@@ -100,9 +100,16 @@ namespace RimMandrake.Inhabited
                 Log.Warning("[RimMandrake.Inhabited] no current tile: open a map or select a world tile.");
                 return;
             }
-            if (Find.WorldObjects.AnyWorldObjectAt<WorldObject_InhabitedSettlement>(tile))
+            // Checks for ANY MapParent (not just WorldObject_InhabitedSettlement) --
+            // adversarial review, 2026-09-07: the narrower type-specific check let a
+            // wilderness WorldObject_Inhabited (from "Create place at current tile")
+            // sit at the same tile undetected, and Find.WorldObjects.Add would then
+            // add a SECOND MapParent there, leaving GetOrGenerateMap's own
+            // MapParentAt(tile) lookup to resolve one arbitrary one of the two.
+            if (Find.WorldObjects.MapParentAt(tile) != null)
             {
-                Log.Message("[RimMandrake.Inhabited] a settlement already exists at tile " + tile + ".");
+                Log.Message("[RimMandrake.Inhabited] a MapParent (settlement or place) already exists at tile "
+                    + tile + ".");
                 return;
             }
             List<SettlementManifestDef> manifests = DefDatabase<SettlementManifestDef>.AllDefsListForReading;
@@ -135,18 +142,32 @@ namespace RimMandrake.Inhabited
                     // MapParent we just added via Find.WorldObjects.MapParentAt(tile)
                     // and reads ITS MapGeneratorDef (Inhabited_SettlementMapGenerator),
                     // exactly the def-level wiring this item shipped.
-                    Map map = GetOrGenerateMapUtility.GetOrGenerateMap(tile, new IntVec3(100, 1, 100), null);
-                    if (map == null)
+                    if (!TryEnterSettlementMap(settlement, tile, out Map map))
                     {
-                        Log.Error("[RimMandrake.Inhabited] map generation failed for " + settlement.LabelCap);
                         return;
                     }
-                    Current.Game.CurrentMap = map;
-                    CameraJumper.TryJump(new GlobalTargetInfo(map.Center, map));
                     Log.Message("[RimMandrake.Inhabited] " + settlement.LabelCap + " (" + manifest.defName
                         + ") created at tile " + tile + " for faction " + (faction?.Name ?? "none")
                         + " and map generated -- visit #" + settlement.casing.visitCount + ".");
                 });
+        }
+
+        /// <summary>
+        /// The generate/select/jump sequence "Create settlement here" and
+        /// "Re-enter settlement here" both need -- extracted after adversarial
+        /// review, 2026-09-07, flagged the identical block appearing twice.
+        /// </summary>
+        private static bool TryEnterSettlementMap(WorldObject_InhabitedSettlement settlement, PlanetTile tile, out Map map)
+        {
+            map = GetOrGenerateMapUtility.GetOrGenerateMap(tile, new IntVec3(100, 1, 100), null);
+            if (map == null)
+            {
+                Log.Error("[RimMandrake.Inhabited] map generation failed for " + settlement.LabelCap);
+                return false;
+            }
+            Current.Game.CurrentMap = map;
+            CameraJumper.TryJump(new GlobalTargetInfo(map.Center, map));
+            return true;
         }
 
         [DebugAction(Cat, "Re-enter settlement here (test harness, needs one already created)", allowedGameStates = AllowedGameStates.Playing)]
@@ -166,20 +187,16 @@ namespace RimMandrake.Inhabited
                     + " -- use 'Create settlement here' first.");
                 return;
             }
-            // Same GetOrGenerateMap call "Create settlement here" makes, minus
-            // the construction branch: the settlement WorldObject already
+            // Same TryEnterSettlementMap call "Create settlement here" makes,
+            // minus the construction branch: the settlement WorldObject already
             // exists (its map was torn down by "Leave settlement now", not
             // itself), so this is the revisit half of the casing-persistence
             // proof -- GenStep_ComposeSettlementDistrict.Generate runs again,
             // reads the still-bound manifest and the casing's prior visitCount.
-            Map map = GetOrGenerateMapUtility.GetOrGenerateMap(tile, new IntVec3(100, 1, 100), null);
-            if (map == null)
+            if (!TryEnterSettlementMap(settlement, tile, out Map map))
             {
-                Log.Error("[RimMandrake.Inhabited] map generation failed for " + settlement.LabelCap);
                 return;
             }
-            Current.Game.CurrentMap = map;
-            CameraJumper.TryJump(new GlobalTargetInfo(map.Center, map));
             Log.Message("[RimMandrake.Inhabited] re-entered " + settlement.LabelCap
                 + " -- casing after this arrival: everVisited=" + settlement.casing.everVisited
                 + " visitCount=" + settlement.casing.visitCount

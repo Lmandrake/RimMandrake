@@ -43,7 +43,13 @@ namespace RimMandrake.TheftHauler
                 Log.Warning("[RimMandrake.TheftHauler] no building at " + cell + ".");
                 return;
             }
-            if (!building.def.Minifiable)
+            // Matches FloatMenuOptionProvider_TheftHaulUninstall's own gate
+            // exactly (category == Building AND Minifiable) -- adversarial
+            // review, 2026-09-07: this harness previously checked Minifiable
+            // alone, so a hypothetical non-Building-category Minifiable thing
+            // would pass here while the real player-facing feature would
+            // refuse it, undermining this comment's own claim.
+            if (building.def.category != ThingCategory.Building || !building.def.Minifiable)
             {
                 Log.Warning("[RimMandrake.TheftHauler] " + building.LabelShort + " is not Minifiable -- "
                     + "the real job would refuse this target too (see FloatMenuOptionProvider's own gate).");

@@ -28,19 +28,37 @@ namespace RimMandrake.Ninefold
         // TryLaunch has several early-return failure paths (unspawned, no
         // fuel, over mass, on cooldown, under roof) that still run to
         // completion with no exception -- a bare Postfix would credit
-        // Ta'Baa on every failed launch ATTEMPT, not just real ones. Gate
-        // on the same pre-check vanilla itself uses (CanLaunch), taken in
-        // a Prefix before TryLaunch mutates anything.
+        // Ta'Baa on every failed launch ATTEMPT, not just real ones.
+        //
+        // 🔴 First fix (CanLaunch()-gated __state) was itself too shallow --
+        // caught by adversarial review, 2026-09-07: CanLaunch() checks
+        // AllLaunchablesInGroupHaveFuelForLaunch (group has ANY fuel), but
+        // TryLaunch has its OWN later, stricter guard: the actual
+        // destination distance against MaxLaunchDistanceAtFuelLevel(
+        // MinFuelLevelInGroup, ...) -- a group with unevenly-fueled pods can
+        // pass CanLaunch() and still bail at that distance check with zero
+        // fuel spent and nothing spawned. Replicating vanilla's full guard
+        // chain here would just be a second, drift-prone copy of it.
+        //
+        // Instead: gate on vanilla's OWN success marker. `lastLaunchTick`
+        // (public field on CompLaunchable) is assigned unconditionally
+        // immediately after EVERY guard clause passes (Spawned, group,
+        // CanLaunch, AND the distance/fuel check) and BEFORE any pod is
+        // processed -- it is the exact moment vanilla itself commits to the
+        // launch, and CanLaunch()'s own cooldown check reads it right back,
+        // so it is not an incidental field, it is vanilla's canonical
+        // "did a launch actually happen" flag. Capture it before the call,
+        // credit Ta'Baa only if it changed.
         [HarmonyPrefix]
-        public static void Prefix(CompLaunchable __instance, out bool __state)
+        public static void Prefix(CompLaunchable __instance, out int __state)
         {
-            __state = __instance.parent.Spawned && __instance.CanLaunch();
+            __state = __instance.lastLaunchTick;
         }
 
         [HarmonyPostfix]
-        public static void Postfix(bool __state)
+        public static void Postfix(CompLaunchable __instance, int __state)
         {
-            if (__state)
+            if (__instance.lastLaunchTick != __state)
             {
                 GameComponent_Ninefold.Instance?.Notify_Launched("launch/relocation");
             }
