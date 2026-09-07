@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  DraughtFuel_Marker.xml               DesertVehicleReskin · authored 2026-09-07
+  ============================================================================
+
+  Closes VEHICLE_FUEL_PATCH_UNFILTERED_1 (owner ruling: filter, not widen-all).
+  VehicleFuelPatches.cs's Harmony prefix/postfix on CompFueledTravel are global:
+  they run for EVERY Vehicle Framework vehicle on the load, not just the
+  five draught carts this mod's About.xml claims (Chariot, WarChariot, OxCart,
+  CoveredCarriage, DogSled). Without a marker, a VVE truck or a raid vehicle
+  could refuel on potatoes exactly like a draught animal.
+
+  Attaches RM_DraughtFuelExtension to those five VehicleDefs only. The C# side
+  checks vehicle.VehicleDef.GetModExtension<RM_DraughtFuelExtension>() and
+  falls through to vanilla (unwidened) fuel behaviour when it is absent.
+
+  All five already declare <modExtensions> (Vanilla Vehicles Expanded's
+  StatExtension), so this is an Add into the existing list, not a new node:
+  a second top-level <modExtensions> would be an unproven double-node gamble.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/Vehicles.VehicleDef[defName="AV_Chariot"]/modExtensions</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/Vehicles.VehicleDef[defName="AV_Chariot"]/modExtensions</xpath>
+      <value>
+        <li Class="RimMandrake.DesertVehicleReskin.RM_DraughtFuelExtension" />
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/Vehicles.VehicleDef[defName="AV_WarChariot"]/modExtensions</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/Vehicles.VehicleDef[defName="AV_WarChariot"]/modExtensions</xpath>
+      <value>
+        <li Class="RimMandrake.DesertVehicleReskin.RM_DraughtFuelExtension" />
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/Vehicles.VehicleDef[defName="AV_OxCart"]/modExtensions</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/Vehicles.VehicleDef[defName="AV_OxCart"]/modExtensions</xpath>
+      <value>
+        <li Class="RimMandrake.DesertVehicleReskin.RM_DraughtFuelExtension" />
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/Vehicles.VehicleDef[defName="AV_CoveredCarriage"]/modExtensions</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/Vehicles.VehicleDef[defName="AV_CoveredCarriage"]/modExtensions</xpath>
+      <value>
+        <li Class="RimMandrake.DesertVehicleReskin.RM_DraughtFuelExtension" />
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/modExtensions</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/modExtensions</xpath>
+      <value>
+        <li Class="RimMandrake.DesertVehicleReskin.RM_DraughtFuelExtension" />
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

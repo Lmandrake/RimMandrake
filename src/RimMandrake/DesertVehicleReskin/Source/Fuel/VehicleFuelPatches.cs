@@ -99,6 +99,11 @@ namespace RimMandrake.DesertVehicleReskin
         public static bool ClosestFuelAvailable_Prefix(CompFueledTravel __instance, Pawn pawn,
             ref Thing __result)
         {
+            if (__instance.Vehicle?.VehicleDef?.GetModExtension<RM_DraughtFuelExtension>() == null)
+            {
+                return true; // not one of our draught vehicles - run the donor's own logic
+            }
+
             CompProperties_FueledTravel props = __instance.Props;
             if (props == null || props.ElectricPowered || pawn == null || pawn.Map == null)
             {
@@ -130,6 +135,10 @@ namespace RimMandrake.DesertVehicleReskin
         public static void AllFuelFromInventory_Postfix(VehiclePawn vehicle,
             ref IEnumerable<Thing> __result)
         {
+            if (vehicle?.VehicleDef?.GetModExtension<RM_DraughtFuelExtension>() == null)
+            {
+                return; // not one of our draught vehicles - leave the donor's result alone
+            }
             __result = WidenedFuelFromInventory(vehicle);
         }
 
@@ -160,7 +169,10 @@ namespace RimMandrake.DesertVehicleReskin
                 yield break;
             }
 
-            List<Thing> carried = vehicle.inventory.innerContainer.InnerListForReading;
+            // Snapshot before iterating: InnerListForReading is the LIVE list, and a
+            // refuel job removing consumed fuel mid-enumeration would skip whatever
+            // shifted into an already-visited index.
+            List<Thing> carried = new List<Thing>(vehicle.inventory.innerContainer.InnerListForReading);
             for (int i = 0; i < carried.Count; i++)
             {
                 if (VegetableFuel.Accepts(declared, carried[i].def))
