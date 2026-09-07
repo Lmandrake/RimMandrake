@@ -198,3 +198,177 @@ verdigris where metal meets moss.** Light: hard glare above, cool gloom under th
 overhangs; enclosed oases glow at their vent-slits. The seep oases inverted: a green
 eye ringed in open flat nothing, no shade at all, impossibly lush — read as magical
 because the engine is hidden beneath.
+
+The map-scale read is already ruled (`biome_and_fauna_roster.md`): **concentric
+rings — water, then green, then scrub, then sand, in visible bands. The most legible
+tile on the world, and it should look designed.** The comb rule nests inside it: the
+rings are the plan view, the combs are the elevation.
+
+---
+
+# The enrichment pass — BENCH, 2026-09-06; the owner's pass is owed on all of it
+
+_Beasts, items, furniture, structures, and the faction faces of the water. Sections
+10–12 are proposals at sheet register; nothing below is a def yet._
+
+## 10. The bestiary — who comes to the water
+
+The concentric rings apply to the fauna too. Three rings: **residents** (live here,
+comb-carrying natives), **pilgrims** (the neighboring biomes' animals, drawn in — the
+"HIGHEST density on the planet" ruling is mostly *visitors*), and **the margin** (what
+hunts the approaches, never the pool). The `ikee` is already placed here, uncommon
+(`fauna_placement.md` — "near water and traffic"; an omen, never a herd).
+
+**The standing cast must be reconciled first.** MEASURED 2026-09-06 off
+`design/Jawa/fauna/cast_assignment.csv` (sha256:0331f6610967ba7f): **29 species are
+already cast to this biome**, assigned before this sheet existed, and it shows — a
+grab-bag of cave bats, polluted-lands toads, a Rancor, a mutating tumorfish. Graded
+against the sheet: ⭐ **the Fanback** (Star Wars Animal Collection, large) is a gift —
+a creature with a literal fan on its back, already here; **the comb convergence was
+waiting for us.** Obvious keeps: Fanback, ColossusToad, Dactillion (the flier mount),
+Ollopom, Boma. Obvious violations for `WEEPING_STONES_ROSTER_1` to evict or re-home:
+every ambush predator (§6 ban — Narkospider, Razorjack as-flavored), anything whose
+body is a pollution story (TumorfishAdult, TaintedTurtle — sacrilege in this water),
+and the Rancor (a truce pool is the one place it cannot star). The cast file is
+curated — nothing moves until the roster item, except that the eviction *criteria*
+are now this sheet's §6.
+
+Names below follow `Alien_Bestiary.md` §1 and the clade roots; every native carries
+the comb (§5). Collision-checked against `creature_names_ashkarr.md` and the bestiary.
+
+| name | clade | what it is |
+|---|---|---|
+| **dewback** | canon | 🔑 **Already LIVE in the mod set** (Star Wars Animal Collection) and mis-cast to `LavaField` (`cast_assignment.csv:769`) — the films' dew-drinking lizard, standing on lava. **Proposed: reassign here.** The archetype resident; its ridged back is the comb the whole biome converges on. |
+| **tirbak** | mount `-bak` | The walking cistern. A placid colossus that drinks once per wind-cycle and carries it for days; dorsal rain-fins it fans to the wind. The caravan mount of the oasis string; replaces the donor's muffalo/dromedary/elephant pack list. Nickname: *tanker*. |
+| **burrak** / **burradar** | heavy `-rak`/`-dar`, elder-form ladder | The well-digger. Wallows and digs catch-basins that outlive it — abandoned burrak digs are how new micro-oases start. The elder **burradar** digs the deep wells; a working oasis tolerates one the way a town tolerates its engineer. Claw-combs. Nickname: *well-digger*. |
+| **sillik** | small-quick `-ik` | Lives on the vertical weep-faces themselves, licking the film; whisker-combs around the muzzle. The prey base. Nickname: *weep-mouse*. |
+| **mirrik** | insectoid `-rrik` | The dew-smoke: swarms that mist-dance over the pools at wind-hour, combing water with mesh wings. Pollinator of the blade-flora; its cocoons are the **dewsilk** source (§11). Nickname: *dew-smoke*. |
+| **ssurr** | reptile `ss-` | The fan-dancer. A crest-fan reptile whose breeding displays happen at the pools — the romance-and-ritual ruling (§4) made animal. Harmless, spectacular, beloved. Nickname: *fan-dancer*. |
+| **vhakk** | apex `vh-` | The margin made flesh. It never hunts at water (§6's ban, by design, not restraint — it drinks in strict rotation like everything else) and owns the approaches instead; a low blade-crest along the spine. Its patrol is the oasis's outermost wall. Nickname: *the warden*. |
+
+## 10b. Weather, and the sound of the place
+
+Weather is the engine made visible. The base state is **clear and windy** — the
+sea-wind always runs (§5). The signature weather is **fog at wind-hour**: when the
+damp flow peaks, the high country goes into cloud at ground level, every comb in the
+biome drinks at once, and the biome does its actual living — travel slows, the pools
+rise, the mirrik swarms come out. Rain is rare and gentle when the fog oversaturates;
+never storms, and **never snow** (§6 strips the donor's absurd SnowGentle/SnowHard).
+Seep oases (§2b) add ground-steam instead of fog — their weather comes from below.
+
+**Sound: an oasis is heard before it is seen.** Wind through the ancient vane arrays
+makes aeolian tones — **each array is its own chord, so each oasis has a name in
+sound before it has one in words**; pilgrims navigate the last miles by ear. Under
+it: drip-echo in the cistern shafts, the fan-dancer's rattle, the crowd-noise of the
+pools. A **dead oasis is silent** — the first thing a traveler notices, and the
+worst. (Cheap to ship: ambient `soundsAmbient` per-biome plus the vanes' tones; the
+donor's night-insects ambient is replaced by this.)
+
+## 11. Unique items, furniture, structures
+
+**Items.**
+
+- **Dewsilk** — cloth woven from mirrik cocoon fiber; fiercely hydrophilic. The
+  material of moisture cloaks and comb-sails; the biome's signature trade good.
+- **Comb-vane segment** — salvage from the ancient condenser arrays;
+  component-tier. Enough segments and a working shaft = a restored water economy (§7).
+- **Bladder-fruit** — the water-hoarding blade-plant's harvest: food and drink in one
+  object. Re-points the donor's `foragedFood` when the flora roster lands.
+- **Seep-salt** — mineral crust from the seep oases (§2b); preservative and spice
+  with the underworld's taste. Only source: the magical ones.
+- **Oomo token** — the pilgrim's marker, left and taken at truce-stones; a social and
+  ritual item, and the gate-token the Hutt palaces accept (§12).
+
+**Furniture and structures — the recapture ladder (§8) made concrete.** Natural props:
+weep-mats and drip-gardens on the cold faces; burrak wallows; the dead ring of bones.
+Built, oldest to ultimate: **ancient vane array** (ruin, per-state: true-running /
+leaking / fog-wild / dead) · **cistern shaft** (deep storage, ancient or re-cut) ·
+**condenser fin** (buildable, wind-facing — the player's entry rung) · **shade-lid and
+awning** (recapture) · **servo-vent segment** (the enclosure endgame) · **truce-stone**
+(the pool's marker; ritual and recreation focus — where the tokens pile up) · between
+oases, the **pilgrim ring**: cairns and camp hearths beading the caravan roads.
+Map-gen placement rides `structure_injection_roster.md`; player buildables are their
+own scoped item.
+
+## 12. Faction expressions — one water, thirteen faces
+
+Grounded in Global system 2 (`faction_roster_v2.md`, the water-and-thirst doctrine):
+each faction's water *state* already decides its oasis face. The truce and claim law
+(§4) grade them all: **settling the water is legal, charging for unsettled water is
+the one barbarism.**
+
+- **The Jawa** — pay-and-go, by doctrine and temperament. The crawler parks at the
+  margin, unfurls its comb-sails, and market-day happens at the water's edge; nothing
+  they raise claims the ground. They pay at settled oases and understand why. Rare
+  settled exceptions exist and are notable *because* they are exceptions.
+- **Hutt Cartel** — the enclosure endgame made gaudy. The **eight palaces**
+  (`HUTT_LORDS_AND_POSTS_1`) are oasis-anchored seats: gilded vane arrays, perfumed
+  pools, a servo-vented dome for a palace roof. Legal to the letter — the Hutt *lives*
+  on the water — and worked as a racket: the gate has a price, the water inside is
+  "free." A Hutt bathing in what others drink stays just inside the law, and every
+  visitor feels exactly where the line is.
+- **Deepwater Compact** — the stewards. Austere warden posts, ledgers of draw, the
+  truce made institutional. The legitimate water-sellers: they live on every tile they
+  charge for, which is the whole difference.
+- **Wildsteam Clan** — the seep oases are theirs (§2b): boiler-works, bathhouses,
+  steam-driven condensers on the hot mineral springs. Devastating at home, per
+  doctrine — an attacked Wildsteam oasis is a kettle turned weapon.
+- **Homestead Defense League** — vaporator farmers; they *manufacture* and don't need
+  the pool. They come anyway — for market, marriage, and the rituals (§4's romance
+  ruling); homesteads cluster near, never on. The neighborly face.
+- **Deep Desert Tribes** — the taboo (Forbid): they never dwell, water in silence,
+  and leave bone-and-vane chimes as offerings. The truce's zealots — the ones who
+  execute toll-keepers. Their reverence is the fiercest and the least visible.
+- **Geonosian Foundry Hive** — arid-adapted (Forbid): they don't stop. A Geonosian
+  column marching past an oasis without drinking is the worst omen on any road — it
+  means the one leash everything else wears isn't on them.
+- **Free Droid Enclaves** — 🔴 **the legal sacrilege.** Their Deny state settles the
+  water and *cracks it for fuel*: electrolysis stacks where vane arrays stood, lethal
+  runoff pooling where the green ring is dying by inches, animals turned away from
+  water that is technically claimed by the law and utterly damned by Oomo. Three
+  enclaves — up to three dying oases on the map. The strongest quest seed this biome
+  owns.
+- **Galactic Empire** — supplied (Allow), needs nothing local — and meters the water
+  anyway where it garrisons. Breaking the one law even enemies keep, *as policy*, is
+  what makes the occupation legible at an oasis: the metering station near the
+  spaceport is despised past politics.
+- **Ascendant Helix** — buys its water in bulk and camps at a **dead ring**, trying
+  to wake the silent machine. The only face more interested in the condenser than the
+  pool; natural holder of the AncientUplink loadout's attention.
+- **Blackstar Company** — water-clock hunters (Allow): oases are their rendezvous and
+  their caches (the Stockpile loadout). Iron truce discipline — the kill happens on
+  the road, never at the pool. A Blackstar team watering quietly means someone nearby
+  is being hunted.
+
+The landmark loadouts (architecture ruling, top) pair naturally with the faces:
+AncientUplink draws the Helix; Stockpile is a Blackstar cache; AnimalHabitat sits
+best near Compact stewardship; the dead rings belong to the Helix or the droids'
+aftermath. Placement rides `OASIS_LANDMARK_PLACEMENT_1` when it files.
+
+---
+
+## Owed
+
+- **The owner's pass** on §10–12 — none of it is ratified; the beasts, the dewback
+  reassignment, the droid dying-oases and the Imperial metering are his to keep or
+  cut.
+- `OASIS_LANDMARK_PLACEMENT_1` (to file) — hand-place and hand-name the pools with
+  per-site loadouts; seep-oasis siting waits on `VAPOR_EMITTER_PLACEMENT_1`.
+- `OASIS_MUTATOR_PATCH_1` (to file) — whitelist `ZBiome_DesertOasis` into the vanilla
+  Oasis mutator; strip snow weathers; re-point forage; alien-flora swap after the
+  roster.
+- `WEEPING_STONES_ROSTER_1` (to file) — flora and fauna to the sheet: reconcile the
+  29 cast (§10), the dewback move from `LavaField`, the seven proposed natives, the
+  blade-flora.
+- **Engine feasibility pass** — the fog-at-wind-hour weather; the condenser fin as a
+  buildable water source; the servo-vent enclosure; aeolian ambient per oasis state;
+  the truce as animal behavior (or as flavor only — the cheap version is spawn
+  suppression of predator-hunts near water, the honest version is a behavior mod).
+- **Cross-flow ledger**: Cracked Lands fliers feed here and nest in the desert
+  (ratified on that sheet); Desert/Badlands herds are the pilgrim ring; Wildsteam's
+  seep claims tie to `the_seas.md` vent chemistry; Hutt palace interiors ride
+  `HUTT_LORDS_AND_POSTS_1`.
+- **Grammar backfill**: this enrichment step (bestiary · items/structures · faction
+  faces · weather/sound) is owed to `README_BIOME_GRAMMAR.md` as standard fields, and
+  **the Cracked Lands is owed the same pass** (owner, 2026-09-06: "I think we also
+  skipped this step on the last biome").
