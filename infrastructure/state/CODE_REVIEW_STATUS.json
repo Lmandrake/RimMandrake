@@ -305,6 +305,12 @@
     "hash": "a312db69586ffa5573396b4033288d17f673245bc7bc8c6374b447b87ec93feb",
     "sha": "43f96b1b"
   },
+  "src/RimMandrake/Aftermath/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "a7d098cfecfe9ef64df91e23769fbbefa3b031c2b61c3997094792cfb5333595",
+    "sha": "e3fe4617"
+  },
   "src/RimMandrake/Aftermath/Source/AftermathMod.cs": {
     "cleanCount": 1,
     "date": "2026-09-06",
@@ -642,10 +648,10 @@
     "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Defs/ThingDefs_Graffiti.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "2a64d0563823d8220e91cb0376c0fb40417b3992798267c0697bd8aac8aeabe9",
-    "sha": "5a1f89a6"
+    "cleanCount": 3,
+    "date": "2026-09-07",
+    "hash": "53cc25753bb89c4b1d5a3257e1894cc030e40a8bdeaa3c60d9e14f97fe7013fe",
+    "sha": "e3fe4617"
   },
   "src/RimMandrake/Graffiti/Defs/ThinkTreeDefs_Graffiti.xml": {
     "cleanCount": 2,
@@ -1266,10 +1272,10 @@
     "sha": "ecc86a6f"
   },
   "src/RimMandrake/Ninefold/Source/Patch_PawnDowned.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "733bcda06ce31c4b1af7151cdfddbd9c4c65715dacfa3363b76b8b2bf8432fc5",
-    "sha": "9e5a639b"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "ddc9cb97f15696c16a08d9d78d803561c1f6dd1ea80d2133f10bd91a01caad5f",
+    "sha": "e3fe4617"
   },
   "src/RimMandrake/Ninefold/Source/Patch_PrisonerCaptured.cs": {
     "cleanCount": 1,
@@ -1386,10 +1392,10 @@
     "sha": "e01583ae"
   },
   "src/RimMandrake/Pits/Defs/ThingDefs/Pit_OpenPits.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "a33367dba3d4042cdcd6476cd9f2f7fc79d71f26d8bd5d7c8ad31a57cdb547e7",
-    "sha": "e01583ae"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "f1de40ce489d82f1f477f4b4917b120f56028e4c900f719c41a015b05c4796e0",
+    "sha": "e3fe4617"
   },
   "src/RimMandrake/Pits/Defs/WorkGiverDefs/Pit_WorkGivers.xml": {
     "cleanCount": 1,
@@ -6088,10 +6094,10 @@
     "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Defs/RecipeDefs/RecipeDefs_Droidworks.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "7b7e03aecfad9f10d24f7fadc195745d4b58e8e09b4a143ff7a8fd600bcca184",
-    "sha": "78944107"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "690ab935742d5b9d1e18631ad957c96181f7a841140c93d9dfd2cc1e5b3ef958",
+    "sha": "e3fe4617"
   },
   "src/RimStarWars/Droidworks/Defs/ThingDefs/Buildings_Charging.xml": {
     "cleanCount": 1,
@@ -7012,10 +7018,10 @@
     "sha": "629956d2"
   },
   "src/RimStarWars/StarWarsPatches/Patches/BehemothArtUpres_StarWarsAnimalCollection.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "f4991e7735b3b7a55a29e0d45e4461259c9630ea5de3a210ba4aee0eebae9abd",
-    "sha": "3c8d5d73"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "99eb4b3691a33022d29e2a885480a9c02b2fb32ddc8e7fc89c668d7f87d58bcb",
+    "sha": "e3fe4617"
   },
   "src/RimStarWars/StarWarsPatches/Patches/BodySizeIsReal.xml": {
     "cleanCount": 1,
