@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T01:13:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T01:17:02Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## CRACKED_LANDS_ENRICHMENT_1 Backfill the enrichment pass (bestiary sorts, items/structures, faction faces, weather/sound) on the_cracked_lands.md; add the step to README_BIOME_GRAMMAR.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  CRACKEDLANDSENRICHMENT1 — backfill the enrichment pass
+prose:    infrastructure/state/items/CRACKED_LANDS_ENRICHMENT_1.md
 
 # IN PROGRESS
 
@@ -250,15 +259,15 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WEEPING_STONES_ROSTER_1.md yet — write one when you have something to say)
+summary:  WEEPINGSTONESROSTER1 — flora and fauna to the sheet
 prose:    infrastructure/state/items/WEEPING_STONES_ROSTER_1.md
 
-## CRACKED_LANDS_ENRICHMENT_1 Backfill the enrichment pass (bestiary sorts, items/structures, faction faces, weather/sound) on the_cracked_lands.md; add the step to README_BIOME_GRAMMAR.md
+## CANON_LORE_PROPAGATION_1 Wednesday 2026-09-09 after 4pm (token reset): full propagation of canon back into the lore docs, AND re-think the three-layers-of-canon design with the owner — either fix the standing contradictions or explain why they are tolerated
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CRACKED_LANDS_ENRICHMENT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CRACKED_LANDS_ENRICHMENT_1.md
+summary:  CANONLOREPROPAGATION1 — canon back into the lore docs, and the three-layers rethink
+prose:    infrastructure/state/items/CANON_LORE_PROPAGATION_1.md
