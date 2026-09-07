@@ -343,7 +343,9 @@ def _as_text(chunk) -> str:
 def run_codex(prompt: str, images: list[Path], workdir: Path, timeout: int,
               verbose: bool, model: str | None = None,
               home: Path | None = None,
-              reasoning_effort: str | None = None) -> tuple[int, str, bool]:
+              reasoning_effort: str | None = None,
+              output_schema: Path | None = None,
+              output_last_message: Path | None = None) -> tuple[int, str, bool]:
     """Run one codex exec turn. Returns (returncode, output, timed_out).
 
     🔴 It does NOT raise on timeout, and that is the point. The image lands
@@ -352,6 +354,10 @@ def run_codex(prompt: str, images: list[Path], workdir: Path, timeout: int,
     produced" - 14 real tree images were lost that way on 2026-09-06
     (CODEX_WRAPPER_HARVEST_FIX_1). The timeout is reported as a flag so the
     caller can harvest first and decide afterwards.
+
+    output_schema/output_last_message are optional pass-throughs to codex
+    exec's own `--output-schema`/`-o` flags (CODEX_PARALLEL_WORKERS_1) - both
+    default to None, so every existing caller is byte-for-byte unaffected.
     """
     cli = find_codex_cli()
     cmd = [str(cli), "exec", "--sandbox", "workspace-write", "--skip-git-repo-check"]
@@ -359,6 +365,10 @@ def run_codex(prompt: str, images: list[Path], workdir: Path, timeout: int,
         cmd += ["-m", model]
     if reasoning_effort and reasoning_effort != "inherit":
         cmd += ["-c", f'model_reasoning_effort="{reasoning_effort}"']
+    if output_schema is not None:
+        cmd += ["--output-schema", wsl_to_win(output_schema)]
+    if output_last_message is not None:
+        cmd += ["-o", wsl_to_win(output_last_message)]
     for img in images:
         if not img.is_file():
             raise EnvError(f"Input image does not exist: {img}")
@@ -447,7 +457,11 @@ def do_image(args) -> int:
     started = time.time()
     code, output, timed_out = run_codex(
         prompt, images, workdir, args.timeout, args.verbose,
-        getattr(args, "model", None), home, args.reasoning_effort)
+        getattr(args, "model", None), home, args.reasoning_effort,
+        output_schema=(Path(args.output_schema).resolve()
+                       if getattr(args, "output_schema", None) else None),
+        output_last_message=(Path(args.output_last_message).resolve()
+                             if getattr(args, "output_last_message", None) else None))
     elapsed = time.time() - started
 
     if args.verbose and output:
@@ -563,6 +577,14 @@ def main() -> int:
         p.add_argument("--dry-run", action="store_true",
                        help="print the resolved command and prompt, call nothing")
         p.add_argument("--verbose", action="store_true")
+        p.add_argument("--output-schema", default=None, metavar="FILE",
+                       help="pass-through to codex exec's own --output-schema: "
+                            "a JSON Schema the agent's final response must match "
+                            "(CODEX_PARALLEL_WORKERS_1). Off by default.")
+        p.add_argument("--output-last-message", default=None, metavar="FILE",
+                       help="pass-through to codex exec's own -o: write the "
+                            "agent's final message (the schema-validated JSON, "
+                            "when --output-schema is set) to this file.")
 
     g = sub.add_parser("generate", help="make a new image from a prompt")
     common(g)
