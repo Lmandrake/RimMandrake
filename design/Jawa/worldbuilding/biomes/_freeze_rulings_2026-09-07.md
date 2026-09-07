@@ -435,3 +435,88 @@ says. Minimum surface area; the rain law is not rewritten.
 **Amends:** `weeping_stones.md` §10b (strike), and **R-H4 — write in the
 BlackRain carve-out that was ruled but never recorded in the rule.** R-H1 and
 the rest of the rain law stand as written.
+
+---
+
+## R19a — ARC 40–50, MEASURED (the finding is mostly downgraded)
+
+**MEASURED** from `world/ASHKARR_WORLDMAP_tiles.csv` (21,872 rows), 2026-09-07:
+**1,328 tiles** lie in arc 40–50.
+
+| tiles | biome def | sheet status |
+|---:|---|---|
+| 748 | `ExtremeDesert` | covered — dune sea + deep desert share this def |
+| 203 | `Desert` | covered — `desert.md` |
+| 97 | `RUT_TheScald` | covered — the Scald reaches out to arc 50 |
+| 57 | `BiomeCypreJungle` | **no sheet** (on the item's undefined list) |
+| 45 | `COMIGO_GreaterSwamp_Tropical` | **no sheet** |
+| 42 | `AB_OcularForest` | **no sheet** |
+| 39 | `AB_FeraliskInfestedJungle` | **no sheet** |
+| 35 | `ZBiome_Grasslands` | **no sheet** |
+| 17 | `ZBiome_DesertOasis` | **no sheet** |
+| 16 | `Wasteland` · 12 `AB_MiasmicMangrove` · 10 `AridShrubland` | covered |
+
+🔑 **The review's fall-through fear does not apply.** The roster binds **per
+def, not per arc** — the 951 ExtremeDesert/Desert tiles inherit their rosters
+whatever the sheets' arc prose says. The arc gap is a **prose** gap.
+✅ **The real uncovered tiles in the band are the already-known undefined biome
+defs**, which the item's blocked list already tracks. No new gap was found.
+
+---
+
+## R22 — EXTREMEDESERT: ONE MERGED ROSTER, STRICT INTERSECTION
+
+**Ruled:** accept the def as the binding unit. `ExtremeDesert` gets **one
+roster obeying BOTH sheets' bans** — the strict intersection `_assignment_prep.md`
+already applies. No region split, no repaint, no new def.
+
+Consequences, accepted deliberately:
+- **bodySize 0.3–3.0 banned** across all `ExtremeDesert` — giants or
+  grain-scale only.
+- **No pursuit or ambush-from-cover predators** — subsurface strike only.
+- The deep desert loses any animal the dune sea bans, **even ones written for
+  it**. That is the price of the def binding, and it produces a genuinely alien
+  fauna rather than a compromise one.
+- The 748 arc 40–50 `ExtremeDesert` tiles take this roster automatically.
+
+**Amends:** `_assignment_prep.md` §5 — the owner's first call is now ANSWERED;
+strike the open question.
+
+---
+
+## R23 — THE SCARLANDS: WAR AEROSOL, NOT RAIN
+
+**Ruled:** the Scarlands' toxic fall is a **legacy of the assailant weapons, not
+weather** — aerosolised toxin still suspended over the province, settling out as
+a corrosive fall when the air stills. It is **not rain**, needs no carve-out from
+the rain law, and fits the biome's identity as a wounded place.
+
+**Amends:** `the_scarlands.md` — replace ToxRain-as-weather with the aerosol.
+**Owed:** a name that is not "rain", and a settling mechanism (when the air
+stills — which [R4] now lets you site).
+
+---
+
+## R24 — GREENWOOD: A SLOW DRYING STEP
+
+**Ruled:** green wood does not burn; **seasoned** wood does. The Greentide's
+export is dried greenwood, and the drying is **long, space-hungry and
+settlement-scale** — putting it exactly where [R5] puts every other fuel: real,
+but never a supply a passing player taps.
+
+**Amends:** `the_greentide.md` — the non-flammable-natives ban stands untouched;
+the export gains its drying process.
+
+---
+
+## R25 — THE ASSAILANTS' AUTHORSHIP IS AUTHORS' KNOWLEDGE EVERYWHERE
+
+**Ruled:** the engineered-bioweapon origin is gated across the board. **The
+player may INFER it; the player is never TOLD it.** Partition `the_rot.md`,
+`the_slime.md` and `the_contagion.md` the way `the_scarlands.md` already is.
+
+Keeps the discovery available as a late-campaign payoff instead of spending it
+in a biome description.
+
+**Amends:** the three sheets' prose partitioning. The Scarlands' existing ban is
+the model.
