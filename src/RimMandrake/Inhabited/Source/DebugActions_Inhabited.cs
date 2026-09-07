@@ -76,6 +76,101 @@ namespace RimMandrake.Inhabited
                         + ", archetype " + (place.placeDef?.defName ?? "NONE (no InhabitedPlaceDef loaded)") + ".");
         }
 
+        // ------------------------------------------------------------------
+        // SETTLEMENT_VISIT_LOOP_1's own test harness. Nothing else in the
+        // codebase constructs a WorldObject_InhabitedSettlement -- confirmed
+        // by search, not assumed: no GenStep, quest or incident anywhere
+        // calls WorldObjectMaker.MakeWorldObject(Inhabited_Settlement), so
+        // the whole arrival/compose/cast/departure/casing loop this item
+        // ships has no producer to reach it through ordinary play yet (the
+        // wilderness Inhabited_Place route above is a different WorldObject
+        // class entirely). These two actions are that producer, scoped
+        // narrowly to what the loop needs to prove itself end to end on a
+        // quicktest map -- not a real "visit a settlement" player feature
+        // (no caravan, no travel time), which is SETTLEMENT_VERBS_WAVE_1/a
+        // future item's job.
+        // ------------------------------------------------------------------
+
+        [DebugAction(Cat, "Create settlement here (pick manifest)", allowedGameStates = AllowedGameStates.Playing)]
+        private static void CreateSettlementHere()
+        {
+            PlanetTile tile = CurrentTile();
+            if (!tile.Valid)
+            {
+                Log.Warning("[RimMandrake.Inhabited] no current tile: open a map or select a world tile.");
+                return;
+            }
+            if (Find.WorldObjects.AnyWorldObjectAt<WorldObject_InhabitedSettlement>(tile))
+            {
+                Log.Message("[RimMandrake.Inhabited] a settlement already exists at tile " + tile + ".");
+                return;
+            }
+            List<SettlementManifestDef> manifests = DefDatabase<SettlementManifestDef>.AllDefsListForReading;
+            if (manifests.Count == 0)
+            {
+                Log.Error("[RimMandrake.Inhabited] no SettlementManifestDefs loaded.");
+                return;
+            }
+            Dialog_DebugOptionListLister.ShowSimpleDebugMenu(manifests, m => m.settlementName ?? m.defName,
+                delegate (SettlementManifestDef manifest)
+                {
+                    WorldObjectDef def = DefDatabase<WorldObjectDef>.GetNamedSilentFail("Inhabited_Settlement");
+                    if (def == null)
+                    {
+                        Log.Error("[RimMandrake.Inhabited] WorldObjectDef Inhabited_Settlement did not load.");
+                        return;
+                    }
+                    WorldObject_InhabitedSettlement settlement =
+                        (WorldObject_InhabitedSettlement)WorldObjectMaker.MakeWorldObject(def);
+                    settlement.Tile = tile;
+                    Faction faction = Find.FactionManager.AllFactionsListForReading
+                        .FirstOrDefault(f => f.def.defName == manifest.factionDefName)
+                        ?? Find.FactionManager.RandomNonHostileFaction(allowNonHumanlike: false);
+                    settlement.SetFaction(faction);
+                    settlement.Name = manifest.settlementName;
+                    settlement.manifest = manifest;
+                    Find.WorldObjects.Add(settlement);
+
+                    // No suggestedMapParentDef needed: GetOrGenerateMap finds the
+                    // MapParent we just added via Find.WorldObjects.MapParentAt(tile)
+                    // and reads ITS MapGeneratorDef (Inhabited_SettlementMapGenerator),
+                    // exactly the def-level wiring this item shipped.
+                    Map map = GetOrGenerateMapUtility.GetOrGenerateMap(tile, new IntVec3(100, 1, 100), null);
+                    if (map == null)
+                    {
+                        Log.Error("[RimMandrake.Inhabited] map generation failed for " + settlement.LabelCap);
+                        return;
+                    }
+                    Current.Game.CurrentMap = map;
+                    CameraJumper.TryJump(new GlobalTargetInfo(map.Center, map));
+                    Log.Message("[RimMandrake.Inhabited] " + settlement.LabelCap + " (" + manifest.defName
+                        + ") created at tile " + tile + " for faction " + (faction?.Name ?? "none")
+                        + " and map generated -- visit #" + settlement.casing.visitCount + ".");
+                });
+        }
+
+        [DebugAction(Cat, "Leave settlement now (test harness, tears down this map)", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void LeaveSettlementNow()
+        {
+            Map map = Find.CurrentMap;
+            if (map == null)
+            {
+                return;
+            }
+            WorldObject_InhabitedSettlement settlement =
+                Find.WorldObjects.WorldObjectAt<WorldObject_InhabitedSettlement>(map.Tile);
+            if (settlement == null)
+            {
+                Log.Warning("[RimMandrake.Inhabited] current map has no WorldObject_InhabitedSettlement -- "
+                    + "nothing to depart from.");
+                return;
+            }
+            Log.Message("[RimMandrake.Inhabited] forcing departure from " + settlement.LabelCap
+                + " -- Patch_SettlementDeparture's gate-search hook and Patch_MapRemoval's roster "
+                + "recall should both fire on the DeinitAndRemoveMap call below.");
+            Current.Game.DeinitAndRemoveMap(map, notifyPlayer: true);
+        }
+
         [DebugAction(Cat, "Set place archetype", allowedGameStates = AllowedGameStates.Playing)]
         private static void SetPlaceDef()
         {
