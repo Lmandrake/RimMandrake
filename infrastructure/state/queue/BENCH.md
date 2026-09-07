@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T06:11:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T06:17:20Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -372,3 +372,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MIASMA_MECHANICS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MIASMA_MECHANICS_1.md
+
+## FEVER_WOOD_MECHANICS_1 Fever Wood C# kit: the Tenant as map-spanning aquifer entity (pool-strike logic, evidence events, never-resolved rule), marsh building-refusal terrain, pool-state intelligence, mirror-break events - spec the_fever_wood.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FEVER_WOOD_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FEVER_WOOD_MECHANICS_1.md
