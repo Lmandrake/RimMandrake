@@ -767,3 +767,69 @@ catchment; the outer flank is R01's source.
 🔑 **Step 4 is the one that catches the failure a per-def check cannot see:** a
 scoped check reads 100% while other work is silently destroyed. Diff the LOSSES,
 not just the gains.
+
+---
+
+## R37 — THE SCALD SOURCES ITS RIVERS AT THE SHORE
+
+**Ruled:** `RUT_TheScald` keeps `allowRivers: false`. Instead, **the first LAND
+tile adjacent to the Scald is each river's SOURCE** — it carries the highest
+`riverDist`, and riverDist **decreases outward** to the far mouth.
+
+On screen the river emerges from the Scald's edge and runs away from it, which is
+how a lake outflow actually looks; drawing a river ribbon across a large water
+body looks wrong, and both vanilla `Lake` and `Ocean` set the flag false too.
+
+✅ **No def change, no redeploy.** [R1] reads correctly in game at zero cost.
+
+### measured state that made this decision
+- `jawa/world_links_get` on tile 19369 (a Scald tile): biome `Lake`,
+  `allowRivers: false`, **`hiddenByBiome: true`** — the link is already invisible.
+- The live world paints 19369 as `Lake` while the CSV says `RUT_TheScald`: the
+  world is behind the CSV, which the import fixes.
+
+---
+
+## R38 — 🔴 `riverDist` ON THE FROZEN WORLD IS NOISE, NOT A DIRECTION
+
+**MEASURED 2026-09-07** via `jawa/world_links_get` on R06's ten tiles, in
+graph order from the Scald: **`0, 1, 0, 1, 2, 0, 1, 2, …`** — cycling, never
+increasing from any mouth. `world/_rivers/apply.py` laid the segments in
+arbitrary order and `OverlayRiver`'s `Max()` preserved whatever came first.
+
+🔑 **So the river job is NOT a reversal. There is no direction to reverse — we are
+establishing one for the first time.** Lower risk than [R32] assumed, and the
+`clear-then-relay` question is moot for correctness: any full re-lay in mouth-first
+order improves on noise.
+
+⭐ **Supporting evidence for [R1], found in the paint itself:** R06 carries
+`River` at its Scald end and degrades to `Creek` outward — exactly the gradient a
+river losing water to evaporation as it leaves a large source would have. The
+existing paint already tells the outflow story.
+
+---
+
+## R39 — TILE 16869: THE COLONY GOES, AND A FRESH ONE IS MADE BEFORE SAVING
+
+**Ruled.** Owner, 2026-09-07: *"Do it, but then make a NEW colony map somewhere
+before we save with one colonist so that we can boot normally from it later."*
+
+- ✅ Import with `--despite-map`; the colony on 16869 is not preserved.
+- 🔴 **Before the save, create a fresh colony map with one colonist** so the
+  savegame boots normally later.
+
+**Confirmed call sequence** (the owner asked for this to be confirmed before
+proceeding): `jawa/tile_settleable` → `jawa/colony_found`
+(`SettleUtility.AddNewHome`; does NOT make the map) → `jawa/world_tile_map_generate`
+(`GetOrGenerateMapUtility.GetOrGenerateMap`) → `jawa/spawn_pawn`
+(`faction: player, count: 1`).
+
+⛔ **The trap that governs it — `TILEGEN_SILENT_REUSE_1`:**
+`world_tile_map_generate` **fabricates success on the SECOND distinct-tile call
+per session** — `success: true, wasAlreadyGenerated: false`, the same `mapIndex`
+as call 1, and `mapCount` does not rise. **Make exactly ONE generate call, and
+verify with a `rimworld/get_game_info` `mapCount` before/after delta — never from
+the tool's own return value.**
+⚠️ Also check whether the broken map left on 16869 still exists as a Map object
+after the import; a dead map may stop the save booting cleanly, which is the whole
+point of this ruling.
