@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T19:15:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T19:39:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1041,7 +1041,7 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SCALD_RIVER_REPAINT_1.md yet — write one when you have something to say)
+summary:  ⛔ THE OBVIOUS APPROACH IS A NO-OP — read this before planning anything
 prose:    infrastructure/state/items/SCALD_RIVER_REPAINT_1.md
 
 ## BLIZZARISK_DONOR_CUT_1 Cherry Picker cut of the Blizzarisk donor def -- R20, owner: donor creature not our canon, remove it from the game
@@ -1081,5 +1081,15 @@ needs:    offline
 target:   v1
 kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ARMOURY_PATCH_INNER_MISS_1.md yet — write one when you have something to say)
+summary:  evidence (full-list load, 2026-09-07, 598 mods)
 prose:    infrastructure/state/items/ARMOURY_PATCH_INNER_MISS_1.md
+
+## ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1 Rewrite OracleHttpClient to shell out to claude -p, per owner's 2026-09-05 in-game-LLM ruling (never tracked as an item)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Per CLAUDE.md's own note: the two laws (text/menu authority only; the game
+prose:    infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md

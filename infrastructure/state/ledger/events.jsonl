@@ -5565,3 +5565,4 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"verify ARMOURY_CROSSFILE_ADD_REPLACE_ORDER_1 damage values live","ts":"2026-09-07T19:13:38Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-07T19:14:05Z"}
 {"seat":"BENCH","event":"file","id":"ARMOURY_PATCH_INNER_MISS_1","title":"Jawa Armoury Rebalance: 3 FindMod blocks report failure though all 3 mods are ACTIVE -- an inner xpath is missing (patch failures 8 vs baseline 5)","kind":"bug","target":"v1","for":"FOUNDRY","ts":"2026-09-07T19:15:22Z"}
+{"seat":"FOUNDRY","event":"file","id":"ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1","title":"Rewrite OracleHttpClient to shell out to claude -p, per owner's 2026-09-05 in-game-LLM ruling (never tracked as an item)","kind":"task","target":"v1","needs":"offline","spec":"infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md","caused_by":"ORACLE_EXPERIMENT_SPIKE_1","for":"FOUNDRY","ts":"2026-09-07T19:39:10Z"}
