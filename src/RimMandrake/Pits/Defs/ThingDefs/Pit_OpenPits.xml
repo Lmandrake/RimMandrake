@@ -80,6 +80,17 @@
     <defName>RM_OpenPit_Oiled</defName>
     <label>oiled pit</label>
     <description>An earthen pit with flammable oil pooled at the bottom. Ignitable at will.</description>
+    <!-- 🔴 REQUIRED override, and measured 2026-09-06: RM_OpenPitBase sets
+         Flammability 0. FireUtility.ChanceToStartFireIn takes the MAX
+         flammability across the cell's terrain and things - on bare Soil
+         with nothing else in the cell that is 0, so TryStartFireIn's own
+         "<=0f -> return false" guard made the Oiled fitting's whole ignite
+         mechanic a no-op regardless of soaked/Sprung state. Any nonzero
+         value here is sufficient: TryStartFireIn spawns the Fire
+         unconditionally once ChanceToStartFireIn > 0, no further roll. -->
+    <statBases>
+      <Flammability>1.0</Flammability>
+    </statBases>
     <comps>
       <!-- CompPitCoverTrigger is INHERITED from RM_OpenPitBase; RimWorld
            APPENDS a child <comps> list to its parent's, so redeclaring it

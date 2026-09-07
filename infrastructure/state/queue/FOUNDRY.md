@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T00:01:25Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-07T00:02:49Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -440,6 +440,15 @@ target:   v1
 kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
+
+## MODSET_BUILDER_RESTORE_STALE_1 MODSET_BUILDER_RESTORE_STALE_1
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/MODSET_BUILDER_RESTORE_STALE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MODSET_BUILDER_RESTORE_STALE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

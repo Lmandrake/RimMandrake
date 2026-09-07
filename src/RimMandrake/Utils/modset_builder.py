@@ -51,7 +51,13 @@ DATA = GAME_DATA
 CONFIG = os.path.join(LOWDIR, "Config", "ModsConfig.xml")
 PLAYERLOG = os.path.join(LOWDIR, "Player.log")
 BACKUPS = os.path.join(ROOT, "deployed", "config")
-FULL_BACKUP = os.path.join(BACKUPS, "ModsConfig.full-568.2026-08-11.xml")
+# 🔴 Was a dated one-off snapshot (ModsConfig.full-568.2026-08-11.xml, 568 mods)
+# that drifted stale as the owner's real list grew -- measured 2026-09-06: it
+# silently dropped 30 mods (568 vs the then-live 598) on a --restore after a
+# --tier swap. ModsConfig.FULL.LATEST.xml is the doctrinally frozen, kept-current
+# full list (CLAUDE.md / rimworld-load-round skill) -- restore to THAT, always.
+FULL_BACKUP = os.path.join(ROOT, "infrastructure", "state", "modlists",
+                            "ModsConfig.FULL.LATEST.xml")
 
 CORE = "ludeon.rimworld"
 HARMONY = "brrainz.harmony"
@@ -287,19 +293,27 @@ def main():
         if game_running():
             print("REFUSING: RimWorld looks live. Exit first.")
             return 1
-        # FULL_BACKUP is a hardcoded snapshot, not re-derived from the live
-        # list. It silently drifts out of date as mods are added -- restoring
-        # it can UNDO mods the live ModsConfig currently has that this
-        # snapshot predates. Compare counts and say so; this does not decide
-        # which count is "right", only stops the loss from being invisible.
+        # 🔴 CONFIG is NOT "the live list" at this point in normal usage -- by
+        # the time anyone calls --restore, CONFIG already holds whatever tiny
+        # --tier ... --apply just wrote, so comparing the restore target
+        # against CONFIG compares it against the test tier it is about to
+        # replace, which can never usefully warn of anything. The actual
+        # pre-swap state lives in the newest ModsConfig.before-tier-*.xml this
+        # session wrote; compare against THAT instead. Measured 2026-09-06:
+        # comparing against CONFIG let a 568-vs-598 mod loss through silently.
         try:
-            live_n = len(ET.parse(CONFIG).getroot().find("activeMods").findall("li"))
-            backup_n = len(ET.parse(FULL_BACKUP).getroot().find("activeMods").findall("li"))
-            if backup_n < live_n:
-                print("  ! %s has %d mods; the live list currently has %d -- "
-                      "restoring will DROP %d mod(s) versus what is live now."
-                      % (os.path.relpath(FULL_BACKUP, ROOT), backup_n, live_n,
-                         live_n - backup_n))
+            before_files = sorted(
+                (p for p in os.listdir(BACKUPS) if p.startswith("ModsConfig.before-tier-")),
+                key=lambda p: os.path.getmtime(os.path.join(BACKUPS, p)))
+            if before_files:
+                pre_swap = os.path.join(BACKUPS, before_files[-1])
+                pre_swap_n = len(ET.parse(pre_swap).getroot().find("activeMods").findall("li"))
+                backup_n = len(ET.parse(FULL_BACKUP).getroot().find("activeMods").findall("li"))
+                if backup_n != pre_swap_n:
+                    print("  ! restoring %s (%d mods); the pre-swap snapshot %s has %d -- "
+                          "these disagree, check which one is actually current."
+                          % (os.path.relpath(FULL_BACKUP, ROOT), backup_n,
+                             os.path.relpath(pre_swap, ROOT), pre_swap_n))
         except Exception:
             pass
         shutil.copy2(FULL_BACKUP, CONFIG)
