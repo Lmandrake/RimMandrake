@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_NightsideIce                             UtinniPatches · authored 2026-09-07
+    NIGHTSIDE_ICE_DEF_1. Full sheet: design/Jawa/worldbuilding/biomes/nightside_ice.md.
+
+    Own def, not a patch (owner's ruling, §0 of the sheet). Vanilla IceSheet carries an
+    arctic zoo, coastal walrus/penguin, salmon/cod, snow at real commonality with
+    DLC-gated blizzards, and pond terrainPatchMakers — patching all of that out across
+    MayRequire branches is silent-failure territory, so this restates IceSheet's SHAPE
+    directly and overrides every list to empty, per §6's hard bans.
+
+    🔴 NOT ParentName="IceSheet". Verified against the real engine (ilprobe,
+    Verse.XmlInheritance.TryRegister/GetBestParentFor): a ParentName only resolves
+    against another def's Name="..." XML attribute, registered into a nodesByName
+    dictionary — never against defName as a fallback. Vanilla IceSheet's own tag
+    (Data/Core/Defs/BiomeDefs/Biomes_Cold.xml) has no Name= attribute at all, so
+    ParentName="IceSheet" would silently fail to resolve (GetBestParentFor finds
+    nothing in nodesByName for "IceSheet"). This is a real, engine-verified trap, not a
+    style choice — restating the shape below is the only way to actually inherit it.
+
+    Fields kept from vanilla IceSheet, verbatim: workerClass, allowFarmingCamps,
+    allowRoads, allowRivers, isExtremeBiome, plantDensity, hasVirtualPlants, forageability,
+    movementDifficulty, lakeBeachTerrain/mudTerrain, terrainsByFertility, texture
+    (placeholder — the sheet's "dirty ice, not blue" art is separate, unowed work).
+    Vanilla's own closing line survives as this def's epigraph (sheet §0: "Vanilla's one
+    line survives as this sheet's epigraph"), quoted verbatim in the description below.
+
+    Overridden to empty/zero, per §6's hard bans (no exceptions, no MayRequire branches
+    to carry across — there is simply nothing here):
+      wildAnimals, coastalWildAnimals, allowedPackAnimals — the arctic zoo is evicted
+        (⛔ "no icy dayside analogs", ⛔ "no ordinary animal silhouettes at all").
+      fishTypes, maxFishPopulation — ⛔ "no liquid water anywhere, in any form, ever".
+      terrainPatchMakers — DROPPED entirely (not just emptied): vanilla's block generates
+        WaterShallow ponds via perlin threshold, which is exactly the liquid-water ban.
+      animalDensity 0 — nothing to scale (was 0.2).
+      soundsAmbient — DROPPED (was Ambient_Wind_Desolate): §5/§6 rule the interior dead
+        still, wind only at the margins as drainage the ice sheet never feels; a wind
+        ambient loop on the interior contradicts its own sheet.
+      baseWeatherCommonalities — Clear only. ⛔ §6: "no precipitation on the interior" (no
+        snow, no blizzard, no rain, no thunderstorm) and ⛔ "no wind on the interior" (no
+        Windy). "Aurora" is the sheet's narrative gloss on Clear on this hemisphere, not a
+        distinct WeatherDef — none named "Aurora" exists in the live def dump. The margin
+        events this table can't express (ablation drift, rime-fall, reconnection storm,
+        thaw pulse) are separately owed as incident defs (sheet's Owed list).
+
+    diseases — judgment call, recorded (the item text's "disease list per the freeze
+    review" does not resolve to any file this pass could find — grepped design/Jawa for
+    "freeze review", no hits). Kept Disease_Flu/Disease_Plague/Disease_OrganDecay (human
+    conditions, not animal-vectored). Dropped Disease_AnimalFlu/Disease_AnimalPlague (no
+    animal population to originate them — wildAnimals is empty) and the two Anomaly
+    mechanite diseases (Fibrous/SensoryMechanites are shambler/Anomaly-lore diseases with
+    no established connection to this sheet). Flag for the owner if a different list was
+    meant.
+
+    Still owed, explicitly NOT this item's scope (sheet's own Owed list): the 802-tile
+    paint under HORRORWASTES_BIOME_DISSOLVE_1's mosaic (needs an owner-reviewed
+    worldview.py render first — NOT done here); registering the def with whatever world
+    tool needs an explicit biome list (C# bridge tools resolve BiomeDef by name via
+    DefDatabase lookup at paint time, no hardcoded list found in JawaBenchWorldTools.cs —
+    if a Python-side census/CSV needs this name added, that is part of the paint pass,
+    not this one); tunnelers/icy insects roster and art; the equivalence-table incident
+    defs (thaw pulse, calving delivery, the lost soul, rime-fall/ablation, the Dark
+    drifting over); savegame re-freeze.
+  -->
+
+  <BiomeDef>
+    <defName>RUT_NightsideIce</defName>
+    <label>nightside ice</label>
+    <description>Dirty white ice, geologically young and impure, on the highest ground of the deep night. It flows, it fractures, and what it swallowed it eventually gives back. There is no soil for plants to grow in. The only animals here are migrating to somewhere else -- or badly lost.</description>
+    <workerClass>BiomeWorker_IceSheet</workerClass>
+    <settleWarning>The nightside ice is extremely inhospitable. There is no soil for plants, almost no animal life, and no warmth anywhere but what you bring. Long-term survival is a challenge.</settleWarning>
+    <allowRoads>false</allowRoads>
+    <allowRivers>false</allowRivers>
+    <allowFarmingCamps>false</allowFarmingCamps>
+    <isExtremeBiome>true</isExtremeBiome>
+    <animalDensity>0</animalDensity>
+    <plantDensity>0</plantDensity>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <forageability>0</forageability>
+    <movementDifficulty>1.5</movementDifficulty>
+    <lakeBeachTerrain>Ice</lakeBeachTerrain>
+    <mudTerrain>Ice</mudTerrain>
+    <texture>World/Biomes/IceSheet</texture>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_OrganDecay</diseaseInc>
+        <commonality>10</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Ice</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>100</Clear>
+      <Fog>0</Fog>
+      <Rain>0</Rain>
+      <DryThunderstorm>0</DryThunderstorm>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">0</GrayPall>
+      <Windy MayRequire="Ludeon.RimWorld.Odyssey">0</Windy>
+      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">0</Overcast>
+      <Blizzard MayRequire="Ludeon.RimWorld.Odyssey">0</Blizzard>
+    </baseWeatherCommonalities>
+    <wildAnimals />
+    <coastalWildAnimals />
+    <allowedPackAnimals />
+  </BiomeDef>
+
+</Defs>
