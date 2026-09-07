@@ -1241,6 +1241,12 @@
     "hash": "5293c76cbe24db9b9d69b17ca8c81ebef9c82aa1660e100de082f155f618674e",
     "sha": "564bd122"
   },
+  "src/RimMandrake/Ninefold/Source/Patch_GravshipLaunched.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "779bf062a71eaa919cc36cfd581d247929523315bb8c26694170fcc4fd86fb3f",
+    "sha": "87331ff7"
+  },
   "src/RimMandrake/Ninefold/Source/Patch_KillManner.cs": {
     "cleanCount": 1,
     "date": "2026-09-06",

@@ -78,7 +78,31 @@ a silent-discard-on-mismatch bug); the second (a fresh re-review, not a
 diff review) found the band-boundary fix from the first pass was itself
 wrong in the opposite direction and corrected it, plus 3 more stale-
 documentation defects (this file included) that asserted the event hooks
-weren't built after they were. Per `CLAUDE.md`'s "Code isn't clean until
-a review says so" — this file set is not yet marked clean in
-`infrastructure/state/CODE_REVIEW_STATUS.json`; it needs one more
-full-file pass with zero findings before it earns that.
+weren't built after they were.
+
+## FOUNDRY, 2026-09-06: state ledger + hooks now CLEAN; blocking on the remaining two pieces
+
+Reviewed `Patch_GravshipLaunched.cs`, the one file `code_review_status.py`
+still showed DIRTY (never marked clean). Found and fixed a real bug: the
+bare Postfix on `CompLaunchable.TryLaunch` credited Ta'Baa's launch spike
++ rooted-clock reset on every launch ATTEMPT, including TryLaunch's several
+early-return failure paths (no fuel, over mass, cooldown, under roof) that
+run to completion with no exception. Fixed with a Prefix/Postfix pair
+gating on `CanLaunch()` (`87331ff7`), rebuilt clean, marked clean. Every
+file in `src/RimMandrake/Ninefold/Source/` is now CLEAN in
+`CODE_REVIEW_STATUS.json` — the satiation ledger + all 17 event hooks
+(far beyond the "five easiest" originally scoped) are done and reviewed.
+
+The remaining two pieces of this item's own title — first-contact chains
+and signed corpus letters — are still blocked on the same thing the
+2026-08-31 scope decision named: owner voice-text redline.
+`design/Jawa/first_contact_chains.md` itself still carries the header
+`status: draft — BENCH proposal for owner ruling` even though the F15
+mechanic was greenlit in the 2026-08-31 card session
+(`salvation_engine_review.md` — "Spec all nine — dramatic, not subtle") —
+the doc's own header is the authority here per "superseding a doc means
+writing INTO the doc" (CLAUDE.md), and it has not been updated to say the
+prose itself was ruled. Building corpus-letter code against unredlined
+voice text would ship text the owner hasn't seen. Blocking rather than
+closing: the buildable scope is fully done, the rest needs the owner's
+eyes on the doc, not more autonomous work.
