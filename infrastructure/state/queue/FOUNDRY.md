@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T02:55:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T02:58:17Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## FORSAKEN_CRAGS_PREDATORS_BUILD_1 Build Cindermare + Skarnix, wild AB_RockyCrags threat pair
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  1. Cindermare (moornakopt1.png) — wild threat, ABRockyCrags. No mouth
-prose:    infrastructure/state/items/FORSAKEN_CRAGS_PREDATORS_BUILD_1.md
 
 ## STARWARS_DONOR_SUNSET_1 Retire ALL remaining third-party Star Wars donors (12 mods, 4 waves; Mlie+TSDA first)
 state:    ready
@@ -188,6 +179,15 @@ target:   v1
 kind:     build
 summary:  Per the doc's rosters and §7.2 shared-art batching:
 prose:    infrastructure/state/items/LIVESTOCK_STARTER_TRIO_1.md
+
+## FORSAKEN_CRAGS_PREDATORS_BUILD_1 Build Cindermare + Skarnix, wild AB_RockyCrags threat pair
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  1. Cindermare (moornakopt1.png) — wild threat, ABRockyCrags. No mouth
+prose:    infrastructure/state/items/FORSAKEN_CRAGS_PREDATORS_BUILD_1.md
 
 ## HELIX_TELLUROX_BUILD_1 Build Tellurox, Ascendant Helix labour-line livestock
 state:    doing
@@ -441,6 +441,24 @@ kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
 
+## GL_EMITTER_OBJECT_GAP_1 gl_emit rebuilds 14 of 44 landforms one <Object> short (coast/river family, Gorge, Valley); selftest must cover all 44
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  - Diff one small case (LandformValley.xml: 3 objects vs 2 emitted) — find which <Object refID the parser drop…
+prose:    infrastructure/state/items/GL_EMITTER_OBJECT_GAP_1.md
+
+## BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1 build.py tool-removal guard byte-scans the DLL and reported a fictitious lost tool (jawa/pawn_); compare against source [Tool] declarations
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  - Replace the byte-scan with a metadata read: the Tool attribute's first constructor argument lives in the cu…
+prose:    infrastructure/state/items/BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -556,16 +574,6 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1.md
-
-## KOTORWEAPONS_ABSORPTION_DANGLING_REFS_1 Absorbed_KotorWeapons/KotorCore defs reference defNames the absorption generator deliberately excluded
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  KOTORWEAPONSABSORPTIONDANGLINGREFS1
-prose:    infrastructure/state/items/KOTORWEAPONS_ABSORPTION_DANGLING_REFS_1.md
 
 ## KOTORCORE_ABSORPTION_MISSING_TEXTURES_1 8 Absorbed_KotorCore/AdditionalMods files carry pink-placeholder texPaths (validate_patch.py, 13 errors)
 state:    proposed
@@ -717,16 +725,6 @@ thin:     no ## spec, no ## criteria
 summary:  VEHICLEFUELPATCHUNFILTERED1 — the fuel-widening patch hits EVERY Vehicle Framework vehicle
 prose:    infrastructure/state/items/VEHICLE_FUEL_PATCH_UNFILTERED_1.md
 
-## GL_EMITTER_OBJECT_GAP_1 gl_emit rebuilds 14 of 44 landforms one <Object> short (coast/river family, Gorge, Valley); selftest must cover all 44
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  - Diff one small case (LandformValley.xml: 3 objects vs 2 emitted) — find which <Object refID the parser drop…
-prose:    infrastructure/state/items/GL_EMITTER_OBJECT_GAP_1.md
-
 ## ANCIENT_WAR_LAB_1 The war lab beneath the propane lake over the Impact Site — submerged dungeon, lab fauna + mechanoid guardians, and the crater ending as a permanent map change
 state:    proposed
 row:      unassigned
@@ -746,16 +744,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  FOUNDRYREBOOTHANDOFF20260906C — READ FIRST on wake (evening session, 2026-09-06)
 prose:    infrastructure/state/items/FOUNDRY_REBOOT_HANDOFF_20260906C.md
-
-## BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1 build.py tool-removal guard byte-scans the DLL and reported a fictitious lost tool (jawa/pawn_); compare against source [Tool] declarations
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  - Replace the byte-scan with a metadata read: the Tool attribute's first constructor argument lives in the cu…
-prose:    infrastructure/state/items/BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1.md
 
 ## LANTERN_DEEPS_INJECTION_1 The crystal caverns as an injected underground layer beneath ≤ −40 °C nightside maps — quicktest the cave-map generation, two entrance features (emergence, ruined mineshaft), persistent Deeps, kyber formations
 state:    proposed

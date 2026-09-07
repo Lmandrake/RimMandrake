@@ -5375,3 +5375,11 @@
 {"seat":"FOUNDRY","event":"claim","id":"WEAPONS_DONOR_RETIREMENT_1","ts":"2026-09-07T02:53:18Z"}
 {"seat":"FOUNDRY","event":"start","id":"WEAPONS_DONOR_RETIREMENT_1","ts":"2026-09-07T02:53:19Z"}
 {"seat":"FOUNDRY","event":"block","id":"WEAPONS_DONOR_RETIREMENT_1","reason":"validate_patch.py --defs (Data+Mods+Workshop+Armoury) re-run clean: 13 errors, all pre-existing KOTORCORE_ABSORPTION_MISSING_TEXTURES_1 findings, no new fallout. Sole remaining criterion (guy762.mm.kotorcore retirement) still gated on parked DROID_SYSTEM_BUILD_1 — DROID_KOTORDROIDS_PORT_WAVE1_1's Site 1 (Droidworks Need_Power port) still open. Not forcing through solo per prior session's own note.","ts":"2026-09-07T02:55:54Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FORSAKEN_CRAGS_PREDATORS_BUILD_1","ts":"2026-09-07T02:56:31Z"}
+{"seat":"FOUNDRY","event":"start","id":"FORSAKEN_CRAGS_PREDATORS_BUILD_1","ts":"2026-09-07T02:56:32Z"}
+{"seat":"FOUNDRY","event":"claim","id":"KOTORWEAPONS_ABSORPTION_DANGLING_REFS_1","ts":"2026-09-07T02:58:07Z"}
+{"seat":"FOUNDRY","event":"drop","id":"KOTORWEAPONS_ABSORPTION_DANGLING_REFS_1","reason":"Re-verified 2026-09-06 (recorded in item file): guy762.mm.kotorcore is active and its own Bullets_HomingProjectiles/Bullets_Special/Structure_SWDoors/Structure_SWWalls define every defName our absorbed content references. Not a dangling ref, not a bug.","ts":"2026-09-07T02:58:08Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GL_EMITTER_OBJECT_GAP_1","ts":"2026-09-07T02:58:15Z"}
+{"seat":"FOUNDRY","event":"start","id":"GL_EMITTER_OBJECT_GAP_1","ts":"2026-09-07T02:58:16Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1","ts":"2026-09-07T02:58:17Z"}
+{"seat":"FOUNDRY","event":"start","id":"BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1","ts":"2026-09-07T02:58:17Z"}
