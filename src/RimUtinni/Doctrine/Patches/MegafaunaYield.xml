@@ -1458,6 +1458,38 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
+    <mods><li>Alpha Biomes</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- AB_UnshackledCompanionDryad MeatAmount: bodySize 2.40, base 336, yields 806 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_UnshackledCompanionDryad"]/statBases/MeatAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_UnshackledCompanionDryad"]/statBases/MeatAmount</xpath>
+            <value><MeatAmount>336</MeatAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_UnshackledCompanionDryad"]/statBases</xpath>
+            <value><MeatAmount>336</MeatAmount></value>
+          </nomatch>
+        </li>
+        <!-- AB_UnshackledCompanionDryad BoneAmount: bodySize 2.40, base 120, yields 288 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AB_UnshackledCompanionDryad"]/statBases/BoneAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AB_UnshackledCompanionDryad"]/statBases/BoneAmount</xpath>
+            <value><BoneAmount>120</BoneAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AB_UnshackledCompanionDryad"]/statBases</xpath>
+            <value><BoneAmount>120</BoneAmount></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
     <mods><li>Alpha Genes</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
