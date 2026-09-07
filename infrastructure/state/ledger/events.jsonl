@@ -5513,3 +5513,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"DROID_DONOR_REFGREP_1","ts":"2026-09-07T08:28:31Z"}
 {"seat":"FOUNDRY","event":"start","id":"DROID_DONOR_REFGREP_1","ts":"2026-09-07T08:28:32Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROID_DONOR_REFGREP_1","sha":"a7dd778266f52d37d9c323a1c79758a0975cbe74","ts":"2026-09-07T08:28:32Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROID_FDE_GOODWILL_CAP_1","ts":"2026-09-07T08:42:08Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROID_FDE_GOODWILL_CAP_1","ts":"2026-09-07T08:42:08Z"}
+{"seat":"FOUNDRY","event":"note","id":"DROID_FDE_GOODWILL_CAP_1","text":"Implemented offline (123fac9d): src/RimUtinni/RestrainingBolts/, matches the design doc's Build note exactly. Corrected the doc's stale [v2] markers in the same commit (FDE FactionDef is built now, confirmed by DROID_FACTIONS_IN_FROZEN_SAVE_1). Builds clean (0 warn/0 err) against live RimWorld assemblies, deployed to Mods/, not yet enabled in any ModsConfig. run_selftests.py 43/43. Live verify (bolt a droid, watch the Enclaves cap actually move) owed to a game-up session -- stays doing.","ts":"2026-09-07T08:42:09Z"}
