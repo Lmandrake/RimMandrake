@@ -118,7 +118,8 @@ Order is by **similarity — slowly vary** (owner, 2026-09-05).
 | `weeping_stones.md` | `ZBiome_DesertOasis` ("the Weeping Stones", owner-named; 236 tiles MEASURED) | ✅ done 2026-09-06, enrichment included — dew+relic engine; biome+landmarks architecture; the truce and the claim law; the comb convergence; the recapture ladder; seep oases; the singing vanes |
 | `the_greentide.md` | `BiomeCypreJungle` ("the Greentide", owner-named; 191 tiles MEASURED, all river) | ✅ done 2026-09-06, four rounds, enrichment included — water is the only argument; STEAM and the Roil; NO truce; the dying river and its graves; blowers, domes, the habitable band; the Greatboles; owner: "I really like how this one turned out" |
 | `the_webwork.md` | `AB_FeraliskInfestedJungle` ("the Webwork", owner-named; 172 tiles MEASURED, bimodal rain) | ✅ done 2026-09-06, two rounds — the drunk river; a biome-sized creature of shade; the Wyyyschokk/Feralisk canon; the light-moat; Shokkweave IS hyperweave, sole source; the three wars; NOT the Greentide, by inversion |
-| **next** | owner's pick | 🔵 the remaining small defs (`Scarlands` 90, `AB_TarPits` 62, `AB_MiasmicMangrove` 92, `COMIGO_GreaterSwamp_Tropical` 60, `AB_MechanoidIntrusion` 236, `ZBiome_Grasslands` 227) · the four liquid biomes |
+| `the_scarlands.md` | `Scarlands` (name kept; 🔑 vanilla Odyssey, not a mod; 90 tiles MEASURED, all in the Scorch) | ✅ done 2026-09-06, two rounds — the Rakatan last stand (🔴 lore PARTITIONED §P/§GM, reveal-gated); the visible defense with no enemy; Glowers, plated grazers, the mynock comes home; rainbow pools; reclaimable droids; the curse as mechanics |
+| **next** | owner's pick | 🔵 the remaining small defs (`AB_TarPits` 62, `AB_MiasmicMangrove` 92, `COMIGO_GreaterSwamp_Tropical` 60, `AB_MechanoidIntrusion` 236, `ZBiome_Grasslands` 227) · the four liquid biomes |
 | `wreck_fields.md` | — | ⛔ superseded by `fall_line.md` |
 
 ### 🔑 The dryland ladder is ONE number: the sun's angle

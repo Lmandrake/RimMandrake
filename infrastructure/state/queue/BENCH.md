@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T04:54:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T05:07:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -320,5 +320,25 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ANCIENT_RUINS_MOD_AUDIT_1.md yet — write one when you have something to say)
+summary:  ANCIENTRUINSMODAUDIT1 — the mall-maps mod: cut, keep, or learn from
 prose:    infrastructure/state/items/ANCIENT_RUINS_MOD_AUDIT_1.md
+
+## SCARLANDS_MECHANICS_1 Scarlands C# kit: mynock ship-infestation (board/breed/eat conduit+flooring+lighting/hunt-out), Scarlands mark hediff, plated-grazer scaria onset, Sentinel defend-only AI bounds, pre-sprung danger dressing — spec the_scarlands.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SCARLANDS_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCARLANDS_MECHANICS_1.md
+
+## STAGED_LORE_DESCRIPTIONS_1 Engine feasibility: scenario-driven staged descriptions - biome/terrain/def texts that change as lore reveal gates open; Scarlands P/GM ladder is the first consumer (BENCH-filed from the owner's musing, not a ruling)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STAGED_LORE_DESCRIPTIONS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STAGED_LORE_DESCRIPTIONS_1.md
