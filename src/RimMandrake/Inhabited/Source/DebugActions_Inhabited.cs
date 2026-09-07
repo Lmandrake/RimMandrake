@@ -149,6 +149,45 @@ namespace RimMandrake.Inhabited
                 });
         }
 
+        [DebugAction(Cat, "Re-enter settlement here (test harness, needs one already created)", allowedGameStates = AllowedGameStates.Playing)]
+        private static void ReenterSettlementHere()
+        {
+            PlanetTile tile = CurrentTile();
+            if (!tile.Valid)
+            {
+                Log.Warning("[RimMandrake.Inhabited] no current tile: select the settlement's world tile.");
+                return;
+            }
+            WorldObject_InhabitedSettlement settlement =
+                Find.WorldObjects.WorldObjectAt<WorldObject_InhabitedSettlement>(tile);
+            if (settlement == null)
+            {
+                Log.Warning("[RimMandrake.Inhabited] no WorldObject_InhabitedSettlement at tile " + tile
+                    + " -- use 'Create settlement here' first.");
+                return;
+            }
+            // Same GetOrGenerateMap call "Create settlement here" makes, minus
+            // the construction branch: the settlement WorldObject already
+            // exists (its map was torn down by "Leave settlement now", not
+            // itself), so this is the revisit half of the casing-persistence
+            // proof -- GenStep_ComposeSettlementDistrict.Generate runs again,
+            // reads the still-bound manifest and the casing's prior visitCount.
+            Map map = GetOrGenerateMapUtility.GetOrGenerateMap(tile, new IntVec3(100, 1, 100), null);
+            if (map == null)
+            {
+                Log.Error("[RimMandrake.Inhabited] map generation failed for " + settlement.LabelCap);
+                return;
+            }
+            Current.Game.CurrentMap = map;
+            CameraJumper.TryJump(new GlobalTargetInfo(map.Center, map));
+            Log.Message("[RimMandrake.Inhabited] re-entered " + settlement.LabelCap
+                + " -- casing after this arrival: everVisited=" + settlement.casing.everVisited
+                + " visitCount=" + settlement.casing.visitCount
+                + " knownDistrictLabels=[" + string.Join(", ", settlement.casing.knownDistrictLabels) + "]"
+                + " searchesLeaversObserved=" + settlement.casing.searchesLeaversObserved
+                + " knownSearchesLeavers=" + settlement.casing.knownSearchesLeavers + ".");
+        }
+
         [DebugAction(Cat, "Leave settlement now (test harness, tears down this map)", allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void LeaveSettlementNow()
         {
