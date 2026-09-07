@@ -181,3 +181,16 @@ Ninefold's still-unbuilt Sh'kaar-meter/corpus-letter infrastructure (same
 block as `NINEFOLD_ENGINE_M0_1`). Not triggering a solo restart for this one item — batching game-up work
 across the queue first. Blocking rather than leaving `doing` so the next
 pass can tell at a glance this isn't mid-edit.
+
+## FOUNDRY, 2026-09-07: game-up batch happened; this item's own test still owed
+
+Did the batched restart (see `NINEFOLD_ENGINE_M0_1`/`SETTLEMENT_VISIT_LOOP_1`
+for the same session). Added a "Set Colony Visibility (dev)" debug action to
+sweep the ruled threat-point curve, but found (and fixed, `6e6ce2d9`) that
+`Visibility.csproj`'s `EnableDefaultCompileItems=false` was silently
+excluding it from the build — same trap as `TheftHauler`. Fixed and
+committed, but NOT YET deployed/tested this pass: the game was up and other
+mods' fixes needed priority; a `deploy_custom_mods.py --mod Visibility
+--apply` + one more restart is owed before the threat-point Prefix can
+actually be swept live. Still blocked on the same live-check this item's
+own history already names.
