@@ -1,0 +1,1 @@
+[Geological Landforms v1.7.13.1] Map generator context: TileId: 93978, Landforms: RUT_Gen_07, BiomeVariants: None, Topology: Inland, TopologyDirection: North (F)

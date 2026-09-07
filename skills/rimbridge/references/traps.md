@@ -983,3 +983,35 @@ reuses it in place of doing the requested work again is invisible from its own r
 value, because that value is shaped exactly like a real success and even varies
 plausibly between calls. Cross-check against an INDEPENDENT reader (`get_game_info`,
 `map_info`) that did not go through the same code path.
+
+## `rimworld/screenshot_cell_rect` cannot frame a whole 250x250+ map, even with zoom extension on
+
+Measured 2026-09-07 (MAPGEN_GL_SHEET_1 round 2). A bare `{"x":0,"z":0,"width":250,
+"height":250,"paddingCells":2}` call refuses: `success:false`,
+`"Requested cell rectangle does not fit in the viewport at the selected camera root
+size."`, `requiredRootSize: 125.0`. Enabling
+`rimworld/set_camera_zoom_extension {"enabled":true}` raises `sizeRange.max` from 60
+to 100 — still short of 125, and passing an explicit `rootSize` of 130 or 150 does
+NOT override the cap: `appliedRootSize` silently clamps back to 100 and the call
+still refuses on the same "does not fit" message. **The tool always insists the
+WHOLE requested rect be visible; there is no partial-capture mode.**
+
+Empirically, `requiredRootSize` is always exactly `crop_size / 2` for a square crop
+(confirmed at 180/200/220 — 90/100/110 respectively) — so the largest square crop
+that fits under the extended 100 cap is exactly **200x200**, never the bare map size
+for anything bigger than that.
+
+⇒ **For a map ≥220 cells on a side, request a CENTRED crop ≤200x200, not the full
+map**, after `set_camera_zoom_extension{"enabled":true}` and an explicit
+`"rootSize":100.0`. A crop this size loses only the outer margin — fine for framing
+a landform/relief feature that is itself centred and well under radius 100, not fine
+for anything that spans the map edges (a coastal or edge-anchored feature needs a
+different approach, not attempted here).
+
+**Generalises to:** any "frame X and screenshot" tool that computes a required zoom
+and refuses below it — the FIX is a smaller request, not a bigger zoom number; the
+zoom range itself has a real ceiling that no parameter on this call can raise past
+100. Silent partial-view screenshots (RimWorld's own default zoom, pre-fix) are a
+DIFFERENT failure from this one: default zoom shows an arbitrary small window with
+no refusal at all, while this refuses loudly and produces nothing — cross-check
+`success` on the response before trusting a screenshot exists, in both cases.
