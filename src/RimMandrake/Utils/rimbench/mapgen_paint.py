@@ -82,14 +82,18 @@ def _fbm2(x, z, seed):
 
 
 def _jitter(x, z, seed, amount=0.12, scale=6.0):
-    """Two fbm scales, not one: a macro wobble (the old single-field jitter)
-    plus a fine one at ~28% of that scale. The corpus's own region-size
-    distribution (median region ~47 cells on a 250x250 map, see
-    corpus_map_stats.md) is far finer than a single low-frequency field
-    ever produces -- that's what was reading as smooth "diagram" swaths
-    rather than a mottled hand-painted texture. The fine field is what
-    fragments a terrace band into many small regions instead of one big
-    one."""
+    """Two fbm scales, not one: a macro wobble plus a fine one at ~28% of
+    that scale -- but see `_terrace_paint`'s `boundary_margin`, which is
+    the actual fix for MAPGEN_PAINTER_V1_1's round-1 finding
+    ("uniform salt-and-pepper speckle over the whole map, no large
+    coherent regions"). The old design applied THIS jitter to every cell
+    unconditionally, which is what produced the speckle: at scale~1.8
+    (max(1.8, 6*0.28)) the micro field is within a couple of cells of pure
+    per-cell noise, so most of a terrace band's INTERIOR was re-rolled
+    independently rather than staying the coarse mask's own uniform fill.
+    `_terrace_paint` now only calls this near a band threshold; leave the
+    amount/scale here as originally tuned for THAT narrower use (organic
+    edge texture), not for classifying the interior."""
     macro = scatter.fbm(x, z, seed=seed, octaves=2, scale=scale)
     micro = scatter.fbm(x, z, seed=seed + 900, octaves=2, scale=max(1.8, scale * 0.28))
     n = macro * 0.5 + micro * 0.5
@@ -117,17 +121,43 @@ def _rock_terraces(seed, floor=SOFTSAND):
             (0.42, GRAVEL), (0.24, SAND), (0.0, floor)]
 
 
-def _terrace_paint(grid_rows, cells, size, bands, seed, jitter=0.12, jitter_scale=6.0):
+def _terrace_paint(grid_rows, cells, size, bands, seed, jitter=0.12, jitter_scale=6.0,
+                    boundary_margin=0.07):
     """cells: iterable of (x, z, density). bands: [(threshold, name_or_fn), ...]
-    sorted descending. Adds one more fbm jitter to density before bucketing
-    -- this is what staggers terrace boundaries instead of nesting perfect
-    concentric rings inside an already-organic mask."""
+    sorted descending.
+
+    MAPGEN_PAINTER_V1_1 round 1's finding: jittering EVERY cell produced
+    "uniform salt-and-pepper speckle over the whole map... each map is
+    still one feature on noise" -- region_size_p50 measured at 3.0 cells
+    and largest-region fraction 0.04-0.10 on all 8 seeds (corpus_stats.py),
+    against the corpus's own 250-bucket band of largest-region fraction
+    0.044-0.63 (corpus_map_stats.md). The fix is not less jitter, it is
+    jitter confined to where a real boundary already is: a cell's RAW
+    (unjittered) density is only pushed across a threshold when it already
+    sits within `boundary_margin` of one -- so a cell deep inside a band
+    (most of a mask's interior, since density falls off smoothly from a
+    mask's own centre) always lands in that band regardless of the fine
+    fbm field, and only the ring of cells actually near a terrace edge
+    gets the organic broken-edge texture. This is what "speckle only at
+    region boundaries" means mechanically: a threshold-adjacency test, not
+    a spatially-adjacent-cell lookup (cells here are `sparse organic-mask
+    points, not a dense grid`, so a real neighbour lookup mid-pass would
+    need a second full pass anyway; density itself already varies
+    smoothly in space, so being near a threshold IS being near a boundary).
+    Jitter strength itself tapers linearly to zero at the margin's edge, so
+    there is no sharp seam between "jittered" and "not jittered" cells.
+    """
+    thresholds = [thr for thr, _ in bands if thr > 0.0]
     for item in cells:
         x, z, d = item[0], item[1], item[2]
         xi, zi = int(round(x)), int(round(z))
         if not (0 <= xi < size and 0 <= zi < size):
             continue
-        dj = d + _jitter(xi, zi, seed, jitter, jitter_scale)
+        nearest = min((abs(d - t) for t in thresholds), default=1.0)
+        if nearest < boundary_margin:
+            dj = d + _jitter(xi, zi, seed, jitter, jitter_scale) * (1.0 - nearest / boundary_margin)
+        else:
+            dj = d
         for thr, name in bands:
             if dj >= thr:
                 grid_rows[zi][xi] = name(xi, zi) if callable(name) else name
@@ -578,6 +608,50 @@ _EXTRA_WANTED = [
 ]
 
 
+def _roughen_boundaries(grid_rows, size, seed, strength=0.25):
+    """One pass over the FINISHED dense grid: flip a cell to a differing
+    4-neighbour's terrain when a fine fbm field clears `strength`, so
+    every boundary the category painter already drew gets a fractal,
+    higher-perimeter edge -- without touching a region's interior, since
+    only cells already adjacent to a different terrain are ever eligible.
+
+    Round 2 finding: after `_terrace_paint`'s boundary_margin fix solved
+    round 1's salt-and-pepper (region_size_max_frac 0.04-0.10 -> 0.07-0.28,
+    corpus_map_stats.md's 250-bucket band is 0.044-0.6346), perim_area_mean
+    fell to 2.08-2.28 -- BELOW the corpus band (2.619-3.064) -- because a
+    coherent big region is inherently more area-efficient (less perimeter
+    per cell) than the same area split into many jagged fragments; round
+    1's in-band 2.64-2.69 turned out to be an artefact of fragmentation,
+    not genuine macro-shape jaggedness. Sweeping this pass's strength
+    against corpus_stats.py's own perim_area_mean_overall (offline, no
+    game needed) found strength=0.25 lands perim_area at 2.63-2.89 while
+    keeping region_size_max_frac at 0.068-0.284 -- both bands, at once.
+    Uses a DENSE-grid neighbour lookup (unlike `_terrace_paint`'s
+    threshold-adjacency proxy) because by this point `grid_rows` is a full
+    grid, not a sparse cloud of organic-mask points -- a real 4-neighbour
+    check is available and is a strictly better boundary test.
+    """
+    src = [row[:] for row in grid_rows]
+    for z in range(size):
+        for x in range(size):
+            cur = src[z][x]
+            neigh = []
+            if x > 0 and src[z][x - 1] != cur:
+                neigh.append(src[z][x - 1])
+            if x < size - 1 and src[z][x + 1] != cur:
+                neigh.append(src[z][x + 1])
+            if z > 0 and src[z - 1][x] != cur:
+                neigh.append(src[z - 1][x])
+            if z < size - 1 and src[z + 1][x] != cur:
+                neigh.append(src[z + 1][x])
+            if not neigh:
+                continue
+            n = scatter.fbm(x, z, seed=seed + 1400, octaves=2, scale=2.2)
+            if n > (1.0 - strength):
+                idx = int(scatter.noise(x, z, seed + 1401) * len(neigh)) % len(neigh)
+                grid_rows[z][x] = neigh[idx]
+
+
 def _guarantee_variety(grid_rows, size, seed):
     present = {name for row in grid_rows for name in row}
     for target, eligible, radius, off in _EXTRA_WANTED:
@@ -601,21 +675,34 @@ def _guarantee_variety(grid_rows, size, seed):
         present.add(target)
 
 
+_PLAIN_THRESHOLDS = (0.66, 0.54, 0.46, 0.34)
+
+
 def _make_plain(size, seed):
-    """Background ground: a macro fbm field (broad patches) blended with a
-    finer one, so the un-carved majority of the map is already a mottled
-    mosaic of small regions -- not one smooth Sand rectangle with a couple
-    of soft-edged Gravel/SoftSand blobs in it. Tuned against
-    corpus_map_stats.md's perimeter/area band empirically (see the item's
-    verify section); five terrain names here, not three, for rule 2's
+    """Background ground: a LOW-frequency macro fbm field decides most of
+    the map (few large patches, the way corpus maps compose big readable
+    ground regions -- see `_terrace_paint`'s docstring for the round-1
+    "salt-and-pepper" measurement this responds to); a finer field only
+    speckles cells whose macro value already sits near one of the four
+    band thresholds, i.e. only right at a patch's own edge. `scale=48`
+    means one fbm wavelength is about a fifth of a 250-cell map -- a
+    handful of large patches, not one per few cells (the old scale=14 at
+    52% weight, next to a scale=3.5 field at 48%, produced fine alternation
+    almost everywhere: region_size_p50 measured at 3.0 cells on all 8
+    round-1 seeds). Five terrain names here, not three, for rule 2's
     distinct-terrain target."""
     grid_rows = [[SAND] * size for _ in range(size)]
+    margin = 0.05
     for z in range(size):
         row = grid_rows[z]
         for x in range(size):
-            macro = scatter.fbm(x, z, seed=seed, octaves=2, scale=14.0)
-            micro = scatter.fbm(x, z, seed=seed + 900, octaves=2, scale=3.5)
-            n = macro * 0.52 + micro * 0.48
+            macro = scatter.fbm(x, z, seed=seed, octaves=2, scale=48.0)
+            nearest = min(abs(macro - t) for t in _PLAIN_THRESHOLDS)
+            if nearest < margin:
+                micro = scatter.fbm(x, z, seed=seed + 900, octaves=2, scale=4.0)
+                n = macro + (micro - 0.5) * 2.0 * margin * (1.0 - nearest / margin)
+            else:
+                n = macro
             if n > 0.66:
                 row[x] = GRAVEL
             elif n > 0.54:
@@ -636,5 +723,6 @@ def paint(plan_dict, size, category):
     grid_rows = _make_plain(size, seed)
     fn = _PAINTERS.get(category, _paint_raised_blob)
     fn(grid_rows, plan_dict, size)
+    _roughen_boundaries(grid_rows, size, seed)
     _guarantee_variety(grid_rows, size, seed)
     return grid_rows

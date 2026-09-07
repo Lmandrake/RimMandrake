@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "seed": 7,
+  "biome": "ExtremeDesert",
+  "sheet": "deep_desert.md",
+  "map_size": 250,
+  "premise": "A crater dominates the map; the only way through is at the ring centre.",
+  "landform": {
+    "id": "Crater",
+    "source": "gl"
+  },
+  "landform_params": {
+    "footprint_fraction": 0.155,
+    "orientation_deg": 333,
+    "relief_class": "mid"
+  },
+  "hydrology": {
+    "kind": "none",
+    "cause": "none, because the Crater sits far from any standing or flowing water"
+  },
+  "anchor": {
+    "position": "ring_centre",
+    "cell_frac": [
+      0.551,
+      0.435
+    ],
+    "holds": "the abandoned road"
+  },
+  "history": "A silverbole stand stood here until the water moved away.",
+  "deletions": [
+    {
+      "forbid": "No green in the open, and no standing surface water except brine seeps.",
+      "source": "sheet:6.5"
+    },
+    {
+      "forbid": "No abundant shade or structure. Shade is rare by definition; a generator that scatters cov",
+      "source": "sheet:6.6"
+    },
+    {
+      "forbid": "a second impact ring",
+      "source": "landform"
+    },
+    {
+      "forbid": "a second crater or feature the premise does not mention",
+      "source": "premise"
+    }
+  ],
+  "calibration": {
+    "bucket": "250",
+    "region_count": [
+      496.0,
+      3056.0
+    ],
+    "largest_region_fraction": [
+      0.04416,
+      0.6346
+    ],
+    "perimeter_area_mean": [
+      2.619,
+      3.064
+    ],
+    "openness_top3": [
+      0.4979,
+      0.9232
+    ],
+    "openness_std_25": [
+      0.136,
+      0.2963
+    ],
+    "distinct_terrains": [
+      12.0,
+      28.0
+    ]
+  }
+}
