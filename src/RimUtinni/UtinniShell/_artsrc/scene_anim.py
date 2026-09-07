@@ -23,8 +23,11 @@ Effects available, composable per scene:
     breathing in brightness (e.g. eyes, embers, an instrument light)
   - arcs(points, color, n_per_burst) — jagged lightning-bolt flicker bursts
     between/around given points (electric-arc gods)
-  - shimmer(region, color, band_h) — a soft light band sweeping across a
-    region once per loop (water glint, metal sheen)
+
+A plain rectangular Shimmer sweep measured as a hard grey box over any dark
+void it crossed, so the shimmer effect lives only as MaskedShimmer in
+animate_menu_richer.py (alpha masked by the base image's own per-pixel
+luminance) — never shipped here.
 
 Usage: import and call `render_loop(base_png, out_webm, effects, duration_s, fps)`.
 """
@@ -157,27 +160,6 @@ class Arcs:
         for px, py in self.points:
             if self.rng.random() < 0.7:
                 self._bolt(d, px, py, alpha)
-
-
-class Shimmer:
-    """A soft light band sweeping across a region once per loop (water
-    glint, metal sheen) — Oomo, Rekko."""
-    def __init__(self, region, color, w, h, band_frac=0.12, alpha=90):
-        (x0f, x1f, y0f, y1f) = region
-        self.rect = (int(x0f * w), int(y0f * h), int(x1f * w), int(y1f * h))
-        self.color, self.band_frac, self.alpha = color, band_frac, alpha
-
-    def draw(self, frame, t):
-        x0, y0, x1, y1 = self.rect
-        rw = x1 - x0
-        band_w = int(rw * self.band_frac)
-        cx = x0 + int((t % 1.0) * (rw + band_w)) - band_w
-        grad = Image.new("RGBA", (max(1, band_w), y1 - y0), (0, 0, 0, 0))
-        gd = ImageDraw.Draw(grad)
-        for i in range(band_w):
-            a = int(self.alpha * math.sin(math.pi * i / max(1, band_w - 1)))
-            gd.line([(i, 0), (i, y1 - y0)], fill=self.color + (max(0, a),))
-        frame.alpha_composite(grad, (cx, y0))
 
 
 def render_loop(base_png, out_webm, effects, duration_s=8.0, fps=20, size=None):
