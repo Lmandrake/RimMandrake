@@ -1,18 +1,28 @@
 # Unused Tile Mutators and Geological Landforms Census
 
-**Date: 2026-09-06**  
-**Status: STEP 1 COMPLETE — Offline verification complete; steps 2–5 require live bridge**
+**Date: 2026-09-06, Part 3 completed 2026-09-07**
+**Status: STEP 1 COMPLETE** — the full offline census, including Part 3, is done. Steps
+2–5 (contact sheet, owner picks, live assignment, re-export) remain, and DO need bridge.
 
-> This document captures the **Exact Census** (Step 1) of UNUSED_MUTATORS_WORLD_ASSIGNMENT_1. Steps 2–5 (contact sheet, owner picks, live assignment, re-export) remain pending bridge/quicktest/owner review access.
+> This document captures the **Exact Census** (Step 1) of UNUSED_MUTATORS_WORLD_ASSIGNMENT_1.
+> 🔴 **CORRECTED 2026-09-07**: the first pass of this doc (Part 3) claimed the full
+> ~336-def master list and per-def metadata "requires live bridge access". That was
+> wrong — `TileMutatorDef` dumps cleanly to the OFFLINE def dump the same as any other
+> def type (`DefDump/captures/2026-09-05T14-41-26Z/defs/TileMutatorDef.json`, 343
+> entries, full fields including `workerClass`/`categories`/`minHilliness`/`maxHilliness`/
+> `coastSidesRange`). No bridge call was ever needed for this step. Steps 2–5 (below)
+> are the parts that actually need bridge/owner review.
 
 ---
 
 ## Executive Summary
 
 - **88 distinct TileMutatorDefs currently in use** on the frozen Ash'karr world (verified from `world/ASHKARR_WORLDMAP_mutators.csv`).
-- **~336 total available TileMutatorDefs** (vanilla + Vanilla Landscaping Expanded + Alpha Biomes + Dark Ages + other mods per mod load).
-- **44 Geological Landforms landforms** in GL mod (30 non-disabled stock landforms, 14 disabled by Odyssey config).
+- **343 total available TileMutatorDefs** in the current 596-mod load (measured from the def dump, not estimated — corrects the ~336 first-pass guess).
+- **255 unused TileMutatorDefs** (343 − 88), full roster with label/mod/workerClass/categories/gate in `unused_mutators_full_list.csv` (Part 3).
+- **44 Geological Landforms landforms** in GL mod (30 non-disabled stock landforms, 14 disabled by Odyssey config) — all 44 are among the 255 unused (0 GL_* assigned anywhere).
 - **Zero GL_* mutators assigned** to any tile on Ash'karr today — entire GL landforms system is unused.
+- Unused-by-source: Vanilla Landmarks Expanded 110 · Geological Landforms 44 · Odyssey 42 · Alpha Biomes 40 · Star Wars Animal Collection 7 · RimStarWars Structure Injections 6 · Dark Ages: Beasts and Monsters 2 · Biome Transitions 1 · Inhabited (local) 1 · Core 1 · Map Designer 1.
 
 ---
 
@@ -194,18 +204,40 @@ GL has these in the mod but they are DISABLED in the active `Mod_2773943594_Geol
 
 ---
 
-## Part 3: Full Unused List (REQUIRES LIVE BRIDGE)
+## Part 3: Full Unused List — DONE (255 mutators, full metadata)
 
-To get the complete UNUSED roster (~248 TileMutatorDefs = ~336 total − 88 in use), I need:
+Source: `DefDump/captures/2026-09-05T14-41-26Z/defs/TileMutatorDef.json` (343 defs total,
+the live 596-mod load) minus the 88 confirmed in-use from Part 1 (cross-checked: all 88
+in-use names resolve in this dump, none stale). Full roster —
+defName, label, modName, packageId, workerClass, categories, and any `gate` (populated
+only when the def sets `minHilliness`/`maxHilliness`/`coastSidesRange` away from its
+default — most mutators gate on nothing beyond what their `workerClass`'s own generation
+logic decides at runtime, which is NOT captured in def data and would need a per-worker
+IL read via `ilprobe` to state precisely; not done here, flagged for step 2/4 where a
+live contact-sheet test settles it empirically instead) — lives in
+[`unused_mutators_full_list.csv`](unused_mutators_full_list.csv), 255 rows.
 
-1. **The full def dump** (the "official" capture): a list of all 336 TileMutatorDef defNames available in the current mod load.
-2. **Live game access** via `jawa/world_mutators_get` or a def dump query.
-3. **Per-mutator metadata:**
-   - `label` (display name)
-   - `workerClass` (C# class name — determines what it does)
-   - `categories` (XML categories list)
-   - `packageId` (which mod provides it)
-   - **Biome/hilliness/coast gates** (read from workerClass C# if custom, or vanilla engine defaults)
+By source mod (unused count):
+
+| mod | unused count |
+|---|---|
+| Vanilla Landmarks Expanded | 110 |
+| Geological Landforms | 44 |
+| Odyssey | 42 |
+| Alpha Biomes | 40 |
+| Star Wars Animal Collection (Continued) | 7 |
+| RimStarWars: Structure Injections | 6 |
+| Dark Ages: Beasts and Monsters | 2 |
+| Biome Transitions | 1 |
+| Inhabited (local) | 1 |
+| Core | 1 |
+| Map Designer | 1 |
+
+Note the largest single source is **Vanilla Landmarks Expanded** (110 of 255, 43%), not
+Vanilla Landscaping Expanded (VLE) as Part 1's mod-attribution guesses suggested for the
+`VEE_`-prefixed in-use defNames — the CSV's `packageId` column is the authoritative
+source, Part 1's prefix-based labels were a first-pass guess and are cosmetic only (they
+don't affect the 88-name in-use SET, which is correct).
 
 ---
 
