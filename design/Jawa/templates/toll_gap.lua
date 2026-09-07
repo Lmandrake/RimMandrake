@@ -47,7 +47,7 @@ function build(ctx)
   end
   local cx2, cz2 = dx, dz - 1
   if not ctx:occupied(cx2, cz2) then
-    ctx:place("DiningChair", cx2, cz2, 4) -- rot 4 (south) faces the desk
+    ctx:place("DiningChair", cx2, cz2, 0) -- rot 0 (north, +z) faces the desk one cell south
   end
 
   -- ---- the ledger shelves, back wall --------------------------------------

@@ -1,20 +1,24 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
+# template  toll_gap (sha b0da9b0687a05005)
+# min_rect  none declared   baked at 20x12
 FOOTPRINT	0	0	20	12
-TERRAIN	8	5	Gravel
-TERRAIN	8	6	Gravel
-TERRAIN	8	7	Gravel
-TERRAIN	9	5	Gravel
-TERRAIN	9	6	Gravel
-TERRAIN	9	7	Gravel
-TERRAIN	10	5	Gravel
-TERRAIN	10	6	Gravel
-TERRAIN	10	7	Gravel
-TERRAIN	11	5	Gravel
-TERRAIN	11	6	Gravel
-TERRAIN	11	7	Gravel
-TERRAIN	12	5	Gravel
-TERRAIN	12	6	Gravel
-TERRAIN	12	7	Gravel
+CLEAR	-1	-1	22	14	soft
+CLEAR	0	0	20	12	all
+TERRAIN	8	5	StrawMatting
+TERRAIN	8	6	StrawMatting
+TERRAIN	8	7	StrawMatting
+TERRAIN	9	5	StrawMatting
+TERRAIN	9	6	StrawMatting
+TERRAIN	9	7	StrawMatting
+TERRAIN	10	5	StrawMatting
+TERRAIN	10	6	StrawMatting
+TERRAIN	10	7	StrawMatting
+TERRAIN	11	5	StrawMatting
+TERRAIN	11	6	StrawMatting
+TERRAIN	11	7	StrawMatting
+TERRAIN	12	5	StrawMatting
+TERRAIN	12	6	StrawMatting
+TERRAIN	12	7	StrawMatting
 THING	Wall	7	4	0	BlocksSandstone
 THING	Wall	8	4	0	BlocksSandstone
 THING	Wall	9	4	0	BlocksSandstone
@@ -36,7 +40,7 @@ THING	Wall	12	8	0	BlocksSandstone
 THING	Wall	13	8	0	BlocksSandstone
 THING	Door	10	8	0	WoodLog
 THING	Table1x2c	10	6	0	-
-THING	DiningChair	10	5	4	-
+THING	DiningChair	10	5	0	-
 THING	Shelf	8	5	0	-
 THING	Shelf	11	5	0	-
 THING	TorchLamp	8	7	0	-

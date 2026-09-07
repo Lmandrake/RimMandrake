@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- structure_injection_roster.md batch 4, one PROMISE row (RUT half —
+       the two RSW rows this batch wired via StructureInjectionsSW's own
+       TileMutatorDefs_Batch4.xml).
+       Responder mechanism per structure_injection_roster.md §0b: a
+       TileMutatorDef's extraGenSteps is the def-driven injection hook.
+       Same shape as batches 1-3/5-6.
+
+       ⚠️ NOT YET PLACED on any Ash'karr tile - a live world-tile edit on
+       the frozen map (bridge + world_commit), out of scope for this pass,
+       same deferral as every prior row.
+
+       Gating note: the roster's own §2 gating column names an ARC context
+       ("Sh'kaar country arc <74"), not a biome - a TileMutatorDef's
+       biomeWhitelist cannot express arc position, so none is set here,
+       same deferral batch 3/5's own comments already established for
+       their own arc-gated rows.
+
+       STRUCTUREINJ_RUT_TEMPLATE_DEFECTS_1: RUT_GenStep_GlassSea
+       (GenStepDefs_Batch4.xml) existed with no TileMutatorDef ever citing
+       it in extraGenSteps — this file was the missing half, so the
+       template's own baked Templates/glass_sea.txt was dead content
+       despite having a live GenStepDef. -->
+
+  <!-- The Glass Sea - PROMISE #16, Sh'kaar. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_GlassSea</defName>
+    <label>the glass sea</label>
+    <description>A stretch of fused sand, mirror-flat and blinding. Solar output soars; so does exposure.</description>
+    <extraGenSteps>
+      <li>RUT_GenStep_GlassSea</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

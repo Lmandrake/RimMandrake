@@ -1,5 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
+# template  glass_sea (sha d0751c13b295c139)
+# min_rect  none declared   baked at 24x24
 FOOTPRINT	0	0	24	24
+CLEAR	-1	-1	26	26	soft
+CLEAR	0	0	24	24	all
 TERRAIN	0	0	VolcanicRock
 TERRAIN	0	1	VolcanicRock_Smooth
 TERRAIN	0	2	VolcanicRock_Smooth
