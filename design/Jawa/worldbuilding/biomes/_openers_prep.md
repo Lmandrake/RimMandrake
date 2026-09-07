@@ -1,5 +1,11 @@
 # Biome opener prep — measured tables for the remaining sheets
 
+🔴 **The "undefined" framing here DECAYED within a day — `README_BIOME_GRAMMAR.md`'s
+status table is the only authority on which sheets exist** (it misled a sitting on
+2026-09-06: MycoticJungle, HorrorWastes, RockyCrags, CrystalCaverns, FungalForest,
+PropaneLakes, Badlands and DesertOasis all have sheets or rulings now). The measured
+tables below stay valid as opener DATA; the list membership does not.
+
 _BENCH overnight 2026-09-05, MEASURED off `world/ASHKARR_WORLDMAP_tiles.csv` (21,872 rows)._
 _One table per undefined biome, ready to open its conversation loop. Sun elevation = 90 − arc._
 
