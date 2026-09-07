@@ -58,7 +58,7 @@ def args_for(out: Path, home: Path | None = None) -> types.SimpleNamespace:
     return types.SimpleNamespace(
         out=str(out), prompt="a crate", image=[], timeout=30, model=None,
         reasoning_effort="low", codex_home=home and str(home), force=False,
-        dry_run=False, verbose=False)
+        dry_run=False, verbose=False, output_schema=None, output_last_message=None)
 
 
 # --------------------------------------------------------------------------
@@ -153,7 +153,7 @@ def test_timeout_still_harvests() -> None:
             ci.HARVEST_GRACE_S = 0.0
 
             def slow_but_done(prompt, images, workdir, timeout, verbose,
-                             model=None, hm=None, reasoning_effort=None):
+                             model=None, hm=None, reasoning_effort=None, **_kw):
                 # The image lands; our ceiling then expires during the wrap-up.
                 tiny_png(home / ci.GENERATED_SUBDIR / "sess" / "exec-abc.png")
                 return 124, "", True
@@ -170,7 +170,7 @@ def test_timeout_still_harvests() -> None:
 
             # ...and a timeout with nothing on disk is still a failure.
             def slow_and_empty(prompt, images, workdir, timeout, verbose,
-                              model=None, hm=None, reasoning_effort=None):
+                              model=None, hm=None, reasoning_effort=None, **_kw):
                 return 124, "", True
             ci.run_codex = slow_and_empty
             out2 = Path(td) / "art2.png"
@@ -180,7 +180,7 @@ def test_timeout_still_harvests() -> None:
 
             # A clean run where the agent DID place the file needs no harvest.
             def agent_copies(prompt, images, workdir, timeout, verbose,
-                            model=None, hm=None, reasoning_effort=None):
+                            model=None, hm=None, reasoning_effort=None, **_kw):
                 tiny_png(Path(workdir) / "art3.png")
                 return 0, "", False
             ci.run_codex = agent_copies
@@ -189,6 +189,49 @@ def test_timeout_still_harvests() -> None:
     finally:
         ci.run_codex, ci.base_codex_home = real_run_codex, real_base
         ci.HARVEST_GRACE_S = real_grace
+
+
+def test_output_schema_passthrough() -> None:
+    """--output-schema/--output-last-message reach run_codex's own kwargs.
+
+    CODEX_PARALLEL_WORKERS_1 added these as pure pass-throughs to codex exec's
+    own flags; every OTHER caller passes neither, so the thing worth proving
+    is that a caller who DOES pass them gets them on the actual run_codex call
+    - not that the flags exist syntactically.
+    """
+    real_run_codex = ci.run_codex
+    seen = {}
+    try:
+        def capture(prompt, images, workdir, timeout, verbose,
+                   model=None, hm=None, reasoning_effort=None, **kw):
+            seen.update(kw)
+            return 0, "", False
+        ci.run_codex = capture
+
+        with tempfile.TemporaryDirectory() as td:
+            out = Path(td) / "art.png"
+            args = args_for(out)
+            args.output_schema = str(Path(td) / "schema.json")
+            args.output_last_message = str(Path(td) / "last.json")
+            ci.do_image(args)  # fails to produce a file (stub writes nothing);
+                               # only run_codex's own kwargs are under test here
+        check("output_schema reached run_codex",
+              seen.get("output_schema") is not None
+              and str(seen["output_schema"]).endswith("schema.json"))
+        check("output_last_message reached run_codex",
+              seen.get("output_last_message") is not None
+              and str(seen["output_last_message"]).endswith("last.json"))
+
+        # And the default (neither flag passed) must stay None - a caller who
+        # never asks for this must see byte-identical behaviour to before.
+        seen.clear()
+        with tempfile.TemporaryDirectory() as td:
+            out = Path(td) / "art.png"
+            ci.do_image(args_for(out))
+        check("no schema/message flags -> both stay None by default",
+              seen.get("output_schema") is None and seen.get("output_last_message") is None)
+    finally:
+        ci.run_codex = real_run_codex
 
 
 def test_harvest_grace() -> None:
@@ -271,7 +314,8 @@ def test_home_must_be_windows_visible() -> None:
 
 def main() -> int:
     for fn in (test_prompt, test_run_codex_timeout, test_reasoning_effort_flag,
-               test_timeout_still_harvests, test_harvest_grace,
+               test_timeout_still_harvests, test_output_schema_passthrough,
+               test_harvest_grace,
                test_child_env_wslenv, test_seed_home,
                test_home_must_be_windows_visible):
         print(fn.__name__)
