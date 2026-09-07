@@ -55,6 +55,13 @@ ANIMALS = os.path.join(ROOT, "observed", "2026-08-13",
                        "inventory", "animals.csv")
 NL = "\n"
 
+# Same list gen_armoury_patch.py uses to keep ion/stun/sonic etc. UNCHANGED
+# (the verb is the weapon, see this file's header). Without it a bare "slug"
+# substring matches IonWeaponry's IW_Bullet_IonSlug and force-sets an ion
+# projectile's AP as if it were a physical slugthrower round.
+VERB_MARKERS = ("ion", "stun", "emp", "sonic", "disrupt", "electr", "shock",
+                "extinguish", "smoke", "gas", "tear", "foam", "net", "web")
+
 # --- 1. damage types aimed at the wrong armour stat -----------------------
 # RSW_Blaster_Damage checking BLUNT means every JDS blaster is stopped by the wrong
 # armour. Energy must be Heat (that is what makes ablative armour the answer);
@@ -428,6 +435,7 @@ for rec in ds.of_type("ThingDef"):
     # The slugthrower rule keys off the PROJECTILE, so it is independent of all
     # the tool work below and must not sit behind its early-out.
     if any(k in b for k in ("slug", "cycler", "shatter", "massdriver")) \
+            and not any(v in b for v in VERB_MARKERS) \
             and el.find("projectile/armorPenetrationBase") is not None:
         p_owner, p_attr, _ = declarer(dn, "projectile")
         if p_owner is not None:
