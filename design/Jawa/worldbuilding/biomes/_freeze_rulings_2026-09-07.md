@@ -621,3 +621,52 @@ never have set it. Read it live before planning any write. Also unconfirmed:
 whether the bridge exposes `riverDist` for writing at all.
 ⚠️ `riverDist` is stored as a **byte** — a river longer than 255 hops cannot be
 numbered.
+
+---
+
+## R29 — FUNGALFOREST MERGE: FOLLOW THE PAINT
+
+**Ruled:** the per-tile neighbour analysis wins over the cluster-spec table in
+`FUNGALFOREST_RAID_MERGE_1.md`. The 16 **South Crags sector 9** tiles go to
+**BiomeGRimond (Blue Desert)** / **AB_RockyCrags (Forsaken Crags)** — whichever
+actually surrounds each — **not** to Wasteland.
+
+🔑 **The principle: a merged tile must be continuous with its new biome.** That
+is what a merge is. A 16-tile Wasteland enclave with no Wasteland adjacent to it
+would read as an error to anyone who opened the map later.
+
+⛔ **Supersedes** the cluster-spec table in the item file — mark it superseded
+there rather than deleting it.
+✅ **Also settles the 15 flagged ties** by the same rule: majority adjacent
+biome, broken by closest temp/rain match. No separate ruling owed.
+
+**MEASURED merge result** (425 tiles, `BMT_FungalForest`, arc 74.0–132.9):
+
+| tiles | receiving biome |
+|---:|---|
+| 352 | `AB_MycoticJungle` — the Rot |
+| 53 | `Desert` |
+| 8 | `BiomeGRimond` — the Blue Desert |
+| 8 | `AB_RockyCrags` — the Forsaken Crags |
+| 4 | `RUT_NightsideIce` |
+
+Zero unreachable or all-water-bounded tiles.
+
+---
+
+## R30 — THE ROT GROWS; THE SHEET IS AMENDED TO MATCH
+
+**Ruled:** absorbing the 352 tiles pushes `AB_MycoticJungle`'s arc footprint from
+the sheet's stated **89–130** to the measured **75.3–132.9**. Amend
+`the_rot.md` to the new footprint. The Rot really is that big; taking those tiles
+is what dissolving `BMT_FungalForest` *means*.
+
+This is the freeze working as designed — **an amendment adds detail, it never
+changes a ruling.**
+
+⚠️ **Owed with it:** the Rot's dayward edge now sits in warmer ground than the
+sheet's climate prose assumes. Check its temperature line against the new arc
+before the assignment pass.
+⚠️ **Compounds:** the 53 tiles going to `Desert` land on top of the already-open
+`WORLDMAP_DESERT_BAND_REPAIR_1` climate-outlier defect. Repair before painting,
+or the outliers grow.
