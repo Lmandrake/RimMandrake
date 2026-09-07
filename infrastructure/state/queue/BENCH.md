@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T06:17:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T06:46:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -382,3 +382,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FEVER_WOOD_MECHANICS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FEVER_WOOD_MECHANICS_1.md
+
+## SUMP_MECHANICS_1 Sump C# kit: poured tar moat + command ignition (smoke wall), dig-lottery tables with era booby traps weighted first, tar beast set-pieces (wake causes, station-eating, evacuate-not-fight), mouse-line telegraphy, wick-garden crop - spec the_sump.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SUMP_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUMP_MECHANICS_1.md
