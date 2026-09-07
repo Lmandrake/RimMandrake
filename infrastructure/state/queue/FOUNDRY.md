@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T04:30:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T04:30:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## MOISTURE_VAPORATOR_WALL_CLIP_1 Moisture vaporator graphic extends/clips through an adjacent wall instead of sitting flush
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  MOISTUREVAPORATORWALLCLIP1 — fixed offline, live verification owed
-prose:    infrastructure/state/items/MOISTURE_VAPORATOR_WALL_CLIP_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -333,6 +324,15 @@ kind:     task
 summary:  (no items/NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1.md
 
+## MOISTURE_VAPORATOR_WALL_CLIP_1 Moisture vaporator graphic extends/clips through an adjacent wall instead of sitting flush
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  MOISTUREVAPORATORWALLCLIP1 — fixed offline, live verification owed
+prose:    infrastructure/state/items/MOISTURE_VAPORATOR_WALL_CLIP_1.md
+
 ## NINEFOLD_RUNTIME_PROOF_BLOCKED_1 Ninefold compile-fix VERIFIED (ready:14, was 6); runtime firing UNPROVEN - GameComponent.Instance null on ignoreModCompatibility loads, all hooks incl. research silent; needs a normal-load or fresh new-game test
 state:    doing
 row:      unassigned
@@ -386,15 +386,6 @@ target:   v1
 kind:     task
 summary:  - Input: a biome sheet paragraph (design/Jawa/worldbuilding/biomes/.md, start
 prose:    infrastructure/state/items/MACRO_GENERATOR_V0_1.md
-
-## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     bug
-summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
-prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
 
 ## CODEX_PARALLEL_WORKERS_1 N-worker codex exec queue with receiving-agent AGENTS.md prose + grumpiness detector reading rollout rate_limits; own CODEX_HOME per worker
 state:    doing  (BLOCKED)
@@ -488,7 +479,7 @@ summary:  STARWARSDONORSUNSET1 — retire the remaining third-party Star Wars do
 prose:    infrastructure/state/items/STARWARS_DONOR_SUNSET_1.md
 
 ## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
-state:    doing  (BLOCKED)
+state:    ready  (BLOCKED)
 row:      unassigned
 needs:    game-up
 target:   v1
