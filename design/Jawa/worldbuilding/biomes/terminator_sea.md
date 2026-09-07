@@ -2,6 +2,13 @@
 
 _First pass, 2026-09-05, to the grammar in `README_BIOME_GRAMMAR.md`._
 
+🔴 **Scope (added 2026-09-07):** this sheet's law — solitary, monoculture, the
+no-schools and sparse-roster bans — governs the seas' **SURFACE and SHORE**,
+where it stays absolutely true. The sea BOTTOMS are their own biomes with their
+own sheets: `the_grey_deep.md` (the statuary) and `the_twilight_deep.md` (the
+last ordinary sea — where, beneath the mat-roof, the crowding exception lives
+by the owner's ruling). Neither world leaks into the other.
+
 🔑 **Def reconciliation done 2026-09-06** (`LIQUID_BIOMES_MAP_1`, offline half): the
 Twilight Sea and Grey Sea this sheet defines are now `RUT_TwilightSea`/`RUT_GreySea`
 (new BiomeDefs — vanilla `Ocean` carries no `Name=` attribute so a patch could not target
