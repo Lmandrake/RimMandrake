@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T08:20:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T08:25:37Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -616,16 +616,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/COLD_LOAD_RUN_SHEET_4.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_4.md
-
-## DROID_FACTIONS_IN_FROZEN_SAVE_1 Census: which droid FactionDefs/kinds/need classes are scribed in the frozen world and campaign saves
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_FACTIONS_IN_FROZEN_SAVE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_FACTIONS_IN_FROZEN_SAVE_1.md
 
 ## DROID_DONOR_REFGREP_1 Per-donor reference grep: every KotOR/ABF/Asimov/Depot defName and class in src/ and every active mod
 state:    proposed
