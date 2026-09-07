@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T08:45:32Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-07T09:22:39Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -441,6 +441,15 @@ kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
 
+## COLD_LOAD_RUN_SHEET_4 Run sheet for the next full-list load: three readings owed from the 2026-09-06 offline wave
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  Six entries, each a reading that could not be taken offline. See history for
+prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_4.md
+
 ## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -634,16 +643,6 @@ kind:     task
 thin:     no ## criteria
 summary:  1. Quicktest first (rimworld-debug-testing): confirm what BMTCrystalCaverns
 prose:    infrastructure/state/items/LANTERN_DEEPS_INJECTION_1.md
-
-## COLD_LOAD_RUN_SHEET_4 Run sheet for the next full-list load: three readings owed from the 2026-09-06 offline wave
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/COLD_LOAD_RUN_SHEET_4.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_4.md
 
 ## DROID_ORACLE_VOICE_DESIGN_1 Design (dormant): four droid Oracle consumers with prescribed fallbacks, claude -p transport
 state:    proposed
