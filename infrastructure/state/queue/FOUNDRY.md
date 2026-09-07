@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T22:25:02Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T22:33:09Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1113,3 +1113,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the ask
 prose:    infrastructure/state/items/UNDERWATER_BIOME_SUPPORT_1.md
+
+## WORLD_LINT_WATER_HARDCODE_1 world_lint hard-codes Ocean/SeaIce as the only water biomes -- reports all 1135 custom-sea tiles as landBiomeSubmerged
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WORLD_LINT_WATER_HARDCODE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WORLD_LINT_WATER_HARDCODE_1.md
