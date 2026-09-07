@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T17:27:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T17:49:44Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -613,16 +613,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## VEHICLE_FUEL_PATCH_UNFILTERED_1 DesertVehicleReskin fuel patch widens fuel for EVERY Vehicle Framework vehicle (VVE trucks on potatoes); About.xml says draught only — owner ruling: intended or filter (Opus review 2026-09-06)
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## criteria
-summary:  VEHICLEFUELPATCHUNFILTERED1 — the fuel-widening patch hits EVERY Vehicle Framework vehicle
-prose:    infrastructure/state/items/VEHICLE_FUEL_PATCH_UNFILTERED_1.md
 
 ## ANCIENT_WAR_LAB_1 The war lab beneath the propane lake over the Impact Site — submerged dungeon, lab fauna + mechanoid guardians, and the crater ending as a permanent map change
 state:    proposed
