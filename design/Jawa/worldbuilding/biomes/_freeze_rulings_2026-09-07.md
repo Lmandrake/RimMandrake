@@ -114,3 +114,80 @@ circulation. Owner's words, 2026-09-07:**
 `arid_shrubland.md` (stormwall sink), `terminator_sea.md` + `nightside_ice.md`
 (antistellar sink), `desert.md` (ash route), and the world-def's weather
 section, which should carry this model in full as the single cited source.
+
+---
+
+## R5 — FUEL: THE FINDING IS REJECTED. TWELVE SOURCES ARE EVIDENCE OF SCARCITY
+
+**Ruled: there is no oversupply.** The review over-estimated **access and
+availability**, not count. Owner, 2026-09-07: *"the fact that people have found
+SO MANY ways to get fuel is still evidence of its scarcity."* A scarce resource
+is exactly the one a population invents twelve marginal routes to.
+
+🔑 **The gate is ACCESSIBILITY, and it is ruled per source.** No sheet loses its
+economy; none of these is a major source save the Propane Lakes:
+
+| source | why it is not a supply |
+|---|---|
+| **Propane Lakes** | the one real source — and **inaccessible until very late game**: terminator shock passage, extreme-cold safety |
+| **Tar** | not fuel — must be **processed**, on machinery found only in some tar-containing squares (injected by *inhabited*), and it is **slow**; the player cannot stay long |
+| **Sap-chemfuel** | not player-tappable — a **settlement-level investment** |
+| **Seep oils** | slow seeps, hard to gather |
+| **Tree liquors** | **fermentation-scale** production; not ship-friendly |
+| **Blastpods** | wild; a minor input at best |
+| **Tholins** | atmospheric **nanoparticles, unharvestable** — a similar keyword, not a fuel; contributes nothing to this story |
+| **Venomvine** | becomes wood only over **timescales beyond the game** |
+| **Glower / hydrocarbon flora** | harvestable, but slow and **very late game** |
+| **Wick-plants** | sited in **one of the nastiest places on the map** |
+
+⚠️ **And by the time the Propane Lakes are reachable, fuel scarcity SHOULD NOT be
+the driving limiter** — the player is getting ready to win.
+
+**Amends:** nothing is cut. Each sheet gains (or keeps) its accessibility clause;
+`the_propane_lakes.md` keeps its premium, now explicitly a LATE-GAME premium.
+**Doctrine this establishes:** before filing an oversupply finding, count
+*reachable* supply, not sources. Twelve hard routes is scarcity.
+
+---
+
+## R6 — THE WATER TRUCE HOLDS WHERE THERE ARE OPEN SIGHTLINES
+
+**Ruled:** the truce's mechanism is **distance you can see coming**. It holds on
+open water where animals can watch each other and keep their spacing. In
+enclosed water — slot canyons, walled cracks, roofed pools — there is no
+distance to keep, so the truce **cannot** hold.
+
+Derives `the_cracked_lands.md`'s 27 water tiles automatically, rules every
+future enclosed water without a list, and makes the Cracked Lands the planet's
+**one lethal water**.
+
+**Amends:** the truce's statement in the world-def (add the sightline
+mechanism); `the_cracked_lands.md` cites the rule instead of asserting a bare
+exception.
+**Owed at the roster pass:** which other biomes have enclosed water (the Sump,
+the Lantern Deeps, canyon reaches of any river).
+
+---
+
+## R7 — THE PYRELANDS: THE FIRE IS THE SETTLEMENT BAN
+
+**Ruled:** periodic burns destroy anything that cannot move — **no permanent
+structures, no stored harvest, no walls.** Only **nomadic fire-followers** work
+the Pyrelands, timing their circuit to the burn cycle. The richness stands
+exactly as written; the scarcity premise is protected; the Pyrelands is a place
+you **visit**, not settle.
+
+**Amends:** `the_pyrelands.md` (state the ban and its mechanism), and the
+settlement pass — **no permanent settlement may be sited in the Pyrelands.**
+
+---
+
+## R8 — DAYSIDE VAPOUR: "NEVER CONDENSES AS RAIN"
+
+**Ruled:** the minimal amendment. `terminator_sea.md`'s sentence becomes
+*"never condenses **as rain**"* — dew and fog are unaffected, and the Weeping
+Stones / arid shrubland condensate economies stand.
+
+**Amends:** `terminator_sea.md`, one sentence.
+⚠️ **Deliberately left open:** WHERE dayside dew forms (open sand? stone? shade?)
+is not ruled. The roster pass will have to answer it to site condensate flora.
