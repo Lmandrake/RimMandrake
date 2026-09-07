@@ -71,6 +71,61 @@ HOME_SEED_FILES = ("auth.json", "config.toml", "models_cache.json",
                    "version.json", "installation_id")
 HOME_SEED_DIRS = ("skills",)
 
+# 🔴 A BRAND-NEW CODEX_HOME NEEDS ITS OWN SANDBOX SETUP, AND ON WINDOWS THAT
+# SETUP CREATES TWO LOCAL USER ACCOUNTS ("CodexSandboxOffline"/"Online") -
+# which needs Administrator consent, which is a Windows UAC prompt (the
+# "big dialog on black"), once per NEW home. MEASURED 2026-09-07: the shared
+# home never shows this (it was set up long ago and already has
+# .sandbox/.sandbox-bin/.sandbox-secrets), but every isolated worker home
+# created for CODEX_PARALLEL_WORKERS_1 triggered a fresh UAC prompt - two
+# workers, two prompts, and it does not scale to N workers or to unattended
+# operation at all. The two Windows accounts are MACHINE-wide, not per-home,
+# so once one home has been through setup, copying its .sandbox* artifacts
+# into a NEW home lets codex.exe see "setup already done" and skip both the
+# setup helper and the UAC prompt entirely.
+#
+# SANDBOX_SEED_DIRS/FILE are copied from SANDBOX_SEED_TEMPLATE (below) - a
+# small, clean template captured from ONE already-elevated home - never from
+# the shared home directly, which has accumulated years of sandbox.*.log
+# files and stale binaries from earlier codex versions.
+SANDBOX_SEED_DIRS = (".sandbox", ".sandbox-bin", ".sandbox-secrets")
+SANDBOX_SEED_FILES = (".sandbox_migration",)
+
+
+def sandbox_seed_template() -> Path | None:
+    """Where the captured elevated-setup template lives, if it exists.
+
+    Override with $CODEX_SANDBOX_SEED for a different location. None means no
+    template has been captured yet - the very first new home still needs a
+    real (UAC-gated) setup, same as before this existed.
+    """
+    override = os.environ.get("CODEX_SANDBOX_SEED")
+    p = Path(override) if override else (windows_home() or Path.home()) / ".codex_sandbox_seed"
+    return p if (p / ".sandbox" / "setup_marker.json").is_file() else None
+
+
+def seed_sandbox_from_template(home: Path) -> bool:
+    """Copy the captured sandbox setup into `home` if it doesn't have one yet.
+
+    Returns True if the home now has (or already had) a sandbox setup, False
+    if there is no template AND this home has none either - the caller's cue
+    that a live call against `home` may still trigger a UAC prompt.
+    """
+    if (home / ".sandbox" / "setup_marker.json").is_file():
+        return True  # already set up (either real, or seeded on a prior call)
+    template = sandbox_seed_template()
+    if template is None:
+        return False
+    for name in SANDBOX_SEED_DIRS:
+        src = template / name
+        if src.is_dir() and not (home / name).is_dir():
+            shutil.copytree(src, home / name)
+    for name in SANDBOX_SEED_FILES:
+        src = template / name
+        if src.is_file() and not (home / name).is_file():
+            shutil.copy2(src, home / name)
+    return True
+
 
 class EnvError(RuntimeError):
     """The Codex toolchain is not usable; the message says what to fix."""
@@ -162,6 +217,17 @@ def seed_codex_home(base: Path, home: Path) -> Path:
         )
     print(f"note: seeded worker CODEX_HOME {home} from {base} "
           f"({', '.join(copied) or 'nothing new'})", file=sys.stderr)
+
+    if seed_sandbox_from_template(home):
+        print(f"note: seeded {home}'s sandbox setup from "
+              f"{sandbox_seed_template()} - no UAC prompt expected", file=sys.stderr)
+    else:
+        print(f"WARNING: no sandbox template found (set $CODEX_SANDBOX_SEED, or "
+              f"see sandbox_seed_template() in this file). The FIRST codex exec "
+              f"call against {home} may pop a Windows UAC 'create local "
+              f"account' prompt - a human needs to be watching to click it. "
+              f"Capture the result as the template afterwards so this never "
+              f"happens again for a new home.", file=sys.stderr)
     return home
 
 
