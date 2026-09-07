@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T19:11:03Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-07T19:15:22Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1073,3 +1073,13 @@ kind:     bug
 thin:     no ## spec, no ## criteria
 summary:  finding
 prose:    infrastructure/state/items/ARMOURY_CROSSFILE_ADD_REPLACE_ORDER_1.md
+
+## ARMOURY_PATCH_INNER_MISS_1 Jawa Armoury Rebalance: 3 FindMod blocks report failure though all 3 mods are ACTIVE -- an inner xpath is missing (patch failures 8 vs baseline 5)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ARMOURY_PATCH_INNER_MISS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARMOURY_PATCH_INNER_MISS_1.md
