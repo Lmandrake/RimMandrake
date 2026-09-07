@@ -67,7 +67,7 @@
   <BiomeDef>
     <defName>RUT_TheScald</defName>
     <label>the Scald</label>
-    <description>A crater lake at the bottom of the world's hottest basin, fed by every river that survives the Anvil and drained by nothing. It boils where it is shallow and simmers where it is deep, and it has been getting saltier and smaller since the day the last outflow closed.</description>
+    <description>A perched ocean in the world's hottest basin, held in a vast crater by the ring of mountains that feed it. It boils where it is shallow and simmers where it is deep, and it spills outward through every river that nourishes the world.</description>
     <workerClass>BiomeWorker_Ocean</workerClass>
     <isWaterBiome>true</isWaterBiome>
     <canBuildBase>false</canBuildBase>
@@ -83,6 +83,35 @@
     <waterMovingChestDeepTerrain>RUT_ScaldWaterMovingChestDeep</waterMovingChestDeepTerrain>
     <wildAnimals />
     <coastalWildAnimals />
+
+    <!-- GRAVTIDE SUPPORT, added 2026-09-07 (UNDERWATER_BIOME_SUPPORT_1).
+         GravTide's arrival gate is generic - OceanArrivalPatches.IsOceanTile and
+         OceanTileFeatures.IsWater both test PrimaryBiome.isWaterBiome - so this sea
+         already qualifies for a gravship landing and a dive. What it lacked is the
+         three things GravTide patches onto vanilla Ocean/Lake BY defName, which never
+         reach a modded biome:
+           1. terrainsByFertility - THE CRITICAL ONE. MapGenUtility.TerrainFrom() finds
+              no terrain without it, logs "No terrain found in biome <X>" and falls back
+              to TerrainDefOf.Sand, which is why an unpatched water biome generates an
+              all-SAND map instead of a sea.
+           2. baseWeatherCommonalities - otherwise every landing logs
+              "All weather commonalities were zero. Defaulting to Clear."
+           3. wildAnimalsCanWanderInto false - land animals have nowhere to walk from.
+         Depth comes from NEGATIVE elevation (OceanTileFeatures.DepthOf = max(0,-elev));
+         these tiles sit at -350 m, so ~350 m: past the ~150 m high-pressure nervous
+         syndrome threshold, inside drysuit range (800 m). -->
+    <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
+    <baseWeatherCommonalities>
+      <Clear>14</Clear>
+      <Fog>8</Fog>
+    </baseWeatherCommonalities>
+    <terrainsByFertility>
+      <li>
+        <terrain>RUT_ScaldWaterOceanDeep</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
   </BiomeDef>
 
 </Defs>
