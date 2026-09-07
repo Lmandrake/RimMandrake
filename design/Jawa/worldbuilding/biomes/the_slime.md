@@ -221,9 +221,11 @@ draining, potable. No meteorological water rain, ever (R-H1).
 
 - **The gene lists** — the curated target list (SW-race gifts) and the hidden odd-rider
   list: authored with the owner, at a sitting.
-- **`EDIBLE_GENEPACK_NATIVE_1`** (filed): scan the Genepacks Injection DLL, understand
-  its consumption flow, and reimplement the edible-genepack loop natively in our own
-  mod so the campaign doesn't lean on the donor mods.
+- **`EDIBLE_GENEPACK_NATIVE_1`** (research half done): the Genepacks Injection DLL is
+  decompiled and its consumption flow fully verified —
+  [`edible_genepack_native_mechanism.md`](edible_genepack_native_mechanism.md) is the
+  complete, IL-cited spec. The actual native C# is unwritten on purpose: it needs a mod to
+  live in, and that mod needs the gene lists (the bullet above) authored first.
 - **Filter-feeder line + scooping-mouth art** → NEW-ART ledger, with the machine, the
   Slime Pit, and slime-rain effects.
 - **Helix wiring** — the Ascendant Helix's vendor role and completed-study lore into
