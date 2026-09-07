@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T18:40:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T18:57:29Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -405,15 +405,6 @@ kind:     bug
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
 
-## CODEX_PARALLEL_WORKERS_1 N-worker codex exec queue with receiving-agent AGENTS.md prose + grumpiness detector reading rollout rate_limits; own CODEX_HOME per worker
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - Architecture A from the design: a request-queue directory driven by N parallel one-shot
-prose:    infrastructure/state/items/CODEX_PARALLEL_WORKERS_1.md
-
 ## MAPGEN_GL_SHEET_1 Map generator: 8 plans through the GL emitter, quicktest screenshots beside painter renders — the real terrain, one sheet (owner 2026-09-06: both routes)
 state:    doing
 row:      unassigned
@@ -590,16 +581,6 @@ kind:     bug
 blocked:  fixed source-side (572413c0, lastLaunchTick gate), adversarially reviewed CLEAN; live PROVE/EXPECT quicktest still owed to a game-up session
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
-
-## CODEX_PARALLEL_WORKERS_1 N-worker codex exec queue with receiving-agent AGENTS.md prose + grumpiness detector reading rollout rate_limits; own CODEX_HOME per worker
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  queue_runner.py + codex_grumpiness.py built, tested (33/33 stub selftests), and codex_image.py extended with --output-schema/-o passthrough (all merged). Live 4-job/2-worker proof exposed a real machine-level blocker: a fresh --codex-home triggers codex-windows-sandbox-setup.exe (builds ~300MB of .sandbox/.sandbox-bin/.sandbox-secrets), and that helper is broken on this machine (missing module), producing repeated UAC-style dialogs that interrupted the owner twice. Asked owner to choose: fix the Codex install, drop per-CODEX_HOME isolation, or try --sandbox read-only. Awaiting answer before any further live codex exec calls.
-summary:  - Architecture A from the design: a request-queue directory driven by N parallel one-shot
-prose:    infrastructure/state/items/CODEX_PARALLEL_WORKERS_1.md
 
 ## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
 state:    doing  (BLOCKED)
