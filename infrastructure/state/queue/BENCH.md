@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T02:39:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T02:44:08Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -282,3 +282,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  FLOODWITNESSEVENT1 — the player sees the flood, once, on purpose
 prose:    infrastructure/state/items/FLOOD_WITNESS_EVENT_1.md
+
+## GREENTIDE_MECHANICS_1 The Greentide C# kit: wet-bulb condition+gear, dry-air blower, scald damage+steam devils, Roil/Breaklight weathers, churnmud+causeways, three-feller tree fall, Lunger ambush, grazing suppression, silence cue, Greatbole mineable-living-tree class — spec the_greentide.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREENTIDE_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREENTIDE_MECHANICS_1.md

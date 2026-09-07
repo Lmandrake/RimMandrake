@@ -5361,3 +5361,4 @@
 {"seat":"BENCH","event":"close","id":"CRACKED_LANDS_ENRICHMENT_1","sha":"dd8c7c71d9fd3bfb8c2d39eedd8a102eabf9eb06","ts":"2026-09-07T01:32:50Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-07T02:09:23Z"}
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-07T02:39:21Z"}
+{"seat":"BENCH","event":"file","id":"GREENTIDE_MECHANICS_1","title":"The Greentide C# kit: wet-bulb condition+gear, dry-air blower, scald damage+steam devils, Roil/Breaklight weathers, churnmud+causeways, three-feller tree fall, Lunger ambush, grazing suppression, silence cue, Greatbole mineable-living-tree class — spec the_greentide.md","kind":"task","target":"v1","for":"BENCH","ts":"2026-09-07T02:44:08Z"}
