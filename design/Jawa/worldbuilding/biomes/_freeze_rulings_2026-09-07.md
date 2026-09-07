@@ -283,3 +283,96 @@ mechanism.
 mapgen per map, so honouring the field means constraining that placement.
 **Amends:** `the_forge.md`, `the_scald.md`, and the Anvil seep lines, each to
 cite the field rather than claim or deny exclusivity.
+
+---
+
+## R13 — THE POISON FOREST NEEDS NO HEAT SOURCE. THE "VENTS" ARE CHEMICAL
+
+**Ruled: R12 stands with no exception carved for the terminator.** The collision
+dissolves because the poison forest was never thermally dependent. Owner,
+2026-09-07: *"You showed we didn't actually need the additional heat source, so
+we don't need the geothermal here. It's all about the chemistry at the local
+site, not anything heat-based. The venting was intended to describe flowing
+complex chemistry, vapor formation, and powerful reactions anyway, not vulcanism
+or thermal dependence."*
+
+- ⛔ **Not geothermal.** The venting is **chemical** — flowing complex chemistry,
+  vapour formation, powerful reactions. Nothing volcanic, nothing seismic.
+- ⛔ **"The vents keep the ground just above freezing" is struck**, along with
+  the freezing framing generally. The forest sits at the **canon terminator
+  temperature** (+14 °C at θ90); it needed a heat source only because it had been
+  written cold.
+- ✅ Chemistry-as-energy-source, sunlight-as-scarce stands untouched — that was
+  always the axis.
+
+**Amends:** `poison_forest.md` throughout (its temperature block, its vent
+language). It remains owed a full second pass — MEASURED block, weather table.
+
+---
+
+## R14 — THE PYRELANDS: FIRE HARVESTERS, NOT FIRE FARMERS
+
+**Ruled (both option 3 and option 1 — there is no separate fire culture, AND the
+contrast is the story):**
+
+- ⛔ **There are no Pyrelands fire-farmers as a distinct people.** Owner: *"They
+  are not 'farmers,' I have never liked that term."*
+- ✅ **They are FIRE HARVESTERS** — and they are the **Deep Tribes**. They come
+  into the Pyrelands **periodically, to perform their sacred Fire rites and reap
+  its bounty**, then **return to their true homes in the deep desert**.
+- 🔑 **The Pyre burns with or without them. It does not need them.** The
+  relationship is harvest and rite, never husbandry.
+- ⭐ **And their religion demands they swear off the old ways of high technology
+  and water mastery.** That is a standing fact about the Deep Tribes, not a
+  Pyrelands detail.
+
+**Amends:** `the_pyrelands.md` (strike the farmer culture; the Deep Tribes visit
+on a rite-circuit), `deep_desert.md` (the circuit, and the religious renunciation
+of high technology and water mastery), and the faction docs.
+**Confirms [R7]:** no permanent settlement in the Pyrelands — now with a named
+people and a stated reason for the visit.
+
+---
+
+## R15 — THE FEVER WOOD: A SPORE FEVER FROM THE WOOD ITSELF
+
+**Ruled:** the fever is **fungal — the wood's own spore load**, which is also
+what Sporefall is named for and what the Wildsteam harvest there. The hazard and
+the resource are the same thing, so living there is a bargain rather than an
+accident.
+
+**Amends:** `the_fever_wood.md` (state the disease, its clock, and the bargain).
+⚠️ **Owed with it:** distinguish it clearly from the Miasma's and the Rot's
+disease registers — three fungal/rot hazards must not read as one.
+**Unblocks:** the Fever Wood disease roster, and [R10]'s Sporefall as second city.
+
+---
+
+## R16 — THE WEBWORK: THE SILK IS THE HAZARD
+
+**Ruled:** the Webwork's air hazard is its own defining material — **shed silk
+fibres and web dust suspended in the air and inhaled**: a mechanical, chronic
+lung hazard, not an infection. It derives from what the biome already is and
+distinguishes it cleanly from the Miasma's stagnation and the Greentide's rot.
+
+**Amends:** `the_webwork.md` — replace the unsupported disease clock with the
+silk mechanism.
+**Owed:** a name and a clock for it.
+
+---
+
+## R17 — FLIERS CROSS BIOMES. THIS IS STANDING, AND HAS BEEN SAID MANY TIMES
+
+**Ruled (owner, 2026-09-07, reaffirming):** *"there will certainly be fliers that
+visit multiple biomes. We have made that clear many times."*
+
+🔑 **A creature's roster entry in one sheet does not confine it to that sheet.**
+Fliers — and migrants generally — range across biomes by design. A cross-biome
+appearance is not a contradiction to be reconciled, and must not be filed as one.
+
+**Closes outright:** the review's Cracked Lands flier-citation finding (#28) —
+citing `desert.md` for a flier seen in the Cracked Lands is legitimate, not an
+error, though the stronger support is `deep_desert.md` §4.
+**Supports [R11]:** the warden migration is an instance of the same principle.
+**Doctrine for reviewers:** before filing "this animal appears in two biomes",
+check whether it can travel. If it can, there is no finding.
