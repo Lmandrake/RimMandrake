@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_PropaneLake.xml                    UtinniPatches · authored 2026-09-06
+  ============================================================================
+  LIQUID_BIOMES_MAP_1 — OFFLINE HALF. The item's fourth liquid biome, the
+  propane lake, per design/Jawa/worldbuilding/biomes/the_propane_lakes.md.
+  🔴 NOT painted onto any tile by this file or this pass — the lake's exact
+  tile subset is explicitly owner-gated by render (the_propane_lakes.md's
+  own "Owed" list: "LIQUID_BIOMES_MAP_1 — the lake's worldmap tiles under
+  Umbra"; the item text: "the lake proper is a subset to rule with the
+  owner by render (worldview.py) before painting"). This def exists so that
+  subset has somewhere to go once it is ruled — nothing more.
+
+  🔴 A key finding this reconciliation pass turned up, worth stating
+  explicitly because it changes what "the propane lake" even means
+  mechanically: AB_PropaneLakes (Alpha Biomes, sarg.alphabiomes) is a LAND
+  biome — canBuildBase=true, isWaterBiome=false, impassable=false (read
+  from the live def dump this pass, defs.sqlite mods=596/cec112bad2152f47,
+  captured=2026-09-05T14:41:26Z) — not a world-map water biome like
+  Ocean/Lake. Its "liquid propane lake" is delivered as a LOCAL-MAP terrain
+  patch via its own terrainPatchMakers (perlinFrequency 0.015, fertility
+  0.76-999 -> AB_PropaneLake terrain; 0.56-0.76 -> AB_SolidPropane), so
+  every one of the 558 Umbra tiles painted AB_PropaneLakes today already
+  generates lake-and-crust patches on ANY colony built there. That is a
+  real, working liquid feature and this item does not touch it.
+  What the_propane_lakes.md §0 measured as MISSING is a different, bigger
+  thing: an actual WORLD-MAP water tile (water=1 in
+  world/ASHKARR_WORLDMAP_tiles.csv) — Umbra currently reads water=0 on all
+  802 of its tiles (measured this pass, both AB_PropaneLakes' 558 and
+  BMT_CrystalCaverns' 244). A world-tile lake, the kind that shows blue on
+  the planet view the way the Scald and the two brine seas already do,
+  needs an isWaterBiome BiomeDef the way Ocean/Lake are — AB_PropaneLakes
+  cannot become one without losing everything that makes it settleable.
+
+  🔴 NOT ParentName="AB_PropaneLakes" and not ParentName="Lake"/"Ocean" for
+  the same reason RUT_TheScald.xml/RUT_TwilightSea.xml give: Lake and Ocean
+  carry no Name="..." attribute on their own <BiomeDef> tag (verified by
+  direct read, Core/Defs/BiomeDefs/Biomes_Water.xml), and AB_PropaneLakes is
+  the wrong shape to inherit from regardless (it is a land biome, not a
+  water one) — so this restates the Ocean/Lake water-biome shape directly,
+  the same pattern as the other three defs this item authors.
+
+  Water terrain: REUSES the donor's own AB_PropaneLake / AB_SolidPropane
+  terrain defs rather than inventing new ones — unlike the Scald, which
+  needed a genuinely new mechanic (the boiling-lift burn), the propane
+  lake's distinct liquid ALREADY EXISTS as a shipped, working TerrainDef
+  (waterBodyType None — correctly not recognised as drinkable water by
+  DBH or anything else, matching "propane, not water"; tags ['Water'],
+  Impassable, pathCost 300, avoidWander true, canFreeze false — read off
+  the live dump this pass). waterDeepTerrain -> AB_PropaneLake (the liquid
+  centre); waterShallowTerrain -> AB_SolidPropane (the frozen margin crust,
+  Standable, pathCost 12) — physically the correct pairing for a phase-line
+  lake (R-H6b: propane liquefies at −42 C, so the shallow/cold edge freezes
+  solid while the deep centre stays liquid).
+
+  fishTypes / wildAnimals: left EMPTY, documented. the_propane_lakes.md §4
+  already names the lake's intended exotics qualitatively ("the V-wake
+  creature and its kin — propane-native, agitated by pumping, attacking
+  pawns and pipe on sight") but no PawnKindDef exists for any of them yet
+  (checked the live dump: no def named anything resembling "V-wake" or
+  "VWake"). Authoring that creature is separate, unowed work (the sheet's
+  own "Owed" list — "the lake terrain (flammable, off-gassing into
+  saturation)" and the engine-feasibility pass are listed as owed there
+  too, ahead of any creature). AB_PropaneLakes' own donor fishTypes
+  (VCEF_PropaneBag, VCEF_AbyssalEel, VCEF_GiantPolarPrawn etc., read off the
+  live dump this pass) belong to the LAND biome's local-map fishing zones
+  and are not copied here — this is a world-tile water biome, a different
+  gameplay surface, and copying them without an owner ruling would invent a
+  content decision, not just an engine reconciliation.
+
+  texture: reuses Biomes/AB_PropaneLakes (the donor's own world-map icon)
+  as a placeholder rather than inventing new art — a dedicated icon
+  distinguishing "the lake proper" from the surrounding AB_PropaneLakes
+  land tiles on the world map is real, owed art work, not done here.
+  ============================================================================
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RUT_PropaneLake</defName>
+    <label>the propane lake</label>
+    <description>A black mirror of liquid fuel under the brightest sky on the planet, ringed by a crust of the same compound frozen solid. Nothing hot has touched it since the war.</description>
+    <workerClass>BiomeWorker_Ocean</workerClass>
+    <isWaterBiome>true</isWaterBiome>
+    <canBuildBase>false</canBuildBase>
+    <allowRoads>false</allowRoads>
+    <allowRivers>false</allowRivers>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <texture>Biomes/AB_PropaneLakes</texture>
+    <impassable>true</impassable>
+    <isBackgroundBiome>true</isBackgroundBiome>
+    <waterDeepTerrain>AB_PropaneLake</waterDeepTerrain>
+    <waterShallowTerrain>AB_SolidPropane</waterShallowTerrain>
+    <wildAnimals />
+    <coastalWildAnimals />
+  </BiomeDef>
+
+</Defs>

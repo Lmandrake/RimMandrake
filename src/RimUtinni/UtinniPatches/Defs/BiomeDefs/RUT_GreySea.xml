@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_GreySea.xml                        UtinniPatches · authored 2026-09-06
+  ============================================================================
+  LIQUID_BIOMES_MAP_1 — OFFLINE HALF. The second of the item's two "brine
+  seas", per design/Jawa/worldbuilding/biomes/terminator_sea.md §2: "the
+  Grey Sea (θ 92, bearing 8, salt-encrusted, shrinking)." Reconciled against
+  world/ASHKARR_WORLDMAP_tiles.csv: region "Grey Sea" is 617 tiles total,
+  biome breakdown Ocean 381 / SeaIce 91 / land shore (AridShrubland 89,
+  Desert 34, ZBiome_Badlands 12, AB_MiasmicMangrove 6, Wasteland 4). This
+  def concerns the 381 Ocean-biome (liquid) tiles only, same scope rule as
+  RUT_TwilightSea.xml.
+
+  See RUT_TwilightSea.xml for the shared provenance this file does not
+  repeat: the Name= trap on vanilla Ocean and why a dedicated def is needed
+  even though Ocean's 823 tiles split cleanly 442/381 with the Twilight Sea
+  and nothing left over; why water terrain is deliberately left at vanilla
+  WaterOceanDeep/WaterOceanShallow (Saltwater is the engine's only
+  hypersaline-adjacent tier); and why wildAnimals/coastalWildAnimals/
+  fishTypes are left empty and documented rather than invented — the Grey
+  Sea's own endemic monoculture (terminator_sea.md: "the Grey Sea holds a
+  different one [mat]" from the Twilight Sea's) is SEAS_WATERLINE_PASS_1's
+  job, not this item's.
+
+  canon.yml / ASHKARR_WORLD_DEFINITION.md's Sea table gives the Grey Sea a
+  0 m sink elevation and "salt-encrusted, shrinking" as its one-line
+  character, distinct from the Twilight Sea's "moldy" — the description
+  below reflects that distinction; nothing else about the two defs differs
+  mechanically in this pass.
+  ============================================================================
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RUT_GreySea</defName>
+    <label>the Grey Sea</label>
+    <description>A hypersaline terminal sea on the terminator band, its own endemic mat holding it alone the way the Twilight Sea's holds that one. Salt-encrusted and shrinking faster than its sister sea — the planet's chemical works, and the retreating shoreline is free surveying for anyone who can read the terraces.</description>
+    <workerClass>BiomeWorker_Ocean</workerClass>
+    <isWaterBiome>true</isWaterBiome>
+    <canBuildBase>false</canBuildBase>
+    <allowRoads>false</allowRoads>
+    <allowRivers>false</allowRivers>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <texture>World/Biomes/Ocean</texture>
+    <impassable>true</impassable>
+    <isBackgroundBiome>true</isBackgroundBiome>
+    <wildAnimals />
+    <coastalWildAnimals />
+  </BiomeDef>
+
+</Defs>

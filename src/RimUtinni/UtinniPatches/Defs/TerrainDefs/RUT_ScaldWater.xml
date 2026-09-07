@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ScaldWater.xml                     UtinniPatches · authored 2026-09-06
+  ============================================================================
+  LIQUID_BIOMES_MAP_1 — OFFLINE HALF. The "boiling-lift" mechanic for the
+  Scald, the crater lake at (35,185) that is the item's "boiling ocean"
+  (design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md §Water; region
+  "Scald" in world/ASHKARR_WORLDMAP_tiles.csv, biome=Lake, MEASURED 312/312
+  tiles water=1). Sits in the Anvil substellar band (arc 0-30, +70..+58 C) —
+  "the hottest lake in the hottest place"
+  (design/Jawa/worldbuilding/biomes/terminator_sea.md §2's own comparison
+  table: "the Scald's coast ... +38 to +58 C, overhead, fierce").
+
+  Mechanic and values lifted from
+  design/Jawa/mods/REGROWTH_BOILING_LIFT_SPEC.md §R-B3/R-B4a (route (b):
+  "author six TerrainDefs ... in src/Jawa/Jawa_Patches", ruled 2026-08-15,
+  NEVER BUILT — measure.get confirms zero defs named Jawa_ScaldWater* exist
+  in the live def dump, defs.sqlite mods=596/cec112bad2152f47,
+  captured=2026-09-05T14:41:26Z). Renamed Jawa_ -> RUT_ under the
+  NAMING_SCHEME_PLAN.md tier grammar (this is new authorship, not a
+  migration, so it takes the new prefix directly rather than waiting on
+  NAMING_SCHEME_EXECUTION_1) and rehomed from the retired src/Jawa/Jawa_Patches
+  to src/RimUtinni/UtinniPatches, the live successor mod
+  (mandrake.rut.patches, JAWA_PATCHES_SPLIT_1).
+
+  R-B3's five reasons to author rather than reference the ReGrowth: Boiling
+  donor still hold (donor's own boiling water terrain does NOTHING — no
+  hediff, no damage, no heat, identical to vanilla water bar a cyan glow;
+  route (a) drags in 41 defs incl. a cut BiomeDef and 14 unwanted plants).
+
+  ParentName safety verified by direct read of Core/Defs/TerrainDefs/
+  Terrain_Water.xml: WaterDeepBase, WaterChestDeepBase and WaterShallowBase
+  all carry a real Name="..." attribute on their own <TerrainDef> tag (lines
+  41, 73, 103), so ParentName against them resolves — unlike Lake/Ocean/
+  IceSheet (see RUT_TheScald.xml / RUT_NightsideIce.xml in this same folder
+  for the trap this is NOT hitting).
+
+  Field-by-field provenance, copied from the vanilla leaf each RUT_ScaldWater*
+  def stands in for (same file, so the shape after gravship-landing and
+  after a bridge crossing matches vanilla, not a truncated def):
+    WaterDeep -> RUT_ScaldWaterDeep               (line 51-58)
+    WaterOceanDeep -> RUT_ScaldWaterOceanDeep      (line 60-69)
+    WaterMovingChestDeep -> RUT_ScaldWaterMovingChestDeep (line 85-99)
+    WaterShallow -> RUT_ScaldWaterShallow          (line 114-126)
+    WaterOceanShallow -> RUT_ScaldWaterOceanShallow(line 128-141)
+    WaterMovingShallow -> RUT_ScaldWaterMovingShallow (line 143-161)
+  gravshipReplacementTerrain is repointed within this family (deep -> our own
+  shallow, never vanilla's) so a gravship landing on the Scald does not
+  quietly convert boiling water back into ordinary water.
+
+  R-B4a's boiling-lift values, applied verbatim:
+    glowColor (2,154,229), glowRadius 2         — the donor's cyan, the one
+                                                   thing worth keeping.
+    burnDamage 1 / burnIntervalTicks 300        — shallow + moving variants.
+    burnDamage 2 / burnIntervalTicks 240        — deep + chest-deep variants.
+      Bracketed by Odyssey's own HotSpring (0/0) and LavaShallow (3/120,
+      Data/Odyssey/Defs/TerrainDefs/Terrain_Water.xml) — "near-boiling" has
+      to sit between the two or the word means nothing.
+    traversedThought HotSpring                  — Odyssey's own ThoughtDef,
+      already loaded (Ludeon.RimWorld.Odyssey is active), reused rather than
+      SoakingWet.
+    avoidWander true                            — pawns should not idle in it.
+    dbh_water tag                               — dubwise.dubsbadhygiene.thirst
+      and .lite are ACTIVE (confirmed in the live ModsConfig.xml this pass);
+      without this tag DBH will not treat this as a drinkable/drawable water
+      source, silently breaking R-H1's "water is currency" economy the moment
+      the Scald is painted with these terrains instead of vanilla WaterDeep.
+      R-B4a's own caveat still holds: verify against DBH's own reader before
+      relying on it — a tag merely being present proves nothing about which
+      mod consumes it.
+    waterBodyType Saltwater + Ocean tag          — ocean-shallow/ocean-deep
+      variants only, matching vanilla's own WaterOceanDeep/WaterOceanShallow
+      pattern. The Lake-facing variants (Deep/Shallow/MovingShallow/
+      MovingChestDeep) keep the inherited Freshwater default: no design doc
+      calls the Scald basin itself saline (unlike the two terminator brine
+      seas, terminator_sea.md), so this is NOT changed here — flagged as an
+      open question for the owner in the design note this item also writes
+      (LIQUID_BIOMES_MAP_1_RECONCILIATION.md), not decided unilaterally.
+
+  What this file does NOT do: assign these terrains to the Scald's world
+  tiles. That is RUT_TheScald.xml's job (a BiomeDef, painted onto the 312
+  Scald tiles only via the LIVE, owner-gated half of this item) — these are
+  just the terrain defs themselves, which parse and validate standalone.
+  ============================================================================
+-->
+<Defs>
+
+  <TerrainDef ParentName="WaterDeepBase">
+    <defName>RUT_ScaldWaterDeep</defName>
+    <label>deep boiling water</label>
+    <description>Deep water at the boil, kept liquid by heat rather than by depth. It is dead calm on the surface and scalding underneath — nothing swims here that cannot stand the temperature, and nothing wades in without paying for it.</description>
+    <renderPrecedence>395</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <forcePassableByFlyingPawns>true</forcePassableByFlyingPawns>
+    <gravshipReplacementTerrain>RUT_ScaldWaterShallow</gravshipReplacementTerrain>
+    <glowColor>(2,154,229)</glowColor>
+    <glowRadius>2</glowRadius>
+    <burnDamage>2</burnDamage>
+    <burnIntervalTicks>240</burnIntervalTicks>
+    <traversedThought>HotSpring</traversedThought>
+    <avoidWander>true</avoidWander>
+    <tags>
+      <li>Water</li>
+      <li>dbh_water</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterDeepBase">
+    <defName>RUT_ScaldWaterOceanDeep</defName>
+    <label>deep boiling water</label>
+    <description>Deep water at the boil, kept liquid by heat rather than by depth. It is dead calm on the surface and scalding underneath — nothing swims here that cannot stand the temperature, and nothing wades in without paying for it.</description>
+    <renderPrecedence>397</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <waterBodyType>Saltwater</waterBodyType>
+    <gravshipReplacementTerrain>RUT_ScaldWaterOceanShallow</gravshipReplacementTerrain>
+    <glowColor>(2,154,229)</glowColor>
+    <glowRadius>2</glowRadius>
+    <burnDamage>2</burnDamage>
+    <burnIntervalTicks>240</burnIntervalTicks>
+    <traversedThought>HotSpring</traversedThought>
+    <avoidWander>true</avoidWander>
+    <tags>
+      <li>Water</li>
+      <li>Ocean</li>
+      <li>dbh_water</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterChestDeepBase">
+    <defName>RUT_ScaldWaterMovingChestDeep</defName>
+    <label>chest-deep boiling water</label>
+    <description>Fast, chest-deep water, hot enough to scald skin through soaked cloth. Crossing it is a choice, not an accident.</description>
+    <renderPrecedence>399</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <affordances>
+      <li>MovingFluid</li>
+    </affordances>
+    <waterDepthShaderParameters>
+      <_UseWaterOffset>1</_UseWaterOffset>
+    </waterDepthShaderParameters>
+    <glowColor>(2,154,229)</glowColor>
+    <glowRadius>2</glowRadius>
+    <burnDamage>2</burnDamage>
+    <burnIntervalTicks>240</burnIntervalTicks>
+    <traversedThought>HotSpring</traversedThought>
+    <avoidWander>true</avoidWander>
+    <tags>
+      <li>Water</li>
+      <li>River</li>
+      <li>dbh_water</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RUT_ScaldWaterShallow</defName>
+    <label>shallow boiling water</label>
+    <description>Shallow water at the boil. Steam stands off it even in the flat, unmoving light of the Anvil, and the mud at its edge is baked hard.</description>
+    <renderPrecedence>394</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <driesTo>Gravel</driesTo>
+    <glowColor>(2,154,229)</glowColor>
+    <glowRadius>2</glowRadius>
+    <burnDamage>1</burnDamage>
+    <burnIntervalTicks>300</burnIntervalTicks>
+    <traversedThought>HotSpring</traversedThought>
+    <avoidWander>true</avoidWander>
+    <tags>
+      <li>Water</li>
+      <li>dbh_water</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RUT_ScaldWaterOceanShallow</defName>
+    <label>shallow boiling water</label>
+    <description>Shallow water at the boil. Steam stands off it even in the flat, unmoving light of the Anvil, and the mud at its edge is baked hard.</description>
+    <renderPrecedence>396</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <driesTo>Gravel</driesTo>
+    <canFreeze>false</canFreeze>
+    <waterBodyType>Saltwater</waterBodyType>
+    <glowColor>(2,154,229)</glowColor>
+    <glowRadius>2</glowRadius>
+    <burnDamage>1</burnDamage>
+    <burnIntervalTicks>300</burnIntervalTicks>
+    <traversedThought>HotSpring</traversedThought>
+    <avoidWander>true</avoidWander>
+    <tags>
+      <li>Water</li>
+      <li>Ocean</li>
+      <li>dbh_water</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RUT_ScaldWaterMovingShallow</defName>
+    <label>shallow boiling water</label>
+    <description>Shallow, moving water at the boil — a scald-fed reach, running down off the Scald Spine and still hot enough to blister at the ankle.</description>
+    <renderPrecedence>398</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <affordances>
+      <li>MovingFluid</li>
+    </affordances>
+    <waterDepthShaderParameters>
+      <_UseWaterOffset>1</_UseWaterOffset>
+    </waterDepthShaderParameters>
+    <glowColor>(2,154,229)</glowColor>
+    <glowRadius>2</glowRadius>
+    <burnDamage>1</burnDamage>
+    <burnIntervalTicks>300</burnIntervalTicks>
+    <traversedThought>HotSpring</traversedThought>
+    <avoidWander>true</avoidWander>
+    <tags>
+      <li>Water</li>
+      <li>River</li>
+      <li>dbh_water</li>
+    </tags>
+  </TerrainDef>
+
+</Defs>
