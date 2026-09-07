@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T01:32:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T01:32:50Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## CRACKED_LANDS_ENRICHMENT_1 Backfill the enrichment pass (bestiary sorts, items/structures, faction faces, weather/sound) on the_cracked_lands.md; add the step to README_BIOME_GRAMMAR.md
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  CRACKEDLANDSENRICHMENT1 — backfill the enrichment pass
-prose:    infrastructure/state/items/CRACKED_LANDS_ENRICHMENT_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -279,7 +270,7 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/EXPLOSIVE_PLANT_GROWTH_1.md yet — write one when you have something to say)
+summary:  EXPLOSIVEPLANTGROWTH1 — visible plant growth as a world mechanic
 prose:    infrastructure/state/items/EXPLOSIVE_PLANT_GROWTH_1.md
 
 ## FLOOD_WITNESS_EVENT_1 Plot event: the player witnesses a Cracked Lands flood (chimes, wall of water, explosive growth) at least once — organized as part of the plot, since natural timing won't show it
@@ -289,5 +280,5 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FLOOD_WITNESS_EVENT_1.md yet — write one when you have something to say)
+summary:  FLOODWITNESSEVENT1 — the player sees the flood, once, on purpose
 prose:    infrastructure/state/items/FLOOD_WITNESS_EVENT_1.md
