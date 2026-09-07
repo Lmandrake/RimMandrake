@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T09:22:39Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-07T17:27:37Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1043,3 +1043,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PAWNFLAVOR_GEN_BEHIND_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PAWNFLAVOR_GEN_BEHIND_1.md
+
+## ARMOURY_DECLARER_ATTRIBUTION_FLIP_1 gen_armour_patch.py's declarer() flips guy762_*/KotOR* ops between own-mod (Conditional) and donor (FindMod) attribution run-to-run
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## criteria
+summary:  finding
+prose:    infrastructure/state/items/ARMOURY_DECLARER_ATTRIBUTION_FLIP_1.md

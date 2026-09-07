@@ -5410,10 +5410,10 @@
     "sha": "ef81a0b7"
   },
   "src/RimStarWars/Armoury/Patches/Armour_DamageCategories.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "484db8d556717c0addb5f58a6dafa17c18f7ae7da7efedd692c044b262147074",
-    "sha": "ef81a0b7"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "33ffb057c792ebb6f6999790e0e3a79c76e3b886cb64f4823ec699e625b3432c",
+    "sha": "4f987088"
   },
   "src/RimStarWars/Armoury/Patches/Armour_Leather.xml": {
     "cleanCount": 2,
@@ -5422,16 +5422,16 @@
     "sha": "e67f2cc0"
   },
   "src/RimStarWars/Armoury/Patches/Armour_Penetration.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "f78faa169124de68b2bbd37a91503a85a8e0450c063b78b0a66a730e21936649",
-    "sha": "ef81a0b7"
+    "cleanCount": 3,
+    "date": "2026-09-07",
+    "hash": "a633cd029962625350d391eaca8306cf998cc10958f5b595450bf623199f3014",
+    "sha": "972798af"
   },
   "src/RimStarWars/Armoury/Patches/Armour_Ratings.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "b3a84ba7b5f2a1dd0aa9a43d23763c68970dcf872437548651cab53e5497b8bf",
-    "sha": "ef81a0b7"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "d52b6a6f4e460ed754aeaed80dd5050066937fcf5213975602a7b61742ab9b66",
+    "sha": "4f987088"
   },
   "src/RimStarWars/Armoury/Patches/Armoury_LightsaberCraftingCut.xml": {
     "cleanCount": 1,
@@ -5446,10 +5446,10 @@
     "sha": "ef81a0b7"
   },
   "src/RimStarWars/Armoury/Patches/Armoury_RangedDamage.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "b636ae66ba6b8e9be70f272b2ebce390b47f227e2ea35913f6f453ae13d0e469",
-    "sha": "d512cc3c"
+    "cleanCount": 3,
+    "date": "2026-09-07",
+    "hash": "afd3f291c147ac6f547bf81649a87c76895e874722e39418b2f87eb696aa0edb",
+    "sha": "4f987088"
   },
   "src/RimStarWars/Armoury/Patches/Armoury_TorpedoSpeed.xml": {
     "cleanCount": 1,
@@ -5482,10 +5482,10 @@
     "sha": "d27125d2"
   },
   "src/RimStarWars/Armoury/Patches/Warcasket_HazardRetune.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "93fcf712eb6a5eb4a981fefbcecadbf36efb88b65470ddd48b36293fd7c0169e",
-    "sha": "d27125d2"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "136bd9e893e7d2ea58286cc1ef788b596c8e2290adc1172632e2842fef759e8f",
+    "sha": "4f987088"
   },
   "src/RimStarWars/Armoury/Source/CompExtraSounds/CompExtraSounds.cs": {
     "cleanCount": 1,
@@ -5763,6 +5763,12 @@
     "hash": "98e9fe6d0a879d3267af1b7f4e75729dc9b6d7c344e45cc7d6ed582d4064b0af",
     "sha": "4e362542"
   },
+  "src/RimStarWars/Armoury/Source/absorption_content_fixes.py": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "a25d25a87462e51f84951d69aae604130dde1df3b4a83a803a8bf2442877ec82",
+    "sha": "972798af"
+  },
   "src/RimStarWars/Armoury/Source/census_turrets.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -5776,22 +5782,22 @@
     "sha": "70cd2206"
   },
   "src/RimStarWars/Armoury/Source/gen_additionalmods_absorption.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "hash": "c525a88b483ecfacd753f80997fa94ed874b1f4d8778b4bf9137353dd9a98557",
-    "sha": "ee0b3ad6"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "8edbc44eb1b6d59226fba66d4d03227740ba4bb43e69689922d0378e3ff7b942",
+    "sha": "972798af"
   },
   "src/RimStarWars/Armoury/Source/gen_armour_patch.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "hash": "d0a7e8507feadc8e8fb14740bbe6993437165fece79eb2f9c27c1bb3c5ee3db6",
-    "sha": "69ea9703"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "8c41c26478e7a1720c389751ed68a288b0199f68ac3d46fa046c9c720a3c98dd",
+    "sha": "972798af"
   },
   "src/RimStarWars/Armoury/Source/gen_armoury_patch.py": {
-    "cleanCount": 2,
-    "date": "2026-09-04",
-    "hash": "12477f5cdcd081f313123ef8a7ba3e07a7c2baba65cd34675140938dfcb2811f",
-    "sha": "b5da9f9b"
+    "cleanCount": 3,
+    "date": "2026-09-07",
+    "hash": "7724fdcce9a4befa15939b8412fabbf71c6d6622dc8d2c2867a7f52c9ee2eadc",
+    "sha": "972798af"
   },
   "src/RimStarWars/Armoury/Source/gen_jds_armory_absorption.py": {
     "cleanCount": 1,
@@ -5800,16 +5806,16 @@
     "sha": "ee0b3ad6"
   },
   "src/RimStarWars/Armoury/Source/gen_kotorcore_absorption.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "hash": "34039db6f2ac772113cd68168a8b673a41bf6cd8c03fdbd72dffb4a49df1b6dd",
-    "sha": "c3f8e8ea"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "e3ef3700d71cce7ac6c0e3f18ffd11cc75001d37a7ad9acaaabb4f80400c1f56",
+    "sha": "972798af"
   },
   "src/RimStarWars/Armoury/Source/gen_kotorweapons_absorption.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "hash": "c7251af44d33bda0790c9000a4c037d733305acf3ee8e023dd905d46f6613518",
-    "sha": "16948032"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "e053c205caafe2c3449c80082cc148fd313dc5e5f0a7d3fce6a9f526ca53e085",
+    "sha": "972798af"
   },
   "src/RimStarWars/Armoury/Source/gen_sovsith_absorption.py": {
     "cleanCount": 1,
