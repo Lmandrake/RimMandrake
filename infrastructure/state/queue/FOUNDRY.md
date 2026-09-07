@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T06:47:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T06:50:51Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -431,15 +431,6 @@ target:   v1
 kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
-
-## LIQUID_BIOMES_MAP_1 Four liquid biomes on the frozen world: boiling ocean, two brine seas, and the propane lake as worldmap tiles under Umbra (render before painting)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - Reconcile with terminatorsea.md ("the three seas"): which existing sea defs are the
-prose:    infrastructure/state/items/LIQUID_BIOMES_MAP_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
