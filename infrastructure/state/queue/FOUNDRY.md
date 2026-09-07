@@ -7,39 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T00:52:26Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-07T01:13:35Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## SETTLEMENT_VISIT_LOOP_1 Inhabited visit loop: peaceful entry to named settlements, manifest, teardown, casing persistence
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31).
-prose:    infrastructure/state/items/SETTLEMENT_VISIT_LOOP_1.md
-
-## SETTLEMENT_VERBS_WAVE_1 v1 interaction verbs: crime suite, salvage-law gray zone, walkable commerce, social fabric
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31),
-prose:    infrastructure/state/items/SETTLEMENT_VERBS_WAVE_1.md
-
-## BUILDING_THEFT_HAULER_1 Building-theft hauler droid: Droidworks heavy chassis that uninstalls and carries whole buildings off hostile maps
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Full ruling: design/Jawa/wreckedmachinesresurrection.md (owner, 2026-08-31,
-prose:    infrastructure/state/items/BUILDING_THEFT_HAULER_1.md
 
 ## FORSAKEN_CRAGS_PREDATORS_BUILD_1 Build Cindermare + Skarnix, wild AB_RockyCrags threat pair
 state:    ready
@@ -162,6 +135,15 @@ kind:     task
 summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
 prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
 
+## SETTLEMENT_VISIT_LOOP_1 Inhabited visit loop: peaceful entry to named settlements, manifest, teardown, casing persistence
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31).
+prose:    infrastructure/state/items/SETTLEMENT_VISIT_LOOP_1.md
+
 ## DISTRICT_TEMPLATE_LIBRARY_1 Authored Lua district template library + composition through rimplace - Junkers set first
 state:    doing
 row:      unassigned
@@ -170,6 +152,24 @@ target:   v1
 kind:     build
 summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31),
 prose:    infrastructure/state/items/DISTRICT_TEMPLATE_LIBRARY_1.md
+
+## SETTLEMENT_VERBS_WAVE_1 v1 interaction verbs: crime suite, salvage-law gray zone, walkable commerce, social fabric
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31),
+prose:    infrastructure/state/items/SETTLEMENT_VERBS_WAVE_1.md
+
+## BUILDING_THEFT_HAULER_1 Building-theft hauler droid: Droidworks heavy chassis that uninstalls and carries whole buildings off hostile maps
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full ruling: design/Jawa/wreckedmachinesresurrection.md (owner, 2026-08-31,
+prose:    infrastructure/state/items/BUILDING_THEFT_HAULER_1.md
 
 ## LIVESTOCK_STARTER_TRIO_1 Livestock v1: onnik kiln-belly + karrask molt-plate + moornak grief-eater, shared-art batch
 state:    doing
@@ -460,7 +460,7 @@ prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
 state:    ready
@@ -468,7 +468,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     build
-waiting:  needs `game-up`, game is DOWN
+waiting:  needs `game-up`, game is LOADING
 summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
 prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
@@ -1169,3 +1169,23 @@ kind:     feature
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md
+
+## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/OASIS_LANDMARK_PLACEMENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
+
+## OASIS_MUTATOR_PATCH_1 Whitelist ZBiome_DesertOasis into vanilla TileMutatorDef Oasis; strip donor snow weathers; re-point forageability; alien-flora swap in additionalWildPlants after the roster
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/OASIS_MUTATOR_PATCH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/OASIS_MUTATOR_PATCH_1.md

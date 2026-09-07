@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T00:53:33Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-07T01:13:35Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -33,7 +33,7 @@ _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -41,7 +41,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is LOADING
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
@@ -242,3 +242,23 @@ kind:     decision
 thin:     no ## verify, no ## criteria
 summary:  Owner's own ask (verbatim, recorded on the filing event): a full review of mod
 prose:    infrastructure/state/items/MOD_NAMING_CONSOLIDATION_AUDIT_1.md
+
+## WEEPING_STONES_ROSTER_1 Weeping Stones flora+fauna roster to the sheet: reconcile the 29 cast, dewback move from LavaField (RULED), sorts-of-animals frame, blade-flora — runs in the full assignment pass
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WEEPING_STONES_ROSTER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEEPING_STONES_ROSTER_1.md
+
+## CRACKED_LANDS_ENRICHMENT_1 Backfill the enrichment pass (bestiary sorts, items/structures, faction faces, weather/sound) on the_cracked_lands.md; add the step to README_BIOME_GRAMMAR.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CRACKED_LANDS_ENRICHMENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CRACKED_LANDS_ENRICHMENT_1.md

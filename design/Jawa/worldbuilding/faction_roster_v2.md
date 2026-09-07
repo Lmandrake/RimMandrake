@@ -218,7 +218,7 @@ Four states. Each governs settlement siting **and** the operational range of tha
 | Blackstar Company | **Allow** (water clock) | Hunt teams carry a finite supply — range is the fight |
 | Geonosian Foundry Hive | **Forbid** (arid-adapted) | Only faction that can sustain a deep-desert siege |
 | Deep Desert Tribes | **Forbid** (taboo) | High raid frequency, very short duration, no siege |
-| Free Droid Enclaves | **Deny** | Settle on water, crack it for fuel; runoff is lethal |
+| Free Droid Enclaves | **Deny** | Settle on water, crack it for fuel; runoff is lethal. 🔑 **Owner, 2026-09-06: never a potable oasis** — they take the toxic and saline waters by preference (crack just as well, and less reason for anyone to come); no hostility wanted, just solitude. See `biomes/weeping_stones.md` §12 |
 
 ### Resulting world shape
 

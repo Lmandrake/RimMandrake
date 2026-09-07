@@ -213,6 +213,10 @@ _Beasts, items, furniture, structures, and the faction faces of the water. Secti
 
 ## 10. The bestiary — who comes to the water
 
+🔑 **Sequencing (owner, 2026-09-06): the full plant and animal assignment happens
+AFTER this sheet — this pass establishes what SORTS of animals go here; any actual
+animal named below is gravy, not a casting decision.**
+
 The concentric rings apply to the fauna too. Three rings: **residents** (live here,
 comb-carrying natives), **pilgrims** (the neighboring biomes' animals, drawn in — the
 "HIGHEST density on the planet" ruling is mostly *visitors*), and **the margin** (what
@@ -322,12 +326,14 @@ the one barbarism.**
 - **Geonosian Foundry Hive** — arid-adapted (Forbid): they don't stop. A Geonosian
   column marching past an oasis without drinking is the worst omen on any road — it
   means the one leash everything else wears isn't on them.
-- **Free Droid Enclaves** — 🔴 **the legal sacrilege.** Their Deny state settles the
-  water and *cracks it for fuel*: electrolysis stacks where vane arrays stood, lethal
-  runoff pooling where the green ring is dying by inches, animals turned away from
-  water that is technically claimed by the law and utterly damned by Oomo. Three
-  enclaves — up to three dying oases on the map. The strongest quest seed this biome
-  owns.
+- **Free Droid Enclaves** — 🔑 **corrected by the owner, 2026-09-06: no sacrilege.**
+  The droids don't want hostility; they want to be left alone. **They would never
+  take a potable oasis** — the toxic and saline waters crack for fuel just as well,
+  and they *prefer* them: less reason for anyone to come. So the enclaves sit on
+  poisoned pans and brine sinks, electrolysis stacks humming over water nothing
+  could ever drink — the one kind of "oasis" where the truce is moot because there
+  was never anything to share. The desert's darkest fear about the thirstless turns
+  out to be wrong; the droids are the most careful neighbors the water has.
 - **Galactic Empire** — supplied (Allow), needs nothing local — and meters the water
   anyway where it garrisons. Breaking the one law even enemies keep, *as policy*, is
   what makes the occupation legible at an oasis: the metering station near the
@@ -357,13 +363,13 @@ aftermath. Placement rides `OASIS_LANDMARK_PLACEMENT_1` when it files.
 - `OASIS_MUTATOR_PATCH_1` (to file) — whitelist `ZBiome_DesertOasis` into the vanilla
   Oasis mutator; strip snow weathers; re-point forage; alien-flora swap after the
   roster.
-- `WEEPING_STONES_ROSTER_1` (to file) — flora and fauna to the sheet: reconcile the
-  29 cast (§10), the dewback move from `LavaField`, the seven proposed natives, the
-  blade-flora.
+- `WEEPING_STONES_ROSTER_1` (filed) — flora and fauna to the sheet: reconcile the
+  29 cast (§10), the **dewback move from `LavaField` (RULED yes, owner
+  2026-09-06)**, the sorts-of-animals frame above, the blade-flora.
 - **Engine feasibility pass** — the fog-at-wind-hour weather; the condenser fin as a
-  buildable water source; the servo-vent enclosure; aeolian ambient per oasis state;
-  the truce as animal behavior (or as flavor only — the cheap version is spawn
-  suppression of predator-hunts near water, the honest version is a behavior mod).
+  buildable water source; the servo-vent enclosure; aeolian ambient per oasis state.
+  🔑 **The truce is RULED cheap-for-v1 (owner, 2026-09-06):** spawn/flavor
+  suppression of predator hunts near water; the honest behavior mod is v2.
 - **Cross-flow ledger**: Cracked Lands fliers feed here and nest in the desert
   (ratified on that sheet); Desert/Badlands herds are the pilgrim ring; Wildsteam's
   seep claims tie to `the_seas.md` vent chemistry; Hutt palace interiors ride
