@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T07:01:51Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-07T07:31:47Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -402,3 +402,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_MECHANICS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_MECHANICS_1.md
+
+## FORGE_MECHANICS_1 Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tower dungeon shell, Contagion die-off ring, geothermal industry - spec the_forge.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FORGE_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FORGE_MECHANICS_1.md
+
+## TIBANNA_EMBARGO_PLOT_1 Campaign clock: the Empire's tibanna monopoly at the Forge - metered blaster gas, dwindling resistance ammunition, and the resolution that must come; spec the_forge.md section 8
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TIBANNA_EMBARGO_PLOT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TIBANNA_EMBARGO_PLOT_1.md
