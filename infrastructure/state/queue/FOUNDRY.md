@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T03:27:08Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T03:27:55Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## DROID_KOTORDROIDS_PORT_WAVE1_1 Port guy762.kotordroids' 44 kinds/22 races onto the Droidworks platform (wave 1, pure XML)
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  design/Jawa/droidsystembuildspec.md §4/§7: guy762.kotordroids is
-prose:    infrastructure/state/items/DROID_KOTORDROIDS_PORT_WAVE1_1.md
 
 ## RIVER_STEAM_ANIMATION_1 Animated steam rising from the rivers (Pyrelands weather visual)
 state:    ready
@@ -216,6 +207,15 @@ kind:     build
 summary:  RimStarWars tier (RSW prefix, mandrake.rsw.<modname) — this is
 prose:    infrastructure/state/items/MLIE_FAUNA_ABSORPTION_1.md
 
+## DROID_KOTORDROIDS_PORT_WAVE1_1 Port guy762.kotordroids' 44 kinds/22 races onto the Droidworks platform (wave 1, pure XML)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  design/Jawa/droidsystembuildspec.md §4/§7: guy762.kotordroids is
+prose:    infrastructure/state/items/DROID_KOTORDROIDS_PORT_WAVE1_1.md
+
 ## SHIELD_MODS_LEVERAGE_1 Find existing shield mods, study and make compatible; tuned-plasma-field model per shd rulings
 state:    doing
 row:      unassigned
@@ -387,6 +387,15 @@ kind:     build
 summary:  Owner, verbatim (filed on the item): "Rather than use the whole Comingo tree
 prose:    infrastructure/state/items/TREE_GRAPHICS_OWNERSHIP_1.md
 
+## KOTORCORE_ABSORPTION_MISSING_TEXTURES_1 8 Absorbed_KotorCore/AdditionalMods files carry pink-placeholder texPaths (validate_patch.py, 13 errors)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  KOTORCOREABSORPTIONMISSINGTEXTURES1
+prose:    infrastructure/state/items/KOTORCORE_ABSORPTION_MISSING_TEXTURES_1.md
+
 ## MACRO_GENERATOR_V0_1 Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)
 state:    doing
 row:      unassigned
@@ -404,6 +413,15 @@ target:   v1
 kind:     bug
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
+
+## STRUCTUREINJ_RUT_TEMPLATE_DEFECTS_1 StructureInjectionsRUT: toll_gap.txt bakes rot=4 (invalid Rot4); glass_sea.txt is unreferenced dead content — regenerate from Lua
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  1. Templates/tollgap.txt:39 — THING DiningChair … rot=4. Rot4 is 0-3; 4 is invalid (the engine wraps or error…
+prose:    infrastructure/state/items/STRUCTUREINJ_RUT_TEMPLATE_DEFECTS_1.md
 
 ## CODEX_PARALLEL_WORKERS_1 N-worker codex exec queue with receiving-agent AGENTS.md prose + grumpiness detector reading rollout rate_limits; own CODEX_HOME per worker
 state:    doing  (BLOCKED)
@@ -558,16 +576,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1.md
 
-## KOTORCORE_ABSORPTION_MISSING_TEXTURES_1 8 Absorbed_KotorCore/AdditionalMods files carry pink-placeholder texPaths (validate_patch.py, 13 errors)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  KOTORCOREABSORPTIONMISSINGTEXTURES1
-prose:    infrastructure/state/items/KOTORCORE_ABSORPTION_MISSING_TEXTURES_1.md
-
 ## KOTORWEAPONS_ABSORPTION_CONTENT_NITS_1 Donor-original flavor-text nits across the KotOR absorption pool (cosmetic only)
 state:    proposed
 row:      unassigned
@@ -667,16 +675,6 @@ kind:     task
 thin:     no ## criteria
 summary:  - Capture ≥10 vanilla-generated terrain grids at matched sizes (250², 275², 300²) in arid biomes: quicktests…
 prose:    infrastructure/state/items/CORPUS_STATS_VANILLA_CONTROLS_1.md
-
-## STRUCTUREINJ_RUT_TEMPLATE_DEFECTS_1 StructureInjectionsRUT: toll_gap.txt bakes rot=4 (invalid Rot4); glass_sea.txt is unreferenced dead content — regenerate from Lua
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  1. Templates/tollgap.txt:39 — THING DiningChair … rot=4. Rot4 is 0-3; 4 is invalid (the engine wraps or error…
-prose:    infrastructure/state/items/STRUCTUREINJ_RUT_TEMPLATE_DEFECTS_1.md
 
 ## MAPGEN_CONVERGENCE_LOOP_1 Map generator convergence loop: painter vs GL vs corpus, iterate until the owner calls it great (owner 2026-09-06)
 state:    proposed
