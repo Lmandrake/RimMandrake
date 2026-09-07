@@ -1697,6 +1697,12 @@
     "hash": "a9bfddac2b6df10cda8a07b0ca281edf21cf209f53e32e6536ebc1434e5a3694",
     "sha": "5a1f89a6"
   },
+  "src/RimMandrake/RaidRedesigner/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "7642740d57e9497affb329319766230c2fd5ca79375b399eaa2f736031faa72c",
+    "sha": "b1655903"
+  },
   "src/RimMandrake/RaidRedesigner/Source/Encounter.cs": {
     "cleanCount": 1,
     "date": "2026-09-06",
@@ -1728,10 +1734,10 @@
     "sha": "b87a3622"
   },
   "src/RimMandrake/RaidRedesigner/Source/Patch_FledRaiderAndCaptain.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
+    "cleanCount": 2,
+    "date": "2026-09-07",
     "hash": "56628700028d8c23ef526f1b345abfe5f257935fb29bc5e752f1cbeb9b50ed27",
-    "sha": "b87a3622"
+    "sha": "b1655903"
   },
   "src/RimMandrake/RaidRedesigner/Source/Patch_PrisonerEscaped.cs": {
     "cleanCount": 1,
@@ -1740,10 +1746,46 @@
     "sha": "b87a3622"
   },
   "src/RimMandrake/RaidRedesigner/Source/Patch_PrisonerReleasedOrNamedHunter.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
+    "cleanCount": 2,
+    "date": "2026-09-07",
     "hash": "2853cf5421cfc323a9f311d697d0d63096686f419455692a47649c230d4df1bb",
-    "sha": "b87a3622"
+    "sha": "b1655903"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/Patch_WokenAncient_STUB.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "5706a4606c62036b77422eaddcb90d6983b58ec478679792ea003463c6d007c3",
+    "sha": "b1655903"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/RaidRedesignerMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "822b4b334276751a1802e94350fb969b6ae4783e45006854199ecfddc0912852",
+    "sha": "b1655903"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/RoleTag.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "3a88507e0e57d5ad8b4c1af0fdcf31f3b4380621a27b9679cb4b487af1524ba5",
+    "sha": "79d533fe"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/RosterPruning.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "bcad177cba1b4f183d01b9c001b9d6891732d28350abd2698af23f37c6bac5aa",
+    "sha": "b1655903"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/SelfTest/Program.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "fd5389f3a88325e070d8016a571a6476fee04b59e3cef58837167ba041cdb561",
+    "sha": "b1655903"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/WorldPawnPinning.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "978e731f554e438e408c8b7c74b846f232a30f5a1b2b4a7b80363ecc55bdafb4",
+    "sha": "b1655903"
   },
   "src/RimMandrake/ResearchKitEastFix/About/About.xml": {
     "cleanCount": 1,
@@ -7934,6 +7976,30 @@
     "date": "2026-09-05",
     "hash": "4ab87380f29a37958eaed3f8c02e20641bac2185a96cc4441df4862eecce07ae",
     "sha": "14cf4186"
+  },
+  "src/RimUtinni/RestrainingBolts/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "16ccb8416ceb7f08a131fe51d0c4b0a28baff6d977ff0d7ab77f8e4f867b7ead",
+    "sha": "b1655903"
+  },
+  "src/RimUtinni/RestrainingBolts/Defs/GoodwillSituationDefs/Jawa_RestrainingBolts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "19e3a7ee715eee436031cb235786307cd7a45b33046212f716897e1b65819d2b",
+    "sha": "b1655903"
+  },
+  "src/RimUtinni/RestrainingBolts/Source/DefOfs.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "61a9ab072b4f818e3422d640fd902c8feb1b2f3ad819a1cc8c690efb994cecf6",
+    "sha": "b1655903"
+  },
+  "src/RimUtinni/RestrainingBolts/Source/GoodwillSituationWorker_RestrainingBolts.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "5f3e60d0286ad9a485e5ff7314e43da6fd2aab7cc7888ed169900ea1917f821c",
+    "sha": "b1655903"
   },
   "src/RimUtinni/Rites/About/About.xml": {
     "cleanCount": 2,
