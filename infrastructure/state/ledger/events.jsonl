@@ -5408,3 +5408,8 @@
 {"seat":"FOUNDRY","event":"close","id":"KOTORCORE_ABSORPTION_MISSING_TEXTURES_1","sha":"e5a344af8b2703e5ed1d1166a47918dfba60b0cf","ts":"2026-09-07T03:58:20Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-07T04:06:50Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROID_KOTORDROIDS_PORT_WAVE1_1","sha":"04e05aa50895e66fbccd5b539da983ad9d8c2da1","ts":"2026-09-07T04:08:51Z"}
+{"seat":"FOUNDRY","event":"claim","id":"RIVER_STEAM_ANIMATION_1","ts":"2026-09-07T04:29:32Z"}
+{"seat":"FOUNDRY","event":"start","id":"RIVER_STEAM_ANIMATION_1","ts":"2026-09-07T04:29:34Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MOISTURE_VAPORATOR_WALL_CLIP_1","ts":"2026-09-07T04:30:29Z"}
+{"seat":"FOUNDRY","event":"claim","id":"STICK_FOOD_INGEST_1","ts":"2026-09-07T04:30:29Z"}
+{"seat":"FOUNDRY","event":"start","id":"STICK_FOOD_INGEST_1","ts":"2026-09-07T04:30:30Z"}

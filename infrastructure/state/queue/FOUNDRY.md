@@ -7,30 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T04:08:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T04:30:30Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
 
-## RIVER_STEAM_ANIMATION_1 Animated steam rising from the rivers (Pyrelands weather visual)
+## MOISTURE_VAPORATOR_WALL_CLIP_1 Moisture vaporator graphic extends/clips through an adjacent wall instead of sitting flush
 state:    ready
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     build
-summary:  Pure ambience feature, no gameplay effect, no new art. mandrake.rut.riversteam
-prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
-
-## STICK_FOOD_INGEST_1 Ingest the stuff-on-a-stick food mod(s) into our own recipe-discovery tree, then retire them
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
-prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
+kind:     bug
+summary:  MOISTUREVAPORATORWALLCLIP1 — fixed offline, live verification owed
+prose:    infrastructure/state/items/MOISTURE_VAPORATOR_WALL_CLIP_1.md
 
 # IN PROGRESS
 
@@ -207,6 +198,15 @@ kind:     build
 summary:  RimStarWars tier (RSW prefix, mandrake.rsw.<modname) — this is
 prose:    infrastructure/state/items/MLIE_FAUNA_ABSORPTION_1.md
 
+## RIVER_STEAM_ANIMATION_1 Animated steam rising from the rivers (Pyrelands weather visual)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Pure ambience feature, no gameplay effect, no new art. mandrake.rut.riversteam
+prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
+
 ## SHIELD_MODS_LEVERAGE_1 Find existing shield mods, study and make compatible; tuned-plasma-field model per shd rulings
 state:    doing
 row:      unassigned
@@ -215,6 +215,15 @@ target:   v1
 kind:     task
 summary:  SHIELDMODSLEVERAGE1 — survey done, scoping (BENCH, 2026-09-02)
 prose:    infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md
+
+## STICK_FOOD_INGEST_1 Ingest the stuff-on-a-stick food mod(s) into our own recipe-discovery tree, then retire them
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
+prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
 
 ## SANDWORM_MYTHOS_BUILD_1 New massive dune-style sandworm with its own mythos (Krayt stays as-is); borrow LEVIATHANS:SANDWORM architecture
 state:    doing
@@ -323,15 +332,6 @@ target:   v1
 kind:     task
 summary:  (no items/NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1.md
-
-## MOISTURE_VAPORATOR_WALL_CLIP_1 Moisture vaporator graphic extends/clips through an adjacent wall instead of sitting flush
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  MOISTUREVAPORATORWALLCLIP1 — fixed offline, live verification owed
-prose:    infrastructure/state/items/MOISTURE_VAPORATOR_WALL_CLIP_1.md
 
 ## NINEFOLD_RUNTIME_PROOF_BLOCKED_1 Ninefold compile-fix VERIFIED (ready:14, was 6); runtime firing UNPROVEN - GameComponent.Instance null on ignoreModCompatibility loads, all hooks incl. research silent; needs a normal-load or fresh new-game test
 state:    doing
