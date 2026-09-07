@@ -1,192 +1,227 @@
 # The Fever Wood — definition sheet
 
-_Owner + BENCH, 2026-09-07, one round + ratification ("yup. tropical swamp").
-Defines `COMIGO_GreaterSwamp_Tropical` (Comigo's Greater Swamps, workshop
-3620545124 — donor label "tropical swamp"). **Sheet name: THE FEVER WOOD** — the
-map's own region name, used throughout the ratified opener; the def-label call
-rides the freeze review with the other donor renames. Thematic handle: **the
-held breath** — and its image: **black mirror pools that haven't rippled in
-years, and a road that doesn't stop.**_
+_Owner + BENCH, 2026-09-07, three rounds ("Write it up!"). Defines
+`COMIGO_GreaterSwamp_Tropical` (Comigo's Greater Swamps, workshop 3620545124 —
+donor label "tropical swamp"). **Sheet name: THE FEVER WOOD** (the map's own
+region name; def-label call rides the freeze review). Thematic handle: **the
+giant stillness** — and its image: **wood-roads twisting through a living crown,
+high above black mirror pools that nothing sane touches.**_
 
-🔑 **Read against `the_miasma.md`** — one wetland, two biomes, opposite souls.
-The Miasma is everything in motion: surges, moving salt lines, refugee
-crowding, evolution auditioning. The Fever Wood is the exact opposite:
-**nothing moves at all.** The Miasma is a lifeboat; the Fever Wood is a held
-breath.
+🔑 **Read against `the_miasma.md`** — one wetland, two biomes: the Miasma is
+everything in motion (surge, salt, refugee crowding); the Fever Wood is what
+happens when something finally made the water HOLD STILL. And read against
+`the_greentide.md` and `the_webwork.md` for the family resemblance: the
+Greentide's plants drank a river, the Webwork's thicket drank a river — **here
+the great trees drank the chaos itself.**
 
 ## 0. The measurements everything rests on
 
 MEASURED off the live CSV: **60 tiles, every one in the Fever Wood region** —
 one contiguous lowland patch at **21 m**, flat (47/60), directly behind the
-Miasma's delta belt. Sun median +43°; temp median 45.7 °C (37.6..51.5).
-**Zero rivers, zero water tiles, zero rain** — a swamp with no visible water
-source at all (§3). The Wildsteam hold **Sporefall** here, "in the Fever Wood,
-on the road" (owner, 2026-08-24).
+Miasma's delta belt. Sun median +43°; temp median 45.7 °C (37.6..51.5). **Zero
+rivers, zero water tiles, zero rain** — the wet is the water table, tamed (§3).
+The Wildsteam hold **Sporefall** here, "in the Fever Wood, on the road" (owner,
+2026-08-24) — reframed this sitting as a treetop town (§8).
 
 Donor inventory: **kept and explained** — "terrain too marshy to support heavy
-structures" (the causeway frame's mechanical spine, §7b), "large animals are
-rare here, and those that do visit are probably terribly lost" (the stillness
-in the donor's own voice), animalDensity 2.3 (LOW — the emptied-out quiet, the
-deliberate opposite of the Miasma's 6.5), plantDensity 0.9, near-impassable
-movement. **Evicted** — the vanilla-Earth roster, as always.
+structures" (ground-level building refusal; the answer is UP, §7b),
+animalDensity 2.3 low (the ground level's emptiness; the crown is where the
+life is), plantDensity 0.9, near-impassable ground movement. **Evicted** — the
+vanilla-Earth roster, as always.
 
 ## 1. What it is
 
-The backswamp: warm black water standing in the soil behind the deltas,
-tree-choked, windless under total canopy, and so still that the pools read as
-polished stone. Air like warm wet cloth; heat with no weather. Little
-vegetation-choked islands in ground too soft to build on; one raised road
-running through it all, and a waystation where travelers hurry between the
-trees. Off the causeway, nothing moves — and everything that lives here has
-organized its whole existence around that fact.
+The place where trees finally won. Great solid trunks — **much more than one
+tile wide** — have rooted the backswamp still and solid, tamed the flowing
+waters into shallow surface pools with **deep, deep mud beneath, nourishing the
+huge trees** (owner). Their arches, branches and twisting pathways have grown
+into **byways and passages well above the dark still pools** — roads made of
+living wood, seemingly fixed, themselves slowly varying over time. In the crown:
+a whole arboreal world — sap-drinkers, wood-borers, herds of nectar-beasts, and
+the Wildsteam's steam-lamps — **a brief moment of giant stillness, giant tree
+parasites sharing the space with the other races in ambivalent harmony**
+(owner). Below: the black mirrors, unrippled. Nothing goes in the water here.
+Everything remembers why.
 
 ## 2. Planetary position
 
-Mid-dayside lowland (arc 42–53), the freshwater back-half of the delta
-wetland: **water table × stillness.** At 21 m behind the Miasma's belt, the
-delta system's groundwater floats inches below the surface — the water doesn't
-flow here, it *stands*: the pools are not bodies with banks but **windows onto
-the water table**. The Miasma is the salt front; the Fever Wood is the still
-fresh water behind it.
+Mid-dayside lowland (arc 42–53), the freshwater back-half of the delta wetland:
+**water table × the trees that tamed it.** At 21 m behind the Miasma's belt,
+the groundwater floats inches down — but unlike any other wet ground on the
+planet, something anchored it: the giants' root-mats hold the soil, still the
+flow, and bank the depth as mud.
 
 ## 3. Driving forces
 
-- **Water from below.** No rain, no rivers: the swamp is wet because the
-  ground is full — Earth's backswamp/bayou pattern. Everything drinks the
-  table; nothing crosses it.
-- **The stillness is the pathology.** The Miasma's diseases are the Working's
-  spillage; the Fever Wood's fever is **stagnation's own brew** — no current,
-  no surge, no wind, no turnover. Heat plus standing water plus time.
-- **One aquifer under everything** — which is the biome's secret and its
-  horror (§4).
+- **The trees are the stabilization engine.** The third member of the
+  thirsty-flora family: they drank the chaos into stillness. The shallow pools
+  are what the water is *allowed* to be; the deep mud is the nutrient bank
+  that pays for trunks the size of towers.
+- **Water from below, life from above.** No rain, no rivers; the table feeds
+  the roots, the roots feed the crown, and the crown is where the biome
+  actually lives. The ground level is dim, wet, quiet, and mostly empty.
+- **The stillness is real — and it is enforced** (§4's last resident).
+- **The oils** (owner): deep organic matter decaying slowly and peacefully
+  under the mud sends **strange oily deposits boiling gently to the surface**
+  — gathered for perfumes, lubrication, and fuel.
 
-## 4. How the biology adapted
+## 4. How the biology adapted — the crown, the herds, and the deep
 
-**The admission test: waits, or never leaves the road.** Nothing here chases —
-ambush is the only predation style the stillness permits, and the donor's low
-density is the truth of the place: most animal life was eaten or left; what
-remains is patient.
-
-- ⭐ **The Tenant** — the signature horror, BENCH-designed on the owner's
-  delegation ("left it for you"; his veto open): the pools are windows onto
-  ONE connected water table — so what waits beneath them is **one creature,
-  everywhere**. A vast, distributed thing living *in the aquifer itself*,
-  able to surface through any pool: every black mirror in the biome is the
-  same animal's mouth. Silent, patient, takes drinkers. It is why the swamp
-  holds its breath: everything that lives here knows better than to touch
-  the water. Nobody has seen enough of it at once to say what it is —
-  implementation: one map-spanning entity striking through pool cells, never
-  spawned as a walking pawn, never fully revealed (`FEVER_WOOD_MECHANICS_1`).
-- **The waiters at the mirrors** — smaller ambushers holding the pool
-  margins: strike-and-retreat things that have never once been seen
-  mid-stride. The rare, terrifying moment anything breaks a mirror is the
-  biome's loudest event.
-- **Stilt-and-island life** — the prey base lives above the water or on the
-  choked islands, never in it: light-footed things on root and tussock, and
-  canopy dwellers that drink only from leaves.
-- **The spore-veil** — a light fungal understory hanging in the windless air
-  (Sporefall's name earned) — 🔴 kept a *note*, not a miracle: the Rot owns
-  the fungal breakthrough; here it is only haze and softness on every edge.
-- **The terribly lost** — big animals wander in off the Dune Sea and the
-  Greentide margins and, per the donor's own line, are probably terribly
-  lost. They drink. The pools take them. The biome's ambient tragedy.
+- **The tree-parasite guild** — the crown's residents: sap-drinkers at the
+  bark, borers eating cave-systems into the living wood (natural rooms the
+  races reuse), canopy grazers and their small patient predators. All of it
+  in ambivalent harmony — nothing here is at war with the trees, because the
+  trees are the only reason anything is dry.
+- ⭐ **The thornbugs** (the nectar-beasts): great thorn-shaped insects clamped
+  to the bark, **secreting sweet, nourishing nectar in exchange for safety**
+  — semi-domesticated, worked on by **the Wookiees and Ewoks and others**
+  (the elevated-thirst arboreal races' canton, exactly where the water
+  doctrine said they would congregate). 🔴 The mechanic IS the deal: a
+  thornbug yields only while it feels safe; a frightened herd dries up for
+  days. The dairy is the alarm system, and every raid costs nectar before it
+  costs blood.
+- ⭐ **The two raiders** (owner) — the enemies always watched for, and there
+  are two: **raiding Feralisks in one direction** (the Webwork probing the
+  wet country) and **the raiding Ants in the other — forever swarming,
+  seeking to devour the flesh and steal the nectar-secreting creatures for
+  their own.** Ant raids haul thornbugs away ALIVE — theft, not slaughter —
+  so every loss is a recoverable quest: track the column, raid it back.
+  **The Ants and the Feralisks despise each other and will fight to the
+  death... and that suits the Wildsteam just fine** (owner, near-verbatim).
+  The Ants are **nothing from an existing faction** (ruled): a wild swarm
+  entity. Source: the ant mod **They/Them** — BENCH's call (delegated):
+  verify it at the roster item and **draw from it literally if its defs and
+  art pass the recognizability rule and the register; otherwise inspiration
+  only.**
+- ⭐ **The thing in the deep** (owner: keep it, BUILD it): down there —
+  under the mud, under the stillness — is something **absolutely huge, dark,
+  and unspeakable. A tentacled monstrosity** that can pull its way to the
+  surface **to remind everyone why nothing goes in the water here. An
+  aquatic equivalent of a sarlacc** (cross-read `sarlacc_spec.md` for the
+  family register). It is made for real — defs, art, the emergence — **so
+  that it can emerge at some point**: the emergence is plot-reserved, never
+  ambient. In ordinary play it is evidence only: the unrippled pools, the
+  drinkers that vanish, the fact that even the Ants do not dig here.
+- **The terribly lost** — big animals wander in, drink at the mirrors, and
+  are subtracted. The biome's ambient tragedy, and the deep thing's ambient
+  proof.
 
 ## 5. Always true
 
-- The pools are windows, not ponds; the water table is one water.
-- Nothing ripples. A moving pool is the worst sign there is.
-- The road is the only safe line, and everyone on it is hurrying.
-- The ground refuses heavy structures; building means the causeway, the
-  islands, or stilts.
-- The air is a fever: windless, saturated, hot — the stillness itself sickens.
-- Large life is rare, quiet, and either patient or lost.
+- The trees hold the ground; the crown holds the life; the mud holds the
+  deep thing.
+- The wood-roads seem fixed and are not — the byways slowly vary.
+- Nothing ripples the pools on purpose. Nothing native drinks at them.
+- The thornbugs' nectar flows exactly as far as their sense of safety.
+- The two raiders come from opposite directions, hate each other more than
+  anyone, and can be left to prove it.
+- The Wildsteam prefer it here — away from the raging steam and the
+  screaming creatures. This is their home canton, and it is *quiet*.
+- The oils seep, gently, forever.
 
 ## 6. Never true — 🔴 HARD BANS (linter-checkable)
 
-1. 🔴 **The Tenant is never fully seen, named in-world, or spawned as a
-   walking creature** — no def, art, or text resolves it; partial evidence
-   only.
-2. 🔴 **No flowing water** — no river, current, or surge mechanics; the
-   Miasma owns motion.
-3. 🔴 **No fungal miracle** — spore-veil dressing only; the Rot owns the
-   breakthrough (standing reservation, same law as the Slime's registry).
-4. 🔴 **No heavy structures off the causeway and islands** — the donor's
-   marsh-refusal is kept as a real building constraint.
-5. 🔴 **No chase predators** — everything native waits.
-6. 🔴 **No rain; no vanilla-Earth flora or fauna** (standard).
+1. 🔴 **The deep thing is never resolved in ordinary play** — no ambient
+   spawn, no codex entry, no name in player-facing text; it is built, and it
+   emerges ONLY as the plotted event.
+2. 🔴 **The Ants are never an existing faction** — no Geonosian tie, no
+   faction allegiance; a wild swarm, full stop.
+3. 🔴 **No native chase predators** — the crown's natives wait or graze; only
+   the two raiders bring pursuit, and they bring it from off-map.
+4. 🔴 **No heavy structures on the ground** — the marsh refuses them (donor,
+   kept); building means the trees, the boughways, or stilts.
+5. 🔴 **No fungal miracle** (the Rot's reservation stands); no flowing water
+   (the Miasma owns motion); no rain.
+6. 🔴 **Thornbugs never yield under fear** — a def or event that milks a
+   frightened herd violates the biome's one contract.
+7. 🔴 **No vanilla-Earth flora or fauna** (standard eviction).
 
 ## 7. Uniquely available
 
-- **The safest dangerous crossing on the dayside** — the causeway is the
-  region's through-road: tolls, traffic, and Sporefall's services, all
-  riding one raised line.
-- **Black-water stillness goods** — what only unmoving water makes: settled
-  fine clays (potter's grade), tannin-steeped preserved wood (bog-oak
-  analog: dense, dark, beautiful timber pulled from the pools — retrieving
-  it is the biome's signature gamble, priced by the Tenant),
-  leaf-drunk canopy game.
-- **The islands** — the only free real estate in the wetland: choked,
-  small, defensible, and dry.
-- **Passage intelligence** — Sporefall sells the one thing every traveler
-  wants: which pools moved lately.
+- ⭐ **Thornbug nectar** — sweet, nourishing, renewable: the crown's dairy
+  and its trade good, priced in the herd's peace.
+- ⭐ **The seep-oils** — perfume, lubricant, and fuel from the deep decay
+  (the still-burners' second source). Boundary kept: the Miasma's attar is
+  *beauty restored from silt*; these are *scent, slick, and flame* — sibling
+  products of one wetland, never the same def.
+- **Wood-road passage** — the safest travel in the wetland, Wildsteam-kept;
+  the ground causeway below survives as the free, wet, watched alternative.
+- **Bog-timber and potter's clay** — the still-water goods, hauled up from
+  the mirrors' edges by people with excellent nerves.
+- **Chitin and salvage** — the two-front war's leavings: stand back, let
+  them, mop up.
+- **Bore-caves** — the borers' galleries as ready-made rooms in living wood.
 
 ## 7b. Playing the Fever Wood
 
-The whole biome is one tension: **the road versus the water.** On the
-causeway: safe, watched, tolled, fast. Off it: the clays, the bog-timber, the
-lost beasts' salvage — every prize within arm's reach of a window that might
-be a mouth. Basing here means an island or stilts, a water discipline
-(nothing and no one drinks at a pool), and the long game of learning which
-mirrors are quiet. Fire clears nothing, walls sink, and the Tenant cannot be
-fought — only avoided, read, and respected. The Fever Wood is the one biome
-where the survival skill is *restraint*.
+The biome's frame is vertical: **the crown versus the water.** Life, traffic,
+trade and safety are UP — boughways, treetop platforms, bore-cave rooms, the
+herds. The ground is for the brave and the poor — the old causeway, the clay
+and timber runs, the oil-gathering — always within arm's reach of a mirror.
+Base-building means trees and stilts; herd-keeping means keeping the
+thornbugs *calm* (walls help less than quiet); defense means reading which
+direction this month's raid comes from — and learning the Wildsteam's oldest
+trick: when both come at once, open the gates between them and stand back.
+And one rule underneath all of it, never explained to newcomers because the
+pools explain it themselves: **nothing goes in the water here.**
 
 ## 8. Inhabited objects
 
-- **The causeway** — the raised road, oldest structure in the region;
-  repaired forever, rerouted never (there is nowhere better).
-- **Sporefall** — the Wildsteam waystation on the road: stilt-built,
-  steam-lit, selling passage, repairs, liquor and pool-intelligence;
-  travelers sleep in the middle of the platform, away from the edges.
-- **Drowned salvage** — the terribly lost, and what they carried; cargo from
-  causeway mishaps; bog-timber stands.
-- **The quiet shrines** — travelers' offerings at the causeway's worst
-  stretches: not worship, just manners. (The Wildsteam's actual pilgrimage
-  runs to the Miasma; here they only pass through, respectfully.)
+- ⭐ **Sporefall, the treetop town** — the Wildsteam's beloved seat: stilt-
+  and-bough architecture, steam-lamps in the crown, stills running nectar-
+  liquor and seep-oil, the boughway tolls, and the quiet that the clan
+  crossed a planet to find.
+- **The herd-groves** — Wookiee and Ewok thornbug stations: tended bark,
+  watch-perches facing both raid directions, nectar-taps.
+- **The wood-roads** — the byway network itself, oldest living
+  infrastructure on the dayside; and beneath it the ground causeway,
+  repaired forever.
+- **The war's edges** — feralisk silk-sign at one margin, ant middens at the
+  other, and the churned no-man's-land where columns met.
+- **The mirrors** — placed, still, and permanent. Every settlement's maps
+  mark which pools moved lately; Sporefall sells the list.
 
 ## 9. Artistic theme
 
-**"Black mirrors under a green ceiling, and a road that doesn't stop."**
+**"A lamplit crown over black glass — giant stillness, twice inhabited."**
 
-- **Light:** dim, green-filtered, windless; the pools as perfect dark
-  reflections — the biome's art direction is symmetry, broken only by the
-  causeway's line.
-- **Palette:** black water, deep greens, tannin browns, spore-haze softness;
-  Sporefall's steam-lamps as the only warm light.
-- **Silhouette language:** verticals doubled in reflection; stilts and
-  causeway piers; islands like knots.
-- **Motion:** none. Then a ripple. (The rarest and worst event in the
-  frame.)
-- **Sound:** the quietest wet place on the planet — drip, insect-shimmer,
-  boardwalk footsteps; every loud noise is somebody's mistake.
+- **Light:** two worlds — warm steam-lamp gold and green-filtered sun in the
+  crown; dim, symmetrical, mirror-doubled dark below.
+- **Palette:** living-wood browns and moss greens, nectar amber, oil-sheen
+  rainbows on the seeps (the wetland's third rainbow — the Miasma's honest
+  blooms, the Scarlands' lying pools, and here: just oil, just useful),
+  black water, chitin red-and-black at the war margins.
+- **Silhouette language:** trunks as towers, boughways as bridges, thornbug
+  spikes along the bark; below, verticals doubled in reflection.
+- **Motion:** crown-life constant and easy; ground-level none — then a
+  ripple, and everything above goes silent to watch.
+- **Sound:** the crown hums with work (taps, herds, boardwalk steps, steam);
+  the ground is the quietest wet place on the planet. The biome's two
+  registers, stacked.
 
 ---
 
 ## Owed
 
-- `FEVER_WOOD_MECHANICS_1` (to file) — the Tenant as a map-spanning entity
-  (pool-strike logic, evidence events, never-resolved rule), the
-  building-refusal terrain, pool-state intelligence, mirror-break events.
-- **Roster** — rides the full assignment pass: waiters, stilt-and-island
-  prey, canopy drinkers; the spore-veil flora; graded against the standing
-  cast (MEASURED at the pass).
-- **Def-label call** at the freeze review ("tropical swamp" donor label vs
-  the Fever Wood).
-- **Donor reconciliation** — the tropical variant's own XML (the base
-  "greater swamp" def was read this sitting; the variant's deltas at the
-  roster item).
-- **Cross-flow ledger**: one wetland with `the_miasma.md` (salt front /
-  still back-half); the causeway joins the road doctrine
-  (`ASHKARR_WORLD_DEFINITION` road classes); Sporefall joins Wildsteam
-  faction canon at the sitting; `LIQUID_TYPES_MOD_1` gets black-water and
-  the clays.
+- `FEVER_WOOD_MECHANICS_1` — scope per this revision: boughway network
+  (elevated lanes, slow variation via the encroachment engine), the
+  nectar-for-safety herd economy (fear drying yields), the two-front war
+  (mutual hostility, target preference, ant theft-hauling + raid-back
+  quests), ground building-refusal, and **the deep thing built in full**
+  (defs, art, pool-evidence events, the plot-reserved emergence — the
+  emergence event itself files with the plot when its moment is chosen).
+- **Roster** — rides the full assignment pass: the tree-parasite guild,
+  thornbugs, the raiders (⭐ verify the **They/Them** ant mod: draw literally
+  if it passes recognizability + register, else inspiration — BENCH's
+  delegated call), the deep thing (with `sarlacc_spec.md` as the family
+  reference), graded against the standing cast.
+- **Def-label call** at the freeze review ("tropical swamp" → the Fever
+  Wood).
+- **Canon sitting (Wednesday)** — Wildsteam's home-canton preference and
+  Sporefall's treetop reframe into their faction canon; the Wookiee/Ewok
+  arboreal canton into the races doctrine.
+- **Cross-flow ledger**: one wetland with `the_miasma.md`; the thirsty-flora
+  family (`the_greentide.md`, `the_webwork.md`); Webwork raid direction =
+  their expansion canon; `LIQUID_TYPES_MOD_1` gets the seep-oils and black
+  water; the Greatbole structure class (`GREENTIDE_MECHANICS_1`) is the
+  multi-tile living-tree machinery this biome's skeleton reuses.
