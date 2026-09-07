@@ -8205,6 +8205,36 @@
     "hash": "7f589e3c19a7d64c04db735ce4a0f8ba03d2dca64f89afcc4ff3cf7f51441b96",
     "sha": "ed416189"
   },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "7c692a44e38a47ffbce1568bed69df6596bfd892b5bc8cf3245c8fce0c9ae63c",
+    "sha": "a07448e6"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "1de4d814c83af12535d75833add74d58ff456cb636a30211fad3921da6398d1b",
+    "sha": "a07448e6"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "285833b5074742420786c0524f8ccf84ad3d4a8d1b87bcfaf9a1f34310845abf",
+    "sha": "a07448e6"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheScald.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "6e318492ae78fd62646d08955f4cbbdd4839842edf5111bae988d7bca8355a20",
+    "sha": "a07448e6"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TwilightSea.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "67deb77ec9106a23acf5fadf591deddf2919684b16f30ba683438ad1716c400e",
+    "sha": "a07448e6"
+  },
   "src/RimUtinni/UtinniPatches/Defs/CultureDefs/JawaLeaderTitles.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -8318,6 +8348,12 @@
     "date": "2026-09-04",
     "hash": "21b572e2c84b3e27137cfeaf0256b45a4f451615a2cd73f3903f81005925e237",
     "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_ScaldWater.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "019632c0a716eeb1a5a8b013a60a18af71d52410edc6ff75945b4e009843dd2b",
+    "sha": "a07448e6"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/Jawa_ClaimRumour.xml": {
     "cleanCount": 1,
