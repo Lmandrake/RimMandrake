@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T04:34:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T04:37:58Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -314,15 +314,6 @@ target:   v1
 kind:     task
 summary:  NINEFOLDFIREHOOKRATELIMITED1 — hook built, not yet proven live
 prose:    infrastructure/state/items/NINEFOLD_FIRE_HOOK_RATELIMITED_1.md
-
-## NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1 Ninefold battle hook should fire on a pawn being DOWNED, not only killed - Sh'kaar feeds on violence, and most fights end in downs
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1.md
 
 ## NINEFOLD_RUNTIME_PROOF_BLOCKED_1 Ninefold compile-fix VERIFIED (ready:14, was 6); runtime firing UNPROVEN - GameComponent.Instance null on ignoreModCompatibility loads, all hooks incl. research silent; needs a normal-load or fresh new-game test
 state:    doing
