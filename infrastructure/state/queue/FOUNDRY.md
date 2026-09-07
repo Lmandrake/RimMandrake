@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T17:49:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T18:20:25Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -467,6 +467,15 @@ target:   v1
 kind:     task
 summary:  Implement design/Jawa/worldbuilding/restrainingbolttechnical.md's "Build note"
 prose:    infrastructure/state/items/DROID_FDE_GOODWILL_CAP_1.md
+
+## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
+prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
