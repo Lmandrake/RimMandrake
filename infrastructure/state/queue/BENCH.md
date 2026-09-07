@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T03:58:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T04:37:00Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -292,3 +292,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GREENTIDE_MECHANICS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GREENTIDE_MECHANICS_1.md
+
+## WEBWORK_MECHANICS_1 Webwork C# kit: web-sense felt-marks + pack convergence, concealed-burst ambush, Shokk-bound hediff, light-moat via existing UV-sensitivity mechanism (verify def), beetle anchor-chewing, margin creep, droid-priority targeting — spec the_webwork.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WEBWORK_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_MECHANICS_1.md
+
+## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SHOKKWEAVE_SOLE_SOURCE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
