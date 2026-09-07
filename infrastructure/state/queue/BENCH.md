@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T04:37:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T04:54:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -312,3 +312,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SHOKKWEAVE_SOLE_SOURCE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
+
+## ANCIENT_RUINS_MOD_AUDIT_1 Deep audit of the ancient-ruins mod (the mall-maps one — identify exact packageId from the live list first): anything redeemable? full ThingDef inventory triage; and study HOW it generates its maps/items before any removal decision
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ANCIENT_RUINS_MOD_AUDIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ANCIENT_RUINS_MOD_AUDIT_1.md
