@@ -5,19 +5,6 @@
      Rationale: design/Jawa/worldbuilding/setting_physics.md L3/L7/L8/L11/L14 -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Ion Weaponry (Continued)</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- IW_Bullet_IonSlug slugthrower AP -> 0.85 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="IW_Bullet_IonSlug"]/projectile/armorPenetrationBase</xpath>
-          <value><armorPenetrationBase>0.85</armorPenetrationBase></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
   <!-- Ops on defs THIS mod declares (mostly absorbed donors). No
        PatchOperationFindMod: def and patch ship in the same mod, so naming
        ourselves is a tautology dressed as a guard, and that shape has
