@@ -18,7 +18,9 @@ GEN = REPO / "skills/generating-images/scripts/codex_image.py"
 STYLE = ("Game creature sprite in the art style of RimWorld: flat cel shading, "
          "clean shapes, hard dark outline, muted painterly palette, full side-profile "
          "view facing left, standing on the ground, the whole animal fully inside the "
-         "frame with margin on every side, no text, no watermark")
+         "frame with margin on every side, no text, no watermark, and a GENUINELY "
+         "TRANSPARENT background - output a real alpha channel, no backdrop, no floor, "
+         "no shadow")
 
 CREATURES = {
     "onnik": [
@@ -70,7 +72,7 @@ def one(job):
         t0 = time.time()
         r = subprocess.run(
             [sys.executable, str(GEN), "generate", "--out", str(out),
-             "--prompt", full, "--chroma-key", "#00ff00", "--timeout", "420"],
+             "--prompt", full, "--timeout", "420"],
             capture_output=True, text=True)
         dt = int(time.time() - t0)
         if r.returncode == 0 and out.exists():

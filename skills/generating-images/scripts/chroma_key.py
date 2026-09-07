@@ -1,15 +1,25 @@
 #!/usr/bin/env python3
 """chroma_key.py — turn a flat key-colour background into real alpha.
 
-Why this exists rather than the helper Codex ships: that one imports Pillow,
-which is not installed here. This uses only `pnglib.py` and the standard
-library, so it runs anywhere Python does.
+🔴 RETIRED FROM THE GENERATION PATH, 2026-09-06 (CODEX_WRAPPER_HARVEST_FIX_1).
+Nothing generates onto a key any more: the built-in `image_gen` tool emits a
+real alpha channel when the prompt asks for one (MEASURED: 1448x1086 RGBA,
+55.7% alpha-0, corners (0,0,0,0), 0.28% mid-alpha, no rim — and again across 7
+of the 14 recovered tree orphans). `codex_image.py` no longer has a
+`--chroma-key` flag, and `make_sprite.py` no longer cuts anything. **Do not
+reach for this when making new art** — ask for transparency in the prompt.
 
-Why it is needed at all: the built-in `image_gen` tool cannot emit a
-transparent background, and true model-native transparency needs an
-OPENAI_API_KEY that a ChatGPT-mode login does not provide. Generating on a flat
-key and removing it locally is therefore the ONLY route to alpha on this
-machine. See ../references/codex-contract.md.
+It survives ONLY to process green-keyed raws that already exist on disk, and it
+has exactly two callers, both of which read such legacy raws:
+`src/RimStarWars/SeaBeasts/art/tools/build_sea_facings.py` and
+`src/RimMandrake/DesertVehicleReskin/Source/recrop_east_v2.py`. The 7
+green-background files under
+`src/RimUtinni/AshkarrFlora/_artsrc/sweetline_orphans_2026-09-06/` are the same
+case. When those inputs are gone, so is this file.
+
+Why it exists rather than the helper Codex ships: that one imports Pillow,
+which is not installed in the system Python here. This uses only `pnglib.py`
+and the standard library.
 
     python chroma_key.py --input raw.png --out cut.png
     python chroma_key.py --input raw.png --out cut.png --key '#ff00ff'
