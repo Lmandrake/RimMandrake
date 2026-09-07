@@ -34,20 +34,21 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <DebugType>none</DebugType>
-    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <!-- FOUNDRY, 2026-09-07: EnableDefaultCompileItems=false plus a hand-maintained
+         Compile Include list silently dropped DebugActions_TheftHauler.cs,
+         the exact trap Ninefold's own csproj comment documents (10 Patch_*.cs
+         files silently excluded there). No SelfTest/ subfolder exists here
+         (checked before switching), so the plain default SDK glob is safe:
+         it compiles every *.cs in this directory, so a new file is never
+         silently omitted again. A build with 0 warnings/0 errors was
+         meaningless before this: the compiler was never even told the new
+         file existed. -->
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="TheftHaulerExtension.cs" />
-    <Compile Include="TheftHaulerDefOf.cs" />
-    <Compile Include="JobDriver_TheftHaulUninstall.cs" />
-    <Compile Include="FloatMenuOptionProvider_TheftHaulUninstall.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />

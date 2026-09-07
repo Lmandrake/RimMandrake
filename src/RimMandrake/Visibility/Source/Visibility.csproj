@@ -31,7 +31,14 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <DebugType>none</DebugType>
-    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <!-- FOUNDRY, 2026-09-07: EnableDefaultCompileItems=false plus a hand-maintained
+         Compile Include list silently dropped DebugActions_Visibility.cs,
+         the exact trap Ninefold's own csproj comment documents (10 Patch_*.cs
+         files silently excluded there). Switched to the default SDK glob
+         (compiles every *.cs here EXCEPT SelfTest/, its own separate project;
+         see the Compile Remove below) so a new file is never silently
+         omitted again; a build with 0 warnings/0 errors is meaningless if the
+         compiler was never even told the file exists. -->
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
@@ -44,9 +51,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="GameComponent_ColonyVisibility.cs" />
-    <Compile Include="ColonyVisibilityRaidPatch.cs" />
-    <Compile Include="VisibilityModInit.cs" />
+    <!-- SelfTest/ is its own project (RimMandrakeVisibility.SelfTest.csproj);
+         the default glob is recursive, so it must be excluded here or its
+         Program.cs (and any Main entry point) would compile twice. -->
+    <Compile Remove="SelfTest/**/*.cs" />
   </ItemGroup>
 
   <ItemGroup>
