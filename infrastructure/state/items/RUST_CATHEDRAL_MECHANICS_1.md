@@ -54,12 +54,13 @@ regardless of anything else.
    eels** — they clear the ground the way the eels clear the canals. That gives
    the Cathedral a closed ecology: eels in the coolant, roaches on the land,
    bolts in the air of its attention.
-4. **Fold into the hum-mood system.** The bolts already display the Cathedral's
-   attitude by dancing. Decide whether the roaches read the hum too — the sheet's
-   survival rule is *"when the hum drops, stop moving; the bolts freeze first"*,
-   and a second, lower-status tell (the roaches scattering, or going still) is
-   cheap and doubles the player's chance of learning the rule before it costs
-   them. **Owner ruling owed on whether roaches are a tell or just fauna.**
+4. ⛔ **NOT part of the hum-mood system — ruled by the owner, 2026-09-07:**
+   *"Leave the roaches out of the hum mechanics for now."*
+   The bolts remain the **only** display of the Cathedral's attitude, and the
+   survival rule stays as the sheet writes it: *when the hum drops, stop moving —
+   the bolts freeze first.* **The roaches are fauna, not instrumentation.** Do not
+   wire them to the attitude value, and do not give them a freeze/scatter tell.
+   *(Read "for now" as reversible, not as an invitation — reopen only on his word.)*
 5. **Salable?** The sheet already has *"bolt-shed curiosities and eel-catch —
    both salable, both watched."* Decide whether roach parts join that list, and
    whether harvesting them is one of the things the Cathedral *minds*.
