@@ -143,3 +143,22 @@ Hadley-cell ruling: the stormwall's toxins precipitate AT the terminator, so the
 the shrubland is the last **clean** water on the approach. The def's scatter is owed to the
 band mend (in the sheet's Owed section) — plume-painted, never a bullseye, folding into
 `WORLDMAP_DESERT_BAND_REPAIR_1`.
+
+## The enrichment pass — standard since 2026-09-06 (owner: "I think we skipped this step")
+
+A sheet is not done at field 9. Four more, written in the same conversation loop
+(owner's pass owed on all of it), with `weeping_stones.md` and `the_cracked_lands.md`
+as the worked examples:
+
+10. **Bestiary sorts** — what KINDS of animals the engine produces, and how they
+    divide the biome (rings in space, phases in time…). Sorts are the deliverable;
+    per the owner's sequencing rule, actual animals wait for the full
+    plant-and-animal assignment pass and any named now are gravy. Grade the standing
+    cast (MEASURED off `design/Jawa/fauna/cast_assignment.csv`) against the sorts.
+11. **Unique items, furniture, structures** — the engine made ownable and buildable:
+    signature materials, trade goods, item-as-quest-seed, the structure ladder.
+12. **Faction faces** — how each faction expresses itself here, derived from ruled
+    doctrine (water states, settlement bans), never invented free.
+    Plus **weather-and-sound** (field 4b/10b where the sheet lacks it): the engine as
+    weather, and what the place sounds like — every biome so far has earned a
+    signature instrument or silence.

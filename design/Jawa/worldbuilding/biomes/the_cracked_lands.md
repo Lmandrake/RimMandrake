@@ -131,6 +131,9 @@ terrestrial animal.**
 6. 🔴 **No resident faction but the Moisture Farmers** — Junkers, Hutts, Jawa and the deep
    desert tribes are road traffic, never settlements here.
 7. 🔴 **The recognizability rule applies**; the icon carve-out protects icons.
+8. 🔴 **No structure on the canyon bottom — higher tiers, NEVER the floor** (owner,
+   2026-09-06, "NEVER" twice). A settlement or map template placing buildings on the
+   canyon floor violates; the flood-marked ruins are what floor-building leaves.
 
 ## 7. Uniquely available
 
@@ -171,7 +174,115 @@ terrestrial animal.**
 - **Silhouette language:** vertical — mesas, hoodoos, slot walls; twisted trees against
   the sky; fliers wheeling up out of the cuts.
 - **Motion:** none, then the flood; fliers as the only daily movement.
-- **Sound:** wind in the slots; nothing; then the roar from upstream.
+- **Sound:** wind in the slots; nothing; then the roar from upstream — and the water
+  chimes (§11) sounding up through the stone before it.
+- **Smell:** the flood announces itself by nose first — wet clay on the wind off the
+  peaks before any sound arrives, and the flats begin to *tick* as the Sealed wake
+  (§10). An experienced Farmer trusts the ground before the chimes.
+
+---
+
+# The enrichment pass — Owner + BENCH, 2026-09-06 (backfilled; `CRACKED_LANDS_ENRICHMENT_1`)
+
+_The layer the first sitting skipped: bestiary sorts, items, structures, faction
+faces. Ruled in conversation; the sorts are the deliverable — per the standing
+sequencing rule, actual animals are assigned in the full plant-and-animal pass._
+
+## 10. The bestiary sorts — a fauna divided by TIME, not space
+
+The Weeping Stones divide their animals in *space* — rings around a pool, everything
+visible, congregated, at truce. The Cracked Lands are the deliberate inversion: the
+fauna divides by **when it is alive**, and almost nothing is visible at all. **There
+is no truce here and there cannot be** — the truce is a law of open water, and here
+the water hides; the kill happens at the seep and the shade line (`weeping_stones.md`
+§4 is the other pole). You see nothing all day, and are watched the whole time.
+
+- **The Sealed** (plainly: creatures that sleep through the dry years). They survive
+  the way Earth's lungfish does — sealed inside a wax-lined burrow under the cracked
+  clay, metabolism banked to almost nothing, until water wakes them. The famous
+  cracked-pan flats ARE a dormant fauna: walk them and you walk on sleeping animals.
+  They cluster where moisture lingers, so **the Farmers read them as living dowsing
+  rods** — where the sleepers lie thickest, the water hides nearest. Their shed
+  burrow-lining is **crack-wax** (§11).
+- **The Spenders** — everything that must live a whole life in the flood-weeks:
+  mudflat breeders, bloom-followers, a sudden carpet of small frantic life between
+  the roar and the dry. This is *why* the fliers commute in (§4's ruling): their
+  feeding runs peak here. The flood also delivers its own drowned dead, so the
+  carrion birds get two feasts — the drowned first, the dying carpet after.
+- **The Patient** — the year-round shade-line residents: moss-browsers on the real
+  soil, crack-dwellers at the seep, and the ambush predators the fauna doctrine
+  already assigns this biome ("ambush country, scavengers"; the emperor vulture
+  rides the flat's thermals as the sky's undertaker).
+
+**The standing cast**: MEASURED 2026-09-06 off `design/Jawa/fauna/cast_assignment.csv`
+(sha256:0331f6610967ba7f) — **29 species currently assigned**, pre-sheet; graded
+against these sorts at the roster item.
+
+## 10b. Explosive growth — 🔴 a WORLD mechanic, born here (owner, 2026-09-06)
+
+The Spenders' flora half, and the owner took it planet-wide: **water-soaked plants
+grow VISIBLY — actually getting bigger on screen, not animal-motion but growth the
+player watches — and it is intimidating.** *"'OMG, what's going to happen?' should
+be the feeling near any water-soaked plant."* It cannot grow forever, so **what DOES
+happen at the top is a designed moment, meant to recur** — custom mod actions so
+players experience and play with it (`EXPLOSIVE_PLANT_GROWTH_1`). The jungles should
+visibly grow. In these canyons it is rare — most visits see the dry stillness — so
+**the plot organizes a witnessed flood at least once**
+(`FLOOD_WITNESS_EVENT_1`). Locally: the bloom is also an economy — a crop that
+exists only in flood-weeks; when a canyon blooms the market drowns in it, then
+nothing for years. Boom-bust on the flood's clock.
+
+## 11. Items and structures
+
+- ⭐ **Water chimes** (owner's pick, replacing the bell-line draft). Deep, resonant
+  chimes seated down in the crack network beside the hidden water, rung not by wind
+  but by water on the move; the seep-cracks fill before the surface wall arrives, so
+  their tones roll up through the stone ahead of the roar. Tooltip, owner's words:
+  *"Ancient water chimes: their tones ring not from wind but the tugs of water
+  coursing down in the annual inundation, far overhead."* The Weeping Stones' vanes
+  sing in the wind; the Cracked Lands ring in the water — the two biomes are a
+  matched pair of instruments.
+- ⭐ **Discovery surveys** (owner's correction of the "cistern chart" draft —
+  everyone KNOWS where the known water went; *that's where they now live*). The
+  valuable item is the survey of a **newly discovered** hidden water: a big,
+  sparsely populated world still holds surprises, and fresh data on one is an
+  exceptionally valuable thing to sell. Item-as-quest-seed.
+- **Crack-wax** — the Sealed's shed burrow lining, gathered off the flats after a
+  wake; the waterproofing the Farmers line their cisterns with. The biome's
+  signature material.
+- **The bloom harvest** — §10b's boom-bust crop.
+- **Structures**: 🔴 **build on the higher tiers of the canyon, NEVER the bottom.
+  NEVER** (owner, verbatim on the second word). Homesteads, vaporator fields and
+  cistern heads occupy ledges and upper benches; the flood-marked ruins of §8 are
+  the compounds built too low, and they are ruins. Plus refuge ledges cut along the
+  roads (where travelers climb when the chimes sound), waymark cairns on the flats,
+  and fields terraced into the shade line.
+
+## 12. Faction faces — everyone on the roads, each for a different reason
+
+§6's ban holds the frame: no resident but the Farmers, so every other face is a
+*road* face.
+
+- **The Moisture Farmers** — the only settled face: high-bench homesteads (never the
+  floor), vaporators AND banked cisterns — the one place their Manufacture doctrine
+  has a second source. Chime-lines, discovery surveys, walls facing sun and flood.
+- **The Jawa** — road traffic with a rhythm: **a flood is a salvage strike.** The
+  wall tears open ruins, washes buried tech from the banks, re-deals the board;
+  crawler crews follow flood-news the way prospectors follow gold. The best
+  scavenging on the dayside, for exactly as long as the mud is fresh.
+- **The Hutt Cartel** — the deep-desert posts include *Tolls*, and a slot canyon is
+  where a toll post actually works: one gate takes a cut of everything. Legal — the
+  one barbarism is charging for unsettled *water*; a road is commerce. The Hutts
+  know precisely where that line sits and stand on the correct side of it, smiling.
+- **The Deep Desert Tribes** — rare desperate trade (§8), the short sharp raid on
+  the road itself; the cisterns they never touch — settled water is legal water, and
+  they are the law's zealots.
+- **The Blackstar Company** — ambush country is contract country; hunts *end* here.
+- **The Empire** — convoys must thread the slots and every officer hates it: no
+  garrison (§6), just patrols through the best ambush terrain on the planet, where
+  the locals hold the high benches.
+- **The Geonosians** — they don't need the roads. A Foundry column crossing the open
+  flats in full sun, off-road, unbothered, is the sight that empties a toll post.
 
 ---
 
@@ -189,3 +300,10 @@ terrestrial animal.**
 - **Def label** → "the Cracked Lands" (rename on `ZBiome_Badlands` or our own def — the
   freeze review decides with the other donor-def renames).
 - **Def-tails check** on the 1,086 tiles after the Contagion peaks are cut out.
+- `EXPLOSIVE_PLANT_GROWTH_1` — the world mechanic born in §10b: visible growth,
+  the designed terminal moment, custom mod actions.
+- `FLOOD_WITNESS_EVENT_1` — the plot arranges a witnessed flood (and growth) at
+  least once.
+- **Roster grading** — the 29 cast (MEASURED §10) against the sorts, in the full
+  assignment pass; water chimes, discovery surveys, crack-wax and the bloom as
+  item defs.

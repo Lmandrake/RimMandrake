@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T01:17:02Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T01:32:12Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -271,3 +271,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CANONLOREPROPAGATION1 — canon back into the lore docs, and the three-layers rethink
 prose:    infrastructure/state/items/CANON_LORE_PROPAGATION_1.md
+
+## EXPLOSIVE_PLANT_GROWTH_1 World mechanic: water-soaked plants grow VISIBLY on screen; design the terminal moment (what happens at the top), then custom mod actions so players experience and replay it — jungles visibly grow
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/EXPLOSIVE_PLANT_GROWTH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/EXPLOSIVE_PLANT_GROWTH_1.md
+
+## FLOOD_WITNESS_EVENT_1 Plot event: the player witnesses a Cracked Lands flood (chimes, wall of water, explosive growth) at least once — organized as part of the plot, since natural timing won't show it
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLOOD_WITNESS_EVENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLOOD_WITNESS_EVENT_1.md
