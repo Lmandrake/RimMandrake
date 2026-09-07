@@ -520,3 +520,69 @@ in a biome description.
 
 **Amends:** the three sheets' prose partitioning. The Scarlands' existing ban is
 the model.
+
+---
+
+## R24a — THE MIASMA/GREY SEA GEOMETRY GAP DOES NOT EXIST (measured)
+
+**MEASURED** from `world/ASHKARR_WORLDMAP_tiles.csv`, 2026-09-07:
+
+- `AB_MiasmicMangrove` — 92 tiles, **arc 18.9 – 75.0**
+- `RUT_GreySea` — 381 tiles, **arc 70.0 – 105.5**
+
+**They overlap at arc 70–75.** The Miasma's rivers reach the Grey Sea because the
+two biomes physically touch. The review's flagged gap came from
+`the_miasma.md`'s stated range (arc 24–66), which is simply **understated against
+the paint**. No ruling owed.
+
+**Amends:** `the_miasma.md` — correct its arc range to the measured span.
+
+---
+
+## R26 — THE ASH-CHURN TAR IS MADE UPSTREAM, NOT IN THE PYRELANDS
+
+**Ruled:** tar is **not made in the Pyrelands**. Ash is carried out of the burn
+province — [R4]'s outward-radial high-altitude return is the route — and churned
+into tar **where there IS water**: downstream, and in the wetter uplands.
+
+Resolves R-H9 against the measured Pyrelands (rain 0 on 207/226 tiles, 9 river
+tiles) without inventing floods the map does not have, and creates a real
+cross-biome flow.
+
+**Amends:** R-H9 (the making moves upstream), `the_pyrelands.md` (it exports ash,
+not tar), and the receiving sheets — which must now name where the churning
+happens.
+**Owed:** site the churn ground. The Sump's tar pits are the obvious receiver
+(*"entombs all who fall into it, preserving their hard structures far into the
+future"* — owner, 2026-09-07), but the route has not been drawn.
+
+---
+
+## R27 — THE NIGHTSIDE'S DIRTY ICE IS DEPOSITION, NOT PRECIPITATION
+
+**Ruled:** the returning high-altitude flow carries dust and ice crystals from
+the Stormwall and **sheds them as it sinks over the antisolar point.** That is
+settling out, not snowfall — so `nightside_ice.md`'s no-precipitation ban stands
+**untouched**, and the ice's dirtiness is explained: it is carrying the
+dayside's dust.
+
+Derives directly from [R4]'s nightside cell, which did not exist when the sheet
+was written.
+
+**Amends:** `nightside_ice.md` — write the deposition mechanism, and never as
+weather.
+
+---
+
+## R28 — PROPAGATION: MECHANICAL NOW, DESIGN-BEARING AT THE SITTING
+
+**Ruled:** split the wave.
+
+- **NOW (agent, unsupervised):** [R9]'s crown-stripping across every sheet,
+  [R20]'s Blizzarisk removal, [R21]'s struck sentence, [R8]'s one-word fix,
+  [R19a] and [R24a]'s arc corrections.
+- **AT THE WEDNESDAY SITTING (with the owner):** the rulings that need
+  judgement — [R1]'s re-plumbing, [R14]'s Fire Harvesters, [R15]'s spore fever,
+  [R16]'s silk hazard, and the rest.
+
+Wednesday opens on clean sheets and spends its time on the interesting half.
