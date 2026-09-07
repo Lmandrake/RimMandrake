@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T00:01:25Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-07T00:52:26Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -222,3 +222,23 @@ kind:     task
 thin:     no ## criteria
 summary:  - Odyssey's fishing is live in the stack (donor biome defs carry fishTypes blocks —
 prose:    infrastructure/state/items/FISH_BY_BIOME_1.md
+
+## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  VAPOREMITTERPLACEMENT1 — worldmap review of every vapor/smoke/gas emitter
+prose:    infrastructure/state/items/VAPOR_EMITTER_PLACEMENT_1.md
+
+## MOD_NAMING_CONSOLIDATION_AUDIT_1 Full review of mod naming/organization: RimMandrake vs RimMaster, consolidation candidates, an ASCII map of how mods relate
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MOD_NAMING_CONSOLIDATION_AUDIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MOD_NAMING_CONSOLIDATION_AUDIT_1.md

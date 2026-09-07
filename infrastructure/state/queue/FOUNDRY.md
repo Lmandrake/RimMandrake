@@ -7,48 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T00:26:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T00:52:26Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## NINEFOLD_ENGINE_M0_1 Build RimMandrake Ninefold M0: GodStates satiation ledger + five easiest event hooks + first-contact chains + signed corpus letters (provisional voice approval; owner redlines live text). Felt-only diegesis ruled - no panels ever
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  design/Jawa/divinesatiationengine.md — full design ruled, "NINE OF
-prose:    infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md
-
-## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
-prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
-
-## RESEARCH_MANIFEST_DRAFT_1 Generate the draft research manifest: all 515 rows prefilled with fates from the sitting's rulings
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  design/Jawa/researchtreetaxonomy.md section 3 defines the manifest schema
-prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
-
-## PROPERTY_FABRIC_BUILD_1 Build RM_Property: the ownership/provenance/perception fabric mod - colony side first
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Source: design/Jawa/ownershipsettlementspec.md (owner, 2026-08-31
-prose:    infrastructure/state/items/PROPERTY_FABRIC_BUILD_1.md
 
 ## SETTLEMENT_VISIT_LOOP_1 Inhabited visit loop: peaceful entry to named settlements, manifest, teardown, casing persistence
 state:    ready
@@ -179,6 +143,24 @@ target:   v1
 kind:     task
 summary:  design/Jawa/graffitispec.md — full design, all four owner rulings made
 prose:    infrastructure/state/items/GRAFFITI_FRAMEWORK_BUILD_1.md
+
+## NINEFOLD_ENGINE_M0_1 Build RimMandrake Ninefold M0: GodStates satiation ledger + five easiest event hooks + first-contact chains + signed corpus letters (provisional voice approval; owner redlines live text). Felt-only diegesis ruled - no panels ever
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  design/Jawa/divinesatiationengine.md — full design ruled, "NINE OF
+prose:    infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md
+
+## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
+prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
 
 ## DISTRICT_TEMPLATE_LIBRARY_1 Authored Lua district template library + composition through rimplace - Junkers set first
 state:    doing
@@ -455,6 +437,26 @@ kind:     build
 blocked:  creative lock-in owed with the owner (FUTURE_VECTORS.md line 22, item's own watch-out) — mechanical rulings landed 2026-09-01 but KCSG authoring/art/dialogue is a joint BENCH+owner session, not solo FOUNDRY build; skipping to next item
 summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §2. Summary:
 prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
+
+## NINEFOLD_ENGINE_M0_1 Build RimMandrake Ninefold M0: GodStates satiation ledger + five easiest event hooks + first-contact chains + signed corpus letters (provisional voice approval; owner redlines live text). Felt-only diegesis ruled - no panels ever
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  state ledger + all 17 event hooks CLEAN (fixed real launch-credit bug); first-contact chains + corpus letters blocked on owner voice-text redline per doc's own draft header
+summary:  design/Jawa/divinesatiationengine.md — full design ruled, "NINE OF
+prose:    infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md
+
+## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  code CLEAN/deployed; threat-point Prefix + tile-memory round trip need a live game session (batching, not restarting solo)
+summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
+prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
