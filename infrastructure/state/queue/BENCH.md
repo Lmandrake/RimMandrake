@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T00:52:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T00:53:33Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -239,6 +239,6 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     decision
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MOD_NAMING_CONSOLIDATION_AUDIT_1.md yet — write one when you have something to say)
+thin:     no ## verify, no ## criteria
+summary:  Owner's own ask (verbatim, recorded on the filing event): a full review of mod
 prose:    infrastructure/state/items/MOD_NAMING_CONSOLIDATION_AUDIT_1.md
