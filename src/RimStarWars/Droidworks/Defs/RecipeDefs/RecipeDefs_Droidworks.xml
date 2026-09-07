@@ -30,10 +30,7 @@
     <targetsBodyPart>false</targetsBodyPart>
     <anesthetize>false</anesthetize>
     <skillRequirements>
-      <li>
-        <skill>Crafting</skill>
-        <minLevel>4</minLevel>
-      </li>
+      <Crafting>4</Crafting>
     </skillRequirements>
   </RecipeDef>
 
@@ -77,10 +74,7 @@
       </thingDefs>
     </fixedIngredientFilter>
     <skillRequirements>
-      <li>
-        <skill>Crafting</skill>
-        <minLevel>4</minLevel>
-      </li>
+      <Crafting>4</Crafting>
     </skillRequirements>
   </RecipeDef>
 
@@ -106,10 +100,7 @@
     <anesthetize>false</anesthetize>
     <removesHediff>RSW_DW_RestrainingBolt</removesHediff>
     <skillRequirements>
-      <li>
-        <skill>Crafting</skill>
-        <minLevel>3</minLevel>
-      </li>
+      <Crafting>3</Crafting>
     </skillRequirements>
   </RecipeDef>
 
@@ -140,10 +131,7 @@
     <anesthetize>false</anesthetize>
     <surgerySuccessChanceFactor>99999</surgerySuccessChanceFactor>
     <skillRequirements>
-      <li>
-        <skill>Crafting</skill>
-        <minLevel>5</minLevel>
-      </li>
+      <Crafting>5</Crafting>
     </skillRequirements>
   </RecipeDef>
 
