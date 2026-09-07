@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T05:24:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T05:45:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -507,6 +507,16 @@ blocked:  Same stuck-agent recovery as RIVER_STEAM_ANIMATION_1 - owner's mod lis
 summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
 prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
 
+## SARLACC_NATIVE_HABITAT_1 Sarlacc: native deep-desert habitat, three life-cycle stages, dungeon module
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  stale-drop-adjacent: draft already delivered 2026-09-06 (design/Jawa/worldbuilding/sarlacc_native_habitat_draft.md, three stages + dungeon module + ban-5 wording, nine forks in §7) and awaits owner review before further creative work; re-drafting without his read is wasted motion
+summary:  SARLACCNATIVEHABITAT1
+prose:    infrastructure/state/items/SARLACC_NATIVE_HABITAT_1.md
+
 ## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -538,26 +548,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## SARLACC_NATIVE_HABITAT_1 Sarlacc: native deep-desert habitat, three life-cycle stages, dungeon module
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  SARLACCNATIVEHABITAT1
-prose:    infrastructure/state/items/SARLACC_NATIVE_HABITAT_1.md
-
-## PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1 Two more generators will silently re-add retired-mod blocks bbf66830 hand-stripped
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1.md
 
 ## KOTORWEAPONS_ABSORPTION_CONTENT_NITS_1 Donor-original flavor-text nits across the KotOR absorption pool (cosmetic only)
 state:    proposed
@@ -1158,3 +1148,13 @@ kind:     bug
 thin:     no ## spec, no ## verify
 summary:  Found while closing KOTORCOREABSORPTIONMISSINGTEXTURES1
 prose:    infrastructure/state/items/KOTORCORE_ADAPTIVESTORAGE_PARENTNAME_1.md
+
+## PAWNFLAVOR_GEN_BEHIND_1 PawnFlavorPhase2 patches are far behind gen_pawn_flavor_phase2_apply.py, plus two small drifts
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PAWNFLAVOR_GEN_BEHIND_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAWNFLAVOR_GEN_BEHIND_1.md
