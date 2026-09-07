@@ -5525,3 +5525,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"COLD_LOAD_RUN_SHEET_4","ts":"2026-09-07T09:22:38Z"}
 {"seat":"FOUNDRY","event":"start","id":"COLD_LOAD_RUN_SHEET_4","ts":"2026-09-07T09:22:39Z"}
 {"seat":"FOUNDRY","event":"note","id":"COLD_LOAD_RUN_SHEET_4","text":"Worked on a fresh full 598-mod load (45c051fb): entries 5,6 CLEAN, 2a PASS, 4 confirmed indirectly (bridge can't read tools[]/projectile damage), 1 inconclusive (FluidCanals not enabled at all), 2b and 3 not reached -- start_debug_game_ready crashed (known OOM ceiling, see NINEFOLD_DEBUG_GAME_READY_CRASH_1). Fresh def dump captured as a side benefit. Full accounting in the item file. Stays doing -- 2b/3/4-full owed.","ts":"2026-09-07T09:22:39Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-07T09:26:18Z"}
