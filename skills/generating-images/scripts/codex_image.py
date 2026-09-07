@@ -15,6 +15,10 @@ Usage
     python codex_image.py edit --image src.png --prompt "..." --out out.png
     python codex_image.py probe          # is the whole chain wired up?
 
+    # isolate this call's CODEX_HOME so concurrent workers cannot collide
+    python codex_image.py generate --prompt "..." --out art.png \
+        --codex-home /mnt/c/Users/Mandrake/.codex_workers/w1
+
 Exit codes: 0 ok, 1 generation failed, 2 environment not usable.
 """
 
@@ -33,13 +37,39 @@ from pathlib import Path
 
 # Codex streams agent output; a cold start plus a high-quality render has been
 # observed to take several minutes. This is a ceiling to avoid hanging a
-# session forever, not a target.
+# session forever, not a target. A timeout is NOT a failed generation - see
+# run_codex/do_image, which harvest before reporting anything.
 DEFAULT_TIMEOUT_S = 900
 
 # The built-in image_gen tool writes here and ignores any destination argument.
 # Harvesting by directory diff is therefore more reliable than trusting the
 # agent to copy the file. See references/codex-contract.md.
 GENERATED_SUBDIR = "generated_images"
+
+# The image lands while the *agent* is still narrating. Killing the CLI does not
+# always kill the Windows codex.exe behind it, so a file can appear a few
+# seconds after our own timeout fired. Measured on the sea-beast batch as the
+# "LATE" case. Poll briefly rather than throwing the work away.
+HARVEST_GRACE_S = 20
+HARVEST_POLL_S = 2
+
+# The image model does the drawing; the Codex turn around it only calls the
+# tool, copies a file and reports a path. At the config default (xhigh) that
+# trivial turn reasons for minutes AFTER the PNG already exists, which is what
+# pushed calls past their ceiling in the first place. MEASURED 2026-09-06 from
+# $CODEX_HOME/models_cache.json: gpt-5.6-sol (the configured model) lists
+# low/medium/high/xhigh/max/ultra, so "low" is a legal value, not a guess.
+DEFAULT_REASONING_EFFORT = "low"
+REASONING_EFFORTS = ("low", "medium", "high", "xhigh", "max", "inherit")
+
+# Files copied when seeding an isolated CODEX_HOME. MEASURED 2026-09-06: with
+# auth.json + config.toml present `codex login status` reports "Logged in using
+# ChatGPT" against the isolated home, and skills/.system/imagegen (the
+# $imagegen system skill) comes across with the skills tree. Without them the
+# same command reports "Not logged in".
+HOME_SEED_FILES = ("auth.json", "config.toml", "models_cache.json",
+                   "version.json", "installation_id")
+HOME_SEED_DIRS = ("skills",)
 
 
 class EnvError(RuntimeError):
@@ -63,8 +93,12 @@ def windows_home() -> Path | None:
     return max(candidates, key=lambda p: (p / ".codex").stat().st_mtime)
 
 
-def codex_home() -> Path:
-    """$CODEX_HOME, or the discovered Windows .codex directory."""
+def base_codex_home() -> Path:
+    """The machine's real Codex home: $CODEX_HOME, or the discovered one.
+
+    This is the *shared* home. Everything an isolated worker home needs is
+    seeded from here.
+    """
     env = os.environ.get("CODEX_HOME")
     if env:
         p = Path(env)
@@ -79,6 +113,77 @@ def codex_home() -> Path:
     )
 
 
+def codex_home(override: str | Path | None = None) -> Path:
+    """The home THIS invocation runs against.
+
+    With no override this is the shared home, exactly as before. With one, it
+    is that directory - created and seeded from the shared home if it is not a
+    working Codex home yet, because a bare empty directory makes codex.exe
+    report "Not logged in".
+    """
+    if override is None:
+        return base_codex_home()
+
+    home = Path(override).expanduser()
+    if in_wsl() and not str(home.resolve() if home.exists() else home).startswith("/mnt/"):
+        raise EnvError(
+            f"--codex-home {home} is not visible to Windows. codex.exe is a "
+            f"Windows binary, so a worker home must live under /mnt/<drive>/, "
+            f"not under /tmp or ~ in WSL."
+        )
+    if not (home / "auth.json").is_file():
+        seed_codex_home(base_codex_home(), home)
+    return home
+
+
+def seed_codex_home(base: Path, home: Path) -> Path:
+    """Make `home` a usable Codex home by copying the shared home's essentials.
+
+    Copies rather than symlinks on purpose: a WSL symlink on DrvFs is a Linux
+    reparse point that Windows binaries do not follow, so a symlinked auth.json
+    would read as "not logged in" with no error to explain it.
+    """
+    home.mkdir(parents=True, exist_ok=True)
+    copied = []
+    for name in HOME_SEED_FILES:
+        src = base / name
+        if src.is_file() and not (home / name).is_file():
+            shutil.copy2(src, home / name)
+            copied.append(name)
+    for name in HOME_SEED_DIRS:
+        src = base / name
+        if src.is_dir() and not (home / name).is_dir():
+            shutil.copytree(src, home / name)
+            copied.append(name + "/")
+    if not (home / "auth.json").is_file():
+        raise EnvError(
+            f"Seeded {home} from {base} but there is still no auth.json - the "
+            f"shared home is not logged in, so no worker home can be."
+        )
+    print(f"note: seeded worker CODEX_HOME {home} from {base} "
+          f"({', '.join(copied) or 'nothing new'})", file=sys.stderr)
+    return home
+
+
+def child_env(home: Path) -> dict[str, str]:
+    """Environment for codex.exe, with CODEX_HOME actually reaching it.
+
+    ⚠️ MEASURED 2026-09-06, and the whole reason this function exists: a WSL
+    process does NOT pass arbitrary environment variables to a Windows child.
+    `env={"CODEX_HOME": ...}` alone arrives EMPTY on the Windows side - the
+    variable must also be named in WSLENV. Without this the wrapper would
+    harvest one directory while codex wrote to another, silently.
+    """
+    env = dict(os.environ)
+    env["CODEX_HOME"] = wsl_to_win(home) if in_wsl() else str(home)
+    if in_wsl():
+        names = [n for n in env.get("WSLENV", "").split(":") if n]
+        if not any(n.split("/")[0] == "CODEX_HOME" for n in names):
+            names.append("CODEX_HOME")
+        env["WSLENV"] = ":".join(names)
+    return env
+
+
 def find_codex_cli() -> Path:
     """Locate codex.exe.
 
@@ -86,7 +191,7 @@ def find_codex_cli() -> Path:
     every update, so the hash is never hardcoded. Order: config.toml (which the
     app itself keeps current) -> PATH -> glob of the install root.
     """
-    home = codex_home()
+    home = base_codex_home()
 
     cfg = home / "config.toml"
     if cfg.is_file():
@@ -120,15 +225,17 @@ def find_codex_cli() -> Path:
     )
 
 
-def auth_mode() -> str:
+def auth_mode(home: Path | None = None) -> str:
     """'chatgpt', 'apikey', or 'unknown'.
 
     This decides which imagegen paths are open: the deterministic CLI fallback
-    (exact --size/--out, true transparency) needs an API key, which a chatgpt
-    login does not provide.
+    (exact --size, exact --out, --mask, --quality) needs an API key, which a
+    chatgpt login does not provide. Transparency is NOT on that list any more -
+    the built-in tool emits real alpha when the prompt asks for it (MEASURED
+    2026-09-06, and again across 7 of the 14 recovered tree orphans).
     """
     try:
-        data = json.loads((codex_home() / "auth.json").read_text())
+        data = json.loads(((home or base_codex_home()) / "auth.json").read_text())
     except (OSError, ValueError):
         return "unknown"
     if data.get("OPENAI_API_KEY"):
@@ -225,12 +332,33 @@ def harvest_new(home: Path, before: set[Path]) -> list[Path]:
 # running codex
 # --------------------------------------------------------------------------
 
+def _as_text(chunk) -> str:
+    if chunk is None:
+        return ""
+    if isinstance(chunk, bytes):
+        return chunk.decode("utf-8", "replace")
+    return str(chunk)
+
+
 def run_codex(prompt: str, images: list[Path], workdir: Path, timeout: int,
-              verbose: bool, model: str | None = None) -> tuple[int, str]:
+              verbose: bool, model: str | None = None,
+              home: Path | None = None,
+              reasoning_effort: str | None = None) -> tuple[int, str, bool]:
+    """Run one codex exec turn. Returns (returncode, output, timed_out).
+
+    🔴 It does NOT raise on timeout, and that is the point. The image lands
+    while the agent is still talking, so a ceiling that expires during the
+    wrap-up turn used to throw away a finished PNG and report "no image
+    produced" - 14 real tree images were lost that way on 2026-09-06
+    (CODEX_WRAPPER_HARVEST_FIX_1). The timeout is reported as a flag so the
+    caller can harvest first and decide afterwards.
+    """
     cli = find_codex_cli()
     cmd = [str(cli), "exec", "--sandbox", "workspace-write", "--skip-git-repo-check"]
     if model:
         cmd += ["-m", model]
+    if reasoning_effort and reasoning_effort != "inherit":
+        cmd += ["-c", f'model_reasoning_effort="{reasoning_effort}"']
     for img in images:
         if not img.is_file():
             raise EnvError(f"Input image does not exist: {img}")
@@ -243,44 +371,53 @@ def run_codex(prompt: str, images: list[Path], workdir: Path, timeout: int,
         cmd.append("--")
     cmd.append(prompt)
 
+    env = child_env(home) if home is not None else None
+
     if verbose:
         print(f"[codex] {cli}", file=sys.stderr)
         print(f"[codex] cwd={workdir}", file=sys.stderr)
+        if home is not None:
+            print(f"[codex] CODEX_HOME={env['CODEX_HOME']}", file=sys.stderr)
 
     try:
         proc = subprocess.run(
-            cmd, cwd=str(workdir), capture_output=True, text=True, timeout=timeout
+            cmd, cwd=str(workdir), capture_output=True, text=True,
+            timeout=timeout, env=env
         )
-    except subprocess.TimeoutExpired:
-        raise EnvError(
-            f"codex exec exceeded {timeout}s. Image generation is slow but not "
-            f"this slow - check whether the Codex app needs re-authentication."
-        )
-    return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
+    except subprocess.TimeoutExpired as exc:
+        return 124, _as_text(exc.stdout) + _as_text(exc.stderr), True
+    return proc.returncode, (proc.stdout or "") + (proc.stderr or ""), False
+
+
+def harvest_with_grace(home: Path, before: set[Path], grace: float) -> list[Path]:
+    """harvest_new, but give a late-arriving file a few seconds to show up."""
+    deadline = time.time() + grace
+    while True:
+        found = harvest_new(home, before)
+        if found or time.time() >= deadline:
+            return found
+        time.sleep(HARVEST_POLL_S)
 
 
 # --------------------------------------------------------------------------
 # the two operations
 # --------------------------------------------------------------------------
 
-TRANSPARENT_CLAUSE = (
-    "Render the subject on a perfectly flat solid {key} chroma-key background. "
-    "The background must be one uniform colour with no shadow, gradient, "
-    "texture, reflection, floor plane or lighting variation. Keep the subject "
-    "fully separated from the background with crisp edges and generous "
-    "padding. Use {key} nowhere in the subject itself."
-)
+def build_prompt(user_prompt: str, out_name: str) -> str:
+    """Wrap a user prompt for the built-in tool.
 
-
-def build_prompt(user_prompt: str, out_name: str, chroma_key: str | None) -> str:
-    parts = ["Use $imagegen to " + user_prompt.strip()]
-    if chroma_key:
-        parts.append(TRANSPARENT_CLAUSE.format(key=chroma_key))
-    parts.append(
+    No chroma-key clause. The built-in image_gen tool emits a real alpha
+    channel when the prompt asks for one, on this ChatGPT-auth install
+    (MEASURED 2026-09-06: 1448x1086 RGBA, 55.7% alpha-0, all four corners
+    (0,0,0,0), 0.28% mid-alpha, no rim or halo - cleaner than a keyed cut).
+    Ask for transparency in the prompt itself; do not generate onto a flat
+    green and cut it out afterwards.
+    """
+    return "\n\n".join([
+        "Use $imagegen to " + user_prompt.strip(),
         f"Then copy the generated image into the current working directory as "
-        f"{out_name}. Report the absolute path of the file you saved."
-    )
-    return "\n\n".join(parts)
+        f"{out_name}. Report the absolute path of the file you saved.",
+    ])
 
 
 def do_image(args) -> int:
@@ -290,14 +427,16 @@ def do_image(args) -> int:
         print(f"ERROR refusing to overwrite {out} (pass --force)", file=sys.stderr)
         return 1
 
-    home = codex_home()
+    home = codex_home(getattr(args, "codex_home", None))
     workdir = out.parent
     images = [Path(i).resolve() for i in (args.image or [])]
 
-    prompt = build_prompt(args.prompt, out.name, args.chroma_key)
+    prompt = build_prompt(args.prompt, out.name)
     if args.dry_run:
         print(f"codex:   {find_codex_cli()}")
-        print(f"auth:    {auth_mode()}")
+        print(f"auth:    {auth_mode(home)}")
+        print(f"home:    {home}")
+        print(f"effort:  {args.reasoning_effort}")
         print(f"workdir: {workdir}")
         print(f"images:  {[str(i) for i in images] or 'none'}")
         print("--- prompt ---")
@@ -306,25 +445,38 @@ def do_image(args) -> int:
 
     before = snapshot_generated(home)
     started = time.time()
-    code, output = run_codex(prompt, images, workdir, args.timeout, args.verbose,
-                             getattr(args, "model", None))
+    code, output, timed_out = run_codex(
+        prompt, images, workdir, args.timeout, args.verbose,
+        getattr(args, "model", None), home, args.reasoning_effort)
     elapsed = time.time() - started
 
     if args.verbose and output:
         print(output[-4000:], file=sys.stderr)
 
-    # The agent was asked to copy the file here. Trust, then verify.
+    # 🔴 Harvest on EVERY path, timeout included. The agent was asked to copy
+    # the file here; whether it did, and whether our own ceiling expired while
+    # it was still narrating, are separate questions from whether an image
+    # exists. A harvested image is a success.
     if not out.is_file():
-        candidates = harvest_new(home, before)
+        candidates = harvest_with_grace(
+            home, before, HARVEST_GRACE_S if timed_out else 0.0)
         if candidates:
             chosen = candidates[-1]
             shutil.copy2(chosen, out)
-            print(f"note: agent did not place the file; harvested {chosen.name} "
-                  f"from {GENERATED_SUBDIR}/", file=sys.stderr)
+            why = (f"timed out after {args.timeout}s"
+                   if timed_out else "agent did not place the file")
+            print(f"note: {why}; harvested {chosen.name} from "
+                  f"{GENERATED_SUBDIR}/", file=sys.stderr)
 
     if not out.is_file():
-        print(f"ERROR no image produced after {elapsed:.0f}s (exit {code}).",
-              file=sys.stderr)
+        if timed_out:
+            print(f"ERROR codex exec exceeded {args.timeout}s after {elapsed:.0f}s "
+                  f"and nothing new reached {home / GENERATED_SUBDIR}. Raise "
+                  f"--timeout, or check whether the Codex app needs "
+                  f"re-authentication.", file=sys.stderr)
+        else:
+            print(f"ERROR no image produced after {elapsed:.0f}s (exit {code}).",
+                  file=sys.stderr)
         if output:
             print("--- last codex output ---", file=sys.stderr)
             print(output[-2000:], file=sys.stderr)
@@ -348,19 +500,21 @@ def do_probe(args) -> int:
         print(f"FAIL codex cli      {exc}")
         return 2
     try:
-        home = codex_home()
+        home = codex_home(getattr(args, "codex_home", None))
         print(f"OK   CODEX_HOME     {home}")
     except EnvError as exc:
         print(f"FAIL CODEX_HOME     {exc}")
         return 2
 
-    mode = auth_mode()
+    mode = auth_mode(home)
     print(f"{'OK  ' if mode != 'unknown' else 'WARN'} auth mode      {mode}")
     if mode == "chatgpt":
         print("     -> built-in image_gen only. No OPENAI_API_KEY, so the")
-        print("        deterministic CLI fallback and true model-native")
-        print("        transparency are NOT available. Alpha must come from")
-        print("        chroma-key + local removal.")
+        print("        deterministic CLI fallback is NOT available: exact")
+        print("        --size, --mask and --quality are out, and the tool")
+        print("        ignores the size you ask for, so conform_sprite.py is")
+        print("        mandatory. Transparency IS available - ask for a real")
+        print("        alpha channel in the prompt; do not chroma-key.")
 
     gen = home / GENERATED_SUBDIR
     print(f"{'OK  ' if gen.is_dir() else 'WARN'} output dir     {gen}"
@@ -381,16 +535,30 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
 
+    def home_flag(p):
+        p.add_argument("--codex-home", metavar="DIR", default=None,
+                       help="run this call against its own CODEX_HOME, so "
+                            "concurrent workers cannot collide over one "
+                            "thread-writer lock or harvest each other's "
+                            "images. Seeded from the shared home if new. Must "
+                            "live under /mnt/<drive>/ - codex.exe is a Windows "
+                            "binary. Default: the shared home.")
+
     def common(p):
         p.add_argument("--out", required=True, help="destination PNG path")
         p.add_argument("--prompt", required=True)
-        p.add_argument("--chroma-key", metavar="HEX", default=None,
-                       help="request a flat key background, e.g. '#00ff00'. "
-                            "Required for any asset that needs alpha.")
         p.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT_S)
         p.add_argument("--model", default=None, metavar="MODEL",
                        help="codex exec -m override; use when the default "
                             "model reports 'at capacity'")
+        p.add_argument("--reasoning-effort", default=DEFAULT_REASONING_EFFORT,
+                       choices=REASONING_EFFORTS,
+                       help="reasoning effort for the Codex turn AROUND the "
+                            "image tool (not the image model). The default is "
+                            "low because that turn only calls the tool and "
+                            "copies a file; 'inherit' leaves config.toml "
+                            "alone.")
+        home_flag(p)
         p.add_argument("--force", action="store_true")
         p.add_argument("--dry-run", action="store_true",
                        help="print the resolved command and prompt, call nothing")
@@ -407,6 +575,7 @@ def main() -> int:
     e.set_defaults(func=do_image)
 
     p = sub.add_parser("probe", help="check the toolchain without generating")
+    home_flag(p)
     p.set_defaults(func=do_probe)
 
     args = ap.parse_args()

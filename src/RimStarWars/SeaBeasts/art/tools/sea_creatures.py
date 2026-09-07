@@ -139,8 +139,8 @@ STYLE = ("Flat cel shading, clean readable shapes, hard dark outline, muted "
          "painterly palette, one single creature centred with generous empty "
          "margin on every side, the whole animal fully inside the frame, no "
          "ground, no shadow, no water, no bubbles, no text, no watermark, no "
-         "border, flat pure green #00ff00 background filling every pixel the "
-         "creature does not cover")
+         "border, and a GENUINELY TRANSPARENT background - output a real alpha "
+         "channel, no backdrop of any colour")
 
 ANCHOR = ("Use the creature in the attached image as the exact reference: the "
           "same species, same anatomy, same proportions, same markings and the "

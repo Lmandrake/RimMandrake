@@ -14,6 +14,7 @@ match this script's own argv and SIGKILL the job it is retrying.
 """
 import subprocess
 import sys
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -23,12 +24,31 @@ from sea_creatures import CREATURES, MOCKUPS, RAW, prompt_for  # noqa: E402
 
 GEN = "/mnt/d/Luke/dev/Rimworld/skills/generating-images/scripts/codex_image.py"
 # Measured on this batch: an `edit` carrying a ~1.5 Mpx mockup lands at
-# 120-170 s, not the ~80 s the skill measured for generate. At 120 s the call
-# was killed AFTER codex had produced the image, so the retry then refused to
-# overwrite its own good output - the FAIL was a harness artefact, not a
-# generation failure. Hence 210 s, and the late-file recovery below.
-TIMEOUT = "210"
+# 120-170 s, not the ~80 s the skill measured for generate. Raised past the old
+# 210 s because the wrapper now HARVESTS on timeout instead of discarding the
+# image (CODEX_WRAPPER_HARVEST_FIX_1), so a generous ceiling costs nothing and
+# a tight one can still kill a turn between the PNG landing and the agent
+# finishing its sentence.
+TIMEOUT = "600"
 ATTEMPTS = 3
+WORKERS = 3
+
+# Each concurrent worker gets its own CODEX_HOME. A shared one puts three
+# codex.exe processes on one thread-writer lock, and - worse - makes the
+# wrapper's before/after diff of generated_images/ able to harvest a SIBLING's
+# image. Must live under /mnt/<drive>/: codex.exe is a Windows binary.
+WORKER_HOMES = "/mnt/c/Users/Mandrake/.codex_workers"
+_slot = threading.local()
+_slots = iter(range(WORKERS))
+_slot_lock = threading.Lock()
+
+
+def my_codex_home() -> str:
+    """A stable per-thread worker home, so retries reuse the same seeded dir."""
+    if not hasattr(_slot, "n"):
+        with _slot_lock:
+            _slot.n = next(_slots)
+    return f"{WORKER_HOMES}/sea{_slot.n}"
 
 
 def one(job):
@@ -44,7 +64,7 @@ def one(job):
         t0 = time.time()
         r = subprocess.run(
             [sys.executable, GEN, "edit", "--out", str(out), "--prompt", prompt,
-             "--image", str(mock), "--chroma-key", "#00ff00",
+             "--image", str(mock), "--codex-home", my_codex_home(),
              "--timeout", TIMEOUT],
             capture_output=True, text=True)
         dt = int(time.time() - t0)
@@ -64,7 +84,7 @@ def main():
         print("usage: gen_sea_facings.py <slug> ...   unknown: %s" % bad, file=sys.stderr)
         return 2
     jobs = [(s, f) for s in slugs for f in ("south", "north")]
-    with ThreadPoolExecutor(max_workers=3) as ex:
+    with ThreadPoolExecutor(max_workers=WORKERS) as ex:
         for res in ex.map(one, jobs):
             print(res, flush=True)
     print("DONE")

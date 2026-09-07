@@ -1,12 +1,21 @@
 #!/usr/bin/env python3
-"""One command: Codex generate/edit -> rembg alpha cutout -> (optional) conform.
+"""One command: Codex generate/edit -> (optional) conform to a reference canvas.
 
-Replaces the old three-step chroma-key dance. Runs the two stages in the right
-interpreters automatically (Codex via system python, rembg via the rwgfx venv).
+There is no cutout stage any more. The built-in $imagegen tool emits a real
+alpha channel when the prompt asks for one (MEASURED 2026-09-06: 1448x1086
+RGBA, 55.7% alpha-0, all four corners (0,0,0,0), 0.28% mid-alpha, no rim or
+halo), which is cleaner than either the chroma-key cut or the rembg cut that
+used to sit here - and it removes both of the failure modes that have destroyed
+subjects on this project: a key colour that was also in the art, and an
+auto-detected "key" that was really banked alpha.
+
+Ask for transparency IN THE PROMPT. `conform_sprite.py` stays mandatory,
+because the tool still ignores the size you ask for.
 
   # fresh generation
   python3 skills/generating-images/scripts/make_sprite.py \
-      --prompt "a rusty derelict smelter, top-down game sprite" \
+      --prompt "a rusty derelict smelter, top-down game sprite, genuinely
+                transparent background, real alpha channel, no floor, no shadow" \
       --out out/smelter.png
 
   # edit/variant from a hero image (reference-conditioned)
@@ -17,9 +26,11 @@ interpreters automatically (Codex via system python, rembg via the rwgfx venv).
   python3 .../make_sprite.py --prompt "..." --out final.png \
       --reference original_south.png
 
-Flags: --tight (crop to subject), --keep-raw (keep the pre-cutout image),
---chroma HEX (background key for generation, default #10e010 — a green the
-subject is unlikely to contain; rembg removes it regardless).
+Flags: --keep-raw (keep the pre-conform image), --codex-home DIR (isolate this
+call's CODEX_HOME so parallel workers cannot collide), --timeout S.
+
+For a channel with NO native alpha - `gemini_image.py` - cut the background
+locally with `rembg_cut.py` under ~/.venvs/rwgfx instead.
 """
 import argparse
 import os
@@ -29,9 +40,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 CODEX = os.path.join(HERE, "codex_image.py")
-REMBG_CUT = os.path.join(HERE, "rembg_cut.py")
 CONFORM = os.path.join(REPO, "skills", "generating-rimworld-sprites", "scripts", "conform_sprite.py")
-RWGFX_PY = os.path.expanduser("~/.venvs/rwgfx/bin/python")
 
 
 def run(cmd):
@@ -46,18 +55,14 @@ def main():
     ap.add_argument("--prompt", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--edit-image", action="append", help="reference image(s) for an edit; repeatable")
-    ap.add_argument("--reference", help="conform the cutout to this sprite's canvas/registration")
-    ap.add_argument("--chroma", default="#10e010")
-    ap.add_argument("--tight", action="store_true")
+    ap.add_argument("--reference", help="conform the result to this sprite's canvas/registration")
+    ap.add_argument("--codex-home", help="isolate this call's CODEX_HOME (parallel workers)")
+    ap.add_argument("--timeout", help="seconds before the wrapper stops waiting")
     ap.add_argument("--keep-raw", action="store_true")
     a = ap.parse_args()
 
-    if not os.path.exists(RWGFX_PY):
-        sys.exit("rwgfx venv missing at %s — create it and pip install rembg" % RWGFX_PY)
-
     base = os.path.splitext(a.out)[0]
-    raw = base + ".raw.png"
-    cut = a.out if not a.reference else base + ".cut.png"
+    raw = a.out if not a.reference else base + ".raw.png"
 
     # 1. Codex generate or edit
     if a.edit_image:
@@ -65,25 +70,19 @@ def main():
         for img in a.edit_image:
             cmd += ["--image", img]
     else:
-        cmd = ["python3", CODEX, "generate", "--out", raw, "--prompt", a.prompt, "--chroma-key", a.chroma]
+        cmd = ["python3", CODEX, "generate", "--out", raw, "--prompt", a.prompt]
+    if a.codex_home:
+        cmd += ["--codex-home", a.codex_home]
+    if a.timeout:
+        cmd += ["--timeout", a.timeout]
     run(cmd)
 
-    # 2. rembg cutout (rwgfx venv)
-    cmd = [RWGFX_PY, REMBG_CUT, "--input", raw, "--out", cut]
-    if a.tight:
-        cmd.append("--tight")
-    run(cmd)
-
-    # 3. optional conform to a reference sprite
+    # 2. optional conform to a reference sprite
     if a.reference:
-        run(["python3", CONFORM, "--reference", a.reference, "--input", cut, "--out", a.out])
+        run(["python3", CONFORM, "--reference", a.reference, "--input", raw, "--out", a.out])
         if not a.keep_raw:
-            for f in (raw, cut):
-                try: os.remove(f)
-                except OSError: pass
-    elif not a.keep_raw:
-        try: os.remove(raw)
-        except OSError: pass
+            try: os.remove(raw)
+            except OSError: pass
 
     print("DONE -> %s" % a.out)
 

@@ -264,8 +264,9 @@ def check(ref: dict, cand: dict) -> list[tuple[str, str]]:
 
     hot = [i for i, a in enumerate(cand["corners"]) if a > CORNER_MAX_ALPHA]
     if hot:
-        add(REJECT, f"{len(hot)} of 4 corners are opaque - the key was not "
-                    f"fully removed, or the background was not flat.")
+        add(REJECT, f"{len(hot)} of 4 corners are opaque - the image was drawn "
+                    f"with a background instead of a real alpha channel. Ask "
+                    f"for transparency in the prompt and regenerate.")
 
     fringe_frac = cand["fringe"] / cand["n"]
     if cand["bbox"] and cand["vis_bbox"]:
@@ -284,8 +285,9 @@ def check(ref: dict, cand: dict) -> list[tuple[str, str]]:
             add(REJECT, f"faint pixels (alpha 1-31) reach {reach:.1%} of canvas "
                         f"BEYOND the solid silhouette. They are invisible on "
                         f"screen but count as subject, so they inflate every "
-                        f"naive measurement. Raise the chroma key's lower "
-                        f"threshold.")
+                        f"naive measurement. Regenerate; native alpha carries "
+                        f"a 1-31 fringe too, so this check still earns its "
+                        f"place.")
         elif fringe_frac > FRINGE_MAX_FRACTION:
             add(WARN, f"{fringe_frac:.2%} of pixels are faint (alpha 1-31) but "
                       f"stay within the silhouette - consistent with soft art "
@@ -295,8 +297,8 @@ def check(ref: dict, cand: dict) -> list[tuple[str, str]]:
     if mid_frac > MIDTONE_MAX_FRACTION:
         add(REJECT, f"{mid_frac:.1%} of pixels are semi-transparent "
                     f"(alpha {MIDTONE_ALPHA_LO}-{MIDTONE_ALPHA_HI}). A clean "
-                    f"cutout is bimodal; this will render washed out. Lower "
-                    f"the chroma key's upper threshold.")
+                    f"cutout is bimodal; this will render washed out. "
+                    f"Regenerate rather than post-processing it.")
 
     # --- residual key spill -------------------------------------------------
     if cand["mean_edge"] and cand["mean_opaque"]:
