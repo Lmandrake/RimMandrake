@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T01:13:35Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-07T02:39:21Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
+prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## FORSAKEN_CRAGS_PREDATORS_BUILD_1 Build Cindermare + Skarnix, wild AB_RockyCrags threat pair
 state:    ready
@@ -460,17 +469,7 @@ prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     build
-waiting:  needs `game-up`, game is LOADING
-summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
-prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -1177,7 +1176,7 @@ needs:    bridge
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/OASIS_LANDMARK_PLACEMENT_1.md yet — write one when you have something to say)
+summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
 prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 ## OASIS_MUTATOR_PATCH_1 Whitelist ZBiome_DesertOasis into vanilla TileMutatorDef Oasis; strip donor snow weathers; re-point forageability; alien-flora swap in additionalWildPlants after the roster
@@ -1187,5 +1186,5 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/OASIS_MUTATOR_PATCH_1.md yet — write one when you have something to say)
+summary:  OASISMUTATORPATCH1 — the vanilla Oasis mutator, adapted
 prose:    infrastructure/state/items/OASIS_MUTATOR_PATCH_1.md
