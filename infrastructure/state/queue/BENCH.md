@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T21:20:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T21:27:58Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -205,7 +205,7 @@ prose:    infrastructure/state/items/ALPHA_FAMILY_SOURCE_REVIEW_1.md
 ## SETTLEMENT_REJIGGER_ROUND2_1 Round-2 rejigger: re-shift every settlement to fit the pre-frozen biomes — right AFTER BIOME_FREEZE_FABLE_REVIEW_1, BEFORE the animal/plant assignment; every move carded to the owner
 state:    proposed
 row:      unassigned
-needs:    owner
+needs:    bridge
 target:   v1
 kind:     task
 thin:     no ## criteria
