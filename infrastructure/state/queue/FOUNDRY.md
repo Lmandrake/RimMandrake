@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T04:30:57Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-07T04:34:05Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -323,15 +323,6 @@ target:   v1
 kind:     task
 summary:  (no items/NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1.md
-
-## MOISTURE_VAPORATOR_WALL_CLIP_1 Moisture vaporator graphic extends/clips through an adjacent wall instead of sitting flush
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  MOISTUREVAPORATORWALLCLIP1 — fixed offline, live verification owed
-prose:    infrastructure/state/items/MOISTURE_VAPORATOR_WALL_CLIP_1.md
 
 ## NINEFOLD_RUNTIME_PROOF_BLOCKED_1 Ninefold compile-fix VERIFIED (ready:14, was 6); runtime firing UNPROVEN - GameComponent.Instance null on ignoreModCompatibility loads, all hooks incl. research silent; needs a normal-load or fresh new-game test
 state:    doing
