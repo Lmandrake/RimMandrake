@@ -431,6 +431,12 @@
     "hash": "7b93c2e56283754235bc3637c97908cc75604cebc6049a2a5d179adf8dae718a",
     "sha": "629956d2"
   },
+  "src/RimMandrake/DesertVehicleReskin/Patches/DraughtFuel_Marker.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "9529495be649c82494f457b58a19342fc8b38543625a7be5aa9130e009f5fccb",
+    "sha": "0f2ac051"
+  },
   "src/RimMandrake/DesertVehicleReskin/Patches/EopieSled_Identity.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -443,11 +449,23 @@
     "hash": "cf74710e0dcb8c96fd271d460bf0acb1c9d2e823d0a1249f8bced2ede4e18f20",
     "sha": "7672f1bd"
   },
+  "src/RimMandrake/DesertVehicleReskin/Source/Fuel/RM_DraughtFuelExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "78065176bfb6b6d97f8881266f975d534a984572a50318f00f0af0bfa986b4ca",
+    "sha": "0f2ac051"
+  },
   "src/RimMandrake/DesertVehicleReskin/Source/Fuel/VegetableFuel.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "hash": "ccf074fece7b4d6d17fcb494cb2253357e12ed539ba617e8de24cfa1b5513793",
     "sha": "ac24cd52"
+  },
+  "src/RimMandrake/DesertVehicleReskin/Source/Fuel/VehicleFuelPatches.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "d6c639f02223a0070825ace82c517ae9c798da7263606e02d67ffc229bdc16b8",
+    "sha": "0f2ac051"
   },
   "src/RimMandrake/DesertVehicleReskin/Source/Fuel/check_fuel_predicate.py": {
     "cleanCount": 1,
@@ -7552,10 +7570,10 @@
     "sha": "52dee04f"
   },
   "src/RimUtinni/Doctrine/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "04ee9756a76d7c242b789648dce7b6b0159429d78b0598fb056a6bc7c3997eb7",
-    "sha": "a12758af"
+    "cleanCount": 3,
+    "date": "2026-09-07",
+    "hash": "cc930ab32006c94cb622bc072eb19eec8034cf284128c744838acf807d927a5b",
+    "sha": "f51159cb"
   },
   "src/RimUtinni/Doctrine/Patches/DroidsAreMachines.xml": {
     "cleanCount": 1,
@@ -7564,10 +7582,10 @@
     "sha": "c9acb340"
   },
   "src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "99bda0e997fd2831eb30b6303482b01d93f8c6c68b473ddbecd71c276ead09ec",
-    "sha": "d512cc3c"
+    "cleanCount": 3,
+    "date": "2026-09-07",
+    "hash": "93a662860ac0c562765cd65e72878ee84f70a903f269527bb5284fa326fdd414",
+    "sha": "f51159cb"
   },
   "src/RimUtinni/Doctrine/Patches/NoDroidManufacture.xml": {
     "cleanCount": 1,
@@ -7588,10 +7606,10 @@
     "sha": "c9acb340"
   },
   "src/RimUtinni/Doctrine/Source/gen_megafauna_yield.py": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "631c793356e9e85a64f76b35687d0f4f56630ad92a2db1c008fe830fa38e5550",
-    "sha": "c9acb340"
+    "cleanCount": 3,
+    "date": "2026-09-07",
+    "hash": "032db7f1a81c13fecc85707a757cedcd92250e54cbc5d6cc07d302ffb54c39b7",
+    "sha": "0f2ac051"
   },
   "src/RimUtinni/EmpirePursuit/About/About.xml": {
     "cleanCount": 1,
