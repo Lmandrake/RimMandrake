@@ -289,6 +289,25 @@ class Graph:
 
     # ---- node/port/connection construction ----
 
+    def _variable_field(self, type_, name, values):
+        """Build a ("variable", name, elem_kind, values, refid, meta) field
+        tuple for a List<T> value, sourcing elem_kind/obj_type/array_tag/
+        raw_inner from the parsed template (self._var_meta) when available.
+        Shared by node() and any special-cased node builder (tile_req,
+        manifest) so a Variable is never dropped just because it isn't one
+        of that builder's named parameters (found live 2026-09-06: 14/44
+        landforms carry `AllowedRiverTypes` on worldTileReq, which tile_req()
+        did not accept)."""
+        elem_kind = self._tpl["variable_elem_kind"].get((type_, name))
+        if elem_kind is None:
+            elem_kind = "string" if any(e is None or isinstance(e, str) for e in values) else "double"
+        refid = self._obj_ctr
+        self._obj_ctr += 1
+        meta = self._var_meta.get((type_, name))
+        if meta and meta[2]:
+            elem_kind = meta[2]
+        return ("variable", name, elem_kind, list(values), refid, meta)
+
     def node(self, type_, name, pos=None, **fields):
         nid = self._node_ctr
         self._node_ctr += 1
@@ -296,15 +315,7 @@ class Graph:
         self._nodes.append(n)
         for k, v in fields.items():
             if isinstance(v, list):
-                elem_kind = self._tpl["variable_elem_kind"].get((type_, k))
-                if elem_kind is None:
-                    elem_kind = "string" if any(e is None or isinstance(e, str) for e in v) else "double"
-                refid = self._obj_ctr
-                self._obj_ctr += 1
-                meta = self._var_meta.get((type_, k))
-                if meta and meta[2]:
-                    elem_kind = meta[2]
-                n.fields.append(("variable", k, elem_kind, list(v), refid, meta))
+                n.fields.append(self._variable_field(type_, k, v))
             else:
                 tag = self._tpl["field_tag"].get((type_, k))
                 if tag is None:
@@ -343,22 +354,26 @@ class Graph:
     # ---- convenience nodes ----
 
     def manifest(self, id_, display_name, is_custom=True, revision_version=1,
-                 time_created=None, is_experimental=False, is_internal=False,
+                 time_created=None, is_experimental=False, is_internal=None,
                  is_edited=False, display_name_has_direction=False, pos=None):
         if time_created is None:
             time_created = int(time.time() * 1000)
-        return self.node(
-            "landformManifest", "Custom Landform", pos=pos,
+        fields = dict(
             Id=id_,
             IsCustom=is_custom,
             IsExperimental=is_experimental,
-            IsInternal=is_internal,
             RevisionVersion=revision_version,
             TimeCreated=time_created,
             IsEdited=is_edited,
             DisplayName=display_name,
             DisplayNameHasDirection=display_name_has_direction,
         )
+        if is_internal is not None:
+            # Optional in the source (35/44 files carry it, 9 don't) -- only
+            # emit it when the caller actually said something, so a rebuild
+            # of one of the 9 doesn't gain a field the source never had.
+            fields["IsInternal"] = is_internal
+        return self.node("landformManifest", "Custom Landform", pos=pos, **fields)
 
     def tile_req(self, topology="Inland", commonness=0.03351957, cave_chance=0.0,
                  hilliness=(1, 2.50282478), road=(0, 1), river=(0, 1),
@@ -366,11 +381,16 @@ class Graph:
                  rainfall=(0, 508.474579), swampiness=(0, 1),
                  biome_transitions=(0, 6), topology_value=(-1, 1),
                  depth_in_cave_system=(0, 10), map_size=(50, 1000),
-                 allow_settlements=True, allow_sites=True, pos=None):
+                 allow_settlements=True, allow_sites=True, allowed_river_types=None, pos=None):
         n = self.node(
             "worldTileReq", "World Tile Requirements", pos=pos,
             Topology=topology, Commonness=commonness, CaveChance=cave_chance,
         )
+        if allowed_river_types is not None:
+            # Only the river/coast family (14/44 landforms) carries this
+            # Variable on worldTileReq; DesertPlateau (the selftest's only
+            # source until this fix) has none, which is how the drop hid.
+            n.fields.append(self._variable_field("worldTileReq", "AllowedRiverTypes", allowed_river_types))
         for name, rng in (
             ("HillinessRequirement", hilliness),
             ("RoadRequirement", road),
@@ -536,7 +556,7 @@ def build_desertplateau(g, frequency=None, manifest_overrides=None, tile_req_ove
                 revision_version=int(kwargs.get("RevisionVersion", 1)),
                 time_created=int(kwargs.get("TimeCreated", 0)),
                 is_experimental=kwargs.get("IsExperimental") == "true",
-                is_internal=kwargs.get("IsInternal") == "true",
+                is_internal=(kwargs.get("IsInternal") == "true") if "IsInternal" in kwargs else None,
                 is_edited=kwargs.get("IsEdited") == "true",
                 display_name_has_direction=kwargs.get("DisplayNameHasDirection") == "true",
                 pos=sn["pos"],
@@ -559,6 +579,7 @@ def build_desertplateau(g, frequency=None, manifest_overrides=None, tile_req_ove
                 map_size=floatranges.get("MapSizeRequirement"),
                 allow_settlements=kwargs.get("AllowSettlements") != "false",
                 allow_sites=kwargs.get("AllowSites") != "false",
+                allowed_river_types=kwargs.get("AllowedRiverTypes"),
                 pos=sn["pos"],
             )
         else:
@@ -578,6 +599,21 @@ def build_desertplateau(g, frequency=None, manifest_overrides=None, tile_req_ove
                 for i, f in enumerate(node.fields):
                     if f[0] == "scalar" and f[2] == "Angle":
                         node.fields[i] = ("scalar", f[1], "Angle", repr(float(rotate_deg)))
+
+        # Safety net for the named-parameter builders above (manifest, tile_req):
+        # any source Variable they don't forward by name would otherwise be
+        # silently dropped, exactly like AllowedRiverTypes was. Carry through
+        # anything still missing so a future landform's node shape can't hide
+        # the same bug (GL_EMITTER_OBJECT_GAP_1).
+        if type_ in ("landformManifest", "worldTileReq"):
+            present = {f[1] for f in node.fields if f[0] == "variable"}
+            for entry in sn["ordered"]:
+                if entry[0] != "variable":
+                    continue
+                _, vname, obj = entry
+                if obj is not None and vname not in present:
+                    node.fields.append(g._variable_field(type_, vname, obj["values"]))
+                    present.add(vname)
 
         for p in sn["ports"]:
             if p["dynamic"] == "True":
@@ -608,6 +644,52 @@ def _norm(v):
         return v
 
 
+def _canon_xml(el):
+    """Whitespace-insignificant canonical string for one array-item element.
+    Needed because a complex item (mapIncidents' `<Entry>`, which carries
+    WorkerName/Value grandchildren rather than direct text) round-trips via
+    the verbatim raw_inner payload, re-indented to the destination's nesting
+    depth -- so `item.text` (insignificant inter-child whitespace) differs
+    between source and rebuild even though the actual data is byte-identical.
+    Comparing THIS instead of `.text` is what lets the selftest tell a real
+    drop from a cosmetic reindent."""
+    parts = [f"<{el.tag}"]
+    for k in sorted(el.attrib):
+        if k == XSI_NIL_ATTR:
+            continue
+        parts.append(f' {k}="{el.attrib[k]}"')
+    parts.append(">")
+    for child in el:
+        parts.append(_canon_xml(child))
+    text = (el.text or "").strip()
+    if text:
+        parts.append(text)
+    parts.append(f"</{el.tag}>")
+    return "".join(parts)
+
+
+def _canon_item_value(item_el):
+    if len(list(item_el)):
+        return _canon_xml(item_el)
+    if item_el.get(XSI_NIL_ATTR) == "true":
+        return None
+    return item_el.text if item_el.text is not None else ""
+
+
+def _object_values_canon(root, refid):
+    objects_el = root.find("Objects")
+    if objects_el is None:
+        return []
+    for obj_el in objects_el.findall("Object"):
+        if obj_el.get("refID") != refid:
+            continue
+        children = list(obj_el)
+        if not children:
+            return []
+        return [_canon_item_value(item) for item in list(children[0])]
+    return []
+
+
 def _collect_node_signatures(fg, collect_scalar_fields):
     """(scalar multiset, floatrange multiset, variable multiset) for one FileGraph."""
     scalars = Counter()
@@ -629,9 +711,32 @@ def _collect_node_signatures(fg, collect_scalar_fields):
                 franges[(ntype, name, _norm(mn), _norm(mx))] += 1
         for name, refids in vars_.items():
             for refid in refids:
-                vals = _read_objects(fg.root).get(refid, {}).get("values", [])
+                vals = _object_values_canon(fg.root, refid)
                 variables[(ntype, name, tuple(_norm(v) for v in vals))] += 1
     return scalars, franges, variables
+
+
+def _object_signatures(fg):
+    """(obj_type multiset, (node_type,var_name,obj_type) binding multiset).
+
+    Deliberately does NOT compare refID values themselves -- a rebuild is
+    free to renumber refIDs, and DOES (DesertPlateau's Objects come out
+    0-based/document-order regardless of the source's own numbers). What
+    must survive is: every Object's `type=` string is still present (the
+    SET of Object type strings), and every <Variable name=X> on a given
+    node type is still bound to an Object of the same `type=` -- catching
+    exactly the lie the item warns about: "a rebuild that matches counts
+    but drops a refID and re-numbers"."""
+    objs = _read_objects(fg.root)
+    obj_types = Counter(info.get("obj_type") for info in objs.values())
+    bindings = Counter()
+    for _nid, ninfo in fg.nodes.items():
+        ntype = ninfo["type"]
+        for var_el in ninfo["el"].findall("Variable"):
+            refid = var_el.get("refID")
+            obj_type = objs.get(refid, {}).get("obj_type")
+            bindings[(ntype, var_el.get("name"), obj_type)] += 1
+    return obj_types, bindings
 
 
 def _connection_signature(fg):
@@ -648,15 +753,14 @@ def _connection_signature(fg):
     return sig
 
 
-def run_selftest():
-    census = _load_gl_schema_census()
-
-    g = Graph()
-    build_desertplateau(g)
-    tmp_path = os.path.join(tempfile.gettempdir(), "gl_emit_selftest_desertplateau.xml")
+def _run_selftest_one(census, source_path, tmp_path):
+    """Rebuild one landform file via the builder and compare to its own
+    source. Returns (ok, [(check_label, ok, detail), ...])."""
+    g = Graph(template_source=source_path)
+    build_desertplateau(g)  # generic over the parsed source despite the name
     g.write(tmp_path)
 
-    orig = census.FileGraph(SOURCE_DESERTPLATEAU)
+    orig = census.FileGraph(source_path)
     emitted = census.FileGraph(tmp_path)
 
     checks = []
@@ -680,6 +784,20 @@ def run_selftest():
         f"floatrange_eq={o_fr == e_fr} variable_eq={o_var == e_var}",
     ))
 
+    # Objects: NOT counts alone -- the SET of Object type strings, and each
+    # Variable's (node type, name) -> Object type binding. A rebuild that
+    # matches the Variable *value* multiset above but silently retypes or
+    # drops-and-renumbers an Object would still be caught here.
+    o_objtypes, o_bind = _object_signatures(orig)
+    e_objtypes, e_bind = _object_signatures(emitted)
+    objects_ok = (o_objtypes == e_objtypes) and (o_bind == e_bind)
+    checks.append((
+        "Objects (type-string set + Variable refID->type bindings, refIDs themselves ignored)",
+        objects_ok,
+        f"{sum(o_objtypes.values())} vs {sum(e_objtypes.values())} Objects, "
+        f"type_set_eq={o_objtypes == e_objtypes} binding_eq={o_bind == e_bind}",
+    ))
+
     o_ports, e_ports = len(orig.port_owner), len(emitted.port_owner)
     checks.append(("port count", o_ports == e_ports, f"{o_ports} vs {e_ports}"))
 
@@ -689,7 +807,7 @@ def run_selftest():
     checks.append((
         "connection set (srcType.port -> dstType.port multiset)",
         o_conn == e_conn,
-        f"{o_total} vs {e_total} resolved edges (orig has 35 total incl. anomalies), equal={o_conn == e_conn}",
+        f"{o_total} vs {e_total} resolved edges, equal={o_conn == e_conn}",
     ))
 
     try:
@@ -701,12 +819,46 @@ def run_selftest():
         reparse_detail = str(e)
     checks.append(("emitted file re-parses with xml.etree", reparse_ok, reparse_detail))
 
-    passed = sum(1 for _, ok, _ in checks if ok)
-    total = len(checks)
-    for label, ok, detail in checks:
-        print(f"  [{'PASS' if ok else 'FAIL'}] {label}: {detail}")
-    print(f"SELFTEST {'PASS' if passed == total else 'FAIL'} {passed}/{total}")
-    return passed == total
+    return all(ok for _, ok, _ in checks), checks
+
+
+def run_selftest():
+    """Rebuild EVERY *.xml under the Landforms-v1 source directory via the
+    builder (not DesertPlateau alone -- that single-file selftest is what
+    let 14/44 landforms ship one <Object> short, GL_EMITTER_OBJECT_GAP_1)
+    and census-compare each rebuild to its own source."""
+    census = _load_gl_schema_census()
+    landforms_dir = os.path.dirname(SOURCE_DESERTPLATEAU)
+    source_paths = sorted(
+        os.path.join(landforms_dir, fn)
+        for fn in os.listdir(landforms_dir)
+        if fn.startswith("Landform") and fn.endswith(".xml")
+    )
+    if not source_paths:
+        print(f"ERROR: no Landform*.xml files found under {landforms_dir}", file=sys.stderr)
+        return False
+
+    tmp_path = os.path.join(tempfile.gettempdir(), "gl_emit_selftest_current.xml")
+    n_pass = 0
+    for source_path in source_paths:
+        name = os.path.basename(source_path)
+        try:
+            ok, checks = _run_selftest_one(census, source_path, tmp_path)
+        except Exception as e:  # noqa: BLE001 - report and keep going
+            ok = False
+            checks = [("exception", False, repr(e))]
+        if ok:
+            n_pass += 1
+            print(f"  [OK] {name}")
+        else:
+            print(f"  [FAIL] {name}")
+            for label, cok, detail in checks:
+                if not cok:
+                    print(f"      [{'PASS' if cok else 'FAIL'}] {label}: {detail}")
+
+    total = len(source_paths)
+    print(f"SELFTEST {'PASS' if n_pass == total else 'FAIL'} {n_pass}/{total}")
+    return n_pass == total
 
 
 # ==================================== CLI ====================================
