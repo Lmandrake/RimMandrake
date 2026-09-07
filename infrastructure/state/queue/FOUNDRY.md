@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T06:09:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T06:10:05Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -527,6 +527,16 @@ blocked:  recon done, not stale: donor Factions_Horrors.xml read (settlementGene
 summary:  - Donor: Horrors (Continued), Mlie.Horrors, ws 3535224844 — FactionDef Horrors,
 prose:    infrastructure/state/items/HORRORS_RAIDING_FACTION_1.md
 
+## HORRORWASTES_BIOME_DISSOLVE_1 Dissolve the HorrorWastes biome: re-biome its 1,711 tiles into neighbors (Deadstone receiving def ruled at the PropaneLakes sitting), re-freeze, re-home 29 cast rows
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  not stale, real dependency order: this item's own receiving mosaic assigns tiles to RUT_NightsideIce (sectors 1-3 + former CrystalCaverns highland), which does not exist yet as a BiomeDef -- that's NIGHTSIDE_ICE_DEF_1 (filed later, 2026-09-06T22:47:09Z, currently unclaimed), a genuine prerequisite despite being younger in the queue. Both items independently carry an owner-render-before-painting gate (worldview.py) -- neither can be painted blind. Working NIGHTSIDE_ICE_DEF_1's offline half (author the BiomeDef) now, out of strict oldest-first order, since it's the actual next unblocked step in this chain; the paint-and-render halves of both items stay gated on the owner's look. KEEP.
+summary:  - MEASURED: 1,711 HorrorWastes tiles — Deadstone 1,457, South Crags 93, Thornend 61,
+prose:    infrastructure/state/items/HORRORWASTES_BIOME_DISSOLVE_1.md
+
 ## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -558,16 +568,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## HORRORWASTES_BIOME_DISSOLVE_1 Dissolve the HorrorWastes biome: re-biome its 1,711 tiles into neighbors (Deadstone receiving def ruled at the PropaneLakes sitting), re-freeze, re-home 29 cast rows
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - MEASURED: 1,711 HorrorWastes tiles — Deadstone 1,457, South Crags 93, Thornend 61,
-prose:    infrastructure/state/items/HORRORWASTES_BIOME_DISSOLVE_1.md
 
 ## CONTAGION_BIOME_PLACEMENT_1 Move the Contagion (AB_OcularForest) to the peaks above the green: Scald Spine's 38 non-green highs + optional Ashfall/Dew Horn tops — NO green squares; render for owner before painting
 state:    proposed
