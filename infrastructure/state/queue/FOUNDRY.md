@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T02:39:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T02:46:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -405,6 +405,24 @@ kind:     task
 summary:  - Input: a biome sheet paragraph (design/Jawa/worldbuilding/biomes/.md, start
 prose:    infrastructure/state/items/MACRO_GENERATOR_V0_1.md
 
+## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     bug
+summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
+prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
+
+## CODEX_PARALLEL_WORKERS_1 N-worker codex exec queue with receiving-agent AGENTS.md prose + grumpiness detector reading rollout rate_limits; own CODEX_HOME per worker
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Architecture A from the design: a request-queue directory driven by N parallel one-shot
+prose:    infrastructure/state/items/CODEX_PARALLEL_WORKERS_1.md
+
 ## MAPGEN_GL_SHEET_1 Map generator: 8 plans through the GL emitter, quicktest screenshots beside painter renders — the real terrain, one sheet (owner 2026-09-06: both routes)
 state:    doing
 row:      unassigned
@@ -466,6 +484,26 @@ kind:     task
 blocked:  code CLEAN/deployed; threat-point Prefix + tile-memory round trip need a live game session (batching, not restarting solo)
 summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
 prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
+
+## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     bug
+blocked:  fixed source-side (572413c0, lastLaunchTick gate), adversarially reviewed CLEAN; live PROVE/EXPECT quicktest still owed to a game-up session
+summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
+prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
+
+## CODEX_PARALLEL_WORKERS_1 N-worker codex exec queue with receiving-agent AGENTS.md prose + grumpiness detector reading rollout rate_limits; own CODEX_HOME per worker
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  dependency satisfied, CODEX_HOME piece done as a side effect; N-worker queue + grumpiness detector unbuilt, needs owner ruling on queue-vs-no-queue per today's Opus review
+summary:  - Architecture A from the design: a request-queue directory driven by N parallel one-shot
+prose:    infrastructure/state/items/CODEX_PARALLEL_WORKERS_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -629,16 +667,6 @@ thin:     no ## criteria
 summary:  - Capture ≥10 vanilla-generated terrain grids at matched sizes (250², 275², 300²) in arid biomes: quicktests…
 prose:    infrastructure/state/items/CORPUS_STATS_VANILLA_CONTROLS_1.md
 
-## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
-prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
-
 ## STRUCTUREINJ_RUT_TEMPLATE_DEFECTS_1 StructureInjectionsRUT: toll_gap.txt bakes rot=4 (invalid Rot4); glass_sea.txt is unreferenced dead content — regenerate from Lua
 state:    proposed
 row:      unassigned
@@ -648,26 +676,6 @@ kind:     bug
 thin:     no ## criteria
 summary:  1. Templates/tollgap.txt:39 — THING DiningChair … rot=4. Rot4 is 0-3; 4 is invalid (the engine wraps or error…
 prose:    infrastructure/state/items/STRUCTUREINJ_RUT_TEMPLATE_DEFECTS_1.md
-
-## CODEX_WRAPPER_HARVEST_FIX_1 codex_image.py discards finished images on timeout (harvest never runs) — fix, recover ~14 orphaned TREE_GRAPHICS images, retire chroma-key: native transparency MEASURED clean
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  1. runcodex(): on timeout, ALWAYS attempt harvestnew() before raising; a harvested
-prose:    infrastructure/state/items/CODEX_WRAPPER_HARVEST_FIX_1.md
-
-## CODEX_PARALLEL_WORKERS_1 N-worker codex exec queue with receiving-agent AGENTS.md prose + grumpiness detector reading rollout rate_limits; own CODEX_HOME per worker
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Architecture A from the design: a request-queue directory driven by N parallel one-shot
-prose:    infrastructure/state/items/CODEX_PARALLEL_WORKERS_1.md
 
 ## MAPGEN_CONVERGENCE_LOOP_1 Map generator convergence loop: painter vs GL vs corpus, iterate until the owner calls it great (owner 2026-09-06)
 state:    proposed

@@ -5362,3 +5362,12 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-07T02:09:23Z"}
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-07T02:39:21Z"}
 {"seat":"BENCH","event":"file","id":"GREENTIDE_MECHANICS_1","title":"The Greentide C# kit: wet-bulb condition+gear, dry-air blower, scald damage+steam devils, Roil/Breaklight weathers, churnmud+causeways, three-feller tree fall, Lunger ambush, grazing suppression, silence cue, Greatbole mineable-living-tree class — spec the_greentide.md","kind":"task","target":"v1","for":"BENCH","ts":"2026-09-07T02:44:08Z"}
+{"seat":"FOUNDRY","event":"claim","id":"NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1","ts":"2026-09-07T02:45:11Z"}
+{"seat":"FOUNDRY","event":"start","id":"NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1","ts":"2026-09-07T02:45:12Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CODEX_WRAPPER_HARVEST_FIX_1","ts":"2026-09-07T02:45:13Z"}
+{"seat":"FOUNDRY","event":"start","id":"CODEX_WRAPPER_HARVEST_FIX_1","ts":"2026-09-07T02:45:13Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CODEX_PARALLEL_WORKERS_1","ts":"2026-09-07T02:45:14Z"}
+{"seat":"FOUNDRY","event":"start","id":"CODEX_PARALLEL_WORKERS_1","ts":"2026-09-07T02:45:15Z"}
+{"seat":"FOUNDRY","event":"block","id":"NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1","reason":"fixed source-side (572413c0, lastLaunchTick gate), adversarially reviewed CLEAN; live PROVE/EXPECT quicktest still owed to a game-up session","ts":"2026-09-07T02:45:51Z"}
+{"seat":"FOUNDRY","event":"close","id":"CODEX_WRAPPER_HARVEST_FIX_1","sha":"814d4223","ts":"2026-09-07T02:46:04Z"}
+{"seat":"FOUNDRY","event":"block","id":"CODEX_PARALLEL_WORKERS_1","reason":"dependency satisfied, CODEX_HOME piece done as a side effect; N-worker queue + grumpiness detector unbuilt, needs owner ruling on queue-vs-no-queue per today's Opus review","ts":"2026-09-07T02:46:42Z"}

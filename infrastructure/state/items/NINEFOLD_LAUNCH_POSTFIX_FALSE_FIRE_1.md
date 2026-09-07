@@ -13,3 +13,11 @@ PROVE   quicktest: a launch attempt with CanLaunch()==false (no fuel) leaves Ta'
 EXPECT  two readings via the Ninefold debug/read surface, before/after each attempt
 LIES    a postfix that fires twice on a real launch (if the chosen hook is also called on retry) — count, don't just check non-zero
 ```
+
+## FOUNDRY, 2026-09-07: fixed source-side, exactly the "Better:" route this item names — live PROVE/EXPECT still owed
+
+Found independently via an adversarial fresh-context code review of an EARLIER same-day self-fix (which itself only gated on `CanLaunch()` and missed the distance-vs-`MinFuelLevelInGroup` guard this item's own first paragraph names) — same root defect, same line, this item just got there first.
+
+**Fixed, matching this item's own "Better:" suggestion**: rather than replicating TryLaunch's guard chain in the Prefix (drift-prone, and I'd already gotten it wrong once), `Patch_GravshipLaunched.cs` now gates on `CompLaunchable.lastLaunchTick` (public field), which vanilla itself sets unconditionally immediately after EVERY guard clause passes and before any pod is processed — verified via RimSage against the decompiled source, not assumed. Prefix captures it, Postfix credits Ta'Baa only if it changed. This is immune to any future guard-chain change, unlike a replicated check list. Commit `572413c0`, adversarially re-reviewed and marked CLEAN (`64e09460`).
+
+**Not done**: the live PROVE/EXPECT this item's own verify section wants (a real quicktest: a no-fuel launch attempt leaves Ta'Baa unchanged, a real launch changes it once) — needs a game-up session with a gravship set up to fail-then-succeed a launch, not attempted this pass. `needs game-up` stands. Left `doing`, blocked rather than closed — the fix is source-complete and independently reviewed, but per this project's own doctrine a live check on a mechanism never observed running still counts as owed.
