@@ -1,10 +1,8 @@
 # Corpus map topology statistics
 
 44 hand-authored `.rws` maps, hash-only topology (no def-name
-resolution). Source: `corpus_stats.py --run`. NO CONTROLS YET --
-vanilla-generated control maps are a follow-up captured through
-the bridge (CORPUS_MAP_STATISTICS_1.md); nothing below has been
-compared to vanilla, and no fabricated control numbers appear here.
+resolution). Source: `corpus_stats.py --run --controls <dir>`.
+Compared below against 12 vanilla-generated control maps (CORPUS_STATS_VANILLA_CONTROLS_1).
 
 ## By size bucket (250 / 275 / 300 / 325+ / 400+, by max(w,h))
 
@@ -51,11 +49,11 @@ compared to vanilla, and no fabricated control numbers appear here.
   - 325+: min=2.892 p50=4.461 max=5.097 (n=5)
   - 400+: min=4.531 p50=4.882 max=5.827 (n=4)
 - **chokepoint width estimate (-1=none found)**
-  - 250: min=1 p50=1 max=1 (n=18)
-  - 275: min=1 p50=1 max=1 (n=10)
-  - 300: min=1 p50=1 max=1 (n=7)
-  - 325+: min=1 p50=1 max=1 (n=5)
-  - 400+: min=1 p50=1 max=1 (n=4)
+  - 250: min=-1 p50=1 max=27 (n=18)
+  - 275: min=-1 p50=3 max=19 (n=10)
+  - 300: min=1 p50=1 max=5 (n=7)
+  - 325+: min=-1 p50=1 max=1 (n=5)
+  - 400+: min=1 p50=1 max=17 (n=4)
 - **distinct terrain hashes**
   - 250: min=12 p50=18 max=28 (n=18)
   - 275: min=13 p50=20 max=24 (n=10)
@@ -94,9 +92,9 @@ compared to vanilla, and no fabricated control numbers appear here.
   - 1.5: min=3.843 p50=4.591 max=5.097 (n=16)
   - 1.6: min=4.4 p50=4.724 max=5.827 (n=7)
 - **chokepoint width estimate (-1=none found)**
-  - 1.4: min=1 p50=1 max=1 (n=21)
-  - 1.5: min=1 p50=1 max=1 (n=16)
-  - 1.6: min=1 p50=1 max=1 (n=7)
+  - 1.4: min=-1 p50=1 max=17 (n=21)
+  - 1.5: min=-1 p50=1 max=27 (n=16)
+  - 1.6: min=-1 p50=1 max=1 (n=7)
 - **distinct terrain hashes**
   - 1.4: min=11 p50=16 max=29 (n=21)
   - 1.5: min=15 p50=19 max=27 (n=16)
@@ -111,5 +109,47 @@ compared to vanilla, and no fabricated control numbers appear here.
 - openness std across 25x25 windows: not clearly size-driven, not clearly version-driven (bucket-median spread ratio 1.14x size, 1.15x version).
 - distinct adjacency pairs: not clearly size-driven, version-driven (bucket-median spread ratio 2.00x size, 2.11x version).
 - adjacency entropy (bits): not clearly size-driven, not clearly version-driven (bucket-median spread ratio 1.13x size, 1.11x version).
-- chokepoint width estimate (-1=none found): not clearly size-driven, not clearly version-driven (bucket-median spread ratio 1.00x size, 1.00x version).
+- chokepoint width estimate (-1=none found): size-driven, not clearly version-driven (bucket-median spread ratio 3.00x size, 1.00x version).
 - distinct terrain hashes: not clearly size-driven, not clearly version-driven (bucket-median spread ratio 1.72x size, 1.75x version).
+
+## Corpus vs controls, by size bucket (CORPUS_STATS_VANILLA_CONTROLS_1)
+
+12 vanilla-generated control maps, matched size buckets only (a feature compared across mismatched sizes would read a size
+effect as a corpus/vanilla difference -- see this item's LIES line).
+
+- **region count**
+  - 250: corpus min=496 p50=1327 max=3056 (n=18) | controls min=254 p50=452 max=500 (n=4) -> OVERLAP
+  - 275: corpus min=940 p50=1139 max=2995 (n=10) | controls min=382 p50=764 max=769 (n=4) -> NO OVERLAP (candidate distinguishing feature)
+  - 300: corpus min=702 p50=1901 max=2351 (n=7) | controls min=509 p50=718 max=1114 (n=4) -> OVERLAP
+- **largest-region fraction of map**
+  - 250: corpus min=0.04416 p50=0.1491 max=0.6346 (n=18) | controls min=0.5973 p50=0.6469 max=0.7049 (n=4) -> OVERLAP
+  - 275: corpus min=0.07976 p50=0.2315 max=0.5695 (n=10) | controls min=0.108 p50=0.2188 max=0.3399 (n=4) -> OVERLAP
+  - 300: corpus min=0.112 p50=0.1623 max=0.1833 (n=7) | controls min=0.1463 p50=0.2626 max=0.7082 (n=4) -> OVERLAP
+- **perimeter/area, mean over regions**
+  - 250: corpus min=2.619 p50=2.805 max=3.064 (n=18) | controls min=1.888 p50=2.519 max=2.653 (n=4) -> OVERLAP
+  - 275: corpus min=2.773 p50=2.865 max=3.053 (n=10) | controls min=2.433 p50=2.634 max=2.649 (n=4) -> NO OVERLAP (candidate distinguishing feature)
+  - 300: corpus min=2.771 p50=2.848 max=2.952 (n=7) | controls min=2.555 p50=2.686 max=2.799 (n=4) -> OVERLAP
+- **openness (top-3 hash fraction)**
+  - 250: corpus min=0.4979 p50=0.7047 max=0.9232 (n=18) | controls min=0.8092 p50=0.8214 max=0.8725 (n=4) -> OVERLAP
+  - 275: corpus min=0.5216 p50=0.6744 max=0.9226 (n=10) | controls min=0.7632 p50=0.85 max=0.8891 (n=4) -> OVERLAP
+  - 300: corpus min=0.5745 p50=0.6201 max=0.7156 (n=7) | controls min=0.7244 p50=0.8488 max=0.865 (n=4) -> NO OVERLAP (candidate distinguishing feature)
+- **openness std across 25x25 windows**
+  - 250: corpus min=0.136 p50=0.2598 max=0.2963 (n=18) | controls min=0.1258 p50=0.1929 max=0.2149 (n=4) -> OVERLAP
+  - 275: corpus min=0.1265 p50=0.2797 max=0.3239 (n=10) | controls min=0.1714 p50=0.2031 max=0.2618 (n=4) -> OVERLAP
+  - 300: corpus min=0.231 p50=0.2834 max=0.3797 (n=7) | controls min=0.1744 p50=0.2317 max=0.3353 (n=4) -> OVERLAP
+- **distinct adjacency pairs**
+  - 250: corpus min=28 p50=64 max=116 (n=18) | controls min=40 p50=44 max=57 (n=4) -> OVERLAP
+  - 275: corpus min=48 p50=71 max=97 (n=10) | controls min=31 p50=53 max=86 (n=4) -> OVERLAP
+  - 300: corpus min=51 p50=78 max=114 (n=7) | controls min=55 p50=57 max=64 (n=4) -> OVERLAP
+- **adjacency entropy (bits)**
+  - 250: corpus min=2.921 p50=4.309 max=4.793 (n=18) | controls min=3.281 p50=3.485 max=3.724 (n=4) -> OVERLAP
+  - 275: corpus min=3.766 p50=4.662 max=4.997 (n=10) | controls min=2.586 p50=3.354 max=3.812 (n=4) -> OVERLAP
+  - 300: corpus min=4.031 p50=4.593 max=4.961 (n=7) | controls min=3.347 p50=3.578 max=3.758 (n=4) -> NO OVERLAP (candidate distinguishing feature)
+- **chokepoint width estimate (-1=none found)**
+  - 250: corpus min=-1 p50=1 max=27 (n=18) | controls min=15 p50=15 max=21 (n=4) -> OVERLAP
+  - 275: corpus min=-1 p50=3 max=19 (n=10) | controls min=1 p50=15 max=33 (n=4) -> OVERLAP
+  - 300: corpus min=1 p50=1 max=5 (n=7) | controls min=17 p50=21 max=23 (n=4) -> NO OVERLAP (candidate distinguishing feature)
+- **distinct terrain hashes**
+  - 250: corpus min=12 p50=18 max=28 (n=18) | controls min=16 p50=19 max=21 (n=4) -> OVERLAP
+  - 275: corpus min=13 p50=20 max=24 (n=10) | controls min=11 p50=18 max=24 (n=4) -> OVERLAP
+  - 300: corpus min=14 p50=19 max=29 (n=7) | controls min=19 p50=21 max=21 (n=4) -> OVERLAP

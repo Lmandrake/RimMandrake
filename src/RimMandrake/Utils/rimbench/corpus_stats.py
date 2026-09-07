@@ -51,20 +51,34 @@ FEATURES computed per map:
     occur, and the Shannon entropy (base 2, bits) of the occurrence
     distribution over those pairs -- structure only, no pair is ever named.
   - chokepoints (documented proxy, no def names, no nearest-neighbour
-    scorer): take the same TOP_K "open" boolean mask used above. Find its
-    largest 4-connected component (the map's main open area) and repeatedly
-    erode it with a 4-neighbour (plus-shaped) structuring element -- one
-    ring of cells removed per step. A corridor of width W survives erosion
-    up to step floor((W-1)/2) and disappears or SPLITS into >=2 components
-    at step floor((W-1)/2)+1. So: erode until the component first splits
-    (or vanishes), record that erosion radius r*, and estimate the
-    narrowest-neck width as 2*r*-1. This finds a chokepoint WITHIN the
-    single largest open region, which is exactly "the minimum cut that
-    would produce two large open regions" -- the CORPUS_MAP_STATISTICS_1
-    item's own suggested proxy ("min cut width between the two largest
-    regions via erosion"). Capped at EROSION_CAP steps; a map with no
-    chokepoint that narrow reports radius=-1, width_est=-1 (i.e. "no
-    chokepoint found within the cap", never a fabricated number).
+    scorer; fixed under CORPUS_STATS_VANILLA_CONTROLS_1 -- see below): take
+    the same TOP_K "open" boolean mask used above. Find its largest
+    4-connected component (the map's main open area) and repeatedly erode
+    it with a 4-neighbour (plus-shaped) structuring element -- one ring of
+    cells removed per step. A corridor of width W survives erosion up to
+    step floor((W-1)/2) and disappears or SPLITS at step floor((W-1)/2)+1.
+    Erode until the component first splits into >=2 components that are
+    each at least MIN_SPLIT_FRAC of the ORIGINAL main-region size (not
+    just >=2 components of ANY size), record that erosion radius r*, and
+    estimate the narrowest-neck width as 2*r*-1. This finds a chokepoint
+    WITHIN the single largest open region, which is exactly "the minimum
+    cut that would produce two large open regions" -- the
+    CORPUS_MAP_STATISTICS_1 item's own suggested proxy ("min cut width
+    between the two largest regions via erosion"). Capped at EROSION_CAP
+    steps; a map with no chokepoint that narrow, or whose main region
+    vanishes before two large pieces separate, reports radius=-1,
+    width_est=-1 (i.e. "no chokepoint found within the cap", never a
+    fabricated number).
+    PRIOR BUG (found by CORPUS_STATS_VANILLA_CONTROLS_1, fixed here): the
+    original version treated ANY split -- including a single stray cell
+    breaking off the main blob's jagged boundary -- as "the" split, so
+    n_components > 1 fired at erosion step 1 on essentially every real
+    terrain grid regardless of true bottleneck width. Measured: all 44
+    corpus maps reported chokepoint_width_est == 1. The size-threshold
+    fix above, re-run over the same 44 maps, produces radii from -1 to 14
+    and widths from -1 to 27 -- a non-degenerate distribution -- because
+    it now waits for the SECOND-largest resulting piece to itself be
+    substantial before calling it a split, rather than firing on debris.
   - distinct-hash count, map width/height/cell-count, gameVersion (raw
     string from the save) and its major "X.Y", and the source file path.
 
@@ -106,6 +120,9 @@ OUT_MD = os.path.join(OUT_DIR, "corpus_map_stats.md")
 TOP_K = 3            # see module docstring: openness/window/chokepoint proxy
 WINDOW = 25           # openness window side, cells
 EROSION_CAP = 25      # max erosion radius tried before giving up on a chokepoint
+MIN_SPLIT_FRAC = 0.05  # a split piece must be >= this fraction of the ORIGINAL
+                        # main-region size to count as a real second region
+                        # (see module docstring's chokepoint PRIOR BUG note)
 
 CSV_FIELDS = [
     "file", "name", "width", "height", "cells", "game_version", "version_major",
@@ -272,30 +289,42 @@ def _largest_true_component(mask):
     return lab_arr == biggest
 
 
-def _count_true_components(mask):
+def _component_sizes(mask):
+    """Sizes of every True-valued 4-connected component in mask, largest first."""
     if not mask.any():
-        return 0
+        return np.array([], dtype=np.int64)
     h, w = mask.shape
     values = mask.astype(np.int8).ravel().tolist()
     labels, k = label_regions(values, w, h)
     lab_arr = np.array(labels, dtype=np.int64).reshape(h, w)
-    true_labels = np.unique(lab_arr[mask])
-    return int(true_labels.size)
+    sizes = np.bincount(lab_arr.ravel()[mask.ravel()], minlength=k)
+    return np.sort(sizes)[::-1]
 
 
-def chokepoint_estimate(open_mask, cap=EROSION_CAP):
-    """(erosion_radius r*, width_est=2r*-1, split_count) or (-1, -1, 0)."""
+def chokepoint_estimate(open_mask, cap=EROSION_CAP, min_split_frac=MIN_SPLIT_FRAC):
+    """(erosion_radius r*, width_est=2r*-1, n_big_pieces) or (-1, -1, 0).
+
+    r* is the first erosion step at which the eroded main region has split
+    into >=2 pieces each >= min_split_frac of the ORIGINAL main-region size
+    (see module docstring's chokepoint PRIOR BUG note) -- not merely >=2
+    pieces of any size, which fires on boundary debris at step 1 almost
+    universally. -1,-1,0 if the region vanishes, or the cap is reached,
+    before a genuine two-large-piece split occurs.
+    """
     main = _largest_true_component(open_mask)
     if main is None:
         return -1, -1, 0
+    main_size = int(main.sum())
+    thresh = max(1, main_size * min_split_frac)
     cur = main
     for r in range(1, cap + 1):
         eroded = _erode(cur)
         if not eroded.any():
-            return r, max(2 * r - 1, 0), 0
-        n_components = _count_true_components(eroded)
-        if n_components > 1:
-            return r, 2 * r - 1, n_components
+            return -1, -1, 0
+        sizes = _component_sizes(eroded)
+        n_big = int((sizes >= thresh).sum())
+        if n_big >= 2:
+            return r, max(2 * r - 1, 0), n_big
         cur = eroded
     return -1, -1, 0
 
@@ -383,7 +412,48 @@ def find_corpus_files():
     return sorted(glob.glob(os.path.join(CORPUS_DIR, "**", "*.rws"), recursive=True))
 
 
-def run():
+CONTROLS_DIR_DEFAULT = os.path.join(OUT_DIR, "controls")
+OUT_CONTROLS_CSV = os.path.join(OUT_DIR, "controls_map_stats.csv")
+
+
+def find_control_files(controls_dir):
+    return sorted(glob.glob(os.path.join(controls_dir, "**", "*.txt"), recursive=True))
+
+
+def decode_control_grid(path):
+    """Text defName grid (render_terrain.py's INPUT B) -> (w, h, values, "control").
+
+    No shortHash exists for a text grid, so the spec's "hash the defName
+    string for the category id" is done as a per-file index into the
+    file's own sorted distinct defNames -- deterministic across runs
+    (unlike Python's str hash under randomised PYTHONHASHSEED) and free of
+    accidental collisions a numeric hash could introduce. The category
+    space is per-file, which is correct here: every downstream feature
+    (region size, perimeter, openness, chokepoint) only ever compares
+    cells for equality/inequality within one grid, never across grids.
+    """
+    rows = []
+    with io.open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.rstrip("\r\n")
+            if not line.strip():
+                continue
+            rows.append([c.strip() for c in line.split(",")])
+    if not rows:
+        raise ValueError("empty control grid: %s" % path)
+    w = len(rows[0])
+    for i, r in enumerate(rows):
+        if len(r) != w:
+            raise ValueError("ragged control grid in %s: row %d has %d cells, row 0 has %d"
+                              % (path, i, len(r), w))
+    h = len(rows)
+    names = [name for row in rows for name in row]
+    id_of = {name: i for i, name in enumerate(sorted(set(names)))}
+    values = [id_of[name] for name in names]
+    return w, h, values, "control"
+
+
+def run(controls_dir=None):
     files = find_corpus_files()
     if not files:
         print("FAILED no .rws files found under %s" % CORPUS_DIR)
@@ -407,22 +477,43 @@ def run():
         if dt > 90:
             print("SLOW >90s: %s took %.1fs" % (path, dt))
 
+    control_rows = []
+    if controls_dir:
+        control_files = find_control_files(controls_dir)
+        if not control_files:
+            print("FAILED no *.txt control grids found under %s" % controls_dir)
+            return 1
+        for path in control_files:
+            try:
+                w, h, values, version = decode_control_grid(path)
+                row = analyze_map(w, h, values, version, path)
+            except Exception as e:
+                print("FAILED %s %s" % (path, e))
+                return 1
+            control_rows.append(row)
+            print("[control] %s %dx%d" % (row["name"], w, h))
+
     os.makedirs(OUT_DIR, exist_ok=True)
-    write_csv(rows)
-    write_summary(rows)
+    write_csv(rows, OUT_CSV)
+    if control_rows:
+        write_csv(control_rows, OUT_CONTROLS_CSV)
+    write_summary(rows, control_rows)
 
     total = time.time() - t_all
-    print("rows=%d" % len(rows))
+    print("rows=%d controls=%d" % (len(rows), len(control_rows)))
     print("total_seconds=%.1f slowest=%s (%.1fs)" % (total, slowest[0], slowest[1]))
     if len(rows) != len(files):
         print("FAILED rows=%d != files=%d" % (len(rows), len(files)))
         return 1
+    if controls_dir and len(control_rows) < 10:
+        print("FAILED controls=%d < 10 required" % len(control_rows))
+        return 1
     return 0
 
 
-def write_csv(rows):
+def write_csv(rows, path):
     import csv
-    with io.open(OUT_CSV, "w", encoding="utf-8", newline="") as f:
+    with io.open(path, "w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(f, fieldnames=CSV_FIELDS)
         w.writeheader()
         for row in rows:
@@ -445,7 +536,14 @@ def _range_str(vals):
     return "min=%.4g p50=%.4g max=%.4g (n=%d)" % (vals[0], p50, vals[-1], n)
 
 
-def write_summary(rows):
+def _ranges_overlap(a, b):
+    """True if the [min, max] spans of two non-empty value lists intersect."""
+    if not a or not b:
+        return None
+    return not (max(a) < min(b) or max(b) < min(a))
+
+
+def write_summary(rows, control_rows=None):
     features = [
         ("region_count", "region count"),
         ("region_size_max_frac", "largest-region fraction of map"),
@@ -460,11 +558,16 @@ def write_summary(rows):
     lines = []
     lines.append("# Corpus map topology statistics")
     lines.append("")
-    lines.append("44 hand-authored `.rws` maps, hash-only topology (no def-name")
-    lines.append("resolution). Source: `corpus_stats.py --run`. NO CONTROLS YET --")
-    lines.append("vanilla-generated control maps are a follow-up captured through")
-    lines.append("the bridge (CORPUS_MAP_STATISTICS_1.md); nothing below has been")
-    lines.append("compared to vanilla, and no fabricated control numbers appear here.")
+    lines.append("%d hand-authored `.rws` maps, hash-only topology (no def-name"
+                  % len(rows))
+    lines.append("resolution). Source: `corpus_stats.py --run --controls <dir>`.")
+    if control_rows:
+        lines.append("Compared below against %d vanilla-generated control maps "
+                      "(CORPUS_STATS_VANILLA_CONTROLS_1)." % len(control_rows))
+    else:
+        lines.append("NO CONTROLS THIS RUN -- pass `--controls <dir>` to compare")
+        lines.append("against vanilla-generated maps (CORPUS_STATS_VANILLA_CONTROLS_1);")
+        lines.append("nothing below has been compared to vanilla in this run.")
     lines.append("")
     lines.append("## By size bucket (250 / 275 / 300 / 325+ / 400+, by max(w,h))")
     lines.append("")
@@ -496,6 +599,32 @@ def write_summary(rows):
         verdict.append("version-driven" if ver_spread > 2.0 else "not clearly version-driven")
         lines.append("- %s: %s (bucket-median spread ratio %.2fx size, %.2fx version)."
                       % (label, ", ".join(verdict), size_spread, ver_spread))
+
+    if control_rows:
+        lines.append("")
+        lines.append("## Corpus vs controls, by size bucket (CORPUS_STATS_VANILLA_CONTROLS_1)")
+        lines.append("")
+        lines.append("%d vanilla-generated control maps, matched size buckets only "
+                      "(a feature compared across mismatched sizes would read a size"
+                      % len(control_rows))
+        lines.append("effect as a corpus/vanilla difference -- see this item's LIES line).")
+        lines.append("")
+        for field, label in features:
+            corpus_buckets = _stratify(rows, "size_bucket", field)
+            control_buckets = _stratify(control_rows, "size_bucket", field)
+            shared = [b for b in ["250", "275", "300", "325+", "400+"]
+                      if b in corpus_buckets and b in control_buckets]
+            lines.append("- **%s**" % label)
+            if not shared:
+                lines.append("  - no size bucket present in both corpus and controls")
+                continue
+            for b in shared:
+                cvals, tvals = corpus_buckets[b], control_buckets[b]
+                overlap = _ranges_overlap(cvals, tvals)
+                verdict = "OVERLAP" if overlap else "NO OVERLAP (candidate distinguishing feature)"
+                lines.append("  - %s: corpus %s | controls %s -> %s"
+                              % (b, _range_str(cvals), _range_str(tvals), verdict))
+
     with io.open(OUT_MD, "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(lines) + "\n")
 
@@ -579,11 +708,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--run", action="store_true")
+    ap.add_argument("--controls", metavar="DIR", default=None,
+                     help="dir of vanilla-control text grids (render_terrain.py "
+                          "INPUT B format); adds the corpus-vs-controls section")
     args = ap.parse_args()
     if args.selftest:
         return selftest()
     if args.run:
-        return run()
+        return run(controls_dir=args.controls)
     ap.print_help()
     return 1
 
