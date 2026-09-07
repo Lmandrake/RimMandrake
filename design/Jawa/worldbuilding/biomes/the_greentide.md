@@ -1,5 +1,11 @@
 # The Greentide — definition sheet
 
+> 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
+> sheet are frozen: **amendments add detail; they never change a ruling.** The
+> unfreeze path is an owner ruling at a sitting, recorded on the item that
+> changes it; contradiction cards from the freeze review amend under this rule.
+
+
 _Owner + BENCH, 2026-09-06, written in conversation over four rounds and declared
 ready by the owner ("This is superb. Write it up!"). Defines `BiomeCypreJungle`
 (GRiNDTerra Biomes — "Cypre" was the donor's tree name and dies with the eviction).

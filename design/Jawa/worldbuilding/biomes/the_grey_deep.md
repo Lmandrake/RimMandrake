@@ -1,5 +1,11 @@
 # The Grey Deep — definition sheet
 
+> 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
+> sheet are frozen: **amendments add detail; they never change a ruling.** The
+> unfreeze path is an owner ruling at a sitting, recorded on the item that
+> changes it; contradiction cards from the freeze review amend under this rule.
+
+
 _Owner + BENCH, 2026-09-07, two rounds and ratified ("Ok! Write it up!"). Defines
 **the bottom of the Grey Sea** — the underwater biome beneath `RUT_GreySea`'s
 waters (381 Ocean-painted tiles plus its ice fringe; surface and shore canon

@@ -1,5 +1,11 @@
 # The Rot — definition sheet
 
+> 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
+> sheet are frozen: **amendments add detail; they never change a ruling.** The
+> unfreeze path is an owner ruling at a sitting, recorded on the item that
+> changes it; contradiction cards from the freeze review amend under this rule.
+
+
 _Owner + BENCH, 2026-09-06, written in conversation over three passes. Defines
 `AB_MycoticJungle` (Alpha Biomes' "Mycotic Jungle" — donor content incorporated wholesale,
 then bent). **The biome's name is THE ROT** (owner's pick). Thematic handle: **the

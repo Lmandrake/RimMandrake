@@ -1,5 +1,11 @@
 # The Twilight Deep — definition sheet
 
+> 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
+> sheet are frozen: **amendments add detail; they never change a ruling.** The
+> unfreeze path is an owner ruling at a sitting, recorded on the item that
+> changes it; contradiction cards from the freeze review amend under this rule.
+
+
 _Owner + BENCH, 2026-09-07, one round and ratified ("Let's show what we can do.
 Write it up!"). Defines **the bottom of the Twilight Sea** — the underwater
 biome beneath `RUT_TwilightSea` (442 Ocean-painted tiles plus ice fringe;

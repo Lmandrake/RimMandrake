@@ -1,5 +1,11 @@
 # The Terminator Sea — biome definition sheet
 
+> 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
+> sheet are frozen: **amendments add detail; they never change a ruling.** The
+> unfreeze path is an owner ruling at a sitting, recorded on the item that
+> changes it; contradiction cards from the freeze review amend under this rule.
+
+
 _First pass, 2026-09-05, to the grammar in `README_BIOME_GRAMMAR.md`._
 
 🔴 **Scope (added 2026-09-07):** this sheet's law — solitary, monoculture, the

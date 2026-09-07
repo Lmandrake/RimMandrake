@@ -1,5 +1,11 @@
 # The edible-genepack loop — reverse-engineered, verified, ready to implement natively
 
+> 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
+> sheet are frozen: **amendments add detail; they never change a ruling.** The
+> unfreeze path is an owner ruling at a sitting, recorded on the item that
+> changes it; contradiction cards from the freeze review amend under this rule.
+
+
 Filed as `EDIBLE_GENEPACK_NATIVE_1`, owed by [the Slime's gene machine](the_slime.md) §7.
 Source: `GenepacksInjection.dll` (TommasoBelluzzo.GenepacksInjection, workshop 3784789591,
 packageId `TommasoBelluzzo.GenepacksInjection`) — **INACTIVE, not in ModsConfig.xml**, on

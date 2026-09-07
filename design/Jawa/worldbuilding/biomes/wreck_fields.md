@@ -4,6 +4,12 @@ wreck-field biome that turned out to be already canon as **The Fall Line** (regi
 
 # The Wreck Fields — biome definition sheet
 
+> 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
+> sheet are frozen: **amendments add detail; they never change a ruling.** The
+> unfreeze path is an owner ruling at a sitting, recorded on the item that
+> changes it; contradiction cards from the freeze review amend under this rule.
+
+
 # 🔴 UNRULED — BENCH'S PROPOSAL, FOR THE OWNER TO ACCEPT OR REJECT
 
 _BENCH, 2026-09-05. **Nothing in this sheet is canon.** The other three sheets

@@ -1,5 +1,11 @@
 # The Slime — gene machine lists — ✅ ACCEPTED (owner, 2026-09-06)
 
+> 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
+> sheet are frozen: **amendments add detail; they never change a ruling.** The
+> unfreeze path is an owner ruling at a sitting, recorded on the item that
+> changes it; contradiction cards from the freeze review amend under this rule.
+
+
 _Draft 2 accepted with one cut: **A23 battle premonition is STRUCK** (P2 wins). Knobs:
 K1 = unlimited visits (riders accumulate), K2 = riders permanent; K3 (animals) and K4
 (rarity tiers) remain open. Companion to `the_slime.md` §7._
