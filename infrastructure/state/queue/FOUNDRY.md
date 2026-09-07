@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T03:14:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T03:23:00Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -440,15 +440,6 @@ target:   v1
 kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
-
-## GL_EMITTER_OBJECT_GAP_1 gl_emit rebuilds 14 of 44 landforms one <Object> short (coast/river family, Gorge, Valley); selftest must cover all 44
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  - Diff one small case (LandformValley.xml: 3 objects vs 2 emitted) — find which <Object refID the parser drop…
-prose:    infrastructure/state/items/GL_EMITTER_OBJECT_GAP_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
