@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T22:53:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T23:01:02Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -491,3 +491,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  🔴 THE CONSTRAINT THAT OUTRANKS EVERY DESIGN CHOICE BELOW
 prose:    infrastructure/state/items/PROJECT_MATURITY_DASHBOARD_1.md
+
+## MOD_HUMAN_EXPLORATION_PASS_1 Human-executable exploration pass: per mod, a scripted in-game walkthrough the owner runs to confirm it looks and feels right -- runs AFTER the art/normalization wave
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MOD_HUMAN_EXPLORATION_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MOD_HUMAN_EXPLORATION_PASS_1.md
+
+## MOD_VALIDATION_PLAN_AUTHORING_1 Author a per-mod automated validation walk for all 76 mods -- a scripted string of checks exercising most of each mod's behaviour, written NOW while context is fresh
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MOD_VALIDATION_PLAN_AUTHORING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MOD_VALIDATION_PLAN_AUTHORING_1.md

@@ -5593,3 +5593,7 @@
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"measure world feature label sizes - owner reports HUGE labels","ts":"2026-09-07T22:51:22Z"}
 {"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-07T22:51:48Z"}
 {"seat":"BENCH","event":"file","id":"WORLD_FEATURE_LABELS_OVERSIZED_1","title":"World feature labels render HUGE and overlap the globe -- our maxDrawSizeInTiles multiplier is 1.63x vanilla's","kind":"bug","target":"v1","for":"FOUNDRY","ts":"2026-09-07T22:53:42Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-07T22:53:48Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"diagnose owner-reported broken roads and rivers","ts":"2026-09-07T22:59:44Z"}
+{"seat":"BENCH","event":"file","id":"MOD_VALIDATION_PLAN_AUTHORING_1","title":"Author a per-mod automated validation walk for all 76 mods -- a scripted string of checks exercising most of each mod's behaviour, written NOW while context is fresh","kind":"task","target":"v1","for":"BENCH","ts":"2026-09-07T23:01:02Z"}
+{"seat":"BENCH","event":"file","id":"MOD_HUMAN_EXPLORATION_PASS_1","title":"Human-executable exploration pass: per mod, a scripted in-game walkthrough the owner runs to confirm it looks and feels right -- runs AFTER the art/normalization wave","kind":"task","target":"v1","for":"BENCH","ts":"2026-09-07T23:01:02Z"}
