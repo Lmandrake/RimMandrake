@@ -1,5 +1,11 @@
 # The Nightside Ice — biome definition sheet
 
+> 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
+> sheet are frozen: **amendments add detail; they never change a ruling.** The
+> unfreeze path is an owner ruling at a sitting, recorded on the item that
+> changes it; contradiction cards from the freeze review amend under this rule.
+
+
 _First pass 2026-09-05 (the nightside as a whole); **second pass 2026-09-06, owner +
 BENCH**, binding it to a def and reconciling it with the seven sheets that landed since.
 The first pass's ecology (§4) stands **unchanged, word for word** — owner's ruling. Defines

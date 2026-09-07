@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T07:47:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T08:20:07Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## BIOME_FREEZE_FABLE_REVIEW_1 Full-scale Fable review of ALL biomes together before the freeze — temps, physics, weather, precipitation, dust/sand/ash, fuel/wood/animal/meat/growth, diseases — BLOCKED until every biome sheet is finished; pre-assignment, not final check-out
+state:    ready
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  BIOMEFREEZEFABLEREVIEW1 — full-scale Fable review of ALL biomes together, before the freeze
+prose:    infrastructure/state/items/BIOME_FREEZE_FABLE_REVIEW_1.md
 
 # IN PROGRESS
 
@@ -132,16 +141,6 @@ kind:     task
 thin:     no ## criteria
 summary:  - Inventory, from the live def dump + mod XML (never guess a defName):
 prose:    infrastructure/state/items/MUTATION_MODIFIERS_SURVEY_1.md
-
-## BIOME_FREEZE_FABLE_REVIEW_1 Full-scale Fable review of ALL biomes together before the freeze — temps, physics, weather, precipitation, dust/sand/ash, fuel/wood/animal/meat/growth, diseases — BLOCKED until every biome sheet is finished; pre-assignment, not final check-out
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  BIOMEFREEZEFABLEREVIEW1 — full-scale Fable review of ALL biomes together, before the freeze
-prose:    infrastructure/state/items/BIOME_FREEZE_FABLE_REVIEW_1.md
 
 ## MECHANOID_BIOME_PRESENCE_REVIEW_1 Review which biomes contain mechanoids and ancient dangers — not all should; the two magnetic poles (Rust Cathedral, the antistellar war lab) by ruling, everything else argued
 state:    proposed

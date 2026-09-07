@@ -1,5 +1,11 @@
 # The Deep Desert — definition sheet
 
+> 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
+> sheet are frozen: **amendments add detail; they never change a ruling.** The
+> unfreeze path is an owner ruling at a sitting, recorded on the item that
+> changes it; contradiction cards from the freeze review amend under this rule.
+
+
 _Owner + BENCH, 2026-09-05, in conversation. Canon anchor: `hydrology_and_fire_ecology.md`
 R-H6d, which names the deep desert **the dayside terminus** and the exact conjugate of the
 forsaken crags — there the danger is presence, here it is **absence**; there the fear is

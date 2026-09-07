@@ -1,5 +1,11 @@
 # The Wasteland — definition sheet
 
+> 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
+> sheet are frozen: **amendments add detail; they never change a ruling.** The
+> unfreeze path is an owner ruling at a sitting, recorded on the item that
+> changes it; contradiction cards from the freeze review amend under this rule.
+
+
 _Owner + BENCH, 2026-09-05, written in conversation over three passes. The ladder's zero:
 the first truly dead ground. Thematic handle: **no outlet** — and its image: **a just-lost
 sunset, flickering with wrathful lightning.**_

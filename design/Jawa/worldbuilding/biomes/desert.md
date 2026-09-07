@@ -1,5 +1,11 @@
 # The Desert — definition sheet
 
+> 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
+> sheet are frozen: **amendments add detail; they never change a ruling.** The
+> unfreeze path is an owner ruling at a sitting, recorded on the item that
+> changes it; contradiction cards from the freeze review amend under this rule.
+
+
 _Owner + BENCH, 2026-09-05, written in conversation. The livable one: the largest biome on
 Ash'karr (`Desert`, 4,151 tiles, 19%) and the first on the dryness ladder with a real food
 web. Thematic handle: **the long shade**._

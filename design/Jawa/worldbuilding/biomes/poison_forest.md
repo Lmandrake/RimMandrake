@@ -1,5 +1,11 @@
 # The Poison Forest — biome definition sheet
 
+> 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
+> sheet are frozen: **amendments add detail; they never change a ruling.** The
+> unfreeze path is an owner ruling at a sitting, recorded on the item that
+> changes it; contradiction cards from the freeze review amend under this rule.
+
+
 _Second pass, 2026-09-05, weaving the owner's refinements: terminator not deep
 nightside · scattered twilight · cold gas vents, **no volcanism or geysers** ·
 photosynthesis possible but dominated · water non-potable · meat toxic but prized._
