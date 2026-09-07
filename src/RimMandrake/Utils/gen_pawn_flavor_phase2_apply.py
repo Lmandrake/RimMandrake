@@ -80,6 +80,7 @@ DECISIONS_JSON = os.path.join(ROOT, "design", "Jawa", "worldbuilding", "review",
 OUT_DIR = os.path.join(ROOT, "src", "RimUtinni", "PawnFlavor", "Patches")
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from game_paths import CAPTURES  # noqa: E402
+from retired_mods import is_retired  # noqa: E402
 
 # Resolved by hand this pass (2026-09-01) - see module docstring. Left explicit
 # rather than fuzzy-matched at runtime: fuzzy matching a defName rename is
@@ -315,7 +316,9 @@ def write_patch(path, top_ops):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--capture", help="explicit DefDump capture dir (defaults to newest)")
+    ap.add_argument("--out", help="override OUT_DIR, so a re-run can be diffed instead of overwriting what you wanted to compare against")
     args = ap.parse_args()
+    out_dir = args.out or OUT_DIR
 
     dec = json.load(open(DECISIONS_JSON, encoding="utf-8"))
     if not dec.get("savedAt") or not dec.get("decidedBy"):
@@ -354,6 +357,9 @@ def main():
             rec = thoughts[real]
             pkg = rec["packageId"]
             modname = rec["modName"]
+            if is_retired(pkg) or is_retired(modname):
+                skipped.append((key, "retired mod (%s)" % modname))
+                continue
             stages = rec["fields"].get("stages") or []
             label = (p.get("label") or "").strip()
             desc = (p.get("description") or "").strip()
@@ -377,6 +383,9 @@ def main():
             rec = mentalbreaks[defname]
             pkg = rec["packageId"]
             modname = rec["modName"]
+            if is_retired(pkg) or is_retired(modname):
+                skipped.append((key, "retired mod (%s)" % modname))
+                continue
             label = (p.get("label") or "").strip()
             if label:
                 xp = 'Defs/MentalBreakDef[defName="%s"]' % defname
@@ -390,13 +399,16 @@ def main():
                 else:
                     ms_pkg = mentalstates[ms_name]["packageId"]
                     ms_modname = mentalstates[ms_name]["modName"]
-                    xp = 'Defs/MentalStateDef[defName="%s"]' % ms_name
-                    fields = {}
-                    if begin:
-                        fields["beginLetter"] = begin
-                    if recov:
-                        fields["recoveryMessage"] = recov
-                    mb_entries.append((ms_pkg, ms_modname, seq_op(xp, fields)))
+                    if is_retired(ms_pkg) or is_retired(ms_modname):
+                        skipped.append((key, "linked MentalStateDef's mod retired (%s)" % ms_modname))
+                    else:
+                        xp = 'Defs/MentalStateDef[defName="%s"]' % ms_name
+                        fields = {}
+                        if begin:
+                            fields["beginLetter"] = begin
+                        if recov:
+                            fields["recoveryMessage"] = recov
+                        mb_entries.append((ms_pkg, ms_modname, seq_op(xp, fields)))
             stats["MentalBreakDef"] += 1
 
         elif deftype == "XenotypeDef":
@@ -407,6 +419,9 @@ def main():
             rec = xenotypes[real]
             pkg = rec["packageId"]
             modname = rec["modName"]
+            if is_retired(pkg) or is_retired(modname):
+                skipped.append((key, "retired mod (%s)" % modname))
+                continue
             label = (p.get("label") or "").strip()
             desc = (p.get("description") or "").strip()
             fields = {}
@@ -422,9 +437,9 @@ def main():
         else:
             skipped.append((key, "unknown defType"))
 
-    write_patch(os.path.join(OUT_DIR, "PawnFlavorPhase2_ThoughtDef.xml"), build_groups(thought_entries))
-    write_patch(os.path.join(OUT_DIR, "PawnFlavorPhase2_MentalBreak.xml"), build_groups(mb_entries))
-    write_patch(os.path.join(OUT_DIR, "PawnFlavorPhase2_Xenotype.xml"), build_groups(xeno_entries))
+    write_patch(os.path.join(out_dir, "PawnFlavorPhase2_ThoughtDef.xml"), build_groups(thought_entries))
+    write_patch(os.path.join(out_dir, "PawnFlavorPhase2_MentalBreak.xml"), build_groups(mb_entries))
+    write_patch(os.path.join(out_dir, "PawnFlavorPhase2_Xenotype.xml"), build_groups(xeno_entries))
 
     print("rows applied: ThoughtDef=%d MentalBreakDef=%d XenotypeDef=%d (total %d of %d)"
           % (stats["ThoughtDef"], stats["MentalBreakDef"], stats["XenotypeDef"],
