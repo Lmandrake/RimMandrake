@@ -215,7 +215,13 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
 
 - `ANCIENT_WAR_LAB_1` — the lab as dungeon beneath the lake; the Impact Site; the crater
   transformation as a permanent map change (its own engine work).
-- `LIQUID_BIOMES_MAP_1` — the lake's worldmap tiles under Umbra.
+- `LIQUID_BIOMES_MAP_1` — the lake's worldmap tiles under Umbra. **Offline half done
+  2026-09-06**: `RUT_PropaneLake` BiomeDef authored (reuses the donor's own
+  `AB_PropaneLake`/`AB_SolidPropane` terrain — see
+  `design/Jawa/worldbuilding/LIQUID_BIOMES_MAP_1_RECONCILIATION.md` §4 for the finding
+  that `AB_PropaneLakes` is a land biome whose lake is a local-map terrain patch, not a
+  worldmap water tile). **Still owed**: the render, the owner's ruling on the lake's
+  exact tile subset, and the paint — nobody has painted `RUT_PropaneLake` onto anything.
 - `TERRAMANUFACTURE_CANON_1` — propagate the ancient history into the world definition
   and the faction/canon docs (the dynamo, the Cathedral as remnant, mutual learning).
 - `MECHANOID_BIOME_PRESENCE_REVIEW_1` — the allowed map; this biome and the Cathedral by

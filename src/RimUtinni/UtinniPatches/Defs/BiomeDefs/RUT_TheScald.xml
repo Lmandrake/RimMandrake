@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_TheScald.xml                       UtinniPatches · authored 2026-09-06
+  ============================================================================
+  LIQUID_BIOMES_MAP_1 — OFFLINE HALF. The item's "boiling ocean". Reconciled
+  against world/ASHKARR_WORLDMAP_tiles.csv: region "Scald" is 312 tiles,
+  biome=Lake, water=1 on all 312 (MEASURED via
+  ~/.claude/skills/measuring-large-artifacts, sha256:b38fd68569237c96),
+  matching design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md's Scald
+  table (centre (35,185), radius 10.5, −30 m ruled / −350 m live-measured,
+  "a terminal pan" — eight rivers end in it, none leaves).
+
+  🔴 NOT ParentName="Lake". Verified by direct read of
+  Core/Defs/BiomeDefs/Biomes_Water.xml: the <BiomeDef> tag for Lake (and for
+  Ocean, used by RUT_TwilightSea.xml/RUT_GreySea.xml in this same folder)
+  carries no Name="..." attribute at all — same trap RUT_NightsideIce.xml
+  already found and documented for IceSheet. ParentName="Lake" would
+  silently fail to resolve, so this restates Lake's shape directly instead.
+
+  Why a NEW BiomeDef rather than patching vanilla Lake in place: Lake is not
+  the Scald alone. The same CSV shows a second, unrelated region ("Damp",
+  10 tiles) also painted biome=Lake — patching Lake's waterDeepTerrain etc.
+  in place would boil that lake too, which no design doc asks for. A
+  dedicated def is the only way to give the Scald its own water terrain
+  without collateral damage elsewhere on the planet.
+
+  What this def carries:
+  - isWaterBiome/canBuildBase/allowRoads/allowRivers/hasVirtualPlants/
+    impassable/isBackgroundBiome/workerClass/texture: copied verbatim from
+    vanilla Lake (same file, lines 19-32) — nothing here changes the
+    baseline world-map behaviour, only the water terrain underneath it.
+  - waterDeepTerrain/waterShallowTerrain/waterMovingShallowTerrain/
+    waterMovingChestDeepTerrain -> the RUT_ScaldWater* terrains authored
+    alongside this file (RUT_ScaldWater.xml), carrying the boiling-lift
+    mechanic from design/Jawa/mods/REGROWTH_BOILING_LIFT_SPEC.md.
+    oceanDeepTerrain/oceanShallowTerrain deliberately left UNSET (inherit
+    vanilla WaterOceanDeep/Shallow): the Scald is Lake-typed, not
+    Ocean-typed, so these fields are never queried for it; the matching
+    RUT_ScaldWaterOcean{Deep,Shallow} terrains exist anyway (R-B3 ruled all
+    six slots authored as a set) and sit ready if a future tile ever needs
+    them.
+  - wildAnimals / coastalWildAnimals / fishTypes: left EMPTY, documented
+    here rather than invented. Two independent reasons, not one:
+      1. No biome definition sheet exists for the Scald at all (checked
+         design/Jawa/worldbuilding/biomes/ — no the_scald.md, no
+         the_anvil.md; terminator_sea.md's own comparison table only uses
+         "the Scald" as a foil for the terminator seas, it does not define
+         the Scald's own roster). Inventing a creature list without an
+         owner-reviewed sheet is exactly the kind of call
+         "Biome sheets are a conversation loop" says is his, not mine.
+      2. design/Jawa/worldbuilding/the_seas.md (Lane 1) already names
+         repatriation candidates for the seas generally — KwazelMaw, Mott,
+         Dianoga, Dragonsnake, Fambaa, Fanback, Blixus — but assigns them to
+         "Lake/DesertOasis/coastal biomes" as a class, not to the Scald by
+         name, and that assignment is SEAS_WATERLINE_PASS_1's job, a
+         separate, already-scoped item. Populating wildAnimals here ahead of
+         that item would fork the roster decision into two places.
+  README_BIOME_GRAMMAR.md's table currently reads "terminator_sea.md | the
+  three seas | done" — that line overclaims for the Scald specifically and
+  should be corrected once a real Scald sheet exists (not done in this
+  pass; flagged in the reconciliation note this item also writes).
+  ============================================================================
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RUT_TheScald</defName>
+    <label>the Scald</label>
+    <description>A crater lake at the bottom of the world's hottest basin, fed by every river that survives the Anvil and drained by nothing. It boils where it is shallow and simmers where it is deep, and it has been getting saltier and smaller since the day the last outflow closed.</description>
+    <workerClass>BiomeWorker_Ocean</workerClass>
+    <isWaterBiome>true</isWaterBiome>
+    <canBuildBase>false</canBuildBase>
+    <allowRoads>false</allowRoads>
+    <allowRivers>false</allowRivers>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <texture>World/Biomes/Ocean</texture>
+    <impassable>true</impassable>
+    <isBackgroundBiome>true</isBackgroundBiome>
+    <waterShallowTerrain>RUT_ScaldWaterShallow</waterShallowTerrain>
+    <waterDeepTerrain>RUT_ScaldWaterDeep</waterDeepTerrain>
+    <waterMovingShallowTerrain>RUT_ScaldWaterMovingShallow</waterMovingShallowTerrain>
+    <waterMovingChestDeepTerrain>RUT_ScaldWaterMovingChestDeep</waterMovingChestDeepTerrain>
+    <wildAnimals />
+    <coastalWildAnimals />
+  </BiomeDef>
+
+</Defs>

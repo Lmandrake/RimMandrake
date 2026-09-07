@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_TwilightSea.xml                    UtinniPatches · authored 2026-09-06
+  ============================================================================
+  LIQUID_BIOMES_MAP_1 — OFFLINE HALF. One of the item's two "brine seas",
+  per design/Jawa/worldbuilding/biomes/terminator_sea.md §2: "the Twilight
+  Sea (θ 91, bearing 170, moldy) and the Grey Sea (θ 92, bearing 8,
+  salt-encrusted, shrinking). Both are hypersaline; both are terminal sinks
+  with no outflow." Reconciled against world/ASHKARR_WORLDMAP_tiles.csv:
+  region "Twilight Sea" is 852 tiles total, biome breakdown Ocean 442 /
+  SeaIce 171 / five land biomes on the shore (Desert 140, AridShrubland 50,
+  ZBiome_Badlands 16, Wasteland 14, ExtremeDesert 14, AB_RockyCrags 5).
+  This def concerns the 442 Ocean-biome (liquid) tiles only — SeaIce is
+  frozen margin, not a liquid biome, and out of this item's scope; the
+  shore's land biomes are a separate, already-existing assignment this item
+  does not touch.
+
+  🔴 NOT ParentName="Ocean". Same trap as RUT_TheScald.xml / RUT_NightsideIce.xml:
+  Core/Defs/BiomeDefs/Biomes_Water.xml's <BiomeDef> tag for Ocean carries no
+  Name="..." attribute, so ParentName="Ocean" would silently fail to
+  resolve. Shape restated directly instead (isWaterBiome/canBuildBase/
+  allowRoads/allowRivers/hasVirtualPlants/texture/impassable/
+  isBackgroundBiome/workerClass copied verbatim from vanilla Ocean, same
+  file, lines 4-17).
+
+  Why a new def at all, since Ocean's 823 tiles split EXACTLY 442/381
+  between Twilight Sea and Grey Sea with nothing left over (verified against
+  the same CSV) — patching vanilla Ocean in place would not leak onto any
+  third region the way patching Lake would (see RUT_TheScald.xml's "Damp"
+  finding): terminator_sea.md §4 rules "each sea is an island, so each sea
+  is endemic and alone... every large organism in a terminator sea exists in
+  that sea and nowhere else in the universe" — a single shared Ocean patch
+  cannot carry two different, mutually exclusive faunas. Twilight and Grey
+  need their own defNames even though they could technically share terrain.
+
+  Water terrain: deliberately UNCHANGED from vanilla (oceanDeepTerrain/
+  oceanShallowTerrain left unset, inheriting WaterOceanDeep/WaterOceanShallow
+  -> waterBodyType Saltwater). "Hypersaline" is real chemistry in the design
+  doc but the engine has exactly one water-salinity tier beyond Freshwater
+  (Verse.WaterBodyType: None/Freshwater/Saltwater/Other — enumerated via
+  ilprobe this pass), so Saltwater already says everything the engine can
+  say; no new TerrainDef is warranted the way the Scald's actual burn
+  mechanic (RUT_ScaldWater.xml) was. A visually distinct "dull steel and
+  bone, never blue" water texture (terminator_sea.md §9's artistic theme) is
+  real but separate, unowed art work, not a mechanical need — noted here so
+  it is not lost, not invented here.
+
+  wildAnimals / coastalWildAnimals / fishTypes: left EMPTY, documented, same
+  reasoning as RUT_TheScald.xml. terminator_sea.md's roster consequences
+  (§ "Roster consequences") ask for "a single mat/film organism per sea" and
+  "one or two enormous, ancient, solitary brine animals per sea, endemic to
+  it" but names no defNames — that creature-authoring pass (with its own art
+  and normalization-law review) is SEAS_WATERLINE_PASS_1 /
+  SW_SEA_MONSTERS_ART_1 territory, not this item's.
+  ============================================================================
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RUT_TwilightSea</defName>
+    <label>the Twilight Sea</label>
+    <description>A hypersaline terminal sea on the terminator band, moldy from shore to shore with one mat organism that has never had to share it. It has no outflow and it is shrinking — the stranded shoreline terraces mark where it used to reach.</description>
+    <workerClass>BiomeWorker_Ocean</workerClass>
+    <isWaterBiome>true</isWaterBiome>
+    <canBuildBase>false</canBuildBase>
+    <allowRoads>false</allowRoads>
+    <allowRivers>false</allowRivers>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <texture>World/Biomes/Ocean</texture>
+    <impassable>true</impassable>
+    <isBackgroundBiome>true</isBackgroundBiome>
+    <wildAnimals />
+    <coastalWildAnimals />
+  </BiomeDef>
+
+</Defs>

@@ -2,6 +2,13 @@
 
 _First pass, 2026-09-05, to the grammar in `README_BIOME_GRAMMAR.md`._
 
+🔑 **Def reconciliation done 2026-09-06** (`LIQUID_BIOMES_MAP_1`, offline half): the
+Twilight Sea and Grey Sea this sheet defines are now `RUT_TwilightSea`/`RUT_GreySea`
+(new BiomeDefs — vanilla `Ocean` carries no `Name=` attribute so a patch could not target
+it safely, and the two seas need independent identities to stay "endemic and alone").
+Not yet painted onto any tile. Full findings, engine facts and what remains owed:
+`design/Jawa/worldbuilding/LIQUID_BIOMES_MAP_1_RECONCILIATION.md`.
+
 ## 🔑 The lush rule, in three parts (owner, 2026-09-05) — and this biome is not in it
 
 > *"The terminator is solitary not the only place where lush exists. In fact it's not

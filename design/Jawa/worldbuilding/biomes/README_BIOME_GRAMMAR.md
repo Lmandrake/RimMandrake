@@ -98,7 +98,7 @@ Order is by **similarity — slowly vary** (owner, 2026-09-05).
 |---|---|---|
 | `poison_forest.md` | `PoisonForest` | ✅ done |
 | `dune_sea.md` | `ExtremeDesert` (Dune Sea) | ✅ done |
-| `terminator_sea.md` | the three seas | ✅ done |
+| `terminator_sea.md` | Twilight Sea + Grey Sea (`RUT_TwilightSea`/`RUT_GreySea`, `LIQUID_BIOMES_MAP_1`) | ✅ sheet done for these two; ⚠️ **this row previously said "the three seas" — the Scald is the third and has NO biome sheet** (checked 2026-09-06, `LIQUID_BIOMES_MAP_1_RECONCILIATION.md` §2); `terminator_sea.md` uses the Scald only as a comparison foil, it does not define it |
 | `nightside_ice.md` | `RUT_NightsideIce` (own def, inherits vanilla `IceSheet`; 802 tiles MEASURED — the deep-night highland) | ✅ first pass 2026-09-05; **second pass 2026-09-06** — dirty ice, the thaw pulse, tunnelers, the six reconciliations; first-pass ecology unchanged |
 | `fall_line.md` | **injection layer** over `ExtremeDesert` | ✅ done — no new BiomeDef |
 | `deep_desert.md` | `ExtremeDesert`, far ring | ✅ done |
