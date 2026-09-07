@@ -42,9 +42,15 @@ sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
 import rimbridge_client as rc
 
 # The expectation is MEASURED from the deployed DLL, never quoted: a literal here
-# rotted twice (166, 233). build.py's tool_surface is an upper bound — a tool name
-# quoted in another tool's description prose counts once — so names in PHANTOMS
-# (prose-only, verified absent as [Tool] in source) are subtracted before comparing.
+# rotted twice (166, 233). Until BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1 (2026-09-06)
+# build.py's tool_surface was an upper bound — a tool name quoted in another
+# tool's description prose counted once — so PHANTOMS (prose-only, verified
+# absent as [Tool] in source) were subtracted before comparing. tool_surface is
+# now an EXACT metadata read (tool_metadata.py) and no longer produces either
+# PHANTOMS name, so this subtraction is now a harmless no-op — kept rather than
+# deleted in case a future prose mention of these exact strings ever changes
+# that, since the cost of keeping it is one line and the cost of a silent
+# off-by-one census is a wrong "expect N tools" baseline.
 PHANTOMS = {"jawa/revoke", "jawa/anomaly_"}
 
 

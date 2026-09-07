@@ -54,6 +54,9 @@ import shutil
 import subprocess
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import tool_metadata
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROJECT = os.path.join(HERE, "JawaBench.BridgeTools", "JawaBench.BridgeTools.csproj")
 ARTIFACT_DIR = os.path.join(HERE, "artifacts", "BridgeTools", "JawaBench")
@@ -148,39 +151,24 @@ def verify_bundle(dll):
 def verify_gm_gate(dll, gm):
     """Read the tool names back out of the compiled DLL.
 
-    Searching the raw bytes needs no IL reader and cannot be fooled by what the
-    source LOOKS like it should have produced -- which is the point: the claim
-    under test is 'the #if fired', and the source is the thing that claim is
-    about, so the source cannot also be the evidence.
+    A [Tool] name is a custom-attribute constructor argument, so it lives in
+    the metadata BLOB heap as a length-prefixed UTF-8 SerString (ECMA-335
+    II.23.3) -- not as a free string a byte/regex scan can stumble on, and
+    not in the #US heap either, which is where ordinary string literals
+    (including a DESCRIPTION that merely MENTIONS a tool name in prose) live.
+    `tool_metadata.tool_names_from_dll` reads the CustomAttribute table's
+    Value column directly and slices each name using the blob's own length
+    prefix, so a description that says "unlike jawa/fire_incident, this..."
+    can never be mistaken for the attribute application itself: only a real
+    [Tool(...)] declaration's first constructor argument is ever considered.
 
-    ENCODING, measured 2026-08-12 rather than assumed: a tool name is a [Tool]
-    CUSTOM ATTRIBUTE argument, so it is stored in the metadata BLOB heap as
-    length-prefixed UTF-8 -- NOT as UTF-16 in the #US heap, which is where
-    ordinary string literals live. A UTF-16-only search reports a clean 0/14 on
-    a DLL that in fact contains all fourteen. Both encodings are checked below
-    because being wrong in the safe direction here means refusing to deploy;
-    being wrong in the other direction means shipping a raid tool believing it
-    was gated.
+    Until 2026-09-07 this compared exact length-prefixed byte patterns against
+    the raw file (calibrated 2026-08-28, itself a fix for an earlier bare
+    substring search). That worked but duplicated the same blob-heap
+    assumptions `tool_metadata.py` now encodes once, in one place, backed by
+    real metadata-table parsing rather than a second calibrated pattern guess.
     """
-    # EXACT length-prefixed matches only, 2026-08-28. A bare substring search
-    # false-positives on other tools' Description strings that MENTION the GM
-    # pair ("Unlike jawa/fire_incident this does not fire anything now...") --
-    # those mentions ship in every build and blocked every default deploy.
-    # Both metadata heaps length-prefix their entries: a BLOB-heap SerString
-    # (attribute arg) is <byte len><utf-8>, a #US literal is <byte len*2+1>
-    # <utf-16-le>. A name embedded inside a longer description has printable
-    # text where the length byte must be, so the prefixed form matches ONLY a
-    # standalone occurrence -- the [Tool] name itself.
-    # Calibrated on 2026-08-28 against a known answer in BOTH directions:
-    # gm build -> 1 prefixed hit per tool; default build -> 0, while bare
-    # substring hits were 1 in each (the mentions). Names >127 bytes would need
-    # multi-byte packed lengths; ours are 16-18 bytes, asserted below.
-    blob = open(dll, "rb").read()
-    for t in GM_TOOLS:
-        assert len(t.encode("utf-8")) * 2 + 1 < 0x80, "packed-length assumption broken"
-    present = [t for t in GM_TOOLS
-               if bytes([len(t.encode("utf-8"))]) + t.encode("utf-8") in blob
-               or bytes([len(t) * 2 + 1]) + t.encode("utf-16-le") in blob]
+    present = [t for t in GM_TOOLS if t in tool_metadata.tool_names_from_dll(dll)]
 
     if gm:
         # ASCII only: the Windows console is cp1252 here and an em dash prints
@@ -206,25 +194,31 @@ def verify_gm_gate(dll, gm):
 
 
 def tool_surface(blob):
-    """Every jawa/* tool name found in a compiled DLL, as a set.
+    """Every jawa/* tool name declared in a compiled DLL, as an EXACT set.
 
-    Same byte-scanning trick as verify_gm_gate, and the same reason for it: the
-    question is what the ARTIFACT contains, so the source cannot be the evidence.
-    Both encodings, because tool names live in the UTF-8 blob heap as custom
-    attribute arguments while ordinary literals are UTF-16 in #US.
+    BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1, 2026-09-06: this used to decode the
+    whole DLL as UTF-16LE and as UTF-8 and regex for a run of `[a-z_]`
+    characters, on the theory that a tool name might show up in either the
+    UTF-8 blob heap (attribute arguments) or the UTF-16 #US heap (ordinary
+    string literals). That theory was right about WHERE names live but wrong
+    about HOW to read them: a coincidental re-encoding of blob-heap bytes as
+    UTF-16LE can stop looking like a letter partway through a real name, and
+    the regex happily reports the truncated fragment as if it were a whole
+    tool -- which is exactly what shipped a fictitious lost tool,
+    `jawa/pawn_`, that was really a prefix-truncated read of a real,
+    still-present name. The same looseness also matched a name merely
+    MENTIONED in another tool's Description prose (`jawa/revoke`, subtracted
+    by hand in prove_stat_and_room.py's PHANTOMS set because this function
+    could not tell the difference).
 
-    KNOWN IMPRECISION, stated because it decides how the result may be used:
-    this also matches a tool name MENTIONED in another tool's description
-    string ("...call jawa/refresh_rect once."). So the set is an upper bound on
-    the registered tools, not an exact census -- get that from the live game via
-    prove_new_tools.py, which asks the running server.
+    `tool_metadata.tool_names_from_dll` fixes both: it walks the actual
+    CustomAttribute table and slices each name using the metadata blob's own
+    length prefix, so the result is the exact set of `[Tool(...)]`
+    declarations compiled into this DLL -- no truncation, no prose
+    false-positives, nothing to subtract by hand afterward.
 
-    The imprecision is harmless for the one comparison below, which is the
-    direction that matters: a name present in the deployed copy and absent from
-    the new build is a real capability reduction either way, because a prose
-    mention only disappears when the text mentioning it does.
-
-    THE BLIND SPOT, found by turning this check's own lesson back on itself
+    THE BLIND SPOT THIS STILL HAS, found by turning this check's own lesson
+    back on itself
     ------------------------------------------------------------------------
     The test for whether a comparison is a gate or a proxy: CONSTRUCT THE CASE
     WHERE THE THING CHANGES AND YOUR FIELD DOES NOT. If you cannot build one you
@@ -247,11 +241,7 @@ def tool_surface(blob):
     this one runs offline before a deploy and answers "did anything vanish?";
     that one needs a live map and answers "does it still work?".
     """
-    import re
-    names = set()
-    for enc in ("utf-16-le", "utf-8"):
-        names |= set(re.findall(r"jawa/[a-z_]{3,40}", blob.decode(enc, "ignore")))
-    return names
+    return tool_metadata.tool_names_from_dll(blob)
 
 
 def build_stamp(blob):
@@ -336,7 +326,17 @@ def plan_deploy(dll, apply_it, allow_removal=False):
     #
     # So compare the tool surfaces too, and let only a REDUCTION be alarming:
     # gaining tools is the normal case for a companion under development.
-    removed = sorted(tool_surface(theirs) - tool_surface(ours)) if exists else []
+    # tool_surface() is an EXACT metadata read (tool_metadata.py) as of
+    # BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1 -- every name in it is a complete,
+    # length-prefix-sliced [Tool(...)] declaration, never a scan artifact. So
+    # a straight set difference is safe: unlike the old byte-scan, this
+    # cannot manufacture a truncated "jawa/pawn_"-style phantom for a rename
+    # to report as a loss (proven live: renaming a real tool's string to
+    # "<name>_SUFFIX" reports exactly "<name>" removed and nothing else, even
+    # though "<name>" is now a strict prefix of the still-present renamed
+    # tool -- a prefix-based filter here would wrongly swallow that real
+    # loss, which is why there isn't one).
+    removed = sorted((tool_surface(theirs) if exists else set()) - tool_surface(ours))
     if removed:
         print("\n*** THIS DEPLOY WOULD REMOVE TOOLS ***")
         for t in removed:
