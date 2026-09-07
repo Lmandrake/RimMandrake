@@ -53,6 +53,19 @@ namespace RimMandrake.Ninefold
     // Sh'kaar harder than one that merely ends in a down, matching "melee above
     // all, a purest war" scaling with lethality while finally making the common
     // down-only outcome visible to the meter at all.
+    //
+    // NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1 also asked for the melee/ranged
+    // split, mirroring Patch_KillManner's pattern exactly (same weapon/
+    // instigator classification, same Small magnitudes, same "byPlayer" gate)
+    // but applied at the down choke instead of the kill choke: divine_
+    // satiation_engine.md §8's "Fire a RANGED weapon" / "Fight in MELEE"
+    // entries are about the act of fighting, not specifically about a kill,
+    // so a down-by-ranged and a down-by-melee should split the same way a
+    // kill-by-ranged/kill-by-melee already does. A melee-down therefore
+    // credits Shkaar twice (this method's flat Small plus the split's own
+    // Small) while a ranged-down credits Shkaar once and Ishko once --
+    // matching the doc's "melee feeds the escalation meter hard, ranged only
+    // a little" scaling without inventing a fourth magnitude tier.
     [HarmonyPatch(typeof(Pawn_HealthTracker), "MakeDowned")]
     public static class Patch_PawnDowned
     {
@@ -66,6 +79,30 @@ namespace RimMandrake.Ninefold
 
             comp.ApplyDelta(God.Shkaar, EventMagnitude.Small,
                 "downed in battle: " + ___pawn.LabelCap);
+
+            DamageInfo d = dinfo.Value;
+            bool byPlayer = d.Instigator is Pawn ip && ip.Faction == Faction.OfPlayer;
+            ThingDef weapon = d.Weapon;
+
+            bool ranged = weapon != null && weapon.IsRangedWeapon;
+            bool melee = (weapon != null && weapon.IsMeleeWeapon)
+                         || (weapon == null && d.Instigator is Pawn); // bare-handed
+
+            if (ranged && byPlayer)
+            {
+                comp.ApplyDelta(God.Ishko, EventMagnitude.Small,
+                    "a down at a remove, the hand unseen");
+            }
+            else if (melee)
+            {
+                comp.ApplyDelta(God.Shkaar, EventMagnitude.Small,
+                    "melee down, the close exposed war");
+                if (byPlayer)
+                {
+                    comp.ApplyDelta(God.Ishko, -EventMagnitude.Small,
+                        "our hand in the open, gripped");
+                }
+            }
         }
     }
 }
