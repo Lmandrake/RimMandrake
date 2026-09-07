@@ -5435,3 +5435,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-07T05:17:56Z"}
 {"seat":"FOUNDRY","event":"block","id":"RIVER_STEAM_ANIMATION_1","reason":"Verify agent hung/looped and was stopped by the owner mid-session; left the live ModsConfig.xml swapped to a throwaway 18-mod quicktest list. Recovered: restored the owner's real 603-mod list from the agent's own pre-swap scratchpad backup (verified against ModsConfig.FULL601.bench-backup.xml, only 4 legitimate mod-list deltas since 09-05). Bridge released. Live-observe verify for this item still owed to a fresh session.","ts":"2026-09-07T05:17:57Z"}
 {"seat":"FOUNDRY","event":"block","id":"STICK_FOOD_INGEST_1","reason":"Same stuck-agent recovery as RIVER_STEAM_ANIMATION_1 - owner's mod list restored, bridge released. Live craft-proof still owed to a fresh session.","ts":"2026-09-07T05:17:57Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"LIGHTFALL_CHASM_AUTHORING_1 + WORLDMAP_DESERT_BAND_REPAIR_1: landmark authoring and desert biome retype","ts":"2026-09-07T05:18:44Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-07T05:24:59Z"}
