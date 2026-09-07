@@ -5592,3 +5592,4 @@
 {"seat":"BENCH","event":"file","id":"PROJECT_MATURITY_DASHBOARD_1","title":"Project maturity dashboard: two spines (systems function x content, and the GOAL_SHEET content inventory), rimflow-owned, rendered as an Artifact -- the first honest answer to 'how close are we to delivery'","kind":"task","target":"v1","for":"BENCH","ts":"2026-09-07T22:49:49Z"}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"measure world feature label sizes - owner reports HUGE labels","ts":"2026-09-07T22:51:22Z"}
 {"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-07T22:51:48Z"}
+{"seat":"BENCH","event":"file","id":"WORLD_FEATURE_LABELS_OVERSIZED_1","title":"World feature labels render HUGE and overlap the globe -- our maxDrawSizeInTiles multiplier is 1.63x vanilla's","kind":"bug","target":"v1","for":"FOUNDRY","ts":"2026-09-07T22:53:42Z"}

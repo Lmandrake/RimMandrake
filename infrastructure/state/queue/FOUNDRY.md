@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T22:51:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T22:53:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1123,3 +1123,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the defect — PROVEN, read from our own source
 prose:    infrastructure/state/items/WORLD_LINT_WATER_HARDCODE_1.md
+
+## WORLD_FEATURE_LABELS_OVERSIZED_1 World feature labels render HUGE and overlap the globe -- our maxDrawSizeInTiles multiplier is 1.63x vanilla's
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WORLD_FEATURE_LABELS_OVERSIZED_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WORLD_FEATURE_LABELS_OVERSIZED_1.md
