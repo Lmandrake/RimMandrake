@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T21:53:39Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-07T22:22:53Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -598,7 +598,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  Mynock bg codex run popped a live Windows UAC dialog on the SHARED codex home, froze owner's screen; killed agent. Shared-home sandbox re-invalidation not understood yet -- do not re-dispatch unattended
+blocked:  attended south-facing pass done (v2 fixes legibility, needs one more framing-only regen); owner went AFK mid-session, no unattended Codex calls until someone is watching again
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
 
@@ -1111,5 +1111,5 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/UNDERWATER_BIOME_SUPPORT_1.md yet — write one when you have something to say)
+summary:  the ask
 prose:    infrastructure/state/items/UNDERWATER_BIOME_SUPPORT_1.md
