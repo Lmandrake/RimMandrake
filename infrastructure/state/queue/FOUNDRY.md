@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T06:10:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T06:15:46Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -958,16 +958,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROIDWORKS_WILD_DROIDS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROIDWORKS_WILD_DROIDS_1.md
-
-## NIGHTSIDE_ICE_DEF_1 Author RUT_NightsideIce (own def inheriting vanilla IceSheet, every list overridden, no arctic zoo, aurora-clear) and paint its 802 highland tiles under the dissolve mosaic; render before painting
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - RUTNightsideIce BiomeDef inheriting vanilla IceSheet's shape (terrain Ice, no
-prose:    infrastructure/state/items/NIGHTSIDE_ICE_DEF_1.md
 
 ## ARMOURY_LOADAFTER_STALE_1 Armoury declares 3 loadAfter packageIds against roughly 40 mods its patches actually target
 state:    proposed
