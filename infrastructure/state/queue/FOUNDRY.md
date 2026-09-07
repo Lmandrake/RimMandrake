@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T21:33:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T21:53:39Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -460,7 +460,7 @@ summary:  Implement design/Jawa/worldbuilding/restrainingbolttechnical.md's "Bui
 prose:    infrastructure/state/items/DROID_FDE_GOODWILL_CAP_1.md
 
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -591,6 +591,16 @@ kind:     task
 blocked:  premature: verified zero concrete Droidworks races exist to repoint onto. Races_Base.xml's DW_Race_Base and every family in Races_Families.xml (Astromech/Battle/Heavy/Labour/Power) are all Abstract=True scaffolding, no instantiable derived race anywhere in src/RimStarWars/Droidworks/. The 4 Jawa_Droid_* PawnKindDefs (JawaFactionRoster.xml) currently set race=OuterRim_ImperialLaborDroid etc. (Depot's own races) under MayRequire=Neronix17.OuterRim.DroidDepot -- there is nothing else to point them at yet. Needs a concrete Droidworks race landing first (DROIDWORKS_PRIMITIVE_TIER_1 or DROIDWORKS_FORMAT_TIERS_1 look like the likely source, neither closed).
 summary:  (no items/DROID_FDE_KINDS_REPOINT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_FDE_KINDS_REPOINT_1.md
+
+## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Mynock bg codex run popped a live Windows UAC dialog on the SHARED codex home, froze owner's screen; killed agent. Shared-home sandbox re-invalidation not understood yet -- do not re-dispatch unattended
+summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
+prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -1093,3 +1103,13 @@ kind:     task
 thin:     no ## criteria
 summary:  Per CLAUDE.md's own note: the two laws (text/menu authority only; the game
 prose:    infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md
+
+## UNDERWATER_BIOME_SUPPORT_1 Underwater biome support: land on the three seas -- looks like ocean, playable seafloor beneath (owner 2026-09-07, later modification)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/UNDERWATER_BIOME_SUPPORT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/UNDERWATER_BIOME_SUPPORT_1.md
