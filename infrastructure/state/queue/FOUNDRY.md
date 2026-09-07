@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T03:25:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T03:27:08Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## STARWARS_DONOR_SUNSET_1 Retire ALL remaining third-party Star Wars donors (12 mods, 4 waves; Mlie+TSDA first)
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  STARWARSDONORSUNSET1 — retire the remaining third-party Star Wars donors
-prose:    infrastructure/state/items/STARWARS_DONOR_SUNSET_1.md
 
 ## DROID_KOTORDROIDS_PORT_WAVE1_1 Port guy762.kotordroids' 44 kinds/22 races onto the Droidworks platform (wave 1, pure XML)
 state:    ready
@@ -206,6 +197,15 @@ target:   v1
 kind:     task
 summary:  FLUIDCANALMECHANIC1 — general canal/fluid-flow mechanic, RimMandrake tier
 prose:    infrastructure/state/items/FLUID_CANAL_MECHANIC_1.md
+
+## STARWARS_DONOR_SUNSET_1 Retire ALL remaining third-party Star Wars donors (12 mods, 4 waves; Mlie+TSDA first)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  STARWARSDONORSUNSET1 — retire the remaining third-party Star Wars donors
+prose:    infrastructure/state/items/STARWARS_DONOR_SUNSET_1.md
 
 ## MLIE_FAUNA_ABSORPTION_1 Absorb Mlie starwarsanimalcollection: port ~150 creature defs before retiring the donor
 state:    doing
@@ -485,6 +485,16 @@ kind:     build
 blocked:  validate_patch.py --defs (Data+Mods+Workshop+Armoury) re-run clean: 13 errors, all pre-existing KOTORCORE_ABSORPTION_MISSING_TEXTURES_1 findings, no new fallout. Sole remaining criterion (guy762.mm.kotorcore retirement) still gated on parked DROID_SYSTEM_BUILD_1 — DROID_KOTORDROIDS_PORT_WAVE1_1's Site 1 (Droidworks Need_Power port) still open. Not forcing through solo per prior session's own note.
 summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
 prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
+
+## STARWARS_DONOR_SUNSET_1 Retire ALL remaining third-party Star Wars donors (12 mods, 4 waves; Mlie+TSDA first)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Waves 1-3 verified/scoped clean (wave 1 re-verified live-clean 2026-09-06; wave 2 is MLIE_FAUNA_ABSORPTION_1, doing; wave 3 points at DROID_SYSTEM_BUILD_1). Sole remaining gap: lumi.doorsexpanded retirement needs an owner call (port our own BlastDoorFrameAsyncFix's modDependencies first, or accept its bug returns) - no ruling on file.
+summary:  STARWARSDONORSUNSET1 — retire the remaining third-party Star Wars donors
+prose:    infrastructure/state/items/STARWARS_DONOR_SUNSET_1.md
 
 ## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
 state:    doing  (BLOCKED)

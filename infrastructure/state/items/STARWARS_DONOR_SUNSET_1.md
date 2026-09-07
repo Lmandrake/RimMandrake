@@ -70,12 +70,21 @@ next wave. Never bundle waves 1 and 3 into one restart — different risk classe
       not just this ticket's own scope (the `WEAPONS_DONOR_RETIREMENT_1`
       incident's exact failure mode).
 - [x] 4 waves proposed, ordered by real risk.
-- [ ] Wave 1 executed (genuinely ready — smallest scope, needs its own claim/item).
-- [ ] Wave 2 scoped as its own absorption project (not started).
-- [ ] Wave 3 folded into `DROID_SYSTEM_BUILD_1`/`DROID_DONOR_PATCH_GATE_1`'s
-      existing plan rather than duplicated.
-- [ ] Wave 4's two open questions put to the owner explicitly (lightsaber
-      ruling reconfirmation, doorsexpanded fix-porting decision).
+- [x] Wave 1 executed (2026-09-02) and re-verified clean 2026-09-06: the three
+      `<li>` entries are absent from the live `ModsConfig.xml` (0 grep hits)
+      and no error/missing/could-not lines name any of the three in
+      `Player.log` across the many cold loads since.
+- [x] Wave 2 scoped as its own absorption project — `MLIE_FAUNA_ABSORPTION_1`,
+      filed 2026-09-02, currently `doing`.
+- [x] Wave 3 folded into `DROID_SYSTEM_BUILD_1`/`DROID_DONOR_PATCH_GATE_1`'s
+      existing plan rather than duplicated — this file already points there
+      and no separate wave-3 item was ever filed.
+- [ ] Wave 4's two open questions: lightsaber reconfirmed STAYS UPSTREAM
+      (owner card, 2026-09-02, recorded above) — resolved. `lumi.doorsexpanded`
+      (blocked on porting `BlastDoorFrameAsyncFix`'s modDependencies first, or
+      accepting the async-fix bug's return) is still an open owner call —
+      not answered by any ruling on file. This is the sole remaining blocker
+      on this item.
 
 ## Open questions for the owner
 
