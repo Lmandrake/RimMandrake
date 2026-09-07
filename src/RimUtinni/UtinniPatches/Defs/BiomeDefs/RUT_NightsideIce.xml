@@ -71,7 +71,8 @@
     <description>Dirty white ice, geologically young and impure, on the highest ground of the deep night. It flows, it fractures, and what it swallowed it eventually gives back. There is no soil for plants to grow in. The only animals here are migrating to somewhere else -- or badly lost.</description>
     <workerClass>BiomeWorker_IceSheet</workerClass>
     <settleWarning>The nightside ice is extremely inhospitable. There is no soil for plants, almost no animal life, and no warmth anywhere but what you bring. Long-term survival is a challenge.</settleWarning>
-    <allowRoads>false</allowRoads>
+    <!-- allowRoads TRUE by owner ruling 2026-09-07: "All of our biomes should allow roads." 91 authored road links crossed RUT_NightsideIce and were invisible - the links were structurally valid (asymmetric 0, nonAdjacent 0), the biome simply refused to draw them. -->
+    <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
     <allowFarmingCamps>false</allowFarmingCamps>
     <isExtremeBiome>true</isExtremeBiome>

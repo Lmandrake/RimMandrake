@@ -4611,7 +4611,12 @@ namespace JawaBench.BridgeTools
                         // label draws at the same size and a 63-tile region shouts
                         // as loudly as a 1,692-tile sea. sqrt because the label is a
                         // LENGTH across an AREA of tiles.
-                        f.maxDrawSizeInTiles = Math.Max(6f, (float)Math.Sqrt(kv.Value.Count) * 2.2f);
+                        // 2.2f -> 1.35f, owner 2026-09-07 ("the labels are now HUUUGE").
+                        // Vanilla FeatureWorker uses bestTileDist * 2 * 1.2 = 2.4*r,
+                        // and for a roughly circular region r = sqrt(A)/sqrt(pi), so
+                        // vanilla == sqrt(A) * 1.354. The old 2.2 was 1.63x vanilla:
+                        // MEASURED live max 99.6 (Deadstone), Dune Sea 90.5, mean 34.1.
+                        f.maxDrawSizeInTiles = Math.Max(6f, (float)Math.Sqrt(kv.Value.Count) * 1.35f);
                     }
                 }
 
