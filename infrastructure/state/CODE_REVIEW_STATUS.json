@@ -6730,10 +6730,10 @@
     "sha": "5a68d1a6"
   },
   "src/RimStarWars/Livestock/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "8af653da3ca6885b8e923cd345efbc4b2895e60cc9668698e08bb73f2baa62db",
-    "sha": "0e986f2a"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "f339de703f78f6b505c02272d82003e41634a48d4ff76cf026b3da4b873bd997",
+    "sha": "c745301c"
   },
   "src/RimStarWars/Livestock/Defs/DamageDefs/DamageDefs_ColdDrain.xml": {
     "cleanCount": 1,
@@ -6777,6 +6777,12 @@
     "hash": "e3796d69b0ec29a2661c5814b5de44d7d7a432463b085d2342696acdae7b6636",
     "sha": "0e986f2a"
   },
+  "src/RimStarWars/Livestock/Patches/ForsakenCrags_WildSpawns.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "be5725b22067d7190881eee95365bec29e7c79d1075381f5d7d85d01a4355255",
+    "sha": "c745301c"
+  },
   "src/RimStarWars/Livestock/Source/CompLightAversion.cs": {
     "cleanCount": 2,
     "date": "2026-09-05",
@@ -6790,10 +6796,10 @@
     "sha": "0e986f2a"
   },
   "src/RimStarWars/Livestock/art/gen_livestock_mockups.py": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "c60301f4898a79025a72b7a751af9b6101d23758fd29643d275f08b437343b78",
-    "sha": "0e986f2a"
+    "cleanCount": 3,
+    "date": "2026-09-07",
+    "hash": "5a9fbcf74b1c12adde553a029847ccbe4ab49c3a962c165933f35c2708e695b6",
+    "sha": "c745301c"
   },
   "src/RimStarWars/MSEDroidFix/About/About.xml": {
     "cleanCount": 2,
@@ -6946,10 +6952,10 @@
     "sha": "6e222c8c"
   },
   "src/RimStarWars/SeaBeasts/art/gen_sea_mockups.py": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "0c126b88cbddef78bcab4b29295ef60d653720fde6651d1c3e44a9a9c65c9939",
-    "sha": "6e222c8c"
+    "cleanCount": 3,
+    "date": "2026-09-07",
+    "hash": "393cee2ac08e2ff149d4378e8f1b7fba94b638e7e2421df682e51343e464a0b8",
+    "sha": "c745301c"
   },
   "src/RimStarWars/SeaBeasts/art/tools/build_sea_facings.py": {
     "cleanCount": 2,
@@ -6958,16 +6964,16 @@
     "sha": "6e222c8c"
   },
   "src/RimStarWars/SeaBeasts/art/tools/gen_sea_facings.py": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "129e0ea01c2cc49d1d037f83c58d2bc64b64a44e5c7b30da99183d8bf2d60bbf",
-    "sha": "6e222c8c"
+    "cleanCount": 3,
+    "date": "2026-09-07",
+    "hash": "db20b71e93634ea49480341d5bb26f1e9f721eb654d5f436fca43580970a4379",
+    "sha": "c745301c"
   },
   "src/RimStarWars/SeaBeasts/art/tools/sea_creatures.py": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "8e25ce31ee0a0641e76b9867d6d0bedc9962e21fdef63c8817a412f667221d0f",
-    "sha": "6e222c8c"
+    "cleanCount": 3,
+    "date": "2026-09-07",
+    "hash": "013272e8f232e4d1a57098e1ecf31781bcf617cea304381a67c6b00232379339",
+    "sha": "c745301c"
   },
   "src/RimStarWars/SeaBeasts/art/tools/seacheck.py": {
     "cleanCount": 2,
