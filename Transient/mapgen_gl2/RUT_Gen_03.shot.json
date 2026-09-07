@@ -1,0 +1,140 @@
+{
+  "success": true,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\glsheet2_RUT_Gen_03__cell_rect.png",
+  "sourcePath": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\glsheet2_RUT_Gen_03.png",
+  "fileName": "glsheet2_RUT_Gen_03__cell_rect",
+  "requestedFileName": "glsheet2_RUT_Gen_03",
+  "saveDataFolder": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios",
+  "screenshotFolder": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots",
+  "sizeBytes": 1536296,
+  "capturedAtUtc": "2026-09-07T08:09:32.575138Z",
+  "suppressMessage": true,
+  "clipped": true,
+  "clipTargetId": "cellRect",
+  "clipTargetKind": "cellRect",
+  "clipTargetLabel": "Cell rect (25, 25, 200, 200)",
+  "clipRect": {
+    "x": 579,
+    "y": 0,
+    "width": 1206,
+    "height": 1205
+  },
+  "doNotResetCamera": false,
+  "cameraWasReset": true,
+  "requestedRect": {
+    "x": 25,
+    "z": 25,
+    "width": 200,
+    "height": 200,
+    "maxX": 224,
+    "maxZ": 224
+  },
+  "paddedRect": {
+    "x": 25,
+    "z": 25,
+    "width": 200,
+    "height": 200,
+    "maxX": 224,
+    "maxZ": 224
+  },
+  "paddingCells": 0,
+  "fullyVisible": true,
+  "rootSizeMode": "explicit",
+  "requestedRootSize": 100.0,
+  "requiredRootSize": 100.0,
+  "appliedRootSize": 100.0,
+  "cameraBefore": {
+    "success": true,
+    "map": "0",
+    "mapId": "Map_0",
+    "mapIndex": 0,
+    "rootSize": 24.0,
+    "zoomRootSize": 24.0,
+    "zoomRange": "Middle",
+    "sizeRange": {
+      "min": 0.0,
+      "max": 100.0
+    },
+    "cameraZoomExtensionEnabled": true,
+    "mapPosition": {
+      "x": 138,
+      "z": 137
+    },
+    "viewRect": {
+      "minX": 90,
+      "minZ": 112,
+      "maxX": 186,
+      "maxZ": 162,
+      "width": 97,
+      "height": 51
+    }
+  },
+  "cameraDuringCapture": {
+    "success": true,
+    "map": "0",
+    "mapId": "Map_0",
+    "mapIndex": 0,
+    "rootSize": 100.0,
+    "zoomRootSize": 100.0,
+    "zoomRange": "Furthest",
+    "sizeRange": {
+      "min": 0.0,
+      "max": 100.0
+    },
+    "cameraZoomExtensionEnabled": true,
+    "mapPosition": {
+      "x": 125,
+      "z": 125
+    },
+    "viewRect": {
+      "minX": -73,
+      "minZ": 24,
+      "maxX": 322,
+      "maxZ": 225,
+      "width": 396,
+      "height": 202
+    }
+  },
+  "cameraAfterCapture": null,
+  "cameraRestored": {
+    "success": true,
+    "map": "0",
+    "mapId": "Map_0",
+    "mapIndex": 0,
+    "rootSize": 24.0,
+    "zoomRootSize": 24.0,
+    "zoomRange": "Middle",
+    "sizeRange": {
+      "min": 0.0,
+      "max": 100.0
+    },
+    "cameraZoomExtensionEnabled": true,
+    "mapPosition": {
+      "x": 138,
+      "z": 137
+    },
+    "viewRect": {
+      "minX": 89,
+      "minZ": 112,
+      "maxX": 186,
+      "maxZ": 161,
+      "width": 98,
+      "height": 50
+    }
+  },
+  "operation": {
+    "OperationId": "op_5a00aa8a7642450cbd92ce864b3cbcbe",
+    "CapabilityId": "rimbridge.core/view/screenshot-cell-rect",
+    "Status": 2,
+    "Success": true,
+    "StartedAtUtc": "2026-09-07T08:09:32.084503+00:00",
+    "CompletedAtUtc": "2026-09-07T08:09:32.5956171+00:00",
+    "DurationMs": 511,
+    "Result": null,
+    "HasResult": true,
+    "ResultWasTruncated": false,
+    "Warnings": [],
+    "Error": null,
+    "Metadata": {}
+  }
+}

@@ -1,0 +1,192 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.109 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.677400 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Mod RimMandrake: Aftermath dependency (mandrake.rm.ninefold) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Aftermath Rites dependency (mandrake.rm.aftermath) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Inhabited (Ash'karr) dependency (mandrake.rm.inhabited) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Weather Suite (Ash'karr) dependency (mandrake.rsw.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Inhabited (local) dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Jawa Ikee dependency (sarg.alphaanimals) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod JawaVoice (SpeakUp reskin) dependency (JPT.speakup) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Fire Ecology (Pyrelands) dependency (zylle.morevanillabiomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Fire Ecology (Pyrelands) dependency (mandrake.rsw.fireecology) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod The Rites dependency (mandrake.rut.antiquities) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake Sacred Marks dependency (mandrake.rm.graffiti) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Salvage Claim dependency (mandrake.rm.property) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimStarWars: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Theft Hauler <packageId> (mandrake.rm.theft_hauler) is not in valid format.
+Mod RimMandrake: Theft Hauler dependency (mandrake.rm.property) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Vault Dungeons dependency (OskarPotocki.VanillaFactionsExpanded.Core) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Colony Visibility dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Exception loading from System.Xml.XmlElement: System.MissingMethodException: Default constructor not found for type System.String
+  at System.RuntimeType.CreateInstanceMono (System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00076] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceSlow (System.Boolean publicOnly, System.Boolean wrapExceptions, System.Boolean skipCheckThis, System.Boolean fillCache) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceDefaultCtor (System.Boolean publicOnly, System.Boolean skipCheckThis, System.Boolean fillCache, System.Boolean wrapExceptions, System.Threading.StackCrawlMark& stackMark) [0x00027] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00020] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0045c] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DirectXmlToObject.ObjectFromXmlReflection[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0060e] in <61e4173561894da49d210260257b5097>:0 
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000002605FE53460.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-0000026060548E40.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 56 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=144 elapsedMs=144
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=144
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=144 elapsedMs=144
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-00000260638DC010.dll
+[TrueTerrainColors v1.12.26.1] Loaded cached true colors for 1766 terrain defs from file.
+[Geological Landforms v1.7.13.1] Found landform data in the following mods: Geological Landforms
+[Geological Landforms v1.7.13.1] Loaded 45 landforms of which 0 are edited and 1 are custom.
+[LunarFramework v1.1.17] Processed 8 Harmony patches in 70 ms.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 152 unused Assets to reduce memory usage. Loaded Objects now: 35880.
+Total: 132.355000 ms (FindLiveObjects: 1.382500 ms CreateObjectMapping: 1.224300 ms MarkObjects: 129.372300 ms  DeleteObjects: 0.375400 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=20 elapsedMs=9222
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=724 elapsedMs=9946
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=9947
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=9948
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=9948
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=9948
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=9948
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=9949
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=9952
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=0 elapsedMs=9952
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=9952
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=9955
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=6 elapsedMs=9961
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=739 elapsedMs=9961
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=6 elapsedMs=9961
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: 9f4ee07581274ac58219bad7551e6fcd
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Unloading 3 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.655200 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 36074.
+Total: 147.256700 ms (FindLiveObjects: 2.212500 ms CreateObjectMapping: 1.035000 ms MarkObjects: 143.954500 ms  DeleteObjects: 0.054400 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - m00nl1ght.GeologicalLandforms
+[Geological Landforms v1.7.13.1] Map generator context: TileId: 66927, Landforms: , BiomeVariants: None, Topology: CliffOneSide, TopologyDirection: North (F)
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 41660.
+Total: 166.482400 ms (FindLiveObjects: 1.424200 ms CreateObjectMapping: 1.280900 ms MarkObjects: 163.698700 ms  DeleteObjects: 0.078300 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 37307.
+Total: 166.809600 ms (FindLiveObjects: 1.425100 ms CreateObjectMapping: 1.201900 ms MarkObjects: 164.128500 ms  DeleteObjects: 0.053800 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.277400 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 37020.
+Total: 143.681400 ms (FindLiveObjects: 1.345100 ms CreateObjectMapping: 1.172100 ms MarkObjects: 141.051200 ms  DeleteObjects: 0.112700 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.347700 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 37043.
+Total: 150.839200 ms (FindLiveObjects: 1.725500 ms CreateObjectMapping: 1.071800 ms MarkObjects: 147.989400 ms  DeleteObjects: 0.052300 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - m00nl1ght.GeologicalLandforms
+[Geological Landforms v1.7.13.1] Map generator context: TileId: 77142, Landforms: LoneMountain, BiomeVariants: None, Topology: Inland, TopologyDirection: West (F)
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 43077.
+Total: 171.885100 ms (FindLiveObjects: 1.564700 ms CreateObjectMapping: 1.327200 ms MarkObjects: 168.914900 ms  DeleteObjects: 0.078000 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 37549.
+Total: 155.238200 ms (FindLiveObjects: 1.492900 ms CreateObjectMapping: 1.207300 ms MarkObjects: 152.470000 ms  DeleteObjects: 0.067500 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.288700 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 37262.
+Total: 148.617700 ms (FindLiveObjects: 1.443900 ms CreateObjectMapping: 1.131200 ms MarkObjects: 145.953000 ms  DeleteObjects: 0.089500 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 6)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.270900 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 37285.
+Total: 158.435300 ms (FindLiveObjects: 1.886700 ms CreateObjectMapping: 1.487800 ms MarkObjects: 155.002100 ms  DeleteObjects: 0.058300 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - m00nl1ght.GeologicalLandforms
+[Geological Landforms v1.7.13.1] Map generator context: TileId: 37703, Landforms: RUT_Gen_01, BiomeVariants: None, Topology: Inland, TopologyDirection: North (F)
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Scatterer RimWorld.GenStep_ScatterAncientMechs from def AncientMechs could not find cell to generate at.
+Scatterer Verse.GenStep_ScatterGroup from def AncientJunkClusters could not find cell to generate at.
+Unloading 0 Unused Serialized files (Serialized files now loaded: 6)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 41969.
+Total: 159.366800 ms (FindLiveObjects: 1.623800 ms CreateObjectMapping: 1.389800 ms MarkObjects: 156.298800 ms  DeleteObjects: 0.053900 ms)
+

@@ -1,0 +1,54 @@
+01:06:05 [RUT_Gen_01] placed as the only custom landform
+01:06:22 [RUT_Gen_01] bridge up
+01:07:00 [RUT_Gen_01] attempt 1: [Geological Landforms v1.7.13.1] Map generator context: TileId: 66927, Landforms: , BiomeVariants: None, Topology: CliffOneSide, TopologyDirection: North (F)
+01:07:00 [RUT_Gen_01] attempt 1: landform not applied, re-rolling tile (go_to_main_menu + start_debug_game_ready)
+01:07:20 [RUT_Gen_01] attempt 2: [Geological Landforms v1.7.13.1] Map generator context: TileId: 77142, Landforms: LoneMountain, BiomeVariants: None, Topology: Inland, TopologyDirection: West (F)
+01:07:20 [RUT_Gen_01] attempt 2: landform not applied, re-rolling tile (go_to_main_menu + start_debug_game_ready)
+01:07:39 [RUT_Gen_01] attempt 3: [Geological Landforms v1.7.13.1] Map generator context: TileId: 37703, Landforms: RUT_Gen_01, BiomeVariants: None, Topology: Inland, TopologyDirection: North (F)
+01:07:39 [RUT_Gen_01] PROOF OK
+01:07:41 [RUT_Gen_01] screenshot -> RUT_Gen_01.png (crop=200, from glsheet2_RUT_Gen_01__cell_rect.png)
+01:07:41 [RUT_Gen_02] placed as the only custom landform
+01:07:56 [RUT_Gen_02] bridge up
+01:08:35 [RUT_Gen_02] attempt 1: [Geological Landforms v1.7.13.1] Map generator context: TileId: 31144, Landforms: RUT_Gen_02, BiomeVariants: None, Topology: Inland, TopologyDirection: North (F)
+01:08:35 [RUT_Gen_02] PROOF OK
+01:08:37 [RUT_Gen_02] screenshot -> RUT_Gen_02.png (crop=200, from glsheet2_RUT_Gen_02__cell_rect.png)
+01:08:37 [RUT_Gen_03] placed as the only custom landform
+01:08:52 [RUT_Gen_03] bridge up
+01:09:30 [RUT_Gen_03] attempt 1: [Geological Landforms v1.7.13.1] Map generator context: TileId: 15800, Landforms: RUT_Gen_03, BiomeVariants: None, Topology: Inland, TopologyDirection: West (F)
+01:09:30 [RUT_Gen_03] PROOF OK
+01:09:32 [RUT_Gen_03] screenshot -> RUT_Gen_03.png (crop=200, from glsheet2_RUT_Gen_03__cell_rect.png)
+01:09:32 [RUT_Gen_04] placed as the only custom landform
+01:09:48 [RUT_Gen_04] bridge up
+01:10:26 [RUT_Gen_04] attempt 1: [Geological Landforms v1.7.13.1] Map generator context: TileId: 75728, Landforms: RUT_Gen_04, BiomeVariants: None, Topology: Inland, TopologyDirection: West (F)
+01:10:26 [RUT_Gen_04] PROOF OK
+01:10:28 [RUT_Gen_04] screenshot -> RUT_Gen_04.png (crop=200, from glsheet2_RUT_Gen_04__cell_rect.png)
+01:10:28 [RUT_Gen_05] placed as the only custom landform
+01:10:44 [RUT_Gen_05] bridge up
+01:11:21 [RUT_Gen_05] attempt 1: [Geological Landforms v1.7.13.1] Map generator context: TileId: 74235, Landforms: None, BiomeVariants: None, Topology: Inland, TopologyDirection: West (F)
+01:11:21 [RUT_Gen_05] attempt 1: landform not applied, re-rolling tile (go_to_main_menu + start_debug_game_ready)
+01:11:41 [RUT_Gen_05] attempt 2: [Geological Landforms v1.7.13.1] Map generator context: TileId: 103183, Landforms: None, BiomeVariants: None, Topology: Inland, TopologyDirection: East (F)
+01:11:41 [RUT_Gen_05] attempt 2: landform not applied, re-rolling tile (go_to_main_menu + start_debug_game_ready)
+01:11:56 [RUT_Gen_05] attempt 3: [Geological Landforms v1.7.13.1] Map generator context: TileId: 81265, Landforms: None, BiomeVariants: None, Topology: Inland, TopologyDirection: South (F)
+01:11:56 [RUT_Gen_05] attempt 3: landform not applied, re-rolling tile (go_to_main_menu + start_debug_game_ready)
+01:12:01 [RUT_Gen_05] PROOF FAILED after 3 attempts -- no screenshot
+01:12:01 [RUT_Gen_06] placed as the only custom landform
+01:12:05 [RUT_Gen_06] bridge up
+01:12:43 [RUT_Gen_06] attempt 1: [Geological Landforms v1.7.13.1] Map generator context: TileId: 91017, Landforms: None, BiomeVariants: None, Topology: Inland, TopologyDirection: North (F)
+01:12:43 [RUT_Gen_06] attempt 1: landform not applied, re-rolling tile (go_to_main_menu + start_debug_game_ready)
+01:13:01 [RUT_Gen_06] attempt 2: [Geological Landforms v1.7.13.1] Map generator context: TileId: 48007, Landforms: , BiomeVariants: None, Topology: CliffTwoSides, TopologyDirection: South (F)
+01:13:01 [RUT_Gen_06] attempt 2: landform not applied, re-rolling tile (go_to_main_menu + start_debug_game_ready)
+01:13:20 [RUT_Gen_06] attempt 3: [Geological Landforms v1.7.13.1] Map generator context: TileId: 53269, Landforms: None, BiomeVariants: None, Topology: Inland, TopologyDirection: East (F)
+01:13:20 [RUT_Gen_06] attempt 3: landform not applied, re-rolling tile (go_to_main_menu + start_debug_game_ready)
+01:13:25 [RUT_Gen_06] PROOF FAILED after 3 attempts -- no screenshot
+01:13:25 [RUT_Gen_07] placed as the only custom landform
+01:13:41 [RUT_Gen_07] bridge up
+01:14:20 [RUT_Gen_07] attempt 1: [Geological Landforms v1.7.13.1] Map generator context: TileId: 93978, Landforms: RUT_Gen_07, BiomeVariants: None, Topology: Inland, TopologyDirection: North (F)
+01:14:20 [RUT_Gen_07] PROOF OK
+01:14:21 [RUT_Gen_07] screenshot -> RUT_Gen_07.png (crop=200, from glsheet2_RUT_Gen_07__cell_rect.png)
+01:14:21 [RUT_Gen_08] placed as the only custom landform
+01:14:37 [RUT_Gen_08] bridge up
+01:15:16 [RUT_Gen_08] attempt 1: [Geological Landforms v1.7.13.1] Map generator context: TileId: 87379, Landforms: RUT_Gen_08, BiomeVariants: None, Topology: Inland, TopologyDirection: South (F)
+01:15:16 [RUT_Gen_08] PROOF OK
+01:15:18 [RUT_Gen_08] screenshot -> RUT_Gen_08.png (crop=200, from glsheet2_RUT_Gen_08__cell_rect.png)
+01:15:18 custom landforms removed from live config (0 left)
+01:15:18 DONE
