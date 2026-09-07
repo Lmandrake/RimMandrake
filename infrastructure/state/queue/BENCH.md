@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T05:07:32Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-07T05:40:29Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -340,5 +340,15 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/STAGED_LORE_DESCRIPTIONS_1.md yet — write one when you have something to say)
+summary:  STAGEDLOREDESCRIPTIONS1 — descriptions that change as the story is learned
 prose:    infrastructure/state/items/STAGED_LORE_DESCRIPTIONS_1.md
+
+## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LIQUID_TYPES_MOD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LIQUID_TYPES_MOD_1.md
