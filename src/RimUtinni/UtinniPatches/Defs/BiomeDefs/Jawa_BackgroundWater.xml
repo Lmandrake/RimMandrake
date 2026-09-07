@@ -35,7 +35,8 @@
     <isBackgroundBiome>true</isBackgroundBiome>
     <canBuildBase>false</canBuildBase>
     <canAutoChoose>false</canAutoChoose>
-    <allowRoads>false</allowRoads>
+    <!-- allowRoads TRUE by owner ruling 2026-09-07: "All of our biomes should allow roads." 91 authored road links crossed RUT_NightsideIce and were invisible - the links were structurally valid (asymmetric 0, nonAdjacent 0), the biome simply refused to draw them. -->
+    <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
     <texture>World/Biomes/Jawa_SickWater</texture>
   </BiomeDef>
