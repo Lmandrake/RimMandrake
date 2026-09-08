@@ -13,7 +13,7 @@ stay,RimMandrake/RaidRedesigner,,RimMandrake,,,HIGH,distinct concern (persistent
 stay,RimMandrake/StructureInjections,,RimMandrake,,,HIGH,ruling 1 exemplar engine of the structures domain
 merge-into,RimMandrake/Visibility,RimMandrake/RimPursuit,RimMandrake,mandrake.rm.pursuit,,HIGH,R3 RULED: Visibility + pursuit engine = RimPursuit (hiding helps when pursued); id mandrake.rm.pursuit picked over rm.rimpursuit stutter
 stay,RimMandrake/WreckedMachines,,RimMandrake,,,MEDIUM,Kolyska/Rekko hits are comments/register only — the naming plan's expected RUT extraction is EMPTY today
-stay,RimMandrake/StrandedQuest,,RimMandrake,,,VERIFY,naming plan Phase-1 VERIFY never resolved: read its 2 quest defs' text in sprint; campaign flavor would re-tier it RUT
+stay,RimMandrake/StrandedQuest,,RimMandrake,,,HIGH,"tier RESOLVED 2026-09-08: stays RM — quest text generic, header says deliberately not campaign"
 stay,RimMandrake/MandrakePatches,,RimMandrake,,,HIGH,RM patches cell; destination for 6 RM fix folds + 8 RM Jawa_Patches files
 stay,RimMandrake/RustChrome,,RimMandrake,,,HIGH,art cell RM; whole-game UI skin stands alone
 stay,RimMandrake/LoadTracer,,RimMandrake,,,HIGH,dev-only diagnostic mod; never ships
@@ -22,7 +22,7 @@ stay,RimMandrake/RimDefDump,,RimMandrake,,,HIGH,dev-only dump tooling mod
 split,RimMandrake/SacredGraffiti/Source/SacredGraffiti.cs,RimMandrake/Graffiti,RimMandrake,mandrake.rm.graffiti,,HIGH,RitualOutcomeEffectWorker_PlaceSacredMark is the reusable mechanism — engine side
 split,RimMandrake/SacredGraffiti/Defs/SacredMarks.xml,RimUtinni/Salvation,RimUtinni,mandrake.rut.salvation,,HIGH,nine Salvation-god wall-marks; Graffiti About already anticipates a rut marks id
 split,RimMandrake/SacredGraffiti/Defs/RitualOutcomeEffects.xml,RimUtinni/Salvation,RimUtinni,mandrake.rut.salvation,,HIGH,mark-placement RitualOutcomeEffectDef; unreferenced until Matrix build — moves with the marks
-move,RimMandrake/DesertVehicleReskin,RimStarWars/DesertVehicleReskin,RimStarWars,mandrake.rsw.desertvehiclereskin,stays,HIGH,"R11 tier move; fold REVERSED by BENCH mid-sprint: mod ships C# (RM_DraughtFuelExtension DLL + LoadFolders.xml) — moves whole; id+prefix re-tier in global pass"
+move,RimMandrake/DesertVehicleReskin,RimStarWars/DesertVehicleReskin,RimStarWars,mandrake.rsw.desertvehiclereskin,stays,HIGH,R11 tier move; fold REVERSED by BENCH mid-sprint: mod ships C# (RM_DraughtFuelExtension DLL + LoadFolders.xml) — moves whole; id+prefix re-tier in global pass
 merge-into,RimMandrake/GravshipAstronautFix,RimMandrake/MandrakePatches,RimMandrake,mandrake.rm.patches,folds-into-patches,HIGH,donor vanillaexpanded.gravship stays; 3 textures
 merge-into,RimMandrake/PhytokinBarkHeadFix,RimMandrake/MandrakePatches,RimMandrake,mandrake.rm.patches,folds-into-patches,HIGH,donor vanillaracesexpanded.phytokin stays; 1 texture
 merge-into,RimMandrake/ResearchKitEastFix,RimMandrake/MandrakePatches,RimMandrake,mandrake.rm.patches,folds-into-patches,HIGH,donor PeteTimesSix.ResearchReinvented stays; 4 textures
@@ -96,9 +96,9 @@ stay,RimStarWars/JawaVoice/Patches/JawaVoice_chitchat_thoughts.xml,,RimStarWars,
 stay,RimStarWars/JawaVoice/Patches/JawaVoice_chitchat_weather.xml,,RimStarWars,,,HIGH,generic Jawaese lines
 stay,RimStarWars/JawaVoice/Patches/JawaVoice_CoreInteractions.xml,,RimStarWars,,,MEDIUM,Utinni!/Thrumb lines are canon Jawaese; no god/ship/clan names found by skim
 stay,RimStarWars/JawaVoice/Patches/JawaVoice_deeptalk.xml,,RimStarWars,,,MEDIUM,no god/ship/campaign vocabulary found by skim
-stay,RimStarWars/JawaVoice/Patches/JawaVoice_Ideology.xml,,RimStarWars,,,VERIFY,likeliest RUT-extraction candidate (ideoligion interactions) yet NO Ishko/Nine/ship refs greppable — read lines fully in sprint
+stay,RimStarWars/JawaVoice/Patches/JawaVoice_Ideology.xml,,RimStarWars,,,HIGH,"R13 RESOLVED 2026-09-08: full line-read, all 47 lines canon Jawaese; Taa baa is licensed canon, not the deity"
 stay,RimStarWars/JawaVoice/Patches/JawaVoice_Insults.xml,,RimStarWars,,,MEDIUM,Utinni hits are the canon exclamation not the campaign name
 stay,RimStarWars/JawaVoice/Patches/JawaVoice_Interactions.xml,,RimStarWars,,,MEDIUM,same — canon Jawaese only
 stay,RimStarWars/JawaVoice/Patches/JawaVoice_prisoners.xml,,RimStarWars,,,HIGH,generic Jawaese lines
 stay,RimStarWars/JawaVoice/Patches/JawaVoice_romance.xml,,RimStarWars,,,HIGH,generic Jawaese lines
-rename-file,RimStarWars/StarWarsPatches/Patches/PlantNames_Ashkarr.xml,RimStarWars/StarWarsPatches/Patches/PlantNames_CanonSW.xml,RSW,,,HIGH,"filename lies: contents are canon SW plant names; RUT twin keeps Ashkarr name — same-name-two-tiers is the misplace shape (sweep 2026-09-08)"
+rename-file,RimStarWars/StarWarsPatches/Patches/PlantNames_Ashkarr.xml,RimStarWars/StarWarsPatches/Patches/PlantNames_CanonSW.xml,RSW,,,HIGH,filename lies: contents are canon SW plant names; RUT twin keeps Ashkarr name — same-name-two-tiers is the misplace shape (sweep 2026-09-08)
