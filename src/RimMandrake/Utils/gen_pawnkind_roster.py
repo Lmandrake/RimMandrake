@@ -163,11 +163,19 @@ EXTRAS = """\
 """
 
 DROID_DEPOT = "Neronix17.OuterRim.DroidDepot"
+# DROID_FDE_KINDS_REPOINT_1, 2026-09-08: the four FDE kinds now spawn the Droidworks
+# absorbed race, not the Depot donor race directly - each RSW_DW_Race_OuterRim_* below
+# is Droidworks' own 1:1 absorption of the matching OuterRim_* race (confirmed present,
+# non-Abstract, in Races_OuterRim.xml). MayRequire stays on DroidDepot: Droidworks
+# still ships the absorbed race's texture set under its own Textures/OuterRim/Droid/...
+# tree and declares no dependency on Depot itself, but retiring the MayRequire line is
+# DROID_RETIRE_DEPOT_ASIMOV_1's job (D4), not this one - the design doc's own verify
+# line for this item is "generator diff = 4 race lines", i.e. MayRequire unchanged.
 RACES = {
-    ("Droid", "Grunt"):      ("OuterRim_ImperialLaborDroid", DROID_DEPOT),
-    ("Droid", "Heavy"):      ("OuterRim_KXSecurityDroid",    DROID_DEPOT),
-    ("Droid", "Specialist"): ("OuterRim_ProtocolDroid",      DROID_DEPOT),
-    ("Droid", "Leader"):     ("OuterRim_SuperTacticalDroid", DROID_DEPOT),
+    ("Droid", "Grunt"):      ("RSW_DW_Race_OuterRim_ImperialLaborDroid", DROID_DEPOT),
+    ("Droid", "Heavy"):      ("RSW_DW_Race_OuterRim_KXSecurityDroid",    DROID_DEPOT),
+    ("Droid", "Specialist"): ("RSW_DW_Race_OuterRim_ProtocolDroid",      DROID_DEPOT),
+    ("Droid", "Leader"):     ("RSW_DW_Race_OuterRim_SuperTacticalDroid", DROID_DEPOT),
 }
 
 # faction -> (FactionDef defName, xenotype-driven?)
