@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T23:48:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T23:56:23Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -459,15 +459,6 @@ kind:     task
 summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
 prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
 
-## DROIDWORKS_MODULE_ABSORB_1 Absorb KotOR's six-slot droid module apparel as RSW_DW_Module_* (loot-only, no recipes)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Per design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5 packet B2: absorb
-prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
-
 ## DROIDWORKS_PRIMITIVE_TIER_1 Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -645,16 +636,6 @@ kind:     task
 blocked:  live-verified 2026-09-08, need-gating FAILS: needs identical at every tier, not root-caused (commit a9d5d251)
 summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
 prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
-
-## DROIDWORKS_MODULE_ABSORB_1 Absorb KotOR's six-slot droid module apparel as RSW_DW_Module_* (loot-only, no recipes)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  live-verified 2026-09-08, apparel FAILS but root cause is upstream (apparelMoney never set) -- see DROIDWORKS_APPARELMONEY_MISSING_1 (commit a9d5d251)
-summary:  Per design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5 packet B2: absorb
-prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
 
 ## DROIDWORKS_PRIMITIVE_TIER_1 Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
 state:    doing  (BLOCKED)
