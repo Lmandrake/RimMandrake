@@ -202,6 +202,40 @@ DETONATION_ROLLOUT_COMP = [
     DETONATION_COMP_LI,
 ]
 
+# 🔴 DROIDWORKS_DETONATION_REVIEW_1 (2026-09-08): the 15 combat-role JDS
+# Separatist races (Battle family: 8, Heavy family: 7 — every JDS race
+# EXCEPT the one Labour-family sabotage/utility droid,
+# JDSCIS_Pistoeka_Sotage_Droid) get deliberateDenyModule=true.
+# design/Jawa/droids/DROID_UNIFIED_FRAMEWORK_DESIGN.md line 166 (§3.2, the
+# Empire faction row) reads "DW KotOR Bad + JDS battle kinds at 20-40% of
+# points" for the Empire's attack-droid loadout, contrasting "battle kinds"
+# against the one non-combat JDS kind — that's the scope this packet's own
+# "deliberateDenyModule on JDS battle kinds" phrase is drawn from, so
+# "battle kinds" = every JDS race actually fielded in combat, not literally
+# only the DW_Family_Battle bucket. Mass-produced, disposable Separatist
+# droids (both light B1-lineage Battle-family and heavier B2/tactical
+# Heavy-family units) are canonically built to deny their parts to whoever
+# kills them — CIS doctrine is attritional by design, not just its lightest
+# units. The 8 Battle-family JDS races carry energyDensity=0 on their family
+# (no CompDroidDetonation at all today) — deny_module_races (below) makes
+# both the field-append AND the comp-gate below apply to them so the module
+# has an effect; the 7 Heavy-family JDS races already carry
+# energyDensity=2 and the comp, so the module there raises their floor
+# only if it would otherwise be lower (Mathf.Max(density, 1f) in
+# CompDroidDetonation.cs — a no-op at density=2, i.e. it never lowers it).
+DENY_MODULE_RACES = {
+    # DW_Family_Battle (energyDensity 0 on the family; module raises floor to 1)
+    "JDSCIS_B1_Battle_Droid", "JDSCIS_B1_Security_Droid",
+    "JDSCIS_B1_Commander_Droid", "JDSCIS_BX_Commando_Droid",
+    "JDSCIS_AQ_Battle_Droid", "JDSCIS_Droideka_Droid",
+    "JDSCIS_Droideka_Sharpshooter_Droid", "JDSCIS_LR-57_Combat_Droid",
+    # DW_Family_Heavy (energyDensity 2 already; module is a no-op floor here)
+    "JDSCIS_IG-100_MagnaGuards", "JDSCIS_T1_Tactical_Droid",
+    "JDSCIS_ST_Super_Tactical_Droid", "JDSCIS_B2_Super_Battle_Droid",
+    "JDSCIS_B2_HA_Super_Battle_Droid", "JDSCIS_Demolition_Droid",
+    "JDSCIS_DSD1_Dwarf_Spider_Droid",
+}
+
 # orig race defName -> (bucket, note-or-None). Every one of the 57 races.
 CHASSIS_PLAN = {
     # --- OuterRimDroidDepot, family Humanlike ---
@@ -499,7 +533,24 @@ def render_race(rd):
     # DroidworksExtension (powerFallPerDay/energyDensity/chassisClass) moved
     # DOWN onto the family abstract (DROIDWORKS_FAMILY_LAYER_1) — every race
     # in a family shares identical tuning by construction (the family split
-    # IS the tuning boundary), so there is never a per-race override to keep.
+    # IS the tuning boundary), so there is never a per-race override to keep
+    # EXCEPT deliberateDenyModule (DROIDWORKS_DETONATION_REVIEW_1): a handful
+    # of races within a family carry it and the rest of the family does not,
+    # so it cannot live on the family abstract. Rendered as a FULL li here
+    # (every field, not just the delta) rather than relying on RimWorld's
+    # list-merge-by-Class XML inheritance behaviour — simpler to verify by
+    # reading the generated XML directly than to trust an inheritance-merge
+    # assumption for a field this project has never exercised before.
+    if rd.get("deny_module"):
+        power_fall, energy_density, class_int = FAMILY_TUNING[rd["chassis_family"]]
+        p.append("    <modExtensions>")
+        p.append('      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">')
+        p.append("        <powerFallPerDay>%s</powerFallPerDay>" % power_fall)
+        p.append("        <energyDensity>%s</energyDensity>" % energy_density)
+        p.append("        <chassisClass>%d</chassisClass>" % class_int)
+        p.append("        <deliberateDenyModule>true</deliberateDenyModule>")
+        p.append("      </li>")
+        p.append("    </modExtensions>")
     comps_lines = rd.get("comps_lines")
     if comps_lines:
         p.append("    <comps>")
@@ -975,9 +1026,16 @@ def main():
         rd["bodySize"] = body_override
         rd["healthScale"] = health_override
         rd["family_dn"] = family_dn(fam)
+        deny_module = r["orig"] in DENY_MODULE_RACES
+        rd["deny_module"] = deny_module
         if r["orig"] in COMPS_OVERRIDE:
             rd["comps_lines"] = COMPS_OVERRIDE[r["orig"]]
-        elif FAMILY_TUNING[fam][1] > 0:
+        elif FAMILY_TUNING[fam][1] > 0 or deny_module:
+            # deny_module: a Battle-family (energyDensity 0) race with the
+            # module still needs the comp attached — CompDroidDetonation.cs's
+            # Notify_Killed raises effective density to Mathf.Max(density, 1f)
+            # when deliberateDenyModule is set, but that logic never runs if
+            # the comp itself is absent from the race's <comps>.
             rd["comps_lines"] = DETONATION_ROLLOUT_COMP
         else:
             rd["comps_lines"] = None

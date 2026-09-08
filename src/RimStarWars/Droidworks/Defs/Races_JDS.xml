@@ -59,6 +59,21 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>0</energyDensity>
+        <chassisClass>3</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>RSW_DW_Race_JDSCIS_B1_Security_Droid</defName>
@@ -85,6 +100,21 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>0</energyDensity>
+        <chassisClass>3</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>RSW_DW_Race_JDSCIS_B1_Commander_Droid</defName>
@@ -111,6 +141,21 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>0</energyDensity>
+        <chassisClass>3</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>RSW_DW_Race_JDSCIS_BX_Commando_Droid</defName>
@@ -137,6 +182,21 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>0</energyDensity>
+        <chassisClass>3</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>RSW_DW_Race_JDSCIS_IG-100_MagnaGuards</defName>
@@ -166,6 +226,14 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>2</energyDensity>
+        <chassisClass>4</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
     <comps>
       <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
            every energyDensity>0 race gets this, per its own family's
@@ -202,6 +270,14 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>2</energyDensity>
+        <chassisClass>4</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
     <comps>
       <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
            every energyDensity>0 race gets this, per its own family's
@@ -238,6 +314,14 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>2</energyDensity>
+        <chassisClass>4</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
     <comps>
       <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
            every energyDensity>0 race gets this, per its own family's
@@ -274,6 +358,14 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>2</energyDensity>
+        <chassisClass>4</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
     <comps>
       <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
            every energyDensity>0 race gets this, per its own family's
@@ -310,6 +402,14 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>2</energyDensity>
+        <chassisClass>4</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
     <comps>
       <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
            every energyDensity>0 race gets this, per its own family's
@@ -346,6 +446,21 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>0</energyDensity>
+        <chassisClass>3</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>RSW_DW_Race_JDSCIS_Droideka_Droid</defName>
@@ -375,6 +490,21 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>0</energyDensity>
+        <chassisClass>3</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>RSW_DW_Race_JDSCIS_Droideka_Sharpshooter_Droid</defName>
@@ -404,6 +534,21 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>0</energyDensity>
+        <chassisClass>3</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>RSW_DW_Race_JDSCIS_Demolition_Droid</defName>
@@ -434,6 +579,14 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>2</energyDensity>
+        <chassisClass>4</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
     <comps>
       <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
            every energyDensity>0 race gets this, per its own family's
@@ -471,6 +624,14 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>2</energyDensity>
+        <chassisClass>4</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
     <comps>
       <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
            every energyDensity>0 race gets this, per its own family's
@@ -507,6 +668,21 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
+        <powerFallPerDay>1.0</powerFallPerDay>
+        <energyDensity>0</energyDensity>
+        <chassisClass>3</chassisClass>
+        <deliberateDenyModule>true</deliberateDenyModule>
+      </li>
+    </modExtensions>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
 
 </Defs>
