@@ -1753,6 +1753,56 @@ def cmd_game(args, seat):
 
 
 # ---------------------------------------------------------------------------
+# capability — PROJECT_MATURITY_DASHBOARD_1's registry, written ONLY here.
+#
+# ⛔ NO HOOKS, NO GATE. This command records a self-declared rung; it never
+# blocks `file`/`claim`/`close`/anything else, and nothing here checks that a
+# rung is "true" before accepting it — that is the ruling, verbatim: the
+# lightest proof possible, self-declared through `runnable`, and `checked-out`
+# gated only by `model._who_refusal`'s existing per-verb permission mechanism
+# (the same one `game UP` already uses), not by a new check invented for this.
+# ---------------------------------------------------------------------------
+def cmd_capability(args, seat):
+    _, w = load()
+    if args.action == "list":
+        return _capability_list(w)
+    if not args.system:
+        die("`capability set` needs a system name: "
+            "capability set <SYSTEM> --function-rung … --content-rung …")
+    return _capability_set(args, seat, w)
+
+
+def _capability_set(args, seat, w):
+    if not args.function_rung and not args.content_rung:
+        die("`capability set` needs --function-rung and/or --content-rung — "
+            "setting neither records nothing.\n"
+            "  function ladder: %s\n"
+            "  content  ladder: %s"
+            % (" -> ".join(model.FUNCTION_RUNGS), " -> ".join(model.CONTENT_RUNGS)))
+    ev = {"seat": seat, "event": "capability", "system": args.system,
+          "function_rung": args.function_rung, "content_rung": args.content_rung,
+          "evidence_ref": args.evidence_ref, "date": args.date, "note": args.note}
+    _emit(ev, w, quiet=True)
+    cap = _replay_now().capabilities.get(args.system)
+    print("capability %s -> function=%s content=%s"
+          % (args.system, cap.function_rung if cap else "?",
+             cap.content_rung if cap else "?"))
+    return 0
+
+
+def _capability_list(w):
+    if not w.capabilities:
+        print("(no capabilities recorded yet — seed with `capability set`)")
+        return 0
+    for name in sorted(w.capabilities):
+        cap = w.capabilities[name]
+        print("%-40s function=%-13s content=%-11s date=%-11s evidence=%s"
+              % (name, cap.function_rung or "-", cap.content_rung or "-",
+                 cap.date or "-", cap.evidence_ref or "-"))
+    return 0
+
+
+# ---------------------------------------------------------------------------
 # artifact — the one door for a new game artifact
 # ---------------------------------------------------------------------------
 def cmd_artifact(args, seat):
@@ -1821,6 +1871,22 @@ def cmd_sweep(args, seat):
         return 0
     print("%d transient file(s). ⚠️ THIS LISTS ONLY — nothing here is deleted, ever."
           % len(names))
+    # ⚠️ ONE `git log` call for every name, not one PER name. Each subprocess spawn
+    # costs ~0.8s on this filesystem regardless of whether the file is even tracked,
+    # and Transient/ is explicitly designed to accumulate for ~14 days — 400 files
+    # measured 2026-09-08 turned this into a ~5-minute silent hang (all prints are
+    # deferred past the loop, so nothing appears on stdout while it runs). `--name-only`
+    # with a control-character-prefixed commit header lets one log walk answer "last
+    # commit that touched path P" for every P at once.
+    log_out = git("log", "--name-only", "--format=\x01%h %ad %an", "--date=short",
+                  "--", "Transient", "TRANSIENT_*")
+    last_by_name: dict[str, str] = {}
+    cur = None
+    for line in log_out.splitlines():
+        if line.startswith("\x01"):
+            cur = line[1:]
+        elif line.strip():
+            last_by_name.setdefault(line.strip(), cur)
     rows = []
     for n in sorted(names):
         p = os.path.join(model.ROOT, n)
@@ -1828,8 +1894,7 @@ def cmd_sweep(args, seat):
             age = (time.time() - os.path.getmtime(p)) / 86400.0
         except OSError:
             age = -1
-        last = git("log", "-1", "--format=%h %ad %an", "--date=short", "--", n)
-        rows.append((age, n, last or "(untracked — never committed)"))
+        rows.append((age, n, last_by_name.get(n) or "(untracked — never committed)"))
     for age, n, last in sorted(rows, reverse=True):
         print("  %6s  %-34s %s"
               % ("%.1fd" % age if age >= 0 else "?", n, last))
@@ -2089,6 +2154,24 @@ def build_parser():
     s.add_argument("--note", default=None,
                    help="one line of context for this state change, e.g. what "
                         "the load is for or why it went down")
+
+    s = add("capability", "PROJECT_MATURITY_DASHBOARD_1's registry: a system's "
+            "maturity grid (function x content), self-declared", cmd_capability)
+    s.add_argument("action", choices=("set", "list"))
+    s.add_argument("system", nargs="?",
+                   help="set only: the system/capability name, free text")
+    s.add_argument("--function-rung", dest="function_rung",
+                   choices=model.FUNCTION_RUNGS,
+                   help="planned -> designed -> implemented -> runnable -> checked-out "
+                        "(checked-out is OWNER only)")
+    s.add_argument("--content-rung", dest="content_rung", choices=model.CONTENT_RUNGS,
+                   help="none -> placeholder -> authored -> final")
+    s.add_argument("--evidence-ref", dest="evidence_ref",
+                   help="what shows it: a log line, a screenshot path, a session note")
+    s.add_argument("--date", help="when the EVIDENCE happened, YYYY-MM-DD "
+                                  "(defaults to unset; the event's own ts still records "
+                                  "when it was FILED)")
+    s.add_argument("--note", help="one line of context")
 
     s = add("sweep", "list stale TRANSIENT_* files. LISTS ONLY", cmd_sweep)
     s.add_argument("--transient", action="store_true")
