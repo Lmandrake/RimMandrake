@@ -40,7 +40,17 @@ def main() -> int:
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--apply", action="store_true",
                     help="write the change (default: report only)")
+    ap.add_argument("--i-know-the-world-has-moved-on", action="store_true",
+                    help="the owner's 2026-08-21 ruling measured every selected tile as "
+                         "AB_FeraliskInfestedJungle (rivers feed it, so drying it costs "
+                         "nothing) - a world rebase since then can broaden the selector "
+                         "to other biomes the ruling never considered. Pass this only "
+                         "after confirming the wider set with the owner.")
     a = ap.parse_args()
+
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from verify_frozen import warn_if_stale
+    warn_if_stale(TILES)
 
     with open(TILES, encoding="utf-8", newline="") as fh:
         rd = csv.DictReader(fh)
@@ -66,6 +76,16 @@ def main() -> int:
     if not sel:
         print("\nnothing to do - the selector already returns 0 rows.")
         return 0
+
+    off_premise = sorted({r["biome"] for r in sel} - {"AB_FeraliskInfestedJungle"})
+    if off_premise and not a.i_know_the_world_has_moved_on:
+        print("\n🔴 REFUSED: the owner's 2026-08-21 ruling measured every selected tile as "
+              "AB_FeraliskInfestedJungle - rivers feed it, so drying it costs the fiction "
+              "nothing. The selector now also matches: %s. The world has moved on since "
+              "the ruling (see world/ASHKARR_WORLDMAP_tiles.csv.frozen.json); re-confirm "
+              "the wider scope with the owner, then re-run with "
+              "--i-know-the-world-has-moved-on." % ", ".join(off_premise))
+        return 1
 
     for r in sel:
         r["rain_mm"] = "0"
