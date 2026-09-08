@@ -2435,10 +2435,10 @@
     "sha": "359b0b2c"
   },
   "src/RimMandrake/Utils/first_light.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "5b2ca5a1b5b307ac4ec84c04c126be7a0fc6196fdb050a2472bd14f00f46b92e",
-    "sha": "8e8fe001"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "1891bace61f429830a11ef8b9c3b701b0ebee6a18815b3213787b3883577a9c2",
+    "sha": "8f031a0b"
   },
   "src/RimMandrake/Utils/game_focus.py": {
     "cleanCount": 1,
