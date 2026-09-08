@@ -3519,6 +3519,12 @@
     "hash": "c675e278f2a0213b1fb6b39cda7ea204a58a533e73e914f6f4fb84c163474091",
     "sha": "de146739"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFluidCanalTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "8fb0f5853cfbc64964ab4aabca97bf932ca7e1a99d04a0820dbaf1875fde79ff",
+    "sha": "2aeb5193"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGenTools2.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -3580,10 +3586,10 @@
     "sha": "9437c787"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchLogAutoOpenSuppress.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "3ed7fb37e2a278efa283220a2af770d62963332a8e3010e2dae2171685b020cc",
-    "sha": "46ac7699"
+    "cleanCount": 2,
+    "date": "2026-09-08",
+    "hash": "e56f16c8af7facd9ca8172e107642ab4a4aaf4e372291b6033e212bb775aab50",
+    "sha": "2aeb5193"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchLordJobTools.cs": {
     "cleanCount": 1,
@@ -3729,6 +3735,12 @@
     "hash": "7583e3e351f3cd28fc8f68a1ee280b487c8454871eb4c9f6471fc14b740d2a85",
     "sha": "18e0094e"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTypeVisibilityTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "12f89a8c1c956200a6c6d9c604d7ea681621a018c22f1a2d5affe2834594c2a7",
+    "sha": "2aeb5193"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchUIRootTools.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -3766,10 +3778,10 @@
     "sha": "8b25e71d"
   },
   "src/RimMandrake/bridgetools/build.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "63001ad37c1f4568f245ce92fe25d1e47c739cde0af9bb36edf313199abc570f",
-    "sha": "1fb0888b"
+    "cleanCount": 2,
+    "date": "2026-09-08",
+    "hash": "37e357763ef241bfa38da6eab04253c2c46cf34bec9b48a452f99b4cc85ee128",
+    "sha": "2aeb5193"
   },
   "src/RimMandrake/bridgetools/check_map_biomes_live.py": {
     "cleanCount": 2,
