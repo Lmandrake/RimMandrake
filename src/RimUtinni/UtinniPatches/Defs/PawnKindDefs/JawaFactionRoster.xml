@@ -985,7 +985,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
     <defName>Jawa_Droid_Grunt</defName>
     <label>labour droid</label>
-    <race>OuterRim_ImperialLaborDroid</race>
+    <race>RSW_DW_Race_OuterRim_ImperialLaborDroid</race>
     <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
     <combatPower>90</combatPower>
     <isFighter>true</isFighter>
@@ -1049,7 +1049,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
     <defName>Jawa_Droid_Heavy</defName>
     <label>security droid</label>
-    <race>OuterRim_KXSecurityDroid</race>
+    <race>RSW_DW_Race_OuterRim_KXSecurityDroid</race>
     <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
     <combatPower>124</combatPower>
     <isFighter>true</isFighter>
@@ -1114,7 +1114,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
     <defName>Jawa_Droid_Specialist</defName>
     <label>medical droid</label>
-    <race>OuterRim_ProtocolDroid</race>
+    <race>RSW_DW_Race_OuterRim_ProtocolDroid</race>
     <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
     <combatPower>108</combatPower>
     <isFighter>true</isFighter>
@@ -1178,7 +1178,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
     <defName>Jawa_Droid_Leader</defName>
     <label>First Speaker R-41 Rell</label>
-    <race>OuterRim_SuperTacticalDroid</race>
+    <race>RSW_DW_Race_OuterRim_SuperTacticalDroid</race>
     <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
     <combatPower>176</combatPower>
     <isFighter>true</isFighter>
