@@ -157,3 +157,21 @@ R14. **Retirements NOT approved**: SeasWaterline and BirthHatchDemo stay;
 R15. Names ruled: RimProperty, RimPursuit, RimChronicle.
 
 Next: Fable revision of plan + map to these rulings; then the sprint item.
+
+## Sign-off — owner, 2026-09-08
+
+Owner: "Let's make sure any Star Wars plants and recipes etc are also
+correctly pulled out into Star Wars. Otherwise this looks good."
+Condition DISCHARGED by a full three-tier plant/recipe/food-drug sweep
+(sonnet agent, same day): 2 plants / ~77 recipes / ~16 food-drug defs,
+**0 misplaced**. The two borderline reads are deliberate design: ScorchFruit
+is FireEcology's engine half (About.xml-documented), Cuisine's generic
+skewers are the owner's own 2026-09-05 "general galaxy content" ruling.
+One finding: PlantNames_Ashkarr.xml exists in BOTH StarWarsPatches and
+UtinniPatches (contents correctly split, filename lies at RSW) — added
+to the map as a rename-file row (103).
+
+**Plan v3 + map (7b07a7d8 + this commit) are SIGNED OFF.** Execution:
+MOD_CONSOLIDATION_SPRINT_1, gated on CHRONICLE_EVENT_SPINE_1,
+GRAFFITI_GENERIC_MARKS_1, PYRELANDS_GENERIC_TEXT_1; scheduling is the
+owner's call.

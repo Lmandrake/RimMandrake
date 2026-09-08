@@ -101,3 +101,4 @@ stay,RimStarWars/JawaVoice/Patches/JawaVoice_Insults.xml,,RimStarWars,,,MEDIUM,U
 stay,RimStarWars/JawaVoice/Patches/JawaVoice_Interactions.xml,,RimStarWars,,,MEDIUM,same — canon Jawaese only
 stay,RimStarWars/JawaVoice/Patches/JawaVoice_prisoners.xml,,RimStarWars,,,HIGH,generic Jawaese lines
 stay,RimStarWars/JawaVoice/Patches/JawaVoice_romance.xml,,RimStarWars,,,HIGH,generic Jawaese lines
+rename-file,RimStarWars/StarWarsPatches/Patches/PlantNames_Ashkarr.xml,RimStarWars/StarWarsPatches/Patches/PlantNames_CanonSW.xml,RSW,,,HIGH,"filename lies: contents are canon SW plant names; RUT twin keeps Ashkarr name — same-name-two-tiers is the misplace shape (sweep 2026-09-08)"
