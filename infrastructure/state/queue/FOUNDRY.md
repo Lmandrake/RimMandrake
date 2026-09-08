@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T16:10:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T16:34:55Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1157,16 +1157,6 @@ thin:     no ## criteria
 summary:  - Identify the mechanism first (MEASURE, don't guess): find what actually draws
 prose:    infrastructure/state/items/WORLDMAP_BIOME_ICONS_REGEN_1.md
 
-## BIOME_FLORA_ROSTER_GAP_1 biome_flora.py's own --check finds 2 stale + 8 unrostered placed biomes (HorrorWastes, BMT_CrystalCaverns dead; BiomeGRimond/RUT_TheScald/RUT_PropaneLake/RUT_NightsideIce/RUT_GreySea/RUT_TwilightSea/BiomeCypreJungle/COMIGO_GreaterSwamp_Tropical unrostered)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Two stale entries to remove/reconcile: HorrorWastes (dissolved into other biomes
-prose:    infrastructure/state/items/BIOME_FLORA_ROSTER_GAP_1.md
-
 ## ASHKARR_REGATE_RAIN_DEAD_1 ashkarr_regate_rain.py is a permanently non-viable dead-file candidate (99% reproduction gate can never pass; replacement already shipped)
 state:    proposed
 row:      unassigned
@@ -1266,3 +1256,13 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  Found 2026-09-08 while live-verifying DROIDWORKSMODULEABSORB1 (B2). Three
 prose:    infrastructure/state/items/DROIDWORKS_APPARELMONEY_MISSING_1.md
+
+## KOTOR_CRYSTAL_GENSTEP_DRIFT_1 Deployed KOTOR_CrystalFormation genstep scatters only Stygium; repo's absorbed copy lists 12 crystal variants — diff repo vs deployed, redeploy or pull (crystal-inventory find)
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     fix
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md

@@ -5918,3 +5918,32 @@
 {"seat":"BENCH","event":"start","id":"GEONOSIAN_BRAINWORM_MORPH_1","ts":"2026-09-08T16:10:21Z"}
 {"seat":"BENCH","event":"note","id":"GEONOSIAN_BRAINWORM_MORPH_1","text":"Both research halves done (design/RimStarWars/brain_worm_spec.md): donor examined inactive, canon cited, def plan drafted with a v1 living-hosts-only vs corpse-walker fork for the owner. Awaiting his review per verify","ts":"2026-09-08T16:10:22Z"}
 {"seat":"BENCH","event":"needs","id":"GEONOSIAN_BRAINWORM_MORPH_1","to":"owner","ts":"2026-09-08T16:10:23Z"}
+{"seat":"BENCH","event":"note","id":"OCULAR_OVERDRIVE_SITE_1","text":"Premise decayed 2026-09-08: AB_OcularForest is now THE CONTAGION's def across 179 peak tiles (the 3-tile Ashfall Range donor placement is superseded per the_contagion.md). The Overdrive must be re-grounded as a named site + dungeon WITHIN the Contagion (Ashfall Range holds 24 of its tiles) — landmark naming, adjacency, and campaign role are owner calls; placement waits for worldgen to resume","ts":"2026-09-08T16:11:38Z"}
+{"seat":"BENCH","event":"claim","id":"MUTATION_MODIFIERS_SURVEY_1","ts":"2026-09-08T16:13:51Z"}
+{"seat":"BENCH","event":"start","id":"MUTATION_MODIFIERS_SURVEY_1","ts":"2026-09-08T16:13:52Z"}
+{"seat":"BENCH","event":"note","id":"MUTATION_MODIFIERS_SURVEY_1","text":"Survey written (design/Jawa/worldbuilding/mutation_modifiers_survey.md): 15 systems classified; Contagion-touched deck proposed. Key law found: never split boon/cost across two hediffs (the luciferium dodge). Deck awaits owner review","ts":"2026-09-08T16:13:53Z"}
+{"seat":"BENCH","event":"needs","id":"MUTATION_MODIFIERS_SURVEY_1","to":"owner","ts":"2026-09-08T16:13:54Z"}
+{"seat":"BENCH","event":"claim","id":"ALPHA_FAMILY_SOURCE_REVIEW_1","ts":"2026-09-08T16:13:55Z"}
+{"seat":"BENCH","event":"start","id":"ALPHA_FAMILY_SOURCE_REVIEW_1","ts":"2026-09-08T16:13:55Z"}
+{"seat":"BENCH","event":"note","id":"ALPHA_FAMILY_SOURCE_REVIEW_1","text":"Review written (design/Jawa/worldbuilding/alpha_family_source_review.md): NO license on either repo — shipped C# banned, clean-room reimplementation fine; 6 mechanics ranked with sheet candidates. Mechanic picks + sheet assignments are the owner's, per the conversation-loop convention","ts":"2026-09-08T16:13:56Z"}
+{"seat":"BENCH","event":"needs","id":"ALPHA_FAMILY_SOURCE_REVIEW_1","to":"owner","ts":"2026-09-08T16:13:57Z"}
+{"seat":"BENCH","event":"claim","id":"STAGED_LORE_DESCRIPTIONS_1","ts":"2026-09-08T16:15:04Z"}
+{"seat":"BENCH","event":"start","id":"STAGED_LORE_DESCRIPTIONS_1","ts":"2026-09-08T16:15:05Z"}
+{"seat":"BENCH","event":"needs","id":"STAGED_LORE_DESCRIPTIONS_1","to":"owner","ts":"2026-09-08T16:15:06Z"}
+{"seat":"BENCH","event":"start","id":"SHEET_SUBMEASURE_REFRESH_1","ts":"2026-09-08T16:17:35Z"}
+{"seat":"BENCH","event":"close","id":"SHEET_SUBMEASURE_REFRESH_1","sha":"4de53d06","ts":"2026-09-08T16:17:36Z"}
+{"seat":"BENCH","event":"note","id":"SHEET_SUBMEASURE_REFRESH_1","text":"All flagged sub-measures resolved except wasteland's three-family table (interpretive — dark-scour regions moved to BiomeGRimond; freeze-review material, flagged in-sheet)","ts":"2026-09-08T16:17:37Z"}
+{"seat":"BENCH","event":"claim","id":"ANCIENT_RUINS_MOD_AUDIT_1","ts":"2026-09-08T16:17:38Z"}
+{"seat":"BENCH","event":"start","id":"ANCIENT_RUINS_MOD_AUDIT_1","ts":"2026-09-08T16:17:38Z"}
+{"seat":"BENCH","event":"note","id":"ANCIENT_RUINS_MOD_AUDIT_1","text":"Audit written (design/Jawa/mods/ancient_ruins_mod_audit.md): mod identified with evidence, 1005 defs triaged (verdict: cut family via Cherry Picker; read its ComplexLayout extension first). Removal is a separate owner-ruled ticket per the item","ts":"2026-09-08T16:17:39Z"}
+{"seat":"BENCH","event":"needs","id":"ANCIENT_RUINS_MOD_AUDIT_1","to":"owner","ts":"2026-09-08T16:17:40Z"}
+{"seat":"OWNER","event":"reassign","id":"BIOME_FLORA_ROSTER_GAP_1","to":"BENCH","ownerSaid":"If you run out of things to do as BENCH, assist with foundry items","override":"only BENCH or DECIDE may `reassign` (seat is OWNER)\n\n✅ If the OWNER told you to do this, that is not a refusal — quote him and it lands,\n   with his words recorded on the event as the authorization:\n    python3 src/RimMandrake/rimflow/cli.py reassign BIOME_FLORA_ROSTER_GAP_1 … --owner-said \"<his words, verbatim>\"\n\n⚠️  Pass what he ACTUALLY said. Bare assent (\"yes\", \"ok\", \"go ahead\") is refused on\n    purpose — that is him agreeing to something YOU said, and the ledger would record\n    your words as his. A short instruction is fine.\n\n⛔ If he did NOT tell you to, the rule stands. Route it to BENCH or DECIDE instead.","ts":"2026-09-08T16:18:08Z"}
+{"seat":"BENCH","event":"claim","id":"BIOME_FLORA_ROSTER_GAP_1","ts":"2026-09-08T16:19:24Z"}
+{"seat":"BENCH","event":"start","id":"BIOME_FLORA_ROSTER_GAP_1","ts":"2026-09-08T16:19:25Z"}
+{"seat":"BENCH","event":"note","id":"BIOME_FLORA_ROSTER_GAP_1","text":"Stale half done (superseded in-file, --check clean of it). Roster half for the 8 live biomes deliberately NOT done solo — it is the flora side of BIOME_FAUNA_ASSIGNMENT_SITTING_1 per the sheet-drives-roster ruling","ts":"2026-09-08T16:19:26Z"}
+{"seat":"BENCH","event":"needs","id":"BIOME_FLORA_ROSTER_GAP_1","to":"owner","ts":"2026-09-08T16:19:27Z"}
+{"seat":"BENCH","event":"file","id":"KOTOR_CRYSTAL_GENSTEP_DRIFT_1","title":"Deployed KOTOR_CrystalFormation genstep scatters only Stygium; repo's absorbed copy lists 12 crystal variants — diff repo vs deployed, redeploy or pull (crystal-inventory find)","kind":"fix","target":"v1","needs":"deploy","for":"FOUNDRY","ts":"2026-09-08T16:34:49Z"}
+{"seat":"BENCH","event":"claim","id":"CRYSTAL_MODS_INGEST_1","ts":"2026-09-08T16:34:50Z"}
+{"seat":"BENCH","event":"start","id":"CRYSTAL_MODS_INGEST_1","ts":"2026-09-08T16:34:51Z"}
+{"seat":"BENCH","event":"note","id":"CRYSTAL_MODS_INGEST_1","text":"Inventory written (design/Jawa/mods/crystal_mods_inventory.md): orange = KOTOR_SmallCrystal_orange, already ours; 6 systems catalogued; recommendations ranked (retarget KOTOR genstep to Lantern Deeps, kyber needs absorption+gate, lanternstone just needs its rename). Ingest decisions are the owner's","ts":"2026-09-08T16:34:53Z"}
+{"seat":"BENCH","event":"needs","id":"CRYSTAL_MODS_INGEST_1","to":"owner","ts":"2026-09-08T16:34:55Z"}
