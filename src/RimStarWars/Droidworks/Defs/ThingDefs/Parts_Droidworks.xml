@@ -221,6 +221,7 @@
       <skillRequirements>
         <Crafting>4</Crafting>
       </skillRequirements>
+      <researchPrerequisite>RSW_DW_Research_PrimitiveFabrication</researchPrerequisite>
     </recipeMaker>
     <costList>
       <Steel>40</Steel>
