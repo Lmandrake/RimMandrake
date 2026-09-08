@@ -54,6 +54,7 @@ namespace RimMandrake.StarWars.JawaIonWeapons
             DamageResult result = base.Apply(dinfo, victim);
 
             ApplyMachineTier(dinfo, victim);
+            ApplyShieldBreak(dinfo, victim);
 
             Pawn pawn = victim as Pawn;
             if (pawn == null || pawn.Dead || pawn.health == null)
@@ -238,6 +239,67 @@ namespace RimMandrake.StarWars.JawaIonWeapons
                 DamageInfo.SourceCategory.ThingOrUnknown,
                 dinfo.IntendedTarget);
             emp.SetIgnoreArmor(true);
+            victim.TakeDamage(emp);
+        }
+
+        /// <summary>
+        /// DROIDWORKS_ION_SHIELD_BODYSIZE_1 (packet B6). "Ion breaks shields" -
+        /// droid_ruling.md section 5A item 3: "have the ion projectile also
+        /// deliver a small amount of real EMP damage", so
+        /// CompShield.PostPreApplyDamage's `dinfo.Def == DamageDefOf.EMP`
+        /// reference-equality check fires and breaks it (read from source:
+        /// that check is unconditional on amount - ANY EMP hit on an active
+        /// shield instantly zeroes its energy and calls Break()).
+        ///
+        /// 🔴 CORRECTED, live-tested: ApplyMachineTier does NOT already cover
+        /// this for droids/machines, despite sending a real DamageDefOf.EMP
+        /// hit. `emp.SetIgnoreArmor(true)` on THAT dispatch (correct for its
+        /// own stun purpose - armor should not block an EMP stun pulse) also
+        /// skips the ENTIRE apparel-comp loop that shields hook into:
+        /// Pawn_HealthTracker.PreApplyDamage's own source reads
+        /// `if (this.pawn.apparel != null &amp;&amp; !dinfo.IgnoreArmor)` around the
+        /// `wornApparel[i].CheckPreAbsorbDamage(dinfo)` loop that is the ONLY
+        /// path to CompShield.PostPreApplyDamage - an IgnoreArmor hit never
+        /// reaches a shield at all, worn by flesh or droid alike. First
+        /// attempt at this fix (flesh-only, IgnoreArmor left true) was tried
+        /// live and DEMONSTRABLY DID NOT WORK (a shielded colonist still
+        /// absorbed a bullet after an ion hit, identically to an un-ion'd
+        /// control) - caught before commit, not shipped broken.
+        ///
+        /// Fix: a SEPARATE dispatch, for every pawn regardless of flesh/
+        /// droid/mech, that does NOT ignore armor - CompShield's own EMP
+        /// branch never checks dinfo.Amount or armor rating before breaking,
+        /// and ordinary armor apparel has no PostPreApplyDamage of its own to
+        /// interfere (armor reduction happens later, inside
+        /// DamageWorker.ApplyDamageToPart, after this comp-absorb pass), so
+        /// letting armor apply here costs nothing and is what lets the hit
+        /// reach the shield's own comp check at all. amount 1 is too small to
+        /// matter for anything that reads it; StunHandler's own gate
+        /// (`!pawn.RaceProps.IsFlesh`) still refuses to stun a flesh pawn
+        /// from EMP regardless of amount, and EMP is harmsHealth:false /
+        /// makesBlood:false, so this is a genuine no-op on anyone with no
+        /// active shield - it does not need to check for one first.
+        /// </summary>
+        private void ApplyShieldBreak(DamageInfo dinfo, Thing victim)
+        {
+            Pawn pawn = victim as Pawn;
+            if (pawn == null || pawn.Dead || !pawn.Spawned)
+            {
+                return;
+            }
+
+            DamageInfo emp = new DamageInfo(
+                DamageDefOf.EMP,
+                1f,
+                0f,
+                dinfo.Angle,
+                dinfo.Instigator,
+                null,
+                dinfo.Weapon,
+                DamageInfo.SourceCategory.ThingOrUnknown,
+                dinfo.IntendedTarget);
+            // Deliberately NOT SetIgnoreArmor(true) here - see this method's
+            // own header for why that flag is exactly what breaks the fix.
             victim.TakeDamage(emp);
         }
     }
