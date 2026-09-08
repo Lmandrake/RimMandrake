@@ -10,8 +10,8 @@
 
 Ships batch 3, four promises: The Oasis Shrine (row 10), The Rakatan Trace (row 9), The Cistern (row 19), The Toll Gap (row 13). All four rimplace templates are authored and lint clean; defName verification rode a validate_patch.py probe against the live on-disk mod XML rather than `rimplace verify` (this session's defs.sqlite capture is scoped to ResearchProjectDef only, so the def dump correctly reports UNMEASURED for ThingDef/TerrainDef checks right now). The TileMutatorDef/GenStepDef wiring exists and proves the engine end to end for each row. None are yet placed on any Ash'karr tile (a live world-tile edit, deliberately deferred per the roster's own protocol) and none have letter text in the gods' register yet. ~39 roster rows remain open for future batches.
 
-Absorbed RimMandrake: RUT — Desert Fixtures (mandrake.rut.desertfixtures).
-Absorbed RimUtinni: Vault Dungeons (mandrake.rut.vaultdungeons).</description>
+Absorbed RimMandrake: RUT — Desert Fixtures (mandrake.rut.injections).
+Absorbed RimUtinni: Vault Dungeons (mandrake.rut.injections).</description>
 
   <modDependencies>
     <li>

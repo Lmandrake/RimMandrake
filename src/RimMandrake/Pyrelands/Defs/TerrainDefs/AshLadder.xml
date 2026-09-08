@@ -3,13 +3,13 @@
 
   <!--
     🔴 EXPECTED, ACCEPTED CONFIG WARNING (confirmed live 2026-09-01):
-    "Config error in RSW_FE_Ash_Trace/Ash_Light: burnedDef is flammable" —
+    "Config error in RM_FE_Ash_Trace/Ash_Light: burnedDef is flammable" —
     `Verse/TerrainDef.cs ConfigErrors()` flags ANY burnedDef target that is
     itself flammable, because vanilla's own convention treats burnedDef as
     a terminal end-state. This chain deliberately breaks that convention on
     purpose (see below) — it is advisory only (ConfigErrors never blocks a
     load or the mechanism itself; `TerrainGrid.Notify_TerrainBurned` fires
-    regardless of what the check says), not a bug. `RSW_FE_Ash_Deep` has no
+    regardless of what the check says), not a bug. `RM_FE_Ash_Deep` has no
     burnedDef and is not itself flammable, so the chain still terminates
     correctly — only the non-terminal rungs (Trace, Light; and the two
     scorchable-ground bases whose burnedDef points at Trace) trip the
@@ -39,7 +39,7 @@
     passively during play). So Black Rain does NOT auto-clear deep ash
     TERRAIN back to clean ground; that half of "converts accumulated ash
     to fast-clearing slurry" is delivered instead through the loose
-    RSW_FE_Filth_LooseAsh layer (Filth_LooseAsh.xml, rainWashes=true) that
+    RM_FE_Filth_LooseAsh layer (Filth_LooseAsh.xml, rainWashes=true) that
     rides on top of these terrains, which vanilla's own
     SteadyEnvironmentEffects DOES wash away passively under any rainRate
     weather. Clearing the underlying HEAVY/DEEP terrain itself is left to
@@ -47,7 +47,7 @@
     flagged scope call, not an oversight.
   -->
 
-  <TerrainDef Name="RSW_FE_AshBase" Abstract="true">
+  <TerrainDef Name="RM_FE_AshBase" Abstract="true">
     <researchPrerequisites/>
     <renderPrecedence>101</renderPrecedence>
     <texturePath>Terrain/Surfaces/RoughHewnRock</texturePath>
@@ -58,8 +58,8 @@
     </affordances>
   </TerrainDef>
 
-  <TerrainDef ParentName="RSW_FE_AshBase">
-    <defName>RSW_FE_Ash_Trace</defName>
+  <TerrainDef ParentName="RM_FE_AshBase">
+    <defName>RM_FE_Ash_Trace</defName>
     <label>ash trace</label>
     <description>A light dusting of ash where the fire passed through fast. Cosmetic — it will not slow you down, and it will not stop the ground burning again.</description>
     <color>(150, 145, 138, 140)</color>
@@ -69,11 +69,11 @@
       <Beauty>-2</Beauty>
       <Flammability>0.6</Flammability>
     </statBases>
-    <burnedDef>RSW_FE_Ash_Light</burnedDef>
+    <burnedDef>RM_FE_Ash_Light</burnedDef>
   </TerrainDef>
 
-  <TerrainDef ParentName="RSW_FE_AshBase">
-    <defName>RSW_FE_Ash_Light</defName>
+  <TerrainDef ParentName="RM_FE_AshBase">
+    <defName>RM_FE_Ash_Light</defName>
     <label>light ash</label>
     <description>A real layer of ash, thick enough to slow root growth. Not yet thick enough to slow a person.</description>
     <color>(120, 115, 108, 190)</color>
@@ -83,11 +83,11 @@
       <Beauty>-4</Beauty>
       <Flammability>0.4</Flammability>
     </statBases>
-    <burnedDef>RSW_FE_Ash_Heavy</burnedDef>
+    <burnedDef>RM_FE_Ash_Heavy</burnedDef>
   </TerrainDef>
 
-  <TerrainDef ParentName="RSW_FE_AshBase">
-    <defName>RSW_FE_Ash_Heavy</defName>
+  <TerrainDef ParentName="RM_FE_AshBase">
+    <defName>RM_FE_Ash_Heavy</defName>
     <label>heavy ash</label>
     <description>Ash banked deep enough to drag at every step and choke anything trying to grow through it. A repeatedly-burned scar looks like this.</description>
     <color>(80, 76, 70, 230)</color>
@@ -97,11 +97,11 @@
       <Beauty>-7</Beauty>
       <Flammability>0.2</Flammability>
     </statBases>
-    <burnedDef>RSW_FE_Ash_Deep</burnedDef>
+    <burnedDef>RM_FE_Ash_Deep</burnedDef>
   </TerrainDef>
 
-  <TerrainDef ParentName="RSW_FE_AshBase">
-    <defName>RSW_FE_Ash_Deep</defName>
+  <TerrainDef ParentName="RM_FE_AshBase">
+    <defName>RM_FE_Ash_Deep</defName>
     <label>deep ash</label>
     <description>A dead grey drift, smothering enough that nothing grows through it and nothing burns it further. The scar's floor, until something clears it back to ground.</description>
     <color>(48, 46, 43, 255)</color>

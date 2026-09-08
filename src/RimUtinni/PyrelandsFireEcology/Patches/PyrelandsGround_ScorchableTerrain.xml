@@ -13,7 +13,7 @@
   giving them Flammability+burnedDef would make EVERY biome's dirt start
   converting to ash, not just the Pyrelands. Scope stays to the one biome
   that opted in: this file repoints ZBiome_Grasslands' own
-  terrainsByFertility and terrainPatchMakers entries at RSW_FE_Ground_* (the
+  terrainsByFertility and terrainPatchMakers entries at RM_FE_Ground_* (the
   scorchable clones), positionally, verified against the raw donor XML read
   2026-09-01 (zylle.MoreVanillaBiomes 1.6/Defs/BiomeDefs/ZBiome_Grasslands.xml):
 
@@ -42,24 +42,24 @@
 
         <li Class="PatchOperationReplace">
           <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/terrainsByFertility/li[1]/terrain</xpath>
-          <value><terrain>RSW_FE_Ground_Sand</terrain></value>
+          <value><terrain>RM_FE_Ground_Sand</terrain></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/terrainsByFertility/li[2]/terrain</xpath>
-          <value><terrain>RSW_FE_Ground_Gravel</terrain></value>
+          <value><terrain>RM_FE_Ground_Gravel</terrain></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/terrainsByFertility/li[3]/terrain</xpath>
-          <value><terrain>RSW_FE_Ground_Soil</terrain></value>
+          <value><terrain>RM_FE_Ground_Soil</terrain></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/terrainsByFertility/li[4]/terrain</xpath>
-          <value><terrain>RSW_FE_Ground_SoilRich</terrain></value>
+          <value><terrain>RM_FE_Ground_SoilRich</terrain></value>
         </li>
 
         <li Class="PatchOperationReplace">
           <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/terrainPatchMakers/li[1]/thresholds/li[1]/terrain</xpath>
-          <value><terrain>RSW_FE_Ground_SoilRich</terrain></value>
+          <value><terrain>RM_FE_Ground_SoilRich</terrain></value>
         </li>
 
       </operations>

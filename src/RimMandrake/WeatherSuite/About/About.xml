@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
   <name>RimMandrake: SW — Weather Suite</name>
-  <packageId>mandrake.rsw.weathersuite</packageId>
+  <packageId>mandrake.rm.weathersuite</packageId>
   <author>mandrake</author>
   <supportedVersions>
     <li>1.6</li>

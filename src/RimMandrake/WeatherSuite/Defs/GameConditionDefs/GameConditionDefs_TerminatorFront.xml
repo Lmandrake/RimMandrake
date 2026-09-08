@@ -29,7 +29,7 @@
 <Defs>
 
   <GameConditionDef>
-    <defName>RSW_WS_TerminatorFront</defName>
+    <defName>RM_WS_TerminatorFront</defName>
     <label>terminator front</label>
     <description>The standing weather-wall where the dayside furnace meets the nightside cold. This front never moves and never passes — the map sits inside it permanently, and lightning strikes here well above ambient rates.</description>
     <allowUnderground>false</allowUnderground>

@@ -25,7 +25,7 @@
 
      Frequency: baseChance 0.7 with minRefireDays 20. Chosen, not copied -
      Droidworks ships no other IncidentDef to mirror, and the nearest house
-     precedent is RimStarWars' own RSW_WS_DarkAurora (baseChance 1.2,
+     precedent is RimStarWars' own RM_WS_DarkAurora (baseChance 1.2,
      minRefireDays 15, IncidentDefs_DarkAurora.xml). Set below that on both
      axes because this one leaves a live hostile on the map with no timeout,
      and because §6's anti-exponential check caps the rate at which new droid

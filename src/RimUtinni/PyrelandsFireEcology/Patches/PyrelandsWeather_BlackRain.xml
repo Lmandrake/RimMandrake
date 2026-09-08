@@ -3,7 +3,7 @@
   ============================================================================
   PyrelandsWeather_BlackRain.xml   RimUtinni: Fire Ecology   2026-09-01
   ============================================================================
-  FIRE_ECOLOGY_LOOP_1, unit 2 — wires RSW_FE_BlackRain (RimMandrake: SW —
+  FIRE_ECOLOGY_LOOP_1, unit 2 — wires RM_FE_BlackRain (RimMandrake: SW —
   Fire Ecology) into the Pyrelands' own weather table at a LOW base share,
   same dictionary-shorthand xpath pattern as PyrelandsWeather_Stage0.xml
   (apply AFTER that file — both are PatchOperationAdd/Replace against the
@@ -34,7 +34,7 @@
         <li Class="PatchOperationAdd">
           <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities</xpath>
           <value>
-            <RSW_FE_BlackRain>1</RSW_FE_BlackRain>
+            <RM_FE_BlackRain>1</RM_FE_BlackRain>
           </value>
         </li>
 

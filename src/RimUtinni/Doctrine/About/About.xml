@@ -82,7 +82,7 @@ Load last.</description>
          in load order too, so this was a second silent no-op waiting to
          trigger, not a live bug today. -->
     <li>LingLuo.Cockroach</li>                            <!-- Rim cockroach -->
-    <li>mandrake.rsw.seabeasts</li>                       <!-- RimMandrake - SW Sea Beasts -->
+    <li>mandrake.rsw.swbestiary</li>                       <!-- RimMandrake - SW Sea Beasts -->
     <li>Mlie.AdvancedBiomes</li>                          <!-- Advanced Biomes (Continued) -->
     <li>Mlie.Horrors</li>                                 <!-- Horrors (Continued) -->
     <li>Mlie.MoEvents</li>                                <!-- Mo'Events (Continued) -->

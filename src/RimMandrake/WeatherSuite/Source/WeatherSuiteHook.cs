@@ -183,10 +183,10 @@ namespace RimMandrake.StarWars.WeatherSuite
             {
                 if (!WeatherGeometryUtility.MapInTerminatorBand(map)) return;
 
-                GameConditionDef frontDef = DefDatabase<GameConditionDef>.GetNamedSilentFail("RSW_WS_TerminatorFront");
+                GameConditionDef frontDef = DefDatabase<GameConditionDef>.GetNamedSilentFail("RM_WS_TerminatorFront");
                 if (frontDef == null)
                 {
-                    Log.Error("[RimMandrake.StarWars.WeatherSuite] RSW_WS_TerminatorFront GameConditionDef "
+                    Log.Error("[RimMandrake.StarWars.WeatherSuite] RM_WS_TerminatorFront GameConditionDef "
                               + "missing — the terminator band is geometrically active on this map but has "
                               + "nothing to start.");
                     return;

@@ -24,7 +24,7 @@
 <Defs>
 
   <ThingDef ParentName="BuildingBase">
-    <defName>RSW_WS_WeatherInstrument</defName>
+    <defName>RM_WS_WeatherInstrument</defName>
     <label>weather instrument mast</label>
     <description>A thermometer, barometer and anemometer bolted to a salvaged mast, wired to a grounding tap. It cannot see far ahead, but it reads what the sky is doing right now better than any pair of eyes — the first thing worth building anywhere the sky itself is a threat.</description>
     <altitudeLayer>Building</altitudeLayer>

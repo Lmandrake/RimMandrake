@@ -12,7 +12,7 @@
     for — no Plant field reads GameCondition or nearby Fire things), this
     plant simply DOES NOT EXIST until the C# hook spawns it (already at
     harvestAfterGrowth, via the same fire-tick hook that places
-    RSW_FE_Filth_LooseAsh) directly on a burning cell. It never appears in
+    RM_FE_Filth_LooseAsh) directly on a burning cell. It never appears in
     any biome's wildPlants list — RimUtinni: Fire Ecology does NOT add it
     there, deliberately. "Inert and worthless unburned" is delivered by the
     plant simply not existing unburned, which is stronger than a gate.
@@ -32,7 +32,7 @@
   -->
 
   <ThingDef ParentName="PlantBase">
-    <defName>RSW_FE_Plant_ScorchFruit</defName>
+    <defName>RM_FE_Plant_ScorchFruit</defName>
     <label>scorch-fruit pod</label>
     <description>A woody seed-pod, sealed shut and inert until fire cracks its casing. Once cracked it ripens almost instantly on the heat alone — and goes soft and worthless again within a day if nothing picks it.</description>
     <altitudeLayer>LowPlant</altitudeLayer>
@@ -71,7 +71,7 @@
       <harvestYield>5</harvestYield>
       <harvestTag>Standard</harvestTag>
       <harvestAfterGrowth>0.01</harvestAfterGrowth>
-      <harvestedThingDef>RSW_FE_ScorchFruitYield</harvestedThingDef>
+      <harvestedThingDef>RM_FE_ScorchFruitYield</harvestedThingDef>
       <wildOrder>2</wildOrder>
       <purpose>Food</purpose>
       <allowAutoCut>false</allowAutoCut>
@@ -89,7 +89,7 @@
   </ThingDef>
 
   <ThingDef ParentName="PlantFoodRawBase">
-    <defName>RSW_FE_ScorchFruitYield</defName>
+    <defName>RM_FE_ScorchFruitYield</defName>
     <label>scorch-fruit</label>
     <description>A fire-cracked seed-pod's contents — sweet, faintly smoky, prized for having been worth the risk. Spoils fast; this was never meant to be stored.</description>
     <allowedArchonexusCount>60</allowedArchonexusCount>

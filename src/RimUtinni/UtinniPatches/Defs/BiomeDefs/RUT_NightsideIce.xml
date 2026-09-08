@@ -58,7 +58,7 @@
     paint under HORRORWASTES_BIOME_DISSOLVE_1's mosaic (needs an owner-reviewed
     worldview.py render first — NOT done here); registering the def with whatever world
     tool needs an explicit biome list (C# bridge tools resolve BiomeDef by name via
-    DefDatabase lookup at paint time, no hardcoded list found in JawaBenchWorldTools.cs —
+    DefDatabase lookup at paint time, no hardcoded engine list —
     if a Python-side census/CSV needs this name added, that is part of the paint pass,
     not this one); tunnelers/icy insects roster and art; the equivalence-table incident
     defs (thaw pulse, calving delivery, the lost soul, rime-fall/ablation, the Dark

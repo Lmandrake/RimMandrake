@@ -43,7 +43,7 @@
   This does NOT touch AshStorms_Pyrelands.xml's own AB_VolcanicAsh addition
   (Jawa_Patches, commonality 3, gated on Alpha Biomes) — untouched, additive,
   no conflict; nor PyrelandsWeather_BlackRain.xml (same folder, adds
-  RSW_FE_BlackRain) — separate file, applied after this one loads.
+  RM_FE_BlackRain) — separate file, applied after this one loads.
   ============================================================================
 -->
 <Patch>

@@ -3,7 +3,7 @@
   ============================================================================
   IncidentDefs_DarkAurora.xml   RimStarWars: Weather Suite   2026-09-01
   ============================================================================
-  Fires RSW_WS_DarkAurora. workerClass is IncidentWorker_NightsideAurora
+  Fires RM_WS_DarkAurora. workerClass is IncidentWorker_NightsideAurora
   (WeatherSuiteHook.cs), which subclasses vanilla IncidentWorker_Aurora and
   adds exactly one requirement on top of everything vanilla Aurora already
   checks (darkness, "won't end immediately"): at least one player-home map
@@ -18,13 +18,13 @@
 <Defs>
 
   <IncidentDef>
-    <defName>RSW_WS_DarkAurora</defName>
+    <defName>RM_WS_DarkAurora</defName>
     <label>dark-side aurora</label>
     <baseChance>1.2</baseChance>
     <canOccurOnAllPlanetLayers>true</canOccurOnAllPlanetLayers>
     <category>Misc</category>
     <durationDays>0.125~0.35</durationDays>
-    <gameCondition>RSW_WS_DarkAurora</gameCondition>
+    <gameCondition>RM_WS_DarkAurora</gameCondition>
     <letterDef>PositiveEvent</letterDef>
     <letterLabel>Dark-side aurora</letterLabel>
     <minRefireDays>15</minRefireDays>

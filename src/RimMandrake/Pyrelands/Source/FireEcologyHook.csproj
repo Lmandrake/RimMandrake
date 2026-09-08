@@ -7,7 +7,7 @@
     header if this one goes stale.
 
     Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimStarWars\FireEcology\Source\FireEcologyHook.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Pyrelands\Source\FireEcologyHook.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 

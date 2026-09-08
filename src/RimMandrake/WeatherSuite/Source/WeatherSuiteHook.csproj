@@ -3,10 +3,10 @@
   <!--
     RimWorld 1.6 runs Unity/Mono against a .NET Framework 4.7.2 profile, so
     the mod DLL must target net472. Same shape as
-    src/RimStarWars/FireEcology/Source/FireEcologyHook.csproj.
+    src/RimMandrake/Pyrelands/Source/FireEcologyHook.csproj.
 
     Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimStarWars\WeatherSuite\Source\WeatherSuiteHook.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\WeatherSuite\Source\WeatherSuiteHook.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 

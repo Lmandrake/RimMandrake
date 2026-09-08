@@ -18,7 +18,7 @@
   -->
 
   <ThingDef ParentName="BaseFilth">
-    <defName>RSW_FE_Filth_LooseAsh</defName>
+    <defName>RM_FE_Filth_LooseAsh</defName>
     <label>loose ash</label>
     <description>A drift of fine grey ash over the ground beneath it. A hard rain carries it off fast.</description>
     <altitudeLayer>Filth</altitudeLayer>

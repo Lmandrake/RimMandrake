@@ -1,5 +1,5 @@
 kind,old,new,tier,confidence,note
-mod,src/Jawa/DesertVehicleReskin,src/RimMandrake/DesertVehicleReskin,RimMandrake,RULED,review finding 1: fixes Alpha Vehicles Neolithic (generic)
+mod,src/Jawa/DesertVehicleReskin,src/RimStarWars/DesertVehicleReskin,RimStarWars,RULED,R11 2026-09-08: aesthetic reskins take the tier of the aesthetic; moved whole (ships C#)
 packageId,mandrake.desertvehiclereskin,mandrake.rm.desertvehiclereskin,RimMandrake,RULED,
 namespace,DesertVehicleReskin,RimMandrake.DesertVehicleReskin,RimMandrake,RULED,
 mod,src/Jawa/Droidworks,src/RimStarWars/Droidworks,RimStarWars,HIGH,plan 7 recommends full RSW_ (drop DW_); map emits RSW_DW_* deterministically - owner signs which
@@ -599,8 +599,8 @@ def,Z6_Rotary_Blaster_Cannon_Shot,RSW_Z6_Rotary_Blaster_Cannon_Shot,RimStarWars,
 mod,src/Jawa/Jawa_Doctrine,src/RimUtinni/Doctrine,RimUtinni,RULED,campaign doctrine
 packageId,mandrake.jawa.doctrine,mandrake.rut.doctrine,RimUtinni,RULED,
 namespace,JawaDoctrineCore,RimMandrake.Utinni.Doctrine,RimUtinni,RULED,
-mod,src/Jawa/Jawa_Patches,"src/RimMandrake/MandrakePatches + src/RimStarWars/StarWarsPatches + src/RimUtinni/UtinniPatches",SPLIT,HIGH,"EXECUTED 2026-09-04 (JAWA_PATCHES_SPLIT_1): 95 Patches/Defs files + 70 textures/languages/source split per jawa_patches_split_map.csv (owner-confirmed tiers 2026-09-01); old folder is a tombstone README"
-packageId,mandrake.jawa.patches,"mandrake.rm.patches + mandrake.rsw.patches + mandrake.rut.patches",SPLIT,HIGH,"EXECUTED 2026-09-04; old packageId leaves ModsConfig after the next full-list load proves the successors (COLD_LOAD_RUN_SHEET_3)"
+mod,src/Jawa/Jawa_Patches,src/RimMandrake/MandrakePatches + src/RimStarWars/StarWarsPatches + src/RimUtinni/UtinniPatches,RETIRED,HIGH,split EXECUTED 2026-09-04; three destinations carry their own rows (2026-09-08)
+packageId,mandrake.jawa.patches,mandrake.rm.patches + mandrake.rsw.patches + mandrake.rut.patches,SPLIT,HIGH,EXECUTED 2026-09-04; old packageId leaves ModsConfig after the next full-list load proves the successors (COLD_LOAD_RUN_SHEET_3)
 def,Base_Player,TBD_SPLIT,SPLIT,VERIFY,Phase 3 per-file triage: Ashkarr/Rakata/DeepDesert/Pyrelands files=RUT; animal/texture/generic fixes=RSW or RM
 def,Jawa_AscendantHelix,TBD_SPLIT,SPLIT,VERIFY,Phase 3 per-file triage: Ashkarr/Rakata/DeepDesert/Pyrelands files=RUT; animal/texture/generic fixes=RSW or RM
 def,Jawa_BackgroundWater,TBD_SPLIT,SPLIT,VERIFY,Phase 3 per-file triage: Ashkarr/Rakata/DeepDesert/Pyrelands files=RUT; animal/texture/generic fixes=RSW or RM
@@ -1398,3 +1398,43 @@ packageId,mandrake.wreckedmachines,mandrake.rm.wreckedmachines,RimMandrake,HIGH,
 def,WM_AutomatedSmelter_Kludged,RM_WM_AutomatedSmelter_Kludged,RimMandrake,HIGH,
 def,WM_AutomatedSmelter_Repaired,RM_WM_AutomatedSmelter_Repaired,RimMandrake,HIGH,
 def,WM_AutomatedSmelter_Wrecked,RM_WM_AutomatedSmelter_Wrecked,RimMandrake,HIGH,
+mod,src/RimMandrake/Property,src/RimMandrake/RimProperty,RimMandrake,RULED,"R1 crime merge, absorbs SalvageClaim+TheftHauler (2026-09-08)"
+mod,src/RimMandrake/SalvageClaim,src/RimMandrake/RimProperty,RimMandrake,RULED,absorbed by R1 (2026-09-08)
+mod,src/RimMandrake/TheftHauler,src/RimMandrake/RimProperty,RimMandrake,RULED,absorbed by R1 (2026-09-08)
+mod,src/RimStarWars/WeatherSuite,src/RimMandrake/WeatherSuite,RimMandrake,RULED,R9 engine promotion (2026-09-08)
+mod,src/RimStarWars/FireEcology,src/RimMandrake/Pyrelands,RimMandrake,RULED,R9 self-contained biome (2026-09-08)
+mod,src/RimUtinni/RiverSteam,src/RimMandrake/ManyWaters,RimMandrake,RULED,R10 water effects engine (2026-09-08)
+mod,src/RimMandrake/MandrakePatches,src/RimMandrake/MandrakePatches,RimMandrake,RULED,patches cell; split destination + 5 fix folds (2026-09-08)
+mod,src/RimStarWars/StarWarsPatches,src/RimStarWars/StarWarsPatches,RimStarWars,RULED,patches cell; split destination + 2 fix folds (2026-09-08)
+mod,src/RimUtinni/UtinniPatches,src/RimUtinni/UtinniPatches,RimUtinni,RULED,patches cell; split destination + FactionSlate (2026-09-08)
+mod,src/RimMandrake/Aftermath,src/RimMandrake/Aftermath,RimMandrake,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimMandrake/FluidCanals,src/RimMandrake/FluidCanals,RimMandrake,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimMandrake/Graffiti,src/RimMandrake/Graffiti,RimMandrake,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimMandrake/LoadTracer,src/RimMandrake/LoadTracer,RimMandrake,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimMandrake/Ninefold,src/RimMandrake/Ninefold,RimMandrake,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimMandrake/Oracle,src/RimMandrake/Oracle,RimMandrake,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimMandrake/RaidRedesigner,src/RimMandrake/RaidRedesigner,RimMandrake,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimMandrake/RustChrome,src/RimMandrake/RustChrome,RimMandrake,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimMandrake/StructureInjections,src/RimMandrake/StructureInjections,RimMandrake,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimMandrake/Visibility,src/RimMandrake/Visibility,RimMandrake,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimStarWars/Cuisine,src/RimStarWars/Cuisine,RimStarWars,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimStarWars/SWBestiary,src/RimStarWars/SWBestiary,RimStarWars,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimStarWars/SeasWaterline,src/RimStarWars/SeasWaterline,RimStarWars,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimStarWars/StructureInjectionsSW,src/RimStarWars/StructureInjectionsSW,RimStarWars,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/AftermathRites,src/RimUtinni/AftermathRites,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/Antiquities,src/RimUtinni/Antiquities,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/AshkarrFlora,src/RimUtinni/AshkarrFlora,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/AshkarrInhabited,src/RimUtinni/AshkarrInhabited,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/AshkarrWeatherSuite,src/RimUtinni/AshkarrWeatherSuite,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/BirthHatchDemo,src/RimUtinni/BirthHatchDemo,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/DroidRepairJobs,src/RimUtinni/DroidRepairJobs,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/IshkoDarkLandmarks,src/RimUtinni/IshkoDarkLandmarks,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/LanternDeeps,src/RimUtinni/LanternDeeps,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/LongHunger,src/RimUtinni/LongHunger,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/MenuShell,src/RimUtinni/MenuShell,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/PyrelandsFireEcology,src/RimUtinni/PyrelandsFireEcology,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/ResearchRetag,src/RimUtinni/ResearchRetag,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/RestrainingBolts,src/RimUtinni/RestrainingBolts,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/Rites,src/RimUtinni/Rites,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/ShipMemory,src/RimUtinni/ShipMemory,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier
+mod,src/RimUtinni/StructureInjectionsRUT,src/RimUtinni/StructureInjectionsRUT,RimUtinni,RULED,consolidation map 2026-09-08: stays at current tier

@@ -19,7 +19,7 @@
   -->
 
   <ThingDef ParentName="ResourceBase">
-    <defName>RSW_FE_Fulgurite</defName>
+    <defName>RM_FE_Fulgurite</defName>
     <label>fulgurite</label>
     <description>Sand fused to glass by a lightning strike, hollow and branching where the bolt burrowed down before the heat gave out. Worthless to sell, satisfying to find.</description>
     <allowedArchonexusCount>40</allowedArchonexusCount>

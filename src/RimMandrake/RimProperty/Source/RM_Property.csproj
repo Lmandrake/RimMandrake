@@ -56,10 +56,10 @@
     <Compile Include="PropertyEvents.cs" />
     <Compile Include="PropertyEngine.cs" />
     <Compile Include="GameComponent_PropertyLedger.cs" />
-    <!-- Absorbed from mandrake.rm.salvageclaim (SETTLEMENT_VERBS_WAVE_1). -->
+    <!-- Absorbed from mandrake.rm.property (SETTLEMENT_VERBS_WAVE_1). -->
     <Compile Include="SalvageClaim\FloatMenuOptionProvider_PaySalvageClaim.cs" />
     <Compile Include="SalvageClaim\SalvageClaimFeeUtility.cs" />
-    <!-- Absorbed from mandrake.rm.theft_hauler (BUILDING_THEFT_HAULER_1). -->
+    <!-- Absorbed from mandrake.rm.property (BUILDING_THEFT_HAULER_1). -->
     <Compile Include="TheftHauler\DebugActions_TheftHauler.cs" />
     <Compile Include="TheftHauler\FloatMenuOptionProvider_TheftHaulUninstall.cs" />
     <Compile Include="TheftHauler\JobDriver_TheftHaulUninstall.cs" />
