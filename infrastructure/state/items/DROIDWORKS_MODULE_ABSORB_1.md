@@ -1,0 +1,120 @@
+## spec
+Per `design/Jawa/droids/DROID_UNIFIED_FRAMEWORK_DESIGN.md` §5 packet B2: absorb
+guy762's KotOR droid-module apparel (kotorcore `_DroidsBase/ThingDefs_DroidEquipment`,
+9 files, + kotordroids' own `ThingDefs_DroidEquipment`, 5 files) into
+Droidworks' own `RSW_DW_Module_*` namespace, body groups and tags re-pointed
+so the already-generated `RSW_DW_guy762_DroidRace_*` KotOR kinds (whose
+`apparelTags` already carry the literal donor tag strings, e.g.
+`KotORDroidUpgrade_combat`, `SWCPSpecificDroidTech_HK47Sensor` — confirmed by
+grepping `Defs/PawnKinds_KotOR.xml`) have real apparel to match against. No
+`recipeMaker` on any absorbed def — loot-only per ruling 8.
+
+## method
+`src/RimStarWars/Droidworks/Source/gen_droidworks_modules.py` (new generator,
+pattern borrowed from `Armoury/Source/gen_kotorcore_absorption.py` but
+re-parented onto Droidworks' own self-contained abstracts rather than
+preserving the donor's abstract chain — that would either collide with
+Armoury's own already-absorbed `Name="guy762_DroidTech"` etc., or make
+Droidworks depend on Armoury being active). Both source workshop folders
+verified by reading their About.xml packageId before trusting the path
+(`guy762.MM.KotORCore` @ 3254370945, `guy762.KotORDroids` @ 3047371944).
+
+## scope, narrowed by what the source itself gates on (not a guess)
+Read all 14 source files end to end. Every item in the weapon/gadget-mount
+files (`Apparel_KotORDroidWeapons.xml` 13, `Apparel_KotORLightCannons.xml` 15,
+`Apparel_KotORDroidUtilityWeapons.xml` 4 = 31) carries
+`Class="MVCF.Comps.CompProperties_VerbGiver"` (Multi Verb Combat Framework),
+confirmed 13/13, 15/15, 4/4 by grep. Every shield item (`Apparel_KotORDroidShields.xml`
+11, `_exotic.xml` 3, `Apparel_KotORHvyShields.xml` 10) plus the cloak
+(`Apparel_KotORDroidCloak.xml` 1) activates via `SelfHediffVerb.Verb_SelfHediff`
+(25 total). Neither MVCF nor SelfHediffVerb ships in Droidworks' own assembly
+— SelfHediffVerb exists only as **Armoury's own C# port** (`JawaArmoury.dll`),
+a different mod, and depending on it for Droidworks droids to wear a shield
+is exactly the cross-mod coupling the item's brief said to avoid. These are
+4 of the six KotOR slots (weapon, gadget, shield, plus the cloak) — **BLOCKED
+wholesale, every excluded element logged by defName+source+reason** to
+`Defs/Absorbed_KotorDroidModules/Absorbed_KotorDroidModules_EXCLUDED_manifest.txt`
+(56 entries: 31 MVCF, 25 SelfHediffVerb). What ships this pass: **hardware,
+software and sensor** modules (27 items — they share one ParentName chain,
+`guy762_DroidTech`/`guy762_DroidCraftableTech`, and use only vanilla-safe
+classes: `CompProperties_CauseHediff_Apparel`, `HediffCompProperties_RemoveIfApparelDropped`)
+plus the **3 droid armor tiers** (21 items — light/medium/heavy, vanilla
+bodyPartGroups/layers already on the concrete defs, no repoint needed). 48
+ThingDefs + 11 paired HediffDefs total.
+
+**Not filed as a separate item, flagged here for whoever picks up B2's
+remainder**: porting SelfHediffVerb into Droidworks' own namespace (unlocks
+shield+cloak) and a dedicated weapon-mount absorption (unlocks the MVCF-driven
+gadget/weapon slots, its own generator much like `gen_kotorweapons_absorption.py`
+needed) are both real follow-up scope, not guessed at or attempted here.
+
+## transforms applied to every kept element
+- `defName`: `guy762_X` → `RSW_DW_Module_X` (ThingDefs and their paired
+  HediffDefs, same rule, so `<hediff>`/`<HediffDef>` references still resolve).
+- `bodyPartGroups`: `guy762BG_Droid_Tech_hardware`/`_software` → new
+  `RSW_DW_BG_ModuleHardware`/`RSW_DW_BG_ModuleSoftware` BodyPartGroupDefs
+  (bare bookkeeping tags in the source too — not tied to any `<part>` on a
+  BodyDef; Droidworks races use the vanilla `Human` BodyDef, confirmed by
+  reading `Races_Base.xml`, never kotorcore's custom `Bodies_KotORDroid.xml`).
+  Sensor items already used vanilla `Eyes`; armor already uses vanilla
+  FullHead/Neck/Torso/Shoulders/Arms/Hands/Legs/Feet — neither needed a repoint.
+- `recipeMaker`/`costList`/`costStuffCount`/`stuffCategories`/`verbs` dropped
+  unconditionally (loot-only), plus the now-dead `WorkToMake`/
+  `StuffEffectMultiplierArmor` statBases entries that only meant anything
+  alongside a recipe.
+- `CompProperties_CauseHediff_Apparel`'s `<part>ABF_BodyPart_Synstruct_Core</part>`
+  (Artificial Beings Framework's own body-part def) stripped, not repointed —
+  applies to the whole pawn instead (vanilla no-`<part>` default), since
+  Droidworks droids have a vanilla Human body, not an ABF synstruct one.
+- `equippedStatOffsets` entries naming `ABF_Stat_Artificial_*` StatDefs
+  dropped (inert on a non-ABF pawn today, a dangling cross-reference the
+  moment ABF retires — R2).
+- `descriptionHyperlinks`: `<HediffDef>` renamed alongside its target (kept,
+  same item); `<AlienRace.ThingDef_AlienRace>` repointed to
+  `RSW_DW_Race_<orig>` when that race genuinely exists (checked against the
+  real defNames in `Defs/Races_KotOR.xml`, all 22 present), dropped+logged
+  (console NOTE, not the manifest — these are per-hyperlink, not per-item)
+  otherwise; none needed dropping — all referenced races exist.
+- Re-parented onto 3 new self-contained abstracts (`Absorbed_KotorDroidModules_Bases.xml`):
+  `RSW_DW_ModuleApparelBase` (mirrors `guy762_apparelbase`, a standalone root
+  in the source too), `RSW_DW_ModuleBase_Tech` (mirrors `guy762_DroidTech`'s
+  REAL root, vanilla `ApparelNoQualityBase` — NOT `guy762_apparelbase`; the
+  utility-item branch chains through `guy762_UtilityItemBase`,
+  `ParentName="ApparelNoQualityBase"`, a different root entirely, confirmed
+  by reading the source), `RSW_DW_ModuleBase_Armor` (adds CompColorable+
+  CompQuality, matching `guy762_apparelmakeable`'s own addition). Each was
+  hand-resolved ONCE from the donor's ParentName chain (documented inline in
+  the generator), not a live inheritance walk.
+- Textures: every surviving `texPath`/`iconPath` copied from whichever source
+  mod's `Textures/` actually has the file (kotordroids' own tech/sensor items
+  share kotorcore's `Items/droidtech/` art by convention — verified, not
+  guessed) into `src/RimStarWars/Droidworks/Textures/`. 48/48 found, 0 missing.
+
+## verify
+- **validate_patch.py: 0 errors, 0 warnings** across all 4 generated XML
+  files (`--defs` against Data + workshop 294100 + Mods, minimal 25-mod
+  active list). ParentName resolution, texPath existence, Class attributes
+  and duplicate-defName all checked clean.
+- **Manifest of excluded classes**: `Absorbed_KotorDroidModules_EXCLUDED_manifest.txt`,
+  56 entries (31 MVCF, 25 SelfHediffVerb), tab-separated defName/source
+  file/reason, regenerated by rerunning the generator.
+- **Tag re-pointing spot-checked**: `SWCPSpecificDroidTech_HK47Sensor`,
+  `KotORDroidArmorT2_weak`, `KotORDroidUpgrade_combat` (all present in
+  `PawnKinds_KotOR.xml`'s existing `apparelTags`) now resolve against real
+  absorbed apparel defs — confirmed by grep, not by spawning anything.
+- 🔴 **NOT done this pass, explicitly left for the next live session**: "a
+  KotOR kind spawns wearing its modules" (the packet's own third verify line)
+  needs a live quicktest via the bridge — this item's brief said not to touch
+  the bridge/running game (another agent may hold it), so this is inspection-
+  only verification. Everything above is confirmed by reading generated XML
+  and running the offline validator; nothing here was confirmed by observing
+  the actual game load a pawn and generate apparel from these tags.
+
+## criteria
+- [x] `Absorbed_KotorDroidModules/` written under Droidworks' own namespace
+      (not Armoury's), `RSW_DW_Module_*` defNames, no `recipeMaker` on any.
+- [x] Body groups and tags re-pointed off the donor's own custom defs.
+- [x] validate_patch.py 0/0.
+- [x] Manifest of excluded classes with defName/source/reason.
+- [ ] A KotOR kind spawns wearing its modules — **live quicktest owed**, not
+      run here (bridge left to whoever holds it).
