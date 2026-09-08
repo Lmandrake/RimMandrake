@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T23:25:34Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-08T23:29:51Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -512,15 +512,6 @@ target:   v1
 kind:     task
 summary:  Thin when filed — no spec/verify/criteria in the queue entry itself, but fully
 prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
-
-## DROIDWORKS_WILD_DROIDS_1 Wild crashed droids: factionless erratic hostiles, capture -> Wild spike -> reprogram-as-recruit with resistance
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/DROIDWORKS_WILD_DROIDS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_WILD_DROIDS_1.md
 
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing  (BLOCKED)
@@ -1162,6 +1153,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CHRONICLE_EVENT_SPINE_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Owner adopted (card, 2026-09-08, on BENCH's advice): RimChronicle
 prose:    infrastructure/state/items/CHRONICLE_EVENT_SPINE_1.md
