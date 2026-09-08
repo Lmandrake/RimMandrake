@@ -283,8 +283,11 @@ Junkers refuse and refute all of it.
      re-enacted by the players with better intentions.
   4. **The volatiles** — the nightside holds `AB_PropaneLakes` (554 tiles, MEASURED). A
      bleeding reactor core dropped into cryogenic propane ignites — and a sustained melt
-     could be **how the players breach the sealed research station holding active
-     Assailants.**
+     could be **how the players breach `ANCIENT_WAR_LAB_1`, the sealed research station
+     holding live, trapped, studied Assailants** (owner-reconciled 2026-09-07: this is
+     the same site as the propane-lakes war lab, `the_propane_lakes.md` §8 — not a
+     second station). The dark tower at the Scald (`SCALD_DARK_TOWER_1`) is a different
+     dungeon with a similar theme; do not conflate the two.
   5. **The Slime experiment** (owner, 2026-09-06 — `the_slime.md` §7): scoop tons of the
      living genetic database onto the gravship and pour it down the Throat — likely killing what
      you poured, maybe neutralizing the pit, with genuinely unknown results below. The

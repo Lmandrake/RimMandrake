@@ -194,6 +194,11 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
   permanently change the map**: the lake becomes **a massive fresh crater and a
   ripped-open ancient lab, shielding intact, amazingly** — on a frozen world that is
   otherwise never allowed to change.
+  🔑 **Reconciled with `wasteland.md` §10 (owner, 2026-09-07)**: this IS "the sealed
+  research station holding active Assailants" — the study subjects here are **live,
+  trapped, and being studied**, not corpses. Hard ban #8 stands unchanged: live and
+  dangerous under containment is not the same as resident weapon-fauna roaming the
+  biome map.
 - **The collapsing machine** — sub-surface structures and self-assembling megastructures,
   one-tenth built, grinding down: the dynamo's conduits, the intake's far end.
 - **Lab guardians** — mechanoids and ancient dangers, the last watch.
