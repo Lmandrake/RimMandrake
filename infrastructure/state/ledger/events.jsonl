@@ -6002,3 +6002,8 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"verify DROIDWORKS_SHOP_BENCHES_1","ts":"2026-09-08T18:23:26Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T18:30:42Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_SHOP_BENCHES_1","sha":"fbed41012fa07775b67dbd47d58efaa1727e98ce","ts":"2026-09-08T18:32:07Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_BOLT_PAYOFF_1","ts":"2026-09-08T18:32:28Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_BOLT_PAYOFF_1","ts":"2026-09-08T18:32:29Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"verify DROIDWORKS_BOLT_PAYOFF_1","ts":"2026-09-08T18:35:38Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T18:39:26Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_BOLT_PAYOFF_1","sha":"6556f22371134c50f92e9494a9cf1eb107d98c62","ts":"2026-09-08T18:40:13Z"}
