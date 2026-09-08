@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T23:34:58Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T23:36:08Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1153,8 +1153,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MOD_CONSOLIDATION_SPRINT_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Execute infrastructure/state/modconsolidationmap.csv (103 rows, the
 prose:    infrastructure/state/items/MOD_CONSOLIDATION_SPRINT_1.md
 
 ## GRAFFITI_GENERIC_MARKS_1 Author generic vanilla-style default marks for RM Graffiti (R7): the nine campaign styles move to Salvation, RM ships with examples
@@ -1163,8 +1163,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GRAFFITI_GENERIC_MARKS_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  R7 (owner, 2026-09-08): RM Graffiti keeps engine + generic vanilla-style
 prose:    infrastructure/state/items/GRAFFITI_GENERIC_MARKS_1.md
 
 ## PYRELANDS_GENERIC_TEXT_1 De-campaign Pyrelands text for the self-contained RM biome (R9); resolve the donor BiomeDef VERIFY (zylle.morevanillabiomes) with the absorption track
@@ -1173,6 +1173,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_GENERIC_TEXT_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  R9 (owner, 2026-09-08): Pyrelands ships as a self-contained generic RM
 prose:    infrastructure/state/items/PYRELANDS_GENERIC_TEXT_1.md
