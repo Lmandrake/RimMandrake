@@ -34,7 +34,7 @@ from rimflow import model
 ITEMS_DIR = os.path.join(REPO_ROOT, "infrastructure", "state", "items")
 MAP_PATH = os.path.join(REPO_ROOT, "infrastructure", "state", "ledger", "github_mirror_map.json")
 OUT_PATH = os.path.join(REPO_ROOT, "infrastructure", "state", "board", "tickets_board.html")
-GH_REPO = "Lmandrake/RimMaster"
+GH_REPO = "Lmandrake/RimMandrake"
 
 
 def read_prose(iid):
@@ -285,7 +285,7 @@ main{padding:18px 20px 60px}
 
 <header class="top">
   <div class="brand">
-    <div class="name">Mirrored Tickets — RimMaster</div>
+    <div class="name">Mirrored Tickets — RimMandrake</div>
     <div class="sub">rimflow ledger → GitHub Issues mirror, visualized — generated __GENERATED_AT__</div>
   </div>
   <div class="stat-row" id="statrow"></div>

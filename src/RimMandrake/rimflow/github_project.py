@@ -6,7 +6,7 @@ QUEUE_GITHUB_MIRROR_1's third sibling: github_mirror.py pushes rimflow items to
 GitHub Issues one-way; board_viz.py renders them as a local HTML board;
 this script pushes the SAME derived state (board_viz.build_tickets(), which
 reuses infer_effort/infer_importance unchanged) onto a real Projects v2 board
-owned by Lmandrake, titled "RimMaster Tickets", so the same picture is visible
+owned by Lmandrake, titled "RimMandrake Tickets", so the same picture is visible
 inside GitHub itself — filterable, sortable, no local file to open.
 
 Ledger stays the truth. This writes GitHub only, never the ledger. Deleting the
@@ -51,7 +51,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from board_viz import build_tickets, GH_REPO  # noqa: E402  (reuses the ONE derivation)
 
 OWNER = "Lmandrake"
-TITLE = "RimMaster Tickets"
+TITLE = "RimMandrake Tickets"
 STATE_PATH = os.path.join(model.LEDGER, "github_project_state.json")
 
 # name -> ordered options. Order is cosmetic (GitHub shows them in creation

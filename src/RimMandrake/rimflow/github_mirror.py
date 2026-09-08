@@ -36,7 +36,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from rimflow import model
 
-REPO = "Lmandrake/RimMaster"
+REPO = "Lmandrake/RimMandrake"
 MAP_PATH = os.path.join(model.LEDGER, "github_mirror_map.json")
 LABELS = {  # label -> (color, description)
     "seat:BENCH":    ("1d76db", "rimflow: owned by the BENCH window"),

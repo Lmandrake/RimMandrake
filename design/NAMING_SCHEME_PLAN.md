@@ -211,7 +211,9 @@ urgent.
 
 ## 7. Named decisions for the owner (short list)
 
-1. **Ninefold**: RM engine + RUT Salvation pack (recommended), or all-RUT?
+1. ~~Ninefold~~ ✅ **RULED (owner card, 2026-09-08): RM engine + RUT
+   Salvation pack.** Executes inside the consolidation sprint
+   (MOD_NAMING_CONSOLIDATION_AUDIT_1's map).
 2. **Sub-prefix survivals**: may `Inhabited_` (297) and `DW_` (176) keep
    their stems behind the tier grammar, or full conversion? (Recommended:
    keep `Inhabited_` as-is inside an RM mod — it already reads as a product
@@ -219,6 +221,15 @@ urgent.
    Droidworks, it's pre-freeze cheap and the split (§3) rewrites half of it
    anyway.)
 3. **JawaRules**: verify-then-rename to RimMandrake, or is it doctrine?
+5. ✅ **RULED (owner card, 2026-09-08): the top-level name is RimMandrake
+   everywhere; "RimMaster" is dead.** GitHub repo renamed to
+   `Lmandrake/RimMandrake` (old remote URL redirects), project board and
+   mirror scripts updated same commit. Does NOT change packageIds or
+   namespaces — those already said RimMandrake.
+6. ✅ **RULED (owner card, 2026-09-08): the place-population engine keeps
+   the name Inhabited** (display `RimMandrake: Inhabited`); "RimPlaces" is
+   not adopted. `Inhabited_` defName stem survives per §2's sub-prefix
+   allowance; `AshkarrInhabited` stays the campaign layer's name.
 4. ~~Display-name format~~ ✅ **RULED with the namespace change (2026-08-31):
    public titles and collection pages carry the RimMandrake mark** —
    collections "RimMandrake", "RimMandrake: Star Wars", "RimMandrake:
