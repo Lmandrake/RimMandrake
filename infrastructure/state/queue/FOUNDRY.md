@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T23:04:23Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-08T23:19:44Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -513,6 +513,15 @@ kind:     task
 summary:  Thin when filed — no spec/verify/criteria in the queue entry itself, but fully
 prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
 
+## DROIDWORKS_WILD_DROIDS_1 Wild crashed droids: factionless erratic hostiles, capture -> Wild spike -> reprogram-as-recruit with resistance
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DROIDWORKS_WILD_DROIDS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_WILD_DROIDS_1.md
+
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -776,16 +785,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROIDWORKS_MODULE_PERSONALITY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_PERSONALITY_1.md
-
-## DROIDWORKS_WILD_DROIDS_1 Wild crashed droids: factionless erratic hostiles, capture -> Wild spike -> reprogram-as-recruit with resistance
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_WILD_DROIDS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_WILD_DROIDS_1.md
 
 ## ARMOURY_LOADAFTER_STALE_1 Armoury declares 3 loadAfter packageIds against roughly 40 mods its patches actually target
 state:    proposed
@@ -1126,16 +1125,6 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  Unmasked 2026-09-08 while live-verifying WORLDLINTWATERHARDCODE1 on the real
 prose:    infrastructure/state/items/WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1.md
-
-## DROIDWORKS_APPAREL_ISFLESH_GATE_1 Harmony patch: PawnApparelGenerator skips apparel generation entirely for isFlesh=false Droidworks pawns
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Found 2026-09-08 live-verifying DROIDWORKSAPPARELMONEYMISSING1's fix.
-prose:    infrastructure/state/items/DROIDWORKS_APPAREL_ISFLESH_GATE_1.md
 
 ## DROID_SUICIDE_CHARGE_STATE_1 Junker suicide droid: proactive charge-and-detonate MentalState, beyond the existing death-detonation
 state:    proposed

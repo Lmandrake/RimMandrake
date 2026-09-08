@@ -6068,3 +6068,12 @@
 {"seat":"BENCH","event":"file","id":"EGG_PROXIMITY_HATCH_TRIGGER_1","title":"Egg proximity-hatch trigger: eggs hatch AT you on approach (owner, 2026-09-08); BirthHatchDemo retirement gated on this","kind":"task","target":"v1","caused_by":"MOD_NAMING_CONSOLIDATION_AUDIT_1","for":"FOUNDRY","ts":"2026-09-08T22:58:34Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T23:03:38Z"}
 {"seat":"FOUNDRY","event":"note","id":"DROID_REPAIR_FOR_PROFIT_EVENTS_1","text":"LEFT DOING, not closed. Built/deployed/ModsConfig-enabled; offline fully clean (build 0/0, validate_quest 0/0, validate_patch 0/0, 22/22 defNames MEASURED). Live on two full 601-mod cold loads: mod active, 0 crossref errors, 0 typeload errors, custom QuestNode Class resolved, config errors back to the 23 baseline after dropping the paired IncidentDef (engine forbids rootSelectionWeight>0 + an IncidentDef, regardless of baseChance). OWED: 'quest fires, completes, pays' — jawa/fire_quest needs a map and quicktest map-gen crashed the game on BOTH attempts (identical log tail; already a known LESSONS_INBOX trap for the full list). Run-sheet for the next window is in the item file; do it on the MINIMAL Droidworks list, not the full one. Commits c15a58f0, 3df346c6.","ts":"2026-09-08T23:04:23Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_APPAREL_ISFLESH_GATE_1","ts":"2026-09-08T23:06:46Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_APPAREL_ISFLESH_GATE_1","ts":"2026-09-08T23:06:46Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_WILD_DROIDS_1","ts":"2026-09-08T23:06:47Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_WILD_DROIDS_1","ts":"2026-09-08T23:06:48Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DROIDWORKS_APPAREL_ISFLESH_GATE_1 live spawn verify (minimal list)","ts":"2026-09-08T23:08:57Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY killed the game to deploy the Droidworks assembly for DROIDWORKS_APPAREL_ISFLESH_GATE_1","ts":"2026-09-08T23:10:08Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY closed the minimal-list verify run for DROIDWORKS_APPAREL_ISFLESH_GATE_1","ts":"2026-09-08T23:16:54Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T23:16:55Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_APPAREL_ISFLESH_GATE_1","sha":"8c2749478b6aea3a44144011c9c9fed8db142f03","ts":"2026-09-08T23:19:44Z"}
