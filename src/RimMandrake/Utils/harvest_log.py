@@ -7,7 +7,7 @@ invented after it. Run this the moment the game reaches the main menu.
 
     python.exe src/RimMandrake/Utils/harvest_log.py                 # the live Player.log
     python.exe src/RimMandrake/Utils/harvest_log.py --log <path>    # a saved copy
-    python.exe src/RimMandrake/Utils/harvest_log.py --show cross    # print matching lines
+    python.exe src/RimMandrake/Utils/harvest_log.py --show crossref # print matching lines
 
 Baselines below were measured from the 2026-08-12 13:45 log. A check is RED
 when it exceeds its baseline, AMBER when it improves on one (tell the docs),
