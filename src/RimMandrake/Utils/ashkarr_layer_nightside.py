@@ -87,9 +87,44 @@ def main() -> int:
     ap.add_argument("--apply", action="store_true")
     a = ap.parse_args()
 
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from verify_frozen import warn_if_stale
+    warn_if_stale(CSV)
+
     rows = list(csv.DictReader(open(CSV, encoding="utf-8")))
     fields = list(rows[0].keys())
     before = collections.Counter(r["biome"] for r in rows)
+
+    # 🔴 SUPERSEDED SINCE THIS SCRIPT WAS WRITTEN (2026-08-23) — refuse rather than
+    # write a now-banned biome. Both this script's carve targets have since been
+    # dissolved by LATER, more authoritative rulings it cannot see:
+    #   - HorrorWastes: fully dissolved into the Blue Desert/ice sheet mosaic
+    #     (HORRORWASTES_BIOME_DISSOLVE_1) — 0 rows remain, so it is no longer a
+    #     real destination band, just a name this script would recreate from scratch.
+    #   - BMT_CrystalCaverns: `the_lantern_deeps.md` hard ban #1, "No worldmap
+    #     biome — BMT_CrystalCaverns never holds a surface tile again." Writing it
+    #     here as a worldmap biome (line ~77, `CAVERNS`) would directly violate
+    #     that ruling.
+    # The owner's underlying ruling ("eliminate any RockyCrags still above
+    # freezing") may still be genuinely unfulfilled — this script's own docstring
+    # premise for that clause (measured 2026-08-23: zero RockyCrags tiles above
+    # 0 C) no longer holds after the 2026-09-07 savegame rebase — but fixing THAT
+    # needs a mechanism that doesn't resurrect either dead target, not a blind
+    # re-run of this one. See RAIN_BAN_SCOPE_DRIFTED_1 for the sibling shape of
+    # this exact problem in ashkarr_dry_jungle.py.
+    if before.get("HorrorWastes", 0) == 0 and before.get(CAVERNS, 0) == 0:
+        if a.apply:
+            print("🔴 REFUSED: HorrorWastes and %s both hold 0 tiles today - both carve "
+                  "targets are superseded by later rulings (HORRORWASTES_BIOME_DISSOLVE_1; "
+                  "the_lantern_deeps.md hard ban #1 forbids %s as a worldmap biome at all). "
+                  "This script cannot --apply without writing a banned biome. See "
+                  "ASHKARR_NIGHTSIDE_LAYER_SUPERSEDED_1." % (CAVERNS, CAVERNS),
+                  file=sys.stderr)
+            return 1
+        print("⚠️  HorrorWastes and %s both hold 0 tiles - this script's carve targets are "
+              "superseded (see ASHKARR_NIGHTSIDE_LAYER_SUPERSEDED_1). Report below is "
+              "informational only; --apply is refused.\n" % CAVERNS)
+
     moves, cut = plan(rows)
 
     if not moves:
