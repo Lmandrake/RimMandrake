@@ -168,10 +168,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/fauna/gen_cast_patch.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "hash": "830b7954c7bf087054682626f1474400bd80bd263d9fa33bea3930074d8e6967",
-    "sha": "58b4dab3"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "13c6456b15da7e67e73960336d4e2f874d02e70ba361af3b7c85e5fe16ba4ff0",
+    "sha": "7c295d7d"
   },
   "design/Jawa/fauna/gen_creature_art_sheet.py": {
     "cleanCount": 1,
@@ -2106,10 +2106,10 @@
     "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/ashkarr_clamp_rain.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "2758705cea09b105428ed59d24a47a531298f46689997bed43738e17a57eb050",
-    "sha": "43884307"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "faaf77cc47d476225b5de845b473f7fce3da98007c6e8f193a90bbf7505f1375",
+    "sha": "9d53fe45"
   },
   "src/RimMandrake/Utils/ashkarr_dry_jungle.py": {
     "cleanCount": 1,
@@ -2118,10 +2118,10 @@
     "sha": "e5013227"
   },
   "src/RimMandrake/Utils/ashkarr_fix_impassable.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "5813c9364290dd50ab0ed467b497f659ec3df2d93ac60e11f3d7a6cab47d5693",
-    "sha": "e5013227"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "b6f1be2e5c6474fd494887a902079e768fcd4edbcc3bed21b04c39973dbbede8",
+    "sha": "9d53fe45"
   },
   "src/RimMandrake/Utils/ashkarr_headwaters.py": {
     "cleanCount": 1,
@@ -2345,10 +2345,10 @@
     "sha": "f3a684e1"
   },
   "src/RimMandrake/Utils/codebase_health.py": {
-    "cleanCount": 3,
-    "date": "2026-09-05",
-    "hash": "a7da4a26bcf90dd0393aaa6658a3129617a7e20740632ce1f17d8a1bcb5b08e2",
-    "sha": "3287ca65"
+    "cleanCount": 4,
+    "date": "2026-09-07",
+    "hash": "a77e30620455ea5810ff54e217fbda3d7fe1e537fe10e30de38c82bfb40d2c9a",
+    "sha": "5932b583"
   },
   "src/RimMandrake/Utils/codebase_health_publish.py": {
     "cleanCount": 2,
@@ -2465,10 +2465,10 @@
     "sha": "64b75417"
   },
   "src/RimMandrake/Utils/gen_pawn_flavor_phase2_apply.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "176953ee3a49928cce41a072bafe6cd5bf18721886a3ffadaa8ef29426fe470e",
-    "sha": "4de5c0cf"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "d0c25ea3da4696823943c74c0f0c854752cd7927c678e4db26875f6eb1818255",
+    "sha": "9d53fe45"
   },
   "src/RimMandrake/Utils/gen_pawn_flavor_phase2_register.py": {
     "cleanCount": 1,
