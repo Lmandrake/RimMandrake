@@ -5806,3 +5806,12 @@
 {"seat":"BENCH","event":"capability","system":"TheftHauler","function_rung":"runnable","evidence_ref":"BUILDING_THEFT_HAULER_1","date":"2026-09-01","ts":"2026-09-08T15:26:12Z"}
 {"seat":"BENCH","event":"capability","system":"UtinniPatches","function_rung":"runnable","evidence_ref":"COLD_LOAD_RUN_SHEET_3","date":"2026-09-04","ts":"2026-09-08T15:26:13Z"}
 {"seat":"BENCH","event":"file","id":"UTINNI_SHELL_DEFNAME_BUG_1","title":"UtinniShell emits Config error every full-list load: defName 'Utinni Shellmandrake.rut.shell' — name and packageId concatenated somewhere in its def authoring","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-08T15:26:22Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_LIVE_LOOP_PROOF_1","sha":"cbc0a8718f1bb7131548580bbd9c0df15751cea2","ts":"2026-09-08T15:34:50Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T15:34:58Z"}
+{"seat":"BENCH","event":"start","id":"MATURITY_DASHBOARD_DENSITY_1","ts":"2026-09-08T15:36:04Z"}
+{"seat":"BENCH","event":"file","id":"GOLDEN_SHEET_REFRESH_1","title":"Golden stat-refresh of all biome sheets except ice/blue/propane against V23 — recompute from CSV+8 overlay plans, plain facts, no provenance tags (worked example 7bbd4b6a); early V12 refresh was reverted stale","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-08T15:36:39Z"}
+{"seat":"BENCH","event":"claim","id":"GOLDEN_SHEET_REFRESH_1","ts":"2026-09-08T15:36:39Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_FORMAT_TIERS_1","ts":"2026-09-08T15:36:42Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_FORMAT_TIERS_1","ts":"2026-09-08T15:36:43Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_MODULE_ABSORB_1","ts":"2026-09-08T15:37:08Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_MODULE_ABSORB_1","ts":"2026-09-08T15:37:09Z"}

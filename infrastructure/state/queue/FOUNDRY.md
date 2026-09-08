@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T15:26:22Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-08T15:37:09Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -459,14 +459,23 @@ kind:     task
 summary:  Thin when filed — no spec/verify/criteria. Decided here (FOUNDRY, 2026-09-08):
 prose:    infrastructure/state/items/DROIDWORKS_FULL_LIST_COEXIST_1.md
 
-## DROIDWORKS_LIVE_LOOP_PROOF_1 Minimal-list quicktest proof of the five-state loop on GNK + a KotOR kind; close the 8 open live checkboxes
+## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
 state:    doing
 row:      unassigned
-needs:    bridge
+needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/DROIDWORKS_LIVE_LOOP_PROOF_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_LIVE_LOOP_PROOF_1.md
+summary:  (no items/DROIDWORKS_FORMAT_TIERS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
+
+## DROIDWORKS_MODULE_ABSORB_1 Absorb KotOR's six-slot droid module apparel as RSW_DW_Module_* (loot-only, no recipes)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DROIDWORKS_MODULE_ABSORB_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
 
 ## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
 state:    doing  (BLOCKED)
@@ -687,26 +696,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_FORMAT_TIERS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
-
-## DROIDWORKS_MODULE_ABSORB_1 Absorb KotOR's six-slot droid module apparel as RSW_DW_Module_* (loot-only, no recipes)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_MODULE_ABSORB_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
 
 ## DROIDWORKS_HEADS_BRAINS_SPIKES_1 Brain trio (import-only), per-family heads with CompHeadIdentity, the mindstone head, per-faction data spikes
 state:    proposed
