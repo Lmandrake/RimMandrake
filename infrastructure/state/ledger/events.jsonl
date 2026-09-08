@@ -5982,3 +5982,12 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is going down — done with the live verify pass, restoring full mod list","ts":"2026-09-08T17:14:26Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T17:14:28Z"}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-09-08T17:14:31Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-08T17:23:51Z"}
+{"seat":"BENCH","event":"claim","id":"MOD_NAMING_CONSOLIDATION_AUDIT_1","ts":"2026-09-08T17:25:31Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-08T17:28:51Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-08T17:39:17Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_HEADS_BRAINS_SPIKES_1","ts":"2026-09-08T17:40:09Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_HEADS_BRAINS_SPIKES_1","ts":"2026-09-08T17:40:09Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"verify DROIDWORKS_HEADS_BRAINS_SPIKES_1 live","ts":"2026-09-08T17:53:59Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T17:59:35Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_HEADS_BRAINS_SPIKES_1","sha":"c0e4e014eb25a4fc84c16be08f3abf4df28d30d6","ts":"2026-09-08T18:00:41Z"}

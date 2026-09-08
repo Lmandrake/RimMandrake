@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T17:14:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T18:00:41Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -707,16 +707,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DROIDWORKS_HEADS_BRAINS_SPIKES_1 Brain trio (import-only), per-family heads with CompHeadIdentity, the mindstone head, per-faction data spikes
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_HEADS_BRAINS_SPIKES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_HEADS_BRAINS_SPIKES_1.md
 
 ## DROIDWORKS_FINE_PARTS_1 Fine parts per family (limbs, sensors, motivators, cells) with quality, drop tables and stat/personality effects
 state:    proposed
