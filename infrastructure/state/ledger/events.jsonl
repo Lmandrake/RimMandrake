@@ -6047,3 +6047,5 @@
 {"seat":"FOUNDRY","event":"file","id":"DROID_SUICIDE_CHARGE_STATE_1","title":"Junker suicide droid: proactive charge-and-detonate MentalState, beyond the existing death-detonation","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-08T21:12:17Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROID_FACTION_LOADOUTS_1","sha":"644080cb02c93290f8141d892914849fab2766ec","ts":"2026-09-08T21:12:39Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T21:12:58Z"}
+{"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-09-08T21:22:27Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-08T21:29:28Z"}
