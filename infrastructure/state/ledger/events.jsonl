@@ -6081,3 +6081,5 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-09-08T23:25:03Z"}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is down","ts":"2026-09-08T23:25:17Z"}
 {"seat":"BENCH","event":"file","id":"CHRONICLE_EVENT_SPINE_1","title":"RimChronicle event spine spec: one-page event taxonomy + soft-hook API before the sprint; Property/Pursuit/Ninefold/Aftermath-rules become producers-consumers via MayRequire hooks (owner, 2026-09-08)","kind":"task","target":"v1","caused_by":"MOD_NAMING_CONSOLIDATION_AUDIT_1","for":"FOUNDRY","ts":"2026-09-08T23:25:34Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T23:28:24Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_WILD_DROIDS_1","sha":"92db2af5f1ed668a916af164cfa0b3c1b5a5efff","ts":"2026-09-08T23:29:51Z"}
