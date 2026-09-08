@@ -7,8 +7,9 @@
 
 
 _Owner + BENCH, 2026-09-05, written in conversation. The livable one: the largest biome on
-Ash'karr (`Desert`, 4,151 tiles, 19%) and the first on the dryness ladder with a real food
-web. Thematic handle: **the long shade**._
+Ash'karr (`Desert`, **3,932 tiles** — MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py`,
+canon CSV + the 8 overlay plans; the 19% share is unmeasured by this pass) and the first
+on the dryness ladder with a real food web. Thematic handle: **the long shade**._
 
 🔑 **Read against `deep_desert.md`.** Deep desert is `ExtremeDesert`; this is `Desert`. They
 share regions and grade into each other, so **the biome def is the boundary, not the region
@@ -20,7 +21,7 @@ name.** ⚠️ Only ~51% of the def's tiles currently fit this definition — se
 | | sun above horizon | shadow length | hilliness | temp |
 |---|---|---|---|---|
 | `ExtremeDesert` — deep desert | 47.4° | 0.9× height | 1.0 | 48.3 °C |
-| **`Desert` — here** | **14.4°** | **3.9× height** | **2.0** | **24.5 °C** |
+| **`Desert` — here** | **14.4°** | **3.9× height** | **2.0** | **25.5 °C** |
 
 Sun elevation is `90 − arc`, and the core of this biome sits at **arc 60–88°**. **Four times
 longer shadows, cast by twice as many objects, at half the temperature.**

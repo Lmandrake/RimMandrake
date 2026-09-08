@@ -23,11 +23,14 @@ Sun-Debt reconciliation.
 
 ## 0. The measurements everything rests on
 
-MEASURED off the live CSV: **226 tiles** scattered across **Dune Sea 107,
-Pyrelands 63, Anvil 36, Dew Belt 12, Kiln 6, Hollow Verge 2** — the region wears
-the name already. Sun median **+56°** (arc 17–57); temp median 53.6 °C
-(28..65); elevation ~245 m, mostly flat (136/226); rivers 9 tiles; **rain zero
-on 207 of 226**, with Dew Belt outliers to 1,529 mm. The 6 Kiln tiles brush the
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8
+overlay plans): **222 tiles** scattered across **Dune Sea 98,
+Pyrelands 63, Anvil 41, Dew Belt 12, Kiln 6, Hollow Verge 2** — the region wears
+the name already. Sun median **+56°** (arc 6–69); temp median 53.6 °C
+(39..65); elevation ~257 m, mostly flat (136/226 — flat-tile count not
+re-measured against the new 222 total); rivers 9 tiles; **rain zero
+on 207 of 226** (proportion not re-measured against the new 222 total), with
+Dew Belt outliers to 1,529 mm. The 6 Kiln tiles brush the
 sacred dead-flat ground (`sacred_sites_pass_1.md`'s Zizzik/Mob'Unloo contest) —
 cross-reference only; that site's canon is its own.
 
@@ -47,7 +50,7 @@ that only fire can open.
 
 ## 2. Planetary position
 
-Mid-to-deep dayside scatter (sun +33° to +73°), lobed across the hot flats:
+Mid-to-deep dayside scatter (sun +21° to +84°), lobed across the hot flats:
 **maximum energy × the engineered grass.** The anomaly is the crop itself
 (§3) — which is why the biome reads as one species from horizon to horizon,
 and why it exists in country this dry at all.

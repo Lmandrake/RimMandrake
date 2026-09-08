@@ -29,10 +29,11 @@ harmonize; propagation rides the Wednesday canon sitting.
 
 ## 0. The measurements everything rests on
 
-MEASURED off the live CSV: **236 tiles, one region, at the substellar
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8
+overlay plans): **236 tiles, one region, at the substellar
 doorstep** — arc median 10.7 (sun **+79°**, the highest steady sun on the
-planet), temp median 62.5 °C (58..66), rain ~zero (max 20 mm). **The flattest
-ground anywhere: 211 of 236 tiles dead flat at a uniform ~615 m** — §2 gives
+planet), temp median 62.5 °C (58.9..65.9), rain ~zero (max 20 mm). **The flattest
+ground anywhere: 211 of 236 tiles dead flat at a uniform ~616 m** — §2 gives
 the flatness its reason. **Eight river tiles that cannot be water** — ruled:
 they are not (§3). 29 species cast pre-sheet (mostly evictions owed — §4).
 Donor (Alpha Biomes): not re-inventoried this sitting — the biome is authored

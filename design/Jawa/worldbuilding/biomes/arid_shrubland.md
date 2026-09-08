@@ -22,10 +22,15 @@ free, and the whole ecology reorganizes around that fact.
 | `Desert` | 14.4° | 25% | 2.0 | 24.5 °C |
 | **`AridShrubland` — here** | **9.2°** | **16%** | **flat (312/361 tiles)** | **18.3 °C median** |
 
-- MEASURED 2026-09-05 off `world/ASHKARR_WORLDMAP_tiles.csv`: **748 tiles**, core band arc
-  70–95 holds 361 of them, dead flat, median temp 18.3 °C. The def's tails (248 tiles at
-  arc < 70 reaching 59.6 °C in the Dune Sea; 139 at arc > 95, past the sunset line) are
-  mislabels owed to the band mend — see **Owed**.
+- MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
+  plans): the def holds **665 tiles**. Arc 15.6→112.5 (p10/median/p90 62.1/82.2/102.3);
+  |lat| median 22.5°; temp p10/median/p90 **−0.8 / 19.7 / 32.1 °C**, tail max 59.4 °C (the
+  Dune Sea sunward outlier). Elevation median 15 m (max 1,260); 37 water tiles, 27 river
+  tiles. Regions Damp 99, Grey Sea 81, Thornbelt 80, Ashfall Range 67, Combs 50, Twilight
+  Sea 49, Twilight Crags 47, Dew Belt 42, Dew Horn 32, +16 more. Present in all twelve 30°
+  bearing sectors, unevenly — 1 to 187 tiles a sector. The arc range still carries a
+  sunward tail past the founding 70–95 core band — a residue of the band mend — see
+  **Owed**.
 - 🔑 **The founding doctrine** (`ASHKARR_WORLD_DEFINITION.md`, band table): *arc > 78° is
   `Desert`, with `AridShrubland` only where it is genuinely damp.* Shrubland was never a
   band — it is the **damp anomaly inside the outer band**. This sheet is the mechanism that
@@ -322,7 +327,7 @@ always means someone lit it.** Smoke on the horizon is a person.
 
 - 🔴 **The band mend** (owner ratified, with the constraint: NEVER a bullseye — maintain
   longitude differences): cut the 248 sunward-tail tiles to Desert/ExtremeDesert per the
-  ladder; judge Ashfall Range (85) and Dew Horn (43) individually as possible anomalies; keep
+  ladder; judge Ashfall Range (67) and Dew Horn (32) individually as possible anomalies; keep
   arc 95–100 as the deep-fog margin where a sea sits upwind; cull past arc 100. Paint by
   **plumes** — shrubland where a sea or wind-gap lies upwind, Desert elsewhere at the same
   arc. Folds into `WORLDMAP_DESERT_BAND_REPAIR_1`'s bridge session.

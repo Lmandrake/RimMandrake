@@ -15,18 +15,19 @@ right next to the razor's edge of barren nothingness in the open sun.**_
 
 🔑 **Read against `desert.md`** (the rung below: the shade economy of a sun at 14°) and
 `the_contagion.md` (the rung above, literally: the peaks that rain). The dryland ladder
-now reads ExtremeDesert 47° → **Cracked Lands 22°** → Desert 14° → Shrubland 9° →
+now reads ExtremeDesert 47° → **Cracked Lands 21°** → Desert 14° → Shrubland 9° →
 Wasteland −10°.
 
 ## 0. The measurements everything rests on
 
-MEASURED 2026-09-06 off `world/ASHKARR_WORLDMAP_tiles.csv`: **1,086 tiles**, dayside, arc
-53→102 (median 68 — the sun **22° above the horizon**). Temp p10/median/p90 1 / 27 / 41 °C.
-Elevation median only 164 m but **max 2,101 m**, with the most mixed relief on the planet:
-378 small-hill, **328 mountainous**, 197 large-hill, 182 flat. Water 27 tiles, 4 river
-tiles; rain median 0, **max 1,132 mm** on the Dew Horn highs. Regions: **Dew Horn 353,
-Cracklands 210**, Gray Crags 84, Salt 74, **Damp 74**, Dune Sea 62, Long Sand 29. Seven
-sectors of twelve — lobed, not a ring.
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
+plans): **985 tiles**, dayside, arc 17→116 (median 69 — the sun **21° above the
+horizon**). Temp p10/median/p90 9 / 27 / 45 °C. Elevation median only 137 m but **max
+1,936 m**, with the most mixed relief on the planet: 378 small-hill, **328
+mountainous**, 197 large-hill, 182 flat. Water 23 tiles, 2 river tiles; rain median 0,
+**max 1,442 mm** on the Dew Horn highs. Regions: **Dew Horn 278, Cracklands 199**, Damp
+112, Dune Sea 71, Salt 70, Wither 45, Long Sand 31, +16 more. Present in all twelve 30°
+bearing sectors, unevenly — 11 to 159 tiles a sector.
 
 🔴 **The peaks (owner, 2026-09-06):** the Contagion goes everywhere it reasonably can as a
 world presence — every rain-receiving non-green high with a sterilization path downslope.
@@ -55,7 +56,7 @@ into the cracks to hide.
 
 ## 2. Planetary position
 
-**Outer dayside (arc 53–102, sun ~22°) × the flash-flood anomaly** — dissected soft ground
+**Outer dayside (arc 17–116, sun ~21°) × the flash-flood anomaly** — dissected soft ground
 directly below the dayside's rain peaks (R-H1: rain at the greatest altitudes; R-H7: the
 ocular/Contagion valleys are where it lands and pools, and the rivers leave clean). Where
 the Desert's anomaly is *geometry* (a sun low enough that hills shade), this one is
@@ -305,7 +306,7 @@ nothing for years. Boom-bust on the flood's clock.
   new concepts.
 - **Def label** → "the Cracked Lands" (rename on `ZBiome_Badlands` or our own def — the
   freeze review decides with the other donor-def renames).
-- **Def-tails check** on the 1,086 tiles after the Contagion peaks are cut out.
+- **Def-tails check** on the 985 tiles after the Contagion peaks are cut out.
 - `EXPLOSIVE_PLANT_GROWTH_1` — the world mechanic born in §10b: visible growth,
   the designed terminal moment, custom mod actions.
 - `FLOOD_WITNESS_EVENT_1` — the plot arranges a witnessed flood (and growth) at

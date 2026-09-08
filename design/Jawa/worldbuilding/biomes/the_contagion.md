@@ -25,10 +25,14 @@ horrible," Ascendant Helix territory and a live bioweapon test ground).
 
 ## 0. The measurements everything rests on
 
-MEASURED 2026-09-06 off `world/ASHKARR_WORLDMAP_tiles.csv`. The planet's median rainfall
-is **0 mm**; one region rains prolifically — **Scald Spine**: 174 tiles, rain median 973 mm
-(max 1,529), 73 river tiles, elevation to 2,001 m, 41 °C, arc 48. The donor's current 3
-tiles sit in the Ashfall Range (8/4/271 mm, no rivers) — the wrong home; they move.
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
+plans): the planet's median rainfall is **0 mm**; one region rains prolifically —
+**Scald Spine**: 174 tiles, rain median 973 mm (max 1,529), 73 river tiles, elevation
+to 2,001 m, 41 °C, arc 48. Now painted onto **179 tiles** (Dew Horn 87, Scald Spine 44,
+Ashfall Range 24, Dune Sea 17, Fall Line 5, Anvil 2), arc 18→69 (median 59), temp
+p10/median/p90 25 / 32 / 45 °C (max 57), elevation median 1,387 m (max 2,190), rain
+median 60 mm (max 1,529), 23 river tiles, zero standing water — the wrong-home donor
+placement (3 tiles in the Ashfall Range) is superseded.
 
 🔴 **Placement ruling (owner):** the Contagion lives on the **peaks above the green** and
 **takes NO green squares** — the jungle/oasis defs below (CypreJungle, Feralisk jungle,

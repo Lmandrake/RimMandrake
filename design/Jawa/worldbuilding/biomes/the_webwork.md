@@ -24,12 +24,16 @@ fellow drinker, you are prey in someone's ledger.
 
 ## 0. The measurements everything rests on
 
-MEASURED 2026-09-06 off `world/ASHKARR_WORLDMAP_tiles.csv` (live re-measure — an
-older 534-tile figure in `ASHKARR_WORLD_DEFINITION.md` decayed with the map's
-reshaping): **172 tiles, 0 river tiles, 0 water tiles.** Sun median **+50°** (arc
-21→54) — more raw energy than the Greentide. Temp median 47.4 °C (36.2..63.5).
-Mountainous-heavy: 62 mountainous + 7 impassable of 172; elevation to 1,255 m.
-Regions: **Dune Sea 73, Scald Spine 50**, Dew Belt 19, Hollow Verge 16, Anvil 14.
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8
+overlay plans): **169 tiles, 21 river tiles, 0 water tiles.** ⚠️ The river-tile
+figure is a live-CSV correction from the "0 river tiles" this sheet shipped
+with — a factual update, not a reopening of the "the water is inside" ruling
+below (§1, §5); BENCH flags it for the freeze review rather than reading it
+here. Sun median **+51°** (arc p10/median/p90 21.2/39.4/53.3) — more raw energy
+than the Greentide. Temp p10/median/p90 38.6 / 49.2 / 58.2 °C (max 63.9).
+Mountainous-heavy: 62 mountainous + 7 impassable of 169; elevation median 361 m,
+to 1,255 m. Regions: **Dune Sea 81, Scald Spine 43**, Dew Belt 16, Hollow Verge
+16, Anvil 12, Dew Horn 1.
 
 🔴 **The rain is bimodal and it is the biome's skeleton: 99 tiles get ZERO rain;
 the other 73 climb to 1,529 mm** — near the heaviest on the planet, on green
@@ -60,7 +64,7 @@ discover a shadow, seconds before it lands upon them, and know nothing more.
 
 ## 2. Planetary position
 
-Mid-dayside, arc 21–54, lobed across the Scald Spine's wet highs and down into the
+Mid-dayside, arc 21–53, lobed across the Scald Spine's wet highs and down into the
 Dune Sea's edge. The reasoned intersection: **maximum solar energy × a stolen
 river × an engineer species.** It can even compete with the Contagion in ferocity
 — though in truth it is mostly **UV exposure that keeps the highest peaks clear**.

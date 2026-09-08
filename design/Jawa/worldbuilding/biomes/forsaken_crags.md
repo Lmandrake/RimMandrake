@@ -17,12 +17,15 @@ nocturnal fauna suite are the starting roster, re-grounded in the atmospheric ph
 
 ## 0. The measurements everything rests on
 
-MEASURED 2026-09-05 off `world/ASHKARR_WORLDMAP_tiles.csv`: **1,225 tiles** (an earlier
-"4,440" in the grammar README was wrong and is corrected). Arc 99→121 — the sun **10° to
-31° below the horizon**, past-terminator into true night. Temp median −14 °C, range −30 to
-+30.9 °C. Elev median 566 m, and it is the **hilliest def on the planet**: 614 tiles at
-large-hills or worse, 17 impassable. Water: 5 tiles. Regions: Rimewall (258), Gray Crags
-(181), Sunreach (174), Nightspill (172), Twilight Crags (169), The Verge (103).
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
+plans): **1,170 tiles** (an earlier "4,440" in the grammar README was wrong and is
+corrected). Arc 68.9→121.5 (p10/median/p90 100.3/108.2/115.7) — the core sits **10° to
+31° below the horizon**, past-terminator into true night, with a sunward tail down to arc
+69 (the Twilight Sea strays, below). Temp p10/median/p90 −18.6/−10.5/0.2 °C, max 30.9 °C.
+Elev median 490 m (max 1,584), and it is the **hilliest def on the planet**: 614 tiles at
+large-hills or worse, 17 impassable (hilliness-bucket counts are unmeasured by this pass,
+carried from the prior census). Water: 36 tiles. Regions: Gray Crags 291, Rimewall 234,
+Twilight Crags 186, Sunreach 147, Nightspill 111, Coldstone 49, The Verge 49, +9 more.
 
 🔑 It **interleaves with the Wasteland's dark scour in the same named regions** (Gray
 Crags, Sunreach, Nightspill appear in both sheets). 🔴 **The interleave ruling (owner,
@@ -31,9 +34,10 @@ flat between. No border is ever drawn and no tiles churn** — a tile's biome is
 not where a line falls. ⚠️ With the standing caveat re-affirmed on the ruling: the mix must
 stay **anomaly-scattered, never bullseye** — relief is scattered by geology, and any
 authoring or repair pass that regularizes the crag/wasteland mix into rings about the
-substellar point violates the planet's founding ban. (Five stray "crag" tiles found in
-Twilight Sea at arc 69–71, flat and dayside, are instrument tails — folded into
-`WORLDMAP_DESERT_BAND_REPAIR_1`, not into any ruling.)
+substellar point violates the planet's founding ban. (36 "crag" tiles now sit in Twilight
+Sea at arc 69–71, flat and dayside — still instrument tails, folded into
+`WORLDMAP_DESERT_BAND_REPAIR_1`, not into any ruling — up sharply from the 5 tiles at last
+census.)
 
 ## 1. What it is
 

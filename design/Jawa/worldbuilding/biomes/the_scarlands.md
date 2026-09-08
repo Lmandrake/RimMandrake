@@ -23,10 +23,11 @@ def description, biome text, or first-tier lore doc** — written as a hard ban 
 
 ## 0. The measurements everything rests on
 
-MEASURED 2026-09-06 off the live `world/ASHKARR_WORLDMAP_tiles.csv`: **90 tiles,
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8
+overlay plans): **90 tiles,
 all in the Scorch** — the deep dayside (lat −12..+21, lon −10..+22), pressed
 against the substellar neighborhood. Sun median **+72°**; temp median 59.4 °C
-(57.6..66.0); rain **zero everywhere**; broken hill country (36 large-hill, 11
+(58.3..66.0); rain **zero everywhere**; broken hill country (36 large-hill, 11
 mountainous of 90); elevation to 620 m. ⚠️ Three river tiles at arc ~18 where
 nothing should flow — flag for the freeze review. Neighbors are the whole story:
 the **Rust Cathedral** (`AB_MechanoidIntrusion`, permanently at war) one region

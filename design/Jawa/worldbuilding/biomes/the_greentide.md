@@ -22,16 +22,17 @@ visibly or dying trying.
 
 ## 0. The measurements everything rests on
 
-MEASURED off `world/ASHKARR_WORLDMAP_tiles.csv` (2026-09-05 prep tables): **191 tiles
-— and every single one is a river tile.** That is the biome in one number: no river,
-no jungle. Arc 27.8→53.6 (median 44.6 — the sun **+45° up**, Extreme Desert energy).
-Temp median **44.8 °C** (37.3..64.4). Elevation median 313 m, but nearly half the
-tiles are large-hill/mountainous/impassable (39+78+8) — **gorge country**, not flat
-jungle. Regions: Dune Sea 70, Scald Spine 62, Dew Belt 31, Hollow Verge 13, Anvil 9,
-Dew Horn 6 — two green groves flanking the Scald plus ribbons out into open sand.
-Wildsteam holds two seats here on the owner's own coordinates: **Oilpalm** (tile
-4271, 58.6 °C, on the river — the clan's hottest) and **Warthorn** (tile 16641,
-1,128 m, river + CaveLakes — its remotest).
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
+plans): **227 tiles — 163 of them river tiles (72%).** That is the biome in one
+number: no river, no jungle. Arc 11.3→58.3 (median 44.7 — the sun **+45° up**,
+Extreme Desert energy). Temp median **45.5 °C** (39.1..64.4). Elevation median
+287 m, but nearly half the tiles are large-hill/mountainous/impassable (39+78+8) —
+**gorge country**, not flat jungle. Regions: Dune Sea 81, Scald Spine 58, Dew Belt
+41, Hollow Verge 13, Anvil 13, Dew Horn 11, Fever Wood 10 — two green groves
+flanking the Scald plus ribbons out into open sand. Wildsteam holds two seats here
+on the owner's own coordinates: **Oilpalm** (tile 4271, 58.6 °C, on the river — the
+clan's hottest) and **Warthorn** (tile 16641, 1,128 m, river + CaveLakes — its
+remotest).
 
 Donor inventory (workshop 3537211820, read from the mod XML): **kept in spirit** —
 animalDensity **3.5** (§4 explains why it
@@ -56,7 +57,7 @@ gnawed, or simply shouldered over — is the background percussion of the place.
 
 ## 2. Planetary position
 
-Mid-dayside river anomaly, arc 28–54. **At +45° the ground receives Extreme Desert
+Mid-dayside river anomaly, arc 11–58. **At +45° the ground receives Extreme Desert
 energy — the only variable that changed is the river, and the result is the most
 furiously productive ground on the planet.** The Greentide is Ash'karr's thesis
 stated as landscape: water is the only argument that matters here. The rivers rise
