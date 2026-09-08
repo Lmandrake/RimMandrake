@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T23:43:21Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-08T23:48:31Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -521,15 +521,6 @@ target:   v1
 kind:     task
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
-
-## DROIDWORKS_APPARELMONEY_MISSING_1 gen_droidworks_defs.py never emits apparelMoney on any of the 80 PawnKindDefs -- no Droidworks kind can ever generate apparel regardless of apparelTags
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  Found 2026-09-08 while live-verifying DROIDWORKSMODULEABSORB1 (B2). Three
-prose:    infrastructure/state/items/DROIDWORKS_APPARELMONEY_MISSING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
