@@ -2184,10 +2184,10 @@
     "sha": "e5013227"
   },
   "src/RimMandrake/Utils/ashkarr_settle.py": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "a2f21281c096e1a939453305aa4d1f62a3b28bcf78cbdea61ed6011b75c45710",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "5ccf881e5d82c9f9b402d21975be9758d8ff3d6199f2cc7e9545c5cea89259e3",
+    "sha": "b8ec4d2a"
   },
   "src/RimMandrake/Utils/ashkarr_shore_and_ice.py": {
     "cleanCount": 2,
