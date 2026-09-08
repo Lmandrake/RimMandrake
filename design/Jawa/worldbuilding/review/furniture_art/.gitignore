@@ -1,0 +1,6 @@
+# Derived PNGs, regenerated in minutes by:
+#     python3 src/RimMandrake/Utils/gen_furniture_register.py --stage art
+# Commit a derived artifact's provenance, never its bulk — the
+# provenance lives in furniture_register_rows.json.
+*
+!.gitignore

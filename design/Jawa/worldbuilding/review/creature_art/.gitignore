@@ -1,0 +1,14 @@
+# 2,327 derived PNGs, ~50 MB. DO NOT COMMIT THEM.
+#
+# Every file here is regenerated in about two minutes by:
+#     python3 src/RimMandrake/Utils/gen_creature_register.py --stage art
+# and the provenance that makes them reproducible — which dump, which mod set,
+# which capture — is committed instead, in creature_register_rows.json.
+#
+# CLAUDE.md's rule, verbatim in spirit: commit a derived artifact's provenance,
+# never its bulk. A folder this size also risks the push-blocking file limit.
+#
+# Delete this file if the sheet must ever travel to a machine that cannot run
+# the extractor — but then commit the folder deliberately, not by accident.
+*
+!.gitignore

@@ -1,0 +1,5814 @@
+{
+ "sheetId": "creature_register",
+ "posture": "blacklist",
+ "postureMeaning": "Default is KEEP THE ART. An undecided row destroys nothing and queues no work. Only 'cut' removes a creature; 'regen'/'rescale' queue art work. 'prio' (A/B/C) is the regeneration ORDER and is meaningful only on a regen/rescale row.",
+ "generatedBy": "fiftyone_sync.py export (dataset creature_art)",
+ "generatedUtc": "2026-09-05T23:32:11Z",
+ "decisions": {
+  "GRimCobra": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dromedary": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Iguana": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Vulture": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Chinchilla": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimLavaSnail": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gizka": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SonarRabbit": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Swarmling": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Worrt": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Needlepost": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_LandOctopus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_BloodShrimp": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Razorjack": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Diggerpede": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Boomcat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Hawkbat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Lynx": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_TeratogenicOriginator": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimBullfrog": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ColossusToad": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ThrumbaToad": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRimTortoise": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimMonitorLizard": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Squirrel": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Fox_Red": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Goat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Deer": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AA_Aerofleet": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWProtovermes": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_ImperialToad": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gorg": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Igitz": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Lothcat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FrilledGorg": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Sketto": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MossBeetle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FungalFerret": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FungalWeevil": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Pufferpig": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LongtailGorg": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Terrorworm": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Urusai": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Megavole": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Massiff": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_TruffleMole": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Wildpawn": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_Karabal": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Eopie": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWCaihong": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWDiplocaulus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWMeganeura": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWQantassaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PaintedSpat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Jamel": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Jerbal": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_SandLion": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWBagaceratops": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Orray": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VAEWaste_Megatardi": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_Pilgrim": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Barbslinger": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mawvorr": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Brezak": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Dactillion": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Lizardochs": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IridonianReek": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWBaseopsis": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Hellboar": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Uvak": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Zeer": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Sivatherium": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mudhorn": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GR_AberrantFleshbeast": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Ronto": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AA_LuciferBug": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FancyRat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SandLeaper": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DZY_RNGChicken": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MutagenicNorphea": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_ChemSnail": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_FissionMouseSecond": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_FissionMouseThird": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_PedigreedRaptor": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Bumbledrone": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_BumbledroneHierophant": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Bearmole": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gornt": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Chickenhorse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Agaripawn": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Warg": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Mancat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQEA_Spliceling": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Hurseman": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Manffalo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BovineBeetle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Groundffalo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQEA_Splicefiend": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWEuoplocephalus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_DrainerLarva": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TYR_Lemming": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Voorpak": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Raccoon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Turkey": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Wolverine": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Rabbuck": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_DwarvenMuffton": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bordok": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Gigantelope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Groundrunner": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_BeardedTroll": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FeralGrazer": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gigantelope": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Maalraas": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TeeMuss": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bear_Grizzly": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Jakobeast": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gualaar": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Raxshir": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Wildpod": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWNyctosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Worhin": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Megaloceros": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_TetraSlug": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWQuetzalcoatlus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Warbird": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Zygolophodon": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Behemoth": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mastmot": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Horax": {
+   "decision": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "Cougar": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Beldon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_DesertAve": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Horse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dewback": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Duck": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TetnissCrab": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_FrostAve": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Yak": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bursa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MarshHaunt": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Megakrill": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Skyeel": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Spidersnake": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Chickenlizard": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_ParagonIguana": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_AuroraSylph": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_MegaLouse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FreezerFrog": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Darkbeast": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_WindBeast": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Slurrypede": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GR_Muffalope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Ravager": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gomphotaria": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Thrumffalo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Chickenlope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Squirralope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Needlechicken": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Catalope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Stoneback": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_BlackScribe": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Jellypot": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bogwing": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Meganeura": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_BumbledroneQueen": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQEA_Splicetoot": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Boomsquirrel": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Toxalope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Boombeetle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Boomsnake": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Manwolf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_ParagonBoomalope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Boomffalo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CactusCrab": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Boomabear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Toraton": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Wraid": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dinornis": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_FleshGrowth": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_MatureFleshbeast": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "BMT_Polluwog": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Batbird": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_FissionMouse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_TaintedTurtle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CaveCricket": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Plasmorph": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Manscarab": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MutatingTumorfishAdult": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Narkospider": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FungalMantis": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "EnergySpider": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SmolderstingScorpion": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Maguana": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CrystalCrab": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FoundryBeetle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_RoyalRhino": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_PodWorm": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Tooke": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Needleroll": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HermitCrab": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "StoneCrab": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Glowtail": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Megathrips": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Shyrack": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BloodropMoth": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Macrofly": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Hellbeetle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Fuelmite": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Megawasp": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Acidspitter": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Dunealisk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Gigalocust": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LavaFlea": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_ParagonInsectoid": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Doedicurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Queen": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Lylek": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "KraytDragon": {
+   "decision": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "WarWyrm": {
+   "decision": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "Kreetle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TYR_HotfootRat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_CrescendoAnole": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VAEWaste_Hydra": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CrestedDragon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "WompRat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SmogMoth": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MutatingTumorfishFry": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MucklurkerCatfish": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LavaSnail": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Erin": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Junglelisk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Sporemole": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_JewelBeetle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Crocorse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Muffalokomodo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Thrumbolizard": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_DuskRat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Murkling": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_FungalHusk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Nightling": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Muffalorat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_NightAve": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_DuskProwler": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Muffalopede": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Snakecat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BarbedPangolin": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_NightRam": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_NightMule": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_CrepuscularBeetle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Elasmobearium": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Thrumbospider": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_PlastemmothAlpha": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_SummitCrab": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Rabbitchicken": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Varmot": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PoisonButterfly": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_BlackScarab": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Doedicoon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FleeceSpider": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MossyFennec": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Dryad_Unstable": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Dryad_Corruptor": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Dryad_Ocular": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CaveLemming": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_OcularNightling": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FenridStoat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Bearffalo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_BearBug": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VRE_CompanionDryad": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Elasmotherium": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Platybelodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_AnimaColossus": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AA_GallatrossMoribund": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Chickenrabbit": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimPinkbird": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Scuttlebug": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimQuail": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Manbear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Mole": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Drainer": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_GreenGoo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_IroncasketBeetle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Snoruuk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_DecayDrake": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Mime": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Worm": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWDilophosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWGeralinura": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CrystalBeetle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWPteranodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Harvester": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Wolf_Great": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Wampa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Fox_Arctic": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_SnowTaraal": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_NorthernDrog": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Megasloth": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bullfrog": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TYR_MousePoison": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_DarkVandal": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Agaripod": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Taozin": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_EmpressButterflyLarva": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Donkey": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bison": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Muffalo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Akk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Reek": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LothWolf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Drexl": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Rancor": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Rat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Wolf_Timber": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_InfectedAerofleet": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GlowSlug": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Feralisk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Rimclaw": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Basilisk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Crystalope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Nexu": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_AcidSlug": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_CrystalMit": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_PebbleMit": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CrystalFairyMole": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Molebear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Bearalope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Deermoss": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_EngorgedTentacularAberration": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Wolf_Arctic": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bear_Polar": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "BMT_Megaroach": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GraniteSlug": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Leaftail": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Neebray": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "WasteRat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_ColonyPustuleHornet": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FamineLocust": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_PustuleHornet": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_PustuleHornetSpawned": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Frostmite": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mynock": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_UnshackledDryad": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Krykna": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQE_IceCrawler": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_ColonyPustuleHornetQueen": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_PustuleHornetQueen": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Snowstalker": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Swarmcaller": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQE_Megamidge": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Frostling": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_ArcticLion": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Blizzarisk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Ling_Cockroach": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FrostweaverSpider": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Thrumbungus": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AA_Bobeene": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GoetoTadpole": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Fleshling": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BrownBat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GlowBat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GastroToad": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GoetoToad": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Squall": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BloodletterPetrel": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Dryad_Spitter": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_ToxSheep": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Spidercat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Wolfscarab": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Animalisk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_TripleSnapper": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VAEWaste_Toxiguana": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_ChemfuelMyrmidon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GiantSlug": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Metallovore": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CrystalMantis": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Megapleura": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Cinderlisk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_MammothWorm": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "BMT_Pillbug": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MetalloSnail": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_BlackSpelopede": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Woollybat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_AcanthamoebaGiganteaHuge": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_SandProwler": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BunkerBug": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_HungeringHydra": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GreaterKraytDragon": {
+   "decision": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "VFEI2_BlackSwarmling": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Swarmling": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimStoneCrab": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Gembug": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Anooba": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_AaroxisDendoria": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_RaptorShrimp": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Thermadon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWProtosolpuga": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Mantrap": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWGorgonops": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Molebear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Lockjaw": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_OcularSlinger": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Helixien": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_BlackQueen": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SilverSheep": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FeralNerf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Strill": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Thrumborat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BeardedYak": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_ParagonMuffalo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Grazer": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Thrumbochicken": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Thrumbalope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HiveQueen": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Gallatross": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_MycoidColossus": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Boomrat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Rikknit": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_OcularJelly": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_RedGoo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Manalope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_ShockGoat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_AngelMoth": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FrogDog": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWArchaeopteryx": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWEuphoberia": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWHynerpeton": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWPlatyhystrix": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWPulmonoscorpius": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_RedSpore": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_RoughPlatedMonitor": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Boomalisk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWGeosternbergia": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_FleshMonstrosity": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_UnblinkingEye": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Beetlefleet": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_ParagonRat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_BedBug": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Dryad_Tumorous": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_GreyCoatedMouflon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_DarkAxolotl": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Screecher": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_GiantCrownedSilkie": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Visceral": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_BlackSpider": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Ratffalo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Raptorkhan": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_ImperialRedhound": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SW_Grenadierworm": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_LeviathanCrab": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Narglatch": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_BlackEmpress": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Behemoth": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_FrostboundBehemoth": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_HoarfrostMastodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_ParagonThrumbo": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GR_Paraceramuffalo": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Megascarab": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_Phrak": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SmogMothLarvae": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FacetMoth": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_FireWasp": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MutatingTumorfishSpawn": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spelopede": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Megaspider": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_RayHound": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BI_Queen": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_SpinedGow": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Roggwart": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JungleRancor": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VFEI2_Boomtick": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_AcanthamoebaGiganteaSmall": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Scurrier": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SW_Electrictick": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CarrionVulture": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Megaphorid": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Creature_Mantrap": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_AcanthamoebaGiganteaLarge": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Rycrit": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SW_Electricfish": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Chickenspider": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FireSalamander": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SW_Electricgryllotalpa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_SandSquid": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SW_Juggernautbeetles": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CaveSpider": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SW_Emperorisopod": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_SmallButterfly": {
+   "decision": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "PoisonRat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Porg": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Catchicken": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Blarth": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bardelot": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Vulptex": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Locust": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AA_AnimusVox": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Durapod": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_RoyalSpelopede": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Venomite": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Bearman": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Rimebeak": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Moleman": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWBeelzebufo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Megapede": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_RoyalMegaspider": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Tankroach": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Maxolotl": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Empress": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Thrumdraeodon": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VFEI2_Silverfish": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Tibidee": {
+   "decision": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "AA_AngelMothLarva": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Cactipine": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Boarwolf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Sacapillar": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Mantistanis": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dinocrocuta": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Bearodile": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Macrauchenia": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Uintatherium": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWIschigualastia": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWBrachytrachelopan": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Sivatherium": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AA_Locusts": {
+   "decision": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "AA_LarvalAtispec": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_AnimusHare": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_RoyalMegascarab": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Tauntaun": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_RoyalAve": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Pulmonoscorpius": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Muffaloman": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWMacrelcana": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_TarGuzzler": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Nerf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Blurrg": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQEA_Splicehulk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Gigamite": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AlphaThrumbo": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GR_Thrumbear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GuineaPig": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Quail": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Clodhopper": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Scavrat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Grank": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Alpaca": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Kybuck": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Qormot": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_MeadowAve": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Gnaut": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Runyip": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GiantToad": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Jimvu": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Shaak": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_Taraal": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dalgo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Hrumph": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bolotaur": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Falumpaset": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gundark": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TuskCat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Megasquid": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "JOE_Landopus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Convor": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gullipud": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Yobshrimp": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Shiro": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Nuna": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Ollopom": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mott": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ShiroTrap": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JOE_Cephalope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Kaadu": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Boma": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Fanback": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_Snaptoad": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_Barog": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PekoPeko": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Hssiss": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Silooth": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_BoulderMit": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Thranta": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KowakianMonkeyLizard": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Monkey": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Borcatu": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Whisperbird": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Stintaril": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Tach": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Iriaz": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Woolamander": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Zarander": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Cannok": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Yippa": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Panther": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Kinrath": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CanCell": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWBernicia": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWManipulator": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gutkurr": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Insectomorph": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MastiffPhalone": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Vornskyr": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gelagrub": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Devourers": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Acklay": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Kwi": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Rhinoceros": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Titanis": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Varactyl": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Wyyyschokk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Arthropleura": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Corinathoth": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Elephant": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Giantala": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Katarn": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Vapaad": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IthorianReek": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWArthropleura": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "HarvesterBeetle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Torton": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Zakkeg": {
+   "decision": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "Klorslug": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Veermok": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Blixus": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Dianoga": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dragonsnake": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KellDragon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KwazelMaw": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Fambaa": {
+   "decision": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "JOE_Nautilant": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Hare": {
+   "decision": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "Snowhare": {
+   "decision": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "Caribou": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Ibex": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Elk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_ChameleonYak": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Aminox": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Manka": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bantha": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_Crestel": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_ShimmershellSnail": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Pikobis": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Xyrion": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ERN_Amaro": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_RipperHound": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Thunderbeast": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Megabat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_IronhuskBeetle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GiantSnail": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SludgeCrawler": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Wolfhorse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Skalder": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Tukata": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ChrysalideRancor": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AA_Eyeling": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_EmpressButterfly": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Skiphound": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Maligoat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_RedhornedLarpah": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Terramorph": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Bearcat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_ColossalAerofleet": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Thrumbocat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Spiderhorse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_GreatDevourer": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Aiwha": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Bearscarab": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Bearhorse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Atispec": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "WildBoar": {
+   "decision": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "Boomalope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_OvergrownColossus": {
+   "decision": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Sparrow": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bluebird": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Crow": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_KiwiBird": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_Mee": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_PhoenixOwlcat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Mech_TurboCleaner": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_SilverMole": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Chickenffalo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Mecharat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IronScruff_Jellybird": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Larva": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PrairieDog": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Rabbit": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_Faa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_SiltLamprey": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_Yobshrimp": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TYR_KangarooRat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TYR_Mouse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Cobra": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Drone_Wasp": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "RSW_RustNipper": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_Mech_Spidermine": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_Mech_Wardrone": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Catman": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Chicken": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Catrabbit": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Chickenbear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Chickencat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Chickenwolf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Mansquirrel": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Cleansweeper": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MegaphoridLarva": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Cat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "YorkshireTerrier": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Macaw": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mink": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Porcupine": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_ArcticOwlcat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_ForestOwlcat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Catbear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Catffalo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Catwolf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Otter": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_Laa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SWPotF_RaceDef_ysalamir": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Alphabeaver": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_DevilSheep": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_ParagonChicken": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWCompsognathus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_MSEDroid": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "OuterRim_SalvageAssistDroid": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SeaTurtle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Tortoise": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Armadillo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Fox_Fennec": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VAEWaste_Toxafox": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_FlamingoPhoenix": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Badger": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Cassowary": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ERN_Carbuncle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Emu": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Fingerspike": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "Flamingo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Turkeyman": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Goose": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Heron": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MonitorLizard": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Peacock": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Prowler": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Swan": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dryad_Barkskin": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Wolfchicken": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dryad_Basic": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "Dryad_Berrymaker": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dryad_Carrier": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dryad_Clawer": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dryad_Gaumaker": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dryad_Medicinemaker": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dryad_Woodmaker": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Blitzkrieg": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Mech_Geneticor": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Mech_Guttersnipe": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Mech_MasterChef": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BloodropLarvae": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FacetMothLarvae": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MossBeetleLarvae": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BiomesIslands_Flamingo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Drone_Hunter": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "Gazelle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Agrihand": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Constructoid": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Fabricor": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Lifter": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Militor": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Paramedic": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_WarUrchin": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Penguin": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Capybara": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Boomachicken": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Dogman": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Mechachicken": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IronScruff_Flatworm": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LabradorRetriever": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_AstromechDroid": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DUMDroid": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_FX7Droid": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Sheep": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_CrystallineCaracal": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_AaroxisDendoriaLarvae": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SandPillar": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Seal": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Sightstealer": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Bearchicken": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BogHound": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CorellianHound": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Wolfalope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Wolfbeaver": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_WasteHound": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Husky": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BovineBeetleLarvae": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CrystalBeetleLarvae": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_JewelBeetleLarvae": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_RoyalRhinoLarvae": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_ShatterjawBeetleLarvae": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Beaverwolf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PoisonDeer": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Zebra": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Mech_Artilleron": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Mech_Bellicor": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Apoptosis": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Aura": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Daggersnout": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Mech_Lux": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Mech_Munifex": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Mech_Optio": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Mech_Sagittarius": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_PristineStrider": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_Hwacha": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_Palanquin": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_Rickshaw": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_RowBoat": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "AV_Wheelbarrow": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AlligatorMan": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_AaroxisDendoriaPupa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BloodropPupa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BovineBeetlePupa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CrystalBeetlePupa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FacetMothPupa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FoundryBeetlePupa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GlarralPenguin": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_JewelBeetlePupa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MossBeetlePupa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_RoyalRhinoPupa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_ShatterjawBeetle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_ShatterjawBeetlePupa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SmogPupa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BlackBearMan": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CACrystalScythe": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CAHarbinger": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CAHavoc": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CAMech_Scyther": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Drone_Sentry": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ERN_BigCarbuncle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ERN_Chocobo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FleshmassNucleus": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "GR_Bearwolf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Mechamime": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Mechaturtle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Molehorse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_ParagonWolf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Wolfbear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Wolfcat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Wolfsnake": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IronScruff_Hydrazoa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mandrill": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MandrillMan": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Apocriton": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Cyclops": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Lancer": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Legionary": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Pikeman": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "Mech_Scorcher": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Scyther": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Tesseron": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Metalhorror": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "Neanderthal": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Noctol": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Ostrich": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DestroyerDroid": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_GNKDroid": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Revenant": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Toughspike": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "Trispike": {
+   "decision": "rescale",
+   "prio": "B",
+   "note": ""
+  },
+  "VGE_Astronaut": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_Hunter": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Charley": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Dirtbike": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Scytheman": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Mech_Polychoron": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_MuckrakerDroid": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SeaLion": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VAEWaste_Wastedeer": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Booman": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Cat_Scimitar": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Mechacat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VAEWaste_Wasteboar": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_OpeeSeaKiller": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Tiger": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Alligator": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Boomwolf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Lizardman": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_MeadowLizard": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Mechalope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Mechawolf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Wolffalo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_WoolyWolf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWAdalia": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWCoelophysis": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWCyclosphaeroma": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWDinilysia": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWHalszkaraptor": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWHolcorobeus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWHylonomus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWHypsilophodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWMicroceratus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWParksosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWPsittacosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWValdosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWWonambi": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWYi": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWYurlunggur": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWZephyrosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Panda": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Frog": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Toad": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_OutriggerCanoe": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Termite": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "VAEWaste_Toxlion": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Phalanx": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Simbakub": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Pig": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_CrimsonOpee": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Castoroides": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Fireworm": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Goliath": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "BMT_FoundryBeetleLarvae": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Muffalochicken": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_ParagonFeline": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Muffalocat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_FrostLynx": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Genix": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Mech_PristineAssembler": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Mech_PristineSlurrypede": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "AV_Chariot": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_DogSled": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Boomhorse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Cathorse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Chickenlodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Manchicken": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Mechabear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Mechaspider": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Muffalowolf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_WolfShrimp": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GiantAnt_Race": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gorehulk": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gorilla": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWKileskus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWLycaenops": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWProtoceratops": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWUdanoceratops": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Ling_Cockroach_Mechanoid": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MO_AbominationRace": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MutantCow": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Hemolope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Neutrolope": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_ShaleGorger": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Dinghy": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Walrus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Yooka": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BlackBear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Chimera": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "MA_Manehound": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Thrumwolf": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Direhorse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_SimbakubAlpha": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Mosquito": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_ParagonHumanoid": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BiliousVarog": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Cow": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "IronScruff_Tardigrade": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VAEWaste_Wasteffalo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_CoveredCarriage": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_WarChariot": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dinopithecus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Muffalobear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Rabbitcat": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWAbrictosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWAgilisaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWDrinker": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWDryosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWRhamphorhynchus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWTupandactylus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Harpeagle": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Moose": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Muskox": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Smilodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VAEWaste_Toxscorpion": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Prowler": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_ThornbackColo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Highwayman": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Hippo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Palaeeudyptes": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_ParagonBear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_BlizzariskClutchMother": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_DunealiskClutchMother": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_FeraliskClutchMother": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Aurochs": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Daeodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Enhydriodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Nighthrumbo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_ParagonHorse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWTermitotron": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Capryak": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Duskhorn": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_CentipedeBlaster": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "Mech_CentipedeBurner": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "Mech_CentipedeGunner": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "Megalania": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Procoptodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_ColoClawFish": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VAEWaste_Pestigator": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Ironclad": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_Astropede": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Scarodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CADevourer": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CAEndBossMech": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Roadrunner": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Snatcher": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Traveller": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Trawler": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Muffalohorse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MaceDrake": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bulbfreak": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "Gigantopithecus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWAlbertosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWBaryonyx": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWBecklespinax": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWCarnotaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWCeratosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWCryolophosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWDesmatosuchus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWDimetrodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWEdaphosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWGasosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWGigantophis": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWKaprosuchus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWMetriacanthosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWNanuqsaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWOphiacodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWOrnithosuchus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWPrestosuchus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWRajasaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWSuchomimus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWTanystropheus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWTitanoboa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWYutyrannus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Tunneler": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Quinkana": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_BangBus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Bunsen": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Mule": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Roadkill": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Wagon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Wisent": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Mech_Legate": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Furpotamus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Centurion": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "Nociosphere": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_AbyssalColo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Plastemmoth": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Teramantis": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Demolisher": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Infernus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Siegebreaker": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Siegemelter": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Starfire": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_OxCart": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Chalicotherium": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_Goldilox": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Devourer": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "GR_Mechahorse": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Thrumboman": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "JRWDeinonychus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWDracorex": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWDromaeosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWGallimimus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWHomalocephale": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWOviraptor": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWPachycephalosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWStaurikosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWStygimoloch": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWTroodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWVelociraptor": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Josephoartigasia": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KingToad": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Dunbear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mech_Diabolus": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "Mech_Warqueen": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_WoollyStegosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Thrumbo": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "VAEWaste_Toxbear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Patriarch": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Titantick": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Diprotodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_RockTroll": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Thrumhorse": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "JRWEnigmosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWSaltasaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWSegnosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWTherizinosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mastodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Megalochelys": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ShortfacedBear": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Bulldog": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Tango": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_WarEmpress": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_Balloon": {
+   "decision": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "Andrewsarchus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dreadmeld": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWAnkylosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWAntarctopelta": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWCamptosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWCoahuilaceratops": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWCorythosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWDeinosuchus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWEdmontosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWEstemmenosuchus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWIndominus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWIndoraptor": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWKentrosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWKosmoceratops": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWMochlodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWNasutoceratops": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWOuranosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWPachyrhinosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWParasaurolophus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWRhabdodon": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWSarcosuchus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWScutosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWStegosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWStyracosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWTenontosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWTorosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWTriceratops": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWZalmoxes": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "WoollyMammoth": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Deinotherium": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Boomnotherium": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Smuggler": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWAcrocanthosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWAllosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWApatosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWArgentinosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWBrachiosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWCamarasaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWCarcharodontosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWGiganotosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWSpinosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWSupersaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWTyrannosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JRWYangchuanosaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bulwark": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Warbird": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Mechathrumbo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Purussaurus": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gigantophis": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_StormSando": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Titanoboa": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_Mechamuffalo": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BroodLord": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_SandoAquaMonster": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Paraceratherium": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_ArchotechCentipede": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_ElderSando": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_Reefback": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_Starmaw": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_Lanternwhale": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RUT_LongHunger": {
+   "decision": "regen",
+   "prio": "A",
+   "note": ""
+  },
+  "SandWorm_Thing": {
+   "decision": "keep",
+   "prio": "",
+   "note": ""
+  }
+ }
+}

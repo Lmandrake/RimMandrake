@@ -1,0 +1,11 @@
+{
+  "_comment": "MLIE_FAUNA_ABSORPTION_1 Wave A (Bantha). old Mlie defName -> new RSW_ defName. Sibling to mlie_sound_defname_map.json (589 SoundDefs, sound wave, already done) - this file covers creature-wave ThingDef/PawnKindDef/ThoughtDef defNames only. Sarlacc was NOT ported this pass: it is not a creature (no ThingDef/PawnKindDef race pair exists for it in Mlie at all) - it is an Odyssey-DLC-gated LandmarkDef/TileMutatorDef/GenStepDef/MapGeneratorDef/MapPortal building system (SW_Buildings_Natural.xml), far more complex than Wave A's plan assumed. See MLIE_FAUNA_ABSORPTION_1 item update for the full finding.",
+  "Bantha": "RSW_Bantha",
+  "WoolBantha": "RSW_WoolBantha",
+  "BlueMilk": "RSW_BlueMilk",
+  "Leather_Bantha": "RSW_Leather_Bantha",
+  "Bantha_Meat": "RSW_Bantha_Meat",
+  "BanthaHorn": "RSW_BanthaHorn",
+  "DrankBlueMilk": "RSW_DrankBlueMilk",
+  "SWanimals_RawMeatBase": "RSW_SWanimals_RawMeatBase"
+}
