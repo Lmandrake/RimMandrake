@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T21:53:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T21:53:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -494,15 +494,6 @@ target:   v1
 kind:     task
 summary:  Implement design/Jawa/worldbuilding/restrainingbolttechnical.md's "Build note"
 prose:    infrastructure/state/items/DROID_FDE_GOODWILL_CAP_1.md
-
-## DROID_PROTOCOL_TRADE_ADVANTAGE_1 Protocol droid in the trade party shifts prices both ways; none on your side is a penalty
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  §3.2's row: "C4: StatDef factor on trade prices/negotiation when a
-prose:    infrastructure/state/items/DROID_PROTOCOL_TRADE_ADVANTAGE_1.md
 
 ## DROID_HUTT_CAPTIVES_1 Droids held in Hutt torture chambers as a rescue-or-purchase source at Hutt sites
 state:    doing
