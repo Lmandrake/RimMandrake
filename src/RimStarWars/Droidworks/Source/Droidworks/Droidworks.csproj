@@ -56,6 +56,8 @@
     <Compile Include="CompDWCharger.cs" />
     <Compile Include="CompDWDataSpike.cs" />
     <Compile Include="CompDWFormatTier.cs" />
+    <Compile Include="CompDWHeadDropper.cs" />
+    <Compile Include="CompHeadIdentity.cs" />
     <Compile Include="CompTargetable_DWDataSpike.cs" />
     <Compile Include="DroidEthicsExtension.cs" />
     <Compile Include="DroidFormatTier.cs" />

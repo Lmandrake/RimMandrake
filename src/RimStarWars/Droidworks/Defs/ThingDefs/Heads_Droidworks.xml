@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_HEADS_BRAINS_SPIKES_1 (packet B3). The real per-family heads
+     RSW_DW_DroidHead (Items_Droidworks.xml) was always a placeholder for -
+     that generic item stays as-is (still the RSW_DW_DataSpike ingredient),
+     these are the ones CompDWHeadDropper actually spawns on a droid's death.
+
+     thingClass Thing_DWHead + CompProperties_HeadIdentity (Source/Droidworks/
+     CompHeadIdentity.cs): a head dropped off a dying droid carries that
+     droid's name into its own label and inspect string ("kill -> head drops
+     with its name", the packet's own verify line); a head bought unused from
+     a trader/Trade Moot stays generic until it is ever worn by a droid that
+     then dies with it snapshotted in.
+
+     Art: one existing portrait icon per family, picked from whichever
+     donor race in that family (see Races_KotOR.xml/Races_OuterRim.xml/
+     Races_JDS.xml's ParentName="DW_Family_*" blocks) already ships a
+     single-image UI icon under KotOR/UI/ - Graphic_Single, no rotation-set
+     risk (see Items_Droidworks.xml's own RSW_DW_DroidHead header for the
+     Graphic_Multi/Graphic_Collection trap that art class avoids). Uniform
+     stats across families: per-family stat variance is fine-parts territory
+     (DROIDWORKS_FINE_PARTS_1, packet B4a), not this packet.
+======================================================================== -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_Head_Labour</defName>
+    <thingClass>RimMandrake.StarWars.Droidworks.Thing_DWHead</thingClass>
+    <label>labour droid head</label>
+    <description>A salvaged labour-chassis droid head - the imported brain trio, in its casing. If it came off a droid rather than off a shelf, it still carries that droid's identity.</description>
+    <graphicData>
+      <texPath>KotOR/UI/Icon_KM1HMD</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>1.5</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <MarketValue>300</MarketValue>
+    </statBases>
+    <techLevel>Spacer</techLevel>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_HeadIdentity" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_Head_Protocol</defName>
+    <thingClass>RimMandrake.StarWars.Droidworks.Thing_DWHead</thingClass>
+    <label>protocol droid head</label>
+    <description>A salvaged protocol-chassis droid head - the imported brain trio, in its casing. If it came off a droid rather than off a shelf, it still carries that droid's identity.</description>
+    <graphicData>
+      <texPath>KotOR/UI/Icon_GE3PD</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>1.5</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <MarketValue>300</MarketValue>
+    </statBases>
+    <techLevel>Spacer</techLevel>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_HeadIdentity" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_Head_Astromech</defName>
+    <thingClass>RimMandrake.StarWars.Droidworks.Thing_DWHead</thingClass>
+    <label>astromech droid head</label>
+    <description>A salvaged astromech-chassis droid head - the imported brain trio, in its casing. If it came off a droid rather than off a shelf, it still carries that droid's identity.</description>
+    <graphicData>
+      <texPath>KotOR/UI/Icon_T3</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>1.5</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <MarketValue>300</MarketValue>
+    </statBases>
+    <techLevel>Spacer</techLevel>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_HeadIdentity" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_Head_Battle</defName>
+    <thingClass>RimMandrake.StarWars.Droidworks.Thing_DWHead</thingClass>
+    <label>battle droid head</label>
+    <description>A salvaged battle-chassis droid head - the imported brain trio, in its casing. If it came off a droid rather than off a shelf, it still carries that droid's identity.</description>
+    <graphicData>
+      <texPath>KotOR/UI/Icon_HK47</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>1.5</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <MarketValue>300</MarketValue>
+    </statBases>
+    <techLevel>Spacer</techLevel>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_HeadIdentity" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_Head_Heavy</defName>
+    <thingClass>RimMandrake.StarWars.Droidworks.Thing_DWHead</thingClass>
+    <label>heavy droid head</label>
+    <description>A salvaged heavy-chassis droid head - the imported brain trio, in its casing. If it came off a droid rather than off a shelf, it still carries that droid's identity.</description>
+    <graphicData>
+      <texPath>KotOR/UI/Icon_SentWD</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>1.5</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <MarketValue>300</MarketValue>
+    </statBases>
+    <techLevel>Spacer</techLevel>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_HeadIdentity" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_Head_Probe</defName>
+    <thingClass>RimMandrake.StarWars.Droidworks.Thing_DWHead</thingClass>
+    <label>probe droid head</label>
+    <description>A salvaged probe-chassis droid head - the imported brain trio, in its casing. If it came off a droid rather than off a shelf, it still carries that droid's identity.</description>
+    <graphicData>
+      <texPath>KotOR/UI/Icon_KX12UPD</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>1.5</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <MarketValue>300</MarketValue>
+    </statBases>
+    <techLevel>Spacer</techLevel>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_HeadIdentity" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_Head_Power</defName>
+    <thingClass>RimMandrake.StarWars.Droidworks.Thing_DWHead</thingClass>
+    <label>power droid head</label>
+    <description>A salvaged power-chassis droid head - the imported brain trio, in its casing. If it came off a droid rather than off a shelf, it still carries that droid's identity.</description>
+    <graphicData>
+      <texPath>KotOR/UI/Icon_gonk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>1.5</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <MarketValue>300</MarketValue>
+    </statBases>
+    <techLevel>Spacer</techLevel>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_HeadIdentity" />
+    </comps>
+  </ThingDef>
+
+  <!-- ========================================================================
+       RSW_DW_Head_Mindstone - MECHANOID_ORIGIN_CANON_1's race, per ruling 3
+       ("Mindstone race = a Droidworks chassis with a special head"). That
+       item is still `proposed`/`needs owner` (filed 2026-09-06, no numeric
+       stats ever ruled) - so despite packet B3's verify line reading
+       "mindstone head yields the ruled stats", nothing has literally been
+       ruled yet. FOUNDRY's own call, recorded here rather than blocking on
+       it: distinctly higher-tier than a family head (Archotech, not Spacer;
+       ~8x the market value) so the item exists and is judgeable, WITHOUT
+       inventing the mindstone's actual sourcing (findable/craftable/found-
+       only) or the "chassis + this head = a new race" mechanic itself - both
+       of those are MECHANOID_ORIGIN_CANON_1's to decide. No donor pawn
+       carries this head, so CompDWHeadDropper never spawns one; it exists
+       today only as a standalone item (spawn/debug, future quest loot).
+       Art: vanilla Biotech's own Mechlink texPath (an archotech implant that
+       psychically links a mind to a mechanoid) - reused for the same reason
+       Items_Droidworks.xml reuses donor-mod textures verbatim, but vanilla
+       here rather than a sibling mod, so there is no cross-mod texPath
+       fragility at all.
+  ======================================================================== -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_Head_Mindstone</defName>
+    <thingClass>RimMandrake.StarWars.Droidworks.Thing_DWHead</thingClass>
+    <label>mindstone head</label>
+    <description>A droid head casing built around something that is not the usual imported brain trio - a mindstone, humming with a presence that answers when addressed. Not really a droid mind any more.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/Mechlink</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>1.5</Mass>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <MarketValue>2500</MarketValue>
+    </statBases>
+    <techLevel>Archotech</techLevel>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_HeadIdentity" />
+    </comps>
+  </ThingDef>
+
+</Defs>
