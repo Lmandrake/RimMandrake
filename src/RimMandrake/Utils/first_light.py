@@ -192,10 +192,11 @@ def main():
         if gi.get("status") == "game_loaded":
             section(out, "World")
             try:
-                wi = (rb.call("jawa/world_info_get", {}) or {}).get("info") or {}
+                resp = rb.call("jawa/world_info_get", {}) or {}
+                wi = resp.get("info") or {}
                 out.append("- `%s`, seed `%s`, coverage %s, %s tiles" %
                            (wi.get("name"), wi.get("seedString"),
-                            wi.get("planetCoverage"), rb.call("jawa/world_info_get", {}).get("tilesCount")))
+                            wi.get("planetCoverage"), resp.get("tilesCount")))
                 st = rb.call("jawa/world_stats", {})
                 out.append("- %s" % st.get("message"))
             except Exception as e:
