@@ -1758,7 +1758,7 @@ def cmd_game(args, seat):
 # ⛔ NO HOOKS, NO GATE. This command records a self-declared rung; it never
 # blocks `file`/`claim`/`close`/anything else, and nothing here checks that a
 # rung is "true" before accepting it — that is the ruling, verbatim: the
-# lightest proof possible, self-declared through `runnable`, and `checked-out`
+# lightest proof possible, self-declared through `validated`, and `played`
 # gated only by `model._who_refusal`'s existing per-verb permission mechanism
 # (the same one `game UP` already uses), not by a new check invented for this.
 # ---------------------------------------------------------------------------
@@ -2162,8 +2162,8 @@ def build_parser():
                    help="set only: the system/capability name, free text")
     s.add_argument("--function-rung", dest="function_rung",
                    choices=model.FUNCTION_RUNGS,
-                   help="planned -> designed -> implemented -> runnable -> checked-out "
-                        "(checked-out is OWNER only)")
+                   help="planned -> designed -> implemented -> runnable -> validated "
+                        "-> played (played is OWNER only)")
     s.add_argument("--content-rung", dest="content_rung", choices=model.CONTENT_RUNGS,
                    help="none -> placeholder -> authored -> final")
     s.add_argument("--evidence-ref", dest="evidence_ref",

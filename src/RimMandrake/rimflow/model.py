@@ -117,6 +117,28 @@ NEEDS = ("offline", "deploy", "game-up", "bridge", "harvest", "owner")
 # runs live items only. In DOWN the game is gone and everyone is offline.
 GAME_STATES = ("DOWN", "DEPLOYING", "LOADING", "UP", "GOING_DOWN")
 
+# ---------------------------------------------------------------------------
+# CAPABILITY REGISTRY — PROJECT_MATURITY_DASHBOARD_1 (ruled 2026-09-07)
+#
+# Two independent ladders per system. Kept GENERIC on purpose — the owner may
+# reuse this schema outside RimWorld — so nothing here names a mod, a def type
+# or anything else specific to this project.
+#
+# 🔴 EVIDENCE IS LIGHTEST-POSSIBLE, PER THE RULING. `planned`/`designed`/
+# `implemented` are self-declared: zero friction, no evidence required.
+# `runnable` falls out of a load already being paid for (harvest_log.py), never
+# a load spent to prove it. `validated` is likewise self/evidence-declared —
+# it means the system's own validation gameplay scripts have been run and
+# passed, not that a human sat down with it. `played` is the one expensive
+# rung — a human has actually sat down and played with it to their
+# satisfaction — and is gated below to the OWNER, exactly the way `game UP`
+# is already gated — this is the ledger's existing per-verb permission
+# mechanism, not a new hook. (Split from a single `checked-out` rung into
+# `validated` + `played`, 2026-09-08 — the owner's ruling: self/evidence-
+# declared validation is not the same claim as a human having played it.)
+FUNCTION_RUNGS = ("planned", "designed", "implemented", "runnable", "validated", "played")
+CONTENT_RUNGS = ("none", "placeholder", "authored", "final")
+
 # The item-ID grammar, and the ONLY place it is written down. It admits the
 # THREE_DESCRIPTIVE_WORDS_# form (underscores, digits) and the legacy B58 / D5 form,
 # which is why legacy items still close under their own number.
@@ -239,12 +261,23 @@ VERBS = {
                   "opt": ("measured", "evidence", "text", "ranBy")},
     # `admin` (an OWNER-only audited correction) was removed 2026-08-27: defined
     # 2026-08-20, fired zero times ever. Git holds it if the need materialises.
+    #
+    # PROJECT_MATURITY_DASHBOARD_1: a system's maturity grid, two axes, one event
+    # per update. `who` is "any" — self-declaration up through `validated` costs
+    # nothing, per the ruling — and the one expensive rung (`played`) is
+    # gated in `_who_refusal`, not here, the same way `game UP` gates on
+    # `measured` rather than in this table. Itemless: a system is not a rimflow
+    # item and carries no THREE_WORDS_# id.
+    "capability": {"who": "any", "req": ("system",),
+                  "opt": ("function_rung", "content_rung", "evidence_ref", "date", "note")},
 }
 
 # Events that do not name an item. Everything else must carry an `id`.
 # Events that do not name an EXISTING item. `spawn` is here because it CREATES one —
 # it is about its `from` (the cause) and its `name` (the product), never about a host.
-ITEMLESS = ("seat", "bridge", "game", "spawn")
+# `capability` is here for the same reason: it describes a SYSTEM (a free-text name),
+# never an existing rimflow item.
+ITEMLESS = ("seat", "bridge", "game", "spawn", "capability")
 
 
 # THREE_DESCRIPTIVE_WORDS_# — the naming rule since 2026-08-20. Legacy IDs (B58, D55,
@@ -435,6 +468,35 @@ def _check_needs(ev):
             "needs --to must be one of %s (got %r)" % (", ".join(NEEDS), ev.get("to")))
 
 
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def _check_capability(ev):
+    """`capability` — a system's maturity update. Not in `_check_enums` because it
+    needs two related fields checked together (at least one axis given, each rung
+    legal for its own ladder), which that function's one-line-per-verb shape does
+    not fit.
+    """
+    if ev.get("event") != "capability":
+        return
+    if not str(ev.get("system") or "").strip():
+        raise SchemaError("`capability` needs --system naming the system/capability.")
+    fr, cr = ev.get("function_rung"), ev.get("content_rung")
+    if not fr and not cr:
+        raise SchemaError(
+            "`capability` needs at least one of --function-rung or --content-rung — "
+            "setting neither records nothing.")
+    if fr and fr not in FUNCTION_RUNGS:
+        raise SchemaError("--function-rung must be one of %s (got %r)"
+                          % (", ".join(FUNCTION_RUNGS), fr))
+    if cr and cr not in CONTENT_RUNGS:
+        raise SchemaError("--content-rung must be one of %s (got %r)"
+                          % (", ".join(CONTENT_RUNGS), cr))
+    d = ev.get("date")
+    if d and not DATE_RE.match(str(d)):
+        raise SchemaError("--date must be YYYY-MM-DD (got %r)" % (d,))
+
+
 def validate(ev):
     """Refuse a malformed event BEFORE it reaches the file.
 
@@ -456,6 +518,7 @@ def validate(ev):
     _check_enums(ev)
     _check_caused_by(ev)
     _check_needs(ev)
+    _check_capability(ev)
     return ev
 
 
@@ -761,6 +824,35 @@ class Item(object):
                                    " BLOCKED" if self.blocked else "")
 
 
+class Capability(object):
+    """The projection of one system's maturity grid. Rebuilt from the ledger every
+    time; never stored. Generic schema — `system`, `function_rung`, `content_rung`,
+    `evidence_ref`, `date` — nothing RimWorld-specific, per PROJECT_MATURITY_DASHBOARD_1.
+
+    An event may set one axis or both; a field it does not carry leaves that axis
+    where it was. `history` keeps every event verbatim, in ledger order, which is
+    what makes the regression view (rung-over-time, so a DROP is visible) derivable
+    without a second read of anything.
+    """
+
+    __slots__ = ("system", "function_rung", "content_rung", "evidence_ref", "date",
+                 "updated_at", "updated_by", "history")
+
+    def __init__(self, system):
+        self.system = system
+        self.function_rung = None
+        self.content_rung = None
+        self.evidence_ref = None
+        self.date = None
+        self.updated_at = None
+        self.updated_by = None
+        self.history = []          # [{ts, seat, function_rung, content_rung, evidence_ref, date, note}]
+
+    def __repr__(self):
+        return "<Capability %s function=%s content=%s>" % (
+            self.system, self.function_rung, self.content_rung)
+
+
 class World(object):
     """Everything the ledger says, at one moment: items, seats, bridge, game state."""
 
@@ -774,6 +866,7 @@ class World(object):
         self.game = "DOWN"
         self.findings = {}              # name -> {"from":…, "type":…, "severity":…}
         self.errors = []                # refusals a replay found ALREADY IN the file
+        self.capabilities = {}          # system -> Capability (latest state + full history)
 
     def open_items(self):
         return [i for i in self.items.values() if i.open]
@@ -822,6 +915,21 @@ def _who_refusal(ev, item):
     exempt him, and `reassign` did not — see `_may`.
     """
     verb, seat = ev["event"], ev["seat"]
+    # 🔴 `played` IS THE ONE EXPENSIVE RUNG, ENTERED ONLY BY OWNER DECISION —
+    # PROJECT_MATURITY_DASHBOARD_1's ruling, in deliberate batches
+    # (MINIMAL_LIST_MOD_RETROSPECTIVE_1), never demanded at check-in. `validated`
+    # (a system's own validation gameplay scripts passed) stays self/evidence-
+    # declared like every earlier rung — it is `played` (a human has sat down
+    # and played with it to their satisfaction) that is gated, the same way
+    # `game UP` is gated on `measured` rather than in the VERBS table — a
+    # value-specific check, not a new mechanism.
+    if verb == "capability" and ev.get("function_rung") == "played" and seat != "OWNER":
+        return ("only the OWNER enters `played` — the expensive rung, entered "
+                "ONLY by his decision, in deliberate batches, never at check-in.\n\n"
+                "✅ If he told you to mark this played, quote him — his words are "
+                "the authorization:\n"
+                "    python3 src/RimMandrake/rimflow/cli.py capability set <SYSTEM> "
+                "--function-rung played --owner-said \"<his words, verbatim>\"")
     who = VERBS[verb]["who"]
     if who in ("any", "self"):
         return None                             # a seat may only speak for itself
@@ -1062,6 +1170,31 @@ def _apply_itemless(ev, seat, world):
         if ev["state"] == "DOWN":
             for it in world.items.values():
                 it.this_deployment = False
+        return
+    if verb == "capability":
+        system = str(ev["system"]).strip()
+        cap = world.capabilities.get(system)
+        if cap is None:
+            cap = world.capabilities[system] = Capability(system)
+        if ev.get("function_rung"):
+            cap.function_rung = ev["function_rung"]
+        if ev.get("content_rung"):
+            cap.content_rung = ev["content_rung"]
+        if ev.get("evidence_ref"):
+            cap.evidence_ref = ev["evidence_ref"]
+        # `date` is when the EVIDENCE happened, distinct from `ts` (when the event
+        # was filed) — incidental evidence is routinely dated after the fact.
+        cap.date = ev.get("date") or cap.date
+        cap.updated_at = ev["ts"]
+        cap.updated_by = seat
+        cap.history.append({
+            "ts": ev["ts"], "seat": seat,
+            "function_rung": ev.get("function_rung"),
+            "content_rung": ev.get("content_rung"),
+            "evidence_ref": ev.get("evidence_ref"),
+            "date": ev.get("date"),
+            "note": ev.get("note"),
+        })
         return
 
 
