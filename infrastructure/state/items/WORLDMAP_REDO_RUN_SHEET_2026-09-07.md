@@ -220,3 +220,7 @@ standing difference rather than an import bug.
 - `UNDERWATER_BIOME_SUPPORT_1` — GravTide is now ACTIVE, and its arrival gate is
   generic (`isWaterBiome`), so the three seas should already be divable.
   **Untested in play.**
+
+## V11 — 2026-09-07 ~22:06, after the ComplexStructures restart
+Save: `WORLDMAP_V11_complex_structures_2026-09-07.rws` (23,044,088 bytes; NEW file, no existing save changed — diff-verified).
+136 `RUT_ComplexStructures` landmarks placed (279 qualify live vs the plan's 261 — the Cathedral pass added landmarks since; 143 skipped for carrying one already). Whole-planet mutator losses: NONE. Read-back 136/136. Propane-lake texture confirmed rendering on the globe (dark liquid, distinct from Umbra ground); landmark icons render.
