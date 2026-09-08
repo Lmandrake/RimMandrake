@@ -116,5 +116,35 @@ needed) are both real follow-up scope, not guessed at or attempted here.
 - [x] Body groups and tags re-pointed off the donor's own custom defs.
 - [x] validate_patch.py 0/0.
 - [x] Manifest of excluded classes with defName/source/reason.
-- [ ] A KotOR kind spawns wearing its modules — **live quicktest owed**, not
-      run here (bridge left to whoever holds it).
+- [ ] A KotOR kind spawns wearing its modules — **RAN, FAILED, root-caused
+      below. This is NOT a B2 defect.**
+
+## 🔴 live quicktest run 2026-09-08 (FOUNDRY) — spawned wearing NOTHING, root cause found
+
+Deployed (`deploy_custom_mods.py --mod Droidworks --apply`) and quicktested on the
+minimal list. Spawned `RSW_DW_KotORDroidBad_KM1HMD`, `RSW_DW_KotORDroidBad_ADMkI`,
+`RSW_DW_KotORDroidColonist_KM1MD` via the debug spawn action — all three came in
+with `apparel: []`, `equipment: []`. Not "no modules", **no apparel of any kind
+whatsoever**.
+
+**Root cause, confirmed by reading, not guessed**: `grep -n "apparelMoney"
+src/RimStarWars/Droidworks/Source/gen_droidworks_defs.py` returns **zero hits** —
+the main Droidworks generator has never emitted an `<apparelMoney>` field on any
+of the 80 `PawnKindDef`s it writes (checked `RSW_DW_KotORDroidBad_KM1HMD`'s full
+block in `PawnKinds_KotOR.xml` directly: `apparelTags` present, `apparelMoney`
+absent). Vanilla `PawnGenerator` will not spend anything on apparel for a kind
+with no (or zero) `apparelMoney` regardless of how many matching tagged items
+exist — this is a **platform-wide gap that predates B2 and blocks every
+Droidworks kind from ever generating apparel**, not something this item's own
+absorption work could have caused or fixed. `apparelTags` alone were never
+sufficient; nothing upstream of B2 ever gave the kinds a budget to spend
+against them.
+
+**Not this item's fix.** `apparelMoney` (and presumably matching
+`weaponMoney`/`techHediffsTags` gates, unchecked) belongs on the *kind*
+generation (`gen_droidworks_defs.py`), one level up from what B2 owns. Whoever
+owns that generator next should add a per-family (or per-kind) `apparelMoney`
+range — a Battle/Heavy combat kind plausibly wants a real budget so its
+tagged armor actually shows, a Labour/Protocol kind may deliberately want
+little-to-none. Filing this as a gap for `gen_droidworks_defs.py`'s next
+touch rather than inventing numbers here.

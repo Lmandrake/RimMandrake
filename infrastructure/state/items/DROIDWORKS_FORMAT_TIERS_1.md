@@ -144,6 +144,52 @@ Closes when the seven boxes above are ticked on a minimal-list quicktest
 (`ModsConfig.MINIMAL.xml`, per `DROIDWORKS_LIVE_LOOP_PROOF_1`'s method) after a
 deploy, with the results written back here.
 
+## 🔴 live quicktest run 2026-09-08 (FOUNDRY) — need-gating does NOT work live, box 1/2 FAIL
+
+Deployed (`deploy_custom_mods.py --mod Droidworks --apply`, 53 files) and quicktested
+on the minimal list. Spawned `RSW_DW_KotORDroidColonist_ADMkI`
+(`RSW_DW_Race_guy762_DroidRace_ADMkI53446`), then swept `RSW_DW_FormatTier` through
+all four stages via `jawa/pawn_health` remove+add (severity 0.5/1.5/2.5/3.9 —
+blank/mindless/programmable/sapient):
+
+```
+severity 0.5 (blank):        needs=['Mood', 'RSW_DW_Power']
+severity 1.5 (mindless):     needs=['Mood', 'RSW_DW_Power']
+severity 2.5 (programmable): needs=['Mood', 'RSW_DW_Power']
+severity 3.9 (sapient):      needs=['Mood', 'RSW_DW_Power']
+```
+
+**Identical needs list at every tier.** Blank/mindless should show `Power` ONLY (no
+Mood); this pawn keeps Mood at every tier including blank. Joy/Beauty/Comfort/Outdoors
+are absent at ALL tiers including sapient — so either they were never on this race's
+need list to begin with (plausible for a non-organic race, in which case "sapient
+gets everything" may need those needs ADDED at the sapient stage, not just
+un-disabled) or the disabling is masking something upstream. **Boxes 1 and 2 above:
+FAIL, not pending.** Box 5 (hediff lands on spawn) partially confirms — default tier
+WAS present (severity 3.0 pre-test) — but the gating itself does not respond to a
+stage change, live, despite the item's own reasoning about `ShouldHaveNeed`/
+`DisablesNeed` reading `disablesNeeds` per-stage.
+
+**Not root-caused this pass** — candidate causes, untested: (a) my remove+add via
+`jawa/pawn_health` may not trigger the same code path a real `SetTier`/recipe call
+would (the item's own bug-fix note says `SetTier` explicitly calls
+`AddOrRemoveNeedsAsAppropriate()` — a raw hediff add via the bridge tool goes through
+`Pawn_HealthTracker.AddHediff` directly, which *should* trigger the same vanilla
+recalculation, but evidently doesn't observably change the needs list here); (b) the
+4 stages' `disablesNeeds` XML may not be doing what the file above claims — worth
+literally reading the shipped `HediffDefs_Droidworks.xml` stage-by-stage rather than
+trusting the description; (c) `Mood` may be added by something OTHER than
+`Pawn_NeedsTracker.ShouldHaveNeed`'s per-hediff check (e.g. `RaceProps.Humanlike`
+forces it elsewhere and `disablesNeeds` cannot override that path for a Humanlike-
+intelligence race — recall Droidworks races deliberately keep `intelligence
+Humanlike`, which may be exactly why Mood cannot be suppressed this way).
+
+**Item reopened, not closed, not silently trusted.** Whoever picks this back up:
+start by reading the actual stage-by-stage `<disablesNeeds>` XML in
+`HediffDefs_Droidworks.xml` against what vanilla's `HediffSet.DisablesNeed` actually
+checks (`hediff.CurStageIndex` vs the LIST of disabled needs on THAT stage,
+specifically) before assuming the mechanism vs the wiring is at fault.
+
 ## owed elsewhere — NOT this item's files
 
 - **No ideoligion in this repo reacts to `RSW_DW_DeformattedSapientDroid`.** In 1.6
