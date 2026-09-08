@@ -79,6 +79,9 @@
     <Compile Include="JobGiver_DWRecharge.cs" />
     <Compile Include="Need_Power.cs" />
     <Compile Include="Patch_ShouldHaveNeed_Power.cs" />
+    <!-- DROID_PROTOCOL_TRADE_ADVANTAGE_1 (packet C4): protocol droids shift
+         trade prices both ways. -->
+    <Compile Include="Patch_ProtocolTradeAdvantage.cs" />
     <Compile Include="Recipe_AssembleDroid.cs" />
     <Compile Include="Recipe_DWFormat.cs" />
     <Compile Include="Recipe_DWMemoryWipe.cs" />
