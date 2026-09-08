@@ -2117,6 +2117,18 @@
     "hash": "faaf77cc47d476225b5de845b473f7fce3da98007c6e8f193a90bbf7505f1375",
     "sha": "9d53fe45"
   },
+  "src/RimMandrake/Utils/ashkarr_contagion_summits.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "5f6be7128da6c93617105914a2ebd3a88ee45cec3420cd3c618d04188c8c37b2",
+    "sha": "f020cfc6"
+  },
+  "src/RimMandrake/Utils/ashkarr_disperse_faction.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "acc6c504a762bc3db3ed6460b7bfd5da84e7794f29c3ef897318597a6e1857ad",
+    "sha": "f020cfc6"
+  },
   "src/RimMandrake/Utils/ashkarr_dry_jungle.py": {
     "cleanCount": 2,
     "date": "2026-09-07",
@@ -2140,6 +2152,12 @@
     "date": "2026-09-03",
     "hash": "55b634c56c23b705af96444de2b9ebe42f925a22e4cc1ac8829ad95925c9dfe8",
     "sha": "e5013227"
+  },
+  "src/RimMandrake/Utils/ashkarr_horrorwastes_dissolve.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "5b32dcdaa5083cf61207ae43f758175c3c34c73a3ccbfbc5376d6adf057f4ed2",
+    "sha": "f020cfc6"
   },
   "src/RimMandrake/Utils/ashkarr_join_mouths.py": {
     "cleanCount": 1,
@@ -2171,11 +2189,23 @@
     "hash": "81fff9e304e5ab78ffdb0594951db3c5077ce5b72e3af574d3f6d8b1c9506351",
     "sha": "7bedead6"
   },
+  "src/RimMandrake/Utils/ashkarr_place_complex_structures.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "f598ee10ced812573379f1a2bb97a5685ac1516660a0d85d37fbe7c98ef65a3d",
+    "sha": "f020cfc6"
+  },
   "src/RimMandrake/Utils/ashkarr_populate.py": {
     "cleanCount": 2,
     "date": "2026-09-06",
     "hash": "33b4a4ade9c501dfe281f586bba35f412cd3fafb881f4b384d0bc16855dd006b",
     "sha": "363bae74"
+  },
+  "src/RimMandrake/Utils/ashkarr_rebase_from_save.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "a74c83ddf1d4c10fb21db60c61dc2682ea7298908c81184ecac3850b9e6fed82",
+    "sha": "f020cfc6"
   },
   "src/RimMandrake/Utils/ashkarr_regate_rain.py": {
     "cleanCount": 2,
@@ -2206,6 +2236,12 @@
     "date": "2026-09-07",
     "hash": "e28a9d63fdafde40d4c194b16ea5b5d2aa80a341b45e470cd4055a80344b1ad3",
     "sha": "5fd66fbb"
+  },
+  "src/RimMandrake/Utils/ashkarr_three_seas.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "91c36c6b42c794466936a93baa2ae55208195a782687cddc5677594fc5146f2c",
+    "sha": "f020cfc6"
   },
   "src/RimMandrake/Utils/ashkarr_warm_crags_to_horror.py": {
     "cleanCount": 1,
