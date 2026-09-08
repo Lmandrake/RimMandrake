@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T15:57:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T15:59:22Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -476,15 +476,6 @@ target:   v1
 kind:     task
 summary:  (no items/DROIDWORKS_MODULE_ABSORB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
-
-## DROIDWORKS_DETONATION_REVIEW_1 Detonation grid (energyDensity x charge) built and SAVED for the owner to walk; deny-module on JDS battle kinds
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  (no items/DROIDWORKS_DETONATION_REVIEW_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_DETONATION_REVIEW_1.md
 
 ## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
 state:    doing  (BLOCKED)
