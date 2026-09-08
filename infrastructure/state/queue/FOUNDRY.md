@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T19:50:59Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-08T21:12:58Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -485,15 +485,6 @@ target:   v1
 kind:     task
 summary:  Packet B10 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_WIPE_SEVERITY_1.md
-
-## DROID_FACTION_LOADOUTS_1 Droids in every faction's hands: Empire attack droids, Homestead utility droids, Hutt heavies, Junker suicide droids, traders' protocol droids, Trade Moot stock — no droid faction
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/DROID_FACTION_LOADOUTS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_FACTION_LOADOUTS_1.md
 
 ## DROID_FDE_GOODWILL_CAP_1 Free Droid Enclaves goodwill cap via GoodwillSituationDef (spec: restraining_bolt_technical.md)
 state:    doing
@@ -1167,3 +1158,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Found 2026-09-08 live-verifying DROIDWORKSAPPARELMONEYMISSING1's fix.
 prose:    infrastructure/state/items/DROIDWORKS_APPAREL_ISFLESH_GATE_1.md
+
+## DROID_SUICIDE_CHARGE_STATE_1 Junker suicide droid: proactive charge-and-detonate MentalState, beyond the existing death-detonation
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  §3.2 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md asks the Junker
+prose:    infrastructure/state/items/DROID_SUICIDE_CHARGE_STATE_1.md
