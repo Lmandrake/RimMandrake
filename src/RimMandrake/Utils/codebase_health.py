@@ -222,7 +222,7 @@ PATH_TOKEN = re.compile(
 # A token used as a COMMAND is a tool being RUN, not the subject of the item.
 # `deploy_custom_mods.py --mod Droidworks` in a bug's spec means "and I deployed
 # it", not "this deploy script is broken".
-INVOKED_BEFORE = re.compile(r"(?:python3?|bash|sh|node|pwsh)\s+$")
+INVOKED_BEFORE = re.compile(r"(?<![A-Za-z0-9_])(?:python3?|bash|sh|node|pwsh)\s+$")
 INVOKED_AFTER = re.compile(r"^\s+-{1,2}[A-Za-z]")
 
 
@@ -749,7 +749,7 @@ function crumbs(){
   leaves.forEach(d=>mix[d.data.status]=(mix[d.data.status]||0)+d.data.loc);
   c.append("span").style("margin-left","10px")
    .text(leaves.length.toLocaleString()+" files · "+loc.toLocaleString()+" lines · ");
-  ORDER.filter(k=>mix[k]).forEach(k=>{
+  ORDER.filter(k=>k in mix).forEach(k=>{
     c.append("span").style("color",COLOR[k]).style("margin-right","8px")
      .text(LABEL[k]+" "+Math.round(100*mix[k]/loc)+"%");
   });
