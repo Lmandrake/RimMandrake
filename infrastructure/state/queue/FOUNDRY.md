@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T19:19:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T19:24:56Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -480,10 +480,10 @@ prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
 ## DROIDWORKS_WIPE_SEVERITY_1 Memory wipe: 7-day severe relearning debuff, service-record reset, permanent accreting hardware quirks
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     task
-summary:  (no items/DROIDWORKS_WIPE_SEVERITY_1.md yet — write one when you have something to say)
+summary:  Packet B10 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_WIPE_SEVERITY_1.md
 
 ## DROID_FDE_GOODWILL_CAP_1 Free Droid Enclaves goodwill cap via GoodwillSituationDef (spec: restraining_bolt_technical.md)
