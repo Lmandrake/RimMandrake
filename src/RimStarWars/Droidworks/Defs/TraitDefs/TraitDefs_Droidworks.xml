@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       HARDWARE QUIRKS — DROIDWORKS_WIPE_SEVERITY_1 (packet B10).
+
+       Owner ruling 7, verbatim: "Frequently also adds a permanent hardware
+       quirk that cannot be reset but only accrete further." And the framework
+       doc §1.3 on why a quirk is not simply a penalty: damaged brain parts stay
+       in use — "rare and valuable still even quirky".
+
+       THE POOL IS DEFINED BY THE MARKER, NOT BY A LIST IN C#. Every def below
+       carries <modExtensions><li Class="...HardwareQuirkExtension" /></, and
+       RimMandrake.StarWars.Droidworks.DroidworksHardwareQuirks answers both
+       "which traits can a wipe grant?" and "which traits must a wipe never
+       strip?" off that one marker. A later packet adds a quirk with XML alone.
+
+       🔑 THREE FIELDS DO THE WORK, and all three matter:
+        * <commonality>0</commonality> — TraitDef.commonality, read by
+          PawnGenerator's own RandomElementByWeight (PawnGenerator.cs:1570). At
+          weight 0 a quirk can NEVER be rolled onto a randomly generated pawn,
+          nor re-rolled by the memory wipe's own trait randomization. The only
+          route in is DroidworksHardwareQuirks.TryGainRandomQuirk.
+        * NO <exclusionTags> and NO <conflictingTraits>, on purpose. Quirks must
+          ACCRETE — a droid wiped three times carries three of them — so nothing
+          here may make two quirks mutually exclusive, and nothing may collide
+          with the ordinary traits a wipe re-rolls.
+        * NO <disabledWorkTags>/<disabledWorkTypes>. A quirk colours a droid; it
+          never takes a work type away. Losing work capability permanently, on a
+          roll, from a routine bench operation would be a different (and much
+          crueller) design than ruling 7 describes.
+
+       ⚠️ The stat numbers are FOUNDRY's own — no design doc sets any of them.
+       They are deliberately small (5–15 %): the severity ruling 7 asks for
+       lives in RSW_DW_RecentlyWiped's seven days, not in the permanent tail.
+       Every StatDef named below was verified to exist in Core before use
+       (Stats_Pawns_General/Social/WorkGeneral/Combat.xml).
+  ======================================================================== -->
+
+  <!-- Mechanical clumsiness that never quite calibrates out. -->
+  <TraitDef>
+    <defName>RSW_DW_Quirk_ServoTwitch</defName>
+    <commonality>0</commonality>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.HardwareQuirkExtension" />
+    </modExtensions>
+    <degreeDatas>
+      <li>
+        <label>servo twitch</label>
+        <description>A wipe left this droid's actuator timing slightly out of true. Its manipulators overshoot and correct, over and over, at every task.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+        <statFactors>
+          <WorkSpeedGlobal>0.95</WorkSpeedGlobal>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- The voice never came back quite right. -->
+  <TraitDef>
+    <defName>RSW_DW_Quirk_VocoderGlitch</defName>
+    <commonality>0</commonality>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.HardwareQuirkExtension" />
+    </modExtensions>
+    <degreeDatas>
+      <li>
+        <label>vocoder glitch</label>
+        <description>Something in this droid's voice synthesiser was not restored cleanly. It clips, buzzes, and drops the ends of words. Nobody takes it quite seriously.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+        <statFactors>
+          <SocialImpact>0.85</SocialImpact>
+          <NegotiationAbility>0.85</NegotiationAbility>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- "It bumps into walls" made permanent, in miniature. -->
+  <TraitDef>
+    <defName>RSW_DW_Quirk_GyroDrift</defName>
+    <commonality>0</commonality>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.HardwareQuirkExtension" />
+    </modExtensions>
+    <degreeDatas>
+      <li>
+        <label>gyro drift</label>
+        <description>This droid's balance package now runs a permanent bias. It walks a shade slower than it should and takes an extra beat to settle a weapon on target.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+        <statFactors>
+          <MoveSpeed>0.92</MoveSpeed>
+          <AimingDelayFactor>1.10</AimingDelayFactor>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- The wipe took something out of the write path. -->
+  <TraitDef>
+    <defName>RSW_DW_Quirk_MemoryHiccup</defName>
+    <commonality>0</commonality>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.HardwareQuirkExtension" />
+    </modExtensions>
+    <degreeDatas>
+      <li>
+        <label>memory hiccup</label>
+        <description>A bad sector this droid routes around and never repairs. New knowledge goes in slowly and comes back out with gaps in it.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+        <statFactors>
+          <GlobalLearningFactor>0.85</GlobalLearningFactor>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- "Rare and valuable still even quirky" (framework doc §1.3): the one
+       quirk that is a trade rather than a tax. -->
+  <TraitDef>
+    <defName>RSW_DW_Quirk_NarrowFixation</defName>
+    <commonality>0</commonality>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.HardwareQuirkExtension" />
+    </modExtensions>
+    <degreeDatas>
+      <li>
+        <label>narrow fixation</label>
+        <description>Whatever came back from the wipe came back narrower. This droid pursues a problem past the point anyone asked it to, and is very poor company while it does.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+        <statFactors>
+          <ResearchSpeed>1.10</ResearchSpeed>
+          <SocialImpact>0.80</SocialImpact>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+</Defs>

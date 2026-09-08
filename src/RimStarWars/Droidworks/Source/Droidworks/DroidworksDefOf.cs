@@ -55,6 +55,13 @@ namespace RimMandrake.StarWars.Droidworks
         public static PawnKindDef RSW_DW_OuterRim_GNKDroid;
         public static HediffDef RSW_DW_Overclocked;
 
+        // DROIDWORKS_WIPE_SEVERITY_1 (packet B10) - the 7-day relearning debuff
+        // added by Recipe_DWMemoryWipe. The hardware-quirk TraitDefs are
+        // deliberately NOT listed here: that pool is discovered through the
+        // HardwareQuirkExtension marker (DroidworksHardwareQuirks) so a later
+        // packet can add one in XML alone.
+        public static HediffDef RSW_DW_RecentlyWiped;
+
         static DroidworksDefOf() =>
             DefOfHelper.EnsureInitializedInCtor(typeof(DroidworksDefOf));
     }

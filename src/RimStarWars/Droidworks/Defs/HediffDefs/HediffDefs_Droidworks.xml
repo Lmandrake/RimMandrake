@@ -328,4 +328,125 @@
     </stages>
   </HediffDef>
 
+  <!-- ========================================================================
+       RSW_DW_RecentlyWiped — DROIDWORKS_WIPE_SEVERITY_1 (packet B10).
+       Owner ruling 7, verbatim: "Wipes: 7-day debuff + service-record reset,
+       and make it REALLY severe. Like it bumps into walls, learns how to use
+       its body, and frequently forgets what it was doing during that week.
+       Frequently also adds a permanent hardware quirk that cannot be reset but
+       only accrete further."
+
+       Added by RimMandrake.StarWars.Droidworks.Recipe_DWMemoryWipe.ApplyOnPawn
+       (Source/Droidworks/Recipe_DWMemoryWipe.cs) — NOT wired onto DW_Race_Base
+       like RSW_DW_FormatTier is: this is a temporary consequence of an
+       operation, not a state every droid always carries.
+
+       🔑 THE SEVEN DAYS ARE THE SEVERITY, and that is what makes the debuff
+       TAPER rather than switch off. initialSeverity 1.0, HediffCompProperties_
+       SeverityPerDay at -0.142857 (= -1/7), so severity crosses each stage
+       boundary on schedule and hits 0 at day 7 — at which point Hediff.
+       ShouldRemove (Severity <= 0) takes the hediff off by itself. Same
+       mechanism RSW_DW_IonOverload above already uses, just over days instead
+       of hours. NOT HediffCompProperties_Disappears: that expires a hediff at a
+       fixed tick with the severity flat the whole time, which would give a
+       droid identical impairment on day 6 as on day 1 and then cure it in one
+       frame. "Learns how to use its body" is a ramp, not a timer.
+
+         severity 1.00 → 0.67   days 0–2.3   blank-slate  (worst)
+         severity 0.67 → 0.33   days 2.3–4.7 disoriented
+         severity 0.33 → 0.00   days 4.7–7   relearning   (mildest)
+
+       capMods carry "learns how to use its body". They are OFFSETS, not
+       setMax: setMax caps a ceiling and would do nothing to a droid whose
+       capacity was already below the cap, whereas an offset always bites.
+       ⚠️ Consciousness is deliberately untouched — vanilla downs a pawn below
+       ~0.30 Consciousness, and a wipe that collapsed the droid where it stood
+       would be state 3 (powered down), not a debuff. Moving and Manipulation
+       are the two capacities ruling 7 actually describes.
+
+       HediffComp_DWWipeStumble (Source/Droidworks/HediffComp_DWWipeStumble.cs)
+       carries the other two clauses — the job interruption ("frequently forgets
+       what it was doing") and the blunder to a random nearby cell ("bumps into
+       walls"). Its chance scales with severity, so the stumbling fades on the
+       same curve the capMods do. See that file's header for why it is a
+       HediffComp and not the JobGiver the packet's own wording named.
+
+       ⚠️ The capMod numbers are FOUNDRY's own — ruling 7 gives an adjective
+       ("REALLY severe"), not values. -0.45 Moving at worst is a droid moving at
+       just over half speed.
+  ======================================================================== -->
+  <HediffDef>
+    <defName>RSW_DW_RecentlyWiped</defName>
+    <label>recently wiped</label>
+    <description>This droid's memory was erased days ago. It is relearning how to move its own body, and keeps losing track of what it was doing.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.85, 0.75, 0.45)</defaultLabelColor>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <initialSeverity>1.0</initialSeverity>
+    <isBad>true</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.142857</severityPerDay>
+      </li>
+      <li Class="RimMandrake.StarWars.Droidworks.HediffCompProperties_DWWipeStumble">
+        <checkIntervalTicks>250</checkIntervalTicks>
+        <stumbleChancePerCheck>0.05</stumbleChancePerCheck>
+        <stumbleRadius>4</stumbleRadius>
+      </li>
+    </comps>
+    <stages>
+
+      <!-- days 4.7–7 — the tail. Nearly itself again. -->
+      <li>
+        <label>relearning</label>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.10</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.10</offset>
+          </li>
+        </capMods>
+      </li>
+
+      <!-- days 2.3–4.7 — still visibly wrong. -->
+      <li>
+        <label>disoriented</label>
+        <minSeverity>0.34</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.25</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.30</offset>
+          </li>
+        </capMods>
+      </li>
+
+      <!-- days 0–2.3 — the days immediately after the wipe. -->
+      <li>
+        <label>blank slate</label>
+        <minSeverity>0.67</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.45</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.50</offset>
+          </li>
+        </capMods>
+      </li>
+
+    </stages>
+  </HediffDef>
+
 </Defs>

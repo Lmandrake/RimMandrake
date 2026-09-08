@@ -43,9 +43,73 @@ namespace RimMandrake.StarWars.Droidworks
     /// (confirmed: a full-source RimSage search for "idiosyncrasy" returns zero
     /// hits). This step is a documented no-op, not a placeholder invented to look
     /// complete - see ApplyOnPawn's own comment at the call site.
+    ///
+    /// ── DROIDWORKS_WIPE_SEVERITY_1 (packet B10) ──────────────────────────────
+    /// Owner ruling 7, verbatim: "Wipes: 7-day debuff + service-record reset, and
+    /// make it REALLY severe. Like it bumps into walls, learns how to use its body,
+    /// and frequently forgets what it was doing during that week. Frequently also
+    /// adds a permanent hardware quirk that cannot be reset but only accrete
+    /// further." Three additions here, all AFTER the trait randomization above:
+    ///
+    ///  1. RSW_DW_RecentlyWiped, a 7-day hediff (severity 1 -> 0 at -1/7 per day)
+    ///     whose stages ramp Moving/Manipulation and whose HediffComp_DWWipeStumble
+    ///     interrupts jobs and blunders the droid into things.
+    ///  2. SERVICE-RECORD RESET, done against vanilla's OWN service record:
+    ///     Pawn_RecordsTracker - kills, damage taken, time as a colonist, distance
+    ///     walked, every RecordDef - which is the pawn's history the player can
+    ///     actually read, in the bio tab's Records page. There is NO Droidworks
+    ///     CompServiceRecord to reset: a repo-wide grep for "ServiceRecord"
+    ///     (2026-09-08) returns zero C# hits, and the droid-specific one is
+    ///     DROIDWORKS_SERVICE_RECORD_DRIFT_1 (packet E2), unbuilt. This packet
+    ///     deliberately does NOT stub E2's system - it resets the record that
+    ///     already exists.
+    ///  3. A permanent hardware quirk, QuirkChance of the time
+    ///     (DroidworksHardwareQuirks). Never removed by anything: RandomizeTraits
+    ///     below skips any trait the quirk pool claims, so wiping a droid twice
+    ///     ACCRETES a second quirk rather than replacing the first.
     /// </summary>
     public class Recipe_DWMemoryWipe : Recipe_Surgery
     {
+        /// <summary>
+        /// Chance a wipe leaves a permanent hardware quirk. Ruling 7 says
+        /// "frequently", not "always" - FOUNDRY's own number for that word, and
+        /// deliberately under 1.0 so a wipe is a gamble rather than a counter.
+        /// </summary>
+        public const float QuirkChance = 0.6f;
+
+        /// Cached reflection handle on Pawn_RecordsTracker's private DefMap.
+        /// There is no public API that zeroes a record: AddTo Log.Errors on any
+        /// RecordType.Time def (which is most of the service record - time as
+        /// colonist, time in combat), and there is no Clear/SetTo at all. The
+        /// DefMap it holds has a public SetAll, so reaching the field is the
+        /// whole of the trick. Harmony is already a reference of this assembly.
+        ///
+        /// Resolved lazily, NOT in a static initializer: this type is
+        /// constructed by the def loader as RSW_DW_MemoryWipe's workerClass, and
+        /// a throwing type initializer there would take the whole recipe out
+        /// rather than just the record reset.
+        private static System.Reflection.FieldInfo recordsField;
+        private static bool recordsFieldResolved;
+
+        private static System.Reflection.FieldInfo RecordsField
+        {
+            get
+            {
+                if (!recordsFieldResolved)
+                {
+                    recordsFieldResolved = true;
+                    recordsField = HarmonyLib.AccessTools.Field(
+                        typeof(Pawn_RecordsTracker), "records");
+                    if (recordsField == null)
+                    {
+                        Log.Warning("[Droidworks] Pawn_RecordsTracker.records not found - "
+                                    + "memory wipe will not reset the service record.");
+                    }
+                }
+                return recordsField;
+            }
+        }
+
         public override IEnumerable<BodyPartRecord> GetPartsToApplyOn(Pawn pawn, RecipeDef recipe)
         {
             yield return null;
@@ -56,10 +120,30 @@ namespace RimMandrake.StarWars.Droidworks
         {
             RandomizeTraits(pawn);
             ClearRelationsAndSocialMemories(pawn);
+            ResetServiceRecord(pawn);
 
             // No idiosyncrasy hediffs exist yet to zero - see class header. When the
             // behavior triad's "EXPERIENCED" tier lands as real hediffs, this is
             // where they get cleared.
+
+            // B10: the 7-day relearning debuff. Added after the trait work so
+            // nothing above can strip it. Wiping a droid that is STILL wiped
+            // restarts the seven days at full severity rather than doing nothing
+            // - a second wipe is not a way to shorten the first.
+            if (pawn.health != null)
+            {
+                Hediff wiped = pawn.health.hediffSet
+                    .GetFirstHediffOfDef(DroidworksDefOf.RSW_DW_RecentlyWiped);
+                if (wiped != null) wiped.Severity = 1f;
+                else pawn.health.AddHediff(DroidworksDefOf.RSW_DW_RecentlyWiped);
+            }
+
+            // B10: the permanent quirk. Accretes - a droid wiped three times can
+            // carry three quirks, and no recipe in this mod ever takes one back.
+            if (Rand.Chance(QuirkChance))
+            {
+                DroidworksHardwareQuirks.TryGainRandomQuirk(pawn);
+            }
 
             pawn.SetFaction(Faction.OfPlayer, billDoer);
 
@@ -70,7 +154,11 @@ namespace RimMandrake.StarWars.Droidworks
         {
             if (pawn.story?.traits == null) return;
 
-            List<Trait> existing = pawn.story.traits.allTraits.ToList();
+            // B10: hardware quirks are excluded from BOTH halves - they are not
+            // removed, and they are not counted, so the pawn gets back exactly as
+            // many ordinary traits as it lost and keeps every quirk on top.
+            List<Trait> existing = pawn.story.traits.allTraits
+                .Where(t => !DroidworksHardwareQuirks.IsQuirk(t)).ToList();
             int count = existing.Count;
             foreach (Trait trait in existing)
             {
@@ -78,11 +166,24 @@ namespace RimMandrake.StarWars.Droidworks
             }
             if (count <= 0) return;
 
+            // Quirk TraitDefs carry commonality 0, so GenerateTraitsFor's
+            // RandomElementByWeight can never roll one back in here either.
             List<Trait> fresh = PawnGenerator.GenerateTraitsFor(pawn, count);
             foreach (Trait trait in fresh)
             {
                 pawn.story.traits.GainTrait(trait);
             }
+        }
+
+        /// <summary>
+        /// Zeroes every RecordDef on the pawn - the service record the player can
+        /// read in the bio tab. See the class header for why this is vanilla's
+        /// Pawn_RecordsTracker and not a Droidworks comp.
+        /// </summary>
+        private static void ResetServiceRecord(Pawn pawn)
+        {
+            if (pawn.records == null || RecordsField == null) return;
+            (RecordsField.GetValue(pawn.records) as DefMap<RecordDef, float>)?.SetAll(0f);
         }
 
         private static void ClearRelationsAndSocialMemories(Pawn pawn)
