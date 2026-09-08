@@ -257,7 +257,14 @@ def main():
             time.sleep(5)
 
     host, port, token = resolve_endpoint()
-    with RimBridge(host, port, token) as rb:
+    # 🔴 The report/screenshot write used to sit AFTER this whole `with` block, so
+    # every early `return` below (paint-guard refusal, no game loaded, canary
+    # failure, tile-count mismatch) skipped it entirely -- precisely the cases
+    # most worth a persisted record (which tiles were at risk, what the canary
+    # actually said) left only stdout and no file. `finally` guarantees the
+    # report is written on every exit path, early return included.
+    try:
+      with RimBridge(host, port, token) as rb:
         gi = rb.call("rimworld/get_game_info", {})
         w(out, "- status `%s`, ticks %s, maps %s" % (gi.get("status"), gi.get("ticksGame"), gi.get("mapCount")))
 
@@ -446,7 +453,8 @@ def main():
         # ---- stage 6: named regions ----------------------------------------
         # 'Region' is NOT a real FeatureDef - that name came from the authoring
         # pipeline. WB_MapLabelFeature is Worldbuilder's arbitrary map label and
-        # is what these 23 names actually are.
+        # is what these names actually are (71 as of 2026-08-23, not the 23 this
+        # line used to claim — see the module docstring).
         r = rb.call("jawa/world_features_import", {"path": TILES, "apply": apply,
                                                    "expectTiles": EXPECT_TILES,
                                                    "featureDef": "WB_MapLabelFeature"})
@@ -471,12 +479,13 @@ def main():
             w(out, "  compare against `world/view/ASHKARR_WORLDMAP.biome.equirect.png` - every defect "
                    "that has mattered in this work passed its numeric check while the picture was wrong.")
 
-    d = os.path.dirname(report)
-    if d and not os.path.isdir(d):
-        os.makedirs(d)
-    with io.open(report, "w", encoding="utf-8") as fh:
-        fh.write("\n".join(out))
-    print("\nreport -> " + report)
+    finally:
+        d = os.path.dirname(report)
+        if d and not os.path.isdir(d):
+            os.makedirs(d)
+        with io.open(report, "w", encoding="utf-8") as fh:
+            fh.write("\n".join(out))
+        print("\nreport -> " + report)
     return 0
 
 
