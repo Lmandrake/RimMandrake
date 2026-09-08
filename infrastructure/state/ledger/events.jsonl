@@ -6097,3 +6097,5 @@
 {"seat":"BENCH","event":"file","id":"CHRONICLE_NINEFOLD_DECOUPLE_1","title":"Decouple Aftermath from Ninefold per CHRONICLE_EVENT_SPINE.md: subscription API, drop hard modDependency+csproj ref, godTie God enum to string (C#, model=opus)","kind":"task","target":"v1","caused_by":"CHRONICLE_EVENT_SPINE_1","for":"FOUNDRY","ts":"2026-09-08T23:43:21Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T23:46:57Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_APPARELMONEY_MISSING_1","sha":"a7bbeaec4a279e14b59b28e75c7df1fb254572b5","ts":"2026-09-08T23:48:31Z"}
+{"seat":"FOUNDRY","event":"unblock","id":"DROIDWORKS_MODULE_ABSORB_1","reason":"Both upstream blockers closed: DROIDWORKS_APPAREL_ISFLESH_GATE_1 (8c274947) and DROIDWORKS_APPARELMONEY_MISSING_1 (a7bbeaec). Re-verifying live.","ts":"2026-09-08T23:49:45Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_MODULE_ABSORB_1","sha":"29bc523540502ff55939ec75723d98657233421d","ts":"2026-09-08T23:56:23Z"}
