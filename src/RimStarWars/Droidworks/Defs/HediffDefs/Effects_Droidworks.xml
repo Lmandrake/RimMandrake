@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_FINE_PARTS_1 (packet B4a). Three quality-bucket HediffDefs per
+     effectful part type (Leg/Manipulator/Sensor -> a capacity offset;
+     Motivator/Servo -> a stat offset). PowerCell carries none (see
+     Parts_Droidworks.xml's own header). Installed and swapped by
+     Source/Droidworks/Recipe_InstallDroidPart.cs, which reads the consumed
+     RSW_DW_Part_* item's CompQuality at bill-completion and picks ONE of
+     the three below via the RecipeDef's own DroidPartEffectExtension -
+     never more than one of a kind on a pawn at a time (the recipe removes
+     whichever of the three it finds before adding the new one).
+
+     Bucketing: Awful/Poor -> Inferior, Normal/Good -> Standard,
+     Excellent/Masterwork/Legendary -> Superior. Offsets are FOUNDRY's own
+     numbers (nothing in the design doc gives a figure) - "inferior sensor
+     lowers Sight" is the one concrete claim the packet's verify line makes,
+     and Standard(0)/Inferior(-)/Superior(+) around a Normal-quality
+     baseline satisfies it by construction.
+======================================================================== -->
+<Defs>
+
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Leg_Inferior</defName>
+    <label>leg actuator (inferior)</label>
+    <description>An installed leg actuator, salvage-grade and it shows.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li><capacity>Moving</capacity><offset>-0.15</offset></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Leg_Standard</defName>
+    <label>leg actuator (standard)</label>
+    <description>An installed leg actuator, unremarkable and reliable.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+      <li><minSeverity>0</minSeverity></li>
+    </stages>
+  </HediffDef>
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Leg_Superior</defName>
+    <label>leg actuator (superior)</label>
+    <description>An installed leg actuator, better than anything on this world was built to be.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li><capacity>Moving</capacity><offset>0.15</offset></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Manipulator_Inferior</defName>
+    <label>manipulator arm (inferior)</label>
+    <description>An installed manipulator arm, salvage-grade and it shows.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li><capacity>Manipulation</capacity><offset>-0.15</offset></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Manipulator_Standard</defName>
+    <label>manipulator arm (standard)</label>
+    <description>An installed manipulator arm, unremarkable and reliable.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+      <li><minSeverity>0</minSeverity></li>
+    </stages>
+  </HediffDef>
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Manipulator_Superior</defName>
+    <label>manipulator arm (superior)</label>
+    <description>An installed manipulator arm, better than anything on this world was built to be.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li><capacity>Manipulation</capacity><offset>0.15</offset></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Sensor_Inferior</defName>
+    <label>sensor (inferior)</label>
+    <description>An installed sensor, salvage-grade and it shows - half-blind static.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li><capacity>Sight</capacity><offset>-0.15</offset></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Sensor_Standard</defName>
+    <label>sensor (standard)</label>
+    <description>An installed sensor, unremarkable and reliable.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+      <li><minSeverity>0</minSeverity></li>
+    </stages>
+  </HediffDef>
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Sensor_Superior</defName>
+    <label>sensor (superior)</label>
+    <description>An installed sensor, better than anything on this world was built to be - misses nothing.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li><capacity>Sight</capacity><offset>0.15</offset></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Motivator_Inferior</defName>
+    <label>motivator (inferior)</label>
+    <description>An installed motivator, salvage-grade and it shows - lags and grinds.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <statOffsets>
+          <MoveSpeed>-0.5</MoveSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Motivator_Standard</defName>
+    <label>motivator (standard)</label>
+    <description>An installed motivator, unremarkable and reliable.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+      <li><minSeverity>0</minSeverity></li>
+    </stages>
+  </HediffDef>
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Motivator_Superior</defName>
+    <label>motivator (superior)</label>
+    <description>An installed motivator, better than anything on this world was built to be - silent and instant.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <statOffsets>
+          <MoveSpeed>0.5</MoveSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Servo_Inferior</defName>
+    <label>servo (inferior)</label>
+    <description>An installed servo, salvage-grade and it shows - dead weight.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <statOffsets>
+          <WorkSpeedGlobal>-0.10</WorkSpeedGlobal>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Servo_Standard</defName>
+    <label>servo (standard)</label>
+    <description>An installed servo, unremarkable and reliable.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+      <li><minSeverity>0</minSeverity></li>
+    </stages>
+  </HediffDef>
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Servo_Superior</defName>
+    <label>servo (superior)</label>
+    <description>An installed servo, better than anything on this world was built to be - shaves seconds off everything.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <statOffsets>
+          <WorkSpeedGlobal>0.10</WorkSpeedGlobal>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

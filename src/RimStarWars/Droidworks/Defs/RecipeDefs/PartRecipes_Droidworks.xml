@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_FINE_PARTS_1 (packet B4a). One install recipe per effectful
+     part type, all backed by the same
+     RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPart
+     (Source/Droidworks/Recipe_InstallDroidPart.cs) - shape copied from
+     RSW_DW_InstallRestrainingBolt (targetsBodyPart false, whole-pawn,
+     ingredient filter on one ThingDef) with skillRequirements dropped to
+     Crafting 2: this is a routine parts-swap, not the bolt's one-off
+     violation-tier surgery. Not isViolation - installing a leg actuator on
+     your own droid is ordinary maintenance.
+
+     DroidPartEffectExtension names each recipe's own Inferior/Standard/
+     Superior trio (Effects_Droidworks.xml). Wired onto DW_Race_Base's
+     <recipes> (Races_Base.xml), same as the bolt/wipe/reboot/format
+     recipes already there.
+======================================================================== -->
+<Defs>
+
+  <RecipeDef>
+    <defName>RSW_DW_InstallLegActuator</defName>
+    <label>install leg actuator</label>
+    <description>Fit a leg actuator. Quality tells: it changes how well this droid moves.</description>
+    <jobString>Installing leg actuator.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPart</workerClass>
+    <workAmount>400</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Leg</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_DW_Part_Leg</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <skillRequirements>
+      <Crafting>2</Crafting>
+    </skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidPartEffectExtension">
+        <inferior>RSW_DW_PartEffect_Leg_Inferior</inferior>
+        <standard>RSW_DW_PartEffect_Leg_Standard</standard>
+        <superior>RSW_DW_PartEffect_Leg_Superior</superior>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RSW_DW_InstallManipulatorArm</defName>
+    <label>install manipulator arm</label>
+    <description>Fit a manipulator arm. Quality tells: it changes how well this droid handles fine work.</description>
+    <jobString>Installing manipulator arm.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPart</workerClass>
+    <workAmount>400</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Manipulator</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_DW_Part_Manipulator</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <skillRequirements>
+      <Crafting>2</Crafting>
+    </skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidPartEffectExtension">
+        <inferior>RSW_DW_PartEffect_Manipulator_Inferior</inferior>
+        <standard>RSW_DW_PartEffect_Manipulator_Standard</standard>
+        <superior>RSW_DW_PartEffect_Manipulator_Superior</superior>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RSW_DW_InstallSensor</defName>
+    <label>install sensor</label>
+    <description>Fit a sensor. Quality tells: it changes how well this droid sees.</description>
+    <jobString>Installing sensor.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPart</workerClass>
+    <workAmount>400</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Sensor</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_DW_Part_Sensor</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <skillRequirements>
+      <Crafting>2</Crafting>
+    </skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidPartEffectExtension">
+        <inferior>RSW_DW_PartEffect_Sensor_Inferior</inferior>
+        <standard>RSW_DW_PartEffect_Sensor_Standard</standard>
+        <superior>RSW_DW_PartEffect_Sensor_Superior</superior>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RSW_DW_InstallMotivator</defName>
+    <label>install motivator</label>
+    <description>Fit a motivator. Quality tells: it changes how fast this droid moves.</description>
+    <jobString>Installing motivator.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPart</workerClass>
+    <workAmount>400</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Motivator</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_DW_Part_Motivator</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <skillRequirements>
+      <Crafting>2</Crafting>
+    </skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidPartEffectExtension">
+        <inferior>RSW_DW_PartEffect_Motivator_Inferior</inferior>
+        <standard>RSW_DW_PartEffect_Motivator_Standard</standard>
+        <superior>RSW_DW_PartEffect_Motivator_Superior</superior>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RSW_DW_InstallServo</defName>
+    <label>install servo</label>
+    <description>Fit a servo. Quality tells: it changes how fast this droid works.</description>
+    <jobString>Installing servo.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPart</workerClass>
+    <workAmount>400</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Servo</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_DW_Part_Servo</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <skillRequirements>
+      <Crafting>2</Crafting>
+    </skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidPartEffectExtension">
+        <inferior>RSW_DW_PartEffect_Servo_Inferior</inferior>
+        <standard>RSW_DW_PartEffect_Servo_Standard</standard>
+        <superior>RSW_DW_PartEffect_Servo_Superior</superior>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+</Defs>

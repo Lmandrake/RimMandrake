@@ -33,6 +33,14 @@ namespace RimMandrake.StarWars.Droidworks
         public static ThingDef RSW_DW_Head_Probe;
         public static ThingDef RSW_DW_Head_Power;
 
+        // DROIDWORKS_FINE_PARTS_1 (packet B4a) - read by CompDWPartDropper.LegalSetFor
+        public static ThingDef RSW_DW_Part_Leg;
+        public static ThingDef RSW_DW_Part_Manipulator;
+        public static ThingDef RSW_DW_Part_Sensor;
+        public static ThingDef RSW_DW_Part_Motivator;
+        public static ThingDef RSW_DW_Part_Servo;
+        public static ThingDef RSW_DW_Part_PowerCell;
+
         static DroidworksDefOf() =>
             DefOfHelper.EnsureInitializedInCtor(typeof(DroidworksDefOf));
     }
