@@ -166,3 +166,17 @@ pre-existing.
 patchfail` reading 5, not 8. Not done here — FOUNDRY was told another window
 holds the live bridge session and must not restart the game. Left as an
 explicit next step; see the block reason on this item.
+
+## 🔴 live-verified 2026-09-08 (FOUNDRY) — confirmed, but only after finding the fix was never DEPLOYED
+
+Full-list cold load + `harvest_log.py --show patchfail`: **first attempt still
+showed all 8 failures, including the same 3 `[Jawa Armoury Rebalance]` lines.**
+Root cause: `deploy_custom_mods.py --mod Armoury` (plan-only) showed
+`Patches/Armour_Penetration.xml` and `Patches/Armoury_RangedDamage.xml` both
+DRIFTED — the regenerated fix sat in the repo, committed and pushed, but was
+never copied to the live `Mods/` folder. Classic "writing a file is not
+deploying it." Ran `deploy_custom_mods.py --mod Armoury --apply`, restarted,
+re-ran `harvest_log.py --show patchfail`: **exactly 5 failures now**, and the
+3 Jawa Armoury Rebalance lines are gone (only the 3 pre-existing
+Intimacy/Mining-Outpost/Biomes-Caverns baseline failures remain). Confirmed
+closed for real.

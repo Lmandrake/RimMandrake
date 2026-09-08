@@ -140,6 +140,13 @@ absorption work could have caused or fixed. `apparelTags` alone were never
 sufficient; nothing upstream of B2 ever gave the kinds a budget to spend
 against them.
 
+**Minor, separate finding from the same full-list cold load** (harvest_log.py
+`--show configerror`): `RSW_DW_Module_DroidArmorHvy`/`_Lte`/`_Mid` each log
+"is smeltable but does not give anything for smelting" — the 3 absorbed armor
+tiers are marked smeltable with no smelting yield defined. Cosmetic (a config
+warning, not a load failure) but worth a follow-up fix when this item is
+revisited alongside the apparelMoney gap.
+
 **Not this item's fix.** `apparelMoney` (and presumably matching
 `weaponMoney`/`techHediffsTags` gates, unchecked) belongs on the *kind*
 generation (`gen_droidworks_defs.py`), one level up from what B2 owns. Whoever
