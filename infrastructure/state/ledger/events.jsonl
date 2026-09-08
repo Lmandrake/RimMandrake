@@ -5658,3 +5658,14 @@
 {"seat":"FOUNDRY","event":"claim","id":"BRIDGE_NTDLL_CRASH_TILEGEN_1","ts":"2026-09-08T13:16:34Z"}
 {"seat":"FOUNDRY","event":"close","id":"BRIDGE_NTDLL_CRASH_TILEGEN_1","sha":"09041ee2a85a46c2bbf300b1c0291bbb9301c3fa","ts":"2026-09-08T13:16:34Z"}
 {"seat":"FOUNDRY","event":"file","id":"NINEFOLD_GRAVSHIP_HOOK_SCOPE_1","title":"Patch_GravshipLaunched never fires on a real gravship launch (CompLaunchable isn't on Building_GravEngine) -- rescope as pod/shuttle-only, or retarget to InitiateTakeoff for gravship coverage?","kind":"decision","target":"v1","needs":"offline","caused_by":"NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1","for":"OWNER","ts":"2026-09-08T13:17:09Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-08T13:20:30Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_FULL_LIST_COEXIST_1","ts":"2026-09-08T13:21:59Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_FULL_LIST_COEXIST_1","ts":"2026-09-08T13:21:59Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DROIDWORKS_FULL_LIST_COEXIST_1 cold load test","ts":"2026-09-08T13:24:04Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY restart to test DROIDWORKS_FULL_LIST_COEXIST_1","ts":"2026-09-08T13:24:09Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","override":"the OWNER handed the bridge to BENCH from FOUNDRY","ts":"2026-09-08T13:26:09Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"relaunch with full mod list","ts":"2026-09-08T13:26:19Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading","ts":"2026-09-08T13:27:13Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH: worldmap sheet-application - Gray Crags, Level/Knuckles merge, LIGHTFALL enlarge; heartbeating","ts":"2026-09-08T13:51:04Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH: ice/blue-desert/propane sheet pass + nightside label audit; heartbeat","ts":"2026-09-08T14:03:18Z"}
+{"seat":"FOUNDRY","event":"note","id":"DROIDWORKS_FULL_LIST_COEXIST_1","text":"enabled+loaded on full list; 3 real def-authoring bugs found+fixed+deployed (a35e4f62); confirming restart owed, BENCH holds bridge","ts":"2026-09-08T14:08:57Z"}
