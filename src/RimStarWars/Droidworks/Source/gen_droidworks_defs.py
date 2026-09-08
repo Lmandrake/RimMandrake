@@ -152,6 +152,66 @@ FAMILY_TUNING = {
     "probe":     (1.0, 1, 5),
 }
 
+# --------------------------------------------------- DROIDWORKS_APPARELMONEY_MISSING_1
+# (2026-09-08) No existing ruling found: grepped droid_verbs_decisions.json,
+# droid_system_spec.md, droid_system_build_spec.md and
+# design/Jawa/droids/DROID_UNIFIED_FRAMEWORK_DESIGN.md for
+# apparelMoney/dressed/armor-by-family and none say how "dressed" each family
+# should be.
+#
+# 🔴 A first pass at these numbers (150~400 battle / 300~800 heavy / 0~20-40
+# for the bare families) was LIVE-TESTED on a quicktest and was wrong in both
+# directions at once — caught by the live spawn this item's own criteria
+# requires, not by reading the XML:
+#   1. Read RimWorld's own PawnApparelGenerator.CanUsePair (RimSage): the
+#      apparelTags filter only applies `if (!apparelTags.NullOrEmpty())`. A
+#      kind with NO apparelTags at all (most non-KotOR-hero kinds — see
+#      `unarmed` in main()) does NOT stay bare just because nothing was ever
+#      declared for it to wear — with apparelMoney > 0 it draws from RimWorld's
+#      ENTIRE apparel pool, unfiltered. Measured: `RSW_DW_OuterRim_GNKDroid`
+#      (power family, no apparelTags, first-pass money 0~20) spawned wearing a
+#      vanilla `Apparel_Broadwrap` — a human cloth wrap, not a droid part.
+#      Fix: a kind whose `parse_kind_gear()` apparel is None gets an
+#      unconditional (0, 0) below, in main(), regardless of family — the only
+#      way to actually guarantee bare skin for "no apparelTags" kinds is never
+#      handing them a nonzero budget at all.
+#   2. For kinds that DO carry real apparelTags (the tag filter now safely
+#      restricts candidates to matching ThingDefs only), the first-pass money
+#      was priced far under the real items those tags resolve to. Measured
+#      empty apparel on RSW_DW_KotORDroidBad_hk50 (battle, tags include
+#      KotORDroidArmorT2 -> cheapest torso-covering match
+#      RSW_DW_Module_DroidArmorMid, $500 MarketValue, against a 150~400
+#      budget) and RSW_DW_KotORDroidBad_ADMkI (heavy, T3 tags -> cheapest
+#      torso match RSW_DW_Module_DroidArmorHvy, $1250, against 300~800).
+#      Re-derived per family by parsing every kind's own apparelTags against
+#      Absorbed_KotorDroidModules_Armor.xml's real <MarketValue> for the
+#      cheapest TORSO-covering match (PawnApparelGenerator also requires
+#      Covers(Torso) before it accepts a working set) — see this item's git
+#      history for the one-off script. Real per-kind floors found: battle
+#      $175-750 (one outlier boss kind, hk50boss, has only a single $12500-
+#      tagged match and is accepted as unreachable by any sane flat family
+#      budget — a named-boss-only gap, not a family-tuning problem); heavy
+#      $175-1250 (one $12500 outlier, DevWD_magnaguard, same story); labour
+#      $300-1250; probe $175; astromech $300; protocol $300.
+# Ranges below clear the REAL (non-outlier) floor with margin for
+# PawnApparelGenerator's own retry logic (it wants total spend >= 45-80% of
+# the rolled budget before accepting a set), scaled by family/tier per this
+# item's own guidance — combat chassis (Battle/Heavy/Probe) get enough to
+# reliably wear real plating; Power (Gonk)/most Labour/Astromech kinds carry
+# no apparelTags at all today and are forced to (0,0) by the None-apparel
+# check regardless of what is written here; Protocol gets a modest
+# "presentable" allowance (this item's own "fine coat" example), still real
+# money, not a token amount that can never clear its own tag's floor.
+APPAREL_MONEY = {
+    "battle":    (600, 1400),
+    "heavy":     (900, 2200),
+    "power":     (100, 300),   # currently unreachable: no power-family kind carries apparelTags
+    "astromech": (350, 700),
+    "labour":    (500, 1400),
+    "protocol":  (350, 650),
+    "probe":     (250, 600),
+}
+
 
 def family_for(orig, bucket):
     if bucket == "astromech-labour":
@@ -597,6 +657,8 @@ def render_kind(kd):
     p.append("    <label>%s</label>" % esc(kd["label"]))
     p.append("    <race>%s</race>" % kd["race_dn"])
     p.append("    <combatPower>%s</combatPower>" % kd["combatPower"])
+    lo, hi = kd["apparelMoney"]
+    p.append("    <apparelMoney>%s~%s</apparelMoney>" % (lo, hi))
     if kd.get("apparelTags"):
         p.append("    <apparelTags>")
         for t in kd["apparelTags"]:
@@ -1046,6 +1108,12 @@ def main():
     kind_out = {"OuterRim": [], "KotOR": [], "JDS": []}
     kind_defnames = []
     unarmed = []
+    # DROIDWORKS_APPARELMONEY_MISSING_1: a kind's chassis family (battle/heavy/
+    # power/astromech/labour/protocol/probe) decides its apparelMoney, per
+    # APPAREL_MONEY above — resolved via the kind's own paired race, since
+    # kinds carry no chassis classification of their own (only races do,
+    # CHASSIS_PLAN).
+    chassis_family_by_orig = {r["orig"]: r["chassis_family"] for r in resolved}
     for kind in kinds:
         orig = kind["defName"]
         dn = "RSW_DW_" + orig  # DROIDWORKS_GENERATOR_NAMING_DRIFT_1, see the race dn comment above
@@ -1058,6 +1126,11 @@ def main():
         race_ref = first_token(kind.get("race"))
         if race_ref is None or race_ref not in race_dn:
             R.skip(orig, "race pointer %r does not resolve to a generated DW_Race_* — hard stop" % kind.get("race"))
+            continue
+
+        chassis_fam = chassis_family_by_orig.get(race_ref)
+        if chassis_fam is None:
+            R.skip(orig, "race pointer %r resolved but carries no chassis_family — hard stop" % race_ref)
             continue
 
         combat_power = kind.get("combatPower")
@@ -1075,12 +1148,23 @@ def main():
         if lnote:
             R.note("%s: %s" % (orig, lnote))
 
+        # DROIDWORKS_APPARELMONEY_MISSING_1: PawnApparelGenerator.CanUsePair
+        # only filters by apparelTags `if (!apparelTags.NullOrEmpty())` — a
+        # kind with NO apparelTags draws from RimWorld's WHOLE apparel pool
+        # once apparelMoney > 0 (measured: a bare-by-design GNK power droid
+        # spawned wearing a vanilla Apparel_Broadwrap). The family budget only
+        # ever applies to a kind that actually carries its own apparelTags;
+        # everything else is pinned to (0, 0) so "bare skin where intended"
+        # (this item's own criteria) is a guarantee, not a probability.
+        apparel_money = APPAREL_MONEY[chassis_fam] if apparel else (0, 0)
+
         kind_defnames.append(dn)
         kd = {
             "dn": dn,
             "label": label,
             "race_dn": race_dn[race_ref],
             "combatPower": combat_power,
+            "apparelMoney": apparel_money,
             "apparelTags": apparel,
             "weaponTags": weapon,
         }

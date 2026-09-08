@@ -9,6 +9,7 @@
     <label>Pistoeka Sotage Droid</label>
     <race>RSW_DW_Race_JDSCIS_Pistoeka_Sotage_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -20,6 +21,7 @@
     <label>B1 Battle Droid</label>
     <race>RSW_DW_Race_JDSCIS_B1_Battle_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>E-5_Blaster_Rifle</li>
     </weaponTags>
@@ -34,6 +36,7 @@
     <label>B1 Security Droid</label>
     <race>RSW_DW_Race_JDSCIS_B1_Security_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>SE-14_Light_Blaster_Pistol</li>
     </weaponTags>
@@ -48,6 +51,7 @@
     <label>B1 Commander Droid</label>
     <race>RSW_DW_Race_JDSCIS_B1_Commander_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>SE-14_Light_Blaster_Pistol</li>
     </weaponTags>
@@ -62,6 +66,7 @@
     <label>BX Commando Droid</label>
     <race>RSW_DW_Race_JDSCIS_BX_Commando_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>E-5S_Sniper_Rifle</li>
     </weaponTags>
@@ -76,6 +81,7 @@
     <label>IG-100 MagnaGuards</label>
     <race>RSW_DW_Race_JDSCIS_IG-100_MagnaGuards</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>Electrostaff</li>
     </weaponTags>
@@ -90,6 +96,7 @@
     <label>T1 Tactical Droid</label>
     <race>RSW_DW_Race_JDSCIS_T1_Tactical_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>SE-14_Light_Blaster_Pistol</li>
     </weaponTags>
@@ -104,6 +111,7 @@
     <label>ST Super Tactical Droid</label>
     <race>RSW_DW_Race_JDSCIS_ST_Super_Tactical_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>SE-14_Light_Blaster_Pistol</li>
     </weaponTags>
@@ -118,6 +126,7 @@
     <label>B2 Super Battle Droid</label>
     <race>RSW_DW_Race_JDSCIS_B2_Super_Battle_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>B2_Wrist_Blaster</li>
     </weaponTags>
@@ -132,6 +141,7 @@
     <label>B2 HA Super Battle Droid</label>
     <race>RSW_DW_Race_JDSCIS_B2_HA_Super_Battle_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>B2_HA_Wrist_Cannon</li>
     </weaponTags>
@@ -146,6 +156,7 @@
     <label>AQ Battle Droid</label>
     <race>RSW_DW_Race_JDSCIS_AQ_Battle_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>AQ_Battle_Blaster</li>
     </weaponTags>
@@ -160,6 +171,7 @@
     <label>Droideka Droid</label>
     <race>RSW_DW_Race_JDSCIS_Droideka_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>Droidekas_Blaster</li>
     </weaponTags>
@@ -174,6 +186,7 @@
     <label>Droideka Sharpshooter Droid</label>
     <race>RSW_DW_Race_JDSCIS_Droideka_Sharpshooter_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>Droideka_Long_Blaster</li>
     </weaponTags>
@@ -188,6 +201,7 @@
     <label>Demolition Droid</label>
     <race>RSW_DW_Race_JDSCIS_Demolition_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>Thermal_Detonator</li>
     </weaponTags>
@@ -202,6 +216,7 @@
     <label>DSD1 Dwarf Spider Droid</label>
     <race>RSW_DW_Race_JDSCIS_DSD1_Dwarf_Spider_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>DSD1_Dwarf_Spider_Blaster</li>
     </weaponTags>
@@ -216,6 +231,7 @@
     <label>LR-57_Combat_Droid</label>
     <race>RSW_DW_Race_JDSCIS_LR-57_Combat_Droid</race>
     <combatPower>45</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>LR-57_Combat_Blaster</li>
     </weaponTags>

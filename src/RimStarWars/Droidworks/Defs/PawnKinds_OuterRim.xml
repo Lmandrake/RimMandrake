@@ -9,6 +9,7 @@
     <label>B1 Battle Droid</label>
     <race>RSW_DW_Race_OuterRim_BattleDroid</race>
     <combatPower>40</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -20,6 +21,7 @@
     <label>B1A Battle Droid</label>
     <race>RSW_DW_Race_OuterRim_BattleDroidAdvanced</race>
     <combatPower>40</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -31,6 +33,7 @@
     <label>BX Commando Droid</label>
     <race>RSW_DW_Race_OuterRim_CommandoDroid</race>
     <combatPower>40</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -42,6 +45,7 @@
     <label>HK-Series Assasin Droid</label>
     <race>RSW_DW_Race_OuterRim_HKDroid</race>
     <combatPower>40</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -53,6 +57,7 @@
     <label>imperial labor droid</label>
     <race>RSW_DW_Race_OuterRim_ImperialLaborDroid</race>
     <combatPower>40</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -64,6 +69,7 @@
     <label>KX Security Droid</label>
     <race>RSW_DW_Race_OuterRim_KXSecurityDroid</race>
     <combatPower>40</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -75,6 +81,7 @@
     <label>MagnaGuard Droid</label>
     <race>RSW_DW_Race_OuterRim_MagnaGuardDroid</race>
     <combatPower>40</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -86,6 +93,7 @@
     <label>protocol droid</label>
     <race>RSW_DW_Race_OuterRim_ProtocolDroid</race>
     <combatPower>40</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -97,6 +105,7 @@
     <label>B2 Super Battle Droid</label>
     <race>RSW_DW_Race_OuterRim_SuperBattleDroid</race>
     <combatPower>40</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -108,6 +117,7 @@
     <label>Super Tactical Droid</label>
     <race>RSW_DW_Race_OuterRim_SuperTacticalDroid</race>
     <combatPower>40</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -119,6 +129,7 @@
     <label>T-Series Tactical Droid</label>
     <race>RSW_DW_Race_OuterRim_TacticalDroid</race>
     <combatPower>40</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -130,6 +141,7 @@
     <label>Muckraker Crab Droid</label>
     <race>RSW_DW_Race_OuterRim_MuckrakerDroid</race>
     <combatPower>99999</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -141,6 +153,7 @@
     <label>Destroyer Droid</label>
     <race>RSW_DW_Race_OuterRim_DestroyerDroid</race>
     <combatPower>99999</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -152,6 +165,7 @@
     <label>DUM Repair Droid</label>
     <race>RSW_DW_Race_OuterRim_DUMDroid</race>
     <combatPower>99999</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -163,6 +177,7 @@
     <label>fx-7 medical Droid</label>
     <race>RSW_DW_Race_OuterRim_FX7Droid</race>
     <combatPower>99999</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -174,6 +189,7 @@
     <label>gnk power Droid</label>
     <race>RSW_DW_Race_OuterRim_GNKDroid</race>
     <combatPower>99999</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -185,6 +201,7 @@
     <label>MSE Repair Droid</label>
     <race>RSW_DW_Race_OuterRim_MSEDroid</race>
     <combatPower>99999</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -196,6 +213,7 @@
     <label>salvage assist droid</label>
     <race>RSW_DW_Race_OuterRim_SalvageAssistDroid</race>
     <combatPower>99999</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -207,6 +225,7 @@
     <label>R-Series Droid</label>
     <race>RSW_DW_Race_OuterRim_AstromechDroid</race>
     <combatPower>99999</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -218,6 +237,7 @@
     <label>KX Security Droid</label>
     <race>RSW_DW_Race_OuterRim_KXSecurityDroid</race>
     <combatPower>120</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <weaponTags>
       <li>ORImperialHeavy</li>
     </weaponTags>
