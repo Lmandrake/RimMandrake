@@ -155,3 +155,64 @@ range — a Battle/Heavy combat kind plausibly wants a real budget so its
 tagged armor actually shows, a Labour/Protocol kind may deliberately want
 little-to-none. Filing this as a gap for `gen_droidworks_defs.py`'s next
 touch rather than inventing numbers here.
+
+## Re-verify 2026-09-08 (FOUNDRY) — CLOSED
+
+Both blockers this item spawned are now closed: `DROIDWORKS_APPAREL_ISFLESH_GATE_1`
+(`8c274947`, transpiler lets `GenerateStartingApparelFor` run for `isFlesh:false`
+pawns) and `DROIDWORKS_APPARELMONEY_MISSING_1` (`a7bbeaec` + earlier, per-kind
+`apparelMoney` now calibrated in `gen_droidworks_defs.py`). This pass confirms
+THIS item's own specific claim — the ABSORBED MODULES themselves are what
+show up, not just any apparel — rather than re-deriving the mechanism.
+
+**validate_patch.py, re-run fresh**: 0 errors, 0 warnings across all 4
+generated `Absorbed_KotorDroidModules*.xml` files plus `PawnKinds_KotOR.xml`,
+against `--defs` Data + workshop 294100 + Mods, current live `ModsConfig.xml`
+(600 active mods — the full list, already restored, no swap needed). `grep -c
+recipeMaker` on the 4 generated files: 2 hits, both in the file-header comment
+("No recipeMaker on any: loot-only") — zero actual `<recipeMaker>` fields.
+
+**Live evidence used (not re-driven — already current)**: the
+`DROIDWORKS_APPARELMONEY_MISSING_1` closing pass's own final live-verify,
+`Transient/mapgen_gl/apparelmoney2/results.json` (captured same session,
+`jawa/pawn_get` per spawn), gives the exact per-pawn apparel defNames for the
+KotOR-absorbed kinds:
+- `RSW_DW_KotORDroidBad_hk50` 5/5 — every pawn wears a real
+  `RSW_DW_Module_DroidSensor_motion`/`RSW_DW_Module_DroidArmorMid*`.
+- `RSW_DW_KotORDroidBad_ADMkI` 4/5 real (`RSW_DW_Module_DroidSensor_motion`,
+  `RSW_DW_Module_DroidArmorHvy_env`, `RSW_DW_Module_DroidSensor_surveillance`),
+  1/5 bare.
+- `RSW_DW_KotORDroidGood_KX12UPD` 5/5 — every pawn wears
+  `RSW_DW_Module_DroidArmorLte*` (some also `DroidSensor_motion`).
+- `RSW_DW_KotORDroidGood_KM1HMD` x20 — 14/20 wearing real
+  `RSW_DW_Module_DroidArmorHvy*` (matches the blocker's own 70% figure exactly,
+  row-by-row recount confirms 14 real / 4 bare / 2 vanilla-only), the residual
+  bare/vanilla-only rows already root-caused in the blocker (budget roll, and a
+  faction-less Humanlike ideo-apparel interaction — not a B2 defect).
+- `RSW_DW_OuterRim_GNKDroid` 0/5, correctly bare (no `apparelTags`, by design)
+  — the control proving the mechanism isn't dressing everything indiscriminately.
+
+Cross-checked every `RSW_DW_Module_*` defName appearing in that data against
+`<defName>` declarations in `Absorbed_KotorDroidModules_Armor.xml` /
+`_Tech.xml` — all present, all genuine B2-absorbed modules, not vanilla or
+donor-namespace stand-ins.
+
+**Player.log**: current live log (same session as the results.json capture,
+mtime matches) carries 12 `Config error in` lines, identical set to the
+pre-session baseline (`Transient/mapgen_gl/apparelmoney2/prev_before.log`) —
+`diff` is empty, zero new errors. The 3 pre-existing "is smeltable but does
+not give anything for smelting" lines on the absorbed armor tiers are the
+already-noted cosmetic gap, unchanged.
+
+**Conclusion**: the packet's own third verify line — "a KotOR kind spawns
+wearing its modules" — now holds, live-confirmed with real `RSW_DW_Module_*`
+defNames across 4 of 5 tested KotOR kinds (the 5th, GNK, correctly bare by
+design). Closing.
+
+## criteria (final)
+- [x] `Absorbed_KotorDroidModules/` written under Droidworks' own namespace,
+      `RSW_DW_Module_*` defNames, no `recipeMaker` on any.
+- [x] Body groups and tags re-pointed off the donor's own custom defs.
+- [x] validate_patch.py 0/0 (re-confirmed 2026-09-08).
+- [x] Manifest of excluded classes with defName/source/reason.
+- [x] A KotOR kind spawns wearing its modules — live-confirmed 2026-09-08.
