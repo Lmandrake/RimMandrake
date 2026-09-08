@@ -915,6 +915,7 @@ CANONICAL = {
     "seat":      dict(seat="BUILD", state="idle"),
     "bridge":    dict(seat="BENCH", state="taken"),
     "game":      dict(seat="OWNER", state="UP"),
+    "capability": dict(seat="BUILD", system="TEST_SYSTEM", function_rung="implemented"),
 }
 
 
