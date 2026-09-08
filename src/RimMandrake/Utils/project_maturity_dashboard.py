@@ -92,12 +92,53 @@ def content_index(rung):
     return CONTENT_RUNGS.index(rung) if rung in CONTENT_RUNGS else -1
 
 
+TIER_DIRS = ("RimMandrake", "RimStarWars", "RimUtinni")
+
+
+def mod_metadata():
+    """system (mod folder name) -> {tier, label, blurb}, read from each mod's
+    About/About.xml. The registry stores bare folder names; the human-facing
+    name and description live only in the mod itself. Best-effort: a system
+    with no readable About.xml just falls back to its folder name."""
+    import xml.etree.ElementTree as ET
+    meta = {}
+    for tier in TIER_DIRS:
+        base = os.path.join(ROOT, "src", tier)
+        if not os.path.isdir(base):
+            continue
+        for d in sorted(os.listdir(base)):
+            about = os.path.join(base, d, "About", "About.xml")
+            if d in meta or not os.path.isfile(about):
+                continue
+            label, blurb = d, ""
+            try:
+                root = ET.parse(about).getroot()
+                raw = (root.findtext("name") or "").strip()
+                # About names carry tier prefixes ("RimMandrake: RSW — Beast
+                # Lairs"); strip them — the chip already encodes tier by colour.
+                label = re.sub(r"^Rim(?:Mandrake|StarWars|Utinni)\s*:?\s*"
+                               r"(?:(?:R(?:M|SW|UT)|Mandrake|Star\s?Wars|Utinni)"
+                               r"\s*[—–-]\s*)?", "", raw) or d
+                blurb = " ".join((root.findtext("description") or "").split())
+                if len(blurb) > 360:
+                    blurb = blurb[:357] + "…"
+            except ET.ParseError:
+                pass
+            meta[d] = {"tier": tier, "label": label, "blurb": blurb}
+    return meta
+
+
 def systems_payload(world):
+    meta = mod_metadata()
     systems = []
     for name in sorted(world.capabilities):
         cap = world.capabilities[name]
+        m = meta.get(name, {})
         systems.append({
             "system": cap.system,
+            "tier": m.get("tier", ""),
+            "label": m.get("label", cap.system),
+            "blurb": m.get("blurb", ""),
             "functionRung": cap.function_rung,
             "contentRung": cap.content_rung,
             "evidenceRef": cap.evidence_ref,
@@ -289,20 +330,43 @@ table.grid th,table.grid td{border:1px solid var(--line);padding:6px 8px;text-al
 table.grid th{background:var(--panel2);color:var(--dim);font-weight:600;font-size:10.5px;
   text-transform:uppercase;letter-spacing:.04em}
 table.grid td.corner{background:var(--panel2)}
-table.grid td.cell{min-width:120px}
-table.grid td.done{background:rgba(62,165,95,.14)}
-.chip2{display:inline-block;background:#232838;border:1px solid var(--line);
-  border-radius:999px;padding:1px 8px;margin:2px 3px 0 0;font-size:10.5px;color:var(--ink)}
-.cellcount{color:var(--dim);font-size:10px}
+table.grid td.cell{width:210px;min-width:210px;max-width:210px}
+table.grid td.done{background:rgba(79,145,71,.16)}
+/* one chip per row, all the same size, so the fills compare at a glance:
+   the wash is a progress bar along the FUNCTION ladder, the thin bottom
+   strip is the CONTENT ladder; tier is the left stripe's colour */
+.chip2{position:relative;display:block;background:var(--panel2);border:1px solid var(--line);
+  border-left:4px solid var(--grey);border-radius:4px;padding:2px 8px;margin:0 0 3px;
+  font-size:11px;color:var(--ink);white-space:nowrap;overflow:hidden;cursor:default}
+.chip2 .fill{position:absolute;left:0;top:0;bottom:0;opacity:.26;pointer-events:none}
+.chip2 .cfill{position:absolute;left:0;bottom:0;height:2px;background:var(--c2);
+  pointer-events:none}
+.chip2 .lbl{position:relative;display:block;overflow:hidden;text-overflow:ellipsis}
+.chip2:hover{border-color:var(--accent)}
+.cellcount{color:var(--dim);font-size:10px;margin-bottom:4px}
+.gridlegend{display:flex;gap:16px;flex-wrap:wrap;margin:0 0 10px;font-size:11px;color:var(--dim)}
+.gridlegend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;
+  vertical-align:-1px}
+/* hover card for any [data-sys] element */
+#tip{position:fixed;z-index:10;max-width:360px;background:var(--panel);
+  border:1px solid var(--accent);border-radius:8px;padding:10px 12px;font-size:11.5px;
+  pointer-events:none;box-shadow:0 6px 24px rgba(0,0,0,.5)}
+#tip .t{font-weight:700;font-size:12.5px;margin-bottom:2px}
+#tip .m{color:var(--dim);font-size:10.5px;margin-bottom:6px}
+#tip .d{color:var(--ink);opacity:.9}
+#tip .e{color:var(--dim);font-size:10.5px;margin-top:6px;border-top:1px solid var(--line);
+  padding-top:5px}
 
 /* ---- systems table ---- */
 table.sys{border-collapse:collapse;width:100%;font-size:11.5px}
 table.sys th{text-align:left;color:var(--dim);font-weight:600;font-size:10.5px;
   text-transform:uppercase;letter-spacing:.04em;padding:5px 8px;border-bottom:1px solid var(--line)}
-table.sys td{padding:5px 8px;border-bottom:1px solid #20242e}
-table.sys tr:hover td{background:#1e2230}
+table.sys td{padding:5px 8px;border-bottom:1px solid #2a221a}
+table.sys tr:hover td{background:#2a2219}
 .tag{display:inline-block;border-radius:4px;padding:1px 7px;font-size:10.5px;font-weight:600}
-.tag.done{background:rgba(62,165,95,.2);color:#7fe3a0}
+.tag.done{background:rgba(79,145,71,.25);color:#9fd08a}
+.tiermark{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px;
+  vertical-align:-1px}
 
 /* ---- goal sheet ---- */
 .gsrow{display:grid;grid-template-columns:230px 1fr 74px;gap:10px;align-items:center;
@@ -393,6 +457,10 @@ const CCOLOR = {"none":"#7d7565","placeholder":"#c9a44a","authored":"#5390c4",
                "final":"#3a6ea0","unset":"#7d7565"};
 const FLADDER = ["planned","designed","implemented","runnable","validated","played"];
 const CLADDER = ["none","placeholder","authored","final"];
+/* chip colour = TIER (position in the matrix already tells the rungs) */
+const TIERCOL = {"RimMandrake":"#c96634","RimStarWars":"#5390c4","RimUtinni":"#8aa24a","":"#7d7565"};
+const BYSYS = {}; DATA.systems.forEach(s=>{ BYSYS[s.system] = s; });
+const TIERORD = {"RimMandrake":0,"RimStarWars":1,"RimUtinni":2,"":3};
 
 function el(tag, attrs, kids){
   const e = document.createElement(tag);
@@ -450,6 +518,16 @@ document.getElementById("gridN").textContent =
   if(total === 0){ wrap.appendChild(el("div",{"class":"empty"},
     ["No systems registered yet. Seed with `rimflow capability set <SYSTEM> --function-rung … --content-rung …`."]));
     return; }
+  const legend = el("div", {"class":"gridlegend"});
+  ["RimMandrake","RimStarWars","RimUtinni"].forEach(t=>{
+    const item = el("span");
+    item.appendChild(el("i", {style:"background:"+TIERCOL[t]}));
+    item.appendChild(document.createTextNode(t));
+    legend.appendChild(item);
+  });
+  legend.appendChild(el("span", {style:"margin-left:auto"},
+    ["wash = how far along the function ladder · bottom strip = content ladder · hover for details"]));
+  wrap.parentNode.insertBefore(legend, wrap);
   const rows = FLADDER.concat(["unset"]);
   const cols = CLADDER.concat(["unset"]);
   const table = el("table", {"class":"grid"});
@@ -460,18 +538,66 @@ document.getElementById("gridN").textContent =
     const tr = el("tr");
     tr.appendChild(el("th", {}, [fr]));
     cols.forEach(cr=>{
-      const list = (DATA.grid[fr] && DATA.grid[fr][cr]) || [];
+      const list = ((DATA.grid[fr] && DATA.grid[fr][cr]) || []).slice()
+        .sort((a,b)=>{
+          const sa = BYSYS[a]||{}, sb = BYSYS[b]||{};
+          return (TIERORD[sa.tier||""]-TIERORD[sb.tier||""])
+              || (sa.label||a).localeCompare(sb.label||b);
+        });
       const isDone = fr==="played" && cr==="final" && list.length;
       const td = el("td", {"class":"cell"+(isDone?" done":"")});
       if(list.length){
         td.appendChild(el("div", {"class":"cellcount"}, [String(list.length)+" system(s)"]));
-        list.forEach(s=>td.appendChild(el("span", {"class":"chip2"}, [s])));
+        list.forEach(name=>{
+          const s = BYSYS[name] || {label:name, tier:""};
+          const fpct = Math.round(100*(FLADDER.indexOf(s.functionRung)+1)/FLADDER.length);
+          const cpct = Math.round(100*(CLADDER.indexOf(s.contentRung)+1)/CLADDER.length);
+          const tc = TIERCOL[s.tier||""];
+          const chip = el("span", {"class":"chip2", "data-sys":name,
+            style:"border-left-color:"+tc});
+          chip.appendChild(el("i", {"class":"fill",
+            style:"width:"+Math.max(0,fpct)+"%;background:"+tc}));
+          if(cpct > 0) chip.appendChild(el("i", {"class":"cfill", style:"width:"+cpct+"%"}));
+          chip.appendChild(el("span", {"class":"lbl"}, [s.label||name]));
+          td.appendChild(chip);
+        });
       }
       tr.appendChild(td);
     });
     table.appendChild(tr);
   });
   wrap.appendChild(table);
+})();
+
+/* ---- hover card: any element carrying data-sys ---- */
+(function(){
+  const tip = el("div", {id:"tip", hidden:""});
+  document.body.appendChild(tip);
+  function fill(s){
+    tip.innerHTML = "";
+    tip.appendChild(el("div", {"class":"t"}, [s.label||s.system]));
+    tip.appendChild(el("div", {"class":"m"},
+      [(s.tier||"tier unknown")+" / "+s.system+" · "
+       +(s.functionRung||"—")+" × "+(s.contentRung||"—")]));
+    tip.appendChild(el("div", {"class":"d"},
+      [s.blurb || "No description in this mod's About.xml yet."]));
+    if(s.evidenceRef) tip.appendChild(el("div", {"class":"e"}, ["evidence: "+s.evidenceRef]));
+  }
+  function move(ev){
+    const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+    let x = ev.clientX + pad, y = ev.clientY + pad;
+    if(x + w > innerWidth - 8) x = ev.clientX - w - pad;
+    if(y + h > innerHeight - 8) y = ev.clientY - h - pad;
+    tip.style.left = Math.max(4,x)+"px"; tip.style.top = Math.max(4,y)+"px";
+  }
+  document.addEventListener("mouseover", ev=>{
+    const t = ev.target.closest("[data-sys]");
+    if(!t){ tip.hidden = true; return; }
+    const s = BYSYS[t.getAttribute("data-sys")];
+    if(!s){ tip.hidden = true; return; }
+    fill(s); tip.hidden = false; move(ev);
+  });
+  document.addEventListener("mousemove", ev=>{ if(!tip.hidden) move(ev); });
 })();
 
 /* ---- systems table ---- */
@@ -481,12 +607,18 @@ document.getElementById("gridN").textContent =
     t.parentNode.replaceChild(el("div",{"class":"empty"},["Registry is empty."]), t);
     return;
   }
-  const head = el("tr", {}, ["system","function","content","done","evidence","date","updated"]
+  const head = el("tr", {}, ["name","folder","function","content","done","evidence","date","updated"]
     .map(h=>el("th", {}, [h])));
   t.appendChild(head);
-  DATA.systems.forEach(s=>{
-    const tr = el("tr");
-    tr.appendChild(el("td", {}, [s.system]));
+  DATA.systems.slice().sort((a,b)=>
+      (TIERORD[a.tier||""]-TIERORD[b.tier||""]) || (a.label||a.system).localeCompare(b.label||b.system)
+  ).forEach(s=>{
+    const tr = el("tr", {"data-sys":s.system});
+    const nameTd = el("td", {style:"font-weight:600;white-space:nowrap"});
+    nameTd.appendChild(el("span", {"class":"tiermark", style:"background:"+TIERCOL[s.tier||""]}));
+    nameTd.appendChild(document.createTextNode(s.label || s.system));
+    tr.appendChild(nameTd);
+    tr.appendChild(el("td", {style:"color:var(--dim)"}, [s.system]));
     tr.appendChild(el("td", {}, [s.functionRung || "—"]));
     tr.appendChild(el("td", {}, [s.contentRung || "—"]));
     tr.appendChild(el("td", {}, [s.done ? el("span",{"class":"tag done"},["DONE"]) : ""]));
