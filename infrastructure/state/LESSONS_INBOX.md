@@ -2,3 +2,6 @@
 
 - 2026-09-07: `skills/generating-images/SKILL.md` still documents a `--chroma-key '#00ff00'` flag on `codex_image.py generate`, but that flag was removed 2026-09-06 (chroma-key retired from the generation path; `chroma_key.py` is now a separate post-process script called directly by callers like `build_sea_facings.py`). SKILL.md needs its workflow section updated to match.
 - prove_new_tools census: jawa/revoke reads MISSING at Entry (314/315) — first sighting; suspect tool_surface upper-bound counting a message string, not a real tool (2026-09-07 BENCH)
+- 2026-09-08 FOUNDRY: `git commit`/`add` can fail with `.git/index.lock` mid-turn when another window's session is committing concurrently in the same shared worktree — retry once it clears, don't force-remove without confirming abandonment.
+- 2026-09-08 FOUNDRY: `python.exe` (WSL calling Windows Python for bridge scripts) can't open a script path under `/tmp/...` or the session scratchpad — write bridge test scripts into `Transient/` and run with a repo-relative path.
+- 2026-09-08 FOUNDRY: `rimflow bridge`'s 45-min staleness rule measures event silence, not game activity — before restarting/swapping the mod list on a "stale" bridge hold, cross-check `rimworld/get_game_info` and Player.log's own mtime; a session can be genuinely live despite a long-idle bridge ledger.
