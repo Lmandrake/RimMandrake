@@ -6027,3 +6027,11 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T19:39:29Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"one more B10 live-completion attempt (Doctor work priority)","ts":"2026-09-08T19:40:48Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T19:42:44Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-08T19:43:50Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_RESEARCH_ROWS_1","ts":"2026-09-08T19:44:18Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_RESEARCH_ROWS_1","ts":"2026-09-08T19:44:19Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROID_FACTION_LOADOUTS_1","ts":"2026-09-08T19:45:35Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROID_FACTION_LOADOUTS_1","ts":"2026-09-08T19:45:36Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"deploy+verify BRIDGETOOLS_CSHARP_SWEEP_BUGS_1's 6 fixes","ts":"2026-09-08T19:47:07Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T19:49:57Z"}
+{"seat":"FOUNDRY","event":"close","id":"BRIDGETOOLS_CSHARP_SWEEP_BUGS_1","sha":"27c90a5a65ec81aa7ab601dc6b4f650a9085b5ef","ts":"2026-09-08T19:50:31Z"}

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T19:42:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T19:50:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -486,6 +486,24 @@ kind:     task
 summary:  Packet B10 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_WIPE_SEVERITY_1.md
 
+## DROIDWORKS_RESEARCH_ROWS_1 Seven Droidworks research rows in The Unbolting; cut the Depot droid-brain rows; brains never researchable
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DROIDWORKS_RESEARCH_ROWS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_RESEARCH_ROWS_1.md
+
+## DROID_FACTION_LOADOUTS_1 Droids in every faction's hands: Empire attack droids, Homestead utility droids, Hutt heavies, Junker suicide droids, traders' protocol droids, Trade Moot stock — no droid faction
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DROID_FACTION_LOADOUTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_FACTION_LOADOUTS_1.md
+
 ## DROID_FDE_GOODWILL_CAP_1 Free Droid Enclaves goodwill cap via GoodwillSituationDef (spec: restraining_bolt_technical.md)
 state:    doing
 row:      unassigned
@@ -503,15 +521,6 @@ target:   v1
 kind:     task
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
-
-## BRIDGETOOLS_CSHARP_SWEEP_BUGS_1 6 real bugs found in a full-file review of the 3 largest bridgetools C# files (Society/Terrain/World tools)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  Full-file review of the 3 largest source files in the JawaBench bridgetools
-prose:    infrastructure/state/items/BRIDGETOOLS_CSHARP_SWEEP_BUGS_1.md
 
 ## DROIDWORKS_APPARELMONEY_MISSING_1 gen_droidworks_defs.py never emits apparelMoney on any of the 80 PawnKindDefs -- no Droidworks kind can ever generate apparel regardless of apparelTags
 state:    doing  (BLOCKED)
@@ -707,26 +716,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DROIDWORKS_RESEARCH_ROWS_1 Seven Droidworks research rows in The Unbolting; cut the Depot droid-brain rows; brains never researchable
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_RESEARCH_ROWS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_RESEARCH_ROWS_1.md
-
-## DROID_FACTION_LOADOUTS_1 Droids in every faction's hands: Empire attack droids, Homestead utility droids, Hutt heavies, Junker suicide droids, traders' protocol droids, Trade Moot stock — no droid faction
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_FACTION_LOADOUTS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_FACTION_LOADOUTS_1.md
 
 ## DROID_PROTOCOL_TRADE_ADVANTAGE_1 Protocol droid in the trade party shifts prices both ways; none on your side is a penalty
 state:    proposed
