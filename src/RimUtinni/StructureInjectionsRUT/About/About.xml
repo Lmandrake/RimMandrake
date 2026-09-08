@@ -8,7 +8,10 @@
   </supportedVersions>
   <description>Ash'karr campaign content for the promise/whisper structure program (design/Jawa/worldbuilding/structure_injection_roster.md), riding mandrake.rm.injections' GenStep_RimplacePlan engine.
 
-Ships batch 3, four promises: The Oasis Shrine (row 10), The Rakatan Trace (row 9), The Cistern (row 19), The Toll Gap (row 13). All four rimplace templates are authored and lint clean; defName verification rode a validate_patch.py probe against the live on-disk mod XML rather than `rimplace verify` (this session's defs.sqlite capture is scoped to ResearchProjectDef only, so the def dump correctly reports UNMEASURED for ThingDef/TerrainDef checks right now). The TileMutatorDef/GenStepDef wiring exists and proves the engine end to end for each row. None are yet placed on any Ash'karr tile (a live world-tile edit, deliberately deferred per the roster's own protocol) and none have letter text in the gods' register yet. ~39 roster rows remain open for future batches.</description>
+Ships batch 3, four promises: The Oasis Shrine (row 10), The Rakatan Trace (row 9), The Cistern (row 19), The Toll Gap (row 13). All four rimplace templates are authored and lint clean; defName verification rode a validate_patch.py probe against the live on-disk mod XML rather than `rimplace verify` (this session's defs.sqlite capture is scoped to ResearchProjectDef only, so the def dump correctly reports UNMEASURED for ThingDef/TerrainDef checks right now). The TileMutatorDef/GenStepDef wiring exists and proves the engine end to end for each row. None are yet placed on any Ash'karr tile (a live world-tile edit, deliberately deferred per the roster's own protocol) and none have letter text in the gods' register yet. ~39 roster rows remain open for future batches.
+
+Absorbed RimMandrake: RUT — Desert Fixtures (mandrake.rut.desertfixtures).
+Absorbed RimUtinni: Vault Dungeons (mandrake.rut.vaultdungeons).</description>
 
   <modDependencies>
     <li>
@@ -16,14 +19,18 @@ Ships batch 3, four promises: The Oasis Shrine (row 10), The Rakatan Trace (row 
       <displayName>RimMandrake: Structure Injections</displayName>
     </li>
     <li>
-      <!-- homestead*.txt spawn RUT_WindowAdobe, which this mod owns (review 2026-09-06) -->
-      <packageId>mandrake.rut.desertfixtures</packageId>
-      <displayName>RimMandrake: RUT — Desert Fixtures</displayName>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+      <displayName>Vanilla Expanded Framework (KCSG)</displayName>
     </li>
   </modDependencies>
 
   <loadAfter>
     <li>mandrake.rm.injections</li>
-    <li>mandrake.rut.desertfixtures</li>
+    <li>Ludeon.RimWorld</li>
+    <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
   </loadAfter>
 </ModMetaData>

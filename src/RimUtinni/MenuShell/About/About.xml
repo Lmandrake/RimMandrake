@@ -27,8 +27,18 @@ during the long cold load.
 
 Not built here (see the spec and UI_APPEARANCE_BUILD_1's filing note): the temple-ship
 hero render (Image A - needs a commissioned piece), the desert-vista second image, and
-the title wordmark (a taste ruling for the owner, carded, not decided).</description>
+the title wordmark (a taste ruling for the owner, carded, not decided).
+
+Absorbed RimUtinni: Shell (mandrake.rut.shell).</description>
+  <modDependencies>
+    <li>
+      <packageId>aRandomKiwi.RimThemes</packageId>
+      <displayName>RimThemes</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=1668983184</steamWorkshopUrl>
+    </li>
+  </modDependencies>
   <loadAfter>
     <li>vanillaexpanded.backgrounds</li>
+    <li>aRandomKiwi.RimThemes</li>
   </loadAfter>
 </ModMetaData>

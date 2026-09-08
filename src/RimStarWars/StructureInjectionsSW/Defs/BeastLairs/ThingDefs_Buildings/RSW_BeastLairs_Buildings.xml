@@ -4,13 +4,14 @@
   <!--
     RSW_BeastNest_Large — structure_procedural_spec.md section 9 NEW content.
     No ParentName: modeled on the FIELD SHAPE of the stack's existing nest
-    scenery (EggSac [Odyssey], MA_HarpeagleNest [Mythic Ages], MaggotNest
-    [Horrors]) rather than inherited from any of them, since all three are
+    scenery (EggSac [Odyssey], MaggotNest
+    [Horrors]; MA_HarpeagleNest [Mythic Ages] was a third model until that mod
+    was retired 2026-09-05) rather than inherited from any of them, since both are
     another mod's own pawn-spawner and pulling a cross-mod ParentName would
-    make this a hard dependency on that mod for no reason. Like all three:
+    make this a hard dependency on that mod for no reason. Like both:
     claimable=false, no designationCategory (never player-buildable — this is
     map-gen/template scatter only), tickerType Never, canOverlapZones true.
-    Unlike all three: no pawn-spawning comp — this is dressing, not a hive.
+    Unlike both: no pawn-spawning comp — this is dressing, not a hive.
   -->
   <ThingDef>
     <defName>RSW_BeastNest_Large</defName>
