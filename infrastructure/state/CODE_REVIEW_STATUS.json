@@ -2190,16 +2190,16 @@
     "sha": "43f96b1b"
   },
   "src/RimMandrake/Utils/ashkarr_shore_and_ice.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "5b1b2ccde30ad29124c52103bfbaacb25b370bd6a16d9b85e86fddf05b99bf69",
-    "sha": "e5013227"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "9c0e19cc3535960c11f39619e05c0d6d7926a8bffe02d20a4c510a4e24984512",
+    "sha": "4bba5f26"
   },
   "src/RimMandrake/Utils/ashkarr_shore_zonation.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "b864f89d8d7e28cb269b8c8e9fe59dddc021348e531c0338989e9c7edf6a26c8",
-    "sha": "e5013227"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "e28a9d63fdafde40d4c194b16ea5b5d2aa80a341b45e470cd4055a80344b1ad3",
+    "sha": "5fd66fbb"
   },
   "src/RimMandrake/Utils/ashkarr_warm_crags_to_horror.py": {
     "cleanCount": 1,
@@ -3178,10 +3178,10 @@
     "sha": "2b988f1c"
   },
   "src/RimMandrake/Utils/w9_run.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "28f70d0270f2b2fc2cd8db3192c6cd08ff7c375a13fe490eebc511546a30b891",
-    "sha": "5ac921b8"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "c9916c6705f80a71feed1fa372e8facc503d618da73ca507e213440a51228cfe",
+    "sha": "9cf1c2ed"
   },
   "src/RimMandrake/Utils/weapon_affordability.py": {
     "cleanCount": 1,
