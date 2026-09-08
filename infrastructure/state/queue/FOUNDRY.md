@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T23:18:26Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-08T04:47:37Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -432,6 +432,15 @@ kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
 
+## LANTERN_DEEPS_INJECTION_1 The crystal caverns as an injected underground layer beneath ≤ −40 °C nightside maps — quicktest the cave-map generation, two entrance features (emergence, ruined mineshaft), persistent Deeps, kyber formations
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Quicktest first (rimworld-debug-testing): confirm what BMTCrystalCaverns
+prose:    infrastructure/state/items/LANTERN_DEEPS_INJECTION_1.md
+
 ## COLD_LOAD_RUN_SHEET_4 Run sheet for the next full-list load: three readings owed from the 2026-09-06 offline wave
 state:    doing
 row:      unassigned
@@ -623,16 +632,6 @@ kind:     task
 thin:     no ## criteria
 summary:  - What it is: the Rakatan-era war lab where the Assailants were first contained and
 prose:    infrastructure/state/items/ANCIENT_WAR_LAB_1.md
-
-## LANTERN_DEEPS_INJECTION_1 The crystal caverns as an injected underground layer beneath ≤ −40 °C nightside maps — quicktest the cave-map generation, two entrance features (emergence, ruined mineshaft), persistent Deeps, kyber formations
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  1. Quicktest first (rimworld-debug-testing): confirm what BMTCrystalCaverns
-prose:    infrastructure/state/items/LANTERN_DEEPS_INJECTION_1.md
 
 ## DROID_ORACLE_VOICE_DESIGN_1 Design (dormant): four droid Oracle consumers with prescribed fallbacks, claude -p transport
 state:    proposed
@@ -1143,3 +1142,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the symptom
 prose:    infrastructure/state/items/BIOME_LABEL_CAMPAIGN_NAMES_1.md
+
+## SCALD_DARK_TOWER_1 Dark tower in the Scald: Rakatan high command, Rust Cathedral control systems, ocular warped Assailant intrusion
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - What it is: a tower rising from RUTTheScald's crater lake — the Rakatan's
+prose:    infrastructure/state/items/SCALD_DARK_TOWER_1.md
+
+## WORLDMAP_BIOME_ICONS_REGEN_1 Worldmap biome decoration icons (e.g. Blue Desert saguaro) don't auto-update with plant/animal reassignment
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Identify the mechanism first (MEASURE, don't guess): find what actually draws
+prose:    infrastructure/state/items/WORLDMAP_BIOME_ICONS_REGEN_1.md

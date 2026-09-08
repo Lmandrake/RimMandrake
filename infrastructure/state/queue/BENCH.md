@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T23:18:26Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-08T04:47:37Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -511,3 +511,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the ask — split into two items on the owner's ruling
 prose:    infrastructure/state/items/MOD_VALIDATION_PLAN_AUTHORING_1.md
+
+## RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1 Deep-dive: RimWorld 18GB+ memory footprint, crash correlation, worst-offender mods, reduction options
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Measure first: current live memory footprint (RSS of the RimWorld process) at a
+prose:    infrastructure/state/items/RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1.md
