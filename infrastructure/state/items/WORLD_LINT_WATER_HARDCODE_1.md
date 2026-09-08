@@ -1,3 +1,11 @@
+## status 2026-09-08 — fixed, build pending deploy+restart to verify live
+
+`landBiomeSubmerged` now reads `if (!b.isWaterBiome && t.elevation <= 0f)`. Compiles
+clean (`dotnet build`, 0 errors, plan-only — no deploy, no restart). `waterBiomeOnRaisedLand`
+is untouched. Owed: a game-down window to `build.py --apply` + restart, then re-run
+`jawa/world_lint` and confirm `landBiomeSubmerged` 1135 → 0 with `waterBiomeOnRaisedLand`
+and `lakesAboveSeaLevel` unchanged.
+
 ## the defect — PROVEN, read from our own source
 
 `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWorldTools.cs:2850`
