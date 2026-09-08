@@ -2148,10 +2148,10 @@
     "sha": "0f770555"
   },
   "src/RimMandrake/Utils/ashkarr_layer_nightside.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "a9111adf0361327af6783d472b18dfd06dfaede11061181e665d4f2450f8d673",
-    "sha": "e5013227"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "8476e4b9aa2ce6b6a3eb6c44faacf3be24910c8ea9fe688df9448c5b8b3d020b",
+    "sha": "279e2e00"
   },
   "src/RimMandrake/Utils/ashkarr_nightside_pass.py": {
     "cleanCount": 1,
@@ -2172,10 +2172,10 @@
     "sha": "363bae74"
   },
   "src/RimMandrake/Utils/ashkarr_regate_rain.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "e7dac34c1de4c5e17c86dd84929534e0d52d98f1feca43930c60f812b06a87ee",
-    "sha": "e5013227"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "848e8680fcefa60dbebbe39d7bf80913978299f8a4aee2877b42c769f9d64408",
+    "sha": "09ce5b8f"
   },
   "src/RimMandrake/Utils/ashkarr_repair.py": {
     "cleanCount": 1,
@@ -2549,10 +2549,10 @@
     "sha": "8193b35c"
   },
   "src/RimMandrake/Utils/harvest_log.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "hash": "ad7a251540c21eb23a4eb878fbe081c9eca6171d92b0cb194899fcf651eac299",
-    "sha": "d92ee4cc"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "c024835e26baa8e3a53398e842dc33e5773375fd31deaeaa32943a24204a96f5",
+    "sha": "279e2e00"
   },
   "src/RimMandrake/Utils/ideology_palette.py": {
     "cleanCount": 1,
@@ -2692,10 +2692,10 @@
     "sha": "d1c193ae"
   },
   "src/RimMandrake/Utils/modset_builder.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "fd206eb77c522036cb143687d6813c341c93fdbd6b23114647036111bc9cd2c8",
-    "sha": "c170a4ee"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "a95f4d3f499f99a5ea3df4b049f4064ceff894ebead6905dc719ab4c2c889ecf",
+    "sha": "09ce5b8f"
   },
   "src/RimMandrake/Utils/naming_lint.py": {
     "cleanCount": 1,
