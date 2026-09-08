@@ -18,6 +18,11 @@ namespace RimMandrake.StarWars.Droidworks
         public static JobDef RSW_DW_ClampBolt;
         public static ThingDef RSW_DW_RestrainingBoltItem;
 
+        // DROIDWORKS_FORMAT_TIERS_1
+        public static HediffDef RSW_DW_FormatTier;
+        public static HistoryEventDef RSW_DW_DeformattedSapientDroid;
+        public static ThoughtDef RSW_DW_KnowSapientDroidDeformatted;
+
         static DroidworksDefOf() =>
             DefOfHelper.EnsureInitializedInCtor(typeof(DroidworksDefOf));
     }

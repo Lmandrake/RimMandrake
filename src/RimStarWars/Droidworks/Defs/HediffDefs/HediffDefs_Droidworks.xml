@@ -167,4 +167,159 @@
     </comps>
   </HediffDef>
 
+  <!-- ========================================================================
+       RSW_DW_FormatTier — DROIDWORKS_FORMAT_TIERS_1 (packet B1). The droid's
+       PERMANENT classification: what its programming makes it capable of feeling
+       and doing. Not a state like RSW_DW_PoweredDown (which comes and goes and is
+       cleared by a reboot) — this one is always present on every droid, put there
+       at spawn by RimMandrake.StarWars.Droidworks.CompDWFormatTier (wired onto
+       DW_Race_Base in Races_Base.xml) and moved only by the three format recipes.
+       It COEXISTS with every other Droidworks hediff; nothing here replaces the
+       powered-down / bolt / resentment hediffs, which answer different questions.
+
+       Severity IS the ladder: 1 blank, 2 mindless, 3 programmable, 4 sapient
+       (DroidFormatTierUtility.SeverityFor). Stage cuts sit at the half-points so a
+       float can never land on a boundary. initialSeverity 3 = programmable, which
+       is also the value minSeverity/maxSeverity bracket around (HediffDef
+       ConfigErrors rejects minSeverity > initialSeverity).
+
+       🔑 THE GATING IS PURE VANILLA XML, NOT HARMONY. Packet B1's own wording
+       ("ShouldHaveNeed extension gating ... by stage; WorkTagIsDisabled postfix")
+       described a C# route; two vanilla HediffStage fields do it natively and were
+       used instead (Charter: "a named defName/xpath is an example, not a mandate"):
+         * <disablesNeeds> is read by Pawn_NeedsTracker.ShouldHaveNeed itself, via
+           HediffSet.DisablesNeed — the exact method the postfix would have wrapped.
+           Vanilla precedent: Anomaly's VoidTouched (Hediffs_Global_Misc.xml).
+         * <disabledWorkTags> is folded into Pawn.CombinedDisabledWorkTags, which is
+           what Pawn.WorkTagIsDisabled returns — so a postfix there would have been
+           re-implementing the field one line downstream. Vanilla precedent:
+           Anomaly's CrumbledMind and BlissLobotomy, same file.
+       Doing it in XML also makes the restrictions show up in the pawn's "incapable
+       of" line and the hediff tooltip for free, which a Harmony postfix would not.
+
+       NEEDS BY TIER — owner ruling 4, verbatim: "SAPIENT gets everything;
+       PROGRAMMABLE gets Mood but not Joy/Beauty/Comfort; MINDLESS and BLANK have no
+       needs." Outdoors is included with Joy/Beauty/Comfort per packet B1's own list.
+       RSW_DW_Power is never disabled — every tier keeps it, which is what makes
+       "mindless has Power only" true.
+
+       WORK BY TIER — from the frozen sheet row abf_formatting: mindless is
+       "only capable of low-level activities"; programmable "opens up many more
+       complex skills especially dealing with other droids and machines, and
+       includes self-defense/combat, repair, plant tending"; sapient adds
+       "exceptional skill functions, savants, idiosyncracies, friendships &
+       bonding". So: Artistic and Social are the sapient rungs (bonding and
+       creativity), and "savants" is expressed as blocksInspirations rather than as
+       a work tag, because that is the mechanism vanilla actually uses for it.
+       ⚠️ Intellectual is deliberately LEFT ENABLED at programmable — the docs never
+       place research on the sapient side, and an astromech slicing a computer is
+       the canonical case. JUDGEMENT CALL, recorded in the item file.
+  ======================================================================== -->
+  <HediffDef>
+    <defName>RSW_DW_FormatTier</defName>
+    <label>format</label>
+    <description>The level of programming this droid is running: what it is able to do, and what it is able to feel.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.75, 0.65)</defaultLabelColor>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <minSeverity>1</minSeverity>
+    <maxSeverity>4</maxSeverity>
+    <initialSeverity>3</initialSeverity>
+    <stages>
+
+      <!-- severity 1 — BLANK: a standby chassis, no programming at all. -->
+      <li>
+        <label>blank</label>
+        <minSeverity>0</minSeverity>
+        <blocksMentalBreaks>true</blocksMentalBreaks>
+        <blocksInspirations>true</blocksInspirations>
+        <disablesNeeds>
+          <li>Mood</li>
+          <li>Joy</li>
+          <li>Beauty</li>
+          <li>Comfort</li>
+          <li>Outdoors</li>
+        </disablesNeeds>
+        <disabledWorkTags>
+          <li>ManualDumb</li>
+          <li>ManualSkilled</li>
+          <li>Violent</li>
+          <li>Caring</li>
+          <li>Social</li>
+          <li>Commoner</li>
+          <li>Intellectual</li>
+          <li>Animals</li>
+          <li>Artistic</li>
+          <li>Crafting</li>
+          <li>Cooking</li>
+          <li>Firefighting</li>
+          <li>Cleaning</li>
+          <li>Hauling</li>
+          <li>PlantWork</li>
+          <li>Mining</li>
+          <li>Hunting</li>
+          <li>Constructing</li>
+          <li>Shooting</li>
+        </disabledWorkTags>
+      </li>
+
+      <!-- severity 2 — MINDLESS: low-level labour only. Keeps ManualDumb,
+           Hauling, Cleaning, Firefighting, Mining and Commoner. -->
+      <li>
+        <label>mindless</label>
+        <minSeverity>1.5</minSeverity>
+        <blocksMentalBreaks>true</blocksMentalBreaks>
+        <blocksInspirations>true</blocksInspirations>
+        <disablesNeeds>
+          <li>Mood</li>
+          <li>Joy</li>
+          <li>Beauty</li>
+          <li>Comfort</li>
+          <li>Outdoors</li>
+        </disablesNeeds>
+        <disabledWorkTags>
+          <li>ManualSkilled</li>
+          <li>Violent</li>
+          <li>Caring</li>
+          <li>Social</li>
+          <li>Intellectual</li>
+          <li>Animals</li>
+          <li>Artistic</li>
+          <li>Crafting</li>
+          <li>Cooking</li>
+          <li>PlantWork</li>
+          <li>Hunting</li>
+          <li>Constructing</li>
+          <li>Shooting</li>
+        </disabledWorkTags>
+      </li>
+
+      <!-- severity 3 — PROGRAMMABLE: the ordinary working droid. Mood, no Joy. -->
+      <li>
+        <label>programmable</label>
+        <minSeverity>2.5</minSeverity>
+        <blocksInspirations>true</blocksInspirations>
+        <disablesNeeds>
+          <li>Joy</li>
+          <li>Beauty</li>
+          <li>Comfort</li>
+          <li>Outdoors</li>
+        </disablesNeeds>
+        <disabledWorkTags>
+          <li>Artistic</li>
+          <li>Social</li>
+        </disabledWorkTags>
+      </li>
+
+      <!-- severity 4 — SAPIENT: everything. No gating of any kind. -->
+      <li>
+        <label>sapient</label>
+        <minSeverity>3.5</minSeverity>
+      </li>
+
+    </stages>
+  </HediffDef>
+
 </Defs>

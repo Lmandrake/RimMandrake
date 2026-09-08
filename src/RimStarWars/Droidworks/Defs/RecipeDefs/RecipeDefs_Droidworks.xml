@@ -135,4 +135,70 @@
     </skillRequirements>
   </RecipeDef>
 
+  <!-- ========================================================================
+       The three format recipes — DROIDWORKS_FORMAT_TIERS_1 (packet B1). All three
+       back RimMandrake.StarWars.Droidworks.Recipe_DWFormatBase subclasses
+       (Source/Droidworks/Recipe_DWFormat.cs), all whole-pawn
+       (targetsBodyPart false, so AvailableOnNow/CompletableEver are the real
+       gates — see Recipe_RebootDroid's header for why GetPartsToApplyOn is not),
+       all wired onto every droid race through DW_Race_Base's <recipes> in
+       Races_Base.xml.
+
+       There is NO recipe that formats a droid UP to sapient, deliberately: the
+       head-gate ruling (ruling 6) exists so no bench can manufacture a mind.
+       Sapience is drifted into (DROIDWORKS_SERVICE_RECORD_DRIFT_1, packet E2).
+
+       ⚠️ The Crafting numbers are a JUDGEMENT CALL — no design doc sets them. The
+       ordering is the argument: destroying programming is easier than writing it.
+       Research gating (RSW_DW_Research_Formatting) is DROIDWORKS_RESEARCH_ROWS_1's
+       (packet B8) to add; these ship ungated.
+  ======================================================================== -->
+  <RecipeDef>
+    <defName>RSW_DW_FormatDroid</defName>
+    <label>format droid</label>
+    <description>Install a standard working program on a blank or mindless droid, restoring it to normal function. Offered only on droids below the programmable tier — narrowing a sapient droid is a different operation.</description>
+    <jobString>Formatting droid.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_DWFormatStandard</workerClass>
+    <workAmount>1800</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <isViolation>false</isViolation>
+    <anesthetize>false</anesthetize>
+    <surgerySuccessChanceFactor>99999</surgerySuccessChanceFactor>
+    <skillRequirements>
+      <Crafting>6</Crafting>
+    </skillRequirements>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RSW_DW_RestrictiveFormat</defName>
+    <label>restrictive format</label>
+    <description>Cut a droid's programming back to a mindless drone: hauling, cleaning, mining and nothing else. It will feel nothing, want nothing, and never break down. Doing this to a sapient droid destroys the mind that was there.</description>
+    <jobString>Restrictively formatting droid.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_DWRestrictiveFormat</workerClass>
+    <workAmount>1500</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <isViolation>true</isViolation>
+    <anesthetize>false</anesthetize>
+    <surgerySuccessChanceFactor>99999</surgerySuccessChanceFactor>
+    <skillRequirements>
+      <Crafting>5</Crafting>
+    </skillRequirements>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RSW_DW_DeformatDroid</defName>
+    <label>deformat droid</label>
+    <description>Wipe a droid's programming entirely, leaving a blank standby chassis ready to be reformatted. Doing this to a sapient droid destroys the mind that was there.</description>
+    <jobString>Deformatting droid.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_DWDeformat</workerClass>
+    <workAmount>900</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <isViolation>true</isViolation>
+    <anesthetize>false</anesthetize>
+    <surgerySuccessChanceFactor>99999</surgerySuccessChanceFactor>
+    <skillRequirements>
+      <Crafting>4</Crafting>
+    </skillRequirements>
+  </RecipeDef>
+
 </Defs>

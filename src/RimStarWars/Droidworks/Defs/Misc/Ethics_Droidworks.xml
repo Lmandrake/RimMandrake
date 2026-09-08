@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       DROIDWORKS_FORMAT_TIERS_1 (packet B1) — the moral consequence of destroying
+       a sapient droid's mind: "deformat sapient = murder thought per faction
+       ethics" (packet B1; build spec unit 9; droid_system_spec.md section 8).
+
+       Fired by RimMandrake.StarWars.Droidworks.Recipe_DWFormatBase whenever an
+       operation takes a droid that WAS sapient below the programmable rung.
+
+       🔑 HOW A WITNESS THOUGHT ACTUALLY REACHES A PAWN IN 1.6. Vanilla has no
+       non-ideoligious witness-thought route left: ThoughtUtility's own
+       organ-harvest and execution paths do nothing but record a HistoryEvent, and
+       the mood memory is granted by a PreceptComp_KnowsMemoryThought on whichever
+       ideoligion holds an opinion. So this file ships the two halves the platform
+       owns — the event, and the thought a precept can point at — and the precept
+       itself is campaign data.
+
+       ⛔ NOT WIRED HERE, AND OWED: no ideoligion in this repo yet reacts to
+       RSW_DW_DeformattedSapientDroid, so with Ideology active a deformat currently
+       moves faction goodwill but produces no colonist thought. The precept wiring
+       belongs with the faction/ideoligion layer (RimUtinni), not with the
+       platform. Recipe_DWFormatBase grants RSW_DW_KnowSapientDroidDeformatted
+       directly ONLY when Ideology is inactive, so the two routes can never
+       double-count.
+  ======================================================================== -->
+  <HistoryEventDef>
+    <defName>RSW_DW_DeformattedSapientDroid</defName>
+    <label>destroyed a sapient droid's mind</label>
+  </HistoryEventDef>
+
+  <ThoughtDef>
+    <defName>RSW_DW_KnowSapientDroidDeformatted</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>10</durationDays>
+    <stackLimit>5</stackLimit>
+    <stackedEffectMultiplier>0.75</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>sapient droid deformatted</label>
+        <description>Someone here scraped a thinking droid down to bare metal. Whatever it had become is gone. It did not have to be that way.</description>
+        <baseMoodEffect>-8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>
