@@ -6060,3 +6060,9 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T21:51:08Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROID_DISTRESS_CALL_REPOINT_1","sha":"44613332e16daba519df33d68cdf4175239b7947","ts":"2026-09-08T21:53:05Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROID_PROTOCOL_TRADE_ADVANTAGE_1","sha":"005c0b8e8336fc8fa3b06bc50178726170fa2820","ts":"2026-09-08T21:53:34Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROID_REPAIR_FOR_PROFIT_EVENTS_1","ts":"2026-09-08T21:55:36Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROID_REPAIR_FOR_PROFIT_EVENTS_1","ts":"2026-09-08T21:55:36Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"C5 DROID_REPAIR_FOR_PROFIT_EVENTS_1 live verify: reboot to load the new RUT DroidRepairJobs mod, then force-offer RUT_DroidRepairJob","ts":"2026-09-08T22:14:57Z"}
+{"seat":"FOUNDRY","event":"note","id":"DROID_REPAIR_FOR_PROFIT_EVENTS_1","text":"Built + deployed + ModsConfig-enabled (600->601). Offline clean: build 0/0, validate_quest 0 errors 0 warnings, validate_patch 0/0 on 4 def files, 22/22 referenced defNames MEASURED on the 2026-09-08T22-04-59Z capture. Commit c15a58f0. Live pass in progress on a full 601-mod cold load (game was at main menu, no campaign).","ts":"2026-09-08T22:19:44Z"}
+{"seat":"BENCH","event":"file","id":"RIMPROPERTY_ANIMAL_THEFT_1","title":"RimProperty: trainable stealing for agile pets, wild-animal theft, droid loaders carry the hauler property (owner, 2026-09-08)","kind":"task","target":"v1","caused_by":"MOD_NAMING_CONSOLIDATION_AUDIT_1","for":"FOUNDRY","ts":"2026-09-08T22:58:34Z"}
+{"seat":"BENCH","event":"file","id":"EGG_PROXIMITY_HATCH_TRIGGER_1","title":"Egg proximity-hatch trigger: eggs hatch AT you on approach (owner, 2026-09-08); BirthHatchDemo retirement gated on this","kind":"task","target":"v1","caused_by":"MOD_NAMING_CONSOLIDATION_AUDIT_1","for":"FOUNDRY","ts":"2026-09-08T22:58:34Z"}

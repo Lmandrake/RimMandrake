@@ -112,3 +112,48 @@ opened at the bench — gathering fragmented mods into domain systems.
 Census: `infrastructure/state/mod_domain_census.csv` (82 folders, 77 mods;
 grep-indicative def counts, not MEASURED). Next: consolidation map + plan
 drafting on a backgrounded Fable agent; owner reviews the map as a sheet.
+
+## Map review rulings — owner sitting, 2026-09-08 (all §7 decisions closed)
+
+Owner ruled on every open decision; four reshape the draft. Voice-typo
+readings BENCH applied (owner may correct): "genetic use"→generic use;
+"world eater effects"→world water effects.
+
+R1. **Crime → RimProperty (RM)**: Property + SalvageClaim + TheftHauler
+    merge as `RimProperty`. Muckraker/droid-loader wiring stays a
+    MayRequire patch. New scope filed: RIMPROPERTY_ANIMAL_THEFT_1.
+R2. **Ninefold and Doctrine stay separate**; Ninefold's ruled RM-engine +
+    RUT-content split stands.
+R3. **RimPursuit (RM, NEW)**: Visibility merges with EmpirePursuit's
+    pursuit engine ("hiding helps when pursued") promoted RUT→RM;
+    Empire-specific triggers stay behind as the RUT data pack.
+R4. **defName re-prefix on tier moves: YES, now** — pre-freeze only exit.
+R5. **Aftermath → RimChronicle (RM)**: a game-event evidence engine other
+    mods hook (Ninefold already consumes the same battle events).
+    Battle-scoped v1; hook API designed for more event kinds, no
+    universal recorder built now. AftermathRites = its RUT data pack,
+    renamed grammar-compliant (Fable proposes).
+R6. **Engine + data-pack pattern RATIFIED as doctrine**: RM engine holds
+    machinery + generic vanilla-style default content; scenario packs
+    patch in from RUT. Guard: only where real machinery exists — never
+    invent empty RM shells where vanilla is the engine.
+R7. **Graffiti (RM)** keeps engine + generic default marks (small
+    authoring task: generic examples); campaign marks patch in from RUT.
+R8. **Salvation (RUT data pack)** = nine campaign mark-styles +
+    IshkoDarkLandmarks + Rites. AftermathRites NOT in it.
+R9. **Pyrelands ships as a self-contained generic RM biome** (FireEcology
+    engine + biome content); same for WeatherSuite at RM. Uniquely-
+    Ashkarr content stays RUT.
+R10. **ManyWaters (RM, NEW)**: all water effects/types together —
+    steaming, boiling, etc.; RiverSteam's effect generalizes into it.
+    UI (MenuShell ← UtinniShell) stays RUT; AshkarrLandmarkArt stays RUT.
+R11. **DesertVehicleReskin → StarWarsPatches (RSW)** — owner overrides
+    the review's generic re-tier: the reskins were Star Wars content.
+R12. **SWBestiary keeps its name**, the RSW fauna cell; merge list stands.
+R13. **JawaVoice stays whole at RSW** (one JawaVoice_Ideology.xml
+    line-read during the sprint closes its VERIFY).
+R14. **Retirements NOT approved**: SeasWaterline and BirthHatchDemo stay;
+    BirthHatchDemo gated on EGG_PROXIMITY_HATCH_TRIGGER_1.
+R15. Names ruled: RimProperty, RimPursuit, RimChronicle.
+
+Next: Fable revision of plan + map to these rulings; then the sprint item.

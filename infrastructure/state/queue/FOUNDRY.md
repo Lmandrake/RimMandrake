@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T21:53:34Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-08T22:58:34Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -504,6 +504,15 @@ kind:     task
 summary:  Thin when filed — no spec/verify/criteria in the queue entry itself. Specced
 prose:    infrastructure/state/items/DROID_HUTT_CAPTIVES_1.md
 
+## DROID_REPAIR_FOR_PROFIT_EVENTS_1 Recurring event: friendlies bring droids for paid repair/upgrade; inferior/superior parts choices; offload problem droids
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Thin when filed — no spec/verify/criteria in the queue entry itself, but fully
+prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
+
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -707,16 +716,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DROID_REPAIR_FOR_PROFIT_EVENTS_1 Recurring event: friendlies bring droids for paid repair/upgrade; inferior/superior parts choices; offload problem droids
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
 
 ## DROID_RETIRE_ABF_SYNCORE_1 Retire ABF + SynCore (wave R2); DroidDonor_ABFGate fires; remove DroidsAreMachines ABF half; cold load
 state:    proposed
@@ -1147,3 +1146,23 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  §3.2 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md asks the Junker
 prose:    infrastructure/state/items/DROID_SUICIDE_CHARGE_STATE_1.md
+
+## EGG_PROXIMITY_HATCH_TRIGGER_1 Egg proximity-hatch trigger: eggs hatch AT you on approach (owner, 2026-09-08); BirthHatchDemo retirement gated on this
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/EGG_PROXIMITY_HATCH_TRIGGER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/EGG_PROXIMITY_HATCH_TRIGGER_1.md
+
+## RIMPROPERTY_ANIMAL_THEFT_1 RimProperty: trainable stealing for agile pets, wild-animal theft, droid loaders carry the hauler property (owner, 2026-09-08)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RIMPROPERTY_ANIMAL_THEFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RIMPROPERTY_ANIMAL_THEFT_1.md
