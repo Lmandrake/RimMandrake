@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T23:29:51Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-08T23:34:58Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -523,7 +523,7 @@ summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choi
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
 
 ## DROIDWORKS_APPARELMONEY_MISSING_1 gen_droidworks_defs.py never emits apparelMoney on any of the 80 PawnKindDefs -- no Droidworks kind can ever generate apparel regardless of apparelTags
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -694,16 +694,6 @@ kind:     task
 blocked:  world-tile mutation needs a frozen propane-lake footprint before any tile set is written (on LIQUID_BIOMES_MAP_1)
 summary:  - What it does: an in-game ignition event (thruster contact, a dropped reactor
 prose:    infrastructure/state/items/WAR_LAB_CRATER_HOOK_1.md
-
-## DROIDWORKS_APPARELMONEY_MISSING_1 gen_droidworks_defs.py never emits apparelMoney on any of the 80 PawnKindDefs -- no Droidworks kind can ever generate apparel regardless of apparelTags
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-blocked:  apparelMoney field added+calibrated and live-verified for the bare-skin half; gear-half blocked on IsFlesh gate in PawnApparelGenerator, needs a Harmony patch (on DROIDWORKS_APPAREL_ISFLESH_GATE_1)
-summary:  Found 2026-09-08 while live-verifying DROIDWORKSMODULEABSORB1 (B2). Three
-prose:    infrastructure/state/items/DROIDWORKS_APPARELMONEY_MISSING_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -1156,3 +1146,33 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Owner adopted (card, 2026-09-08, on BENCH's advice): RimChronicle
 prose:    infrastructure/state/items/CHRONICLE_EVENT_SPINE_1.md
+
+## MOD_CONSOLIDATION_SPRINT_1 Execute the consolidation map: 77 to 53 mods, one mechanical game-down window per MOD_CONSOLIDATION_PLAN.md section 4 (signed off 2026-09-08)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MOD_CONSOLIDATION_SPRINT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MOD_CONSOLIDATION_SPRINT_1.md
+
+## GRAFFITI_GENERIC_MARKS_1 Author generic vanilla-style default marks for RM Graffiti (R7): the nine campaign styles move to Salvation, RM ships with examples
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GRAFFITI_GENERIC_MARKS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GRAFFITI_GENERIC_MARKS_1.md
+
+## PYRELANDS_GENERIC_TEXT_1 De-campaign Pyrelands text for the self-contained RM biome (R9); resolve the donor BiomeDef VERIFY (zylle.morevanillabiomes) with the absorption track
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_GENERIC_TEXT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_GENERIC_TEXT_1.md
