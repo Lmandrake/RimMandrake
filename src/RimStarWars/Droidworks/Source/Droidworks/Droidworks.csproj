@@ -89,6 +89,8 @@
     <Compile Include="Recipe_RebootDroid.cs" />
     <Compile Include="Recipe_RemoveRestrainingBolt.cs" />
     <Compile Include="Recipe_ShopRebuild.cs" />
+    <!-- DROID_FACTION_LOADOUTS_1 (packet C1): the Trade Moot's droid market. -->
+    <Compile Include="StockGenerator_DWDroids.cs" />
     <Compile Include="ThoughtWorker_NearBoltedDroid.cs" />
   </ItemGroup>
 

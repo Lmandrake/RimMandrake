@@ -175,6 +175,21 @@
         </traders>
         <guards>
           <RSW_Quarren MayRequire="mandrake.rsw.starwarsraces">6</RSW_Quarren>
+          <!-- ═══ DROID_FACTION_LOADOUTS_1 (packet C1), 2026-09-08 ═══════════════
+               Ruling 2: "Many traders will come with protocol droids to help them
+               with communication and trade advantage."
+               ⛔ PRESENCE ONLY. The price mechanic is C4
+               (DROID_PROTOCOL_TRADE_ADVANTAGE_1), which keys on a Protocol-family
+               pawn being in the trade party; this entry is what C4 will find.
+               🔑 `guards` is the only node PawnGroupKindWorker_Trader reads a
+               companion out of - it fills a Trader group from `traders` (exactly
+               one), `carriers` and `guards`, and never touches `options`. So a
+               walking companion is a "guard" whether or not it fights.
+               ⚠️ Presence is by weight, therefore not guaranteed, and that is the
+               ruled behaviour rather than a shortfall: ruling 2 also says it is
+               "dangerous not to" have one, which requires that some parties arrive
+               without. C4 owns the absent case as its penalty branch. -->
+          <RSW_DW_KotORDroidGood_GE3PD MayRequire="mandrake.rsw.droidworks">4</RSW_DW_KotORDroidGood_GE3PD>
         </guards>
         <carriers>
           <Muffalo>6</Muffalo>

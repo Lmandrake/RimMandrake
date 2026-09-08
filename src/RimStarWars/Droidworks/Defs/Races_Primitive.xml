@@ -198,8 +198,28 @@
     <comps>
       <!-- CompDroidDetonation, same rollout convention Races_JDS.xml's own
            B1 Battle Droid block documents: every energyDensity>0 race gets
-           this, per its own race's DroidworksExtension tuning. -->
-      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+           this, per its own race's DroidworksExtension tuning.
+
+           🔴 damageDef Flame, and this ONE race overrides it — added by
+           DROID_FACTION_LOADOUTS_1 (packet C1), 2026-09-08. Ruling 2 asks for
+           droids "spewing fire and able to blow themselves up"; the second half
+           was already true here (energyDensity 3 + deliberateDenyModule above),
+           the first half was not — CompProperties_DroidDetonation defaults to
+           DamageDefOf.Bomb, which is a concussion, not a fire. `Flame` is vanilla
+           Core and is the same DamageDef vanilla's own molotov explosion uses, so
+           the explosion sets the ground and the target alight rather than just
+           knocking them down. It is set HERE and nowhere else: every other droid
+           in the mod detonates as a power cell rupturing, which is correct for
+           them and would be wrong for this one.
+
+           ⛔ The alternative route — an actual flamethrower — does not exist to
+           be taken. The only droid flamethrower in the live 600-mod set
+           (`guy762_DroidWeapon_flamethrower`) is kotorcore apparel requiring
+           MVCF and was already excluded from the B2 absorption for that reason
+           (Absorbed_KotorDroidModules_EXCLUDED_manifest.txt:24). Not invented. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation">
+        <damageDef>Flame</damageDef>
+      </li>
     </comps>
   </AlienRace.ThingDef_AlienRace>
 

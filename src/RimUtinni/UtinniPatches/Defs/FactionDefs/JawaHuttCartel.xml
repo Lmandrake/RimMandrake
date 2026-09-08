@@ -207,6 +207,23 @@
          this opt-out the faction fields those too and raids arrive as
          vanilla pawns wearing our name. Vanilla itself writes it 314 times,
          9 of them on pawnGroupMakers. -->
+    <!-- ═══ DROID_FACTION_LOADOUTS_1 (packet C1), 2026-09-08 ═════════════════════
+         Ruling 2, verbatim: "The Hutts mostly rely on muscle but could easily have
+         some military droids they purchased." §3.2's mechanism cell: "raid/defence
+         entries: 0-2 Heavy kinds". Two DW_Family_Heavy kinds, and the weights are
+         sized so that "0-2" is what a group actually contains rather than a hope:
+         2.5 of 19.5 total weight, so roughly one pawn in eight is a droid.
+
+         🔑 PURCHASED, therefore MID-GRADE, therefore the Colonist-tier variants.
+         Droidworks ships a "Bad" (raider-grade, 125-500 power) and a "Colonist"
+         (60-90 power) build of the same KotOR chassis; the Hutts buy droids the way
+         anyone buys droids, off a market, so they get the ordinary ones. Powers off
+         the live 600-mod dump 2026-09-08: ADMkI 70, SentWD 50, against Hutt Grunt
+         55 / Heavy 90 / Specialist 108 / Leader 873. That is 155 of 2154 weighted
+         combatPower, 7 % - "mostly muscle" is preserved exactly as ruled.
+
+         ⛔ NOT the Hutt captives row of §3.2 (droids in the torture chambers). That
+         is C6, DROID_HUTT_CAPTIVES_1, a separate item, and nothing here touches it. -->
     <pawnGroupMakers Inherit="False">
       <li>
         <kindDef>Combat</kindDef>
@@ -215,6 +232,8 @@
           <Jawa_Hutt_Heavy>4</Jawa_Hutt_Heavy>
           <Jawa_Hutt_Specialist>2</Jawa_Hutt_Specialist>
           <Jawa_Hutt_Leader>1</Jawa_Hutt_Leader>
+          <RSW_DW_KotORDroidColonist_ADMkI MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_KotORDroidColonist_ADMkI>
+          <RSW_DW_KotORDroidColonist_SentWD MayRequire="mandrake.rsw.droidworks">1</RSW_DW_KotORDroidColonist_SentWD>
         </options>
       </li>
       <li>
@@ -226,6 +245,10 @@
           <Jawa_Gamorrean_Guard>6</Jawa_Gamorrean_Guard>
           <Jawa_Gamorrean_Enforcer>2</Jawa_Gamorrean_Enforcer>
           <Jawa_Spawn_Hutt>1</Jawa_Spawn_Hutt>
+          <!-- C1, protocol-droid presence only. The price mechanic is C4's
+               (DROID_PROTOCOL_TRADE_ADVANTAGE_1); `guards` is the only node a
+               Trader group reads a companion out of. Weight 4 of 13. -->
+          <RSW_DW_KotORDroidGood_GE3PD MayRequire="mandrake.rsw.droidworks">4</RSW_DW_KotORDroidGood_GE3PD>
         </guards>
         <carriers>
           <Bantha MayRequire="Mlie.StarWarsAnimalCollection">6</Bantha>
@@ -238,6 +261,9 @@
           <Jawa_Hutt_Grunt>10</Jawa_Hutt_Grunt>
           <Jawa_Hutt_Heavy>3</Jawa_Hutt_Heavy>
           <Jawa_Hutt_Specialist>2</Jawa_Hutt_Specialist>
+          <!-- C1: bought muscle stands in the palace as well as on the raid. -->
+          <RSW_DW_KotORDroidColonist_ADMkI MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_KotORDroidColonist_ADMkI>
+          <RSW_DW_KotORDroidColonist_SentWD MayRequire="mandrake.rsw.droidworks">1</RSW_DW_KotORDroidColonist_SentWD>
         </options>
       </li>
     </pawnGroupMakers>

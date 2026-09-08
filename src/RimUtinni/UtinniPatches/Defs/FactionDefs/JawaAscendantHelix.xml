@@ -178,6 +178,16 @@
         </traders>
         <guards>
           <RSW_Arkanian MayRequire="mandrake.rsw.starwarsraces">6</RSW_Arkanian>
+          <!-- C1 (DROID_FACTION_LOADOUTS_1), 2026-09-08: ruling 2's protocol droid
+               on a trading party. Presence only - the price mechanic is C4's.
+               `guards` is the only node a Trader group reads a companion out of;
+               full reasoning in JawaDeepwaterCompact.xml's copy of this comment.
+               ⚠️ RSW_DW_OuterRim_ProtocolDroid rather than the KotOR GE3PD the
+               other factions carry: Helix is the one Ultra-tech faction on the
+               planet and the design doc's own §1.5 puts the Depot line above the
+               KotOR line in grade. Same Protocol family, so C4 keys on it
+               identically. -->
+          <RSW_DW_OuterRim_ProtocolDroid MayRequire="mandrake.rsw.droidworks">4</RSW_DW_OuterRim_ProtocolDroid>
         </guards>
         <carriers>
           <Muffalo>6</Muffalo>

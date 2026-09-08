@@ -216,6 +216,37 @@
       <xpath>/Defs/FactionDef[@Name="OutlanderFactionBase"]/pawnGroupMakers</xpath>
       <value>
 
+        <!-- ═══ DROID_FACTION_LOADOUTS_1 (packet C1), 2026-09-08 ═══════════════
+             Ruling 2, verbatim: "If they must, the Moisture Farmers will defend
+             themselves with utility droids also trying to fight alongside
+             (badly)." §3.2's mechanism cell: "defence-group entries: Labour/
+             Astromech kinds, low combatPower".
+
+             🔑 THE POINT OF THIS ENTRY IS THAT THEY ARE SEEN AND THEY ARE USELESS,
+             and weighted selection gives both at once for free. The four droid
+             kinds carry 14 of the 47 total weight in the Combat group - roughly
+             three in ten pawns is a droid, so a homestead defence visibly fields
+             farm machinery - while contributing only 290 of 2234 weighted
+             combatPower, 13 %. A raid budget spent on them buys the player almost
+             nothing to fight. Powers read off the live 600-mod dump 2026-09-08:
+             KM1MD 30, R8009UD 20, GE3LD 10, 3C 20, against Homestead Grunt 49 /
+             Ranger 62 / Heavy 69 / Specialist 76 / Leader 116.
+
+             ⚠️ THEY ARRIVE BARE-HANDED AND THAT IS THE DESIGN, not the
+             known-defect. Every Droidworks-generated kind ships with no
+             weaponTags/weaponMoney (a deliberate convention of
+             gen_droidworks_defs.py - combat comes from race stats, never from
+             gear), so these four punch. §3.2's "Primitive-tier weapons" cell
+             cannot be honoured yet: the Primitive tier fabricates frames, parts
+             and modules, not weapons, and no flame or improvised weapon exists in
+             the live set that a droid kind could be pointed at without inventing
+             a defName. Recorded rather than guessed.
+
+             ⚠️ These hang off the ABSTRACT OutlanderFactionBase along with their
+             four host groups, so they reach every Outlander descendant that rolls
+             one of these commonality-5 groups, not OutlanderCivil alone - the same
+             accepted blast radius OUTLANDER_GROUPMAKER_PATCH_1 already documents
+             above. -->
         <li>
           <kindDef>Combat</kindDef>
           <commonality>5</commonality>
@@ -225,6 +256,10 @@
             <Jawa_Homestead_Heavy>6</Jawa_Homestead_Heavy>
             <Jawa_Homestead_Specialist>4</Jawa_Homestead_Specialist>
             <Jawa_Homestead_Leader>1</Jawa_Homestead_Leader>
+            <RSW_DW_KotORDroidColonist_KM1MD MayRequire="mandrake.rsw.droidworks">4</RSW_DW_KotORDroidColonist_KM1MD>
+            <RSW_DW_KotORDroidColonist_R8009UD MayRequire="mandrake.rsw.droidworks">4</RSW_DW_KotORDroidColonist_R8009UD>
+            <RSW_DW_KotORDroidGood_3C MayRequire="mandrake.rsw.droidworks">3</RSW_DW_KotORDroidGood_3C>
+            <RSW_DW_KotORDroidColonist_GE3LD MayRequire="mandrake.rsw.droidworks">3</RSW_DW_KotORDroidColonist_GE3LD>
           </options>
         </li>
 
@@ -236,6 +271,13 @@
             <Jawa_Homestead_DesertRanger>10</Jawa_Homestead_DesertRanger>
             <Jawa_Homestead_Heavy>4</Jawa_Homestead_Heavy>
             <Jawa_Homestead_Specialist>4</Jawa_Homestead_Specialist>
+            <!-- C1: the League is `raidsForbidden`, so a peaceful visit is where
+                 the player actually meets it and therefore where its droids have
+                 to be visible at all. Same four kinds, same weights. -->
+            <RSW_DW_KotORDroidColonist_KM1MD MayRequire="mandrake.rsw.droidworks">4</RSW_DW_KotORDroidColonist_KM1MD>
+            <RSW_DW_KotORDroidColonist_R8009UD MayRequire="mandrake.rsw.droidworks">4</RSW_DW_KotORDroidColonist_R8009UD>
+            <RSW_DW_KotORDroidGood_3C MayRequire="mandrake.rsw.droidworks">3</RSW_DW_KotORDroidGood_3C>
+            <RSW_DW_KotORDroidColonist_GE3LD MayRequire="mandrake.rsw.droidworks">3</RSW_DW_KotORDroidColonist_GE3LD>
           </options>
         </li>
 
@@ -257,6 +299,22 @@
             <Jawa_Homestead_Grunt>8</Jawa_Homestead_Grunt>
             <Jawa_Homestead_Heavy>6</Jawa_Homestead_Heavy>
             <Jawa_Homestead_Specialist>3</Jawa_Homestead_Specialist>
+            <!-- C1, the protocol-droid row of §3.2: "every trader kind | a
+                 protocol droid, with a mechanical trade advantage". ⛔ THE PRICE
+                 MECHANIC IS NOT BUILT HERE - that is C4
+                 (DROID_PROTOCOL_TRADE_ADVANTAGE_1), and it keys on a Protocol-
+                 family pawn being PRESENT in the trade party. This entry is that
+                 presence and nothing more.
+                 🔑 `guards` is the only route. PawnGroupKindWorker_Trader fills a
+                 Trader group from `traders` (exactly one), `carriers` and
+                 `guards`; its `options` node is never read. So a walking companion
+                 is a guard whether or not it can fight, and this one cannot.
+                 ⚠️ Presence is PROBABILISTIC, by weight, not guaranteed - which is
+                 the ruled behaviour, not a shortfall: ruling 2 says a protocol
+                 droid is a trade advantage and that it is "dangerous not to" have
+                 one, which requires that some parties arrive without. C4 must
+                 handle the absent case anyway; it is C4's penalty branch. -->
+            <RSW_DW_KotORDroidGood_GE3PD MayRequire="mandrake.rsw.droidworks">5</RSW_DW_KotORDroidGood_GE3PD>
           </guards>
         </li>
 
@@ -269,6 +327,12 @@
             <Jawa_Homestead_Heavy>8</Jawa_Homestead_Heavy>
             <Jawa_Homestead_Specialist>5</Jawa_Homestead_Specialist>
             <Jawa_Homestead_Leader>2</Jawa_Homestead_Leader>
+            <!-- C1: the farm droids are at the homestead too, which is where a
+                 player raiding one meets them. -->
+            <RSW_DW_KotORDroidColonist_KM1MD MayRequire="mandrake.rsw.droidworks">4</RSW_DW_KotORDroidColonist_KM1MD>
+            <RSW_DW_KotORDroidColonist_R8009UD MayRequire="mandrake.rsw.droidworks">4</RSW_DW_KotORDroidColonist_R8009UD>
+            <RSW_DW_KotORDroidGood_3C MayRequire="mandrake.rsw.droidworks">3</RSW_DW_KotORDroidGood_3C>
+            <RSW_DW_KotORDroidColonist_GE3LD MayRequire="mandrake.rsw.droidworks">3</RSW_DW_KotORDroidColonist_GE3LD>
           </options>
         </li>
 
