@@ -2154,16 +2154,16 @@
     "sha": "279e2e00"
   },
   "src/RimMandrake/Utils/ashkarr_nightside_pass.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "a2c5570dcec06b59ac1ede6174ff23af370a3e5cc72241d8d3bc4cdbedb8cbb8",
-    "sha": "e5013227"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "3c795956fa213fef22955ae46b78e23f49375d5525d86c3cda93b3b540f48d98",
+    "sha": "5f75d12d"
   },
   "src/RimMandrake/Utils/ashkarr_paint.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "ff82845a17377c12dc1c446b70668d904c59707c7107bb5b5e832916c9125bb5",
-    "sha": "df166bc9"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "81fff9e304e5ab78ffdb0594951db3c5077ce5b72e3af574d3f6d8b1c9506351",
+    "sha": "7bedead6"
   },
   "src/RimMandrake/Utils/ashkarr_populate.py": {
     "cleanCount": 2,
@@ -3022,10 +3022,10 @@
     "sha": "d401c253"
   },
   "src/RimMandrake/Utils/selftest_codebase_health.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "d06e1fb87bdc0db0b8e3bc9c3d06a2657f4494fda6143b0b4a96884054fb875d",
-    "sha": "359b0b2c"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "d2e2001802292e74522b5cf30c2e2fde2798cbcbc1353555853a6eb461c7baba",
+    "sha": "5f75d12d"
   },
   "src/RimMandrake/Utils/selftest_colony_visibility.py": {
     "cleanCount": 1,
@@ -3160,10 +3160,10 @@
     "sha": "5ac921b8"
   },
   "src/RimMandrake/Utils/verify_frozen.py": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "b30f950798da33e9f69b016599025e1c7da200d0d36a0c40aaefcb5764b9152e",
-    "sha": "363bae74"
+    "cleanCount": 3,
+    "date": "2026-09-07",
+    "hash": "8f02da5e6e5ba42bd4734887e0d16212dc2986002c92d6c49650029512d2d12d",
+    "sha": "9698e721"
   },
   "src/RimMandrake/Utils/verify_resolve_texture_live.py": {
     "cleanCount": 1,
