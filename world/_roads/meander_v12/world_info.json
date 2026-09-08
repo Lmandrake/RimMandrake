@@ -1,0 +1,66 @@
+{
+ "success": true,
+ "info": {
+  "name": "Ash'karr",
+  "seedString": "raven",
+  "seed": 766758233,
+  "planetCoverage": 1.0,
+  "persistentRandomValue": -1622588257,
+  "overallRainfall": "Normal",
+  "overallTemperature": "Normal",
+  "overallPopulation": "Normal",
+  "landmarkDensity": "Normal",
+  "initialMapSize": {
+   "x": 250,
+   "y": 1,
+   "z": 250
+  },
+  "pollution": 0.05,
+  "factionCount": 21,
+  "factions": [
+   "Jawa_IndigenousTribes",
+   "Jawa_Junkers",
+   "Jawa_HuttCartel",
+   "Jawa_DeepwaterCompact",
+   "Jawa_WildsteamClan",
+   "Jawa_GeonosianFoundryHive",
+   "Jawa_FreeDroidEnclaves",
+   "Jawa_AscendantHelix",
+   "OutlanderCivil",
+   "TribeCivil",
+   "Pirate",
+   "Empire",
+   "Mechanoid",
+   "Insect",
+   "Entities",
+   "Ancients",
+   "AncientsHostile",
+   "HoraxCult",
+   "AM_EnemyPirate",
+   "TribalHostile",
+   "DP_GenericHostile"
+  ]
+ },
+ "tilesCount": 21872,
+ "notPersisted": [
+  "overallPopulation",
+  "landmarkDensity"
+ ],
+ "notPersistedNote": "WorldInfo.ExposeData does not scribe these two. Whatever they read now, they revert on the next load.",
+ "ticksGame": 1181,
+ "operation": {
+  "OperationId": "op_69cea5f4a9bb4a4ebe53ad02899f71ab",
+  "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/world-info-get",
+  "Status": 2,
+  "Success": true,
+  "StartedAtUtc": "2026-09-08T05:11:32.1364967+00:00",
+  "CompletedAtUtc": "2026-09-08T05:11:32.1604163+00:00",
+  "DurationMs": 23,
+  "Result": null,
+  "HasResult": true,
+  "ResultWasTruncated": false,
+  "Warnings": [],
+  "Error": null,
+  "Metadata": {}
+ }
+}

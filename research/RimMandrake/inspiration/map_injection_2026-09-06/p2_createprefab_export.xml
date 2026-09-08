@@ -1,0 +1,22 @@
+
+<PrefabDef>
+  <defName>NewPrefab</defName> <!-- rename -->
+  <size>(5,3)</size>
+  <things>
+    <Table1x2c>
+      <position>(2, 0, 1)</position>
+      <stuff>Steel</stuff>
+      <quality>Normal</quality>
+    </Table1x2c>
+    <Stool>
+      <rects>
+        <li>(1,1,1,1)</li>
+        <li>(3,1,3,2)</li>
+      </rects>
+      <relativeRotation>Clockwise</relativeRotation>
+      <stuff>Steel</stuff>
+      <quality>Normal</quality>
+    </Stool>
+  </things>
+</PrefabDef>
+
