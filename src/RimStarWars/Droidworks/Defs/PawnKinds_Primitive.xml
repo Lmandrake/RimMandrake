@@ -26,7 +26,7 @@
   <PawnKindDef>
     <defName>RSW_DW_Primitive_G2</defName>
     <label>G2 repair droid</label>
-    <race>RSW_DW_Race_Primitive_G2</race>
+    <race>RSW_DW_Race_Primitive_G2Unit</race>
     <combatPower>99999</combatPower>
     <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
