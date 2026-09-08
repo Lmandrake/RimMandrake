@@ -5672,3 +5672,7 @@
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-08T14:11:37Z"}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH AFK: roads straighten + straggler cleanup + walk biomes; heartbeat","ts":"2026-09-08T14:27:02Z"}
 {"seat":"BENCH","event":"file","id":"BLUE_PROPANE_RING_RULING_1","title":"Blue desert & propane now occupy all 12 bearing sectors — their 'never a ring' anti-bullseye rulings are contradicted by the paint; re-de-circle or amend the ruling","kind":"decision","target":"v1","for":"OWNER","ts":"2026-09-08T14:31:03Z"}
+{"seat":"FOUNDRY","event":"file","id":"BRIDGETOOLS_CSHARP_SWEEP_BUGS_1","title":"6 real bugs found in a full-file review of the 3 largest bridgetools C# files (Society/Terrain/World tools)","kind":"bug","target":"v1","for":"FOUNDRY","ts":"2026-09-08T14:32:21Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BRIDGETOOLS_CSHARP_SWEEP_BUGS_1","ts":"2026-09-08T14:32:27Z"}
+{"seat":"FOUNDRY","event":"start","id":"BRIDGETOOLS_CSHARP_SWEEP_BUGS_1","ts":"2026-09-08T14:32:28Z"}
+{"seat":"FOUNDRY","event":"note","id":"BRIDGETOOLS_CSHARP_SWEEP_BUGS_1","text":"6 fixes landed in 2691a1e3 (swept into BENCH's commit by an index race); write-up recorded here since that commit message doesn't mention them","ts":"2026-09-08T14:33:01Z"}
