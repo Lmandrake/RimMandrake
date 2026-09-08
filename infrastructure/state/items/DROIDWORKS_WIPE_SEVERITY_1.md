@@ -160,3 +160,88 @@ entry points into one shared method (they are mutually exclusive branches,
 so it cannot double-fire) precisely to be immune to the answer. Worth one
 live check — if `CompPostTick` is dead, `RSW_DW_BoltResentment` has never
 accumulated.
+
+**RESOLVED, false alarm** (FOUNDRY, 2026-09-08, once the bridge freed):
+read `Pawn_HealthTracker.HealthTick()` from source
+(`mcp__rimsage__read_csharp_symbol`) — it calls `tmpHediff.Tick();
+tmpHediff.PostTick();` for every hediff on the pawn, **unconditionally,
+every normal tick** (not gated behind an interval check), and
+`HediffWithComps.PostTick()`'s own body is `comps[i].CompPostTick(ref
+severityAdjustment)` in a loop. `CompPostTick` is not dead; `PoweredDown`/
+`BoltResentment`/`IonOverloadsDroid` all fire as designed. No code change
+needed. (`HediffComp_DWWipeStumble`'s own belt-and-braces double-override
+is harmless either way, just no longer necessary to reason about.)
+
+## FOUNDRY, 2026-09-08 later — live verify, partial
+
+Bridge freed once the A2 full-list restart (that this item was blocked
+behind) closed. Minimal-list quicktest:
+
+- **`RSW_DW_RecentlyWiped`'s capMods confirmed live, exactly as authored.**
+  Baseline Moving 1.0 / Manipulation 0.91 on a fresh Protocol droid → after
+  adding the hediff directly (`jawa/pawn_health`, severity 1.0, the "blank
+  slate" stage): **Moving 0.55 / Manipulation 0.41** — the -0.45/-0.50
+  offsets landed precisely. "Bumps into walls, learns how to use its body"
+  is real and severe, matching ruling 7.
+- **`jawa/bill_add` accepted `RSW_DW_MemoryWipe` onto a live pawn** — a
+  genuine new capability this session hadn't used before (Pawns are valid
+  `IBillGiver` targets for surgery bills, same as workbenches for
+  production bills). The RecipeDef structure and `workerClass` wiring are
+  therefore confirmed well-formed by the running game.
+- **Not reached: the bill actually completing** (which would prove the
+  service-record reset and quirk roll live, not just by code review).
+  Tried twice — once on the original quicktest colonists (droid patient
+  spawned ~50 tiles from the nearest colonist; ~3250 ticks, never picked
+  up), once on a droid spawned directly next to a Medicine-15-boosted
+  colonist (~5700 more ticks, still `shouldDoNow: true`, never picked up).
+  A direct `jawa/ordered_job` force-attempt (`jobDef: "DoBill"`) was
+  accepted but resolved to `Wait` within 100 ticks rather than running the
+  bill. Skill was confirmed non-zero (`levelRaw: 15`); did not check
+  work-tab *priority* (a separate field from skill level — `jawa/
+  set_pawn_skill` does not touch it) before stopping, so an unset/zero
+  Doctor priority on these quicktest colonists is the leading suspect, not
+  ruled out. **Same class of limitation this session hit repeatedly today**
+  (A1's own precedent) — the mechanism the recipe drives (hediff add,
+  reflection-based record zero, quirk grant) is code-review-verified only;
+  the actual `ApplyOnPawn` execution has not been observed running.
+- **Player.log, literal check**: clean, no new `Config error in` lines
+  attributable to this item's own defs (12 pre-existing, same baseline as
+  every other check this session).
+
+**Still owed**: an actual completed wipe (set Doctor work priority
+explicitly next attempt, or spawn the patient inside an existing bedroom/
+med bay where a colonist is more likely to path). Item stays `doing`+`needs
+bridge`.
+
+## FOUNDRY, 2026-09-08 later still — second attempt, Doctor priority ruled out
+
+Tried the leading suspect from the note above directly: `jawa/
+set_work_priority` (`workType: Doctor, priority: 1`) on three colonists,
+confirmed `success: true` and Doctor now *active* for all three (the
+tool's own `manualPrioritiesOn: false` note means the game only has
+on/off toggles here, not numbered priorities — "active" is what was
+missing, and now isn't). Spawned a fresh droid directly among the
+colonists, `bill_add` again accepted, unpaused ~2600 ticks. **Still not
+picked up.** The droid itself wandered ~15 tiles on its own normal AI
+(un-drafted pawns roam) into rough proximity of the colonists without a
+doctor ever starting the operation.
+
+Doctor priority is therefore **ruled out** as the blocker — it was worth
+checking and wasn't it. Leading remaining theory, not confirmed: vanilla
+medical `Bill_Medical` work may expect the patient reasonably stationary
+(in a bed, or at minimum not actively wandering under its own AI) before
+`WorkGiver_DoBill` schedules a colonist onto it — a roaming, non-drafted,
+non-Downed droid may simply never qualify as an operable patient the way
+a bedridden colonist does. Not investigated further this pass (would need
+reading `WorkGiver_DoBill`/`Bill_Medical`'s own eligibility checks from
+source, or trying a Downed/bedridden droid next). Recorded rather than
+guessed at further.
+
+**Net effect on this item's own verify claims, unchanged**: the mechanism
+`ApplyOnPawn` drives (record reset, quirk roll) remains code-review-only,
+not run to completion live. The two pieces that COULD be tested
+independent of the recipe firing (`RSW_DW_RecentlyWiped`'s capMods,
+`bill_add`'s validation of the RecipeDef) are both confirmed live and
+correct, twice over now. Item stays `doing`+`needs bridge` — closing it
+without ever observing `ApplyOnPawn` run would be the exact failure mode
+this codebase's own review discipline exists to catch.
