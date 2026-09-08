@@ -269,7 +269,8 @@ VERBS = {
     # `measured` rather than in this table. Itemless: a system is not a rimflow
     # item and carries no THREE_WORDS_# id.
     "capability": {"who": "any", "req": ("system",),
-                  "opt": ("function_rung", "content_rung", "evidence_ref", "date", "note")},
+                  "opt": ("function_rung", "content_rung", "evidence_ref", "date", "note",
+                          "retired")},
 }
 
 # Events that do not name an item. Everything else must carry an `id`.
@@ -482,6 +483,11 @@ def _check_capability(ev):
     if not str(ev.get("system") or "").strip():
         raise SchemaError("`capability` needs --system naming the system/capability.")
     fr, cr = ev.get("function_rung"), ev.get("content_rung")
+    if ev.get("retired"):
+        # a retire names the system and nothing else — it is a removal, not an update
+        if fr or cr:
+            raise SchemaError("`capability retire` takes no rungs — it removes the row.")
+        return
     if not fr and not cr:
         raise SchemaError(
             "`capability` needs at least one of --function-rung or --content-rung — "
@@ -1173,6 +1179,11 @@ def _apply_itemless(ev, seat, world):
         return
     if verb == "capability":
         system = str(ev["system"]).strip()
+        if ev.get("retired"):
+            # removal, not an update: the row leaves every count. History stays
+            # in the ledger; a later `set` on the same name starts a fresh row.
+            world.capabilities.pop(system, None)
+            return
         cap = world.capabilities.get(system)
         if cap is None:
             cap = world.capabilities[system] = Capability(system)

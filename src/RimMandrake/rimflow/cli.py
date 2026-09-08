@@ -1767,9 +1767,28 @@ def cmd_capability(args, seat):
     if args.action == "list":
         return _capability_list(w)
     if not args.system:
-        die("`capability set` needs a system name: "
-            "capability set <SYSTEM> --function-rung … --content-rung …")
+        die("`capability %s` needs a system name: "
+            "capability set <SYSTEM> --function-rung … --content-rung …" % args.action)
+    if args.action == "retire":
+        return _capability_retire(args, seat, w)
     return _capability_set(args, seat, w)
+
+
+def _capability_retire(args, seat, w):
+    """Remove a row from the registry — for a system that turned out not to be a
+    system at all (a survey error, a folder folded into another mod). The ledger
+    keeps the history; the projection and every count drop the row."""
+    if args.system not in w.capabilities:
+        die("`capability retire`: no row named %r — `capability list` shows what exists."
+            % args.system)
+    if args.function_rung or args.content_rung:
+        die("`capability retire` takes no rungs — it removes the row.")
+    ev = {"seat": seat, "event": "capability", "system": args.system,
+          "retired": True, "evidence_ref": args.evidence_ref, "note": args.note}
+    _emit(ev, w, quiet=True)
+    print("capability %s retired — the row leaves every count; ledger history stays."
+          % args.system)
+    return 0
 
 
 def _capability_set(args, seat, w):
@@ -2157,7 +2176,7 @@ def build_parser():
 
     s = add("capability", "PROJECT_MATURITY_DASHBOARD_1's registry: a system's "
             "maturity grid (function x content), self-declared", cmd_capability)
-    s.add_argument("action", choices=("set", "list"))
+    s.add_argument("action", choices=("set", "list", "retire"))
     s.add_argument("system", nargs="?",
                    help="set only: the system/capability name, free text")
     s.add_argument("--function-rung", dest="function_rung",

@@ -5761,3 +5761,15 @@
 {"seat":"BENCH","event":"claim","id":"PROJECT_MATURITY_DASHBOARD_1","ts":"2026-09-08T14:56:15Z"}
 {"seat":"BENCH","event":"close","id":"PROJECT_MATURITY_DASHBOARD_1","sha":"78fe3b38","ts":"2026-09-08T14:56:23Z"}
 {"seat":"BENCH","event":"note","id":"PROJECT_MATURITY_DASHBOARD_1","text":"Registry seeded (78 systems, folder-evidence rungs), dashboard rendered and published to the artifact; weighting equal-per-capability as ruled; owner retunes rungs via rimflow capability set","ts":"2026-09-08T14:56:29Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-08T15:07:39Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY belt mode, owner AFK","ts":"2026-09-08T15:07:40Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_LIVE_LOOP_PROOF_1","ts":"2026-09-08T15:08:11Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_LIVE_LOOP_PROOF_1","ts":"2026-09-08T15:08:11Z"}
+{"seat":"FOUNDRY","event":"claim","id":"KOTORCORE_ADAPTIVESTORAGE_PARENTNAME_1","ts":"2026-09-08T15:14:10Z"}
+{"seat":"FOUNDRY","event":"start","id":"KOTORCORE_ADAPTIVESTORAGE_PARENTNAME_1","ts":"2026-09-08T15:14:10Z"}
+{"seat":"FOUNDRY","event":"claim","id":"WORLD_LINT_WATER_HARDCODE_1","ts":"2026-09-08T15:14:22Z"}
+{"seat":"FOUNDRY","event":"start","id":"WORLD_LINT_WATER_HARDCODE_1","ts":"2026-09-08T15:14:23Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ARMOURY_PATCH_INNER_MISS_1","ts":"2026-09-08T15:14:39Z"}
+{"seat":"FOUNDRY","event":"start","id":"ARMOURY_PATCH_INNER_MISS_1","ts":"2026-09-08T15:14:41Z"}
+{"seat":"FOUNDRY","event":"block","id":"WORLD_LINT_WATER_HARDCODE_1","reason":"fix committed f56dc9d4, needs a game-down window to build+deploy the companion DLL and re-run jawa/world_lint to verify landBiomeSubmerged 1135->0","ts":"2026-09-08T15:15:54Z"}
+{"seat":"BENCH","event":"capability","system":"Spikes","retired":true,"evidence_ref":"not a mod: no About.xml; spike code — 2 absorbed by Pits, 1 moved to RaidRedesigner (owner ruling 2026-09-08)","ts":"2026-09-08T15:19:12Z"}

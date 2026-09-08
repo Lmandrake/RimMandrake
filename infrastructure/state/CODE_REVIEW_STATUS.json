@@ -1931,36 +1931,6 @@
     "hash": "66fa07b372980515d545f0521c71257cf2dd341cafb88cb12d87f4f013f253aa",
     "sha": "5a68d1a6"
   },
-  "src/RimMandrake/Spikes/README.md": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "ae0bc96b275307ec5555fd72053bc4cc84c0ffd14d078a3b8cb6ef1ed7e6c815",
-    "sha": "7abf4a85"
-  },
-  "src/RimMandrake/Spikes/Spike1_TerrainMimic.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "29f4fd8bcf1cf02707a82213dda05b287bc148515cc594878733f866b8a966a5",
-    "sha": "7abf4a85"
-  },
-  "src/RimMandrake/Spikes/Spike2_PitCellHolding.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "d723f3403338a404cfb1c9f72878cb24252131b303cb014bd875df922ba0891a",
-    "sha": "7abf4a85"
-  },
-  "src/RimMandrake/Spikes/Spike3_ThreatPointReplace.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "d1b91e4d7539a394eb7981030ce350e7ae2828556e3a8f52fe386e6f2614f197",
-    "sha": "7abf4a85"
-  },
-  "src/RimMandrake/Spikes/Spikes.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "df76201c2251016c3fed6422d8a29e5a8ffccacbb0ec08fe72d19b4610bcaf80",
-    "sha": "7abf4a85"
-  },
   "src/RimMandrake/StrandedQuest/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
