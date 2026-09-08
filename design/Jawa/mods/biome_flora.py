@@ -337,31 +337,16 @@ FAMILIES = {
     'AB_CrystalFlower': 0.5, 'AB_CrystalHorn': 0.4, 'BMT_Crystal_BlueSowable': 0.30,
     # --- second pass 2026-08-23: use the content we already have ---
     'CaveCrystal': 0.45, 'TreeCrystal': 0.10, 'BMT_RimeFlowerGrowable': 0.20},
-  'HorrorWastes': {                 # 468 - BIOWEAPON class. The danger is the wildlife.
-    'HorrorWeb': 1.2,               # its own mod's plant, used by nothing until now
-    'AB_BloodBouquet': 0.5, 'AB_GlobularPlant': 0.4, 'AB_TentacularPlant': 0.35,
-    'AB_FleshTree': 0.12,  # ⛔ Plant_Agave is GONE - a desert succulent at -49 C
-    # --- second pass 2026-08-23: use the content we already have ---
-    'Grimtacle': 0.55, 'AB_GlobularPlant_Polluted': 0.18,
-    # --- third pass 2026-08-23, DECIDE: bioweapon rot ---
-    'AA_RottingMound': 0.25},
-  'BMT_CrystalCaverns': {           # 127
-    'CrystalSmall': 1.0, 'BMT_CrystaltipBrambles': 0.8, 'CrystalShard': 0.6,
-    'CrystalBig': 0.30, 'BMT_Crystalcap': 0.30,
-    # --- second pass 2026-08-23: use the content we already have ---
-    'BMT_Gleamcap': 0.35, 'BMT_Glowbulb': 0.35, 'BMT_Brightbells': 0.30,
-    'BMT_Greyfields': 0.30, 'BMT_RoyalBracket': 0.25, 'BMT_Shimmershroom': 0.30,
-    'BMT_MoonlessStripesPlant': 0.25, 'BMT_MortalMorelPlant': 0.25,
-    'BMT_StarchstalkPlant': 0.25, 'BMT_Stimquill': 0.20, 'BMT_KessingerPlant': 0.20,
-    'BMT_JadeGlintsCrop': 0.20, 'BMT_DulcisPlant': 0.20, 'BMT_CapscoolFungus': 0.20,
-    'BMT_AmbrosyxFungus': 0.20, 'BMT_Blastpod': 0.15, 'BMT_GreyLady': 0.15,
-    'BMT_AbyssalGrapesVine': 0.20, 'Agarilux': 0.30, 'Bryolux': 0.30, 'Glowstool': 0.30,
-    'CaveShroom': 0.30, 'Plant_Fibershroom': 0.25, 'Plant_Cottonshroom': 0.20,
-    'Plant_DevilShroom': 0.20, 'Plant_GoldShroom': 0.20, 'Plant_NeutroShroom': 0.20,
-    'Plant_PsychoidShroom': 0.20, 'Plant_SteelShroom': 0.20, 'Plant_Psykshroom': 0.20,
-    'Plant_Giantshroom': 0.20, 'Plant_Healshroom': 0.20, 'Plant_Jellyshroom': 0.20,
-    'Plant_Meatshroom': 0.20, 'Plant_Microshroom': 0.20, 'Plant_Timbercap': 0.15,
-    'Plant_Nutrifungus': 0.15},
+  # 'HorrorWastes' — REMOVED 2026-09-08 (BIOME_FLORA_ROSTER_GAP_1): the biome was
+  # dissolved (HORRORWASTES_BIOME_DISSOLVE_1) and holds zero tiles. Its BIOWEAPON
+  # roster (HorrorWeb, the AB_ flesh/blood plants, Grimtacle, AA_RottingMound) is in
+  # git at this line — a candidate list for the CONTAGION at the assignment sitting,
+  # not a decision made here.
+  # 'BMT_CrystalCaverns' — REMOVED 2026-09-08 (BIOME_FLORA_ROSTER_GAP_1): no longer
+  # a worldmap biome (the_lantern_deeps.md ruling — it became the injected cave-map
+  # layer, LANTERN_DEEPS_INJECTION_1). Its full crystal/fungal roster is in git at
+  # this line — the natural candidate list when the Lantern Deeps cave layer takes
+  # its flora, decided there, not here.
  },
 
  'F. volcanic': {
