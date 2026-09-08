@@ -34,6 +34,28 @@ Owner rulings 2026-09-06 (`the_propane_lakes.md` §3 "The machine" and §8).
   systems for the Rust Cathedral, holding *ocular warped* Assailants that pressed their
   way in from outside. Similar theme, different site, different item — do not merge.
 - Naming per the tier grammar (`RUT_`/`RSW_`).
+- ⭐ **SCOPED (research, 2026-09-07)**: the world-tile mutation is real and achievable
+  — `Tile.PrimaryBiome` has a public setter, `Tile.ExposeData()` Scribes biome/
+  elevation/etc. as plain values with no special-casing blocking a runtime write
+  from surviving save/load (confirmed via decompiled `Source/RimWorld/Planet/Tile.cs`).
+  Vanilla itself never rewrites a tile's biome mid-campaign (the only runtime
+  per-tile-mutation precedent is `pollution`, a plain float via
+  `WorldPollutionUtility.PolluteWorldAtTile`) — no config flip exists for this.
+  This project's own `jawa/world_tile_set` + `jawa/world_commit` bridge tools
+  (`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWorldTools.cs`)
+  already prove the correct call sequence (`PrimaryBiome` write, then regenerate
+  `WorldDrawLayer_Terrain/_Hills/_Landmarks/_Roads/_Rivers`, `FastTileFinder`,
+  `WorldPathGrid`, `WorldReachability` caches) — but that tool is driven externally
+  over the bridge RPC and **cannot fire itself from an in-game trigger**. Building
+  this needs new companion-mod C# (a `QuestPart`/`CompDestroyed`/`GameComponent`
+  hook on the ignition event) calling that SAME sequence in-process — new
+  authoring work, not a config task, but low-risk since the sequence is already
+  validated. Recommend splitting scope: local-map spectacle (fire, terrain swap,
+  roof breach) for the 95% of player-visible payoff using routine, well-precedented
+  map-damage machinery; the real world-tile mutation only for the permanent
+  worldmap scar itself, likely a small tile count (propane lake's exact footprint
+  still owed by `LIQUID_BIOMES_MAP_1`). Do not fake the worldmap side only — that
+  leaves a permanent discrepancy between what the map shows and what a save holds.
 
 ## verify
 Lab placed and reachable via the submerged route in a test map; ignition triggers
