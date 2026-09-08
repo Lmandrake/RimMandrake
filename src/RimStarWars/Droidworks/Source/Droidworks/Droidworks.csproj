@@ -57,6 +57,7 @@
     <Compile Include="CompDWDataSpike.cs" />
     <Compile Include="CompDWFormatTier.cs" />
     <Compile Include="CompDWHeadDropper.cs" />
+    <Compile Include="CompDWPartDropper.cs" />
     <Compile Include="CompHeadIdentity.cs" />
     <Compile Include="CompTargetable_DWDataSpike.cs" />
     <Compile Include="DroidEthicsExtension.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Patch_ShouldHaveNeed_Power.cs" />
     <Compile Include="Recipe_DWFormat.cs" />
     <Compile Include="Recipe_DWMemoryWipe.cs" />
+    <Compile Include="Recipe_InstallDroidPart.cs" />
     <Compile Include="Recipe_InstallRestrainingBolt.cs" />
     <Compile Include="Recipe_RebootDroid.cs" />
     <Compile Include="Recipe_RemoveRestrainingBolt.cs" />

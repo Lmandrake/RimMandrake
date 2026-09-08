@@ -61,6 +61,12 @@
       <li>RSW_DW_FormatDroid</li>
       <li>RSW_DW_RestrictiveFormat</li>
       <li>RSW_DW_DeformatDroid</li>
+      <!-- DROIDWORKS_FINE_PARTS_1 (packet B4a) -->
+      <li>RSW_DW_InstallLegActuator</li>
+      <li>RSW_DW_InstallManipulatorArm</li>
+      <li>RSW_DW_InstallSensor</li>
+      <li>RSW_DW_InstallMotivator</li>
+      <li>RSW_DW_InstallServo</li>
     </recipes>
     <!-- DROIDWORKS_FORMAT_TIERS_1: puts RSW_DW_FormatTier on every droid at
          spawn (and leaves an already-formatted one alone on load) so the tier is
@@ -76,6 +82,9 @@
       <!-- DROIDWORKS_HEADS_BRAINS_SPIKES_1 (packet B3): every droid, any
            family, drops its own identity-carrying head on death. -->
       <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWHeadDropper" />
+      <!-- DROIDWORKS_FINE_PARTS_1 (packet B4a): every droid, any family,
+           rolls its legal per-family part set on death. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWPartDropper" />
     </comps>
     <alienRace>
       <generalSettings>
