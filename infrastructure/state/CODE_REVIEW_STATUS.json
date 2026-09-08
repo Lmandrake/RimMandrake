@@ -2769,6 +2769,12 @@
     "hash": "914e6d1acdb073e409af3daea845f4da80e38dafbdfe5d197f3765d51f447be3",
     "sha": "46cc98d3"
   },
+  "src/RimMandrake/Utils/planet_portrait.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "1fc90958cb50bd11834ff4e30b503c764460ce3b7cc14e18959dba65fad91e99",
+    "sha": "2174503f"
+  },
   "src/RimMandrake/Utils/preload_check.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -3766,10 +3772,10 @@
     "sha": "1fb0888b"
   },
   "src/RimMandrake/bridgetools/check_map_biomes_live.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "6566b8f5c826de1ac0013a59ac4a456ad8c38d7fde110a1a36323f5facf59a87",
-    "sha": "353b3c33"
+    "cleanCount": 2,
+    "date": "2026-09-08",
+    "hash": "9c72b0f47d3ffaef3e5e6bddb4337c8b2638073f8cc35b9b17690f29df3c9d67",
+    "sha": "2174503f"
   },
   "src/RimMandrake/bridgetools/crash_watch.sh": {
     "cleanCount": 1,
@@ -3832,16 +3838,22 @@
     "sha": "18e0094e"
   },
   "src/RimMandrake/bridgetools/prove_stat_and_room.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "0d099cbbe7e97255571406349eeb956a480e066a76e64d40c8060143ab0bb77d",
-    "sha": "353b3c33"
+    "cleanCount": 2,
+    "date": "2026-09-08",
+    "hash": "f75d5a92c8d3ba804c898f309cd316a18e77e912c9aac80021c80d3b1abba4df",
+    "sha": "2174503f"
   },
   "src/RimMandrake/bridgetools/prove_world_cache_audit.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "hash": "31ba95a98239a781e60b238e10fc7026c71167772224b57ccfc9214aaae090a7",
     "sha": "353b3c33"
+  },
+  "src/RimMandrake/bridgetools/selftest_tool_metadata.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "75b7606fef141366970fed1363533ca500626b505c9fcbc1f2d25bd566254216",
+    "sha": "2174503f"
   },
   "src/RimMandrake/bridgetools/shoot_planet.py": {
     "cleanCount": 1,
@@ -3854,6 +3866,12 @@
     "date": "2026-09-03",
     "hash": "f6bc735951f947f4b4f5acb3fb0d541e55557f4d5c8710ce06f74a00701e1601",
     "sha": "353b3c33"
+  },
+  "src/RimMandrake/bridgetools/tool_metadata.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "89096bfeb226f99f824e5bca977ee784a264981498809bb4a07f0c9993331ab4",
+    "sha": "2174503f"
   },
   "src/RimMandrake/mapsynth/authored/author_coastal_mesa.py": {
     "cleanCount": 1,
