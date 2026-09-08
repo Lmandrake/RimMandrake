@@ -198,10 +198,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/mods/biome_flora.py": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "74ebdfa86b5829dc684982d90e6419d1d0e530fb575796aae43ba716c29e9963",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "d1e14b992088ae9ef5c4d705ace33e48202574bdb49b54ac19128ff41c702591",
+    "sha": "56b17db2"
   },
   "design/Jawa/mods/plant_harvest_coverage.py": {
     "cleanCount": 2,
@@ -252,10 +252,10 @@
     "sha": "43f96b1b"
   },
   "skills/generating-images/scripts/chroma_key.py": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "dbca97a13a44ff816c34fc141181341877d224815bbee11a741f0ed80afff610",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "8156c196b7aa886f6125c2341b012703539f9c43968865e66d501e317c01cba6",
+    "sha": "56b17db2"
   },
   "skills/generating-images/scripts/codex_image.py": {
     "cleanCount": 1,
@@ -288,10 +288,10 @@
     "sha": "43f96b1b"
   },
   "skills/generating-rimworld-sprites/scripts/validate_sprite.py": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "bf11c867b6d38655140ac14601a9b2edc9d0b6df0139d96d21e6e97b47fc87e2",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "1b34b5ece00643bb3a2858b2dededf1faef95bf47bc42f500a99ded5ecfc004a",
+    "sha": "a0e9f2d6"
   },
   "skills/rimworld-start-prep/scripts/sync_mod_state.py": {
     "cleanCount": 1,
