@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T15:56:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T15:57:29Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -26,15 +26,6 @@ target:   v1
 kind:     task
 summary:  Full creature-art review sheet, per design/Jawa/fauna/creatureartdecisions.json
 prose:    infrastructure/state/items/CREATURE_ART_REVIEW_SHEET_1.md
-
-## WATER_KINDS_TAXONOMY_1 Owner: many kinds of water by content + the transmutations between them — inventory every sheet's water, write the taxonomy as data, map onto the live water systems
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  - Inventory every water the sheets have already produced, with what is IN it:
-prose:    infrastructure/state/items/WATER_KINDS_TAXONOMY_1.md
 
 ## BIOME_FREEZE_FABLE_REVIEW_1 Full-scale Fable review of ALL biomes together before the freeze — temps, physics, weather, precipitation, dust/sand/ash, fuel/wood/animal/meat/growth, diseases — BLOCKED until every biome sheet is finished; pre-assignment, not final check-out
 state:    doing
@@ -460,16 +451,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the ask
 prose:    infrastructure/state/items/MOD_HUMAN_EXPLORATION_PASS_1.md
-
-## MOD_VALIDATION_PLAN_AUTHORING_1 Author a per-mod automated validation walk for all 76 mods -- a scripted string of checks exercising most of each mod's behaviour, written NOW while context is fresh
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  the ask — split into two items on the owner's ruling
-prose:    infrastructure/state/items/MOD_VALIDATION_PLAN_AUTHORING_1.md
 
 ## RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1 Deep-dive: RimWorld 18GB+ memory footprint, crash correlation, worst-offender mods, reduction options
 state:    proposed
