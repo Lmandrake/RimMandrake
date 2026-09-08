@@ -33,6 +33,7 @@ import csv
 import io
 import json
 import os
+import re
 import sys
 import xml.etree.ElementTree as ET
 
@@ -45,7 +46,14 @@ from refresh import D_DUMP
 from patch_provenance import guard
 from retired_mods import is_retired
 
-OUTDIR = os.path.join(ROOT, "src", "RimStarWars", "Armoury", "Patches")
+# PATCHDIR is where this mod's patches actually live and is NEVER redirected:
+# self_supplied_tools_defnames() reads our own already-shipped subfolder
+# patches off it. Pointing that read at an empty scratch directory (as --out
+# does to OUTDIR, below) would silently make every self-supplied lightsaber
+# look reachable again -- exactly the ARMOURY_PATCH_INNER_MISS_1 trap this
+# guards against.
+PATCHDIR = os.path.join(ROOT, "src", "RimStarWars", "Armoury", "Patches")
+OUTDIR = PATCHDIR
 # --out DIR sends the emit somewhere else. Without it this generator could
 # only be checked by clobbering the very file you wanted to compare against,
 # which is how its output silently diverged (ARMOURY_LEATHER_GEN_DESYNC_1).
@@ -54,6 +62,61 @@ if "--out" in sys.argv:
 ANIMALS = os.path.join(ROOT, "observed", "2026-08-13",
                        "inventory", "animals.csv")
 NL = "\n"
+
+_ADD_TOOLS_XPATH = re.compile(r'^/?Defs/ThingDef\[defName="([^"]+)"\]$')
+
+
+def self_supplied_tools_defnames():
+    """defNames whose <tools> is (re-)supplied by one of OUR OWN Armoury
+    subfolder patches -- Absorbed_AdditionalMods, or any future sibling --
+    rather than by the base def or an earlier-loading mod's own patches.
+
+    Copied from gen_armoury_patch.py's function of the same name and purpose
+    (ARMOURY_PATCH_INNER_MISS_1): this generator's own tool-AP work (section
+    3, below) has the identical "injected" branch that trap already broke --
+    aiming a PatchOperationConditional's <nomatch> Add at a concrete
+    defName's tools/li[label=X], which does not exist until a LATER-loading
+    subfolder patch adds the whole <tools Inherit="False"> node onto it.
+    RimWorld applies one mod's own patch FILES in file-tree order, TOP-LEVEL
+    FILES BEFORE SUBFOLDER FILES (ARMOURY_LIGHTSABER_FINDMOD_1); this
+    generator's own output (Armour_Penetration.xml) is a top-level file, so a
+    self-supplied defName is unreachable from it every load -- proven live,
+    2026-09-07: `PatchOperationAdd(.../Force_Lightsaber_Custom.../tools/
+    li[label="hilt"])` failed to find a node, because
+    Absorbed_Kotorweapons_TheForceLightsabers_Patch_KotORLightsaberBalancing.xml
+    (a subfolder file) is the one that creates that li, and it had not run
+    yet.
+    """
+    out = set()
+    if not os.path.isdir(PATCHDIR):
+        return out
+    for dirpath, _dirnames, filenames in os.walk(PATCHDIR):
+        if os.path.abspath(dirpath) == os.path.abspath(PATCHDIR):
+            continue          # top-level files -- run BEFORE subfolder files too
+        for fn in filenames:
+            if not fn.lower().endswith(".xml"):
+                continue
+            try:
+                root = ET.parse(os.path.join(dirpath, fn)).getroot()
+            except ET.ParseError:
+                continue
+            for li in root.iter("li"):
+                if li.get("Class") not in ("PatchOperationAdd", "PatchOperationReplace"):
+                    continue
+                m = _ADD_TOOLS_XPATH.match((li.findtext("xpath") or "").strip())
+                if not m:
+                    continue
+                val = li.find("value")
+                if val is not None and val.find("tools") is not None:
+                    out.add(m.group(1))
+    return out
+
+
+SELF_SUPPLIED_TOOLS = self_supplied_tools_defnames()
+if SELF_SUPPLIED_TOOLS:
+    print("self-supplied tools (our own subfolder patch adds them AFTER our "
+          "top-level file runs -- skipped): %d defName(s)"
+          % len(SELF_SUPPLIED_TOOLS))
 
 # Same list gen_armoury_patch.py uses to keep ion/stun/sonic etc. UNCHANGED
 # (the verb is the weapon, see this file's header). Without it a bare "slug"
@@ -426,6 +489,7 @@ for rec in [r for t in APPAREL_TYPES for r in ds.of_type(t)]:
 saber_done = set()
 vibro_n = slug_n = alien_n = 0
 skipped_no_live = []
+self_supplied_skipped = []
 for rec in ds.of_type("ThingDef"):
     el = rec.element
     dn = rec.defName or ""
@@ -498,6 +562,17 @@ for rec in ds.of_type("ThingDef"):
         skipped_no_live.append(dn)
     elif [l for l, _ in live["tools"]] == decl_labels:
         labels = decl_labels
+    elif dn in SELF_SUPPLIED_TOOLS:
+        # The concrete defName only differs from the declarer because OUR OWN
+        # subfolder patch adds its tools AFTER Armour_Penetration.xml (a
+        # top-level file) has already run. Aiming at the concrete defName
+        # here -- the "injected" branch below -- targets a tools/li that does
+        # not exist yet at patch time: ARMOURY_PATCH_INNER_MISS_1, proven live
+        # 2026-09-07 (PatchOperationAdd on Force_Lightsaber_Custom's "hilt"
+        # li failed to find a node). Skip; there is nothing reachable from
+        # this file for this defName.
+        self_supplied_skipped.append(dn)
+        continue
     else:
         owner, attr = dn, "defName"
         labels = [l for l, _ in live["tools"]]
@@ -741,4 +816,7 @@ if retired_skipped:
 print("\narmour tiers matched: %s" % dict(tier_counts))
 print("vibro %d | alien blades %d | slugthrowers %d | lightsaber bases %d"
       % (vibro_n, alien_n, slug_n, len(saber_done)))
+if self_supplied_skipped:
+    print("  AP skipped (our own subfolder patch supplies tools later):",
+          sorted(set(self_supplied_skipped)))
 print("leather profiles: %s" % dict(leather_n))
