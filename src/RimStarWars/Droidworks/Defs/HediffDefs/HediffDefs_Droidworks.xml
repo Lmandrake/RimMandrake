@@ -20,7 +20,6 @@
     <scenarioCanAdd>false</scenarioCanAdd>
     <maxSeverity>1.0</maxSeverity>
     <isBad>true</isBad>
-    <everVisible>true</everVisible>
     <comps>
       <li Class="RimMandrake.StarWars.Droidworks.HediffCompProperties_PoweredDown" />
     </comps>
@@ -102,7 +101,6 @@
     <scenarioCanAdd>false</scenarioCanAdd>
     <maxSeverity>1.0</maxSeverity>
     <isBad>true</isBad>
-    <everVisible>true</everVisible>
     <stages>
       <li>
         <minSeverity>0</minSeverity>
@@ -147,6 +145,12 @@
        // TODO: instant-rebellion-on-removal is the payoff this accumulator
        //       feeds — not built here either; this item ships the
        //       accumulator only, per BENCH's own scope note.
+       // TODO: the intended "player never sees a number for this" (see the
+       //       C# comp's header) has no real field to carry it — `everVisible`
+       //       doesn't exist on HediffDef and was silently dropped as a
+       //       Config error (2026-09-08). Whoever builds a later phase should
+       //       find the actual hide-from-health-tab idiom before this hediff
+       //       does anything the player would notice.
   ======================================================================== -->
   <HediffDef>
     <defName>RSW_DW_BoltResentment</defName>
@@ -156,7 +160,6 @@
     <scenarioCanAdd>false</scenarioCanAdd>
     <maxSeverity>1.0</maxSeverity>
     <isBad>true</isBad>
-    <everVisible>false</everVisible>
     <comps>
       <li Class="RimMandrake.StarWars.Droidworks.HediffCompProperties_DWBoltResentment">
         <severityPerDayWhileBolted>0.05</severityPerDayWhileBolted>
