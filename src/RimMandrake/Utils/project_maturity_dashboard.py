@@ -128,6 +128,71 @@ def mod_metadata():
     return meta
 
 
+BUG_KINDS = ("bug", "defect", "fix")
+ITEMS_DIR = os.path.join(ROOT, "infrastructure", "state", "items")
+
+
+def _name_patterns(system, tier):
+    """How an item names a system: the mod folder path (strong), the folder name
+    as a case-sensitive whole word in the title, or its UPPER_SNAKE form in the
+    item id (DROIDWORKS / SEA_BEASTS both match SeaBeasts)."""
+    upper_flat = system.upper()
+    upper_snake = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "_", system).upper()
+    return {
+        "path": "src/%s/%s" % (tier, system) if tier else None,
+        "title_re": re.compile(r"\b%s\b" % re.escape(system)),
+        "id_tokens": {upper_flat, upper_snake},
+    }
+
+
+def system_flags(world, systems):
+    """system -> {"blocked": [ids], "awaiting": [ids]} from OPEN ledger items.
+    RED/YELLOW per the owner's 2026-09-08 ruling: red = blocked by a bug
+    (an open bug/defect/fix item naming the system), yellow = awaiting his
+    decision (an open item with needs=owner naming it). Name-matching is
+    deliberately conservative — path mention, exact folder word in the title,
+    or the folder's UPPER_SNAKE in the item id — a false red cries wolf."""
+    pats = {s["system"]: _name_patterns(s["system"], s.get("tier") or "") for s in systems}
+    prose_cache = {}
+
+    def prose(item_id):
+        if item_id not in prose_cache:
+            p = os.path.join(ITEMS_DIR, item_id + ".md")
+            try:
+                with open(p, encoding="utf-8", errors="replace") as fh:
+                    prose_cache[item_id] = fh.read()
+            except OSError:
+                prose_cache[item_id] = ""
+        return prose_cache[item_id]
+
+    flags = {name: {"blocked": [], "awaiting": []} for name in pats}
+    counts = {"openItems": 0, "openBugs": 0, "needsOwner": 0}
+    for item in world.items.values():
+        if item.state not in ("proposed", "ready", "doing", "blocked"):
+            continue
+        counts["openItems"] += 1
+        is_bug = (item.kind or "") in BUG_KINDS
+        needs_owner = item.needs == "owner"
+        if is_bug:
+            counts["openBugs"] += 1
+        if needs_owner:
+            counts["needsOwner"] += 1
+        if not is_bug and not needs_owner:
+            continue
+        title = item.title or ""
+        for name, pat in pats.items():
+            hit = (pat["path"] and pat["path"] in prose(item.id)) \
+                or pat["title_re"].search(title) \
+                or any(tok in item.id for tok in pat["id_tokens"])
+            if not hit:
+                continue
+            if is_bug:
+                flags[name]["blocked"].append(item.id)
+            if needs_owner:
+                flags[name]["awaiting"].append(item.id)
+    return flags, counts
+
+
 def systems_payload(world):
     meta = mod_metadata()
     systems = []
@@ -255,18 +320,20 @@ def code_review_tile():
     compare per recorded entry, zero git spawns."""
     data = CRS.load()
     clean = dirty = unknown = recidivists = 0
+    dirty_paths = []
     for rel, entry in data.items():
         state, _ = CRS.clean_state(rel, entry)
         if state == "CLEAN":
             clean += 1
         elif entry.get("hash"):
             dirty += 1
+            dirty_paths.append(rel)
             if (entry.get("cleanCount") or 0) > 0:
                 recidivists += 1
         else:
             unknown += 1
     return {"total": len(data), "clean": clean, "dirty": dirty, "unknown": unknown,
-           "recidivists": recidivists}
+           "recidivists": recidivists, "dirtyPaths": sorted(dirty_paths)}
 
 
 # -------------------------------------------------------------------- page
@@ -286,152 +353,246 @@ PAGE = r"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Project Maturity Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
+/* warm 70s browns — the owner-approved look; single committed dark theme.
+   Colour DOCTRINE (owner, 2026-09-08): RED = blocked by a bug, YELLOW =
+   awaiting his decision, otherwise a brown ramp dark (beginning) -> light
+   (satisfyingly complete). Tier is identity only: a small stripe/dot. */
 :root{
-  /* warm 70s browns — owner-approved look from the seed-proposal page; keep this palette */
   --bg:#171310; --panel:#211b16; --panel2:#1c1712; --line:#332a20; --ink:#efe7d9;
   --dim:#a99d89; --accent:#e0803a;
-  --r0:#7d7565; --r1:#c98536; --r2:#c96634; --r3:#8aa24a; --r4:#c9a44a;
-  --c0:#7d7565; --c1:#c9a44a; --c2:#5390c4; --c3:#3a6ea0;
-  --red:#d05a3c; --green:#4f9147; --grey:#7d7565; --unk:#c9a44a;
+  --f0:#453321; --f1:#63492e; --f2:#82603a; --f3:#a37c49; --f4:#c49a5d; --f5:#e6be7e;
+  --c0:#4a3624; --c1:#7a5a38; --c2:#ab8250; --c3:#dcb076;
+  --red:#d05a3c; --yellow:#e0b13e; --green:#4f9147; --grey:#7d7565;
+  --t-rm:#c96634; --t-sw:#5390c4; --t-ut:#8aa24a;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);
-  font:13px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font:13px/1.45 "IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
   padding:0 0 40px}
-header{padding:16px 22px;border-bottom:1px solid var(--line);background:var(--panel);
+header{padding:12px 22px 10px;border-bottom:1px solid var(--line);background:var(--panel);
   display:flex;gap:18px;align-items:baseline;flex-wrap:wrap;position:sticky;top:0;z-index:3}
-h1{font-size:17px;margin:0;font-weight:650;letter-spacing:.2px}
-.sub{color:var(--dim);font-size:11.5px}
-main{max-width:1320px;margin:0 auto;padding:22px}
-section.block{margin-bottom:30px}
-h2{font-size:12.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--dim);
-  margin:0 0 12px;display:flex;align-items:center;gap:10px}
-h2 .n{color:var(--ink);font-weight:600;text-transform:none;letter-spacing:0;font-size:12px}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
-.row{display:flex;gap:18px;flex-wrap:wrap}
-.row>.panel{flex:1;min-width:320px}
+h1{font-family:"Archivo",sans-serif;font-size:17px;margin:0;font-weight:800;letter-spacing:.2px}
+.sub{color:var(--dim);font-size:11px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:10.5px;
+  color:var(--dim);margin-left:auto}
+.legend .sw{display:inline-flex;vertical-align:-2px;margin-right:5px}
+.legend .sw i{width:9px;height:11px;display:inline-block}
+.legend .dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;
+  vertical-align:-1px}
+main{max-width:1360px;margin:0 auto;padding:16px 22px}
+section.block{margin-bottom:22px}
+h2{font-family:"Archivo",sans-serif;font-size:12px;text-transform:uppercase;
+  letter-spacing:.09em;color:var(--dim);margin:0 0 10px;display:flex;
+  align-items:center;gap:10px;font-weight:700}
+h2 .n{color:var(--ink);font-weight:500;text-transform:none;letter-spacing:0;font-size:11.5px;
+  font-family:"IBM Plex Sans"}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+code{font-size:11px;color:#d8cdb8}
 
-/* ---- headline bars ---- */
-.ladder{display:flex;flex-direction:column;gap:8px}
-.rungrow{display:grid;grid-template-columns:118px 1fr 92px;gap:10px;align-items:center;
-  font-size:11.5px}
-.rungrow b{color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;
-  text-overflow:ellipsis}
-.barbg{background:#0e1016;border-radius:4px;height:14px;overflow:hidden;
-  border:1px solid var(--line)}
-.barfg{height:100%;border-radius:3px}
-.rungrow .cnt{text-align:right;color:var(--dim);font-variant-numeric:tabular-nums}
-.rungrow .cnt b{color:var(--ink)}
-.weighting{margin-top:10px;font-size:11px;color:var(--dim)}
+/* ---- tile strip ---- */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:9px 12px 8px}
+.tile .v{font-family:"IBM Plex Mono";font-size:20px;font-weight:600;
+  font-variant-numeric:tabular-nums;line-height:1.15}
+.tile .v small{font-size:11px;color:var(--dim);font-weight:400}
+.tile .l{color:var(--dim);font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
+.tile.red{border-color:var(--red)} .tile.red .v{color:var(--red)}
+.tile.yellow{border-color:var(--yellow)} .tile.yellow .v{color:var(--yellow)}
+.tile.bright .v{color:var(--f5)}
+.tile.green .v{color:var(--green)}
 
-/* ---- grid ---- */
-table.grid{border-collapse:collapse;width:100%;font-size:11.5px}
-table.grid th,table.grid td{border:1px solid var(--line);padding:6px 8px;text-align:left;
+/* ---- two-column middle ---- */
+.mid{display:grid;grid-template-columns:minmax(0,2.05fr) minmax(280px,1fr);gap:14px}
+@media(max-width:980px){.mid{grid-template-columns:1fr}}
+
+/* ---- matrix ---- */
+table.grid{border-collapse:collapse;width:100%;font-size:11px}
+table.grid th,table.grid td{border:1px solid var(--line);padding:5px 7px;text-align:left;
   vertical-align:top}
-table.grid th{background:var(--panel2);color:var(--dim);font-weight:600;font-size:10.5px;
+table.grid th{background:var(--panel2);color:var(--dim);font-weight:600;font-size:10px;
   text-transform:uppercase;letter-spacing:.04em}
 table.grid td.corner{background:var(--panel2)}
-table.grid td.cell{width:210px;min-width:210px;max-width:210px}
+table.grid td.cell{min-width:150px}
 table.grid td.done{background:rgba(79,145,71,.16)}
-/* one chip per row, all the same size, so the fills compare at a glance:
-   the wash is a progress bar along the FUNCTION ladder, the thin bottom
-   strip is the CONTENT ladder; tier is the left stripe's colour */
+table.grid td.zero{color:var(--line);text-align:center;font-family:"IBM Plex Mono";font-size:10px}
+table.grid .marg{font-family:"IBM Plex Mono";color:var(--dim);text-align:right;
+  font-variant-numeric:tabular-nums;background:var(--panel2)}
+.cellcount{color:var(--dim);font-size:9.5px;margin-bottom:3px;font-family:"IBM Plex Mono"}
+/* one chip per row, all the same size, so fills compare at a glance:
+   wash = the brown progress ramp at this system's function rung; thin bottom
+   strip = content rung; left stripe = tier; red/yellow REPLACE the wash when
+   the system is blocked / awaiting the owner */
 .chip2{position:relative;display:block;background:var(--panel2);border:1px solid var(--line);
-  border-left:4px solid var(--grey);border-radius:4px;padding:2px 8px;margin:0 0 3px;
-  font-size:11px;color:var(--ink);white-space:nowrap;overflow:hidden;cursor:default}
-.chip2 .fill{position:absolute;left:0;top:0;bottom:0;opacity:.26;pointer-events:none}
-.chip2 .cfill{position:absolute;left:0;bottom:0;height:2px;background:var(--c2);
-  pointer-events:none}
+  border-left:4px solid var(--grey);border-radius:4px;padding:1px 7px;margin:0 0 3px;
+  font-size:10.5px;color:var(--ink);white-space:nowrap;overflow:hidden;cursor:default}
+.chip2 .fill{position:absolute;left:0;top:0;bottom:0;pointer-events:none}
+.chip2 .cfill{position:absolute;left:0;bottom:0;height:2px;pointer-events:none;opacity:.9}
 .chip2 .lbl{position:relative;display:block;overflow:hidden;text-overflow:ellipsis}
+.chip2 .lbl .g{font-family:"IBM Plex Mono";font-weight:600;margin-right:4px}
 .chip2:hover{border-color:var(--accent)}
-.cellcount{color:var(--dim);font-size:10px;margin-bottom:4px}
-.gridlegend{display:flex;gap:16px;flex-wrap:wrap;margin:0 0 10px;font-size:11px;color:var(--dim)}
-.gridlegend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;
+.chip2.blocked{border-color:var(--red);border-left-color:var(--red)}
+.chip2.blocked .lbl .g{color:var(--red)}
+.chip2.awaiting{border-color:var(--yellow);border-left-color:var(--yellow)}
+.chip2.awaiting .lbl .g{color:var(--yellow)}
+
+/* ---- ladders + tier rollup (right rail) ---- */
+.rail{display:flex;flex-direction:column;gap:14px}
+.rungrow{display:grid;grid-template-columns:96px 1fr 74px;gap:8px;align-items:center;
+  font-size:10.5px;padding:2px 0}
+.rungrow b{color:var(--ink);font-weight:500;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;font-family:"IBM Plex Mono";font-size:10.5px}
+.barbg{height:11px;background:var(--panel2);border:1px solid var(--line);border-radius:3px;
+  overflow:hidden}
+.barfg{height:100%}
+.rungrow .cnt{text-align:right;color:var(--dim);font-variant-numeric:tabular-nums;
+  font-family:"IBM Plex Mono";font-size:10.5px}
+.rungrow .cnt b{color:var(--ink);font-family:"IBM Plex Mono"}
+.weighting{margin-top:8px;font-size:10px;color:var(--dim)}
+.stackrow{display:grid;grid-template-columns:96px 1fr 40px;gap:8px;align-items:center;
+  font-size:10.5px;padding:3px 0}
+.stackrow b{font-weight:500;white-space:nowrap}
+.stack{display:flex;height:13px;border-radius:3px;overflow:hidden;border:1px solid var(--line)}
+.stack i{display:block;height:100%}
+.stack i + i{border-left:1px solid var(--bg)}
+
+/* ---- roster ---- */
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.controls input[type=search]{background:var(--panel2);border:1px solid var(--line);
+  border-radius:5px;color:var(--ink);font:11.5px "IBM Plex Sans";padding:4px 9px;width:190px}
+.controls input[type=search]:focus{outline:1px solid var(--accent)}
+.fbtn{background:var(--panel2);border:1px solid var(--line);border-radius:99px;
+  color:var(--dim);font:10.5px "IBM Plex Sans";padding:2px 10px;cursor:pointer}
+.fbtn.on{color:var(--ink);border-color:var(--accent)}
+.fbtn .dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;
   vertical-align:-1px}
-/* hover card for any [data-sys] element */
-#tip{position:fixed;z-index:10;max-width:360px;background:var(--panel);
+table.sys{border-collapse:collapse;width:100%;font-size:11px}
+table.sys th{text-align:left;color:var(--dim);font-weight:600;font-size:9.5px;
+  text-transform:uppercase;letter-spacing:.04em;padding:4px 7px;
+  border-bottom:1px solid var(--line);cursor:pointer;user-select:none;white-space:nowrap}
+table.sys th:hover{color:var(--ink)}
+table.sys td{padding:3px 7px;border-bottom:1px solid #2a221a;white-space:nowrap}
+table.sys tr:hover td{background:#2a2219}
+table.sys td.ev{max-width:330px;overflow:hidden;text-overflow:ellipsis;color:var(--dim);
+  font-size:10.5px}
+.tag{display:inline-block;border-radius:4px;padding:0 6px;font-size:9.5px;font-weight:600;
+  font-family:"IBM Plex Mono"}
+.tag.done{background:rgba(79,145,71,.25);color:#9fd08a}
+.tag.blocked{background:rgba(208,90,60,.18);color:var(--red)}
+.tag.awaiting{background:rgba(224,177,62,.15);color:var(--yellow)}
+.tiermark{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;
+  vertical-align:-.5px}
+.meter{display:inline-flex;gap:1.5px;margin-right:6px;vertical-align:-1px}
+.meter i{width:7px;height:9px;border-radius:1.5px;background:var(--panel2);
+  border:1px solid var(--line)}
+.rungword{font-family:"IBM Plex Mono";font-size:10px;color:var(--dim)}
+.age{font-family:"IBM Plex Mono";font-size:10px;color:var(--dim);
+  font-variant-numeric:tabular-nums}
+.age.stale{color:var(--yellow)}
+
+/* ---- movement + regression ---- */
+.movelist{font-size:10.5px;display:flex;flex-direction:column;gap:2px;
+  max-height:238px;overflow-y:auto}
+.movelist .mrow{display:grid;grid-template-columns:76px 1fr auto;gap:8px;padding:2px 0;
+  border-bottom:1px solid #241d16}
+.movelist .mts{color:var(--dim);font-family:"IBM Plex Mono";font-size:9.5px}
+.movelist .mto{font-family:"IBM Plex Mono";font-size:9.5px}
+svg.reg{width:100%;height:190px;display:block}
+.reglegend{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;font-size:10px;color:var(--dim)}
+.reglegend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;
+  vertical-align:-1px}
+
+/* ---- goal sheet + code review ---- */
+.bottom{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+@media(max-width:980px){.bottom{grid-template-columns:1fr}}
+.gsrow{display:grid;grid-template-columns:170px 1fr 58px;gap:8px;align-items:center;
+  padding:3px 0;font-size:11px}
+.gsrow .barbg{height:9px}
+.dirtylist{columns:2;column-gap:18px;font-size:10px;color:var(--dim);margin-top:8px}
+.dirtylist div{break-inside:avoid;padding:1px 0;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap}
+.empty{color:var(--dim);font-style:italic;font-size:11.5px}
+
+/* ---- hover card ---- */
+#tip{position:fixed;z-index:10;max-width:380px;background:var(--panel);
   border:1px solid var(--accent);border-radius:8px;padding:10px 12px;font-size:11.5px;
   pointer-events:none;box-shadow:0 6px 24px rgba(0,0,0,.5)}
-#tip .t{font-weight:700;font-size:12.5px;margin-bottom:2px}
-#tip .m{color:var(--dim);font-size:10.5px;margin-bottom:6px}
+#tip .t{font-family:"Archivo";font-weight:700;font-size:12.5px;margin-bottom:2px}
+#tip .m{color:var(--dim);font-size:10.5px;margin-bottom:6px;font-family:"IBM Plex Mono"}
 #tip .d{color:var(--ink);opacity:.9}
+#tip .flag{margin-top:6px;font-size:10.5px;font-weight:600}
+#tip .flag.blocked{color:var(--red)} #tip .flag.awaiting{color:var(--yellow)}
 #tip .e{color:var(--dim);font-size:10.5px;margin-top:6px;border-top:1px solid var(--line);
   padding-top:5px}
-
-/* ---- systems table ---- */
-table.sys{border-collapse:collapse;width:100%;font-size:11.5px}
-table.sys th{text-align:left;color:var(--dim);font-weight:600;font-size:10.5px;
-  text-transform:uppercase;letter-spacing:.04em;padding:5px 8px;border-bottom:1px solid var(--line)}
-table.sys td{padding:5px 8px;border-bottom:1px solid #2a221a}
-table.sys tr:hover td{background:#2a2219}
-.tag{display:inline-block;border-radius:4px;padding:1px 7px;font-size:10.5px;font-weight:600}
-.tag.done{background:rgba(79,145,71,.25);color:#9fd08a}
-.tiermark{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px;
-  vertical-align:-1px}
-
-/* ---- goal sheet ---- */
-.gsrow{display:grid;grid-template-columns:230px 1fr 74px;gap:10px;align-items:center;
-  padding:5px 0;font-size:12px}
-.gsrow .barbg{height:10px}
-
-/* ---- tile ---- */
-.tiles{display:flex;gap:14px;flex-wrap:wrap}
-.tile{background:var(--panel2);border:1px solid var(--line);border-radius:8px;
-  padding:12px 16px;min-width:120px}
-.tile .v{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
-.tile .l{color:var(--dim);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em}
-.tile.green .v{color:var(--green)}
-.tile.grey .v{color:var(--grey)}
-.tile.unk .v{color:var(--unk)}
-
-/* ---- regression chart ---- */
-svg.reg{width:100%;height:220px;display:block}
-.reglegend{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:10.5px;color:var(--dim)}
-.reglegend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;
-  vertical-align:-1px}
-.empty{color:var(--dim);font-style:italic;font-size:12px}
-code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#d8cdb8}
 </style></head><body>
 <div id="app">
   <header>
     <div><h1>Project Maturity Dashboard</h1>
       <div class="sub" id="stamp"></div></div>
+    <div class="legend">
+      <span><span class="sw" id="rampSw"></span>progress: dark → light brown</span>
+      <span><i class="dot" style="background:var(--red)"></i>✖ blocked by a bug</span>
+      <span><i class="dot" style="background:var(--yellow)"></i>? awaiting your decision</span>
+      <span><i class="dot" style="background:var(--t-rm)"></i>RimMandrake</span>
+      <span><i class="dot" style="background:var(--t-sw)"></i>RimStarWars</span>
+      <span><i class="dot" style="background:var(--t-ut)"></i>RimUtinni</span>
+    </div>
   </header>
   <main>
     <section class="block">
-      <h2>Headline <span class="n" id="headlineN"></span></h2>
-      <div class="row">
-        <div class="panel"><h2 style="margin-bottom:10px">Function axis</h2>
-          <div class="ladder" id="functionBars"></div>
-          <div class="weighting" id="functionWeight"></div></div>
-        <div class="panel"><h2 style="margin-bottom:10px">Content axis</h2>
-          <div class="ladder" id="contentBars"></div>
-          <div class="weighting" id="contentWeight"></div></div>
+      <div class="tiles" id="tiles"></div>
+    </section>
+
+    <section class="block">
+      <div class="mid">
+        <div>
+          <h2>Maturity grid <span class="n" id="gridN"></span></h2>
+          <div class="panel"><div id="gridWrap" style="overflow-x:auto"></div></div>
+        </div>
+        <div class="rail">
+          <div>
+            <h2>Function ladder</h2>
+            <div class="panel"><div class="ladder" id="functionBars"></div>
+              <div class="weighting" id="functionWeight"></div></div>
+          </div>
+          <div>
+            <h2>Content ladder</h2>
+            <div class="panel"><div class="ladder" id="contentBars"></div></div>
+          </div>
+          <div>
+            <h2>By tier <span class="n">function-rung mix</span></h2>
+            <div class="panel" id="tierRoll"></div>
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="block">
-      <h2>Systems — maturity grid <span class="n" id="gridN"></span></h2>
-      <div class="panel"><div id="gridWrap" style="overflow-x:auto"></div></div>
+      <h2>The roster <span class="n" id="rosterN"></span></h2>
+      <div class="panel">
+        <div class="controls" id="rosterControls"></div>
+        <div style="overflow-x:auto"><table class="sys" id="sysTable"></table></div>
+      </div>
     </section>
 
     <section class="block">
-      <h2>Systems — the roster</h2>
-      <div class="panel" style="overflow-x:auto"><table class="sys" id="sysTable"></table></div>
-    </section>
-
-    <section class="block">
-      <h2>Regression — rung counts over time <span class="n">a drop is a regression</span></h2>
       <div class="row">
-        <div class="panel" style="flex:1;min-width:420px">
-          <div style="color:var(--dim);font-size:11px;margin-bottom:6px">FUNCTION</div>
+        <div class="panel" style="flex:1;min-width:300px">
+          <h2 style="margin-bottom:8px">Latest movement <span class="n">newest first</span></h2>
+          <div class="movelist" id="movement"></div>
+        </div>
+        <div class="panel" style="flex:1.4;min-width:380px">
+          <h2 style="margin-bottom:8px">Function rungs over time <span class="n">a drop is a regression</span></h2>
           <svg class="reg" id="regFunction"></svg>
           <div class="reglegend" id="legFunction"></div>
         </div>
-        <div class="panel" style="flex:1;min-width:420px">
-          <div style="color:var(--dim);font-size:11px;margin-bottom:6px">CONTENT</div>
+        <div class="panel" style="flex:1.4;min-width:380px">
+          <h2 style="margin-bottom:8px">Content rungs over time</h2>
           <svg class="reg" id="regContent"></svg>
           <div class="reglegend" id="legContent"></div>
         </div>
@@ -439,31 +600,45 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#d8cdb8}
     </section>
 
     <section class="block">
-      <h2>Content inventory — GOAL_SHEET.md, as-is <span class="n" id="gsN"></span></h2>
-      <div class="panel" id="goalSheet"></div>
-    </section>
-
-    <section class="block">
-      <h2>Code review — clean / dirty (one tile, not this dashboard's parent)</h2>
-      <div class="panel"><div class="tiles" id="crTiles"></div></div>
+      <div class="bottom">
+        <div>
+          <h2>Content inventory <span class="n" id="gsN">GOAL_SHEET.md, as-is</span></h2>
+          <div class="panel" id="goalSheet"></div>
+        </div>
+        <div>
+          <h2>Code review <span class="n">one tile, not this dashboard's parent</span></h2>
+          <div class="panel"><div class="tiles" id="crTiles" style="grid-template-columns:repeat(auto-fit,minmax(96px,1fr))"></div>
+            <div class="dirtylist" id="dirtyList"></div></div>
+        </div>
+      </div>
     </section>
   </main>
 </div>
 <script>
 const DATA = __DATA__;
-/* Plain hex, not CSS var() — an SVG `stroke` attribute set via setAttribute does
-   not resolve a custom property the way an inline `style` does, so one palette
-   is kept here rather than fighting two different resolution rules for one map. */
-const FCOLOR = {"planned":"#7d7565","designed":"#c98536","implemented":"#c96634",
-                "runnable":"#8aa24a","validated":"#4f9147","played":"#c9a44a","unset":"#7d7565"};
-const CCOLOR = {"none":"#7d7565","placeholder":"#c9a44a","authored":"#5390c4",
-               "final":"#3a6ea0","unset":"#7d7565"};
+/* Plain hex, not CSS var() — SVG setAttribute strokes don't resolve custom
+   properties; one palette map serves both worlds. Colour doctrine (owner,
+   2026-09-08): brown ramp = progress, red = blocked, yellow = awaiting him. */
+const RAMPF = ["#453321","#63492e","#82603a","#a37c49","#c49a5d","#e6be7e"];
+const RAMPC = ["#4a3624","#7a5a38","#ab8250","#dcb076"];
+const RED = "#d05a3c", YELLOW = "#e0b13e", INK = "#efe7d9";
 const FLADDER = ["planned","designed","implemented","runnable","validated","played"];
 const CLADDER = ["none","placeholder","authored","final"];
-/* chip colour = TIER (position in the matrix already tells the rungs) */
 const TIERCOL = {"RimMandrake":"#c96634","RimStarWars":"#5390c4","RimUtinni":"#8aa24a","":"#7d7565"};
-const BYSYS = {}; DATA.systems.forEach(s=>{ BYSYS[s.system] = s; });
 const TIERORD = {"RimMandrake":0,"RimStarWars":1,"RimUtinni":2,"":3};
+const BYSYS = {}; DATA.systems.forEach(s=>{ BYSYS[s.system] = s; });
+const fIdx = s => FLADDER.indexOf(s.functionRung);
+const cIdx = s => CLADDER.indexOf(s.contentRung);
+const flag = s => s.blocked && s.blocked.length ? "blocked"
+               : s.awaiting && s.awaiting.length ? "awaiting" : null;
+/* chart strokes: ramp steps lifted toward ink so the dark end stays visible */
+function mix(hex, hex2, t){
+  const a=parseInt(hex.slice(1),16), b=parseInt(hex2.slice(1),16);
+  const ch=(sh)=>Math.round(((a>>sh&255)*(1-t))+((b>>sh&255)*t));
+  return "#"+((1<<24)+(ch(16)<<16)+(ch(8)<<8)+ch(0)).toString(16).slice(1);
+}
+const STROKEF = RAMPF.map(c=>mix(c, INK, .25));
+const STROKEC = RAMPC.map(c=>mix(c, INK, .25));
 
 function el(tag, attrs, kids){
   const e = document.createElement(tag);
@@ -471,27 +646,62 @@ function el(tag, attrs, kids){
   (kids||[]).forEach(k=>e.appendChild(typeof k==="string"?document.createTextNode(k):k));
   return e;
 }
+const total = DATA.systems.length;
 
 /* ---- header ---- */
 document.getElementById("stamp").textContent =
-  DATA.head + " · " + DATA.generated + " · " + DATA.systems.length + " system(s) registered";
+  DATA.head + " · " + DATA.generated + " · " + total + " systems registered";
+(function(){
+  const sw = document.getElementById("rampSw");
+  RAMPF.forEach(c=>sw.appendChild(el("i",{style:"background:"+c})));
+})();
 
-/* ---- headline ladders ---- */
-function renderLadder(mountId, counts, ladder, colorMap, total){
+/* ---- tile strip ---- */
+(function(){
+  const t = document.getElementById("tiles");
+  const n = k => DATA.functionCounts[k]||0;
+  const c = k => DATA.contentCounts[k]||0;
+  const runnablePlus = n("runnable")+n("validated")+n("played");
+  const validatedPlus = n("validated")+n("played");
+  const authoredPlus = c("authored")+c("final");
+  const blocked = DATA.systems.filter(s=>flag(s)==="blocked").length;
+  const awaiting = DATA.systems.filter(s=>flag(s)==="awaiting").length;
+  const gs = DATA.goalSheet, cr = DATA.codeReview, lg = DATA.ledger||{};
+  const done = DATA.systems.filter(s=>s.done).length;
+  function tile(v, sub, label, cls){
+    const d = el("div", {"class":"tile"+(cls?" "+cls:"")});
+    const vv = el("div", {"class":"v"}, [String(v)]);
+    if(sub) vv.appendChild(el("small", {}, [" "+sub]));
+    d.appendChild(vv); d.appendChild(el("div", {"class":"l"}, [label]));
+    return d;
+  }
+  t.appendChild(tile(total, "", "systems"));
+  t.appendChild(tile(runnablePlus, "/"+total, "proven runnable+", "bright"));
+  t.appendChild(tile(validatedPlus, "/"+total, "validated+", "bright"));
+  t.appendChild(tile(done, "/"+total, "done (played × final)", done?"green":""));
+  t.appendChild(tile(authoredPlus, "/"+total, "content authored+"));
+  t.appendChild(tile(blocked, "", "blocked by a bug", blocked?"red":""));
+  t.appendChild(tile(awaiting, "", "awaiting your decision", awaiting?"yellow":""));
+  t.appendChild(tile(gs.ticked, "/"+gs.total, "goal-sheet boxes"));
+  t.appendChild(tile(cr.clean, "/"+cr.total, "files review-clean", ""));
+  t.appendChild(tile((lg.openItems!=null?lg.openItems:"—"), lg.openBugs!=null?"("+lg.openBugs+" bugs)":"", "open ledger items"));
+})();
+
+/* ---- ladders ---- */
+function renderLadder(mountId, counts, ladder, ramp){
   const mount = document.getElementById(mountId);
   mount.innerHTML = "";
-  ladder.forEach(rung=>{
+  ladder.forEach((rung,i)=>{
     const n = counts[rung] || 0;
     const pct = total ? Math.round(100*n/total) : 0;
     const row = el("div", {"class":"rungrow"});
     row.appendChild(el("b", {}, [rung]));
     const bg = el("div", {"class":"barbg"});
-    const fg = el("div", {"class":"barfg", "style":"width:"+pct+"%;background:"+colorMap[rung]});
-    bg.appendChild(fg);
+    bg.appendChild(el("div", {"class":"barfg", "style":"width:"+pct+"%;background:"+ramp[i]}));
     row.appendChild(bg);
     const cnt = el("span", {"class":"cnt"});
     const b = document.createElement("b"); b.textContent = n;
-    cnt.appendChild(b); cnt.appendChild(document.createTextNode(" ("+pct+"%)"));
+    cnt.appendChild(b); cnt.appendChild(document.createTextNode(" · "+pct+"%"));
     row.appendChild(cnt);
     mount.appendChild(row);
   });
@@ -503,43 +713,53 @@ function renderLadder(mountId, counts, ladder, colorMap, total){
     mount.appendChild(row);
   }
 }
-const total = DATA.systems.length;
-document.getElementById("headlineN").textContent =
-  total + " system(s), equal-weight per capability (owner may retune)";
-renderLadder("functionBars", DATA.functionCounts, FLADDER, FCOLOR, total);
-renderLadder("contentBars", DATA.contentCounts, CLADDER, CCOLOR, total);
+renderLadder("functionBars", DATA.functionCounts, FLADDER, RAMPF);
+renderLadder("contentBars", DATA.contentCounts, CLADDER, RAMPC);
 document.getElementById("functionWeight").textContent =
-  "\"done\" is played AND final on the SAME system — see the grid below.";
-document.getElementById("contentWeight").textContent =
-  total===0 ? "No systems registered yet — this axis is 0/0 until `rimflow capability set` runs." : "";
+  "equal weight per system; “done” is played AND final on the same system.";
 
-/* ---- grid ---- */
+/* ---- tier rollup: one 100% stacked bar per tier, segments = function rungs ---- */
+(function(){
+  const mount = document.getElementById("tierRoll");
+  ["RimMandrake","RimStarWars","RimUtinni"].forEach(tier=>{
+    const rows = DATA.systems.filter(s=>s.tier===tier);
+    if(!rows.length) return;
+    const row = el("div", {"class":"stackrow"});
+    const b = el("b", {});
+    b.appendChild(el("span", {"class":"tiermark", style:"background:"+TIERCOL[tier]}));
+    b.appendChild(document.createTextNode(tier.replace("Rim","")));
+    row.appendChild(b);
+    const stack = el("div", {"class":"stack"});
+    FLADDER.forEach((rung,i)=>{
+      const n = rows.filter(s=>s.functionRung===rung).length;
+      if(n) stack.appendChild(el("i", {style:"width:"+(100*n/rows.length)+"%;background:"+RAMPF[i],
+        title:rung+": "+n}));
+    });
+    row.appendChild(stack);
+    row.appendChild(el("span", {"class":"cnt mono", style:"text-align:right;color:var(--dim);font-size:10.5px"},
+      [String(rows.length)]));
+    mount.appendChild(row);
+  });
+})();
+
+/* ---- matrix with marginals ---- */
 document.getElementById("gridN").textContent =
-  total + " system(s) across " + FLADDER.length + "x" + CLADDER.length + " cells";
+  total + " systems · rows: function · columns: content";
 (function(){
   const wrap = document.getElementById("gridWrap");
-  if(total === 0){ wrap.appendChild(el("div",{"class":"empty"},
-    ["No systems registered yet. Seed with `rimflow capability set <SYSTEM> --function-rung … --content-rung …`."]));
-    return; }
-  const legend = el("div", {"class":"gridlegend"});
-  ["RimMandrake","RimStarWars","RimUtinni"].forEach(t=>{
-    const item = el("span");
-    item.appendChild(el("i", {style:"background:"+TIERCOL[t]}));
-    item.appendChild(document.createTextNode(t));
-    legend.appendChild(item);
-  });
-  legend.appendChild(el("span", {style:"margin-left:auto"},
-    ["wash = how far along the function ladder · bottom strip = content ladder · hover for details"]));
-  wrap.parentNode.insertBefore(legend, wrap);
-  const rows = FLADDER.concat(["unset"]);
-  const cols = CLADDER.concat(["unset"]);
+  if(total === 0){ wrap.appendChild(el("div",{"class":"empty"},["No systems registered yet."])); return; }
+  const hasUnset = DATA.systems.some(s=>!s.functionRung||!s.contentRung);
+  const rows = FLADDER.slice().reverse().concat(hasUnset?["unset"]:[]);
+  const cols = CLADDER.concat(hasUnset?["unset"]:[]);
   const table = el("table", {"class":"grid"});
   const thead = el("tr", {}, [el("th", {"class":"corner"}, ["function \\ content"])]
-    .concat(cols.map(c=>el("th", {}, [c]))));
+    .concat(cols.map(c=>el("th", {}, [c]))).concat([el("th",{"class":"marg"},["Σ"])]));
   table.appendChild(thead);
+  const colTot = {};
   rows.forEach(fr=>{
     const tr = el("tr");
     tr.appendChild(el("th", {}, [fr]));
+    let rowTot = 0;
     cols.forEach(cr=>{
       const list = ((DATA.grid[fr] && DATA.grid[fr][cr]) || []).slice()
         .sort((a,b)=>{
@@ -547,29 +767,248 @@ document.getElementById("gridN").textContent =
           return (TIERORD[sa.tier||""]-TIERORD[sb.tier||""])
               || (sa.label||a).localeCompare(sb.label||b);
         });
+      rowTot += list.length; colTot[cr] = (colTot[cr]||0) + list.length;
       const isDone = fr==="played" && cr==="final" && list.length;
-      const td = el("td", {"class":"cell"+(isDone?" done":"")});
+      const td = el("td", {"class": list.length ? "cell"+(isDone?" done":"") : "cell zero"});
       if(list.length){
-        td.appendChild(el("div", {"class":"cellcount"}, [String(list.length)+" system(s)"]));
+        td.appendChild(el("div", {"class":"cellcount"}, [String(list.length)]));
         list.forEach(name=>{
           const s = BYSYS[name] || {label:name, tier:""};
-          const fpct = Math.round(100*(FLADDER.indexOf(s.functionRung)+1)/FLADDER.length);
-          const cpct = Math.round(100*(CLADDER.indexOf(s.contentRung)+1)/CLADDER.length);
-          const tc = TIERCOL[s.tier||""];
-          const chip = el("span", {"class":"chip2", "data-sys":name,
-            style:"border-left-color:"+tc});
+          const st = flag(s);
+          const fi = fIdx(s), ci = cIdx(s);
+          const chip = el("span", {"class":"chip2"+(st?" "+st:""), "data-sys":name,
+            style: st ? "" : "border-left-color:"+TIERCOL[s.tier||""]});
+          const fillCol = st==="blocked" ? RED : st==="awaiting" ? YELLOW : RAMPF[Math.max(0,fi)];
+          const w = st ? 100 : Math.round(100*(fi+1)/FLADDER.length);
           chip.appendChild(el("i", {"class":"fill",
-            style:"width:"+Math.max(0,fpct)+"%;background:"+tc}));
-          if(cpct > 0) chip.appendChild(el("i", {"class":"cfill", style:"width:"+cpct+"%"}));
-          chip.appendChild(el("span", {"class":"lbl"}, [s.label||name]));
+            style:"width:"+w+"%;background:"+fillCol+";opacity:"+(st?".30":".45")}));
+          if(ci >= 0) chip.appendChild(el("i", {"class":"cfill",
+            style:"width:"+Math.round(100*(ci+1)/CLADDER.length)+"%;background:"+RAMPC[ci]}));
+          const lbl = el("span", {"class":"lbl"});
+          if(st) lbl.appendChild(el("span", {"class":"g"}, [st==="blocked"?"✖":"?"]));
+          lbl.appendChild(document.createTextNode(s.label||name));
+          chip.appendChild(lbl);
           td.appendChild(chip);
         });
-      }
+      } else { td.textContent = "·"; }
       tr.appendChild(td);
     });
+    tr.appendChild(el("td", {"class":"marg"}, [String(rowTot)]));
     table.appendChild(tr);
   });
+  const tf = el("tr", {}, [el("th", {"class":"marg"}, ["Σ"])]
+    .concat(cols.map(c=>el("td", {"class":"marg"}, [String(colTot[c]||0)])))
+    .concat([el("td", {"class":"marg"}, [String(total)])]));
+  table.appendChild(tf);
   wrap.appendChild(table);
+})();
+
+/* ---- roster: filter + sort ---- */
+(function(){
+  const t = document.getElementById("sysTable");
+  const controls = document.getElementById("rosterControls");
+  if(total === 0){
+    t.parentNode.replaceChild(el("div",{"class":"empty"},["Registry is empty."]), t);
+    return;
+  }
+  const state = {q:"", tier:null, flagged:false, sort:"name", dir:1};
+  const search = el("input", {type:"search", placeholder:"filter systems…"});
+  search.addEventListener("input", ()=>{ state.q = search.value.toLowerCase(); render(); });
+  controls.appendChild(search);
+  ["RimMandrake","RimStarWars","RimUtinni"].forEach(tier=>{
+    const b = el("button", {"class":"fbtn"});
+    b.appendChild(el("span", {"class":"dot", style:"background:"+TIERCOL[tier]}));
+    b.appendChild(document.createTextNode(tier.replace("Rim","")));
+    b.addEventListener("click", ()=>{
+      state.tier = state.tier===tier ? null : tier;
+      controls.querySelectorAll(".fbtn").forEach(x=>x.classList.remove("on"));
+      if(state.tier) b.classList.add("on");
+      render();
+    });
+    controls.appendChild(b);
+  });
+  const fb = el("button", {"class":"fbtn"}, ["✖/? only flagged"]);
+  fb.addEventListener("click", ()=>{ state.flagged=!state.flagged; fb.classList.toggle("on"); render(); });
+  controls.appendChild(fb);
+
+  const days = s => {
+    if(!s.date) return null;
+    const d = Math.round((Date.parse(DATA.generated.slice(0,10)) - Date.parse(s.date))/864e5);
+    return isNaN(d) ? null : d;
+  };
+  const SORTS = {
+    name:  (a,b)=>(a.label||a.system).localeCompare(b.label||b.system),
+    tier:  (a,b)=>(TIERORD[a.tier||""]-TIERORD[b.tier||""])||SORTS.name(a,b),
+    status:(a,b)=>((flag(b)==="blocked")-(flag(a)==="blocked"))||((flag(b)==="awaiting")-(flag(a)==="awaiting"))||SORTS.name(a,b),
+    fn:    (a,b)=>(fIdx(b)-fIdx(a))||SORTS.name(a,b),
+    ct:    (a,b)=>(cIdx(b)-cIdx(a))||SORTS.name(a,b),
+    age:   (a,b)=>((days(a)==null)-(days(b)==null))||((days(b)||0)-(days(a)||0))||SORTS.name(a,b),
+  };
+  function meter(idx, steps, ramp){
+    const m = el("span", {"class":"meter"});
+    for(let i=0;i<steps;i++)
+      m.appendChild(el("i", {style: i<=idx ? "background:"+ramp[i]+";border-color:"+ramp[i] : ""}));
+    return m;
+  }
+  function render(){
+    t.innerHTML = "";
+    const head = el("tr");
+    [["name","name"],["tier","tier"],["status","status"],["fn","function"],["ct","content"],
+     ["age","evidence age"],[null,"evidence"]].forEach(([key,label])=>{
+      const th = el("th", {}, [label + (key===state.sort ? (state.dir>0?" ▾":" ▴") : "")]);
+      if(key) th.addEventListener("click", ()=>{
+        state.dir = state.sort===key ? -state.dir : 1; state.sort = key; render();
+      });
+      head.appendChild(th);
+    });
+    t.appendChild(head);
+    let rows = DATA.systems.slice();
+    if(state.q) rows = rows.filter(s=>((s.label||"")+" "+s.system+" "+(s.blurb||"")).toLowerCase().includes(state.q));
+    if(state.tier) rows = rows.filter(s=>s.tier===state.tier);
+    if(state.flagged) rows = rows.filter(s=>flag(s));
+    rows.sort(SORTS[state.sort]); if(state.dir<0) rows.reverse();
+    document.getElementById("rosterN").textContent =
+      rows.length===total ? total+" systems" : rows.length+" of "+total+" shown";
+    rows.forEach(s=>{
+      const st = flag(s);
+      const tr = el("tr", {"data-sys":s.system});
+      const nameTd = el("td", {style:"font-weight:600"});
+      nameTd.appendChild(el("span", {"class":"tiermark", style:"background:"+TIERCOL[s.tier||""]}));
+      nameTd.appendChild(document.createTextNode(s.label || s.system));
+      tr.appendChild(nameTd);
+      tr.appendChild(el("td", {style:"color:var(--dim);font-size:10.5px"}, [(s.tier||"?").replace("Rim","")]));
+      const stTd = el("td");
+      if(s.done) stTd.appendChild(el("span",{"class":"tag done"},["DONE"]));
+      else if(st==="blocked") stTd.appendChild(el("span",{"class":"tag blocked"},["✖ "+s.blocked.length+" bug"+(s.blocked.length>1?"s":"")]));
+      else if(st==="awaiting") stTd.appendChild(el("span",{"class":"tag awaiting"},["? decision"]));
+      tr.appendChild(stTd);
+      const fnTd = el("td");
+      fnTd.appendChild(meter(fIdx(s), 6, RAMPF));
+      fnTd.appendChild(el("span", {"class":"rungword"}, [s.functionRung||"—"]));
+      tr.appendChild(fnTd);
+      const ctTd = el("td");
+      ctTd.appendChild(meter(cIdx(s), 4, RAMPC));
+      ctTd.appendChild(el("span", {"class":"rungword"}, [s.contentRung||"—"]));
+      tr.appendChild(ctTd);
+      const d = days(s);
+      tr.appendChild(el("td", {}, [el("span", {"class":"age"+(d!=null&&d>14?" stale":"")},
+        [d==null?"—":(d+"d")])]));
+      tr.appendChild(el("td", {"class":"ev", title:s.evidenceRef||""}, [s.evidenceRef||"—"]));
+      t.appendChild(tr);
+    });
+  }
+  render();
+})();
+
+/* ---- movement feed ---- */
+(function(){
+  const mount = document.getElementById("movement");
+  const mv = DATA.movement||[];
+  if(!mv.length){ mount.appendChild(el("div",{"class":"empty"},["No capability events yet."])); return; }
+  mv.forEach(m=>{
+    const s = BYSYS[m.system];
+    const row = el("div", s ? {"class":"mrow", "data-sys": m.system} : {"class":"mrow"});
+    row.appendChild(el("span", {"class":"mts"}, [(m.ts||"").slice(5,16).replace("T"," ")]));
+    row.appendChild(el("span", {style:"overflow:hidden;text-overflow:ellipsis;white-space:nowrap"},
+      [(s&&s.label)||m.system]));
+    const to = el("span", {"class":"mto"});
+    if(m.retired){ to.textContent = "retired"; to.style.color = "var(--dim)"; }
+    else {
+      const parts = [];
+      if(m.functionRung) parts.push("→ "+m.functionRung);
+      if(m.contentRung) parts.push("→ "+m.contentRung+" (content)");
+      to.textContent = parts.join("  ") || "note";
+      const i = FLADDER.indexOf(m.functionRung);
+      if(i>=0) to.style.color = STROKEF[i];
+    }
+    row.appendChild(to);
+    mount.appendChild(row);
+  });
+})();
+
+/* ---- regression: a small hand-rolled step chart, no library ---- */
+function drawRegression(svgId, legId, snaps, ladder, strokes, field){
+  const svg = document.getElementById(svgId);
+  const leg = document.getElementById(legId);
+  if(!snaps.length){
+    svg.replaceWith(el("div", {"class":"empty"}, ["No capability events yet."]));
+    return;
+  }
+  const W = svg.clientWidth || 560, H = 190, padL = 26, padR = 34, padT = 8, padB = 20;
+  const maxY = Math.max(1, ...snaps.map(s => Math.max(...ladder.map(r => s[field][r] || 0))));
+  const x = i => padL + (W-padL-padR) * (snaps.length===1 ? 0 : i/(snaps.length-1));
+  const y = v => H-padB - (H-padT-padB) * (v/maxY);
+  const ns = "http://www.w3.org/2000/svg";
+  function mk(tag, attrs){
+    const e = document.createElementNS(ns, tag);
+    for(const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  svg.setAttribute("viewBox", "0 0 "+W+" "+H);
+  svg.appendChild(mk("line", {x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:"#332a20"}));
+  svg.appendChild(mk("line", {x1:padL,y1:padT,x2:padL,y2:H-padB,stroke:"#332a20"}));
+  [0, Math.ceil(maxY/2), maxY].forEach(v=>{
+    const t = mk("text", {x:2, y:y(v)+3, fill:"#a99d89", "font-size":"9"});
+    t.textContent = v; svg.appendChild(t);
+  });
+  ladder.forEach((rung, li)=>{
+    let dstr = "";
+    snaps.forEach((s,i)=>{
+      dstr += (i? " L":"M") + x(i).toFixed(1) + " " + y(s[field][rung]||0).toFixed(1);
+    });
+    svg.appendChild(mk("path", {d:dstr, fill:"none", stroke:strokes[li], "stroke-width":2}));
+    const last = snaps[snaps.length-1][field][rung]||0;
+    if(last){
+      const t = mk("text", {x:W-padR+4, y:y(last)+3, fill:strokes[li], "font-size":"9",
+        "font-family":"IBM Plex Mono"});
+      t.textContent = last; svg.appendChild(t);
+    }
+    const sp = el("span");
+    sp.appendChild(el("i", {style:"background:"+strokes[li]}));
+    sp.appendChild(document.createTextNode(rung+" ("+last+")"));
+    leg.appendChild(sp);
+  });
+}
+drawRegression("regFunction", "legFunction", DATA.regression, FLADDER, STROKEF, "function");
+drawRegression("regContent", "legContent", DATA.regression, CLADDER, STROKEC, "content");
+
+/* ---- goal sheet ---- */
+(function(){
+  const gs = DATA.goalSheet, mount = document.getElementById("goalSheet");
+  if(!gs.ok && !gs.sections.length){
+    mount.appendChild(el("div",{"class":"empty"},["GOAL_SHEET.md not found."])); return;
+  }
+  document.getElementById("gsN").textContent =
+    gs.ticked+"/"+gs.total+" boxes ticked — GOAL_SHEET.md, as-is";
+  gs.sections.forEach(sec=>{
+    const row = el("div", {"class":"gsrow"});
+    row.appendChild(el("span", {style:"overflow:hidden;text-overflow:ellipsis;white-space:nowrap"},
+      [sec.n+". "+sec.title]));
+    const bg = el("div", {"class":"barbg"});
+    const pct = sec.total ? Math.round(100*sec.ticked/sec.total) : 0;
+    bg.appendChild(el("div", {"class":"barfg", style:"width:"+pct+"%;background:#c49a5d"}));
+    row.appendChild(bg);
+    row.appendChild(el("span", {"class":"cnt mono", style:"text-align:right;color:var(--dim);font-size:10px"},
+      [sec.ticked+"/"+sec.total]));
+    mount.appendChild(row);
+  });
+})();
+
+/* ---- code review tile ---- */
+(function(){
+  const cr = DATA.codeReview, mount = document.getElementById("crTiles");
+  function tile(v,label,cls){
+    const d = el("div", {"class":"tile"+(cls?" "+cls:"")});
+    d.appendChild(el("div", {"class":"v"}, [String(v)]));
+    d.appendChild(el("div", {"class":"l"}, [label]));
+    return d;
+  }
+  mount.appendChild(tile(cr.clean, "clean", "green"));
+  mount.appendChild(tile(cr.dirty, "dirty", cr.dirty?"":"green"));
+  mount.appendChild(tile(cr.recidivists, "clean→dirty again"));
+  mount.appendChild(tile(cr.total, "recorded"));
+  const dl = document.getElementById("dirtyList");
+  (cr.dirtyPaths||[]).forEach(p=>dl.appendChild(el("div", {"class":"mono", title:p}, [p])));
 })();
 
 /* ---- hover card: any element carrying data-sys ---- */
@@ -584,7 +1023,14 @@ document.getElementById("gridN").textContent =
        +(s.functionRung||"—")+" × "+(s.contentRung||"—")]));
     tip.appendChild(el("div", {"class":"d"},
       [s.blurb || "No description in this mod's About.xml yet."]));
-    if(s.evidenceRef) tip.appendChild(el("div", {"class":"e"}, ["evidence: "+s.evidenceRef]));
+    if(s.blocked && s.blocked.length)
+      tip.appendChild(el("div", {"class":"flag blocked"},
+        ["✖ blocked by: "+s.blocked.join(", ")]));
+    if(s.awaiting && s.awaiting.length)
+      tip.appendChild(el("div", {"class":"flag awaiting"},
+        ["? awaiting your decision: "+s.awaiting.join(", ")]));
+    if(s.evidenceRef) tip.appendChild(el("div", {"class":"e"},
+      ["evidence"+(s.date?" ("+s.date+")":"")+": "+s.evidenceRef]));
   }
   function move(ev){
     const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
@@ -601,115 +1047,6 @@ document.getElementById("gridN").textContent =
     fill(s); tip.hidden = false; move(ev);
   });
   document.addEventListener("mousemove", ev=>{ if(!tip.hidden) move(ev); });
-})();
-
-/* ---- systems table ---- */
-(function(){
-  const t = document.getElementById("sysTable");
-  if(total === 0){
-    t.parentNode.replaceChild(el("div",{"class":"empty"},["Registry is empty."]), t);
-    return;
-  }
-  const head = el("tr", {}, ["name","folder","function","content","done","evidence","date","updated"]
-    .map(h=>el("th", {}, [h])));
-  t.appendChild(head);
-  DATA.systems.slice().sort((a,b)=>
-      (TIERORD[a.tier||""]-TIERORD[b.tier||""]) || (a.label||a.system).localeCompare(b.label||b.system)
-  ).forEach(s=>{
-    const tr = el("tr", {"data-sys":s.system});
-    const nameTd = el("td", {style:"font-weight:600;white-space:nowrap"});
-    nameTd.appendChild(el("span", {"class":"tiermark", style:"background:"+TIERCOL[s.tier||""]}));
-    nameTd.appendChild(document.createTextNode(s.label || s.system));
-    tr.appendChild(nameTd);
-    tr.appendChild(el("td", {style:"color:var(--dim)"}, [s.system]));
-    tr.appendChild(el("td", {}, [s.functionRung || "—"]));
-    tr.appendChild(el("td", {}, [s.contentRung || "—"]));
-    tr.appendChild(el("td", {}, [s.done ? el("span",{"class":"tag done"},["DONE"]) : ""]));
-    tr.appendChild(el("td", {}, [s.evidenceRef || "—"]));
-    tr.appendChild(el("td", {}, [s.date || "—"]));
-    tr.appendChild(el("td", {}, [(s.updatedAt||"").slice(0,10) + (s.updatedBy?" ("+s.updatedBy+")":"")]));
-    t.appendChild(tr);
-  });
-})();
-
-/* ---- regression: a small hand-rolled line chart, no library needed ---- */
-function drawRegression(svgId, legId, snaps, ladder, colorMap, field){
-  const svg = document.getElementById(svgId);
-  const leg = document.getElementById(legId);
-  if(!snaps.length){
-    svg.replaceWith(el("div", {"class":"empty"}, ["No capability events yet."]));
-    return;
-  }
-  const W = svg.clientWidth || 560, H = 220, padL = 28, padR = 10, padT = 10, padB = 22;
-  const maxY = Math.max(1, ...snaps.map(s => Math.max(...ladder.map(r => s[field][r] || 0))));
-  const x = i => padL + (W-padL-padR) * (snaps.length===1 ? 0 : i/(snaps.length-1));
-  const y = v => H-padB - (H-padT-padB) * (v/maxY);
-  const ns = "http://www.w3.org/2000/svg";
-  function mk(tag, attrs){
-    const e = document.createElementNS(ns, tag);
-    for(const k in attrs) e.setAttribute(k, attrs[k]);
-    return e;
-  }
-  svg.setAttribute("viewBox", "0 0 "+W+" "+H);
-  // axes
-  svg.appendChild(mk("line", {x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:"#332a20"}));
-  svg.appendChild(mk("line", {x1:padL,y1:padT,x2:padL,y2:H-padB,stroke:"#332a20"}));
-  [0, maxY].forEach(v=>{
-    const t = mk("text", {x:2, y:y(v)+3, fill:"#a99d89", "font-size":"9"});
-    t.textContent = v; svg.appendChild(t);
-  });
-  ladder.forEach(rung=>{
-    const pts = snaps.map((s,i)=>x(i)+","+y(s[field][rung]||0)).join(" ");
-    svg.appendChild(mk("polyline", {points:pts, fill:"none",
-      stroke: colorMap[rung], "stroke-width":"1.6"}));
-    const i = document.createElement("i");
-    i.style.background = colorMap[rung];
-    leg.appendChild(el("span", {}, [i, rung]));
-  });
-}
-drawRegression("regFunction", "legFunction", DATA.regression, FLADDER, FCOLOR, "function");
-drawRegression("regContent", "legContent", DATA.regression, CLADDER, CCOLOR, "content");
-
-/* ---- GOAL_SHEET ---- */
-(function(){
-  const mount = document.getElementById("goalSheet");
-  const gs = DATA.goalSheet;
-  document.getElementById("gsN").textContent =
-    gs.ticked + " / " + gs.total + " boxes ticked ("
-    + (gs.total ? Math.round(100*gs.ticked/gs.total) : 0) + "%)";
-  if(!gs.ok){
-    mount.appendChild(el("div", {"class":"empty"}, ["GOAL_SHEET.md not found."]));
-    return;
-  }
-  gs.sections.forEach(s=>{
-    const pct = s.total ? Math.round(100*s.ticked/s.total) : 0;
-    const row = el("div", {"class":"gsrow"});
-    row.appendChild(el("b", {}, [s.n + ". " + s.title]));
-    const bg = el("div", {"class":"barbg"});
-    bg.appendChild(el("div", {"class":"barfg", "style":"width:"+pct+"%;background:var(--green)"}));
-    row.appendChild(bg);
-    row.appendChild(el("span", {"class":"cnt"}, [s.ticked + "/" + s.total]));
-    mount.appendChild(row);
-  });
-})();
-
-/* ---- code review tile ---- */
-(function(){
-  const cr = DATA.codeReview;
-  const mount = document.getElementById("crTiles");
-  const tiles = [
-    ["clean", cr.clean, "green"],
-    ["dirty (drifted since marked)", cr.dirty, "grey"],
-    ["unknown (legacy, unresolved)", cr.unknown, "unk"],
-    ["reviewed, dirty again", cr.recidivists, "grey"],
-    ["total review entries", cr.total, ""],
-  ];
-  tiles.forEach(([label, v, cls])=>{
-    const t = el("div", {"class":"tile"+(cls?" "+cls:"")});
-    t.appendChild(el("div", {"class":"v"}, [String(v)]));
-    t.appendChild(el("div", {"class":"l"}, [label]));
-    mount.appendChild(t);
-  });
 })();
 </script>
 </body></html>
@@ -728,6 +1065,17 @@ def main(argv=None):
 
     world, cap_events = load_capabilities()
     systems = systems_payload(world)
+    flags, ledger_counts = system_flags(world, systems)
+    for s in systems:
+        f = flags.get(s["system"], {})
+        s["blocked"] = f.get("blocked", [])
+        s["awaiting"] = f.get("awaiting", [])
+
+    movement = [{"ts": ev.get("ts"), "system": ev.get("system"),
+                 "functionRung": ev.get("function_rung"),
+                 "contentRung": ev.get("content_rung"),
+                 "retired": bool(ev.get("retired")), "seat": ev.get("seat")}
+                for ev in cap_events[-40:]][::-1]
 
     payload = {
         "generated": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
@@ -739,6 +1087,8 @@ def main(argv=None):
         "regression": regression_payload(cap_events),
         "goalSheet": parse_goal_sheet(),
         "codeReview": code_review_tile(),
+        "ledger": ledger_counts,
+        "movement": movement,
         "weighting": "equal-weight per capability (default; owner may retune once he "
                      "sees real numbers — PROJECT_MATURITY_DASHBOARD_1, 'open, and "
                      "deliberately not blocking')",

@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T14:56:29Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-08T15:26:22Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## MATURITY_DASHBOARD_DENSITY_1 Maturity dashboard density passes (owner AFK note 2026-09-08): cram info intuitively; evidence-miner promotions land here too
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/MATURITY_DASHBOARD_DENSITY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MATURITY_DASHBOARD_DENSITY_1.md
 
 # IN PROGRESS
 
