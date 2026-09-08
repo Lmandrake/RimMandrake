@@ -115,6 +115,69 @@ OUTDIR = PATCHDIR
 if "--out" in sys.argv:
     OUTDIR = os.path.abspath(sys.argv[sys.argv.index("--out") + 1])
 
+_TURRET_PROJ_XPATH = re.compile(
+    r'^/?Defs/ThingDef\[defName="([^"]+)"\]/projectile(?:/damageAmountBase)?$')
+
+
+def turret_doctrine_projectile_defnames():
+    """Projectile defNames Turrets_DamageDoctrine.xml (gen_turret_doctrine.py's
+    output) writes damageAmountBase on directly, in-place.
+
+    ⛔ This generator's own header already flagged the debt (2026-08-29): "the
+    three fixed-gun tiers below lost ownership of every projectile fired by a
+    turret on canon.yml turrets.official_roster -- gen_turret_doctrine.py
+    writes those under the (squares)^2 doctrine, and its output file sorts
+    after this one so its writes win. On this generator's NEXT regen, exclude
+    those projectiles from the emplacement/artillery/turbolaser rungs
+    entirely." That regen never happened -- this is it.
+
+    "Its writes win" assumed BOTH ops are PatchOperationReplace against an
+    ALREADY-EXISTING field, so the later one silently overwrites the earlier
+    one's successful write. That is false whenever the base field is ABSENT
+    pre-patch: DP_Cannonball and OuterRim_Proj_ProtonArtillery both inherit
+    from BaseBullet (vanilla, no <projectile> block at all), so neither ships
+    a damageAmountBase of its own. gen_turret_doctrine.py notices this and
+    emits PatchOperationAdd; this generator, unaware, emits its own
+    PatchOperationReplace for the SAME defName into Armoury_RangedDamage.xml
+    -- and because filenames sort Armoury_* before Turrets_*, that Replace
+    runs FIRST, before the Add has created the field, and fails outright.
+    Proven live, 2026-09-07 (ARMOURY_PATCH_INNER_MISS_1):
+    `PatchOperationReplace(xpath="/Defs/ThingDef[defName="DP_Cannonball"]/
+    projectile/damageAmountBase"): Failed to find a node with the given
+    xpath`, same for OuterRim_Proj_ProtonArtillery.
+
+    Read off the artifact rather than re-deriving turret exclusivity a second
+    time: Turrets_DamageDoctrine.xml already contains an in-place
+    damageAmountBase op ONLY for the exclusive case -- a projectile shared
+    with a non-turret weapon gets a CLONE (RSW_Jawa_TD_<turret>) instead, with
+    the retarget on the GUN, leaving the original projectile untouched and
+    still ours to tune. So every defName this function finds is safe to drop
+    from our own candidate pool entirely.
+    """
+    out = set()
+    path = os.path.join(PATCHDIR, "Turrets_DamageDoctrine.xml")
+    if not os.path.isfile(path):
+        return out
+    try:
+        root = ET.parse(path).getroot()
+    except ET.ParseError:
+        return out
+    for li in root.iter():
+        if li.tag not in ("li", "Operation"):
+            continue
+        if li.get("Class") not in ("PatchOperationAdd", "PatchOperationReplace"):
+            continue
+        m = _TURRET_PROJ_XPATH.match((li.findtext("xpath") or "").strip())
+        if m:
+            out.add(m.group(1))
+    return out
+
+
+TURRET_DOCTRINE_PROJECTILES = turret_doctrine_projectile_defnames()
+if TURRET_DOCTRINE_PROJECTILES:
+    print("turret-doctrine-owned projectiles excluded from ranged rungs: %d"
+          % len(TURRET_DOCTRINE_PROJECTILES))
+
 # Mods whose HAND weapons sit on our ladder. Additive by design: dropping a mod
 # name in here is the whole cost of covering it.
 #
@@ -447,6 +510,14 @@ for src in (sw_proj, turret_proj):
         for u in users:
             if u not in candidate_proj[pname]:
                 candidate_proj[pname].append(u)
+
+# See turret_doctrine_projectile_defnames() above: Turrets_DamageDoctrine.xml
+# owns these exclusively now, and double-writing damageAmountBase from here
+# too is either a redundant last-writer-wins Replace (harmless but pointless)
+# or, when the base field is absent, an outright load failure
+# (ARMOURY_PATCH_INNER_MISS_1).
+for pname in TURRET_DOCTRINE_PROJECTILES:
+    candidate_proj.pop(pname, None)
 
 print("SW weapons %d | SW projectiles %d" % (len(sw_weapons), len(sw_proj)))
 print("  by name %d | by our own %s* %d | own mod display names %d"
