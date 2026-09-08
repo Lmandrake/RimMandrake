@@ -325,6 +325,12 @@ def main():
     # "vanilla animal defs" cross-check exists yet - an imperfect gate here is still
     # strictly safer than today's NONE, but a wrong packageId could gate an entry on
     # the wrong mod's presence. Flagged, not solved, in this pass.
+    # ⚠️ Same "every capture, not just the newest" treatment as PKG above, and for
+    # the identical reason: a single capture from a load that discarded defs would
+    # otherwise silently undercount PAWNKINDS, routing real cast animals into the
+    # SKIPPED branch below instead of failing loudly. Fixed 2026-09-07 (was a bare
+    # `break` after the first capture that merely had the file, not the newest
+    # COMPLETE one).
     PAWNKINDS = set()
     ANIMALPKG = {}
     for cap in captures_newest_first():
@@ -337,7 +343,6 @@ def main():
         for x in pl:
             if isinstance(x, dict):
                 ANIMALPKG.setdefault(x['defName'], x.get('packageId'))
-        break
     if not PAWNKINDS:
         sys.exit('no PawnKindDef.json in any capture - refusing to emit a cast that '
                  'cannot be checked against the pawnkind roster')
