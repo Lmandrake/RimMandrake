@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T21:29:28Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-08T21:48:17Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -495,6 +495,33 @@ kind:     task
 summary:  Implement design/Jawa/worldbuilding/restrainingbolttechnical.md's "Build note"
 prose:    infrastructure/state/items/DROID_FDE_GOODWILL_CAP_1.md
 
+## DROID_PROTOCOL_TRADE_ADVANTAGE_1 Protocol droid in the trade party shifts prices both ways; none on your side is a penalty
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  §3.2's row: "C4: StatDef factor on trade prices/negotiation when a
+prose:    infrastructure/state/items/DROID_PROTOCOL_TRADE_ADVANTAGE_1.md
+
+## DROID_HUTT_CAPTIVES_1 Droids held in Hutt torture chambers as a rescue-or-purchase source at Hutt sites
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Thin when filed — no spec/verify/criteria in the queue entry itself. Specced
+prose:    infrastructure/state/items/DROID_HUTT_CAPTIVES_1.md
+
+## DROID_DISTRESS_CALL_REPOINT_1 Re-point the BTD Droid Distress Call quest's 5 KotOR kinds to Droidworks kinds; reframe as the crashed-droid rescue
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DROID_DISTRESS_CALL_REPOINT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_DISTRESS_CALL_REPOINT_1.md
+
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -699,26 +726,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## DROID_PROTOCOL_TRADE_ADVANTAGE_1 Protocol droid in the trade party shifts prices both ways; none on your side is a penalty
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_PROTOCOL_TRADE_ADVANTAGE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_PROTOCOL_TRADE_ADVANTAGE_1.md
-
-## DROID_HUTT_CAPTIVES_1 Droids held in Hutt torture chambers as a rescue-or-purchase source at Hutt sites
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_HUTT_CAPTIVES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_HUTT_CAPTIVES_1.md
-
 ## DROID_REPAIR_FOR_PROFIT_EVENTS_1 Recurring event: friendlies bring droids for paid repair/upgrade; inferior/superior parts choices; offload problem droids
 state:    proposed
 row:      unassigned
@@ -728,16 +735,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
-
-## DROID_DISTRESS_CALL_REPOINT_1 Re-point the BTD Droid Distress Call quest's 5 KotOR kinds to Droidworks kinds; reframe as the crashed-droid rescue
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_DISTRESS_CALL_REPOINT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_DISTRESS_CALL_REPOINT_1.md
 
 ## DROID_RETIRE_ABF_SYNCORE_1 Retire ABF + SynCore (wave R2); DroidDonor_ABFGate fires; remove DroidsAreMachines ABF half; cold load
 state:    proposed
