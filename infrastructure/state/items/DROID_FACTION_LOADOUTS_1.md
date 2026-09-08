@@ -171,7 +171,37 @@ Two more, decided rather than overlooked:
   else. `grep -c "<FactionDef" src/RimUtinni/UtinniPatches/Defs/TraderKindDefs/`
   is 0, and the eight campaign FactionDefs are the same eight as before.
 
-**Live — see the closing note.**
+**Live — MEASURED on a full 600-mod cold load, 2026-09-08 21:31.**
+
+Two loads were spent, because the first one caught a real defect (see decision 3).
+
+| claim | how it was measured | result |
+|---|---|---|
+| nothing my XML added breaks the load | `harvest_log.py` on the second run's Player.log | DEFS DISCARDED **0** = baseline · cross-reference (def loader) **0** = baseline · dead mods 0 · Harmony failures 1 = baseline · patch ops failed 5 = baseline |
+| no NEW ConfigError is mine | `--show configerror`, grepped for every name this packet creates | **0 hits.** The 25-vs-17 RED is unchanged between run 1 and run 2 and is `RSW_FE_*` (fire ecology), `RSW_DW_Module_DroidArmor*` (B2), `RUT_ComplexStructures` and five others. None of it is C1's. |
+| the droids are in the resolved rosters | `jawa/get_defs` on the live game, `pawnGroupMakers` with `deep:true` | `Empire` **6** droid kinds · `OutlanderCivil` **5** · `Jawa_HuttCartel` **3** · `Jawa_Junkers` **1** (`RSW_DW_Primitive_Junker`, which also proves B9's kind is live and the entry is not dangling) · `Jawa_IndigenousTribes` **4** |
+| the Trade Moot's markets exist and hold droids | `jawa/get_defs` on all three TraderKindDefs | **4 of 4 resolved**, `notFound: []`. `RUT_Caravan_TradeMoot_Droids` carries two instantiated `StockGenerator_DWDroids` with their `pawnKinds` (9 and 2) and countRanges (2~5, 0~1) intact — which is also the proof the new DLL loaded and the type resolved. `Jawa_IndigenousTribes` lists all three in its trader-kind lists. |
+| the Junker spews fire | `jawa/get_def RSW_DW_Race_Primitive_Junker` | `CompProperties_DroidDetonation` present with `damageDef: 'Flame'`, `baseRadius: 3.9` |
+| **no droid FactionDef exists anywhere** | `measure count FactionDef` + a `FactionDef` census by packageId, on the fresh 600-mod capture `2026-09-08T20-26-42Z` | **85 FactionDefs**, identical to the pre-change 19:25:50Z capture. Ours are the same **8** `Jawa_*` as before. **Droidworks ships zero FactionDefs.** |
+
+🔴 **NOT proven, and not claimed: a raid actually rolling a droid at runtime.**
+The packet's verify line says "each faction raid/caravan on quicktest shows the
+droids", and the quicktest could not be reached: `rimworld/start_debug_game_ready`
+**crashed RimWorld outright** on the 600-mod list — the third reproduction of
+`NINEFOLD_DEBUG_GAME_READY_CRASH_1`, and this run's tail names a culprit that item
+did not have. The stack is
+`Caveworld_Flora_Unleashed.MapComponent_CaveFungus.MapGenerated →
+TrySpawnNewMyceliumAtRandomPosition → Mycelium.SpawnNewMyceliumAt →
+Verse.GenSpawn.Spawn`, dying inside `GenSpawn.Spawn` under six third-party
+patches. Nothing to do with this packet; noted on that item with the log.
+
+What that leaves unobserved is one step: whether a weighted `options` dictionary
+picks an entry at real point budgets. That is stock engine behaviour on
+non-trivial weights (the smallest share here is 3 of 20), and every input to it is
+measured above — but it is an inference, not an observation, and the next session
+that has a live map should fire one raid per faction and look. Logs kept:
+`Transient/Player_log_C1_run1_automatons_discarded_2026-09-08.log` (the defect) and
+`Transient/Player_log_C1_run2_clean_then_quicktest_crash_2026-09-08.log` (the fix).
 
 ## Assumptions
 
