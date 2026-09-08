@@ -50,6 +50,14 @@ As painted, the def's 1,029 tiles fall in all twelve bearing sectors, unevenly �
 149 tiles a sector: sectors 10, 0 and 9 the heaviest (149/120/113), sectors 7 and 8 the
 thinnest (49/45, each under 5% of the def).
 
+⭐ **Amendment (owner ruling, 2026-09-08, `BLUE_PROPANE_RING_RULING_1`):** presence in
+all twelve sectors does NOT itself violate the anti-bullseye ruling. **The ban is on a
+CLEAN circle** — a band of even width ringing the antistellar point. Lobed, uneven,
+terrain-following spreads (like the 45–149 spread above, 3.3× between thinnest and
+heaviest) are compliant; chemistry here follows basin depth and height, never bearing.
+The sector table above records the dissolve plan's intent, not a per-sector occupancy
+law. No repaint owed.
+
 Donor inventory taken in: blue sand/soil (re-read as water-ice sand), animal density
 0.5 (the sparsest def defined), plant density 0.33, movement 1.5, disease clock 90 d,
 weather table (Clear 18; **BlueSnow** → ice-sand drift; **Blue

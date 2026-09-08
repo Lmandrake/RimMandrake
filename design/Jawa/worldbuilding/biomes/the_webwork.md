@@ -189,6 +189,11 @@ read it.
   yield), raiding a nest. Implementation: game-wide rename patch + hyperweave
   stripped from every trader stock table, proven against live trader generation,
   not the XML (`SHOKKWEAVE_SOLE_SOURCE_1`).
+  ⭐ **Amendment (owner ruling, 2026-09-08): the Shokk are the wyyyschokk of
+  Kashyyyk** — canon web-casting giant spiders (*Han Solo and the Lost Legacy*;
+  *Jedi: Fallen Order*), not a Rakatan invention (`rakatan_legacy_index.md` row 5,
+  ruled negative). How a Kashyyyk species reached Ash'karr is unwritten — open
+  flavor, not open mechanics.
 - **The eggs** — extremely valuable smuggled offworld; carrying stolen eggs marks
   you to every web you pass. The smuggler's jackpot, priced in risk.
 - **The mandible bounty** — the Wildsteam's standing reward for fresh pairs; a

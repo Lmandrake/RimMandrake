@@ -34,7 +34,10 @@ Cinderdark 9. Zero worldmap water tiles — **the lake gets its own tiles** unde
 tiles**, all water=1, arc 170→179, temp median −79.0 °C, regions Umbra 29/Ammonia Flats
 28). Anti-bullseye: the cap is a disc (physics — the coldest point pools: every tile past
 arc 165 is this def or the lake), and the band around it is lobed, thinnest through
-sectors 4–6 (159/131/142 tiles against 311 in sector 9).
+sectors 4–6 (159/131/142 tiles against 311 in sector 9). ⭐ **Amendment (owner ruling,
+2026-09-08, `BLUE_PROPANE_RING_RULING_1`): all-twelve-sector presence is compliant — the
+ban is on a CLEAN circle of even width, not on encirclement; a 2.4× lobed spread like
+this one satisfies it. No repaint owed.**
 
 Donor inventory taken in: terrain (packed snow/ice, solid propane, liquid propane lake),
 constant snow (50 vs Clear 12 — re-read as fuel snow), dry thunderstorms, forage **0**,
