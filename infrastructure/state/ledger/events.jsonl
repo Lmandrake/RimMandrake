@@ -6007,3 +6007,8 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"verify DROIDWORKS_BOLT_PAYOFF_1","ts":"2026-09-08T18:35:38Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T18:39:26Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_BOLT_PAYOFF_1","sha":"6556f22371134c50f92e9494a9cf1eb107d98c62","ts":"2026-09-08T18:40:13Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_ION_SHIELD_BODYSIZE_1","ts":"2026-09-08T18:42:00Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_ION_SHIELD_BODYSIZE_1","ts":"2026-09-08T18:42:00Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"verify DROIDWORKS_ION_SHIELD_BODYSIZE_1","ts":"2026-09-08T18:42:51Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T18:47:57Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_ION_SHIELD_BODYSIZE_1","sha":"b329e342c440ea11671b136ff473ff71fd1dc6d8","ts":"2026-09-08T18:48:47Z"}
