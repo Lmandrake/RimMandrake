@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T18:48:47Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-08T19:19:38Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -477,14 +477,14 @@ kind:     task
 summary:  Per design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5 packet B2: absorb
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
 
-## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
-state:    doing  (BLOCKED)
+## DROIDWORKS_WIPE_SEVERITY_1 Memory wipe: 7-day severe relearning debuff, service-record reset, permanent accreting hardware quirks
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/DROID_FDE_KINDS_REPOINT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_FDE_KINDS_REPOINT_1.md
+summary:  (no items/DROIDWORKS_WIPE_SEVERITY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_WIPE_SEVERITY_1.md
 
 ## DROID_FDE_GOODWILL_CAP_1 Free Droid Enclaves goodwill cap via GoodwillSituationDef (spec: restraining_bolt_technical.md)
 state:    doing
@@ -656,16 +656,6 @@ blocked:  live-verified 2026-09-08, apparel FAILS but root cause is upstream (ap
 summary:  Per design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5 packet B2: absorb
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
 
-## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  premature: verified zero concrete Droidworks races exist to repoint onto. Races_Base.xml's DW_Race_Base and every family in Races_Families.xml (Astromech/Battle/Heavy/Labour/Power) are all Abstract=True scaffolding, no instantiable derived race anywhere in src/RimStarWars/Droidworks/. The 4 Jawa_Droid_* PawnKindDefs (JawaFactionRoster.xml) currently set race=OuterRim_ImperialLaborDroid etc. (Depot's own races) under MayRequire=Neronix17.OuterRim.DroidDepot -- there is nothing else to point them at yet. Needs a concrete Droidworks race landing first (DROIDWORKS_PRIMITIVE_TIER_1 or DROIDWORKS_FORMAT_TIERS_1 look like the likely source, neither closed).
-summary:  (no items/DROID_FDE_KINDS_REPOINT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_FDE_KINDS_REPOINT_1.md
-
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -717,16 +707,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROIDWORKS_PRIMITIVE_TIER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
-
-## DROIDWORKS_WIPE_SEVERITY_1 Memory wipe: 7-day severe relearning debuff, service-record reset, permanent accreting hardware quirks
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_WIPE_SEVERITY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_WIPE_SEVERITY_1.md
 
 ## DROIDWORKS_RESEARCH_ROWS_1 Seven Droidworks research rows in The Unbolting; cut the Depot droid-brain rows; brains never researchable
 state:    proposed

@@ -6012,3 +6012,8 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"verify DROIDWORKS_ION_SHIELD_BODYSIZE_1","ts":"2026-09-08T18:42:51Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T18:47:57Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_ION_SHIELD_BODYSIZE_1","sha":"b329e342c440ea11671b136ff473ff71fd1dc6d8","ts":"2026-09-08T18:48:47Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"confirming full-list restart for DROIDWORKS_FULL_LIST_COEXIST_1 + B3-B6 content","ts":"2026-09-08T19:10:47Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_WIPE_SEVERITY_1","ts":"2026-09-08T19:13:29Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_WIPE_SEVERITY_1","ts":"2026-09-08T19:13:29Z"}
+{"seat":"FOUNDRY","event":"unblock","id":"DROID_FDE_KINDS_REPOINT_1","reason":"verified false: 57 concrete (non-Abstract) DW races exist in Races_OuterRim/KotOR/JDS.xml (RSW_DW_Race_OuterRim_ProtocolDroid etc, spawned and tested live repeatedly this session) - the block only checked Races_Base.xml/Races_Families.xml (the abstract scaffolding) and missed the concrete race files entirely","ts":"2026-09-08T19:14:21Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROID_FDE_KINDS_REPOINT_1","sha":"ac7c941ffbffb1239302d7fa7b5aa77178f50c6a","ts":"2026-09-08T19:19:38Z"}
