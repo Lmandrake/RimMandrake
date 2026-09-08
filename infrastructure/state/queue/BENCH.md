@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T16:00:34Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-08T16:10:23Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## SHEET_SUBMEASURE_REFRESH_1 Region-level + landform-level sheet breakdowns are stale and not derivable from the per-def instrument: cracked_lands landform mix, fever_wood 47/60, pyrelands flat/rain fractions, deep_desert region table, wasteland three-family table, weeping/webwork hilliness; needs a region+landform measurement pass
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/SHEET_SUBMEASURE_REFRESH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SHEET_SUBMEASURE_REFRESH_1.md
 
 # IN PROGRESS
 
@@ -26,6 +35,24 @@ target:   v1
 kind:     task
 summary:  Full creature-art review sheet, per design/Jawa/fauna/creatureartdecisions.json
 prose:    infrastructure/state/items/CREATURE_ART_REVIEW_SHEET_1.md
+
+## GEONOSIAN_BRAINWORM_MORPH_1 Research Space Worms mod + Geonosian brain worm canon (Brain Invaders arc), author our own RSW_ brain worms — cold-vulnerable, host-puppeting
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  1. Research the donor: the Space Worms mod already in our orbit (the legacy cast
+prose:    infrastructure/state/items/GEONOSIAN_BRAINWORM_MORPH_1.md
+
+## GIZKA_TRIBBLE_ADAPTATION_1 Examine the subscribed (not installed) Tribble module; design the Gizka ship-pest event — cute first, real problem after; check Absorbed_KotorCore for donor art
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  1. Examine the Tribble module (find its workshop folder by About.xml name scan; it is
+prose:    infrastructure/state/items/GIZKA_TRIBBLE_ADAPTATION_1.md
 
 ## BIOME_FREEZE_FABLE_REVIEW_1 Full-scale Fable review of ALL biomes together before the freeze — temps, physics, weather, precipitation, dust/sand/ash, fuel/wood/animal/meat/growth, diseases — BLOCKED until every biome sheet is finished; pre-assignment, not final check-out
 state:    doing
@@ -42,7 +69,7 @@ _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -50,7 +77,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
@@ -91,26 +118,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  BIOMEFAUNAASSIGNMENTSITTING1 — the morning sitting, prepped
 prose:    infrastructure/state/items/BIOME_FAUNA_ASSIGNMENT_SITTING_1.md
-
-## GEONOSIAN_BRAINWORM_MORPH_1 Research Space Worms mod + Geonosian brain worm canon (Brain Invaders arc), author our own RSW_ brain worms — cold-vulnerable, host-puppeting
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  1. Research the donor: the Space Worms mod already in our orbit (the legacy cast
-prose:    infrastructure/state/items/GEONOSIAN_BRAINWORM_MORPH_1.md
-
-## GIZKA_TRIBBLE_ADAPTATION_1 Examine the subscribed (not installed) Tribble module; design the Gizka ship-pest event — cute first, real problem after; check Absorbed_KotorCore for donor art
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  1. Examine the Tribble module (find its workshop folder by About.xml name scan; it is
-prose:    infrastructure/state/items/GIZKA_TRIBBLE_ADAPTATION_1.md
 
 ## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
 state:    proposed
@@ -461,13 +468,3 @@ kind:     task
 thin:     no ## criteria
 summary:  - Measure first: current live memory footprint (RSS of the RimWorld process) at a
 prose:    infrastructure/state/items/RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1.md
-
-## SHEET_SUBMEASURE_REFRESH_1 Region-level + landform-level sheet breakdowns are stale and not derivable from the per-def instrument: cracked_lands landform mix, fever_wood 47/60, pyrelands flat/rain fractions, deep_desert region table, wasteland three-family table, weeping/webwork hilliness; needs a region+landform measurement pass
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SHEET_SUBMEASURE_REFRESH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SHEET_SUBMEASURE_REFRESH_1.md

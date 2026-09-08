@@ -5890,3 +5890,31 @@
 {"seat":"BENCH","event":"note","id":"PATCHMODS_LOADAFTER_SWEEP_1","text":"Walk authoring found 3 more undeclared StarWarsPatches loadAfters: redmattis.bigsmall.core, Killathon.ArtificialBeings, cross-tier mandrake.rut.patches — fold into the sweep","ts":"2026-09-08T15:57:29Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_DETONATION_REVIEW_1","sha":"72c58ea2af55495c905149dabb9c98dba40599b3","ts":"2026-09-08T15:59:22Z"}
 {"seat":"FOUNDRY","event":"block","id":"DROIDWORKS_MODULE_ABSORB_1","reason":"absorbed + validate_patch 0/0, needs a live quicktest to confirm a KotOR kind spawns wearing its modules -- commit c6b9b7d9","ts":"2026-09-08T16:00:34Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"deploy assemblies + minimal-list quicktest verify (Format Tiers, Module Absorb)","ts":"2026-09-08T16:01:40Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"closing quicktest to deploy assemblies","ts":"2026-09-08T16:01:41Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is going down","ts":"2026-09-08T16:01:45Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"game closed for assembly deploy","ts":"2026-09-08T16:01:48Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-09-08T16:01:53Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"relaunching on minimal list to verify deployed changes","ts":"2026-09-08T16:02:26Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading","ts":"2026-09-08T16:02:41Z"}
+{"seat":"BENCH","event":"claim","id":"SHEET_SUBMEASURE_REFRESH_1","ts":"2026-09-08T16:04:30Z"}
+{"seat":"BENCH","event":"note","id":"SHEET_SUBMEASURE_REFRESH_1","text":"Resolved at 4ae1ac59: hilliness/rain-zero/per-region stats added to biome_sheet_stats.py; pyrelands, cracked_lands, fever_wood, webwork, weeping_stones fractions fixed. REMAINING: deep_desert's from-water column needs a water-distance instrument (do not improvise the metric); wasteland's three-family table is interpretive (dark-scour regions moved to BiomeGRimond) — freeze-review material, flagged in-sheet","ts":"2026-09-08T16:04:31Z"}
+{"seat":"FOUNDRY","event":"file","id":"DROIDWORKS_APPARELMONEY_MISSING_1","title":"gen_droidworks_defs.py never emits apparelMoney on any of the 80 PawnKindDefs -- no Droidworks kind can ever generate apparel regardless of apparelTags","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-08T16:06:57Z"}
+{"seat":"FOUNDRY","event":"block","id":"DROIDWORKS_FORMAT_TIERS_1","reason":"live-verified 2026-09-08, need-gating FAILS: needs identical at every tier, not root-caused (commit a9d5d251)","ts":"2026-09-08T16:07:33Z"}
+{"seat":"FOUNDRY","event":"block","id":"DROIDWORKS_MODULE_ABSORB_1","reason":"live-verified 2026-09-08, apparel FAILS but root cause is upstream (apparelMoney never set) -- see DROIDWORKS_APPARELMONEY_MISSING_1 (commit a9d5d251)","ts":"2026-09-08T16:07:34Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T16:07:53Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"going down to restore full list for cold-load verification","ts":"2026-09-08T16:07:54Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"full-list cold load to verify ARMOURY_PATCH_INNER_MISS_1 (patchfail 8->5) and WORLD_LINT_WATER_HARDCODE_1 (landBiomeSubmerged 1135->0)","ts":"2026-09-08T16:08:01Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"full list cold load starting for verification","ts":"2026-09-08T16:08:02Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"full list cold load starting for verification","ts":"2026-09-08T16:08:03Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is going down","ts":"2026-09-08T16:08:41Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-09-08T16:08:42Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading","ts":"2026-09-08T16:08:43Z"}
+{"seat":"BENCH","event":"claim","id":"GIZKA_TRIBBLE_ADAPTATION_1","ts":"2026-09-08T16:08:49Z"}
+{"seat":"BENCH","event":"start","id":"GIZKA_TRIBBLE_ADAPTATION_1","ts":"2026-09-08T16:08:50Z"}
+{"seat":"BENCH","event":"note","id":"GIZKA_TRIBBLE_ADAPTATION_1","text":"Spec written (design/RimStarWars/gizka_ship_pest_spec.md): Tribble module examined inactive, donor art absence MEASURED (only 4 RSW_Pawn_Gizka_* SoundDefs exist). Awaiting owner review per verify; build shape targets the Livestock mod","ts":"2026-09-08T16:08:51Z"}
+{"seat":"BENCH","event":"needs","id":"GIZKA_TRIBBLE_ADAPTATION_1","to":"owner","ts":"2026-09-08T16:08:51Z"}
+{"seat":"BENCH","event":"claim","id":"GEONOSIAN_BRAINWORM_MORPH_1","ts":"2026-09-08T16:10:20Z"}
+{"seat":"BENCH","event":"start","id":"GEONOSIAN_BRAINWORM_MORPH_1","ts":"2026-09-08T16:10:21Z"}
+{"seat":"BENCH","event":"note","id":"GEONOSIAN_BRAINWORM_MORPH_1","text":"Both research halves done (design/RimStarWars/brain_worm_spec.md): donor examined inactive, canon cited, def plan drafted with a v1 living-hosts-only vs corpse-walker fork for the owner. Awaiting his review per verify","ts":"2026-09-08T16:10:22Z"}
+{"seat":"BENCH","event":"needs","id":"GEONOSIAN_BRAINWORM_MORPH_1","to":"owner","ts":"2026-09-08T16:10:23Z"}
