@@ -32,4 +32,37 @@
       <li>mandrake.rm.patches</li>
     <li>mandrake.rsw.patches</li>
   </loadAfter>
+  <!-- Merged from RimUtinni/FactionSlate (mandrake.rut.factionslate, MOD_CONSOLIDATION_SPRINT_1):
+       Patches/FactionSlate/OnlyOurFactions.xml zeroes startingCountAtWorldCreation on 48
+       FactionDefs so only the campaign's own factions offer on the Configure Factions page.
+       It is PatchOperationConditional with no <nomatch>, so a faction whose owning mod has
+       not loaded YET is a silent no-op — this forceLoadAfter list (built from the live def
+       dump's per-def packageId attribution, JAWA_FACTION_SLATE_LOAD_ORDER_1) is the fix, and
+       is REQUIRED, not optional, for the patch to do its whole job. -->
+  <forceLoadAfter>
+    <li>biomesteam.biomespollutedlands</li>
+    <li>det.buzzers</li>
+    <li>det.keshig</li>
+    <li>guy762.kotordroids</li>
+    <li>iforgotmysocks.caravanadventures</li>
+    <li>karew.orcclan</li>
+    <li>m3.continued.jangodsoul.starwars.tsda</li>
+    <li>mlie.horrors</li>
+    <li>mlie.moevents</li>
+    <li>mlie.rfrumorhasit</li>
+    <li>neronix17.outerrim.core</li>
+    <li>neronix17.outerrim.droiddepot</li>
+    <li>neronix17.outerrim.galacticempire</li>
+    <li>neronix17.outerrim.rebelalliance</li>
+    <li>oskarpotocki.vfe.pirates</li>
+    <li>redmattis.betterprerequisites</li>
+    <li>redmattis.bigsmall</li>
+    <li>sapiently.theyatomicmonsters</li>
+    <li>sarg.alphaanimals</li>
+    <li>sarg.alphagenes</li>
+    <li>van.beasts</li>
+    <li>vanillaexpanded.vgeneticse</li>
+    <li>vanillaracesexpanded.archon</li>
+    <li>vanillaracesexpanded.saurid</li>
+  </forceLoadAfter>
 </ModMetaData>
