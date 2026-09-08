@@ -57,7 +57,23 @@
       <li>RSW_DW_InstallRestrainingBolt</li>
       <li>RSW_DW_RemoveRestrainingBolt</li>
       <li>RSW_DW_MemoryWipe</li>
+      <!-- DROIDWORKS_FORMAT_TIERS_1 (packet B1) -->
+      <li>RSW_DW_FormatDroid</li>
+      <li>RSW_DW_RestrictiveFormat</li>
+      <li>RSW_DW_DeformatDroid</li>
     </recipes>
+    <!-- DROIDWORKS_FORMAT_TIERS_1: puts RSW_DW_FormatTier on every droid at
+         spawn (and leaves an already-formatted one alone on load) so the tier is
+         visible in the health tab rather than an implicit default living in code.
+         See Source/Droidworks/CompDWFormatTier.cs for why this is a spawn hook
+         and not a hediffGiverSet or a PawnGenerator patch. A family or race that
+         should ship at a different rung overrides <defaultTier> on its own copy
+         of this comp. -->
+    <comps>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWFormatTier">
+        <defaultTier>Programmable</defaultTier>
+      </li>
+    </comps>
     <alienRace>
       <generalSettings>
         <alienPartGenerator>
