@@ -1319,6 +1319,12 @@
     "hash": "4075a09872e2499a364b7a530430d9210024ba3bb26b066c626928b59cd7b519",
     "sha": "ecc86a6f"
   },
+  "src/RimMandrake/Oracle/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "ab134e74f93f718009fb809a456147e6e6034780887ceb0c86a3754014a26486",
+    "sha": "06da6f34"
+  },
   "src/RimMandrake/Oracle/Source/DebugActions_Oracle.cs": {
     "cleanCount": 1,
     "date": "2026-09-04",
