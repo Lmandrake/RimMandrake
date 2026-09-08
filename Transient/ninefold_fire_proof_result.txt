@@ -1,0 +1,10 @@
+devmode: {"devMode": true, "logVerbose": false, "autosaveIntervalDays": 0.25, "autosavesCount": 10, "pauseOnLoad": true}
+state: game_loaded / None maps=1 ticks=15002
+anchor colonist cell: {'x': 162, 'z': 110} (of 3 colonists)
+explosion leaf: Actions\Explosion...\Bomb
+log offset: 1664910
+explosion@(170,118): success=True logs=0
+hostile kind leaf: Actions\Spawn Pawn...\AM_EnemyScavenger
+spawned new pawns: 3 at ~(182,110)
+=== [Ninefold] LINES SINCE OFFSET: 0 ===
+DONE

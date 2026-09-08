@@ -1,0 +1,1171 @@
+{
+  "success": true,
+  "captureId": 9,
+  "capturedFrame": 174252,
+  "capturedAtUtc": "2026-09-05T21:05:43.4761222Z",
+  "surfaceCount": 2,
+  "surfaces": [
+    {
+      "captureTargetId": "ui-surface:9:1",
+      "surfaceTargetId": "window:-1593759361:Verse.ImmediateWindow",
+      "surfaceKind": "window",
+      "type": "Verse.ImmediateWindow",
+      "title": null,
+      "label": null,
+      "semanticKind": null,
+      "semanticDetails": null,
+      "rect": {
+        "x": 1086.0,
+        "y": 3.0,
+        "width": 192.0,
+        "height": 25.0
+      },
+      "screenRect": {
+        "x": 1086.0,
+        "y": 3.0,
+        "width": 192.0,
+        "height": 25.0
+      },
+      "elementCount": 10,
+      "actionableElementCount": 9,
+      "elements": [
+        {
+          "targetId": "ui-element:9:1:1",
+          "kind": "group",
+          "source": "widgets.begin_group",
+          "label": null,
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 192.0,
+            "height": 25.0
+          },
+          "screenRect": {
+            "x": 1086.0,
+            "y": 3.0,
+            "width": 192.0,
+            "height": 25.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:1:2",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 192.0,
+            "y": 0.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "screenRect": {
+            "x": 1278.0,
+            "y": 3.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:1:3",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "screenRect": {
+            "x": 1086.0,
+            "y": 3.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:1:4",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 24.0,
+            "y": 0.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "screenRect": {
+            "x": 1110.0,
+            "y": 3.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:1:5",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 48.0,
+            "y": 0.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "screenRect": {
+            "x": 1134.0,
+            "y": 3.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:1:6",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 72.0,
+            "y": 0.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "screenRect": {
+            "x": 1158.0,
+            "y": 3.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:1:7",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 96.0,
+            "y": 0.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "screenRect": {
+            "x": 1182.0,
+            "y": 3.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:1:8",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 120.0,
+            "y": 0.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "screenRect": {
+            "x": 1206.0,
+            "y": 3.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:1:9",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 144.0,
+            "y": 0.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "screenRect": {
+            "x": 1230.0,
+            "y": 3.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:1:10",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 168.0,
+            "y": 0.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "screenRect": {
+            "x": 1254.0,
+            "y": 3.0,
+            "width": 24.0,
+            "height": 24.0
+          },
+          "scroll": null
+        }
+      ]
+    },
+    {
+      "captureTargetId": "ui-surface:9:2",
+      "surfaceTargetId": "window:7:aRandomKiwi.RimThemes.Dialog_ThemesList",
+      "surfaceKind": "window",
+      "type": "aRandomKiwi.RimThemes.Dialog_ThemesList",
+      "title": null,
+      "label": null,
+      "semanticKind": null,
+      "semanticDetails": null,
+      "rect": {
+        "x": 872.0,
+        "y": 227.0,
+        "width": 620.0,
+        "height": 750.0
+      },
+      "screenRect": {
+        "x": 872.0,
+        "y": 227.0,
+        "width": 620.0,
+        "height": 750.0
+      },
+      "elementCount": 31,
+      "actionableElementCount": 16,
+      "elements": [
+        {
+          "targetId": "ui-element:9:2:1",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 598.0,
+            "y": 4.0,
+            "width": 18.0,
+            "height": 18.0
+          },
+          "screenRect": {
+            "x": 1470.0,
+            "y": 231.0,
+            "width": 18.0,
+            "height": 18.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:2",
+          "kind": "group",
+          "source": "widgets.begin_group",
+          "label": null,
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 18.0,
+            "y": 18.0,
+            "width": 584.0,
+            "height": 714.0
+          },
+          "screenRect": {
+            "x": 890.0,
+            "y": 245.0,
+            "width": 584.0,
+            "height": 714.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:3",
+          "kind": "button",
+          "source": "widgets.button_text",
+          "label": "Supported by M <3",
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": false,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 8.0,
+            "y": 15.0,
+            "width": 574.0,
+            "height": 40.0
+          },
+          "screenRect": {
+            "x": 898.0,
+            "y": 260.0,
+            "width": 574.0,
+            "height": 40.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:4",
+          "kind": "text_field",
+          "source": "widgets.text_field",
+          "label": null,
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 8.0,
+            "y": 65.0,
+            "width": 418.0,
+            "height": 25.0
+          },
+          "screenRect": {
+            "x": 898.0,
+            "y": 310.0,
+            "width": 418.0,
+            "height": 25.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:5",
+          "kind": "button",
+          "source": "widgets.button_text",
+          "label": "All",
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": false,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 433.0,
+            "y": 65.0,
+            "width": 150.0,
+            "height": 26.0
+          },
+          "screenRect": {
+            "x": 1323.0,
+            "y": 310.0,
+            "width": 150.0,
+            "height": 26.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:6",
+          "kind": "scroll_view",
+          "source": "widgets.begin_scroll_view",
+          "label": null,
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 0.0,
+            "y": 100.0,
+            "width": 584.0,
+            "height": 569.0
+          },
+          "screenRect": {
+            "x": 890.0,
+            "y": 345.0,
+            "width": 584.0,
+            "height": 569.0
+          },
+          "scroll": {
+            "offsetX": 0.0,
+            "offsetY": 0.0,
+            "maxOffsetX": 0.0,
+            "maxOffsetY": 31.0,
+            "canScrollX": false,
+            "canScrollY": true,
+            "atLeft": true,
+            "atRight": true,
+            "atTop": true,
+            "atBottom": false,
+            "viewportRect": {
+              "x": 0.0,
+              "y": 100.0,
+              "width": 584.0,
+              "height": 569.0
+            },
+            "viewportScreenRect": {
+              "x": 890.0,
+              "y": 345.0,
+              "width": 584.0,
+              "height": 569.0
+            },
+            "contentRect": {
+              "x": 0.0,
+              "y": 0.0,
+              "width": 568.0,
+              "height": 600.0
+            }
+          }
+        },
+        {
+          "targetId": "ui-element:9:2:7",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 8.0,
+            "y": 2.0,
+            "width": 96.0,
+            "height": 96.0
+          },
+          "screenRect": {
+            "x": 898.0,
+            "y": 347.0,
+            "width": 96.0,
+            "height": 96.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:8",
+          "kind": "label",
+          "source": "widgets.label",
+          "label": "Centipede",
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 4.0,
+            "y": 0.0,
+            "width": 368.0,
+            "height": 34.0
+          },
+          "screenRect": {
+            "x": 1014.0,
+            "y": 345.0,
+            "width": 368.0,
+            "height": 34.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:9",
+          "kind": "label",
+          "source": "widgets.label",
+          "label": "Muffalo's best friend !",
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 0.0,
+            "y": 38.0,
+            "width": 368.0,
+            "height": 66.0
+          },
+          "screenRect": {
+            "x": 1010.0,
+            "y": 383.0,
+            "width": 368.0,
+            "height": 66.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:10",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 496.0,
+            "y": 18.0,
+            "width": 64.0,
+            "height": 64.0
+          },
+          "screenRect": {
+            "x": 1386.0,
+            "y": 363.0,
+            "width": 64.0,
+            "height": 64.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:11",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 8.0,
+            "y": 2.0,
+            "width": 96.0,
+            "height": 96.0
+          },
+          "screenRect": {
+            "x": 898.0,
+            "y": 447.0,
+            "width": 96.0,
+            "height": 96.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:12",
+          "kind": "label",
+          "source": "widgets.label",
+          "label": "CentipedeClassic",
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 4.0,
+            "y": 0.0,
+            "width": 368.0,
+            "height": 34.0
+          },
+          "screenRect": {
+            "x": 1014.0,
+            "y": 445.0,
+            "width": 368.0,
+            "height": 34.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:13",
+          "kind": "label",
+          "source": "widgets.label",
+          "label": "Muffalo's best friend !",
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 0.0,
+            "y": 38.0,
+            "width": 368.0,
+            "height": 66.0
+          },
+          "screenRect": {
+            "x": 1010.0,
+            "y": 483.0,
+            "width": 368.0,
+            "height": 66.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:14",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 496.0,
+            "y": 18.0,
+            "width": 64.0,
+            "height": 64.0
+          },
+          "screenRect": {
+            "x": 1386.0,
+            "y": 463.0,
+            "width": 64.0,
+            "height": 64.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:15",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 8.0,
+            "y": 2.0,
+            "width": 96.0,
+            "height": 96.0
+          },
+          "screenRect": {
+            "x": 898.0,
+            "y": 547.0,
+            "width": 96.0,
+            "height": 96.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:16",
+          "kind": "label",
+          "source": "widgets.label",
+          "label": "Cyberpunk",
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 4.0,
+            "y": 0.0,
+            "width": 368.0,
+            "height": 34.0
+          },
+          "screenRect": {
+            "x": 1014.0,
+            "y": 545.0,
+            "width": 368.0,
+            "height": 34.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:17",
+          "kind": "label",
+          "source": "widgets.label",
+          "label": "Nice colony you have there... would be a shame if 50 wargs find it during a solar flare ;)",
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 0.0,
+            "y": 38.0,
+            "width": 368.0,
+            "height": 66.0
+          },
+          "screenRect": {
+            "x": 1010.0,
+            "y": 583.0,
+            "width": 368.0,
+            "height": 66.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:18",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 496.0,
+            "y": 18.0,
+            "width": 64.0,
+            "height": 64.0
+          },
+          "screenRect": {
+            "x": 1386.0,
+            "y": 563.0,
+            "width": 64.0,
+            "height": 64.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:19",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 8.0,
+            "y": 2.0,
+            "width": 96.0,
+            "height": 96.0
+          },
+          "screenRect": {
+            "x": 898.0,
+            "y": 647.0,
+            "width": 96.0,
+            "height": 96.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:20",
+          "kind": "label",
+          "source": "widgets.label",
+          "label": "Thrumbo",
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 4.0,
+            "y": 0.0,
+            "width": 368.0,
+            "height": 34.0
+          },
+          "screenRect": {
+            "x": 1014.0,
+            "y": 645.0,
+            "width": 368.0,
+            "height": 34.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:21",
+          "kind": "label",
+          "source": "widgets.label",
+          "label": "Shouldn't have attacked that Thrumbo !!",
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 0.0,
+            "y": 38.0,
+            "width": 368.0,
+            "height": 66.0
+          },
+          "screenRect": {
+            "x": 1010.0,
+            "y": 683.0,
+            "width": 368.0,
+            "height": 66.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:22",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 496.0,
+            "y": 18.0,
+            "width": 64.0,
+            "height": 64.0
+          },
+          "screenRect": {
+            "x": 1386.0,
+            "y": 663.0,
+            "width": 64.0,
+            "height": 64.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:23",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 8.0,
+            "y": 2.0,
+            "width": 96.0,
+            "height": 96.0
+          },
+          "screenRect": {
+            "x": 898.0,
+            "y": 747.0,
+            "width": 96.0,
+            "height": 96.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:24",
+          "kind": "label",
+          "source": "widgets.label",
+          "label": "Utinni Shell",
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 4.0,
+            "y": 0.0,
+            "width": 368.0,
+            "height": 34.0
+          },
+          "screenRect": {
+            "x": 1014.0,
+            "y": 745.0,
+            "width": 368.0,
+            "height": 34.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:25",
+          "kind": "label",
+          "source": "widgets.label",
+          "label": "Desert Star Wars shell for the Utinni campaign \u2014 oxidised rust plate, chalk graffiti outlines and a brass accent over an indigo-black ground.",
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 0.0,
+            "y": 38.0,
+            "width": 368.0,
+            "height": 66.0
+          },
+          "screenRect": {
+            "x": 1010.0,
+            "y": 783.0,
+            "width": 368.0,
+            "height": 66.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:26",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 496.0,
+            "y": 18.0,
+            "width": 64.0,
+            "height": 64.0
+          },
+          "screenRect": {
+            "x": 1386.0,
+            "y": 763.0,
+            "width": 64.0,
+            "height": 64.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:27",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 8.0,
+            "y": 2.0,
+            "width": 96.0,
+            "height": 96.0
+          },
+          "screenRect": {
+            "x": 898.0,
+            "y": 847.0,
+            "width": 96.0,
+            "height": 96.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:28",
+          "kind": "label",
+          "source": "widgets.label",
+          "label": "Vanilla",
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 4.0,
+            "y": 0.0,
+            "width": 368.0,
+            "height": 34.0
+          },
+          "screenRect": {
+            "x": 1014.0,
+            "y": 845.0,
+            "width": 368.0,
+            "height": 34.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:29",
+          "kind": "label",
+          "source": "widgets.label",
+          "label": "Want some old school interface ?",
+          "valueText": null,
+          "actionable": false,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 0.0,
+            "y": 38.0,
+            "width": 368.0,
+            "height": 66.0
+          },
+          "screenRect": {
+            "x": 1010.0,
+            "y": 883.0,
+            "width": 368.0,
+            "height": 66.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:30",
+          "kind": "icon_button",
+          "source": "widgets.button_image",
+          "label": null,
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": null,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 496.0,
+            "y": 18.0,
+            "width": 64.0,
+            "height": 64.0
+          },
+          "screenRect": {
+            "x": 1386.0,
+            "y": 863.0,
+            "width": 64.0,
+            "height": 64.0
+          },
+          "scroll": null
+        },
+        {
+          "targetId": "ui-element:9:2:31",
+          "kind": "button",
+          "source": "widgets.button_text",
+          "label": "Close",
+          "valueText": null,
+          "actionable": true,
+          "clipCapable": true,
+          "isChecked": null,
+          "disabled": false,
+          "depth": 0,
+          "parentTargetId": null,
+          "rect": {
+            "x": 250.0,
+            "y": 695.0,
+            "width": 120.0,
+            "height": 40.0
+          },
+          "screenRect": {
+            "x": 1122.0,
+            "y": 922.0,
+            "width": 120.0,
+            "height": 40.0
+          },
+          "scroll": null
+        }
+      ]
+    }
+  ],
+  "operation": {
+    "OperationId": "op_fc2bad309dbe46fdaad13d529d413619",
+    "CapabilityId": "rimbridge.core/input/get-ui-layout",
+    "Status": 2,
+    "Success": true,
+    "StartedAtUtc": "2026-09-05T21:05:43.4455588+00:00",
+    "CompletedAtUtc": "2026-09-05T21:05:43.4771245+00:00",
+    "DurationMs": 31,
+    "Result": null,
+    "HasResult": true,
+    "ResultWasTruncated": false,
+    "Warnings": [],
+    "Error": null,
+    "Metadata": {}
+  }
+}

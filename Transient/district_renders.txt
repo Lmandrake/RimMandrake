@@ -1,0 +1,564 @@
+=== junkers_scrapyard (30x30, Jawa_Junkers/Neolithic)
+  junkers_scrapyard  seed=1  faction=Jawa_Junkers  rooms=2  occ=2  wealth=modest
+  footprint 30x30 at (0,0)
+
+                                  
+   .............................. 
+   .###########.................. 
+   .#S.S.c.Sc%#.........########. 
+   .#...%.....#.........#Sc..K.#. 
+   .#.....s..c#.........#....%.#. 
+   .#....T.%..#.........#......#. 
+   .#....h...c#.........#..s...#. 
+   .#*...S...c#.........#c.%..*#. 
+   .####+######.........#####+##. 
+   .............................. 
+   .......c........%............. 
+   .........%%...%...........c... 
+   ...........%........%...%..... 
+   .............%................ 
+   .............................. 
+   ...............%.............. 
+   .........%.................... 
+   ..............%%.............. 
+   .....W........................ 
+   .............%................ 
+   ..............%............... 
+   .............................. 
+   ..######...................... 
+   ..#c't*#...s.................. 
+   ..#.b..#...................%.. 
+   ..#....+...K..*............... 
+   ..#..sS#....s.......W......... 
+   ..######...s.................. 
+   ..................%........... 
+   ...........|.|.||||.|||.|.|||. 
+                                  
+
+  room r1   Storeroom    11x8 at (1,21)
+  room r2   Workshop     8x7 at (21,21)
+  room r3   Bedroom      6x6 at (2,2)
+
+  note: sorting shed: 3 shelving unit(s) against the walls, sorting table with a stool
+  note: boundary: 13 fence cell(s) with gaps - nobody finished it
+  note: open lot: 2 wreck(s), 6 junk heap(s), 10 slag chunk(s)
+  note: no security props placed: Junkers/The Claim Jump is low security by design (searchesLeavers=false)
+
+  #=wall +=door b=bed *=light T=table h=chair S=storage K=stove s=stool c=crate c=barrel S=shelf_small t=end_table '=wall_light %=junk_pile %=scrap W=wreck W=wreck_big K=forge K=brazier b=hospital_bed *=sunlamp |=fence #=pillar T=desk *=light_tall T=table_small b=bed_fine c=crate_wide %=spice K=drug_lab K=workbench %=component %=steel  .=floor
+  junkers_scrapyard.lua: 0 finding(s)
+=== junkers_dwelling_cluster (22x22, Jawa_Junkers/Neolithic)
+  junkers_dwelling_cluster  seed=1  faction=Jawa_Junkers  rooms=2  occ=2  wealth=modest
+  footprint 22x22 at (0,0)
+
+                          
+   ...................... 
+   .#####.........######. 
+   .#..S#.........#ct.*#. 
+   .#b..+.........+.b.'#. 
+   .#..'#.........#c..s#. 
+   .#...#.........######. 
+   .#c.*#................ 
+   .#####..h.h..*........ 
+   .........T............ 
+   ...........s.s........ 
+   ............K......... 
+   ...................... 
+   ..c..c......s......... 
+   ........c|||.......... 
+   #######............... 
+   #*...c#.......###+###. 
+   #....S#.......#.b..*#. 
+   #'b..t#.......#.....#. 
+   #.....+.......#....S#. 
+   #cs...#.......#.....#. 
+   #######.......#c..'c#. 
+   ..............#######. 
+                          
+
+  room r1   Barracks     5x7 at (1,14)
+  room r2   Barracks     6x5 at (15,16)
+  room r3   Barracks     7x7 at (0,1)
+  room r4   Barracks     7x7 at (14,0)
+
+  note: dwelling cluster: 4 huts of unequal size, 4 bed(s) total for 2 occupant(s)
+  note: 3 fence cell(s) between huts
+  note: no security props placed: dwelling cluster is residential, not a checkpoint
+
+  #=wall +=door b=bed *=light T=table h=chair S=storage K=stove s=stool c=crate c=barrel S=shelf_small t=end_table '=wall_light K=forge K=brazier b=hospital_bed *=sunlamp |=fence #=pillar T=desk *=light_tall T=table_small b=bed_fine c=crate_wide K=drug_lab K=workbench  .=floor
+  junkers_dwelling_cluster.lua: 0 finding(s)
+=== junkers_cantina_block (16x16, Jawa_Junkers/Neolithic)
+  junkers_cantina_block  seed=1  faction=Jawa_Junkers  rooms=2  occ=2  wealth=modest
+  footprint 16x16 at (0,0)
+
+                    
+   ################ 
+   #......*#c....c# 
+   #.......#.....c# 
+   #.b.....#......# 
+   #'.t...c#*....S# 
+   ##+#########+### 
+   #*..S..Sc.....c# 
+   #c.............# 
+   #....T.T......'# 
+   #....s.ss......# 
+   #.........h....# 
+   #..............# 
+   #..T.h...hT....# 
+   #g.hh..........# 
+   #...'.'.......g# 
+   ############+### 
+                    
+
+  room r1   Cantina      16x11 at (0,0)
+  room r2   Bedroom      9x6 at (0,10)
+  room r3   Storeroom    8x6 at (8,10)
+
+  note: cantina hall: 2 bar shelf(s), 2 counter(s) with 3 stool(s), 2 seating round(s), pazaak in the corner
+  note: no security props placed: Junkers/The Claim Jump is low security by design (searchesLeavers=false)
+
+  #=wall +=door b=bed *=light T=table h=chair S=storage s=stool c=crate c=barrel S=shelf_small t=end_table '=wall_light g=game g=holo g=instrument b=hospital_bed *=sunlamp #=pillar T=desk *=light_tall T=table_small g=instrument_big g=holo_band b=bed_fine c=crate_wide  .=floor
+  junkers_cantina_block.lua: 0 finding(s)
+=== junkers_depot (18x18, Jawa_Junkers/Neolithic)
+  junkers_depot  seed=1  faction=Jawa_Junkers  rooms=2  occ=2  wealth=modest
+  footprint 18x18 at (0,0)
+
+                      
+   ################## 
+   #.S..S...S#*..s.c# 
+   #.........#.b....# 
+   #....T....#.....'# 
+   #c...h...*#.t....# 
+   ####+##########+## 
+   #S.c..c.c.c%.c..c# 
+   #'......%........# 
+   #...............S# 
+   #S......S.S......# 
+   #...%..%.........# 
+   #...........S....# 
+   #.......s........# 
+   #.......T.......S# 
+   #*.'..........'..# 
+   ####++############ 
+   .................. 
+   .................. 
+                      
+
+  room r1   Storeroom    18x11 at (0,2)
+  room r2   Office       11x6 at (0,12)
+  room r3   Bedroom      8x6 at (10,12)
+
+  note: depot floor: 7 shelving unit(s) - wall runs plus two island rows, 4-cell centre aisle kept clear
+  note: no security props placed: Junkers/The Claim Jump is low security by design (searchesLeavers=false)
+
+  #=wall +=door b=bed *=light T=table h=chair S=storage s=stool c=crate c=barrel S=shelf_small t=end_table '=wall_light %=junk_pile %=scrap b=hospital_bed *=sunlamp #=pillar T=desk *=light_tall T=table_small b=bed_fine c=crate_wide %=spice %=component %=steel  .=floor
+  junkers_depot.lua: 0 finding(s)
+=== hutt_palace_hall (26x24, Jawa_HuttCartel/Industrial)
+  hutt_palace_hall  seed=1  faction=Jawa_HuttCartel  rooms=2  occ=2  wealth=modest
+  footprint 26x24 at (0,0)
+
+                              
+   ########################## 
+   #p.......!..R..!...''...*# 
+   #........................# 
+   #p.......................# 
+   #.........K...K..........# 
+   #p......g...~...g.......'# 
+   #...................s....# 
+   #T............s...s.....'# 
+   #......#..........#.....g# 
+   #........................# 
+   #p...................g..T# 
+   #........................# 
+   #*.....#..........#......# 
+   #..................gs.g.T# 
+   #*......................*# 
+   ######+#####+####+######## 
+   #.D..t.t*#s.~p#c........S# 
+   #..b....p#...'#.....T...i# 
+   #........#....#.....h....# 
+   #.......p#....#.........S# 
+   #........#....#.........S# 
+   #........#s...#..........# 
+   #o......U#...K#*.s....'.S# 
+   ############+############# 
+                              
+
+  room r1   ThroneRoom   26x16 at (0,8)
+  room r2   Bedroom      10x9 at (0,0)
+  room r3   Vestibule    6x9 at (9,0)
+  room r4   Office       12x9 at (14,0)
+
+  note: palace hall: throne on the dais, 4 column(s), 7 guest table(s)/stool(s), band corner, pazaak
+  note: security props: none in the hall itself - the palace is guarded at its gate (cistern court, holding pens)
+
+  #=wall +=door b=bed *=light T=table h=chair S=storage K=stove o=decor s=stool c=crate c=barrel S=shelf_small t=end_table D=dresser p=plant_pot '=wall_light K=forge K=brazier R=throne g=game g=holo g=instrument i=terminal i=screen U=water_tank U=fountain U=well U=trough U=tub b=hospital_bed *=sunlamp !=banner ~=decal ~=sign #=pillar T=desk *=light_tall T=table_small g=instrument_big g=holo_band b=bed_fine c=crate_wide K=drug_lab i=terminal_tall i=holo_table K=workbench U=basin U=sink o=decor_big ~=decal_alt  .=floor
+  hutt_palace_hall.lua: 0 finding(s)
+=== hutt_spicehouse (18x16, Jawa_HuttCartel/Industrial)
+  hutt_spicehouse  seed=1  faction=Jawa_HuttCartel  rooms=2  occ=2  wealth=modest
+  footprint 18x16 at (0,0)
+
+                      
+   ######+########### 
+   #..c%c....'..c...# 
+   #................# 
+   #%......%s......K# 
+   #................# 
+   #*~............'.# 
+   ###########+###### 
+   #*........~......# 
+   #pg...s..........# 
+   #....sT..sTs....c# 
+   #.........s......# 
+   #p...............# 
+   #...............c# 
+   #...............'# 
+   #c..'...........K# 
+   #####+############ 
+                      
+
+  room r1   Den          18x10 at (0,0)
+  room r2   DrugLab      18x7 at (0,9)
+
+  note: spice den: 2 rug(s) with a low table and stools each, dancer holo, braziers
+  note: lab: 1 drug bench(es), shelving, crates, spice on the floor
+  note: security props: none here - the den wants custom, and the palace gate does the searching
+
+  #=wall +=door *=light T=table K=stove s=stool c=crate c=barrel p=plant_pot '=wall_light %=junk_pile %=scrap K=forge K=brazier g=game g=holo g=instrument *=sunlamp ~=decal ~=sign #=pillar T=desk *=light_tall T=table_small g=instrument_big g=holo_band c=crate_wide %=spice K=drug_lab K=workbench %=component %=steel ~=decal_alt  .=floor
+  hutt_spicehouse.lua: 0 finding(s)
+=== hutt_holding_pens (20x16, Jawa_HuttCartel/Industrial)
+  hutt_holding_pens  seed=1  faction=Jawa_HuttCartel  rooms=2  occ=2  wealth=modest
+  footprint 20x16 at (0,0)
+
+                        
+    #################   
+    #U..#.b.#...#...#   
+    #...#...#.b.#.b.#   
+    #.b.#...#...#...#   
+    #...#s..#...#...#   
+   ##+#####+#+####+#### 
+   #...'.............X# 
+   #.......~...'......# 
+   ########+########### 
+   #.'..S...*#ct......# 
+   #....h....+....b.bb# 
+   #...hT....#........# 
+   #...h....c#.......D# 
+   #S.,.,,,,.#.......t# 
+   #........c#......'*# 
+   #####+############## 
+                        
+
+  room r1   Corridor     20x4 at (0,7)
+  room r2   PrisonCell   5x6 at (1,10)
+  room r3   PrisonCell   5x6 at (5,10)
+  room r4   PrisonCell   5x6 at (9,10)
+  room r5   PrisonCell   5x6 at (13,10)
+  room r6   GuardRoom    11x8 at (0,0)
+  room r7   Barracks     10x8 at (10,0)
+
+  note: 4 cell(s) off the corridor, 4 bed(s)
+  note: guardroom: 5 barricade cell(s) inside the door, turret covering the corridor
+  note: barracks: 3 guard bed(s)
+
+  #=wall +=door b=bed *=light T=table h=chair S=storage X=turret ,=sandbag s=stool c=crate c=barrel S=shelf_small t=end_table D=dresser '=wall_light U=water_tank U=fountain U=well U=trough U=tub b=hospital_bed *=sunlamp ,=barricade ~=decal ~=sign #=pillar T=desk *=light_tall T=table_small b=bed_fine c=crate_wide U=basin U=sink ~=decal_alt  .=floor
+  hutt_holding_pens.lua: 0 finding(s)
+=== hutt_cistern_court (22x22, Jawa_HuttCartel/Industrial)
+  hutt_cistern_court  seed=1  faction=Jawa_HuttCartel  rooms=2  occ=2  wealth=modest
+  footprint 22x22 at (0,0)
+
+                          
+   ###################### 
+   #######........'....*# 
+   ##c..*#..............# 
+   ##.b..+..............# 
+   ##hTS'#....U.........# 
+   #######..............# 
+   #...................'# 
+   #....................# 
+   #....................# 
+   #....U......U.U......# 
+   #...........U........# 
+   #............U.......# 
+   #.........U..U...U...# 
+   #K................U..# 
+   #'...................# 
+   #....................# 
+   #....................# 
+   #....................# 
+   #..................X.# 
+   #...,,..,,c..........# 
+   #p..,p...,pc.p.....p*# 
+   ######++############## 
+                          
+
+  room r1   Bedroom      6x5 at (1,16)
+
+  note: cistern court: 4 tank(s) on the apron, well 1, fountain 1, 3 trough(s)
+  note: security props: 6 sandbag cell(s) inside the gate, 1 turret(s) - the well is guarded and is NOT free
+
+  #=wall +=door b=bed *=light T=table h=chair S=storage K=stove X=turret ,=sandbag c=crate c=barrel S=shelf_small p=plant_pot '=wall_light K=forge K=brazier U=water_tank U=fountain U=well U=trough U=tub b=hospital_bed *=sunlamp ,=barricade #=pillar T=desk *=light_tall T=table_small b=bed_fine c=crate_wide K=drug_lab K=workbench U=basin U=sink  .=floor
+  hutt_cistern_court.lua: 0 finding(s)
+=== droid_charging_hall (24x20, Jawa_FreeDroidEnclaves/Spacer)
+  droid_charging_hall  seed=1  faction=Jawa_FreeDroidEnclaves  rooms=2  occ=2  wealth=modest
+  footprint 24x20 at (0,0)
+
+                            
+   ######################## 
+   #*...'.F#i............*# 
+   #......B#..............# 
+   #.......#'......i.....i# 
+   #F.....i#..............# 
+   #.....~F#........'....i# 
+   ####+######+############ 
+   #*....E......i..E..i..*# 
+   #..........E...........# 
+   #E....................c# 
+   #......E...............# 
+   #.................E...E# 
+   #.......#.......#......# 
+   #.............%.%.....c# 
+   #......E..........E....# 
+   #E.....................# 
+   #'....................E# 
+   #......................# 
+   #F..........~.........F# 
+   #####+################## 
+                            
+
+  room r1   ChargingHall 24x14 at (0,0)
+  room r2   Reactor      9x7 at (0,13)
+  room r3   Council      16x7 at (8,13)
+
+  note: charging hall: 6 wall bay(s), 2 heavy recharger(s), 3 power droid(s) parked - no beds, no chairs, by canon
+  note: speakers' room: holo-table at the centre
+  note: security props: none in the hall - the enclave's defence is at the cracking works
+
+  #=wall +=door *=light B=battery c=crate c=barrel '=wall_light %=junk_pile %=scrap i=terminal i=screen E=charger E=gonk F=fuel_tank F=fuel_tank_small F=refinery F=reactor F=fabricator *=sunlamp ~=decal ~=sign #=pillar *=light_tall c=crate_wide %=spice E=charger_big F=reactor_big F=gas_tank i=terminal_tall i=holo_table %=component %=steel ~=decal_alt  .=floor
+  droid_charging_hall.lua: 0 finding(s)
+=== droid_cracking_works (24x24, Jawa_FreeDroidEnclaves/Spacer)
+  droid_cracking_works  seed=1  faction=Jawa_FreeDroidEnclaves  rooms=2  occ=2  wealth=modest
+  footprint 24x24 at (0,0)
+
+                            
+   ######################## 
+   #...'...........######## 
+   #....F..........#c...i## 
+   #.F.............#....i## 
+   #.........%.....#.....## 
+   #.............%.#c%..i## 
+   #............E..###+#### 
+   #.F....................# 
+   #*..F..................# 
+   #...~..................# 
+   #......F...........Fc..# 
+   #......................# 
+   #*...........F.........# 
+   #......................# 
+   #......................# 
+   #..................%...# 
+   #'.....................# 
+   #...........~..........# 
+   #.................F....# 
+   #*.....................# 
+   #..X.............E..F..# 
+   #....................%.# 
+   #.c.......c............# 
+   ######++################ 
+                            
+
+  room r1   Control      7x6 at (16,17)
+
+  note: cracking works: refinery seated, 4 tank(s) in the farm, 4 small tank(s), 2 power droid(s), 1 turret(s) on the gate
+
+  #=wall +=door *=light X=turret c=crate c=barrel '=wall_light %=junk_pile %=scrap i=terminal i=screen E=charger E=gonk F=fuel_tank F=fuel_tank_small F=refinery F=reactor F=fabricator *=sunlamp ~=decal ~=sign #=pillar *=light_tall c=crate_wide %=spice E=charger_big F=reactor_big F=gas_tank i=terminal_tall i=holo_table %=component %=steel ~=decal_alt  .=floor
+  droid_cracking_works.lua: 0 finding(s)
+=== droid_battery_bunker (16x14, Jawa_FreeDroidEnclaves/Spacer)
+  droid_battery_bunker  seed=1  faction=Jawa_FreeDroidEnclaves  rooms=2  occ=2  wealth=modest
+  footprint 16x14 at (0,0)
+
+                    
+   ################ 
+   ################ 
+   ##F.....B..~.c## 
+   ##............## 
+   ##....B.......## 
+   ##.B.B......F.## 
+   ##i....B......## 
+   ##..BB........## 
+   ##............## 
+   ##............## 
+   ##............## 
+   ##i...~......*## 
+   ######+######### 
+   ######+######### 
+                    
+
+  room r1   BatteryBunker 14x12 at (1,1)
+
+  note: battery bunker: double wall, 9 battery(ies) in 3 bank(s), reactor in the corner
+  note: security props: the wall IS the security prop; nothing else is placed
+
+  #=wall +=door *=light B=battery c=crate c=barrel i=terminal i=screen F=fuel_tank F=fuel_tank_small F=refinery F=reactor F=fabricator *=sunlamp ~=decal ~=sign #=pillar *=light_tall c=crate_wide F=reactor_big F=gas_tank i=terminal_tall i=holo_table ~=decal_alt  .=floor
+  droid_battery_bunker.lua: 0 finding(s)
+=== droid_fabrication_room (20x16, Jawa_FreeDroidEnclaves/Spacer)
+  droid_fabrication_room  seed=1  faction=Jawa_FreeDroidEnclaves  rooms=2  occ=2  wealth=modest
+  footprint 20x16 at (0,0)
+
+                        
+   #################### 
+   #*.....i..F.*#'..S.# 
+   #............#.....# 
+   #..........%S#....c# 
+   #.......%....+.....# 
+   #............#....c# 
+   #'....%.....K#...%.# 
+   #............#.%...# 
+   #............#.~...# 
+   #............#.....# 
+   #...........K#.....# 
+   #............#.....# 
+   #..........%i#.....# 
+   #.....%......#.....# 
+   #c.....~....c#*%..c# 
+   #####+############## 
+                        
+
+  room r1   Fabrication  14x16 at (0,0)
+  room r2   Storeroom    7x16 at (13,0)
+
+  note: fabrication: factory on the wall, 2 machining bench(es)
+  note: security props: none - the shop is inside the enclave's wall
+
+  #=wall +=door *=light S=storage K=stove c=crate c=barrel S=shelf_small '=wall_light %=junk_pile %=scrap K=forge K=brazier i=terminal i=screen F=fuel_tank F=fuel_tank_small F=refinery F=reactor F=fabricator *=sunlamp ~=decal ~=sign #=pillar *=light_tall c=crate_wide %=spice K=drug_lab F=reactor_big F=gas_tank i=terminal_tall i=holo_table K=workbench %=component %=steel ~=decal_alt  .=floor
+  droid_fabrication_room.lua: 0 finding(s)
+=== deepwater_cistern_hall (26x22, Jawa_DeepwaterCompact/Industrial)
+  deepwater_cistern_hall  seed=1  faction=Jawa_DeepwaterCompact  rooms=2  occ=2  wealth=modest
+  footprint 26x22 at (0,0)
+
+                              
+   ########################## 
+   #*.c..c......'.~''.c....U# 
+   #....................U..p# 
+   #c..................*...c# 
+   #'.......................# 
+   #.......................c# 
+   #U......................i# 
+   #..............*........p# 
+   #....U..#U.......#.......# 
+   #.....U....U............c# 
+   #.......................i# 
+   #.......U...U............+ 
+   #.........U.U...........p# 
+   #....U..#........#......c# 
+   #.......................c# 
+   #........................# 
+   #U................######## 
+   #.................#*..Si## 
+   #.................#..T.'## 
+   #...........U.....+..h.S## 
+   #*i'.....'.....U..#.....## 
+   ########+################# 
+                              
+
+  room r1   Cistern      26x22 at (0,0)
+  room r2   Office       7x6 at (18,0)
+
+  note: cistern hall: 9 tank(s) and 4 basin(s)/fountain(s) on the mosaic, intake well 1, 5 cask(s), 2 trough(s), 4 column(s)
+  note: security props: none in the hall - the Compact's teeth are at the gate bastion
+
+  #=wall +=door *=light T=table h=chair S=storage c=crate c=barrel S=shelf_small p=plant_pot '=wall_light i=terminal i=screen U=water_tank U=fountain U=well U=trough U=tub *=sunlamp ~=decal ~=sign #=pillar T=desk *=light_tall T=table_small c=crate_wide i=terminal_tall i=holo_table U=basin U=sink ~=decal_alt  .=floor
+  deepwater_cistern_hall.lua: 0 finding(s)
+=== deepwater_hospital_ward (20x16, Jawa_DeepwaterCompact/Industrial)
+  deepwater_hospital_ward  seed=1  faction=Jawa_DeepwaterCompact  rooms=2  occ=2  wealth=modest
+  footprint 20x16 at (0,0)
+
+                        
+   #################### 
+   #.t.m..m.m..#..'S..# 
+   #..b..bt....#...t..# 
+   #...........#..m...# 
+   #...........#.m.b..# 
+   #...........#......# 
+   #..........S#......# 
+   #.bm......m.+.~....# 
+   #.t.........#U....*# 
+   #...........####+### 
+   #....m......#U....U# 
+   #...........+......# 
+   #...........#......# 
+   #...........#......# 
+   #*p...~.s.p*#U.U..*# 
+   ####+############### 
+                        
+
+  room r1   Hospital     13x16 at (0,0)
+  room r2   Scrub        8x7 at (12,0)
+  room r3   Surgery      8x10 at (12,6)
+
+  note: ward: 3 hospital bed(s) with 6 monitor(s)/table(s) beside them
+  note: security props: none - a hospital is the one room the Compact leaves unguarded on purpose
+
+  #=wall +=door b=bed *=light S=storage s=stool S=shelf_small t=end_table p=plant_pot '=wall_light U=water_tank U=fountain U=well U=trough U=tub b=hospital_bed m=vitals *=sunlamp ~=decal ~=sign #=pillar m=medicine *=light_tall b=bed_fine U=basin U=sink ~=decal_alt  .=floor
+  deepwater_hospital_ward.lua: 0 finding(s)
+=== deepwater_hydroponics_bay (22x18, Jawa_DeepwaterCompact/Industrial)
+  deepwater_hydroponics_bay  seed=1  faction=Jawa_DeepwaterCompact  rooms=2  occ=2  wealth=modest
+  footprint 22x18 at (0,0)
+
+                          
+   ##############C####### 
+   #c..............'...c# 
+   #....................# 
+   #...................p# 
+   #..........U....y....# 
+   #................y...# 
+   #...................c# 
+   #..........y...*....p# 
+   #....y..#....#.......# 
+   #.......#..*.#y...y.U# 
+   #....*.y.........y...# 
+   #...........y........# 
+   #.......y...........S# 
+   #....y.U............c# 
+   #...................'# 
+   #...................S# 
+   #i.........~........c# 
+   #######+############## 
+                          
+
+  room r1   Hydroponics  22x18 at (0,0)
+
+  note: hydroponics: 3 sun lamp(s), 14 basin(s) clustered under them, 4 roof column(s)
+  note: cooler in the north wall at rot 0 (cold side in); no power modelled - the layout-layers lint applies live
+  note: 2 trough(s), casks and crates along the walls
+  note: security props: none - inside the hold's wall
+
+  #=wall +=door *=light S=storage C=cooler c=crate c=barrel S=shelf_small p=plant_pot '=wall_light i=terminal i=screen U=water_tank U=fountain U=well U=trough U=tub y=hydro *=sunlamp ~=decal ~=sign #=pillar *=light_tall c=crate_wide i=terminal_tall i=holo_table U=basin U=sink ~=decal_alt  .=floor
+  deepwater_hydroponics_bay.lua: 0 finding(s)
+=== deepwater_gate_bastion (24x14, Jawa_DeepwaterCompact/Industrial)
+  deepwater_gate_bastion  seed=1  faction=Jawa_DeepwaterCompact  rooms=2  occ=2  wealth=modest
+  footprint 24x14 at (0,0)
+
+                            
+   ######################## 
+   ##*......+.............# 
+   ##S.b..b.#.............# 
+   ##'.hT..i#.............# 
+   ##...h...#...........c.# 
+   ##i.....c#.....X....*..# 
+   ##########..........c..# 
+   ##################++#### 
+   #.............X...~....# 
+   #.,,,,..,,,.,,.,,,....X# 
+   #.x.....x.*.....x.,....# 
+   #.x,....,........*.x...# 
+   #..,.~..,..............# 
+   #####++################# 
+                            
+
+  room r1   Barracks     9x7 at (1,7)
+
+  note: security props: 15 sandbag cell(s), 5 EMP trap(s), 3 turret(s), 2 barricade(s) - every leaver is searched here
+  note: guardhouse: 2 warden bed(s), table and chairs, terminal
+
+  #=wall +=door b=bed *=light T=table h=chair S=storage X=turret ,=sandbag c=crate c=barrel S=shelf_small '=wall_light i=terminal i=screen b=hospital_bed *=sunlamp x=trap ,=barricade ~=decal ~=sign #=pillar T=desk *=light_tall T=table_small b=bed_fine c=crate_wide i=terminal_tall i=holo_table ~=decal_alt  .=floor
+  deepwater_gate_bastion.lua: 0 finding(s)

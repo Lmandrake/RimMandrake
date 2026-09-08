@@ -1,0 +1,141 @@
+<title>Maturity Seed Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f4efe6; --panel:#fbf8f2; --ink:#241f18; --muted:#6f675a; --line:#e2d9c9;
+  --accent:#b5561e; --accent-soft:#e9d8c6; --track:#e9e1d2;
+  --grey:#a89f8f; --amber:#d38b3c; --rust:#b5561e; --olive:#7c9440; --teal:#3f8f74; --green:#3f7d3a;
+  --gold:#c9a44a; --blue:#3f77a8; --dblue:#2b5484;
+}
+:root:not([data-theme="light"]){ @media (prefers-color-scheme:dark){
+  --bg:#171310; --panel:#211b16; --ink:#efe7d9; --muted:#a99d89; --line:#332a20;
+  --accent:#e0803a; --accent-soft:#3a2c1e; --track:#2b241c;
+  --grey:#7d7565; --amber:#c98536; --rust:#c96634; --olive:#8aa24a; --teal:#4fab90; --green:#4f9147;
+  --gold:#c9a44a; --blue:#5390c4; --dblue:#3a6ea0;
+}}
+:root[data-theme="dark"]{
+  --bg:#171310; --panel:#211b16; --ink:#efe7d9; --muted:#a99d89; --line:#332a20;
+  --accent:#e0803a; --accent-soft:#3a2c1e; --track:#2b241c;
+  --grey:#7d7565; --amber:#c98536; --rust:#c96634; --olive:#8aa24a; --teal:#4fab90; --green:#4f9147;
+  --gold:#c9a44a; --blue:#5390c4; --dblue:#3a6ea0;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.35;margin:0;font-size:13px}
+.wrap{max-width:1180px;margin:0 auto;padding:16px 20px 28px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin:0 0 3px}
+h1{font-family:"Archivo",sans-serif;font-weight:800;font-size:clamp(19px,2.4vw,25px);line-height:1.05;margin:0 0 3px;letter-spacing:-.01em}
+.lede{color:var(--muted);max-width:90ch;margin:0 0 8px;font-size:12px}
+.banner{background:var(--accent-soft);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:6px;padding:6px 10px;font-size:12px;margin:0 0 12px;line-height:1.4}
+.banner b{color:var(--accent)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 14px}
+@media(max-width:720px){.stats{grid-template-columns:1fr}}
+.statcard{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 12px}
+.statcard h2{font-family:"Archivo";font-size:11px;letter-spacing:.05em;text-transform:uppercase;margin:0 0 7px;color:var(--muted)}
+.ladder{display:flex;flex-direction:column;gap:5px}
+.lrow{display:grid;grid-template-columns:1fr 60px;align-items:center;gap:8px}
+.lval{font-family:"IBM Plex Mono";font-size:11.5px;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.tiergroup{margin:0 0 14px}
+.tierhead{display:flex;align-items:baseline;gap:10px;border-bottom:2px solid var(--accent);padding-bottom:3px;margin:0 0 2px}
+.tierhead h3{font-family:"Archivo";font-weight:700;font-size:14px;margin:0}
+.tierhead .cnt{font-family:"IBM Plex Mono";font-size:11px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{font-family:"IBM Plex Mono";font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:3px 6px;font-weight:500}
+tbody td{padding:2px 6px;border-top:1px solid var(--line);vertical-align:middle}
+.sys{font-weight:600;white-space:nowrap;font-size:12px}
+.note{color:var(--muted);font-size:10.5px;line-height:1.3}
+tbody tr:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
+/* ---- progress-bar rung indicator: shared by headline ladders and table cells.
+   The rung word sits IN FRONT of the bar, its fill length = position on the
+   ladder (not a count) — a reader scans fill length, never a color name. Text
+   uses a background-colored halo (multi text-shadow) so it stays legible over
+   both the filled and unfilled portions, in both themes. */
+.rbar{position:relative;height:19px;border-radius:4px;background:var(--track);border:1px solid var(--line);overflow:hidden}
+.rbar .fill{position:absolute;inset:0;right:auto;height:100%}
+.rbar .lbl{position:relative;z-index:1;height:100%;display:flex;align-items:center;padding:0 7px;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.01em;color:var(--ink);
+  text-shadow:0 0 3px var(--bg),0 0 3px var(--bg),0 0 5px var(--bg);white-space:nowrap}
+.rbar.sm{height:16px;width:120px}
+.rbar.sm .lbl{font-size:9.5px;padding:0 6px}
+footer{margin-top:14px;border-top:1px solid var(--line);padding-top:8px;color:var(--muted);font-size:10.5px}
+footer p{margin:0 0 4px}
+footer code{font-family:"IBM Plex Mono";background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:10px;color:var(--ink)}
+.keys{display:flex;flex-wrap:wrap;gap:16px 22px;margin:6px 0 0}
+.keygroup{display:flex;align-items:center;flex-wrap:wrap;gap:9px;font-size:10.5px;color:var(--muted)}
+.keygroup .glabel{font-family:"Archivo";font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:9.5px;color:var(--ink);margin-right:2px}
+.keygroup span.item{display:inline-flex;align-items:center;gap:5px}
+.dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">PROJECT_MATURITY_DASHBOARD_1 · seed survey</p>
+  <h1>Maturity Seed Proposal</h1>
+  <p class="lede">Proposed starting registry — every mod folder across the three tiers, scored on the <b>function</b> ladder (planned→designed→implemented→runnable→validated→played) and the <b>content</b> ladder (none→placeholder→authored→final).</p>
+  <div class="banner"><b>Nothing here is written yet</b> — the rimflow registry is empty. Every rung is <b>folder-evidence only</b> (About.xml, Def/Patch/.cs counts, a compiled assembly, PNG counts); nothing here goes past <i>implemented</i>/<i>authored</i> — <i>runnable</i>, <i>validated</i>, <i>played</i> and <i>final</i> are yours to grant from real evidence. Review, edit, then seed via rimflow.</div>
+
+  <div class="stats">
+    <div class="statcard">
+      <h2>Function ladder</h2>
+      <div class="ladder" id="fnladder"></div>
+    </div>
+    <div class="statcard">
+      <h2>Content ladder</h2>
+      <div class="ladder" id="ctladder"></div>
+    </div>
+  </div>
+
+  <div id="tiers"></div>
+
+  <footer>
+    <p><b>Method.</b> Systems = mod folders under <code>src/RimMandrake</code>, <code>src/RimStarWars</code>, <code>src/RimUtinni</code> (dev tooling excluded), 78 surveyed — a folder scan, re-runnable any time, not a load. <b>To seed a row:</b> <code>rimflow capability set &lt;system&gt; --function-rung &lt;rung&gt; --content-rung &lt;rung&gt; --evidence-ref "…" --date 2026-09-08</code> — <code>played</code> requires owner authorization, everything else is self-declared.</p>
+    <div class="keys">
+      <div class="keygroup"><span class="glabel">Function</span>
+        <span class="item"><i class="dot" style="background:var(--grey)"></i>planned</span>
+        <span class="item"><i class="dot" style="background:var(--amber)"></i>designed</span>
+        <span class="item"><i class="dot" style="background:var(--rust)"></i>implemented</span>
+        <span class="item"><i class="dot" style="background:var(--olive)"></i>runnable</span>
+        <span class="item"><i class="dot" style="background:var(--teal)"></i>validated</span>
+        <span class="item"><i class="dot" style="background:var(--green)"></i>played</span>
+      </div>
+      <div class="keygroup"><span class="glabel">Content</span>
+        <span class="item"><i class="dot" style="background:var(--grey)"></i>none</span>
+        <span class="item"><i class="dot" style="background:var(--gold)"></i>placeholder</span>
+        <span class="item"><i class="dot" style="background:var(--blue)"></i>authored</span>
+        <span class="item"><i class="dot" style="background:var(--dblue)"></i>final</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+const DATA=[{"tier": "RimMandrake", "sys": "Aftermath", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 20 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimMandrake", "sys": "DesertVehicleReskin", "fn": "implemented", "ct": "authored", "note": "About.xml + a real body: 0 def file(s), 4 patch file(s), 9 .cs file(s); 30 PNG(s) under Textures/ \u2014 a real art pass has happened"}, {"tier": "RimMandrake", "sys": "FluidCanals", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 6 def file(s), 1 patch file(s), 11 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimMandrake", "sys": "Graffiti", "fn": "implemented", "ct": "placeholder", "note": "About.xml + a real body: 5 def file(s), 0 patch file(s), 12 .cs file(s), compiled assembly present; 6 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimMandrake", "sys": "GravshipAstronautFix", "fn": "designed", "ct": "placeholder", "note": "About.xml and/or a thin body (0 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; 3 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimMandrake", "sys": "Inhabited", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 20 def file(s), 0 patch file(s), 31 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimMandrake", "sys": "LoadTracer", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 3 .cs file(s), compiled assembly present; no PNGs under Textures/ \u2014 mechanism-only"}, {"tier": "RimMandrake", "sys": "MandrakePatches", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 9 patch file(s), 0 .cs file(s); no PNGs under Textures/ \u2014 mechanism-only"}, {"tier": "RimMandrake", "sys": "Ninefold", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 26 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimMandrake", "sys": "Oracle", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 10 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimMandrake", "sys": "PhytokinBarkHeadFix", "fn": "designed", "ct": "placeholder", "note": "About.xml and/or a thin body (0 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; 1 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimMandrake", "sys": "Pits", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 7 def file(s), 0 patch file(s), 29 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimMandrake", "sys": "PlanetPresetPrime", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 3 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimMandrake", "sys": "Property", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 27 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimMandrake", "sys": "RaidRedesigner", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 18 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimMandrake", "sys": "ResearchKitEastFix", "fn": "designed", "ct": "placeholder", "note": "About.xml and/or a thin body (0 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; 4 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimMandrake", "sys": "RimDefDump", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 5 .cs file(s); no PNGs under Textures/ found"}, {"tier": "RimMandrake", "sys": "RustChrome", "fn": "implemented", "ct": "authored", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 5 .cs file(s), compiled assembly present; 14 PNG(s) under Textures/ \u2014 a real art pass has happened"}, {"tier": "RimMandrake", "sys": "SacredGraffiti", "fn": "implemented", "ct": "placeholder", "note": "About.xml + a real body: 2 def file(s), 0 patch file(s), 3 .cs file(s), compiled assembly present; 1 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimMandrake", "sys": "SalvageClaim", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 4 .cs file(s), compiled assembly present; no PNGs under Textures/ \u2014 mechanism-only"}, {"tier": "RimMandrake", "sys": "SauridFrillFix", "fn": "designed", "ct": "placeholder", "note": "About.xml and/or a thin body (0 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; 1 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimMandrake", "sys": "Spikes", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 5 .cs file(s); no PNGs under Textures/ found"}, {"tier": "RimMandrake", "sys": "StrandedQuest", "fn": "designed", "ct": "none", "note": "About.xml and/or a thin body (2 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; no PNGs under Textures/ found"}, {"tier": "RimMandrake", "sys": "StructureInjections", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 7 .cs file(s), compiled assembly present; no PNGs under Textures/ \u2014 mechanism-only"}, {"tier": "RimMandrake", "sys": "TheftHauler", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 1 def file(s), 1 patch file(s), 7 .cs file(s), compiled assembly present; no PNGs under Textures/ \u2014 mechanism-only"}, {"tier": "RimMandrake", "sys": "ToolBeltFix", "fn": "designed", "ct": "placeholder", "note": "About.xml and/or a thin body (0 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; 1 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimMandrake", "sys": "Visibility", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 9 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimMandrake", "sys": "WreckedMachines", "fn": "implemented", "ct": "authored", "note": "About.xml + a real body: 3 def file(s), 0 patch file(s), 0 .cs file(s); 12 PNG(s) under Textures/ \u2014 a real art pass has happened"}, {"tier": "RimStarWars", "sys": "Armoury", "fn": "implemented", "ct": "authored", "note": "About.xml + a real body: 251 def file(s), 20 patch file(s), 55 .cs file(s), compiled assembly present; 1058 PNG(s) under Textures/ \u2014 a real art pass has happened"}, {"tier": "RimStarWars", "sys": "BeastLairs", "fn": "designed", "ct": "placeholder", "note": "About.xml and/or a thin body (1 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; 1 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimStarWars", "sys": "BeastNorm", "fn": "designed", "ct": "none", "note": "About.xml and/or a thin body (0 def, 1 patch, 0 cs) \u2014 declared, not yet substantial; no PNGs under Textures/ found"}, {"tier": "RimStarWars", "sys": "BlastDoorFrameAsyncFix", "fn": "designed", "ct": "placeholder", "note": "About.xml and/or a thin body (0 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; 6 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimStarWars", "sys": "CereanManeFix", "fn": "designed", "ct": "placeholder", "note": "About.xml and/or a thin body (0 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; 1 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimStarWars", "sys": "Cuisine", "fn": "implemented", "ct": "authored", "note": "About.xml + a real body: 3 def file(s), 0 patch file(s), 5 .cs file(s), compiled assembly present; 9 PNG(s) under Textures/ \u2014 a real art pass has happened"}, {"tier": "RimStarWars", "sys": "Droidworks", "fn": "implemented", "ct": "authored", "note": "About.xml + a real body: 15 def file(s), 1 patch file(s), 27 .cs file(s), compiled assembly present; 457 PNG(s) under Textures/ \u2014 a real art pass has happened"}, {"tier": "RimStarWars", "sys": "FireEcology", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 8 def file(s), 0 patch file(s), 3 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimStarWars", "sys": "HelixTellurox", "fn": "designed", "ct": "placeholder", "note": "About.xml and/or a thin body (1 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; 1 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimStarWars", "sys": "JawaIkee", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 1 def file(s), 0 patch file(s), 3 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimStarWars", "sys": "JawaIonWeapons", "fn": "implemented", "ct": "placeholder", "note": "About.xml + a real body: 5 def file(s), 0 patch file(s), 11 .cs file(s), compiled assembly present; 2 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimStarWars", "sys": "JawaRules", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 3 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimStarWars", "sys": "JawaVoice", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 11 patch file(s), 0 .cs file(s); no PNGs under Textures/ found"}, {"tier": "RimStarWars", "sys": "KotORBandolierNorthFix", "fn": "designed", "ct": "authored", "note": "About.xml and/or a thin body (0 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; 20 PNG(s) under Textures/ \u2014 a real art pass has happened"}, {"tier": "RimStarWars", "sys": "Livestock", "fn": "implemented", "ct": "placeholder", "note": "About.xml + a real body: 7 def file(s), 1 patch file(s), 3 .cs file(s), compiled assembly present; 3 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimStarWars", "sys": "MSEDroidFix", "fn": "designed", "ct": "placeholder", "note": "About.xml and/or a thin body (0 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; 1 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimStarWars", "sys": "SWBestiary", "fn": "implemented", "ct": "authored", "note": "About.xml + a real body: 14 def file(s), 0 patch file(s), 0 .cs file(s); 70 PNG(s) under Textures/ \u2014 a real art pass has happened"}, {"tier": "RimStarWars", "sys": "SeaBeasts", "fn": "implemented", "ct": "authored", "note": "About.xml + a real body: 6 def file(s), 0 patch file(s), 0 .cs file(s); 72 PNG(s) under Textures/ \u2014 a real art pass has happened"}, {"tier": "RimStarWars", "sys": "SeasWaterline", "fn": "designed", "ct": "none", "note": "About.xml and/or a thin body (0 def, 1 patch, 0 cs) \u2014 declared, not yet substantial; no PNGs under Textures/ found"}, {"tier": "RimStarWars", "sys": "StarWarsPatches", "fn": "implemented", "ct": "authored", "note": "About.xml + a real body: 5 def file(s), 22 patch file(s), 0 .cs file(s); 54 PNG(s) under Textures/ \u2014 a real art pass has happened"}, {"tier": "RimStarWars", "sys": "StarWarsRaces", "fn": "implemented", "ct": "authored", "note": "About.xml + a real body: 13 def file(s), 0 patch file(s), 0 .cs file(s); 876 PNG(s) under Textures/ \u2014 a real art pass has happened"}, {"tier": "RimStarWars", "sys": "StructureInjectionsSW", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 8 def file(s), 0 patch file(s), 0 .cs file(s); no PNGs under Textures/ \u2014 mechanism-only"}, {"tier": "RimStarWars", "sys": "WeatherSuite", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 5 def file(s), 0 patch file(s), 3 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "AftermathRites", "fn": "designed", "ct": "none", "note": "About.xml and/or a thin body (2 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "Antiquities", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 5 def file(s), 0 patch file(s), 8 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "AshkarrFlora", "fn": "designed", "ct": "none", "note": "About.xml and/or a thin body (1 def, 1 patch, 0 cs) \u2014 declared, not yet substantial; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "AshkarrInhabited", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 6 def file(s), 0 patch file(s), 0 .cs file(s); no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "AshkarrLandmarkArt", "fn": "designed", "ct": "authored", "note": "About.xml and/or a thin body (0 def, 1 patch, 0 cs) \u2014 declared, not yet substantial; 49 PNG(s) under Textures/ \u2014 a real art pass has happened"}, {"tier": "RimUtinni", "sys": "AshkarrWeatherSuite", "fn": "designed", "ct": "none", "note": "About.xml and/or a thin body (1 def, 1 patch, 0 cs) \u2014 declared, not yet substantial; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "BirthHatchDemo", "fn": "designed", "ct": "none", "note": "About.xml and/or a thin body (1 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "DesertFixtures", "fn": "designed", "ct": "placeholder", "note": "About.xml and/or a thin body (1 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; 1 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimUtinni", "sys": "Doctrine", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 3 patch file(s), 5 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "EmpirePursuit", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 1 def file(s), 0 patch file(s), 7 .cs file(s), compiled assembly present; no PNGs under Textures/ \u2014 mechanism-only"}, {"tier": "RimUtinni", "sys": "FactionSlate", "fn": "designed", "ct": "none", "note": "About.xml and/or a thin body (0 def, 1 patch, 0 cs) \u2014 declared, not yet substantial; no PNGs under Textures/ \u2014 mechanism-only"}, {"tier": "RimUtinni", "sys": "IshkoDarkLandmarks", "fn": "designed", "ct": "none", "note": "About.xml and/or a thin body (1 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "LanternDeeps", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 3 def file(s), 1 patch file(s), 3 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "LongHunger", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 4 def file(s), 0 patch file(s), 4 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "MenuShell", "fn": "designed", "ct": "authored", "note": "About.xml and/or a thin body (2 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; 11 PNG(s) under Textures/ \u2014 a real art pass has happened"}, {"tier": "RimUtinni", "sys": "PawnFlavor", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 8 def file(s), 4 patch file(s), 0 .cs file(s); no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "PlantGrowth", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 1 def file(s), 0 patch file(s), 5 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "PyrelandsFireEcology", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 3 patch file(s), 0 .cs file(s); no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "ResearchRetag", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 1 def file(s), 3 patch file(s), 0 .cs file(s); no PNGs under Textures/ \u2014 mechanism-only"}, {"tier": "RimUtinni", "sys": "RestrainingBolts", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 1 def file(s), 0 patch file(s), 4 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "Rites", "fn": "designed", "ct": "none", "note": "About.xml and/or a thin body (1 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "RiverSteam", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 0 def file(s), 0 patch file(s), 3 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "ShipMemory", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 1 def file(s), 1 patch file(s), 3 .cs file(s), compiled assembly present; no PNGs under Textures/ found"}, {"tier": "RimUtinni", "sys": "StructureInjectionsRUT", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 10 def file(s), 0 patch file(s), 0 .cs file(s); no PNGs under Textures/ \u2014 mechanism-only"}, {"tier": "RimUtinni", "sys": "UtinniPatches", "fn": "implemented", "ct": "authored", "note": "About.xml + a real body: 28 def file(s), 37 patch file(s), 0 .cs file(s); 19 PNG(s) under Textures/ \u2014 a real art pass has happened"}, {"tier": "RimUtinni", "sys": "UtinniShell", "fn": "designed", "ct": "placeholder", "note": "About.xml and/or a thin body (1 def, 0 patch, 0 cs) \u2014 declared, not yet substantial; 1 PNG(s) under Textures/ \u2014 thin, likely placeholder-grade"}, {"tier": "RimUtinni", "sys": "VaultDungeons", "fn": "implemented", "ct": "none", "note": "About.xml + a real body: 7 def file(s), 0 patch file(s), 0 .cs file(s); no PNGs under Textures/ found"}], FN=[["planned", 0], ["designed", 25], ["implemented", 53], ["runnable", 0], ["validated", 0], ["played", 0]], CT=[["none", 48], ["placeholder", 16], ["authored", 14], ["final", 0]], N=78;
+const FNORDER=['planned','designed','implemented','runnable','validated','played'];
+const CTORDER=['none','placeholder','authored','final'];
+const FNCOL={planned:'--grey',designed:'--amber',implemented:'--rust',runnable:'--olive',validated:'--teal',played:'--green'};
+const CTCOL={none:'--grey',placeholder:'--gold',authored:'--blue',final:'--dblue'};
+// Bar fill = position on the ladder (index+1)/length — NOT a count. A reader scans
+// fill length down the column; the label always sits legible in front of it.
+function rbar(rung,order,colmap,sizeClass){
+  const idx=order.indexOf(rung);
+  const frac=idx<0?0:(idx+1)/order.length;
+  return `<div class="rbar ${sizeClass||''}"><div class="fill" style="width:${Math.round(frac*100)}%;background:var(${colmap[rung]||'--grey'})"></div><span class="lbl">${rung}</span></div>`;
+}
+function ladder(el,counts,order,colmap){
+  el.innerHTML=counts.map(([name,n])=>{
+    const pct=Math.round(100*n/N);
+    return `<div class="lrow">${rbar(name,order,colmap)}<span class="lval">${n} <span style="opacity:.6">(${pct}%)</span></span></div>`;
+  }).join('');
+}
+ladder(document.getElementById('fnladder'),FN,FNORDER,FNCOL);
+ladder(document.getElementById('ctladder'),CT,CTORDER,CTCOL);
+const tiers=['RimMandrake','RimStarWars','RimUtinni'];
+document.getElementById('tiers').innerHTML=tiers.map(t=>{
+  const rows=DATA.filter(r=>r.tier===t);
+  const body=rows.map(r=>`<tr><td class="sys">${r.sys}</td>`+
+    `<td>${rbar(r.fn,FNORDER,FNCOL,'sm')}</td>`+
+    `<td>${rbar(r.ct,CTORDER,CTCOL,'sm')}</td>`+
+    `<td class="note">${r.note.replace(/</g,'&lt;')}</td></tr>`).join('');
+  return `<section class="tiergroup"><div class="tierhead"><h3>${t}</h3><span class="cnt">${rows.length} systems</span></div>`+
+    `<div style="overflow-x:auto"><table><thead><tr><th>System</th><th>Function</th><th>Content</th><th>Evidence</th></tr></thead><tbody>${body}</tbody></table></div></section>`;
+}).join('');
+</script>

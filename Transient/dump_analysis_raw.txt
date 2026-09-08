@@ -1,0 +1,204 @@
+================================================================================
+FILE: /mnt/c/Users/Mandrake/AppData/Local/CrashDumps/RimWorldWin64.exe.39232.dmp
+================================================================================
+Crashing Thread ID: 36632
+Exception code: ExceptionCode.EXCEPTION_ACCESS_VIOLATION (0xc0000005)
+Exception address: 0x00007ff9c0150f32  C:\Windows\System32\ntdll.dll+0x70f32
+Access violation type: READ at target address 0xffffffffffffffff
+
+RIP: 0x00007ff9c0150f32  C:\Windows\System32\ntdll.dll+0x70f32
+RSP: 0x123005e488   RBP: 0x123005e588
+Stack range: 0x123005e488 - 0x1230060000 (0x1b78 bytes)
+
+--- naive stack scan: pointer-sized values landing inside a mapped module (first 20, from RSP) ---
+  [stack+0x00078] 0x00007ff9c0200d08  C:\Windows\System32\ntdll.dll+0x120d08
+  [stack+0x00098] 0x00007ff9c0120d29  C:\Windows\System32\ntdll.dll+0x40d29
+  [stack+0x00178] 0x00007ff9c0214117  C:\Windows\System32\ntdll.dll+0x134117
+  [stack+0x00208] 0x00007ff9c0150c66  C:\Windows\System32\ntdll.dll+0x70c66
+  [stack+0x00258] 0x00007ff9c01506ce  C:\Windows\System32\ntdll.dll+0x706ce
+  [stack+0x00300] 0x00007ff8feaccc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x00328] 0x00007ff9c0116ea0  C:\Windows\System32\ntdll.dll+0x36ea0
+  [stack+0x005f0] 0x00007ff8feaccc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x005f8] 0x00007ff8feaccc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x00618] 0x00007ff9c0117257  C:\Windows\System32\ntdll.dll+0x37257
+  [stack+0x00620] 0x00007ff9c025ad40  C:\Windows\System32\ntdll.dll+0x17ad40
+  [stack+0x00640] 0x00007ff9c025ac28  C:\Windows\System32\ntdll.dll+0x17ac28
+  [stack+0x00700] 0x00007ff9531701f0  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0x1201f0
+  [stack+0x00708] 0x00007ff9bd301da6  C:\Windows\System32\KERNELBASE.dll+0x11da6
+  [stack+0x00748] 0x00007ff9530fb158  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0xab158
+  [stack+0x008e0] 0x00007ff8fecf5680  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x7b5680
+  [stack+0x00908] 0x00007ff9bd30c11f  C:\Windows\System32\KERNELBASE.dll+0x1c11f
+  [stack+0x00990] 0x00007ff9be960000  C:\Windows\System32\kernel32.dll+0x0
+  [stack+0x009a8] 0x00007ff9530fb6cd  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0xab6cd
+  [stack+0x009e0] 0x00007ff9be960000  C:\Windows\System32\kernel32.dll+0x0
+
+================================================================================
+FILE: /mnt/c/Users/Mandrake/AppData/Local/CrashDumps/RimWorldWin64.exe.21000.dmp
+================================================================================
+Crashing Thread ID: 30508
+Exception code: ExceptionCode.EXCEPTION_ACCESS_VIOLATION (0xc0000005)
+Exception address: 0x00007ff9c0150f32  C:\Windows\System32\ntdll.dll+0x70f32
+Access violation type: READ at target address 0xffffffffffffffff
+
+RIP: 0x00007ff9c0150f32  C:\Windows\System32\ntdll.dll+0x70f32
+RSP: 0x16c839e3f8   RBP: 0x16c839e4f8
+Stack range: 0x16c839e3f8 - 0x16c83a0000 (0x1c08 bytes)
+
+--- naive stack scan: pointer-sized values landing inside a mapped module (first 20, from RSP) ---
+  [stack+0x00078] 0x00007ff9c0200d08  C:\Windows\System32\ntdll.dll+0x120d08
+  [stack+0x00098] 0x00007ff9c0120d29  C:\Windows\System32\ntdll.dll+0x40d29
+  [stack+0x00178] 0x00007ff9c0214117  C:\Windows\System32\ntdll.dll+0x134117
+  [stack+0x00208] 0x00007ff9c0150c66  C:\Windows\System32\ntdll.dll+0x70c66
+  [stack+0x00258] 0x00007ff9c01506ce  C:\Windows\System32\ntdll.dll+0x706ce
+  [stack+0x00300] 0x00007ff8feaccc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x00328] 0x00007ff9c0116ea0  C:\Windows\System32\ntdll.dll+0x36ea0
+  [stack+0x005f0] 0x00007ff8feaccc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x005f8] 0x00007ff8feaccc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x00618] 0x00007ff9c0117257  C:\Windows\System32\ntdll.dll+0x37257
+  [stack+0x00620] 0x00007ff9c025ad40  C:\Windows\System32\ntdll.dll+0x17ad40
+  [stack+0x00640] 0x00007ff9c025ac28  C:\Windows\System32\ntdll.dll+0x17ac28
+  [stack+0x00700] 0x00007ff9531701f0  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0x1201f0
+  [stack+0x00708] 0x00007ff9bd301da6  C:\Windows\System32\KERNELBASE.dll+0x11da6
+  [stack+0x00748] 0x00007ff9530fb158  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0xab158
+  [stack+0x008e0] 0x00007ff8fecf5680  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x7b5680
+  [stack+0x00908] 0x00007ff9bd30c11f  C:\Windows\System32\KERNELBASE.dll+0x1c11f
+  [stack+0x00990] 0x00007ff9be960000  C:\Windows\System32\kernel32.dll+0x0
+  [stack+0x009a8] 0x00007ff9530fb6cd  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0xab6cd
+  [stack+0x009e0] 0x00007ff9be960000  C:\Windows\System32\kernel32.dll+0x0
+
+================================================================================
+FILE: /mnt/c/Users/Mandrake/AppData/Local/CrashDumps/RimWorldWin64.exe.27676.dmp
+================================================================================
+Crashing Thread ID: 27512
+Exception code: ExceptionCode.EXCEPTION_ACCESS_VIOLATION (0xc0000005)
+Exception address: 0x00007ff9c0150f32  C:\Windows\System32\ntdll.dll+0x70f32
+Access violation type: READ at target address 0xffffffffffffffff
+
+RIP: 0x00007ff9c0150f32  C:\Windows\System32\ntdll.dll+0x70f32
+RSP: 0x936a5fe878   RBP: 0x936a5fe978
+Stack range: 0x936a5fe878 - 0x936a600000 (0x1788 bytes)
+
+--- naive stack scan: pointer-sized values landing inside a mapped module (first 20, from RSP) ---
+  [stack+0x00078] 0x00007ff9c0200d08  C:\Windows\System32\ntdll.dll+0x120d08
+  [stack+0x00098] 0x00007ff9c0120d29  C:\Windows\System32\ntdll.dll+0x40d29
+  [stack+0x00178] 0x00007ff9c0214117  C:\Windows\System32\ntdll.dll+0x134117
+  [stack+0x00208] 0x00007ff9c0150c66  C:\Windows\System32\ntdll.dll+0x70c66
+  [stack+0x00258] 0x00007ff9c01506ce  C:\Windows\System32\ntdll.dll+0x706ce
+  [stack+0x00300] 0x00007ff94057cc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x00328] 0x00007ff9c0116ea0  C:\Windows\System32\ntdll.dll+0x36ea0
+  [stack+0x005f0] 0x00007ff94057cc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x005f8] 0x00007ff94057cc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x00618] 0x00007ff9c0117257  C:\Windows\System32\ntdll.dll+0x37257
+  [stack+0x00620] 0x00007ff9c025ad40  C:\Windows\System32\ntdll.dll+0x17ad40
+  [stack+0x00640] 0x00007ff9c025ac28  C:\Windows\System32\ntdll.dll+0x17ac28
+  [stack+0x00700] 0x00007ff9564201f0  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0x1201f0
+  [stack+0x00708] 0x00007ff9bd301da6  C:\Windows\System32\KERNELBASE.dll+0x11da6
+  [stack+0x00748] 0x00007ff9563ab158  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0xab158
+  [stack+0x008e0] 0x00007ff9407a5680  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x7b5680
+  [stack+0x00908] 0x00007ff9bd30c11f  C:\Windows\System32\KERNELBASE.dll+0x1c11f
+  [stack+0x00990] 0x00007ff9be960000  C:\Windows\System32\kernel32.dll+0x0
+  [stack+0x009a8] 0x00007ff9563ab6cd  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0xab6cd
+  [stack+0x009e0] 0x00007ff9be960000  C:\Windows\System32\kernel32.dll+0x0
+
+================================================================================
+FILE: /mnt/c/Users/Mandrake/AppData/Local/CrashDumps/RimWorldWin64.exe.38048.dmp
+================================================================================
+Crashing Thread ID: 37880
+Exception code: ExceptionCode.EXCEPTION_ACCESS_VIOLATION (0xc0000005)
+Exception address: 0x00007ff9c0150f32  C:\Windows\System32\ntdll.dll+0x70f32
+Access violation type: READ at target address 0xffffffffffffffff
+
+RIP: 0x00007ff9c0150f32  C:\Windows\System32\ntdll.dll+0x70f32
+RSP: 0x63b8ade688   RBP: 0x63b8ade788
+Stack range: 0x63b8ade688 - 0x63b8ae0000 (0x1978 bytes)
+
+--- naive stack scan: pointer-sized values landing inside a mapped module (first 20, from RSP) ---
+  [stack+0x00078] 0x00007ff9c0200d08  C:\Windows\System32\ntdll.dll+0x120d08
+  [stack+0x00098] 0x00007ff9c0120d29  C:\Windows\System32\ntdll.dll+0x40d29
+  [stack+0x00178] 0x00007ff9c0214117  C:\Windows\System32\ntdll.dll+0x134117
+  [stack+0x00208] 0x00007ff9c0150c66  C:\Windows\System32\ntdll.dll+0x70c66
+  [stack+0x00258] 0x00007ff9c01506ce  C:\Windows\System32\ntdll.dll+0x706ce
+  [stack+0x00300] 0x00007ff94057cc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x00328] 0x00007ff9c0116ea0  C:\Windows\System32\ntdll.dll+0x36ea0
+  [stack+0x005f0] 0x00007ff94057cc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x005f8] 0x00007ff94057cc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x00618] 0x00007ff9c0117257  C:\Windows\System32\ntdll.dll+0x37257
+  [stack+0x00620] 0x00007ff9c025ad40  C:\Windows\System32\ntdll.dll+0x17ad40
+  [stack+0x00640] 0x00007ff9c025ac28  C:\Windows\System32\ntdll.dll+0x17ac28
+  [stack+0x00700] 0x00007ff9564501f0  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0x1201f0
+  [stack+0x00708] 0x00007ff9bd301da6  C:\Windows\System32\KERNELBASE.dll+0x11da6
+  [stack+0x00748] 0x00007ff9563db158  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0xab158
+  [stack+0x008e0] 0x00007ff9407a5680  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x7b5680
+  [stack+0x00908] 0x00007ff9bd30c11f  C:\Windows\System32\KERNELBASE.dll+0x1c11f
+  [stack+0x00990] 0x00007ff9be960000  C:\Windows\System32\kernel32.dll+0x0
+  [stack+0x009a8] 0x00007ff9563db6cd  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0xab6cd
+  [stack+0x009e0] 0x00007ff9be960000  C:\Windows\System32\kernel32.dll+0x0
+
+================================================================================
+FILE: /mnt/c/Users/Mandrake/AppData/Local/CrashDumps/RimWorldWin64.exe.11636.dmp
+================================================================================
+Crashing Thread ID: 8388
+Exception code: ExceptionCode.EXCEPTION_ACCESS_VIOLATION (0xc0000005)
+Exception address: 0x00007ff9c0150f32  C:\Windows\System32\ntdll.dll+0x70f32
+Access violation type: READ at target address 0xffffffffffffffff
+
+RIP: 0x00007ff9c0150f32  C:\Windows\System32\ntdll.dll+0x70f32
+RSP: 0x389bdee658   RBP: 0x389bdee758
+Stack range: 0x389bdee658 - 0x389bdf0000 (0x19a8 bytes)
+
+--- naive stack scan: pointer-sized values landing inside a mapped module (first 20, from RSP) ---
+  [stack+0x00078] 0x00007ff9c0200d08  C:\Windows\System32\ntdll.dll+0x120d08
+  [stack+0x00098] 0x00007ff9c0120d29  C:\Windows\System32\ntdll.dll+0x40d29
+  [stack+0x00178] 0x00007ff9c0214117  C:\Windows\System32\ntdll.dll+0x134117
+  [stack+0x00208] 0x00007ff9c0150c66  C:\Windows\System32\ntdll.dll+0x70c66
+  [stack+0x00258] 0x00007ff9c01506ce  C:\Windows\System32\ntdll.dll+0x706ce
+  [stack+0x00300] 0x00007ff9416ccc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x00328] 0x00007ff9c0116ea0  C:\Windows\System32\ntdll.dll+0x36ea0
+  [stack+0x005f0] 0x00007ff9416ccc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x005f8] 0x00007ff9416ccc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x00618] 0x00007ff9c0117257  C:\Windows\System32\ntdll.dll+0x37257
+  [stack+0x00620] 0x00007ff9c025ad40  C:\Windows\System32\ntdll.dll+0x17ad40
+  [stack+0x00640] 0x00007ff9c025ac28  C:\Windows\System32\ntdll.dll+0x17ac28
+  [stack+0x00700] 0x00007ff9565f01f0  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0x1201f0
+  [stack+0x00708] 0x00007ff9bd301da6  C:\Windows\System32\KERNELBASE.dll+0x11da6
+  [stack+0x00748] 0x00007ff95657b158  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0xab158
+  [stack+0x008e0] 0x00007ff9418f5680  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x7b5680
+  [stack+0x00908] 0x00007ff9bd30c11f  C:\Windows\System32\KERNELBASE.dll+0x1c11f
+  [stack+0x00990] 0x00007ff9be960000  C:\Windows\System32\kernel32.dll+0x0
+  [stack+0x009a8] 0x00007ff95657b6cd  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0xab6cd
+  [stack+0x009e0] 0x00007ff9be960000  C:\Windows\System32\kernel32.dll+0x0
+
+================================================================================
+FILE: /mnt/c/Users/Mandrake/AppData/Local/CrashDumps/RimWorldWin64.exe.34620.dmp
+================================================================================
+Crashing Thread ID: 29708
+Exception code: ExceptionCode.EXCEPTION_ACCESS_VIOLATION (0xc0000005)
+Exception address: 0x00007ff9c0150f32  C:\Windows\System32\ntdll.dll+0x70f32
+Access violation type: READ at target address 0xffffffffffffffff
+
+RIP: 0x00007ff9c0150f32  C:\Windows\System32\ntdll.dll+0x70f32
+RSP: 0xd9016ce5e8   RBP: 0xd9016ce6e8
+Stack range: 0xd9016ce5e8 - 0xd9016d0000 (0x1a18 bytes)
+
+--- naive stack scan: pointer-sized values landing inside a mapped module (first 20, from RSP) ---
+  [stack+0x00078] 0x00007ff9c0200d08  C:\Windows\System32\ntdll.dll+0x120d08
+  [stack+0x00098] 0x00007ff9c0120d29  C:\Windows\System32\ntdll.dll+0x40d29
+  [stack+0x00178] 0x00007ff9c0214117  C:\Windows\System32\ntdll.dll+0x134117
+  [stack+0x00208] 0x00007ff9c0150c66  C:\Windows\System32\ntdll.dll+0x70c66
+  [stack+0x00258] 0x00007ff9c01506ce  C:\Windows\System32\ntdll.dll+0x706ce
+  [stack+0x00300] 0x00007ff94595cc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x00328] 0x00007ff9c0116ea0  C:\Windows\System32\ntdll.dll+0x36ea0
+  [stack+0x005f0] 0x00007ff94595cc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x005f8] 0x00007ff94595cc18  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x58cc18
+  [stack+0x00618] 0x00007ff9c0117257  C:\Windows\System32\ntdll.dll+0x37257
+  [stack+0x00620] 0x00007ff9c025ad40  C:\Windows\System32\ntdll.dll+0x17ad40
+  [stack+0x00640] 0x00007ff9c025ac28  C:\Windows\System32\ntdll.dll+0x17ac28
+  [stack+0x00700] 0x00007ff98ea201f0  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0x1201f0
+  [stack+0x00708] 0x00007ff9bd301da6  C:\Windows\System32\KERNELBASE.dll+0x11da6
+  [stack+0x00748] 0x00007ff98e9ab158  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0xab158
+  [stack+0x008e0] 0x00007ff945b85680  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll+0x7b5680
+  [stack+0x00908] 0x00007ff9bd30c11f  C:\Windows\System32\KERNELBASE.dll+0x1c11f
+  [stack+0x00990] 0x00007ff9be960000  C:\Windows\System32\kernel32.dll+0x0
+  [stack+0x009a8] 0x00007ff98e9ab6cd  C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll+0xab6cd
+  [stack+0x009e0] 0x00007ff9be960000  C:\Windows\System32\kernel32.dll+0x0
+

@@ -1,0 +1,23 @@
+# rimplace flat plan v1
+FOOTPRINT	0	0	16	12
+THING	Leather_Bantha	0	9	0	-
+THING	BanthaHorn	1	0	0	-
+THING	BanthaHorn	1	5	0	-
+THING	BanthaHorn	1	11	0	-
+THING	Leather_Bantha	2	7	0	-
+THING	BanthaHorn	4	3	0	-
+THING	BanthaHorn	5	5	0	-
+THING	Leather_Bantha	7	0	0	-
+THING	Leather_Bantha	7	8	0	-
+THING	BanthaHorn	8	7	0	-
+THING	BanthaHorn	9	5	0	-
+THING	Leather_Bantha	9	6	0	-
+THING	Leather_Bantha	9	8	0	-
+THING	BanthaHorn	9	10	0	-
+THING	BanthaHorn	10	6	0	-
+THING	Leather_Bantha	10	9	0	-
+THING	BanthaHorn	11	2	0	-
+THING	BanthaHorn	12	7	0	-
+THING	Leather_Bantha	13	5	0	-
+THING	Leather_Bantha	13	6	0	-
+THING	BanthaHorn	15	3	0	-

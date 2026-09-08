@@ -1,0 +1,2643 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Xml;
+using HarmonyLib;
+using LibAPNG;
+using RimWorld;
+using UnityEngine;
+using Verse;
+using Verse.Sound;
+
+namespace aRandomKiwi.RimThemes;
+
+[StaticConstructorOnStartup]
+internal static class Themes
+{
+	private static GUIStyle cacheGetDBGUIStyleTiny;
+
+	private static GUIStyle cacheGetDBGUIStyleSmall;
+
+	private static GUIStyle cacheGetDBGUIStyleMedium;
+
+	private static string cacheGetDBGUIStyleTinyTheme;
+
+	private static string cacheGetDBGUIStyleSmallTheme;
+
+	private static string cacheGetDBGUIStyleMediumTheme;
+
+	public static Dictionary<string, string> DBFix;
+
+	public static List<string> DBAvailableThemes;
+
+	public static Dictionary<string, float> DBEffect;
+
+	public static List<Dictionary<string, string>> fontsToLoad;
+
+	public static Dictionary<string, Dictionary<GameFont, GUIStyle>> DBGUIStyle;
+
+	public static Dictionary<string, Dictionary<GameFont, GUIStyle>> DBGUIStyleTextField;
+
+	public static Dictionary<string, Dictionary<GameFont, GUIStyle>> DBGUIStyleTextArea;
+
+	public static Dictionary<string, Dictionary<GameFont, GUIStyle>> DBGUIStyleTextAreaReadOnly;
+
+	public static Dictionary<string, Dictionary<GameFont, float>> DBGUIStyleLineHeight;
+
+	public static Dictionary<string, Dictionary<GameFont, float>> DBGUIStyleSpaceBetweenLine;
+
+	public static Dictionary<string, byte[]> RDBTexThemeIcon;
+
+	public static Dictionary<string, byte[]> RDBTexParticle;
+
+	public static Dictionary<string, byte[]> RDBTexTapestry;
+
+	public static Dictionary<string, byte[][]> RDBLoader;
+
+	public static Dictionary<string, byte[]> RDBBGLoader;
+
+	public static Dictionary<string, byte[]> RDBTexLoaderBar;
+
+	public static Dictionary<string, byte[]> RDBTexLoaderText;
+
+	public static Dictionary<string, Dictionary<string, Dictionary<string, byte[]>>> RDBTex;
+
+	public static Dictionary<string, Dictionary<string, Dictionary<string, List<byte[]>>>> RDBTexDyn;
+
+	public static Dictionary<string, Texture2D> DBTexThemeIcon;
+
+	public static Dictionary<string, Texture2D> DBTexParticle;
+
+	public static Dictionary<string, Texture2D> DBTexTapestry;
+
+	public static Dictionary<string, Texture2D[]> DBLoader;
+
+	public static Dictionary<string, bool> DBNoLoader;
+
+	public static Dictionary<string, bool> DBLoaderNotFound;
+
+	public static Dictionary<string, List<Texture2D>> DBBGLoader;
+
+	public static Dictionary<string, List<string>> DBBGLoaderAnimated;
+
+	public static Dictionary<string, Texture2D> DBTexLoaderBar;
+
+	public static Dictionary<string, Texture2D> DBTexLoaderText;
+
+	public static Dictionary<string, Dictionary<string, Dictionary<string, Texture2D>>> DBTex;
+
+	public static Dictionary<string, Dictionary<string, Dictionary<string, List<Texture2D>>>> DBTexDyn;
+
+	public static Dictionary<string, string> DBAnimatedBackground;
+
+	public static Dictionary<string, List<string>> DBAnimatedBackgroundDyn;
+
+	public static Dictionary<string, Color> DBTextColorWhite;
+
+	public static Dictionary<string, Color> DBTextColorYellow;
+
+	public static Dictionary<string, Color> DBTextColorGreen;
+
+	public static Dictionary<string, Color> DBTextColorRed;
+
+	public static Dictionary<string, Color> DBTextColorCyan;
+
+	public static Dictionary<string, Color> DBTextColorBlue;
+
+	public static Dictionary<string, Color> DBTextColorGray;
+
+	public static Dictionary<string, Color> DBTextColorMagenta;
+
+	public static Dictionary<string, Color> DBTexColorWhite;
+
+	public static Dictionary<string, Color> DBTexColorYellow;
+
+	public static Dictionary<string, Color> DBTexColorGreen;
+
+	public static Dictionary<string, Color> DBTexColorRed;
+
+	public static Dictionary<string, Color> DBTexColorCyan;
+
+	public static Dictionary<string, Color> DBTexColorBlue;
+
+	public static Dictionary<string, Color> DBTexColorGray;
+
+	public static Dictionary<string, Color> DBTexColorMagenta;
+
+	public static Dictionary<string, Color> DBTextColorFactionsNeutral;
+
+	public static Dictionary<string, WindowAnim> DBWindowAnim;
+
+	public static Dictionary<string, Dictionary<string, Dictionary<string, Color>>> DBColor;
+
+	public static Dictionary<string, Dictionary<string, AudioGrain_ClipTheme>> DBSound;
+
+	public static Dictionary<string, Dictionary<string, AudioClip>> DBSong;
+
+	public static Dictionary<string, List<AudioClip>> DBEntrySongDyn;
+
+	public static Dictionary<string, Dictionary<string, string>> DBText;
+
+	public static Dictionary<string, Dictionary<string, int>> DBVal;
+
+	public static Dictionary<string, Dictionary<string, string>> DBModInfo;
+
+	public static Dictionary<string, Dictionary<Color, Color>> DBDynColor;
+
+	public static Dictionary<string, Dictionary<string, string>> DBSongsToLoad;
+
+	public static List<string> DBfontsBundleToLoad;
+
+	public static Dictionary<string, string> fieldsOfInterestTexNS;
+
+	public static Dictionary<string, string> fieldsOfInterestColorNS;
+
+	public static Dictionary<string, List<FOI>> fieldsOfInterestTex;
+
+	public static Dictionary<string, List<FOI>> fieldsOfInterestColor;
+
+	public static Dictionary<string, Font> DBTinyFontByTheme;
+
+	public static Dictionary<string, int> DBTinyFontSizeByTheme;
+
+	public static string VanillaThemeID;
+
+	public static string MiscKey;
+
+	public static Dictionary<string, List<ResolvedGrain>> DBVanillaResolvedGrains;
+
+	public static List<AssetBundle> fontsPackage;
+
+	public static string forcedFontTheme;
+
+	public static Texture2D TexLoaderBar;
+
+	public static Texture2D TexLoaderText;
+
+	public static bool initialized;
+
+	public static bool cursorFirstSet;
+
+	public static bool vanillaGrainsSaved;
+
+	public static bool vanillaSongGrainsSaved;
+
+	public static bool vanillaThemeSaved;
+
+	public static bool currentThemeExist;
+
+	static Themes()
+	{
+		cacheGetDBGUIStyleTiny = null;
+		cacheGetDBGUIStyleSmall = null;
+		cacheGetDBGUIStyleMedium = null;
+		cacheGetDBGUIStyleTinyTheme = "";
+		cacheGetDBGUIStyleSmallTheme = "";
+		cacheGetDBGUIStyleMediumTheme = "";
+		DBFix = new Dictionary<string, string>();
+		DBAvailableThemes = new List<string>();
+		DBEffect = new Dictionary<string, float>();
+		fontsToLoad = new List<Dictionary<string, string>>();
+		DBGUIStyle = new Dictionary<string, Dictionary<GameFont, GUIStyle>>();
+		DBGUIStyleTextField = new Dictionary<string, Dictionary<GameFont, GUIStyle>>();
+		DBGUIStyleTextArea = new Dictionary<string, Dictionary<GameFont, GUIStyle>>();
+		DBGUIStyleTextAreaReadOnly = new Dictionary<string, Dictionary<GameFont, GUIStyle>>();
+		DBGUIStyleLineHeight = new Dictionary<string, Dictionary<GameFont, float>>();
+		DBGUIStyleSpaceBetweenLine = new Dictionary<string, Dictionary<GameFont, float>>();
+		RDBTexThemeIcon = new Dictionary<string, byte[]>();
+		RDBTexParticle = new Dictionary<string, byte[]>();
+		RDBTexTapestry = new Dictionary<string, byte[]>();
+		RDBLoader = new Dictionary<string, byte[][]>();
+		RDBBGLoader = new Dictionary<string, byte[]>();
+		RDBTexLoaderBar = new Dictionary<string, byte[]>();
+		RDBTexLoaderText = new Dictionary<string, byte[]>();
+		RDBTex = new Dictionary<string, Dictionary<string, Dictionary<string, byte[]>>>();
+		RDBTexDyn = new Dictionary<string, Dictionary<string, Dictionary<string, List<byte[]>>>>();
+		DBTexThemeIcon = new Dictionary<string, Texture2D>();
+		DBTexParticle = new Dictionary<string, Texture2D>();
+		DBTexTapestry = new Dictionary<string, Texture2D>();
+		DBLoader = new Dictionary<string, Texture2D[]>();
+		DBNoLoader = new Dictionary<string, bool>();
+		DBLoaderNotFound = new Dictionary<string, bool>();
+		DBBGLoader = new Dictionary<string, List<Texture2D>>();
+		DBBGLoaderAnimated = new Dictionary<string, List<string>>();
+		DBTexLoaderBar = new Dictionary<string, Texture2D>();
+		DBTexLoaderText = new Dictionary<string, Texture2D>();
+		DBTex = new Dictionary<string, Dictionary<string, Dictionary<string, Texture2D>>>();
+		DBTexDyn = new Dictionary<string, Dictionary<string, Dictionary<string, List<Texture2D>>>>();
+		DBAnimatedBackground = new Dictionary<string, string>();
+		DBAnimatedBackgroundDyn = new Dictionary<string, List<string>>();
+		DBTextColorWhite = new Dictionary<string, Color>();
+		DBTextColorYellow = new Dictionary<string, Color>();
+		DBTextColorGreen = new Dictionary<string, Color>();
+		DBTextColorRed = new Dictionary<string, Color>();
+		DBTextColorCyan = new Dictionary<string, Color>();
+		DBTextColorBlue = new Dictionary<string, Color>();
+		DBTextColorGray = new Dictionary<string, Color>();
+		DBTextColorMagenta = new Dictionary<string, Color>();
+		DBTexColorWhite = new Dictionary<string, Color>();
+		DBTexColorYellow = new Dictionary<string, Color>();
+		DBTexColorGreen = new Dictionary<string, Color>();
+		DBTexColorRed = new Dictionary<string, Color>();
+		DBTexColorCyan = new Dictionary<string, Color>();
+		DBTexColorBlue = new Dictionary<string, Color>();
+		DBTexColorGray = new Dictionary<string, Color>();
+		DBTexColorMagenta = new Dictionary<string, Color>();
+		DBTextColorFactionsNeutral = new Dictionary<string, Color>();
+		DBWindowAnim = new Dictionary<string, WindowAnim>();
+		DBColor = new Dictionary<string, Dictionary<string, Dictionary<string, Color>>>();
+		DBSound = new Dictionary<string, Dictionary<string, AudioGrain_ClipTheme>>();
+		DBSong = new Dictionary<string, Dictionary<string, AudioClip>>();
+		DBEntrySongDyn = new Dictionary<string, List<AudioClip>>();
+		DBText = new Dictionary<string, Dictionary<string, string>>();
+		DBVal = new Dictionary<string, Dictionary<string, int>>();
+		DBModInfo = new Dictionary<string, Dictionary<string, string>>();
+		DBDynColor = new Dictionary<string, Dictionary<Color, Color>>();
+		DBSongsToLoad = new Dictionary<string, Dictionary<string, string>>();
+		DBfontsBundleToLoad = new List<string>();
+		fieldsOfInterestTexNS = new Dictionary<string, string>();
+		fieldsOfInterestColorNS = new Dictionary<string, string>();
+		fieldsOfInterestTex = new Dictionary<string, List<FOI>>();
+		fieldsOfInterestColor = new Dictionary<string, List<FOI>>();
+		DBTinyFontByTheme = new Dictionary<string, Font>();
+		DBTinyFontSizeByTheme = new Dictionary<string, int>();
+		VanillaThemeID = "-1Vanilla";
+		MiscKey = "_Misc_";
+		DBVanillaResolvedGrains = new Dictionary<string, List<ResolvedGrain>>();
+		fontsPackage = new List<AssetBundle>();
+		forcedFontTheme = "";
+		initialized = false;
+		cursorFirstSet = false;
+		vanillaGrainsSaved = false;
+		vanillaSongGrainsSaved = false;
+		vanillaThemeSaved = false;
+		currentThemeExist = true;
+		BindingFlags bf = BindingFlags.Static | BindingFlags.NonPublic;
+		fieldsOfInterestTex["Alert"] = new List<FOI>
+		{
+			new FOI("AlertBGTex", bf),
+			new FOI("AlertBGTexHighlight", bf)
+		};
+		fieldsOfInterestTex["Widgets"] = new List<FOI>
+		{
+			new FOI("DefaultBarBgTex", bf),
+			new FOI("BarFullTexHor"),
+			new FOI("CheckboxOnTex"),
+			new FOI("CheckboxOffTex"),
+			new FOI("CheckboxPartialTex"),
+			new FOI("RadioButOnTex"),
+			new FOI("RadioButOffTex", bf),
+			new FOI("FillArrowTexRight", bf),
+			new FOI("FillArrowTexLeft", bf),
+			new FOI("ShadowAtlas", bf),
+			new FOI("ButtonBGAtlas"),
+			new FOI("ButtonBGAtlasMouseover", bf),
+			new FOI("ButtonBGAtlasClick"),
+			new FOI("FloatRangeSliderTex", bf),
+			new FOI("LightHighlight"),
+			new FOI("AltTexture", bf),
+			new FOI("ButtonSubtleAtlas"),
+			new FOI("ButtonBarTex", bf)
+		};
+		fieldsOfInterestTex["ColonistBarColonistDrawer"] = new List<FOI>
+		{
+			new FOI("MoodBGTex", bf),
+			new FOI("DeadColonistTex", bf),
+			new FOI("Icon_FormingCaravan", bf),
+			new FOI("Icon_MentalStateNonAggro", bf),
+			new FOI("Icon_MentalStateAggro", bf),
+			new FOI("Icon_MedicalRest", bf),
+			new FOI("Icon_Sleeping", bf),
+			new FOI("Icon_Fleeing", bf),
+			new FOI("Icon_Attacking", bf),
+			new FOI("Icon_Idle", bf),
+			new FOI("Icon_Burning", bf),
+			new FOI("Icon_Inspired", bf)
+		};
+		fieldsOfInterestTex["GenUI"] = new List<FOI>
+		{
+			new FOI("UnderShadowTex", bf),
+			new FOI("UIFlash", bf)
+		};
+		fieldsOfInterestTex["LogEntry"] = new List<FOI>
+		{
+			new FOI("Blood"),
+			new FOI("BloodTarget"),
+			new FOI("Downed"),
+			new FOI("DownedTarget"),
+			new FOI("Skull"),
+			new FOI("SkullTarget")
+		};
+		fieldsOfInterestTex["TrainingCardUtility"] = new List<FOI>
+		{
+			new FOI("LearnedTrainingTex"),
+			new FOI("LearnedNotTrainingTex")
+		};
+		fieldsOfInterestTex["CompTransporter"] = new List<FOI>
+		{
+			new FOI("CancelLoadCommandTex"),
+			new FOI("LoadCommandTex", bf),
+			new FOI("SelectPreviousInGroupCommandTex", bf),
+			new FOI("SelectAllInGroupCommandTex", bf),
+			new FOI("SelectNextInGroupCommandTex", bf)
+		};
+		fieldsOfInterestTex["Thought"] = new List<FOI>
+		{
+			new FOI("DefaultGoodIcon", bf),
+			new FOI("DefaultBadIcon", bf)
+		};
+		fieldsOfInterestTex["PawnColumnWorker_Bond"] = new List<FOI>
+		{
+			new FOI("BondIcon", bf),
+			new FOI("BondBrokenIcon", bf)
+		};
+		fieldsOfInterestTex["HostilityResponseModeUtility"] = new List<FOI>
+		{
+			new FOI("IgnoreIcon", bf),
+			new FOI("AttackIcon", bf),
+			new FOI("FleeIcon", bf)
+		};
+		fieldsOfInterestTex["GenderUtility"] = new List<FOI>
+		{
+			new FOI("GenderlessIcon", bf),
+			new FOI("MaleIcon", bf),
+			new FOI("FemaleIcon", bf)
+		};
+		fieldsOfInterestTex["ContentSourceUtility"] = new List<FOI>
+		{
+			new FOI("ContentSourceIcon_ModsFolder", bf),
+			new FOI("ContentSourceIcon_SteamWorkshop", bf),
+			new FOI("ContentSourceIcon_OfficialModsFolder", bf)
+		};
+		fieldsOfInterestTex["MainMenuDrawer"] = new List<FOI>
+		{
+			new FOI("TexTitle", bf),
+			new FOI("TexLudeonLogo", bf)
+		};
+		fieldsOfInterestTex["ActiveTip"] = new List<FOI>
+		{
+			new FOI("TooltipBGAtlas")
+		};
+		fieldsOfInterestTex["TabRecord"] = new List<FOI>
+		{
+			new FOI("TabAtlas", bf)
+		};
+		fieldsOfInterestTex["Command"] = new List<FOI>
+		{
+			new FOI("BGTex")
+		};
+		fieldsOfInterestTex["CustomCursor"] = new List<FOI>
+		{
+			new FOI("CursorTex", bf)
+		};
+		fieldsOfInterestTex["InspectPaneUtility"] = new List<FOI>
+		{
+			new FOI("InspectTabButtonFillTex", bf)
+		};
+		fieldsOfInterestTex["TexButton"] = new List<FOI>
+		{
+			new FOI("Delete"),
+			new FOI("CloseXBig"),
+			new FOI("CloseXSmall"),
+			new FOI("NextBig"),
+			new FOI("ReorderUp"),
+			new FOI("ReorderDown"),
+			new FOI("Plus"),
+			new FOI("Minus"),
+			new FOI("Suspend"),
+			new FOI("SelectOverlappingNext"),
+			new FOI("Info"),
+			new FOI("Rename"),
+			new FOI("Banish"),
+			new FOI("OpenStatsReport"),
+			new FOI("Copy"),
+			new FOI("Paste"),
+			new FOI("Drop"),
+			new FOI("Ingest"),
+			new FOI("DragHash"),
+			new FOI("ToggleLog"),
+			new FOI("OpenDebugActionsMenu"),
+			new FOI("OpenInspector"),
+			new FOI("OpenInspectSettings"),
+			new FOI("GodModeEnabled"),
+			new FOI("GodModeDisabled"),
+			new FOI("ToggleTweak"),
+			new FOI("Add"),
+			new FOI("NewItem"),
+			new FOI("Reveal"),
+			new FOI("Collapse"),
+			new FOI("Empty"),
+			new FOI("Save"),
+			new FOI("NewFile"),
+			new FOI("RenameDev"),
+			new FOI("Reload"),
+			new FOI("Play"),
+			new FOI("Stop"),
+			new FOI("RangeMatch"),
+			new FOI("CenterOnPointsTex"),
+			new FOI("CurveResetTex"),
+			new FOI("QuickZoomHor1Tex"),
+			new FOI("QuickZoomHor100Tex"),
+			new FOI("QuickZoomHor20kTex"),
+			new FOI("QuickZoomVer1Tex"),
+			new FOI("QuickZoomVer100Tex"),
+			new FOI("QuickZoomVer20kTex"),
+			new FOI("IconBlog"),
+			new FOI("IconForums"),
+			new FOI("IconTwitter"),
+			new FOI("IconBook"),
+			new FOI("IconSoundtrack"),
+			new FOI("ShowLearningHelper"),
+			new FOI("ShowZones"),
+			new FOI("ShowBeauty"),
+			new FOI("ShowRoomStats"),
+			new FOI("ShowColonistBar"),
+			new FOI("ShowRoofOverlay"),
+			new FOI("AutoHomeArea"),
+			new FOI("AutoRebuild"),
+			new FOI("CategorizedResourceReadout"),
+			new FOI("LockNorthUp"),
+			new FOI("UsePlanetDayNightSystem"),
+			new FOI("ShowExpandingIcons"),
+			new FOI("ShowWorldFeatures")
+		};
+		fieldsOfInterestTex["TexCommand"] = new List<FOI>
+		{
+			new FOI("DesirePower"),
+			new FOI("Draft"),
+			new FOI("ReleaseAnimals"),
+			new FOI("HoldOpen"),
+			new FOI("GatherSpotActive"),
+			new FOI("Install"),
+			new FOI("SquadAttack"),
+			new FOI("AttackMelee"),
+			new FOI("Attack"),
+			new FOI("FireAtWill"),
+			new FOI("ToggleVent"),
+			new FOI("PauseCaravan"),
+			new FOI("ForbidOff"),
+			new FOI("ForbidOn"),
+			new FOI("RearmTrap"),
+			new FOI("CannotShoot"),
+			new FOI("ClearPrioritizedWork"),
+			new FOI("RemoveRoutePlannerWaypoint")
+		};
+		fieldsOfInterestTex["WidgetsWork"] = new List<FOI>
+		{
+			new FOI("WorkBoxBGTex_Awful"),
+			new FOI("WorkBoxBGTex_Bad"),
+			new FOI("WorkBoxBGTex_Mid"),
+			new FOI("WorkBoxBGTex_Excellent"),
+			new FOI("WorkBoxCheckTex"),
+			new FOI("PassionWorkboxMinorIcon"),
+			new FOI("PassionWorkboxMajorIcon"),
+			new FOI("WorkBoxOverlay_Warning")
+		};
+		fieldsOfInterestTex["TexUI"] = new List<FOI>
+		{
+			new FOI("TitleBGTex"),
+			new FOI("HighlightTex"),
+			new FOI("HighlightSelectedTex"),
+			new FOI("ArrowTexRight"),
+			new FOI("ArrowTexLeft"),
+			new FOI("WinExpandWidget"),
+			new FOI("ArrowTex"),
+			new FOI("RotLeftTex"),
+			new FOI("RotRightTex"),
+			new FOI("HighlightTex"),
+			new FOI("FastFillTex"),
+			new FOI("TextBGBlack"),
+			new FOI("GrayTextBG"),
+			new FOI("FloatMenuOptionBG")
+		};
+		fieldsOfInterestTex["PawnColumnWorker_Predator"] = new List<FOI>
+		{
+			new FOI("Icon", bf)
+		};
+		fieldsOfInterestTex["CaravanThingsTabUtility"] = new List<FOI>
+		{
+			new FOI("AbandonButtonTex"),
+			new FOI("AbandonSpecificCountButtonTex"),
+			new FOI("SpecificTabButtonTex")
+		};
+		fieldsOfInterestTex["Settlement"] = new List<FOI>
+		{
+			new FOI("ShowSellableItemsCommand"),
+			new FOI("FormCaravanCommand"),
+			new FOI("AttackCommand")
+		};
+		fieldsOfInterestTex["HediffComp_TendDuration"] = new List<FOI>
+		{
+			new FOI("TendedIcon_Need_General", bf),
+			new FOI("TendedIcon_Well_General", bf),
+			new FOI("TendedIcon_Well_Injury", bf)
+		};
+		fieldsOfInterestTex["PawnColumnWorker"] = new List<FOI>
+		{
+			new FOI("SortingIcon", bf),
+			new FOI("SortingDescendingIcon", bf)
+		};
+		fieldsOfInterestTex["SettleUtility"] = new List<FOI>
+		{
+			new FOI("SettleCommandTex")
+		};
+		fieldsOfInterestTex["PawnColumnWorker_Pregnant"] = new List<FOI>
+		{
+			new FOI("Icon", bf)
+		};
+		fieldsOfInterestTex["SkillUI"] = new List<FOI>
+		{
+			new FOI("PassionMinorIcon"),
+			new FOI("PassionMajorIcon"),
+			new FOI("SkillBarFillTex", bf)
+		};
+		fieldsOfInterestTex["Need"] = new List<FOI>
+		{
+			new FOI("BarInstantMarkerTex", bf),
+			new FOI("NeedUnitDividerTex", bf)
+		};
+		fieldsOfInterestTex["CompassWidget"] = new List<FOI>
+		{
+			new FOI("CompassTex", bf)
+		};
+		fieldsOfInterestTex["TransferableUIUtility"] = new List<FOI>
+		{
+			new FOI("TradeArrow", bf),
+			new FOI("DividerTex", bf),
+			new FOI("PregnantIcon", bf),
+			new FOI("BondIcon", bf)
+		};
+		fieldsOfInterestTex["Dialog_ManageDrugPolicies"] = new List<FOI>
+		{
+			new FOI("IconForAddiction", bf),
+			new FOI("IconForJoy", bf),
+			new FOI("IconScheduled", bf)
+		};
+		fieldsOfInterestTex["FormCaravanComp"] = new List<FOI>
+		{
+			new FOI("FormCaravanCommand")
+		};
+		fieldsOfInterestTex["SelectionDrawerUtility"] = new List<FOI>
+		{
+			new FOI("SelectedTexGUI")
+		};
+		fieldsOfInterestTex["CaravanVisitUtility"] = new List<FOI>
+		{
+			new FOI("TradeCommandTex", bf)
+		};
+		fieldsOfInterestTex["HediffComp_Immunizable"] = new List<FOI>
+		{
+			new FOI("IconImmune", bf)
+		};
+		fieldsOfInterestTex["SettlementAbandonUtility"] = new List<FOI>
+		{
+			new FOI("AbandonCommandTex", bf)
+		};
+		fieldsOfInterestTex["Dialog_Trade"] = new List<FOI>
+		{
+			new FOI("ShowSellableItemsIcon", bf),
+			new FOI("GiftModeIcon", bf),
+			new FOI("TradeModeIcon", bf)
+		};
+		fieldsOfInterestTex["CaravanMergeUtility"] = new List<FOI>
+		{
+			new FOI("MergeCommandTex", bf)
+		};
+		fieldsOfInterestTex["Designator_Dropdown"] = new List<FOI>
+		{
+			new FOI("PlusTex")
+		};
+		fieldsOfInterestTex["Frame"] = new List<FOI>
+		{
+			new FOI("CornerTex", bf),
+			new FOI("TileTex", bf)
+		};
+		fieldsOfInterestTex["FactionGiftUtility"] = new List<FOI>
+		{
+			new FOI("OfferGiftsCommandTex", bf)
+		};
+		fieldsOfInterestTex["MapParent"] = new List<FOI>
+		{
+			new FOI("ShowMapCommand", bf)
+		};
+		fieldsOfInterestTex["Command_SetPlantToGrow"] = new List<FOI>
+		{
+			new FOI("SetPlantToGrowTex", bf)
+		};
+		fieldsOfInterestTex["WorldRoutePlanner"] = new List<FOI>
+		{
+			new FOI("ButtonTex", bf),
+			new FOI("MouseAttachment", bf)
+		};
+		fieldsOfInterestTex["CompLaunchable"] = new List<FOI>
+		{
+			new FOI("TargeterMouseAttachment"),
+			new FOI("LaunchCommandTex")
+		};
+		fieldsOfInterestTex["HealthCardUtility"] = new List<FOI>
+		{
+			new FOI("BleedingIcon", bf)
+		};
+		fieldsOfInterestTex["TransferableOneWayWidget"] = new List<FOI>
+		{
+			new FOI("CanGrazeIcon", bf)
+		};
+		fieldsOfInterestTexNS["Alert"] = "RimWorld";
+		fieldsOfInterestTexNS["TexCommand"] = "RimWorld";
+		fieldsOfInterestTexNS["WidgetsWork"] = "RimWorld";
+		fieldsOfInterestTexNS["ColonistBarColonistDrawer"] = "RimWorld";
+		fieldsOfInterestTexNS["MainMenuDrawer"] = "RimWorld";
+		fieldsOfInterestTexNS["HostilityResponseModeUtility"] = "RimWorld";
+		fieldsOfInterestTexNS["PawnColumnWorker_Bond"] = "RimWorld";
+		fieldsOfInterestTexNS["PawnColumnWorker_Predator"] = "RimWorld";
+		fieldsOfInterestTexNS["Thought"] = "RimWorld";
+		fieldsOfInterestTexNS["CompTransporter"] = "RimWorld";
+		fieldsOfInterestTexNS["TrainingCardUtility"] = "RimWorld";
+		fieldsOfInterestTexNS["PawnColumnWorker_Predator"] = "RimWorld";
+		fieldsOfInterestTexNS["CaravanThingsTabUtility"] = "RimWorld.Planet";
+		fieldsOfInterestTexNS["Settlement"] = "RimWorld.Planet";
+		fieldsOfInterestTexNS["PawnColumnWorker"] = "RimWorld";
+		fieldsOfInterestTexNS["SettleUtility"] = "RimWorld.Planet";
+		fieldsOfInterestTexNS["PawnColumnWorker_Pregnant"] = "RimWorld";
+		fieldsOfInterestTexNS["SkillUI"] = "RimWorld";
+		fieldsOfInterestTexNS["Need"] = "RimWorld";
+		fieldsOfInterestTexNS["CompassWidget"] = "RimWorld.Planet";
+		fieldsOfInterestTexNS["TransferableUIUtility"] = "RimWorld";
+		fieldsOfInterestTexNS["Dialog_ManageDrugPolicies"] = "RimWorld";
+		fieldsOfInterestTexNS["FormCaravanComp"] = "RimWorld.Planet";
+		fieldsOfInterestTexNS["SelectionDrawerUtility"] = "RimWorld";
+		fieldsOfInterestTexNS["CaravanVisitUtility"] = "RimWorld.Planet";
+		fieldsOfInterestTexNS["SettlementAbandonUtility"] = "RimWorld.Planet";
+		fieldsOfInterestTexNS["Dialog_Trade"] = "RimWorld";
+		fieldsOfInterestTexNS["CaravanMergeUtility"] = "RimWorld.Planet";
+		fieldsOfInterestTexNS["Designator_Dropdown"] = "RimWorld";
+		fieldsOfInterestTexNS["Frame"] = "RimWorld";
+		fieldsOfInterestTexNS["FactionGiftUtility"] = "RimWorld.Planet";
+		fieldsOfInterestTexNS["MapParent"] = "RimWorld.Planet";
+		fieldsOfInterestTexNS["WorldRoutePlanner"] = "RimWorld.Planet";
+		fieldsOfInterestTexNS["CompLaunchable"] = "RimWorld";
+		fieldsOfInterestTexNS["HealthCardUtility"] = "RimWorld";
+		fieldsOfInterestTexNS["TransferableOneWayWidget"] = "RimWorld";
+		fieldsOfInterestTexNS["InspectPaneUtility"] = "RimWorld";
+		fieldsOfInterestColor["SocialCardUtility"] = new List<FOI>
+		{
+			new FOI("RelationLabelColor", bf),
+			new FOI("PawnLabelColor", bf),
+			new FOI("HighlightColor", bf)
+		};
+		fieldsOfInterestColor["Widgets"] = new List<FOI>
+		{
+			new FOI("WindowBGBorderColor", bf),
+			new FOI("WindowBGFillColor"),
+			new FOI("MenuSectionBGFillColor"),
+			new FOI("MenuSectionBGBorderColor", bf),
+			new FOI("TutorWindowBGFillColor", bf),
+			new FOI("TutorWindowBGBorderColor", bf),
+			new FOI("OptionUnselectedBGFillColor", bf),
+			new FOI("OptionUnselectedBGBorderColor", bf),
+			new FOI("OptionSelectedBGFillColor", bf),
+			new FOI("OptionSelectedBGBorderColor", bf),
+			new FOI("NormalOptionColor"),
+			new FOI("MouseoverOptionColor"),
+			new FOI("SeparatorLineColor"),
+			new FOI("SeparatorLabelColor")
+		};
+		fieldsOfInterestColor["GenUI"] = new List<FOI>
+		{
+			new FOI("MouseoverColor"),
+			new FOI("SubtleMouseoverColor")
+		};
+		fieldsOfInterestColor["FloatMenuOption"] = new List<FOI>
+		{
+			new FOI("ColorBGActiveMouseover"),
+			new FOI("ColorBGActive"),
+			new FOI("ColorBGDisabled"),
+			new FOI("ColorTextActive"),
+			new FOI("ColorTextDisabled")
+		};
+		fieldsOfInterestColor["HealthCardUtility"] = new List<FOI>
+		{
+			new FOI("HighlightColor", bf),
+			new FOI("StaticHighlightColor", bf),
+			new FOI("MediumPainColor", bf),
+			new FOI("SeverePainColor", bf)
+		};
+		fieldsOfInterestColor["Dialog_SaveFileList"] = new List<FOI>
+		{
+			new FOI("AutosaveTextColor", bf)
+		};
+		fieldsOfInterestColor["Dialog_FileList"] = new List<FOI>
+		{
+			new FOI("DefaultFileTextColor", bf)
+		};
+		fieldsOfInterestColor["SaveFileInfo"] = new List<FOI>
+		{
+			new FOI("UnimportantTextColor")
+		};
+		fieldsOfInterestColor["PawnNameColorUtility"] = new List<FOI>
+		{
+			new FOI("ColorBaseNeutral", bf),
+			new FOI("ColorBaseHostile"),
+			new FOI("ColorBasePrisoner", bf),
+			new FOI("ColorColony", bf),
+			new FOI("ColorWildMan", bf)
+		};
+		fieldsOfInterestColor["ITab_Pawn_Gear"] = new List<FOI>
+		{
+			new FOI("ThingLabelColor"),
+			new FOI("HighlightColor")
+		};
+		fieldsOfInterestColor["TransferableOneWayWidget"] = new List<FOI>
+		{
+			new FOI("ItemMassColor")
+		};
+		fieldsOfInterestColor["HealthUtility"] = new List<FOI>
+		{
+			new FOI("ImpairedColor"),
+			new FOI("SlightlyImpairedColor"),
+			new FOI("RedColor"),
+			new FOI("GoodConditionColor")
+		};
+		fieldsOfInterestColor["NeedsCardUtility"] = new List<FOI>
+		{
+			new FOI("MoodColor"),
+			new FOI("MoodColorNegative"),
+			new FOI("NoEffectColor", bf)
+		};
+		fieldsOfInterestColor["Hediff_Injury"] = new List<FOI>
+		{
+			new FOI("PermanentInjuryColor", bf)
+		};
+		fieldsOfInterestColor["ColoredText"] = new List<FOI>
+		{
+			new FOI("NameColor"),
+			new FOI("CurrencyColor"),
+			new FOI("DateTimeColor"),
+			new FOI("FactionColor_Ally"),
+			new FOI("FactionColor_Hostile"),
+			new FOI("ThreatColor"),
+			new FOI("FactionColor_Neutral"),
+			new FOI("WarningColor"),
+			new FOI("ColonistCountColor")
+		};
+		fieldsOfInterestColor["ColorLibrary"] = new List<FOI>
+		{
+			new FOI("RedReadable"),
+			new FOI("Red"),
+			new FOI("Brown"),
+			new FOI("Pink"),
+			new FOI("Blue"),
+			new FOI("Green"),
+			new FOI("Purple"),
+			new FOI("Black"),
+			new FOI("Violet"),
+			new FOI("Teal"),
+			new FOI("Grey"),
+			new FOI("Magenta"),
+			new FOI("Orange"),
+			new FOI("Yellow"),
+			new FOI("Leather"),
+			new FOI("LightPurple"),
+			new FOI("LimeGreen"),
+			new FOI("SkyBlue"),
+			new FOI("LightGreen"),
+			new FOI("LightBlue"),
+			new FOI("DarkOrange"),
+			new FOI("Sand"),
+			new FOI("PastelGreen"),
+			new FOI("Mint"),
+			new FOI("LightOrange"),
+			new FOI("BrightPink"),
+			new FOI("DeepPurple"),
+			new FOI("DarkBrown"),
+			new FOI("Taupe"),
+			new FOI("PeaGreen"),
+			new FOI("PukeGreen"),
+			new FOI("BlueGreen"),
+			new FOI("Khaki"),
+			new FOI("Burgundy"),
+			new FOI("DarkTeal"),
+			new FOI("BrickRed"),
+			new FOI("RoyalPurple"),
+			new FOI("Plum"),
+			new FOI("Gold"),
+			new FOI("BabyBlue"),
+			new FOI("YellowGreen"),
+			new FOI("BrightPurple"),
+			new FOI("DarkRed"),
+			new FOI("PaleBlue"),
+			new FOI("GrassGreen"),
+			new FOI("Navy"),
+			new FOI("Aquamarine"),
+			new FOI("BurntOrange"),
+			new FOI("NeonGreen"),
+			new FOI("BrightBlue"),
+			new FOI("Rose"),
+			new FOI("LightPink"),
+			new FOI("Mustard"),
+			new FOI("Indigo"),
+			new FOI("Lime"),
+			new FOI("DarkPink"),
+			new FOI("OliveGreen"),
+			new FOI("Peach"),
+			new FOI("PaleGreen"),
+			new FOI("LightBrown"),
+			new FOI("HotPink"),
+			new FOI("Lilac"),
+			new FOI("NavyBlue"),
+			new FOI("RoyalBlue"),
+			new FOI("Beige"),
+			new FOI("Salmon"),
+			new FOI("Olive"),
+			new FOI("Maroon"),
+			new FOI("BrightGreen"),
+			new FOI("Mauve"),
+			new FOI("ForestGreen"),
+			new FOI("Aqua"),
+			new FOI("Cyan"),
+			new FOI("Tan"),
+			new FOI("DarkBlue"),
+			new FOI("Lavender"),
+			new FOI("Lavender"),
+			new FOI("DarkGreen"),
+			new FOI("LogError")
+		};
+		fieldsOfInterestColorNS["Dialog_SaveFileList"] = "RimWorld";
+		fieldsOfInterestColorNS["Dialog_FileList"] = "RimWorld";
+		fieldsOfInterestColorNS["HealthCardUtility"] = "RimWorld";
+		fieldsOfInterestColorNS["ITab_Pawn_Gear"] = "RimWorld";
+		fieldsOfInterestColorNS["TransferableOneWayWidget"] = "RimWorld";
+		fieldsOfInterestColorNS["SocialCardUtility"] = "RimWorld";
+		fieldsOfInterestColorNS["HealthUtility"] = "Verse";
+		fieldsOfInterestColorNS["NeedsCardUtility"] = "RimWorld";
+		fieldsOfInterestColorNS["Hediff_Injury"] = "Verse";
+		fieldsOfInterestColorNS["ColoredText"] = "Verse";
+		fieldsOfInterestColorNS["ColorLibrary"] = "Verse";
+	}
+
+	public static void startInit()
+	{
+		try
+		{
+			LoaderGM.curStep = LoaderSteps.loadingTheme;
+			string themesDir = Utils.currentMod.RootDir + Path.DirectorySeparatorChar + "Themes" + Path.DirectorySeparatorChar;
+			DBModInfo["-1"] = new Dictionary<string, string>();
+			DBModInfo["-1"]["name"] = "";
+			if (!Settings.disableDefaultThemes)
+			{
+				loadThemesInFolder("-1", themesDir, prefix: true);
+			}
+			else
+			{
+				if (Settings.curTheme.StartsWith("-1"))
+				{
+					Settings.curTheme = VanillaThemeID;
+				}
+				LogMsg("Skip all default themes : disabled in user's settings");
+			}
+			DBAnimatedBackground[VanillaThemeID] = Utils.currentMod.RootDir + Path.DirectorySeparatorChar + "Rtrsc" + Path.DirectorySeparatorChar + "VanillaVBG.webm";
+		}
+		catch (Exception ex)
+		{
+			LogError("Cannot load core : " + ex.Message);
+			return;
+		}
+		try
+		{
+			string text = Utils.RWBaseFolderPath + Path.DirectorySeparatorChar + "RimThemes" + Path.DirectorySeparatorChar;
+			if (Directory.Exists(text))
+			{
+				DBModInfo["-2"] = new Dictionary<string, string>();
+				DBModInfo["-2"]["name"] = "";
+				loadThemesInFolder("-2", text, prefix: true);
+			}
+		}
+		catch (Exception ex2)
+		{
+			LogError("Cannot load default themes : " + ex2.Message);
+		}
+		string text2 = "";
+		try
+		{
+			List<ModContentPack> runningModsListForReading = LoadedModManager.RunningModsListForReading;
+			for (int num = runningModsListForReading.Count - 1; num >= 0; num--)
+			{
+				ModContentPack val = runningModsListForReading[num];
+				text2 = val.RootDir + Path.DirectorySeparatorChar + "RimThemes";
+				if (Directory.Exists(text2))
+				{
+					try
+					{
+						DBModInfo[val.PackageId] = new Dictionary<string, string>();
+						DBModInfo[val.PackageId]["name"] = val.Name;
+						loadThemesInFolder(val.PackageId, text2, prefix: false);
+					}
+					catch (Exception ex3)
+					{
+						LogError("Cannot load " + val.Name + "'s themes : " + ex3.Message);
+					}
+				}
+			}
+			CustomCursor.Deactivate();
+			CustomCursor.Activate();
+			if (!DBAvailableThemes.Contains(Settings.curTheme))
+			{
+				currentThemeExist = false;
+			}
+			initialized = true;
+		}
+		catch (Exception ex4)
+		{
+			LogError(" Unhandled error at startInit : " + ex4.Message);
+		}
+	}
+
+	private static void loadThemesInFolder(string modID, string themesDir, bool prefix)
+	{
+		//IL_0863: Unknown result type (might be due to invalid IL or missing references)
+		//IL_086a: Expected O, but got Unknown
+		LogMsg("Searching themes in " + themesDir + "...");
+		string[] directories = Directory.GetDirectories(themesDir);
+		LogMsg("Found " + directories.Count() + " themes");
+		try
+		{
+			string[] array = directories;
+			foreach (string text in array)
+			{
+				string text2 = text.Remove(0, text.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+				string text3 = modID + "" + text2;
+				if (modID == "-1" && !Utils.isDefaultThemeAllowed(text2))
+				{
+					if (Settings.curTheme == text3)
+					{
+						Settings.curTheme = VanillaThemeID;
+					}
+					LogMsg("Skip default theme '" + text2 + "' : disabled in user's settings");
+					continue;
+				}
+				string text4 = themesDir + Path.DirectorySeparatorChar + text2 + Path.DirectorySeparatorChar;
+				LoaderGM.curTheme = text2;
+				LogMsg("Loading theme : " + text2);
+				RDBTex[text3] = new Dictionary<string, Dictionary<string, byte[]>>();
+				string text5 = text4 + "Misc" + Path.DirectorySeparatorChar + "Icon.png";
+				if (File.Exists(text5))
+				{
+					RDBTexThemeIcon[text3] = rawBytesLoad(text5);
+				}
+				else
+				{
+					DBTexThemeIcon[text3] = Loader.defaultIconTex;
+				}
+				string text6 = text4 + "Misc" + Path.DirectorySeparatorChar + "Particle.png";
+				if (File.Exists(text6))
+				{
+					RDBTexParticle[text3] = rawBytesLoad(text6);
+				}
+				else
+				{
+					RDBTexParticle[text3] = null;
+				}
+				string path = text4 + "Misc" + Path.DirectorySeparatorChar + "Tapestry";
+				if (Utils.texFileExist(path))
+				{
+					RDBTexTapestry[text3] = Utils.readAllBytesTexFile(path);
+				}
+				else
+				{
+					RDBTexTapestry[text3] = null;
+				}
+				string text7 = text4 + "Loader" + Path.DirectorySeparatorChar + "LoaderBar.png";
+				if (File.Exists(text7))
+				{
+					RDBTexLoaderBar[text3] = rawBytesLoad(text7);
+				}
+				else
+				{
+					RDBTexLoaderBar[text3] = null;
+				}
+				string text8 = text4 + "Loader" + Path.DirectorySeparatorChar + "TextBar.png";
+				if (File.Exists(text8))
+				{
+					RDBTexLoaderText[text3] = rawBytesLoad(text8);
+				}
+				else
+				{
+					RDBTexLoaderText[text3] = null;
+				}
+				string path2 = text4 + Path.DirectorySeparatorChar + "Textures";
+				string text9 = "";
+				try
+				{
+					if (Directory.Exists(path2))
+					{
+						string[] files = Directory.GetFiles(path2);
+						string[] array2 = files;
+						foreach (string text10 in array2)
+						{
+							text9 = Path.GetExtension(text10);
+							if (text9 == null || !Utils.isValidImgExt(text9.ToLower()))
+							{
+								continue;
+							}
+							string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(text10);
+							if (fileNameWithoutExtension.IndexOf('.') == -1)
+							{
+								LogMsg("Bad tex name for " + fileNameWithoutExtension + " cannot get className and fieldName");
+								continue;
+							}
+							string[] classNameAndFileName = getClassNameAndFileName(fileNameWithoutExtension);
+							if (classNameAndFileName.Count() != 2)
+							{
+								LogMsg("Bad tex name for " + fileNameWithoutExtension);
+								continue;
+							}
+							if (!RDBTex[text3].ContainsKey(classNameAndFileName[0]) || RDBTex[text3][classNameAndFileName[0]] == null)
+							{
+								RDBTex[text3][classNameAndFileName[0]] = new Dictionary<string, byte[]>();
+							}
+							try
+							{
+								if (classNameAndFileName[1].Contains("@"))
+								{
+									int num = classNameAndFileName[1].LastIndexOf("@");
+									if (num >= 0)
+									{
+										classNameAndFileName[1] = classNameAndFileName[1].Substring(0, num);
+									}
+									if (!RDBTexDyn.ContainsKey(text3))
+									{
+										RDBTexDyn[text3] = new Dictionary<string, Dictionary<string, List<byte[]>>>();
+									}
+									if (!RDBTexDyn[text3].ContainsKey(classNameAndFileName[0]))
+									{
+										RDBTexDyn[text3][classNameAndFileName[0]] = new Dictionary<string, List<byte[]>>();
+									}
+									if (!RDBTexDyn[text3][classNameAndFileName[0]].ContainsKey(classNameAndFileName[1]))
+									{
+										RDBTexDyn[text3][classNameAndFileName[0]][classNameAndFileName[1]] = new List<byte[]>();
+									}
+									RDBTexDyn[text3][classNameAndFileName[0]][classNameAndFileName[1]].Add(rawBytesLoad(text10));
+									if (!RDBTex[text3][classNameAndFileName[0]].ContainsKey(classNameAndFileName[1]))
+									{
+										RDBTex[text3][classNameAndFileName[0]][classNameAndFileName[1]] = null;
+									}
+								}
+								else
+								{
+									RDBTex[text3][classNameAndFileName[0]][classNameAndFileName[1]] = rawBytesLoad(text10);
+								}
+							}
+							catch (Exception ex)
+							{
+								LogError("Invalid custom texture " + fileNameWithoutExtension + " : " + ex.Message);
+							}
+						}
+					}
+				}
+				catch (Exception ex2)
+				{
+					LogError("Fatal error in custom textures processing : " + ex2.Message);
+				}
+				string path3 = text + Path.DirectorySeparatorChar + "Textures";
+				DirectoryInfo directoryInfo = new DirectoryInfo(path3);
+				IOrderedEnumerable<FileInfo> orderedEnumerable = from f in directoryInfo.GetFiles()
+					where f.Name.StartsWith("UI_BackgroundMain.BGPlanet") && f.Extension == ".webm"
+					orderby f.LastWriteTime descending
+					select f;
+				if (orderedEnumerable.Count() >= 1)
+				{
+					try
+					{
+						if (!DBAnimatedBackgroundDyn.ContainsKey(text3) || DBAnimatedBackgroundDyn[text3] == null)
+						{
+							DBAnimatedBackgroundDyn[text3] = new List<string>();
+						}
+						foreach (FileInfo item in orderedEnumerable)
+						{
+							DBAnimatedBackgroundDyn[text3].Add(item.FullName);
+							DBAnimatedBackground[text3] = item.FullName;
+							LogMsg("Found and loading animated background " + item.FullName);
+						}
+					}
+					catch (Exception ex3)
+					{
+						LogError("Error while trying to load animated background : " + ex3.Message);
+					}
+				}
+				string metaPath = text + Path.DirectorySeparatorChar + "meta.xml";
+				processMetaXML(text3, metaPath);
+				if (!DBText[text3].ContainsKey("category") || !Dialog_ThemesList.categoriesID.Contains(DBText[text3]["category"]))
+				{
+					DBText[text3]["category"] = "other";
+				}
+				string path4 = text + Path.DirectorySeparatorChar + "Sounds";
+				try
+				{
+					if (Directory.Exists(path4))
+					{
+						Type type = Type.GetType(typeof(SoundDefOf).AssemblyQualifiedName);
+						DBSound[text3] = new Dictionary<string, AudioGrain_ClipTheme>();
+						string[] files2 = Directory.GetFiles(path4);
+						string[] array3 = files2;
+						foreach (string text11 in array3)
+						{
+							string fileNameWithoutExtension2 = Path.GetFileNameWithoutExtension(text11);
+							try
+							{
+								FieldInfo field = type.GetField(fileNameWithoutExtension2);
+								SoundDef val = (SoundDef)field.GetValue(null);
+								DBSound[text3][fileNameWithoutExtension2] = new AudioGrain_ClipTheme();
+								DBSound[text3][fileNameWithoutExtension2].themeClipPath = text11;
+								LogMsg("Loading custom sound " + fileNameWithoutExtension2 + " OK");
+							}
+							catch (Exception ex4)
+							{
+								LogError("Invalid custom sound " + fileNameWithoutExtension2 + " : " + ex4.Message);
+							}
+						}
+					}
+				}
+				catch (Exception ex5)
+				{
+					LogError("Fatal error in custom sound processing : " + ex5.Message);
+				}
+				string path5 = text + Path.DirectorySeparatorChar + "Songs";
+				try
+				{
+					if (Directory.Exists(path5))
+					{
+						DBSong[text3] = new Dictionary<string, AudioClip>();
+						string[] files3 = Directory.GetFiles(path5);
+						DBSongsToLoad[text3] = new Dictionary<string, string>();
+						string[] array4 = files3;
+						foreach (string text12 in array4)
+						{
+							string extension = Path.GetExtension(text12);
+							if (File.Exists(text12) && extension != null && extension.ToLower() == ".ogg")
+							{
+								string fileNameWithoutExtension3 = Path.GetFileNameWithoutExtension(text12);
+								DBSongsToLoad[text3][fileNameWithoutExtension3] = text12;
+								LogMsg("Append " + fileNameWithoutExtension3 + " song to preload songs list");
+							}
+						}
+					}
+				}
+				catch (Exception ex6)
+				{
+					LogError("Fatal error in custom song pre-processing : " + ex6.Message);
+				}
+				DBAvailableThemes.Add(text3);
+			}
+			string text13 = themesDir + Path.DirectorySeparatorChar + "fontsPackage";
+			try
+			{
+				if (File.Exists(text13))
+				{
+					DBfontsBundleToLoad.Add(text13);
+					LogMsg("Found a font bundle");
+				}
+			}
+			catch (Exception ex7)
+			{
+				LogError("Fatal error in custom fonts package pre-processing : " + ex7.Message);
+			}
+		}
+		catch (Exception ex8)
+		{
+			LogError("Fatal error in loadThemesInFolder : " + ex8.Message);
+		}
+	}
+
+	public static void processMetaXML(string themeID, string metaPath)
+	{
+		//IL_01f7: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0d94: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0c2c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0c31: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0c39: Unknown result type (might be due to invalid IL or missing references)
+		//IL_082f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0834: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0df9: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0dfe: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0e13: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0e18: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0e25: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0e27: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a2c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a31: Unknown result type (might be due to invalid IL or missing references)
+		//IL_09b4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0974: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0984: Unknown result type (might be due to invalid IL or missing references)
+		//IL_09e4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0bb4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0b84: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0be4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0bd4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_09a4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_09c4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0994: Unknown result type (might be due to invalid IL or missing references)
+		//IL_09d4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0b94: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0bc4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0b74: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0ba4: Unknown result type (might be due to invalid IL or missing references)
+		DBDynColor[themeID] = new Dictionary<Color, Color>();
+		DBColor[themeID] = new Dictionary<string, Dictionary<string, Color>>();
+		DBText[themeID] = new Dictionary<string, string>();
+		if (!DBVal.ContainsKey(themeID))
+		{
+			DBVal[themeID] = new Dictionary<string, int>();
+			DBVal[themeID]["loaderfps"] = 20;
+		}
+		if (!File.Exists(metaPath))
+		{
+			return;
+		}
+		if (RDBTex.ContainsKey(themeID))
+		{
+			RDBTex[themeID]["buttonbarcolor"] = null;
+		}
+		DBText[themeID]["description"] = "";
+		DBGUIStyle[themeID] = null;
+		Dictionary<string, string> dictionary = new Dictionary<string, string>();
+		DBColor[themeID][MiscKey] = new Dictionary<string, Color>();
+		try
+		{
+			using (XmlReader xmlReader = XmlReader.Create(metaPath))
+			{
+				xmlReader.MoveToContent();
+				while (xmlReader.Read())
+				{
+					if (xmlReader.NodeType != XmlNodeType.Element)
+					{
+						continue;
+					}
+					string text = xmlReader.Name.ToString();
+					string text2 = xmlReader.ReadString();
+					if (text.IndexOf('.') != -1)
+					{
+						string[] classNameAndFileName = getClassNameAndFileName(text);
+						if (classNameAndFileName.Count() != 2)
+						{
+							LogMsg("Bad color tag " + text);
+							continue;
+						}
+						if (!DBColor[themeID].ContainsKey(classNameAndFileName[0]) || DBColor[themeID][classNameAndFileName[0]] == null)
+						{
+							DBColor[themeID][classNameAndFileName[0]] = new Dictionary<string, Color>();
+						}
+						try
+						{
+							DBColor[themeID][classNameAndFileName[0]][classNameAndFileName[1]] = (Color)ParseHelper.FromString(text2, typeof(Color));
+						}
+						catch (Exception ex)
+						{
+							LogError("Cannot parse field " + text + " : " + ex.Message);
+						}
+						continue;
+					}
+					text = text.ToLower().Trim();
+					text2 = text2.Trim();
+					try
+					{
+						switch (text)
+						{
+						case "textcolorwhite":
+						case "textcolorcyan":
+						case "textcolorgray":
+						case "textcolorred":
+						case "textcoloryellow":
+						case "textcolorblue":
+						case "textcolorgreen":
+						case "textcolormangenta":
+							try
+							{
+								Color value4 = (Color)ParseHelper.FromString(text2, typeof(Color));
+								switch (text)
+								{
+								case "textcolorwhite":
+									DBTextColorWhite[themeID] = value4;
+									break;
+								case "textcolorcyan":
+									DBTextColorCyan[themeID] = value4;
+									break;
+								case "textcolorgray":
+									DBTextColorGray[themeID] = value4;
+									break;
+								case "textcolorred":
+									DBTextColorRed[themeID] = value4;
+									break;
+								case "textcoloryellow":
+									DBTextColorYellow[themeID] = value4;
+									break;
+								case "textcolorblue":
+									DBTextColorBlue[themeID] = value4;
+									break;
+								case "textcolorgreen":
+									DBTextColorGreen[themeID] = value4;
+									break;
+								case "textcolormagenta":
+									DBTextColorMagenta[themeID] = value4;
+									break;
+								}
+							}
+							catch (Exception ex4)
+							{
+								LogMsg("Cannot parse textcolor white field " + text + " : " + ex4.Message);
+							}
+							break;
+						case "texturecolorwhite":
+						case "texturecolorcyan":
+						case "texturecolorgray":
+						case "texturecolorred":
+						case "texturecoloryellow":
+						case "texturecolorblue":
+						case "texturecolorgreen":
+						case "texturecolormangenta":
+							try
+							{
+								Color value2 = (Color)ParseHelper.FromString(text2, typeof(Color));
+								switch (text)
+								{
+								case "texturecolorwhite":
+									DBTexColorWhite[themeID] = value2;
+									break;
+								case "texturecolorcyan":
+									DBTexColorCyan[themeID] = value2;
+									break;
+								case "texturecolorgray":
+									DBTexColorGray[themeID] = value2;
+									break;
+								case "texturecolorred":
+									DBTexColorRed[themeID] = value2;
+									break;
+								case "texturecoloryellow":
+									DBTexColorYellow[themeID] = value2;
+									break;
+								case "texturecolorblue":
+									DBTexColorBlue[themeID] = value2;
+									break;
+								case "texturecolorgreen":
+									DBTexColorGreen[themeID] = value2;
+									break;
+								case "textureolormagenta":
+									DBTexColorMagenta[themeID] = value2;
+									break;
+								}
+							}
+							catch (Exception ex3)
+							{
+								LogMsg("Cannot parse texureColor white field " + text + " : " + ex3.Message);
+							}
+							break;
+						case "textcolorfactionneutral":
+							try
+							{
+								Color value = (Color)ParseHelper.FromString(text2, typeof(Color));
+								DBTextColorFactionsNeutral[themeID] = value;
+							}
+							catch (Exception ex2)
+							{
+								LogMsg("Cannot parse textcolor faction neutral : " + ex2.Message);
+							}
+							break;
+						case "font":
+						{
+							Dictionary<string, string> dictionary2 = new Dictionary<string, string>();
+							dictionary["font"] = text2;
+							dictionary["themeID"] = themeID;
+							break;
+						}
+						case "windowanim":
+							switch (text2.ToLower())
+							{
+							case "clip":
+								DBWindowAnim[themeID] = WindowAnim.Clip;
+								break;
+							case "slideleft":
+								DBWindowAnim[themeID] = WindowAnim.SlideLeft;
+								break;
+							case "slideright":
+								DBWindowAnim[themeID] = WindowAnim.SlideRight;
+								break;
+							case "slidetop":
+								DBWindowAnim[themeID] = WindowAnim.SlideTop;
+								break;
+							case "slidebottom":
+								DBWindowAnim[themeID] = WindowAnim.SlideBottom;
+								break;
+							default:
+								DBWindowAnim[themeID] = WindowAnim.None;
+								break;
+							}
+							break;
+						case "particlemode":
+						case "buttonnotex":
+						case "buttonnobg":
+						case "buttonusecolor":
+						case "dialogstacking":
+						case "disablemainrimthemeslogo":
+						case "disablemainthemeselector":
+						case "category":
+						case "tapestryscalemode":
+							DBText[themeID][text] = text2.ToLower();
+							break;
+						case "buttonfillcolor":
+						case "buttonhovercolor":
+						case "buttonclickcolor":
+						case "tapestrybordercolor":
+							DBColor[themeID][MiscKey][text] = (Color)ParseHelper.FromString(text2, typeof(Color));
+							break;
+						case "dyncolor":
+						{
+							string[] array = text2.Split('=');
+							if (array.Count() == 2)
+							{
+								LogMsg("Found dynColor " + array[0] + " => " + array[1]);
+								Color key = (Color)ParseHelper.FromString(array[0], typeof(Color));
+								Color value3 = (Color)ParseHelper.FromString(array[1], typeof(Color));
+								DBDynColor[themeID][key] = value3;
+							}
+							break;
+						}
+						case "disabletransparenttext":
+						case "menuspecialmode":
+						case "loaderfps":
+						{
+							int result = 0;
+							if (int.TryParse(text2, out result))
+							{
+								DBVal[themeID][text] = result;
+								break;
+							}
+							LogError("DBVal : value '" + text2 + "' of tag '" + text + "' is not a valid number");
+							break;
+						}
+						default:
+							DBText[themeID][text] = text2;
+							Fonts.tryParseCustomFontTag(dictionary, themeID, text, text2);
+							break;
+						}
+					}
+					catch (Exception ex5)
+					{
+						LogError("Cannot parse tag " + text + " : " + ex5.Message);
+					}
+				}
+			}
+			if (dictionary.Count() != 0)
+			{
+				fontsToLoad.Add(dictionary);
+			}
+		}
+		catch (Exception ex6)
+		{
+			LogError("Cannot parse meta.xml " + ex6.Message);
+		}
+	}
+
+	public static Texture2D customTexLoad(string fullPath, int w = 64, int h = 64)
+	{
+		//IL_0005: Unknown result type (might be due to invalid IL or missing references)
+		//IL_000b: Expected O, but got Unknown
+		Texture2D val = new Texture2D(w, h, (TextureFormat)4, false);
+		ImageConversion.LoadImage(val, File.ReadAllBytes(fullPath));
+		return val;
+	}
+
+	public static byte[] rawBytesLoad(string fullPath)
+	{
+		return File.ReadAllBytes(fullPath);
+	}
+
+	public static void changeThemeNow(string modID, string themeName, bool manualChange)
+	{
+		string newTheme = modID + "" + themeName;
+		changeThemeNow(newTheme, manualChange);
+	}
+
+	public static void changeThemeNow(string newTheme, bool manualChange = false)
+	{
+		try
+		{
+			if (manualChange)
+			{
+				currentThemeExist = true;
+			}
+			string curTheme = Settings.curTheme;
+			if (!vanillaThemeSaved)
+			{
+				LogMsg("Saving vanilla theme...");
+				saveVanillaRsc(DBTex);
+				saveVanillaRsc(DBColor);
+				DBDynColor[VanillaThemeID] = new Dictionary<Color, Color>();
+				DBText[VanillaThemeID] = new Dictionary<string, string>();
+				DBText[VanillaThemeID]["description"] = "Want some old school interface ?";
+				LogMsg("Saving vanilla theme ending");
+				vanillaThemeSaved = true;
+				Utils.applyWindowFillColorOpacityOverride(newTheme);
+				changeThemeNow(newTheme, manualChange);
+				if (curTheme == VanillaThemeID)
+				{
+					return;
+				}
+			}
+			if (curTheme != VanillaThemeID)
+			{
+				changeTheme(DBTex, VanillaThemeID);
+				changeTheme(DBColor, VanillaThemeID);
+				changeThemeOtherMods(VanillaThemeID);
+			}
+			string curThemeForBackgroundRegen = Settings.getCurThemeForBackgroundRegen(newTheme);
+			if (DBTexDyn.ContainsKey(curThemeForBackgroundRegen))
+			{
+				foreach (KeyValuePair<string, Dictionary<string, List<Texture2D>>> item in DBTexDyn[curThemeForBackgroundRegen])
+				{
+					foreach (KeyValuePair<string, List<Texture2D>> item2 in item.Value)
+					{
+						bool flag = item.Key == "UI_BackgroundMain" && item2.Key == "BGPlanet";
+						if (DBTex.ContainsKey(curThemeForBackgroundRegen) && DBTex[curThemeForBackgroundRegen].ContainsKey(item.Key) && DBTex[curThemeForBackgroundRegen][item.Key].ContainsKey(item2.Key) && (!flag || (flag && !Settings.keepCurrentBg)))
+						{
+							Random random = new Random();
+							int num = random.Next(0, item2.Value.Count);
+							DBTex[curThemeForBackgroundRegen][item.Key][item2.Key] = item2.Value[num];
+							if (flag)
+							{
+								Settings.curRandomBgIndex = num;
+							}
+						}
+					}
+				}
+			}
+			shuffleAnimatedBackgrounds(newTheme);
+			stopCurrentAnimatedBackground();
+			changeTheme(DBTex, newTheme);
+			changeTheme(DBColor, newTheme);
+			changeThemeOtherMods(newTheme);
+			Utils.resetCachedLabelWidthCache();
+			Settings.curTheme = newTheme;
+			((ModSettings)Utils.modSettings).Write();
+			changeSoundTheme();
+			changeSongTheme();
+			CustomCursor.Deactivate();
+			CustomCursor.Activate();
+			Utils.needRefresh = true;
+			Utils.applyWindowFillColorOpacityOverride(newTheme);
+		}
+		catch (Exception ex)
+		{
+			LogError("Error while trying to change theme : " + ex.Message);
+		}
+	}
+
+	public static void shuffleAnimatedBackgrounds(string newTheme)
+	{
+		string curThemeForBackgroundRegen = Settings.getCurThemeForBackgroundRegen(newTheme);
+		if (!Settings.keepCurrentBg)
+		{
+			if (DBAnimatedBackgroundDyn.ContainsKey(curThemeForBackgroundRegen) && DBAnimatedBackgroundDyn[curThemeForBackgroundRegen].Count() > 0)
+			{
+				Random random = new Random();
+				int num = random.Next(0, DBAnimatedBackgroundDyn[curThemeForBackgroundRegen].Count);
+				DBAnimatedBackground[curThemeForBackgroundRegen] = DBAnimatedBackgroundDyn[curThemeForBackgroundRegen][num];
+				Settings.curRandomBgIndex = num;
+			}
+			else if (Settings.forceVanillaVideoBgWhenNoVBG)
+			{
+				DBAnimatedBackground[curThemeForBackgroundRegen] = DBAnimatedBackground[VanillaThemeID];
+				Settings.curRandomBgIndex = 0;
+			}
+		}
+	}
+
+	public static void changeSongTheme()
+	{
+		//IL_0163: Unknown result type (might be due to invalid IL or missing references)
+		//IL_016a: Expected O, but got Unknown
+		//IL_0180: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0187: Expected O, but got Unknown
+		//IL_019d: Unknown result type (might be due to invalid IL or missing references)
+		//IL_01a4: Expected O, but got Unknown
+		string text = Settings.curTheme;
+		if (Settings.disableCustomSongs)
+		{
+			text = VanillaThemeID;
+		}
+		if (!vanillaSongGrainsSaved)
+		{
+			try
+			{
+				if (!DBSong.ContainsKey(VanillaThemeID))
+				{
+					DBSong[VanillaThemeID] = new Dictionary<string, AudioClip>();
+				}
+				DBSong[VanillaThemeID]["EntrySong"] = SongDefOf.EntrySong.clip;
+			}
+			catch (Exception ex)
+			{
+				LogError("Cannot save vanilla song " + ex.Message);
+			}
+			vanillaSongGrainsSaved = true;
+		}
+		else
+		{
+			SongDefOf.EntrySong.clip = DBSong[VanillaThemeID]["EntrySong"];
+		}
+		if (!DBSong.ContainsKey(text) || DBSong[text] == null || !DBSong[text].ContainsKey("EntrySong"))
+		{
+			text = VanillaThemeID;
+		}
+		try
+		{
+			SongDefOf.EntrySong.clip = DBSong[text]["EntrySong"];
+			Type type = Type.GetType(typeof(Current).AssemblyQualifiedName);
+			if (!(type != null))
+			{
+				return;
+			}
+			FieldInfo field = type.GetField("rootEntryInt", BindingFlags.Static | BindingFlags.NonPublic);
+			Root_Entry val = (Root_Entry)field.GetValue(null);
+			MusicManagerEntry val2 = (MusicManagerEntry)Traverse.Create((object)val).Field("musicManagerEntry").GetValue();
+			AudioSource val3 = (AudioSource)Traverse.Create((object)val2).Field("audioSource").GetValue();
+			if ((Object)(object)val3 != (Object)null)
+			{
+				val3.Stop();
+				if (text == VanillaThemeID || !DBEntrySongDyn.ContainsKey(text))
+				{
+					val3.clip = DBSong[text]["EntrySong"];
+				}
+				else
+				{
+					val3.clip = GenCollection.RandomElement<AudioClip>((IEnumerable<AudioClip>)DBEntrySongDyn[text]);
+				}
+				val3.Play();
+			}
+		}
+		catch (Exception ex2)
+		{
+			LogError("changeSoundTheme : " + ex2.Message);
+		}
+	}
+
+	public static void changeSoundTheme()
+	{
+		//IL_00a6: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00ad: Expected O, but got Unknown
+		string key = Settings.curTheme;
+		if (Settings.disableCustomSounds)
+		{
+			key = VanillaThemeID;
+		}
+		if (!vanillaGrainsSaved)
+		{
+			saveVanillaGrains();
+			vanillaGrainsSaved = true;
+		}
+		else
+		{
+			restoreVanilaGrains();
+		}
+		if (!DBSound.ContainsKey(key))
+		{
+			return;
+		}
+		Type type = Type.GetType(typeof(SoundDefOf).AssemblyQualifiedName);
+		foreach (KeyValuePair<string, AudioGrain_ClipTheme> item in DBSound[key])
+		{
+			try
+			{
+				string key2 = item.Key;
+				FieldInfo field = type.GetField(key2);
+				SoundDef val = (SoundDef)field.GetValue(null);
+				val.subSounds[0].grains[0] = (AudioGrain)(object)item.Value;
+				((Editable)val.subSounds[0]).ResolveReferences();
+			}
+			catch (Exception ex)
+			{
+				LogError("changeSoundTheme : " + ex.Message);
+			}
+		}
+	}
+
+	public static void saveVanillaGrains()
+	{
+		//IL_0036: Unknown result type (might be due to invalid IL or missing references)
+		//IL_003d: Expected O, but got Unknown
+		Type type = Type.GetType(typeof(SoundDefOf).AssemblyQualifiedName);
+		FieldInfo[] fields = type.GetFields();
+		FieldInfo[] array = fields;
+		foreach (FieldInfo fieldInfo in array)
+		{
+			try
+			{
+				SoundDef val = (SoundDef)fieldInfo.GetValue(null);
+				if (val.subSounds.Count != 0)
+				{
+					List<ResolvedGrain> list = (List<ResolvedGrain>)Traverse.Create((object)val.subSounds[0]).Field("resolvedGrains").GetValue();
+					DBVanillaResolvedGrains[fieldInfo.Name] = new List<ResolvedGrain>();
+					foreach (ResolvedGrain item in list)
+					{
+						DBVanillaResolvedGrains[fieldInfo.Name].Add(item);
+					}
+				}
+				else
+				{
+					DBVanillaResolvedGrains[fieldInfo.Name] = null;
+				}
+			}
+			catch (Exception ex)
+			{
+				if (fieldInfo != null)
+				{
+					LogError("Cannot save vanilla grain " + fieldInfo.Name + " : " + ex.Message);
+				}
+			}
+		}
+	}
+
+	public static void restoreVanilaGrains()
+	{
+		//IL_0035: Unknown result type (might be due to invalid IL or missing references)
+		//IL_003c: Expected O, but got Unknown
+		Type type = Type.GetType(typeof(SoundDefOf).AssemblyQualifiedName);
+		FieldInfo[] fields = type.GetFields();
+		FieldInfo[] array = fields;
+		foreach (FieldInfo fieldInfo in array)
+		{
+			SoundDef val = (SoundDef)fieldInfo.GetValue(null);
+			if (DBVanillaResolvedGrains[fieldInfo.Name] == null)
+			{
+				continue;
+			}
+			List<ResolvedGrain> list = (List<ResolvedGrain>)Traverse.Create((object)val.subSounds[0]).Field("resolvedGrains").GetValue();
+			list.Clear();
+			foreach (ResolvedGrain item in DBVanillaResolvedGrains[fieldInfo.Name])
+			{
+				list.Add(item);
+			}
+		}
+	}
+
+	public static void changeTheme<T>(Dictionary<string, Dictionary<string, Dictionary<string, T>>> db, string forcedTheme = null)
+	{
+		//IL_01b7: Unknown result type (might be due to invalid IL or missing references)
+		//IL_01e0: Unknown result type (might be due to invalid IL or missing references)
+		//IL_01ea: Expected O, but got Unknown
+		//IL_01ef: Expected O, but got Unknown
+		string key = ((forcedTheme == null) ? Settings.curTheme : forcedTheme);
+		bool flag = true;
+		Dictionary<string, List<FOI>> dictionary = fieldsOfInterestTex;
+		if (!db.ContainsKey(key))
+		{
+			return;
+		}
+		if (typeof(T) != typeof(Texture2D))
+		{
+			flag = false;
+			dictionary = fieldsOfInterestColor;
+		}
+		foreach (KeyValuePair<string, List<FOI>> item in dictionary)
+		{
+			try
+			{
+				if (!db[key].ContainsKey(item.Key))
+				{
+					continue;
+				}
+				string text = "Verse";
+				if (flag)
+				{
+					if (fieldsOfInterestTexNS.ContainsKey(item.Key))
+					{
+						text = fieldsOfInterestTexNS[item.Key];
+					}
+				}
+				else if (fieldsOfInterestColorNS.ContainsKey(item.Key))
+				{
+					text = fieldsOfInterestColorNS[item.Key];
+				}
+				Type type = typeof(FloatMenuOption).Assembly.GetType(text + "." + item.Key);
+				foreach (FOI item2 in item.Value)
+				{
+					try
+					{
+						if (db[key][item.Key].ContainsKey(item2.field) && db[key][item.Key][item2.field] != null)
+						{
+							if (flag)
+							{
+								ImageConversion.LoadImage((Texture2D)type.GetField(item2.field, item2.bf).GetValue(null), ImageConversion.EncodeToPNG((Texture2D)(object)db[key][item.Key][item2.field]));
+							}
+							else
+							{
+								type.GetField(item2.field, item2.bf).SetValue(null, db[key][item.Key][item2.field]);
+							}
+						}
+					}
+					catch (Exception ex)
+					{
+						LogMsg(string.Concat("changeTheme (", typeof(T), ") : Cannot set field ", item.Key, ".", item2.field, " : ", ex.Message));
+					}
+				}
+			}
+			catch (Exception ex2)
+			{
+				LogError(string.Concat("changeTheme (", typeof(T), ") : Cannot get class ", item.Key, " : ", ex2.Message));
+			}
+		}
+	}
+
+	public static void changeThemeOtherMods(string theme)
+	{
+		//IL_006e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00a6: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00de: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0116: Unknown result type (might be due to invalid IL or missing references)
+		//IL_014e: Unknown result type (might be due to invalid IL or missing references)
+		BindingFlags bindingAttr = BindingFlags.Static | BindingFlags.NonPublic;
+		Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+		for (int i = 0; i != assemblies.Count(); i++)
+		{
+			try
+			{
+				if (assemblies[i].GetName().Name == "RecipeIcons")
+				{
+					Type type = assemblies[i].GetType("RecipeIcons.FloatMenuOptionLeft");
+					type.GetField("ColorBGActive", bindingAttr).SetValue(null, DBColor[theme]["FloatMenuOption"]["ColorBGActive"]);
+					type.GetField("ColorBGActiveMouseover", bindingAttr).SetValue(null, DBColor[theme]["FloatMenuOption"]["ColorBGActiveMouseover"]);
+					type.GetField("ColorBGDisabled", bindingAttr).SetValue(null, DBColor[theme]["FloatMenuOption"]["ColorBGDisabled"]);
+					type.GetField("ColorTextActive", bindingAttr).SetValue(null, DBColor[theme]["FloatMenuOption"]["ColorTextActive"]);
+					type.GetField("ColorTextDisabled", bindingAttr).SetValue(null, DBColor[theme]["FloatMenuOption"]["ColorTextDisabled"]);
+				}
+			}
+			catch (Exception ex)
+			{
+				LogError("Cannot apply theme on custom assembly : " + ex.Message);
+			}
+		}
+	}
+
+	public static void saveVanillaRsc<T>(Dictionary<string, Dictionary<string, Dictionary<string, T>>> db)
+	{
+		//IL_0234: Unknown result type (might be due to invalid IL or missing references)
+		//IL_023b: Expected O, but got Unknown
+		//IL_027b: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0282: Expected O, but got Unknown
+		//IL_029e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_01ea: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0162: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0169: Expected O, but got Unknown
+		//IL_0182: Unknown result type (might be due to invalid IL or missing references)
+		//IL_018c: Expected O, but got Unknown
+		string vanillaThemeID = VanillaThemeID;
+		db[vanillaThemeID] = new Dictionary<string, Dictionary<string, T>>();
+		Dictionary<string, List<FOI>> dictionary = fieldsOfInterestTex;
+		bool flag = true;
+		if (typeof(T) != typeof(Texture2D))
+		{
+			flag = false;
+			dictionary = fieldsOfInterestColor;
+		}
+		foreach (KeyValuePair<string, List<FOI>> item in dictionary)
+		{
+			try
+			{
+				db[vanillaThemeID][item.Key] = new Dictionary<string, T>();
+				string text = "Verse";
+				if (flag)
+				{
+					if (fieldsOfInterestTexNS.ContainsKey(item.Key))
+					{
+						text = fieldsOfInterestTexNS[item.Key];
+					}
+				}
+				else if (fieldsOfInterestColorNS.ContainsKey(item.Key))
+				{
+					text = fieldsOfInterestColorNS[item.Key];
+				}
+				Type type = typeof(FloatMenuOption).Assembly.GetType(text + "." + item.Key);
+				foreach (FOI item2 in item.Value)
+				{
+					try
+					{
+						if (flag)
+						{
+							Dictionary<string, Texture2D> dictionary2 = (Dictionary<string, Texture2D>)(object)db[vanillaThemeID][item.Key];
+							Texture2D val = (Texture2D)type.GetField(item2.field, item2.bf).GetValue(null);
+							dictionary2[item2.field] = new Texture2D(((Texture)val).width, ((Texture)val).height, (TextureFormat)4, false);
+							ImageConversion.LoadImage(dictionary2[item2.field], ImageConversion.EncodeToPNG(val));
+						}
+						else
+						{
+							Dictionary<string, Color> dictionary3 = (Dictionary<string, Color>)(object)db[vanillaThemeID][item.Key];
+							dictionary3[item2.field] = (Color)type.GetField(item2.field, item2.bf).GetValue(null);
+						}
+					}
+					catch (Exception)
+					{
+						try
+						{
+							Dictionary<string, Texture2D> dictionary4 = (Dictionary<string, Texture2D>)(object)db[vanillaThemeID][item.Key];
+							Texture2D val2 = (Texture2D)type.GetField(item2.field, item2.bf).GetValue(null);
+							((Texture)val2).filterMode = (FilterMode)0;
+							RenderTexture val3 = (RenderTexture.active = RenderTexture.GetTemporary(((Texture)val2).width, ((Texture)val2).height));
+							Graphics.Blit((Texture)(object)val2, val3);
+							Texture2D val4 = new Texture2D(((Texture)val2).width, ((Texture)val2).height, (TextureFormat)4, false);
+							val4.ReadPixels(new Rect(0f, 0f, (float)((Texture)val2).width, (float)((Texture)val2).height), 0, 0, false);
+							val4.Apply(false);
+							RenderTexture.active = null;
+							ImageConversion.LoadImage(dictionary4[item2.field], ImageConversion.EncodeToPNG(val4));
+							val3.Release();
+						}
+						catch (Exception ex)
+						{
+							LogError(string.Concat("saveVanillaRsc (", typeof(T), ")  : Cannot save field ", item.Key, ".", item2.field, " : ", ex.Message));
+						}
+					}
+				}
+			}
+			catch (Exception ex3)
+			{
+				LogError(string.Concat("saveVanillaRsc (", typeof(T), ")  : Cannot get class ", item.Key, " : ", ex3.Message));
+			}
+		}
+	}
+
+	public static Texture2D getThemeIcon(string dtheme = "")
+	{
+		string key = ((!(dtheme != "")) ? Settings.curTheme : dtheme);
+		if (!DBTexThemeIcon.ContainsKey(key))
+		{
+			return Loader.defaultIconTex;
+		}
+		return DBTexThemeIcon[key];
+	}
+
+	public static Texture2D getThemeParticle(string dtheme = "")
+	{
+		string key = ((!(dtheme != "")) ? Settings.curTheme : dtheme);
+		if (!DBTexParticle.ContainsKey(key))
+		{
+			return null;
+		}
+		return DBTexParticle[key];
+	}
+
+	public static Texture2D getThemeTex(string className, string fieldName, string dtheme = "", int index = -1)
+	{
+		string key = ((!(dtheme != "")) ? Settings.curTheme : dtheme);
+		if (!DBTex.ContainsKey(key) || !DBTex[key].ContainsKey(className) || !DBTex[key][className].ContainsKey(fieldName) || (Object)(object)DBTex[key][className][fieldName] == (Object)null)
+		{
+			if (!DBTex.ContainsKey(VanillaThemeID) || !DBTex[VanillaThemeID].ContainsKey(className) || !DBTex[VanillaThemeID][className].ContainsKey(fieldName) || (Object)(object)DBTex[VanillaThemeID][className][fieldName] == (Object)null)
+			{
+				return null;
+			}
+			return DBTex[VanillaThemeID][className][fieldName];
+		}
+		if (index != -1 && DBTexDyn.ContainsKey(key) && DBTexDyn[key].ContainsKey(className) && DBTexDyn[key][className].ContainsKey(fieldName) && DBTexDyn[key][className][fieldName].Count() > index)
+		{
+			return DBTexDyn[key][className][fieldName][index];
+		}
+		return DBTex[key][className][fieldName];
+	}
+
+	public static string getText(string text, string dtheme = "")
+	{
+		string key = ((!(dtheme != "")) ? Settings.curTheme : dtheme);
+		if (DBText == null || !DBText.TryGetValue(key, out var value) || value == null || !value.TryGetValue(text, out var value2))
+		{
+			return null;
+		}
+		return value2;
+	}
+
+	public static int getVal(string text, string dtheme = "")
+	{
+		string key = ((!(dtheme != "")) ? Settings.curTheme : dtheme);
+		if (!DBVal.TryGetValue(key, out var value) || value == null || !value.TryGetValue(text, out var value2))
+		{
+			return -9999;
+		}
+		return value2;
+	}
+
+	public static Color getColorMisc(string text, string dtheme = "")
+	{
+		//IL_005b: Unknown result type (might be due to invalid IL or missing references)
+		//IL_005c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0052: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0057: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0060: Unknown result type (might be due to invalid IL or missing references)
+		string key = ((!(dtheme != "")) ? Settings.curTheme : dtheme);
+		if (!DBColor.TryGetValue(key, out var value) || value == null || !value.TryGetValue(MiscKey, out var value2) || !value2.TryGetValue(text, out var value3))
+		{
+			return Color.black;
+		}
+		return value3;
+	}
+
+	public static GUIStyle getDBGUIStyle(GameFont gf)
+	{
+		//IL_004a: Unknown result type (might be due to invalid IL or missing references)
+		//IL_004b: Unknown result type (might be due to invalid IL or missing references)
+		//IL_004d: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0060: Expected I4, but got Unknown
+		//IL_00da: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00db: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00dd: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00f0: Expected I4, but got Unknown
+		//IL_00f9: Unknown result type (might be due to invalid IL or missing references)
+		//IL_010d: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0121: Unknown result type (might be due to invalid IL or missing references)
+		//IL_012f: Unknown result type (might be due to invalid IL or missing references)
+		string curTheme = Settings.curTheme;
+		if (forcedFontTheme != "")
+		{
+			curTheme = forcedFontTheme;
+		}
+		if (Settings.disableCustomFonts || !DBGUIStyle.TryGetValue(curTheme, out var value) || value == null)
+		{
+			return null;
+		}
+		switch ((int)gf)
+		{
+		case 0:
+			if (cacheGetDBGUIStyleTiny != null && cacheGetDBGUIStyleTinyTheme == curTheme)
+			{
+				return cacheGetDBGUIStyleTiny;
+			}
+			break;
+		case 1:
+			if (cacheGetDBGUIStyleSmall != null && cacheGetDBGUIStyleSmallTheme == curTheme)
+			{
+				return cacheGetDBGUIStyleSmall;
+			}
+			break;
+		case 2:
+			if (cacheGetDBGUIStyleMedium != null && cacheGetDBGUIStyleMediumTheme == curTheme)
+			{
+				return cacheGetDBGUIStyleMedium;
+			}
+			break;
+		}
+		switch ((int)gf)
+		{
+		case 0:
+			cacheGetDBGUIStyleTinyTheme = curTheme;
+			cacheGetDBGUIStyleTiny = value[gf];
+			break;
+		case 1:
+			cacheGetDBGUIStyleSmallTheme = curTheme;
+			cacheGetDBGUIStyleSmall = value[gf];
+			break;
+		case 2:
+			cacheGetDBGUIStyleMediumTheme = curTheme;
+			cacheGetDBGUIStyleMedium = value[gf];
+			break;
+		}
+		return value[gf];
+	}
+
+	public static GUIStyle getDBGUIStyleTextField(GameFont gf)
+	{
+		//IL_0055: Unknown result type (might be due to invalid IL or missing references)
+		string curTheme = Settings.curTheme;
+		if (forcedFontTheme != "")
+		{
+			curTheme = forcedFontTheme;
+		}
+		if (!DBGUIStyleTextField.ContainsKey(curTheme) || DBGUIStyleTextField[curTheme] == null || Settings.disableCustomFonts)
+		{
+			return null;
+		}
+		return DBGUIStyleTextField[curTheme][gf];
+	}
+
+	public static GUIStyle getDBGUIStyleTextArea(GameFont gf)
+	{
+		//IL_0055: Unknown result type (might be due to invalid IL or missing references)
+		string curTheme = Settings.curTheme;
+		if (forcedFontTheme != "")
+		{
+			curTheme = forcedFontTheme;
+		}
+		if (!DBGUIStyleTextArea.ContainsKey(curTheme) || DBGUIStyleTextArea[curTheme] == null || Settings.disableCustomFonts)
+		{
+			return null;
+		}
+		return DBGUIStyleTextArea[curTheme][gf];
+	}
+
+	public static GUIStyle getDBGUIStyleTextAreaReadOnly(GameFont gf)
+	{
+		//IL_0055: Unknown result type (might be due to invalid IL or missing references)
+		string curTheme = Settings.curTheme;
+		if (forcedFontTheme != "")
+		{
+			curTheme = forcedFontTheme;
+		}
+		if (!DBGUIStyleTextAreaReadOnly.ContainsKey(curTheme) || DBGUIStyleTextAreaReadOnly[curTheme] == null || Settings.disableCustomFonts)
+		{
+			return null;
+		}
+		return DBGUIStyleTextAreaReadOnly[curTheme][gf];
+	}
+
+	public static float getDBGUIStyleLineHeight(GameFont gf)
+	{
+		//IL_0059: Unknown result type (might be due to invalid IL or missing references)
+		string curTheme = Settings.curTheme;
+		if (forcedFontTheme != "")
+		{
+			curTheme = forcedFontTheme;
+		}
+		if (!DBGUIStyleLineHeight.ContainsKey(curTheme) || DBGUIStyleLineHeight[curTheme] == null || Settings.disableCustomFonts)
+		{
+			return 0f;
+		}
+		return DBGUIStyleLineHeight[curTheme][gf];
+	}
+
+	public static float getDBGUIStyleSpaceBetweenLine(GameFont gf)
+	{
+		//IL_0059: Unknown result type (might be due to invalid IL or missing references)
+		string curTheme = Settings.curTheme;
+		if (forcedFontTheme != "")
+		{
+			curTheme = forcedFontTheme;
+		}
+		if (!DBGUIStyleSpaceBetweenLine.ContainsKey(curTheme) || DBGUIStyleSpaceBetweenLine[curTheme] == null || Settings.disableCustomFonts)
+		{
+			return 0f;
+		}
+		return DBGUIStyleSpaceBetweenLine[curTheme][gf];
+	}
+
+	public static Texture2D[] getThemeLoader()
+	{
+		string[] array = Settings.curTheme.Split('');
+		if (!DBVal.ContainsKey(VanillaThemeID))
+		{
+			DBVal[VanillaThemeID] = new Dictionary<string, int>();
+			DBVal[VanillaThemeID]["loaderfps"] = 20;
+		}
+		if (DBNoLoader.ContainsKey(Settings.curTheme) && DBNoLoader[Settings.curTheme])
+		{
+			return null;
+		}
+		if (DBLoaderNotFound.ContainsKey(Settings.curTheme) && DBLoaderNotFound[Settings.curTheme])
+		{
+			return getDefaultLoader();
+		}
+		if (array[0] == "-1")
+		{
+			if (!DBLoader.ContainsKey(Settings.curTheme))
+			{
+				if (!DBNoLoader.ContainsKey(Settings.curTheme))
+				{
+					string path = Utils.currentMod.RootDir + Path.DirectorySeparatorChar + "Themes" + Path.DirectorySeparatorChar + array[1] + Path.DirectorySeparatorChar + "Loader" + Path.DirectorySeparatorChar + "NOLOADER";
+					if (File.Exists(path))
+					{
+						DBNoLoader[Settings.curTheme] = true;
+						return null;
+					}
+					DBNoLoader[Settings.curTheme] = false;
+				}
+				string text = Utils.currentMod.RootDir + Path.DirectorySeparatorChar + "Themes" + Path.DirectorySeparatorChar + array[1] + Path.DirectorySeparatorChar + "meta.xml";
+				if (File.Exists(text))
+				{
+					try
+					{
+						processMetaXML(Settings.curTheme, text);
+					}
+					catch (Exception ex)
+					{
+						LogError("getThemeLoader processing meta.xml : " + ex.Message);
+					}
+				}
+				string text2 = Utils.currentMod.RootDir + Path.DirectorySeparatorChar + "Themes" + Path.DirectorySeparatorChar + array[1] + Path.DirectorySeparatorChar + "Loader" + Path.DirectorySeparatorChar + "Loader.png";
+				if (!File.Exists(text2))
+				{
+					DBLoaderNotFound[Settings.curTheme] = true;
+					return getDefaultLoader();
+				}
+				DBLoaderNotFound[Settings.curTheme] = false;
+				if (loadCustomThemeLoader(text2))
+				{
+					return DBLoader[Settings.curTheme];
+				}
+				return getDefaultLoader();
+			}
+			if (DBLoader[Settings.curTheme] == null)
+			{
+				return getDefaultLoader();
+			}
+			return DBLoader[Settings.curTheme];
+		}
+		if (array[0] == "-2")
+		{
+			if (!DBLoader.ContainsKey(Settings.curTheme))
+			{
+				string rWBaseFolderPath = Utils.RWBaseFolderPath;
+				if (!DBNoLoader.ContainsKey(Settings.curTheme))
+				{
+					string path2 = rWBaseFolderPath + Path.DirectorySeparatorChar + "RimThemes" + Path.DirectorySeparatorChar + array[1] + Path.DirectorySeparatorChar + "Loader" + Path.DirectorySeparatorChar + "NOLOADER";
+					if (File.Exists(path2))
+					{
+						DBNoLoader[Settings.curTheme] = true;
+						return null;
+					}
+					DBNoLoader[Settings.curTheme] = false;
+				}
+				string text3 = rWBaseFolderPath + Path.DirectorySeparatorChar + "RimThemes" + Path.DirectorySeparatorChar + array[1] + Path.DirectorySeparatorChar + "meta.xml";
+				if (File.Exists(text3))
+				{
+					try
+					{
+						processMetaXML(Settings.curTheme, text3);
+					}
+					catch (Exception ex2)
+					{
+						LogError("getThemeLoader processing meta.xml : " + ex2.Message);
+					}
+				}
+				string text4 = rWBaseFolderPath + Path.DirectorySeparatorChar + "RimThemes" + Path.DirectorySeparatorChar + array[1] + Path.DirectorySeparatorChar + "Loader" + Path.DirectorySeparatorChar + "Loader.png";
+				if (!File.Exists(text4))
+				{
+					DBLoaderNotFound[Settings.curTheme] = true;
+					return getDefaultLoader();
+				}
+				DBLoaderNotFound[Settings.curTheme] = false;
+				if (loadCustomThemeLoader(text4))
+				{
+					return DBLoader[Settings.curTheme];
+				}
+				return getDefaultLoader();
+			}
+			if (DBLoader[Settings.curTheme] == null)
+			{
+				return getDefaultLoader();
+			}
+			return DBLoader[Settings.curTheme];
+		}
+		if (DBLoader.ContainsKey(Settings.curTheme))
+		{
+			if (DBLoader[Settings.curTheme] == null)
+			{
+				return getDefaultLoader();
+			}
+			return DBLoader[Settings.curTheme];
+		}
+		List<ModContentPack> runningModsListForReading = LoadedModManager.RunningModsListForReading;
+		for (int num = runningModsListForReading.Count - 1; num >= 0; num--)
+		{
+			ModContentPack val = runningModsListForReading[num];
+			if (val.PackageId == array[0])
+			{
+				if (!DBNoLoader.ContainsKey(Settings.curTheme))
+				{
+					string path3 = val.RootDir + Path.DirectorySeparatorChar + "RimThemes" + Path.DirectorySeparatorChar + array[1] + Path.DirectorySeparatorChar + "Loader" + Path.DirectorySeparatorChar + "NOLOADER";
+					if (File.Exists(path3))
+					{
+						DBNoLoader[Settings.curTheme] = true;
+						return null;
+					}
+					DBNoLoader[Settings.curTheme] = false;
+				}
+				string text5 = val.RootDir + Path.DirectorySeparatorChar + "RimThemes" + Path.DirectorySeparatorChar + array[1] + Path.DirectorySeparatorChar + "meta.xml";
+				if (File.Exists(text5))
+				{
+					try
+					{
+						processMetaXML(Settings.curTheme, text5);
+					}
+					catch (Exception ex3)
+					{
+						LogError("getThemeLoader processing meta.xml : " + ex3.Message);
+					}
+				}
+				string text6 = val.RootDir + Path.DirectorySeparatorChar + "RimThemes" + Path.DirectorySeparatorChar + array[1] + Path.DirectorySeparatorChar + "Loader" + Path.DirectorySeparatorChar + "Loader.png";
+				if (File.Exists(text6))
+				{
+					if (loadCustomThemeLoader(text6))
+					{
+						DBLoaderNotFound[Settings.curTheme] = false;
+						return DBLoader[Settings.curTheme];
+					}
+					DBLoaderNotFound[Settings.curTheme] = true;
+					return getDefaultLoader();
+				}
+			}
+		}
+		return getDefaultLoader();
+	}
+
+	private static bool loadCustomThemeLoader(string customLoaderPath)
+	{
+		//IL_0054: Unknown result type (might be due to invalid IL or missing references)
+		//IL_005a: Expected O, but got Unknown
+		//IL_00b5: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00bb: Expected O, but got Unknown
+		bool result = true;
+		try
+		{
+			APNG aPNG = new APNG(File.ReadAllBytes(customLoaderPath));
+			DBLoader[Settings.curTheme] = (Texture2D[])(object)new Texture2D[aPNG.Frames.Count()];
+			Frame[] frames = aPNG.Frames;
+			if (aPNG.Frames.Length == 0)
+			{
+				Texture2D val = new Texture2D(196, 196, (TextureFormat)5, false);
+				if (!ImageConversion.LoadImage(val, File.ReadAllBytes(customLoaderPath)))
+				{
+					throw new Exception();
+				}
+				DBLoader[Settings.curTheme] = (Texture2D[])(object)new Texture2D[1];
+				DBLoader[Settings.curTheme][0] = val;
+			}
+			else
+			{
+				for (int i = 0; i != frames.Count(); i++)
+				{
+					Texture2D val = new Texture2D(196, 196, (TextureFormat)5, false);
+					ImageConversion.LoadImage(val, frames[i].GetStream().ToArray());
+					DBLoader[Settings.curTheme][i] = val;
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			result = false;
+			if (DBLoader[Settings.curTheme] == null)
+			{
+				DBLoader[Settings.curTheme] = (Texture2D[])(object)new Texture2D[1];
+			}
+			for (int j = 0; j != DBLoader[Settings.curTheme].Count(); j++)
+			{
+				DBLoader[Settings.curTheme][j] = null;
+			}
+			LogError("Cannot load custom loader for current theme : " + ex.Message);
+		}
+		return result;
+	}
+
+	private static Texture2D[] getDefaultLoader()
+	{
+		if ((Object)(object)Loader.tex[0] == (Object)null)
+		{
+			Loader.initTextures();
+		}
+		return Loader.tex;
+	}
+
+	public static string getMenuAlignment()
+	{
+		if (Settings.menuAlignment == 3)
+		{
+			return getText("menualignment");
+		}
+		if (Settings.menuAlignment == 0)
+		{
+			return "left";
+		}
+		if (Settings.menuAlignment == 1)
+		{
+			return "middle";
+		}
+		return "right";
+	}
+
+	public static bool dialogStacking()
+	{
+		if (Settings.dialogStacking == 1)
+		{
+			string text = getText("dialogstacking");
+			if (text == null)
+			{
+				return true;
+			}
+			if (text == "true")
+			{
+				return true;
+			}
+			return false;
+		}
+		if (Settings.dialogStacking == 2)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	public static bool windowsShadow()
+	{
+		if (Settings.windowsShadowMode == 3)
+		{
+			string text = getText("windowsshadow");
+			if (text == null)
+			{
+				return true;
+			}
+			if (text == "true")
+			{
+				return true;
+			}
+			return false;
+		}
+		if (Settings.windowsShadowMode == 2)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public static ScaleMode applicableScaleMode()
+	{
+		//IL_000e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0022: Unknown result type (might be due to invalid IL or missing references)
+		//IL_001e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0025: Unknown result type (might be due to invalid IL or missing references)
+		if (Settings.bgTextureScaleMode == 1)
+		{
+			return (ScaleMode)0;
+		}
+		if (Settings.bgTextureScaleMode == 2)
+		{
+			return (ScaleMode)2;
+		}
+		return (ScaleMode)1;
+	}
+
+	public static bool expansionsIcons()
+	{
+		if (Settings.expansionsIconsMode == 3)
+		{
+			string text = getText("expansionsicons");
+			if (text == null)
+			{
+				return true;
+			}
+			if (text == "true")
+			{
+				return true;
+			}
+			return false;
+		}
+		if (Settings.expansionsIconsMode == 2)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public static bool translationsInfos()
+	{
+		if (Settings.translationCreditsIconsMode == 3)
+		{
+			string text = getText("translationsinfos");
+			if (text == null)
+			{
+				return true;
+			}
+			if (text == "true")
+			{
+				return true;
+			}
+			return false;
+		}
+		if (Settings.translationCreditsIconsMode == 2)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public static WindowAnim getWindowAnimation()
+	{
+		string curTheme = Settings.curTheme;
+		WindowAnim windowAnimation = (WindowAnim)Settings.windowAnimation;
+		if (windowAnimation == WindowAnim.Theme)
+		{
+			if (DBWindowAnim.ContainsKey(curTheme))
+			{
+				return DBWindowAnim[curTheme];
+			}
+			return WindowAnim.None;
+		}
+		return (WindowAnim)Settings.windowAnimation;
+	}
+
+	public static bool getButtonNoBG()
+	{
+		return Settings.disableButtonBG || getText("buttonnobg") == "true" || Utils.tempDisableButtonsBackground;
+	}
+
+	public static void LogMsg(string msg, bool forceShow = false)
+	{
+		if (Settings.verboseMode || forceShow)
+		{
+			Log.Message("[RimThemes] " + msg);
+		}
+	}
+
+	public static void LogError(string msg)
+	{
+		Log.Message("[RimThemesError] " + msg);
+	}
+
+	public static void drawParticle(Rect rect)
+	{
+		//IL_0068: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0098: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00e6: Unknown result type (might be due to invalid IL or missing references)
+		if (Settings.disableParticle)
+		{
+			return;
+		}
+		Texture2D themeParticle = getThemeParticle();
+		if (!((Object)(object)themeParticle == (Object)null) && !(((Rect)(ref rect)).width < 80f))
+		{
+			string text = getText("particlemode");
+			bool flag = text == "mono";
+			GUI.BeginGroup(rect);
+			Rect val = default(Rect);
+			((Rect)(ref val))..ctor(9f, ((Rect)(ref rect)).height / 2f - 8f, 16f, 16f);
+			Widgets.DrawTextureFitted(val, (Texture)(object)themeParticle, 1f, 1f);
+			if (!flag)
+			{
+				((Rect)(ref val))..ctor(((Rect)(ref rect)).width - 25f, ((Rect)(ref rect)).height / 2f - 8f, 16f, 16f);
+				Widgets.DrawTextureFitted(val, (Texture)(object)themeParticle, 1f, 1f);
+			}
+			GUI.EndGroup();
+		}
+	}
+
+	public static string[] getClassNameAndFileName(string rscName)
+	{
+		string[] result = null;
+		int num = rscName.LastIndexOf('.');
+		if (num + 1 < rscName.Length)
+		{
+			result = new string[2]
+			{
+				rscName.Substring(0, num),
+				rscName.Substring(num + 1)
+			};
+		}
+		return result;
+	}
+
+	public static void setNewRandomBg(bool force = false)
+	{
+		if (!force && Settings.keepCurrentBg)
+		{
+			return;
+		}
+		string text = null;
+		if (DBAvailableThemes.Count() <= 0)
+		{
+			Settings.curRandomBg = VanillaThemeID;
+			return;
+		}
+		List<string> list = DBAvailableThemes.ToList();
+		do
+		{
+			text = GenCollection.RandomElement<string>((IEnumerable<string>)list);
+			list.Remove(text);
+		}
+		while (list.Count() > 0 && text == Settings.curRandomBg);
+		Settings.curRandomBg = text;
+	}
+
+	public static void setNewRandomBgMain()
+	{
+		stopCurrentAnimatedBackground();
+		LoaderGM.stopCurrentAnimatedbackgroundLoader();
+		setNewRandomBg();
+	}
+
+	public static string getCustomBackgroundApplyableTheme()
+	{
+		if (Settings.disableRandomBg || !LoaderGM.themeTexAlreadyLoaded || LoaderGM.curStep <= LoaderSteps.FinishUp)
+		{
+			return Settings.curTheme;
+		}
+		if (!DBAvailableThemes.Contains(Settings.curRandomBg))
+		{
+			setNewRandomBg(force: true);
+		}
+		return Settings.curRandomBg;
+	}
+
+	public static void stopCurrentAnimatedBackground()
+	{
+		if ((Object)(object)Utils.CurrentMainAnimatedBg != (Object)null)
+		{
+			Utils.CurrentMainAnimatedBg.Stop();
+			Utils.CurrentMainAnimatedBgPlaying = false;
+			Utils.CurrentMainAnimatedBgSourceSet = false;
+		}
+	}
+}
+You are not using the latest version of the tool, please update.
+Latest version is '11.0.0.9375' (yours is '8.2.0.7535-95108c96')

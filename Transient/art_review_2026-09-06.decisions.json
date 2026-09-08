@@ -1,0 +1,45 @@
+{
+  "criterion": "Pre-filled by validator PASS/FAIL + whether the redesign visibly answers your stated complaint.",
+  "decidedCount": 6,
+  "decisions": {
+    "AA_Atispec": {
+      "at": "2026-09-06T15:10:04.786Z",
+      "decision": "revise",
+      "note": "That is so strange I almost love it. A rainbow lobster thing... well at least it's creative.",
+      "prefill": ""
+    },
+    "AA_Behemoth": {
+      "at": "2026-09-06T15:09:19.052Z",
+      "decision": "approve",
+      "note": "Might be interesting for the nightside beasts. ",
+      "prefill": "approve"
+    },
+    "Capybara": {
+      "decision": "revise",
+      "note": "",
+      "prefill": "revise"
+    },
+    "Enhydriodon": {
+      "at": "2026-09-06T15:08:27.996Z",
+      "decision": "reject",
+      "note": "This is just some kind of lava beast, boring. Don't need.",
+      "prefill": "approve"
+    },
+    "Gorilla": {
+      "at": "2026-09-06T15:08:47.060Z",
+      "decision": "reject",
+      "note": "Again, these \"make a terrestrial shape made out of glowing plates\" isn't a good solution.",
+      "prefill": "approve"
+    },
+    "Revenant": {
+      "at": "2026-09-06T15:10:29.189Z",
+      "decision": "reject",
+      "note": "Do we really NEED this?",
+      "prefill": ""
+    }
+  },
+  "posture": "review",
+  "savedAt": "2026-09-06T08:10:29-0700",
+  "savedBy": "review-sheet-sidecar",
+  "writeCount": 16
+}

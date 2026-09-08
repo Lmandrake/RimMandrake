@@ -1,0 +1,1 @@
+/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh --dangerously-skip-permissions --model sonnet --resume "AGENT FOUNDRY ▶ WILD_ANIMALS_PADDED_LISTS_1"
