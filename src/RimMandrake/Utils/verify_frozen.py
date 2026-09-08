@@ -39,8 +39,25 @@ def check(marker: str, restamp: bool = False) -> bool:
         print(f"🔴 MISSING  {d.get('artifact')} — the marker guards a file that is not there")
         return False
     now = measure(art)
-    bad = [k for k in ('sha256', 'rows', 'bytes') if k in d and d[k] != now.get(k)]
     name = d.get('artifact') or os.path.basename(art)
+    # 🔴 An ABSENT stamp is not a passing stamp. Measured 2026-09-07: a rewritten
+    # marker carrying no sha256/rows/bytes at all reported ✅ CURRENT, because the
+    # old comprehension skipped every key with `if k in d`. That is the guard
+    # failing OPEN — the precise failure this file was written to prevent, and it
+    # had already happened once before under a different cause. A marker with none
+    # of the three keys is UNSTAMPED and must be restamped before it guards anything.
+    present = [k for k in ('sha256', 'rows', 'bytes') if k in d]
+    if not present:
+        if restamp:
+            d.update({k: now[k] for k in ('sha256', 'rows', 'bytes') if k in now})
+            json.dump(d, open(marker, 'w', encoding='utf-8'), indent=2, ensure_ascii=False)
+            print(f"♻️  STAMPED  {name} — sha256, rows, bytes (marker carried none)")
+            return True
+        print(f"🔴 UNSTAMPED {name} — the marker records no sha256/rows/bytes, so it"
+              f" cannot detect its own staleness and guards nothing."
+              f"\n   Fix: verify_frozen.py --restamp {d.get('artifact')}")
+        return False
+    bad = [k for k in present if d[k] != now.get(k)]
     if not bad:
         print(f"✅ CURRENT  {name}  sha {now['sha256'][:12]} · {now.get('rows','-')} rows")
         return True
@@ -85,11 +102,21 @@ def warn_if_stale(artifact_path: str) -> bool:
     try:
         d = json.load(open(marker, encoding='utf-8'))
         now = measure(artifact_path)
-        bad = [k for k in ('sha256', 'rows', 'bytes') if k in d and d[k] != now.get(k)]
+        present = [k for k in ('sha256', 'rows', 'bytes') if k in d]
+        # Same failing-open bug as check(): an absent stamp is not a passing stamp.
+        bad = present and [k for k in present if d[k] != now.get(k)] or []
+        unstamped = not present
     except Exception as e:  # fail open — a reader must never crash on this check
         print(f"⚠️  could not verify freeze stamp for {artifact_path}: {e}", file=sys.stderr)
         _WARNED[key] = True
         return True
+    if unstamped:
+        print(f"⚠️  UNSTAMPED FREEZE MARKER on {os.path.basename(artifact_path)} — it records no"
+              f" sha256/rows/bytes and cannot detect its own staleness.\n"
+              f"   python3 src/RimMandrake/Utils/verify_frozen.py --restamp"
+              f" {os.path.relpath(artifact_path, ROOT)}", file=sys.stderr)
+        _WARNED[key] = False
+        return False
     if bad:
         print(f"⚠️  STALE FREEZE STAMP on {os.path.basename(artifact_path)} — "
               + ", ".join(bad) + f". You are reading data the stamp does not describe.\n"

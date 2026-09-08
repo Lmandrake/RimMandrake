@@ -1,6 +1,43 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""ashkarr_paint.py - THE ONE MAP. Hand-authored, once, for Ash'karr.
+"""ashkarr_paint.py - ONE STEP in building Ash'karr. NOT the author of it.
+
+⛔⛔ DEPRECATED AS AN AUTHORITY - owner's ruling, 2026-09-07. READ THIS FIRST. ⛔⛔
+
+THIS SCRIPT IS NOT THE AUTHOR OF THE PLANET AND ITS OUTPUT IS NOT THE WORLD.
+It is one step in a long, multi-part worldgen process, most of which happened
+OUTSIDE any script: bridge edits, debug-menu edits, and the owner's own decisions
+made while looking at the globe. Nothing here can reproduce those.
+
+🔑 THE WORLD IS THE SAVEGAME. The canonical CSVs
+(`world/ASHKARR_WORLDMAP_tiles.csv`, `..._links.csv`) are now EXPORTED FROM IT by
+`ashkarr_rebase_from_save.py` - they are a RECORD of the planet, never a rival to
+it. If you want to change the world, change the world and re-export.
+
+WHY THIS RULING EXISTS. This script's output was treated as the authoring source
+for two weeks and imported into the game repeatedly. The two lineages had silently
+diverged. Measured 2026-09-07 against `WORLDMAP_V1_original_e.rws`, the last state
+the owner inspected and approved:
+
+    biome      differed on 5,411 tiles
+    hilliness  differed on 7,275 tiles  <- a THIRD of the planet, both directions
+    elevation  differed on   787 tiles
+    roads      the links CSV shared only 77 of the save's 1,399 road edges
+
+The 2026-09-07 redo imported this lineage wholesale and flattened the planet
+(`Impassable` 355 -> 56, `Mountainous` 2,428 -> 1,495) - a change nobody asked for
+- then validated live against the same CSV and reported "0 mismatches".
+⛔ THAT PROVED NOTHING. A 100% match against the artifact you just imported only
+shows the import worked, never that it was WANTED.
+
+Full account: `world/DEPRECATED_painted_lineage/README.md`.
+
+⚠️ Everything below this banner is preserved as the record of what this step did
+and why. It remains true about the SCRIPT. It is no longer true about the PLANET.
+
+---
+
+Original header follows.
 
 🔴 THIS IS NOT A GENERATOR. Owner, 2026-08-18: *"We aren't trying to make random
 generators that produce alternative planet maps... I just want ONE planetary map that
