@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T23:39:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T23:43:21Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1173,6 +1173,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SPRINT_SRC_WRITE_FREEZE_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  BENCH is executing MODCONSOLIDATIONSPRINT1 (owner's word, 2026-09-08):
 prose:    infrastructure/state/items/SPRINT_SRC_WRITE_FREEZE_1.md
+
+## CHRONICLE_NINEFOLD_DECOUPLE_1 Decouple Aftermath from Ninefold per CHRONICLE_EVENT_SPINE.md: subscription API, drop hard modDependency+csproj ref, godTie God enum to string (C#, model=opus)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CHRONICLE_NINEFOLD_DECOUPLE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
