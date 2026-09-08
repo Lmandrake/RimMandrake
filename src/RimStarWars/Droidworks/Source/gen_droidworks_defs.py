@@ -212,6 +212,26 @@ APPAREL_MONEY = {
     "probe":     (250, 600),
 }
 
+# DROIDWORKS_APPARELMONEY_MISSING_1 (2026-09-08, second pass): live-verify
+# found KM1HMD (chassis bucket "astromech-labour" -> family "labour") at only
+# ~20% dressed (1/5, re-batched 3/15) against every other tested kind's
+# 80-100%. Root cause is NOT vanilla roll variance — it's the one real
+# outlier inside "labour": KM1HMD's own apparelTags (KotORDroidArmorT3_*)
+# resolve ONLY to KotOR Class III/"heavy" armor (RSW_DW_Module_DroidArmorHvy
+# family, MarketValue 1250/1750/6750 — confirmed via
+# Absorbed_KotorDroidModules_Armor.xml), while "labour"'s other two tagged
+# kinds (GE3LD -> $300 T1 item, KM1MD -> $500/$750 T2 items) are genuinely
+# cheap and the shared (500, 1400) budget is fine for them. Only the top
+# ~17% of that range (1250-1400) can ever afford KM1HMD's cheapest match at
+# all — that IS the measured ~20% hit rate, not noise. Fix: override just
+# these two kinds to the "heavy" tier's own (900, 2200), which already
+# affords the same $1250 floor at ADMkI's measured ~80% (heavy family, same
+# floor) instead of raising "labour" for GE3LD/KM1MD, who don't need it.
+APPAREL_MONEY_KIND_OVERRIDE = {
+    "KotORDroidGood_KM1HMD": APPAREL_MONEY["heavy"],
+    "KotORDroidBad_KM1HMD": APPAREL_MONEY["heavy"],
+}
+
 
 def family_for(orig, bucket):
     if bucket == "astromech-labour":
@@ -1156,7 +1176,12 @@ def main():
         # ever applies to a kind that actually carries its own apparelTags;
         # everything else is pinned to (0, 0) so "bare skin where intended"
         # (this item's own criteria) is a guarantee, not a probability.
-        apparel_money = APPAREL_MONEY[chassis_fam] if apparel else (0, 0)
+        if not apparel:
+            apparel_money = (0, 0)
+        elif orig in APPAREL_MONEY_KIND_OVERRIDE:
+            apparel_money = APPAREL_MONEY_KIND_OVERRIDE[orig]
+        else:
+            apparel_money = APPAREL_MONEY[chassis_fam]
 
         kind_defnames.append(dn)
         kd = {
