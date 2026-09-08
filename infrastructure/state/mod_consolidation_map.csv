@@ -1,0 +1,100 @@
+action,source,destination,tier,new_packageId,fate,confidence,note
+stay,RimMandrake/Aftermath,,RimMandrake,,,HIGH,mechanic engine; AftermathRites is its RUT content cell — pattern already correct
+stay,RimMandrake/FluidCanals,,RimMandrake,,,HIGH,mechanic; species/biome-agnostic
+stay,RimMandrake/Graffiti,,RimMandrake,,,HIGH,mechanic engine; absorbs SacredGraffiti's worker C# (see split rows)
+stay,RimMandrake/Inhabited,,RimMandrake,,,HIGH,ruling 8: keeps its name; AshkarrInhabited stays the campaign layer
+stay,RimMandrake/Ninefold,,RimMandrake,,,HIGH,ruling 9: RM engine; 0 defs today so nothing extracts — RUT Salvation is a NEW pack
+stay,RimMandrake/Oracle,,RimMandrake,,,HIGH,mechanic; claude -p transport rewrite is its own item
+stay,RimMandrake/Pits,,RimMandrake,,,HIGH,the naming exemplar; mechanic
+stay,RimMandrake/Property,,RimMandrake,,,HIGH,crime fabric engine; proposed absorber of SalvageClaim+TheftHauler (decision 1)
+merge-into,RimMandrake/SalvageClaim,RimMandrake/Property,RimMandrake,mandrake.rm.property,,MEDIUM,0 defs C# verb depending on Property; one crime system in pieces — decision 1
+merge-into,RimMandrake/TheftHauler,RimMandrake/Property,RimMandrake,mandrake.rm.property,,VERIFY,1 JobDef + C# heist verb on Property; About also names rsw.droidworks — check if hard dep (tier inversion)
+stay,RimMandrake/RaidRedesigner,,RimMandrake,,,HIGH,distinct concern (persistent NPC roster) despite Property dep; mechanics stay
+stay,RimMandrake/StructureInjections,,RimMandrake,,,HIGH,ruling 1 exemplar engine of the structures domain
+stay,RimMandrake/Visibility,,RimMandrake,,,HIGH,About declares no rut.doctrine modDependency (census deps col overstates — loadAfter only); keep separate
+stay,RimMandrake/WreckedMachines,,RimMandrake,,,MEDIUM,Kolyska/Rekko hits are comments/register only — the naming plan's expected RUT extraction is EMPTY today
+stay,RimMandrake/StrandedQuest,,RimMandrake,,,VERIFY,naming plan Phase-1 VERIFY never resolved: read its quest text; campaign flavor would re-tier it RUT
+stay,RimMandrake/MandrakePatches,,RimMandrake,,,HIGH,RM patches cell; destination for 6 RM fix folds + 8 RM Jawa_Patches files
+stay,RimMandrake/RustChrome,,RimMandrake,,,HIGH,art cell RM; whole-game UI skin stands alone
+stay,RimMandrake/LoadTracer,,RimMandrake,,,HIGH,dev-only diagnostic mod; never ships
+stay,RimMandrake/PlanetPresetPrime,,RimMandrake,,,HIGH,dev-only ergonomics mod
+stay,RimMandrake/RimDefDump,,RimMandrake,,,HIGH,dev-only dump tooling mod
+split,RimMandrake/SacredGraffiti/Source/SacredGraffiti.cs,RimMandrake/Graffiti,RimMandrake,mandrake.rm.graffiti,,HIGH,RitualOutcomeEffectWorker_PlaceSacredMark is the reusable mechanism — engine side
+split,RimMandrake/SacredGraffiti/Defs/SacredMarks.xml,RimUtinni/Salvation,RimUtinni,mandrake.rut.salvation,,HIGH,nine Salvation-god wall-marks; Graffiti About already anticipates a rut marks id
+split,RimMandrake/SacredGraffiti/Defs/RitualOutcomeEffects.xml,RimUtinni/Salvation,RimUtinni,mandrake.rut.salvation,,HIGH,mark-placement RitualOutcomeEffectDef; unreferenced until Matrix build — moves with the marks
+merge-into,RimMandrake/DesertVehicleReskin,RimMandrake/MandrakePatches,RimMandrake,mandrake.rm.patches,folds-into-patches,MEDIUM,donor sarg.alphavehiclesneolithic stays; 30-texture full reskin — owner may prefer stays
+merge-into,RimMandrake/GravshipAstronautFix,RimMandrake/MandrakePatches,RimMandrake,mandrake.rm.patches,folds-into-patches,HIGH,donor vanillaexpanded.gravship stays; 3 textures
+merge-into,RimMandrake/PhytokinBarkHeadFix,RimMandrake/MandrakePatches,RimMandrake,mandrake.rm.patches,folds-into-patches,HIGH,donor vanillaracesexpanded.phytokin stays; 1 texture
+merge-into,RimMandrake/ResearchKitEastFix,RimMandrake/MandrakePatches,RimMandrake,mandrake.rm.patches,folds-into-patches,HIGH,donor PeteTimesSix.ResearchReinvented stays; 4 textures
+merge-into,RimMandrake/SauridFrillFix,RimMandrake/MandrakePatches,RimMandrake,mandrake.rm.patches,folds-into-patches,HIGH,donor vanillaracesexpanded.saurid stays; 1 texture
+merge-into,RimMandrake/ToolBeltFix,RimMandrake/MandrakePatches,RimMandrake,mandrake.rm.patches,folds-into-patches,HIGH,donor VanillaExpanded.VAEAccessories stays; 1 texture
+exempt,RimMandrake/Utils,,,,,HIGH,tooling; no About.xml; naming scheme §1 exemption
+exempt,RimMandrake/bridgetools,,,,,HIGH,tooling; no About.xml
+exempt,RimMandrake/mapsynth,,,,,HIGH,tooling; no About.xml
+exempt,RimMandrake/rimflow,,,,,HIGH,tooling; no About.xml
+stay,RimStarWars/Armoury,,RimStarWars,,,HIGH,weapons cell RSW; absorbs IonWeapons; all 13 Patches triaged SW-generic (doctrine word = damage math not theology)
+extract,RimStarWars/Armoury/Defs/ThingDefs/Absorbed_SovSith_Genes.xml,RimStarWars/StarWarsRaces,RimStarWars,mandrake.rsw.starwarsraces,,MEDIUM,genes are races-domain content sitting in the weapons mod
+extract,RimStarWars/Armoury/Defs/ThingDefs/Absorbed_SovSith_HeadTypes.xml,RimStarWars/StarWarsRaces,RimStarWars,mandrake.rsw.starwarsraces,,MEDIUM,headtypes are races-domain content sitting in the weapons mod
+extract,RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_RulePacks_DroidNameMakers.xml,RimStarWars/Droidworks,RimStarWars,mandrake.rsw.droidworks,,VERIFY,droid namer rulepacks belong to droids domain; check which kinds reference them first
+merge-into,RimStarWars/JawaIonWeapons,RimStarWars/Armoury,RimStarWars,mandrake.rsw.armoury,,HIGH,6 defs + C# into weapons cell; ResearchRetag MayRequires BOTH ids — rewrite required
+stay,RimStarWars/SWBestiary,,RimStarWars,,,HIGH,fauna cell RSW destination; already the absorbed-creature home; Mlie absorption lands here too
+merge-into,RimStarWars/SeaBeasts,RimStarWars/SWBestiary,RimStarWars,mandrake.rsw.swbestiary,,HIGH,36 defs 18 sea creatures; pure fauna content; Odyssey dep moves to merged About
+merge-into,RimStarWars/Livestock,RimStarWars/SWBestiary,RimStarWars,mandrake.rsw.swbestiary,,HIGH,Cindermare/Skarnix predators; fauna content (has small C# — assembly folds)
+merge-into,RimStarWars/HelixTellurox,RimStarWars/SWBestiary,RimStarWars,mandrake.rsw.swbestiary,,HIGH,3 defs livestock creature; fauna content
+merge-into,RimStarWars/JawaIkee,RimStarWars/SWBestiary,RimStarWars,mandrake.rsw.swbestiary,,MEDIUM,1 ThoughtDef + C#; deps starwarsraces + sarg.alphaanimals move to merged About
+merge-into,RimStarWars/BeastNorm,RimStarWars/SWBestiary,RimStarWars,mandrake.rsw.swbestiary,,MEDIUM,patches mlie donor's 105 beasts; retargets/bakes into our defs when MLIE_FAUNA_ABSORPTION_1 lands
+retire,RimStarWars/SeasWaterline,,RimStarWars,,,VERIFY,0 defs; a program-lane planning mod with 3 donor deps; fold its prep into the fauna manifest
+stay,RimStarWars/Cuisine,,RimStarWars,,,HIGH,food cell RSW; only food mod
+stay,RimStarWars/Droidworks,,RimStarWars,,,HIGH,droids cell RSW; campaign layer already externalized by design (no defaultFactionDef — comments prove the boundary)
+stay,RimStarWars/FireEcology,,RimStarWars,,,VERIFY,census itself calls the engine generic — RM promotion candidate (decision 5)
+stay,RimStarWars/JawaRules,,RimStarWars,,,HIGH,species-rule mechanic per naming plan §7.3 evidence ruling
+stay,RimStarWars/JawaVoice,,RimStarWars,,,VERIFY,per-file triage (11 files below) found NO god/ship/campaign refs — naming plan's 6-file claim does not reproduce; whole mod stays RSW
+stay,RimStarWars/StarWarsRaces,,RimStarWars,,,HIGH,races cell RSW; gains SovSith genes/headtypes from Armoury
+merge-into,RimStarWars/BeastLairs,RimStarWars/StructureInjectionsSW,RimStarWars,mandrake.rsw.injections,,HIGH,1 scenery ThingDef; structures cell RSW
+stay,RimStarWars/StructureInjectionsSW,,RimStarWars,,,HIGH,structures cell RSW (ruling 1 exemplar)
+stay,RimStarWars/WeatherSuite,,RimStarWars,,,VERIFY,census calls the tidally-locked engine generic — RM promotion candidate (decision 5)
+stay,RimStarWars/StarWarsPatches,,RimStarWars,,,HIGH,RSW patches cell; destination for 2 fix folds + 28 RSW Jawa_Patches files
+merge-into,RimStarWars/BlastDoorFrameAsyncFix,RimStarWars/StarWarsPatches,RimStarWars,mandrake.rsw.patches,folds-into-patches,MEDIUM,donor Lumi.doorsexpanded (SW ed.) active with no retirement item; 6 textures
+merge-into,RimStarWars/CereanManeFix,RimStarWars/StarWarsPatches,RimStarWars,mandrake.rsw.patches,folds-into-patches,MEDIUM,donor OuterRim GalacticDiversity NOT on sunset list; would die later if it retires
+stay,RimStarWars/KotORBandolierNorthFix,,RimStarWars,,dies-with-donor,HIGH,donor guy762.mm.kotorcore; retirement owned by WEAPONS_DONOR_RETIREMENT_1 + ARMOURY_SWMODS_DONOR_GAP_1
+stay,RimStarWars/MSEDroidFix,,RimStarWars,,dies-with-donor,HIGH,donor neronix17.outerrim.droiddepot; STARWARS_DONOR_SUNSET_1 wave 3 / DROID_SYSTEM_BUILD_1
+stay,RimUtinni/AftermathRites,,RimUtinni,,,HIGH,RUT content cell of Aftermath engine; pattern already correct
+stay,RimUtinni/Antiquities,,RimUtinni,,,HIGH,mechanic (urn research system); Rites' dep survives its move to Salvation
+stay,RimUtinni/AshkarrFlora,,RimUtinni,,,HIGH,plants cell RUT; grows as owned tree art lands
+stay,RimUtinni/AshkarrInhabited,,RimUtinni,,,HIGH,ruling 8: keeps its name; Inhabited campaign layer
+stay,RimUtinni/AshkarrLandmarkArt,,RimUtinni,,,MEDIUM,world-art cell RUT; stays separate from the UI-shell merge (decision 6); Salvation's MayRequire on it needs rewrite check
+stay,RimUtinni/AshkarrWeatherSuite,,RimUtinni,,,HIGH,RUT wiring cell of WeatherSuite engine
+stay,RimUtinni/Doctrine,,RimUtinni,,,HIGH,campaign doctrine layer; distinct from Ninefold/Property/Visibility — cluster stays separate (decision 2)
+stay,RimUtinni/EmpirePursuit,,RimUtinni,,,HIGH,mechanic fork; ship Utinni per naming plan
+merge-into,RimUtinni/FactionSlate,RimUtinni/UtinniPatches,RimUtinni,mandrake.rut.patches,,VERIFY,0 defs no C# yet restricts a UI page — read its mechanism before moving anything
+merge-into,RimUtinni/IshkoDarkLandmarks,RimUtinni/Salvation,RimUtinni,mandrake.rut.salvation,,MEDIUM,3 LandmarkDefs for the god Ishko = Salvation-pantheon content; stays if owner declines decision 4
+merge-into,RimUtinni/Rites,RimUtinni/Salvation,RimUtinni,mandrake.rut.salvation,,MEDIUM,liturgy research tree = faith content; Salvation gains dep on Antiquities (decision 4)
+stay,RimUtinni/LanternDeeps,,RimUtinni,,,HIGH,mechanic (persistent cave layer)
+stay,RimUtinni/LongHunger,,RimUtinni,,,HIGH,fauna cell RUT; creature + mythos; Anomaly dep
+merge-into,RimUtinni/UtinniShell,RimUtinni/MenuShell,RimUtinni,mandrake.rut.menushell,,MEDIUM,both are campaign UI shell; 1 def + RimThemes dep move; merged mod = the RUT UI cell
+stay,RimUtinni/MenuShell,,RimUtinni,,,HIGH,RUT UI cell destination
+stay,RimUtinni/PawnFlavor,,RimUtinni,,,HIGH,faction-content cell RUT (90 backstory/trait defs)
+stay,RimUtinni/PlantGrowth,,RimUtinni,,,HIGH,mechanic (Harmony growth multiplier); naming plan VERIFY resolved by C# nature — stays
+stay,RimUtinni/PyrelandsFireEcology,,RimUtinni,,,HIGH,RUT wiring cell of FireEcology engine
+stay,RimUtinni/ResearchRetag,,RimUtinni,,,HIGH,mechanic off frozen manifest; MayRequire rewrite needed when IonWeapons merges into Armoury
+stay,RimUtinni/RestrainingBolts,,RimUtinni,,,HIGH,mechanic (goodwill cap)
+stay,RimUtinni/RiverSteam,,RimUtinni,,,MEDIUM,C# fleck effect — mechanic not art; too alive to fold into an art pack
+stay,RimUtinni/ShipMemory,,RimUtinni,,,HIGH,mechanic (Anomaly route unlock); distinct from Antiquities
+merge-into,RimUtinni/DesertFixtures,RimUtinni/StructureInjectionsRUT,RimUtinni,mandrake.rut.injections,,HIGH,1 buildable ThingDef; SIRUT already depends on it — merge removes a MayRequire
+merge-into,RimUtinni/VaultDungeons,RimUtinni/StructureInjectionsRUT,RimUtinni,mandrake.rut.injections,,MEDIUM,46 KCSG layout defs = structures-domain content; VFE Core dep moves to merged About
+stay,RimUtinni/StructureInjectionsRUT,,RimUtinni,,,HIGH,structures cell RUT (ruling 1 exemplar)
+stay,RimUtinni/UtinniPatches,,RimUtinni,,,HIGH,RUT patches cell; destination for 57 RUT Jawa_Patches files + FactionSlate
+retire,RimUtinni/BirthHatchDemo,,RimUtinni,,,VERIFY,census files it tooling: bridge-driven demo not campaign content; confirm nothing references its 1 ThingDef
+retire,SPLIT_Phase3/Jawa_Patches,,,,,HIGH,tombstone only — 3-way split ALREADY EXECUTED (2385af29 2026-09-04; 0 XML left); remove folder + resolve naming_rename_map SPLIT row
+extract,RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaFactionRoster.xml,RimUtinni/UtinniPatches,RimUtinni,,,VERIFY,already in UtinniPatches; Jawa_Droid_* kinds still mix RSW droid mechanics with FDE faction — Droidworks-boundary call stands
+stay,RimStarWars/JawaVoice/Patches/JawaVoice_animals.xml,,RimStarWars,,,HIGH,generic Jawaese lines; no campaign markers
+stay,RimStarWars/JawaVoice/Patches/JawaVoice_chitchat_jokes.xml,,RimStarWars,,,HIGH,generic; Thrumb-bros is Jawaese slang not a god
+stay,RimStarWars/JawaVoice/Patches/JawaVoice_chitchat_thoughts.xml,,RimStarWars,,,HIGH,generic Jawaese lines
+stay,RimStarWars/JawaVoice/Patches/JawaVoice_chitchat_weather.xml,,RimStarWars,,,HIGH,generic Jawaese lines
+stay,RimStarWars/JawaVoice/Patches/JawaVoice_CoreInteractions.xml,,RimStarWars,,,MEDIUM,Utinni!/Thrumb lines are canon Jawaese; no god/ship/clan names found by skim
+stay,RimStarWars/JawaVoice/Patches/JawaVoice_deeptalk.xml,,RimStarWars,,,MEDIUM,no god/ship/campaign vocabulary found by skim
+stay,RimStarWars/JawaVoice/Patches/JawaVoice_Ideology.xml,,RimStarWars,,,VERIFY,likeliest RUT-extraction candidate (ideoligion interactions) yet NO Ishko/Nine/ship refs greppable — read lines fully in sprint
+stay,RimStarWars/JawaVoice/Patches/JawaVoice_Insults.xml,,RimStarWars,,,MEDIUM,Utinni hits are the canon exclamation not the campaign name
+stay,RimStarWars/JawaVoice/Patches/JawaVoice_Interactions.xml,,RimStarWars,,,MEDIUM,same — canon Jawaese only
+stay,RimStarWars/JawaVoice/Patches/JawaVoice_prisoners.xml,,RimStarWars,,,HIGH,generic Jawaese lines
+stay,RimStarWars/JawaVoice/Patches/JawaVoice_romance.xml,,RimStarWars,,,HIGH,generic Jawaese lines
