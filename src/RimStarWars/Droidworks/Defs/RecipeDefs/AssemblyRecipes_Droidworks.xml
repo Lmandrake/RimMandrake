@@ -136,6 +136,7 @@
         <li>RSW_DW_Part_PowerCell</li>
       </thingDefs>
     </fixedIngredientFilter>
+    <researchPrerequisite>RSW_DW_Research_Reassembly</researchPrerequisite>
     <skillRequirements>
       <Crafting>6</Crafting>
     </skillRequirements>
@@ -188,6 +189,7 @@
         <li>RSW_DW_Part_Frame_Primitive</li>
       </thingDefs>
     </fixedIngredientFilter>
+    <researchPrerequisite>RSW_DW_Research_Reassembly</researchPrerequisite>
     <skillRequirements>
       <Crafting>6</Crafting>
     </skillRequirements>
@@ -208,6 +210,7 @@
     <workAmount>300</workAmount>
     <targetsBodyPart>false</targetsBodyPart>
     <anesthetize>false</anesthetize>
+    <researchPrerequisite>RSW_DW_Research_ShopRepair</researchPrerequisite>
     <skillRequirements>
       <Crafting>4</Crafting>
     </skillRequirements>

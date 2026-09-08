@@ -70,6 +70,7 @@
       <skillRequirements>
         <Crafting>2</Crafting>
       </skillRequirements>
+      <researchPrerequisite>RSW_DW_Research_PrimitiveFabrication</researchPrerequisite>
     </recipeMaker>
     <costList>
       <Steel>10</Steel>
@@ -116,6 +117,7 @@
       <skillRequirements>
         <Crafting>2</Crafting>
       </skillRequirements>
+      <researchPrerequisite>RSW_DW_Research_PrimitiveFabrication</researchPrerequisite>
     </recipeMaker>
     <costList>
       <Steel>8</Steel>
@@ -162,6 +164,7 @@
       <skillRequirements>
         <Crafting>2</Crafting>
       </skillRequirements>
+      <researchPrerequisite>RSW_DW_Research_PrimitiveFabrication</researchPrerequisite>
     </recipeMaker>
     <costList>
       <Steel>6</Steel>

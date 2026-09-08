@@ -29,6 +29,7 @@
     <workAmount>600</workAmount>
     <targetsBodyPart>false</targetsBodyPart>
     <anesthetize>false</anesthetize>
+    <researchPrerequisite>RSW_DW_Research_Reboot</researchPrerequisite>
     <skillRequirements>
       <Crafting>4</Crafting>
     </skillRequirements>
@@ -58,6 +59,7 @@
     <anesthetize>false</anesthetize>
     <surgerySuccessChanceFactor>99999</surgerySuccessChanceFactor>
     <addsHediff>RSW_DW_RestrainingBolt</addsHediff>
+    <researchPrerequisite>RSW_DW_Research_Bolting</researchPrerequisite>
     <ingredients>
       <li>
         <filter>
@@ -99,6 +101,7 @@
     <isViolation>false</isViolation>
     <anesthetize>false</anesthetize>
     <removesHediff>RSW_DW_RestrainingBolt</removesHediff>
+    <researchPrerequisite>RSW_DW_Research_Bolting</researchPrerequisite>
     <skillRequirements>
       <Crafting>3</Crafting>
     </skillRequirements>
@@ -137,6 +140,7 @@
     <isViolation>true</isViolation>
     <anesthetize>false</anesthetize>
     <surgerySuccessChanceFactor>99999</surgerySuccessChanceFactor>
+    <researchPrerequisite>RSW_DW_Research_Bolting</researchPrerequisite>
     <skillRequirements>
       <Crafting>5</Crafting>
     </skillRequirements>
@@ -171,6 +175,7 @@
     <isViolation>false</isViolation>
     <anesthetize>false</anesthetize>
     <surgerySuccessChanceFactor>99999</surgerySuccessChanceFactor>
+    <researchPrerequisite>RSW_DW_Research_Formatting</researchPrerequisite>
     <skillRequirements>
       <Crafting>6</Crafting>
     </skillRequirements>
@@ -187,6 +192,7 @@
     <isViolation>true</isViolation>
     <anesthetize>false</anesthetize>
     <surgerySuccessChanceFactor>99999</surgerySuccessChanceFactor>
+    <researchPrerequisite>RSW_DW_Research_Formatting</researchPrerequisite>
     <skillRequirements>
       <Crafting>5</Crafting>
     </skillRequirements>
@@ -203,6 +209,7 @@
     <isViolation>true</isViolation>
     <anesthetize>false</anesthetize>
     <surgerySuccessChanceFactor>99999</surgerySuccessChanceFactor>
+    <researchPrerequisite>RSW_DW_Research_Formatting</researchPrerequisite>
     <skillRequirements>
       <Crafting>4</Crafting>
     </skillRequirements>

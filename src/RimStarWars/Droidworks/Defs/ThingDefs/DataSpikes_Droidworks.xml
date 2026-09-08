@@ -73,6 +73,7 @@
       <skillRequirements>
         <Crafting>6</Crafting>
       </skillRequirements>
+      <researchPrerequisite>RSW_DW_Research_Spiking</researchPrerequisite>
     </recipeMaker>
     <costList>
       <RSW_DW_DroidHead>1</RSW_DW_DroidHead>
@@ -120,6 +121,7 @@
       <skillRequirements>
         <Crafting>6</Crafting>
       </skillRequirements>
+      <researchPrerequisite>RSW_DW_Research_Spiking</researchPrerequisite>
     </recipeMaker>
     <costList>
       <RSW_DW_DroidHead>1</RSW_DW_DroidHead>
@@ -167,6 +169,7 @@
       <skillRequirements>
         <Crafting>6</Crafting>
       </skillRequirements>
+      <researchPrerequisite>RSW_DW_Research_Spiking</researchPrerequisite>
     </recipeMaker>
     <costList>
       <RSW_DW_DroidHead>1</RSW_DW_DroidHead>
@@ -214,6 +217,7 @@
       <skillRequirements>
         <Crafting>6</Crafting>
       </skillRequirements>
+      <researchPrerequisite>RSW_DW_Research_Spiking</researchPrerequisite>
     </recipeMaker>
     <costList>
       <RSW_DW_DroidHead>1</RSW_DW_DroidHead>

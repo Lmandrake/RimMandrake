@@ -47,6 +47,7 @@
         <li>RSW_DW_Part_Leg_Primitive</li>
       </thingDefs>
     </fixedIngredientFilter>
+    <researchPrerequisite>RSW_DW_Research_PrimitiveFabrication</researchPrerequisite>
     <skillRequirements>
       <Crafting>1</Crafting>
     </skillRequirements>
@@ -83,6 +84,7 @@
         <li>RSW_DW_Part_Manipulator_Primitive</li>
       </thingDefs>
     </fixedIngredientFilter>
+    <researchPrerequisite>RSW_DW_Research_PrimitiveFabrication</researchPrerequisite>
     <skillRequirements>
       <Crafting>1</Crafting>
     </skillRequirements>
@@ -119,6 +121,7 @@
         <li>RSW_DW_Part_Sensor_Primitive</li>
       </thingDefs>
     </fixedIngredientFilter>
+    <researchPrerequisite>RSW_DW_Research_PrimitiveFabrication</researchPrerequisite>
     <skillRequirements>
       <Crafting>1</Crafting>
     </skillRequirements>
@@ -155,6 +158,7 @@
         <li>RSW_DW_Part_Motivator_Primitive</li>
       </thingDefs>
     </fixedIngredientFilter>
+    <researchPrerequisite>RSW_DW_Research_PrimitiveFabrication</researchPrerequisite>
     <skillRequirements>
       <Crafting>1</Crafting>
     </skillRequirements>
@@ -191,6 +195,7 @@
         <li>RSW_DW_Part_Servo_Primitive</li>
       </thingDefs>
     </fixedIngredientFilter>
+    <researchPrerequisite>RSW_DW_Research_PrimitiveFabrication</researchPrerequisite>
     <skillRequirements>
       <Crafting>1</Crafting>
     </skillRequirements>

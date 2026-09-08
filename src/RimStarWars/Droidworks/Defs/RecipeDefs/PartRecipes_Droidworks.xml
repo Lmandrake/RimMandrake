@@ -41,6 +41,7 @@
         <li>RSW_DW_Part_Leg</li>
       </thingDefs>
     </fixedIngredientFilter>
+    <researchPrerequisite>RSW_DW_Research_ShopRepair</researchPrerequisite>
     <skillRequirements>
       <Crafting>2</Crafting>
     </skillRequirements>
@@ -77,6 +78,7 @@
         <li>RSW_DW_Part_Manipulator</li>
       </thingDefs>
     </fixedIngredientFilter>
+    <researchPrerequisite>RSW_DW_Research_ShopRepair</researchPrerequisite>
     <skillRequirements>
       <Crafting>2</Crafting>
     </skillRequirements>
@@ -113,6 +115,7 @@
         <li>RSW_DW_Part_Sensor</li>
       </thingDefs>
     </fixedIngredientFilter>
+    <researchPrerequisite>RSW_DW_Research_ShopRepair</researchPrerequisite>
     <skillRequirements>
       <Crafting>2</Crafting>
     </skillRequirements>
@@ -149,6 +152,7 @@
         <li>RSW_DW_Part_Motivator</li>
       </thingDefs>
     </fixedIngredientFilter>
+    <researchPrerequisite>RSW_DW_Research_ShopRepair</researchPrerequisite>
     <skillRequirements>
       <Crafting>2</Crafting>
     </skillRequirements>
@@ -185,6 +189,7 @@
         <li>RSW_DW_Part_Servo</li>
       </thingDefs>
     </fixedIngredientFilter>
+    <researchPrerequisite>RSW_DW_Research_ShopRepair</researchPrerequisite>
     <skillRequirements>
       <Crafting>2</Crafting>
     </skillRequirements>

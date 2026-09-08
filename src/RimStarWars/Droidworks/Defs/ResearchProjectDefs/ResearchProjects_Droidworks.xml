@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_RESEARCH_ROWS_1 (packet B8). Seven Droidworks research rows in
+     The Unbolting (RUT_Tree_Unbolting, already shipped by RESEARCH_TREE_TABS_1
+     — src/RimUtinni/ResearchRetag/Defs/ResearchTabDefs/RUT_Tree_Defs.xml),
+     per §4 of design/Jawa/droids/DROID_UNIFIED_FRAMEWORK_DESIGN.md:
+
+       RSW_DW_Research_Reboot (free at start) -> _Bolting -> _Spiking ->
+       _ShopRepair -> _Reassembly -> _PrimitiveFabrication (frames, parts,
+       inferior modules, the G2) -> _Formatting
+
+     No row here, or anywhere else in this file set, ever names
+     RSW_DW_PersonalityMatrix / RSW_DW_Processor / RSW_DW_Databank as
+     something a research row unlocks — the head-gate (ruling 6, §0 item 6 /
+     §1.3) is enforced by construction: the brain trio carries no recipeMaker
+     at all (BrainTrio_Droidworks.xml's own header), so there is nothing for
+     a researchPrerequisite to gate in the first place. Cross-mod <tab>
+     reference to RUT_Tree_Unbolting resolves fine regardless of load order
+     (all mods' defs load before ResolveReferences runs); no modDependency
+     added to About.xml since this campaign already runs the two packages
+     together (same convention as every other RimStarWars<->RimUtinni
+     cross-reference in this stack).
+
+     Placement decisions this packet made where the design doc's own §4 list
+     doesn't name a row explicitly (recorded fully in
+     infrastructure/state/items/DROIDWORKS_RESEARCH_ROWS_1.md):
+       - RSW_DW_MemoryWipe -> _Bolting. §1.3's own grouping lists these four
+         operations together in this order: "Reboot / bolt / wipe / spike" -
+         wipe sits between bolt and spike in that sentence, so it rides the
+         row that unlocks bolt rather than getting its own.
+       - RSW_DW_RestrainingBoltItem's recipeMaker (the physical bolt itself,
+         Items_Droidworks.xml) -> _Bolting, alongside the two bolt surgeries
+         it feeds.
+       - The 5 data-spike ThingDefs' recipeMakers (RSW_DW_DataSpike +
+         _Empire/_Hutt/_Junker/_Wild) -> _Spiking (the row's own name).
+       - RSW_DW_OverclockDroid -> _ShopRepair (the bench-adjacent shop job,
+         not the reassembly-from-parts row).
+       - RSW_DW_Part_Frame's recipeMaker (Parts_Droidworks.xml, the
+         donor-tier "stopgap ... before B9 lands" frame recipe) ->
+         _PrimitiveFabrication, alongside its Primitive-tier sibling and
+         every other Primitive part/module recipe — it is frame FABRICATION
+         either way, B9 having since landed doesn't change what row a frame
+         recipe belongs under.
+======================================================================== -->
+<Defs>
+
+  <ResearchProjectDef>
+    <defName>RSW_DW_Research_Reboot</defName>
+    <label>reboot</label>
+    <description>Bring a powered-down droid back online. Free — every Jawa clan already knows how to do this; it is not a discovery, it is a formality.</description>
+    <baseCost>0</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RUT_Tree_Unbolting</tab>
+    <researchViewX>0</researchViewX>
+    <researchViewY>0</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RSW_DW_Research_Bolting</defName>
+    <label>the bolting</label>
+    <description>Fit, remove, and wipe. The restraining bolt that makes a droid safe to own, and the memory wipe that makes it forget why it minded.</description>
+    <baseCost>300</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RUT_Tree_Unbolting</tab>
+    <prerequisites>
+      <li>RSW_DW_Research_Reboot</li>
+    </prerequisites>
+    <researchViewX>1</researchViewX>
+    <researchViewY>0</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RSW_DW_Research_Spiking</defName>
+    <label>data spiking</label>
+    <description>Build the keyed data spikes that overwrite a captured droid's ownership protocols — one key per faction that fields them, and one for the ones that belong to no one.</description>
+    <baseCost>500</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RUT_Tree_Unbolting</tab>
+    <prerequisites>
+      <li>RSW_DW_Research_Bolting</li>
+    </prerequisites>
+    <researchViewX>2</researchViewX>
+    <researchViewY>0</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RSW_DW_Research_ShopRepair</defName>
+    <label>shop repair</label>
+    <description>Swap a leg, an arm, a sensor, a motivator, a servo — and push a droid past its rated limits when the job calls for it. The shop floor's routine work.</description>
+    <baseCost>800</baseCost>
+    <techLevel>Spacer</techLevel>
+    <tab>RUT_Tree_Unbolting</tab>
+    <prerequisites>
+      <li>RSW_DW_Research_Spiking</li>
+    </prerequisites>
+    <researchViewX>3</researchViewX>
+    <researchViewY>0</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RSW_DW_Research_Reassembly</defName>
+    <label>reassembly</label>
+    <description>Build a droid whole from a head, a frame, and a matched part set — or rebuild one from its own corpse. The reassembly harness's own trade.</description>
+    <baseCost>1200</baseCost>
+    <techLevel>Spacer</techLevel>
+    <tab>RUT_Tree_Unbolting</tab>
+    <prerequisites>
+      <li>RSW_DW_Research_ShopRepair</li>
+    </prerequisites>
+    <researchViewX>4</researchViewX>
+    <researchViewY>0</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RSW_DW_Research_PrimitiveFabrication</defName>
+    <label>primitive fabrication</label>
+    <description>Bang together frames, parts and modules from scrap — grossly inferior to shop-grade, but Jawa-buildable from Steel and Wood alone. The G2's own trade, and every clan's fallback when nothing better survives the desert.</description>
+    <baseCost>700</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RUT_Tree_Unbolting</tab>
+    <prerequisites>
+      <li>RSW_DW_Research_Reassembly</li>
+    </prerequisites>
+    <researchViewX>5</researchViewX>
+    <researchViewY>0</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RSW_DW_Research_Formatting</defName>
+    <label>formatting</label>
+    <description>Write, restrict, or erase a droid's working program entirely. The deepest and most dangerous operation on the bench — never a route to a mind, only to what a mind runs on.</description>
+    <baseCost>1500</baseCost>
+    <techLevel>Spacer</techLevel>
+    <tab>RUT_Tree_Unbolting</tab>
+    <prerequisites>
+      <li>RSW_DW_Research_PrimitiveFabrication</li>
+    </prerequisites>
+    <researchViewX>6</researchViewX>
+    <researchViewY>0</researchViewY>
+  </ResearchProjectDef>
+
+</Defs>
