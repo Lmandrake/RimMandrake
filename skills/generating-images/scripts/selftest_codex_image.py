@@ -18,6 +18,7 @@ import struct
 import subprocess
 import sys
 import tempfile
+import time
 import types
 import zlib
 from pathlib import Path
@@ -186,6 +187,53 @@ def test_timeout_still_harvests() -> None:
             ci.run_codex = agent_copies
             out3 = Path(td) / "art3.png"
             check("normal path still works", ci.do_image(args_for(out3)) == 0)
+    finally:
+        ci.run_codex, ci.base_codex_home = real_run_codex, real_base
+        ci.HARVEST_GRACE_S = real_grace
+
+
+def test_force_regen_failure_does_not_report_stale_success() -> None:
+    """--out already exists (only possible with --force) and the regen fails.
+
+    The old file must not be mistaken for a successful new one just because
+    out.is_file() is trivially true from before the run even started.
+    """
+    real_run_codex, real_base = ci.run_codex, ci.base_codex_home
+    real_grace = ci.HARVEST_GRACE_S
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            home = Path(td) / "codexhome"
+            (home / ci.GENERATED_SUBDIR).mkdir(parents=True)
+            ci.base_codex_home = lambda: home
+            ci.HARVEST_GRACE_S = 0.0
+
+            out = Path(td) / "art.png"
+            tiny_png(out)
+            stale_mtime = out.stat().st_mtime
+
+            def does_nothing(prompt, images, workdir, timeout, verbose,
+                             model=None, hm=None, reasoning_effort=None, **_kw):
+                return 1, "codex: internal error", False
+            ci.run_codex = does_nothing
+
+            args = args_for(out)
+            args.force = True
+            rc = ci.do_image(args)
+            check("a failed --force regen over an existing file reports FAILURE",
+                  rc == 1, f"rc={rc}")
+            check("the stale file was not touched/deleted",
+                  out.is_file() and out.stat().st_mtime == stale_mtime)
+
+            # And the successful case still works: a fresh write is recognised.
+            def writes_new(prompt, images, workdir, timeout, verbose,
+                           model=None, hm=None, reasoning_effort=None, **_kw):
+                time.sleep(0.01)
+                tiny_png(out)
+                return 0, "", False
+            ci.run_codex = writes_new
+            rc = ci.do_image(args)
+            check("a --force regen that actually rewrites out reports SUCCESS",
+                  rc == 0, f"rc={rc}")
     finally:
         ci.run_codex, ci.base_codex_home = real_run_codex, real_base
         ci.HARVEST_GRACE_S = real_grace
@@ -405,7 +453,9 @@ def test_home_must_be_windows_visible() -> None:
 
 def main() -> int:
     for fn in (test_prompt, test_run_codex_timeout, test_reasoning_effort_flag,
-               test_timeout_still_harvests, test_output_schema_passthrough,
+               test_timeout_still_harvests,
+               test_force_regen_failure_does_not_report_stale_success,
+               test_output_schema_passthrough,
                test_harvest_grace,
                test_child_env_wslenv, test_seed_home, test_sandbox_seed_template,
                test_home_must_be_windows_visible):
