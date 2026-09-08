@@ -7,7 +7,7 @@
 > the `QuestScriptDef` family that does — built 2026-09-05, FOUNDRY, offline
 > only, no bridge, no deploy. Every mechanical claim below was read in the
 > decompiled 1.6 source or vanilla Data before it was written; the provenance
-> list is the header of `src/RimUtinni/VaultDungeons/Source/gen_vault_quests.py`.
+> list is the header of `src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/gen_vault_quests.py`.
 >
 > Ruled sources, not re-derived: `dungeons_arc_spec.md` §2.3 (the thaw-gate
 > model), §3 (sites, grammar, payoff ladder); `canon.yml`
