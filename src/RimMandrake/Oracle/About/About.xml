@@ -11,7 +11,9 @@
 "RimMandrake.Oracle: Selftest validator" runs the register lint against canned good/bad text with no network call.
 "RimMandrake.Oracle: Test Ohm letter" fires one real async call through OracleGameComponent against whatever endpoint is configured in Mod Settings (a local mock stub, or a real OpenAI-compatible cloud endpoint with an API key) and delivers a letter -- the model's text if it passes the register lint, the prescribed fallback if the call fails, times out, or the output is rejected. Nothing about this ships live to any consumer yet; the v1 posture (dormant vs consumer-live) is the owner's call after he sees this work.
 
-No Harmony, no def patches. Everything is opt-in through Mod Settings, defaults to a blank API key (silently falls back), and a global kill switch.</description>
+No Harmony, no def patches. Everything is opt-in through Mod Settings, defaults to a blank API key (silently falls back), and a global kill switch.
+
+Transport note: the OpenAI-compatible HTTP client described above is the ORIGINAL spike transport, still what this build's code runs today. Owner ruling 2026-09-05 supersedes it in favor of shelling out to the Claude Code CLI (`claude -p`, no API key) -- see CLAUDE.md and ORACLE_EXPERIMENT_SPIKE_1's own supersession note. That rewrite has not landed yet; this description will stop matching the code once it does.</description>
 
   <loadAfter>
     <li>Ludeon.RimWorld</li>
