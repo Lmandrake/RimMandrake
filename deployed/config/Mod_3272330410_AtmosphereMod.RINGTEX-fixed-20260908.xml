@@ -1,8 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<!-- SUPERSEDED 2026-09-08 by Mod_3272330410_AtmosphereMod.RINGTEX-fixed-20260908.xml.
-     This "glorious" snapshot has <ringMapPath /> EMPTY, which the mod renders as a flat
-     gray disk (shader default "gary"); the ring STRUCTURE needs the path set to
-     Ring/2k_saturn_ring_alpha. Not the ringed state it was believed to be. -->
 <SettingsBlock>
 	<ModSettings Class="RW_PlanetAtmosphere.AtmosphereSettings">
 		<sunFlareTexturePath>Effect/sunFlare</sunFlareTexturePath>
@@ -44,7 +40,7 @@
 			<li Class="RW_PlanetAtmosphere.TransparentObject_Ring">
 				<renderingShadow>True</renderingShadow>
 				<hideWhenGetClose>True</hideWhenGetClose>
-				<ringMapPath />
+				<ringMapPath>Ring/2k_saturn_ring_alpha</ringMapPath>
 				<refraction>100000</refraction>
 				<luminescen>0</luminescen>
 				<opacity>100000</opacity>
