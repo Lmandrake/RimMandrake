@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T16:00:34Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-08T16:10:23Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -651,7 +651,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  built + offline-validated (dotnet build 0/0, validate_patch 0/0), needs a live quicktest to verify the per-tier need/work gating and the deformat-sapient thought — commit b81a023b
+blocked:  live-verified 2026-09-08, need-gating FAILS: needs identical at every tier, not root-caused (commit a9d5d251)
 summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
 prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
 
@@ -661,7 +661,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  absorbed + validate_patch 0/0, needs a live quicktest to confirm a KotOR kind spawns wearing its modules -- commit c6b9b7d9
+blocked:  live-verified 2026-09-08, apparel FAILS but root cause is upstream (apparelMoney never set) -- see DROIDWORKS_APPARELMONEY_MISSING_1 (commit a9d5d251)
 summary:  Per design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5 packet B2: absorb
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
 
@@ -1256,3 +1256,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1.md
+
+## DROIDWORKS_APPARELMONEY_MISSING_1 gen_droidworks_defs.py never emits apparelMoney on any of the 80 PawnKindDefs -- no Droidworks kind can ever generate apparel regardless of apparelTags
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  Found 2026-09-08 while live-verifying DROIDWORKSMODULEABSORB1 (B2). Three
+prose:    infrastructure/state/items/DROIDWORKS_APPARELMONEY_MISSING_1.md
