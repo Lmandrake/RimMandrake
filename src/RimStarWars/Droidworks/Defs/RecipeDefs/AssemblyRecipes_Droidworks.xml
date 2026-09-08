@@ -13,14 +13,23 @@
 <Defs>
 
   <!-- ========================================================================
-       RSW_DW_AssembleDroid — "head+frame+set -> pawn". The 7-defName head
-       filter deliberately excludes RSW_DW_Head_Mindstone
+       RSW_DW_AssembleDroid — "head+frame+set -> pawn". The head filter
+       deliberately excludes RSW_DW_Head_Mindstone
        (MECHANOID_ORIGIN_CANON_1 unruled - DroidAssembly.KindForHeadDef's own
-       header) and is why the ingredient list spells out all seven rather
-       than a shared thingCategory: no category currently separates "the 7
+       header) and is why the ingredient list spells out each one rather
+       than a shared thingCategory: no category currently separates "the
        family heads" from "the mindstone head" without inventing one just
        for this filter. "No head, no droid" (section 1.3) needs no extra
        code: a bill with zero heads available simply cannot start.
+
+       RSW_DW_Head_Primitive and RSW_DW_Part_Frame_Primitive added
+       (DROIDWORKS_PRIMITIVE_TIER_1, packet B9): without this, the
+       Primitive tier's own frame/head are craftable but unreachable — a
+       dead end, since this harness is the platform's ONE construction
+       method ("every droid is repaired into existence... one hard
+       import", §1.3). DroidAssembly.KindForHeadDef (Source/Droidworks/
+       DroidAssembly.cs) maps RSW_DW_Head_Primitive to RSW_DW_Primitive_G2,
+       same one-representative-kind-per-family shape as the other 7.
   ======================================================================== -->
   <RecipeDef>
     <defName>RSW_DW_AssembleDroid</defName>
@@ -44,6 +53,7 @@
             <li>RSW_DW_Head_Heavy</li>
             <li>RSW_DW_Head_Probe</li>
             <li>RSW_DW_Head_Power</li>
+            <li>RSW_DW_Head_Primitive</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -52,6 +62,7 @@
         <filter>
           <thingDefs>
             <li>RSW_DW_Part_Frame</li>
+            <li>RSW_DW_Part_Frame_Primitive</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -114,7 +125,9 @@
         <li>RSW_DW_Head_Heavy</li>
         <li>RSW_DW_Head_Probe</li>
         <li>RSW_DW_Head_Power</li>
+        <li>RSW_DW_Head_Primitive</li>
         <li>RSW_DW_Part_Frame</li>
+        <li>RSW_DW_Part_Frame_Primitive</li>
         <li>RSW_DW_Part_Leg</li>
         <li>RSW_DW_Part_Manipulator</li>
         <li>RSW_DW_Part_Sensor</li>
@@ -160,6 +173,7 @@
         <filter>
           <thingDefs>
             <li>RSW_DW_Part_Frame</li>
+            <li>RSW_DW_Part_Frame_Primitive</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -171,6 +185,7 @@
       </categories>
       <thingDefs>
         <li>RSW_DW_Part_Frame</li>
+        <li>RSW_DW_Part_Frame_Primitive</li>
       </thingDefs>
     </fixedIngredientFilter>
     <skillRequirements>

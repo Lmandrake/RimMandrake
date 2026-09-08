@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_PRIMITIVE_TIER_1 (packet B9). Install-effect HediffDefs for
+     Parts_Droidworks_Primitive.xml, granted by
+     PartRecipes_Droidworks_Primitive.xml's own RecipeDefs via the existing
+     DroidPartEffectExtension/Recipe_InstallDroidPart machinery
+     (Recipe_InstallDroidPart.cs) - no new C# needed.
+
+     FOUNDRY's own call, option B of the two the item brief offered: rather
+     than scale a quality-tier trio down 40% (there is no principled "40% of
+     a -0.15 offset" - the donor Standard tier IS zero, so there is nothing
+     positive to shrink), Primitive parts drop the Inferior/Standard/
+     Superior grading entirely and ALWAYS resolve to one flat "grossly
+     inferior" hediff regardless of the installed part's own CompQuality
+     roll (PartRecipes_Droidworks_Primitive.xml points inferior/standard/
+     superior all at the SAME def below). Each one is 1.5x the magnitude of
+     the matching donor Inferior tier (Effects_Droidworks.xml) - worse than
+     the worst a fine part can ever roll, which is what "grossly inferior"
+     has to mean once "below every donor module" is the packet's own verify
+     line: Standard/Superior are strictly better than Inferior, so beating
+     Inferior beats all three. 1.5x, not a bigger multiplier: nothing in the
+     design doc gives a number, and a droid that can barely stand is a
+     worse story beat than a droid that would rather have used the fine
+     part in the first place, not one so broken it might as well have no
+     part at all.
+======================================================================== -->
+<Defs>
+
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Leg_Primitive</defName>
+    <label>crude leg actuator (installed)</label>
+    <description>An installed leg actuator, hammered together from scrap. Worse than anything a working shop would ever fit.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li><capacity>Moving</capacity><offset>-0.225</offset></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Manipulator_Primitive</defName>
+    <label>crude claw hand (installed)</label>
+    <description>An installed manipulator claw, hammered together from scrap. Worse than anything a working shop would ever fit.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li><capacity>Manipulation</capacity><offset>-0.225</offset></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Sensor_Primitive</defName>
+    <label>lamp-eye sensor (installed)</label>
+    <description>An installed lamp-eye sensor. Worse than anything a working shop would ever fit - half-blind static.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li><capacity>Sight</capacity><offset>-0.225</offset></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Motivator_Primitive</defName>
+    <label>crude motivator (installed)</label>
+    <description>An installed motivator, hammered together from scrap. Worse than anything a working shop would ever fit - lags and grinds.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <statOffsets>
+          <MoveSpeed>-0.75</MoveSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_DW_PartEffect_Servo_Primitive</defName>
+    <label>crude servo (installed)</label>
+    <description>An installed servo, hammered together from scrap. Worse than anything a working shop would ever fit - dead weight.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <statOffsets>
+          <WorkSpeedGlobal>-0.15</WorkSpeedGlobal>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- Paired with Modules_Droidworks_Primitive.xml's RSW_DW_Module_Motivator_Primitive
+       via CompProperties_CauseHediff_Apparel - the one Primitive module that
+       needs its own hediff (the Software/Sensor Primitive modules apply
+       their reduced effect via equippedStatOffsets directly, matching their
+       own donors' shape). 0.04 = 40% of the donor RSW_DW_Module_HardwareHediff_motivator's
+       own +0.1/+0.1 (Absorbed_KotorDroidModules_Hediffs.xml) - a genuine
+       "40% of donor" scaling (unlike the part-install hediffs above, this
+       module DOES have a positive donor baseline to shrink). -->
+  <HediffDef>
+    <defName>RSW_DW_ModuleHediff_Motivator_Primitive</defName>
+    <label>crude motivator booster</label>
+    <description>A Jawa-built module, splicing a little more drive into the motivators. It helps. Barely.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>0.04</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>0.04</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_RemoveIfApparelDropped" />
+    </comps>
+    <isBad>false</isBad>
+  </HediffDef>
+
+</Defs>

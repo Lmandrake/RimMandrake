@@ -36,7 +36,8 @@ namespace RimMandrake.StarWars.Droidworks
         }
 
         // chassisClass ints per DroidworksExtension's own comment: 0 labour,
-        // 1 protocol, 2 astromech, 3 battle, 4 heavy, 5 probe, 6 power.
+        // 1 protocol, 2 astromech, 3 battle, 4 heavy, 5 probe, 6 power,
+        // 7 primitive (DROIDWORKS_PRIMITIVE_TIER_1, packet B9).
         private static ThingDef HeadDefFor(int chassisClass)
         {
             switch (chassisClass)
@@ -48,6 +49,7 @@ namespace RimMandrake.StarWars.Droidworks
                 case 4: return DroidworksDefOf.RSW_DW_Head_Heavy;
                 case 5: return DroidworksDefOf.RSW_DW_Head_Probe;
                 case 6: return DroidworksDefOf.RSW_DW_Head_Power;
+                case 7: return DroidworksDefOf.RSW_DW_Head_Primitive;
                 default: return DroidworksDefOf.RSW_DW_Head_Labour;
             }
         }

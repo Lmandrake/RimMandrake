@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_PRIMITIVE_TIER_1 (packet B9). §1.4: "Donor-grade modules are
+     loot and salvage only, forever; the Primitive tier can fabricate a
+     module per slot at grossly inferior stats (ruling 8)." Reuses the SAME
+     body-group/slot shape and apparel bases the absorbed KotOR modules
+     already use (RSW_DW_BG_ModuleHardware/Software/Sensor,
+     RSW_DW_ModuleBase_Tech - Absorbed_KotorDroidModules_Bases.xml) - not a
+     new mechanic, per the item's own design guidance. One representative
+     fabricable module per slot (Hardware/Software/Sensor - the three slots
+     this mod's own donor absorption shipped, Absorbed_KotorDroidModules_Tech.xml's
+     own header), each a ~40%-stat cousin of one concrete donor module,
+     ART REUSED VERBATIM from that same donor (loot-tier art reused, not
+     new - matching the item brief). The ONLY field that differs in kind
+     rather than degree: these carry a recipeMaker (Steel + Wood, no
+     ComponentIndustrial/ComponentSpacer, Crafting 2) - the donor modules
+     deliberately carry none (loot-only, Absorbed_KotorDroidModules_Tech.xml's
+     own header: "No recipeMaker on any: loot-only").
+
+     Donor comparison (Absorbed_KotorDroidModules_Tech.xml/_Hediffs.xml),
+     all scaled to 40%:
+       Hardware: RSW_DW_Module_DroidHardware_motivator  (MarketValue 1100, IncomingDamageFactor -0.2, paired hediff Moving/Manipulation +0.1/+0.1)
+       Software: RSW_DW_Module_DroidSoftware_repair      (MarketValue 3300, MechRepairSpeed/FixBrokenDownBuildingSuccessChance/ConstructSuccessChance +0.4 each)
+       Sensor:   RSW_DW_Module_DroidSensor_motion         (MarketValue 250,  ShootingAccuracyPawn/MeleeHitChance +0.1/+0.1, PawnTrapSpringChance -0.2)
+======================================================================== -->
+<Defs>
+
+  <ThingDef ParentName="RSW_DW_ModuleBase_Tech">
+    <defName>RSW_DW_Module_Motivator_Primitive</defName>
+    <label>crude motivator booster</label>
+    <description>A Jawa-built hardware module, splicing a little extra drive into a droid's motivators. Nothing like the shop-grade version - it helps, barely.</description>
+    <descriptionHyperlinks>
+      <HediffDef>RSW_DW_ModuleHediff_Motivator_Primitive</HediffDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Items/droidtech/droidhardware_E</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>2</Mass>
+      <MarketValue>440</MarketValue>
+    </statBases>
+    <equippedStatOffsets>
+      <IncomingDamageFactor>-0.08</IncomingDamageFactor>
+    </equippedStatOffsets>
+    <apparel>
+      <tags>
+        <li>SWCPDroidApparelRestrictionTag_HardwareTechSlot</li>
+        <li>RSW_DW_ModuleTag_PrimitiveFabricated</li>
+      </tags>
+      <bodyPartGroups>
+        <li>RSW_DW_BG_ModuleHardware</li>
+      </bodyPartGroups>
+    </apparel>
+    <comps>
+      <li Class="CompProperties_CauseHediff_Apparel">
+        <hediff>RSW_DW_ModuleHediff_Motivator_Primitive</hediff>
+      </li>
+    </comps>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <effectWorking>Repair</effectWorking>
+      <soundWorking>Recipe_Machining</soundWorking>
+      <workAmount>250</workAmount>
+      <productCount>1</productCount>
+      <workSkill>Crafting</workSkill>
+      <recipeUsers>
+        <li>FabricationBench</li>
+      </recipeUsers>
+      <skillRequirements>
+        <Crafting>2</Crafting>
+      </skillRequirements>
+    </recipeMaker>
+    <costList>
+      <Steel>10</Steel>
+      <WoodLog>15</WoodLog>
+    </costList>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_DW_ModuleBase_Tech">
+    <defName>RSW_DW_Module_Repair_Primitive</defName>
+    <label>crude machine interface</label>
+    <description>A Jawa-built software module, patched together to nudge a droid's repair routines. Fitting, coming from the ones who taught themselves to fix droids in the first place - and grossly inferior to what a real shop turns out.</description>
+    <graphicData>
+      <texPath>Items/droidtech/droidsoftware_A</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0.5</Mass>
+      <MarketValue>1320</MarketValue>
+    </statBases>
+    <equippedStatOffsets>
+      <MechRepairSpeed>0.16</MechRepairSpeed>
+      <FixBrokenDownBuildingSuccessChance>0.16</FixBrokenDownBuildingSuccessChance>
+      <ConstructSuccessChance>0.16</ConstructSuccessChance>
+    </equippedStatOffsets>
+    <apparel>
+      <tags>
+        <li>SWCPDroidApparelRestrictionTag_SoftwareTechSlot</li>
+        <li>RSW_DW_ModuleTag_PrimitiveFabricated</li>
+      </tags>
+      <bodyPartGroups>
+        <li>RSW_DW_BG_ModuleSoftware</li>
+      </bodyPartGroups>
+    </apparel>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <effectWorking>Repair</effectWorking>
+      <soundWorking>Recipe_Machining</soundWorking>
+      <workAmount>250</workAmount>
+      <productCount>1</productCount>
+      <workSkill>Crafting</workSkill>
+      <recipeUsers>
+        <li>FabricationBench</li>
+      </recipeUsers>
+      <skillRequirements>
+        <Crafting>2</Crafting>
+      </skillRequirements>
+    </recipeMaker>
+    <costList>
+      <Steel>8</Steel>
+      <WoodLog>12</WoodLog>
+    </costList>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_DW_ModuleBase_Tech">
+    <defName>RSW_DW_Module_Sensor_Primitive</defName>
+    <label>crude motion sensor</label>
+    <description>A Jawa-built sensor module, wired to flinch at movement. Grossly inferior to a shop-grade tracker, but it flinches in roughly the right direction.</description>
+    <graphicData>
+      <texPath>Items/droidtech/droidsensor_A</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>2</Mass>
+      <MarketValue>100</MarketValue>
+    </statBases>
+    <equippedStatOffsets>
+      <ShootingAccuracyPawn>0.04</ShootingAccuracyPawn>
+      <MeleeHitChance>0.04</MeleeHitChance>
+      <PawnTrapSpringChance>-0.08</PawnTrapSpringChance>
+    </equippedStatOffsets>
+    <apparel>
+      <tags>
+        <li>SWCPDroidApparelRestrictionTag_SensorTechSlot</li>
+        <li>RSW_DW_ModuleTag_PrimitiveFabricated</li>
+      </tags>
+      <bodyPartGroups>
+        <li>RSW_DW_BG_ModuleSensor</li>
+      </bodyPartGroups>
+    </apparel>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <effectWorking>Repair</effectWorking>
+      <soundWorking>Recipe_Machining</soundWorking>
+      <workAmount>200</workAmount>
+      <productCount>1</productCount>
+      <workSkill>Crafting</workSkill>
+      <recipeUsers>
+        <li>FabricationBench</li>
+      </recipeUsers>
+      <skillRequirements>
+        <Crafting>2</Crafting>
+      </skillRequirements>
+    </recipeMaker>
+    <costList>
+      <Steel>6</Steel>
+      <WoodLog>10</WoodLog>
+    </costList>
+  </ThingDef>
+
+</Defs>

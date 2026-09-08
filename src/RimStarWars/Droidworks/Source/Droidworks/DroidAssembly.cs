@@ -16,11 +16,12 @@ namespace RimMandrake.StarWars.Droidworks
         /// One representative PawnKindDef per family, keyed by the family's
         /// own RSW_DW_Head_* defName - the same 7-family roster
         /// DROIDWORKS_HEADS_BRAINS_SPIKES_1 (B3) already picked one donor
-        /// race per family for. RSW_DW_Head_Mindstone is deliberately absent:
-        /// MECHANOID_ORIGIN_CANON_1 (the "chassis + this head = a new race"
-        /// mechanic) is still unruled, so the harness does not accept it as
-        /// an ingredient at all (see PartRecipes_AssemblyDroidworks.xml's
-        /// own ingredient filter).
+        /// race per family for, plus the Primitive family's own G2
+        /// (DROIDWORKS_PRIMITIVE_TIER_1, packet B9). RSW_DW_Head_Mindstone
+        /// is deliberately absent: MECHANOID_ORIGIN_CANON_1 (the "chassis +
+        /// this head = a new race" mechanic) is still unruled, so the
+        /// harness does not accept it as an ingredient at all (see
+        /// PartRecipes_AssemblyDroidworks.xml's own ingredient filter).
         /// </summary>
         public static PawnKindDef KindForHeadDef(ThingDef headDef)
         {
@@ -34,6 +35,7 @@ namespace RimMandrake.StarWars.Droidworks
                 case "RSW_DW_Head_Heavy": return DroidworksDefOf.RSW_DW_OuterRim_SuperTacticalDroid;
                 case "RSW_DW_Head_Probe": return DroidworksDefOf.RSW_DW_KotORDroidColonist_KX12UPD;
                 case "RSW_DW_Head_Power": return DroidworksDefOf.RSW_DW_OuterRim_GNKDroid;
+                case "RSW_DW_Head_Primitive": return DroidworksDefOf.RSW_DW_Primitive_G2;
                 default: return null;
             }
         }

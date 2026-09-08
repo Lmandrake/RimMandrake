@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_PRIMITIVE_TIER_1 (packet B9). Install recipes for
+     Parts_Droidworks_Primitive.xml's 5 effectful Primitive parts (no Frame
+     or PowerCell recipe here - see that file's own header for why). Reuses
+     RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPartAtBench VERBATIM
+     (same worker class PartRecipes_Droidworks.xml's fine-part recipes use -
+     the proximity-to-RSW_DW_RepairBench gate applies here too, it's still a
+     bench job). No new C# - the "grossly inferior, always" behaviour comes
+     entirely from pointing this RecipeDef's own DroidPartEffectExtension's
+     inferior/standard/superior fields at the SAME def
+     (Effects_Droidworks_Primitive.xml), so Recipe_InstallDroidPart.cs's own
+     quality-bucketing switch (Awful/Poor/.../Legendary) always lands on
+     that one hediff no matter what the consumed Primitive part's own
+     CompQuality rolled.
+
+     Wired onto DW_Race_Base's <recipes> (Races_Base.xml) alongside the fine
+     tier's own 5 - ANY droid, any family, can be fitted with a cheap Jawa
+     part (ruling 2's "use superior or inferior parts... be Jawa" economy is
+     universal, not gated to the Primitive chassis itself). Available at
+     Crafting 1 (fine tier is Crafting 2) - "very primitive" work needs no
+     real expertise.
+======================================================================== -->
+<Defs>
+
+  <RecipeDef>
+    <defName>RSW_DW_InstallLegActuator_Primitive</defName>
+    <label>install crude leg actuator</label>
+    <description>Fit a Jawa-built leg actuator. Grossly inferior to a shop part, but it moves.</description>
+    <jobString>Installing crude leg actuator.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPartAtBench</workerClass>
+    <workAmount>200</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Leg_Primitive</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_DW_Part_Leg_Primitive</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <skillRequirements>
+      <Crafting>1</Crafting>
+    </skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidPartEffectExtension">
+        <inferior>RSW_DW_PartEffect_Leg_Primitive</inferior>
+        <standard>RSW_DW_PartEffect_Leg_Primitive</standard>
+        <superior>RSW_DW_PartEffect_Leg_Primitive</superior>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RSW_DW_InstallManipulatorArm_Primitive</defName>
+    <label>install crude claw hand</label>
+    <description>Fit a Jawa-built manipulator claw. Grossly inferior to a shop part, but it grips.</description>
+    <jobString>Installing crude claw hand.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPartAtBench</workerClass>
+    <workAmount>200</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Manipulator_Primitive</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_DW_Part_Manipulator_Primitive</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <skillRequirements>
+      <Crafting>1</Crafting>
+    </skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidPartEffectExtension">
+        <inferior>RSW_DW_PartEffect_Manipulator_Primitive</inferior>
+        <standard>RSW_DW_PartEffect_Manipulator_Primitive</standard>
+        <superior>RSW_DW_PartEffect_Manipulator_Primitive</superior>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RSW_DW_InstallSensor_Primitive</defName>
+    <label>install lamp-eye sensor</label>
+    <description>Fit a Jawa-built lamp-eye sensor. Grossly inferior to a shop part - half-blind static.</description>
+    <jobString>Installing lamp-eye sensor.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPartAtBench</workerClass>
+    <workAmount>200</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Sensor_Primitive</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_DW_Part_Sensor_Primitive</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <skillRequirements>
+      <Crafting>1</Crafting>
+    </skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidPartEffectExtension">
+        <inferior>RSW_DW_PartEffect_Sensor_Primitive</inferior>
+        <standard>RSW_DW_PartEffect_Sensor_Primitive</standard>
+        <superior>RSW_DW_PartEffect_Sensor_Primitive</superior>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RSW_DW_InstallMotivator_Primitive</defName>
+    <label>install crude motivator</label>
+    <description>Fit a Jawa-built motivator. Grossly inferior to a shop part - lags and grinds.</description>
+    <jobString>Installing crude motivator.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPartAtBench</workerClass>
+    <workAmount>200</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Motivator_Primitive</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_DW_Part_Motivator_Primitive</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <skillRequirements>
+      <Crafting>1</Crafting>
+    </skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidPartEffectExtension">
+        <inferior>RSW_DW_PartEffect_Motivator_Primitive</inferior>
+        <standard>RSW_DW_PartEffect_Motivator_Primitive</standard>
+        <superior>RSW_DW_PartEffect_Motivator_Primitive</superior>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RSW_DW_InstallServo_Primitive</defName>
+    <label>install crude servo</label>
+    <description>Fit a Jawa-built servo. Grossly inferior to a shop part - dead weight more often than not.</description>
+    <jobString>Installing crude servo.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPartAtBench</workerClass>
+    <workAmount>150</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Servo_Primitive</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_DW_Part_Servo_Primitive</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <skillRequirements>
+      <Crafting>1</Crafting>
+    </skillRequirements>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidPartEffectExtension">
+        <inferior>RSW_DW_PartEffect_Servo_Primitive</inferior>
+        <standard>RSW_DW_PartEffect_Servo_Primitive</standard>
+        <superior>RSW_DW_PartEffect_Servo_Primitive</superior>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+</Defs>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_PRIMITIVE_TIER_1 (packet B9). Hand-authored, same "no donor
+     to absorb from" reasoning as Races_Primitive.xml's own header - these
+     two kinds are not generator output and do not belong in the
+     generator-owned PawnKinds_{OuterRim,KotOR,JDS}.xml files.
+
+     Neither kind is wired into any FactionDef's pawnGroupMakers -
+     DROID_FACTION_LOADOUTS_1 (packet C1) owns that, same scope limit
+     GamorreanPawnKinds.xml's own header already establishes for this
+     codebase ("A pawnkind only enters world generation when a faction
+     lists it in pawnGroupMakers... adding a new species to live raid
+     tables... is a decision for [the roster spec], not a side effect of
+     authoring art defs"). Both are reachable today via spawn/debug and the
+     G2 via the reassembly harness (AssemblyRecipes_Droidworks.xml's
+     RSW_DW_AssembleDroid, extended this packet to accept RSW_DW_Head_Primitive
+     + RSW_DW_Part_Frame_Primitive).
+
+     combatPower 99999 on the G2 matches this file's own house convention
+     for repair/utility droid kinds (RSW_DW_OuterRim_DUMDroid/FX7Droid/
+     MSEDroid/SalvageAssistDroid all use the same sentinel in
+     PawnKinds_OuterRim.xml) - mirrored, not independently re-derived.
+======================================================================== -->
+<Defs>
+
+  <PawnKindDef>
+    <defName>RSW_DW_Primitive_G2</defName>
+    <label>G2 repair droid</label>
+    <race>RSW_DW_Race_Primitive_G2</race>
+    <combatPower>99999</combatPower>
+    <apparelMoney>0~0</apparelMoney>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
+  </PawnKindDef>
+
+  <!-- combatPower low (not the utility sentinel above) - a real if weak
+       threat, "atrocious, clumsy" per ruling 2, not a non-combatant.
+       NO defaultFactionDef: Jawa_Junkers is a RimUtinni (campaign-tier)
+       FactionDef and Droidworks is a RimStarWars (platform-tier) mod - §1.1
+       of the design doc's own table draws that line ("campaign layer |
+       RimUtinni owns faction loadouts, FDE membership..."). Droidworks must
+       stand up standalone (A1/A2 test it beside JawaIonWeapons only, no
+       RimUtinni guarantee), so a hard defaultFactionDef reference into a
+       campaign-tier def would be a load-order gamble this file doesn't
+       take. The faction association itself - and any pawnGroupMakers entry
+       - is DROID_FACTION_LOADOUTS_1 (packet C1)'s to wire, from the
+       RimUtinni side, once this kind exists to point at. -->
+  <PawnKindDef>
+    <defName>RSW_DW_Primitive_Junker</defName>
+    <label>Junker suicide droid</label>
+    <race>RSW_DW_Race_Primitive_Junker</race>
+    <combatPower>20</combatPower>
+    <apparelMoney>0~0</apparelMoney>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
+  </PawnKindDef>
+
+</Defs>
