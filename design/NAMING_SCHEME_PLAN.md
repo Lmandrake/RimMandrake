@@ -26,7 +26,7 @@ reuses RimStarWars wholesale only if nothing campaign-specific leaked into it.
 | **RimUtinni** | This scenario only — the Utinni campaign | *Does it name Ash'karr, the Kolyska, the Nine, this clan, or this story?* | The Salvation, planetary lore/art, Jawa_Doctrine, EmpirePursuit config, pawn flavor, faction slates |
 
 **Tie-break rules (canonized here):**
-- **A fix mod takes the tier of the mod it fixes** (Cerean mane fix → RimStarWars; saurid frill fix → RimMandrake).
+- **A fix mod takes the tier of the mod it fixes** (Cerean mane fix → RimStarWars; saurid frill fix → RimMandrake). **Functional fixes only — aesthetic reskins take the tier of the AESTHETIC, not the target** (owner, 2026-09-08: DesertVehicleReskin redraws a generic vehicle mod *for the Star Wars feel* → RSW, overriding review finding 1).
 - **Engine vs. content**: when a system splits into a generic engine and campaign content (Pits precedent, ratified), the engine takes the highest tier it honestly passes, the content pack takes its own tier. One mod may not straddle; split it.
 - **Species vs. clan**: the Jawa *species* (genes, body, voice, eggs) is RimStarWars (owner-explicit); *this clan's* culture, faith, backstories, and doctrine are RimUtinni.
 - **Doctrine is Utinni even when it patches SW content** (the ion-over-explosives *rule* is theology; the ion *weapons* are RimStarWars).
@@ -238,7 +238,11 @@ urgent.
    "RimStarWars" is never a public brand. packageIds stay `mandrake.<tier>.
    <modname>` — the author segment is the collision guard there, and the
    peer stream's nesting adds no safety at double the length in every log
-   and MayRequire.
+   and MayRequire. **Amendment (owner card, 2026-09-08): an RM-tier mod
+   whose name already carries the Rim stem (RimProperty, RimPursuit,
+   RimChronicle) displays as just that name — never "RimMandrake:
+   RimProperty"; the collection page carries the tier mark. packageId
+   modname segments drop the stem (`mandrake.rm.property`).**
 
 ## 8b. Review round 2 — adversarial fork, all nine findings folded in
 
