@@ -2,6 +2,26 @@
 # -*- coding: utf-8 -*-
 """ashkarr_settle.py - more moisture farmers, more Hutts, more oases, and roads to them.
 
+⛔⛔ DEPRECATED AS AN AUTHORITY - owner's ruling, 2026-09-07. ⛔⛔
+This script is ONE STEP in a multi-part worldgen process, not the author of the
+planet. THE WORLD IS THE SAVEGAME; the canonical CSVs are exported from it by
+`ashkarr_rebase_from_save.py`. Do not treat this script's output as the map, and
+do not run it to "fix" the map - change the world, then re-export.
+
+🔑 Two things it did that a reader needs to know, because they explain the CSV:
+  * Every road it appends is hard-coded `DirtRoad` (see `new_roads` below). That
+    is why the painted links CSV carried only two road classes while the real
+    world carries four - the day/dusk/night/ancient classes are MEASURED off a
+    finished route by `world/_roads/compose.py`, and no painter ever computed them.
+  * `ashkarr_paint.py` calls `ashkarr_settle.roads(...)`, and THAT FUNCTION DOES
+    NOT EXIST in this module (verified by import, 2026-09-07). The painter's road
+    path would raise AttributeError, so the freeze marker's documented
+    "unfreeze and re-run the generator" escape hatch does not work.
+
+Full account: `world/DEPRECATED_painted_lineage/README.md`.
+
+⚠️ The staleness notes below remain true about the SCRIPT and are kept as record.
+
 ⛔ STALE IN FOUR PLACES AS OF 2026-08-24 - the owner re-ruled faction placement live and
    this script was NOT rewritten. Re-running it as-is will fight the map:
      1. HUTT_* requires a free adjacent well for every Hutt site. That rule now binds the
