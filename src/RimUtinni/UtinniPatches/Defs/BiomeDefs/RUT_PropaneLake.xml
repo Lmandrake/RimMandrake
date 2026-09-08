@@ -88,7 +88,13 @@
     <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
     <hasVirtualPlants>false</hasVirtualPlants>
-    <texture>Biomes/AB_PropaneLakes</texture>
+    <!-- Owner 2026-09-07: the lake was INVISIBLE on the world map because this pointed at
+         Biomes/AB_PropaneLakes - the very texture of the LAND biome it sits inside, so the
+         lake was drawn identically to its own shore. BiomeDef has no colour or material
+         override; `texture` is the only lever on world-map appearance. Jawa_SickWater is a
+         dark slate-blue with brown mottling - a murky liquid that does not read as clean
+         water, which is the point: this is propane, not water. -->
+    <texture>World/Biomes/Jawa_SickWater</texture>
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
     <waterDeepTerrain>AB_PropaneLake</waterDeepTerrain>

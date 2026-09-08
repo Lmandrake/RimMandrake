@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RUT_ComplexStructures — owner, 2026-09-07.
+
+       He asked for "another graphical mutator that clearly identified 'complex
+       structures' ... indicating a particularly complicated and dense network on the
+       map (as there are in many, many places here)."
+
+       🔑 IT HAS TO BE A LANDMARK, NOT A MUTATOR. Measured off the live defs this
+       date: LandmarkDef carries iconTexturePath / drawScale / drawType /
+       drawAboveRoads, and TileMutatorDef has NO visual fields at all — a mutator
+       never draws anything on the world map. That is also the root cause of the
+       complaint that prompted this: the Rust Cathedral averages 5.25 mutators per
+       tile and every tile carries at least one, yet only 8 of its 236 tiles showed an
+       icon, so a dense place read as barren.
+
+       WHAT IT MEANS, and why it is honest. This landmark is placed where the tile
+       ALREADY carries 6 or more mutators — the top ~1.2% of the planet (261 of
+       21,872; measured, whole-planet distribution below). So the icon is not
+       decoration asserting complexity, it is a readout of complexity that is really
+       there. Owner chose the >=6 threshold from 6/7/8.
+
+           0 muts 7730 | 1 7509 | 2 3715 | 3 1542 | 4 687 | 5 428
+           6 146 | 7 86 | 8 22 | 9 3 | 10 2 | 11 1 | 12 1
+
+       ⛔ commonality 0 ON PURPOSE. Worldgen must never roll this: its meaning comes
+       entirely from the density rule, and a randomly-placed one would be a lie. It is
+       placed only by ashkarr_place_complex_structures.py.
+
+       ⛔ NO mutatorChances, also on purpose. A landmark's mutatorChances rolls go
+       through AddMutator and can displace what is already on the tile — and these
+       tiles are chosen precisely because they are already the busiest on the planet.
+       Adding more would both risk the displacement and corrupt the very count the
+       icon reports.
+
+       Icon: four variants at 512px in a 1024 sheet (atlasSize 2,2), drawn by
+       AshkarrLandmarkArt/make_complex_structures_icon.py in the house style —
+       blocks wired together, so it reads as a NETWORK rather than as rubble
+       (Ruins) or one compound (AncientGarrison). -->
+
+  <LandmarkDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_ComplexStructures</defName>
+    <label>complex structures</label>
+    <description>Not one ruin but a system of them: blocks, conduits and outbuildings still wired to each other long after whatever ran them stopped. Survey teams mark ground like this because it takes days to walk and longer to understand — whatever was built here was built to work together, and a great deal of it is still standing.</description>
+    <iconTexturePath>World/Landmarks/Ashkarr/RUT_ComplexStructures</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0</commonality>
+    <!-- `structure` is what Ruins and AncientGarrison use; read off the live defs
+         rather than guessed. The only categories in use are structure / mountain /
+         lake. NamerLandmark_Ruins likewise reused rather than authoring a RulePackDef
+         for one landmark — same call IshkoDarkLandmarks made. -->
+    <category>structure</category>
+    <nameMaker>NamerLandmark_Ruins</nameMaker>
+  </LandmarkDef>
+
+</Defs>
