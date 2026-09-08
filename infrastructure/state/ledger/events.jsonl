@@ -5679,3 +5679,4 @@
 {"seat":"BENCH","event":"file","id":"BIOME_LANDMARK_REFINEMENT_1","title":"First-pass landmark density on 8 dense biomes (Greentide/Contagion/Webwork/Weeping Stones/Slime/Scarlands/Pyrelands/Cracked Lands) needs per-biome refinement — density and defs are BENCH drafts, not curated to each sheet's flagship","kind":"task","target":"v1","for":"OWNER","ts":"2026-09-08T14:36:48Z"}
 {"seat":"FOUNDRY","event":"file","id":"GL_EMIT_FLOATRANGE_GENERIC_DROP_1","title":"gl_emit.py silently drops any FloatRange field on a non-worldTileReq node type","kind":"bug","target":"v1","for":"FOUNDRY","ts":"2026-09-08T14:42:28Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-08T14:48:41Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-08T14:52:30Z"}
