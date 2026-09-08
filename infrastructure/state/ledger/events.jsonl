@@ -5758,3 +5758,6 @@
 {"seat":"BENCH","event":"capability","system":"UtinniPatches","function_rung":"implemented","content_rung":"authored","evidence_ref":"src/RimUtinni/UtinniPatches folder survey 2026-09-08: 28 defs, 37 patches, 19 PNGs","date":"2026-09-08","ts":"2026-09-08T14:54:31Z"}
 {"seat":"BENCH","event":"capability","system":"UtinniShell","function_rung":"designed","content_rung":"placeholder","evidence_ref":"src/RimUtinni/UtinniShell folder survey 2026-09-08: 1 PNGs","date":"2026-09-08","ts":"2026-09-08T14:54:32Z"}
 {"seat":"BENCH","event":"capability","system":"VaultDungeons","function_rung":"implemented","content_rung":"none","evidence_ref":"src/RimUtinni/VaultDungeons folder survey 2026-09-08: 7 defs, no PNGs","date":"2026-09-08","ts":"2026-09-08T14:54:33Z"}
+{"seat":"BENCH","event":"claim","id":"PROJECT_MATURITY_DASHBOARD_1","ts":"2026-09-08T14:56:15Z"}
+{"seat":"BENCH","event":"close","id":"PROJECT_MATURITY_DASHBOARD_1","sha":"78fe3b38","ts":"2026-09-08T14:56:23Z"}
+{"seat":"BENCH","event":"note","id":"PROJECT_MATURITY_DASHBOARD_1","text":"Registry seeded (78 systems, folder-evidence rungs), dashboard rendered and published to the artifact; weighting equal-per-capability as ruled; owner retunes rungs via rimflow capability set","ts":"2026-09-08T14:56:29Z"}

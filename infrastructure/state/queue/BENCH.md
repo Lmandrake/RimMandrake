@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T14:48:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T14:56:29Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -481,16 +481,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RAKATAN_LEGACY_INDEX_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RAKATAN_LEGACY_INDEX_1.md
-
-## PROJECT_MATURITY_DASHBOARD_1 Project maturity dashboard: two spines (systems function x content, and the GOAL_SHEET content inventory), rimflow-owned, rendered as an Artifact -- the first honest answer to 'how close are we to delivery'
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  🔴 THE CONSTRAINT THAT OUTRANKS EVERY DESIGN CHOICE BELOW
-prose:    infrastructure/state/items/PROJECT_MATURITY_DASHBOARD_1.md
 
 ## MOD_HUMAN_EXPLORATION_PASS_1 Human-executable exploration pass: per mod, a scripted in-game walkthrough the owner runs to confirm it looks and feels right -- runs AFTER the art/normalization wave
 state:    proposed
