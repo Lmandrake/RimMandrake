@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DROIDWORKS_FULL_LIST_COEXIST_1. Every RSW_DW_ PawnKindDef using a humanlike
+  (HAR) race needs initialResistanceRange/initialWillRange: vanilla's
+  ConfigErrors() requires both on any humanlike-race PawnKindDef, since they
+  back the vanilla recruit-by-resistance/will mechanic. None of the ~80
+  JDS/KotOR/OuterRim droid kinds authored here set them, so a fresh full-list
+  load (2026-09-08) logged one "initial resistance range is undefined" and one
+  "initial will range is undefined" Config error per kind.
+
+  Droids do not actually get talked down like a human prisoner; the values
+  only need to exist to satisfy the engine. 10~20 / 5~10 matches the donor
+  convention already used for humanlike droid kinds elsewhere in this mod's
+  lineage (Outer Rim - Droid Depot's OuterRim_ImperialDTSeriesSentryDroid:
+  initialResistanceRange 10~20, initialWillRange 5~10; see
+  Source/extraction.json). PLACEHOLDER, not a balance pass: every kind gets
+  the same flat range regardless of toughness. Revisit per-kind if resistance/
+  will ever becomes load-bearing for droids specifically.
+-->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/PawnKindDef[starts-with(defName, "RSW_DW_") and race and not(initialResistanceRange)]</xpath>
+    <value>
+      <initialResistanceRange>10~20</initialResistanceRange>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/PawnKindDef[starts-with(defName, "RSW_DW_") and race and not(initialWillRange)]</xpath>
+    <value>
+      <initialWillRange>5~10</initialWillRange>
+    </value>
+  </Operation>
+</Patch>

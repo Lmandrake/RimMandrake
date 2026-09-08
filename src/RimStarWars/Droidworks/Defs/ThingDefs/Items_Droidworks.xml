@@ -164,10 +164,7 @@
         <li>FabricationBench</li>
       </recipeUsers>
       <skillRequirements>
-        <li>
-          <skill>Crafting</skill>
-          <minLevel>6</minLevel>
-        </li>
+        <Crafting>6</Crafting>
       </skillRequirements>
     </recipeMaker>
     <costList>

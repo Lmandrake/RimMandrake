@@ -93,6 +93,10 @@
     <interactionCellOffset>(0,0,2)</interactionCellOffset>
     <passability>Impassable</passability>
     <fillPercent>0.5</fillPercent>
+    <!-- Deliberately impassable-but-not-full-fillage: a bay a droid parks fully
+         inside, not a wall. Same shape vanilla flags by default; silenced the
+         same way ThirdPartySignConfigErrors_Fix.xml does for Dark.Signs. -->
+    <disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
     <rotatable>true</rotatable>
     <tickerType>Normal</tickerType>
     <altitudeLayer>Building</altitudeLayer>
