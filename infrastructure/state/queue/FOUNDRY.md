@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T15:59:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T16:00:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -469,12 +469,12 @@ summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
 prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
 
 ## DROIDWORKS_MODULE_ABSORB_1 Absorb KotOR's six-slot droid module apparel as RSW_DW_Module_* (loot-only, no recipes)
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/DROIDWORKS_MODULE_ABSORB_1.md yet — write one when you have something to say)
+summary:  Per design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5 packet B2: absorb
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
 
 ## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
@@ -654,6 +654,16 @@ kind:     task
 blocked:  built + offline-validated (dotnet build 0/0, validate_patch 0/0), needs a live quicktest to verify the per-tier need/work gating and the deformat-sapient thought — commit b81a023b
 summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
 prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
+
+## DROIDWORKS_MODULE_ABSORB_1 Absorb KotOR's six-slot droid module apparel as RSW_DW_Module_* (loot-only, no recipes)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  absorbed + validate_patch 0/0, needs a live quicktest to confirm a KotOR kind spawns wearing its modules -- commit c6b9b7d9
+summary:  Per design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5 packet B2: absorb
+prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
 
 ## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
 state:    doing  (BLOCKED)
