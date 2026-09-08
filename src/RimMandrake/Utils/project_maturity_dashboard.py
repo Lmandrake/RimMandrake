@@ -685,6 +685,7 @@ document.getElementById("stamp").textContent =
   t.appendChild(tile(gs.ticked, "/"+gs.total, "goal-sheet boxes"));
   t.appendChild(tile(cr.clean, "/"+cr.total, "files review-clean", ""));
   t.appendChild(tile((lg.openItems!=null?lg.openItems:"—"), lg.openBugs!=null?"("+lg.openBugs+" bugs)":"", "open ledger items"));
+  t.appendChild(tile((lg.needsOwner!=null?lg.needsOwner:"—"), "", "open items needing you", lg.needsOwner?"yellow":""));
 })();
 
 /* ---- ladders ---- */
@@ -719,7 +720,7 @@ function renderLadder(mountId, counts, ladder, ramp){
 renderLadder("functionBars", DATA.functionCounts, FLADDER, RAMPF);
 renderLadder("contentBars", DATA.contentCounts, CLADDER, RAMPC);
 document.getElementById("functionWeight").textContent =
-  "equal weight per system; “done” is played AND final on the same system.";
+  DATA.weighting + " — “done” is played AND final on the same system.";
 
 /* ---- tier rollup: one 100% stacked bar per tier, segments = function rungs ---- */
 (function(){
@@ -985,6 +986,8 @@ drawRegression("regContent", "legContent", DATA.regression, CLADDER, STROKEC, "c
     gs.ticked+"/"+gs.total+" boxes ticked — GOAL_SHEET.md, as-is";
   gs.sections.forEach(sec=>{
     const row = el("div", {"class":"gsrow"});
+    if(sec.items && sec.items.length)
+      row.title = sec.items.map(it=>(it.ticked?"☑ ":"☐ ")+it.text).join("\n");
     row.appendChild(el("span", {style:"overflow:hidden;text-overflow:ellipsis;white-space:nowrap"},
       [sec.n+". "+sec.title]));
     const bg = el("div", {"class":"barbg"});
@@ -1009,6 +1012,7 @@ drawRegression("regContent", "legContent", DATA.regression, CLADDER, STROKEC, "c
   mount.appendChild(tile(cr.clean, "clean", "green"));
   mount.appendChild(tile(cr.dirty, "dirty", cr.dirty?"":"green"));
   mount.appendChild(tile(cr.recidivists, "clean→dirty again"));
+  if(cr.unknown) mount.appendChild(tile(cr.unknown, "unknown state", "red"));
   mount.appendChild(tile(cr.total, "recorded"));
   const dl = document.getElementById("dirtyList");
   (cr.dirtyPaths||[]).forEach(p=>dl.appendChild(el("div", {"class":"mono", title:p}, [p])));
@@ -1023,7 +1027,8 @@ drawRegression("regContent", "legContent", DATA.regression, CLADDER, STROKEC, "c
     tip.appendChild(el("div", {"class":"t"}, [s.label||s.system]));
     tip.appendChild(el("div", {"class":"m"},
       [(s.tier||"tier unknown")+" / "+s.system+" · "
-       +(s.functionRung||"—")+" × "+(s.contentRung||"—")]));
+       +(s.functionRung||"—")+" × "+(s.contentRung||"—")
+       +(s.updatedAt?" · set "+s.updatedAt.slice(0,10)+(s.updatedBy?" by "+s.updatedBy:""):"")]));
     tip.appendChild(el("div", {"class":"d"},
       [s.blurb || "No description in this mod's About.xml yet."]));
     if(s.blocked && s.blocked.length)
