@@ -189,3 +189,36 @@ even the worst fine-part outcome, not just below Standard/Superior.
 - Junker `combatPower 20` (G2 mirrors the house `99999` utility-droid
   sentinel already used by DUM/FX7/MSE/SalvageAssist — not independently
   re-derived, just matched).
+
+## FOUNDRY, 2026-09-08 later — live spot-check, one real bug found and fixed
+
+Picked back up once the bridge freed (the A2 full-list restart this item's
+own write-up was waiting on finished and closed separately). Minimal-list
+quicktest:
+
+- **`RSW_DW_Part_Frame_Primitive` and `RSW_DW_Head_Primitive` spawn clean.**
+- **`RSW_DW_Primitive_G2` and `RSW_DW_Primitive_Junker` spawn clean**,
+  Humanlike, correct bodySize (0.75 / 0.6).
+- **Killed a G2 — it drops Primitive-tier parts**, confirmed distinct from
+  standard salvage (`RSW_DW_Part_{Frame,Sensor,Servo,PowerCell}_Primitive`
+  in one death, none of the donor-grade `RSW_DW_Part_*` without the
+  `_Primitive` suffix) — the `chassisClass 7` legal-set wiring in
+  `CompDWPartDropper.LegalSetFor` works as built.
+- 🔴 **Real bug, caught on THIS session's first full-list load (not this
+  item's own minimal-list checks, which never surface it — validate_patch.py
+  didn't either):** `Config error in RSW_DW_Race_Primitive_G2: ends with a
+  numerical digit, which is not allowed on ThingDefs.` A genuine vanilla
+  constraint on `ThingDef` (which `AlienRace.ThingDef_AlienRace` is)
+  defNames, three occurrences per load plus two auto-generated corpse defs
+  inheriting the same bad name (`Corpse_RSW_DW_Race_Primitive_G2`,
+  `UnnaturalCorpse_RSW_DW_Race_Primitive_G2`). Fixed: renamed the race
+  defName to `RSW_DW_Race_Primitive_G2Unit` (`Races_Primitive.xml`,
+  `PawnKinds_Primitive.xml` — the only two files referencing it). Confirmed
+  gone on a fresh load, and the kind still spawns correctly under the new
+  name. Commit `7ccec154`.
+- **Did not re-attempt driving the memory-wipe/assembly bills to completion
+  for this item** — out of this item's own scope; see
+  `DROIDWORKS_WIPE_SEVERITY_1`'s own item file for that class of finding.
+
+**Still owed, unchanged from above**: real G2 sprite art, the
+owner-facing savegame. Item stays `doing`+blocked.
