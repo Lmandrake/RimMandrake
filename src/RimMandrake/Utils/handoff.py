@@ -136,14 +136,24 @@ def previous_handoff():
 
 
 def open_this_window(since_ts):
-    """Items this seat started in the window and has not closed."""
-    ev = events()
-    closed = {e.get("id") for e in ev
-              if e.get("event") in ("close", "block", "drop", "supersede")}
-    return sorted({e["id"] for e in ev
-                   if e.get("event") == "start" and e.get("seat") == seat()
-                   and (since_ts is None or (e.get("ts") or "") > since_ts)
-                   and e.get("id") not in closed})
+    """Items this seat started in the window and has not closed since.
+
+    ⚠️ "has not closed" means since the item's OWN most recent start, not
+    ever. An id blocked back in August and unblocked-and-restarted this
+    window is open now — a close/block/drop/supersede from a PRIOR spell
+    must not suppress it. Determined from the id's latest lifecycle event
+    (start/close/block/drop/supersede) in chronological order, not from
+    "does a terminal event exist anywhere in this id's history."
+    """
+    s = seat()
+    last_lifecycle: dict[str, tuple[str, str, str]] = {}
+    for e in sorted(events(), key=lambda x: x.get("ts") or ""):
+        kind = e.get("event")
+        if kind in ("start", "close", "block", "drop", "supersede"):
+            last_lifecycle[e.get("id")] = (kind, e.get("ts") or "", e.get("seat"))
+    return sorted(id_ for id_, (kind, ts, start_seat) in last_lifecycle.items()
+                  if kind == "start" and start_seat == s
+                  and (since_ts is None or ts > since_ts))
 
 
 def gates(since_ts=None, handoff_path=None, doing_is_fatal=True):

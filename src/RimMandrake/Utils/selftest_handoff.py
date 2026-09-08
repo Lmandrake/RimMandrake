@@ -148,6 +148,29 @@ else:
     check(picked_name is None,
           "with no committed handoff it returns nothing rather than guessing")
 
+print("handoff: a block/close from a PRIOR spell must not hide a later restart")
+# DROID_TILES_SOURED_TERRAIN_1 lived this for real: blocked in August, unblocked
+# and restarted by FOUNDRY on 2026-09-03, never closed since -- but the first
+# draft of open_this_window() excluded any id with a close/block/drop/supersede
+# ANYWHERE in its history, so a live "doing" item vanished from the gate.
+_fake_events = [
+    {"id": "REOPENED_ITEM_1", "event": "block", "seat": "FOUNDRY", "ts": "2026-01-01T00:00:00Z"},
+    {"id": "REOPENED_ITEM_1", "event": "unblock", "seat": "FOUNDRY", "ts": "2026-01-02T00:00:00Z"},
+    {"id": "REOPENED_ITEM_1", "event": "start", "seat": "FOUNDRY", "ts": "2026-01-02T00:00:01Z"},
+]
+_orig_events, _orig_seat = handoff.events, handoff.seat
+handoff.events = lambda: _fake_events
+handoff.seat = lambda: "FOUNDRY"
+try:
+    check("REOPENED_ITEM_1" in handoff.open_this_window(None),
+          "a restarted-after-block id is open, not suppressed by its old block")
+    check("REOPENED_ITEM_1" in handoff.open_this_window("2026-01-01T12:00:00Z"),
+          "and it counts as started IN a window that only covers the restart")
+    check("REOPENED_ITEM_1" not in handoff.open_this_window("2026-01-03T00:00:00Z"),
+          "but not in a window that starts after the restart itself")
+finally:
+    handoff.events, handoff.seat = _orig_events, _orig_seat
+
 print("handoff: an empty window is ALREADY HANDED OFF, not a second handoff")
 # The say-once rule. A window whose start is in the future contains nothing by
 # construction, so window_is_empty must agree -- and must NOT agree when there
