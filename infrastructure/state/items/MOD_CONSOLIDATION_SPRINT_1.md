@@ -32,3 +32,27 @@ explicitly re-parked with reason.
 ## Criteria
 All 103 map rows executed or re-parked; counts reconcile; owner told
 scheduling was his call — do not start without his go.
+
+## Game-down window runbook — prepared 2026-09-08 (BENCH)
+
+15 dying ids are ACTIVE in live ModsConfig (MEASURED against the live file).
+Swap old→new (dedupe after — several map to one destination):
+```
+mandrake.rut.factionslate -> mandrake.rut.patches
+mandrake.rsw.beastnorm -> mandrake.rsw.swbestiary
+mandrake.rsw.seabeasts -> mandrake.rsw.swbestiary
+mandrake.rm.sauridfrillfix -> mandrake.rm.patches
+mandrake.rm.gravshipastronautfix -> mandrake.rm.patches
+mandrake.rm.toolbeltfix -> mandrake.rm.patches
+mandrake.rsw.blastdoorframeasyncfix -> mandrake.rsw.patches
+mandrake.rm.researchkiteastfix -> mandrake.rm.patches
+mandrake.rm.desertvehiclereskin -> mandrake.rsw.desertvehiclereskin
+mandrake.rsw.jawaikee -> mandrake.rsw.swbestiary
+mandrake.rsw.fireecology -> mandrake.rm.pyrelands
+mandrake.rut.fireecology -> mandrake.rut.fireecology
+mandrake.rm.salvageclaim -> mandrake.rm.property
+mandrake.rm.theft_hauler -> mandrake.rm.property
+mandrake.rut.shell -> mandrake.rut.menushell
+```
+Then: deploy_custom_mods.py plan → --apply; refresh.py; minimal-list load proof.
+Game must be DOWN for the swap+deploy (ModsConfig describes the NEXT load).

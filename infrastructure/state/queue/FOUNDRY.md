@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T23:56:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T23:57:03Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1158,3 +1158,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CHRONICLE_NINEFOLD_DECOUPLE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
+
+## MANYWATERS_GENERIC_SPLIT_1 ManyWaters is not generic yet: RiverSteamHook.cs hardcodes ZBiome_Grasslands — split the Ashkarr wiring out as a RUT patch/data hook (C#)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MANYWATERS_GENERIC_SPLIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MANYWATERS_GENERIC_SPLIT_1.md
+
+## NAMESPACE_RETIER_PASS_1 C# namespace re-tier pass: RiverSteamHook → RimMandrake.ManyWaters, RimMandrake.DesertVehicleReskin → RimMandrake.StarWars.* — namespace+XML Class attrs+rebuild in one change (INHABITED lesson; model=opus)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NAMESPACE_RETIER_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NAMESPACE_RETIER_PASS_1.md
