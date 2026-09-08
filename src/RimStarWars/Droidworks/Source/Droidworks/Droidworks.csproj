@@ -68,6 +68,9 @@
     <Compile Include="DroidworksHardwareQuirks.cs" />
     <Compile Include="DroidworksModExtension.cs" />
     <Compile Include="HediffComp_DWBoltResentment.cs" />
+    <!-- DROIDWORKS_WILD_DROIDS_1 (packet E4): the factionless crashed-droid
+         incident, plus its XML-side pool extension. -->
+    <Compile Include="IncidentWorker_WildDroidCrash.cs" />
     <Compile Include="HediffComp_DWBoltShear.cs" />
     <Compile Include="HediffComp_DWWipeStumble.cs" />
     <Compile Include="HediffComp_IonOverloadsDroid.cs" />

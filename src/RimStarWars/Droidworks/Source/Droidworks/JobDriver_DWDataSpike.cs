@@ -67,13 +67,16 @@ namespace RimMandrake.StarWars.Droidworks
             {
                 if (jobCondition != JobCondition.Succeeded) return;
                 Pawn target = Target;
-                if (target == null || target.Dead) return;
-                if (!(target.Downed || target.IsPrisoner)) return;
 
+                // DROIDWORKS_WILD_DROIDS_1 (packet E4): one shared legality
+                // test with the targeting UI, and the effect itself now lives
+                // on the comp because it is no longer always "flip the
+                // faction" - RSW_DW_DataSpike_Wild spends several spikes
+                // grinding recruitment resistance down before the flip.
                 CompDWDataSpike comp = Item?.TryGetComp<CompDWDataSpike>();
-                if (comp == null || !comp.MatchesFaction(target)) return;
+                if (comp == null || !comp.ValidTarget(target)) return;
 
-                target.SetFaction(Faction.OfPlayer, pawn);
+                comp.TryReprogram(target, pawn);
             });
 
             yield return Toils_Goto.GotoThing(ItemInd, PathEndMode.Touch);

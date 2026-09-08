@@ -1,3 +1,5 @@
+using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.StarWars.Droidworks
@@ -26,6 +28,29 @@ namespace RimMandrake.StarWars.Droidworks
         /// </summary>
         public bool factionless;
 
+        /// <summary>
+        /// DROIDWORKS_WILD_DROIDS_1 (packet E4). When true the spike refuses a
+        /// merely-DOWNED target and only works on a pawn already taken
+        /// prisoner. Set on RSW_DW_DataSpike_Wild because that spike runs on
+        /// recruitment resistance (below), and Pawn_GuestTracker.resistance is
+        /// only initialised by CapturedBy -> SetGuestStatus(Prisoner); before
+        /// capture it is the -1 sentinel, i.e. "no resistance value exists
+        /// yet". The faction-keyed spikes leave this false and stay usable in
+        /// the field on a downed droid, exactly as before.
+        /// </summary>
+        public bool requiresPrisoner;
+
+        /// <summary>
+        /// DROIDWORKS_WILD_DROIDS_1 (packet E4). 0 (the default, and what every
+        /// faction-keyed spike leaves it at) = the original behaviour: one use,
+        /// instant faction flip. Above 0 = "reprogram-as-recruit with
+        /// resistance": each use chews this much (times a spiker-skill factor)
+        /// off the target's vanilla recruitment resistance, and the flip only
+        /// happens on the use that takes it to zero. The spike is consumed
+        /// either way, so a stubborn droid costs several.
+        /// </summary>
+        public float resistancePerUse;
+
         public CompProperties_DWDataSpike()
         {
             compClass = typeof(CompDWDataSpike);
@@ -47,6 +72,86 @@ namespace RimMandrake.StarWars.Droidworks
             if (Props.factionless) return target.Faction == null;
             if (target.Faction?.def == null || Props.spikeFaction.NullOrEmpty()) return false;
             return target.Faction.def.defName == Props.spikeFaction;
+        }
+
+        /// <summary>
+        /// The whole legality test for a spike target, in one place so the
+        /// targeting UI (CompTargetable_DWDataSpike) and the job's own re-check
+        /// at completion (JobDriver_DWDataSpike) cannot drift apart.
+        /// </summary>
+        public bool ValidTarget(Pawn target)
+        {
+            if (target == null || target.Dead) return false;
+            if (!(target.Downed || target.IsPrisoner)) return false;
+            if (Props.requiresPrisoner && !target.IsPrisoner) return false;
+            return MatchesFaction(target);
+        }
+
+        /// <summary>
+        /// DROIDWORKS_WILD_DROIDS_1 (packet E4). Applies one spike to a legal
+        /// target. Returns true only if the droid actually changed hands.
+        ///
+        /// With resistancePerUse == 0 this is the original single-use flip.
+        /// Above 0 it is the resistance loop: the vanilla prisoner recruitment
+        /// resistance the engine already rolled on capture (from the kind's
+        /// initialResistanceRange - Patches/PawnKind_HumanoidDroidResistanceWill
+        /// .xml gives every RSW_DW_ kind 10~20) is the thing being worn down,
+        /// so the prisoner tab's existing "recruitment resistance" readout is
+        /// the progress bar and nothing new has to be scribed or drawn.
+        /// Faction change goes through Pawn.SetFaction, which itself calls
+        /// guest.SetGuestStatus(null) first - so the droid stops being a
+        /// prisoner and becomes a colonist in one call, and that call is
+        /// null-Faction-safe (FactionUtility.HostileTo is an extension method
+        /// that returns false for a null 'this').
+        /// </summary>
+        public bool TryReprogram(Pawn target, Pawn spiker)
+        {
+            if (target == null || target.Dead) return false;
+
+            if (Props.resistancePerUse > 0f && target.guest != null)
+            {
+                if (target.guest.resistance < 0f)
+                {
+                    // Sentinel: never captured, so no resistance was ever rolled.
+                    // requiresPrisoner should have stopped us getting here; roll
+                    // one rather than silently treating "unset" as "zero left".
+                    target.guest.resistance =
+                        target.kindDef?.initialResistanceRange?.RandomInRange ?? 10f;
+                }
+
+                target.guest.resistance =
+                    Mathf.Max(0f, target.guest.resistance - Props.resistancePerUse * SkillFactor(spiker));
+
+                if (target.guest.resistance > 0f)
+                {
+                    Messages.Message(
+                        "The spike is rejected. " + target.LabelShortCap +
+                        " fights the overwrite - " + target.guest.resistance.ToString("F0") +
+                        " resistance left.",
+                        target, MessageTypeDefOf.NeutralEvent, historical: false);
+                    return false;
+                }
+            }
+
+            if (target.Faction == Faction.OfPlayer) return false;
+            target.SetFaction(Faction.OfPlayer, spiker);
+            Messages.Message(
+                target.LabelShortCap + " has been reprogrammed and now answers to you.",
+                target, MessageTypeDefOf.PositiveEvent, historical: false);
+            return true;
+        }
+
+        /// <summary>
+        /// How hard the spiker bites: 0.5x at Intellectual 0, 1.0x at 10,
+        /// 1.5x at 20. Intellectual rather than Social because nobody is
+        /// talking the droid round - Patches/PawnKind_HumanoidDroidResistance
+        /// Will.xml's own header already rules that droids are not talked down
+        /// like a human prisoner.
+        /// </summary>
+        private static float SkillFactor(Pawn spiker)
+        {
+            int level = spiker?.skills?.GetSkill(SkillDefOf.Intellectual)?.Level ?? 0;
+            return 0.5f + 0.05f * level;
         }
     }
 }
