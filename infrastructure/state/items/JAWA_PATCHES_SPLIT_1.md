@@ -82,3 +82,11 @@ confirm the live campaign still loads clean) needs the owner's review of
 the 12 straddle calls first, plus a verification window this session
 doesn't have (the AFK instruction was explicit: unfinished work becomes
 a normal item, not a rushed finish). Left `doing`.
+
+## Superseded execution route — 2026-09-08 (BENCH, owner present)
+The physical split this item owed now executes INSIDE the consolidation
+sprint: MOD_NAMING_CONSOLIDATION_AUDIT_1 (rulings section, 2026-09-08).
+Its triage guidance (Ashkarr/Rakata/DeepDesert/Pyrelands → RUT; animal/
+texture/generic → RSW or RM; the six straddle extractions incl. JawaVoice
+campaign lines) feeds the consolidation map. Do not start the split
+standalone — it rides the map the owner reviews.
