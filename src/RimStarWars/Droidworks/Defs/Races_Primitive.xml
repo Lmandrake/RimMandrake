@@ -55,8 +55,16 @@
   </AlienRace.ThingDef_AlienRace>
 
   <!-- ========================================================================
-       RSW_DW_Race_Primitive_G2 — "the one chassis the Jawa build whole"
-       (§1.3). Frame, limbs, sensors, claws all Primitive-tier
+       RSW_DW_Race_Primitive_G2Unit — "the one chassis the Jawa build whole"
+       (§1.3). 🔴 FIXED live 2026-09-08 (full-list confirming load): the
+       original defName RSW_DW_Race_Primitive_G2 ("...G2") logged "Config
+       error... ends with a numerical digit, which is not allowed on
+       ThingDefs" - a real vanilla ThingDef constraint, not caught by
+       validate_patch.py or a build. Renamed with a letter suffix; no other
+       def references the old name (DroidAssembly.KindForHeadDef keys off
+       RSW_DW_Head_Primitive and the PawnKindDef, never the race defName
+       directly).
+       Frame, limbs, sensors, claws all Primitive-tier
        (Parts_Droidworks_Primitive.xml); the head/brain is still the SAME
        imported-brain economy every other family uses (ruling 6 - "the
        brain, which they can't do at all ever" is universal, not
@@ -81,7 +89,7 @@
        as "junk", pending the real G2 palette).
   ======================================================================== -->
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Primitive">
-    <defName>RSW_DW_Race_Primitive_G2</defName>
+    <defName>RSW_DW_Race_Primitive_G2Unit</defName>
     <label>G2 repair droid</label>
     <description>A goose-necked repair droid the Jawa built whole - tube-and-plate frame, claw hands, three-toed feet, exposed cabling, twin lamp-eye photoreceptors on a stalk neck. Every part but the brain is their own crude work.</description>
     <race>
