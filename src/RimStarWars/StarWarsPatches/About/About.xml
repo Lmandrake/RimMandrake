@@ -30,5 +30,12 @@
     <li>7f.alienworlds.tidallylocked</li>                   <!-- JawaWorld_BiomeMix.xml patches its PlanetTypeDef -->
     <li>7f.alienworlds</li>                                 <!-- the framework that def's fields belong to -->
       <li>mandrake.rm.patches</li>
+
+    <!-- Carried in by MOD_CONSOLIDATION_PATCHES_FOLD_1 (2026-09-08): each is
+         the fix-target donor of a fix mod folded into this Patches/ tree.
+         A fold that loses its donor's loadAfter silently no-ops.
+         Neronix17.OuterRim.GalacticDiversity is CereanManeFix's fix target
+         and was already present above - no addition needed for it. -->
+    <li>Lumi.doorsexpanded</li>                             <!-- Patches/BlastDoorFrameAsyncFix textures - fix target -->
   </loadAfter>
 </ModMetaData>
