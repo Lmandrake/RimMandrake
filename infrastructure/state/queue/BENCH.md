@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T16:10:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T16:34:55Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## SHEET_SUBMEASURE_REFRESH_1 Region-level + landform-level sheet breakdowns are stale and not derivable from the per-def instrument: cracked_lands landform mix, fever_wood 47/60, pyrelands flat/rain fractions, deep_desert region table, wasteland three-family table, weeping/webwork hilliness; needs a region+landform measurement pass
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/SHEET_SUBMEASURE_REFRESH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SHEET_SUBMEASURE_REFRESH_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -54,6 +45,15 @@ kind:     task
 summary:  1. Examine the Tribble module (find its workshop folder by About.xml name scan; it is
 prose:    infrastructure/state/items/GIZKA_TRIBBLE_ADAPTATION_1.md
 
+## MUTATION_MODIFIERS_SURVEY_1 Survey every mutation-type system in the stack (Biotech genes, mutagen part-hediffs, SlurryHigh, transformation hediffs) to build Contagion-touched — never an upgrade
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  - Inventory, from the live def dump + mod XML (never guess a defName):
+prose:    infrastructure/state/items/MUTATION_MODIFIERS_SURVEY_1.md
+
 ## BIOME_FREEZE_FABLE_REVIEW_1 Full-scale Fable review of ALL biomes together before the freeze — temps, physics, weather, precipitation, dust/sand/ash, fuel/wood/animal/meat/growth, diseases — BLOCKED until every biome sheet is finished; pre-assignment, not final check-out
 state:    doing
 row:      unassigned
@@ -62,6 +62,51 @@ target:   v1
 kind:     task
 summary:  BIOMEFREEZEFABLEREVIEW1 — full-scale Fable review of ALL biomes together, before the freeze
 prose:    infrastructure/state/items/BIOME_FREEZE_FABLE_REVIEW_1.md
+
+## CRYSTAL_MODS_INGEST_1 Find the orange glowing crystal's source mod; inventory every crystal harvest in the stack; assess ingesting it so all crystals live in the Lantern Deeps
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  - Identify the mod: which import ships the orange glowing crystal (candidates to
+prose:    infrastructure/state/items/CRYSTAL_MODS_INGEST_1.md
+
+## ALPHA_FAMILY_SOURCE_REVIEW_1 Study the whole Alpha family from its public source (github.com/juanosarg/AlphaBiomes + AlphaAnimals): catalog the C# mechanics, replicate the ones worth owning as generic comps (active-defender plants, terrain attacks, sensor fog), broaden the concepts for Ash'karr
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  1. Inventory the family: which Alpha mods are in our stack (ModsConfig, MEASURED) and
+prose:    infrastructure/state/items/ALPHA_FAMILY_SOURCE_REVIEW_1.md
+
+## ANCIENT_RUINS_MOD_AUDIT_1 Deep audit of the ancient-ruins mod (the mall-maps one — identify exact packageId from the live list first): anything redeemable? full ThingDef inventory triage; and study HOW it generates its maps/items before any removal decision
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  ANCIENTRUINSMODAUDIT1 — the mall-maps mod: cut, keep, or learn from
+prose:    infrastructure/state/items/ANCIENT_RUINS_MOD_AUDIT_1.md
+
+## STAGED_LORE_DESCRIPTIONS_1 Engine feasibility: scenario-driven staged descriptions - biome/terrain/def texts that change as lore reveal gates open; Scarlands P/GM ladder is the first consumer (BENCH-filed from the owner's musing, not a ruling)
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  STAGEDLOREDESCRIPTIONS1 — descriptions that change as the story is learned
+prose:    infrastructure/state/items/STAGED_LORE_DESCRIPTIONS_1.md
+
+## BIOME_FLORA_ROSTER_GAP_1 biome_flora.py's own --check finds 2 stale + 8 unrostered placed biomes (HorrorWastes, BMT_CrystalCaverns dead; BiomeGRimond/RUT_TheScald/RUT_PropaneLake/RUT_NightsideIce/RUT_GreySea/RUT_TwilightSea/BiomeCypreJungle/COMIGO_GreaterSwamp_Tropical unrostered)
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  - Two stale entries to remove/reconcile: HorrorWastes (dissolved into other biomes
+prose:    infrastructure/state/items/BIOME_FLORA_ROSTER_GAP_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -129,16 +174,6 @@ thin:     no ## criteria
 summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
 prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
 
-## MUTATION_MODIFIERS_SURVEY_1 Survey every mutation-type system in the stack (Biotech genes, mutagen part-hediffs, SlurryHigh, transformation hediffs) to build Contagion-touched — never an upgrade
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Inventory, from the live def dump + mod XML (never guess a defName):
-prose:    infrastructure/state/items/MUTATION_MODIFIERS_SURVEY_1.md
-
 ## MECHANOID_BIOME_PRESENCE_REVIEW_1 Review which biomes contain mechanoids and ancient dangers — not all should; the two magnetic poles (Rust Cathedral, the antistellar war lab) by ruling, everything else argued
 state:    proposed
 row:      unassigned
@@ -159,16 +194,6 @@ thin:     no ## criteria
 summary:  - Write the ruling INTO the docs that already speak of the planet's past (superseding
 prose:    infrastructure/state/items/TERRAMANUFACTURE_CANON_1.md
 
-## CRYSTAL_MODS_INGEST_1 Find the orange glowing crystal's source mod; inventory every crystal harvest in the stack; assess ingesting it so all crystals live in the Lantern Deeps
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Identify the mod: which import ships the orange glowing crystal (candidates to
-prose:    infrastructure/state/items/CRYSTAL_MODS_INGEST_1.md
-
 ## KYBER_TRADE_PLOT_1 Selling kyber: Empire heat rises per sale, Hutt interest rises, alleged Jedi from the Moisture Farmers, the donate-and-smuggle plot (no helping the Rebellion here)
 state:    proposed
 row:      unassigned
@@ -188,16 +213,6 @@ kind:     task
 thin:     no ## criteria
 summary:  - Reconcile with existing canon: the Rust Cathedral (ABMechanoidIntrusion, the
 prose:    infrastructure/state/items/MECHANOID_ORIGIN_CANON_1.md
-
-## ALPHA_FAMILY_SOURCE_REVIEW_1 Study the whole Alpha family from its public source (github.com/juanosarg/AlphaBiomes + AlphaAnimals): catalog the C# mechanics, replicate the ones worth owning as generic comps (active-defender plants, terrain attacks, sensor fog), broaden the concepts for Ash'karr
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  1. Inventory the family: which Alpha mods are in our stack (ModsConfig, MEASURED) and
-prose:    infrastructure/state/items/ALPHA_FAMILY_SOURCE_REVIEW_1.md
 
 ## SETTLEMENT_REJIGGER_ROUND2_1 Round-2 rejigger: re-shift every settlement to fit the pre-frozen biomes — right AFTER BIOME_FREEZE_FABLE_REVIEW_1, BEFORE the animal/plant assignment; every move carded to the owner
 state:    proposed
@@ -309,16 +324,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SHOKKWEAVE_SOLE_SOURCE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
 
-## ANCIENT_RUINS_MOD_AUDIT_1 Deep audit of the ancient-ruins mod (the mall-maps one — identify exact packageId from the live list first): anything redeemable? full ThingDef inventory triage; and study HOW it generates its maps/items before any removal decision
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  ANCIENTRUINSMODAUDIT1 — the mall-maps mod: cut, keep, or learn from
-prose:    infrastructure/state/items/ANCIENT_RUINS_MOD_AUDIT_1.md
-
 ## SCARLANDS_MECHANICS_1 Scarlands C# kit: mynock ship-infestation (board/breed/eat conduit+flooring+lighting/hunt-out), Scarlands mark hediff, plated-grazer scaria onset, Sentinel defend-only AI bounds, pre-sprung danger dressing — spec the_scarlands.md
 state:    proposed
 row:      unassigned
@@ -328,16 +333,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SCARLANDS_MECHANICS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SCARLANDS_MECHANICS_1.md
-
-## STAGED_LORE_DESCRIPTIONS_1 Engine feasibility: scenario-driven staged descriptions - biome/terrain/def texts that change as lore reveal gates open; Scarlands P/GM ladder is the first consumer (BENCH-filed from the owner's musing, not a ruling)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  STAGEDLOREDESCRIPTIONS1 — descriptions that change as the story is learned
-prose:    infrastructure/state/items/STAGED_LORE_DESCRIPTIONS_1.md
 
 ## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
 state:    proposed
