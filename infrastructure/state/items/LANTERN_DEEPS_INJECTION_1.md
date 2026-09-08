@@ -33,6 +33,25 @@ biome; it is an injected cave-map layer beneath any nightside map with biome tem
    BiomeDef's generation properties (isCavern, weather, incidents) — never its own
    worker/placement path. This is now a concrete design decision, not open research;
    next step is the Odyssey `PocketMapParent` API itself.
+   ⭐ **BUILT 2026-09-07**: `src/RimUtinni/LanternDeeps/` ships `RUT_LanternDeepGenerator`
+   (MapGeneratorDef, pocket map biome=`BMT_CrystalCaverns`), `RUT_LanternDeepEmergence`
+   (natural-emergence portal ThingDef, `thingClass MapPortal`, `CompProperties_Sealable`
+   collapse hazard, placeholder art), `RUT_LanternDeepEmergence_Scatter`
+   (`GenStep_ScatterCavePortal`, new C#, self-gates to `BiomeGRimond`/`RUT_NightsideIce`/
+   `RUT_PropaneLake` at an 8%-per-map placeholder rarity), added globally onto
+   `MapCommonBase` via patch. Builds clean, `validate_patch.py` passes 0 errors against
+   both the frozen official dump and the live 599-mod set. **Ruined-mineshaft entrance
+   (item spec 2b) NOT built yet** — deferred, needs KCSG/scene-composition authoring.
+   ⚠️ **Quicktest attempt 2026-09-07 crashed the game**: added
+   `m00nl1ght.GeologicalLandforms` + `BiomesTeam.BiomesCaverns` + `mandrake.rut.lanterndeeps`
+   to the 25-mod minimal list but forgot Biomes! Caverns' own hard dependency
+   **`BiomesTeam.BiomesCore`** — its absence broke `BiomesCore.DefModExtensions.*` type
+   resolution (`Song_MapRestrictions` etc.), which cascaded into a NullReferenceException
+   in `RecipeDefGenerator.SetIngredients` during implied-def generation and triggered
+   RimWorld's own recovery-reset (mod list wiped to Core+expansions). No save/world data
+   lost — only the live `ModsConfig.xml` was affected, since restored by `modlist_swap.py`.
+   **Next bridge session**: add `BiomesTeam.BiomesCore` to the mod list alongside the
+   other two before relaunching, then retry the quicktest.
 2. **Entrances as map-transition features** (caverns sitting: same category as
    DeepRim/Z-Levels shafts): (a) **natural emergence** — lanternstone breaking the
    surface, lit from below; (b) **old mineshaft inside a ruined mining facility** —
