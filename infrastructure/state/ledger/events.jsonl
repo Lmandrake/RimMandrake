@@ -6023,3 +6023,7 @@
 {"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_PRIMITIVE_TIER_1","ts":"2026-09-08T19:27:41Z"}
 {"seat":"FOUNDRY","event":"block","id":"DROIDWORKS_PRIMITIVE_TIER_1","reason":"mechanics built and committed at 5c80b1797677af906691d2d0f5dd331eb17f318e, G2 art + live savegame verify owed to a parent session","ts":"2026-09-08T19:28:52Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_FULL_LIST_COEXIST_1","sha":"3b970039e295b8627d2a6cb33e7b7f8586710ef6","ts":"2026-09-08T19:31:37Z"}
+{"seat":"FOUNDRY","event":"note","id":"NINEFOLD_DEBUG_GAME_READY_CRASH_1","text":"2026-09-08 FOUNDRY: second full-list start_debug_game_ready misbehavior, different symptom - process did NOT crash (confirmed alive via Get-Process) but get_game_info threw System.InvalidCastException at Find.get_MapUI()/get_Selector() repeatedly for 15s+ after the call itself timed out client-side at 30s. Did not wait it out; killed and swapped to the minimal list instead (proven-safe workflow) rather than risk it. Not investigated further - flagging as corroborating evidence that start_debug_game_ready is unreliable on the full 600-mod list, this time without an outright crash.","ts":"2026-09-08T19:33:21Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T19:39:29Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"one more B10 live-completion attempt (Doctor work priority)","ts":"2026-09-08T19:40:48Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T19:42:44Z"}
