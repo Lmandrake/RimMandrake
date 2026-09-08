@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: Lantern Deeps</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.lanterndeeps</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Ships the persistent underground "Lantern Deeps" cave-map dungeon layer (LANTERN_DEEPS_INJECTION_1, design/Jawa/worldbuilding/biomes/the_lantern_deeps.md): a natural-emergence entrance building that appears on qualifying nightside/cold-biome maps and, when entered, generates a permanent pocket map using Biomes! Caverns' BMT_CrystalCaverns biome def. This mod depends on Biomes! Caverns for the biome def itself - it does not ship any cave biome, crystal formations, or cavern-shape logic of its own. Also ships RUT_LanternDeepEmergence (the natural-emergence entrance ThingDef) and the GenStep that scatters it onto qualifying host maps.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>BiomesTeam.BiomesCaverns</packageId>
+      <displayName>Biomes! Caverns</displayName>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>BiomesTeam.BiomesCaverns</li>
+    <li>m00nl1ght.GeologicalLandforms</li>
+  </loadAfter>
+</ModMetaData>

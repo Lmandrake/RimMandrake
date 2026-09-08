@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <MapGeneratorDef>
+    <defName>RUT_LanternDeepGenerator</defName>
+    <label>lantern deeps</label>
+    <isUnderground>true</isUnderground>
+    <forceCaves>true</forceCaves>
+    <ignoreAreaRevealedLetter>true</ignoreAreaRevealedLetter>
+    <disableCallAid>true</disableCallAid>
+    <pocketMapProperties>
+      <biome>BMT_CrystalCaverns</biome>
+      <temperature>17</temperature>
+    </pocketMapProperties>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>MutatorPostElevationFertility</li>
+      <li>Underground_RocksFromGrid</li>
+      <li>Terrain</li>
+      <li>MutatorPostTerrain</li>
+      <li>RockChunks</li>
+      <li>BMT_CrystalsGenerator</li>
+      <li>PlaceCaveExit</li>
+      <li>Plants</li>
+      <li>MutatorFinal</li>
+      <li>Fog</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+</Defs>
