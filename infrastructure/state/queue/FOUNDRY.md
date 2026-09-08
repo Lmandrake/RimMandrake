@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T23:19:44Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-08T23:25:34Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1155,3 +1155,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Owner, 2026-09-08 (verbatim on the consolidation sitting): "Some droid
 prose:    infrastructure/state/items/RIMPROPERTY_ANIMAL_THEFT_1.md
+
+## CHRONICLE_EVENT_SPINE_1 RimChronicle event spine spec: one-page event taxonomy + soft-hook API before the sprint; Property/Pursuit/Ninefold/Aftermath-rules become producers-consumers via MayRequire hooks (owner, 2026-09-08)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CHRONICLE_EVENT_SPINE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CHRONICLE_EVENT_SPINE_1.md
