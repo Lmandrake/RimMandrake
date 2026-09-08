@@ -41,6 +41,23 @@ A biome is a *reasoned intersection* of one regime and one anomaly. If you canno
 name both, the biome has no driving force and its art will drift ordinary — which
 is exactly what went wrong with the poison forest.
 
+## The lanes doctrine
+
+Travel on Ash'karr runs on **lanes**: in a hostile biome, safe movement is a
+named, ownable, contestable STRUCTURE, never open ground. The motif is
+deliberate and recurs across the sheets — the Fever Wood's **boughways**
+(canopy roads with tolls, the ground left to the brave and the poor,
+`the_fever_wood.md`), the Greentide's **root causeways** (the giants' roots
+are the road system, and the fights happen on it, `the_greentide.md`), the
+Sump's poured-tar **mouse-lines** (`the_sump.md`), the Grey Deep's **pillar
+navigation** (the masons' salt pillars as the only bearings in the murk,
+`the_grey_deep.md`), and the dayside's **oasis strings** (caravan travel
+pegged to water, the tirbak as its mount, `weeping_stones.md`). It is named
+here once so future content — quests, raids, roads, caravan events, dungeon
+approaches — **cites the motif rather than reinventing it**: when a new biome
+or mechanic needs movement, ask first *what is this biome's lane, who owns
+it, and what does walking off it cost?*
+
 ## The sheet template (nine fields)
 
 1. **What it is** — one paragraph, the place as a person would describe it.
