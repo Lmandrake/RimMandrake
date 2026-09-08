@@ -97,11 +97,34 @@ def main() -> int:
     ap.add_argument('--apply', action='store_true', help='write the CSVs; otherwise report only')
     a = ap.parse_args()
 
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from verify_frozen import warn_if_stale
+    warn_if_stale(TILES)
+
     with open(TILES, encoding='utf-8') as fh:
         rd = csv.DictReader(fh)
         tiles = list(rd)
         cols = rd.fieldnames
     X = {r['tile']: xyz(r) for r in tiles}
+
+    # 🔴 SUPERSEDED SINCE THIS SCRIPT WAS WRITTEN (2026-08-23). `WET`/`('Ocean',
+    # 'SeaIce')` are the vanilla sea biome names; LIQUID_BIOMES_MAP_1 (2026-09-07,
+    # ashkarr_three_seas.py) renamed the actual seas to RUT_TwilightSea/RUT_GreySea
+    # and Ocean now holds 0 live tiles. Re-running --apply today would (E1) treat
+    # up to 817 live sea tiles as "drained seabed" and repaint them to desert/scrub,
+    # stripping the biome LIQUID_BIOMES_MAP_1 deliberately created, and (E2) write
+    # the dead literal 'Ocean' back onto real SeaIce tiles. Refuse rather than
+    # silently corrupt the live map. See ASHKARR_NIGHTSIDE_LAYER_SUPERSEDED_1 for
+    # the sibling shape of this problem.
+    live_sea_as_drained = [r for r in tiles if r['region'] in DRAINED_REGIONS
+                           and r['biome'] in ('RUT_TwilightSea', 'RUT_GreySea')]
+    if live_sea_as_drained and a.apply:
+        print("🔴 REFUSED: %d tile(s) in Twilight Sea/Grey Sea now carry the renamed "
+              "live sea biomes (RUT_TwilightSea/RUT_GreySea), which WET/DRAINED_REGIONS "
+              "here still treat as 'drained seabed'. --apply would repaint live ocean. "
+              "See ASHKARR_NIGHTSIDE_LAYER_SUPERSEDED_1." % len(live_sea_as_drained),
+              file=sys.stderr)
+        return 1
 
     muts = {}
     with open(MUTS, encoding='utf-8') as fh:
