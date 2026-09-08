@@ -121,6 +121,46 @@ Two ways to settle it, in order of strength:
    is never checked. An agent correctly refused `FoggyMutator` on `Ocean` on exactly this
    reasoning after its probe appeared to succeed.
 
+## 8. ✅ `biomeWhitelist`/`biomeBlacklist` gate the WORLDGEN ROLL ONLY — repainting under a placed mutator is safe
+
+**Measured 2026-09-07 from the C# source, and it is the permissive half of §7.** §7 says a gate
+you cannot read is UNMEASURED. This one *was* read, and it turns out not to bind at all once a
+mutator is on the tile.
+
+`TileMutatorDef.biomeWhitelist` / `biomeBlacklist` are consulted in exactly one place —
+`TileMutatorDef.IsValidTile(PlanetTile, PlanetLayer)`:
+
+```csharp
+if (biomeWhitelistSet != null && !biomeWhitelistSet.Contains(primaryBiome)) return false;
+if (biomeBlacklistSet != null &&  biomeBlacklistSet.Contains(primaryBiome)) return false;
+```
+
+and `IsValidTile` is called **only from the worldgen assignment path** —
+`WorldGenStep_Mutators.TryAddMutator`, `WorldLandmarks`' `mutatorChance` rolls, and
+`LandmarkDef.IsValidTile`.
+
+⭐ **The map-generation path never re-checks the biome.** `MapGenerator` iterates
+`map.TileInfo.Mutators` directly to pull `extraGenSteps`, `preventGenSteps`,
+`terrainPatchMakers`, `additionalWildPlants` and the rest. `Tile.AddMutator` does not check
+either, and neither does the dev "add mutator" debug action.
+
+⇒ **You may repaint a tile's biome under an already-placed mutator without satisfying its
+whitelist.** This is what made a 10-tile lake-bed repaint safe on 2026-09-07: `ToxicLake` is
+whitelisted to 8 biomes not including `ZBiome_Badlands`, `AB_TarLakes` blacklists `AB_TarPits`,
+and both landed on exactly those biomes and generate normally.
+
+⛔ **One real exception.** `TileMutatorWorker_MixedBiome` — and only that worker — reuses
+`def.biomeWhitelist` inside its own `Init(Map)` at map generation to pick a neighbour biome. If
+the tile's biome is not in that list, `GetNeighbourTile` returns null, it logs *"No neighbour
+tile found for mixed biome tile"* and returns early **without setting `biomeGrid` or
+`secondaryBiome`** — silent degradation, not an error. Check for `MixedBiome` before repainting
+under it.
+
+🔑 The generalisation: **a def's declared constraint tells you where the GENERATOR would put
+it, not where it can FUNCTION.** Find the consuming call site before treating a whitelist as a
+constraint on your own hand placement — and before treating it as freedom, check no worker
+reads the field a second time.
+
 ---
 
 # Measured 2026-08-26, authoring ~11,000 mutators and 150 landmarks on Ash'karr
