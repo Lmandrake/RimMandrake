@@ -1,0 +1,15 @@
+# rimplace flat plan v1
+FOOTPRINT	0	0	16	12
+THING	KraytDragonSkull	10	3	0	-
+THING	KraytPearl	9	4	0	-
+THING	KraytDragonHorn	12	4	0	-
+THING	KraytDragonSkull	12	6	0	-
+THING	KraytDragonHorn	11	9	0	-
+THING	KraytDragonSkull	9	10	0	-
+THING	KraytDragonHorn	7	10	0	-
+THING	KraytDragonSkull	5	9	0	-
+THING	KraytPearl	6	8	0	-
+THING	KraytDragonHorn	4	6	0	-
+THING	KraytDragonSkull	4	4	0	-
+THING	KraytDragonHorn	6	3	0	-
+THING	KraytDragonSkull	8	6	0	-

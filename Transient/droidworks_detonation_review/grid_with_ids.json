@@ -1,0 +1,1397 @@
+[
+  {
+    "cell": "Probe_d1_x_charge5",
+    "kind": "RSW_DW_KotORDroidBad_KX12UPD",
+    "charge": 0.05,
+    "x": 40,
+    "z": 40,
+    "spawn_result": {
+      "success": true,
+      "path": "Actions\\Spawn Pawn...\\RSW_DW_KotORDroidBad_KX12UPD",
+      "node": {
+        "path": "Actions\\Spawn Pawn...\\RSW_DW_KotORDroidBad_KX12UPD",
+        "parentPath": "Actions\\Spawn Pawn...",
+        "label": "RSW_DW_KotORDroidBad_KX12UPD",
+        "category": "Humanlike",
+        "actionType": "ToolMap",
+        "isRoot": false,
+        "visible": true,
+        "active": true,
+        "on": false,
+        "displayPriority": 0,
+        "tabId": "actions",
+        "tabTitle": "Actions/tools",
+        "tabRootPath": "Actions",
+        "tabDefName": null,
+        "hasChildren": false,
+        "childCount": 0,
+        "visibleChildCount": 0,
+        "hasDirectAction": true,
+        "hasPawnAction": false,
+        "hasSettingsToggle": false,
+        "execution": {
+          "kind": "MapTarget",
+          "supported": true,
+          "reason": "This debug action requires a map target input.",
+          "requiredTargetKind": "map"
+        },
+        "source": null
+      },
+      "targetPawn": null,
+      "mapTarget": {
+        "kind": "cell",
+        "cell": {
+          "x": 40,
+          "z": 40
+        },
+        "thingId": null,
+        "thing": null,
+        "thingTargetIsPositional": false
+      },
+      "stateBefore": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "stateAfter": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "effects": {
+        "logCount": 0,
+        "logs": [],
+        "windowCountDelta": 0,
+        "openedWindowTypes": [],
+        "closedWindowTypes": [],
+        "debugToolActiveBefore": false,
+        "debugToolActiveAfter": false,
+        "debugToolChanged": false
+      },
+      "followUp": null,
+      "operation": {
+        "OperationId": "op_95234f01c0c541edb59fee26ae72d6d5",
+        "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:00.9510842+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:00.9692218+00:00",
+        "DurationMs": 18,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    },
+    "pawnId": "RSW_DW_Race_guy762_DroidRace_KX12UPD20205",
+    "spawned_position": null,
+    "need_result": {
+      "success": true,
+      "action": "need",
+      "notes": [
+        "set RSW_DW_Power to 0.05"
+      ],
+      "needs": [
+        {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+        },
+        {
+          "need": "RSW_DW_Power",
+          "level": 0.05,
+          "pct": 0.05
+        }
+      ],
+      "memories": [],
+      "ticksGame": 1,
+      "operation": {
+        "OperationId": "op_3a7aedc3da6044b19679cb254223dd5b",
+        "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-need",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:05.0752974+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:05.1240909+00:00",
+        "DurationMs": 48,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    }
+  },
+  {
+    "cell": "Probe_d1_x_charge50",
+    "kind": "RSW_DW_KotORDroidBad_KX12UPD",
+    "charge": 0.5,
+    "x": 65,
+    "z": 40,
+    "spawn_result": {
+      "success": true,
+      "path": "Actions\\Spawn Pawn...\\RSW_DW_KotORDroidBad_KX12UPD",
+      "node": {
+        "path": "Actions\\Spawn Pawn...\\RSW_DW_KotORDroidBad_KX12UPD",
+        "parentPath": "Actions\\Spawn Pawn...",
+        "label": "RSW_DW_KotORDroidBad_KX12UPD",
+        "category": "Humanlike",
+        "actionType": "ToolMap",
+        "isRoot": false,
+        "visible": true,
+        "active": true,
+        "on": false,
+        "displayPriority": 0,
+        "tabId": "actions",
+        "tabTitle": "Actions/tools",
+        "tabRootPath": "Actions",
+        "tabDefName": null,
+        "hasChildren": false,
+        "childCount": 0,
+        "visibleChildCount": 0,
+        "hasDirectAction": true,
+        "hasPawnAction": false,
+        "hasSettingsToggle": false,
+        "execution": {
+          "kind": "MapTarget",
+          "supported": true,
+          "reason": "This debug action requires a map target input.",
+          "requiredTargetKind": "map"
+        },
+        "source": null
+      },
+      "targetPawn": null,
+      "mapTarget": {
+        "kind": "cell",
+        "cell": {
+          "x": 65,
+          "z": 40
+        },
+        "thingId": null,
+        "thing": null,
+        "thingTargetIsPositional": false
+      },
+      "stateBefore": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "stateAfter": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "effects": {
+        "logCount": 0,
+        "logs": [],
+        "windowCountDelta": 0,
+        "openedWindowTypes": [],
+        "closedWindowTypes": [],
+        "debugToolActiveBefore": false,
+        "debugToolActiveAfter": false,
+        "debugToolChanged": false
+      },
+      "followUp": null,
+      "operation": {
+        "OperationId": "op_69d6e59c0e5e4664977350871b62ce47",
+        "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:00.9860726+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:00.9935779+00:00",
+        "DurationMs": 7,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    },
+    "pawnId": "RSW_DW_Race_guy762_DroidRace_KX12UPD20206",
+    "spawned_position": null,
+    "need_result": {
+      "success": true,
+      "action": "need",
+      "notes": [
+        "set RSW_DW_Power to 0.5"
+      ],
+      "needs": [
+        {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+        },
+        {
+          "need": "RSW_DW_Power",
+          "level": 0.5,
+          "pct": 0.5
+        }
+      ],
+      "memories": [],
+      "ticksGame": 1,
+      "operation": {
+        "OperationId": "op_6d32f9d908404a7d8bbbf972fbcf464a",
+        "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-need",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:05.1300871+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:05.1740445+00:00",
+        "DurationMs": 43,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    }
+  },
+  {
+    "cell": "Probe_d1_x_charge100",
+    "kind": "RSW_DW_KotORDroidBad_KX12UPD",
+    "charge": 1.0,
+    "x": 90,
+    "z": 40,
+    "spawn_result": {
+      "success": true,
+      "path": "Actions\\Spawn Pawn...\\RSW_DW_KotORDroidBad_KX12UPD",
+      "node": {
+        "path": "Actions\\Spawn Pawn...\\RSW_DW_KotORDroidBad_KX12UPD",
+        "parentPath": "Actions\\Spawn Pawn...",
+        "label": "RSW_DW_KotORDroidBad_KX12UPD",
+        "category": "Humanlike",
+        "actionType": "ToolMap",
+        "isRoot": false,
+        "visible": true,
+        "active": true,
+        "on": false,
+        "displayPriority": 0,
+        "tabId": "actions",
+        "tabTitle": "Actions/tools",
+        "tabRootPath": "Actions",
+        "tabDefName": null,
+        "hasChildren": false,
+        "childCount": 0,
+        "visibleChildCount": 0,
+        "hasDirectAction": true,
+        "hasPawnAction": false,
+        "hasSettingsToggle": false,
+        "execution": {
+          "kind": "MapTarget",
+          "supported": true,
+          "reason": "This debug action requires a map target input.",
+          "requiredTargetKind": "map"
+        },
+        "source": null
+      },
+      "targetPawn": null,
+      "mapTarget": {
+        "kind": "cell",
+        "cell": {
+          "x": 90,
+          "z": 40
+        },
+        "thingId": null,
+        "thing": null,
+        "thingTargetIsPositional": false
+      },
+      "stateBefore": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "stateAfter": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "effects": {
+        "logCount": 0,
+        "logs": [],
+        "windowCountDelta": 0,
+        "openedWindowTypes": [],
+        "closedWindowTypes": [],
+        "debugToolActiveBefore": false,
+        "debugToolActiveAfter": false,
+        "debugToolChanged": false
+      },
+      "followUp": null,
+      "operation": {
+        "OperationId": "op_ffffc3fe595c47af8988e8dcbfa093e7",
+        "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:00.9945766+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:01.0105835+00:00",
+        "DurationMs": 16,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    },
+    "pawnId": "RSW_DW_Race_guy762_DroidRace_KX12UPD20207",
+    "spawned_position": null,
+    "need_result": {
+      "success": true,
+      "action": "need",
+      "notes": [
+        "set RSW_DW_Power to 1"
+      ],
+      "needs": [
+        {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+        },
+        {
+          "need": "RSW_DW_Power",
+          "level": 1.0,
+          "pct": 1.0
+        }
+      ],
+      "memories": [],
+      "ticksGame": 1,
+      "operation": {
+        "OperationId": "op_78253bfbf24441739e15c9e8bdeec7bc",
+        "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-need",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:05.1750465+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:05.223897+00:00",
+        "DurationMs": 48,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    }
+  },
+  {
+    "cell": "Heavy_d2_x_charge5",
+    "kind": "RSW_DW_KotORDroidBad_ADMkI",
+    "charge": 0.05,
+    "x": 40,
+    "z": 65,
+    "spawn_result": {
+      "success": true,
+      "path": "Actions\\Spawn Pawn...\\RSW_DW_KotORDroidBad_ADMkI",
+      "node": {
+        "path": "Actions\\Spawn Pawn...\\RSW_DW_KotORDroidBad_ADMkI",
+        "parentPath": "Actions\\Spawn Pawn...",
+        "label": "RSW_DW_KotORDroidBad_ADMkI",
+        "category": "Humanlike",
+        "actionType": "ToolMap",
+        "isRoot": false,
+        "visible": true,
+        "active": true,
+        "on": false,
+        "displayPriority": 0,
+        "tabId": "actions",
+        "tabTitle": "Actions/tools",
+        "tabRootPath": "Actions",
+        "tabDefName": null,
+        "hasChildren": false,
+        "childCount": 0,
+        "visibleChildCount": 0,
+        "hasDirectAction": true,
+        "hasPawnAction": false,
+        "hasSettingsToggle": false,
+        "execution": {
+          "kind": "MapTarget",
+          "supported": true,
+          "reason": "This debug action requires a map target input.",
+          "requiredTargetKind": "map"
+        },
+        "source": null
+      },
+      "targetPawn": null,
+      "mapTarget": {
+        "kind": "cell",
+        "cell": {
+          "x": 40,
+          "z": 65
+        },
+        "thingId": null,
+        "thing": null,
+        "thingTargetIsPositional": false
+      },
+      "stateBefore": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "stateAfter": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "effects": {
+        "logCount": 0,
+        "logs": [],
+        "windowCountDelta": 0,
+        "openedWindowTypes": [],
+        "closedWindowTypes": [],
+        "debugToolActiveBefore": false,
+        "debugToolActiveAfter": false,
+        "debugToolChanged": false
+      },
+      "followUp": null,
+      "operation": {
+        "OperationId": "op_6154329b3654446cbdd9ade067b2d409",
+        "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:01.0115869+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:01.0266742+00:00",
+        "DurationMs": 15,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    },
+    "pawnId": "RSW_DW_Race_guy762_DroidRace_ADMkI20208",
+    "spawned_position": null,
+    "need_result": {
+      "success": true,
+      "action": "need",
+      "notes": [
+        "set RSW_DW_Power to 0.05"
+      ],
+      "needs": [
+        {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+        },
+        {
+          "need": "RSW_DW_Power",
+          "level": 0.05,
+          "pct": 0.05
+        }
+      ],
+      "memories": [],
+      "ticksGame": 1,
+      "operation": {
+        "OperationId": "op_50c87ff98b31450f802142afb2835242",
+        "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-need",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:05.2249044+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:05.2740028+00:00",
+        "DurationMs": 49,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    }
+  },
+  {
+    "cell": "Heavy_d2_x_charge50",
+    "kind": "RSW_DW_KotORDroidBad_ADMkI",
+    "charge": 0.5,
+    "x": 65,
+    "z": 65,
+    "spawn_result": {
+      "success": true,
+      "path": "Actions\\Spawn Pawn...\\RSW_DW_KotORDroidBad_ADMkI",
+      "node": {
+        "path": "Actions\\Spawn Pawn...\\RSW_DW_KotORDroidBad_ADMkI",
+        "parentPath": "Actions\\Spawn Pawn...",
+        "label": "RSW_DW_KotORDroidBad_ADMkI",
+        "category": "Humanlike",
+        "actionType": "ToolMap",
+        "isRoot": false,
+        "visible": true,
+        "active": true,
+        "on": false,
+        "displayPriority": 0,
+        "tabId": "actions",
+        "tabTitle": "Actions/tools",
+        "tabRootPath": "Actions",
+        "tabDefName": null,
+        "hasChildren": false,
+        "childCount": 0,
+        "visibleChildCount": 0,
+        "hasDirectAction": true,
+        "hasPawnAction": false,
+        "hasSettingsToggle": false,
+        "execution": {
+          "kind": "MapTarget",
+          "supported": true,
+          "reason": "This debug action requires a map target input.",
+          "requiredTargetKind": "map"
+        },
+        "source": null
+      },
+      "targetPawn": null,
+      "mapTarget": {
+        "kind": "cell",
+        "cell": {
+          "x": 65,
+          "z": 65
+        },
+        "thingId": null,
+        "thing": null,
+        "thingTargetIsPositional": false
+      },
+      "stateBefore": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "stateAfter": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "effects": {
+        "logCount": 0,
+        "logs": [],
+        "windowCountDelta": 0,
+        "openedWindowTypes": [],
+        "closedWindowTypes": [],
+        "debugToolActiveBefore": false,
+        "debugToolActiveAfter": false,
+        "debugToolChanged": false
+      },
+      "followUp": null,
+      "operation": {
+        "OperationId": "op_717702e570b040019b15d3c720d45f2c",
+        "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:01.0276742+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:01.0447473+00:00",
+        "DurationMs": 17,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    },
+    "pawnId": "RSW_DW_Race_guy762_DroidRace_ADMkI20209",
+    "spawned_position": null,
+    "need_result": {
+      "success": true,
+      "action": "need",
+      "notes": [
+        "set RSW_DW_Power to 0.5"
+      ],
+      "needs": [
+        {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+        },
+        {
+          "need": "RSW_DW_Power",
+          "level": 0.5,
+          "pct": 0.5
+        }
+      ],
+      "memories": [],
+      "ticksGame": 1,
+      "operation": {
+        "OperationId": "op_f0846fdf26f44b709ed5b6d163a37a35",
+        "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-need",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:05.275511+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:05.3240636+00:00",
+        "DurationMs": 48,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    }
+  },
+  {
+    "cell": "Heavy_d2_x_charge100",
+    "kind": "RSW_DW_KotORDroidBad_ADMkI",
+    "charge": 1.0,
+    "x": 90,
+    "z": 65,
+    "spawn_result": {
+      "success": true,
+      "path": "Actions\\Spawn Pawn...\\RSW_DW_KotORDroidBad_ADMkI",
+      "node": {
+        "path": "Actions\\Spawn Pawn...\\RSW_DW_KotORDroidBad_ADMkI",
+        "parentPath": "Actions\\Spawn Pawn...",
+        "label": "RSW_DW_KotORDroidBad_ADMkI",
+        "category": "Humanlike",
+        "actionType": "ToolMap",
+        "isRoot": false,
+        "visible": true,
+        "active": true,
+        "on": false,
+        "displayPriority": 0,
+        "tabId": "actions",
+        "tabTitle": "Actions/tools",
+        "tabRootPath": "Actions",
+        "tabDefName": null,
+        "hasChildren": false,
+        "childCount": 0,
+        "visibleChildCount": 0,
+        "hasDirectAction": true,
+        "hasPawnAction": false,
+        "hasSettingsToggle": false,
+        "execution": {
+          "kind": "MapTarget",
+          "supported": true,
+          "reason": "This debug action requires a map target input.",
+          "requiredTargetKind": "map"
+        },
+        "source": null
+      },
+      "targetPawn": null,
+      "mapTarget": {
+        "kind": "cell",
+        "cell": {
+          "x": 90,
+          "z": 65
+        },
+        "thingId": null,
+        "thing": null,
+        "thingTargetIsPositional": false
+      },
+      "stateBefore": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "stateAfter": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "effects": {
+        "logCount": 0,
+        "logs": [],
+        "windowCountDelta": 0,
+        "openedWindowTypes": [],
+        "closedWindowTypes": [],
+        "debugToolActiveBefore": false,
+        "debugToolActiveAfter": false,
+        "debugToolChanged": false
+      },
+      "followUp": null,
+      "operation": {
+        "OperationId": "op_2d2ec115bc0640eaa6cceb04f777e3c8",
+        "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:01.0457495+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:01.0605999+00:00",
+        "DurationMs": 14,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    },
+    "pawnId": "RSW_DW_Race_guy762_DroidRace_ADMkI20211",
+    "spawned_position": null,
+    "need_result": {
+      "success": true,
+      "action": "need",
+      "notes": [
+        "set RSW_DW_Power to 1"
+      ],
+      "needs": [
+        {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+        },
+        {
+          "need": "RSW_DW_Power",
+          "level": 1.0,
+          "pct": 1.0
+        }
+      ],
+      "memories": [],
+      "ticksGame": 1,
+      "operation": {
+        "OperationId": "op_fcf722dba9724f43a84e65a199f31530",
+        "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-need",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:05.3250568+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:05.3745948+00:00",
+        "DurationMs": 49,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    }
+  },
+  {
+    "cell": "Power_d3_x_charge5",
+    "kind": "RSW_DW_OuterRim_GNKDroid",
+    "charge": 0.05,
+    "x": 40,
+    "z": 90,
+    "spawn_result": {
+      "success": true,
+      "path": "Actions\\Spawn Pawn...\\RSW_DW_OuterRim_GNKDroid",
+      "node": {
+        "path": "Actions\\Spawn Pawn...\\RSW_DW_OuterRim_GNKDroid",
+        "parentPath": "Actions\\Spawn Pawn...",
+        "label": "RSW_DW_OuterRim_GNKDroid",
+        "category": "Humanlike",
+        "actionType": "ToolMap",
+        "isRoot": false,
+        "visible": true,
+        "active": true,
+        "on": false,
+        "displayPriority": 0,
+        "tabId": "actions",
+        "tabTitle": "Actions/tools",
+        "tabRootPath": "Actions",
+        "tabDefName": null,
+        "hasChildren": false,
+        "childCount": 0,
+        "visibleChildCount": 0,
+        "hasDirectAction": true,
+        "hasPawnAction": false,
+        "hasSettingsToggle": false,
+        "execution": {
+          "kind": "MapTarget",
+          "supported": true,
+          "reason": "This debug action requires a map target input.",
+          "requiredTargetKind": "map"
+        },
+        "source": null
+      },
+      "targetPawn": null,
+      "mapTarget": {
+        "kind": "cell",
+        "cell": {
+          "x": 40,
+          "z": 90
+        },
+        "thingId": null,
+        "thing": null,
+        "thingTargetIsPositional": false
+      },
+      "stateBefore": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "stateAfter": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "effects": {
+        "logCount": 0,
+        "logs": [],
+        "windowCountDelta": 0,
+        "openedWindowTypes": [],
+        "closedWindowTypes": [],
+        "debugToolActiveBefore": false,
+        "debugToolActiveAfter": false,
+        "debugToolChanged": false
+      },
+      "followUp": null,
+      "operation": {
+        "OperationId": "op_19f9ac27942b433b98623743d92e78b8",
+        "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:01.0605999+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:01.0940873+00:00",
+        "DurationMs": 33,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    },
+    "pawnId": "RSW_DW_Race_OuterRim_GNKDroid20213",
+    "spawned_position": null,
+    "need_result": {
+      "success": true,
+      "action": "need",
+      "notes": [
+        "set RSW_DW_Power to 0.05"
+      ],
+      "needs": [
+        {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+        },
+        {
+          "need": "RSW_DW_Power",
+          "level": 0.05,
+          "pct": 0.05
+        }
+      ],
+      "memories": [],
+      "ticksGame": 1,
+      "operation": {
+        "OperationId": "op_d93d10c0567a48658dd6e4e1660d78c5",
+        "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-need",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:05.3755966+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:05.4244253+00:00",
+        "DurationMs": 48,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    }
+  },
+  {
+    "cell": "Power_d3_x_charge50",
+    "kind": "RSW_DW_OuterRim_GNKDroid",
+    "charge": 0.5,
+    "x": 65,
+    "z": 90,
+    "spawn_result": {
+      "success": true,
+      "path": "Actions\\Spawn Pawn...\\RSW_DW_OuterRim_GNKDroid",
+      "node": {
+        "path": "Actions\\Spawn Pawn...\\RSW_DW_OuterRim_GNKDroid",
+        "parentPath": "Actions\\Spawn Pawn...",
+        "label": "RSW_DW_OuterRim_GNKDroid",
+        "category": "Humanlike",
+        "actionType": "ToolMap",
+        "isRoot": false,
+        "visible": true,
+        "active": true,
+        "on": false,
+        "displayPriority": 0,
+        "tabId": "actions",
+        "tabTitle": "Actions/tools",
+        "tabRootPath": "Actions",
+        "tabDefName": null,
+        "hasChildren": false,
+        "childCount": 0,
+        "visibleChildCount": 0,
+        "hasDirectAction": true,
+        "hasPawnAction": false,
+        "hasSettingsToggle": false,
+        "execution": {
+          "kind": "MapTarget",
+          "supported": true,
+          "reason": "This debug action requires a map target input.",
+          "requiredTargetKind": "map"
+        },
+        "source": null
+      },
+      "targetPawn": null,
+      "mapTarget": {
+        "kind": "cell",
+        "cell": {
+          "x": 65,
+          "z": 90
+        },
+        "thingId": null,
+        "thing": null,
+        "thingTargetIsPositional": false
+      },
+      "stateBefore": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "stateAfter": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "effects": {
+        "logCount": 0,
+        "logs": [],
+        "windowCountDelta": 0,
+        "openedWindowTypes": [],
+        "closedWindowTypes": [],
+        "debugToolActiveBefore": false,
+        "debugToolActiveAfter": false,
+        "debugToolChanged": false
+      },
+      "followUp": null,
+      "operation": {
+        "OperationId": "op_50e235820bf64acc847c480a5012f14f",
+        "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:01.0950934+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:01.103258+00:00",
+        "DurationMs": 8,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    },
+    "pawnId": "RSW_DW_Race_OuterRim_GNKDroid20214",
+    "spawned_position": null,
+    "need_result": {
+      "success": true,
+      "action": "need",
+      "notes": [
+        "set RSW_DW_Power to 0.5"
+      ],
+      "needs": [
+        {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+        },
+        {
+          "need": "RSW_DW_Power",
+          "level": 0.5,
+          "pct": 0.5
+        }
+      ],
+      "memories": [],
+      "ticksGame": 1,
+      "operation": {
+        "OperationId": "op_834e616112cc40dbb0390619efb31a37",
+        "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-need",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:05.4254296+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:05.47409+00:00",
+        "DurationMs": 48,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    }
+  },
+  {
+    "cell": "Power_d3_x_charge100",
+    "kind": "RSW_DW_OuterRim_GNKDroid",
+    "charge": 1.0,
+    "x": 90,
+    "z": 90,
+    "spawn_result": {
+      "success": true,
+      "path": "Actions\\Spawn Pawn...\\RSW_DW_OuterRim_GNKDroid",
+      "node": {
+        "path": "Actions\\Spawn Pawn...\\RSW_DW_OuterRim_GNKDroid",
+        "parentPath": "Actions\\Spawn Pawn...",
+        "label": "RSW_DW_OuterRim_GNKDroid",
+        "category": "Humanlike",
+        "actionType": "ToolMap",
+        "isRoot": false,
+        "visible": true,
+        "active": true,
+        "on": false,
+        "displayPriority": 0,
+        "tabId": "actions",
+        "tabTitle": "Actions/tools",
+        "tabRootPath": "Actions",
+        "tabDefName": null,
+        "hasChildren": false,
+        "childCount": 0,
+        "visibleChildCount": 0,
+        "hasDirectAction": true,
+        "hasPawnAction": false,
+        "hasSettingsToggle": false,
+        "execution": {
+          "kind": "MapTarget",
+          "supported": true,
+          "reason": "This debug action requires a map target input.",
+          "requiredTargetKind": "map"
+        },
+        "source": null
+      },
+      "targetPawn": null,
+      "mapTarget": {
+        "kind": "cell",
+        "cell": {
+          "x": 90,
+          "z": 90
+        },
+        "thingId": null,
+        "thing": null,
+        "thingTargetIsPositional": false
+      },
+      "stateBefore": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "stateAfter": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      },
+      "effects": {
+        "logCount": 0,
+        "logs": [],
+        "windowCountDelta": 0,
+        "openedWindowTypes": [],
+        "closedWindowTypes": [],
+        "debugToolActiveBefore": false,
+        "debugToolActiveAfter": false,
+        "debugToolChanged": false
+      },
+      "followUp": null,
+      "operation": {
+        "OperationId": "op_b9014784de964295b8c52712f1083452",
+        "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:01.1042586+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:01.1092658+00:00",
+        "DurationMs": 5,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    },
+    "pawnId": "RSW_DW_Race_OuterRim_GNKDroid20215",
+    "spawned_position": null,
+    "need_result": {
+      "success": true,
+      "action": "need",
+      "notes": [
+        "set RSW_DW_Power to 1"
+      ],
+      "needs": [
+        {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+        },
+        {
+          "need": "RSW_DW_Power",
+          "level": 1.0,
+          "pct": 1.0
+        }
+      ],
+      "memories": [],
+      "ticksGame": 1,
+      "operation": {
+        "OperationId": "op_1307a9fdae98440d926da99c1cf9bd1b",
+        "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-need",
+        "Status": 2,
+        "Success": true,
+        "StartedAtUtc": "2026-09-08T15:54:05.4750848+00:00",
+        "CompletedAtUtc": "2026-09-08T15:54:05.5247212+00:00",
+        "DurationMs": 49,
+        "Result": null,
+        "HasResult": true,
+        "ResultWasTruncated": false,
+        "Warnings": [],
+        "Error": null,
+        "Metadata": {}
+      }
+    }
+  }
+]

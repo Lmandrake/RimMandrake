@@ -1,0 +1,35 @@
+
+  sheet      D:\Luke\dev\Rimworld\Transient\art_review_2026-09-06.html
+  decisions  D:\Luke\dev\Rimworld\Transient\art_review_2026-09-06.decisions.json
+             6 rows · 4 decided · NEVER reviewed (pre-fill only)
+  serving    http://localhost:37431/?t=JVcL2UBtf6w38DoocKsyXQ
+             (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
+              the ?t= token is what gates writes. Windows browser uses localhost.)
+  stop       Ctrl-C
+
+  opened with explorer.exe
+
+  "GET /?t=JVcL2UBtf6w38DoocKsyXQ HTTP/1.1" 200 -
+  "GET /decisions HTTP/1.1" 200 -
+  "GET /art_review_terrestrial_replacements/sheet_gorilla.png HTTP/1.1" 200 -
+  "GET /art_review_terrestrial_replacements/sheet_enhydriodon.png HTTP/1.1" 200 -
+  "GET /art_review_AA_FrostboundBehemoth_south_candidate.png HTTP/1.1" 200 -
+  "GET /favicon.ico HTTP/1.1" 204 -
+  "GET /art_review_terrestrial_replacements/sheet_capybara.png HTTP/1.1" 200 -
+  "GET /art_review_AA_Atispec_south_candidate_REJECTED_v2.png HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -

@@ -1,0 +1,229 @@
+{
+ "waste_camp": {
+  "rect": [
+   75,
+   30,
+   20,
+   20
+  ],
+  "calls": [
+   {
+    "tool": "jawa/destroy_batch",
+    "params": {
+     "rects": "75,30,20,20",
+     "categories": "Plant,Item,Filth,Building"
+    }
+   },
+   {
+    "tool": "jawa/destroy_batch",
+    "params": {
+     "rects": "74,29,22,22",
+     "categories": "Plant,Item,Filth"
+    }
+   },
+   {
+    "tool": "jawa/set_terrain_batch",
+    "params": {
+     "ops": "PackedDirt:80,36,9,9;PackedDirt:79,37,1,7;PackedDirt:89,37,2,1;PackedDirt:78,38,1,2;PackedDirt:89,38,1,3;PackedDirt:90,39,1,2;PackedDirt:78,41,1,2;PackedDirt:89,42,1,2"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "Brazier:88,42"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "Filth_AnimalFilth:84,36;Filth_AnimalFilth:84,43"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "Filth_DriedBlood:81,39;Filth_DriedBlood:82,42"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "Filth_Trash:79,39;Filth_Trash:80,38;Filth_Trash:85,41;Filth_Trash:87,38"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "Leather_Camel:86,41;Leather_Camel:80,41;Leather_Camel:85,42;Leather_Camel:80,37"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "MeleeWeapon_Club:81,40",
+     "stuff": "WoodLog"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "WoodLog:83,39;WoodLog:85,40;WoodLog:82,41;WoodLog:84,37;WoodLog:81,38;WoodLog:86,38"
+    }
+   },
+   {
+    "tool": "jawa/map_commit",
+    "params": {
+     "regions": true,
+     "pathing": true,
+     "power": true,
+     "redraw": true
+    }
+   }
+  ],
+  "notes": [
+   "waste camp: 101 sunken-pit floor cells (jagged, PackedDirt), 6 fallen tent-poles, 4 loose hide pieces, 1 cold hearth, 8 dry waste-filth cells, 1 worn tool",
+   "\u26a0\ufe0f live path: CLEAR mode=all destroyed Building-category things in its rects via jawa/destroy_batch, but did NOT replace mined rock with its rough-rock terrain (no such live tool exists) - that replacement only happens on the mapgen-time GenStep path."
+  ]
+ },
+ "boneyard": {
+  "rect": [
+   120,
+   75,
+   24,
+   24
+  ],
+  "calls": [
+   {
+    "tool": "jawa/destroy_batch",
+    "params": {
+     "rects": "120,75,24,24",
+     "categories": "Plant,Item,Filth,Building"
+    }
+   },
+   {
+    "tool": "jawa/destroy_batch",
+    "params": {
+     "rects": "119,74,26,26;120,81,23,13",
+     "categories": "Plant,Item,Filth"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "AB_AncientBrokenBone:121,86"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "AB_AncientGallatrossSkull:138,87"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "AB_AncientVerticalBone:137,87;AB_AncientVerticalBone:127,86;AB_AncientVerticalBone:125,87;AB_AncientVerticalBone:123,88"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "AB_BoneWall:132,84;AB_BoneWall:131,90"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "AB_HugeGallatrossSkeleton:132,87"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "TreeDead:132,90"
+    }
+   },
+   {
+    "tool": "jawa/map_commit",
+    "params": {
+     "regions": true,
+     "pathing": true,
+     "power": true,
+     "redraw": true
+    }
+   }
+  ],
+  "notes": [
+   "boneyard: 1 anchor skeleton(s) (8x4), 1 skull(s), 5 bone piece(s), 2 loose chunk(s), 1 tree(s) [SILVERBOLE_STANDIN=TreeDead pending the real def], 0 shade tenant(s)",
+   "\u26a0\ufe0f live path: CLEAR mode=all destroyed Building-category things in its rects via jawa/destroy_batch, but did NOT replace mined rock with its rough-rock terrain (no such live tool exists) - that replacement only happens on the mapgen-time GenStep path."
+  ]
+ },
+ "long_crossing": {
+  "rect": [
+   160,
+   30,
+   20,
+   16
+  ],
+  "calls": [
+   {
+    "tool": "jawa/destroy_batch",
+    "params": {
+     "rects": "160,30,20,16",
+     "categories": "Plant,Item,Filth,Building"
+    }
+   },
+   {
+    "tool": "jawa/destroy_batch",
+    "params": {
+     "rects": "159,29,22,18",
+     "categories": "Plant,Item,Filth"
+    }
+   },
+   {
+    "tool": "jawa/set_terrain_batch",
+    "params": {
+     "ops": "SoftSand:171,30,3,1;SoftSand:171,31,2,1;SoftSand:172,32,3,1;SoftSand:171,33,1,2;SoftSand:172,34,1,2;SoftSand:176,34,1,1;SoftSand:173,35,1,1;SoftSand:173,37,2,1;SoftSand:173,38,1,2;SoftSand:172,39,1,1;SoftSand:174,39,1,1;SoftSand:171,41,2,1;SoftSand:171,42,1,4;SoftSand:173,42,3,1;SoftSand:172,43,1,3;SoftSand:174,44,1,1;SoftSand:173,45,1,1"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "AncientIndustrialTruck:169,36"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "ChunkSlagSteel:165,39;ChunkSlagSteel:167,33;ChunkSlagSteel:167,36;ChunkSlagSteel:173,35;ChunkSlagSteel:173,38"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "Dirt_HillTop_Right:169,33;Dirt_HillTop_Right:170,33;Dirt_HillTop_Right:171,33;Dirt_HillTop_Right:172,33"
+    }
+   },
+   {
+    "tool": "jawa/build_batch",
+    "params": {
+     "ops": "Dirt_Hill_Right:169,34;Dirt_Hill_Right:170,34;Dirt_Hill_Right:171,34;Dirt_Hill_Right:172,34"
+    }
+   },
+   {
+    "tool": "jawa/map_commit",
+    "params": {
+     "regions": true,
+     "pathing": true,
+     "power": true,
+     "redraw": true
+    }
+   }
+  ],
+  "notes": [
+   "the long crossing: 1 stalled AncientIndustrialTruck (engine failure, never touched by anything alive), half-buried against a 8-cell Dirt_Hill/Dirt_HillTop dune-lip on its leeward side, 5 ChunkSlagSteel leftovers too small to have been worth carrying off, 34 SoftSand cells drifted against the same side, 1 dessicated Iguana - the shade's first and so-far only tenant",
+   "\u26a0\ufe0f live path: CLEAR mode=all destroyed Building-category things in its rects via jawa/destroy_batch, but did NOT replace mined rock with its rough-rock terrain (no such live tool exists) - that replacement only happens on the mapgen-time GenStep path.",
+   "\u26a0\ufe0f live path: 1 PAWN directive(s) with a corpse state were NOT compiled to any bridge call - no live tool makes a Corpse. Those only execute on the mapgen-time GenStep path."
+  ]
+ }
+}

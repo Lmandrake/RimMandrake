@@ -1,0 +1,10 @@
+mesh 90992 v 181980 f  loaded 0.4s
+GATE south : best IoU 0.970 @ az=0 el=0  |  prior(az=0.0,el22) IoU 0.873
+GATE east  : best IoU 0.722 @ az=45 el=0  |  prior(az=90.0,el22) IoU 0.472
+GATE north : best IoU 0.948 @ az=180 el=70  |  prior(az=180.0,el22) IoU 0.863
+BAKE south  az=0 el=0: 23823 verts textured  (26%)
+BAKE east   az=45 el=0: 38450 verts textured  (42%)
+BAKE north  az=180 el=70: 33293 verts textured  (37%)
+total verts textured by fusion: 66678 (73%)
+CONTACT SHEET: /mnt/d/Luke/dev/Rimworld/Transient/meshfuse_experiment/contact_sheet.png
+done 29.3s

@@ -1,0 +1,90 @@
+# rimplace flat plan v1
+FOOTPRINT	0	0	16	12
+TERRAIN	4	4	AncientMegastructure
+TERRAIN	4	5	AncientMegastructure
+TERRAIN	4	6	AncientMegastructure
+TERRAIN	4	7	AncientMegastructure
+TERRAIN	4	8	AncientMegastructure
+TERRAIN	5	3	AncientMegastructure
+TERRAIN	5	4	AncientMegastructure
+TERRAIN	5	5	AncientMegastructure
+TERRAIN	5	6	AncientMegastructure
+TERRAIN	5	7	AncientMegastructure
+TERRAIN	5	8	AncientMegastructure
+TERRAIN	5	9	AncientMegastructure
+TERRAIN	6	2	AncientMegastructure
+TERRAIN	6	3	AncientMegastructure
+TERRAIN	6	4	AncientMegastructure
+TERRAIN	6	5	AncientMegastructure
+TERRAIN	6	6	AncientMegastructure
+TERRAIN	6	7	AncientMegastructure
+TERRAIN	6	8	AncientMegastructure
+TERRAIN	6	9	AncientMegastructure
+TERRAIN	6	10	AncientMegastructure
+TERRAIN	7	2	AncientMegastructure
+TERRAIN	7	3	AncientMegastructure
+TERRAIN	7	4	AncientMegastructure
+TERRAIN	7	5	AncientMegastructure
+TERRAIN	7	6	AncientMegastructure
+TERRAIN	7	7	AncientMegastructure
+TERRAIN	7	8	AncientMegastructure
+TERRAIN	7	9	AncientMegastructure
+TERRAIN	7	10	AncientMegastructure
+TERRAIN	8	2	AncientMegastructure
+TERRAIN	8	3	AncientMegastructure
+TERRAIN	8	4	AncientMegastructure
+TERRAIN	8	5	AncientMegastructure
+TERRAIN	8	6	AncientMegastructure
+TERRAIN	8	7	AncientMegastructure
+TERRAIN	8	8	AncientMegastructure
+TERRAIN	8	9	AncientMegastructure
+TERRAIN	8	10	AncientMegastructure
+TERRAIN	9	2	AncientMegastructure
+TERRAIN	9	3	AncientMegastructure
+TERRAIN	9	4	AncientMegastructure
+TERRAIN	9	5	AncientMegastructure
+TERRAIN	9	6	AncientMegastructure
+TERRAIN	9	7	AncientMegastructure
+TERRAIN	9	8	AncientMegastructure
+TERRAIN	9	9	AncientMegastructure
+TERRAIN	9	10	AncientMegastructure
+TERRAIN	10	2	AncientMegastructure
+TERRAIN	10	3	AncientMegastructure
+TERRAIN	10	4	AncientMegastructure
+TERRAIN	10	5	AncientMegastructure
+TERRAIN	10	6	AncientMegastructure
+TERRAIN	10	7	AncientMegastructure
+TERRAIN	10	8	AncientMegastructure
+TERRAIN	10	9	AncientMegastructure
+TERRAIN	10	10	AncientMegastructure
+TERRAIN	11	3	AncientMegastructure
+TERRAIN	11	4	AncientMegastructure
+TERRAIN	11	5	AncientMegastructure
+TERRAIN	11	6	AncientMegastructure
+TERRAIN	11	7	AncientMegastructure
+TERRAIN	11	8	AncientMegastructure
+TERRAIN	11	9	AncientMegastructure
+TERRAIN	12	4	AncientMegastructure
+TERRAIN	12	5	AncientMegastructure
+TERRAIN	12	6	AncientMegastructure
+TERRAIN	12	7	AncientMegastructure
+TERRAIN	12	8	AncientMegastructure
+THING	ChunkSlagSteel	0	9	0	-
+THING	Steel	1	0	0	-
+THING	Steel	1	5	0	-
+THING	Steel	1	11	0	-
+THING	ChunkSlagSteel	2	7	0	-
+THING	Steel	4	3	0	-
+THING	Steel	5	5	0	-
+THING	ChunkSlagSteel	6	11	0	-
+THING	ChunkSlagSteel	7	7	0	-
+THING	ComponentIndustrial	8	5	0	-
+THING	ComponentIndustrial	9	2	0	-
+THING	ChunkSlagSteel	9	5	0	-
+THING	Steel	9	6	0	-
+THING	Steel	10	1	0	-
+THING	ChunkSlagSteel	10	4	0	-
+THING	ComponentIndustrial	10	8	0	-
+THING	ChunkSlagSteel	12	11	0	-
+THING	ChunkSlagSteel	13	0	0	-
+THING	Steel	14	9	0	-

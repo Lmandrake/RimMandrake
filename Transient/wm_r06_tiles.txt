@@ -1,0 +1,11 @@
+19369,2014,19366,6449,18413,1855,18411,8334,8330,8331
+19369	0	RUT_TheScald	-350.0	True
+2014	1	BiomeCypreJungle	91.0	False
+19366	2	BiomeCypreJungle	10.0	False
+6449	3	BiomeCypreJungle	14.0	False
+18413	4	BiomeCypreJungle	15.0	False
+1855	5	BiomeCypreJungle	11.0	False
+18411	6	BiomeCypreJungle	13.0	False
+8334	7	AB_MiasmicMangrove	15.0	False
+8330	8	AB_MiasmicMangrove	10.0	False
+8331	9	AB_MiasmicMangrove	13.0	False

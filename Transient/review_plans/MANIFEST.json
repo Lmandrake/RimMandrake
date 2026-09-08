@@ -1,0 +1,170 @@
+[
+ {
+  "template": "bantha_graveyard",
+  "x": 6,
+  "z": 6,
+  "log": "foundationCells=0 terrainCells=0 things=21 roofCells=0 thingsSpawned=21",
+  "buildings": 16,
+  "allThings": 133
+ },
+ {
+  "template": "broken_ring",
+  "x": 54,
+  "z": 6,
+  "log": "foundationCells=0 terrainCells=69 things=19 roofCells=0 thingsSpawned=7",
+  "buildings": 17,
+  "allThings": 200
+ },
+ {
+  "template": "cistern",
+  "x": 102,
+  "z": 6,
+  "log": "foundationCells=0 terrainCells=25 things=28 roofCells=49 thingsSpawned=28",
+  "buildings": 32,
+  "allThings": 200
+ },
+ {
+  "template": "dead_beacon",
+  "x": 150,
+  "z": 6,
+  "log": "foundationCells=0 terrainCells=9 things=17 roofCells=25 thingsSpawned=4",
+  "buildings": 34,
+  "allThings": 171
+ },
+ {
+  "template": "dwelling",
+  "x": 198,
+  "z": 6,
+  "log": "foundationCells=0 terrainCells=130 things=69 roofCells=192 thingsSpawned=66",
+  "buildings": 145,
+  "allThings": 200
+ },
+ {
+  "template": "glass_sea",
+  "x": 6,
+  "z": 54,
+  "log": "foundationCells=0 terrainCells=192 things=10 roofCells=0 thingsSpawned=-1",
+  "buildings": 26,
+  "allThings": 200
+ },
+ {
+  "template": "hunting_lodge",
+  "x": 54,
+  "z": 54,
+  "log": "foundationCells=0 terrainCells=1008 things=317 roofCells=1216 thingsSpawned=223",
+  "buildings": 200,
+  "allThings": 200
+ },
+ {
+  "template": "imperial_waystation",
+  "x": 102,
+  "z": 54,
+  "log": "foundationCells=0 terrainCells=28 things=35 roofCells=54 thingsSpawned=31",
+  "buildings": 32,
+  "allThings": 200
+ },
+ {
+  "template": "junkers_cantina_block",
+  "x": 150,
+  "z": 54,
+  "log": "foundationCells=0 terrainCells=1406 things=221 roofCells=1600 thingsSpawned=203",
+  "buildings": 200,
+  "allThings": 200
+ },
+ {
+  "template": "junkers_depot",
+  "x": 198,
+  "z": 54,
+  "log": "foundationCells=0 terrainCells=1406 things=346 roofCells=1600 thingsSpawned=273",
+  "buildings": 200,
+  "allThings": 200
+ },
+ {
+  "template": "junkers_dwelling_cluster",
+  "x": 6,
+  "z": 102,
+  "log": "foundationCells=0 terrainCells=192 things=79 roofCells=96 thingsSpawned=56",
+  "buildings": 124,
+  "allThings": 198
+ },
+ {
+  "template": "junkers_scrapyard",
+  "x": 54,
+  "z": 102,
+  "log": "foundationCells=0 terrainCells=1600 things=72 roofCells=128 thingsSpawned=72",
+  "buildings": 75,
+  "allThings": 142
+ },
+ {
+  "template": "krayt_graveyard",
+  "x": 102,
+  "z": 102,
+  "log": "foundationCells=0 terrainCells=0 things=13 roofCells=0 thingsSpawned=13",
+  "buildings": 14,
+  "allThings": 200
+ },
+ {
+  "template": "moisture_farm",
+  "x": 150,
+  "z": 102,
+  "log": "foundationCells=0 terrainCells=9 things=75 roofCells=25 thingsSpawned=3",
+  "buildings": 77,
+  "allThings": 200
+ },
+ {
+  "template": "monument",
+  "x": 198,
+  "z": 102,
+  "log": "foundationCells=0 terrainCells=192 things=5 roofCells=0 thingsSpawned=-10",
+  "buildings": 77,
+  "allThings": 200
+ },
+ {
+  "template": "mynock_roost",
+  "x": 6,
+  "z": 150,
+  "log": "foundationCells=0 terrainCells=0 things=112 roofCells=0 thingsSpawned=109",
+  "buildings": 21,
+  "allThings": 200
+ },
+ {
+  "template": "nursery",
+  "x": 54,
+  "z": 150,
+  "log": "foundationCells=0 terrainCells=36 things=40 roofCells=64 thingsSpawned=40",
+  "buildings": 125,
+  "allThings": 200
+ },
+ {
+  "template": "oasis_shrine",
+  "x": 102,
+  "z": 150,
+  "log": "foundationCells=0 terrainCells=120 things=7 roofCells=0 thingsSpawned=7",
+  "buildings": 25,
+  "allThings": 50
+ },
+ {
+  "template": "podracer_wreck",
+  "x": 150,
+  "z": 150,
+  "log": "foundationCells=0 terrainCells=0 things=34 roofCells=0 thingsSpawned=34",
+  "buildings": 2,
+  "allThings": 168
+ },
+ {
+  "template": "rakatan_trace",
+  "x": 198,
+  "z": 150,
+  "log": "foundationCells=0 terrainCells=174 things=18 roofCells=0 thingsSpawned=18",
+  "buildings": 20,
+  "allThings": 200
+ },
+ {
+  "template": "toll_gap",
+  "x": 6,
+  "z": 198,
+  "log": "foundationCells=0 terrainCells=15 things=31 roofCells=35 thingsSpawned=31",
+  "buildings": 35,
+  "allThings": 135
+ }
+]

@@ -1,0 +1,36 @@
+# rimplace flat plan v1
+FOOTPRINT	0	0	16	12
+THING	AncientPodCar	7	5	0	-
+THING	ChunkSlagSteel	0	8	0	-
+THING	ChunkSlagSteel	1	0	0	-
+THING	ChunkSlagSteel	1	5	0	-
+THING	ChunkSlagSteel	1	11	0	-
+THING	ChunkSlagSteel	2	7	0	-
+THING	ChunkSlagSteel	3	1	0	-
+THING	ChunkSlagSteel	4	2	0	-
+THING	ChunkSlagSteel	4	5	0	-
+THING	ChunkSlagSteel	5	3	0	-
+THING	ChunkSlagSteel	5	8	0	-
+THING	ChunkSlagSteel	7	1	0	-
+THING	ChunkSlagSteel	8	1	0	-
+THING	ChunkSlagSteel	8	3	0	-
+THING	ChunkSlagSteel	9	3	0	-
+THING	ChunkSlagSteel	9	8	0	-
+THING	ChunkSlagSteel	10	8	0	-
+THING	ChunkSlagSteel	10	9	0	-
+THING	ChunkSlagSteel	10	11	0	-
+THING	ChunkSlagSteel	11	1	0	-
+THING	ChunkSlagSteel	11	3	0	-
+THING	ChunkSlagSteel	11	8	0	-
+THING	ChunkSlagSteel	11	10	0	-
+THING	ChunkSlagSteel	12	4	0	-
+THING	ChunkSlagSteel	12	5	0	-
+THING	ChunkSlagSteel	12	6	0	-
+THING	ChunkSlagSteel	13	7	0	-
+THING	ChunkSlagSteel	14	5	0	-
+THING	ChunkSlagSteel	14	6	0	-
+THING	ChunkSlagSteel	15	8	0	-
+THING	Steel	5	5	0	-
+THING	Steel	11	5	0	-
+THING	Steel	7	3	0	-
+THING	Steel	7	8	0	-
