@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T19:28:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T19:31:37Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -449,15 +449,6 @@ target:   v1
 kind:     task
 summary:  Design (dormant, per DROIDUNIFIEDFRAMEWORKDESIGN.md §0 card 14 / §3.4 E5) for
 prose:    infrastructure/state/items/DROID_ORACLE_VOICE_DESIGN_1.md
-
-## DROIDWORKS_FULL_LIST_COEXIST_1 Enable Droidworks in the full mod list beside the donors; cold load, texPath census, Harmony idempotency
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  Thin when filed — no spec/verify/criteria. Decided here (FOUNDRY, 2026-09-08):
-prose:    infrastructure/state/items/DROIDWORKS_FULL_LIST_COEXIST_1.md
 
 ## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
 state:    doing  (BLOCKED)

@@ -6022,3 +6022,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_PRIMITIVE_TIER_1","ts":"2026-09-08T19:27:38Z"}
 {"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_PRIMITIVE_TIER_1","ts":"2026-09-08T19:27:41Z"}
 {"seat":"FOUNDRY","event":"block","id":"DROIDWORKS_PRIMITIVE_TIER_1","reason":"mechanics built and committed at 5c80b1797677af906691d2d0f5dd331eb17f318e, G2 art + live savegame verify owed to a parent session","ts":"2026-09-08T19:28:52Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_FULL_LIST_COEXIST_1","sha":"3b970039e295b8627d2a6cb33e7b7f8586710ef6","ts":"2026-09-08T19:31:37Z"}
