@@ -1,0 +1,20 @@
+id,name,source_biome,is_water,contents_hazard,potable,transmutations_out,sheet_ref
+fog_condensate,Fog condensate,AridShrubland;terminator,yes,clean — the stormwall's last clean water,yes,,arid_shrubland.md;terminator_sea.md
+sea_twilight,Terminator sea water,RUT_TwilightSea;RUT_GreySea,yes,saline,no,evaporation->fog_condensate,terminator_sea.md
+scald_water,Scald water,RUT_TheScald,yes,"boiling mineral brine — fouled, not toxic",never (hard ruling: no def or tech renders it potable),evaporation->scald_melt (via peak snow/condensate cycle),the_scald.md
+scald_melt,Scald meltwater / peak runoff,peaks above RUT_TheScald,yes,mineral traces; hot,once cooled + sterilized (R-H1/R-H7),cooling->fog_condensate-grade,the_scald.md
+red_water,Red water,AB_OcularForest (the Contagion),yes,spores + alien toxins,after one day sunned,sunning->potable; descent->sterile (feeds dayside rivers R-H7),the_contagion.md
+slime_flood,Slime floodwater,AB_GelatinousSuperorganism,yes,organic load; potable floodwater,yes as-is,drains fast; slime WATER counts toxic for distillation->clean,the_slime.md
+sheen_milk,The Sheen / milk ponds,AB_MycoticJungle (the Rot),NO — fungal reproductive emission,biological; reclaims into milk ponds,no,reclaim->milk ponds (not-water),the_rot.md
+rime_etchfall,Hydrocarbon rime / etchfall,AB_RockyCrags (Forsaken Crags),NO — chemical frost,corrosive hydrocarbon condensate,no,warm pulse->melt-trickle (the twilight's ONLY liquid water),forsaken_crags.md
+crags_trickle,Melt-trickle,AB_RockyCrags warm pulses,yes,thin; the twilight's only liquid water,yes (scarce),refreeze->rime,forsaken_crags.md
+waste_brine,Hypersaline brine pools,Wasteland,yes,dead-river concentrate; radiologically live,no,sequestration->brine batteries (locks contamination),wasteland.md
+poison_standing,Poison-forest standing water,PoisonForest,yes,heavy-metal load,never,condensate above it -> potable,poison_forest.md
+night_ice,Nightside ice,RUT_NightsideIce,yes (frozen),atmospheric frost layers; particulates,not unfiltered,melt+filter->potable,nightside_ice.md
+propane_lake,Propane lakes,AB_PropaneLakes;RUT_PropaneLake,NO — cryogenic propane,cryogenic hydrocarbon; ignites on heat,no,ignition (see ANCIENT_WAR_LAB_1 breach route),the_propane_lakes.md
+deep_brine,Grey Deep brine pools,bottom of RUT_GreySea,yes,dense hypersaline; underwater lakes with shores,no,,the_grey_deep.md
+miasma_axis,Miasma fresh↔brine axis,AB_MiasmicMangrove,yes,storm-driven salt line; stranding pools,fresh side only,surge moves the line; stranding->brine,the_miasma.md
+fever_pool,Fever Wood pools,COMIGO_GreaterSwamp_Tropical,yes,the Tenant's aquifer — watched water,unresolved by design (the Tenant rule),pool-strike events,the_fever_wood.md
+river_steam,Steaming rivers,dayside rivers (RiverSteam mod),yes,hot flowing fresh water,once cooled,cooling->potable; steam->fog,the_greentide.md;RiverSteam
+crack_flood,Cracked-lands flood,ZBiome_Badlands,yes,"flash flood — chimes, wall of water",yes (fresh),soak->explosive plant growth; drains,the_cracked_lands.md;FLOOD_WITNESS_EVENT_1
+dead_river,Dead-river termini,dayside river ends,yes,concentrating minerals toward brine,degrading,concentration->waste_brine,wasteland.md
