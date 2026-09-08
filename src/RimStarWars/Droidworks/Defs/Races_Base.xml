@@ -57,6 +57,8 @@
       <li>RSW_DW_InstallRestrainingBolt</li>
       <li>RSW_DW_RemoveRestrainingBolt</li>
       <li>RSW_DW_MemoryWipe</li>
+      <!-- DROID_HUTT_CAPTIVES_1 (packet C6) -->
+      <li>RSW_DW_LiberateHuttCaptive</li>
       <!-- DROIDWORKS_FORMAT_TIERS_1 (packet B1) -->
       <li>RSW_DW_FormatDroid</li>
       <li>RSW_DW_RestrictiveFormat</li>

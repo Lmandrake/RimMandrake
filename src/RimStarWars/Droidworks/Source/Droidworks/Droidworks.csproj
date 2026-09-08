@@ -85,12 +85,16 @@
     <Compile Include="Recipe_InstallDroidPart.cs" />
     <Compile Include="Recipe_InstallDroidPartAtBench.cs" />
     <Compile Include="Recipe_InstallRestrainingBolt.cs" />
+    <!-- DROID_HUTT_CAPTIVES_1 (packet C6): rescue half. -->
+    <Compile Include="Recipe_LiberateHuttCaptive.cs" />
     <Compile Include="Recipe_OverclockDroid.cs" />
     <Compile Include="Recipe_RebootDroid.cs" />
     <Compile Include="Recipe_RemoveRestrainingBolt.cs" />
     <Compile Include="Recipe_ShopRebuild.cs" />
     <!-- DROID_FACTION_LOADOUTS_1 (packet C1): the Trade Moot's droid market. -->
     <Compile Include="StockGenerator_DWDroids.cs" />
+    <!-- DROID_HUTT_CAPTIVES_1 (packet C6): purchase half. -->
+    <Compile Include="StockGenerator_DWHuttCaptives.cs" />
     <Compile Include="ThoughtWorker_NearBoltedDroid.cs" />
   </ItemGroup>
 

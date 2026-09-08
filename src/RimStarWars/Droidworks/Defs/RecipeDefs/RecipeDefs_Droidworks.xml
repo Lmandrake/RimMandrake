@@ -108,6 +108,36 @@
   </RecipeDef>
 
   <!-- ========================================================================
+       RSW_DW_LiberateHuttCaptive — DROID_HUTT_CAPTIVES_1 (packet C6). Custom
+       worker (RimMandrake.StarWars.Droidworks.Recipe_LiberateHuttCaptive)
+       because the gate is "prisoner AND already carries
+       RSW_DW_RestrainingBolt" — no single vanilla RecipeDef field expresses
+       that pair, same reason RSW_DW_RemoveRestrainingBolt above has its own
+       GetPartsToApplyOn. Only ever offered on a captive found already bolted
+       (StockGenerator_DWHuttCaptives, or a future site-cast route — see
+       infrastructure/state/items/DROID_HUTT_CAPTIVES_1.md for the exact
+       plug-in point); does not touch the bolt or its resentment at all —
+       that stays RSW_DW_RemoveRestrainingBolt's job, rebellion check intact.
+       isViolation false: freeing a prisoner from captivity is not a
+       violation against the faction that held them.
+  ======================================================================== -->
+  <RecipeDef>
+    <defName>RSW_DW_LiberateHuttCaptive</defName>
+    <label>liberate captive</label>
+    <description>Cut this captive free of its Hutt captivity. It joins you exactly as it is — bolt, and whatever resentment it has built up under it, both intact.</description>
+    <jobString>Liberating captive.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_LiberateHuttCaptive</workerClass>
+    <workAmount>250</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <isViolation>false</isViolation>
+    <anesthetize>false</anesthetize>
+    <researchPrerequisite>RSW_DW_Research_Bolting</researchPrerequisite>
+    <skillRequirements>
+      <Crafting>2</Crafting>
+    </skillRequirements>
+  </RecipeDef>
+
+  <!-- ========================================================================
        RSW_DW_MemoryWipe — DROIDWORKS_WIPE_AND_SPIKE_1. Backs
        RimMandrake.StarWars.Droidworks.Recipe_DWMemoryWipe (Source/Droidworks/Recipe_DWMemoryWipe.cs)
        — see that file's header for the full mechanism writeup (trait
