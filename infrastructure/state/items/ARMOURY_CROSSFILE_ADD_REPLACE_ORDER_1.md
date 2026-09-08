@@ -62,3 +62,37 @@ LIES    checking only that the Replace stops erroring (e.g. by reordering so it
         runs on a field that already exists at 0) without checking the RESOLVED
         value actually landed at the intended tuned number
 ```
+
+## resolution 2026-09-08 (FOUNDRY) — closed, but the EXPECT numbers above are WRONG, corrected here
+
+`ARMOURY_PATCH_INNER_MISS_1` (closed today, commit `1974a7c6`) independently found and
+fixed this exact defect from the runtime-log side (3 `PatchOperationFindMod` inner-match
+failures, one of them this same `OuterRim_Proj_ProtonArtillery`/`ProtonMortar` pair). Its
+fix: `gen_armoury_patch.py` now reads `Turrets_DamageDoctrine.xml` off disk and excludes
+every projectile it already owns — the stale `Replace` (600/335) is gone from
+`Armoury_RangedDamage.xml` entirely (grepped, confirmed absent), not reordered.
+
+**I almost mis-flagged this as a silent balance regression** — 600/335 looked like the
+"real" tuned target and 3188/560 (what now survives, from `Turrets_DamageDoctrine.xml`'s
+`PatchOperationAdd`) looked like an unmodified leftover. It is not. Read
+`gen_armoury_patch.py`'s own docstring (lines ~16-21): *"SUPERSEDED 2026-08-29 for
+canon-roster turrets: ...gen_turret_doctrine.py writes those under the (squares)^2
+doctrine, and its output file sorts after this one so its writes win. On this
+generator's NEXT regen, exclude those projectiles..."* — this item's own 600/335
+"tuned target" was the PRE-turret-doctrine number, already marked stale eight days
+before this item was even filed. `gen_turret_doctrine.py` computes 3188 for
+`OuterRim_ProtonArtillery` from an explicit, commented formula (`"r7.9*3 capped, spill
+2.53"`, the `(squares)^2 x personal anchor` doctrine, owner-ruled 2026-08-14) — it is
+the CURRENT correct value, not a bug. The `250-600` "artillery" prose band quoted
+elsewhere in the same docstring is the OLD three-tier ruling that the turret-doctrine
+system's per-turret formula superseded for canon-roster turrets specifically.
+
+**Corrected EXPECT** (superseding the block above, which predates the doctrine
+ownership handoff): `jawa/get_def OuterRim_Proj_ProtonArtillery` should read
+`damageAmountBase 3188`, `OuterRim_Proj_ProtonMortar` should read `560` — matching
+`Turrets_DamageDoctrine.xml`'s Add, not the deleted Replace. Still owed: a live
+load + `jawa/get_def` to confirm those values actually resolve (not done by either
+closing pass — both left this for the next game-down/cold-load window).
+
+Closing as resolved by `1974a7c6`. If a future load shows the resolved value is
+neither 3188/560 NOR 600/335, that's a new defect, not this one.
