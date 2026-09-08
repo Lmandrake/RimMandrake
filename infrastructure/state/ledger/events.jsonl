@@ -6057,3 +6057,5 @@
 {"seat":"FOUNDRY","event":"start","id":"DROID_DISTRESS_CALL_REPOINT_1","ts":"2026-09-08T21:32:27Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"C4 protocol-droid trade advantage: live price comparison","ts":"2026-09-08T21:37:35Z"}
 {"seat":"FOUNDRY","event":"note","id":"DROID_HUTT_CAPTIVES_1","text":"Built purchase (StockGenerator_DWHuttCaptives on Jawa_HuttCartel's caravan) + rescue (Recipe_LiberateHuttCaptive) mechanisms, 0-error build, offline-validated. Left doing: bridge held by a concurrent FOUNDRY session (C4, not stale) and mandrake.rut.patches not in the active ModsConfig anyway, so live spawn+recipe verification is genuinely owed but not obtainable this pass. Site itself (holding pens district + Hutt InhabitedCastDef) confirmed unbuilt -- out of this packet's scope, plug-in point recorded in the item file. commit 4f338439.","ts":"2026-09-08T21:48:17Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T21:51:08Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROID_DISTRESS_CALL_REPOINT_1","sha":"44613332e16daba519df33d68cdf4175239b7947","ts":"2026-09-08T21:53:05Z"}
