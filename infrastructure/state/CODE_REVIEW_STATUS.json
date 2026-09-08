@@ -2597,10 +2597,10 @@
     "sha": "8193b35c"
   },
   "src/RimMandrake/Utils/handoff.py": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-08",
-    "hash": "e5e43330ee7f5eaebfad53deddc1446975362c28f115a389b1821989548289f9",
-    "sha": "b9a1d9a2"
+    "hash": "fd58cdb71388719a69359ceea5dae7a3164370378c8e48049aa8ca70ef706bb2",
+    "sha": "6204e16b"
   },
   "src/RimMandrake/Utils/harvest_log.py": {
     "cleanCount": 2,
@@ -3148,10 +3148,10 @@
     "sha": "43f96b1b"
   },
   "src/RimMandrake/Utils/selftest_handoff.py": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-08",
-    "hash": "9d22cc1b6710a3117eb4277badfd6c05d7a6512958aa6935f48bad9b1107d425",
-    "sha": "b9a1d9a2"
+    "hash": "410aef98b185d3741a33bb727f989dc28b85353606a0e533cf7806fabcfb9fc5",
+    "sha": "6204e16b"
   },
   "src/RimMandrake/Utils/selftest_one_path_seam.py": {
     "cleanCount": 1,
