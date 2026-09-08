@@ -34,6 +34,22 @@
   </JobDef>
 
   <!-- ========================================================================
+       RSW_DW_UnclampBolt — DROIDWORKS_BOLT_PAYOFF_1 (packet B5), the field
+       removal counterpart to RSW_DW_ClampBolt. Backs
+       RimMandrake.StarWars.Droidworks.JobDriver_DWUnclampBolt (Source/
+       Droidworks/JobDriver_DWUnclampBolt.cs): 300 ticks on any bolted pawn,
+       no Downed gate (removal is cooperative, not coercive). Wiring a
+       float-menu option / WorkGiver to actually ISSUE this job is left as
+       follow-up, same as RSW_DW_ClampBolt's own precedent.
+  ======================================================================== -->
+  <JobDef>
+    <defName>RSW_DW_UnclampBolt</defName>
+    <driverClass>RimMandrake.StarWars.Droidworks.JobDriver_DWUnclampBolt</driverClass>
+    <reportString>unclamping a restraining bolt from TargetA.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+
+  <!-- ========================================================================
        RSW_DW_DataSpike — DROIDWORKS_WIPE_AND_SPIKE_1. Backs
        RimMandrake.StarWars.Droidworks.JobDriver_DWDataSpike (Source/Droidworks/JobDriver_DWDataSpike.cs):
        carry the spike (TargetA) to the target droid (TargetB), work 600 ticks,

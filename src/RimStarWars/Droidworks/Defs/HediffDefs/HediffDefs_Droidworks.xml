@@ -74,9 +74,9 @@
   </HediffDef>
 
   <!-- ========================================================================
-       RSW_DW_RestrainingBolt — DROIDWORKS_BOLT_CORE_1. Pure vanilla HediffStage
-       fields, ZERO custom comp — matches OuterRim_RestraintBolt exactly, read
-       verbatim from the live mod XML (Droid Depot workshop 3096501398,
+       RSW_DW_RestrainingBolt — DROIDWORKS_BOLT_CORE_1. Started as pure vanilla
+       HediffStage fields with zero custom comp — matches OuterRim_RestraintBolt
+       exactly, read verbatim from the live mod XML (Droid Depot workshop 3096501398,
        1.6/Defs/HediffDefs/Droid_General.xml): "HediffWithComps, no comps",
        opinionOfOthersFactor 0, capMods Talking setMax 0 / Manipulation
        setMax 0.75, SlaveSuppressionFallRate 0 (Ideology-gated). Manipulation's
@@ -101,6 +101,12 @@
     <scenarioCanAdd>false</scenarioCanAdd>
     <maxSeverity>1.0</maxSeverity>
     <isBad>true</isBad>
+    <!-- DROIDWORKS_BOLT_PAYOFF_1 (packet B5): "shear on damage". -->
+    <comps>
+      <li Class="RimMandrake.StarWars.Droidworks.HediffCompProperties_DWBoltShear">
+        <shearChancePerDamage>0.02</shearChancePerDamage>
+      </li>
+    </comps>
     <stages>
       <li>
         <minSeverity>0</minSeverity>

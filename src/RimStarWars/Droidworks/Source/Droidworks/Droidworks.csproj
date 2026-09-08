@@ -67,9 +67,11 @@
     <Compile Include="DroidworksDefOf.cs" />
     <Compile Include="DroidworksModExtension.cs" />
     <Compile Include="HediffComp_DWBoltResentment.cs" />
+    <Compile Include="HediffComp_DWBoltShear.cs" />
     <Compile Include="HediffComp_IonOverloadsDroid.cs" />
     <Compile Include="HediffComp_PoweredDown.cs" />
     <Compile Include="JobDriver_DWClampBolt.cs" />
+    <Compile Include="JobDriver_DWUnclampBolt.cs" />
     <Compile Include="JobDriver_DWDataSpike.cs" />
     <Compile Include="JobDriver_DWRecharge.cs" />
     <Compile Include="JobGiver_DWRecharge.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="Recipe_RebootDroid.cs" />
     <Compile Include="Recipe_RemoveRestrainingBolt.cs" />
     <Compile Include="Recipe_ShopRebuild.cs" />
+    <Compile Include="ThoughtWorker_NearBoltedDroid.cs" />
   </ItemGroup>
 
   <ItemGroup>
