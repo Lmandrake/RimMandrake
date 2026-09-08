@@ -65,9 +65,11 @@
     <Compile Include="DroidFormatTier.cs" />
     <Compile Include="DroidworksBoltUtility.cs" />
     <Compile Include="DroidworksDefOf.cs" />
+    <Compile Include="DroidworksHardwareQuirks.cs" />
     <Compile Include="DroidworksModExtension.cs" />
     <Compile Include="HediffComp_DWBoltResentment.cs" />
     <Compile Include="HediffComp_DWBoltShear.cs" />
+    <Compile Include="HediffComp_DWWipeStumble.cs" />
     <Compile Include="HediffComp_IonOverloadsDroid.cs" />
     <Compile Include="HediffComp_PoweredDown.cs" />
     <Compile Include="JobDriver_DWClampBolt.cs" />
