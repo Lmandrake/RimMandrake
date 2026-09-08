@@ -181,6 +181,38 @@
          this opt-out the faction fields those too and raids arrive as
          vanilla pawns wearing our name. Vanilla itself writes it 314 times,
          9 of them on pawnGroupMakers. -->
+    <!-- ═══ DROID_FACTION_LOADOUTS_1 (packet C1), 2026-09-08 ═════════════════════
+         Ruling 2, verbatim: "Junkers might have one or two atrocious, clumsy droids
+         spewing fire and able to blow themselves up against the enemy or their
+         structures." §3.2's mechanism cell asks for Primitive-family kinds with
+         `energyDensity 3` + `deliberateDenyModule`, which is exactly what
+         RSW_DW_Primitive_Junker already is (built by B9,
+         DROIDWORKS_PRIMITIVE_TIER_1, Droidworks' own Races_Primitive.xml) - so this
+         packet wires it in and does not rebuild it.
+
+         🔑 "ONE OR TWO" IS A COUNT, and weight 3 of 20 is what produces it: about
+         one pawn in seven, so a Junker band of ten arrives with one or two. Its
+         combatPower is 20 against Junker Grunt 56 / Heavy 84 / Specialist 94 /
+         Leader 149 (live 600-mod dump 2026-09-08), so those two cost the raid
+         budget 60 of 1293 weighted points - 4.6 %. They are a hazard, not an army.
+
+         ⚠️ THE SUICIDE IS THE EXISTING DEATH-DETONATION, not a new behaviour.
+         CompDroidDetonation already fires on death for any race with
+         energyDensity > 0 and stored charge, scaling with both; the Junker race
+         carries density 3 and deliberateDenyModule, and C1 additionally set its
+         explosion's damageDef to vanilla `Flame` so it is fire that comes out.
+         §3.2's "MentalState charge-and-detonate" - a droid that walks up and
+         deliberately kills itself rather than exploding when killed - is NOT built
+         and is NOT claimed; it is filed as its own item. Ruling 2's "blow themselves
+         up against the enemy or their structures" is met by the death path, because
+         the thing that kills them in a raid is the colony.
+
+         ⚠️ No flamethrower gear. The only droid flamethrower in the live 600-mod set
+         is `guy762_DroidWeapon_flamethrower`, which is APPAREL (RimWorld.Apparel),
+         belongs to kotorcore - a mod §2's R4 retires - and was already excluded from
+         the B2 module absorption for requiring MVCF, a framework Droidworks does not
+         ship (Absorbed_KotorDroidModules_EXCLUDED_manifest.txt:24). Nothing else in
+         600 mods fits. Left weaponless rather than pointed at an invented defName. -->
     <pawnGroupMakers Inherit="False">
       <li>
         <kindDef>Combat</kindDef>
@@ -189,6 +221,7 @@
           <Jawa_Junkers_Heavy>4</Jawa_Junkers_Heavy>
           <Jawa_Junkers_Specialist>2</Jawa_Junkers_Specialist>
           <Jawa_Junkers_Leader>1</Jawa_Junkers_Leader>
+          <RSW_DW_Primitive_Junker MayRequire="mandrake.rsw.droidworks">3</RSW_DW_Primitive_Junker>
         </options>
       </li>
       <li>
@@ -197,6 +230,10 @@
           <Jawa_Junkers_Grunt>10</Jawa_Junkers_Grunt>
           <Jawa_Junkers_Heavy>3</Jawa_Junkers_Heavy>
           <Jawa_Junkers_Specialist>2</Jawa_Junkers_Specialist>
+          <!-- C1: lower than the raid weight. A firebomb on legs is something the
+               Junkers send OUT, and one standing in their own outpost is as much a
+               danger to them as to anyone attacking it. -->
+          <RSW_DW_Primitive_Junker MayRequire="mandrake.rsw.droidworks">2</RSW_DW_Primitive_Junker>
         </options>
       </li>
     </pawnGroupMakers>

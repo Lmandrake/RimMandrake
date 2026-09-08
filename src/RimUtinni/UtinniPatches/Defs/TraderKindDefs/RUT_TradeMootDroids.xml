@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_TradeMootDroids.xml       RimUtinni Patches · DROID_FACTION_LOADOUTS_1
+                                (packet C1), authored 2026-09-08
+  ============================================================================
+
+  Builds the Jawa Trade Moot row of DROID_UNIFIED_FRAMEWORK_DESIGN.md §3.2:
+  "buys/sells droids of all kinds, and brain parts | StockGenerator_Colonists
+  on DW kinds; brain-trio stock, rare" — under owner ruling 2, verbatim: "the
+  Trade Moot loves droids of all kinds and buys/sells them, just like you."
+
+  These three TraderKindDefs are appended to `Jawa_IndigenousTribes`'s
+  `caravanTraderKinds` and `baseTraderKinds` in
+  Defs/FactionDefs/JawaTribes.xml. They do NOT replace TribeBase's own
+  Caravan_Neolithic_* / Base_Neolithic_Standard entries — RimWorld appends a
+  child's list to the parent's, so these are extra rolls beside the ordinary
+  tribal traders, which is why their commonalities are below 1.
+
+  🔴 THE GENERATOR CLASS IS OURS, AND THE FIRST TRY WAS WRONG IN A WAY WORTH
+  RECORDING. §3.2 names `StockGenerator_Colonists`; that is an EXAMPLE, and it
+  turned out to belong to a mod this program retires. Every off-the-shelf route
+  was measured against the live 600-mod set and every one of them fails:
+
+      StockGenerator_Colonists    17 uses, ALL guy762.mm.kotorcore — §2's R4
+                                  retires that mod. There is no vanilla class of
+                                  this name.
+      StockGenerator_Automatons    9 uses. Its real name is
+                                  `Asimov.StockGenerator_Automatons` and its own
+                                  donor gates it on Neronix17.OuterRim.DroidDepot,
+                                  NOT on Outer Rim Core (measured in the donor's
+                                  TraderKinds_Base.xml:83) — so §2's R3 kills it,
+                                  before D4 has even run.
+      StockGenerator_Slaves      vanilla, and silently inert:
+                                  StockGenerator_Slaves.cs lines 20-35 yield
+                                  NOTHING unless every ideo of the trading faction
+                                  returns IdeoApprovesOfSlavery(), and the Moot's
+                                  fixedIdeo is The Salvation.
+
+  🔴 THE FIRST BUILD OF THIS FILE SHIPPED `Class="StockGenerator_Automatons"`
+  WITHOUT THE `Asimov.` NAMESPACE AND BOTH DEFS WERE DISCARDED — the 2026-09-08
+  20:26 full-list load logged "Could not find type named
+  StockGenerator_Automatons" twice and then two dangling
+  caravanTraderKinds/baseTraderKinds cross-references, because the faction's <li>
+  survives a def that does not. The short-name `$type` in a def DUMP is not the
+  `Class=` string; the dump prints the type's name, the loader wants a name
+  GenTypes can resolve. Do not read one as the other.
+
+  ⇒ `RimMandrake.StarWars.Droidworks.StockGenerator_DWDroids`, written for this
+  (Source/Droidworks/StockGenerator_DWDroids.cs). It outlives R1-R4, it has no
+  slavery gate — a droid is property, not a person — and its HandlesThingDef keys
+  on RSW_DW_FleshType_Droid, so the Moot BUYS any Droidworks droid the player
+  brings, not only the models it is selling today. That is the "buys" half of
+  ruling 2, and with a third-party class it was unprovable.
+
+  ⚠️ EVERY DEF HERE CARRIES `MayRequire="mandrake.rsw.droidworks"` ON ITS ROOT
+  ELEMENT, and the identical string is on the faction's own
+  caravanTraderKinds/baseTraderKinds <li> in JawaTribes.xml. Both halves are
+  needed: a `Class=` naming a type no loaded assembly has discards the whole def
+  (memory: modextension-missing-type-discards-def), and a faction that still
+  lists a discarded def logs a dangling cross-reference. That pairing is what the
+  first build got wrong.
+
+  🔴 THE DLL AND THIS FILE SHIP TOGETHER OR NOT AT ALL. StockGenerator_DWDroids
+  lives in Droidworks.dll, and an assembly can only be replaced while the game is
+  CLOSED. Deploying this XML against an older DLL reproduces exactly the discard
+  above. Same rule the Inhabited cast rosters were held under in DEPLOY_HOLD.txt.
+
+  ⚠️ Bought droids arrive UNBOLTED, deliberately. RSW_DW_BoltResentment is seeded
+  by the two APPLICATION routes (Recipe_InstallRestrainingBolt.ApplyOnPawn /
+  JobDriver_DWClampBolt's AddFinishAction), never by a hediff merely appearing on
+  a pawn — so a droid bolted by a stock generator would carry a bolt that never
+  earns resentment and never rebels when freed, which is half a mechanism wearing
+  the whole one's face. Selling bolted droids belongs with B5's payoff.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       1 · The parts caravan. No third-party class, so it survives every
+       retirement wave in §2 — which matters, because ruling 6's head-gate
+       economy ("you import them... nobody on this world can, or ever will")
+       has no other supply route than salvage, quest loot and this.
+       countRange 0~2 per part IS the "rare" of §3.2: a caravan can and often
+       will arrive carrying none of the three.
+       ══════════════════════════════════════════════════════════════════════ -->
+  <TraderKindDef MayRequire="mandrake.rsw.droidworks">
+    <defName>RUT_Caravan_TradeMoot_DroidParts</defName>
+    <label>droid parts trader</label>
+    <commonality>0.5</commonality>
+    <requestable>true</requestable>
+    <orbital>false</orbital>
+    <stockGenerators>
+
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>Silver</thingDef>
+        <countRange>1500~4000</countRange>
+      </li>
+
+      <!-- SELL: the brain trio, rare. -->
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_DW_PersonalityMatrix</thingDef>
+        <countRange>0~2</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_DW_Processor</thingDef>
+        <countRange>0~2</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_DW_Databank</thingDef>
+        <countRange>0~2</countRange>
+      </li>
+
+      <!-- BUY: "and brain parts" cuts both ways. A Jawa strips a wreck and
+           sells the head; this is where that head turns into silver. -->
+      <li Class="StockGenerator_BuySingleDef">
+        <thingDef>RSW_DW_PersonalityMatrix</thingDef>
+      </li>
+      <li Class="StockGenerator_BuySingleDef">
+        <thingDef>RSW_DW_Processor</thingDef>
+      </li>
+      <li Class="StockGenerator_BuySingleDef">
+        <thingDef>RSW_DW_Databank</thingDef>
+      </li>
+
+      <li Class="StockGenerator_BuyExpensiveSimple" />
+
+    </stockGenerators>
+  </TraderKindDef>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       2 · The droid caravan. "Droids of all kinds" is taken literally: one
+       generator for the ordinary working chassis a market actually moves,
+       and a second, much thinner one for military hulls.
+       ⛔ Every kind listed is a *_Colonist / *_Good build. Droidworks ships a
+       raider-grade "Bad" variant of the same chassis at 125-500 combatPower;
+       those are what the Empire and the Junkers field, not what anyone sells
+       over a counter, and putting them on a market would hand the player an
+       HK-50 for silver.
+       ══════════════════════════════════════════════════════════════════════ -->
+  <TraderKindDef MayRequire="mandrake.rsw.droidworks">
+    <defName>RUT_Caravan_TradeMoot_Droids</defName>
+    <label>droid trader</label>
+    <commonality>0.5</commonality>
+    <requestable>true</requestable>
+    <orbital>false</orbital>
+    <stockGenerators>
+
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>Silver</thingDef>
+        <countRange>2000~5000</countRange>
+      </li>
+
+      <li Class="RimMandrake.StarWars.Droidworks.StockGenerator_DWDroids">
+        <countRange>2~5</countRange>
+        <pawnKinds>
+          <li>RSW_DW_KotORDroidColonist_GE3LD</li>
+          <li>RSW_DW_KotORDroidColonist_GE3PD</li>
+          <li>RSW_DW_KotORDroidColonist_KM1MD</li>
+          <li>RSW_DW_KotORDroidColonist_KM1HMD</li>
+          <li>RSW_DW_KotORDroidColonist_R8009UD</li>
+          <li>RSW_DW_KotORDroidColonist_3CUD</li>
+          <li>RSW_DW_KotORDroidColonist_T3UD</li>
+          <li>RSW_DW_KotORDroidColonist_KX12UPD</li>
+          <li>RSW_DW_OuterRim_ProtocolDroid</li>
+        </pawnKinds>
+      </li>
+
+      <!-- The military shelf: 0~1, because a Moot caravan is a market stall,
+           not an arms fair. -->
+      <li Class="RimMandrake.StarWars.Droidworks.StockGenerator_DWDroids">
+        <countRange>0~1</countRange>
+        <pawnKinds>
+          <li>RSW_DW_KotORDroidColonist_SentWD</li>
+          <li>RSW_DW_KotORDroidColonist_ADMkI</li>
+        </pawnKinds>
+      </li>
+
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_DW_PersonalityMatrix</thingDef>
+        <countRange>0~2</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_DW_Processor</thingDef>
+        <countRange>0~2</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_DW_Databank</thingDef>
+        <countRange>0~2</countRange>
+      </li>
+
+      <li Class="StockGenerator_BuySingleDef">
+        <thingDef>RSW_DW_PersonalityMatrix</thingDef>
+      </li>
+      <li Class="StockGenerator_BuySingleDef">
+        <thingDef>RSW_DW_Processor</thingDef>
+      </li>
+      <li Class="StockGenerator_BuySingleDef">
+        <thingDef>RSW_DW_Databank</thingDef>
+      </li>
+
+    </stockGenerators>
+  </TraderKindDef>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       3 · The Moot's own settlement market. Same stock, deeper, because this
+       is the one a player travels to on purpose — §3.2's "buys/sells droids
+       of all kinds" is a place as much as an event. commonality 0.6 against
+       TribeBase's single Base_Neolithic_Standard at 1, so roughly a third of
+       visits find the droid market rather than the pemmican one.
+       ══════════════════════════════════════════════════════════════════════ -->
+  <TraderKindDef MayRequire="mandrake.rsw.droidworks">
+    <defName>RUT_Base_TradeMoot_Droids</defName>
+    <label>droid market</label>
+    <commonality>0.6</commonality>
+    <requestable>false</requestable>
+    <orbital>false</orbital>
+    <stockGenerators>
+
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>Silver</thingDef>
+        <countRange>3000~7000</countRange>
+      </li>
+
+      <li Class="RimMandrake.StarWars.Droidworks.StockGenerator_DWDroids">
+        <countRange>4~8</countRange>
+        <pawnKinds>
+          <li>RSW_DW_KotORDroidColonist_GE3LD</li>
+          <li>RSW_DW_KotORDroidColonist_GE3PD</li>
+          <li>RSW_DW_KotORDroidColonist_KM1MD</li>
+          <li>RSW_DW_KotORDroidColonist_KM1HMD</li>
+          <li>RSW_DW_KotORDroidColonist_R8009UD</li>
+          <li>RSW_DW_KotORDroidColonist_3CUD</li>
+          <li>RSW_DW_KotORDroidColonist_T3UD</li>
+          <li>RSW_DW_KotORDroidColonist_KX12UPD</li>
+          <li>RSW_DW_KotORDroidGood_3C</li>
+          <li>RSW_DW_KotORDroidGood_R8009</li>
+          <li>RSW_DW_KotORDroidGood_KX12UPD</li>
+          <li>RSW_DW_OuterRim_ProtocolDroid</li>
+        </pawnKinds>
+      </li>
+
+      <li Class="RimMandrake.StarWars.Droidworks.StockGenerator_DWDroids">
+        <countRange>0~2</countRange>
+        <pawnKinds>
+          <li>RSW_DW_KotORDroidColonist_SentWD</li>
+          <li>RSW_DW_KotORDroidColonist_ADMkI</li>
+          <li>RSW_DW_KotORDroidColonist_ADMkIV</li>
+        </pawnKinds>
+      </li>
+
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_DW_PersonalityMatrix</thingDef>
+        <countRange>1~3</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_DW_Processor</thingDef>
+        <countRange>1~3</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RSW_DW_Databank</thingDef>
+        <countRange>1~3</countRange>
+      </li>
+
+      <li Class="StockGenerator_BuySingleDef">
+        <thingDef>RSW_DW_PersonalityMatrix</thingDef>
+      </li>
+      <li Class="StockGenerator_BuySingleDef">
+        <thingDef>RSW_DW_Processor</thingDef>
+      </li>
+      <li Class="StockGenerator_BuySingleDef">
+        <thingDef>RSW_DW_Databank</thingDef>
+      </li>
+
+      <li Class="StockGenerator_BuyExpensiveSimple" />
+
+    </stockGenerators>
+  </TraderKindDef>
+
+</Defs>

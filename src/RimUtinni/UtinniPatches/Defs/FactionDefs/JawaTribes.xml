@@ -195,6 +195,20 @@
           <Jawa_Tribal_Scavenger>5</Jawa_Tribal_Scavenger>
           <Jawa_Tribal_Slinger>5</Jawa_Tribal_Slinger>
           <Jawa_Tribal_Elder>1</Jawa_Tribal_Elder>
+          <!-- ═══ DROID_FACTION_LOADOUTS_1 (packet C1), 2026-09-08 ═══════════════
+               Ruling 2: "the Trade Moot loves droids of all kinds and buys/sells
+               them, just like you." A faction that trades droids owns droids, and
+               the ones it has not sold yet walk with it. Deliberately a MIX rather
+               than a combat selection - a war droid, a mining droid and a protocol
+               droid together read as stock, not as an army. Weighted combatPower
+               2x50 + 2x30 + 1x30 = 190 against 1091 for the seven kinds above
+               (live 600-mod dump 2026-09-08), 15 %.
+               ⛔ The SELLING is not done here - a pawnGroupMaker cannot sell
+               anything. That is the two TraderKindDefs added below and in
+               Defs/TraderKindDefs/RUT_TradeMootDroids.xml. -->
+          <RSW_DW_KotORDroidColonist_SentWD MayRequire="mandrake.rsw.droidworks">2</RSW_DW_KotORDroidColonist_SentWD>
+          <RSW_DW_KotORDroidColonist_KM1MD MayRequire="mandrake.rsw.droidworks">2</RSW_DW_KotORDroidColonist_KM1MD>
+          <RSW_DW_KotORDroidGood_GE3PD MayRequire="mandrake.rsw.droidworks">1</RSW_DW_KotORDroidGood_GE3PD>
         </options>
       </li>
       <li>
@@ -202,6 +216,11 @@
         <options>
           <Jawa_Tribal_Scavenger>10</Jawa_Tribal_Scavenger>
           <Jawa_Tribal_Slinger>5</Jawa_Tribal_Slinger>
+          <!-- C1: a Moot party that is not fighting is the commonest way the player
+               sees this faction at all, so the droids have to be in it. -->
+          <RSW_DW_KotORDroidColonist_KM1MD MayRequire="mandrake.rsw.droidworks">3</RSW_DW_KotORDroidColonist_KM1MD>
+          <RSW_DW_KotORDroidColonist_R8009UD MayRequire="mandrake.rsw.droidworks">3</RSW_DW_KotORDroidColonist_R8009UD>
+          <RSW_DW_KotORDroidGood_GE3PD MayRequire="mandrake.rsw.droidworks">2</RSW_DW_KotORDroidGood_GE3PD>
         </options>
       </li>
       <li>
@@ -219,9 +238,45 @@
         <guards>
           <Jawa_Tribal_Scavenger>10</Jawa_Tribal_Scavenger>
           <Jawa_Tribal_Slinger>8</Jawa_Tribal_Slinger>
+          <!-- C1: the protocol droid of §3.2's trader row (presence only - the price
+               mechanic is C4's), plus a war droid, because this is the one faction
+               whose caravan is CARRYING droids to sell. Highest protocol weight of
+               any faction in the campaign: the Moot is the one that would never
+               travel without one. -->
+          <RSW_DW_KotORDroidGood_GE3PD MayRequire="mandrake.rsw.droidworks">8</RSW_DW_KotORDroidGood_GE3PD>
+          <RSW_DW_KotORDroidColonist_SentWD MayRequire="mandrake.rsw.droidworks">3</RSW_DW_KotORDroidColonist_SentWD>
         </guards>
       </li>
     </pawnGroupMakers>
+
+    <!-- ═══ DROID_FACTION_LOADOUTS_1 (packet C1), 2026-09-08 ═════════════════════
+         §3.2, Jawa Trade Moot: "buys/sells droids of all kinds, and brain parts |
+         StockGenerator_Colonists on DW kinds; brain-trio stock, rare".
+
+         🔑 NO `Inherit="False"` HERE, AND THAT IS THE WHOLE POINT. RimWorld appends
+         a child's list entries to the parent's rather than replacing them (this
+         file's own pawnGroupMakers comment above documents the same rule from the
+         other direction), so `TribeBase`'s four Caravan_Neolithic_* kinds, its
+         Visitor_Neolithic_Standard and its Base_Neolithic_Standard all SURVIVE and
+         these are extra rolls beside them. The Moot still turns up selling pemmican
+         and hides most of the time; sometimes it turns up selling droids.
+
+         ⚠️ EVERY MayRequire STRING HERE MATCHES THE ONE ON THE ROOT ELEMENT OF THE
+         DEF IT NAMES, in RUT_TradeMootDroids.xml, and that pairing IS the safety
+         property: a def dropped for a missing mod must not still be listed here.
+         🔴 Measured the hard way on the 2026-09-08 20:26 full-list load - the
+         first build of that file used a class name the loader could not resolve,
+         both droid-selling defs were DISCARDED, and these two <li> then logged
+         "Could not resolve cross-reference to RimWorld.TraderKindDef". A faction's
+         list entry survives a def that does not; matching gates are the only thing
+         that keeps the two in step. -->
+    <caravanTraderKinds>
+      <li MayRequire="mandrake.rsw.droidworks">RUT_Caravan_TradeMoot_DroidParts</li>
+      <li MayRequire="mandrake.rsw.droidworks">RUT_Caravan_TradeMoot_Droids</li>
+    </caravanTraderKinds>
+    <baseTraderKinds>
+      <li MayRequire="mandrake.rsw.droidworks">RUT_Base_TradeMoot_Droids</li>
+    </baseTraderKinds>
   </FactionDef>
 
 </Defs>

@@ -345,7 +345,39 @@
           <match Class="PatchOperationSequence">
             <operations>
 
-              <!-- The common raid (vanilla commonality 100). Line troops only. -->
+              <!-- The common raid (vanilla commonality 100). Line troops, plus
+                   the attack droids beside them.
+
+                   ═══ DROID_FACTION_LOADOUTS_1 (packet C1), 2026-09-08 ═══════════
+                   Ruling 2, verbatim: "The Empire will use Droids in their attacks.
+                   Stormtroopers + Attack Droids working together." The design doc's
+                   §3.2 mechanism cell: "DW KotOR Bad + JDS battle kinds at 20-40 %
+                   of points; `Jawa_Empire_*` kinds untouched" - and untouched they
+                   are, same three defNames at the same three weights as before.
+
+                   🔑 THE SHARE IS OF POINTS, NOT OF PICKS, so the weights are sized
+                   against combatPower, not eyeballed. Read off the live 600-mod dump
+                   2026-09-08 (Jawa_Empire_Grunt 101 / Heavy 129 / Specialist 119 -
+                   the Grunt is 101, NOT the 87 this file's own header comment still
+                   records from 2026-08-21; the roster generator has been re-run since):
+
+                       organic   5x101 + 2x129 + 1.5x119            =  941.5
+                       droids  1.5x120 + 1.5x75 + 1.5x45 + 1x45     =  405.0
+                       droid share = 405 / 1346.5                   =  30.1 %
+
+                   which sits in the middle of the ruled 20-40 % band rather than at
+                   its ceiling. Ruling 2 is explicit that these armies are still
+                   mostly organic troops.
+
+                   ⚠️ RSW_DW_OuterRim_ImperialKXSecurityDroid is the Empire's OWN KX
+                   security droid, carried by Droidworks - §2's R3 row already rules
+                   it "IS an Empire attack droid now". The JDS Separatist kinds beside
+                   it are deliberate and this file's own description sentence licenses
+                   them: "security droids that were requisitioned rather than chosen".
+
+                   ⚠️ MayRequire on every droid entry, same reason the OuterRim kinds
+                   in the rare group carry one: an unwrapped defName from a disabled
+                   mod is a silent no-op that reads as success. -->
               <li Class="PatchOperationReplace">
                 <xpath>/Defs/FactionDef[defName="Empire"]/pawnGroupMakers/li[kindDef="Combat"][commonality="100"]/options</xpath>
                 <value>
@@ -353,6 +385,10 @@
                     <Jawa_Empire_Grunt>5</Jawa_Empire_Grunt>
                     <Jawa_Empire_Heavy>2</Jawa_Empire_Heavy>
                     <Jawa_Empire_Specialist>1.5</Jawa_Empire_Specialist>
+                    <RSW_DW_OuterRim_ImperialKXSecurityDroid MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_OuterRim_ImperialKXSecurityDroid>
+                    <RSW_DW_KotORDroidBad_DevWD_weak MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_KotORDroidBad_DevWD_weak>
+                    <RSW_DW_JDSCIS_BX_Commando_Droid MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_JDSCIS_BX_Commando_Droid>
+                    <RSW_DW_JDSCIS_B2_Super_Battle_Droid MayRequire="mandrake.rsw.droidworks">1</RSW_DW_JDSCIS_B2_Super_Battle_Droid>
                   </options>
                 </value>
               </li>
@@ -369,6 +405,17 @@
                     <OuterRim_ImpRangeTrooper MayRequire="Neronix17.OuterRim.GalacticEmpire">2</OuterRim_ImpRangeTrooper>
                     <OuterRim_ImpDeathTrooper MayRequire="Neronix17.OuterRim.GalacticEmpire">1.5</OuterRim_ImpDeathTrooper>
                     <OuterRim_ImpISBAgent MayRequire="Neronix17.OuterRim.GalacticEmpire">1</OuterRim_ImpISBAgent>
+                    <!-- C1: the heavier droid line, matching this group's own
+                         "line troops plus specialists" character. Weighted power
+                         1.5x120 + 1x125 + 0.5x150 + 1.5x45 = 447.5 against an
+                         organic floor of 941.5 (the three Jawa_Empire_* kinds)
+                         BEFORE the three Outer Rim specialists above are counted,
+                         so the droid share is at most 32 % and in practice lower -
+                         inside the ruled 20-40 % band from the top. -->
+                    <RSW_DW_OuterRim_ImperialKXSecurityDroid MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_OuterRim_ImperialKXSecurityDroid>
+                    <RSW_DW_KotORDroidBad_SentWD MayRequire="mandrake.rsw.droidworks">1</RSW_DW_KotORDroidBad_SentWD>
+                    <RSW_DW_KotORDroidBad_DevWD_strong MayRequire="mandrake.rsw.droidworks">0.5</RSW_DW_KotORDroidBad_DevWD_strong>
+                    <RSW_DW_JDSCIS_BX_Commando_Droid MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_JDSCIS_BX_Commando_Droid>
                   </options>
                 </value>
               </li>
@@ -395,6 +442,15 @@
                     <Jawa_Empire_Grunt>5</Jawa_Empire_Grunt>
                     <Jawa_Empire_Heavy>2</Jawa_Empire_Heavy>
                     <Jawa_Empire_Specialist>1.5</Jawa_Empire_Specialist>
+                    <!-- C1: the same four droid entries at the same four weights as
+                         the common raid, for the same reason B40 mirrored the troops
+                         here - a player walks onto that map and chooses when to
+                         leave it, so the settlement must read as the same army the
+                         raid does. Droid share 30.1 % of points, identical. -->
+                    <RSW_DW_OuterRim_ImperialKXSecurityDroid MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_OuterRim_ImperialKXSecurityDroid>
+                    <RSW_DW_KotORDroidBad_DevWD_weak MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_KotORDroidBad_DevWD_weak>
+                    <RSW_DW_JDSCIS_BX_Commando_Droid MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_JDSCIS_BX_Commando_Droid>
+                    <RSW_DW_JDSCIS_B2_Super_Battle_Droid MayRequire="mandrake.rsw.droidworks">1</RSW_DW_JDSCIS_B2_Super_Battle_Droid>
                   </options>
                 </value>
               </li>

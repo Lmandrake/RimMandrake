@@ -174,6 +174,13 @@
         <guards>
           <RSW_WookieeTribal MayRequire="mandrake.rsw.starwarsraces">6</RSW_WookieeTribal>
           <RSW_Wookiee MayRequire="mandrake.rsw.starwarsraces">3</RSW_Wookiee>
+          <!-- C1 (DROID_FACTION_LOADOUTS_1), 2026-09-08: ruling 2's protocol droid
+               on a trading party. Presence only - the price mechanic is C4's.
+               `guards` is the only node a Trader group reads a companion out of;
+               full reasoning in JawaDeepwaterCompact.xml's copy of this comment.
+               🔑 A Wookiee caravan is the party that most NEEDS one: this faction
+               trades in a language nobody the player fields can speak. -->
+          <RSW_DW_KotORDroidGood_GE3PD MayRequire="mandrake.rsw.droidworks">5</RSW_DW_KotORDroidGood_GE3PD>
         </guards>
         <carriers>
           <Muffalo>6</Muffalo>
