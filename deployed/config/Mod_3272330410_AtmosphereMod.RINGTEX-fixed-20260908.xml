@@ -45,7 +45,7 @@
 				<luminescen>0</luminescen>
 				<opacity>100000</opacity>
 				<opacityType>0</opacityType>
-				<ringFromTo>(10000000, 15000000)</ringFromTo>
+				<ringFromTo>(14000000, 20000000)</ringFromTo>
 				<normal>(0, 100000, 0)</normal>
 				<postion>(0, 0, 0)</postion>
 			</li>
