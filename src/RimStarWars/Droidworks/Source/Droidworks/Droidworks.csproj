@@ -60,6 +60,7 @@
     <Compile Include="CompDWPartDropper.cs" />
     <Compile Include="CompHeadIdentity.cs" />
     <Compile Include="CompTargetable_DWDataSpike.cs" />
+    <Compile Include="DroidAssembly.cs" />
     <Compile Include="DroidEthicsExtension.cs" />
     <Compile Include="DroidFormatTier.cs" />
     <Compile Include="DroidworksBoltUtility.cs" />
@@ -74,12 +75,16 @@
     <Compile Include="JobGiver_DWRecharge.cs" />
     <Compile Include="Need_Power.cs" />
     <Compile Include="Patch_ShouldHaveNeed_Power.cs" />
+    <Compile Include="Recipe_AssembleDroid.cs" />
     <Compile Include="Recipe_DWFormat.cs" />
     <Compile Include="Recipe_DWMemoryWipe.cs" />
     <Compile Include="Recipe_InstallDroidPart.cs" />
+    <Compile Include="Recipe_InstallDroidPartAtBench.cs" />
     <Compile Include="Recipe_InstallRestrainingBolt.cs" />
+    <Compile Include="Recipe_OverclockDroid.cs" />
     <Compile Include="Recipe_RebootDroid.cs" />
     <Compile Include="Recipe_RemoveRestrainingBolt.cs" />
+    <Compile Include="Recipe_ShopRebuild.cs" />
   </ItemGroup>
 
   <ItemGroup>

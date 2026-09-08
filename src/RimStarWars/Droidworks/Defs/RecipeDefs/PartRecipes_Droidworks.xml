@@ -22,7 +22,7 @@
     <label>install leg actuator</label>
     <description>Fit a leg actuator. Quality tells: it changes how well this droid moves.</description>
     <jobString>Installing leg actuator.</jobString>
-    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPart</workerClass>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPartAtBench</workerClass>
     <workAmount>400</workAmount>
     <targetsBodyPart>false</targetsBodyPart>
     <anesthetize>false</anesthetize>
@@ -58,7 +58,7 @@
     <label>install manipulator arm</label>
     <description>Fit a manipulator arm. Quality tells: it changes how well this droid handles fine work.</description>
     <jobString>Installing manipulator arm.</jobString>
-    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPart</workerClass>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPartAtBench</workerClass>
     <workAmount>400</workAmount>
     <targetsBodyPart>false</targetsBodyPart>
     <anesthetize>false</anesthetize>
@@ -94,7 +94,7 @@
     <label>install sensor</label>
     <description>Fit a sensor. Quality tells: it changes how well this droid sees.</description>
     <jobString>Installing sensor.</jobString>
-    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPart</workerClass>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPartAtBench</workerClass>
     <workAmount>400</workAmount>
     <targetsBodyPart>false</targetsBodyPart>
     <anesthetize>false</anesthetize>
@@ -130,7 +130,7 @@
     <label>install motivator</label>
     <description>Fit a motivator. Quality tells: it changes how fast this droid moves.</description>
     <jobString>Installing motivator.</jobString>
-    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPart</workerClass>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPartAtBench</workerClass>
     <workAmount>400</workAmount>
     <targetsBodyPart>false</targetsBodyPart>
     <anesthetize>false</anesthetize>
@@ -166,7 +166,7 @@
     <label>install servo</label>
     <description>Fit a servo. Quality tells: it changes how fast this droid works.</description>
     <jobString>Installing servo.</jobString>
-    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPart</workerClass>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallDroidPartAtBench</workerClass>
     <workAmount>400</workAmount>
     <targetsBodyPart>false</targetsBodyPart>
     <anesthetize>false</anesthetize>

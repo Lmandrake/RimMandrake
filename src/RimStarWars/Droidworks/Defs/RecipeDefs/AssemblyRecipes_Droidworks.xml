@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_SHOP_BENCHES_1 (packet B4b). Both wired onto
+     RSW_DW_ReassemblyHarness's own <recipes> (Buildings_ShopBenches.xml),
+     same pattern vanilla's FabricationBench uses for Make_ComponentIndustrial
+     - no <recipeUsers> needed when the building lists the recipe itself.
+     No <products> on either: Source/Droidworks/Recipe_AssembleDroid.cs and
+     Recipe_ShopRebuild.cs spawn the pawn as a side effect of
+     Notify_IterationCompleted, not as a Bill product (vanilla's
+     GenRecipe.MakeRecipeProducts can only ever make ThingDefCountClass
+     items, never a Pawn) - see those files' own headers.
+======================================================================== -->
+<Defs>
+
+  <!-- ========================================================================
+       RSW_DW_AssembleDroid — "head+frame+set -> pawn". The 7-defName head
+       filter deliberately excludes RSW_DW_Head_Mindstone
+       (MECHANOID_ORIGIN_CANON_1 unruled - DroidAssembly.KindForHeadDef's own
+       header) and is why the ingredient list spells out all seven rather
+       than a shared thingCategory: no category currently separates "the 7
+       family heads" from "the mindstone head" without inventing one just
+       for this filter. "No head, no droid" (section 1.3) needs no extra
+       code: a bill with zero heads available simply cannot start.
+  ======================================================================== -->
+  <RecipeDef>
+    <defName>RSW_DW_AssembleDroid</defName>
+    <label>assemble droid</label>
+    <description>Build a droid whole from a head, a frame, and a matched part set. The head decides which family it becomes - and if it carries a name, that name comes with it.</description>
+    <jobString>Assembling a droid.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_AssembleDroid</workerClass>
+    <workAmount>3000</workAmount>
+    <effectWorking>Repair</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Head_Labour</li>
+            <li>RSW_DW_Head_Protocol</li>
+            <li>RSW_DW_Head_Astromech</li>
+            <li>RSW_DW_Head_Battle</li>
+            <li>RSW_DW_Head_Heavy</li>
+            <li>RSW_DW_Head_Probe</li>
+            <li>RSW_DW_Head_Power</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Frame</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Leg</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Manipulator</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Sensor</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Motivator</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Servo</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_PowerCell</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_DW_Head_Labour</li>
+        <li>RSW_DW_Head_Protocol</li>
+        <li>RSW_DW_Head_Astromech</li>
+        <li>RSW_DW_Head_Battle</li>
+        <li>RSW_DW_Head_Heavy</li>
+        <li>RSW_DW_Head_Probe</li>
+        <li>RSW_DW_Head_Power</li>
+        <li>RSW_DW_Part_Frame</li>
+        <li>RSW_DW_Part_Leg</li>
+        <li>RSW_DW_Part_Manipulator</li>
+        <li>RSW_DW_Part_Sensor</li>
+        <li>RSW_DW_Part_Motivator</li>
+        <li>RSW_DW_Part_Servo</li>
+        <li>RSW_DW_Part_PowerCell</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <skillRequirements>
+      <Crafting>6</Crafting>
+    </skillRequirements>
+  </RecipeDef>
+
+  <!-- ========================================================================
+       RSW_DW_ShopRebuild — "rebuild a corpse". Ingredient filter is broad
+       (any Corpse) on purpose - Source/Droidworks/Recipe_ShopRebuild.cs is
+       the actual gate, checking the corpse's InnerPawn for a
+       DroidworksExtension race and silently refusing (no pawn spawned) on
+       anything else. See that file's own header for why a narrower filter
+       was not built (57+ generated corpse defNames, no shared category).
+  ======================================================================== -->
+  <RecipeDef>
+    <defName>RSW_DW_ShopRebuild</defName>
+    <label>shop rebuild</label>
+    <description>Rebuild a droid from its own corpse and a fresh frame - the same droid, back on its feet.</description>
+    <jobString>Rebuilding droid from corpse.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_ShopRebuild</workerClass>
+    <workAmount>3000</workAmount>
+    <effectWorking>Repair</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>Corpses</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Part_Frame</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>Corpses</li>
+      </categories>
+      <thingDefs>
+        <li>RSW_DW_Part_Frame</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <skillRequirements>
+      <Crafting>6</Crafting>
+    </skillRequirements>
+  </RecipeDef>
+
+  <!-- ========================================================================
+       RSW_DW_OverclockDroid — "overclock as a bench job". Whole-pawn
+       Recipe_Surgery like the part-install recipes, same repair-bench
+       proximity gate (Source/Droidworks/Recipe_OverclockDroid.cs). Wired
+       onto DW_Race_Base's <recipes> (Races_Base.xml), not a bench bill.
+  ======================================================================== -->
+  <RecipeDef>
+    <defName>RSW_DW_OverclockDroid</defName>
+    <label>overclock</label>
+    <description>Push this droid past its rated limits for a few days: faster, at the cost of running hot.</description>
+    <jobString>Overclocking droid.</jobString>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_OverclockDroid</workerClass>
+    <workAmount>300</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <skillRequirements>
+      <Crafting>4</Crafting>
+    </skillRequirements>
+  </RecipeDef>
+
+</Defs>

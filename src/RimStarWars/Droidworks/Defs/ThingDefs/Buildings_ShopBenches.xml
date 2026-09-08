@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_SHOP_BENCHES_1 (packet B4b). Two buildings:
+
+     RSW_DW_RepairBench — a pure PROXIMITY requirement, not a bill-holder.
+     Vanilla has no workbench-targets-a-live-pawn bill shape (bionic/
+     prosthetic installs are always the health-tab Recipe_Surgery route,
+     never a Bill_Production), so "the repair bench (part-swap bills)" is
+     built as a landmark the part-install and overclock surgery recipes
+     check for nearby (Source/Droidworks/Recipe_InstallDroidPartAtBench.cs,
+     Recipe_OverclockDroid.cs) rather than a second, redundant production
+     path. Plain Building, no <recipes>, no ITab_Bills.
+
+     RSW_DW_ReassemblyHarness — a real Building_WorkTable with two bills:
+     RSW_DW_AssembleDroid (head+frame+parts -> a new pawn) and
+     RSW_DW_ShopRebuild (corpse+frame -> the same pawn again). Both are
+     custom RecipeWorkers (Source/Droidworks/Recipe_AssembleDroid.cs,
+     Recipe_ShopRebuild.cs) since vanilla's GenRecipe.MakeRecipeProducts only
+     ever makes ThingDefCountClass products, never a Pawn.
+
+     Art: RepairBench reuses vanilla's own FabricationBench texPath
+     (guaranteed present, "a bench that fixes things" reads fine) - same
+     "borrow a vanilla texPath directly" convention
+     DROIDWORKS_HEADS_BRAINS_SPIKES_1 already used for the mindstone head.
+     ReassemblyHarness reuses OuterRim's own droid-assembly-rig art
+     (Textures/OuterRim/Building/DroidBay/DroidAssembly_HK47_*, a genuine
+     "droid mid-build on a rig" 4-rotation set, already deployed loose) -
+     one representative variant, same "pick one donor asset" convention B3
+     used for head portraits.
+======================================================================== -->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RSW_DW_RepairBench</defName>
+    <label>droid repair bench</label>
+    <description>A fitted-out workbench for droid repair - part swaps and overclocking need one of these nearby to work at all.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/FabricationBench</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>(5,3)</drawSize>
+    </graphicData>
+    <size>(3,2)</size>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.5</fillPercent>
+    <rotatable>true</rotatable>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <designationCategory>Production</designationCategory>
+    <uiOrder>2460</uiOrder>
+    <constructEffect>ConstructMetal</constructEffect>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>2500</WorkToBuild>
+      <Mass>30</Mass>
+      <Flammability>0.5</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+    <costList>
+      <Steel>75</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>150</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Forbiddable"/>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>RSW_DW_ReassemblyHarness</defName>
+    <label>reassembly harness</label>
+    <description>A frame-and-cradle rig for building a droid whole: a head, a frame, and the part set - or a corpse and a frame, if it's the same droid coming back. No head, no droid.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <texPath>OuterRim/Building/DroidBay/DroidAssembly_HK47</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+    <size>(3,3)</size>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.5</fillPercent>
+    <rotatable>true</rotatable>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <designationCategory>Production</designationCategory>
+    <uiOrder>2461</uiOrder>
+    <constructEffect>ConstructMetal</constructEffect>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>3500</WorkToBuild>
+      <Mass>40</Mass>
+      <Flammability>0.5</Flammability>
+      <Beauty>2</Beauty>
+    </statBases>
+    <costList>
+      <Steel>120</Steel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+    </costList>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <recipes>
+      <li>RSW_DW_AssembleDroid</li>
+      <li>RSW_DW_ShopRebuild</li>
+    </recipes>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>200</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="CompProperties_Breakdownable"/>
+    </comps>
+  </ThingDef>
+
+</Defs>

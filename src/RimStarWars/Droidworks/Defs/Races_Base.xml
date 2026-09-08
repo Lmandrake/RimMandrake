@@ -67,6 +67,8 @@
       <li>RSW_DW_InstallSensor</li>
       <li>RSW_DW_InstallMotivator</li>
       <li>RSW_DW_InstallServo</li>
+      <!-- DROIDWORKS_SHOP_BENCHES_1 (packet B4b) -->
+      <li>RSW_DW_OverclockDroid</li>
     </recipes>
     <!-- DROIDWORKS_FORMAT_TIERS_1: puts RSW_DW_FormatTier on every droid at
          spawn (and leaves an already-formatted one alone on load) so the tier is

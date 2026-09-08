@@ -40,6 +40,18 @@ namespace RimMandrake.StarWars.Droidworks
         public static ThingDef RSW_DW_Part_Motivator;
         public static ThingDef RSW_DW_Part_Servo;
         public static ThingDef RSW_DW_Part_PowerCell;
+        public static ThingDef RSW_DW_Part_Frame;
+
+        // DROIDWORKS_SHOP_BENCHES_1 (packet B4b)
+        public static ThingDef RSW_DW_RepairBench;
+        public static PawnKindDef RSW_DW_OuterRim_ImperialLaborDroid;
+        public static PawnKindDef RSW_DW_OuterRim_ProtocolDroid;
+        public static PawnKindDef RSW_DW_OuterRim_AstromechDroid;
+        public static PawnKindDef RSW_DW_OuterRim_BattleDroid;
+        public static PawnKindDef RSW_DW_OuterRim_SuperTacticalDroid;
+        public static PawnKindDef RSW_DW_KotORDroidColonist_KX12UPD;
+        public static PawnKindDef RSW_DW_OuterRim_GNKDroid;
+        public static HediffDef RSW_DW_Overclocked;
 
         static DroidworksDefOf() =>
             DefOfHelper.EnsureInitializedInCtor(typeof(DroidworksDefOf));

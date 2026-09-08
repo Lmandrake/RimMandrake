@@ -236,6 +236,38 @@
       <li><minSeverity>0</minSeverity></li>
     </stages>
   </HediffDef>
+  <!-- ========================================================================
+       RSW_DW_Overclocked — DROIDWORKS_SHOP_BENCHES_1 (packet B4b), "overclock
+       as a bench job". Nothing in the design doc specifies its mechanical
+       shape beyond the name; FOUNDRY's own call: a temporary, self-decaying
+       boost (HediffCompProperties_SeverityPerDay, -0.33/day, ~3 days) - the
+       droid runs hot for a few days after a visit to the bench, then settles.
+  ======================================================================== -->
+  <HediffDef>
+    <defName>RSW_DW_Overclocked</defName>
+    <label>overclocked</label>
+    <description>Pushed past its rated limits at the repair bench. Faster for a few days, until it settles back down.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(1.0, 0.65, 0.2)</defaultLabelColor>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.33</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <statOffsets>
+          <MoveSpeed>0.8</MoveSpeed>
+          <WorkSpeedGlobal>0.15</WorkSpeedGlobal>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
   <HediffDef>
     <defName>RSW_DW_PartEffect_Servo_Superior</defName>
     <label>servo (superior)</label>
