@@ -17,6 +17,8 @@ namespace RimMandrake.StarWars.Droidworks
         public static HediffDef RSW_DW_BoltResentment;
         public static JobDef RSW_DW_ClampBolt;
         public static ThingDef RSW_DW_RestrainingBoltItem;
+        // DROIDWORKS_BOLT_PAYOFF_1 (packet B5)
+        public static JobDef RSW_DW_UnclampBolt;
 
         // DROIDWORKS_FORMAT_TIERS_1
         public static HediffDef RSW_DW_FormatTier;

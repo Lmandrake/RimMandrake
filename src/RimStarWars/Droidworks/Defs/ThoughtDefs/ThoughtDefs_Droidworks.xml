@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_BOLT_PAYOFF_1 (packet B5). "aura thought" - "depressing to be
+     around" (design/Jawa/droid_system_spec.md section 7). Backs
+     RimMandrake.StarWars.Droidworks.ThoughtWorker_NearBoltedDroid
+     (Source/Droidworks/ThoughtWorker_NearBoltedDroid.cs) - situational, live-
+     scanned, never a persisted memory, same as vanilla's own NeedFood/
+     NeedRest.
+======================================================================== -->
+<Defs>
+
+  <ThoughtDef>
+    <defName>RSW_DW_NearBoltedDroid</defName>
+    <workerClass>RimMandrake.StarWars.Droidworks.ThoughtWorker_NearBoltedDroid</workerClass>
+    <stages>
+      <li>
+        <label>a bolted droid nearby</label>
+        <description>There's a droid nearby wearing a restraining bolt. It's a grim thing to look at.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

@@ -16,9 +16,16 @@ namespace RimMandrake.StarWars.Droidworks
     /// hardcoded DefOf, matching vanilla Recipe_RemoveImplant's own shape.
     /// Deliberately does NOT touch RSW_DW_BoltResentment - the whole point of
     /// that hediff is that it survives removal.
+    ///
+    /// DROIDWORKS_BOLT_PAYOFF_1 (packet B5): "resentment >= threshold ->
+    /// rebellion MentalState on removal". RebellionThreshold and the reuse
+    /// of vanilla's own Berserk are FOUNDRY's own call - the design doc
+    /// names the consequence, not a number or a bespoke MentalStateDef.
     /// </summary>
     public class Recipe_RemoveRestrainingBolt : Recipe_Surgery
     {
+        public const float RebellionThreshold = 0.6f;
+
         public override IEnumerable<BodyPartRecord> GetPartsToApplyOn(Pawn pawn, RecipeDef recipe)
         {
             if (recipe.removesHediff != null && pawn.health.hediffSet.HasHediff(recipe.removesHediff))
@@ -30,6 +37,15 @@ namespace RimMandrake.StarWars.Droidworks
         {
             Hediff h = pawn.health.hediffSet.GetFirstHediffOfDef(recipe.removesHediff);
             if (h != null) pawn.health.RemoveHediff(h);
+
+            Hediff resentment = pawn.health.hediffSet.GetFirstHediffOfDef(DroidworksDefOf.RSW_DW_BoltResentment);
+            if (resentment != null && resentment.Severity >= RebellionThreshold
+                && pawn.mindState?.mentalStateHandler != null
+                && !pawn.InMentalState)
+            {
+                pawn.mindState.mentalStateHandler.TryStartMentalState(
+                    RimWorld.MentalStateDefOf.Berserk, "freed from its restraining bolt after years of resentment");
+            }
         }
     }
 }
