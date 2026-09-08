@@ -113,6 +113,26 @@ def handoff_files():
             if fn.startswith(s + "_REBOOT_HANDOFF_") and fn.endswith(".md")]
 
 
+def _to_utc_z(iso_ts):
+    """A `%cI`-format git timestamp (local offset, e.g. '...-07:00') rewritten
+    to match the ledger's own 'Z'-suffixed UTC format.
+
+    ⚠️ Without this, `since_ts` (sourced from git) and every ledger `ts` it
+    gets compared against are two DIFFERENT ISO-8601 representations of a
+    moment, and a bare string `>` does not know that '13:07:06Z' (13:07 UTC)
+    is actually EARLIER than '06:19:54-07:00' (13:19:54 UTC) - it only sees
+    '13' > '06'. Measured live 2026-09-08: this silently pulled
+    DROID_ORACLE_VOICE_DESIGN_1 (genuinely started in a PRIOR window, ~13
+    minutes before the cutoff) into "started this window", passing the
+    doing-gate on a false premise.
+    """
+    try:
+        dt = datetime.datetime.fromisoformat(iso_ts)
+    except ValueError:
+        return iso_ts
+    return dt.astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 def previous_handoff():
     """(path, iso-timestamp) of the newest handoff for this seat, or (None, None).
 
@@ -129,7 +149,8 @@ def previous_handoff():
     best = (None, None)
     for fn in handoff_files():
         rel = os.path.join("infrastructure", "state", "items", fn)
-        ts = sh("git", "log", "-1", "--format=%cI", "--", rel)
+        raw = sh("git", "log", "-1", "--format=%cI", "--", rel)
+        ts = _to_utc_z(raw) if raw else raw
         if ts and (best[1] is None or ts > best[1]):
             best = (fn, ts)
     return best

@@ -132,7 +132,7 @@ for fn in names:
     rel = os.path.join("infrastructure", "state", "items", fn)
     ts = handoff.sh("git", "log", "-1", "--format=%cI", "--", rel)
     if ts:
-        stamped.append((ts, fn))
+        stamped.append((handoff._to_utc_z(ts), fn))
 picked_name, picked_ts = handoff.previous_handoff()
 if stamped:
     latest_ts = max(t for t, _ in stamped)
@@ -170,6 +170,19 @@ try:
           "but not in a window that starts after the restart itself")
 finally:
     handoff.events, handoff.seat = _orig_events, _orig_seat
+
+print("handoff: since_ts is UTC-normalized, not a raw local-offset git timestamp")
+# Measured live 2026-09-08: git's %cI gives a LOCAL-offset timestamp
+# ('...-07:00'), and every ledger `ts` is 'Z'-suffixed UTC. A bare string `>`
+# between the two formats does not know that '13:07:06Z' (13:07 UTC) is
+# EARLIER than '06:19:54-07:00' (13:19:54 UTC) -- it only sees '13' > '06'
+# and calls it later. This silently pulled a genuinely-prior-window start
+# into "started this window".
+check(handoff._to_utc_z("2026-09-08T06:19:54-07:00") == "2026-09-08T13:19:54Z",
+      "a local-offset git timestamp converts to the matching UTC instant")
+check(not ("2026-09-08T13:07:06Z" > handoff._to_utc_z("2026-09-08T06:19:54-07:00")),
+      "and once normalized, an event 13 minutes BEFORE the cutoff no longer "
+      "reads as after it")
 
 print("handoff: an empty window is ALREADY HANDED OFF, not a second handoff")
 # The say-once rule. A window whose start is in the future contains nothing by
