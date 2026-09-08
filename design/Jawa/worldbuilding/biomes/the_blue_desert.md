@@ -26,6 +26,11 @@ horizon, median −45°), temp median **−44.4 °C** (−55…−30), elevation
 rolling plateau (1,160 small-hill tiles, 512 large, 8 mountain, 31 flat), **zero water,
 zero rivers**. Nightside ladder: Rot −19 → **Blue Desert −44** → PropaneLakes −64.
 
+> ⚠️ MEASURED 2026-09-08 (V18 canon): current median temps on the ladder's lower two
+> rungs are **Blue Desert (`BiomeGRimond`) −42.6 °C → PropaneLakes (`AB_PropaneLakes`)
+> −62.2 °C** — the ordering holds, the exact figures have drifted with repainting;
+> amendment — ruling text stands.
+
 🔴 **The ring, and the ruling that breaks it (owner, 2026-09-06: "ensure there is no
 bullseye pattern in the cold night side; add longitudinal variance as needed").**
 MEASURED: that ground is a *perfect ring* — all twelve 30° bearing sectors, each ≥5% of
@@ -41,6 +46,15 @@ mosaic** by bearing, with arc excursions so no boundary is a circle:
 | arc excursions | Blue Desert lobes in 0 and 11 push *down* into 143–155; propane pushes *up* in 6 | variance in arc as well as longitude |
 
 Exact tiles are the dissolve item's job, **rendered for the owner before painting**.
+
+> ⚠️ MEASURED 2026-09-08 (V18 canon): `BiomeGRimond` (this def) is now painted at
+> **1,029 tiles** — down from the 2026-09-07 measurement of 1,328, still well above
+> the "core 700–900" estimate above — across 10 regions (Deadstone 527, South
+> Crags 159, Cinderdark 102, Ammonia Flats 96, The Verge 49, Thornend 38,
+> Sunreach 35, Quiet Ground 18, Venom Wood 3, Ashen Wastes 2), where this plan
+> described one ring; arc now p10 124.6/med 134.7/p90 143.2, temp med −42.6 °C,
+> elev med 640 m — contradiction card for the owner; the ruling text stands
+> until ruled.
 
 Donor inventory taken in: blue sand/soil (re-read as water-ice sand), animal density
 0.5 (the sparsest def defined), plant density 0.33, movement 1.5, disease clock 90 d,

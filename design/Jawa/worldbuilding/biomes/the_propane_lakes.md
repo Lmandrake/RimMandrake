@@ -23,15 +23,26 @@ the same mechanism two degrees colder — where the haze finally pools.
 
 ## 0. The measurements everything rests on
 
-MEASURED 2026-09-06 off `world/ASHKARR_WORLDMAP_tiles.csv`: **1,589 tiles**, arc 145→170
-(sun 55°–80° below the horizon). Temp p10/median/p90 **−75.7 / −64.3 / −55.1 °C**, the
-coldest tiles on the planet (−82). Elevation median 572 m. Regions: **Ammonia Flats
-(732), Umbra (558), Deadstone (299)**. Umbra IS the antistellar cap: 332 of the 360 tiles
-at arc ≥165. Zero worldmap water tiles — **the lake gets its own tiles** under
-`LIQUID_BIOMES_MAP_1` (four liquid biomes, owner 2026-09-06). Anti-bullseye: the cap is a
-disc (physics — the coldest point pools), and the band around it is three-lobed, not a
-ring (sectors 4, 5, 8 weak at 59/68/51; CrystalCaverns holds them). ⚠️ Older docs say
-"554 tiles" — a stale map iteration.
+MEASURED 2026-09-07 (V12 canon) off `world/ASHKARR_WORLDMAP_tiles.csv`: **987 tiles**, arc p10 135.2 → p90 165.5
+(sun 45°–76° below the horizon). Temp p10/median/p90 **−72.0 / −60.8 / −44.8 °C**, the
+coldest tiles on the planet (−80.8). Elevation median 638 m. Regions: **Ammonia Flats
+(362), Deadstone (360), Umbra (262)**, Nightspill (3). Zero worldmap water tiles — **the
+lake gets its own tiles** under `LIQUID_BIOMES_MAP_1` (four liquid biomes, owner 2026-09-06;
+`RUT_PropaneLake` now MEASURED at 57 tiles, all water=1, regions Umbra 29/Ammonia Flats
+28). Anti-bullseye: the cap is a disc (physics — the coldest point pools), and the band
+around it is three-lobed, not a ring (sectors 4, 5, 8 weak at 59/68/51; CrystalCaverns
+holds them). ⚠️ Older docs say "554 tiles" — a stale map iteration.
+
+> ⚠️ MEASURED 2026-09-08 (V18 canon), re-overlaid with `backside_reband_full.json` →
+> `pf_terminator_plan.json` → `wasteland_reclaim_plan.json` → `crag_meander_plan.json` →
+> `pf_meander_plan.json` → `graycrags_coldonly_plan.json`: `AB_PropaneLakes` now holds
+> **2,531 tiles** (up from 987 at the 2026-09-07 measurement), arc p10 139.3 → p90 166.0,
+> temp p10/median/p90 **−73.0 / −62.2 / −47.8 °C**, coldest tile −81.7 °C. Elevation
+> median 670 m. Regions: **Deadstone (861), Umbra (773), Ammonia Flats (692)**, Venom Wood
+> 69, Lantern Deeps 57, South Crags 34, Thornend 23, Quiet Ground 13, Cinderdark 9 — Umbra
+> and Ammonia Flats have swapped rank versus 2026-09-07, and Deadstone is now the
+> plurality region; amendment — ruling text stands. `RUT_PropaneLake` re-verified
+> unchanged at **57 tiles**, all water=1, regions Umbra 29/Ammonia Flats 28.
 
 Donor inventory taken in: terrain (packed snow/ice, solid propane, liquid propane lake),
 constant snow (50 vs Clear 12 — re-read as fuel snow), dry thunderstorms, forage **0**,

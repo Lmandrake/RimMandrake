@@ -25,11 +25,17 @@ sheet is now the column's top.
 
 MEASURED 2026-09-06 off `world/ASHKARR_WORLDMAP_tiles.csv`. Vanilla `IceSheet` holds 49
 tiles today (Deadstone, −52 °C). After the ruled re-home (`HORRORWASTES_BIOME_DISSOLVE_1`;
-`the_lantern_deeps.md` §0) the def holds **802 tiles**: the dissolved ring's highland
+`the_lantern_deeps.md` §0) the def held **802 tiles**: the dissolved ring's highland
 sectors 1–3 (337 tiles, elev median 1,271 m) + the former crystal caverns' high ground
-(416 tiles ≥ 900 m) + its own 49. Arc 128→159; temp p10/median/p90 **−70 / −56 / −39 °C**;
-**elevation median 1,129 m (max 1,884) — the deep night's mountains, under ice.** Regions
-Deadstone 509, Umbra 158, Ammonia Flats 73, Rimewall 30. Sectors 0–5 and 7–10 —
+(416 tiles ≥ 900 m) + its own 49. **MEASURED 2026-09-08 (V18 canon)**, re-overlaid with
+`backside_reband_full.json` → `pf_terminator_plan.json` → `wasteland_reclaim_plan.json` →
+`crag_meander_plan.json` → `pf_meander_plan.json` → `graycrags_coldonly_plan.json`: the def
+now holds **1,406 tiles** (`backside_reband_full` 1,044 + `wasteland_reclaim_plan` 243 +
+`pf_terminator_plan` 98 + `crag_meander_plan` 21). Arc 111→139; temp p10/median/p90
+**−45 / −32 / −22 °C**; **elevation median 748 m (max 1,884) — the deep night's mountains,
+under ice.** Regions Deadstone 663, Sunreach 263, Gray Crags 105, Nightspill 105, South
+Crags 78, Rimewall 64, Twilight Crags 60, Cinderdark 42, The Verge 15, Quiet Ground 7 (+4:
+Ammonia Flats 2, Ashen Wastes 1, Salt 1). Sectors 0–5 and 7–10 —
 **highland lobes, accepted as topography (owner's ruling), not a band**: chemistry here
 follows basin depth and height, never arc, which is the sheet's own anti-bullseye argument.
 
@@ -73,6 +79,10 @@ toward the warmth of whatever just lay down to die.
 cold-trap anomaly, upland half.** The antistellar point is the planet's condensation sink;
 this sheet is the inert-ice top of that column, and the Blue Desert, the Ammonia Flats and
 the propane sea are where the frost the uplands shed finally pools.
+
+> ⚠️ MEASURED 2026-09-08 (V18 canon): arc now 111→139 (was 128→159) — the highland's
+> lower bound has moved into ground §2 elsewhere calls twilight (the crags: arc 103–121);
+> amendment — ruling text stands.
 
 - **Energy regime:** none from the sun, none from below — 🔴 explicitly **no vents, no
   geothermal, no volcanism**. What arrives is what the atmosphere carries in, and (second
