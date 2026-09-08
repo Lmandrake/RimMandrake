@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T19:24:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T19:28:52Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -477,6 +477,15 @@ kind:     task
 summary:  Per design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5 packet B2: absorb
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
 
+## DROIDWORKS_PRIMITIVE_TIER_1 Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Packet B9 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
+prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
+
 ## DROIDWORKS_WIPE_SEVERITY_1 Memory wipe: 7-day severe relearning debuff, service-record reset, permanent accreting hardware quirks
 state:    doing
 row:      unassigned
@@ -656,6 +665,16 @@ blocked:  live-verified 2026-09-08, apparel FAILS but root cause is upstream (ap
 summary:  Per design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5 packet B2: absorb
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
 
+## DROIDWORKS_PRIMITIVE_TIER_1 Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  mechanics built and committed at 5c80b1797677af906691d2d0f5dd331eb17f318e, G2 art + live savegame verify owed to a parent session
+summary:  Packet B9 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
+prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
+
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -697,16 +716,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DROIDWORKS_PRIMITIVE_TIER_1 Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_PRIMITIVE_TIER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
 
 ## DROIDWORKS_RESEARCH_ROWS_1 Seven Droidworks research rows in The Unbolting; cut the Depot droid-brain rows; brains never researchable
 state:    proposed
