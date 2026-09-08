@@ -14,6 +14,6 @@ namespace RimMandrake.StarWars.Droidworks
         public float powerFallPerDay = 0.33f;
         public float energyDensity = 0f;      // 0 = never detonates (state 5 unreachable)
         public bool deliberateDenyModule = false; // combat deny-your-parts package
-        public int chassisClass = 0;          // 0 labour 1 protocol 2 astromech 3 battle 4 heavy 5 probe 6 power
+        public int chassisClass = 0;          // 0 labour 1 protocol 2 astromech 3 battle 4 heavy 5 probe 6 power 7 primitive
     }
 }

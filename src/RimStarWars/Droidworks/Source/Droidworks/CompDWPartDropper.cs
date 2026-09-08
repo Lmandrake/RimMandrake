@@ -51,7 +51,8 @@ namespace RimMandrake.StarWars.Droidworks
         }
 
         // chassisClass ints per DroidworksExtension's own comment: 0 labour,
-        // 1 protocol, 2 astromech, 3 battle, 4 heavy, 5 probe, 6 power.
+        // 1 protocol, 2 astromech, 3 battle, 4 heavy, 5 probe, 6 power,
+        // 7 primitive (DROIDWORKS_PRIMITIVE_TIER_1, packet B9).
         private static ThingDef[] LegalSetFor(int chassisClass)
         {
             ThingDef leg = DroidworksDefOf.RSW_DW_Part_Leg;
@@ -60,6 +61,16 @@ namespace RimMandrake.StarWars.Droidworks
             ThingDef motiv = DroidworksDefOf.RSW_DW_Part_Motivator;
             ThingDef servo = DroidworksDefOf.RSW_DW_Part_Servo;
             ThingDef cell = DroidworksDefOf.RSW_DW_Part_PowerCell;
+
+            // Primitive (7) drops its OWN tier of salvage, not the fine
+            // parts above - a Jawa/Junker-built chassis sheds Jawa-built
+            // junk, never donor-grade salvage (Parts_Droidworks_Primitive.xml).
+            ThingDef legP = DroidworksDefOf.RSW_DW_Part_Leg_Primitive;
+            ThingDef manipP = DroidworksDefOf.RSW_DW_Part_Manipulator_Primitive;
+            ThingDef sensorP = DroidworksDefOf.RSW_DW_Part_Sensor_Primitive;
+            ThingDef motivP = DroidworksDefOf.RSW_DW_Part_Motivator_Primitive;
+            ThingDef servoP = DroidworksDefOf.RSW_DW_Part_Servo_Primitive;
+            ThingDef cellP = DroidworksDefOf.RSW_DW_Part_PowerCell_Primitive;
 
             switch (chassisClass)
             {
@@ -77,6 +88,8 @@ namespace RimMandrake.StarWars.Droidworks
                     return new[] { sensor, motiv, servo, cell };
                 case 6: // Power (Gonk) - simple hauler, no arms or sensor
                     return new[] { leg, motiv, servo, cell };
+                case 7: // Primitive (G2/Junker) - full limb set, claw hands, own tier
+                    return new[] { legP, manipP, sensorP, motivP, servoP, cellP };
                 default:
                     return new[] { leg, manip, sensor, motiv, servo, cell };
             }

@@ -69,6 +69,15 @@
       <li>RSW_DW_InstallServo</li>
       <!-- DROIDWORKS_SHOP_BENCHES_1 (packet B4b) -->
       <li>RSW_DW_OverclockDroid</li>
+      <!-- DROIDWORKS_PRIMITIVE_TIER_1 (packet B9): the same 5 install slots,
+           Jawa-fabricated at grossly inferior quality. Universal, not
+           gated to Primitive-chassis droids - ruling 2's own "use superior
+           or inferior parts... be Jawa" economy. -->
+      <li>RSW_DW_InstallLegActuator_Primitive</li>
+      <li>RSW_DW_InstallManipulatorArm_Primitive</li>
+      <li>RSW_DW_InstallSensor_Primitive</li>
+      <li>RSW_DW_InstallMotivator_Primitive</li>
+      <li>RSW_DW_InstallServo_Primitive</li>
     </recipes>
     <!-- DROIDWORKS_FORMAT_TIERS_1: puts RSW_DW_FormatTier on every droid at
          spawn (and leaves an already-formatted one alone on load) so the tier is

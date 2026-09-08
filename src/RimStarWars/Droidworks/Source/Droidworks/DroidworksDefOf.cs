@@ -62,6 +62,19 @@ namespace RimMandrake.StarWars.Droidworks
         // packet can add one in XML alone.
         public static HediffDef RSW_DW_RecentlyWiped;
 
+        // DROIDWORKS_PRIMITIVE_TIER_1 (packet B9) - read by
+        // CompDWHeadDropper.HeadDefFor / CompDWPartDropper.LegalSetFor
+        // (chassisClass 7) and DroidAssembly.KindForHeadDef.
+        public static ThingDef RSW_DW_Head_Primitive;
+        public static ThingDef RSW_DW_Part_Frame_Primitive;
+        public static ThingDef RSW_DW_Part_Leg_Primitive;
+        public static ThingDef RSW_DW_Part_Manipulator_Primitive;
+        public static ThingDef RSW_DW_Part_Sensor_Primitive;
+        public static ThingDef RSW_DW_Part_Motivator_Primitive;
+        public static ThingDef RSW_DW_Part_Servo_Primitive;
+        public static ThingDef RSW_DW_Part_PowerCell_Primitive;
+        public static PawnKindDef RSW_DW_Primitive_G2;
+
         static DroidworksDefOf() =>
             DefOfHelper.EnsureInitializedInCtor(typeof(DroidworksDefOf));
     }

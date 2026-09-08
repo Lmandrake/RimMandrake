@@ -192,6 +192,44 @@
   </ThingDef>
 
   <!-- ========================================================================
+       RSW_DW_Head_Primitive — DROIDWORKS_PRIMITIVE_TIER_1 (packet B9), the
+       8th family head, added beside the original 7 above rather than
+       inside that GENERATED table's own file (see Races_Primitive.xml's
+       header for why the family layer itself is hand-authored, not
+       generator output — this file is hand-authored too, so no such
+       collision risk here). Same imported-brain-trio economy as every
+       other family (ruling 6/8: "the brain, which they can't do at all
+       ever" applies to every chassis, Primitive included — only the
+       CASING and the rest of the chassis are Jawa-built). Art: an unused
+       existing KotOR portrait icon (Icon_GOTO, none of the other 7 heads
+       claim it), same "one existing portrait icon per family, Graphic_Single"
+       convention this file's own header already documents.
+  ======================================================================== -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_Head_Primitive</defName>
+    <thingClass>RimMandrake.StarWars.Droidworks.Thing_DWHead</thingClass>
+    <label>primitive droid head</label>
+    <description>A salvaged primitive-chassis droid head - the imported brain trio, in a Jawa-built casing. If it came off a droid rather than off a shelf, it still carries that droid's identity.</description>
+    <graphicData>
+      <texPath>KotOR/UI/Icon_GOTO</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>1.5</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <MarketValue>300</MarketValue>
+    </statBases>
+    <techLevel>Spacer</techLevel>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_HeadIdentity" />
+    </comps>
+  </ThingDef>
+
+  <!-- ========================================================================
        RSW_DW_Head_Mindstone - MECHANOID_ORIGIN_CANON_1's race, per ruling 3
        ("Mindstone race = a Droidworks chassis with a special head"). That
        item is still `proposed`/`needs owner` (filed 2026-09-06, no numeric
