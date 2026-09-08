@@ -54,3 +54,10 @@ list backed by real per-mod measurements, crash-log correlation findings (or
 "UNMEASURED, no OOM pattern found in captured logs"), and 3-5 concrete reduction
 options with estimated impact, presented as owner-decidable choices, not a
 unilateral fix.
+
+## synthesis findings (BENCH deep pass, 2026-09-08 — full report Transient/memory_audit_synthesis_2026-09-08.md, digest here is the durable copy)
+- 18GB+ confirmed: peak RSS 20.17 GB MEASURED — a play-session peak, not steady state.
+- The crash is NOT managed OOM: real death at 8.7 GB declining; recurring ntdll 0xc0000005 native fault (one instance already root-caused to concurrent tilegen). Working hypothesis: native heap fragmentation/corruption, aggravated by (not caused by) texture pressure.
+- The 2.7× disk→RAM gap is expected: loose PNGs expand to RGBA+mips; PIXEL COUNT, not disk size, is the honest offender metric. One 8K clouds PNG ≈ 178 MB RAM.
+- Options for the owner, ranked: (A) texture compression at load — biggest lever, plausibly 5–10 GB, verify whether 1.6 has the toggle before reaching for a mod; (B) downscale the loose-PNG giants (Caverns/GRiNDTerra/Minerals), 1–3 GB est.; (C) the 8K clouds file alone ~170 MB; (D) RimThemes diet/drop ~0.5–1 GB est.; (E) keep absorbing/trimming defs; (F) add Windows-side commit capture to the mem-watch script (closes the biggest UNKNOWN, trivial).
+- Still owed live: cold-load vs after-play RSS + per-mod attribution, riding a load already being paid for.
