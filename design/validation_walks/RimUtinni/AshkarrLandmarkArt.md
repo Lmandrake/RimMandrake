@@ -1,0 +1,23 @@
+# AshkarrLandmarkArt — validation walk
+subject: src/RimUtinni/AshkarrLandmarkArt  (packageId `mandrake.rut.ashkarrlandmarkart`)
+deps: none declared as modDependencies (patch-only mod, "Load it LAST"); loadAfter names the four soft providers whose LandmarkDefs it repaints — Ludeon.RimWorld.Odyssey, VanillaExpanded.VExplorationE, sarg.alphabiomes, Mlie.StarWarsAnimalCollection
+list: full   # the mod's whole point is repainting LandmarkDefs sourced from 4 different providers (Odyssey DLC + 3 mods); the minimal list has none of them active, so a load there would only prove the patch is a safe no-op, never that a single icon actually applies
+status-hint: repaints 48 world-map LandmarkDef icons Ash'karr draws (translucent-wash-over-black-rim house style, matching Ludeon's own Cliffs/Valley/Ruins) to replace vanilla Landmarks Expanded's flat opaque fills; every silhouette is unchanged, only iconTexturePath moves; the 4 oceanic landmarks (Bay, Peninsula, CoastalIsland, Archipelago) are deliberately left untouched so the engine's own ocean-colour tint still applies to them.
+
+## must be true
+- All 48 patched LandmarkDefs resolve `iconTexturePath` to `World/Landmarks/Ashkarr/<defName>` after patching — both the Replace-branch defs that already carried a path (e.g. vanilla Odyssey's `Cliffs`) and the Add-branch defs that only inherit the field from an abstract parent (e.g. `AncientGarrison`, per the patch file's own comment).
+- The 48 defNames patched span all 4 named providers by prefix convention: unprefixed (Cliffs, Valley, Ruins, Basin, Cavern, Chasm, DryLake, Dunes, FrozenRuins, Hollow, HotSprings, LavaCrater, LavaLake, Oasis, Plateau, TerraformingScar, ToxicLake, AncientChemfuelRefinery, AncientGarrison, AncientHeatVent, AncientLaunchSite, AncientQuarry, AncientWarehouse, AbandonedColonyOutlander, AbandonedColonyTribal) = vanilla Odyssey; `AB_*` (AB_MagmaticQuagmire, AB_QuicksandPits, AB_TarLakes); `VEE_*` (23 defs); `sw_*` (sw_DeadSarlacc, sw_Sarlacc) — not independently confirmed which mod owns AB_/VEE_, only that the patch header says "four different mods" matching the four loadAfter entries.
+- Every one of the 48 patched defNames has a matching `.png` in `Textures/World/Landmarks/Ashkarr/` (confirmed 1:1 by repo listing: 48 `<xpath>` defName entries, 49 PNGs on disk — the 1 extra, `RUT_ComplexStructures.png`, is consumed directly by a separate LandmarkDef declared in `src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_ComplexStructures.xml`, not by this mod's own patch — cross-mod texture dependency, out of this walk's scope).
+- The 4 oceanic landmarks (Bay, Peninsula, CoastalIsland, Archipelago) never appear in `Patches/LandmarkIcons.xml` — confirmed by repo grep, 0 matches.
+- Every `<Operation>` is `PatchOperationConditional`-wrapped (outer, on the def's existence; inner, on whether `iconTexturePath` already has a node) so any of the 4 provider mods being inactive, or Odyssey itself off, produces zero errors — only a silent no-op for that def's entries.
+
+## the walk
+1. [L] Player.log after load (full list) contains no "Config error in mandrake.rut.ashkarrlandmarkart" and no XML error naming LandmarkIcons.xml
+2. [D] repo check: `grep 'defName="Bay"\|defName="Peninsula"\|defName="CoastalIsland"\|defName="Archipelago"' Patches/LandmarkIcons.xml` → 0 matches
+3. [D] repo check: 48 unique `defName="..."` values in Patches/LandmarkIcons.xml == 48 of the 49 `.png` basenames in Textures/World/Landmarks/Ashkarr/ (the 49th, RUT_ComplexStructures.png, is the documented exception above)
+4. [B] jawa/get_def {defType: "LandmarkDef", defName: "Cliffs"} → expect resolved iconTexturePath="World/Landmarks/Ashkarr/Cliffs" (Replace branch, vanilla Odyssey landmark)
+5. [B] jawa/get_def {defType: "LandmarkDef", defName: "AncientGarrison"} → expect resolved iconTexturePath="World/Landmarks/Ashkarr/AncientGarrison" (Add branch — no local node before this patch, field inherited from an abstract parent)
+6. [B] jawa/get_def {defType: "LandmarkDef", defName: "sw_Sarlacc"} → expect resolved iconTexturePath="World/Landmarks/Ashkarr/sw_Sarlacc" (StarWarsAnimalCollection-sourced def)
+7. [B] jawa/get_def {defType: "LandmarkDef", defName: "VEE_AlluvialFan"} → expect resolved iconTexturePath="World/Landmarks/Ashkarr/VEE_AlluvialFan"
+8. [B] jawa/world_landmarks_get {} on a live world with landmarks already generated → expect success, odysseyActive=true, count>0 — confirms the LandmarkDef set this patch targets is actually reachable in a real game, not just defs-only
+X. [S] (human pass) eyeball a handful of repainted icons on the world map — do they read as translucent wash + hard black rim like Ludeon's own Cliffs/Valley/Ruins, not a flat coloured cutout — separate MOD_HUMAN_EXPLORATION_PASS_1 item.
