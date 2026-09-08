@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T04:47:37Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-08T05:21:03Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1162,3 +1162,13 @@ kind:     task
 thin:     no ## criteria
 summary:  - Identify the mechanism first (MEASURE, don't guess): find what actually draws
 prose:    infrastructure/state/items/WORLDMAP_BIOME_ICONS_REGEN_1.md
+
+## BIOME_FLORA_ROSTER_GAP_1 biome_flora.py's own --check finds 2 stale + 8 unrostered placed biomes (HorrorWastes, BMT_CrystalCaverns dead; BiomeGRimond/RUT_TheScald/RUT_PropaneLake/RUT_NightsideIce/RUT_GreySea/RUT_TwilightSea/BiomeCypreJungle/COMIGO_GreaterSwamp_Tropical unrostered)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Two stale entries to remove/reconcile: HorrorWastes (dissolved into other biomes
+prose:    infrastructure/state/items/BIOME_FLORA_ROSTER_GAP_1.md
