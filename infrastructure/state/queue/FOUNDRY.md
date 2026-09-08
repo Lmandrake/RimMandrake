@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T13:17:09Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-08T14:31:03Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -450,6 +450,15 @@ kind:     task
 summary:  Design (dormant, per DROIDUNIFIEDFRAMEWORKDESIGN.md §0 card 14 / §3.4 E5) for
 prose:    infrastructure/state/items/DROID_ORACLE_VOICE_DESIGN_1.md
 
+## DROIDWORKS_FULL_LIST_COEXIST_1 Enable Droidworks in the full mod list beside the donors; cold load, texPath census, Harmony idempotency
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  Thin when filed — no spec/verify/criteria. Decided here (FOUNDRY, 2026-09-08):
+prose:    infrastructure/state/items/DROIDWORKS_FULL_LIST_COEXIST_1.md
+
 ## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -632,16 +641,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DROIDWORKS_FULL_LIST_COEXIST_1 Enable Droidworks in the full mod list beside the donors; cold load, texPath census, Harmony idempotency
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_FULL_LIST_COEXIST_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_FULL_LIST_COEXIST_1.md
 
 ## DROIDWORKS_LIVE_LOOP_PROOF_1 Minimal-list quicktest proof of the five-state loop on GNK + a KotOR kind; close the 8 open live checkboxes
 state:    proposed

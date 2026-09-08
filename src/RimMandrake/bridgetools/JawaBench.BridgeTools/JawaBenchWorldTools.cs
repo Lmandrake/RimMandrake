@@ -780,21 +780,45 @@ namespace JawaBench.BridgeTools
                     // ushort, temperature as (t + 300) * 10, rainfall as a bare ushort. A
                     // negative rainfall column - the easy one for a generator to emit - used
                     // to import clean, validate clean, and come back 0 after a reload.
-                    if (elevS != null && F(elevS, out fv))
-                    { if (fv < -8192f || fv > 57343f) clampedCells++; t.elevation = Mathf.Clamp(fv, -8192f, 57343f); }
-                    if (tempS != null && F(tempS, out fv))
-                    { if (fv < -300f || fv > 6253.5f) clampedCells++; t.temperature = Mathf.Clamp(fv, -300f, 6253.5f); }
-                    if (rainS != null && F(rainS, out fv))
-                    { if (fv < 0f || fv > 65535f) clampedCells++; t.rainfall = Mathf.Clamp(fv, 0f, 65535f); }
+                    // A field that is PRESENT but does not parse must be VISIBLE as a
+                    // failure, not silently left untouched while the row still counts as
+                    // applied - that is exactly the biome-unresolved shape one level down,
+                    // just per-field instead of per-row.
+                    if (elevS != null)
+                    {
+                        if (F(elevS, out fv)) { if (fv < -8192f || fv > 57343f) clampedCells++; t.elevation = Mathf.Clamp(fv, -8192f, 57343f); }
+                        else if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable elev_m '" + elevS + "', field not written");
+                    }
+                    if (tempS != null)
+                    {
+                        if (F(tempS, out fv)) { if (fv < -300f || fv > 6253.5f) clampedCells++; t.temperature = Mathf.Clamp(fv, -300f, 6253.5f); }
+                        else if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable temp_c '" + tempS + "', field not written");
+                    }
+                    if (rainS != null)
+                    {
+                        if (F(rainS, out fv)) { if (fv < 0f || fv > 65535f) clampedCells++; t.rainfall = Mathf.Clamp(fv, 0f, 65535f); }
+                        else if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable rain_mm '" + rainS + "', field not written");
+                    }
                     // Clamped for the same reason as world_tile_set: the savegame stores
                     // swampiness in one byte and pollution in one ushort, both scaled from
                     // 0-1, so anything outside that range is silently lost on the next load
                     // while every read-back and the validator report it as having landed.
-                    if (swS != null && F(swS, out fv))
-                    { if (fv < 0f || fv > 1f) clampedCells++; t.swampiness = Mathf.Clamp01(fv); }
-                    if (poS != null && F(poS, out fv))
-                    { if (fv < 0f || fv > 1f) clampedCells++; t.pollution = Mathf.Clamp01(fv); }
-                    if (hiS != null) { Hilliness h; if (TryHilliness(hiS, out h)) t.hilliness = h; }
+                    if (swS != null)
+                    {
+                        if (F(swS, out fv)) { if (fv < 0f || fv > 1f) clampedCells++; t.swampiness = Mathf.Clamp01(fv); }
+                        else if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable swampiness '" + swS + "', field not written");
+                    }
+                    if (poS != null)
+                    {
+                        if (F(poS, out fv)) { if (fv < 0f || fv > 1f) clampedCells++; t.pollution = Mathf.Clamp01(fv); }
+                        else if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable pollution '" + poS + "', field not written");
+                    }
+                    if (hiS != null)
+                    {
+                        Hilliness h;
+                        if (TryHilliness(hiS, out h)) t.hilliness = h;
+                        else if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable hilliness '" + hiS + "', field not written");
+                    }
                     applied++;
                 }
 
@@ -886,21 +910,52 @@ namespace JawaBench.BridgeTools
                         var live = t.PrimaryBiome != null ? t.PrimaryBiome.defName : null;
                         if (!string.Equals(live, bname, StringComparison.OrdinalIgnoreCase)) { bad.Add("biome:" + live + "!=" + bname); bump("biome"); }
                     }
+                    // 🔴 `s2 != null && F(s2, out fv) && Math.Abs(...) > tolerance` used to read
+                    // a cell that fails to PARSE the same as a cell that MATCHES: the whole
+                    // && chain short-circuits to false either way, so a typo'd or locale-
+                    // formatted number in the comparison CSV was silently counted as agreeing
+                    // with the live tile instead of being flagged. Each field now reports a
+                    // parse failure as its own kind of "bad" rather than folding it into a match.
                     var s2 = Cell(csv, row, "elev_m") ?? Cell(csv, row, "elevation");
-                    if (s2 != null && F(s2, out fv) && Math.Abs(t.elevation - fv) > tolerance) { bad.Add("elevation:" + t.elevation + "!=" + fv); bump("elevation"); }
+                    if (s2 != null)
+                    {
+                        if (!F(s2, out fv)) { bad.Add("elevation:UNPARSEABLE('" + s2 + "')"); bump("elevation"); }
+                        else if (Math.Abs(t.elevation - fv) > tolerance) { bad.Add("elevation:" + t.elevation + "!=" + fv); bump("elevation"); }
+                    }
                     s2 = Cell(csv, row, "temp_c") ?? Cell(csv, row, "temperature");
-                    if (s2 != null && F(s2, out fv) && Math.Abs(t.temperature - fv) > tolerance) { bad.Add("temperature:" + t.temperature + "!=" + fv); bump("temperature"); }
+                    if (s2 != null)
+                    {
+                        if (!F(s2, out fv)) { bad.Add("temperature:UNPARSEABLE('" + s2 + "')"); bump("temperature"); }
+                        else if (Math.Abs(t.temperature - fv) > tolerance) { bad.Add("temperature:" + t.temperature + "!=" + fv); bump("temperature"); }
+                    }
                     s2 = Cell(csv, row, "rain_mm") ?? Cell(csv, row, "rainfall");
-                    if (s2 != null && F(s2, out fv) && Math.Abs(t.rainfall - fv) > tolerance) { bad.Add("rainfall:" + t.rainfall + "!=" + fv); bump("rainfall"); }
+                    if (s2 != null)
+                    {
+                        if (!F(s2, out fv)) { bad.Add("rainfall:UNPARSEABLE('" + s2 + "')"); bump("rainfall"); }
+                        else if (Math.Abs(t.rainfall - fv) > tolerance) { bad.Add("rainfall:" + t.rainfall + "!=" + fv); bump("rainfall"); }
+                    }
                     s2 = Cell(csv, row, "swampiness");
-                    if (s2 != null && F(s2, out fv) && Math.Abs(t.swampiness - fv) > 0.02f) { bad.Add("swampiness:" + t.swampiness + "!=" + fv); bump("swampiness"); }
+                    if (s2 != null)
+                    {
+                        if (!F(s2, out fv)) { bad.Add("swampiness:UNPARSEABLE('" + s2 + "')"); bump("swampiness"); }
+                        else if (Math.Abs(t.swampiness - fv) > 0.02f) { bad.Add("swampiness:" + t.swampiness + "!=" + fv); bump("swampiness"); }
+                    }
                     // world_tile_import writes pollution; without this the validator reported
                     // a pollution-only mismatch as a MATCH and "prove the import took" was a lie
                     // for that column. 0-1 scale, so the swampiness tolerance, not `tolerance`.
                     s2 = Cell(csv, row, "pollution");
-                    if (s2 != null && F(s2, out fv) && Math.Abs(t.pollution - fv) > 0.02f) { bad.Add("pollution:" + t.pollution + "!=" + fv); bump("pollution"); }
+                    if (s2 != null)
+                    {
+                        if (!F(s2, out fv)) { bad.Add("pollution:UNPARSEABLE('" + s2 + "')"); bump("pollution"); }
+                        else if (Math.Abs(t.pollution - fv) > 0.02f) { bad.Add("pollution:" + t.pollution + "!=" + fv); bump("pollution"); }
+                    }
                     s2 = Cell(csv, row, "hilliness");
-                    if (s2 != null) { Hilliness h; if (TryHilliness(s2, out h) && t.hilliness != h) { bad.Add("hilliness:" + t.hilliness + "!=" + h); bump("hilliness"); } }
+                    if (s2 != null)
+                    {
+                        Hilliness h;
+                        if (!TryHilliness(s2, out h)) { bad.Add("hilliness:UNPARSEABLE('" + s2 + "')"); bump("hilliness"); }
+                        else if (t.hilliness != h) { bad.Add("hilliness:" + t.hilliness + "!=" + h); bump("hilliness"); }
+                    }
 
                     if (bad.Count == 0) matched++;
                     else
@@ -2113,7 +2168,16 @@ namespace JawaBench.BridgeTools
                                         displacedMutators.Add(new { tile = id, displaced = lost.defName, byLandmark = ld.defName });
                                 }
                         }
-                        else { if (wl[pt] != null) { wl.RemoveLandmark(pt); removed++; } }
+                        else if (wl[pt] != null)
+                        {
+                            // Same read-back discipline as the add branch above: RemoveLandmark
+                            // completing is not proof the dictionary entry actually cleared.
+                            wl.RemoveLandmark(pt);
+                            if (wl[pt] == null) removed++;
+                            else errors.Add("tile " + id + ": RemoveLandmark left '" +
+                                            (wl[pt].def != null ? wl[pt].def.defName : "(unknown)") +
+                                            "' on the tile.");
+                        }
                     }
                     catch (Exception ex) { errors.Add("tile " + id + ": " + ex.GetType().Name + ": " + ex.Message); }
                 }
