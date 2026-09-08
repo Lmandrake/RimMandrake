@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T14:31:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T14:42:28Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -485,6 +485,15 @@ target:   v1
 kind:     task
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
+
+## BRIDGETOOLS_CSHARP_SWEEP_BUGS_1 6 real bugs found in a full-file review of the 3 largest bridgetools C# files (Society/Terrain/World tools)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  Full-file review of the 3 largest source files in the JawaBench bridgetools
+prose:    infrastructure/state/items/BRIDGETOOLS_CSHARP_SWEEP_BUGS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1181,3 +1190,13 @@ kind:     bug
 thin:     no ## criteria
 summary:  - src/RimMandrake/Utils/w9run.py's stages are strictly ordered and each invalidates
 prose:    infrastructure/state/items/W9_RUN_STAGE_RESULTS_UNCHECKED_1.md
+
+## GL_EMIT_FLOATRANGE_GENERIC_DROP_1 gl_emit.py silently drops any FloatRange field on a non-worldTileReq node type
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GL_EMIT_FLOATRANGE_GENERIC_DROP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GL_EMIT_FLOATRANGE_GENERIC_DROP_1.md
