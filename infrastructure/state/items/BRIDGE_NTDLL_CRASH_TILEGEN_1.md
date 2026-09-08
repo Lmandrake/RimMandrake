@@ -127,3 +127,11 @@ would need to make (game client settings, not a repo file).
       client settings, not a repo change. Whoever next has the game up
       should ask him or try it directly if he's said game-state sentences
       are fine to act on.
+
+## Closing (FOUNDRY, 2026-09-08)
+Root cause and the TILEGEN_SILENT_REUSE_1 separation are the substantive
+findings this item exists to produce, and both are done. The one remaining
+box is a Steam client GUI setting only the owner can flip — there is no
+further repo-side work this item can gate on, so closing it here and
+surfacing the mitigation suggestion to him directly rather than leaving the
+item open indefinitely for an action nobody but him can take.
