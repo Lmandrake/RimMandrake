@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_HuttCartel_Captives.xml   RimUtinni Patches · DROID_HUTT_CAPTIVES_1
+                                 (packet C6), authored 2026-09-08
+  ============================================================================
+
+  Builds the purchase half of DROID_UNIFIED_FRAMEWORK_DESIGN.md §3.2's "Hutt
+  captives" row: "droids in Hutt torture chambers — rescue or buy." §0 ruling 2,
+  verbatim: "those trapped in the torture chambers of the Hutts for displeasing
+  them."
+
+  🔴 SCOPE, RECORDED HONESTLY: the "torture chambers" themselves are NOT a real,
+  visitable site yet. `design/Jawa/templates/hutt_holding_pens.lua` is compiled
+  and registered in GenStep_ComposeSettlementDistrict.TemplateFiles by label
+  ("holding pens"), but that step's own doc comment says v1 "reads only
+  districts[0]" per settlement, and Gorga the Immense's Palace's districts[0]
+  is "palace hall" — "holding pens" is districts[2] and is never composed onto
+  a real map today. Separately, no InhabitedCastDef exists for the Hutt Cartel
+  at all (SettlementManifestDefs_GorgaPalace.xml's own header: "no
+  InhabitedCastDef exists for any Cartel place yet"), and
+  SettlementManifestDef.castSlots (the "guard"/"debtor" roles the manifest
+  already names against "holding pens") is proven SCHEMA ONLY —
+  WorldObject_Inhabited.InstantiateCast reads `Cast` (`castDef ??
+  placeDef?.defaultCast`), never `manifest.castSlots` — so today Gorga's Palace
+  spawns precisely ZERO cast pawns of any kind. Building multi-district
+  composition and a real InhabitedCastDef for the Hutt Cartel is its own,
+  much bigger prerequisite than a droid packet should absorb; it is not filed
+  as a fresh item because DROID_FACTION_LOADOUTS_1's own C1 already recorded
+  "Hutt captives in the torture chambers" as its own deferred line pointing at
+  this item, and the site-composition gap belongs with whichever future item
+  finishes DISTRICT_TEMPLATE_LIBRARY_1's own stated "stretch goal, unbuilt."
+
+  What ships here instead, ready to plug into that site the moment it exists:
+  the CONTENT. A dedicated TraderKindDef so a real, playable purchase route
+  exists TODAY regardless of the map layer (caravan trading needs no map), plus
+  RSW_DW_LiberateHuttCaptive (RecipeDefs_Droidworks.xml) for the rescue half.
+  THE PLUG-IN POINT for whoever builds the site: give the "holding pens"
+  district's "debtor" cast role an InhabitedCastDef whose roles use these same
+  pawn kinds, routed through StockGenerator_DWHuttCaptives.ApplyCaptiveBolt (or
+  an equivalent call to DroidworksBoltUtility.ApplyCaptiveBolt) at spawn time.
+
+  Pawn kinds: non-combat, colonist-tier Droidworks kinds already MEASURED live
+  in RUT_TradeMootDroids.xml's own stock (2026-09-08) — a debtor droid is a
+  household/labour/protocol unit that displeased its master, not a war
+  machine; Hutt's existing combat guards (RSW_DW_KotORDroidColonist_ADMkI/
+  SentWD, JawaHuttCartel.xml pawnGroupMakers, C1) are untouched.
+
+  Faction: `Jawa_HuttCartel` (this same mod's own FactionDef, JawaHuttCartel.xml,
+  authored 2026-08-14) — the REAL, loadable Hutt Cartel FactionDef, not a
+  stand-in. Recorded because DROIDWORKS_HEADS_BRAINS_SPIKES_1 (B3, same session)
+  keyed its Hutt data-spike to `OuterRim_BinaryStarRaiders`, asserting "no
+  dedicated Hutt Cartel FactionDef exists anywhere in the stack" — that
+  assertion is WRONG as of this file: `Jawa_HuttCartel` is ours, is
+  SettlementManifestDefs_GorgaPalace.xml's own `factionDefName`, and is exactly
+  the Hutt faction this item's captives belong to. Not fixing B3's own
+  already-closed item here (out of scope for C6); flagged so nobody re-derives
+  the wrong convention from it.
+  ============================================================================
+-->
+<Defs>
+
+  <TraderKindDef MayRequire="mandrake.rsw.droidworks">
+    <defName>RUT_Caravan_HuttCartel_Captives</defName>
+    <label>Hutt debtor droids</label>
+    <commonality>0.3</commonality>
+    <requestable>true</requestable>
+    <orbital>false</orbital>
+    <stockGenerators>
+
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>Silver</thingDef>
+        <countRange>800~2000</countRange>
+      </li>
+
+      <!-- The captives themselves. resentmentSeverityRange left at the class
+           default (0.2~0.8) — some are fresh, some are already past
+           Recipe_RemoveRestrainingBolt.RebellionThreshold (0.6f): buying one
+           is not always a clean purchase. -->
+      <li Class="RimMandrake.StarWars.Droidworks.StockGenerator_DWHuttCaptives">
+        <countRange>1~3</countRange>
+        <pawnKinds>
+          <li>RSW_DW_KotORDroidColonist_GE3LD</li>
+          <li>RSW_DW_KotORDroidColonist_GE3PD</li>
+          <li>RSW_DW_KotORDroidColonist_T3UD</li>
+          <li>RSW_DW_OuterRim_ProtocolDroid</li>
+        </pawnKinds>
+      </li>
+
+    </stockGenerators>
+  </TraderKindDef>
+
+</Defs>

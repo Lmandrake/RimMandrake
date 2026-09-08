@@ -267,6 +267,18 @@
         </options>
       </li>
     </pawnGroupMakers>
+    <!-- DROID_HUTT_CAPTIVES_1 (packet C6): the purchase route. Appended, not
+         replacing OutlanderFactionBase's own caravanTraderKinds — RimWorld's
+         list inheritance appends a child's list to the parent's (same rule
+         RUT_TradeMootDroids.xml documents for JawaTribes.xml), so the ordinary
+         Outlander traders still show up beside this one. MayRequire matches
+         RUT_HuttCartel_Captives.xml's own def exactly — a Class= naming a type
+         no loaded assembly has discards the whole def, and a faction that
+         still lists a discarded def logs a dangling cross-reference; both
+         halves carry the gate or neither does. -->
+    <caravanTraderKinds>
+      <li MayRequire="mandrake.rsw.droidworks">RUT_Caravan_HuttCartel_Captives</li>
+    </caravanTraderKinds>
   </FactionDef>
 
 </Defs>
