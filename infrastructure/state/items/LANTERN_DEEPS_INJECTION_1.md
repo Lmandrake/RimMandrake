@@ -10,6 +10,29 @@ biome; it is an injected cave-map layer beneath any nightside map with biome tem
    overhead mountain roof, `Calm` weather, incidents disabled) and ships NO entrance def
    in XML; find the transition mechanism in its DLL / Odyssey's layer system. Report
    MEASURED.
+   ⭐ **MEASURED 2026-09-07** (static file research, `2969748433` "Biomes! Caverns",
+   `.../1.6/Defs/Biomes/BMT_CrystalCaverns.xml`): confirmed `isCavern true`,
+   `baseWeatherCommonalities` 100% `BMT_Calm`, and a partial `disabledIncidents` list
+   (not a global disable flag). **No entrance mechanism exists in this mod at all** —
+   it is an ordinary top-level world-map biome, placed by its `workerClass
+   GeologicalLandforms.ConfigurableBiomeWorker` scoring `depthInCaveSystem` (min 2-3,
+   i.e. deep into a chained cave-tile network) AND **temperature between −15 and 5 °C**
+   — not our ≤ −40 °C nightside gate. The active mod list also carries
+   `m00nl1ght.geologicallandforms.biometransitions`, which is Geological Landforms'
+   generic biome-border map-blending feature (smooth transition maps between ANY two
+   adjacent biome tiles) — unrelated to cave entrances specifically.
+   ⇒ **Consequence for spec item 3 below**: we cannot let `BMT_CrystalCaverns` be
+   auto-placed by Geological Landforms' own worldtile scoring — that would make it a
+   visible, ordinarily-reachable worldmap tile, violating the owner's "NOT a worldmap
+   biome" ruling, and its native temp gate (−15..5 °C) doesn't even match our ≤ −40 °C
+   host requirement. The build must (a) prevent `BMT_CrystalCaverns` from entering
+   ordinary biome-worker placement (strip/override its `workerClass`, or simply never
+   let it worldgen-place and only ever spawn it as a generated pocket map's biome), and
+   (b) reach it exclusively through our own authored entrance features (item 2) wired
+   to Odyssey's pocket-map/layer system (`PocketMapParent`-style), reusing only the
+   BiomeDef's generation properties (isCavern, weather, incidents) — never its own
+   worker/placement path. This is now a concrete design decision, not open research;
+   next step is the Odyssey `PocketMapParent` API itself.
 2. **Entrances as map-transition features** (caverns sitting: same category as
    DeepRim/Z-Levels shafts): (a) **natural emergence** — lanternstone breaking the
    surface, lit from below; (b) **old mineshaft inside a ruined mining facility** —
