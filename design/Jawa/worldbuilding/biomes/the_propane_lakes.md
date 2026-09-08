@@ -23,26 +23,18 @@ the same mechanism two degrees colder — where the haze finally pools.
 
 ## 0. The measurements everything rests on
 
-MEASURED 2026-09-07 (V12 canon) off `world/ASHKARR_WORLDMAP_tiles.csv`: **987 tiles**, arc p10 135.2 → p90 165.5
-(sun 45°–76° below the horizon). Temp p10/median/p90 **−72.0 / −60.8 / −44.8 °C**, the
-coldest tiles on the planet (−80.8). Elevation median 638 m. Regions: **Ammonia Flats
-(362), Deadstone (360), Umbra (262)**, Nightspill (3). Zero worldmap water tiles — **the
-lake gets its own tiles** under `LIQUID_BIOMES_MAP_1` (four liquid biomes, owner 2026-09-06;
-`RUT_PropaneLake` now MEASURED at 57 tiles, all water=1, regions Umbra 29/Ammonia Flats
-28). Anti-bullseye: the cap is a disc (physics — the coldest point pools), and the band
-around it is three-lobed, not a ring (sectors 4, 5, 8 weak at 59/68/51; CrystalCaverns
-holds them). ⚠️ Older docs say "554 tiles" — a stale map iteration.
-
-> ⚠️ MEASURED 2026-09-08 (V18 canon), re-overlaid with `backside_reband_full.json` →
-> `pf_terminator_plan.json` → `wasteland_reclaim_plan.json` → `crag_meander_plan.json` →
-> `pf_meander_plan.json` → `graycrags_coldonly_plan.json`: `AB_PropaneLakes` now holds
-> **2,531 tiles** (up from 987 at the 2026-09-07 measurement), arc p10 139.3 → p90 166.0,
-> temp p10/median/p90 **−73.0 / −62.2 / −47.8 °C**, coldest tile −81.7 °C. Elevation
-> median 670 m. Regions: **Deadstone (861), Umbra (773), Ammonia Flats (692)**, Venom Wood
-> 69, Lantern Deeps 57, South Crags 34, Thornend 23, Quiet Ground 13, Cinderdark 9 — Umbra
-> and Ammonia Flats have swapped rank versus 2026-09-07, and Deadstone is now the
-> plurality region; amendment — ruling text stands. `RUT_PropaneLake` re-verified
-> unchanged at **57 tiles**, all water=1, regions Umbra 29/Ammonia Flats 28.
+MEASURED off `world/ASHKARR_WORLDMAP_tiles.csv`: **2,531 tiles**, arc 132→179
+(p10/median/p90 139.3/151.3/166.0 — sun 49°–76° below the horizon). Temp p10/median/p90
+**−73.0 / −62.2 / −47.8 °C**, every tile's annual mean below propane's −42 °C dew point;
+the coldest land on the planet (−81.7 °C; only the lake's own tiles, at −82.0 °C, are
+colder). Elevation median 670 m. Regions: **Deadstone (861), Umbra (773), Ammonia Flats
+(692)**, Venom Wood 69, Lantern Deeps 57, South Crags 34, Thornend 23, Quiet Ground 13,
+Cinderdark 9. Zero worldmap water tiles — **the lake gets its own tiles** under
+`LIQUID_BIOMES_MAP_1` (four liquid biomes, owner 2026-09-06; `RUT_PropaneLake` holds **57
+tiles**, all water=1, arc 170→179, temp median −79.0 °C, regions Umbra 29/Ammonia Flats
+28). Anti-bullseye: the cap is a disc (physics — the coldest point pools: every tile past
+arc 165 is this def or the lake), and the band around it is lobed, thinnest through
+sectors 4–6 (159/131/142 tiles against 311 in sector 9).
 
 Donor inventory taken in: terrain (packed snow/ice, solid propane, liquid propane lake),
 constant snow (50 vs Clear 12 — re-read as fuel snow), dry thunderstorms, forage **0**,
@@ -79,8 +71,8 @@ phase lines (propane pools at −42, ammonia is liquid −78…−33) × the mac
   antistellar cap is the planet's fuel tank (ruled). Propane-in-liquid gives the
   nightside's butane/pentane biochemistry a *medium* — so it gets big.
 - **Ammonia Flats — the polar solvent returns.** Ammonia is liquid across this biome's
-  whole range and it is *polar* — the classic water-analog. The largest region is the
-  nightside's chemical oasis: **ammonia-based life**, efficient where the Blue Desert
+  whole range and it is *polar* — the classic water-analog. The Flats — 692 tiles of this
+  def — are the nightside's chemical oasis: **ammonia-based life**, efficient where the Blue Desert
   starved.
 
 ### The aurora — the magnetosphere reconnecting (owner-ratified physics)

@@ -23,19 +23,14 @@ sheet is now the column's top.
 
 ## 0. The measurements everything rests on
 
-MEASURED 2026-09-06 off `world/ASHKARR_WORLDMAP_tiles.csv`. Vanilla `IceSheet` holds 49
-tiles today (Deadstone, −52 °C). After the ruled re-home (`HORRORWASTES_BIOME_DISSOLVE_1`;
-`the_lantern_deeps.md` §0) the def held **802 tiles**: the dissolved ring's highland
-sectors 1–3 (337 tiles, elev median 1,271 m) + the former crystal caverns' high ground
-(416 tiles ≥ 900 m) + its own 49. **MEASURED 2026-09-08 (V18 canon)**, re-overlaid with
-`backside_reband_full.json` → `pf_terminator_plan.json` → `wasteland_reclaim_plan.json` →
-`crag_meander_plan.json` → `pf_meander_plan.json` → `graycrags_coldonly_plan.json`: the def
-now holds **1,406 tiles** (`backside_reband_full` 1,044 + `wasteland_reclaim_plan` 243 +
-`pf_terminator_plan` 98 + `crag_meander_plan` 21). Arc 111→139; temp p10/median/p90
-**−45 / −32 / −22 °C**; **elevation median 748 m (max 1,884) — the deep night's mountains,
-under ice.** Regions Deadstone 663, Sunreach 263, Gray Crags 105, Nightspill 105, South
-Crags 78, Rimewall 64, Twilight Crags 60, Cinderdark 42, The Verge 15, Quiet Ground 7 (+4:
-Ammonia Flats 2, Ashen Wastes 1, Salt 1). Sectors 0–5 and 7–10 —
+MEASURED off `world/ASHKARR_WORLDMAP_tiles.csv`: the def holds **1,406 tiles**. Arc
+111→139 (p10/median/p90 117/125/135); |lat| median 31°; temp p10/median/p90
+**−45 / −32 / −22 °C**, summer maximum below 0 °C on every tile; **elevation median 748 m
+(max 1,884) — the deep night's mountains, under ice.** Zero water tiles. Regions Deadstone
+663, Sunreach 263, Gray Crags 105, Nightspill 105, South Crags 78, Rimewall 64, Twilight
+Crags 60, Cinderdark 42, The Verge 15, Quiet Ground 7 (+4: Ammonia Flats 2, Ashen Wastes 1,
+Salt 1). Present in all twelve 30° bearing sectors, unevenly — 41 to 289 tiles a sector,
+sector 4 the heaviest, sectors 9–10 the thinnest at 44 and 41 —
 **highland lobes, accepted as topography (owner's ruling), not a band**: chemistry here
 follows basin depth and height, never arc, which is the sheet's own anti-bullseye argument.
 
@@ -75,14 +70,10 @@ toward the warmth of whatever just lay down to die.
 
 ## 2. Planetary position
 
-**Deep nightside highland (arc 128–159; the coldest high ground on the planet) × the
+**Deep nightside highland (arc 111–139; the coldest high ground on the planet) × the
 cold-trap anomaly, upland half.** The antistellar point is the planet's condensation sink;
 this sheet is the inert-ice top of that column, and the Blue Desert, the Ammonia Flats and
 the propane sea are where the frost the uplands shed finally pools.
-
-> ⚠️ MEASURED 2026-09-08 (V18 canon): arc now 111→139 (was 128→159) — the highland's
-> lower bound has moved into ground §2 elsewhere calls twilight (the crags: arc 103–121);
-> amendment — ruling text stands.
 
 - **Energy regime:** none from the sun, none from below — 🔴 explicitly **no vents, no
   geothermal, no volcanism**. What arrives is what the atmosphere carries in, and (second
@@ -98,7 +89,7 @@ this sheet. Move it fifty degrees dayward and the ice softens, the pans empty, a
 is nothing left.
 
 ⚠️ A first-pass claim is struck: *"`AB_RockyCrags` is the dominant terrain past θ 130"* —
-the crags are twilight (arc 103–121, `forsaken_crags.md`); the deep night is the Blue
+the crags are twilight (arc 100–116 at p10–p90, tailing to 121; `forsaken_crags.md`); the deep night is the Blue
 Desert, this highland, the caverns' former ground, and the propane country.
 
 ## 3. Driving forces
@@ -355,7 +346,7 @@ strange, and mostly not obviously fauna at all.
 ## Owed
 
 - `NIGHTSIDE_ICE_DEF_1` — author `RUT_NightsideIce` (inherit vanilla's shape, override every
-  list, no arctic zoo, no snow table); paint the 802 tiles under
+  list, no arctic zoo, no snow table); paint its 1,406 tiles under
   `HORRORWASTES_BIOME_DISSOLVE_1`; add it to the world tools' biome list.
 - **Name** — owner's pick if the dirty-ice plateau wants one beyond "the Nightside Ice."
 - **Tunnelers and icy insects** — authoring (art to the NEW-ART ledger; the within-ice
