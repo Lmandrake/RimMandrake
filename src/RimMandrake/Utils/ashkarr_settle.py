@@ -34,6 +34,16 @@ Full account: `world/DEPRECATED_painted_lineage/README.md`.
         removed 2026-08-24; the MST here would lay them straight back.
    Rulings: design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md §7 and §7c.
 
+⛔ A FIFTH, SILENT ONE - found 2026-09-07 by code review, not by the owner: BARREN_REGIONS
+   and HELIX_BARREN_OK (below) are written as "The <Name>" strings, but the live `region`
+   CSV column has never carried the article - it has always been the bare name
+   (`Deadstone`, `Ammonia Flats`, `Umbra`, ...). Only "Twilight Sea" and "Scald" in
+   BARREN_REGIONS ever match anything; the other 20 entries, and all 7 of
+   HELIX_BARREN_OK, have never matched a single tile, on ANY run, since this file was
+   written - this predates even the four re-rulings above. The docstring's "BARRENNESS
+   IS A CONSTRAINT HERE, NOT A HOPE" invariant (below) does not hold for those 20 named
+   regions. Re-verify this by hand too before passing --i-know-its-stale.
+
 Owner, 2026-08-22: *"more settlements and roads, though do keep large areas of
 barrenness please. Making a lot more Hutts in the desert could make sense here (more
 oases though), and the moisture farmers could definitely be all over the place."*
