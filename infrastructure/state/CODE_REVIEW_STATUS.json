@@ -2279,6 +2279,12 @@
     "hash": "4bb58d416c187f0a5bbaf6ad672a6517774e23516263418aed55b8add6d10a25",
     "sha": "377864eb"
   },
+  "src/RimMandrake/Utils/check_config_errors.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "99942b39db460be641883539bbbd54f51a6bbc01052cce5c970d4e4218e5b228",
+    "sha": "e3212aae"
+  },
   "src/RimMandrake/Utils/check_declarations.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -2703,6 +2709,12 @@
     "hash": "9a81a9eabc448f87d4a39ca0925cd02d943f5f250363a88ac76faa051c1f7655",
     "sha": "d1c193ae"
   },
+  "src/RimMandrake/Utils/modsconfig_from_save.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "820323ac405ed4dade8288b77a647075f504c24b9d51304bbec4b73f8975f0ee",
+    "sha": "e3212aae"
+  },
   "src/RimMandrake/Utils/modset_builder.py": {
     "cleanCount": 2,
     "date": "2026-09-07",
@@ -2798,6 +2810,18 @@
     "date": "2026-09-04",
     "hash": "30be758eccdda3078da7c562b97845fab65ba8e45a69fefcdb2556225975cf18",
     "sha": "f1ebc8c1"
+  },
+  "src/RimMandrake/Utils/retired_mods.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "0b413ef21b8c59533c0906e4c58edbf66bdaabcd1770f21712fbd992953e05fd",
+    "sha": "e3212aae"
+  },
+  "src/RimMandrake/Utils/retirement_order.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "4aa31eab1c5440e425068356891fad07c6d6edfcebff7cb5526cce64ac8b1ea5",
+    "sha": "e3212aae"
   },
   "src/RimMandrake/Utils/rimbench/__init__.py": {
     "cleanCount": 1,
@@ -3098,6 +3122,18 @@
     "date": "2026-09-05",
     "hash": "046bdceadf7808ee0bab101f5d5e706b2b807abece0cc7ed70f82b86b5ee8678",
     "sha": "3287ca65"
+  },
+  "src/RimMandrake/Utils/selftest_retired_mods.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "ebb807117f94af8f0d16896bda154c790d3cd3ec37e03d3d676c4a5242207e7b",
+    "sha": "e3212aae"
+  },
+  "src/RimMandrake/Utils/selftest_retirement_order.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "2adedf7a9219336cd03b9900a2de56ee50dcea6e29ba9e8f33c21f8b0060f003",
+    "sha": "e3212aae"
   },
   "src/RimMandrake/Utils/selftest_sound_paths.py": {
     "cleanCount": 1,
