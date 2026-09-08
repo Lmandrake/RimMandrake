@@ -7,21 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T15:26:22Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-08T15:37:09Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
 
-## MATURITY_DASHBOARD_DENSITY_1 Maturity dashboard density passes (owner AFK note 2026-09-08): cram info intuitively; evidence-miner promotions land here too
+## GOLDEN_SHEET_REFRESH_1 Golden stat-refresh of all biome sheets except ice/blue/propane against V23 — recompute from CSV+8 overlay plans, plain facts, no provenance tags (worked example 7bbd4b6a); early V12 refresh was reverted stale
 state:    ready
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/MATURITY_DASHBOARD_DENSITY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MATURITY_DASHBOARD_DENSITY_1.md
+summary:  (no items/GOLDEN_SHEET_REFRESH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GOLDEN_SHEET_REFRESH_1.md
 
 # IN PROGRESS
 
@@ -44,6 +44,15 @@ target:   v1
 kind:     task
 summary:  BIOMEFREEZEFABLEREVIEW1 — full-scale Fable review of ALL biomes together, before the freeze
 prose:    infrastructure/state/items/BIOME_FREEZE_FABLE_REVIEW_1.md
+
+## MATURITY_DASHBOARD_DENSITY_1 Maturity dashboard density passes (owner AFK note 2026-09-08): cram info intuitively; evidence-miner promotions land here too
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/MATURITY_DASHBOARD_DENSITY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MATURITY_DASHBOARD_DENSITY_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
