@@ -33,6 +33,32 @@ This should happen after reassignment of plants and animals per biome."*
   generally — any biome whose roster has been reassigned since its icon set was
   last (baked/verified) is a candidate for the same staleness.
 
+## MEASURED 2026-09-07 — the premise was wrong, not the icons
+
+The icons are drawn by **Biomes Kit** (`zal.biomeskit`, formerly "World Map
+Beautification Project"), not Geological Landforms and not vanilla. They come from
+a hand-authored `BiomesKitControls` modExtension patched onto each `BiomeDef`
+(threshold flags: `forested`, `forestDenseAbove`, `forestSparseBelow`, hill/mountain
+snow thresholds) that selects one of several **baked PNG icon sheets** shipped by
+the mod. For `BiomeGRimond` ("Blue Desert"), `Forest.png` is a fixed 2×2 tile of the
+exact cactus + dark tree/coral glyphs in the owner's screenshot.
+
+🔴 **There is no code path from `BiomeDef.wildPlants`/`wildAnimals` to these icons at
+all** — never was, not a stale cache. Reassigning a biome's plant/animal roster,
+live or via any future pass, changes nothing here. The owner's "I assume these
+won't auto-update" is correct in effect but wrong in mechanism: it isn't that they
+fail to update, it's that they were never wired to the roster in the first place.
+
+**Consequence**: "regenerate after plant/animal reassignment" isn't a real fix path
+— there's nothing to regenerate from. If the owner wants Blue Desert's icons to
+actually reflect its roster, that's a **manual retuning pass**: either adjust
+`BiomeGRimond`'s `BiomesKitControls` thresholds so a more fitting baked icon set
+gets selected, or (bigger lift) author/replace the icon PNGs themselves. This is a
+one-time authoring decision, not an automated hook — recommend closing this as
+MEASURED and filing the actual retuning as its own item once the owner says which
+icon set(s) should change and to what, rather than leaving this item open for a
+"fix" that doesn't exist in the form it was filed for.
+
 ## verify
 Blue Desert's world-map decoration icons match its current (post-reassignment)
 wildPlants/wildAnimals roster, confirmed by a live world-map screenshot; the fix (or
