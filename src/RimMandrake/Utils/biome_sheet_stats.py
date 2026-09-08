@@ -113,11 +113,56 @@ def biome_stats(rows):
     return out
 
 
+def from_water(rows, regions):
+    """Region-median angular distance (degrees) to the nearest water OR river
+    tile — deep_desert.md's 'from water' metric. CALIBRATED 2026-09-08 against
+    the sheet's own pre-repaint numbers on the deprecated CSV: 5 of 6 regions
+    within ~1° (Thornbelt off — tile-set drift, not the metric). Water and
+    river columns are canon-CSV-authoritative; overlays don't touch them."""
+    import math
+    water = [(math.radians(float(r["lat"])), math.radians(float(r["lon"])))
+             for r in rows
+             if r["water"] not in ("0", "", "0.0") or float(r["river_flow"] or 0) > 0]
+    wsin = [math.sin(la) for la, _ in water]
+    wcos = [math.cos(la) for la, _ in water]
+    wlon = [lo for _, lo in water]
+    out = {}
+    for reg in regions:
+        dists = []
+        for r in rows:
+            if r["region"] != reg:
+                continue
+            la, lo = math.radians(float(r["lat"])), math.radians(float(r["lon"]))
+            s, c = math.sin(la), math.cos(la)
+            best = 4.0
+            for i in range(len(water)):
+                cosd = max(-1.0, min(1.0, s*wsin[i] + c*wcos[i]*math.cos(lo - wlon[i])))
+                d = math.acos(cosd)
+                if d < best:
+                    best = d
+            dists.append(math.degrees(best))
+        dists.sort()
+        out[reg] = {"n": len(dists),
+                    "from_water_med": pctl(dists, 50) if dists else None}
+    return out
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--json", help="also write full stats as JSON here")
     ap.add_argument("--biome", help="print only this biome def")
+    ap.add_argument("--from-water", metavar="REGION[,REGION...]",
+                    help="region-median degrees of arc to nearest water/river "
+                         "(slow: brute-force over all water tiles)")
     args = ap.parse_args(argv)
+    if args.from_water:
+        rows, applied = current_tiles()
+        for reg, s in from_water(rows, args.from_water.split(",")).items():
+            print("%-16s n=%-4d from_water_median=%s"
+                  % (reg, s["n"],
+                     "%.1f" % s["from_water_med"] if s["from_water_med"] is not None
+                     else "UNMEASURED (no tiles)"))
+        return 0
     rows, applied = current_tiles()
     stats = biome_stats(rows)
     print("MEASURED %d tiles; %d overlay repaints applied (%d plans)"

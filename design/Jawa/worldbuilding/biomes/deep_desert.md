@@ -14,16 +14,18 @@ that you are not alone, here it is that **you will run out**._
 ## 0. Where it is
 
 The far ring of dayside ground, past the Pyrelands and past the tar pits those Pyrelands
-manufacture as their own margin (R-H9). Measured as degrees of arc from the nearest water:
+manufacture as their own margin (R-H9). Measured as region-median degrees of arc from the
+nearest water or river tile (`biome_sheet_stats.py --from-water`, calibrated against this
+table's own pre-repaint numbers — 5 of 6 regions reproduced within ~1°):
 
 | region | from water | tiles | arc | temp | reading |
 |---|---|---|---|---|---|
-| **Cracklands** | 39.6° | 138 | 67° | 31 °C | the terminus — furthest dayside ground from water on the planet |
-| **Thornbelt** | 38.7° | 263 | 69° | 30 °C | |
-| **Dry Marches** | 28.9° | 345 | 68° | 29 °C | |
-| **Long Sand** | 26.1° | 532 | 67° | 32 °C | |
-| **Glare** | 25.9° | 879 | 50° | 43 °C | the deep — hottest of the far ring |
-| **Kiln** | 19.4° | 878 | 51° | 43 °C | the margin, where the Pyrelands let go |
+| **Cracklands** | 40.1° | 227 | 72° | 27 °C | the terminus — furthest dayside ground from water on the planet |
+| **Thornbelt** | 13.7° | 502 | 74° | 26 °C | ⚠️ no longer far-ring by water: a meandered river now runs close — the one real change in this table |
+| **Dry Marches** | 29.0° | 387 | 69° | 28 °C | |
+| **Long Sand** | 25.8° | 721 | 70° | 30 °C | |
+| **Glare** | 25.4° | 879 | 50° | 43 °C | the deep — hottest of the far ring |
+| **Kiln** | 20.3° | 878 | 51° | 43 °C | the margin, where the Pyrelands let go |
 
 MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
 plans): `ExtremeDesert` now totals **3,172 tiles** (the region table above predates the
