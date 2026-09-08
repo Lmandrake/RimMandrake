@@ -2,6 +2,11 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
+// COMPILE-ONLY SPIKE — deliberately NOT in RM_RaidRedesigner.csproj (which has
+// EnableDefaultCompileItems=false, so this file is inert). It is the verified
+// API shape for the threat-point choke patch this mod does not implement yet;
+// implement against it, then delete it. Folded in from src/RimMandrake/Spikes
+// (owner, 2026-09-08); its two pit siblings were absorbed by Pits and deleted.
 namespace RimMandrake.Spikes
 {
     // SPIKE 3 — own the raid math: REPLACE threat points at the single choke point,

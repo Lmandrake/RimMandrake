@@ -186,11 +186,14 @@ def regression_payload(cap_events):
         sysname = ev.get("system")
         if not sysname:
             continue
-        st = state.setdefault(sysname, {"function": None, "content": None})
-        if ev.get("function_rung"):
-            st["function"] = ev["function_rung"]
-        if ev.get("content_rung"):
-            st["content"] = ev["content_rung"]
+        if ev.get("retired"):
+            state.pop(sysname, None)
+        else:
+            st = state.setdefault(sysname, {"function": None, "content": None})
+            if ev.get("function_rung"):
+                st["function"] = ev["function_rung"]
+            if ev.get("content_rung"):
+                st["content"] = ev["content_rung"]
         fcounts = dict.fromkeys(FUNCTION_RUNGS, 0)
         ccounts = dict.fromkeys(CONTENT_RUNGS, 0)
         for s in state.values():

@@ -30,7 +30,7 @@ reuses RimStarWars wholesale only if nothing campaign-specific leaked into it.
 - **Engine vs. content**: when a system splits into a generic engine and campaign content (Pits precedent, ratified), the engine takes the highest tier it honestly passes, the content pack takes its own tier. One mod may not straddle; split it.
 - **Species vs. clan**: the Jawa *species* (genes, body, voice, eggs) is RimStarWars (owner-explicit); *this clan's* culture, faith, backstories, and doctrine are RimUtinni.
 - **Doctrine is Utinni even when it patches SW content** (the ion-over-explosives *rule* is theology; the ion *weapons* are RimStarWars).
-- **Non-shipping tooling is EXEMPT** (Utils, rimflow, JawaBench companion, the `jawa/*` GABP tool prefix, Spikes): the scheme governs shipping identity; renaming dev tooling breaks 56+ scripts and every skill doc for zero player value. Tooling keeps its names and paths.
+- **Non-shipping tooling is EXEMPT** (Utils, rimflow, JawaBench companion, the `jawa/*` GABP tool prefix): the scheme governs shipping identity; renaming dev tooling breaks 56+ scripts and every skill doc for zero player value. Tooling keeps its names and paths.
 
 ## 2. The naming grammar
 
