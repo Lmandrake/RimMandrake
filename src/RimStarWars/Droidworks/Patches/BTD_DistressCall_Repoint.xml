@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DROID_DISTRESS_CALL_REPOINT_1 (C7). Ruling 13
+  (DROID_UNIFIED_FRAMEWORK_DESIGN.md §0): "Distress Call quest: re-point to DW
+  kinds - it becomes the wild/crashed-droid rescue."
+
+  Target: btd.gbp.shippack.kotor.vge's IncidentDef BTD_DroidDistressCall
+  (workshop 3614012898, also duplicated byte-identical inside its dependency
+  btd.remix.gravshipblueprints, workshop 3575162262 - both copies live under a
+  path named 1.6/Mods/BTD_KotOR_Droids/ and both are LoadFolders-gated:
+  <li IfModActiveAll="guy762.KotORDroids,btd.gbp.shippack.kotor.vge">
+  (REMIX's own LoadFolders.xml) / <li IfModActive="guy762.KotORDroids">
+  (the VGE shippack's own LoadFolders.xml). CONFIRMED the open question in
+  DROID_PROGRAM_STATE_2026-09-06.md: yes, gated on guy762.KotORDroids being
+  active - the quest content does not exist at all without it. Guarded with
+  PatchOperationConditional testing the target node itself (rimworld-modding's
+  own guidance: MayRequire/FindMod check the MOD, Conditional checks the DEF -
+  the def's existence here is a LoadFolders fact, not just an installed-mod
+  fact, so Conditional is the guard that actually matches reality). Once
+  guy762.KotORDroids is retired
+  (D2), this whole folder stops loading and the patch below simply matches
+  nothing from then on (harmless no-op, per this repo's own "patch matches
+  nothing logs nothing" doctrine) - the permanent, donor-independent
+  wild/crashed-droid rescue is DROIDWORKS_WILD_DROIDS_1 (E4), explicitly out
+  of scope here.
+
+  CORRECTION to the design doc's "5 KotORDroidColonist_* refs": live-read off
+  disk, the modExtension's rewardDroidKindDefs list actually names 19 (not
+  5) KotORDroidColonist_* kinds. All 19 confirmed as real PawnKindDefs in
+  guy762.KotORDroids's PawnKinds_PlayerDroids.xml, and all 19 have a 1:1
+  Droidworks absorption in src/RimStarWars/Droidworks/Defs/PawnKinds_KotOR.xml
+  (RSW_DW_KotORDroidColonist_<suffix>, same suffix, same race-per-kind
+  mapping) - repointed below.
+
+  Reframe (player-facing text): questNameRules/questDescriptionRules and the
+  IncidentDef's letterLabel/letterText were already donor-neutral ("distress
+  call from a crashed freighter", "the other droids ... have gone haywire and
+  become hostile") - no literal "KotOR" string anywhere in the quest's or
+  incident's player-facing text, so no text patch is needed for the reframe;
+  the kind repoint alone completes it (the reward pawn's own PawnKindDef
+  labels are already generic - "war droid", "protocol droid", etc., never
+  "KotOR" anything).
+
+  Explicitly NOT touched (out of scope for this item):
+  - IncidentDef's hostileFactionDef guy762_KotORFaction_RogueDroids (the site's
+    hostile spawn faction, hidden, label "rogue droid collective"). Ruling 2
+    bans a rogue droid faction going forward and D2's own supersession note
+    already retires this concept with kotordroids; repointing it is a
+    mechanism change (which faction fields the site's hostiles) that belongs
+    to whoever executes D2/E4, not this narrow kind+text repoint.
+  - eligibleShipLabels, SitePartDef, QuestScriptDef node tree: none of these
+    name a KotOR-specific kind or donor string.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/IncidentDef[defName="BTD_DroidDistressCall"]/modExtensions/li[@Class="RWM_BTD_Remix_GravshipBlueprints.BTD_ModExtension_DroidDistressCallSettings"]/rewardDroidKindDefs</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/IncidentDef[defName="BTD_DroidDistressCall"]/modExtensions/li[@Class="RWM_BTD_Remix_GravshipBlueprints.BTD_ModExtension_DroidDistressCallSettings"]/rewardDroidKindDefs</xpath>
+      <value>
+        <rewardDroidKindDefs>
+          <li>RSW_DW_KotORDroidColonist_T3UD</li>
+          <li>RSW_DW_KotORDroidColonist_3CUD</li>
+          <li>RSW_DW_KotORDroidColonist_ITUD</li>
+          <li>RSW_DW_KotORDroidColonist_R8009UD</li>
+          <li>RSW_DW_KotORDroidColonist_GE3LD</li>
+          <li>RSW_DW_KotORDroidColonist_GE3PD</li>
+          <li>RSW_DW_KotORDroidColonist_KX12UPD</li>
+          <li>RSW_DW_KotORDroidColonist_KX12APD</li>
+          <li>RSW_DW_KotORDroidColonist_MPDMkI</li>
+          <li>RSW_DW_KotORDroidColonist_KM1MD</li>
+          <li>RSW_DW_KotORDroidColonist_KM1HMD</li>
+          <li>RSW_DW_KotORDroidColonist_SentWD</li>
+          <li>RSW_DW_KotORDroidColonist_DevWD</li>
+          <li>RSW_DW_KotORDroidColonist_DevAD</li>
+          <li>RSW_DW_KotORDroidColonist_ADMkI</li>
+          <li>RSW_DW_KotORDroidColonist_ADMkI_sf</li>
+          <li>RSW_DW_KotORDroidColonist_ADMkIV</li>
+          <li>RSW_DW_KotORDroidColonist_ADMkIV_sith</li>
+          <li>RSW_DW_KotORDroidColonist_GOTO</li>
+        </rewardDroidKindDefs>
+      </value>
+    </match>
+  </Operation>
+</Patch>
