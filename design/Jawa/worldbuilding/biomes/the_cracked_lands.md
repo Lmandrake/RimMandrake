@@ -23,8 +23,8 @@ Wasteland −10°.
 MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
 plans): **985 tiles**, dayside, arc 17→116 (median 69 — the sun **21° above the
 horizon**). Temp p10/median/p90 9 / 27 / 45 °C. Elevation median only 137 m but **max
-1,936 m**, with the most mixed relief on the planet: 378 small-hill, **328
-mountainous**, 197 large-hill, 182 flat. Water 23 tiles, 2 river tiles; rain median 0,
+1,936 m**, with the most mixed relief on the planet: **333 mountainous**, 315 flat,
+161 large-hill, 135 small-hill, 41 impassable. Water 23 tiles, 2 river tiles; rain median 0,
 **max 1,442 mm** on the Dew Horn highs. Regions: **Dew Horn 278, Cracklands 199**, Damp
 112, Dune Sea 71, Salt 70, Wither 45, Long Sand 31, +16 more. Present in all twelve 30°
 bearing sectors, unevenly — 11 to 159 tiles a sector.

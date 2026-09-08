@@ -33,8 +33,8 @@ plans): **223 tiles**, scattered wide across the dayside — arc 13→84 (p10/me
 24/**59**/80 — the sun **31° above the horizon** at the median, but individual tiles
 run from light near noon down to near the terminator). Temp p10/median/p90 20.5 /
 35.3 / 57.0 °C (max 63.5). Elevation median **612 m** (max 1,353) — this biome sits
-high. Hilliness genuinely mixed (small-hill/flat/large-hill/mountainous all present —
-exact counts pending a refresh against the current tile total). **Water tiles 0, river
+high. Hilliness genuinely mixed: 61 small-hill, 60 mountainous, 54 flat, 38
+large-hill, 10 impassable of 223. **Water tiles 0, river
 tiles 1** — the biome named for water has almost none at world scale; the pools are
 map-scale. Regions: **Dew Belt 83, Dew Horn 54** (three-fifths of the biome — the
 map's own names voted for the engine), Dune Sea 39, **Scald Spine 24, Anvil 13** (the

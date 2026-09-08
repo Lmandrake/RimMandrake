@@ -24,7 +24,7 @@ the great trees drank the chaos itself.**
 
 MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8
 overlay plans): **43 tiles, every one in the Fever Wood region** — one
-contiguous lowland patch at **22 m**, flat (47/60), directly behind the
+contiguous lowland patch at **22 m**, flat (43/43 — every tile), directly behind the
 Miasma's delta belt. Sun median +43°; temp median 45.5 °C (42.0 p10 .. 51.5
 max). **Zero rivers, zero water tiles, zero rain** — the wet is the water
 table, tamed (§3).
