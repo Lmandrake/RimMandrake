@@ -258,10 +258,10 @@
     "sha": "56b17db2"
   },
   "skills/generating-images/scripts/codex_image.py": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "a42c642c8462f45a4ec98f09ff770b2c9c6c12d0a7bb9da4c0ac539df0ee5ee9",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "c1155ded1f83a374a5054cf5b64d0342b716f679172d546661dde39001934a10",
+    "sha": "f8f51187"
   },
   "skills/generating-images/scripts/pnglib.py": {
     "cleanCount": 1,
