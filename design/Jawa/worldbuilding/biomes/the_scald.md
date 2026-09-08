@@ -162,6 +162,14 @@ the dung-and-mat economy.**
 - **Wrecks in the shallows** — what the pan swallowed over millennia,
   cooked clean, visible through cyan glow on a still day: salvage priced
   in burns.
+- ⭐ **AMENDMENT, added detail, 2026-09-07 (owner ruling, `SCALD_DARK_TOWER_1`)**: a
+  dark tower rises from the crater lake — the Rakatan's **ground-based high command**,
+  carrying the control systems for the Rust Cathedral (`the_rust_cathedral.md`),
+  fiercely defended, and now infiltrated by **ocular warped Assailants that have
+  pressed their way inside**. A different dungeon from `ANCIENT_WAR_LAB_1` (the
+  propane-lakes war lab) with a similar theme — the two are not the same site and not
+  the same item. Does not change any ruling above; the tower sits IN the crater lake,
+  it does not touch the boil, the roster, or the two-faith shore.
 
 ## 9. Artistic theme
 
@@ -190,6 +198,9 @@ the dung-and-mat economy.**
   bath recreation, bubble-sailor and walker set-pieces, geyser fields, the
   boiling-lift integration (spec already ruled), wreck-salvage in burning
   shallows.
+- `SCALD_DARK_TOWER_1` (filed 2026-09-07) — the Rakatan high-command dungeon
+  in the crater lake: Rust Cathedral control systems, fierce defenses,
+  ocular warped Assailants that pressed their way in.
 - **Roster** — rides the full assignment pass: the four sorts into
   `RUT_TheScald`'s waiting empty `wildAnimals`; mats as flora/terrain
   dressing; `FISH_BY_BIOME_1`'s strangest table.

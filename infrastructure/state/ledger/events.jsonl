@@ -5603,3 +5603,13 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"save the game under a new name, then start it reloading as you suggested","ts":"2026-09-07T23:16:34Z"}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is down","ts":"2026-09-07T23:16:50Z"}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"then start it reloading as you suggested","ts":"2026-09-07T23:18:26Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"Game is loading","ts":"2026-09-07T23:20:13Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-08T00:45:13Z"}
+{"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-08T00:45:15Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH + owner: interactive worldmap improvement session","ts":"2026-09-08T00:45:20Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-08T04:01:04Z"}
+{"seat":"FOUNDRY","event":"block","id":"ANCIENT_WAR_LAB_1","reason":"needs owner ruling: reconcile with wasteland §10 sealed research station before engine-level map-mutation work starts","ts":"2026-09-08T04:01:37Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LANTERN_DEEPS_INJECTION_1","ts":"2026-09-08T04:01:49Z"}
+{"seat":"FOUNDRY","event":"start","id":"LANTERN_DEEPS_INJECTION_1","ts":"2026-09-08T04:01:49Z"}
+{"seat":"OWNER","event":"file","id":"SCALD_DARK_TOWER_1","title":"Dark tower in the Scald: Rakatan high command, Rust Cathedral control systems, ocular warped Assailant intrusion","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ownerSaid":"the nearby lab concept has been reborn as the dark tower that rises from the volcanic lake near the Scald. That was the ground-based high command of the Rakatan and has control systems for the Rust Cathedral in it as well as fierce defenses... as well as ocular warped assailants that have pressed their way inside. A different dungeon with similar theme.","ts":"2026-09-08T04:12:26Z"}
+{"seat":"OWNER","event":"unblock","id":"ANCIENT_WAR_LAB_1","reason":"owner reconciled 2026-09-06/07 wasteland §10 overlap: same lab, live/trapped/studied Assailants; dark tower split out as SCALD_DARK_TOWER_1","ownerSaid":"The War Lab refers to the antipodal site beneath the propane lake on the night side, that's where the live assailants being studied trapped in the frozen wastes will happen.","override":"OWNER may not `unblock` ANCIENT_WAR_LAB_1 — it belongs to FOUNDRY. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-09-08T04:12:26Z"}
