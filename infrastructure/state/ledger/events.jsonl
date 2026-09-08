@@ -5669,3 +5669,6 @@
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH: worldmap sheet-application - Gray Crags, Level/Knuckles merge, LIGHTFALL enlarge; heartbeating","ts":"2026-09-08T13:51:04Z"}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH: ice/blue-desert/propane sheet pass + nightside label audit; heartbeat","ts":"2026-09-08T14:03:18Z"}
 {"seat":"FOUNDRY","event":"note","id":"DROIDWORKS_FULL_LIST_COEXIST_1","text":"enabled+loaded on full list; 3 real def-authoring bugs found+fixed+deployed (a35e4f62); confirming restart owed, BENCH holds bridge","ts":"2026-09-08T14:08:57Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-08T14:11:37Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH AFK: roads straighten + straggler cleanup + walk biomes; heartbeat","ts":"2026-09-08T14:27:02Z"}
+{"seat":"BENCH","event":"file","id":"BLUE_PROPANE_RING_RULING_1","title":"Blue desert & propane now occupy all 12 bearing sectors — their 'never a ring' anti-bullseye rulings are contradicted by the paint; re-de-circle or amend the ruling","kind":"decision","target":"v1","for":"OWNER","ts":"2026-09-08T14:31:03Z"}

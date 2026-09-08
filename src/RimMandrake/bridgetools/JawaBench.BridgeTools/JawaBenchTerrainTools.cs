@@ -1126,7 +1126,7 @@ namespace JawaBench.BridgeTools
                         {
                             try
                             {
-                                if (pawn.health.capacities.CapableOf(cap) || true)
+                                if (pawn.health.capacities.CapableOf(cap))
                                     caps[cap.defName] = pawn.health.capacities.GetLevel(cap);
                             }
                             catch { /* some caps throw on some races; skip rather than fail the call */ }

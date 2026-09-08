@@ -303,7 +303,7 @@ namespace JawaBench.BridgeTools
                     var victim = matches[0];
 
                     if (dryRun)
-                        return new { success = true, dryRun = true, action = A, ideo = new { target.id, target.name }, precept = new { def = victim.def.defName, label = victim.Label }, preceptCountBefore = before };
+                        return new { success = true, dryRun = true, action = A, ideo = new { target.id, target.name }, precept = new { def = victim.def != null ? victim.def.defName : null, label = victim.Label }, preceptCountBefore = before };
 
                     try { target.RemovePrecept(victim); }
                     catch (Exception e) { return Fail("RemovePrecept threw: " + e.GetType().Name + ": " + e.Message); }
@@ -315,7 +315,7 @@ namespace JawaBench.BridgeTools
                         success = !stillPresent,
                         action = A,
                         ideo = new { target.id, target.name },
-                        precept = new { def = victim.def.defName, label = victim.Label },
+                        precept = new { def = victim.def != null ? victim.def.defName : null, label = victim.Label },
                         preceptCountBefore = before,
                         preceptCountAfter = after,
                         note = "RemovePrecept can auto-replace a required-issue precept with a randomly chosen " +
@@ -374,10 +374,10 @@ namespace JawaBench.BridgeTools
 
                 if (matches.Count == 0)
                     return Fail("'" + wanted + "' matches no ritual precept on ideo '" + target.name + "'.",
-                        new { rituals = (target.PreceptsListForReading ?? new List<Precept>()).OfType<Precept_Ritual>().Select(r => new { def = r.def.defName, label = r.Label }).ToList() });
+                        new { rituals = (target.PreceptsListForReading ?? new List<Precept>()).OfType<Precept_Ritual>().Select(r => new { def = r.def != null ? r.def.defName : null, label = r.Label }).ToList() });
                 if (matches.Count > 1)
                     return Fail("'" + wanted + "' matches " + matches.Count + " ritual precepts ambiguously.",
-                        new { matches = matches.Select(r => new { def = r.def.defName, label = r.Label }).ToList() });
+                        new { matches = matches.Select(r => new { def = r.def != null ? r.def.defName : null, label = r.Label }).ToList() });
                 var targetRitual = matches[0];
 
                 int before = targetRitual.activeObligations != null ? targetRitual.activeObligations.Count : 0;
@@ -390,7 +390,7 @@ namespace JawaBench.BridgeTools
                         success = true,
                         dryRun = true,
                         ideo = new { target.id, target.name },
-                        ritual = new { def = targetRitual.def.defName, label = targetRitual.Label },
+                        ritual = new { def = targetRitual.def != null ? targetRitual.def.defName : null, label = targetRitual.Label },
                         obligationCountBefore = before,
                         obligationsActiveOnIdeo = obligationsActive,
                         allowsOptionalObligations = allowsOptional,
@@ -408,7 +408,7 @@ namespace JawaBench.BridgeTools
                 {
                     success = ok,
                     ideo = new { target.id, target.name },
-                    ritual = new { def = targetRitual.def.defName, label = targetRitual.Label },
+                    ritual = new { def = targetRitual.def != null ? targetRitual.def.defName : null, label = targetRitual.Label },
                     obligationCountBefore = before,
                     obligationCountAfter = after,
                     obligationsActiveOnIdeo = obligationsActive,
@@ -901,8 +901,15 @@ namespace JawaBench.BridgeTools
                 }
                 if (exitTileId < 0 || exitTileId >= grid.TilesCount) return Fail("Resolved exitTile " + exitTileId + " is out of range.");
                 var exitPt = new PlanetTile(exitTileId, grid.Surface);
-                var dirPt = directionTile >= 0 && directionTile < grid.TilesCount ? new PlanetTile(directionTile, grid.Surface) : exitPt;
-                var destPt = destTile >= 0 && destTile < grid.TilesCount ? new PlanetTile(destTile, grid.Surface) : PlanetTile.Invalid;
+                // -1 means "not given" (same convention as exitTile above) and falls back
+                // silently; anything else out of range is a caller mistake and must refuse
+                // the same way exitTile does, not be treated as if it had been omitted.
+                if (directionTile >= 0 && directionTile >= grid.TilesCount)
+                    return Fail("Given directionTile " + directionTile + " is out of range.");
+                if (destTile >= 0 && destTile >= grid.TilesCount)
+                    return Fail("Given destTile " + destTile + " is out of range.");
+                var dirPt = directionTile >= 0 ? new PlanetTile(directionTile, grid.Surface) : exitPt;
+                var destPt = destTile >= 0 ? new PlanetTile(destTile, grid.Surface) : PlanetTile.Invalid;
 
                 if (dryRun)
                     return new
