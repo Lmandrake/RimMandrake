@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T21:48:17Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-08T21:53:05Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -512,15 +512,6 @@ target:   v1
 kind:     task
 summary:  Thin when filed — no spec/verify/criteria in the queue entry itself. Specced
 prose:    infrastructure/state/items/DROID_HUTT_CAPTIVES_1.md
-
-## DROID_DISTRESS_CALL_REPOINT_1 Re-point the BTD Droid Distress Call quest's 5 KotOR kinds to Droidworks kinds; reframe as the crashed-droid rescue
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/DROID_DISTRESS_CALL_REPOINT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_DISTRESS_CALL_REPOINT_1.md
 
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing  (BLOCKED)
