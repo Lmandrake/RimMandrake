@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T15:37:09Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-08T15:53:04Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## GOLDEN_SHEET_REFRESH_1 Golden stat-refresh of all biome sheets except ice/blue/propane against V23 — recompute from CSV+8 overlay plans, plain facts, no provenance tags (worked example 7bbd4b6a); early V12 refresh was reverted stale
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/GOLDEN_SHEET_REFRESH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GOLDEN_SHEET_REFRESH_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -36,6 +27,15 @@ kind:     task
 summary:  Full creature-art review sheet, per design/Jawa/fauna/creatureartdecisions.json
 prose:    infrastructure/state/items/CREATURE_ART_REVIEW_SHEET_1.md
 
+## WATER_KINDS_TAXONOMY_1 Owner: many kinds of water by content + the transmutations between them — inventory every sheet's water, write the taxonomy as data, map onto the live water systems
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  - Inventory every water the sheets have already produced, with what is IN it:
+prose:    infrastructure/state/items/WATER_KINDS_TAXONOMY_1.md
+
 ## BIOME_FREEZE_FABLE_REVIEW_1 Full-scale Fable review of ALL biomes together before the freeze — temps, physics, weather, precipitation, dust/sand/ash, fuel/wood/animal/meat/growth, diseases — BLOCKED until every biome sheet is finished; pre-assignment, not final check-out
 state:    doing
 row:      unassigned
@@ -45,22 +45,13 @@ kind:     task
 summary:  BIOMEFREEZEFABLEREVIEW1 — full-scale Fable review of ALL biomes together, before the freeze
 prose:    infrastructure/state/items/BIOME_FREEZE_FABLE_REVIEW_1.md
 
-## MATURITY_DASHBOARD_DENSITY_1 Maturity dashboard density passes (owner AFK note 2026-09-08): cram info intuitively; evidence-miner promotions land here too
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/MATURITY_DASHBOARD_DENSITY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MATURITY_DASHBOARD_DENSITY_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -68,7 +59,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
@@ -139,16 +130,6 @@ kind:     task
 thin:     no ## criteria
 summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
 prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
-
-## WATER_KINDS_TAXONOMY_1 Owner: many kinds of water by content + the transmutations between them — inventory every sheet's water, write the taxonomy as data, map onto the live water systems
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Inventory every water the sheets have already produced, with what is IN it:
-prose:    infrastructure/state/items/WATER_KINDS_TAXONOMY_1.md
 
 ## MUTATION_MODIFIERS_SURVEY_1 Survey every mutation-type system in the stack (Biotech genes, mutagen part-hediffs, SlurryHigh, transformation hediffs) to build Contagion-touched — never an upgrade
 state:    proposed
@@ -470,36 +451,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/POISON_FOREST_REPASS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/POISON_FOREST_REPASS_1.md
 
-## DONOR_DEFNAME_RECONCILE_1 Reconcile ten shipping names that differ from their def labels (listed in _freeze_matrix.csv)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DONOR_DEFNAME_RECONCILE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DONOR_DEFNAME_RECONCILE_1.md
-
-## LANES_DOCTRINE_PARAGRAPH_1 One paragraph in the grammar README naming the lanes motif: boughways, causeways, root-roads, pillar navigation, oasis strings
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LANES_DOCTRINE_PARAGRAPH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LANES_DOCTRINE_PARAGRAPH_1.md
-
-## RAKATAN_LEGACY_INDEX_1 Rakatan engineered-legacy GM index: quickgrass, scaria, smart metal, the Webwork question, the Scald's makers
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RAKATAN_LEGACY_INDEX_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RAKATAN_LEGACY_INDEX_1.md
-
 ## MOD_HUMAN_EXPLORATION_PASS_1 Human-executable exploration pass: per mod, a scripted in-game walkthrough the owner runs to confirm it looks and feels right -- runs AFTER the art/normalization wave
 state:    proposed
 row:      unassigned
@@ -529,3 +480,13 @@ kind:     task
 thin:     no ## criteria
 summary:  - Measure first: current live memory footprint (RSS of the RimWorld process) at a
 prose:    infrastructure/state/items/RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1.md
+
+## SHEET_SUBMEASURE_REFRESH_1 Region-level + landform-level sheet breakdowns are stale and not derivable from the per-def instrument: cracked_lands landform mix, fever_wood 47/60, pyrelands flat/rain fractions, deep_desert region table, wasteland three-family table, weeping/webwork hilliness; needs a region+landform measurement pass
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SHEET_SUBMEASURE_REFRESH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SHEET_SUBMEASURE_REFRESH_1.md

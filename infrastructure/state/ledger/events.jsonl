@@ -5815,3 +5815,32 @@
 {"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_FORMAT_TIERS_1","ts":"2026-09-08T15:36:43Z"}
 {"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_MODULE_ABSORB_1","ts":"2026-09-08T15:37:08Z"}
 {"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_MODULE_ABSORB_1","ts":"2026-09-08T15:37:09Z"}
+{"seat":"BENCH","event":"close","id":"MATURITY_DASHBOARD_DENSITY_1","sha":"80e38de9","ts":"2026-09-08T15:41:18Z"}
+{"seat":"BENCH","event":"note","id":"MATURITY_DASHBOARD_DENSITY_1","text":"3 passes done (structural rework, direction coherence, review-agent fixes). OPEN FOR OWNER: 26 UNCERTAIN runnable-candidates from the evidence pass (active in 3 clean full-list sessions, activity not shown) left unapplied — his call whether that meets 'did anything'; list in Transient/maturity_evidence_pass_2026-09-08.md","ts":"2026-09-08T15:41:19Z"}
+{"seat":"BENCH","event":"claim","id":"LANES_DOCTRINE_PARAGRAPH_1","ts":"2026-09-08T15:42:05Z"}
+{"seat":"BENCH","event":"close","id":"LANES_DOCTRINE_PARAGRAPH_1","sha":"71753752","ts":"2026-09-08T15:42:06Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_DETONATION_REVIEW_1","ts":"2026-09-08T15:42:34Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_DETONATION_REVIEW_1","ts":"2026-09-08T15:42:35Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DROIDWORKS_DETONATION_REVIEW_1 grid build + save","ts":"2026-09-08T15:42:40Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"reboot for DROIDWORKS_DETONATION_REVIEW_1: deploy CompDroidDetonation.cs deliberateDenyModule wiring + regenerated Races_JDS.xml","ts":"2026-09-08T15:43:20Z"}
+{"seat":"BENCH","event":"claim","id":"RAKATAN_LEGACY_INDEX_1","ts":"2026-09-08T15:43:31Z"}
+{"seat":"BENCH","event":"close","id":"RAKATAN_LEGACY_INDEX_1","sha":"6180f961","ts":"2026-09-08T15:43:32Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-09-08T15:43:37Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"reboot for DROIDWORKS_DETONATION_REVIEW_1 deploy complete, relaunching minimal list","ts":"2026-09-08T15:43:58Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is down","ts":"2026-09-08T15:44:07Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading","ts":"2026-09-08T15:44:22Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-09-08T15:44:23Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"DROIDWORKS_DETONATION_REVIEW_1 bridge up, starting quicktest map","ts":"2026-09-08T15:44:31Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up","ts":"2026-09-08T15:44:53Z"}
+{"seat":"FOUNDRY","event":"block","id":"ARMOURY_PATCH_INNER_MISS_1","reason":"generator fix committed 1974a7c6, needs a full-list cold load + harvest_log.py to verify patch failures 8->5","ts":"2026-09-08T15:45:00Z"}
+{"seat":"BENCH","event":"file","id":"SHEET_SUBMEASURE_REFRESH_1","title":"Region-level + landform-level sheet breakdowns are stale and not derivable from the per-def instrument: cracked_lands landform mix, fever_wood 47/60, pyrelands flat/rain fractions, deep_desert region table, wasteland three-family table, weeping/webwork hilliness; needs a region+landform measurement pass","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-08T15:46:22Z"}
+{"seat":"BENCH","event":"start","id":"GOLDEN_SHEET_REFRESH_1","ts":"2026-09-08T15:46:22Z"}
+{"seat":"BENCH","event":"close","id":"GOLDEN_SHEET_REFRESH_1","sha":"b8b65eb4","ts":"2026-09-08T15:46:23Z"}
+{"seat":"BENCH","event":"supersede","id":"DONOR_DEFNAME_RECONCILE_1","by":"BIOME_LABEL_CAMPAIGN_NAMES_1","reason":"Same rename, superset scope (26 donor biomes incl. the ten), and the owner's 2026-09-07 'I thought we were renaming all of this?' is the ruling the ten-name card would have requested","ts":"2026-09-08T15:46:59Z"}
+{"seat":"BENCH","event":"claim","id":"WATER_KINDS_TAXONOMY_1","ts":"2026-09-08T15:47:30Z"}
+{"seat":"BENCH","event":"start","id":"WATER_KINDS_TAXONOMY_1","ts":"2026-09-08T15:49:48Z"}
+{"seat":"BENCH","event":"note","id":"WATER_KINDS_TAXONOMY_1","text":"Table authored as data (design/Jawa/worldbuilding/water_taxonomy.csv, 19 rows). Not closable yet per its own verify: transmutation list needs the owner's ruling; DBH C#-grade mapping owed before any item defs","ts":"2026-09-08T15:49:50Z"}
+{"seat":"BENCH","event":"needs","id":"WATER_KINDS_TAXONOMY_1","to":"owner","ts":"2026-09-08T15:49:53Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"reboot: fix modExtension FirstOrDefault->LastOrDefault bug found live-testing deliberateDenyModule","ts":"2026-09-08T15:52:18Z"}
+{"seat":"FOUNDRY","event":"block","id":"DROIDWORKS_FORMAT_TIERS_1","reason":"built + offline-validated (dotnet build 0/0, validate_patch 0/0), needs a live quicktest to verify the per-tier need/work gating and the deformat-sapient thought — commit b81a023b","ts":"2026-09-08T15:53:01Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"relaunch after modExtension fix rebuild","ts":"2026-09-08T15:53:04Z"}
