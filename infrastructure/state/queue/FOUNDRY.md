@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T19:50:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T19:50:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -485,15 +485,6 @@ target:   v1
 kind:     task
 summary:  Packet B10 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_WIPE_SEVERITY_1.md
-
-## DROIDWORKS_RESEARCH_ROWS_1 Seven Droidworks research rows in The Unbolting; cut the Depot droid-brain rows; brains never researchable
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/DROIDWORKS_RESEARCH_ROWS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_RESEARCH_ROWS_1.md
 
 ## DROID_FACTION_LOADOUTS_1 Droids in every faction's hands: Empire attack droids, Homestead utility droids, Hutt heavies, Junker suicide droids, traders' protocol droids, Trade Moot stock — no droid faction
 state:    doing

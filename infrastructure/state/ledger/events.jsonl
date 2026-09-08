@@ -6035,3 +6035,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"deploy+verify BRIDGETOOLS_CSHARP_SWEEP_BUGS_1's 6 fixes","ts":"2026-09-08T19:47:07Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T19:49:57Z"}
 {"seat":"FOUNDRY","event":"close","id":"BRIDGETOOLS_CSHARP_SWEEP_BUGS_1","sha":"27c90a5a65ec81aa7ab601dc6b4f650a9085b5ef","ts":"2026-09-08T19:50:31Z"}
+{"seat":"OWNER","event":"note","id":"JAWA_PATCHES_SPLIT_1","text":"Straddle extractions ride the consolidation sprint (MOD_NAMING_CONSOLIDATION_AUDIT_1); split itself already executed 2385af29 — BENCH correcting its stale-premise note on the item","ownerSaid":"Yes, fold them in. Make sure we ingested the queue for proper renaming too.","ts":"2026-09-08T19:50:46Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_RESEARCH_ROWS_1","sha":"42b3abd58cd526fff8f415b013b1b81369034238","ts":"2026-09-08T19:50:59Z"}
