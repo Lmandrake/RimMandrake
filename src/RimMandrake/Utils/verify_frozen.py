@@ -33,6 +33,17 @@ def measure(path: str) -> dict:
 
 
 def check(marker: str, restamp: bool = False) -> bool:
+    try:
+        return _check(marker, restamp)
+    except Exception as e:
+        # 🔴 One bad marker (malformed JSON, a guarded file with a stray non-UTF8
+        # byte) must not take down verification of every OTHER frozen artifact in
+        # the same repo-wide run — that is a worse failure than one wrong report.
+        print(f"🔴 ERROR   {marker} — {e}")
+        return False
+
+
+def _check(marker: str, restamp: bool = False) -> bool:
     d = json.load(open(marker, encoding='utf-8'))
     art = os.path.join(ROOT, d.get('artifact') or marker[:-len('.frozen.json')])
     if not os.path.exists(art):
@@ -134,6 +145,15 @@ def main() -> int:
     ap.add_argument('--restamp', action='store_true',
                     help='update the stamp to what is on disk — only after a DELIBERATE edit')
     a = ap.parse_args()
+
+    # 🔴 --restamp with no artifact fell through to the repo-wide branch and
+    # silently restamped EVERY frozen marker in the repo to whatever is
+    # currently on disk — exactly the failure mode this file exists to catch,
+    # applied blind and repo-wide by a forgotten path argument. Restamping is
+    # always a deliberate, one-file act; require the path explicitly.
+    if a.restamp and not a.artifact:
+        ap.error("--restamp requires an artifact path (restamping is a deliberate, "
+                 "one-file act, never a repo-wide default)")
 
     if a.artifact:
         m = a.artifact if a.artifact.endswith('.frozen.json') else a.artifact + '.frozen.json'
