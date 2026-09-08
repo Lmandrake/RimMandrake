@@ -52,11 +52,31 @@ def main():
     ap.add_argument('--apply', action='store_true', help='write the file; default is a dry run')
     a = ap.parse_args()
 
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from verify_frozen import warn_if_stale
+    warn_if_stale(TILES)
+
     rows, cols = load()
     for r in rows:
         r['_arc'] = fnum(r['arc']); r['_el'] = fnum(r['elev_m']); r['_t'] = fnum(r['temp_c'])
         r['_bear'] = fnum(r['bearing'])
     before = collections.Counter(r['biome'] for r in rows)
+
+    # 🔴 SUPERSEDED SINCE THIS SCRIPT WAS WRITTEN (2026-08-22) — E4 carves
+    # HorrorWastes out of AB_RockyCrags, but HorrorWastes was later fully
+    # dissolved into the Blue Desert/ice sheet mosaic (HORRORWASTES_BIOME_DISSOLVE_1).
+    # Re-running --apply today would write that dissolved biome straight back onto
+    # the worldmap. E1-E3 (meridian water, brine halo, sea-ice freeze) are unrelated
+    # and already landed; refusing the whole file rather than half-applying it,
+    # since main() has no way to run only E1-E3. See
+    # ASHKARR_NIGHTSIDE_LAYER_SUPERSEDED_1 for the sibling shape of this problem.
+    if before.get('HorrorWastes', 0) == 0 and a.apply:
+        print("🔴 REFUSED: HorrorWastes holds 0 tiles today - it was dissolved by "
+              "HORRORWASTES_BIOME_DISSOLVE_1 since this script's E4 was written. "
+              "--apply would write it back onto the worldmap. See "
+              "ASHKARR_NIGHTSIDE_LAYER_SUPERSEDED_1.", file=sys.stderr)
+        return 1
+
     changes = collections.Counter()
 
     # ---- E3 FREEZE FIRST -----------------------------------------------------------
