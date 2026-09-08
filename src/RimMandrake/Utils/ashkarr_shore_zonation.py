@@ -16,7 +16,7 @@ at all - AridShrubland was scattered uniformly, so the shore looked like five ho
    that is erasure, not zonation. So this only moves the FRINGE and the tiles stranded
    away from it; the deep waste is left alone.
 """
-import argparse, csv, math, os, collections
+import argparse, csv, math, os, sys, collections
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 W = os.path.join(ROOT, 'world')
@@ -46,6 +46,10 @@ def main():
                          'tiles and the coasts got 226, so the sea looked bare - which is '
                          'exactly what the owner saw on the render.')
     a = ap.parse_args()
+
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from verify_frozen import warn_if_stale
+    warn_if_stale(TILES)
 
     with open(TILES, encoding='utf-8') as f:
         rd = csv.DictReader(f); tiles = list(rd); cols = rd.fieldnames
