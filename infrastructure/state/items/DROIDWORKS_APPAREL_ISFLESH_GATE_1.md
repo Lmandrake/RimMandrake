@@ -95,6 +95,68 @@ LIES    a single spawn passing is not proof (RNG); checking only that the
         closes this
 ```
 
+## Built 2026-09-08
+`Source/Droidworks/Patch_ApparelForDroids.cs` — a **transpiler** on
+`PawnApparelGenerator.GenerateStartingApparelFor`, registered from the existing
+`DroidworksNeedGateMod` static ctor in `Patch_ShouldHaveNeed_Power.cs` (third
+try/catch block), `Compile Include` added to `Droidworks.csproj`.
+
+It rewrites **one instruction**: the `callvirt RaceProperties::get_IsFlesh()`
+inside the method's opening guard becomes `call Patch_ApparelForDroids
+.CountsAsFleshForApparel(RaceProperties)` = `props.IsFlesh || props.FleshType ==
+RSW_DW_FleshType_Droid`. `ToolUser` and `IsAnomalyEntity` are untouched;
+`isOrganic` is untouched; no other `IsFlesh` consumer in the game is affected.
+Transpiler over prefix because the body is 140 lines of vanilla apparel-budget
+logic that must keep running verbatim — a reimplementing prefix would fork it
+against every RimWorld update. The transpiler asserts exactly 1 `IsFlesh` call
+site and `Log.Error`s if the count ever changes.
+
+Build 0 errors / 0 warnings; `deploy_custom_mods.py --mod Droidworks --apply`
+-> VERIFIED in sync.
+
+## verify results 2026-09-08 (LIVE, minimal 25-mod list, quicktest map)
+```
+PATCH LOADED  jawa/harmony_patches typeName=PawnApparelGenerator:
+              transpilerCount 1, owner mandrake.rsw.droidworks.needgate,
+              RimMandrake.StarWars.Droidworks.Patch_ApparelForDroids.Transpiler.
+              Composes with AlienRace's prefix+postfix and VEF's postfix
+              already on the same method (all still listed, all still run).
+              No [RimMandrake.StarWars.Droidworks] error in Player.log.
+
+SPAWNS        jawa/spawn_pawn count=5 per kind, faction=player, then
+              jawa/pawn_get per pawn (jawa/list_pawns has NO apparel field —
+              reading apparel off list_pawns returns a false 0/N for every kind)
+
+  RSW_DW_KotORDroidBad_hk50      5/5   RSW_DW_Module_DroidArmorMid
+  RSW_DW_KotORDroidBad_ADMkI     4/5   DroidArmorHvy (+DroidSensor_surveillance)
+  RSW_DW_KotORDroidGood_KX12UPD  5/5   DroidArmorLte / Lte_czerka (+Sensor_motion)
+  RSW_DW_KotORDroidGood_KM1HMD   1/5   DroidArmorHvy      <- see below
+  RSW_DW_OuterRim_GNKDroid       0/5   [] — control held, bare as required
+
+              Parent item measured 15/15 EMPTY across these same kinds before
+              the fix. The gate is lifted: all four tagged kinds now reach the
+              budget logic and three of them clothe on a majority.
+
+KM1HMD RATE   second batch of 15: 3/15. 4/20 overall, always DroidArmorHvy.
+              NOT a gate failure (0 -> nonzero is the gate); it is
+              apparelMoney 500~1400 vs the T3 (Hvy) armor's own price under
+              vanilla's set-acceptance loop. Handed to
+              DROIDWORKS_APPARELMONEY_MISSING_1 to size, which this fix unblocks.
+
+BROADWRAP     the parent's one unexplained vanilla Apparel_Broadwrap on a GNK
+              did NOT reproduce (0/5 GNK, nothing worn at all).
+
+CONFIG ERRORS this run's log carries no error attributable to this change (the
+              patch adds zero defs). check_config_errors.py reports 25 "new"
+              distinct lines, ALL of them missing-cross-reference noise from
+              running the 25-mod MINIMAL list against a baseline measured on
+              ~595 mods (OuterRim_StormtrooperHelmet, RUT_Tree_Unbolting,
+              guy762_* apparel — mods simply absent from the minimal list).
+              A full-list comparison against the baseline is NOT claimed here.
+```
+Unblocks (do not reopen from here; a later FOUNDRY pass re-verifies and closes):
+`DROIDWORKS_APPARELMONEY_MISSING_1`, `DROIDWORKS_MODULE_ABSORB_1`.
+
 ## criteria
 The IsFlesh gate no longer silently discards Droidworks apparel generation:
 a live spawn of the four kinds named above shows real module gear worn on a

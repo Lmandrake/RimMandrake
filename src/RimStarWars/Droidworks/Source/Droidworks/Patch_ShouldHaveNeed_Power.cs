@@ -62,6 +62,16 @@ namespace RimMandrake.StarWars.Droidworks
                 Log.Error("[RimMandrake.StarWars.Droidworks] Failed to apply the non-flesh-Humanlike "
                     + "relations fix - droid pawns may NRE the first time anything touches pawn.relations. " + ex);
             }
+
+            try
+            {
+                Patch_ApparelForDroids.Apply(harmony);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("[RimMandrake.StarWars.Droidworks] Failed to apply the droid apparel gate lift - "
+                    + "every Droidworks pawn will spawn with no apparel regardless of apparelTags/apparelMoney. " + ex);
+            }
         }
     }
 
