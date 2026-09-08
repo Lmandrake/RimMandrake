@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T15:37:09Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-08T15:53:04Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -460,12 +460,12 @@ summary:  Thin when filed — no spec/verify/criteria. Decided here (FOUNDRY, 20
 prose:    infrastructure/state/items/DROIDWORKS_FULL_LIST_COEXIST_1.md
 
 ## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/DROIDWORKS_FORMAT_TIERS_1.md yet — write one when you have something to say)
+summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
 prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
 
 ## DROIDWORKS_MODULE_ABSORB_1 Absorb KotOR's six-slot droid module apparel as RSW_DW_Module_* (loot-only, no recipes)
@@ -476,6 +476,15 @@ target:   v1
 kind:     task
 summary:  (no items/DROIDWORKS_MODULE_ABSORB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
+
+## DROIDWORKS_DETONATION_REVIEW_1 Detonation grid (energyDensity x charge) built and SAVED for the owner to walk; deny-module on JDS battle kinds
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  (no items/DROIDWORKS_DETONATION_REVIEW_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_DETONATION_REVIEW_1.md
 
 ## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
 state:    doing  (BLOCKED)
@@ -505,7 +514,7 @@ summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choi
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
 
 ## ARMOURY_PATCH_INNER_MISS_1 Jawa Armoury Rebalance: 3 FindMod blocks report failure though all 3 mods are ACTIVE -- an inner xpath is missing (patch failures 8 vs baseline 5)
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -645,6 +654,16 @@ blocked:  fixed source-side (572413c0, lastLaunchTick gate), adversarially revie
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
 
+## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  built + offline-validated (dotnet build 0/0, validate_patch 0/0), needs a live quicktest to verify the per-tier need/work gating and the deformat-sapient thought — commit b81a023b
+summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
+prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
+
 ## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -664,6 +683,16 @@ kind:     task
 blocked:  attended south-facing pass done (v2 fixes legibility, needs one more framing-only regen); owner went AFK mid-session, no unattended Codex calls until someone is watching again
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
+
+## ARMOURY_PATCH_INNER_MISS_1 Jawa Armoury Rebalance: 3 FindMod blocks report failure though all 3 mods are ACTIVE -- an inner xpath is missing (patch failures 8 vs baseline 5)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+blocked:  generator fix committed 1974a7c6, needs a full-list cold load + harvest_log.py to verify patch failures 8->5
+summary:  evidence (full-list load, 2026-09-07, 598 mods)
+prose:    infrastructure/state/items/ARMOURY_PATCH_INNER_MISS_1.md
 
 ## WORLD_LINT_WATER_HARDCODE_1 world_lint hard-codes Ocean/SeaIce as the only water biomes -- reports all 1135 custom-sea tiles as landBiomeSubmerged
 state:    doing  (BLOCKED)
@@ -746,16 +775,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROIDWORKS_ION_SHIELD_BODYSIZE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROIDWORKS_ION_SHIELD_BODYSIZE_1.md
-
-## DROIDWORKS_DETONATION_REVIEW_1 Detonation grid (energyDensity x charge) built and SAVED for the owner to walk; deny-module on JDS battle kinds
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_DETONATION_REVIEW_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_DETONATION_REVIEW_1.md
 
 ## DROIDWORKS_PRIMITIVE_TIER_1 Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
 state:    proposed
