@@ -26,12 +26,14 @@ reconciliation.
 
 ## 0. The measurements everything rests on
 
-MEASURED off the live CSV: **62 tiles just past the terminator on the night
-side** — sun median **−6.6°** (below the horizon: permanent deep twilight),
-temp median 4.7 °C (−6.5..21.2), **elevation median 1 m**, dead flat (51/62),
-no water, no rivers, no rain. Regions: **Nightspill 31, Glass Reach 26**, plus
-scraps. Glass Reach is earned where the sheets cool smooth and shine under the
-horizon-glow.
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8
+overlay plans): **42 tiles just past the terminator on the night side** — sun
+median **−10.6°** (below the horizon: permanent deep twilight), temp
+p10/median/p90 −4.3 / 1.2 / 14.9 °C (max 20.3), **elevation median 1 m** (max
+218), dead flat, **2 water tiles**, no rivers, no rain. Regions: **Nightspill
+23, Glass Reach 11**, plus scraps (Damp 4, Twilight Sea 1, Scour 1, Twilight
+Crags 1, Sunreach 1). Glass Reach is earned where the sheets cool smooth and
+shine under the horizon-glow.
 
 Donor inventory (Alpha Biomes): **corrected** — "sun-baked mud" inverts to cold
 tar in the dark. **Kept** — movementDifficulty 4 (tar-mire), the

@@ -19,11 +19,12 @@ plot; the machines in the lava stay unrevealed by ban.
 
 ## 0. The measurements everything rests on
 
-MEASURED off the live CSV: **44 tiles, one compact massif in the Dune Sea
-interior** (27 Pyroclastic tiles + all Volcano/LavaField in Dune Sea; 4 in the
-Anvil), dayside sun +51°..+64°, temps 42–56 °C, and the zonation in the
-elevations: Volcano median 1,875 m (max 2,266 — the cones), LavaField 1,496
-(the flows), Pyroclastic 1,382 (the skirts). **A seismically active massif** —
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8
+overlay plans): **44 tiles, one compact massif in the Dune Sea interior** (27
+Pyroclastic tiles + all Volcano/LavaField in Dune Sea; 4 in the Anvil),
+dayside sun +51°..+64°, temps 42–56 °C, and the zonation in the elevations:
+Volcano median 1,875 m (max 2,021 — the cones), LavaField median 2,010 m (max
+2,106 — the flows), Pyroclastic median 1,382 m (max 2,266 — the skirts). **A seismically active massif** —
 vents, tremors and lava at the surface (`hydrology_and_fire_ecology.md`) —
 and the **epicenter of the geyser law** (`VAPOR_EMITTER_PLACEMENT_1`:
 steam frequency radiates from here and reaches zero before the terminator).

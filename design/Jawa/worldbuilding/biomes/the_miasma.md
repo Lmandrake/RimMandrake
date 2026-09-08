@@ -23,15 +23,17 @@ it; the Working (§3) is undirected ecology, never a machine.
 
 ## 0. The measurements everything rests on
 
-MEASURED off the live CSV: **92 tiles strung along the Salt Gate — the deltas** —
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8
+overlay plans): **93 tiles strung along the Salt Gate — the deltas** —
 where the dayside's surviving rivers reach the **Grey Sea** (hypersaline,
 terminal, **shrinking** — `terminator_sea.md`: every year the brine strengthens
 and the shore steps back). Elevation median **22 m**, the lowest ground on the
 dayside; 32 river tiles, 6 sea tiles; sun median +39°; temp median 42.8 °C
-(26..59). **Rain: zero everywhere — a swamp that has never once been rained
-on** (§3 explains what feeds it). Regions: Dune Sea 29, Fever Wood 21, Dew Horn
-17, Salt Gate 16, Grey Sea shore 6. Holds **Bitterleaf** (tile 6645, 29 m,
-27 °C) — the Wildsteam Clan's first coastal and coolest seat.
+(30..59). **Rain: zero on 89 of 93 tiles (max 417 mm on three reassigned edge
+tiles) — the delta itself has never once been rained on** (§3 explains what
+feeds it). Regions: Dune Sea 29, Fever Wood 21, Dew Horn 17, Salt Gate 16,
+Grey Sea shore 6, Hollow Verge 2, Combs 1, Anvil 1. Holds **Bitterleaf** (tile
+6645, 29 m, 27 °C) — the Wildsteam Clan's first coastal and coolest seat.
 
 Donor inventory (Alpha Biomes): three figures kept and *explained* —
 **animalDensity 6.5** (§4's refugee crowding),
@@ -65,7 +67,7 @@ a war.** Two engines, and they are the same engine:
   settled into the muck.
 - **The lifeboat** — the Grey Sea is being pickled alive in its own basin, and
   the only refuge is the fresh end of the gradient: **an entire sea's endemic
-  line crowding into 92 tiles of brackish fringe.** The record density is not
+  line crowding into 93 tiles of brackish fringe.** The record density is not
   abundance. It is refugee crowding — whole biomes smashing themselves into
   this tiny one, trying to find a way to survive (owner).
 

@@ -13,12 +13,14 @@ planet's gut** — and its image: **a pale forest with a heartbeat of rot.**_
 
 ## 0. The measurements everything rests on
 
-MEASURED 2026-09-05 off `world/ASHKARR_WORLDMAP_tiles.csv`: **1,939 tiles** — the largest
-biome defined since the dryland ladder. Arc 89→130: from touching the terminator down to
-sun 40° below the horizon. Temp median −19.3 °C, spread −54.3 to +23.8 — and the spread is
-not noise, it is the map of digestion (§3). Elev median 703 m, flat-to-rolling. **Zero
-water tiles, zero rivers.** Regions: Nightspill (368), Frostcaps (224), Sporefields (170),
-Blindwood (135), Mould Marches (121), Hanging Wood (118).
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8
+overlay plans): **2,348 tiles** — the largest
+biome defined since the dryland ladder. Arc 74→142: from touching the terminator down to
+sun 52° below the horizon. Temp p10/median/p90 −37.3/−19.6/+12.5 °C, max +24.0 °C — and the
+spread is not noise, it is the map of digestion (§3). Elev median 704 m, flat-to-rolling.
+**54 water tiles (the Twilight Sea shore, newly folded into the def), zero rivers.**
+Regions: Nightspill 475, Frostcaps 254, Sporefields 243, South Crags 159, Blindwood 142,
+Stillwood 139, +14 more (full list in the truth-source JSON).
 
 Donor inventory taken in: the twelve-species fungal flora suite (Bryolux carpet,
 Glowstools, the Agarilux family), the two spore-allergy diseases and a disease
@@ -280,5 +282,5 @@ subject to this sheet's admission tests. Beyond flora and fauna, the mod carries
 - **Roster admission tests** at `BIOME_FAUNA_ASSIGNMENT_SITTING_1`: hybrid-or-out; the
   donor exotics tail (trace-commonality non-hybrids) judged there.
 - **Wildsteam wiring** — the sacred-grove relationship into `FACTION_SPEC.md`.
-- **Def tails check** — arc-89 edge tiles vs the terminator families; fold any strays into
+- **Def tails check** — arc-74 edge tiles vs the terminator families; fold any strays into
   `WORLDMAP_DESERT_BAND_REPAIR_1` (not yet measured for this def).

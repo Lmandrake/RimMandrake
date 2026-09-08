@@ -8,7 +8,7 @@
 
 _Owner + BENCH, 2026-09-07, one round and ratified ("Let's show what we can do.
 Write it up!"). Defines **the bottom of the Twilight Sea** — the underwater
-biome beneath `RUT_TwilightSea` (442 Ocean-painted tiles plus ice fringe;
+biome beneath `RUT_TwilightSea` (479 Ocean-painted tiles plus ice fringe;
 surface and shore stay with `terminator_sea.md`). 🔑 **Implementation deferred
 by standing ruling** to the diving mods — but the DESIGN is full-rich by the
 owner's word: **"a biome as rich and varied as the land."** Thematic handle:

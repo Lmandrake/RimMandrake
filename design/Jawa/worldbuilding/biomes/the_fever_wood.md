@@ -22,10 +22,12 @@ the great trees drank the chaos itself.**
 
 ## 0. The measurements everything rests on
 
-MEASURED off the live CSV: **60 tiles, every one in the Fever Wood region** —
-one contiguous lowland patch at **21 m**, flat (47/60), directly behind the
-Miasma's delta belt. Sun median +43°; temp median 45.7 °C (37.6..51.5). **Zero
-rivers, zero water tiles, zero rain** — the wet is the water table, tamed (§3).
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8
+overlay plans): **43 tiles, every one in the Fever Wood region** — one
+contiguous lowland patch at **22 m**, flat (47/60), directly behind the
+Miasma's delta belt. Sun median +43°; temp median 45.5 °C (42.0 p10 .. 51.5
+max). **Zero rivers, zero water tiles, zero rain** — the wet is the water
+table, tamed (§3).
 The Wildsteam hold **Sporefall** here, "in the Fever Wood, on the road" (owner,
 2026-08-24) — reframed this sitting as a treetop town (§8).
 

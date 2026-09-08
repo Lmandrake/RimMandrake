@@ -28,19 +28,20 @@ by us, never rolled.
 
 ## 0. The measurements everything rests on
 
-MEASURED 2026-09-06 off `world/ASHKARR_WORLDMAP_tiles.csv` (21,872 rows,
-sha256:b38fd68569237c96): **236 tiles**, scattered wide across the dayside — arc
-26.3→79.9 (median 58.0 — the sun **32° above the horizon** at the median, but
-individual tiles run from ~64° light down to ~10° near the terminator). Temp
-p10-context median 35.5 °C (17.8..63.5). Elevation median **612 m** — this biome sits
-high. Hilliness genuinely mixed: 81 small-hill, 56 flat, 48 large-hill, 50 mountainous,
-1 impassable. **Water tiles 0, river tiles 1** — the biome named for water has almost
-none at world scale; the pools are map-scale. Regions: **Dew Belt 92, Dew Horn 66**
-(two-thirds of the biome — the map's own names voted for the engine), Dune Sea 36,
-**Scald Spine 24, Anvil 11** (the hot aberrants, §2b), Hollow Verge 7.
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
+plans): **223 tiles**, scattered wide across the dayside — arc 13→84 (p10/median/p90
+24/**59**/80 — the sun **31° above the horizon** at the median, but individual tiles
+run from light near noon down to near the terminator). Temp p10/median/p90 20.5 /
+35.3 / 57.0 °C (max 63.5). Elevation median **612 m** (max 1,353) — this biome sits
+high. Hilliness genuinely mixed (small-hill/flat/large-hill/mountainous all present —
+exact counts pending a refresh against the current tile total). **Water tiles 0, river
+tiles 1** — the biome named for water has almost none at world scale; the pools are
+map-scale. Regions: **Dew Belt 83, Dew Horn 54** (three-fifths of the biome — the
+map's own names voted for the engine), Dune Sea 39, **Scald Spine 24, Anvil 13** (the
+hot aberrants, §2b), Hollow Verge 7.
 
 Not a rung on the dryland ladder (ExtremeDesert 47° → Cracked Lands 22° → Desert 14° →
-Shrubland 9° → Wasteland −10°): the arc spread 26→80 says *scatter*, not band. This is
+Shrubland 9° → Wasteland 0°): the arc spread 13→84 says *scatter*, not band. This is
 an anomaly biome — it occurs wherever high stone stands in the moisture corridor.
 
 Donor inventory (read from the mod XML, workshop 1931453053): **kept in spirit** — the
@@ -69,8 +70,8 @@ substellar heat, and that wind crosses the torn seas on its way in — it arrive
 dayside *wet*. Two-thirds of these tiles sit in the Dew Belt and Dew Horn because that
 is the corridor. The anomaly is high stone (median 612 m) forcing the wet wind up.
 
-**2b. The seep oases (owner, 2026-09-06).** The Scald Spine and Anvil tiles (35 of
-236, up to 63 °C) are too hot for the dew engine. These — and others near vulcanism —
+**2b. The seep oases (owner, 2026-09-06).** The Scald Spine and Anvil tiles (37 of
+223, up to 63.5 °C) are too hot for the dew engine. These — and others near vulcanism —
 are **seep oases**: fed from *below*, groundwater and vent-warmed springs rising
 through the rock, often on open flat ground with no adjacent stone at all. Especially
 amazing, especially magical — a green eye in open nothing. **It is still the Weeping

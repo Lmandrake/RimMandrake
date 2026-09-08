@@ -25,11 +25,12 @@ a raiding faction and the Overdrive site, not a biome.)*
 
 ## 0. The measurements everything rests on
 
-MEASURED 2026-09-05 off `world/ASHKARR_WORLDMAP_tiles.csv`: **96 tiles** — the smallest
-defined biome — in four patches: **Slough (58)**, Glass Reach (15), Nightspill (14),
-Chalk Marches (9). Arc p10 84.6 / median **90.0** / p90 99.1: it straddles the terminator
-itself. Temp median 13.4 °C, total range −2.7…21.9 — **the mildest, most stable climate
-on Ash'karr**. Elevation median 3 m, 88/96 tiles dead flat, zero water and river tiles —
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
+plans): **96 tiles** — the smallest defined biome — in four patches: **Slough (58)**,
+Glass Reach (15), Nightspill (14), Chalk Marches (9). Arc p10 84.6 / median **90.0** /
+p90 99.1: it straddles the terminator itself. Temp p10/median/p90 3.1 / 13.4 / 17.5 °C
+(max 21.9) — **the mildest, most stable climate on Ash'karr**. Elevation median 3 m
+(max 165), 88/96 tiles dead flat, zero water and river tiles —
 but it sits at sea level in dead-river basin country (Glass Reach and Chalk Marches are
 Wasteland basin regions): it grew where the rivers used to end.
 

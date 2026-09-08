@@ -25,10 +25,12 @@ manufacture as their own margin (R-H9). Measured as degrees of arc from the near
 | **Glare** | 25.9° | 879 | 50° | 43 °C | the deep — hottest of the far ring |
 | **Kiln** | 19.4° | 878 | 51° | 43 °C | the margin, where the Pyrelands let go |
 
-**≈3,035 tiles.** 🔑 **Glare and Kiln are not twins.** They match on arc and temperature but
-Glare is **six degrees deeper into the absence**, and the biomes agree: Glare runs 628
-`ExtremeDesert` to 239 `Desert`, Kiln an even 418/412. **Kiln is the transition; Glare is
-the deep; Cracklands is the end.**
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
+plans): `ExtremeDesert` now totals **3,172 tiles** (the region table above predates the
+repaint — see **Owed**). 🔑 **Glare and Kiln are not twins.** They match on arc and
+temperature but Glare is **six degrees deeper into the absence**, and the biomes agree:
+Glare runs 628 `ExtremeDesert` to 239 `Desert`, Kiln 418/409. **Kiln is the transition;
+Glare is the deep; Cracklands is the end.**
 
 ⛔ **The Anvil is NOT this biome.** It is 6.5° from water, which is why it carries grassland
 and jungle — it is the fire ecology at maximum energy, not the terminus.
@@ -245,3 +247,8 @@ ruin, or something older.
 - The silverbole's final name (owner to pick; **silver** is required).
 - Cavern authoring is a substantial piece of work in its own right.
 - Wind-grain / yardang generation in the map-modification routine.
+- ⚠️ **The §0 per-region table is stale against V23.** `biome_sheet_stats.py` measures
+  per biome-def, not per-region, and per its current `ExtremeDesert` membership Cracklands
+  and Thornbelt now hold **zero** `ExtremeDesert` tiles each — a real shift since the
+  2026-08-24 region census this table was built from. Needs a dedicated region-level
+  re-measurement before the table's from-water/arc/temp columns can be trusted again.

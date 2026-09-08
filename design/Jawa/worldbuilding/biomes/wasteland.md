@@ -22,15 +22,29 @@ ground will still be killing you while you do.
 
 ## 0. The measurements everything rests on
 
-MEASURED 2026-09-05 off `world/ASHKARR_WORLDMAP_tiles.csv`: **1,699 tiles**, and the def
-straddles the terminator (arc 75→130, median 100 — the sun 10° *below* the horizon). The
-per-region stats split into three families:
+MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
+plans): **1,126 tiles**, arc 37→118 (p10/median/p90 73/**90**/108) — the def now sits
+**exactly on the terminator at the median** (sun elevation 0°), not 10° past it. The
+low tail is the already-flagged mislabeled 19 tiles (§Owed, `WORLDMAP_DESERT_BAND_REPAIR_1`).
+The per-region stats split into three families:
 
 | family | regions | arc | temp | elev |
 |---|---|---|---|---|
 | **Dayside basins** | Salt, Pan, Glass Reach, Blight, Cinders, Scour | 73–92 | +10…+27 °C | low (5–32 m) |
 | **The margin** | Ashen Wastes, Nightspill | ~101–108 | −9…−1 °C | mid |
 | **The dark scour** | Sunreach, Cinderdark, South Crags, Gray Crags | 110–129 | −13…−35 °C | high (200–544 m) |
+
+⚠️ **Amendment (measurement refresh, not a ruling change):** re-measured against the
+current world, **Cinderdark and South Crags now carry zero `Wasteland` tiles** — both
+regions have moved off this def since the table above was written (Cinderdark 102 and
+South Crags 159 tiles now register under `BiomeGRimond` instead). The dark-scour row's
+region list is stale on that point; its arc/temp/elev columns are not re-derivable from
+the per-def instrument (no per-region climate breakdown) and are left as measured, not
+recomputed. Also newly present in the current tile set: **~130 tiles now sit in regions
+outside all three named families** (Grey Sea, Thornbelt, Ashfall Range, Long Sand,
+Twilight Sea, Glare, Pale Flats, Damp, Wither, Kiln, Dew Horn, Dune Sea, The Verge,
+Twilight Crags — full region list and counts in `biome_sheet_stats.py`'s output). Flagged
+for the freeze review / a `WASTELAND_FAMILY_REFRESH` follow-up, not resolved here.
 
 🔴 **One def, by ruling.** The different wastelands vary **only by the mutators and
 Inhabited injections** assigned to each family (owner, 2026-09-05) — the `fall_line.md`
@@ -281,7 +295,7 @@ Junkers refuse and refute all of it.
   2. **Freeze it on the cold side** — the honest coward's option.
   3. **Entomb it on the remaining Assailants** discovered there — *the Rakatan solution*,
      re-enacted by the players with better intentions.
-  4. **The volatiles** — the nightside holds `AB_PropaneLakes` (554 tiles, MEASURED). A
+  4. **The volatiles** — the nightside holds `AB_PropaneLakes` (2,531 tiles, MEASURED). A
      bleeding reactor core dropped into cryogenic propane ignites — and a sustained melt
      could be **how the players breach `ANCIENT_WAR_LAB_1`, the sealed research station
      holding live, trapped, studied Assailants** (owner-reconciled 2026-09-07: this is
