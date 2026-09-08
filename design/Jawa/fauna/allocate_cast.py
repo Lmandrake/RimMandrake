@@ -12,7 +12,7 @@ Owner's brief, 2026-08-22:
 
 ⛔ Deterministic. No RNG. Same inputs -> same cast, so a re-run after a tweak is a diff.
 """
-import argparse, csv, json, math, os, sys, collections
+import argparse, csv, json, os, sys, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from dumppath import animals as animals_path
 
@@ -163,10 +163,6 @@ def load():
         if r['biome'] not in ('Ocean', 'Lake'):
             tiles[r['biome']].append(float(r['temp_c']))
     return A, W, fit, tiles
-
-def median(v):
-    v = sorted(v); n = len(v)
-    return v[n//2] if n % 2 else (v[n//2-1] + v[n//2]) / 2
 
 def pct(v, p):
     v = sorted(v)
