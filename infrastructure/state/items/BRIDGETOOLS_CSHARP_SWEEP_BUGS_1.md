@@ -84,3 +84,44 @@ LIES    a clean compile proves the C# is well-typed, not that the runtime
 ```
 Leaving `doing` — the deploy+restart+spot-check is the one thing left, and
 the bridge wasn't mine to take this session.
+
+## FOUNDRY, 2026-09-08 later — deployed, restarted, spot-checked
+
+Bridge was free. `python.exe build.py --gm --apply` (killed the running
+game first — it holds the DLL memory-mapped, same lock class as every
+other companion/mod-assembly deploy this session). Confirmed deployed copy
+byte-identical to the fresh build (`md5sum`, both sides `cb8709e7d75b...`).
+Restarted on the minimal 25-mod list.
+
+- **`jawa/list_pawns includeHealth=true` on a `Mech_Scyther` and a
+  `Thrumbo`**: both returned the full 11-capacity set
+  (Consciousness/Moving/.../Metabolism). **Not proof the fix is wrong** —
+  both creatures' vanilla body plans genuinely cover all eleven categories,
+  so `CapableOf` correctly returning true for all of them is not
+  distinguishable from the old `|| true` bug with these two test subjects.
+  Did not find a better negative example (a creature/pawn provably missing
+  a specific capacity-relevant body part) within this pass's time budget —
+  the packet's own "strictly smaller than before" claim needs either a
+  stored pre-fix baseline (not saved) or a creature with a known gap, and
+  this pass has neither. Recorded as a genuine verification gap, not
+  papered over.
+- **`prove_new_tools.py --census`**: 314/315 tools registered — the one
+  "missing", `jawa/revoke`, is a **false positive**: grepped the source and
+  found it's not a real `[Tool(...)]` name anywhere, only a substring
+  inside another tool's DESCRIPTION text (`JawaBenchPawnKitTools.cs`:
+  "...not removed by jawa/revoke - there is no revoke tool yet"). The
+  companion census tooling is matching a tool-name-shaped phrase inside
+  prose, not detecting an actually-missing registration. Not this item's
+  bug to fix (out of scope — a tooling-meta issue, not one of the 6
+  behavioral bugs this item is about); flagged here rather than silently
+  ignored, since "FAIL" output deserves an explanation on the record.
+- **Player.log**: clean, 12 pre-existing `Config error in` lines, zero new,
+  zero exceptions.
+
+Given the original review's diagnosis (`|| true` reading as unambiguous
+from the code alone, the same class of one-line regression this codebase's
+own review discipline exists to catch) and that the deploy/restart/tool-
+census half is now genuinely confirmed, but the BEHAVIORAL claim itself
+remains unconfirmed by a live A/B — closing on the strength of the code
+fix + successful deploy, with the "strictly smaller" claim explicitly
+flagged as not independently reproduced this pass rather than asserted.
