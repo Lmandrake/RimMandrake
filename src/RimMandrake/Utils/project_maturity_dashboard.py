@@ -244,11 +244,12 @@ PAGE = r"""<!doctype html>
 <title>Project Maturity Dashboard</title>
 <style>
 :root{
-  --bg:#12141a; --panel:#1a1d26; --panel2:#161923; --line:#2b303d; --ink:#e6e9f0;
-  --dim:#98a0b3; --accent:#8ab4f8;
-  --r0:#5b6373; --r1:#5d7bb8; --r2:#3e7fb8; --r3:#3ea55f; --r4:#c9932a;
-  --c0:#5b6373; --c1:#7a5db8; --c2:#3e8fb8; --c3:#3ea55f;
-  --red:#e0483c; --green:#3ea55f; --grey:#79808f; --unk:#c9a227;
+  /* warm 70s browns — owner-approved look from the seed-proposal page; keep this palette */
+  --bg:#171310; --panel:#211b16; --panel2:#1c1712; --line:#332a20; --ink:#efe7d9;
+  --dim:#a99d89; --accent:#e0803a;
+  --r0:#7d7565; --r1:#c98536; --r2:#c96634; --r3:#8aa24a; --r4:#c9a44a;
+  --c0:#7d7565; --c1:#c9a44a; --c2:#5390c4; --c3:#3a6ea0;
+  --red:#d05a3c; --green:#4f9147; --grey:#7d7565; --unk:#c9a44a;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -324,7 +325,7 @@ svg.reg{width:100%;height:220px;display:block}
 .reglegend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;
   vertical-align:-1px}
 .empty{color:var(--dim);font-style:italic;font-size:12px}
-code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#c3cbdb}
+code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#d8cdb8}
 </style></head><body>
 <div id="app">
   <header>
@@ -386,10 +387,10 @@ const DATA = __DATA__;
 /* Plain hex, not CSS var() — an SVG `stroke` attribute set via setAttribute does
    not resolve a custom property the way an inline `style` does, so one palette
    is kept here rather than fighting two different resolution rules for one map. */
-const FCOLOR = {"planned":"#5b6373","designed":"#5d7bb8","implemented":"#3e7fb8",
-                "runnable":"#3ea55f","validated":"#3ea597","played":"#c9932a","unset":"#5b6373"};
-const CCOLOR = {"none":"#5b6373","placeholder":"#7a5db8","authored":"#3e8fb8",
-               "final":"#3ea55f","unset":"#5b6373"};
+const FCOLOR = {"planned":"#7d7565","designed":"#c98536","implemented":"#c96634",
+                "runnable":"#8aa24a","validated":"#4f9147","played":"#c9a44a","unset":"#7d7565"};
+const CCOLOR = {"none":"#7d7565","placeholder":"#c9a44a","authored":"#5390c4",
+               "final":"#3a6ea0","unset":"#7d7565"};
 const FLADDER = ["planned","designed","implemented","runnable","validated","played"];
 const CLADDER = ["none","placeholder","authored","final"];
 
@@ -516,10 +517,10 @@ function drawRegression(svgId, legId, snaps, ladder, colorMap, field){
   }
   svg.setAttribute("viewBox", "0 0 "+W+" "+H);
   // axes
-  svg.appendChild(mk("line", {x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:"#2b303d"}));
-  svg.appendChild(mk("line", {x1:padL,y1:padT,x2:padL,y2:H-padB,stroke:"#2b303d"}));
+  svg.appendChild(mk("line", {x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:"#332a20"}));
+  svg.appendChild(mk("line", {x1:padL,y1:padT,x2:padL,y2:H-padB,stroke:"#332a20"}));
   [0, maxY].forEach(v=>{
-    const t = mk("text", {x:2, y:y(v)+3, fill:"#98a0b3", "font-size":"9"});
+    const t = mk("text", {x:2, y:y(v)+3, fill:"#a99d89", "font-size":"9"});
     t.textContent = v; svg.appendChild(t);
   });
   ladder.forEach(rung=>{
