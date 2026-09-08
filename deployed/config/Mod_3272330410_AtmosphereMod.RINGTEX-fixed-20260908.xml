@@ -40,7 +40,7 @@
 			<li Class="RW_PlanetAtmosphere.TransparentObject_Ring">
 				<renderingShadow>True</renderingShadow>
 				<hideWhenGetClose>True</hideWhenGetClose>
-				<ringMapPath>Ring/2k_saturn_ring_alpha</ringMapPath>
+				<ringMapPath>Ring/ring_debris</ringMapPath>
 				<refraction>100000</refraction>
 				<luminescen>0</luminescen>
 				<opacity>100000</opacity>
