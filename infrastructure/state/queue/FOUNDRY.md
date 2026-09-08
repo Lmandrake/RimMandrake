@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T05:21:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-08T13:03:39Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -432,6 +432,15 @@ kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
 
+## ANCIENT_WAR_LAB_1 The war lab beneath the propane lake over the Impact Site — submerged dungeon, lab fauna + mechanoid guardians, and the crater ending as a permanent map change
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - What it is: the Rakatan-era war lab where the Assailants were first contained and
+prose:    infrastructure/state/items/ANCIENT_WAR_LAB_1.md
+
 ## LANTERN_DEEPS_INJECTION_1 The crystal caverns as an injected underground layer beneath ≤ −40 °C nightside maps — quicktest the cave-map generation, two entrance features (emergence, ruined mineshaft), persistent Deeps, kyber formations
 state:    doing
 row:      unassigned
@@ -611,6 +620,16 @@ blocked:  attended south-facing pass done (v2 fixes legibility, needs one more f
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
 
+## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  world-tile mutation needs a frozen propane-lake footprint before any tile set is written (on LIQUID_BIOMES_MAP_1)
+summary:  - What it does: an in-game ignition event (thruster contact, a dropped reactor
+prose:    infrastructure/state/items/WAR_LAB_CRATER_HOOK_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -622,16 +641,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## ANCIENT_WAR_LAB_1 The war lab beneath the propane lake over the Impact Site — submerged dungeon, lab fauna + mechanoid guardians, and the crater ending as a permanent map change
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - What it is: the Rakatan-era war lab where the Assailants were first contained and
-prose:    infrastructure/state/items/ANCIENT_WAR_LAB_1.md
 
 ## DROID_ORACLE_VOICE_DESIGN_1 Design (dormant): four droid Oracle consumers with prescribed fallbacks, claude -p transport
 state:    proposed
@@ -1172,3 +1181,23 @@ kind:     task
 thin:     no ## criteria
 summary:  - Two stale entries to remove/reconcile: HorrorWastes (dissolved into other biomes
 prose:    infrastructure/state/items/BIOME_FLORA_ROSTER_GAP_1.md
+
+## ASHKARR_REGATE_RAIN_DEAD_1 ashkarr_regate_rain.py is a permanently non-viable dead-file candidate (99% reproduction gate can never pass; replacement already shipped)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - src/RimMandrake/Utils/ashkarrregaterain.py tried to faithfully reconstruct the
+prose:    infrastructure/state/items/ASHKARR_REGATE_RAIN_DEAD_1.md
+
+## W9_RUN_STAGE_RESULTS_UNCHECKED_1 w9_run.py logs stage bridge-call results but never checks success before continuing to the next stage
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+thin:     no ## criteria
+summary:  - src/RimMandrake/Utils/w9run.py's stages are strictly ordered and each invalidates
+prose:    infrastructure/state/items/W9_RUN_STAGE_RESULTS_UNCHECKED_1.md
