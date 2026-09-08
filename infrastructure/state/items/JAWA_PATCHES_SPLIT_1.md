@@ -83,10 +83,17 @@ the 12 straddle calls first, plus a verification window this session
 doesn't have (the AFK instruction was explicit: unfinished work becomes
 a normal item, not a rushed finish). Left `doing`.
 
-## Superseded execution route — 2026-09-08 (BENCH, owner present)
-The physical split this item owed now executes INSIDE the consolidation
-sprint: MOD_NAMING_CONSOLIDATION_AUDIT_1 (rulings section, 2026-09-08).
-Its triage guidance (Ashkarr/Rakata/DeepDesert/Pyrelands → RUT; animal/
-texture/generic → RSW or RM; the six straddle extractions incl. JawaVoice
-campaign lines) feeds the consolidation map. Do not start the split
-standalone — it rides the map the owner reviews.
+## Remaining work re-routed — 2026-09-08 (BENCH, owner present; ruling on event)
+*(An earlier version of this note said "do not start the split" — stale
+premise, corrected same sitting: the split already ran.)*
+The Jawa_Patches per-file split itself is DONE (2385af29, 2026-09-04):
+95 Patches/Defs + 70 assets moved into MandrakePatches/StarWarsPatches/
+UtinniPatches; `src/SPLIT_Phase3/Jawa_Patches` is a tombstone (0 XML).
+What remains, and where each piece goes:
+- Cold-load proof of the successors + retiring the deployed old copy —
+  rides COLD_LOAD_RUN_SHEET_3, unchanged by the sprint.
+- The straddle EXTRACTIONS (SacredGraffiti marks, WreckedMachines relics,
+  Droidworks campaign layer, Armoury doctrine, JawaVoice campaign lines)
+  + tombstone removal — execute INSIDE the consolidation sprint:
+  MOD_NAMING_CONSOLIDATION_AUDIT_1 (rulings section, 2026-09-08). Do not
+  start them standalone — they ride the map the owner reviews.
