@@ -2112,10 +2112,10 @@
     "sha": "9d53fe45"
   },
   "src/RimMandrake/Utils/ashkarr_dry_jungle.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "3c5766f8632a61eabd11d27cae90d221a6a5ed5b413e73d6ab00b72db6573a04",
-    "sha": "e5013227"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "b9fff0083df81d62de5f01dca033be2066bec01b9f5cd1ef28908efed9ff883d",
+    "sha": "4e707a01"
   },
   "src/RimMandrake/Utils/ashkarr_fix_impassable.py": {
     "cleanCount": 2,
