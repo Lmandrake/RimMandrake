@@ -204,10 +204,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/mods/plant_harvest_coverage.py": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "c9cd96116b8f1532a4f7db435d0898f11e462e9d4c008cb366545aaf8c5075a1",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "d3b404285d23ef6cc0442d357acddae5ad59a55eebd5e597f3c5474552ce85a0",
+    "sha": "a0728d4b"
   },
   "design/Jawa/mods/plant_names.py": {
     "cleanCount": 1,
