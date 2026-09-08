@@ -224,3 +224,8 @@ standing difference rather than an import bug.
 ## V11 — 2026-09-07 ~22:06, after the ComplexStructures restart
 Save: `WORLDMAP_V11_complex_structures_2026-09-07.rws` (23,044,088 bytes; NEW file, no existing save changed — diff-verified).
 136 `RUT_ComplexStructures` landmarks placed (279 qualify live vs the plan's 261 — the Cathedral pass added landmarks since; 143 skipped for carrying one already). Whole-planet mutator losses: NONE. Read-back 136/136. Propane-lake texture confirmed rendering on the globe (dark liquid, distinct from Umbra ground); landmark icons render.
+
+## V12 — 2026-09-07 ~22:20: ideoligions live; meander ruling verified already satisfied
+Save: `WORLDMAP_V12_ideoligions_2026-09-07.rws` (24,245,841 bytes; NEW file, nothing else changed).
+- **CORRECT_ASHKARR_IDEOLOGY_1 executed on the live world** (owner ruled live test-faction-first over scratch proof, 2026-09-07): all 12 factions converted via `jawa/faction_ideo_set` — authored ideoName, real leader titles (Captain/Director/High Warden/First Speaker/Archduke/Lord/Scraplord/Prime Trader/Elder/War Chief/High Marshal/Emperor), per-ideo classicMode=false, read back per faction AND re-verified in the saved .rws. Believers untouched per standing ruling (new pawns only). Astropolitan remains registered.
+- **Meander ruling: ALREADY SATISFIED on the live net** (leg max 3, sinuosity 1.32 vs ancient ~1.0) — the handoff's "unapplied" line was stale; nothing written. Full numbers: `world/_roads/meander_v12/REPORT.md`. ⚠️ River entries 652 live vs 634 at V3 — unexplained +9 edges, re-measure before any river import.
