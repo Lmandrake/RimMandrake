@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T23:36:08Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-08T23:39:12Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1147,16 +1147,6 @@ thin:     spec, verify and criteria all present
 summary:  Owner adopted (card, 2026-09-08, on BENCH's advice): RimChronicle
 prose:    infrastructure/state/items/CHRONICLE_EVENT_SPINE_1.md
 
-## MOD_CONSOLIDATION_SPRINT_1 Execute the consolidation map: 77 to 53 mods, one mechanical game-down window per MOD_CONSOLIDATION_PLAN.md section 4 (signed off 2026-09-08)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Execute infrastructure/state/modconsolidationmap.csv (103 rows, the
-prose:    infrastructure/state/items/MOD_CONSOLIDATION_SPRINT_1.md
-
 ## GRAFFITI_GENERIC_MARKS_1 Author generic vanilla-style default marks for RM Graffiti (R7): the nine campaign styles move to Salvation, RM ships with examples
 state:    proposed
 row:      unassigned
@@ -1176,3 +1166,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  R9 (owner, 2026-09-08): Pyrelands ships as a self-contained generic RM
 prose:    infrastructure/state/items/PYRELANDS_GENERIC_TEXT_1.md
+
+## SPRINT_SRC_WRITE_FREEZE_1 NOTICE: src/ write freeze while BENCH executes the consolidation map (mod folders moving under you) — finish DROIDWORKS_APPARELMONEY_MISSING_1 (Droidworks itself does not move), start nothing new in src/ until this closes
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SPRINT_SRC_WRITE_FREEZE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SPRINT_SRC_WRITE_FREEZE_1.md
