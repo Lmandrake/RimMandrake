@@ -691,7 +691,10 @@ document.getElementById("stamp").textContent =
 function renderLadder(mountId, counts, ladder, ramp){
   const mount = document.getElementById(mountId);
   mount.innerHTML = "";
-  ladder.forEach((rung,i)=>{
+  /* most-mature first, so every vertical read on the page runs the same way
+     as the matrix: light brown (done) at the top, dark (beginning) below */
+  ladder.slice().reverse().forEach((rung, ri)=>{
+    const i = ladder.length - 1 - ri;
     const n = counts[rung] || 0;
     const pct = total ? Math.round(100*n/total) : 0;
     const row = el("div", {"class":"rungrow"});
