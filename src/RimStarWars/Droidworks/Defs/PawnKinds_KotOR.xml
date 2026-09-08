@@ -402,7 +402,7 @@
     <label>fire control droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_KM1HMD</race>
     <combatPower>25</combatPower>
-    <apparelMoney>500~1400</apparelMoney>
+    <apparelMoney>900~2200</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT3_stuffable</li>
       <li>KotORDroidArmorT3_miningdroid</li>
@@ -440,7 +440,7 @@
     <label>excavation droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_KM1HMD</race>
     <combatPower>200</combatPower>
-    <apparelMoney>500~1400</apparelMoney>
+    <apparelMoney>900~2200</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT3_stuffable</li>
       <li>KotORDroidArmorT3_miningdroid</li>
