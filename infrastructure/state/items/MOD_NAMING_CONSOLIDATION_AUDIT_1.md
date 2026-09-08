@@ -77,3 +77,38 @@ BENCH, not FOUNDRY.
 - This is explicitly an owner-interactive review (`needs=owner`) — BENCH
   should bring options and the visual, not a pre-baked answer, per the
   owner's own "or not" framing.
+
+## Rulings — owner sitting, 2026-09-08 (BENCH, all by card)
+
+Scope: this item now carries the "asset systems" consolidation the owner
+opened at the bench — gathering fragmented mods into domain systems.
+
+1. **Structure: system = domain × tier matrix; a mod is a cell.** One
+   system = up to three mods (one per tier where content exists) + one
+   manifest + one pipeline. StructureInjections/SW/RUT is the exemplar.
+2. **Approach: B — big-bang merge**, executed Phase-2-style: all judgment
+   pre-baked into a consolidation map the owner reviews BEFORE any file
+   moves; then one mechanical migration sprint, one game-down window.
+   Ordering unchanged: map → migration → regenerate .rid/.xtp → freeze.
+3. **The parked content splits FOLD IN** (SacredGraffiti marks,
+   WreckedMachines relics, Droidworks campaign layer, Armoury doctrine
+   patches, JAWA_PATCHES_SPLIT_1) — same triage, done once.
+4. **Granularity: strict domain×tier cells.** Mechanics (Pits, Ninefold,
+   Oracle, …) stay their own mods outside the asset taxonomy.
+5. **Fix mods get a fate column** on the map: dies-with-donor /
+   folds-into-patches / stays — target mod named per row. Owner's framing:
+   once we own the art/items, most of these should not need to exist.
+6. **Donor absorption stays its own track** (MLIE_FAUNA_ABSORPTION_1,
+   WEAPONS_DONOR_RETIREMENT_1, …); the map records which fixes/patches die
+   with each donor so absorption items retire them.
+7. **Brand: RimMandrake, everywhere. RimMaster is dead.** Repo renamed to
+   Lmandrake/RimMandrake (executed this sitting: gh rename, remote set-url,
+   project board retitled, mirror/board/check_refs scripts updated).
+8. **Inhabited keeps its name**; RimPlaces not adopted. AshkarrInhabited
+   remains the campaign layer.
+9. **Ninefold: RM engine + RUT Salvation pack** (NAMING_SCHEME_PLAN §7.1
+   now RULED).
+
+Census: `infrastructure/state/mod_domain_census.csv` (82 folders, 77 mods;
+grep-indicative def counts, not MEASURED). Next: consolidation map + plan
+drafting on a backgrounded Fable agent; owner reviews the map as a sheet.

@@ -166,7 +166,7 @@ class Repo:
         return self.index.get(name, [])
 
     def find_ci(self, name):
-        """`rimmaster.md` when the file is runtime/RimMaster.md. Resolves on
+        """`rimmandrake.md` when the file is runtime/RimMandrake.md. Resolves on
         Windows, not here, and not on GitHub -- worth naming exactly."""
         self.deep()
         low = name.lower()

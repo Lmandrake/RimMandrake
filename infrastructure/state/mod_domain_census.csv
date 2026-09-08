@@ -1,0 +1,83 @@
+tier,folder,is_mod,packageId,modname,deps,def_count,top_def_types,tex_count,has_csharp,domain,notes
+RimMandrake,Aftermath,yes,mandrake.rm.aftermath,RimMandrake: Aftermath,mandrake.rm.ninefold;mandrake.rut.aftermath,0,,0,yes,mechanic,battle recorder + aftermath-hostilities engine (M0)
+RimMandrake,DesertVehicleReskin,yes,mandrake.rm.desertvehiclereskin,Desert Vehicle Reskin — Alpha Vehicles Neolithic,,1,,30,yes,fix,desert-tint reskin for Alpha Vehicles Neolithic carts
+RimMandrake,FluidCanals,yes,mandrake.rm.fluidcanals,RimMandrake Fluid Canals,,7,ThingDef:2;DesignationDef:1;FluidDef:1,0,yes,mechanic,"species/biome-agnostic canal engine, water/oil/tar flow"
+RimMandrake,Graffiti,yes,mandrake.rm.graffiti,RimMandrake: Graffiti Framework,mandrake.rm;mandrake.rm.ninefold;mandrake.rm.sacredgraffiti;mandrake.rut.marks,6,ThingDef:2;JobDef:1;JoyGiverDef:1,6,yes,mechanic,"graffiti vandalism engine, supersedes Mlie GraffitiMod"
+RimMandrake,GravshipAstronautFix,yes,mandrake.rm.gravshipastronautfix,Missing North Facings — Vanilla Gravship Expanded,,0,,3,no,fix,north-facing textures for VGE Astronaut mechanoid (Vanilla Gravship Expanded)
+RimMandrake,Inhabited,yes,mandrake.rm.inhabited,Inhabited (local),mandrake.rm.injections,306,CharacterDef:294;InhabitedPlaceDef:4;GenStepDef:3,0,yes,mechanic,gives world settlements a persistent living pawn cast
+RimMandrake,LoadTracer,yes,mandrake.rm.loadtracer,Load Tracer (local),,0,,0,yes,tooling,diagnostic instrument for intermittent cold-load stall
+RimMandrake,MandrakePatches,yes,mandrake.rm.patches,RimMandrake Patches,mandrake.jawa.patches,0,,0,no,patches_catchall,"game-generic compat patches, RimMandrake tier"
+RimMandrake,Ninefold,yes,mandrake.rm.ninefold,RimMandrake Ninefold (M0 — safe core),,0,,0,yes,mechanic,"divine-satiation mood engine, safe M0 core"
+RimMandrake,Oracle,yes,mandrake.rm.oracle,RimMandrake: Oracle,,0,,0,yes,mechanic,in-game LLM wiring / narrator engine plumbing
+RimMandrake,PhytokinBarkHeadFix,yes,mandrake.rm.phytokinbarkheadfix,Bark Head East Fix — Vanilla Races Expanded: Phytokin,,0,,1,no,fix,"east-facing head texture fix, Vanilla Races Expanded Phytokin"
+RimMandrake,Pits,yes,mandrake.rm.pits,RimMandrake Pits,,24,ThingDef:21;openPitDef:10;HediffDef:3,0,yes,mechanic,species-agnostic covered pit-trap framework
+RimMandrake,PlanetPresetPrime,yes,mandrake.rm.planetpresetprime,Planet Preset Prime (local),,0,,0,yes,tooling,dev ergonomics: fast test-world creation presets
+RimMandrake,Property,yes,mandrake.rm.property,RimMandrake: Property,,0,,0,yes,mechanic,ownership/theft/perception fabric engine
+RimMandrake,RaidRedesigner,yes,mandrake.rm.raidredesigner,RimMandrake: Raid Redesigner — Old Friends,mandrake.rm.property,0,,0,yes,mechanic,persistent NPC roster for raid redesign (Old Friends)
+RimMandrake,ResearchKitEastFix,yes,mandrake.rm.researchkiteastfix,Research Kit East Fix — Research Reinvented (Retextured),,0,,4,no,fix,"east-facing worn-art fix, Research Reinvented kits"
+RimMandrake,RimDefDump,yes,mandrake.rm.rimdefdump,RimDefDump (local tooling),,0,,0,yes,tooling,dumps post-patch def database to JSON at load
+RimMandrake,RustChrome,yes,mandrake.rm.rustchrome,RimMandrake: Rust Chrome,,0,,14,yes,art_only,"rusted iron/brass UI skin, whole-game texture pack"
+RimMandrake,SacredGraffiti,yes,mandrake.rm.sacredgraffiti,RimMandrake Sacred Marks,mandrake.rm.graffiti,2,RitualOutcomeEffectDef:1;ThingDef:1,1,yes,ideoligion_faith,"devotional wall-marks per Salvation god, on Graffiti engine"
+RimMandrake,SalvageClaim,yes,mandrake.rm.salvageclaim,RimMandrake: Salvage Claim,mandrake.rm.property,0,,0,yes,mechanic,salvage-law ownership verb (crime-suite slice)
+RimMandrake,SauridFrillFix,yes,mandrake.rm.sauridfrillfix,Center Frill North Fix — Vanilla Races Expanded: Saurid,,0,,1,no,fix,"north-facing frill art fix, Vanilla Races Expanded Saurid"
+RimMandrake,StrandedQuest,yes,mandrake.rm.strandedquest,RM_Stranded,,2,letterDef:5;HistoryEventDef:1;QuestScriptDef:1,0,no,quests_story,RM_Stranded quest: crashed survivor shelter event
+RimMandrake,StructureInjections,yes,mandrake.rm.injections,RimMandrake: Structure Injections,,0,,0,yes,mechanic,engine replaying BuildPlans onto maps at map gen
+RimMandrake,TheftHauler,yes,mandrake.rm.theft_hauler,RimMandrake: Theft Hauler,mandrake.rm.property;mandrake.rsw.droidworks,1,JobDef:1,0,yes,mechanic,heist verb: uninstall any building via extension
+RimMandrake,ToolBeltFix,yes,mandrake.rm.toolbeltfix,Tool Belt West Fix — Vanilla Apparel Expanded: Accessories,,0,,1,no,fix,"west-facing tool-belt art fix, Vanilla Apparel Expanded Accessories"
+RimMandrake,Utils,no,,,,0,,0,no,tooling,"python dev-tooling library, no About.xml"
+RimMandrake,Visibility,yes,mandrake.rm.visibility,RimMandrake: Colony Visibility,mandrake.rut.doctrine,0,,0,yes,mechanic,colony visibility 0-100 stat/GameComponent dial
+RimMandrake,WreckedMachines,yes,mandrake.rm.wreckedmachines,Wrecked Machines,,5,ThingDef:3;ResearchProjectDef:1;SpecialResearchOpportunityDef:1,12,no,structures_furniture,wrecked-machine ruin scenery ThingDefs + research
+RimMandrake,bridgetools,no,,,,0,,0,yes,tooling,"bridge companion build/prove scripts, no About.xml"
+RimMandrake,mapsynth,no,,,,0,,0,no,tooling,"offline map/ship layout render scripts, no About.xml"
+RimMandrake,rimflow,no,,,,0,,0,no,tooling,"queue/ledger CLI tooling, no About.xml"
+RimStarWars,Armoury,yes,mandrake.rsw.armoury,Jawa Armoury Rebalance,,1996,ThingDef:961;mountDef:415;SoundDef:304,1058,yes,weapons,weapon ladder rebalance across the whole armoury
+RimStarWars,BeastLairs,yes,mandrake.rsw.beastlairs,RimMandrake: RSW — Beast Lairs,,1,ThingDef:1;filthDef:1,1,no,structures_furniture,beast-nest/lair scenery ThingDef (3x3 prop)
+RimStarWars,BeastNorm,yes,mandrake.rsw.beastnorm,RimStarWars: Beast Danger Normalization,,0,,0,no,animals,beast lethality/counterplay normalization for 105 SW beasts
+RimStarWars,BlastDoorFrameAsyncFix,yes,mandrake.rsw.blastdoorframeasyncfix,Blast Door Split-Frame East Fix — Doors Expanded Star Wars edition,,0,,6,no,fix,"missing east-facing blast-door frame textures, Doors Expanded SW"
+RimStarWars,CereanManeFix,yes,mandrake.rsw.cereanmanefix,Cerean Mane South Fix — Outer Rim: Galactic Diversity,,0,,1,no,fix,"south-facing cerean mane hairstyle art fix, Outer Rim Galactic Diversity"
+RimStarWars,Cuisine,yes,mandrake.rsw.cuisine,RimStarWars: Cuisine,,27,RecipeDef:17;ThingDef:9;ThoughtDef:1,9,yes,food,Star Wars cuisine recipes: campfire skewer cooking wave 1
+RimStarWars,Droidworks,yes,mandrake.rsw.droidworks,Droidworks,,244,PawnKindDef:80;ThingDef:57;HediffDef:27,505,yes,droids,"unified droid platform: 5 states, shop-centric framework"
+RimStarWars,FireEcology,yes,mandrake.rsw.fireecology,RimMandrake: SW — Fire Ecology,mandrake.rut.fireecology,16,TerrainDef:11;burnedDef:8;ThingDef:6,0,yes,terrain_biome,generic desert-savanna fire-ecology engine (scorch/ash chain)
+RimStarWars,HelixTellurox,yes,mandrake.rsw.helixtellurox,RimStarWars: Helix Tellurox,,3,ThingDef:2;thingDef:1;leatherDef:1,1,no,animals,Tellurox labour-line livestock creature (draft/pack beast)
+RimStarWars,JawaIkee,yes,mandrake.rsw.jawaikee,Jawa Ikee,mandrake.rsw.starwarsraces,1,ThoughtDef:1,0,yes,animals,Ikee pet creature and comfort thought
+RimStarWars,JawaIonWeapons,yes,mandrake.rsw.ionweapons,Jawa Ion Weapons (local),,6,ThingDef:2;DamageDef:1;HediffDef:1,2,yes,weapons,"Jawa Ion Blaster, ion damage type, stun hediff"
+RimStarWars,JawaRules,yes,mandrake.rsw.jawarules,Jawa Rules (local),,0,,0,yes,mechanic,"colony behaviour rules (no sowing, etc) via C#"
+RimStarWars,JawaVoice,yes,mandrake.rsw.jawavoice,JawaVoice (SpeakUp reskin),,0,,0,no,mechanic,Jawaese speech bubbles via SpeakUp reskin
+RimStarWars,KotORBandolierNorthFix,yes,mandrake.rsw.kotorbandoliernorthfix,Bandolier North Fix — Star Wars KotOR Resources and Materials,mandrake.missingartfixes,0,,20,no,fix,"north-facing bandolier art fix, Star Wars KotOR Resources"
+RimStarWars,Livestock,yes,mandrake.rsw.livestock,RimMandrake: SW — Forsaken Crags Fauna,,11,ThingDef:5;PawnKindDef:3;leatherDef:3,3,yes,animals,Cindermare & Skarnix wild untameable predator creatures
+RimStarWars,MSEDroidFix,yes,mandrake.rsw.msedroidfix,MSE Droid North Fix — Outer Rim: Droid Depot,,0,,1,no,fix,"north-facing MSE-6 droid art fix, Outer Rim Droid Depot"
+RimStarWars,SWBestiary,yes,mandrake.rsw.swbestiary,RimMandrake: SW — Bestiary,,631,SoundDef:589;ThingDef:32;PawnKindDef:10,70,no,animals,absorbed creature defs/art from retiring SW animal mods
+RimStarWars,SeaBeasts,yes,mandrake.rsw.seabeasts,RimMandrake - SW Sea Beasts,,36,ThingDef:18;PawnKindDef:18;leatherDef:6,72,no,animals,18 Naboo/SW sea creatures across six ecological roles
+RimStarWars,SeasWaterline,yes,mandrake.rsw.seaswaterline,RimStarWars: Seas Waterline Pass,,0,,0,no,terrain_biome,seas-filling program lane: ocean/lake waterline/fauna prep
+RimStarWars,StarWarsPatches,yes,mandrake.rsw.patches,RimStarWars Patches,mandrake.jawa.patches;mandrake.rm.patches;mandrake.rsw.armoury;mandrake.rsw.starwarsraces,22,PawnKindDef:15;WeatherDef:4;defaultFactionDef:2,54,no,patches_catchall,SW-tier content fixes/compat patches
+RimStarWars,StarWarsRaces,yes,mandrake.rsw.starwarsraces,RimMandrake - Star Wars Races,,511,GeneDef:161;HeadTypeDef:138;PawnKindDef:87,876,no,races,69 owned SW species/xenotypes replacing 3 colliding mods
+RimStarWars,StructureInjectionsSW,yes,mandrake.rsw.injections,RimStarWars: Structure Injections,mandrake.rm.inhabited;mandrake.rm.injections,14,GenStepDef:7;TileMutatorDef:7,0,no,structures_furniture,SW structure-injection content riding RimplacePlan engine
+RimStarWars,WeatherSuite,yes,mandrake.rsw.weathersuite,RimMandrake: SW — Weather Suite,mandrake.rut.weathersuite,5,letterDef:3;GameConditionDef:2;IncidentDef:1,0,yes,mechanic,generic tidally-locked weather/terminator-band engine
+RimUtinni,AftermathRites,yes,mandrake.rut.aftermath,RimUtinni: Aftermath Rites,mandrake.rm.aftermath;mandrake.rm.ninefold,14,RM_AftermathRuleDef:8;RM_AlliancePairDef:6,0,no,mechanic,AftermathRuleDefs/AlliancePairDefs naming real campaign factions
+RimUtinni,Antiquities,yes,mandrake.rut.antiquities,Antiquities,,14,ThingDef:6;ResearchProjectDef:5;JobDef:1,0,yes,quests_story,17th research tree: urn-based world-lore reveal system
+RimUtinni,AshkarrFlora,yes,mandrake.rut.ashkarrflora,RimUtinni: Ash'karr Flora,,1,ThingDef:1,0,no,plants,"own tree art/graphics at campaign scale, replacing tree mods"
+RimUtinni,AshkarrInhabited,yes,mandrake.rut.inhabited,RimMandrake: Utinni — Inhabited (Ash'karr),mandrake.rm.inhabited,8,SecurityProfileDef:4;SettlementManifestDef:4,0,no,faction_world,Junkers pilot settlement manifest (The Claim Jump)
+RimUtinni,AshkarrLandmarkArt,yes,mandrake.rut.ashkarrlandmarkart,Ash'karr Landmark Art,,0,,49,no,art_only,repainted world-map landmark icons for Ash'karr
+RimUtinni,AshkarrWeatherSuite,yes,mandrake.rut.weathersuite,RimMandrake: Utinni — Weather Suite (Ash'karr),mandrake.rsw.weathersuite,1,PlanetGeometryDef:1,0,no,terrain_biome,wires generic weather engine to Ash'karr's substellar point
+RimUtinni,BirthHatchDemo,yes,mandrake.rut.birthhatchdemo,RimMandrake: Utinni — Birth &amp; Hatch Demo,,1,ThingDef:1,0,no,tooling,"bridge-driven reproduction/birth demo, not campaign content"
+RimUtinni,DesertFixtures,yes,mandrake.rut.desertfixtures,RimMandrake: RUT — Desert Fixtures,,1,ThingDef:1,1,no,structures_furniture,buildable adobe wall-slot window ThingDef
+RimUtinni,Doctrine,yes,mandrake.rut.doctrine,Jawa Doctrine Patches,mandrake.rsw.armoury;mandrake.rsw.seabeasts,0,,0,yes,mechanic,surgical doctrine patches enforcing Jawa design rules
+RimUtinni,EmpirePursuit,yes,mandrake.rut.empirepursuit,Empire Pursuit — Survey Shadow,,1,ScenPartDef:1,0,yes,mechanic,fork of 'Ruthless Faction Pursuit' workshop mod
+RimUtinni,FactionSlate,yes,mandrake.rut.factionslate,Jawa Faction Slate,,0,,0,no,faction_world,restricts Configure Factions page to campaign slate
+RimUtinni,IshkoDarkLandmarks,yes,mandrake.rut.ishkolandmarks,RimUtinni: Ishko's Dark Landmarks,mandrake.rut.ashkarrlandmarkart,3,LandmarkDef:3,0,no,ideoligion_faith,3 LandmarkDefs for the god Ishko the Unmaskable
+RimUtinni,LanternDeeps,yes,mandrake.rut.lanterndeeps,RimUtinni: Lantern Deeps,,3,GenStepDef:1;MapGeneratorDef:1;ThingDef:1,0,yes,terrain_biome,persistent underground cave-map dungeon layer
+RimUtinni,LongHunger,yes,mandrake.rut.longhunger,RimUtinni: The Long Hunger,,5,ThingDef:2;IncidentDef:1;QuestScriptDef:1,0,yes,animals,Long Hunger dune leviathan creature and mythos
+RimUtinni,MenuShell,yes,mandrake.rut.menushell,RimUtinni: Menu Shell,,11,BackgroundImageDef:10;TipSetDef:2,11,no,art_only,campaign main-menu/loading-screen shell (XML+texture)
+RimUtinni,PawnFlavor,yes,mandrake.rut.pawnflavor,Jawa Pawn Flavor — faction backstories and traits,mandrake.jawa.patches,90,BackstoryDef:77;TraitDef:13,0,no,faction_world,50 faction-keyed BackstoryDefs and TraitDefs across 10 factions
+RimUtinni,PlantGrowth,yes,mandrake.rut.plantgrowth,Jawa Plant Growth (local),,1,PlantGrowthSettingsDef:1,0,yes,mechanic,global plant growth-rate multiplier via Harmony postfix
+RimUtinni,PyrelandsFireEcology,yes,mandrake.rut.fireecology,RimMandrake: Utinni — Fire Ecology (Pyrelands),mandrake.rsw.fireecology,0,,0,no,terrain_biome,wires SW fire-ecology engine to the Pyrelands biome
+RimUtinni,ResearchRetag,yes,mandrake.rut.researchretag,Research Retag,mandrake.rsw.armoury;mandrake.rsw.ionweapons,15,ResearchTabDef:15,0,no,mechanic,research-tree normalization from frozen manifest
+RimUtinni,RestrainingBolts,yes,mandrake.rut.restrainingbolts,Jawa Restraining Bolts,,1,GoodwillSituationDef:1,0,yes,mechanic,goodwill cap with Free Droid Enclaves via restraining bolts
+RimUtinni,Rites,yes,mandrake.rut.rites,The Rites,mandrake.rut.antiquities,6,ResearchProjectDef:5;ResearchTabDef:1,0,no,ideoligion_faith,"liturgy tree: five rites (Scrap Shrine, Conduit Choir, etc)"
+RimUtinni,RiverSteam,yes,mandrake.rut.riversteam,RimMandrake: Utinni — River Steam,,0,,0,yes,art_only,"ambient steam fleck effect over Pyrelands rivers, no gameplay"
+RimUtinni,ShipMemory,yes,mandrake.rut.shipmemory,RimUtinni: Ship Memory — the Chains Below,,1,ThingDef:1,0,yes,quests_story,Memory-Core revelation unlocking the Anomaly research route
+RimUtinni,StructureInjectionsRUT,yes,mandrake.rut.injections,RimUtinni: Structure Injections,mandrake.rm.inhabited;mandrake.rm.injections;mandrake.rut.desertfixtures,24,GenStepDef:12;TileMutatorDef:12,0,no,structures_furniture,Ash'karr structure-injection content batch (RimplacePlan)
+RimUtinni,UtinniPatches,yes,mandrake.rut.patches,RimUtinni Patches (Jawa campaign),mandrake.jawa.patches;mandrake.rm.patches;mandrake.rsw.patches;mandrake.rsw.starwarsraces,115,thingDef:211;PawnKindDef:53;defaultFactionDef:50,19,no,patches_catchall,campaign patch layer: factions/scenario/doctrine/worldbuilding
+RimUtinni,UtinniShell,yes,mandrake.rut.shell,RimUtinni: Shell,,1,BackgroundImageDef:1,1,no,art_only,campaign UI theme (RimThemes) + main-menu background
+RimUtinni,VaultDungeons,yes,mandrake.rut.vaultdungeons,RimUtinni: Vault Dungeons,,46,historyDef:13;SymbolDef:12;HistoryEventDef:8,0,no,structures_furniture,six Forsaken vault dungeon KCSG StructureLayoutDef templates
+SPLIT_Phase3,Jawa_Patches,no,,,,0,,0,no,tooling,"superseded source tree, split into Mandrake/StarWars/UtinniPatches"
