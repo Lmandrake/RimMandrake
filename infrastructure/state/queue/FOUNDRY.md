@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T22:58:34Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-08T23:04:23Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1153,8 +1153,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/EGG_PROXIMITY_HATCH_TRIGGER_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Owner, 2026-09-08 (verbatim): "Still need to dev a trigger for eggs that
 prose:    infrastructure/state/items/EGG_PROXIMITY_HATCH_TRIGGER_1.md
 
 ## RIMPROPERTY_ANIMAL_THEFT_1 RimProperty: trainable stealing for agile pets, wild-animal theft, droid loaders carry the hauler property (owner, 2026-09-08)
@@ -1163,6 +1163,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RIMPROPERTY_ANIMAL_THEFT_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Owner, 2026-09-08 (verbatim on the consolidation sitting): "Some droid
 prose:    infrastructure/state/items/RIMPROPERTY_ANIMAL_THEFT_1.md

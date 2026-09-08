@@ -211,14 +211,36 @@ YOURS TO CALL" does not unlock. Bridge was FREE and taken for the reboot.
   vs 23)** — the IncidentDef one above, now deleted. Nothing on the
   QuestScriptDef, the HediffDef or the five HistoryEventDefs.
 
-❌ **What is still owed — "quest fires, completes, pays".** The quicktest map was
-requested (`rimworld/start_debug_game`, Crashlanded/Cassandra/Rough, mapSize 250)
-and **RimWorld died during map generation** — process gone, no exception in the
-log, last lines are ordinary Geological Landforms / Map Designer / ore-step
-output. Not attributable to this packet: it ships no map-gen code, and its only
-log line all session was the config error above. This is the cost of a quicktest
-on the full 601-mod list, not a defect here. One attempt was spent; a second
-17-minute load was not judged worth it against the packet's remaining risk.
+✅ **The IncidentDef fix re-verified on a SECOND full cold load** (15:44→16:01):
+`Config error in` count back to **23**, i.e. exactly the pre-restart baseline;
+`grep -i "DroidRepairJob\|RUT_DroidJob"` over the whole Player.log returns
+**nothing at all**; cross-reference errors **0**.
+
+❌ **What is still owed — "quest fires, completes, pays".** `jawa/fire_quest`
+needs a map ("No current map. Load a game first."), and **RimWorld died during
+quicktest map generation on BOTH attempts**, one per cold load. Process gone,
+no exception logged, and the last four log lines are **byte-identical** between
+the two crashes (Ninefold research-completion messages during scenario setup,
+after Geological Landforms / Map Designer / ore steps) — a deterministic crash in
+quicktest map gen on this 601-mod list, not a flake.
+
+🔴 **Not attributable to this packet**, and worth knowing for every future
+FOUNDRY live test: this mod ships no map-gen code, no Harmony patch and no comp;
+its entire footprint in the log across three loads was the one config error above
+(now gone). `rimworld/start_debug_game` takes **no parameters**, so the map size
+(250) cannot be reduced to dodge it. ⇒ **A quicktest is not currently available
+on the full list; live droid work must use the minimal Droidworks mod list.**
+Two attempts were spent, which is the budget this packet was given.
+
+⚠️ **This was already a known trap and I walked into it anyway.** The last line
+of `infrastructure/state/LESSONS_INBOX.md` before this packet reads: *"FOUNDRY
+2026-09-08: `rimworld/start_debug_game_ready` crashed the game outright (not just
+hung) on the owner's full ~599-mod list… Never run it on the full list; swap to
+the minimal list first."* Reading LESSONS_INBOX before spending a load round
+would have saved both attempts and ~34 minutes. The correct move was: cold-load
+on the **minimal Droidworks list**, quicktest there, then restore. Recorded here
+rather than as a new lesson line because the lesson already exists — what was
+missing was reading it.
 
 ⚠️ Note that the **completion** leg would likely have stalled anyway: finishing
 this quest requires a `Recipe_Surgery` bill actually being worked, and
