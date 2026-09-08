@@ -182,7 +182,7 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RSW_DW_DataSpike_Wild</defName>
     <label>data spike (wild)</label>
-    <description>A compact tool loaded with generic reprogramming protocols, built for a droid with no faction ownership to override at all - the crashed and gone-wild. Used on one already downed or captured, it claims it for your own. Used on anything with a real owner, it does nothing.</description>
+    <description>A compact tool loaded with generic reprogramming protocols, built for a droid with no faction ownership to override at all - the crashed and gone-wild. It only works on one you have already taken prisoner, and a scrambled core does not give in at once: each spike grinds down the droid's resistance, and only the one that takes it to zero claims the droid for you. Used on anything with a real owner, it does nothing.</description>
     <graphicData>
       <texPath>OuterRim/Items/DataSpike</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -202,6 +202,19 @@
       </li>
       <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWDataSpike">
         <factionless>true</factionless>
+        <!-- DROIDWORKS_WILD_DROIDS_1 (packet E4). The other three spikes leave
+             both of these at their defaults and keep the original one-use
+             instant flip: they override an OWNER, which is a protocol
+             handshake. This one has no owner to override and a corrupted core
+             to rewrite, so it runs on vanilla recruitment resistance instead.
+             requiresPrisoner because Pawn_GuestTracker.resistance is only
+             rolled by CapturedBy - before capture it is the -1 "unset"
+             sentinel. resistancePerUse 8, times 0.5x/1.0x/1.5x for the
+             spiker's Intellectual 0/10/20, against the 10~20 resistance
+             Patches/PawnKind_HumanoidDroidResistanceWill.xml gives every
+             RSW_DW_ kind: roughly 2-4 spikes for an average colonist. -->
+        <requiresPrisoner>true</requiresPrisoner>
+        <resistancePerUse>8</resistancePerUse>
       </li>
     </comps>
     <recipeMaker>

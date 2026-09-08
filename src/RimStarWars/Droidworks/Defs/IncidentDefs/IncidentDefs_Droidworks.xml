@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_WILD_DROIDS_1 (packet E4). The wild-droid incident.
+
+     Owner ruling 2 (design/Jawa/droids/DROID_UNIFIED_FRAMEWORK_DESIGN.md §0),
+     verbatim: "there's the wild droids that have gone crazy from being left
+     out in the desert after crashing" - and, in the same ruling, "NO rogue
+     droid faction, ever". So this incident spawns a droid with NO faction at
+     all, hostile through ManhunterPermanent rather than through a faction
+     relation. That factionless state is the key RSW_DW_DataSpike_Wild
+     (DataSpikes_Droidworks.xml, packet B3) was already cut for.
+
+     ONE firing route, deliberately. DROID_REPAIR_FOR_PROFIT_EVENTS_1 (packet
+     C5) established the engine constraint the hard way: IncidentDef's own
+     ConfigErrors() forbids a def that is both selectable from the random
+     incident pool (baseChance > 0 + targetTags) AND fired as a quest root.
+     This one is a plain random incident and nothing else.
+
+     workerClass: Source/Droidworks/IncidentWorker_WildDroidCrash.cs. Read its
+     header before changing anything here - in particular why the count is
+     exactly one droid (two factionless HUMANLIKE manhunters are force-hostile
+     to each other and would fight instead of attacking) and why the pool is a
+     flat weighted pick rather than points-scaled (every utility droid kind in
+     this mod carries the combatPower 99999 "keep out of raid pools" sentinel).
+
+     Frequency: baseChance 0.7 with minRefireDays 20. Chosen, not copied -
+     Droidworks ships no other IncidentDef to mirror, and the nearest house
+     precedent is RimStarWars' own RSW_WS_DarkAurora (baseChance 1.2,
+     minRefireDays 15, IncidentDefs_DarkAurora.xml). Set below that on both
+     axes because this one leaves a live hostile on the map with no timeout,
+     and because §6's anti-exponential check caps the rate at which new droid
+     bodies can enter the colony's economy: at ~20+ days apart a wild droid is
+     an event, not a supply line.
+======================================================================== -->
+<Defs>
+
+  <IncidentDef>
+    <defName>RSW_DW_WildDroidCrash</defName>
+    <label>wild droid</label>
+    <description>A droid abandoned in the desert long enough to lose its mind wanders into the area. It belongs to nobody and is hostile to everybody.</description>
+    <category>ThreatSmall</category>
+    <baseChance>0.7</baseChance>
+    <minRefireDays>20</minRefireDays>
+    <pointsScaleable>false</pointsScaleable>
+    <letterDef>ThreatSmall</letterDef>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.StarWars.Droidworks.IncidentWorker_WildDroidCrash</workerClass>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.WildDroidCrashExtension">
+        <!-- Weighted by how plausibly the thing was left in a desert:
+             abandoned labour and salvage units are commonest, old war
+             leftovers next, one-off oddities rarest. Every defName here is
+             a Droidworks kind (PawnKinds_*.xml in this mod), so the pool
+             cannot break on a donor mod being retired under D2/D3/D4. -->
+        <options>
+          <li><kind>RSW_DW_OuterRim_ImperialLaborDroid</kind><weight>10</weight></li>
+          <li><kind>RSW_DW_OuterRim_SalvageAssistDroid</kind><weight>8</weight></li>
+          <li><kind>RSW_DW_OuterRim_DUMDroid</kind><weight>6</weight></li>
+          <li><kind>RSW_DW_OuterRim_RSeriesDroid</kind><weight>6</weight></li>
+          <li><kind>RSW_DW_OuterRim_MuckrakerDroid</kind><weight>4</weight></li>
+          <li><kind>RSW_DW_OuterRim_BattleDroid</kind><weight>10</weight></li>
+          <li><kind>RSW_DW_JDSCIS_B1_Battle_Droid</kind><weight>10</weight></li>
+          <li><kind>RSW_DW_JDSCIS_B1_Security_Droid</kind><weight>5</weight></li>
+          <li><kind>RSW_DW_OuterRim_SuperBattleDroid</kind><weight>3</weight></li>
+          <li><kind>RSW_DW_KotORDroidBad_KM1MD</kind><weight>5</weight></li>
+          <li><kind>RSW_DW_KotORDroidBad_ADMkI</kind><weight>3</weight></li>
+          <li><kind>RSW_DW_Primitive_G2</kind><weight>3</weight></li>
+          <li><kind>RSW_DW_OuterRim_GNKDroid</kind><weight>2</weight></li>
+        </options>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+</Defs>

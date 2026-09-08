@@ -41,10 +41,14 @@ namespace RimMandrake.StarWars.Droidworks
                 canTargetBuildings = false,
                 canTargetItems = false,
                 mapObjectTargetsMustBeAutoAttackable = false,
+                // DROIDWORKS_WILD_DROIDS_1 (packet E4): the downed/prisoner and
+                // faction-key tests moved into CompDWDataSpike.ValidTarget so
+                // this UI gate and the job's own completion re-check share one
+                // definition - E4 adds a third condition (requiresPrisoner) and
+                // two copies of the rule would have drifted immediately.
                 validator = (TargetInfo x) => x.Thing is Pawn p
-                    && (p.Downed || p.IsPrisoner)
                     && spike != null
-                    && spike.MatchesFaction(p)
+                    && spike.ValidTarget(p)
             };
         }
 
