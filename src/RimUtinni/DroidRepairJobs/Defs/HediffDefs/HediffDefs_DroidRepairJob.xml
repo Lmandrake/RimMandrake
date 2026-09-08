@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROID_REPAIR_FOR_PROFIT_EVENTS_1 (packet C5).
+
+     One hediff: the fault the customer's droid is brought in WITH. It is not a
+     Droidworks part-effect tier - the whole grading scheme in
+     QuestPart_DroidRepairJobOutcome turns on "does this droid now carry a
+     RSW_DW_PartEffect_* hediff it did not arrive with", and a freshly generated
+     droid carries none, so the arrival state has to be something else.
+
+     Removed by QuestPart_DroidRepairJobOutcome when any part is fitted, at
+     pickup. A droid the player KEEPS keeps its fault until the player fixes it
+     themselves - which is the correct consequence of taking a broken machine.
+======================================================================== -->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_DroidJobFault</defName>
+    <label>seized drive train</label>
+    <description>Sand in the joints and a motivator that will not hold a signal. This droid was walked here, slowly, by somebody who wants it walking properly again.</description>
+    <hediffClass>Hediff</hediffClass>
+    <defaultLabelColor>(0.8, 0.62, 0.35)</defaultLabelColor>
+    <isBad>true</isBad>
+    <maxSeverity>1.0</maxSeverity>
+    <initialSeverity>1.0</initialSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.45</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.30</offset>
+          </li>
+        </capMods>
+        <statOffsets>
+          <WorkSpeedGlobal>-0.35</WorkSpeedGlobal>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

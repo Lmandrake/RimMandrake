@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: Droid Repair Jobs</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.droidrepairjobs</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Local friendlies bring their broken droids to the Jawa shop and pay for the work. What you fit into the machine is your business: a superior part buys a reputation, a worn one buys silver you keep, and a droid that never walks back out buys neither.
+
+The customer layer on top of the Droidworks platform. Requires Droidworks — the job is resolved with its own repair bench and part-install recipes, not a parallel mechanism.</description>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rsw.droidworks</packageId>
+      <displayName>Droidworks</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rsw.droidworks</li>
+  </loadAfter>
+</ModMetaData>

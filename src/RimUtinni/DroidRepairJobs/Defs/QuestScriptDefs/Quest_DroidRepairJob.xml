@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_DroidRepairJob - DROID_REPAIR_FOR_PROFIT_EVENTS_1 (packet C5).
+
+  Owner ruling 2, 2026-09-06 (DROID_UNIFIED_FRAMEWORK_DESIGN.md section 0):
+  "there should be regular events where various local friendlies come to have you
+  repair or upgrade their droids for profit... it's just what everyone knows Jawa
+  are supposed to do. And there should be real opportunities to use superior or
+  inferior parts, get rid of problematic droids or parts, and otherwise be...
+  Jawa."
+
+  THE SPEC IT WAS BUILT FROM (skills/rimworld-quests/SKILL.md section 2):
+    ask       a neighbouring friendly walks a seized droid to your shop; get it
+              moving again before their people come back for it
+    reason    everyone on this rock knows Jawa fix droids. Turning it away is
+              turning away the one thing your clan is known for.
+    choice    WHICH part you fit. Droidworks already grades a fitted part by its
+              CompQuality: an excellent part buys reputation and the best fee, a
+              worn part buys a smaller fee and a worse name while you keep the
+              good stock. Or you arrest the droid and it is simply yours.
+    failure   never touched it (Fail, goodwill down), or the droid does not walk
+              back out at all (Fail, goodwill well down) - the colony survives
+              both
+    reward    outcome-scaled silver by drop pod, plus goodwill
+    deadline  5-9 days, shown as the quest timer; the OFFER expires in 2-4 days
+
+  RESOLUTION MECHANISM IS B4b's, NOT A NEW ONE. The droid arrives as a quest
+  lodger in the player's own faction (joinPlayer, the vanilla Hospitality shape),
+  which is what makes ITab_Pawn_Health.ShouldAllowOperations() return true - a
+  friendly NON-player-faction pawn cannot be operated on at all, verified in
+  Assembly-CSharp. The player then runs the ALREADY-BUILT
+  RSW_DW_Install{LegActuator,ManipulatorArm,Sensor,Motivator,Servo} recipes
+  (Recipe_InstallDroidPartAtBench, which needs an RSW_DW_RepairBench within 15
+  tiles) off the droid's health tab, consuming their OWN RSW_DW_Part_* stock.
+  Nothing here duplicates that.
+
+  ANTI-EXPONENTIAL GUARDRAIL (design doc section 6, "repair-for-profit events |
+  silver printer"): payment scales with the customer faction's tech level and
+  goodwill (QuestNode_DroidRepairJob.WealthFactor/ReputationFactor), the parts
+  spent are the player's own, and minRefireDays 15 caps the frequency.
+
+  PROVENANCE - node shapes copied from shipped defs, never recalled. Paths under
+  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data:
+    GetMap, GetNearbySettlement, Delay(isQuestTimeout), Letter, End
+                                    Core\...\Script_TradeRequest.xml
+    GetWalkInSpot                   Core\...\Scripts_JoinerThreatCore.xml
+    GeneratePawn(kindDef, faction, addToList, ensureNonNumericName)
+                                    Royalty\...\Utility\Scripts_Utility_Helpers.xml
+    ExtraFaction(faction, pawns, factionType HomeFaction)
+                                    Royalty\...\Hospitality\Script_Hospitality_Root_Joiners.xml:322
+    PawnsArrive(joinPlayer), LeaveOnCleanup
+                                    Royalty\...\Script_Hospitality_Worker.xml:836,872
+    ChangeFactionGoodwill(faction, change, reason)
+                                    src/RimUtinni/VaultDungeons (RUT_Reclamation)
+    lodgers.Arrested / .Destroyed / .LeftMap
+                                    Royalty\...\Script_Hospitality_Worker.xml:1020-1160
+  Royalty paths are cited for SHAPE only; every class named here lives in
+  Assembly-CSharp, so this mod has no DLC dependency.
+
+  arrivalMode is deliberately OMITTED: QuestNode_PawnsArrive defaults to
+  PawnsArrivalModeDefOf.EdgeWalkIn, which is the right fiction (they walked it
+  here) and is why everAcceptableInSpace is also omitted - Accept should be grey
+  on a space map, because nobody walks a droid onto an orbital platform.
+-->
+<Defs>
+
+  <QuestScriptDef>
+    <defName>RUT_DroidRepairJob</defName>
+
+    <!-- Route 1, the natural random pool: this is the "regular event" ruling 2
+         asked for. 1.1 is mid-family (shipped weights run 0.15-2.0). The
+         paired IncidentDef exists at baseChance 0 purely as a deterministic
+         trigger for testing. -->
+    <rootSelectionWeight>1.1</rootSelectionWeight>
+    <rootMinPoints>0</rootMinPoints>
+    <!-- Do not send a repair job to a colony that has no shop yet. -->
+    <rootMinProgressScore>4</rootMinProgressScore>
+    <!-- THE FREQUENCY CAP. Section 6's guardrail, enforced here. -->
+    <minRefireDays>15</minRefireDays>
+    <!-- The OFFER window, a different clock from the job timer below. -->
+    <expireDaysRange>2~4</expireDaysRange>
+    <defaultChallengeRating>1</defaultChallengeRating>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->Repair job</li>
+        <li>questName->Shop work</li>
+        <li>questName->A droid at the door</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->Somebody from [settlement_label] has walked a droid across the flats to your door. It is a [lodgers0_kind], it is dragging one side, and it has not run a clean cycle in a long time.\n\n[customerFaction_name] will leave it with you for [jobTicks_duration]. Fit it a part and it walks home; what you fit is your business, and theirs only when they see it move.\n\nHonest work, a standard part off your own shelf: [payHonest_money]. A part better than they are paying for: [payFine_money], and they will remember it. A worn part, and you keep the good one: [payShoddy_money], and they will remember that too.\n\nThey will not be told what you did. They will see what walks out.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_GetMap" />
+        <li Class="QuestNode_GetWalkInSpot" />
+
+        <!-- Visitable settlements only, so the customer is always a friendly -
+             ruling 2's "various local friendlies". No faction is named or
+             excluded here: whoever has a settlement nearby and is not hostile
+             brings work, which is exactly how a shop gets customers. -->
+        <li Class="QuestNode_GetNearbySettlement">
+          <storeAs>settlement</storeAs>
+          <storeFactionAs>customerFaction</storeFactionAs>
+          <maxTileDistance>36</maxTileDistance>
+        </li>
+
+        <li Class="QuestNode_Set">
+          <name>jobTicks</name>
+          <value>$(randInt(5,9)*60000)</value>
+        </li>
+
+        <!-- Unscaled defaults for the three fee figures. QuestNode_DroidRepairJob
+             overwrites all three below with the wealth/reputation-scaled values;
+             these exist because QuestNode.Run() SWALLOWS an exception and only
+             logs it, and one unresolvable [symbol] blanks the whole description
+             rather than degrading. With these set, a failure in the custom node
+             costs the player accurate numbers, not the entire quest text. -->
+        <li Class="QuestNode_Set">
+          <name>payHonest</name>
+          <value>320</value>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>payFine</name>
+          <value>512</value>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>payShoddy</name>
+          <value>128</value>
+        </li>
+
+        <!-- The droid. addToList, not storeAs: the object signals below are
+             raised on the LIST var, and lodgers is the name vanilla uses.
+             Four civilian/utility kinds, all confirmed live on the 600-mod
+             capture by DROID_FACTION_LOADOUTS_1 (C1). QuestNode_RandomNode
+             gives each an implicit selectionWeight of 1. -->
+        <li Class="QuestNode_RandomNode">
+          <nodes>
+            <li Class="QuestNode_GeneratePawn">
+              <kindDef>RSW_DW_KotORDroidColonist_T3UD</kindDef>
+              <faction>$customerFaction</faction>
+              <addToList>lodgers</addToList>
+              <ensureNonNumericName>true</ensureNonNumericName>
+            </li>
+            <li Class="QuestNode_GeneratePawn">
+              <kindDef>RSW_DW_KotORDroidColonist_R8009UD</kindDef>
+              <faction>$customerFaction</faction>
+              <addToList>lodgers</addToList>
+              <ensureNonNumericName>true</ensureNonNumericName>
+            </li>
+            <li Class="QuestNode_GeneratePawn">
+              <kindDef>RSW_DW_KotORDroidColonist_GE3LD</kindDef>
+              <faction>$customerFaction</faction>
+              <addToList>lodgers</addToList>
+              <ensureNonNumericName>true</ensureNonNumericName>
+            </li>
+            <li Class="QuestNode_GeneratePawn">
+              <kindDef>RSW_DW_KotORDroidGood_3C</kindDef>
+              <faction>$customerFaction</faction>
+              <addToList>lodgers</addToList>
+              <ensureNonNumericName>true</ensureNonNumericName>
+            </li>
+          </nodes>
+        </li>
+
+        <!-- Home faction stays the customer's even while the droid sits in the
+             player's faction as a lodger. This is what makes IsQuestLodger()
+             true, and it is where the goodwill lands. -->
+        <li Class="QuestNode_ExtraFaction">
+          <faction>$customerFaction</faction>
+          <pawns>$lodgers</pawns>
+          <factionType>HomeFaction</factionType>
+        </li>
+
+        <!-- THE ONE CUSTOM VERB. Breaks the droid, writes payFine/payHonest/
+             payShoddy to the slate, and emits the QuestPart that grades the
+             work at PickupDue. Everything after this is stock. -->
+        <li Class="RimMandrake.Utinni.DroidRepairJobs.QuestNode_DroidRepairJob">
+          <inSignal>PickupDue</inSignal>
+          <droids>$lodgers</droids>
+          <customer>$customerFaction</customer>
+          <basePayment>320</basePayment>
+          <faultHediff>RUT_DroidJobFault</faultHediff>
+          <inferiorHediffs>
+            <li>RSW_DW_PartEffect_Leg_Inferior</li>
+            <li>RSW_DW_PartEffect_Manipulator_Inferior</li>
+            <li>RSW_DW_PartEffect_Sensor_Inferior</li>
+            <li>RSW_DW_PartEffect_Motivator_Inferior</li>
+            <li>RSW_DW_PartEffect_Servo_Inferior</li>
+          </inferiorHediffs>
+          <standardHediffs>
+            <li>RSW_DW_PartEffect_Leg_Standard</li>
+            <li>RSW_DW_PartEffect_Manipulator_Standard</li>
+            <li>RSW_DW_PartEffect_Sensor_Standard</li>
+            <li>RSW_DW_PartEffect_Motivator_Standard</li>
+            <li>RSW_DW_PartEffect_Servo_Standard</li>
+          </standardHediffs>
+          <superiorHediffs>
+            <li>RSW_DW_PartEffect_Leg_Superior</li>
+            <li>RSW_DW_PartEffect_Manipulator_Superior</li>
+            <li>RSW_DW_PartEffect_Sensor_Superior</li>
+            <li>RSW_DW_PartEffect_Motivator_Superior</li>
+            <li>RSW_DW_PartEffect_Servo_Superior</li>
+          </superiorHediffs>
+          <outSignalFine>WorkFine</outSignalFine>
+          <outSignalHonest>WorkHonest</outSignalHonest>
+          <outSignalShoddy>WorkShoddy</outSignalShoddy>
+          <outSignalNeglected>WorkNeglected</outSignalNeglected>
+        </li>
+
+        <li Class="QuestNode_PawnsArrive">
+          <pawns>$lodgers</pawns>
+          <joinPlayer>true</joinPlayer>
+          <customLetterLabel TKey="LetterLabelDroidJobArrived">Repair job: [lodgers0_nameDef]</customLetterLabel>
+          <customLetterText TKey="LetterTextDroidJobArrived">[lodgers0_nameDef] came in on one good leg. [customerFaction_name] want it back inside [jobTicks_duration], moving.\n\nOpen the panel at a repair bench and fit it a part. Which part is between you and the sand.</customLetterText>
+        </li>
+
+        <!-- On cleanup rather than on a signal, so the droid leaving can never
+             race the end of the quest. -->
+        <li Class="QuestNode_LeaveOnCleanup">
+          <pawns>$lodgers</pawns>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <!-- The shown timer. isQuestTimeout makes it the quest's own clock, and
+             PickupDue is what the grading part listens for. -->
+        <li Class="QuestNode_Delay">
+          <delayTicks>$jobTicks</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <inspectString TKey="InspectStringDroidJobTimeLeft">Pickup in: {0}</inspectString>
+          <outSignalComplete>PickupDue</outSignalComplete>
+        </li>
+
+        <!-- OUTCOME 1: a superior part. Costs the player their best stock and
+             buys the best name. -->
+        <li Class="QuestNode_Letter">
+          <inSignal>WorkFine</inSignal>
+          <label TKey="LetterLabelDroidJobFine">Fine work: [lodgers0_nameDef]</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextDroidJobFine">[lodgers0_nameDef] walked out of your shop better than it walked in, and better than [customerFaction_name] paid for. Nobody says thank you out here. They pay, and they come back, and they tell the next settlement over.</text>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>WorkFine</inSignal>
+          <faction>$customerFaction</faction>
+          <change>8</change>
+          <reason>RUT_DroidJobFineWork</reason>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>WorkFine</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <!-- OUTCOME 2: a standard part. The honest job. -->
+        <li Class="QuestNode_Letter">
+          <inSignal>WorkHonest</inSignal>
+          <label TKey="LetterLabelDroidJobHonest">Job done: [lodgers0_nameDef]</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextDroidJobHonest">[lodgers0_nameDef] cycles clean and walks straight. [customerFaction_name] paid the price you named and went home with a working droid, which is all either of you wanted.</text>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>WorkHonest</inSignal>
+          <faction>$customerFaction</faction>
+          <change>4</change>
+          <reason>RUT_DroidJobHonestWork</reason>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>WorkHonest</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <!-- OUTCOME 3: a worn part, and you kept the good one. Ruling 2's "get
+             rid of problematic parts": this is the profitable, disreputable
+             answer, and it is a real option, not a punishment. -->
+        <li Class="QuestNode_Letter">
+          <inSignal>WorkShoddy</inSignal>
+          <label TKey="LetterLabelDroidJobShoddy">Paid, and watched: [lodgers0_nameDef]</label>
+          <letterDef>NeutralEvent</letterDef>
+          <text TKey="LetterTextDroidJobShoddy">[lodgers0_nameDef] moves. It moves the way scrap moves. [customerFaction_name] paid the short price without much said, and looked at the panel a moment longer than they needed to.\n\nThe good part is still on your shelf. That was the trade.</text>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>WorkShoddy</inSignal>
+          <faction>$customerFaction</faction>
+          <change>-3</change>
+          <reason>RUT_DroidJobShoddyWork</reason>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>WorkShoddy</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <!-- OUTCOME 4: the panel was never opened. -->
+        <li Class="QuestNode_Letter">
+          <inSignal>WorkNeglected</inSignal>
+          <label TKey="LetterLabelDroidJobNeglected">Untouched: [lodgers0_nameDef]</label>
+          <letterDef>NegativeEvent</letterDef>
+          <text TKey="LetterTextDroidJobNeglected">[lodgers0_nameDef] left your shop dragging the same leg it arrived on. No fee. [customerFaction_name] will mention it to whoever asks who fixes droids around here.</text>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>WorkNeglected</inSignal>
+          <faction>$customerFaction</faction>
+          <change>-8</change>
+          <reason>RUT_DroidJobNeglected</reason>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>WorkNeglected</inSignal>
+          <outcome>Fail</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <!-- OUTCOME 5: you kept it. Ruling 2's "get rid of problematic droids",
+             read from the other side: the customer's droid never leaves, and it
+             is worth more than the fee ever was. Arrest is the route the game
+             actually offers on a quest lodger
+             (FloatMenuOptionProvider_Arrest.cs:55) - bolt it and it is yours. -->
+        <li Class="QuestNode_Signal">
+          <inSignal>lodgers.Arrested</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelDroidJobSeized">Kept: [lodgers0_nameDef]</label>
+                <letterDef>NegativeEvent</letterDef>
+                <text TKey="LetterTextDroidJobSeized">[lodgers0_nameDef] is not going home. [customerFaction_name] left a droid with the Jawa and are about to learn what that has always meant.</text>
+              </li>
+              <li Class="QuestNode_ChangeFactionGoodwill">
+                <change>-18</change>
+                <faction>$customerFaction</faction>
+                <reason>RUT_DroidJobDroidKept</reason>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+                <sendStandardLetter>false</sendStandardLetter>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <!-- Stripped for parts, or it died on the bench. Vanilla uses
+             .Destroyed for a dead quest pawn; .Killed has no XML precedent. -->
+        <li Class="QuestNode_Signal">
+          <inSignal>lodgers.Destroyed</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelDroidJobDestroyed">Nothing left: [lodgers0_nameDef]</label>
+                <letterDef>NegativeEvent</letterDef>
+                <text TKey="LetterTextDroidJobDestroyed">There is no droid to hand back. [customerFaction_name] will be told it was beyond saving, and will decide for themselves what that means.</text>
+              </li>
+              <li Class="QuestNode_ChangeFactionGoodwill">
+                <change>-12</change>
+                <faction>$customerFaction</faction>
+                <reason>RUT_DroidJobDroidKept</reason>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+                <sendStandardLetter>false</sendStandardLetter>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <!-- Wandered off on its own: nobody's fault, no verdict. -->
+        <li Class="QuestNode_End">
+          <inSignal>lodgers.LeftMap</inSignal>
+          <outcome>Unknown</outcome>
+        </li>
+
+        <!-- The two ways this becomes impossible through no choice of the player. -->
+        <li Class="QuestNode_End">
+          <inSignal>customerFaction.BecameHostileToPlayer</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>

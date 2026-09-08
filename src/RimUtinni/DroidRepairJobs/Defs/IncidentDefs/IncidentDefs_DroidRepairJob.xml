@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROID_REPAIR_FOR_PROFIT_EVENTS_1 (packet C5).
+
+     RUT_DroidRepairJob reaches the player through the NATURAL RANDOM POOL
+     (rootSelectionWeight 1.1, minRefireDays 15) - that is the "regular event"
+     ruling 2 asked for, and the frequency cap section 6 demanded.
+
+     This IncidentDef exists at baseChance 0 for one reason: a deterministic
+     trigger. skills/rimworld-quests/SKILL.md section 7 - "never gate a
+     verification on the storyteller". Fire it from dev mode (Debug actions ->
+     Do incident) or a bridge call to force the quest to offer, instead of
+     waiting for a roll. Same shape as VaultDungeons' RUT_GiveQuest_* row.
+
+     baseChance 0 also means it can never double the natural pool's own rate.
+======================================================================== -->
+<Defs>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_DroidRepairJob</defName>
+    <label>quest: droid repair job</label>
+    <letterLabel>Quest available</letterLabel>
+    <questScriptDef>RUT_DroidRepairJob</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+</Defs>
