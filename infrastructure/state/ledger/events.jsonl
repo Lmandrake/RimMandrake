@@ -5773,3 +5773,36 @@
 {"seat":"FOUNDRY","event":"start","id":"ARMOURY_PATCH_INNER_MISS_1","ts":"2026-09-08T15:14:41Z"}
 {"seat":"FOUNDRY","event":"block","id":"WORLD_LINT_WATER_HARDCODE_1","reason":"fix committed f56dc9d4, needs a game-down window to build+deploy the companion DLL and re-run jawa/world_lint to verify landBiomeSubmerged 1135->0","ts":"2026-09-08T15:15:54Z"}
 {"seat":"BENCH","event":"capability","system":"Spikes","retired":true,"evidence_ref":"not a mod: no About.xml; spike code — 2 absorbed by Pits, 1 moved to RaidRedesigner (owner ruling 2026-09-08)","ts":"2026-09-08T15:19:12Z"}
+{"seat":"BENCH","event":"file","id":"BRIDGETOOLS_DLL_GM_DRIFT_1","title":"JawaBench DLL is 41 tools behind source (built without GM pair); selftest_tool_metadata FAILs until companion rebuild+redeploy on a game-down window","kind":"task","target":"v1","needs":"deploy","for":"FOUNDRY","ts":"2026-09-08T15:21:39Z"}
+{"seat":"BENCH","event":"file","id":"MATURITY_DASHBOARD_DENSITY_1","title":"Maturity dashboard density passes (owner AFK note 2026-09-08): cram info intuitively; evidence-miner promotions land here too","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-08T15:21:40Z"}
+{"seat":"BENCH","event":"claim","id":"MATURITY_DASHBOARD_DENSITY_1","ts":"2026-09-08T15:21:41Z"}
+{"seat":"FOUNDRY","event":"close","id":"KOTORCORE_ADAPTIVESTORAGE_PARENTNAME_1","sha":"cbd371cc83309b73533d4508887a236db3600de8","ts":"2026-09-08T15:22:51Z"}
+{"seat":"BENCH","event":"capability","system":"Antiquities","function_rung":"validated","evidence_ref":"ANTIQUITIES_TREE_BUILD_1","date":"2026-09-04","ts":"2026-09-08T15:25:45Z"}
+{"seat":"BENCH","event":"capability","system":"Armoury","function_rung":"validated","evidence_ref":"LIGHTSABER_RECIPE_GATE_1","date":"2026-09-03","ts":"2026-09-08T15:25:46Z"}
+{"seat":"BENCH","event":"capability","system":"BirthHatchDemo","function_rung":"validated","evidence_ref":"LIVE_BIRTH_AND_HATCH_DEMO_1","date":"2026-09-02","ts":"2026-09-08T15:25:46Z"}
+{"seat":"BENCH","event":"capability","system":"Droidworks","function_rung":"validated","evidence_ref":"DROIDWORKS_POWEREDDOWN_NOT_WIRED_1 / DROIDWORKS_FULL_LIST_COEXIST_1","date":"2026-09-08","ts":"2026-09-08T15:25:47Z"}
+{"seat":"BENCH","event":"capability","system":"FireEcology","function_rung":"validated","evidence_ref":"FIRE_ECOLOGY_LOOP_1","date":"2026-09-01","ts":"2026-09-08T15:25:47Z"}
+{"seat":"BENCH","event":"capability","system":"FluidCanals","function_rung":"validated","evidence_ref":"FLUID_CANAL_FLOOD_TUNING_GAPS_1","date":"2026-09-04","ts":"2026-09-08T15:25:48Z"}
+{"seat":"BENCH","event":"capability","system":"Graffiti","function_rung":"validated","evidence_ref":"GRAFFITI_FRAMEWORK_BUILD_1","date":"2026-09-06","ts":"2026-09-08T15:25:49Z"}
+{"seat":"BENCH","event":"capability","system":"Inhabited","function_rung":"validated","evidence_ref":"INHABITED_SETTLEMENT_MAPPARENT_GAP_1","date":"2026-09-04","ts":"2026-09-08T15:25:49Z"}
+{"seat":"BENCH","event":"capability","system":"JawaIonWeapons","function_rung":"validated","evidence_ref":"VEHICLE_ION_TIER_1","date":"2026-08-30","ts":"2026-09-08T15:25:50Z"}
+{"seat":"BENCH","event":"capability","system":"Livestock","function_rung":"validated","evidence_ref":"FORSAKEN_CRAGS_PREDATORS_BUILD_1","date":"2026-09-07","ts":"2026-09-08T15:25:51Z"}
+{"seat":"BENCH","event":"capability","system":"LoadTracer","function_rung":"validated","evidence_ref":"COLD_LOAD_STALL_INTERMITTENT_1","date":"2026-09-02","ts":"2026-09-08T15:25:51Z"}
+{"seat":"BENCH","event":"capability","system":"Ninefold","function_rung":"validated","evidence_ref":"NINEFOLD_RUNTIME_PROOF_BLOCKED_1","date":"2026-09-05","ts":"2026-09-08T15:25:52Z"}
+{"seat":"BENCH","event":"capability","system":"Pits","function_rung":"validated","evidence_ref":"RIMMANDRAKE_PITS_BUILD_1","date":"2026-09-06","ts":"2026-09-08T15:25:53Z"}
+{"seat":"BENCH","event":"capability","system":"PawnFlavor","function_rung":"validated","evidence_ref":"PAWN_FLAVOR_SILENT_NONAPPLY_1","date":"2026-09-02","ts":"2026-09-08T15:25:55Z"}
+{"seat":"BENCH","event":"capability","system":"ResearchRetag","function_rung":"validated","evidence_ref":"RESEARCH_TREE_NORMALIZATION_1","date":"2026-09-04","ts":"2026-09-08T15:25:56Z"}
+{"seat":"BENCH","event":"capability","system":"RimDefDump","function_rung":"validated","evidence_ref":"DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1","date":"2026-09-03","ts":"2026-09-08T15:25:58Z"}
+{"seat":"BENCH","event":"capability","system":"SalvageClaim","function_rung":"validated","evidence_ref":"SETTLEMENT_VERBS_WAVE_1","date":"2026-09-01","ts":"2026-09-08T15:25:59Z"}
+{"seat":"BENCH","event":"capability","system":"ShipMemory","function_rung":"validated","evidence_ref":"ANOMALY_EXCEPTION_ACCESS_1","date":"2026-09-04","ts":"2026-09-08T15:26:00Z"}
+{"seat":"BENCH","event":"capability","system":"StarWarsRaces","function_rung":"validated","evidence_ref":"STARWARSRACES_UNDECLARED_GENE_DEPS_1","date":"2026-09-03","ts":"2026-09-08T15:26:02Z"}
+{"seat":"BENCH","event":"capability","system":"StructureInjections","function_rung":"validated","evidence_ref":"RIMPLACE_GENSTEP_LIVE_PROOF_1","date":"2026-09-02","ts":"2026-09-08T15:26:03Z"}
+{"seat":"BENCH","event":"capability","system":"WreckedMachines","function_rung":"validated","evidence_ref":"WRECKED_MACHINES_RESURRECTION_1","date":"2026-09-01","ts":"2026-09-08T15:26:05Z"}
+{"seat":"BENCH","event":"capability","system":"AshkarrInhabited","function_rung":"runnable","evidence_ref":"DISTRICT_TEMPLATE_LIBRARY_1","date":"2026-09-01","ts":"2026-09-08T15:26:06Z"}
+{"seat":"BENCH","event":"capability","system":"Cuisine","function_rung":"runnable","evidence_ref":"RIVER_STEAM_ANIMATION_1","date":"2026-09-07","ts":"2026-09-08T15:26:07Z"}
+{"seat":"BENCH","event":"capability","system":"EmpirePursuit","function_rung":"runnable","evidence_ref":"EMPIRE_PURSUIT_SURVEY_SHADOW_1 (pre-rename packageId, see caveat)","date":"2026-08-30","ts":"2026-09-08T15:26:09Z"}
+{"seat":"BENCH","event":"capability","system":"SeaBeasts","function_rung":"runnable","evidence_ref":"SW_SEA_MONSTERS_ART_1","date":"2026-09-02","ts":"2026-09-08T15:26:10Z"}
+{"seat":"BENCH","event":"capability","system":"StarWarsPatches","function_rung":"runnable","evidence_ref":"COLD_LOAD_RUN_SHEET_3","date":"2026-09-04","ts":"2026-09-08T15:26:11Z"}
+{"seat":"BENCH","event":"capability","system":"TheftHauler","function_rung":"runnable","evidence_ref":"BUILDING_THEFT_HAULER_1","date":"2026-09-01","ts":"2026-09-08T15:26:12Z"}
+{"seat":"BENCH","event":"capability","system":"UtinniPatches","function_rung":"runnable","evidence_ref":"COLD_LOAD_RUN_SHEET_3","date":"2026-09-04","ts":"2026-09-08T15:26:13Z"}
+{"seat":"BENCH","event":"file","id":"UTINNI_SHELL_DEFNAME_BUG_1","title":"UtinniShell emits Config error every full-list load: defName 'Utinni Shellmandrake.rut.shell' — name and packageId concatenated somewhere in its def authoring","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-08T15:26:22Z"}

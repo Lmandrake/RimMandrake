@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T14:48:41Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-08T15:26:22Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -459,6 +459,15 @@ kind:     task
 summary:  Thin when filed — no spec/verify/criteria. Decided here (FOUNDRY, 2026-09-08):
 prose:    infrastructure/state/items/DROIDWORKS_FULL_LIST_COEXIST_1.md
 
+## DROIDWORKS_LIVE_LOOP_PROOF_1 Minimal-list quicktest proof of the five-state loop on GNK + a KotOR kind; close the 8 open live checkboxes
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  (no items/DROIDWORKS_LIVE_LOOP_PROOF_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_LIVE_LOOP_PROOF_1.md
+
 ## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -485,6 +494,24 @@ target:   v1
 kind:     task
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
+
+## ARMOURY_PATCH_INNER_MISS_1 Jawa Armoury Rebalance: 3 FindMod blocks report failure though all 3 mods are ACTIVE -- an inner xpath is missing (patch failures 8 vs baseline 5)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  evidence (full-list load, 2026-09-07, 598 mods)
+prose:    infrastructure/state/items/ARMOURY_PATCH_INNER_MISS_1.md
+
+## WORLD_LINT_WATER_HARDCODE_1 world_lint hard-codes Ocean/SeaIce as the only water biomes -- reports all 1135 custom-sea tiles as landBiomeSubmerged
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  status 2026-09-08 — fixed, build pending deploy+restart to verify live
+prose:    infrastructure/state/items/WORLD_LINT_WATER_HARDCODE_1.md
 
 ## BRIDGETOOLS_CSHARP_SWEEP_BUGS_1 6 real bugs found in a full-file review of the 3 largest bridgetools C# files (Society/Terrain/World tools)
 state:    doing
@@ -629,6 +656,16 @@ blocked:  attended south-facing pass done (v2 fixes legibility, needs one more f
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
 
+## WORLD_LINT_WATER_HARDCODE_1 world_lint hard-codes Ocean/SeaIce as the only water biomes -- reports all 1135 custom-sea tiles as landBiomeSubmerged
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+blocked:  fix committed f56dc9d4, needs a game-down window to build+deploy the companion DLL and re-run jawa/world_lint to verify landBiomeSubmerged 1135->0
+summary:  status 2026-09-08 — fixed, build pending deploy+restart to verify live
+prose:    infrastructure/state/items/WORLD_LINT_WATER_HARDCODE_1.md
+
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    ready  (BLOCKED)
 row:      unassigned
@@ -650,16 +687,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DROIDWORKS_LIVE_LOOP_PROOF_1 Minimal-list quicktest proof of the five-state loop on GNK + a KotOR kind; close the 8 open live checkboxes
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_LIVE_LOOP_PROOF_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_LIVE_LOOP_PROOF_1.md
 
 ## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
 state:    proposed
@@ -1011,16 +1038,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  OASISMUTATORPATCH1 — the vanilla Oasis mutator, adapted
 prose:    infrastructure/state/items/OASIS_MUTATOR_PATCH_1.md
 
-## KOTORCORE_ADAPTIVESTORAGE_PARENTNAME_1 Absorbed_Kotorcore_AdaptiveStorageFramework_HiddenSmugglingCompartmentPanels.xml: guy762_SecretFloorPanel_BASE ParentName=AdaptiveStorageBase resolves to nothing, def discarded
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify
-summary:  Found while closing KOTORCOREABSORPTIONMISSINGTEXTURES1
-prose:    infrastructure/state/items/KOTORCORE_ADAPTIVESTORAGE_PARENTNAME_1.md
-
 ## PAWNFLAVOR_GEN_BEHIND_1 PawnFlavorPhase2 patches are far behind gen_pawn_flavor_phase2_apply.py, plus two small drifts
 state:    proposed
 row:      unassigned
@@ -1081,16 +1098,6 @@ thin:     no ## spec, no ## criteria
 summary:  finding
 prose:    infrastructure/state/items/ARMOURY_CROSSFILE_ADD_REPLACE_ORDER_1.md
 
-## ARMOURY_PATCH_INNER_MISS_1 Jawa Armoury Rebalance: 3 FindMod blocks report failure though all 3 mods are ACTIVE -- an inner xpath is missing (patch failures 8 vs baseline 5)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  evidence (full-list load, 2026-09-07, 598 mods)
-prose:    infrastructure/state/items/ARMOURY_PATCH_INNER_MISS_1.md
-
 ## ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1 Rewrite OracleHttpClient to shell out to claude -p, per owner's 2026-09-05 in-game-LLM ruling (never tracked as an item)
 state:    proposed
 row:      unassigned
@@ -1110,16 +1117,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the ask
 prose:    infrastructure/state/items/UNDERWATER_BIOME_SUPPORT_1.md
-
-## WORLD_LINT_WATER_HARDCODE_1 world_lint hard-codes Ocean/SeaIce as the only water biomes -- reports all 1135 custom-sea tiles as landBiomeSubmerged
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  the defect — PROVEN, read from our own source
-prose:    infrastructure/state/items/WORLD_LINT_WATER_HARDCODE_1.md
 
 ## WORLD_FEATURE_LABELS_OVERSIZED_1 World feature labels render HUGE and overlap the globe -- our maxDrawSizeInTiles multiplier is 1.63x vanilla's
 state:    proposed
@@ -1200,3 +1197,23 @@ kind:     bug
 thin:     no ## criteria
 summary:  Found 2026-09-08, FOUNDRY code-review loop (subagent review of glemit.py,
 prose:    infrastructure/state/items/GL_EMIT_FLOATRANGE_GENERIC_DROP_1.md
+
+## BRIDGETOOLS_DLL_GM_DRIFT_1 JawaBench DLL is 41 tools behind source (built without GM pair); selftest_tool_metadata FAILs until companion rebuild+redeploy on a game-down window
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BRIDGETOOLS_DLL_GM_DRIFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BRIDGETOOLS_DLL_GM_DRIFT_1.md
+
+## UTINNI_SHELL_DEFNAME_BUG_1 UtinniShell emits Config error every full-list load: defName 'Utinni Shellmandrake.rut.shell' — name and packageId concatenated somewhere in its def authoring
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/UTINNI_SHELL_DEFNAME_BUG_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/UTINNI_SHELL_DEFNAME_BUG_1.md
