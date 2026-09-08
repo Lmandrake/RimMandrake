@@ -27,9 +27,8 @@ MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8
 overlay plans): **222 tiles** scattered across **Dune Sea 98,
 Pyrelands 63, Anvil 41, Dew Belt 12, Kiln 6, Hollow Verge 2** — the region wears
 the name already. Sun median **+56°** (arc 6–69); temp median 53.6 °C
-(39..65); elevation ~257 m, mostly flat (136/226 — flat-tile count not
-re-measured against the new 222 total); rivers 9 tiles; **rain zero
-on 207 of 226** (proportion not re-measured against the new 222 total), with
+(39..65); elevation ~257 m, mostly flat (144/222; 41 small-hill, 31
+large-hill, 6 mountainous); rivers 9 tiles; **rain zero on 199 of 222**, with
 Dew Belt outliers to 1,529 mm. The 6 Kiln tiles brush the
 sacred dead-flat ground (`sacred_sites_pass_1.md`'s Zizzik/Mob'Unloo contest) —
 cross-reference only; that site's canon is its own.

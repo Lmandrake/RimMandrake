@@ -31,11 +31,12 @@ with — a factual update, not a reopening of the "the water is inside" ruling
 below (§1, §5); BENCH flags it for the freeze review rather than reading it
 here. Sun median **+51°** (arc p10/median/p90 21.2/39.4/53.3) — more raw energy
 than the Greentide. Temp p10/median/p90 38.6 / 49.2 / 58.2 °C (max 63.9).
-Mountainous-heavy: 62 mountainous + 7 impassable of 169; elevation median 361 m,
+High-relief: 34 mountainous + 9 impassable + 56 large-hill of 169 (55 flat, 15
+small-hill); elevation median 361 m,
 to 1,255 m. Regions: **Dune Sea 81, Scald Spine 43**, Dew Belt 16, Hollow Verge
 16, Anvil 12, Dew Horn 1.
 
-🔴 **The rain is bimodal and it is the biome's skeleton: 99 tiles get ZERO rain;
+🔴 **The rain is bimodal and it is the biome's skeleton: 96 tiles get ZERO rain;
 the other 73 climb to 1,529 mm** — near the heaviest on the planet, on green
 mountain shoulders the Contagion could not take (its own sheet: no green squares).
 Half this jungle drinks storms. Half drinks nothing — and is jungle anyway. §3
@@ -189,11 +190,11 @@ read it.
   yield), raiding a nest. Implementation: game-wide rename patch + hyperweave
   stripped from every trader stock table, proven against live trader generation,
   not the XML (`SHOKKWEAVE_SOLE_SOURCE_1`).
-  ⭐ **Amendment (owner ruling, 2026-09-08): the Shokk are the wyyyschokk of
-  Kashyyyk** — canon web-casting giant spiders (*Han Solo and the Lost Legacy*;
-  *Jedi: Fallen Order*), not a Rakatan invention (`rakatan_legacy_index.md` row 5,
-  ruled negative). How a Kashyyyk species reached Ash'karr is unwritten — open
-  flavor, not open mechanics.
+  ⭐ **Amendment (owner ruling, 2026-09-08): the Wyyyschokk are canon Star Wars
+  fauna, NOT a Rakatan invention** — the origin question the legacy index carried
+  is closed negative (`rakatan_legacy_index.md` row 5). Identity itself was
+  already standing ruling (header: Wyyyschokk to the galaxy, Feralisk on this
+  world); this amendment only settles what the ancients did NOT make.
 - **The eggs** — extremely valuable smuggled offworld; carrying stolen eggs marks
   you to every web you pass. The smuggler's jackpot, priced in risk.
 - **The mandible bounty** — the Wildsteam's standing reward for fresh pairs; a

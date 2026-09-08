@@ -75,6 +75,20 @@ def biome_stats(rows):
         rivers = sum(1 for t in tiles if float(t["river_flow"] or 0) > 0)
         regions = collections.Counter(t["region"] for t in tiles)
         sectors = collections.Counter(int(float(t["bearing"]) // 30) % 12 for t in tiles)
+        # RimWorld Hilliness enum: 1 Flat, 2 SmallHills, 3 LargeHills,
+        # 4 Mountainous, 5 Impassable
+        hill = collections.Counter(int(t["hilliness"] or 0) for t in tiles)
+        # per-region climate mini-stats inside this biome (SHEET_SUBMEASURE_REFRESH_1)
+        reg_rows = collections.defaultdict(list)
+        for t in tiles:
+            reg_rows[t["region"]].append(t)
+        reg_stats = {}
+        for reg, rts in reg_rows.items():
+            ra = sorted(float(t["arc"]) for t in rts)
+            rt = sorted(float(t["temp_c"]) for t in rts)
+            re_ = sorted(int(t["elev_m"]) for t in rts)
+            reg_stats[reg] = {"n": len(rts), "arc_med": pctl(ra, 50),
+                              "temp_med": pctl(rt, 50), "elev_med": pctl(re_, 50)}
         out[biome] = {
             "tiles": len(tiles),
             "arc_min": arc[0], "arc_max": arc[-1],
@@ -85,6 +99,11 @@ def biome_stats(rows):
             "elev_med": pctl(elev, 50), "elev_max": elev[-1],
             "rain_med": pctl(rain, 50), "rain_max": rain[-1],
             "water_tiles": water, "river_tiles": rivers,
+            "rain_zero_tiles": sum(1 for t in tiles if float(t["rain_mm"] or 0) == 0),
+            "hilliness": {"flat": hill.get(1, 0), "small": hill.get(2, 0),
+                          "large": hill.get(3, 0), "mountainous": hill.get(4, 0),
+                          "impassable": hill.get(5, 0)},
+            "region_stats": reg_stats,
             "regions": regions.most_common(),
             "sectors_present": len(sectors),
             "sector_min": min(sectors.values()) if sectors else 0,
