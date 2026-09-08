@@ -22,7 +22,7 @@ stay,RimMandrake/RimDefDump,,RimMandrake,,,HIGH,dev-only dump tooling mod
 split,RimMandrake/SacredGraffiti/Source/SacredGraffiti.cs,RimMandrake/Graffiti,RimMandrake,mandrake.rm.graffiti,,HIGH,RitualOutcomeEffectWorker_PlaceSacredMark is the reusable mechanism — engine side
 split,RimMandrake/SacredGraffiti/Defs/SacredMarks.xml,RimUtinni/Salvation,RimUtinni,mandrake.rut.salvation,,HIGH,nine Salvation-god wall-marks; Graffiti About already anticipates a rut marks id
 split,RimMandrake/SacredGraffiti/Defs/RitualOutcomeEffects.xml,RimUtinni/Salvation,RimUtinni,mandrake.rut.salvation,,HIGH,mark-placement RitualOutcomeEffectDef; unreferenced until Matrix build — moves with the marks
-merge-into,RimMandrake/DesertVehicleReskin,RimStarWars/StarWarsPatches,RimStarWars,mandrake.rsw.patches,folds-into-patches,HIGH,R11 per NAMING_SCHEME_PLAN tie-break amendment (aesthetic reskins take the tier of the aesthetic); fold rides R4 machinery
+move,RimMandrake/DesertVehicleReskin,RimStarWars/DesertVehicleReskin,RimStarWars,mandrake.rsw.desertvehiclereskin,stays,HIGH,"R11 tier move; fold REVERSED by BENCH mid-sprint: mod ships C# (RM_DraughtFuelExtension DLL + LoadFolders.xml) — moves whole; id+prefix re-tier in global pass"
 merge-into,RimMandrake/GravshipAstronautFix,RimMandrake/MandrakePatches,RimMandrake,mandrake.rm.patches,folds-into-patches,HIGH,donor vanillaexpanded.gravship stays; 3 textures
 merge-into,RimMandrake/PhytokinBarkHeadFix,RimMandrake/MandrakePatches,RimMandrake,mandrake.rm.patches,folds-into-patches,HIGH,donor vanillaracesexpanded.phytokin stays; 1 texture
 merge-into,RimMandrake/ResearchKitEastFix,RimMandrake/MandrakePatches,RimMandrake,mandrake.rm.patches,folds-into-patches,HIGH,donor PeteTimesSix.ResearchReinvented stays; 4 textures

@@ -25,5 +25,15 @@
     <li>DanZinagri.FacialAnimationCompatabilityProject</li> <!-- HeadSetForFA_Revive.xml - creates BS_InsectoidHumanoid_FourArmed_FaceAdjustment; must load after -->
     <li>ab.hoffa</li>                                       <!-- HeadSetForFA_Revive.xml - the mod being revived (not in the current active list; the patch no-ops harmlessly until it is) -->
     <li>Dark.Signs</li>                                     <!-- SignBillboard etc. (9 defs)  ThirdPartySignConfigErrors_Fix.xml -->
+
+    <!-- Carried in by MOD_CONSOLIDATION_PATCHES_FOLD_1 (2026-09-08): each is
+         the fix-target donor of a fix mod folded into this Patches/ tree.
+         A fold that loses its donor's loadAfter silently no-ops. -->
+    <li>vanillaexpanded.gravship</li>                       <!-- Patches/GravshipAstronautFix textures - fix target -->
+    <li>vanillaracesexpanded.phytokin</li>                  <!-- Patches/PhytokinBarkHeadFix textures - fix target -->
+    <li>PeteTimesSix.ResearchReinvented</li>                <!-- Patches/ResearchKitEastFix textures - fix target -->
+    <li>aw.researchreinvented.retextured</li>               <!-- Patches/ResearchKitEastFix textures - fix target's own retexture add-on -->
+    <li>vanillaracesexpanded.saurid</li>                    <!-- Patches/SauridFrillFix textures - fix target -->
+    <li>VanillaExpanded.VAEAccessories</li>                 <!-- Patches/ToolBeltFix textures - fix target -->
     </loadAfter>
 </ModMetaData>
