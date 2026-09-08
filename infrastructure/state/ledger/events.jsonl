@@ -5991,3 +5991,9 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"verify DROIDWORKS_HEADS_BRAINS_SPIKES_1 live","ts":"2026-09-08T17:53:59Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T17:59:35Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_HEADS_BRAINS_SPIKES_1","sha":"c0e4e014eb25a4fc84c16be08f3abf4df28d30d6","ts":"2026-09-08T18:00:41Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-08T18:01:04Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_FINE_PARTS_1","ts":"2026-09-08T18:01:15Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_FINE_PARTS_1","ts":"2026-09-08T18:01:15Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"deploy+verify DROIDWORKS_FINE_PARTS_1","ts":"2026-09-08T18:07:14Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T18:12:32Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_FINE_PARTS_1","sha":"2d9b14e39fa799fa530352b4cdc4e6e6981edcfd","ts":"2026-09-08T18:13:22Z"}
