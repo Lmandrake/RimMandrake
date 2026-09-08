@@ -228,6 +228,91 @@ not editing. Audit early.
 
 ---
 
+## 6. Repainting biomes — measured 2026-09-07, closing out two vanilla survivors
+
+Ash'karr had been "fully repainted" for weeks and still carried 262 vanilla `SeaIce`
+and 10 vanilla `Lake` tiles. Everything here is why they survived and what the engine
+actually reads.
+
+### 🔴 A `(region, biome)` selector silently skips every pair it does not enumerate
+
+The paint script chose tiles like this:
+
+```python
+SELECTORS = [('Scald','Lake','RUT_TheScald'), ('Twilight Sea','Ocean','RUT_TwilightSea'), ...]
+moved = [r for r in rows if r['region']==region and r['biome']==from_biome]
+```
+
+The 262 `SeaIce` tiles were **inside** the two sea regions and were skipped only for not
+being `Ocean`; the 10 `Lake` tiles were in a region no selector named. **And nothing
+caught it, because the script printed 442 and 381 — exactly the numbers its own plan
+predicted.** A count that matches your plan only proves the plan was self-consistent.
+
+✅ **Assert coverage against the INVENTORY, not against the expected number.** After any
+regional repaint, ask what is left in that region that you did not touch:
+`Counter(r['biome'] for r in rows if r['region']==R)` must contain nothing you did not
+intend to leave. Same family as *zero rows is a failure, not a footnote*.
+
+### 🔴 Water NEVER freezes from temperature. Ice comes from the biome, and only the biome.
+
+Do not assume a cold sea will look frozen. Two independent mechanisms, both measured in
+source:
+
+1. **Map-gen** — `MapGenUtility.TerrainFrom()` resolves every cell through
+   `biomeDef.terrainsByFertility`. **There is no temperature term anywhere in it.**
+   Vanilla `SeaIce` looks frozen purely because its `terrainsByFertility` maps everything
+   to `Ice`. `BiomeDef` has no ice or freezing field at all.
+2. **Runtime** — Odyssey's `FreezeManager.DoWaterFreezing` lays `ThinIce` at ≤ −7 °C, but
+   only where `terrain.canFreeze`. `WaterDeepBase` (parent of `WaterDeep` **and**
+   `WaterOceanDeep`) sets `canFreeze=false`, as does `WaterOceanShallow`. **Ocean terrain
+   is hard-excluded by def flag.** Only freshwater shallows freeze.
+
+⇒ A custom sea biome mapping to `WaterOceanDeep` stays liquid at any temperature, forever.
+**Visible ice requires a variant BiomeDef whose `terrainsByFertility` maps to `Ice`** —
+there is no other lever.
+
+### ⭐ Only ten fields are real. Everything else in your authoring CSV is bookkeeping.
+
+`jawa/world_tile_export` returns exactly:
+`tile · lat · long · biome · elevation · temperature · rainfall · hilliness · swampiness · pollution`
+
+A `water` column, an `arc`, a `region` — those are **yours**, not the engine's. ⛔ The
+engine's water test is `elevation <= 0` and nothing else. Ash'karr's `water` column had
+silently disagreed with `elev_m` on 153 tiles; invisible to the game, but a live landmine
+for the next `(region, water)` selector. **Reconcile a derived column against the field
+the engine actually reads, or delete the column.**
+
+### ⚠️ Two encodings that make a correct diff look like total failure
+
+* **`hilliness` round-trips as an ENUM NAME, not an int.** A naive compare of an authoring
+  CSV (`2`) against a live export (`SmallHills`) reports a mismatch on **every tile**. Map
+  `0..5` → `Undefined · Flat · SmallHills · LargeHills · Mountainous · Impassable`.
+* **`jawa/world_stats`' biome histogram covers LAND ONLY.** Water is counted separately, so
+  the histogram total will not equal the tile count — 20,465 + 1,407 = 21,872. That is
+  correct, not a truncation.
+
+### ✅ Decide a landform per adjacency CLUSTER, not per tile
+
+Voting each ex-lake tile independently by neighbour majority scattered **three biomes
+across one five-tile basin** and left a **117 m lump** inside it, because each tile saw a
+different rim. Flood-fill the patch first, pool the land neighbours of the WHOLE cluster,
+and give the cluster one biome and one elevation. For a drained basin, set elevation to the
+cluster's lowest **land** neighbour minus ~10 m (floored at 1 m) so it still reads as a
+depression rather than a bump.
+
+⚠️ **Exclude water biomes from any neighbour-majority vote**, or a fill paints the sea onto
+dry land — nearly done here twice.
+
+### 📌 Two signatures that are not what you would guess
+
+* `jawa/world_view` takes **`centerTile`**, `altitude`, `northUp`, `show` — **not** lat/lon.
+* `jawa/world_neighbors` takes **`path`** and writes the whole adjacency CSV; it does not
+  answer a single tile. Dump it once, then read it offline.
+
+Both were caught by `rimbridge_client`'s param guard, which refuses an undeclared name
+rather than letting the bridge discard it and report success. Drive the bridge through that
+client, never raw.
+
 ---
 
 ## 7. Where the detail lives

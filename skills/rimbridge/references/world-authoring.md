@@ -84,3 +84,12 @@ previous mode. Give the render loop a beat (or step a frame/tick) before capturi
   `desiredAltitude` — the tool sets both.
 * ⚠️ **`CameraJumper.TryShowWorld()` returns false unless `ProgramState == Playing`**, which
   `readiness=mapData` does not guarantee.
+* ⭐ **`world_tile_export` names the only fields that are real**: `tile · lat · long · biome ·
+  elevation · temperature · rainfall · hilliness · swampiness · pollution`. A `water`, `arc` or
+  `region` column in an authoring CSV is bookkeeping the engine never sees — its water test is
+  `elevation <= 0`. And `hilliness` comes back as an ENUM NAME, so a naive int compare against
+  your CSV mismatches on every tile.
+* 🔴 **Ice is a property of the BIOME, never of temperature** — `terrainsByFertility` decides
+  it, and ocean terrain sets `canFreeze=false` so even Odyssey's runtime freeze cannot touch
+  it. A cold custom sea stays liquid forever. Full evidence and the repaint traps that go with
+  it: `rimworld-world-editing` SKILL.md §6.
