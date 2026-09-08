@@ -25,3 +25,18 @@ engines).
 
 ## Criteria
 One page; owner has seen it; sprint map's Chronicle rows cite it.
+
+## Spec delivered; gate stays CLOSED — 2026-09-08 (BENCH)
+`design/CHRONICLE_EVENT_SPINE.md` written (469 words, Fable). But the
+verify grep fails TODAY, by design of the old code — three compile-time
+couplings contradict the soft-hook law:
+1. Aftermath About.xml modDependencies lists mandrake.rm.ninefold;
+   RM_Aftermath.csproj hard-References RimMandrakeNinefold.
+2. MapComponent_BattleRecorder.Close() calls
+   GameComponent_Ninefold.ApplyDelta directly (documented as deliberate).
+3. RM_AftermathRuleDef.godTie is typed with Ninefold's God enum — the
+   ChronicleRites split would inherit a compile-time Ninefold ref.
+Decoupling is C# authoring → CHRONICLE_NINEFOLD_DECOUPLE_1 (filed, model
+escalation warranted). This item closes when the spine spec's verify
+grep passes; the sprint's Chronicle/Property/Pursuit rename rows stay
+parked until then. Wave-A mechanics are unaffected.
