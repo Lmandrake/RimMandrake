@@ -9,6 +9,7 @@
     <label>specialist droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_T3series</race>
     <combatPower>50</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -20,6 +21,7 @@
     <label>utility droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_3Cseries</race>
     <combatPower>30</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -31,6 +33,7 @@
     <label>specialist droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_ITseries</race>
     <combatPower>30</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -42,6 +45,7 @@
     <label>utility droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_R8009UD</race>
     <combatPower>20</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -53,6 +57,7 @@
     <label>labor droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_GE3LD</race>
     <combatPower>10</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -64,6 +69,7 @@
     <label>protocol droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_GE3PD</race>
     <combatPower>10</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -75,6 +81,7 @@
     <label>probe droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_KX12UPD</race>
     <combatPower>20</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -86,6 +93,7 @@
     <label>assassin probe</label>
     <race>RSW_DW_Race_guy762_DroidRace_KX12APD</race>
     <combatPower>50</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -97,6 +105,7 @@
     <label>patrol droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_MPDMkI</race>
     <combatPower>20</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -108,6 +117,7 @@
     <label>mining droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_KM1MD</race>
     <combatPower>30</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -119,6 +129,7 @@
     <label>excavation droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_KM1HMD</race>
     <combatPower>40</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -130,6 +141,7 @@
     <label>war droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_SentWD</race>
     <combatPower>50</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -141,6 +153,7 @@
     <label>battle droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_DevWD</race>
     <combatPower>30</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -152,6 +165,7 @@
     <label>assassin droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_DevAD</race>
     <combatPower>60</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -163,6 +177,7 @@
     <label>assault droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_ADMkI</race>
     <combatPower>70</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -174,6 +189,7 @@
     <label>star forge droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_ADMkI_sf</race>
     <combatPower>100</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -185,6 +201,7 @@
     <label>heavy assault droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_ADMkIV</race>
     <combatPower>90</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -196,6 +213,7 @@
     <label>heavy assault droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_ADMkIV_sith</race>
     <combatPower>120</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -207,6 +225,7 @@
     <label>HK-50 unit</label>
     <race>RSW_DW_Race_guy762_DroidRace_HK50series</race>
     <combatPower>100</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -218,6 +237,7 @@
     <label>HK-51 unit</label>
     <race>RSW_DW_Race_guy762_DroidRace_HK51series</race>
     <combatPower>100</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -229,6 +249,7 @@
     <label>specialist droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_GOTO</race>
     <combatPower>100</combatPower>
+    <apparelMoney>0~0</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -240,6 +261,7 @@
     <label>HK-51 unit</label>
     <race>RSW_DW_Race_guy762_DroidRace_HK51series</race>
     <combatPower>200</combatPower>
+    <apparelMoney>600~1400</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT2_weak</li>
       <li>KotORDroidWeapon_hvy_any</li>
@@ -257,6 +279,7 @@
     <label>HK unit</label>
     <race>RSW_DW_Race_guy762_DroidRace_HKseries</race>
     <combatPower>500</combatPower>
+    <apparelMoney>600~1400</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT2_weak</li>
       <li>KotORDroidWeapon_hvy_any</li>
@@ -274,6 +297,7 @@
     <label>T3 unit</label>
     <race>RSW_DW_Race_guy762_DroidRace_T3series</race>
     <combatPower>100</combatPower>
+    <apparelMoney>350~700</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT1_weak</li>
       <li>KotORDroidWeapon_light_any</li>
@@ -292,6 +316,7 @@
     <label>utility droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_3Cseries</race>
     <combatPower>20</combatPower>
+    <apparelMoney>350~700</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT1_weak</li>
       <li>KotORDroidUpgrade_repair</li>
@@ -309,6 +334,7 @@
     <label>maintenance droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_R8009UD</race>
     <combatPower>10</combatPower>
+    <apparelMoney>350~700</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT1_weak</li>
       <li>KotORDroidUpgrade_repair</li>
@@ -325,6 +351,7 @@
     <label>protocol droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_GE3PD</race>
     <combatPower>30</combatPower>
+    <apparelMoney>350~650</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT1_weak</li>
       <li>KotORDroidUpgrade_repair</li>
@@ -340,6 +367,7 @@
     <label>labor droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_GE3LD</race>
     <combatPower>10</combatPower>
+    <apparelMoney>500~1400</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT1_weak</li>
       <li>KotORDroidUpgrade_repair</li>
@@ -355,6 +383,7 @@
     <label>medical droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_KX12UPD</race>
     <combatPower>75</combatPower>
+    <apparelMoney>250~600</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT1_mid</li>
       <li>KotORDroidArmorT1_stuffable</li>
@@ -373,6 +402,7 @@
     <label>fire control droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_KM1HMD</race>
     <combatPower>25</combatPower>
+    <apparelMoney>500~1400</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT3_stuffable</li>
       <li>KotORDroidArmorT3_miningdroid</li>
@@ -390,6 +420,7 @@
     <label>mining droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_KM1MD</race>
     <combatPower>50</combatPower>
+    <apparelMoney>500~1400</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT2_stuffable</li>
       <li>KotORDroidArmorT2_miningdroid</li>
@@ -409,6 +440,7 @@
     <label>excavation droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_KM1HMD</race>
     <combatPower>200</combatPower>
+    <apparelMoney>500~1400</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT3_stuffable</li>
       <li>KotORDroidArmorT3_miningdroid</li>
@@ -428,6 +460,7 @@
     <label>probe droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_KX12UPD</race>
     <combatPower>35</combatPower>
+    <apparelMoney>250~600</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT1_weak</li>
       <li>KotORDroidArmorT1_stuffable</li>
@@ -447,6 +480,7 @@
     <label>patrol droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_MPDMkI</race>
     <combatPower>40</combatPower>
+    <apparelMoney>600~1400</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT1_mid</li>
       <li>KotORDroidArmorT1_stuffable</li>
@@ -466,6 +500,7 @@
     <label>assassin probe</label>
     <race>RSW_DW_Race_guy762_DroidRace_KX12APD</race>
     <combatPower>150</combatPower>
+    <apparelMoney>250~600</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT1_strong</li>
       <li>KotORDroidArmorT1_stuffable</li>
@@ -486,6 +521,7 @@
     <label>saboteur probe</label>
     <race>RSW_DW_Race_guy762_DroidRace_KX12APD</race>
     <combatPower>150</combatPower>
+    <apparelMoney>250~600</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT1_strong</li>
       <li>KotORDroidArmorT1_stuffable</li>
@@ -506,6 +542,7 @@
     <label>battle droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_DevWD</race>
     <combatPower>75</combatPower>
+    <apparelMoney>900~2200</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT1_weak</li>
       <li>KotORDroidArmorT1_stuffable</li>
@@ -526,6 +563,7 @@
     <label>elite war droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_DevAD</race>
     <combatPower>150</combatPower>
+    <apparelMoney>900~2200</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT2_mid</li>
       <li>KotORDroidUpgrade_combat</li>
@@ -545,6 +583,7 @@
     <label>bodyguard droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_DevAD</race>
     <combatPower>200</combatPower>
+    <apparelMoney>900~2200</apparelMoney>
     <apparelTags>
       <li>KotORDroidUpgrade_combat</li>
       <li>KotORDroidShield_melee</li>
@@ -564,6 +603,7 @@
     <label>war droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_SentWD</race>
     <combatPower>125</combatPower>
+    <apparelMoney>900~2200</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT2_weak</li>
       <li>KotORDroidArmorT2_stuffable</li>
@@ -584,6 +624,7 @@
     <label>assault droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_ADMkI</race>
     <combatPower>250</combatPower>
+    <apparelMoney>900~2200</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT3_weak</li>
       <li>KotORDroidArmorT3_stuffable</li>
@@ -604,6 +645,7 @@
     <label>heavy assault droid</label>
     <race>RSW_DW_Race_guy762_DroidRace_ADMkIV</race>
     <combatPower>500</combatPower>
+    <apparelMoney>900~2200</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT3_mid</li>
       <li>KotORDroidArmorT3_stuffable</li>
@@ -625,6 +667,7 @@
     <label>HK-50 unit</label>
     <race>RSW_DW_Race_guy762_DroidRace_HK50series</race>
     <combatPower>500</combatPower>
+    <apparelMoney>600~1400</apparelMoney>
     <apparelTags>
       <li>KotORDroidArmorT2</li>
       <li>KotORDroidUpgrade_hacking</li>
@@ -645,6 +688,7 @@
     <label>veteran HK-50 unit</label>
     <race>RSW_DW_Race_guy762_DroidRace_HK50series</race>
     <combatPower>500</combatPower>
+    <apparelMoney>600~1400</apparelMoney>
     <apparelTags>
       <li>KotORDroidUpgrade_hacking</li>
       <li>KotORDroidUpgrade_combat</li>

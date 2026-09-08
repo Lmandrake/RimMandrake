@@ -1,3 +1,30 @@
+## UPDATE 2026-09-08 (live-verify pass) — blocked on DROIDWORKS_APPAREL_ISFLESH_GATE_1
+`gen_droidworks_defs.py` now emits a per-kind `<apparelMoney>` (0,0 for any
+kind with no `apparelTags` at all — RimWorld's `PawnApparelGenerator.CanUsePair`
+only tag-filters `if (!apparelTags.NullOrEmpty())`, so a nonzero budget on an
+untagged kind draws from the WHOLE apparel pool and dresses a droid in random
+human clothes, measured live on `RSW_DW_OuterRim_GNKDroid`; a nonzero
+family-tier value otherwise, sized against the real `RSW_DW_Module_*` armor
+`MarketValue` floor each family's own tags resolve to). Diffed clean against
+the pre-change committed XML (80 added `<apparelMoney>` lines, zero removed,
+zero other changes) and this part of the fix IS live-verified: `bare skin
+where not intended` now holds (GNK stayed `apparel: []` across a batch after
+the fix, was previously dressed in a vanilla `Apparel_Broadwrap`).
+
+`gear where the design intends it` is NOT yet live — 15/15 spawns across
+Battle/Heavy/Labour/Probe kinds with real `apparelTags` and a budget
+comfortably above their own cheapest matching item still came back
+`apparel: []`. Root cause (read from engine source, not guessed):
+`PawnApparelGenerator.GenerateStartingApparelFor`'s first line returns
+immediately when `!pawn.RaceProps.IsFlesh`, and every Droidworks race is
+`isOrganic:false` by an earlier, deliberate ruling — confirmed live,
+`isFlesh: False` on every spawned DW kind via `jawa/pawn_get`. `apparelMoney`
+is never even read. Full writeup, the fix shape, and the reopened verify
+plan: `DROIDWORKS_APPAREL_ISFLESH_GATE_1`.
+
+This item stays open/blocked rather than closing: its own criteria requires
+a live spawn showing GEAR where intended, which does not hold yet.
+
 ## spec
 Found 2026-09-08 while live-verifying `DROIDWORKS_MODULE_ABSORB_1` (B2). Three
 Droidworks KotOR kinds spawned via `rimworld/execute_debug_action` `Spawn Pawn...`

@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T16:34:55Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-08T17:14:31Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -504,24 +504,6 @@ kind:     task
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
 
-## ARMOURY_PATCH_INNER_MISS_1 Jawa Armoury Rebalance: 3 FindMod blocks report failure though all 3 mods are ACTIVE -- an inner xpath is missing (patch failures 8 vs baseline 5)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  evidence (full-list load, 2026-09-07, 598 mods)
-prose:    infrastructure/state/items/ARMOURY_PATCH_INNER_MISS_1.md
-
-## WORLD_LINT_WATER_HARDCODE_1 world_lint hard-codes Ocean/SeaIce as the only water biomes -- reports all 1135 custom-sea tiles as landBiomeSubmerged
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  status 2026-09-08 — fixed, build pending deploy+restart to verify live
-prose:    infrastructure/state/items/WORLD_LINT_WATER_HARDCODE_1.md
-
 ## BRIDGETOOLS_CSHARP_SWEEP_BUGS_1 6 real bugs found in a full-file review of the 3 largest bridgetools C# files (Society/Terrain/World tools)
 state:    doing
 row:      unassigned
@@ -530,6 +512,15 @@ target:   v1
 kind:     bug
 summary:  Full-file review of the 3 largest source files in the JawaBench bridgetools
 prose:    infrastructure/state/items/BRIDGETOOLS_CSHARP_SWEEP_BUGS_1.md
+
+## DROIDWORKS_APPARELMONEY_MISSING_1 gen_droidworks_defs.py never emits apparelMoney on any of the 80 PawnKindDefs -- no Droidworks kind can ever generate apparel regardless of apparelTags
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  Found 2026-09-08 while live-verifying DROIDWORKSMODULEABSORB1 (B2). Three
+prose:    infrastructure/state/items/DROIDWORKS_APPARELMONEY_MISSING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -685,26 +676,6 @@ blocked:  attended south-facing pass done (v2 fixes legibility, needs one more f
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
 
-## ARMOURY_PATCH_INNER_MISS_1 Jawa Armoury Rebalance: 3 FindMod blocks report failure though all 3 mods are ACTIVE -- an inner xpath is missing (patch failures 8 vs baseline 5)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-blocked:  generator fix committed 1974a7c6, needs a full-list cold load + harvest_log.py to verify patch failures 8->5
-summary:  evidence (full-list load, 2026-09-07, 598 mods)
-prose:    infrastructure/state/items/ARMOURY_PATCH_INNER_MISS_1.md
-
-## WORLD_LINT_WATER_HARDCODE_1 world_lint hard-codes Ocean/SeaIce as the only water biomes -- reports all 1135 custom-sea tiles as landBiomeSubmerged
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-blocked:  fix committed f56dc9d4, needs a game-down window to build+deploy the companion DLL and re-run jawa/world_lint to verify landBiomeSubmerged 1135->0
-summary:  status 2026-09-08 — fixed, build pending deploy+restart to verify live
-prose:    infrastructure/state/items/WORLD_LINT_WATER_HARDCODE_1.md
-
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    ready  (BLOCKED)
 row:      unassigned
@@ -714,6 +685,16 @@ kind:     task
 blocked:  world-tile mutation needs a frozen propane-lake footprint before any tile set is written (on LIQUID_BIOMES_MAP_1)
 summary:  - What it does: an in-game ignition event (thruster contact, a dropped reactor
 prose:    infrastructure/state/items/WAR_LAB_CRATER_HOOK_1.md
+
+## DROIDWORKS_APPARELMONEY_MISSING_1 gen_droidworks_defs.py never emits apparelMoney on any of the 80 PawnKindDefs -- no Droidworks kind can ever generate apparel regardless of apparelTags
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+blocked:  apparelMoney field added+calibrated and live-verified for the bare-skin half; gear-half blocked on IsFlesh gate in PawnApparelGenerator, needs a Harmony patch (on DROIDWORKS_APPAREL_ISFLESH_GATE_1)
+summary:  Found 2026-09-08 while live-verifying DROIDWORKSMODULEABSORB1 (B2). Three
+prose:    infrastructure/state/items/DROIDWORKS_APPARELMONEY_MISSING_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -1247,16 +1228,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1.md
 
-## DROIDWORKS_APPARELMONEY_MISSING_1 gen_droidworks_defs.py never emits apparelMoney on any of the 80 PawnKindDefs -- no Droidworks kind can ever generate apparel regardless of apparelTags
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  Found 2026-09-08 while live-verifying DROIDWORKSMODULEABSORB1 (B2). Three
-prose:    infrastructure/state/items/DROIDWORKS_APPARELMONEY_MISSING_1.md
-
 ## KOTOR_CRYSTAL_GENSTEP_DRIFT_1 Deployed KOTOR_CrystalFormation genstep scatters only Stygium; repo's absorbed copy lists 12 crystal variants — diff repo vs deployed, redeploy or pull (crystal-inventory find)
 state:    proposed
 row:      unassigned
@@ -1266,3 +1237,23 @@ kind:     fix
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
+
+## WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1 181 land-biome tiles (AridShrubland/Desert/Wasteland/AB_RockyCrags/AB_MycoticJungle/ZBiome_Badlands) sit at the three seas' own elevation (-350), unmasked now that WORLD_LINT_WATER_HARDCODE_1 stopped conflating them with the seas' own tiles
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  Unmasked 2026-09-08 while live-verifying WORLDLINTWATERHARDCODE1 on the real
+prose:    infrastructure/state/items/WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1.md
+
+## DROIDWORKS_APPAREL_ISFLESH_GATE_1 Harmony patch: PawnApparelGenerator skips apparel generation entirely for isFlesh=false Droidworks pawns
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Found 2026-09-08 live-verifying DROIDWORKSAPPARELMONEYMISSING1's fix.
+prose:    infrastructure/state/items/DROIDWORKS_APPAREL_ISFLESH_GATE_1.md
