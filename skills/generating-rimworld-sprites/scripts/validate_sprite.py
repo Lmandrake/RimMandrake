@@ -26,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]
                        / "generating-images" / "scripts"))
 import pnglib  # noqa: E402
 
-REJECT, WARN = "REJECT", "WARN"
+REJECT, WARN, INFO = "REJECT", "WARN", "INFO"
 
 # --- thresholds, each with the observation that set it ------------------------
 
@@ -317,8 +317,9 @@ def check(ref: dict, cand: dict) -> list[tuple[str, str]]:
     if cand["sha"] == ref["sha"]:
         add(REJECT, "byte-identical to the reference - nothing changed.")
 
-    if cand["touches"] and not ref["touches"]:
-        add(WARN, f"subject touches the canvas edge ({', '.join(sorted(cand['touches']))}) "
+    new_touches = cand["touches"] - ref["touches"]
+    if new_touches:
+        add(WARN, f"subject touches the canvas edge ({', '.join(sorted(new_touches))}) "
                   f"where the reference does not - the art may be clipped.")
 
     # --- geometry against the reference -------------------------------------
@@ -362,11 +363,16 @@ def check(ref: dict, cand: dict) -> list[tuple[str, str]]:
                           f"subject gained material.")
 
     # --- fragments ----------------------------------------------------------
-    frag = fragment_fraction(cand)
-    if frag is not None and frag > FRAGMENT_MAX_FRACTION:
-        add(WARN, f"{frag:.1%} of solid pixels are in detached fragments "
-                  f"rather than the main mass - stray blobs from generation, "
-                  f"or intentionally separate parts.")
+    if cand["n"] > FRAGMENT_PIXEL_BUDGET:
+        add(INFO, f"fragment check skipped - canvas is {cand['n']:,} px, over the "
+                  f"{FRAGMENT_PIXEL_BUDGET:,} px budget. Detached-blob defects on "
+                  f"this asset would not be caught.")
+    else:
+        frag = fragment_fraction(cand)
+        if frag is not None and frag > FRAGMENT_MAX_FRACTION:
+            add(WARN, f"{frag:.1%} of solid pixels are in detached fragments "
+                      f"rather than the main mass - stray blobs from generation, "
+                      f"or intentionally separate parts.")
 
     return out
 
@@ -407,11 +413,14 @@ def main() -> int:
     findings = check(ref, cand)
     rejects = [m for lvl, m in findings if lvl == REJECT]
     warns = [m for lvl, m in findings if lvl == WARN]
+    infos = [m for lvl, m in findings if lvl == INFO]
 
     for m in rejects:
         print(f"REJECT {m}", file=sys.stderr)
     for m in warns:
         print(f"WARN   {m}", file=sys.stderr)
+    for m in infos:
+        print(f"INFO   {m}", file=sys.stderr)
 
     if rejects or (warns and args.strict):
         n = len(rejects) + (len(warns) if args.strict else 0)
