@@ -2877,6 +2877,12 @@
     "hash": "128a338c2aa85b61a73c9b8fe35223311ce98d349e4e629955c0dee3e3ff0005",
     "sha": "5c97b5c1"
   },
+  "src/RimMandrake/Utils/rimbench/compose_gl_vs_painter.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "82ce50533d5595d9dc06215285e9b21c3415bbf998cae5871067dcd952ead56f",
+    "sha": "f658d7a0"
+  },
   "src/RimMandrake/Utils/rimbench/core.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -7695,6 +7701,12 @@
     "hash": "0694fbe4b9547038683ae89d8d1bc75bad2881f5139e7a4659e470accc9fbc51",
     "sha": "629956d2"
   },
+  "src/RimUtinni/AshkarrLandmarkArt/make_complex_structures_icon.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "a78f068fbf86d0c8a904c5a2deb1df96b627fdecfd396caf85f3fd105789ab17",
+    "sha": "f658d7a0"
+  },
   "src/RimUtinni/AshkarrWeatherSuite/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-06",
@@ -7862,6 +7874,12 @@
     "date": "2026-09-05",
     "hash": "c71178cfea9a00a702d86db174ff5ddae73fe5ad22d1befd122da6bc94f8f3ce",
     "sha": "629956d2"
+  },
+  "src/RimUtinni/LanternDeeps/Source/GenStep_ScatterCavePortal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "8190e074bf4c850a2c8c30cffbc10879020dbbb23bd6f2cabedd6c5a8c63f4ad",
+    "sha": "f658d7a0"
   },
   "src/RimUtinni/LongHunger/About/About.xml": {
     "cleanCount": 1,
