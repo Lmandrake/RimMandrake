@@ -29,7 +29,7 @@ Not built here (see the spec and UI_APPEARANCE_BUILD_1's filing note): the templ
 hero render (Image A - needs a commissioned piece), the desert-vista second image, and
 the title wordmark (a taste ruling for the owner, carded, not decided).
 
-Absorbed RimUtinni: Shell (mandrake.rut.shell).</description>
+Absorbed RimUtinni: Shell (mandrake.rut.menushell).</description>
   <modDependencies>
     <li>
       <packageId>aRandomKiwi.RimThemes</packageId>

@@ -3,11 +3,11 @@
 
   <!--
     🔴 EXPECTED, ACCEPTED CONFIG WARNING — owner ruled "accept", 2026-09-03.
-    Each of these four logs "Config error in RSW_FE_Ground_<x>: burnedDef is
-    flammable" on every load, because their burnedDef (RSW_FE_Ash_Trace) is
+    Each of these four logs "Config error in RM_FE_Ground_<x>: burnedDef is
+    flammable" on every load, because their burnedDef (RM_FE_Ash_Trace) is
     itself flammable — which is the whole point: ground burns to trace ash,
     and trace ash burns onward down the ladder in AshLadder.xml (0.6 -> 0.4
-    -> 0.2 -> 0, terminating at RSW_FE_Ash_Deep). Vanilla's ConfigErrors()
+    -> 0.2 -> 0, terminating at RM_FE_Ash_Deep). Vanilla's ConfigErrors()
     assumes burnedDef is terminal and complains; it is advisory only and
     never blocks the load or the mechanism.
     ⛔ DO NOT "FIX" THIS BY ZEROING Flammability OR CLEARING burnedDef.
@@ -35,7 +35,7 @@
     under a Fire thing each burn tick, not just constructed floors.
   -->
 
-  <TerrainDef Name="RSW_FE_ScorchableGroundBase" Abstract="true">
+  <TerrainDef Name="RM_FE_ScorchableGroundBase" Abstract="true">
     <researchPrerequisites/>
     <renderPrecedence>100</renderPrecedence>
     <fertility>0</fertility>
@@ -49,8 +49,8 @@
     </statBases>
   </TerrainDef>
 
-  <TerrainDef ParentName="RSW_FE_ScorchableGroundBase">
-    <defName>RSW_FE_Ground_Sand</defName>
+  <TerrainDef ParentName="RM_FE_ScorchableGroundBase">
+    <defName>RM_FE_Ground_Sand</defName>
     <label>sand</label>
     <description>Loose, pale sand. Dry enough to carry a grass fire's heat straight down into it.</description>
     <texturePath>Terrain/Surfaces/Sand</texturePath>
@@ -58,11 +58,11 @@
     <fertility>0.05</fertility>
     <passability>Standable</passability>
     <pathCost>3</pathCost>
-    <burnedDef>RSW_FE_Ash_Trace</burnedDef>
+    <burnedDef>RM_FE_Ash_Trace</burnedDef>
   </TerrainDef>
 
-  <TerrainDef ParentName="RSW_FE_ScorchableGroundBase">
-    <defName>RSW_FE_Ground_Gravel</defName>
+  <TerrainDef ParentName="RM_FE_ScorchableGroundBase">
+    <defName>RM_FE_Ground_Gravel</defName>
     <label>gravel</label>
     <description>Loose stone chips over hardpan. Sparse fuel, but what grows in it still burns.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
@@ -70,11 +70,11 @@
     <fertility>0.28</fertility>
     <passability>Standable</passability>
     <pathCost>2</pathCost>
-    <burnedDef>RSW_FE_Ash_Trace</burnedDef>
+    <burnedDef>RM_FE_Ash_Trace</burnedDef>
   </TerrainDef>
 
-  <TerrainDef ParentName="RSW_FE_ScorchableGroundBase">
-    <defName>RSW_FE_Ground_Soil</defName>
+  <TerrainDef ParentName="RM_FE_ScorchableGroundBase">
+    <defName>RM_FE_Ground_Soil</defName>
     <label>soil</label>
     <description>Ordinary dirt, thick with dry grass roots that carry a fire's heat into the ground itself.</description>
     <texturePath>Terrain/Surfaces/Soil</texturePath>
@@ -82,11 +82,11 @@
     <fertility>0.7</fertility>
     <passability>Standable</passability>
     <pathCost>1</pathCost>
-    <burnedDef>RSW_FE_Ash_Trace</burnedDef>
+    <burnedDef>RM_FE_Ash_Trace</burnedDef>
   </TerrainDef>
 
-  <TerrainDef ParentName="RSW_FE_ScorchableGroundBase">
-    <defName>RSW_FE_Ground_SoilRich</defName>
+  <TerrainDef ParentName="RM_FE_ScorchableGroundBase">
+    <defName>RM_FE_Ground_SoilRich</defName>
     <label>rich soil</label>
     <description>Dark, fertile dirt — R-H5's ash-fertilized ground, and the richest fuel bed on the savanna.</description>
     <texturePath>Terrain/Surfaces/SoilRich</texturePath>
@@ -94,7 +94,7 @@
     <fertility>1.4</fertility>
     <passability>Standable</passability>
     <pathCost>1</pathCost>
-    <burnedDef>RSW_FE_Ash_Trace</burnedDef>
+    <burnedDef>RM_FE_Ash_Trace</burnedDef>
   </TerrainDef>
 
 </Defs>

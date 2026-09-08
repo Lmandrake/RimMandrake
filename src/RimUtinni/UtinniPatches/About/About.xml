@@ -32,7 +32,7 @@
       <li>mandrake.rm.patches</li>
     <li>mandrake.rsw.patches</li>
   </loadAfter>
-  <!-- Merged from RimUtinni/FactionSlate (mandrake.rut.factionslate, MOD_CONSOLIDATION_SPRINT_1):
+  <!-- Merged from RimUtinni/FactionSlate (mandrake.rut.patches, MOD_CONSOLIDATION_SPRINT_1):
        Patches/FactionSlate/OnlyOurFactions.xml zeroes startingCountAtWorldCreation on 48
        FactionDefs so only the campaign's own factions offer on the Configure Factions page.
        It is PatchOperationConditional with no <nomatch>, so a faction whose owning mod has

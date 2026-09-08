@@ -35,7 +35,7 @@ namespace RimMandrake.DesertVehicleReskin
 
             try
             {
-                VehicleFuelPatches.Apply(new Harmony("mandrake.rm.desertvehiclereskin"));
+                VehicleFuelPatches.Apply(new Harmony("mandrake.rsw.desertvehiclereskin"));
             }
             catch (Exception ex)
             {

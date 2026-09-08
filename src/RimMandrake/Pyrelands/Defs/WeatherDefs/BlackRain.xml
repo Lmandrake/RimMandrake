@@ -38,7 +38,7 @@
   -->
 
   <WeatherDef>
-    <defName>RSW_FE_BlackRain</defName>
+    <defName>RM_FE_BlackRain</defName>
     <label>black rain</label>
     <description>A short, filthy downpour of ash-laden condensate, dragged out of a fire's own convection column. It blackens everything it touches, cuts visibility and accuracy, and puts out the fire it came from — the one time it truly rains here.</description>
     <ambientSounds>

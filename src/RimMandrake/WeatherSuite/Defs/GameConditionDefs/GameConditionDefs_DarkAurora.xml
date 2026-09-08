@@ -21,7 +21,7 @@
   already scales off ambient glow, so no separate new mechanic is needed
   for that half of the doc's ask either.
 
-  What IS new: RSW_WS_DarkAurora is a SEPARATE GameConditionDef from
+  What IS new: RM_WS_DarkAurora is a SEPARATE GameConditionDef from
   vanilla's own `Aurora` (never touched), fired by its own IncidentDef via
   IncidentWorker_NightsideAurora (WeatherSuiteHook.cs), which requires a
   player-home map in the RimUtinni geometry def's nightside band before it
@@ -32,7 +32,7 @@
 <Defs>
 
   <GameConditionDef>
-    <defName>RSW_WS_DarkAurora</defName>
+    <defName>RM_WS_DarkAurora</defName>
     <label>dark-side aurora</label>
     <description>The deep night has no sun, but it is not without light. A magnetospheric aurora is lighting the sky — the one beauty this hemisphere owns for free.</description>
     <allowUnderground>false</allowUnderground>

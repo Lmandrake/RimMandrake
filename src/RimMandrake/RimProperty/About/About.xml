@@ -8,12 +8,12 @@
   </supportedVersions>
   <description>PROPERTY_FABRIC_BUILD_1 — the campaign-blind ownership/theft/perception fabric ruled at the 2026-08-31 brainstorming sitting (design/Jawa/ownership_settlement_spec.md, canon.yml ownership_fabric). A decaying-claim engine: claims are a set of (claimant, strength, basis, timestamp) records per Thing, virtual and computed by default (territorial/situational — zero storage, zero tick cost), recorded only for the exception list (stolen, purchased, claim-fee-paid, gifted, inherited, looted). Decay is lazy — evaluated on read, never ticked — at a rate set by a per-Thing recognizability score (quality, market value, a persistent Name, mechanoid identity). TakingEvent is the event spine every future verb emits into: act → claim resolution → authorization check → witness/perception roll → faction-record propagation (also lazy) → an unauthorized-taking hook other content binds a social-fight reaction to. Colony-side friction: each colonist is their own claimant, a per-faction Commons claimant holds unassigned faction property (the player colony's "Clan commons" is just the player faction's instance of this), and guests are ordinary Pawn claimants with a different Faction — the same mechanism, fully symmetric.
 
-Carries NO Star Wars content, no settlement/district data, no verb jobs/gizmos, and no RimUtinni tuning (decay-curve constants here are generic engine defaults, not authored per-species/per-faction values) — see design/Jawa/ownership_settlement_spec.md's "Module boundaries" table. Those ship separately: SETTLEMENT_VISIT_LOOP_1 (Inhabited), DISTRICT_TEMPLATE_LIBRARY_1, SETTLEMENT_VERBS_WAVE_1, and RimUtinni tuning data.
+Carries NO Star Wars content, no settlement/district data, and no RimUtinni tuning (decay-curve constants here are generic engine defaults, not authored per-species/per-faction values) — see design/Jawa/ownership_settlement_spec.md's "Module boundaries" table. The pay-claim-fee and theft-haul verbs live here (absorbed SalvageClaim + TheftHauler, 2026-09-08). Other consumers ship separately: SETTLEMENT_VISIT_LOOP_1 (Inhabited), DISTRICT_TEMPLATE_LIBRARY_1, SETTLEMENT_VERBS_WAVE_1, and RimUtinni tuning data.
 
 No Harmony hooks auto-fire TakingEvents from vanilla actions — that wiring is verb-job territory (SETTLEMENT_VERBS_WAVE_1). This mod is the API future code calls, proven with a plain GameComponent ledger, at the colony, with zero visit machinery.
 
-Absorbed mandrake.rm.salvageclaim (SETTLEMENT_VERBS_WAVE_1's salvage-law pay-claim-fee float menu order) into this mod.
-Absorbed mandrake.rm.theft_hauler (BUILDING_THEFT_HAULER_1's theft-haul uninstall heist verb, MayRequire-gated Muckraker Crab Droid patch included) into this mod.</description>
+Absorbed mandrake.rm.property (SETTLEMENT_VERBS_WAVE_1's salvage-law pay-claim-fee float menu order) into this mod.
+Absorbed mandrake.rm.property (BUILDING_THEFT_HAULER_1's theft-haul uninstall heist verb, MayRequire-gated Muckraker Crab Droid patch included) into this mod.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>

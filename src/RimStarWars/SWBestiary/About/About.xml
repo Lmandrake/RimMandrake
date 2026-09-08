@@ -14,14 +14,14 @@ JURASSIC_RETIREMENT_ABSORPTION (2026-09-05) — eight creatures out of Jurassic 
 
 BEASTS_OF_THE_RIM_RETIREMENT (2026-09-05) — `RSW_Jerba`, new content rather than a port. Beasts of the Rim (`mlie.beastsoftherim`) was retired the same day; it shipped a speculative-biology `Jerbal` that was never a Star Wars jerba. This is the real one: the shaggy horned Tatooine pack-and-milk beast, desert-banded for Ash&apos;karr, reusing the already-absorbed unwooled bantha sprite at a third of the size in a pale dun palette. Iconic Star Wars creature, so the recognizability rule&apos;s icon carve-out applies.
 
-Content only — no assemblies, no patches, no dependency on any retired mod.
+Content plus two absorbed assemblies (Livestock light-aversion, Ikee thought-worker); BeastNorm patches target the mlie.starwarsanimalcollection donor while it remains installed.
 
 MECHANICAL_FAUNA_MERGE_WAVE_A — five sibling mods absorbed in, folders retired:
-Absorbed SeaBeasts (`mandrake.rsw.seabeasts`, SW_SEA_MONSTERS_ART_1) — 18 Naboo/Star Wars sea creatures (opee/colo/sando/scalefish/swarm families) with full art; its dev-only art review material (`art/`) was left behind in the emptied SeaBeasts folder, not merged.
-Absorbed Livestock (`mandrake.rsw.livestock`, FORSAKEN_CRAGS_PREDATORS_BUILD_1 / LIVESTOCK_STARTER_TRIO_1) — Cindermare, Skarnix and karrask defs, textures and the ForsakenCrags_WildSpawns patch; its C# (`CompLightAversion`, Assemblies/RimMandrakeLivestockRSW.dll) was left in place, unmerged — Cindermare/Skarnix now depend on an assembly that ships outside this mod.
-Absorbed HelixTellurox (`mandrake.rsw.helixtellurox`, HELIX_TELLUROX_BUILD_1) — the Tellurox draft/pack beast def and texture; not yet wired into any biome's wild-spawn cast.
-Absorbed JawaIkee (`mandrake.rsw.jawaikee`) — the Ikee-watching thought def; its C# (`ThoughtWorker_IkeeNearby`, Assemblies/JawaIkee.dll) was left in place, unmerged — the thought now depends on an assembly that ships outside this mod.
-Absorbed BeastNorm (`mandrake.rsw.beastnorm`) — Law 3 of the beast normalization pass, a PatchOperationConditional set keyed to Star Wars Animal Collection defNames; this mod now also depends on `mlie.starwarsanimalcollection` for that patch to have a target.</description>
+Absorbed SeaBeasts (`mandrake.rsw.swbestiary`, SW_SEA_MONSTERS_ART_1) — 18 Naboo/Star Wars sea creatures (opee/colo/sando/scalefish/swarm families) with full art; its dev-only art review material (`art/`) was left behind in the emptied SeaBeasts folder, not merged.
+Absorbed Livestock (`mandrake.rsw.swbestiary`, FORSAKEN_CRAGS_PREDATORS_BUILD_1 / LIVESTOCK_STARTER_TRIO_1) — Cindermare, Skarnix and karrask defs, textures and the ForsakenCrags_WildSpawns patch; its C# (`CompLightAversion`, Assemblies/RimMandrakeLivestockRSW.dll) was left in place, unmerged — Cindermare/Skarnix now depend on an assembly that ships outside this mod.
+Absorbed HelixTellurox (`mandrake.rsw.swbestiary`, HELIX_TELLUROX_BUILD_1) — the Tellurox draft/pack beast def and texture; not yet wired into any biome's wild-spawn cast.
+Absorbed JawaIkee (`mandrake.rsw.swbestiary`) — the Ikee-watching thought def; its C# (`ThoughtWorker_IkeeNearby`, Assemblies/JawaIkee.dll) was left in place, unmerged — the thought now depends on an assembly that ships outside this mod.
+Absorbed BeastNorm (`mandrake.rsw.swbestiary`) — Law 3 of the beast normalization pass, a PatchOperationConditional set keyed to Star Wars Animal Collection defNames; this mod now also depends on `mlie.starwarsanimalcollection` for that patch to have a target.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>

@@ -12,7 +12,7 @@
     from NuGet instead.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\DesertVehicleReskin\Source\Fuel\DesertVehicleReskin.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimStarWars\DesertVehicleReskin\Source\Fuel\DesertVehicleReskin.csproj -c Release
 
     VF_UNGUARDED_EAGER_FIX_1 (2026-09-05): output moved from ../../Assemblies/ to
     ../../VehicleFuel/Assemblies/. This whole DLL exists only to widen vehicle

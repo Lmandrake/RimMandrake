@@ -30,7 +30,7 @@ namespace RimMandrake.StarWars.FireEcology
         // assembly ships in the RimStarWars-tier mod.
         private static readonly string[] SandTerrainDefNames =
         {
-            "RSW_FE_Ground_Sand", "Sand",
+            "RM_FE_Ground_Sand", "Sand",
         };
 
         internal const float FulguriteChancePerStrike = 0.35f;
@@ -40,7 +40,7 @@ namespace RimMandrake.StarWars.FireEcology
 
         static FireEcologyHookMod()
         {
-            var h = new Harmony("mandrake.rsw.fireecology");
+            var h = new Harmony("mandrake.rm.pyrelands");
 
             Apply(h, AccessTools.Method(typeof(WeatherEvent_LightningStrike), "DoStrike"),
                   typeof(Patch_LightningStrike_Fulgurite), "fulgurite-spawn",
@@ -90,7 +90,7 @@ namespace RimMandrake.StarWars.FireEcology
         {
             if (terrain == null) return false;
             string n = terrain.defName;
-            return n.StartsWith("RSW_FE_Ground_")
+            return n.StartsWith("RM_FE_Ground_")
                 || n == "Sand" || n == "Gravel" || n == "Soil" || n == "SoilRich";
         }
     }
@@ -112,7 +112,7 @@ namespace RimMandrake.StarWars.FireEcology
                 if (!FireEcologyHookMod.IsSandFamily(terrain)) return;
                 if (!Rand.Chance(FireEcologyHookMod.FulguriteChancePerStrike)) return;
 
-                ThingDef fulguriteDef = DefDatabase<ThingDef>.GetNamedSilentFail("RSW_FE_Fulgurite");
+                ThingDef fulguriteDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Fulgurite");
                 if (fulguriteDef == null) return; // mod not loaded / def missing — no-op, not a crash
 
                 Thing fulgurite = ThingMaker.MakeThing(fulguriteDef);
@@ -158,7 +158,7 @@ namespace RimMandrake.StarWars.FireEcology
                 // Loose ash dusting — rides alongside vanilla's own
                 // unconditional Filth_Ash spawn (DamageWorker_Flame), does
                 // not replace it.
-                ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RSW_FE_Filth_LooseAsh");
+                ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
                 if (ashFilth != null && Rand.Chance(FireEcologyHookMod.AshDustingChancePerFireTick * delta))
                 {
                     FilthMaker.TryMakeFilth(pos, map, ashFilth);
@@ -170,7 +170,7 @@ namespace RimMandrake.StarWars.FireEcology
                 // overload wrong, and this runs at most a few times a fire.
                 if (Rand.Chance(FireEcologyHookMod.ScorchFruitChancePerFireTick * delta))
                 {
-                    ThingDef fruitDef = DefDatabase<ThingDef>.GetNamedSilentFail("RSW_FE_Plant_ScorchFruit");
+                    ThingDef fruitDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Plant_ScorchFruit");
                     // A map-wide burn runs hundreds of concurrent Fire things;
                     // uncapped this seeds an orchard, not a harvest. BENCH
                     // review finding, 2026-09-01.
