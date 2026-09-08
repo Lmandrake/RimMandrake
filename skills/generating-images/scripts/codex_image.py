@@ -519,6 +519,15 @@ def do_image(args) -> int:
         print(prompt)
         return 0
 
+    # 🔴 --force only bypasses the pre-run overwrite guard above; it does not
+    # touch `out` itself. So a pre-existing `out` (the only way past that guard)
+    # must not be trusted as "the run succeeded" just because it still exists
+    # afterward — a failed/timed-out regeneration would otherwise silently
+    # report OK using the STALE file, with the failed attempt's elapsed time
+    # printed next to it. Track the pre-run mtime and require it to move.
+    existed_before = out.exists()
+    mtime_before = out.stat().st_mtime if existed_before else None
+
     before = snapshot_generated(home)
     started = time.time()
     code, output, timed_out = run_codex(
@@ -533,22 +542,25 @@ def do_image(args) -> int:
     if args.verbose and output:
         print(output[-4000:], file=sys.stderr)
 
+    fresh = out.is_file() and (not existed_before or out.stat().st_mtime != mtime_before)
+
     # 🔴 Harvest on EVERY path, timeout included. The agent was asked to copy
     # the file here; whether it did, and whether our own ceiling expired while
     # it was still narrating, are separate questions from whether an image
     # exists. A harvested image is a success.
-    if not out.is_file():
+    if not fresh:
         candidates = harvest_with_grace(
             home, before, HARVEST_GRACE_S if timed_out else 0.0)
         if candidates:
             chosen = candidates[-1]
             shutil.copy2(chosen, out)
+            fresh = True
             why = (f"timed out after {args.timeout}s"
                    if timed_out else "agent did not place the file")
             print(f"note: {why}; harvested {chosen.name} from "
                   f"{GENERATED_SUBDIR}/", file=sys.stderr)
 
-    if not out.is_file():
+    if not fresh:
         if timed_out:
             print(f"ERROR codex exec exceeded {args.timeout}s after {elapsed:.0f}s "
                   f"and nothing new reached {home / GENERATED_SUBDIR}. Raise "
@@ -603,7 +615,12 @@ def do_probe(args) -> int:
     try:
         res = subprocess.run([str(cli), "--version"], capture_output=True,
                              text=True, timeout=120)
-        print(f"OK   version        {res.stdout.strip() or res.stderr.strip()}")
+        text = res.stdout.strip() or res.stderr.strip()
+        if res.returncode == 0:
+            print(f"OK   version        {text}")
+        else:
+            print(f"FAIL version        exit {res.returncode}: {text}")
+            ok = False
     except (OSError, subprocess.SubprocessError) as exc:
         print(f"FAIL version        {exc}")
         ok = False
