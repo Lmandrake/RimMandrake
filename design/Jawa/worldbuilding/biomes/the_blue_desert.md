@@ -20,22 +20,21 @@ landscape that already looks like horror.
 
 ## 0. The measurements everything rests on
 
-MEASURED 2026-09-06 off `world/ASHKARR_WORLDMAP_tiles.csv`. The ground it inherits: the
-Deadstone ring — 1,711 former `HorrorWastes` tiles at arc 126→143 (sun 36°–53° below the
-horizon, median −45°), temp median **−44.4 °C** (−55…−30), elevation median 691 m, a
-rolling plateau (1,160 small-hill tiles, 512 large, 8 mountain, 31 flat), **zero water,
-zero rivers**. Nightside ladder: Rot −19 → **Blue Desert −44** → PropaneLakes −64.
-
-> ⚠️ MEASURED 2026-09-08 (V18 canon): current median temps on the ladder's lower two
-> rungs are **Blue Desert (`BiomeGRimond`) −42.6 °C → PropaneLakes (`AB_PropaneLakes`)
-> −62.2 °C** — the ordering holds, the exact figures have drifted with repainting;
-> amendment — ruling text stands.
+MEASURED off `world/ASHKARR_WORLDMAP_tiles.csv`: `BiomeGRimond` holds **1,029 tiles** at
+arc 118→149 (p10/median/p90 124.6/134.7/143.2 — sun 35°–53° below the horizon, median
+−45°), temp median **−42.6 °C** (−58…−19; summer maximum below 0 °C on every tile),
+elevation median 640 m, a rolling plateau (406 small-hill tiles, 224 flat, 203 large-hill,
+190 mountainous, 6 impassable), **zero water, zero rivers**. Regions: Deadstone 527, South
+Crags 159, Cinderdark 102, Ammonia Flats 96, The Verge 49, Thornend 38, Sunreach 35, Quiet
+Ground 18, Venom Wood 3, Ashen Wastes 2. Nightside ladder: Rot −19 → **Blue Desert −42.6**
+→ PropaneLakes −62.2.
 
 🔴 **The ring, and the ruling that breaks it (owner, 2026-09-06: "ensure there is no
 bullseye pattern in the cold night side; add longitudinal variance as needed").**
-MEASURED: that ground is a *perfect ring* — all twelve 30° bearing sectors, each ≥5% of
-tiles. It is therefore **not inherited whole**. Ruled principle: a five-def **lobe
-mosaic** by bearing, with arc excursions so no boundary is a circle:
+The ground it inherited — the former `HorrorWastes`' Deadstone ring, dissolved under
+`HORRORWASTES_BIOME_DISSOLVE_1` — was a *perfect ring*: all twelve 30° bearing sectors,
+each ≥5% of tiles. It was therefore **not inherited whole**. Ruled principle: a five-def
+**lobe mosaic** by bearing, with arc excursions so no boundary is a circle:
 
 | sectors | ruled occupant | why |
 |---|---|---|
@@ -47,14 +46,9 @@ mosaic** by bearing, with arc excursions so no boundary is a circle:
 
 Exact tiles are the dissolve item's job, **rendered for the owner before painting**.
 
-> ⚠️ MEASURED 2026-09-08 (V18 canon): `BiomeGRimond` (this def) is now painted at
-> **1,029 tiles** — down from the 2026-09-07 measurement of 1,328, still well above
-> the "core 700–900" estimate above — across 10 regions (Deadstone 527, South
-> Crags 159, Cinderdark 102, Ammonia Flats 96, The Verge 49, Thornend 38,
-> Sunreach 35, Quiet Ground 18, Venom Wood 3, Ashen Wastes 2), where this plan
-> described one ring; arc now p10 124.6/med 134.7/p90 143.2, temp med −42.6 °C,
-> elev med 640 m — contradiction card for the owner; the ruling text stands
-> until ruled.
+As painted, the def's 1,029 tiles fall in all twelve bearing sectors, unevenly — 45 to
+149 tiles a sector: sectors 10, 0 and 9 the heaviest (149/120/113), sectors 7 and 8 the
+thinnest (49/45, each under 5% of the def).
 
 Donor inventory taken in: blue sand/soil (re-read as water-ice sand), animal density
 0.5 (the sparsest def defined), plant density 0.33, movement 1.5, disease clock 90 d,
