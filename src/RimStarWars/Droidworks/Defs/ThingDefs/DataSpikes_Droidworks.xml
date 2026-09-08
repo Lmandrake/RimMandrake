@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_HEADS_BRAINS_SPIKES_1 (packet B3). Per-faction data spikes -
+     ruling 2's list of who fields droids. RSW_DW_DataSpike (Items_Droidworks.
+     xml, keyed guy762_KotORFaction_RogueDroids) is untouched; these are new
+     siblings, same shape, different CompProperties_DWDataSpike key (or
+     factionless=true for Wild - Source/Droidworks/CompDWDataSpike.cs).
+
+     Faction defNames MEASURED 2026-09-08 against the live mod list:
+       Empire  -> vanilla `Empire` FactionDef (mcp__rimsage__search_defs,
+                  label "shattered empire" - RimStarWars' own Galactic
+                  Empire IS this def, reskinned, not a separate FactionDef).
+       Hutt    -> `OuterRim_BinaryStarRaiders` (Neronix17.OuterRim.Core,
+                  packageId neronix17.outerrim.core, confirmed active in the
+                  live ModsConfig.xml). There is no dedicated Hutt Cartel
+                  FactionDef anywhere in the stack (GamorreanPawnKinds.xml's
+                  own header: "all 81 loaded factions were checked and none
+                  matches hutt/cartel/crime/pyke/slaver/black-sun" - that mercs/
+                  raiders def is already the accepted stand-in for Hutt
+                  muscle, same convention this file follows).
+       Junker  -> `Jawa_Junkers` (RimUtinni/UtinniPatches/Defs/FactionDefs/
+                  JawaJunkers.xml) - our own faction, ruling 2's own text
+                  ("Junkers might have one or two atrocious, clumsy droids").
+       Wild    -> factionless=true, not a FactionDef at all - keys to
+                  target.Faction == null, matching the crashed/gone-wild
+                  droids DROIDWORKS_WILD_DROIDS_1 (E4, unbuilt) will spawn
+                  with no faction (see CompDWDataSpike.cs's own header on
+                  Props.factionless).
+
+     costList reuses the same RSW_DW_DroidHead placeholder ingredient
+     Items_Droidworks.xml's own RSW_DW_DataSpike already crafts from -
+     rewiring that recipe onto the new identity-carrying heads is out of
+     scope here (not asked for by the packet, and would coeuple an
+     unrelated crafting cost to the salvage/identity system).
+======================================================================== -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_DataSpike_Empire</defName>
+    <label>data spike (Imperial)</label>
+    <description>A compact tool loaded with Imperial ownership protocols. Used on a downed or captured Imperial droid, it overrides the droid's loyalty to your own. Keyed to the wrong faction, it does nothing.</description>
+    <graphicData>
+      <texPath>OuterRim/Items/DataSpike</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0.3</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>RSW_DW_DataSpike</useJob>
+        <useLabel>Spike droid (Imperial)</useLabel>
+      </li>
+      <li Class="CompProperties_Targetable">
+        <compClass>RimMandrake.StarWars.Droidworks.CompTargetable_DWDataSpike</compClass>
+      </li>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWDataSpike">
+        <spikeFaction>Empire</spikeFaction>
+      </li>
+    </comps>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <effectWorking>Cook</effectWorking>
+      <soundWorking>Recipe_Machining</soundWorking>
+      <workAmount>1200</workAmount>
+      <productCount>1</productCount>
+      <workSkill>Crafting</workSkill>
+      <recipeUsers>
+        <li>FabricationBench</li>
+      </recipeUsers>
+      <skillRequirements>
+        <Crafting>6</Crafting>
+      </skillRequirements>
+    </recipeMaker>
+    <costList>
+      <RSW_DW_DroidHead>1</RSW_DW_DroidHead>
+    </costList>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_DataSpike_Hutt</defName>
+    <label>data spike (Hutt)</label>
+    <description>A compact tool loaded with Hutt ownership protocols. Used on a downed or captured Hutt-fielded droid, it overrides the droid's loyalty to your own. Keyed to the wrong faction, it does nothing.</description>
+    <graphicData>
+      <texPath>OuterRim/Items/DataSpike</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0.3</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>RSW_DW_DataSpike</useJob>
+        <useLabel>Spike droid (Hutt)</useLabel>
+      </li>
+      <li Class="CompProperties_Targetable">
+        <compClass>RimMandrake.StarWars.Droidworks.CompTargetable_DWDataSpike</compClass>
+      </li>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWDataSpike">
+        <spikeFaction>OuterRim_BinaryStarRaiders</spikeFaction>
+      </li>
+    </comps>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <effectWorking>Cook</effectWorking>
+      <soundWorking>Recipe_Machining</soundWorking>
+      <workAmount>1200</workAmount>
+      <productCount>1</productCount>
+      <workSkill>Crafting</workSkill>
+      <recipeUsers>
+        <li>FabricationBench</li>
+      </recipeUsers>
+      <skillRequirements>
+        <Crafting>6</Crafting>
+      </skillRequirements>
+    </recipeMaker>
+    <costList>
+      <RSW_DW_DroidHead>1</RSW_DW_DroidHead>
+    </costList>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_DataSpike_Junker</defName>
+    <label>data spike (Junker)</label>
+    <description>A compact tool loaded with Junker ownership protocols. Used on a downed or captured Junker droid, it overrides the droid's loyalty to your own. Keyed to the wrong faction, it does nothing.</description>
+    <graphicData>
+      <texPath>OuterRim/Items/DataSpike</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0.3</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>RSW_DW_DataSpike</useJob>
+        <useLabel>Spike droid (Junker)</useLabel>
+      </li>
+      <li Class="CompProperties_Targetable">
+        <compClass>RimMandrake.StarWars.Droidworks.CompTargetable_DWDataSpike</compClass>
+      </li>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWDataSpike">
+        <spikeFaction>Jawa_Junkers</spikeFaction>
+      </li>
+    </comps>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <effectWorking>Cook</effectWorking>
+      <soundWorking>Recipe_Machining</soundWorking>
+      <workAmount>1200</workAmount>
+      <productCount>1</productCount>
+      <workSkill>Crafting</workSkill>
+      <recipeUsers>
+        <li>FabricationBench</li>
+      </recipeUsers>
+      <skillRequirements>
+        <Crafting>6</Crafting>
+      </skillRequirements>
+    </recipeMaker>
+    <costList>
+      <RSW_DW_DroidHead>1</RSW_DW_DroidHead>
+    </costList>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_DataSpike_Wild</defName>
+    <label>data spike (wild)</label>
+    <description>A compact tool loaded with generic reprogramming protocols, built for a droid with no faction ownership to override at all - the crashed and gone-wild. Used on one already downed or captured, it claims it for your own. Used on anything with a real owner, it does nothing.</description>
+    <graphicData>
+      <texPath>OuterRim/Items/DataSpike</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0.3</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>RSW_DW_DataSpike</useJob>
+        <useLabel>Spike droid (wild)</useLabel>
+      </li>
+      <li Class="CompProperties_Targetable">
+        <compClass>RimMandrake.StarWars.Droidworks.CompTargetable_DWDataSpike</compClass>
+      </li>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWDataSpike">
+        <factionless>true</factionless>
+      </li>
+    </comps>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <effectWorking>Cook</effectWorking>
+      <soundWorking>Recipe_Machining</soundWorking>
+      <workAmount>1200</workAmount>
+      <productCount>1</productCount>
+      <workSkill>Crafting</workSkill>
+      <recipeUsers>
+        <li>FabricationBench</li>
+      </recipeUsers>
+      <skillRequirements>
+        <Crafting>6</Crafting>
+      </skillRequirements>
+    </recipeMaker>
+    <costList>
+      <RSW_DW_DroidHead>1</RSW_DW_DroidHead>
+    </costList>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

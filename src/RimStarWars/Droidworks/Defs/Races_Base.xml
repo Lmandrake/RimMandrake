@@ -73,6 +73,9 @@
       <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWFormatTier">
         <defaultTier>Programmable</defaultTier>
       </li>
+      <!-- DROIDWORKS_HEADS_BRAINS_SPIKES_1 (packet B3): every droid, any
+           family, drops its own identity-carrying head on death. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWHeadDropper" />
     </comps>
     <alienRace>
       <generalSettings>

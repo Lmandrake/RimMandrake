@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_HEADS_BRAINS_SPIKES_1 (packet B3). The brain trio, ruling 6
+     ("head-gate CONFIRMED... Personality matrices, processors, and
+     databanks are all too high tech and specialized for anyone on this
+     world to make. You import them... Hacking them is virtually
+     impossible... And then they get damaged... you keep using them, because
+     they're rare and valuable still even quirky.")
+
+     No recipeMaker on any of the three - deliberately, forever (ruling 6):
+     these reach the player only as salvage, Trade Moot / trader stock, and
+     quest loot, never crafted. That is the entire "head-gate" anti-
+     exponential rule this program keeps citing (design/Jawa/droids/
+     DROID_UNIFIED_FRAMEWORK_DESIGN.md section 6): no bench in this mod, or
+     any future one, may ever gain a recipeMaker producing one of these three
+     defNames.
+
+     Art reused from OuterRim's own droid-brain-part icon set (already
+     deployed loose at these texPaths per Items_Droidworks.xml's own
+     established convention of reusing donor art verbatim by texPath).
+======================================================================== -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_PersonalityMatrix</defName>
+    <label>personality matrix</label>
+    <description>An imported component of the droid brain trio - the part that makes a droid a personality rather than a tool. Industrial Automaton, Cybot Galactica, Arakyd and a handful of others make these; nobody on this world can, or ever will.</description>
+    <graphicData>
+      <texPath>OuterRim/Items/DroidVoiceModule</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0.4</Mass>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <MarketValue>800</MarketValue>
+    </statBases>
+    <techLevel>Ultra</techLevel>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_Processor</defName>
+    <label>droid processor</label>
+    <description>An imported component of the droid brain trio - the part that thinks. Industrial Automaton, Cybot Galactica, Arakyd and a handful of others make these; nobody on this world can, or ever will.</description>
+    <graphicData>
+      <texPath>OuterRim/Items/DroidBrain</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0.4</Mass>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <MarketValue>800</MarketValue>
+    </statBases>
+    <techLevel>Ultra</techLevel>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DW_Databank</defName>
+    <label>droid databank</label>
+    <description>An imported component of the droid brain trio - the part that remembers. Industrial Automaton, Cybot Galactica, Arakyd and a handful of others make these; nobody on this world can, or ever will.</description>
+    <graphicData>
+      <texPath>OuterRim/Items/DroidMemoryModule</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0.4</Mass>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <MarketValue>800</MarketValue>
+    </statBases>
+    <techLevel>Ultra</techLevel>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

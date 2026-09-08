@@ -23,6 +23,16 @@ namespace RimMandrake.StarWars.Droidworks
         public static HistoryEventDef RSW_DW_DeformattedSapientDroid;
         public static ThoughtDef RSW_DW_KnowSapientDroidDeformatted;
 
+        // DROIDWORKS_HEADS_BRAINS_SPIKES_1 (packet B3) - one per chassisClass,
+        // read by CompDWHeadDropper.HeadDefFor
+        public static ThingDef RSW_DW_Head_Labour;
+        public static ThingDef RSW_DW_Head_Protocol;
+        public static ThingDef RSW_DW_Head_Astromech;
+        public static ThingDef RSW_DW_Head_Battle;
+        public static ThingDef RSW_DW_Head_Heavy;
+        public static ThingDef RSW_DW_Head_Probe;
+        public static ThingDef RSW_DW_Head_Power;
+
         static DroidworksDefOf() =>
             DefOfHelper.EnsureInitializedInCtor(typeof(DroidworksDefOf));
     }
