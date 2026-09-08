@@ -23,8 +23,11 @@ Four fixes, all built on scatter.py primitives (never modified here):
   2. Height -> terraced terrain bands. Every mask carries a continuous
      density/height value; `_terrace_paint` jitters it with one more fbm
      field, then buckets it through rock -> RoughHewn -> Gravel -> Sand ->
-     SoftSand (`_rock_terraces`), with PackedDirt/Soil deposited on the
-     lee side (`_lee_deposit`, opposite the plan's orientation). A small
+     SoftSand, via `_rock_fn`/`_roughhewn_fn` at thresholds each painter
+     tunes for its own shape (no single shared band table -- a raised
+     blob's terrace reads differently from a channel's), with PackedDirt/
+     Soil deposited on the lee side (`_lee_deposit`, opposite the plan's
+     orientation). A small
      deterministic backstop (`_guarantee_variety`) tops up the vocabulary
      to the item's >=10-distinct-terrain target on any seed noise alone
      doesn't reach it -- it converts a small existing patch, never touches
@@ -112,13 +115,6 @@ def _roughhewn_fn(seed):
                 else ROUGHHEWN)
     return f
 
-
-def _rock_terraces(seed, floor=SOFTSAND):
-    """Standard 5-band terrace, highest threshold first: rock -> RoughHewn
-    -> Gravel -> Sand -> floor (caller substitutes the lowest band, e.g.
-    Gravel/Mud for a dry riverbed)."""
-    return [(0.80, _rock_fn(seed)), (0.60, _roughhewn_fn(seed)),
-            (0.42, GRAVEL), (0.24, SAND), (0.0, floor)]
 
 
 def _terrace_paint(grid_rows, cells, size, bands, seed, jitter=0.12, jitter_scale=6.0,

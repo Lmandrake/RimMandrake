@@ -5676,3 +5676,5 @@
 {"seat":"FOUNDRY","event":"claim","id":"BRIDGETOOLS_CSHARP_SWEEP_BUGS_1","ts":"2026-09-08T14:32:27Z"}
 {"seat":"FOUNDRY","event":"start","id":"BRIDGETOOLS_CSHARP_SWEEP_BUGS_1","ts":"2026-09-08T14:32:28Z"}
 {"seat":"FOUNDRY","event":"note","id":"BRIDGETOOLS_CSHARP_SWEEP_BUGS_1","text":"6 fixes landed in 2691a1e3 (swept into BENCH's commit by an index race); write-up recorded here since that commit message doesn't mention them","ts":"2026-09-08T14:33:01Z"}
+{"seat":"BENCH","event":"file","id":"BIOME_LANDMARK_REFINEMENT_1","title":"First-pass landmark density on 8 dense biomes (Greentide/Contagion/Webwork/Weeping Stones/Slime/Scarlands/Pyrelands/Cracked Lands) needs per-biome refinement — density and defs are BENCH drafts, not curated to each sheet's flagship","kind":"task","target":"v1","for":"OWNER","ts":"2026-09-08T14:36:48Z"}
+{"seat":"FOUNDRY","event":"file","id":"GL_EMIT_FLOATRANGE_GENERIC_DROP_1","title":"gl_emit.py silently drops any FloatRange field on a non-worldTileReq node type","kind":"bug","target":"v1","for":"FOUNDRY","ts":"2026-09-08T14:42:28Z"}

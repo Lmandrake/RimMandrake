@@ -2890,10 +2890,10 @@
     "sha": "5c97b5c1"
   },
   "src/RimMandrake/Utils/rimbench/corpus_stats.py": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "240ca5ef389368bd5a8fb43a6dfa95129dc8e09729561664d6497365a55280f1",
-    "sha": "7fbb1af5"
+    "cleanCount": 2,
+    "date": "2026-09-08",
+    "hash": "7b03e835cbdfb9f6f6912031bcf0a4c168d8adfa2e73a29a1b58197ee79251b7",
+    "sha": "64eb8f3e"
   },
   "src/RimMandrake/Utils/rimbench/crater.py": {
     "cleanCount": 1,
@@ -2913,6 +2913,12 @@
     "hash": "c9d752376d3f8138710ceae3490c6bc599fe6e1d1ceb2e53166de0bd41b461af",
     "sha": "7fbb1af5"
   },
+  "src/RimMandrake/Utils/rimbench/mapgen_v0.py": {
+    "cleanCount": 1,
+    "date": "2026-09-08",
+    "hash": "7278cb6ec8d5f02b44b3327d12503af320bc1f97e7a7b1f1ed713d9036c4c473",
+    "sha": "64eb8f3e"
+  },
   "src/RimMandrake/Utils/rimbench/place.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -2920,10 +2926,10 @@
     "sha": "86de40c5"
   },
   "src/RimMandrake/Utils/rimbench/render_terrain.py": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "28f84a487872cc42b87f1d82e286e96995e7a333e96faba4fb46f90f19f41260",
-    "sha": "7fbb1af5"
+    "cleanCount": 2,
+    "date": "2026-09-08",
+    "hash": "17d34bdb1ccd82195bd9c2f3fe1fe43f1ed7d553322bb05d60f14731b0251e9c",
+    "sha": "64eb8f3e"
   },
   "src/RimMandrake/Utils/rimbench/roll_arm_harvest.py": {
     "cleanCount": 1,
