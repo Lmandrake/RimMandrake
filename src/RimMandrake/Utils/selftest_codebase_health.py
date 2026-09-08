@@ -114,6 +114,7 @@ for blob, why in (
 for blob, why in (
     ("the bug lives in deploy.py and nowhere else", "a bare mention is not an invocation"),
     ("deploy.py: 1/1 match, 0 errors", "a result line is not an invocation"),
+    ("please polish deploy.py", "'sh' inside an ordinary word is not python3/bash/sh/node/pwsh"),
 ):
     m = ch.PATH_TOKEN.search(blob)
     eq(ch.is_invocation(blob, m.start(), m.end()), False, why)
