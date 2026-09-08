@@ -144,10 +144,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/fauna/allocate_cast.py": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "5ddad47aeead70b0296bbc1f78c46ff75fdb117fe7d52ef04344f32b30a830cd",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-07",
+    "hash": "ebd2eb8b278077d191f1dd76f7b093d3105db5ac56ffabdd4219d5613e3fc35b",
+    "sha": "582e9432"
   },
   "design/Jawa/fauna/animal_tolerances.py": {
     "cleanCount": 1,
