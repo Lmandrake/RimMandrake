@@ -348,6 +348,13 @@ def main():
     for key in sorted(prose):
         deftype, defname = key.split("::", 1)
         p = prose[key]
+        # A row missing from `rows` defaults to approve (the documented posture);
+        # an EXPLICIT non-approve decision must actually be honoured, not just
+        # counted in `not_all_approved` above and shipped anyway.
+        decision = rows.get(key, {}).get("d", "approve")
+        if decision != "approve":
+            skipped.append((key, "owner decision: %s" % decision))
+            continue
 
         if deftype == "ThoughtDef":
             real, why = resolve_thought(defname, thoughts)
