@@ -132,10 +132,23 @@ Everything a stock node can already do stays in XML — skill §9's hybrid shape
   −0.45, Manipulation −0.30, WorkSpeedGlobal −0.35. A droid the player **keeps**
   keeps its fault until they fix it themselves.
 - Five HistoryEventDefs, the goodwill reasons above.
-- `RUT_GiveQuest_DroidRepairJob` (IncidentDef, `ParentName GiveQuestBase`,
-  **`baseChance 0`**) — not a second firing route; a deterministic trigger for
-  testing, skill §7's "never gate a verification on the storyteller". At
-  baseChance 0 it can never inflate the natural pool's rate.
+🔴 **No IncidentDef ships.** A first draft included
+`RUT_GiveQuest_DroidRepairJob` (`ParentName GiveQuestBase`, `baseChance 0`) as a
+deterministic test trigger. The live load refused it:
+
+```
+Config error in RUT_GiveQuest_DroidRepairJob: quest is run from both incident and random quest.
+```
+
+`IncidentDef.ConfigErrors()` fires on `questScriptDef != null &&
+questScriptDef.rootSelectionWeight != 0f` and **never looks at `baseChance`** —
+so the two firing routes are mutually exclusive no matter how the incident is
+weighted, and the "baseChance 0 makes it inert" assumption was simply wrong.
+The def was deleted; the natural pool is the only route, which is what ruling 2
+asked for anyway. Dev mode's *Debug actions → Quests → Generate quest* and a
+`jawa/fire_quest` bridge call both take a QuestScriptDef directly, so nothing was
+lost. **This is the one thing the offline validators could not see** and the sole
+reason the cold load earned its ~17 minutes.
 
 ## verify
 
@@ -175,7 +188,58 @@ Everything a stock node can already do stays in XML — skill §9's hybrid shape
   taken first, per CHARTER's expensive list:
   `infrastructure/state/modlists/ModsConfig.PRESWAP.20260908_151432_before_C5_droidrepairjobs.xml`.
 
-**Live — see the LIVE section appended below.**
+**Live — PARTIAL. Half the verify line is met; the other half is owed.**
+
+Full 601-mod cold load, FOUNDRY, 2026-09-08 15:16→15:33 local (~17 min). The
+game was at the **main menu with no game loaded** when the reboot was called
+(`rimworld/list_colonists` → "No game is currently loaded"), so nothing the owner
+was playing was killed — the one thing `GAME_STATE_WORKFLOW.md` §"A REBOOT IS
+YOURS TO CALL" does not unlock. Bridge was FREE and taken for the reboot.
+
+✅ **What the load proved:**
+- **The mod is active**: `mandrake.rut.droidrepairjobs` appears in the log's own
+  active-mod dump (Player.log:12984), after `mandrake.rsw.droidworks`.
+- **Zero cross-reference errors on the whole load.** That is the proof that all
+  15 `RSW_DW_PartEffect_*` names in the three tier lists, the four PawnKindDefs
+  and `RUT_DroidJobFault` resolved — a bad name there would have been a
+  `Could not resolve cross-reference` line.
+- **Zero type-load errors, and the custom node's `Class=` resolved.** A `Class`
+  the game cannot resolve throws away the **whole parent def** silently; the
+  QuestScriptDef survived, so `RimMandrake.Utinni.DroidRepairJobs.
+  QuestNode_DroidRepairJob` was found in the deployed assembly.
+- **Exactly ONE new `Config error in` line versus the pre-restart baseline (24
+  vs 23)** — the IncidentDef one above, now deleted. Nothing on the
+  QuestScriptDef, the HediffDef or the five HistoryEventDefs.
+
+❌ **What is still owed — "quest fires, completes, pays".** The quicktest map was
+requested (`rimworld/start_debug_game`, Crashlanded/Cassandra/Rough, mapSize 250)
+and **RimWorld died during map generation** — process gone, no exception in the
+log, last lines are ordinary Geological Landforms / Map Designer / ore-step
+output. Not attributable to this packet: it ships no map-gen code, and its only
+log line all session was the config error above. This is the cost of a quicktest
+on the full 601-mod list, not a defect here. One attempt was spent; a second
+17-minute load was not judged worth it against the packet's remaining risk.
+
+⚠️ Note that the **completion** leg would likely have stalled anyway: finishing
+this quest requires a `Recipe_Surgery` bill actually being worked, and
+`DROIDWORKS_LIVE_LOOP_PROOF_1` (A1), `DROIDWORKS_HEADS_BRAINS_SPIKES_1` (B3),
+`DROIDWORKS_FINE_PARTS_1` (B4a) and `DROIDWORKS_SHOP_BENCHES_1` (B4b) have each
+hit the same wall today — no bridge tool forces a `JobDriver_DoBill` to
+completion, and colonists would not pick the job up across ~34,000 ticks.
+
+**The precise run-sheet for whoever picks this up on the next load** (cheap on a
+minimal Droidworks list, ~1 min, rather than the full 601):
+1. `jawa/fire_quest` `RUT_DroidRepairJob` (or dev *Generate quest*).
+2. Confirm the quest **description is not blank** — one unresolvable `[symbol]`
+   blanks the whole thing, and `[payFine_money]`/`[payHonest_money]`/
+   `[payShoddy_money]` come from the custom node. Blank ⇒ the node threw; look
+   for `Exception running QuestNode_DroidRepairJob` in the log.
+3. Confirm the three fee figures are **scaled**, not the 320/512/128 XML
+   fallbacks — equal to the fallbacks means the node did not run.
+4. `jawa/list_things` / pawn health: the droid carries `RUT_DroidJobFault`.
+5. Fit an Excellent `RSW_DW_Part_Leg` via `RSW_DW_InstallLegActuator` near an
+   `RSW_DW_RepairBench`; at pickup expect the `WorkFine` branch, a silver drop
+   pod and **+8** goodwill.
 
 ## Assumptions recorded (Charter: "record what you assumed")
 

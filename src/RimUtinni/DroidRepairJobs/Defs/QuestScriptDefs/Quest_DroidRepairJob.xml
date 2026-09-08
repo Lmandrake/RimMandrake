@@ -67,10 +67,20 @@
   <QuestScriptDef>
     <defName>RUT_DroidRepairJob</defName>
 
-    <!-- Route 1, the natural random pool: this is the "regular event" ruling 2
-         asked for. 1.1 is mid-family (shipped weights run 0.15-2.0). The
-         paired IncidentDef exists at baseChance 0 purely as a deterministic
-         trigger for testing. -->
+    <!-- Route 1, the natural random pool, and it is the ONLY route: this is the
+         "regular event" ruling 2 asked for. 1.1 is mid-family (shipped weights
+         run 0.15-2.0).
+         🔴 This def deliberately ships NO paired IncidentDef. A first draft had
+         one at baseChance 0 as a deterministic test trigger; the engine refused
+         it on a live 601-mod load with
+             Config error in RUT_GiveQuest_DroidRepairJob:
+             quest is run from both incident and random quest.
+         IncidentDef.ConfigErrors() fires on `questScriptDef != null &&
+         questScriptDef.rootSelectionWeight != 0f` and never looks at baseChance,
+         so the two firing routes are mutually exclusive no matter how the
+         incident is weighted. Force this quest with dev mode's
+         Debug actions -> Quests -> Generate quest, or a jawa/fire_quest bridge
+         call, both of which take a QuestScriptDef directly. -->
     <rootSelectionWeight>1.1</rootSelectionWeight>
     <rootMinPoints>0</rootMinPoints>
     <!-- Do not send a repair job to a colony that has no shop yet. -->
