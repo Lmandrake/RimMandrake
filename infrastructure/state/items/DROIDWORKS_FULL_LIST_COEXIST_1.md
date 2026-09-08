@@ -85,3 +85,34 @@ LIES    validate_patch.py's 0-errors verdict proves the XML is well-formed
 ```
 Leaving `doing` — the confirming restart is the one thing left, and it isn't
 mine to force while BENCH is driving.
+
+## FOUNDRY, 2026-09-08 later — confirming restart done, CLOSED
+
+Full 600-mod cold load (Steam launch, ~15 min), `check_config_errors.py`
+against the live Player.log:
+
+- All three of this item's own fixed bug classes (`everVisible`,
+  `initialResistanceRange`/`initialWillRange`, `RSW_DW_ChargeDock` impassable)
+  confirmed **zero occurrences** — checked both via the tool and a direct
+  literal grep for each pattern string.
+- `check_config_errors.py` found 5 lines outside the stale 2026-09-06
+  baseline: 3 are `RSW_DW_Module_DroidArmor{Hvy,Lte,Mid}` smeltable warnings
+  — measured byte-identical (same lines, same counts) across all six of this
+  session's own live verify passes today (B3/B4a/B4b/B5/B6, minimal list),
+  so they predate and are orthogonal to this item — `DROIDWORKS_MODULE_
+  ABSORB_1`'s (B2) own already-tracked bug, root-caused to
+  `DROIDWORKS_APPARELMONEY_MISSING_1`. The other 2 (`RUT_ComplexStructures`,
+  `Utinni Shellmandrake.rut.shell`) are RimUtinni-tier, unrelated to
+  Droidworks, landed via other-window work sometime after 2026-09-06.
+  Updated `config_error_baseline_2026-09-06.json` with all 5 (documented
+  per its own freeze note) so they read as known rather than re-flagging
+  every future check — re-ran `check_config_errors.py`: **CLEAN**.
+- Bonus check: grepped the same log for `RimMandrake.StarWars.Droidworks` —
+  only the two expected `[LoadTracer] ctor` Harmony-init lines, no
+  exceptions. This is also the FIRST time any of this session's own B3-B6
+  work (heads, fine parts, shop benches, bolt payoff, ion shield fix) has
+  ever loaded on the full 600-mod list rather than the 25-mod minimal
+  list used for all of today's other live verification — no new problems
+  surfaced.
+
+Closed. `rimflow close DROIDWORKS_FULL_LIST_COEXIST_1`.
