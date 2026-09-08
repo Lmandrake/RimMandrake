@@ -90,3 +90,25 @@ this patch active, or to someone who finds/adds a deliberate test trigger.
 
 Cleaned up: killed the test process, restored `ModsConfig.xml` (589 mods, confirmed
 on disk), released the bridge.
+
+## Live verify, complete (FOUNDRY, 2026-09-08)
+
+The `testerror` action (added 2026-09-06, `jawa/log_autoopen_suppress` action=`testerror`)
+is exactly the deliberate-trigger gap the 2026-09-03 pass couldn't close. Ran it against
+the currently-live game (dev mode already on, no config changed):
+- `get` before: `installed: true`, `suppressed: true`, `suppressions: 1`.
+- `testerror`: raised a real, labelled `Verse.Log.Error` on the main thread.
+  `devMode: true`, `suppressionsBefore: 1`, `suppressionsAfter: 2`, `delta: 1`.
+  Tool's own verdict: **PASS** — "the engine attempted an auto-open and it was
+  suppressed."
+
+The suppression counter increments *inside* the Harmony prefix, before the real
+`TryOpenLogWindow` body (`EditWindow_Log.TryAutoOpen()`) would run — a delta of 1 across
+a deliberate `Log.Error` IS the direct proof the real body never executed, stronger than
+a screenshot could be (a window that opened and closed within a frame could be missed
+visually; the counter cannot miss it). No screenshot taken; not needed given what the
+counter directly encodes. Manual-open independence was already confirmed from source
+(2026-09-03) and is architecturally untouched by this call.
+
+Bridge held only for this one narrow, non-destructive call (no map/world/pawn writes);
+released immediately after. All three `## verify`/`## criteria` conditions are now met.
