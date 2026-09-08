@@ -5648,3 +5648,13 @@
 {"seat":"FOUNDRY","event":"file","id":"WAR_LAB_CRATER_HOOK_1","title":"Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint","kind":"task","target":"v1","needs":"offline","caused_by":"ANCIENT_WAR_LAB_1","for":"FOUNDRY","ts":"2026-09-08T13:03:03Z"}
 {"seat":"FOUNDRY","event":"claim","id":"WAR_LAB_CRATER_HOOK_1","ts":"2026-09-08T13:03:38Z"}
 {"seat":"FOUNDRY","event":"block","id":"WAR_LAB_CRATER_HOOK_1","reason":"world-tile mutation needs a frozen propane-lake footprint before any tile set is written","on":"LIQUID_BIOMES_MAP_1","ts":"2026-09-08T13:03:39Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROID_ORACLE_VOICE_DESIGN_1","ts":"2026-09-08T13:07:06Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROID_ORACLE_VOICE_DESIGN_1","ts":"2026-09-08T13:07:07Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY: A1 DROIDWORKS_LIVE_LOOP_PROOF_1 live quicktest (GNK + KotOR kind, 5-state loop)","override":"took the bridge: BENCH went quiet for 484 min","ts":"2026-09-08T13:09:37Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T13:10:57Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY: DEV_LOG_AUTOOPEN_SUPPRESS_1 live testerror verify (non-destructive, no map/world writes)","ts":"2026-09-08T13:11:40Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-08T13:11:58Z"}
+{"seat":"FOUNDRY","event":"close","id":"DEV_LOG_AUTOOPEN_SUPPRESS_1","sha":"547d1c2b4695f5d6f72d33aadaa24682391e79cc","ts":"2026-09-08T13:12:36Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BRIDGE_NTDLL_CRASH_TILEGEN_1","ts":"2026-09-08T13:16:34Z"}
+{"seat":"FOUNDRY","event":"close","id":"BRIDGE_NTDLL_CRASH_TILEGEN_1","sha":"09041ee2a85a46c2bbf300b1c0291bbb9301c3fa","ts":"2026-09-08T13:16:34Z"}
+{"seat":"FOUNDRY","event":"file","id":"NINEFOLD_GRAVSHIP_HOOK_SCOPE_1","title":"Patch_GravshipLaunched never fires on a real gravship launch (CompLaunchable isn't on Building_GravEngine) -- rescope as pod/shuttle-only, or retarget to InitiateTakeoff for gravship coverage?","kind":"decision","target":"v1","needs":"offline","caused_by":"NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1","for":"OWNER","ts":"2026-09-08T13:17:09Z"}

@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T13:03:39Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-08T13:17:09Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -234,15 +234,6 @@ kind:     task
 summary:  Three outcomes, decided here because the item filed none.
 prose:    infrastructure/state/items/INHABITED_STOCK_ONTO_MAP_AND_FATE_1.md
 
-## DEV_LOG_AUTOOPEN_SUPPRESS_1 Suppress the dev-mode auto-open of the error log (no vanilla pref exists; Harmony prefix in JawaBench)
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-summary:  Owner, 2026-09-02: "Man I wish the Autoopen of the error log was set to False by default"
-prose:    infrastructure/state/items/DEV_LOG_AUTOOPEN_SUPPRESS_1.md
-
 ## DIRTY_CODE_REVIEW_STANDING_LOOP_1 Standing FOUNDRY code-review loop in progress per owner (keep going, bit by bit) - 12 waves in, ~230 ledger entries, ~55 real bugs found, self-continuing via /loop, not blocked on anything
 state:    doing
 row:      unassigned
@@ -296,15 +287,6 @@ target:   v1
 kind:     task
 summary:  Full design + build record: design/Jawa/worldbuilding/vaultthawquestfamily.md.
 prose:    infrastructure/state/items/VAULT_THAW_QUEST_FAMILY_1.md
-
-## BRIDGE_NTDLL_CRASH_TILEGEN_1 RimWorld crashed twice with identical ntdll.dll fault signature during TILEGEN_SILENT_REUSE_1 live verify
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  Filed by FOUNDRY, 2026-09-05, during a live-verify session for
-prose:    infrastructure/state/items/BRIDGE_NTDLL_CRASH_TILEGEN_1.md
 
 ## NINEFOLD_FIRE_HOOK_RATELIMITED_1 Fire as a Zizzik/Sh'kaar input needs an incident-level or rate-limited hook - per-fire (FireUtility.TryStartFireIn) would flood satiation in one forest fire
 state:    doing
@@ -458,6 +440,15 @@ target:   v1
 kind:     task
 summary:  Six entries, each a reading that could not be taken offline. See history for
 prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_4.md
+
+## DROID_ORACLE_VOICE_DESIGN_1 Design (dormant): four droid Oracle consumers with prescribed fallbacks, claude -p transport
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Design (dormant, per DROIDUNIFIEDFRAMEWORKDESIGN.md §0 card 14 / §3.4 E5) for
+prose:    infrastructure/state/items/DROID_ORACLE_VOICE_DESIGN_1.md
 
 ## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
 state:    doing  (BLOCKED)
@@ -641,16 +632,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DROID_ORACLE_VOICE_DESIGN_1 Design (dormant): four droid Oracle consumers with prescribed fallbacks, claude -p transport
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_ORACLE_VOICE_DESIGN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_ORACLE_VOICE_DESIGN_1.md
 
 ## DROIDWORKS_FULL_LIST_COEXIST_1 Enable Droidworks in the full mod list beside the donors; cold load, texPath census, Harmony idempotency
 state:    proposed
