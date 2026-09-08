@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROID_REPAIR_FOR_PROFIT_EVENTS_1 (packet C5).
+
+     A goodwill change needs a reason, and the reason is a HistoryEventDef - it
+     is the line the faction tab shows the player next to the number. Same shape
+     as RM_StrandedTravellerTaken (src/RimMandrake/StrandedQuest) and the
+     RUT_Vault* events: one defName, one label, nothing else.
+
+     Four, one per outcome that moves the number. "Honest work" and "fine work"
+     are separate lines because the player should be able to read back which of
+     the two they did.
+======================================================================== -->
+<Defs>
+
+  <HistoryEventDef>
+    <defName>RUT_DroidJobFineWork</defName>
+    <label>fitted better parts than we paid for</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>RUT_DroidJobHonestWork</defName>
+    <label>repaired our droid honestly</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>RUT_DroidJobShoddyWork</defName>
+    <label>fobbed us off with worn parts</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>RUT_DroidJobNeglected</defName>
+    <label>never touched the droid we brought</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>RUT_DroidJobDroidKept</defName>
+    <label>kept a droid we left in their care</label>
+  </HistoryEventDef>
+
+</Defs>
