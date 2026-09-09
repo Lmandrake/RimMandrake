@@ -94,6 +94,11 @@ def _trigger_health_rebuild():
     to spawning, same as always; MIN_INTERVAL is mirrored from
     codebase_health_publish.py.
     """
+    # Sandboxed selftests (CODE_REVIEW_STATUS_ROOT) must never spawn the
+    # publisher: it derives its repo from its own __file__ and would rebuild
+    # the LIVE health state as a test side effect.
+    if os.environ.get("CODE_REVIEW_STATUS_ROOT"):
+        return
     MIN_INTERVAL = 900
     try:
         with open(os.path.join(ROOT, "infrastructure", "state",
@@ -213,7 +218,8 @@ def canonical_rels(rels):
     ask = [r for r in rels if not (r.startswith("../") or r == "..")]
     if not ask:
         return out
-    r = git(["ls-files", "--"] + [":(icase)" + a for a in ask])
+    r = git(["-c", "core.quotePath=false", "ls-files", "--"]
+            + [":(icase)" + a for a in ask])
     if r.returncode != 0:
         return out
     lines = r.stdout.splitlines()
@@ -374,7 +380,13 @@ def cmd_mark_clean(path, sha):
     # informational sha doesn't reflect what was reviewed. `diff --quiet`
     # is scoped to one path and skips the untracked-file directory walk
     # `git status` does, so it's the cheaper of the two for this check.
-    diff = git(["diff", "--quiet", "HEAD", "--", rel])
+    # Resolve HEAD ONCE and diff against that sha, not the symbolic HEAD:
+    # with several windows committing into this checkout, a commit landing
+    # between the diff and a later rev-parse would record a sha whose blob
+    # is not the hashed bytes — exactly what the explicit --sha path refuses.
+    head = git(["rev-parse", "--short", "HEAD"])
+    head_sha = head.stdout.strip() if head.returncode == 0 and head.stdout.strip() else None
+    diff = git(["diff", "--quiet", head_sha or "HEAD", "--", rel])
     if diff.returncode not in (0, 1):
         print(f"FAIL: git could not report status for {rel} (index lock? bad path?). Try again.", file=sys.stderr)
         return 2
@@ -382,8 +394,7 @@ def cmd_mark_clean(path, sha):
         print(f"FAIL: {rel} has uncommitted changes. Commit first, then mark-clean.", file=sys.stderr)
         return 2
     if sha is None:
-        r = git(["rev-parse", "--short", "HEAD"])
-        sha = r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else "unknown"
+        sha = head_sha or "unknown"
     else:
         # An unvalidated --sha is recorded verbatim. A typo poisons the entry
         # permanently: every later `check` says "recorded sha not found — log is
@@ -556,7 +567,10 @@ def find_untracked(data):
     be true only for the ~917 paths ever entered here, out of 1,402 real
     .py/.cs/.xml files under src/ - the other ~485 were never tracked at all.
     """
-    r = git(["ls-files", "--", UNTRACKED_SCAN_DIR])
+    # core.quotePath=false: git C-quotes non-ASCII paths by default
+    # ("src/caf\303\251.py", literal quotes), which fails endswith() and
+    # silently drops the file from the census this instrument exists for.
+    r = git(["-c", "core.quotePath=false", "ls-files", "--", UNTRACKED_SCAN_DIR])
     if r.returncode != 0:
         return None  # caller must not treat this as "no untracked files"
     tracked = [p for p in r.stdout.splitlines() if p.endswith(UNTRACKED_SCAN_EXTS)]
@@ -570,8 +584,10 @@ def cmd_list(show_untracked=False):
     else:
         for rel in sorted(data):
             entry = data[rel]
-            state, _ = clean_state(rel, entry)
-            label = state if state == "CLEAN" else "DIRTY (edited since / uncommitted)"
+            state, detail = clean_state(rel, entry)
+            # The real reason, not a hardcoded one: "no recorded hash", "file
+            # no longer exists" and "content changed" need different remedies.
+            label = state if state == "CLEAN" else f"DIRTY ({detail})"
             cc = entry.get("cleanCount", 1)
             streak = f"  [x{cc}]" if cc > 1 else ""
             print(f"{label:35s} {rel}  ({entry.get('sha', '?')}, {entry.get('date', '?')}){streak}")
