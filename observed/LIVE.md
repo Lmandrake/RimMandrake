@@ -3,7 +3,31 @@
 Published by CHECK. One line per fact. Superseded lines are replaced, not appended to.
 Everything here was read out of a running game or off an artifact a running game wrote.
 
+## 🔴 THE MODERN GAME — owner's baseline ruling, 2026-09-08
+
+> *"Please record this game as the current 'modern' version of the game for future processing."*
+
+- **World**: `Saves\WORLDMAP_V24_consolidated_names_2026-09-09.rws` — the hand-authored
+  Ash'karr draft, migrated to consolidated names (63 text + 15 meta + 492 terrain-grid
+  cells), live-proven (RUT_Jawa_* factions PRESENT), canonically re-saved in-game.
+- **Gravship**: `Saves\gravship_f_consolidated_names_2026-09-09.rws` — same migration,
+  identity proven by GravEngine content check. Previous versions V23 + gravship_scratch_e
+  are the only other saves kept (owner's prune order, same day).
+- **Mod list**: `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` — **590 active**,
+  post-consolidation roster (77→56 mods on disk; MOD_CONSOLIDATION_SPRINT_1) + zylle.sandcastles.
+- **Dump**: capture `2026-09-09T01-54-07Z` (post-rename proof load). ⚠️ ONE MOD SWAPPED
+  SINCE: seaswaterline folded away (patch-only, zero defs) and sandcastles added — the
+  COUNT still reads 590 so a count-fingerprint FALSELY passes; the SET differs by one.
+  Retake on the next full load; until then def questions tolerate the sandcastles hole.
+- Repo anchor: commit 8508685e (2026-09-08). Sprint remainder (rid/xtp regen, shutdown-
+  window deploys, gated rows) on MOD_CONSOLIDATION_SPRINT_1.
+
 ## The def dump
+
+⛔ SUPERSEDED 2026-09-08 by the MODERN GAME section above — the 2026-08-20 "definitive
+dump" ruling lapsed when the consolidation sprint changed the mod set (the ruling's own
+lapse condition). Kept below for the fingerprint doctrine, which stands.
+
 
 🔴 **RATIFIED AS DEFINITIVE BY THE OWNER, 2026-08-20:** *"Please keep this thingdef dump
 as definitive until I say otherwise. I don't plan on adding new mods for some time now, so
