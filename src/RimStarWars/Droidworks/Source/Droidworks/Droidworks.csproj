@@ -63,6 +63,10 @@
          trait-equivalent hediff while a module is worn. -->
     <Compile Include="CompModulePersonality.cs" />
     <Compile Include="CompTargetable_DWDataSpike.cs" />
+    <!-- DROIDWORKS_SERVICE_RECORD_DRIFT_1 (packet E2): the time-since-wipe
+         clock and the chassis-weighted idiosyncrasy pool it draws from. -->
+    <Compile Include="CompDWServiceRecord.cs" />
+    <Compile Include="DroidServiceRecord.cs" />
     <Compile Include="DroidAssembly.cs" />
     <Compile Include="DroidEthicsExtension.cs" />
     <Compile Include="DroidFormatTier.cs" />

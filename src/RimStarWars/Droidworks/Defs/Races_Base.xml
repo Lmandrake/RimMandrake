@@ -98,6 +98,18 @@
       <!-- DROIDWORKS_FINE_PARTS_1 (packet B4a): every droid, any family,
            rolls its legal per-family part set on death. -->
       <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWPartDropper" />
+      <!-- DROIDWORKS_SERVICE_RECORD_DRIFT_1 (packet E2): the time-since-wipe
+           clock. Past 2 years unwiped a droid starts accreting idiosyncrasy
+           traits drawn from its own chassis family's weights, and the first
+           one wakes a Programmable droid up to Sapient; a memory wipe erases
+           them and puts the clock back to zero. Wired on the BASE race, not
+           per family, exactly like the three comps above - the family bias
+           lives in the trait weights (TraitDefs_Droidworks_Idiosyncrasies.xml)
+           rather than in which races carry the comp, so every droid has a
+           service record even if its family's weights make some traits
+           vanishingly rare. A race that must never drift overrides
+           <maxAccreted>0</maxAccreted> on its own copy of this comp. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWServiceRecord" />
     </comps>
     <alienRace>
       <generalSettings>

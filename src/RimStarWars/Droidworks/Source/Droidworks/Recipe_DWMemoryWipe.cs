@@ -36,13 +36,16 @@ namespace RimMandrake.StarWars.Droidworks
     /// non-blood-only variant - droids carry no blood relations, so the distinction
     /// buys nothing here and a full clear matches "clears relations" verbatim.
     ///
-    /// Idiosyncrasy hediffs: NONE EXIST YET. design/Jawa/droid_system_spec.md
-    /// sections 4 and 11 (the behavior triad; "EXPERIENCED" idiosyncrasies accreted
-    /// over service) are explicitly "deliberately unengineered until played" - there
-    /// is no idiosyncrasy HediffDef or system anywhere in this codebase to zero
-    /// (confirmed: a full-source RimSage search for "idiosyncrasy" returns zero
-    /// hits). This step is a documented no-op, not a placeholder invented to look
-    /// complete - see ApplyOnPawn's own comment at the call site.
+    /// Idiosyncrasies: BUILT, as of DROIDWORKS_SERVICE_RECORD_DRIFT_1 (packet E2).
+    /// This class header previously read "NONE EXIST YET ... a documented no-op" and
+    /// ApplyOnPawn carried the matching comment "when the behavior triad's
+    /// 'EXPERIENCED' tier lands, this is where they get cleared". That is now the
+    /// first line of ApplyOnPawn: DroidServiceRecordUtility.NotifyWiped removes every
+    /// idiosyncrasy the droid accreted over its unwiped service life and resets
+    /// CompDWServiceRecord's clock. They are TRAITS, not hediffs, per E2's own spec
+    /// (the accretion pool parallels E1's forcedTraits chassis bias) - which is why
+    /// NotifyWiped runs BEFORE RandomizeTraits below rather than beside the hediff
+    /// work further down.
     ///
     /// ── DROIDWORKS_WIPE_SEVERITY_1 (packet B10) ──────────────────────────────
     /// Owner ruling 7, verbatim: "Wipes: 7-day debuff + service-record reset, and
@@ -57,12 +60,12 @@ namespace RimMandrake.StarWars.Droidworks
     ///  2. SERVICE-RECORD RESET, done against vanilla's OWN service record:
     ///     Pawn_RecordsTracker - kills, damage taken, time as a colonist, distance
     ///     walked, every RecordDef - which is the pawn's history the player can
-    ///     actually read, in the bio tab's Records page. There is NO Droidworks
-    ///     CompServiceRecord to reset: a repo-wide grep for "ServiceRecord"
-    ///     (2026-09-08) returns zero C# hits, and the droid-specific one is
-    ///     DROIDWORKS_SERVICE_RECORD_DRIFT_1 (packet E2), unbuilt. This packet
-    ///     deliberately does NOT stub E2's system - it resets the record that
-    ///     already exists.
+    ///     actually read, in the bio tab's Records page. There are now TWO service
+    ///     records and a wipe clears both: this vanilla one, and E2's
+    ///     CompDWServiceRecord drift clock (via NotifyWiped, first line of
+    ///     ApplyOnPawn). They are separate on purpose - vanilla's is the readable
+    ///     history, E2's is the single "ticks since the last wipe" the drift
+    ///     ladder is measured from, and neither can be derived from the other.
     ///  3. A permanent hardware quirk, QuirkChance of the time
     ///     (DroidworksHardwareQuirks). Never removed by anything: RandomizeTraits
     ///     below skips any trait the quirk pool claims, so wiping a droid twice
@@ -118,13 +121,16 @@ namespace RimMandrake.StarWars.Droidworks
         public override void ApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn billDoer,
                                          List<Thing> ingredients, Bill bill)
         {
+            // E2: FIRST, before anything counts traits. Strips every accreted
+            // idiosyncrasy and puts CompDWServiceRecord's clock back to zero, so
+            // RandomizeTraits below sees only the droid's ordinary traits and
+            // re-rolls exactly that many - a droid that shipped with 2 traits and
+            // grew 3 idiosyncrasies comes out with 2, not 5.
+            DroidServiceRecordUtility.NotifyWiped(pawn);
+
             RandomizeTraits(pawn);
             ClearRelationsAndSocialMemories(pawn);
             ResetServiceRecord(pawn);
-
-            // No idiosyncrasy hediffs exist yet to zero - see class header. When the
-            // behavior triad's "EXPERIENCED" tier lands as real hediffs, this is
-            // where they get cleared.
 
             // B10: the 7-day relearning debuff. Added after the trait work so
             // nothing above can strip it. Wiping a droid that is STILL wiped
