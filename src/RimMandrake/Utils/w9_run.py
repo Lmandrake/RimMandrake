@@ -312,6 +312,9 @@ def main():
         r = rb.call("jawa/world_tile_import", {"path": TILES, "apply": apply, "expectTiles": EXPECT_TILES})
         w(out, "- **stage 1 tiles**: success=%s rows=%s applied=%s skipped=%s unknownBiomes=%s"
              % (r.get("success"), r.get("rows"), r.get("applied"), r.get("skipped"), r.get("unknownBiomes")))
+        if not r.get("success"):
+            w(out, "- 🔴 stage 1 tiles FAILED — every later stage assumes this one landed. Stopping.")
+            return 6
 
         # ---- stage 2: links (rivers then roads, file order matters) --------
         if not a.skip_links:
@@ -321,6 +324,9 @@ def main():
                  % (r.get("success"), json.dumps({k: v for k, v in r.items()
                                                   if k in ("rows", "rivers", "roads", "unknownDefs", "message")},
                                                  ensure_ascii=False)[:220]))
+            if not r.get("success"):
+                w(out, "- 🔴 stage 2 links FAILED. Stopping.")
+                return 7
 
         # ---- stage 3: clear the marine mutators the repaint stranded -------
         au = rb.call("jawa/world_mutators_audit", {"limit": 5000})
@@ -357,7 +363,12 @@ def main():
         elif apply:
             rr = rb.call("jawa/world_landmarks_set",
                          {"action": "remove", "tiles": ",".join(map(str, existing)), "checkValid": False})
-            w(out, "- **stage 3b leftovers**: removed %s of %d" % (rr.get("removed"), len(existing)))
+            w(out, "- **stage 3b leftovers**: success=%s removed %s of %d"
+                 % (rr.get("success"), rr.get("removed"), len(existing)))
+            if not rr.get("success"):
+                w(out, "- 🔴 stage 3b leftover removal FAILED — stage 4 refuses a tile that "
+                       "already holds a landmark. Stopping.")
+                return 8
         else:
             w(out, "- stage 3b leftovers (dry): would remove %d" % len(existing))
 
@@ -449,6 +460,9 @@ def main():
              % (r.get("success"), str(r.get("message") or r.get("note"))[:200]))
         for ref in (r.get("refused") or [])[:5]:
             w(out, "    - refused: %s" % json.dumps(ref, ensure_ascii=False)[:170])
+        if not r.get("success"):
+            w(out, "- 🔴 stage 5 settlements FAILED. Stopping before regions/commit.")
+            return 9
 
         # ---- stage 6: named regions ----------------------------------------
         # 'Region' is NOT a real FeatureDef - that name came from the authoring
@@ -459,10 +473,18 @@ def main():
                                                    "expectTiles": EXPECT_TILES,
                                                    "featureDef": "WB_MapLabelFeature"})
         w(out, "- **stage 6 regions**: success=%s %s" % (r.get("success"), str(r.get("message") or r.get("note"))[:200]))
+        if not r.get("success"):
+            w(out, "- 🔴 stage 6 regions FAILED. Stopping before commit.")
+            return 10
 
         # ---- commit, lint, look --------------------------------------------
         if apply:
-            w(out, "- world_commit: %s" % rb.call("jawa/world_commit", {}).get("success"))
+            commit_ok = rb.call("jawa/world_commit", {}).get("success")
+            w(out, "- world_commit: %s" % commit_ok)
+            if not commit_ok:
+                w(out, "- 🔴 world_commit FAILED — nothing above this line is guaranteed to be "
+                       "on the live world. The lint/screenshot below may be reading stale state.")
+                return 11
         li = rb.call("jawa/world_lint", {"limit": 4})
         w(out, "- **lint**: %s" % li.get("verdict"))
         for name, chk in (li.get("checks") or {}).items():
