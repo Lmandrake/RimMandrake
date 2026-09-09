@@ -6509,3 +6509,5 @@
 {"seat":"FOUNDRY","event":"close","id":"DROID_FDE_GOODWILL_CAP_1","sha":"61789b97086798ba0d4406a3060c0551798a493a","ts":"2026-09-09T20:16:40Z"}
 {"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-09-09T20:16:56Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROID_HUTT_CAPTIVES_1","sha":"41c5c7f3","ts":"2026-09-09T20:18:17Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-09T20:18:59Z"}
+{"seat":"FOUNDRY","event":"note","id":"BIOME_ENRICHMENT_POISON_FOREST_1","text":"Sheet resolves to real defNames via a prior prepared plan (unlike the DESERT/WASTELAND sibling); verified+corrected it (category-collision + drift bugs fixed), 245-row plan ready in Transient/. Blocked tonight by a live crash loading CANONICAL_ASHKARR_2026-09-09.rws (missing lumi.doorsexpanded) -- reproduced, reported to sibling agent, no world write landed. Left doing, needs:bridge.","ts":"2026-09-09T20:20:17Z"}
