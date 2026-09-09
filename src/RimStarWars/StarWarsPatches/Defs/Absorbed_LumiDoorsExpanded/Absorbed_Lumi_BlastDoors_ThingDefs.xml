@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Absorbed from Lumi.doorsexpanded ("Doors Expanded - Star Wars edition",
+     workshop 3550435517), source file Defs/ThingDef_Building/Heron_Doors.xml
+     and Defs/ThingDef_Building/Heron_Base.xml, BLASTDOOR_LUMI_PORT_1
+     (2026-09-08) - owner ruling: "Port the dependency first" ahead of
+     STARWARS_DONOR_SUNSET_1 retiring Lumi.doorsexpanded.
+
+     Only the 3 blast-door ThingDefs and the 2 abstract bases they need are
+     ported - Lumi's other ~35 defs (autodoors, mono doors, jail door) are
+     OUT of scope and stay with the donor until a separate absorption item
+     covers them.
+
+     defNames of the 3 concrete ThingDefs preserved verbatim (buildings are
+     save-referenced by defName; do not rename ahead of
+     NAMING_SCHEME_EXECUTION_1 - see naming_rename_map.csv discipline). The
+     2 abstract bases are Abstract="True" and never appear in save data, so
+     they carry RSW_ names instead of Lumi's "Heron"/"SWHeron" naming.
+
+     Texture paths are unchanged strings (Things/Building/Door/Blast/...) -
+     they now resolve against THIS mod's own Textures/ folder, where the
+     full donor texture set was copied in alongside the already-fixed
+     _FrameAsync_east / _FrameAsync_eastm PNGs (formerly the standalone
+     BlastDoorFrameAsyncFix mod, folded into this mod's Textures tree by
+     MOD_CONSOLIDATION_PATCHES_FOLD_1 on 2026-09-08). No override mod, no
+     donor dependency for these textures any more.
+
+     Remaining hard dependencies (unchanged, NOT part of this retirement):
+     jecrell.doorsexpanded (DoorsExpanded.CompProperties_* classes,
+     PlaceWorker_DoorLearnOpeningSpeed) and jecrell.jecstools
+     (JecsTools.PlaceWorker_Outline) - both real frameworks this content
+     needs directly now, added to this mod's own loadAfter. -->
+<Defs>
+
+  <!-- ===== Absorbed abstract bases (Heron_Base.xml) ===== -->
+
+  <!-- Was Name="AbstractSWHeronDoorBase" in the donor. Abstract only - never
+       save-referenced, so renamed to this tier's own scaffolding name. -->
+  <ThingDef Name="RSW_AbsorbedHeronDoorBase" ParentName="BuildingBase" Abstract="True">
+    <thingClass>DoorsExpanded.Building_DoorExpanded</thingClass>
+    <category>Building</category>
+    <altitudeLayer>DoorMoveable</altitudeLayer>
+    <fillPercent>1</fillPercent>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <selectable>true</selectable>
+    <tickerType>Normal</tickerType>
+    <rotatable>true</rotatable>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <useStuffTerrainAffordance>true</useStuffTerrainAffordance>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <designationCategory>Structure</designationCategory>
+    <holdsRoof>true</holdsRoof>
+    <staticSunShadowHeight>1.0</staticSunShadowHeight>
+    <blockLight>true</blockLight>
+    <drawerType>RealtimeOnly</drawerType>
+    <building>
+      <isInert>true</isInert>
+      <canPlaceOverWall>true</canPlaceOverWall>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <comps>
+      <li Class="CompProperties_Forbiddable"/>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_DoorLearnOpeningSpeed</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <!-- Was Name="HeronSWMetalDoorBase" in the donor. Abstract only. -->
+  <ThingDef ParentName="RSW_AbsorbedHeronDoorBase" Name="RSW_AbsorbedHeronMetalDoorBase" Abstract="True">
+    <stuffCategories>
+      <li>Metallic</li>
+    </stuffCategories>
+  </ThingDef>
+
+  <!-- ===== Absorbed concrete blast doors (Heron_Doors.xml) - defNames verbatim ===== -->
+
+  <ThingDef ParentName="RSW_AbsorbedHeronMetalDoorBase">
+    <defName>PH_DoorThickBlastBDoor</defName>
+    <!-- label and description are handled by CompProperties_PostProcessText -->
+    <statBases>
+      <Mass>200</Mass>
+      <MaxHitPoints>2000</MaxHitPoints>
+      <WorkToBuild>8000</WorkToBuild>
+      <DoorOpenSpeed>0.25</DoorOpenSpeed> <!-- when powered, 0.25*4 = 1x door speed (1/4 autodoor speed) -->
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <costList>
+      <Steel>160</Steel>
+      <ComponentIndustrial>14</ComponentIndustrial>
+    </costList>
+    <costStuffCount>300</costStuffCount>
+    <size>(3,2)</size>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <graphicData>
+      <texPath>Things/Building/Door/Blast/SWDoorBlastBDoor_Mover</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,2)</drawSize>
+      <damageData>
+        <enabled>false</enabled>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Door/Blast/SWBlastDoorBUI</uiIconPath>
+    <building>
+      <soundDoorOpenManual>HeronSWBlastDoorAOpen</soundDoorOpenManual>
+      <soundDoorCloseManual>HeronSWBlastDoorAClose</soundDoorCloseManual>
+    </building>
+    <comps>
+      <li Class="DoorsExpanded.CompProperties_PostProcessText">
+        <defaultLabelAndDescriptionFrom>PH_DoorBlastCDoor</defaultLabelAndDescriptionFrom>
+        <appendSizeToLabel>true</appendSizeToLabel>
+      </li>
+      <li Class="DoorsExpanded.CompProperties_DoorExpanded">
+        <remoteDoor>true</remoteDoor>
+        <doorType>Standard</doorType>
+        <fixedPerspective>true</fixedPerspective>
+        <rotatesSouth>false</rotatesSouth>
+        <doorAsync>
+          <texPath>Things/Building/Door/Blast/SWDoorBlastBDoor_MoverAsync</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>(3,2)</drawSize>
+          <damageData>
+            <enabled>false</enabled>
+          </damageData>
+        </doorAsync>
+        <doorFrame>
+          <texPath>Things/Building/Door/Blast/SWDoorBlastBDoor_Frame</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>(3,2)</drawSize>
+          <damageData>
+            <enabled>false</enabled>
+          </damageData>
+        </doorFrame>
+        <doorFrameSplit>
+          <texPath>Things/Building/Door/Blast/SWDoorBlastBDoor_FrameAsync</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>(3,2)</drawSize>
+          <damageData>
+            <enabled>false</enabled>
+          </damageData>
+        </doorFrameSplit>
+      </li>
+      <li Class="DoorsExpanded.CompProperties_BreakdownableCustom">
+        <breakdownMTBUnit>2.0</breakdownMTBUnit> <!-- half as likely to breakdown -->
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>100</basePowerConsumption>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>JecsTools.PlaceWorker_Outline</li>
+    </placeWorkers>
+    <researchPrerequisites>
+      <li>ProjectHeron_Swdoors</li>
+    </researchPrerequisites>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_AbsorbedHeronMetalDoorBase">
+    <defName>PH_DoorBlastCDoor</defName>
+    <label>blast door</label>
+    <description>A heavy pair of doors that are far more resilient to damage.</description>
+    <statBases>
+      <Mass>200</Mass>
+      <MaxHitPoints>2000</MaxHitPoints>
+      <WorkToBuild>8000</WorkToBuild>
+      <DoorOpenSpeed>0.25</DoorOpenSpeed>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <costList>
+      <Steel>160</Steel>
+      <ComponentIndustrial>14</ComponentIndustrial>
+    </costList>
+    <costStuffCount>300</costStuffCount>
+    <size>(3,2)</size>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <graphicData>
+      <texPath>Things/Building/Door/Blast/SWDoorBlastDoor_Mover</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,2)</drawSize>
+      <damageData>
+        <enabled>false</enabled>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Door/Blast/SWBlastDoorUI</uiIconPath>
+    <building>
+      <soundDoorOpenManual>HeronSWBlastDoorAOpen</soundDoorOpenManual>
+      <soundDoorCloseManual>HeronSWBlastDoorAClose</soundDoorCloseManual>
+    </building>
+    <comps>
+      <li Class="DoorsExpanded.CompProperties_PostProcessText">
+        <appendSizeToLabel>true</appendSizeToLabel>
+      </li>
+      <li Class="DoorsExpanded.CompProperties_DoorExpanded">
+        <remoteDoor>true</remoteDoor>
+        <doorType>Standard</doorType>
+        <fixedPerspective>true</fixedPerspective>
+        <rotatesSouth>false</rotatesSouth>
+        <doorAsync>
+          <texPath>Things/Building/Door/Blast/SWDoorBlastDoor_MoverAsync</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>(3,2)</drawSize>
+          <damageData>
+            <enabled>false</enabled>
+          </damageData>
+        </doorAsync>
+        <doorFrame>
+          <texPath>Things/Building/Door/Blast/SWDoorBlastDoor_Frame</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>(3,2)</drawSize>
+          <damageData>
+            <enabled>false</enabled>
+          </damageData>
+        </doorFrame>
+        <doorFrameSplit>
+          <texPath>Things/Building/Door/Blast/SWDoorBlastDoor_FrameAsync</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>(3,2)</drawSize>
+          <damageData>
+            <enabled>false</enabled>
+          </damageData>
+        </doorFrameSplit>
+      </li>
+      <li Class="DoorsExpanded.CompProperties_BreakdownableCustom">
+        <breakdownMTBUnit>2.0</breakdownMTBUnit>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>100</basePowerConsumption>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>JecsTools.PlaceWorker_Outline</li>
+    </placeWorkers>
+    <researchPrerequisites>
+      <li>ProjectHeron_BlastDoors</li>
+    </researchPrerequisites>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_AbsorbedHeronMetalDoorBase">
+    <defName>PH_DoorBlastDDoor</defName>
+    <label>blast door</label>
+    <description>A heavy pair of doors that are far more resilient to damage.</description>
+    <statBases>
+      <Mass>200</Mass>
+      <MaxHitPoints>2000</MaxHitPoints>
+      <WorkToBuild>8000</WorkToBuild>
+      <DoorOpenSpeed>0.25</DoorOpenSpeed>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <costList>
+      <Steel>160</Steel>
+      <ComponentIndustrial>14</ComponentIndustrial>
+    </costList>
+    <costStuffCount>300</costStuffCount>
+    <size>(3,2)</size>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <graphicData>
+      <texPath>Things/Building/Door/Blast/SWDoorBlastDDoor_Mover</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,2)</drawSize>
+      <damageData>
+        <enabled>false</enabled>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Door/Blast/SWBlastDoorDUI</uiIconPath>
+    <building>
+      <soundDoorOpenManual>HeronSWBlastDoorBOpen</soundDoorOpenManual>
+      <soundDoorCloseManual>HeronSWBlastDoorBClose</soundDoorCloseManual>
+    </building>
+    <comps>
+      <li Class="DoorsExpanded.CompProperties_PostProcessText">
+        <appendSizeToLabel>true</appendSizeToLabel>
+      </li>
+      <li Class="DoorsExpanded.CompProperties_DoorExpanded">
+        <remoteDoor>true</remoteDoor>
+        <doorType>Standard</doorType>
+        <fixedPerspective>true</fixedPerspective>
+        <rotatesSouth>false</rotatesSouth>
+        <doorAsync>
+          <texPath>Things/Building/Door/Blast/SWDoorBlastDDoor_MoverAsync</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>(3,2)</drawSize>
+          <damageData>
+            <enabled>false</enabled>
+          </damageData>
+        </doorAsync>
+        <doorFrame>
+          <texPath>Things/Building/Door/Blast/SWDoorBlastDDoor_Frame</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>(3,2)</drawSize>
+          <damageData>
+            <enabled>false</enabled>
+          </damageData>
+        </doorFrame>
+        <doorFrameSplit>
+          <texPath>Things/Building/Door/Blast/SWDoorBlastDDoor_FrameAsync</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>(3,2)</drawSize>
+          <damageData>
+            <enabled>false</enabled>
+          </damageData>
+        </doorFrameSplit>
+      </li>
+      <li Class="DoorsExpanded.CompProperties_BreakdownableCustom">
+        <breakdownMTBUnit>2.0</breakdownMTBUnit>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>100</basePowerConsumption>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>JecsTools.PlaceWorker_Outline</li>
+    </placeWorkers>
+    <researchPrerequisites>
+      <li>ProjectHeron_BlastDoors</li>
+    </researchPrerequisites>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Absorbed from Lumi.doorsexpanded (workshop 3550435517), source file
+     Defs/SoundDef/Heron_Sounds.xml, BLASTDOOR_LUMI_PORT_1 (2026-09-08).
+     Only the 4 door-open/close sounds the ported blast doors reference.
+     Clip files copied to this mod's own Sounds/Misc/BlastDoorA and
+     BlastDoorB folders - clipPath strings unchanged, they now resolve
+     against this mod's own Sounds/ tree. defNames preserved verbatim. -->
+<Defs>
+
+  <SoundDef>
+    <defName>HeronSWBlastDoorAOpen</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <name>False</name>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Misc/BlastDoorA/BlastDoorOpen</clipPath>
+          </li>
+        </grains>
+        <volumeRange>3</volumeRange>
+        <pitchRange>0.85~1.15</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>HeronSWBlastDoorAClose</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <name>False</name>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Misc/BlastDoorA/BlastDoorClose</clipPath>
+          </li>
+        </grains>
+        <volumeRange>3</volumeRange>
+        <pitchRange>0.85~1.15</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>HeronSWBlastDoorBOpen</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <name>False</name>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Misc/BlastDoorB/BlastDoorOpen</clipPath>
+          </li>
+        </grains>
+        <volumeRange>3</volumeRange>
+        <pitchRange>0.90~1.20</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>HeronSWBlastDoorBClose</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <name>False</name>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Misc/BlastDoorB/BlastDoorClose</clipPath>
+          </li>
+        </grains>
+        <volumeRange>3</volumeRange>
+        <pitchRange>0.90~1.20</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>

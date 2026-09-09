@@ -35,8 +35,14 @@
          the fix-target donor of a fix mod folded into this Patches/ tree.
          A fold that loses its donor's loadAfter silently no-ops.
          Neronix17.OuterRim.GalacticDiversity is CereanManeFix's fix target
-         and was already present above - no addition needed for it. -->
-    <li>Lumi.doorsexpanded</li>                             <!-- Patches/BlastDoorFrameAsyncFix textures - fix target -->
+         and was already present above - no addition needed for it.
+         Lumi.doorsexpanded REMOVED (BLASTDOOR_LUMI_PORT_1, 2026-09-08): the
+         3 blast-door ThingDefs it gated are now absorbed under
+         Defs/Absorbed_LumiDoorsExpanded/, textures and sounds folded into
+         this mod's own Textures/Sounds trees - no donor dependency left for
+         this content. Closes STARWARS_DONOR_SUNSET_1's last wave-4 gap. -->
+    <li>jecrell.doorsexpanded</li>                          <!-- DoorsExpanded.CompProperties_* / Building_DoorExpanded - the absorbed blast doors' real framework dependency -->
+    <li>jecrell.jecstools</li>                              <!-- JecsTools.PlaceWorker_Outline - used by the absorbed blast doors' placeWorkers -->
 
     <!-- Added PATCHMODS_LOADAFTER_SWEEP_1 (2026-09-08): real MayRequire/FindMod
          targets in Patches/ with no loadAfter declaration, found the same way
