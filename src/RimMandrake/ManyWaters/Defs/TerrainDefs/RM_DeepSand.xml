@@ -10,10 +10,10 @@
     `SwimPathFinder`, `JoyGiver_GoSwimming`, `WaterSource`, flood/explosion FX, etc.).
   - `Zone_Fishing.IsFishable(cell)` (RimWorld/Zone_Fishing.cs) requires
     `cell.GetTerrain(map).IsWater` AND `cell.GetWaterBodyType(map) == FishType`, where
-    `FishType` comes from the zone's `TerrainDef.waterBodyType` (Freshwater/Saltwater —
-    a closed two-value field, `Verse/WaterBodyType.cs`; there is no "Sand" water body
-    type, and adding one would need C#). Declaring `waterBodyType: Freshwater` here is
-    what lets a fishing zone actually form fishable cells on Deep Sand.
+    `FishType` comes from the zone's `TerrainDef.waterBodyType` — a closed four-value
+    enum, `Verse/WaterBodyType.cs` (None/Freshwater/Saltwater/Other); there is no "Sand"
+    water body type, and adding one would need C#. Declaring `waterBodyType: Freshwater`
+    here is what lets a fishing zone actually form fishable cells on Deep Sand.
   - Passability Impassable is what blocks ordinary pawn pathing — the same mechanism
     `WaterDeep` (`Defs/Core/TerrainDefs/Terrain_Water.xml`) uses for "you cannot walk
     across this." This def is written from scratch rather than ParentName="WaterBase"
