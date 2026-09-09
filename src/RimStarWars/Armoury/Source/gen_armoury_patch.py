@@ -599,9 +599,24 @@ def classify(pname, p, users):
         return "slugthrower"
     if any(s in b for s in ("slug", "cycler", "shatter", "massdriver", "bowcaster")):
         return "slugthrower"
-    if any(s in b for s in ("heavy", "cannon", "repeater")):
+    # 🔴 ARMOURY_SUBSTRING_RUNG_TRAP_1: "heavy"/"cannon"/"repeater" ALONE is not
+    # a blaster signal -- it is naming, and naming is any mod's to pick. Vanilla
+    # Core alone ships Bullet_HeavySMG (plain Bullet damage), Bullet_AutocannonTurret
+    # (plain Bullet) and Bullet_InfernoCannon (Flame) -- none of them a blaster,
+    # all three containing one of these three words. The old form fired on the
+    # word regardless of damage type, so any third-party turret sharing its
+    # projectile with a hand weapon (the same shared-projectile shape this file
+    # has already hit twice) would drag a kinetic or incendiary round onto the
+    # blaster_heavy band the moment its name happened to contain "cannon".
+    # Require the SAME energy signal line 604 already trusts -- the projectile
+    # must already read as blaster-family by defName/damageDef -- before a
+    # heavy/cannon/repeater qualifier is allowed to promote it to the heavy
+    # sub-tier. A bare kinetic "cannon" with no blaster/bolt/laser/energy/plasma
+    # marker anywhere in `b` now falls through and returns None, untouched.
+    is_energy = any(k in b for k in ("blaster", "bolt", "laser", "energy", "plasma"))
+    if is_energy and any(s in b for s in ("heavy", "cannon", "repeater")):
         return "blaster_heavy"
-    if any(s in b for s in ("blaster", "bolt", "laser", "energy", "plasma")):
+    if is_energy:
         return "blaster"
     return None
 
