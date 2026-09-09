@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T21:42:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T21:43:27Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -674,6 +674,15 @@ target:   v1
 kind:     task
 summary:  This is a census + risk-ordered retirement PLAN. Do not retire anything in this
 prose:    infrastructure/state/items/STAT_NORMALIZATION_AUDIT_1.md
+
+## STAT_NORM_WAVE1_RETIRE_1 Retire the 13 zero-content/zero-save-presence mods from STAT_NORMALIZATION_AUDIT_1's Wave 1
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  (no items/STAT_NORM_WAVE1_RETIRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STAT_NORM_WAVE1_RETIRE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
