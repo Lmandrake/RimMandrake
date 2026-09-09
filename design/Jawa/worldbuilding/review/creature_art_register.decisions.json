@@ -1,0 +1,1682 @@
+{
+ "sheet": "creature_art_register",
+ "item": "CREATURE_ART_REVIEW_SHEET_1",
+ "posture": "blacklist",
+ "postureMeaning": "APPROVED unless flagged. A row with no entry stands as approved. Nothing in this file edits art; a non-approve verdict is a work item.",
+ "criterion": "Pre-fill carries the owner's own frozen 2026-08-23 verdicts forward unchanged, plus the 2026-09-06 rulings on top of them; only rows neither of those touched are agent guesses, and those were made on MEASURABLE art quality — source resolution against the size the game draws the sprite at. That ranks QUALITY, not WORTH: it cannot see that a shape is too terrestrial, too familiar, or unreadable as a creature, which is exactly what the owner overruled it on last time.",
+ "generatedBy": "gen_creature_art_register.py",
+ "generatedFrom": "design/Jawa/worldbuilding/biomes/rosters/*.json (residency, 2026-09-09) + creature_register_rows.json (art metrics, 595-mod dump 2026-09-05) + design/Jawa/fauna/creature_art_decisions.json (owner-frozen 2026-08-23, READ ONLY) + infrastructure/state/items/CREATURE_ART_REVIEW_SHEET_1.md (owner rulings 2026-09-06)",
+ "invented": [
+  "THE SCALE CAP. Rows are drawn at true relative in-game scale — 19.5 px per map cell — and the biggest creature on the sheet (18.06 cells) sets it by being capped at 380 px on its longest side. Everything else is proportional to that ONE cap. The smallest row (0.5 cells) therefore comes out about 10 px across and is genuinely hard to see — that is the true proportion, not a rendering fault. The 64px thumbnail beside it is the legible one; press Z to zoom it.",
+  "BIOME CLUSTERING IS THE REVIEW ORDER, and it is a choice. The 2026-08-23 sheet ranked by measured art quality (worst first). This one groups by where the creature now lives, because the question changed: a sprite is judged against the biome it has to sell. Inside a group, rows run smallest to largest so the scale ladder reads.",
+  "A creature in several biomes appears ONCE, in its highest-commonality home; the others are named on its row. Ties break alphabetically so two runs never disagree.",
+  "96 rows carry an AGENT GUESS, not your verdict — the 2026-08-23 file has no entry for them. The guess is mechanical: revise if the source sprite has under 0.7 source px per drawn px (upscaled and soft at its drawn size), approve otherwise. It is blind to silhouette, legibility and ‘too terrestrial’.",
+  "MAPPING YOUR 2026-08-23 WORDS ONTO THESE FIVE OPTIONS IS THE AGENT'S: keep→approve, shrink→revise, replace→replace, redraw→redraw. `shrink` in particular is read as a size revision, not a new drawing — if you meant a redraw, say so.",
+  "‘Contested’ here means a LIVE def carrying an open art flag — a verdict other than approve on a creature that is actually on the planet or in the reserve. Rows whose def is cut from the game, and rows you already ruled on, are deliberately NOT marked contested even though they are not approve.",
+  "The register's art metrics (source px, px-per-drawn-px, the size-law ratio) are MEASURED from the 595-mod def dump of 2026-09-05. Everything derived from them is only as current as that dump."
+ ],
+ "decisions": {
+  "c:Capybara": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "ruled",
+   "note": ""
+  },
+  "c:Noctol": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Revenant": {
+   "decision": "cancel",
+   "prefill": "cancel",
+   "prefillSource": "ruled",
+   "note": ""
+  },
+  "c:Gorilla": {
+   "decision": "redraw",
+   "prefill": "redraw",
+   "prefillSource": "ruled",
+   "note": ""
+  },
+  "c:JRWDimetrodon": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Procoptodon": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:MA_Capryak": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:JRWTorosaurus": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:GR_Catbear": {
+   "decision": "replace",
+   "prefill": "replace",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:JRWAntarctopelta": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Enhydriodon": {
+   "decision": "redraw",
+   "prefill": "redraw",
+   "prefillSource": "ruled",
+   "note": ""
+  },
+  "c:JRWOuranosaurus": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:JRWBrachiosaurus": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_SandPillar": {
+   "decision": "replace",
+   "prefill": "replace",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:DA_BlackScribe": {
+   "decision": "replace",
+   "prefill": "replace",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_ShatterjawBeetle": {
+   "decision": "replace",
+   "prefill": "replace",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:RSW_CrimsonOpee": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:RSW_ShaleGorger": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:BMT_SludgeCrawler": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:RSW_ThornbackColo": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Gomphotaria": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:RSW_ColoClawFish": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:BMT_TripleSnapper": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_BiliousVarog": {
+   "decision": "replace",
+   "prefill": "replace",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:RSW_AbyssalColo": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Atispec": {
+   "decision": "cancel",
+   "prefill": "cancel",
+   "prefillSource": "ruled",
+   "note": ""
+  },
+  "c:GR_Thrumbalope": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:GR_Thrumbolizard": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:GR_Thrumbospider": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:KwazelMaw": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:GR_Paraceramuffalo": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Roggwart": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:RSW_StormSando": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:RSW_Starmaw": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Behemoth": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "ruled",
+   "note": ""
+  },
+  "c:BMT_ImperialToad": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:OuterRim_DUMDroid": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Lothcat": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Porg": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Cactipine": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_MossBeetle": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Rat": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Igitz": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:KowakianMonkeyLizard": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Pikobis": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Scavrat": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Scurrier": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Sketto": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:OuterRim_GNKDroid": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:OuterRim_FX7Droid": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Vulptex": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:OuterRim_AstromechDroid": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:FrilledGorg": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Gorg": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Pufferpig": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:OuterRim_SalvageAssistDroid": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:WompRat": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Iriaz": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:OuterRim_MuckrakerDroid": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:LongtailGorg": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Qormot": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Kybuck": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Cannok": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:OuterRim_DestroyerDroid": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Massiff": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:OuterRim_MSEDroid": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Strill": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Terrorworm": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Urusai": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Eopie": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:FeralNerf": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:VFEI2_Fuelmite": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Anooba": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Corinathoth": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Mudhorn": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Ronto": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Voorpak": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_Jellypot": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Nerf": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Shaak": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Shyrack": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Jimvu": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Krykna": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_DesertAve": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Bantha": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:FeralGrazer": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Gigantelope": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Gutkurr": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:IridonianReek": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Jamel": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Kwi": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:TeeMuss": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Wraid": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Hrumph": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Uvak": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Skalder": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Bolotaur": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Jakobeast": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Varactyl": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_MammothWorm": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Horax": {
+   "decision": "replace",
+   "prefill": "replace",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:RSW_Faa": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Kreetle": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:RSW_Mee": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:RSW_Yobshrimp": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:RSW_RustNipper": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:RSW_SiltLamprey": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:BMT_CrestedDragon": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:RSW_Laa": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Yobshrimp": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_AaroxisDendoria": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_Gembug": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:VFEI2_Swarmling": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Grank": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Mantrap": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:RSW_OpeeSeaKiller": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Runyip": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_DecayDrake": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_RaptorShrimp": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Thermadon": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Vornskyr": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Lockjaw": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Helixien": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Slurrypede": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Zakkeg": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Gizka": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Convor": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Clodhopper": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_Diggerpede": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Mott": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Shiro": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:ShiroTrap": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Worrt": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Needlepost": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Hawkbat": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Whisperbird": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Klorslug": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Kinrath": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Dalgo": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Razorjack": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Hssiss": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:PekoPeko": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Dianoga": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Dragonsnake": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Falumpaset": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Lylek": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Fambaa": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Eyeling": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_FleeceSpider": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_BloodletterPetrel": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_AcanthamoebaGiganteaSmall": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:VFEI2_BlackSwarmling": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:SW_Electrictick": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_PustuleHornetSpawned": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Borcatu": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_FissionMouse": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:BMT_Screecher": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_Maligoat": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Terramorph": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Toxalope": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:BMT_ColonyPustuleHornetQueen": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:GR_Molebear": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_PustuleHornetQueen": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:GR_ParagonRat": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:GR_Spidercat": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:VAEWaste_Megatardi": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_GlowBat": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Swarmling": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:BMT_FungalWeevil": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Agaripawn": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:BMT_GiantSlug": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_Pillbug": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Wildpawn": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:BMT_GiantSnail": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_BovineBeetle": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:BMT_FungalMantis": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:BMT_CaveSpider": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Agaripod": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Wildpod": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:BMT_ChemSnail": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_MycoidColossus": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_DuskRat": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Murkling": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Nightling": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_DarkVandal": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Darkbeast": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_DuskProwler": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Frostling": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_NightRam": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_ShadowCharger": {
+   "decision": "",
+   "prefill": "",
+   "prefillSource": "agent",
+   "note": "Left undecided on purpose: the texture does not resolve on disk (not_found), so there is nothing to judge. It renders in game or it does not — that is a deploy question, not an art verdict."
+  },
+  "c:AA_NightAve": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_NightMule": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Thunderox": {
+   "decision": "",
+   "prefill": "",
+   "prefillSource": "agent",
+   "note": "Left undecided on purpose: the texture does not resolve on disk (not_found), so there is nothing to judge. It renders in game or it does not — that is a deploy question, not an art verdict."
+  },
+  "c:AA_SandProwler": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_CrepuscularBeetle": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Neebray": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:GraniteSlug": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_BedBug": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:GR_Beetlefleet": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AM_Dryad_Corruptor": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AM_Dryad_Ocular": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AM_Dryad_Tumorous": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_CrystalMit": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Visceral": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_GiantCrownedSilkie": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_InfectedAerofleet": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_DrainerLarva": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Drainer": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_OcularJelly": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_RedGoo": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_RedSpore": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_BloodShrimp": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_RoughPlatedMonitor": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_MutagenicNorphea": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_SandLeaper": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Woolamander": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_Creature_Mantrap": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Gornt": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:CanCell": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_SandSquid": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:GR_Chickenrabbit": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:GR_Manbear": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Mime": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Plasmorph": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_AcanthamoebaGiganteaLarge": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_GreenGoo": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Thunderbeast": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Aerofleet": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:LavaSnail": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_Maguana": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Cinderlisk": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Metallovore": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Beldon": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:LavaFlea": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Mynock": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:VFEI2_Boomtick": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_FoundryBeetle": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:SW_Electricgryllotalpa": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:SW_Juggernautbeetles": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_SpinedGow": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:RG_Rimclaw": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:ColossusToad": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Ollopom": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Dactillion": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Dewback": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Boma": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Fanback": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Needleroll": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_Dunealisk": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_BoulderMit": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:GreaterKraytDragon": {
+   "decision": "revise",
+   "prefill": "revise",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:KraytDragon": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:WarWyrm": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Nuna": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_FireWasp": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Boomalope": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Orray": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:GR_Mantistanis": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Zeer": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:BMT_GlowSlug": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:VFEI2_Megathrips": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:Gelagrub": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:BMT_AcidSlug": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Bumbledrone": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_BumbledroneHierophant": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_TarGuzzler": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_TetraSlug": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_SummitCrab": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:RSW_SandoAquaMonster": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:RSW_ElderSando": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:BMT_JewelBeetle": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Wyyyschokk": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:AA_Frostmite": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:AA_FrostboundBehemoth": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  },
+  "c:RSW_Reefback": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:RSW_Lanternwhale": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "agent",
+   "note": ""
+  },
+  "c:Ling_Cockroach": {
+   "decision": "approve",
+   "prefill": "approve",
+   "prefillSource": "owner0823",
+   "note": ""
+  }
+ }
+}
