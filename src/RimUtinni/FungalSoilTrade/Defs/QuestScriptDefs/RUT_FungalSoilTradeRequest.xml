@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FUNGAL_SOIL_TRADE_1 - "the good", the delivery-quest half of Verify ("a delivery
+  quest/trade pays out at a farm"). Built almost entirely from STOCK vanilla
+  QuestNodes, mirroring Core's own Script_TradeRequest.xml (read in full via
+  mcp__rimsage__get_def_details, QuestScriptDef "TradeRequest") - the exact same
+  system (TradeRequestComp / QuestNode_TradeRequest_Initiate) any settlement
+  already uses to ask a caravan to bring specific goods, then pay a wealth- and
+  reputation-scaled reward once the goods are handed over on a visit.
+
+  THE ONE CHANGE FROM STOCK: vanilla's own random-thing picker
+  (QuestNode_TradeRequest_GetRequestedThing) filters candidates through
+  PlayerItemAccessibilityUtility.PlayerCanMake (read via
+  mcp__rimsage__read_csharp_symbol) - it only ever requests goods the colony can
+  CRAFT. RUT_FungalSoil is mined-only, so it would never be picked by that
+  random selector; it is asked for by name instead, the same literal-defName-as-
+  SlateRef move src/RimUtinni/DroidRepairJobs/Defs/QuestScriptDefs/
+  Quest_DroidRepairJob.xml already uses for its own <faultHediff> field. No
+  custom QuestNode class was needed for this quest at all.
+
+  OPEN QUESTION, flagged rather than guessed at: this does not gate the
+  requesting settlement to OutlanderCivil/"Moisture Farmers" specifically.
+  QuestNode_GetNearbySettlement (read via mcp__rimsage__read_csharp_symbol) has
+  no faction-filter field, and no Moisture Farmer FactionDef or placed
+  settlement exists yet (StructureInjectionsRUT/Defs/TileMutatorDefs_
+  MoistureFarm.xml is explicitly unplaced on any Ash'karr tile). Any nearby
+  visitable settlement can roll this request; ordinary caravan trade (RUT_FungalSoil
+  is a plain sellable ResourceBase item) already covers "sell it to the Moisture
+  Farmers specifically" once their settlements exist to trade with directly.
+  Narrowing this quest to them is real follow-up work, not done here.
+
+  rootMinProgressScore 0 and a short minRefireDays (unlike Core's own
+  rootMinProgressScore 8): the owner's own framing is "an early game way to make
+  money," so this is deliberately available from turn one, capped only by
+  refire frequency and by the per-map soil supply itself (the mineable def's
+  fixed yield, no regrowth, no craft recipe).
+-->
+<Defs>
+
+  <QuestScriptDef>
+    <defName>RUT_FungalSoilTradeRequest</defName>
+    <rootSelectionWeight>1.0</rootSelectionWeight>
+    <rootMinProgressScore>0</rootMinProgressScore>
+    <minRefireDays>4</minRefireDays>
+    <expireDaysRange>4~8</expireDaysRange>
+    <defaultChallengeRating>1</defaultChallengeRating>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->Soil order: [settlement_label]</li>
+        <li>questName->Fungal soil buyer</li>
+        <li>questName->[settlement_label] wants soil</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->[settlement_label] has heard a Jawa outfit can get its hands on fungal soil off the Rot, and they want some for their shade-soil beds. They are asking for:
+\n  [requestedThingCount]x [requestedThing_label] (worth [requestedThingMarketValue_money])
+\nBring it by caravan before the offer lapses.[travelTime]</li>
+        <li>travelTime(canCaravan==True,priority=1)-> The estimated travel time is [estimatedTravelTime_duration].</li>
+        <li>travelTime-></li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_GetMap">
+          <canBeSpace>true</canBeSpace>
+        </li>
+
+        <li Class="QuestNode_GetNearbySettlement">
+          <allowActiveTradeRequest>false</allowActiveTradeRequest>
+          <maxTileDistance>60</maxTileDistance>
+          <storeAs>settlement</storeAs>
+          <storeFactionLeaderAs>asker</storeFactionLeaderAs>
+          <storeCanCaravanAs>canCaravan</storeCanCaravanAs>
+          <canBeSpace>false</canBeSpace>
+        </li>
+
+        <li Class="QuestNode_GetFactionOf">
+          <thing>$asker</thing>
+          <storeAs>faction</storeAs>
+        </li>
+
+        <li Class="QuestNode_Letter">
+          <inSignal>faction.BecameHostileToPlayer</inSignal>
+          <label TKey="LetterLabelQuestFailed">Quest failed: [resolvedQuestName]</label>
+          <text TKey="LetterTextQuestFailed">[faction_name] became hostile to you.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>faction.BecameHostileToPlayer</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+        <li Class="QuestNode_TradeRequest_RandomOfferDuration">
+          <settlement>$settlement</settlement>
+          <storeAs>timeout</storeAs>
+          <storeEstimatedTravelTimeAs>estimatedTravelTime</storeEstimatedTravelTimeAs>
+        </li>
+
+        <!-- THE ONE CHANGE FROM STOCK: named explicitly, not randomly picked.
+             requestedThing must be set on the slate (not just passed as a
+             literal to QuestNode_TradeRequest_Initiate below) because
+             questDescriptionRules resolves [requestedThing_label] from the
+             slate var of that name - vanilla's own picker node sets it the
+             same way (storeThingAs>requestedThing). Skipping this step would
+             leave an unresolvable [symbol] and blank the whole description
+             (the exact trap DroidRepairJob's own comments warn about). -->
+        <li Class="QuestNode_Set">
+          <name>requestedThing</name>
+          <value>RUT_FungalSoil</value>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>requestedThingCount</name>
+          <value>$(randInt(12,28))</value>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>requestedThingMarketValue</name>
+          <value>$($requestedThingCount * 7)</value>
+        </li>
+
+        <li Class="QuestNode_TradeRequest_Initiate">
+          <settlement>$settlement</settlement>
+          <requestedThingDef>$requestedThing</requestedThingDef>
+          <requestedThingCount>$requestedThingCount</requestedThingCount>
+          <duration>$timeout</duration>
+        </li>
+
+        <li Class="QuestNode_GetMapWealth">
+          <map>$map</map>
+          <storeAs>mapWealth</storeAs>
+        </li>
+        <li Class="QuestNode_EvaluateSimpleCurve">
+          <value>$mapWealth</value>
+          <storeAs>wealthRewardValueFactor</storeAs>
+          <curve>
+            <points>
+              <li>0, 1.15</li>
+              <li>50000, 1</li>
+              <li>300000, 0.85</li>
+            </points>
+          </curve>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>rewardValue</name>
+          <value>$($requestedThingMarketValue * $wealthRewardValueFactor * randFloat(1.5, 2.1))</value>
+        </li>
+
+        <li Class="QuestNode_GiveRewards">
+          <inSignal>settlement.TradeRequestFulfilled</inSignal>
+          <parms>
+            <allowGoodwill>true</allowGoodwill>
+            <giveToCaravan>true</giveToCaravan>
+            <disallowedThingDefs>
+              <li>$requestedThing</li>
+            </disallowedThingDefs>
+          </parms>
+          <useDifficultyFactor>false</useDifficultyFactor>
+        </li>
+
+        <li Class="QuestNode_Delay">
+          <delayTicks>$timeout</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <outSignalComplete>TradeRequestTimeout</outSignalComplete>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>settlement.TradeRequestFulfilled</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>true</sendStandardLetter>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>TradeRequestTimeout</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>

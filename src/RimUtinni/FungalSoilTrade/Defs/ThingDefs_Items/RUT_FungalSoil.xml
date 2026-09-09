@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- FUNGAL_SOIL_TRADE_1 - the haulable, sellable payoff. ParentName="ResourceBase"
+       (same parent Steel uses, confirmed via mcp__rimsage__get_def_details) - a
+       plain tradeable raw resource, alwaysHaulable/Sellable by inheritance, so it
+       is sellable at ANY settlement's ordinary caravan trade window with zero
+       extra wiring; RUT_FungalSoilTradeRequest.xml (QuestScriptDefs) additionally
+       lets a settlement specifically REQUEST it via vanilla's own TradeRequest
+       system.
+
+       MarketValue 7: pitched deliberately above Steel's 1.9 (worth the trip - "an
+       early game way to make money" per the owner's own framing) but the total a
+       single map can ever yield is hard-capped by RUT_MineableFungalGround's knot
+       count x mineableYield 18, with no craft recipe to manufacture more - the
+       anti-exponential floor lives on the mineable def, not here.
+
+       PLACEHOLDER ART: reuses BiomesTeam.BiomesCaverns' own BMT_MycelialSoil
+       terrain texture path directly (vendor/mod_sources/BiomesCaverns_src/1.6/
+       Defs/TerrainDef/BiomesCaverns_Floor.xml:309, texturePath
+       BMT_Caverns/Terrains/MycelialSoil) - a real, live asset from an active mod
+       dependency, not an invented path; it is a flat terrain graphic pressed into
+       service as an item icon (same "reuse a confirmed-real path, flag it,
+       don't invent one" move LanternDeeps' own RUT_LanternDeepEmergence made
+       with a vanilla cave-entrance texture). Real bespoke item art is owed. -->
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_FungalSoil</defName>
+    <label>fungal soil</label>
+    <description>Rich, dense soil pulled out of the Rot's mycelial mat, still faintly warm and threaded with living hyphae. It keeps metabolizing for a while after it is dug - the bag stays warm on the ride out. Moisture Farmers pay well for it: worked into shade-soil, a little goes a long way.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>BMT_Caverns/Terrains/MycelialSoil</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>50</stackLimit>
+    <statBases>
+      <MarketValue>7</MarketValue>
+      <Mass>0.9</Mass>
+      <Beauty>-1</Beauty>
+      <Flammability>0</Flammability>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <tradeTags>
+      <li>RUT_MoistureFarmDesired</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>
