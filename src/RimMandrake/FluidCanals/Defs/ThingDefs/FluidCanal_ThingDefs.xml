@@ -35,6 +35,11 @@
     <fillPercent>0.2</fillPercent>
     <altitudeLayer>Building</altitudeLayer>
     <useHitPoints>true</useHitPoints>
+    <!-- Owner ruling 2026-09-04 (canon_reintegration_plan.md sec G8): the
+         reservoir now runs two independent recurring releases (drip + periodic
+         re-flood) off CompTickRare instead of spending once and going inert;
+         needs an actual ticker, which BuildingBase does not set by default. -->
+    <tickerType>Rare</tickerType>
     <statBases>
       <MaxHitPoints>100</MaxHitPoints>
       <Flammability>0</Flammability>
@@ -45,7 +50,10 @@
     <comps>
       <li Class="RimMandrake.FluidCanals.CompProperties_FluidReservoir">
         <fluidDef>RM_Fluid_Water</fluidDef>
-        <volume>60</volume>
+        <dripVolume>3</dripVolume>
+        <dripIntervalTicks>2500</dripIntervalTicks>
+        <reFloodVolume>60</reFloodVolume>
+        <reFloodIntervalTicks>180000</reFloodIntervalTicks>
       </li>
     </comps>
   </ThingDef>
