@@ -10,6 +10,13 @@
     <race>RSW_DW_Race_JDSCIS_Pistoeka_Sotage_Droid</race>
     <combatPower>45</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Industriousness>1</Industriousness>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -25,6 +32,13 @@
     <weaponTags>
       <li>E-5_Blaster_Rifle</li>
     </weaponTags>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -40,6 +54,13 @@
     <weaponTags>
       <li>SE-14_Light_Blaster_Pistol</li>
     </weaponTags>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -55,6 +76,13 @@
     <weaponTags>
       <li>SE-14_Light_Blaster_Pistol</li>
     </weaponTags>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -70,6 +98,13 @@
     <weaponTags>
       <li>E-5S_Sniper_Rifle</li>
     </weaponTags>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -85,6 +120,13 @@
     <weaponTags>
       <li>Electrostaff</li>
     </weaponTags>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -100,6 +142,13 @@
     <weaponTags>
       <li>SE-14_Light_Blaster_Pistol</li>
     </weaponTags>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -115,6 +164,13 @@
     <weaponTags>
       <li>SE-14_Light_Blaster_Pistol</li>
     </weaponTags>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -130,6 +186,13 @@
     <weaponTags>
       <li>B2_Wrist_Blaster</li>
     </weaponTags>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -145,6 +208,13 @@
     <weaponTags>
       <li>B2_HA_Wrist_Cannon</li>
     </weaponTags>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -160,6 +230,13 @@
     <weaponTags>
       <li>AQ_Battle_Blaster</li>
     </weaponTags>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -175,6 +252,13 @@
     <weaponTags>
       <li>Droidekas_Blaster</li>
     </weaponTags>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -190,6 +274,13 @@
     <weaponTags>
       <li>Droideka_Long_Blaster</li>
     </weaponTags>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -205,6 +296,13 @@
     <weaponTags>
       <li>Thermal_Detonator</li>
     </weaponTags>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -220,6 +318,13 @@
     <weaponTags>
       <li>DSD1_Dwarf_Spider_Blaster</li>
     </weaponTags>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -235,6 +340,13 @@
     <weaponTags>
       <li>LR-57_Combat_Blaster</li>
     </weaponTags>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>

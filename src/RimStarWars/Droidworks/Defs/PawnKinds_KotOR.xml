@@ -10,6 +10,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_T3series</race>
     <combatPower>50</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <TooSmart>0</TooSmart>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -22,6 +29,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_3Cseries</race>
     <combatPower>30</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <TooSmart>0</TooSmart>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -34,6 +48,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_ITseries</race>
     <combatPower>30</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <TooSmart>0</TooSmart>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -46,6 +67,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_R8009UD</race>
     <combatPower>20</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <TooSmart>0</TooSmart>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -58,6 +86,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_GE3LD</race>
     <combatPower>10</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Industriousness>1</Industriousness>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -70,6 +105,14 @@
     <race>RSW_DW_Race_guy762_DroidRace_GE3PD</race>
     <combatPower>10</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Abrasive>0</Abrasive>
+      <RSW_DW_Trait_ProtocolPedantry>0</RSW_DW_Trait_ProtocolPedantry>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -82,6 +125,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_KX12UPD</race>
     <combatPower>20</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <GreatMemory>0</GreatMemory>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -94,6 +144,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_KX12APD</race>
     <combatPower>50</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <GreatMemory>0</GreatMemory>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -106,6 +163,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_MPDMkI</race>
     <combatPower>20</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -118,6 +182,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_KM1MD</race>
     <combatPower>30</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Industriousness>1</Industriousness>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -130,6 +201,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_KM1HMD</race>
     <combatPower>40</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Industriousness>1</Industriousness>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -142,6 +220,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_SentWD</race>
     <combatPower>50</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -154,6 +239,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_DevWD</race>
     <combatPower>30</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -166,6 +258,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_DevAD</race>
     <combatPower>60</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -178,6 +277,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_ADMkI</race>
     <combatPower>70</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -190,6 +296,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_ADMkI_sf</race>
     <combatPower>100</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -202,6 +315,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_ADMkIV</race>
     <combatPower>90</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -214,6 +334,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_ADMkIV_sith</race>
     <combatPower>120</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -226,6 +353,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_HK50series</race>
     <combatPower>100</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -238,6 +372,13 @@
     <race>RSW_DW_Race_guy762_DroidRace_HK51series</race>
     <combatPower>100</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -250,6 +391,14 @@
     <race>RSW_DW_Race_guy762_DroidRace_GOTO</race>
     <combatPower>100</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Abrasive>0</Abrasive>
+      <RSW_DW_Trait_ProtocolPedantry>0</RSW_DW_Trait_ProtocolPedantry>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -268,6 +417,13 @@
       <li>KotORDroidShield_weak</li>
       <li>KotORDroidUpgrade_combat</li>
     </apparelTags>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -286,6 +442,13 @@
       <li>KotORDroidShield_weak</li>
       <li>SWCPSpecificDroidTech_HK47Sensor</li>
     </apparelTags>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -305,6 +468,13 @@
       <li>SWKotORSpecificDroidGadget_T3M4RenewableShield</li>
       <li>SWKotORSpecificDroidTech_T3M4RepairHardware</li>
     </apparelTags>
+    <forcedTraits>
+      <TooSmart>0</TooSmart>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -323,6 +493,13 @@
       <li>KotORDroidShield_weak</li>
       <li>KotORDroidGadget_repairdroid</li>
     </apparelTags>
+    <forcedTraits>
+      <TooSmart>0</TooSmart>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -340,6 +517,13 @@
       <li>KotORDroidUpgrade_repair</li>
       <li>KotORDroidGadget_repairdroid</li>
     </apparelTags>
+    <forcedTraits>
+      <TooSmart>0</TooSmart>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -356,6 +540,14 @@
       <li>KotORDroidArmorT1_weak</li>
       <li>KotORDroidUpgrade_repair</li>
     </apparelTags>
+    <forcedTraits>
+      <Abrasive>0</Abrasive>
+      <RSW_DW_Trait_ProtocolPedantry>0</RSW_DW_Trait_ProtocolPedantry>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -372,6 +564,13 @@
       <li>KotORDroidArmorT1_weak</li>
       <li>KotORDroidUpgrade_repair</li>
     </apparelTags>
+    <forcedTraits>
+      <Industriousness>1</Industriousness>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -391,6 +590,13 @@
       <li>KotORDroidShield_mid</li>
       <li>SWKotORSpecificDroidWeapon_KoltoSpray</li>
     </apparelTags>
+    <forcedTraits>
+      <GreatMemory>0</GreatMemory>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -409,6 +615,13 @@
       <li>SWKotORSpecificDroidWeapon_FirefoamCannon</li>
       <li>SWKotORSpecificDroidGadget_ThermalHeavyShield</li>
     </apparelTags>
+    <forcedTraits>
+      <Industriousness>1</Industriousness>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -429,6 +642,13 @@
       <li>SWKotORSpecificDroidWeapon_MiningLaserCannon</li>
       <li>SWCPSpecificDroidArmor_EnvironmentMedium</li>
     </apparelTags>
+    <forcedTraits>
+      <Industriousness>1</Industriousness>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -449,6 +669,13 @@
       <li>SWKotORSpecificDroidWeapon_SonicCannon</li>
       <li>SWCPSpecificDroidArmor_EnvironmentHeavy</li>
     </apparelTags>
+    <forcedTraits>
+      <Industriousness>1</Industriousness>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -469,6 +696,13 @@
       <li>SWKotORSpecificDroidWeapon_HoldoutBlaster</li>
       <li>SWCPSpecificDroidArmor_CzerkaLight</li>
     </apparelTags>
+    <forcedTraits>
+      <GreatMemory>0</GreatMemory>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -489,6 +723,13 @@
       <li>SWKotORSpecificDroidWeapon_HoldoutBlaster</li>
       <li>SWCPSpecificDroidArmor_CzerkaLight</li>
     </apparelTags>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -510,6 +751,13 @@
       <li>SWKotORSpecificDroidGadget_2minDroidStealthDevice</li>
       <li>SWCPSpecificDroidArmor_AgriniumLight</li>
     </apparelTags>
+    <forcedTraits>
+      <GreatMemory>0</GreatMemory>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -531,6 +779,13 @@
       <li>SWKotORSpecificDroidGadget_2minDroidStealthDevice</li>
       <li>SWCPSpecificDroidArmor_AgriniumLight</li>
     </apparelTags>
+    <forcedTraits>
+      <GreatMemory>0</GreatMemory>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -552,6 +807,13 @@
       <li>SWCPSpecificApparelItem_DoubleBandolier</li>
       <li>SWCPSpecificDroidArmor_CzerkaLight</li>
     </apparelTags>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -572,6 +834,13 @@
       <li>SWCPSpecificDroidArmor_CzerkaMedium</li>
       <li>guy762PatchedTag_Cape</li>
     </apparelTags>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -592,6 +861,13 @@
       <li>SWCPSpecificDroidArmor_QuadraniumMedium</li>
       <li>guy762PatchedTag_Cape</li>
     </apparelTags>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -613,6 +889,13 @@
       <li>KotORDroidWeapon_explosive</li>
       <li>SWCPSpecificDroidArmor_CzerkaMedium</li>
     </apparelTags>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -634,6 +917,13 @@
       <li>SWKotORSpecificDroidWeapon_TriShot</li>
       <li>SWCPSpecificDroidArmor_CzerkaHeavy</li>
     </apparelTags>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -656,6 +946,13 @@
       <li>SWKotORSpecificDroidWeapon_HeavyRepeaterCannon</li>
       <li>SWCPSpecificDroidArmor_CzerkaHeavy</li>
     </apparelTags>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -677,6 +974,13 @@
       <li>KotORDroidShield_strong</li>
       <li>SWCPSpecificDroidArmor_DeshMedium</li>
     </apparelTags>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -698,6 +1002,13 @@
       <li>SWCPSpecificDroidArmor_QuadraniumMedium</li>
       <li>SWKotORSpecificDroidGadget_AdvDeflectorShield</li>
     </apparelTags>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>

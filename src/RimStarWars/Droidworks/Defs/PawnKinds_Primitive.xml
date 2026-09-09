@@ -23,6 +23,15 @@
 ======================================================================== -->
 <Defs>
 
+  <!-- DROIDWORKS_CHASSIS_PERSONALITY_1 (packet E1): forcedTraits/
+       disallowedTraits hand-added here, matching gen_droidworks_defs.py's
+       own FAMILY_TRAIT_BIAS/DROID_DISALLOWED_TRAITS for the "primitive"
+       family — this file is hand-authored (not generator output, per this
+       file's own header), so the generator cannot reach it; kept in sync by
+       eye. SlowLearner: crude, simple hardware, "very primitive" (ruling 8).
+       Bloodlust/Psychopath disallowed for the same reason every generated
+       droid kind disallows them: no construct has a referent for human
+       blood-violence-thrill (see FAMILY_TRAIT_BIAS's own header). -->
   <PawnKindDef>
     <defName>RSW_DW_Primitive_G2</defName>
     <label>G2 repair droid</label>
@@ -34,6 +43,13 @@
         <Baseliner>1</Baseliner>
       </xenotypeChances>
     </xenotypeSet>
+    <forcedTraits>
+      <SlowLearner>0</SlowLearner>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
   </PawnKindDef>
 
   <!-- combatPower low (not the utility sentinel above) - a real if weak
@@ -59,6 +75,13 @@
         <Baseliner>1</Baseliner>
       </xenotypeChances>
     </xenotypeSet>
+    <forcedTraits>
+      <SlowLearner>0</SlowLearner>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
   </PawnKindDef>
 
 </Defs>
