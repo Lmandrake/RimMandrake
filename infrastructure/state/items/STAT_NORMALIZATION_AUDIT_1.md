@@ -67,3 +67,28 @@ A written census + wave plan exists in this item file (or a linked doc under
 plant balance parameters, with the save-cross-reference check done for every
 retirement candidate. Nothing is retired by this item — that is explicitly
 follow-on work for whoever executes a wave.
+
+## Owner RULED — question cards, 2026-09-09
+
+1. **Scope WIDENED**: not fauna/flora only — any third-party mod touching
+   damage, armor, work-speed, or other gameplay-number balance (weapons,
+   apparel, pawn stats included), since all of it conflicts with a future
+   own-numbers normalization pass the same way.
+2. **Cosmetic-only mods (zero gameplay-number impact) get their own separate,
+   lower-priority bucket** — flagged, not dropped, not merged into the main
+   numeric-conflict list.
+3. **No specific mod names supplied** — census proceeds as pure from-scratch
+   discovery, exactly as scoped.
+4. **Mods that ADD unique content (new creatures/plants) alongside rebalancing
+   existing ones get flagged separately from pure knob-turners**, with an
+   explicit "retiring this loses content X unless ported first" note — same
+   treatment this repo's donor-retirement items already give absorbable
+   content.
+
+⚠️ **Modlist-source correction, same day**: at the time this ruling landed, the
+live `ModsConfig.xml` held only ~11 entries — a temporary minimal list another
+agent had swapped in for fast crash-recovery quicktest iteration, NOT the
+owner's real campaign list. The census must NOT be built against the live file
+in that state; use `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`
+or the most recent dated full-list backup, and cross-check against the live
+file once the full list is confirmed restored.
