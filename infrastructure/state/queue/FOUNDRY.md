@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T05:02:05Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-09T14:53:31Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -522,10 +522,28 @@ kind:     task
 summary:  1. A ThingComp on a module ThingDef adds a personality HediffDef to the
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_PERSONALITY_1.md
 
-## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
-state:    doing  (BLOCKED)
+## MOISTURE_FARM_TEMPLATES_1 Content injection: several highly plausible moisture-farm templates (homestead, vaporator field, cistern head, compound, ruin) — needed many times over
+state:    doing
 row:      unassigned
 needs:    offline
+target:   v1
+kind:     task
+summary:  - Author a family of moisture-farm templates (KCSG / the structure-template engine —
+prose:    infrastructure/state/items/MOISTURE_FARM_TEMPLATES_1.md
+
+## PITCELL_PRISONER_BED_BRIDGE_GAP_1 PITCELL_PRISONER_BED_BRIDGE_GAP_1
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     feature
+summary:  (no items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md
+
+## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
+state:    doing
+row:      unassigned
+needs:    game-up
 target:   v1
 kind:     task
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
@@ -549,14 +567,41 @@ kind:     bug
 summary:  symptom
 prose:    infrastructure/state/items/WORLD_FEATURE_LABELS_OVERSIZED_1.md
 
-## BLASTDOOR_LUMI_PORT_1 Port Lumi.doorsexpanded's blast-door ThingDefs before retiring the donor (owner ruling, 2026-09-08: port first, don't accept the bug returning)
+## W9_RUN_STAGE_RESULTS_UNCHECKED_1 w9_run.py logs stage bridge-call results but never checks success before continuing to the next stage
 state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  - src/RimMandrake/Utils/w9run.py's stages are strictly ordered and each invalidates
+prose:    infrastructure/state/items/W9_RUN_STAGE_RESULTS_UNCHECKED_1.md
+
+## GL_EMIT_FLOATRANGE_GENERIC_DROP_1 gl_emit.py silently drops any FloatRange field on a non-worldTileReq node type
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
+kind:     bug
+summary:  Found 2026-09-08, FOUNDRY code-review loop (subagent review of glemit.py,
+prose:    infrastructure/state/items/GL_EMIT_FLOATRANGE_GENERIC_DROP_1.md
+
+## KOTOR_CRYSTAL_GENSTEP_DRIFT_1 Deployed KOTOR_CrystalFormation genstep scatters only Stygium; repo's absorbed copy lists 12 crystal variants — diff repo vs deployed, redeploy or pull (crystal-inventory find)
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     fix
+summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
+
+## BLUE_DESERT_WORLD_SWITCH_1 Repaint BiomeGRimond's 1,029 tiles to our own RUT_BlueDesert (world switch)
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
 kind:     task
-summary:  src/RimStarWars/BlastDoorFrameAsyncFix (packageId
-prose:    infrastructure/state/items/BLASTDOOR_LUMI_PORT_1.md
+summary:  (no items/BLUE_DESERT_WORLD_SWITCH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BLUE_DESERT_WORLD_SWITCH_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -702,16 +747,6 @@ blocked:  cold load found 4 NEW cross-reference errors (guy762_DroidWeapon_micro
 summary:  DROIDRETIREKOTORDROIDS1
 prose:    infrastructure/state/items/DROID_RETIRE_KOTORDROIDS_1.md
 
-## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  attended south-facing pass done (v2 fixes legibility, needs one more framing-only regen); owner went AFK mid-session, no unattended Codex calls until someone is watching again
-summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
-prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
-
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    ready  (BLOCKED)
 row:      unassigned
@@ -721,6 +756,16 @@ kind:     task
 blocked:  world-tile mutation needs a frozen propane-lake footprint before any tile set is written (on LIQUID_BIOMES_MAP_1)
 summary:  - What it does: an in-game ignition event (thruster contact, a dropped reactor
 prose:    infrastructure/state/items/WAR_LAB_CRATER_HOOK_1.md
+
+## GL_EMIT_FLOATRANGE_GENERIC_DROP_1 gl_emit.py silently drops any FloatRange field on a non-worldTileReq node type
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+blocked:  item text names BENCH as the owner (active gl_emit.py dev); no calibrating landform exists yet to fix against
+summary:  Found 2026-09-08, FOUNDRY code-review loop (subagent review of glemit.py,
+prose:    infrastructure/state/items/GL_EMIT_FLOATRANGE_GENERIC_DROP_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -794,26 +839,6 @@ thin:     no ## criteria
 summary:  - The good: fungal soil (the Rot's mycelial ground — therot.md; the raided
 prose:    infrastructure/state/items/FUNGAL_SOIL_TRADE_1.md
 
-## MOISTURE_FARM_TEMPLATES_1 Content injection: several highly plausible moisture-farm templates (homestead, vaporator field, cistern head, compound, ruin) — needed many times over
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Author a family of moisture-farm templates (KCSG / the structure-template engine —
-prose:    infrastructure/state/items/MOISTURE_FARM_TEMPLATES_1.md
-
-## WORLD_RIVER_COLORS_1 Color the worldmap's rivers by segment (red headwaters → brackish green/brown jungle → toxic brown/blue termini) and the propane lake slate cyan — RiverDef has no color field, so a Harmony patch on the river world-layer; mock in worldview.py first
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  1. Segment classes as data (rules must be data): headwater (red — the Contagion's
-prose:    infrastructure/state/items/WORLD_RIVER_COLORS_1.md
-
 ## SAND_SWIMMERS_MOD_1 Sand fishing: impassable Deep Sand pools you fish like water, with sand-swimmer analogs (never fish-shaped) — the sand swimmers mod
 state:    proposed
 row:      unassigned
@@ -824,16 +849,6 @@ thin:     no ## criteria
 summary:  - Deep Sand terrain: pools of sand you cannot walk over (impassable like deep water,
 prose:    infrastructure/state/items/SAND_SWIMMERS_MOD_1.md
 
-## PITCELL_PRISONER_BED_BRIDGE_GAP_1 PITCELL_PRISONER_BED_BRIDGE_GAP_1
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     feature
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md
-
 ## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
 state:    proposed
 row:      unassigned
@@ -843,16 +858,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
 prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
-
-## OASIS_MUTATOR_PATCH_1 Whitelist ZBiome_DesertOasis into vanilla TileMutatorDef Oasis; strip donor snow weathers; re-point forageability; alien-flora swap in additionalWildPlants after the roster
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  OASISMUTATORPATCH1 — the vanilla Oasis mutator, adapted
-prose:    infrastructure/state/items/OASIS_MUTATOR_PATCH_1.md
 
 ## SCALD_RIVER_REPAINT_1 Redirect the Scald's rivers outward on the painted worldmap to match R1 -- R18 step 2, blocked on ASHKARR_RIVER_LEDGER_1, verify tile-by-tile
 state:    proposed
@@ -914,26 +919,6 @@ thin:     no ## criteria
 summary:  - src/RimMandrake/Utils/ashkarrregaterain.py tried to faithfully reconstruct the
 prose:    infrastructure/state/items/ASHKARR_REGATE_RAIN_DEAD_1.md
 
-## W9_RUN_STAGE_RESULTS_UNCHECKED_1 w9_run.py logs stage bridge-call results but never checks success before continuing to the next stage
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  - src/RimMandrake/Utils/w9run.py's stages are strictly ordered and each invalidates
-prose:    infrastructure/state/items/W9_RUN_STAGE_RESULTS_UNCHECKED_1.md
-
-## GL_EMIT_FLOATRANGE_GENERIC_DROP_1 gl_emit.py silently drops any FloatRange field on a non-worldTileReq node type
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  Found 2026-09-08, FOUNDRY code-review loop (subagent review of glemit.py,
-prose:    infrastructure/state/items/GL_EMIT_FLOATRANGE_GENERIC_DROP_1.md
-
 ## BRIDGETOOLS_DLL_GM_DRIFT_1 JawaBench DLL is 41 tools behind source (built without GM pair); selftest_tool_metadata FAILs until companion rebuild+redeploy on a game-down window
 state:    proposed
 row:      unassigned
@@ -954,16 +939,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md
 
-## KOTOR_CRYSTAL_GENSTEP_DRIFT_1 Deployed KOTOR_CrystalFormation genstep scatters only Stygium; repo's absorbed copy lists 12 crystal variants — diff repo vs deployed, redeploy or pull (crystal-inventory find)
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     fix
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
-
 ## WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1 181 land-biome tiles (AridShrubland/Desert/Wasteland/AB_RockyCrags/AB_MycoticJungle/ZBiome_Badlands) sit at the three seas' own elevation (-350), unmasked now that WORLD_LINT_WATER_HARDCODE_1 stopped conflating them with the seas' own tiles
 state:    proposed
 row:      unassigned
@@ -983,36 +958,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  §3.2 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md asks the Junker
 prose:    infrastructure/state/items/DROID_SUICIDE_CHARGE_STATE_1.md
-
-## EGG_PROXIMITY_HATCH_TRIGGER_1 Egg proximity-hatch trigger: eggs hatch AT you on approach (owner, 2026-09-08); BirthHatchDemo retirement gated on this
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Owner, 2026-09-08 (verbatim): "Still need to dev a trigger for eggs that
-prose:    infrastructure/state/items/EGG_PROXIMITY_HATCH_TRIGGER_1.md
-
-## RIMPROPERTY_ANIMAL_THEFT_1 RimProperty: trainable stealing for agile pets, wild-animal theft, droid loaders carry the hauler property (owner, 2026-09-08)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Owner, 2026-09-08 (verbatim on the consolidation sitting): "Some droid
-prose:    infrastructure/state/items/RIMPROPERTY_ANIMAL_THEFT_1.md
-
-## CHRONICLE_EVENT_SPINE_1 RimChronicle event spine spec: one-page event taxonomy + soft-hook API before the sprint; Property/Pursuit/Ninefold/Aftermath-rules become producers-consumers via MayRequire hooks (owner, 2026-09-08)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Owner adopted (card, 2026-09-08, on BENCH's advice): RimChronicle
-prose:    infrastructure/state/items/CHRONICLE_EVENT_SPINE_1.md
 
 ## GRAFFITI_GENERIC_MARKS_1 Author generic vanilla-style default marks for RM Graffiti (R7): the nine campaign styles move to Salvation, RM ships with examples
 state:    proposed
@@ -1044,16 +989,6 @@ thin:     no ## verify, no ## criteria
 summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
 prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
 
-## MANYWATERS_GENERIC_SPLIT_1 ManyWaters is not generic yet: RiverSteamHook.cs hardcodes ZBiome_Grasslands — split the Ashkarr wiring out as a RUT patch/data hook (C#)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MANYWATERS_GENERIC_SPLIT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MANYWATERS_GENERIC_SPLIT_1.md
-
 ## NAMESPACE_RETIER_PASS_1 C# namespace re-tier pass: RiverSteamHook → RimMandrake.ManyWaters, RimMandrake.DesertVehicleReskin → RimMandrake.StarWars.* — namespace+XML Class attrs+rebuild in one change (INHABITED lesson; model=opus)
 state:    proposed
 row:      unassigned
@@ -1063,26 +998,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/NAMESPACE_RETIER_PASS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/NAMESPACE_RETIER_PASS_1.md
-
-## DROIDWORKS_WIP_SWEPT_NOTICE_1 NOTICE: your uncommitted ModulePersonality WIP (hediffs+comp+csproj+DLL) was swept into BENCH commit 0f7da95c by a directory add — verify its state before continuing; nothing was lost, attribution is wrong
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_WIP_SWEPT_NOTICE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_WIP_SWEPT_NOTICE_1.md
-
-## DROIDWORKS_MODULE_SMELT_CONFIG_1 3 DW armor modules (Lte/Mid/Hvy) log 'smeltable but does not give anything for smelting' x2 each — new vs config-error baseline, surfaced on the consolidation proof load 2026-09-08
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_MODULE_SMELT_CONFIG_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_MODULE_SMELT_CONFIG_1.md
 
 ## PYRELANDS_SELF_CONTAINED_BIOME_1 Author RM Pyrelands' own BiomeDef, self-contained: ScorchFruit, strange weather, ash-as-snow, Cinderfall storms, fast grass (owner ruled the R9 fork: OWN it, 2026-09-09)
 state:    proposed
@@ -1103,16 +1018,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
-
-## MOD_LICENSE_PERMISSIVE_1 Add the most generous re-use license (CC0-1.0) to every mod we ship
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  - License: CC0-1.0 (public-domain-equivalent dedication) — the most
-prose:    infrastructure/state/items/MOD_LICENSE_PERMISSIVE_1.md
 
 ## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
 state:    proposed
@@ -1181,15 +1086,35 @@ needs:    game-up
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LANDMARK_NAMING_PASS_1.md yet — write one when you have something to say)
+summary:  names ready
 prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
 
-## LANDMARK_SETTLEMENT_STACKS_1 Review B3: 14 settlements share a tile with a landmark (list in Transient/final_review/findings/mutators_landmarks.md) — keep deliberate stacks (palace-on-oasis), nudge accidents one tile; verify with read-back + loss diff
+## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
 state:    proposed
 row:      unassigned
-needs:    bridge
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec
+summary:  spec (design proposal, Fable subagent, 2026-09-09 — awaiting owner ruling)
+prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
+
+## PLANETARY_BEAUTY_LOADSCREENS_1 Render realistic planetary beauty shots from space for load screens (graphics pipeline)
+state:    proposed
+row:      unassigned
+needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LANDMARK_SETTLEMENT_STACKS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LANDMARK_SETTLEMENT_STACKS_1.md
+summary:  (no items/PLANETARY_BEAUTY_LOADSCREENS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PLANETARY_BEAUTY_LOADSCREENS_1.md
+
+## BIOME_OWNERSHIP_WAVE_1 Own every planet biome: author our-tier BiomeDefs for the ~22 donor-owned painted defs (parameter + assignment control; donors stay installed), world-switch per def on the Pyrelands/BlueDesert pattern
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BIOME_OWNERSHIP_WAVE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_OWNERSHIP_WAVE_1.md
