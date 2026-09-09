@@ -42,7 +42,16 @@ local function furnish_hut(ctx, r, beds_needed, q)
   if ctx:has_role("BED") and beds < beds_needed then
     note(string.format("hut %s: %d of %d beds fitted", q, beds, beds_needed))
   end
-  dress(ctx, hi, {
+  -- a 5x5 hut's interior is 3x3 (9 cells) once walls are cut, and two beds
+  -- already eat a third of that - the full clutter set packed the rest solid
+  -- enough that lint's aisle-blocked flood-fill couldn't reach it from the
+  -- door (caught 2026-09-09, real defect, not a design choice: same room
+  -- count/floor/door plan, just fewer loose items in a hut this small).
+  local small = (hi.w * hi.h) <= 16
+  dress(ctx, hi, small and {
+    { role = "CRATE", n = 1, where = "corner" },
+    { role = "LIGHT", n = 1, where = "corner" },
+  } or {
     { role = "END_TABLE",   n = { 0, 1 }, where = "wall" },
     { role = "SHELF_SMALL", n = { 0, 1 }, where = "wall" },
     { role = "CRATE",       n = { 1, 2 }, where = "corner" },
