@@ -31,6 +31,7 @@ one build passed it over** — add a ramp, and record the choice in `used`.
 | `flooring_rusted` | metal × rusted — corroded decking, the ship's own vocabulary | **in use.** `gravship_floor_v2.py` imports it |
 | `machinewreck` | condition — mangled metal, dead machinery, crash debris | **candidates.** Nobody has looked at the sprites yet |
 | `sandscoured` | condition — what wind-driven sand does to anything left outside | **unused.** Composes with the other two |
+| `manywaters_color` | fluid tint — coloured water/slime, freshly authored RGB | **in use.** MANYWATERS_COLOR_SUPPORT_1 v1 quicktest grid |
 
 Two axes generate most of what is still missing: **material** (metal · stone · wood ·
 organic · glass) × **condition** (pristine · worn · rusted · burnt · wrecked ·

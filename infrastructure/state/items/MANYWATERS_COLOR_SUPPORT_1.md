@@ -125,3 +125,75 @@ this — like maybe the whole diving mod, and rain."**
   interaction worth coordinating with: a diving/underwater mod, and any
   rain-collection or weather mod that reads terrain water colour. Report
   what's found even if nothing is actionable.
+
+## FOUNDRY offline pass, 2026-09-09 — done, live step OWED
+
+**Offline authoring complete.** `src/RimMandrake/ManyWaters/Defs/`:
+- `TerrainDefs/RM_ColoredWater.xml` — 10 new TerrainDefs, 5 colours (Rust,
+  Verdigris, Amber, Violet, Chalk): `RM_Water_<Colour>` (ParentName
+  WaterShallowBase, tints vanilla WaterShallowRamp, ungated) and
+  `RM_Slime_<Colour>` (same base, tints Alpha Biomes' AB_SlimeRamp,
+  `MayRequire="sarg.alphabiomes"` on the def tag — confirmed live packageId
+  and confirmed AB ships a 1.6/ folder, resolving the design's open question).
+- `FleckDefs/RM_ColoredSteam.xml` — 5 tinted `RM_Fleck_Steam_<Colour>` clones
+  of vanilla `Steam`, wired via `throwFleckChance`/`fleckData` on each
+  `RM_Slime_<Colour>` (the exact mechanism Odyssey's own `HotSpring` uses,
+  confirmed by reading `Data/Odyssey/Defs/TerrainDefs/Terrain_Water.xml:128`).
+- `ThingDefs/RM_ColoredWaterBottles.xml` — 5 `RM_WaterBottle_<Colour>`,
+  `ParentName="DBH_WaterBottle"`, `MayRequire="Dubwise.DubsBadHygiene.Lite"`.
+- `Palettes/manywaters_color.md` — the colour set, marked freshly-authored
+  (not sourced), plus `Palettes/README.md` updated.
+- `About/About.xml` — description + `loadAfter` for the two soft deps.
+
+Read against the live def dump (`.../DefDump/captures/2026-09-09T01-54-07Z`):
+`DBH_WaterBottle`, `AB_LiquidSlime`, `WaterShallowBase`, and vanilla `Steam`
+all exist in the current mod set; none of the 20 new defNames collide with
+anything in that dump.
+
+**Thirst-mod finding**: `Dubwise.DubsBadHygiene.Lite` (workshop 2570319432)
+defines `DBH_WaterBottle` itself (`1.6/Defs/ThingDefs_Items/
+Items_Resource_Stuff.xml:108`); `Dubwise.DubsBadHygiene.Thirst` (workshop
+2582878800, "Adds a thirst need to Dubs Bad Hygiene Lite") supplies only the
+`Need_Thirst` need/class Lite's own NeedDef references — it ships no Defs of
+its own. Both are active. The correct MayRequire gate is therefore Lite's
+packageId (it's what actually defines the parent), which is what was used.
+DBH's full (non-Lite) mod is NOT active and was not depended on.
+
+**Diving/underwater mod**: none found on the live modlist — no defName,
+packageId or mod name containing dive/scuba/submarine/ocean/kelp/reef/
+snorkel/amphib. Nothing to coordinate with.
+
+**Rain/weather-reads-water-colour mod**: `dorbo.watersfx` ("LiquidSFX",
+workshop 3758773902) is the only water-adjacent ambient mod on the list; its
+own About.xml says it "Adds sound to rivers, coasts, still bodies of water,
+lava and marshes" — audio only, confirmed by reading its About.xml. No
+colour interaction, nothing to gate against.
+Two more names turned up in a keyword sweep of ModsConfig.xml —
+`milkwater.destinymod` and `grimterra.terrainretexturemod` — but neither
+was locatable on disk (workshop or local Mods) to inspect their defs before
+the time budget on this sub-check ran out. Neither name suggests a
+water-colour reader; flagged UNCONFIRMED rather than asserted clean.
+
+**Live step OWED — bridge was held, not free.** `rimflow bridge who` at
+2026-09-09T19:2x showed it held by another FOUNDRY window (idle ~2 min, well
+under the 45-min staleness bar) for `WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1`
+— per this item's own instructions, did not wait or force-take it. Still
+owed, exactly as scoped in the original ask:
+1. `rimflow bridge take --for "MANYWATERS_COLOR_SUPPORT_1 v1 quicktest"`
+   once free.
+2. Deploy ManyWaters (`deploy_custom_mods.py --mod ManyWaters --apply`) —
+   these defs have never been deployed or loaded in a running game.
+3. Quicktest map, paint Row A (WaterShallow control + 5 `RM_Water_<Colour>`)
+   and Row B (AB_LiquidSlime control + 5 `RM_Slime_<Colour>`), 4x4 patches,
+   ~6-cell pitch, per the design's §3 recipe.
+4. **First thing painted**: one `RM_Water_<Colour>` cell — confirm whether
+   the tint survives the `Map/WaterDepth` overlay (the design's one
+   UNVERIFIED mechanism). If it washes out, recolour a copy of
+   `WaterShallowRamp.png` per colour as the fallback (still XML-only) rather
+   than stopping.
+5. Save as a look-and-pick savegame per the ship-as-savegame rule, with a
+   grid key (cell -> colour/fluid) as its own file, not inside `Transient/`.
+6. `rimflow bridge release` the instant done.
+7. Only then close the item.
+
+This item stays in `doing` — do not close on this commit.

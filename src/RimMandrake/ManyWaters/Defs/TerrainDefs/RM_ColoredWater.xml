@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MANYWATERS_COLOR_SUPPORT_1 v1 — coloured water and coloured slime, ten TerrainDefs.
+
+  MECHANISM (verified against RimWorld 1.6 source, not guessed):
+  - `TerrainDef.DrawColor` (from the `<color>` field) is passed straight into
+    `GraphicDatabase.Get<Graphic_Terrain>(texturePath, Shader, ..., DrawColor)` for
+    EVERY edgeType including `TerrainWater` (`Verse/TerrainDef.cs:433`) — one texture,
+    N `<color>` variants is vanilla's own convention (`Terrain_Floors_StoneTile.xml`:
+    six colours on one `TileStoneBase` texture; this repo's own `AshLadder.xml`,
+    `JawaSaltCrust.xml`). `(R,G,B)` is 0-255 int syntax, confirmed against that file.
+  - Colour MULTIPLIES the texture (same law as `Palettes/sandscoured.md`): these RGB
+    values were chosen to read as a visible tint against the existing water/slime
+    ramps, not as paint. They are FRESHLY AUTHORED for this item, not sourced from
+    any mod XML or screen calibration — record any owner change to them here.
+  - ⚠️ The design's open question — whether `<color>` survives the `Map/WaterDepth`
+    overlay material, which `TerrainDef.cs:448` creates with no colour parameter at
+    all — is UNVERIFIED offline. First live test is the FIRST thing painted on the
+    quicktest grid (see the item file); if the tint washes out under the depth
+    overlay, the fallback is a recoloured copy of `WaterShallowRamp.png` per colour
+    (still XML-only) rather than blocking the rest of the slice.
+
+  WATER — `RM_Water_<Colour>`, ParentName="WaterShallowBase" (vanilla, always
+  present), texture is vanilla's own `WaterShallowRamp` — same asset `WaterShallow`
+  itself uses (Data/Core/Defs/TerrainDefs/Terrain_Water.xml). No cross-mod texture
+  dependency, no MayRequire needed.
+
+  SLIME — `RM_Slime_<Colour>`, ParentName="WaterShallowBase" (NOT
+  ParentName="AB_LiquidSlime" — that would make the whole def unresolvable, not just
+  cosmetically wrong, the moment Alpha Biomes is absent; XmlInheritance can leave a
+  dangling ParentName). Instead each def is gated with `MayRequire="sarg.alphabiomes"`
+  (Alpha Biomes' real packageId, confirmed live: `.../workshop/content/294100/
+  1841354677/About/About.xml` line 32) at the TerrainDef tag itself, so the whole
+  node is skipped — never loaded, never magenta — when AB is inactive. The texture
+  path (`Terrain/Surfaces/AB_SlimeRamp`) is AB's own asset
+  (`.../1841354677/1.6/Defs/TerrainDefs/Terrain_GelatinousSuperorganism.xml:129`,
+  confirmed present under AB's `1.6/` folder — resolving the design's open question
+  of whether AB ships 1.6 content: it does). `driesTo` points at AB's own
+  `AB_SlimeGrass`, safe under the same gate.
+
+  AMBIENT BUBBLES — each slime def carries `throwFleckChance` + `fleckData` pointing
+  at the matching tinted `RM_Fleck_Steam_<Colour>` (Defs/FleckDefs/
+  RM_ColoredSteam.xml), the exact vanilla mechanism Odyssey's own `HotSpring` uses
+  (`Data/Odyssey/Defs/TerrainDefs/Terrain_Water.xml:128-136`, consumed by
+  `SteadyEnvironmentEffects.cs:171`) — zero C#, per the design's own finding. Water
+  rows get no flecks; the ambient-bubble ask was slime-specific.
+
+  SCOPE NOTE — the design's §3 recipe describes the SIX-cell grid per row (one
+  untinted control + five tinted) and separately states "Author count: 12
+  TerrainDefs + 5 FleckDefs". Read literally that is inconsistent with its own
+  recipe (5+5=10 new defs, not 12) UNLESS "12" counts the two CONTROLS too — vanilla
+  `WaterShallow` and AB's own `AB_LiquidSlime`, both already-existing defs that get
+  painted alongside these ten, not re-authored here. That is the reading this pass
+  took: 10 new TerrainDefs below + the two pre-existing controls painted at test
+  time = 12 terrain defs total on the grid. Recorded here because the owner's
+  ruling did not resolve the arithmetic, only the "skip the gate test" scope call.
+
+  Not authored here (explicitly deferred, per the design's §2 and the owner's
+  ruling): the `temporary=true` canal-flood siblings and the FluidDefs that would
+  let FluidCanals carry these colours — those follow once the owner picks which
+  colours stay.
+-->
+<Defs>
+
+  <!-- ══════════════════════════════════════════ WATER — WaterShallowRamp, tinted ══ -->
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_Water_Rust</defName>
+    <label>rust-tinted water</label>
+    <description>Shallow water carrying enough dissolved iron oxide to run the colour of old blood. Nothing about it says which mine or wreck it drained through.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>394</renderPrecedence>
+    <driesTo>Gravel</driesTo>
+    <color>(168,92,58)</color>
+    <tags>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_Water_Verdigris</defName>
+    <label>verdigris water</label>
+    <description>Shallow water tinted teal-green by dissolved copper salts — the colour a bronze hull turns after long enough underwater.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>394</renderPrecedence>
+    <driesTo>Gravel</driesTo>
+    <color>(70,168,140)</color>
+    <tags>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_Water_Amber</defName>
+    <label>amber water</label>
+    <description>Shallow water gone gold-brown with dissolved resin or spice residue. Smells sweeter than it should.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>394</renderPrecedence>
+    <driesTo>Gravel</driesTo>
+    <color>(198,150,60)</color>
+    <tags>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_Water_Violet</defName>
+    <label>violet water</label>
+    <description>Shallow water stained a deep violet by something living in it, or something that used to.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>394</renderPrecedence>
+    <driesTo>Gravel</driesTo>
+    <color>(120,80,168)</color>
+    <tags>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_Water_Chalk</defName>
+    <label>chalky water</label>
+    <description>Shallow water clouded pale by dissolved minerals — the milky look of runoff off a limestone seam.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>394</renderPrecedence>
+    <driesTo>Gravel</driesTo>
+    <color>(200,196,178)</color>
+    <tags>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+    </tags>
+  </TerrainDef>
+
+  <!-- ══════════════════════════ SLIME — AB_SlimeRamp, tinted, MayRequire Alpha Biomes ══ -->
+
+  <TerrainDef MayRequire="sarg.alphabiomes" ParentName="WaterShallowBase">
+    <defName>RM_Slime_Rust</defName>
+    <label>rust-tinted slime</label>
+    <description>Liquid slime carrying the same iron stain as the rust-coloured water nearby. Whatever produces it drank from the same source.</description>
+    <texturePath>Terrain/Surfaces/AB_SlimeRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/AB_SlimeRamp_Polluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>394</renderPrecedence>
+    <driesTo>AB_SlimeGrass</driesTo>
+    <color>(168,92,58)</color>
+    <throwFleckChance>0.25</throwFleckChance>
+    <fleckData>
+      <fleck>RM_Fleck_Steam_Rust</fleck>
+      <velocitySpeedRange>0.01~0.5</velocitySpeedRange>
+      <velocityAngleRange>-90~90</velocityAngleRange>
+      <rotationSpeedRange>-50~50</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>1.5~3</scaleRange>
+    </fleckData>
+  </TerrainDef>
+
+  <TerrainDef MayRequire="sarg.alphabiomes" ParentName="WaterShallowBase">
+    <defName>RM_Slime_Verdigris</defName>
+    <label>verdigris slime</label>
+    <description>Liquid slime with the same teal-green cast as verdigris water — copper-fed, and thriving on it.</description>
+    <texturePath>Terrain/Surfaces/AB_SlimeRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/AB_SlimeRamp_Polluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>394</renderPrecedence>
+    <driesTo>AB_SlimeGrass</driesTo>
+    <color>(70,168,140)</color>
+    <throwFleckChance>0.25</throwFleckChance>
+    <fleckData>
+      <fleck>RM_Fleck_Steam_Verdigris</fleck>
+      <velocitySpeedRange>0.01~0.5</velocitySpeedRange>
+      <velocityAngleRange>-90~90</velocityAngleRange>
+      <rotationSpeedRange>-50~50</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>1.5~3</scaleRange>
+    </fleckData>
+  </TerrainDef>
+
+  <TerrainDef MayRequire="sarg.alphabiomes" ParentName="WaterShallowBase">
+    <defName>RM_Slime_Amber</defName>
+    <label>amber slime</label>
+    <description>Liquid slime gone gold-brown, thick with something resin-sweet dissolved in it.</description>
+    <texturePath>Terrain/Surfaces/AB_SlimeRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/AB_SlimeRamp_Polluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>394</renderPrecedence>
+    <driesTo>AB_SlimeGrass</driesTo>
+    <color>(198,150,60)</color>
+    <throwFleckChance>0.25</throwFleckChance>
+    <fleckData>
+      <fleck>RM_Fleck_Steam_Amber</fleck>
+      <velocitySpeedRange>0.01~0.5</velocitySpeedRange>
+      <velocityAngleRange>-90~90</velocityAngleRange>
+      <rotationSpeedRange>-50~50</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>1.5~3</scaleRange>
+    </fleckData>
+  </TerrainDef>
+
+  <TerrainDef MayRequire="sarg.alphabiomes" ParentName="WaterShallowBase">
+    <defName>RM_Slime_Violet</defName>
+    <label>violet slime</label>
+    <description>Liquid slime stained a deep violet, faintly luminous where it pools deepest.</description>
+    <texturePath>Terrain/Surfaces/AB_SlimeRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/AB_SlimeRamp_Polluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>394</renderPrecedence>
+    <driesTo>AB_SlimeGrass</driesTo>
+    <color>(120,80,168)</color>
+    <throwFleckChance>0.25</throwFleckChance>
+    <fleckData>
+      <fleck>RM_Fleck_Steam_Violet</fleck>
+      <velocitySpeedRange>0.01~0.5</velocitySpeedRange>
+      <velocityAngleRange>-90~90</velocityAngleRange>
+      <rotationSpeedRange>-50~50</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>1.5~3</scaleRange>
+    </fleckData>
+  </TerrainDef>
+
+  <TerrainDef MayRequire="sarg.alphabiomes" ParentName="WaterShallowBase">
+    <defName>RM_Slime_Chalk</defName>
+    <label>chalky slime</label>
+    <description>Liquid slime clouded pale with mineral sediment — thick, slow-moving, and paler than anything healthy should be.</description>
+    <texturePath>Terrain/Surfaces/AB_SlimeRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/AB_SlimeRamp_Polluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>394</renderPrecedence>
+    <driesTo>AB_SlimeGrass</driesTo>
+    <color>(200,196,178)</color>
+    <throwFleckChance>0.25</throwFleckChance>
+    <fleckData>
+      <fleck>RM_Fleck_Steam_Chalk</fleck>
+      <velocitySpeedRange>0.01~0.5</velocitySpeedRange>
+      <velocityAngleRange>-90~90</velocityAngleRange>
+      <rotationSpeedRange>-50~50</rotationSpeedRange>
+      <solidTicksRange>1~3</solidTicksRange>
+      <scaleRange>1.5~3</scaleRange>
+    </fleckData>
+  </TerrainDef>
+
+</Defs>

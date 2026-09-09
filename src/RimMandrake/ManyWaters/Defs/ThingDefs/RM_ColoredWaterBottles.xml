@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MANYWATERS_COLOR_SUPPORT_1 v1 — added scope, owner verbatim (paraphrased from
+  voice, 2026-09-09): "if the thirst kid is present, we should have different
+  bottles of the colored waters too. Conditional mod check."
+
+  IDENTIFIED, live modlist (not guessed): the mod is **Dubs Bad Hygiene**, split
+  into `Dubwise.DubsBadHygiene.Lite` (packageId confirmed at
+  `.../workshop/content/294100/2570319432/About/About.xml`) + the
+  `Dubwise.DubsBadHygiene.Thirst` add-on (packageId confirmed at
+  `.../2582878800/About/About.xml`, description "Adds a thirst need to Dubs Bad
+  Hygiene Lite") — both active in ModsConfig.xml. The drinkable item itself,
+  `DBH_WaterBottle`, is defined IN Lite's own `1.6/Defs/ThingDefs_Items/
+  Items_Resource_Stuff.xml:108-167` (ParentName="ResourceBasedMom",
+  `modExtensions/WaterExt` with `SeekForThirst=true`) — Thirst has no Defs of its
+  own, it only supplies the `Need_Thirst` class Lite's own NeedDef references. So
+  the correct gate for a `DBH_WaterBottle` clone is Lite's packageId: if Lite is
+  inactive, `DBH_WaterBottle` itself does not exist and `ParentName` would dangle.
+
+  Each variant below only overrides defName/label/description/colour; everything
+  else (the `WaterExt` modExtension, `ingestible` block, stack/mass stats) is
+  inherited from `DBH_WaterBottle` unchanged, so these drink and satisfy thirst
+  exactly like the vanilla bottle — same texture (`DBH/Things/Resource/
+  WaterBottles`), tinted via `graphicData.color` the same way the terrain and fleck
+  variants are, per this item's colour set (Defs/TerrainDefs/RM_ColoredWater.xml).
+
+  `MayRequire` on the TerrainDef tag itself (not a PatchOperationFindMod file) —
+  the whole node is skipped, never loaded, never a dangling ParentName error, when
+  Lite is absent. Never ungated, per the owner's own instruction.
+-->
+<Defs>
+
+  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="DBH_WaterBottle">
+    <defName>RM_WaterBottle_Rust</defName>
+    <label>rust-tinted water</label>
+    <description>A bottle of water carrying enough dissolved iron oxide to run the colour of old blood. Still drinkable — just don't ask where it came from.</description>
+    <graphicData>
+      <texPath>DBH/Things/Resource/WaterBottles</texPath>
+      <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
+      <drawSize>0.8</drawSize>
+      <color>(168,92,58)</color>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="DBH_WaterBottle">
+    <defName>RM_WaterBottle_Verdigris</defName>
+    <label>verdigris water</label>
+    <description>A bottle of water tinted teal-green by dissolved copper salts.</description>
+    <graphicData>
+      <texPath>DBH/Things/Resource/WaterBottles</texPath>
+      <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
+      <drawSize>0.8</drawSize>
+      <color>(70,168,140)</color>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="DBH_WaterBottle">
+    <defName>RM_WaterBottle_Amber</defName>
+    <label>amber water</label>
+    <description>A bottle of water gone gold-brown with dissolved resin or spice residue.</description>
+    <graphicData>
+      <texPath>DBH/Things/Resource/WaterBottles</texPath>
+      <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
+      <drawSize>0.8</drawSize>
+      <color>(198,150,60)</color>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="DBH_WaterBottle">
+    <defName>RM_WaterBottle_Violet</defName>
+    <label>violet water</label>
+    <description>A bottle of water stained a deep violet. Nobody at the trading post could say by what.</description>
+    <graphicData>
+      <texPath>DBH/Things/Resource/WaterBottles</texPath>
+      <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
+      <drawSize>0.8</drawSize>
+      <color>(120,80,168)</color>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="DBH_WaterBottle">
+    <defName>RM_WaterBottle_Chalk</defName>
+    <label>chalky water</label>
+    <description>A bottle of water clouded pale with dissolved minerals.</description>
+    <graphicData>
+      <texPath>DBH/Things/Resource/WaterBottles</texPath>
+      <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
+      <drawSize>0.8</drawSize>
+      <color>(200,196,178)</color>
+    </graphicData>
+  </ThingDef>
+
+</Defs>

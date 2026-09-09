@@ -8,11 +8,17 @@
   </supportedVersions>
   <description>Generic water-effects engine (engine promoted from RUT RiverSteam per R10: ManyWaters gathers all water effects/types — steaming, boiling, etc. — as they land). Currently ships the animated river-steam ambience: periodic "Steam" FleckDef puffs off river cells, reusing vanilla's own TerrainDef.IsRiver test — a pure ambience feature, no gameplay effect. Biome-agnostic: a biome opts in by carrying a `RiverSteamHook.RiverSteamBiomeExtension` modExtension (which also carries the tuning — fleck, puff interval, scale, drift), and this engine names no biome of its own (MANYWATERS_GENERIC_SPLIT_1). Campaign-specific wiring lives in RimUtinni: UtinniPatches — Patches/ManyWaters_RiverSteam_Ashkarr.xml puts the extension on ZBiome_Grasslands (the Pyrelands).
 
-  SAND_SWIMMERS_MOD_1 (2026-09-09) added `RM_DeepSand`, an impassable, fishable sand terrain built the same way vanilla deep water is (the "Water" tag, not a new type) — Defs/TerrainDefs/RM_DeepSand.xml. Generic like everything else here: it names no biome and carries no fish of its own. The Star-Wars-flavored catch/predator/prize family lives in RimStarWars: SWBestiary, and the Ash'karr biome wiring (which BiomeDef actually offers that fish list) lives in RimUtinni: UtinniPatches.</description>
+  SAND_SWIMMERS_MOD_1 (2026-09-09) added `RM_DeepSand`, an impassable, fishable sand terrain built the same way vanilla deep water is (the "Water" tag, not a new type) — Defs/TerrainDefs/RM_DeepSand.xml. Generic like everything else here: it names no biome and carries no fish of its own. The Star-Wars-flavored catch/predator/prize family lives in RimStarWars: SWBestiary, and the Ash'karr biome wiring (which BiomeDef actually offers that fish list) lives in RimUtinni: UtinniPatches.
+
+  MANYWATERS_COLOR_SUPPORT_1 (2026-09-09) added coloured water and coloured slime: ten TerrainDefs (RM_Water_Colour and RM_Slime_Colour pairs, five colours — Rust/Verdigris/Amber/Violet/Chalk), five tinted RM_Fleck_Steam_Colour FleckDefs for the slime ambient-bubble effect, and (conditional on Dubs Bad Hygiene's Thirst add-on) five RM_WaterBottle_Colour drinkable items. The slime terrain and the water-bottle variants are each gated with MayRequire on the mod whose asset/def they build on (Alpha Biomes' AB_SlimeRamp; Dubs Bad Hygiene Lite's DBH_WaterBottle) — never ungated. See Palettes/manywaters_color.md for the colour set.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>
       <displayName>RimWorld</displayName>
     </li>
   </modDependencies>
+  <loadAfter>
+    <li>sarg.alphabiomes</li>
+    <li>Dubwise.DubsBadHygiene.Lite</li>
+  </loadAfter>
 </ModMetaData>
