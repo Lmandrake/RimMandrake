@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SCALD_DARK_TOWER_1: the site-part/gen-step wiring, same shape as
+  VaultDungeons/SitePartDefs_Vaults.xml (VAULT_DUNGEON_BUILD_1 precedent) -
+  a SitePartDef the world can carry plus a linked GenStepDef that runs
+  KCSG.GenStep_CustomStructureGen against the RUT_DarkTower_HighCommand
+  template authored in StructureLayoutDefs_DarkTower.xml.
+
+  minMapSize matches the vaults' RULED floor (dungeons_arc_spec.md SS3.9:
+  325x325, the vanilla initialMapSize ceiling, still MapSizePerformanceWarning
+  -free) - the tower's own footprint (121x121, see the generator's docstring)
+  sits inside it with room for the surrounding RUT_TheScald crater-lake shore.
+
+  wantsThreatPoints is false for the SAME reason as the vaults: the layout
+  IS the threat (a live, ungated garrison - see the console ThingDef's own
+  comment on why this site has no thaw-gate) - nothing extra should be
+  rolled on top of an already-fierce fixed roster.
+
+  NOT DONE HERE, deliberately (task scope / CLAUDE.md "no bridge/game calls"):
+  no WorldObjectDef, no world-tile write, no world_commit. Siting this
+  SitePartDef on an actual tile inside RUT_TheScald's 312-tile crater lake
+  (the_scald.md SS0) is a separate bridge/world-editing pass, explicitly out
+  of scope for this authoring pass per SCALD_DARK_TOWER_1's own "CANNOT DO"
+  line.
+-->
+<Defs>
+  <SitePartDef>
+    <defName>RUT_DarkTowerSite</defName>
+    <label>the dark tower</label>
+    <description>A tower of dead-black metal rising straight out of the Scald's boiling lake - the Rakatan's ground-based high command. Its garrison never got the order to stand down.</description>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/AncientStructure</expandingIconTexture>
+    <minMapSize>(325,1,325)</minMapSize>
+    <wantsThreatPoints>false</wantsThreatPoints>
+    <gravShipsCanLandOn>false</gravShipsCanLandOn>
+    <considerEnteringAsAttack>true</considerEnteringAsAttack>
+    <forceExitAndRemoveMapCountdownDurationDays>4</forceExitAndRemoveMapCountdownDurationDays>
+    <tags>
+      <li>RUT_DarkTower</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_DarkTowerSite</defName>
+    <linkWithSite>RUT_DarkTowerSite</linkWithSite>
+    <order>400</order>
+    <genStep Class="KCSG.GenStep_CustomStructureGen">
+      <fullClear>true</fullClear>
+      <clearFogInRect>false</clearFogInRect>
+      <structureLayoutDefs>
+        <li>RUT_DarkTower_HighCommand</li>
+      </structureLayoutDefs>
+    </genStep>
+  </GenStepDef>
+</Defs>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <KCSG.SymbolDef>
+    <defName>RUT_Symbol_DarkTowerConsole</defName>
+    <thing>RUT_DarkTowerControlConsole</thing>
+    <spawnPartOfFaction>false</spawnPartOfFaction>
+  </KCSG.SymbolDef>
+</Defs>
