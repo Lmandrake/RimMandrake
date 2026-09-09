@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -10,12 +11,15 @@ namespace RimMandrake.Ninefold
     // and ALL voice narration -- pure read/compute/text. No live mutation."
     //
     // This class ships the VECTOR + MOOD WALK (the band ladder itself is
-    // `SatiationBand.cs`; `GetBand` below just delegates to it), and the five
-    // Harmony-patched event hooks (Patch_*.cs, this same assembly) bind real
-    // RimWorld choke points to its ApplyDelta. It does NOT ship: first-
-    // contact chains or narrator corpus letters (NINEFOLD_ENGINE_M0_1's other
-    // named pieces) -- those need real event-binding research and owner-
-    // reviewed voice text, not a solo pass. See
+    // `SatiationBand.cs`; `GetBand` below just delegates to it), the
+    // Harmony-patched event hooks (Patch_*.cs, this same assembly) that bind
+    // real RimWorld choke points to its ApplyDelta, AND (2026-09-09) seven of
+    // the nine first-contact unveilings (`FirstContactCorpus.cs`) -- see
+    // TryFirstContact below for the owner-ruling citation that authorized
+    // shipping the corpus text now rather than holding it for a paper
+    // redline. Ishko and Oomo's chains remain unwired: they have no existing
+    // event hook this mod can bind to without new API research, a genuine
+    // mechanical gap, not a voice-text one. See
     // infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md.
     public class GameComponent_Ninefold : GameComponent
     {
@@ -62,6 +66,37 @@ namespace RimMandrake.Ninefold
         // the 2026-09-05 code review wave).
         private const int RootedErosionGraceTicks = MoodWalkIntervalTicks * 6; // ~6 in-game hours
         private int lastLaunchTick;
+
+        // NINEFOLD_ENGINE_M0_1: first-contact unveilings
+        // (design/Jawa/first_contact_chains.md). Owner ruling on record
+        // authorizes shipping this pre-authored text now, redlined live
+        // in-game rather than on paper (ledger, 2026-09-01: "build the five
+        // event hooks + corpus letters with the PROVISIONAL voice text; he
+        // redlines letters as they appear in-game. Not held on a paper
+        // redline" -- reaffirmed by the 2026-08-31 card session, "Ninefold
+        // M0 CALLED -- provisional corpus... emergent first contact", and
+        // OPUS5_HANDOFF.md's own "needs the owner's hands only: corpus
+        // redline on LIVE M0 text"). This ships narration only (SHOCK +
+        // CURIOSITY + REALIZATION, see FirstContactCorpus.cs) -- no DELIGHT
+        // one-off mechanical gift, which is a live-mutation piece outside
+        // this file's own safe-core scope.
+        private bool[] unveiled = new bool[GodExtensions.Count];
+        private List<int> pendingFirstContact = new List<int>();
+        private int nextFirstContactTick;
+        // Approximates first_contact_chains.md ⑧'s "third violent battle"
+        // as the third violent death -- this mod has no battle-grouping /
+        // incident window for deaths (unlike the fire hook's
+        // instigator-keyed rate limiter), so a single battle with multiple
+        // deaths could in principle fire early. First-pass simplification,
+        // same status as this file's other UNTUNED constants.
+        private int violentDeathCount;
+
+        private const int OneDayTicks = 60000;
+        // "the fourth or fifth night rooted" (first_contact_chains.md ②) --
+        // UNTUNED first-pass reading, same status as this file's other
+        // first-pass constants; §10 owns real tuning.
+        private const int TaBaaFirstContactRootedTicks = OneDayTicks * 4;
+        private const int ShkaarFirstContactViolentDeaths = 3;
 
         public GameComponent_Ninefold(Game game)
         {
@@ -120,6 +155,7 @@ namespace RimMandrake.Ninefold
         {
             base.GameComponentTick();
             int ticks = Find.TickManager.TicksGame;
+            StepPendingFirstContact();
             if (ticks % MoodWalkIntervalTicks != 0) return;
             StepMoodWalk();
             StepRootedErosion();
@@ -133,6 +169,67 @@ namespace RimMandrake.Ninefold
             // this step doesn't need to re-derive elapsed hours from it.
             int i = (int)God.TaBaa;
             satiation[i] = Mathf.Clamp(satiation[i] - RootedErosionPerHour, -100f, 100f);
+
+            if (!unveiled[i] &&
+                Find.TickManager.TicksGame - lastLaunchTick >= TaBaaFirstContactRootedTicks)
+            {
+                TryFirstContact(God.TaBaa);
+            }
+        }
+
+        public bool IsUnveiled(God god) => unveiled[(int)god];
+
+        // Called by an event hook (Patch_*.cs) the first time that god's
+        // trigger condition is met. Safe to call repeatedly/redundantly --
+        // no-ops once unveiled or already queued. See the class-level
+        // comment above for the owner ruling that authorizes firing this
+        // with the pre-authored corpus text.
+        public void TryFirstContact(God god)
+        {
+            int i = (int)god;
+            if (unveiled[i]) return;
+            if (pendingFirstContact.Contains(i)) return;
+
+            if (pendingFirstContact.Count == 0 &&
+                Find.TickManager.TicksGame >= nextFirstContactTick)
+            {
+                FireFirstContact(god);
+            }
+            else
+            {
+                // "two gods never introduce themselves at once" (build note,
+                // first_contact_chains.md) -- queue behind whatever is
+                // already scheduled rather than firing the same day.
+                pendingFirstContact.Add(i);
+            }
+        }
+
+        // Sh'kaar's trigger is a violent-death counter, not a single event --
+        // called from Patch_BattleResolved alongside its existing ApplyDelta.
+        public void NotifyViolentDeath()
+        {
+            if (unveiled[(int)God.Shkaar]) return;
+            violentDeathCount++;
+            if (violentDeathCount >= ShkaarFirstContactViolentDeaths)
+                TryFirstContact(God.Shkaar);
+        }
+
+        private void FireFirstContact(God god)
+        {
+            unveiled[(int)god] = true;
+            nextFirstContactTick = Find.TickManager.TicksGame + OneDayTicks;
+            if (!FirstContactCorpus.GetChain(god, out string title, out string text))
+                return; // Ishko/Oomo -- no corpus entry wired yet
+            Find.LetterStack.ReceiveLetter(title, text, LetterDefOf.NeutralEvent);
+        }
+
+        private void StepPendingFirstContact()
+        {
+            if (pendingFirstContact.Count == 0) return;
+            if (Find.TickManager.TicksGame < nextFirstContactTick) return;
+            int nextGod = pendingFirstContact[0];
+            pendingFirstContact.RemoveAt(0);
+            FireFirstContact((God)nextGod);
         }
 
         // Harmony hooks call this (Patch_GravshipLaunched.cs) when the colony
@@ -172,10 +269,15 @@ namespace RimMandrake.Ninefold
             }
             Scribe_Collections.Look(ref satiationList, "ninefoldSatiation", LookMode.Value);
             Scribe_Collections.Look(ref moodList, "ninefoldMood", LookMode.Value);
+            Scribe_Collections.Look(ref unveiledList, "ninefoldUnveiled", LookMode.Value);
+            Scribe_Collections.Look(ref pendingFirstContact, "ninefoldPendingFirstContact", LookMode.Value);
+            Scribe_Values.Look(ref nextFirstContactTick, "ninefoldNextFirstContactTick", 0);
+            Scribe_Values.Look(ref violentDeathCount, "ninefoldViolentDeathCount", 0);
             Scribe_Values.Look(ref lastLaunchTick, "ninefoldLastLaunchTick", 0);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 FromLists();
+                if (pendingFirstContact == null) pendingFirstContact = new List<int>();
                 // A save from before NINEFOLD_MISSING_EVENT_HOOKS_1 has no
                 // recorded lastLaunchTick (defaults to 0) -- treat that as
                 // "just launched now" rather than eroding Ta'Baa for however
@@ -189,15 +291,23 @@ namespace RimMandrake.Ninefold
         // save/load-only views over the real arrays.
         private List<float> satiationList;
         private List<float> moodList;
+        private List<bool> unveiledList;
 
         private void ToLists()
         {
             satiationList = new List<float>(satiation);
             moodList = new List<float>(mood);
+            unveiledList = new List<bool>(unveiled);
         }
 
         private void FromLists()
         {
+            if (unveiledList != null && unveiledList.Count == GodExtensions.Count)
+                unveiledList.CopyTo(unveiled);
+            else if (unveiledList != null)
+                Log.Warning("[Ninefold] saved unveiled list has " + unveiledList.Count +
+                    " entries, expected " + GodExtensions.Count + " -- discarding, all gods reset to veiled.");
+
             if (satiationList != null && satiationList.Count == GodExtensions.Count)
                 satiationList.CopyTo(satiation);
             else if (satiationList != null)

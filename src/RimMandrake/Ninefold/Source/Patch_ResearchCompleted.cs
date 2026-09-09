@@ -46,6 +46,15 @@ namespace RimMandrake.Ninefold
                 "research completed: " + proj.defName);
             comp.ApplyDelta(God.Ohm, EventMagnitude.Small,
                 "research completed (shared input): " + proj.defName);
+
+            // NINEFOLD_ENGINE_M0_1: first_contact_chains.md ⑨ -- "the first
+            // true reach... research completed at a real bench." The doc's
+            // alternate trigger ("or the colony's first masterwork") is NOT
+            // wired to Patch_ArtCreated here: that hook fires on every piece
+            // of art regardless of quality, and using it would fire this
+            // chain on the very first tiny sculpture rather than a genuine
+            // masterwork -- too loose an approximation to ship.
+            comp.TryFirstContact(God.Ozzik);
         }
     }
 }
