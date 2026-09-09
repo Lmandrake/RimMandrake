@@ -24,12 +24,11 @@ fellow drinker, you are prey in someone's ledger.
 
 ## 0. The measurements everything rests on
 
-MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8
-overlay plans): **169 tiles, 21 river tiles, 0 water tiles.** ⚠️ The river-tile
-figure is a live-CSV correction from the "0 river tiles" this sheet shipped
-with — a factual update, not a reopening of the "the water is inside" ruling
-below (§1, §5); BENCH flags it for the freeze review rather than reading it
-here. Sun median **+51°** (arc p10/median/p90 21.2/39.4/53.3) — more raw energy
+MEASURED live on V26 (2026-09-08, worldmap sitting): **161 tiles, 0 river tiles, 0
+water tiles.** ✅ *(Amendment, owner ruled 2026-09-08: the 8 through-river tiles the
+earlier correction flagged are repainted to the Greentide — dayside river lines are the
+Greentide's by the lush rule, and "the water is inside" (§1, §5) is now literally true
+on the map. Saved as `WORLDMAP_V26_webwork_rivers_2026-09-09`.)* Sun median **+51°** (arc p10/median/p90 21.2/39.4/53.3) — more raw energy
 than the Greentide. Temp p10/median/p90 38.6 / 49.2 / 58.2 °C (max 63.9).
 High-relief: 34 mountainous + 9 impassable + 56 large-hill of 169 (55 flat, 15
 small-hill); elevation median 361 m,

@@ -290,5 +290,8 @@ subject to this sheet's admission tests. Beyond flora and fauna, the mod carries
 - **Roster admission tests** at `BIOME_FAUNA_ASSIGNMENT_SITTING_1`: hybrid-or-out; the
   donor exotics tail (trace-commonality non-hybrids) judged there.
 - **Wildsteam wiring** — the sacred-grove relationship into `FACTION_SPEC.md`.
-- **Def tails check** — arc-74 edge tiles vs the terminator families; fold any strays into
-  `WORLDMAP_DESERT_BAND_REPAIR_1` (not yet measured for this def).
+- ✅ **Def tails check — CLOSED** (measured + owner ruled, 2026-09-08): the 152 tiles at
+  arc 74–84 are not strays — they are two coherent named woods, **Sweatwood (83)** and
+  **Tallow Ground (69)**, three adjacency clusters at the def's warm end (+12..+24 °C),
+  bordering the Desert. Ruled legitimate; nothing folds into
+  `WORLDMAP_DESERT_BAND_REPAIR_1`.
