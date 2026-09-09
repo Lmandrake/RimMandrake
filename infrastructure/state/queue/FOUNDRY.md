@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T19:52:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T19:56:07Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -483,7 +483,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-summary:  (no items/DROID_RETIRE_ABF_SYNCORE_1.md yet — write one when you have something to say)
+summary:  DROIDRETIREABFSYNCORE1 — retire ABF + SynCore (wave R2)
 prose:    infrastructure/state/items/DROID_RETIRE_ABF_SYNCORE_1.md
 
 ## DROID_RETIRE_KOTORDROIDS_1 Retire guy762.kotordroids (wave R1) after modules, heads, loadouts, FDE repoint and Distress Call are closed; cold load
