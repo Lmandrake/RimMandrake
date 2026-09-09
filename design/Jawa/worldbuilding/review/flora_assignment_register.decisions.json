@@ -615,12 +615,12 @@
    "prefill": "keep",
    "note": ""
   },
-  "p:the_rot:BMT_Blastpod": {
+  "p:the_rot:BMT_BleedingTooth": {
    "decision": "keep",
    "prefill": "keep",
    "note": ""
   },
-  "p:the_rot:BMT_BleedingTooth": {
+  "p:the_rot:Boomshroom": {
    "decision": "keep",
    "prefill": "keep",
    "note": ""
@@ -748,6 +748,11 @@
   "p:the_rot:BMT_Wrinklecap": {
    "decision": "keep",
    "prefill": "keep",
+   "note": ""
+  },
+  "purge:the_rot": {
+   "decision": "purge",
+   "prefill": "purge",
    "note": ""
   },
   "purge:the_rust_cathedral": {

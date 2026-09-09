@@ -137,6 +137,54 @@ generalized. Verify post-load with a fresh def dump, not disk XML.
 - ⚠️ Fix-wave sequencing: roster edits shift positional sheet row-ids — regenerate
   both review sheets after any roster fix, BEFORE the owner's verdict pass.
 
+## 2026-09-09 FIX WAVE — what it found and closed
+
+- ✅ **Ban 9 (shrubland flammability): CLOSED by patch, not by re-pick.** All 10 rows
+  were re-checked against the pool for a Flammability-0 alien donor fitting the sheet's
+  low-shrub/fuzz law. **None exists** — only 32 of 647 pool defs are non-flammable and
+  every one is a fungus, a fire/anima form or an Earth-nameable cactus, most already
+  bound to another flora family. So all 10 are KEPT and zeroed by
+  `BiomeFloraStatAdjustments_Generated.xml`; safe because every one is single-biome on
+  the landed planet (MEASURED). `BMT_GreyLady`'s Flammability 40 (26× the pool maximum)
+  clamped to 1.0 in the same patch as a donor bug.
+- 🔴 **figF2's "46 dead flora rows" was measured off a STALE source and the real number
+  was 6.** `plant_pool.csv` was built 2026-08-23, *before* any tolerance patch existed;
+  the live def dump already carried the widening. 40 of the 46 were alive. This is the
+  "instruments can read the wrong file" failure, and figF2 should read the DUMP for
+  liveness and the POOL only for donor (as-shipped) values.
+- 🔴 **The real defect was worse than the reported one: `plant_tolerances.py` was
+  dissolving its own output.** Two faults, both fixed. (1) Its `PATCH` constant still
+  pointed at the retired `src/Jawa/Jawa_Patches/`, so every `--write` since
+  JAWA_PATCHES_SPLIT_1 wrote to a dead directory — the deployed patch went stale through
+  the whole roster rewrite. (2) It read current values from the live dump, which already
+  contains its own patch, so 67 plants looked like they "already survived their home"
+  and would have been dropped from the next regeneration — reverting them to donor bands
+  that cannot reach their biome. It now reads shipped values from `plant_pool.csv`,
+  unions the tile demand with the sheets' median ±10 (`biome_climate.json`), and
+  ASSERTS the outcome: 0 of 122 landed flora rows fail their biome's median.
+- ✅ **One genuine re-pick: `BMT_Blastpod` → `Boomshroom`** (the_rot). Blastpod ships
+  50…352 °C; reaching the Rot's −18.8 °C median needed a 78.8 °C stretch, past the 30 °C
+  re-pick limit. Boomshroom is literally the same asset (Blastpod's own texPath is
+  `.../Boomshroom/BoomshroomGrown`) with the same chemfuel yield and a 0…58 °C band.
+- ✅ **The Rot's fungi are EXTENDED, not re-picked, and the sheet is why.** `the_rot.md`,
+  "Thermogenesis — the warmth is metabolic": the mycelial mat is a heated floor the
+  jungle makes for itself, and *"air temperature is a lie about the ground"*; the cold
+  edge (Frostcaps) is where that heat fails. Cold air over warm substrate is the biome's
+  own story, so a sub-zero floor on its fungi is in character.
+- ✅ **RUT_PropaneLake grows nothing** (new roster key `flora_def_exclusions`): its four
+  flora rows were the fuel-snow SHORE's, handed to the liquid sea by def-binding.
+- ✅ **animalDensity**: RUT_NightsideIce 0→0.2, RUT_TwilightSea/RUT_GreySea undeclared
+  →0.1, RUT_TheScald →0.15, each citing its sheet and recording a quicktest tune owed.
+  ⚠️ The reference figure "Desert ≈1.5" used to size these is WRONG — live resolved
+  Desert is **0.4** (MEASURED); IceSheet 0.2 and SeaIce 0.1 are right. The chosen values
+  still sit correctly on the live scale, so none was changed.
+- ⚠️ **445 operations dropped from `PlantTolerances_Ashkarr.xml` (577 → 139)** and this
+  is deliberate: the old file was generated from the pre-2026-09-09 whole-pool FAMILIES.
+  Every dropped def is unrostered, so nothing spawns wild that did before, and each
+  reverts to the value its own mod ships — never below it. Two rostered defs are among
+  the drops (`AB_TinkleGrass`, `Plant_FelucianGlowspore_Wild`) and both are correct:
+  their shipped bands already cover their homes.
+
 ## Cross-item verification (2026-09-09): RETEXTURED_EARTH_FAUNA_BANNED_1 (FOUNDRY's, already closed)
 Re-verified against the REGENERATED cast at `90727e48`: the five twins are in
 EARTH_FAUNA_EXCLUDED.txt (lines 125–129), the new cast greps 0 for GRim*/Wolf_Great,
