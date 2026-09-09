@@ -35,11 +35,13 @@ Design: design/Jawa/bridge/INHABITED_DESIGN.md</description>
       <displayName>Harmony</displayName>
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
     </li>
-    <li>
-      <packageId>mandrake.rm.injections</packageId>
-      <displayName>RimMandrake: Structure Injections</displayName>
-    </li>
   </modDependencies>
+  <!-- 🔴 No mandrake.* engine belongs in modDependencies above
+       (INHABITED_INJECTIONS_DECOUPLE_1, soft-hook law 1 in
+       design/CHRONICLE_EVENT_SPINE.md). This mod loads and cold-loads
+       standalone; mandrake.rm.injections stays in loadAfter only, as a
+       load-ORDER preference for when it IS present, and is reached via
+       StructureInjectionsBridge.cs reflection, never a hard reference. -->
   <loadAfter>
     <li>brrainz.harmony</li>
     <li>Ludeon.RimWorld</li>

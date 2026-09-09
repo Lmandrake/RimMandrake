@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using RimMandrake.StructureInjections;
 using Verse;
 
 namespace RimMandrake.Inhabited
@@ -176,15 +175,24 @@ namespace RimMandrake.Inhabited
         /// StructureInjections' own GenStepDef-driven path uses, called
         /// directly rather than through a GenStepDef+planFile binding because
         /// the plan file to use depends on manifest data resolved at runtime,
-        /// not on static XML. Returns false (no map change made) for any
-        /// label with no template, or if the template file is missing/unparsable
-        /// -- the caller falls back to the placeholder-log behaviour either
-        /// way, so a missing template degrades to the pre-existing stub rather
-        /// than an error.</summary>
+        /// not on static XML. Reached only through
+        /// <see cref="StructureInjectionsBridge"/> (INHABITED_INJECTIONS_DECOUPLE_1):
+        /// Inhabited has no compile-time reference to StructureInjections, so
+        /// this returns false immediately when mandrake.rm.injections is not
+        /// loaded. Also returns false (no map change made) for any label with
+        /// no template, or if the template file is missing/unparsable -- the
+        /// caller falls back to the placeholder-log behaviour either way, so a
+        /// missing template or missing mod degrades to the pre-existing stub
+        /// rather than an error.</summary>
         private bool TryComposeRealDistrict(Map map, string districtLabel)
         {
             if (districtLabel.NullOrEmpty()
                 || !TemplateFiles.TryGetValue(districtLabel, out string fileName))
+            {
+                return false;
+            }
+
+            if (!StructureInjectionsBridge.Available)
             {
                 return false;
             }
@@ -204,10 +212,10 @@ namespace RimMandrake.Inhabited
                 return false;
             }
 
-            RimplacePlan plan;
+            object plan;
             try
             {
-                plan = RimplacePlan.Parse(path);
+                plan = StructureInjectionsBridge.Parse(path);
             }
             catch (Exception ex)
             {
@@ -220,16 +228,17 @@ namespace RimMandrake.Inhabited
             // planFile-driven path: the plan is authored at small, arbitrary
             // offline coordinates, so it is centered on the generated map.
             int dx = 0, dz = 0;
-            if (plan.HasFootprint)
+            bool hasFootprint = StructureInjectionsBridge.HasFootprint(plan);
+            if (hasFootprint)
             {
                 var mapCenter = map.Center;
-                int planCenterX = plan.FootprintX + plan.FootprintW / 2;
-                int planCenterZ = plan.FootprintZ + plan.FootprintH / 2;
+                int planCenterX = StructureInjectionsBridge.FootprintX(plan) + StructureInjectionsBridge.FootprintW(plan) / 2;
+                int planCenterZ = StructureInjectionsBridge.FootprintZ(plan) + StructureInjectionsBridge.FootprintH(plan) / 2;
                 dx = mapCenter.x - planCenterX;
                 dz = mapCenter.z - planCenterZ;
             }
 
-            GenStep_RimplacePlan.ApplyPlan(map, plan, dx, dz, fileName);
+            StructureInjectionsBridge.ApplyPlan(map, plan, dx, dz, fileName);
 
             // INHABITED_STOCK_ONTO_MAP_AND_FATE_1: publish where the district
             // actually landed, so GenStep_InhabitedStock (order 910) can put the
@@ -239,11 +248,13 @@ namespace RimMandrake.Inhabited
             // objects, and MapGenerator's var bag is the shipped channel between
             // steps of one generation (GenStep_ReserveGravshipArea uses it for
             // "UsedRects" the same way).
-            if (plan.HasFootprint)
+            if (hasFootprint)
             {
                 MapGenerator.SetVar(GenStep_InhabitedStock.DistrictRectVar,
-                    new CellRect(plan.FootprintX + dx, plan.FootprintZ + dz,
-                        plan.FootprintW, plan.FootprintH));
+                    new CellRect(StructureInjectionsBridge.FootprintX(plan) + dx,
+                        StructureInjectionsBridge.FootprintZ(plan) + dz,
+                        StructureInjectionsBridge.FootprintW(plan),
+                        StructureInjectionsBridge.FootprintH(plan)));
             }
             return true;
         }
