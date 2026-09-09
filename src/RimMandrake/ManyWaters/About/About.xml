@@ -6,7 +6,7 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>Generic water-effects engine (engine promoted from RUT RiverSteam per R10: ManyWaters gathers all water effects/types — steaming, boiling, etc. — as they land). Currently ships the animated river-steam ambience: periodic "Steam" FleckDef puffs off river cells, reusing vanilla's own TerrainDef.IsRiver test — a pure ambience feature, no gameplay effect. NOTE: MapComponent_RiverSteam still gates on the literal biome defName `ZBiome_Grasslands` (the Pyrelands) inherited untouched from RiverSteam's Source/ — generalizing that gate is future work, not done by this promotion. Campaign-specific wiring lives in RimUtinni: UtinniPatches.</description>
+  <description>Generic water-effects engine (engine promoted from RUT RiverSteam per R10: ManyWaters gathers all water effects/types — steaming, boiling, etc. — as they land). Currently ships the animated river-steam ambience: periodic "Steam" FleckDef puffs off river cells, reusing vanilla's own TerrainDef.IsRiver test — a pure ambience feature, no gameplay effect. Biome-agnostic: a biome opts in by carrying a `RiverSteamHook.RiverSteamBiomeExtension` modExtension (which also carries the tuning — fleck, puff interval, scale, drift), and this engine names no biome of its own (MANYWATERS_GENERIC_SPLIT_1). Campaign-specific wiring lives in RimUtinni: UtinniPatches — Patches/ManyWaters_RiverSteam_Ashkarr.xml puts the extension on ZBiome_Grasslands (the Pyrelands).</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>

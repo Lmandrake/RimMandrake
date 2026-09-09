@@ -5,21 +5,52 @@ using Verse;
 
 namespace RiverSteamHook
 {
-    // Ambient visual only: rivers on the Pyrelands (ZBiome_Grasslands) throw
-    // periodic steam puffs, per the owner's ask (RIVER_STEAM_ANIMATION_1).
-    // Reuses vanilla's own "Steam" FleckDef (Defs/Ideology/Effects/Fleck_Visual.xml,
-    // ParentName="FleckBase_Thrown") and the exact river-cell test
+    // ════════════════════════════════════════════════════════════════════
+    // WHICH BIOMES STEAM — the data hook.
+    //
+    // TRIGGERED BY: a <modExtensions><li Class="RiverSteamHook.RiverSteamBiomeExtension">
+    // block on a BiomeDef. A biome that does not carry this extension gets
+    // no river steam at all; this assembly names no biome of its own.
+    //
+    // The campaign's own wiring (the Pyrelands, ZBiome_Grasslands) lives in
+    // the RimUtinni tier — src/RimUtinni/UtinniPatches/Patches/
+    // ManyWaters_RiverSteam_Ashkarr.xml — not here, because ManyWaters is a
+    // RimMandrake-tier engine and must run on any game, any biome.
+    //
+    // ⚠️ Every default below is the value this engine shipped with while the
+    // biome was hardcoded. A biome that declares the extension and overrides
+    // nothing therefore gets byte-identical behaviour to the old build.
+    // ════════════════════════════════════════════════════════════════════
+    public class RiverSteamBiomeExtension : DefModExtension
+    {
+        // Present-but-off, so a biome can be listed and muted without the
+        // patch that added it having to be removed.
+        public bool riverSteam = true;
+
+        // Vanilla's own "Steam" FleckDef (Defs/Ideology/Effects/Fleck_Visual.xml,
+        // ParentName="FleckBase_Thrown"). Overridable so a biome can steam in
+        // its own colour once ManyWaters ships flecks of its own.
+        public string fleckDef = "Steam";
+
+        public IntRange ticksBetweenPuffs = new IntRange(90, 260);
+        public FloatRange puffScale = new FloatRange(1f, 1.8f);
+        public IntRange velocityAngle = new IntRange(60, 120);
+        public FloatRange velocitySpeed = new FloatRange(0.15f, 0.3f);
+    }
+
+    // Ambient visual only: rivers on any biome that opts in (see the
+    // extension above) throw periodic steam puffs, per the owner's ask
+    // (RIVER_STEAM_ANIMATION_1). Reuses the exact river-cell test
     // RimWorld.SeasonalFlood already uses (TerrainDef.IsRiver) -- no new art,
     // no heat push, no gameplay effect. MapComponent subclasses are
     // auto-instantiated per map by Map.FillComponents(), so no Harmony/XML
     // registration is needed.
     public class MapComponent_RiverSteam : MapComponent
     {
-        private static readonly IntRange TicksBetweenPuffs = new IntRange(90, 260);
-
         private List<IntVec3> riverCells;
         private int nextPuffTick = -1;
         private FleckDef steamFleck;
+        private RiverSteamBiomeExtension settings;
 
         public MapComponent_RiverSteam(Map map) : base(map)
         {
@@ -28,12 +59,24 @@ namespace RiverSteamHook
         public override void FinalizeInit()
         {
             base.FinalizeInit();
-            steamFleck = DefDatabase<FleckDef>.GetNamedSilentFail("Steam");
             riverCells = new List<IntVec3>();
 
-            // Pyrelands only ("stormy savanna", ZBiome_Grasslands) -- not every
-            // river on every biome. See ASHKARR_WORLD_DEFINITION.md's biome table.
-            if (map.Biome == null || map.Biome.defName != "ZBiome_Grasslands")
+            // Data-driven, not a biome defName in C#: this component exists on
+            // EVERY map in every save, so the not-my-biome path stays a single
+            // extension lookup and an early return.
+            if (map.Biome == null)
+            {
+                return;
+            }
+            settings = map.Biome.GetModExtension<RiverSteamBiomeExtension>();
+            if (settings == null || !settings.riverSteam)
+            {
+                return;
+            }
+
+            steamFleck = DefDatabase<FleckDef>.GetNamedSilentFail(
+                settings.fleckDef.NullOrEmpty() ? "Steam" : settings.fleckDef);
+            if (steamFleck == null)
             {
                 return;
             }
@@ -65,9 +108,10 @@ namespace RiverSteamHook
             if (!cell.Fogged(map))
             {
                 Vector3 loc = cell.ToVector3Shifted();
-                FleckCreationData data = FleckMaker.GetDataStatic(loc, map, steamFleck, Rand.Range(1f, 1.8f));
-                data.velocityAngle = Rand.Range(60, 120);
-                data.velocitySpeed = Rand.Range(0.15f, 0.3f);
+                FleckCreationData data = FleckMaker.GetDataStatic(
+                    loc, map, steamFleck, Rand.Range(settings.puffScale.min, settings.puffScale.max));
+                data.velocityAngle = Rand.Range(settings.velocityAngle.min, settings.velocityAngle.max);
+                data.velocitySpeed = Rand.Range(settings.velocitySpeed.min, settings.velocitySpeed.max);
                 map.flecks.CreateFleck(data);
             }
 
@@ -76,7 +120,7 @@ namespace RiverSteamHook
 
         private void ScheduleNext()
         {
-            nextPuffTick = Find.TickManager.TicksGame + TicksBetweenPuffs.RandomInRange;
+            nextPuffTick = Find.TickManager.TicksGame + settings.ticksBetweenPuffs.RandomInRange;
         }
     }
 }
