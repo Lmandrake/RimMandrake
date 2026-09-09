@@ -60,15 +60,19 @@ namespace RimMandrake.FluidCanals
                 CompFluidReservoir res = t.TryGetComp<CompFluidReservoir>();
                 if (res != null)
                 {
-                    // Fixed 2026-09-02 (opus code review): fluidDef/volume are
-                    // static Props config that never change - printed next to
-                    // nothing live, they read like live state and aren't. spent
-                    // is the one real runtime field; without it, re-triggering an
-                    // already-spent reservoir reported identically to a fresh
-                    // one, in the tool meant to verify exactly that distinction.
-                    sb.Append(" [reservoir spent=").Append(res.Spent)
+                    // Updated for the drip+re-flood rework (owner ruling
+                    // 2026-09-04, canon_reintegration_plan.md sec G8): "spent"
+                    // no longer exists -- primed/seedCell/nextDripTick/
+                    // nextReFloodTick are the real runtime state now, and are
+                    // exactly what a live test needs to see fire on schedule.
+                    sb.Append(" [reservoir primed=").Append(res.Primed)
+                      .Append(" seedCell=").Append(res.SeedCell)
                       .Append(" fluid=").Append(res.Props.fluidDef?.defName ?? "NULL")
-                      .Append(" volume=").Append(res.Props.volume.ToString("F1")).Append(']');
+                      .Append(" dripVolume=").Append(res.Props.dripVolume.ToString("F1"))
+                      .Append(" nextDripTick=").Append(res.NextDripTick)
+                      .Append(" reFloodVolume=").Append(res.Props.reFloodVolume.ToString("F1"))
+                      .Append(" nextReFloodTick=").Append(res.NextReFloodTick)
+                      .Append(" nowTick=").Append(Find.TickManager.TicksGame).Append(']');
                 }
                 if (t is Flood_FluidCanal flood)
                 {

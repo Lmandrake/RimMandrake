@@ -17,7 +17,12 @@
 //
 // EVERY SIGNATURE READ FROM src/RimMandrake/FluidCanals/Source, not guessed:
 //   CompFluidReservoir.Notify_CanalCellOpened(Map, IntVec3)   public static
-//   CompFluidReservoir.Spent (bool), .Props (fluidDef, volume)
+//   CompFluidReservoir.Primed (bool), .SeedCell (IntVec3), .NextDripTick (int),
+//     .NextReFloodTick (int), .Props (fluidDef, dripVolume, reFloodVolume)
+//   -- reworked 2026-09-09 (FLUID_CANAL_MECHANIC_1, owner ruling 2026-09-04
+//   canon_reintegration_plan.md sec G8): the old one-shot Spent/volume fields
+//   are GONE, replaced by a primed/drip/re-flood cadence; this tool's
+//   reflection surface follows the same rename.
 //   Flood_FluidCanal.FloodedTileCount / RemainingVolume / ExpiresAtTick
 //   TerrainDef RM_Channel_Empty via DefDatabase, no assembly needed.
 //
@@ -140,13 +145,15 @@ namespace JawaBench.BridgeTools
                 "(TempTerrainAt - null means no temporary overlay), underneath " +
                 "(TopTerrainAt - what comes back when the flood drains; on a flooded " +
                 "concrete cell 'underneath=Concrete' is the whole recoverability proof), " +
-                "plus every Thing on the cell with reservoir state (spent is the one real " +
-                "runtime field) and flood state (floodedTileCount, remainingVolume, " +
+                "plus every Thing on the cell with reservoir state (primed/seedCell/" +
+                "nextDripTick/nextReFloodTick are the real runtime fields since the " +
+                "2026-09-09 drip+re-flood rework) and flood state (floodedTileCount, remainingVolume, " +
                 "expiresAtTick vs nowTick). Works with or without the FluidCanals mod " +
                 "loaded - the mod-specific blocks just come back absent.",
             ResultDescription =
                 "success, cell, terrain, isWater, tempTerrain ('none' when no overlay), " +
-                "underneath, things[] of {def, id, reservoir?{spent,fluid,volume}, " +
+                "underneath, things[] of {def, id, " +
+                "reservoir?{primed,seedCell,fluid,dripVolume,nextDripTick,reFloodVolume,nextReFloodTick}, " +
                 "flood?{spawned,floodedTileCount,remainingVolume,expiresAtTick}}, " +
                 "mapId, mapTile, ticksGame.")]
         public static async Task<object> CanalCellReport(
@@ -172,7 +179,13 @@ namespace JawaBench.BridgeTools
 
                 Type compType = GenTypes.GetTypeInAnyAssembly(FluidCompTypeName);
                 Type floodType = GenTypes.GetTypeInAnyAssembly(FluidFloodTypeName);
-                PropertyInfo spentProp = compType?.GetProperty("Spent");
+                // Renamed 2026-09-09 (FLUID_CANAL_MECHANIC_1 drip+re-flood rework):
+                // Spent/volume no longer exist on the live comp -- Primed/SeedCell/
+                // NextDripTick/NextReFloodTick and Props.dripVolume/reFloodVolume do.
+                PropertyInfo primedProp = compType?.GetProperty("Primed");
+                PropertyInfo seedCellProp = compType?.GetProperty("SeedCell");
+                PropertyInfo nextDripProp = compType?.GetProperty("NextDripTick");
+                PropertyInfo nextReFloodProp = compType?.GetProperty("NextReFloodTick");
                 PropertyInfo propsProp = compType?.GetProperty("Props");
 
                 var things = new List<object>();
@@ -190,9 +203,13 @@ namespace JawaBench.BridgeTools
                             Type propsType = props?.GetType();
                             reservoir = new
                             {
-                                spent = spentProp?.GetValue(comp),
+                                primed = primedProp?.GetValue(comp),
+                                seedCell = seedCellProp?.GetValue(comp)?.ToString(),
                                 fluid = (propsType?.GetField("fluidDef")?.GetValue(props) as Def)?.defName ?? "NULL",
-                                volume = propsType?.GetField("volume")?.GetValue(props)
+                                dripVolume = propsType?.GetField("dripVolume")?.GetValue(props),
+                                nextDripTick = nextDripProp?.GetValue(comp),
+                                reFloodVolume = propsType?.GetField("reFloodVolume")?.GetValue(props),
+                                nextReFloodTick = nextReFloodProp?.GetValue(comp)
                             };
                             break;
                         }
