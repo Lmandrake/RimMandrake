@@ -13,14 +13,22 @@ planet's gut** — and its image: **a pale forest with a heartbeat of rot.**_
 
 ## 0. The measurements everything rests on
 
-MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8
-overlay plans): **2,348 tiles** — the largest
-biome defined since the dryland ladder. Arc 74→142: from touching the terminator down to
-sun 52° below the horizon. Temp p10/median/p90 −37.3/−19.6/+12.5 °C, max +24.0 °C — and the
-spread is not noise, it is the map of digestion (§3). Elev median 704 m, flat-to-rolling.
+MEASURED live on V25 (2026-09-08, post cold-tail repaint): **2,258 tiles** — the largest
+biome defined since the dryland ladder. Arc 74→135: from touching the terminator down to
+sun 45° below the horizon. Temp p10/median/p90 −35.5/−18.8/+12.9 °C, floor −42.0 °C,
+max +24.0 °C — and the spread is not noise, it is the map of digestion (§3).
 **54 water tiles (the Twilight Sea shore, newly folded into the def), zero rivers.**
-Regions: Nightspill 475, Frostcaps 254, Sporefields 243, South Crags 159, Blindwood 142,
-Stillwood 139, +14 more (full list in the truth-source JSON).
+Regions: Nightspill 475, Frostcaps 254, Sporefields 243, Sootreach 159 (the V24
+consolidation's name for South Crags), Hanging Wood 127, Mould Marches 123, Stillwood 119,
+Blindwood 116, +12 more.
+
+⭐ **Amendment (owner ruling at the 2026-09-08 worldmap sitting): the cold tail is
+repainted.** The def's 90 tiles below propane's −42 °C dew point (arc 130–142, deep in
+Ashwood/Blindwood/Stillwood/Capwood, seven adjacency clusters) moved to `RUT_NightsideIce` —
+each cluster's plurality neighbor. Painted temps and the sheet now agree: nothing of the
+Rot lives below −42 °C, where its water chemistry would be stone and the propane regime
+begins. Verified: whole-planet diff showed exactly 90 tiles changed, zero collateral;
+saved as `WORLDMAP_V25_rot_cold_tail_2026-09-09`.
 
 Donor inventory taken in: the twelve-species fungal flora suite (Bryolux carpet,
 Glowstools, the Agarilux family), the two spore-allergy diseases and a disease

@@ -28,8 +28,10 @@ MEASURED off `world/ASHKARR_WORLDMAP_tiles.csv`: **2,531 tiles**, arc 132→179
 **−73.0 / −62.2 / −47.8 °C**, every tile's annual mean below propane's −42 °C dew point;
 the coldest land on the planet (−81.7 °C; only the lake's own tiles, at −82.0 °C, are
 colder). Elevation median 670 m. Regions: **Deadstone (861), Umbra (773), Ammonia Flats
-(692)**, Venom Wood 69, Lantern Deeps 57, South Crags 34, Thornend 23, Quiet Ground 13,
-Cinderdark 9. Zero worldmap water tiles — **the lake gets its own tiles** under
+(692)**, Fuelmere 69, Lantern Deeps 57, Sootreach 34, Frostvein 23, Quiet Ground 13,
+Cinderdark 9. *(Amendment, owner's yes 2026-09-08: the V24 name consolidation renamed
+Venom Wood→Fuelmere, South Crags→Sootreach, Thornend→Frostvein — counts identical,
+MEASURED live on V24; pure rename, no structural change.)* Zero worldmap water tiles — **the lake gets its own tiles** under
 `LIQUID_BIOMES_MAP_1` (four liquid biomes, owner 2026-09-06; `RUT_PropaneLake` holds **57
 tiles**, all water=1, arc 170→179, temp median −79.0 °C, regions Umbra 29/Ammonia Flats
 28). Anti-bullseye: the cap is a disc (physics — the coldest point pools: every tile past
@@ -236,8 +238,9 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
   `AB_PropaneLake`/`AB_SolidPropane` terrain — see
   `design/Jawa/worldbuilding/LIQUID_BIOMES_MAP_1_RECONCILIATION.md` §4 for the finding
   that `AB_PropaneLakes` is a land biome whose lake is a local-map terrain patch, not a
-  worldmap water tile). **Still owed**: the render, the owner's ruling on the lake's
-  exact tile subset, and the paint — nobody has painted `RUT_PropaneLake` onto anything.
+  worldmap water tile). ✅ **Paint DONE** *(amendment, owner's yes 2026-09-08)*: 57
+  `RUT_PropaneLake` tiles live on V24, all engine-water, arc 170–179, bordering only the
+  cap — MEASURED. Nothing further owed here.
 - `TERRAMANUFACTURE_CANON_1` — propagate the ancient history into the world definition
   and the faction/canon docs (the dynamo, the Cathedral as remnant, mutual learning).
 - `MECHANOID_BIOME_PRESENCE_REVIEW_1` — the allowed map; this biome and the Cathedral by
