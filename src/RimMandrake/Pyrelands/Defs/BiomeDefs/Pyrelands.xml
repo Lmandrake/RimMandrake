@@ -48,9 +48,25 @@
         <!-- Score = baseScore + (temp - temperature.min) * degreeWeight
                             + (rain - rainfall.min) / rainfallDivisor.
              Calibrated against BiomeWorker_AridShrubland
-             (22.5 + (T-20)*2.2 + (R-600)/100): at T=30/R=700 this scores
-             46.9 vs its 45.5, and at T=24 it loses to it. Raise baseScore
-             to make the biome commoner, lower it to make it rarer. -->
+             (22.5 + (T-20)*2.2 + (R-600)/100).
+             ⚠️ CODE REVIEW CORRECTION, 2026-09-09: an earlier version of
+             this note claimed "at T=30/R=700 this scores 46.9 vs its
+             45.5" and "the crossover sits near 25 degC" — both false
+             for the constants actually shipped below. Recomputed:
+             Score(T=30,R=700) = 30 + (30-25)*2.6 + (700-550)/120 = 44.25,
+             which LOSES to AridShrubland's 45.5 at that point. Solving
+             the two formulas against each other across this band's full
+             rainfall range (550-1000mm) puts the true crossover at
+             T≈32.5 degC (R=550) to T≈34.4 degC (R=1000) — every tile
+             from the 25 degC floor up to ~33 degC stays AridShrubland's
+             regardless of rainfall, a materially narrower niche than
+             documented. baseScore≈32.65 would reproduce the originally
+             -intended 46.9-at-T=30/R=700 figure and a ~25-26 degC
+             crossover, but that is a tuning call left for the item's own
+             owed worldgen-tile-count quicktest, not changed here.
+             Raise baseScore to make the biome commoner, lower it to make
+             it rarer — re-verify this arithmetic after any change, it
+             does not move intuitively. -->
         <baseScore>30</baseScore>
         <degreeWeight>2.6</degreeWeight>
         <rainfallDivisor>120</rainfallDivisor>

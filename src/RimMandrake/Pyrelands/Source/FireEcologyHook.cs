@@ -239,10 +239,14 @@ namespace RimMandrake.StarWars.FireEcology
     // TRIGGERED BY: <workerClass> on the RM_FE_Pyrelands BiomeDef.
     //
     // Scored against vanilla's own BiomeWorker_AridShrubland, which owns
-    // this rainfall corridor today (22.5 + (T-20)*2.2 + (R-600)/100). With
-    // the shipped numbers the crossover sits near 25 degC: cooler tiles
-    // stay arid shrubland, hotter ones become pyrelands, and outside
-    // 550-1000mm rainfall this worker returns 0 and never competes at all.
+    // this rainfall corridor today (22.5 + (T-20)*2.2 + (R-600)/100).
+    // ⚠️ CODE REVIEW CORRECTION, 2026-09-09: with the shipped numbers
+    // (baseScore=30) the crossover is NOT near 25 degC — it works out to
+    // T≈32.5-34.4 degC across this band's 550-1000mm rainfall span (see
+    // the worked-through arithmetic in Pyrelands.xml's modExtension
+    // comment). Tiles between the 25 degC floor and ~33 degC stay arid
+    // shrubland regardless of rainfall; outside 550-1000mm rainfall this
+    // worker returns 0 and never competes at all.
     public class BiomeWorker_Pyrelands : BiomeWorker
     {
         private static readonly PyrelandsBiomeRanges FallbackRanges = new PyrelandsBiomeRanges();
