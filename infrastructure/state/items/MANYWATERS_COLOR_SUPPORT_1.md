@@ -174,19 +174,53 @@ was locatable on disk (workshop or local Mods) to inspect their defs before
 the time budget on this sub-check ran out. Neither name suggests a
 water-colour reader; flagged UNCONFIRMED rather than asserted clean.
 
-**Live step OWED — bridge was held, not free.** `rimflow bridge who` at
-2026-09-09T19:2x showed it held by another FOUNDRY window (idle ~2 min, well
-under the 45-min staleness bar) for `WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1`
-— per this item's own instructions, did not wait or force-take it. Still
-owed, exactly as scoped in the original ask:
+**Live step OWED — two separate blockers found, in sequence.**
+
+1. `rimflow bridge who` first showed it held by another FOUNDRY window (idle
+   ~2 min, well under the 45-min staleness bar) for
+   `WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1` — per this item's own
+   instructions, did not wait or force-take it.
+2. It freed up shortly after and was taken (`bridge take --for
+   "MANYWATERS_COLOR_SUPPORT_1 v1 quicktest"`). Running
+   `deploy_custom_mods.py --mod ManyWaters` (plan only) then surfaced a
+   bigger blocker: **`mandrake.rm.manywaters` is not in the currently active
+   `ModsConfig.xml` at all** — confirmed by grepping the live file for every
+   `mandrake.rm.*` entry; ManyWaters (and its `RM_DeepSand` content from
+   SAND_SWIMMERS_MOD_1, already merged) has apparently never been switched
+   on in the campaign's mod list. Testing this item therefore needs a
+   **mod-list change plus a full cold-load restart** (~15-25 min on the
+   ~580-mod full list) — a quicktest map cannot fake a mod-list change
+   (`rimworld-debug-testing` skill, §6). The game is currently UP and running
+   the full list.
+   ⚠️ **Did not restart.** The bridge-who probe a minute earlier showed
+   ANOTHER FOUNDRY window actively mid-investigation on
+   `WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1`, which — unlike a bridge *drive*
+   lock — the "bridge free" state does not capture: that window may still be
+   relying on the currently-running game/world for its own live checks.
+   Restarting the whole game process out from under a concurrent
+   investigation is a materially bigger disruption than taking the drive
+   lock, and the owner was not present to arbitrate a collision between two
+   live needs. Released the bridge again rather than take that risk
+   unilaterally.
+
+Still owed, exactly as scoped in the original ask, PLUS the newly-found
+mod-activation step:
+0. Snapshot the current `ModsConfig.xml` to `infrastructure/state/modlists/`,
+   add `mandrake.rm.manywaters` to `<activeMods>` (its only real dependency
+   is `Ludeon.RimWorld`; `sarg.alphabiomes` and
+   `Dubwise.DubsBadHygiene.Lite`/`.Thirst` are already active, well before
+   the existing `mandrake.rm.*` cluster near the end of the list, so plain
+   insertion into that cluster satisfies `loadAfter`), then restart the game
+   — check `rimflow bridge who` AND that no other window's item plausibly
+   needs the currently-running game before pulling it down.
 1. `rimflow bridge take --for "MANYWATERS_COLOR_SUPPORT_1 v1 quicktest"`
-   once free.
+   once free (retake after the restart).
 2. Deploy ManyWaters (`deploy_custom_mods.py --mod ManyWaters --apply`) —
    these defs have never been deployed or loaded in a running game.
-3. Quicktest map, paint Row A (WaterShallow control + 5 `RM_Water_<Colour>`)
-   and Row B (AB_LiquidSlime control + 5 `RM_Slime_<Colour>`), 4x4 patches,
+3. Quicktest map, paint Row A (WaterShallow control + 5 RM_Water_Colour)
+   and Row B (AB_LiquidSlime control + 5 RM_Slime_Colour), 4x4 patches,
    ~6-cell pitch, per the design's §3 recipe.
-4. **First thing painted**: one `RM_Water_<Colour>` cell — confirm whether
+4. **First thing painted**: one RM_Water_Colour cell — confirm whether
    the tint survives the `Map/WaterDepth` overlay (the design's one
    UNVERIFIED mechanism). If it washes out, recolour a copy of
    `WaterShallowRamp.png` per colour as the fallback (still XML-only) rather
