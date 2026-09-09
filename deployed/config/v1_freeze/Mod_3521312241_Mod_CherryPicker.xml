@@ -1460,6 +1460,20 @@
 			<li>ResearchProjectDef/guy762_ResearchKotOR_uncraftable</li>
 			<li>ResearchProjectDef/guy762_ResearchKotOR_vao</li>
 			<li>ResearchProjectDef/guy762_ResearchKotOR_visas</li>
+			<!-- BLIZZARISK_DONOR_CUT_1, ratified 2026-09-08: owner ruling - Blizzarisk is a
+			     donor creature (Alpha Animals), not campaign canon. Cuts both forms (the
+			     Blizzarisk and its clutch-mother variant), the incident that force-spawns
+			     the clutch mother onto the map, and their two unique fertilized eggs.
+			     Shared products (Meat_Megaspider, Leather_Chitin, Hyperweave) are NOT cut -
+			     other live creatures produce them. AA_FeraliskEggUnfertilized is NOT cut -
+			     shared with Feralisk. Corpse_ ThingDefs and animal PawnKindDefs are NOT cut,
+			     matching this file's existing convention (0 of either cut anywhere else) -
+			     cutting the race ThingDef is what removes the creature. -->
+			<li>ThingDef/AA_Blizzarisk</li>
+			<li>ThingDef/AA_BlizzariskClutchMother</li>
+			<li>ThingDef/AA_BlizzariskEggFertilized</li>
+			<li>ThingDef/AA_BlizzariskSuperEggFertilized</li>
+			<li>IncidentDef/AA_IncidentBlizzariskClutchMother</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>
