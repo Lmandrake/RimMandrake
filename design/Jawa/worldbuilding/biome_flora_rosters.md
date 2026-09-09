@@ -1,3 +1,9 @@
+<!-- status: SUPERSEDED-PENDING-REGEN 2026-09-09 — the owner ruled (BIOME_FAUNA_ASSIGNMENT_SITTING_1)
+     that Earth-nameable flora is purged planet-wide and every roster is re-derived from the biome
+     sheets' laws (design/Jawa/worldbuilding/biomes/*.md). The FAMILIES dict in biome_flora.py is
+     being rewritten to sheet law; this doc regenerates from it. Until that regen lands, do not
+     source flora placement from the tables below (the Desert's saguaro/agave rows are exactly
+     what was condemned — DESERT_PLANTS_SCRAGGLY_1 and the desert sheet both reject them). -->
 # Ash'karr's flora — what grows where, and why
 
 > 🔴 **GENERATED** by `design/Jawa/mods/biome_flora.py --doc`. The rosters live in that
