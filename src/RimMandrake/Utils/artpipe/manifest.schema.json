@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "artpipe worker manifest",
+  "description": "Passed to `codex exec --output-schema` (or the equivalent --output-schema flag on codex_image.py's generate/edit). The worker's FINAL message must match this exactly, no prose around it. The daemon treats this as one input among several — see AGENTS.md's 'Failure is reported, never disguised' and artpiped.py's own re-validation with validate_sprite.py, which is authoritative over this self-report.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "status", "note"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Echoed verbatim from the job's own id — never invented."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ok", "fail", "refused"]
+    },
+    "out": {
+      "type": ["string", "null"],
+      "description": "Absolute path to the finished PNG, or null. A missing `out` with status \"ok\" is the worst outcome available to a worker — verify the file exists before writing \"ok\"."
+    },
+    "width": {"type": "integer", "minimum": 0},
+    "height": {"type": "integer", "minimum": 0},
+    "has_alpha": {"type": "boolean"},
+    "corners_transparent": {"type": "boolean"},
+    "background_used": {
+      "type": "string",
+      "description": "\"transparent\" or the hex key actually rendered, e.g. \"#10e010\"."
+    },
+    "attempts": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3,
+      "description": "1 unless a mechanical validate_sprite.py reject forced a regenerate (up to 3 total) or a tool error/refusal forced one retry."
+    },
+    "note": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "What changed from the prompt, or why it failed. A refusal's own words, never paraphrased."
+    }
+  }
+}
