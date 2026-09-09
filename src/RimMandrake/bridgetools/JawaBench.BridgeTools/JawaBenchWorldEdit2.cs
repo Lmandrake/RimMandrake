@@ -228,7 +228,9 @@ namespace JawaBench.BridgeTools
                 string m = (mode ?? "setPct").Trim();
                 if (string.Equals(m, "setPct", StringComparison.OrdinalIgnoreCase))
                 {
-                    comp.SetStoredEnergyPct(value);
+                    // Clamp 0-1 (2026-09-09 hardening): sibling modes add/draw clamp their
+                    // input, setPct did not, so an out-of-range pct passed through unguarded.
+                    comp.SetStoredEnergyPct(value < 0f ? 0f : (value > 1f ? 1f : value));
                 }
                 else if (string.Equals(m, "add", StringComparison.OrdinalIgnoreCase))
                 {
