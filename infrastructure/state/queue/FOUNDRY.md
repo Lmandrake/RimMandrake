@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T22:02:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T22:31:09Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -683,6 +683,15 @@ target:   v1
 kind:     task
 summary:  Retire these 13 mods, per STATNORMALIZATIONAUDIT1's Wave 1 (measured
 prose:    infrastructure/state/items/STAT_NORM_WAVE1_RETIRE_1.md
+
+## MODLIST_RESTORE_AND_BATCH_DEPLOY_1 Restore the abandoned full campaign modlist, apply Wave 1 retirement, enable tonight's new own-built mods, redeploy updated DLLs, one clean restart
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  (no items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
