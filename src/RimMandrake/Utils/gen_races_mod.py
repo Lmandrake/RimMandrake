@@ -123,6 +123,14 @@ JAWA_GENES = {
 # dropped from the copy. Cosmetic in both cases.
 DROP_EXT_CLASSES = {"EyeOffsetSouth.ModExtension_EyeOffsetSouth"}
 
+# modExtension classes whose assembly is a SOFT dependency (declared in
+# SOFT_AFTER, never installed) rather than dropped outright. A <li Class=...>
+# with no MayRequire on it cannot resolve when that mod is inactive, and per
+# this repo's own lesson an unresolved modExtension Class discards the WHOLE
+# containing def, not just the node -- so guard the <li> with MayRequire
+# instead of stripping it (STARWARSRACES_TOOLBOX_SOFT_DEP_1, 2026-09-08).
+MAYREQUIRE_EXT_CLASSES = {"TabulaRasa.DefModExt_HeadTypeStuff": "neronix17.toolbox"}
+
 DEPENDENCIES = [
     ("Ludeon.RimWorld.Biotech", "Biotech", ""),
     ("OskarPotocki.VanillaFactionsExpanded.Core", "Vanilla Expanded Framework",
@@ -640,6 +648,8 @@ def rewrite(el, defmap, absmap, texidx, home, texhits,
             cls = child.get("Class")
             if cls in DROP_EXT_CLASSES:
                 parent.remove(child)
+            elif cls in MAYREQUIRE_EXT_CLASSES and not child.get("MayRequire"):
+                child.set("MayRequire", MAYREQUIRE_EXT_CLASSES[cls])
     raw = rawtext_ids(el)
     # Rule_File word lists. Claimed here, before the texture pass, because
     # `path` is also a texture field name and the two must not be confused.
