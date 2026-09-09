@@ -129,7 +129,7 @@ namespace RimMandrake.StarWars.JawaIonWeapons
     /// empAmountDroid ITSELF IS READ BY REFLECTION, not hardcoded here and not a
     /// hard reference to RimMandrake.StarWars.JawaIonWeapons.dll's own IonDamageDef type - this
     /// assembly targets net48 (Vehicles.dll/SmashTools.dll are net48; the main
-    /// RimMandrake.StarWars.JawaIonWeapons.csproj stays net472, matching RimMandrake.DesertVehicleReskin's own
+    /// RimMandrake.StarWars.JawaIonWeapons.csproj stays net472, matching RimMandrake.StarWars.DesertVehicleReskin's own
     /// reason for splitting a Harmony/Vehicles-dependent patch into its own
     /// sub-project) and reflection keeps the two build outputs load-order
     /// independent - this one does not need RimMandrake.StarWars.JawaIonWeapons.dll to have built

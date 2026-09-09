@@ -26,7 +26,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/Vehicles.VehicleDef[defName="AV_Chariot"]/modExtensions</xpath>
       <value>
-        <li Class="RimMandrake.DesertVehicleReskin.RM_DraughtFuelExtension" />
+        <li Class="RimMandrake.StarWars.DesertVehicleReskin.RM_DraughtFuelExtension" />
       </value>
     </match>
   </Operation>
@@ -36,7 +36,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/Vehicles.VehicleDef[defName="AV_WarChariot"]/modExtensions</xpath>
       <value>
-        <li Class="RimMandrake.DesertVehicleReskin.RM_DraughtFuelExtension" />
+        <li Class="RimMandrake.StarWars.DesertVehicleReskin.RM_DraughtFuelExtension" />
       </value>
     </match>
   </Operation>
@@ -46,7 +46,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/Vehicles.VehicleDef[defName="AV_OxCart"]/modExtensions</xpath>
       <value>
-        <li Class="RimMandrake.DesertVehicleReskin.RM_DraughtFuelExtension" />
+        <li Class="RimMandrake.StarWars.DesertVehicleReskin.RM_DraughtFuelExtension" />
       </value>
     </match>
   </Operation>
@@ -56,7 +56,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/Vehicles.VehicleDef[defName="AV_CoveredCarriage"]/modExtensions</xpath>
       <value>
-        <li Class="RimMandrake.DesertVehicleReskin.RM_DraughtFuelExtension" />
+        <li Class="RimMandrake.StarWars.DesertVehicleReskin.RM_DraughtFuelExtension" />
       </value>
     </match>
   </Operation>
@@ -66,7 +66,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/modExtensions</xpath>
       <value>
-        <li Class="RimMandrake.DesertVehicleReskin.RM_DraughtFuelExtension" />
+        <li Class="RimMandrake.StarWars.DesertVehicleReskin.RM_DraughtFuelExtension" />
       </value>
     </match>
   </Operation>

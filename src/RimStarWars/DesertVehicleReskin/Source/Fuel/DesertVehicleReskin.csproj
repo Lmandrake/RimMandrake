@@ -37,7 +37,7 @@
     <TargetFramework>net48</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AssemblyName>DesertVehicleReskin</AssemblyName>
-    <RootNamespace>DesertVehicleReskin</RootNamespace>
+    <RootNamespace>RimMandrake.StarWars.DesertVehicleReskin</RootNamespace>
     <Version>1.0.0</Version>
 
     <OutputPath>..\..\VehicleFuel\Assemblies\</OutputPath>
