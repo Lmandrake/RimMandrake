@@ -131,6 +131,30 @@ def race_to_kinds():
     return None, None
 
 
+def live_races():
+    """{ThingDef defName} the RUNNING game has, from the newest capture.
+
+    🔴 WHY THIS FILTER EXISTS. The disk walk reads every INSTALLED mod, active or not -
+    Animals Expanded is on disk here and not in the mod list, and its 127 races produced
+    127 removals for defs no load will ever see. Harmless at runtime (a conditional
+    whose xpath finds nothing is a no-op) but validate_patch.py counts each one as an
+    error against the live dump, and 254 errors is a wall that hides a real one.
+
+    Returns None if no capture carries ThingDef.json; the caller then keeps every pair
+    rather than silently emitting an empty patch.
+    """
+    from dumppath import captures_newest_first
+    for cap in captures_newest_first():
+        f = os.path.join(cap, "defs", "ThingDef.json")
+        if not os.path.isfile(f):
+            continue
+        with open(f, encoding="utf-8") as fh:
+            td = json.load(fh)
+        td = td if isinstance(td, list) else td.get("defs") or []
+        return {t["defName"] for t in td if isinstance(t, dict)}
+    return None
+
+
 def animal_side(cache=None):
     if cache and os.path.isfile(cache):
         with open(cache, encoding="utf-8") as fh:
@@ -212,7 +236,12 @@ def main(argv=None):
     shipped = already_removed()
     aside = animal_side(a.cache)
 
-    rows, kept, dup = [], 0, 0
+    live = live_races()
+    if live is None:
+        print("⚠️ UNMEASURED: no capture carries ThingDef.json, so installed-but-inactive "
+              "mods cannot be filtered out. Every pair is emitted.")
+
+    rows, kept, dup, dead = [], 0, 0, 0
     for b in sorted(painted):
         for race in sorted(aside.get(b, ())):
             mine = roster.get(b, set())
@@ -222,13 +251,16 @@ def main(argv=None):
             if (race, b) in shipped:
                 dup += 1
                 continue
+            if live is not None and race not in live:
+                dead += 1                       # installed on disk, not in the mod list
+                continue
             rows.append((race, b))
 
     print("capture: %s · %d painted def(s) · %d roster admission(s)"
           % (cap, len(painted), sum(len(v) for v in roster.values())))
     print("%d eviction pair(s) across %d biome(s); %d rostered pair(s) left to the de-dup "
-          "union; %d already shipped there"
-          % (len(rows), len({b for _r, b in rows}), kept, dup))
+          "union; %d already shipped there; %d skipped as not in the live mod set"
+          % (len(rows), len({b for _r, b in rows}), kept, dup, dead))
     per = collections.Counter(b for _r, b in rows)
     for b in sorted(per, key=lambda x: -per[x]):
         print("   %-32s %4d" % (b, per[b]))
@@ -237,8 +269,10 @@ def main(argv=None):
         ops = [OP % {"n": i + 1, "race": r, "biome": b} for i, (r, b) in enumerate(rows)]
         prov = ("  Generated from capture %s plus the installed-mod XML walk.\n"
                 "  %d operation(s) over %d painted biome def(s).\n"
-                "  %d rostered pair(s) deliberately NOT here (de-dup union owns those).\n"
-                % (cap, len(rows), len(per), kept))
+                "  %d rostered pair(s) deliberately NOT here (de-dup union owns those);\n"
+                "  %d pair(s) skipped because the race is installed on disk but not in the\n"
+                "  live mod set - a removal for a def no load sees is dead weight.\n"
+                % (cap, len(rows), len(per), kept, dead))
         with open(a.xml, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(HEADER % {"prov": prov, "ops": "".join(ops)})
         print("\nwrote %d operation(s) -> %s" % (len(ops), a.xml))
