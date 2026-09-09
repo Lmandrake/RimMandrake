@@ -6456,3 +6456,8 @@
 {"seat":"FOUNDRY","event":"close","id":"WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1","sha":"ec8e467028c371a92421dc60f1bab0eb3c09437c","ts":"2026-09-09T19:26:30Z"}
 {"seat":"FOUNDRY","event":"close","id":"PYRELANDS_LORE_NAMING_DRIFT_1","sha":"b2ebdfdb9618cffa2cd266d4a4970185dcd33b1b","ts":"2026-09-09T19:27:19Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-09T19:27:53Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BRIDGETOOLS_DLL_GM_DRIFT_1","ts":"2026-09-09T19:28:15Z"}
+{"seat":"FOUNDRY","event":"start","id":"BRIDGETOOLS_DLL_GM_DRIFT_1","ts":"2026-09-09T19:28:16Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BIOME_ENRICHMENT_DESERT_WASTELAND_1","ts":"2026-09-09T19:29:57Z"}
+{"seat":"FOUNDRY","event":"start","id":"BIOME_ENRICHMENT_DESERT_WASTELAND_1","ts":"2026-09-09T19:29:57Z"}
+{"seat":"FOUNDRY","event":"note","id":"BRIDGETOOLS_DLL_GM_DRIFT_1","text":"Rebuilt companion locally with --gm (plan-only, no --apply — game is UP). selftest_tool_metadata PASSES against the built (undeployed) DLL: 317/317 tools incl. GM pair. Deployed game copy already has all 317 too (someone rebuilt+deployed earlier today, commit 5ed3e2a1, 3 commits stale vs current HEAD — name-set identical, not a regression). Still owed: deploy --apply + game restart on next game-down window, then live spot-check. See items/BRIDGETOOLS_DLL_GM_DRIFT_1.md.","ts":"2026-09-09T19:30:44Z"}

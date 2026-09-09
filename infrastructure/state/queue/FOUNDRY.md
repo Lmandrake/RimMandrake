@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T19:27:53Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T19:30:44Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -567,6 +567,15 @@ kind:     bug
 summary:  Found 2026-09-08, FOUNDRY code-review loop (subagent review of glemit.py,
 prose:    infrastructure/state/items/GL_EMIT_FLOATRANGE_GENERIC_DROP_1.md
 
+## BRIDGETOOLS_DLL_GM_DRIFT_1 JawaBench DLL is 41 tools behind source (built without GM pair); selftest_tool_metadata FAILs until companion rebuild+redeploy on a game-down window
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  BRIDGETOOLSDLLGMDRIFT1
+prose:    infrastructure/state/items/BRIDGETOOLS_DLL_GM_DRIFT_1.md
+
 ## ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1 AshkarrFlora RUT_SweetlineTree texture folder is empty; 11 candidate PNGs sit unmoved in _artsrc — wire or cut (walk-authoring find)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -620,6 +629,15 @@ target:   v1
 kind:     task
 summary:  - Location: 32.12N 94.76E → tile 2403 (MEASURED off the canon CSV: lat 32.1169,
 prose:    infrastructure/state/items/GAPING_DOOM_SITE_1.md
+
+## BIOME_ENRICHMENT_DESERT_WASTELAND_1 Enrichment wave (review B1): Desert (53% zero-mutator) + Wasteland (63%) — the two largest land biomes read thin where caravans travel most; place from their sheets' shade-line and plant-vault kits; dune sea stays barren by rule
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  (no items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
 
 ## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
 state:    doing
@@ -864,16 +882,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  ⛔ THE OBVIOUS APPROACH IS A NO-OP — read this before planning anything
 prose:    infrastructure/state/items/SCALD_RIVER_REPAINT_1.md
 
-## BRIDGETOOLS_DLL_GM_DRIFT_1 JawaBench DLL is 41 tools behind source (built without GM pair); selftest_tool_metadata FAILs until companion rebuild+redeploy on a game-down window
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BRIDGETOOLS_DLL_GM_DRIFT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BRIDGETOOLS_DLL_GM_DRIFT_1.md
-
 ## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
 state:    proposed
 row:      unassigned
@@ -883,16 +891,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
-
-## BIOME_ENRICHMENT_DESERT_WASTELAND_1 Enrichment wave (review B1): Desert (53% zero-mutator) + Wasteland (63%) — the two largest land biomes read thin where caravans travel most; place from their sheets' shade-line and plant-vault kits; dune sea stays barren by rule
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
 
 ## BIOME_ENRICHMENT_POISON_FOREST_1 Enrichment wave (review B1): Poison Forest is mutator-barren (74% zero-tile MEASURED) — place from its sheet's own kit: vent fields, metal-plated groves, condensation lines; verify by density + whole-planet loss diff
 state:    proposed
