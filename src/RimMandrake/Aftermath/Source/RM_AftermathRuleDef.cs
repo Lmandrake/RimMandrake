@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
-using RimMandrake.Ninefold;
 
 namespace RimMandrake.Aftermath
 {
@@ -28,7 +27,18 @@ namespace RimMandrake.Aftermath
         public AftermathPayloadFactionMode payloadFactionMode = AftermathPayloadFactionMode.SameAsTrigger;
 
         // --- God tie -------------------------------------------------------------
-        public God? godTie;
+        // CHRONICLE_NINEFOLD_DECOUPLE_1: a plain string, NOT Ninefold's God
+        // enum. This engine has no compile-time knowledge of Ninefold (or of
+        // any other consumer), so the god name travels as data on the
+        // "chronicle.rule.queued" spine event and Ninefold's own subscriber
+        // resolves it to God + calls ApplyDelta. An unresolvable name is
+        // therefore Ninefold's warning to log, not a ConfigError here -- this
+        // def cannot know which names are valid.
+        //
+        // The XML representation is UNCHANGED: <godTie>Shkaar</godTie> parsed
+        // as an enum before and parses as a string now, so the eight rule
+        // defs in mandrake.rut.aftermath needed no edit.
+        public string godTie;
         public float godDelta;
 
         // --- Baseline letter (fires when the PAYLOAD incident itself lands,

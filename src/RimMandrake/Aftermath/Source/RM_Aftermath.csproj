@@ -3,10 +3,15 @@
   <!--
     PLOT_MECHANISM_MODS_WAVE_1 (Aftermath half): the battle recorder
     (MapComponent_BattleRecorder) and the RM_AftermathRuleDef rule runner.
-    Harmony via brrainz.harmony at runtime (never bundled), plus a
-    compile-time reference to mandrake.rm.ninefold's own assembly
-    (GameComponent_Ninefold.ApplyDelta / God enum) - same recipe as
-    RimMandrake.RaidRedesigner referencing RimMandrakeProperty.dll.
+    Harmony via brrainz.harmony at runtime (never bundled).
+
+    🔴 NO reference to any other mandrake.* engine, deliberately
+    (CHRONICLE_NINEFOLD_DECOUPLE_1, soft-hook law 2 in
+    design/CHRONICLE_EVENT_SPINE.md). This mod is the event SPINE: it
+    publishes on ChronicleEvents and knows no consumer. The
+    RimMandrakeNinefold reference that used to sit here is gone with the
+    direct GameComponent_Ninefold.ApplyDelta calls; Ninefold now subscribes
+    from its own side by reflection. Do not add one back.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
       "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Aftermath\Source\RM_Aftermath.csproj -c Release
@@ -41,11 +46,9 @@
     <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(RimMandrakeNinefoldDll)' == ''">
-    <RimMandrakeNinefoldDll>..\..\Ninefold\Assemblies\RimMandrakeNinefold.dll</RimMandrakeNinefoldDll>
-  </PropertyGroup>
-
   <ItemGroup>
+    <Compile Include="ChronicleEvent.cs" />
+    <Compile Include="ChronicleEvents.cs" />
     <Compile Include="BattleOutcome.cs" />
     <Compile Include="BattleOutcomeClassifier.cs" />
     <Compile Include="BattleRecord.cs" />
@@ -82,10 +85,6 @@
     </Reference>
     <Reference Include="0Harmony">
       <HintPath>$(HarmonyDll)</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="RimMandrakeNinefold">
-      <HintPath>$(RimMandrakeNinefoldDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

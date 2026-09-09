@@ -15,8 +15,7 @@
     does not mention this folder).
 
     Targets net472 (like the real mod) because RM_AftermathRuleDef extends
-    Verse.Def and carries a RimMandrake.Ninefold.God? field - both need real
-    Assembly-CSharp.dll and the Ninefold assembly to resolve, even though
+    Verse.Def, which needs the real Assembly-CSharp.dll to resolve, even though
     nothing called here needs a running game (a Def's own constructor has no
     live-game dependency - same reasoning as Property's SelfTest constructing
     ClaimResolution/ClaimantRef with null Pawn/Faction payloads).
@@ -45,10 +44,6 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(RimMandrakeNinefoldDll)' == ''">
-    <RimMandrakeNinefoldDll>..\..\..\Ninefold\Assemblies\RimMandrakeNinefold.dll</RimMandrakeNinefoldDll>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
   </ItemGroup>
@@ -66,10 +61,6 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
-    <Reference Include="RimMandrakeNinefold">
-      <HintPath>$(RimMandrakeNinefoldDll)</HintPath>
       <Private>true</Private>
     </Reference>
   </ItemGroup>
