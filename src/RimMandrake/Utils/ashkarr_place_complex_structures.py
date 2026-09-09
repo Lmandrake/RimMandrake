@@ -7,7 +7,12 @@ Owner, 2026-09-07: he wanted a marker that "clearly identified 'complex structur
 ... indicating a particularly complicated and dense network on the map (as there are
 in many, many places here)", and chose the >=6 threshold.
 
-THE RULE. A tile qualifies when it carries >= THRESHOLD tile mutators. Nothing else.
+THE RULE. A tile qualifies when it carries >= THRESHOLD tile mutators AND its biome
+is not in BIOME_DENYLIST. Owner ruling 2026-09-08 ("bad idea here", the Fever Wood
+screenshot vs "they look great in the Rust Cathedral"): the wet-green biomes' density
+is BIOLOGICAL — megahives, locust country — and an icon that says "built structures"
+is the wrong word for it there. 59 icons were removed from those biomes at V27;
+the denylist keeps a re-run from putting them back.
 The icon is therefore a READOUT of density that is genuinely present, not decoration
 asserting it. Measured 2026-09-07 over all 21,872 tiles:
 
@@ -72,7 +77,25 @@ def main():
         lm = rb.call("jawa/world_landmarks_get", {"limit": 5000})
         taken = {l["tile"] for l in (lm.get("landmarks") or lm.get("rows") or [])}
 
+        # Owner ruling 2026-09-08: never in the wet-green family — their density is
+        # biological, not structural. See module docstring.
+        BIOME_DENYLIST = {
+            "COMIGO_GreaterSwamp_Tropical",   # the Fever Wood
+            "AB_MiasmicMangrove",             # the Miasma
+            "BiomeCypreJungle",               # the Greentide
+            "AB_OcularForest",                # the Contagion
+            "AB_FeraliskInfestedJungle",      # the Webwork
+            "ZBiome_Grasslands",              # the Pyrelands
+        }
+        te = rb.call("jawa/world_tile_export",
+                     {"path": r"D:\Luke\dev\Rimworld\Transient\cs_place_tiles.csv"})
+        import csv as _csv
+        biome_of = {int(x["tile"]): x["biome"] for x in _csv.DictReader(
+            open(r"D:\Luke\dev\Rimworld\Transient\cs_place_tiles.csv"))}
         dense = sorted(t for t, m in before.items() if len(m) >= a.threshold)
+        denied = [t for t in dense if biome_of.get(t) in BIOME_DENYLIST]
+        dense = [t for t in dense if biome_of.get(t) not in BIOME_DENYLIST]
+        print("  denied by biome (wet-green ruling 2026-09-08): %d" % len(denied))
         plan = [t for t in dense if t not in taken]
 
         print("COMPLEX STRUCTURES — landmark on tiles carrying >= %d mutators" % a.threshold)
