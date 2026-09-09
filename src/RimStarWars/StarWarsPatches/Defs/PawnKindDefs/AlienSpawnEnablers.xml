@@ -79,73 +79,73 @@
 <Defs>
 
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>Jawa_Spawn_Hutt</defName>
+    <defName>RSW_Jawa_Spawn_Hutt</defName>
     <label>hutt</label>
     <xenotypeSet><xenotypeChances><RSW_RimMandrakeHutt>999</RSW_RimMandrakeHutt></xenotypeChances></xenotypeSet>
   </PawnKindDef>
 
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>Jawa_Spawn_Gand</defName>
+    <defName>RSW_Jawa_Spawn_Gand</defName>
     <label>gand</label>
     <xenotypeSet><xenotypeChances><RSW_RimMandrakeGand>999</RSW_RimMandrakeGand></xenotypeChances></xenotypeSet>
   </PawnKindDef>
 
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>Jawa_Spawn_Kubaz</defName>
+    <defName>RSW_Jawa_Spawn_Kubaz</defName>
     <label>kubaz</label>
     <xenotypeSet><xenotypeChances><RSW_RimMandrakeKubaz>999</RSW_RimMandrakeKubaz></xenotypeChances></xenotypeSet>
   </PawnKindDef>
 
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>Jawa_Spawn_Taung</defName>
+    <defName>RSW_Jawa_Spawn_Taung</defName>
     <label>taung</label>
     <xenotypeSet><xenotypeChances><RSW_RimMandrakeTaung>999</RSW_RimMandrakeTaung></xenotypeChances></xenotypeSet>
   </PawnKindDef>
 
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>Jawa_Spawn_Mimbanese</defName>
+    <defName>RSW_Jawa_Spawn_Mimbanese</defName>
     <label>mimbanese</label>
     <xenotypeSet><xenotypeChances><RSW_RimMandrakeMimbanese>999</RSW_RimMandrakeMimbanese></xenotypeChances></xenotypeSet>
   </PawnKindDef>
 
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>Jawa_Spawn_Zygerrian</defName>
+    <defName>RSW_Jawa_Spawn_Zygerrian</defName>
     <label>zygerrian</label>
     <xenotypeSet><xenotypeChances><RSW_RimMandrakeZygerrian>999</RSW_RimMandrakeZygerrian></xenotypeChances></xenotypeSet>
   </PawnKindDef>
 
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>Jawa_Spawn_Lasat</defName>
+    <defName>RSW_Jawa_Spawn_Lasat</defName>
     <label>lasat</label>
     <xenotypeSet><xenotypeChances><RSW_RimMandrakeLasat>999</RSW_RimMandrakeLasat></xenotypeChances></xenotypeSet>
   </PawnKindDef>
 
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>Jawa_Spawn_Muun</defName>
+    <defName>RSW_Jawa_Spawn_Muun</defName>
     <label>muun</label>
     <xenotypeSet><xenotypeChances><RSW_RimMandrakeMuun>999</RSW_RimMandrakeMuun></xenotypeChances></xenotypeSet>
   </PawnKindDef>
 
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>Jawa_Spawn_Ortolan</defName>
+    <defName>RSW_Jawa_Spawn_Ortolan</defName>
     <label>ortolan</label>
     <xenotypeSet><xenotypeChances><RSW_RimMandrakeOrtolan>999</RSW_RimMandrakeOrtolan></xenotypeChances></xenotypeSet>
   </PawnKindDef>
 
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>Jawa_Spawn_Nelvaanian</defName>
+    <defName>RSW_Jawa_Spawn_Nelvaanian</defName>
     <label>nelvaanian</label>
     <xenotypeSet><xenotypeChances><RSW_RimMandrakeNelvaanian>999</RSW_RimMandrakeNelvaanian></xenotypeChances></xenotypeSet>
   </PawnKindDef>
 
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>Jawa_Spawn_SithK</defName>
+    <defName>RSW_Jawa_Spawn_SithK</defName>
     <label>sith (kissai)</label>
     <xenotypeSet><xenotypeChances><RSW_RimMandrakeSithKissaiPureblood>999</RSW_RimMandrakeSithKissaiPureblood></xenotypeChances></xenotypeSet>
   </PawnKindDef>
 
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>Jawa_Spawn_SithM</defName>
+    <defName>RSW_Jawa_Spawn_SithM</defName>
     <label>sith (massassi)</label>
     <xenotypeSet><xenotypeChances><RSW_RimMandrakeSithMassassi>999</RSW_RimMandrakeSithMassassi></xenotypeChances></xenotypeSet>
   </PawnKindDef>
@@ -157,7 +157,7 @@
        remapping, not from anything the debug menu can reach. Art confirmed
        good on screen 2026-08-11. -->
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>Jawa_Spawn_Yoder</defName>
+    <defName>RSW_Jawa_Spawn_Yoder</defName>
     <label>yoder</label>
     <xenotypeSet>
       <xenotypeChances>

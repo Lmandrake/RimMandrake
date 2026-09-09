@@ -2,7 +2,7 @@
 <Defs>
 
   <!--
-    Jawa_BackgroundWater — a biome that NO TILE WILL EVER HAVE.
+    RUT_Jawa_BackgroundWater — a biome that NO TILE WILL EVER HAVE.
 
     It exists for exactly one field read, in exactly one place:
       WorldDrawLayer_Terrain.cs:48
@@ -28,7 +28,7 @@
   -->
 
   <BiomeDef>
-    <defName>Jawa_BackgroundWater</defName>
+    <defName>RUT_Jawa_BackgroundWater</defName>
     <label>mineral water</label>
     <description>Sediment-laden, mineral-saturated and faintly toxic. The water of Ash'karr carries more suspended rock than life.</description>
     <implemented>false</implemented>

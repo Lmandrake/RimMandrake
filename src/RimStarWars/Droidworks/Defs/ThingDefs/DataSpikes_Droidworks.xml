@@ -18,7 +18,7 @@
                   matches hutt/cartel/crime/pyke/slaver/black-sun" - that mercs/
                   raiders def is already the accepted stand-in for Hutt
                   muscle, same convention this file follows).
-       Junker  -> `Jawa_Junkers` (RimUtinni/UtinniPatches/Defs/FactionDefs/
+       Junker  -> `RUT_Jawa_Junkers` (RimUtinni/UtinniPatches/Defs/FactionDefs/
                   JawaJunkers.xml) - our own faction, ruling 2's own text
                   ("Junkers might have one or two atrocious, clumsy droids").
        Wild    -> factionless=true, not a FactionDef at all - keys to
@@ -153,7 +153,7 @@
         <compClass>RimMandrake.StarWars.Droidworks.CompTargetable_DWDataSpike</compClass>
       </li>
       <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWDataSpike">
-        <spikeFaction>Jawa_Junkers</spikeFaction>
+        <spikeFaction>RUT_Jawa_Junkers</spikeFaction>
       </li>
     </comps>
     <recipeMaker>

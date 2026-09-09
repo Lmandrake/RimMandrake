@@ -90,7 +90,7 @@ namespace RimMandrake.Inhabited
         public string settlementName;
 
         /// <summary>The faction defName this settlement belongs to, as free
-        /// text for the same reason (e.g. "Jawa_Junkers"). Informational only
+        /// text for the same reason (e.g. "RUT_Jawa_Junkers"). Informational only
         /// in v1 -- nothing here binds it to a live FactionDef.</summary>
         public string factionDefName;
 

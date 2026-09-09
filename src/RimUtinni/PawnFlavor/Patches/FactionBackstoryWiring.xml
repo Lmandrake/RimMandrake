@@ -9,18 +9,18 @@
            Factions_Empire), Pirate (Pirate, Core Factions_Misc.xml:510 -
            the def is ALSO abstract root Name=PirateBandBase, so this patch
            leaks JawaBSC_Blackstar to the five zeroed pirate siblings -
-           accepted, they never spawn), Jawa_IndigenousTribes (Tribal,
+           accepted, they never spawn), RUT_Jawa_IndigenousTribes (Tribal,
            src/SPLIT_Phase3/Jawa_Patches Defs/FactionDefs).
          Inherit filters from an abstract parent (patches run before
            inheritance, so these defs have NO raw node, and a declared list
            OVERRIDES the parent's - each nomatch therefore restates the
            parent's categories plus ours):
            OutlanderFactionBase supplies Outlander+Offworld to:
-             OutlanderCivil, Jawa_HuttCartel, Jawa_WildsteamClan,
-             Jawa_GeonosianFoundryHive, Jawa_AscendantHelix,
-             Jawa_DeepwaterCompact (round 5, 2026-08-29)
+             OutlanderCivil, RUT_Jawa_HuttCartel, RUT_Jawa_WildsteamClan,
+             RUT_Jawa_GeonosianFoundryHive, RUT_Jawa_AscendantHelix,
+             RUT_Jawa_DeepwaterCompact (round 5, 2026-08-29)
            TribeBase supplies Tribal to: TribeCivil
-           PirateBandBase supplies Pirate to: Jawa_Junkers (whose declared
+           PirateBandBase supplies Pirate to: RUT_Jawa_Junkers (whose declared
              list here also SHEDS the Blackstar leak from the Pirate patch)
        ====================================================================== -->
 
@@ -55,9 +55,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FactionDef[defName="Jawa_IndigenousTribes"]/backstoryFilters</xpath>
+    <xpath>/Defs/FactionDef[defName="RUT_Jawa_IndigenousTribes"]/backstoryFilters</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/FactionDef[defName="Jawa_IndigenousTribes"]/backstoryFilters</xpath>
+      <xpath>/Defs/FactionDef[defName="RUT_Jawa_IndigenousTribes"]/backstoryFilters</xpath>
       <value>
         <li>
           <categories>
@@ -118,9 +118,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FactionDef[defName="Jawa_HuttCartel"]/backstoryFilters</xpath>
+    <xpath>/Defs/FactionDef[defName="RUT_Jawa_HuttCartel"]/backstoryFilters</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/FactionDef[defName="Jawa_HuttCartel"]</xpath>
+      <xpath>/Defs/FactionDef[defName="RUT_Jawa_HuttCartel"]</xpath>
       <value>
         <backstoryFilters>
           <li>
@@ -144,9 +144,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FactionDef[defName="Jawa_WildsteamClan"]/backstoryFilters</xpath>
+    <xpath>/Defs/FactionDef[defName="RUT_Jawa_WildsteamClan"]/backstoryFilters</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/FactionDef[defName="Jawa_WildsteamClan"]</xpath>
+      <xpath>/Defs/FactionDef[defName="RUT_Jawa_WildsteamClan"]</xpath>
       <value>
         <backstoryFilters>
         <li>
@@ -170,9 +170,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FactionDef[defName="Jawa_DeepwaterCompact"]/backstoryFilters</xpath>
+    <xpath>/Defs/FactionDef[defName="RUT_Jawa_DeepwaterCompact"]/backstoryFilters</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/FactionDef[defName="Jawa_DeepwaterCompact"]</xpath>
+      <xpath>/Defs/FactionDef[defName="RUT_Jawa_DeepwaterCompact"]</xpath>
       <value>
         <backstoryFilters>
         <li>
@@ -196,9 +196,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FactionDef[defName="Jawa_GeonosianFoundryHive"]/backstoryFilters</xpath>
+    <xpath>/Defs/FactionDef[defName="RUT_Jawa_GeonosianFoundryHive"]/backstoryFilters</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/FactionDef[defName="Jawa_GeonosianFoundryHive"]</xpath>
+      <xpath>/Defs/FactionDef[defName="RUT_Jawa_GeonosianFoundryHive"]</xpath>
       <value>
         <backstoryFilters>
         <li>
@@ -222,9 +222,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FactionDef[defName="Jawa_AscendantHelix"]/backstoryFilters</xpath>
+    <xpath>/Defs/FactionDef[defName="RUT_Jawa_AscendantHelix"]/backstoryFilters</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/FactionDef[defName="Jawa_AscendantHelix"]</xpath>
+      <xpath>/Defs/FactionDef[defName="RUT_Jawa_AscendantHelix"]</xpath>
       <value>
         <backstoryFilters>
         <li>
@@ -248,9 +248,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FactionDef[defName="Jawa_Junkers"]/backstoryFilters</xpath>
+    <xpath>/Defs/FactionDef[defName="RUT_Jawa_Junkers"]/backstoryFilters</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/FactionDef[defName="Jawa_Junkers"]</xpath>
+      <xpath>/Defs/FactionDef[defName="RUT_Jawa_Junkers"]</xpath>
       <value>
         <backstoryFilters>
           <li>
@@ -268,12 +268,12 @@
     </nomatch>
   </Operation>
 
-  <!-- BUGFIX (this review pass): Jawa_FreeDroidEnclaves sets humanlikeFaction=true
+  <!-- BUGFIX (this review pass): RUT_Jawa_FreeDroidEnclaves sets humanlikeFaction=true
        (JawaFreeDroidEnclaves.xml, load-bearing per its own comment) but was never
        wired here, and FactionDef.ConfigErrors() flags any humanlikeFaction faction
-       whose OWN backstoryFilters is empty - "Jawa_FreeDroidEnclaves is humanlikeFaction
+       whose OWN backstoryFilters is empty - "RUT_Jawa_FreeDroidEnclaves is humanlikeFaction
        but has no backstory categories" - regardless of the backstoryFilters already
-       declared on its four PawnKindDefs (Jawa_Droid_Grunt/Heavy/Specialist/Leader in
+       declared on its four PawnKindDefs (RUT_Jawa_Droid_Grunt/Heavy/Specialist/Leader in
        JawaFactionRoster.xml). Restating vanilla Outlander/Offworld here (the pattern
        used for every other OutlanderFactionBase child below) would be lore-wrong for
        a 0%-biological faction, so this wires the faction's OWN two droid categories
@@ -281,9 +281,9 @@
        redundant-but-harmless alongside the per-kind filters PawnBioAndNameGenerator
        already merges in. -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FactionDef[defName="Jawa_FreeDroidEnclaves"]/backstoryFilters</xpath>
+    <xpath>/Defs/FactionDef[defName="RUT_Jawa_FreeDroidEnclaves"]/backstoryFilters</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/FactionDef[defName="Jawa_FreeDroidEnclaves"]</xpath>
+      <xpath>/Defs/FactionDef[defName="RUT_Jawa_FreeDroidEnclaves"]</xpath>
       <value>
         <backstoryFilters>
           <li>

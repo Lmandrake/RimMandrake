@@ -18,7 +18,7 @@
 
   <!-- ===== Sandstorm: signature desert hazard. Accuracy 0.25, high wind, long duration. ===== -->
   <WeatherDef>
-    <defName>SW_Sandstorm</defName>
+    <defName>RSW_SW_Sandstorm</defName>
     <label>sandstorm</label>
     <description>A punishing wall of wind-driven sand. Ranged accuracy is gutted and the air itself seems to claw at anything caught in the open.</description>
     <temperatureRange>
@@ -74,7 +74,7 @@
 
   <!-- ===== Dry sandstorm: as above, but throws lightning (fire risk, no rain to douse it). ===== -->
   <WeatherDef>
-    <defName>SW_DrySandstorm</defName>
+    <defName>RSW_SW_DrySandstorm</defName>
     <label>dry sandstorm</label>
     <description>A bone-dry sandstorm charged with static. Lightning strikes with no rain to put out the fires it starts.</description>
     <temperatureRange>
@@ -136,7 +136,7 @@
 
   <!-- ===== Red fog: accuracy 0.5. Uses vanilla fog overlay in the original too. Volcanic/exotic tint. ===== -->
   <WeatherDef>
-    <defName>SW_RedFog</defName>
+    <defName>RSW_SW_RedFog</defName>
     <label>red fog</label>
     <description>A thick red haze that reduces the accuracy of ranged weapons.</description>
     <windSpeedFactor>0.5</windSpeedFactor>
@@ -183,7 +183,7 @@
 
   <!-- ===== Red foggy rain: accuracy 0.5 AND move speed 0.9. Vanilla fog+rain overlays. ===== -->
   <WeatherDef>
-    <defName>SW_RedFoggyRain</defName>
+    <defName>RSW_SW_RedFoggyRain</defName>
     <label>red foggy rain</label>
     <description>Red haze mixed with rain. Reduces both ranged accuracy and movement speed.</description>
     <temperatureRange>0~999</temperatureRange>

@@ -1950,7 +1950,7 @@ namespace JawaBench.BridgeTools
             int count = 1,
             [ToolParameter(Description =
                 "XenotypeDef defName to FORCE, e.g. BTD_Jawa, OuterRim_Jawa, " +
-                "guy762_xenotype_jawa, Jawa_Xeno_Gamorrean. Needs Biotech. This goes through " +
+                "guy762_xenotype_jawa, RSW_Jawa_Xeno_Gamorrean. Needs Biotech. This goes through " +
                 "PawnGenerationRequest.ForcedXenotype, which PawnGenerator checks FIRST and " +
                 "returns immediately on, so it beats the kind's and the faction's own xenotype " +
                 "chances. Leave null to keep the pre-existing generation path exactly as it " +
@@ -2779,7 +2779,7 @@ namespace JawaBench.BridgeTools
                 "so converting a pawn twice leaves the first xenotype's genes behind -- pass " +
                 "clearEndogenes to strip them. Xenotypes present on this stack include " +
                 "BTD_Jawa (inheritable, the one our Jawa patches target), OuterRim_Jawa, " +
-                "guy762_xenotype_jawa and Jawa_Xeno_Gamorrean. Needs Biotech: " +
+                "guy762_xenotype_jawa and RSW_Jawa_Xeno_Gamorrean. Needs Biotech: " +
                 "Pawn_GeneTracker.SetXenotype opens with ModLister.CheckBiotech and RETURNS " +
                 "when it is absent.",
             ResultDescription =
@@ -4140,7 +4140,7 @@ namespace JawaBench.BridgeTools
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description =
-                "QuestScriptDef defName, e.g. Jawa_TheClaim, OpportunitySite_ItemStash.")]
+                "QuestScriptDef defName, e.g. RUT_Jawa_TheClaim, OpportunitySite_ItemStash.")]
             string questDef,
             [ToolParameter(Description =
                 "Threat/reward points. Omit or <=0 for the storyteller's current default.",

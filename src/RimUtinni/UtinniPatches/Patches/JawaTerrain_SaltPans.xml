@@ -6,7 +6,7 @@
 
   V1 ROW 4, override 1 of 3 (the attachment half).
 
-  Defs/TerrainDefs/JawaSaltCrust.xml declares Jawa_SaltCrust. A TerrainDef on
+  Defs/TerrainDefs/JawaSaltCrust.xml declares RUT_Jawa_SaltCrust. A TerrainDef on
   its own generates NOWHERE, exactly as a WeatherDef on its own blows nowhere
   (see SWDesertWeather_Attach.xml, same mod, same lesson). A biome must ask
   for it. This file is that ask.
@@ -115,7 +115,7 @@
           <minSize>25</minSize>
           <thresholds>
             <li>
-              <terrain>Jawa_SaltCrust</terrain>
+              <terrain>RUT_Jawa_SaltCrust</terrain>
               <min>0.70</min>
               <max>999</max>
             </li>
@@ -137,7 +137,7 @@
           <minSize>25</minSize>
           <thresholds>
             <li>
-              <terrain>Jawa_SaltCrust</terrain>
+              <terrain>RUT_Jawa_SaltCrust</terrain>
               <min>0.68</min>
               <max>999</max>
             </li>
@@ -162,7 +162,7 @@
           <minSize>25</minSize>
           <thresholds>
             <li>
-              <terrain>Jawa_SaltCrust</terrain>
+              <terrain>RUT_Jawa_SaltCrust</terrain>
               <min>0.75</min>
               <max>999</max>
             </li>
@@ -180,7 +180,7 @@
             <minSize>25</minSize>
             <thresholds>
               <li>
-                <terrain>Jawa_SaltCrust</terrain>
+                <terrain>RUT_Jawa_SaltCrust</terrain>
                 <min>0.75</min>
                 <max>999</max>
               </li>

@@ -24,7 +24,7 @@
   The <groups> keys are PrefabDef defNames, read from the node, not assumed:
   ScarlandsJunkPrefabs keys on <Exterior_AncientContainerForklift> and that
   is the defName of a PrefabDef in the same DLC
-  (Odyssey\Defs\PrefabDefs\AncientExteriorPrefabs.xml:6-7). So <Jawa_GroundHulk>
+  (Odyssey\Defs\PrefabDefs\AncientExteriorPrefabs.xml:6-7). So <RUT_Jawa_GroundHulk>
   here names our PrefabDef.
 
   <count>1</count> in place of countPer10kCellsRange: donor is
@@ -43,7 +43,7 @@
     600  GenStep_ReserveGravshipArea   Odyssey\Defs\MapGeneration\BasePlayerMapGenerator.xml:5-7
     850  FindPlayerStartSpot           Core\Defs\MapGeneration\CommonMapGenerator.xml:167-169
     950  ScarlandsJunkPrefabs          Odyssey\Defs\MapGeneration\CommonMapGenerator.xml:82-84
-    960  Jawa_ScatterScrapfields       Jawa_Patches\Defs\MapGeneration\JawaScrapfields.xml
+    960  RUT_Jawa_ScatterScrapfields       Jawa_Patches\Defs\MapGeneration\JawaScrapfields.xml
 
   940 puts the hulk after the gravship area is reserved and after the player
   start spot exists, and BEFORE the two scatterers. That direction is
@@ -92,7 +92,7 @@
 <Defs>
 
   <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey,Arcjc007.GravshipCrashes">
-    <defName>Jawa_StampGroundHulk</defName>
+    <defName>RUT_Jawa_StampGroundHulk</defName>
     <order>940</order>
     <genStep Class="GenStep_ScatterGroupPrefabs">
       <allowInWaterBiome>false</allowInWaterBiome>
@@ -134,14 +134,14 @@
         <li Class="ScatterValidator_AvoidUsedRects" />
       </validators>
       <groups>
-        <Jawa_GroundHulk>
+        <RUT_Jawa_GroundHulk>
           <weight>1.0</weight>
           <indoorRuin>false</indoorRuin>
           <filthDef>Filth_MachineBits</filthDef>
           <filthExpandBy>1</filthExpandBy>
           <filthChance>0.35</filthChance>
           <max>1</max>
-        </Jawa_GroundHulk>
+        </RUT_Jawa_GroundHulk>
       </groups>
     </genStep>
   </GenStepDef>

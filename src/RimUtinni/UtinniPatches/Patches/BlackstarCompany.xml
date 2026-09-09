@@ -49,9 +49,9 @@
   that cannot send a caravan or defend its own settlement is a worse defect than
   the one being fixed.
   ⚠️ The LEADER does not go in a group maker. A leader is generated once per
-  faction, so `Jawa_Blackstar_Leader` goes to `fixedLeaderKinds` - an ADD, since
+  faction, so `RUT_Jawa_Blackstar_Leader` goes to `fixedLeaderKinds` - an ADD, since
   no vanilla FactionDef in `Factions_Misc.xml` writes that field. This is the
-  same mechanism that has been quietly fielding `Jawa_Empire_Leader` all along,
+  same mechanism that has been quietly fielding `RUT_Jawa_Empire_Leader` all along,
   and the reason reporting it as "orphaned" was a false positive.
 
   ⚠️ The ideo layer (`fixedIdeo` / `ideoName` "the Contract", deliberately with
@@ -189,7 +189,7 @@
                AG_XenohumanPirates  Alpha Genes    no own colour -> GUARDED
                CannibalPirate       Ideology       declares (0.67,0,0.9)..(0.88,0.48,1)
                DV_PirateKeshig      Det's Keshig   declares (198,86,86) Inherit="False"
-               Jawa_Junkers         ours           declares its own
+               RUT_Jawa_Junkers         ours           declares its own
                VU_* / BS_Hell       mods not active
              `validate_patch.py` over Data + workshop + Mods (all three def roots)
              reports this op at
@@ -246,7 +246,7 @@
              and Inherit="False" both fail, with the engine source that proves it. -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/FactionDef[defName="Pirate"]/factionNameMaker</xpath>
-          <value><factionNameMaker>Jawa_NamerFactionBlackstar</factionNameMaker></value>
+          <value><factionNameMaker>RUT_Jawa_NamerFactionBlackstar</factionNameMaker></value>
         </li>
 
         <!-- 🔑 THE FIVE INHERITED PIRATES GET THEIR OWN CANON NAMES.
@@ -268,11 +268,11 @@
             <xpath>/Defs/FactionDef[defName="PirateWaster"]/factionNameMaker</xpath>
             <match Class="PatchOperationReplace">
               <xpath>/Defs/FactionDef[defName="PirateWaster"]/factionNameMaker</xpath>
-              <value><factionNameMaker>Jawa_NamerFactionPirateWaster</factionNameMaker></value>
+              <value><factionNameMaker>RUT_Jawa_NamerFactionPirateWaster</factionNameMaker></value>
             </match>
             <nomatch Class="PatchOperationAdd">
               <xpath>/Defs/FactionDef[defName="PirateWaster"]</xpath>
-              <value><factionNameMaker>Jawa_NamerFactionPirateWaster</factionNameMaker></value>
+              <value><factionNameMaker>RUT_Jawa_NamerFactionPirateWaster</factionNameMaker></value>
             </nomatch>
           </match>
         </li>
@@ -283,11 +283,11 @@
             <xpath>/Defs/FactionDef[defName="PirateYttakin"]/factionNameMaker</xpath>
             <match Class="PatchOperationReplace">
               <xpath>/Defs/FactionDef[defName="PirateYttakin"]/factionNameMaker</xpath>
-              <value><factionNameMaker>Jawa_NamerFactionPirateYttakin</factionNameMaker></value>
+              <value><factionNameMaker>RUT_Jawa_NamerFactionPirateYttakin</factionNameMaker></value>
             </match>
             <nomatch Class="PatchOperationAdd">
               <xpath>/Defs/FactionDef[defName="PirateYttakin"]</xpath>
-              <value><factionNameMaker>Jawa_NamerFactionPirateYttakin</factionNameMaker></value>
+              <value><factionNameMaker>RUT_Jawa_NamerFactionPirateYttakin</factionNameMaker></value>
             </nomatch>
           </match>
         </li>
@@ -298,11 +298,11 @@
             <xpath>/Defs/FactionDef[defName="CannibalPirate"]/factionNameMaker</xpath>
             <match Class="PatchOperationReplace">
               <xpath>/Defs/FactionDef[defName="CannibalPirate"]/factionNameMaker</xpath>
-              <value><factionNameMaker>Jawa_NamerFactionCannibalPirate</factionNameMaker></value>
+              <value><factionNameMaker>RUT_Jawa_NamerFactionCannibalPirate</factionNameMaker></value>
             </match>
             <nomatch Class="PatchOperationAdd">
               <xpath>/Defs/FactionDef[defName="CannibalPirate"]</xpath>
-              <value><factionNameMaker>Jawa_NamerFactionCannibalPirate</factionNameMaker></value>
+              <value><factionNameMaker>RUT_Jawa_NamerFactionCannibalPirate</factionNameMaker></value>
             </nomatch>
           </match>
         </li>
@@ -313,11 +313,11 @@
             <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]/factionNameMaker</xpath>
             <match Class="PatchOperationReplace">
               <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]/factionNameMaker</xpath>
-              <value><factionNameMaker>Jawa_NamerFactionAG_XenohumanPirates</factionNameMaker></value>
+              <value><factionNameMaker>RUT_Jawa_NamerFactionAG_XenohumanPirates</factionNameMaker></value>
             </match>
             <nomatch Class="PatchOperationAdd">
               <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]</xpath>
-              <value><factionNameMaker>Jawa_NamerFactionAG_XenohumanPirates</factionNameMaker></value>
+              <value><factionNameMaker>RUT_Jawa_NamerFactionAG_XenohumanPirates</factionNameMaker></value>
             </nomatch>
           </match>
         </li>
@@ -328,11 +328,11 @@
             <xpath>/Defs/FactionDef[defName="DV_PirateKeshig"]/factionNameMaker</xpath>
             <match Class="PatchOperationReplace">
               <xpath>/Defs/FactionDef[defName="DV_PirateKeshig"]/factionNameMaker</xpath>
-              <value><factionNameMaker>Jawa_NamerFactionDV_PirateKeshig</factionNameMaker></value>
+              <value><factionNameMaker>RUT_Jawa_NamerFactionDV_PirateKeshig</factionNameMaker></value>
             </match>
             <nomatch Class="PatchOperationAdd">
               <xpath>/Defs/FactionDef[defName="DV_PirateKeshig"]</xpath>
-              <value><factionNameMaker>Jawa_NamerFactionDV_PirateKeshig</factionNameMaker></value>
+              <value><factionNameMaker>RUT_Jawa_NamerFactionDV_PirateKeshig</factionNameMaker></value>
             </nomatch>
           </match>
         </li>
@@ -353,9 +353,9 @@
           <xpath>/Defs/FactionDef[defName="Pirate"]/pawnGroupMakers/li[kindDef="Combat"][commonality="100"]/options</xpath>
           <value>
             <options>
-                    <Jawa_Blackstar_Grunt>10</Jawa_Blackstar_Grunt>
-                    <Jawa_Blackstar_Heavy>5</Jawa_Blackstar_Heavy>
-                    <Jawa_Blackstar_Specialist>3</Jawa_Blackstar_Specialist>
+                    <RUT_Jawa_Blackstar_Grunt>10</RUT_Jawa_Blackstar_Grunt>
+                    <RUT_Jawa_Blackstar_Heavy>5</RUT_Jawa_Blackstar_Heavy>
+                    <RUT_Jawa_Blackstar_Specialist>3</RUT_Jawa_Blackstar_Specialist>
             </options>
           </value>
         </li>
@@ -366,8 +366,8 @@
           <xpath>/Defs/FactionDef[defName="Pirate"]/pawnGroupMakers/li[kindDef="Combat"][commonality="30"]/options</xpath>
           <value>
             <options>
-                    <Jawa_Blackstar_Heavy>10</Jawa_Blackstar_Heavy>
-                    <Jawa_Blackstar_Grunt>5</Jawa_Blackstar_Grunt>
+                    <RUT_Jawa_Blackstar_Heavy>10</RUT_Jawa_Blackstar_Heavy>
+                    <RUT_Jawa_Blackstar_Grunt>5</RUT_Jawa_Blackstar_Grunt>
             </options>
           </value>
         </li>
@@ -377,8 +377,8 @@
           <xpath>/Defs/FactionDef[defName="Pirate"]/pawnGroupMakers/li[kindDef="Combat"][commonality="20"]/options</xpath>
           <value>
             <options>
-                    <Jawa_Blackstar_Grunt>10</Jawa_Blackstar_Grunt>
-                    <Jawa_Blackstar_Specialist>6</Jawa_Blackstar_Specialist>
+                    <RUT_Jawa_Blackstar_Grunt>10</RUT_Jawa_Blackstar_Grunt>
+                    <RUT_Jawa_Blackstar_Specialist>6</RUT_Jawa_Blackstar_Specialist>
             </options>
           </value>
         </li>
@@ -388,8 +388,8 @@
           <xpath>/Defs/FactionDef[defName="Pirate"]/pawnGroupMakers/li[kindDef="Combat"][commonality="15"]/options</xpath>
           <value>
             <options>
-                    <Jawa_Blackstar_Heavy>10</Jawa_Blackstar_Heavy>
-                    <Jawa_Blackstar_Grunt>4</Jawa_Blackstar_Grunt>
+                    <RUT_Jawa_Blackstar_Heavy>10</RUT_Jawa_Blackstar_Heavy>
+                    <RUT_Jawa_Blackstar_Grunt>4</RUT_Jawa_Blackstar_Grunt>
             </options>
           </value>
         </li>
@@ -399,7 +399,7 @@
           <xpath>/Defs/FactionDef[defName="Pirate"]/pawnGroupMakers/li[kindDef="Combat"][commonality="10"]/options</xpath>
           <value>
             <options>
-                    <Jawa_Blackstar_Specialist>10</Jawa_Blackstar_Specialist>
+                    <RUT_Jawa_Blackstar_Specialist>10</RUT_Jawa_Blackstar_Specialist>
             </options>
           </value>
         </li>
@@ -409,7 +409,7 @@
           <xpath>/Defs/FactionDef[defName="Pirate"]/pawnGroupMakers/li[kindDef="Combat"][commonality="2.5"]/options</xpath>
           <value>
             <options>
-                    <Jawa_Blackstar_Grunt>10</Jawa_Blackstar_Grunt>
+                    <RUT_Jawa_Blackstar_Grunt>10</RUT_Jawa_Blackstar_Grunt>
             </options>
           </value>
         </li>
@@ -419,7 +419,7 @@
           <xpath>/Defs/FactionDef[defName="Pirate"]</xpath>
           <value>
             <fixedLeaderKinds>
-              <li>Jawa_Blackstar_Leader</li>
+              <li>RUT_Jawa_Blackstar_Leader</li>
             </fixedLeaderKinds>
           </value>
         </li>
@@ -442,7 +442,7 @@
     <xpath>/Defs/FactionDef[defName="Pirate"]/allowedCultures</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/FactionDef[defName="Pirate"]/allowedCultures</xpath>
-      <value><allowedCultures><li>Jawa_Culture_Blackstar</li></allowedCultures></value>
+      <value><allowedCultures><li>RUT_Jawa_Culture_Blackstar</li></allowedCultures></value>
     </match>
   </Operation>
 

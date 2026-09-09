@@ -97,7 +97,7 @@
 <Defs>
 
   <TerrainDef ParentName="NaturalTerrainBase">
-    <defName>Jawa_SaltCrust</defName>
+    <defName>RUT_Jawa_SaltCrust</defName>
     <label>salt crust</label>
     <description>A hard evaporite pan left by water that dried out an age ago. The crust is flat, blinding at midday, and takes a footprint like chalk. It will grow nothing whatsoever, but it is the firmest ground on the planet and you can see anything coming across it long before it arrives.</description>
     <texturePath>Terrain/Surfaces/DryLakeBed</texturePath>

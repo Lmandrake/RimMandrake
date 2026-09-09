@@ -38,7 +38,7 @@
 
   <!-- combatPower low (not the utility sentinel above) - a real if weak
        threat, "atrocious, clumsy" per ruling 2, not a non-combatant.
-       NO defaultFactionDef: Jawa_Junkers is a RimUtinni (campaign-tier)
+       NO defaultFactionDef: RUT_Jawa_Junkers is a RimUtinni (campaign-tier)
        FactionDef and Droidworks is a RimStarWars (platform-tier) mod - §1.1
        of the design doc's own table draws that line ("campaign layer |
        RimUtinni owns faction loadouts, FDE membership..."). Droidworks must

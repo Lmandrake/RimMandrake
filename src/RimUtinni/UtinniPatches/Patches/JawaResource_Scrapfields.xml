@@ -7,7 +7,7 @@
   V1 ROW 4, override 3 of 3 (the registration half).
 
   Defs/MapGeneration/JawaScrapfields.xml declares the GenStepDef
-  Jawa_ScatterScrapfields. A GenStepDef on its own runs on NO map. A
+  RUT_Jawa_ScatterScrapfields. A GenStepDef on its own runs on NO map. A
   MapGeneratorDef has to list it, exactly as a TerrainDef needs a biome to ask
   for it. This file is that listing.
 
@@ -58,7 +58,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
       <value>
-        <li>Jawa_ScatterScrapfields</li>
+        <li>RUT_Jawa_ScatterScrapfields</li>
       </value>
     </match>
   </Operation>

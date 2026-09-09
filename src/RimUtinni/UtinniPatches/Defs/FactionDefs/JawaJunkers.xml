@@ -39,7 +39,7 @@
 <Defs>
 
   <FactionDef ParentName="PirateBandBase">
-    <defName>Jawa_Junkers</defName>
+    <defName>RUT_Jawa_Junkers</defName>
     <label>the Junkers</label>
     <fixedName>the Junkers</fixedName>
     <description>The bottom of the scrap heap, given weapons and a grudge. Scavengers who arrive second and kill whoever arrived first, welded into warcaskets cut off other people's bodies.\n\nThere is no doctrine down there, only the ladder. Which means there is always somebody who would rather be paid than climb it.</description>
@@ -75,7 +75,7 @@
          two at random - the title would then be right on roughly half of all worlds, which
          is worse than wrong because it looks fixed. -->
     <allowedCultures Inherit="False">
-      <li>Jawa_Culture_Junkers</li>
+      <li>RUT_Jawa_Culture_Junkers</li>
     </allowedCultures>
 
     <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
@@ -217,19 +217,19 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <Jawa_Junkers_Grunt>10</Jawa_Junkers_Grunt>
-          <Jawa_Junkers_Heavy>4</Jawa_Junkers_Heavy>
-          <Jawa_Junkers_Specialist>2</Jawa_Junkers_Specialist>
-          <Jawa_Junkers_Leader>1</Jawa_Junkers_Leader>
+          <RUT_Jawa_Junkers_Grunt>10</RUT_Jawa_Junkers_Grunt>
+          <RUT_Jawa_Junkers_Heavy>4</RUT_Jawa_Junkers_Heavy>
+          <RUT_Jawa_Junkers_Specialist>2</RUT_Jawa_Junkers_Specialist>
+          <RUT_Jawa_Junkers_Leader>1</RUT_Jawa_Junkers_Leader>
           <RSW_DW_Primitive_Junker MayRequire="mandrake.rsw.droidworks">3</RSW_DW_Primitive_Junker>
         </options>
       </li>
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <Jawa_Junkers_Grunt>10</Jawa_Junkers_Grunt>
-          <Jawa_Junkers_Heavy>3</Jawa_Junkers_Heavy>
-          <Jawa_Junkers_Specialist>2</Jawa_Junkers_Specialist>
+          <RUT_Jawa_Junkers_Grunt>10</RUT_Jawa_Junkers_Grunt>
+          <RUT_Jawa_Junkers_Heavy>3</RUT_Jawa_Junkers_Heavy>
+          <RUT_Jawa_Junkers_Specialist>2</RUT_Jawa_Junkers_Specialist>
           <!-- C1: lower than the raid weight. A firebomb on legs is something the
                Junkers send OUT, and one standing in their own outpost is as much a
                danger to them as to anyone attacking it. -->
@@ -240,13 +240,13 @@
 
     <!-- 🔴 THE THIRD INHERIT TRAP, and it opened on 2026-08-22 when
          AUTHORED_KINDS_MUST_FIELD_1 gave `Pirate` a `fixedLeaderKinds` naming
-         `Jawa_Blackstar_Leader`. That is a list on our own parent, so without this opt-out
+         `RUT_Jawa_Blackstar_Leader`. That is a list on our own parent, so without this opt-out
          the Junkers would be led by Captain Jaxen Marr of Blackstar Company.
-         🔑 `Jawa_Junkers_Leader` is ALSO in the Combat group above at weight 1, and that is
+         🔑 `RUT_Jawa_Junkers_Leader` is ALSO in the Combat group above at weight 1, and that is
          deliberate rather than a duplicate: the group entry is the Scraplord turning up in
          a raid, this field is the faction's standing leader. -->
     <fixedLeaderKinds Inherit="False">
-      <li>Jawa_Junkers_Leader</li>
+      <li>RUT_Jawa_Junkers_Leader</li>
     </fixedLeaderKinds>
   </FactionDef>
 

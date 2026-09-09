@@ -913,7 +913,7 @@ This is the Reclamation. Survive it and it is over.</text>
 
         <!-- The Helix flip: hostile, with the reason on the faction tab. -->
         <li Class="QuestNode_ChangeFactionGoodwill">
-          <faction>Jawa_AscendantHelix</faction>
+          <faction>RUT_Jawa_AscendantHelix</faction>
           <change>-100</change>
           <ensureHostile>true</ensureHostile>
           <canSendLetter>true</canSendLetter>
@@ -943,7 +943,7 @@ This is the Reclamation. Survive it and it is over.</text>
         <!-- Wave two: the Helix, a day and a half behind - local collaboration, not a joint column. -->
         <li Class="QuestNode_Set">
           <name>enemyFaction</name>
-          <value>Jawa_AscendantHelix</value>
+          <value>RUT_Jawa_AscendantHelix</value>
         </li>
         <li Class="QuestNode_Delay">
           <delayTicks>$(1.5*60000)</delayTicks>

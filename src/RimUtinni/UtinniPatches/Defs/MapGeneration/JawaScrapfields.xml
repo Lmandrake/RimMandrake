@@ -101,7 +101,7 @@
 <Defs>
 
   <GenStepDef>
-    <defName>Jawa_ScatterScrapfields</defName>
+    <defName>RUT_Jawa_ScatterScrapfields</defName>
     <order>960</order>
     <genStep Class="GenStep_ScatterThings">
       <thingDef>ChunkSlagSteel</thingDef>
@@ -126,7 +126,7 @@
            did not touch. ⚠️ Do not record a tradeoff here — there isn't one.
            ⚠️ THIS IS NOT THE EXPLANATION FOR THE MEASURED 11. That reading was
            WITHDRAWN by a retired seat the same night (a retired seat's queue, item O15) and it was wrong:
-           Jawa_StampGroundHulk is also isJunk, shares the tile, and inherits
+           RUT_Jawa_StampGroundHulk is also isJunk, shares the tile, and inherits
            CalculateFinalCount unchanged — yet the hulk DID warn, and a zeroed
            count never enters the placement loop and so cannot warn. ⇒ the
            factor was NOT 0 on that quicktest tile, and scrapfields should have

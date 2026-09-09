@@ -40,7 +40,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          the field in Scout Trooper pauldrons. Narrowed to ImperialStormtrooper (3
          carriers: cuirass, helmet, pauldrons) and the rest hard-refused below. -->
   <PawnKindDef>
-    <defName>Jawa_Empire_Grunt</defName>
+    <defName>RUT_Jawa_Empire_Grunt</defName>
     <label>stormtrooper</label>
     <race>Human</race>
     <defaultFactionDef>Empire</defaultFactionDef>
@@ -109,7 +109,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
 
   <!-- Imperial ARMY trooper - army plate only, never stormtrooper white or an officer's cap. -->
   <PawnKindDef>
-    <defName>Jawa_Empire_Heavy</defName>
+    <defName>RUT_Jawa_Empire_Heavy</defName>
     <label>heavy trooper</label>
     <race>Human</race>
     <defaultFactionDef>Empire</defaultFactionDef>
@@ -170,7 +170,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
 
   <!-- Imperial officer - uniform and cap only. -->
   <PawnKindDef>
-    <defName>Jawa_Empire_Specialist</defName>
+    <defName>RUT_Jawa_Empire_Specialist</defName>
     <label>Imperial officer</label>
     <race>Human</race>
     <defaultFactionDef>Empire</defaultFactionDef>
@@ -228,7 +228,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
 
   <!-- senior officer, black uniform. Officer wardrobe only. -->
   <PawnKindDef>
-    <defName>Jawa_Empire_Leader</defName>
+    <defName>RUT_Jawa_Empire_Leader</defName>
     <label>Emperor Palpatine</label>
     <race>Human</race>
     <defaultFactionDef>Empire</defaultFactionDef>
@@ -273,10 +273,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Hutt_Grunt</defName>
+    <defName>RUT_Jawa_Hutt_Grunt</defName>
     <label>Cartel enforcer</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_HuttCartel</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_HuttCartel</defaultFactionDef>
     <combatPower>55</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -330,10 +330,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Hutt_Heavy</defName>
+    <defName>RUT_Jawa_Hutt_Heavy</defName>
     <label>Cartel bodyguard</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_HuttCartel</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_HuttCartel</defaultFactionDef>
     <combatPower>90</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -387,10 +387,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Hutt_Specialist</defName>
+    <defName>RUT_Jawa_Hutt_Specialist</defName>
     <label>Cartel factor</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_HuttCartel</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_HuttCartel</defaultFactionDef>
     <combatPower>108</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -448,10 +448,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          200~240 - but a Hutt crime boss carrying one ostentatious 12000-credit blaster is
          the character, not a contradiction. -->
   <PawnKindDef>
-    <defName>Jawa_Hutt_Leader</defName>
+    <defName>RUT_Jawa_Hutt_Leader</defName>
     <label>Lord Gorga the Immense</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_HuttCartel</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_HuttCartel</defaultFactionDef>
     <combatPower>873</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -508,7 +508,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Homestead_Grunt</defName>
+    <defName>RUT_Jawa_Homestead_Grunt</defName>
     <label>homestead militia</label>
     <race>Human</race>
     <defaultFactionDef>OutlanderCivil</defaultFactionDef>
@@ -568,7 +568,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Homestead_Heavy</defName>
+    <defName>RUT_Jawa_Homestead_Heavy</defName>
     <label>well-guard</label>
     <race>Human</race>
     <defaultFactionDef>OutlanderCivil</defaultFactionDef>
@@ -628,7 +628,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Homestead_Specialist</defName>
+    <defName>RUT_Jawa_Homestead_Specialist</defName>
     <label>water warden</label>
     <race>Human</race>
     <defaultFactionDef>OutlanderCivil</defaultFactionDef>
@@ -688,7 +688,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Homestead_Leader</defName>
+    <defName>RUT_Jawa_Homestead_Leader</defName>
     <label>High Marshal Taren Voss</label>
     <race>Human</race>
     <defaultFactionDef>OutlanderCivil</defaultFactionDef>
@@ -748,7 +748,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_DeepDesert_Grunt</defName>
+    <defName>RUT_Jawa_DeepDesert_Grunt</defName>
     <label>Tusken raider</label>
     <race>Human</race>
     <defaultFactionDef>TribeCivil</defaultFactionDef>
@@ -807,7 +807,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_DeepDesert_Heavy</defName>
+    <defName>RUT_Jawa_DeepDesert_Heavy</defName>
     <label>Tusken brute</label>
     <race>Human</race>
     <defaultFactionDef>TribeCivil</defaultFactionDef>
@@ -868,7 +868,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          Wrong: SaV_tusken holds exactly 2 weapons, both the Tusken slugrifle at 1977.
          The budget was sized to the signature weapon; below it the kind is bare-handed. -->
   <PawnKindDef>
-    <defName>Jawa_DeepDesert_Specialist</defName>
+    <defName>RUT_Jawa_DeepDesert_Specialist</defName>
     <label>Tusken marksman</label>
     <race>Human</race>
     <defaultFactionDef>TribeCivil</defaultFactionDef>
@@ -925,7 +925,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_DeepDesert_Leader</defName>
+    <defName>RUT_Jawa_DeepDesert_Leader</defName>
     <label>War Chief Torr'gan</label>
     <race>Human</race>
     <defaultFactionDef>TribeCivil</defaultFactionDef>
@@ -983,10 +983,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
-    <defName>Jawa_Droid_Grunt</defName>
+    <defName>RUT_Jawa_Droid_Grunt</defName>
     <label>labour droid</label>
     <race>RSW_DW_Race_OuterRim_ImperialLaborDroid</race>
-    <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_FreeDroidEnclaves</defaultFactionDef>
     <combatPower>90</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>false</useFactionXenotypes>
@@ -1047,10 +1047,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
-    <defName>Jawa_Droid_Heavy</defName>
+    <defName>RUT_Jawa_Droid_Heavy</defName>
     <label>security droid</label>
     <race>RSW_DW_Race_OuterRim_KXSecurityDroid</race>
-    <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_FreeDroidEnclaves</defaultFactionDef>
     <combatPower>124</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>false</useFactionXenotypes>
@@ -1112,10 +1112,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
-    <defName>Jawa_Droid_Specialist</defName>
+    <defName>RUT_Jawa_Droid_Specialist</defName>
     <label>medical droid</label>
     <race>RSW_DW_Race_OuterRim_ProtocolDroid</race>
-    <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_FreeDroidEnclaves</defaultFactionDef>
     <combatPower>108</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>false</useFactionXenotypes>
@@ -1176,10 +1176,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
-    <defName>Jawa_Droid_Leader</defName>
+    <defName>RUT_Jawa_Droid_Leader</defName>
     <label>First Speaker R-41 Rell</label>
     <race>RSW_DW_Race_OuterRim_SuperTacticalDroid</race>
-    <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_FreeDroidEnclaves</defaultFactionDef>
     <combatPower>176</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>false</useFactionXenotypes>
@@ -1246,10 +1246,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          this kind's only tag. The Grunt/Heavy inversion is real but the fix is to raise
          the HEAVY, not to strand the Grunt below its own weapon. -->
   <PawnKindDef>
-    <defName>Jawa_Wildsteam_Grunt</defName>
+    <defName>RUT_Jawa_Wildsteam_Grunt</defName>
     <label>Wildsteam hunter</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_WildsteamClan</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_WildsteamClan</defaultFactionDef>
     <combatPower>101</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -1309,10 +1309,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
 
   <!-- raised above the Grunt to restore the ladder - and 2000 reaches the war bowcaster. -->
   <PawnKindDef>
-    <defName>Jawa_Wildsteam_Heavy</defName>
+    <defName>RUT_Jawa_Wildsteam_Heavy</defName>
     <label>pod-warden</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_WildsteamClan</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_WildsteamClan</defaultFactionDef>
     <combatPower>140</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -1372,10 +1372,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Wildsteam_Specialist</defName>
+    <defName>RUT_Jawa_Wildsteam_Specialist</defName>
     <label>beast-handler</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_WildsteamClan</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_WildsteamClan</defaultFactionDef>
     <combatPower>82</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -1435,10 +1435,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Wildsteam_Leader</defName>
+    <defName>RUT_Jawa_Wildsteam_Leader</defName>
     <label>Elder Rroowaak</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_WildsteamClan</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_WildsteamClan</defaultFactionDef>
     <combatPower>164</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -1497,10 +1497,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Deepwater_Grunt</defName>
+    <defName>RUT_Jawa_Deepwater_Grunt</defName>
     <label>shore guard</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_DeepwaterCompact</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_DeepwaterCompact</defaultFactionDef>
     <combatPower>67</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -1557,10 +1557,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Deepwater_Heavy</defName>
+    <defName>RUT_Jawa_Deepwater_Heavy</defName>
     <label>pressure trooper</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_DeepwaterCompact</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_DeepwaterCompact</defaultFactionDef>
     <combatPower>100</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -1617,10 +1617,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Deepwater_Specialist</defName>
+    <defName>RUT_Jawa_Deepwater_Specialist</defName>
     <label>Quarren shipwright</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_DeepwaterCompact</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_DeepwaterCompact</defaultFactionDef>
     <combatPower>108</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -1677,10 +1677,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Deepwater_Leader</defName>
+    <defName>RUT_Jawa_Deepwater_Leader</defName>
     <label>High Warden Neris Cal</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_DeepwaterCompact</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_DeepwaterCompact</defaultFactionDef>
     <combatPower>193</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -1737,10 +1737,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Geonosian_Grunt</defName>
+    <defName>RUT_Jawa_Geonosian_Grunt</defName>
     <label>Geonosian drone</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_GeonosianFoundryHive</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_GeonosianFoundryHive</defaultFactionDef>
     <combatPower>56</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -1792,10 +1792,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Geonosian_Heavy</defName>
+    <defName>RUT_Jawa_Geonosian_Heavy</defName>
     <label>soldier drone</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_GeonosianFoundryHive</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_GeonosianFoundryHive</defaultFactionDef>
     <combatPower>86</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -1848,10 +1848,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Geonosian_Specialist</defName>
+    <defName>RUT_Jawa_Geonosian_Specialist</defName>
     <label>hive overseer</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_GeonosianFoundryHive</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_GeonosianFoundryHive</defaultFactionDef>
     <combatPower>94</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -1904,10 +1904,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Geonosian_Leader</defName>
+    <defName>RUT_Jawa_Geonosian_Leader</defName>
     <label>Archduke Korrik the Shaper</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_GeonosianFoundryHive</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_GeonosianFoundryHive</defaultFactionDef>
     <combatPower>146</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -1961,10 +1961,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Helix_Grunt</defName>
+    <defName>RUT_Jawa_Helix_Grunt</defName>
     <label>retrieval agent</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_AscendantHelix</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_AscendantHelix</defaultFactionDef>
     <combatPower>130</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -2023,10 +2023,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Helix_Heavy</defName>
+    <defName>RUT_Jawa_Helix_Heavy</defName>
     <label>brute-stock labourer</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_AscendantHelix</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_AscendantHelix</defaultFactionDef>
     <combatPower>192</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -2085,10 +2085,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Helix_Specialist</defName>
+    <defName>RUT_Jawa_Helix_Specialist</defName>
     <label>Helix curator</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_AscendantHelix</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_AscendantHelix</defaultFactionDef>
     <combatPower>224</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -2151,10 +2151,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          the cut left the Helix boss unarmed. Owner: Helix are VERY wealthy - this is what
          very wealthy costs in this stack. -->
   <PawnKindDef>
-    <defName>Jawa_Helix_Leader</defName>
+    <defName>RUT_Jawa_Helix_Leader</defName>
     <label>Director Ko Saiyan</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_AscendantHelix</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_AscendantHelix</defaultFactionDef>
     <combatPower>890</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -2215,7 +2215,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Blackstar_Grunt</defName>
+    <defName>RUT_Jawa_Blackstar_Grunt</defName>
     <label>hired gun</label>
     <race>Human</race>
     <defaultFactionDef>Pirate</defaultFactionDef>
@@ -2272,7 +2272,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Blackstar_Heavy</defName>
+    <defName>RUT_Jawa_Blackstar_Heavy</defName>
     <label>Mandalorian</label>
     <race>Human</race>
     <defaultFactionDef>Pirate</defaultFactionDef>
@@ -2328,7 +2328,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Blackstar_Specialist</defName>
+    <defName>RUT_Jawa_Blackstar_Specialist</defName>
     <label>Blackstar hunter</label>
     <race>Human</race>
     <defaultFactionDef>Pirate</defaultFactionDef>
@@ -2385,7 +2385,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Blackstar_Leader</defName>
+    <defName>RUT_Jawa_Blackstar_Leader</defName>
     <label>Captain Jaxen Marr</label>
     <race>Human</race>
     <defaultFactionDef>Pirate</defaultFactionDef>
@@ -2444,10 +2444,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_TradeMoot_Grunt</defName>
+    <defName>RUT_Jawa_TradeMoot_Grunt</defName>
     <label>Jawa scavenger</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_IndigenousTribes</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_IndigenousTribes</defaultFactionDef>
     <combatPower>51</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -2512,10 +2512,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_TradeMoot_Heavy</defName>
+    <defName>RUT_Jawa_TradeMoot_Heavy</defName>
     <label>crawler guard</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_IndigenousTribes</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_IndigenousTribes</defaultFactionDef>
     <combatPower>71</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -2581,10 +2581,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_TradeMoot_Specialist</defName>
+    <defName>RUT_Jawa_TradeMoot_Specialist</defName>
     <label>Scrap-Singer</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_IndigenousTribes</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_IndigenousTribes</defaultFactionDef>
     <combatPower>92</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -2649,10 +2649,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_TradeMoot_Leader</defName>
+    <defName>RUT_Jawa_TradeMoot_Leader</defName>
     <label>First Bargainer Kiknik the Wealthy</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_IndigenousTribes</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_IndigenousTribes</defaultFactionDef>
     <combatPower>113</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -2719,10 +2719,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Junkers_Grunt</defName>
+    <defName>RUT_Jawa_Junkers_Grunt</defName>
     <label>Junker scrapper</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_Junkers</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_Junkers</defaultFactionDef>
     <combatPower>56</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -2780,10 +2780,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          Body (341) and shoulders (81) added, so the suit is a suit. Base Warcasket
          tier, which is the scrapper's own, not a veteran suit. -->
   <PawnKindDef>
-    <defName>Jawa_Junkers_Heavy</defName>
+    <defName>RUT_Jawa_Junkers_Heavy</defName>
     <label>warcasket Junker</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_Junkers</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_Junkers</defaultFactionDef>
     <combatPower>84</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -2841,10 +2841,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
-    <defName>Jawa_Junkers_Specialist</defName>
+    <defName>RUT_Jawa_Junkers_Specialist</defName>
     <label>claim-jumper</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_Junkers</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_Junkers</defaultFactionDef>
     <combatPower>94</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -2900,10 +2900,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   <!-- the Junker boss is also cased. Same base tier - Junkers are not rich, they are
          merely armoured, which is the whole character of the faction. -->
   <PawnKindDef>
-    <defName>Jawa_Junkers_Leader</defName>
+    <defName>RUT_Jawa_Junkers_Leader</defName>
     <label>Scraplord Tarn Vox the Brutal</label>
     <race>Human</race>
-    <defaultFactionDef>Jawa_Junkers</defaultFactionDef>
+    <defaultFactionDef>RUT_Jawa_Junkers</defaultFactionDef>
     <combatPower>149</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
@@ -2990,7 +2990,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
        kind. All five Homestead kinds are in them; the ranger carries the joint-highest
        weight. If it still never appears, the weight is wrong, not the def. -->
   <PawnKindDef>
-    <defName>Jawa_Homestead_DesertRanger</defName>
+    <defName>RUT_Jawa_Homestead_DesertRanger</defName>
     <label>dune ranger</label>
     <race>Human</race>
     <defaultFactionDef>OutlanderCivil</defaultFactionDef>

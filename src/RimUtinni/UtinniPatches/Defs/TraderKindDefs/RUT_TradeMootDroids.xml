@@ -10,7 +10,7 @@
   on DW kinds; brain-trio stock, rare" — under owner ruling 2, verbatim: "the
   Trade Moot loves droids of all kinds and buys/sells them, just like you."
 
-  These three TraderKindDefs are appended to `Jawa_IndigenousTribes`'s
+  These three TraderKindDefs are appended to `RUT_Jawa_IndigenousTribes`'s
   `caravanTraderKinds` and `baseTraderKinds` in
   Defs/FactionDefs/JawaTribes.xml. They do NOT replace TribeBase's own
   Caravan_Neolithic_* / Base_Neolithic_Standard entries — RimWorld appends a

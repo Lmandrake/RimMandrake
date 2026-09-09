@@ -44,38 +44,38 @@ namespace RimMandrake.Inhabited
         /// "depot" (18x18) were exported and added here alongside the
         /// already-live "scrapyard" (30x30) -- rect sizes match each slot's
         /// own `approxSize` in SettlementManifestDefs_TheClaimJump.xml, faction
-        /// Jawa_Junkers, tech Neolithic (the depot floor is explicitly
+        /// RUT_Jawa_Junkers, tech Neolithic (the depot floor is explicitly
         /// unpowered per its own template comment). Composing all four in one
         /// map generation (multi-district spatial layout, not just resolving
         /// districts[0]) remains DISTRICT_TEMPLATE_LIBRARY_1's stated stretch
         /// goal, not done here.
         ///
         /// 2026-09-05: three more faction sets, each a manifest of its own in
-        /// AshkarrInhabited (Gorga the Immense's Palace / Jawa_HuttCartel,
-        /// The Cracking Yard / Jawa_FreeDroidEnclaves, Deepwater Hold /
-        /// Jawa_DeepwaterCompact) whose district LABELS are unique across the
+        /// AshkarrInhabited (Gorga the Immense's Palace / RUT_Jawa_HuttCartel,
+        /// The Cracking Yard / RUT_Jawa_FreeDroidEnclaves, Deepwater Hold /
+        /// RUT_Jawa_DeepwaterCompact) whose district LABELS are unique across the
         /// whole library - the key here is the label alone, so two manifests
         /// must never reuse one for different geometry. Every entry was
         /// exported at its manifest's approxSize, faction and tech.</summary>
         private static readonly Dictionary<string, string> TemplateFiles =
             new Dictionary<string, string>
             {
-                // The Claim Jump (Jawa_Junkers, Neolithic)
+                // The Claim Jump (RUT_Jawa_Junkers, Neolithic)
                 { "scrapyard", "junkers_scrapyard.txt" },
                 { "dwelling cluster", "junkers_dwelling_cluster.txt" },
                 { "cantina block", "junkers_cantina_block.txt" },
                 { "depot", "junkers_depot.txt" },
-                // Gorga the Immense's Palace (Jawa_HuttCartel, Industrial)
+                // Gorga the Immense's Palace (RUT_Jawa_HuttCartel, Industrial)
                 { "palace hall", "hutt_palace_hall.txt" },
                 { "spicehouse", "hutt_spicehouse.txt" },
                 { "holding pens", "hutt_holding_pens.txt" },
                 { "cistern court", "hutt_cistern_court.txt" },
-                // The Cracking Yard (Jawa_FreeDroidEnclaves, Spacer)
+                // The Cracking Yard (RUT_Jawa_FreeDroidEnclaves, Spacer)
                 { "charging hall", "droid_charging_hall.txt" },
                 { "cracking works", "droid_cracking_works.txt" },
                 { "fabrication room", "droid_fabrication_room.txt" },
                 { "battery bunker", "droid_battery_bunker.txt" },
-                // Deepwater Hold (Jawa_DeepwaterCompact, Industrial)
+                // Deepwater Hold (RUT_Jawa_DeepwaterCompact, Industrial)
                 { "cistern hall", "deepwater_cistern_hall.txt" },
                 { "gate bastion", "deepwater_gate_bastion.txt" },
                 { "hospital ward", "deepwater_hospital_ward.txt" },

@@ -112,7 +112,7 @@
   of "every colonist is a Jawa".
   ⚠️ `overrideKinds` carries the other half. Without it the kind falls through to
   `Faction.OfPlayer.def.basicMemberKind`, which is Core `Colonist` - measured in
-  the live 578-mod dump, unpatched by anything we ship. `Jawa_Colonist` is the
+  the live 578-mod dump, unpatched by anything we ship. `RUT_Jawa_Colonist` is the
   kind authored for this and it now carries the robe and hood.
   ⚠️ `Standing`, not `DropPods`: SCENARIO_SPEC's opening is the clan already
   aboard a hull it woke, not survivors falling out of the sky.
@@ -121,7 +121,7 @@
 <Defs>
 
   <ScenarioDef ParentName="ScenarioBase">
-    <defName>Jawa_UtinniStart</defName>
+    <defName>RUT_Jawa_UtinniStart</defName>
     <label>the opened hull</label>
     <description>A clan of Jawa scavengers has woken something in a Hutt junkyard, and it is announcing itself at volume. Start aboard a gravship you do not own, with a machine that thinks it is a god and a yard full of Gamorreans who have just noticed.</description>
     <scenario>
@@ -137,7 +137,7 @@
           <overrideKinds>
             <li>
               <xenotype>RSW_MandrakeJawa</xenotype>
-              <pawnKind>Jawa_Colonist</pawnKind>
+              <pawnKind>RUT_Jawa_Colonist</pawnKind>
             </li>
           </overrideKinds>
           <xenotypeCounts>

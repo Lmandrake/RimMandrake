@@ -2,7 +2,7 @@
 <Defs>
 
   <!--
-    SETTLEMENT_VISIT_LOOP_1's one real manifest. The Claim Jump: Jawa_Junkers,
+    SETTLEMENT_VISIT_LOOP_1's one real manifest. The Claim Jump: RUT_Jawa_Junkers,
     tile 16905, ZBiome_Badlands, "squatting the worked-out mining fields the
     Geonosians did not finish" (world/ASHKARR_WORLDMAP_settlements.csv row
     44). Chosen over the item's other three candidates (The Slagfield, The
@@ -29,7 +29,7 @@
     <label>The Claim Jump</label>
     <description>A Junkers scrap-and-salvage seat squatting a worked-out Geonosian mining field. Low security, forgiving -- the gate waves you through both ways.</description>
     <settlementName>The Claim Jump</settlementName>
-    <factionDefName>Jawa_Junkers</factionDefName>
+    <factionDefName>RUT_Jawa_Junkers</factionDefName>
     <securityProfile>Inhabited_SecurityProfile_Junkers</securityProfile>
 
     <!-- INHABITED_STOCK_ONTO_MAP_AND_FATE_1: what this settlement IS as a

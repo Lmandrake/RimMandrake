@@ -24,20 +24,20 @@
   the worldgen click: an ideo is generated once, at world creation, and a
   `fixedIdeo` added afterwards does not retrofit an existing world.
 
-  🔴 `Jawa_Spawn_Hutt` APPEARS IN Settlement AND Trader guards ONLY, NEVER in a
+  🔴 `RSW_Jawa_Spawn_Hutt` APPEARS IN Settlement AND Trader guards ONLY, NEVER in a
   Combat group. A Hutt does not go on raids; it is met at home or on a caravan.
 
   Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
   their owning mod for `MayRequire`:
       RSW_Nikto · RSW_NiktoTribal          mandrake.rsw.starwarsraces
       Bantha · Dewback                        Mlie.StarWarsAnimalCollection
-      Jawa_Gamorrean_* · Jawa_Spawn_Hutt      OURS, this same mod - no MayRequire
+      Jawa_Gamorrean_* · RSW_Jawa_Spawn_Hutt      OURS, this same mod - no MayRequire
   ============================================================================
 -->
 <Defs>
 
   <FactionDef ParentName="OutlanderFactionBase">
-    <defName>Jawa_HuttCartel</defName>
+    <defName>RUT_Jawa_HuttCartel</defName>
     <label>Hutt Cartel</label>
     <fixedName>Hutt Cartel</fixedName>
     <description>Wealthy, decentralised and entirely transactional. The Cartel owns the oases and sells water at whatever the buyer can be made to pay, and it holds the only non-Imperial orbital node on the planet — the door off-world, and the reason everyone keeps taking its calls.\n\nIt is hostile the way a creditor is hostile. Nothing about it is personal, and everything about it is negotiable.</description>
@@ -73,7 +73,7 @@
          two at random - the title would then be right on roughly half of all worlds, which
          is worse than wrong because it looks fixed. -->
     <allowedCultures Inherit="False">
-      <li>Jawa_Culture_Hutt</li>
+      <li>RUT_Jawa_Culture_Hutt</li>
     </allowedCultures>
 
     <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
@@ -228,10 +228,10 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <Jawa_Hutt_Grunt>10</Jawa_Hutt_Grunt>
-          <Jawa_Hutt_Heavy>4</Jawa_Hutt_Heavy>
-          <Jawa_Hutt_Specialist>2</Jawa_Hutt_Specialist>
-          <Jawa_Hutt_Leader>1</Jawa_Hutt_Leader>
+          <RUT_Jawa_Hutt_Grunt>10</RUT_Jawa_Hutt_Grunt>
+          <RUT_Jawa_Hutt_Heavy>4</RUT_Jawa_Hutt_Heavy>
+          <RUT_Jawa_Hutt_Specialist>2</RUT_Jawa_Hutt_Specialist>
+          <RUT_Jawa_Hutt_Leader>1</RUT_Jawa_Hutt_Leader>
           <RSW_DW_KotORDroidColonist_ADMkI MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_KotORDroidColonist_ADMkI>
           <RSW_DW_KotORDroidColonist_SentWD MayRequire="mandrake.rsw.droidworks">1</RSW_DW_KotORDroidColonist_SentWD>
         </options>
@@ -242,9 +242,9 @@
           <RSW_Nikto MayRequire="mandrake.rsw.starwarsraces">1</RSW_Nikto>
         </traders>
         <guards>
-          <Jawa_Gamorrean_Guard>6</Jawa_Gamorrean_Guard>
-          <Jawa_Gamorrean_Enforcer>2</Jawa_Gamorrean_Enforcer>
-          <Jawa_Spawn_Hutt>1</Jawa_Spawn_Hutt>
+          <RSW_Jawa_Gamorrean_Guard>6</RSW_Jawa_Gamorrean_Guard>
+          <RSW_Jawa_Gamorrean_Enforcer>2</RSW_Jawa_Gamorrean_Enforcer>
+          <RSW_Jawa_Spawn_Hutt>1</RSW_Jawa_Spawn_Hutt>
           <!-- C1, protocol-droid presence only. The price mechanic is C4's
                (DROID_PROTOCOL_TRADE_ADVANTAGE_1); `guards` is the only node a
                Trader group reads a companion out of. Weight 4 of 13. -->
@@ -258,9 +258,9 @@
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <Jawa_Hutt_Grunt>10</Jawa_Hutt_Grunt>
-          <Jawa_Hutt_Heavy>3</Jawa_Hutt_Heavy>
-          <Jawa_Hutt_Specialist>2</Jawa_Hutt_Specialist>
+          <RUT_Jawa_Hutt_Grunt>10</RUT_Jawa_Hutt_Grunt>
+          <RUT_Jawa_Hutt_Heavy>3</RUT_Jawa_Hutt_Heavy>
+          <RUT_Jawa_Hutt_Specialist>2</RUT_Jawa_Hutt_Specialist>
           <!-- C1: bought muscle stands in the palace as well as on the raid. -->
           <RSW_DW_KotORDroidColonist_ADMkI MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_KotORDroidColonist_ADMkI>
           <RSW_DW_KotORDroidColonist_SentWD MayRequire="mandrake.rsw.droidworks">1</RSW_DW_KotORDroidColonist_SentWD>

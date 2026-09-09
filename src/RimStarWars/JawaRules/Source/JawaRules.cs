@@ -13,7 +13,7 @@ namespace RimMandrake.StarWars.JawaRules
     [StaticConstructorOnStartup]
     public static class JawaRulesMod
     {
-        // The player's Jawa. Both Jawa_Colonist and the three Jawa_Tribal_* kinds
+        // The player's Jawa. Both RUT_Jawa_Colonist and the three Jawa_Tribal_* kinds
         // roll RSW_MandrakeJawa at 1.0; RSW_RimMandrakeJawa is the generated species-catalogue
         // twin and is NOT what our pawnkinds field. Keyed by name so a missing def is
         // a quiet no-op rather than a type-load failure.

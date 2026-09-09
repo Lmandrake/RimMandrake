@@ -34,7 +34,7 @@
   -->
 
   <RulePackDef>
-    <defName>Jawa_NamerPetSW</defName>
+    <defName>RSW_Jawa_NamerPetSW</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name(p=6)-&gt;[loreName]</li>

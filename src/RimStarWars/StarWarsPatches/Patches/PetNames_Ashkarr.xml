@@ -37,7 +37,7 @@
     <xpath>/Defs/ThingDef/race/nameGenerator[text()="SWAnimalNamerMale"]</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/ThingDef/race/nameGenerator[text()="SWAnimalNamerMale"]</xpath>
-      <value><nameGenerator>Jawa_NamerPetSW</nameGenerator></value>
+      <value><nameGenerator>RSW_Jawa_NamerPetSW</nameGenerator></value>
     </match>
   </Operation>
 
@@ -45,7 +45,7 @@
     <xpath>/Defs/ThingDef/race/nameGeneratorFemale[text()="SWAnimalNamerFemale"]</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/ThingDef/race/nameGeneratorFemale[text()="SWAnimalNamerFemale"]</xpath>
-      <value><nameGeneratorFemale>Jawa_NamerPetSW</nameGeneratorFemale></value>
+      <value><nameGeneratorFemale>RSW_Jawa_NamerPetSW</nameGeneratorFemale></value>
     </match>
   </Operation>
 

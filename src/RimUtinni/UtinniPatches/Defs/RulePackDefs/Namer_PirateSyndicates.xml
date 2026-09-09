@@ -25,7 +25,7 @@
 
   <!-- PirateWaster - pollution-adapted wasters -->
   <RulePackDef>
-    <defName>Jawa_NamerFactionPirateWaster</defName>
+    <defName>RUT_Jawa_NamerFactionPirateWaster</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name->Nova Blades</li>
@@ -35,7 +35,7 @@
 
   <!-- PirateYttakin - hairy cold-adapted brutes -->
   <RulePackDef>
-    <defName>Jawa_NamerFactionPirateYttakin</defName>
+    <defName>RUT_Jawa_NamerFactionPirateYttakin</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name->the Ohnaka Gang</li>
@@ -45,7 +45,7 @@
 
   <!-- CannibalPirate - cannibal ideoligion -->
   <RulePackDef>
-    <defName>Jawa_NamerFactionCannibalPirate</defName>
+    <defName>RUT_Jawa_NamerFactionCannibalPirate</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name->Crimson Dawn</li>
@@ -55,7 +55,7 @@
 
   <!-- AG_XenohumanPirates - gene-modified xenohumans -->
   <RulePackDef>
-    <defName>Jawa_NamerFactionAG_XenohumanPirates</defName>
+    <defName>RUT_Jawa_NamerFactionAG_XenohumanPirates</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name->Black Sun</li>
@@ -65,7 +65,7 @@
 
   <!-- DV_PirateKeshig - the Keshig xenotype -->
   <RulePackDef>
-    <defName>Jawa_NamerFactionDV_PirateKeshig</defName>
+    <defName>RUT_Jawa_NamerFactionDV_PirateKeshig</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name->Kanjiklub</li>

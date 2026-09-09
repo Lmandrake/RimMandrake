@@ -200,9 +200,9 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>

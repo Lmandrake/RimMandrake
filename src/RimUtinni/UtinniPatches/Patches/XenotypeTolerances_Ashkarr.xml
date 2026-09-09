@@ -123,18 +123,18 @@
     </nomatch>
   </Operation>
 
-  <!-- Jawa_Xeno_Gamorrean: -40..45 -> -50..55 °C   metabolism -2 -->
+  <!-- RSW_Jawa_Xeno_Gamorrean: -40..45 -> -50..55 °C   metabolism -2 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/genes/li[text()="MinTemp_SmallDecrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes/li[text()="MinTemp_SmallDecrease"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/genes</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes</xpath>
       <value><li>MinTemp_SmallDecrease</li></value>
     </nomatch>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/genes/li[text()="MaxTemp_SmallIncrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes/li[text()="MaxTemp_SmallIncrease"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/genes</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes</xpath>
       <value><li>MaxTemp_SmallIncrease</li></value>
     </nomatch>
   </Operation>

@@ -128,7 +128,7 @@
        diagnosis is still exactly right. It is incomplete only because it
        could not anticipate us: Jawa_Patches later authored four kinds of our
        own on the same droid races, in Defs/PawnKindDefs/JawaFactionRoster.xml,
-       and none carries fixedGender. All four field for Jawa_FreeDroidEnclaves,
+       and none carries fixedGender. All four field for RUT_Jawa_FreeDroidEnclaves,
        so that faction visibly spawns bodiless droids.
 
        ⚠️ ONLY THE PROTOCOL ONE HAS BEEN SEEN FAILING, and that is not evidence
@@ -150,44 +150,44 @@
        PAWNKIND_GENERATOR_DIVERGED_1.
        -->
 
-  <!-- Jawa_Droid_Specialist : race OuterRim_ProtocolDroid : SEEN FAILING twice in the 2026-08-23 log -->
+  <!-- RUT_Jawa_Droid_Specialist : race OuterRim_ProtocolDroid : SEEN FAILING twice in the 2026-08-23 log -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Specialist"][not(fixedGender)]</xpath>
+    <xpath>/Defs/PawnKindDef[defName="RUT_Jawa_Droid_Specialist"][not(fixedGender)]</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Specialist"][not(fixedGender)]</xpath>
+      <xpath>/Defs/PawnKindDef[defName="RUT_Jawa_Droid_Specialist"][not(fixedGender)]</xpath>
       <value>
         <fixedGender>Male</fixedGender>
       </value>
     </match>
   </Operation>
 
-  <!-- Jawa_Droid_Grunt : race OuterRim_ImperialLaborDroid : not yet seen - it simply has not rolled female -->
+  <!-- RUT_Jawa_Droid_Grunt : race OuterRim_ImperialLaborDroid : not yet seen - it simply has not rolled female -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Grunt"][not(fixedGender)]</xpath>
+    <xpath>/Defs/PawnKindDef[defName="RUT_Jawa_Droid_Grunt"][not(fixedGender)]</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Grunt"][not(fixedGender)]</xpath>
+      <xpath>/Defs/PawnKindDef[defName="RUT_Jawa_Droid_Grunt"][not(fixedGender)]</xpath>
       <value>
         <fixedGender>Male</fixedGender>
       </value>
     </match>
   </Operation>
 
-  <!-- Jawa_Droid_Heavy : race OuterRim_KXSecurityDroid : not yet seen - it simply has not rolled female -->
+  <!-- RUT_Jawa_Droid_Heavy : race OuterRim_KXSecurityDroid : not yet seen - it simply has not rolled female -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Heavy"][not(fixedGender)]</xpath>
+    <xpath>/Defs/PawnKindDef[defName="RUT_Jawa_Droid_Heavy"][not(fixedGender)]</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Heavy"][not(fixedGender)]</xpath>
+      <xpath>/Defs/PawnKindDef[defName="RUT_Jawa_Droid_Heavy"][not(fixedGender)]</xpath>
       <value>
         <fixedGender>Male</fixedGender>
       </value>
     </match>
   </Operation>
 
-  <!-- Jawa_Droid_Leader : race OuterRim_SuperTacticalDroid : not yet seen - it simply has not rolled female -->
+  <!-- RUT_Jawa_Droid_Leader : race OuterRim_SuperTacticalDroid : not yet seen - it simply has not rolled female -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Leader"][not(fixedGender)]</xpath>
+    <xpath>/Defs/PawnKindDef[defName="RUT_Jawa_Droid_Leader"][not(fixedGender)]</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/PawnKindDef[defName="Jawa_Droid_Leader"][not(fixedGender)]</xpath>
+      <xpath>/Defs/PawnKindDef[defName="RUT_Jawa_Droid_Leader"][not(fixedGender)]</xpath>
       <value>
         <fixedGender>Male</fixedGender>
       </value>

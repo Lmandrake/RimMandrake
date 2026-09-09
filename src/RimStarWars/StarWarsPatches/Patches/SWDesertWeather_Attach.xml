@@ -13,7 +13,7 @@
   ===========================================================================
   The first version of this patch added entries in LIST form:
 
-      <li><weather>SW_Sandstorm</weather><commonality>8</commonality></li>
+      <li><weather>RSW_SW_Sandstorm</weather><commonality>8</commonality></li>
 
   That is wrong, and it was catastrophic rather than merely ineffective.
 
@@ -84,8 +84,8 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="Desert"]/baseWeatherCommonalities</xpath>
       <value>
-        <SW_Sandstorm>8</SW_Sandstorm>
-        <SW_DrySandstorm>6</SW_DrySandstorm>
+        <RSW_SW_Sandstorm>8</RSW_SW_Sandstorm>
+        <RSW_SW_DrySandstorm>6</RSW_SW_DrySandstorm>
       </value>
     </match>
   </Operation>
@@ -96,8 +96,8 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/baseWeatherCommonalities</xpath>
       <value>
-        <SW_Sandstorm>12</SW_Sandstorm>
-        <SW_DrySandstorm>10</SW_DrySandstorm>
+        <RSW_SW_Sandstorm>12</RSW_SW_Sandstorm>
+        <RSW_SW_DrySandstorm>10</RSW_SW_DrySandstorm>
       </value>
     </match>
   </Operation>
@@ -108,7 +108,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AridShrubland"]/baseWeatherCommonalities</xpath>
       <value>
-        <SW_Sandstorm>5</SW_Sandstorm>
+        <RSW_SW_Sandstorm>5</RSW_SW_Sandstorm>
       </value>
     </match>
   </Operation>
@@ -119,7 +119,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/baseWeatherCommonalities</xpath>
       <value>
-        <SW_Sandstorm>6</SW_Sandstorm>
+        <RSW_SW_Sandstorm>6</RSW_SW_Sandstorm>
       </value>
     </match>
   </Operation>
@@ -130,8 +130,8 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/baseWeatherCommonalities</xpath>
       <value>
-        <SW_Sandstorm>8</SW_Sandstorm>
-        <SW_DrySandstorm>6</SW_DrySandstorm>
+        <RSW_SW_Sandstorm>8</RSW_SW_Sandstorm>
+        <RSW_SW_DrySandstorm>6</RSW_SW_DrySandstorm>
       </value>
     </match>
   </Operation>
@@ -144,7 +144,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/baseWeatherCommonalities</xpath>
       <value>
-        <SW_RedFog>8</SW_RedFog>
+        <RSW_SW_RedFog>8</RSW_SW_RedFog>
       </value>
     </match>
   </Operation>
@@ -155,8 +155,8 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="Volcano"]/baseWeatherCommonalities</xpath>
       <value>
-        <SW_RedFog>8</SW_RedFog>
-        <SW_RedFoggyRain>5</SW_RedFoggyRain>
+        <RSW_SW_RedFog>8</RSW_SW_RedFog>
+        <RSW_SW_RedFoggyRain>5</RSW_SW_RedFoggyRain>
       </value>
     </match>
   </Operation>

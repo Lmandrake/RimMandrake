@@ -9,7 +9,7 @@
        and canvas each plan was baked at are in the plan file's own header
        comment lines. -->
 
-  <!-- abode: one room, 1-2 people. Jawa_IndigenousTribes, Neolithic, poor, 9x8. -->
+  <!-- abode: one room, 1-2 people. RUT_Jawa_IndigenousTribes, Neolithic, poor, 9x8. -->
   <GenStepDef>
     <defName>RUT_GenStep_HomesteadAbode</defName>
     <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
@@ -31,7 +31,7 @@
   </GenStepDef>
 
   <!-- compound: households around a shared fire, a pen, a grave plot, a
-       sandbag perimeter. Jawa_IndigenousTribes, Neolithic, poor, 40x34. -->
+       sandbag perimeter. RUT_Jawa_IndigenousTribes, Neolithic, poor, 40x34. -->
   <GenStepDef>
     <defName>RUT_GenStep_HomesteadCompound</defName>
     <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">

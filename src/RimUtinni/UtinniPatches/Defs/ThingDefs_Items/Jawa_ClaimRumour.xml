@@ -2,7 +2,7 @@
 <!-- A readable rumour that hands the player "The Claim" on the spot.
 
      WHY THIS EXISTS, and it is a load-budget decision before it is a fiction one.
-     Jawa_TheClaim is root-selected (rootSelectionWeight 1.0) and therefore fires
+     RUT_Jawa_TheClaim is root-selected (rootSelectionWeight 1.0) and therefore fires
      on the storyteller's own cadence. The gate is "seen working
      in-game ONCE" — and a cold load is ~23-30 minutes, so "wait for the
      storyteller" is the most expensive possible way to clear it. This item makes
@@ -50,16 +50,16 @@
      (buying a map from the Hutts puts you on the Empire's radar) also lands on
      this def when it lands, and the quest does not change either time.
 
-     Dev route: Debug actions -> Spawn thing -> Jawa_ClaimRumour, then select a
+     Dev route: Debug actions -> Spawn thing -> RUT_Jawa_ClaimRumour, then select a
      colonist and right-click it to read. -->
 <Defs>
 
   <ThingDef ParentName="ResourceBase">
-    <!-- defName stays Jawa_ClaimRumour deliberately: a defName is never shown to
+    <!-- defName stays RUT_Jawa_ClaimRumour deliberately: a defName is never shown to
          the player, and renaming it would churn the quest reference and every
          save that holds one, for zero player-facing gain. The label/defName
          mismatch is intentional, not an oversight. -->
-    <defName>Jawa_ClaimRumour</defName>
+    <defName>RUT_Jawa_ClaimRumour</defName>
     <label>salvage rumour</label>
     <description>A scraped hide chart, rolled around a stub of iron cut for driving into wreckage. Somebody walked out far enough to see where the thing came down, and then walked back to sell what they saw.\n\nReading it tells you where to go. It does not tell you who else was told.</description>
     <thingClass>ThingWithComps</thingClass>
@@ -87,7 +87,7 @@
       </li>
       <li Class="CompProperties_UseEffectDestroySelf" />
       <li Class="CompProperties_UseEffectGiveQuest">
-        <quest>Jawa_TheClaim</quest>
+        <quest>RUT_Jawa_TheClaim</quest>
       </li>
     </comps>
   </ThingDef>
