@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T18:54:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T18:57:36Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -586,7 +586,7 @@ summary:  (no items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md yet — write one w
 prose:    infrastructure/state/items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md
 
 ## KOTOR_CRYSTAL_GENSTEP_DRIFT_1 Deployed KOTOR_CrystalFormation genstep scatters only Stygium; repo's absorbed copy lists 12 crystal variants — diff repo vs deployed, redeploy or pull (crystal-inventory find)
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    deploy
 target:   v1
@@ -811,6 +811,16 @@ kind:     fix
 blocked:  Not a fresh find: the 14 candidate PNGs and empty-folder status are already documented in _artsrc/sweetline_orphans_2026-09-06/README.md and TREE_GRAPHICS_OWNERSHIP_1.md Owed#1, which explicitly rules picking among them is an owner art call (CONTACT_SHEET.png ready for review), not something FOUNDRY settles by picking the newest/best-looking file. Left folder empty and source PNGs untouched; wiring deferred to that item. (on TREE_GRAPHICS_OWNERSHIP_1)
 summary:  (no items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md
+
+## KOTOR_CRYSTAL_GENSTEP_DRIFT_1 Deployed KOTOR_CrystalFormation genstep scatters only Stygium; repo's absorbed copy lists 12 crystal variants — diff repo vs deployed, redeploy or pull (crystal-inventory find)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     fix
+blocked:  Not a repo bug: repo's Absorbed_KotorCore_CrystalMapGenerator.xml already lists all 11 variants ungated (confirmed via deploy_custom_mods.py plan: file is under an ACTIVE DEPLOY_HOLD entry, 'donor guy762.mm.kotorcore still active, 2026-09-06'). Live game loads the donor's own un-absorbed CrystalMapGenerator.xml (workshop 3254370945), which gates 10/11 variants behind MayRequire=guy762.KotORWeapons -- a mod confirmed absent from live ModsConfig.xml -- leaving only ungated Stygium. Redeploying now would create a duplicate KOTOR_CrystalFormation defName against the still-active donor; pulling the crippled donor version into repo would be a regression. Real fix is retiring guy762.mm.kotorcore, already tracked and blocked elsewhere. (on DROID_DONOR_PATCH_GATE_1)
+summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
