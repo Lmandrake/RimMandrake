@@ -148,9 +148,12 @@ figure is ~~8.14% water (1,780 of 21,872 tiles, measured 2026-08-20)~~ — 🔴 
 6.46% water, 1,412 of 21,872 tiles**, measured by CHECK 2026-08-23 on the live planet
 (`jawa/world_stats`) and agreeing with `_tiles.csv` to the tile. The bundle was edited
 after the 2026-08-20 reading and this line was never told: **Ocean fell 1,468 → 823**,
-`Lake` held at 312, and **277 `SeaIce` tiles appeared** — the nightside ice pass. **Exactly
-three** connected bodies of ≥ 8 tiles (5 counting puddles), largest 2.97% of the planet, no
-strays. Perimeter²/area **≥ 25** (a circle is 4π ≈ 12.6). Two centroids in the
+`Lake` held at 312, and **277 `SeaIce` tiles appeared** — the nightside ice pass. **Four**
+connected bodies of ≥ 8 tiles (16 counting puddles), largest 2.76% of the planet, no
+strays *(re-measured live on V27 at the 2026-09-08 review: the Propane Lake's 53-tile
+body crossed the ≥8 threshold under LIQUID_BIOMES_MAP_1, and the puddle count grew with
+the waterline ribbon — see water_doctrine.md's ribbon section; superseded the 08-23
+"exactly three / 5" figures in place)*. Perimeter²/area **≥ 25** (a circle is 4π ≈ 12.6). Two centroids in the
 terminator band, **one deliberately out near the antistellar point**, frozen. Elongated
 and torn, ⛔ **never a ring**, ⛔ never smoothed. Hypersaline — the sea is food and mass,
 not drink. Every water tile `elevation ≤ 0`; every land tile `elevation > 0`.

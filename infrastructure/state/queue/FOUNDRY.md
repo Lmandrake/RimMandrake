@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T04:14:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T05:02:05Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1143,3 +1143,53 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  - Location: 32.12N 94.76E → tile 2403 (MEASURED off the canon CSV: lat 32.1169,
 prose:    infrastructure/state/items/GAPING_DOOM_SITE_1.md
+
+## BIOME_ENRICHMENT_DESERT_WASTELAND_1 Enrichment wave (review B1): Desert (53% zero-mutator) + Wasteland (63%) — the two largest land biomes read thin where caravans travel most; place from their sheets' shade-line and plant-vault kits; dune sea stays barren by rule
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
+
+## BIOME_ENRICHMENT_POISON_FOREST_1 Enrichment wave (review B1): Poison Forest is mutator-barren (74% zero-tile MEASURED) — place from its sheet's own kit: vent fields, metal-plated groves, condensation lines; verify by density + whole-planet loss diff
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BIOME_ENRICHMENT_POISON_FOREST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_ENRICHMENT_POISON_FOREST_1.md
+
+## SEA_ENRICHMENT_LANDMARKS_1 Enrichment wave (review B1): the Grey Sea holds ZERO landmarks in 429 tiles and the Twilight Sea is near-bare — seamounts, wreck moorings, mat features for the diving arc; respects the seas' sheets
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SEA_ENRICHMENT_LANDMARKS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SEA_ENRICHMENT_LANDMARKS_1.md
+
+## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LANDMARK_NAMING_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
+
+## LANDMARK_SETTLEMENT_STACKS_1 Review B3: 14 settlements share a tile with a landmark (list in Transient/final_review/findings/mutators_landmarks.md) — keep deliberate stacks (palace-on-oasis), nudge accidents one tile; verify with read-back + loss diff
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LANDMARK_SETTLEMENT_STACKS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LANDMARK_SETTLEMENT_STACKS_1.md
