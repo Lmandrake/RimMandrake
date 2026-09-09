@@ -6554,3 +6554,8 @@
 {"seat":"FOUNDRY","event":"file","id":"MODLIST_RESTORE_AND_BATCH_DEPLOY_1","title":"Restore the abandoned full campaign modlist, apply Wave 1 retirement, enable tonight's new own-built mods, redeploy updated DLLs, one clean restart","kind":"task","target":"v1","needs":"game-up","for":"FOUNDRY","ts":"2026-09-09T22:31:07Z"}
 {"seat":"FOUNDRY","event":"claim","id":"MODLIST_RESTORE_AND_BATCH_DEPLOY_1","ts":"2026-09-09T22:31:08Z"}
 {"seat":"FOUNDRY","event":"start","id":"MODLIST_RESTORE_AND_BATCH_DEPLOY_1","ts":"2026-09-09T22:31:09Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"MODLIST_RESTORE_AND_BATCH_DEPLOY_1: modlist restore + batch deploy + one cold load","ts":"2026-09-09T22:32:31Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-09T22:40:50Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-09T22:41:01Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-09T22:41:55Z"}
+{"seat":"BENCH","event":"file","id":"DUMPDB_MANIFEST_SHORTFALL_1","title":"Live defs.sqlite holds 80287 defs vs 80987 manifest-declared (e.g. Verse.CreepJoinerBaseDef json 24 / sqlite 0) — pre-existing at HEAD, find the 700 missing","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-09T22:45:54Z"}

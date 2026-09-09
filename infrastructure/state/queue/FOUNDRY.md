@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T22:31:09Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-09T22:45:54Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -690,7 +690,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-summary:  (no items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md yet — write one when you have something to say)
+summary:  Restore the campaign to a real, correct, save-safe state and fold in tonight's
 prose:    infrastructure/state/items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md
 
 # BLOCKED — something is WRONG and someone must act
@@ -928,3 +928,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SELFTEST_RENDER_FLAKE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SELFTEST_RENDER_FLAKE_1.md
+
+## DUMPDB_MANIFEST_SHORTFALL_1 Live defs.sqlite holds 80287 defs vs 80987 manifest-declared (e.g. Verse.CreepJoinerBaseDef json 24 / sqlite 0) — pre-existing at HEAD, find the 700 missing
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DUMPDB_MANIFEST_SHORTFALL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DUMPDB_MANIFEST_SHORTFALL_1.md
