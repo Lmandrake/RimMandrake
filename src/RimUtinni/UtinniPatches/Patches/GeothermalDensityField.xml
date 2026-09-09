@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  GeothermalDensityField.xml            RimUtinni Patches   GEOTHERMAL_DENSITY_FIELD_1
+  ============================================================================
+  Vanilla's SteamGeysers GenStepDef (Core, class GenStep_ScatterGeysers)
+  scatters ThingDefOf.SteamGeyser on EVERY map at countPer10kCellsRange
+  (0.7~1) x map.Biome.geyserCountFactor x per-mutator geyserCountFactor —
+  none of which vary with where the map's world tile actually sits. Swap the
+  genStep Class to our subclass (Source/GeothermalDensityField.cs), which
+  calls base.CalculateFinalCount for the exact same vanilla number and then
+  multiplies by a per-tile 0..1 density: 1.0 on dayside mountainous ground,
+  decaying with distance from the nearest dayside mountain range, 0 past the
+  terminator (arc >= 90, same substellar-point formula the weather suite's
+  terminator storm wall already uses).
+
+  Every other field on the GenStepDef (thingDef, minSpacing, terrain
+  validation, validators...) is untouched — PatchOperationAttributeSet only
+  rewrites the Class attribute on the existing <genStep> node.
+
+  SteamGeysers is Core, always present — but per this mod's own convention
+  (JawaResource_Scrapfields.xml's SAFETY note), wrapped in
+  PatchOperationConditional anyway with an xpath IDENTICAL to the inner
+  operation's own, so a future Core rename/restructure is a silent no-op
+  (falls back to vanilla's flat geyser count) rather than a red error on
+  every launch.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/GenStepDef[defName="SteamGeysers"]/genStep</xpath>
+    <match Class="PatchOperationAttributeSet">
+      <xpath>Defs/GenStepDef[defName="SteamGeysers"]/genStep</xpath>
+      <attribute>Class</attribute>
+      <value>RimMandrake.Utinni.UtinniPatches.GenStep_ScatterGeysersDensityField</value>
+    </match>
+  </Operation>
+
+</Patch>
