@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_Desert                                     UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/desert.md
+    (FROZEN, BIOME_FREEZE_FABLE_REVIEW_1). Replaces the donor Desert (vanilla Core,
+    currently retextured/weather-patched by GRiNDTerra Terrain Retexture and others) —
+    own def, not a patch, same reasoning as RUT_BlueDesert: sheet-governed weather,
+    plantDensity and terrain are patch targets today (`biome_flora.py`,
+    `BiomeCast_Ashkarr.xml`, and third-party retexture patches all touch this donor
+    def); a def we author stops being a patch collision.
+
+    MEASURED (sheet SS0): 3,932 tiles, arc 60-88 deg (sun 14.4 deg above horizon),
+    temp median 25.5 C, hilliness 2.0. Sheet's thematic handle: "the long shade" —
+    shade is patchy, permanent and never moves; nothing here pursues (ban 3); nothing
+    is nocturnal (ban 1, no day/night geometry to key off).
+
+    plantDensity dropped to vanilla's own 0.05 (not the 0.45 a terrain-retexture patch
+    currently carries): ban 8 is explicit — "vegetation meagre and never green in
+    quantity." terrainsByFertility kept at vanilla Sand/Soil rather than the donor's
+    patched NewAridSoil (a GRiNDTerra Terrain Retexture def) — no MayRequire needed,
+    and nothing in the sheet asks for a different soil.
+
+    Weather: ban 2 is a hard ban on rain here (R-H1; only the peaks and the river
+    margin are exempt, and this is neither) — Rain/RainyThunderstorm zeroed. Snow
+    zeroed too: not a named ban, but "the heat never breaks... never a cold night"
+    (SS4 "Never a cold night") reads badly against a snow entry, so it is dropped as a
+    thematic call, distinct from the hard ban, and flagged as such here rather than
+    silently. DryThunderstorm and Sandstorm (Odyssey) kept — "the smoke is a gift"
+    (ash/dust events fit; SS4). GrayPall (Anomaly) kept per the standard MayRequire
+    pattern already used on RUT_BlueDesert/RUT_TheScald.
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml (see specs.py header) — both generated against
+    rosters/desert.json, which is this sheet's own landed fauna/flora pass
+    (BIOME_FAUNA_ASSIGNMENT_SITTING_1, 2026-09-09).
+
+    foragedFood: left UNSET. The donor's RawAgave points at Plant_Agave, which
+    desert.json's flora_purged list explicitly cuts as Earth-nameable — carrying the
+    donor value forward would forage from a plant this sheet evicted. No frozen sheet
+    or roster field names the correct replacement defName (candidate: the wild hubba
+    gourd's ForagedFood item, not verified here) — left unset rather than guessed,
+    flagged in the item report.
+
+    NOT this pass's scope: painting this def onto the world (a separate live-bridge
+    step, `BLUE_DESERT_WORLD_SWITCH_1`'s own template); the shade-grid MapComponent,
+    burst-predator staged statFactors, filter-feeding megafauna, ultracactus and
+    staggerseed defs (all SS10/SS4b/SS4c "Owed" — design and art not authored here).
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_Desert</defName>
+    <label>the Desert</label>
+    <description>A dayside band of scattered rock at a sun so low every stone throws a shadow four times its own height. Nothing lives in the light and nothing survives leaving shelter, so life here is a sprint between islands of shade -- rest, dash, rest -- and the gaps between them are the only geography that matters. Cooler and steadier than the deep dune beyond it: the numbers are small, but they hold.</description>
+    <workerClass>RimWorld.BiomeWorker_Desert</workerClass>
+
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>false</allowFarmingCamps>
+    <animalDensity>0.4</animalDensity>
+    <plantDensity>0.05</plantDensity>
+    <forageability>0.25</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <texture>World/Biomes/Desert</texture>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_OrganDecay</diseaseInc>
+        <commonality>10</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Sand</terrain>
+        <min>-999</min>
+        <max>0.8</max>
+      </li>
+      <li>
+        <terrain>Soil</terrain>
+        <min>0.8</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>90</Clear>
+      <DryThunderstorm>4</DryThunderstorm>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">1</GrayPall>
+      <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">4</Sandstorm>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <Bantha MayRequire="mlie.starwarsanimalcollection">0.8</Bantha>  <!-- bantha - huge-herd, adjust-keep -->
+      <Kreetle MayRequire="mlie.starwarsanimalcollection">0.8</Kreetle>  <!-- kreetle - ambush-small, keep -->
+      <BMT_Jellypot MayRequire="biomesteam.biomescaverns">0.7</BMT_Jellypot>  <!-- jellypot - ambush-small, keep -->
+      <Scavrat MayRequire="mlie.starwarsanimalcollection">0.6</Scavrat>  <!-- Scavrats - ship-vermin, import -->
+      <Shyrack MayRequire="mlie.starwarsanimalcollection">0.6</Shyrack>  <!-- shyrack - ambush-flier, keep -->
+      <Gorg MayRequire="mlie.starwarsanimalcollection">0.4</Gorg>  <!-- gorg - ambush-small, keep -->
+      <Gutkurr MayRequire="mlie.starwarsanimalcollection">0.4</Gutkurr>  <!-- gutkurr - burst-predator, adjust-keep -->
+      <Jamel MayRequire="mlie.starwarsanimalcollection">0.4</Jamel>  <!-- Jamel - herd, keep -->
+      <LongtailGorg MayRequire="mlie.starwarsanimalcollection">0.4</LongtailGorg>  <!-- longtail gorg - ambush-small, keep -->
+      <Ronto MayRequire="mlie.starwarsanimalcollection">0.4</Ronto>  <!-- ronto - huge-herd, keep -->
+      <Sketto MayRequire="mlie.starwarsanimalcollection">0.4</Sketto>  <!-- sketto - ambush-small, keep -->
+      <WompRat MayRequire="mlie.starwarsanimalcollection">0.4</WompRat>  <!-- womp rat - ambush-small, keep -->
+      <Wraid MayRequire="mlie.starwarsanimalcollection">0.4</Wraid>  <!-- wraid - burst-predator, adjust-keep -->
+      <AA_DesertAve MayRequire="sarg.alphaanimals">0.4</AA_DesertAve>  <!-- desert ave - navigator, keep -->
+      <Eopie MayRequire="mlie.starwarsanimalcollection">0.3</Eopie>  <!-- eopie - herd, keep -->
+      <Hrumph MayRequire="mlie.starwarsanimalcollection">0.3</Hrumph>  <!-- hrumph - herd, import -->
+      <IridonianReek MayRequire="mlie.starwarsanimalcollection">0.3</IridonianReek>  <!-- iridonian reek - herd, import -->
+      <Jimvu MayRequire="mlie.starwarsanimalcollection">0.3</Jimvu>  <!-- jimvu - herd, import -->
+      <Kwi MayRequire="mlie.starwarsanimalcollection">0.3</Kwi>  <!-- Kwi - herd, import -->
+      <Mynock MayRequire="mlie.starwarsanimalcollection">0.3</Mynock>  <!-- mynock - ship-vermin, import -->
+      <Skalder MayRequire="mlie.starwarsanimalcollection">0.3</Skalder>  <!-- skalder - huge-herd, import -->
+      <Uvak MayRequire="mlie.starwarsanimalcollection">0.3</Uvak>  <!-- uvak - herd, import -->
+      <Varactyl MayRequire="mlie.starwarsanimalcollection">0.3</Varactyl>  <!-- varactyl - herd, import -->
+      <Zeer MayRequire="mlie.starwarsanimalcollection">0.3</Zeer>  <!-- zeer - herd, import -->
+      <VFEI2_Fuelmite MayRequire="oskarpotocki.vfe.insectoid2">0.3</VFEI2_Fuelmite>  <!-- fuelmite - ship-vermin, import -->
+      <Falumpaset MayRequire="mlie.starwarsanimalcollection">0.2</Falumpaset>  <!-- falumpaset - herd, import -->
+      <FrilledGorg MayRequire="mlie.starwarsanimalcollection">0.2</FrilledGorg>  <!-- frilled gorg - ambush-small, keep -->
+      <Jakobeast MayRequire="mlie.starwarsanimalcollection">0.2</Jakobeast>  <!-- jakobeast - herd, import -->
+      <Nerf MayRequire="mlie.starwarsanimalcollection">0.2</Nerf>  <!-- nerf - herd, keep -->
+      <Nuna MayRequire="mlie.starwarsanimalcollection">0.2</Nuna>  <!-- nuna - herd-small, keep -->
+      <Shaak MayRequire="mlie.starwarsanimalcollection">0.2</Shaak>  <!-- shaak - herd, import -->
+      <TeeMuss MayRequire="mlie.starwarsanimalcollection">0.2</TeeMuss>  <!-- tee muss - herd, import -->
+      <Worrt MayRequire="mlie.starwarsanimalcollection">0.2</Worrt>  <!-- worrt - ambush-small, keep -->
+      <AA_Needleroll MayRequire="sarg.alphaanimals">0.2</AA_Needleroll>  <!-- needleroll - grain, keep -->
+      <Rat>0.1</Rat>  <!-- brown rat - ship-vermin, import -->
+      <Bolotaur MayRequire="mlie.starwarsanimalcollection">0.1</Bolotaur>  <!-- bolotaur - herd, import -->
+      <Clodhopper MayRequire="mlie.starwarsanimalcollection">0.1</Clodhopper>  <!-- clodhopper - ambush-small, keep -->
+      <FeralGrazer MayRequire="mlie.starwarsanimalcollection">0.1</FeralGrazer>  <!-- feral grazer - herd, import -->
+      <Gizka MayRequire="mlie.starwarsanimalcollection">0.1</Gizka>  <!-- gizka - ambush-small, keep -->
+      <Iriaz MayRequire="mlie.starwarsanimalcollection">0.1</Iriaz>  <!-- iriaz - herd-small, keep -->
+      <Krykna MayRequire="mlie.starwarsanimalcollection">0.1</Krykna>  <!-- krykna - ambush-small, keep -->
+      <Runyip MayRequire="mlie.starwarsanimalcollection">0.1</Runyip>  <!-- runyip - herd, import -->
+      <OuterRim_MSEDroid MayRequire="neronix17.outerrim.droiddepot">0.1</OuterRim_MSEDroid>  <!-- MSE Repair Droid - feral-droid, import -->
+      <OuterRim_SalvageAssistDroid MayRequire="neronix17.outerrim.droiddepot">0.1</OuterRim_SalvageAssistDroid>  <!-- salvage assist droid - feral-droid, import -->
+      <OuterRim_DUMDroid MayRequire="neronix17.outerrim.droiddepot">0.08</OuterRim_DUMDroid>  <!-- DUM Repair Droid - feral-droid, import -->
+      <OuterRim_GNKDroid MayRequire="neronix17.outerrim.droiddepot">0.08</OuterRim_GNKDroid>  <!-- GNK Power Droid - feral-droid, import -->
+      <Voorpak MayRequire="mlie.starwarsanimalcollection">0.05</Voorpak>  <!-- voorpak - ambush-small, keep -->
+      <OuterRim_FX7Droid MayRequire="neronix17.outerrim.droiddepot">0.05</OuterRim_FX7Droid>  <!-- fx-7 medical droid - feral-droid, import -->
+      <OuterRim_MuckrakerDroid MayRequire="neronix17.outerrim.droiddepot">0.05</OuterRim_MuckrakerDroid>  <!-- Muckraker Crab Droid - feral-droid, import -->
+      <AA_Gigantelope MayRequire="sarg.alphaanimals">0.05</AA_Gigantelope>  <!-- gigantelope - herd, keep -->
+      <AA_SandProwler MayRequire="sarg.alphaanimals">0.05</AA_SandProwler>  <!-- sand prowler - ambush-burrow, keep -->
+      <AA_Terramorph MayRequire="sarg.alphaanimals">0.035</AA_Terramorph>  <!-- terramorph - ambush-flat, keep -->
+      <AA_SandSquid MayRequire="sarg.alphaanimals">0.025</AA_SandSquid>  <!-- sand squid - subsurface-slow, keep -->
+      <OuterRim_DestroyerDroid MayRequire="neronix17.outerrim.droiddepot">0.02</OuterRim_DestroyerDroid>  <!-- Destroyer Droid - feral-droid, import -->
+      <AA_MammothWorm MayRequire="sarg.alphaanimals">0.015</AA_MammothWorm>  <!-- mammoth worm - subsurface-slow, keep -->
+      <Horax MayRequire="mlie.starwarsanimalcollection">0.01</Horax>  <!-- horax - megafauna, import -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_HardyGrass>0.6</AB_HardyGrass>  <!-- hardy grass -->
+      <Plant_Chakroot_Wild>0.3</Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
+      <Plant_HubbaGourd_Wild>0.2</Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
+      <AB_Aaklac>0.12</AB_Aaklac>  <!-- aaklac -->
+      <AB_DessertTree>0.06</AB_DessertTree>  <!-- dessert tree - tree -->
+    </wildPlants>
+    <wildPlantRegrowDays>35</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

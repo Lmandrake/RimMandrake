@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_Slime                                      UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/the_slime.md
+    (FROZEN). Replaces the donor `AB_GelatinousSuperorganism` (Alpha Biomes — donor
+    content incorporated wholesale, then bent).
+
+    MEASURED (sheet SS0): 96 tiles — the smallest defined biome — in four patches
+    (Slough 58, Glass Reach 15, Nightspill 14, Chalk Marches 9), straddling the
+    terminator (arc median 90.0). Temp p10/median/p90 3.1/13.4/17.5 C — the mildest,
+    most stable climate on Ash'karr.
+
+    diseases: emptied outright and diseaseMtbDays left at engine-max/effectively-off
+    (999, matching the donor's OWN empty disease list, sheet SS0: "the empty disease
+    list" is explicitly named as donor inventory taken in, not an omission).
+
+    Weather: "Rain" here is kept at a small commonality DELIBERATELY MISLABELED in
+    fiction as slime rain (SS3, SS4b): "the organism emits volatiles that condense
+    into precipitation... R-H1 stands because this is not weather, it is a body
+    irrigating itself" — ban 2 bans METEOROLOGICAL rain specifically, not this
+    ruled carve-out, so the Rain slot is kept rather than zeroed (same reskin-in-place
+    reasoning as The Rot's Sheen). SnowGentle/SnowHard zeroed (the donor's vanilla
+    snow/rain pair both become slime rain per SS4b — there is no separate slime
+    snow named anywhere). Clear kept dominant (the donor's own "Clear stays common —
+    the mild strip earns it," SS4b).
+
+    plantDensity kept modest at the donor's own 0.2 despite the wall-to-wall "fields
+    of its own grass, groves of its own trees" imagery (SS1): ban 4 (no permanent
+    farmland — cultivated fields convert back to slime within a few harvests) argues
+    against reading the biome as agriculturally lush, and 0.2 is the donor's own
+    measured figure, not disputed by the sheet.
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/the_slime.json. Ban 5 (no unprotected
+    permanent residents — resistant or transforming only) is roster-level, already
+    enforced by that JSON.
+
+    NOT this pass's scope: the gene machine (SS7, its own C# system + gene-list
+    authoring, SS Owed); the Slime Pit cuisine building; slimification hediff; any
+    world repaint.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_Slime</defName>
+    <label>the Slime</label>
+    <description>A country-sized body lying in the mildest weather on the planet, wearing a landscape as its skin: fields of its own grass, groves of its own trees, herds of its own cells. It was a weapon once. It ate everything it was sent against, and what it ate unmade it -- now it is a living registry and database, forever seeking to ingest, analyze, recombine, store and multiply, still faithfully serving a master a thousand years decayed.</description>
+    <workerClass>AlphaBiomes.BiomeWorker_GelatinousSuperorganism</workerClass>
+    <foragedFood>AB_RawSlime</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>2.0</animalDensity>
+    <plantDensity>0.2</plantDensity>
+    <forageability>0.75</forageability>
+    <movementDifficulty>4</movementDifficulty>
+    <texture>Biomes/AB_GelatinousSuperorganism</texture>
+    <diseaseMtbDays>999</diseaseMtbDays>
+    <diseases />
+    <terrainsByFertility>
+      <li>
+        <terrain>AB_Slime</terrain>
+        <min>-999</min>
+        <max>0.87</max>
+      </li>
+      <li>
+        <terrain>AB_RichSlime</terrain>
+        <min>0.87</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>60</Clear>
+      <Fog>3</Fog>
+      <DryThunderstorm>1</DryThunderstorm>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <Rain>8</Rain>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <AA_GreenGoo MayRequire="sarg.alphaanimals">2.0</AA_GreenGoo>  <!-- green goo - substrate, keep -->
+      <AA_AcanthamoebaGiganteaLarge MayRequire="sarg.alphaanimals">0.15</AA_AcanthamoebaGiganteaLarge>  <!-- acanthamoeba gigantea, large - resistant-native, import -->
+      <AA_Plasmorph MayRequire="sarg.alphaanimals">0.1</AA_Plasmorph>  <!-- plasmorph - resistant-native, adjust-keep -->
+      <AA_Helixien MayRequire="sarg.alphaanimals">0.075</AA_Helixien>  <!-- helixien - resistant-native, keep -->
+      <AA_DecayDrake MayRequire="sarg.alphaanimals">0.02</AA_DecayDrake>  <!-- decay drake - trace-experiment, keep -->
+      <AA_Mime MayRequire="sarg.alphaanimals">0.01</AA_Mime>  <!-- mime - trace-experiment, keep -->
+      <AA_Thunderbeast MayRequire="sarg.alphaanimals">0.005</AA_Thunderbeast>  <!-- thunderbeast - trace-experiment, keep -->
+      <GR_Chickenrabbit MayRequire="vanillaexpanded.vgeneticse">0.005</GR_Chickenrabbit>  <!-- chickenrabbit - trace-tail, import -->
+      <GR_Manbear MayRequire="vanillaexpanded.vgeneticse">0.002</GR_Manbear>  <!-- manbear - trace-tail, import -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_TallSlimyGrass>1.0</AB_TallSlimyGrass>  <!-- tall slimy grass -->
+      <AB_SlimyFern>0.5</AB_SlimyFern>  <!-- slimy fern -->
+      <AB_SlimyTree>0.5</AB_SlimyTree>  <!-- slimy tree -->
+      <AB_Slimecasia>0.4</AB_Slimecasia>  <!-- slimecasia -->
+      <AB_SlimyPholiota>0.4</AB_SlimyPholiota>  <!-- slimy pholiota -->
+      <AB_LargeSlimyTree>0.3</AB_LargeSlimyTree>  <!-- large slimy tree -->
+    </wildPlants>
+    <wildPlantRegrowDays>13</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

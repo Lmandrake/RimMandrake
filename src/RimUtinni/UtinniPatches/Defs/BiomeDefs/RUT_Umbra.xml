@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_Umbra                                      UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
+    the_propane_lakes.md (FROZEN). Replaces the donor `AB_PropaneLakes` (Alpha
+    Biomes) on its LAND tiles only — the lake itself is a separate, already-owned
+    worldmap water biome, `RUT_PropaneLake` (57 tiles, `LIQUID_BIOMES_MAP_1`, paint
+    DONE per that sheet's Owed). Named `RUT_Umbra` rather than a "PropaneLakes"
+    variant to avoid colliding with that existing water-biome defName — the sheet's
+    own name for the antistellar cap region IS Umbra (SS0).
+
+    MEASURED (sheet SS0): 2,531 tiles, arc 132-179 (sun 49-76 deg below horizon),
+    temp p10/median/p90 -73.0/-62.2/-47.8 C — the coldest LAND on the planet.
+    Regions Deadstone/Umbra/Ammonia Flats.
+
+    Weather: SS4b and ban 3 rule this directly — "Aurora-clear — the common state.
+    No visibility blockage (owner): starlight and curtain-light; ranged fire works;
+    the sky is the most beautiful on the planet." Fog/Rain/RainyThunderstorm/
+    FoggyRain all zeroed (ban 3 + ban 7 no rain, R-H1); Clear made dominant.
+    SnowGentle/SnowHard kept high, reflavored per the sheet as "fuel snow" (SS4b,
+    hydrocarbon/ammonia precipitation feeding the crystal flora) — not literal
+    water snow, same reskin-in-place pattern The Rot's sheet uses for its own
+    weather. DryThunderstorm kept low ("dry lightning over a fuel field," SS4b) —
+    ban 4 requires ignition to need a hot source or spark, so this stays rare, never
+    dominant.
+
+    animalDensity/plantDensity/diseaseMtbDays kept at the donor's own values (sheet
+    SS0 "Donor inventory taken in" lists these as read-in, not disputed).
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/the_propane_lakes.json. Ban 1 (no icy
+    dayside analogs) and ban 2 (no kyber) are both roster-level bans already
+    enforced by that JSON's own evictions, not re-checked field-by-field here.
+
+    NOT this pass's scope: `ANCIENT_WAR_LAB_1` (the sealed lab beneath the lake);
+    the electrojet tap building; the crater-event map permanence; the island
+    landmark (tile 5873); any world repaint (paint already DONE for the lake per
+    the sheet's Owed — this def is the land only, un-painted).
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_Umbra</defName>
+    <label>Umbra</label>
+    <description>The far end of the world: a black sea of liquid fuel under the brightest sky on the planet, ringed by frozen ammonia flats. It snows fuel. The aurora is the strongest anywhere -- the magnetosphere slamming back together after its rude shock upstream -- so the ice glows green and violet even without a moon. The fast things run in blue flame, because nothing moves fluidly here without burning; the plants are crystal, and grow overnight from what falls.</description>
+    <workerClass>AlphaBiomes.BiomeWorker_PropaneLakes</workerClass>
+
+    <allowRoads>false</allowRoads>
+    <allowRivers>false</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>0.5</animalDensity>
+    <plantDensity>0.75</plantDensity>
+    <forageability>0.0</forageability>
+    <movementDifficulty>1.5</movementDifficulty>
+    <texture>Biomes/AB_PropaneLakes</texture>
+    <diseaseMtbDays>110</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>AB_PackedSnow</terrain>
+        <min>-999</min>
+        <max>0.87</max>
+      </li>
+      <li>
+        <terrain>AB_PackedIce</terrain>
+        <min>0.87</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>70</Clear>
+      <SnowGentle>20</SnowGentle>
+      <SnowHard>25</SnowHard>
+      <DryThunderstorm>2</DryThunderstorm>
+      <Fog>0</Fog>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <AA_Frostmite MayRequire="sarg.alphaanimals">0.35</AA_Frostmite>  <!-- frostmite - small — corpse-sweeper, the pole's undertaker, keep -->
+      <AA_FrostboundBehemoth MayRequire="sarg.alphaanimals">0.126</AA_FrostboundBehemoth>  <!-- frostbound behemoth - huge — ammonia life of the Flats, keep -->
+      <AA_Terramorph MayRequire="sarg.alphaanimals">0.1</AA_Terramorph>  <!-- terramorph - medium — Flats mineral chemistry, adjust-keep -->
+      <AA_Slurrypede MayRequire="sarg.alphaanimals">0.02</AA_Slurrypede>  <!-- slurrypede - lab fauna — the containment facility's feeder, still running, adjust-keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_CrystalHorn>1.0</AB_CrystalHorn>  <!-- crystal horn -->
+      <AB_CrystalFlower>0.8</AB_CrystalFlower>  <!-- crystal flower -->
+      <AB_FrostLeaf>0.6</AB_FrostLeaf>  <!-- frost leaf -->
+      <AB_RimeNodules>0.4</AB_RimeNodules>  <!-- rime nodules -->
+    </wildPlants>
+    <wildPlantRegrowDays>1</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_RustCathedral                              UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
+    the_rust_cathedral.md (FROZEN). Replaces the donor `AB_MechanoidIntrusion`
+    (Alpha Biomes). THE LORE IS PARTITIONED on this sheet (SS0): only SSP
+    (player-facing) content informs anything here; SSGM truths never appear in a def
+    field, matching hard ban 1.
+
+    MEASURED (sheet SS0): 236 tiles, one region, at the substellar doorstep — arc
+    median 10.7 (sun +79 deg, the highest steady sun on the planet), temp median
+    62.5 C, the flattest ground anywhere (211/236 tiles dead flat at ~616 m).
+
+    plantDensity zeroed and hasVirtualPlants false: ban 7 is explicit — "No
+    ordinary wildlife... green flora count: zero." animalDensity dropped to near-zero
+    (0.1, donor's own value): SS4 "almost nothing, and each exception is a story" —
+    the roster is 3 named exceptions (mynock flocks, coolant eels, living bolts), not
+    a normal wildlife curve. allowRoads FALSE: ban 4 "No organic settlement or
+    faction presence but road traffic" — read narrowly, only the droids' own "No
+    Master" seat keeps a road OUT (SS8), so roads are not a biome-wide feature here;
+    flagged as a judgment call, not a named field-level ban.
+
+    diseases trimmed to the two mechanite entries only (dropped Flu/Plague/etc. and
+    BMT_Disease_Mutapox): "remote from organics" (SS4) argues against a normal
+    epidemiology; the mechanite pair is the one disease register that fits a
+    mechanoid-garrisoned plateau.
+
+    Weather: no rain/fog per the "no erosion engine at all... near-zero humidity"
+    driving force (SS3); Clear and shimmer-appropriate DryThunderstorm dominate.
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/the_rust_cathedral.json — ONE entry
+    (Ling_Cockroach, the roster-flagged candidate SS4 names for grading) and ZERO
+    flora rows respectively (BiomeFlora_Ashkarr.xml carries none for this defName —
+    left empty rather than invented, matching ban 7's "green flora count: zero").
+
+    NOT this pass's scope: `RUST_CATHEDRAL_MECHANICS_1` (hum-mood system, the living
+    bolts as mechanical wildlife, eel-fishing consequences, wall-tier defs); the
+    canon-sitting naming propagation (Forsakens=Rakatans=Ancients); any world
+    repaint.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_RustCathedral</defName>
+    <label>the Rust Cathedral</label>
+    <description>A flat plateau of deck plate and mathematical walls at the foot of the eternal noon -- a complex, circuit-board maze of walls and structures that screams of meaningful complexity and intention. Rust-dust banks in drifts against them, heat shimmer stands as the weather, and almost nothing living remains. And under everything, always, a hum.</description>
+    <workerClass>AlphaBiomes.BiomeWorker_MechanoidIntrusion</workerClass>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <lakeBeachTerrain>AB_SoilOnCrackedMetal</lakeBeachTerrain>
+    <mudTerrain>AB_SoilOnCrackedMetal</mudTerrain>
+    <riverbankTerrain>AB_SoilOnCrackedMetal</riverbankTerrain>
+    <allowRoads>false</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>false</allowFarmingCamps>
+    <animalDensity>0.1</animalDensity>
+    <plantDensity>0.0</plantDensity>
+    <forageability>0.0</forageability>
+    <movementDifficulty>1.5</movementDifficulty>
+    <texture>Biomes/AB_MechanoidBiome</texture>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>GU_MetalFloor1</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>90</Clear>
+      <DryThunderstorm>4</DryThunderstorm>
+      <Fog>0</Fog>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <Ling_Cockroach MayRequire="lingluo.cockroach">0.05</Ling_Cockroach>  <!-- Giant Cockroach - medium, import -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+
+    </wildPlants>
+    <wildPlantRegrowDays>25</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

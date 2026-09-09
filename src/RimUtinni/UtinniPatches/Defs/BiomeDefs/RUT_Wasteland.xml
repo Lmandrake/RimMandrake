@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_Wasteland                                  UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/wasteland.md
+    (FROZEN). One def by ruling (sheet SS0): the different wastelands (dayside basins,
+    the margin, the dark scour) vary only by mutators and Inhabited injections, never
+    by BiomeDef — the fall_line.md no-new-BiomeDef precedent, extended. This owned
+    def carries that one def forward.
+
+    MEASURED (sheet SS0): 1,126 tiles, arc p10/median/p90 73/90/108 (sitting exactly
+    on the terminator at the median). War-legacy split (sheet SS0): Wasteland is the
+    POISONED legacy — conventional radiation and chemical contamination, never
+    Assailant bioweapon content (that is PoisonForest's and the Contagion's lane).
+
+    Weather: ban 5 is explicit — "No rain (R-H1: rain falls only at the greatest
+    altitudes; the Wasteland is not one)" — so Rain/RainyThunderstorm are zeroed.
+    ToxRain and GrayPall (Anomaly) kept: SS4b names ash storms and radiation-halo
+    storms as the standing weather (no WeatherDef yet exists for either by that
+    name — SS Owed engine-feasibility — ToxRain and GrayPall are the nearest
+    existing stand-ins, reflavored, not invented). Ban 7 stands: "Plasma storms
+    never occur outside the terminator families" — none added here since no plasma
+    WeatherDef exists to add.
+
+    diseases trimmed to the plain vanilla suite (dropped the donor's AnimalFlu/
+    AnimalPlague/OrganDecay/BMT_Disease_Mutapox): ban 4 requires every resident to be
+    "visibly shaped by the contamination," and the sheet's own disease register is
+    radiation/toxin, not wildlife epidemiology — left at the donor's core set rather
+    than inventing a radiological disease that does not exist as a def yet (SS Owed
+    "needs a dose/geiger layer").
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/wasteland.json.
+
+    NOT this pass's scope: the dose/geiger layer; the three storm WeatherDefs (ash,
+    halo, plasma); the mutator/injection palette per family (SS8 table, its own
+    authoring pass); the Junkers' tipping-fee economy; the Throat.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_Wasteland</defName>
+    <label>the Wasteland</label>
+    <description>Where rivers die, everything they carried is concentrated into salt and brine; where the sky's exhaust falls, nothing ever washes it away. Nothing here recycles -- water doesn't leave, fallout doesn't wash, history doesn't decay. The wildlife is wretched and mutated as the rule, extremophile-odd as the exception; the danger is the ground, the air and the water, never the creatures. They merely adapt, struggle, and mostly fail.</description>
+    <workerClass>BiomesPlus.BiomeWorker_Wasteland</workerClass>
+    <lakeBeachTerrain>Gravel</lakeBeachTerrain>
+    <mudTerrain>MarshyTerrain</mudTerrain>
+    <riverbankTerrain>MarshyTerrain</riverbankTerrain>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>0.1</animalDensity>
+    <plantDensity>0.12</plantDensity>
+    <forageability>1.0</forageability>
+    <movementDifficulty>2</movementDifficulty>
+    <texture>Biomes/Wasteland</texture>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>VolcanoSoil</terrain>
+        <min>-999</min>
+        <max>0.5</max>
+      </li>
+      <li>
+        <terrain>WastelandAsphalt</terrain>
+        <min>0.5</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>30</Clear>
+      <DryThunderstorm>1</DryThunderstorm>
+      <SnowGentle>1.5</SnowGentle>
+      <SnowHard>1</SnowHard>
+      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">1</GrayPall>
+      <ToxRain MayRequire="Ludeon.RimWorld.Biotech">4</ToxRain>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <BMT_FleeceSpider MayRequire="biomesteam.biomescaverns">0.7</BMT_FleeceSpider>  <!-- fleece spider - wretched-small, keep -->
+      <BMT_BloodletterPetrel MayRequire="biomesteam.biomespollutedlands">0.7</BMT_BloodletterPetrel>  <!-- bloodletter petrel - wretched-small, keep -->
+      <Borcatu MayRequire="mlie.starwarsanimalcollection">0.7</Borcatu>  <!-- Borcatu - wretched-small, keep -->
+      <GR_Beetlefleet MayRequire="vanillaexpanded.vgeneticse">0.7</GR_Beetlefleet>  <!-- beetlefleet - wretched-small, keep -->
+      <GR_ParagonRat MayRequire="vanillaexpanded.vgeneticse">0.7</GR_ParagonRat>  <!-- rodent paragon - wretched-small, keep -->
+      <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.6</VFEI2_Swarmling>  <!-- swarmlings - wretched-small, adjust-keep -->
+      <AA_Eyeling MayRequire="sarg.alphaanimals">0.6</AA_Eyeling>  <!-- ikee - wretched-small, keep -->
+      <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals">0.6</VFEI2_BlackSwarmling>  <!-- black swarmlings - wretched-small, adjust-keep -->
+      <SW_Electrictick MayRequire="who.vfee.isopodageneline">0.5</SW_Electrictick>  <!-- Electrictick - extremophile-odd, adjust-keep -->
+      <Toxalope MayRequire="mlie.advancedbiomes">0.4</Toxalope>  <!-- toxalope - wretched-herd, import -->
+      <BMT_Maligoat MayRequire="biomesteam.biomespollutedlands">0.4</BMT_Maligoat>  <!-- maligoat - wretched-herd, keep -->
+      <BMT_Screecher MayRequire="biomesteam.biomespollutedlands">0.4</BMT_Screecher>  <!-- screecher - wretched-pack, import -->
+      <GR_Molebear MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Molebear>  <!-- molebear - wretched-medium, keep -->
+      <GR_Spidercat MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Spidercat>  <!-- spidercat - wretched-medium, keep -->
+      <BMT_PustuleHornetQueen MayRequire="biomesteam.biomespollutedlands">0.3</BMT_PustuleHornetQueen>  <!-- pustule queen - wretched-small, import -->
+      <AA_FissionMouse MayRequire="sarg.alphaanimals">0.3</AA_FissionMouse>  <!-- fission mouse - extremophile-odd, import -->
+      <BMT_ColonyPustuleHornetQueen MayRequire="biomesteam.biomespollutedlands">0.2</BMT_ColonyPustuleHornetQueen>  <!-- pustule queen - wretched-small, import -->
+      <BMT_PustuleHornetSpawned MayRequire="biomesteam.biomespollutedlands">0.2</BMT_PustuleHornetSpawned>  <!-- pustule hornet - wretched-small, import -->
+      <AA_Terramorph MayRequire="sarg.alphaanimals">0.2</AA_Terramorph>  <!-- terramorph - extremophile-odd, keep -->
+      <VAEWaste_Megatardi MayRequire="vanillaexpanded.vaewaste">0.18</VAEWaste_Megatardi>  <!-- megatardi - extremophile-odd, import -->
+      <AA_AcanthamoebaGiganteaSmall MayRequire="sarg.alphaanimals">0.1</AA_AcanthamoebaGiganteaSmall>  <!-- acanthamoeba gigantea, small - wretched-small, import -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <plantDensity>0.12</plantDensity>
+    </wildPlants>
+    <wildPlantRegrowDays>15</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

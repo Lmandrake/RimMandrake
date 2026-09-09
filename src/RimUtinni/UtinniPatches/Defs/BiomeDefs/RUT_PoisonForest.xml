@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_PoisonForest                               UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
+    poison_forest.md (FROZEN).
+
+    MEASURED live on V26 (sheet SS2, owner accepted 2026-09-08): 557 tiles, arc
+    envelope 56-115, core p10/p90 82-107, median 91.3 — straddling the terminator.
+    Driving forces: weak scattered light, a cold stable ceiling (no day-night swing
+    to drive one), and a ground that exhales metal-rich cold gas (SS3; explicitly NOT
+    volcanic — ban 1 "No volcanism, lava, magma, steam or geysers. The vents are
+    COLD").
+
+    Weather: the donor's own baseWeatherCommonalities carries only one custom entry,
+    `PoisonForestSpores` (BiomesPlus's own WeatherDef) — kept out of our own def
+    rather than pulled in with a fresh MayRequire dependency, since a bespoke
+    vent-gas WeatherDef is itself still-owed content (no sheet section authors one).
+    Substituted with vanilla Fog at the donor's commonality (18 -> scaled to fill the
+    table): "the light never changes and never comes from anywhere... lit like the
+    inside of an overcast dawn that will not resolve" (SS1) reads as permanent fog
+    more honestly than Clear. Clear itself zeroed: SS6 bans "direct sunlight cues —
+    no beams, no dappling, no cast shadows." Rain/RainyThunderstorm/SnowGentle/
+    SnowHard zeroed: ban 5 "No potable water source," and nothing in the sheet names
+    a precipitation event (its whole water economy is condensate you must not drink,
+    SS5).
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/poison_forest.json.
+
+    NOT this pass's scope: the vent-gas WeatherDef itself (SS Owed); the toxic-meat
+    Star Wars cuisine chain; capped wellheads/gas-tap scaffold structures (SS8).
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_PoisonForest</defName>
+    <label>the Poison Forest</label>
+    <description>A low, wet-black forest standing in permanent dusk over ground that breathes. The light never changes and casts nothing you could call a shadow; trunks weep a grey metallic sweat that hardens into scabs and crystal fans. Nearly everything alive here is either sealed against the vented metal-rich gas or has processed the load and become toxic itself -- and nothing is fast, because a chemosynthetic budget is thin.</description>
+    <workerClass>BiomesPlus.BiomeWorker_PoisonForest</workerClass>
+    <lakeBeachTerrain>Marsh</lakeBeachTerrain>
+    <mudTerrain>Marsh</mudTerrain>
+    <riverbankTerrain>Riverbank</riverbankTerrain>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>0.8</animalDensity>
+    <plantDensity>0.5</plantDensity>
+    <forageability>1.0</forageability>
+    <movementDifficulty>2</movementDifficulty>
+    <texture>Biomes/PoisonForest</texture>
+    <diseaseMtbDays>30</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>160</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SleepingSickness</diseaseInc>
+        <commonality>140</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>PoisonSoil</terrain>
+        <min>-999</min>
+        <max>0.87</max>
+      </li>
+      <li>
+        <terrain>PoisonSoilRich</terrain>
+        <min>0.87</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Fog>90</Fog>
+      <Clear>0</Clear>
+      <DryThunderstorm>1</DryThunderstorm>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <Neebray MayRequire="mlie.starwarsanimalcollection">0.8</Neebray>  <!-- neebray - small-flier, keep -->
+      <GR_Beetlefleet MayRequire="vanillaexpanded.vgeneticse">0.7</GR_Beetlefleet>  <!-- beetlefleet - small-shelled, keep -->
+      <AA_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</AA_InfectedAerofleet>  <!-- infected aerofleet - small, keep -->
+      <AA_OcularJelly MayRequire="sarg.alphaanimals">0.5</AA_OcularJelly>  <!-- ocular jelly - small, keep -->
+      <AM_Dryad_Corruptor MayRequire="sarg.alphamemes">0.4</AM_Dryad_Corruptor>  <!-- corruptor dryad - small, keep -->
+      <AM_Dryad_Ocular MayRequire="sarg.alphamemes">0.4</AM_Dryad_Ocular>  <!-- ocular dryad - small, keep -->
+      <AM_Dryad_Tumorous MayRequire="sarg.alphamemes">0.4</AM_Dryad_Tumorous>  <!-- tumorous dryad - small, keep -->
+      <BMT_Screecher MayRequire="biomesteam.biomespollutedlands">0.35</BMT_Screecher>  <!-- screecher - medium-pred, keep -->
+      <Visceral MayRequire="mlie.horrors">0.35</Visceral>  <!-- visceral - medium-pred, keep -->
+      <AA_BedBug MayRequire="sarg.alphaanimals">0.3</AA_BedBug>  <!-- bedbug - small-pred, keep -->
+      <Mynock MayRequire="mlie.starwarsanimalcollection">0.2</Mynock>  <!-- mynock - small, import -->
+      <GraniteSlug MayRequire="mlie.starwarsanimalcollection">0.15</GraniteSlug>  <!-- granite slug - grain, import -->
+      <AA_CrystalMit MayRequire="sarg.alphaanimals">0.15</AA_CrystalMit>  <!-- crystalmit - small, import -->
+      <AA_GiantCrownedSilkie MayRequire="sarg.alphaanimals">0.15</AA_GiantCrownedSilkie>  <!-- giant crowned silkie - medium, keep -->
+      <AA_DecayDrake MayRequire="sarg.alphaanimals">0.1</AA_DecayDrake>  <!-- decay drake - medium, keep -->
+      <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - giant, keep -->
+      <AA_Wildpod MayRequire="sarg.alphaanimals">0.05</AA_Wildpod>  <!-- wildpod - giant, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <BMT_Plant_TreeTwistingThornwood>0.6</BMT_Plant_TreeTwistingThornwood>  <!-- twisting thornwood - tree -->
+      <AB_CrystalFlower>0.5</AB_CrystalFlower>  <!-- crystal flower -->
+      <BMT_Plant_TreeMartyr>0.5</BMT_Plant_TreeMartyr>  <!-- martyr tree - tree -->
+      <AB_BloodBouquet>0.4</AB_BloodBouquet>  <!-- blood bouquet -->
+      <AB_CrystalHorn>0.4</AB_CrystalHorn>  <!-- crystal horn -->
+      <AB_RavenNettle>0.4</AB_RavenNettle>  <!-- raven nettle -->
+      <AB_GiantAgariTox>0.3</AB_GiantAgariTox>  <!-- agaritox - tree -->
+      <AB_RedBugloss>0.3</AB_RedBugloss>  <!-- red bugloss -->
+      <AB_KeeningCordax>0.2</AB_KeeningCordax>  <!-- keening cordax - tree -->
+    </wildPlants>
+    <wildPlantRegrowDays>15</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

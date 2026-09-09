@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_WeepingStones                              UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
+    weeping_stones.md (FROZEN). Replaces the donor `ZBiome_DesertOasis` (More
+    Vanilla Biomes, Zylleon — a thin donor whose one real gift is mechanical: the
+    terrainPatchMakers painting genuine standing water into sand). Sheet-named THE
+    WEEPING STONES (owner's pick).
+
+    MEASURED (sheet SS0): 223 tiles, arc p10/median/p90 24/59/80 (sun 31 deg above
+    horizon at the median), temp p10/median/p90 20.5/35.3/57.0 C, elevation median
+    612 m — this biome sits high. Water tiles 0 at world scale (the pools are
+    map-scale landmarks, per the architecture ruling SS0: each oasis is a hand-placed
+    Odyssey `LandmarkDef Oasis`, NOT a BiomeDef field — out of this pass's scope).
+
+    Weather: ban ("No snow: baseWeatherCommonalities carries no SnowGentle/
+    SnowHard entry") matched exactly — the donor's own SnowGentle 4/SnowHard 4 (a
+    donor absurdity at 35 C per SS0's own note) dropped to 0. Ban ("No rain-fed
+    ecology") — Rain/RainyThunderstorm/FoggyRain/TorrentialRain zeroed; the
+    signature weather is fog at wind-hour (SS10b: "when the damp flow peaks, the
+    high country goes into cloud at ground level... the biome does its actual
+    living"), so Fog is kept substantial rather than zero. Overcast (Odyssey) zeroed
+    rather than kept at the donor's low value, to avoid muddying the fog-vs-overcast
+    read the sheet asks for.
+
+    diseases kept close to donor (Malaria carried at a reduced commonality vs the
+    donor's Wasteland-style set, since nothing in the sheet names a disease theme —
+    left conservative rather than invented).
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/weeping_stones.json. The sheet's own SS10
+    admission test (comb-carrying natives; no ambush-at-water predator, ban) is
+    roster-level and already enforced by that JSON, not re-derived here.
+
+    NOT this pass's scope: `OASIS_LANDMARK_PLACEMENT_1` (hand-placing/naming the
+    pools); `OASIS_MUTATOR_PATCH_1` (whitelisting this def into the vanilla Oasis
+    mutator); the recapture-ladder structures; the truce mechanic (SS4, ruled
+    cheap-for-v1, unbuilt); any world repaint.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_WeepingStones</defName>
+    <label>the Weeping Stones</label>
+    <description>High pale stone standing in the path of the sea-wind. Most of this country is bright, dry, wind-scoured ridge and shoulder -- but every cold shaded face of it weeps: thin black streaks of wet running down white rock, moss crowding the seep lines, and here and there a true pool with a green ring around it and a crowd at the water. An oasis here is never merely found water; it is a working thing, part stone, part machine, part congregation of everything that drinks.</description>
+    <workerClass>VanillaBiomes.BiomeWorker_DesertOasis</workerClass>
+    <lakeBeachTerrain>SoilRich</lakeBeachTerrain>
+    <riverbankTerrain>SoilRich</riverbankTerrain>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>1.5</animalDensity>
+    <plantDensity>0.4</plantDensity>
+    <forageability>0.5</forageability>
+    <movementDifficulty>1.5</movementDifficulty>
+    <texture>World/Biomes/ZBiome_Oasis</texture>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Sand</terrain>
+        <min>-999</min>
+        <max>0.95</max>
+      </li>
+      <li>
+        <terrain>SoftSand</terrain>
+        <min>0.95</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>70</Clear>
+      <Fog>25</Fog>
+      <DryThunderstorm>1</DryThunderstorm>
+      <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">6</Sandstorm>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <TorrentialRain>0</TorrentialRain>
+      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">0</Overcast>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <Ollopom MayRequire="mlie.starwarsanimalcollection">0.7</Ollopom>  <!-- ollopom - small-resident, keep -->
+      <Fanback MayRequire="mlie.starwarsanimalcollection">0.5</Fanback>  <!-- fanback - large-resident, adjust-keep -->
+      <ColossusToad MayRequire="zylle.morevanillabiomes">0.4</ColossusToad>  <!-- colossus toad - medium-resident, keep -->
+      <Dewback MayRequire="mlie.starwarsanimalcollection">0.4</Dewback>  <!-- dewback - large-resident, import -->
+      <Boma MayRequire="mlie.starwarsanimalcollection">0.15</Boma>  <!-- boma - large-margin, keep -->
+      <Dactillion MayRequire="mlie.starwarsanimalcollection">0.15</Dactillion>  <!-- dactillion - flier-mount, keep -->
+      <Bantha MayRequire="mlie.starwarsanimalcollection">0.1</Bantha>  <!-- bantha - pilgrim, import -->
+      <Eopie MayRequire="mlie.starwarsanimalcollection">0.1</Eopie>  <!-- eopie - pilgrim, import -->
+      <Jamel MayRequire="mlie.starwarsanimalcollection">0.1</Jamel>  <!-- Jamel - pilgrim, import -->
+      <AA_Eyeling MayRequire="sarg.alphaanimals">0.1</AA_Eyeling>  <!-- ikee - omen, import -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <Plant_Reeds>1.0</Plant_Reeds>  <!-- sarnreed -->
+      <AB_GreenRockFern>0.4</AB_GreenRockFern>  <!-- green rock fern -->
+      <BMT_Dewshrooms>0.4</BMT_Dewshrooms>  <!-- dewshrooms -->
+      <Plant_Ambrosia>0.12</Plant_Ambrosia>  <!-- ambrosia bush -->
+    </wildPlants>
+    <wildPlantRegrowDays>17</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

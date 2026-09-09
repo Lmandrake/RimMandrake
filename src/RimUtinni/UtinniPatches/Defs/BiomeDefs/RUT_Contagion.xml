@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_Contagion                                  UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
+    the_contagion.md (FROZEN). Replaces the donor `AB_OcularForest` (Alpha Biomes'
+    "Ocular Forest").
+
+    MEASURED (sheet SS0): now painted onto 179 tiles (Dew Horn 87, Scald Spine 44,
+    Ashfall Range 24, Dune Sea 17, Fall Line 5, Anvil 2), arc 18-69 (median 59), temp
+    p10/median/p90 25/32/45 C, rain median 60 mm (max 1,529) — the wettest dayside
+    ground.
+
+    Weather: AB_RedFog (Alpha Biomes' own WeatherDef, kept MayRequire-gated) IS the
+    Bloom (SS4b) — the storm-state ranged-accuracy x0.4 penalty ban 5 protects
+    stands unmodified at the donor's own commonality (17, scaled to 70 of the whole
+    table to keep it dominant). The Burn (rare tears letting Clear weather occur) has
+    no bespoke WeatherDef — kept as ordinary Clear at low commonality per the
+    donor's own Clear:8, since "Clear weather is the terrifying weather here" (SS3)
+    reads as a rare state, not a renamed one; a real Burn WeatherDef with the
+    radiation/UV mechanic is un-owed (SS Owed, engine feasibility pass). Rain-type
+    entries kept at the donor's own low values — the Scald rain assignment
+    (`Jawa_ScaldDrizzle/Rain/Fog`) already exists per SS0 but is a SEPARATE
+    already-assigned weather suite this def does not duplicate or override.
+
+    diseases: AB_Disease_SporesAllergy pair kept MayRequire-gated (matches the
+    donor's own spore-heavy read); Malaria/SleepingSickness kept high per the
+    donor's own set — ban 4 ("No edible forage") is matched by forageability 0.
+
+    animalDensity/plantDensity/diseaseMtbDays kept at the donor's own values (sheet
+    SS0 "Donor inventory taken in" lists these as read-in, not disputed).
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/the_contagion.json. Ban 1 (no green
+    squares taken) and ban 3 (no finished natives beyond the ruled table) are
+    roster/placement-level, not re-verified field-by-field here.
+
+    NOT this pass's scope: `CONTAGION_BIOME_PLACEMENT_1` (the widened peak-by-peak
+    world placement); the Burn as a real radiation/UV WeatherDef;
+    `WATER_KINDS_TAXONOMY_1`; the Unfinished spawner (C#); any world repaint.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_Contagion</defName>
+    <label>the Contagion</label>
+    <description>A red valley on a scalded mountain, roofed by a thunderstorm that has not stopped in a thousand years. Under the cloud everything is wet, warm and unfinished: trees half-way to being something else, animals with one design completed and two abandoned. Then the cloud tears -- and the sun comes through like a sterilizing lamp, and everything alive dives for cover, because here the clear sky is the killer.</description>
+    <workerClass>AlphaBiomes.BiomeWorker_OcularForest</workerClass>
+    <lakeBeachTerrain>GU_AlienSandFine</lakeBeachTerrain>
+    <mudTerrain>GU_AlienSandFine</mudTerrain>
+    <riverbankTerrain>GU_AlienSandFine</riverbankTerrain>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>3.0</animalDensity>
+    <plantDensity>0.35</plantDensity>
+    <forageability>0.0</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <texture>Biomes/AB_OcularForest</texture>
+    <diseaseMtbDays>30</diseaseMtbDays>
+    <diseases>
+      <li MayRequire="sarg.alphabiomes">
+        <diseaseInc>AB_Disease_SporesAllergy</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li MayRequire="sarg.alphabiomes">
+        <diseaseInc>AB_Disease_AnimalSporesAllergy</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>160</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SleepingSickness</diseaseInc>
+        <commonality>140</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>GU_AlienSandFine</terrain>
+        <min>-999</min>
+        <max>0.2</max>
+      </li>
+      <li>
+        <terrain>GU_AlienSand</terrain>
+        <min>0.2</min>
+        <max>0.87</max>
+      </li>
+      <li>
+        <terrain>GU_RichAlienSand</terrain>
+        <min>0.87</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <AB_RedFog MayRequire="sarg.alphabiomes">70</AB_RedFog>
+      <Clear>8</Clear>
+      <Rain>1</Rain>
+      <DryThunderstorm>1</DryThunderstorm>
+      <RainyThunderstorm>1</RainyThunderstorm>
+      <FoggyRain>1</FoggyRain>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <AA_OcularJelly MayRequire="sarg.alphaanimals">2.0</AA_OcularJelly>  <!-- ocular jelly - the-eyes, keep -->
+      <AA_RedSpore MayRequire="sarg.alphaanimals">0.85</AA_RedSpore>  <!-- red spore - the-leaker, keep -->
+      <AA_RedGoo MayRequire="sarg.alphaanimals">0.75</AA_RedGoo>  <!-- red goo - the-body, keep -->
+      <AA_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</AA_InfectedAerofleet>  <!-- infected aerofleet - the-sower, keep -->
+      <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.2</AA_BloodShrimp>  <!-- blood shrimp - the-drinker, adjust-keep -->
+      <AA_Drainer MayRequire="sarg.alphaanimals">0.15</AA_Drainer>  <!-- drainer - the-thieves, adjust-keep -->
+      <AA_Razorjack MayRequire="sarg.alphaanimals">0.15</AA_Razorjack>  <!-- razorjack - the-pickers, adjust-keep -->
+      <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - the-undertaker, adjust-keep -->
+      <AA_RoughPlatedMonitor MayRequire="sarg.alphaanimals">0.1</AA_RoughPlatedMonitor>  <!-- rough-plated monitor - the-basker, keep -->
+      <AA_Swarmling MayRequire="sarg.alphaanimals">0.1</AA_Swarmling>  <!-- swarmling - the-pickers, adjust-keep -->
+      <AA_DrainerLarva MayRequire="sarg.alphaanimals">0.05</AA_DrainerLarva>  <!-- drainer larva - the-thieves, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_AlienGrass>1.0</AB_AlienGrass>  <!-- ocular grass -->
+      <AB_AlienTree>1.0</AB_AlienTree>  <!-- ocular tree - tree -->
+      <AB_EyeGrass>0.6</AB_EyeGrass>  <!-- flowering ocular grass -->
+      <AB_RedLeaves>0.6</AB_RedLeaves>  <!-- ocular plant -->
+      <AB_HalfAlienTree>0.5</AB_HalfAlienTree>  <!-- half transformed ocular tree - tree -->
+      <AB_RedPlantsTall>0.5</AB_RedPlantsTall>  <!-- ocular plant -->
+      <AB_GlobularPlant>0.4</AB_GlobularPlant>  <!-- globular aberration -->
+      <AB_TentacularPlant>0.4</AB_TentacularPlant>  <!-- tentacular aberration -->
+      <AB_BloodBouquet>0.3</AB_BloodBouquet>  <!-- blood bouquet -->
+      <AB_AlienTree_Polluted>0.15</AB_AlienTree_Polluted>  <!-- mutated ocular tree - tree -->
+    </wildPlants>
+    <wildPlantRegrowDays>25</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

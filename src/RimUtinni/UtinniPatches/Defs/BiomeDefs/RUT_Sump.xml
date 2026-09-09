@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_Sump                                       UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/the_sump.md
+    (FROZEN). Replaces the donor `AB_TarPits` (Alpha Biomes). THE TAR'S ORIGIN IS
+    RULED (SS0, R-H9): the Pyrelands make the tar, drainage carries it nightward,
+    and the Sump — lowest ground on the planet — is where it collects.
+
+    MEASURED (sheet SS0): 42 tiles just past the terminator on the night side, sun
+    median -10.6 deg (permanent deep twilight), temp p10/median/p90 -4.3/1.2/14.9 C,
+    elevation median 1 m, dead flat.
+
+    animalDensity/plantDensity CORRECTED from the donor (sheet SS0): "corrected —
+    animalDensity 3.5 drops to sparse-but-strange; plantDensity 0.25 fits the
+    edge-ring pattern" — no exact replacement figure is given in the sheet, so 1.0
+    / 0.15 are DESIGNED interim values (same pattern as RUT_TheScald/RUT_GreySea),
+    lower than the donor's own numbers per the sheet's explicit "drops"/"sparse"
+    language, with a quicktest tune still owed.
+
+    Weather: ban 4 ("No rain, no surface water defs — the only liquid is tar") zeros
+    Rain/RainyThunderstorm/FoggyRain. Ban 5 ("No warm-climate donor flavor — 'sun-
+    baked' and its kin are stripped") is why Fog (not Clear) carries the baseline:
+    "permanent deep twilight... the sun a glow below the horizon" (SS1/SS9) reads as
+    fog-dim, not desert-clear; the donor's own sun-baked-mud framing is dropped
+    entirely, matching SS0's "corrected" note. SnowGentle/SnowHard kept modest (the
+    donor's own values, cold-night-appropriate at -4..15 C).
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/the_sump.json. Ban 2 (no tar beast as a
+    fightable spawn — set-piece only) means the tar beasts are NOT in this
+    wildAnimals list; they are a separate dormant-set-piece mechanic (SS4, SS Owed).
+
+    NOT this pass's scope: `SUMP_MECHANICS_1` (poured-moat buildable, dig-lottery
+    tables, tar beast set-piece logic, mouse-line telegraphy); wick-garden crop; any
+    world repaint.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_Sump</defName>
+    <label>the Sump</label>
+    <description>The planet's oil sump: the lowest basin on Ash'karr, filled by every slow black flow off the twilight slopes for geological time. Flat black pools and cooled glassy sheets under permanent dusk, ringed with low waxy plants that glow faintly where the Junker stations keep their lamp-gardens. Mice run the tar without a thought. Nothing else touches it -- because the tar takes slowly, keeps perfectly, and everything that ever blundered in is still in there.</description>
+    <workerClass>AlphaBiomes.BiomeWorker_TarPits</workerClass>
+
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>1.0</animalDensity>
+    <plantDensity>0.15</plantDensity>
+    <forageability>0.0</forageability>
+    <movementDifficulty>4</movementDifficulty>
+    <texture>Biomes/AB_TarPits</texture>
+    <diseaseMtbDays>65</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>AB_GrassySand</terrain>
+        <min>-999</min>
+        <max>0.25</max>
+      </li>
+      <li>
+        <terrain>AB_LushGrass</terrain>
+        <min>0.25</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Fog>50</Fog>
+      <Clear>15</Clear>
+      <DryThunderstorm>1</DryThunderstorm>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>2</SnowGentle>
+      <SnowHard>2</SnowHard>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <AA_TarGuzzler MayRequire="sarg.alphaanimals">0.5</AA_TarGuzzler>  <!-- tar guzzler - tar-eater, adjust-keep -->
+      <AA_Bumbledrone MayRequire="sarg.alphaanimals">0.35</AA_Bumbledrone>  <!-- bumbledrone - under-layer, keep -->
+      <AA_BumbledroneHierophant MayRequire="sarg.alphaanimals">0.2</AA_BumbledroneHierophant>  <!-- bumbledrone hierophant - under-layer, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_TarPuddle>0.6</AB_TarPuddle>  <!-- tar puddle -->
+    </wildPlants>
+    <wildPlantRegrowDays>20</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

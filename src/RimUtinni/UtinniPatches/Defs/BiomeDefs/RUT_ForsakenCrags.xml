@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_ForsakenCrags                              UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
+    forsaken_crags.md (FROZEN). Replaces the donor `AB_RockyCrags` (Alpha Biomes'
+    "Forsaken Crags") — donor content incorporated wholesale per the sheet's own
+    ruling, then bent (SS0).
+
+    MEASURED (sheet SS0): 1,170 tiles (an earlier "4,440" in the grammar README was
+    wrong per this sheet's own correction), arc p10/median/p90 100.3/108.2/115.7
+    (10-31 deg below horizon, past-terminator true night). Hilliest def on the
+    planet: 614 tiles at large-hills or worse.
+
+    Weather: ban 4 is explicit — "No permanent Clear — Clear weather commonality
+    stays 0" — matched exactly (donor already carried Clear:0). AB_ForsakenNight/
+    AB_ForsakenThunderstorm/AB_ForsakenRainyNight (all Alpha Biomes WeatherDefs, kept
+    MayRequire-gated on sarg.alphabiomes since they are optional content, unlike the
+    terrain/texture fields which already assume that mod stays installed) carry the
+    donor's re-skinned physics per the sheet: "the Dark" (permanent), "the
+    Unveiling" (rare illumination rise, still un-authored as its own WeatherDef —
+    SS Owed), "Etchfall" (never water, ban 3), "Witchfire storms." Ban 1 (no
+    geothermal) and ban 2 (no steady wind, gust-pattern only) are mechanic-level, not
+    weather-commonality fields, and are not claimed as satisfied by this def alone.
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/forsaken_crags.json — "the donor roster
+    IS the population" per the sheet's own ruling (SS4), the 13-species nocturnal
+    transplanted family plus the Frostling (moved back here from the Propane Lakes'
+    sheet, per that sheet's own Owed note).
+
+    NOT this pass's scope: the Unveiling as its own rare WeatherDef; the darkbeast,
+    the Dark-folding mechanism, gust-wind variability (all C#, SS Owed); Lightfall
+    chasm authoring (`LIGHTFALL_CHASM_AUTHORING_1`); any world repaint.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_ForsakenCrags</defName>
+    <label>the Forsaken Crags</label>
+    <description>A country of obsidian-black stone twisted into shapes no wind carved, drowned in a darkness that behaves like a substance: it fills the air, it pools, it parts without warning into pockets of impossibly clear air, and it closes again. Light is eaten in transit here, not merely absent. The only reliable illumination is biological -- glowing grass, blue darklight gammas, yellow giant flora -- a land lit like a harbor at night, by its own lamps.</description>
+    <workerClass>AlphaBiomes.BiomeWorker_RockyCrags</workerClass>
+    <foragedFood>RawAgave</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>1.8</animalDensity>
+    <plantDensity>0.5</plantDensity>
+    <forageability>0.5</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <texture>Biomes/AB_RockyCrags</texture>
+    <diseaseMtbDays>65</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>AB_FineForsakenSand</terrain>
+        <min>-999</min>
+        <max>0.5</max>
+      </li>
+      <li>
+        <terrain>AB_ForsakenSand</terrain>
+        <min>0.5</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>0</Clear>
+      <AB_ForsakenNight MayRequire="sarg.alphabiomes">70</AB_ForsakenNight>
+      <AB_ForsakenThunderstorm MayRequire="sarg.alphabiomes">4</AB_ForsakenThunderstorm>
+      <AB_ForsakenRainyNight MayRequire="sarg.alphabiomes">4</AB_ForsakenRainyNight>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <AA_DuskRat MayRequire="sarg.alphaanimals">0.5</AA_DuskRat>  <!-- dusk rat - small, keep -->
+      <AA_Murkling MayRequire="sarg.alphaanimals">0.5</AA_Murkling>  <!-- murkling - small, keep -->
+      <AA_NightMule MayRequire="sarg.alphaanimals">0.5</AA_NightMule>  <!-- nightmule - large, keep -->
+      <AA_CrepuscularBeetle MayRequire="sarg.alphaanimals">0.35</AA_CrepuscularBeetle>  <!-- Crepuscular Beetle - large, keep -->
+      <AA_DuskProwler MayRequire="sarg.alphaanimals">0.2</AA_DuskProwler>  <!-- dusk prowler - medium-pred, keep -->
+      <AA_NightAve MayRequire="sarg.alphaanimals">0.2</AA_NightAve>  <!-- night ave - medium, keep -->
+      <AA_Nightling MayRequire="sarg.alphaanimals">0.2</AA_Nightling>  <!-- nightling - medium-apex, keep -->
+      <AA_DarkVandal MayRequire="sarg.alphaanimals">0.15</AA_DarkVandal>  <!-- dark vandal - medium, keep -->
+      <AA_NightRam MayRequire="sarg.alphaanimals">0.09</AA_NightRam>  <!-- nightram - large, keep -->
+      <AA_ShadowCharger MayRequire="sarg.alphaanimals">0.09</AA_ShadowCharger>  <!-- shadow charger - large, keep -->
+      <AA_Thunderox MayRequire="sarg.alphaanimals">0.09</AA_Thunderox>  <!-- thunderox - large, keep -->
+      <AA_SandProwler MayRequire="sarg.alphaanimals">0.075</AA_SandProwler>  <!-- sand prowler - medium-pred, keep -->
+      <AA_Frostling MayRequire="sarg.alphaanimals">0.05</AA_Frostling>  <!-- frostling - medium-pred, import -->
+      <AA_Darkbeast MayRequire="sarg.alphaanimals">0.005</AA_Darkbeast>  <!-- darkbeast - medium, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_GlowingGrass>1.0</AB_GlowingGrass>  <!-- grass -->
+      <AB_ToxicGamma>0.6</AB_ToxicGamma>  <!-- toxic gamma - tree -->
+      <AB_GiantGamma>0.5</AB_GiantGamma>  <!-- giant gamma -->
+      <AB_WildRadagast>0.5</AB_WildRadagast>  <!-- wild ragadast -->
+      <AB_GiantStikehr>0.3</AB_GiantStikehr>  <!-- giant stikehr -->
+      <AB_GiantSeptimum>0.2</AB_GiantSeptimum>  <!-- giant septimum - tree -->
+    </wildPlants>
+    <wildPlantRegrowDays>27</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>
