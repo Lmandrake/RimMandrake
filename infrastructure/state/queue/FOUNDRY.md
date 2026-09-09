@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T00:13:57Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-09T00:27:30Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -505,12 +505,12 @@ summary:  Thin when filed — no spec/verify/criteria in the queue entry itself,
 prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
 
 ## DROID_RETIRE_KOTORDROIDS_1 Retire guy762.kotordroids (wave R1) after modules, heads, loadouts, FDE repoint and Distress Call are closed; cold load
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-summary:  (no items/DROID_RETIRE_KOTORDROIDS_1.md yet — write one when you have something to say)
+summary:  DROIDRETIREKOTORDROIDS1
 prose:    infrastructure/state/items/DROID_RETIRE_KOTORDROIDS_1.md
 
 ## DROIDWORKS_MODULE_PERSONALITY_1 Installed modules carry attitudes: CompModulePersonality trait-hediffs while worn
@@ -664,6 +664,16 @@ kind:     task
 blocked:  mechanics built and committed at 5c80b1797677af906691d2d0f5dd331eb17f318e, G2 art + live savegame verify owed to a parent session
 summary:  Packet B9 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
+
+## DROID_RETIRE_KOTORDROIDS_1 Retire guy762.kotordroids (wave R1) after modules, heads, loadouts, FDE repoint and Distress Call are closed; cold load
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+blocked:  cold load found 4 NEW cross-reference errors (guy762_DroidWeapon_microrocket/railgun/seekerrocket/trishot) via kotorcore's _DroidsBase folder (IfModActive=guy762.KotORDroids) feeding Armoury's ungated Absorbed_KotorWeapons ammoDef consumers; reverted ModsConfig.xml+About.xml, see item file for the fix needed
+summary:  DROIDRETIREKOTORDROIDS1
+prose:    infrastructure/state/items/DROID_RETIRE_KOTORDROIDS_1.md
 
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing  (BLOCKED)
