@@ -1,5 +1,10 @@
 # Unused Tile Mutators and Geological Landforms Census
 
+> ⚠️ **Counts superseded in place, 2026-09-08 review (C4):** this census's totals
+> (6,710 mutator-bearing tiles / 88 defs) were measured off a superseded CSV; the live
+> V27 export reads **14,290 tiles / 163 defs** (`Transient/final_review/` lanes). The
+> census's *unused-def roster* remains useful as a menu; do not cite its counts.
+
 **Date: 2026-09-06, Part 3 completed 2026-09-07**
 **Status: STEP 1 COMPLETE** — the full offline census, including Part 3, is done. Steps
 2–5 (contact sheet, owner picks, live assignment, re-export) remain, and DO need bridge.
