@@ -116,3 +116,23 @@ generalized. Verify post-load with a fresh def dump, not disk XML.
 - `design/Jawa/worldbuilding/biome_flora_rosters.md` — DELETED; `biome_flora.py --doc`
   regenerates it once FAMILIES is rewritten to sheet law.
 - This item's own "joint sitting" framing and the sequence rider (satisfied).
+
+## 2026-09-09 instrument findings (post-landing; the new portfolio caught both)
+- ✅ fig6 regression gate: Desert 0/45 violations, AridShrubland 0/42, ExtremeDesert
+  1/12 (AA_Dunealisk, self-documented exception). fig7 max spread collapsed 45 → 5.
+- 🔴 **Flora defect 1 — arid shrubland ban 9 (no flammable living flora) is violated
+  by 10 of 10 landed flora** (figF3, MEASURED off resolved statBases; the dryland
+  batch had flagged flammability UNMEASURED). Fix wave owed: per-def Flammability→0
+  patch for the interim stand-ins (they are near-single-biome post-pass) OR re-pick;
+  the sheet's own designed flora (the fuzz…) is non-flammable by design.
+- 🔴 **Flora defect 2 — 46 of 126 judged flora rows cannot grow at their biome's
+  measured temps** (figF2; 31 are the Rot's fungi, minGrowthTemp 0 vs −18.8 °C
+  median; 4 propane-lake plants 19° short). Silent dead flora in game. Fix wave:
+  per-def grow-temp tolerance patch (the NORMALIZE_TEMPERATURE_TOLERANCES_1 job,
+  now with a measured worklist in `review/biome_climate.json` +
+  `review/plant_flammability.json`).
+- ⚠️ Sheet gap: PoisonForest, the Forge (3 defs), Wasteland state no median temp in
+  §0 — 73 flora rows unjudgeable by figF2. Sheets are the owner's conversation loop;
+  flagged here, not solo-edited.
+- ⚠️ Fix-wave sequencing: roster edits shift positional sheet row-ids — regenerate
+  both review sheets after any roster fix, BEFORE the owner's verdict pass.
