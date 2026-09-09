@@ -609,8 +609,8 @@ const ORDER = ["red","blue","green","grey","unmeasured"];
 const RULES = [
  ["red","1 · RED — known error or bug","Named by path in the descriptive prose of an OPEN rimflow item of kind <code>bug</code>, <code>defect</code> or <code>fix</code>. Red wins over every other rule: a review-clean file named by an open bug is red. An item's <i>verify</i> and <i>criteria</i> sections are deliberately not read — they name the instrument, not the defect."],
  ["blue","2 · BLUE — in dev","Uncommitted changes in the working tree, or named by an open item whose state is <code>doing</code>."],
- ["green","3 · GREEN — clean","CODE_REVIEW_STATUS.json records a clean mark and git shows zero commits against the path since."],
- ["grey","4 · GREY — dirty","The default, and the correct answer for almost every file: no review entry, or commits since one. A measured verdict, not a shrug."],
+ ["green","3 · GREEN — clean","CODE_REVIEW_STATUS.json records a clean mark whose hash matches the file's current bytes."],
+ ["grey","4 · GREY — dirty","The default, and the correct answer for almost every file: no review entry, or the file's bytes changed since its clean mark. A measured verdict, not a shrug."],
  ["unmeasured","5 · HATCHED — UNMEASURED","Status could not be determined: git refused, a recorded review sha no longer resolves, or the file is not decodable as text. Never counted as dirty."]
 ];
 

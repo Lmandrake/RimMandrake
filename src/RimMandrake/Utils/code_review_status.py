@@ -38,8 +38,10 @@ alone was ~1,600 spawns. That is what a background agent was seen stuck on
 for 10 minutes.
 
 The fix: CLEAN/DIRTY is now answered by comparing a SHA-256 of the file's
-current bytes against a hash recorded at `mark-clean` time — zero git calls,
-zero subprocesses, for `check`/`list`/`reopen`. `mark-clean` still makes a
+current bytes against a hash recorded at `mark-clean` time — zero git calls
+for `list` and for `check` of recorded paths; `check` on paths with no entry
+and `reopen` add ONE batched `git ls-files` spawn (drvfs case
+canonicalization), never one per path. `mark-clean` still makes a
 small, BEST-EFFORT, TIMEOUT-GUARDED git call or two (to check the file is
 tracked, to refuse on uncommitted changes exactly as documented in CLAUDE.md,
 and to record an informational commit sha/date) — but those calls happen
@@ -142,7 +144,14 @@ def load():
     if not os.path.isfile(LOG_PATH):
         return {}
     with open(LOG_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+        try:
+            return json.load(f)
+        except ValueError as e:
+            # A tracked file several windows commit: rebase conflict markers
+            # are a realistic input, and the answer is "the ledger is
+            # corrupt", not a traceback.
+            sys.exit("FAIL: %s is not valid JSON (merge conflict markers?): %s"
+                     % (LOG_PATH, e))
 
 
 def save(data):
@@ -192,23 +201,38 @@ def repo_rel(path):
     return os.path.relpath(os.path.abspath(path), ROOT).replace(os.sep, "/")
 
 
-def canonical_rel(rel):
+def canonical_rels(rels):
     """/mnt/d (drvfs) resolves paths case-insensitively, but the ledger and
     git are case-sensitive: a mis-cased argument reads as "never reviewed"
     and then fails mark-clean's tracked-file gate with a false message. Ask
-    git for the tracked spelling; on any ambiguity or git failure, keep the
-    caller's spelling unchanged."""
-    if rel.startswith("../") or rel == "..":
-        return rel
-    r = git(["ls-files", "--", ":(icase)" + rel])
-    if r.returncode == 0:
-        lines = r.stdout.splitlines()
-        if rel in lines:
-            return rel
-        ci = [l for l in lines if l.lower() == rel.lower()]
+    git for the tracked spelling — in ONE `ls-files` spawn for the whole
+    batch, because a spawn per path is the exact bottleneck this rewrite
+    removed. Returns {rel: canonical}; identity for anything out-of-repo,
+    ambiguous, unknown to git, or on git failure."""
+    out = {r: r for r in rels}
+    ask = [r for r in rels if not (r.startswith("../") or r == "..")]
+    if not ask:
+        return out
+    r = git(["ls-files", "--"] + [":(icase)" + a for a in ask])
+    if r.returncode != 0:
+        return out
+    lines = r.stdout.splitlines()
+    exact = set(lines)
+    by_fold = {}
+    for l in lines:
+        by_fold.setdefault(l.lower(), []).append(l)
+    for a in ask:
+        if a in exact:
+            continue
+        ci = by_fold.get(a.lower(), [])
         if len(ci) == 1:
-            return ci[0]
-    return rel
+            out[a] = ci[0]
+    return out
+
+
+def canonical_rel(rel):
+    """Single-path form of canonical_rels()."""
+    return canonical_rels([rel])[rel]
 
 
 def git(args):
@@ -281,9 +305,15 @@ def clean_state(rel, entry):
 
 def cmd_check(paths):
     data = load()
+    rels = [repo_rel(p) for p in paths]
+    # One batched spawn for every entry-less path (never one per path).
+    missing = [r for r in rels
+               if not (r.startswith("../") or r == "..")
+               and data.get(r) is None
+               and not os.path.isdir(os.path.join(ROOT, r))]
+    canon = canonical_rels(missing) if missing else {}
     any_dirty = False
-    for p in paths:
-        rel = repo_rel(p)
+    for p, rel in zip(paths, rels):
         # Answer honestly for paths that cannot be reviewed at all, instead
         # of a reassuring "DIRTY (never marked clean)" that is
         # indistinguishable from a real file awaiting review.
@@ -296,7 +326,7 @@ def cmd_check(paths):
             print(f"UNREVIEWABLE  {rel}  (a directory, not a file)")
             continue
         if data.get(rel) is None:
-            rel = canonical_rel(rel)
+            rel = canon.get(rel, rel)
         if data.get(rel) is None and not os.path.isfile(os.path.join(ROOT, rel)):
             any_dirty = True
             print(f"UNREVIEWABLE  {rel}  (no such file under the repo root)")
@@ -327,7 +357,15 @@ def cmd_mark_clean(path, sha):
     # tracking): a clean mark should point at real, shippable, committed
     # content. `vendor/mod_sources/**` is ignored, and this tool's docstring
     # puts .cs mod source in scope.
-    if git(["ls-files", "--error-unmatch", "--", rel]).returncode != 0:
+    tracked = git(["ls-files", "--error-unmatch", "--", rel])
+    if tracked.returncode not in (0, 1):
+        # A timeout/lock/missing-git failure must not wear the untracked
+        # message — that told reviewers to `git add` already-tracked files.
+        print(f"FAIL: git could not answer whether {rel} is tracked "
+              f"({(tracked.stderr or '').strip() or 'index lock?'}). Try again.",
+              file=sys.stderr)
+        return 2
+    if tracked.returncode == 1:
         print(f"FAIL: {rel} is not tracked by git — commit it first, or it can "
               "never be measured dirty again.", file=sys.stderr)
         return 2
@@ -362,6 +400,20 @@ def cmd_mark_clean(path, sha):
         if git(["merge-base", "--is-ancestor", sha, "HEAD"]).returncode != 0:
             print(f"FAIL: --sha {sha} is not an ancestor of HEAD; a clean mark "
                   "there could never be measured dirty.", file=sys.stderr)
+            return 2
+        # And its copy of the file must BE the reviewed bytes: the recorded
+        # hash is the worktree's content, so accepting an older sha whose
+        # blob differs would point every later reader at a commit that does
+        # not contain what was reviewed.
+        blob = git_bytes(["show", "%s:%s" % (sha, rel)])
+        if blob.returncode != 0:
+            print(f"FAIL: git could not read {rel} at --sha {sha}.",
+                  file=sys.stderr)
+            return 2
+        if hashlib.sha256(blob.stdout).hexdigest() != current_hash:
+            print(f"FAIL: {rel} at --sha {sha} differs from the working tree — "
+                  "the clean mark must name a commit whose bytes were reviewed.",
+                  file=sys.stderr)
             return 2
     # sha/date below are informational display only — the hash is the real
     # clean/dirty mechanism, so a git failure here degrades the printout,
@@ -403,13 +455,20 @@ def cmd_reopen(paths, reason):
     # operator meant to retract stays marked CLEAN — a silent no-op in the one
     # command whose entire job is undoing a wrong clean mark.
     rels = []
+    canon = canonical_rels([repo_rel(p) for p in paths])
+    preview = load()   # unlocked peek, validation UX only — the locked
+    # section below re-checks membership before mutating anything.
     for path in paths:
-        rel = canonical_rel(repo_rel(path))
+        rel = canon[repo_rel(path)]
         if rel.startswith("../") or rel == "..":
             print(f"FAIL: {rel} is outside the repo root.", file=sys.stderr)
             return 2
-        if not os.path.isfile(os.path.join(ROOT, rel)):
-            print(f"FAIL: {rel} does not exist under the repo root.", file=sys.stderr)
+        # A wrong clean mark on a since-deleted path must still be
+        # retractable — only refuse paths that neither exist NOR have an
+        # entry to retract.
+        if not os.path.isfile(os.path.join(ROOT, rel)) and rel not in preview:
+            print(f"FAIL: {rel} does not exist under the repo root and has "
+                  "no entry to retract.", file=sys.stderr)
             return 2
         rels.append(rel)
     with locked():
