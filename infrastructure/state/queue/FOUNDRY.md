@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T15:21:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T15:26:38Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -522,15 +522,6 @@ kind:     task
 summary:  1. A ThingComp on a module ThingDef adds a personality HediffDef to the
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_PERSONALITY_1.md
 
-## FUNGAL_SOIL_TRADE_1 Jawas dig fungal soil from the Rot and haul it to the moisture farms by ship — early money; digging sends distress through the fungal whole and brings its creatures
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - The good: fungal soil (the Rot's mycelial ground — therot.md; the raided
-prose:    infrastructure/state/items/FUNGAL_SOIL_TRADE_1.md
-
 ## SAND_SWIMMERS_MOD_1 Sand fishing: impassable Deep Sand pools you fish like water, with sand-swimmer analogs (never fish-shaped) — the sand swimmers mod
 state:    doing
 row:      unassigned
@@ -602,15 +593,6 @@ target:   v1
 kind:     fix
 summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
-
-## GRAFFITI_GENERIC_MARKS_1 Author generic vanilla-style default marks for RM Graffiti (R7): the nine campaign styles move to Salvation, RM ships with examples
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  R7 (owner, 2026-09-08): RM Graffiti keeps engine + generic vanilla-style
-prose:    infrastructure/state/items/GRAFFITI_GENERIC_MARKS_1.md
 
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
 state:    doing
@@ -1113,6 +1095,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TITANIC_CREATURES_MOD_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  TITANICCREATURESMOD1 — make titan mass REAL
 prose:    infrastructure/state/items/TITANIC_CREATURES_MOD_1.md
