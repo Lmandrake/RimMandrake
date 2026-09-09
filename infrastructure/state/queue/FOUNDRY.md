@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T20:09:02Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-09T20:13:19Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -188,15 +188,6 @@ target:   v1
 kind:     task
 summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
 prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
-
-## SANDWORM_MYTHOS_BUILD_1 New massive dune-style sandworm with its own mythos (Krayt stays as-is); borrow LEVIATHANS:SANDWORM architecture
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Identity: the Long Hunger — Deep Desert tribal lore for a colossal entity
-prose:    infrastructure/state/items/SANDWORM_MYTHOS_BUILD_1.md
 
 ## INHABITED_STOCK_ONTO_MAP_AND_FATE_1 Spawn a place's stock onto its map, collect it back, and wire InhabitedFate to it
 state:    doing
@@ -519,7 +510,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     feature
-summary:  (no items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md yet — write one when you have something to say)
+summary:  STATUS 2026-09-09: tool built and committed, blocked on a live-proof pass — not closeable right now
 prose:    infrastructure/state/items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md
 
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline

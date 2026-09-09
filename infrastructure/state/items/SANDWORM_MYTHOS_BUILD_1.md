@@ -111,3 +111,38 @@ eruption/tremor/submerge mechanism and a scavenging-economy-appropriate loot
 payoff — offline-authored and validated clean. Krayt Dragon confirmed
 untouched. Live-fired and observed in a real game is the next pass's job, not
 this one's.
+
+## close-out (2026-09-09, FOUNDRY, re-verification pass)
+
+Game was mid-cold-load on the full modlist tonight (crash/reboot); no bridge
+calls made, per this pass's own scope. Re-ran every offline check the item
+already claimed, from scratch, rather than trusting the prior record:
+
+- `dotnet build LongHunger.csproj -c Release` — still 0 warnings, 0 errors.
+- `validate_quest.py Quest_LongHunger.xml` — still 0 errors, 0 warnings.
+- `validate_patch.py src/RimUtinni/LongHunger --live <2026-09-09T01-54-07Z
+  capture>` — still 0 errors, 3 advisory texPath warnings (unchanged from the
+  2026-09-02 record; capture is 590 mods vs 586 currently listed in
+  ModsConfig.xml — a live-count drift, not evidence anything here broke,
+  since the mod itself is disabled and nothing in its XML changed).
+- Deploy state unchanged: `LongHunger` mod folder present under the game's
+  `Mods/`, still absent from `ModsConfig.xml` (deliberately not enabled).
+- Found and confirmed a real mechanical fix landed since the item's last
+  history note, already committed (`88f0b470`, 2026-09-02, not this session):
+  `ExposeData` was added (ticksSinceSpawn/nextPulseAt were unscribed before,
+  so a save/reload mid-event reset the eruption/pulse timeline) and
+  `Submerge()`'s ordering was fixed (loot now generates before `Destroy()`,
+  not after). Read both files in full this pass — no further mechanical gap
+  found; `IncidentWorker_LongHungerSurfaces` and `LongHungerThing` both look
+  complete against the spec's five named (deliberate) v1 simplifications.
+- Krayt Dragon (`mlie.starwarsanimalcollection`): not touched this pass, not
+  touched by 88f0b470 either — confirmed untouched.
+
+**Closing as v1-complete.** The item's own criteria (above) name live-fire as
+"the next pass's job, not this one's" — every offline criterion is met and
+reproduces clean. No design/lore gap was found needing a Fable pass: identity
+("the Long Hunger"), Deep Desert tribal framing, and the scavenging-economy
+tie-in were already fully drafted and are unchanged. Live verification
+(quest offers/fires, incident spawns the entity, eruption+pulses register
+damage, submerge drops loot, quest timer pays out) remains owed to a future
+bridge session — tracked as a plain follow-up, not a blocker on this v1.
