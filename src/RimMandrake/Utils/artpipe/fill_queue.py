@@ -13,18 +13,27 @@ CSV columns (JSON: same keys; `facings` may be a JSON list there):
     prompt             the generation instruction
     canvas_w, canvas_h pixels the worker must generate at
     reference          optional — path to the existing sprite this reskins;
-                       blank means new art, no --image on the worker
+                       blank means new art, no --image on the worker.
+                       VERIFIED to exist at filing time and stored ABSOLUTE
+                       — a dangling reference is refused here rather than
+                       surfacing later as a validate_sprite.py exit-2 the
+                       daemon has to distinguish from a real art rejection.
     facings            optional — comma/semicolon-separated (CSV) or a list
                        (JSON); empty means one job named bare "<id>"
     style_notes        optional — free text, folded into the prompt
-    priority           optional int, default 100 — LOWER claims sooner
+    priority           optional int, default 100 — LOWER claims sooner.
+                       A blank CSV cell reads as '' (not a missing key) and
+                       is treated the same as absent, not as int('').
     background         optional, default "transparent"
 
 Refuses a duplicate job id — checked against pending/active/done/failed all
 at once, so an id already claimed, finished or failed is exactly as
-protected as one still waiting. The check-then-create has an O_EXCL backstop
-on the actual pending/ write, for the same reason claim_next() in
-artpiped.py relies on rename atomicity rather than a check-then-act pair.
+protected as one still waiting. The write itself goes to a tmp file first,
+then `os.link()`s it into pending/ — the same exclusivity an O_EXCL create
+would give, but without ever leaving a partially-written file sitting at
+the real path if this process is killed mid-write (that used to be able to
+permanently block the id: a corrupt file at `dest` is still a file `dest`
+has, so id_taken() would refuse every future refile of it).
 
     python3 fill_queue.py --input art_list.csv
     python3 fill_queue.py --input art_list.json --dry-run
@@ -78,9 +87,28 @@ def row_to_jobs(row: dict) -> list[dict]:
     base_id = str(row["id"]).strip()
     facings = _split_facings(row.get("facings"))
     canvas = {"width": int(row["canvas_w"]), "height": int(row["canvas_h"])}
+
     reference = row.get("reference") or None
     if reference:
         reference = str(reference).strip() or None
+    if reference:
+        # Stored ABSOLUTE, and verified to exist here at filing time rather
+        # than left to fail inside the daemon later — a dangling reference
+        # used to reach validate_sprite.py as a plain nonzero exit, which
+        # the daemon folded into the same REJECT as a genuinely bad image
+        # (fixed separately in artpiped.py's run_validator; this is the
+        # OTHER half of that fix: catch it before the job is even filed).
+        ref_path = Path(reference).expanduser()
+        if not ref_path.is_absolute():
+            ref_path = (Path.cwd() / ref_path)
+        if not ref_path.is_file():
+            raise ValueError(f"row {base_id!r} reference does not exist: {ref_path}")
+        reference = str(ref_path.resolve())
+
+    # csv.DictReader gives '' (not a missing key) for a blank cell, and
+    # int('') raises — `row.get('priority') or 100` treats a blank cell the
+    # same as an absent one instead of crashing the whole file.
+    priority = int(row.get("priority") or 100)
 
     jobs = []
     for facing in (facings or [None]):
@@ -92,7 +120,7 @@ def row_to_jobs(row: dict) -> list[dict]:
             "canvas": canvas,
             "prompt": row["prompt"],
             "style_notes": row.get("style_notes") or "",
-            "priority": int(row.get("priority", 100)),
+            "priority": priority,
             "background": row.get("background") or "transparent",
             "facing": facing,
             "facings": facings,
@@ -112,11 +140,27 @@ def write_job(job: dict, pending_dir: Path, active_dir: Path, done_dir: Path,
         print(f"would write {dest}")
         return
 
-    fd = os.open(str(dest), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
+    # Write to a tmp name FIRST, fully, then os.link() it into place. A
+    # direct O_EXCL create-and-write at `dest` itself leaves a PARTIALLY
+    # WRITTEN file sitting at the real path if this process is killed
+    # mid-write — and that corrupt file then blocks every future refile of
+    # this id forever (id_taken() sees it and refuses, common.load_job()
+    # can't parse it). os.link fails with FileExistsError if dest already
+    # exists — the same exclusivity O_EXCL gave — but only after the
+    # content is already complete and closed, so a crash between link and
+    # cleanup can only ever leave a fully-valid dest.
+    tmp = pending_dir / f".{job['id']}.json.tmp.{os.getpid()}.{time.time_ns()}"
+    tmp.write_text(json.dumps(job, indent=2, sort_keys=True) + "\n")
     try:
-        os.write(fd, (json.dumps(job, indent=2, sort_keys=True) + "\n").encode())
+        os.link(tmp, dest)
+    except FileExistsError:
+        raise DuplicateJobId(f"{job['id']} already exists at {dest} "
+                              f"(created concurrently by another filer)")
     finally:
-        os.close(fd)
+        try:
+            tmp.unlink()
+        except FileNotFoundError:
+            pass
     print(f"filed {dest}")
 
 

@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "artpipe worker manifest",
-  "description": "Passed to `codex exec --output-schema` (or the equivalent --output-schema flag on codex_image.py's generate/edit). The worker's FINAL message must match this exactly, no prose around it. The daemon treats this as one input among several — see AGENTS.md's 'Failure is reported, never disguised' and artpiped.py's own re-validation with validate_sprite.py, which is authoritative over this self-report.",
+  "description": "Passed to `codex exec --output-schema` (or the equivalent --output-schema flag on codex_image.py's generate/edit); the worker's FINAL chat message must match this exactly, no prose around it, and `codex exec`'s own -o flag captures it — the worker does not choose where this is written. The daemon treats this as one input among several and re-validates the returned file independently with validate_sprite.py, which is authoritative over anything reported here — see AGENTS.md's 'Failure is reported, never disguised'.",
   "type": "object",
   "additionalProperties": false,
   "required": ["id", "status", "note"],
@@ -29,8 +29,8 @@
     "attempts": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 3,
-      "description": "1 unless a mechanical validate_sprite.py reject forced a regenerate (up to 3 total) or a tool error/refusal forced one retry."
+      "maximum": 2,
+      "description": "1 unless a genuine tool error or refusal forced ONE retry (never used to chase a better result — the worker does not run validate_sprite.py itself and has no mechanical-reject loop of its own; that judgment is entirely the daemon's, after the fact)."
     },
     "note": {
       "type": "string",
