@@ -56,3 +56,23 @@ mandrake.rut.shell -> mandrake.rut.menushell
 ```
 Then: deploy_custom_mods.py plan → --apply; refresh.py; minimal-list load proof.
 Game must be DOWN for the swap+deploy (ModsConfig describes the NEXT load).
+
+## Repo-side execution COMPLETE — 2026-09-08 (BENCH, waves A+B)
+Executed: 5 wave-A cluster merges · global pass (23 ids, 32 files) ·
+Armoury extractions · R4 re-prefix (120 defs + RSW_WS_/RSW_FE_) · 4+1
+assemblies rebuilt 0W/0E · tombstone removed · selftests 45/45 ·
+def-count differential 4430→4433, the +3 attributed to FOUNDRY's swept
+ModulePersonality WIP (sprint net ZERO — lost nothing).
+src/ write freeze CLOSED — repo-side moves done.
+
+STILL OPEN on this item:
+- Game-down runbook above (ModsConfig 15-id swap, redeploy, refresh.py,
+  minimal-list load proof) — needs the next real down-window.
+- Gated rows: Chronicle/Pursuit renames (CHRONICLE_NINEFOLD_DECOUPLE_1),
+  Graffiti/Salvation split (GRAFFITI_GENERIC_MARKS_1), Pyrelands
+  finish (PYRELANDS_GENERIC_TEXT_1).
+- VERIFY rows: Absorbed_SovSith_Misc duplicate-species compare;
+  SeasWaterline + BirthHatchDemo fates (owner-parked, R14).
+- Incident recorded: DROIDWORKS_WIP_SWEPT_NOTICE_1 (BENCH directory-add
+  swept FOUNDRY's uncommitted Droidworks WIP into 0f7da95c; preserved,
+  misattributed; explicit file lists used from then on).
