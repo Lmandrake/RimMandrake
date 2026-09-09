@@ -15,9 +15,8 @@ remaining biome descriptions, then assign the animals and plants.
    **~205 of 767 live wild creatures (27%) have no home once the sheets bind** (MEASURED).
 4. **First call of the sitting** (flagged in the pack): `ExtremeDesert` is ONE def carrying
    TWO sheets (dune sea + deep desert) — split or share.
-5. **Standing contradiction to supersede**: `biome_and_fauna_roster.md` (2026-08-13) says
-   "SW Animal Collection: KEEP ALL" and forbids predator cuts — the sheets invert it.
-   Needs the owner's supersede line written INTO that doc.
+5. ~~Standing contradiction: `biome_and_fauna_roster.md`~~ — resolved 2026-09-09 by
+   deleting the doc (owner: remove inaccurate material, don't supersede).
 6. **2-minute cards also waiting**: GRAPHICS_GEMINI_BILLING_DECISION_1 (cost math done).
 
 ## Instrument caveats carried into the sitting
@@ -96,8 +95,11 @@ no XML was ever generated from it — nothing to revert).
   commonality 0 at load — a live dump of `wildAnimals` is NOT our cast; compare against
   the XML we author, and never audit placement from a padded live dump.
 
-## Supersedes
-- `design/Jawa/worldbuilding/biome_and_fauna_roster.md` — superseded line written at top.
-- `design/Jawa/worldbuilding/biome_fauna_flora_divvy_2026-09-09.md` — already carries it.
-- `design/Jawa/worldbuilding/biome_flora_rosters.md` — superseded-pending-regen line at top.
+## Removed (owner ruling 2026-09-09: delete inaccurate material, never leave-and-supersede)
+- `design/Jawa/worldbuilding/biome_and_fauna_roster.md` — DELETED (KEEP-ALL-SW etc.
+  inverted by the sheets; git holds the history).
+- `design/Jawa/worldbuilding/biome_fauna_flora_divvy_2026-09-09.md` — DELETED (the
+  census-blind FOUNDRY divvy; no XML was ever generated from it).
+- `design/Jawa/worldbuilding/biome_flora_rosters.md` — DELETED; `biome_flora.py --doc`
+  regenerates it once FAMILIES is rewritten to sheet law.
 - This item's own "joint sitting" framing and the sequence rider (satisfied).

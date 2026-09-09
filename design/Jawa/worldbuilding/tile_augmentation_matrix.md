@@ -356,7 +356,7 @@ these are the **specific set-pieces** a tile can be *about*._
 | NA2 | **The dunemother's grazing track** — a swathe of cropped `AB_EuphorbiaRimworldia` a mile wide: the beast passed | ExtremeDesert | A | flora removal in a curve | ✅ paint |
 | NA3 | **Glass sea** ↩P16 — fused sand, mirror flat, brutal glare | ExtremeDesert | A | 🆕 terrain (a glass/obsidian-like floor; `AB_*` obsidian family may serve) | 🔶 / 🆕 |
 | NA4 | **Mirage twin** ↩W19 | ExtremeDesert | A | scam-prop | 🆕 |
-| NA5 | **Rock outcrops as navigation landmarks** (`biome_and_fauna_roster.md` §5) | Desert | B | Geological Landforms | ✅ |
+| NA5 | **Rock outcrops as navigation landmarks** | Desert | B | Geological Landforms | ✅ |
 | NA6 | **Wadis** — dry channels, visibly water-cut, no water | AridShrubland | B–C | `Gravel`/`Sand` channel paint | ✅ |
 | NA7 | **The oasis rings** — water, green, scrub, sand in concentric bands; the most legible tile on the world | ZBiome_DesertOasis | B | `Oasis` mutator + `Plant_Reeds`/`VEE_Plant_DatePalm`/`AB_FanPalm` rings | ✅ paint + flora |
 | NA8 | **Mesa and erosion channels** | ZBiome_Badlands | B | Geological Landforms | ✅ |
@@ -639,8 +639,8 @@ distinct augmentations, of which roughly three-quarters need **no new def**.
    §3 row is either the *promise's responder content* or a *whisper's payload*; it never
    ships as a third channel.
 2. **Density follows the band, not the biome.** Band A is the Empire's and the void's —
-   `ExtremeDesert` stays the emptiest tile on the planet (`biome_and_fauna_roster.md` §3:
-   *"emptiness is content"*). Band B is where "downright replete" lives. Bands E–F carry one
+   `ExtremeDesert` stays the emptiest tile on the planet (the dune-sea sheet: sparse to
+   the point of discomfort). Band B is where "downright replete" lives. Bands E–F carry one
    thing each, and it is usually dead.
 3. **Nothing walks across the terminator.** A GB/SK row's band is a constraint, not a
    suggestion.

@@ -17,11 +17,6 @@ tool, is the record.
 > `infrastructure/state/canon.yml > biomes` (`survivors: 36`, `base_defs: 66`,
 > `base_defs_as_of: 2026-08-15`, `live_defs: 80`).
 >
-> ⚠️ **`biome_and_fauna_roster.md` works from 57, and that is not a contradiction
-> of this 66.** Its 57 is 66 minus the nine defs with no `workerClass`, which
-> worldgen can never offer — a deliberately narrower base for a *decision* count.
-> Two bases, one population. Neither file used to say so; both do now.
->
 > ⚠️ **"Survivors" and "biomes on the map" are different questions.** Only **24**
 > distinct biomes are painted on the frozen world (`canon.yml >
 > planet.biomes_on_map`). A def can survive this cut and appear on zero tiles.

@@ -179,7 +179,7 @@ fits there).
   Zakkeg — all SW, all currently rare here or elsewhere).
 - **Flora:** ultracactus, staggerseed/cycle plant, defending shade plants — **NEW
   ART/DEF NEEDED** (owner-authored concepts; no donor equivalent). Current assigned flora
-  (`biome_flora_rosters.md`) is Earth cacti — see §10 contradictions.
+  is Earth cacti — purged planet-wide per the owner's 2026-09-09 card.
 
 ### 2.5 Open calls
 1. The three high-commonality SW pursuit staples (Wraid/Scurrier/Gutkurr): evict, slow,
@@ -542,26 +542,12 @@ to ≤2 named home biomes.**
 
 ## 10. GLOBAL — contradictions with prior rosters (sheet wins pending owner)
 
-1. 🔴 **`biome_and_fauna_roster.md` (2026-08-13, aspirational) vs the sheets — the big
-   one.** It rules "Star Wars Animal Collection: ✅ KEEP ALL — this is the theme," parks
-   SW herds in `AridShrubland` ("the liveable fringe — herds") and "SW large reptilian
-   grazers + their predators" in `Desert`. The 2026-09-05 sheets invert all three: the
-   shrubland size ladder evicts 59 SW midrange creatures, the desert bans its pursuit
-   predators (Wraid/Gutkurr/Massiff at comm 0.8), and its "⛔ do NOT cut on predator
-   grounds" note is superseded by the desert sheet's no-pursuit law (an ecology law, not
-   a difficulty cut). Its §2 worldgen-weight machinery is dead anyway (no worldgen,
-   owner 2026-08-15). **Recommend: mark the doc superseded-by-sheets at the top.**
-2. **It also rules PoisonForest, AB_MycoticJungle, AB_PropaneLakes, HorrorWastes,
-   Glowforest OUT (weight 0)** — the frozen map paints 1,939 MycoticJungle tiles, 1,589
-   PropaneLakes, 542 PoisonForest. The one-map superseded the in/out table; nobody wrote
-   that into the doc.
-3. **`biome_flora_rosters.md` (generated, 2026-08-23) vs the desert/dune sheets:**
-   `Desert` is assigned saguaro/agave/aloe/pincushion — instantly-nameable Earth cacti —
-   and `ExtremeDesert` a 21-plant list where the sheet demands buried glass-nub flora
-   and "no above-ground foliage." Flora predates the sheets wholesale; the generator
-   (`biome_flora.py` FAMILIES) needs a sheet-law pass. ⚠️ Its own header says climate was
-   deliberately not a filter — that job (`NORMALIZE_TEMPERATURE_TOLERANCES_1`) now folds
-   into per-sheet flora law.
+1–3. Resolved 2026-09-09 by deletion (owner: remove inaccurate material, don't
+   supersede): `biome_and_fauna_roster.md` and the stale generated
+   `biome_flora_rosters.md` are gone from the tree. The live remnant of #3: the
+   generator (`biome_flora.py` FAMILIES) still needs its sheet-law rewrite before
+   `--doc` regenerates the rosters doc, and `NORMALIZE_TEMPERATURE_TOLERANCES_1`'s
+   climate-filter job folds into per-sheet flora law.
 4. **`creature_recognizability_rule.md` survival table** already condemns Megafauna,
    Mythic Ages, Beasts of the Rim (0% survival, retirement rulings recorded) — so any
    import list above naming their bodies (Sivatherium, Titanoboa) is a RESKIN-SOURCE

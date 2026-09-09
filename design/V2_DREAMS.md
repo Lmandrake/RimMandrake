@@ -2149,8 +2149,8 @@ part of this that touches **which animals exist in the savegame's world** has to
 against that. Re-weighting `BiomeDef.wildAnimals` is read at map generation, not at worldgen,
 so it stays safe to do later — **verify that before relying on it.**
 
-🔑 Pairs with `biome_and_fauna_roster.md` and `fauna_placement.md`, which already hold design
-work for this and should be the starting point rather than a blank page.
+🔑 Pairs with the biome sheets (`design/Jawa/worldbuilding/biomes/`) and `fauna_placement.md`,
+which already hold design work for this and should be the starting point rather than a blank page.
 
 
 ## IKEE_POSTERCHILD_IDEAS_1 — making the Ikee the creepy Star Wars pet

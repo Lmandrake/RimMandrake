@@ -458,8 +458,7 @@ quietly moving it.
 ## Owed
 
 - The sitting's rulings on §7, and the strikes through `sarlacc_spec.md` that §6 lists.
-- Tenant roster for a cistern (`biome_and_fauna_roster.md` admission test — every tenant must
-  pass the deep desert sheet on its own).
+- Tenant roster for a cistern (every tenant must pass the deep desert sheet on its own).
 - Art: the swimmer's silhouette (a mouth that swims), the anchored pit, the cistern's rim with
   the dew ring and the silverbole ring, the pearl. The mouth is the one wet surface in the
   biome; that single contrast is the brief. Landmark world-art for the dead/live defs is still

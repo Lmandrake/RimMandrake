@@ -91,13 +91,16 @@ Old names migrate under NAMING_SCHEME_EXECUTION_1 — do not rename ahead of it.
 `B*`/`C*`/`D*`/`W*` IDs; legacy IDs are never renamed and are always cited with
 their title attached — `B58 (the dead Jawa pawnkind)`, never bare.
 
-## Superseding a doc means writing INTO the doc you superseded
+## Inaccurate material is DELETED, not superseded-in-place — owner, 2026-09-09
 
-One line at the top of the superseded file naming the successor — nobody reads
-backwards, and provenance lives in git, nowhere else (owner, 2026-08-30):
-entries state what IS, never what used to be. "Not my file" does not discharge
-it. Single-source only what a generator can enforce; where only discipline
-enforces a duplicate, write a pointer instead.
+*"Simply remove offending inaccurate material, don't leave it in and supersede
+it."* Wrong or dead content is removed outright — git is the provenance — and
+every inbound reference is fixed in the same change. A one-line successor
+pointer at the top is only for content that MOVED somewhere else (owner,
+2026-08-30); it is never a banner over wrong content left in place. Entries
+state what IS, never what used to be. "Not my file" does not discharge it.
+Single-source only what a generator can enforce; where only discipline enforces
+a duplicate, write a pointer instead.
 
 ## Git
 
