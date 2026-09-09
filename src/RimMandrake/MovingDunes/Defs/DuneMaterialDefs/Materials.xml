@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    The engine's own default content: one generic sand material, plus the global
+    hide-depth settings. MOVING_DUNES_DESIGN.md §4 (R6): this mod is the MACHINERY
+    with a generic material as default content; data packs (RUT for the campaign's
+    deserts, a Pyrelands ash-dune biome) add materials and their own biome bindings.
+
+    Every number here is the design's own tuning from §2 "Budget arithmetic":
+    K = attemptsPerCellPerDay x cells / 240 batches-per-day, so 7.7 gives K = 2,000
+    on a 250x250 map. A crest advances one cell per ~depth/slabSize = 20 slab
+    arrivals ~ 2.5 game days: a ten-cell creep toward the base is a season. That is
+    the owner's "extremely slow", and every one of these is a knob.
+  -->
+
+  <RimMandrake.MovingDunes.RM_DuneGlobalsDef>
+    <defName>RM_Dunes_Globals</defName>
+    <!--
+      Depths at which the game stops DRAWING a covered thing. Global, not per-map:
+      ThingDef.hideAtSnowOrSandDepth lives on the shared def database. Applied at
+      startup only to defs still carrying vanilla's 99999 default, so anything with
+      its own opinion keeps it.
+    -->
+    <itemHideDepth>0.45</itemHideDepth>
+    <plantHideDepth>0.55</plantHideDepth>
+    <filthHideDepth>0.2</filthHideDepth>
+  </RimMandrake.MovingDunes.RM_DuneGlobalsDef>
+
+  <RimMandrake.MovingDunes.RM_DuneMaterialDef>
+    <defName>RM_Dunes_Sand</defName>
+    <label>desert sand</label>
+    <description>Ordinary wind-blown quartz sand. Light enough to lift in a moderate breeze, heavy enough to settle the moment it finds shelter.</description>
+
+    <!-- Untinted: the vanilla windswept-sand look. A data pack's ash or glacier
+         material is where a tint earns its keep. -->
+    <tint>(1,1,1)</tint>
+    <tintMode>MaterialColor</tintMode>
+    <crestShading>0.18</crestShading>
+
+    <!-- Transport. slabSize 0.05 sits under SandGrid's own 0.15 mesh-dirty
+         threshold on purpose, so slab moves ride the vanilla rate limiter. -->
+    <slabSize>0.05</slabSize>
+    <hopRange>2~6</hopRange>
+    <erodeMinDepth>0.1</erodeMinDepth>
+    <windSpeedThreshold>0.6</windSpeedThreshold>
+    <shadowRange>4</shadowRange>
+    <attemptsPerCellPerDay>7.7</attemptsPerCellPerDay>
+    <stormTransportFactor>4</stormTransportFactor>
+    <ambientDecayFactor>0</ambientDecayFactor>
+
+    <!-- Supply. ratio 1.0 = a steady field: what blows off the leeward edge comes
+         back on the windward one. influxPerDay is the absolute base AND the cold
+         start (a map with no sand loses none, so it could never be given any). -->
+    <influxLossRatio>1.0</influxLossRatio>
+    <influxPerDay>25</influxPerDay>
+    <weatherInfluxFactor>4</weatherInfluxFactor>
+    <maxTotalMassFraction>0.35</maxTotalMassFraction>
+
+    <!-- Gameplay. -->
+    <burialDepth>0.6</burialDepth>
+    <revealDepth>0.25</revealDepth>
+    <minBurialMarketValue>5</minBurialMarketValue>
+    <maxCachesPerMap>400</maxCachesPerMap>
+    <plantChokeDepth>0.5</plantChokeDepth>
+    <plantChokeDays>3</plantChokeDays>
+    <plantChokeSampleFraction>0.125</plantChokeSampleFraction>
+
+    <windShiftMeanDays>6</windShiftMeanDays>
+    <windShiftBigChance>0.25</windShiftBigChance>
+  </RimMandrake.MovingDunes.RM_DuneMaterialDef>
+
+</Defs>

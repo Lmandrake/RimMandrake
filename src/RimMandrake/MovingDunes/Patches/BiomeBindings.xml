@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <!--
+    Biome opt-in, generic from day one (RULED, MOVING_DUNES_DESIGN.md §5): the engine
+    mod itself binds vanilla Desert and ExtremeDesert to its own generic sand material.
+    Campaign biomes are bound by the RUT data pack, not here.
+
+    PatchOperationAddModExtension is the vanilla operation for exactly this; it appends
+    to <modExtensions> and creates the node if the def has none, so it works on a def
+    that has never carried an extension.
+
+    Neither operation is guarded: both target vanilla core BiomeDefs that are always
+    present, so a false return is a real failure worth the log line. A Conditional or
+    FindMod wrapper here would only convert a broken binding into silence — both of
+    those return true on no match, which is the trap this repo's rules name first.
+  -->
+
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/BiomeDef[defName="Desert"]</xpath>
+    <value>
+      <li Class="RimMandrake.MovingDunes.DuneFieldExtension">
+        <material>RM_Dunes_Sand</material>
+      </li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/BiomeDef[defName="ExtremeDesert"]</xpath>
+    <value>
+      <li Class="RimMandrake.MovingDunes.DuneFieldExtension">
+        <material>RM_Dunes_Sand</material>
+      </li>
+    </value>
+  </Operation>
+
+</Patch>

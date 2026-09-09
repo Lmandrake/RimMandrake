@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Moving Dunes</name>
+  <packageId>mandrake.rm.movingdunes</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Sand that actually moves.
+
+Odyssey already gives a map a per-cell sand depth, a renderer, path penalties, a clear-sand job and a sandstorm that drops sand out of the sky. What it never does is move the sand afterwards — it lands where it fell and evaporates within days. This mod adds the missing half.
+
+On a dune-field biome the map gets a prevailing wind direction of its own, which shifts every few days. Sand erodes off exposed crests and hops downwind in slabs, banking wherever it finds shelter — behind a wall, at the lip of a roof, or in any hollow lower than the ground it came from. Dug pits and cleared lanes refill from that same rule, so a maintained trench upwind becomes a sand moat you keep re-digging. A wall line across the prevailing wind becomes a real windbreak, and where your base faces becomes a layout decision.
+
+The map is treated as a window onto an endless desert rather than a loop: sand blowing off the downwind edge is gone for good, and fresh sand arrives along the upwind edge at a rate the material sets. A storm brings more of it.
+
+Loose gear left out in the desert gets swallowed. A buried stack stops deteriorating and waits; when the wind turns and the drift over it erodes away, it comes back out. Anything in a stockpile or inside your home area is left alone. Plants under deep drift choke and die, so an advancing front leaves a dead strip behind it.
+
+Every number is data. A dune material def carries the colour, the slab size, hop distance, wind threshold, supply rate, storm multipliers, burial and reveal depths and the plant-choke timing, so a desert can drift pale sand while an ash field drifts grey on the same machinery. Biomes opt in one at a time; vanilla Desert and Extreme Desert are bound here, and other mods bind their own.
+
+Other mods can bury things directly (BuryThingsAt) so wrecks and dig sites can start the game already under the sand.
+
+Requires Odyssey: the sand grid is Odyssey's, and without it this mod is inert rather than broken.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+  </loadAfter>
+</ModMetaData>

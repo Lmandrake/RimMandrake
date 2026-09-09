@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    The container a buried stack becomes (MOVING_DUNES_DESIGN.md §3).
+
+    It is an ITEM, not a building, and deliberately so: any full-fillage edifice
+    zeroes its own cell's sand depth (SandGrid.CanCoexistWithSand), which would
+    erode the very dune that made the cache and reveal it on the next tick.
+
+    drawerType is None because the thing is UNDER the sand — there is nothing to
+    draw, and it destroys itself the moment erosion uncovers it, dropping the real
+    items back onto the map to be drawn normally. The design's "low-bump graphic"
+    is deliberately NOT faked with a borrowed vanilla texPath: a texPath that does
+    not resolve renders nothing and reports nothing, which is the exact silent
+    failure this mod's whole discipline is against. The bump sprite is owed art,
+    tracked on the item, not guessed at here.
+
+    Not haulable (neither alwaysHaulable nor designateHaulable), so no pawn ever
+    tries to carry a dune away.
+  -->
+  <ThingDef>
+    <defName>RM_Dunes_BuriedCache</defName>
+    <label>buried cache</label>
+    <description>A stack of something the sand swallowed. It stops rotting and stops weathering while it is down there, and it comes back out when the drift over it erodes away.</description>
+    <thingClass>RimMandrake.MovingDunes.Thing_BuriedCache</thingClass>
+    <category>Item</category>
+    <altitudeLayer>Item</altitudeLayer>
+    <drawerType>None</drawerType>
+    <selectable>false</selectable>
+    <useHitPoints>false</useHitPoints>
+    <isSaveable>true</isSaveable>
+    <tickerType>Rare</tickerType>
+    <alwaysHaulable>false</alwaysHaulable>
+    <designateHaulable>false</designateHaulable>
+    <drawGUIOverlay>false</drawGUIOverlay>
+    <stackLimit>1</stackLimit>
+    <rotatable>false</rotatable>
+    <tradeability>None</tradeability>
+    <forceDebugSpawnable>true</forceDebugSpawnable>
+    <!-- Never burns: it is under a metre of sand, and useHitPoints is false, which
+         vanilla's own ThingDef.ConfigErrors flags when flammability is non-zero. -->
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <!-- Hidden by depth as well as by drawerType, so a future bump sprite drops in
+         without another change: it appears just before the reveal fires. -->
+    <hideAtSnowOrSandDepth>0.30</hideAtSnowOrSandDepth>
+  </ThingDef>
+
+</Defs>
