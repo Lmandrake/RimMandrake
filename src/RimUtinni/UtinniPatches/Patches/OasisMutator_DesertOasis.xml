@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  OasisMutator_DesertOasis.xml          RimUtinni Patches · added 2026-09-08
+  ============================================================================
+  OASIS_MUTATOR_PATCH_1. Vanilla/Odyssey TileMutatorDef Oasis ships with
+
+      <biomeWhitelist>
+        <li>Desert</li>
+        <li>ExtremeDesert</li>
+      </biomeWhitelist>
+
+  (verified via RimSage get_def_details, Ludeon Odyssey Defs/Odyssey/TileMutators)
+  — it does NOT list zylle.MoreVanillaBiomes' ZBiome_DesertOasis, which is our
+  Ash'karr oasis biome (renamed/repatched by BiomeNames_Ashkarr.xml,
+  BiomeFlora_Ashkarr.xml, BiomeCast_Ashkarr.xml, SWDesertWeather_Attach.xml).
+  w9_run.py (src/RimMandrake/Utils/w9_run.py, search "Oasis") already assumes
+  this whitelist add is needed and reads back live tile mutator counts to
+  prove it landed — this patch is the other half of that check.
+
+  Three cleanups the donor def (zylle.MoreVanillaBiomes,
+  Defs/BiomeDefs/ZBiome_DesertOasis.xml, read directly off disk from the
+  Workshop item since it isn't in this repo) still carries wrong for an
+  Ash'karr desert biome:
+
+    1. baseWeatherCommonalities still has SnowGentle(4) / SnowHard(4) — a
+       tidally-locked desert world (JawaWorld_BiomeMix.xml) never snows.
+    2. foragedFood=RawAgave was CHECKED, not repointed: RawAgave is a Core
+       ThingDef (Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml),
+       always present regardless of mod list — it resolves fine and is left
+       alone. (Plant_Agave, the plant that used to justify it, was dropped
+       from this biome's wildPlants by BiomeFlora_Ashkarr.xml, but foraging
+       doesn't require the source plant to be in wildPlants, so this is
+       thematic drift, not a broken cross-reference — no fix filed for it.)
+    3. additionalWildPlants is NOT a BiomeDef field — donor ZBiome_DesertOasis
+       has none. It lives on TileMutatorDef Oasis itself (vanilla):
+       Plant_TreePalm/Plant_RatPalm/Plant_Grass/Plant_GrayGrass/Plant_Reeds,
+       all real vanilla plants, not donor placeholders. The only RUT_-prefixed
+       plant in the repo, RUT_SweetlineTree
+       (src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_AshkarrFlora_Plants.xml),
+       is explicitly documented as one-per-landmark, NOT random wildPlants
+       scatter — using it here would contradict that design note, so it is
+       deliberately NOT added. Instead this adds two plants already curated
+       into this biome's own wildPlants roster by BiomeFlora_Ashkarr.xml
+       (TreePalma, VEE_Plant_DatePalm) so the mutator's bonus flora matches
+       Ash'karr's oasis roster instead of vanilla's generic set.
+
+  SAFETY: every op is PatchOperationConditional on the target node (or
+  target-node-minus-existing-entry) so a missing DLC/mod or an already-applied
+  entry yields a silent no-op, never a red error.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- ================= 1. WHITELIST our oasis biome ================= -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TileMutatorDef[defName="Oasis"]/biomeWhitelist[not(li="ZBiome_DesertOasis")]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/TileMutatorDef[defName="Oasis"]/biomeWhitelist</xpath>
+      <value>
+        <li>ZBiome_DesertOasis</li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- ================= 2. STRIP donor snow weathers ================= -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/baseWeatherCommonalities/SnowGentle</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/baseWeatherCommonalities/SnowGentle</xpath>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/baseWeatherCommonalities/SnowHard</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/baseWeatherCommonalities/SnowHard</xpath>
+    </match>
+  </Operation>
+
+  <!-- ========== 3. Oasis mutator's bonus flora, our roster ========== -->
+  <!-- additionalWildPlants is dictionary-keyed like wildPlants/baseWeatherCommonalities
+       (element name = plant defName, text = commonality) — NOT an <li> list. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TileMutatorDef[defName="Oasis"]/additionalWildPlants[not(TreePalma)]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/TileMutatorDef[defName="Oasis"]/additionalWildPlants</xpath>
+      <value>
+        <TreePalma>3</TreePalma> <!-- Ash'karr oasis roster, BiomeFlora_Ashkarr.xml -->
+        <VEE_Plant_DatePalm>2</VEE_Plant_DatePalm> <!-- Ash'karr oasis roster, BiomeFlora_Ashkarr.xml -->
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
