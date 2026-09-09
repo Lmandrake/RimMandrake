@@ -204,52 +204,6 @@
        true whichever copy of a co-declared def the load ends up holding. -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="guy762_Backpack_scorch"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- guy762_Backpack_scorch [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_Backpack_scorch"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_Backpack_scorch [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_Backpack_scorch"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_Backpack_scorch [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_Backpack_scorch"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="guy762_armband_cortosis"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- guy762_armband_cortosis [cortosis] ArmorRating_Sharp -> 0.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_armband_cortosis"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>0.20</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_armband_cortosis [cortosis] ArmorRating_Blunt -> 0.15 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_armband_cortosis"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.15</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_armband_cortosis [cortosis] ArmorRating_Heat -> 2.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_armband_cortosis"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>2.00</ArmorRating_Heat></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="guy762_MalgusArmor"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
@@ -657,6 +611,44 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Apparel_ArmorCataphractPhoenix"]/statBases/ArmorRating_Heat</xpath>
           <value><ArmorRating_Heat>0.35</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Star Wars KotOR Resources and Materials</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_Backpack_scorch [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_Backpack_scorch"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_Backpack_scorch [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_Backpack_scorch"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_Backpack_scorch [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_Backpack_scorch"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+        <!-- guy762_armband_cortosis [cortosis] ArmorRating_Sharp -> 0.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_armband_cortosis"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>0.20</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_armband_cortosis [cortosis] ArmorRating_Blunt -> 0.15 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_armband_cortosis"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.15</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_armband_cortosis [cortosis] ArmorRating_Heat -> 2.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_armband_cortosis"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>2.00</ArmorRating_Heat></value>
         </li>
       </operations>
     </match>

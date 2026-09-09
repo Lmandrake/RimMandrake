@@ -2221,6 +2221,123 @@
     </match>
   </Operation>
 
+  <!-- Ops on defs THIS mod declares (mostly absorbed donors). No
+       PatchOperationFindMod: def and patch ship in the same mod, so naming
+       ourselves is a tautology dressed as a guard, and that shape has
+       already failed twice here. When a donor was absorbed and RETIRED the
+       FindMod went on naming a mod nobody loads; FindMod returns true on no
+       match, so whole blocks silently never ran (ARMOURY_RETIRED_GUARD_FIX_1).
+       The guard that means something is the target def itself, which is also
+       true whichever copy of a co-declared def the load ends up holding. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_TelluroxShell"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_TelluroxShell : baseline hide -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_TelluroxShell"]/stuffProps/statFactors</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_TelluroxShell"]/stuffProps/statFactors</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.40</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.15</Comfort>
+            </statFactors>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_TelluroxShell"]/stuffProps</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.40</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.15</Comfort>
+            </statFactors>
+            </value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_KarraskPlate"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_KarraskPlate : baseline hide -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_KarraskPlate"]/stuffProps/statFactors</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_KarraskPlate"]/stuffProps/statFactors</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.40</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.15</Comfort>
+            </statFactors>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_KarraskPlate"]/stuffProps</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.40</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.15</Comfort>
+            </statFactors>
+            </value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Leather_Bantha"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_Leather_Bantha : heat-adapted: ablative hide, resists energy (L11) -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Leather_Bantha"]/stuffProps/statFactors</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Leather_Bantha"]/stuffProps/statFactors</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.15</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.05</ArmorRating_Blunt>
+              <ArmorRating_Heat>1.30</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.00</Comfort>
+            </statFactors>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Leather_Bantha"]/stuffProps</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.15</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.05</ArmorRating_Blunt>
+              <ArmorRating_Heat>1.30</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.00</Comfort>
+            </statFactors>
+            </value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationFindMod">
     <mods><li>Rimefeller</li></mods>
     <match Class="PatchOperationSequence">
