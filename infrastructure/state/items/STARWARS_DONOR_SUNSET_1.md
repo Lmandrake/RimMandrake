@@ -161,3 +161,12 @@ owner's ruling — this rides whatever load happens next):
   TSDA's 59 defs.
 - **Drassik glands RULED** (livestock, recorded here only as cross-ref):
   Steel / Plasteel / Slag.
+
+## Wave 4 RULED — owner, question card, 2026-09-09
+
+**`lumi.doorsexpanded`: port the fix, then retire.** Port
+`src/RimMandrake/BlastDoorFrameAsyncFix/`'s Harmony patch to drop its hard
+`modDependencies` on this donor before retiring it — do not retire first and
+accept the async-door bug returning, and do not leave it upstream
+indefinitely. This is the sole remaining blocker on the item; unblocking now
+for FOUNDRY to execute.

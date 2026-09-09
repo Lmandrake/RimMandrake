@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T18:58:26Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-09T19:03:13Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -172,7 +172,7 @@ summary:  FLUIDCANALMECHANIC1 — general canal/fluid-flow mechanic, RimMandrake
 prose:    infrastructure/state/items/FLUID_CANAL_MECHANIC_1.md
 
 ## STARWARS_DONOR_SUNSET_1 Retire ALL remaining third-party Star Wars donors (12 mods, 4 waves; Mlie+TSDA first)
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -594,6 +594,15 @@ kind:     fix
 summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
 
+## CHRONICLE_NINEFOLD_DECOUPLE_1 Decouple Aftermath from Ninefold per CHRONICLE_EVENT_SPINE.md: subscription API, drop hard modDependency+csproj ref, godTie God enum to string (C#, model=opus)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
+prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
+
 ## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
 state:    doing
 row:      unassigned
@@ -611,6 +620,15 @@ target:   v1
 kind:     task
 summary:  - Location: 32.12N 94.76E → tile 2403 (MEASURED off the canon CSV: lat 32.1169,
 prose:    infrastructure/state/items/GAPING_DOOM_SITE_1.md
+
+## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  spec (design proposal, Fable subagent, 2026-09-09 — awaiting owner ruling)
+prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
 
 ## PLANETARY_BEAUTY_LOADSCREENS_1 Render realistic planetary beauty shots from space for load screens (graphics pipeline)
 state:    doing
@@ -683,16 +701,6 @@ kind:     build
 blocked:  validate_patch.py --defs (Data+Mods+Workshop+Armoury) re-run clean: 13 errors, all pre-existing KOTORCORE_ABSORPTION_MISSING_TEXTURES_1 findings, no new fallout. Sole remaining criterion (guy762.mm.kotorcore retirement) still gated on parked DROID_SYSTEM_BUILD_1 — DROID_KOTORDROIDS_PORT_WAVE1_1's Site 1 (Droidworks Need_Power port) still open. Not forcing through solo per prior session's own note.
 summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
 prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
-
-## STARWARS_DONOR_SUNSET_1 Retire ALL remaining third-party Star Wars donors (12 mods, 4 waves; Mlie+TSDA first)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Waves 1-3 verified/scoped clean (wave 1 re-verified live-clean 2026-09-06; wave 2 is MLIE_FAUNA_ABSORPTION_1, doing; wave 3 points at DROID_SYSTEM_BUILD_1). Sole remaining gap: lumi.doorsexpanded retirement needs an owner call (port our own BlastDoorFrameAsyncFix's modDependencies first, or accept its bug returns) - no ruling on file.
-summary:  STARWARSDONORSUNSET1 — retire the remaining third-party Star Wars donors
-prose:    infrastructure/state/items/STARWARS_DONOR_SUNSET_1.md
 
 ## RIVER_STEAM_ANIMATION_1 Animated steam rising from the rivers (Pyrelands weather visual)
 state:    doing  (BLOCKED)
@@ -886,16 +894,6 @@ thin:     spec, verify and criteria all present
 summary:  Unmasked 2026-09-08 while live-verifying WORLDLINTWATERHARDCODE1 on the real
 prose:    infrastructure/state/items/WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1.md
 
-## CHRONICLE_NINEFOLD_DECOUPLE_1 Decouple Aftermath from Ninefold per CHRONICLE_EVENT_SPINE.md: subscription API, drop hard modDependency+csproj ref, godTie God enum to string (C#, model=opus)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
-prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
-
 ## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
 state:    proposed
 row:      unassigned
@@ -956,16 +954,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  names ready
 prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
 
-## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec
-summary:  spec (design proposal, Fable subagent, 2026-09-09 — awaiting owner ruling)
-prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
-
 ## BIOMESKIT_RENDER_LAYER_MISSING_1 BiomesKit's 1.6 DLL dropped BiomesKitWorldLayer entirely -- worldmap decoration icons' current source unknown
 state:    proposed
 row:      unassigned
@@ -975,3 +963,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BIOMESKIT_RENDER_LAYER_MISSING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOMESKIT_RENDER_LAYER_MISSING_1.md
+
+## PYRELANDS_LORE_NAMING_DRIFT_1 the_pyrelands.md lore doc still says RSW_FE_* where shipped defs are RM_FE_Pyrelands
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     fix
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_LORE_NAMING_DRIFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_LORE_NAMING_DRIFT_1.md
