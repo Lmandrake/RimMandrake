@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T03:28:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T03:49:36Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -540,14 +540,23 @@ kind:     task
 summary:  Per CLAUDE.md's own note: the two laws (text/menu authority only; the game
 prose:    infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md
 
-## UTINNI_SHELL_DEFNAME_BUG_1 UtinniShell emits Config error every full-list load: defName 'Utinni Shellmandrake.rut.shell' — name and packageId concatenated somewhere in its def authoring
+## WORLD_FEATURE_LABELS_OVERSIZED_1 World feature labels render HUGE and overlap the globe -- our maxDrawSizeInTiles multiplier is 1.63x vanilla's
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-summary:  (no items/UTINNI_SHELL_DEFNAME_BUG_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/UTINNI_SHELL_DEFNAME_BUG_1.md
+summary:  symptom
+prose:    infrastructure/state/items/WORLD_FEATURE_LABELS_OVERSIZED_1.md
+
+## BLASTDOOR_LUMI_PORT_1 Port Lumi.doorsexpanded's blast-door ThingDefs before retiring the donor (owner ruling, 2026-09-08: port first, don't accept the bug returning)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  src/RimStarWars/BlastDoorFrameAsyncFix (packageId
+prose:    infrastructure/state/items/BLASTDOOR_LUMI_PORT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -875,16 +884,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  the ask
 prose:    infrastructure/state/items/UNDERWATER_BIOME_SUPPORT_1.md
 
-## WORLD_FEATURE_LABELS_OVERSIZED_1 World feature labels render HUGE and overlap the globe -- our maxDrawSizeInTiles multiplier is 1.63x vanilla's
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  symptom
-prose:    infrastructure/state/items/WORLD_FEATURE_LABELS_OVERSIZED_1.md
-
 ## SCALD_DARK_TOWER_1 Dark tower in the Scald: Rakatan high command, Rust Cathedral control systems, ocular warped Assailant intrusion
 state:    proposed
 row:      unassigned
@@ -1134,33 +1133,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MOVING_DUNES_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
-
-## ARMOURY_LEATHER_RATINGS_REGEN_STALE_1 Armour_Leather.xml and Armour_Ratings.xml drifted from gen_armour_patch.py after the naming/dedupe sprints
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec
-summary:  ARMOURYLEATHERRATINGSREGENSTALE1
-prose:    infrastructure/state/items/ARMOURY_LEATHER_RATINGS_REGEN_STALE_1.md
-
-## PROPANE_LAKES_SELF_CONTAINED_BIOME_1 Author the Propane Lakes' own self-contained BiomeDef (RM tier), replacing donor AB_PropaneLakes — owner-delegated pick, worldmap sitting 2026-09-08; mirror the Pyrelands pattern: own weather (fuel snow, dry lightning, reconnection storms), crystal flora 1-day regrow, propane-sea terrain, 110d clock; sheet: design/Jawa/worldbuilding/biomes/the_propane_lakes.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PROPANE_LAKES_SELF_CONTAINED_BIOME_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PROPANE_LAKES_SELF_CONTAINED_BIOME_1.md
-
-## PROPANE_LAKES_WORLD_SWITCH_1 Switch Ashkarr's AB_PropaneLakes tiles (MEASURED 2,531 on live V24) to the new RM Propane Lakes biome once it proves out in a quicktest — same lane as PYRELANDS_WORLD_SWITCH_1, rides a deploy+restart window
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PROPANE_LAKES_WORLD_SWITCH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PROPANE_LAKES_WORLD_SWITCH_1.md
