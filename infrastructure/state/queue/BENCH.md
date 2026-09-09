@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T23:05:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T23:20:07Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -134,16 +134,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## GRAPHICS_GEMINI_BILLING_DECISION_1 Wrecked-Machines facing pipeline gated on owner enabling Gemini billing (free tier=0 for images); channel+key ready, rembg+Remotion free wins already landed
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  GRAPHICSGEMINIBILLINGDECISION1 — enable Gemini billing for the facing pipeline?
-prose:    infrastructure/state/items/GRAPHICS_GEMINI_BILLING_DECISION_1.md
 
 ## LOCAL_IMAGEGEN_TRACK_PARKED_1 PARKED by owner 2026-09-05: local ComfyUI/Flux image-generation track halted - it caused the seat OOM window kills; do NOT relaunch local generation until the owner says otherwise
 state:    proposed
