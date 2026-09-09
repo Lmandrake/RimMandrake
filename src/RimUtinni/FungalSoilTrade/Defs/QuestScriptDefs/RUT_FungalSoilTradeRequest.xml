@@ -108,10 +108,29 @@
              slate var of that name - vanilla's own picker node sets it the
              same way (storeThingAs>requestedThing). Skipping this step would
              leave an unresolvable [symbol] and blank the whole description
-             (the exact trap DroidRepairJob's own comments warn about). -->
+             (the exact trap DroidRepairJob's own comments warn about).
+
+             convertTo>ThingDef< IS REQUIRED, not decorative: QuestNode_Set's
+             own value field is a SlateRef<object>, so without convertTo a
+             literal like "RUT_FungalSoil" is stored on the slate as a plain
+             System.String, not a ThingDef. $requestedThing still resolves
+             correctly for QuestNode_TradeRequest_Initiate's requestedThingDef
+             (SlateRef<ThingDef> auto-converts a string via
+             ConvertHelper/GenDefDatabase.GetDef on read) - but the
+             description-rule grammar walk (QuestGenUtility.AddSlateVar) only
+             emits a "_label" child rule when the slate object itself is a
+             Def (GrammarUtility.RulesForDef); for a bare string it emits only
+             the base "requestedThing" rule. Verified by reading
+             QuestGenUtility.AddSlateVar and GrammarUtility.RulesForDef via
+             mcp__rimsage__read_file: without convertTo, [requestedThing_label]
+             above is exactly the unresolvable-symbol trap this comment
+             already warns about, and it silently blanks the whole
+             questDescription. convertTo forces QuestNode_Set to resolve the
+             defName to the real ThingDef before it ever reaches the slate. -->
         <li Class="QuestNode_Set">
           <name>requestedThing</name>
           <value>RUT_FungalSoil</value>
+          <convertTo>ThingDef</convertTo>
         </li>
         <li Class="QuestNode_Set">
           <name>requestedThingCount</name>

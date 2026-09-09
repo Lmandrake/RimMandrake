@@ -18,8 +18,22 @@ namespace RimMandrake.Utinni.FungalSoilTrade
 	// uses the ordinary Designator_Mine / WorkGiver_Miner / JobDriver_Mine chain
 	// with no new job system, per the item's own instruction. Prefix (not
 	// postfix): DestroyMined's own body calls base.Destroy() partway through,
-	// after which the Mineable's Map/Position are no longer valid to read, so the
-	// cell and map must be captured before the original method runs.
+	// after which the Mineable's Map is no longer valid to read (Thing.Map
+	// returns null once mapIndexOrState is reset by DeSpawn) - confirmed by
+	// reading Verse/Thing.cs's Map/DeSpawn via mcp__rimsage__read_file, not
+	// guessed. (Position itself is just the positionInt field and stays
+	// readable post-Destroy - vanilla's own TrySpawnYield relies on that - but
+	// Map alone is reason enough that the cell and map must be captured before
+	// the original method runs; capturing both together here is the simpler,
+	// still-correct call.)
+	//
+	// HARMONY PARAMETER NAMES: DestroyMined's real signature is
+	// `public void DestroyMined(Pawn pawn)` - one parameter, named "pawn",
+	// confirmed via mcp__rimsage__read_csharp_symbol. The Prefix below binds
+	// __instance via Harmony's special reserved name (not tied to any real
+	// parameter name) and binds "pawn" by matching the real parameter's name
+	// exactly - both bindings verified against the decompiled source, not
+	// assumed.
 	//
 	// RESPONSE ROSTER: the six PawnKindDefs are AA_Agaripawn, AA_Agaripod,
 	// AA_Wildpawn, AA_Wildpod, AA_Swarmling and AA_MycoidColossus - every one
@@ -102,9 +116,9 @@ namespace RimMandrake.Utinni.FungalSoilTrade
 		private const float DistressDecayPerInterval = 0.15f;
 		private const int DecayIntervalTicks = 2000; // ~1/30th of an in-game day
 
-		private const float FirstResponseThreshold = 3f;   // ~3 knots dug: pawns/pods first responders
+		private const float FirstResponseThreshold = 3f;   // ~3 knots dug: one pawn-tier first responder
 		private const float SwarmThreshold = 6f;            // a swarmling cluster joins
-		private const float HeavyThreshold = 9f;             // a second, heavier hybrid joins
+		private const float HeavyThreshold = 9f;             // a pod-tier heavy hybrid joins
 		private const float ColossusThreshold = 14f;        // sustained digging: the Colossus itself
 
 		private const int PulseCooldownTicks = 2500; // ~1 in-game hour between distress pulses
@@ -211,12 +225,12 @@ namespace RimMandrake.Utinni.FungalSoilTrade
 			PawnKindDef firstResponder = Rand.Bool
 				? LookUp(FungalSoilDefOf.AgaripawnDefName)
 				: LookUp(FungalSoilDefOf.WildpawnDefName);
+			// If neither AA_Agaripawn nor AA_Wildpawn resolved (Alpha Animals
+			// absent), firstResponder is null and AddIfFound is a no-op - the
+			// swarm/heavy/colossus tiers below are each independently
+			// guarded the same way, so a higher-distress response can still
+			// fire even with this tier empty.
 			AddIfFound(result, firstResponder);
-			if (result.Count == 0)
-			{
-				// Neither def resolved (Alpha Animals absent) - try the other
-				// tiers anyway before giving up, each guarded the same way.
-			}
 
 			if (distress >= SwarmThreshold)
 			{
