@@ -406,3 +406,103 @@ Both re-exported, `rimplace selftest` re-run (28/28), both mods' `Templates/`
 this was a defensive/clarity fix to code that had not yet caused a wrong
 result, not a rollback of anything shipped.
 
+## 2026-09-09 (FOUNDRY) — coverage lint built, precise state established, no new templates
+
+Picked up during a full-mod-list cold load in progress on unrelated work
+(BENCH holding the bridge for `BIOME_ENRICHMENT_POISON_FOREST_1`) — pure
+offline pass, no bridge/ModsConfig touch, per this dispatch's own
+instruction. Re-read the whole item history and the roster before writing
+anything, per standing lesson (queue items decay).
+
+**Built**: `src/RimMandrake/Utils/structure_roster_lint.py` — the
+coverage-lint mechanism the item's criteria has asked for since 2026-08-31
+and no prior batch built. Checks, per roster row: promise → does
+`design/Jawa/templates/<slug>.lua` exist AND does some `GenStepDefs*.xml`
+in that row's tier mod reference `Templates/<slug>.txt`. Roster rows are
+hardcoded in the script (name/tier/slug/status), not parsed from the
+markdown prose — the roster isn't machine-structured and mis-parsing free
+text would be worse than a human-checked table. Run: `python3
+src/RimMandrake/Utils/structure_roster_lint.py`.
+
+**Precise coverage, run 2026-09-09** (supersedes every "~N of 44 rows
+remain" line above — those were never rows, only promises, and were
+undercounting by one: row 22 The Homestead was built by a DIFFERENT item,
+`INHABITED_AUGMENTATION_BUILD_1` (commit `ade756fc`, abode/homestead/
+compound wired in `mandrake.rut.injections`), and no prior session here
+credited it):
+
+- **Promises: 16/22 covered** (template + wired responder, both verified
+  present on disk): #1 Moisture Farm, #3 Krayt Graveyard, #4 Podracer
+  Wreck, #8 Monument, #9 Rakatan Trace, #10 Oasis Shrine, #12 Hunting
+  Lodge, #13 Toll Gap, #14 Dead Beacon, #15 Bantha Graveyard, #16 Glass
+  Sea, #18 Mynock Roost, #19 Cistern, #20 Broken Ring, #21 Imperial
+  Waystation, #22 Homestead.
+- **6 promises are real, declared gaps — not mine to fill blind**:
+  - **#5 The Junkers' Field**, **#11 The Kiln** — already correctly
+    identified and skipped in batch 6 (needs the coastal_mesa mapsynth
+    tool / an owner ruling on the Ohm-vs-Sh'kaar contest, respectively).
+    Re-confirmed still unbuilt.
+  - **#2 The Sarlacc** — roster asks for "responder polish (warning
+    totems ring the pit)" onto the *existing* `sw_Sarlacc`/`sw_SarlaccLair`
+    pair. Checked: that mutator's def lives in a Workshop mod, not this
+    repo, and its actual pit geometry has never been inspected here — I
+    have no dump/RimSage access to it this pass (bridge busy on another
+    item's mapgen work, not free to query defs against). Ringing an
+    unmeasured pit shape is a real design/measurement gap, not a blind
+    fill.
+  - **#6 The Dead Crawler**, **#7 The Signal Mast**, **#17 The Ashfall
+    Battery** — the roster names these ("three interior decks" / "comms-
+    console room" / "fuel-farm room") without a concrete layout anywhere
+    in any design doc. Same rule prior batches applied to underspecified
+    rows (Kiln, Junkers' Field): do not invent the content, leave open.
+- **Whispers: 0/22 — a missing SUBSYSTEM, not 22 small gaps.** Checked
+  directly (`grep -rl whisper src/ design/`): no territory table, no
+  weighted-selector GenStep, no landing-letter hook, no incident/quest
+  wiring keys off any of the 22 whisper names or their god-country column
+  anywhere in the repo. The roster's own mechanism sketch (§0b:
+  `GenStep_RandomSelector` for whisper variety) was never built out. This
+  is a full engine-plus-22-distinct-mechanics build (a strongbox event,
+  a migration, a hostile-pair spawn, a timed knocking incident, etc. —
+  each is its own design, not a template fill) and was out of every prior
+  batch's scope too; it belongs as its own scoped pass, not something a
+  single offline dispatch should attempt uninvited. Flagging explicitly
+  because no prior state note in this file ever gave whispers an honest
+  number — they were silently absent from every "~N of 44" line above.
+
+**VERIFY (terrain/roof ordering) — offline re-confirmed, live proof still
+owed.** Re-read `src/RimMandrake/StructureInjections/Source/
+GenStep_RimplacePlan.cs` in full: `ApplyPlan` runs CLEAR → FOUNDATION →
+TERRAIN → THINGS (`OrderByDescending(EverTransmitsPower)`, transmitters
+spawn before connectors) → RUN → ROOF → PAWN, matching both the roster's
+§0b requirement and the live-proven `rimplace.plan.compile_calls()` order
+the code comments cite line-for-line. This is the same order the item's
+own `verify` section asks for. Did **not** attempt a live quicktest this
+pass — the bridge was held by another FOUNDRY window running unrelated
+mapgen work and the dispatch for this item explicitly said not to touch
+it; the live ordering proof (build a test structure on a quicktest map,
+confirm no clipping/wrong roof) remains owed exactly as every batch since
+2026-08-31 has recorded, not newly discovered as missing.
+
+**Found, not touched**: `mandrake.rut.injections` — the mod holding 10 of
+the 16 covered promise rows plus Homestead — is deployed on disk
+(`C:\...\RimWorld\Mods\StructureInjectionsRUT` exists) but is **absent
+from the live `ModsConfig.xml`** (`mandrake.rm.injections` and
+`mandrake.rsw.injections` are both present and active; `mandrake.rut.
+injections` is not, checked by direct grep against the live file). None
+of RUT's 10 covered rows can generate in the current game until it's
+enabled — an activation gap, not a content gap. Left alone: enabling a
+mod mid-cold-load on an unrelated item's active load is exactly the
+cross-window collision this dispatch said to avoid; it rides the next
+restart alongside the still-open live-ordering proof.
+
+**No new templates authored this pass** — every remaining promise is a
+declared gap (tool/owner/design), and the whisper subsystem is out of a
+single dispatch's scope. Nothing was invented to pad the count.
+
+**Coverage as of this pass: 16/22 promises (73%), 0/22 whispers, 0
+coverage-law violations** (no promise ships with only a template or only
+a responder — `structure_roster_lint.py` confirms this mechanically now,
+not by re-reading batch notes by hand). Left `doing` — not close-eligible:
+6 promise gaps need an owner ruling or a design pass, the whisper engine
+doesn't exist, and the live ordering proof is still owed.
+
