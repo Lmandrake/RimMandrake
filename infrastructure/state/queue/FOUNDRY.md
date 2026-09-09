@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T19:06:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T19:07:22Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -964,3 +964,13 @@ kind:     fix
 thin:     spec, verify and criteria all present
 summary:  Found by PYRELANDSSELFCONTAINEDBIOME1's closing agent (2026-09-09), out of that
 prose:    infrastructure/state/items/PYRELANDS_LORE_NAMING_DRIFT_1.md
+
+## INHABITED_INJECTIONS_DECOUPLE_1 Decouple Inhabited from StructureInjections (Law-1 sweep confirmed violation)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     fix
+thin:     spec, verify and criteria all present
+summary:  Decouple Inhabited (mandrake.rm.inhabited) from StructureInjections
+prose:    infrastructure/state/items/INHABITED_INJECTIONS_DECOUPLE_1.md

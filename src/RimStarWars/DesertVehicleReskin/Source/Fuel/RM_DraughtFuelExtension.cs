@@ -1,6 +1,6 @@
 using Verse;
 
-namespace RimMandrake.StarWars.DesertVehicleReskin
+namespace RimMandrake.DesertVehicleReskin
 {
     /// <summary>
     /// Marker attached (via XML patch, see DraughtFuel_Marker.xml) to the

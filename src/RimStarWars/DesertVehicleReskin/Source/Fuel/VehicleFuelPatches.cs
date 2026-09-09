@@ -10,7 +10,7 @@ using Vehicles.World;
 using Verse;
 using Verse.AI;
 
-namespace RimMandrake.StarWars.DesertVehicleReskin
+namespace RimMandrake.DesertVehicleReskin
 {
     /// <summary>
     /// Harmony bootstrap. Deliberately mentions no Vehicles type: if Vehicle
@@ -28,7 +28,7 @@ namespace RimMandrake.StarWars.DesertVehicleReskin
                 .Any(assembly => assembly.GetName().Name == "Vehicles");
             if (!vehiclesLoaded)
             {
-                Log.Warning("[RimMandrake.StarWars.DesertVehicleReskin] Vehicles (Vehicle Framework) is not loaded; "
+                Log.Warning("[RimMandrake.DesertVehicleReskin] Vehicles (Vehicle Framework) is not loaded; "
                     + "fuel widening skipped. Textures are unaffected.");
                 return;
             }
@@ -39,7 +39,7 @@ namespace RimMandrake.StarWars.DesertVehicleReskin
             }
             catch (Exception ex)
             {
-                Log.Error("[RimMandrake.StarWars.DesertVehicleReskin] Failed to widen vehicle fuel types: " + ex);
+                Log.Error("[RimMandrake.DesertVehicleReskin] Failed to widen vehicle fuel types: " + ex);
             }
         }
     }
@@ -74,7 +74,7 @@ namespace RimMandrake.StarWars.DesertVehicleReskin
 
             if (closestFuel == null || inventoryFuel == null)
             {
-                Log.Error("[RimMandrake.StarWars.DesertVehicleReskin] Vehicle Framework's fuel API has moved: "
+                Log.Error("[RimMandrake.DesertVehicleReskin] Vehicle Framework's fuel API has moved: "
                     + "ClosestFuelAvailable=" + (closestFuel != null)
                     + " AllFuelFromInventory=" + (inventoryFuel != null)
                     + ". Fuel widening not applied.");

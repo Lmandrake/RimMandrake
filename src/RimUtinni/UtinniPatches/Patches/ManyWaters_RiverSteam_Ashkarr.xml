@@ -46,14 +46,14 @@
         <match Class="PatchOperationAdd">
           <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/modExtensions</xpath>
           <value>
-            <li Class="RimMandrake.ManyWaters.RiverSteamBiomeExtension" />
+            <li Class="RiverSteamHook.RiverSteamBiomeExtension" />
           </value>
         </match>
         <nomatch Class="PatchOperationAdd">
           <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]</xpath>
           <value>
             <modExtensions>
-              <li Class="RimMandrake.ManyWaters.RiverSteamBiomeExtension" />
+              <li Class="RiverSteamHook.RiverSteamBiomeExtension" />
             </modExtensions>
           </value>
         </nomatch>

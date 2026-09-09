@@ -3,12 +3,12 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.ManyWaters
+namespace RiverSteamHook
 {
     // ════════════════════════════════════════════════════════════════════
     // WHICH BIOMES STEAM — the data hook.
     //
-    // TRIGGERED BY: a <modExtensions><li Class="RimMandrake.ManyWaters.RiverSteamBiomeExtension">
+    // TRIGGERED BY: a <modExtensions><li Class="RiverSteamHook.RiverSteamBiomeExtension">
     // block on a BiomeDef. A biome that does not carry this extension gets
     // no river steam at all; this assembly names no biome of its own.
     //

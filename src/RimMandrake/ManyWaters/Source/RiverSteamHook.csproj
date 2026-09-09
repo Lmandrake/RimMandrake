@@ -19,7 +19,7 @@
     <TargetFramework>net472</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AssemblyName>RiverSteamHook</AssemblyName>
-    <RootNamespace>RimMandrake.ManyWaters</RootNamespace>
+    <RootNamespace>RiverSteamHook</RootNamespace>
     <Version>1.0.0</Version>
 
     <OutputPath>..\Assemblies\</OutputPath>
