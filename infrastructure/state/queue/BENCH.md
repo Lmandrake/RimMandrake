@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T21:13:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T21:28:54Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -89,6 +89,15 @@ target:   v1
 kind:     task
 summary:  ANCIENTRUINSMODAUDIT1 — the mall-maps mod: cut, keep, or learn from
 prose:    infrastructure/state/items/ANCIENT_RUINS_MOD_AUDIT_1.md
+
+## ART_PIPELINE_DAEMON_1 Constant background art pipeline: dumb daemon + N codex exec receiving-agent workers, seats fill the queue
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Division of labor (the design decision, incl. the ruled pushback):
+prose:    infrastructure/state/items/ART_PIPELINE_DAEMON_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
