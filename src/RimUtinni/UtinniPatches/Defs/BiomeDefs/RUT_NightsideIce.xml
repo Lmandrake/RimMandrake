@@ -67,7 +67,7 @@
 
   <BiomeDef>
     <defName>RUT_NightsideIce</defName>
-    <label>nightside ice</label>
+    <label>the Nightside Ice</label>
     <description>Dirty white ice, geologically young and impure, on the highest ground of the deep night. It flows, it fractures, and what it swallowed it eventually gives back. There is no soil for plants to grow in. The only animals here are migrating to somewhere else -- or badly lost.</description>
     <workerClass>BiomeWorker_IceSheet</workerClass>
     <settleWarning>The nightside ice is extremely inhospitable. There is no soil for plants, almost no animal life, and no warmth anywhere but what you bring. Long-term survival is a challenge.</settleWarning>

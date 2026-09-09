@@ -212,6 +212,11 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
 - **Lab guardians** — mechanoids and ancient dangers, the last watch.
 - **Prior taps** — the wire-loop ruins of everyone who learned the aurora pays.
 - **The fallen** — the Blue Desert's dead, arrived, and the frostmites at them.
+- ⭐ **The island** *(amendment, owner ruled CANON at the 2026-09-08 review sitting)*:
+  tile 5873 — a lone 1,042 m crag carrying caves, surrounded on all six sides by the
+  lake. Found by the review (the lint's one single-tile island); ruled a place, not an
+  accident: the reading is the lab's access standing above the fuel. Landmark + name
+  owed at build; nothing else on the lake breaks the mirror.
 
 ## 9. Artistic theme
 

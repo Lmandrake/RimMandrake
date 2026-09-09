@@ -79,8 +79,8 @@
 
   <BiomeDef>
     <defName>RUT_PropaneLake</defName>
-    <label>the propane lake</label>
-    <description>A black mirror of liquid fuel under the brightest sky on the planet, ringed by a crust of the same compound frozen solid. Nothing hot has touched it since the war.</description>
+    <label>the Propane Lake</label>
+    <description>A black mirror of liquid fuel under the brightest sky on the planet, ringed by a crust of the same compound frozen solid. The cold here is total, and the stillness is older than anyone's records.</description>
     <workerClass>BiomeWorker_Ocean</workerClass>
     <isWaterBiome>true</isWaterBiome>
     <canBuildBase>false</canBuildBase>

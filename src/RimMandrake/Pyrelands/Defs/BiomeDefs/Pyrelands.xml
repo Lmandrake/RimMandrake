@@ -29,7 +29,7 @@
 
   <BiomeDef>
     <defName>RM_FE_Pyrelands</defName>
-    <label>pyrelands</label>
+    <label>the Pyrelands</label>
     <description>A hot, wind-scoured savanna that burns on a schedule of its own. Coarse fast grass carpets the ground faster than anything can eat it, dries out within days of growing, and goes up at the first dry-storm strike. What is left behind is ash: falling out of the sky for days after a big burn, banking into drifts, and packing down into a grey hardpan that nothing roots through. The rare rain here is black with it. Little grows tall enough to matter, so the horizon is nothing but grass, scars and smoke.</description>
     <workerClass>RimMandrake.StarWars.FireEcology.BiomeWorker_Pyrelands</workerClass>
     <texture>World/Biomes/RM_FE_Pyrelands</texture>
