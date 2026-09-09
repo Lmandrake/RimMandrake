@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T19:17:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T19:26:30Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -585,15 +585,6 @@ kind:     fix
 summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
 
-## WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1 181 land-biome tiles (AridShrubland/Desert/Wasteland/AB_RockyCrags/AB_MycoticJungle/ZBiome_Badlands) sit at the three seas' own elevation (-350), unmasked now that WORLD_LINT_WATER_HARDCODE_1 stopped conflating them with the seas' own tiles
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  Unmasked 2026-09-08 while live-verifying WORLDLINTWATERHARDCODE1 on the real
-prose:    infrastructure/state/items/WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1.md
-
 ## CHRONICLE_NINEFOLD_DECOUPLE_1 Decouple Aftermath from Ninefold per CHRONICLE_EVENT_SPINE.md: subscription API, drop hard modDependency+csproj ref, godTie God enum to string (C#, model=opus)
 state:    doing
 row:      unassigned
@@ -611,6 +602,15 @@ target:   v1
 kind:     task
 summary:  Owner (2026-09-09, verbatim on the event): commission art INSPIRED BY the
 prose:    infrastructure/state/items/DESERT_WRAPS_ART_COMMISSION_1.md
+
+## MOVING_DUNES_BUILD_1 Build the dunes engine per MOVING_DUNES_DESIGN.md v2 (model=opus, ~1.1-1.4k lines): Werner transport on Odyssey sandGrid, source/sink edges, DuneMaterialDef skins, burial caches + BuryThingsAt API — GATED on the shader-tint quicktest the design names
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/MOVING_DUNES_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
 
 ## GAPING_DOOM_SITE_1 The Gaping Doom: dead-sarlacc toxic-waste pit at tile 2403 (32.12N 94.76E, Cracked Lands, Junker territory) — landmark + green-throat art derived from sw_DeadSarlacc; world-threatening buildup is a plot element (owner, 2026-09-08)
 state:    doing
@@ -647,6 +647,15 @@ target:   v1
 kind:     design
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
+
+## PYRELANDS_LORE_NAMING_DRIFT_1 the_pyrelands.md lore doc still says RSW_FE_* where shipped defs are RM_FE_Pyrelands
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     fix
+summary:  Found by PYRELANDSSELFCONTAINEDBIOME1's closing agent (2026-09-09), out of that
+prose:    infrastructure/state/items/PYRELANDS_LORE_NAMING_DRIFT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -884,16 +893,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
 
-## MOVING_DUNES_BUILD_1 Build the dunes engine per MOVING_DUNES_DESIGN.md v2 (model=opus, ~1.1-1.4k lines): Werner transport on Odyssey sandGrid, source/sink edges, DuneMaterialDef skins, burial caches + BuryThingsAt API — GATED on the shader-tint quicktest the design names
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MOVING_DUNES_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
-
 ## BIOME_ENRICHMENT_DESERT_WASTELAND_1 Enrichment wave (review B1): Desert (53% zero-mutator) + Wasteland (63%) — the two largest land biomes read thin where caravans travel most; place from their sheets' shade-line and plant-vault kits; dune sea stays barren by rule
 state:    proposed
 row:      unassigned
@@ -943,16 +942,6 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BIOMESKIT_RENDER_LAYER_MISSING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOMESKIT_RENDER_LAYER_MISSING_1.md
-
-## PYRELANDS_LORE_NAMING_DRIFT_1 the_pyrelands.md lore doc still says RSW_FE_* where shipped defs are RM_FE_Pyrelands
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     fix
-thin:     spec, verify and criteria all present
-summary:  Found by PYRELANDSSELFCONTAINEDBIOME1's closing agent (2026-09-09), out of that
-prose:    infrastructure/state/items/PYRELANDS_LORE_NAMING_DRIFT_1.md
 
 ## DROIDWORKS_PERSONALITY_VERIFY_1 Live-verify chassis personality bias: 20 spawns per family show the forced traits + protocol pedantry
 state:    proposed
