@@ -79,4 +79,69 @@
     </statBases>
   </ThingDef>
 
+  <!-- GRAFFITI_GENERIC_MARKS_1 (owner R7, 2026-09-08): RM Graffiti keeps
+       engine + generic vanilla-style default marks as EXAMPLES; the nine
+       campaign mark-styles move to Salvation (RUT tier) separately. These
+       three are vanilla RimWorld register - weathered wear, a practical
+       tally, a hazard sign - zero franchise/campaign vocabulary. Same
+       shape as RM_Graffiti_Vandal: ParentName="RM_BaseGraffiti",
+       Graphic_Random over a texPath folder, CornerFiller linked to Wall.
+       Art generated per the generating-rimworld-sprites skill (native-
+       alpha $imagegen, conformed onto a 640x640 canvas to match
+       RM_Graffiti_Vandal's own canvas), not copied from any donor mod. -->
+
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_Scratches</defName>
+    <label>scratch marks</label>
+    <description>Deep parallel scratches gouged into the wall, plaster and paint stripped away to raw material beneath.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Scratches</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-8</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_TallyMarks</defName>
+    <label>tally marks</label>
+    <description>A running tally scratched into the wall, groups of four struck through by a fifth.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_TallyMarks</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_WarningGlyph</defName>
+    <label>warning glyph</label>
+    <description>A crude hazard glyph, daubed as a warning to whoever reads it next.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_WarningGlyph</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-6</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+  </ThingDef>
+
 </Defs>
