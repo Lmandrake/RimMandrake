@@ -141,3 +141,73 @@ departure/casing proof this item's own verify bar wants is still owed, and
 now has a precise, narrow reason why (same-tile GetOrGenerateMap no-op +
 no picker-click tool) rather than a vague "needs a live session." Left
 `doing`.
+
+## FOUNDRY, 2026-09-09: offline re-verify after a wave of sibling-item fixes — mechanically complete, live bar still owed
+
+Re-checked from scratch rather than re-authoring, per this pass's brief. RimWorld
+was mid-cold-load on the full ~600-mod list the whole session (crashed twice
+overnight, currently rebooting again) — `rimflow bridge who` showed FREE, but
+no live bridge call was attempted per this pass's own instruction; everything
+below is offline.
+
+**The two blockers named in the 2026-09-07 note are both gone, closed by sibling
+items filed off this one's own findings, not by this pass:**
+- `CurrentTile()` (`DebugActions_Inhabited.cs`) now falls back to
+  `Find.WorldSelector.SelectedObjects` when no map is open, so "Create
+  settlement here" can target an empty world tile instead of only ever
+  re-resolving the CURRENT colony's own tile (the same-tile `GetOrGenerateMap`
+  no-op the last note flagged is no longer the only path in).
+- A real, live-verified, non-debug-menu producer exists:
+  `jawa/world_settlements_import` with a `world_object_def=Inhabited_Settlement`
+  column (`INHABITED_SETTLEMENT_PRODUCER_GAP_1`, closed `39050abc`,
+  live-verified 2026-09-04 down to an independent `jawa/world_objects_get`
+  read-back showing `isSettlement: false` — a genuinely different C# type, not
+  a relabeled `Settlement`). This sidesteps the debug-menu
+  `Dialog_DebugOptionListLister` picker-click gap entirely for a real
+  end-to-end proof; the debug actions remain a second, harness-only route.
+- `WorldObject_Inhabited`/`WorldObject_InhabitedSettlement` now derive
+  `MapParent` (`INHABITED_SETTLEMENT_MAPPARENT_GAP_1`, rebased+live-verified
+  2026-09-04, owner card ruling G10) — the `InvalidCastException`
+  `GetOrGenerateMap` used to throw on any `Inhabited_Settlement` is gone.
+- `SettlementManifestDef` binding is live (`SETTLEMENT_MANIFEST_BINDING_1`,
+  closed `a2b307b3`).
+- The compose step is no longer a bare single-district stub: all four Junkers
+  district templates (scrapyard, dwelling cluster, cantina block, depot) are
+  wired live (`DISTRICT_TEMPLATE_LIBRARY_1`, closed v1, `a0816bec`) —
+  ahead of this item's own scoped bar ("stub: single placeholder district
+  until the template library lands").
+
+**This pass, independently re-run, all clean:**
+- `dotnet build -c Release` on `Inhabited.csproj` — 0 warnings/0 errors,
+  output already matched the committed DLL (no drift to rebuild).
+- `validate_patch.py` on `src/RimMandrake/Inhabited` and
+  `src/RimUtinni/AshkarrInhabited`, with `--defs` covering Mods + Workshop +
+  the base game's own `Data` folder (needed or `MapCommonBase` false-positives
+  as unresolved — it's a shipped Core abstract def, confirmed by reading
+  `CommonMapGenerator.xml` directly) **and** `--live` against tonight's
+  `2026-09-09T01-54-07Z` DefDump capture (590 mods; current `ModsConfig.xml`
+  has 587 — a 3-mod drift, both `mandrake.rm.inhabited` and
+  `mandrake.rut.inhabited` present in the capture, close enough for a
+  defName-existence check): **29 files, 0 errors, 0 warnings.**
+- Folder-basename uniqueness: exactly one `Inhabited` directory anywhere under
+  `src/` (`src/RimMandrake/Inhabited`) — no collision across tiers.
+- `git status` on `src/RimMandrake/Inhabited` and `src/RimUtinni/AshkarrInhabited`:
+  clean, nothing uncommitted.
+- Read `GateSearchHook.cs` and `SettlementCasing.cs` in full against the spec's
+  own language ("a faction searches leavers only if its profile says so";
+  casing as "the residue... how many times we have been here, which district
+  labels were composed, whether the gate has ever searched us") — both match
+  exactly, correct `Scribe_Values`/`Scribe_Collections` usage, `PostLoadInit`
+  null-guard present.
+
+**Still genuinely owed, not attempted this pass (bridge unavailable by this
+pass's own brief, game mid-cold-load all session):** the item's own live bar —
+`Def.ConfigErrors()` triage against a fresh `Player.log` on this exact code
+(current deployed `Mods/Inhabited/` copy is stale relative to repo HEAD per
+`deploy_custom_mods.py --mod Inhabited`'s plan output — About.xml, the DLL and
+one district template all drifted since the last deploy; not deployed this
+pass since the game was mid-load the whole session and a companion/mod DLL
+should only be written while the game is down), and the actual
+arrival→compose→cast→departure→gate-search→teardown→casing run on the Junkers
+pilot manifest, observed rather than inferred from source. Left `doing` — this
+is offline-complete, not done.
