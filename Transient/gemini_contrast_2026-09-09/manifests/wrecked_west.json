@@ -1,0 +1,12 @@
+{
+ "job_id": "wrecked_west",
+ "retry": false,
+ "ref": "/mnt/d/Luke/dev/Rimworld/src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedSmelter/Wrecked/AutomatedSmelter_west.png",
+ "out": "/mnt/d/Luke/dev/Rimworld/Transient/gemini_contrast_2026-09-09/out/wrecked_west.png",
+ "prompt": "Attached is a reference sprite of an automated smelter machine (Wrecked condition), a RimWorld top-down orthographic game sprite viewed from the west side. Reproduce the SAME machine \u2014 same identity, same camera angle, same silhouette, same proportions, same landscape 640x512 canvas composition and footprint as the reference image. Domed rounded rusted-metal top with a central hex bolt, riveted side panels with jagged torn holes exposing a dark scorched red-brown interior, three shuttered vent bays across the base with torn metal edges, heavy corrosion streaks, unlit and dead. Do not draw a larger, smaller, or differently-posed machine than the reference. Real transparent alpha background where possible; if alpha is not supported, use a flat solid magenta (#FF00FF) background instead so it can be keyed out. No floor plane, no shadow, no backdrop, no ground plate, no drop shadow, no border.",
+ "duration_s": 16.8,
+ "exit_code": 0,
+ "stdout": "wrote /mnt/d/Luke/dev/Rimworld/Transient/gemini_contrast_2026-09-09/out/wrecked_west.png (616039 bytes), model=gemini-3-pro-image, refs=1",
+ "stderr": "",
+ "file_landed": true
+}

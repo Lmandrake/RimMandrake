@@ -1,0 +1,185 @@
+=== wrecked_north ===
+WARN   0.32% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+AutomatedSmelter_north.png
+  canvas    512x640   aspect 0.800
+  alpha     yes
+  coverage  58.2%   solid px 190,649
+  subject   367x537 at (71,49)  aspect 0.683
+  centroid  (254,314)
+  alpha mix clear 41.81% | fringe 0.01% | mid 0.32% | solid 57.85%
+  corners   [0, 0, 0, 0]
+  sha256    cf0c1e8b543a87aa
+
+wrecked_north.png
+  canvas    512x640   aspect 0.800
+  alpha     yes
+  coverage  58.1%   solid px 190,266
+  subject   367x537 at (71,49)  aspect 0.683
+  centroid  (254,314)
+  alpha mix clear 41.62% | fringe 0.32% | mid 0.56% | solid 11.90%
+  corners   [0, 0, 0, 0]
+  sha256    b541be9d49a7be28
+
+PASS  shippable against this reference (1 warning(s) - look at it)
+=== wrecked_south ===
+WARN   0.33% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+AutomatedSmelter_south.png
+  canvas    512x640   aspect 0.800
+  alpha     yes
+  coverage  58.9%   solid px 192,991
+  subject   375x537 at (69,49)  aspect 0.698
+  centroid  (256,324)
+  alpha mix clear 41.08% | fringe 0.02% | mid 0.41% | solid 58.48%
+  corners   [0, 0, 0, 0]
+  sha256    fecb189be2f809e9
+
+wrecked_south.png
+  canvas    512x640   aspect 0.800
+  alpha     yes
+  coverage  58.7%   solid px 192,366
+  subject   375x537 at (69,49)  aspect 0.698
+  centroid  (256,324)
+  alpha mix clear 40.96% | fringe 0.33% | mid 0.66% | solid 12.35%
+  corners   [0, 0, 0, 0]
+  sha256    1b94ee0425bef9a1
+
+PASS  shippable against this reference (1 warning(s) - look at it)
+=== wrecked_east ===
+WARN   0.30% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+WARN   the antialiased rim is 24/255 more B than the body - residual key spill. Re-cut with despill, or --edge-contract.
+AutomatedSmelter_east.png
+  canvas    640x512   aspect 1.250
+  alpha     yes
+  coverage  60.8%   solid px 199,300
+  subject   534x399 at (54,46)  aspect 1.338
+  centroid  (327,254)
+  alpha mix clear 39.15% | fringe 0.02% | mid 0.42% | solid 60.38%
+  corners   [0, 0, 0, 0]
+  sha256    99a291fb6bef2d37
+
+wrecked_east.png
+  canvas    640x512   aspect 1.250
+  alpha     yes
+  coverage  60.7%   solid px 198,894
+  subject   533x399 at (55,46)  aspect 1.336
+  centroid  (327,254)
+  alpha mix clear 39.00% | fringe 0.30% | mid 0.60% | solid 12.98%
+  corners   [0, 0, 0, 0]
+  sha256    a197bed5eaece4fd
+
+PASS  shippable against this reference (2 warning(s) - look at it)
+=== wrecked_west ===
+WARN   0.39% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+AutomatedSmelter_west.png
+  canvas    640x512   aspect 1.250
+  alpha     yes
+  coverage  60.6%   solid px 198,595
+  subject   534x399 at (52,47)  aspect 1.338
+  centroid  (315,254)
+  alpha mix clear 39.37% | fringe 0.02% | mid 0.48% | solid 60.08%
+  corners   [0, 0, 0, 0]
+  sha256    b6639a7627bab6fd
+
+wrecked_west.png
+  canvas    640x512   aspect 1.250
+  alpha     yes
+  coverage  60.5%   solid px 198,391
+  subject   534x399 at (52,47)  aspect 1.338
+  centroid  (315,254)
+  alpha mix clear 39.07% | fringe 0.39% | mid 0.59% | solid 15.13%
+  corners   [0, 0, 0, 0]
+  sha256    62eb18bfe4f99dfe
+
+PASS  shippable against this reference (1 warning(s) - look at it)
+=== repaired_north ===
+WARN   0.37% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+AutomatedSmelter_north.png
+  canvas    512x640   aspect 0.800
+  alpha     yes
+  coverage  58.9%   solid px 193,034
+  subject   368x537 at (72,48)  aspect 0.685
+  centroid  (255,315)
+  alpha mix clear 41.05% | fringe 0.04% | mid 0.35% | solid 58.48%
+  corners   [0, 0, 0, 0]
+  sha256    04540d57ba1cb938
+
+repaired_north.png
+  canvas    512x640   aspect 0.800
+  alpha     yes
+  coverage  58.6%   solid px 191,943
+  subject   368x536 at (72,48)  aspect 0.687
+  centroid  (256,314)
+  alpha mix clear 41.05% | fringe 0.37% | mid 0.59% | solid 6.63%
+  corners   [0, 0, 0, 0]
+  sha256    07fcb6383a523472
+
+PASS  shippable against this reference (1 warning(s) - look at it)
+=== repaired_south ===
+WARN   0.58% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+AutomatedSmelter_south.png
+  canvas    512x640   aspect 0.800
+  alpha     yes
+  coverage  59.3%   solid px 194,257
+  subject   378x537 at (66,48)  aspect 0.704
+  centroid  (255,323)
+  alpha mix clear 40.71% | fringe 0.00% | mid 0.46% | solid 58.68%
+  corners   [0, 0, 0, 0]
+  sha256    d1eaf01cf396fe2e
+
+repaired_south.png
+  canvas    512x640   aspect 0.800
+  alpha     yes
+  coverage  59.0%   solid px 193,218
+  subject   378x536 at (66,49)  aspect 0.705
+  centroid  (255,323)
+  alpha mix clear 40.45% | fringe 0.58% | mid 0.67% | solid 5.98%
+  corners   [0, 0, 0, 0]
+  sha256    de85160710a3d16b
+
+PASS  shippable against this reference (1 warning(s) - look at it)
+=== repaired_east ===
+WARN   0.30% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+AutomatedSmelter_east.png
+  canvas    640x512   aspect 1.250
+  alpha     yes
+  coverage  61.1%   solid px 200,064
+  subject   534x401 at (54,46)  aspect 1.332
+  centroid  (327,255)
+  alpha mix clear 38.93% | fringe 0.01% | mid 0.71% | solid 60.27%
+  corners   [0, 0, 0, 0]
+  sha256    483ca44c8bf5d42f
+
+repaired_east.png
+  canvas    640x512   aspect 1.250
+  alpha     yes
+  coverage  60.6%   solid px 198,700
+  subject   533x401 at (55,46)  aspect 1.329
+  centroid  (328,255)
+  alpha mix clear 39.06% | fringe 0.30% | mid 0.66% | solid 8.21%
+  corners   [0, 0, 0, 0]
+  sha256    d31a241e13804255
+
+PASS  shippable against this reference (1 warning(s) - look at it)
+=== repaired_west ===
+WARN   0.32% of pixels are faint (alpha 1-31) but stay within the silhouette - consistent with soft art such as smoke or glow. Confirm it is intentional.
+AutomatedSmelter_west.png
+  canvas    640x512   aspect 1.250
+  alpha     yes
+  coverage  61.3%   solid px 200,849
+  subject   534x402 at (52,45)  aspect 1.328
+  centroid  (313,254)
+  alpha mix clear 38.70% | fringe 0.01% | mid 0.34% | solid 60.89%
+  corners   [0, 0, 0, 0]
+  sha256    a5241b701906168b
+
+repaired_west.png
+  canvas    640x512   aspect 1.250
+  alpha     yes
+  coverage  61.1%   solid px 200,267
+  subject   533x402 at (52,45)  aspect 1.326
+  centroid  (313,254)
+  alpha mix clear 38.56% | fringe 0.32% | mid 0.58% | solid 9.04%
+  corners   [0, 0, 0, 0]
+  sha256    62520b0fc036d65a
+
+PASS  shippable against this reference (1 warning(s) - look at it)

@@ -1,0 +1,12 @@
+{
+ "job_id": "repaired_east",
+ "retry": false,
+ "ref": "/mnt/d/Luke/dev/Rimworld/src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedSmelter/Repaired/AutomatedSmelter_east.png",
+ "out": "/mnt/d/Luke/dev/Rimworld/Transient/gemini_contrast_2026-09-09/out/repaired_east.png",
+ "prompt": "Attached is a reference sprite of an automated smelter machine (Repaired condition), a RimWorld top-down orthographic game sprite viewed from the east side. Reproduce the SAME machine \u2014 same identity, same camera angle, same silhouette, same proportions, same landscape 640x512 canvas composition and footprint as the reference image. Domed rounded clean grey-green metal top with a central hex bolt, intact riveted side panels, a ring of small glowing amber indicator lights around the dome's base, three sealed shutter vent bays across the base, light weathering only, clearly powered and working. Do not draw a larger, smaller, or differently-posed machine than the reference. Real transparent alpha background where possible; if alpha is not supported, use a flat solid magenta (#FF00FF) background instead so it can be keyed out. No floor plane, no shadow, no backdrop, no ground plate, no drop shadow, no border.",
+ "duration_s": 17.5,
+ "exit_code": 0,
+ "stdout": "wrote /mnt/d/Luke/dev/Rimworld/Transient/gemini_contrast_2026-09-09/out/repaired_east.png (524840 bytes), model=gemini-3-pro-image, refs=1",
+ "stderr": "",
+ "file_landed": true
+}
