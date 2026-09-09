@@ -1,3 +1,10 @@
+> 🧊 **FROZEN CANONICAL — owner ruling, 2026-09-09.** The world map is frozen. The
+> canonical save is **`CANONICAL_ASHKARR_2026-09-09.rws`** (the only save in the game's
+> Saves dir; the 20 prior saves are archived in `Saves_archive_2026-09-09/` next to it).
+> That save carries: the complete punch-list world (Rot 2258 / NightsideIce 1506 /
+> Greentide 235 / Webwork 161, MEASURED), the Zeddo's Yard ruin field, the printed
+> gravship, and the Five Founders. No further world edits without an explicit unfreeze.
+
 # Ash'karr — the studio review (2026-09-08)
 
 *WORLDMAP_FINAL_REVIEW_1 · BENCH/Fable, one sitting, owner present. Baseline
