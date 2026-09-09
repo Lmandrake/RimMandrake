@@ -7,9 +7,12 @@
      as RM_StrandedTravellerTaken (src/RimMandrake/StrandedQuest) and the
      RUT_Vault* events: one defName, one label, nothing else.
 
-     Four, one per outcome that moves the number. "Honest work" and "fine work"
-     are separate lines because the player should be able to read back which of
-     the two they did.
+     Six goodwill-changing outcomes (Fine/Honest/Shoddy/Neglected/Kept/
+     Destroyed), one HistoryEventDef each - except Kept and Destroyed shared
+     one defName until this review split them out, so a droid that died on
+     the bench was misreported to the faction tab as "kept a droid we left in
+     their care". "Honest work" and "fine work" are separate lines because
+     the player should be able to read back which of the two they did.
 ======================================================================== -->
 <Defs>
 
@@ -36,6 +39,11 @@
   <HistoryEventDef>
     <defName>RUT_DroidJobDroidKept</defName>
     <label>kept a droid we left in their care</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>RUT_DroidJobDroidDestroyed</defName>
+    <label>lost the droid we left in their care</label>
   </HistoryEventDef>
 
 </Defs>

@@ -367,7 +367,7 @@
               <li Class="QuestNode_ChangeFactionGoodwill">
                 <change>-12</change>
                 <faction>$customerFaction</faction>
-                <reason>RUT_DroidJobDroidKept</reason>
+                <reason>RUT_DroidJobDroidDestroyed</reason>
               </li>
               <li Class="QuestNode_End">
                 <outcome>Fail</outcome>
