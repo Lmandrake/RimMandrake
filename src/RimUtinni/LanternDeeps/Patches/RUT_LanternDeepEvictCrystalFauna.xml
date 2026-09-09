@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LANTERN_DEEPS_INJECTION_1 spec item 4 / the_lantern_deeps.md HARD BAN #3
+  (frozen, BIOME_FREEZE_FABLE_REVIEW_1): "No crystal-studded animals - resident
+  crystal life is crystal, not an animal wearing crystals; the donor's
+  crystalope line and kin are evicted." Owner, verbatim (sheet Sec.0): "a bit
+  hokey... I'd rather have crystals AS creatures."
+
+  Removes Biomes! Caverns' six crystal-tagged PawnKindDefs from
+  BMT_CrystalCaverns' own wildAnimals commonality list (confirmed live, donor
+  file .../1.6/Defs/Biomes/BMT_CrystalCaverns.xml lines 257-293):
+  BMT_CrystalBeetleLarvae, BMT_CrystalBeetle, BMT_Crystalope,
+  BMT_CrystalFairyMole, BMT_CrystalCrab, BMT_CrystalMantis - plus
+  BMT_CrystalCrab's entry in allowedPackAnimals (a resident of this biome
+  should never be offered as a pack animal here either).
+
+  "The rat" (the sheet's other evicted line) needs no patch: the donor's own
+  wildAnimals list already ships its Rat entry inside an XML comment (a bare
+  `Rat` element wrapped in comment markers), so vanilla Rat is already absent
+  from this biome's spawn table.
+
+  The remaining wildAnimals entries are the ordinary non-crystal cave fauna
+  the sheet defers to "the assignment sitting" for a keep/cut ruling
+  (bloodrop moths, shatterjaws, cave spiders, megapleura, glowslugs, facet/
+  aaroxis moths, etc.) - untouched here; only the crystal-studded line is a
+  ruled eviction.
+-->
+<Patch>
+
+  <!-- Guarded: BMT_CrystalCaverns is owned by Biomes! Caverns. This mod already
+       declares that mod a hard modDependency (About.xml), but PatchOperationRemove
+       against a missing xpath logs a RED error (not the silent no-match case
+       CLAUDE.md warns about for Conditional/FindMod), so wrap it anyway. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Biomes! Caverns</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals/BMT_CrystalBeetleLarvae</xpath>
+        </li>
+
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals/BMT_CrystalBeetle</xpath>
+        </li>
+
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals/BMT_Crystalope</xpath>
+        </li>
+
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals/BMT_CrystalFairyMole</xpath>
+        </li>
+
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals/BMT_CrystalCrab</xpath>
+        </li>
+
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals/BMT_CrystalMantis</xpath>
+        </li>
+
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/allowedPackAnimals/li[text()="BMT_CrystalCrab"]</xpath>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
