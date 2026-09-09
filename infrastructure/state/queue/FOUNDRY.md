@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T20:18:17Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-09T20:20:17Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -618,7 +618,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-summary:  (no items/BIOME_ENRICHMENT_POISON_FOREST_1.md yet — write one when you have something to say)
+summary:  BIOMEENRICHMENTPOISONFOREST1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_POISON_FOREST_1.md
 
 ## SEA_ENRICHMENT_LANDMARKS_1 Enrichment wave (review B1): the Grey Sea holds ZERO landmarks in 429 tiles and the Twilight Sea is near-bare — seamounts, wreck moorings, mat features for the diving arc; respects the seas' sheets
