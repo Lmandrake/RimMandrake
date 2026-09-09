@@ -136,6 +136,58 @@ gone, `ResearchRetag`'s `<li>coldcrow.betterkibble</li>` and its
 regenerates that set from the manifest — leave it to the next regeneration
 rather than hand-editing a generated artifact mid-wave.
 
+## 🔴 EXECUTION BLOCKED — item stays `doing`. `ModsConfig.xml` NOT touched.
+
+**Nothing was removed. No backup was written. The live mod list never came back.**
+
+The item's own gate — "if it is not back to something in the ~580-600 range, do
+NOT proceed" — was not satisfied, so the removal step was not run. This is a
+deliberate stop, not a failure of the checks: **the fresh dependency and save
+re-checks above are complete and all 13 pass.** Only the write is outstanding.
+
+### What was observed, precisely (FOUNDRY, 2026-09-09 14:44-15:28 PDT)
+
+| reading | value |
+|---|---|
+| live `ModsConfig.xml` `<activeMods>` | **6**, and it is not even the ~11-mod recovery list — it is `ludeon.rimworld` + the five DLC, **zero third-party mods** |
+| its mtime | **13:50:41**, unchanged for the whole 45-minute watch (98 min stale at 15:28) |
+| `harvest_log.py` | **REFUSED**, twice-over: "the def dump was written by a 590-mod run but ModsConfig has 6", and the dump (written 18:54:26) predates the previous run's end (13:35:48) |
+| `./game` | `RUNNING (RimWorldWin64 running; BRIDGE NOT PROBED — no port found)` — recorded state `LOADING` |
+| `Player.log` | actively growing, tail is a `GUI Error: You are pushing more GUIClips than you are popping` loop — an idle vanilla menu, not a load in progress |
+| `rimflow bridge who` | **FREE since 2026-09-09T20:35:50Z** (13:35 PDT) — nobody has held it for 1h50m |
+| ledger | **no restoration item is open or in flight**; the last events are unrelated FOUNDRY/BENCH filings |
+
+**Method**: watched for 45 minutes (a `Monitor`, then three foreground
+until-loops polling every 20 s). The count never moved off 6.
+
+🔑 **Read this before assuming a restoration is still running.** The item was
+filed expecting another agent to be mid-restore. The evidence says otherwise:
+the bridge has been free for nearly two hours, no ledger item claims the work,
+and the file has not been written since 13:50. The full list appears to have
+been **left** on vanilla rather than to be **mid-way** back. Nothing was
+accelerated or interfered with, per this item's instruction.
+
+### To resume — the work is one command
+
+The checks do not need re-running unless the mod set itself changes. Once the
+live list is genuinely back in the ~580-600 range **and** `harvest_log.py`
+stops refusing:
+
+1. Re-read the live `<activeMods>` count and confirm all 13 packageIds are
+   present in it (they were all present in the 587-list).
+2. Back up the live file to
+   `infrastructure/state/modlists/ModsConfig_before_STAT_NORM_WAVE1_RETIRE_<stamp>.xml`.
+3. Remove the 13 `<li>` entries by exact-tag match; confirm the delta is
+   **exactly 13** and all 13 are absent on re-grep.
+
+A ready, guard-railed script for steps 1-3 was written and left in this
+session's scratchpad; it refuses on an out-of-range count, a missing target,
+or a delta mismatch. It is trivially re-derivable — do not hunt for it, and do
+not run a version that skips those three guards.
+
+⚠️ Cold-load proof remains OWED to the next natural load either way. Do not
+call a restart for this.
+
 ## verify
 All 13 `<li>` entries removed from the live `ModsConfig.xml` by exact-tag
 match, confirmed absent by re-grep; backup file exists; the fresh dependency +
