@@ -39,6 +39,10 @@ namespace RimMandrake.Ninefold
 
             comp.ApplyDelta(God.Ohm, EventMagnitude.Large,
                 "droid brought online: " + __instance.LabelCap);
+
+            // NINEFOLD_ENGINE_M0_1: first_contact_chains.md ⑦ -- the first
+            // machine rewoken.
+            comp.TryFirstContact(God.Ohm);
         }
     }
 }

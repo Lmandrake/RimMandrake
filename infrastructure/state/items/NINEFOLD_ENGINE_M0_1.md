@@ -106,3 +106,89 @@ prose itself was ruled. Building corpus-letter code against unredlined
 voice text would ship text the owner hasn't seen. Blocking rather than
 closing: the buildable scope is fully done, the rest needs the owner's
 eyes on the doc, not more autonomous work.
+
+## FOUNDRY, 2026-09-09 (BELT, game mid-reboot — offline pass): the "blocked
+on owner voice-text redline" rationale directly above is contradicted by the
+owner's own ledger note; seven of nine first-contact chains built on that
+authority
+
+Re-checked this item cold. State ledger + all 17 event hooks: still CLEAN,
+still build 0W/0E (`dotnet build Ninefold.csproj -c Release` re-run tonight,
+clean, before touching anything). `NINEFOLD_RUNTIME_PROOF_BLOCKED_1`'s own
+body (its title is stale, not its content) still stands as PROVEN
+2026-09-05 — nothing tonight's other Ninefold items
+(`NINEFOLD_FIRE_HOOK_RATELIMITED_1`, `NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1`,
+`CHRONICLE_NINEFOLD_DECOUPLE_1`) found changes that.
+
+**The discrepancy.** The 2026-09-07 block just above cites "first-contact
+chains + corpus letters blocked on owner voice-text redline per doc's own
+draft header." But `rimflow show NINEFOLD_ENGINE_M0_1`'s ledger history
+already carried, since **2026-09-01** (six days before that block was
+written): *"Owner 2026-09-01: build the five event hooks + corpus letters
+with the PROVISIONAL voice text; he redlines letters as they appear in-game.
+Not held on a paper redline."* Corroborated twice more: `OPUS5_HANDOFF.md`'s
+2026-08-31 reboot addendum lists "Ninefold M0 CALLED (provisional corpus —
+the owner redlines live letters, felt-only diegesis... emergent first
+contact)" as a ruled card, and that same doc's "needs the owner's hands
+only" list separately names **"corpus redline on live M0 text"** — i.e. the
+redline was always a post-ship, in-game review step, not a pre-build gate.
+The doc's `status: draft` header refers to the mechanic needing a ruling
+(which the card session gave it), not to each letter's exact wording
+needing pre-approval. Three prior FOUNDRY passes (09-05/06/07) built and
+reviewed the hooks without ever citing or acting on this note. Not asserting
+the 09-07 block was made in bad faith — flagging it because it stood
+uncorrected for two days despite being on record in the same ledger
+`rimflow show` prints.
+
+**Built this pass, on that authority** (`FirstContactCorpus.cs` new,
+`GameComponent_Ninefold.cs` additions, one wiring line each in
+`Patch_BuildingDeconstructed.cs` / `Patch_TradeCompleted.cs` /
+`Patch_DroidOnline.cs` / `Patch_BattleResolved.cs` /
+`Patch_ResearchCompleted.cs` / `Patch_MentalBreakStarted.cs`): **7 of the 9
+first-contact unveilings** — Rekko, Ta'Baa, Mob'Unloo, Ohm, Sh'kaar, Ozzik,
+Zizzik. Each fires one `Find.LetterStack.ReceiveLetter(..., LetterDefOf.
+NeutralEvent)` — felt-only, no dialog, no choice, no panel — carrying the
+doc's own SHOCK + CURIOSITY + REALIZATION text (trimmed, not invented).
+**Deliberately excluded, consistent with §9's own safe-core scope ("pure
+read/compute/text, no live mutation")**:
+- The DELIGHT paragraph's mechanical one-off gifts (Tailwind, Body's Tide, a
+  quality step, an inspiration, price recalculation...) — those need real
+  gameplay mutation, explicitly not this file's job yet. Checked line by
+  line that no letter promises an effect that doesn't actually fire.
+- Ishko (raid survived unseen) and Oomo (first coupling) — genuinely no
+  existing event hook to bind to; wiring either safely needs RimSage
+  research into the exact raid-detection / lovin' API, not a solo guess
+  under time pressure on a night the game is already unstable.
+  `FirstContactCorpus.GetChain` returns `false` for both;
+  `GameComponent_Ninefold`'s own header says so.
+- Two disclosed approximations: Sh'kaar's "third violent battle" is counted
+  as the third violent DEATH (no battle-grouping/incident window exists for
+  this hook, unlike the fire hook's rate limiter); Zizzik's letter text is
+  generalized rather than claiming the doc's specific "wrecks the
+  fabricator" detail, since the underlying hook (any player mental break)
+  can't see what gets wrecked. Ozzik's alternate trigger ("or the colony's
+  first masterwork") was NOT wired to `Patch_ArtCreated` — that hook fires
+  on every art piece regardless of quality, too loose to call a masterwork.
+
+Persistence: `unveiled bool[9]`, a `pendingFirstContact` day-spacing queue,
+and the Sh'kaar death counter are all `ExposeData`-scribed with the same
+null-safety pattern as `satiation`/`mood`.
+
+Build clean (`dotnet build Ninefold.csproj -c Release`, 0 warnings, 0
+errors) re-verified as the final step, after every change above.
+
+**Not done, correctly still left `doing` rather than closed:**
+- No live proof — the game is mid-reboot tonight and this session was
+  explicitly told not to attempt bridge calls. Owed to the next restart:
+  confirm each of the 7 wired triggers fires its letter once (not zero, not
+  twice), the day-spacing queue actually delays a same-day collision, and a
+  save/reload round-trips `unveiled`/the pending queue correctly.
+- Ishko + Oomo's chains (mechanical research gap, see above).
+- The broader "signed corpus letters" piece of this item's own title —
+  ongoing Narrator-corpus dispatch (judgement/council/triad voices,
+  `design/Jawa/narrator_corpus/`) beyond first contact — is a separate,
+  larger build, not attempted this pass.
+- None of the six touched/created files are marked CLEAN in
+  `CODE_REVIEW_STATUS.json` — new/changed tonight, authored solo; they need
+  an independent full-file review before that mark, same as any other new
+  code in this repo.

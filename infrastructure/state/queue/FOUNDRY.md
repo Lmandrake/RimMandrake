@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T22:00:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T22:02:10Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -714,7 +714,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  state ledger + all 17 event hooks CLEAN (fixed real launch-credit bug); first-contact chains + corpus letters blocked on owner voice-text redline per doc's own draft header
+blocked:  7/9 first-contact chains built+wired tonight (Rekko/TaBaa/MobUnloo/Ohm/Shkaar/Ozzik/Zizzik), build 0W/0E, on owner authority already on record 2026-09-01 ('build...corpus letters with PROVISIONAL voice text...not held on a paper redline') that the 09-07 block missed -- see item file for full discrepancy note. Still needs: live proof next restart, Ishko+Oomo (real research gap, not voice-text), full narrator-corpus dispatch beyond first contact, and independent code review (none of tonight's 6 files marked CLEAN).
 summary:  design/Jawa/divinesatiationengine.md — full design ruled, "NINE OF
 prose:    infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md
 

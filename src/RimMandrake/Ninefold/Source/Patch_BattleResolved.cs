@@ -31,6 +31,13 @@ namespace RimMandrake.Ninefold
 
             comp.ApplyDelta(God.Shkaar, EventMagnitude.Medium,
                 "violent death: " + __instance.LabelCap);
+
+            // NINEFOLD_ENGINE_M0_1: first_contact_chains.md ⑧ -- "the moment
+            // the colony wins its third violent battle." NotifyViolentDeath
+            // approximates one battle as one violent death (this hook has no
+            // battle-grouping / incident window, unlike the fire hook's
+            // instigator-keyed rate limiter) -- a first-pass simplification.
+            comp.NotifyViolentDeath();
         }
     }
 }

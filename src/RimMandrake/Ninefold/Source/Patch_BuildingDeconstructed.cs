@@ -56,6 +56,12 @@ namespace RimMandrake.Ninefold
                 "deconstructed a repairable building: " + building.def.defName);
             comp.ApplyDelta(God.Zizzik, EventMagnitude.Small,
                 "waste/entropy from deconstruction: " + building.def.defName);
+
+            // NINEFOLD_ENGINE_M0_1: Rekko's first-contact chain fires on this
+            // same day-one scavenger reflex (first_contact_chains.md ①).
+            // First contact is never a curse -- TryFirstContact only sends
+            // the SHOCK/CURIOSITY/REALIZATION letter, no extra penalty.
+            comp.TryFirstContact(God.Rekko);
         }
     }
 }

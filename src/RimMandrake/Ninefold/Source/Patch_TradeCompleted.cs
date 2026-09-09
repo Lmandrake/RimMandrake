@@ -28,6 +28,10 @@ namespace RimMandrake.Ninefold
             if (comp == null) return;
 
             comp.ApplyDelta(God.MobUnloo, EventMagnitude.Medium, "trade completed");
+
+            // NINEFOLD_ENGINE_M0_1: first_contact_chains.md ⑥ -- the first
+            // closed deal.
+            comp.TryFirstContact(God.MobUnloo);
         }
     }
 }

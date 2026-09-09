@@ -88,6 +88,15 @@ namespace RimMandrake.Ninefold
 
             comp.ApplyDelta(God.Zizzik, EventMagnitude.Large,
                 "mental break: " + pawn.LabelShortCap + " -> " + breakLabel);
+
+            // NINEFOLD_ENGINE_M0_1: first_contact_chains.md ⑤ -- "the first
+            // crack." The doc's SHOCK beat is a specific berserk-wrecks-the-
+            // fabricator scene; this hook fires on ANY player-colonist
+            // mental break (it has no signal for which object, if any, gets
+            // wrecked), so FirstContactCorpus's text for Zizzik is
+            // deliberately generalized rather than repeating that specific
+            // detail as fact.
+            comp.TryFirstContact(God.Zizzik);
         }
     }
 }
