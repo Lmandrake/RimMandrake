@@ -6263,3 +6263,9 @@
 {"seat":"FOUNDRY","event":"claim","id":"MOD_LICENSE_PERMISSIVE_1","ts":"2026-09-09T05:33:02Z"}
 {"seat":"FOUNDRY","event":"start","id":"MOD_LICENSE_PERMISSIVE_1","ts":"2026-09-09T05:33:03Z"}
 {"seat":"FOUNDRY","event":"close","id":"MOD_LICENSE_PERMISSIVE_1","sha":"af0f1280270b1ec9c19686c5a0442c281ae0dcdf","ts":"2026-09-09T05:37:03Z"}
+{"seat":"FOUNDRY","event":"claim","id":"W9_RUN_STAGE_RESULTS_UNCHECKED_1","ts":"2026-09-09T05:39:52Z"}
+{"seat":"FOUNDRY","event":"start","id":"W9_RUN_STAGE_RESULTS_UNCHECKED_1","ts":"2026-09-09T05:39:53Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"overnight ship flight to Zeddo's Yard (owner mandate): claim/fuel/crew/fly per PLAYER_START_SITE_1 run-sheet","ts":"2026-09-09T05:40:01Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-09T06:22:05Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"overnight mandate: restart is mine to call — DLL deploy window","ts":"2026-09-09T06:22:15Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"overnight mandate: relaunching after DLL deploy","ts":"2026-09-09T06:23:10Z"}

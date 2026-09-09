@@ -1036,6 +1036,11 @@ namespace JawaBench.BridgeTools
                 var job = a.HasValue
                     ? (b.HasValue ? JobMaker.MakeJob(jd, a.Value, b.Value) : JobMaker.MakeJob(jd, a.Value))
                     : JobMaker.MakeJob(jd);
+                // An ordered job IS a player order. Without this flag every driver carrying
+                // a `!job.playerForced && <auto condition>` fail line (vanilla
+                // JobDriver_Refuel.cs:34 is the one that caught us, 2026-09-09) kills the
+                // job on its first tick and the tool reports accepted-then-Wait.
+                job.playerForced = true;
                 if (count.HasValue) job.count = count.Value;
                 if (plantThing != null) { job.plantDefToSow = plantThing; plantDefName = plantThing.defName; }
 
