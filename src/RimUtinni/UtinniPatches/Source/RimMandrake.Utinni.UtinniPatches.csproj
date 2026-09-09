@@ -1,0 +1,81 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    RimWorld 1.6 runs Unity/Mono against a .NET Framework 4.7.2 profile, so
+    the mod DLL must target net472. Same shape as
+    src/RimUtinni/LanternDeeps/Source/RimMandrake.Utinni.LanternDeeps.csproj,
+    copy that file's own header if this one goes stale. No Harmony reference:
+    GenStep_ScatterGeysersDensityField is a plain GenStep_ScatterGeysers
+    subclass (GEOTHERMAL_DENSITY_FIELD_1), discovered by RimWorld's own
+    GenStepDef the moment Patches/GeothermalDensityField.xml points its
+    genStep Class at it; no patch registration call needed.
+
+    References RimMandrake.WeatherSuite's WeatherSuiteHook.dll for
+    WeatherGeometryUtility.ArcFromSubstellar — the shared arc/terminator
+    formula, not reinvented here. mandrake.rm.weathersuite (and, at runtime,
+    mandrake.rut.weathersuite for the actual PlanetGeometryDef data) are
+    declared as modDependencies in ../About/About.xml.
+
+    Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimUtinni\UtinniPatches\Source\RimMandrake.Utinni.UtinniPatches.csproj -c Release
+
+    Output lands in ../Assemblies/, which is where RimWorld looks.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrake.Utinni.UtinniPatches</AssemblyName>
+    <RootNamespace>RimMandrake.Utinni.UtinniPatches</RootNamespace>
+    <Version>1.0.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="GeothermalDensityField.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- The shared arc/terminator engine (RimMandrake.StarWars.WeatherSuite.
+         WeatherGeometryUtility.ArcFromSubstellar) — built from the repo copy
+         at src/RimMandrake/WeatherSuite/Source, output already committed at
+         src/RimMandrake/WeatherSuite/Assemblies/WeatherSuiteHook.dll. Not
+         referenced from the deployed Mods folder: this repo path is the one
+         guaranteed to exist for anyone building from source. -->
+    <Reference Include="WeatherSuiteHook">
+      <HintPath>..\..\..\RimMandrake\WeatherSuite\Assemblies\WeatherSuiteHook.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

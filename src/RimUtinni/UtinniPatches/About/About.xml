@@ -3,11 +3,31 @@
   <packageId>mandrake.rut.patches</packageId>
   <name>RimUtinni Patches (Jawa campaign)</name>
   <author>mandrake</author>
-  <description>The Utinni campaign patch layer: factions, scenario, doctrine, Ash'karr worldbuilding patches. Split 2026-09-04 from Jawa Patches (mandrake.jawa.patches) per JAWA_PATCHES_SPLIT_1; tiers per infrastructure/state/jawa_patches_split_map.csv, owner-confirmed 2026-09-01. Every patch is MayRequire/Conditional-guarded. LOAD LAST of the three patch tiers, after every mod it touches.</description>
+  <description>The Utinni campaign patch layer: factions, scenario, doctrine, Ash'karr worldbuilding patches. Split 2026-09-04 from Jawa Patches (mandrake.jawa.patches) per JAWA_PATCHES_SPLIT_1; tiers per infrastructure/state/jawa_patches_split_map.csv, owner-confirmed 2026-09-01. Every patch is MayRequire/Conditional-guarded. LOAD LAST of the three patch tiers, after every mod it touches.
+
+  GEOTHERMAL_DENSITY_FIELD_1 (2026-09-09) is the one exception to patch-only:
+  ships a small C# assembly (Source/GeothermalDensityField.cs) that swaps
+  vanilla's SteamGeysers GenStepDef onto a GenStep_ScatterGeysers subclass
+  gating geyser count by a per-tile world-position density field, reusing
+  mandrake.rm.weathersuite's arc-from-substellar-point formula — hence the
+  new hard dependency on that mod (and loadAfter mandrake.rut.weathersuite
+  for the actual Ash'karr PlanetGeometryDef data).</description>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rm.weathersuite</packageId>
+      <displayName>RimMandrake: SW — Weather Suite</displayName>
+    </li>
+  </modDependencies>
 <loadAfter>
+    <li>mandrake.rm.weathersuite</li>                           <!-- GeothermalDensityField.cs: WeatherGeometryUtility.ArcFromSubstellar -->
+    <li>mandrake.rut.weathersuite</li>                          <!-- the actual Ash'karr PlanetGeometryDef instance -->
     <li>mandrake.rsw.starwarsraces</li>                         <!-- RimMandrake* species, name makers and rescued pawn kinds -->
     <li>Neronix17.OuterRim.Core</li>
     <li>Neronix17.OuterRim.GalacticEmpire</li>              <!-- OuterRim_Imp* pawn kinds     GalacticEmpire.xml -->
