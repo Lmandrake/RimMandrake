@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T18:57:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T18:58:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -593,24 +593,6 @@ target:   v1
 kind:     fix
 summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
-
-## NAMESPACE_RETIER_PASS_1 C# namespace re-tier pass: RiverSteamHook → RimMandrake.ManyWaters, RimMandrake.DesertVehicleReskin → RimMandrake.StarWars.* — namespace+XML Class attrs+rebuild in one change (INHABITED lesson; model=opus)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/NAMESPACE_RETIER_PASS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NAMESPACE_RETIER_PASS_1.md
-
-## PYRELANDS_SELF_CONTAINED_BIOME_1 Author RM Pyrelands' own BiomeDef, self-contained: ScorchFruit, strange weather, ash-as-snow, Cinderfall storms, fast grass (owner ruled the R9 fork: OWN it, 2026-09-09)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Owner, verbatim (2026-09-09): "The pyre land has no biome of its own. It
-prose:    infrastructure/state/items/PYRELANDS_SELF_CONTAINED_BIOME_1.md
 
 ## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
 state:    doing
