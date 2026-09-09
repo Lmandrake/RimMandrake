@@ -57,8 +57,12 @@ MUST_ACCEPT = ["Hay", "RawPotatoes", "RawCorn", "RawBerries", "RawFungus", "RawR
 MUST_REJECT = ["Beer", "Meat_Cow", "Meat_Human", "Milk", "Ambrosia",
                "MA_RaptorkhanEggUnfertilized"]
 
-# Defs the item's spec claims the rule admits, that it measurably does not.
-# Reported, never quietly fixed: the predicate is DECIDE's ruling verbatim.
+# The Seed ruling's regression guard (owner 2026-08-21): before Seed was added
+# to ACCEPTED, RawRice's foodType (the standalone Seed flag) meant the rule
+# measurably rejected a crop the item's own roster said should fuel. Seed is
+# now in ACCEPTED, so this must PASS - checked separately from MUST_ACCEPT so
+# that specific fix has its own named regression guard instead of blending
+# into the general list.
 SPEC_CLAIMS_NOT_MET = ["RawRice"]
 
 def iter_thingdefs(path):
