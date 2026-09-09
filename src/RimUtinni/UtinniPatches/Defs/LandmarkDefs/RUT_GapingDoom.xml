@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RUT_GapingDoom — the dead-sarlacc waste pit at tile 2403 (owner, 2026-09-08,
+       GAPING_DOOM_SITE_1). A distinct LandmarkDef, not a reskin of sw_DeadSarlacc,
+       because THIS instance carries a unique icon: the dead sarlacc with a bright
+       green throat, dull at the edges and brightening irregularly toward the centre
+       (owner's verbatim art spec). Art generated offline (RUT_GapingDoom.png, alpha
+       byte-identical to sw_DeadSarlacc so the footprint is preserved).
+
+       commonality 0 ON PURPOSE — worldgen must never roll it; it is placed only on
+       tile 2403 by the world-edit step owed on the item. Description is present-tense,
+       what IS: a waste pit and the danger it holds. No past-why (the Rakatan/war-lab
+       gating rules), no not-yet-happened plot. -->
+
+  <LandmarkDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_GapingDoom</defName>
+    <label>the Gaping Doom</label>
+    <description>The corpse of a sarlacc, its throat turned into a pit. The Junkers sell the right to dump into it, and everything the world wants gone goes down: chemical sludge, spent cores, worse. What has pooled at the bottom glows — a hard, wrong green that brightens toward the centre — and the air above it shimmers with heat that has no fire under it. Nothing that goes in comes back, and the ground around it is going quietly poisonous for a day's walk in every direction.</description>
+    <iconTexturePath>World/Landmarks/Ashkarr/RUT_GapingDoom</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0</commonality>
+    <category>structure</category>
+    <nameMaker>NamerLandmark_Ruins</nameMaker>
+  </LandmarkDef>
+
+</Defs>

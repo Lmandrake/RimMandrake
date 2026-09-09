@@ -35,3 +35,13 @@ dangerous chemical, nuclear, and exotic energies."*
 ## criteria
 - The Gaping Doom appears on the world map at tile 2403 with the green-throat art and
   a name/description carrying the waste-pit lore; saved into the worldmap lineage.
+
+## PROGRESS (BENCH, overnight 2026-09-09)
+- ✅ Art done offline: `src/RimUtinni/AshkarrLandmarkArt/Textures/World/Landmarks/Ashkarr/RUT_GapingDoom.png`
+  (1024², alpha byte-identical to sw_DeadSarlacc; green throat per owner's spec).
+  Comparison: `D:\Luke\dev\Rimworld\Transient\final_review\gaping_doom_compare.png`.
+- ✅ LandmarkDef authored + deployed: `RUT_GapingDoom` (UtinniPatches/Defs/LandmarkDefs).
+- ⏳ OWED (one bridge call on the CANONICAL world, next clean session): place
+  `RUT_GapingDoom` on tile 2403, set its name "The Gaping Doom" via the new
+  `jawa/world_landmark_rename` tool (deploys next game restart), world_commit, save.
+- ⏳ Plot mechanism (buildup clock / dumping-rights events) stays a separate item.
