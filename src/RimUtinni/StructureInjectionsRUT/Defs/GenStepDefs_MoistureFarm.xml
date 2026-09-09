@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- MOISTURE_FARM_TEMPLATES_1 - the Badlands (ZBiome_Badlands, "the Cracked
+       Lands") Moisture Farmer family: design/Jawa/worldbuilding/biomes/
+       the_cracked_lands.md section 8 - "homesteads, vaporator fields, cistern
+       heads, walled compounds, ruined farms." Each replays a plan authored
+       via rimplace (design/Jawa/templates/moisture_*.lua, exported through
+       rimplace's `export` subcommand) via mandrake.rm.injections'
+       GenStep_RimplacePlan, faction OutlanderCivil (patched vanilla
+       OutlanderCivil = the Homestead Defense League / Moisture Farmers,
+       FACTION_SPEC.md section 3), tech Industrial.
+
+       🔴 the_cracked_lands.md section 8/11 (owner, "NEVER" twice): these
+       structures belong on the higher canyon benches, NEVER the floor - the
+       ruined farm is the one deliberate exception, sited "one bench too low."
+       This placement gate is a world-tile/TileMutatorDef siting concern, out
+       of a flat-plan template's reach; not yet enforced here (open question,
+       see the queue item's report). -->
+
+  <GenStepDef>
+    <defName>RUT_GenStep_MoistureHomestead</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/moisture_homestead.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_MoistureVaporatorField</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/moisture_vaporator_field.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_MoistureCisternHead</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/moisture_cistern_head.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_MoistureWalledCompound</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/moisture_walled_compound.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_MoistureFarmRuined</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/moisture_farm_ruined.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>

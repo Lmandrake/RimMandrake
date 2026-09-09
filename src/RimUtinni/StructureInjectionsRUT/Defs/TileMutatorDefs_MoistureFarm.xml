@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- MOISTURE_FARM_TEMPLATES_1 - the_cracked_lands.md section 8's Moisture
+       Farmer family, gated to ZBiome_Badlands only (the Cracked Lands is
+       their one resident biome per section 6's hard ban - "no resident
+       faction but the Moisture Farmers"). Responder mechanism per
+       structure_injection_roster.md section 0b: a TileMutatorDef's
+       extraGenSteps is the def-driven injection hook.
+
+       ⚠️ NOT YET PLACED on any Ash'karr tile - a live world-tile edit on the
+       frozen map (bridge + world_commit) is out of scope for this pass, and
+       this session had no bridge/game access at all (see the queue item's
+       report). The "higher bench, never the floor" siting rule
+       (the_cracked_lands.md section 8/11) is not mechanically enforced by
+       any field here - it is a placement-time discipline for whoever runs
+       that world-tile pass, same open gap the RSW_MoistureFarm precedent
+       already carries. -->
+
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_MoistureHomestead</defName>
+    <label>moisture homestead</label>
+    <description>A Moisture Farmer family's house on a canyon bench: hearth room, one bedroom, three vaporators on the shade-soil patch, a grave by the door.</description>
+    <biomeWhitelist>
+      <li>ZBiome_Badlands</li>
+    </biomeWhitelist>
+    <extraGenSteps>
+      <li>RUT_GenStep_MoistureHomestead</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_MoistureVaporatorField</defName>
+    <label>vaporator field</label>
+    <description>Rows of moisture vaporators terraced into the shade-soil bench, watched from one small lean-to. No home here - a satellite field a homestead or compound tends.</description>
+    <biomeWhitelist>
+      <li>ZBiome_Badlands</li>
+    </biomeWhitelist>
+    <extraGenSteps>
+      <li>RUT_GenStep_MoistureVaporatorField</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_MoistureCisternHead</defName>
+    <label>cistern head</label>
+    <description>The found-and-held flood water, sealed inside a single thick-walled stone room - the planet's most defensible water.</description>
+    <biomeWhitelist>
+      <li>ZBiome_Badlands</li>
+    </biomeWhitelist>
+    <extraGenSteps>
+      <li>RUT_GenStep_MoistureCisternHead</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_MoistureWalledCompound</defName>
+    <label>walled compound</label>
+    <description>A real wall ring around a family house, a cistern room and a vaporator cluster - the gate faces away from the sun and the flood.</description>
+    <biomeWhitelist>
+      <li>ZBiome_Badlands</li>
+    </biomeWhitelist>
+    <extraGenSteps>
+      <li>RUT_GenStep_MoistureWalledCompound</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_MoistureFarmRuined</defName>
+    <label>flood-marked ruin</label>
+    <description>A moisture farm built one bench too low: breached walls, a dropped roof, ash on the floor and a high-water line reaching into the yard. The family did not get out.</description>
+    <biomeWhitelist>
+      <li>ZBiome_Badlands</li>
+    </biomeWhitelist>
+    <extraGenSteps>
+      <li>RUT_GenStep_MoistureFarmRuined</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

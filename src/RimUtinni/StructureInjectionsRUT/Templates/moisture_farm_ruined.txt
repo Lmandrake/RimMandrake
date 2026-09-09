@@ -1,0 +1,81 @@
+# rimplace flat plan v2
+# template  moisture_farm_ruined (sha 1dd3699fd8c46e35)
+# min_rect  none declared   baked at 18x15
+FOOTPRINT	0	0	18	15
+CLEAR	-1	-1	20	17	soft
+CLEAR	0	0	18	15	all
+TERRAIN	0	2	MossyTerrain
+TERRAIN	0	3	MossyTerrain
+TERRAIN	0	4	MossyTerrain
+TERRAIN	0	5	MossyTerrain
+TERRAIN	0	6	MossyTerrain
+TERRAIN	3	3	WoodPlankFloor
+TERRAIN	3	4	WoodPlankFloor
+TERRAIN	3	5	WoodPlankFloor
+TERRAIN	3	6	WoodPlankFloor
+TERRAIN	4	3	WoodPlankFloor
+TERRAIN	4	4	WoodPlankFloor
+TERRAIN	4	5	WoodPlankFloor
+TERRAIN	4	6	WoodPlankFloor
+TERRAIN	5	3	WoodPlankFloor
+TERRAIN	5	4	WoodPlankFloor
+TERRAIN	5	5	WoodPlankFloor
+TERRAIN	5	6	WoodPlankFloor
+TERRAIN	6	3	WoodPlankFloor
+TERRAIN	6	4	WoodPlankFloor
+TERRAIN	6	5	WoodPlankFloor
+TERRAIN	6	6	WoodPlankFloor
+TERRAIN	7	3	WoodPlankFloor
+TERRAIN	7	4	WoodPlankFloor
+TERRAIN	7	5	WoodPlankFloor
+TERRAIN	7	6	WoodPlankFloor
+TERRAIN	8	3	WoodPlankFloor
+TERRAIN	8	4	WoodPlankFloor
+TERRAIN	8	5	WoodPlankFloor
+TERRAIN	8	6	WoodPlankFloor
+THING	Wall	2	6	0	WoodLog
+THING	Wall	9	6	0	WoodLog
+THING	Wall	2	7	0	WoodLog
+THING	Wall	3	7	0	WoodLog
+THING	Wall	4	7	0	WoodLog
+THING	Wall	5	7	0	WoodLog
+THING	Wall	7	7	0	WoodLog
+THING	Wall	8	7	0	WoodLog
+THING	Wall	9	7	0	WoodLog
+THING	Door	6	7	0	WoodLog
+THING	Table1x2c	7	3	0	WoodLog
+THING	Bed	4	5	0	WoodLog
+THING	Shelf	3	4	0	WoodLog
+THING	Grave	5	8	0	-
+THING	Grave	7	8	0	-
+THING	ChunkSandstone	2	2	0	-
+THING	ChunkSandstone	3	2	0	-
+THING	ChunkSandstone	4	2	0	-
+THING	ChunkSandstone	5	2	0	-
+THING	Filth_Ash	3	3	0	-
+THING	Filth_Ash	8	3	0	-
+THING	Filth_Ash	4	4	0	-
+THING	ChunkSlagSteel	4	3	0	-
+THING	ChunkSlagSteel	0	2	0	-
+THING	Filth_Dirt	0	9	0	-
+THING	Filth_Dirt	2	9	0	-
+THING	Filth_Dirt	4	9	0	-
+THING	Filth_Dirt	5	9	0	-
+THING	Filth_Dirt	10	9	0	-
+THING	Filth_Dirt	11	9	0	-
+THING	Filth_Dirt	12	9	0	-
+THING	Filth_Dirt	13	9	0	-
+THING	Filth_Dirt	16	9	0	-
+THING	Filth_Dirt	17	9	0	-
+ROOF	3	7	RoofConstructed
+ROOF	4	6	RoofConstructed
+ROOF	4	7	RoofConstructed
+ROOF	5	5	RoofConstructed
+ROOF	5	6	RoofConstructed
+ROOF	5	7	RoofConstructed
+ROOF	6	5	RoofConstructed
+ROOF	6	6	RoofConstructed
+ROOF	6	7	RoofConstructed
+ROOF	7	6	RoofConstructed
+ROOF	7	7	RoofConstructed
+ROOF	8	7	RoofConstructed
