@@ -86,15 +86,71 @@ Generated from a live post-patch def dump; load last.</description>
        does not silently break this content. Making the load itself resilient
        (moving these files out of Defs/ into per-framework folders LoadFolders.xml
        can gate) is a larger, separate restructuring - not done here. -->
-  <!-- Corrected 2026-08-13. Both previous ids were WRONG and this whole block
-       was therefore INERT: `guy762.starwarskotorweapons` and `Aoba.OuterRim.Core`
-       match no installed mod (Aoba is Dead Man's Switch - wrong author entirely).
-       A loadAfter naming a packageId that does not exist fails SILENTLY: nothing
-       logs it, and the rule simply does not constrain anything. Verified against
-       the live ModsConfig - the two below are present, the two above are not. -->
+  <!-- Corrected 2026-08-13, then rebuilt ARMOURY_LOADAFTER_STALE_1 (2026-09-08).
+       The 2026-08-13 fix only corrected the two typo'd ids above; it never
+       covered the real scope: gen_armoury_patch.py, gen_turret_doctrine.py and
+       the hand-authored Armour_*/Warcasket_*/Turrets_*/Flamebow_TagWiden patches
+       under Patches/ together emit PatchOperationFindMod/Conditional blocks
+       against ~40 third-party (and DLC) mods' ThingDefs, and only 3 packageIds
+       were declared. `guy762.kotorweapons` (the old KotOR Weapons donor) is now
+       itself DEAD -- that mod was absorbed into this one and retired, so the
+       packageId matches nothing installed; it is dropped here in favour of
+       `guy762.mm.kotorcore` (the materials mod, still a real donor and already
+       below). The full list was built by generating every Patches/*.xml file
+       fresh against the live 2026-09-09T01:54:07Z / 590-mod dump (fingerprint
+       matches ModsConfig.xml's 590 active mods), collecting every distinct
+       <mods><li> FindMod target across ALL patch files (not just the ranged/
+       melee ones), and resolving each display name to a packageId off that
+       same dump's manifest.json. `Core` (ludeon.rimworld) is omitted: it is
+       always first regardless of loadAfter. A loadAfter naming a packageId
+       that does not exist, or that is merely inactive, fails/no-ops SILENTLY --
+       nothing logs it -- so absent entries are the dangerous failure mode, not
+       extra ones; several of these (DLCs, and mods not in every list) are fine
+       to declare even when inactive, as an optional-compat statement of intent. -->
   <loadAfter>
+    <li>als.gravtech</li>
+    <li>als.gravtech.bc</li>
+    <li>aoba.fortress.industrial</li>
+    <li>aoba.warcasket</li>
+    <li>arcjc007.lasercannon</li>
+    <li>biomesteam.biomescaverns</li>
+    <li>biomesteam.biomescore</li>
+    <li>biomesteam.biomespollutedlands</li>
     <li>brrainz.harmony</li>
-    <li>guy762.kotorweapons</li>
-    <li>Neronix17.OuterRim.Core</li>
+    <li>clown.dedicatedturrets</li>
+    <li>dubwise.rimefeller</li>
+    <li>erin.ffanimals</li>
+    <li>guy762.mm.kotorcore</li>
+    <li>hmc.wall.furniture</li>
+    <li>ironscruff.primordialgeysers</li>
+    <li>lee.theforce.lightsaber</li>
+    <li>ludeon.rimworld.anomaly</li>
+    <li>ludeon.rimworld.odyssey</li>
+    <li>ludeon.rimworld.royalty</li>
+    <li>milkwater.destinymod</li>
+    <li>mlie.dungeonpack</li>
+    <li>mlie.miningcospaceship</li>
+    <li>mlie.starwarsanimalcollection</li>
+    <li>mlie.yayoscombat3</li>
+    <li>nephlite.orbitaltradecolumn</li>
+    <li>neronix17.outerrim.core</li>
+    <li>neronix17.outerrim.droiddepot</li>
+    <li>oskarpotocki.vfe.insectoid2</li>
+    <li>oskarpotocki.vfe.pirates</li>
+    <li>regrowth.botr.core</li>
+    <li>sapiently.theyatomicmonsters</li>
+    <li>sarg.alphaanimals</li>
+    <li>sarg.alphabiomes</li>
+    <li>sarg.alphagenes</li>
+    <li>sarg.alphamechs</li>
+    <li>van.beasts</li>
+    <li>vanillaexpanded.gravship</li>
+    <li>vanillaexpanded.vaewaste</li>
+    <li>vanillaexpanded.vfesecurity</li>
+    <li>vanillaexpanded.vgeneticse</li>
+    <li>vanillaexpanded.vwe</li>
+    <li>vanillaquestsexpanded.cryptoforge</li>
+    <li>xmb.ancientminingindustry.mo</li>
+    <li>xmb.ancienturbanruins.mo</li>
   </loadAfter>
 </ModMetaData>

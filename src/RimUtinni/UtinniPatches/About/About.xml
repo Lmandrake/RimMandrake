@@ -31,6 +31,40 @@
     <li>7f.alienworlds</li>                                 <!-- the framework that def's fields belong to -->
       <li>mandrake.rm.patches</li>
     <li>mandrake.rsw.patches</li>
+
+    <!-- Added PATCHMODS_LOADAFTER_SWEEP_1 (2026-09-08): real MayRequire/FindMod
+         targets in Patches/ with no loadAfter declaration, found the same way
+         the Armoury gap was (ARMOURY_LOADAFTER_STALE_1). Mostly BiomeCast_Ashkarr.xml,
+         which MayRequire-gates against ~20 biome/animal mods individually. -->
+    <li>Arcjc007.GravshipCrashes</li>                       <!-- JawaGroundHulk_Register.xml -->
+    <li>ArmoredAmpharos.fancyrats</li>                      <!-- BiomeCast_Ashkarr.xml -->
+    <li>BiomesTeam.BiomesCaverns</li>                       <!-- BiomeCast_Ashkarr.xml -->
+    <li>BiomesTeam.BiomesCore</li>                          <!-- BiomeCast_Ashkarr.xml -->
+    <li>DizzyEevee.RHenG</li>                               <!-- BiomeCast_Ashkarr.xml -->
+    <li>Erin.FFAnimals</li>                                 <!-- BiomeCast_Ashkarr.xml -->
+    <li>GRimTerra.Biomesmod</li>                            <!-- BiomeCast_Ashkarr.xml -->
+    <li>Joe.Cephaloids</li>                                 <!-- BiomeCast_Ashkarr.xml -->
+    <li>LingLuo.Cockroach</li>                              <!-- BiomeCast_Ashkarr.xml -->
+    <li>mandrake.rsw.droidworks</li>                        <!-- GalacticEmpire.xml, HomesteadDefenseLeague.xml -->
+    <li>Mlie.AdvancedBiomes</li>                            <!-- BiomeCast_Ashkarr.xml -->
+    <li>Mlie.SpaceWorms</li>                                <!-- BiomeCast_Ashkarr.xml -->
+    <li>Mlie.StarWarsAnimalCollection</li>                  <!-- BiomeCast_Ashkarr.xml -->
+    <li>OskarPotocki.VFE.Insectoid2</li>                    <!-- BiomeCast_Ashkarr.xml, BugTurretRetexture_GeonosianHive.xml -->
+    <li>RedMattis.BigSmall.Core</li>                        <!-- GiantWeaponWielders_Ashkarr.xml -->
+    <li>ReGrowth.BOTR.Core</li>                             <!-- BiomeCast_Ashkarr.xml -->
+    <li>Sarg.AlphaMemes</li>                                <!-- BiomeCast_Ashkarr.xml, HomesteadDefenseLeague.xml -->
+    <li>tyrannidae.littlecritters</li>                      <!-- BiomeCast_Ashkarr.xml -->
+    <li>VanillaExpanded.VAEWaste</li>                       <!-- BiomeCast_Ashkarr.xml -->
+    <li>VanillaExpanded.VMemesE</li>                        <!-- BlackstarCompany.xml, GalacticEmpire.xml -->
+    <li>vanillaquestsexpanded.ancients</li>                 <!-- BiomeCast_Ashkarr.xml, VQEPatients_AreRakata.xml -->
+    <li>vanillaquestsexpanded.cryptoforge</li>              <!-- BiomeCast_Ashkarr.xml -->
+    <li>vanillaquestsexpanded.generator</li>                <!-- DeepDesertTribes.xml -->
+    <li>vanillaracesexpanded.phytokin</li>                  <!-- BiomeCast_Ashkarr.xml -->
+    <li>Who.VFEE.IsopodaGeneline</li>                       <!-- BiomeCast_Ashkarr.xml -->
+    <li>XMB.AncientUrbanrUins.MO</li>                       <!-- AncientsAreRakata.xml, ApparelTags_DeadTagRepair.xml -->
+    <li>zal.betterinfestations</li>                         <!-- BiomeCast_Ashkarr.xml -->
+    <li>zal.comigogreaterswamps</li>                        <!-- BiomeCast_Ashkarr.xml -->
+    <li>zal.gianttoads</li>                                 <!-- BiomeCast_Ashkarr.xml -->
   </loadAfter>
   <!-- Merged from RimUtinni/FactionSlate (mandrake.rut.patches, MOD_CONSOLIDATION_SPRINT_1):
        Patches/FactionSlate/OnlyOurFactions.xml zeroes startingCountAtWorldCreation on 48
