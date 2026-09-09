@@ -148,13 +148,15 @@ src/                    mods, defs, C#, art            FOUNDRY owns
 design/                 campaign specs (Utinni)        the owner's, via BENCH
 skills/                 tooling + how-to               curated in fresh-context passes
 infrastructure/state/   ledger, items, facts/, V1.md   written only through rimflow
-Transient/              output to LOOK AT, then bin    untracked, ~14 days
+Transient/              output to LOOK AT, then bin    tracked+pushed, ~14 days
 ```
 
-**Transient rule** (owner, 2026-08-27): a human reads it once → `Transient/`;
-a program reads it → `/tmp`, never the repo; anyone-later → the repo, committed.
-Never the only copy of anything in `Transient/`, and never a committed doc citing a
-file inside it. `rimflow sweep --transient` lists by age; it never deletes.
+**Transient rule**: a human reads it once → `Transient/`; a program reads it →
+`/tmp`, never the repo; anyone-later → the repo, committed outside `Transient/`.
+Tracked and pushed so the owner can review it from another machine (his ruling
+2026-09-01, recorded in `.gitignore`), but shelf life is ~14 days: never the
+only copy of anything, and never a committed doc citing a file inside it.
+`rimflow sweep --transient` lists by age; it never deletes.
 
 ## Tools
 

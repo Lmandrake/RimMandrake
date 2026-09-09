@@ -260,3 +260,4 @@ src/**/obj/
 # `rimflow bridge who` rebuilds it; the history lives in events.jsonl.
 infrastructure/state/BRIDGE
 infrastructure/state/BRIDGE.tmp
+Transient/codebase_health_hook.log
