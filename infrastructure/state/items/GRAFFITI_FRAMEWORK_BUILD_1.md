@@ -268,3 +268,61 @@ pre-swap backup (verified 598 mods both before and after, matching
 `ModsConfig.FULL.LATEST.xml`) — the `modset_builder.py --restore` bug this
 same session fixed under `MODSET_BUILDER_RESTORE_STALE_1` is exactly why
 that comparison was worth making. Left `doing` — content is still owed.
+
+## 2026-09-09 (FOUNDRY) — reconciled against R7/R8, closing: the "content owed" scope moved out from under this item
+
+Read this item's history plus the sibling `GRAFFITI_PUNK_IDEOLIGION_SCOPE_1`
+(unruled — a widening, not built this pass, per its own instruction) before
+touching anything. Re-verified both mods still build clean (`dotnet.exe
+build`, 0/0 both `Graffiti.csproj` and `SacredGraffiti.csproj`) and
+`validate_patch.py` against the live 589-mod Data+Mods+Workshop set: 0
+errors/0 warnings, 6 files (`Graffiti`) + 3 files (`SacredGraffiti`). No
+code changed this pass — the mechanism was already complete and live-proven
+(2026-09-06).
+
+**The "content still owed" this item has carried since 2026-08-31 is no
+longer this item's scope**, per two owner rulings made 2026-09-08 in
+`MOD_NAMING_CONSOLIDATION_AUDIT_1.md` (§ Map review rulings, R7/R8) — one
+day before either was checked against this item:
+
+- **R7**: "Graffiti (RM) keeps engine + generic default marks (small
+  authoring task: generic examples); campaign marks patch in from RUT."
+  Fulfilled: `GRAFFITI_GENERIC_MARKS_1` (closed b9ac45cb) shipped the RM-side
+  generic examples (`RM_Graffiti_Scratches`/`TallyMarks`/`WarningGlyph`).
+  This lifted the gate `MOD_CONSOLIDATION_SPRINT_1` names by name
+  ("GRAFFITI_GENERIC_MARKS_1 (RM Graffiti needs default content to ship)").
+- **R8**: "Salvation (RUT data pack) = nine campaign mark-styles +
+  IshkoDarkLandmarks + Rites." This is this item's original `mandrake.
+  rut.marks` ask (the nine sacred marks + the Ishko rite hook,
+  `src/RimMandrake/SacredGraffiti/`), renamed and re-homed to a
+  `mandrake.rut.salvation`-shaped destination that `mod_consolidation_map.csv`
+  now owns, not this item. `ISHKO_DARK_LANDMARKS_1` (one of Salvation's three
+  named ingredients) is already done as its own mod
+  (`mandrake.rut.ishkolandmarks`). The relocation itself is
+  `MOD_CONSOLIDATION_SPRINT_1` — status `ready`, owner-gated ("do not start
+  without his go"), and explicitly **mechanical only, NO authoring
+  in-window** (git mv / About merges / defName re-prefix, not new content).
+
+**What this means for the remaining "8 more sacred marks + cant glyphs +
+taunt theology" text**: it was never blocked on FOUNDRY's owner-voice
+caution alone — its destination mod identity changed out from under it
+(`mandrake.rut.marks` → Salvation) by a ruling this item's own file never
+recorded. That content-authoring work is real and still nobody has filed it
+as an item — it is not `MOD_CONSOLIDATION_SPRINT_1`'s job (mechanical-only,
+by its own spec) and it was never re-filed under a Salvation-named item.
+**Flagging, not filing**: whoever executes `MOD_CONSOLIDATION_SPRINT_1` and
+lands the Salvation pack should re-file the nine-marks/cant/taunt content
+authoring as its own item at that point — the destination mod won't exist
+under its final name until that sprint runs, so filing it earlier would
+name a mod folder that doesn't exist yet.
+
+**Closing this item**: `mandrake.rm.graffiti`'s full engine (ModExtension,
+absorbed spree JobDriver/JoyGiver/MentalState/ThinkTree, viewer
+ThoughtWorker, breach-bias Harmony hook) is built, live-proven, and its
+mandated RM-side content shipped under R7. The RUT-side content this item
+was filed to also produce has been superseded out from under it by R8 into
+the not-yet-executed Salvation consolidation track — not silently dropped,
+recorded above and left for whoever runs that sprint. Nothing in this
+item's original four owner rulings (2026-08-31) is contradicted; R7/R8 are
+later, narrower rulings on the SAME material and this item's file is now
+reconciled with them, per this repo's deciding-and-superseding doctrine.

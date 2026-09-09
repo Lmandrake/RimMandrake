@@ -23,6 +23,18 @@ PreToolUse src/ hook (NAMING_SCHEME_PLAN §5 Phase 2 precedent).
 Hard ordering: this sprint → regenerate .rid/.xtp → world re-import →
 only then any world freeze.
 
+**Owed after this sprint lands Salvation** (found closing `GRAFFITI_
+FRAMEWORK_BUILD_1`, 2026-09-09): R8's "Salvation = nine campaign mark-styles
++ IshkoDarkLandmarks + Rites" still needs the nine-marks/cant/taunt-theology
+CONTENT authored — one sacred mark (Ishko) plus its rite exist today in
+`src/RimMandrake/SacredGraffiti/`, the other eight plus cant/taunt content
+do not. This sprint's own spec is mechanical-only (git mv/About-merge/
+re-prefix), so it won't produce that content — whoever lands the Salvation
+row here should re-file the authoring as its own item once the mod exists
+under its final name (filing it earlier would name a folder that doesn't
+exist yet). Engine side (`mandrake.rm.graffiti`) is fully built and
+live-proven; only this RUT content is outstanding.
+
 ## Verify
 Per-destination def-count reconciliation vs sources (plan §4's
 lost-nothing check); naming_lint 0 violations; MayRequire checker 0;
