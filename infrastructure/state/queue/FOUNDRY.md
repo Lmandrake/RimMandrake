@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T19:35:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T19:36:02Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -636,7 +636,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-summary:  (no items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md yet — write one when you have something to say)
+summary:  BIOMEENRICHMENTDESERTWASTELAND1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
 
 ## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
