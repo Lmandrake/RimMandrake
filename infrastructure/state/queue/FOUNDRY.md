@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T20:01:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T20:05:21Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -492,7 +492,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-summary:  (no items/DROID_RETIRE_DEPOT_ASIMOV_1.md yet — write one when you have something to say)
+summary:  DROIDRETIREDEPOTASIMOV1 — wave R3 (DROIDUNIFIEDFRAMEWORKDESIGN.md §2 row D4)
 prose:    infrastructure/state/items/DROID_RETIRE_DEPOT_ASIMOV_1.md
 
 ## DROIDWORKS_MODULE_PERSONALITY_1 Installed modules carry attitudes: CompModulePersonality trait-hediffs while worn
