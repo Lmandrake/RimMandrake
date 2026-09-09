@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <KCSG.SymbolDef>
+    <defName>RUT_Symbol_Slurrypede</defName>
+    <pawnKindDef>AA_Slurrypede</pawnKindDef>
+    <spawnPartOfFaction>false</spawnPartOfFaction>
+    <numberToSpawn>1</numberToSpawn>
+    <spawnDead>false</spawnDead>
+    <spawnRotten>false</spawnRotten>
+    <defendSpawnPoint>false</defendSpawnPoint>
+  </KCSG.SymbolDef>
+  <KCSG.SymbolDef>
+    <defName>RUT_Symbol_WarLabArchive</defName>
+    <thing>RUT_WarLabArchive</thing>
+    <spawnPartOfFaction>false</spawnPartOfFaction>
+  </KCSG.SymbolDef>
+  <KCSG.SymbolDef>
+    <defName>RUT_Symbol_WarLabContainmentCell</defName>
+    <thing>RUT_WarLabContainmentCell</thing>
+    <spawnPartOfFaction>false</spawnPartOfFaction>
+  </KCSG.SymbolDef>
+</Defs>

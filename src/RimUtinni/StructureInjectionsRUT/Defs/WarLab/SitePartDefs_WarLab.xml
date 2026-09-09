@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ANCIENT_WAR_LAB_1: the site-part/gen-step wiring, same shape as
+  VaultDungeons/SitePartDefs_Vaults.xml and DarkTower/SitePartDefs_DarkTower.xml
+  - a SitePartDef the world can carry plus a linked GenStepDef that runs
+  KCSG.GenStep_CustomStructureGen against the RUT_WarLab_Complex template
+  authored in StructureLayoutDefs_WarLab.xml.
+
+  minMapSize matches the same RULED floor as both siblings
+  (dungeons_arc_spec.md SS3.9: 325x325) even though the authored footprint
+  (61x61, see the generator's docstring) is smaller than that floor - room
+  for whatever the propane-lake siting eventually needs around it.
+
+  wantsThreatPoints is false for the same reason as both siblings: the
+  layout IS the threat (lab guardians, fixed) - nothing extra rolled on top.
+
+  gravShipsCanLandOn is false - this is explicitly NOT an overland/landing
+  site (item criteria: "Reachable only via the submerged route ... no
+  ordinary overland entrance"). No WorldObjectDef, no world-tile write, no
+  world_commit are done here, deliberately - siting this SitePartDef on an
+  actual tile inside RUT_PropaneLake/AB_PropaneLakes over the Impact Site is
+  a separate bridge/world-editing pass, and per this task's own brief it is
+  explicitly out of scope while two other agents are mid-transition from the
+  main menu to Playing (no bridge calls made or attempted this pass).
+
+  NOT DONE HERE: the ignition->crater world-tile mutation (WAR_LAB_CRATER_HOOK_1,
+  blocked on LIQUID_BIOMES_MAP_1's frozen propane-lake footprint - untouched by
+  this file, per this task's explicit scope boundary).
+-->
+<Defs>
+  <SitePartDef>
+    <defName>RUT_WarLabSite</defName>
+    <label>the ancient war lab</label>
+    <description>A sealed Rakatan research station, built after the weapon it studies was already loose. Shielding intact; guardians still at their posts; whatever they were containing is still, somehow, contained.</description>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/AncientStructure</expandingIconTexture>
+    <minMapSize>(325,1,325)</minMapSize>
+    <wantsThreatPoints>false</wantsThreatPoints>
+    <gravShipsCanLandOn>false</gravShipsCanLandOn>
+    <considerEnteringAsAttack>true</considerEnteringAsAttack>
+    <forceExitAndRemoveMapCountdownDurationDays>4</forceExitAndRemoveMapCountdownDurationDays>
+    <tags>
+      <li>RUT_WarLab</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_WarLabSite</defName>
+    <linkWithSite>RUT_WarLabSite</linkWithSite>
+    <order>400</order>
+    <genStep Class="KCSG.GenStep_CustomStructureGen">
+      <fullClear>true</fullClear>
+      <clearFogInRect>false</clearFogInRect>
+      <structureLayoutDefs>
+        <li>RUT_WarLab_Complex</li>
+      </structureLayoutDefs>
+    </genStep>
+  </GenStepDef>
+</Defs>

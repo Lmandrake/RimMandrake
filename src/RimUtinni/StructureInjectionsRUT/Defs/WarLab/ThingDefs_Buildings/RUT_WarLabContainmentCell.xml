@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_WarLabContainmentCell - ANCIENT_WAR_LAB_1's core, the live-specimen
+  half of the reveal-beat (with RUT_WarLabArchive carrying the records half).
+
+  Item spec, criteria list: "Lab guardians read as mechanoid/ancient, never
+  Assailant-flesh material (hard ban #8) ... live specimens exist only as
+  sealed containment props/props-with-pawn, never a spawned hostile
+  faction." the_propane_lakes.md's own reconciliation is explicit: "the
+  study subjects here are live, trapped, and being studied ... not
+  corpses" - so this cannot be flavor-text-only inert scenery pretending
+  nothing is inside, but it ALSO must never risk spawning a hostile
+  Assailant pawn on this map.
+
+  DELIBERATE CHOICE, flagged rather than invented past: the criteria
+  explicitly offers TWO satisfying shapes - "sealed containment props" OR
+  "props-with-pawn". This file takes the props-only shape, not
+  props-with-pawn, because props-with-pawn would need a confirmed
+  Assailant PawnKindDef wired the way VAULT_DUNGEON_BUILD_1's
+  RUT_Symbol_RakataCasket wraps AncientCryptosleepCasket with
+  containPawnKindAnyOf - and that vanilla casket mechanism SPAWNS its
+  contained pawn hostile the moment it is opened/breached
+  (Building_AncientCryptosleepCasket's whole point). No Assailant
+  PawnKindDef exists in this repo's authored content to check against
+  (searched; none found), and inventing one now would be exactly the kind
+  of content-palette invention ANCIENT_WAR_LAB_1.md's own "Watch out"
+  section forbids for this pass ("do not invent — confirm at build time").
+  A sealed, non-openable prop satisfies the ruled ban unambiguously; a
+  live-pawn container version is real future work, once an Assailant
+  study-subject PawnKindDef is confirmed and a non-breachable containment
+  mechanic (or an explicit "opening this is a scripted quest event, not a
+  free interaction") is designed - not guessed here.
+
+  Not claimable, not deconstructible: a sealed system nobody on the crew
+  understands well enough to strip for parts, matching the ban's own
+  register (the study subject is dangerous if released, not a resource).
+
+  Art: reuses Things/Building/Ship/ShipCryptosleepCasket (Core,
+  Buildings_Misc.xml) at its native (1,2) proportions via drawSize only
+  (footprint kept (1,1) so it never collides in a dense KCSG grid cell -
+  the same size-vs-drawSize split RUT_VaultHeart/RUT_DarkTowerControlConsole
+  already use for their own oversized single-cell props). Reading the shape
+  of a sealed vertical pod without touching the vanilla ThingDef itself
+  (Building_AncientCryptosleepCasket's className carries the openable/
+  spawns-a-pawn behavior this file deliberately does not want) - no new art
+  authored this pass.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_WarLabContainmentCell</defName>
+    <label>containment cell</label>
+    <description>A sealed vertical tank, fogged with condensation on the inside of the glass. Something moves in there, unhurried, the way something moves when it has stopped trying to get out.\n\nNobody on the crew understands the seals well enough to trust them. Nobody is opening this.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Ship/ShipCryptosleepCasket</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <MaxHitPoints>600</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-8</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+    </building>
+  </ThingDef>
+</Defs>
