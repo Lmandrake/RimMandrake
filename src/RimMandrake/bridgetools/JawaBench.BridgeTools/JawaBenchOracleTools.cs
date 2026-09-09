@@ -75,18 +75,18 @@ namespace JawaBench.BridgeTools
             Description =
                 "*** WRITES ORACLE MOD SETTINGS *** Set RimMandrake.Oracle's OracleSettings " +
                 "fields directly in memory (and to disk) - no settings-window UI needed. " +
-                "Only non-null parameters are changed. For the mock-endpoint quicktest gate: " +
-                "enabled=true, baseUrl='http://127.0.0.1:<port>/v1', apiKey left blank " +
-                "(baseUrl containing 127.0.0.1/localhost is the one case OracleGameComponent " +
-                "allows a blank key).",
+                "Only non-null parameters are changed. The transport is the Claude Code CLI " +
+                "as a child process, so there is no endpoint, model or key to set: the only " +
+                "knobs are the kill switch, an optional full path to the claude executable " +
+                "(blank = find it on PATH), the timeout and the per-day budget. To force the " +
+                "fallback path for a negative test, point claudeCliPath at a file that does " +
+                "not exist.",
             ResultDescription = "success, the settings AFTER the write.")]
         public static async Task<object> OracleConfigure(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "Kill switch.")] bool? enabled = null,
-            [ToolParameter(Description = "OpenAI-compatible /chat/completions root.")] string baseUrl = null,
-            [ToolParameter(Description = "Model name.")] string model = null,
-            [ToolParameter(Description = "API key. Pass empty string, not omitted, to blank it.")] string apiKey = null,
+            [ToolParameter(Description = "Full path to the claude executable. Pass empty string, not omitted, to blank it back to PATH lookup.")] string claudeCliPath = null,
             [ToolParameter(Description = "Timeout in seconds.")] int? timeoutSeconds = null,
             [ToolParameter(Description = "Gods budget per in-game day.")] int? godsBudgetPerDay = null)
         {
@@ -96,9 +96,7 @@ namespace JawaBench.BridgeTools
                 if (s == null) return Fail("OracleMod.Settings is null - is mandrake.rm.oracle active?");
 
                 if (enabled.HasValue) s.enabled = enabled.Value;
-                if (baseUrl != null) s.baseUrl = baseUrl;
-                if (model != null) s.model = model;
-                if (apiKey != null) s.apiKey = apiKey;
+                if (claudeCliPath != null) s.claudeCliPath = claudeCliPath;
                 if (timeoutSeconds.HasValue) s.timeoutSeconds = timeoutSeconds.Value;
                 if (godsBudgetPerDay.HasValue) s.godsBudgetPerDay = godsBudgetPerDay.Value;
 
@@ -109,8 +107,7 @@ namespace JawaBench.BridgeTools
                     success = true,
                     after = new
                     {
-                        s.enabled, s.baseUrl, s.model,
-                        apiKeySet = !string.IsNullOrEmpty(s.apiKey),
+                        s.enabled, s.claudeCliPath,
                         s.timeoutSeconds, s.godsBudgetPerDay,
                     },
                     ticksGame = TicksGameSafe(),
@@ -122,10 +119,10 @@ namespace JawaBench.BridgeTools
             "jawa/oracle_test_ohm_letter",
             Description =
                 "*** ACTS ON THE LIVE COLONY - DELIVERS A LETTER *** Fire one real async call " +
-                "through RimMandrake.Oracle's OracleGameComponent for the Ohm consumer, against " +
-                "whatever endpoint/key is configured in that mod's settings (blank key + a " +
-                "127.0.0.1/localhost baseUrl is allowed for a mock stub; otherwise a key is " +
-                "required). Delivers the model's text if it passes the register lint, the " +
+                "through RimMandrake.Oracle's OracleGameComponent for the Ohm consumer, which " +
+                "launches the Claude Code CLI (claude -p) as a child process and reads its " +
+                "stdout. Requires Claude Code installed and logged in on this machine. " +
+                "Delivers the model's text if it passes the register lint, the " +
                 "prescribed fallback otherwise - the call is fire-and-forget off the main " +
                 "thread, so this tool returns immediately and the letter lands within a few " +
                 "ticks. Poll rimworld/get_game_info or just read the letter stack.",
@@ -149,9 +146,9 @@ namespace JawaBench.BridgeTools
                 {
                     success = true,
                     requested = new { label, context, fallback },
-                    note = "Fire-and-forget: the async HTTP call runs off-thread and delivers via the letter " +
-                           "stack on a later tick. A delivered letter containing the mock server's marker " +
-                           "text proves the real path fired; the fallback text proves it did not.",
+                    note = "Fire-and-forget: the claude -p child process runs off-thread and delivers via the " +
+                           "letter stack on a later tick. A delivered letter whose text is NOT the fallback " +
+                           "string above proves the real path fired; the fallback text proves it did not.",
                     ticksGame = TicksGameSafe(),
                 };
             });
