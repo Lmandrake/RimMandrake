@@ -31,7 +31,14 @@ ships and old megastructures."*
 - (Checked and weaker: Hurgo's Kennels (21230) — neither anchor; no Hutt site near the
   Cathedral's cooler flanks exists.)
 
-## spec (fills in after the owner picks)
+## RULED — owner picked A, "Zeddo's Yard", by card 2026-09-08
+The junkyard anchors at the Zeddo's Toll cluster (candidate start tile **17007**,
+alternates 1621/17011 — final tile chosen at build time when the local map is judged).
+Ships are the real terrain (Fall Line Barrens); the old megastructures arrive by
+structure injection. The toll road carries the waste-hauling economy (ties to
+GAPING_DOOM_SITE_1 and the Junkers).
+
+## spec (fills in at build)
 - World presence: the start tile marked (landmark/world object per the pattern the
   owner rules), scenario's start location pinned to it; junkyard identity carried by
   injected structures + the scenario opening.
