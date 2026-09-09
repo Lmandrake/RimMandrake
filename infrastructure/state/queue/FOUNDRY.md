@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T20:51:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T20:52:10Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -665,6 +665,15 @@ target:   v1
 kind:     task
 summary:  DROIDWORKSPERSONALITYVERIFY1
 prose:    infrastructure/state/items/DROIDWORKS_PERSONALITY_VERIFY_1.md
+
+## STAT_NORMALIZATION_AUDIT_1 Census third-party mods that adjust animal/plant stats, rarity, appearance, size, growth before a self-owned-content normalization pass
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  This is a census + risk-ordered retirement PLAN. Do not retire anything in this
+prose:    infrastructure/state/items/STAT_NORMALIZATION_AUDIT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
