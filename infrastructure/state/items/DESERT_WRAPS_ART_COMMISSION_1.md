@@ -28,6 +28,38 @@ generating-rimworld-sprites.
   frequency on the tribe) → src/RimUtinni/UtinniPatches, per the
   engine/content doctrine.
 
+## Candidates (2026-09-09, FOUNDRY)
+Contact sheet: `Transient/DESERT_WRAPS_ART_COMMISSION_1_candidates_2026-09-09.png`
+(4 wrap styles + 2 head shapes, south-facing, labeled). Source PNGs (real
+alpha, generated via `codex_image.py generate` per the `generating-rimworld-sprites`
+skill — Codex now returns native alpha on this install, no chroma-key needed)
+sit beside it at `Transient/desert_wraps_candidates/*.png`.
+
+Style inputs used: this item's own `design/Jawa/desert_wraps_design_capture.md`
+(prose-only capture, no donor pixels) plus our own absorbed
+`src/RimStarWars/Armoury/Textures/SWApparel/Sovereign_Tuskens/{Wraps,SandHead_south}.png`
+as style anchor — described in prompts, never passed as image input to avoid
+any derivative-of-our-own-derivative ambiguity, and the donor mod's own PNGs
+were never opened. All 6 candidates are original generated art.
+
+- Wrap A "Spiral Wrap" — grayscale/neutral, Stuff-dyeable, thick outline +
+  converging spiral seam bands (closest to the Rimwars mod's own grammar per
+  the capture doc, redrawn from scratch).
+- Wrap B "Banded Wrap" — overlapping horizontal cloth bands, warm tan, uneven
+  hem.
+- Wrap C "Segmented Raider" — armored/segmented plates over a wrap base, more
+  rugged register.
+- Wrap D "Draped Shawl" — loose flowing drape, cream, softer trader read.
+- Head 1 "Blunt Bucket Head" — flat squared crown, cylindrical taper, heavy
+  jaw-shadow mass, blank dot eyes (closest to the capture doc's measured
+  geometry delta from vanilla).
+- Head 2 "Elongated Ridged Skull" — domed elongated crown with brow ridges;
+  a genuinely different "devolved" direction, not a minor tweak of Head 1.
+
+**Awaits the owner's pick.** Do not build the full body-type × direction
+matrix or wire any ThingDef/HeadTypeDef until he picks — see CLAUDE.md's
+mockups-first doctrine.
+
 ## Verify
 Candidates sheet reviewed by owner; picked styles produce the full
 matrix passing validate_sprite; defs load on minimal list; DeepDesert
