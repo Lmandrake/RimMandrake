@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T04:19:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T04:46:37Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -453,3 +453,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  BENCH reboot handoff — 2026-09-08 evening
 prose:    infrastructure/state/items/BENCH_REBOOT_HANDOFF_202609082018.md
+
+## PLAYER_START_SITE_1 The formal player start site: Hutt junkyard of ruined ships + old megastructures — lore fixed by Scenario_Utinni + fall_line.md; candidates measured (Zeddo's Yard on the Fall Line vs Gorga's shadow by the Cathedral); owner picks, then build + pin scenario start (2026-09-08)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec
+summary:  The player's formal start site — the Hutt junkyard (owner, 2026-09-08)
+prose:    infrastructure/state/items/PLAYER_START_SITE_1.md
