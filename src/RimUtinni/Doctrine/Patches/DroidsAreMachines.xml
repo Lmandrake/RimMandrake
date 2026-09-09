@@ -87,12 +87,23 @@
        declaring the field. Same shape as set_field() in
        gen_armour_patch.py, which exists for exactly this failure mode. -->
 
-  <!-- Asimov half retired 2026-09-09 (DROID_RETIRE_DEPOT_ASIMOV_1, wave R3):
-       neronix17.asimov is off the active list, so the Asimov_Automaton block
-       that used to sit here is gone rather than left as a dead no-op FindMod.
-       The ABF half below is UNCHANGED — killathon.artificialbeings.syncore is
-       still active; its own retirement is DROID_RETIRE_ABF_SYNCORE_1 (wave R2),
-       a separate item. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Asimov</li></mods>
+    <match Class="PatchOperationConditional">
+      <!-- 19 Outer Rim Droid Depot races: GNK, MSE, DUM, R series, FX-7,
+           Astromech, Protocol, Battle, Commando, MagnaGuard, Destroyer, HK,
+           KX Security, Imperial Labor, Salvage Assist and the rest. -->
+      <xpath>/Defs/FleshTypeDef[defName="Asimov_Automaton"]/isOrganic</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/FleshTypeDef[defName="Asimov_Automaton"]/isOrganic</xpath>
+        <value><isOrganic>false</isOrganic></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/FleshTypeDef[defName="Asimov_Automaton"]</xpath>
+        <value><isOrganic>false</isOrganic></value>
+      </nomatch>
+    </match>
+  </Operation>
 
   <Operation Class="PatchOperationFindMod">
     <mods><li>ABF: Synstructs Core</li></mods>
