@@ -97,3 +97,32 @@ What remains, and where each piece goes:
   + tombstone removal — execute INSIDE the consolidation sprint:
   MOD_NAMING_CONSOLIDATION_AUDIT_1 (rulings section, 2026-09-08). Do not
   start them standalone — they ride the map the owner reviews.
+
+## Re-verification, no action taken — 2026-09-09 (FOUNDRY, BELT)
+
+Recounted `src/SPLIT_Phase3/Jawa_Patches` fresh rather than trusting this
+file's history: **0 files** (`find ... -type f` → 0; the directory itself
+is empty except its own presence). Confirms the 2026-09-08 note — there is
+no TBD triage backlog left under this item. Before: 93 files (95 rows
+after the +2 post-census additions) at filing; after: 0. There is nothing
+left for a bulk-triage pass to pick off.
+
+Checked whether the successor work is now unblocked: it is not.
+`MOD_NAMING_CONSOLIDATION_AUDIT_1` is signed off (plan v3 + map, R1–R15
+ruled, 2026-09-08) and its execution vehicle `MOD_CONSOLIDATION_SPRINT_1`
+exists (`rimflow show` → state `ready`), but that sprint is explicitly
+gated on `CHRONICLE_EVENT_SPINE_1`, `GRAFFITI_GENERIC_MARKS_1`,
+`PYRELANDS_GENERIC_TEXT_1`, and "scheduling is the owner's call" — not
+claimed, not started. The straddle extractions this item still owes
+(SacredGraffiti marks, WreckedMachines relics, Droidworks campaign layer,
+Armoury doctrine, JawaVoice campaign lines) ride inside that sprint per
+the owner's explicit "do not start them standalone." `SPRINT_SRC_WRITE_
+FREEZE_1` (the src/ write-freeze for the sprint's game-down window) is
+itself `done`/closed right now — not a live blocker — but the sprint has
+simply not been claimed yet, so there is nothing under this item's own ID
+to execute.
+
+**Left `doing`, not closed**: real work remains (the straddle
+extractions), it is just not this item's to run standalone — it surfaces
+again the moment `MOD_CONSOLIDATION_SPRINT_1` is claimed. No files moved
+this pass.
