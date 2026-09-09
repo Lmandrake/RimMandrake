@@ -22,9 +22,11 @@ visibly or dying trying.
 
 ## 0. The measurements everything rests on
 
-MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
-plans): **227 tiles — 163 of them river tiles (72%).** That is the biome in one
-number: no river, no jungle. Arc 11.3→58.3 (median 44.7 — the sun **+45° up**,
+MEASURED live on V26 (2026-09-08, worldmap sitting): **235 tiles — 199 of them river
+tiles (85%).** That is the biome in one number: no river, no jungle. *(Amendment, owner
+ruled 2026-09-08: the 36 riverless tiles are read as **the dying river and its graves** —
+its own canon, no repaint; and 8 through-river tiles arrive from the Webwork, whose sheet
+keeps no surface river — dayside river lines are the Greentide's by the lush rule.)* Arc 11.3→58.3 (median 44.7 — the sun **+45° up**,
 Extreme Desert energy). Temp median **45.5 °C** (39.1..64.4). Elevation median
 287 m, but nearly half the tiles are large-hill/mountainous/impassable (39+78+8) —
 **gorge country**, not flat jungle. Regions: Dune Sea 81, Scald Spine 58, Dew Belt
