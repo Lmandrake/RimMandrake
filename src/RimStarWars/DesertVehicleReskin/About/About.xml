@@ -51,5 +51,6 @@ Alpha Vehicles - Neolithic ships its vehicle art as loose PNGs, not as an AssetB
 
   <loadAfter>
     <li>sarg.alphavehiclesneolithic</li>
+    <li>VanillaExpanded.VFEPropsandDecor</li>          <!-- EopieSled_Identity.xml patches its prop def too -->
   </loadAfter>
 </ModMetaData>

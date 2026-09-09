@@ -9,7 +9,58 @@
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Royalty</li>
-    <li>mandrake.jawa.patches</li>
+    <!-- mandrake.jawa.patches was the pre-split monolithic Jawa_Patches mod;
+         JAWA_PATCHES_SPLIT_1 (2026-09-08) replaced it with per-tier patches
+         mods. mandrake.rut.patches is the direct successor for this RUT-tier
+         mod, fixed as a MISSING declaration alongside PATCHMODS_LOADAFTER_SWEEP_1. -->
+    <li>mandrake.rut.patches</li>
+
+    <!-- Added PATCHMODS_LOADAFTER_SWEEP_1 (2026-09-08): real MayRequire/FindMod
+         targets in Patches/ with no loadAfter declaration, found the same way
+         the Armoury gap was (ARMOURY_LOADAFTER_STALE_1). Almost all cited by
+         PawnFlavorPhase2_ThoughtDef.xml, which MayRequire-gates per-mod thoughts. -->
+    <li>amoruch.RimWorldStealingMod</li>
+    <li>avius.prisonlabor</li>
+    <li>BiomesTeam.BiomesCaverns</li>
+    <li>BiomesTeam.BiomesCore</li>
+    <li>BiomesTeam.BiomesFossils</li>
+    <li>BiomesTeam.BiomesPollutedLands</li>
+    <li>divineDerivative.Romance</li>
+    <li>EBSG.Framework</li>
+    <li>erdelf.HumanoidAlienRaces</li>
+    <li>GarryFlowers.MoreSlaveryStuff</li>
+    <li>Greg.CustomGasTypes</li>
+    <li>GulMadred.BreedingRitual</li>
+    <li>guy762.MM.KotORCore</li>                             <!-- PawnFlavorPhase2_Xenotype.xml -->
+    <li>iforgotmysocks.CaravanAdventures</li>
+    <li>Killathon.ArtificialBeings.SynCore</li>              <!-- PawnFlavorPhase2_MentalBreak.xml -->
+    <li>Legator.PrisonerRealism</li>
+    <li>mandrake.rsw.armoury</li>
+    <li>mandrake.rsw.starwarsraces</li>                      <!-- also PawnFlavorPhase2_Xenotype.xml -->
+    <li>Mlie.PreceptsAndMemes</li>
+    <li>Mlie.StarWarsAnimalCollection</li>
+    <li>Neronix17.OuterRim.DroidDepot</li>                   <!-- PawnFlavorPhase2_MentalBreak.xml -->
+    <li>neronix17.toolbox</li>
+    <li>OskarPotocki.VanillaVehiclesExpanded</li>
+    <li>OskarPotocki.VFE.Pirates</li>
+    <li>OskarPotocki.VFE.Tribals</li>
+    <li>RedMattis.BigSmall.Core</li>
+    <li>sarg.alphaanimals</li>
+    <li>sarg.alphabiomes</li>
+    <li>sarg.alphagenes</li>
+    <li>Sarg.AlphaMemes</li>
+    <li>telardo.RomanceOnTheRim</li>
+    <li>TRIBeagle.simpleslaverycollars</li>
+    <li>TSA.TorturePod</li>
+    <li>Turnovus.Biotech.IntegratedGenes</li>                 <!-- also PawnFlavorPhase2_MentalBreak.xml -->
+    <li>vanillaexpanded.gravship</li>
+    <li>VanillaExpanded.VanillaTraitsExpanded</li>            <!-- also PawnFlavorPhase2_MentalBreak.xml -->
+    <li>VanillaExpanded.VBrewE</li>
+    <li>VanillaExpanded.VCookE</li>
+    <li>VanillaExpanded.VGeneticsE</li>
+    <li>VanillaExpanded.VMemesE</li>
+    <li>vanillaracesexpanded.saurid</li>                      <!-- also PawnFlavorPhase2_Xenotype.xml -->
+    <li>weilbyte.snapout</li>
   </loadAfter>
   <description>Faction-keyed backstories, childhoods and traits for the Ash'karr campaign — every faction answers "why raid them, why enslave theirs, why free them" differently.
 

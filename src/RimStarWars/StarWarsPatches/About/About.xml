@@ -37,5 +37,17 @@
          Neronix17.OuterRim.GalacticDiversity is CereanManeFix's fix target
          and was already present above - no addition needed for it. -->
     <li>Lumi.doorsexpanded</li>                             <!-- Patches/BlastDoorFrameAsyncFix textures - fix target -->
+
+    <!-- Added PATCHMODS_LOADAFTER_SWEEP_1 (2026-09-08): real MayRequire/FindMod
+         targets in Patches/ with no loadAfter declaration, found the same way
+         the Armoury gap was (ARMOURY_LOADAFTER_STALE_1). -->
+    <li>Killathon.ArtificialBeings</li>                     <!-- DroidDonor_ABFGate.xml -->
+    <li>LovelyDovey.Sex.WithRosaline</li>                   <!-- EggLayersLayEggs.xml -->
+    <li>Mlie.StarWarsAnimalCollection</li>                  <!-- BehemothArtUpres_StarWarsAnimalCollection.xml -->
+    <li>OskarPotocki.VFE.Tribals</li>                       <!-- WeaponTags_Renormalise.xml -->
+    <li>RedMattis.BigSmall.Core</li>                        <!-- BodySizeIsReal.xml -->
+    <li>sarg.alphavehiclesneolithic</li>                    <!-- VehicleBeastLabels.xml, VehicleBeastSound_Fix.xml -->
+    <li>VanillaExpanded.VWE</li>                            <!-- WeaponTags_Renormalise.xml -->
+    <li>XMB.AncientUrbanrUins.MO</li>                       <!-- WeaponTags_Renormalise.xml -->
   </loadAfter>
 </ModMetaData>
