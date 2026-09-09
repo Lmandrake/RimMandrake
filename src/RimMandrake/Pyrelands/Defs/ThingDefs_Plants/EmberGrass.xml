@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Ember grass — the fuel bed. The owner's ruling asked for "rapidly
+    growing grass", and in RimWorld a plant's growth speed is one number:
+    PlantProperties.growDays (RimSage, RimWorld/PlantProperties.cs:70).
+    There is no growthRate field and no multiplier — a faster plant is a
+    plant with a smaller growDays, full stop.
+
+    2.5 days (vanilla Plant_Grass) -> 0.8 days here: roughly three times
+    the regrowth rate, which is what makes the biome's loop close. A scar
+    that would take a vanilla savanna the better part of a season to
+    re-fuel re-fuels here inside a couple of days, so the same ground can
+    burn again while the last burn's ash is still on it — which is exactly
+    what the ash ladder in AshLadder.xml is built to escalate.
+
+    ⚠️ growDays is not free. PlantProperties.LifespanDays is
+    growDays * lifespanDaysPerGrowDays, so at the vanilla default of 8 a
+    0.8-day plant would live 6.4 days and the map would churn through
+    dying-plant messages. lifespanDaysPerGrowDays is raised to 26 to put
+    the lifespan back at a normal ~21 days: fast to arrive, ordinary once
+    it is there.
+
+    ⚠️ UNVERIFIED, flagged not guessed: no VANILLA plant sets a
+    graphicData <color>, so the ochre tint below rides on the same
+    assumption this mod's own ScorchFruit.xml already makes (CutoutPlant
+    respects the material colour). If it renders plain green in game it is
+    cosmetic only — nothing else in the def depends on it.
+  -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_FE_Plant_EmberGrass</defName>
+    <label>ember grass</label>
+    <description>A coarse, fast bunchgrass that carpets burned ground within days of the fire going out. It puts everything into height and nothing into water, so it is dry and brittle almost as soon as it is up — standing tinder, growing faster than anything can graze it down. The stems dry to a dull orange, which is where the name comes from, though it is a fair description of what happens next as well.</description>
+    <statBases>
+      <MaxHitPoints>70</MaxHitPoints>
+      <!-- Above every Core plant (grass tops out at 1.3): this is the
+           thing the biome's fires are actually made of. -->
+      <Flammability>1.6</Flammability>
+      <Nutrition>0.45</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Grass</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(198, 142, 68)</color>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <ingestible />
+    <plant>
+      <!-- Grows on almost anything, including a fresh ash trace
+           (fertility 0.5) and a light ash bank (0.25). It stops at heavy
+           ash (0.05) and deep ash (0.0), so a scar that has climbed the
+           ladder stays bare — the ladder still means something. -->
+      <fertilityMin>0.08</fertilityMin>
+      <fertilitySensitivity>0.15</fertilitySensitivity>
+      <growDays>0.8</growDays>
+      <lifespanDaysPerGrowDays>26</lifespanDaysPerGrowDays>
+      <leaflessGraphicPath>Things/Plant/Grass_Leafless</leaflessGraphicPath>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>9</maxMeshCount>
+      <visualSizeRange>0.5~0.85</visualSizeRange>
+      <topWindExposure>0.5</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>12</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <!-- Wide span, per the ruling: it is still growing when the ground
+           is hot enough to scorch and when a night frost would stop
+           vanilla grass. -->
+      <minGrowthTemperature>-4</minGrowthTemperature>
+      <minOptimalGrowthTemperature>8</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>50</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>80</maxGrowthTemperature>
+      <growMinGlow>0.31</growMinGlow>
+    </plant>
+  </ThingDef>
+
+</Defs>

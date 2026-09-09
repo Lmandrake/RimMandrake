@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Cinderfall — the storm (owner's ruling, 2026-09-09: "Cinderfall
+    storms"). Ash fall's rare, violent sibling: the same falling-particle
+    trick, run at hard-snow density and tinted ember instead of grey, with
+    real lightning underneath it.
+
+    THE IGNITION IS VANILLA'S, NOT AN INVENTED ONE. `eventMakers` takes
+    weather-event classes the base game already ships, and
+    WeatherEvent_LightningStrike.DoStrike calls
+    GenExplosion.DoExplosion(..., DamageDefOf.Flame, ...) at the strike
+    cell (RimSage, RimWorld/WeatherEvent_LightningStrike.cs:44) — that IS
+    the fire-starter, the same one DryThunderstorm uses. Nothing here
+    invents an ignition system in XML; the intervals are simply tighter
+    than DryThunderstorm's 1200 so the storm reads as a storm.
+
+    That same strike is what this mod's existing fulgurite hook is
+    postfixed onto (Source/FireEcologyHook.cs), so a cinderfall over sand
+    leaves glass behind it as well as fire — no extra wiring, the hook was
+    already listening for exactly this event.
+
+    Ember tint, same mechanism as AshFall: Verse/SkyManager.cs:117 tints
+    every non-forced overlay with `curSky.colors.overlay`, so the
+    `<overlay>` colour below is what turns the hard-snow particle sheet
+    into blown sparks and the fog layer into lit smoke.
+
+    ⚠️ rainRate STAYS 0 here too — a storm that put out fires would be
+    the opposite of the point, and RM_FE_BlackRain must remain the only
+    rain-rated weather in the biome's table (see Pyrelands.xml).
+
+    favorability VeryBad means WeatherDecider will not roll it in the
+    first 8 days after settling (WeatherDecider.cs:156). That is correct
+    for this one: it is the biome's disaster, not its wallpaper.
+  -->
+
+  <WeatherDef>
+    <defName>RM_FE_Weather_Cinderfall</defName>
+    <label>cinderfall</label>
+    <description>A firestorm's exhaust arriving overhead: live embers driven sideways on a hot wind, thick enough to read by, coming down among the grass. Visibility collapses, the air is full of grit and sparks, and the lightning that comes with it lands in ground that is already primed to catch. Get everything flammable under a roof and get everyone off the grass.</description>
+    <durationRange>12000~30000</durationRange>
+    <favorability>VeryBad</favorability>
+    <isBad>true</isBad>
+    <perceivePriority>3</perceivePriority>
+    <accuracyMultiplier>0.6</accuracyMultiplier>
+    <moveSpeedMultiplier>0.85</moveSpeedMultiplier>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <temperatureRange>0~999</temperatureRange>
+    <windSpeedFactor>1.8</windSpeedFactor>
+    <windSpeedOffset>1.5</windSpeedOffset>
+    <preventSkygaze>true</preventSkygaze>
+    <preventsShuttleLaunch>true</preventsShuttleLaunch>
+    <letterDef>ThreatSmall</letterDef>
+    <letterLabel>Cinderfall</letterLabel>
+    <letterText>A cinderfall is coming down over the area. Live embers are falling among the grass and lightning is striking with them. Anything flammable left in the open is likely to catch, and anyone caught out in it will be burned.</letterText>
+    <ambientSounds>
+      <li>Ambient_Wind_Storm</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_SnowHard</li>
+      <li>WeatherOverlay_Fog</li>
+    </overlayClasses>
+    <eventMakers>
+      <li>
+        <averageInterval>420</averageInterval>
+        <eventClass>WeatherEvent_LightningFlash</eventClass>
+      </li>
+      <li>
+        <averageInterval>640</averageInterval>
+        <eventClass>WeatherEvent_LightningStrike</eventClass>
+      </li>
+    </eventMakers>
+    <!-- `overlay` is the ember colour — see the header. -->
+    <skyColorsDay>
+      <sky>(0.72,0.44,0.28)</sky>
+      <shadow>(0.90,0.86,0.84)</shadow>
+      <overlay>(0.95,0.46,0.16)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.70,0.36,0.22)</sky>
+      <shadow>(0.90,0.86,0.84)</shadow>
+      <overlay>(0.92,0.42,0.14)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.34,0.20,0.16)</sky>
+      <shadow>(0.85,0.82,0.80)</shadow>
+      <overlay>(0.78,0.34,0.12)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.30,0.18,0.15)</sky>
+      <shadow>(0.85,0.82,0.80)</shadow>
+      <overlay>(0.74,0.32,0.11)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>
