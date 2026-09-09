@@ -1,0 +1,43 @@
+{
+  "sheet": "terminator_sea + the_grey_deep",
+  "defNames": ["RUT_GreySea"],
+  "tiles": 429,
+  "authored": "2026-09-09",
+  "law_sources": ["terminator_sea.md", "the_grey_deep.md", "_assignment_prep.md §6", "_freeze_rulings_2026-09-07.md R2/R11/R17", "owner cards 2026-09-09"],
+  "fauna": [
+    {"def": "RSW_Reefback", "commonality": 0.005, "action": "import",
+     "band": "endemic giant — single-spawn, the warden ADULT",
+     "law": "terminator_sea §4 (endemic giant, one per sea, no sharing); the_grey_deep §4: the crusted giant — the endemic lineage, ill-tempered, mineral-armored; R11: warden adults spend their centuries in the Grey Deep as the brine adults; bs 32, spd 2.0, non-predator, manhunter-on-hurt 50% (MEASURED)",
+     "note": "This is the warden lifecycle's ADULT side only — they breed and die in the Miasma (R11); the crèche/mothers side is the Miasma roster (parallel agent). Manhunter-on-hurt carries the ill-tempered read. Donor: RimMandrake - SW Sea Beasts (prep §6.4 menu)."},
+    {"def": "AA_Aerofleet", "commonality": 0.05, "action": "import",
+     "band": "shore/shadow-lane drifter",
+     "law": "terminator_sea prep §6.1 target allows 1-2 shore/shadow-lane forms; ubiquity-25 BINDING (owner card 2026-09-09): terminator-adjacent only, keep scarce; R17 fliers cross biomes; bs 0.2, spd 2.84, non-predator (MEASURED)",
+     "note": "Shared with the Twilight Sea shore — legal: endemism binds giants; a drifter ranges (R17). Shore-side only; the Grey DEEP's three-resident cap (ban 2) governs the bottom, which this row never touches."}
+  ],
+  "evictions": [],
+  "stat_adjustments": [],
+  "flora": [],
+  "flora_purged": [],
+  "fish": {
+    "ruling": "no fish — the water is saturated brine going to saturated-plus at the bottom (the_grey_deep §3), the sea is a monoculture (terminator_sea §4), nothing schools in either layer, and the Grey Deep's roster is capped at three residents (ban 2). R2: the Grey Sea is salting — early on the salt road; its water is a chemistry, not a fishery. FISH_BY_BIOME_1: ruled no-fish, no analogs owed.",
+    "list": []
+  },
+  "new_defs": [
+    {"name": "the pillar-mason (Grey monoculture — crystal-binding film that builds mineral columns)", "kind": "plant",
+     "mechanic_load": "none for the def; pillar navigation/waymarks deferred to diving mods", "from_sheet": "terminator_sea §4 (the Grey Sea holds a different mat) + the_grey_deep §4"},
+    {"name": "the ossuary shrimp (man-sized, skeletal-seeming, shy and evasive, never attacks, never tamed)", "kind": "creature",
+     "mechanic_load": "C#: evasion AI — deferred to diving mods; def can land single-spawn per inherited bans", "from_sheet": "the_grey_deep §4, bans 3 (no combat/pet variant); no donor — RSW_Yobshrimp bs 0.2 is the wrong scale (MEASURED)"},
+    {"name": "rename ledger: RSW_Reefback → 'Brine Warden (adult)' / the crusted giant endemic label (defName migration rides NAMING_SCHEME_EXECUTION_1 — do not rename ahead of it)", "kind": "creature",
+     "mechanic_load": "none", "from_sheet": "the_grey_deep §4 + R11; prep §6.4 renames-to-endemic"},
+    {"name": "salt-rimed blade flora, Grey shore variant (distinct def from the Twilight's — endemism)", "kind": "plant",
+     "mechanic_load": "none", "from_sheet": "terminator_sea §4/§9"},
+    {"name": "shadow-lane detritivore + condensate drinker, Grey shore (distinct defs from the Twilight's)", "kind": "creature",
+     "mechanic_load": "none", "from_sheet": "terminator_sea §4; prep §6.4 — no donor"}
+  ],
+  "confidence": [
+    {"claim": "warden adult ↔ Miasma crèche route", "status": "open", "why": "R11's 'Owed: a stated route between the Miasma delta and the Grey Deep' is still owed; R24a measured the biomes touching at arc 70-75, so the route is physically possible"},
+    {"claim": "tiles = 429 (binding table) vs the_grey_deep's stated 381", "status": "MEASURED", "why": "painted CSV wins per canon.yml rule 1; sheet figure is stale against paint"},
+    {"claim": "no bioluminescent dressing conflict from Aerofleet", "status": "UNMEASURED", "why": "the_grey_deep ban 4 bars glow BELOW; Aerofleet is shore-surface; whether its art glows needs the eye test"},
+    {"claim": "biome had 0 register residents to evict", "status": "MEASURED", "why": "def shipped with wildAnimals empty; no register row lists RUT_GreySea"}
+  ]
+}

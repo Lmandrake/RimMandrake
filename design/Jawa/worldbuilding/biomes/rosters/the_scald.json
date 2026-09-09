@@ -1,0 +1,45 @@
+{
+  "sheet": "the_scald",
+  "defNames": ["RUT_TheScald"],
+  "tiles": 312,
+  "authored": "2026-09-09",
+  "law_sources": ["the_scald.md", "_assignment_prep.md §6.5 (Scald is NOT a terminator sea)", "_freeze_rulings_2026-09-07.md R1/R35", "owner cards 2026-09-09"],
+  "fauna": [
+    {"def": "RSW_ElderSando", "commonality": 0.005, "action": "import",
+     "band": "bottom-walker elder — crater floor, rare",
+     "law": "the_scald §4: bottom-walkers — huge creatures walking the crater floor at depth where the boil gentles; ban 4 satisfied (depth-dweller, never in the roiling surface layer); icon lineage carve-out (Naboo sando); bs 20, spd 3.8 (MEASURED)",
+     "note": "Keeps its icon name — no endemic rename (the icon carve-out is the point); endemic by sole-residency. Predator flag stripped, see stat_adjustments."},
+    {"def": "RSW_SandoAquaMonster", "commonality": 0.03, "action": "import",
+     "band": "bottom-walker adult — the submerged herds",
+     "law": "the_scald §4: the Scald has herds, submerged, mowing the mats as the Pyrelands' grazers mow the burn; ban 4 satisfied (depth); icon lineage carve-out; bs 14, spd 4.5 (MEASURED)",
+     "note": "Adult + elder of one lineage = the walker herd's story beat. Predator flag stripped, see stat_adjustments."}
+  ],
+  "evictions": [],
+  "stat_adjustments": [
+    {"def": "RSW_ElderSando", "field": "predator", "from": true, "to": false,
+     "authority": "owner card 2026-09-09: SW staples adjust-and-keep — icons survive by fitting the law; the_scald §4 walkers are 'armored, slow, pastoral' mat-mowers, and ban 3's spirit bars a hunting giant in the water"},
+    {"def": "RSW_SandoAquaMonster", "field": "predator", "from": true, "to": false,
+     "authority": "same — one lineage, one ruling; both carry predator + manhunter-on-hurt 100% (MEASURED) as shipped, which the pastoral read cannot keep"}
+  ],
+  "flora": [],
+  "flora_purged": [],
+  "fish": {
+    "ruling": "fish ANALOGS only, and none exist yet — the silver shoals (the_scald §4: darting clouds working the dung-fall, 'the strangest entry the fish roster will ever take'). Water chemistry: boiling, fouled mineral brine, never potable (ban 1); no existing fish def survives it, so the list stays empty pending the new thermophile shoal-analog def (FISH_BY_BIOME_1 rides this row).",
+    "list": []
+  },
+  "new_defs": [
+    {"name": "welcome-blanket thermophile mats (rainbow, banded by temperature; pigment harvest at the margins)", "kind": "plant",
+     "mechanic_load": "none blocking — flora/terrain dressing; pigment product def with it", "from_sheet": "the_scald §4/§7"},
+    {"name": "bubble-sailor jellyfish-analog (rides boiling bubble-lines like little solar sails — the signature silhouette)", "kind": "creature",
+     "mechanic_load": "C#: bubble-line locomotion/VFX later; def can land as a slow drifter first", "from_sheet": "the_scald §4"},
+    {"name": "silver shoal fish-analog (thermophile dung-fall feeder)", "kind": "creature",
+     "mechanic_load": "none — fishing integration rides SCALD_MECHANICS_1", "from_sheet": "the_scald §4; FISH_BY_BIOME_1"}
+  ],
+  "confidence": [
+    {"claim": "the Scald is NOT a terminator sea — terminator_sea.md law does not bind this roster (herds legal, no one-giant cap)", "status": "ruled", "why": "R1/R35 (perched ocean, the Spine's crater face; its coast is the green line); the_scald ban 2 (three seas, three biomes); prep §6.5's own note"},
+    {"claim": "no def is shared with RUT_TwilightSea/RUT_GreySea", "status": "MEASURED", "why": "ban 2 no-shared-roster — checked against the other two files this pass"},
+    {"claim": "the sando defs are in the register, live, statsResolved", "status": "MEASURED", "why": "RSW_ElderSando / RSW_SandoAquaMonster both present, cut=false, statsResolved=true; predator + manhunter 100% read off specials"},
+    {"claim": "walkers as 'herds' via commonality only", "status": "UNMEASURED", "why": "neither def carries the herd special; sheet wants submerged herds — whether a herd flag should be ADDED is left to the def-work item, not assumed here"},
+    {"claim": "the eight-rivers line in the sheet's §0 is superseded reading", "status": "ruled", "why": "R1/R31: rivers flow OUT of the Scald; roster unaffected"}
+  ]
+}
