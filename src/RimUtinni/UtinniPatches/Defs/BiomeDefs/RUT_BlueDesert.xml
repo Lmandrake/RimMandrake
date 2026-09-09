@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_BlueDesert                                UtinniPatches · authored 2026-09-09
+    Full sheet: design/Jawa/worldbuilding/biomes/the_blue_desert.md (FROZEN,
+    BIOME_FREEZE_FABLE_REVIEW_1). Replaces the donor GRiNDTerra Biomes def
+    BiomeGRimond ("Blue desert") on the 1,029 tiles it currently holds — own def,
+    not a patch, same shape of decision as RUT_NightsideIce (§0 of that sheet):
+    the donor ships an ordinary Earth-desert zoo and water-based flora wired onto
+    a biome the sheet hard-bans that content from (§6.1 "No water-based plants or
+    animals"; §0 "Evicted wholesale: the entire Earth desert zoo... and grimpepper
+    and every water-based plant"). Patching all of that out across MayRequire
+    branches is silent-failure territory; restating the shape directly is not.
+
+    🔴 NOT ParentName="BiomeGRimond" for the same engine reason RUT_NightsideIce
+    documents against ParentName="IceSheet": ParentName only resolves against a
+    Name="..." XML attribute, and small third-party biome defs routinely carry
+    none. Modeled instead on RUT_NightsideIce's own proven shape — both are
+    frigid (-42.6°C median vs -33.8°C), zero-water, ice-ground biomes on this
+    same frozen nightside, so its shape is a better template than the donor's.
+
+    MEASURED (sheet §0, off world/ASHKARR_WORLDMAP_tiles.csv): 1,029 tiles, temp
+    median -42.6°C (range -58...-19.4, summer max below 0°C on every tile),
+    zero water, zero rivers, rolling plateau. Sheet's own donor-inventory read:
+    animal density 0.5 ("the sparsest def defined"), plant density 0.33,
+    movement 1.5, disease clock 90 days — movement and disease clock kept below
+    since they don't depend on undesigned content; animal/plant density zeroed
+    for now, same restraint RUT_NightsideIce used, because the sheet's actual
+    fauna (Swallowers, Burners, Pickers) and flora (transparent fractal ferns/
+    dandelions/fuzzballs) are explicitly still owed (§"Owed" — NEW-ART ledger),
+    not invented here.
+
+    Weather: ONLY Clear authored. The sheet names three more (The Haze, ice-sand
+    drift re-skinning BlueSnow, ice fog re-skinning Blue Fogstorm/Purple Fog)
+    but its own "Owed" section lists all three as still needing an "engine
+    feasibility pass" — they do not exist as WeatherDefs yet, ours or the
+    donor's re-skinned. Same restraint RUT_NightsideIce applied to its own
+    margin events (ablation drift, rime-fall, thaw pulse): named in the sheet,
+    not invented in this def. Zeroed explicitly rather than left absent, so a
+    later MayRequire audit sees a deliberate 0, not a silent gap.
+
+    Terrain: Ice (vanilla), matching the sheet's own "the ground is ancient
+    water ice; the sand is ice; the snow is sand" — real ice-sand terrain art
+    is separately unowed work, same placeholder pattern as RUT_NightsideIce's
+    texture note below.
+
+    NOT this item's scope (sheet's own §0 lobe-mosaic ruling and Owed list):
+    painting the def onto the 1,029 tiles currently holding BiomeGRimond (a
+    live-world edit needing the bridge and an owner-reviewed worldview.py
+    render first, same two-step shape as HORRORWASTES_BIOME_DISSOLVE_1 —
+    filed separately as BLUE_DESERT_WORLD_SWITCH_1); the lobe-mosaic anti-
+    bullseye repaint (§0); Swallowers/Burners/Pickers fauna and the transparent
+    fractal flora (art + defs); The Haze/ice-sand-drift/ice-fog WeatherDefs;
+    blue ice as a mineable resource (WATER_KINDS_TAXONOMY_1's distilled-purity
+    row); the quarry injection templates and crysalis trigger mechanism
+    (HORRORS_RAIDING_FACTION_1); §6.5's ruling that Bluefire Mountains
+    (BiomeGRimphire) is never used — a painting-pass constraint, not a field
+    here.
+  -->
+
+  <BiomeDef>
+    <defName>RUT_BlueDesert</defName>
+    <label>the Blue Desert</label>
+    <description>From orbit the bluest thing on the planet; underfoot, colorless. A plateau of the oldest ice on Ash'karr, its "sand" ice grain, its "snow" that same sand blowing, scoured bare by cold wind draining off higher ground. Nothing here runs on water: what lives is a fuel charge stable only in the cold, and warmth is detonation. It is usually clear, silent, and almost empty -- then the ablation line gives something up.</description>
+    <workerClass>BiomeWorker_IceSheet</workerClass>
+    <settleWarning>The Blue Desert is a hydrocarbon-ice plateau with no water-based life and no soil. Everything native here is a cold-stable fuel charge that detonates on warming -- mining and heating are both a hazard, not just a convenience.</settleWarning>
+    <!-- allowRoads true per the standing owner ruling (RUT_NightsideIce's own comment, 2026-09-07): "All of our biomes should allow roads." -->
+    <allowRoads>true</allowRoads>
+    <allowRivers>false</allowRivers>
+    <allowFarmingCamps>false</allowFarmingCamps>
+    <isExtremeBiome>true</isExtremeBiome>
+    <!-- Zeroed, not the sheet's donor-read 0.5/0.33: nothing to scale until
+         Swallowers/Burners/Pickers and the transparent fractal flora exist. -->
+    <animalDensity>0</animalDensity>
+    <plantDensity>0</plantDensity>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <forageability>0</forageability>
+    <movementDifficulty>1.5</movementDifficulty>
+    <lakeBeachTerrain>Ice</lakeBeachTerrain>
+    <mudTerrain>Ice</mudTerrain>
+    <texture>World/Biomes/IceSheet</texture> <!-- placeholder, per RUT_NightsideIce's own note; the sheet's real "extremely blue from far away" art is separate, unowed work -->
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Ice</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>100</Clear>
+      <Fog>0</Fog>
+      <Rain>0</Rain>
+      <DryThunderstorm>0</DryThunderstorm>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">0</GrayPall>
+      <Windy MayRequire="Ludeon.RimWorld.Odyssey">0</Windy>
+      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">0</Overcast>
+      <Blizzard MayRequire="Ludeon.RimWorld.Odyssey">0</Blizzard>
+    </baseWeatherCommonalities>
+    <wildAnimals />
+    <coastalWildAnimals />
+    <allowedPackAnimals />
+  </BiomeDef>
+
+</Defs>

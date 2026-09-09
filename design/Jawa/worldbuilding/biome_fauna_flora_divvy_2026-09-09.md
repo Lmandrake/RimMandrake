@@ -1,9 +1,17 @@
-<!-- status: draft — FOUNDRY solo baseline pass, 2026-09-09. NOT applied to any def or
-     patch. Every line here is here to be argued with — this is pass 1 of the owner's
-     dialectic ("first divvy up what we know we got, then review each biome one at a
-     time"). Supersedes nothing; `biome_and_fauna_roster.md` (2026-08-13, aspirational,
-     pre-freeze, 66 candidate biomes) and `fauna_placement.md` (live, binding rules) are
-     both inputs, not replaced. -->
+<!-- status: SUPERSEDED 2026-09-09, same day it was written. DO NOT USE FOR ASSIGNMENT.
+
+     Built entirely from raw creature-census + tile-temperature data, in ignorance of
+     `design/Jawa/worldbuilding/biomes/*.md` (34 real, per-biome design sheets) and of
+     `design/Jawa/worldbuilding/biomes/_assignment_prep.md` (611 lines: real per-biome
+     admission tests, KEEP/EVICT/IMPORT menus with cited laws, a MEASURED 27%-homeless
+     census, a NEW-ART/DEF ledger) — the actual, already-built prep for
+     `BIOME_FAUNA_ASSIGNMENT_SITTING_1`, unblocked and ready since both its sequence-rider
+     items closed. Checked against 6 of the 34 real sheets after the owner caught the
+     BiomeGRimond error below: 6 of 6 directly contradict what this document says (e.g.
+     it puts warm-blooded surface fauna and cold-icy-dayside-analogs on biomes whose own
+     sheets hard-ban exactly that). Read `_assignment_prep.md` and the sheets themselves;
+     do not carry any species pick from this file forward without re-deriving it from its
+     real sheet. Left in place as a record of the mistake, not as an input. -->
 
 # Biome fauna + flora divvy — pass 1 (baseline)
 
