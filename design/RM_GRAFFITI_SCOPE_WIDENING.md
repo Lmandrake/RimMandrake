@@ -1,4 +1,4 @@
-<!-- status: draft — Fable design pass for owner ruling, 2026-09-09. Item: GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 (design only; no code, no queue writes). Ground truth for what exists: src/RimMandrake/Graffiti/ (read in full) and items/GRAFFITI_FRAMEWORK_BUILD_1.md. Sibling in flight, NOT superseded: GRAFFITI_GENERIC_MARKS_1 (six glyphs). Predecessor spec, still the campaign side's authority: design/Jawa/graffiti_spec.md. Vanilla mechanisms cited below were read from RimWorld 1.6 source via RimSage, file and line named; nothing is guessed. -->
+<!-- status: draft — Fable design pass for owner ruling, 2026-09-09. Item: GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 (design only; no code, no queue writes). Ground truth for what exists: src/RimMandrake/Graffiti/ (read in full) and items/GRAFFITI_FRAMEWORK_BUILD_1.md. Sibling GRAFFITI_GENERIC_MARKS_1 is DONE (b9ac45cb): three shipped marks RM_Graffiti_Scratches / TallyMarks / WarningGlyph, the Glyph form's default members. Item file for rulings: items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md. Predecessor spec, still the campaign side's authority: design/Jawa/graffiti_spec.md. Vanilla mechanisms cited below were read from RimWorld 1.6 source via RimSage, file and line named; nothing is guessed. -->
 # RM Graffiti — widening the base mod: punk-urban marks and ideoligion sigils
 
 _Owner, verbatim (2026-09-09): "we want the base Graffiti mod to have a wide
@@ -13,9 +13,9 @@ surface `mandrake.rm.graffiti` (RM tier, generic, no franchise or campaign
 vocabulary) should grow to, names what is genuinely new mechanically versus
 reskinned, draws the RM/RUT seam so the Salvation follow-on is a content pack
 and not a second engine, and lists the forks the brief does not decide. It
-does not build anything, and it does not touch the six generic glyphs
-GRAFFITI_GENERIC_MARKS_1 is authoring — those are treated as a starting subset
-(§2.4).
+does not build anything, and it does not touch the three generic marks
+GRAFFITI_GENERIC_MARKS_1 shipped — those are treated as a starting subset
+(§2.4). New defNames use the shipped stem `RM_Graffiti_*`.
 
 ---
 
@@ -49,10 +49,12 @@ the item history:
    authors are your own colonists cannot express territory, threat, or
    another culture's presence — which is most of what graffiti IS.
 
-In flight and untouched by this design: **GRAFFITI_GENERIC_MARKS_1** has six
-candidates through art review (`RM_Mark_arrow / handprint / hazard / spiral /
-sun / tally`, Transient/art_review_generic_marks/final/). They are the
-wayfinding/warning subset of §2.
+Shipped alongside and untouched by this design: **GRAFFITI_GENERIC_MARKS_1**
+(done, b9ac45cb) added `RM_Graffiti_Scratches`, `RM_Graffiti_TallyMarks` and
+`RM_Graffiti_WarningGlyph` — the wayfinding/warning subset of §2. Its six
+review-candidate PNGs in `Transient/art_review_generic_marks/final/` are
+candidates only; which become further defs is an owner question (item file,
+open question 4).
 
 ---
 
@@ -269,7 +271,7 @@ like letters". Slogans then live in the inspect text, not the art.
 | `RM_Mark_Stencil_Fist` | Stencil · Jest/Taunt | Designator | raised fist — a generic defiance stencil |
 | `RM_Mark_Paste_Flyer` | Paste · Jest | Visitor, Designator | a pasted paper poster, asemic headline; decays in days, peels in rain; small Jest thought; a Proselytizer settlement's visitors leave these |
 | `RM_Mark_Paste_Wanted` | Paste · Taunt | RaidExit, SettlementGen | a torn "wanted"-style poster with a silhouette; hostile marker |
-| `RM_Mark_Glyph_*` (six) | Glyph · Code | Designator, SettlementGen | GRAFFITI_GENERIC_MARKS_1's arrow / handprint / hazard / spiral / sun / tally — wayfinding and warning; `hazard` gets `breachLure` as the engine's one generic taunt-funnel example |
+| `RM_Graffiti_Scratches` / `_TallyMarks` / `_WarningGlyph` (shipped) | Glyph · Code | Designator, SettlementGen | GRAFFITI_GENERIC_MARKS_1's three — wear, tally, hazard; `WarningGlyph` gets `breachLure` as the engine's one generic taunt-funnel example |
 | `RM_Mark_Piece_Base` | Piece · Mural | Designator bill only | the mural placeholder; quality-bearing once fork F1 rules the thingClass |
 
 Fourteen assets at the in-flight prompt's cost (one Codex call + validate
@@ -292,9 +294,9 @@ each, per generating-rimworld-sprites) plus three sigil frames for §1.3-A.
 
 ### 2.4 Relationship to GRAFFITI_GENERIC_MARKS_1
 
-The six glyphs are the `Glyph` form, `Code` category, as-is. This design
-adds forms around them; it does not change their art, names, or the owner's
-review of them. If the owner's review cuts some, the form has fewer members.
+The three shipped marks are the `Glyph` form, `Code` category, as-is. This
+design adds forms around them; it does not change their art or names. Any
+further members come from the owner's review of the candidate sheet.
 
 ---
 
@@ -353,8 +355,11 @@ art brief is grounded, not invented.
 | `Inhuman` (Anomaly) | `factionWhitelist HoraxCult` — never on a generated NPC ideo; concepts "void / entities / rage" (`Defs/Anomaly/MemeDefs/Memes_Misc.xml`) | a void ring | RaidExit by the cult only; never on own walls |
 | `Bloodfeeding` (Biotech) | style category row present (`Memes_Bloodfeeding.xml:81`) | a drop with fangs | RaidExit, night |
 | `Ritualist` (Anomaly) | Morbid style, priority 3 (`Memes_Misc.xml:80-85`); `PsychicRituals_Exalted` | a knife-and-circle | Devotional |
+| `Shipborn` (Odyssey) | `factionWhitelist TradersGuild` (dump record, 2026-09-08 capture) — only the Traders' Guild carries it | a hull-and-star (placeholder, owner question) | Visitor pastes only; never RaidExit |
 
-Twenty-six glyphs is the complete tier; the v1 slice should be the eight
+Twenty-seven glyphs is the complete tier (27 non-structure `ludeon.*`
+`MemeDef`s MEASURED from the 2026-09-08 dump, structures merged into their
+rows above); the v1 slice should be the eight
 memes most often seen on NPC factions (Raider, Cannibal, Supremacist,
 Collectivist, Individualist, Proselytizer, Transhumanist, NaturePrimacy) —
 that is the order in the table's placement column. Modded memes (the palette
@@ -477,6 +482,6 @@ the hostile tag only when designated.
 - **F9 — Settlement GenStep.** v1 (settlement maps arrive tagged — the
   strongest "urban settlement" read, but it touches every settlement map
   generation and needs its own live proof) · v2.
-- **F10 — The six in-flight glyphs' role.** Confirm they are the `Glyph`/`Code`
-  form's default members with `hazard` carrying the engine's example
-  `breachLure`, or keep them flavour-only with no mechanics attached.
+- **F10 — The three shipped marks' role.** Confirm they are the `Glyph`/`Code`
+  form's default members with `RM_Graffiti_WarningGlyph` carrying the engine's
+  example `breachLure`, or keep them flavour-only with no mechanics attached.
