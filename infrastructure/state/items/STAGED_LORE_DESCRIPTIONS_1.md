@@ -45,6 +45,25 @@ private `descriptionDetailedCached` (ThingDef.cs:794–821), used by trade/trans
 /filter tooltips. A stage swap must null that field via reflection on affected
 ThingDefs, or those tooltips keep the old text for the session.
 
+## Status 2026-09-09 (Fable) — feasibility half EXECUTED, full trace filed
+
+`design/Jawa/worldbuilding/research/staged_lore_descriptions_feasibility_2026-09-09.md`
+— every display path traced to `File.cs:line` in the 1.6 source. **FEASIBLE on
+all five named surfaces**; biome inspect, settle warning, thing flavor and info
+card are live-read, trade/transfer is the one cached path. **Two** long-lived
+caches found, not one: `ThingDef.descriptionDetailedCached` (`ThingDef.cs:414`)
+**and** `HediffDef.descriptionCached` (`HediffDef.cs:193`) — neither is cleared
+by any engine path, because `ThingDef` and `HediffDef` do not override
+`Def.ClearCachedData` (only `RoadDef`/`BodyDef` do). Reflection is the only
+invalidation route. Vanilla precedent is stronger than the 09-08 note recorded:
+`Building_VoidMonolith.cs:92–102` stages its description by Anomaly *campaign
+level* — this exact feature ships in the base game. New trap: defs are not
+reloaded between savegames (`LoadAllPlayData` is called only from `Root.cs:75`
+and on language change), so the apply must reset to baseline every load or a
+stage-4 colony leaks its text into a stage-0 one. Effort ~1.5 days + one
+authoring sitting. R25 compliance is a property of the data table, not the
+mechanism — the top stage still never names the Assailants. Awaiting go/no-go.
+
 **Recommended shape:** a `GameComponent` holding the lore stage (scribed), a
 data-side table `defName → {stage: description}` (rules as data), applied on
 load + on stage-advance by rewriting `def.description` and clearing the one
