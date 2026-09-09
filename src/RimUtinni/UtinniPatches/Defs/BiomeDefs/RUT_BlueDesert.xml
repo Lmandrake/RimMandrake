@@ -112,6 +112,11 @@
       <Overcast MayRequire="Ludeon.RimWorld.Odyssey">0</Overcast>
       <Blizzard MayRequire="Ludeon.RimWorld.Odyssey">0</Blizzard>
     </baseWeatherCommonalities>
+    <!-- WILD ANIMALS: STAYS EMPTY, ruled 2026-09-09 by BIOME_FAUNA_ASSIGNMENT_SITTING_1.
+         design/Jawa/worldbuilding/biomes/rosters/the_blue_desert.json lands ZERO fauna
+         rows on this def (and on BiomeGRimond, which it still shares while the world
+         paint is switched over): its only content is nine evictions. The Burners and
+         the rest of the Blue Desert's intended life are new defs, not pool creatures. -->
     <wildAnimals />
     <coastalWildAnimals />
     <allowedPackAnimals />

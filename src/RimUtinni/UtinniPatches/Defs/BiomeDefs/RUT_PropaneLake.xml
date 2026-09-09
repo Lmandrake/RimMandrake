@@ -99,6 +99,14 @@
     <isBackgroundBiome>true</isBackgroundBiome>
     <waterDeepTerrain>AB_PropaneLake</waterDeepTerrain>
     <waterShallowTerrain>AB_SolidPropane</waterShallowTerrain>
+    <!-- WILD ANIMALS: STAYS EMPTY, and that is a ruling, not an omission.
+         design/Jawa/worldbuilding/biomes/rosters/the_propane_lakes.json binds every one
+         of its four fauna rows to AB_PropaneLakes (the LAND def, 2531 tiles) and rules
+         in its own confidence block: "RUT_PropaneLake wildAnimals stays EMPTY - the
+         sheet distinguishes the lake (its residents are the unauthored sea exotics)".
+         The lake's own life is the V-wake creature and kin, owed as new defs
+         (the_propane_lakes §4, propane_gas_deep_design v1). Checked 2026-09-09 by
+         BIOME_FAUNA_ASSIGNMENT_SITTING_1's build lane - do not "fill this in". -->
     <wildAnimals />
     <coastalWildAnimals />
 
