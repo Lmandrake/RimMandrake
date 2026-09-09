@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T15:52:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T16:27:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## BIOME_FAUNA_ASSIGNMENT_SITTING_1 Joint sitting: review all biome sheets, finish remaining biome descriptions (candidates: AB_RockyCrags, AB_MycoticJungle), then assign fauna/flora per sheet laws — prep pack being built overnight 2026-09-05
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  BIOMEFAUNAASSIGNMENTSITTING1 — the morning sitting, prepped
-prose:    infrastructure/state/items/BIOME_FAUNA_ASSIGNMENT_SITTING_1.md
 
 ## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
 state:    ready
