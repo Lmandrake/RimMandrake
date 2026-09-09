@@ -408,8 +408,8 @@ code{font-size:11px;color:#d8cdb8}
 .tile.green .v{color:var(--green)}
 
 /* ---- two-column middle ---- */
-.mid{display:grid;grid-template-columns:minmax(0,2.05fr) minmax(280px,1fr);gap:14px}
-@media(max-width:980px){.mid{grid-template-columns:1fr}}
+.rail3{display:grid;grid-template-columns:repeat(2,minmax(240px,1fr));gap:14px;margin-bottom:16px}
+@media(max-width:980px){.rail3{grid-template-columns:1fr}}
 
 /* ---- matrix ---- */
 table.grid{border-collapse:collapse;width:100%;font-size:11px}
@@ -549,27 +549,21 @@ svg.reg{width:100%;height:190px;display:block}
     </section>
 
     <section class="block">
-      <div class="mid">
+      <div class="rail3">
         <div>
-          <h2>Maturity grid <span class="n" id="gridN"></span></h2>
-          <div class="panel"><div id="gridWrap" style="overflow-x:auto;scrollbar-width:thin"></div><div class="muted" id="gridScrollHint" style="display:none;font-size:10px;margin-top:4px">⟷ grid wider than panel — scroll horizontally</div></div>
+          <h2>Function ladder</h2>
+          <div class="panel"><div class="ladder" id="functionBars"></div>
+            <div class="weighting" id="functionWeight"></div></div>
         </div>
-        <div class="rail">
-          <div>
-            <h2>Function ladder</h2>
-            <div class="panel"><div class="ladder" id="functionBars"></div>
-              <div class="weighting" id="functionWeight"></div></div>
-          </div>
-          <div>
-            <h2>Content ladder</h2>
-            <div class="panel"><div class="ladder" id="contentBars"></div></div>
-          </div>
-          <div>
-            <h2>By tier <span class="n">function-rung mix</span></h2>
-            <div class="panel" id="tierRoll"></div>
-          </div>
+        <div>
+          <h2>Content ladder</h2>
+          <div class="panel"><div class="ladder" id="contentBars"></div></div>
+          <h2 style="margin-top:14px">By tier <span class="n">function-rung mix</span></h2>
+          <div class="panel" id="tierRoll"></div>
         </div>
       </div>
+      <h2>Maturity grid <span class="n" id="gridN"></span></h2>
+      <div class="panel"><div id="gridWrap" style="overflow-x:auto;scrollbar-width:thin"></div><div class="muted" id="gridScrollHint" style="display:none;font-size:10px;margin-top:4px">⟷ grid wider than panel — scroll horizontally</div></div>
     </section>
 
     <section class="block">
