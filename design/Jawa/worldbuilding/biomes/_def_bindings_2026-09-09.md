@@ -1,0 +1,143 @@
+# Biome/def binding table — work-packet prep for the fauna/flora assignment pass
+
+_Compiled 2026-09-09, BENCH subagent. Painted-def tile counts are the caller's
+MEASURED figures from `world/ASHKARR_WORLDMAP_tiles.csv`; sheet-stated tile counts
+in `README_BIOME_GRAMMAR.md` are sometimes stale against them by a few tiles
+(paint drifts after a sheet is written) — the painted CSV wins per `canon.yml`
+rule 1. Every binding below was verified by opening the named sheet and/or
+`README_BIOME_GRAMMAR.md`'s progress table (not guessed from name similarity)._
+
+## 1. Def → sheet → §10 → wildAnimals owner
+
+| def | tiles | sheet | §10 "Bestiary sorts"? | wildAnimals owner (current) |
+|---|---:|---|---|---|
+| Desert | 3932 | `desert.md` | no (§10 = "Implementation", not bestiary) | `src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml` |
+| ExtremeDesert | 3172 | `dune_sea.md` + `deep_desert.md` (ONE merged roster, R22) | no (neither sheet) | `BiomeCast_Ashkarr.xml` |
+| AB_PropaneLakes | 2531 | `the_propane_lakes.md` | no | `BiomeCast_Ashkarr.xml` |
+| AB_MycoticJungle | 2258 | `the_rot.md` | no | `BiomeCast_Ashkarr.xml` |
+| RUT_NightsideIce | 1506 | `nightside_ice.md` | no (§10 = "The door — occupied") | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml` |
+| AB_RockyCrags | 1170 | `forsaken_crags.md` | no | `BiomeCast_Ashkarr.xml` |
+| Wasteland | 1126 | `wasteland.md` | no (§10 = "Campaign hooks") | `BiomeCast_Ashkarr.xml` |
+| BiomeGRimond | 1029 | `the_blue_desert.md` | no | **donor mod only — no local override.** (`RUT_BlueDesert.xml` exists as the pending-switch target def with `<wildAnimals />` still empty — not live yet.) |
+| ZBiome_Badlands | 985 | `the_cracked_lands.md` | **YES** — §10 "The bestiary sorts — a fauna divided by TIME, not space" | `BiomeCast_Ashkarr.xml` |
+| AridShrubland | 665 | `arid_shrubland.md` | no | `BiomeCast_Ashkarr.xml` |
+| PoisonForest | 557 | `poison_forest.md` | no | `BiomeCast_Ashkarr.xml` |
+| RUT_TwilightSea | 479 | `terminator_sea.md` (surface); `the_twilight_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `RUT_TwilightSea.xml` |
+| RUT_GreySea | 429 | `terminator_sea.md` (surface); `the_grey_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `RUT_GreySea.xml` |
+| RUT_TheScald | 312 | `the_scald.md` | no | own def file: `RUT_TheScald.xml` |
+| AB_MechanoidIntrusion | 236 | `the_rust_cathedral.md` | no | `BiomeCast_Ashkarr.xml` |
+| BiomeCypreJungle | 235 | `the_greentide.md` | no | `BiomeCast_Ashkarr.xml` |
+| ZBiome_DesertOasis | 223 | `weeping_stones.md` — **VERIFIED**, README row: "`ZBiome_DesertOasis` ('the Weeping Stones')" | **YES** — §10 "The bestiary — who comes to the water" (bestiary-content, titled slightly differently than "sorts" but is the enrichment-pass §10) | `BiomeCast_Ashkarr.xml` |
+| ZBiome_Grasslands | 222 | `the_pyrelands.md` | no | `BiomeCast_Ashkarr.xml` |
+| AB_OcularForest | 179 | `the_contagion.md` | no | `BiomeCast_Ashkarr.xml` |
+| AB_FeraliskInfestedJungle | 161 | `the_webwork.md` | no | `BiomeCast_Ashkarr.xml` |
+| AB_GelatinousSuperorganism | 96 | `the_slime.md` | no | `BiomeCast_Ashkarr.xml` |
+| AB_MiasmicMangrove | 93 | `the_miasma.md` | no | `BiomeCast_Ashkarr.xml` |
+| Scarlands | 90 | `the_scarlands.md` | no | `BiomeCast_Ashkarr.xml` |
+| RUT_PropaneLake | 57 | `the_propane_lakes.md` (a second, RUT-tier def line 242: "authored, reuses the donor's own...") | no | own def file: `RUT_PropaneLake.xml` |
+| COMIGO_GreaterSwamp_Tropical | 43 | `the_fever_wood.md` | no | `BiomeCast_Ashkarr.xml` |
+| AB_TarPits | 42 | `the_sump.md` | no | `BiomeCast_Ashkarr.xml` |
+| AB_PyroclasticConflagration | 31 | `the_forge.md` (shares one sheet with Volcano + LavaField — "one sheet, one massif") | no | `BiomeCast_Ashkarr.xml` |
+| LavaField | 8 | `the_forge.md` | no | `BiomeCast_Ashkarr.xml` |
+| Volcano | 5 | `the_forge.md` | no | `BiomeCast_Ashkarr.xml` |
+
+**§10 tally: 2 of 29 painted defs sit under a sheet with an enriched bestiary §10**
+(`ZBiome_Badlands`/the_cracked_lands.md, `ZBiome_DesertOasis`/weeping_stones.md —
+these are the two "worked examples" `README_BIOME_GRAMMAR.md` itself names for the
+enrichment pass). Every other sheet's numbered §10, where one exists at all
+(`desert.md`, `nightside_ice.md`, `wasteland.md`, `wreck_fields.md`), is a
+differently-purposed section, not a bestiary. CONFIRMED by grep of all 32 sheet
+files for "bestiary" case-insensitive (only 3 files match at all: the_cracked_lands,
+the_sump [passing mention, not a section], weeping_stones).
+
+**wildAnimals ownership: CONFIRMED by two-step grep** (defName string anywhere in
+`src/**/*.xml`, then which of those files also mention `wildAnimals`) —
+`src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml` owns 23 of the 29
+painted defs wholesale-replace (`PatchOperationConditional` on
+`/Defs/BiomeDef[defName="…"]/wildAnimals`, generated by
+`design/Jawa/fauna/gen_cast_patch.py`, `OUT = .../BiomeCast_Ashkarr.xml`). The
+5 `RUT_`-tier defs (own biome, own file) declare `wildAnimals` directly in their
+own `Defs/BiomeDefs/*.xml`. `BiomeGRimond` alone has **no** local override —
+donor-mod default only — matching the doc's own note that its replacement,
+`RUT_BlueDesert`, is authored but not yet the world's live paint.
+
+## 2. Flags
+
+- **RUT_TwilightSea and RUT_GreySea are each claimed by two sheets.** `terminator_sea.md`
+  defines the surface/open-water ecology for both seas; `the_twilight_deep.md` and
+  `the_grey_deep.md` each define that same def's SEA-BOTTOM ecology (design done,
+  🔵 implementation deferred to the diving mods per `README_BIOME_GRAMMAR.md`'s own
+  progress table). This reads as intentional layering (surface sheet + bottom sheet
+  per sea), not a collision — but it means the def's `wildAnimals` roster is not
+  fully specified by any ONE sheet; the assignment pass needs both per sea.
+- **fall_line.md, the_lantern_deeps.md, wreck_fields.md, assailant_weapon_remnants.md**
+  are deliberately unbound to any painted def (injection layers / dissolved-and-
+  reabsorbed / not-a-biome rulings) — not gaps, per the task's own framing.
+- No sheet was found naming zero def or two sheets colliding on one def other than
+  the twilight/grey-sea case above.
+
+## 3. The five standing questions
+
+**1. Offline def dump — plants.** `src/RimMandrake/Utils/refresh.py`'s `D_DUMP`
+resolves (via `game_paths.newest_capture()`) to
+`/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon
+Studios/DefDump/captures/<latest-id>/` (currently `2026-09-09T01-54-07Z`,
+CONFIRMED to exist on disk). There is **no `PlantDef.json`** — RimWorld plants are
+`ThingDef` rows (`thingClass`/`category=Plant`) living inside `defs/ThingDef.json`,
+which is **385 MB** (CONFIRMED via `du -h`, not opened whole per the
+measuring-large-artifacts rule). `manifest.json.defCounts.ThingDef = 25,812`
+(CONFIRMED) — that is ALL ThingDefs, not plants specifically; a plant-only count
+needs a real instrument (`measure`), which is **not installed/on PATH in this
+environment** (`which measure` → not found) — **UNMEASURED**. A `defs.sqlite`
+derived index sits beside the dump (`DefDump/defs.sqlite`, tables
+`defs`/`def_flags`/`def_tags`) but I did not validate its plant-filter query
+against a known answer, so any count from it would be UNCERTAIN, not CONFIRMED —
+not used here. **The actual usable plant candidate pool already exists**, separate
+from the dump: `design/Jawa/mods/plant_pool.csv`, **670 lines = 669 plant rows**
+(CONFIRMED via `wc -l`), columns include defName/label/mod/growDays/temp
+tolerances/sowTags/texPath; it is the `POOL` constant read by
+`design/Jawa/mods/biome_flora.py`. This is the pool the assignment pass should use.
+
+**2. `creature_register_rows.json`.** Path:
+`design/Jawa/worldbuilding/review/creature_register_rows.json`. Structure is
+`{"meta": {...14 keys}, "rows": [...]}`. **`len(rows) == 1165`** (CONFIRMED by
+`json.load` + `len()`) — matches `_assignment_prep.md`'s stated "1,165 rows,
+595-mod dump 2026-09-05, calibration PASSED" claim exactly.
+
+**3. `biome_flora.py` FAMILIES.** Yes — CONFIRMED by `ast.literal_eval`, it is a
+**two-level** dict: 8 top-level narrative-category keys (`'A. dayside desert'`,
+`'B. contamination'`, `'C. mycoid belt'`, `'D. river jungle'`, `'E. frozen
+nightside'`, `'F. volcanic'`, `'G. machine and scar'`, `'H. alien'`), each holding
+a nested dict keyed by **BiomeDef defName** (22 distinct defName keys total:
+`AB_FeraliskInfestedJungle, AB_GelatinousSuperorganism, AB_MechanoidIntrusion,
+AB_MiasmicMangrove, AB_MycoticJungle, AB_OcularForest, AB_PropaneLakes,
+AB_PyroclasticConflagration, AB_RockyCrags, AB_TarPits, AridShrubland,
+BMT_FungalForest, Desert, ExtremeDesert, LavaField, PoisonForest, Scarlands,
+Volcano, Wasteland, ZBiome_Badlands, ZBiome_DesertOasis, ZBiome_Grasslands`).
+Note `BMT_FungalForest` is a stale key (dissolved per R29/R30, merged into
+`AB_MycoticJungle`/`Desert`/`BiomeGRimond`/`AB_RockyCrags`/`RUT_NightsideIce`) —
+still present in FAMILIES, not yet cleaned up. Missing painted-def keys entirely:
+`RUT_NightsideIce, BiomeGRimond, RUT_TwilightSea, RUT_GreySea, RUT_TheScald,
+BiomeCypreJungle, RUT_PropaneLake, COMIGO_GreaterSwamp_Tropical,
+AB_MechanoidIntrusion` — wait, `AB_MechanoidIntrusion` IS present; the real gap
+list is the 5 `RUT_` defs, `BiomeGRimond`, `BiomeCypreJungle`,
+`COMIGO_GreaterSwamp_Tropical` — 8 painted defs with no flora family yet.
+
+**4. De-dup union machinery (`BIOME_DUPLICATES_STILL_LIVE_1`).** Generated file:
+`src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml`
+(header: "GENERATED - do not hand-edit. Regenerate with `biome_animal_conflicts.py`,
+flag `xml`"). Generator script: **`src/RimMandrake/Utils/biome_animal_conflicts.py`**
+(CONFIRMED, `grep -rl` hit). It fixes the double-registration bug where an animal
+listed by both a biome's `wildAnimals` and its own `race.wildBiomes` throws in
+`BiomeDef.CommonalityOfAnimal()`'s dictionary Add — always removing the ANIMAL
+side. Companion hand-written file (still correct, not superseded):
+`AnimalBiomeDuplicates_Fix.xml` in the same directory.
+
+**5. `EARTH_FAUNA_EXCLUDED.txt`.** Path: `design/Jawa/fauna/EARTH_FAUNA_EXCLUDED.txt`.
+**129 total lines / 85 non-blank/non-comment content lines** (CONFIRMED via `wc -l`
+and a `^[A-Za-z]` count). ⚠️ Its own header is a live caveat, not just data: "KNOWN
+GAP … RETEXTURES OF BANNED ANIMALS ARE NOT BANNED" — the list is Core/Odyssey
+defNames only; reskinned Earth animals under mod-prefixed defNames (its own cited
+examples: `GRimTortoise`, `GRimCobra`) pass straight through it. Relevant to this
+packet: any def-bindings-driven cast pass should NOT treat this file as a complete
+denylist (matches the `defname-denylists-miss-retextures` lesson already on file).
