@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T02:34:07Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-09T02:47:55Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -522,14 +522,23 @@ kind:     task
 summary:  1. A ThingComp on a module ThingDef adds a personality HediffDef to the
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_PERSONALITY_1.md
 
-## PATCH_LEDGER_MINUS_ONE_OSCILLATES_1 87 patch_ledger entries record an original of -1, and any op emitted onto one oscillates in and out on alternate runs
+## PAWNFLAVOR_GEN_BEHIND_1 PawnFlavorPhase2 patches are far behind gen_pawn_flavor_phase2_apply.py, plus two small drifts
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-summary:  (no items/PATCH_LEDGER_MINUS_ONE_OSCILLATES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PATCH_LEDGER_MINUS_ONE_OSCILLATES_1.md
+summary:  (no items/PAWNFLAVOR_GEN_BEHIND_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAWNFLAVOR_GEN_BEHIND_1.md
+
+## ARMOURY_DECLARER_ATTRIBUTION_FLIP_1 gen_armour_patch.py's declarer() flips guy762_*/KotOR* ops between own-mod (Conditional) and donor (FindMod) attribution run-to-run
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  finding
+prose:    infrastructure/state/items/ARMOURY_DECLARER_ATTRIBUTION_FLIP_1.md
 
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing  (BLOCKED)
@@ -539,6 +548,15 @@ target:   v1
 kind:     task
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
+
+## BLIZZARISK_DONOR_CUT_1 Cherry Picker cut of the Blizzarisk donor def -- R20, owner: donor creature not our canon, remove it from the game
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/BLIZZARISK_DONOR_CUT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BLIZZARISK_DONOR_CUT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -836,26 +854,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  OASISMUTATORPATCH1 — the vanilla Oasis mutator, adapted
 prose:    infrastructure/state/items/OASIS_MUTATOR_PATCH_1.md
 
-## PAWNFLAVOR_GEN_BEHIND_1 PawnFlavorPhase2 patches are far behind gen_pawn_flavor_phase2_apply.py, plus two small drifts
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PAWNFLAVOR_GEN_BEHIND_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PAWNFLAVOR_GEN_BEHIND_1.md
-
-## ARMOURY_DECLARER_ATTRIBUTION_FLIP_1 gen_armour_patch.py's declarer() flips guy762_*/KotOR* ops between own-mod (Conditional) and donor (FindMod) attribution run-to-run
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## criteria
-summary:  finding
-prose:    infrastructure/state/items/ARMOURY_DECLARER_ATTRIBUTION_FLIP_1.md
-
 ## SCALD_RIVER_REPAINT_1 Redirect the Scald's rivers outward on the painted worldmap to match R1 -- R18 step 2, blocked on ASHKARR_RIVER_LEDGER_1, verify tile-by-tile
 state:    proposed
 row:      unassigned
@@ -865,16 +863,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  ⛔ THE OBVIOUS APPROACH IS A NO-OP — read this before planning anything
 prose:    infrastructure/state/items/SCALD_RIVER_REPAINT_1.md
-
-## BLIZZARISK_DONOR_CUT_1 Cherry Picker cut of the Blizzarisk donor def -- R20, owner: donor creature not our canon, remove it from the game
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BLIZZARISK_DONOR_CUT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BLIZZARISK_DONOR_CUT_1.md
 
 ## GEOTHERMAL_DENSITY_FIELD_1 Geothermal vent/geyser density field: high at dayside mountain ranges, decaying with distance, zero at the terminator -- R12, stop geysers spawning on every map
 state:    proposed
@@ -1192,6 +1180,26 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MOVING_DUNES_ENGINE_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Owner spark, verbatim (2026-09-09): "In the extreme limit, it would be
 prose:    infrastructure/state/items/MOVING_DUNES_ENGINE_1.md
+
+## MOD_LICENSE_PERMISSIVE_1 Add the most generous re-use license (CC0-1.0) to every mod we ship
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  - License: CC0-1.0 (public-domain-equivalent dedication) — the most
+prose:    infrastructure/state/items/MOD_LICENSE_PERMISSIVE_1.md
+
+## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DESERT_WRAPS_ART_COMMISSION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DESERT_WRAPS_ART_COMMISSION_1.md
