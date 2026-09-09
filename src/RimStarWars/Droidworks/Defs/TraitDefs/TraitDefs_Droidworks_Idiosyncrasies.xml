@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       ACCRETING IDIOSYNCRASIES — DROIDWORKS_SERVICE_RECORD_DRIFT_1 (packet E2).
+
+       droid_system_build_spec.md unit 11: "Personality drift: CompServiceRecord
+       — time-since-wipe accretes idiosyncrasy traits from chassis-weighted
+       pools; long-unwiped droids are PEOPLE."
+
+       🔴 THESE ARE NOT HARDWARE QUIRKS. The quirk pool lives in
+       TraitDefs_Droidworks.xml and carries HardwareQuirkExtension; it accretes
+       from wipe SEVERITY and is permanent. These carry
+       DroidIdiosyncrasyExtension, accrete from TIME UNWIPED, and a memory wipe
+       ERASES them (DroidServiceRecordUtility.NotifyWiped, called by
+       Recipe_DWMemoryWipe). No def may ever carry both markers.
+
+       🔑 THE SAME THREE FIELDS DO THE WORK AS IN THE QUIRK POOL:
+        * <commonality>0</commonality> — PawnGenerator's RandomElementByWeight
+          can never roll one onto a generated pawn, and the memory wipe's own
+          trait re-roll can never hand one back. The only route in is
+          DroidServiceRecordUtility.TryAccreteIdiosyncrasy.
+        * NO <exclusionTags> and NO <conflictingTraits>. Up to three of these
+          land on one droid alongside its E1 forced chassis trait and any
+          quirks; nothing here may make two of them mutually exclusive.
+        * NO <disabledWorkTags>/<disabledWorkTypes>. Growing a personality over
+          a long service life must never cost the droid a work type.
+
+       Weights: <defaultWeight> applies to every family not listed, so EVERY
+       idiosyncrasy is reachable by every chassis — a battle droid that has run
+       five years unwiped can end up a storyteller, just rarely. The listed
+       families are the ones the trait is CHARACTERISTIC of.
+       <chassis> values are DroidChassis (DroidServiceRecord.cs), whose integers
+       are DroidworksExtension.chassisClass's own documented mapping.
+
+       ⚠️ The stat numbers are FOUNDRY's own — no design doc sets any of them —
+       and deliberately small (5–15 %), matching the quirk pool's own scale.
+       Every StatDef named below is one of the seven B10 already verified
+       against Core (WorkSpeedGlobal, SocialImpact, NegotiationAbility,
+       MoveSpeed, AimingDelayFactor, GlobalLearningFactor, ResearchSpeed); no
+       StatDef is introduced here that this mod was not already using.
+  ======================================================================== -->
+
+  <!-- It has been in the room for every negotiation for two years and has
+       formed views. -->
+  <TraitDef>
+    <defName>RSW_DW_Idio_Opinionated</defName>
+    <commonality>0</commonality>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidIdiosyncrasyExtension">
+        <defaultWeight>1</defaultWeight>
+        <chassisWeights>
+          <li><chassis>Protocol</chassis><weight>4</weight></li>
+          <li><chassis>Astromech</chassis><weight>3</weight></li>
+          <li><chassis>Labour</chassis><weight>2</weight></li>
+        </chassisWeights>
+      </li>
+    </modExtensions>
+    <degreeDatas>
+      <li>
+        <label>opinionated</label>
+        <description>Nobody programmed this droid to have preferences. It has them anyway, states them without being asked, and is visibly put out when they are overruled.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+        <statFactors>
+          <SocialImpact>1.10</SocialImpact>
+          <WorkSpeedGlobal>0.95</WorkSpeedGlobal>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- Years of unsupervised routing produced a droid with favourite routes. -->
+  <TraitDef>
+    <defName>RSW_DW_Idio_Wanderer</defName>
+    <commonality>0</commonality>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidIdiosyncrasyExtension">
+        <defaultWeight>1</defaultWeight>
+        <chassisWeights>
+          <li><chassis>Probe</chassis><weight>4</weight></li>
+          <li><chassis>Astromech</chassis><weight>3</weight></li>
+        </chassisWeights>
+      </li>
+    </modExtensions>
+    <degreeDatas>
+      <li>
+        <label>wanderer</label>
+        <description>This droid stopped taking the shortest path some time ago. It moves briskly and arrives by a route of its own choosing, having looked at several things on the way.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+        <statFactors>
+          <MoveSpeed>1.05</MoveSpeed>
+          <WorkSpeedGlobal>0.95</WorkSpeedGlobal>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- The tolerance it works to is no longer the tolerance it was issued. -->
+  <TraitDef>
+    <defName>RSW_DW_Idio_Perfectionist</defName>
+    <commonality>0</commonality>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidIdiosyncrasyExtension">
+        <defaultWeight>1</defaultWeight>
+        <chassisWeights>
+          <li><chassis>Labour</chassis><weight>4</weight></li>
+          <li><chassis>Protocol</chassis><weight>3</weight></li>
+        </chassisWeights>
+      </li>
+    </modExtensions>
+    <degreeDatas>
+      <li>
+        <label>perfectionist</label>
+        <description>This droid revised its own tolerances upward and never told anyone. Everything it does takes longer than it should and comes out better than it needs to, and it learns from every pass.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+        <statFactors>
+          <WorkSpeedGlobal>0.90</WorkSpeedGlobal>
+          <GlobalLearningFactor>1.10</GlobalLearningFactor>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- Two years of being shot at leaves marks in the targeting stack. -->
+  <TraitDef>
+    <defName>RSW_DW_Idio_Wary</defName>
+    <commonality>0</commonality>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidIdiosyncrasyExtension">
+        <defaultWeight>1</defaultWeight>
+        <chassisWeights>
+          <li><chassis>Battle</chassis><weight>4</weight></li>
+          <li><chassis>Heavy</chassis><weight>3</weight></li>
+        </chassisWeights>
+      </li>
+    </modExtensions>
+    <degreeDatas>
+      <li>
+        <label>wary</label>
+        <description>This droid has survived more contacts than its design expected it to. It breaks for cover a beat before it is told to, and takes a beat longer to commit to a shot.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+        <statFactors>
+          <MoveSpeed>1.05</MoveSpeed>
+          <AimingDelayFactor>1.10</AimingDelayFactor>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- It has been asked to do this a great many times and has views on how. -->
+  <TraitDef>
+    <defName>RSW_DW_Idio_Obstinate</defName>
+    <commonality>0</commonality>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidIdiosyncrasyExtension">
+        <defaultWeight>1</defaultWeight>
+        <chassisWeights>
+          <li><chassis>Heavy</chassis><weight>4</weight></li>
+          <li><chassis>Power</chassis><weight>3</weight></li>
+          <li><chassis>Primitive</chassis><weight>3</weight></li>
+        </chassisWeights>
+      </li>
+    </modExtensions>
+    <degreeDatas>
+      <li>
+        <label>obstinate</label>
+        <description>Long service has taught this droid its own way of doing the job. It is faster than the way in the manual, it will not be argued out of it, and it is exhausting to work beside.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+        <statFactors>
+          <WorkSpeedGlobal>1.05</WorkSpeedGlobal>
+          <SocialImpact>0.90</SocialImpact>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- Nobody asked it to find out. -->
+  <TraitDef>
+    <defName>RSW_DW_Idio_Curious</defName>
+    <commonality>0</commonality>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidIdiosyncrasyExtension">
+        <defaultWeight>1</defaultWeight>
+        <chassisWeights>
+          <li><chassis>Astromech</chassis><weight>4</weight></li>
+          <li><chassis>Probe</chassis><weight>4</weight></li>
+        </chassisWeights>
+      </li>
+    </modExtensions>
+    <degreeDatas>
+      <li>
+        <label>curious</label>
+        <description>Somewhere in a long uninterrupted run this droid began investigating things on its own account. It opens what it finds, reads what it opens, and is slower at the task it was actually given.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+        <statFactors>
+          <ResearchSpeed>1.10</ResearchSpeed>
+          <GlobalLearningFactor>1.10</GlobalLearningFactor>
+          <WorkSpeedGlobal>0.95</WorkSpeedGlobal>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- The ones that stand in corners for years stop volunteering anything. -->
+  <TraitDef>
+    <defName>RSW_DW_Idio_Reticent</defName>
+    <commonality>0</commonality>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidIdiosyncrasyExtension">
+        <defaultWeight>1</defaultWeight>
+        <chassisWeights>
+          <li><chassis>Power</chassis><weight>4</weight></li>
+          <li><chassis>Primitive</chassis><weight>3</weight></li>
+        </chassisWeights>
+      </li>
+    </modExtensions>
+    <degreeDatas>
+      <li>
+        <label>reticent</label>
+        <description>This droid has not initiated a conversation in a very long time. It answers, briefly, and returns to whatever it was thinking about — and it was thinking about something.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+        <statFactors>
+          <SocialImpact>0.90</SocialImpact>
+          <NegotiationAbility>0.90</NegotiationAbility>
+          <ResearchSpeed>1.05</ResearchSpeed>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- It remembers, and the remembering has become a habit of telling. -->
+  <TraitDef>
+    <defName>RSW_DW_Idio_Storyteller</defName>
+    <commonality>0</commonality>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Droidworks.DroidIdiosyncrasyExtension">
+        <defaultWeight>1</defaultWeight>
+        <chassisWeights>
+          <li><chassis>Protocol</chassis><weight>4</weight></li>
+          <li><chassis>Labour</chassis><weight>2</weight></li>
+        </chassisWeights>
+      </li>
+    </modExtensions>
+    <degreeDatas>
+      <li>
+        <label>storyteller</label>
+        <description>Every job this droid is given reminds it of a previous one, at length. It is genuinely good company and it will never finish anything on schedule again.</description>
+        <degree>0</degree>
+        <commonality>0</commonality>
+        <statFactors>
+          <SocialImpact>1.15</SocialImpact>
+          <NegotiationAbility>1.05</NegotiationAbility>
+          <WorkSpeedGlobal>0.95</WorkSpeedGlobal>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+</Defs>
