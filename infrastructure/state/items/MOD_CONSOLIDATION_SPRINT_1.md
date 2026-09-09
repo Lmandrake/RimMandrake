@@ -96,3 +96,17 @@ contained" requires authoring/absorbing a BiomeDef — owner picks: absorb
 now (donor-retirement coordination) or keep the dep and amend R9's
 promise. About.xml's "self-contained" claim is currently wrong; held for
 the ruling.
+
+## World + gravship saves MIGRATED to the new names — 2026-09-08 evening (BENCH, bridge window)
+Offline migration (Transient/load_verify_save.py pattern): text defNames
+word-boundary, meta packageIds, and grid shortHashes remapped via the
+pre/post-rename dump pair (old 00-19Z / new 01-54Z captures). V23→V24:
+63 text + 15 meta + 492 topGrid terrain cells (RM_FE_Ground_*);
+gravship e→f: 83 text + 15 meta, no grid hits. Both loaded live
+(RUT_Jawa_* factions PRESENT, old names absent), canonically re-saved
+in-game, slot audits clean (only their own files changed; gravship
+identity proven by GravEngine content check). Saves dir pruned to the
+4 keepers on the owner's order (deleted-unverified until next-launch
+count, per the Steam Cloud lesson). Pre-migration originals in
+Transient/. STILL OWED: .rid/.xtp regeneration before worldgen/freeze
+(build_salvation_rid.py) — unchanged by this.
