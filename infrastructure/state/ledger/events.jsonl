@@ -6454,3 +6454,5 @@
 {"seat":"FOUNDRY","event":"claim","id":"PYRELANDS_LORE_NAMING_DRIFT_1","ts":"2026-09-09T19:26:18Z"}
 {"seat":"FOUNDRY","event":"start","id":"PYRELANDS_LORE_NAMING_DRIFT_1","ts":"2026-09-09T19:26:18Z"}
 {"seat":"FOUNDRY","event":"close","id":"WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1","sha":"ec8e467028c371a92421dc60f1bab0eb3c09437c","ts":"2026-09-09T19:26:30Z"}
+{"seat":"FOUNDRY","event":"close","id":"PYRELANDS_LORE_NAMING_DRIFT_1","sha":"b2ebdfdb9618cffa2cd266d4a4970185dcd33b1b","ts":"2026-09-09T19:27:19Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-09T19:27:53Z"}
