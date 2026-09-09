@@ -250,7 +250,18 @@ class Recorder(object):
         self.added = 0
 
     def record(self, xpath, original):
-        if original is None or xpath in self.originals:
+        # -1 is RimWorld's own engine sentinel for "this numeric field was
+        # never set; derive it elsewhere" -- damageAmountBase on a grenade or
+        # gas/smoke/incendiary projectile (damage comes from the explosion,
+        # not a direct hit), armorPenetrationBase (derive from damage), and
+        # so on. It reads out of the dump as a plain int, so it passes every
+        # isinstance(x, (int, float)) check a generator uses to decide "is
+        # this a real value" -- but it is not one: there is nothing to anchor
+        # a re-run to. Recording it is exactly as wrong as recording None,
+        # and for the same reason: a bare "isinstance" check let 88 sentinel
+        # projectiles' -1 in as if it were the pre-patch original
+        # (PATCH_LEDGER_MINUS_ONE_OSCILLATES_1). Treat it the same way.
+        if original is None or original == -1 or xpath in self.originals:
             return
         self.originals[xpath] = original
         self.added += 1
@@ -328,6 +339,17 @@ def _selftest():
     r.record("/x", 999.0)
     assert r.originals["/x"] == 1.0, "record() must never overwrite an original"
     r.originals = before
+    ok += 1
+
+    # PATCH_LEDGER_MINUS_ONE_OSCILLATES_1: -1 is RimWorld's "unset, derive
+    # elsewhere" sentinel, not a real original -- never let it in.
+    r2 = Recorder()
+    before2 = dict(r2.originals)
+    r2.originals = {}
+    r2.record("/sentinel", -1)
+    assert "/sentinel" not in r2.originals, \
+        "record() must refuse -1 the same way it refuses None"
+    r2.originals = before2
     ok += 1
 
     st = DumpStatus("p", True, "t", 5, [])
