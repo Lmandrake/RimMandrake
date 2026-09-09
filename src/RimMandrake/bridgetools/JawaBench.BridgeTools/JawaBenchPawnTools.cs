@@ -768,8 +768,13 @@ namespace JawaBench.BridgeTools
                     {
                         if (p.apparel == null) return Fail("Pawn has no apparel tracker.");
                         if (!td.IsApparel) return Fail("'" + td.defName + "' is not apparel.");
+                        // When the caller NAMED a stuff, honour it: GenerateApparelOfDefFor
+                        // picks its own material and would silently discard the request
+                        // (2026-09-09 hardening). Only fall to the generator when no stuff
+                        // was specified, so its material/quality choices still apply.
                         Apparel ap = null;
-                        try { ap = PawnApparelGenerator.GenerateApparelOfDefFor(p, td); } catch { }
+                        bool stuffExplicit = !string.IsNullOrEmpty(stuff) && sd != null;
+                        if (!stuffExplicit) { try { ap = PawnApparelGenerator.GenerateApparelOfDefFor(p, td); } catch { } }
                         if (ap == null) ap = (Apparel)ThingMaker.MakeThing(td, sd);
                         if (setQ) { var cq = ap.TryGetComp<CompQuality>(); if (cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider); }
                         p.apparel.Wear(ap, true, false);
