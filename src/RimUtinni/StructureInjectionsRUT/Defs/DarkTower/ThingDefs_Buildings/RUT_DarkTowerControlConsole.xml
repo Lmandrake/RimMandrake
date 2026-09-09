@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_DarkTowerControlConsole - SCALD_DARK_TOWER_1's Rust Cathedral tie.
+
+  Owner ruling (SCALD_DARK_TOWER_1, verbatim in intent, 2026-09-07): the dark
+  tower is the Rakatan's GROUND-BASED HIGH COMMAND and "has control systems
+  for the Rust Cathedral in it as well." the_scald.md SS8's own amendment
+  calls this a "command-and-control tie between the two sites, not a shared
+  biome or roster" and leaves it explicitly open whether that tie is
+  mechanical or narrative (its own "verify" line).
+
+  THIS PASS: narrative/structural, not mechanical - and deliberately so.
+  RUST_CATHEDRAL_MECHANICS_1 (the_rust_cathedral.md's own "C# kit" item) owns
+  the hum-mood system: "a slow-moving attitude value voiced as layered tones,
+  displayed by the bolts' dances, with droid commentary and hysteresis
+  wiring" - and that C# is NOT YET BUILT (the item still reads as a spec).
+  SCALD_DARK_TOWER_1 says explicitly: "reuse/extend that pattern rather than
+  inventing a parallel one." Building a second, different attitude/mood
+  system on this console to fake the tie NOW would be exactly the parallel
+  system that instruction forbids. So this ThingDef is the ANCHOR POINT for
+  that future wiring - the console the crew finds, the object whose label
+  and description carry the tie in text - and nothing here invents new mood
+  mechanics. Whoever eventually builds RUST_CATHEDRAL_MECHANICS_1's hum-mood
+  GameComponent should hook this building (by defName or a shared tag), not
+  duplicate it.
+
+  Mechanically it is the OPPOSITE of RUT_VaultHeart (VaultDungeons/
+  ThingDefs_Buildings/RUT_VaultHeart.xml) on purpose: VaultHeart is DEAD and
+  needs a delivered AIPersonaCore to wake (the thaw-gate pattern shared by
+  the frozen-Rakata vault and ANCIENT_WAR_LAB_1's war lab). This tower is the
+  opposite case - "garrisons that never got the order to stand down"
+  (SCALD_DARK_TOWER_1, echoing the_forgotten_war.md R-W1's self-replicating
+  defensive systems) means the whole site, console included, is ALREADY
+  LIVE on arrival. No thaw trigger, no delivered item, no dormant state.
+  That is the mechanical fact that keeps this site distinct from both other
+  dungeons in the arc (ANCIENT_WAR_LAB_1's frozen approach/thaw-gate;
+  VAULT_DUNGEON_BUILD_1 type (3)'s dark, frost-locked, needs-a-core scene).
+
+  CompPowerPlant (negative consumption = a SOURCE, already running, no fuel
+  comp at all - "the pumps still run") feeds the core's own point-defense
+  ring through KCSG's spawnConduits (see StructureLayoutDefs_DarkTower.xml),
+  same wiring shape as RUT_VaultHeart's circuit but never dead to begin with.
+  Not buildable, not deconstructible (ancient, and the whole point of the
+  fierce garrison outside is that nobody gets close enough to try), claimable
+  once the garrison is cleared - a study prize, not a resource.
+
+  Art is the same vanilla ship-computer-core placeholder RUT_VaultHeart uses;
+  no new art authored this pass.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_DarkTowerControlConsole</defName>
+    <label>high command console</label>
+    <description>A Forsaken command console, still drawing power after all this time. Its data-spikes run to a socket built for interfaces that no longer exist - and among the runs still live, the fittings match nothing found anywhere else on the plateau except the Rust Cathedral itself.\n\nThis was the Rakata's ground-based high command. Whatever it commanded is not obvious from the console alone.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Ship/ShipComputerCore</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1.6,1.6)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-5</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>false</deconstructible>
+      <claimable>true</claimable>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerPlant</compClass>
+        <basePowerConsumption>-1200</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>9</glowRadius>
+        <glowColor>(180,220,255,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>
