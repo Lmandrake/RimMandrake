@@ -135,3 +135,11 @@ The second re-reads `Flammability` from the live def dump into
 `review/plant_flammability.json` (a committed cache, so the figure is reproducible on a
 machine with no dump). Re-run it after any mod-list change; the file records the dump's
 `captured_utc`, `mod_count` and `modlist_fingerprint`.
+
+## CORRECTION 2026-09-09 (fix wave, BENCH)
+figF2's headline "46 dead-temp rows" was a STALE-SOURCE reading — it took plant
+stats from `plant_pool.csv` (snapshot 2026-08-23, pre-dating the tolerance patch).
+Against the live dump only **6 rows / 5 defs** were genuinely dead; the fix wave
+(`9574513a`) re-picked one (BMT_Blastpod → Boomshroom) and extended the rest on
+sheet authority (the Rot's thermogenesis). Post-fix: **0 of 122 landed rows fail
+their biome's median.** Regenerate figF2 from the live dump before citing it.
