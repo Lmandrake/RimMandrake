@@ -10,6 +10,23 @@ copies of the same twenty lines.
     import sys, pathlib
     sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
     import common
+
+⚠️ RESIDUAL RISK, STATED HONESTLY RATHER THAN CLAIMED AWAY: this module's
+atomic-claim helpers (`artpiped.py`'s `claim_next`/`reconcile`, both built on
+`os.rename`) are proven correct by `selftest_artpipe.py` running on
+`tempfile.TemporaryDirectory()` — real Linux tmpfs/ext4 inside the WSL2 VM.
+Production runs on `/mnt/d` (DrvFs/9p), which this repo has ALREADY MEASURED
+serving minutes-stale reads to a second process (see the owner's own
+`drvfs-stale-reads-mimic-revert` note). The selftests demonstrate the CLAIM
+LOGIC is correct; they do not demonstrate that DrvFs itself honors POSIX
+rename atomicity under two real WSL processes racing the same file — that is
+not independently measured here, and cannot be fixed from user space.
+`claim_next`/`reconcile` mitigate by re-`stat()`-ing a path immediately after
+renaming it and treating a stat that can't see it as a lost race, same as a
+FileNotFoundError on the rename itself — a mitigation, not a proof. Watch
+`throughput.jsonl` for duplicate or vanished ids if two daemons (or a daemon
+and a human editing the queue by hand) are ever run against the real
+`/mnt/d` queue at once.
 """
 from __future__ import annotations
 
@@ -50,16 +67,49 @@ class JobError(ValueError):
 
 
 def load_job(path: Path) -> dict:
+    """Load and validate a job file — VALUE shapes, not just key presence.
+
+    A job with `"canvas": {}` used to pass this function clean (the key was
+    present) and then blow up as an uncaught KeyError deep inside
+    build_job_prompt()'s `canvas['width']` — reached AFTER a worker slot had
+    already been acquired, which is exactly the kind of exception that used
+    to leak it permanently. Catching shape problems here, before
+    process_job ever calls `ctx.slots.get()`, means a malformed job can
+    never reach that code path at all.
+    """
     try:
         job = json.loads(path.read_text())
     except (OSError, ValueError) as exc:
         raise JobError(f"{path}: unreadable job file — {exc}") from exc
+    if not isinstance(job, dict):
+        raise JobError(f"{path}: job file is not a JSON object")
+
     missing = [f for f in REQUIRED_JOB_FIELDS if f not in job]
     if missing:
         raise JobError(f"{path}: missing required field(s) {missing}")
+
     if job["id"] != path.stem:
         raise JobError(f"{path}: job id {job['id']!r} does not match filename "
                         f"{path.stem!r} — refusing to guess which is right")
+    if not isinstance(job["id"], str) or not job["id"]:
+        raise JobError(f"{path}: 'id' must be a non-empty string")
+    if not isinstance(job["rimflow_item_id"], str) or not job["rimflow_item_id"]:
+        raise JobError(f"{path}: 'rimflow_item_id' must be a non-empty string")
+    if not isinstance(job["prompt"], str) or not job["prompt"].strip():
+        raise JobError(f"{path}: 'prompt' must be a non-empty string")
+
+    canvas = job["canvas"]
+    if not isinstance(canvas, dict) or "width" not in canvas or "height" not in canvas:
+        raise JobError(f"{path}: 'canvas' must be an object with 'width' and 'height'")
+    for k in ("width", "height"):
+        v = canvas[k]
+        if not isinstance(v, int) or isinstance(v, bool) or v <= 0:
+            raise JobError(f"{path}: canvas.{k} must be a positive integer, got {v!r}")
+
+    ref = job.get("reference")
+    if ref is not None and (not isinstance(ref, str) or not ref):
+        raise JobError(f"{path}: 'reference' must be a non-empty string path or null")
+
     return job
 
 

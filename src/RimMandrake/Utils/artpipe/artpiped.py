@@ -15,7 +15,7 @@ grumpiness-detector rows from
 
     python3 artpiped.py                       # run until SIGTERM/SIGINT
     python3 artpiped.py --once                # drain what's pending, then exit
-    python3 artpiped.py --dry-run --once       # claim + reconcile, never spawn a worker
+    python3 artpiped.py --dry-run              # report what's pending, touch nothing
     python3 artpiped.py --reconcile-only       # crash recovery only, then exit
     python3 artpiped.py --worker-script .../mock_codex_worker.py --once   # tests
 
@@ -42,6 +42,21 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import common  # noqa: E402
+
+# The rollout-reading path (find the newest rollout-*.jsonl under a
+# CODEX_HOME, pull its last rate_limits) already exists and is already
+# selftested — skills/generating-images/scripts/codex_grumpiness.py — so it
+# is imported here rather than re-implemented. Its `after_mtime` parameter is
+# also what fixes a real bug this review caught: without it, `meter_after`
+# for a job whose worker died before writing its own rollout would silently
+# read the PREVIOUS job's leftover rollout on a reused --codex-home slot.
+# codex_grumpiness's own GRUMPY_PRIMARY_PCT/GRUMPY_SECONDARY_PCT and its
+# `grumpy` flag are NOT used — those are that file's own stated placeholder
+# assumption (its docstring says so), whereas this item's spec gives the real
+# six-row thresholds below, so only the READ path is shared, not the
+# threshold judgment.
+sys.path.insert(0, str(common.REPO_ROOT / "skills" / "generating-images" / "scripts"))
+import codex_grumpiness  # noqa: E402
 
 # Month-long measured median for a cold `generate` (design addendum §A) —
 # the baseline row 4's wall-clock guard compares against.
@@ -80,14 +95,17 @@ class Detector:
     def note_rate_limited(self) -> None:
         self.hard_stop = True
 
-    def note_meters(self, rate_limits: dict | None) -> None:
-        if not rate_limits:
+    def note_meters(self, meters: dict | None) -> None:
+        """`meters` is codex_grumpiness.read_meters()'s own return shape —
+        `{"ok": bool, "secondary_used_percent":.., "primary_used_percent":..,
+        "primary_resets_at":..}` — not a raw rate_limits object. `ok: False`
+        (no rollout yet, or none new enough) is ignorance, not 0%, and is a
+        no-op here exactly like `meters` being None."""
+        if not meters or not meters.get("ok"):
             return
-        secondary = rate_limits.get("secondary") or {}
-        primary = rate_limits.get("primary") or {}
-        weekly = secondary.get("used_percent")
-        five_h = primary.get("used_percent")
-        resets_at = primary.get("resets_at")
+        weekly = meters.get("secondary_used_percent")
+        five_h = meters.get("primary_used_percent")
+        resets_at = meters.get("primary_resets_at")
 
         if weekly is not None:
             if weekly >= WEEKLY_STOP:
@@ -107,11 +125,14 @@ class Detector:
                 self.n_override = 1
 
     def note_wall_clock(self, seconds: float, configured_n: int) -> None:
-        # Row 6 is a structural guarantee, not a call site here: a plain
-        # subprocess timeout never reaches this method or note_rate_limited
-        # at all (see process_job) — only an explicit TooManyRequests string
-        # match does, so a slow-but-real request cannot masquerade as a
-        # throttle signal.
+        # Timeouts DO reach this method, correctly: a timed-out request is
+        # definitionally the slowest possible one, and this row's job is to
+        # notice a sustained slowdown, timeouts included. What must NEVER
+        # reach note_rate_limited (row 1) is a plain timeout — only an
+        # explicit TooManyRequests/rate-limited text match does that (see
+        # _looks_rate_limited and its call site in process_job) — so a
+        # slow-but-real request cannot masquerade as a throttle refusal, even
+        # though it is exactly the kind of thing that SHOULD slow this row down.
         self.wall_clock_history.append(seconds)
         self.wall_clock_history = self.wall_clock_history[-5:]
         if len(self.wall_clock_history) >= WALL_CLOCK_STREAK:
@@ -137,65 +158,31 @@ class Detector:
         return max(1, n)
 
 
-def _looks_rate_limited(text: str) -> bool:
-    low = (text or "").lower()
-    return "toomanyrequests" in low or "rate limited" in low or "rate-limited" in low
+# Specific throttle phrasing, not a bare "rate limited" substring — that
+# loose a match collides with ordinary art-prompt vocabulary (a "rusted
+# rate-limited valve" reskin prompt would trip it). "toomanyrequests" is
+# camelCase and effectively never appears in natural English by accident.
+RATE_LIMIT_MARKERS = ("toomanyrequests", "rate limit exceeded",
+                      "was rate limited", "request was rate limited")
 
 
-def _find_rate_limits(obj, depth=0):
-    """Recursively hunt a `rate_limits` key inside one rollout JSONL line.
-
-    Bounded depth: this is reading a machine-generated event, not walking an
-    adversarial structure, but an unbounded recursive search over untrusted
-    JSON is still the wrong shape to write.
+def _looks_rate_limited(text: str, prompt: str | None = None) -> bool:
+    """Detect an explicit throttle refusal in the worker's captured stdout+
+    stderr. Not a fully structured signal — codex_image.py has no field for
+    "the account got throttled" distinct from its own raw output blob
+    (do_image() dumps up to 2000 chars of it to stderr on ANY failure,
+    --verbose or not), so this is a best-effort text match, not the clean
+    field lookup the ideal fix would use. Two mitigations against a false
+    hard-stop: this job's own `prompt` — which that same dump routinely
+    echoes back verbatim — is stripped out of the haystack first, and the
+    remaining markers are specific throttle phrasing (see RATE_LIMIT_MARKERS)
+    rather than anything a benign prompt could contain.
     """
-    if depth > 4 or not isinstance(obj, dict):
-        return None
-    if "rate_limits" in obj and isinstance(obj["rate_limits"], dict):
-        return obj["rate_limits"]
-    for v in obj.values():
-        if isinstance(v, dict):
-            found = _find_rate_limits(v, depth + 1)
-            if found:
-                return found
-    return None
-
-
-def read_rate_limits(codex_home: Path) -> dict | None:
-    """Meters from the newest rollout JSONL under `codex_home/sessions/`.
-
-    Missing data reads as None ("no signal"), never as 0% — an absent meter
-    is ignorance, and feeding ignorance into a threshold comparison is
-    exactly the "instrument that lies with a number" trap this repo has been
-    bitten by before.
-    """
-    sessions = codex_home / "sessions"
-    if not sessions.is_dir():
-        return None
-    try:
-        files = sorted(sessions.rglob("rollout-*.jsonl"), key=lambda p: p.stat().st_mtime)
-    except OSError:
-        return None
-    if not files:
-        return None
-    newest = files[-1]
-    rl = None
-    try:
-        text = newest.read_text(errors="replace")
-    except OSError:
-        return None
-    for line in text.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            obj = json.loads(line)
-        except ValueError:
-            continue
-        found = _find_rate_limits(obj)
-        if found:
-            rl = found  # last one in the file wins — the most recent turn
-    return rl
+    hay = text or ""
+    if prompt:
+        hay = hay.replace(prompt, "")
+    hay = hay.lower()
+    return any(marker in hay for marker in RATE_LIMIT_MARKERS)
 
 
 # --------------------------------------------------------------------------
@@ -216,6 +203,28 @@ def claim_next(pending_dir: Path, active_dir: Path) -> Path | None:
     renamed it away between our glob() and our rename(), the source is gone
     and rename raises FileNotFoundError — that daemon lost the race, moves on
     to the next candidate, and never touches the file the winner claimed.
+
+    Two things happen right after a successful rename, both load-bearing:
+
+    1. `os.utime(dest)` stamps a FRESH mtime. `os.rename` preserves the
+       inode's existing mtime, so without this a job that sat in pending/
+       for 20 minutes before being claimed would carry that 20-minute-old
+       timestamp straight into active/ — and reconcile()'s age gate, which
+       exists specifically to tell a crashed orphan from a live claim by
+       age, would misread a job claimed one second ago as one stale enough
+       to steal back. This is exactly the bug the concurrent-daemons
+       selftest caught (see reconcile()'s own docstring).
+    2. A re-stat of `dest` immediately after the rename, because production
+       runs on /mnt/d (DrvFs/9p), which this repo has already measured
+       serving minutes-stale reads to a second process — see
+       `common.py`'s module docstring. `os.rename`'s atomicity is a POSIX
+       filesystem promise; whether DrvFs's OWN consistency under two WSL
+       processes racing the same rename honors it as cleanly is NOT
+       independently verified here (the selftests run on real tmpfs/ext4
+       under WSL2, not on the DrvFs mount). Treating a stat that can't see
+       what we just renamed as a lost race — the same as a FileNotFoundError
+       on the rename itself — is the best mitigation available from user
+       space; it is a mitigation, not a proof.
     """
     try:
         candidates = sorted(pending_dir.glob("*.json"), key=lambda p: (_priority_of(p), p.name))
@@ -229,6 +238,11 @@ def claim_next(pending_dir: Path, active_dir: Path) -> Path | None:
             os.rename(src, dest)
         except FileNotFoundError:
             continue  # lost the race to another daemon
+        try:
+            os.utime(dest, None)
+            dest.stat()
+        except FileNotFoundError:
+            continue  # a stale-read filesystem's rename that a stat can't see: lost race
         return dest
     return None
 
@@ -283,6 +297,11 @@ def reconcile(active_dir: Path, pending_dir: Path, done_dir: Path,
             os.rename(p, dest)
         except FileNotFoundError:
             continue
+        try:
+            dest.stat()
+        except FileNotFoundError:
+            continue  # see claim_next()'s docstring: a stale-read mount can
+                      # report a rename a stat then can't see — lost race, not a move.
         moved.append((job_id, "no manifest in done/ or failed/"))
         stray = active_dir / f"{job_id}.worker_last_message.json"
         if stray.is_file():
@@ -302,7 +321,7 @@ class RunCtx:
 
     def __init__(self, worker_script, validator_script, manifest_schema,
                  artsrc_dir, active_dir, codex_home_root, timeout_generate,
-                 timeout_edit, reasoning_effort, verbose, dry_run, slots):
+                 timeout_edit, reasoning_effort, verbose, slots):
         self.worker_script = worker_script
         self.validator_script = validator_script
         self.manifest_schema = manifest_schema
@@ -313,8 +332,11 @@ class RunCtx:
         self.timeout_edit = timeout_edit
         self.reasoning_effort = reasoning_effort
         self.verbose = verbose
-        self.dry_run = dry_run
         self.slots = slots  # queue.Queue of free worker-slot ints
+        # No `dry_run` field: --dry-run is handled entirely in main()'s
+        # run_dry_run(), before a RunCtx is ever built, so it never claims a
+        # real job or reaches process_job at all (finding: dry-run used to
+        # consume the real queue — see run_dry_run's docstring).
 
 
 def build_job_prompt(job: dict) -> str:
@@ -364,8 +386,17 @@ def run_worker(worker_script: Path, subcmd: str, prompt: str, out_png: Path,
 
 
 def run_validator(validator_script: Path, reference, candidate: Path):
-    """Returns (passed: bool | None, findings: list[str]). None = skipped
-    (no reference on this job — cannot be judged, never a silent pass)."""
+    """Returns (verdict, findings). verdict is one of:
+      None              — skipped, no reference on this job (never a silent pass)
+      "pass"             — validate_sprite.py exit 0
+      "reject"           — exit 1: the IMAGE is not shippable
+      "cannot_validate"  — exit 2 (or anything else): the INPUT was unusable
+                            (e.g. a missing/unreadable reference path) — a
+                            data problem on the job, never the same thing as
+                            the worker having produced a bad image, and must
+                            never be reported to the owner as an art-quality
+                            rejection.
+    """
     if not reference:
         return None, ["no reference on this job — validator skipped, not a pass"]
     proc = subprocess.run(
@@ -373,7 +404,11 @@ def run_validator(validator_script: Path, reference, candidate: Path):
          "--candidate", str(candidate)],
         capture_output=True, text=True, timeout=60)
     findings = (proc.stdout + proc.stderr).strip().splitlines()
-    return proc.returncode == 0, findings
+    if proc.returncode == 0:
+        return "pass", findings
+    if proc.returncode == 1:
+        return "reject", findings
+    return "cannot_validate", findings
 
 
 def process_job(job_path: Path, ctx: RunCtx) -> dict:
@@ -395,34 +430,63 @@ def process_job(job_path: Path, ctx: RunCtx) -> dict:
     last_msg_path = ctx.active_dir / f"{job_id}.worker_last_message.json"
 
     slot = ctx.slots.get()
-    codex_home = ctx.codex_home_root / f"w{slot}"
-    codex_home.mkdir(parents=True, exist_ok=True)
-    meter_before = read_rate_limits(codex_home)
-
-    if ctx.dry_run:
-        ctx.slots.put(slot)
-        return {"id": job_id, "status": "dry_run", "worker_status": "skipped",
-                "validator": "skipped", "elapsed_s": 0.0,
-                "meter_before": meter_before, "meter_after": meter_before,
-                "note": f"dry-run: would have run {subcmd} -> {out_png}"}
-
-    prompt = build_job_prompt(job)
     try:
+        # w<slot>-<pid>: unique per PROCESS, not just per in-process slot
+        # index. Slot integers are only unique WITHIN one daemon; two daemons
+        # sharing --codex-home-root would otherwise both compute "w0" and
+        # collide under one CODEX_HOME — exactly the openai/codex #11435
+        # interference this file's own module docstring calls mandatory to
+        # avoid, and slot numbers alone do not avoid it across processes.
+        codex_home = ctx.codex_home_root / f"w{slot}-{os.getpid()}"
+        codex_home.mkdir(parents=True, exist_ok=True)
+        meter_before = codex_grumpiness.read_meters(codex_home)
+
+        prompt = build_job_prompt(job)
+
+        # A stale PNG/manifest at these exact paths, left by a PREVIOUS
+        # attempt at this same job id (a requeue after a fix, or a leftover
+        # from a killed run), must never be mistaken for THIS run's output.
+        # Delete both before spawning, so anything found afterward genuinely
+        # came from this invocation.
+        for stale in (out_png, last_msg_path):
+            try:
+                stale.unlink()
+            except FileNotFoundError:
+                pass
+
+        job_started_at = time.time()
         code, out, err, elapsed, timed_out = run_worker(
             ctx.worker_script, subcmd, prompt, out_png, codex_home, timeout,
             ctx.manifest_schema, last_msg_path, reference, job.get("model"),
             ctx.reasoning_effort, ctx.verbose)
     finally:
+        # Acquisition-to-release is now ALL inside this try — a mkdir
+        # failure, a malformed job reaching build_job_prompt (load_job now
+        # validates shapes, not just key presence, but this stays as
+        # defence in depth), or any other exception in between still
+        # returns the slot. Before this fix, an exception here leaked the
+        # slot permanently; with -N 1 that deadlocks the daemon, and since
+        # queue.Queue.get() has no timeout, SIGTERM cannot unblock it either
+        # — the drain-in-flight shutdown would simply hang forever.
         ctx.slots.put(slot)
 
-    meter_after = read_rate_limits(codex_home)
+    # `after_mtime=job_started_at` is the fix for a real bug: without a
+    # floor, a worker that died before writing its own rollout (a crash, a
+    # refusal before the first token) would leave read_meters() reading
+    # whatever rollout this codex_home's slot last wrote for a PREVIOUS job
+    # — misattributing that job's meters to this one in throughput.jsonl and
+    # to the detector.
+    meter_after = codex_grumpiness.read_meters(codex_home, after_mtime=job_started_at)
+    # `prompt` is stripped from the searched text before matching — see
+    # _looks_rate_limited's own docstring for why an unstripped haystack is
+    # a false-hard-stop risk.
     text = (out or "") + (err or "")
     result = {"id": job_id, "elapsed_s": elapsed, "timed_out": timed_out,
               "meter_before": meter_before, "meter_after": meter_after}
 
     # Row 1 first: an explicit throttle refusal, checked before anything
     # else about exit code or files.
-    if _looks_rate_limited(text):
+    if _looks_rate_limited(text, prompt):
         result.update(status="failed", worker_status="rate_limited",
                        validator="not_run", detector_row=1,
                        note="TooManyRequests / rate limited — hard stop, "
@@ -432,35 +496,59 @@ def process_job(job_path: Path, ctx: RunCtx) -> dict:
     manifest_present = last_msg_path.is_file()
     image_present = out_png.is_file()
 
+    # A nonzero exit or a timeout is NEVER trustworthy evidence, however
+    # tempting a leftover file looks — checked before image_present, so a
+    # killed subprocess's partial write (or, pre-fix, a genuinely stale file
+    # from a previous attempt) can never be filed as "ok". Row 6: a timeout
+    # is still never treated as throttle evidence here — it falls through to
+    # the same plain "worker_error" as any other nonzero exit, never to
+    # detector_row=1.
+    if code != 0 or timed_out:
+        result.update(status="failed", worker_status="worker_error",
+                       validator="not_run",
+                       note=(f"worker exited {code}, image_present={image_present} — "
+                             f"a failed/timed-out run is never trusted regardless"
+                             + (" (timed out)" if timed_out else "")))
+        return result
+
     if not image_present:
-        # Row 5: exit 0 with no manifest and no image is the `--`-trap no-op
-        # — fail THIS request, never the account. Anything else with no
-        # image (nonzero exit, or a timeout — row 6: never throttle evidence
-        # on its own) is a plain worker error.
-        if code == 0 and not manifest_present:
+        if manifest_present:
+            result.update(status="failed", worker_status="worker_reported_fail",
+                           validator="not_run",
+                           note="exit 0, a manifest exists, but no image — "
+                                "the worker reported failure/refusal honestly")
+        else:
+            # Row 5: exit 0 with no manifest and no image is the `--`-trap
+            # no-op — fail THIS request, never the account.
             result.update(status="failed", worker_status="no_manifest",
                            validator="not_run", detector_row=5,
                            note="exit 0, no manifest, no image — the `--` "
                                 "no-op (row 5): fails the request, not the account")
-        else:
-            result.update(status="failed", worker_status="worker_error",
-                           validator="not_run",
-                           note=(f"worker exited {code}, no image produced"
-                                 + (" (timed out)" if timed_out else "")))
         return result
 
-    passed, findings = run_validator(ctx.validator_script, reference, out_png)
+    verdict, findings = run_validator(ctx.validator_script, reference, out_png)
     result["validator_findings"] = findings
-    if passed is False:
+    if verdict == "reject":
         result.update(status="failed", worker_status="worker_reported_ok_but_invalid",
                        validator="REJECT",
                        note="validate_sprite.py rejected the returned file — "
                             "the worker's own manifest is never trusted")
         return result
+    if verdict == "cannot_validate":
+        # exit 2: the INPUT was unusable (e.g. a missing/unreadable
+        # reference path) — a data problem on the JOB, not the same failure
+        # as the worker having produced a bad image, and reported as its own
+        # kind rather than folded into REJECT.
+        result.update(status="failed", worker_status="bad_reference_path",
+                       validator="CANNOT_VALIDATE",
+                       note="validate_sprite.py could not judge this at all "
+                            "(exit 2, unusable input) — most likely a bad or "
+                            "missing reference path on the job, not an image defect")
+        return result
 
     result.update(status="ok", worker_status="ok",
-                   validator=("PASS" if passed else "skipped"),
-                   note="validated" if passed else "no reference to validate against")
+                   validator=("PASS" if verdict == "pass" else "skipped"),
+                   note="validated" if verdict == "pass" else "no reference to validate against")
     return result
 
 
@@ -468,7 +556,10 @@ def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
                   active_dir: Path, throughput_log: Path, detector: Detector,
                   configured_n: int) -> None:
     job_id = result.get("id", job_path.stem)
-    ok = result.get("status") in ("ok", "dry_run")
+    # "dry_run" is not a real status here any more — --dry-run never reaches
+    # finalize_job at all (see run_dry_run) — so "ok" is the only passing
+    # status a real run can produce.
+    ok = result.get("status") == "ok"
     target_dir = done_dir if ok else failed_dir
 
     dest_job = target_dir / f"{job_id}.json"
@@ -504,7 +595,7 @@ def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
     if result.get("detector_row") == 1:
         detector.note_rate_limited()
     detector.note_meters(result.get("meter_after"))
-    if result.get("elapsed_s") is not None and result.get("status") != "dry_run":
+    if result.get("elapsed_s") is not None:
         detector.note_wall_clock(result["elapsed_s"], configured_n)
 
 
@@ -534,7 +625,8 @@ def parse_args(argv=None) -> argparse.Namespace:
     ap.add_argument("--once", action="store_true",
                      help="drain what's claimable now, then exit — for scripts/tests")
     ap.add_argument("--dry-run", action="store_true",
-                     help="do everything except spawn a worker subprocess")
+                     help="report what pending/ would run and exit — reads "
+                          "only, never claims, reconciles, or moves anything")
     ap.add_argument("--reconcile-only", action="store_true",
                      help="run crash reconciliation and exit — a human's recovery tool")
     ap.add_argument("--reconcile-min-age", type=float, default=600.0,
@@ -546,10 +638,54 @@ def parse_args(argv=None) -> argparse.Namespace:
     return ap.parse_args(argv)
 
 
+def run_dry_run(args: argparse.Namespace) -> int:
+    """Report what WOULD run, touching nothing.
+
+    Previously, --dry-run's "do everything except spawn a worker" ran
+    THROUGH the real claim_next()/finalize_job() path with a synthetic
+    "dry_run" status — which still renamed real jobs out of pending/ into
+    active/ and then into done/, permanently consuming the real queue and
+    blocking a later real re-file as a duplicate id. This is a pure read:
+    it lists what claim_next() would pick, in the order it would pick them,
+    and moves or writes nothing — pending/ is byte-for-byte what it was
+    before this ran. It does not call reconcile() either, for the same
+    reason: reconcile can move a file, and --dry-run promises it never does.
+    """
+    try:
+        candidates = sorted(args.pending_dir.glob("*.json"),
+                            key=lambda p: (_priority_of(p), p.name))
+    except OSError:
+        candidates = []
+
+    if not candidates:
+        print("artpiped: --dry-run, nothing pending")
+        return 0
+
+    for p in candidates:
+        try:
+            job = common.load_job(p)
+        except common.JobError as exc:
+            print(f"would FAIL to claim {p.name}: {exc}")
+            continue
+        is_edit = bool(job.get("reference"))
+        subcmd = "edit" if is_edit else "generate"
+        out_png = args.artsrc_dir / f"{job['id']}.png"
+        print(f"would claim {p.name}: {subcmd} -> {out_png}")
+        if args.verbose:
+            print(f"    prompt: {build_job_prompt(job)}")
+
+    print(f"\nartpiped: --dry-run, {len(candidates)} job(s) would be claimed — "
+          f"pending/ left untouched, no worker spawned")
+    return 0
+
+
 def main(argv=None) -> int:
     args = parse_args(argv)
     common.ensure_queue_dirs(args.pending_dir, args.active_dir, args.done_dir,
                               args.failed_dir, args.artsrc_dir)
+
+    if args.dry_run:
+        return run_dry_run(args)
 
     moved = reconcile(args.active_dir, args.pending_dir, args.done_dir,
                        args.failed_dir, args.reconcile_min_age)
@@ -567,7 +703,7 @@ def main(argv=None) -> int:
     ctx = RunCtx(args.worker_script, args.validator_script, args.manifest_schema,
                  args.artsrc_dir, args.active_dir, args.codex_home_root,
                  args.timeout_generate, args.timeout_edit, args.reasoning_effort,
-                 args.verbose, args.dry_run, slots)
+                 args.verbose, slots)
     detector = Detector()
     stop_event = threading.Event()
 

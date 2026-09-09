@@ -31,6 +31,26 @@ Behaviors:
                   the given override (default 95).
     five_h_high   like ok, but the rollout reports primary.used_percent at
                   the given override (default 92), resets_at 2s out.
+    tool_error    exits 1, a generic (non-throttle) stderr message, writes
+                  NOTHING — a plain worker failure, distinct from row 1.
+    tool_error_echo_prompt
+                  like tool_error, but its stderr ALSO echoes the exact
+                  --prompt text back verbatim (as codex_image.py's own
+                  "--- last codex output ---" dump routinely does) — proves
+                  a benign prompt phrase can't cause a false rate-limit
+                  hard-stop.
+    fail_with_image
+                  exits 1 with a generic error, but STILL writes a
+                  genuinely valid-looking image to --out (no manifest) —
+                  simulating a killed/partial run that left a file behind.
+                  Proves the daemon never trusts an image over a nonzero
+                  exit code.
+    ok_ignore_reference
+                  exits 0 with a valid manifest and a synthetic image, but
+                  never reads --image at all — used to put a BAD reference
+                  path on the job without the worker itself tripping over
+                  it, so the daemon's own re-validation is what discovers
+                  the reference is unusable.
 """
 from __future__ import annotations
 
@@ -63,22 +83,32 @@ def control_for(job_id: str) -> dict:
 
 
 def write_rollout(codex_home: Path, weekly: float, five_h: float, resets_at=None) -> None:
+    """Emit a rollout-*.jsonl line in the SAME shape
+    skills/generating-images/scripts/codex_grumpiness.py actually reads:
+    `rate_limits` sits at `payload.rate_limits`, a SIBLING of `payload.info`
+    inside a `token_count` event — not a bare top-level key. artpiped.py
+    reuses that module's read path rather than re-implementing it, so a mock
+    rollout in the wrong shape would make read_meters() silently see nothing
+    (read_last_rate_limits() returns None, not an error) and every
+    meter-driven detector test would have been exercising nothing at all."""
     now = time.gmtime()
     day_dir = codex_home / "sessions" / time.strftime("%Y/%m/%d", now)
     day_dir.mkdir(parents=True, exist_ok=True)
     path = day_dir / f"rollout-{time.time_ns()}-mock.jsonl"
-    payload = {
-        "type": "turn.completed",
-        "rate_limits": {
-            "limit_id": "codex",
-            "primary": {"used_percent": five_h, "window_minutes": 300,
-                        "resets_at": resets_at or int(time.time()) + 3600},
-            "secondary": {"used_percent": weekly, "window_minutes": 10080,
-                          "resets_at": int(time.time()) + 86400},
-            "credits": {"has_credits": False, "unlimited": False, "balance": "0"},
+    record = {
+        "payload": {
+            "type": "token_count",
+            "info": {},
+            "rate_limits": {
+                "primary": {"used_percent": five_h, "window_minutes": 300,
+                            "resets_at": resets_at or int(time.time()) + 3600},
+                "secondary": {"used_percent": weekly, "window_minutes": 10080,
+                              "resets_at": int(time.time()) + 86400},
+                "credits": {"has_credits": False, "unlimited": False, "balance": "0"},
+            },
         },
     }
-    path.write_text(json.dumps(payload) + "\n")
+    path.write_text(json.dumps(record) + "\n")
 
 
 def mutate_reference(ref_path: Path, out_path: Path) -> tuple[int, int]:
@@ -164,6 +194,33 @@ def main(argv=None) -> int:
 
     if behavior == "no_manifest":
         return 0  # the `--`-trap no-op: exit 0, touch nothing at all.
+
+    if behavior == "tool_error":
+        print("codex: internal error — the sandbox setup step failed", file=sys.stderr)
+        return 1
+
+    if behavior == "tool_error_echo_prompt":
+        print("--- last codex output ---", file=sys.stderr)
+        print(args.prompt, file=sys.stderr)
+        return 1
+
+    if behavior == "fail_with_image":
+        if reference is not None:
+            mutate_reference(reference, out)
+        else:
+            w, h = 64, 64
+            pnglib.write_rgba(str(out), w, h, bytes(4 * w * h))
+        print("codex: internal error after the image tool already ran", file=sys.stderr)
+        return 1  # no manifest either — this is what an actually killed run looks like.
+
+    if behavior == "ok_ignore_reference":
+        w, h = 64, 64
+        pnglib.write_rgba(str(out), w, h, bytes(4 * w * h))
+        write_manifest("ok", "mock: produced output without reading --image at all",
+                        width=w, height=h, has_alpha=True, corners_transparent=True,
+                        background_used="transparent")
+        print(f"OK {out}")
+        return 0
 
     if home is not None:
         weekly = ctrl.get("weekly", DEFAULT_WEEKLY_HIGH if behavior == "weekly_high" else 3.0)
