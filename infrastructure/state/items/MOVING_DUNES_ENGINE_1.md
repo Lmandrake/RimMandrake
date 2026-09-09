@@ -25,3 +25,15 @@ A design spec exists and the owner has ruled build/park on it.
 
 ## Criteria
 No code before the spec ruling.
+
+## Owner rulings — 2026-09-09 (design pass round 1)
+Verdict accepted: BUILD, in the cut form (sand-riding-Odyssey, Werner
+transport, burial caches). Rulings: Odyssey soft-dep YES · pacing FULLY
+TUNABLE (def-driven rates; violent Ashkarr windstorms want disturbingly
+fast dunes) · the EDGE problem is his own catch — sand must resupply
+windward / exit leeward; design decides toroidal vs source-sink ·
+burial: wild items only · release GENERIC day one, "any color, anywhere"
+via per-map material skin (DuneMaterialDef over the single channel;
+multi-channel physics stays refused) · dig-vanishes + vanilla half-speed
+defaults accepted. Design v2 amendment in flight; build item files when
+v2 lands.
