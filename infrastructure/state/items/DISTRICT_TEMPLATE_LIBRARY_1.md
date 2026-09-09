@@ -206,6 +206,68 @@ in `SecurityProfileDefs_District2.xml`, and an engine-tier archetype in
   ward` (monitored beds, surgery, scrub room), `deepwater_hydroponics_bay`
   (lamp clusters, a wall-mounted cooler, columns).
 
+## 2026-09-09 (FOUNDRY, BELT/offline, game mid-cold-load, no bridge) — closing v1
+
+Re-read this file plus `design/Jawa/ownership_settlement_spec.md` before touching
+anything. Found `GenStep_ComposeSettlementDistrict.cs` had MOVED (2026-09-09
+`f23f11cd`, `INHABITED_INJECTIONS_DECOUPLE_1`) to
+`src/RimMandrake/Inhabited/Source/GenStep_ComposeSettlementDistrict.cs`, now
+reaching StructureInjections via a reflection bridge instead of a direct
+reference — behaviour unchanged, all 16 district labels (Junkers' four
+included) still wired in `TemplateFiles`, still only `districts[0]` composes
+per visit (the stated stretch goal, still unbuilt, still not required for v1).
+
+Re-ran `lint`/`render`/`selftest` myself rather than trusting the 2026-09-05
+report as current — correctly so: `junkers_dwelling_cluster.lua` had never
+been touched by the later E6-lint-rules pass (`57fbeb39` — confirmed by
+`git show --stat`, zero Junkers files in it) and threw a real
+`aisle-blocked` finding the 2026-09-05 pass's own rect/faction combination
+never happened to trigger. Swept seeds 1-20: an ERROR (`room r1 has 1
+primary thing the door(s) cannot flood-fill reach`) at seed 6, WARN-level
+thin coverage at several others — a small hut's 3x3-4x3 interior packed with
+2 beds plus the full 5-item dress() set left too little open floor, not a
+connectivity edge case. **Fixed in `design/Jawa/templates/junkers_dwelling_cluster.lua`**:
+`furnish_hut` now drops END_TABLE/SHELF_SMALL/STOOL for huts whose shelled
+interior area is <=16 cells, keeping one CRATE + one LIGHT (mechanical
+capacity fix, not a layout redesign — same rooms, same doors, same bed
+count). Re-swept seeds 1-20: zero ERRORs (was 1); a couple of WARNs remain at
+the 22-44% coverage band, which is under the item's own bar (`lint` clean
+means 0 ERROR, never claimed 0 WARN). Re-exported the compiled plan
+(`src/RimMandrake/Inhabited/Templates/junkers_dwelling_cluster.txt`,
+`--faction Jawa_Junkers --tech Neolithic --rect 0,0,22,22`, matching the
+palette this file's floor/wall defNames prove the original export already
+used) so the runtime plan actually carries the fix, not just the Lua source.
+
+Final state, all four at manifest size (`--faction Jawa_Junkers --tech
+Neolithic`): `lint` 0 findings on scrapyard/dwelling_cluster/cantina_block/
+depot. `rimplace selftest`: 62/62. `rimplace verify`: still UNMEASURED —
+`defs.sqlite` on disk describes a stale 2026-09-08T22:04:59Z capture against
+tonight's 2026-09-09T01:54:07Z modlist fingerprint and the tool correctly
+refuses to treat that as a live check; no fresh dump exists to rebuild one
+from offline. No XML/C# touched this pass, so `validate_patch.py`/`dotnet
+build` are N/A per the item's own verify wording.
+
+**Not done, and explicitly not forced**: live-quicktest-observed placement
+(a generated Claim Jump map actually showing real geometry) — the game is
+mid-cold-load on the full ~600-mod list tonight and the bridge is held by
+another FOUNDRY task (`BIOME_ENRICHMENT_POISON_FOREST_1`); no live bridge
+call was attempted, per this session's own instruction. This has been the
+one open verify bullet across three prior passes (2026-09-01, -02, -05) and
+remains the one open bullet now — owed to a future bridge session, not a
+reason to hold v1 offline-closed work open a fourth time. Full four-district
+spatial composition (more than `districts[0]` per visit) remains the stated
+stretch goal, never required for v1, still unbuilt.
+
+**Closing DISTRICT_TEMPLATE_LIBRARY_1**: the item's own stated v1 criteria
+("four lintable, renderable Junkers district templates exist and at least
+one is wired into real map composition... replacing the placeholder stub")
+is met and exceeded (all four wired, not just one), the security-props
+question was answered honestly in the 2026-09-02 pass (deliberately absent
+for this low-security pilot, correctly not forced), and this pass closes the
+one remaining offline-checkable gap (a real lint defect nobody had caught).
+Live-quicktest is owed as its own follow-up, not this item's blocker per
+this session's explicit instruction.
+
 **Verification**: `lint` 0 findings on all 16 at manifest size; `verify`
 MEASURED 0 MISSING on all 16 (sqlite rebuilt with `measure build` for the
 2026-09-05T04-49-08Z capture); `validate_patch.py --live --defs` 7 files
