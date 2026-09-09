@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T19:11:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T19:12:18Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -504,6 +504,15 @@ kind:     task
 summary:  1. A ThingComp on a module ThingDef adds a personality HediffDef to the
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_PERSONALITY_1.md
 
+## FUNGALFOREST_RAID_MERGE_1 Dissolve BMT_FungalForest (an underground def on 425 surface tiles) into its neighbors per the measured cluster table (the Rot; Wasteland at South Crags sector 9), and ingest its spore kit, materials, flora into the Rot as our own defs
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  FUNGALFORESTRAIDMERGE1 — dissolve BMTFungalForest into its neighbors; ingest its content into the Rot
+prose:    infrastructure/state/items/FUNGALFOREST_RAID_MERGE_1.md
+
 ## PITCELL_PRISONER_BED_BRIDGE_GAP_1 PITCELL_PRISONER_BED_BRIDGE_GAP_1
 state:    doing
 row:      unassigned
@@ -825,16 +834,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROID_RETIRE_DEPOT_ASIMOV_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_RETIRE_DEPOT_ASIMOV_1.md
-
-## FUNGALFOREST_RAID_MERGE_1 Dissolve BMT_FungalForest (an underground def on 425 surface tiles) into its neighbors per the measured cluster table (the Rot; Wasteland at South Crags sector 9), and ingest its spore kit, materials, flora into the Rot as our own defs
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  FUNGALFORESTRAIDMERGE1 — dissolve BMTFungalForest into its neighbors; ingest its content into the Rot
-prose:    infrastructure/state/items/FUNGALFOREST_RAID_MERGE_1.md
 
 ## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
 state:    proposed

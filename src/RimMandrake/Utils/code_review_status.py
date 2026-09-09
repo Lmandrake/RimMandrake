@@ -101,7 +101,7 @@ def _trigger_health_rebuild():
             return
     except (OSError, ValueError):
         pass
-    log_path = os.path.join(ROOT, "Transient", "codebase_health_hook.log")
+    log_path = "/tmp/rimworld_codebase_health_hook.log"
     try:
         os.makedirs(os.path.dirname(log_path), exist_ok=True)
         with open(log_path, "a") as fh:

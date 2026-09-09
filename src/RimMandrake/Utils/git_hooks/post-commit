@@ -29,8 +29,7 @@
 REPO="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
 [ -n "$REPO" ] || exit 0
 
-LOG="$REPO/Transient/codebase_health_hook.log"
-mkdir -p "$REPO/Transient" 2>/dev/null
+LOG="/tmp/rimworld_codebase_health_hook.log"
 
 # Detached from the commit: no stdin, output to the log, and the shell does not wait.
 (

@@ -4,3 +4,9 @@ raw/
 options/
 __pycache__/
 *.png
+
+# Owner-review candidate archives — NOT derived from the generators above;
+# they must survive until his pick (Transient shelf life does not protect them).
+!planetary_beauty_shots_2026-09-09/
+!planetary_beauty_shots_2026-09-09/**
+!planetary_beauty_loadscreens_contact_sheet_2026-09-09.png
