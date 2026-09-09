@@ -75,7 +75,7 @@
     <xpath>/Defs/BiomeDef[defName="PoisonForest"]/label</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="PoisonForest"]/label</xpath>
-      <value><label>the poison forest</label></value>
+      <value><label>the Poison Forest</label></value>
     </match>
   </Operation>   <!-- was "poison forest" -->
 

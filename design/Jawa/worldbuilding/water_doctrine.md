@@ -233,3 +233,16 @@ distillation is fuel-expensive, so potable water is a fuel-derived product in a
 fuel-first economy. They mine the edge of the dark and the edge of potable
 water; what they sell is mostly fuel and kludged products. FDE long-distance
 fuel pipes (canon free_droid_enclaves.geography) feed this hunger.
+
+## The waterline ribbon — who owns the submerged land-biome shore tiles (2026-09-08 review, A5)
+
+The engine's lint reports 181 land-biome tiles at elevation <= 0 ("landBiomeSubmerged").
+Decomposed at the review (MEASURED, live V27): **54 are the Rot's ruled Twilight-shore
+tiles** — its sheet claims exactly that number — and the remaining **127 are the
+waterline ribbon**: shallow shore hexes hugging the seas across seven land biomes
+(AridShrubland 37, AB_RockyCrags 36, ZBiome_Badlands 23, Wasteland 12, PoisonForest 11,
+Desert 6, AB_TarPits 2). They are engine-water (waterCovered, no rock generated) wearing
+the adjacent land biome so the shore reads as that country's edge rather than open sea.
+**This paragraph owns them**: the ribbon is design, not spill; the count moves only with
+a ruled shoreline change. Any future audit that flags landBiomeSubmerged should
+reconcile against the Rot's 54 + this ribbon before calling damage.

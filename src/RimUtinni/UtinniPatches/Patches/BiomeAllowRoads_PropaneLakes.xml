@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Owner ruling, 2026-09-08 worldmap review (A3): the 34 tiles of
+       AncientAsphaltHighway stored under the antistellar cap become VISIBLE.
+       The donor def ships allowRoads=false, which hides real stored links
+       without deleting them — the only biome/def pair hiding roads on the
+       planet (MEASURED). Lore: these are the dynamo's buried conduit roads;
+       the ancient network should be traceable. allowRivers stays false —
+       no real river deficit exists under the cap. -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/allowRoads</xpath>
+    <value><allowRoads>true</allowRoads></value>
+  </Operation>
+</Patch>
