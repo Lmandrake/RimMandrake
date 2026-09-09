@@ -110,7 +110,10 @@ namespace RiverSteamHook
                 Vector3 loc = cell.ToVector3Shifted();
                 FleckCreationData data = FleckMaker.GetDataStatic(
                     loc, map, steamFleck, Rand.Range(settings.puffScale.min, settings.puffScale.max));
-                data.velocityAngle = Rand.Range(settings.velocityAngle.min, settings.velocityAngle.max);
+                // IntRange.RandomInRange (Rand.RangeInclusive) is inclusive of max; the
+                // plain int overload Rand.Range(int,int) is NOT (maxExclusive) and was
+                // silently dropping the top of the configured angle range.
+                data.velocityAngle = settings.velocityAngle.RandomInRange;
                 data.velocitySpeed = Rand.Range(settings.velocitySpeed.min, settings.velocitySpeed.max);
                 map.flecks.CreateFleck(data);
             }
