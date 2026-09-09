@@ -14,8 +14,19 @@ survives everywhere has no climate."* So no plant gets a band wider than its own
 plus a bounded hardiness allowance.
 
     need_lo, need_hi = p05(home tiles) − SWING, p95(home tiles) + SWING
+                       ∪  sheet median ± CLIM_MARGIN, per landed biome   (2026-09-09)
     band             = [ min(shipped min, need_lo) , max(shipped max, need_hi) ]
     optimal band     = the same FRACTION of the band the plant shipped with, clamped sane
+
+## Two demands, unioned — and one of them can refuse the plant (2026-09-09 fix wave)
+
+The painted tile CSV and the biome SHEETS are different authorities and disagree; the
+demand is the UNION, because widen-only means a union can only help and dropping either
+source lets its biomes go quietly dead again. But a plant whose SHEET demand sits more
+than `REPICK_LIMIT` beyond a bound the mod actually shipped is not hardy, it is a lie:
+those are listed, NOT patched, and the roster has to re-pick. `BMT_Blastpod` (shipped
+50…352 °C, rostered into a −18.8 °C biome) is why the rule exists and was the first to
+go — replaced by `Boomshroom`, the same asset with a shippable band.
 
 🔴 **WIDEN ONLY — never narrow.** Corrected 2026-08-23, after the animal pass showed the
 re-centring version stripping `GR_ParagonIguana` of 45 °C of shipped heat tolerance for no
@@ -58,6 +69,8 @@ first number to revise when the load is scored.
 GENES, not on the XenotypeDef) are NOT touched here and the item stays open for them.
 """
 import collections
+import csv
+import json
 import os
 import statistics
 import sys
@@ -67,8 +80,15 @@ sys.path.insert(0, HERE)
 import biome_flora as bf                                            # noqa: E402  the rosters
 
 ROOT = bf.ROOT
-PATCH = os.path.join(ROOT, 'src', 'Jawa', 'Jawa_Patches', 'Patches',
+# ⚠️ This used to point at src/Jawa/Jawa_Patches/, which JAWA_PATCHES_SPLIT_1 retired.
+# The deployed file has been under RimUtinni since that split, so `--write` was silently
+# creating a fresh dead directory instead of updating anything - and the patch on disk went
+# stale through the whole 2026-09-09 roster rewrite. Same defect biome_flora.py carried;
+# corrected here 2026-09-09.
+PATCH = os.path.join(ROOT, 'src', 'RimUtinni', 'UtinniPatches', 'Patches',
                      'PlantTolerances_Ashkarr.xml')
+CLIMATE = os.path.join(ROOT, 'design', 'Jawa', 'worldbuilding', 'review',
+                       'biome_climate.json')
 
 FIELDS = ['minGrowthTemperature', 'minOptimalGrowthTemperature',
           'maxOptimalGrowthTemperature', 'maxGrowthTemperature']
@@ -97,6 +117,66 @@ def plant_homes():
     return homes
 
 
+# ── the second demand: the SHEETS' own medians ────────────────────────────────────
+# 🔴 Added 2026-09-09 (BIOME_FAUNA_ASSIGNMENT_SITTING_1 fix wave, flora defect 2: 46 of
+# 126 landed flora rows cannot grow at their biome's measured temperature — silent dead
+# flora in game). The tile CSV and the biome SHEETS are two different authorities and
+# they do not agree: the CSV is the painted map, the sheets are the owner's frozen §0
+# MEASURED blocks, and `biome_climate.json` transcribes the latter verbatim.
+#
+# 🔑 So the demand is the UNION of both, never a choice between them. Widen-only is
+# already the rule, so a union can only ever help; picking one source would let the other
+# one's biomes go dead again, silently, which is the exact defect being closed.
+#
+# ⛔ A biome whose sheet states no median is EXCLUDED, not interpolated (the climate file's
+# own rule). Those biomes still get the tile-CSV demand; they simply add no second one.
+CLIM_MARGIN = 10.0    # °C either side of the sheet median — the fix wave's stated margin
+REPICK_LIMIT = 30.0   # beyond this much extension past a DONOR bound, the plant is a LIE
+
+# 🔴 "DONOR" MEANS WHAT THE MOD SHIPPED, and the live def dump is NOT that — it already
+# carries this patch's own previous widening. `plant_pool.csv` was built 2026-08-23, before
+# any tolerance patch existed, so it is the last honest record of shipped values and the
+# re-pick gate measures against IT. Measuring extension from the dump would compare our own
+# stretch to itself and never flag anything, which is how a lie compounds. (The same
+# staleness is a TRAP elsewhere: figF2 judged 46 flora rows dead off this CSV when only 6
+# are dead against the live dump — for "is this plant currently dead", read the DUMP.)
+POOL = os.path.join(HERE, 'plant_pool.csv')
+
+
+def sheet_demands():
+    """plant defName -> (lo, hi) demanded by the sheet medians of its landed biomes."""
+    with open(CLIMATE, encoding='utf-8') as fh:
+        clim = json.load(fh)['biomes']
+    out = {}
+    for _fam, bs in bf.FAMILIES.items():
+        for b, roster in bs.items():
+            med = (clim.get(b) or {}).get('median')
+            if med is None:
+                continue
+            for p in roster:
+                lo, hi = out.get(p, (med, med))
+                out[p] = (min(lo, med), max(hi, med))
+    return {p: (lo - CLIM_MARGIN, hi + CLIM_MARGIN) for p, (lo, hi) in out.items()}
+
+
+POOL_FIELDS = {'minGrowthTemperature': 'minGrowthTemp',
+               'minOptimalGrowthTemperature': 'minOptTemp',
+               'maxOptimalGrowthTemperature': 'maxOptTemp',
+               'maxGrowthTemperature': 'maxGrowthTemp'}
+
+
+def donor_bands():
+    """plant defName -> {field: shipped value} for all four fields. See POOL above."""
+    out = {}
+    with open(POOL, encoding='utf-8') as fh:
+        for r in csv.DictReader(fh):
+            try:
+                out[r['defName']] = {k: float(r[c]) for k, c in POOL_FIELDS.items()}
+            except (TypeError, ValueError, KeyError):
+                pass
+    return out
+
+
 def compute(plants):
     """Fit each plant's band to the climate it was assigned, keeping its hardiness as a bonus.
 
@@ -109,17 +189,52 @@ def compute(plants):
     So the biome sets the band and the plant's shipped WIDTH only buys extra hardiness, capped.
     """
     homes = plant_homes()
-    rows, bonus, already = [], 0, 0
+    sheets = sheet_demands()
+    donors = donor_bands()
+    rows, bonus, already, repicks = [], 0, 0, []
     for p, ts in sorted(homes.items()):
         d = plants.get(p)
         if not d or not ts:
             continue
+        # 🔴 `cur` IS THE DONOR'S VALUE, NOT THE LIVE DUMP'S — and this is the defect that
+        # made this generator DISSOLVE ITS OWN OUTPUT. The dump is of a game with this very
+        # patch deployed, so reading it back showed 67 plants "already surviving their whole
+        # home", the generator emitted nothing for them, and the next run's patch would have
+        # dropped the widening that was the only reason they survived - reverting them to a
+        # donor band that cannot reach their biome. 508 of 577 operations vanished that way
+        # on the first regeneration of the 2026-09-09 fix wave. A generator must never take
+        # its own effect as its input. The dump is the fallback only for a plant the pool
+        # does not carry.
         g = d['fields']['plant']
-        cur = {k: float(g.get(k) if g.get(k) is not None else DEFAULTS[k]) for k in FIELDS}
+        cur = donors.get(p) or {k: float(g.get(k) if g.get(k) is not None else DEFAULTS[k])
+                                for k in FIELDS}
+        cur = dict(cur)
 
         need_lo = _pct(ts, 0.05) - SWING            # what this biome actually demands
         need_hi = _pct(ts, 0.95) + SWING
+        s_lo, s_hi = sheets.get(p, (need_lo, need_hi))   # and what its SHEET demands
+        need_lo, need_hi = min(need_lo, s_lo), max(need_hi, s_hi)
         need_w = need_hi - need_lo
+
+        # 🔴 A fungus stretched 70 °C is a lie, not a tolerance. Past REPICK_LIMIT beyond a
+        # SHIPPED bound the honest move is a different donor, so the plant is listed rather
+        # than silently widened - the ROSTER has to answer for it.
+        #
+        # 🔑 The gate measures the SHEET demand (median ± CLIM_MARGIN), not the tile demand.
+        # The sheets are the frozen owner authority and state the temperature the biome IS;
+        # the tile p05/p95 ± SWING window is a spawn-gate allowance layered on top, and
+        # letting it drive re-picks would evict plants their own sheet admits. Where the two
+        # diverge most - the Rot, whose fungi are extended ~53 °C below their shipped floor -
+        # the SHEET is what justifies it: the_rot.md, "Thermogenesis - the warmth is
+        # metabolic": the mycelial mat is a heated floor the jungle makes for itself, and
+        # "air temperature is a lie about the ground". Cold air, warm substrate; the cold
+        # edge (Frostcaps) is where that heat fails, which is the biome's own story.
+        d_lo = cur['minGrowthTemperature']
+        d_hi = cur['maxGrowthTemperature']
+        over = max(d_lo - s_lo, s_hi - d_hi)
+        if over > REPICK_LIMIT:
+            repicks.append((p, d_lo, d_hi, round(s_lo, 1), round(s_hi, 1), round(over, 1)))
+            continue
 
         # already survives its whole home? leave it completely alone.
         if cur['minGrowthTemperature'] <= need_lo and cur['maxGrowthTemperature'] >= need_hi:
@@ -150,7 +265,36 @@ def compute(plants):
 
         new = {k: round(v, 1) for k, v in new.items()}
         rows.append((p, cur, new, round(need_lo, 1), round(need_hi, 1), len(ts)))
-    return rows, bonus, already
+    return rows, bonus, already, repicks
+
+
+def verify(rows):
+    """The whole point, asserted: can every landed flora row grow at its biome's median?
+
+    🔑 A generator that only reports what it wrote cannot tell you whether the defect is
+    closed. This walks the RESULT - patched band where a plant was patched, shipped band
+    where it was not - against every sheet median, and returns the rows still dead. It is
+    the direct answer to figF2's finding, and it must print 0.
+    """
+    with open(CLIMATE, encoding='utf-8') as fh:
+        clim = json.load(fh)['biomes']
+    new = {r[0]: r[2] for r in rows}
+    donors = donor_bands()
+    dead, total = [], 0
+    for _fam, bs in bf.FAMILIES.items():
+        for b, roster in bs.items():
+            med = (clim.get(b) or {}).get('median')
+            if med is None:
+                continue
+            for p in roster:
+                band = new.get(p) or donors.get(p)
+                if not band:
+                    continue
+                total += 1
+                if not (band['minGrowthTemperature'] <= med <= band['maxGrowthTemperature']):
+                    dead.append((b, p, med, band['minGrowthTemperature'],
+                                 band['maxGrowthTemperature']))
+    return dead, total
 
 
 def emit(rows, plants):
@@ -202,10 +346,17 @@ def emit(rows, plants):
 def main() -> int:
     write = '--write' in sys.argv
     plants, _biomes = bf.load()
-    rows, bonus, already = compute(plants)
+    rows, bonus, already, repicks = compute(plants)
 
     print(f"\n{len(rows)} plants refitted · {already} already survived their whole home and "
           f"were left untouched · {bonus} kept a shipped bound already generous enough")
+    if repicks:
+        print(f"\n🔴 {len(repicks)} plant(s) NOT patched — the extension would exceed "
+              f"{REPICK_LIMIT:g} °C beyond a shipped bound, which is a re-pick, not a "
+              f"tolerance. Fix the ROSTER, not this script:")
+        for p, a, z, nlo, nhi, over in repicks:
+            print(f"   {p:28s} ships {a:g}…{z:g} °C, sheets demand {nlo:g}…{nhi:g} "
+                  f"({over:g} °C too far)")
     if rows:
         lo = [r[2]['minGrowthTemperature'] for r in rows]
         hi = [r[2]['maxGrowthTemperature'] for r in rows]
@@ -216,6 +367,16 @@ def main() -> int:
                 print(f"  {tag:8s} {p:34s} {n:6d} tiles  "
                       f"min {cur['minGrowthTemperature']:g}->{new['minGrowthTemperature']:g}  "
                       f"max {cur['maxGrowthTemperature']:g}->{new['maxGrowthTemperature']:g}")
+    dead, total = verify(rows)
+    if dead:
+        print(f"\n🔴 {len(dead)} of {total} landed flora rows STILL cannot grow at their "
+              f"biome's sheet median — nothing written:")
+        for b, p, med, a, z in dead:
+            print(f"   {p:28s} in {b:26s} median {med:g} °C, band {a:g}…{z:g}")
+        return 1
+    print(f"✅ all {total} landed flora rows grow at their biome's sheet median "
+          f"(figF2's defect, asserted)")
+
     if not write:
         print("\n(pass --write to emit the patch)")
         return 0

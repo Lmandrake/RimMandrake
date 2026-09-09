@@ -526,7 +526,8 @@
   {
    "def": "BMT_GreyLady",
    "commonality": 0.2,
-   "law": "§7b ingested (grey lady lace)"
+   "law": "§7b ingested (grey lady lace)",
+   "note": "donor bug, clamped 2026-09-09 fix wave: BMT_GreyLady ships Flammability 40 (MEASURED — the whole pool's next-highest is 1.5, so 40 is a typo in the donor mod, not a design). Clamped to 1.0 by BiomeFloraStatAdjustments_Generated.xml."
   },
   {
    "def": "BMT_Shinecap",
@@ -549,12 +550,26 @@
    "law": "§7b the Skultop defender — defName now MEASURED against the pool (BMT_Skulltop); sibling of the Agarilux Prime (ban 8)"
   },
   {
-   "def": "BMT_Blastpod",
+   "def": "Boomshroom",
    "commonality": 0.05,
-   "law": "§7b blastpod→chemfuel chain, ruled wild-only; see confidence — donor temp range confines it to hot caverns"
+   "law": "§7b blastpod->chemfuel chain, ruled wild-only — RE-PICK 2026-09-09 fix wave, replacing BMT_Blastpod. Same plant under the skin (Blastpod's own texPath is BMT_Caverns/.../Boomshroom/BoomshroomGrown) and the same chemfuel yield, but shipped 0..58 °C instead of 50..352 °C: Blastpod's donor band confined it to hot caverns and reaching the Rot's -18.8 °C median would have meant a 78.8 °C stretch, which is a lie, not a tolerance (plant_tolerances.py REPICK_LIMIT 30). Boomshroom is Odyssey stock, so it is present whenever the DLC is."
   }
  ],
- "flora_purged": [],
+ "flora_purged": [
+  {
+   "def": "BMT_Blastpod",
+   "reason": "re-picked out 2026-09-09 (fix wave, flora defect 2): donor band 50..352 °C cannot reach the Rot's -18.8 °C median (sheet §0) and the extension needed (78.8 °C) exceeds the 30 °C re-pick limit. Its role — the §7b blastpod->chemfuel chain — passes to Boomshroom, which is the same asset with a shippable temperature band."
+  }
+ ],
+ "flora_stat_adjustments": [
+  {
+   "def": "BMT_GreyLady",
+   "field": "flammability",
+   "from": 40,
+   "to": 1.0,
+   "authority": "donor-bug clamp, 2026-09-09 fix wave: 40 is 26x the pool maximum (1.5) and would make one ingested marsh fungus the most flammable object on the planet. 1.0 is the pool's ordinary living-plant value. No sheet law changes."
+  }
+ ],
  "fish": {
   "ruling": "No fish — the milk ponds are not-water (§3: reclaimed Sheen; the only 'surface water' on the night shoulder, and none of it is water); anything living in them is fungal and rostered as flora (the marsh fungi). The 54 Twilight Sea shore tiles are open sea owned by terminator_sea.md/the_twilight_deep.md (def-bindings flag: both sheets claim RUT_TwilightSea) — the Rot rules no sea water.",
   "list": []

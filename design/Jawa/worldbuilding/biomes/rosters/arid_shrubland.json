@@ -1216,52 +1216,62 @@
   {
    "def": "Plant_ShrubLow",
    "commonality": 0.9,
-   "law": "the knee-high fuzz stand-in until the fuzz def lands (§1); spaced, low, generic — not Earth-nameable"
+   "law": "the knee-high fuzz stand-in until the fuzz def lands (§1); spaced, low, generic — not Earth-nameable",
+   "note": "ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency)."
   },
   {
    "def": "RG_Plant_AridGrass",
    "commonality": 0.5,
-   "law": "\"short grasses struggling between\" the quincunx (§4)"
+   "law": "\"short grasses struggling between\" the quincunx (§4)",
+   "note": "ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1.3 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency)."
   },
   {
    "def": "Plant_Bush",
    "commonality": 0.3,
-   "law": "generic spaced shrub — quincunx-legal, no thicket"
+   "law": "generic spaced shrub — quincunx-legal, no thicket",
+   "note": "ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency)."
   },
   {
    "def": "Plant_Brambles",
    "commonality": 0.3,
-   "law": "thorny holdout — venomvine-adjacent read (§4 venomvine)"
+   "law": "thorny holdout — venomvine-adjacent read (§4 venomvine)",
+   "note": "ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency)."
   },
   {
    "def": "Plant_Ripthorn",
    "commonality": 0.3,
-   "law": "alien thorn (Biotech), forbids-rather-than-flees flora"
+   "law": "alien thorn (Biotech), forbids-rather-than-flees flora",
+   "note": "ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency)."
   },
   {
    "def": "Plant_HealrootWild",
    "commonality": 0.25,
-   "law": "RimWorld-native fiction herb, not Earth-nameable"
+   "law": "RimWorld-native fiction herb, not Earth-nameable",
+   "note": "ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency)."
   },
   {
    "def": "RG_Plant_Dervish",
    "commonality": 0.2,
-   "law": "alien-named low form"
+   "law": "alien-named low form",
+   "note": "ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency)."
   },
   {
    "def": "RG_Plant_CreepStern",
    "commonality": 0.2,
-   "law": "alien-named low form"
+   "law": "alien-named low form",
+   "note": "ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 0.6 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency)."
   },
   {
    "def": "RG_Plant_CrimsonCushion",
    "commonality": 0.2,
-   "law": "alien-named cushion form"
+   "law": "alien-named cushion form",
+   "note": "ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 0.6 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency)."
   },
   {
    "def": "Plant_Nysyllin_Wild",
    "commonality": 0.22,
-   "law": "SW medicinal herb (nysyllin), wild variant — not a food crop, ban 8 clean"
+   "law": "SW medicinal herb (nysyllin), wild variant — not a food crop, ban 8 clean",
+   "note": "ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency)."
   }
  ],
  "flora_purged": [
@@ -1490,6 +1500,78 @@
    "reason": "Earth-nameable + Grindterra"
   }
  ],
+ "flora_stat_adjustments": [
+  {
+   "def": "Plant_ShrubLow",
+   "field": "flammability",
+   "from": 1.0,
+   "to": 0,
+   "authority": "arid_shrubland.md §6 ban 9 (frozen): 'No flammable living flora. The native plants resist fire greatly and burn only grudgingly.' Interim stand-ins kept because no donor passes; the designed fuzz/venomvine flora is non-flammable by design and this patch retires with them."
+  },
+  {
+   "def": "RG_Plant_AridGrass",
+   "field": "flammability",
+   "from": 1.3,
+   "to": 0,
+   "authority": "arid_shrubland.md §6 ban 9 (frozen): 'No flammable living flora. The native plants resist fire greatly and burn only grudgingly.' Interim stand-ins kept because no donor passes; the designed fuzz/venomvine flora is non-flammable by design and this patch retires with them."
+  },
+  {
+   "def": "Plant_Bush",
+   "field": "flammability",
+   "from": 1.0,
+   "to": 0,
+   "authority": "arid_shrubland.md §6 ban 9 (frozen): 'No flammable living flora. The native plants resist fire greatly and burn only grudgingly.' Interim stand-ins kept because no donor passes; the designed fuzz/venomvine flora is non-flammable by design and this patch retires with them."
+  },
+  {
+   "def": "Plant_Brambles",
+   "field": "flammability",
+   "from": 1.0,
+   "to": 0,
+   "authority": "arid_shrubland.md §6 ban 9 (frozen): 'No flammable living flora. The native plants resist fire greatly and burn only grudgingly.' Interim stand-ins kept because no donor passes; the designed fuzz/venomvine flora is non-flammable by design and this patch retires with them."
+  },
+  {
+   "def": "Plant_Ripthorn",
+   "field": "flammability",
+   "from": 1.0,
+   "to": 0,
+   "authority": "arid_shrubland.md §6 ban 9 (frozen): 'No flammable living flora. The native plants resist fire greatly and burn only grudgingly.' Interim stand-ins kept because no donor passes; the designed fuzz/venomvine flora is non-flammable by design and this patch retires with them."
+  },
+  {
+   "def": "Plant_HealrootWild",
+   "field": "flammability",
+   "from": 1.0,
+   "to": 0,
+   "authority": "arid_shrubland.md §6 ban 9 (frozen): 'No flammable living flora. The native plants resist fire greatly and burn only grudgingly.' Interim stand-ins kept because no donor passes; the designed fuzz/venomvine flora is non-flammable by design and this patch retires with them."
+  },
+  {
+   "def": "RG_Plant_Dervish",
+   "field": "flammability",
+   "from": 1.0,
+   "to": 0,
+   "authority": "arid_shrubland.md §6 ban 9 (frozen): 'No flammable living flora. The native plants resist fire greatly and burn only grudgingly.' Interim stand-ins kept because no donor passes; the designed fuzz/venomvine flora is non-flammable by design and this patch retires with them."
+  },
+  {
+   "def": "RG_Plant_CreepStern",
+   "field": "flammability",
+   "from": 0.6,
+   "to": 0,
+   "authority": "arid_shrubland.md §6 ban 9 (frozen): 'No flammable living flora. The native plants resist fire greatly and burn only grudgingly.' Interim stand-ins kept because no donor passes; the designed fuzz/venomvine flora is non-flammable by design and this patch retires with them."
+  },
+  {
+   "def": "RG_Plant_CrimsonCushion",
+   "field": "flammability",
+   "from": 0.6,
+   "to": 0,
+   "authority": "arid_shrubland.md §6 ban 9 (frozen): 'No flammable living flora. The native plants resist fire greatly and burn only grudgingly.' Interim stand-ins kept because no donor passes; the designed fuzz/venomvine flora is non-flammable by design and this patch retires with them."
+  },
+  {
+   "def": "Plant_Nysyllin_Wild",
+   "field": "flammability",
+   "from": 1.0,
+   "to": 0,
+   "authority": "arid_shrubland.md §6 ban 9 (frozen): 'No flammable living flora. The native plants resist fire greatly and burn only grudgingly.' Interim stand-ins kept because no donor passes; the designed fuzz/venomvine flora is non-flammable by design and this patch retires with them."
+  }
+ ],
  "fish": {
   "ruling": "no fish — the biome's only water is fog on the ground-wind (§5: it does not rain, it does not sprinkle); the def's 37 mapped water/river tiles are margin artifacts belonging to the river and sea sheets, not shrubland standing water",
   "list": []
@@ -1541,8 +1623,8 @@
  "confidence": [
   {
    "claim": "kept flora satisfies ban 9 (no flammable living flora)",
-   "status": "UNMEASURED",
-   "why": "plant_pool.csv carries no flammability column; stat pass owed before XML lands"
+   "status": "MEASURED — VIOLATED, then fixed",
+   "why": "plant_flammability.json (resolved statBases, def dump 2026-09-08) measured all 10 landed rows flammable: 10/10 violated ban 9 (figF3). No Flammability-0 donor fits the flora law, so all 10 are KEPT and zeroed by flora_stat_adjustments above."
   },
   {
    "claim": "venom-armed specials on AA_Murkling/AA_Needlepost/AA_Wildpawn",
