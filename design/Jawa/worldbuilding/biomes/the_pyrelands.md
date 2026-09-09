@@ -82,7 +82,7 @@ after its gardeners died.
 
 **The permitted rain**: rare, bursty, violent, under unusual wind patterns
 (ruled) — and the FireEcology mod already ships its best form:
-`RSW_FE_BlackRain`, the filthy downpour dragged out of a fire's own
+`RM_FE_BlackRain`, the filthy downpour dragged out of a fire's own
 convection column, *"the one time it truly rains here"* — a storm the fire
 makes and the fire dies by. The Dew Belt outlier tiles carry the ordinary
 kind.
@@ -152,13 +152,13 @@ against fuel-as-danger, opposite poles of one design.
 
 ## 7. Uniquely available
 
-- ⭐ **The flame harvest** — scorch-fruit (`RSW_FE_Plant_ScorchFruit` /
-  `RSW_FE_ScorchFruitYield`, already built): sweet, smoky, prized for
+- ⭐ **The flame harvest** — scorch-fruit (`RM_FE_Plant_ScorchFruit` /
+  `RM_FE_ScorchFruitYield`, already built): sweet, smoky, prized for
   having been worth the risk, gone in a day. The player can walk the
   burn-line too — the Tribes notice how you do it.
 - **The herds** — the planet's richest grazing economy: meat, hides, and
   the pastoral game the dryland ladder never allowed.
-- **Fulgurite** (`RSW_FE_Fulgurite`) — lightning-glass, "worthless to sell,
+- **Fulgurite** (`RM_FE_Fulgurite`) — lightning-glass, "worthless to sell,
   satisfying to find": the beachcombing of a thunderstorm country.
 - **Warmth on the hoof** — a furnace-beast herd is a walking hearth;
   caravans route with them toward the cold country.
