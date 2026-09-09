@@ -42,6 +42,7 @@ Absorbed BeastNorm (`mandrake.rsw.swbestiary`) — Law 3 of the beast normalizat
     </li>
   </modDependencies>
   <loadAfter>
+    <li>mandrake.rm.proximityhatch</li>  <!-- Patches/ProximityHatch - supplies CompProperties_ProximityHatch, EGG_PROXIMITY_HATCH_TRIGGER_1 -->
     <li>biomesteam.biomespollutedlands</li>  <!-- carried from SeasWaterline fold 2026-09-09 -->
     <li>van.beasts</li>  <!-- carried from SeasWaterline fold 2026-09-09 -->
     <li>zylle.morevanillabiomes</li>  <!-- carried from SeasWaterline fold 2026-09-09 -->

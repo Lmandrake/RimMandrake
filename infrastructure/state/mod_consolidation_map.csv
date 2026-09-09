@@ -87,7 +87,7 @@ merge-into,RimUtinni/DesertFixtures,RimUtinni/StructureInjectionsRUT,RimUtinni,m
 merge-into,RimUtinni/VaultDungeons,RimUtinni/StructureInjectionsRUT,RimUtinni,mandrake.rut.injections,,MEDIUM,46 KCSG layout defs = structures-domain content; VFE Core dep moves to merged About
 stay,RimUtinni/StructureInjectionsRUT,,RimUtinni,,,HIGH,structures cell RUT (ruling 1 exemplar)
 stay,RimUtinni/UtinniPatches,,RimUtinni,,,HIGH,RUT patches cell; destination for 57 RUT Jawa_Patches files + FactionSlate
-stay,RimUtinni/BirthHatchDemo,,RimUtinni,,,VERIFY,R14 RULED: stays — gated on EGG_PROXIMITY_HATCH_TRIGGER_1 (new item); not campaign content
+stay,RimUtinni/BirthHatchDemo,,RimUtinni,,,VERIFY,R14 RULED: stays — gate EGG_PROXIMITY_HATCH_TRIGGER_1 now CLOSED (mandrake.rm.proximityhatch extracted CompHatcher.Hatch()-reuse + hatcherPawn lesson); retirement itself was NOT approved at the R14 sitting and needs its own owner call, not an automatic flip; not campaign content
 retire,SPLIT_Phase3/Jawa_Patches,,,,,HIGH,tombstone only — 3-way split ALREADY EXECUTED (2385af29 2026-09-04; 0 XML left); remove folder + resolve naming_rename_map SPLIT row
 extract,RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaFactionRoster.xml,RimUtinni/UtinniPatches,RimUtinni,,,VERIFY,already in UtinniPatches; Jawa_Droid_* kinds still mix RSW droid mechanics with FDE faction — Droidworks-boundary call stands
 stay,RimStarWars/JawaVoice/Patches/JawaVoice_animals.xml,,RimStarWars,,,HIGH,generic Jawaese lines; no campaign markers

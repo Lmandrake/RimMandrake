@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.proximityhatch</packageId>
+  <name>RimMandrake: Proximity Hatch</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>EGG_PROXIMITY_HATCH_TRIGGER_1, owner (2026-09-08, verbatim):
+"Still need to dev a trigger for eggs that hatch at you on proximity."
+Adds CompProperties_ProximityHatch, a generic engine comp any egg-laying
+mod can pair with vanilla CompProperties_Hatcher: instead of only ever
+hatching on its own timer, the egg also watches a def-configurable radius
+and forces an early hatch the moment a live pawn walks into range, with the
+hatchling immediately aggroed on whoever tripped it - an ambush/horror beat,
+not a nest you can walk past safely. Fully generalizable (RimMandrake tier):
+this mod does not know or care what creature or campaign an egg belongs to,
+only that the ThingDef also carries CompProperties_Hatcher. See
+RimMandrake.ProximityHatch.CompProximityHatch for the mechanism and why it
+reuses CompHatcher.Hatch() rather than re-implementing pawn generation.
+
+Supersedes the LIVE_BIRTH_AND_HATCH_DEMO_1 dev demo's proof that
+CompHatcher can be triggered and driven programmatically
+(src/RimUtinni/BirthHatchDemo) - that demo stays in the repo per the
+mod_consolidation_map.csv R14 ruling (owner sitting 2026-09-08: retirement
+NOT approved that round, gated on this item), but nothing further needs it:
+this mod is the extraction.</description>
+</ModMetaData>
