@@ -107,3 +107,8 @@ creatures, which biomes) stays in the rosters, not in this mod.
 - Tier auto-attach: census of tiered races matches the tier table against the
   roster size ladder; override list honored both directions.
 - No second size ladder live (Large Pawns thresholds reconciled or absorbed).
+
+## Tier census (fig10, MEASURED 2026-09-09, rostered defs)
+T1 4–8: **18** · T2 8–20: **7** · T3 20+: **3** (RSW_ElderSando, RSW_Reefback,
+RSW_Lanternwhale). Large Pawns at its default thresholds would make **57** defs
+multi-cell (16 at 3x3, 9 at 4x4) — the measured size of the one-ladder reconciliation.
