@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: River Colors</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.rivercolors</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>WORLD_RIVER_COLORS_1 (design/Jawa/worldbuilding/, owner 2026-09-06). Vanilla
+RiverDef has no colour field and WorldDrawLayer_Rivers paints every river on the world
+map with one shared Color32. This patches WorldDrawLayer_Paths.GeneratePaths (the method
+WorldDrawLayer_Rivers already calls once per tile, and which already writes a per-vertex
+mesh colour for the fade-to-transparent path ends) to substitute a colour computed from
+the tile instead of the vanilla flat riverColor: red at the Contagion's headwaters
+(AB_OcularForest), brackish green/brown through the jungle (AB_FeraliskInfestedJungle),
+toxic brown/blue at the dead-river salt termini (Wasteland), interpolated by each river
+network's own elevation span in between. Scoped to WorldDrawLayer_Rivers only (a
+__instance type check in the prefix) so WorldDrawLayer_Roads, which calls the same base
+method, is untouched.
+
+Does NOT touch the propane lake's world-map tint (RUT_PropaneLake) or any other biome's
+world colour: WorldDrawLayer_Terrain colours every tile from
+BiomeDef.DrawMaterial, itself built from the biome's own &lt;texture&gt; field
+(currently World/Biomes/Jawa_SickWater on RUT_PropaneLake per
+src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml) -- that is a texture-art
+lever already in the def, not a C# problem, and out of scope for this pass.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>
