@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave B — Wampa creature port, executing the owner's ruling
+  (STARWARS_DONOR_SUNSET_1, question card 2026-09-02): "Wampa and Acklay: WIRE THEM
+  IN — port both and give them real cast slots ... honoring the original adoption
+  intent that never landed." Wampa was Tier C in the 2026-09-02 dependency census
+  (no functional dependency — its own race/wildBiomes lists only cold biomes
+  (BorealForest/Tundra/ColdBog/IceSheet), none of which Ash'karr has), so this is a
+  DELIBERATE placement, not a natural fit: cast into ExtremeDesert at a low
+  commonality (0.02) as a rare, dangerous nocturnal predator — the "night-side"
+  half of the ruling, read as the harshest/coldest available biome on a desert
+  world rather than a literal day/night spawn mechanic RimWorld does not have.
+
+  Ported from mlie.starwarsanimalcollection's `Wampa` ThingDef/PawnKindDef pair,
+  renamed under the RSW_ tier prefix. The donor's own ThingDef label was the sole
+  bare "Wampa" (capitalized, unlike every other species' lowercase label) — kept as
+  "wampa" here to match convention, not renamed to the defName.
+  ⚠️ PRESERVED DONOR QUIRK, not a porting bug: both the left AND right claw tools
+  link to RSW_SWLeftFingerClaw (the donor never wrote a right-hand tool entry) —
+  cosmetically both attacks reference the same body-part group; left as the donor
+  shipped it per this item's "stat-clone, not a balance pass" scope. Flag for a
+  future code-review pass, same as the Bantha duplicate-horns fix.
+
+  Custom body (RSW_Wampa, RSW_MlieWaveB_Bodies.xml), custom body-part-groups
+  (RSW_SWLeftFingerClaw/RSW_SWRightFingerClaw, RSW_MlieWaveB_BodyParts.xml — only
+  the left one is actually referenced, see above), leather/meat/trophy
+  (RSW_Leather_Wampa, RSW_Reptomammal_Meat, RSW_WampaSkull,
+  RSW_MlieWaveB_Resources.xml), sounds (RSW_Pawn_Wampa_*, already absorbed).
+  `AttackTarget` is a VANILLA Odyssey TrainableDef (confirmed — not a donor def),
+  kept MayRequire-gated as shipped.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Wampa</defName>
+    <label>wampa</label>
+    <description>wampa were a carnivorous, white-furred species which dwelled on the snow-clad planet Hoth.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>2500</MarketValue>
+      <ComfyTemperatureMin>-80</ComfyTemperatureMin>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left leg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>20</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right leg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>20</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>30</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>17</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWLeftFingerClaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>17</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWLeftFingerClaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_Wampa</body>
+      <predator>true</predator>
+      <baseBodySize>6</baseBodySize>
+      <baseHungerRate>0.55</baseHungerRate>
+      <baseHealthScale>7</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <gestationPeriodDays>30</gestationPeriodDays>
+      <lifeExpectancy>40</lifeExpectancy>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.5</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <leatherDef>RSW_Leather_Wampa</leatherDef>
+      <specificMeatDef>RSW_Reptomammal_Meat</specificMeatDef>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.0</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.0</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.0</TemperateForest>
+        <BorealForest>0.04</BorealForest>
+        <Tundra>0.08</Tundra>
+        <ColdBog>0.04</ColdBog>
+        <IceSheet>0.02</IceSheet>
+      </wildBiomes>
+      <nuzzleMtbHours>275</nuzzleMtbHours>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+          <soundWounded>RSW_Pawn_Wampa_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Wampa_Death</soundDeath>
+          <soundCall>RSW_Pawn_Wampa_Call</soundCall>
+          <soundAngry>RSW_Pawn_Wampa_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>BadassAnimal</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Wampa</defName>
+    <label>wampa</label>
+    <race>RSW_Wampa</race>
+    <combatPower>600</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>wampa cub</label>
+        <labelPlural>wampa cubs</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Wampa/Wampa_j</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Wampa/Wampa_j_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Wampa/Wampa</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Wampa/Wampa_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Wampa/Wampa</texPath>
+          <drawSize>3.0</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Wampa/Wampa_Dessicated</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+        <butcherBodyPart>
+          <bodyPartGroup>HeadAttackTool</bodyPartGroup>
+          <thing>RSW_WampaSkull</thing>
+          <allowFemale>true</allowFemale>
+        </butcherBodyPart>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>

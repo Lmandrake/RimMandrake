@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave B — resource ThingDefs the 6 species need: eggs
+  (Dewback, Acklay, Porg, Nuna all lay eggs via CompProperties_EggLayer), leathers
+  and species meats (all 6), and the two butcherBodyPart trophies (RSW_AcklayClaw,
+  RSW_WampaSkull).
+
+  Ported verbatim from mlie.starwarsanimalcollection's
+  ThingDefs_Items/Items_Resource_swanimal_Items.xml, each defName flat-RSW_-prefixed.
+  texPath values are UNCHANGED text (swresource/EggSaurian, swresource/Leather_Fur,
+  etc.) — the shared category textures these leathers/meats/eggs point at were
+  extracted to the same relative Textures/swresource/ path the donor used, so no
+  re-pathing was needed (same pattern as RSW_Bantha's own resources). Several
+  species SHARE a texture (e.g. Reptomammal_Meat serves both Wampa and, in a later
+  wave, Tauntaun) — that sharing is the donor's own, not introduced here.
+
+  RSW_Saurian_Meat/RSW_Crustapod_Meat/RSW_Tough_Meat/RSW_Reptomammal_Meat/
+  RSW_Reptavian_Meat/RSW_Mammavian_Meat parent RSW_SWanimals_RawMeatBase — the
+  abstract base ALREADY renamed under Wave A (RSW_Bantha_Items.xml) rather than a
+  second copy of it; do not reintroduce the bare "SWanimals_RawMeatBase" spelling.
+-->
+<Defs>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggDewbackFertilized</defName>
+    <label>dewback egg (fert.)</label>
+    <description>Fertilized Dewback egg.</description>
+    <graphicData>
+      <texPath>swresource/EggSaurian</texPath>
+      <color>(206,181,140)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>40.0</MarketValue>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>10</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Dewback</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggDewbackUnFertilized</defName>
+    <label>dewback egg (unfert.)</label>
+    <description>An unfertilized dewback egg. It can be eaten raw, but it's much, much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSaurian</texPath>
+      <color>(206,181,140)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>40.0</MarketValue>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggAcklayFertilized</defName>
+    <label>acklay roe (fert.)</label>
+    <description>Fertilized Acklay egg.</description>
+    <graphicData>
+      <texPath>swresource/EggRoe</texPath>
+      <color>(100,175,150)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>80.0</MarketValue>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Acklay</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggAcklayUnFertilized</defName>
+    <label>acklay roe (unfert.)</label>
+    <description>Unfertilized Acklay egg.</description>
+    <graphicData>
+      <texPath>swresource/EggRoe</texPath>
+      <color>(100,175,150)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>80.0</MarketValue>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <ingestible>
+      <joy>0.12</joy>
+      <joyKind>Gluttonous</joyKind>
+      <tasteThought>AteCrustapodRoe</tasteThought>
+      <specialThoughtAsIngredient>AteCrustapodRoe</specialThoughtAsIngredient>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggPorgFertilized</defName>
+    <label>porg egg (fert.)</label>
+    <description>Fertilized Porg egg.</description>
+    <graphicData>
+      <texPath>swresource/EggMammavian</texPath>
+      <color>(245,245,245)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>6</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>4</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Porg</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggPorgUnFertilized</defName>
+    <label>porg egg (unfert.)</label>
+    <description>Unfertilized Porg egg.</description>
+    <graphicData>
+      <texPath>swresource/EggMammavian</texPath>
+      <color>(245,245,245)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>6</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggNunaFertilized</defName>
+    <label>nuna egg (fert.)</label>
+    <description>A fertilized nuna egg. If all goes well, it should hatch into a baby nuna. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggEaster</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>4</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Nuna</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggNunaUnFertilized</defName>
+    <label>nuna egg (unfert.)</label>
+    <description>An unfertilized nuna egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggEaster</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Saurian</defName>
+    <label>saurian hide</label>
+    <description>Tanned, dried, saurian skin. It has an unusual beauty.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Scaled</texPath>
+      <color>(118,134,69)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.4</MarketValue>
+      <StuffPower_Armor_Sharp>1.0</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.50</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Heat>20</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(118,134,69)</color>
+      <commonality>0.1</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+        <Beauty>1.2</Beauty>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Crustapod</defName>
+    <label>crustapod chitin</label>
+    <description>Tanned, dried, crustapod chitin. Durable, but lacks insulation.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Chitin</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(100,175,175)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>3.5</MarketValue>
+      <StuffPower_Armor_Sharp>1.6</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.6</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>20</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>5</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(100,175,175)</color>
+      <commonality>0.025</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_SoftFur</defName>
+    <label>soft fur</label>
+    <description>Tanned, dried, soft fur. Soft, insulating and beautiful.</description>
+    <graphicData>
+      <texPath>swresource/Leather_ShortFur</texPath>
+      <color>(250,250,200)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>5.0</MarketValue>
+      <StuffPower_Insulation_Cold>50</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>25</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(250,250,200)</color>
+      <commonality>0.1</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+        <Beauty>3.0</Beauty>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Wampa</defName>
+    <label>wampa pelt</label>
+    <description>Tanned, dried, wampa pelt. Reasonable protection and keeps you warm.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Fur</texPath>
+      <color>(255,255,255)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>3.4</MarketValue>
+      <StuffPower_Armor_Sharp>1.20</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.20</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>30</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>20</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(255,255,255)</color>
+      <commonality>0.1</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Reptavian</defName>
+    <label>reptavian hide</label>
+    <description>Tanned, dried, skin. It is tough and somewhat beautiful.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Reptavian</texPath>
+      <color>(100,69,134)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.2</MarketValue>
+      <StuffPower_Armor_Sharp>0.9</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.2</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(100,69,134)</color>
+      <commonality>0.1</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+        <Beauty>2.0</Beauty>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Mammavian</defName>
+    <label>mammavian hide</label>
+    <description>Tanned, dried, skin. It is quite insulative.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Mammavian</texPath>
+      <color>(125,125,75)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.2</MarketValue>
+      <StuffPower_Armor_Sharp>0.9</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.4</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>30</StuffPower_Insulation_Cold>
+    </statBases>
+    <stuffProps>
+      <color>(125,125,75)</color>
+      <commonality>0.1</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Saurian_Meat</defName>
+    <label>saurian meat</label>
+    <description>A piece of meat from a saurian.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Saurian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Crustapod_Meat</defName>
+    <label>crustapod meat</label>
+    <description>A piece of meat from a crustapod.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Crustapod</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.5</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Tough_Meat</defName>
+    <label>tough meat</label>
+    <description>A piece of tough, chewy meat from a generally active creature.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Tough</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <tasteThought>AteToughMeat</tasteThought>
+      <specialThoughtAsIngredient>AteToughMeat</specialThoughtAsIngredient>
+      <optimalityOffsetFeedingAnimals>7</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Reptomammal_Meat</defName>
+    <label>reptomammal meat</label>
+    <description>A piece of meat from a reptomammal.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Reptomammal</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Reptavian_Meat</defName>
+    <label>reptavian meat</label>
+    <description>A piece of meat from a reptavian.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Reptavian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Mammavian_Meat</defName>
+    <label>mammavian meat</label>
+    <description>A piece of meat from a mammavian.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Mammavian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="OrganicProductBase">
+    <defName>RSW_AcklayClaw</defName>
+    <label>acklay claw</label>
+    <description>The raw claws of an acklay creature. These claws are noted to be quite delicious when eaten cooked.</description>
+    <graphicData>
+      <texPath>swresource/AnimalProduct/AcklayClaw</texPath>
+    </graphicData>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MarketValue>25.0</MarketValue>
+      <Mass>0.1</Mass>
+      <DeteriorationRate>4</DeteriorationRate>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Nutrition>1.0</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>10</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <joy>0.12</joy>
+      <joyKind>Gluttonous</joyKind>
+      <tasteThought>AteAcklayClaw</tasteThought>
+      <specialThoughtAsIngredient>AteAcklayClaw</specialThoughtAsIngredient>
+      <preferability>RawTasty</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <ingestSound>RawMeat_Eat</ingestSound>
+      <foodType>AnimalProduct</foodType>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
+    <thingCategories>
+      <li>AnimalProductRaw</li>
+    </thingCategories>
+  </ThingDef>
+<ThingDef ParentName="ResourceBase">
+    <defName>RSW_WampaSkull</defName>
+    <label>wampa skull</label>
+    <description>A wampa skull. These fearsome trophies were often displayed to show-off hunting prowess.</description>
+    <graphicData>
+      <texPath>swresource/Trophies/WampaSkull</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>500</MarketValue>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>2</Mass>
+      <Flammability>0.1</Flammability>
+      <DeteriorationRate>0.3</DeteriorationRate>
+    </statBases>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <stackLimit>10</stackLimit>
+    <relicChance>2</relicChance>
+    <comps>
+      <li Class="CompProperties_Styleable">
+      </li>
+    </comps>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>Exotic</li>
+    </tradeTags>
+  </ThingDef></Defs>

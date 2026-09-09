@@ -116,10 +116,25 @@ item's own criteria.
 - [x] All 589 sounds absorbed, offline-validated (owner ruling 2026-09-02;
       see the 2026-09-02 sound-absorption pass below). Live cold-load proof
       (clips actually play, no missing-audio errors) still owed.
-- [ ] Wave A (Bantha + Sarlacc family) absorbed, art extracted and
-      re-pathed, offline-validated.
-- [ ] Wave B (next 8 highest-presence species) absorbed.
-- [ ] A full non-scan-grade defName sweep run before Wave C is scoped.
+- [x] Wave A (Bantha) absorbed, art extracted and re-pathed, offline-validated
+      (2026-09-02) — **but not actually wired into the live cast until this
+      pass** (see 2026-09-09 below). Sarlacc turned out NOT to be a creature
+      (no ThingDef/PawnKindDef pair exists for it in Mlie at all — it is an
+      Odyssey-gated LandmarkDef/TileMutatorDef/GenStepDef building system,
+      SW_Buildings_Natural.xml) and was dropped from Wave A's scope, recorded
+      then, unchanged here.
+- [~] Wave B: 5 of the originally-named 8 absorbed this pass (Dewback,
+      Vulptex, Porg, Nuna — Tier A wild-spawns — plus Acklay via the owner's
+      Wampa/Acklay ruling). Wampa also absorbed (7th of this wave's 8,
+      likewise via the ruling). Reek, Tauntaun, Nexu **NOT ported**: re-
+      verified against the LIVE `BiomeCast_Ashkarr.xml` and `cast_assignment.
+      csv` this pass (not the stale 2026-09-02 census) and found ABSENT from
+      both — dropped in a later biome-authoring session, no longer a measured
+      dependency. See "2026-09-09 (FOUNDRY)" below for the full account.
+- [ ] A full non-scan-grade defName sweep run before Wave C is scoped —
+      MORE urgent now: this pass found the 2026-09-02 census already stale
+      (3 species silently dropped from the live cast since), so the ~135
+      "depended-on" baseline itself needs re-measuring, not just extending.
 - [ ] Wave C (remainder) absorbed.
 - [ ] Our own 3 Mlie-touching patch files repointed and confirmed resolving.
 - [ ] A full-list cold load with Mlie disabled proves clean (separate,
@@ -247,3 +262,156 @@ resolves by basename). Deleted the WAV originals after confirming the OGG
 set. **Total footprint: 95 MB → 13 MB** (589 files, ~8x reduction).
 `validate_patch.py`: 0 errors/0 warnings. Redeployed with `--prune` to also
 remove the stale WAVs from the game's own `Mods/` copy, not just the repo.
+
+## 2026-09-09 (FOUNDRY) — license verification, Wave A wiring gap fixed, Wave B batch, both rulings executed
+
+**License, verified directly, not re-trusted from the earlier "unverified" flag**:
+confirmed the ACTIVE donor folder is `3497316713` (packageId
+`Mlie.StarWarsAnimalCollection`, matching the 2026-09-02 census — a second
+workshop folder, `3557220601`, is a different mod, `lee.theforce.standalone`,
+correctly excluded then). Fetched
+`https://github.com/emipa606/StarWarsAnimalCollection` (Mlie's own
+maintained "Continued" repo) and read the raw `LICENSE.md` directly — first
+line "MIT License", standard MIT text, 2018 copyright. **MIT confirmed
+first-hand.** Art and defs are legally portable; this changes nothing about
+the porting *plan* (already assumed MIT going in) but removes the standing
+"unverified" caveat from the record.
+
+**Found and fixed: Wave A's own wiring gap.** `RSW_Bantha`'s ThingDef/
+PawnKindDef have existed since 2026-09-02, but `BiomeCast_Ashkarr.xml` (both
+`design/Jawa/fauna/` and the deployed `src/RimUtinni/UtinniPatches/Patches/`
+copy) and `cast_assignment.csv` still named the bare donor `Bantha` in all 3
+of its cast slots (AridShrubland 0.5, Desert 0.8, ZBiome_DesertOasis 0.1) —
+meaning the wild Bantha population has been Mlie's donor def this whole time,
+not our own port, and "absorbed creatures spawn" (this item's own Wave A
+verify bar) was never actually true. Not a blocker while Mlie stays active
+(same creature, same stats — cosmetically nothing changed), but a real gap:
+retiring Mlie without this fix would have silently deleted Bantha entirely.
+Fixed alongside this wave's own renames, same file, same mechanism, near-zero
+marginal cost — see gating caveat below for why the `MayRequire` on these
+lines is still `mlie.starwarsanimalcollection`, not our own mod.
+
+**Precise counts.**
+
+| | before this pass | after this pass |
+|---|---|---|
+| creature species with an authored `ThingDef`/`PawnKindDef` port | 1 (Bantha) | 7 (Bantha, Dewback, Vulptex, Porg, Nuna, Wampa, Acklay) |
+| of those, actually **wired into the live cast** (not just existing as a def) | 0 (Bantha's port existed but its 3 cast slots still named the bare donor) | 7 |
+| against the original ~135 "depended-on" (Tier A+B) tally specifically | 1 | 5 (Bantha, Dewback, Vulptex, Porg, Nuna — all Tier A/B) |
+| Tier-C species wired in anyway, by direct owner ruling (outside the 135 tally) | 0 | 2 (Wampa, Acklay) |
+| remaining against the 135 tally | 134 | **at least 130** (135 − 5) — see caveat below, this number is a floor, not settled |
+
+**⚠️ The 135 baseline is now known-stale, not just extended.** Wave B's
+original plan (2026-09-02) named 8 species by "next tier by live presence":
+Reek, Acklay, Dewback, Porg, Nexu, Wampa, Vulptex, Tauntaun. Re-checking
+against the CURRENT live `BiomeCast_Ashkarr.xml` and `cast_assignment.csv`
+(a probe, not the full non-scan-grade sweep this item's own criteria already
+calls for) found **Reek, Tauntaun and Nexu absent from both** — no cast
+entry, no CSV row, anywhere. They were not cut by Cherry Picker or any
+tracked mechanism found this pass; they simply are not part of the live
+biome design any more, most likely dropped during one of the several
+biome-authoring sessions between 2026-09-02 and now ("Biome sheets are a
+conversation loop" — the owner and BENCH iterate these per-biome, live, off
+this item's own record). **Not ported this pass** — porting a species with
+zero current dependency would be exactly the padded-cast mistake
+`WILD_ANIMALS_PADDED_LISTS_1` already ruled against. Recorded in
+`mlie_creature_defname_map_wave_b.json`'s `not_ported_this_wave` block.
+Consequence: whoever scopes Wave C should NOT trust the 135 figure without
+re-running the full sweep first — it may already be lower (species quietly
+dropped) as easily as it needs extending (a full sweep was always scan-grade
+before this pass, per the original survey's own caveat).
+
+**Batch ported, mechanism**: extracted each species' `ThingDef`+`PawnKindDef`
+pair directly from the donor's `Races_Animal_SW.xml` (workshop folder
+`3497316713`), plus every non-vanilla dependency actually used — 3 custom
+`BodyDef`s (Dewback, Wampa, Acklay; Vulptex/Porg/Nuna use vanilla Core
+bodies), the WHOLE `BodyParts_StarWars.xml` (40 `BodyPartDef`/
+`BodyPartGroupDef`s — small and self-contained, ported in full so Wave C
+species reusing the same tail/claw/horn/tentacle parts need no repeat), 2
+Odyssey `AbilityDef`/`HediffDef`/`TrainableDef` trios (`SW_Rampage` for
+Acklay, `SW_Spur` for Dewback), and 22 resource `ThingDef`s (eggs, leathers,
+species meats, 2 butcher trophies). Every `defName` flat-`RSW_`-prefixed,
+same convention as the sound wave and Wave A. Sounds for all 6 species were
+already absorbed 2026-09-02 (`RSW_Pawn_<Species>_{Wounded,Death,Call,Angry}`)
+— confirmed present, wired, not re-done.
+
+Art extracted via `extract_bundle.py` from the same AssetBundle the sound
+wave already proved out (184 PNGs pulled, 19 unused/vestigial trophy files
+and 12 unused `AcklayW`/`DewbackPack` variants — extracted then found
+unreferenced by any ported def — deleted rather than kept as clutter).
+`--keep-paths` lowercases every path segment; renamed to match each def's own
+`texPath` casing (`validate_patch.py` catches this as a WARN, not silently —
+fixed all of them, 0 warnings remaining) rather than leaving a
+Windows-only-safe mismatch in a Linux-tracked repo.
+
+**Two full offline-validation passes, both clean**: `validate_patch.py`
+against the new defs (0 errors/0 warnings once the case fixes and one missing
+texture pair — `Leather_Reptavian`/`Leather_Mammavian`, extracted but never
+copied into the repo's `Textures/` tree, caught by the validator itself — were
+fixed) and against the patched `BiomeCast_Ashkarr.xml` (0 errors; the one
+warning present is pre-existing, unrelated to this pass — a Comigo's Greater
+Swamps xpath ambiguity).
+
+**Both owner rulings executed**:
+- **Nuna**: the `RSW_` prefix convention already produces a name distinct
+  from vanilla Core's bare `Nuna`, so "port under a new name" needed no
+  special-casing beyond the standard rename. "Keep both" is executed by
+  ADDING `RSW_Nuna` alongside every one of the 5 existing bare `Nuna` cast
+  entries (AridShrubland, BiomeCypreJungle, COMIGO_GreaterSwamp_Tropical,
+  Desert, ZBiome_Grasslands), same commonality as the row it sits beside,
+  rather than replacing vanilla's slot.
+- **Wampa + Acklay wired in with real cast slots**: both were Tier C (zero
+  functional dependency, cited in `required_mods.md` as adoption reasons but
+  never actually cast) — ported fully (defs, art, sounds already absorbed)
+  and given NEW cast entries that did not exist before. Wampa → ExtremeDesert
+  at 0.02 (the "night-side" half of the ruling, read as the harshest/coldest
+  available Ash'karr biome rather than a literal day/night mechanic RimWorld
+  does not have — Wampa's own donor `wildBiomes` lists only cold biomes
+  Ash'karr has none of, so this is a deliberate placement, not a natural
+  fit, and said so in the def's own header comment). Acklay → Scarlands at
+  0.05 ("wherever fits" — an armored arena predator reads naturally against
+  Scarlands' war-wreckage/weapon-descendant register).
+
+**Gating caveat, left deliberately imprecise, not silently**: the renamed
+cast entries (`RSW_Bantha`, `RSW_Dewback`, `RSW_Vulptex`, `RSW_Porg`) still
+sit inside their pre-existing `MayRequire="mlie.starwarsanimalcollection"`
+`PatchOperationAdd` blocks rather than a `mandrake.rsw.swbestiary`-gated one.
+`gen_cast_patch.py`'s per-animal donor gating reads the packageId attribution
+from the newest def-dump CAPTURE — no capture has ever seen these `RSW_`
+defNames, so a safe regen right now would SKIP them outright (the `PAWNKINDS`
+gate: a defName absent from every capture is treated as "not a PawnKindDef,
+cannot resolve"). Hand-editing the deployed XML directly (not running the
+generator) was therefore the only safe path this pass — correct **today**,
+since this item's own scope keeps Mlie active until every wave lands, but
+technically wrong once Mlie is gone. New entries (`RSW_Nuna` additions,
+`RSW_Wampa`, `RSW_Acklay`) were gated on `mandrake.rsw.swbestiary` directly,
+since there was no existing block to reuse for them. **Whoever runs the next
+safe `gen_cast_patch.py` regen (once a post-deployment capture exists) will
+correct every renamed entry's gating in one pass** — do not hand-patch this
+file again before then; see `mlie_creature_defname_map_wave_b.json`'s
+`gating_caveat` for the full mechanism.
+
+**Deployed**: `deploy_custom_mods.py --mod SWBestiary --apply` — 166 files
+written clean. One pre-existing, unrelated file (`RimMandrakeLivestockRSW.dll`)
+failed to write because the game process has it locked (expected — a
+companion DLL cannot be written while the game runs, and this session was
+told not to touch the live bridge). Not enabled/disabled in `ModsConfig.xml`
+either way (SWBestiary is already active in the FULL campaign list; the
+currently-loaded `ModsConfig.xml` is a minimal test list, unrelated to this
+mod's own activation state). **No live cold-load proof yet** — owed to the
+next natural restart, per this item's own established pattern (no dedicated
+restart triggered this pass, matching Wave 1/sound-wave precedent).
+
+**Not done, explicitly**: Fambaa (the other Tier B species, patched onto
+`SeasWaterline`) — not touched this pass, still rides the donor. The full
+non-scan-grade defName sweep this item's own criteria requires before Wave C
+— MORE urgent now given the Reek/Tauntaun/Nexu drift found above. The 3
+Mlie-touching patch files (`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+`AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`) — not
+checked this pass; still owed regardless of wave progress.
+
+**Remaining, precisely**: at minimum 130 of the original ~135-species tally
+(135 − 5 confirmed ported+wired this pass: Bantha, Dewback, Vulptex, Porg,
+Nuna), plus Fambaa, plus whatever the overdue full sweep reveals once run —
+the true remaining count is UNMEASURED until that sweep happens, not 130
+exactly. Item stays `doing`.

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave B — special-trainable abilities Acklay (rampage) and
+  Dewback (spur) need. Both are Odyssey-DLC animal-command abilities (MayRequire
+  preserved from the donor); the game is whole without Odyssey, these two creatures
+  just lose the special-trainable gizmo, same as any vanilla Odyssey-gated animal.
+
+  Ported verbatim from mlie.starwarsanimalcollection's AbilityDefs/SW_Abilities.xml
+  (SW_Rampage and SW_Spur, each an AbilityDef + HediffDef + TrainableDef trio sharing
+  one defName in the donor) — renamed RSW_SW_Rampage / RSW_SW_Spur throughout. The
+  ability comps (CompProperties_AbilityRequiresTrainable, _AbilityGiveHediff,
+  _AbilityGiveMentalState, _AbilityEffecterOnCaster), soundCast (now
+  RSW_Ability_Beserk / RSW_Ability_Spur — already absorbed in the 589-sound wave,
+  2026-09-02), effecterDef (WarTrumpet, vanilla), fleckDef (PsycastPsychicEffect,
+  vanilla) and stateDef (Manhunter, vanilla) are all Core/Odyssey or already-ported —
+  nothing here still points at the donor.
+-->
+<Defs>
+<AbilityDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_Rampage</defName>
+    <label>rampage</label>
+    <description>The creatures goes into a heightened physical state fueled by adrenaline. This strengthens them past normal limits but makes them go manhunter and will attack anyone. This state will last for 3 hours.</description>
+    <iconPath>UI/Abilities/Ability_AnimalRampage</iconPath>
+    <cooldownTicksRange>60000</cooldownTicksRange>
+    <!-- 24 hours -->
+    <targetRequired>false</targetRequired>
+    <displayOrder>200</displayOrder>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <statBases>
+      <Ability_Duration>120</Ability_Duration>
+    </statBases>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <warmupTime>0.5</warmupTime>
+      <soundCast>RSW_Ability_Beserk</soundCast>
+      <nonInterruptingSelfCast>true</nonInterruptingSelfCast>
+      <targetParams>
+        <canTargetSelf>True</canTargetSelf>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilityRequiresTrainable">
+        <trainableDef>RSW_SW_Rampage</trainableDef>
+        <aiCanCastWithoutTrainable>true</aiCanCastWithoutTrainable>
+      </li>
+      <li Class="CompProperties_AbilityEffecterOnCaster">
+        <effecterDef>WarTrumpet</effecterDef>
+        <maintainTicks>20</maintainTicks>
+      </li>
+      <li Class="CompProperties_AbilityGiveMentalState">
+        <compClass>CompAbilityEffect_GiveMentalState</compClass>
+        <stateDef>Manhunter</stateDef>
+      </li>
+      <li Class="CompProperties_AbilityGiveHediff">
+        <compClass>CompAbilityEffect_GiveHediff</compClass>
+        <hediffDef>RSW_SW_Rampage</hediffDef>
+        <onlyApplyToSelf>True</onlyApplyToSelf>
+        <replaceExisting>true</replaceExisting>
+      </li>
+    </comps>
+  </AbilityDef>
+<HediffDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_Rampage</defName>
+    <label>rampage</label>
+    <description>Reverted by fierce instincts this creature has driven itself into a adrenlaline fuelled manhunting rage. Every muscle is at peak performance and it has become numb to damage for a short time.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <showRemainingTime>True</showRemainingTime>
+      </li>
+      <li Class="HediffCompProperties_DisappearsOnDeath" />
+    </comps>
+    <stages>
+      <li>
+        <painFactor>0.1</painFactor>
+        <capMods>
+          <li>
+            <capacity>Sight</capacity>
+            <offset>0.5</offset>
+          </li>
+          <li>
+            <capacity>Hearing</capacity>
+            <offset>0.5</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>0.5</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>0.5</offset>
+          </li>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>0.5</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <isBad>false</isBad>
+  </HediffDef>
+<TrainableDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_Rampage</defName>
+    <label>rampage</label>
+    <description>Command the creature to go into a heightened physical state.</description>
+    <listPriority>0</listPriority>
+    <difficulty>200</difficulty>
+    <steps>2</steps>
+    <specialTrainable>true</specialTrainable>
+    <enablesAbility>RSW_SW_Rampage</enablesAbility>
+  </TrainableDef>
+<AbilityDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_Spur</defName>
+    <label>spur</label>
+    <description>The creatures goes into a heightened physical state fueled by adrenaline. This makes them faster for approximately 3 hours.</description>
+    <iconPath>UI/Abilities/Ability_AnimalSpur</iconPath>
+    <cooldownTicksRange>60000</cooldownTicksRange>
+    <!-- 24 hours -->
+    <targetRequired>false</targetRequired>
+    <displayOrder>200</displayOrder>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <statBases>
+      <Ability_Duration>280</Ability_Duration>
+    </statBases>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <warmupTime>0.5</warmupTime>
+      <soundCast>RSW_Ability_Spur</soundCast>
+      <nonInterruptingSelfCast>true</nonInterruptingSelfCast>
+      <targetParams>
+        <canTargetSelf>True</canTargetSelf>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilityRequiresTrainable">
+        <trainableDef>RSW_SW_Spur</trainableDef>
+        <aiCanCastWithoutTrainable>true</aiCanCastWithoutTrainable>
+      </li>
+      <li Class="CompProperties_AbilityFleckOnTarget">
+        <fleckDef>PsycastPsychicEffect</fleckDef>
+      </li>
+      <li Class="CompProperties_AbilityGiveHediff">
+        <compClass>CompAbilityEffect_GiveHediff</compClass>
+        <hediffDef>RSW_SW_Spur</hediffDef>
+        <onlyApplyToSelf>True</onlyApplyToSelf>
+        <replaceExisting>true</replaceExisting>
+      </li>
+    </comps>
+  </AbilityDef>
+<HediffDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_Spur</defName>
+    <label>spurred</label>
+    <description>Triggering it's own "fight or fligh" instincts this creature has driven itself into a adrenlaline fuelled rush. It will move and breath twice as effectively as usual.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <showRemainingTime>True</showRemainingTime>
+      </li>
+      <li Class="HediffCompProperties_DisappearsOnDeath" />
+    </comps>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>1.0</offset>
+          </li>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>1.0</offset>
+          </li>
+        </capMods>
+        <statOffsets>
+          <CaravanRidingSpeedFactor>2.0</CaravanRidingSpeedFactor>
+        </statOffsets>
+      </li>
+    </stages>
+    <isBad>false</isBad>
+  </HediffDef>
+<TrainableDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_Spur</defName>
+    <label>spur</label>
+    <description>Command the creature to go into a heightened physical state making it move faster for a while.</description>
+    <listPriority>0</listPriority>
+    <difficulty>200</difficulty>
+    <steps>2</steps>
+    <specialTrainable>true</specialTrainable>
+    <enablesAbility>RSW_SW_Spur</enablesAbility>
+  </TrainableDef></Defs>

@@ -38,7 +38,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
       <value>
-        <Bantha>0.8</Bantha> <!-- bantha - huge-herd, adjust-keep -->
+        <RSW_Bantha>0.8</RSW_Bantha> <!-- bantha - huge-herd, adjust-keep; MLIE_FAUNA_ABSORPTION_1 Wave A: repointed to our own port -->
         <Kreetle>0.8</Kreetle> <!-- kreetle - ambush-small, keep -->
         <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
         <Shyrack>0.6</Shyrack> <!-- shyrack - ambush-flier, keep -->
@@ -65,6 +65,7 @@
         <Jakobeast>0.2</Jakobeast> <!-- jakobeast - herd, import -->
         <Nerf>0.2</Nerf> <!-- nerf - herd, keep -->
         <Nuna>0.2</Nuna> <!-- nuna - herd-small, keep -->
+        <RSW_Nuna>0.2</RSW_Nuna> <!-- MLIE_FAUNA_ABSORPTION_1 Wave B: Nuna collision, owner ruling 2026-09-02 - port kept alongside vanilla Nuna -->
         <Shaak>0.2</Shaak> <!-- shaak - herd, import -->
         <TeeMuss>0.2</TeeMuss> <!-- tee muss - herd, import -->
         <Worrt>0.2</Worrt> <!-- worrt - ambush-small, keep -->
@@ -178,12 +179,13 @@
         <Kybuck>0.6</Kybuck> <!-- kybuck - medium-runner, keep -->
         <Massiff>0.6</Massiff> <!-- massiff - medium-interface, keep -->
         <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
-        <Bantha>0.5</Bantha> <!-- bantha - huge-grazer, keep -->
+        <RSW_Bantha>0.5</RSW_Bantha> <!-- bantha - huge-grazer, keep; MLIE_FAUNA_ABSORPTION_1 Wave A: repointed to our own port -->
         <Pufferpig>0.5</Pufferpig> <!-- Pufferpig - small-runway, keep -->
         <Anooba>0.4</Anooba> <!-- anooba - medium-interface, adjust-keep -->
         <Corinathoth>0.4</Corinathoth> <!-- corinathoth - huge-grazer, keep -->
         <Gizka>0.4</Gizka> <!-- gizka - small-runway, keep -->
         <Nuna>0.4</Nuna> <!-- nuna - small-runway, keep -->
+        <RSW_Nuna>0.4</RSW_Nuna> <!-- MLIE_FAUNA_ABSORPTION_1 Wave B: Nuna collision, owner ruling 2026-09-02 - port kept alongside vanilla Nuna -->
         <WompRat>0.4</WompRat> <!-- womp rat - ship-vermin, import -->
         <Worrt>0.4</Worrt> <!-- worrt - small-runway, keep -->
         <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
@@ -195,9 +197,9 @@
         <Pikobis>0.1</Pikobis> <!-- pikobis - medium-runner, keep -->
         <Convor>0.08</Convor> <!-- convor - flier-interface, keep -->
         <Skalder>0.08</Skalder> <!-- skalder - huge-grazer, keep -->
-        <Vulptex>0.08</Vulptex> <!-- vulptex - small-runway, keep -->
+        <RSW_Vulptex>0.08</RSW_Vulptex> <!-- vulptex - small-runway, keep; MLIE_FAUNA_ABSORPTION_1 Wave B: repointed to our own port -->
         <FeralNerf>0.04</FeralNerf> <!-- feral nerf - medium-runner, keep -->
-        <Porg>0.04</Porg> <!-- porg - small-runway, keep -->
+        <RSW_Porg>0.04</RSW_Porg> <!-- porg - small-runway, keep; MLIE_FAUNA_ABSORPTION_1 Wave B: repointed to our own port -->
         <Voorpak>0.02</Voorpak> <!-- voorpak - small-runway, keep -->
         <KowakianMonkeyLizard>0.01</KowakianMonkeyLizard> <!-- kowakian monkey-lizard - small-runway, keep -->
       </value>
@@ -364,6 +366,7 @@
         <Klorslug>0.4</Klorslug> <!-- k'lor'slug - gnawer, keep -->
         <Mott>0.4</Mott> <!-- mott - brake, import -->
         <Nuna>0.4</Nuna> <!-- nuna - brake, import -->
+        <RSW_Nuna>0.4</RSW_Nuna> <!-- MLIE_FAUNA_ABSORPTION_1 Wave B: Nuna collision, owner ruling 2026-09-02 - port kept alongside vanilla Nuna -->
         <Convor>0.3</Convor> <!-- convor - flier, import -->
         <Falumpaset>0.3</Falumpaset> <!-- falumpaset - brake, import -->
         <Gelagrub>0.3</Gelagrub> <!-- gelagrub - gnawer, import -->
@@ -471,6 +474,16 @@
         <AA_Dunealisk>0.1</AA_Dunealisk> <!-- dunealisk - giant-subsurface, import -->
         <AA_BoulderMit>0.025</AA_BoulderMit> <!-- bouldermit - giant, keep -->
         <AA_TetraSlug>0.0005</AA_TetraSlug> <!-- tetra slug - giant, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+      <value>
+        <RSW_Wampa>0.02</RSW_Wampa> <!-- wampa - apex-nocturnal, MLIE_FAUNA_ABSORPTION_1 Wave B: owner ruling 2026-09-02 (wire in, "night-side") - Wampa has no natural desert wildBiomes fit; placed here as ExtremeDesert's rare, dangerous cold-hour predator -->
       </value>
     </match>
   </Operation>
@@ -801,6 +814,7 @@
         <Urusai>0.5</Urusai> <!-- urusai - crown-flier, keep -->
         <Gelagrub>0.4</Gelagrub> <!-- gelagrub - crown-grazer, adjust-keep -->
         <Nuna>0.4</Nuna> <!-- nuna - grazer, keep -->
+        <RSW_Nuna>0.4</RSW_Nuna> <!-- MLIE_FAUNA_ABSORPTION_1 Wave B: Nuna collision, owner ruling 2026-09-02 - port kept alongside vanilla Nuna -->
         <Convor>0.3</Convor> <!-- convor - crown-flier, import -->
         <LongtailGorg>0.3</LongtailGorg> <!-- longtail gorg - wait-ambush, keep -->
         <Whisperbird>0.3</Whisperbird> <!-- whisperbird - crown-flier, import -->
@@ -896,10 +910,10 @@
       <value>
         <Ollopom>0.7</Ollopom> <!-- ollopom - small-resident, keep -->
         <Fanback>0.5</Fanback> <!-- fanback - large-resident, adjust-keep -->
-        <Dewback>0.4</Dewback> <!-- dewback - large-resident, import -->
+        <RSW_Dewback>0.4</RSW_Dewback> <!-- dewback - large-resident, import; MLIE_FAUNA_ABSORPTION_1 Wave B: repointed to our own port -->
         <Boma>0.15</Boma> <!-- boma - large-margin, keep -->
         <Dactillion>0.15</Dactillion> <!-- dactillion - flier-mount, keep -->
-        <Bantha>0.1</Bantha> <!-- bantha - pilgrim, import -->
+        <RSW_Bantha>0.1</RSW_Bantha> <!-- bantha - pilgrim, import; MLIE_FAUNA_ABSORPTION_1 Wave A: repointed to our own port -->
         <Eopie>0.1</Eopie> <!-- eopie - pilgrim, import -->
         <Jamel>0.1</Jamel> <!-- Jamel - pilgrim, import -->
       </value>
@@ -1028,6 +1042,16 @@
     </match>
   </Operation>
 
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
+    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+      <value>
+        <RSW_Acklay>0.05</RSW_Acklay> <!-- acklay - apex-predator, MLIE_FAUNA_ABSORPTION_1 Wave B: owner ruling 2026-09-02 (wire in, "wherever fits") - armored arena predator fits the war-wreckage register -->
+      </value>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
     <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
@@ -1048,6 +1072,7 @@
         <Zeer>0.6</Zeer> <!-- zeer - large-herd, adjust-keep -->
         <Iriaz>0.5</Iriaz> <!-- iriaz - small-herd, import -->
         <Nuna>0.5</Nuna> <!-- nuna - small, adjust-keep -->
+        <RSW_Nuna>0.5</RSW_Nuna> <!-- MLIE_FAUNA_ABSORPTION_1 Wave B: Nuna collision, owner ruling 2026-09-02 - port kept alongside vanilla Nuna -->
         <Anooba>0.35</Anooba> <!-- anooba - medium-predator, import -->
         <Gizka>0.3</Gizka> <!-- gizka - grain, adjust-keep -->
         <Orray>0.25</Orray> <!-- orray - medium, import -->

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave B — Nuna creature port, executing the owner's ruling
+  (STARWARS_DONOR_SUNSET_1, question card 2026-09-02): "Nuna collision: port Mlie's
+  under a NEW name and keep both — Mlie's version becomes a distinct ... species
+  alongside vanilla Core's Nuna; the collision dissolves in the port." The RSW_
+  tier prefix already gives a distinct defName (RSW_Nuna vs. vanilla Core's bare
+  "Nuna" — no rename-collision to solve beyond the standard convention), so "keep
+  both" is executed by ADDING RSW_Nuna alongside every existing bare "Nuna" cast
+  entry in BiomeCast_Ashkarr.xml (AridShrubland, BiomeCypreJungle,
+  COMIGO_GreaterSwamp_Tropical, Desert, ZBiome_Grasslands) at the same commonality,
+  rather than replacing the vanilla bird's slot.
+
+  Ported from mlie.starwarsanimalcollection's `Nuna` ThingDef/PawnKindDef pair,
+  renamed under the RSW_ tier prefix. Vanilla Core body (Bird) — no donor BodyDef
+  needed. Egg/leather/meat (RSW_EggNuna{,Un}Fertilized, RSW_Leather_Reptavian,
+  RSW_Reptavian_Meat, RSW_MlieWaveB_Resources.xml), sounds (RSW_Pawn_Nuna_*,
+  already absorbed; chick stage keeps vanilla Pawn_Chick_Call). The
+  `PathfindingFramework.MovementExtension` modExtension (MayRequire=
+  "pathfinding.framework", amphibious movement) is kept verbatim and gated — the
+  game is whole without that framework, Nuna just loses the swamp-movement bonus.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Nuna</defName>
+    <label>nuna</label>
+    <description>Nuna (commonly called 'swamp turkeys'), were reptavian gamebirds native to the planet Naboo. Nuna were diminutive bipeds, mostly covered in scaly skin and sporting a distinctive dorsal ridge. They possessed a notably prominent jutting jaw and two large wattles hanging from either side of their mouths. They were transported as livestock as well as a game animal, allowing for wild populations on other worlds.</description>
+    <statBases>
+      <MoveSpeed>3</MoveSpeed>
+      <MarketValue>100</MarketValue>
+      <ComfyTemperatureMin>-8</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>6</FilthRate>
+      <Wildness>0.2</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggNunaUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggNunaFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>1.5</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>1.0</eggProgressUnfertilizedMax>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+    </comps>
+    <modExtensions>
+      <li MayRequire="pathfinding.framework" Class="PathfindingFramework.MovementExtension">
+        <movementDef>PF_Movement_Amphibious</movementDef>
+      </li>
+    </modExtensions>
+    <race>
+      <body>Bird</body>
+      <baseBodySize>0.6</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>RSW_Leather_Reptavian</leatherDef>
+      <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
+      <herdAnimal>true</herdAnimal>
+      <roamMtbDays>6</roamMtbDays>
+      <trainability>None</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <lifeExpectancy>6</lifeExpectancy>
+      <wildBiomes>
+        <AridShrubland>0.4</AridShrubland>
+        <Desert>0.01</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.9</TropicalSwamp>
+        <TemperateSwamp>0.9</TemperateSwamp>
+        <TemperateForest>0.5</TemperateForest>
+        <BorealForest>0.04</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.01</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Chick_Call</soundWounded>
+          <soundDeath>Pawn_Chick_Call</soundDeath>
+          <soundCall>Pawn_Chick_Call</soundCall>
+          <soundAngry>Pawn_Chick_Call</soundAngry>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.12</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>RSW_Pawn_Nuna_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Nuna_Death</soundDeath>
+          <soundCall>RSW_Pawn_Nuna_Call</soundCall>
+          <soundAngry>RSW_Pawn_Nuna_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Nuna</defName>
+    <label>nuna</label>
+    <labelPlural>nunas</labelPlural>
+    <race>RSW_Nuna</race>
+    <combatPower>50</combatPower>
+    <ecoSystemWeight>0.50</ecoSystemWeight>
+    <wildGroupSize>2~6</wildGroupSize>
+    <labelMale>nuna tom</labelMale>
+    <labelFemale>nuna hen</labelFemale>
+    <lifeStages>
+      <li>
+        <label>nuna chick</label>
+        <labelPlural>nuna chicks</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Nuna/Nuna_f</texPath>
+          <drawSize>0.50</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Nuna/Nuna_Dessicated</texPath>
+          <drawSize>0.50</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Nuna/Nuna_f</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Nuna/Nuna_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Nuna/Nuna_m</texPath>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Nuna/Nuna_f</texPath>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Nuna/Nuna_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+        <femaleDessicatedBodyGraphicData>
+          <texPath>swanimals/Nuna/Nuna_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </femaleDessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>
