@@ -192,3 +192,12 @@ rosters refilled every touched biome, and GRimStoneCrab (Miasma) — a sixth twi
 original spec missed — was caught and evicted by this pass. Note for FOUNDRY: the
 deployed cast now lives at `src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml`;
 that item's verify snippet still greps the old src/Jawa path and would false-pass.
+
+## Deploy status (2026-09-09, end of the solo pass)
+REPO COMPLETE, GAME COPY NOT UPDATED — deliberately. The deploy plan for
+UtinniPatches is entangled with the other window's in-flight ownership wave (their
+new RUT_Sump/TheForge/TheRot/Umbra/Wasteland/Webwork/WeepingStones defs +
+GeothermalDensityField + SandFishing sit in the same `+` list) and the game is
+RUNNING under their session. Applying would ship their mid-work. The assignment
+patches ride the NEXT load round's batched deploy (rimworld-load-round protocol);
+nothing here needs the game before the owner's verdict sitting anyway.
