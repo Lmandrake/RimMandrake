@@ -28,3 +28,4 @@
 - Unpaused colonists treat bridge-printed furniture as theirs to optimize: they MINIFIED both gravship fuel tanks and hauled them to a corner stockpile during a 90k-tick blind run; §4b applies to friendly pawns too (2026-09-09).
 - rimworld/get_cell_info can return empty things[] on cells occupied by buildings AND items (the grav engine was invisible to it); jawa/list_things with defName+rect is the existence instrument (2026-09-09).
 - rimworld/click_cell dispatches a real click but may select NOTHING (selection unchanged/stale); rimworld/clear_selection works; verify selection with get_selection_semantics, never with the gizmo list alone (2026-09-09).
+- deciding-and-superseding's "Supersede, don't delete" is overruled for inaccurate content: owner 2026-09-09 rules DELETE it and fix inbound refs (git is provenance); the strike-and-keep pattern survives only for criteria/gates whose evidence would otherwise mislead — CLAUDE.md carries the ruling

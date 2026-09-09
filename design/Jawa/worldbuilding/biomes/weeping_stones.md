@@ -206,7 +206,7 @@ overhangs; enclosed oases glow at their vent-slits. The seep oases inverted: a g
 eye ringed in open flat nothing, no shade at all, impossibly lush — read as magical
 because the engine is hidden beneath.
 
-The map-scale read is already ruled (`biome_and_fauna_roster.md`): **concentric
+The map-scale read is already ruled: **concentric
 rings — water, then green, then scrub, then sand, in visible bands. The most legible
 tile on the world, and it should look designed.** The comb rule nests inside it: the
 rings are the plan view, the combs are the elevation.

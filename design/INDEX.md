@@ -6,14 +6,18 @@
 This is an index, not doctrine — the tier rule and the promotion test live in
 `design/README.md` and are written by hand.
 
-⚠️ **31 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
+⚠️ **196 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
 
 ### `design/`
 
 | doc | title | status |
 |---|---|---|
+| `CHRONICLE_EVENT_SPINE.md` | RimChronicle event spine — one-page spec (CHRONICLE_EVENT_SPINE_1) | — |
 | `FABLE_WINDOW_PROPOSITION.md` | What to spend Fable on while we have it | ? proposition for the owner — bench, 2026-08-31, answering his high-priority ask |
+| `MOD_CONSOLIDATION_PLAN.md` | Mod Consolidation Plan — domain × tier cells, one big-bang merge | ? draft v3 — expansions adopted, pending owner sign-off |
+| `MOVING_DUNES_DESIGN.md` | MOVING_DUNES_DESIGN — real aeolian transport for RimWorld maps | — |
 | `NAMING_SCHEME_PLAN.md` | The Three-Tier Naming Scheme — RimMandrake / RimStarWars / RimUtinni | ? live — the three-tier naming scheme plan. ruled in principle by the owner 2026-08-30 |
+| `RIMPROPERTY_ANIMAL_THEFT_SPEC.md` | RimProperty animal theft — RIMPROPERTY_ANIMAL_THEFT_1 | — |
 | `V2_DREAMS.md` | V2 — dreams and hopes | ☁ aspirational |
 
 ### `design/Jawa/`
@@ -32,6 +36,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `carbonite_trophy_mod.md` | Custom Carbonite Trophy Mod — PARKED DESIGN (author fresh for 1.6) | ☁ aspirational |
 | `concept.md` | concept.md — Portable Campaign Brief |  |
 | `covered_pit_traps_spec.md` | Covered Pits — the earth that swallows (first-class mod spec) | ? draft — bench proposal for owner ruling, 2026-08-30. item |
+| `desert_wraps_design_capture.md` | Desert Wraps + Devolved Head — design capture | — |
 | `devotional_sacrifice_catalog.md` | The Devotional Sacrifice Catalog — sacrifice-as-play (F11 ruling) | ? draft — bench proposal for owner ruling, 2026-08-30. item |
 | `divine_dilemma_events.md` | Divine Dilemma Events — twelve three-cornered arguments (F6) | ? draft — bench proposal for owner ruling, 2026-08-30. item |
 | `divine_satiation_engine.md` | The Divine-Satiation Engine — design (agent G) |  |
@@ -87,6 +92,18 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `graphics_overhaul_protocol.md` | graphics_overhaul_protocol.md — overhauling race art ourselves |  |
 | `gravship_wear_pass.md` | gravship_wear_pass.md — making the Kolyska read "old, rusty brown, and terrible" | ☁ aspirational |
 
+### `design/Jawa/art/gods/`
+
+| doc | title | status |
+|---|---|---|
+| `god_render_prompt_spec.md` | The Nine Gods — render prompt spec | — |
+
+### `design/Jawa/art/gods/busts/`
+
+| doc | title | status |
+|---|---|---|
+| `PROMPTS.md` | Bust portrait prompts — provenance | — |
+
 ### `design/Jawa/bridge/`
 
 | doc | title | status |
@@ -110,6 +127,16 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `ROSTER_VS_BUILT_2026-08-26.md` | Roster vs. built — the 2026-08-26 walk | — |
 | `STRUCTURE_TEMPLATE_ENGINE_SPEC.md` | The structure template engine — building a dwelling from a file | ? draft — check, 2026-08-22. three approaches for downselect |
 
+### `design/Jawa/droids/`
+
+| doc | title | status |
+|---|---|---|
+| `A3_frozen_save_droid_census.md` | Droid-Related Content Census: Frozen World vs Campaign Save | — |
+| `D1_donor_reference_grep.md` | Droid Donor Reference Audit — D1_donor_reference_grep | — |
+| `DROID_PROGRAM_STATE_2026-09-06.md` | The droid program — where it actually stands (2026-09-06) | ? state-of-play, fable design pass 2026-09-06 for bench. sibling |
+| `DROID_UNIFIED_FRAMEWORK_DESIGN.md` | Droidworks — the unified framework, the retirement, the ladder, the fan-out | ? design, fable pass 2026-09-06, ruled by the owner the same day (§0).
+     reads on top of (never restates) |
+
 ### `design/Jawa/fauna/`
 
 | doc | title | status |
@@ -123,11 +150,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `CHERRYPICK_AGENDA.md` | CHERRYPICK_AGENDA.md — everything we review together, and in what order |  |
 | `REGROWTH_BOILING_LIFT_SPEC.md` | REGROWTH_BOILING_LIFT_SPEC.md — the boiling water and the boiling rain, kept; the mod, dropped | ☁ aspirational |
 | `agent_supersession_audit.md` | agent_supersession_audit.md — "does a mod already do this?" |  |
+| `ancient_ruins_mod_audit.md` | Ancient Urban Ruins — deep audit (ANCIENT_RUINS_MOD_AUDIT_1) | — |
 | `armoury_keeplist.md` | armoury_keeplist.md — the proposed weapon roster |  |
 | `cai_fog_deep_dive_2026-08-31.md` | CAI 5000 fog-of-war deep dive | ? evidence + decision menu — cai_fog_deep_dive_1, bench 2026-08-31.
      owner's brief, verbatim |
 | `cherry_picker_killlist.md` | Cherry Picker Kill-List — Gravship Expedition (DRAFT / candidate) |  |
 | `concept_defnames.md` | concept_defnames.md — verified defName / ID vocabulary (companion to concept.md) |  |
+| `crystal_mods_inventory.md` | Crystal mods inventory — `CRYSTAL_MODS_INGEST_1` | — |
 | `forbidden_mods.md` | Forbidden Mods — Gravship Expedition Campaign |  |
 | `minotaur_design_extraction.md` | Roo's Minotaur Xenotype — mechanisms extracted before retirement | ? retire — design reference extracted from roo's minotaur xenotype before its removal (owner ruling 2026-08-31). not star wars canon |
 | `mod_config_rulings.md` | mod_config_rulings.md — accept/reject rulings and configuration guidance |  |
@@ -168,6 +197,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `high_cuisine_deep_design.md` | High cuisine, deep design — meals are statements | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
 | `llm_driven_mods_deep_design.md` | The Oracle, cast wide — sparse LLM consumers for the whole campaign | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
 | `ludicrous_livestock_deep_design.md` | Ludicrous livestock, deep design — a workbench with a heartbeat | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
+| `plot_mechanisms_wave.md` | Plot mechanisms wave — the raid redesigner, aftermath hostilities, and what the plot still lacks | ? draft proposal for owner review — written afk 2026-09-05 on the owner's brief, not ruled. design only |
 | `propane_gas_deep_design.md` | Propane and gas, deep design — a fuel field the size of a sea, and the danger IS the fuel | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
 | `sarlacc_deep_design.md` | The Sarlacc, deep design — a landmark that digests centuries | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
 | `ship_shields_deep_design.md` | Environmental shields — gating access to the planet, not winning fights | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
@@ -216,6 +246,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
      aggressive thematic filtering, weapons by physics, ritual-tech, royalty question").
      nothing here is ruled. companion artifacts |
 
+### `design/Jawa/reviews/`
+
+| doc | title | status |
+|---|---|---|
+| `COMPANION_HARDENING_AUDIT_2026-09-09.md` | JawaBench companion tool surface — silent-failure audit | — |
+| `ULTRA_REVIEW_PREP_2026-09-09.md` | Ultra Review Prep — Census + Action List | — |
+
 ### `design/Jawa/worldbuilding/`
 
 | doc | title | status |
@@ -225,30 +262,40 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `Alien_Bestiary.md` | Star Wars Naming Layer for the VGE 1.6 Bestiary — v1 | ☁ aspirational |
 | `EMPIRE_GAP_AUDIT.md` | The Galactic Empire — gap audit against vanilla `Empire` |  |
 | `FACTION_SPEC.md` | FACTION_SPEC.md — the buildable faction layer |  |
+| `GRAVSHIP_LAUNCH_TOOL_DESIGN.md` | Programmatic gravship launch — companion-tool design (research 2026-09-09) | — |
 | `Gravship_Campaign_Planning_Discussion_2026-08-02.md` | Gravship Campaign Design Notes |  |
+| `LIQUID_BIOMES_MAP_1_RECONCILIATION.md` | LIQUID_BIOMES_MAP_1 — def reconciliation, 2026-09-06 | ? reconciliation record — the offline half of liquid_biomes_map_1 only.
+     the live/paint half (world tiles, the propane lake's exact subset, the
+     owner-reviewed worldview.py render, the savegame re-freeze) is not done
+     here and is not this document's job to rule on. |
 | `Livestock_Trade_Utility_Pets_v1.md` | The Livestock Trade — Utility, Pet & Companion Creatures | ☁ aspirational |
 | `PLANT_GROWTH_SPEC.md` | PLANT_GROWTH_SPEC.md — freakish plant growth, specified for build |  |
 | `PRE_WORLDGEN_GATE.md` | Before the owner generates the world — what is actually owed |  |
 | `REGIONS_THAT_LIE.md` | Regions that lie about themselves — audit, 2026-08-23 |  |
+| `RETIREMENT_CHECKLIST.md` | Retirement checklist — four mods, 2026-09-05 | — |
 | `SCENARIO_SETTINGS_SPEC.md` | SCENARIO_SETTINGS_SPEC.md — every setting the campaign start needs, and WHEN it is fixed |  |
 | `SCENARIO_SPEC.md` | SCENARIO_SPEC.md — how the campaign starts |  |
 | `WORLDMAP_BRIDGE_SURFACE.md` | The worldmap bridge surface — every element, and read/write/validate for each |  |
 | `WORLD_REDRAFT.md` | Rebuilding the keeper world, by hand |  |
+| `alpha_family_source_review.md` | Alpha-family source review — mechanics catalog and generalization proposals | — |
 | `aquatic_movement_routes.md` | Aquatic movement — the honest menu, post-Pathfinding-Framework | ? decision card — sw_sea_monsters_art_1, bench 2026-09-02. supersedes
      sea_beasts_def_spec.md §4 routes a–c (route b, pathfinding.framework, is dead |
 | `beast_normalization_spec.md` | Beast Normalization — size, mass, and casual lethality | ? draft — bench synthesis of the three-arm beast fan-out, 2026-08-31. owner's law |
-| `biome_and_fauna_roster.md` | biome_and_fauna_roster.md — which biomes, which beasts, and what makes each tile feel like itself | ☁ aspirational |
-| `biome_flora_rosters.md` | Ash'karr's flora — what grows where, and why | — |
 | `biome_review_comments.md` | biome_review_comments.md — DECIDE's read of the owner's biome cuts |  |
 | `biome_terrain_palette.md` | biome_terrain_palette.md — Authoritative Biome + Terrain Palette |  |
 | `cherrypick_inbox.md` | Cherry Picker inbox — everything ruled OFF so far |  |
 | `cherrypick_resolved.md` | Cherry Picker — the resolved target list |  |
 | `colony_visibility_stat.md` | Colony Visibility — the shared dial (F18 design, COLONY_VISIBILITY_STAT_1) |  |
+| `contagion_placement_candidates.md` | The Contagion — placement candidates (CONTAGION_BIOME_PLACEMENT_1) | — |
 | `creature_abilities_inventory.md` | What our creatures can already DO — the strange-behaviour inventory | — |
 | `creature_names_ashkarr.md` | Creature names for Ash'karr — killing the Latin | — |
+| `creature_normalization_doctrine.md` | Creature & race physical normalization — doctrine | — |
+| `creature_recognizability_rule.md` | The recognizability rule — the actual keep/cut criterion | — |
+| `creature_size_model.md` | Creature size model — bodySize, drawSize, the render, and the review sheet | — |
 | `depths_build_spec_v1.md` | The Depths — v1 "Dive expeditions" build spec | ? ruled — both §0 questions answered by the owner 2026-08-31 (question cards).
      executes |
 | `depths_concept.md` | The Depths — underwater as space, dark for a whole new reason | ? draft — bench concept for owner ruling, 2026-08-31. tier |
+| `desert_ecology_feasibility.md` | Desert ecology — engine feasibility | — |
 | `desert_world_design.md` | desert_world_design.md — Consequential-Landing Design (risk/reward per terrain) |  |
 | `droid_chassis_coverage.md` | Droid chassis — what we have, what one subscribe buys, what needs art |  |
 | `droid_taxonomy.md` | The three droid families, and what each is FOR |  |
@@ -262,22 +309,37 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `faction_stage3_buildable_spec.md` | Faction Stage 3 — the buildable spec | → superseded `FACTION_SPEC.md` |
 | `faction_world_spec.md` | The world we want — faction specification |  |
 | `fauna_placement.md` | fauna_placement.md — where each creature belongs |  |
+| `genepack_mods_plunder.md` | Genepack mods plunder — GENEPACK_MODS_PLUNDER_1 | — |
+| `graphics_pipeline_recommendation.md` | Graphics generation channel — review & recommendation | — |
 | `gravship_flight_invariants.md` | gravship_flight_invariants.md — what a gravship must satisfy to fly |  |
+| `gravship_landing_relaxation.md` | GRAVSHIP_LANDING_CRUSH_1 — relaxing gravship landing and launch | — |
 | `gravship_pursuer_mechanism.md` | The gravship pursuer — can it be changed from mechanoids? |  |
 | `hiding_the_gravship.md` | Hiding the gravship — the third verb |  |
+| `horrorwastes_dissolve_execution.md` | HorrorWastes dissolve — execution record (HORRORWASTES_BIOME_DISSOLVE_1 + NIGHTSIDE_ICE_DEF_1) | — |
 | `hydrology_and_fire_ecology.md` | hydrology_and_fire_ecology.md — where the water goes, and what burns |  |
 | `jawa_crew_personas.md` | Jawa Crew Personas — the Five Founders |  |
 | `jawa_dialogue_source_audit.md` | Jawa Dialogue and Translation Corpus — Source-Audited |  |
 | `jawa_society.md` | Jawa society — slavery, reproduction, the life-cycle, and what they carry |  |
 | `landmark_art_direction.md` | Landmark art direction — Ash'karr | — |
+| `mass_consumer_audit.md` | Mass / bodySize consumer audit — the complete blast radius | — |
+| `mod_retirement_audit.md` | Mod retirement audit — what the seven low-survival mods ACTUALLY ship | — |
+| `mutation_modifiers_survey.md` | Mutation modifiers survey — `MUTATION_MODIFIERS_SURVEY_1` | — |
 | `named_places_draft.md` | NAMED PLACES — draft set for the owner to veto | ? superseded |
 | `orbital_towers_and_the_sky_ladder.md` | Orbital towers and the sky ladder — the Empire's way down |  |
 | `pawnkind_roster.md` | The pawn-kind roster — 48 kinds, and what each one carries |  |
+| `rakatan_legacy_index.md` | Rakatan engineered-legacy index | — |
 | `restraining_bolt_doctrine.md` | The restraint bolt — making the campaign's moral problem cost something | → superseded `restraining_bolt_technical.md` |
 | `restraining_bolt_technical.md` | Restraining bolts — the technical spec |  |
 | `rimworld_worldmap_loadsavecreate.md` | Making ONE world, keeping it, and shipping it | — |
 | `row8_build_order.md` | row8_build_order.md — the gravship build, step by step |  |
 | `sacred_sites_pass_1.md` | SACRED SITES — the F16 tile pass (SACRED_SITES_PASS_1) |  |
+| `sarlacc_discussion_pack.md` | The Sarlacc — discussion pack for the sitting | ? discussion pack for the live sitting — sarlacc_native_habitat_1, design subagent
+     2026-09-06. nothing here is ruled |
+| `sarlacc_native_habitat_draft.md` | The Sarlacc — native habitat, three stages, and the well that is a mouth | ? draft for owner review — sarlacc_native_habitat_1, fable design pass 2026-09-06,
+     overnight, owner afk. nothing here is ruled. it answers the deep desert sheet's ticket
+     ("native to this biome, three life-cycle stages, a dungeon-like module") and the owner's
+     2026-09-02 ruling that there are many sarlaccs. it reconciles, and where it cannot, it
+     names the conflict for the sitting (§7). no defs, no code, no live game touched. |
 | `sarlacc_spec.md` | The Sarlacc — unified spec: the event above, the dungeon below | ? spec — sarlacc_spec_session_1, bench 2026-08-31, green-lit by the owner with scope
      widened verbatim |
 | `sea_beasts_def_spec.md` | Sea beasts — def design spec (18 creatures) | ? design spec (def-level, machine-checkable) — sw_sea_monsters_art_1,
@@ -295,25 +357,91 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `ship_designs.md` | ship_designs.md — Gravship topology: chosen hull + candidate menu (expanded limits) |  |
 | `ship_distinctive_features.md` | ship_distinctive_features.md — the Kolyska's identity layer |  |
 | `ship_legacy_armoury.md` | The ship's legacy armoury — laser weapons as inherited technology |  |
+| `starwars_iconic_creatures.md` | Star Wars iconic creatures — the reskin/recreate catalogue | — |
 | `structure_injection_roster.md` | Structure Injection Roster — Promises & Whispers | ? draft — bench roster for foundry design iteration, 2026-08-31. frame |
+| `structure_procedural_spec.md` | Structure Procedural Spec — what goes in each building, and roughly where | ? draft — procedural build spec for every injected structure archetype, written 2026-09-05 (afk brief) under the owner's review verdict of the same night. binds every rimplace template in design/jawa/templates/ and every future one. sibling |
 | `the_forgotten_war.md` | the_forgotten_war.md — the war that ended this world, and what it left |  |
 | `the_one_map.md` | THE ONE MAP — Ash'karr, hand-authored once |  |
 | `the_seas.md` | The Seas of Ash'karr — the filling program | ? draft — bench synthesis of the three-arm seas fan-out, 2026-08-31. owner |
 | `tidally_locked_world.md` | The world is TIDALLY LOCKED — and it explains everything |  |
 | `tile_augmentation_catalogue.md` | tile_augmentation_catalogue.md — the concrete augmentation catalogue |  |
+| `tile_augmentation_matrix.md` | tile_augmentation_matrix.md — everything a tile could be given, by biome × territory × arc | ? draft — owner's afk brief 2026-09-05, "err on the side of too many good ideas". expansion of tile_augmentation_catalogue.md |
+| `ui_appearance_spec.md` | UI appearance — the visual shell of the Utinni campaign | ? draft |
+| `ui_shell_spec.md` | RimUtinni Shell — UI theme + loading-art spec | — |
+| `unused_mutators_census.md` | Unused Tile Mutators and Geological Landforms Census | — |
 | `v1_quest_the_claim.md` | "The Claim" — the v1 quest, specified |  |
 | `vault_siting_prep.md` | Vault siting prep — for the VAULT_DUNGEON_CONCEPT_1 owner sitting |  |
+| `vault_thaw_quest_family.md` | The vault thaw quest family — what makes the six Forsaken vaults play | ? built-offline, owner review owed |
 | `water_doctrine.md` | Water doctrine — the master resource, finally decided |  |
+| `water_taxonomy.md` | The waters of Ash'karr — taxonomy wrapper | — |
 | `what_the_machines_are.md` | What the machines are |  |
 | `worldgen_interactive_build_concepts.md` | worldgen_interactive_build_concepts.md — new content the world painting asks for |  |
 | `worldgen_interactive_def.md` | worldgen_interactive_def.md — the working definition of the world we are painting | ⚠ do not quote its numbers |
+
+### `design/Jawa/worldbuilding/biomes/`
+
+| doc | title | status |
+|---|---|---|
+| `README_BIOME_GRAMMAR.md` | Biome definition sheets — the grammar | — |
+| `_assignment_prep.md` | Biome fauna/flora assignment — DECISION PREP for the owner's sitting | — |
+| `_freeze_review_2026-09-07.md` | The Biome Freeze Review — BIOME_FREEZE_FABLE_REVIEW_1 | — |
+| `_freeze_rulings_2026-09-07.md` | Freeze-review card rulings — owner, 2026-09-07 | — |
+| `_openers_prep.md` | Biome opener prep — measured tables for the remaining sheets | — |
+| `arid_shrubland.md` | The Arid Shrubland — definition sheet | — |
+| `assailant_weapon_remnants.md` | The Assailant weapon remnants — the triptych's third panel (not a biome) | — |
+| `deep_desert.md` | The Deep Desert — definition sheet | — |
+| `desert.md` | The Desert — definition sheet | — |
+| `dune_sea.md` | The Dune Sea — biome definition sheet | — |
+| `edible_genepack_native_mechanism.md` | The edible-genepack loop — reverse-engineered, verified, ready to implement natively | — |
+| `fall_line.md` | The Fall Line — definition sheet | — |
+| `forsaken_crags.md` | The Forsaken Crags — definition sheet | — |
+| `nightside_ice.md` | The Nightside Ice — biome definition sheet | — |
+| `poison_forest.md` | The Poison Forest — biome definition sheet | — |
+| `terminator_sea.md` | The Terminator Sea — biome definition sheet | — |
+| `the_blue_desert.md` | The Blue Desert — definition sheet | — |
+| `the_contagion.md` | The Contagion — definition sheet | — |
+| `the_cracked_lands.md` | The Cracked Lands — definition sheet | — |
+| `the_fever_wood.md` | The Fever Wood — definition sheet | — |
+| `the_forge.md` | The Forge — definition sheet | — |
+| `the_greentide.md` | The Greentide — definition sheet | — |
+| `the_grey_deep.md` | The Grey Deep — definition sheet | — |
+| `the_lantern_deeps.md` | The Lantern Deeps — injection-layer definition sheet | — |
+| `the_miasma.md` | The Miasma — definition sheet | — |
+| `the_propane_lakes.md` | The Propane Lakes — definition sheet | — |
+| `the_pyrelands.md` | The Pyrelands — definition sheet | — |
+| `the_rot.md` | The Rot — definition sheet | — |
+| `the_rust_cathedral.md` | The Rust Cathedral — definition sheet | — |
+| `the_scald.md` | The Scald — definition sheet | — |
+| `the_scarlands.md` | The Scarlands — definition sheet | — |
+| `the_slime.md` | The Slime — definition sheet | — |
+| `the_slime_gene_lists.md` | The Slime — gene machine lists — ✅ ACCEPTED (owner, 2026-09-06) | — |
+| `the_sump.md` | The Sump — definition sheet | — |
+| `the_twilight_deep.md` | The Twilight Deep — definition sheet | — |
+| `the_webwork.md` | The Webwork — definition sheet | — |
+| `wasteland.md` | The Wasteland — definition sheet | — |
+| `weeping_stones.md` | The Weeping Stones — definition sheet | — |
+| `wreck_fields.md` | The Wreck Fields — biome definition sheet | — |
+
+### `design/Jawa/worldbuilding/biomes/rosters/`
+
+| doc | title | status |
+|---|---|---|
+| `_SCHEMA.md` | rosters/ — the landed fauna/flora assignment, as data | — |
 
 ### `design/Jawa/worldbuilding/data/`
 
 | doc | title | status |
 |---|---|---|
+| `fungalforest_merge_plan_2026-09-07.md` | FUNGALFOREST_RAID_MERGE_1 — per-tile merge plan (measured 2026-09-07) | — |
 | `ideology_palette.md` | Ideology authoring palette — what is actually installed |  |
 | `mech_control_axes.md` | — |  |
+| `river_graph_2026-09-07.md` | Ash'karr river graph — derived from the frozen world data (ASHKARR_RIVER_LEDGER_1) | — |
+
+### `design/Jawa/worldbuilding/enrichment/`
+
+| doc | title | status |
+|---|---|---|
+| `REVIEW.md` | Biome enrichment plans — REVIEW | — |
 
 ### `design/Jawa/worldbuilding/ideoligion/`
 
@@ -326,8 +454,38 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
+| `INSTRUMENT_ROLES.md` | Review instruments — which one is the DECISION OF RECORD | — |
+| `WORLDMAP_FINAL_REVIEW_2026-09-08.md` | Ash'karr — the studio review (2026-09-08) | — |
 | `religions_repair_sheet.md` | Religions repair sheet — the 9 INVALID entries, option by option | → superseded `faction_religions_spec.md` |
 | `turret_normalization_v1.md` | Turret normalization v1 — worksheet (PROPOSAL, not yet patched) | — |
+
+### `design/Jawa/worldbuilding/review/mechanics/`
+
+| doc | title | status |
+|---|---|---|
+| `PLAIN_CUT_LIST.md` | PLAIN CUT LIST — recognizable AND mechanically ordinary | — |
+| `REGENERATE_WORKLIST.md` | REGENERATE-ART WORKLIST — recognizable creatures worth saving by redrawing | — |
+
+### `design/Jawa/worldbuilding/review/recognizability/`
+
+| doc | title | status |
+|---|---|---|
+| `CUT_CANDIDATES.md` | CUT candidates — LIVE creatures that are too recognizable | — |
+| `RESTORE_CANDIDATES.md` | RESTORE candidates — cut creatures that are genuinely strange | — |
+
+### `design/Jawa/worldbuilding/review/skill_proposals/`
+
+| doc | title | status |
+|---|---|---|
+| `param-scatter-exploration.SKILL.md` | param-scatter-exploration (PROPOSED SKILL — draft, not installed) | — |
+| `register-analytics.SKILL.md` | register-analytics (PROPOSED SKILL — draft, not installed) | — |
+
+### `design/Jawa/worldbuilding/review/viz/`
+
+| doc | title | status |
+|---|---|---|
+| `PORTFOLIO_creature_distribution.md` | Visual portfolio — creature DISTRIBUTION analysis (economy · lethality · biome law · dominance · husbandry) | — |
+| `PORTFOLIO_creature_size_mismatch.md` | Visual portfolio — creature size mismatch (bodySize vs drawSize) | — |
 
 ### `design/Jawa/worldbuilding/ship_build/`
 
@@ -343,11 +501,17 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `balance_paradigm.md` | balance_paradigm.md — why we would change any number in this game |  |
 | `beautiful_tilemap.md` | Beautiful_Tilemap — concept spec | ☁ aspirational |
 | `coastal_mesa_rationale.md` | Coastal Mesa — LLM-authored map improvement |  |
+| `codex_receiving_agent_design.md` | A receiving agent inside Codex — accelerating graphics generation | — |
+| `droid_oracle_voice_design.md` | Droid voice through the Oracle — four consumers, dormant | ? design, dormant — droid_oracle_voice_design_1, fable pass 2026-09-08, for owner
+     review. ruled into existence by droid_unified_framework_design.md §0 card 14 ("droid voice
+     via the oracle |
 | `faction_authoring_mechanism.md` | faction_authoring_mechanism.md — How we make rich, differentiated factions |  |
 | `llm_ingame_wiring_spec.md` | The Oracle — in-game LLM wiring | ? spec — llm_ingame_wiring_1, bench 2026-08-31, green-lit by the owner, verbatim |
 | `llm_stack_assessment.md` | llm_stack_assessment.md — how far the live LLM stack gets us |  |
 | `llm_voice_preauthoring.md` | llm_voice_preauthoring.md — paste-ready LLM voice prompts (RimAI + RimDialogue) |  |
 | `map_authoring_decision.md` | Map authoring: RimBridge vs save-editing — the decision |  |
+| `map_content_injection_research.md` | Map content injection — the research path |  |
+| `map_generator_chooser_spec.md` | Map generator v0 — the CHOOSER (spec) | — |
 | `music_protocol.md` | music_protocol.md — adding our own music to the gravship campaign |  |
 | `nine_voices_cast_bible.md` | The Nine Voices — cast bible for the thing in the walls | ? cast bible — nine_voices_cast_bible_1, bench 2026-08-31, green-lit by the owner.
      supersedes llm_voice_preauthoring.md part a (the single cradle-mind persona), which r-w6
@@ -358,4 +522,103 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `rimtalk_analysis.md` | rimtalk_analysis.md — RimTalk adoption analysis | → superseded `llm_stack_assessment.md` |
 | `rimworld_file_lore.md` | rimworld_file_lore.md — technical manual for editing RimWorld save / scenario / def files |  |
 | `save_authoring_pipeline.md` | Save-Based World Authoring Pipeline — RimWorld 1.6 Jawa Gravship Campaign | ⛔ dead |
+
+### `design/RimStarWars/`
+
+| doc | title | status |
+|---|---|---|
+| `brain_worm_spec.md` | Geonosian brain worms — research + def plan (design spec) | — |
+| `gizka_ship_pest_spec.md` | Gizka — the ship-pest event (design spec) | — |
+
+### `design/validation_walks/RimMandrake/`
+
+| doc | title | status |
+|---|---|---|
+| `Aftermath.md` | RimMandrake: Aftermath — validation walk | — |
+| `DesertVehicleReskin.md` | Desert Vehicle Reskin — Alpha Vehicles Neolithic — validation walk | — |
+| `FluidCanals.md` | RimMandrake Fluid Canals — validation walk | — |
+| `Graffiti.md` | RimMandrake: Graffiti Framework — validation walk | — |
+| `GravshipAstronautFix.md` | Missing North Facings — Vanilla Gravship Expanded — validation walk | — |
+| `Inhabited.md` | Inhabited (local) — validation walk | — |
+| `LoadTracer.md` | Load Tracer (local) — validation walk | — |
+| `MandrakePatches.md` | RimMandrake Patches — validation walk | — |
+| `Ninefold.md` | RimMandrake Ninefold (M0 — safe core) — validation walk | — |
+| `Oracle.md` | RimMandrake: Oracle — validation walk | — |
+| `PhytokinBarkHeadFix.md` | Bark Head East Fix — Vanilla Races Expanded: Phytokin — validation walk | — |
+| `Pits.md` | RimMandrake Pits — validation walk | — |
+| `PlanetPresetPrime.md` | Planet Preset Prime (local) — validation walk | — |
+| `Property.md` | Property — validation walk | — |
+| `RaidRedesigner.md` | RaidRedesigner — validation walk | — |
+| `ResearchKitEastFix.md` | ResearchKitEastFix — validation walk | — |
+| `RimDefDump.md` | RimDefDump — validation walk | — |
+| `RustChrome.md` | RustChrome — validation walk | — |
+| `SacredGraffiti.md` | SacredGraffiti — validation walk | — |
+| `SalvageClaim.md` | SalvageClaim — validation walk | — |
+| `SauridFrillFix.md` | SauridFrillFix — validation walk | — |
+| `StrandedQuest.md` | StrandedQuest — validation walk | — |
+| `StructureInjections.md` | StructureInjections — validation walk | — |
+| `TheftHauler.md` | TheftHauler — validation walk | — |
+| `ToolBeltFix.md` | ToolBeltFix — validation walk | — |
+| `Visibility.md` | Visibility — validation walk | — |
+| `WreckedMachines.md` | WreckedMachines — validation walk | — |
+
+### `design/validation_walks/RimStarWars/`
+
+| doc | title | status |
+|---|---|---|
+| `Armoury.md` | Armoury — validation walk | — |
+| `BeastLairs.md` | BeastLairs — validation walk | — |
+| `BeastNorm.md` | BeastNorm — validation walk | — |
+| `BlastDoorFrameAsyncFix.md` | BlastDoorFrameAsyncFix — validation walk | — |
+| `CereanManeFix.md` | CereanManeFix — validation walk | — |
+| `Cuisine.md` | Cuisine — validation walk | — |
+| `Droidworks.md` | Droidworks — validation walk | — |
+| `FireEcology.md` | Fire Ecology — validation walk | — |
+| `HelixTellurox.md` | Helix Tellurox — validation walk | — |
+| `JawaIkee.md` | JawaIkee — validation walk | — |
+| `JawaIonWeapons.md` | JawaIonWeapons — validation walk | — |
+| `JawaRules.md` | JawaRules — validation walk | — |
+| `JawaVoice.md` | JawaVoice — validation walk | — |
+| `KotORBandolierNorthFix.md` | KotORBandolierNorthFix — validation walk | — |
+| `Livestock.md` | Livestock — validation walk | — |
+| `MSEDroidFix.md` | MSEDroidFix — validation walk | — |
+| `SWBestiary.md` | SWBestiary — validation walk | — |
+| `SeaBeasts.md` | SeaBeasts — validation walk | — |
+| `SeasWaterline.md` | SeasWaterline — validation walk | — |
+| `StarWarsPatches.md` | StarWarsPatches — validation walk | — |
+| `StarWarsRaces.md` | StarWarsRaces — validation walk | — |
+| `StructureInjectionsSW.md` | StructureInjectionsSW — validation walk | — |
+| `WeatherSuite.md` | WeatherSuite — validation walk | — |
+
+### `design/validation_walks/RimUtinni/`
+
+| doc | title | status |
+|---|---|---|
+| `AftermathRites.md` | AftermathRites — validation walk | — |
+| `Antiquities.md` | Antiquities — validation walk | — |
+| `AshkarrFlora.md` | AshkarrFlora — validation walk | — |
+| `AshkarrInhabited.md` | AshkarrInhabited — validation walk | — |
+| `AshkarrLandmarkArt.md` | AshkarrLandmarkArt — validation walk | — |
+| `AshkarrWeatherSuite.md` | AshkarrWeatherSuite — validation walk | — |
+| `BirthHatchDemo.md` | BirthHatchDemo — validation walk | — |
+| `DesertFixtures.md` | DesertFixtures — validation walk | — |
+| `Doctrine.md` | Doctrine — validation walk | — |
+| `EmpirePursuit.md` | EmpirePursuit — validation walk | — |
+| `FactionSlate.md` | FactionSlate — validation walk | — |
+| `IshkoDarkLandmarks.md` | IshkoDarkLandmarks — validation walk | — |
+| `LanternDeeps.md` | LanternDeeps — validation walk | — |
+| `LongHunger.md` | LongHunger — validation walk | — |
+| `MenuShell.md` | MenuShell — validation walk | — |
+| `PawnFlavor.md` | PawnFlavor — validation walk | — |
+| `PlantGrowth.md` | PlantGrowth — validation walk | — |
+| `PyrelandsFireEcology.md` | PyrelandsFireEcology — validation walk | — |
+| `ResearchRetag.md` | ResearchRetag — validation walk | — |
+| `RestrainingBolts.md` | RestrainingBolts — validation walk | — |
+| `Rites.md` | Rites — validation walk | — |
+| `RiverSteam.md` | RiverSteam — validation walk | — |
+| `ShipMemory.md` | ShipMemory — validation walk | — |
+| `StructureInjectionsRUT.md` | StructureInjectionsRUT — validation walk | — |
+| `UtinniPatches.md` | UtinniPatches — validation walk | — |
+| `UtinniShell.md` | UtinniShell — validation walk | — |
+| `VaultDungeons.md` | VaultDungeons — validation walk | — |
 <!-- doc_roster:END -->
