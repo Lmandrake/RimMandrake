@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T14:53:31Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-09T15:21:27Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -522,14 +522,23 @@ kind:     task
 summary:  1. A ThingComp on a module ThingDef adds a personality HediffDef to the
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_PERSONALITY_1.md
 
-## MOISTURE_FARM_TEMPLATES_1 Content injection: several highly plausible moisture-farm templates (homestead, vaporator field, cistern head, compound, ruin) — needed many times over
+## FUNGAL_SOIL_TRADE_1 Jawas dig fungal soil from the Rot and haul it to the moisture farms by ship — early money; digging sends distress through the fungal whole and brings its creatures
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  - Author a family of moisture-farm templates (KCSG / the structure-template engine —
-prose:    infrastructure/state/items/MOISTURE_FARM_TEMPLATES_1.md
+summary:  - The good: fungal soil (the Rot's mycelial ground — therot.md; the raided
+prose:    infrastructure/state/items/FUNGAL_SOIL_TRADE_1.md
+
+## SAND_SWIMMERS_MOD_1 Sand fishing: impassable Deep Sand pools you fish like water, with sand-swimmer analogs (never fish-shaped) — the sand swimmers mod
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Deep Sand terrain: pools of sand you cannot walk over (impassable like deep water,
+prose:    infrastructure/state/items/SAND_SWIMMERS_MOD_1.md
 
 ## PITCELL_PRISONER_BED_BRIDGE_GAP_1 PITCELL_PRISONER_BED_BRIDGE_GAP_1
 state:    doing
@@ -594,14 +603,23 @@ kind:     fix
 summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
 
-## BLUE_DESERT_WORLD_SWITCH_1 Repaint BiomeGRimond's 1,029 tiles to our own RUT_BlueDesert (world switch)
+## GRAFFITI_GENERIC_MARKS_1 Author generic vanilla-style default marks for RM Graffiti (R7): the nine campaign styles move to Salvation, RM ships with examples
 state:    doing
 row:      unassigned
-needs:    bridge
+needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/BLUE_DESERT_WORLD_SWITCH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BLUE_DESERT_WORLD_SWITCH_1.md
+summary:  R7 (owner, 2026-09-08): RM Graffiti keeps engine + generic vanilla-style
+prose:    infrastructure/state/items/GRAFFITI_GENERIC_MARKS_1.md
+
+## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  (no items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -829,26 +847,6 @@ thin:     no ## spec, no ## criteria
 summary:  FUNGALFORESTRAIDMERGE1 — dissolve BMTFungalForest into its neighbors; ingest its content into the Rot
 prose:    infrastructure/state/items/FUNGALFOREST_RAID_MERGE_1.md
 
-## FUNGAL_SOIL_TRADE_1 Jawas dig fungal soil from the Rot and haul it to the moisture farms by ship — early money; digging sends distress through the fungal whole and brings its creatures
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - The good: fungal soil (the Rot's mycelial ground — therot.md; the raided
-prose:    infrastructure/state/items/FUNGAL_SOIL_TRADE_1.md
-
-## SAND_SWIMMERS_MOD_1 Sand fishing: impassable Deep Sand pools you fish like water, with sand-swimmer analogs (never fish-shaped) — the sand swimmers mod
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Deep Sand terrain: pools of sand you cannot walk over (impassable like deep water,
-prose:    infrastructure/state/items/SAND_SWIMMERS_MOD_1.md
-
 ## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
 state:    proposed
 row:      unassigned
@@ -868,16 +866,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  ⛔ THE OBVIOUS APPROACH IS A NO-OP — read this before planning anything
 prose:    infrastructure/state/items/SCALD_RIVER_REPAINT_1.md
-
-## GEOTHERMAL_DENSITY_FIELD_1 Geothermal vent/geyser density field: high at dayside mountain ranges, decaying with distance, zero at the terminator -- R12, stop geysers spawning on every map
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GEOTHERMAL_DENSITY_FIELD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GEOTHERMAL_DENSITY_FIELD_1.md
 
 ## UNDERWATER_BIOME_SUPPORT_1 Underwater biome support: land on the three seas -- looks like ocean, playable seafloor beneath (owner 2026-09-07, later modification)
 state:    proposed
@@ -958,16 +946,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  §3.2 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md asks the Junker
 prose:    infrastructure/state/items/DROID_SUICIDE_CHARGE_STATE_1.md
-
-## GRAFFITI_GENERIC_MARKS_1 Author generic vanilla-style default marks for RM Graffiti (R7): the nine campaign styles move to Salvation, RM ships with examples
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  R7 (owner, 2026-09-08): RM Graffiti keeps engine + generic vanilla-style
-prose:    infrastructure/state/items/GRAFFITI_GENERIC_MARKS_1.md
 
 ## PYRELANDS_GENERIC_TEXT_1 De-campaign Pyrelands text for the self-contained RM biome (R9); resolve the donor BiomeDef VERIFY (zylle.morevanillabiomes) with the absorption track
 state:    proposed
@@ -1115,6 +1093,26 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BIOME_OWNERSHIP_WAVE_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  BIOMEOWNERSHIPWAVE1 — own every planet biome we have not yet owned
 prose:    infrastructure/state/items/BIOME_OWNERSHIP_WAVE_1.md
+
+## VFEPD_HORSECART_IDENTITY_LEAK_1 VFEPD Alpha-Vehicles compat props (Chariot/WarChariot/CoveredCarriage/OxCart) still wear donor horse-cart identity, unlike DogSled
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     fix
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/VFEPD_HORSECART_IDENTITY_LEAK_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/VFEPD_HORSECART_IDENTITY_LEAK_1.md
+
+## TITANIC_CREATURES_MOD_1 Titanic_Creatures: make titan mass real — Large Pawns multi-cell footprints + destruction wake, thin-roof smash / thick-roof avoidance, auto size tiers with dev overrides, curated crush-table, T3 corpse-as-site (owner-ruled 2026-09-09)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TITANIC_CREATURES_MOD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TITANIC_CREATURES_MOD_1.md
