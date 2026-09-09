@@ -14,7 +14,7 @@ The absorbed spree mechanic: an unhappy or idle artistic pawn seeks "paint graff
 
 RM_Graffiti_Vandal's six texture variants are Graffiti Mod (Continued)'s own art, copied byte-for-byte under its MIT license (LICENSE.md, workshop id 2986996933, (c) 2020 Mlie) - see this mod's own LICENSE-THIRD-PARTY.md for the full notice. RM_BaseGraffiti (thingClass plain vanilla Filth, not the donor's custom subclass - verified CornerFiller linking needs no special subclass support) is a fresh abstract def so mandrake.rm.sacredgraffiti's existing marks keep working once the donor mod is gone.
 
-Ships the engine plus the one generic vandal mark. mandrake.rut.marks (not yet built) is the sacred/jest/taunt/cant content side.</description>
+Ships the engine plus four generic vanilla-register example marks (RM_Graffiti_Vandal, RM_Graffiti_Scratches, RM_Graffiti_TallyMarks, RM_Graffiti_WarningGlyph - GRAFFITI_GENERIC_MARKS_1, owner R7 2026-09-08). The nine campaign mark-styles move to Salvation (RUT tier) separately, not this mod.</description>
 
   <loadAfter>
     <li>Ludeon.RimWorld</li>
