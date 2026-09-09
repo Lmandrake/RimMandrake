@@ -194,8 +194,8 @@ body.grid .row.sel-tint{border-color:currentColor}
 {
   "sheetId": "flora_assignment_register",
   "title": "Flora assignment register — Ash'karr",
-  "subtitle": "169 landed plants · 21 purge summaries · 118 new-art ledger · 13 contested",
-  "briefHtml": "<p><b>The pass:</b> BIOME_FAUNA_ASSIGNMENT_SITTING_1, flora half — landed 2026-09-09. <b>169</b> landed plant rows across <b>28</b> biome sheets, <b>21</b> purge summaries covering <b>197</b> removed plants, and <b>118</b> entries in the NEW ART/DEF ledger.</p><p><b>The four owner cards this pass ran on (2026-09-09):</b> <b>1. Land now, review after</b> — the roster data and the generated wildPlants patches are already committed on the agent's calls; this sheet is the override surface. <b>2. The homeless pool defaults to reserve-for-events</b> (fauna side). <b>3. SW staples adjust-and-keep</b> (fauna side). <b>4. Flora: purge Earth-nameable planet-wide now, refill from the best available alien donor per sheet law, thin is acceptable</b> — sparseness is doctrine in half these biomes — <b>and every sheet-demanded signature plant becomes a NEW-ART/DEF queue item.</b> That card is what this sheet records.</p><p><b>What a verdict here drives:</b> plant verdicts amend the roster JSONs under <code>design/Jawa/worldbuilding/biomes/rosters/</code> and the wildPlants patches are regenerated from them. <b>Ledger verdicts decide the new-art queue</b> — Keep files it as a queue item and it gets drawn; Defer parks it; Drop kills it, and the biome that asked for it stays thin permanently.</p><p><b>The controls:</b> <b>Keep</b> the row as landed — <i>on a ledger row this means COMMISSION it</i> · <b>Thin</b> — keep it but less of it, <i>say how much in the note</i> · <b>Purge</b> — take it out of this biome (on a purge-summary row, Purge means the removal stands; overrule to <b>Keep</b> to restore, naming what in the note) · <b>Defer</b> · <b>Drop</b> — the ledger's park and kill. The note is worth more than the verdict.</p><p><b>Read the ⚠ contested group first</b> — 13 rows: the interim stand-ins that are holding a biome together, and the confidence[] claims about plants that no measurement closed.</p><p class='sub'>Marks: <b>◆ contested</b> = defensible both ways. <b>⚠ UNMEASURED</b> = the law line rests on by-name knowledge, not the register. <b>⊘ zeroed</b> = Cherry Picker zeroes this def in this very biome, so the row will not spawn until the cut is lifted. Plant facts (shape, grow days, cave, pollution, yield) are read from <code>plant_register_rows.json</code>; commonality is ours.</p>",
+  "subtitle": "169 landed plants · 22 purge summaries · 118 new-art ledger · 13 contested",
+  "briefHtml": "<p><b>The pass:</b> BIOME_FAUNA_ASSIGNMENT_SITTING_1, flora half — landed 2026-09-09. <b>169</b> landed plant rows across <b>28</b> biome sheets, <b>22</b> purge summaries covering <b>198</b> removed plants, and <b>118</b> entries in the NEW ART/DEF ledger.</p><p><b>The four owner cards this pass ran on (2026-09-09):</b> <b>1. Land now, review after</b> — the roster data and the generated wildPlants patches are already committed on the agent's calls; this sheet is the override surface. <b>2. The homeless pool defaults to reserve-for-events</b> (fauna side). <b>3. SW staples adjust-and-keep</b> (fauna side). <b>4. Flora: purge Earth-nameable planet-wide now, refill from the best available alien donor per sheet law, thin is acceptable</b> — sparseness is doctrine in half these biomes — <b>and every sheet-demanded signature plant becomes a NEW-ART/DEF queue item.</b> That card is what this sheet records.</p><p><b>What a verdict here drives:</b> plant verdicts amend the roster JSONs under <code>design/Jawa/worldbuilding/biomes/rosters/</code> and the wildPlants patches are regenerated from them. <b>Ledger verdicts decide the new-art queue</b> — Keep files it as a queue item and it gets drawn; Defer parks it; Drop kills it, and the biome that asked for it stays thin permanently.</p><p><b>The controls:</b> <b>Keep</b> the row as landed — <i>on a ledger row this means COMMISSION it</i> · <b>Thin</b> — keep it but less of it, <i>say how much in the note</i> · <b>Purge</b> — take it out of this biome (on a purge-summary row, Purge means the removal stands; overrule to <b>Keep</b> to restore, naming what in the note) · <b>Defer</b> · <b>Drop</b> — the ledger's park and kill. The note is worth more than the verdict.</p><p><b>Read the ⚠ contested group first</b> — 13 rows: the interim stand-ins that are holding a biome together, and the confidence[] claims about plants that no measurement closed.</p><p class='sub'>Marks: <b>◆ contested</b> = defensible both ways. <b>⚠ UNMEASURED</b> = the law line rests on by-name knowledge, not the register. <b>⊘ zeroed</b> = Cherry Picker zeroes this def in this very biome, so the row will not spawn until the cut is lifted. Plant facts (shape, grow days, cave, pollution, yield) are read from <code>plant_register_rows.json</code>; commonality is ours.</p>",
   "criterion": "Rows pass their biome sheet's admission tests — which rank LAWFULNESS, not worth; commonality values are agent-chosen throughout.",
   "invented": [
     "Every commonality value on every flora row is agent-chosen. Nothing measures how much of a plant a biome should carry — these are a first pass at relative abundance.",
@@ -373,7 +373,7 @@ body.grid .row.sel-tint{border-color:currentColor}
   "group": "⚠ contested — the flora calls that need YOUR eye",
   "thumb": "plant_art/Plant_ShrubLow.scale.png",
   "effect": "comm 0.9 · bush · grows 3d · pollution: CleanOnly",
-  "law": "the knee-high fuzz stand-in until the fuzz def lands (§1); spaced, low, generic — not Earth-nameable",
+  "law": "the knee-high fuzz stand-in until the fuzz def lands (§1); spaced, low, generic — not Earth-nameable  — ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency).",
   "prefill": "keep",
   "inferred": false,
   "zeroed": null,
@@ -438,7 +438,7 @@ body.grid .row.sel-tint{border-color:currentColor}
   "group": "arid_shrubland · AridShrubland · 665 tiles",
   "thumb": "plant_art/Plant_Brambles.scale.png",
   "effect": "comm 0.3 · ground cover · grows 3d",
-  "law": "thorny holdout — venomvine-adjacent read (§4 venomvine)",
+  "law": "thorny holdout — venomvine-adjacent read (§4 venomvine)  — ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency).",
   "prefill": "keep",
   "inferred": false,
   "zeroed": null
@@ -449,7 +449,7 @@ body.grid .row.sel-tint{border-color:currentColor}
   "group": "arid_shrubland · AridShrubland · 665 tiles",
   "thumb": "plant_art/Plant_Bush.scale.png",
   "effect": "comm 0.3 · ground cover · grows 3d · pollution: CleanOnly",
-  "law": "generic spaced shrub — quincunx-legal, no thicket",
+  "law": "generic spaced shrub — quincunx-legal, no thicket  — ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency).",
   "prefill": "keep",
   "inferred": false,
   "zeroed": null
@@ -460,7 +460,7 @@ body.grid .row.sel-tint{border-color:currentColor}
   "group": "arid_shrubland · AridShrubland · 665 tiles",
   "thumb": "plant_art/RG_Plant_CreepStern.scale.png",
   "effect": "comm 0.2 · bush · grows 15d · pollution: CleanOnly",
-  "law": "alien-named low form",
+  "law": "alien-named low form  — ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 0.6 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency).",
   "prefill": "keep",
   "inferred": false,
   "zeroed": null
@@ -471,7 +471,7 @@ body.grid .row.sel-tint{border-color:currentColor}
   "group": "arid_shrubland · AridShrubland · 665 tiles",
   "thumb": "plant_art/RG_Plant_CrimsonCushion.scale.png",
   "effect": "comm 0.2 · bush · grows 5d · pollution: CleanOnly",
-  "law": "alien-named cushion form",
+  "law": "alien-named cushion form  — ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 0.6 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency).",
   "prefill": "keep",
   "inferred": false,
   "zeroed": null
@@ -482,7 +482,7 @@ body.grid .row.sel-tint{border-color:currentColor}
   "group": "arid_shrubland · AridShrubland · 665 tiles",
   "thumb": "plant_art/RG_Plant_Dervish.scale.png",
   "effect": "comm 0.2 · ground cover · grows 2.5d · pollution: CleanOnly",
-  "law": "alien-named low form",
+  "law": "alien-named low form  — ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency).",
   "prefill": "keep",
   "inferred": false,
   "zeroed": null
@@ -493,7 +493,7 @@ body.grid .row.sel-tint{border-color:currentColor}
   "group": "arid_shrubland · AridShrubland · 665 tiles",
   "thumb": "plant_art/RG_Plant_AridGrass.scale.png",
   "effect": "comm 0.5 · ground cover · grows 2.5d · pollution: CleanOnly",
-  "law": "\"short grasses struggling between\" the quincunx (§4)",
+  "law": "\"short grasses struggling between\" the quincunx (§4)  — ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1.3 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency).",
   "prefill": "keep",
   "inferred": false,
   "zeroed": null
@@ -504,7 +504,7 @@ body.grid .row.sel-tint{border-color:currentColor}
   "group": "arid_shrubland · AridShrubland · 665 tiles",
   "thumb": "plant_art/Plant_Ripthorn.scale.png",
   "effect": "comm 0.3 · ground cover · grows 3d · pollution: PollutedOnly",
-  "law": "alien thorn (Biotech), forbids-rather-than-flees flora",
+  "law": "alien thorn (Biotech), forbids-rather-than-flees flora  — ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency).",
   "prefill": "keep",
   "inferred": false,
   "zeroed": null
@@ -515,7 +515,7 @@ body.grid .row.sel-tint{border-color:currentColor}
   "group": "arid_shrubland · AridShrubland · 665 tiles",
   "thumb": "plant_art/Plant_HealrootWild.scale.png",
   "effect": "comm 0.25 · ground cover · grows 10d · pollution: CleanOnly · yields herbal medicine",
-  "law": "RimWorld-native fiction herb, not Earth-nameable",
+  "law": "RimWorld-native fiction herb, not Earth-nameable  — ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency).",
   "prefill": "keep",
   "inferred": false,
   "zeroed": null
@@ -526,7 +526,7 @@ body.grid .row.sel-tint{border-color:currentColor}
   "group": "arid_shrubland · AridShrubland · 665 tiles",
   "thumb": "plant_art/Plant_Nysyllin_Wild.scale.png",
   "effect": "comm 0.22 · bush · grows 10d · pollution: CleanOnly · yields nysyllin",
-  "law": "SW medicinal herb (nysyllin), wild variant — not a food crop, ban 8 clean",
+  "law": "SW medicinal herb (nysyllin), wild variant — not a food crop, ban 8 clean  — ban 9 fix wave 2026-09-09: KEPT, not re-picked — Flammability 1 (MEASURED, resolved statBases) violates §6 ban 9, and NO Flammability-0 donor exists that fits this sheet's flora law (only 32 of 647 pool defs are non-flammable, and every one is a fungus, a fire/anima form or an Earth-nameable cactus — none is a low shrub or fuzz, and most are already bound to another family). Flammability zeroed instead by BiomeFloraStatAdjustments_Generated.xml; safe because this def is single-biome on the landed planet (MEASURED, rosters_residency).",
   "prefill": "keep",
   "inferred": false,
   "zeroed": null
@@ -1610,23 +1610,23 @@ body.grid .row.sel-tint{border-color:currentColor}
   "zeroed": null
  },
  {
-  "id": "p:the_rot:BMT_Blastpod",
-  "label": "blastpod shroom",
-  "group": "the_rot · AB_MycoticJungle · 2,258 tiles",
-  "thumb": "plant_art/BMT_Blastpod.scale.png",
-  "effect": "comm 0.05 · bush · grows 5d · cave-only · pollution: CleanOnly · yields blast spore sac",
-  "law": "§7b blastpod→chemfuel chain, ruled wild-only; see confidence — donor temp range confines it to hot caverns",
-  "prefill": "keep",
-  "inferred": false,
-  "zeroed": null
- },
- {
   "id": "p:the_rot:BMT_BleedingTooth",
   "label": "bleeding tooth",
   "group": "the_rot · AB_MycoticJungle · 2,258 tiles",
   "thumb": "plant_art/BMT_BleedingTooth.scale.png",
   "effect": "comm 0.2 · bush · grows 2d",
   "law": "§7b ingested",
+  "prefill": "keep",
+  "inferred": false,
+  "zeroed": null
+ },
+ {
+  "id": "p:the_rot:Boomshroom",
+  "label": "boomshroom",
+  "group": "the_rot · AB_MycoticJungle · 2,258 tiles",
+  "thumb": "plant_art/Boomshroom.scale.png",
+  "effect": "comm 0.05 · bush · grows 60d · yields chemfuel",
+  "law": "§7b blastpod->chemfuel chain, ruled wild-only — RE-PICK 2026-09-09 fix wave, replacing BMT_Blastpod. Same plant under the skin (Blastpod's own texPath is BMT_Caverns/.../Boomshroom/BoomshroomGrown) and the same chemfuel yield, but shipped 0..58 °C instead of 50..352 °C: Blastpod's donor band confined it to hot caverns and reaching the Rot's -18.8 °C median would have meant a 78.8 °C stretch, which is a lie, not a tolerance (plant_tolerances.py REPICK_LIMIT 30). Boomshroom is Odyssey stock, so it is present whenever the DLC is.",
   "prefill": "keep",
   "inferred": false,
   "zeroed": null
@@ -1736,7 +1736,7 @@ body.grid .row.sel-tint{border-color:currentColor}
   "group": "the_rot · AB_MycoticJungle · 2,258 tiles",
   "thumb": "plant_art/BMT_GreyLady.scale.png",
   "effect": "comm 0.2 · bush · grows 8d · cave-only · pollution: CleanOnly · yields cloth",
-  "law": "§7b ingested (grey lady lace)",
+  "law": "§7b ingested (grey lady lace)  — donor bug, clamped 2026-09-09 fix wave: BMT_GreyLady ships Flammability 40 (MEASURED — the whole pool's next-highest is 1.5, so 40 is a typo in the donor mod, not a design). Clamped to 1.0 by BiomeFloraStatAdjustments_Generated.xml.",
   "prefill": "keep",
   "inferred": false,
   "zeroed": null
@@ -1903,6 +1903,17 @@ body.grid .row.sel-tint{border-color:currentColor}
   "effect": "comm 0.5 · ground cover · grows 3d · pollution: CleanOnly",
   "law": "§7b marsh fungi",
   "prefill": "keep",
+  "inferred": false,
+  "zeroed": null
+ },
+ {
+  "id": "purge:the_rot",
+  "label": "PURGE — the_rot",
+  "group": "the_rot · AB_MycoticJungle · 2,258 tiles",
+  "thumb": null,
+  "effect": "1 plants removed from this biome — 0 as Earth-nameable (owner card 4), 1 on sheet law. Left standing: 32 rostered plants.",
+  "law": "Removed: blastpod shroom (BMT_Blastpod)  — restore any of these by overruling this row to Keep and naming them in the note.",
+  "prefill": "purge",
   "inferred": false,
   "zeroed": null
  },
