@@ -93,7 +93,7 @@ Generated from a live post-patch def dump; load last.</description>
        under Patches/ together emit PatchOperationFindMod/Conditional blocks
        against ~40 third-party (and DLC) mods' ThingDefs, and only 3 packageIds
        were declared. `guy762.kotorweapons` (the old KotOR Weapons donor) is now
-       itself DEAD -- that mod was absorbed into this one and retired, so the
+       itself DEAD - that mod was absorbed into this one and retired, so the
        packageId matches nothing installed; it is dropped here in favour of
        `guy762.mm.kotorcore` (the materials mod, still a real donor and already
        below). The full list was built by generating every Patches/*.xml file
@@ -104,7 +104,7 @@ Generated from a live post-patch def dump; load last.</description>
        same dump's manifest.json. `Core` (ludeon.rimworld) is omitted: it is
        always first regardless of loadAfter. A loadAfter naming a packageId
        that does not exist, or that is merely inactive, fails/no-ops SILENTLY --
-       nothing logs it -- so absent entries are the dangerous failure mode, not
+       nothing logs it - so absent entries are the dangerous failure mode, not
        extra ones; several of these (DLCs, and mods not in every list) are fine
        to declare even when inactive, as an optional-compat statement of intent. -->
   <loadAfter>
