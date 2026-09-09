@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T02:47:55Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-09T02:56:06Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -522,15 +522,6 @@ kind:     task
 summary:  1. A ThingComp on a module ThingDef adds a personality HediffDef to the
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_PERSONALITY_1.md
 
-## PAWNFLAVOR_GEN_BEHIND_1 PawnFlavorPhase2 patches are far behind gen_pawn_flavor_phase2_apply.py, plus two small drifts
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/PAWNFLAVOR_GEN_BEHIND_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PAWNFLAVOR_GEN_BEHIND_1.md
-
 ## ARMOURY_DECLARER_ATTRIBUTION_FLIP_1 gen_armour_patch.py's declarer() flips guy762_*/KotOR* ops between own-mod (Conditional) and donor (FindMod) attribution run-to-run
 state:    doing
 row:      unassigned
@@ -548,15 +539,6 @@ target:   v1
 kind:     task
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
-
-## BLIZZARISK_DONOR_CUT_1 Cherry Picker cut of the Blizzarisk donor def -- R20, owner: donor creature not our canon, remove it from the game
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/BLIZZARISK_DONOR_CUT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BLIZZARISK_DONOR_CUT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1174,16 +1156,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
 
-## MOVING_DUNES_ENGINE_1 RM aeolian-transport engine idea: deposition so deep it forms dunes that CREEP — erode windward, deposit leeward, along the wind vector (owner spark, 2026-09-09; design-first, no build)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Owner spark, verbatim (2026-09-09): "In the extreme limit, it would be
-prose:    infrastructure/state/items/MOVING_DUNES_ENGINE_1.md
-
 ## MOD_LICENSE_PERMISSIVE_1 Add the most generous re-use license (CC0-1.0) to every mod we ship
 state:    proposed
 row:      unassigned
@@ -1200,6 +1172,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DESERT_WRAPS_ART_COMMISSION_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Owner (2026-09-09, verbatim on the event): commission art INSPIRED BY the
 prose:    infrastructure/state/items/DESERT_WRAPS_ART_COMMISSION_1.md
+
+## MOVING_DUNES_BUILD_1 Build the dunes engine per MOVING_DUNES_DESIGN.md v2 (model=opus, ~1.1-1.4k lines): Werner transport on Odyssey sandGrid, source/sink edges, DuneMaterialDef skins, burial caches + BuryThingsAt API — GATED on the shader-tint quicktest the design names
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MOVING_DUNES_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
