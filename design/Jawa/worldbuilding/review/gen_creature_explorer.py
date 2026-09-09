@@ -19,24 +19,47 @@ Known reference laws are drawn automatically when the axis pair matches:
   bestHit     vs bodySize : Law-3 band (12–15 × bodySize)
   drawSizeMax vs bodySize : vanilla sprite law 1.9·√bs
 
-Data honesty: every number is copied verbatim from creature_register_rows.json
+Data honesty: every STAT is copied verbatim from creature_register_rows.json
 (see gen_creature_register.py for provenance); derived fields (bestHit,
 biomeSpread, kPerBS) state their formula in the axis label. Missing = null,
 never 0; null rows drop out of the plot for that axis pair and the drop count
 is shown.
+
+🔴 RESIDENCY (changed 2026-09-09): biome membership, biome spread and top
+commonality come from biomes/rosters/*.json through rosters_residency.py — the
+LANDED Ash'karr assignment. The register's own `biomes`/`group`/`topCommonality`
+are the MODS' default residency on a vanilla planet and are STALE for placement;
+they are never read here. A creature with no roster home has nb=0, tc=null and
+`grp` "(homeless-reserve)" or "(cut)" — that is a real state, not missing data.
 
 Run from repo root:
   python3 design/Jawa/worldbuilding/review/gen_creature_explorer.py
 Then open (Windows):
   D:\\Luke\\dev\\Rimworld\\design\\Jawa\\worldbuilding\\review\\viz\\creature_explorer.html
 """
-import json, os, html
+import json, os, html, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import rosters_residency as RR
+
 ROWS = os.path.join(HERE, "creature_register_rows.json")
 OUT = os.path.join(HERE, "viz", "creature_explorer.html")
 
 D = json.load(open(ROWS))
+ROST = RR.load()
+
+
+def roster_group(defName):
+    """The row's cluster: its primary roster sheet, else its planet-wide disposition."""
+    sh = ROST.primary_sheet(defName)
+    if sh:
+        return sh
+    if defName in ROST.cuts:
+        return "(cut)"
+    if defName in ROST.reserve:
+        return "(homeless-reserve)"
+    return "(unrostered)"
 
 
 def slim(r):
@@ -45,7 +68,7 @@ def slim(r):
     ds = r.get("drawSize")
     art = r.get("art") or {}
     return dict(
-        d=r["defName"], l=r.get("label"), m=r.get("mod"), g=r.get("group"),
+        d=r["defName"], l=r.get("label"), m=r.get("mod"), g=roster_group(r["defName"]),
         k=r.get("kindOf"),
         bs=r.get("bodySize"), hs=r.get("healthScale"), sp=r.get("moveSpeed"),
         wd=r.get("wildness"), tr=r.get("trainability"),
@@ -53,9 +76,11 @@ def slim(r):
         ar=r.get("armorSharp"),
         dw=(max(v for v in ds if isinstance(v, (int, float)))
             if isinstance(ds, (list, tuple)) and any(isinstance(v, (int, float)) for v in ds) else None),
-        bh=best, tc=r.get("topCommonality"),
-        nb=sum(1 for b in r.get("biomes") or [] if (b.get("commonality") or 0) > 0),
-        bio=sorted({b["biomeDef"] for b in r.get("biomes") or [] if (b.get("commonality") or 0) > 0}),
+        bh=best,
+        # residency: rosters ONLY (never r["topCommonality"] / r["biomes"])
+        tc=(ROST.top_commonality(r["defName"]) or None),
+        nb=ROST.spread(r["defName"]),
+        bio=sorted({q.biome for q in ROST.residency.get(r["defName"], [])}),
         cut=bool(r.get("cut")), zz=bool(r.get("commonalityZeroed")),
         px=art.get("pxPerCell"), sprite=art.get("detail"),
     )

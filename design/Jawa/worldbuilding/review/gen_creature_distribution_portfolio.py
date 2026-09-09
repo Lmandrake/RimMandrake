@@ -23,9 +23,17 @@ Reference laws drawn (never fitted to these points):
           bodySize 0.036/0.286 make the linear reference approximate below 0.286.
   danger: beast_normalization_spec.md Law 3 — best single hit = 12-15 * bodySize
           for bodySize>=1 (shipped at K=15 in mandrake.rsw.beastnorm).
-  biome : the biome definition sheets' HARD BANS (design/Jawa/worldbuilding/biomes/),
-          which are the TARGET state (authored 2026-09-05) — the fauna assignment
-          predates them, so violations measure the curation workload, not bugs.
+  biome : the biome definition sheets' HARD BANS (design/Jawa/worldbuilding/biomes/).
+          🔴 SINCE 2026-09-09 fig6 IS A REGRESSION INSTRUMENT, not a workload meter.
+          The assignment pass landed (BIOME_FAUNA_ASSIGNMENT_SITTING_1) and residency
+          now comes from biomes/rosters/*.json via rosters_residency.py — the sheets'
+          own product. A base-roster violation bar SHOULD be zero; a nonzero one is a
+          DEFECT in the roster, to be fixed in the roster, never explained away here.
+
+RESIDENCY SOURCE (changed 2026-09-09): rosters/*.json through rosters_residency.py.
+The register's own `biomes` / `group` / `topCommonality` are the MODS' default
+residency on a vanilla planet and are STALE for placement — they are never read for
+residency anywhere in this file. The register remains the STATS source.
 
 Analytic thresholds chosen here (stated, not canonical):
   size bands   small<0.5 <= medium <1.5 <= large <=3.5 < huge   (human=1.0 medium,
@@ -39,7 +47,10 @@ Run from repo root:
 """
 from __future__ import annotations
 
-import json, math, os, statistics, collections
+import json, math, os, statistics, collections, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import rosters_residency as RR
 
 import matplotlib
 matplotlib.use("Agg")
@@ -69,13 +80,43 @@ def besthit(r):
 def is_pred(r):
     return any("predator" in (s.get("text") or "") for s in (r.get("specials") or []))
 
+# --------------------------------------------------- residency: rosters, never the register
+ROST = RR.load()
+REG = {r["defName"]: r for r in ALL}
+
+# The rosters carry DESIGNED stat corrections that are part of the assignment ruling
+# ("adjust-keep": the creature stays because its stat moves). Judging a roster against
+# a sheet ban on the creature's PRE-adjustment stat would report a violation the
+# assignment already fixed, so the designed value wins here and every designed point
+# is drawn with an open marker so it is never mistaken for a MEASURED one.
+DESIGNED = collections.defaultdict(dict)
+for _a in ROST.stat_adjustments:
+    DESIGNED[_a["def"]][_a["field"]] = _a["to"]
+
+
+def designed(defName, field):
+    """(value, is_designed). MEASURED from the register unless the rosters adjust it."""
+    if field in DESIGNED.get(defName, {}):
+        return DESIGNED[defName][field], True
+    return REG.get(defName, {}).get(field), False
+
+
+def is_pred_designed(defName):
+    v, d = designed(defName, "predator")
+    if d:
+        return bool(v)
+    return is_pred(REG[defName]) if defName in REG else False
+
+
 def residents(biomedef):
+    """Fauna LANDED in this BiomeDef by the assignment pass.
+    Returns (register row, commonality, Residency) — commonality is the roster's
+    DESIGN CHOICE, the register row is stats only."""
     out = []
-    for r in LIVE:
-        for b in r["biomes"]:
-            if b["biomeDef"] == biomedef and (b.get("commonality") or 0) > 0:
-                out.append((r, b["commonality"]))
-                break
+    for res in ROST.residents(biomedef):
+        r = REG.get(res.defName)
+        if r is not None:
+            out.append((r, res.commonality, res))
     return out
 
 FLESH_KINDS = ("animal", "insectoid", "leviathan", "entity", "dryad")
@@ -271,157 +312,222 @@ def fig5():
                      inband=sum(1 for r in v if 12 <= k[r["defName"]] <= 15.5)) for m, v in rows}
     return dict(pop=len(pop), n_in=n_in, n_below=n_below, mods=stats)
 
-# ------------------------------------------------------ fig 6: biome-law gap
+# ------------------------------------------------------ fig 6: biome-law regression
 def fig6():
+    """POST-ASSIGNMENT REGRESSION INSTRUMENT.
+
+    Residency comes from the rosters — the sheets' own product — so a base-roster
+    bar SHOULD be zero. Injection-layer additions (fall_line) are drawn as a
+    SEPARATE, differently-marked series: they are transient vermin injected over
+    the underlying BiomeDefs under fall_line.md's own law, not dune-sea/desert
+    residents, and folding them into the base bar would manufacture a violation
+    the sheets never made."""
     out = {}
     fig, axes = plt.subplots(3, 1, figsize=(10.6, 10.4), dpi=150)
     rng = np.random.default_rng(11)
 
+    def split(res):
+        return ([t for t in res if not t[2].injection], [t for t in res if t[2].injection])
+
+    def verdict(ax, nbase, nviol, x, y):
+        ok = nviol == 0
+        ax.text(x, y, ("✓ 0 base-roster violations of %d residents" % nbase) if ok
+                else ("✗ %d base-roster violation%s of %d residents — ROSTER DEFECT"
+                      % (nviol, "" if nviol == 1 else "s", nbase)),
+                fontsize=8.2, color=C_GREEN if ok else C_RED, weight="bold", ha="left")
+
     # Panel A — Desert: no pursuit predators
     ax = axes[0]
-    res = residents("Desert")
-    preds = [(r, c) for r, c in res if is_pred(r)]
-    nonp = [(r, c) for r, c in res if not is_pred(r)]
-    viol = [(r, c) for r, c in preds if (r.get("moveSpeed") or 0) >= 4.5]
+    base, inj = split(residents("Desert"))
+    preds = [(r, c, q) for r, c, q in base if is_pred_designed(r["defName"])]
+    nonp = [t for t in base if not is_pred_designed(t[0]["defName"])]
+    viol = [(r, c, q) for r, c, q in preds if (designed(r["defName"], "moveSpeed")[0] or 0) >= 4.5]
+    injv = [(r, c, q) for r, c, q in inj
+            if is_pred_designed(r["defName"]) and (designed(r["defName"], "moveSpeed")[0] or 0) >= 4.5]
     ax.axvspan(4.5, 9.4, color=C_BAN, zorder=0)
-    ax.text(4.62, 1.72, "pursuit-capable: banned for predators (moveSpeed ≥ 4.5; wild human ≈ 4.6)",
+    ax.text(4.62, 1.78, "pursuit-capable: banned for predators (moveSpeed ≥ 4.5; wild human ≈ 4.6)",
             fontsize=7.4, color=C_RED, ha="left")
-    ax.scatter([r.get("moveSpeed") or 0 for r, c in nonp], 0.35 + rng.uniform(-0.16, 0.16, len(nonp)),
-               s=10, c=C_GRAY, alpha=0.4, lw=0, label="non-predator residents, n=%d" % len(nonp))
-    for r, c in preds:
-        sp = r.get("moveSpeed") or 0
+    ax.scatter([designed(r["defName"], "moveSpeed")[0] or 0 for r, c, q in nonp],
+               0.35 + rng.uniform(-0.16, 0.16, len(nonp)),
+               s=10, c=C_GRAY, alpha=0.45, lw=0)
+    for r, c, q in preds:
+        sp = designed(r["defName"], "moveSpeed")[0] or 0
+        d = designed(r["defName"], "moveSpeed")[1]
         bad = sp >= 4.5
         ax.scatter(sp, 1.0 + rng.uniform(-0.2, 0.2), s=12 + 46 * math.sqrt(min(c, 1.5)),
-                   c=C_RED if bad else C_GREEN, marker="^" if bad else "o", alpha=0.8, lw=0)
+                   facecolors="none" if d else (C_RED if bad else C_GREEN),
+                   edgecolors=C_RED if bad else C_GREEN, linewidths=1.1 if d else 0,
+                   marker="^" if bad else "o", alpha=0.85)
+    for r, c, q in inj:
+        sp = designed(r["defName"], "moveSpeed")[0] or 0
+        ax.scatter(sp, 1.55 + rng.uniform(-0.14, 0.14), s=10 + 40 * math.sqrt(min(c, 1.5)),
+                   c=C_ORANGE, marker="D", alpha=0.75, lw=0)
     ann = []
-    for nm, tx, ty in (("GR_Manwolf", 5.35, 0.05), ("Meganeura", 7.35, 1.45), ("JOE_Cephalope", 7.5, 0.42)):
-        t = next(((r, c) for r, c in viol if r["defName"] == nm), None)
-        if t:
-            ann.append(ax.annotate(nm + " (comm %.2g)" % t[1], (t[0].get("moveSpeed"), 1.0),
-                                   xytext=(tx, ty), fontsize=7.2,
-                                   arrowprops=dict(arrowstyle="-", lw=0.5, color="#888888")))
+    for r, c, q in sorted(viol + injv, key=lambda t: -t[1])[:3]:
+        yy = 1.55 if q.injection else 1.0
+        ann.append(ax.annotate("%s (comm %.2g, %s)" % (r["defName"], c, q.sheet),
+                               (designed(r["defName"], "moveSpeed")[0], yy),
+                               xytext=(5.6, yy - 0.55), fontsize=7.2,
+                               arrowprops=dict(arrowstyle="-", lw=0.5, color="#888888")))
+    # the two designed slow-downs are the assignment's own repair — name them
+    adj = [(r, c) for r, c, q in preds if designed(r["defName"], "moveSpeed")[1]]
+    if adj:
+        ann.append(ax.annotate("adjust-keep: %s slowed below the ban by roster ruling"
+                               % ", ".join("%s %.1f→%.1f" % (r["defName"], REG[r["defName"]]["moveSpeed"],
+                                                             designed(r["defName"], "moveSpeed")[0])
+                                           for r, c in adj),
+                               (4.4, 1.0), xytext=(0.25, 0.03), fontsize=7.0, color=C_BLUE,
+                               arrowprops=dict(arrowstyle="-", lw=0.5, color=C_BLUE)))
     halo(ann)
-    ax.set_yticks([0.35, 1.0]); ax.set_yticklabels(["other residents", "predators"], fontsize=8)
-    ax.set_xlim(0, 9.4); ax.set_ylim(-0.1, 1.95)
-    ax.set_xlabel("moveSpeed (cells/s)", fontsize=8)
-    ax.set_title("Desert (sheet law: NO pursuit predators, steady populations) — %d of %d resident predators are pursuit-capable"
-                 % (len(viol), len(preds)), fontsize=9.6, loc="left")
-    leg = [Line2D([], [], marker="^", ls="", c=C_RED, label="predator, pursuit-capable (violates), n=%d" % len(viol)),
-           Line2D([], [], marker="o", ls="", c=C_GREEN, label="predator, slow (ambush-compatible), n=%d" % (len(preds) - len(viol)))]
-    ax.legend(handles=leg, loc="upper left", fontsize=7.2, framealpha=0.95)
-    out["Desert"] = dict(residents=len(res), predators=len(preds), pursuit=len(viol),
-                         top=[(r["defName"], c) for r, c in sorted(viol, key=lambda t: -t[1])[:8]])
+    ax.set_yticks([0.42, 1.0, 1.55]); ax.set_yticklabels(["other residents", "predators", "Fall Line (injected)"], fontsize=7.6)
+    ax.set_xlim(0, 9.4); ax.set_ylim(-0.22, 2.0)
+    ax.set_xlabel("moveSpeed (cells/s) — roster-adjusted where the assignment ruled one", fontsize=8)
+    ax.set_title("Desert (law: NO pursuit predators) — base roster %d residents, %d predators, %d pursuit-capable"
+                 % (len(base), len(preds), len(viol)), fontsize=9.6, loc="left")
+    verdict(ax, len(base), len(viol), 0.12, 1.80)
+    ax.legend(handles=[Line2D([], [], marker="o", ls="", c=C_GREEN, label="predator, ambush-slow (legal)"),
+                       Line2D([], [], marker="o", ls="", mfc="none", mec=C_GREEN, label="…via a roster stat_adjustment (DESIGNED)"),
+                       Line2D([], [], marker="^", ls="", c=C_RED, label="predator, pursuit-capable (VIOLATION)"),
+                       Line2D([], [], marker="D", ls="", c=C_ORANGE, label="Fall Line injection (own law)"),
+                       Line2D([], [], marker="o", ls="", c=C_GRAY, label="non-predator resident")],
+              loc="lower right", fontsize=6.6, framealpha=0.95, ncol=2)
+    out["Desert"] = dict(base=len(base), injected=len(inj), predators=len(preds), pursuit=len(viol),
+                         injected_violations=[(r["defName"], c) for r, c, q in injv],
+                         top=[(r["defName"], c) for r, c, q in sorted(viol, key=lambda t: -t[1])[:8]])
 
-    # Panel B — AridShrubland: the size void (nothing resident in LARGE)
+    # Panel B — AridShrubland: the size void
     ax = axes[1]
-    res = residents("AridShrubland")
-    viol = [(r, c) for r, c in res if 1.5 <= (r.get("bodySize") or 0) <= 3.5]
+    base, inj = split(residents("AridShrubland"))
+    def bs_of(r): return designed(r["defName"], "bodySize")[0] or 0
+    viol = [t for t in base if 1.5 <= bs_of(t[0]) <= 3.5]
+    injv = [t for t in inj if 1.5 <= bs_of(t[0]) <= 3.5]
     ax.axvspan(1.5, 3.5, color=C_BAN, zorder=0)
-    for r, c in res:
-        bs = r.get("bodySize") or 0
-        bad = 1.5 <= bs <= 3.5
-        ax.scatter(bs, 0.8 + rng.uniform(-0.55, 0.55), s=10 + 46 * math.sqrt(min(c, 1.5)),
-                   c=C_RED if bad else C_GRAY, marker="^" if bad else "o", alpha=0.65 if bad else 0.4, lw=0)
-    ax.text(2.28, 1.78, "LARGE band: banned resident (legal only as huge-young)", fontsize=7.4, color=C_RED, ha="center")
-    ann = []
-    for nm, tx, ty in (("Gutkurr", 0.62, 1.6), ("Dactillion", 4.6, 0.05), ("Varactyl", 5.2, 1.55)):
-        t = next(((r, c) for r, c in viol if r["defName"] == nm), None)
-        if t:
-            ann.append(ax.annotate("%s (comm %.2g)" % (nm, t[1]), (t[0]["bodySize"], 0.8),
-                                   xytext=(tx, ty), fontsize=7.2,
-                                   arrowprops=dict(arrowstyle="-", lw=0.5, color="#888888")))
-    halo(ann)
-    ax.set_xscale("log"); ax.set_xlim(0.008, 45); ax.set_ylim(0, 2.0); ax.set_yticks([])
+    for r, c, q in base:
+        bad = 1.5 <= bs_of(r) <= 3.5
+        ax.scatter(bs_of(r), 0.75 + rng.uniform(-0.45, 0.45), s=10 + 46 * math.sqrt(min(c, 1.5)),
+                   c=C_RED if bad else C_GRAY, marker="^" if bad else "o", alpha=0.75 if bad else 0.5, lw=0)
+    for r, c, q in inj:
+        ax.scatter(bs_of(r), 1.55 + rng.uniform(-0.1, 0.1), s=10 + 40 * math.sqrt(min(c, 1.5)),
+                   c=C_ORANGE, marker="D", alpha=0.75, lw=0)
+    ax.text(2.28, 1.86, "LARGE band: banned resident (legal only as huge-young)", fontsize=7.4, color=C_RED, ha="center")
+    ax.set_xscale("log"); ax.set_xlim(0.008, 45); ax.set_ylim(0, 2.0)
+    ax.set_yticks([0.75, 1.55]); ax.set_yticklabels(["base roster", "Fall Line"], fontsize=7.6)
     ax.set_xlabel("bodySize (log)", fontsize=8)
-    ax.set_title("Arid shrubland (sheet law: small · medium · VOID · huge) — %d of %d residents sit in the banned large band (%d%%)"
-                 % (len(viol), len(res), round(100 * len(viol) / len(res)) if res else 0), fontsize=9.6, loc="left")
-    ax.text(0.0095, 1.72, "size bands (stated thresholds):\nsmall <0.5 ≤ medium <1.5 ≤ large ≤3.5 < huge", fontsize=7.0, color="#777777")
-    out["AridShrubland"] = dict(residents=len(res), large=len(viol),
-                                top=[(r["defName"], c) for r, c in sorted(viol, key=lambda t: -t[1])[:8]])
+    ax.set_title("Arid shrubland (law: small · medium · VOID · huge) — base roster %d residents, %d in the banned large band"
+                 % (len(base), len(viol)), fontsize=9.6, loc="left")
+    verdict(ax, len(base), len(viol), 0.0095, 1.86)
+    ax.text(0.0095, 1.60, "size bands (stated thresholds):\nsmall <0.5 ≤ medium <1.5 ≤ large ≤3.5 < huge", fontsize=7.0, color="#777777")
+    out["AridShrubland"] = dict(base=len(base), injected=len(inj), large=len(viol),
+                                injected_violations=[(r["defName"], c) for r, c, q in injv],
+                                top=[(r["defName"], c) for r, c, q in sorted(viol, key=lambda t: -t[1])[:8]])
 
-    # Panel C — ExtremeDesert (dune sea): giant or grain-scale, nothing between
+    # Panel C — ExtremeDesert (dune sea)
     ax = axes[2]
-    res = residents("ExtremeDesert")
-    viol = [(r, c) for r, c in res if 0.3 <= (r.get("bodySize") or 0) <= 3.0]
+    base, inj = split(residents("ExtremeDesert"))
+    viol = [t for t in base if 0.3 <= bs_of(t[0]) <= 3.0]
+    injv = [t for t in inj if 0.3 <= bs_of(t[0]) <= 3.0]
     ax.axvspan(0.3, 3.0, color=C_BAN, zorder=0)
-    for r, c in res:
-        bs = r.get("bodySize") or 0
-        bad = 0.3 <= bs <= 3.0
-        ax.scatter(bs, 0.8 + rng.uniform(-0.55, 0.55), s=10 + 46 * math.sqrt(min(c, 1.5)),
-                   c=C_RED if bad else C_GRAY, marker="^" if bad else "o", alpha=0.65 if bad else 0.4, lw=0)
-    ax.text(0.95, 1.78, "MEDIUM: banned — 'body sizes are giant or grain-scale, nothing between'",
-            fontsize=7.4, color=C_RED, ha="center")
+    for r, c, q in base:
+        bad = 0.3 <= bs_of(r) <= 3.0
+        ax.scatter(bs_of(r), 0.75 + rng.uniform(-0.45, 0.45), s=10 + 46 * math.sqrt(min(c, 1.5)),
+                   c=C_RED if bad else C_GRAY, marker="^" if bad else "o", alpha=0.75 if bad else 0.5, lw=0)
+    for r, c, q in inj:
+        ax.scatter(bs_of(r), 1.55 + rng.uniform(-0.1, 0.1), s=10 + 40 * math.sqrt(min(c, 1.5)),
+                   c=C_ORANGE, marker="D", alpha=0.8, lw=0)
+    ax.text(0.95, 1.86, "MEDIUM: banned — 'giant or grain-scale, nothing between'", fontsize=7.4, color=C_RED, ha="center")
     ann = []
-    for nm, tx, ty in (("Tooke", 0.045, 1.5), ("Wraid", 4.6, 0.05), ("Falumpaset", 5.2, 1.5)):
-        t = next(((r, c) for r, c in viol if r["defName"] == nm), None)
-        if t:
-            ann.append(ax.annotate("%s (comm %.2g)" % (nm, t[1]), (t[0]["bodySize"], 0.8),
-                                   xytext=(tx, ty), fontsize=7.2,
-                                   arrowprops=dict(arrowstyle="-", lw=0.5, color="#888888")))
+    for r, c, q in sorted(viol, key=lambda t: -t[1])[:2]:
+        ann.append(ax.annotate("%s (bs %.2g, comm %.2g)\nroster law: %s" % (r["defName"], bs_of(r), c, (q.band or "—")),
+                               (bs_of(r), 0.75), xytext=(4.2, 0.18), fontsize=7.0,
+                               arrowprops=dict(arrowstyle="-", lw=0.5, color="#888888")))
+    if injv:
+        ann.append(ax.annotate("Fall Line injects %d vermin/droid rows here under its OWN law\n"
+                               "(fall_line.md: transient, over the underlying def — not dune-sea residents)" % len(injv),
+                               (0.6, 1.55), xytext=(0.011, 1.18), fontsize=7.0, color=C_ORANGE,
+                               arrowprops=dict(arrowstyle="-", lw=0.5, color=C_ORANGE)))
     halo(ann)
-    ax.set_xscale("log"); ax.set_xlim(0.008, 45); ax.set_ylim(0, 2.0); ax.set_yticks([])
+    ax.set_xscale("log"); ax.set_xlim(0.008, 45); ax.set_ylim(0, 2.0)
+    ax.set_yticks([0.75, 1.55]); ax.set_yticklabels(["base roster", "Fall Line"], fontsize=7.6)
     ax.set_xlabel("bodySize (log)", fontsize=8)
-    ax.set_title("Dune sea / ExtremeDesert (sheet law: giant or grain-scale ONLY) — %d of %d residents are medium-sized (%d%%)"
-                 % (len(viol), len(res), round(100 * len(viol) / len(res)) if res else 0), fontsize=9.6, loc="left")
-    ax.text(0.0095, 1.72, "banned 'medium' stated as 0.3 ≤ bodySize ≤ 3.0\n(the sheet gives no number; this is the analytic choice)", fontsize=7.0, color="#777777")
-    out["ExtremeDesert"] = dict(residents=len(res), medium=len(viol),
-                                top=[(r["defName"], c) for r, c in sorted(viol, key=lambda t: -t[1])[:8]])
+    ax.set_title("Dune sea + deep desert (`ExtremeDesert`, law: giant or grain-scale ONLY) — base roster %d residents, %d medium"
+                 % (len(base), len(viol)), fontsize=9.6, loc="left")
+    verdict(ax, len(base), len(viol), 0.0095, 1.70)
+    ax.text(0.0095, 1.44, "banned 'medium' stated as 0.3 ≤ bodySize ≤ 3.0\n(the sheet gives no number; this is the analytic choice)", fontsize=7.0, color="#777777")
+    out["ExtremeDesert"] = dict(base=len(base), injected=len(inj), medium=len(viol),
+                                injected_violations=[(r["defName"], c) for r, c, q in injv],
+                                top=[(r["defName"], c) for r, c, q in sorted(viol, key=lambda t: -t[1])[:8]])
 
-    fig.suptitle("The biome sheets' hard bans vs the fauna the mods actually assign — the curation gap, measured",
-                 fontsize=12, x=0.012, ha="left")
+    fig.suptitle("REGRESSION INSTRUMENT — the biome sheets' hard bans vs the LANDED assignment: base-roster bars should read zero",
+                 fontsize=11.5, x=0.012, ha="left")
     fig.text(0.012, 0.012,
-             "Resident = live creature with spawn commonality > 0 in that BiomeDef. Marker AREA ∝ √commonality (non-scale sizing, disclosed).\n"
-             "The sheets (design/Jawa/worldbuilding/biomes/, authored 2026-09-05) are the TARGET; the fauna lists predate them — these are curation\n"
-             "WORKLOADS, not code defects. Huge-young exemption (shrubland) is UNMEASURED: the register carries no life-stage data.\n%s" % src_line(), **FOOT)
-    fig.subplots_adjust(left=0.09, right=0.985, top=0.935, bottom=0.095, hspace=0.5)
+             "Resident = a row in biomes/rosters/<sheet>.json landed on that BiomeDef (rosters_residency.py). ⚠️ NOT the register's `biomes` field — that\n"
+             "is the MODS' default residency on a vanilla planet, stale for placement. Marker AREA ∝ √commonality (design choice, disclosed); open\n"
+             "markers = a roster stat_adjustment (DESIGNED, not yet built); ◆ = injection-layer addition judged under fall_line.md, never the host\n"
+             "biome's law. Huge-young exemption (shrubland) stays UNMEASURED — no life-stage data in the register.\n"
+             "Stats: creature_register_rows.json (dump %s mods, %s). Residency: biomes/rosters/*.json, authored 2026-09-09."
+             % (META["dumpMods"], META["dumpCaptured"][:10]), **FOOT)
+    fig.subplots_adjust(left=0.115, right=0.985, top=0.93, bottom=0.115, hspace=0.55)
     for ext in ("png", "svg"):
         fig.savefig(os.path.join(VIZ, "fig6_biome_law_gap.%s" % ext))
     plt.close(fig)
     return out
 
-# ------------------------------------------------------ fig 7: dominance (supplementary)
+# ------------------------------------------------------ fig 7: dominance after the pass
 def fig7():
-    pop = [(r, r.get("topCommonality") or 0, sum(1 for b in r["biomes"] if (b.get("commonality") or 0) > 0))
-           for r in LIVE]
+    """Roster spread × roster top-commonality. Both axes come from the rosters;
+    the register's `topCommonality` / `biomes` are NOT read here."""
+    pop = [(REG[d], ROST.top_commonality(d), ROST.spread(d)) for d in sorted(ROST.residency)
+           if d in REG]
     pop = [(r, tc, sp) for r, tc, sp in pop if sp > 0 and tc > 0]
     fig, ax = plt.subplots(figsize=(10.2, 7.2), dpi=150)
-    aa = [(r, tc, sp) for r, tc, sp in pop if r["mod"] == "Alpha Animals"]
-    core = [(r, tc, sp) for r, tc, sp in pop if r["mod"] == "Core"]
-    oth = [(r, tc, sp) for r, tc, sp in pop if r["mod"] not in ("Alpha Animals", "Core")]
-    ax.scatter([sp for _, _, sp in oth], [tc for _, tc, _ in oth], s=13, c=C_GRAY, alpha=0.45, lw=0,
-               label="all other mods, n=%d" % len(oth))
-    ax.scatter([sp for _, _, sp in core], [tc for _, tc, _ in core], s=22, c=C_BLUE, marker="s", alpha=0.8, lw=0,
-               label="Core (vanilla), n=%d" % len(core))
-    ax.scatter([sp for _, _, sp in aa], [tc for _, tc, _ in aa], s=22, c=C_ORANGE, marker="^", alpha=0.85, lw=0,
-               label="Alpha Animals, n=%d" % len(aa))
-    ax.axvline(20, color="#bbbbbb", lw=0.8, ls=":"); ax.axhline(0.3, color="#bbbbbb", lw=0.8, ls=":")
-    ub = [(r, tc, sp) for r, tc, sp in pop if tc >= 0.3 and sp >= 20]
-    ann = []
-    for nm, dx, dy in (("AA_PebbleMit", -6.2, 1.6), ("Rat", -3.5, 1.25), ("Hare", -3, 1.3), ("AA_Aerofleet", -8.5, 1.5),
-                       ("Muffalo", 0.4, 1.4), ("GraniteSlug", 0.5, 1.55), ("Boomalope", 0.3, 0.52)):
-        t = next(((r, tc, sp) for r, tc, sp in ub if r["defName"] == nm), None)
-        if t:
-            ann.append(ax.annotate(nm, (t[2], t[1]), xytext=(t[2] + dx, t[1] * dy), fontsize=7.4,
-                                   arrowprops=dict(arrowstyle="-", lw=0.5, color="#888888")))
-    halo(ann)
-    ax.text(33, 1.9, "EVERYWHERE AND COMMON\n%d creatures — the homogenizers:\nthey will make every biome feel the same" % len(ub),
-            fontsize=8.4, color=C_DARK, ha="center")
-    ax.set_yscale("log"); ax.set_xlim(-0.5, 48); ax.set_ylim(0.0004, 4.5)
-    ax.set_xlabel("biome spread — number of BiomeDefs where the creature spawns (commonality > 0)")
-    ax.set_ylabel("top commonality across those biomes (log)")
-    ax.set_title("Who will be everywhere: 25 creatures are both widespread (≥20 biomes) and common (top ≥ 0.3) —\n"
-                 "11 of them Alpha Animals; biome identity dies by ubiquity, not by any single bad def", fontsize=11, loc="left")
-    ax.legend(loc="lower left", fontsize=7.6, framealpha=0.95)
+    rng = np.random.default_rng(19)
+    aa = [t for t in pop if t[0]["mod"] == "Alpha Animals"]
+    core = [t for t in pop if t[0]["mod"] == "Core"]
+    oth = [t for t in pop if t[0]["mod"] not in ("Alpha Animals", "Core")]
+    for grp, col, mk, lab in ((oth, C_GRAY, "o", "all other mods"),
+                              (core, C_BLUE, "s", "Core (vanilla)"),
+                              (aa, C_ORANGE, "^", "Alpha Animals")):
+        ax.scatter([sp + rng.uniform(-0.16, 0.16) for _, _, sp in grp], [tc for _, tc, _ in grp],
+                   s=15 if col == C_GRAY else 26, c=col, marker=mk,
+                   alpha=0.5 if col == C_GRAY else 0.85, lw=0,
+                   label="%s, n=%d" % (lab, len(grp)))
+    ax.axvline(3.5, color="#bbbbbb", lw=0.8, ls=":"); ax.axhline(0.3, color="#bbbbbb", lw=0.8, ls=":")
+    ub = sorted([t for t in pop if t[1] >= 0.3 and t[2] >= 4], key=lambda t: (-t[2], -t[1]))
+    # No leader lines: at spread ≤5 the points stack on five x values and every
+    # leader crossed another. The list IS the annotation, parked in the empty
+    # low-commonality quadrant where nothing is plotted.
+    box = ["WIDESPREAD AND COMMON — %d creatures (spread ≥4, top commonality ≥0.3)" % len(ub)]
+    for r, tc, sp in ub:
+        sh = sorted({q.sheet for q in ROST.residency[r["defName"]]})
+        txt = ", ".join(sh[:2]) + (" +%d more" % (len(sh) - 2) if len(sh) > 2 else "")
+        box.append("   %-14s %d biomes, comm %-4.2g %s" % (r["defName"], sp, tc, txt))
+    ax.text(1.55, 0.0075, "\n".join(box), fontsize=7.0, color=C_DARK, ha="left", va="top",
+            family="DejaVu Sans Mono",
+            bbox=dict(boxstyle="round,pad=0.5", fc="white", ec="#cccccc", lw=0.6))
+    ax.set_yscale("log"); ax.set_xlim(0.4, 5.9); ax.set_xticks([1, 2, 3, 4, 5])
+    ax.set_ylim(0.0006, 4.5)
+    ax.set_xlabel("biome spread — number of Ash'karr BiomeDefs the ROSTERS land this creature in (x jittered ±0.16)")
+    ax.set_ylabel("top roster commonality across its homes (log)")
+    mx_sp = max(sp for _, _, sp in pop); mx_tc = max(tc for _, tc, _ in pop)
+    ax.set_title("After the assignment pass, ubiquity is gone: max spread %d biomes (was 45 on the mods' default residency),\n"
+                 "%d of %d rostered creatures live in exactly ONE biome" % (mx_sp, sum(1 for _, _, sp in pop if sp == 1), len(pop)),
+                 fontsize=11, loc="left")
+    ax.legend(loc="upper right", fontsize=7.6, framealpha=0.95)
     ax.grid(True, which="major", lw=0.4, alpha=0.3)
-    fig.text(0.012, 0.02,
-             "Live creatures with at least one spawn biome, n=%d. Spread counts ALL registered BiomeDefs (52, modded included), not only those on\n"
-             "Ash'karr — an upper bound on campaign ubiquity. Y log (disclosed). Quadrant thresholds (spread 20, commonality 0.3) are stated analytic\n"
-             "choices. %s" % (len(pop), src_line()), **FOOT)
-    fig.subplots_adjust(left=0.08, right=0.985, top=0.9, bottom=0.13)
+    fig.text(0.012, 0.018,
+             "Rostered creatures with at least one landed home, n=%d of the register's %d live rows — spread AND commonality both from\n"
+             "biomes/rosters/*.json via rosters_residency.py. ⚠️ The register's own `biomes`/`topCommonality` (the MODS' default residency,\n"
+             "where spread ran to 45 BiomeDefs and commonality to 3.0) are NOT plotted and NOT mixed in; that scale is quoted in the title as\n"
+             "the state this pass replaced, nothing more. Y log (disclosed). Quadrant thresholds (spread 4, comm 0.3) are stated choices.\n"
+             "Stats: creature_register_rows.json (dump %s mods, %s). Commonality is a DESIGN CHOICE, never a measured stat."
+             % (len(pop), len(LIVE), META["dumpMods"], META["dumpCaptured"][:10]), **FOOT)
+    fig.subplots_adjust(left=0.08, right=0.985, top=0.9, bottom=0.185)
     for ext in ("png", "svg"):
         fig.savefig(os.path.join(VIZ, "fig7_dominance.%s" % ext))
     plt.close(fig)
-    return dict(pop=len(pop), ubiq=[(r["defName"], tc, sp, r["mod"]) for r, tc, sp in sorted(ub, key=lambda t: -t[2])])
+    return dict(pop=len(pop), max_spread=mx_sp, max_comm=mx_tc,
+                singles=sum(1 for _, _, sp in pop if sp == 1),
+                ubiq=[(r["defName"], tc, sp, r["mod"]) for r, tc, sp in sorted(ub, key=lambda t: -t[2])])
 
 # ------------------------------------------------------ fig 8: husbandry (supplementary)
 def fig8():

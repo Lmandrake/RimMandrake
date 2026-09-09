@@ -53,6 +53,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REVIEW = os.path.dirname(HERE)
 ROWS = os.path.join(REVIEW, "creature_register_rows.json")
 DECISIONS = os.path.join(REVIEW, "creature_register.decisions.json")
+
+sys.path.insert(0, REVIEW)
+import rosters_residency as RR          # noqa: E402  (needs REVIEW on sys.path)
+ROSTERS = RR.load()
 ART = os.path.join(REVIEW, "creature_art")
 THUMBS = os.path.join(HERE, "thumbs")
 OUT = os.path.join(HERE, "creature_deck.pptx")
@@ -170,6 +174,19 @@ def true_size(row):
     return (d, b)
 
 
+def roster_group(defName):
+    """Slide cluster: the def's primary roster sheet, else its planet-wide
+    disposition. Set by biomes/rosters/*.json — the assignment the owner ruled."""
+    sh = ROSTERS.primary_sheet(defName)
+    if sh:
+        return sh
+    if defName in ROSTERS.cuts:
+        return "(cut)"
+    if defName in ROSTERS.reserve:
+        return "(homeless-reserve)"
+    return "(unrostered)"
+
+
 def load():
     reg = json.load(open(ROWS, encoding="utf-8"))
     dec = json.load(open(DECISIONS, encoding="utf-8"))["decisions"]
@@ -187,7 +204,10 @@ def load():
         rows.append({
             "defName": r["defName"],
             "label": r.get("label") or r["defName"],
-            "biome": r.get("group") or "(ungrouped)",
+            # Cluster = the LANDED roster sheet (rosters_residency.py), never the
+            # register's `group` — that was the MODS' default residency and is
+            # stale since the 2026-09-09 assignment pass.
+            "biome": roster_group(r["defName"]),
             "band": band,
             "size": true_size(r),
             "alreadyCut": bool(r.get("cut")),

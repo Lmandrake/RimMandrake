@@ -19,6 +19,23 @@ import sys
 REVIEW = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROWS = os.path.join(REVIEW, "creature_register_rows.json")
 DECISIONS = os.path.join(REVIEW, "creature_register.decisions.json")
+
+sys.path.insert(0, REVIEW)
+import rosters_residency as RR          # noqa: E402  (needs REVIEW on sys.path)
+ROSTERS = RR.load()
+
+
+def roster_group(defName):
+    """Cluster = the def's primary LANDED roster sheet, else its planet-wide
+    disposition. From biomes/rosters/*.json, never the register's stale `group`."""
+    sh = ROSTERS.primary_sheet(defName)
+    if sh:
+        return sh
+    if defName in ROSTERS.cuts:
+        return "(cut)"
+    if defName in ROSTERS.reserve:
+        return "(homeless-reserve)"
+    return "(unrostered)"
 DATASET = os.environ.get("FO_DATASET", "creature_art")
 
 # Same constants as gen_creature_register.py -- the mismatch the owner cares
@@ -74,7 +91,11 @@ def main():
         s["defName"] = r["defName"]
         s["label_"] = r.get("label")
         s["mod"] = r.get("mod")
-        s["cluster"] = r.get("group")          # biome cluster the sheet groups by
+        # LANDED roster sheet (biomes/rosters/*.json via rosters_residency.py), not
+        # the register's stale `group` (= the mods' default residency).
+        s["cluster"] = roster_group(r["defName"])
+        s["biomeSpread"] = ROSTERS.spread(r["defName"])
+        s["rosterCommonality"] = ROSTERS.top_commonality(r["defName"]) or None
         s["kind"] = r.get("kindOf")
         s["bodySize"] = r.get("bodySize")      # mass
         s["drawSize"] = render_cells(r)
