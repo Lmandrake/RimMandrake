@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T00:48:54Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: BENCH
+as-of: 2026-09-09T02:02:51Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1186,3 +1186,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROIDWORKS_WIP_SWEPT_NOTICE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROIDWORKS_WIP_SWEPT_NOTICE_1.md
+
+## DROIDWORKS_MODULE_SMELT_CONFIG_1 3 DW armor modules (Lte/Mid/Hvy) log 'smeltable but does not give anything for smelting' x2 each — new vs config-error baseline, surfaced on the consolidation proof load 2026-09-08
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_MODULE_SMELT_CONFIG_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_MODULE_SMELT_CONFIG_1.md

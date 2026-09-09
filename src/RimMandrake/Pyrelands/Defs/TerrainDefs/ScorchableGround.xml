@@ -88,7 +88,7 @@
   <TerrainDef ParentName="RM_FE_ScorchableGroundBase">
     <defName>RM_FE_Ground_SoilRich</defName>
     <label>rich soil</label>
-    <description>Dark, fertile dirt — R-H5's ash-fertilized ground, and the richest fuel bed on the savanna.</description>
+    <description>Dark, fertile dirt, ash-fertilized and thick with growth — the richest fuel bed on the savanna.</description>
     <texturePath>Terrain/Surfaces/SoilRich</texturePath>
     <color>(90, 69, 46)</color>
     <fertility>1.4</fertility>
