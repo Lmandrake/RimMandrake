@@ -3,7 +3,6 @@ using System.Linq;
 using RimWorld;
 using Verse;
 using Verse.AI.Group;
-using RimMandrake.Ninefold;
 
 namespace RimMandrake.Aftermath
 {
@@ -13,12 +12,16 @@ namespace RimMandrake.Aftermath
     // Lord is removed (Patch_LordRemoved.cs) -- WITH a fallback poll
     // (CheckFallbackClosures, below) for the case where the Lord could not
     // be correlated (see TryCorrelateLord's own comment) or its removal
-    // postfix is somehow missed. Reconciles with, rather than duplicates,
-    // mandrake.rm.ninefold's existing Patch_BattleResolved.cs (a PER-DEATH
-    // Sh'kaar hook on Pawn.Kill, unconditional on any raid): this recorder
-    // adds a separate PER-BATTLE delta once per closed battle, calling the
-    // same public GameComponent_Ninefold.ApplyDelta rather than adding a
-    // second patch on Pawn.Kill.
+    // postfix is somehow missed.
+    //
+    // CHRONICLE_NINEFOLD_DECOUPLE_1: a closed battle is PUBLISHED on the
+    // spine (ChronicleEvents.Raise, kind "battle.closed") and nothing here
+    // knows who listens. It used to call GameComponent_Ninefold.ApplyDelta
+    // directly, which cost this mod a hard modDependency and a compile-time
+    // reference on mandrake.rm.ninefold; the per-battle Sh'kaar delta now
+    // lives in Ninefold's own ChronicleSubscriber, where it still reconciles
+    // with (rather than duplicates) Ninefold's PER-DEATH Patch_BattleResolved
+    // hook on Pawn.Kill.
     public class MapComponent_BattleRecorder : MapComponent
     {
         private const int FallbackPollIntervalTicks = 250;
@@ -146,34 +149,24 @@ namespace RimMandrake.Aftermath
             closedHistory.Add(record);
             while (closedHistory.Count > ClosedHistoryCap) closedHistory.RemoveAt(0);
 
-            ApplyNinefoldDelta(record);
+            // The spine first, then this mod's own in-assembly rule runner.
+            // Order is deliberate: a god-delta consumer reacting to the raw
+            // outcome should see it before any rule this battle triggers
+            // publishes its own follow-up event.
+            ChronicleEvents.Raise(new ChronicleEvent(
+                ChronicleEventKind.BattleClosed,
+                record.ClosedTick,
+                record.Map,
+                record.OriginalPawns,
+                null,
+                record.Outcome.ToString(),
+                record));
+
             AftermathRuleRunner.Instance?.OnBattleClosed(record);
 
             if (Prefs.DevMode)
                 Log.Message("[RimMandrake.Aftermath] battle closed: " + record.RaidFaction?.Name +
                     " -> " + record.Outcome);
-        }
-
-        // design/Jawa/proposals/plot_mechanisms_wave.md Part 2: "fires
-        // Sh'kaar +D - the battle hook Ninefold currently lacks". Magnitude
-        // scaled by outcome severity -- a first-pass ordering (same UNTUNED
-        // status as Ninefold's own EventMagnitude constants; real tuning is
-        // SATIATION_TUNING_RIG's job, not this build's).
-        private static void ApplyNinefoldDelta(BattleRecord record)
-        {
-            GameComponent_Ninefold ninefold = GameComponent_Ninefold.Instance;
-            if (ninefold == null) return;
-
-            float delta = record.Outcome switch
-            {
-                BattleOutcome.Repelled => EventMagnitude.Large,
-                BattleOutcome.Lost => EventMagnitude.Medium,
-                BattleOutcome.Routed => EventMagnitude.Medium,
-                _ => EventMagnitude.Small,
-            };
-
-            ninefold.ApplyDelta(God.Shkaar, delta,
-                "battle " + record.Outcome + ": " + (record.RaidFaction?.Name ?? "unknown faction"));
         }
     }
 }

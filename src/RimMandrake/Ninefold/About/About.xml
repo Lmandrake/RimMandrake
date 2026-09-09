@@ -10,6 +10,8 @@
 
 Other RimMandrake systems (e.g. the colony visibility dial) name this engine's satiation state as their extension point; the wiring itself is not built yet.
 
+One cross-engine binding IS live and is deliberately SOFT (design/CHRONICLE_EVENT_SPINE.md): if the Chronicle engine (`mandrake.rm.aftermath`) is loaded, `ChronicleSubscriber` subscribes to its `battle.closed` and `chronicle.rule.queued` events by reflection and applies the per-BATTLE god deltas. There is no modDependency and no assembly reference in either direction — with Chronicle absent this mod loads and runs exactly as before.
+
 NOT shipped here (NINEFOLD_ENGINE_M0_1's other named pieces, deliberately left for a later session): first-contact chains and the signed corpus letters - the latter needs the owner's voice-text redline pass per the item's own note ("provisional voice approval; owner redlines live text"). Mood-walk amplitudes and event magnitudes are a first-pass encoding of the spec's qualitative personality column, explicitly UNTUNED (design/Jawa/divine_satiation_engine.md §10 defers real tuning to a throwaway-save test rig).</description>
 
   <modDependencies>

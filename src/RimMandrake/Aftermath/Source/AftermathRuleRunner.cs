@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using Verse;
-using RimMandrake.Ninefold;
 
 namespace RimMandrake.Aftermath
 {
@@ -109,11 +108,21 @@ namespace RimMandrake.Aftermath
 
             SendTelegraph(def, targetFaction);
 
-            if (def.godTie.HasValue)
-            {
-                GameComponent_Ninefold ninefold = GameComponent_Ninefold.Instance;
-                ninefold?.ApplyDelta(def.godTie.Value, def.godDelta, "aftermath queued: " + def.defName);
-            }
+            // CHRONICLE_NINEFOLD_DECOUPLE_1: this used to reach into
+            // GameComponent_Ninefold.ApplyDelta with def.godTie as a God
+            // enum. It now PUBLISHES the queued rule on the spine and lets
+            // whoever cares about godTie/godDelta (Ninefold's own
+            // ChronicleSubscriber) read them off the def as data. Raised
+            // unconditionally -- a consumer other than Ninefold may want a
+            // queued-rule signal that carries no god tie at all.
+            ChronicleEvents.Raise(new ChronicleEvent(
+                ChronicleEventKind.RuleQueued,
+                Find.TickManager.TicksGame,
+                record.Map,
+                record.OriginalPawns,
+                null,
+                record.Outcome.ToString(),
+                def));
 
             if (Prefs.DevMode)
                 Log.Message("[RimMandrake.Aftermath] queued " + def.defName + " for " + targetFaction.Name +
