@@ -586,31 +586,49 @@ def cmd_prune(apply):
     rename fix belongs at the NEW path via mark-clean, not here) - it does not
     try to guess where content moved to.
     """
+    def _orphaned(rel):
+        # One predicate for the scan AND the under-lock re-test — the two
+        # briefly disagreed and prune --apply printed "dropped" for a
+        # case-rename phantom while removing nothing (review 2026-09-09).
+        return (not os.path.isfile(os.path.join(ROOT, rel))
+                or not exact_case_isfile(rel))  # drvfs: a case-renamed
+                                                # spelling "exists" but is
+                                                # a phantom
+
+    def _why(rel):
+        ap = os.path.join(ROOT, rel)
+        if os.path.isdir(ap):
+            return "path is now a directory"
+        if os.path.isfile(ap):
+            return "case-renamed phantom — the bytes exist under another spelling"
+        return "no longer exists on disk"
+
     data = load()
-    orphans = [rel for rel in data
-               if not os.path.isfile(os.path.join(ROOT, rel))
-               or not exact_case_isfile(rel)]  # drvfs: a case-renamed spelling
-                                               # "exists" but is a phantom
+    orphans = [rel for rel in data if _orphaned(rel)]
     if not orphans:
         print("(nothing to prune - every recorded path still exists on disk)")
         return 0
-    for rel in sorted(orphans):
-        why = "path is now a directory" if os.path.isdir(os.path.join(ROOT, rel)) else "no longer exists on disk"
-        print(("would drop" if not apply else "dropped") + f"  {rel}  ({why})")
     if not apply:
+        for rel in sorted(orphans):
+            print(f"would drop  {rel}  ({_why(rel)})")
         print(f"\n{len(orphans)} orphaned entr{'y' if len(orphans) == 1 else 'ies'} - re-run with --apply to remove.")
         return 0
     with locked():
         # Re-test under the lock against the fresh reload: a mark-clean that
         # landed between the unlocked scan above and here must not lose its
         # entry, and a path re-created meanwhile is no longer an orphan
-        # (review finding 2026-09-06).
+        # (review finding 2026-09-06). The dir-listing cache may be stale by
+        # now — re-derive it so the re-test answers from the live disk.
+        _dir_cache.clear()
         data = load()
-        removed = [rel for rel in orphans
-                   if rel in data and not os.path.isfile(os.path.join(ROOT, rel))]
+        removed = [rel for rel in orphans if rel in data and _orphaned(rel)]
         for rel in removed:
             data.pop(rel, None)
         save(data)
+    # "dropped" is printed only for entries the locked section actually
+    # removed — never from the unlocked scan's guess.
+    for rel in sorted(removed):
+        print(f"dropped  {rel}  ({_why(rel)})")
     print(f"\n{len(removed)} orphaned entr{'y' if len(removed) == 1 else 'ies'} removed.")
     return 0
 
