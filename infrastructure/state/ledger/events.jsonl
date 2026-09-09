@@ -6118,3 +6118,14 @@
 {"seat":"OWNER","event":"note","id":"IKEE_MYNOCK_ART_REGEN_1","text":"BENCH committing FOUNDRY's uncommitted item-file edit during the consolidation game window","ownerSaid":"Foundry is down. The game is yours. And all uncommitted work is now yours to commit.","ts":"2026-09-09T00:48:54Z"}
 {"seat":"BENCH","event":"file","id":"DROIDWORKS_MODULE_SMELT_CONFIG_1","title":"3 DW armor modules (Lte/Mid/Hvy) log 'smeltable but does not give anything for smelting' x2 each — new vs config-error baseline, surfaced on the consolidation proof load 2026-09-08","kind":"task","target":"v1","caused_by":"DROIDWORKS_APPARELMONEY_MISSING_1","for":"FOUNDRY","ts":"2026-09-09T01:59:52Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-09T02:02:51Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-09T02:06:04Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-09T02:06:05Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ARMOURY_LOADAFTER_STALE_1","ts":"2026-09-09T02:09:05Z"}
+{"seat":"FOUNDRY","event":"start","id":"ARMOURY_LOADAFTER_STALE_1","ts":"2026-09-09T02:09:06Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PATCHMODS_LOADAFTER_SWEEP_1","ts":"2026-09-09T02:09:07Z"}
+{"seat":"FOUNDRY","event":"start","id":"PATCHMODS_LOADAFTER_SWEEP_1","ts":"2026-09-09T02:09:07Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PATCH_LEDGER_MINUS_ONE_OSCILLATES_1","ts":"2026-09-09T02:09:08Z"}
+{"seat":"FOUNDRY","event":"start","id":"PATCH_LEDGER_MINUS_ONE_OSCILLATES_1","ts":"2026-09-09T02:09:09Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ARMOURY_SUBSTRING_RUNG_TRAP_1","ts":"2026-09-09T02:09:09Z"}
+{"seat":"FOUNDRY","event":"start","id":"ARMOURY_SUBSTRING_RUNG_TRAP_1","ts":"2026-09-09T02:09:10Z"}
+{"seat":"OWNER","event":"file","id":"PYRELANDS_SELF_CONTAINED_BIOME_1","title":"Author RM Pyrelands' own BiomeDef, self-contained: ScorchFruit, strange weather, ash-as-snow, Cinderfall storms, fast grass (owner ruled the R9 fork: OWN it, 2026-09-09)","kind":"task","target":"v1","caused_by":"PYRELANDS_GENERIC_TEXT_1","for":"FOUNDRY","ownerSaid":"The pyre land has no biome of its own. It should be self contained as you said. So lets make it self contained. Scorch fruit. Strange weather the lot. Ash that blows like snow. Cinderfall storms. Rapidly growing grass","ts":"2026-09-09T02:10:09Z"}
