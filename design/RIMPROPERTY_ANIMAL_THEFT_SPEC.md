@@ -135,3 +135,12 @@ theft of equipped/worn items (loose things only).
 5. Which Droidworks chassis count as "loaders" besides the Muckraker?
 6. Autonomous stealing (trained-Haul idiom, no direct orders) acceptable for
    v1, or is a master-directed order the actual ask?
+
+## Ruling on open question 3 — owner, 2026-09-09 (verbatim)
+"The pet for the theft, but seeing the player click on the pet to issue
+the command gives heat to the colony."
+→ TakingEvent stays single-actor (the pet) for the taking itself; a
+SEPARATE witness check fires at ORDER-ISSUE time — a witness who sees
+the command moment attributes suspicion to the colony, not the animal.
+Two witnessable moments, two different attribution targets. No Principal
+field needed in v1.
