@@ -46,6 +46,13 @@ proceed.** Warning is not asking.
 ⚖️ **Act without checking; but when the question is "is this TRUE", check.**
 Speed on actions, rigour on claims.
 
+### Fetcher (and async web) — check back FAST
+
+When you hand a web fetch/search/download to **Fetcher**, it is usually **very fast**.
+**Set your follow-up check to ~1 minute or less** — do not treat it like a multi-minute
+background job and park it. Poll the delivery folder / queue promptly; most requests are
+already done within a minute.
+
 ## Commit and push as soon as the work exists
 
 **Committed *and pushed* is the only durable state.** Uncommitted work is already
