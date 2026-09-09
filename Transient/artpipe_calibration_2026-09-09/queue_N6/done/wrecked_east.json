@@ -1,0 +1,27 @@
+{
+ "job_id": "wrecked_east",
+ "kind": "generate",
+ "prompt": "a squat riveted industrial smelting furnace, RimWorld top-down orthographic game sprite, viewed from directly above at a slight angle, seen from the east side. Domed rounded rusted-metal top with a central hex bolt, riveted side panels with jagged torn holes exposing a dark scorched red-brown interior, three shuttered vent bays across the base with torn metal edges, heavy corrosion streaks, unlit and dead. 4:5 portrait canvas, subject centred and filling most of the frame, real transparent alpha background, no floor plane, no shadow, no backdrop.",
+ "out": "/mnt/d/Luke/dev/Rimworld/Transient/artpipe_calibration_2026-09-09/N6/out/wrecked_east.png",
+ "images": [],
+ "manifest": {
+  "job_id": "wrecked_east",
+  "kind": "generate",
+  "out": "/mnt/d/Luke/dev/Rimworld/Transient/artpipe_calibration_2026-09-09/N6/out/wrecked_east.png",
+  "worker_slot": 1,
+  "duration_s": 152.3,
+  "codex_image_exit": 0,
+  "file_landed": true,
+  "rate_limits": {
+   "ok": true,
+   "rollout": "/mnt/d/Luke/dev/Rimworld/Transient/artpipe_calibration_2026-09-09/queue_N6/.worker_homes/w1/sessions/2026/09/09/rollout-2026-09-09T15-39-59-01a08853-f8e9-7823-af24-6f4fdf50ef06.jsonl",
+   "primary_used_percent": 42.0,
+   "primary_window_minutes": 300,
+   "primary_resets_at": 1789007441,
+   "secondary_used_percent": 20.0,
+   "secondary_window_minutes": 10080,
+   "secondary_resets_at": 1789448705,
+   "grumpy": false
+  }
+ }
+}

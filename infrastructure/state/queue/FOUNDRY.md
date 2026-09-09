@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T22:45:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T22:52:38Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -938,3 +938,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DUMPDB_MANIFEST_SHORTFALL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DUMPDB_MANIFEST_SHORTFALL_1.md
+
+## CODEX_EDIT_TIMEOUT_1 codex edit mode (image-conditioned generation) timed out 3/3 in calibration (240/360/480s, zero images, not throttle) — root-cause it; it is the facing pipeline's reference-fidelity route
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CODEX_EDIT_TIMEOUT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CODEX_EDIT_TIMEOUT_1.md
