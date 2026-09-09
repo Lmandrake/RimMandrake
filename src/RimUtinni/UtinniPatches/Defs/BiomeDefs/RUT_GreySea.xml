@@ -54,12 +54,20 @@
          Aerofleet is the shore drifter shared with the Twilight Sea (endemism binds
          giants; fliers range, R17); it never touches the Grey Deep's three-resident cap.
          🔴 No <li>: the node NAME is the animal, the node TEXT is the commonality.
-         ⚠️ No animalDensity declared (engine default 0), impassable background biome -
-         see the Twilight Sea's note; a diving pass owns that number. -->
+         ⚠️ No animalDensity was declared and the engine default is 0, so neither
+         resident could ever spawn. CLOSED 2026-09-09 (fix wave,
+         BIOME_FAUNA_ASSIGNMENT_SITTING_1): 0.1 declared below. -->
     <wildAnimals>
       <AA_Aerofleet MayRequire="sarg.alphaanimals">0.05</AA_Aerofleet>              <!-- aerofleet - drifter, import -->
       <RSW_Reefback MayRequire="mandrake.rsw.swbestiary">0.005</RSW_Reefback>       <!-- reefback - endemic giant (warden adult), import -->
     </wildAnimals>
+    <!-- animalDensity: undeclared (engine default 0) -> 0.1, DESIGNED interim
+         (2026-09-09 fix wave). the_grey_deep.md / terminator_sea.md population
+         doctrine: the Grey Deep runs a THREE-RESIDENT CAP and its giants are endemic -
+         deliberate scarcity, not emptiness. Held equal to the Twilight Sea (the two
+         terminator seas share one doctrine) and to vanilla SeaIce's 0.1 (MEASURED from
+         the def dump). ⚠️ A quicktest tune is OWED. -->
+    <animalDensity>0.1</animalDensity>
     <coastalWildAnimals />
 
     <!-- GRAVTIDE SUPPORT, added 2026-09-07 (UNDERWATER_BIOME_SUPPORT_1).

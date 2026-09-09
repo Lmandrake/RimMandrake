@@ -34,7 +34,9 @@
       fishTypes, maxFishPopulation — ⛔ "no liquid water anywhere, in any form, ever".
       terrainPatchMakers — DROPPED entirely (not just emptied): vanilla's block generates
         WaterShallow ponds via perlin threshold, which is exactly the liquid-water ban.
-      animalDensity 0 — nothing to scale (was 0.2).
+      animalDensity — was 0 while wildAnimals was empty by law; restored to the donor's
+        0.2 on 2026-09-09 now that the roster landed six residents (see the wildAnimals
+        block below). §6 bans the arctic ZOO, not density itself.
       soundsAmbient — DROPPED (was Ambient_Wind_Desolate): §5/§6 rule the interior dead
         still, wind only at the margins as drainage the ice sheet never feels; a wind
         ambient loop on the interior contradicts its own sheet.
@@ -76,7 +78,16 @@
     <allowRivers>false</allowRivers>
     <allowFarmingCamps>false</allowFarmingCamps>
     <isExtremeBiome>true</isExtremeBiome>
-    <animalDensity>0</animalDensity>
+    <!-- animalDensity 0 -> 0.2, DESIGNED interim (2026-09-09 fix wave,
+         BIOME_FAUNA_ASSIGNMENT_SITTING_1). At 0 the six landed residents could never
+         spawn however high their commonality. nightside_ice.md §4: "Animals and plants
+         are nearly nonexistent; the population is mostly corpses and dying things" —
+         near-empty is the doctrine, so this matches vanilla IceSheet's 0.2 (MEASURED
+         from the def dump) and no higher; the roster's own commonalities (0.002-0.004)
+         carry the scarcity. ⚠️ A quicktest tune is OWED: this number has never been
+         watched in play. Live scale for reference (MEASURED): IceSheet 0.2,
+         SeaIce 0.1, Desert 0.4, ExtremeDesert 0.1, AridShrubland 1.8. -->
+    <animalDensity>0.2</animalDensity>
     <plantDensity>0</plantDensity>
     <hasVirtualPlants>false</hasVirtualPlants>
     <forageability>0</forageability>
@@ -134,10 +145,10 @@
          an ELEMENT whose .Value is null -> ArgumentNullException -> the WHOLE BiomeDef
          is discarded, silently. That shipped once and cost 26 biomes.
 
-         ⚠️ animalDensity is 0 on this def (set by the 2026-09-07 pass, when the list
-         was empty by law). At 0 these six can never spawn however high their
-         commonality. The roster does not rule a density, so nothing is invented here -
-         flagged to the owner as one number owed on the review sheet. -->
+         ⚠️ animalDensity was 0 on this def (set by the 2026-09-07 pass, when the list
+         was empty by law), which meant these six could never spawn however high their
+         commonality. CLOSED 2026-09-09: set to 0.2 above as a DESIGNED interim, sized
+         to vanilla IceSheet, with a quicktest tune owed. -->
     <wildAnimals>
       <AA_BoulderMit MayRequire="sarg.alphaanimals">0.004</AA_BoulderMit>       <!-- boulder mit - giant, import -->
       <AA_SummitCrab MayRequire="sarg.alphaanimals">0.004</AA_SummitCrab>       <!-- summit crab - landform-giant, import -->

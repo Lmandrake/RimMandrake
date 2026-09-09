@@ -81,13 +81,21 @@
          legal because endemism binds GIANTS and fliers range (freeze R17).
          🔴 No <li>: BiomeAnimalRecord's custom loader reads the node NAME as the
          animal and the node TEXT as the commonality; an <li> discards the whole def.
-         ⚠️ This def declares no animalDensity (engine default 0) and is impassable /
-         isBackgroundBiome, so nothing spawns until a dive map asks - by design here,
-         but it is the one number a future diving-mods pass must set. -->
+         ⚠️ This def declared NO animalDensity, and the engine default is 0 - so the two
+         residents above could never spawn, on a dive map or anywhere else. CLOSED
+         2026-09-09 (fix wave, BIOME_FAUNA_ASSIGNMENT_SITTING_1): 0.1 declared below. -->
     <wildAnimals>
       <AA_Aerofleet MayRequire="sarg.alphaanimals">0.05</AA_Aerofleet>                    <!-- aerofleet - drifter, import -->
       <RSW_Lanternwhale MayRequire="mandrake.rsw.swbestiary">0.005</RSW_Lanternwhale>     <!-- lanternwhale - endemic giant, import -->
     </wildAnimals>
+    <!-- animalDensity: undeclared (engine default 0) -> 0.1, DESIGNED interim
+         (2026-09-09 fix wave). terminator_sea.md's population doctrine is endemism and
+         scarcity - every large organism endemic to its own sea, one Lanternwhale
+         gardener, a shared shore drifter - so the sea is sparsely peopled by rule, not
+         empty. 0.1 matches vanilla SeaIce (MEASURED from the def dump; IceSheet 0.2,
+         Desert 0.4), the closest shipped water/ice analog. ⚠️ A quicktest tune is OWED,
+         and the diving-mods pass may revise it once dive maps actually spawn. -->
+    <animalDensity>0.1</animalDensity>
     <coastalWildAnimals />
 
     <!-- GRAVTIDE SUPPORT, added 2026-09-07 (UNDERWATER_BIOME_SUPPORT_1).
