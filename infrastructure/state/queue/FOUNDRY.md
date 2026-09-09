@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T15:26:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T18:54:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -451,7 +451,7 @@ summary:  Design (dormant, per DROIDUNIFIEDFRAMEWORKDESIGN.md §0 card 14 / §3.
 prose:    infrastructure/state/items/DROID_ORACLE_VOICE_DESIGN_1.md
 
 ## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -522,15 +522,6 @@ kind:     task
 summary:  1. A ThingComp on a module ThingDef adds a personality HediffDef to the
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_PERSONALITY_1.md
 
-## SAND_SWIMMERS_MOD_1 Sand fishing: impassable Deep Sand pools you fish like water, with sand-swimmer analogs (never fish-shaped) — the sand swimmers mod
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - Deep Sand terrain: pools of sand you cannot walk over (impassable like deep water,
-prose:    infrastructure/state/items/SAND_SWIMMERS_MOD_1.md
-
 ## PITCELL_PRISONER_BED_BRIDGE_GAP_1 PITCELL_PRISONER_BED_BRIDGE_GAP_1
 state:    doing
 row:      unassigned
@@ -585,6 +576,15 @@ kind:     bug
 summary:  Found 2026-09-08, FOUNDRY code-review loop (subagent review of glemit.py,
 prose:    infrastructure/state/items/GL_EMIT_FLOATRANGE_GENERIC_DROP_1.md
 
+## ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1 AshkarrFlora RUT_SweetlineTree texture folder is empty; 11 candidate PNGs sit unmoved in _artsrc — wire or cut (walk-authoring find)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     fix
+summary:  (no items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md
+
 ## KOTOR_CRYSTAL_GENSTEP_DRIFT_1 Deployed KOTOR_CrystalFormation genstep scatters only Stygium; repo's absorbed copy lists 12 crystal variants — diff repo vs deployed, redeploy or pull (crystal-inventory find)
 state:    doing
 row:      unassigned
@@ -593,6 +593,51 @@ target:   v1
 kind:     fix
 summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
+
+## NAMESPACE_RETIER_PASS_1 C# namespace re-tier pass: RiverSteamHook → RimMandrake.ManyWaters, RimMandrake.DesertVehicleReskin → RimMandrake.StarWars.* — namespace+XML Class attrs+rebuild in one change (INHABITED lesson; model=opus)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/NAMESPACE_RETIER_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NAMESPACE_RETIER_PASS_1.md
+
+## PYRELANDS_SELF_CONTAINED_BIOME_1 Author RM Pyrelands' own BiomeDef, self-contained: ScorchFruit, strange weather, ash-as-snow, Cinderfall storms, fast grass (owner ruled the R9 fork: OWN it, 2026-09-09)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Owner, verbatim (2026-09-09): "The pyre land has no biome of its own. It
+prose:    infrastructure/state/items/PYRELANDS_SELF_CONTAINED_BIOME_1.md
+
+## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Owner (2026-09-09, verbatim on the event): commission art INSPIRED BY the
+prose:    infrastructure/state/items/DESERT_WRAPS_ART_COMMISSION_1.md
+
+## GAPING_DOOM_SITE_1 The Gaping Doom: dead-sarlacc toxic-waste pit at tile 2403 (32.12N 94.76E, Cracked Lands, Junker territory) — landmark + green-throat art derived from sw_DeadSarlacc; world-threatening buildup is a plot element (owner, 2026-09-08)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Location: 32.12N 94.76E → tile 2403 (MEASURED off the canon CSV: lat 32.1169,
+prose:    infrastructure/state/items/GAPING_DOOM_SITE_1.md
+
+## PLANETARY_BEAUTY_LOADSCREENS_1 Render realistic planetary beauty shots from space for load screens (graphics pipeline)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/PLANETARY_BEAUTY_LOADSCREENS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PLANETARY_BEAUTY_LOADSCREENS_1.md
 
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
 state:    doing
@@ -717,16 +762,6 @@ blocked:  fixed source-side (572413c0, lastLaunchTick gate), adversarially revie
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
 
-## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  live-verified 2026-09-08, need-gating FAILS: needs identical at every tier, not root-caused (commit a9d5d251)
-summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
-prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
-
 ## DROIDWORKS_PRIMITIVE_TIER_1 Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -767,6 +802,16 @@ blocked:  item text names BENCH as the owner (active gl_emit.py dev); no calibra
 summary:  Found 2026-09-08, FOUNDRY code-review loop (subagent review of glemit.py,
 prose:    infrastructure/state/items/GL_EMIT_FLOATRANGE_GENERIC_DROP_1.md
 
+## ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1 AshkarrFlora RUT_SweetlineTree texture folder is empty; 11 candidate PNGs sit unmoved in _artsrc — wire or cut (walk-authoring find)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     fix
+blocked:  Not a fresh find: the 14 candidate PNGs and empty-folder status are already documented in _artsrc/sweetline_orphans_2026-09-06/README.md and TREE_GRAPHICS_OWNERSHIP_1.md Owed#1, which explicitly rules picking among them is an owner art call (CONTACT_SHEET.png ready for review), not something FOUNDRY settles by picking the newest/best-looking file. Left folder empty and source PNGs untouched; wiring deferred to that item. (on TREE_GRAPHICS_OWNERSHIP_1)
+summary:  (no items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -799,26 +844,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROID_RETIRE_DEPOT_ASIMOV_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_RETIRE_DEPOT_ASIMOV_1.md
 
-## DROIDWORKS_CHASSIS_PERSONALITY_1 Per-family starting-trait weights and the protocol-droid pedantry social modifier
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_CHASSIS_PERSONALITY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_CHASSIS_PERSONALITY_1.md
-
-## DROIDWORKS_SERVICE_RECORD_DRIFT_1 CompServiceRecord: time-since-wipe accretes chassis-weighted idiosyncrasies; wipe resets
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_SERVICE_RECORD_DRIFT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_SERVICE_RECORD_DRIFT_1.md
-
 ## FUNGALFOREST_RAID_MERGE_1 Dissolve BMT_FungalForest (an underground def on 425 surface tiles) into its neighbors per the measured cluster table (the Rot; Wasteland at South Crags sector 9), and ingest its spore kit, materials, flora into the Rot as our own defs
 state:    proposed
 row:      unassigned
@@ -849,46 +874,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  ⛔ THE OBVIOUS APPROACH IS A NO-OP — read this before planning anything
 prose:    infrastructure/state/items/SCALD_RIVER_REPAINT_1.md
 
-## UNDERWATER_BIOME_SUPPORT_1 Underwater biome support: land on the three seas -- looks like ocean, playable seafloor beneath (owner 2026-09-07, later modification)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  the ask
-prose:    infrastructure/state/items/UNDERWATER_BIOME_SUPPORT_1.md
-
-## SCALD_DARK_TOWER_1 Dark tower in the Scald: Rakatan high command, Rust Cathedral control systems, ocular warped Assailant intrusion
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - What it is: a tower rising from RUTTheScald's crater lake — the Rakatan's
-prose:    infrastructure/state/items/SCALD_DARK_TOWER_1.md
-
-## WORLDMAP_BIOME_ICONS_REGEN_1 Worldmap biome decoration icons (e.g. Blue Desert saguaro) don't auto-update with plant/animal reassignment
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Identify the mechanism first (MEASURE, don't guess): find what actually draws
-prose:    infrastructure/state/items/WORLDMAP_BIOME_ICONS_REGEN_1.md
-
-## ASHKARR_REGATE_RAIN_DEAD_1 ashkarr_regate_rain.py is a permanently non-viable dead-file candidate (99% reproduction gate can never pass; replacement already shipped)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - src/RimMandrake/Utils/ashkarrregaterain.py tried to faithfully reconstruct the
-prose:    infrastructure/state/items/ASHKARR_REGATE_RAIN_DEAD_1.md
-
 ## BRIDGETOOLS_DLL_GM_DRIFT_1 JawaBench DLL is 41 tools behind source (built without GM pair); selftest_tool_metadata FAILs until companion rebuild+redeploy on a game-down window
 state:    proposed
 row:      unassigned
@@ -898,16 +883,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BRIDGETOOLS_DLL_GM_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BRIDGETOOLS_DLL_GM_DRIFT_1.md
-
-## ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1 AshkarrFlora RUT_SweetlineTree texture folder is empty; 11 candidate PNGs sit unmoved in _artsrc — wire or cut (walk-authoring find)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     fix
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md
 
 ## WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1 181 land-biome tiles (AridShrubland/Desert/Wasteland/AB_RockyCrags/AB_MycoticJungle/ZBiome_Badlands) sit at the three seas' own elevation (-350), unmasked now that WORLD_LINT_WATER_HARDCODE_1 stopped conflating them with the seas' own tiles
 state:    proposed
@@ -919,26 +894,6 @@ thin:     spec, verify and criteria all present
 summary:  Unmasked 2026-09-08 while live-verifying WORLDLINTWATERHARDCODE1 on the real
 prose:    infrastructure/state/items/WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1.md
 
-## DROID_SUICIDE_CHARGE_STATE_1 Junker suicide droid: proactive charge-and-detonate MentalState, beyond the existing death-detonation
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  §3.2 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md asks the Junker
-prose:    infrastructure/state/items/DROID_SUICIDE_CHARGE_STATE_1.md
-
-## PYRELANDS_GENERIC_TEXT_1 De-campaign Pyrelands text for the self-contained RM biome (R9); resolve the donor BiomeDef VERIFY (zylle.morevanillabiomes) with the absorption track
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  R9 (owner, 2026-09-08): Pyrelands ships as a self-contained generic RM
-prose:    infrastructure/state/items/PYRELANDS_GENERIC_TEXT_1.md
-
 ## CHRONICLE_NINEFOLD_DECOUPLE_1 Decouple Aftermath from Ninefold per CHRONICLE_EVENT_SPINE.md: subscription API, drop hard modDependency+csproj ref, godTie God enum to string (C#, model=opus)
 state:    proposed
 row:      unassigned
@@ -948,26 +903,6 @@ kind:     task
 thin:     no ## verify, no ## criteria
 summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
 prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
-
-## NAMESPACE_RETIER_PASS_1 C# namespace re-tier pass: RiverSteamHook → RimMandrake.ManyWaters, RimMandrake.DesertVehicleReskin → RimMandrake.StarWars.* — namespace+XML Class attrs+rebuild in one change (INHABITED lesson; model=opus)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NAMESPACE_RETIER_PASS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NAMESPACE_RETIER_PASS_1.md
-
-## PYRELANDS_SELF_CONTAINED_BIOME_1 Author RM Pyrelands' own BiomeDef, self-contained: ScorchFruit, strange weather, ash-as-snow, Cinderfall storms, fast grass (owner ruled the R9 fork: OWN it, 2026-09-09)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  Owner, verbatim (2026-09-09): "The pyre land has no biome of its own. It
-prose:    infrastructure/state/items/PYRELANDS_SELF_CONTAINED_BIOME_1.md
 
 ## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
 state:    proposed
@@ -979,16 +914,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
 
-## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Owner (2026-09-09, verbatim on the event): commission art INSPIRED BY the
-prose:    infrastructure/state/items/DESERT_WRAPS_ART_COMMISSION_1.md
-
 ## MOVING_DUNES_BUILD_1 Build the dunes engine per MOVING_DUNES_DESIGN.md v2 (model=opus, ~1.1-1.4k lines): Werner transport on Odyssey sandGrid, source/sink edges, DuneMaterialDef skins, burial caches + BuryThingsAt API — GATED on the shader-tint quicktest the design names
 state:    proposed
 row:      unassigned
@@ -998,16 +923,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MOVING_DUNES_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
-
-## GAPING_DOOM_SITE_1 The Gaping Doom: dead-sarlacc toxic-waste pit at tile 2403 (32.12N 94.76E, Cracked Lands, Junker territory) — landmark + green-throat art derived from sw_DeadSarlacc; world-threatening buildup is a plot element (owner, 2026-09-08)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  - Location: 32.12N 94.76E → tile 2403 (MEASURED off the canon CSV: lat 32.1169,
-prose:    infrastructure/state/items/GAPING_DOOM_SITE_1.md
 
 ## BIOME_ENRICHMENT_DESERT_WASTELAND_1 Enrichment wave (review B1): Desert (53% zero-mutator) + Wasteland (63%) — the two largest land biomes read thin where caravans travel most; place from their sheets' shade-line and plant-vault kits; dune sea stays barren by rule
 state:    proposed
@@ -1059,42 +974,12 @@ thin:     no ## spec
 summary:  spec (design proposal, Fable subagent, 2026-09-09 — awaiting owner ruling)
 prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
 
-## PLANETARY_BEAUTY_LOADSCREENS_1 Render realistic planetary beauty shots from space for load screens (graphics pipeline)
+## BIOMESKIT_RENDER_LAYER_MISSING_1 BiomesKit's 1.6 DLL dropped BiomesKitWorldLayer entirely -- worldmap decoration icons' current source unknown
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
-kind:     task
+kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PLANETARY_BEAUTY_LOADSCREENS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PLANETARY_BEAUTY_LOADSCREENS_1.md
-
-## BIOME_OWNERSHIP_WAVE_1 Own every planet biome: author our-tier BiomeDefs for the ~22 donor-owned painted defs (parameter + assignment control; donors stay installed), world-switch per def on the Pyrelands/BlueDesert pattern
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  BIOMEOWNERSHIPWAVE1 — own every planet biome we have not yet owned
-prose:    infrastructure/state/items/BIOME_OWNERSHIP_WAVE_1.md
-
-## VFEPD_HORSECART_IDENTITY_LEAK_1 VFEPD Alpha-Vehicles compat props (Chariot/WarChariot/CoveredCarriage/OxCart) still wear donor horse-cart identity, unlike DogSled
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     fix
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/VFEPD_HORSECART_IDENTITY_LEAK_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/VFEPD_HORSECART_IDENTITY_LEAK_1.md
-
-## TITANIC_CREATURES_MOD_1 Titanic_Creatures: make titan mass real — Large Pawns multi-cell footprints + destruction wake, thin-roof smash / thick-roof avoidance, auto size tiers with dev overrides, curated crush-table, T3 corpse-as-site (owner-ruled 2026-09-09)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  TITANICCREATURESMOD1 — make titan mass REAL
-prose:    infrastructure/state/items/TITANIC_CREATURES_MOD_1.md
+summary:  (no items/BIOMESKIT_RENDER_LAYER_MISSING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOMESKIT_RENDER_LAYER_MISSING_1.md
