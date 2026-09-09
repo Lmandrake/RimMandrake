@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    Ported from BiomesCaverns_src 1.6/Defs/Items/BMT_MantisScythes.xml (fungal variant
+    only — the crystal-claw variant belongs to BMT_CrystalCaverns, a different donor
+    biome, out of scope). costList's claw ingredient still names the donor's own
+    BMT_FungalMantisClaw (harvested from BMT_FungalMantis, RUT_TheRot.xml's own
+    wildAnimals list, MayRequire biomesteam.biomescaverns): fauna admission for that
+    animal rides BIOME_FAUNA_ASSIGNMENT_SITTING_1, out of this item's scope. Remap this
+    costList once that sitting resolves the mantis's fate.
+  -->
+
+  <ThingDef ParentName="BaseMeleeWeapon_Sharp_Quality">
+    <defName>RUT_FungalMantisScythe</defName>
+    <label>fungal mantis scythe</label>
+    <description>A chitinous weapon made from the claws of a giant mantis. It excels at slashing at enemies while injecting two types of fungal spores into them.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/FungalMantisClaw/FungalMantisScythe</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+    </graphicData>
+    <techLevel>Medieval</techLevel>
+    <weaponTags>
+      <li>MedievalMeleeAdvanced</li>
+    </weaponTags>
+    <thingSetMakerTags>
+      <li>RewardStandardQualitySuper</li>
+    </thingSetMakerTags>
+    <statBases>
+      <WorkToMake>3000</WorkToMake>
+      <Mass>2</Mass>
+    </statBases>
+    <relicChance>2</relicChance>
+    <equippedAngleOffset>-65</equippedAngleOffset>
+    <costList>
+      <BMT_FungalMantisClaw MayRequire="biomesteam.biomescaverns">1</BMT_FungalMantisClaw>
+      <RUT_MushroomLog>15</RUT_MushroomLog>
+    </costList>
+    <tools>
+      <li>
+        <label>handle</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <extraMeleeDamages>
+          <li>
+            <def>RUT_ToxicSpores</def>
+            <amount>5</amount>
+            <chance>0.75</chance>
+          </li>
+        </extraMeleeDamages>
+      </li>
+      <li>
+        <label>edge</label>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2.6</cooldownTime>
+        <extraMeleeDamages>
+          <li>
+            <def>RUT_StunningSpores</def>
+            <amount>7</amount>
+            <chance>0.75</chance>
+          </li>
+        </extraMeleeDamages>
+      </li>
+    </tools>
+    <recipeMaker>
+      <skillRequirements>
+        <Crafting>5</Crafting>
+      </skillRequirements>
+      <displayPriority>420</displayPriority>
+    </recipeMaker>
+  </ThingDef>
+</Defs>

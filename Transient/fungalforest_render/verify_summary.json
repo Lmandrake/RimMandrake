@@ -1,0 +1,19 @@
+{
+  "planned_total": 425,
+  "planned_counts": {
+    "Desert": 53,
+    "AB_MycoticJungle": 352,
+    "BiomeGRimond": 8,
+    "RUT_NightsideIce": 4,
+    "AB_RockyCrags": 8
+  },
+  "actual_counts_of_those_425_tiles_today": {
+    "AB_MycoticJungle": 389,
+    "Desert": 13,
+    "RUT_NightsideIce": 13,
+    "PoisonForest": 9,
+    "AB_RockyCrags": 1
+  },
+  "bmt_fungalforest_tiles_remaining_live": 0,
+  "tiles_matching_2026-09-07_plan_exactly": 366
+}

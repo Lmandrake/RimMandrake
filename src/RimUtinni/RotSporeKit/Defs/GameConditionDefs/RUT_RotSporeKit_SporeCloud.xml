@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    Ported from BiomesCaverns_src 1.6/Defs/Incidents/BMT_GameConditions_SporeCloud.xml
+    + 1.6/Defs/Incidents/BMT_Incidents.xml's BMT_SporeCloud IncidentDef.
+
+    conditionClass is left pointed at the donor's own compiled class
+    (BiomesCaverns.GameCondition_SporeCloud, MayRequire the donor packageId) — a full
+    C# port to our own assembly is OWED (see About.xml / FUNGALFOREST_RAID_MERGE_1) and
+    only matters once BiomesCaverns actually retires from the live mod list. The
+    IncidentDef itself needs no donor class (vanilla IncidentWorker_MakeGameCondition),
+    so it is fully ours already. disallowedBiomes dropped the donor's own cavern biomes
+    (not ours to gate) and instead excludes RUT_TheRot itself — the biome already reads
+    as a permanent Sheen-fall/spore-event source per its own sheet (the_rot.md §4b);
+    a second, unrelated "spore cloud" incident firing there would be redundant.
+  -->
+
+  <GameConditionDef>
+    <defName>RUT_SporeCloud</defName>
+    <conditionClass MayRequire="biomesteam.biomescaverns">BiomesCaverns.GameCondition_SporeCloud</conditionClass>
+    <label>spore cloud</label>
+    <description>A cloud of fungal spores from some distant source is slowly settling over this entire region. Any living thing not under a roof will be suffocating.</description>
+    <descriptionFuture>a cloud of fungal spores will blanket the area around [map_definite] for [gameConditionDuration_duration], killing outdoor animal life.</descriptionFuture>
+    <endMessage>The worst of the fungal spores has settled.</endMessage>
+    <letterText>A distant fungal forest has released a plume of spores over this entire region.\n\nAny person or creature not under a roof will be slowly suffocating by the fungal spores settling out of the atmosphere.\n\nIt will last for anywhere between a few days to over a quadrum.</letterText>
+    <letterDef>NegativeEvent</letterDef>
+    <canBePermanent>true</canBePermanent>
+  </GameConditionDef>
+
+  <IncidentDef>
+    <defName>RUT_SporeCloud</defName>
+    <label>spore cloud</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>IncidentWorker_MakeGameCondition</workerClass>
+    <gameCondition>RUT_SporeCloud</gameCondition>
+    <letterLabel>Spore cloud</letterLabel>
+    <letterDef>ThreatSmall</letterDef>
+    <baseChance>0.06</baseChance>
+    <earliestDay>60</earliestDay>
+    <minRefireDays>90</minRefireDays>
+    <disallowedBiomes>
+      <li>RUT_TheRot</li>
+    </disallowedBiomes>
+    <disabledWhen>
+      <extremeWeatherIncidentsDisabled>true</extremeWeatherIncidentsDisabled>
+    </disabledWhen>
+    <durationDays>2.5~10.5</durationDays>
+    <tale>ToxicFallout</tale>
+  </IncidentDef>
+</Defs>

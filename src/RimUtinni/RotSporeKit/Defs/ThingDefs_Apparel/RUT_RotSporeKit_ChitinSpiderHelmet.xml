@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    Ported from BiomesCaverns_src 1.6/Defs/Items/BMT_ChitinArmor.xml
+    (BMT_Apparel_ChitinSpiderHelmet only — the other chitin armor pieces in that file
+    are not named in this item's scope). costList substituted: donor used
+    BMT_RoyalChitin + BMT_RoyalRhinoHorn (Royal Rhino Beetle byproducts, a different
+    animal/biome, out of scope); replaced with our own RUT_ChitinPlating stuff
+    resource plus the cave-spider-head trophy this same raid ingests, keeping the
+    "made from what you killed" flavor intact.
+  -->
+
+  <ThingDef ParentName="HatMakeableBase">
+    <defName>RUT_Apparel_ChitinSpiderHelmet</defName>
+    <label>chitin spider helmet</label>
+    <description>A chitin helmet which gives moderate protection. It is themed around a cave spider.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Headgear/SpiderHelmet/SpiderHelmet</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <techLevel>Medieval</techLevel>
+    <tradeability>Sellable</tradeability>
+    <generateCommonality>0.1</generateCommonality>
+    <costList>
+      <RUT_CaveSpiderHead>1</RUT_CaveSpiderHead>
+    </costList>
+    <costStuffCount>40</costStuffCount>
+    <stuffCategories>
+      <li>RUT_ChitinStuff</li>
+    </stuffCategories>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <WorkToMake>10000</WorkToMake>
+      <Mass>2.8</Mass>
+      <StuffEffectMultiplierArmor>0.25</StuffEffectMultiplierArmor>
+      <StuffEffectMultiplierInsulation_Cold>1.0</StuffEffectMultiplierInsulation_Cold>
+      <StuffEffectMultiplierInsulation_Heat>0.5</StuffEffectMultiplierInsulation_Heat>
+      <EquipDelay>5</EquipDelay>
+    </statBases>
+    <thingCategories Inherit="False">
+      <li>ArmorHeadgear</li>
+    </thingCategories>
+    <tradeTags>
+      <li>Clothing</li>
+      <li>Armor</li>
+    </tradeTags>
+    <apparel>
+      <bodyPartGroups>
+        <li>FullHead</li>
+      </bodyPartGroups>
+      <wornGraphicPath>RotSporeKit/Things/Headgear/SpiderHelmet/SpiderHelmet</wornGraphicPath>
+      <layers>
+        <li>Overhead</li>
+      </layers>
+      <tags>
+        <li>MedievalMilitary</li>
+      </tags>
+      <defaultOutfitTags>
+        <li>Soldier</li>
+      </defaultOutfitTags>
+    </apparel>
+    <recipeMaker>
+      <researchPrerequisite>PlateArmor</researchPrerequisite>
+      <skillRequirements>
+        <Crafting>10</Crafting>
+      </skillRequirements>
+      <recipeUsers Inherit="False">
+        <li>CraftingSpot</li>
+        <li>ElectricTailoringBench</li>
+        <li>HandTailoringBench</li>
+      </recipeUsers>
+    </recipeMaker>
+  </ThingDef>
+</Defs>

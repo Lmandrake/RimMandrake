@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    Ported from BiomesCaverns_src 1.6/Defs/TerrainDef/BiomesCaverns_Floor.xml. All
+    vanilla ParentName chains (FloorBase/BridgeBase) — no donor compClass dependency.
+    Dropped the BiomesCore.DefModExtensions.Biomes_PlantControl tuning extension on
+    BMT_MycelialSoil (flavor-only terrain-tag hinting, not essential; avoids a
+    BiomesCore dependency on a terrain that's otherwise fully ours).
+  -->
+
+  <TerrainDef ParentName="FloorBase">
+    <defName>RUT_MushroomFloor</defName>
+    <label>mushroom floor</label>
+    <renderPrecedence>250</renderPrecedence>
+    <description>Mushroom plank flooring for that warm, homey feeling. It is quick to lay and not flammable.</description>
+    <texturePath>Terrain/Surfaces/WoodFloor</texturePath>
+    <isPaintable>true</isPaintable>
+    <burnedDef>BurnedWoodPlankFloor</burnedDef>
+    <color>(195,195,195)</color>
+    <statBases>
+      <WorkToBuild>85</WorkToBuild>
+      <Flammability>0</Flammability>
+    </statBases>
+    <costList>
+      <RUT_MushroomLog>3</RUT_MushroomLog>
+    </costList>
+    <constructEffect>ConstructWood</constructEffect>
+  </TerrainDef>
+
+  <TerrainDef ParentName="BridgeBase" Abstract="True" Name="RUT_BridgeMushroomBase">
+    <label>mushroom bridge</label>
+    <description>A flat mushroom surface on supportive beams which can be built over water. You can build light structures on bridges, but be careful - bridges are fragile. If a bridge falls, buildings on top of it fall as well.</description>
+    <texturePath>RotSporeKit/Terrains/MushroomBridge/MushroomBridge</texturePath>
+    <bridgePropsPath>RotSporeKit/Terrains/MushroomBridge/MushroomBridgeProps</bridgePropsPath>
+    <spaceBridgePropsPath>RotSporeKit/Terrains/MushroomBridge/MushroomBridgeProps</spaceBridgePropsPath>
+    <color>(195,195,195)</color>
+    <uiIconPath>RotSporeKit/Terrains/MushroomBridge/MushroomBridge_MenuIcon</uiIconPath>
+    <isPaintable>true</isPaintable>
+    <affordances>
+      <li>Light</li>
+    </affordances>
+    <constructEffect>ConstructWood</constructEffect>
+    <statBases>
+      <WorkToBuild>1500</WorkToBuild>
+      <Flammability>0</Flammability>
+    </statBases>
+    <terrainAffordanceNeeded>Bridgeable</terrainAffordanceNeeded>
+    <designationHotKey>Misc4</designationHotKey>
+    <destroyOnBombDamageThreshold>35</destroyOnBombDamageThreshold>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RUT_BridgeMushroomBase">
+    <defName>RUT_MushroomBridge</defName>
+    <label>mushroom bridge</label>
+    <uiIconPath>RotSporeKit/Terrains/MushroomBridge/MushroomBridge_MenuIcon</uiIconPath>
+    <affordances>
+      <li>Light</li>
+    </affordances>
+    <statBases>
+      <WorkToBuild>1500</WorkToBuild>
+      <Flammability>0</Flammability>
+    </statBases>
+    <costList>
+      <RUT_MushroomLog>12</RUT_MushroomLog>
+    </costList>
+    <destroyOnBombDamageThreshold>35</destroyOnBombDamageThreshold>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RUT_BridgeMushroomBase">
+    <defName>RUT_HeavyMushroomBridge</defName>
+    <label>heavy mushroom bridge</label>
+    <description>A flat mushroom surface on extra-strong supportive beams which can be built over water. You can build heavy structures on this bridge, but be careful - bridges are fragile. If a bridge falls, buildings on top of it fall as well.</description>
+    <uiIconPath>RotSporeKit/Terrains/MushroomBridge/HeavyMushroomBridge_MenuIcon</uiIconPath>
+    <isPaintable>true</isPaintable>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+    </affordances>
+    <statBases>
+      <WorkToBuild>2000</WorkToBuild>
+      <Flammability>0</Flammability>
+    </statBases>
+    <costList>
+      <RUT_MushroomLog>12</RUT_MushroomLog>
+      <Steel>5</Steel>
+    </costList>
+    <destroyOnBombDamageThreshold>55</destroyOnBombDamageThreshold>
+  </TerrainDef>
+
+  <TerrainDef ParentName="FloorBase">
+    <defName>RUT_MoonlessCarpet</defName>
+    <label>moonless stripes carpet</label>
+    <description>Carpeting made from the fungal fibers of moonless stripes. It's reasonably pretty.</description>
+    <texturePath>RotSporeKit/Terrains/MoonlessCarpet</texturePath>
+    <color>(231,231,231)</color>
+    <edgeType>Hard</edgeType>
+    <renderPrecedence>70</renderPrecedence>
+    <isPaintable>true</isPaintable>
+    <statBases>
+      <Beauty>2</Beauty>
+      <Flammability>0.0</Flammability>
+      <WorkToBuild>100</WorkToBuild>
+      <CleaningTimeFactor>0.8</CleaningTimeFactor>
+    </statBases>
+    <costList>
+      <RUT_MoonlessSilk>7</RUT_MoonlessSilk>
+    </costList>
+    <researchPrerequisites>
+      <li>CarpetMaking</li>
+    </researchPrerequisites>
+    <tags>
+      <li>FineFloor</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="FloorBase">
+    <defName>RUT_MycelialSoil</defName>
+    <label>mycelial soil</label>
+    <description>Soil with mycelium spread throughout. It's kind of ugly and takes a lot of work to build, but it's perfect for growing darkness-loving crops.</description>
+    <texturePath>RotSporeKit/Terrains/MycelialSoil</texturePath>
+    <edgeType>Fade</edgeType>
+    <renderPrecedence>70</renderPrecedence>
+    <pathCost>2</pathCost>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+      <WorkToBuild>1100</WorkToBuild>
+      <Flammability>0.0</Flammability>
+    </statBases>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <filthAcceptanceMask>
+      <li>None</li>
+    </filthAcceptanceMask>
+    <fertility>1</fertility>
+    <takeFootprints>true</takeFootprints>
+    <tools>
+      <li>
+        <label>dirt</label>
+        <capacities>
+          <li>KickMaterialInEyes</li>
+        </capacities>
+        <hediff>DirtInEyes</hediff>
+        <cooldownTime>1.5</cooldownTime>
+      </li>
+    </tools>
+    <tags>
+      <li>Soil</li>
+    </tags>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <costList>
+      <RUT_MushroomLog>10</RUT_MushroomLog>
+    </costList>
+    <researchPrerequisites>
+      <li>RUT_AdvancedFungi</li>
+    </researchPrerequisites>
+  </TerrainDef>
+
+  <TerrainDef ParentName="FloorBase">
+    <defName>RUT_MycelialMatting</defName>
+    <label>mycelial matting</label>
+    <description>Rough mycelium matting for use in animal barns where straw is unavailable. It is cheap and accepts very little filth.</description>
+    <texturePath>RotSporeKit/Terrains/MycelialMatting</texturePath>
+    <edgeType>Hard</edgeType>
+    <renderPrecedence>240</renderPrecedence>
+    <pathCost>1</pathCost>
+    <statBases>
+      <Beauty>-1</Beauty>
+      <Cleanliness>-0.1</Cleanliness>
+      <WorkToBuild>120</WorkToBuild>
+      <FilthMultiplier>0.05</FilthMultiplier>
+      <Flammability>0</Flammability>
+    </statBases>
+    <costList>
+      <RUT_MushroomLog>5</RUT_MushroomLog>
+    </costList>
+    <uiOrder>2010</uiOrder>
+  </TerrainDef>
+</Defs>

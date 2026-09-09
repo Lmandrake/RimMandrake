@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    Ported from BiomesCaverns_src 1.6/Defs/DamageDef/DamageDef.xml. BMT_ToxicSpores
+    ports clean (vanilla ToxicBuildup hediff + ToxicResistance stat). BMT_StunningSpores
+    originally applied a donor-only hediff (`BMT_Paralysis`, never defined in the
+    vendored source we have — not guessed) — substituted with vanilla `Anesthetic`
+    at a low severity so the mechanic (mantis scythe edge stuns) still functions
+    without inventing an undefined hediff.
+  -->
+
+  <DamageDef ParentName="Scratch">
+    <defName>RUT_ToxicSpores</defName>
+    <label>toxic spores</label>
+    <additionalHediffs>
+      <li>
+        <hediff>ToxicBuildup</hediff>
+        <severityPerDamageDealt>0.015</severityPerDamageDealt>
+        <victimSeverityScaling>ToxicResistance</victimSeverityScaling>
+        <inverseStatScaling>true</inverseStatScaling>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>false</applyAdditionalHediffsIfHuntingForFood>
+    <impactSoundType>Toxic</impactSoundType>
+    <damageEffecter>Impact_Toxic</damageEffecter>
+  </DamageDef>
+
+  <DamageDef ParentName="Scratch">
+    <defName>RUT_StunningSpores</defName>
+    <label>stunning spores</label>
+    <additionalHediffs>
+      <li>
+        <hediff>Anesthetic</hediff>
+        <severityPerDamageDealt>0.02</severityPerDamageDealt>
+        <inverseStatScaling>true</inverseStatScaling>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>true</applyAdditionalHediffsIfHuntingForFood>
+    <impactSoundType>Toxic</impactSoundType>
+    <damageEffecter>Impact_Toxic</damageEffecter>
+  </DamageDef>
+</Defs>
