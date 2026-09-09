@@ -15,19 +15,32 @@ modifications pointlessly."
 pass.** Mirror `STARWARS_DONOR_SUNSET_1`'s scoping discipline (measured candidate
 table, waves by real risk, nothing touched live).
 
-1. **Census.** Read the live `ModsConfig.xml` (whatever it says at the time you
-   run, note the count) and, for every active third-party mod, determine whether
-   it actually modifies any of:
+*(The owner's four rulings that widened this scope are recorded once, below,
+under "Owner RULED". The field list here is the widened one.)*
+
+1. **Census.** Read the campaign's active mod list (⚠️ **NOT** the live
+   `ModsConfig.xml` while a minimal-list swap is in effect — see the Instrument
+   note in the census doc) and, for every active third-party mod, determine
+   whether it actually modifies any of:
    - Animal combat/damage stats (melee/ranged damage, verbs, armor, health)
    - Animal rarity/commonality/spawn weighting (wild spawn rates, biome animal
      tables, "dangerous animals" difficulty knobs)
    - Animal appearance (retextures, recolors, size/scale overrides)
    - Animal body size / `bodySizeFactor`-style stat overrides
    - Plant parameters (growth rate, yield, harvest work, wild plant density)
+   - **(widened)** Weapon damage / armour penetration / accuracy / cooldown
+   - **(widened)** Apparel armour ratings, insulation, equipped stat offsets
+   - **(widened)** Work-speed, research-speed, construction/mining multipliers,
+     `WorkToBuild`/`WorkToMake`, recipe work amounts
+   - **(widened)** Market values, costLists, and any global `StatDef` retune
    Do not trust a mod's NAME to answer this — open its actual Defs/Patches and
    confirm mechanically. A mod named suggestively but touching none of the above
    is a false positive; a plainly-named mod that turns out narrower than
    expected should be characterized by what it ACTUALLY does.
+   🔴 **A pure-C# mod has no XML to scan** and will be invisible to any
+   Defs/Patches sweep — the exact gap `outgrown_audit_2026-08-30.md` flagged in
+   its own honesty note. Those are found by their Keyed/Settings strings and
+   assembly, not by grepping Defs.
 
 2. **Overlap check — this is the part that matters.** For each candidate mod,
    determine whether its patches apply to:
@@ -92,3 +105,47 @@ owner's real campaign list. The census must NOT be built against the live file
 in that state; use `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`
 or the most recent dated full-list backup, and cross-check against the live
 file once the full list is confirmed restored.
+
+## CENSUS + WAVE PLAN DELIVERED (FOUNDRY, 2026-09-09, offline — game mid-reboot)
+
+📄 **`design/Jawa/mods/stat_normalization_audit_2026-09-09.md`** — the full
+census, the per-mod save cross-reference table, and the four waves.
+
+**Instrument used** (and why not the live file): the census ran against
+`infrastructure/state/modlists/ModsConfig_before_droid_donor_fix_2026-09-09.xml`
+(mtime 13:38, **587 `<activeMods>`**) because the live `ModsConfig.xml` held a
+6-mod minimal list at census time. The campaign save's own `<modIds>` (590)
+differs from that snapshot by exactly the three droid mods being reverted
+tonight and nothing else, which is what makes the snapshot trustworthy.
+⚠️ A final cross-check against the live file is OWED once the full list is
+restored — not this item's job.
+
+**Numbers**: 587 active mods walked, every one's own XML opened (names never
+trusted); **131** carry a PatchOperation landing on a balance-number surface,
+**124** of them third-party; **31 are real conflicts**. 90 active mods are
+pure-C# and invisible to any Defs/Patches sweep — those were characterised from
+About/Keyed/`Config/Mod_*.xml` and are marked as characterisations, not
+measurements. 23 mods sit in the cosmetic-only bucket.
+
+**Waves**: 1 — 13 mods, zero content, zero save presence (quick, real win).
+2 — 9 save-clean but content-bearing (a keep-or-port sitting). 3 — 6 entangled
+with open research/work-economy items. 4 — the rest, several of which are
+**NOT retirable** and are recommended as permanent keeps.
+
+**Top finding**: `fluxilis.germanquality` ("Quality Affects HP") is a
+1,114-byte, zero-def mod that adds a `StatPart_Quality` to `MaxHitPoints` —
+**0.5× awful to 10× legendary, globally, on everything with a quality level**.
+It is the widest silent multiplier in the stack and costs nothing to remove.
+Runner-up, and the mod the owner was remembering: `zylle.moredangerousgame`, a
+C# predator/prey and revenge overhaul with no settings file ever written.
+
+🔴 **Save-cross-reference landmine the mod-graph check would have missed**:
+`sarg.alphabiomes` holds **23,819 placed `AB_Obsidianstone` instances** in
+`CANONICAL_ASHKARR_2026-09-09.rws`, and ten of our 23 painted biomes are its
+BiomeDefs. No active mod declares a dependency on it — it would have read as
+retirable and taken the campaign with it. Same shape one order down:
+`grimterra.biomesmod` (782 placed), `sarg.alphamemes` (622), `regrowth.botr.core`
+(563), `oskarpotocki.vfe.tribals` (312), `vanillaexpanded.vmemese` (234).
+
+**Nothing was retired. `ModsConfig.xml` was not touched.** Four questions for
+the owner are at the foot of the census doc; the item stays open for his ruling.
