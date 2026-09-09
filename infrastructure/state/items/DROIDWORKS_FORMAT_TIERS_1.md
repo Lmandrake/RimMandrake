@@ -190,6 +190,64 @@ start by reading the actual stage-by-stage `<disablesNeeds>` XML in
 checks (`hediff.CurStageIndex` vs the LIST of disabled needs on THAT stage,
 specifically) before assuming the mechanism vs the wiring is at fault.
 
+## root-cause read 2026-09-09 (FOUNDRY, offline — bridge held by another item, cold-load in progress)
+
+Picked this back up per its own instruction: read the stage-by-stage XML against
+what vanilla's need-caching actually does, before assuming mechanism vs wiring is
+at fault. Mechanism, not wiring, is CLEARED — the 2026-09-08 FAIL is a test-tool
+artifact, not a shipped-code bug. Read live (via RimSage), not assumed:
+
+- `HediffSet.CacheNeeds()` reads `hediff.CurStage.disablesNeeds` correctly, and
+  `Hediff.Severity`'s setter DOES call `Pawn_HealthTracker.Notify_HediffChanged` →
+  `HediffSet.DirtyCache()` on every stage-index change — so `cachedDisabledNeeds`
+  itself was never stale.
+- But `Pawn_NeedsTracker.ShouldHaveNeed` is only *consulted* when something calls
+  `pawn.needs.AddOrRemoveNeedsAsAppropriate()` to rebuild the actual `Need` object
+  list. `HediffSet.AddDirect` calls it once, at add-time. Bare `Hediff.Severity`'s
+  setter — confirmed by reading it end to end — does **not** call it again.
+- `DroidFormatTier.SetTier` (`Source/Droidworks/DroidFormatTier.cs:95-111`) already
+  knows this and calls `pawn.needs?.AddOrRemoveNeedsAsAppropriate()` explicitly
+  after setting severity — its own comment (lines 85-94) names this exact vanilla
+  gap. `Recipe_DWFormat.cs:48` calls `DroidFormatTierUtility.SetTier`, not a raw
+  severity write. Both are correct as shipped.
+- The 2026-09-08 quicktest drove the hediff through `jawa/pawn_health` instead:
+  `AddHediff(hd, part)` (creates it at `initialSeverity` = 3 = programmable, which
+  fires `AddOrRemoveNeedsAsAppropriate` ONCE at that stage — Joy/Beauty/Comfort/
+  Outdoors disabled, Mood not), then a bare `h.Severity = severity` line
+  (`JawaBenchPawnTools.cs:862-863`) for each of the four probed stages. That later
+  line updates `cachedDisabledNeeds` but never calls `AddOrRemoveNeedsAsAppropriate`
+  again — so the actual `Need` list stayed frozen at the programmable-stage snapshot
+  for all four "different" severities tested. That reproduces the logged result
+  exactly: Mood present and Joy/Beauty/Comfort/Outdoors absent at every stage
+  including blank and sapient, because all four readings were the same stale
+  snapshot, not four live measurements. (Checked `Joy`'s NeedDef too:
+  `colonistsOnly true`, `minIntelligence Humanlike` — no other gate involved; a
+  player-faction Humanlike-intelligence pawn passes both.)
+- This resolves candidates (a) and (b) from the prior entry: (a) confirmed —
+  the bridge probe doesn't exercise the fixed code path; (b) ruled out — the
+  shipped XML/stage wiring is correct as read. (c) is subsumed: Joy/Beauty/
+  Comfort/Outdoors were never actually re-evaluated at blank/mindless/sapient in
+  that test, so their absence there proves nothing about whether they're on this
+  race's need list at all.
+
+**Offline verify re-run clean**, confirming nothing regressed since 2026-09-08:
+`dotnet build Droidworks.csproj -c Release` → 0 warnings/0 errors;
+`validate_patch.py` on the same 4 def files against the live 586-mod load set →
+0 errors/0 warnings (the one `info` on `Races_Base.xml` is
+`CompProperties_DWServiceRecord`, packet E2's class, not this item's).
+
+**Still NOT live-retested — leaving `doing`, not closing.** The seven-box live
+checklist above is still owed exactly as stated; this pass only clears WHY the
+last attempt failed. Whoever has the bridge next: retest by driving
+`DroidFormatTier.SetTier` — either through the three real recipes (bill on a
+droid at a crafting spot) or, faster, a bridge call that invokes `SetTier`
+directly — and do **not** reuse the raw `jawa/pawn_health` remove+add+severity-poke
+pattern to probe stage-gated needs on any hediff again; it cannot see
+`AddOrRemoveNeedsAsAppropriate`-gated effects on this or any other tier-style
+hediff in this repo. (`jawa/pawn_health`'s own tool description is otherwise
+accurate for its stated purpose — installing/removing hediffs — this is a gap in
+what it can prove about needs specifically, not a bug in it.)
+
 ## owed elsewhere — NOT this item's files
 
 - **No ideoligion in this repo reacts to `RSW_DW_DeformattedSapientDroid`.** In 1.6
