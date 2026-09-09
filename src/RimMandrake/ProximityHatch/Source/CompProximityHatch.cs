@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -71,20 +72,30 @@ namespace RimMandrake.ProximityHatch
             IntVec3 pos = parent.PositionHeld;
             PawnKindDef expectedKind = hatcher.Props.hatcherPawn;
 
+            // Snapshot who's already standing on the egg's own cell before
+            // Hatch() runs. Without this, a pawn of the exact same kindDef
+            // that happens to already be on that cell (e.g. a litter-mate
+            // from an adjacent egg that hatched a moment earlier and hasn't
+            // moved off yet) would be misidentified below as the pawn this
+            // Hatch() call just produced, and get aggroed on a bystander.
+            HashSet<Thing> preHatch = (map != null && expectedKind != null)
+                ? new HashSet<Thing>(pos.GetThingList(map))
+                : null;
+
             hatcher.Hatch(); // vanilla spawn/relation/filth logic, completely unmodified; destroys parent internally
 
             if (map == null || expectedKind == null) return;
 
             // Hatch() runs synchronously and has already returned by the
             // time this line executes, so anything of the expected kind now
-            // sitting at the egg's own former cell is what it just produced.
-            // CompHatcher.Hatch() does not hand back a pawn reference to its
-            // caller, so this reads the map state it already wrote rather
-            // than reaching into its internals or re-deriving the pawn some
-            // other way.
+            // sitting at the egg's own former cell that WASN'T there before
+            // is what it just produced. CompHatcher.Hatch() does not hand
+            // back a pawn reference to its caller, so this reads the map
+            // state it already wrote rather than reaching into its
+            // internals or re-deriving the pawn some other way.
             foreach (Thing t in pos.GetThingList(map))
             {
-                if (t is Pawn hatchling && hatchling.kindDef == expectedKind)
+                if (t is Pawn hatchling && hatchling.kindDef == expectedKind && !preHatch.Contains(t))
                 {
                     Aggro(hatchling, triggeringPawn);
                 }

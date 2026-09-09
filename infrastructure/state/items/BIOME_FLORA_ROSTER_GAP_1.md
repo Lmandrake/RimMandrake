@@ -52,3 +52,11 @@ code itself is reviewed clean; this item tracks the DATA gap the check surfaced.
 `python3 design/Jawa/mods/biome_flora.py --check` reports 0 problems; `--write` produces
 a patch covering all 24 (or however many then-current) placed biomes with no stale
 entries; `--doc` regenerates `biome_flora_rosters.md` cleanly.
+
+## closed 2026-09-09 (BENCH, assignment pass)
+FAMILIES rewritten from the rosters at `32f9d25d`: --check 0 problems, 5 families
+(connected components of plant-sharing — the 8-family shape was unsatisfiable under
+"no plant crosses a family" with the rosters' shared plants), 23 biomes, 143 plants,
+199 assignments; stale HorrorWastes/BMT_CrystalCaverns keys gone; --write and --doc
+both regenerate clean. A follow-on normalization wave (flammability + grow temps) is
+running under BIOME_FAUNA_ASSIGNMENT_SITTING_1 but this item's own criteria are met.

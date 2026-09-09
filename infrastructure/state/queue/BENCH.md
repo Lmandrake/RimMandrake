@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T15:26:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T15:52:52Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -107,15 +107,6 @@ target:   v1
 kind:     task
 summary:  STAGEDLOREDESCRIPTIONS1 — descriptions that change as the story is learned
 prose:    infrastructure/state/items/STAGED_LORE_DESCRIPTIONS_1.md
-
-## BIOME_FLORA_ROSTER_GAP_1 biome_flora.py's own --check finds 2 stale + 8 unrostered placed biomes (HorrorWastes, BMT_CrystalCaverns dead; BiomeGRimond/RUT_TheScald/RUT_PropaneLake/RUT_NightsideIce/RUT_GreySea/RUT_TwilightSea/BiomeCypreJungle/COMIGO_GreaterSwamp_Tropical unrostered)
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  - Two stale entries to remove/reconcile: HorrorWastes (dissolved into other biomes
-prose:    infrastructure/state/items/BIOME_FLORA_ROSTER_GAP_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -469,6 +460,6 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ASSIGNMENT_SHEETS_VERDICT_SITTING_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  Serve with python3 /home/mandrake/.claude/skills/review-sheets/assets/servesheet.py
 prose:    infrastructure/state/items/ASSIGNMENT_SHEETS_VERDICT_SITTING_1.md
