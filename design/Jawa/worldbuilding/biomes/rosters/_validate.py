@@ -117,6 +117,18 @@ def check(path, reg, plants):
                 warnings.append(f'{name}: flora {pn} not in plant_pool (declared in new_defs)')
             else:
                 problems.append(f'{name}: flora def {pn!r} not in plant_pool.csv (exact case)')
+    # `flora_def_exclusions` — a roster covering several BiomeDefs may rule that one of
+    # them grows nothing (the_propane_lakes: the fuel-snow shore has crystal flora, the
+    # liquid-propane sea has none). It must name a def this file actually claims, and it
+    # must carry a reason, or it is a silent no-op.
+    for row in d.get('flora_def_exclusions', []):
+        dn = row.get('def', '')
+        if dn not in d.get('defNames', []):
+            problems.append(f'{name}: flora_def_exclusions names {dn!r}, which is not in '
+                            f'this file\'s defNames — it would exclude nothing')
+        if not row.get('reason'):
+            problems.append(f'{name}: flora_def_exclusions {dn} has no reason')
+
     fish = d.get('fish')
     if not isinstance(fish, dict) or not fish.get('ruling'):
         problems.append(f'{name}: fish ruling missing')

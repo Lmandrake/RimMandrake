@@ -260,6 +260,13 @@
       "law": "the_propane_lakes §0: 'extracts propane from the surrounding landscape... consumed as a very mild euphoric' — §7's rime-nodule euphoric; kept rarer than the structural crystals"
     }
   ],
+  "flora_def_exclusions": [
+    {
+      "def": "RUT_PropaneLake",
+      "reason": "A LIQUID-PROPANE SEA GROWS NOTHING. Ruled by BENCH, 2026-09-09 fix wave. This file's four flora rows are the LAND crystal flora of AB_PropaneLakes (the fuel-snow shore, 2,531 tiles); def-binding handed the same four to the 57 water tiles of RUT_PropaneLake, where the medium is liquid propane at ~-79 °C and no photosynthetic or crystal-accreting surface exists. The lake's life is the ruled propane-native exotics (the V-wake creature and kin) — creatures owed as new defs, never wildPlants. Same split the fauna rows already make: every fauna row here binds AB_PropaneLakes only.",
+      "scope": "flora only — this key deliberately does NOT touch the fauna cast, which already excludes RUT_PropaneLake by rostering the land def alone"
+    }
+  ],
   "flora_purged": [],
   "fish": {
     "ruling": "no fish — the lake is liquid propane at ~−79 °C, not water; nothing with gills, no analogs possible in a fuel solvent. The sea's life is the ruled propane-native exotics (the V-wake creature and kin, propane_gas_deep_design v1 rows; agitated by pumping, attack pawns and pipe) — CREATURES owed as new defs, not fishTypes. FISH_BY_BIOME_1: ruled no-fish.",

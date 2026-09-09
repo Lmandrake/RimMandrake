@@ -26,7 +26,7 @@ event-spawned and hydroponics-only flora — is the comment block at the foot of
 temperatures later"* — 650 of 669 plants will not grow below 0 °C and half this planet is
 colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_TOLERANCES_1`.
 
-**5 families · 23 biomes · 143 plants, all distinct.** 10 biomes carry no flora by design: `AB_MechanoidIntrusion`, `IceSheet`, `Lake`, `Ocean`, `RUT_BlueDesert`, `RUT_GreySea`, `RUT_NightsideIce`, `RUT_TheScald`, `RUT_TwilightSea`, `SeaIce`.
+**5 families · 22 biomes · 143 plants, all distinct.** 11 biomes carry no flora by design: `AB_MechanoidIntrusion`, `IceSheet`, `Lake`, `Ocean`, `RUT_BlueDesert`, `RUT_GreySea`, `RUT_NightsideIce`, `RUT_PropaneLake`, `RUT_TheScald`, `RUT_TwilightSea`, `SeaIce`.
 
 ## A. dayside desert, badlands and the river jungles
 
@@ -140,17 +140,6 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.15 | **gomphoeria** |  | `AB_Gomphoeria` · Alpha Biomes |
 | 0.07 | **red bugloss** |  | `AB_RedBugloss` · Alpha Biomes |
 | 0.05 | **aaklac** |  | `AB_Aaklac` · Alpha Biomes |
-
-### `RUT_PropaneLake` — 57 tiles · -82 … -75 °C (median -79) · plantDensity 0  🔴 **`plantDensity` is near zero — this roster will almost never be seen**
-
-*was 0 inherited plants → now **4** assigned*
-
-| commonality | plant | | mod |
-|---:|---|---|---|
-| 1 | **crystal horn** |  | `AB_CrystalHorn` · Alpha Biomes |
-| 0.8 | **crystal flower** |  | `AB_CrystalFlower` · Alpha Biomes |
-| 0.6 | **frost leaf** |  | `AB_FrostLeaf` · Alpha Biomes |
-| 0.4 | **rime nodules** |  | `AB_RimeNodules` · Alpha Biomes |
 
 ### `COMIGO_GreaterSwamp_Tropical` — 43 tiles · 38 … 52 °C (median 46) · plantDensity 0.99
 
