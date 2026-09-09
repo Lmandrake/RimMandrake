@@ -15,6 +15,17 @@ from dumppath import defs_dir, captures_newest_first
 FA = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(FA, 'BiomeCast_Ashkarr.xml')
 
+# 🔑 THE DEPLOYED COPY IS THE CAST SECTION ONLY, AND IT IS WRITTEN HERE RATHER THAN
+# COPIED BY HAND. Everything below the "CAST-BIOME EXCLUSIVITY" banner in OUT is a
+# FLOOR computed from a post-patch capture, and the shipped removals must be the UNION
+# of every pair ever found (see _animal_side_biomes' docstring) - so the exclusivity
+# ops live in their own accumulating files, never in this one. Until 2026-09-09 the
+# split was done by hand, and the two copies had drifted: the shipped file still cast
+# four biomes the CSV no longer named. A generator with two outputs cannot drift.
+SRC_OUT = os.path.normpath(os.path.join(
+    FA, '..', '..', '..', 'src', 'RimUtinni', 'UtinniPatches', 'Patches',
+    'BiomeCast_Ashkarr.xml'))
+
 def _cherry_picker_cuts():
     """defNames the owner has cut with Cherry Picker, or None if UNREADABLE.
 
@@ -494,6 +505,7 @@ def main():
     # not own biome-side entries other mods' animals arrive through). Safe
     # because our own cast never depends on an animal's wildBiomes field - it
     # writes wildAnimals directly - so this can never remove anything we cast.
+    cast_only = list(parts)          # everything above the exclusivity banner
     aside = _animal_side_biomes()
     dups = []
     for b in sorted(byb):
@@ -545,8 +557,11 @@ def main():
         parts.append('')
     parts.append('</Patch>')
     open(OUT, 'w', encoding='utf-8').write('\n'.join(parts))
+    cast_only.append('</Patch>')
+    open(SRC_OUT, 'w', encoding='utf-8', newline='\n').write('\n'.join(cast_only) + '\n')
     print(f"wrote {OUT}: {len(byb)} biomes, {len(rows)} records, "
           f"{len(dups)} exclusivity pair(s) removed (wildBiomes-side)")
+    print(f"wrote {SRC_OUT}: same cast, exclusivity section deliberately omitted")
     nomay = [b for b in byb if not PKG.get(b)]
     if nomay:
         print(f"⚠️ no packageId resolved for: {nomay} - BUILD must confirm the MayRequire")

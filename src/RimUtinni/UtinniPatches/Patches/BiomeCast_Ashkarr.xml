@@ -16,9 +16,8 @@
       <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <!-- SKIPPED SWPotF_RaceDef_ysalamir - ysalamir: not a PawnKindDef; wildAnimals cannot resolve it -->
-          <Toxalope>0.4</Toxalope> <!-- toxalope - med, dormant -->
-          <Megasloth>0.315</Megasloth> <!-- megasloth - huge, ours -->
+          <Rat>0.1</Rat> <!-- brown rat - ship-vermin, import -->
+          <!-- SKIPPED OuterRim_AstromechDroid - Astromech Droid: not a PawnKindDef; wildAnimals cannot resolve it -->
         </wildAnimals>
       </value>
     </match>
@@ -29,30 +28,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
       <value>
-        <BMT_Jellypot>0.7</BMT_Jellypot> <!-- jellypot - small, dormant -->
-        <BMT_Stoneback>0.7</BMT_Stoneback> <!-- stoneback - small, dormant -->
-        <BMT_Diggerpede>0.4</BMT_Diggerpede> <!-- diggerpede - med, dormant -->
-        <BMT_CactusCrab>0.18</BMT_CactusCrab> <!-- cactus crab - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
-      <value>
-        <BMT_PustuleHornetSpawned>0.7</BMT_PustuleHornetSpawned> <!-- pustule hornet - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="joe.cephaloids">   <!-- donor: joe.cephaloids -->
-    <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
-      <value>
-        <JOE_Cephalope>0.4</JOE_Cephalope> <!-- cephalope - med, ours -->
+        <BMT_Jellypot>0.7</BMT_Jellypot> <!-- jellypot - ambush-small, keep -->
       </value>
     </match>
   </Operation>
@@ -62,767 +38,87 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
       <value>
-        <Bogwing>0.7</Bogwing> <!-- bogwing - small, ours -->
+        <Bantha>0.8</Bantha> <!-- bantha - huge-herd, adjust-keep -->
+        <Kreetle>0.8</Kreetle> <!-- kreetle - ambush-small, keep -->
+        <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
+        <Shyrack>0.6</Shyrack> <!-- shyrack - ambush-flier, keep -->
+        <Gorg>0.4</Gorg> <!-- gorg - ambush-small, keep -->
+        <Gutkurr>0.4</Gutkurr> <!-- gutkurr - burst-predator, adjust-keep -->
+        <Jamel>0.4</Jamel> <!-- Jamel - herd, keep -->
+        <LongtailGorg>0.4</LongtailGorg> <!-- longtail gorg - ambush-small, keep -->
+        <Ronto>0.4</Ronto> <!-- ronto - huge-herd, keep -->
+        <Sketto>0.4</Sketto> <!-- sketto - ambush-small, keep -->
+        <WompRat>0.4</WompRat> <!-- womp rat - ambush-small, keep -->
+        <Wraid>0.4</Wraid> <!-- wraid - burst-predator, adjust-keep -->
+        <Eopie>0.3</Eopie> <!-- eopie - herd, keep -->
+        <Hrumph>0.3</Hrumph> <!-- hrumph - herd, import -->
+        <IridonianReek>0.3</IridonianReek> <!-- iridonian reek - herd, import -->
+        <Jimvu>0.3</Jimvu> <!-- jimvu - herd, import -->
+        <Kwi>0.3</Kwi> <!-- Kwi - herd, import -->
+        <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
+        <Skalder>0.3</Skalder> <!-- skalder - huge-herd, import -->
+        <Uvak>0.3</Uvak> <!-- uvak - herd, import -->
+        <Varactyl>0.3</Varactyl> <!-- varactyl - herd, import -->
+        <Zeer>0.3</Zeer> <!-- zeer - herd, import -->
+        <Falumpaset>0.2</Falumpaset> <!-- falumpaset - herd, import -->
+        <FrilledGorg>0.2</FrilledGorg> <!-- frilled gorg - ambush-small, keep -->
+        <Jakobeast>0.2</Jakobeast> <!-- jakobeast - herd, import -->
+        <Nerf>0.2</Nerf> <!-- nerf - herd, keep -->
+        <Nuna>0.2</Nuna> <!-- nuna - herd-small, keep -->
+        <Shaak>0.2</Shaak> <!-- shaak - herd, import -->
+        <TeeMuss>0.2</TeeMuss> <!-- tee muss - herd, import -->
+        <Worrt>0.2</Worrt> <!-- worrt - ambush-small, keep -->
+        <Bolotaur>0.1</Bolotaur> <!-- bolotaur - herd, import -->
+        <Clodhopper>0.1</Clodhopper> <!-- clodhopper - ambush-small, keep -->
+        <FeralGrazer>0.1</FeralGrazer> <!-- feral grazer - herd, import -->
+        <Gizka>0.1</Gizka> <!-- gizka - ambush-small, keep -->
+        <Iriaz>0.1</Iriaz> <!-- iriaz - herd-small, keep -->
+        <Krykna>0.1</Krykna> <!-- krykna - ambush-small, keep -->
+        <Runyip>0.1</Runyip> <!-- runyip - herd, import -->
+        <Voorpak>0.05</Voorpak> <!-- voorpak - ambush-small, keep -->
+        <Horax>0.01</Horax> <!-- horax - megafauna, import -->
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
+  <Operation Class="PatchOperationConditional" MayRequire="neronix17.outerrim.droiddepot">   <!-- donor: neronix17.outerrim.droiddepot -->
     <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
       <value>
-        <AA_BumbledroneQueen>0.7</AA_BumbledroneQueen> <!-- bumbledrone queen - small, dormant -->
-        <AA_OcularJelly>0.7</AA_OcularJelly> <!-- ocular jelly - small, ours -->
-        <AA_MatureFleshbeast>0.054</AA_MatureFleshbeast> <!-- mature fleshbeast - SUPER, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
-      <value>
-        <GR_Catalope>1.0</GR_Catalope> <!-- catalope - tiny, dormant -->
-        <GR_Chickenlope>1.0</GR_Chickenlope> <!-- chickenlope - tiny, dormant -->
-        <GR_Needlechicken>1.0</GR_Needlechicken> <!-- needlechicken - tiny, dormant -->
-        <GR_Squirralope>1.0</GR_Squirralope> <!-- squirralope - tiny, dormant -->
-        <GR_Boombeetle>0.4</GR_Boombeetle> <!-- boombeetle - med, dormant -->
-        <GR_Boomcat>0.4</GR_Boomcat> <!-- boomcat - med, dormant -->
-        <GR_Boomsnake>0.4</GR_Boomsnake> <!-- boomsnake - med, dormant -->
-        <GR_Boomsquirrel>0.4</GR_Boomsquirrel> <!-- boomsquirrel - med, dormant -->
-        <GR_FleshGrowth>0.315</GR_FleshGrowth> <!-- flesh growth - huge, dormant -->
-        <GR_Boomabear>0.18</GR_Boomabear> <!-- boomabear - large, dormant -->
-        <GR_Boomffalo>0.18</GR_Boomffalo> <!-- boomffalo - large, dormant -->
-        <GR_Manwolf>0.18</GR_Manwolf> <!-- manwolf - large, dormant -->
-        <GR_ParagonBoomalope>0.18</GR_ParagonBoomalope> <!-- boomalope paragon - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="vanillaquestsexpanded.ancients">   <!-- donor: vanillaquestsexpanded.ancients -->
-    <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
-      <value>
-        <VQEA_Splicetoot>0.4</VQEA_Splicetoot> <!-- splicetoot - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <HermitCrab>1.0</HermitCrab> <!-- hermit crab - tiny, dormant -->
-          <Locust>0.7</Locust> <!-- locust - small, dormant -->
-          <!-- SKIPPED SWPotF_RaceDef_ysalamir - ysalamir: not a PawnKindDef; wildAnimals cannot resolve it -->
-          <StoneCrab>0.7</StoneCrab> <!-- stone crab - small, dormant -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-      <value>
-        <BMT_BloodropMoth>0.7</BMT_BloodropMoth> <!-- bloodrop moth - small, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-      <value>
-        <BMT_Glowtail>0.7</BMT_Glowtail> <!-- glowtail - small, dormant -->
-        <BMT_ColonyPustuleHornetQueen>0.4</BMT_ColonyPustuleHornetQueen> <!-- pustule queen - med, dormant -->
-        <BMT_PustuleHornetQueen>0.4</BMT_PustuleHornetQueen> <!-- pustule queen - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-      <value>
-        <Scurrier>1.0</Scurrier> <!-- scurrier - tiny, ours -->
-        <Tooke>1.0</Tooke> <!-- tooke - tiny, ours -->
-        <Sketto>0.7</Sketto> <!-- sketto - small, ours -->
-        <Stintaril>0.7</Stintaril> <!-- stintaril - small, foreign -->
-        <Cannok>0.4</Cannok> <!-- cannok - med, ours -->
-        <Falumpaset>0.35</Falumpaset> <!-- falumpaset - huge, ours -->
-        <KwazelMaw>0.35</KwazelMaw> <!-- kwazel maw - huge, ours -->
-        <WarWyrm>0.2</WarWyrm> <!-- war wyrm - SUPER, foreign -->
-        <Devourers>0.18</Devourers> <!-- devourer - large, ours -->
+        <OuterRim_MSEDroid>0.1</OuterRim_MSEDroid> <!-- MSE Repair Droid - feral-droid, import -->
+        <OuterRim_SalvageAssistDroid>0.1</OuterRim_SalvageAssistDroid> <!-- salvage assist droid - feral-droid, import -->
+        <OuterRim_DUMDroid>0.08</OuterRim_DUMDroid> <!-- DUM Repair Droid - feral-droid, import -->
+        <OuterRim_GNKDroid>0.08</OuterRim_GNKDroid> <!-- GNK Power Droid - feral-droid, import -->
+        <OuterRim_FX7Droid>0.05</OuterRim_FX7Droid> <!-- fx-7 medical droid - feral-droid, import -->
+        <OuterRim_MuckrakerDroid>0.05</OuterRim_MuckrakerDroid> <!-- Muckraker Crab Droid - feral-droid, import -->
+        <OuterRim_DestroyerDroid>0.02</OuterRim_DestroyerDroid> <!-- Destroyer Droid - feral-droid, import -->
       </value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
-    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
       <value>
-        <VFEI2_Boomtick>1.0</VFEI2_Boomtick> <!-- boomtick - tiny, dormant -->
-        <VFEI2_Megathrips>0.7</VFEI2_Megathrips> <!-- megathrips - small, dormant -->
-        <VFEI2_Fuelmite>0.4</VFEI2_Fuelmite> <!-- fuelmite - med, dormant -->
-        <VFEI2_Hellbeetle>0.4</VFEI2_Hellbeetle> <!-- hellbeetle - med, dormant -->
-        <VFEI2_Macrofly>0.4</VFEI2_Macrofly> <!-- macrofly - med, dormant -->
-        <VFEI2_Megawasp>0.4</VFEI2_Megawasp> <!-- megawasp - med, dormant -->
-        <VFEI2_Queen>0.35</VFEI2_Queen> <!-- insectoid princess - huge, dormant -->
-        <VFEI2_Acidspitter>0.18</VFEI2_Acidspitter> <!-- acidspitter - large, dormant -->
-        <VFEI2_Gigalocust>0.18</VFEI2_Gigalocust> <!-- gigalocust - large, dormant -->
+        <VFEI2_Fuelmite>0.3</VFEI2_Fuelmite> <!-- fuelmite - ship-vermin, import -->
       </value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
       <value>
-        <AA_Dunealisk>0.18</AA_Dunealisk> <!-- dunealisk - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-      <value>
-        <GR_Manscarab>0.4</GR_Manscarab> <!-- manscarab - med, dormant -->
-        <GR_ParagonInsectoid>0.18</GR_ParagonInsectoid> <!-- insectoid paragon - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <WasteRat>0.7</WasteRat> <!-- waste rat - small, dormant -->
-          <HiveQueen>0.0663</HiveQueen> <!-- hive queen - huge, dormant -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-      <value>
-        <BMT_ChemSnail>0.7</BMT_ChemSnail> <!-- chem snail - small, ours -->
-        <BMT_SilverSheep>0.4</BMT_SilverSheep> <!-- silver sheep - med, dormant -->
-        <BMT_Snowstalker>0.4</BMT_Snowstalker> <!-- snowstalker - med, dormant -->
-        <BMT_BeardedYak>0.18</BMT_BeardedYak> <!-- bearded yak - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-      <value>
-        <BMT_Megakrill>1.0</BMT_Megakrill> <!-- megakrill - tiny, dormant -->
-        <BMT_Varmot>1.0</BMT_Varmot> <!-- varmot - tiny, dormant -->
-        <BMT_MutagenicNorphea>0.7</BMT_MutagenicNorphea> <!-- mutagenic norphea - small, dormant -->
-        <BMT_Swarmcaller>0.4</BMT_Swarmcaller> <!-- swarmcaller - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-      <value>
-        <Leaftail>1.0</Leaftail> <!-- leaf-tail - tiny, ours -->
-        <FeralNerf>0.4</FeralNerf> <!-- feral nerf - med, ours -->
-        <Strill>0.4</Strill> <!-- strill - med, ours -->
-        <Bursa>0.18</Bursa> <!-- bursa - large, ours -->
-        <Grazer>0.18</Grazer> <!-- grazer - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-      <value>
-        <AA_FissionMouseSecond>0.7</AA_FissionMouseSecond> <!-- fission mouse, second generation - small, dormant -->
-        <AA_FissionMouseThird>0.7</AA_FissionMouseThird> <!-- fission mouse, third generation - small, dormant -->
-        <AA_Murkling>0.7</AA_Murkling> <!-- murkling - small, ours -->
-        <AA_Gallatross>0.0114</AA_Gallatross> <!-- gallatross - SUPER, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphamemes">   <!-- donor: sarg.alphamemes -->
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-      <value>
-        <AM_UnshackledDryad>0.7</AM_UnshackledDryad> <!-- unshackled dryad - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,van.beasts">   <!-- donor: van.beasts -->
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-      <value>
-        <DA_BeardedTroll>0.18</DA_BeardedTroll> <!-- bearded troll - large, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-      <value>
-        <GR_Rabbitchicken>1.0</GR_Rabbitchicken> <!-- rabbitchicken - tiny, dormant -->
-        <GR_Doedicoon>0.7</GR_Doedicoon> <!-- doedicoon - small, dormant -->
-        <GR_Thrumborat>0.4</GR_Thrumborat> <!-- thrumborat - med, dormant -->
-        <GR_ParagonMuffalo>0.18</GR_ParagonMuffalo> <!-- muffalo paragon - large, dormant -->
-        <GR_Thrumbalope>0.0663</GR_Thrumbalope> <!-- thrumbalope - huge, dormant -->
-        <GR_Thrumbochicken>0.0663</GR_Thrumbochicken> <!-- thrumbochicken - huge, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaquestsexpanded.cryptoforge">   <!-- donor: vanillaquestsexpanded.cryptoforge -->
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-      <value>
-        <VQE_IceCrawler>0.4</VQE_IceCrawler> <!-- ice crawler - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,who.vfee.isopodageneline">   <!-- donor: who.vfee.isopodageneline -->
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
-      <value>
-        <SW_Electricgryllotalpa>0.4</SW_Electricgryllotalpa> <!-- Electricgryllotalpa - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.horrors">
-    <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <WasteRat>0.7</WasteRat> <!-- waste rat - small, dormant -->
-          <Muffalo>0.18</Muffalo> <!-- muffalo - large, ours -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.horrors,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-      <value>
-        <BMT_CrystalFairyMole>0.4</BMT_CrystalFairyMole> <!-- crystal fairy mole - med, ours -->
-        <BMT_FrostweaverSpider>0.18</BMT_FrostweaverSpider> <!-- frostweaver - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.horrors,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-      <value>
-        <GraniteSlug>1.0</GraniteSlug> <!-- granite slug - tiny, ours -->
-        <Neebray>1.0</Neebray> <!-- neebray - tiny, ours -->
-        <Mynock>0.7</Mynock> <!-- mynock - small, ours -->
-        <FeralGrazer>0.18</FeralGrazer> <!-- feral grazer - large, ours -->
-        <Maalraas>0.18</Maalraas> <!-- maalraas - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.horrors,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-      <value>
-        <AA_Skyeel>1.0</AA_Skyeel> <!-- arcturan sky eel - tiny, dormant -->
-        <AA_AuroraSylph>0.7</AA_AuroraSylph> <!-- Aurora sylph - small, ours -->
-        <AA_CrystalMit>0.7</AA_CrystalMit> <!-- crystalmit - small, ours -->
-        <AA_GreenGoo>0.7</AA_GreenGoo> <!-- green goo - small, ours -->
-        <AA_MegaLouse>0.7</AA_MegaLouse> <!-- megalouse - small, ours -->
-        <AA_PebbleMit>0.7</AA_PebbleMit> <!-- pebblemit - small, ours -->
-        <AA_FungalHusk>0.4</AA_FungalHusk> <!-- fungal husk - med, dormant -->
-        <AA_BoulderMit>0.05</AA_BoulderMit> <!-- bouldermit - huge, ours -->
-        <AA_EngorgedTentacularAberration>0.008</AA_EngorgedTentacularAberration> <!-- engorged tentacular aberration - SUPER, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.horrors,van.beasts">   <!-- donor: van.beasts -->
-    <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-      <value>
-        <DA_NorthernDrog>0.05</DA_NorthernDrog> <!-- northern drog - huge, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.horrors,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-      <value>
-        <GR_Spidersnake>1.0</GR_Spidersnake> <!-- spidersnake - tiny, dormant -->
-        <GR_Chickenlizard>0.7</GR_Chickenlizard> <!-- chickenlizard - small, dormant -->
-        <GR_Bearalope>0.4</GR_Bearalope> <!-- bearalope - med, dormant -->
-        <GR_Bearffalo>0.4</GR_Bearffalo> <!-- bearffalo - med, dormant -->
-        <GR_Boomsnake>0.4</GR_Boomsnake> <!-- boomsnake - med, dormant -->
-        <GR_Molebear>0.4</GR_Molebear> <!-- molebear - med, dormant -->
-        <GR_Muffalorat>0.4</GR_Muffalorat> <!-- muffalorat - med, dormant -->
-        <GR_Snakecat>0.4</GR_Snakecat> <!-- snakecat - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes">
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-      <value>
-        <BMT_FleeceSpider>0.7</BMT_FleeceSpider> <!-- fleece spider - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-      <value>
-        <BMT_BloodletterPetrel>0.7</BMT_BloodletterPetrel> <!-- bloodletter petrel - small, dormant -->
-        <BMT_Maligoat>0.4</BMT_Maligoat> <!-- maligoat - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-      <value>
-        <GraniteSlug>1.0</GraniteSlug> <!-- granite slug - tiny, ours -->
-        <Borcatu>0.7</Borcatu> <!-- Borcatu - small, ours -->
-        <Aiwha>0.35</Aiwha> <!-- aiwha - huge, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-      <value>
-        <VFEI2_Swarmling>1.0</VFEI2_Swarmling> <!-- swarmlings - tiny, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-      <value>
-        <VFEI2_BlackSwarmling>1.0</VFEI2_BlackSwarmling> <!-- black swarmlings - tiny, dormant -->
-        <AA_EmpressButterfly>0.7</AA_EmpressButterfly> <!-- Empress butterfly - small, foreign -->
-        <AA_Skiphound>0.7</AA_Skiphound> <!-- skiphound - small, substituted -->
-        <AA_Terramorph>0.4</AA_Terramorph> <!-- terramorph - med, ours -->
-        <AA_Atispec>0.2</AA_Atispec> <!-- atispec - SUPER, dormant -->
-        <AA_ColossalAerofleet>0.18</AA_ColossalAerofleet> <!-- colossal aerofleet - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,sarg.alphamemes">   <!-- donor: sarg.alphamemes -->
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-      <value>
-        <AM_Dryad_Tumorous>0.7</AM_Dryad_Tumorous> <!-- tumorous dryad - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,van.beasts">   <!-- donor: van.beasts -->
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-      <value>
-        <DA_DwarvenMuffton>0.4</DA_DwarvenMuffton> <!-- dwarven muffton - med, foreign -->
-        <DA_RedhornedLarpah>0.4</DA_RedhornedLarpah> <!-- red-horned larpah - med, ours -->
-        <DA_Barog>0.18</DA_Barog> <!-- barogoth - large, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-      <value>
-        <GR_Beetlefleet>0.7</GR_Beetlefleet> <!-- beetlefleet - small, dormant -->
-        <GR_ParagonRat>0.7</GR_ParagonRat> <!-- rodent paragon - small, dormant -->
-        <GR_Bearalope>0.4</GR_Bearalope> <!-- bearalope - med, dormant -->
-        <GR_Molebear>0.4</GR_Molebear> <!-- molebear - med, dormant -->
-        <GR_Spidercat>0.4</GR_Spidercat> <!-- spidercat - med, dormant -->
-        <GR_Wolfscarab>0.4</GR_Wolfscarab> <!-- wolfscarab - med, dormant -->
-        <GR_Bearhorse>0.35</GR_Bearhorse> <!-- bearhorse - huge, dormant -->
-        <GR_Bearscarab>0.35</GR_Bearscarab> <!-- bearscarab - huge, dormant -->
-        <GR_Bearcat>0.18</GR_Bearcat> <!-- bearcat - large, dormant -->
-        <GR_Spiderhorse>0.18</GR_Spiderhorse> <!-- spiderhorse - large, dormant -->
-        <GR_Thrumbocat>0.18</GR_Thrumbocat> <!-- thrumbocat - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,who.vfee.isopodageneline">   <!-- donor: who.vfee.isopodageneline -->
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-      <value>
-        <SW_Electrictick>1.0</SW_Electrictick> <!-- Electrictick - tiny, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
-    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-      <value>
-        <BMT_FreezerFrog>0.7</BMT_FreezerFrog> <!-- freezer frog - small, dormant -->
-        <BMT_HoarfrostMastodon>0.252</BMT_HoarfrostMastodon> <!-- hoarfrost mastodon - huge, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-      <value>
-        <BMT_Megakrill>1.0</BMT_Megakrill> <!-- megakrill - tiny, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,lingluo.cockroach">   <!-- donor: lingluo.cockroach -->
-    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-      <value>
-        <Ling_Cockroach>0.18</Ling_Cockroach> <!-- Giant Cockroach - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-      <value>
-        <GraniteSlug>1.0</GraniteSlug> <!-- granite slug - tiny, ours -->
-        <Mynock>0.7</Mynock> <!-- mynock - small, ours -->
-        <Krykna>0.4</Krykna> <!-- krykna - med, ours -->
-        <Jakobeast>0.18</Jakobeast> <!-- jakobeast - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-      <value>
-        <AA_Skyeel>1.0</AA_Skyeel> <!-- arcturan sky eel - tiny, dormant -->
-        <AA_BedBug>0.7</AA_BedBug> <!-- bedbug - small, ours -->
-        <AA_CrystalMit>0.7</AA_CrystalMit> <!-- crystalmit - small, ours -->
-        <AA_Frostmite>0.7</AA_Frostmite> <!-- frostmite - small, ours -->
-        <AA_GreenGoo>0.7</AA_GreenGoo> <!-- green goo - small, ours -->
-        <AA_RedGoo>0.7</AA_RedGoo> <!-- red goo - small, ours -->
-        <AA_Darkbeast>0.4</AA_Darkbeast> <!-- darkbeast - med, ours -->
-        <AA_FrostAve>0.4</AA_FrostAve> <!-- frost ave - med, foreign -->
-        <AA_Frostling>0.4</AA_Frostling> <!-- frostling - med, ours -->
-        <AA_WindBeast>0.4</AA_WindBeast> <!-- windbeast - med, ours -->
-        <AA_FrostboundBehemoth>0.252</AA_FrostboundBehemoth> <!-- frostbound behemoth - huge, ours -->
-        <AA_ArcticLion>0.18</AA_ArcticLion> <!-- arctic lion - large, ours -->
-        <AA_Blizzarisk>0.18</AA_Blizzarisk> <!-- blizzarisk - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,van.beasts">   <!-- donor: van.beasts -->
-    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-      <value>
-        <DA_SnowTaraal>0.18</DA_SnowTaraal> <!-- snow taraal - large, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-      <value>
-        <GR_Spidersnake>1.0</GR_Spidersnake> <!-- spidersnake - tiny, dormant -->
-        <GR_ParagonIguana>0.7</GR_ParagonIguana> <!-- reptile paragon - small, dormant -->
-        <GR_Muffalorat>0.4</GR_Muffalorat> <!-- muffalorat - med, dormant -->
-        <GR_ParagonThrumbo>0.252</GR_ParagonThrumbo> <!-- colossal paragon - huge, dormant -->
-        <GR_Paraceramuffalo>0.0432</GR_Paraceramuffalo> <!-- paraceramuffalo - SUPER, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaquestsexpanded.cryptoforge">   <!-- donor: vanillaquestsexpanded.cryptoforge -->
-    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-      <value>
-        <VQE_Megamidge>0.4</VQE_Megamidge> <!-- megamidge - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
-    <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
-      <value>
-        <BMT_FreezerFrog>0.7</BMT_FreezerFrog> <!-- freezer frog - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
-      <value>
-        <BMT_Megakrill>1.0</BMT_Megakrill> <!-- megakrill - tiny, dormant -->
-        <BMT_Megaroach>1.0</BMT_Megaroach> <!-- megaroach - tiny, dormant -->
-        <BMT_ColonyPustuleHornet>0.7</BMT_ColonyPustuleHornet> <!-- pustule hornet - small, dormant -->
-        <BMT_FamineLocust>0.7</BMT_FamineLocust> <!-- famine locust - small, dormant -->
-        <BMT_Megaphorid>0.7</BMT_Megaphorid> <!-- megaphorid - small, dormant -->
-        <BMT_PustuleHornet>0.7</BMT_PustuleHornet> <!-- pustule hornet - small, dormant -->
-        <BMT_Swarmcaller>0.4</BMT_Swarmcaller> <!-- swarmcaller - med, dormant -->
-        <BMT_BarbedPangolin>0.18</BMT_BarbedPangolin> <!-- barbed pangolin - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
-      <value>
-        <AA_Skyeel>1.0</AA_Skyeel> <!-- arcturan sky eel - tiny, dormant -->
-        <AA_MegaLouse>0.7</AA_MegaLouse> <!-- megalouse - small, ours -->
-        <AA_DuskProwler>0.4</AA_DuskProwler> <!-- dusk prowler - med, ours -->
-        <AA_FungalHusk>0.4</AA_FungalHusk> <!-- fungal husk - med, dormant -->
-        <AA_NightAve>0.4</AA_NightAve> <!-- night ave - med, ours -->
-        <AA_Nightling>0.4</AA_Nightling> <!-- nightling - med, ours -->
-        <AA_NightRam>0.18</AA_NightRam> <!-- nightram - large, ours -->
-        <AA_Ravager>0.18</AA_Ravager> <!-- ravager - large, ours -->
-        <AA_ShadowCharger>0.18</AA_ShadowCharger> <!-- shadow charger - large, ours -->
-        <AA_Thunderox>0.18</AA_Thunderox> <!-- thunderox - large, ours -->
-        <AA_SummitCrab>0.012</AA_SummitCrab> <!-- summit crab - SUPER, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
-      <value>
-        <GR_Spidersnake>1.0</GR_Spidersnake> <!-- spidersnake - tiny, dormant -->
-        <GR_Chickenlizard>0.7</GR_Chickenlizard> <!-- chickenlizard - small, dormant -->
-        <GR_ParagonIguana>0.7</GR_ParagonIguana> <!-- reptile paragon - small, dormant -->
-        <GR_Muffalopede>0.4</GR_Muffalopede> <!-- muffalopede - med, dormant -->
-        <GR_Muffalorat>0.4</GR_Muffalorat> <!-- muffalorat - med, dormant -->
-        <GR_Snakecat>0.4</GR_Snakecat> <!-- snakecat - med, dormant -->
-        <GR_Elasmobearium>0.07</GR_Elasmobearium> <!-- elasmobearium - huge, dormant -->
-        <GR_Thrumbospider>0.07</GR_Thrumbospider> <!-- thrumbospider - huge, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <Warg>0.4</Warg> <!-- warg - med, ours -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,armoredampharos.fancyrats">   <!-- donor: armoredampharos.fancyrats -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-      <value>
-        <FancyRat>1.0</FancyRat> <!-- fancy rat - tiny, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-      <value>
-        <BMT_SandLeaper>1.0</BMT_SandLeaper> <!-- sand leaper - tiny, dormant -->
-        <BMT_ChemSnail>0.7</BMT_ChemSnail> <!-- chem snail - small, ours -->
-        <BMT_BovineBeetle>0.18</BMT_BovineBeetle> <!-- bovine beetle - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-      <value>
-        <BMT_MutagenicNorphea>0.7</BMT_MutagenicNorphea> <!-- mutagenic norphea - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,dizzyeevee.rheng">   <!-- donor: dizzyeevee.rheng -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-      <value>
-        <DZY_RNGChicken>0.7</DZY_RNGChicken> <!-- chaos chicken - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-      <value>
-        <CanCell>0.4</CanCell> <!-- can-cell - med, ours -->
-        <Eopie>0.4</Eopie> <!-- eopie - med, ours -->
-        <Gornt>0.4</Gornt> <!-- gornt - med, dormant -->
-        <Hrumph>0.18</Hrumph> <!-- hrumph - large, ours -->
-        <Behemoth>0.036</Behemoth> <!-- behemoth - SUPER, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-      <value>
-        <AA_LuciferBug>1.0</AA_LuciferBug> <!-- luciferbug - tiny, ours -->
-        <AA_SmallButterfly>1.0</AA_SmallButterfly> <!-- small butterflies - tiny, dormant -->
-        <AA_Bumbledrone>0.7</AA_Bumbledrone> <!-- bumbledrone - small, ours -->
-        <AA_BumbledroneHierophant>0.7</AA_BumbledroneHierophant> <!-- bumbledrone hierophant - small, ours -->
-        <AA_FissionMouseSecond>0.7</AA_FissionMouseSecond> <!-- fission mouse, second generation - small, dormant -->
-        <AA_FissionMouseThird>0.7</AA_FissionMouseThird> <!-- fission mouse, third generation - small, dormant -->
-        <AA_PedigreedRaptor>0.7</AA_PedigreedRaptor> <!-- pedigreed raptor - small, ours -->
-        <AA_Agaripawn>0.4</AA_Agaripawn> <!-- agaripawn - med, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-      <value>
-        <GR_Bearmole>0.4</GR_Bearmole> <!-- bearmole - med, dormant -->
-        <GR_Chickenhorse>0.4</GR_Chickenhorse> <!-- chickenhorse - med, dormant -->
-        <GR_Mancat>0.4</GR_Mancat> <!-- mancat - med, dormant -->
-        <GR_Groundffalo>0.21</GR_Groundffalo> <!-- groundffalo - huge, dormant -->
-        <GR_Hurseman>0.18</GR_Hurseman> <!-- hurseman - large, dormant -->
-        <GR_Manffalo>0.18</GR_Manffalo> <!-- manffalo - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,vanillaquestsexpanded.ancients">   <!-- donor: vanillaquestsexpanded.ancients -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-      <value>
-        <VQEA_Splicefiend>0.21</VQEA_Splicefiend> <!-- splicefiend - huge, dormant -->
-        <VQEA_Spliceling>0.18</VQEA_Spliceling> <!-- spliceling - large, dormant -->
+        <AA_DesertAve>0.4</AA_DesertAve> <!-- desert ave - navigator, keep -->
+        <AA_Needleroll>0.2</AA_Needleroll> <!-- needleroll - grain, keep -->
+        <AA_Gigantelope>0.05</AA_Gigantelope> <!-- gigantelope - herd, keep -->
+        <AA_SandProwler>0.05</AA_SandProwler> <!-- sand prowler - ambush-burrow, keep -->
+        <AA_Terramorph>0.035</AA_Terramorph> <!-- terramorph - ambush-flat, keep -->
+        <AA_SandSquid>0.025</AA_SandSquid> <!-- sand squid - subsurface-slow, keep -->
+        <AA_MammothWorm>0.015</AA_MammothWorm> <!-- mammoth worm - subsurface-slow, keep -->
       </value>
     </match>
   </Operation>
@@ -833,7 +129,8 @@
       <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <Megavole>0.4</Megavole> <!-- megavole - med, foreign -->
+          <Rat>0.1</Rat> <!-- brown rat - ship-vermin, import -->
+          <!-- SKIPPED OuterRim_AstromechDroid - Astromech Droid: not a PawnKindDef; wildAnimals cannot resolve it -->
         </wildAnimals>
       </value>
     </match>
@@ -844,12 +141,8 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
       <value>
-        <BMT_GoetoTadpole>1.0</BMT_GoetoTadpole> <!-- goeto tadpole - tiny, dormant -->
-        <BMT_FungalFerret>0.7</BMT_FungalFerret> <!-- fungal ferret - small, ours -->
-        <BMT_FungalWeevil>0.7</BMT_FungalWeevil> <!-- fungal weevil - small, ours -->
-        <BMT_ImperialToad>0.7</BMT_ImperialToad> <!-- imperial toad - small, dormant -->
-        <BMT_MossBeetle>0.7</BMT_MossBeetle> <!-- moss beetle - small, ours -->
-        <BMT_TruffleMole>0.4</BMT_TruffleMole> <!-- truffle mole - med, ours -->
+        <BMT_ImperialToad>0.7</BMT_ImperialToad> <!-- imperial toad - small-runway, keep -->
+        <BMT_MossBeetle>0.3</BMT_MossBeetle> <!-- moss beetle - small-runway, keep -->
       </value>
     </match>
   </Operation>
@@ -859,7 +152,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
       <value>
-        <Terrorworm>0.7</Terrorworm> <!-- terrorworm - small, foreign -->
+        <Terrorworm>0.7</Terrorworm> <!-- terrorworm - medium-tunnel, keep -->
       </value>
     </match>
   </Operation>
@@ -869,12 +162,70 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
       <value>
-        <Igitz>0.7</Igitz> <!-- igitz - small, foreign -->
-        <Pufferpig>0.7</Pufferpig> <!-- Pufferpig - small, foreign -->
-        <Urusai>0.7</Urusai> <!-- urusai - small, ours -->
-        <PaintedSpat>0.4</PaintedSpat> <!-- painted spat - med, substituted -->
-        <Orray>0.18</Orray> <!-- orray - large, ours -->
-        <Torton>0.012</Torton> <!-- torton - SUPER, ours -->
+        <FrilledGorg>1.0</FrilledGorg> <!-- frilled gorg - small-runway, keep -->
+        <Gorg>1.0</Gorg> <!-- gorg - small-runway, keep -->
+        <Iriaz>1.0</Iriaz> <!-- iriaz - small-herd, keep -->
+        <LongtailGorg>1.0</LongtailGorg> <!-- longtail gorg - medium-interface, keep -->
+        <Eopie>0.8</Eopie> <!-- eopie - medium-pack, keep -->
+        <Kreetle>0.8</Kreetle> <!-- kreetle - small-runway, keep -->
+        <Lothcat>0.8</Lothcat> <!-- loth-cat - small-runway, keep -->
+        <Mudhorn>0.8</Mudhorn> <!-- mudhorn - huge-predator-exception, keep -->
+        <Ronto>0.8</Ronto> <!-- ronto - huge-grazer, keep -->
+        <Scurrier>0.8</Scurrier> <!-- scurrier - small-runway, keep -->
+        <Sketto>0.8</Sketto> <!-- sketto - small-runway, keep -->
+        <Igitz>0.7</Igitz> <!-- igitz - small-runway, keep -->
+        <Urusai>0.7</Urusai> <!-- urusai - medium-interface, keep -->
+        <Kybuck>0.6</Kybuck> <!-- kybuck - medium-runner, keep -->
+        <Massiff>0.6</Massiff> <!-- massiff - medium-interface, keep -->
+        <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
+        <Bantha>0.5</Bantha> <!-- bantha - huge-grazer, keep -->
+        <Pufferpig>0.5</Pufferpig> <!-- Pufferpig - small-runway, keep -->
+        <Anooba>0.4</Anooba> <!-- anooba - medium-interface, adjust-keep -->
+        <Corinathoth>0.4</Corinathoth> <!-- corinathoth - huge-grazer, keep -->
+        <Gizka>0.4</Gizka> <!-- gizka - small-runway, keep -->
+        <Nuna>0.4</Nuna> <!-- nuna - small-runway, keep -->
+        <WompRat>0.4</WompRat> <!-- womp rat - ship-vermin, import -->
+        <Worrt>0.4</Worrt> <!-- worrt - small-runway, keep -->
+        <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
+        <Grank>0.2</Grank> <!-- Grank - medium-interface, keep -->
+        <Qormot>0.2</Qormot> <!-- qormot - medium-interface, keep -->
+        <Strill>0.2</Strill> <!-- strill - medium-interface, keep -->
+        <Cannok>0.16</Cannok> <!-- cannok - medium-interface, keep -->
+        <Whisperbird>0.15</Whisperbird> <!-- whisperbird - flier-interface, keep -->
+        <Pikobis>0.1</Pikobis> <!-- pikobis - medium-runner, keep -->
+        <Convor>0.08</Convor> <!-- convor - flier-interface, keep -->
+        <Skalder>0.08</Skalder> <!-- skalder - huge-grazer, keep -->
+        <Vulptex>0.08</Vulptex> <!-- vulptex - small-runway, keep -->
+        <FeralNerf>0.04</FeralNerf> <!-- feral nerf - medium-runner, keep -->
+        <Porg>0.04</Porg> <!-- porg - small-runway, keep -->
+        <Voorpak>0.02</Voorpak> <!-- voorpak - small-runway, keep -->
+        <KowakianMonkeyLizard>0.01</KowakianMonkeyLizard> <!-- kowakian monkey-lizard - small-runway, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="neronix17.outerrim.droiddepot">   <!-- donor: neronix17.outerrim.droiddepot -->
+    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
+      <value>
+        <OuterRim_MSEDroid>0.1</OuterRim_MSEDroid> <!-- MSE Repair Droid - feral-droid, import -->
+        <OuterRim_SalvageAssistDroid>0.1</OuterRim_SalvageAssistDroid> <!-- salvage assist droid - feral-droid, import -->
+        <OuterRim_DUMDroid>0.08</OuterRim_DUMDroid> <!-- DUM Repair Droid - feral-droid, import -->
+        <OuterRim_GNKDroid>0.08</OuterRim_GNKDroid> <!-- GNK Power Droid - feral-droid, import -->
+        <OuterRim_FX7Droid>0.05</OuterRim_FX7Droid> <!-- fx-7 medical droid - feral-droid, import -->
+        <OuterRim_MuckrakerDroid>0.05</OuterRim_MuckrakerDroid> <!-- Muckraker Crab Droid - feral-droid, import -->
+        <OuterRim_DestroyerDroid>0.02</OuterRim_DestroyerDroid> <!-- Destroyer Droid - feral-droid, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
+    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
+      <value>
+        <VFEI2_Fuelmite>0.3</VFEI2_Fuelmite> <!-- fuelmite - ship-vermin, import -->
       </value>
     </match>
   </Operation>
@@ -884,405 +235,18 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
       <value>
-        <AA_Aerofleet>1.0</AA_Aerofleet> <!-- aerofleet - tiny, ours -->
-        <AA_Wildpawn>0.4</AA_Wildpawn> <!-- wildpawn - med, ours -->
-        <AA_SandLion>0.18</AA_SandLion> <!-- sand lion - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="vanillaexpanded.vaewaste">   <!-- donor: vanillaexpanded.vaewaste -->
-    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
-      <value>
-        <VAEWaste_Megatardi>0.18</VAEWaste_Megatardi> <!-- megatardi - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
-      <value>
-        <GR_Fleshling>1.0</GR_Fleshling> <!-- fleshling - tiny, dormant -->
-        <GR_AberrantFleshbeast>0.07</GR_AberrantFleshbeast> <!-- aberrant fleshbeast - huge, dormant -->
-        <GR_Lizardochs>0.07</GR_Lizardochs> <!-- lizardochs - huge, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zal.gianttoads">   <!-- donor: zal.gianttoads -->
-    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
-      <value>
-        <GiantToad>0.18</GiantToad> <!-- giant toad - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns">
-    <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-      <value>
-        <BMT_FreezerFrog>0.7</BMT_FreezerFrog> <!-- freezer frog - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-      <value>
-        <BMT_Megakrill>1.0</BMT_Megakrill> <!-- megakrill - tiny, dormant -->
-        <BMT_Megaphorid>0.7</BMT_Megaphorid> <!-- megaphorid - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-      <value>
-        <Neebray>1.0</Neebray> <!-- neebray - tiny, ours -->
-        <Krykna>0.4</Krykna> <!-- krykna - med, ours -->
-        <Jakobeast>0.18</Jakobeast> <!-- jakobeast - large, ours -->
-        <Blixus>0.0504</Blixus> <!-- blixus - huge, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-      <value>
-        <AA_Skyeel>1.0</AA_Skyeel> <!-- arcturan sky eel - tiny, dormant -->
-        <AA_AuroraSylph>0.7</AA_AuroraSylph> <!-- Aurora sylph - small, ours -->
-        <AA_Frostmite>0.7</AA_Frostmite> <!-- frostmite - small, ours -->
-        <AA_MegaLouse>0.7</AA_MegaLouse> <!-- megalouse - small, ours -->
-        <AA_RedGoo>0.7</AA_RedGoo> <!-- red goo - small, ours -->
-        <AA_Darkbeast>0.4</AA_Darkbeast> <!-- darkbeast - med, ours -->
-        <AA_FrostAve>0.4</AA_FrostAve> <!-- frost ave - med, foreign -->
-        <AA_Frostling>0.4</AA_Frostling> <!-- frostling - med, ours -->
-        <AA_WindBeast>0.4</AA_WindBeast> <!-- windbeast - med, ours -->
-        <AA_Ravager>0.18</AA_Ravager> <!-- ravager - large, ours -->
-        <AA_RedSpore>0.18</AA_RedSpore> <!-- red spore - large, ours -->
-        <AA_Slurrypede>0.18</AA_Slurrypede> <!-- slurrypede - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-      <value>
-        <GR_Spidersnake>1.0</GR_Spidersnake> <!-- spidersnake - tiny, dormant -->
-        <GR_Chickenlizard>0.7</GR_Chickenlizard> <!-- chickenlizard - small, dormant -->
-        <GR_ParagonIguana>0.7</GR_ParagonIguana> <!-- reptile paragon - small, dormant -->
-        <GR_Muffalope>0.18</GR_Muffalope> <!-- muffalope - large, dormant -->
-        <GR_Thrumffalo>0.0086</GR_Thrumffalo> <!-- thrumffalo - SUPER, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,vanillaquestsexpanded.cryptoforge">   <!-- donor: vanillaquestsexpanded.cryptoforge -->
-    <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-      <value>
-        <VQE_IceCrawler>0.4</VQE_IceCrawler> <!-- ice crawler - med, dormant -->
-        <VQE_Megamidge>0.4</VQE_Megamidge> <!-- megamidge - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes">
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <!-- SKIPPED GiantAnt_Race - giant ant: not a PawnKindDef; wildAnimals cannot resolve it -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-      <value>
-        <BMT_CaveLemming>0.4</BMT_CaveLemming> <!-- cave lemming - med, dormant -->
-        <BMT_DarkAxolotl>0.4</BMT_DarkAxolotl> <!-- dark axolotl - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-      <value>
-        <BMT_FenridStoat>0.4</BMT_FenridStoat> <!-- fenrid stoat - med, dormant -->
-        <BMT_Screecher>0.4</BMT_Screecher> <!-- screecher - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,mlie.advancedbiomes">   <!-- donor: mlie.advancedbiomes -->
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-      <value>
-        <PoisonButterfly>1.0</PoisonButterfly> <!-- butterfly - tiny, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,mlie.horrors">   <!-- donor: mlie.horrors -->
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-      <value>
-        <Visceral>0.4</Visceral> <!-- visceral - med, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-      <value>
-        <Neebray>1.0</Neebray> <!-- neebray - tiny, ours -->
-        <Narglatch>0.1575</Narglatch> <!-- narglatch - huge, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-      <value>
-        <AA_InfectedAerofleet>1.0</AA_InfectedAerofleet> <!-- infected aerofleet - tiny, ours -->
-        <AA_AuroraSylph>0.7</AA_AuroraSylph> <!-- Aurora sylph - small, ours -->
-        <AA_BedBug>0.7</AA_BedBug> <!-- bedbug - small, ours -->
-        <AA_PebbleMit>0.7</AA_PebbleMit> <!-- pebblemit - small, ours -->
-        <AA_BlackSpider>0.4</AA_BlackSpider> <!-- blackspider - med, dormant -->
-        <AA_GiantCrownedSilkie>0.4</AA_GiantCrownedSilkie> <!-- giant crowned silkie - med, ours -->
-        <AA_GreyCoatedMouflon>0.4</AA_GreyCoatedMouflon> <!-- Grey-Coated Mouflon - med, ours -->
-        <VFEI2_BlackEmpress>0.1575</VFEI2_BlackEmpress> <!-- black empress - huge, dormant -->
-        <AA_Behemoth>0.027</AA_Behemoth> <!-- Behemoth - SUPER, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,sarg.alphamemes">   <!-- donor: sarg.alphamemes -->
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-      <value>
-        <AM_Dryad_Corruptor>0.7</AM_Dryad_Corruptor> <!-- corruptor dryad - small, dormant -->
-        <AM_Dryad_Ocular>0.7</AM_Dryad_Ocular> <!-- ocular dryad - small, dormant -->
-        <AM_Dryad_Tumorous>0.7</AM_Dryad_Tumorous> <!-- tumorous dryad - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,tyrannidae.littlecritters">   <!-- donor: tyrannidae.littlecritters -->
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-      <value>
-        <TYR_Lemming>1.0</TYR_Lemming> <!-- lemming - tiny, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,van.beasts">   <!-- donor: van.beasts -->
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-      <value>
-        <DA_ImperialRedhound>0.18</DA_ImperialRedhound> <!-- imperial redhound - large, dormant -->
-        <DA_LeviathanCrab>0.1575</DA_LeviathanCrab> <!-- leviathan - huge, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-      <value>
-        <GR_Beetlefleet>0.7</GR_Beetlefleet> <!-- beetlefleet - small, dormant -->
-        <GR_ParagonRat>0.7</GR_ParagonRat> <!-- rodent paragon - small, dormant -->
-        <GR_Ratffalo>0.18</GR_Ratffalo> <!-- ratffalo - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,who.vfee.isopodageneline">   <!-- donor: who.vfee.isopodageneline -->
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-      <value>
-        <SW_Grenadierworm>0.18</SW_Grenadierworm> <!-- Grenadierworm - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns">
-    <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-      <value>
-        <BMT_FleeceSpider>0.7</BMT_FleeceSpider> <!-- fleece spider - small, dormant -->
-        <BMT_MossyFennec>0.7</BMT_MossyFennec> <!-- mossy fennec - small, ours -->
-        <BMT_CaveLemming>0.4</BMT_CaveLemming> <!-- cave lemming - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-      <value>
-        <BMT_Varmot>1.0</BMT_Varmot> <!-- varmot - tiny, dormant -->
-        <BMT_FenridStoat>0.4</BMT_FenridStoat> <!-- fenrid stoat - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,mlie.advancedbiomes">   <!-- donor: mlie.advancedbiomes -->
-    <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-      <value>
-        <PoisonButterfly>1.0</PoisonButterfly> <!-- butterfly - tiny, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-      <value>
-        <Borcatu>0.7</Borcatu> <!-- Borcatu - small, ours -->
-        <Kybuck>0.4</Kybuck> <!-- kybuck - med, ours -->
-        <Shaak>0.18</Shaak> <!-- shaak - large, ours -->
-        <TeeMuss>0.18</TeeMuss> <!-- tee muss - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-      <value>
-        <AA_DuskRat>1.0</AA_DuskRat> <!-- dusk rat - tiny, ours -->
-        <AA_BlackScarab>0.7</AA_BlackScarab> <!-- black scarab - small, dormant -->
-        <AA_OcularNightling>0.4</AA_OcularNightling> <!-- ocular nightling - med, dormant -->
-        <AA_AnimaColossus>0.008</AA_AnimaColossus> <!-- anima colossus - SUPER, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,sarg.alphamemes">   <!-- donor: sarg.alphamemes -->
-    <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-      <value>
-        <AM_Dryad_Corruptor>0.7</AM_Dryad_Corruptor> <!-- corruptor dryad - small, dormant -->
-        <AM_Dryad_Ocular>0.7</AM_Dryad_Ocular> <!-- ocular dryad - small, dormant -->
-        <AM_Dryad_Unstable>0.7</AM_Dryad_Unstable> <!-- unstable dryad - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,van.beasts">   <!-- donor: van.beasts -->
-    <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-      <value>
-        <DA_Taraal>0.18</DA_Taraal> <!-- taraal - large, foreign -->
-        <DA_Crestel>0.05</DA_Crestel> <!-- crestel - huge, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-      <value>
-        <GR_Rabbitchicken>1.0</GR_Rabbitchicken> <!-- rabbitchicken - tiny, dormant -->
-        <GR_Doedicoon>0.7</GR_Doedicoon> <!-- doedicoon - small, dormant -->
-        <GR_Bearffalo>0.4</GR_Bearffalo> <!-- bearffalo - med, dormant -->
-        <GR_Boomsquirrel>0.4</GR_Boomsquirrel> <!-- boomsquirrel - med, dormant -->
-        <GR_BearBug>0.18</GR_BearBug> <!-- bear bug - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,vanillaquestsexpanded.ancients">   <!-- donor: vanillaquestsexpanded.ancients -->
-    <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-      <value>
-        <VQEA_Splicetoot>0.4</VQEA_Splicetoot> <!-- splicetoot - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,vanillaracesexpanded.phytokin">   <!-- donor: vanillaracesexpanded.phytokin -->
-    <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-      <value>
-        <VRE_CompanionDryad>0.18</VRE_CompanionDryad> <!-- companion dryad - large, dormant -->
+        <AA_Cactipine>0.25</AA_Cactipine> <!-- cactipine - small-venom, keep -->
+        <AA_Needlepost>0.1</AA_Needlepost> <!-- needlepost - small-venom, adjust-keep -->
+        <AA_Wildpawn>0.1</AA_Wildpawn> <!-- wildpawn - medium-venom, keep -->
+        <AA_Wildpod>0.025</AA_Wildpod> <!-- wildpod - huge-sessile, keep -->
       </value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
-    <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
         </wildAnimals>
@@ -1291,279 +255,76 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
       <value>
-        <BMT_Pillbug>0.7</BMT_Pillbug> <!-- pillbug - small, ours -->
-        <BMT_Basilisk>0.4</BMT_Basilisk> <!-- basilisk - med, dormant -->
-        <BMT_MetalloSnail>0.4</BMT_MetalloSnail> <!-- metallosnail - med, foreign -->
-        <BMT_Woollybat>0.4</BMT_Woollybat> <!-- woolly bat - med, ours -->
-        <BMT_HungeringHydra>0.35</BMT_HungeringHydra> <!-- hungering hydra - huge, dormant -->
-        <BMT_SmolderstingScorpion>0.18</BMT_SmolderstingScorpion> <!-- smoldersting scorpion - large, foreign -->
+        <BMT_Gembug>0.5</BMT_Gembug> <!-- gembug - arthropod-floor, keep -->
+        <BMT_CrestedDragon>0.4</BMT_CrestedDragon> <!-- crested dragon - channel-predator, keep -->
+        <BMT_AaroxisDendoria>0.3</BMT_AaroxisDendoria> <!-- aaroxis dendoria - strange, keep -->
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
+    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
       <value>
-        <BMT_Megaroach>1.0</BMT_Megaroach> <!-- megaroach - tiny, dormant -->
-        <BMT_CarrionVulture>0.7</BMT_CarrionVulture> <!-- carrion vulture - small, dormant -->
-        <BMT_BunkerBug>0.35</BMT_BunkerBug> <!-- bunker bug - huge, dormant -->
+        <RSW_Mee>0.4</RSW_Mee> <!-- mee scalefish - nursery, import -->
+        <RSW_Faa>0.3</RSW_Faa> <!-- faa scalefish - nursery, import -->
+        <RSW_Laa>0.3</RSW_Laa> <!-- laa scalefish - nursery, import -->
+        <RSW_Yobshrimp>0.3</RSW_Yobshrimp> <!-- pale yobshrimp - nursery, import -->
+        <RSW_RustNipper>0.25</RSW_RustNipper> <!-- rust nipper - nursery, import -->
+        <RSW_SiltLamprey>0.25</RSW_SiltLamprey> <!-- silt lamprey - nursery, import -->
+        <RSW_OpeeSeaKiller>0.05</RSW_OpeeSeaKiller> <!-- opee sea killer - nursery-guard, import -->
       </value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
       <value>
-        <Gorg>0.7</Gorg> <!-- gorg - small, ours -->
-        <LongtailGorg>0.7</LongtailGorg> <!-- longtail gorg - small, ours -->
-        <Tach>0.7</Tach> <!-- tach - small, ours -->
-        <Worrt>0.7</Worrt> <!-- worrt - small, ours -->
-        <IridonianReek>0.35</IridonianReek> <!-- iridonian reek - huge, ours -->
-        <GreaterKraytDragon>0.2</GreaterKraytDragon> <!-- greater krayt dragon - SUPER, ours -->
-        <PekoPeko>0.18</PekoPeko> <!-- Peko-peko - large, ours -->
+        <Kreetle>1.0</Kreetle> <!-- kreetle - arthropod-floor, keep -->
+        <Yobshrimp>0.8</Yobshrimp> <!-- yobshrimp - arthropod-floor, import -->
+        <Runyip>0.5</Runyip> <!-- runyip - muck-forager, adjust-keep -->
+        <Shiro>0.4</Shiro> <!-- shiro - arthropod-floor, keep -->
+        <Anooba>0.3</Anooba> <!-- anooba - scavenger, keep -->
+        <Grank>0.3</Grank> <!-- Grank - channel-predator, import -->
+        <Whisperbird>0.3</Whisperbird> <!-- whisperbird - flier, keep -->
+        <Vornskyr>0.15</Vornskyr> <!-- vornskyr - strange, keep -->
+        <Zakkeg>0.05</Zakkeg> <!-- zakkeg - big-wanderer, keep -->
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,regrowth.botr.core">   <!-- donor: regrowth.botr.core -->
-    <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
+    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
       <value>
-        <RG_Rimclaw>0.4</RG_Rimclaw> <!-- rimclaw - med, ours -->
+        <VFEI2_Swarmling>0.7</VFEI2_Swarmling> <!-- swarmlings - vermin, keep -->
       </value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
       <value>
-        <AA_AcanthamoebaGiganteaSmall>1.0</AA_AcanthamoebaGiganteaSmall> <!-- acanthamoeba gigantea, small - tiny, ours -->
-        <AA_Needleroll>1.0</AA_Needleroll> <!-- needleroll - tiny, ours -->
-        <AA_Cactipine>0.7</AA_Cactipine> <!-- cactipine - small, ours -->
-        <AA_Needlepost>0.7</AA_Needlepost> <!-- needlepost - small, ours -->
-        <AA_AcanthamoebaGiganteaHuge>0.4</AA_AcanthamoebaGiganteaHuge> <!-- acanthamoeba gigantea, huge - med, dormant -->
-        <AA_BlackSpelopede>0.4</AA_BlackSpelopede> <!-- black spelopede - med, dormant -->
-        <AA_ChemfuelMyrmidon>0.4</AA_ChemfuelMyrmidon> <!-- chemfuel myrmidon - med, ours -->
-        <AA_Cinderlisk>0.18</AA_Cinderlisk> <!-- cinderlisk - large, ours -->
-        <AA_SandProwler>0.18</AA_SandProwler> <!-- sand prowler - large, ours -->
-        <AA_Slurrypede>0.18</AA_Slurrypede> <!-- slurrypede - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,tyrannidae.littlecritters">   <!-- donor: tyrannidae.littlecritters -->
-    <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
-      <value>
-        <TYR_HotfootRat>1.0</TYR_HotfootRat> <!-- hotfoot rat - tiny, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,who.vfee.isopodageneline">   <!-- donor: who.vfee.isopodageneline -->
-    <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
-      <value>
-        <SW_Electricfish>0.4</SW_Electricfish> <!-- Electricfish - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <ColossusToad>0.4</ColossusToad> <!-- colossus toad - med, foreign -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-      <value>
-        <BMT_Batbird>1.0</BMT_Batbird> <!-- batbird - tiny, dormant -->
-        <BMT_BrownBat>1.0</BMT_BrownBat> <!-- brown bat - tiny, dormant -->
-        <BMT_ImperialToad>0.7</BMT_ImperialToad> <!-- imperial toad - small, dormant -->
-        <BMT_Jellypot>0.7</BMT_Jellypot> <!-- jellypot - small, dormant -->
-        <BMT_Stoneback>0.7</BMT_Stoneback> <!-- stoneback - small, dormant -->
-        <BMT_CaveCricket>0.4</BMT_CaveCricket> <!-- cave cricket - med, ours -->
-        <BMT_FungalMantis>0.18</BMT_FungalMantis> <!-- fungal mimic mantis - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-      <value>
-        <BMT_Polluwog>1.0</BMT_Polluwog> <!-- polluwog - tiny, dormant -->
-        <BMT_GastroToad>0.7</BMT_GastroToad> <!-- gastro toad - small, dormant -->
-        <BMT_TaintedTurtle>0.7</BMT_TaintedTurtle> <!-- tainted turtle - small, dormant -->
-        <BMT_TripleSnapper>0.4</BMT_TripleSnapper> <!-- triple snapper - med, dormant -->
-        <BMT_MutatingTumorfishAdult>0.18</BMT_MutatingTumorfishAdult> <!-- mutating tumorfish - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-      <value>
-        <Ollopom>0.7</Ollopom> <!-- ollopom - small, foreign -->
-        <Kinrath>0.4</Kinrath> <!-- kinrath - med, ours -->
-        <Boma>0.18</Boma> <!-- boma - large, ours -->
-        <Fanback>0.18</Fanback> <!-- fanback - large, ours -->
-        <Dactillion>0.084</Dactillion> <!-- dactillion - huge, ours -->
-        <EnergySpider>0.084</EnergySpider> <!-- energy spider - huge, ours -->
-        <Rancor>0.0144</Rancor> <!-- Rancor - SUPER, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-      <value>
-        <AA_BumbledroneQueen>0.7</AA_BumbledroneQueen> <!-- bumbledrone queen - small, dormant -->
-        <AA_FissionMouse>0.7</AA_FissionMouse> <!-- fission mouse - small, substituted -->
-        <AA_BloodShrimp>0.4</AA_BloodShrimp> <!-- blood shrimp - med, ours -->
-        <AA_Plasmorph>0.4</AA_Plasmorph> <!-- plasmorph - med, ours -->
-        <AA_Razorjack>0.4</AA_Razorjack> <!-- razorjack - med, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-      <value>
-        <GR_Chickenlope>1.0</GR_Chickenlope> <!-- chickenlope - tiny, dormant -->
-        <GR_Manscarab>0.4</GR_Manscarab> <!-- manscarab - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <HermitCrab>1.0</HermitCrab> <!-- hermit crab - tiny, dormant -->
-          <Megascarab>1.0</Megascarab> <!-- megascarab - tiny, ours -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-      <value>
-        <BMT_Maguana>0.18</BMT_Maguana> <!-- maguana - large, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-      <value>
-        <BMT_MutatingTumorfishSpawn>0.4</BMT_MutatingTumorfishSpawn> <!-- mutating tumorfish spawn - med, dormant -->
-        <BMT_Sacapillar>0.18</BMT_Sacapillar> <!-- sacapillar - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-      <value>
-        <Gizka>1.0</Gizka> <!-- gizka - tiny, ours -->
-        <Clodhopper>0.7</Clodhopper> <!-- clodhopper - small, ours -->
-        <FrilledGorg>0.7</FrilledGorg> <!-- frilled gorg - small, ours -->
-        <Nuna>0.7</Nuna> <!-- nuna - small, ours -->
-        <Yobshrimp>0.7</Yobshrimp> <!-- yobshrimp - small, foreign -->
-        <Grank>0.4</Grank> <!-- Grank - med, ours -->
-        <Klorslug>0.4</Klorslug> <!-- k'lor'slug - med, ours -->
-        <Boarwolf>0.18</Boarwolf> <!-- Boar-wolf - large, ours -->
-        <Insectomorph>0.18</Insectomorph> <!-- insectomorph - large, ours -->
-        <Zeer>0.05</Zeer> <!-- zeer - huge, ours -->
-        <KraytDragon>0.008</KraytDragon> <!-- krayt dragon - SUPER, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-      <value>
-        <AA_Eyeling>0.7</AA_Eyeling> <!-- ikee - small, ours -->
-        <AA_FireWasp>0.7</AA_FireWasp> <!-- fire wasp - small, ours -->
-        <AA_DesertAve>0.4</AA_DesertAve> <!-- desert ave - med, ours -->
-        <AA_Junglelisk>0.4</AA_Junglelisk> <!-- junglelisk - med, ours -->
-        <AA_Plasmorph>0.4</AA_Plasmorph> <!-- plasmorph - med, ours -->
-        <AA_Barbslinger>0.18</AA_Barbslinger> <!-- barbslinger - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,van.beasts">   <!-- donor: van.beasts -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-      <value>
-        <DA_Phrak>0.7</DA_Phrak> <!-- phrak - small, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,vanillaexpanded.vaewaste">   <!-- donor: vanillaexpanded.vaewaste -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-      <value>
-        <VAEWaste_Hydra>0.7</VAEWaste_Hydra> <!-- hydra - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-      <value>
-        <GR_Needlechicken>1.0</GR_Needlechicken> <!-- needlechicken - tiny, dormant -->
-        <GR_Boombeetle>0.4</GR_Boombeetle> <!-- boombeetle - med, dormant -->
-        <GR_Chickenspider>0.4</GR_Chickenspider> <!-- chickenspider - med, dormant -->
-        <GR_Bearodile>0.05</GR_Bearodile> <!-- bearodile - huge, dormant -->
-        <GR_Mantistanis>0.05</GR_Mantistanis> <!-- mantistanis - huge, dormant -->
+        <VFEI2_BlackSwarmling>0.5</VFEI2_BlackSwarmling> <!-- black swarmlings - vermin, keep -->
+        <AA_Lockjaw>0.2</AA_Lockjaw> <!-- lockjaw - channel-predator, keep -->
+        <AA_Mantrap>0.2</AA_Mantrap> <!-- mantrap - root-ambush, keep -->
+        <AA_RaptorShrimp>0.2</AA_RaptorShrimp> <!-- raptor shrimp - channel-predator, keep -->
+        <AA_BloodShrimp>0.1</AA_BloodShrimp> <!-- blood shrimp - channel-predator, keep -->
+        <AA_DecayDrake>0.1</AA_DecayDrake> <!-- decay drake - composter, keep -->
+        <AA_Helixien>0.1</AA_Helixien> <!-- helixien - strange, keep -->
+        <AA_Slurrypede>0.1</AA_Slurrypede> <!-- slurrypede - composter, adjust-keep -->
+        <AA_Thermadon>0.1</AA_Thermadon> <!-- thermadon - channel-predator, keep -->
+        <AA_Plasmorph>0.05</AA_Plasmorph> <!-- plasmorph - strange, keep -->
       </value>
     </match>
   </Operation>
@@ -1584,18 +345,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
       <value>
-        <BMT_SonarRabbit>1.0</BMT_SonarRabbit> <!-- sonar rabbit - tiny, ours -->
-        <BMT_Diggerpede>0.4</BMT_Diggerpede> <!-- diggerpede - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="grimterra.biomesmod,biomesteam.biomescore">   <!-- donor: biomesteam.biomescore -->
-    <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
-      <value>
-        <BMT_LandOctopus>0.4</BMT_LandOctopus> <!-- terrestrial octopus - med, dormant -->
+        <BMT_Diggerpede>0.4</BMT_Diggerpede> <!-- diggerpede - floor-predator, keep -->
       </value>
     </match>
   </Operation>
@@ -1605,23 +355,28 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
       <value>
-        <Gizka>1.0</Gizka> <!-- gizka - tiny, ours -->
-        <Clodhopper>0.7</Clodhopper> <!-- clodhopper - small, ours -->
-        <Shiro>0.7</Shiro> <!-- shiro - small, ours -->
-        <ShiroTrap>0.7</ShiroTrap> <!-- shiro-trap - small, ours -->
-        <Whisperbird>0.7</Whisperbird> <!-- whisperbird - small, ours -->
-        <Worrt>0.7</Worrt> <!-- worrt - small, ours -->
-        <Kinrath>0.4</Kinrath> <!-- kinrath - med, ours -->
-        <Klorslug>0.4</Klorslug> <!-- k'lor'slug - med, ours -->
-        <Dalgo>0.18</Dalgo> <!-- dalgo - large, ours -->
-        <Gutkurr>0.18</Gutkurr> <!-- gutkurr - large, ours -->
-        <Hawkbat>0.18</Hawkbat> <!-- hawk-bat - large, ours -->
-        <Hssiss>0.18</Hssiss> <!-- hssiss - large, ours -->
-        <Jamel>0.18</Jamel> <!-- Jamel - large, ours -->
-        <Dianoga>0.05</Dianoga> <!-- dianoga - huge, ours -->
-        <Dragonsnake>0.05</Dragonsnake> <!-- Dragonsnake - huge, foreign -->
-        <Lylek>0.05</Lylek> <!-- lylek - huge, ours -->
-        <Beldon>0.008</Beldon> <!-- beldon - SUPER, ours -->
+        <Gizka>1.0</Gizka> <!-- gizka - floor-vermin, keep -->
+        <Clodhopper>0.7</Clodhopper> <!-- clodhopper - floor-vermin, keep -->
+        <Whisperbird>0.7</Whisperbird> <!-- whisperbird - flier, keep -->
+        <Worrt>0.7</Worrt> <!-- worrt - ambush, keep -->
+        <Shiro>0.5</Shiro> <!-- shiro - floor-ambush, keep -->
+        <ShiroTrap>0.5</ShiroTrap> <!-- shiro-trap - floor-ambush, keep -->
+        <Klorslug>0.4</Klorslug> <!-- k'lor'slug - gnawer, keep -->
+        <Mott>0.4</Mott> <!-- mott - brake, import -->
+        <Nuna>0.4</Nuna> <!-- nuna - brake, import -->
+        <Convor>0.3</Convor> <!-- convor - flier, import -->
+        <Falumpaset>0.3</Falumpaset> <!-- falumpaset - brake, import -->
+        <Gelagrub>0.3</Gelagrub> <!-- gelagrub - gnawer, import -->
+        <Kinrath>0.3</Kinrath> <!-- kinrath - canopy-ambush, adjust-keep -->
+        <Fambaa>0.25</Fambaa> <!-- fambaa - shatterer, import -->
+        <PekoPeko>0.2</PekoPeko> <!-- Peko-peko - flier, import -->
+        <Dalgo>0.18</Dalgo> <!-- dalgo - brake, keep -->
+        <Hawkbat>0.18</Hawkbat> <!-- hawk-bat - flier-predator, keep -->
+        <Hssiss>0.18</Hssiss> <!-- hssiss - lunger-junior, keep -->
+        <Dianoga>0.15</Dianoga> <!-- dianoga - lunger, adjust-keep -->
+        <Dragonsnake>0.12</Dragonsnake> <!-- Dragonsnake - lunger, adjust-keep -->
+        <Lylek>0.05</Lylek> <!-- lylek - apex, keep -->
+        <Beldon>0.008</Beldon> <!-- beldon - flier-giant, keep -->
       </value>
     </match>
   </Operation>
@@ -1631,7 +386,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
       <value>
-        <VFEI2_Swarmling>1.0</VFEI2_Swarmling> <!-- swarmlings - tiny, dormant -->
+        <VFEI2_Swarmling>0.4</VFEI2_Swarmling> <!-- swarmlings - floor-vermin, adjust-keep -->
       </value>
     </match>
   </Operation>
@@ -1641,350 +396,376 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
       <value>
-        <AA_Needleroll>1.0</AA_Needleroll> <!-- needleroll - tiny, ours -->
-        <AA_FireWasp>0.7</AA_FireWasp> <!-- fire wasp - small, ours -->
-        <AA_Needlepost>0.7</AA_Needlepost> <!-- needlepost - small, ours -->
-        <AA_BloodShrimp>0.4</AA_BloodShrimp> <!-- blood shrimp - med, ours -->
-        <AA_DesertAve>0.4</AA_DesertAve> <!-- desert ave - med, ours -->
-        <AA_Razorjack>0.4</AA_Razorjack> <!-- razorjack - med, ours -->
+        <AA_Needlepost>0.3</AA_Needlepost> <!-- needlepost - floor-vermin, keep -->
+        <AA_BloodShrimp>0.2</AA_BloodShrimp> <!-- blood shrimp - margin-predator, keep -->
+        <AA_Razorjack>0.2</AA_Razorjack> <!-- razorjack - floor-predator, keep -->
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="grimterra.biomesmod,sarg.alphamemes">   <!-- donor: sarg.alphamemes -->
-    <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
       <value>
-        <AM_Dryad_Spitter>0.7</AM_Dryad_Spitter> <!-- spitter dryad - small, dormant -->
+        <wildAnimals>
+          <Rat>0.1</Rat> <!-- brown rat - ship-vermin, import -->
+          <!-- SKIPPED OuterRim_AstromechDroid - Astromech Droid: not a PawnKindDef; wildAnimals cannot resolve it -->
+        </wildAnimals>
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="grimterra.biomesmod,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
       <value>
-        <GR_Boomcat>0.4</GR_Boomcat> <!-- boomcat - med, dormant -->
+        <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
+        <WompRat>0.4</WompRat> <!-- womp rat - ship-vermin, import -->
+        <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
+        <Kreetle>0.2</Kreetle> <!-- kreetle - grain-scale, keep -->
+        <WarWyrm>0.2</WarWyrm> <!-- war wyrm - giant, keep -->
+        <KraytDragon>0.15</KraytDragon> <!-- krayt dragon - giant, keep -->
+        <GraniteSlug>0.1</GraniteSlug> <!-- granite slug - grain-scale, keep -->
+        <Scurrier>0.1</Scurrier> <!-- scurrier - grain-scale, adjust-keep -->
+        <Gizka>0.01</Gizka> <!-- gizka - grain-scale, keep -->
+        <GreaterKraytDragon>0.001</GreaterKraytDragon> <!-- greater krayt dragon - giant, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="neronix17.outerrim.droiddepot">   <!-- donor: neronix17.outerrim.droiddepot -->
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+      <value>
+        <OuterRim_MSEDroid>0.1</OuterRim_MSEDroid> <!-- MSE Repair Droid - feral-droid, import -->
+        <OuterRim_SalvageAssistDroid>0.1</OuterRim_SalvageAssistDroid> <!-- salvage assist droid - feral-droid, import -->
+        <OuterRim_DUMDroid>0.08</OuterRim_DUMDroid> <!-- DUM Repair Droid - feral-droid, import -->
+        <OuterRim_GNKDroid>0.08</OuterRim_GNKDroid> <!-- GNK Power Droid - feral-droid, import -->
+        <OuterRim_FX7Droid>0.05</OuterRim_FX7Droid> <!-- fx-7 medical droid - feral-droid, import -->
+        <OuterRim_MuckrakerDroid>0.05</OuterRim_MuckrakerDroid> <!-- Muckraker Crab Droid - feral-droid, import -->
+        <OuterRim_DestroyerDroid>0.02</OuterRim_DestroyerDroid> <!-- Destroyer Droid - feral-droid, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+      <value>
+        <VFEI2_Fuelmite>0.3</VFEI2_Fuelmite> <!-- fuelmite - ship-vermin, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+      <value>
+        <AA_Needleroll>0.3</AA_Needleroll> <!-- needleroll - grain-scale, adjust-keep -->
+        <AA_Eyeling>0.15</AA_Eyeling> <!-- ikee - grain-scale, adjust-keep -->
+        <AA_Dunealisk>0.1</AA_Dunealisk> <!-- dunealisk - giant-subsurface, import -->
+        <AA_BoulderMit>0.025</AA_BoulderMit> <!-- bouldermit - giant, keep -->
+        <AA_TetraSlug>0.0005</AA_TetraSlug> <!-- tetra slug - giant, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes">
+    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+          <Toxalope>0.4</Toxalope> <!-- toxalope - wretched-herd, import -->
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
+    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+      <value>
+        <BMT_FleeceSpider>0.7</BMT_FleeceSpider> <!-- fleece spider - wretched-small, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
+    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+      <value>
+        <BMT_BloodletterPetrel>0.7</BMT_BloodletterPetrel> <!-- bloodletter petrel - wretched-small, keep -->
+        <BMT_Maligoat>0.4</BMT_Maligoat> <!-- maligoat - wretched-herd, keep -->
+        <BMT_Screecher>0.4</BMT_Screecher> <!-- screecher - wretched-pack, import -->
+        <BMT_PustuleHornetQueen>0.3</BMT_PustuleHornetQueen> <!-- pustule queen - wretched-small, import -->
+        <BMT_ColonyPustuleHornetQueen>0.2</BMT_ColonyPustuleHornetQueen> <!-- pustule queen - wretched-small, import -->
+        <BMT_PustuleHornetSpawned>0.2</BMT_PustuleHornetSpawned> <!-- pustule hornet - wretched-small, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
+    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+      <value>
+        <Borcatu>0.7</Borcatu> <!-- Borcatu - wretched-small, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
+    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+      <value>
+        <VFEI2_Swarmling>0.6</VFEI2_Swarmling> <!-- swarmlings - wretched-small, adjust-keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
+    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+      <value>
+        <AA_Eyeling>0.6</AA_Eyeling> <!-- ikee - wretched-small, keep -->
+        <VFEI2_BlackSwarmling>0.6</VFEI2_BlackSwarmling> <!-- black swarmlings - wretched-small, adjust-keep -->
+        <AA_FissionMouse>0.3</AA_FissionMouse> <!-- fission mouse - extremophile-odd, import -->
+        <AA_Terramorph>0.2</AA_Terramorph> <!-- terramorph - extremophile-odd, keep -->
+        <AA_AcanthamoebaGiganteaSmall>0.1</AA_AcanthamoebaGiganteaSmall> <!-- acanthamoeba gigantea, small - wretched-small, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,vanillaexpanded.vaewaste">   <!-- donor: vanillaexpanded.vaewaste -->
+    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+      <value>
+        <VAEWaste_Megatardi>0.18</VAEWaste_Megatardi> <!-- megatardi - extremophile-odd, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
+    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+      <value>
+        <GR_Beetlefleet>0.7</GR_Beetlefleet> <!-- beetlefleet - wretched-small, keep -->
+        <GR_ParagonRat>0.7</GR_ParagonRat> <!-- rodent paragon - wretched-small, keep -->
+        <GR_Molebear>0.4</GR_Molebear> <!-- molebear - wretched-medium, keep -->
+        <GR_Spidercat>0.4</GR_Spidercat> <!-- spidercat - wretched-medium, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,who.vfee.isopodageneline">   <!-- donor: who.vfee.isopodageneline -->
+    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+      <value>
+        <SW_Electrictick>0.5</SW_Electrictick> <!-- Electrictick - extremophile-odd, adjust-keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes">
+    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
+    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
+      <value>
+        <BMT_Screecher>0.35</BMT_Screecher> <!-- screecher - medium-pred, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,mlie.horrors">   <!-- donor: mlie.horrors -->
+    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
+      <value>
+        <Visceral>0.35</Visceral> <!-- visceral - medium-pred, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
+    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
+      <value>
+        <Neebray>0.8</Neebray> <!-- neebray - small-flier, keep -->
+        <Mynock>0.2</Mynock> <!-- mynock - small, import -->
+        <GraniteSlug>0.15</GraniteSlug> <!-- granite slug - grain, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
+    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
+      <value>
+        <AA_InfectedAerofleet>0.5</AA_InfectedAerofleet> <!-- infected aerofleet - small, keep -->
+        <AA_OcularJelly>0.5</AA_OcularJelly> <!-- ocular jelly - small, keep -->
+        <AA_BedBug>0.3</AA_BedBug> <!-- bedbug - small-pred, keep -->
+        <AA_CrystalMit>0.15</AA_CrystalMit> <!-- crystalmit - small, import -->
+        <AA_GiantCrownedSilkie>0.15</AA_GiantCrownedSilkie> <!-- giant crowned silkie - medium, keep -->
+        <AA_DecayDrake>0.1</AA_DecayDrake> <!-- decay drake - medium, keep -->
+        <AA_Helixien>0.1</AA_Helixien> <!-- helixien - giant, keep -->
+        <AA_Wildpod>0.05</AA_Wildpod> <!-- wildpod - giant, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,sarg.alphamemes">   <!-- donor: sarg.alphamemes -->
+    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
+      <value>
+        <AM_Dryad_Corruptor>0.4</AM_Dryad_Corruptor> <!-- corruptor dryad - small, keep -->
+        <AM_Dryad_Ocular>0.4</AM_Dryad_Ocular> <!-- ocular dryad - small, keep -->
+        <AM_Dryad_Tumorous>0.4</AM_Dryad_Tumorous> <!-- tumorous dryad - small, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
+    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
+      <value>
+        <GR_Beetlefleet>0.7</GR_Beetlefleet> <!-- beetlefleet - small-shelled, keep -->
       </value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <!-- ANOMALY ENTITY Fingerspike - fingerspike: never wild-spawns, dropped by owner ruling -->
-          <!-- ANOMALY ENTITY Noctol - noctol: never wild-spawns, dropped by owner ruling -->
-          <!-- ANOMALY ENTITY Sightstealer - sightstealer: never wild-spawns, dropped by owner ruling -->
-          <!-- ANOMALY ENTITY Toughspike - toughspike: never wild-spawns, dropped by owner ruling -->
-          <!-- ANOMALY ENTITY Chimera - chimera: never wild-spawns, dropped by owner ruling -->
-          <!-- ANOMALY ENTITY Devourer - devourer: never wild-spawns, dropped by owner ruling -->
         </wildAnimals>
       </value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
       <value>
-        <BMT_Mole>0.7</BMT_Mole> <!-- mole - small, dormant -->
-        <BMT_CrystalBeetle>0.18</BMT_CrystalBeetle> <!-- crystalback beetle - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,grimterra.biomesmod">   <!-- donor: grimterra.biomesmod -->
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-      <value>
-        <GRimPinkbird>1.0</GRimPinkbird> <!-- pinkbird - tiny, foreign -->
-        <GRimQuail>1.0</GRimQuail> <!-- Colorful quail - tiny, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.horrors">   <!-- donor: mlie.horrors -->
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-      <value>
-        <Harvester>0.0108</Harvester> <!-- harvester - SUPER, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.spaceworms">   <!-- donor: mlie.spaceworms -->
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-      <value>
-        <Scuttlebug>1.0</Scuttlebug> <!-- Space Worm - tiny, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-      <value>
-        <Gullipud>0.7</Gullipud> <!-- gullipud - small, foreign -->
-        <Snoruuk>0.7</Snoruuk> <!-- snoruuk - small, ours -->
+        <BMT_ChemSnail>0.7</BMT_ChemSnail> <!-- chem snail - ingest-strange, keep -->
+        <BMT_FungalWeevil>0.4</BMT_FungalWeevil> <!-- fungal weevil - ingest-strange, import -->
+        <BMT_GlowBat>0.4</BMT_GlowBat> <!-- bioluminescent bat - ingest-strange, import -->
+        <BMT_Pillbug>0.4</BMT_Pillbug> <!-- pillbug - ingest-strange, import -->
+        <BMT_GiantSlug>0.3</BMT_GiantSlug> <!-- giant slug - ingest-strange, import -->
+        <BMT_BovineBeetle>0.2</BMT_BovineBeetle> <!-- bovine beetle - ingest-producer, import -->
+        <BMT_GiantSnail>0.2</BMT_GiantSnail> <!-- giant snail - ingest-strange, import -->
+        <BMT_FungalMantis>0.15</BMT_FungalMantis> <!-- fungal mimic mantis - guardian, import -->
+        <BMT_CaveSpider>0.05</BMT_CaveSpider> <!-- cave spider - guardian, import -->
       </value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/wildAnimals</xpath>
       <value>
-        <AA_CrescendoAnole>0.7</AA_CrescendoAnole> <!-- crescendo anole - small, ours -->
-        <AA_Drainer>0.7</AA_Drainer> <!-- drainer - small, ours -->
-        <AA_DecayDrake>0.4</AA_DecayDrake> <!-- decay drake - med, substituted -->
-        <AA_Mime>0.4</AA_Mime> <!-- mime - med, dormant -->
-        <AA_ChameleonYak>0.18</AA_ChameleonYak> <!-- chameleon yak - large, ours -->
-        <AA_TarGuzzler>0.18</AA_TarGuzzler> <!-- tar guzzler - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,van.beasts">   <!-- donor: van.beasts -->
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-      <value>
-        <DA_IroncasketBeetle>0.7</DA_IroncasketBeetle> <!-- ironcasket beetle - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-      <value>
-        <GR_Chickenrabbit>1.0</GR_Chickenrabbit> <!-- chickenrabbit - tiny, dormant -->
-        <GR_Manbear>0.7</GR_Manbear> <!-- manbear - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-      <value>
-        <BMT_FireSalamander>0.4</BMT_FireSalamander> <!-- fire salamander - med, foreign -->
-        <BMT_FoundryBeetle>0.18</BMT_FoundryBeetle> <!-- foundry beetle - large, foreign -->
-        <BMT_CaveSpider>0.126</BMT_CaveSpider> <!-- cave spider - huge, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-      <value>
-        <BMT_CarrionVulture>0.7</BMT_CarrionVulture> <!-- carrion vulture - small, dormant -->
-        <BMT_ColonyPustuleHornet>0.7</BMT_ColonyPustuleHornet> <!-- pustule hornet - small, dormant -->
-        <BMT_Creature_Mantrap>0.7</BMT_Creature_Mantrap> <!-- mantrap - small, dormant -->
-        <BMT_FamineLocust>0.7</BMT_FamineLocust> <!-- famine locust - small, dormant -->
-        <BMT_Megaphorid>0.7</BMT_Megaphorid> <!-- megaphorid - small, dormant -->
-        <BMT_PustuleHornet>0.7</BMT_PustuleHornet> <!-- pustule hornet - small, dormant -->
-        <BMT_PustuleHornetSpawned>0.7</BMT_PustuleHornetSpawned> <!-- pustule hornet - small, dormant -->
-        <BMT_Swarmcaller>0.4</BMT_Swarmcaller> <!-- swarmcaller - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="grimterra.biomesmod">   <!-- donor: grimterra.biomesmod -->
-    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-      <value>
-        <GRimLavaSnail>0.4</GRimLavaSnail> <!-- Colorful lava snail - med, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-      <value>
-        <Scurrier>1.0</Scurrier> <!-- scurrier - tiny, ours -->
-        <Woolamander>0.7</Woolamander> <!-- woolamander - small, ours -->
-        <Rycrit>0.4</Rycrit> <!-- rycrit - med, ours -->
-        <LavaFlea>0.18</LavaFlea> <!-- lava flea - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
-    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-      <value>
-        <VFEI2_Boomtick>1.0</VFEI2_Boomtick> <!-- boomtick - tiny, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-      <value>
-        <AA_AcanthamoebaGiganteaSmall>1.0</AA_AcanthamoebaGiganteaSmall> <!-- acanthamoeba gigantea, small - tiny, ours -->
-        <AA_AcanthamoebaGiganteaLarge>0.4</AA_AcanthamoebaGiganteaLarge> <!-- acanthamoeba gigantea, large - med, dormant -->
-        <AA_Mantrap>0.18</AA_Mantrap> <!-- mantrap - large, ours -->
-        <AA_SandSquid>0.18</AA_SandSquid> <!-- sand squid - large, ours -->
-        <AA_SpinedGow>0.18</AA_SpinedGow> <!-- spined gow - large, ours -->
-        <AA_MycoidColossus>0.0216</AA_MycoidColossus> <!-- mycoid colossus - SUPER, substituted -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-      <value>
-        <GR_Chickenspider>0.4</GR_Chickenspider> <!-- chickenspider - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="who.vfee.isopodageneline">   <!-- donor: who.vfee.isopodageneline -->
-    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-      <value>
-        <SW_Electrictick>1.0</SW_Electrictick> <!-- Electrictick - tiny, dormant -->
-        <SW_Electricfish>0.4</SW_Electricfish> <!-- Electricfish - med, dormant -->
-        <SW_Electricgryllotalpa>0.4</SW_Electricgryllotalpa> <!-- Electricgryllotalpa - med, dormant -->
-        <SW_Emperorisopod>0.126</SW_Emperorisopod> <!-- Emperorisopod - huge, dormant -->
-        <SW_Juggernautbeetles>0.126</SW_Juggernautbeetles> <!-- Juggernautbeetles - huge, dormant -->
+        <AA_Swarmling>0.3</AA_Swarmling> <!-- swarmling - hybrid-vermin, adjust-keep -->
+        <AA_Agaripod>0.25</AA_Agaripod> <!-- agaripod - hybrid-native, keep -->
+        <AA_MycoidColossus>0.25</AA_MycoidColossus> <!-- mycoid colossus - hybrid-giant, keep -->
+        <AA_Agaripawn>0.2</AA_Agaripawn> <!-- agaripawn - hybrid-native, keep -->
+        <AA_Wildpawn>0.2</AA_Wildpawn> <!-- wildpawn - hybrid-native, adjust-keep -->
+        <AA_Wildpod>0.2</AA_Wildpod> <!-- wildpod - hybrid-native, adjust-keep -->
       </value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
-    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <Boomalope>0.18</Boomalope> <!-- boomalope - large, ours -->
-          <AlphaThrumbo>0.05</AlphaThrumbo> <!-- alpha thrumbo - huge, dormant -->
         </wildAnimals>
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.advancedbiomes">   <!-- donor: mlie.advancedbiomes -->
-    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
+    <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
       <value>
-        <PoisonRat>1.0</PoisonRat> <!-- poison rat - tiny, ours -->
+        <AA_DuskRat>0.5</AA_DuskRat> <!-- dusk rat - small, keep -->
+        <AA_Murkling>0.5</AA_Murkling> <!-- murkling - small, keep -->
+        <AA_NightMule>0.5</AA_NightMule> <!-- nightmule - large, keep -->
+        <AA_CrepuscularBeetle>0.35</AA_CrepuscularBeetle> <!-- Crepuscular Beetle - large, keep -->
+        <AA_DuskProwler>0.2</AA_DuskProwler> <!-- dusk prowler - medium-pred, keep -->
+        <AA_NightAve>0.2</AA_NightAve> <!-- night ave - medium, keep -->
+        <AA_Nightling>0.2</AA_Nightling> <!-- nightling - medium-apex, keep -->
+        <AA_DarkVandal>0.15</AA_DarkVandal> <!-- dark vandal - medium, keep -->
+        <AA_NightRam>0.09</AA_NightRam> <!-- nightram - large, keep -->
+        <AA_ShadowCharger>0.09</AA_ShadowCharger> <!-- shadow charger - large, keep -->
+        <AA_Thunderox>0.09</AA_Thunderox> <!-- thunderox - large, keep -->
+        <AA_SandProwler>0.075</AA_SandProwler> <!-- sand prowler - medium-pred, keep -->
+        <AA_Frostling>0.05</AA_Frostling> <!-- frostling - medium-pred, import -->
+        <AA_Darkbeast>0.005</AA_Darkbeast> <!-- darkbeast - medium, keep -->
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
+    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
       <value>
-        <Blarth>0.7</Blarth> <!-- blarth - small, foreign -->
-        <Lothcat>0.7</Lothcat> <!-- loth-cat - small, ours -->
-        <Sketto>0.7</Sketto> <!-- sketto - small, ours -->
-        <Voorpak>0.7</Voorpak> <!-- voorpak - small, ours -->
-        <Tauntaun>0.4</Tauntaun> <!-- tauntaun - med, foreign -->
-        <Blurrg>0.18</Blurrg> <!-- blurrg - large, ours -->
-        <Nerf>0.18</Nerf> <!-- nerf - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
-    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-      <value>
-        <VFEI2_RoyalMegascarab>0.4</VFEI2_RoyalMegascarab> <!-- royal megascarab - med, dormant -->
-        <VFEI2_Gigamite>0.05</VFEI2_Gigamite> <!-- gigamite - huge, dormant -->
+        <wildAnimals>
+        </wildAnimals>
       </value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
       <value>
-        <AA_Locusts>1.0</AA_Locusts> <!-- locusts - tiny, dormant -->
-        <AA_Bumbledrone>0.7</AA_Bumbledrone> <!-- bumbledrone - small, ours -->
-        <AA_BumbledroneHierophant>0.7</AA_BumbledroneHierophant> <!-- bumbledrone hierophant - small, ours -->
-        <AA_ShockGoat>0.7</AA_ShockGoat> <!-- shock goat - small, ours -->
-        <AA_MeadowAve>0.4</AA_MeadowAve> <!-- meadow ave - med, ours -->
-        <AA_RoyalAve>0.4</AA_RoyalAve> <!-- royal ave - med, ours -->
-        <AA_Bobeene>0.18</AA_Bobeene> <!-- bobeene - large, foreign -->
-        <AA_Radyak>0.18</AA_Radyak> <!-- radyak - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,tyrannidae.littlecritters">   <!-- donor: tyrannidae.littlecritters -->
-    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-      <value>
-        <TYR_MousePoison>1.0</TYR_MousePoison> <!-- poison mouse - tiny, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-      <value>
-        <GR_Catchicken>1.0</GR_Catchicken> <!-- catchicken - tiny, dormant -->
-        <GR_AnimusHare>0.7</GR_AnimusHare> <!-- animus hare - small, dormant -->
-        <GR_Muffaloman>0.4</GR_Muffaloman> <!-- muffaloman - med, dormant -->
-        <GR_Thrumbear>0.008</GR_Thrumbear> <!-- thrumbear - SUPER, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaquestsexpanded.ancients">   <!-- donor: vanillaquestsexpanded.ancients -->
-    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-      <value>
-        <VQEA_Splicehulk>0.05</VQEA_Splicehulk> <!-- splicehulk - huge, dormant -->
+        <AA_OcularJelly>2.0</AA_OcularJelly> <!-- ocular jelly - the-eyes, keep -->
+        <AA_RedSpore>0.85</AA_RedSpore> <!-- red spore - the-leaker, keep -->
+        <AA_RedGoo>0.75</AA_RedGoo> <!-- red goo - the-body, keep -->
+        <AA_InfectedAerofleet>0.5</AA_InfectedAerofleet> <!-- infected aerofleet - the-sower, keep -->
+        <AA_BloodShrimp>0.2</AA_BloodShrimp> <!-- blood shrimp - the-drinker, adjust-keep -->
+        <AA_Drainer>0.15</AA_Drainer> <!-- drainer - the-thieves, adjust-keep -->
+        <AA_Razorjack>0.15</AA_Razorjack> <!-- razorjack - the-pickers, adjust-keep -->
+        <AA_Helixien>0.1</AA_Helixien> <!-- helixien - the-undertaker, adjust-keep -->
+        <AA_RoughPlatedMonitor>0.1</AA_RoughPlatedMonitor> <!-- rough-plated monitor - the-basker, keep -->
+        <AA_Swarmling>0.1</AA_Swarmling> <!-- swarmling - the-pickers, adjust-keep -->
+        <AA_DrainerLarva>0.05</AA_DrainerLarva> <!-- drainer larva - the-thieves, keep -->
       </value>
     </match>
   </Operation>
@@ -1995,8 +776,6 @@
       <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <HermitCrab>1.0</HermitCrab> <!-- hermit crab - tiny, dormant -->
-          <ColossusToad>0.4</ColossusToad> <!-- colossus toad - med, foreign -->
         </wildAnimals>
       </value>
     </match>
@@ -2007,23 +786,9 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
       <value>
-        <BMT_SandLeaper>1.0</BMT_SandLeaper> <!-- sand leaper - tiny, dormant -->
-        <BMT_FungalWeevil>0.7</BMT_FungalWeevil> <!-- fungal weevil - small, ours -->
-        <BMT_GlowSlug>0.7</BMT_GlowSlug> <!-- glowslug - small, ours -->
-        <BMT_Basilisk>0.4</BMT_Basilisk> <!-- basilisk - med, dormant -->
-        <BMT_CaveCricket>0.4</BMT_CaveCricket> <!-- cave cricket - med, ours -->
-        <BMT_Crystalope>0.18</BMT_Crystalope> <!-- crystalope - large, ours -->
-        <BMT_AcidSlug>0.0548</BMT_AcidSlug> <!-- acid slug - huge, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zal.comigogreaterswamps,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
-      <value>
-        <BMT_Glowtail>0.7</BMT_Glowtail> <!-- glowtail - small, dormant -->
+        <BMT_GlowSlug>0.5</BMT_GlowSlug> <!-- glowslug - sap-drinker, keep -->
+        <BMT_JewelBeetle>0.2</BMT_JewelBeetle> <!-- jewel beetle - crown-grazer, import -->
+        <BMT_AcidSlug>0.05</BMT_AcidSlug> <!-- acid slug - ground-slow, keep -->
       </value>
     </match>
   </Operation>
@@ -2033,17 +798,13 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
       <value>
-        <LongtailGorg>0.7</LongtailGorg> <!-- longtail gorg - small, ours -->
-        <Nuna>0.7</Nuna> <!-- nuna - small, ours -->
-        <Urusai>0.7</Urusai> <!-- urusai - small, ours -->
-        <Yobshrimp>0.7</Yobshrimp> <!-- yobshrimp - small, foreign -->
-        <Grank>0.4</Grank> <!-- Grank - med, ours -->
-        <Gelagrub>0.18</Gelagrub> <!-- gelagrub - large, foreign -->
-        <Jimvu>0.18</Jimvu> <!-- jimvu - large, ours -->
-        <Mawvorr>0.18</Mawvorr> <!-- mawvorr - large, ours -->
-        <Nexu>0.18</Nexu> <!-- nexu - large, ours -->
-        <Reek>0.0548</Reek> <!-- reek - huge, ours -->
-        <Varactyl>0.0548</Varactyl> <!-- varactyl - huge, ours -->
+        <Urusai>0.5</Urusai> <!-- urusai - crown-flier, keep -->
+        <Gelagrub>0.4</Gelagrub> <!-- gelagrub - crown-grazer, adjust-keep -->
+        <Nuna>0.4</Nuna> <!-- nuna - grazer, keep -->
+        <Convor>0.3</Convor> <!-- convor - crown-flier, import -->
+        <LongtailGorg>0.3</LongtailGorg> <!-- longtail gorg - wait-ambush, keep -->
+        <Whisperbird>0.3</Whisperbird> <!-- whisperbird - crown-flier, import -->
+        <Fambaa>0.02</Fambaa> <!-- fambaa - the-terribly-lost, import -->
       </value>
     </match>
   </Operation>
@@ -2053,41 +814,263 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
       <value>
-        <VFEI2_Megathrips>0.7</VFEI2_Megathrips> <!-- megathrips - small, dormant -->
+        <VFEI2_Megathrips>0.5</VFEI2_Megathrips> <!-- megathrips - wood-borer, keep -->
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="zal.comigogreaterswamps,regrowth.botr.core">   <!-- donor: regrowth.botr.core -->
-    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
       <value>
-        <RG_Rimclaw>0.4</RG_Rimclaw> <!-- rimclaw - med, ours -->
+        <wildAnimals>
+        </wildAnimals>
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="zal.comigogreaterswamps,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
       <value>
-        <AA_InfectedAerofleet>1.0</AA_InfectedAerofleet> <!-- infected aerofleet - tiny, ours -->
-        <AA_Erin>0.4</AA_Erin> <!-- erin - med, ours -->
-        <AA_Feralisk>0.4</AA_Feralisk> <!-- feralisk - med, ours -->
-        <AA_Behemoth>0.0094</AA_Behemoth> <!-- Behemoth - SUPER, dormant -->
+        <BMT_ChemSnail>0.3</BMT_ChemSnail> <!-- chem snail - the-Patient, keep -->
+        <BMT_SandLeaper>0.2</BMT_SandLeaper> <!-- sand leaper - the-Spenders, adjust-keep -->
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="zal.comigogreaterswamps,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
       <value>
-        <GR_Chickenlope>1.0</GR_Chickenlope> <!-- chickenlope - tiny, dormant -->
-        <GR_Mancat>0.4</GR_Mancat> <!-- mancat - med, dormant -->
+        <BMT_MutagenicNorphea>0.4</BMT_MutagenicNorphea> <!-- mutagenic norphea - the-Sealed, keep -->
+        <BMT_Creature_Mantrap>0.15</BMT_Creature_Mantrap> <!-- mantrap - the-Patient, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
+      <value>
+        <Gornt>0.3</Gornt> <!-- gornt - the-Patient, keep -->
+        <Eopie>0.25</Eopie> <!-- eopie - the-Patient, keep -->
+        <CanCell>0.2</CanCell> <!-- can-cell - flier-commuter, keep -->
+        <Convor>0.2</Convor> <!-- convor - flier-commuter, import -->
+        <Woolamander>0.15</Woolamander> <!-- woolamander - flier-commuter, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
+      <value>
+        <AA_Murkling>0.2</AA_Murkling> <!-- murkling - the-Spenders, adjust-keep -->
+        <AA_SandSquid>0.1</AA_SandSquid> <!-- sand squid - the-Sealed, adjust-keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+          <ColossusToad>0.4</ColossusToad> <!-- colossus toad - medium-resident, keep -->
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+      <value>
+        <Ollopom>0.7</Ollopom> <!-- ollopom - small-resident, keep -->
+        <Fanback>0.5</Fanback> <!-- fanback - large-resident, adjust-keep -->
+        <Dewback>0.4</Dewback> <!-- dewback - large-resident, import -->
+        <Boma>0.15</Boma> <!-- boma - large-margin, keep -->
+        <Dactillion>0.15</Dactillion> <!-- dactillion - flier-mount, keep -->
+        <Bantha>0.1</Bantha> <!-- bantha - pilgrim, import -->
+        <Eopie>0.1</Eopie> <!-- eopie - pilgrim, import -->
+        <Jamel>0.1</Jamel> <!-- Jamel - pilgrim, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+      <value>
+        <AA_Eyeling>0.1</AA_Eyeling> <!-- ikee - omen, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
+    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
+    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+      <value>
+        <AA_GreenGoo>2.0</AA_GreenGoo> <!-- green goo - substrate, keep -->
+        <AA_AcanthamoebaGiganteaLarge>0.15</AA_AcanthamoebaGiganteaLarge> <!-- acanthamoeba gigantea, large - resistant-native, import -->
+        <AA_Plasmorph>0.1</AA_Plasmorph> <!-- plasmorph - resistant-native, adjust-keep -->
+        <AA_Helixien>0.075</AA_Helixien> <!-- helixien - resistant-native, keep -->
+        <AA_DecayDrake>0.02</AA_DecayDrake> <!-- decay drake - trace-experiment, keep -->
+        <AA_Mime>0.01</AA_Mime> <!-- mime - trace-experiment, keep -->
+        <AA_Thunderbeast>0.005</AA_Thunderbeast> <!-- thunderbeast - trace-experiment, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
+    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+      <value>
+        <GR_Chickenrabbit>0.005</GR_Chickenrabbit> <!-- chickenrabbit - trace-tail, import -->
+        <GR_Manbear>0.002</GR_Manbear> <!-- manbear - trace-tail, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
+    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+      <value>
+        <BMT_FoundryBeetle>0.18</BMT_FoundryBeetle> <!-- foundry beetle - plated-grazer, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
+    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+      <value>
+        <Mynock>0.5</Mynock> <!-- mynock - wiring-eater, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
+    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+      <value>
+        <VFEI2_Boomtick>0.4</VFEI2_Boomtick> <!-- boomtick - weapon-descendant, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="regrowth.botr.core">   <!-- donor: regrowth.botr.core -->
+    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+      <value>
+        <RG_Rimclaw>0.1</RG_Rimclaw> <!-- rimclaw - weapon-descendant, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
+    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+      <value>
+        <AA_SpinedGow>0.15</AA_SpinedGow> <!-- spined gow - plated-grazer, keep -->
+        <AA_Helixien>0.08</AA_Helixien> <!-- helixien - mortuary-guild, adjust-keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="who.vfee.isopodageneline">   <!-- donor: who.vfee.isopodageneline -->
+    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+      <value>
+        <SW_Electrictick>0.3</SW_Electrictick> <!-- Electrictick - weapon-descendant, keep -->
+        <SW_Electricgryllotalpa>0.15</SW_Electricgryllotalpa> <!-- Electricgryllotalpa - weapon-descendant, keep -->
+        <SW_Juggernautbeetles>0.05</SW_Juggernautbeetles> <!-- Juggernautbeetles - weapon-descendant, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+          <Boomalope>0.3</Boomalope> <!-- boomalope - medium, import -->
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+      <value>
+        <Zeer>0.6</Zeer> <!-- zeer - large-herd, adjust-keep -->
+        <Iriaz>0.5</Iriaz> <!-- iriaz - small-herd, import -->
+        <Nuna>0.5</Nuna> <!-- nuna - small, adjust-keep -->
+        <Anooba>0.35</Anooba> <!-- anooba - medium-predator, import -->
+        <Gizka>0.3</Gizka> <!-- gizka - grain, adjust-keep -->
+        <Orray>0.25</Orray> <!-- orray - medium, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+      <value>
+        <AA_FireWasp>0.4</AA_FireWasp> <!-- fire wasp - small-predator, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+      <value>
+        <GR_Mantistanis>0.05</GR_Mantistanis> <!-- mantistanis - large-predator, import -->
       </value>
     </match>
   </Operation>
@@ -2098,9 +1081,7 @@
       <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <Megascarab>1.0</Megascarab> <!-- megascarab - tiny, ours -->
-          <Megaspider>0.4</Megaspider> <!-- megaspider - med, ours -->
-          <Spelopede>0.4</Spelopede> <!-- spelopede - med, ours -->
+          <LavaSnail>0.35</LavaSnail> <!-- lava snail - ground-slow, import -->
         </wildAnimals>
       </value>
     </match>
@@ -2111,22 +1092,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
       <value>
-        <BMT_FacetMoth>0.7</BMT_FacetMoth> <!-- facet moth - small, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
-      <value>
-        <BMT_SmogMoth>0.7</BMT_SmogMoth> <!-- smog moth - small, dormant -->
-        <BMT_SmogMothLarvae>0.7</BMT_SmogMothLarvae> <!-- smog caterpillar - small, substituted -->
-        <BMT_TaintedTurtle>0.7</BMT_TaintedTurtle> <!-- tainted turtle - small, dormant -->
-        <BMT_MucklurkerCatfish>0.4</BMT_MucklurkerCatfish> <!-- mucklurker catfish - med, dormant -->
-        <BMT_MutatingTumorfishFry>0.4</BMT_MutatingTumorfishFry> <!-- mutating tumorfish fry - med, dormant -->
-        <BMT_MutatingTumorfishSpawn>0.4</BMT_MutatingTumorfishSpawn> <!-- mutating tumorfish spawn - med, dormant -->
+        <BMT_Maguana>0.15</BMT_Maguana> <!-- maguana - ground-slow, import -->
       </value>
     </match>
   </Operation>
@@ -2136,16 +1102,8 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
       <value>
-        <Tooke>1.0</Tooke> <!-- tooke - tiny, ours -->
-        <Shyrack>0.7</Shyrack> <!-- shyrack - small, ours -->
-        <Tach>0.7</Tach> <!-- tach - small, ours -->
-        <MarshHaunt>0.18</MarshHaunt> <!-- marsh haunt - large, ours -->
-        <MastiffPhalone>0.18</MastiffPhalone> <!-- mastiff phalone - large, ours -->
-        <Veermok>0.18</Veermok> <!-- veermok - large, ours -->
-        <KellDragon>0.105</KellDragon> <!-- kell dragon - huge, ours -->
-        <Mudhorn>0.105</Mudhorn> <!-- mudhorn - huge, ours -->
-        <Roggwart>0.105</Roggwart> <!-- roggwart - huge, ours -->
-        <JungleRancor>0.018</JungleRancor> <!-- Jungle Rancor - SUPER, foreign -->
+        <LavaFlea>0.25</LavaFlea> <!-- lava flea - ground-herd, import -->
+        <Beldon>0.08</Beldon> <!-- beldon - sky-herd, keep -->
       </value>
     </match>
   </Operation>
@@ -2155,42 +1113,54 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
       <value>
-        <AA_Eyeling>1.0</AA_Eyeling> <!-- ikee - tiny, ours -->
-        <AA_BlackScarab>0.7</AA_BlackScarab> <!-- black scarab - small, dormant -->
-        <AA_BlackSpider>0.4</AA_BlackSpider> <!-- blackspider - med, dormant -->
-        <AA_RayHound>0.4</AA_RayHound> <!-- ray-hound - med, ours -->
-        <AA_Metallovore>0.18</AA_Metallovore> <!-- metallovore - large, ours -->
+        <AA_Aerofleet>0.4</AA_Aerofleet> <!-- aerofleet - sky, adjust-keep -->
+        <AA_Cinderlisk>0.2</AA_Cinderlisk> <!-- cinderlisk - ground-predator, import -->
+        <AA_Metallovore>0.15</AA_Metallovore> <!-- metallovore - ground-slow, keep -->
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,van.beasts">   <!-- donor: van.beasts -->
-    <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
       <value>
-        <DA_Phrak>0.7</DA_Phrak> <!-- phrak - small, foreign -->
+        <wildAnimals>
+          <LavaSnail>0.35</LavaSnail> <!-- lava snail - ground-slow, import -->
+        </wildAnimals>
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
+    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
       <value>
-        <GR_Squirralope>1.0</GR_Squirralope> <!-- squirralope - tiny, dormant -->
-        <GR_Muffalopede>0.4</GR_Muffalopede> <!-- muffalopede - med, dormant -->
+        <BMT_Maguana>0.15</BMT_Maguana> <!-- maguana - ground-slow, import -->
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,zal.betterinfestations">   <!-- donor: zal.betterinfestations -->
-    <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
+    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
       <value>
-        <BI_Queen>0.18</BI_Queen> <!-- queen - large, dormant -->
+        <LavaFlea>0.25</LavaFlea> <!-- lava flea - ground-herd, import -->
+        <Beldon>0.08</Beldon> <!-- beldon - sky-herd, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
+    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
+      <value>
+        <AA_Aerofleet>0.4</AA_Aerofleet> <!-- aerofleet - sky, adjust-keep -->
+        <AA_Cinderlisk>0.2</AA_Cinderlisk> <!-- cinderlisk - ground-predator, import -->
+        <AA_Metallovore>0.15</AA_Metallovore> <!-- metallovore - ground-slow, keep -->
       </value>
     </match>
   </Operation>
@@ -2201,6 +1171,7 @@
       <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
+          <LavaSnail>0.35</LavaSnail> <!-- lava snail - ground-slow, import -->
         </wildAnimals>
       </value>
     </match>
@@ -2211,48 +1182,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
       <value>
-        <BMT_GlowBat>1.0</BMT_GlowBat> <!-- bioluminescent bat - tiny, ours -->
-        <BMT_SandLeaper>1.0</BMT_SandLeaper> <!-- sand leaper - tiny, dormant -->
-        <BMT_SonarRabbit>1.0</BMT_SonarRabbit> <!-- sonar rabbit - tiny, ours -->
-        <BMT_GlowSlug>0.7</BMT_GlowSlug> <!-- glowslug - small, ours -->
-        <BMT_Mole>0.7</BMT_Mole> <!-- mole - small, dormant -->
-        <BMT_ShimmershellSnail>0.7</BMT_ShimmershellSnail> <!-- shimmershell snail - small, ours -->
-        <BMT_DarkAxolotl>0.4</BMT_DarkAxolotl> <!-- dark axolotl - med, dormant -->
-        <BMT_Xyrion>0.4</BMT_Xyrion> <!-- xyrion - med, ours -->
-        <BMT_GiantSnail>0.18</BMT_GiantSnail> <!-- giant snail - large, ours -->
-        <BMT_Megabat>0.18</BMT_Megabat> <!-- megabat - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,biomesteam.biomescore">   <!-- donor: biomesteam.biomescore -->
-    <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
-      <value>
-        <BMT_LandOctopus>0.4</BMT_LandOctopus> <!-- terrestrial octopus - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
-      <value>
-        <BMT_Polluwog>1.0</BMT_Polluwog> <!-- polluwog - tiny, dormant -->
-        <BMT_ToxSheep>0.7</BMT_ToxSheep> <!-- tox-wool sheep - small, dormant -->
-        <BMT_SludgeCrawler>0.18</BMT_SludgeCrawler> <!-- sludgecrawler - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,erin.ffanimals">   <!-- donor: erin.ffanimals -->
-    <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
-      <value>
-        <ERN_Amaro>0.4</ERN_Amaro> <!-- amaro - med, ours -->
+        <BMT_Maguana>0.15</BMT_Maguana> <!-- maguana - ground-slow, import -->
       </value>
     </match>
   </Operation>
@@ -2262,15 +1192,8 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
       <value>
-        <Iriaz>0.7</Iriaz> <!-- iriaz - small, ours -->
-        <KowakianMonkeyLizard>0.7</KowakianMonkeyLizard> <!-- kowakian monkey-lizard - small, ours -->
-        <Pikobis>0.7</Pikobis> <!-- pikobis - small, ours -->
-        <Scavrat>0.7</Scavrat> <!-- Scavrats - small, ours -->
-        <Kaadu>0.4</Kaadu> <!-- kaadu - med, ours -->
-        <Skalder>0.35</Skalder> <!-- skalder - huge, ours -->
-        <Tukata>0.35</Tukata> <!-- tuk'ata - huge, ours -->
-        <Uvak>0.35</Uvak> <!-- uvak - huge, ours -->
-        <ChrysalideRancor>0.0864</ChrysalideRancor> <!-- chrysalide rancor - SUPER, ours -->
+        <LavaFlea>0.25</LavaFlea> <!-- lava flea - ground-herd, import -->
+        <Beldon>0.08</Beldon> <!-- beldon - sky-herd, keep -->
       </value>
     </match>
   </Operation>
@@ -2280,327 +1203,9 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
       <value>
-        <AA_BlackSpelopede>0.4</AA_BlackSpelopede> <!-- black spelopede - med, dormant -->
-        <AA_RipperHound>0.4</AA_RipperHound> <!-- ripper hound - med, ours -->
-        <AA_Thunderbeast>0.4</AA_Thunderbeast> <!-- thunderbeast - med, ours -->
-        <AA_IronhuskBeetle>0.18</AA_IronhuskBeetle> <!-- ironhusk beetle - large, substituted -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
-      <value>
-        <GR_Wolfhorse>0.18</GR_Wolfhorse> <!-- wolfhorse - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-      <value>
-        <BMT_BrownBat>1.0</BMT_BrownBat> <!-- brown bat - tiny, dormant -->
-        <BMT_GlowBat>1.0</BMT_GlowBat> <!-- bioluminescent bat - tiny, ours -->
-        <BMT_GoetoTadpole>1.0</BMT_GoetoTadpole> <!-- goeto tadpole - tiny, dormant -->
-        <BMT_GoetoToad>0.7</BMT_GoetoToad> <!-- goeto toad - small, ours -->
-        <BMT_CrystalMantis>0.18</BMT_CrystalMantis> <!-- crystal mimic mantis - large, ours -->
-        <BMT_GiantSlug>0.18</BMT_GiantSlug> <!-- giant slug - large, ours -->
-        <BMT_Megapleura>0.18</BMT_Megapleura> <!-- megapleura - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-      <value>
-        <BMT_BloodletterPetrel>0.7</BMT_BloodletterPetrel> <!-- bloodletter petrel - small, dormant -->
-        <BMT_GastroToad>0.7</BMT_GastroToad> <!-- gastro toad - small, dormant -->
-        <BMT_ToxSheep>0.7</BMT_ToxSheep> <!-- tox-wool sheep - small, dormant -->
-        <BMT_TripleSnapper>0.4</BMT_TripleSnapper> <!-- triple snapper - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-      <value>
-        <Iriaz>0.7</Iriaz> <!-- iriaz - small, ours -->
-        <Mott>0.7</Mott> <!-- mott - small, ours -->
-        <Squall>0.7</Squall> <!-- squall - small, ours -->
-        <Kybuck>0.4</Kybuck> <!-- kybuck - med, ours -->
-        <Massiff>0.4</Massiff> <!-- massiff - med, ours -->
-        <Dewback>0.0573</Dewback> <!-- dewback - huge, ours -->
-        <Katarn>0.0573</Katarn> <!-- katarn - huge, ours -->
-        <Taozin>0.0098</Taozin> <!-- taozin - SUPER, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-      <value>
-        <AA_Animalisk>0.4</AA_Animalisk> <!-- animalisk - med, dormant -->
-        <AA_RaptorShrimp>0.4</AA_RaptorShrimp> <!-- raptor shrimp - med, substituted -->
-        <AA_NightMule>0.18</AA_NightMule> <!-- nightmule - large, ours -->
-        <AA_MammothWorm>0.0573</AA_MammothWorm> <!-- mammoth worm - huge, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphamemes">   <!-- donor: sarg.alphamemes -->
-    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-      <value>
-        <AM_Dryad_Spitter>0.7</AM_Dryad_Spitter> <!-- spitter dryad - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="van.beasts">   <!-- donor: van.beasts -->
-    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-      <value>
-        <DA_Snaptoad>0.18</DA_Snaptoad> <!-- giant snaptoad - large, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="vanillaexpanded.vaewaste">   <!-- donor: vanillaexpanded.vaewaste -->
-    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-      <value>
-        <VAEWaste_Toxiguana>0.4</VAEWaste_Toxiguana> <!-- toxiguana - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-      <value>
-        <GR_Fleshling>1.0</GR_Fleshling> <!-- fleshling - tiny, dormant -->
-        <GR_Spidercat>0.4</GR_Spidercat> <!-- spidercat - med, dormant -->
-        <GR_Wolfscarab>0.4</GR_Wolfscarab> <!-- wolfscarab - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
-    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <Boomrat>1.0</Boomrat> <!-- boomrat - tiny, ours -->
-          <!-- ANOMALY ENTITY Fingerspike - fingerspike: never wild-spawns, dropped by owner ruling -->
-          <StoneCrab>0.7</StoneCrab> <!-- stone crab - small, dormant -->
-          <!-- ANOMALY ENTITY Gorehulk - gorehulk: never wild-spawns, dropped by owner ruling -->
-          <!-- ANOMALY ENTITY Bulbfreak - bulbfreak: never wild-spawns, dropped by owner ruling -->
-          <!-- ANOMALY ENTITY Dreadmeld - dreadmeld: never wild-spawns, dropped by owner ruling -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-      <value>
-        <BMT_Batbird>1.0</BMT_Batbird> <!-- batbird - tiny, dormant -->
-        <BMT_FungalFerret>0.7</BMT_FungalFerret> <!-- fungal ferret - small, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,joe.cephaloids">   <!-- donor: joe.cephaloids -->
-    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-      <value>
-        <JOE_Landopus>1.0</JOE_Landopus> <!-- landopus - tiny, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.spaceworms">   <!-- donor: mlie.spaceworms -->
-    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-      <value>
-        <Scuttlebug>1.0</Scuttlebug> <!-- Space Worm - tiny, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-      <value>
-        <Convor>0.7</Convor> <!-- convor - small, ours -->
-        <Rikknit>0.7</Rikknit> <!-- rikknit - small, foreign -->
-        <Bordok>0.4</Bordok> <!-- bordok - med, ours -->
-        <FrogDog>0.4</FrogDog> <!-- frog dog - med, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-      <value>
-        <AA_AngelMoth>0.7</AA_AngelMoth> <!-- angel moth - small, ours -->
-        <AA_ShockGoat>0.7</AA_ShockGoat> <!-- shock goat - small, ours -->
-        <AA_Gigantelope>0.18</AA_Gigantelope> <!-- gigantelope - large, ours -->
-        <AA_UnblinkingEye>0.008</AA_UnblinkingEye> <!-- unblinking eye - SUPER, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-      <value>
-        <GR_Manalope>0.7</GR_Manalope> <!-- manalope - small, dormant -->
-        <GR_Boomalisk>0.18</GR_Boomalisk> <!-- boomalisk - large, dormant -->
-        <GR_FleshMonstrosity>0.05</GR_FleshMonstrosity> <!-- flesh monstrosity - huge, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <Locust>0.7</Locust> <!-- locust - small, dormant -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-      <value>
-        <BMT_Rimebeak>0.4</BMT_Rimebeak> <!-- rimebeak - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescore">   <!-- donor: biomesteam.biomescore -->
-    <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-      <value>
-        <BMT_Maxolotl>0.18</BMT_Maxolotl> <!-- maxolotl - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes">   <!-- donor: mlie.advancedbiomes -->
-    <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-      <value>
-        <PoisonRat>1.0</PoisonRat> <!-- poison rat - tiny, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-      <value>
-        <Porg>1.0</Porg> <!-- porg - tiny, ours -->
-        <Blarth>0.7</Blarth> <!-- blarth - small, foreign -->
-        <TetnissCrab>0.7</TetnissCrab> <!-- tet'niss crab - small, foreign -->
-        <Voorpak>0.7</Voorpak> <!-- voorpak - small, ours -->
-        <Vulptex>0.7</Vulptex> <!-- vulptex - small, ours -->
-        <Qormot>0.4</Qormot> <!-- qormot - med, ours -->
-        <Tibidee>0.2</Tibidee> <!-- tibidee - SUPER, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
-    <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-      <value>
-        <VFEI2_Durapod>0.4</VFEI2_Durapod> <!-- durapod - med, dormant -->
-        <VFEI2_RoyalSpelopede>0.4</VFEI2_RoyalSpelopede> <!-- royal spelopede - med, dormant -->
-        <VFEI2_Venomite>0.4</VFEI2_Venomite> <!-- venomite - med, dormant -->
-        <VFEI2_Empress>0.35</VFEI2_Empress> <!-- empress - huge, dormant -->
-        <VFEI2_Silverfish>0.35</VFEI2_Silverfish> <!-- silverfish - huge, dormant -->
-        <VFEI2_Megapede>0.18</VFEI2_Megapede> <!-- megapede - large, dormant -->
-        <VFEI2_RoyalMegaspider>0.18</VFEI2_RoyalMegaspider> <!-- royal megaspider - large, dormant -->
-        <VFEI2_Tankroach>0.18</VFEI2_Tankroach> <!-- tankroach - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-      <value>
-        <AA_SmallButterfly>1.0</AA_SmallButterfly> <!-- small butterflies - tiny, dormant -->
-        <AA_AnimusVox>0.7</AA_AnimusVox> <!-- animus vox - small, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphamemes">   <!-- donor: sarg.alphamemes -->
-    <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-      <value>
-        <AM_UnshackledDryad>0.7</AM_UnshackledDryad> <!-- unshackled dryad - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-      <value>
-        <GR_Catchicken>1.0</GR_Catchicken> <!-- catchicken - tiny, dormant -->
-        <GR_Bearman>0.4</GR_Bearman> <!-- bearman - med, dormant -->
-        <GR_Moleman>0.4</GR_Moleman> <!-- moleman - med, dormant -->
-        <GR_Thrumdraeodon>0.35</GR_Thrumdraeodon> <!-- thrumdraeodon - huge, dormant -->
+        <AA_Aerofleet>0.4</AA_Aerofleet> <!-- aerofleet - sky, adjust-keep -->
+        <AA_Cinderlisk>0.2</AA_Cinderlisk> <!-- cinderlisk - ground-predator, import -->
+        <AA_Metallovore>0.15</AA_Metallovore> <!-- metallovore - ground-slow, keep -->
       </value>
     </match>
   </Operation>
@@ -2611,7 +1216,6 @@
       <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <LavaSnail>0.4</LavaSnail> <!-- lava snail - med, ours -->
         </wildAnimals>
       </value>
     </match>
@@ -2622,22 +1226,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
       <value>
-        <BMT_BrownBat>1.0</BMT_BrownBat> <!-- brown bat - tiny, dormant -->
-        <BMT_CrestedDragon>0.7</BMT_CrestedDragon> <!-- crested dragon - small, dormant -->
-        <BMT_JewelBeetle>0.18</BMT_JewelBeetle> <!-- jewel beetle - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
-      <value>
-        <BMT_Creature_Mantrap>0.7</BMT_Creature_Mantrap> <!-- mantrap - small, dormant -->
-        <BMT_SmogMoth>0.7</BMT_SmogMoth> <!-- smog moth - small, dormant -->
-        <BMT_MucklurkerCatfish>0.4</BMT_MucklurkerCatfish> <!-- mucklurker catfish - med, dormant -->
-        <BMT_MutatingTumorfishFry>0.4</BMT_MutatingTumorfishFry> <!-- mutating tumorfish fry - med, dormant -->
+        <BMT_JewelBeetle>0.3</BMT_JewelBeetle> <!-- jewel beetle - anchor-beetle, import -->
       </value>
     </match>
   </Operation>
@@ -2647,277 +1236,77 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
       <value>
-        <Kreetle>1.0</Kreetle> <!-- kreetle - tiny, ours -->
-        <ShiroTrap>0.7</ShiroTrap> <!-- shiro-trap - small, ours -->
-        <Shyrack>0.7</Shyrack> <!-- shyrack - small, ours -->
-        <WompRat>0.7</WompRat> <!-- womp rat - small, ours -->
-        <Massiff>0.4</Massiff> <!-- massiff - med, ours -->
-        <Ronto>0.008</Ronto> <!-- ronto - SUPER, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
-      <value>
-        <AA_CrescendoAnole>0.7</AA_CrescendoAnole> <!-- crescendo anole - small, ours -->
-        <AA_Animalisk>0.4</AA_Animalisk> <!-- animalisk - med, dormant -->
-        <AA_Erin>0.4</AA_Erin> <!-- erin - med, ours -->
-        <AA_Junglelisk>0.4</AA_Junglelisk> <!-- junglelisk - med, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,tyrannidae.littlecritters">   <!-- donor: tyrannidae.littlecritters -->
-    <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
-      <value>
-        <TYR_HotfootRat>1.0</TYR_HotfootRat> <!-- hotfoot rat - tiny, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,van.beasts">   <!-- donor: van.beasts -->
-    <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
-      <value>
-        <DA_Pilgrim>0.18</DA_Pilgrim> <!-- pilgrim - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaexpanded.vaewaste">   <!-- donor: vanillaexpanded.vaewaste -->
-    <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
-      <value>
-        <VAEWaste_Hydra>0.7</VAEWaste_Hydra> <!-- hydra - small, dormant -->
-        <VAEWaste_Toxiguana>0.4</VAEWaste_Toxiguana> <!-- toxiguana - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
-      <value>
-        <GR_Catalope>1.0</GR_Catalope> <!-- catalope - tiny, dormant -->
-        <GR_Crocorse>0.18</GR_Crocorse> <!-- crocorse - large, dormant -->
-        <GR_Muffalokomodo>0.05</GR_Muffalokomodo> <!-- muffalokomodo - huge, dormant -->
-        <GR_Thrumbolizard>0.05</GR_Thrumbolizard> <!-- thrumbolizard - huge, dormant -->
+        <Wyyyschokk>0.4</Wyyyschokk> <!-- wyyyschokk - owner, import -->
+        <Kreetle>0.2</Kreetle> <!-- kreetle - trace-prey, adjust-keep -->
+        <Shyrack>0.2</Shyrack> <!-- shyrack - trace-flier, keep -->
       </value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
-    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <LavaSnail>0.4</LavaSnail> <!-- lava snail - med, ours -->
         </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
-      <value>
-        <BMT_GlowBat>1.0</BMT_GlowBat> <!-- bioluminescent bat - tiny, ours -->
-        <BMT_CrestedDragon>0.7</BMT_CrestedDragon> <!-- crested dragon - small, dormant -->
-        <BMT_Gembug>0.7</BMT_Gembug> <!-- gembug - small, ours -->
-        <BMT_AaroxisDendoria>0.4</BMT_AaroxisDendoria> <!-- aaroxis dendoria - med, ours -->
-        <BMT_Molebear>0.18</BMT_Molebear> <!-- Molebear - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,grimterra.biomesmod">   <!-- donor: grimterra.biomesmod -->
-    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
-      <value>
-        <GRimStoneCrab>0.7</GRimStoneCrab> <!-- Colorful stone crab - small, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
-      <value>
-        <Kreetle>1.0</Kreetle> <!-- kreetle - tiny, ours -->
-        <Shiro>0.7</Shiro> <!-- shiro - small, ours -->
-        <Whisperbird>0.7</Whisperbird> <!-- whisperbird - small, ours -->
-        <WompRat>0.7</WompRat> <!-- womp rat - small, ours -->
-        <Anooba>0.4</Anooba> <!-- anooba - med, ours -->
-        <Runyip>0.4</Runyip> <!-- runyip - med, ours -->
-        <Vornskyr>0.18</Vornskyr> <!-- vornskyr - large, ours -->
-        <Zakkeg>0.05</Zakkeg> <!-- zakkeg - huge, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
-    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
-      <value>
-        <VFEI2_Swarmling>1.0</VFEI2_Swarmling> <!-- swarmlings - tiny, dormant -->
       </value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
+    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
       <value>
-        <VFEI2_BlackSwarmling>1.0</VFEI2_BlackSwarmling> <!-- black swarmlings - tiny, dormant -->
-        <AA_FireWasp>0.7</AA_FireWasp> <!-- fire wasp - small, ours -->
-        <AA_Swarmling>0.7</AA_Swarmling> <!-- swarmling - small, substituted -->
-        <AA_Feralisk>0.4</AA_Feralisk> <!-- feralisk - med, ours -->
-        <AA_Thermadon>0.4</AA_Thermadon> <!-- thermadon - med, ours -->
-        <AA_RoughPlatedMonitor>0.18</AA_RoughPlatedMonitor> <!-- rough-plated monitor - large, ours -->
-        <VFEI2_BlackQueen>0.05</VFEI2_BlackQueen> <!-- black insectoid queen - huge, dormant -->
+        <AA_Frostmite>0.35</AA_Frostmite> <!-- frostmite - small — corpse-sweeper, the pole's undertaker, keep -->
+        <AA_FrostboundBehemoth>0.126</AA_FrostboundBehemoth> <!-- frostbound behemoth - huge — ammonia life of the Flats, keep -->
+        <AA_Terramorph>0.1</AA_Terramorph> <!-- terramorph - medium — Flats mineral chemistry, adjust-keep -->
+        <AA_Slurrypede>0.02</AA_Slurrypede> <!-- slurrypede - lab fauna — the containment facility's feeder, still running, adjust-keep -->
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphagenes">   <!-- donor: sarg.alphagenes -->
-    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
-      <value>
-        <AG_OcularSlinger>0.18</AG_OcularSlinger> <!-- ocular slinger - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,van.beasts">   <!-- donor: van.beasts -->
-    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
-      <value>
-        <DA_Karabal>0.4</DA_Karabal> <!-- karabal - med, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
+    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <WasteRat>0.7</WasteRat> <!-- waste rat - small, dormant -->
         </wildAnimals>
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
+    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
       <value>
-        <BMT_Snowstalker>0.4</BMT_Snowstalker> <!-- snowstalker - med, dormant -->
-        <BMT_Thrumbungus>0.35</BMT_Thrumbungus> <!-- thrumbungus - huge, dormant -->
-        <BMT_FrostweaverSpider>0.18</BMT_FrostweaverSpider> <!-- frostweaver - large, dormant -->
+        <AA_TarGuzzler>0.5</AA_TarGuzzler> <!-- tar guzzler - tar-eater, adjust-keep -->
+        <AA_Bumbledrone>0.35</AA_Bumbledrone> <!-- bumbledrone - under-layer, keep -->
+        <AA_BumbledroneHierophant>0.2</AA_BumbledroneHierophant> <!-- bumbledrone hierophant - under-layer, keep -->
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomespollutedlands">   <!-- donor: biomesteam.biomespollutedlands -->
-    <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
+    <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
       <value>
-        <BMT_Megaroach>1.0</BMT_Megaroach> <!-- megaroach - tiny, dormant -->
-        <BMT_ColonyPustuleHornet>0.7</BMT_ColonyPustuleHornet> <!-- pustule hornet - small, dormant -->
-        <BMT_FamineLocust>0.7</BMT_FamineLocust> <!-- famine locust - small, dormant -->
-        <BMT_PustuleHornet>0.7</BMT_PustuleHornet> <!-- pustule hornet - small, dormant -->
-        <BMT_PustuleHornetSpawned>0.7</BMT_PustuleHornetSpawned> <!-- pustule hornet - small, dormant -->
-        <BMT_ColonyPustuleHornetQueen>0.4</BMT_ColonyPustuleHornetQueen> <!-- pustule queen - med, dormant -->
-        <BMT_PustuleHornetQueen>0.4</BMT_PustuleHornetQueen> <!-- pustule queen - med, dormant -->
-        <BMT_Swarmcaller>0.4</BMT_Swarmcaller> <!-- swarmcaller - med, dormant -->
+        <wildAnimals>
+        </wildAnimals>
       </value>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="lingluo.cockroach">   <!-- donor: lingluo.cockroach -->
-    <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,lingluo.cockroach">   <!-- donor: lingluo.cockroach -->
+    <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
+      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/wildAnimals</xpath>
       <value>
-        <Ling_Cockroach>0.18</Ling_Cockroach> <!-- Giant Cockroach - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
-      <value>
-        <GraniteSlug>1.0</GraniteSlug> <!-- granite slug - tiny, ours -->
-        <Leaftail>1.0</Leaftail> <!-- leaf-tail - tiny, ours -->
-        <Neebray>1.0</Neebray> <!-- neebray - tiny, ours -->
-        <Mynock>0.7</Mynock> <!-- mynock - small, ours -->
-        <Krykna>0.4</Krykna> <!-- krykna - med, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
-      <value>
-        <AA_Frostmite>0.7</AA_Frostmite> <!-- frostmite - small, ours -->
-        <AA_Frostling>0.4</AA_Frostling> <!-- frostling - med, ours -->
-        <AA_ArcticLion>0.18</AA_ArcticLion> <!-- arctic lion - large, ours -->
-        <AA_Blizzarisk>0.18</AA_Blizzarisk> <!-- blizzarisk - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphamemes">   <!-- donor: sarg.alphamemes -->
-    <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
-      <value>
-        <AM_UnshackledDryad>0.7</AM_UnshackledDryad> <!-- unshackled dryad - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="van.beasts">   <!-- donor: van.beasts -->
-    <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
-      <value>
-        <DA_SnowTaraal>0.18</DA_SnowTaraal> <!-- snow taraal - large, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="vanillaquestsexpanded.cryptoforge">   <!-- donor: vanillaquestsexpanded.cryptoforge -->
-    <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="IceSheet"]/wildAnimals</xpath>
-      <value>
-        <VQE_IceCrawler>0.4</VQE_IceCrawler> <!-- ice crawler - med, dormant -->
-        <VQE_Megamidge>0.4</VQE_Megamidge> <!-- megamidge - med, dormant -->
+        <Ling_Cockroach>0.05</Ling_Cockroach> <!-- Giant Cockroach - medium, import -->
       </value>
     </match>
   </Operation>
