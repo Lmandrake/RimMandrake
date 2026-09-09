@@ -262,6 +262,27 @@ def _organic_channel(x0, y0, x1, y1, seed, base_width, wander=0.4, notch_every=8
     return [(x, z, d) for (x, z), d in cells.items()]
 
 
+def _channel_bank_point(x0, y0, x1, y1, base_width, seed):
+    """A point beside a carved-line channel's own midpoint, off the
+    centreline -- round 3 fix. Point hydrology (spring/brine_seep/
+    salt_pan) used to stamp dead-centre on the channel, which is exactly
+    where `_paint_carved_line`'s bands hit their rock/roughhewn
+    threshold (density peaks at the centreline); the IMPASSABLE_ROCK
+    guard on the write below then excluded nearly the whole stamp --
+    round 2's sheet measured 32-38 surviving Marsh cells out of an
+    ~880-cell nominal blob (radius base_width*0.7), the "hydrology
+    dressing too small to read" finding logged against this item. Move
+    the stamp onto the channel's own gravel/mud bank instead, where
+    nothing is impassable, and size it against base_width so it still
+    reads as the channel's own feature, not a second landform."""
+    dist = math.hypot(x1 - x0, y1 - y0) or 1.0
+    mx, my = (x0 + x1) / 2.0, (y0 + y1) / 2.0
+    perp = (-(y1 - y0) / dist, (x1 - x0) / dist)
+    side = 1 if scatter.noise(int(mx), int(my), seed + 61) > 0.5 else -1
+    bank = base_width * 0.9 * side
+    return mx + perp[0] * bank, my + perp[1] * bank
+
+
 def _rotate_toward(ox, oy, tx, ty, spread_deg, reach=0.6):
     """A point `reach` of the way from (ox,oy) to (tx,ty), with the bearing
     rotated by spread_deg -- used to fan a delta's branches out from its
@@ -367,7 +388,16 @@ def _point_hydrology(grid_rows, cx, cy, radius, orient_deg, hydro, seed, size):
                         jitter=0.1, jitter_scale=8.0)
     elif hydro in ("spring", "brine_seep"):
         fill = WATER_SHALLOW if hydro == "spring" else MARSH
-        for x, z, d in scatter.blob(cx, cy, max(3.0, radius * 0.12), seed=seed + 21, roughness=0.4):
+        # Round 3 fix (see _channel_bank_point's docstring for the
+        # matching carved_line case): cx,cy is a LoneMountain's own rock
+        # core (density~1 hits the 0.78 rock threshold in
+        # _paint_raised_blob), so a blob centred there mostly failed the
+        # IMPASSABLE_ROCK guard below. Push out to the outer terrace
+        # (sand/softsand) along a per-seed bearing instead.
+        ang = scatter.noise(int(cx), int(cy), seed + 61) * 2.0 * math.pi
+        px = cx + math.cos(ang) * radius * 0.62
+        py = cy + math.sin(ang) * radius * 0.62
+        for x, z, d in scatter.blob(px, py, max(4.0, radius * 0.16), seed=seed + 21, roughness=0.4):
             xi, zi = int(x), int(z)
             if 0 <= xi < size and 0 <= zi < size and grid_rows[zi][xi] not in IMPASSABLE_ROCK:
                 grid_rows[zi][xi] = fill
@@ -501,14 +531,14 @@ def _paint_carved_line(grid_rows, plan_dict, size):
 
     if hydro in ("spring", "brine_seep"):
         fill = WATER_SHALLOW if hydro == "spring" else MARSH
-        mx, my = (x0 + x1) / 2.0, (y0 + y1) / 2.0
-        for x, z, d in scatter.blob(mx, my, max(3.0, base_width * 0.7), seed=seed + 21, roughness=0.4):
+        bx, by = _channel_bank_point(x0, y0, x1, y1, base_width, seed)
+        for x, z, d in scatter.blob(bx, by, max(4.0, base_width * 0.8), seed=seed + 21, roughness=0.4):
             xi, zi = int(x), int(z)
             if 0 <= xi < size and 0 <= zi < size and grid_rows[zi][xi] not in IMPASSABLE_ROCK:
                 grid_rows[zi][xi] = fill
     elif hydro == "salt_pan":
-        mx, my = (x0 + x1) / 2.0, (y0 + y1) / 2.0
-        patch = scatter.clumps(scatter.blob(mx, my, max(3.0, base_width * 0.7), seed=seed + 23,
+        bx, by = _channel_bank_point(x0, y0, x1, y1, base_width, seed)
+        patch = scatter.clumps(scatter.blob(bx, by, max(4.0, base_width * 0.8), seed=seed + 23,
                                              roughness=0.5),
                                 seed=seed + 24, clump_scale=3.0, threshold=0.4)
         for x, z, d in patch:
