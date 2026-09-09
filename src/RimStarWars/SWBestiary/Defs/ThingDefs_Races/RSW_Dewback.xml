@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave B — Dewback creature port.
+  Ported from mlie.starwarsanimalcollection's `Dewback` ThingDef/PawnKindDef pair
+  (Races_Animal_SW.xml), renamed under the RSW_ tier prefix. Geometry/stats/comps
+  copied verbatim; defName references repointed to this wave's own supporting defs:
+  the custom body (RSW_Dewback, RSW_MlieWaveB_Bodies.xml), the custom body-part-group
+  (RSW_SWTailAttackTool, RSW_MlieWaveB_BodyParts.xml), the Odyssey spur ability
+  (RSW_SW_Spur, RSW_MlieWaveB_Abilities.xml), its eggs/leather/meat
+  (RSW_EggDewback{,Un}Fertilized, RSW_Leather_Saurian, RSW_Saurian_Meat,
+  RSW_MlieWaveB_Resources.xml), and the already-absorbed sound wave
+  (RSW_Pawn_Dewback_*, mlie_sound_defname_map.json). texPaths are UNCHANGED text —
+  extracted art sits at the same relative Textures/swanimals/Dewback/ path the donor
+  used. Live at ZBiome_DesertOasis in the current cast (cast_assignment.csv /
+  BiomeCast_Ashkarr.xml), repointed from the bare "Dewback" entry this same pass.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Dewback</defName>
+    <label>dewback</label>
+    <description>Dewbacks are large, four-legged, omnivorous, cold-blooded reptiles native to the Dune Sea of Tatooine. As such, they are well-adapted to the harsh desert climate. This and the fact that they can be easily domesticated make them commonly employed as beasts of burden by both the inhabitants of the desert planet and the off-worlders wandering its dunes. Due to their numerous useful traits and versatility, they are quite possibly the most respected of all the creatures native to Tatooine.</description>
+    <statBases>
+      <MoveSpeed>4.7</MoveSpeed>
+      <MarketValue>700</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>tail</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggDewbackUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggDewbackFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Dewback</body>
+      <baseBodySize>3.0</baseBodySize>
+      <baseHungerRate>1.8</baseHungerRate>
+      <baseHealthScale>2.75</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <!-- <roamMtbDays>2</roamMtbDays> -->
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.25</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <herdAnimal>true</herdAnimal>
+      <packAnimal>true</packAnimal>
+      <lifeExpectancy>55</lifeExpectancy>
+      <leatherDef>RSW_Leather_Saurian</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <trainability>Advanced</trainability>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.02</AridShrubland>
+        <TemperateForest>0.04</TemperateForest>
+        <TropicalRainforest>0.01</TropicalRainforest>
+        <IceSheet>0</IceSheet>
+        <BorealForest>0.04</BorealForest>
+        <Tundra>0.05</Tundra>
+        <Desert>0.05</Desert>
+      </wildBiomes>
+      <nuzzleMtbHours>275</nuzzleMtbHours>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>RSW_Pawn_Dewback_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Dewback_Death</soundDeath>
+          <soundCall>RSW_Pawn_Dewback_Call</soundCall>
+          <soundAngry>RSW_Pawn_Dewback_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>StandardAnimal</li>
+      <li>AnimalCommon</li>
+      <li>BadassAnimal</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Dewback</defName>
+    <label>dewback</label>
+    <race>RSW_Dewback</race>
+    <combatPower>325</combatPower>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <wildGroupSize>2~5</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+    </abilities>
+    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/Dewback/DewbackW</texPath>
+        <color>(137,147,100)</color>
+      </li>
+      <li>
+        <texPath>swanimals/Dewback/DewbackW</texPath>
+        <color>(116,124,83)</color>
+      </li>
+      <li>
+        <texPath>swanimals/Dewback/DewbackW</texPath>
+        <color>(71,99,56)</color>
+      </li>
+      <li>
+        <texPath>swanimals/Dewback/DewbackW</texPath>
+        <color>(93,122,78)</color>
+      </li>
+      <li>
+        <texPath>swanimals/Dewback/DewbackW</texPath>
+        <color>(181,181,97)</color>
+      </li>
+      <li>
+        <texPath>swanimals/Dewback/DewbackW</texPath>
+        <color>(193,168,69)</color>
+      </li>
+    </alternateGraphics>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Dewback/Dewback</texPath>
+          <drawSize>1.0</drawSize>
+          <shaderType>CutoutComplex</shaderType>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dewback/Dewback_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Dewback/Dewback</texPath>
+          <drawSize>2.0</drawSize>
+          <shaderType>CutoutComplex</shaderType>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dewback/Dewback_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Dewback/Dewback</texPath>
+          <drawSize>3.0</drawSize>
+          <shaderType>CutoutComplex</shaderType>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dewback/Dewback_Dessicated</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>

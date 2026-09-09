@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave B — support BodyPartDefs/BodyPartGroupDefs.
+
+  Ported verbatim from mlie.starwarsanimalcollection's Bodies/BodyParts_StarWars.xml
+  (the WHOLE file, not just this wave's own needs — it is small, self-contained, and
+  every defName gets a flat RSW_ prefix, matching the sound-wave convention
+  (mlie_sound_defname_map.json) and Wave A's creature renames. Porting the full file
+  now means Wave C species that reuse these same tail/claw/horn/wing/tentacle parts
+  (Rancor, Blixus, Beldon, Lylek, etc.) do not need this exercise repeated.
+
+  Only RSW_SWTailAttackTool, RSW_SWLeftLegClawAttackTool, RSW_SWRightLegClawAttackTool,
+  RSW_SWLeftFingerClaw and RSW_SWRightFingerClaw are used by this wave's own species
+  (Dewback, Acklay, Wampa) — the rest sit ready for later waves. All tags used inside
+  (MovingLimbDigit, ManipulationLimbDigit, MovingLimbCore, ManipulationLimbCore) are
+  vanilla Core body-part tags; nothing here depends on the donor mod being present.
+-->
+<Defs>
+  <!--===================== Claws =====================-->
+  <BodyPartDef Name="RSW_SWClawBase" Abstract="True">
+    <hitPoints>7</hitPoints>
+    <solid>true</solid>
+    <alive>false</alive>
+    <bleedRate>0</bleedRate>
+    <permanentInjuryChanceFactor>0</permanentInjuryChanceFactor>
+    <skinCovered>false</skinCovered>
+    <frostbiteVulnerability>10</frostbiteVulnerability>
+    <pawnGeneratorCanAmputate>true</pawnGeneratorCanAmputate>
+  </BodyPartDef>
+  <BodyPartDef ParentName="RSW_SWClawBase">
+    <defName>RSW_SW_Claw</defName>
+    <label>claw</label>
+    <labelShort>claw</labelShort>
+    <tags>
+      <li>MovingLimbDigit</li>
+      <li>ManipulationLimbDigit</li>
+    </tags>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RSW_SW_LeftClaw</defName>
+    <label>left claw</label>
+    <hitPoints>20</hitPoints>
+    <frostbiteVulnerability>0</frostbiteVulnerability>
+    <permanentInjuryChanceFactor>0.00</permanentInjuryChanceFactor>
+    <skinCovered>false</skinCovered>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RSW_SW_RightClaw</defName>
+    <label>right claw</label>
+    <hitPoints>20</hitPoints>
+    <frostbiteVulnerability>0</frostbiteVulnerability>
+    <permanentInjuryChanceFactor>0.00</permanentInjuryChanceFactor>
+    <skinCovered>false</skinCovered>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RSW_SW_Spikes</defName>
+    <label>spikes</label>
+    <hitPoints>20</hitPoints>
+    <frostbiteVulnerability>0</frostbiteVulnerability>
+    <permanentInjuryChanceFactor>0.00</permanentInjuryChanceFactor>
+    <skinCovered>false</skinCovered>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RSW_SW_Club</defName>
+    <label>club</label>
+    <hitPoints>20</hitPoints>
+    <frostbiteVulnerability>0</frostbiteVulnerability>
+    <permanentInjuryChanceFactor>0.00</permanentInjuryChanceFactor>
+    <skinCovered>false</skinCovered>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RSW_SW_FrontHorn</defName>
+    <label>front horn</label>
+    <hitPoints>20</hitPoints>
+    <permanentInjuryChanceFactor>0.2</permanentInjuryChanceFactor>
+    <skinCovered>false</skinCovered>
+    <solid>true</solid>
+    <alive>false</alive>
+    <bleedRate>0</bleedRate>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RSW_SW_LeftHorn</defName>
+    <label>left horn</label>
+    <hitPoints>20</hitPoints>
+    <permanentInjuryChanceFactor>0.2</permanentInjuryChanceFactor>
+    <skinCovered>false</skinCovered>
+    <solid>true</solid>
+    <alive>false</alive>
+    <bleedRate>0</bleedRate>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RSW_SW_RightHorn</defName>
+    <label>right horn</label>
+    <hitPoints>20</hitPoints>
+    <permanentInjuryChanceFactor>0.2</permanentInjuryChanceFactor>
+    <skinCovered>false</skinCovered>
+    <solid>true</solid>
+    <alive>false</alive>
+    <bleedRate>0</bleedRate>
+  </BodyPartDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWLeftFingerClaw</defName>
+    <label>left finger claw</label>
+    <labelShort>finger claw</labelShort>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWRightFingerClaw</defName>
+    <label>right finger claw</label>
+    <labelShort>finger claw</labelShort>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWTailAttackTool</defName>
+    <label>tail</label>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWLeftArmClawAttackTool</defName>
+    <label>left claw</label>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWRightArmClawAttackTool</defName>
+    <label>right claw</label>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWLeftLegClawAttackTool</defName>
+    <label>left claw</label>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWRightLegClawAttackTool</defName>
+    <label>right claw</label>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWLeftLeg</defName>
+    <label>left leg</label>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWRightLeg</defName>
+    <label>right leg</label>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWHornAttackTool</defName>
+    <label>horn</label>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWToxicAppendage</defName>
+    <label>poisonous appendage</label>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWLeftHoof</defName>
+    <label>raised hoof</label>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWRightHoof</defName>
+    <label>raised hoof</label>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWClaws</defName>
+    <label>claws</label>
+  </BodyPartGroupDef>
+  <BodyPartDef>
+    <defName>RSW_SW_RightWing</defName>
+    <label>right wing</label>
+    <hitPoints>20</hitPoints>
+    <frostbiteVulnerability>6</frostbiteVulnerability>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+    </tags>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RSW_SW_LeftWing</defName>
+    <label>left wing</label>
+    <hitPoints>20</hitPoints>
+    <frostbiteVulnerability>6</frostbiteVulnerability>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+    </tags>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RSW_SW_RightFlipper</defName>
+    <label>right flipper</label>
+    <hitPoints>10</hitPoints>
+    <frostbiteVulnerability>6</frostbiteVulnerability>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+      <li>ManipulationLimbCore</li>
+    </tags>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RSW_SW_LeftFlipper</defName>
+    <label>left flipper</label>
+    <hitPoints>10</hitPoints>
+    <frostbiteVulnerability>6</frostbiteVulnerability>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+      <li>ManipulationLimbCore</li>
+    </tags>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RSW_SW_DexterousTail</defName>
+    <label>dexterous tail</label>
+    <hitPoints>7</hitPoints>
+    <frostbiteVulnerability>6</frostbiteVulnerability>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbDigit</li>
+      <li>ManipulationLimbDigit</li>
+    </tags>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RSW_SW_LeftTentacle</defName>
+    <label>left tentacle</label>
+    <hitPoints>15</hitPoints>
+    <frostbiteVulnerability>6</frostbiteVulnerability>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+      <li>ManipulationLimbCore</li>
+    </tags>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RSW_SW_RightTentacle</defName>
+    <label>right tentacle</label>
+    <hitPoints>15</hitPoints>
+    <frostbiteVulnerability>6</frostbiteVulnerability>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+      <li>ManipulationLimbCore</li>
+    </tags>
+  </BodyPartDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SWTentacleAttackTool</defName>
+    <label>thrashing tentacle</label>
+    <labelShort>tentacle</labelShort>
+  </BodyPartGroupDef>
+  <BodyPartDef>
+    <defName>RSW_SW_DorsalTentacle</defName>
+    <label>dorsal tentacle</label>
+    <hitPoints>15</hitPoints>
+    <frostbiteVulnerability>6</frostbiteVulnerability>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+      <li>ManipulationLimbCore</li>
+    </tags>
+  </BodyPartDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SW_FirstTentacleBeldon</defName>
+    <label>tentacle</label>
+    <listOrder>80</listOrder>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SW_SecondTentacleBeldon</defName>
+    <label>tentacle</label>
+    <listOrder>80</listOrder>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SW_ThirdTentacleBeldon</defName>
+    <label>tentacle</label>
+    <listOrder>80</listOrder>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SW_FirstTentacleBlixus</defName>
+    <label>tentacle</label>
+    <listOrder>80</listOrder>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SW_SecondTentacleBlixus</defName>
+    <label>tentacle</label>
+    <listOrder>80</listOrder>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SW_FirstTentacleLylek</defName>
+    <label>tentacle</label>
+    <listOrder>80</listOrder>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_SW_SecondTentacleLylek</defName>
+    <label>tentacle</label>
+    <listOrder>80</listOrder>
+  </BodyPartGroupDef>
+  <BodyPartGroupDef>
+    <defName>RSW_RancorHeart</defName>
+    <label>rancor heart</label>
+    <listOrder>80</listOrder>
+  </BodyPartGroupDef>
+  <BodyPartDef>
+    <defName>RSW_SW_SerpentTail</defName>
+    <label>serpent tail</label>
+    <hitPoints>30</hitPoints>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+    </tags>
+    <executionPartPriority>500</executionPartPriority>
+  </BodyPartDef></Defs>

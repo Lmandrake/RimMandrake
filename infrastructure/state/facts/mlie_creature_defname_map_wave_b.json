@@ -1,0 +1,101 @@
+{
+  "_comment": "MLIE_FAUNA_ABSORPTION_1 Wave B. old Mlie defName -> new RSW_ defName. Sibling to mlie_creature_defname_map_wave_a.json (Bantha) and mlie_sound_defname_map.json (589 SoundDefs). Covers this wave's 6 creatures (Dewback, Wampa, Acklay, Vulptex, Porg, Nuna) plus every supporting def (BodyDef, BodyPartDef/GroupDef, AbilityDef/HediffDef/TrainableDef, resource ThingDef) their ports needed. Wampa and Acklay were Tier C (no functional dependency, never actually cast) before this wave - wired in per the owner's question-card ruling (STARWARS_DONOR_SUNSET_1, 2026-09-02). Nuna's defName collision with vanilla Core is resolved by this same RSW_ prefix - both now coexist in the cast.",
+  "creatures": {
+    "Dewback": "RSW_Dewback",
+    "Wampa": "RSW_Wampa",
+    "Acklay": "RSW_Acklay",
+    "Vulptex": "RSW_Vulptex",
+    "Porg": "RSW_Porg",
+    "Nuna": "RSW_Nuna"
+  },
+  "bodydefs": {
+    "Dewback": "RSW_Dewback",
+    "Wampa": "RSW_Wampa",
+    "Acklay": "RSW_Acklay"
+  },
+  "bodyparts_full_file_port": {
+    "_comment": "The WHOLE donor BodyParts_StarWars.xml was ported (not just this wave's needs) - future waves reusing these tail/claw/horn/wing/tentacle parts need no repeat of this exercise.",
+    "SWClawBase": "RSW_SWClawBase",
+    "SW_Claw": "RSW_SW_Claw",
+    "SW_LeftClaw": "RSW_SW_LeftClaw",
+    "SW_RightClaw": "RSW_SW_RightClaw",
+    "SW_Spikes": "RSW_SW_Spikes",
+    "SW_Club": "RSW_SW_Club",
+    "SW_FrontHorn": "RSW_SW_FrontHorn",
+    "SW_LeftHorn": "RSW_SW_LeftHorn",
+    "SW_RightHorn": "RSW_SW_RightHorn",
+    "SWLeftFingerClaw": "RSW_SWLeftFingerClaw",
+    "SWRightFingerClaw": "RSW_SWRightFingerClaw",
+    "SWTailAttackTool": "RSW_SWTailAttackTool",
+    "SWLeftArmClawAttackTool": "RSW_SWLeftArmClawAttackTool",
+    "SWRightArmClawAttackTool": "RSW_SWRightArmClawAttackTool",
+    "SWLeftLegClawAttackTool": "RSW_SWLeftLegClawAttackTool",
+    "SWRightLegClawAttackTool": "RSW_SWRightLegClawAttackTool",
+    "SWLeftLeg": "RSW_SWLeftLeg",
+    "SWRightLeg": "RSW_SWRightLeg",
+    "SWHornAttackTool": "RSW_SWHornAttackTool",
+    "SWToxicAppendage": "RSW_SWToxicAppendage",
+    "SWLeftHoof": "RSW_SWLeftHoof",
+    "SWRightHoof": "RSW_SWRightHoof",
+    "SWClaws": "RSW_SWClaws",
+    "SW_RightWing": "RSW_SW_RightWing",
+    "SW_LeftWing": "RSW_SW_LeftWing",
+    "SW_RightFlipper": "RSW_SW_RightFlipper",
+    "SW_LeftFlipper": "RSW_SW_LeftFlipper",
+    "SW_DexterousTail": "RSW_SW_DexterousTail",
+    "SW_LeftTentacle": "RSW_SW_LeftTentacle",
+    "SW_RightTentacle": "RSW_SW_RightTentacle",
+    "SWTentacleAttackTool": "RSW_SWTentacleAttackTool",
+    "SW_DorsalTentacle": "RSW_SW_DorsalTentacle",
+    "SW_FirstTentacleBeldon": "RSW_SW_FirstTentacleBeldon",
+    "SW_SecondTentacleBeldon": "RSW_SW_SecondTentacleBeldon",
+    "SW_ThirdTentacleBeldon": "RSW_SW_ThirdTentacleBeldon",
+    "SW_FirstTentacleBlixus": "RSW_SW_FirstTentacleBlixus",
+    "SW_SecondTentacleBlixus": "RSW_SW_SecondTentacleBlixus",
+    "SW_FirstTentacleLylek": "RSW_SW_FirstTentacleLylek",
+    "SW_SecondTentacleLylek": "RSW_SW_SecondTentacleLylek",
+    "RancorHeart": "RSW_RancorHeart",
+    "SW_SerpentTail": "RSW_SW_SerpentTail"
+  },
+  "abilities": {
+    "SW_Rampage": "RSW_SW_Rampage",
+    "SW_Spur": "RSW_SW_Spur"
+  },
+  "resources": {
+    "EggDewbackFertilized": "RSW_EggDewbackFertilized",
+    "EggDewbackUnFertilized": "RSW_EggDewbackUnFertilized",
+    "EggAcklayFertilized": "RSW_EggAcklayFertilized",
+    "EggAcklayUnFertilized": "RSW_EggAcklayUnFertilized",
+    "EggPorgFertilized": "RSW_EggPorgFertilized",
+    "EggPorgUnFertilized": "RSW_EggPorgUnFertilized",
+    "EggNunaFertilized": "RSW_EggNunaFertilized",
+    "EggNunaUnFertilized": "RSW_EggNunaUnFertilized",
+    "Leather_Saurian": "RSW_Leather_Saurian",
+    "Leather_Crustapod": "RSW_Leather_Crustapod",
+    "Leather_SoftFur": "RSW_Leather_SoftFur",
+    "Leather_Wampa": "RSW_Leather_Wampa",
+    "Leather_Reptavian": "RSW_Leather_Reptavian",
+    "Leather_Mammavian": "RSW_Leather_Mammavian",
+    "Saurian_Meat": "RSW_Saurian_Meat",
+    "Crustapod_Meat": "RSW_Crustapod_Meat",
+    "Tough_Meat": "RSW_Tough_Meat",
+    "Reptomammal_Meat": "RSW_Reptomammal_Meat",
+    "Reptavian_Meat": "RSW_Reptavian_Meat",
+    "Mammavian_Meat": "RSW_Mammavian_Meat",
+    "AcklayClaw": "RSW_AcklayClaw",
+    "WampaSkull": "RSW_WampaSkull"
+  },
+  "not_ported_this_wave": {
+    "_comment": "Reek, Tauntaun, Nexu - named in this item's original Wave B plan (2026-09-02) - were re-verified against the LIVE BiomeCast_Ashkarr.xml this pass and found ABSENT from the current cast entirely (dropped in a later biome-authoring session; the 2026-09-02 census was stale). Not ported: no longer a measured dependency. A future wave should re-run the full non-scan-grade defName sweep (this item's own Wave C precondition) before deciding whether they need porting at all.",
+    "Reek": "not currently cast, no cast_assignment.csv row - deferred pending re-verification",
+    "Tauntaun": "not currently cast, no cast_assignment.csv row - deferred pending re-verification",
+    "Nexu": "not currently cast, no cast_assignment.csv row - deferred pending re-verification"
+  },
+  "known_gap_found_and_fixed_this_pass": {
+    "_comment": "Wave A's RSW_Bantha (2026-09-02) was authored but its 3 BiomeCast_Ashkarr.xml cast entries and 3 cast_assignment.csv rows were NEVER repointed from bare 'Bantha' - meaning the wild Bantha population was still Mlie's donor def, not our own port, until this pass. Fixed here alongside Wave B's own renames (same mechanism, same files, near-zero marginal cost) rather than left open.",
+    "biomes_fixed": ["AridShrubland", "Desert", "ZBiome_DesertOasis"]
+  },
+  "gating_caveat": {
+    "_comment": "Renamed cast entries (RSW_Bantha, RSW_Dewback, RSW_Vulptex, RSW_Porg) were left INSIDE their existing MayRequire=\"mlie.starwarsanimalcollection\" PatchOperationAdd blocks rather than moved to a mandrake.rsw.swbestiary-gated block, because gen_cast_patch.py's per-animal donor gating (ANIMALPKG) is read from the newest def-dump CAPTURE, and no capture has ever seen these RSW_ defNames yet - a safe regen right now would SKIP them entirely (PAWNKINDS gate). Functionally correct today because this item's own scope keeps Mlie active until all waves land. New entries (RSW_Nuna additions, RSW_Wampa, RSW_Acklay) were gated on mandrake.rsw.swbestiary directly since there was no existing block to reuse. A full safe regen of gen_cast_patch.py, once a post-deployment capture exists, will correct every renamed entry's gating in one pass - do not hand-patch this again before then."
+  }
+}

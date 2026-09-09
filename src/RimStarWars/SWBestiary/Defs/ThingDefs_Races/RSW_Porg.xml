@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave B — Porg creature port.
+  Ported from mlie.starwarsanimalcollection's `Porg` ThingDef/PawnKindDef pair,
+  renamed under the RSW_ tier prefix. Vanilla Core body (Bird) — no donor BodyDef
+  needed. Egg/leather/meat (RSW_EggPorg{,Un}Fertilized, RSW_Leather_Mammavian,
+  RSW_Mammavian_Meat, RSW_MlieWaveB_Resources.xml), sounds (RSW_Pawn_Porg_*,
+  already absorbed; the chick life stage keeps vanilla Pawn_Chick_Call, unchanged).
+  The vanilla PawnKindDef.flyingAnimationFramePathPrefix{,Female} fields (Odyssey's
+  migratory-bird flight-frame system) are ported along with their 4-frame art sets
+  (swanimals/Porg/Porg_{,f_}Flying_1..4), not dropped — the extracted bundle
+  included them and the fields are Core, not donor-specific. texPaths otherwise
+  unchanged text. Live at AridShrubland in the current cast
+  (cast_assignment.csv / BiomeCast_Ashkarr.xml), repointed from the bare "Porg"
+  entry this same pass.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_Porg</defName>
+    <label>porg</label>
+    <description>The Porg.</description>
+    <statBases>
+      <MoveSpeed>2.1</MoveSpeed>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <MarketValue>75</MarketValue>
+      <Wildness>0</Wildness>
+      <MaxFlightTime>30</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggPorgUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggPorgFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>2</eggLayIntervalDays>
+        <eggCountRange>2</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>Bird</body>
+      <baseHungerRate>0.35</baseHungerRate>
+      <baseBodySize>0.18</baseBodySize>
+      <baseHealthScale>0.35</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <herdAnimal>true</herdAnimal>
+      <roamMtbDays>7</roamMtbDays>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <leatherDef>RSW_Leather_Mammavian</leatherDef>
+      <specificMeatDef>RSW_Mammavian_Meat</specificMeatDef>
+      <lifeExpectancy>6</lifeExpectancy>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.4</leaveMapOnFleeChance>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <wildBiomes>
+        <AridShrubland>0.04</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.0</TropicalRainforest>
+        <TropicalSwamp>0.4</TropicalSwamp>
+        <TemperateSwamp>0.8</TemperateSwamp>
+        <TemperateForest>0.08</TemperateForest>
+        <BorealForest>0.04</BorealForest>
+        <Tundra>0.01</Tundra>
+        <ColdBog>0.04</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Chick_Call</soundWounded>
+          <soundDeath>Pawn_Chick_Call</soundDeath>
+          <soundCall>Pawn_Chick_Call</soundCall>
+          <soundAngry>Pawn_Chick_Call</soundAngry>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.12</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>RSW_Pawn_Porg_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Porg_Death</soundDeath>
+          <soundCall>RSW_Pawn_Porg_Call</soundCall>
+          <soundAngry>RSW_Pawn_Porg_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Porg</defName>
+    <label>porg</label>
+    <race>RSW_Porg</race>
+    <combatPower>30</combatPower>
+    <ecoSystemWeight>0.50</ecoSystemWeight>
+    <wildGroupSize>2~5</wildGroupSize>
+    <flyingAnimationFramePathPrefix>swanimals/Porg/Porg_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFramePathPrefixFemale>swanimals/Porg/Porg_f_Flying_</flyingAnimationFramePathPrefixFemale>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>1.25</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <label>porglet</label>
+        <labelPlural>porglets</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Porg/Porg_j</texPath>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Porg/Porg_j</texPath>
+          <drawSize>0.5</drawSize>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Porg/Porg_j_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Porg/Porg</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Porg/Porg_f</texPath>
+          <drawSize>0.75</drawSize>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Porg/Porg_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Porg/Porg</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Porg/Porg_f</texPath>
+          <drawSize>1.0</drawSize>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Porg/Porg_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>

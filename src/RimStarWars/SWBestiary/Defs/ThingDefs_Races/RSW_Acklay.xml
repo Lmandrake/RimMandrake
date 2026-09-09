@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave B — Acklay creature port, executing the owner's
+  ruling (STARWARS_DONOR_SUNSET_1, question card 2026-09-02): "Wampa and Acklay:
+  WIRE THEM IN — port both and give them real cast slots ... honoring the original
+  adoption intent that never landed." Acklay was Tier C in the 2026-09-02
+  dependency census (no functional dependency — cited in required_mods.md as an
+  adoption reason but never actually cast). "Wherever fits" per the ruling: cast
+  into Scarlands at a low commonality (0.05) — a savage, armored arena predator
+  fits the biome's war-wreckage/weapon-descendant register better than Ash'karr's
+  other biomes, and Scarlands already hosts several rare apex creatures at similar
+  weights.
+
+  Ported from mlie.starwarsanimalcollection's `Acklay` ThingDef/PawnKindDef pair,
+  renamed under the RSW_ tier prefix. Custom body (RSW_Acklay,
+  RSW_MlieWaveB_Bodies.xml — an armored arthropod build: Shell/Elytra/InsectLeg/
+  InsectHead, the donor's own theming for a crustacean-like predator), custom
+  body-part-groups (RSW_SWLeftLegClawAttackTool/RSW_SWRightLegClawAttackTool,
+  RSW_MlieWaveB_BodyParts.xml), the Odyssey rampage ability (RSW_SW_Rampage,
+  RSW_MlieWaveB_Abilities.xml), eggs/leather/meat/trophy (RSW_EggAcklay{,Un}
+  Fertilized, RSW_Leather_Crustapod, RSW_Crustapod_Meat, RSW_AcklayClaw,
+  RSW_MlieWaveB_Resources.xml), sounds (RSW_Pawn_Acklay_*, already absorbed).
+  texPaths unchanged text (swanimals/Acklay/... — the alternate-graphics palette of
+  5 colour variants, each with its own swimming set, ported along with the base).
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Acklay</defName>
+    <label>acklay</label>
+    <description>The acklay is a non-sentient carnivore native to planet Vendaxa. Acklays have sharp claws, thick skin, and are about 3 meters tall. Due to these attributes, as well as the species' ferocity, acklays are often exported from Vendaxa to be used in gladiatorial combat. The creatures can be found on Geonosis, where they are commonly brought in to fight other creatures—and sentients—in the Petranaki arena.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <MarketValue>1800</MarketValue>
+      <ArmorRating_Blunt>0.20</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.20</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.20</ArmorRating_Heat>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Cut</li>
+          <li>Stab</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWLeftLegClawAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <capacities>
+          <li>Cut</li>
+          <li>Stab</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWRightLegClawAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>1.4</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggAcklayUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggAcklayFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>30</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~6</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Acklay</body>
+      <predator>true</predator>
+      <baseBodySize>3.0</baseBodySize>
+      <maxPreyBodySize>3.0</maxPreyBodySize>
+      <baseHungerRate>0.35</baseHungerRate>
+      <baseHealthScale>3.5</baseHealthScale>
+      <leatherDef>RSW_Leather_Crustapod</leatherDef>
+      <specificMeatDef>RSW_Crustapod_Meat</specificMeatDef>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <lifeExpectancy>35</lifeExpectancy>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.40</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Rampage</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.014</AridShrubland>
+        <TemperateForest>0.08</TemperateForest>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <IceSheet>0</IceSheet>
+        <BorealForest>0.008</BorealForest>
+        <Tundra>0.008</Tundra>
+        <Desert>0.008</Desert>
+      </wildBiomes>
+      <nuzzleMtbHours>275</nuzzleMtbHours>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+          <soundWounded>RSW_Pawn_Acklay_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Acklay_Death</soundDeath>
+          <soundCall>RSW_Pawn_Acklay_Call</soundCall>
+          <soundAngry>RSW_Pawn_Acklay_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Acklay</defName>
+    <label>acklay</label>
+    <race>RSW_Acklay</race>
+    <combatPower>500</combatPower>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Rampage</li>
+    </abilities>
+    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/Acklay/AcklayA</texPath>
+        <swimmingTexPath>swanimals/Acklay/AcklayA_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/Acklay/AcklayB</texPath>
+        <swimmingTexPath>swanimals/Acklay/AcklayB_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/Acklay/AcklayC</texPath>
+        <swimmingTexPath>swanimals/Acklay/AcklayC_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/Acklay/AcklayD</texPath>
+        <swimmingTexPath>swanimals/Acklay/AcklayD_Swimming</swimmingTexPath>
+      </li>
+      <li>
+        <texPath>swanimals/Acklay/AcklayE</texPath>
+        <swimmingTexPath>swanimals/Acklay/AcklayE_Swimming</swimmingTexPath>
+      </li>
+    </alternateGraphics>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>1.25</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Acklay/Acklay</texPath>
+          <drawSize>1.6</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Acklay/Acklay_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Acklay/Acklay_Dessicated</texPath>
+          <drawSize>1.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Acklay/Acklay</texPath>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Acklay/Acklay_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Acklay/Acklay_Dessicated</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Acklay/Acklay</texPath>
+          <drawSize>2.9</drawSize>
+          <shadowData>
+            <volume>(1.2, 1, 1)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Acklay/Acklay_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.9</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Acklay/Acklay_Dessicated</texPath>
+          <drawSize>2.9</drawSize>
+        </dessicatedBodyGraphicData>
+        <butcherBodyPart>
+          <bodyPartGroup>Feet</bodyPartGroup>
+          <thing>RSW_AcklayClaw</thing>
+        </butcherBodyPart>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>
