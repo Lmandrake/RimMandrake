@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  EGG_PROXIMITY_HATCH_TRIGGER_1. Wires RimMandrake.ProximityHatch's generic
+  engine comp (src/RimMandrake/ProximityHatch) onto one real shipping egg -
+  RSW_ProtovermesEggFertilized (Defs/ThingDefs_Items/RSW_Absorbed_Eggs.xml),
+  which already carries vanilla CompProperties_Hatcher hatching
+  RSW_Protovermes. Not invented content: the egg and its hatcherPawn are
+  the JURASSIC_RETIREMENT_ABSORPTION content, unchanged.
+
+  Protovermes was picked over the other seven absorbed eggs in this file
+  because it is a genuine small predator (Wildness 0.75, claw+bite tools,
+  canBePredatorPrey false because it hunts) - "hatch at you" reads as a
+  threat rather than a curiosity.
+
+  MayRequire-gated on the engine mod's own packageId: absent it, this file
+  is a silent no-op and RSW_ProtovermesEggFertilized keeps hatching on its
+  vanilla CompHatcher timer only, exactly as it does today. loadAfter
+  mandrake.rm.proximityhatch is declared in this mod's own About.xml so the
+  CompProperties_ProximityHatch TYPE is already loaded when this patch runs.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.proximityhatch">
+    <xpath>/Defs/ThingDef[defName="RSW_ProtovermesEggFertilized"]/comps</xpath>
+    <value>
+      <li Class="RimMandrake.ProximityHatch.CompProperties_ProximityHatch">
+        <!-- Close-range ambush, not a nest you can see coming from across
+             the map - three cells is roughly "the pawn is standing right
+             next to it" by the time the egg reacts. -->
+        <triggerRadius>3</triggerRadius>
+        <scanIntervalTicks>60</scanIntervalTicks>
+      </li>
+    </value>
+  </Operation>
+
+</Patch>
