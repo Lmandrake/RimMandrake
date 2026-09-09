@@ -1,0 +1,46 @@
+{
+  "sheet": "terminator_sea + the_twilight_deep",
+  "defNames": ["RUT_TwilightSea"],
+  "tiles": 479,
+  "authored": "2026-09-09",
+  "law_sources": ["terminator_sea.md", "the_twilight_deep.md", "_assignment_prep.md §6", "_freeze_rulings_2026-09-07.md R8/R17", "owner cards 2026-09-09"],
+  "fauna": [
+    {"def": "RSW_Lanternwhale", "commonality": 0.005, "action": "import",
+     "band": "endemic giant — single-spawn, the last of its lineage",
+     "law": "terminator_sea §4 (osmotic surface area: giants, few, far apart; every large organism endemic to its own sea) + §Roster cap; the_twilight_deep §4: the gardener — placid, tends the roof; bs 40, spd 1.8, non-predator (MEASURED)",
+     "note": "THE gardener. Killing the last one kills the roof (twilight_deep ban 2). One giant, no juvenile — terminator_sea §1: 'the last of the only lineage this particular sea ever produced'. Donor: RimMandrake - SW Sea Beasts (prep §6.4 menu)."},
+    {"def": "AA_Aerofleet", "commonality": 0.05, "action": "import",
+     "band": "shore/shadow-lane drifter",
+     "law": "terminator_sea prep §6.1 target allows 1-2 shore/shadow-lane forms; ubiquity-25 BINDING (owner card 2026-09-09): AA_Aerofleet terminator-adjacent only, keep scarce; R17 fliers cross biomes; bs 0.2, spd 2.84, non-predator (MEASURED)",
+     "note": "Shared with the Grey Sea shore — legal: the one-def-per-sea endemism law binds GIANTS; a drifting flier ranges (R17). Not a school: trace commonality, no herd special (MEASURED)."}
+  ],
+  "evictions": [],
+  "stat_adjustments": [],
+  "flora": [],
+  "flora_purged": [],
+  "fish": {
+    "ruling": "no surface fish — saturated brine plus the no-schools ban (terminator_sea §6); the silver shoals exist ONLY beneath the mat-roof (the_twilight_deep §4, 'the only ordinary fishing on the planet' §7) and ride the deferred diving-mods implementation; analogs only, owed as new defs (FISH_BY_BIOME_1)",
+    "list": []
+  },
+  "new_defs": [
+    {"name": "the mold-mat roof organism (Twilight monoculture, shore-to-shore)", "kind": "plant",
+     "mechanic_load": "none for the def; C#: skylight drift deferred to diving mods", "from_sheet": "terminator_sea §4 (one mat per sea) + the_twilight_deep §0-3"},
+    {"name": "rename ledger: RSW_Lanternwhale → 'Twilight Gardener' endemic label (defName migration rides NAMING_SCHEME_EXECUTION_1 — do not rename ahead of it)", "kind": "creature",
+     "mechanic_load": "none", "from_sheet": "terminator_sea §4 endemic law; prep §6.4 renames-to-endemic"},
+    {"name": "salt-rimed blade flora (black sail on white pan — planar, vertical, hundreds of metres apart)", "kind": "plant",
+     "mechanic_load": "none", "from_sheet": "terminator_sea §4/§9"},
+    {"name": "shadow-lane detritivore", "kind": "creature", "mechanic_load": "none", "from_sheet": "terminator_sea §4 (the permanent shadow is a habitat); prep §6.4 — no donor"},
+    {"name": "condensate drinker (fog-lick fauna)", "kind": "creature", "mechanic_load": "none", "from_sheet": "terminator_sea §4 + R8 (dew and fog stand); prep §6.4 — no donor"},
+    {"name": "shore scavenger on stranded carcasses (StoneCrab/HermitCrab bodies fit the niche but fail recognizability — REGENERATE or NEW, prep §6.4)", "kind": "creature",
+     "mechanic_load": "none", "from_sheet": "terminator_sea §Roster"},
+    {"name": "the Twilight Deep set, DEFERRED to diving mods: kelp forest flora, ceiling-garden encrusters, silver shoal fish-analog (schools legal only below the roof), the one true predator (candidate donor body when needed: RSW_ColoClawFish bs 3.0 spd 4.0 predator MEASURED — currently homeless-reserve), river-bank fauna", "kind": "creature",
+     "mechanic_load": "deferred: diving mods (standing ruling, the_twilight_deep header)", "from_sheet": "the_twilight_deep §4"}
+  ],
+  "confidence": [
+    {"claim": "RSW_ sea-beast pool is 18 live register rows, not the 12 stated in _assignment_prep §6.4", "status": "MEASURED", "why": "direct count of RSW_ rows, all cut=false/zeroed=none/modDropped=false; discrepancy noted, not resolved"},
+    {"claim": "any flier reasoning here", "status": "UNMEASURED", "why": "register flies special is broken (every RSW row carries it)"},
+    {"claim": "Lanternwhale placidity/gardener temperament", "status": "UNMEASURED", "why": "non-predator is MEASURED; the placid read is by-name/design"},
+    {"claim": "the remaining RSW sea beasts (15 after Lanternwhale/Reefback/two sandos place) stay homeless-reserve", "status": "ruled", "why": "owner card 2026-09-09 homeless default; prep §6.4 — the seas cannot hold 12+ kinds; six small RSW carry the herd-migration special (MEASURED) and are barred by the no-herds ban regardless"},
+    {"claim": "biome had 0 register residents to evict", "status": "MEASURED", "why": "def shipped with wildAnimals empty; no register row lists RUT_TwilightSea"}
+  ]
+}

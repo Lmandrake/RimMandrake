@@ -1,0 +1,447 @@
+{
+ "sheet": "poison_forest",
+ "defNames": [
+  "PoisonForest"
+ ],
+ "tiles": 557,
+ "authored": "2026-09-09",
+ "law_sources": [
+  "poison_forest.md \u00a76",
+  "_assignment_prep.md \u00a75 + \u00a79 (BINDING)",
+  "_freeze_rulings_2026-09-07.md R13 (chemical vents, no heat)",
+  "owner cards 2026-09-09"
+ ],
+ "fauna": [
+  {
+   "def": "Neebray",
+   "commonality": 0.8,
+   "action": "keep",
+   "band": "small-flier",
+   "law": "ban 9 pass: spd 3.0 (MEASURED); \u00a79 BINDING names poison forest + caves its two homes",
+   "note": "SW icon; flier claim UNMEASURED (broken flag); toxic-prized-meat carrier"
+  },
+  {
+   "def": "AA_OcularJelly",
+   "commonality": 0.5,
+   "action": "keep",
+   "band": "small",
+   "law": "eye-heavy signature (sheet \u00a74: many-eyes lane); spd 2.0 (MEASURED)",
+   "note": "commonality raised \u2014 the biome's own adjective in a body"
+  },
+  {
+   "def": "AA_InfectedAerofleet",
+   "commonality": 0.5,
+   "action": "keep",
+   "band": "small",
+   "law": "spd 2.84 (MEASURED); 'infected' = the biome's read (prep \u00a75.2)"
+  },
+  {
+   "def": "AM_Dryad_Corruptor",
+   "commonality": 0.4,
+   "action": "keep",
+   "band": "small",
+   "law": "spd 3.0 (MEASURED); alien, slow, does not eat \u2014 no grazing-body conflict (ban 8)",
+   "note": "see confidence: wild-function UNMEASURED"
+  },
+  {
+   "def": "AM_Dryad_Ocular",
+   "commonality": 0.4,
+   "action": "keep",
+   "band": "small",
+   "law": "spd 4.0 (MEASURED) passes ban 9; eye-heavy per sheet \u00a74",
+   "note": "see confidence: wild-function UNMEASURED"
+  },
+  {
+   "def": "AM_Dryad_Tumorous",
+   "commonality": 0.4,
+   "action": "keep",
+   "band": "small",
+   "law": "spd 2.0 (MEASURED); alien slow form",
+   "note": "see confidence: wild-function UNMEASURED"
+  },
+  {
+   "def": "BMT_Screecher",
+   "commonality": 0.35,
+   "action": "keep",
+   "band": "medium-pred",
+   "law": "spd 3.0 (MEASURED); pack ambusher, contamination-authored (prep \u00a75.2)",
+   "note": "toxic-prized-meat carrier"
+  },
+  {
+   "def": "Visceral",
+   "commonality": 0.35,
+   "action": "keep",
+   "band": "medium-pred",
+   "law": "spd 3.85 (MEASURED) passes ban 9; sealed insectoid horror",
+   "note": "toxic-prized-meat carrier"
+  },
+  {
+   "def": "AA_BedBug",
+   "commonality": 0.3,
+   "action": "keep",
+   "band": "small-pred",
+   "law": "spd 3.0 (MEASURED); paralysing-bite ambusher \u2014 forest of ambushers, not chases (sheet \u00a74)"
+  },
+  {
+   "def": "Mynock",
+   "commonality": 0.2,
+   "action": "import",
+   "band": "small",
+   "law": "\u00a79 BINDING: Fall Line + poison forest are its two homes; spd 2.0 (MEASURED); chemosynthetic-parasite read (prep \u00a75.4)",
+   "note": "icon; flier UNMEASURED"
+  },
+  {
+   "def": "GraniteSlug",
+   "commonality": 0.15,
+   "action": "import",
+   "band": "grain",
+   "law": "\u00a79 BINDING: ExtremeDesert + PoisonForest only; spd 1.0, mineral-eater (MEASURED) \u2014 grazes crust off stone, the sheet's only legal herbivory"
+  },
+  {
+   "def": "AA_CrystalMit",
+   "commonality": 0.15,
+   "action": "import",
+   "band": "small",
+   "law": "\u00a79 BINDING: CrystalCaverns/PoisonForest are crystal's two sheets; spd 1.8 (MEASURED); matches the trunks' crystal fans (sheet \u00a71)"
+  },
+  {
+   "def": "AA_GiantCrownedSilkie",
+   "commonality": 0.15,
+   "action": "keep",
+   "band": "medium",
+   "law": "spd 3.0 (MEASURED); prep \u00a75.2 keep",
+   "note": "silhouette eye-test owed \u2014 reads birdlike"
+  },
+  {
+   "def": "AA_Helixien",
+   "commonality": 0.1,
+   "action": "keep",
+   "band": "giant",
+   "law": "spd 0.6 (MEASURED) \u2014 the slowest resident; corpse-decayer gas-form fits chemistry-fed patience (sheet \u00a74)",
+   "note": "toxic-prized-meat carrier"
+  },
+  {
+   "def": "AA_DecayDrake",
+   "commonality": 0.1,
+   "action": "keep",
+   "band": "medium",
+   "law": "spd 4.0 (MEASURED) passes ban 9; decay-themed alien"
+  },
+  {
+   "def": "AA_Wildpod",
+   "commonality": 0.05,
+   "action": "keep",
+   "band": "giant",
+   "law": "spd 3.0, venomous (MEASURED) \u2014 itself-toxic strategy (sheet \u00a74: sealed or poisoned)"
+  },
+  {
+   "def": "GR_Beetlefleet",
+   "commonality": 0.7,
+   "action": "keep",
+   "band": "small-shelled",
+   "law": "sealed law pass: shelled; ban 9 pass: spd 2.5 (MEASURED); prep \u00a75.2 keep",
+   "note": "VGE chimera (GR_ = Vanilla Genetics, not Grindterra \u2014 prefix corrected 2026-09-09); slow sit-and-wait predator; pops on death"
+  }
+ ],
+ "evictions": [
+  {
+   "def": "TYR_Lemming",
+   "reason": "recognizability: a lemming at comm 1.0 despite passing stats \u2014 accepted recommendation (task ruling + prep \u00a75.5.1)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "TYR_MousePoison",
+   "reason": "recognizability: a mouse, same accepted recommendation",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "PoisonButterfly",
+   "reason": "ban 9 fast: spd 4.84 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_ParagonRat",
+   "reason": "ban 9: spd 4.5 (MEASURED); recognizability: rat-analog read",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_Ratffalo",
+   "reason": "ban 9: spd 6.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_CaveLemming",
+   "reason": "ban 9: spd 6.0 (MEASURED); also recognizability",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_FenridStoat",
+   "reason": "ban 9: spd 5.0 (MEASURED); recognizability (stoat)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_DarkAxolotl",
+   "reason": "ban 9: spd 4.6 (MEASURED); recognizability (axolotl)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_BlackSpider",
+   "reason": "ban 9: spd 5.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "MA_Raptorkhan",
+   "reason": "ban 9: spd 6.0 (MEASURED); Mythic Ages 0% recognizability survival \u2014 retirement ruled (prep \u00a710.4)",
+   "disposition": "cut:creature_recognizability_rule.md retirement"
+  },
+  {
+   "def": "DA_ImperialRedhound",
+   "reason": "ban 9: spd 5.5 (MEASURED); recognizability (hound)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "DA_LeviathanCrab",
+   "reason": "ban 9: spd 4.6 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Narglatch",
+   "reason": "ban 9: spd 5.0 (MEASURED) \u2014 pursuit cat in a no-chase forest",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "VFEI2_BlackEmpress",
+   "reason": "ban 9: spd 5.6 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Nightling",
+   "reason": "ban 9: spd 5.0 (MEASURED); its home is the crags' donor family",
+   "disposition": "move:AB_RockyCrags"
+  },
+  {
+   "def": "AA_ShockGoat",
+   "reason": "recognizability: a goat",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_RoughPlatedMonitor",
+   "reason": "recognizability: monitor-lizard silhouette despite plating; spd 3.0 passes but eye test fails on sight",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_PebbleMit",
+   "reason": "\u00a79 BINDING trim: rock/cavern biomes are its \u22642 homes, not here (overrides prep \u00a75.2 keep)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_AuroraSylph",
+   "reason": "\u00a79 trim: aurora name fits wasteland's halo-storms, not the terminator forest",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_GreyCoatedMouflon",
+   "reason": "recognizability: mouflon = Earth sheep; ban 8 grazing body plan",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Aerofleet",
+   "reason": "the infected variant owns this biome; plain aerofleet is \u00a79 trim stock",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Wildpawn",
+   "reason": "sheet \u00a74: sealed-or-toxic, no third strategy \u2014 an ape-form is neither",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Bumbledrone",
+   "reason": "ban 9: spd 5.0 (MEASURED); \u00a79 trim",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_FissionMouse",
+   "reason": "ban 9: spd 5.0 (MEASURED); \u00a79: reskin target for Wasteland radiotroph",
+   "disposition": "move:Wasteland (reskin lane, \u00a79)"
+  },
+  {
+   "def": "AA_Swarmling",
+   "reason": "ban 9: spd 5.0 (MEASURED); \u00a79 trim",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_AnimusVox",
+   "reason": "ban 9: spd 4.6 (MEASURED); \u00a79 trim to one strange home",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_MeadowAve",
+   "reason": "ban 9: spd 7.0 (MEASURED); 'meadow' fails the no-grass forest on its face",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_MegaLouse",
+   "reason": "\u00a79 trim: vermin texture, capped elsewhere",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Behemoth",
+   "reason": "ban 8: bs 32 grazer body with nothing to graze (MEASURED bs)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_BloodShrimp",
+   "reason": "ban 9: spd 5.5 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Razorjack",
+   "reason": "recognizability (jackal silhouette); spd 4.0 borderline",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Groundrunner",
+   "reason": "runner body plan \u2014 a forest of ambushers, not chases (sheet \u00a74)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Slurrypede",
+   "reason": "passes stats but rostered to the nightside shelf instead \u2014 one shelf, two claims resolved nightward",
+   "disposition": "move:RUT_NightsideIce"
+  },
+  {
+   "def": "AA_Thermadon",
+   "reason": "ban 9: spd 5.0 (MEASURED); thermal name belongs to volcanic sheets \u2014 ban on anything volcanic",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_RipperHound",
+   "reason": "ban 9: spd 5.0 (MEASURED); recognizability (hound)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_BoulderMit",
+   "reason": "passes stats; rostered dune sea (prep \u00a71.2) \u2014 not one of its homes here",
+   "disposition": "move:ExtremeDesert"
+  },
+  {
+   "def": "AA_TetraSlug",
+   "reason": "passes stats; rostered dune sea + nightside (prep \u00a71.2/\u00a77.2)",
+   "disposition": "move:RUT_NightsideIce"
+  },
+  {
+   "def": "SW_Grenadierworm",
+   "reason": "no wanted archetype claims it; homeless default (owner card 2)",
+   "disposition": "homeless-reserve"
+  }
+ ],
+ "stat_adjustments": [],
+ "flora": [
+  {
+   "def": "BMT_Plant_TreeTwistingThornwood",
+   "commonality": 0.6,
+   "law": "prep \u00a75.4: owner favourite, keep; no leaf-crown, no green \u2014 passes \u00a76"
+  },
+  {
+   "def": "BMT_Plant_TreeMartyr",
+   "commonality": 0.5,
+   "law": "prep \u00a75.4: owner favourite, keep; weeping form fits trunks-that-sweat (\u00a71)"
+  },
+  {
+   "def": "AB_CrystalFlower",
+   "commonality": 0.5,
+   "law": "crystal growths wanted (sheet \u00a71 crystal fans); Alpha Biomes = named donor pool"
+  },
+  {
+   "def": "AB_CrystalHorn",
+   "commonality": 0.4,
+   "law": "crystal/mineral growth lane (sheet roster consequences)"
+  },
+  {
+   "def": "AB_BloodBouquet",
+   "commonality": 0.4,
+   "law": "dark red phototroph palette (\u00a74: black/purple/blood-red, never green)"
+  },
+  {
+   "def": "AB_RavenNettle",
+   "commonality": 0.4,
+   "law": "black flora, defensive form \u2014 sealed-world palette (\u00a79)"
+  },
+  {
+   "def": "AB_RedBugloss",
+   "commonality": 0.3,
+   "law": "red-spectrum understory, non-green (\u00a76 ban 2)"
+  },
+  {
+   "def": "AB_GiantAgariTox",
+   "commonality": 0.3,
+   "law": "toxic fungal form \u2014 chemosynthesis-adjacent, Alpha Biomes donor (sheet last \u00b6)"
+  },
+  {
+   "def": "AB_KeeningCordax",
+   "commonality": 0.2,
+   "law": "alien filter-form, no conventional crown (\u00a76 ban 3)"
+  }
+ ],
+ "flora_purged": [
+  {
+   "def": "PlantBush",
+   "reason": "Earth-nameable planet-wide purge (owner card 4) \u2014 generic green bush"
+  },
+  {
+   "def": "PlantTreeOak",
+   "reason": "Earth-nameable + \u00a76: no conventional tree crowns, no green"
+  }
+ ],
+ "fish": {
+  "ruling": "no fish \u2014 the sheet's water chemistry forbids them: standing water is never potable, it carries the metal load, and condensate/puddles/sap all poison (\u00a75); there is no body of water here that is not tailings",
+  "list": []
+ },
+ "new_defs": [
+  {
+   "name": "eyeless vibration-sensing ambusher (the signature)",
+   "kind": "creature",
+   "mechanic_load": "none blocking (prep \u00a712)",
+   "from_sheet": "poison_forest \u00a74 ground-sense"
+  },
+  {
+   "name": "dark crust phototroph flora (black/purple/red films on starward faces)",
+   "kind": "plant",
+   "mechanic_load": "none",
+   "from_sheet": "poison_forest \u00a74"
+  },
+  {
+   "name": "toxic-prized-meat def property on the 4 flagged keepers (Neebray, Visceral, BMT_Screecher, AA_Helixien)",
+   "kind": "creature",
+   "mechanic_load": "meat hediff def, no C# (prep \u00a75.4)",
+   "from_sheet": "poison_forest \u00a77 cuisine chain"
+  }
+ ],
+ "confidence": [
+  {
+   "claim": "dryads function as wildAnimals without a Gauranlen tree",
+   "status": "UNMEASURED",
+   "why": "prep \u00a75.5.2 open call; kindOf=dryad, wildness 0.0 \u2014 landed per owner ruling 1 (land now, review after), verify at patch validation"
+  },
+  {
+   "claim": "GR_* prefix = Grindterra",
+   "status": "CONFLICT NOTED",
+   "why": "register mod field says GR_* rows are Vanilla Genetics Expanded; GRiNDTerra's own defs are GRim*. The card names the prefix, so the prefix is enforced; flagged for the owner's review sheet"
+  },
+  {
+   "claim": "all flier statements",
+   "status": "UNMEASURED",
+   "why": "register flies special broken (1161/1165 rows carry it)"
+  },
+  {
+   "claim": "donor PoisonForest wildPlants inventory",
+   "status": "UNMEASURED",
+   "why": "purge list names only verified Earth-nameables; the generator applies the planet-wide Earth-nameable purge (owner card 4) against the live def at generation time"
+  },
+  {
+   "claim": "GR_ prefix = Grindterra",
+   "status": "RESOLVED WRONG 2026-09-09",
+   "why": "GR_ is Vanilla Genetics Expanded (chimeras, kept-per-law); Grindterra is GRim*. GR_ rows re-adjudicated per sheet law."
+  }
+ ]
+}

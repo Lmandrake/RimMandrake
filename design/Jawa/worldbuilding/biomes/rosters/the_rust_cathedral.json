@@ -1,0 +1,68 @@
+{
+  "sheet": "the_rust_cathedral",
+  "defNames": ["AB_MechanoidIntrusion"],
+  "tiles": 236,
+  "authored": "2026-09-09",
+  "law_sources": ["the_rust_cathedral.md §4/§6 ban 7 (frozen): no ordinary wildlife — nothing organic spawns that isn't §4's short list", "_freeze_rulings_2026-09-07.md R17 (fliers cross biomes)", "owner cards 2026-09-09", "MECHANOID_BIOME_PRESENCE_REVIEW_1 (mechanoid axis EXCLUDED from this file by design)"],
+  "fauna": [
+    {"def": "Mynock", "commonality": 0.3, "action": "import", "band": "small-flock", "law": "sheet §4 (frozen, owner-ratified): the one grazer that belongs, working the dead conduit; shared with the Scarlands — one home, two ranges; R17 makes the cross-biome range legal", "note": "register shows no current AB_MechanoidIntrusion row (MEASURED) — this ADDS it; §9's Fall-Line+PoisonForest trim reconciles as fliers-range under R17, frozen sheet outranks the prep menu here; flier claim UNMEASURED"},
+    {"def": "Ling_Cockroach", "commonality": 0.05, "action": "import", "band": "medium", "law": "sheet §4 owner flag: 'the cockroaches from the cockroach mod might work here after all' — VERIFIED: mod 'Rim cockroach' live in register, bs 2.0 spd 4.5 (MEASURED); graded KEEP at trace — the lone-organic-survivor read fits 'almost nothing alive'", "note": "Ling_Cockroach_Mechanoid explicitly excluded — mechanoid kind, separate axis"}
+  ],
+  "evictions": [
+    {"def": "TYR_HotfootRat", "reason": "ban 7: no ordinary wildlife; recognizability (rat)", "disposition": "homeless-reserve"},
+    {"def": "BMT_Megaroach", "reason": "ban 7; the cockroach niche goes to the owner-flagged Ling_Cockroach, one roach only", "disposition": "homeless-reserve"},
+    {"def": "Worrt", "reason": "ban 7 — SW icon but nothing organic lives at 62.5 °C median on deck plate; its homes are the dayside deserts", "disposition": "homeless-reserve"},
+    {"def": "Gorg", "reason": "ban 7; rostered in Desert (prep §2.2)", "disposition": "move:Desert"},
+    {"def": "LongtailGorg", "reason": "ban 7; rostered in Desert (prep §2.2)", "disposition": "move:Desert"},
+    {"def": "Tach", "reason": "ban 7", "disposition": "homeless-reserve"},
+    {"def": "BMT_Pillbug", "reason": "ban 7", "disposition": "homeless-reserve"},
+    {"def": "BMT_CarrionVulture", "reason": "ban 7; the desiccated dead are map dressing, not a food chain (§4)", "disposition": "homeless-reserve"},
+    {"def": "AA_Needleroll", "reason": "ban 7; rostered dune sea (prep §1.2)", "disposition": "move:ExtremeDesert"},
+    {"def": "AA_Needlepost", "reason": "ban 7", "disposition": "homeless-reserve"},
+    {"def": "AA_AcanthamoebaGiganteaSmall", "reason": "ban 7; §9 trims amoebae to wasteland/pans", "disposition": "homeless-reserve"},
+    {"def": "AA_AcanthamoebaGiganteaHuge", "reason": "ban 7; §9 amoeba trim", "disposition": "homeless-reserve"},
+    {"def": "RG_Rimclaw", "reason": "ban 7", "disposition": "homeless-reserve"},
+    {"def": "BMT_Basilisk", "reason": "ban 7", "disposition": "homeless-reserve"},
+    {"def": "BMT_MetalloSnail", "reason": "ban 7 — metal-themed name does not admit an organic; the sheet's metal life is the bolts, and they are mechanical", "disposition": "homeless-reserve"},
+    {"def": "BMT_Woollybat", "reason": "ban 7; woolly at 62 °C is also a placement absurdity", "disposition": "homeless-reserve"},
+    {"def": "SW_Electricfish", "reason": "ban 7; the canals are coolant, not water (§3) — nothing swims them but the eels", "disposition": "homeless-reserve"},
+    {"def": "IridonianReek", "reason": "ban 7; SW midrange — shrubland/desert triage lane (prep §3.3)", "disposition": "homeless-reserve"},
+    {"def": "BMT_BunkerBug", "reason": "ban 7", "disposition": "homeless-reserve"},
+    {"def": "BMT_HungeringHydra", "reason": "ban 7", "disposition": "homeless-reserve"},
+    {"def": "AA_Cactipine", "reason": "ban 7", "disposition": "homeless-reserve"},
+    {"def": "AA_ChemfuelMyrmidon", "reason": "ban 7", "disposition": "homeless-reserve"},
+    {"def": "AA_BlackSpelopede", "reason": "ban 7", "disposition": "homeless-reserve"},
+    {"def": "GreaterKraytDragon", "reason": "ban 7; icon's home is the dune sea (prep §1.2, comm correctly near-zero there)", "disposition": "move:ExtremeDesert"},
+    {"def": "BMT_SmolderstingScorpion", "reason": "ban 7", "disposition": "homeless-reserve"},
+    {"def": "PekoPeko", "reason": "ban 7", "disposition": "homeless-reserve"},
+    {"def": "AA_Slurrypede", "reason": "ban 7; rostered nightside (this pass)", "disposition": "move:RUT_NightsideIce"},
+    {"def": "AA_Cinderlisk", "reason": "ban 7", "disposition": "homeless-reserve"},
+    {"def": "AA_SandProwler", "reason": "ban 7; kept in the crags' donor family (this pass)", "disposition": "move:AB_RockyCrags"},
+    {"def": "AA_LuciferBug", "reason": "ban 7; §9 BINDING trim", "disposition": "homeless-reserve"},
+    {"def": "AA_FissionMouse", "reason": "ban 7; §9: Wasteland radiotroph reskin lane", "disposition": "move:Wasteland (reskin lane, §9)"},
+    {"def": "Meganeura", "reason": "ban 7 + Megafauna 0% recognizability survival — retirement ruled (prep §10.4)", "disposition": "cut:creature_recognizability_rule.md retirement"},
+    {"def": "Pulmonoscorpius", "reason": "ban 7 + Megafauna retirement (prep §10.4)", "disposition": "cut:creature_recognizability_rule.md retirement"},
+    {"def": "Arthropleura", "reason": "ban 7 + Megafauna retirement (prep §10.4)", "disposition": "cut:creature_recognizability_rule.md retirement"},
+    {"def": "AA_PebbleMit", "reason": "ban 7; §9 trim to rock/cavern", "disposition": "homeless-reserve"},
+    {"def": "AA_Swarmling", "reason": "ban 7; §9 trim", "disposition": "homeless-reserve"},
+    {"def": "AA_BoulderMit", "reason": "ban 7; rostered dune sea + nightside", "disposition": "move:ExtremeDesert"},
+    {"def": "AA_WindBeast", "reason": "ban 7", "disposition": "homeless-reserve"},
+    {"def": "AA_TetraSlug", "reason": "ban 7; rostered nightside (this pass)", "disposition": "move:RUT_NightsideIce"}
+  ],
+  "stat_adjustments": [],
+  "flora": [],
+  "flora_purged": [
+    {"def": "ALL", "reason": "ban 7: green flora count is ZERO (frozen sheet); §9 palette — no green anywhere; the generator empties wildPlants wholesale"}
+  ],
+  "fish": {"ruling": "the eight 'river' tiles are coolant canals, not water (§3, ruled) — no ordinary fish exists or may be added; the canals' only life is the coolant eels (§4, owner: blind, pale, eating microfouling), a NEW def, and fishing them is possible and deeply inadvisable — the hum changes when a line goes in. Until the eel def lands, the fish list ships empty", "list": []},
+  "new_defs": [
+    {"name": "coolant eels", "kind": "creature", "mechanic_load": "C#: canal-locked movement, hum-mood consequence on fishing (RUST_CATHEDRAL_MECHANICS_1)", "from_sheet": "the_rust_cathedral §4 — VERIFIED absent from register"},
+    {"name": "living bolts", "kind": "creature", "mechanic_load": "mechanical wildlife def shape — not organic, not tameable, not butcherable into meat; dance patterns resonate with the mind's mood; §GM origin stays gated (ban 1)", "from_sheet": "the_rust_cathedral §4 — roster item owns the def shape"}
+  ],
+  "confidence": [
+    {"claim": "mechanoid/Sentinel presence", "status": "EXCLUDED BY DESIGN", "why": "separate axis — MECHANOID_BIOME_PRESENCE_REVIEW_1; never encoded in wild rosters (item ruling)"},
+    {"claim": "Mynock here vs §9's two-home trim", "status": "CONFLICT RESOLVED, flagged", "why": "frozen sheet §4 explicitly rosters mynock flocks; R17 rules fliers cross biomes so a third appearance is not a conflict; the owner's review sheet can overrule"},
+    {"claim": "Ling_Cockroach recognizability (a cockroach is nameable)", "status": "OWNER-FLAGGED", "why": "sheet §4 carries the owner's own 'might work here after all' — graded keep-at-trace under that flag, eye test at review"},
+    {"claim": "scaria-mad strays", "status": "NOT ROSTERED", "why": "sheet §4: desiccated dead are map dressing, not spawns"}
+  ]
+}
