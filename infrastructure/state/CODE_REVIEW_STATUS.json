@@ -1181,6 +1181,36 @@
     "hash": "52af343beb45b58c019e9bfd90bc1f6b0853477ca3f504e4e5941e9f8706d14c",
     "sha": "21d72dc5"
   },
+  "src/RimMandrake/ManyWaters/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "077c919e494d1180373333ccb55a3f827173f6e60bf81e5359569de001951b54",
+    "sha": "0c9c0cff"
+  },
+  "src/RimMandrake/ManyWaters/Defs/TerrainDefs/RM_DeepSand.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "8ac3d2024b8bd1e6a95ed3b4839eca9247015bb6fbc45292a1f7c30f67992fdd",
+    "sha": "0c9c0cff"
+  },
+  "src/RimMandrake/ManyWaters/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "0c9c0cff"
+  },
+  "src/RimMandrake/ManyWaters/Source/RiverSteamHook.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "312c6a649c904e67476983870f2572e7b3966ed85f0de253d42740542c8cfdaf",
+    "sha": "0c9c0cff"
+  },
+  "src/RimMandrake/ManyWaters/Source/RiverSteamHook.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d14fd1b0f4eb5fce6998d54214d4f18afd377bcc43ee3d7067f9fbb5c00bb875",
+    "sha": "0c9c0cff"
+  },
   "src/RimMandrake/Ninefold/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -1703,6 +1733,132 @@
     "hash": "a9bfddac2b6df10cda8a07b0ca281edf21cf209f53e32e6536ebc1434e5a3694",
     "sha": "5a1f89a6"
   },
+  "src/RimMandrake/ProximityHatch/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d3a993239de184ed1ffca3445ed7bc22309ec64a9916a29bdb4d89ae56c86e2a",
+    "sha": "8be234dd"
+  },
+  "src/RimMandrake/ProximityHatch/Source/CompProperties_ProximityHatch.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "8e64b1e94cbbea18c4304a6c3d7087282e4a898210aa06812ec139e138b036f2",
+    "sha": "8be234dd"
+  },
+  "src/RimMandrake/ProximityHatch/Source/CompProximityHatch.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "7c27949736b31aa9d4b2f432fcf5d728f7f30ee716d90aa9104624fe3d0a9ed4",
+    "sha": "8be234dd"
+  },
+  "src/RimMandrake/ProximityHatch/Source/RimMandrake_ProximityHatch.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "bd001a15913a3193fff23f2f2a540c514efd6450f8cce00eafb2c33f2b4ee02f",
+    "sha": "8be234dd"
+  },
+  "src/RimMandrake/Pyrelands/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b53515619bb5c65345264399ae08d4da9ca7140624e0c2b410ef246c3cda7ceb",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "709a6adc6856ba61822c84a3521b145c81175dd88c38a2dc776ad3050aea1b00",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshLadder.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d1d651cd69d9a19200e1902184a813215f296f8be8105c731bb096028663f9ab",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Defs/TerrainDefs/Firebreak.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3ca65a12e43339511db3c52e198c5c07476f31c1b0581ead42e25b0fdb3fa626",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Defs/TerrainDefs/ScorchableGround.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c70a53337619a20fb8add45fa311bf34025c04e1029777acffa7d5c43077e185",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Defs/ThingDefs_Ash/Filth_LooseAsh.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "7c720d8d36cd1993f88ec915f771cd4c6d4df79a52ce9d14d9dfed5bac3037f0",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Defs/ThingDefs_Fulgurite/Fulgurite.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "da3bd52f19d7ce7059ecd6ed7f89e4b8cd3722c7b5fd7ebfa343522ce44e30ac",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/EmberGrass.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "13135fafb6e93fd9fe8a82676d685f2a717482bb557c00cd9e48c7f1891a0546",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "92448c19627024fec623fc1067fc6b9d29d33d622beda30cfc61409d12e3764d",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Defs/ThingDefs_Sprayer/FirefoamSprayer.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6151e6ea2e21758c0a54f9ed328d652e3444665092a719aa90378d17d3afae8c",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Defs/WeatherDefs/AshFall.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f74237077414d4a23d841b9627c72963f4bfbd4416ab9d2474b54c22af0fb2bb",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Defs/WeatherDefs/BlackRain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2744c6ad9217039da03584592d47003912912cf69449f9f7eaa7bfa1f837fe98",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Defs/WeatherDefs/Cinderfall.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d3d759176ab3c28df9297f326ad5d00947a91c3ce3b8697bb7d3ca8ebac39d90",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e4e17f7dd6323d8dbc6ff9c29dd886b39913ef4bbde44f1560b602f70ec9100d",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Source/FireEcologyHook.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1e60ed4a7c2d69b67149c3e5e88b53637411d08306dfa0997a8906b0d78f7fbe",
+    "sha": "90940c68"
+  },
+  "src/RimMandrake/Pyrelands/Textures/World/Biomes/RM_FE_Pyrelands.png": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "45160942cbe571994025ad2b633dab3edad7e0dadeb0d16256d0f241962b77b2",
+    "sha": "90940c68"
+  },
   "src/RimMandrake/RaidRedesigner/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-07",
@@ -1852,6 +2008,258 @@
     "date": "2026-09-04",
     "hash": "9599ec736082b9b0e2ae360ca7839fca07499603b253bf865bf5ff9628d0702e",
     "sha": "43f96b1b"
+  },
+  "src/RimMandrake/RimProperty/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "8f06cd5279b5140eb65d42a5d5bdfef574fd23ed8be5045dc563474a98c9be42",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Defs/AnimalTheft/JobDefs_AnimalSteal.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "8d3ec13b2b43b2db31495bed35fdeff72aca126fc38af4dee7dcffc2f19fc370",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Defs/AnimalTheft/ThinkTreeDefs_AnimalSteal.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "8d3fd715ea991ec1f7b67c67266d0d24f66e3c4ff65cff2d4be045333cc43dd7",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Defs/AnimalTheft/TrainableDefs_Steal.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e6b80d0fcdeda6938dd7ffd8cc68aea60b05a2f6548c7407f4ddc976953b3255",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Defs/TheftHauler/JobDefs_TheftHauler.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "58ad7a135f2b104cecfeca4fe54cc95468c417ec31cc5ab8321aa810e5a707f5",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Patches/AnimalTheft/RaccoonWildTheft.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "29fe802cbb64b3f231550e80de8b0f54577ade9a871ec0e7f7accfc1124cd2b7",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Patches/TheftHauler/DroidLoaders_TheftHauler.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "33c2e97f00ae8b2c1eb32cca7c6b728e5e068569271280fc5cf797e93aef7941",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Patches/TheftHauler/MuckrakerChassis_TheftHauler.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "30f55ad7716a43fbe62c42c8f5c699c8c3966a1054a81cf4fb65d0fa45921e3e",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/AnimalTheft/AnimalTheftDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e63d9652873dce050fdc5253236ae4610bbe20bac9bbb4927a0fc51095d0cd85",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/AnimalTheft/AnimalTheftUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "7c976865d4d8688fec325ff50d1ff4adb302a07ed23b9b7334d3e50a1d4b551b",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/AnimalTheft/JobDriver_RM_AnimalSteal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "736734d0e1d4eb01ceb81944e4b5e2ad2fd191e5cb5fa5e04fa8eadfaad4b96f",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/AnimalTheft/JobGiver_RM_TrainedSteal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4f30b11b6d916168feed1053d7f46dbee198e6b647c0f5c0a707f43b61e53901",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/AnimalTheft/JobGiver_RM_WildSteal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "bdcc54b3919a79f157881dfbea3f38ea34170e1985b4a1d70b9ad8a900e71709",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/AnimalTheft/WildTheftExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d737f56bfa795eaddcbc3a6a2fb0b4d17c81919475c5340318a8a4a59c0ce260",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/ClaimBasis.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "803c43343b20a97da2d1e4156d96518948ed930471a2efa9f76651856424e947",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/ClaimDecay.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "83d5f5867ea70ab906d1246366bb564b1f24ed468f76f3c81cbbf65bd8649c66",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/ClaimEngine.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "af00a7d3d3751cd18c5f5f9e20b15e9178db2182c09efeae132aea0111c8ca51",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/ClaimRecord.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "984f6ef2797a256714b2b54e452ed63937cd214171b96964c6685bdd8e4758ae",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/ClaimRecordList.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "75ba9d8598aa7542248638d247464548433971701d9fc206f847b998add43d37",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/ClaimResolution.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "beb43c44e060cd852a31f8e18b0a688877c6363a5e94b27144ccc0c059b833e8",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/ClaimantKind.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "63b33a156651a598fd7244afbb5ed5077e44b29b8680bde1362538a82489bde6",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/ClaimantRef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "33b61a07ec88b467792a34601cc0a0b714372081005c492141b63683588014d8",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/FactionRecord.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "dcfbbd9777b36584b90a022a79e469a4fc81dab8e4ae7bc103f40acd3a874088",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/GameComponent_PropertyLedger.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "fce03410cf6025f5b92fa7ccfa7bbce5e2c278555f3676886620fcc5d8608804",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/PerceptionUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "500f6cc7ec4aebd18199692cad1cadc32ae3c3f997c44758e03c6529de8e4576",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/PropertyEngine.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "8c23828cfdb045644bcfc436abe6f45ce098c6fda08339decc2b4ebdc3a47b01",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/PropertyEvents.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "64225870a9888201c8c1ec2f2a431c91283d2aed64815f47581189e6ebb07e18",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/PropertyTuning.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d0ebe516435efe4b13b9071ce86c84e3f9cfec75775f0b8573d0dc7b4b8b2bd6",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/RM_Property.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1db4ff463139a55bb4c85a6dbf8af8cf7f8ec26a40d0f431e0e7bab1acc892be",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/RecognizabilityUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ffd4fa1dfabc9e3ae8ead36f42f25513b183bbd71984508ae86a3c7628a38e93",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/SalvageClaim/FloatMenuOptionProvider_PaySalvageClaim.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "bfe00c25971750cb647da66646e920525cc644af51bf7277254b3c96d59c7cf6",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/SalvageClaim/SalvageClaimFeeUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4b1de73b4aec32b266f782e0585c9cda6b5410bb68c81fda8674113387ff2e23",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/SelfTest/Program.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "234a2084aff97f8de611ce99de11a8a40a90be8a58452967d070dfb76f4b232d",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/SelfTest/RimMandrakeProperty.SelfTest.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "25e66a3113b3834011e2b65b1cf909bdb997b4c29c675697acbb5c40848fc632",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/TakingAct.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "833bf1e5d6f081afc50ee0d45c62aae1d32f0fd59ce53533a00d75efb453021f",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/TakingEvent.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "bb97c2d4136c83693fd14b24a227f5b433843d05b415ba6185488743cc60d0e2",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/TheftHauler/DebugActions_TheftHauler.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4138b7cd17f5f75fe5a1f09840b31e35ca8c7a4846927d72abaeb0b709aef624",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/TheftHauler/FloatMenuOptionProvider_TheftHaulUninstall.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "813238cb176c750646e1a4c8b733462017ee4c574e542198c7d8124b9d380e7a",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/TheftHauler/JobDriver_TheftHaulUninstall.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "834b21438fd5ad5cb9ddd53c087eb152d5f8d52f5ca43014b2a68f7159f6311c",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/TheftHauler/TheftHaulerDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6ba983bdc4d0cd1a23cd637b0c093db9b5b325885b7a079d7c346b926b6f926e",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/TheftHauler/TheftHaulerExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "882de71d89aa724a9bf79b393797c0a366e4ade02f38d5ba424eda22b57f62b2",
+    "sha": "dad4e548"
+  },
+  "src/RimMandrake/RimProperty/Source/WitnessEntry.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a9bfddac2b6df10cda8a07b0ca281edf21cf209f53e32e6536ebc1434e5a3694",
+    "sha": "dad4e548"
   },
   "src/RimMandrake/RustChrome/About/About.xml": {
     "cleanCount": 1,
@@ -3416,6 +3824,54 @@
     "date": "2026-09-05",
     "hash": "e3505190b1e26d3b49e53bd4af46197f8aa3fa7382fbfe305aaf3bacc672ebbc",
     "sha": "e7fa0af5"
+  },
+  "src/RimMandrake/WeatherSuite/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6a206bd203e3eaf44d52372928db5ae7cb1c624ad92764817784a3eac56b3fa4",
+    "sha": "a4b734f3"
+  },
+  "src/RimMandrake/WeatherSuite/Defs/GameConditionDefs/GameConditionDefs_DarkAurora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "5e5330ed78e6b13ace56f4e607dd510fa8df1e704843d207aab92f1e82d973db",
+    "sha": "a4b734f3"
+  },
+  "src/RimMandrake/WeatherSuite/Defs/GameConditionDefs/GameConditionDefs_TerminatorFront.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3fd1fb982c681aa0c3376de575a36583ba2cd9d8b8867d93f22ecf42e897af93",
+    "sha": "a4b734f3"
+  },
+  "src/RimMandrake/WeatherSuite/Defs/IncidentDefs/IncidentDefs_DarkAurora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "44ac92b7e5c1651f73753de8b51b937d5761fffc04e31b7678db4adf1f1080e5",
+    "sha": "a4b734f3"
+  },
+  "src/RimMandrake/WeatherSuite/Defs/ThingDefs_Buildings/ThingDefs_WeatherInstrument.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b5a5c7d0b0a5f8dcbe1f364b88336fe68066980ef473459fd72fd51ad2717d6a",
+    "sha": "a4b734f3"
+  },
+  "src/RimMandrake/WeatherSuite/Defs/ThoughtDefs/ThoughtDefs_DarkAurora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4b471eb1140c1023a610985d9faa0a569d409ce22d34bcb7e19918f2d4107bb2",
+    "sha": "a4b734f3"
+  },
+  "src/RimMandrake/WeatherSuite/Source/WeatherSuiteHook.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "8ee8846b77e2e7c664ee45d92d04d01d6c710bbaa43ac43a3ddb867d411198ef",
+    "sha": "a4b734f3"
+  },
+  "src/RimMandrake/WeatherSuite/Source/WeatherSuiteHook.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2604affc90a65b8a5c2f6d056ccfbd21da5e2876233d957ab7a29740597c187c",
+    "sha": "a4b734f3"
   },
   "src/RimMandrake/WreckedMachines/About/About.xml": {
     "cleanCount": 1,
@@ -6189,6 +6645,84 @@
     "hash": "8b6e03361470c648e04e2f4f6dcc4984871a285b4622144a0111547a1eb5dd5d",
     "sha": "4c830bfd"
   },
+  "src/RimStarWars/DesertVehicleReskin/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "7431a138fe55137286a5112298447f219e9ed07f4f097a3226458c10ca4f5acc",
+    "sha": "77a61de0"
+  },
+  "src/RimStarWars/DesertVehicleReskin/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "77a61de0"
+  },
+  "src/RimStarWars/DesertVehicleReskin/LoadFolders.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "db3b123018940f577cd6d1b04d2bc410faa54714a23b023e5a40d0175bd243db",
+    "sha": "77a61de0"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Patches/BeastVehicleProp_Identity.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a2a869a9cd69ff6c766f14506d533106eadf9266f3c79d0a90823c823a8bb8ec",
+    "sha": "0a34f66f"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Patches/BeastVehicle_Identity.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e118b6d831e306cca190dea55eb4c15251c029fe86f7a4aaaca61ab050ffcacb",
+    "sha": "77a61de0"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Patches/DogSledTint_Brown.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "7b93c2e56283754235bc3637c97908cc75604cebc6049a2a5d179adf8dae718a",
+    "sha": "77a61de0"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Patches/DraughtFuel_Marker.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "9529495be649c82494f457b58a19342fc8b38543625a7be5aa9130e009f5fccb",
+    "sha": "77a61de0"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Patches/EopieSled_Identity.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ad12d8d13a73ac57d6205a6cba7f32cb8a547148f6f162654b4084369b961213",
+    "sha": "77a61de0"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/Fuel/DesertVehicleReskin.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "5d7f388ee76e9cf7fdcbe69ec955fd54e8460a6002729e07cdda0e6e021f6454",
+    "sha": "77a61de0"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/Fuel/FuelDebugActions.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "cf74710e0dcb8c96fd271d460bf0acb1c9d2e823d0a1249f8bced2ede4e18f20",
+    "sha": "77a61de0"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/Fuel/RM_DraughtFuelExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "78065176bfb6b6d97f8881266f975d534a984572a50318f00f0af0bfa986b4ca",
+    "sha": "77a61de0"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/Fuel/VegetableFuel.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ccf074fece7b4d6d17fcb494cb2253357e12ed539ba617e8de24cfa1b5513793",
+    "sha": "77a61de0"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/Fuel/check_fuel_predicate.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b72426304b6aa433f703afb639615b9ec97e1fe8482727d0f39c107754c619ab",
+    "sha": "77a61de0"
+  },
   "src/RimStarWars/Droidworks/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -6968,6 +7502,36 @@
     "date": "2026-09-05",
     "hash": "61bcccc5fc288884c621184f62739b384b9a2e009f0e2c676b73e57da4c897c9",
     "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/MynockArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f65b96322e6a0c470363d65ee366eea6cfb444324885809302158ed87ac06ea8",
+    "sha": "ea334c83"
+  },
+  "src/RimStarWars/MynockArtOverride/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "ea334c83"
+  },
+  "src/RimStarWars/MynockArtOverride/Textures/swanimals/Mynock/Mynock_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2ef5dd724e2c3cd502204a195ee245feb65de294702325643147722c19350afe",
+    "sha": "ea334c83"
+  },
+  "src/RimStarWars/MynockArtOverride/Textures/swanimals/Mynock/Mynock_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "20d6715417598b5408970beb7173f7d81cc3773eb15e6dc82480242bc274795d",
+    "sha": "ea334c83"
+  },
+  "src/RimStarWars/MynockArtOverride/Textures/swanimals/Mynock/Mynock_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5",
+    "sha": "ea334c83"
   },
   "src/RimStarWars/SWBestiary/About/About.xml": {
     "cleanCount": 1,
@@ -7773,6 +8337,54 @@
     "hash": "032db7f1a81c13fecc85707a757cedcd92250e54cbc5d6cc07d302ffb54c39b7",
     "sha": "0f2ac051"
   },
+  "src/RimUtinni/DroidRepairJobs/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f48bf323a3cb074a35aa9c64fd669bb428df972bf9af2b8d48c8fcb3d95d147b",
+    "sha": "9445450d"
+  },
+  "src/RimUtinni/DroidRepairJobs/Defs/HediffDefs/HediffDefs_DroidRepairJob.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "5a9c8d601fbd8749e97785c99dc207f169cac9799e0cc50ad19b7c2446079a8d",
+    "sha": "9445450d"
+  },
+  "src/RimUtinni/DroidRepairJobs/Defs/HistoryEventDefs/HistoryEvents_DroidRepairJob.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4ea3719d1b4d7d46253cec84d67fda93a69f3b9257eb01a05ea9c94040fdd8df",
+    "sha": "9445450d"
+  },
+  "src/RimUtinni/DroidRepairJobs/Defs/QuestScriptDefs/Quest_DroidRepairJob.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ec17db7527e309c52ca68cc5708e23148814ad125610451cc1d1339d09e2fed6",
+    "sha": "9445450d"
+  },
+  "src/RimUtinni/DroidRepairJobs/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "9445450d"
+  },
+  "src/RimUtinni/DroidRepairJobs/Source/QuestNode_DroidRepairJob.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "43dff937cca0901c35138176a99f5bcf662b8b97bfd085b463fefd96b74076b4",
+    "sha": "9445450d"
+  },
+  "src/RimUtinni/DroidRepairJobs/Source/QuestPart_DroidRepairJobOutcome.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c0b4b747aa299fa0ae8f2489c62d63189149ae996fe32a8ca401317621cd0f53",
+    "sha": "9445450d"
+  },
+  "src/RimUtinni/DroidRepairJobs/Source/RimMandrake.Utinni.DroidRepairJobs.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c3ab61f3149e46f16714bf0f33e97edc6dc9bdf359426272f62b87fde9e62c0b",
+    "sha": "9445450d"
+  },
   "src/RimUtinni/EmpirePursuit/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -7844,6 +8456,66 @@
     "date": "2026-09-04",
     "hash": "2316487c0076c830ab0fecd873d4ffba96a4d823e3311918656374b473d460ea",
     "sha": "fe15fae0"
+  },
+  "src/RimUtinni/FungalSoilTrade/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "033ae29e7ee125210bb94a8aa6ce954c760712c88275ea0cf004c62257e3e2d8",
+    "sha": "8be234dd"
+  },
+  "src/RimUtinni/FungalSoilTrade/Defs/MapGeneration/RUT_FungalSoilScatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "fd9a88c9fcf9339fda9ffbbd97bfe440f69239c653a306642bccffcc6f3ea265",
+    "sha": "8be234dd"
+  },
+  "src/RimUtinni/FungalSoilTrade/Defs/QuestScriptDefs/RUT_FungalSoilTradeRequest.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a3767bc853f9d7c32d607a1d6694dd399f6f61363e7b16540c88473ac34060dd",
+    "sha": "8be234dd"
+  },
+  "src/RimUtinni/FungalSoilTrade/Defs/ThingDefs_Buildings/RUT_MineableFungalGround.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4ff7b941b9218abad63185c78e8f600af47f78e31843b93736b0be27a7169164",
+    "sha": "8be234dd"
+  },
+  "src/RimUtinni/FungalSoilTrade/Defs/ThingDefs_Items/RUT_FungalSoil.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "eaa544fbe1b8768f333f23bd96fe1a90df0a6986deb587d5311971e8e25bb96e",
+    "sha": "8be234dd"
+  },
+  "src/RimUtinni/FungalSoilTrade/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "8be234dd"
+  },
+  "src/RimUtinni/FungalSoilTrade/Patches/RUT_FungalSoilScatter_MapGenPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2c2c462e29fe5b9b91950b9337f02cb79d9cfacd28b5cd5630dbef9bd7f18c1a",
+    "sha": "8be234dd"
+  },
+  "src/RimUtinni/FungalSoilTrade/Source/GenStep_ScatterFungalGround.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e66ecaf75291660bbe428033fb40f0d090f913ab04782b508300728792ecab36",
+    "sha": "8be234dd"
+  },
+  "src/RimUtinni/FungalSoilTrade/Source/MapComponent_RotFungalDistress.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2c2e05c64d1aa0793318c8d99b2600af1b540e4fb80eaf1525906ca5d4a29bff",
+    "sha": "8be234dd"
+  },
+  "src/RimUtinni/FungalSoilTrade/Source/RimMandrake.Utinni.FungalSoilTrade.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1a6e4776aefc525e13667cfc224697f5936f417cb966f43def03cc1791ee3b84",
+    "sha": "8be234dd"
   },
   "src/RimUtinni/IshkoDarkLandmarks/About/About.xml": {
     "cleanCount": 1,
@@ -8132,6 +8804,30 @@
     "date": "2026-09-04",
     "hash": "13f3469783ddc3ad0a69bea53ad3c5b07c55ee7144fc6f0a719a11bffe322609",
     "sha": "2e3336f4"
+  },
+  "src/RimUtinni/RiverColors/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "fafef0474287631ac4492b7796de2ac542f1c5e79d16ea4f3753b119eb37cc40",
+    "sha": "9a69acce"
+  },
+  "src/RimUtinni/RiverColors/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "9a69acce"
+  },
+  "src/RimUtinni/RiverColors/Source/HarmonyPatch_RiverColors.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "effb3e6feae4bb44d946ed8e0cf3713c62a2a1c376bc010424dd4e6cb25ffd93",
+    "sha": "9a69acce"
+  },
+  "src/RimUtinni/RiverColors/Source/RimMandrake.Utinni.RiverColors.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4930f8790918f4d7b9fe42eba32e7be4ae33d034e70b3799d6bd057593a6a5fb",
+    "sha": "dad4e548"
   },
   "src/RimUtinni/RiverSteam/About/About.xml": {
     "cleanCount": 2,
