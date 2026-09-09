@@ -21,6 +21,30 @@ deployed (next shutdown window).
    no compile error; ChronicleSubscriber already probes the new name first.
 4. Law-1 sweep candidates found: Inhabited hard-depends on
    mandrake.rm.injections; SacredGraffiti on mandrake.rm.graffiti.
+   RESOLVED 2026-09-09 (FOUNDRY offline sweep): "Law 1" is the soft-hook
+   law's clause 1 in `design/CHRONICLE_EVENT_SPINE.md` (no
+   `<modDependencies>` naming another `mandrake.*` mod; no hard csproj
+   `<Reference>`; every cross-mod C# call reflection-guarded).
+   - **Inhabited → mandrake.rm.injections: CONFIRMED, all three clauses**
+     (About.xml modDependencies, hard `<Reference
+     Include="RimMandrakeStructureInjections">` in Inhabited.csproj, and
+     `using RimMandrake.StructureInjections;` in
+     GenStep_ComposeSettlementDistrict.cs calling `RimplacePlan.Parse`/
+     `GenStep_RimplacePlan.ApplyPlan` directly). Filed as
+     `INHABITED_INJECTIONS_DECOUPLE_1` — note the fix shape differs from
+     this item's (a functional library call with a return value, not a
+     fire-and-forget event; see that item's "Shape difference" section).
+   - **SacredGraffiti → mandrake.rm.graffiti: FALSE POSITIVE** for a
+     reflection-style fix. About.xml declares the modDependencies, but
+     SacredGraffiti.cs has zero C# coupling (no `using`, no csproj
+     `<Reference>`, no AccessTools call) — the only dependency is XML:
+     `ParentName="RM_BaseGraffiti"` def inheritance plus
+     `Class="RimMandrake.Graffiti.ModExtension_Graffiti"`, both load-time
+     XML resolution, not a C# call site reflection could route around.
+     SacredGraffiti's own About.xml description frames this as a
+     deliberate content-expansion of a base framework (like a DLC needing
+     its base game), not an engine-to-engine coupling the spine law was
+     written to police. No item filed; not a violation.
 
 ## Owner nod RULED — question card, 2026-09-09
 
