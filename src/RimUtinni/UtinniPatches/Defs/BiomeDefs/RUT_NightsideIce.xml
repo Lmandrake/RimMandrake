@@ -120,7 +120,32 @@
       <Overcast MayRequire="Ludeon.RimWorld.Odyssey">0</Overcast>
       <Blizzard MayRequire="Ludeon.RimWorld.Odyssey">0</Blizzard>
     </baseWeatherCommonalities>
-    <wildAnimals />
+    <!-- WILD ANIMALS, landed 2026-09-09 by BIOME_FAUNA_ASSIGNMENT_SITTING_1.
+         Source: design/Jawa/worldbuilding/biomes/rosters/nightside_ice.json (owner
+         cards 2026-09-09: "~87% eviction ACCEPTED, near-empty is correct"). Six
+         shelf keeps, every one a slow (spd < 2.0, MEASURED) landform body chosen
+         against §4/§6's no-eyes / no-glow / no-ordinary-silhouette bans. The comment
+         above that says this list ships EMPTY described the 2026-09-07 authoring
+         pass; the roster supersedes it.
+
+         🔴 THE NODE NAME IS THE ANIMAL, THE NODE TEXT IS THE COMMONALITY.
+         BiomeAnimalRecord.LoadDataFromXmlCustom reads xmlRoot.Name for the animal and
+         xmlRoot.FirstChild.Value for the number, so an <li> wrapper makes FirstChild
+         an ELEMENT whose .Value is null -> ArgumentNullException -> the WHOLE BiomeDef
+         is discarded, silently. That shipped once and cost 26 biomes.
+
+         ⚠️ animalDensity is 0 on this def (set by the 2026-09-07 pass, when the list
+         was empty by law). At 0 these six can never spawn however high their
+         commonality. The roster does not rule a density, so nothing is invented here -
+         flagged to the owner as one number owed on the review sheet. -->
+    <wildAnimals>
+      <AA_BoulderMit MayRequire="sarg.alphaanimals">0.004</AA_BoulderMit>       <!-- boulder mit - giant, import -->
+      <AA_SummitCrab MayRequire="sarg.alphaanimals">0.004</AA_SummitCrab>       <!-- summit crab - landform-giant, import -->
+      <AA_RedGoo MayRequire="sarg.alphaanimals">0.003</AA_RedGoo>               <!-- red goo - small, import -->
+      <AA_Terramorph MayRequire="sarg.alphaanimals">0.003</AA_Terramorph>       <!-- terramorph - medium, import -->
+      <AA_Slurrypede MayRequire="sarg.alphaanimals">0.002</AA_Slurrypede>       <!-- slurrypede - medium, import -->
+      <AA_TetraSlug MayRequire="sarg.alphaanimals">0.002</AA_TetraSlug>         <!-- tetra slug - giant, import -->
+    </wildAnimals>
     <coastalWildAnimals />
     <allowedPackAnimals />
   </BiomeDef>

@@ -46,7 +46,20 @@
     <texture>World/Biomes/Ocean</texture>
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
-    <wildAnimals />
+    <!-- WILD ANIMALS, landed 2026-09-09 by BIOME_FAUNA_ASSIGNMENT_SITTING_1 from
+         design/Jawa/worldbuilding/biomes/rosters/the_grey_sea.json. This supersedes
+         the "left empty, SEAS_WATERLINE_PASS_1's job" note above.
+         The Reefback is the warden lineage's ADULT side only - they breed and die in
+         the Miasma (freeze R11), so the crèche rows live in the Miasma roster. The
+         Aerofleet is the shore drifter shared with the Twilight Sea (endemism binds
+         giants; fliers range, R17); it never touches the Grey Deep's three-resident cap.
+         🔴 No <li>: the node NAME is the animal, the node TEXT is the commonality.
+         ⚠️ No animalDensity declared (engine default 0), impassable background biome -
+         see the Twilight Sea's note; a diving pass owns that number. -->
+    <wildAnimals>
+      <AA_Aerofleet MayRequire="sarg.alphaanimals">0.05</AA_Aerofleet>              <!-- aerofleet - drifter, import -->
+      <RSW_Reefback MayRequire="mandrake.rsw.swbestiary">0.005</RSW_Reefback>       <!-- reefback - endemic giant (warden adult), import -->
+    </wildAnimals>
     <coastalWildAnimals />
 
     <!-- GRAVTIDE SUPPORT, added 2026-09-07 (UNDERWATER_BIOME_SUPPORT_1).

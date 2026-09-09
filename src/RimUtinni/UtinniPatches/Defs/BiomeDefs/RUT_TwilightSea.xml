@@ -71,7 +71,23 @@
     <texture>World/Biomes/Ocean</texture>
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
-    <wildAnimals />
+    <!-- WILD ANIMALS, landed 2026-09-09 by BIOME_FAUNA_ASSIGNMENT_SITTING_1 from
+         design/Jawa/worldbuilding/biomes/rosters/the_twilight_sea.json. This
+         supersedes the "left EMPTY, SEAS_WATERLINE_PASS_1's job" note above: the
+         sea beasts now exist as defs and the roster names them.
+         The Lanternwhale is THE gardener - one giant, endemic, single-spawn
+         (terminator_sea §4: every large organism endemic to its own sea); the
+         Aerofleet is a shore/shadow-lane drifter shared with the Grey Sea, which is
+         legal because endemism binds GIANTS and fliers range (freeze R17).
+         🔴 No <li>: BiomeAnimalRecord's custom loader reads the node NAME as the
+         animal and the node TEXT as the commonality; an <li> discards the whole def.
+         ⚠️ This def declares no animalDensity (engine default 0) and is impassable /
+         isBackgroundBiome, so nothing spawns until a dive map asks - by design here,
+         but it is the one number a future diving-mods pass must set. -->
+    <wildAnimals>
+      <AA_Aerofleet MayRequire="sarg.alphaanimals">0.05</AA_Aerofleet>                    <!-- aerofleet - drifter, import -->
+      <RSW_Lanternwhale MayRequire="mandrake.rsw.swbestiary">0.005</RSW_Lanternwhale>     <!-- lanternwhale - endemic giant, import -->
+    </wildAnimals>
     <coastalWildAnimals />
 
     <!-- GRAVTIDE SUPPORT, added 2026-09-07 (UNDERWATER_BIOME_SUPPORT_1).

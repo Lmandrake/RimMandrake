@@ -82,7 +82,20 @@
     <waterDeepTerrain>RUT_ScaldWaterDeep</waterDeepTerrain>
     <waterMovingShallowTerrain>RUT_ScaldWaterMovingShallow</waterMovingShallowTerrain>
     <waterMovingChestDeepTerrain>RUT_ScaldWaterMovingChestDeep</waterMovingChestDeepTerrain>
-    <wildAnimals />
+    <!-- WILD ANIMALS, landed 2026-09-09 by BIOME_FAUNA_ASSIGNMENT_SITTING_1 from
+         design/Jawa/worldbuilding/biomes/rosters/the_scald.json. This supersedes the
+         "no Scald sheet exists, so wildAnimals is left empty" note above - the_scald.md
+         now exists and is frozen, and it names these bottom-walkers.
+         Both are the sando lineage (adult + elder) walking the crater floor at depth
+         where the boil gentles, which is what satisfies ban 4; the icon carve-out is
+         why they keep their names. Their shipped `predator` flag is stripped by
+         BiomeFaunaStatAdjustments_Generated.xml, per the same roster.
+         🔴 No <li>: the node NAME is the animal, the node TEXT is the commonality.
+         ⚠️ No animalDensity declared (engine default 0), impassable background biome. -->
+    <wildAnimals>
+      <RSW_SandoAquaMonster MayRequire="mandrake.rsw.swbestiary">0.03</RSW_SandoAquaMonster>   <!-- sando aqua monster - bottom-walker adult, import -->
+      <RSW_ElderSando MayRequire="mandrake.rsw.swbestiary">0.005</RSW_ElderSando>              <!-- elder sando - bottom-walker elder, import -->
+    </wildAnimals>
     <coastalWildAnimals />
 
     <!-- GRAVTIDE SUPPORT, added 2026-09-07 (UNDERWATER_BIOME_SUPPORT_1).
