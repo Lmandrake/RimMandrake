@@ -1,17 +1,17 @@
 {
- "generated": "2026-09-08 09:35",
- "head": "8d64f329",
+ "generated": "2026-09-08 22:45",
+ "head": "452cefe8",
  "systems": [
   {
    "system": "Aftermath",
    "tier": "RimMandrake",
    "label": "Aftermath",
    "blurb": "PLOT_MECHANISM_MODS_WAVE_1 \u2014 the aftermath-hostilities engine from design/Jawa/proposals/plot_mechanisms_wave.md Part 2, ruled in scope 2026-09-05. Two pieces: (1) The battle recorder \u2014 a MapComponent that opens a BattleRecord when `IncidentWorker_Raid.TryGenerateRaidInfo` returns true and closes it when the raid's Lord is removed, classifying the fight R\u2026",
-   "functionRung": "implemented",
+   "functionRung": "validated",
    "contentRung": "none",
-   "evidenceRef": "src/RimMandrake/Aftermath folder survey 2026-09-08: 20 .cs, assembly, no PNGs",
+   "evidenceRef": "CHRONICLE_NINEFOLD_DECOUPLE_1: ChronicleEvents spine built, selftest 11/11 passed; NOT yet deployed",
    "date": "2026-09-08",
-   "updatedAt": "2026-09-08T14:53:38Z",
+   "updatedAt": "2026-09-09T03:09:05Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -59,12 +59,7 @@
    "updatedAt": "2026-09-08T15:25:46Z",
    "updatedBy": "BENCH",
    "done": false,
-   "blocked": [
-    "ARMOURY_LOADAFTER_STALE_1",
-    "ARMOURY_SUBSTRING_RUNG_TRAP_1",
-    "ARMOURY_DECLARER_ATTRIBUTION_FLIP_1",
-    "ARMOURY_PATCH_INNER_MISS_1"
-   ],
+   "blocked": [],
    "awaiting": []
   },
   {
@@ -88,7 +83,7 @@
    "system": "AshkarrInhabited",
    "tier": "RimUtinni",
    "label": "Inhabited (Ash'karr)",
-   "blurb": "The Junkers pilot settlement manifest for SETTLEMENT_VISIT_LOOP_1, naming an actual Ash'karr settlement: The Claim Jump (Jawa_Junkers, tile 16905, ZBiome_Badlands \u2014 squatting the worked-out mining fields the Geonosians did not finish; design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md \u00a77 / world/ASHKARR_WORLDMAP_settlements.csv row 44). Low security, f\u2026",
+   "blurb": "The Junkers pilot settlement manifest for SETTLEMENT_VISIT_LOOP_1, naming an actual Ash'karr settlement: The Claim Jump (RUT_Jawa_Junkers, tile 16905, ZBiome_Badlands \u2014 squatting the worked-out mining fields the Geonosians did not finish; design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md \u00a77 / world/ASHKARR_WORLDMAP_settlements.csv row 44). Low securit\u2026",
    "functionRung": "runnable",
    "contentRung": "none",
    "evidenceRef": "DISTRICT_TEMPLATE_LIBRARY_1",
@@ -97,9 +92,7 @@
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
-   "awaiting": [
-    "MOD_NAMING_CONSOLIDATION_AUDIT_1"
-   ]
+   "awaiting": []
   },
   {
    "system": "AshkarrLandmarkArt",
@@ -120,42 +113,12 @@
    "system": "AshkarrWeatherSuite",
    "tier": "RimUtinni",
    "label": "Weather Suite (Ash'karr)",
-   "blurb": "Wires `mandrake.rsw.weathersuite`'s generic terminator-band/nightside-band engine onto THIS campaign's real, frozen planet: ships the one PlanetGeometryDef with Ash'karr's actual substellar point (lat 0, lon 0) and its actual band arcs (63-117 for the terminator storm wall, reusing the exact arc range already used to site the Twilight Sea and Grey Sea; 11\u2026",
+   "blurb": "Wires `mandrake.rm.weathersuite`'s generic terminator-band/nightside-band engine onto THIS campaign's real, frozen planet: ships the one PlanetGeometryDef with Ash'karr's actual substellar point (lat 0, lon 0) and its actual band arcs (63-117 for the terminator storm wall, reusing the exact arc range already used to site the Twilight Sea and Grey Sea; 117\u2026",
    "functionRung": "designed",
    "contentRung": "none",
    "evidenceRef": "src/RimUtinni/AshkarrWeatherSuite folder survey 2026-09-08: no PNGs",
    "date": "2026-09-08",
    "updatedAt": "2026-09-08T14:54:18Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
-   "system": "BeastLairs",
-   "tier": "RimStarWars",
-   "label": "Beast Lairs",
-   "blurb": "`RSW_BeastNest_Large` \u2014 a 3x3 scenery prop filed against `structure_procedural_spec.md` section 9: no large-nest ThingDef existed in the 593-mod stack, so a lair archetype had to fake the den with bare terrain and a hay stack. Modeled on the shape of the stack's existing nest scenery (`EggSac` [Odyssey], `MaggotNest` [Horrors]; MA_HarpeagleNest [Mythic Ag\u2026",
-   "functionRung": "designed",
-   "contentRung": "placeholder",
-   "evidenceRef": "src/RimStarWars/BeastLairs folder survey 2026-09-08: 1 PNGs",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T14:53:59Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
-   "system": "BeastNorm",
-   "tier": "RimStarWars",
-   "label": "Beast Danger Normalization",
-   "blurb": "Law 3 of the beast normalization pass (design/Jawa/worldbuilding/beast_normalization_spec.md): casual lethality with counterplay for the 105 SW beasts at bodySize >= 1 from Star Wars Animal Collection (Continued). Best-hit melee damage on each animal's hardest tool goes linear with bodySize (power = 15 x bodySize). Cooldown on that same tool is lengthened\u2026",
-   "functionRung": "runnable",
-   "contentRung": "none",
-   "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): ACTIVE-51 + 3 clean full-list sessions this week, no BeastNorm-specific error",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T15:55:46Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -177,36 +140,6 @@
    "awaiting": []
   },
   {
-   "system": "BlastDoorFrameAsyncFix",
-   "tier": "RimStarWars",
-   "label": "Blast Door Split-Frame East Fix \u2014 Doors Expanded Star Wars edition",
-   "blurb": "Supplies the three missing east-facing split-frame textures for the blast doors in Doors Expanded Star Wars edition, so a blast door built on a north-south wall stops rendering its own frame BEHIND its door leaves. WHAT YOU SEE WITHOUT THIS MOD Face a Blast Door, Thick Blast Door or Blast Door D east or west and the arch around the doorway loses its inner\u2026",
-   "functionRung": "runnable",
-   "contentRung": "placeholder",
-   "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): ACTIVE-51 + 3 clean full-list sessions this week, no BlastDoorFrameAsyncFix-spec",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T15:55:40Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
-   "system": "CereanManeFix",
-   "tier": "RimStarWars",
-   "label": "Cerean Mane South Fix \u2014 Outer Rim: Galactic Diversity",
-   "blurb": "Restores the south-facing art of the \"cerean mane\" hairstyle in Outer Rim - Galactic Diversity. The file is not missing. It ships, it loads without complaint, and it is completely empty: 512x512 pixels of which zero have any alpha at all. A Cerean wearing this hairstyle therefore renders BALD from the front \u2014 the facing you see most of the time \u2014 while th\u2026",
-   "functionRung": "designed",
-   "contentRung": "placeholder",
-   "evidenceRef": "src/RimStarWars/CereanManeFix folder survey 2026-09-08: 1 PNGs",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T14:54:01Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
    "system": "Cuisine",
    "tier": "RimStarWars",
    "label": "Cuisine",
@@ -222,30 +155,15 @@
    "awaiting": []
   },
   {
-   "system": "DesertFixtures",
-   "tier": "RimUtinni",
-   "label": "Desert Fixtures",
-   "blurb": "`RUT_WindowAdobe` \u2014 a real, player-buildable, stuffable wall-slot window (`ParentName=\"Wall\"`, `isWall=\"true\"`), filed against `structure_procedural_spec.md` section 9: the only wall-slot window defs in the 593-mod stack (`MUS_SpaceBase_Window`, `AM_Wall_Atlas_Glass`) are both decorative/ruin scatter with no `designationCategory` \u2014 neither is player-build\u2026",
-   "functionRung": "designed",
-   "contentRung": "placeholder",
-   "evidenceRef": "src/RimUtinni/DesertFixtures folder survey 2026-09-08: 1 PNGs",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T14:54:19Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
    "system": "DesertVehicleReskin",
-   "tier": "RimMandrake",
+   "tier": "RimStarWars",
    "label": "Desert Vehicle Reskin \u2014 Alpha Vehicles Neolithic",
    "blurb": "Redraws the draught animals in Alpha Vehicles - Neolithic so its carts read as desert, not as medieval Europe. Mostly texture overrides: every art file here sits at the exact path the donor's own ThingDef already asks for, so the vehicles, their stats and their research stay entirely the donor's, and Alpha Vehicles - Neolithic itself is never edited. Two \u2026",
    "functionRung": "runnable",
    "contentRung": "authored",
-   "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): ACTIVE-51 + 3 clean full-list sessions this week; also present (mod-ctor confirm",
+   "evidenceRef": "MOD_CONSOLIDATION_SPRINT_1 proof load 2026-09-09, tier move RM to RSW confirmed, packageId mandrake.rsw.desertvehiclereskin; CSV row25 HIGH",
    "date": "2026-09-08",
-   "updatedAt": "2026-09-08T15:55:48Z",
+   "updatedAt": "2026-09-09T03:09:05Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -278,9 +196,7 @@
    "updatedAt": "2026-09-08T15:25:47Z",
    "updatedBy": "BENCH",
    "done": false,
-   "blocked": [
-    "DROIDWORKS_APPARELMONEY_MISSING_1"
-   ],
+   "blocked": [],
    "awaiting": []
   },
   {
@@ -299,25 +215,10 @@
    "awaiting": []
   },
   {
-   "system": "FactionSlate",
-   "tier": "RimUtinni",
-   "label": "Jawa Faction Slate",
-   "blurb": "Takes every faction except the campaign's own off the Configure Factions page, so a generated world contains exactly the intended slate. \ud83d\udd34 THIS MOD MUST LOAD LAST, OR IT SILENTLY DOES HALF ITS JOB. Every operation is a PatchOperationConditional testing that the FactionDef exists, with no <nomatch> - which is deliberate, because a def belonging to a droppe\u2026",
-   "functionRung": "runnable",
-   "contentRung": "none",
-   "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): ACTIVE-51 + 3 clean full-list sessions this week, no FactionSlate-specific error",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T15:55:41Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
    "system": "FireEcology",
-   "tier": "RimStarWars",
-   "label": "SW \u2014 Fire Ecology",
-   "blurb": "The generic engine half of FIRE_ECOLOGY_LOOP_1 \u2014 a self-igniting desert-savanna fire ecology any Star Wars desert scenario could use unchanged: a scorchable-ground \u2192 ash-ladder terrain chain (trace \u2192 light \u2192 heavy \u2192 deep, real pathCost/fertility teeth, triggered by vanilla's own TerrainDef.burnedDef on flammable ground), a Black Rain WeatherDef that explo\u2026",
+   "tier": "",
+   "label": "FireEcology",
+   "blurb": "",
    "functionRung": "validated",
    "contentRung": "none",
    "evidenceRef": "FIRE_ECOLOGY_LOOP_1",
@@ -359,38 +260,6 @@
    "awaiting": []
   },
   {
-   "system": "GravshipAstronautFix",
-   "tier": "RimMandrake",
-   "label": "Missing North Facings \u2014 Vanilla Gravship Expanded",
-   "blurb": "Supplies the north-facing textures Vanilla Gravship Expanded - Chapter 1 asks for and does not ship: both life stages of the VGE_Astronaut mechanoid, and the gravship gene bank. None of these is a redraw. Two are the donor's own bytes at the filename its def already names; the third is the donor's own south view rotated 180 degrees, which is exactly the b\u2026",
-   "functionRung": "runnable",
-   "contentRung": "placeholder",
-   "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): ACTIVE-51 + 3 clean full-list sessions this week (texture-fix mod, see BlastDoor",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T15:55:52Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
-   "system": "HelixTellurox",
-   "tier": "RimStarWars",
-   "label": "Helix Tellurox",
-   "blurb": "Tellurox \u2014 Ascendant Helix labour-line livestock, HELIX_TELLUROX_BUILD_1. Owner-approved design row from FORSAKEN_CRAGS_FAUNA_1 (karrask_opt3.png). A draft/pack beast with a PERMANENT, non-molting shell that grows with the animal: first-rate plate comes only from slaughtering a mature working animal, never a renewable shear cycle (deliberately the opposit\u2026",
-   "functionRung": "designed",
-   "contentRung": "placeholder",
-   "evidenceRef": "src/RimStarWars/HelixTellurox folder survey 2026-09-08: 1 PNGs",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T14:54:04Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [
-    "HELIX_TELLUROX_SHELL_LOAD_CRASH_1"
-   ],
-   "awaiting": []
-  },
-  {
    "system": "Inhabited",
    "tier": "RimMandrake",
    "label": "Inhabited (local)",
@@ -403,9 +272,7 @@
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
-   "awaiting": [
-    "MOD_NAMING_CONSOLIDATION_AUDIT_1"
-   ]
+   "awaiting": []
   },
   {
    "system": "IshkoDarkLandmarks",
@@ -417,21 +284,6 @@
    "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): ACTIVE-51 + 3 clean full-list sessions this week. Its own item explicitly said \"",
    "date": "2026-09-08",
    "updatedAt": "2026-09-08T15:55:53Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
-   "system": "JawaIkee",
-   "tier": "RimStarWars",
-   "label": "Jawa Ikee",
-   "blurb": "The ikee watches. Jawa and the species that keep creepy pets find it comforting; everyone else does not.",
-   "functionRung": "runnable",
-   "contentRung": "none",
-   "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): NAMESPACE_PAIR_DEPLOY_1",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T15:55:32Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -509,23 +361,6 @@
    "updatedAt": "2026-09-08T14:54:23Z",
    "updatedBy": "BENCH",
    "done": false,
-   "blocked": [
-    "LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1"
-   ],
-   "awaiting": []
-  },
-  {
-   "system": "Livestock",
-   "tier": "RimStarWars",
-   "label": "SW \u2014 Forsaken Crags Fauna",
-   "blurb": "FORSAKEN_CRAGS_PREDATORS_BUILD_1 \u2014 Cindermare and Skarnix, two wild `AB_RockyCrags` threats promoted from owner-approved mockup art (`FORSAKEN_CRAGS_FAUNA_1`). Both untameable (wildness 1.0). Cindermare kills by a mouthless cold-drain grip (a real `RSW_ColdDrainDamage`/`RSW_ColdDrain` injury chain, not flavor text) rather than a bite. Skarnix avoids lit g\u2026",
-   "functionRung": "validated",
-   "contentRung": "placeholder",
-   "evidenceRef": "FORSAKEN_CRAGS_PREDATORS_BUILD_1",
-   "date": "2026-09-07",
-   "updatedAt": "2026-09-08T15:25:51Z",
-   "updatedBy": "BENCH",
-   "done": false,
    "blocked": [],
    "awaiting": []
   },
@@ -581,9 +416,24 @@
    "blurb": "Game-generic fixes and compatibility patches (RimMandrake tier - nothing Star Wars, nothing campaign). Split 2026-09-04 from Jawa Patches (mandrake.jawa.patches) per JAWA_PATCHES_SPLIT_1; tiers per infrastructure/state/jawa_patches_split_map.csv, owner-confirmed 2026-09-01. Every patch is MayRequire/Conditional-guarded: a missing target is a silent no-op.\u2026",
    "functionRung": "runnable",
    "contentRung": "none",
-   "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): ACTIVE-51 + 3 clean full-list sessions this week, no MandrakePatches-specific er",
+   "evidenceRef": "MOD_CONSOLIDATION_SPRINT_1 proof load 2026-09-09; absorbed GravshipAstronautFix+PhytokinBarkHeadFix+ResearchKitEastFix+SauridFrillFix+ToolBeltFix",
    "date": "2026-09-08",
-   "updatedAt": "2026-09-08T15:56:02Z",
+   "updatedAt": "2026-09-09T03:09:02Z",
+   "updatedBy": "BENCH",
+   "done": false,
+   "blocked": [],
+   "awaiting": []
+  },
+  {
+   "system": "ManyWaters",
+   "tier": "RimMandrake",
+   "label": "ManyWaters",
+   "blurb": "Generic water-effects engine (engine promoted from RUT RiverSteam per R10: ManyWaters gathers all water effects/types \u2014 steaming, boiling, etc. \u2014 as they land). Currently ships the animated river-steam ambience: periodic \"Steam\" FleckDef puffs off river cells, reusing vanilla's own TerrainDef.IsRiver test \u2014 a pure ambience feature, no gameplay effect. NOT\u2026",
+   "functionRung": "implemented",
+   "contentRung": "none",
+   "evidenceRef": "MOD_CONSOLIDATION_SPRINT_1 proof load 2026-09-09 R10: gathers RiverSteam steam fleck effect C# into a generic RM water-effects engine; CSV row83",
+   "date": null,
+   "updatedAt": "2026-09-09T03:09:08Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -594,11 +444,11 @@
    "tier": "RimUtinni",
    "label": "Menu Shell",
    "blurb": "The campaign's menu and loading-screen shell, per design/Jawa/worldbuilding/ui_appearance_spec.md section 2 and 5. Ships two things, both XML/texture only (no C#, no Harmony): (1) VBE.BackgroundImageDef backgrounds for Vanilla Backgrounds Expanded's main-menu picker (which the loading screen inherits for free) - the pantheon slide, letterboxed onto a 2560\u2026",
-   "functionRung": "designed",
+   "functionRung": "runnable",
    "contentRung": "authored",
-   "evidenceRef": "src/RimUtinni/MenuShell folder survey 2026-09-08: 11 PNGs",
+   "evidenceRef": "MOD_CONSOLIDATION_SPRINT_1 proof load 2026-09-09; mandrake.rut.shell to mandrake.rut.menushell ID swap confirmed active; absorbed UtinniShell",
    "date": "2026-09-08",
-   "updatedAt": "2026-09-08T14:54:24Z",
+   "updatedAt": "2026-09-09T03:09:00Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -626,7 +476,7 @@
    "system": "Oracle",
    "tier": "RimMandrake",
    "label": "Oracle",
-   "blurb": "The Oracle \u2014 in-game LLM wiring (design/RimMandrake/llm_ingame_wiring_spec.md), campaign-agnostic plumbing. In the campaign it is the NARRATOR's engine (the ship's old non-egoic mind voicing the nine gods); no god is the Oracle, and Ohm is only its first consumer. This build is ORACLE_EXPERIMENT_SPIKE_1: the thin OpenAI-compatible client + ONE god-letter \u2026",
+   "blurb": "The Oracle \u2014 in-game LLM wiring (design/RimMandrake/llm_ingame_wiring_spec.md), campaign-agnostic plumbing. In the campaign it is the NARRATOR's engine (the ship's old non-egoic mind voicing the nine gods); no god is the Oracle, and Ohm is only its first consumer. This build carries the transport plus ONE god-letter consumer (Ohm the All-Current, per desi\u2026",
    "functionRung": "implemented",
    "contentRung": "none",
    "evidenceRef": "src/RimMandrake/Oracle folder survey 2026-09-08: 10 .cs, assembly, no PNGs",
@@ -647,23 +497,6 @@
    "evidenceRef": "PAWN_FLAVOR_SILENT_NONAPPLY_1",
    "date": "2026-09-02",
    "updatedAt": "2026-09-08T15:25:55Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [
-    "PAWNFLAVOR_GEN_BEHIND_1"
-   ],
-   "awaiting": []
-  },
-  {
-   "system": "PhytokinBarkHeadFix",
-   "tier": "RimMandrake",
-   "label": "Bark Head East Fix \u2014 Vanilla Races Expanded: Phytokin",
-   "blurb": "Supplies the missing east-facing head texture for a female Phytokin with bark skin and a heavy jaw, in Vanilla Races Expanded - Phytokin. The art was never missing. It is in the donor's own folder, saved under the male head's filename with \" copy\" appended, so the game never looks for it. This mod ships those exact bytes at the filename the donor's own He\u2026",
-   "functionRung": "designed",
-   "contentRung": "placeholder",
-   "evidenceRef": "src/RimMandrake/PhytokinBarkHeadFix folder survey 2026-09-08: 1 PNGs",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T14:53:45Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -715,27 +548,25 @@
    "awaiting": []
   },
   {
-   "system": "Property",
+   "system": "Pyrelands",
    "tier": "RimMandrake",
-   "label": "Property",
-   "blurb": "PROPERTY_FABRIC_BUILD_1 \u2014 the campaign-blind ownership/theft/perception fabric ruled at the 2026-08-31 brainstorming sitting (design/Jawa/ownership_settlement_spec.md, canon.yml ownership_fabric). A decaying-claim engine: claims are a set of (claimant, strength, basis, timestamp) records per Thing, virtual and computed by default (territorial/situational \u2026",
-   "functionRung": "runnable",
-   "contentRung": "none",
-   "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): PROPERTY_FABRIC_BUILD_1",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T15:55:33Z",
+   "label": "Pyrelands",
+   "blurb": "Adds the pyrelands: a hot savanna biome that burns on a cycle of its own, and everything the cycle needs. Ember grass regrows in under a day and dries to tinder almost as fast, so the fuel bed is always ready. Dry lightning takes it. Ground that burns turns to ash, and ash that burns again banks up through four deepening layers until nothing will root in \u2026",
+   "functionRung": "implemented",
+   "contentRung": "authored",
+   "evidenceRef": "PYRELANDS_SELF_CONTAINED_BIOME_1: RM_FE_Pyrelands BiomeDef + placement modExtension + BiomeWorker, EmberGrass plant, AshFall+Cinderfall weather, 512px world tile; build 0W/0E; NOT yet deployed or proven live",
+   "date": null,
+   "updatedAt": "2026-09-09T03:09:07Z",
    "updatedBy": "BENCH",
    "done": false,
-   "blocked": [
-    "RAIDREDESIGNER_HARD_PROPERTY_REF_1"
-   ],
+   "blocked": [],
    "awaiting": []
   },
   {
    "system": "PyrelandsFireEcology",
    "tier": "RimUtinni",
    "label": "Fire Ecology (Pyrelands)",
-   "blurb": "Wires `mandrake.rsw.fireecology`'s generic desert fire-ecology engine onto THIS campaign's Pyrelands biome (`ZBiome_Grasslands`, from \"More Vanilla Biomes\" \u2014 zylle.morevanillabiomes): strips rain, cranks DryThunderstorm, adds Black Rain to the biome's weather table, swaps its ground terrain for the scorchable/ash-ladder family, and seeds scorch-fruit's sp\u2026",
+   "blurb": "Wires `mandrake.rm.pyrelands`'s generic desert fire-ecology engine onto THIS campaign's Pyrelands biome (`ZBiome_Grasslands`, from \"More Vanilla Biomes\" \u2014 zylle.morevanillabiomes): strips rain, cranks DryThunderstorm, adds Black Rain to the biome's weather table, swaps its ground terrain for the scorchable/ash-ladder family, and seeds scorch-fruit's spawn\u2026",
    "functionRung": "runnable",
    "contentRung": "none",
    "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): FIRE_ECOLOGY_LOOP_1",
@@ -756,23 +587,6 @@
    "evidenceRef": "src/RimMandrake/RaidRedesigner folder survey 2026-09-08: 18 .cs, assembly, no PNGs",
    "date": "2026-09-08",
    "updatedAt": "2026-09-08T14:53:48Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [
-    "RAIDREDESIGNER_HARD_PROPERTY_REF_1"
-   ],
-   "awaiting": []
-  },
-  {
-   "system": "ResearchKitEastFix",
-   "tier": "RimMandrake",
-   "label": "Research Kit East Fix \u2014 Research Reinvented (Retextured)",
-   "blurb": "Restores the east-facing worn art of all four Research Reinvented field research kits. A pawn wearing a research kit and facing east wears nothing visible. All four kits are affected \u2014 simple, hi-tech, multi-analyzer and remote \u2014 and all four are fine facing north, south and west. No log line is possible: \"Failed to find any textures at\" fires only when E\u2026",
-   "functionRung": "runnable",
-   "contentRung": "placeholder",
-   "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): ACTIVE-51 + 3 clean full-list sessions this week (texture-fix mod, see BlastDoor",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T15:56:08Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -824,6 +638,21 @@
    "awaiting": []
   },
   {
+   "system": "RimProperty",
+   "tier": "RimMandrake",
+   "label": "RimProperty",
+   "blurb": "PROPERTY_FABRIC_BUILD_1 \u2014 the campaign-blind ownership/theft/perception fabric ruled at the 2026-08-31 brainstorming sitting (design/Jawa/ownership_settlement_spec.md, canon.yml ownership_fabric). A decaying-claim engine: claims are a set of (claimant, strength, basis, timestamp) records per Thing, virtual and computed by default (territorial/situational \u2026",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "evidenceRef": "MOD_CONSOLIDATION_SPRINT_1 proof load 2026-09-09: builds 0W/0E, selftest 20/20, deployed, full 590-mod load clean; absorbs SalvageClaim+TheftHauler",
+   "date": null,
+   "updatedAt": "2026-09-09T03:09:06Z",
+   "updatedBy": "BENCH",
+   "done": false,
+   "blocked": [],
+   "awaiting": []
+  },
+  {
    "system": "Rites",
    "tier": "RimUtinni",
    "label": "The Rites",
@@ -833,21 +662,6 @@
    "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): ACTIVE-51 + 3 clean full-list sessions this week, no Rites-specific error (resea",
    "date": "2026-09-08",
    "updatedAt": "2026-09-08T15:56:10Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
-   "system": "RiverSteam",
-   "tier": "RimUtinni",
-   "label": "River Steam",
-   "blurb": "Animated steam rising off river cells on the Pyrelands (`ZBiome_Grasslands`) \u2014 a pure ambience feature, no gameplay effect. Reuses vanilla's own \"Steam\" FleckDef and the same TerrainDef.IsRiver test SeasonalFlood already uses. RIVER_STEAM_ANIMATION_1, per `infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md`.",
-   "functionRung": "implemented",
-   "contentRung": "none",
-   "evidenceRef": "src/RimUtinni/RiverSteam folder survey 2026-09-08: 3 .cs, assembly, no PNGs",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T14:54:29Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -873,11 +687,11 @@
    "tier": "RimStarWars",
    "label": "SW \u2014 Bestiary",
    "blurb": "Absorbed creature content: defs and art lifted out of mods that are being retired, so retiring them costs the campaign nothing. MLIE_FAUNA_ABSORPTION_1 \u2014 absorbs content from `mlie.starwarsanimalcollection` (Star Wars Animal Collection) under an `RSW_` prefix, staged in waves. All 589 SoundDefs absorbed (per-creature Angry/Wounded/Death/Call vocal sets ac\u2026",
-   "functionRung": "implemented",
+   "functionRung": "runnable",
    "contentRung": "authored",
-   "evidenceRef": "src/RimStarWars/SWBestiary folder survey 2026-09-08: 14 defs, 70 PNGs",
+   "evidenceRef": "MOD_CONSOLIDATION_SPRINT_1 proof load 2026-09-09 (full 590-mod load clean); absorbed SeaBeasts+Livestock+HelixTellurox+JawaIkee+BeastNorm+SeasWaterline",
    "date": "2026-09-08",
-   "updatedAt": "2026-09-08T14:54:09Z",
+   "updatedAt": "2026-09-09T03:08:53Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -893,66 +707,6 @@
    "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): GRAFFITI_FRAMEWORK_BUILD_1",
    "date": "2026-09-08",
    "updatedAt": "2026-09-08T15:55:36Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
-   "system": "SalvageClaim",
-   "tier": "RimMandrake",
-   "label": "Salvage Claim",
-   "blurb": "SETTLEMENT_VERBS_WAVE_1, scoped to the salvage-law gray zone only (design/Jawa/ownership_settlement_spec.md item 9's four v1 verb families \u2014 crime suite, walkable commerce and social fabric are separate, unbuilt items). Adds ONE interaction: a right-click \"pay claim fee\" order any drafted or undrafted colonist can issue against a Thing (or a downed mechan\u2026",
-   "functionRung": "validated",
-   "contentRung": "none",
-   "evidenceRef": "SETTLEMENT_VERBS_WAVE_1",
-   "date": "2026-09-01",
-   "updatedAt": "2026-09-08T15:25:59Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
-   "system": "SauridFrillFix",
-   "tier": "RimMandrake",
-   "label": "Center Frill North Fix \u2014 Vanilla Races Expanded: Saurid",
-   "blurb": "Restores the north-facing art of the \"littlefoot\" center frill in Vanilla Races Expanded - Saurid. The art is not missing and it is not broken. The north texture ships complete inside the donor mod \u2014 it is simply saved with a stray trailing hyphen in its filename, \"CenterFrill8_north-.png\", so the game never finds it. RimWorld's Graphic_Multi silently fal\u2026",
-   "functionRung": "runnable",
-   "contentRung": "placeholder",
-   "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): ACTIVE-51 + 3 clean full-list sessions this week (texture-fix mod, see BlastDoor",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T15:56:13Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
-   "system": "SeaBeasts",
-   "tier": "RimStarWars",
-   "label": "- SW Sea Beasts",
-   "blurb": "SW_SEA_MONSTERS_ART_1 \u2014 18 Naboo/Star Wars sea creatures across six roles: silt ambushers (the opee family), harpooners (the colo family), leviathans (the sando family), shoal grazers (the canon scalefish), a scavenger swarm, and colossal filter-feeder neutrals. Every stat, tool and lifeStage is calibrated in `design/Jawa/worldbuilding/sea_beasts_def_spec\u2026",
-   "functionRung": "runnable",
-   "contentRung": "authored",
-   "evidenceRef": "SW_SEA_MONSTERS_ART_1",
-   "date": "2026-09-02",
-   "updatedAt": "2026-09-08T15:26:10Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
-   "system": "SeasWaterline",
-   "tier": "RimStarWars",
-   "label": "Seas Waterline Pass",
-   "blurb": "Lane 1 of the seas-filling program (design/Jawa/worldbuilding/the_seas.md): the seas are sealed and faunaless in the current stack (Ocean and Lake carry zero wildAnimals entries, measured live), while a misplaced cast of Star Wars aquatics already sits in the mod list with nowhere wet to swim. Gives Lake and Ocean their first wildAnimals commonality for a\u2026",
-   "functionRung": "runnable",
-   "contentRung": "none",
-   "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): ACTIVE-51 + 3 clean full-list sessions this week, no SeasWaterline-specific erro",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T15:56:15Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -980,14 +734,12 @@
    "blurb": "Star Wars content fixes and compatibility patches (RimStarWars tier - any SW scenario, no campaign lore). Split 2026-09-04 from Jawa Patches (mandrake.jawa.patches) per JAWA_PATCHES_SPLIT_1; tiers per infrastructure/state/jawa_patches_split_map.csv, owner-confirmed 2026-09-01. Every patch is MayRequire/Conditional-guarded. Load late, after every mod it to\u2026",
    "functionRung": "runnable",
    "contentRung": "authored",
-   "evidenceRef": "COLD_LOAD_RUN_SHEET_3",
+   "evidenceRef": "COLD_LOAD_RUN_SHEET_3; MOD_CONSOLIDATION_SPRINT_1 proof load 2026-09-09; absorbed BlastDoorFrameAsyncFix+CereanManeFix",
    "date": "2026-09-04",
-   "updatedAt": "2026-09-08T15:26:11Z",
+   "updatedAt": "2026-09-09T03:09:01Z",
    "updatedBy": "BENCH",
    "done": false,
-   "blocked": [
-    "PATCHMODS_LOADAFTER_SWEEP_1"
-   ],
+   "blocked": [],
    "awaiting": []
   },
   {
@@ -1002,9 +754,7 @@
    "updatedAt": "2026-09-08T15:26:02Z",
    "updatedBy": "BENCH",
    "done": false,
-   "blocked": [
-    "STARWARSRACES_TOOLBOX_SOFT_DEP_1"
-   ],
+   "blocked": [],
    "awaiting": []
   },
   {
@@ -1042,11 +792,11 @@
    "tier": "RimUtinni",
    "label": "Structure Injections",
    "blurb": "Ash'karr campaign content for the promise/whisper structure program (design/Jawa/worldbuilding/structure_injection_roster.md), riding mandrake.rm.injections' GenStep_RimplacePlan engine. Ships batch 3, four promises: The Oasis Shrine (row 10), The Rakatan Trace (row 9), The Cistern (row 19), The Toll Gap (row 13). All four rimplace templates are authored \u2026",
-   "functionRung": "implemented",
+   "functionRung": "runnable",
    "contentRung": "none",
-   "evidenceRef": "src/RimUtinni/StructureInjectionsRUT folder survey 2026-09-08: 10 defs, no PNGs (mechanism-only)",
+   "evidenceRef": "MOD_CONSOLIDATION_SPRINT_1 proof load 2026-09-09; absorbed DesertFixtures+VaultDungeons",
    "date": "2026-09-08",
-   "updatedAt": "2026-09-08T14:54:30Z",
+   "updatedAt": "2026-09-09T03:08:58Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -1059,39 +809,9 @@
    "blurb": "SW content for the promise/whisper structure program (design/Jawa/worldbuilding/structure_injection_roster.md), riding mandrake.rm.injections' GenStep_RimplacePlan engine. Ships one promise so far: The Moisture Farm (roster row 1) - a vaporator ring around a buried cistern hut, walled yard. The rimplace template is authored and lints/verifies clean; the T\u2026",
    "functionRung": "runnable",
    "contentRung": "none",
-   "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): ACTIVE-51 + 3 clean full-list sessions this week, no StructureInjectionsSW-speci",
+   "evidenceRef": "MOD_CONSOLIDATION_SPRINT_1 proof load 2026-09-09; absorbed BeastLairs",
    "date": "2026-09-08",
-   "updatedAt": "2026-09-08T15:56:19Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
-   "system": "TheftHauler",
-   "tier": "RimMandrake",
-   "label": "Theft Hauler",
-   "blurb": "BUILDING_THEFT_HAULER_1 \u2014 the heist verb: a pawn marked with RM_TheftHaulerExtension can uninstall ANY Building (not gated by the normal player-deconstruct/own-faction check) into a haulable MinifiedThing via a right-click float menu order, reusing vanilla's own uninstall-to-MinifiedThing machinery (JobDriver_RemoveBuilding, MinifyUtility.Uninstall). At t\u2026",
-   "functionRung": "runnable",
-   "contentRung": "none",
-   "evidenceRef": "BUILDING_THEFT_HAULER_1",
-   "date": "2026-09-01",
-   "updatedAt": "2026-09-08T15:26:12Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [],
-   "awaiting": []
-  },
-  {
-   "system": "ToolBeltFix",
-   "tier": "RimMandrake",
-   "label": "Tool Belt West Fix \u2014 Vanilla Apparel Expanded: Accessories",
-   "blurb": "Restores the west-facing worn art of the tool belt in Vanilla Apparel Expanded - Accessories. The file is not missing. It ships, it loads without complaint, and it is completely empty: 256x256 pixels of which zero have any alpha. A pawn wearing a tool belt and facing west therefore wears nothing visible, while the same pawn facing east, north or south wea\u2026",
-   "functionRung": "runnable",
-   "contentRung": "placeholder",
-   "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): ACTIVE-51 + 3 clean full-list sessions this week (texture-fix mod, see BlastDoor",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T15:56:21Z",
+   "updatedAt": "2026-09-09T03:08:56Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -1104,43 +824,9 @@
    "blurb": "The Utinni campaign patch layer: factions, scenario, doctrine, Ash'karr worldbuilding patches. Split 2026-09-04 from Jawa Patches (mandrake.jawa.patches) per JAWA_PATCHES_SPLIT_1; tiers per infrastructure/state/jawa_patches_split_map.csv, owner-confirmed 2026-09-01. Every patch is MayRequire/Conditional-guarded. LOAD LAST of the three patch tiers, after e\u2026",
    "functionRung": "runnable",
    "contentRung": "authored",
-   "evidenceRef": "COLD_LOAD_RUN_SHEET_3",
+   "evidenceRef": "MOD_CONSOLIDATION_SPRINT_1 proof load 2026-09-09; absorbed FactionSlate + RiverSteam Ashkarr-wiring residue",
    "date": "2026-09-04",
-   "updatedAt": "2026-09-08T15:26:13Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [
-    "PATCHMODS_LOADAFTER_SWEEP_1"
-   ],
-   "awaiting": []
-  },
-  {
-   "system": "UtinniShell",
-   "tier": "RimUtinni",
-   "label": "Shell",
-   "blurb": "The campaign's UI shell \u2014 a RimThemes theme, \"Utinni Shell\", plus one main-menu background. Visual language (design/Jawa/worldbuilding/ui_shell_spec.md): oxidised red-rust plate, chalk-white graffiti outlines and a hot brass/amber accent over an indigo-black ground \u2014 Galaxy's Edge control panels and an amber Aurebesh tactical read-out, on-model with the g\u2026",
-   "functionRung": "designed",
-   "contentRung": "placeholder",
-   "evidenceRef": "src/RimUtinni/UtinniShell folder survey 2026-09-08: 1 PNGs",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T14:54:32Z",
-   "updatedBy": "BENCH",
-   "done": false,
-   "blocked": [
-    "UTINNI_SHELL_DEFNAME_BUG_1"
-   ],
-   "awaiting": []
-  },
-  {
-   "system": "VaultDungeons",
-   "tier": "RimUtinni",
-   "label": "Vault Dungeons",
-   "blurb": "Ash'karr campaign content for the six Forsaken vaults (VAULT_DUNGEON_BUILD_1, design/Jawa/worldbuilding/dungeons_arc_spec.md \u00a73). Ships three parameterized KCSG StructureLayoutDef templates, one per vault type: RUT_VaultType1_MechanoidGarrison (Forgotten Arsenal held, doctrine turrets, materials/weapons-only core loot), RUT_VaultType2_FleshWeaponLoose (br\u2026",
-   "functionRung": "runnable",
-   "contentRung": "none",
-   "evidenceRef": "owner-ruled promotion 2026-09-08 (UNCERTAIN tier accepted: active + clean full-list loads, activity not directly shown): Direct log finds (this pass): `Transient/Player_log_before_worldmap_session_2026",
-   "date": "2026-09-08",
-   "updatedAt": "2026-09-08T15:55:38Z",
+   "updatedAt": "2026-09-09T03:09:03Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -1163,14 +849,14 @@
   },
   {
    "system": "WeatherSuite",
-   "tier": "RimStarWars",
+   "tier": "RimMandrake",
    "label": "SW \u2014 Weather Suite",
    "blurb": "The generic engine half of WEATHER_SUITE_SLICE_1 \u2014 a fixed-geometry \"arc from the substellar point\" test any tidally-locked Star Wars planet could use unchanged (PlanetGeometryDef + MapComponent_TerminatorBand), a permanent terminator-front storm wall riding vanilla GameCondition_Flashstorm, a nightside-gated dark-side aurora riding vanilla GameCondition_\u2026",
-   "functionRung": "implemented",
+   "functionRung": "runnable",
    "contentRung": "none",
-   "evidenceRef": "src/RimStarWars/WeatherSuite folder survey 2026-09-08: 5 defs, 3 .cs, assembly, no PNGs",
+   "evidenceRef": "MOD_CONSOLIDATION_SPRINT_1 proof load 2026-09-09, tier move RSW to RM, packageId mandrake.rm.weathersuite; CSV row55 HIGH",
    "date": "2026-09-08",
-   "updatedAt": "2026-09-08T14:54:14Z",
+   "updatedAt": "2026-09-09T03:09:04Z",
    "updatedBy": "BENCH",
    "done": false,
    "blocked": [],
@@ -1194,59 +880,24 @@
  ],
  "functionCounts": {
   "planned": 0,
-  "designed": 11,
-  "implemented": 11,
-  "runnable": 34,
+  "designed": 4,
+  "implemented": 8,
+  "runnable": 25,
   "validated": 21,
   "played": 0,
   "__unset__": 0
  },
  "contentCounts": {
-  "none": 47,
-  "placeholder": 16,
+  "none": 40,
+  "placeholder": 4,
   "authored": 14,
   "final": 0,
   "__unset__": 0
  },
  "grid": {
-  "implemented": {
-   "none": [
-    "Aftermath",
-    "LanternDeeps",
-    "LongHunger",
-    "Oracle",
-    "RaidRedesigner",
-    "RestrainingBolts",
-    "RiverSteam",
-    "StructureInjectionsRUT",
-    "WeatherSuite"
-   ],
-   "authored": [
-    "RustChrome",
-    "SWBestiary"
-   ]
-  },
-  "designed": {
-   "none": [
-    "AftermathRites",
-    "AshkarrFlora",
-    "AshkarrWeatherSuite"
-   ],
-   "placeholder": [
-    "BeastLairs",
-    "CereanManeFix",
-    "DesertFixtures",
-    "HelixTellurox",
-    "PhytokinBarkHeadFix",
-    "UtinniShell"
-   ],
-   "authored": [
-    "KotORBandolierNorthFix",
-    "MenuShell"
-   ]
-  },
   "validated": {
    "none": [
+    "Aftermath",
     "Antiquities",
     "BirthHatchDemo",
     "FireEcology",
@@ -1258,7 +909,7 @@
     "Pits",
     "ResearchRetag",
     "RimDefDump",
-    "SalvageClaim",
+    "RimProperty",
     "ShipMemory",
     "StructureInjections"
    ],
@@ -1270,50 +921,64 @@
    ],
    "placeholder": [
     "Graffiti",
-    "JawaIonWeapons",
-    "Livestock"
+    "JawaIonWeapons"
+   ]
+  },
+  "designed": {
+   "none": [
+    "AftermathRites",
+    "AshkarrFlora",
+    "AshkarrWeatherSuite"
+   ],
+   "authored": [
+    "KotORBandolierNorthFix"
    ]
   },
   "runnable": {
    "none": [
     "AshkarrInhabited",
-    "BeastNorm",
     "Doctrine",
     "EmpirePursuit",
-    "FactionSlate",
     "IshkoDarkLandmarks",
-    "JawaIkee",
     "JawaRules",
     "JawaVoice",
     "MandrakePatches",
     "PlanetPresetPrime",
     "PlantGrowth",
-    "Property",
     "PyrelandsFireEcology",
     "Rites",
-    "SeasWaterline",
     "StrandedQuest",
+    "StructureInjectionsRUT",
     "StructureInjectionsSW",
-    "TheftHauler",
-    "VaultDungeons",
-    "Visibility"
+    "Visibility",
+    "WeatherSuite"
    ],
    "authored": [
     "AshkarrLandmarkArt",
     "Cuisine",
     "DesertVehicleReskin",
-    "SeaBeasts",
+    "MenuShell",
+    "SWBestiary",
     "StarWarsPatches",
     "UtinniPatches"
    ],
    "placeholder": [
-    "BlastDoorFrameAsyncFix",
-    "GravshipAstronautFix",
     "MSEDroidFix",
-    "ResearchKitEastFix",
-    "SacredGraffiti",
-    "SauridFrillFix",
-    "ToolBeltFix"
+    "SacredGraffiti"
+   ]
+  },
+  "implemented": {
+   "none": [
+    "LanternDeeps",
+    "LongHunger",
+    "ManyWaters",
+    "Oracle",
+    "RaidRedesigner",
+    "RestrainingBolts"
+   ],
+   "authored": [
+    "Pyrelands",
+    "RustChrome"
    ]
   }
  },
@@ -3997,6 +3662,706 @@
     "final": 0
    },
    "nSystems": 77
+  },
+  {
+   "ts": "2026-09-09T03:07:46Z",
+   "system": "SeaBeasts",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 11,
+    "implemented": 11,
+    "runnable": 33,
+    "validated": 21,
+    "played": 0
+   },
+   "content": {
+    "none": 47,
+    "placeholder": 16,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 76
+  },
+  {
+   "ts": "2026-09-09T03:07:47Z",
+   "system": "Livestock",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 11,
+    "implemented": 11,
+    "runnable": 33,
+    "validated": 20,
+    "played": 0
+   },
+   "content": {
+    "none": 47,
+    "placeholder": 15,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 75
+  },
+  {
+   "ts": "2026-09-09T03:07:48Z",
+   "system": "HelixTellurox",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 10,
+    "implemented": 11,
+    "runnable": 33,
+    "validated": 20,
+    "played": 0
+   },
+   "content": {
+    "none": 47,
+    "placeholder": 14,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 74
+  },
+  {
+   "ts": "2026-09-09T03:07:50Z",
+   "system": "JawaIkee",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 10,
+    "implemented": 11,
+    "runnable": 32,
+    "validated": 20,
+    "played": 0
+   },
+   "content": {
+    "none": 46,
+    "placeholder": 14,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 73
+  },
+  {
+   "ts": "2026-09-09T03:07:52Z",
+   "system": "BeastNorm",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 10,
+    "implemented": 11,
+    "runnable": 31,
+    "validated": 20,
+    "played": 0
+   },
+   "content": {
+    "none": 45,
+    "placeholder": 14,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 72
+  },
+  {
+   "ts": "2026-09-09T03:07:54Z",
+   "system": "SeasWaterline",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 10,
+    "implemented": 11,
+    "runnable": 30,
+    "validated": 20,
+    "played": 0
+   },
+   "content": {
+    "none": 44,
+    "placeholder": 14,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 71
+  },
+  {
+   "ts": "2026-09-09T03:08:01Z",
+   "system": "BeastLairs",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 9,
+    "implemented": 11,
+    "runnable": 30,
+    "validated": 20,
+    "played": 0
+   },
+   "content": {
+    "none": 44,
+    "placeholder": 13,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 70
+  },
+  {
+   "ts": "2026-09-09T03:08:05Z",
+   "system": "DesertFixtures",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 8,
+    "implemented": 11,
+    "runnable": 30,
+    "validated": 20,
+    "played": 0
+   },
+   "content": {
+    "none": 44,
+    "placeholder": 12,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 69
+  },
+  {
+   "ts": "2026-09-09T03:08:09Z",
+   "system": "VaultDungeons",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 8,
+    "implemented": 11,
+    "runnable": 29,
+    "validated": 20,
+    "played": 0
+   },
+   "content": {
+    "none": 43,
+    "placeholder": 12,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 68
+  },
+  {
+   "ts": "2026-09-09T03:08:13Z",
+   "system": "UtinniShell",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 7,
+    "implemented": 11,
+    "runnable": 29,
+    "validated": 20,
+    "played": 0
+   },
+   "content": {
+    "none": 43,
+    "placeholder": 11,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 67
+  },
+  {
+   "ts": "2026-09-09T03:08:18Z",
+   "system": "SalvageClaim",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 7,
+    "implemented": 11,
+    "runnable": 29,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 42,
+    "placeholder": 11,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 66
+  },
+  {
+   "ts": "2026-09-09T03:08:21Z",
+   "system": "TheftHauler",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 7,
+    "implemented": 11,
+    "runnable": 28,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 41,
+    "placeholder": 11,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 65
+  },
+  {
+   "ts": "2026-09-09T03:08:24Z",
+   "system": "FactionSlate",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 7,
+    "implemented": 11,
+    "runnable": 27,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 40,
+    "placeholder": 11,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 64
+  },
+  {
+   "ts": "2026-09-09T03:08:27Z",
+   "system": "RiverSteam",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 7,
+    "implemented": 10,
+    "runnable": 27,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 39,
+    "placeholder": 11,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 63
+  },
+  {
+   "ts": "2026-09-09T03:08:31Z",
+   "system": "BlastDoorFrameAsyncFix",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 7,
+    "implemented": 10,
+    "runnable": 26,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 39,
+    "placeholder": 10,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 62
+  },
+  {
+   "ts": "2026-09-09T03:08:34Z",
+   "system": "CereanManeFix",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 6,
+    "implemented": 10,
+    "runnable": 26,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 39,
+    "placeholder": 9,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 61
+  },
+  {
+   "ts": "2026-09-09T03:08:36Z",
+   "system": "GravshipAstronautFix",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 6,
+    "implemented": 10,
+    "runnable": 25,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 39,
+    "placeholder": 8,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 60
+  },
+  {
+   "ts": "2026-09-09T03:08:39Z",
+   "system": "PhytokinBarkHeadFix",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 5,
+    "implemented": 10,
+    "runnable": 25,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 39,
+    "placeholder": 7,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 59
+  },
+  {
+   "ts": "2026-09-09T03:08:42Z",
+   "system": "ResearchKitEastFix",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 5,
+    "implemented": 10,
+    "runnable": 24,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 39,
+    "placeholder": 6,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 58
+  },
+  {
+   "ts": "2026-09-09T03:08:44Z",
+   "system": "SauridFrillFix",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 5,
+    "implemented": 10,
+    "runnable": 23,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 39,
+    "placeholder": 5,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 57
+  },
+  {
+   "ts": "2026-09-09T03:08:47Z",
+   "system": "ToolBeltFix",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 5,
+    "implemented": 10,
+    "runnable": 22,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 39,
+    "placeholder": 4,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 56
+  },
+  {
+   "ts": "2026-09-09T03:08:50Z",
+   "system": "Property",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 5,
+    "implemented": 10,
+    "runnable": 21,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 38,
+    "placeholder": 4,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 55
+  },
+  {
+   "ts": "2026-09-09T03:08:53Z",
+   "system": "SWBestiary",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 5,
+    "implemented": 9,
+    "runnable": 22,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 38,
+    "placeholder": 4,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 55
+  },
+  {
+   "ts": "2026-09-09T03:08:56Z",
+   "system": "StructureInjectionsSW",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 5,
+    "implemented": 9,
+    "runnable": 22,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 38,
+    "placeholder": 4,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 55
+  },
+  {
+   "ts": "2026-09-09T03:08:58Z",
+   "system": "StructureInjectionsRUT",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 5,
+    "implemented": 8,
+    "runnable": 23,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 38,
+    "placeholder": 4,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 55
+  },
+  {
+   "ts": "2026-09-09T03:09:00Z",
+   "system": "MenuShell",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 4,
+    "implemented": 8,
+    "runnable": 24,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 38,
+    "placeholder": 4,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 55
+  },
+  {
+   "ts": "2026-09-09T03:09:01Z",
+   "system": "StarWarsPatches",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 4,
+    "implemented": 8,
+    "runnable": 24,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 38,
+    "placeholder": 4,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 55
+  },
+  {
+   "ts": "2026-09-09T03:09:02Z",
+   "system": "MandrakePatches",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 4,
+    "implemented": 8,
+    "runnable": 24,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 38,
+    "placeholder": 4,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 55
+  },
+  {
+   "ts": "2026-09-09T03:09:03Z",
+   "system": "UtinniPatches",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 4,
+    "implemented": 8,
+    "runnable": 24,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 38,
+    "placeholder": 4,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 55
+  },
+  {
+   "ts": "2026-09-09T03:09:04Z",
+   "system": "WeatherSuite",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 4,
+    "implemented": 7,
+    "runnable": 25,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 38,
+    "placeholder": 4,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 55
+  },
+  {
+   "ts": "2026-09-09T03:09:05Z",
+   "system": "DesertVehicleReskin",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 4,
+    "implemented": 7,
+    "runnable": 25,
+    "validated": 19,
+    "played": 0
+   },
+   "content": {
+    "none": 38,
+    "placeholder": 4,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 55
+  },
+  {
+   "ts": "2026-09-09T03:09:05Z",
+   "system": "Aftermath",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 4,
+    "implemented": 6,
+    "runnable": 25,
+    "validated": 20,
+    "played": 0
+   },
+   "content": {
+    "none": 38,
+    "placeholder": 4,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 55
+  },
+  {
+   "ts": "2026-09-09T03:09:06Z",
+   "system": "RimProperty",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 4,
+    "implemented": 6,
+    "runnable": 25,
+    "validated": 21,
+    "played": 0
+   },
+   "content": {
+    "none": 39,
+    "placeholder": 4,
+    "authored": 13,
+    "final": 0
+   },
+   "nSystems": 56
+  },
+  {
+   "ts": "2026-09-09T03:09:07Z",
+   "system": "Pyrelands",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 4,
+    "implemented": 7,
+    "runnable": 25,
+    "validated": 21,
+    "played": 0
+   },
+   "content": {
+    "none": 39,
+    "placeholder": 4,
+    "authored": 14,
+    "final": 0
+   },
+   "nSystems": 57
+  },
+  {
+   "ts": "2026-09-09T03:09:08Z",
+   "system": "ManyWaters",
+   "seat": "BENCH",
+   "function": {
+    "planned": 0,
+    "designed": 4,
+    "implemented": 8,
+    "runnable": 25,
+    "validated": 21,
+    "played": 0
+   },
+   "content": {
+    "none": 40,
+    "placeholder": 4,
+    "authored": 14,
+    "final": 0
+   },
+   "nSystems": 58
   }
  ],
  "goalSheet": {
@@ -4763,52 +5128,630 @@
  },
  "codeReview": {
   "total": 1476,
-  "clean": 1443,
-  "dirty": 33,
+  "clean": 1145,
+  "dirty": 331,
   "unknown": 0,
-  "recidivists": 33,
+  "recidivists": 331,
   "dirtyPaths": [
    "design/Jawa/mods/biome_flora.py",
+   "src/RimMandrake/Aftermath/About/About.xml",
+   "src/RimMandrake/Aftermath/Source/AftermathRuleRunner.cs",
+   "src/RimMandrake/Aftermath/Source/MapComponent_BattleRecorder.cs",
+   "src/RimMandrake/Aftermath/Source/RM_AftermathRuleDef.cs",
+   "src/RimMandrake/DesertVehicleReskin/About/About.xml",
+   "src/RimMandrake/DesertVehicleReskin/LoadFolders.xml",
+   "src/RimMandrake/DesertVehicleReskin/Patches/BeastVehicle_Identity.xml",
+   "src/RimMandrake/DesertVehicleReskin/Patches/DogSledTint_Brown.xml",
+   "src/RimMandrake/DesertVehicleReskin/Patches/DraughtFuel_Marker.xml",
+   "src/RimMandrake/DesertVehicleReskin/Patches/EopieSled_Identity.xml",
+   "src/RimMandrake/DesertVehicleReskin/Source/Fuel/FuelDebugActions.cs",
+   "src/RimMandrake/DesertVehicleReskin/Source/Fuel/RM_DraughtFuelExtension.cs",
+   "src/RimMandrake/DesertVehicleReskin/Source/Fuel/VegetableFuel.cs",
+   "src/RimMandrake/DesertVehicleReskin/Source/Fuel/VehicleFuelPatches.cs",
+   "src/RimMandrake/DesertVehicleReskin/Source/Fuel/check_fuel_predicate.py",
+   "src/RimMandrake/DesertVehicleReskin/Source/build_beast_vehicle.py",
+   "src/RimMandrake/DesertVehicleReskin/Source/build_eopie_sled_east.py",
+   "src/RimMandrake/DesertVehicleReskin/Source/build_eopie_sled_north.py",
+   "src/RimMandrake/DesertVehicleReskin/Source/build_eopie_sled_south.py",
+   "src/RimMandrake/DesertVehicleReskin/Source/despeckle.py",
+   "src/RimMandrake/DesertVehicleReskin/Source/preview_derived_facings.py",
+   "src/RimMandrake/DesertVehicleReskin/Source/preview_tint.py",
+   "src/RimMandrake/DesertVehicleReskin/Source/recolour_ronto.py",
+   "src/RimMandrake/DesertVehicleReskin/Source/recrop_east_v2.py",
+   "src/RimMandrake/DesertVehicleReskin/Source/review_sheet.py",
+   "src/RimMandrake/DesertVehicleReskin/Source/trim_to_band_aspect.py",
+   "src/RimMandrake/GravshipAstronautFix/About/About.xml",
+   "src/RimMandrake/GravshipAstronautFix/Source/make_genebank_north.py",
+   "src/RimMandrake/GravshipAstronautFix/Textures/Things/Pawns/Mechanoid/Astronaut/Allegiance_Mech_Astronaut_north.png",
+   "src/RimMandrake/GravshipAstronautFix/Textures/Things/Pawns/Mechanoid/Astronaut/MechAncient_Astronaut_north.png",
+   "src/RimMandrake/GravshipAstronautFix/Textures/Things/Structures/GravshipGenebank/GravshipGenebank_north.png",
+   "src/RimMandrake/Inhabited/Source/GenStep_ComposeSettlementDistrict.cs",
+   "src/RimMandrake/Inhabited/Source/SettlementManifestDef.cs",
+   "src/RimMandrake/MandrakePatches/About/About.xml",
+   "src/RimMandrake/Ninefold/About/About.xml",
+   "src/RimMandrake/Oracle/About/About.xml",
+   "src/RimMandrake/Oracle/Source/OracleGameComponent.cs",
+   "src/RimMandrake/Oracle/Source/OracleHttpClient.cs",
+   "src/RimMandrake/Oracle/Source/OracleSettings.cs",
+   "src/RimMandrake/PhytokinBarkHeadFix/About/About.xml",
+   "src/RimMandrake/PhytokinBarkHeadFix/Source/make_bark_female_wide_east.py",
+   "src/RimMandrake/PhytokinBarkHeadFix/Textures/Things/Pawn/Humanlike/Heads/BarkSkinFemale_Wide_Normal_east.png",
+   "src/RimMandrake/Property/About/About.xml",
+   "src/RimMandrake/Property/Source/ClaimBasis.cs",
+   "src/RimMandrake/Property/Source/ClaimDecay.cs",
+   "src/RimMandrake/Property/Source/ClaimEngine.cs",
+   "src/RimMandrake/Property/Source/ClaimRecord.cs",
+   "src/RimMandrake/Property/Source/ClaimRecordList.cs",
+   "src/RimMandrake/Property/Source/ClaimResolution.cs",
+   "src/RimMandrake/Property/Source/ClaimantKind.cs",
+   "src/RimMandrake/Property/Source/ClaimantRef.cs",
+   "src/RimMandrake/Property/Source/FactionRecord.cs",
+   "src/RimMandrake/Property/Source/GameComponent_PropertyLedger.cs",
+   "src/RimMandrake/Property/Source/PerceptionUtility.cs",
+   "src/RimMandrake/Property/Source/PropertyEngine.cs",
+   "src/RimMandrake/Property/Source/PropertyEvents.cs",
+   "src/RimMandrake/Property/Source/PropertyTuning.cs",
+   "src/RimMandrake/Property/Source/RM_Property.csproj",
+   "src/RimMandrake/Property/Source/RecognizabilityUtility.cs",
+   "src/RimMandrake/Property/Source/SelfTest/Program.cs",
+   "src/RimMandrake/Property/Source/SelfTest/RimMandrakeProperty.SelfTest.csproj",
+   "src/RimMandrake/Property/Source/TakingAct.cs",
+   "src/RimMandrake/Property/Source/TakingEvent.cs",
+   "src/RimMandrake/Property/Source/WitnessEntry.cs",
+   "src/RimMandrake/RaidRedesigner/Source/Patch_CaravanRobbed.cs",
+   "src/RimMandrake/RaidRedesigner/Source/RaidRedesignerMod.cs",
+   "src/RimMandrake/ResearchKitEastFix/About/About.xml",
+   "src/RimMandrake/ResearchKitEastFix/Source/mirror_research_kit_easts.py",
+   "src/RimMandrake/ResearchKitEastFix/Textures/Things/Items/HiTechResearchKit/HiTechResearchKit_east.png",
+   "src/RimMandrake/ResearchKitEastFix/Textures/Things/Items/MultiAnalyzerResearchKit/MultiAnalyzerResearchKit_east.png",
+   "src/RimMandrake/ResearchKitEastFix/Textures/Things/Items/RemoteResearchKit/RemoteResearchKit_east.png",
+   "src/RimMandrake/ResearchKitEastFix/Textures/Things/Items/SimpleResearchKit/SimpleResearchKit_east.png",
+   "src/RimMandrake/SalvageClaim/About/About.xml",
+   "src/RimMandrake/SalvageClaim/Source/FloatMenuOptionProvider_PaySalvageClaim.cs",
+   "src/RimMandrake/SalvageClaim/Source/RM_SalvageClaim.csproj",
+   "src/RimMandrake/SalvageClaim/Source/SalvageClaimFeeUtility.cs",
+   "src/RimMandrake/SauridFrillFix/About/About.xml",
+   "src/RimMandrake/SauridFrillFix/Textures/Pawn/CenterFrill/CenterFrill8_north.png",
+   "src/RimMandrake/TheftHauler/About/About.xml",
+   "src/RimMandrake/TheftHauler/Defs/JobDefs_TheftHauler.xml",
+   "src/RimMandrake/TheftHauler/Patches/MuckrakerChassis_TheftHauler.xml",
+   "src/RimMandrake/TheftHauler/Source/DebugActions_TheftHauler.cs",
+   "src/RimMandrake/TheftHauler/Source/FloatMenuOptionProvider_TheftHaulUninstall.cs",
+   "src/RimMandrake/TheftHauler/Source/JobDriver_TheftHaulUninstall.cs",
+   "src/RimMandrake/TheftHauler/Source/RM_TheftHauler.csproj",
+   "src/RimMandrake/TheftHauler/Source/TheftHaulerDefOf.cs",
+   "src/RimMandrake/TheftHauler/Source/TheftHaulerExtension.cs",
+   "src/RimMandrake/ToolBeltFix/About/About.xml",
+   "src/RimMandrake/ToolBeltFix/Source/mirror_toolbelt_west.py",
+   "src/RimMandrake/ToolBeltFix/Textures/Things/Apparel/ToolBelt/ToolBelt_west.png",
+   "src/RimMandrake/Utils/ashkarr_place_complex_structures.py",
+   "src/RimMandrake/Utils/check_refs.py",
+   "src/RimMandrake/Utils/gen_pawn_flavor_phase2_apply.py",
+   "src/RimMandrake/Utils/gen_pawnkind_roster.py",
+   "src/RimMandrake/Utils/gen_races_mod.py",
+   "src/RimMandrake/Utils/patch_provenance.py",
+   "src/RimMandrake/Utils/selftest_property_fabric.py",
+   "src/RimMandrake/Utils/w9_run.py",
+   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchEventTools.cs",
+   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFactionTools.cs",
+   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchOracleTools.cs",
+   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs",
    "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWorldTools.cs",
+   "src/RimMandrake/rimflow/board_viz.py",
    "src/RimMandrake/rimflow/cli.py",
+   "src/RimMandrake/rimflow/github_mirror.py",
+   "src/RimMandrake/rimflow/github_project.py",
    "src/RimMandrake/rimflow/model.py",
    "src/RimMandrake/rimflow/selftest_model.py",
+   "src/RimStarWars/Armoury/About/About.xml",
    "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorweapons/TheForceLightsabers/Absorbed_Kotorweapons_TheForceLightsabers_HiltPartDefs_KotORColorCrystals.xml",
+   "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_RulePacks_DroidNameMakers.xml",
    "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Carpets.xml",
    "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_ImmortalusSithLords.xml",
    "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORHeroApparel.xml",
    "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponMelee_KotORVibroblade.xml",
    "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORBlasterRifle.xml",
+   "src/RimStarWars/Armoury/Defs/MiscDefs/Absorbed_SovSith_Misc.xml",
+   "src/RimStarWars/Armoury/Defs/ThingDefs/Absorbed_SovSith_Genes.xml",
+   "src/RimStarWars/Armoury/Defs/ThingDefs/Absorbed_SovSith_HeadTypes.xml",
+   "src/RimStarWars/Armoury/Patches/Armour_DamageCategories.xml",
+   "src/RimStarWars/Armoury/Patches/Armour_Leather.xml",
    "src/RimStarWars/Armoury/Patches/Armour_Penetration.xml",
+   "src/RimStarWars/Armoury/Patches/Armour_Ratings.xml",
    "src/RimStarWars/Armoury/Patches/Armoury_MeleePower.xml",
    "src/RimStarWars/Armoury/Patches/Armoury_RangedDamage.xml",
    "src/RimStarWars/Armoury/Source/gen_armour_patch.py",
    "src/RimStarWars/Armoury/Source/gen_armoury_patch.py",
+   "src/RimStarWars/BeastNorm/About/About.xml",
+   "src/RimStarWars/BeastNorm/Patches/BeastNorm_Law3.xml",
+   "src/RimStarWars/BlastDoorFrameAsyncFix/About/About.xml",
+   "src/RimStarWars/BlastDoorFrameAsyncFix/Source/blast_door_frameasync_east_BRIEF.md",
+   "src/RimStarWars/BlastDoorFrameAsyncFix/Source/build_frameasync_east.py",
+   "src/RimStarWars/BlastDoorFrameAsyncFix/Source/render_review.py",
+   "src/RimStarWars/BlastDoorFrameAsyncFix/Source/verify_frameasync_east.py",
+   "src/RimStarWars/BlastDoorFrameAsyncFix/Textures/Things/Building/Door/Blast/SWDoorBlastBDoor_FrameAsync_east.png",
+   "src/RimStarWars/BlastDoorFrameAsyncFix/Textures/Things/Building/Door/Blast/SWDoorBlastBDoor_FrameAsync_eastm.png",
+   "src/RimStarWars/BlastDoorFrameAsyncFix/Textures/Things/Building/Door/Blast/SWDoorBlastDDoor_FrameAsync_east.png",
+   "src/RimStarWars/BlastDoorFrameAsyncFix/Textures/Things/Building/Door/Blast/SWDoorBlastDDoor_FrameAsync_eastm.png",
+   "src/RimStarWars/BlastDoorFrameAsyncFix/Textures/Things/Building/Door/Blast/SWDoorBlastDoor_FrameAsync_east.png",
+   "src/RimStarWars/BlastDoorFrameAsyncFix/Textures/Things/Building/Door/Blast/SWDoorBlastDoor_FrameAsync_eastm.png",
+   "src/RimStarWars/CereanManeFix/About/About.xml",
+   "src/RimStarWars/CereanManeFix/Source/draw_mane_south.py",
+   "src/RimStarWars/Droidworks/About/About.xml",
    "src/RimStarWars/Droidworks/Defs/HediffDefs/HediffDefs_Droidworks.xml",
+   "src/RimStarWars/Droidworks/Defs/JobDefs/JobDefs_Droidworks.xml",
+   "src/RimStarWars/Droidworks/Defs/PawnKinds_JDS.xml",
+   "src/RimStarWars/Droidworks/Defs/PawnKinds_KotOR.xml",
+   "src/RimStarWars/Droidworks/Defs/PawnKinds_OuterRim.xml",
    "src/RimStarWars/Droidworks/Defs/Races_Base.xml",
    "src/RimStarWars/Droidworks/Defs/Races_JDS.xml",
    "src/RimStarWars/Droidworks/Defs/RecipeDefs/RecipeDefs_Droidworks.xml",
    "src/RimStarWars/Droidworks/Defs/ThingDefs/Buildings_Charging.xml",
    "src/RimStarWars/Droidworks/Defs/ThingDefs/Items_Droidworks.xml",
+   "src/RimStarWars/Droidworks/Source/Droidworks/CompDWDataSpike.cs",
    "src/RimStarWars/Droidworks/Source/Droidworks/CompDroidDetonation.cs",
+   "src/RimStarWars/Droidworks/Source/Droidworks/CompTargetable_DWDataSpike.cs",
    "src/RimStarWars/Droidworks/Source/Droidworks/Droidworks.csproj",
+   "src/RimStarWars/Droidworks/Source/Droidworks/DroidworksBoltUtility.cs",
    "src/RimStarWars/Droidworks/Source/Droidworks/DroidworksDefOf.cs",
+   "src/RimStarWars/Droidworks/Source/Droidworks/DroidworksModExtension.cs",
+   "src/RimStarWars/Droidworks/Source/Droidworks/JobDriver_DWDataSpike.cs",
+   "src/RimStarWars/Droidworks/Source/Droidworks/Patch_ShouldHaveNeed_Power.cs",
+   "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_DWMemoryWipe.cs",
+   "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_RemoveRestrainingBolt.cs",
    "src/RimStarWars/Droidworks/Source/gen_droidworks_defs.py",
+   "src/RimStarWars/FireEcology/About/About.xml",
+   "src/RimStarWars/FireEcology/Defs/TerrainDefs/AshLadder.xml",
+   "src/RimStarWars/FireEcology/Defs/TerrainDefs/Firebreak.xml",
+   "src/RimStarWars/FireEcology/Defs/TerrainDefs/ScorchableGround.xml",
+   "src/RimStarWars/FireEcology/Defs/ThingDefs_Ash/Filth_LooseAsh.xml",
+   "src/RimStarWars/FireEcology/Defs/ThingDefs_Fulgurite/Fulgurite.xml",
+   "src/RimStarWars/FireEcology/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml",
+   "src/RimStarWars/FireEcology/Defs/ThingDefs_Sprayer/FirefoamSprayer.xml",
+   "src/RimStarWars/FireEcology/Defs/WeatherDefs/BlackRain.xml",
+   "src/RimStarWars/FireEcology/Source/FireEcologyHook.cs",
+   "src/RimStarWars/FireEcology/Source/FireEcologyHook.csproj",
+   "src/RimStarWars/HelixTellurox/About/About.xml",
+   "src/RimStarWars/HelixTellurox/Defs/ThingDefs_Races/Races_Tellurox.xml",
+   "src/RimStarWars/JawaIkee/About/About.xml",
+   "src/RimStarWars/JawaIkee/Defs/ThoughtDefs/Thought_IkeeWatching.xml",
+   "src/RimStarWars/JawaIkee/Source/JawaIkee.csproj",
+   "src/RimStarWars/JawaIkee/Source/ThoughtWorker_IkeeNearby.cs",
+   "src/RimStarWars/JawaIonWeapons/Source/DamageWorker_IonBuildup.cs",
+   "src/RimStarWars/JawaRules/Source/JawaRules.cs",
+   "src/RimStarWars/Livestock/About/About.xml",
+   "src/RimStarWars/Livestock/Defs/DamageDefs/DamageDefs_ColdDrain.xml",
+   "src/RimStarWars/Livestock/Defs/HediffDefs/HediffDefs_ColdDrain.xml",
+   "src/RimStarWars/Livestock/Defs/PawnKindDefs/PawnKindDefs_ForsakenCrags.xml",
+   "src/RimStarWars/Livestock/Defs/PawnKindDefs/PawnKindDefs_Karrask.xml",
+   "src/RimStarWars/Livestock/Defs/RecipeDefs/RecipeDefs_Karrask.xml",
+   "src/RimStarWars/Livestock/Defs/ThingDefs_Animals/ThingDefs_ForsakenCrags.xml",
+   "src/RimStarWars/Livestock/Defs/ThingDefs_Animals/ThingDefs_Karrask.xml",
+   "src/RimStarWars/Livestock/Patches/ForsakenCrags_WildSpawns.xml",
+   "src/RimStarWars/Livestock/Source/CompLightAversion.cs",
+   "src/RimStarWars/Livestock/Source/RimMandrakeLivestockRSW.csproj",
+   "src/RimStarWars/Livestock/art/gen_livestock_mockups.py",
+   "src/RimStarWars/SWBestiary/About/About.xml",
+   "src/RimStarWars/SeaBeasts/About/About.xml",
+   "src/RimStarWars/SeaBeasts/Defs/ThingDefs_Races/SeaBeasts_Colo.xml",
+   "src/RimStarWars/SeaBeasts/Defs/ThingDefs_Races/SeaBeasts_Colossi.xml",
+   "src/RimStarWars/SeaBeasts/Defs/ThingDefs_Races/SeaBeasts_Opee.xml",
+   "src/RimStarWars/SeaBeasts/Defs/ThingDefs_Races/SeaBeasts_Sando.xml",
+   "src/RimStarWars/SeaBeasts/Defs/ThingDefs_Races/SeaBeasts_Scalefish.xml",
+   "src/RimStarWars/SeaBeasts/Defs/ThingDefs_Races/SeaBeasts_Swarm.xml",
+   "src/RimStarWars/SeaBeasts/art/gen_sea_mockups.py",
+   "src/RimStarWars/SeaBeasts/art/tools/build_sea_facings.py",
+   "src/RimStarWars/SeaBeasts/art/tools/gen_sea_facings.py",
+   "src/RimStarWars/SeaBeasts/art/tools/sea_creatures.py",
+   "src/RimStarWars/SeaBeasts/art/tools/seacheck.py",
+   "src/RimStarWars/SeaBeasts/art/tools/seafit.py",
+   "src/RimStarWars/SeaBeasts/art/tools/write_sea_plan.py",
+   "src/RimStarWars/SeasWaterline/About/About.xml",
+   "src/RimStarWars/SeasWaterline/Patches/Waterline_Lane1.xml",
+   "src/RimStarWars/StarWarsPatches/About/About.xml",
+   "src/RimStarWars/StarWarsPatches/Defs/PawnKindDefs/AlienSpawnEnablers.xml",
+   "src/RimStarWars/StarWarsPatches/Defs/PawnKindDefs/GamorreanPawnKinds.xml",
+   "src/RimStarWars/StarWarsPatches/Defs/RulePackDefs/Jawa_PetNames.xml",
+   "src/RimStarWars/StarWarsPatches/Defs/WeatherDefs/SWDesertWeather.xml",
+   "src/RimStarWars/StarWarsPatches/Defs/XenotypeDefs/GamorreanXenotype.xml",
+   "src/RimStarWars/StarWarsPatches/Patches/BodySizeIsReal.xml",
+   "src/RimStarWars/StarWarsPatches/Patches/DroidFemaleTexture_Fix.xml",
+   "src/RimStarWars/StarWarsPatches/Patches/PetNames_Ashkarr.xml",
+   "src/RimStarWars/StarWarsPatches/Patches/PlantNames_Ashkarr.xml",
+   "src/RimStarWars/StarWarsPatches/Patches/SWDesertWeather_Attach.xml",
+   "src/RimStarWars/StarWarsPatches/Patches/SpeciesStartingGear_Tuning.xml",
+   "src/RimStarWars/StarWarsPatches/Patches/WeaponTags_Renormalise.xml",
+   "src/RimStarWars/StarWarsRaces/Defs/HeadTypeDefs/SW_HeadTypes.xml",
+   "src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/MandrakeJawaXenotype.xml",
+   "src/RimStarWars/StructureInjectionsSW/About/About.xml",
+   "src/RimStarWars/WeatherSuite/About/About.xml",
+   "src/RimStarWars/WeatherSuite/Defs/GameConditionDefs/GameConditionDefs_DarkAurora.xml",
+   "src/RimStarWars/WeatherSuite/Defs/GameConditionDefs/GameConditionDefs_TerminatorFront.xml",
+   "src/RimStarWars/WeatherSuite/Defs/IncidentDefs/IncidentDefs_DarkAurora.xml",
+   "src/RimStarWars/WeatherSuite/Defs/ThingDefs_Buildings/ThingDefs_WeatherInstrument.xml",
+   "src/RimStarWars/WeatherSuite/Defs/ThoughtDefs/ThoughtDefs_DarkAurora.xml",
+   "src/RimStarWars/WeatherSuite/Source/WeatherSuiteHook.cs",
+   "src/RimStarWars/WeatherSuite/Source/WeatherSuiteHook.csproj",
+   "src/RimUtinni/AftermathRites/Defs/RM_AlliancePairDefs.xml",
+   "src/RimUtinni/AshkarrInhabited/About/About.xml",
+   "src/RimUtinni/AshkarrInhabited/Defs/SettlementManifestDefs/SettlementManifestDefs_DeepwaterHold.xml",
+   "src/RimUtinni/AshkarrInhabited/Defs/SettlementManifestDefs/SettlementManifestDefs_GorgaPalace.xml",
+   "src/RimUtinni/AshkarrInhabited/Defs/SettlementManifestDefs/SettlementManifestDefs_TheClaimJump.xml",
+   "src/RimUtinni/AshkarrInhabited/Defs/SettlementManifestDefs/SettlementManifestDefs_TheCrackingYard.xml",
+   "src/RimUtinni/AshkarrWeatherSuite/About/About.xml",
+   "src/RimUtinni/DesertFixtures/About/About.xml",
+   "src/RimUtinni/DesertFixtures/Defs/ThingDefs_Buildings/RUT_DesertFixtures_Buildings.xml",
+   "src/RimUtinni/Doctrine/About/About.xml",
+   "src/RimUtinni/FactionSlate/About/About.xml",
+   "src/RimUtinni/FactionSlate/Patches/OnlyOurFactions.xml",
+   "src/RimUtinni/MenuShell/About/About.xml",
+   "src/RimUtinni/PawnFlavor/About/About.xml",
+   "src/RimUtinni/PawnFlavor/Defs/Backstories_FDE_Droids.xml",
+   "src/RimUtinni/PawnFlavor/Defs/Backstories_Moot_Wildsteam_Junkers.xml",
+   "src/RimUtinni/PawnFlavor/Patches/FactionBackstoryWiring.xml",
+   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_MentalBreak.xml",
+   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_ThoughtDef.xml",
+   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_Xenotype.xml",
+   "src/RimUtinni/PyrelandsFireEcology/About/About.xml",
+   "src/RimUtinni/PyrelandsFireEcology/Patches/PyrelandsGround_ScorchableTerrain.xml",
+   "src/RimUtinni/PyrelandsFireEcology/Patches/PyrelandsWeather_BlackRain.xml",
+   "src/RimUtinni/PyrelandsFireEcology/Patches/PyrelandsWeather_Stage0.xml",
+   "src/RimUtinni/RestrainingBolts/Source/DefOfs.cs",
+   "src/RimUtinni/RestrainingBolts/Source/GoodwillSituationWorker_RestrainingBolts.cs",
+   "src/RimUtinni/RiverSteam/About/About.xml",
+   "src/RimUtinni/RiverSteam/Source/RiverSteamHook.cs",
+   "src/RimUtinni/RiverSteam/Source/RiverSteamHook.csproj",
+   "src/RimUtinni/StructureInjectionsRUT/About/About.xml",
+   "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Homestead.xml",
+   "src/RimUtinni/UtinniPatches/About/About.xml",
    "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/Jawa_BackgroundWater.xml",
    "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml",
    "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml",
    "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml",
    "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheScald.xml",
    "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TwilightSea.xml",
-   "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml"
+   "src/RimUtinni/UtinniPatches/Defs/CultureDefs/JawaLeaderTitles.xml",
+   "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaAscendantHelix.xml",
+   "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaDeepwaterCompact.xml",
+   "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaFreeDroidEnclaves.xml",
+   "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaGeonosianFoundryHive.xml",
+   "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaHuttCartel.xml",
+   "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaJunkers.xml",
+   "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaTribes.xml",
+   "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaWildsteamClan.xml",
+   "src/RimUtinni/UtinniPatches/Defs/MapGeneration/JawaGroundHulk.xml",
+   "src/RimUtinni/UtinniPatches/Defs/MapGeneration/JawaScrapfields.xml",
+   "src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaColonistPawnKinds.xml",
+   "src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaFactionRoster.xml",
+   "src/RimUtinni/UtinniPatches/Defs/PrefabDefs/JawaGroundHulk.xml",
+   "src/RimUtinni/UtinniPatches/Defs/QuestScriptDefs/Jawa_TheClaim.xml",
+   "src/RimUtinni/UtinniPatches/Defs/RulePackDefs/Namer_BlackstarCompany.xml",
+   "src/RimUtinni/UtinniPatches/Defs/RulePackDefs/Namer_PirateSyndicates.xml",
+   "src/RimUtinni/UtinniPatches/Defs/ScenarioDefs/Scenario_Utinni.xml",
+   "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/JawaSaltCrust.xml",
+   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/Jawa_ClaimRumour.xml",
+   "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml",
+   "src/RimUtinni/UtinniPatches/Patches/BlackstarCompany.xml",
+   "src/RimUtinni/UtinniPatches/Patches/DeepDesertTribes.xml",
+   "src/RimUtinni/UtinniPatches/Patches/GalacticEmpire.xml",
+   "src/RimUtinni/UtinniPatches/Patches/GiantWeaponWielders_Ashkarr.xml",
+   "src/RimUtinni/UtinniPatches/Patches/HomesteadDefenseLeague.xml",
+   "src/RimUtinni/UtinniPatches/Patches/JawaGroundHulk_Register.xml",
+   "src/RimUtinni/UtinniPatches/Patches/JawaResource_Scrapfields.xml",
+   "src/RimUtinni/UtinniPatches/Patches/JawaTerrain_SaltPans.xml",
+   "src/RimUtinni/UtinniPatches/Patches/PlanetLayer_BackgroundWater.xml",
+   "src/RimUtinni/UtinniPatches/Patches/XenotypeTolerances_Ashkarr.xml",
+   "src/RimUtinni/UtinniShell/About/About.xml",
+   "src/RimUtinni/UtinniShell/Defs/VBE_Backgrounds_Utinni.xml",
+   "src/RimUtinni/UtinniShell/RimThemes/Utinni Shell/meta.xml",
+   "src/RimUtinni/UtinniShell/_artsrc/animate_god_ozzik.py",
+   "src/RimUtinni/UtinniShell/_artsrc/animate_god_shkaar.py",
+   "src/RimUtinni/UtinniShell/_artsrc/animate_god_tabaa.py",
+   "src/RimUtinni/UtinniShell/_artsrc/animate_god_zizzik.py",
+   "src/RimUtinni/UtinniShell/_artsrc/animate_gods.py",
+   "src/RimUtinni/UtinniShell/_artsrc/animate_menu.py",
+   "src/RimUtinni/UtinniShell/_artsrc/animate_menu_richer.py",
+   "src/RimUtinni/UtinniShell/_artsrc/gen_bg.py",
+   "src/RimUtinni/UtinniShell/_artsrc/gen_textures.py",
+   "src/RimUtinni/UtinniShell/_artsrc/scene_anim.py",
+   "src/RimUtinni/VaultDungeons/About/About.xml",
+   "src/RimUtinni/VaultDungeons/Defs/HistoryEventDefs_Vaults.xml",
+   "src/RimUtinni/VaultDungeons/Defs/IncidentDefs_Vaults.xml",
+   "src/RimUtinni/VaultDungeons/Defs/QuestScriptDefs/RUT_VaultThaw.xml",
+   "src/RimUtinni/VaultDungeons/Defs/SitePartDefs_Vaults.xml",
+   "src/RimUtinni/VaultDungeons/Defs/StructureLayoutDefs_Vaults.xml",
+   "src/RimUtinni/VaultDungeons/Defs/SymbolDefs_Vaults.xml",
+   "src/RimUtinni/VaultDungeons/Defs/ThingDefs_Buildings/RUT_VaultHeart.xml",
+   "src/RimUtinni/VaultDungeons/Source/gen_vault_layouts.py",
+   "src/RimUtinni/VaultDungeons/Source/gen_vault_quests.py"
   ]
  },
  "ledger": {
-  "openItems": 171,
-  "openBugs": 23,
-  "needsOwner": 19
+  "openItems": 162,
+  "openBugs": 10,
+  "needsOwner": 17
  },
  "movement": [
+  {
+   "ts": "2026-09-09T03:09:08Z",
+   "system": "ManyWaters",
+   "functionRung": "implemented",
+   "contentRung": "none",
+   "retired": false,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:09:07Z",
+   "system": "Pyrelands",
+   "functionRung": "implemented",
+   "contentRung": "authored",
+   "retired": false,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:09:06Z",
+   "system": "RimProperty",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "retired": false,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:09:05Z",
+   "system": "Aftermath",
+   "functionRung": "validated",
+   "contentRung": null,
+   "retired": false,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:09:05Z",
+   "system": "DesertVehicleReskin",
+   "functionRung": "runnable",
+   "contentRung": null,
+   "retired": false,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:09:04Z",
+   "system": "WeatherSuite",
+   "functionRung": "runnable",
+   "contentRung": null,
+   "retired": false,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:09:03Z",
+   "system": "UtinniPatches",
+   "functionRung": "runnable",
+   "contentRung": null,
+   "retired": false,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:09:02Z",
+   "system": "MandrakePatches",
+   "functionRung": "runnable",
+   "contentRung": null,
+   "retired": false,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:09:01Z",
+   "system": "StarWarsPatches",
+   "functionRung": "runnable",
+   "contentRung": null,
+   "retired": false,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:09:00Z",
+   "system": "MenuShell",
+   "functionRung": "runnable",
+   "contentRung": null,
+   "retired": false,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:58Z",
+   "system": "StructureInjectionsRUT",
+   "functionRung": "runnable",
+   "contentRung": null,
+   "retired": false,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:56Z",
+   "system": "StructureInjectionsSW",
+   "functionRung": "runnable",
+   "contentRung": null,
+   "retired": false,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:53Z",
+   "system": "SWBestiary",
+   "functionRung": "runnable",
+   "contentRung": null,
+   "retired": false,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:50Z",
+   "system": "Property",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:47Z",
+   "system": "ToolBeltFix",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:44Z",
+   "system": "SauridFrillFix",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:42Z",
+   "system": "ResearchKitEastFix",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:39Z",
+   "system": "PhytokinBarkHeadFix",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:36Z",
+   "system": "GravshipAstronautFix",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:34Z",
+   "system": "CereanManeFix",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:31Z",
+   "system": "BlastDoorFrameAsyncFix",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:27Z",
+   "system": "RiverSteam",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:24Z",
+   "system": "FactionSlate",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:21Z",
+   "system": "TheftHauler",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:18Z",
+   "system": "SalvageClaim",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:13Z",
+   "system": "UtinniShell",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:09Z",
+   "system": "VaultDungeons",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:05Z",
+   "system": "DesertFixtures",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:08:01Z",
+   "system": "BeastLairs",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:07:54Z",
+   "system": "SeasWaterline",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:07:52Z",
+   "system": "BeastNorm",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:07:50Z",
+   "system": "JawaIkee",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:07:48Z",
+   "system": "HelixTellurox",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:07:47Z",
+   "system": "Livestock",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
+  {
+   "ts": "2026-09-09T03:07:46Z",
+   "system": "SeaBeasts",
+   "functionRung": null,
+   "contentRung": null,
+   "retired": true,
+   "seat": "BENCH"
+  },
   {
    "ts": "2026-09-08T15:56:22Z",
    "system": "Visibility",
@@ -4845,286 +5788,6 @@
    "ts": "2026-09-08T15:56:15Z",
    "system": "SeasWaterline",
    "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:56:13Z",
-   "system": "SauridFrillFix",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:56:10Z",
-   "system": "Rites",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:56:08Z",
-   "system": "ResearchKitEastFix",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:56:06Z",
-   "system": "PlantGrowth",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:56:04Z",
-   "system": "PlanetPresetPrime",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:56:02Z",
-   "system": "MandrakePatches",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:56:00Z",
-   "system": "MSEDroidFix",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:58Z",
-   "system": "JawaVoice",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:56Z",
-   "system": "JawaRules",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:53Z",
-   "system": "IshkoDarkLandmarks",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:52Z",
-   "system": "GravshipAstronautFix",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:50Z",
-   "system": "Doctrine",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:48Z",
-   "system": "DesertVehicleReskin",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:46Z",
-   "system": "BeastNorm",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:43Z",
-   "system": "AshkarrLandmarkArt",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:41Z",
-   "system": "FactionSlate",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:40Z",
-   "system": "BlastDoorFrameAsyncFix",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:38Z",
-   "system": "VaultDungeons",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:36Z",
-   "system": "SacredGraffiti",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:34Z",
-   "system": "PyrelandsFireEcology",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:33Z",
-   "system": "Property",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:55:32Z",
-   "system": "JawaIkee",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:26:13Z",
-   "system": "UtinniPatches",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:26:12Z",
-   "system": "TheftHauler",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:26:11Z",
-   "system": "StarWarsPatches",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:26:10Z",
-   "system": "SeaBeasts",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:26:09Z",
-   "system": "EmpirePursuit",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:26:07Z",
-   "system": "Cuisine",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:26:06Z",
-   "system": "AshkarrInhabited",
-   "functionRung": "runnable",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:26:05Z",
-   "system": "WreckedMachines",
-   "functionRung": "validated",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:26:03Z",
-   "system": "StructureInjections",
-   "functionRung": "validated",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:26:02Z",
-   "system": "StarWarsRaces",
-   "functionRung": "validated",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:26:00Z",
-   "system": "ShipMemory",
-   "functionRung": "validated",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:25:59Z",
-   "system": "SalvageClaim",
-   "functionRung": "validated",
-   "contentRung": null,
-   "retired": false,
-   "seat": "BENCH"
-  },
-  {
-   "ts": "2026-09-08T15:25:58Z",
-   "system": "RimDefDump",
-   "functionRung": "validated",
    "contentRung": null,
    "retired": false,
    "seat": "BENCH"
