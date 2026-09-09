@@ -385,7 +385,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>Jawa Patches (local)</li>
+      <li>RimStarWars Patches</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>

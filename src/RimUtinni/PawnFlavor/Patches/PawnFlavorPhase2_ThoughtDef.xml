@@ -18283,6 +18283,66 @@
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="AM_TreeDensityReduced"]/stages/li[9]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="AM_TreeDensityReduced"]/stages/li[9]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="AM_TreeDensityReduced"]/stages/li[9]/label</xpath>
+                  <value>
+                    <label>the brush is closing in</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="AM_TreeDensityReduced"]/stages/li[9]</xpath>
+                  <value>
+                    <label>the brush is closing in</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="AM_TreeDensityReduced"]/stages/li[9]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="AM_TreeDensityReduced"]/stages/li[9]/description</xpath>
+                  <value>
+                    <description>We've barely cut back any of the growth this stretch, and it's spreading faster than we're clearing it. Feels like we're losing ground to it.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="AM_TreeDensityReduced"]/stages/li[9]</xpath>
+                  <value>
+                    <description>We've barely cut back any of the growth this stretch, and it's spreading faster than we're clearing it. Feels like we're losing ground to it.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="AM_TreeDensityReduced"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="AM_TreeDensityReduced"]/stages</xpath>
+              <value>
+                <li>
+                  <label>the brush is closing in</label>
+                  <description>We've barely cut back any of the growth this stretch, and it's spreading faster than we're clearing it. Feels like we're losing ground to it.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="AM_TreeDensityReduced"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>the brush is closing in</label>
+                    <description>We've barely cut back any of the growth this stretch, and it's spreading faster than we're clearing it. Feels like we're losing ground to it.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ThoughtDef[defName="AM_Trees_Despised"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
@@ -20692,6 +20752,66 @@
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Female"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Female"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Female"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>wrapped more than the groin</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <label>wrapped more than the groin</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Female"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Female"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>I've got cloth over skin that should be out in the wind and sun. Only the groin needs hiding — the rest should breathe free.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <description>I've got cloth over skin that should be out in the wind and sun. Only the groin needs hiding — the rest should breathe free.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Female"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Female"]/stages</xpath>
+              <value>
+                <li>
+                  <label>wrapped more than the groin</label>
+                  <description>I've got cloth over skin that should be out in the wind and sun. Only the groin needs hiding — the rest should breathe free.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Female"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>wrapped more than the groin</label>
+                    <description>I've got cloth over skin that should be out in the wind and sun. Only the groin needs hiding — the rest should breathe free.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Male"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
@@ -20872,6 +20992,66 @@
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Social_Female"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Social_Female"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>wraps more than the groin</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <label>wraps more than the groin</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Social_Female"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Social_Female"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>They keep skin bound that ought to be free in the sun. Not how I'd wear it, but it's their hide.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <description>They keep skin bound that ought to be free in the sun. Not how I'd wear it, but it's their hide.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Social_Female"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Social_Female"]/stages</xpath>
+              <value>
+                <li>
+                  <label>wraps more than the groin</label>
+                  <description>They keep skin bound that ought to be free in the sun. Not how I'd wear it, but it's their hide.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Social_Female"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>wraps more than the groin</label>
+                    <description>They keep skin bound that ought to be free in the sun. Not how I'd wear it, but it's their hide.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ThoughtDef[defName="AnyBodyPartButGroinCovered_Disapproved_Social_Male"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
@@ -20960,6 +21140,66 @@
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Female"]/stages/li[1]</xpath>
+                  <value>
+                    <description>I don't believe in hiding my skin, and here I am wrapped in cloth like everyone else. It doesn't sit right.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Female"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Female"]/stages</xpath>
+              <value>
+                <li>
+                  <label>covered up anyway</label>
+                  <description>I don't believe in hiding my skin, and here I am wrapped in cloth like everyone else. It doesn't sit right.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Female"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>covered up anyway</label>
+                    <description>I don't believe in hiding my skin, and here I am wrapped in cloth like everyone else. It doesn't sit right.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Female"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Female"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Female"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>covered up anyway</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <label>covered up anyway</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Female"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Female"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>I don't believe in hiding my skin, and here I am wrapped in cloth like everyone else. It doesn't sit right.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Female"]/stages/li[2]</xpath>
                   <value>
                     <description>I don't believe in hiding my skin, and here I am wrapped in cloth like everyone else. It doesn't sit right.</description>
                   </value>
@@ -21140,6 +21380,66 @@
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Social_Female"]/stages/li[1]</xpath>
+                  <value>
+                    <description>They go around wrapped head to foot when there's no need for it. Skin was never meant to hide.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Social_Female"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Social_Female"]/stages</xpath>
+              <value>
+                <li>
+                  <label>keeps skin covered</label>
+                  <description>They go around wrapped head to foot when there's no need for it. Skin was never meant to hide.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Social_Female"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>keeps skin covered</label>
+                    <description>They go around wrapped head to foot when there's no need for it. Skin was never meant to hide.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Social_Female"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Social_Female"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>keeps skin covered</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <label>keeps skin covered</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Social_Female"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Social_Female"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>They go around wrapped head to foot when there's no need for it. Skin was never meant to hide.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="AnyBodyPartCovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
                   <value>
                     <description>They go around wrapped head to foot when there's no need for it. Skin was never meant to hide.</description>
                   </value>
@@ -33052,6 +33352,66 @@
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Female"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Female"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Female"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>showed too much skin</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <label>showed too much skin</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Female"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Female"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>I let myself be seen with too much bare — should be wrapped up head to foot, nothing on show. That was wrong of me.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <description>I let myself be seen with too much bare — should be wrapped up head to foot, nothing on show. That was wrong of me.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Female"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Female"]/stages</xpath>
+              <value>
+                <li>
+                  <label>showed too much skin</label>
+                  <description>I let myself be seen with too much bare — should be wrapped up head to foot, nothing on show. That was wrong of me.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Female"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>showed too much skin</label>
+                    <description>I let myself be seen with too much bare — should be wrapped up head to foot, nothing on show. That was wrong of me.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Male"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
@@ -33140,6 +33500,66 @@
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Social_Female"]/stages/li[1]</xpath>
+                  <value>
+                    <description>They go around with too much bare for my taste. Should keep it all covered.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Social_Female"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Social_Female"]/stages</xpath>
+              <value>
+                <li>
+                  <label>shows too much skin</label>
+                  <description>They go around with too much bare for my taste. Should keep it all covered.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Social_Female"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>shows too much skin</label>
+                    <description>They go around with too much bare for my taste. Should keep it all covered.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Social_Female"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Social_Female"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>shows too much skin</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <label>shows too much skin</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Social_Female"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Social_Female"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>They go around with too much bare for my taste. Should keep it all covered.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestHairOrFaceUncovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
                   <value>
                     <description>They go around with too much bare for my taste. Should keep it all covered.</description>
                   </value>
@@ -33292,6 +33712,66 @@
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Female"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Female"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Female"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>groin, chest, or hair bare</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <label>groin, chest, or hair bare</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Female"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Female"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>I've got skin showing that should be hidden — only the face is meant to be seen. Wrong to be out like this.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <description>I've got skin showing that should be hidden — only the face is meant to be seen. Wrong to be out like this.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Female"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Female"]/stages</xpath>
+              <value>
+                <li>
+                  <label>groin, chest, or hair bare</label>
+                  <description>I've got skin showing that should be hidden — only the face is meant to be seen. Wrong to be out like this.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Female"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>groin, chest, or hair bare</label>
+                    <description>I've got skin showing that should be hidden — only the face is meant to be seen. Wrong to be out like this.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Male"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
@@ -33380,6 +33860,66 @@
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Social_Female"]/stages/li[1]</xpath>
+                  <value>
+                    <description>They've got skin bare that should stay covered. Not how it's meant to be worn.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Social_Female"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Social_Female"]/stages</xpath>
+              <value>
+                <li>
+                  <label>shows too much skin</label>
+                  <description>They've got skin bare that should stay covered. Not how it's meant to be worn.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Social_Female"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>shows too much skin</label>
+                    <description>They've got skin bare that should stay covered. Not how it's meant to be worn.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Social_Female"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Social_Female"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>shows too much skin</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <label>shows too much skin</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Social_Female"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Social_Female"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>They've got skin bare that should stay covered. Not how it's meant to be worn.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinChestOrHairUncovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
                   <value>
                     <description>They've got skin bare that should stay covered. Not how it's meant to be worn.</description>
                   </value>
@@ -33532,6 +34072,66 @@
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Female"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Female"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Female"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>uncovered, exposed</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <label>uncovered, exposed</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Female"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Female"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>I've got skin showing that should be covered. Out here the sun and the sand and the wrong kind of stares all want a piece of me for it.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <description>I've got skin showing that should be covered. Out here the sun and the sand and the wrong kind of stares all want a piece of me for it.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Female"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Female"]/stages</xpath>
+              <value>
+                <li>
+                  <label>uncovered, exposed</label>
+                  <description>I've got skin showing that should be covered. Out here the sun and the sand and the wrong kind of stares all want a piece of me for it.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Female"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>uncovered, exposed</label>
+                    <description>I've got skin showing that should be covered. Out here the sun and the sand and the wrong kind of stares all want a piece of me for it.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Male"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
@@ -33620,6 +34220,66 @@
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Social_Female"]/stages/li[1]</xpath>
+                  <value>
+                    <description>They're going around with chest or groin uncovered. Should keep it wrapped.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Social_Female"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Social_Female"]/stages</xpath>
+              <value>
+                <li>
+                  <label>chest or groin bare</label>
+                  <description>They're going around with chest or groin uncovered. Should keep it wrapped.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Social_Female"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>chest or groin bare</label>
+                    <description>They're going around with chest or groin uncovered. Should keep it wrapped.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Social_Female"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Social_Female"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>chest or groin bare</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <label>chest or groin bare</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Social_Female"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Social_Female"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>They're going around with chest or groin uncovered. Should keep it wrapped.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinOrChestUncovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
                   <value>
                     <description>They're going around with chest or groin uncovered. Should keep it wrapped.</description>
                   </value>
@@ -33772,6 +34432,66 @@
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Female"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Female"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Female"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>uncovered below</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <label>uncovered below</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Female"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Female"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>I don't have enough covering me down below and I feel it. That's not how a decent scavenger goes about her business.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <description>I don't have enough covering me down below and I feel it. That's not how a decent scavenger goes about her business.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Female"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Female"]/stages</xpath>
+              <value>
+                <li>
+                  <label>uncovered below</label>
+                  <description>I don't have enough covering me down below and I feel it. That's not how a decent scavenger goes about her business.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Female"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>uncovered below</label>
+                    <description>I don't have enough covering me down below and I feel it. That's not how a decent scavenger goes about her business.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Male"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
@@ -33860,6 +34580,66 @@
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Social_Female"]/stages/li[1]</xpath>
+                  <value>
+                    <description>They've got the one part that should always stay covered, showing. That's not how it's done.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Social_Female"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Social_Female"]/stages</xpath>
+              <value>
+                <li>
+                  <label>groin left bare</label>
+                  <description>They've got the one part that should always stay covered, showing. That's not how it's done.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Social_Female"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>groin left bare</label>
+                    <description>They've got the one part that should always stay covered, showing. That's not how it's done.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Social_Female"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Social_Female"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>groin left bare</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
+                  <value>
+                    <label>groin left bare</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Social_Female"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Social_Female"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>They've got the one part that should always stay covered, showing. That's not how it's done.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="GroinUncovered_Disapproved_Social_Female"]/stages/li[2]</xpath>
                   <value>
                     <description>They've got the one part that should always stay covered, showing. That's not how it's done.</description>
                   </value>
@@ -109516,6 +110296,66 @@
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugDependency"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugDependency"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugDependency"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>my genes are begging for it</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugDependency"]/stages/li[2]</xpath>
+                  <value>
+                    <label>my genes are begging for it</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugDependency"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugDependency"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>Something in my blood was built to crave this, and it's been too long since I had any. The want claws at me until I do.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugDependency"]/stages/li[2]</xpath>
+                  <value>
+                    <description>Something in my blood was built to crave this, and it's been too long since I had any. The want claws at me until I do.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugDependency"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugDependency"]/stages</xpath>
+              <value>
+                <li>
+                  <label>my genes are begging for it</label>
+                  <description>Something in my blood was built to crave this, and it's been too long since I had any. The want claws at me until I do.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugDependency"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>my genes are begging for it</label>
+                    <description>Something in my blood was built to crave this, and it's been too long since I had any. The want claws at me until I do.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugReliance"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
@@ -109544,6 +110384,66 @@
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugReliance"]/stages/li[1]</xpath>
+                  <value>
+                    <description>It's not a full-blown need yet, but my body's started missing what it was engineered to have. I can feel the pull building.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugReliance"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugReliance"]/stages</xpath>
+              <value>
+                <li>
+                  <label>genes want their fix</label>
+                  <description>It's not a full-blown need yet, but my body's started missing what it was engineered to have. I can feel the pull building.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugReliance"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>genes want their fix</label>
+                    <description>It's not a full-blown need yet, but my body's started missing what it was engineered to have. I can feel the pull building.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugReliance"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugReliance"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugReliance"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>genes want their fix</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugReliance"]/stages/li[2]</xpath>
+                  <value>
+                    <label>genes want their fix</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugReliance"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugReliance"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>It's not a full-blown need yet, but my body's started missing what it was engineered to have. I can feel the pull building.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticDrugReliance"]/stages/li[2]</xpath>
                   <value>
                     <description>It's not a full-blown need yet, but my body's started missing what it was engineered to have. I can feel the pull building.</description>
                   </value>
@@ -109636,6 +110536,66 @@
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodDependency"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodDependency"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodDependency"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>built to need this food</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodDependency"]/stages/li[2]</xpath>
+                  <value>
+                    <label>built to need this food</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodDependency"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodDependency"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>Whatever they spliced into me left my body demanding a specific meal, and I haven't had it in far too long. The craving's getting hard to ignore.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodDependency"]/stages/li[2]</xpath>
+                  <value>
+                    <description>Whatever they spliced into me left my body demanding a specific meal, and I haven't had it in far too long. The craving's getting hard to ignore.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodDependency"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodDependency"]/stages</xpath>
+              <value>
+                <li>
+                  <label>built to need this food</label>
+                  <description>Whatever they spliced into me left my body demanding a specific meal, and I haven't had it in far too long. The craving's getting hard to ignore.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodDependency"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>built to need this food</label>
+                    <description>Whatever they spliced into me left my body demanding a specific meal, and I haven't had it in far too long. The craving's getting hard to ignore.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupDependency"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
@@ -109664,6 +110624,66 @@
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupDependency"]/stages/li[1]</xpath>
+                  <value>
+                    <description>My gut wants a whole class of food that my genes were built around, not just any scrap-meal. Going without is starting to wear on me.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupDependency"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupDependency"]/stages</xpath>
+              <value>
+                <li>
+                  <label>wired for a certain diet</label>
+                  <description>My gut wants a whole class of food that my genes were built around, not just any scrap-meal. Going without is starting to wear on me.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupDependency"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>wired for a certain diet</label>
+                    <description>My gut wants a whole class of food that my genes were built around, not just any scrap-meal. Going without is starting to wear on me.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupDependency"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupDependency"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupDependency"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>wired for a certain diet</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupDependency"]/stages/li[2]</xpath>
+                  <value>
+                    <label>wired for a certain diet</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupDependency"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupDependency"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>My gut wants a whole class of food that my genes were built around, not just any scrap-meal. Going without is starting to wear on me.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupDependency"]/stages/li[2]</xpath>
                   <value>
                     <description>My gut wants a whole class of food that my genes were built around, not just any scrap-meal. Going without is starting to wear on me.</description>
                   </value>
@@ -109756,6 +110776,66 @@
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupReliance"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupReliance"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupReliance"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>missing my usual diet</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupReliance"]/stages/li[2]</xpath>
+                  <value>
+                    <label>missing my usual diet</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupReliance"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupReliance"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>I'm not desperate yet, but the kind of food my body was engineered for has been scarce lately. I notice the difference.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupReliance"]/stages/li[2]</xpath>
+                  <value>
+                    <description>I'm not desperate yet, but the kind of food my body was engineered for has been scarce lately. I notice the difference.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupReliance"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupReliance"]/stages</xpath>
+              <value>
+                <li>
+                  <label>missing my usual diet</label>
+                  <description>I'm not desperate yet, but the kind of food my body was engineered for has been scarce lately. I notice the difference.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodGroupReliance"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>missing my usual diet</label>
+                    <description>I'm not desperate yet, but the kind of food my body was engineered for has been scarce lately. I notice the difference.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodReliance"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
@@ -109784,6 +110864,66 @@
                 </match>
                 <nomatch Class="PatchOperationAdd">
                   <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodReliance"]/stages/li[1]</xpath>
+                  <value>
+                    <description>Nothing's wrong with the rations, exactly, they just aren't what my body was built to run on. It's a small ache, but it's there.</description>
+                  </value>
+                </nomatch>
+              </li>
+            </operations>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodReliance"]/stages</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodReliance"]/stages</xpath>
+              <value>
+                <li>
+                  <label>missing the right meal</label>
+                  <description>Nothing's wrong with the rations, exactly, they just aren't what my body was built to run on. It's a small ache, but it's there.</description>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodReliance"]</xpath>
+              <value>
+                <stages>
+                  <li>
+                    <label>missing the right meal</label>
+                    <description>Nothing's wrong with the rations, exactly, they just aren't what my body was built to run on. It's a small ache, but it's there.</description>
+                  </li>
+                </stages>
+              </value>
+            </nomatch>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodReliance"]/stages/li[2]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodReliance"]/stages/li[2]/label</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodReliance"]/stages/li[2]/label</xpath>
+                  <value>
+                    <label>missing the right meal</label>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodReliance"]/stages/li[2]</xpath>
+                  <value>
+                    <label>missing the right meal</label>
+                  </value>
+                </nomatch>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodReliance"]/stages/li[2]/description</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodReliance"]/stages/li[2]/description</xpath>
+                  <value>
+                    <description>Nothing's wrong with the rations, exactly, they just aren't what my body was built to run on. It's a small ache, but it's there.</description>
+                  </value>
+                </match>
+                <nomatch Class="PatchOperationAdd">
+                  <xpath>Defs/ThoughtDef[defName="EBSG_GeneticFoodReliance"]/stages/li[2]</xpath>
                   <value>
                     <description>Nothing's wrong with the rations, exactly, they just aren't what my body was built to run on. It's a small ache, but it's there.</description>
                   </value>
@@ -113216,7 +114356,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>Jawa Ikee</li>
+      <li>RimMandrake: SW — Bestiary</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -114623,7 +115763,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>Jawa Armoury Rebalance</li>
+      <li>Star Wars KotOR Resources and Materials</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
