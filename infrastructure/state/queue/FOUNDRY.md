@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T02:56:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T03:09:08Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -522,15 +522,6 @@ kind:     task
 summary:  1. A ThingComp on a module ThingDef adds a personality HediffDef to the
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_PERSONALITY_1.md
 
-## ARMOURY_DECLARER_ATTRIBUTION_FLIP_1 gen_armour_patch.py's declarer() flips guy762_*/KotOR* ops between own-mod (Conditional) and donor (FindMod) attribution run-to-run
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  finding
-prose:    infrastructure/state/items/ARMOURY_DECLARER_ATTRIBUTION_FLIP_1.md
-
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -539,6 +530,24 @@ target:   v1
 kind:     task
 summary:  Owner go-ahead, 2026-09-07 (live session, "Do (b)" on the offered choice): generate
 prose:    infrastructure/state/items/IKEE_MYNOCK_ART_REGEN_1.md
+
+## ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1 Rewrite OracleHttpClient to shell out to claude -p, per owner's 2026-09-05 in-game-LLM ruling (never tracked as an item)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Per CLAUDE.md's own note: the two laws (text/menu authority only; the game
+prose:    infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md
+
+## BIOME_LABEL_CAMPAIGN_NAMES_1 Relabel the 26 donor biomes to their campaign names -- the planet currently shows 'Cypre Jungle', 'Mycotic Jungle', 'GRimond' instead of the Greentide, the Rot, the Blue Desert
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  the symptom
+prose:    infrastructure/state/items/BIOME_LABEL_CAMPAIGN_NAMES_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -856,16 +865,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GEOTHERMAL_DENSITY_FIELD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GEOTHERMAL_DENSITY_FIELD_1.md
 
-## ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1 Rewrite OracleHttpClient to shell out to claude -p, per owner's 2026-09-05 in-game-LLM ruling (never tracked as an item)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Per CLAUDE.md's own note: the two laws (text/menu authority only; the game
-prose:    infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md
-
 ## UNDERWATER_BIOME_SUPPORT_1 Underwater biome support: land on the three seas -- looks like ocean, playable seafloor beneath (owner 2026-09-07, later modification)
 state:    proposed
 row:      unassigned
@@ -885,16 +884,6 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  symptom
 prose:    infrastructure/state/items/WORLD_FEATURE_LABELS_OVERSIZED_1.md
-
-## BIOME_LABEL_CAMPAIGN_NAMES_1 Relabel the 26 donor biomes to their campaign names -- the planet currently shows 'Cypre Jungle', 'Mycotic Jungle', 'GRimond' instead of the Greentide, the Rot, the Blue Desert
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  the symptom
-prose:    infrastructure/state/items/BIOME_LABEL_CAMPAIGN_NAMES_1.md
 
 ## SCALD_DARK_TOWER_1 Dark tower in the Scald: Rakatan high command, Rust Cathedral control systems, ocular warped Assailant intrusion
 state:    proposed
@@ -1185,3 +1174,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MOVING_DUNES_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
+
+## ARMOURY_LEATHER_RATINGS_REGEN_STALE_1 Armour_Leather.xml and Armour_Ratings.xml drifted from gen_armour_patch.py after the naming/dedupe sprints
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec
+summary:  ARMOURYLEATHERRATINGSREGENSTALE1
+prose:    infrastructure/state/items/ARMOURY_LEATHER_RATINGS_REGEN_STALE_1.md
