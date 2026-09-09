@@ -43,7 +43,7 @@ merge-into,RimStarWars/Livestock,RimStarWars/SWBestiary,RimStarWars,mandrake.rsw
 merge-into,RimStarWars/HelixTellurox,RimStarWars/SWBestiary,RimStarWars,mandrake.rsw.swbestiary,,HIGH,3 defs livestock creature; fauna content
 merge-into,RimStarWars/JawaIkee,RimStarWars/SWBestiary,RimStarWars,mandrake.rsw.swbestiary,,MEDIUM,1 ThoughtDef + C#; deps starwarsraces + sarg.alphaanimals move to merged About
 merge-into,RimStarWars/BeastNorm,RimStarWars/SWBestiary,RimStarWars,mandrake.rsw.swbestiary,,MEDIUM,patches mlie donor's 105 beasts; retargets/bakes into our defs when MLIE_FAUNA_ABSORPTION_1 lands
-stay,RimStarWars/SeasWaterline,,RimStarWars,,,VERIFY,R14 RULED: retirement NOT approved — stays pending; 0-def program lane, revisit when the seas program lands
+merge-into,RimStarWars/SeasWaterline,RimStarWars/SWBestiary,RimStarWars,,,HIGH,RULED 2026-09-09: NOT a dead stub — Lane 1 of the seas program (14-creature Lake/Ocean waterline); folds into the fauna cell per strict domain rule, revisit when the seas program lands
 stay,RimStarWars/Cuisine,,RimStarWars,,,HIGH,food cell RSW; only food mod
 stay,RimStarWars/Droidworks,,RimStarWars,,,HIGH,droids cell RSW; campaign layer already externalized by design (no defaultFactionDef — comments prove the boundary)
 merge-into,RimStarWars/FireEcology,RimMandrake/Pyrelands,RimMandrake,mandrake.rm.pyrelands,,HIGH,R9 RULED: Pyrelands ships as self-contained generic RM biome — engine + biome content together
