@@ -1,3 +1,76 @@
+## 2026-09-09 (FOUNDRY) — re-verified after the RimProperty merge; Droidworks is now LIVE
+
+Claimed off the queue mid-restart (game rebooting twice tonight, owner's
+standing authorization); bridge confirmed FREE but per this pass's own
+instruction, no live bridge calls attempted — offline verification only.
+
+**Found it further along than the 2026-09-02 note describes, again** (this
+queue's recurring failure mode). The code moved: `f32eef5f` (2026-09-08)
+merged `TheftHauler` into `src/RimMandrake/RimProperty/` (packageId now
+`mandrake.rm.property`, not the old `mandrake.rm.theft_hauler` the last note
+cites — old packageId is dead, don't grep for it). `fc173df3` (2026-09-09,
+closing the separate `RIMPROPERTY_ANIMAL_THEFT_1`) added
+`Patches/TheftHauler/DroidLoaders_TheftHauler.xml`, marking 4 MORE Droidworks
+Labour-family chassis (`RSW_DW_Race_OuterRim_ImperialLaborDroid`, both KotOR
+KM1 mining/excavation droids at `baseBodySize 1.5` — the two largest concrete
+Labour bodies in Droidworks, bigger than Muckraker's 1.2 — and the baseline
+GE3 labor droid) with `TheftHaulerExtension`, alongside the original Muckraker
+patch. The haul-away half the 2026-09-02 note flagged as a gap is also
+already built: `JobDriver_TheftHaulUninstall.FinishedRemoving` now enqueues
+`HaulAIUtility.HaulToStorageJob` right after `Building.Uninstall()` so the
+minified crate doesn't just sit at the building's old position — matches the
+float menu's own "Steal and haul away" wording. `DebugActions_TheftHauler.cs`
+(a chassis-gate-bypassing debug action to prove the `PropertyEngine.Fire`
+call fires independent of Droidworks being live) is new too, dated with an
+"adversarial review, 2026-09-07" comment tightening its Minifiable/Building
+gate to match the float menu's exactly. All of this is spec-compliant with
+`design/Jawa/wrecked_machines_resurrection.md` and this item's own scope —
+no invented mechanics, nothing needing a fresh ruling.
+
+**Re-verified this pass**:
+- `dotnet build RM_Property.csproj -c Release` (via the user-local SDK at
+  `C:\Users\Mandrake\.dotnet\dotnet.exe`, not the Program Files runtime-only
+  install) — clean, 0 warnings/errors.
+- `deploy_custom_mods.py --mod RimProperty --apply` — 6 of 7 drifted files
+  deployed (today's animal-theft + `DroidLoaders_TheftHauler.xml` additions,
+  `About.xml`). The DLL itself **failed to deploy — locked by the live game
+  mid-cold-load**, expected and non-blocking (writes to a running mod folder
+  during a load are exactly the risk the "no live bridge calls" instruction
+  is guarding against elsewhere; this is a plain file-copy failing safely,
+  not a live call). Owed: re-apply the DLL once this cold load finishes and
+  the game is closed or between sessions.
+- `validate_patch.py` against the live 587-mod dump (Data + Mods + Workshop
+  roots) on both TheftHauler patch files — **0 errors, 0 warnings**, and for
+  the first time all 5 xpaths (Muckraker + the 4 new DroidLoaders targets)
+  **actually MATCHED** rather than reading as an inert MayRequire no-op.
+- **`mandrake.rsw.droidworks` IS NOW ACTIVE** in the live `ModsConfig.xml`
+  (checked directly, not inferred from the match count) — this reverses the
+  2026-09-01/09-02 notes' "Droidworks not on the live list, feature present
+  but inert" finding. `mandrake.rm.property` is active too. This means, once
+  the current cold load reaches Playing and the bridge is confirmed
+  reachable, a real droid of one of the 5 marked chassis IS present on the
+  live mod list and the item's own live-quicktest criterion is finally
+  testable — not blocked on a separate Droidworks-enablement decision
+  anymore.
+- Checked the current (mid-load) `Player.log` for config errors: 19 present,
+  literal-string-checked (`MEASURE_ALLOW_SCAN=1`, exact "Config error in"
+  match, not a semantic scan) — **none** name anything in `RM_FE`-adjacent...
+  none name `RimProperty`, `TheftHauler`, or any of the 5 chassis defNames.
+  Zero `RimMandrake.TheftHauler`/`RimMandrake.Property` hits in the log at
+  all yet (load hasn't reached that point, or logged clean either way).
+
+**Leaving `doing`, not closing.** Two things still owed, both correctly
+deferred rather than invented around:
+1. Re-deploy the DLL once the game frees the file (this session's cold load
+   finishes or the game closes) — pure mechanics, no decision needed.
+2. The live-quicktest itself (droid uninstalls an unowned building -> Stolen
+   ClaimRecord; same droid on its own faction's building -> no record) —
+   now genuinely reachable given Droidworks is live, but this pass's explicit
+   instruction was no live bridge calls while the game is mid-cold-load.
+   Next session with a confirmed-reachable bridge should run this directly
+   against the real chassis (Muckraker or one of the 4 new loaders) rather
+   than only the chassis-bypassing debug action.
+
 ## 2026-09-02 (FOUNDRY) — correcting the record: this was ALREADY BUILT, 2026-09-01
 
 Claimed this off the queue believing it unstarted (the item file below carried
