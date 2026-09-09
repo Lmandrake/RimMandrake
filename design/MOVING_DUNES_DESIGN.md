@@ -1,7 +1,11 @@
 # MOVING_DUNES_DESIGN — real aeolian transport for RimWorld maps
 
-**Status: DRAFT — pending owner ruling** · item `MOVING_DUNES_ENGINE_1` · 2026-09-09
+**Status: DRAFT v2 — owner rulings folded, build-ready pending final read** · item
+`MOVING_DUNES_ENGINE_1` · 2026-09-09
 Engine sources verified via RimSage against 1.6 decompiled source (file:line cited inline).
+Owner rulings folded (2026-09-09): Odyssey soft-dep YES · pacing fully tunable ·
+edge condition designed §2, source/sink chosen · wild-items-only burial · generic
+release day one with per-map material skins · dig-vanishes and vanilla half-speed accepted.
 
 ## 1. Verdict
 
@@ -75,9 +79,41 @@ Per batch (every 250 ticks, the Pyrelands ashfall cadence), K random unroofed ce
   candidate that is shadowed or lower-depth than its neighbors — deposition prefers low
   cells, so **pits and cleared lanes refill from the rule itself, free** (the owner's
   pit mechanic is not a feature, it's a corollary).
-- **Supply**: eroding cells at the leeward map edge lose mass off-map; a per-biome
-  influx budget deposits at the windward edge. Influx ≪ field ⇒ isolated migrating
-  banks; influx ≈ loss ⇒ steady dune field. This is the one big tuning knob.
+### The edge condition: source/sink, not toroidal (RULED — designed here, committed)
+
+The owner's fast-dune case (violent windstorms marching dunes clear across the map)
+forces the choice. **Toroidal wrap** (leeward exit re-enters windward) conserves mass
+perfectly and needs no tuning — but it loops the SAME sand forever: total mass is
+frozen at map-start, so a violent storm can never bring MORE sand than the map began
+with, a wind reversal replays the same banks backwards, and opposite map edges become
+visibly correlated (a dune exiting south materializes north — the fiction of an
+endless desert breaks exactly at the map edge where it matters). **Source/sink** treats
+the map as a window onto an endless desert: slabs hopping off the leeward edge are
+gone; a windward-edge influx budget deposits new sand at a tunable rate. **Committed:
+source/sink** — it is the only model where influx is a knob (per-biome base ×
+per-weather multiplier, which is precisely what "disturbingly fast dunes during
+windstorms" needs), and the endless-desert fiction holds. Save implications are equal
+(both are just the existing depth grid; source/sink adds one float of accumulated
+influx debt to the MapComponent). Guard: a total-grid-mass cap per material def so a
+mis-tuned influx cannot drown a map unboundedly — unless the def says it can (see
+open question 3).
+
+- **Supply**: influx ≪ loss ⇒ isolated migrating banks; influx ≈ loss ⇒ steady dune
+  field; influx > loss ⇒ a map that is slowly burying (designer's choice, capped).
+
+### The tunable surface (RULED: no constants — everything a designer might retune is data)
+
+One new def type, **`RM_DuneMaterialDef`**, is the whole knob panel; the MapComponent
+reads it, hardcodes nothing: `tint` (display color), `slabSize` (q), `hopRange`,
+`erodeMinDepth`, `windSpeedThreshold`, `shadowRange`, `attemptsPerCellPerDay` (K,
+normalized by map area), `stormTransportFactor` (default 4×; a violent-windstorm
+WeatherDef can carry a modExtension overriding it higher), `ambientDecayFactor`
+(0 = full suppression), `influxPerDay` + `weatherInfluxFactor`, `burialDepth`,
+`revealDepth`, `plantChokeDepth`, `plantChokeDays`, `maxTotalMassFraction`, optional
+`depositFilthDef`. "Particle mass" (owner's phrase): Odyssey has no mass concept —
+mass IS the parameter cluster (heavier ⇒ higher `windSpeedThreshold`, shorter
+`hopRange`, larger `slabSize`), and the def is where it lives. Biomes bind a material
+via DefModExtension; the map resolves its one material at init.
 
 **Budget arithmetic, 250×250 (62,500 cells):** K = 2,000 attempts/batch is index math
 plus a short upwind scan — sub-millisecond, and only every 250 ticks (the ashfall
@@ -97,21 +133,34 @@ snowdrift-behind-fence tails around every building** — emergent and visibly
 wind-driven, not textbook crescent barchans. "Dune-like", not "dune simulation". That
 is enough for every gameplay beat below.
 
-### Rendering: vanilla layer + one additive crest layer
+### Rendering: subclassed layer with a per-map tinted material (delivers "any color, anywhere")
 
-`SectionLayer_Sand` draws opacity-blended windswept sand at terrain altitude — free.
-Its one weakness is the reason vanilla excluded sand-on-sand: low contrast against Sand
-terrain. Fix: one additional `SectionLayer` subclass (MapDrawer auto-instantiates all
-of them) reading the same depth grid and shading by local downwind gradient — darkened
-slip faces, lightened crests — keyed on the same `MapMeshFlagDefOf.Sand` dirty flag.
-~120 lines, no shader work. Visual burial of things is a vanilla FIELD:
+`SectionLayer_Sand` draws opacity-blended windswept sand at terrain altitude, but from
+one STATIC shared material (`GetSubMesh(MatBases.Sand)`, `SectionLayer_Sand.cs:62`) —
+no per-map color source exists. The route that ships: our own `SectionLayer` subclass
+(MapDrawer auto-instantiates every SectionLayer type per map, so it is per-map by
+construction) that clones the vanilla layer's vertex-opacity logic against the same
+depth grid and same `MapMeshFlagDefOf.Sand` dirty flag, but builds its submesh from a
+per-map `new Material(MatBases.Sand)` instance carrying the material def's `tint`
+(the mesh's vertex colors carry opacity in alpha and the pollution mask in red;
+material color multiplies on top). One tiny prefix on `SectionLayer_Sand.Regenerate`
+disables the vanilla submesh on skinned maps so the two layers never double-draw.
+⚠️ One honest unknown: whether the sand shader respects material `color` — if it
+ignores it, the fallback is drawing with a vertex-color shader from `MatBases` and
+folding the tint into our own vertex RGB (we own the layer, red is free on skinned
+maps). Verify with one quicktest before building the rest. The same subclass adds the
+downwind-gradient crest shading (darkened slip faces, lightened crests) that fixes
+sand-on-sand contrast — the reason vanilla excluded sand terrain. Visual burial of
+things is a vanilla FIELD:
 `hideAtSnowOrSandDepth`, honored by `SectionLayer_Things.cs:66`,
 `DynamicDrawManager.cs:69`, and `Plant.cs:193` — we set it by XML patch on the
 categories we bury.
 
 ## 3. Gameplay systems, each on its vanilla anchor
 
-- **Burial of items** — depth > 0.75 sustained over a cell holding haulables ⇒ despawn
+- **Burial of items** (RULED: wild/unclaimed only — anything in a stockpile, home
+  area, or player-forbidden-on-purpose is exempt) — depth > `burialDepth` sustained
+  over a cell holding qualifying haulables ⇒ despawn
   the stack into a `RM_Dunes_BuriedCache` thing (ThingOwner container, low-bump
   graphic; anchor: grave/crashed-part inner containers). Present-but-hidden via
   `hideAtSnowOrSandDepth` alone is worse: the item stays selectable, haulable, and
@@ -147,33 +196,41 @@ categories we bury.
 
 "Fusion into the existing particle physics" can only honestly mean: **ride Odyssey's
 single sand channel and inherit everything coupled to it.** `sandGrid` is one float per
-cell with one material — there is no multi-material grid to fuse into, `snowGrid` is
-temperature-owned, and ash is filth (Pyrelands' existing ladder), not a grid. A generic
-per-material engine-owned DepthGrid is buildable but forfeits every vanilla coupling
-and is the 5× budget version of the same fun. The engine+data-pack doctrine (R6) is
-satisfied at the right layer: **RM_MovingDunes is the machinery** (transport, burial,
-choke, wind state) with generic defaults; **data packs configure it** (biome opt-ins,
-influx budgets, thresholds, cache loot tables) — RUT patches the campaign's deserts in.
-Materials-as-skins is deferred until a second real material exists with real machinery
-behind it; per R6's guard, no empty shells.
+cell — there is no multi-material grid to fuse into, `snowGrid` is temperature-owned,
+and ash is filth (Pyrelands' ladder), not a grid. Multi-material-PER-MAP therefore
+stays refused. But the owner's "any color, anywhere, with particle mass" (ruled, v2)
+is delivered one level up: **one material PER MAP** — the map's `RM_DuneMaterialDef`
+skins the channel (tinted renderer §2, transport-mass parameters, optional deposit
+filth) so an ash map drifts grey and a glacier-sand map drifts blue on the SAME grid
+with all vanilla couplings intact. The engine+data-pack doctrine (R6) lands at the
+right layer: **RM_MovingDunes is the machinery** (transport, burial, choke, wind
+state, skin renderer) with a generic sand material as default content; **data packs
+add materials and biome bindings** — RUT patches the campaign's deserts and any
+Pyrelands ash-dune biome in. Per R6's guard: materials are real def-configured
+machinery users, not empty shells.
 
 ## 5. v1 cut (YAGNI)
 
-**Ships:** sand only, riding `map.sandGrid` (Odyssey soft-dep, inert without);
-MapComponent with saved wind direction + Werner slab transport (erode/hop/shadow/
-prefer-low, storm multiplier, edge influx); patches: CanHaveSand-on-sand, ambient-decay
-suppression (both per-map-flag, loud-failure); burial caches + reveal + `BuryThingsAt`
-API; plant choke; crest-shading section layer; biome opt-in via DefModExtension
-(vanilla Desert/ExtremeDesert patched in as the generic default, campaign biomes via
-RUT pack).
-**Out, explicitly:** multi-material/own grids; snow or ash drifting; sand as a haulable
-item; deep-drift extra path tier (knob, ruled separately); burying pawns/corpses/
-turrets; any worldgen; non-Odyssey fallback; sandcastle coupling.
-**Size vs the yardstick:** Pyrelands' `FireEcologyHook.cs` is ~400 lines/one file. This
-is 4–6 hooks' worth of real machinery: transport component ~350, cache thing ~150,
-patches ~150, section layer ~120, choke ~50, plus XML — call it **800–1,100 lines C#**
-in one small assembly. A real mod, not a hook; still bounded, and nothing in it is
-speculative.
+**Ships:** one grid channel (`map.sandGrid`; Odyssey soft-dep, inert without — RULED);
+`RM_DuneMaterialDef` + the full tunable surface (§2 — RULED: no constants) with one
+generic sand material as default; per-map material skin renderer (subclassed layer +
+tinted material instance + vanilla-layer suppression prefix); MapComponent with saved
+wind direction + Werner slab transport (erode/hop/shadow/prefer-low, weather-driven
+transport factor); source/sink edge flow with tunable influx and mass cap (RULED §2);
+patches: CanHaveSand-on-sand, ambient-decay suppression (per-map-flag, loud-failure);
+burial caches — **wild/unclaimed items only (RULED)** — + reveal + `BuryThingsAt` API;
+plant choke; biome opt-in via DefModExtension, **generic from day one (RULED)**:
+vanilla Desert/ExtremeDesert bound to the default sand material in the RM mod itself,
+campaign biomes via RUT pack.
+**Out, explicitly:** multi-material per map / own grids; snow drifting; sand as a
+haulable item (dig vanishes — RULED); deep-drift extra path tier (vanilla half-speed
+accepted — RULED); burying pawns/corpses/turrets; any worldgen; non-Odyssey fallback.
+**Size vs the yardstick:** Pyrelands' `FireEcologyHook.cs` is ~400 lines/one file.
+v2 additions (material def + skin layer + suppression patch + formalized edge flow)
+move the estimate: transport component ~400, material def + resolution ~100, skin/crest
+layer ~180, cache thing ~150, patches ~180, choke ~50, plus XML — call it
+**1,100–1,400 lines C#** in one small assembly. A real mod, not a hook; still bounded,
+and nothing in it is speculative.
 
 ## 6. Perf and failure risks — top 3
 
@@ -193,16 +250,14 @@ speculative.
    update silently changes dune behavior; the loud-failure pattern plus one selftest
    asserting the constants is the guard.
 
-## 7. Open questions for the owner
+## 7. What remains genuinely open (post-rulings)
 
-1. Odyssey as a hard soft-dependency — acceptable that the mod is inert without it?
-2. Pacing ruling: ~1 cell of crest creep per 2–3 days baseline, 4× during sandstorms —
-   right feel, or should calm-weather creep be near-zero and storms do all the work?
-3. Burial scope: everything unroofed (your stockpiles too — harsh, forces roofs/walls)
-   or wild/unclaimed items only in v1?
-4. Deep-drift movement: keep vanilla's ~half speed, or ship the quarter-speed deep
-   tier (one extra patch)?
-5. Should digging yield a haulable sand item (sandbag/sandcastle economy), or vanish
-   like vanilla clear-sand? (v1 default: vanish.)
-6. Generic release posture: RM_MovingDunes with vanilla deserts opted in from day one,
-   or campaign-gated until it has soaked on Ash'karr?
+1. **Shader tint** (technical, pre-build gate): does the sand material's shader respect
+   material `color`? One quicktest decides tinted-instance vs vertex-color fallback
+   (§2 Rendering). This and decay-suppression fragility (§6.3) are the two build risks.
+2. **Decay-suppression mechanism** (technical): exact-constant intercept vs transpiler
+   on `DoCellSteadyEffects` — decided at build time by whichever survives a selftest
+   asserting the vanilla constant.
+3. **Owner-level, the one real question left:** may a material def legitimately set
+   influx > loss so an unmanaged map PERMANENTLY buries (a slow-loss map as designed
+   drama), or is the total-mass cap always binding? Default until ruled: cap binding.
