@@ -333,12 +333,20 @@ namespace JawaBench.BridgeTools
 
                 if (qualityMin != null || qualityMax != null)
                 {
+                    // Same guard configure_bill carries (JawaBenchJobTools.cs, 2026-09-09
+                    // hardening): Enum.TryParse accepts any int literal ("99"), which then
+                    // indexes QualityUtility arrays out of bounds; and an inverted min>max
+                    // band matches no ingredient so the bill silently never runs.
                     var min = bill.qualityRange.min;
                     var max = bill.qualityRange.max;
-                    if (qualityMin != null && !Enum.TryParse(qualityMin.Trim(), true, out min))
+                    if (qualityMin != null && (!Enum.TryParse(qualityMin.Trim(), true, out min)
+                                               || !Enum.IsDefined(typeof(QualityCategory), min)))
                         return Fail($"Unknown qualityMin '{qualityMin}'.", new { accepted = Enum.GetNames(typeof(QualityCategory)) });
-                    if (qualityMax != null && !Enum.TryParse(qualityMax.Trim(), true, out max))
+                    if (qualityMax != null && (!Enum.TryParse(qualityMax.Trim(), true, out max)
+                                               || !Enum.IsDefined(typeof(QualityCategory), max)))
                         return Fail($"Unknown qualityMax '{qualityMax}'.", new { accepted = Enum.GetNames(typeof(QualityCategory)) });
+                    if (min > max)
+                        return Fail($"qualityMin ({min}) is above qualityMax ({max}) - an inverted band matches no ingredient and the bill would silently never run. Nothing changed.");
                     bill.qualityRange = new QualityRange(min, max);
                 }
 
