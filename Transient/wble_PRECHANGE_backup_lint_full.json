@@ -1,0 +1,1731 @@
+{
+  "success": true,
+  "tilesScanned": 21872,
+  "totalFindings": 309,
+  "verdict": "309 findings across 21872 tiles.",
+  "checks": {
+    "staleMarineMutators": {
+      "count": 104,
+      "note": "Marine mutator on a tile that is not coastal by real adjacency - the classic survivor of a repaint.",
+      "examples": [
+        {
+          "tile": 36,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 81,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 269,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 26.0
+        },
+        {
+          "tile": 448,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 707,
+          "mutator": "Coast",
+          "biome": "Desert",
+          "elevation": 1.0
+        },
+        {
+          "tile": 2234,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 2236,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 2607,
+          "mutator": "Coast",
+          "biome": "Desert",
+          "elevation": 1.0
+        },
+        {
+          "tile": 2917,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 137.0
+        },
+        {
+          "tile": 2919,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 15.0
+        },
+        {
+          "tile": 2920,
+          "mutator": "Coast",
+          "biome": "ZBiome_DesertOasis",
+          "elevation": 163.0
+        },
+        {
+          "tile": 3221,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 3224,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 117.0
+        },
+        {
+          "tile": 3226,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 8.0
+        },
+        {
+          "tile": 3869,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 5.0
+        },
+        {
+          "tile": 3871,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 4022,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 4024,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 35.0
+        },
+        {
+          "tile": 4027,
+          "mutator": "Coast",
+          "biome": "Desert",
+          "elevation": 67.0
+        },
+        {
+          "tile": 4038,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 29.0
+        },
+        {
+          "tile": 4043,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 25.0
+        },
+        {
+          "tile": 4951,
+          "mutator": "Coast",
+          "biome": "Desert",
+          "elevation": 1.0
+        },
+        {
+          "tile": 5106,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 23.0
+        },
+        {
+          "tile": 5110,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 5120,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 5122,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 5127,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 5128,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 5130,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 5456,
+          "mutator": "Coast",
+          "biome": "PoisonForest",
+          "elevation": 44.0
+        },
+        {
+          "tile": 6634,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 6654,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 330.0
+        },
+        {
+          "tile": 6664,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 6666,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 6677,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 15.0
+        },
+        {
+          "tile": 6919,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 3.0
+        },
+        {
+          "tile": 6971,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 214.0
+        },
+        {
+          "tile": 7466,
+          "mutator": "Coast",
+          "biome": "Desert",
+          "elevation": 1.0
+        },
+        {
+          "tile": 7468,
+          "mutator": "Coast",
+          "biome": "Desert",
+          "elevation": 1.0
+        },
+        {
+          "tile": 7469,
+          "mutator": "Coast",
+          "biome": "Desert",
+          "elevation": 1.0
+        },
+        {
+          "tile": 7771,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 7773,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 94.0
+        },
+        {
+          "tile": 7778,
+          "mutator": "Coast",
+          "biome": "ZBiome_DesertOasis",
+          "elevation": 219.0
+        },
+        {
+          "tile": 7779,
+          "mutator": "Coast",
+          "biome": "ZBiome_DesertOasis",
+          "elevation": 163.0
+        },
+        {
+          "tile": 8081,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 143.0
+        },
+        {
+          "tile": 8730,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 8902,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 8907,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 9959,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 21.0
+        },
+        {
+          "tile": 9961,
+          "mutator": "Coast",
+          "biome": "Desert",
+          "elevation": 1.0
+        },
+        {
+          "tile": 9968,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 9969,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 9971,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 9981,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 9982,
+          "mutator": "Coast",
+          "biome": "Desert",
+          "elevation": 1.0
+        },
+        {
+          "tile": 9987,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 9989,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 10321,
+          "mutator": "Coast",
+          "biome": "PoisonForest",
+          "elevation": 24.0
+        },
+        {
+          "tile": 11498,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 11503,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 11519,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 1.0
+        },
+        {
+          "tile": 11525,
+          "mutator": "Coast",
+          "biome": "Desert",
+          "elevation": 1.0
+        },
+        {
+          "tile": 11537,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 17.0
+        },
+        {
+          "tile": 11538,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 24.0
+        },
+        {
+          "tile": 11779,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 1.0
+        },
+        {
+          "tile": 11813,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 67.0
+        },
+        {
+          "tile": 11814,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 32.0
+        },
+        {
+          "tile": 11828,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 82.0
+        },
+        {
+          "tile": 11831,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 35.0
+        },
+        {
+          "tile": 13204,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 6.0
+        },
+        {
+          "tile": 13220,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 13222,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 7.0
+        },
+        {
+          "tile": 13408,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 13557,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 25.0
+        },
+        {
+          "tile": 15051,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 287.0
+        },
+        {
+          "tile": 15054,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 401.0
+        },
+        {
+          "tile": 15065,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 437.0
+        },
+        {
+          "tile": 15076,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 52.0
+        },
+        {
+          "tile": 16887,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 16898,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 181.0
+        },
+        {
+          "tile": 16902,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 308.0
+        },
+        {
+          "tile": 16908,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 323.0
+        },
+        {
+          "tile": 17209,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 222.0
+        },
+        {
+          "tile": 17210,
+          "mutator": "Coast",
+          "biome": "ZBiome_DesertOasis",
+          "elevation": 18.0
+        },
+        {
+          "tile": 18249,
+          "mutator": "Coast",
+          "biome": "AB_MiasmicMangrove",
+          "elevation": 1.0
+        },
+        {
+          "tile": 18267,
+          "mutator": "Coast",
+          "biome": "AB_MiasmicMangrove",
+          "elevation": 1.0
+        },
+        {
+          "tile": 18270,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 20688,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 20698,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 20706,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 20763,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 4.0
+        },
+        {
+          "tile": 20766,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 1.0
+        },
+        {
+          "tile": 20768,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 6.0
+        },
+        {
+          "tile": 20770,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 5.0
+        },
+        {
+          "tile": 20776,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 2.0
+        },
+        {
+          "tile": 20780,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 5.0
+        },
+        {
+          "tile": 20781,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 5.0
+        },
+        {
+          "tile": 21706,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 23.0
+        },
+        {
+          "tile": 21724,
+          "mutator": "Coast",
+          "biome": "Desert",
+          "elevation": 27.0
+        },
+        {
+          "tile": 21765,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 22.0
+        },
+        {
+          "tile": 21767,
+          "mutator": "Coast",
+          "biome": "Wasteland",
+          "elevation": 24.0
+        },
+        {
+          "tile": 21783,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 30.0
+        },
+        {
+          "tile": 21813,
+          "mutator": "Coast",
+          "biome": "ZBiome_Badlands",
+          "elevation": 48.0
+        },
+        {
+          "tile": 21814,
+          "mutator": "Coast",
+          "biome": "AridShrubland",
+          "elevation": 1.0
+        }
+      ]
+    },
+    "waterBiomeOnRaisedLand": {
+      "count": 0,
+      "note": "Ocean or SeaIce biome with elevation > 0. Lake is EXCLUDED - a lake at altitude is ordinary geography, and including it made this check fire once per authored lake.",
+      "examples": []
+    },
+    "lakesAboveSeaLevel": {
+      "count": 0,
+      "note": "INFORMATIONAL, scores ZERO. Lake tiles above sea level, which is normal. Here so a genuinely suspicious count is still visible."
+    },
+    "landBiomeSubmerged": {
+      "count": 181,
+      "note": "Land biome with elevation <= 0.",
+      "examples": [
+        {
+          "tile": 150,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 176,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 270,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 271,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 331,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 726,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 746,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 789,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 800,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 871,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 957,
+          "biome": "ZBiome_Badlands",
+          "elevation": -51.0
+        },
+        {
+          "tile": 995,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 1287,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 1328,
+          "biome": "PoisonForest",
+          "elevation": -350.0
+        },
+        {
+          "tile": 1330,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 1343,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 1446,
+          "biome": "ZBiome_Badlands",
+          "elevation": -53.0
+        },
+        {
+          "tile": 1700,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 1701,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 1702,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 1703,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 1704,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 2421,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 2908,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 2909,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 2948,
+          "biome": "PoisonForest",
+          "elevation": -350.0
+        },
+        {
+          "tile": 2950,
+          "biome": "PoisonForest",
+          "elevation": -350.0
+        },
+        {
+          "tile": 2951,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 2960,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 2963,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 3320,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 3321,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 3322,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 3323,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 3480,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 4041,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 4161,
+          "biome": "ZBiome_Badlands",
+          "elevation": -51.0
+        },
+        {
+          "tile": 4401,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 4404,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 4407,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 4408,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 4409,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 4411,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 4924,
+          "biome": "AB_TarPits",
+          "elevation": -91.0
+        },
+        {
+          "tile": 6786,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 6898,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7148,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7152,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7153,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7157,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7222,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7223,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7225,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7233,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7235,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7240,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7768,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7769,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7808,
+          "biome": "PoisonForest",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7810,
+          "biome": "PoisonForest",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7811,
+          "biome": "PoisonForest",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7822,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 7823,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 8180,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 8182,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 8183,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 8185,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 8337,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 8338,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 8339,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 8340,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 8900,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 8901,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 8905,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 8906,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 8909,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 9267,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 9268,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 9269,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 9270,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 9271,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 9784,
+          "biome": "ZBiome_Badlands",
+          "elevation": -71.0
+        },
+        {
+          "tile": 11639,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 11640,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 11642,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 11646,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 11756,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 11759,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 11776,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12008,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12012,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12013,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12014,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12017,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12018,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12039,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12041,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12080,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12081,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12083,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12085,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12269,
+          "biome": "ZBiome_Badlands",
+          "elevation": -51.0
+        },
+        {
+          "tile": 12271,
+          "biome": "ZBiome_Badlands",
+          "elevation": -69.0
+        },
+        {
+          "tile": 12506,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12507,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12509,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12510,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 12511,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 13026,
+          "biome": "ZBiome_Badlands",
+          "elevation": -94.0
+        },
+        {
+          "tile": 13027,
+          "biome": "AB_RockyCrags",
+          "elevation": -50.0
+        },
+        {
+          "tile": 13250,
+          "biome": "AB_TarPits",
+          "elevation": -350.0
+        },
+        {
+          "tile": 13251,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15002,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15003,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15004,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15005,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15014,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15015,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15016,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15017,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15018,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15019,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15248,
+          "biome": "PoisonForest",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15249,
+          "biome": "PoisonForest",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15250,
+          "biome": "PoisonForest",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15251,
+          "biome": "PoisonForest",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15255,
+          "biome": "PoisonForest",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15260,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15261,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15262,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15263,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15266,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15323,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15324,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15325,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15326,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15340,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15341,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 15342,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 16042,
+          "biome": "ZBiome_Badlands",
+          "elevation": -74.0
+        },
+        {
+          "tile": 17480,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17481,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17482,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17483,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17484,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17485,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17486,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17487,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17488,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17489,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17490,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17491,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17492,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17493,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17494,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17498,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17499,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17500,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17501,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17502,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17503,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17504,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17505,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17508,
+          "biome": "ZBiome_Badlands",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17509,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17514,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17515,
+          "biome": "AB_RockyCrags",
+          "elevation": -350.0
+        },
+        {
+          "tile": 17532,
+          "biome": "AB_MycoticJungle",
+          "elevation": -350.0
+        },
+        {
+          "tile": 18445,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 18447,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 18584,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 18587,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 18588,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 21808,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 21809,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 21810,
+          "biome": "AridShrubland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 21811,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 21857,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 21858,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 21859,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        },
+        {
+          "tile": 21863,
+          "biome": "Wasteland",
+          "elevation": -350.0
+        }
+      ]
+    },
+    "singleTileIslands": {
+      "count": 1,
+      "note": "Land tile with every neighbour water.",
+      "examples": [
+        {
+          "tile": 5873,
+          "biome": "AB_PropaneLakes",
+          "elevation": 1042.0
+        }
+      ]
+    },
+    "riverSystems": {
+      "total": 11,
+      "reachingNoSea": 3,
+      "trunkSystemsReachingNoSea": 1,
+      "note": "Only TRUNK systems (HugeRiver/LargeRiver) are defects. Low-accumulation rivers are ALLOWED to die in playas and salt pans - owner's ruling.",
+      "orphanTrunks": [
+        {
+          "sampleTile": 256,
+          "systemTiles": 118,
+          "largestRiver": "LargeRiver"
+        }
+      ]
+    },
+    "settlementsOnWater": {
+      "count": 0,
+      "examples": []
+    },
+    "settlementsOnImpassable": {
+      "count": 0,
+      "examples": []
+    },
+    "settlementsWithNoRoad": {
+      "count": 22,
+      "examples": [
+        {
+          "tile": 8497,
+          "name": "Hollow Hive",
+          "faction": "RUT_Jawa_GeonosianFoundryHive"
+        },
+        {
+          "tile": 19350,
+          "name": "No Master",
+          "faction": "RUT_Jawa_FreeDroidEnclaves"
+        },
+        {
+          "tile": 21037,
+          "name": "Quiet Lab",
+          "faction": "RUT_Jawa_AscendantHelix"
+        },
+        {
+          "tile": 9451,
+          "name": "Deepwater Hold",
+          "faction": "RUT_Jawa_DeepwaterCompact"
+        },
+        {
+          "tile": 13737,
+          "name": "Duneward",
+          "faction": "TribeCivil"
+        },
+        {
+          "tile": 6308,
+          "name": "Stone Moot",
+          "faction": "TribeCivil"
+        },
+        {
+          "tile": 6570,
+          "name": "Redscarp",
+          "faction": "TribeCivil"
+        },
+        {
+          "tile": 13357,
+          "name": "Razorsand",
+          "faction": "TribeCivil"
+        },
+        {
+          "tile": 18341,
+          "name": "Barno",
+          "faction": "TribeCivil"
+        },
+        {
+          "tile": 11559,
+          "name": "The Long Camp",
+          "faction": "TribeCivil"
+        },
+        {
+          "tile": 8069,
+          "name": "Ashfoot",
+          "faction": "TribeCivil"
+        },
+        {
+          "tile": 13520,
+          "name": "Sufferband",
+          "faction": "TribeCivil"
+        },
+        {
+          "tile": 21638,
+          "name": "The Blind Wells",
+          "faction": "TribeCivil"
+        },
+        {
+          "tile": 21560,
+          "name": "Unbound Exception",
+          "faction": "RUT_Jawa_FreeDroidEnclaves"
+        },
+        {
+          "tile": 21547,
+          "name": "The Free Charge",
+          "faction": "RUT_Jawa_FreeDroidEnclaves"
+        },
+        {
+          "tile": 5072,
+          "name": "Second Speaker",
+          "faction": "RUT_Jawa_FreeDroidEnclaves"
+        },
+        {
+          "tile": 5912,
+          "name": "The Fair Copy",
+          "faction": "RUT_Jawa_AscendantHelix"
+        },
+        {
+          "tile": 16869,
+          "name": "Colony",
+          "faction": "PlayerColony"
+        },
+        {
+          "tile": 733,
+          "name": "Vent Nine",
+          "faction": "RUT_Jawa_FreeDroidEnclaves"
+        },
+        {
+          "tile": 6645,
+          "name": "Bitterleaf",
+          "faction": "RUT_Jawa_WildsteamClan"
+        },
+        {
+          "tile": 4271,
+          "name": "Oilpalm",
+          "faction": "RUT_Jawa_WildsteamClan"
+        },
+        {
+          "tile": 16641,
+          "name": "Warthorn",
+          "faction": "RUT_Jawa_WildsteamClan"
+        }
+      ]
+    },
+    "stackedSettlements": {
+      "count": 0,
+      "examples": []
+    },
+    "lushBiomesOffRiver": {
+      "count": 0,
+      "checked_": [],
+      "note": "Nile-style ruling: a 1-2 tile lush band follows EVERY river. Lush terrain away from one is the defect.",
+      "examples": []
+    }
+  },
+  "ticksGame": 108948,
+  "operation": {
+    "OperationId": "op_770db77c19e849be875e26e291ffe954",
+    "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/world-lint",
+    "Status": 2,
+    "Success": true,
+    "StartedAtUtc": "2026-09-09T19:19:02.4878586+00:00",
+    "CompletedAtUtc": "2026-09-09T19:19:02.535436+00:00",
+    "DurationMs": 47,
+    "Result": null,
+    "HasResult": true,
+    "ResultWasTruncated": false,
+    "Warnings": [],
+    "Error": null,
+    "Metadata": {}
+  }
+}
