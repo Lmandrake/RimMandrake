@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Card #4's landmark. Spawned in code only (TitanicCorpseSiteUtility /
+    Patch_Corpse_SpawnSetup_TitanicSite) - never placed by the player, hence
+    no designationCategory/costList/constructible block.
+
+    PLACEHOLDER ART: texPath borrowed from vanilla RubblePile
+    (Things/Building/RubblePile, Graphic_Single) purely for a large,
+    decaying-mound silhouette that exists on disk today - not a
+    creature-specific corpse sprite. Needs real art before this ships to a
+    player; flagged in the build report.
+
+    size (4,4) matches the T3 tier's own footprint ceiling (both this mod's
+    tier table and Large Pawns' hard 4x4 ceiling per the decompile).
+  -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_TitanicCorpseSite</defName>
+    <label>titanic remains</label>
+    <description>The remains of something titanic. Days of work here will yield meat and leather before it spoils away or is picked clean.</description>
+    <thingClass>RimMandrake.TitanicCreatures.Building_TitanicCorpseSite</thingClass>
+    <category>Building</category>
+    <tickerType>Rare</tickerType>
+    <size>(4,4)</size>
+    <graphicData>
+      <texPath>Things/Building/RubblePile</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>100</pathCost>
+    <fillPercent>0.6</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <useHitPoints>false</useHitPoints>
+    <canOverlapZones>false</canOverlapZones>
+    <statBases>
+      <MaxHitPoints>9999</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-8</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <alwaysDeconstructible>false</alwaysDeconstructible>
+      <repairable>false</repairable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+  </ThingDef>
+
+</Defs>
