@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SAND_SWIMMERS_MOD_1 — the rare-catch pool for sand fishing, parented on vanilla's
+  own `RareFishingCatchesBase` (Defs/Odyssey/ThingSetMakerDefs/ThingSetMakers_Fishing.xml)
+  the same way `RareFishingCatches_Hot` is, so it plugs straight into
+  `BiomeDef.fishTypes.rareCatchesSetMaker` (RUT: Patches/SandFishing_CrackedLands.xml).
+
+  This is where "the rare prize" (RSW_GlassPearl) and "the thing that catches the
+  catcher" (RSW_SandStalker, here as a corpse) both live — mirroring vanilla's own
+  RareFishingCatches_Hot pattern of occasional predator corpses (Iguana/Rat/Vulture/
+  MonitorLizard, alive:false) mixed with an item reward. "You didn't catch a dune
+  crawler this time — you caught what ate one" needs no world-tile placement or live
+  ambush mechanic to work; it is entirely this weighted table.
+
+  Weights are a first pass (uncalibrated against playtesting — no bridge/game access
+  this session) tuned only for the anti-exponential goal: the glass pearl is the
+  headline rare catch, the stalker corpse rarer still, and there is no third option
+  padding the table, keeping the whole "prize" tier thin on purpose.
+-->
+<Defs>
+
+  <ThingSetMakerDef ParentName="RareFishingCatchesBase">
+    <defName>RSW_RareSandCatches</defName>
+    <root Class="ThingSetMaker_RandomOption">
+      <options>
+        <li>
+          <weight>4</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <!-- StackCount (not Count) because RSW_GlassPearl is a stackable raw
+                 resource, not equipment — matches RareFishingCatchesBase's own
+                 "Human meat and leather" ThingSetMaker_StackCount precedent. -->
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RSW_GlassPearl</li>
+                </thingDefs>
+              </filter>
+              <countRange>1~3</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+        <li>
+          <weight>1</weight>
+          <thingSetMaker Class="ThingSetMaker_Pawn">
+            <pawnKind>RSW_SandStalker</pawnKind>
+            <alive>false</alive>
+            <corpseAgeRangeDays>5~10</corpseAgeRangeDays>
+          </thingSetMaker>
+        </li>
+      </options>
+    </root>
+  </ThingSetMakerDef>
+
+</Defs>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SAND_SWIMMERS_MOD_1 — Deep Sand: an impassable sand terrain that behaves like deep
+  water for pathing and fishing, without being water at all.
+
+  MECHANISM, verified against RimWorld 1.6 + Odyssey source (not guessed):
+  - `TerrainDef.IsWater` (Verse/TerrainDef.cs) is `HasTag("Water")` — a TAG check, not
+    a hardcoded terrain-name list. Any TerrainDef carrying the "Water" tag reads as
+    water to every system that calls `.IsWater` (pathing, `Zone_Fishing.IsFishable`,
+    `SwimPathFinder`, `JoyGiver_GoSwimming`, `WaterSource`, flood/explosion FX, etc.).
+  - `Zone_Fishing.IsFishable(cell)` (RimWorld/Zone_Fishing.cs) requires
+    `cell.GetTerrain(map).IsWater` AND `cell.GetWaterBodyType(map) == FishType`, where
+    `FishType` comes from the zone's `TerrainDef.waterBodyType` (Freshwater/Saltwater —
+    a closed two-value field, `Verse/WaterBodyType.cs`; there is no "Sand" water body
+    type, and adding one would need C#). Declaring `waterBodyType: Freshwater` here is
+    what lets a fishing zone actually form fishable cells on Deep Sand.
+  - Passability Impassable is what blocks ordinary pawn pathing — the same mechanism
+    `WaterDeep` (`Defs/Core/TerrainDefs/Terrain_Water.xml`) uses for "you cannot walk
+    across this." This def is written from scratch rather than ParentName="WaterBase"
+    to avoid inheriting water-only baggage (the `SoakingWet` traversedThought, the
+    `Map/WaterDepth` shader, `floodTerrain`) that reads wrong on sand.
+
+  Engine/content split (NAMING_SCHEME_PLAN.md §1): this terrain is a pure mechanic —
+  "impassable ground you can fish in" — with zero Star Wars flavor, so it is RM tier
+  and lives here in ManyWaters (already the RM-tier "gathers all water effects/types"
+  engine, MANYWATERS_GENERIC_SPLIT_1) rather than a new mod. It names no biome of its
+  own, matching that mod's existing generic/biome-agnostic pattern. The Star-Wars-
+  flavored fish family that gets caught here is RSW tier (SWBestiary); the Ash'karr
+  biome hookup (which BiomeDef actually offers this fish list) is RUT tier
+  (UtinniPatches) — see Patches/SandFishing_CrackedLands.xml there.
+
+  SITING — open question, NOT resolved here (world-tile placement is out of scope for
+  this item; see the item file). `dune_sea.md` §6 hard-bans "medium-sized fauna" in
+  the dune sea proper (giant-or-grain-scale only) and `ExtremeDesert` is literally the
+  SAME BiomeDef for both the dune sea (θ0-40) and deep desert (θ50-69, Glare/Kiln) —
+  there is no BiomeDef-level way to scope a fish family to deep-desert tiles only
+  without leaking into dune-sea tiles. The RUT hookup therefore targets Cracked Lands
+  (`ZBiome_Badlands`) only, which carries no such ban. Wiring ExtremeDesert/Desert too
+  (the item's other two siting suggestions) is a follow-up that first needs an answer
+  to that conflict — either keep any ExtremeDesert Deep Sand pool at θ≥40 (deep desert
+  proper), or give the fish family a giant/grain-scale variant fit for the dune sea.
+
+  ART — PLACEHOLDER. texturePath below points at the vanilla `Terrain/Surfaces/SoftSand`
+  texture as a deliberate stand-in so this never renders magenta; a real "sunken,
+  rippled sand pool, visibly deeper/darker than surrounding sand" texture is OWED
+  (generating-rimworld-sprites skill) and is not part of this pass.
+
+  ANTI-EXPONENTIAL: this def carries no yield lever of its own (that lives in the
+  biome's fishTypes/maxFishPopulation, RUT side) — it only makes cells fishable, it
+  does not make fish more common.
+-->
+<Defs>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_DeepSand</defName>
+    <label>deep sand</label>
+    <description>A pool of sand deep enough to swallow a person whole. The surface looks like any other dune, but there is nothing solid beneath it — step out onto it and you sink, slowly and completely. Nothing walks across deep sand. Some things live in it.</description>
+    <texturePath>Terrain/Surfaces/SoftSand</texturePath>
+    <!-- PLACEHOLDER ART — see header. -->
+    <edgeType>FadeRough</edgeType>
+    <categoryType>Sand</categoryType>
+    <renderPrecedence>353</renderPrecedence>
+    <fertility>0</fertility>
+    <natural>true</natural>
+    <passability>Impassable</passability>
+    <pathCost>300</pathCost>
+    <avoidWander>true</avoidWander>
+    <canFreeze>false</canFreeze>
+    <changeable>false</changeable>
+    <holdSnowOrSand>false</holdSnowOrSand>
+    <extinguishesFire>true</extinguishesFire>
+    <extraDeteriorationFactor>3</extraDeteriorationFactor>
+    <extraNonDraftedPerceivedPathCost>180</extraNonDraftedPerceivedPathCost>
+    <extraDraftedPerceivedPathCost>18</extraDraftedPerceivedPathCost>
+    <waterBodyType>Freshwater</waterBodyType>
+    <!-- Not literal water — Freshwater is the only bucket BiomeFishTypes offers that
+         isn't briny; picked so the biome-side fishTypes patch (RUT) has somewhere to
+         hang its freshwater_Common/Uncommon catches. -->
+    <filthAcceptanceMask>
+      <li>None</li>
+    </filthAcceptanceMask>
+    <tags>
+      <li>Water</li>
+      <!-- The load-bearing tag: TerrainDef.IsWater == HasTag("Water"). Everything
+           else in this def follows from being tagged Water — impassability reads
+           the same as deep water, and Zone_Fishing/WorkGiver_Fish/JobDriver_Fish
+           work unmodified, no Harmony patch needed. -->
+    </tags>
+    <tools>
+      <li>
+        <label>sand</label>
+        <capacities>
+          <li>KickMaterialInEyes</li>
+        </capacities>
+        <hediff>SandInEyes</hediff>
+        <!-- Reuses vanilla Sand/SoftSand's own hazard hediff rather than WaterInEyes. -->
+        <cooldownTime>1.5</cooldownTime>
+      </li>
+    </tools>
+    <statBases>
+      <Beauty>-5</Beauty>
+      <BeautyOutdoors>-3</BeautyOutdoors>
+    </statBases>
+  </TerrainDef>
+
+</Defs>

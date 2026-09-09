@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SAND_SWIMMERS_MOD_1 — biome wiring: puts the sand-swimmer fish family
+  (RimStarWars: SWBestiary — RSW_DuneCrawler / RSW_SandStalker / RSW_GlassPearl /
+  RSW_RareSandCatches) into `ZBiome_Badlands` (the Cracked Lands, More Vanilla
+  Biomes) as its `fishTypes`, replacing the vanilla Fish_Guppy/Fish_Tilapia/
+  RareFishingCatches_Hot that ship on that def today.
+
+  TARGETED, VERIFIED, NOT GUESSED: `ZBiome_Badlands` is not in the offline def dump
+  or rimsage's vanilla-source index (it's a third-party BiomeDef, sarg/zylle content),
+  so its live XML was read directly off disk from the active workshop copy —
+  `.../steamapps/workshop/content/294100/1931453053/1.6/Defs/BiomeDefs/ZBiome_Badlands.xml`
+  (packageId `zylle.MoreVanillaBiomes`, confirmed active in the live ModsConfig.xml) —
+  to confirm the exact existing `<fishTypes>` shape before writing xpaths against it,
+  rather than assuming vanilla's default shape applies. It already carries:
+    maxFishPopulation 360; freshwater_Common Fish_Guppy(1); freshwater_Uncommon
+    Fish_Tilapia(1); saltwater_Common Fish_Bluefish(1); saltwater_Uncommon
+    Fish_Tuna(1); rareCatchesSetMaker RareFishingCatches_Hot.
+  Only the freshwater buckets, the rare-catch pool, and the population cap are
+  touched below; saltwater is left alone (ZBiome_Badlands has no salt water to
+  speak of, and this item is about sand, not the ocean).
+
+  SITING DECISION (open, surfaced rather than silently made): the item's own siting
+  suggestion is "dune sea / deep desert / Cracked Lands flats" (an OR list). This
+  patch targets Cracked Lands ONLY. Reason: `ExtremeDesert` — the BiomeDef backing
+  BOTH the dune sea (θ0-40) and deep desert (θ50-69, Glare/Kiln) per dune_sea.md §2
+  and deep_desert.md §0 — is a single shared def with no per-region hook, and
+  dune_sea.md §6 hard-bans medium-sized fauna in that biome outright ("No medium-
+  sized fauna. Body sizes are giant or grain-scale, nothing between" — a FROZEN
+  ruling, BIOME_FREEZE_FABLE_REVIEW_1). RSW_SandStalker is deliberately mid-scale
+  (bodySize 1.1, fits deep desert, which carries no such ban) — wiring ExtremeDesert
+  too would silently make this family available in dune-sea tiles as well, where it
+  would violate that ban the moment a world-tile placement pass drops a Deep Sand
+  pool at θ<40. Cracked Lands carries no equivalent ban, so it is the only one of
+  the three suggested sites this patch touches. Extending to ExtremeDesert/Desert
+  (deep desert siting) is a real follow-up, gated on that conflict being resolved —
+  not resolved here, and not silently dropped either.
+
+  ANTI-EXPONENTIAL: maxFishPopulation dropped 360 -> 90 (a first-pass number, not
+  measured/tuned against play — the owner's verify pass should retune it). Fish
+  Nutrition/MarketValue are held at vanilla tier on the RSW side; this is the only
+  yield lever touched here, and it is a straight cut, not a multiplier.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>More Vanilla Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+
+        <li Class="PatchOperationReplace" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/fishTypes/freshwater_Common</xpath>
+          <value>
+            <freshwater_Common>
+              <RSW_DuneCrawler MayRequire="mandrake.rsw.swbestiary">1</RSW_DuneCrawler>
+            </freshwater_Common>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/fishTypes/freshwater_Uncommon</xpath>
+          <value>
+            <!-- Deliberately empty — the family is kept small on purpose (item's own
+                 "small family" instruction); the second freshwater bucket is the
+                 uncommon SPECIES slot and this family has only one catch species.
+                 An empty list is a safe no-op for WaterBody.SetFishTypes.TryRandomElement. -->
+            <freshwater_Uncommon>
+            </freshwater_Uncommon>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/fishTypes/rareCatchesSetMaker</xpath>
+          <value>
+            <rareCatchesSetMaker MayRequire="mandrake.rsw.swbestiary">RSW_RareSandCatches</rareCatchesSetMaker>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/maxFishPopulation</xpath>
+          <value>
+            <maxFishPopulation>90</maxFishPopulation>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

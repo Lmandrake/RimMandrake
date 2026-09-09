@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SAND_SWIMMERS_MOD_1 — "the thing that catches the catcher": a subsurface ambush
+  predator that hunts dune crawlers (RSW_DuneCrawler) in deep sand, grounded in
+  dune_sea.md §4's predation law ("Predation cannot work by ambush, because there is
+  no cover... hunting is either subsurface... or attritional") and
+  desert_ecology_feasibility.md §7's confirmed sand-prowler precedent.
+
+  NOT reusing Alpha Animals' `CompProperties_GraphicByTerrain` terrain-hiding trick
+  (the "burrows in sand" illusion §7 confirms is real and already installed) —
+  deliberately, this pass. That comp is a VEF (Vanilla Expanded Framework) type;
+  SWBestiary does not currently declare a VEF dependency, and I have no bridge/game
+  access this pass to verify the class resolves cleanly against the live mod set
+  rather than throwing a config error. OWED: a follow-up pass that confirms VEF is
+  safe to depend on and adds the terrain-hiding graphic + `AA_BurrowingUnderSand`-
+  style hediff, matching the sand prowler's own "looks buried until it strikes" read.
+  Until then this is an ordinary (if dangerous) wild animal, not a visual burrower.
+
+  SITING deliberately NOT declared — no `<race><wildBiomes>` block. Per the trap
+  RSW_Jerba.xml already documents: BiomeCast_Ashkarr.xml is the biome-side placement
+  authority for Ash'karr, and declaring the same (animal, biome) pair on both sides
+  throws ArgumentException in BiomeDef.CommonalityOfAnimal. World-tile placement is
+  explicitly out of scope for SAND_SWIMMERS_MOD_1 — this animal does not naturally
+  spawn anywhere until a placement pass (BiomeCast_Ashkarr.xml or a per-biome patch)
+  adds it. It still enters play today as a rare-catch corpse — see
+  ThingSetMakerDefs/RSW_RareSandCatches.xml — which needs no siting at all.
+
+  Recognizability: an invented analog, not an Earth animal and not iconic Star Wars,
+  so the ordinary recognizability rule applies (alien-read silhouette, no instantly-
+  nameable Earth creature). Body size is deliberately mid-scale (bodySize 1.1) to fit
+  DEEP DESERT siting (no size ban there) — see RM_DeepSand.xml's header for why this
+  family should NOT be sited in the dune sea proper (θ<40), which frozen-bans
+  medium-sized fauna outright.
+
+  ART — PLACEHOLDER (owed, not generated this pass). validate_patch.py proved a plain
+  vanilla-Core texPath reference (Badger) doesn't check out — Core's art is packed
+  into resources.assets, not loose PNGs, so this repo's static scan can't confirm it,
+  and this project's convention is to reuse art that is physically present in this
+  mod's own Textures/ folder. Reused instead: Things/Pawn/Animal/Skarnix/Skarnix — an
+  existing, already-shipped SWBestiary predator (RSW_Skarnix, "a cat-large ambush
+  stalker," Forsaken Crags) that is thematically the closest thing already on disk to
+  an ambush stalker, and its PawnKindDef pattern (Graphic_Single, no dessicated
+  variant) is copied exactly below. A proper sand-toned, sun-axis-asymmetric analog
+  sprite for the sand stalker specifically is owed.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_SandStalker</defName>
+    <label>sand stalker</label>
+    <description>A low, broad-shouldered ambush hunter built for one motion: erupting out of deep sand at whatever crossed above it. It cannot outrun anything in the open and does not try — it waits under a pool for the vibration of a dune crawler, or a boot, and spends its whole strike budget on a single lunge. Jawa crews who fish deep sand watch the surface as much as the line.</description>
+    <statBases>
+      <MoveSpeed>4.4</MoveSpeed>
+      <MarketValue>140</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>65</ComfyTemperatureMax>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <baseBodySize>1.1</baseBodySize>
+      <baseHungerRate>0.45</baseHungerRate>
+      <baseHealthScale>1.1</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <predator>true</predator>
+      <maxPreyBodySize>1.4</maxPreyBodySize>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <trainability>None</trainability>
+      <manhunterOnTameFailChance>0.4</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.6</manhunterOnDamageChance>
+      <lifeExpectancy>16</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Badger_Wounded</soundWounded>
+          <soundDeath>Pawn_Badger_Death</soundDeath>
+          <soundCall>Pawn_Badger_Call</soundCall>
+          <soundAngry>Pawn_Badger_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Rodent_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_SandStalker</defName>
+    <label>sand stalker</label>
+    <race>RSW_SandStalker</race>
+    <combatPower>110</combatPower>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>sand stalker kit</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Skarnix/Skarnix</texPath>
+          <!-- PLACEHOLDER — see header. -->
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.85</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Skarnix/Skarnix</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.15</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Skarnix/Skarnix</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.25)</volume>
+            <offset>(0,0,-0.12)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
