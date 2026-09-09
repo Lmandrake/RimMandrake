@@ -5494,6 +5494,11 @@ namespace JawaBench.BridgeTools
                         hitPoints = thing.def.useHitPoints ? thing.HitPoints : -1,
                         maxHitPoints = thing.def.useHitPoints ? thing.MaxHitPoints : -1,
                         faction = thing.Faction?.def?.defName,
+                        // factionName added 2026-09-09: list_pawns exposes both, list_things
+                        // exposed only the defName-shaped `faction`, so a caller reading
+                        // `factionName` (as list_pawns teaches) saw null and read a
+                        // player-owned building as factionless — a confirmed incident.
+                        factionName = thing.Faction?.Name,
                         stuff = thing.Stuff?.defName,
                         quality
                     });
