@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "count": 1,
+  "returned": 1,
+  "allObjectsOnPlanet": 196,
+  "settlements": 96,
+  "objectsWithNoFaction": 80,
+  "factionWarning": "A Settlement with a null faction is DESTROYED on load. Fix before saving.",
+  "byDef": {
+    "VGE_DerelictStation": 1
+  },
+  "byFaction": {
+    "(none)": 1
+  },
+  "objects": [
+    {
+      "id": 80,
+      "def": "VGE_DerelictStation",
+      "label": "Esminbondos Asteroid",
+      "tile": 957,
+      "layer": "Orbit",
+      "faction": null,
+      "factionName": null,
+      "hasFaction": false,
+      "isSettlement": false,
+      "name": null,
+      "namedByPlayer": false,
+      "spawned": true
+    }
+  ],
+  "ticksGame": 108948,
+  "operation": {
+    "OperationId": "op_fc3bf499380946f2bd9c81e0f585f33e",
+    "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/world-objects-get",
+    "Status": 2,
+    "Success": true,
+    "StartedAtUtc": "2026-09-09T19:21:10.678285+00:00",
+    "CompletedAtUtc": "2026-09-09T19:21:10.7383449+00:00",
+    "DurationMs": 60,
+    "Result": null,
+    "HasResult": true,
+    "ResultWasTruncated": false,
+    "Warnings": [],
+    "Error": null,
+    "Metadata": {}
+  }
+}
