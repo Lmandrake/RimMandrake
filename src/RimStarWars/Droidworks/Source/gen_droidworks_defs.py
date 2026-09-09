@@ -232,6 +232,81 @@ APPAREL_MONEY_KIND_OVERRIDE = {
     "KotORDroidBad_KM1HMD": APPAREL_MONEY["heavy"],
 }
 
+# --------------------------------------------------- DROIDWORKS_CHASSIS_PERSONALITY_1
+# (packet E1, 2026-09-09) "per-family trait weights (data)" per the design
+# doc's own row (DROID_UNIFIED_FRAMEWORK_DESIGN.md §5) and the source triage
+# (sw_mod_concepts_triage.md §G): "Chassis archetypes as starting personality
+# bias, not destiny... implemented as a starting-trait weighting per chassis
+# PawnKindDef, not a hard-coded behavior, so individual droids still diverge."
+#
+# THE REAL MECHANISM, confirmed against RimWorld source (rimsage) before
+# writing a line of this: PawnGenerator.GenerateTraits reads
+# PawnKindDef.forcedTraits unconditionally (Verse/PawnGenerator.cs:1444-1449)
+# and PawnGenerator.GenerateTraitsFor's random-trait roll draws from
+# TraitDef.GetGenderSpecificCommonality — a GLOBAL per-TraitDef weight, never
+# a per-kind one (Verse/PawnGenerator.cs:1568). Vanilla has NO per-kind
+# probability-weighting hook for an existing trait: only a binary
+# force-it-in (forcedTraits) or rule-it-out (disallowedTraits/
+# disallowedTraitsWithDegree). forcedTraits is also the exact mechanism the
+# kotordroids donor mod already used for its own per-kind personality
+# (extraction.json: HK-47 "ShootingAccuracy +1", T3 "TooSmart 0") — a live
+# precedent in this project's own droid corpus, not invented here.
+# So "trait weights" here means ONE guaranteed personality trait per family
+# (100% present, hence trivially "shown" by any spawn count>0) while every
+# other trait slot still rolls at vanilla's own global commonality — that IS
+# the "bias, not destiny" the design doc asks for: other traits still
+# diverge freely, only this one slot is chassis-determined.
+#
+# Grounding, family by family (real vanilla TraitDefs, degrees confirmed via
+# rimsage get_def_details before use — never guessed):
+#   astromech "clever, territorial about machinery" -> TooSmart (learns fast,
+#     eccentric) — the exact trait the donor mod already used for its own
+#     astromech-shaped T3 series.
+#   battle "obedient, literal, comically bad at threat assessment" ->
+#     ShootingAccuracy degree -1 ("trigger-happy": shoots faster, less
+#     accurately) — matches Star Wars canon B1 battle-droid marksmanship.
+#   heavy (B2/tactical/MagnaGuard-weight chassis) -> Tough (IncomingDamageFactor
+#     0.5) — armored, hard to kill, matches the heavier chassis literally.
+#   labour (menial utility droids) -> Industriousness degree 1 ("hard
+#     worker") — dutiful, no-nonsense.
+#   power (Gonk-shaped, "simple, occasionally heroic") -> Nerves degree 1
+#     ("steadfast") — simple but holds together when it matters.
+#   probe (K-X series recon/surveillance chassis) -> GreatMemory — built to
+#     watch and remember, not to feel.
+#   protocol "risk-averse, pedantic, prone to interrupting" -> Abrasive
+#     ("always says exactly what's on its mind... rubs people the wrong
+#     way") — reads almost verbatim off the source doc's own wording.
+#
+# Deliberately NOT used anywhere in this table: Bloodlust, Psychopath. The
+# task's own brief names them explicitly as the wrong shape for a
+# construct's "personality" (human blood-violence-thrill has no referent in
+# a droid), so they are actively DISALLOWED below rather than merely
+# unused — a random roll must not hand a droid either one.
+FAMILY_TRAIT_BIAS = {
+    "astromech": [("TooSmart", 0)],
+    "battle":    [("ShootingAccuracy", -1)],
+    "heavy":     [("Tough", 0)],
+    "labour":    [("Industriousness", 1)],
+    "power":     [("Nerves", 1)],
+    "probe":     [("GreatMemory", 0)],
+    # Protocol carries TWO forced traits: the family's own personality bias
+    # (Abrasive, above) plus the distinct "protocol pedantry modifier" E1's
+    # own row lists as a second deliverable — RSW_DW_Trait_ProtocolPedantry
+    # (TraitDefs_Droidworks.xml), a plain data TraitDef with statFactors on
+    # NegotiationAbility/SocialImpact, riding this exact forcedTraits
+    # mechanism rather than a new Harmony patch. DROID_PROTOCOL_TRADE_
+    # ADVANTAGE_1 (packet C4, Patch_ProtocolTradeAdvantage.cs) already ships
+    # the PRICE half of "real trade advantage... dangerous not to"; this
+    # trait is the SOCIAL half the source doc's §G separately names
+    # ("a modifier on existing social/negotiation rolls that's sometimes
+    # negative").
+    "protocol":  [("Abrasive", 0), ("RSW_DW_Trait_ProtocolPedantry", 0)],
+}
+
+# Never let a droid randomly roll a trait whose premise is a human violence
+# drive a construct has no referent for — see FAMILY_TRAIT_BIAS's own header.
+DROID_DISALLOWED_TRAITS = ["Bloodlust", "Psychopath"]
+
 
 def family_for(orig, bucket):
     if bucket == "astromech-labour":
@@ -689,6 +764,23 @@ def render_kind(kd):
         for t in kd["weaponTags"]:
             p.append("      <li>%s</li>" % esc(t))
         p.append("    </weaponTags>")
+    # DROIDWORKS_CHASSIS_PERSONALITY_1 (packet E1): forcedTraits shorthand is
+    # <TraitDefName>degree</TraitDefName> per element (PawnKindDef.forcedTraits
+    # is List<TraitRequirement>, whose LoadDataFromXmlCustom reads the tag
+    # name as the TraitDef and the inner text as the degree — confirmed
+    # against a live vanilla PawnKindDef, Biotech's own "Mechanitor"
+    # (Defs/Biotech/PawnKindDefs_Humanlikes/PawnKinds_Special.xml), via
+    # rimsage before use: <forcedTraits><Recluse>0</Recluse></forcedTraits>).
+    bias = FAMILY_TRAIT_BIAS.get(kd["chassis_fam"])
+    if bias:
+        p.append("    <forcedTraits>")
+        for trait_dn, degree in bias:
+            p.append("      <%s>%d</%s>" % (trait_dn, degree, trait_dn))
+        p.append("    </forcedTraits>")
+    p.append("    <disallowedTraits>")
+    for trait_dn in DROID_DISALLOWED_TRAITS:
+        p.append("      <li>%s</li>" % trait_dn)
+    p.append("    </disallowedTraits>")
     # DROIDWORKS_FLESHTYPE_NEEDS_GAP_1 (2026-08-30): a droid has no business
     # getting a random human xenotype at spawn. XenotypeSet has a CUSTOM
     # loader (XenotypeChance.LoadDataFromXmlCustom) -- the field is
@@ -1192,6 +1284,7 @@ def main():
             "apparelMoney": apparel_money,
             "apparelTags": apparel,
             "weaponTags": weapon,
+            "chassis_fam": chassis_fam,
         }
         kind_out[family].append(render_kind(kd))
 

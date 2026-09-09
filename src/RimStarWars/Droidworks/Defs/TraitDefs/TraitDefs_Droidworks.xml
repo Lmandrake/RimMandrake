@@ -141,4 +141,45 @@
     </degreeDatas>
   </TraitDef>
 
+  <!-- ========================================================================
+       RSW_DW_Trait_ProtocolPedantry — DROIDWORKS_CHASSIS_PERSONALITY_1
+       (packet E1). "The protocol droid is technically correct" (source
+       triage, sw_mod_concepts_triage.md §G, the sharpest line in the source
+       sheet): a diplomacy-support droid that can worsen a negotiation
+       through perfect, pedantic honesty — "a modifier on existing social/
+       negotiation rolls that's sometimes negative, keyed to the protocol
+       chassis bias". DROID_PROTOCOL_TRADE_ADVANTAGE_1 (packet C4,
+       Patch_ProtocolTradeAdvantage.cs) already ships the PRICE half of
+       ruling 2's "real trade advantage... dangerous not to"; this trait is
+       the distinct SOCIAL half the same source paragraph names — pure data
+       (a TraitDef with statFactors), not a second Harmony patch.
+
+       Same commonality-0 shape as the HardwareQuirk pool above (never a
+       random roll) but deliberately WITHOUT HardwareQuirkExtension — this is
+       not part of the wipe-quirk pool, only reachable via forcedTraits on
+       DW_Family_Protocol's own PawnKindDefs (gen_droidworks_defs.py's
+       FAMILY_TRAIT_BIAS, "protocol" entry).
+
+       "Sometimes negative", not uniformly bad: correctness helps the FACTS
+       (NegotiationAbility up — it is very seldom wrong) while the pedantry
+       itself costs rapport (SocialImpact down — the "rubs people the wrong
+       way" half). Both StatDefs verified to exist in Core before use (same
+       two the VocoderGlitch quirk above already carries).
+  ======================================================================== -->
+  <TraitDef>
+    <defName>RSW_DW_Trait_ProtocolPedantry</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>pedantic</label>
+        <description>This droid corrects the record even when nobody asked, footnotes every claim, and will not let an inaccuracy pass unremarked. It is very seldom wrong, and everyone in the room knows it.</description>
+        <degree>0</degree>
+        <statFactors>
+          <NegotiationAbility>1.10</NegotiationAbility>
+          <SocialImpact>0.85</SocialImpact>
+        </statFactors>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
 </Defs>

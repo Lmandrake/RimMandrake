@@ -10,6 +10,13 @@
     <race>RSW_DW_Race_OuterRim_BattleDroid</race>
     <combatPower>40</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -22,6 +29,13 @@
     <race>RSW_DW_Race_OuterRim_BattleDroidAdvanced</race>
     <combatPower>40</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -34,6 +48,13 @@
     <race>RSW_DW_Race_OuterRim_CommandoDroid</race>
     <combatPower>40</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -46,6 +67,13 @@
     <race>RSW_DW_Race_OuterRim_HKDroid</race>
     <combatPower>40</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -58,6 +86,13 @@
     <race>RSW_DW_Race_OuterRim_ImperialLaborDroid</race>
     <combatPower>40</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Industriousness>1</Industriousness>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -70,6 +105,13 @@
     <race>RSW_DW_Race_OuterRim_KXSecurityDroid</race>
     <combatPower>40</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -82,6 +124,13 @@
     <race>RSW_DW_Race_OuterRim_MagnaGuardDroid</race>
     <combatPower>40</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -94,6 +143,14 @@
     <race>RSW_DW_Race_OuterRim_ProtocolDroid</race>
     <combatPower>40</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Abrasive>0</Abrasive>
+      <RSW_DW_Trait_ProtocolPedantry>0</RSW_DW_Trait_ProtocolPedantry>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -106,6 +163,13 @@
     <race>RSW_DW_Race_OuterRim_SuperBattleDroid</race>
     <combatPower>40</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -118,6 +182,13 @@
     <race>RSW_DW_Race_OuterRim_SuperTacticalDroid</race>
     <combatPower>40</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -130,6 +201,13 @@
     <race>RSW_DW_Race_OuterRim_TacticalDroid</race>
     <combatPower>40</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Tough>0</Tough>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -142,6 +220,13 @@
     <race>RSW_DW_Race_OuterRim_MuckrakerDroid</race>
     <combatPower>99999</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Industriousness>1</Industriousness>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -154,6 +239,13 @@
     <race>RSW_DW_Race_OuterRim_DestroyerDroid</race>
     <combatPower>99999</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -166,6 +258,13 @@
     <race>RSW_DW_Race_OuterRim_DUMDroid</race>
     <combatPower>99999</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Industriousness>1</Industriousness>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -178,6 +277,13 @@
     <race>RSW_DW_Race_OuterRim_FX7Droid</race>
     <combatPower>99999</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Industriousness>1</Industriousness>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -190,6 +296,13 @@
     <race>RSW_DW_Race_OuterRim_GNKDroid</race>
     <combatPower>99999</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Nerves>1</Nerves>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -202,6 +315,13 @@
     <race>RSW_DW_Race_OuterRim_MSEDroid</race>
     <combatPower>99999</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Industriousness>1</Industriousness>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -214,6 +334,13 @@
     <race>RSW_DW_Race_OuterRim_SalvageAssistDroid</race>
     <combatPower>99999</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <Industriousness>1</Industriousness>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -226,6 +353,13 @@
     <race>RSW_DW_Race_OuterRim_AstromechDroid</race>
     <combatPower>99999</combatPower>
     <apparelMoney>0~0</apparelMoney>
+    <forcedTraits>
+      <TooSmart>0</TooSmart>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
@@ -241,6 +375,13 @@
     <weaponTags>
       <li>ORImperialHeavy</li>
     </weaponTags>
+    <forcedTraits>
+      <ShootingAccuracy>-1</ShootingAccuracy>
+    </forcedTraits>
+    <disallowedTraits>
+      <li>Bloodlust</li>
+      <li>Psychopath</li>
+    </disallowedTraits>
     <xenotypeSet>
       <xenotypeChances>
         <Baseliner>1</Baseliner>
