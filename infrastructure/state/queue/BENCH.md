@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T03:28:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T04:03:40Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -53,15 +53,6 @@ target:   v1
 kind:     task
 summary:  - Inventory, from the live def dump + mod XML (never guess a defName):
 prose:    infrastructure/state/items/MUTATION_MODIFIERS_SURVEY_1.md
-
-## BIOME_FREEZE_FABLE_REVIEW_1 Full-scale Fable review of ALL biomes together before the freeze — temps, physics, weather, precipitation, dust/sand/ash, fuel/wood/animal/meat/growth, diseases — BLOCKED until every biome sheet is finished; pre-assignment, not final check-out
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  BIOMEFREEZEFABLEREVIEW1 — full-scale Fable review of ALL biomes together, before the freeze
-prose:    infrastructure/state/items/BIOME_FREEZE_FABLE_REVIEW_1.md
 
 ## CRYSTAL_MODS_INGEST_1 Find the orange glowing crystal's source mod; inventory every crystal harvest in the stack; assess ingesting it so all crystals live in the Lantern Deeps
 state:    doing
@@ -213,16 +204,6 @@ kind:     task
 thin:     no ## criteria
 summary:  - Reconcile with existing canon: the Rust Cathedral (ABMechanoidIntrusion, the
 prose:    infrastructure/state/items/MECHANOID_ORIGIN_CANON_1.md
-
-## SETTLEMENT_REJIGGER_ROUND2_1 Round-2 rejigger: re-shift every settlement to fit the pre-frozen biomes — right AFTER BIOME_FREEZE_FABLE_REVIEW_1, BEFORE the animal/plant assignment; every move carded to the owner
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Inputs: the frozen sheets (every biome's §8 Inhabited objects + who-lives-here
-prose:    infrastructure/state/items/SETTLEMENT_REJIGGER_ROUND2_1.md
 
 ## FISH_BY_BIOME_1 Fish in every biome where relevant — inventory the stack's fish defs and each biome's fishTypes; rule per water kind (milk, propane, red water, brine); analogs only
 state:    proposed
