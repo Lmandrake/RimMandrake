@@ -69,7 +69,7 @@ ship at footprint 143,59,86,133 on the colony map, tile 16869).
    substructure near the engine (187,150); conduit if needed.
 5. Fuel: fill the 2 ChemfuelTanks (dev refuel route), verify thruster pipe nets see it.
 6. Engine inspection by a colonist (order a pawn; gate is upstream of everything).
-7. Crew: apply `Transient/final_review/crew_spec.json` — remove the 3 test colonists,
+7. Crew: apply `infrastructure/state/items/PLAYER_START_SITE_1.crew.json` — remove the 3 test colonists,
    spawn + author the Five Founders aboard (fidelity scope, characterful not optimal).
 8. Pre-flight save (the landing chain can wedge — no retry exists).
 9. Launch → target tile 17007 → land; the map generates with the Zeddo ruin-field
