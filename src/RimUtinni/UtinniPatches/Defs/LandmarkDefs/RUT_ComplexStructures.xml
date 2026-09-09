@@ -20,6 +20,9 @@
        21,872; measured, whole-planet distribution below). So the icon is not
        decoration asserting complexity, it is a readout of complexity that is really
        there. Owner chose the >=6 threshold from 6/7/8.
+       ⭐ Amendment (owner ruled 2026-09-08): never in the wet-green biomes (Fever
+       Wood, Miasma, Greentide, Contagion, Webwork, Pyrelands) — their density is
+       biological, not structural. The placement script carries the denylist.
 
            0 muts 7730 | 1 7509 | 2 3715 | 3 1542 | 4 687 | 5 428
            6 146 | 7 86 | 8 22 | 9 3 | 10 2 | 11 1 | 12 1
