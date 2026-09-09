@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Ash'karr biome names. Owner 2026-09-07, on reading the world map: "I see
+       'Cypre Jungle' - I thought we were renaming all of this?" 30 distinct
+       biomes are painted on the planet; only 4 carry our own defNames
+       (RUT_TwilightSea, RUT_GreySea, RUT_NightsideIce, RUT_TheScald). The other
+       26 show a donor's label even though every one of them already has a
+       campaign name from its own biome sheet under
+       design/Jawa/worldbuilding/biomes/ - see BIOME_LABEL_CAMPAIGN_NAMES_1.
+
+       The player never sees a defName, only <label>. So this is a label-only
+       patch, same convention as CreatureNames_Ashkarr.xml and
+       PlantNames_Ashkarr.xml: PatchOperationConditional guards each replace so
+       a donor that is not installed simply produces a no-op, no MayRequire
+       roster to maintain.
+
+       🔴 LABEL ONLY. No defName is touched. Do not touch the tiles CSV.
+
+       Two defs are claimed by more than one biome sheet - `Desert` and
+       `ExtremeDesert` (the dune sea and the deep desert both paint
+       `ExtremeDesert`, ruled R22 in _freeze_rulings_2026-09-07.md: the def is
+       the binding unit, one merged roster obeying both sheets, no region
+       split). A def has one label, so neither sheet's own regional name
+       (`dune_sea.md`'s "the Dune Sea") can own it alone. `deep_desert.md`'s own
+       title is already the higher-level term that spans both regions, so that
+       is what is used here - "the Deep Desert" - and `desert.md`'s single-sheet
+       name is used for `Desert` unchanged, "the Desert". These two are NOT
+       spelled out in BIOME_LABEL_CAMPAIGN_NAMES_1's own table (only the
+       collision rule is); confirm before treating as final.
+
+       `SeaIce` (262 tiles) is claimed by no biome sheet - left untouched here,
+       per the item's own note to decide that before labelling. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/label</xpath>
+      <value><label>the Rot</label></value>
+    </match>
+  </Operation>   <!-- was "mycotic jungle" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/label</xpath>
+      <value><label>the Propane Lakes</label></value>
+    </match>
+  </Operation>   <!-- was "propane lakes" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/label</xpath>
+      <value><label>the Blue Desert</label></value>
+    </match>
+  </Operation>   <!-- was "Blue desert" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/label</xpath>
+      <value><label>the Forsaken Crags</label></value>
+    </match>
+  </Operation>   <!-- was "forsaken crags" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/label</xpath>
+      <value><label>the Cracked Lands</label></value>
+    </match>
+  </Operation>   <!-- was "badlands" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/label</xpath>
+      <value><label>the poison forest</label></value>
+    </match>
+  </Operation>   <!-- was "poison forest" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/label</xpath>
+      <value><label>the Weeping Stones</label></value>
+    </match>
+  </Operation>   <!-- was "desert oasis" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/label</xpath>
+      <value><label>the Rust Cathedral</label></value>
+    </match>
+  </Operation>   <!-- was "mechanoid intrusion" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/label</xpath>
+      <value><label>the Pyrelands</label></value>
+    </match>
+  </Operation>   <!-- was "stormy savanna" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/label</xpath>
+      <value><label>the Greentide</label></value>
+    </match>
+  </Operation>   <!-- was "Cypre Jungle" - the one the owner spotted -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/label</xpath>
+      <value><label>the Contagion</label></value>
+    </match>
+  </Operation>   <!-- was "ocular forest" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/label</xpath>
+      <value><label>the Webwork</label></value>
+    </match>
+  </Operation>   <!-- was "feralisk infested jungle" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/label</xpath>
+      <value><label>the Slime</label></value>
+    </match>
+  </Operation>   <!-- was "gelatinous superorganism" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/label</xpath>
+      <value><label>the Miasma</label></value>
+    </match>
+  </Operation>   <!-- was "miasmic mangrove" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/label</xpath>
+      <value><label>the Sump</label></value>
+    </match>
+  </Operation>   <!-- was "tar pits" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/label</xpath>
+      <value><label>the Fever Wood</label></value>
+    </match>
+  </Operation>   <!-- was "greater tropical swamp" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/label</xpath>
+      <value><label>the Forge</label></value>
+    </match>
+  </Operation>   <!-- was "pyroclastic conflagration" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="Desert"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="Desert"]/label</xpath>
+      <value><label>the Desert</label></value>
+    </match>
+  </Operation>   <!-- was "desert" - single sheet (desert.md), not the R22 collision -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/label</xpath>
+      <value><label>the Deep Desert</label></value>
+    </match>
+  </Operation>   <!-- was "extreme desert" - R22 shared def: dune_sea.md + deep_desert.md
+                      both paint this, so it takes deep_desert.md's own higher-level
+                      title rather than either sheet's regional name -->
+
+</Patch>
