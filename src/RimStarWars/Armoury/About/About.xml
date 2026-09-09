@@ -103,7 +103,7 @@ Generated from a live post-patch def dump; load last.</description>
        melee ones), and resolving each display name to a packageId off that
        same dump's manifest.json. `Core` (ludeon.rimworld) is omitted: it is
        always first regardless of loadAfter. A loadAfter naming a packageId
-       that does not exist, or that is merely inactive, fails/no-ops SILENTLY --
+       that does not exist, or that is merely inactive, fails/no-ops SILENTLY -
        nothing logs it - so absent entries are the dangerous failure mode, not
        extra ones; several of these (DLCs, and mods not in every list) are fine
        to declare even when inactive, as an optional-compat statement of intent. -->
