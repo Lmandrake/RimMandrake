@@ -52,10 +52,13 @@ no XML was ever generated from it — nothing to revert).
 2. **Homeless pool defaults to RESERVE-FOR-EVENTS** (no wild spawn anywhere, def stays live
    for quests/raids/traders). Cherry Picker cuts only where already ruled: Earth-nameable,
    retextured Earth twins (`RETEXTURED_EARTH_FAUNA_BANNED_1`), Blizzarisk (freeze R20),
-   0%-recognizability mods. Grindterra (`GR_*`) fauna are homeless-by-default — Earth
-   analogs, deprioritized (owner, 2026-09-09) — which is what enables retiring Grindterra
-   biomes after the pass. *Does NOT change: livestock/faction-kind creatures (Tellurox
-   etc.) — wild rosters only.*
+   0%-recognizability mods. Grindterra (**`GRim*` prefix — NOT `GR_*`**) fauna are
+   homeless-by-default — Earth analogs, deprioritized (owner, 2026-09-09) — which is what
+   enables retiring Grindterra biomes after the pass. ⚠️ Prefix correction 2026-09-09:
+   `GR_*` is Vanilla Genetics Expanded — chimeras, NOT Earth animals
+   (`RETEXTURED_EARTH_FAUNA_BANNED_1`: "leave them") — judged per sheet law normally.
+   The first roster batch enforced the wrong prefix; corrected on resume. *Does NOT
+   change: livestock/faction-kind creatures (Tellurox etc.) — wild rosters only.*
 3. **SW staples: adjust-and-keep.** Wraid/Gutkurr slowed <4.5 → legal burst predators in
    `Desert`; Massiff → shrubland medium band; WarWyrm ruled a burrower → `ExtremeDesert`
    giant; Mudhorn kept as the shrubland's ONE huge-predator icon exception; Scurrier

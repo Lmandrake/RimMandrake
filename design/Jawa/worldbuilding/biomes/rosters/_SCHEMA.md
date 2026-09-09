@@ -53,4 +53,5 @@ from the owner amend THESE files, then regenerate.
   `dune_sea_deep_desert.json` (R22 strict intersection).
 - `_global.json` holds: the ubiquity-25 dispositions, the Earth-five planet-wide
   evictions, the homeless reserve list, the Cherry Picker cut list (each cut cites its
-  ruling), and the Grindterra (GR_*) homeless-by-default rule.
+  ruling), and the Grindterra homeless-by-default rule (Grindterra defs are `GRim*`;
+  `GR_*` is Vanilla Genetics Expanded — chimeras, judged per sheet law normally).
