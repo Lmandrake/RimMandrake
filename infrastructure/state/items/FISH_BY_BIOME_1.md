@@ -21,3 +21,20 @@ Owner, 2026-09-06: *"need to think about FISH in every biome where relevant! Goo
 ## verify
 Every water-bearing biome has a ruled fish list or an explicit "no fish, because…"; the
 dump resolves each def.
+
+## 2026-09-09 progress (BENCH, assignment pass)
+- Per-biome fish RULINGS are data now: every roster in
+  `design/Jawa/worldbuilding/biomes/rosters/*.json` carries a `fish` field (mostly
+  ruled no-fish with the chemistry cited).
+- Candidates for the ruled-yes waters: `rosters/_fish_candidates.json` (`f18fb5de`) —
+  87 fish ThingDefs MEASURED in the live dump; binding is `BiomeDef.fishTypes`
+  (fresh/salt Common/Uncommon buckets) — fish placement is BIOME work, no def edits;
+  the campaign water-kinds chemistry has no engine hook, it is flavor over the
+  fresh/salt axis. Weeping Stones and Cracked Lands have confident donors; greentide
+  already assigned (RSW_Mee/Faa/Laa); twilight sub-roof shoal = the one new-def gap,
+  non-blocking (diving mods unbuilt).
+- ⚠️ RECONCILE BEFORE CLOSING: another window is concurrently authoring sand-fishing
+  content (`src/RimUtinni/UtinniPatches/Patches/SandFishing_CrackedLands.xml`,
+  `src/RimStarWars/SWBestiary/.../RSW_SandStalker.xml`, `ManyWaters/Defs/` — untracked
+  in their tree as of this note). Their custom-def approach and this census's donor
+  candidates for the Cracked Lands must merge into ONE fishTypes ruling per water.
