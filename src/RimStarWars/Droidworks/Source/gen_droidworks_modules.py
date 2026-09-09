@@ -285,6 +285,24 @@ def strip_recipe_and_cost(el):
             el.remove(sb)
 
 
+def force_unsmeltable_if_armor(el, parent_base):
+    # RSW_DW_ModuleBase_Armor's own parent (RSW_DW_ModuleApparelBase) sets
+    # smeltable=true; RSW_DW_ModuleBase_Tech already overrides it to false
+    # itself, so only the Armor branch needs this. Once strip_recipe_and_cost
+    # has removed costList/costStuffCount these things are loot-only, and an
+    # inherited/carried-over smeltable=true trips RimWorld's own "is
+    # smeltable but does not give anything for smelting" ConfigError
+    # (DROIDWORKS_MODULE_SMELT_CONFIG_1: hit exactly the three plain-tier
+    # armor defs whose donor source had no explicit override, unlike their
+    # material-variant siblings which already carried smeltable=false).
+    if parent_base != "RSW_DW_ModuleBase_Armor":
+        return
+    smeltable = el.find("smeltable")
+    if smeltable is None:
+        smeltable = ET.SubElement(el, "smeltable")
+    smeltable.text = "false"
+
+
 def strip_abf_parts_and_stats(el):
     comps = el.find("comps")
     if comps is not None:
@@ -627,11 +645,13 @@ def main():
     for dn, parent, el, src_rel in all_thing_els:
         new_dn = rename_dn(dn)
         el.attrib.clear()
-        el.attrib["ParentName"] = "RSW_DW_ModuleBase_Tech" if parent in TECH_PARENTS else "RSW_DW_ModuleBase_Armor"
+        new_parent_base = "RSW_DW_ModuleBase_Tech" if parent in TECH_PARENTS else "RSW_DW_ModuleBase_Armor"
+        el.attrib["ParentName"] = new_parent_base
         dn_node = el.find("defName")
         dn_node.text = new_dn
 
         strip_recipe_and_cost(el)
+        force_unsmeltable_if_armor(el, new_parent_base)
         strip_abf_parts_and_stats(el)
         rewrite_body_part_groups(el)
         rewrite_comp_hediff_refs(el)
