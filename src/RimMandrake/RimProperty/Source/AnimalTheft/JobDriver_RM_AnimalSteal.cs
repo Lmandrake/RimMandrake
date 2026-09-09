@@ -30,7 +30,15 @@ namespace RimMandrake.AnimalTheft
     {
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            return pawn.Reserve(TargetA, job, 1, 1, null, errorOnFailed);
+            // stackCount -1 = reserve the whole stack, matching the take toil below
+            // (TryStartCarry(target, target.stackCount, ...) always takes the FULL
+            // stack, never just one unit). A hardcoded stackCount of 1 here would
+            // under-reserve any target with stackCount > 1, letting another pawn's
+            // job reserve the remaining units of the same Thing while this pawn is
+            // still pathing to it. Matches JobDriver_RemoveBuilding's own base
+            // TryMakePreToilReservations (stackCount -1) and vanilla's
+            // JobDriver_HaulToCell.
+            return pawn.Reserve(TargetA, job, 1, -1, null, errorOnFailed);
         }
 
         protected override IEnumerable<Toil> MakeNewToils()
