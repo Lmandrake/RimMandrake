@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T19:26:30Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-09T19:27:53Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -647,15 +647,6 @@ target:   v1
 kind:     design
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
-
-## PYRELANDS_LORE_NAMING_DRIFT_1 the_pyrelands.md lore doc still says RSW_FE_* where shipped defs are RM_FE_Pyrelands
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     fix
-summary:  Found by PYRELANDSSELFCONTAINEDBIOME1's closing agent (2026-09-09), out of that
-prose:    infrastructure/state/items/PYRELANDS_LORE_NAMING_DRIFT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
