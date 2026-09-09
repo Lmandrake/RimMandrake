@@ -64,8 +64,9 @@ ROOT = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 POOL = os.path.join(ROOT, "design", "Jawa", "mods", "plant_pool.csv")
 CLIMATE = os.path.join(HERE, "biome_climate.json")
 FLAM = os.path.join(HERE, "plant_flammability.json")
-DEFDB = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-         "RimWorld by Ludeon Studios/DefDump/defs.sqlite")
+sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils"))
+from game_paths import DUMP_ROOT  # noqa: E402
+DEFDB = os.path.join(DUMP_ROOT, "defs.sqlite")
 os.makedirs(VIZ, exist_ok=True)
 
 C_GRAY = "#9aa0a6"; C_BLUE = "#3b6fb5"; C_ORANGE = "#d97706"; C_RED = "#c0392b"
