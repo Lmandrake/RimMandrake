@@ -201,3 +201,10 @@ GeothermalDensityField + SandFishing sit in the same `+` list) and the game is
 RUNNING under their session. Applying would ship their mid-work. The assignment
 patches ride the NEXT load round's batched deploy (rimworld-load-round protocol);
 nothing here needs the game before the owner's verdict sitting anyway.
+
+## CLOSED d19997bd (2026-09-09) — the solo pass is complete; the owner half is its own item
+28 rosters landed and validated; cast/defs/patches generated, validated, dedup-unioned,
+eviction-stripped; flora chain rewritten + normalized (flammability, temps); analyses
+portfolio migrated + extended; both review sheets built, click-tested, regenerated
+post-fixes. Deploy held for the next load round (see above). Successor for everything
+remaining: ASSIGNMENT_SHEETS_VERDICT_SITTING_1 (owner verdicts → applier → regen).
