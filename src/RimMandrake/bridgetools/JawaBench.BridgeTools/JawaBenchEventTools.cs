@@ -569,8 +569,8 @@ namespace JawaBench.BridgeTools
                 // than discovered afterwards. IncidentWorker_RaidEnemy will not raid with a
                 // faction that is not hostile to the player: TryResolveRaidFaction picks a
                 // different one and the raid arrives under that flag.
-                // FIRE_RAID_ECHOES_REQUESTED_FACTION_1: asking for Jawa_FreeDroidEnclaves
-                // (neutral on this world) returned resolved.faction Jawa_FreeDroidEnclaves
+                // FIRE_RAID_ECHOES_REQUESTED_FACTION_1: asking for RUT_Jawa_FreeDroidEnclaves
+                // (neutral on this world) returned resolved.faction RUT_Jawa_FreeDroidEnclaves
                 // and five Blackstar Company pirates walked in.
                 if (requestedFaction != null && !friendly && !requestedFaction.HostileTo(Faction.OfPlayer))
                     factionNotes.Add("⚠ " + requestedFaction.def.defName + " is NOT hostile to the player ("

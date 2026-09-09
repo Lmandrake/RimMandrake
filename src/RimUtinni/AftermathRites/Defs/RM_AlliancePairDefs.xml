@@ -3,8 +3,8 @@
   design/Jawa/proposals/plot_mechanisms_wave.md §2.1 rule 2's alliance table.
   FactionDef defNames are all real, read from
   src/RimUtinni/UtinniPatches/Defs/FactionDefs/*.xml directly (not guessed):
-  Jawa_GeonosianFoundryHive, Jawa_FreeDroidEnclaves, Jawa_Junkers,
-  Jawa_HuttCartel, Jawa_AscendantHelix; `Pirate` is vanilla Core (Blackstar
+  RUT_Jawa_GeonosianFoundryHive, RUT_Jawa_FreeDroidEnclaves, RUT_Jawa_Junkers,
+  RUT_Jawa_HuttCartel, RUT_Jawa_AscendantHelix; `Pirate` is vanilla Core (Blackstar
   Company is a reskin of it, not a new defName — confirmed in
   src/RimUtinni/UtinniPatches/Patches/BlackstarCompany.xml); `Empire` is
   vanilla Core (the campaign's Galactic Empire is a reskin, same pattern —
@@ -22,29 +22,29 @@
 
   <RimMandrake.Aftermath.RM_AlliancePairDef>
     <defName>RM_AlliancePair_GeonosianHive_FreeDroidEnclaves</defName>
-    <a>Jawa_GeonosianFoundryHive</a>
-    <b>Jawa_FreeDroidEnclaves</b>
+    <a>RUT_Jawa_GeonosianFoundryHive</a>
+    <b>RUT_Jawa_FreeDroidEnclaves</b>
     <weight>1</weight>
   </RimMandrake.Aftermath.RM_AlliancePairDef>
 
   <RimMandrake.Aftermath.RM_AlliancePairDef>
     <defName>RM_AlliancePair_FreeDroidEnclaves_GeonosianHive</defName>
-    <a>Jawa_FreeDroidEnclaves</a>
-    <b>Jawa_GeonosianFoundryHive</b>
+    <a>RUT_Jawa_FreeDroidEnclaves</a>
+    <b>RUT_Jawa_GeonosianFoundryHive</b>
     <weight>1</weight>
   </RimMandrake.Aftermath.RM_AlliancePairDef>
 
   <RimMandrake.Aftermath.RM_AlliancePairDef>
     <defName>RM_AlliancePair_Junkers_FreeDroidEnclaves</defName>
-    <a>Jawa_Junkers</a>
-    <b>Jawa_FreeDroidEnclaves</b>
+    <a>RUT_Jawa_Junkers</a>
+    <b>RUT_Jawa_FreeDroidEnclaves</b>
     <weight>1</weight>
   </RimMandrake.Aftermath.RM_AlliancePairDef>
 
   <!-- Blackstar-hire pairs — NOT reachable this build, see header. -->
   <RimMandrake.Aftermath.RM_AlliancePairDef>
     <defName>RM_AlliancePair_HuttCartel_Blackstar</defName>
-    <a>Jawa_HuttCartel</a>
+    <a>RUT_Jawa_HuttCartel</a>
     <b>Pirate</b>
     <weight>1</weight>
   </RimMandrake.Aftermath.RM_AlliancePairDef>
@@ -58,7 +58,7 @@
 
   <RimMandrake.Aftermath.RM_AlliancePairDef>
     <defName>RM_AlliancePair_Helix_Blackstar</defName>
-    <a>Jawa_AscendantHelix</a>
+    <a>RUT_Jawa_AscendantHelix</a>
     <b>Pirate</b>
     <weight>1</weight>
   </RimMandrake.Aftermath.RM_AlliancePairDef>

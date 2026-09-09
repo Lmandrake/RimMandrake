@@ -47,7 +47,7 @@ namespace RimMandrake.Utinni.RestrainingBolts
             // vanilla default before touching PawnsFinder means the real walk
             // over every owned pawn happens only for the one faction it can ever
             // matter for.
-            if (other?.def != FactionDefOf_RestrainingBolts.Jawa_FreeDroidEnclaves)
+            if (other?.def != FactionDefOf_RestrainingBolts.RUT_Jawa_FreeDroidEnclaves)
                 return 100;
 
             var hediff = BoltHediff;

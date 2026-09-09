@@ -281,7 +281,7 @@
   <!-- ===== Junkers — the fuel economy (round 9, ruled 2026-08-30) =====
        canon.yml junkers: a fuel-first bad-water nation. "The casket remains
        the crown; fuel is the floor everyone stands on." Same spawnCategory
-       (JawaBSC_Junkers) as the block above, already wired to Jawa_Junkers -
+       (JawaBSC_Junkers) as the block above, already wired to RUT_Jawa_Junkers -
        no new wiring needed. Forced traits: Traits_JawaPawnFlavor.xml. -->
 
   <BackstoryDef>

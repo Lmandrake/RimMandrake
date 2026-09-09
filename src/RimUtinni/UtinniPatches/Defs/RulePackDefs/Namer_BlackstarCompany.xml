@@ -37,7 +37,7 @@
 <Defs>
 
   <RulePackDef>
-    <defName>Jawa_NamerFactionBlackstar</defName>
+    <defName>RUT_Jawa_NamerFactionBlackstar</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name->Blackstar Company</li>

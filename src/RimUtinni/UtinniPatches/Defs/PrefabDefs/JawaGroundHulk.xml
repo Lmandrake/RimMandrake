@@ -149,7 +149,7 @@
 <Defs>
 
   <PrefabDef MayRequire="Ludeon.RimWorld.Odyssey,Arcjc007.GravshipCrashes">
-    <defName>Jawa_GroundHulk</defName>
+    <defName>RUT_Jawa_GroundHulk</defName>
     <rotations>North</rotations>
     <size>(73,16)</size>
     <things>

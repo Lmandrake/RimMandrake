@@ -63,7 +63,7 @@
   arrival mode, and a `pawnGroupMaker` expresses NEITHER. What a group maker
   can express is composition and size, so the signature is carried by those:
   `maxTotalPoints` 800 caps it to a light party (vanilla precedent, the
-  Drifter group at 1000). No `Tribal_HeavyArcher`/`Jawa_DeepDesert_Heavy`, no
+  Drifter group at 1000). No `Tribal_HeavyArcher`/`RUT_Jawa_DeepDesert_Heavy`, no
   `Tribal_Breacher`, no chiefs ; a breacher is the exact opposite of a group
   that leaves once it has the water. Commonality 30 against the parent's
   100/60/60/5 (superseded numbers below — the four combat groups are no
@@ -172,33 +172,33 @@
                 <kindDef>Combat</kindDef>
                 <commonality>100</commonality>
                 <options>
-                    <Jawa_DeepDesert_Grunt>10</Jawa_DeepDesert_Grunt>
-                    <Jawa_DeepDesert_Heavy>5</Jawa_DeepDesert_Heavy>
-                    <Jawa_DeepDesert_Specialist>6</Jawa_DeepDesert_Specialist>
+                    <RUT_Jawa_DeepDesert_Grunt>10</RUT_Jawa_DeepDesert_Grunt>
+                    <RUT_Jawa_DeepDesert_Heavy>5</RUT_Jawa_DeepDesert_Heavy>
+                    <RUT_Jawa_DeepDesert_Specialist>6</RUT_Jawa_DeepDesert_Specialist>
                 </options>
               </li>
               <li>
                 <kindDef>Combat</kindDef>
                 <commonality>60</commonality>
                 <options>
-                    <Jawa_DeepDesert_Specialist>10</Jawa_DeepDesert_Specialist>
-                    <Jawa_DeepDesert_Grunt>4</Jawa_DeepDesert_Grunt>
+                    <RUT_Jawa_DeepDesert_Specialist>10</RUT_Jawa_DeepDesert_Specialist>
+                    <RUT_Jawa_DeepDesert_Grunt>4</RUT_Jawa_DeepDesert_Grunt>
                 </options>
               </li>
               <li>
                 <kindDef>Combat</kindDef>
                 <commonality>60</commonality>
                 <options>
-                    <Jawa_DeepDesert_Grunt>10</Jawa_DeepDesert_Grunt>
-                    <Jawa_DeepDesert_Heavy>8</Jawa_DeepDesert_Heavy>
+                    <RUT_Jawa_DeepDesert_Grunt>10</RUT_Jawa_DeepDesert_Grunt>
+                    <RUT_Jawa_DeepDesert_Heavy>8</RUT_Jawa_DeepDesert_Heavy>
                 </options>
               </li>
               <li>
                 <kindDef>Combat</kindDef>
                 <commonality>5</commonality>
                 <options>
-                    <Jawa_DeepDesert_Heavy>10</Jawa_DeepDesert_Heavy>
-                    <Jawa_DeepDesert_Grunt>5</Jawa_DeepDesert_Grunt>
+                    <RUT_Jawa_DeepDesert_Heavy>10</RUT_Jawa_DeepDesert_Heavy>
+                    <RUT_Jawa_DeepDesert_Grunt>5</RUT_Jawa_DeepDesert_Grunt>
                 </options>
               </li>
               <li>
@@ -289,8 +289,8 @@
                 <commonality>30</commonality>
                 <maxTotalPoints>800</maxTotalPoints>
                 <options>
-                  <Jawa_DeepDesert_Grunt>10</Jawa_DeepDesert_Grunt>
-                  <Jawa_DeepDesert_Specialist>8</Jawa_DeepDesert_Specialist>
+                  <RUT_Jawa_DeepDesert_Grunt>10</RUT_Jawa_DeepDesert_Grunt>
+                  <RUT_Jawa_DeepDesert_Specialist>8</RUT_Jawa_DeepDesert_Specialist>
                 </options>
               </li>
             </pawnGroupMakers>
@@ -304,7 +304,7 @@
           <xpath>/Defs/FactionDef[defName="TribeCivil"]</xpath>
           <value>
             <fixedLeaderKinds>
-              <li>Jawa_DeepDesert_Leader</li>
+              <li>RUT_Jawa_DeepDesert_Leader</li>
             </fixedLeaderKinds>
           </value>
         </li>
@@ -377,7 +377,7 @@
     <xpath>/Defs/FactionDef[defName="TribeCivil"]</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/FactionDef[defName="TribeCivil"]</xpath>
-      <value><allowedCultures Inherit="False"><li>Jawa_Culture_DeepDesert</li></allowedCultures></value>
+      <value><allowedCultures Inherit="False"><li>RUT_Jawa_Culture_DeepDesert</li></allowedCultures></value>
     </match>
   </Operation>
 

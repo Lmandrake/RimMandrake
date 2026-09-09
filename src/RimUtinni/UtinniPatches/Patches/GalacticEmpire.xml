@@ -74,11 +74,11 @@
   kind in a raid. Only a `pawnGroupMaker` does. So the three fighting kinds now
   carry both groups:
 
-      Jawa_Empire_Grunt        5      stormtrooper,     combatPower  87
-      Jawa_Empire_Heavy        2      heavy trooper,    combatPower 129
-      Jawa_Empire_Specialist   1.5    Imperial officer, combatPower 119
+      RUT_Jawa_Empire_Grunt        5      stormtrooper,     combatPower  87
+      RUT_Jawa_Empire_Heavy        2      heavy trooper,    combatPower 129
+      RUT_Jawa_Empire_Specialist   1.5    Imperial officer, combatPower 119
 
-  and the fourth, `Jawa_Empire_Leader` (Emperor Palpatine, combatPower 211), is
+  and the fourth, `RUT_Jawa_Empire_Leader` (Emperor Palpatine, combatPower 211), is
   wired in through `fixedLeaderKinds` above rather than through a group, because
   a leader is generated once for the faction and not rolled into raids.
 
@@ -90,7 +90,7 @@
   sentinel; checked, all three are 200.
 
   ⚠️ Our three kinds stay INSIDE the Outer Rim `PatchOperationFindMod` even
-  though they are ours, and that is deliberate: `Jawa_Empire_Grunt` declares
+  though they are ours, and that is deliberate: `RUT_Jawa_Empire_Grunt` declares
   `apparelRequired` on `OuterRim_StormtrooperCuirass` and
   `OuterRim_StormtrooperHelmet`, so without that mod the whole group is wrong
   anyway.
@@ -140,14 +140,14 @@
           Empire_Royal_Stellarch), so this is a REPLACE. An Add here would
           append a second li and the Stellarch would keep rolling half the time.
 
-          OUTSIDE the Outer Rim FindMod on purpose: Jawa_Empire_Leader is ours,
+          OUTSIDE the Outer Rim FindMod on purpose: RUT_Jawa_Empire_Leader is ours,
           shipped in this same mod, and needs no third-party gate.
         -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/FactionDef[defName="Empire"]/fixedLeaderKinds</xpath>
           <value>
             <fixedLeaderKinds>
-              <li>Jawa_Empire_Leader</li>
+              <li>RUT_Jawa_Empire_Leader</li>
             </fixedLeaderKinds>
           </value>
         </li>
@@ -244,18 +244,18 @@
           The shipped list carries PlayerTribe and PlayerColony. Both are
           DELIBERATELY DROPPED here, and that single omission is what keeps the
           Empire permanently hostile to the player - the owner's 2026-08-14
-          ruling. Also dropped, also deliberately: Jawa_FreeDroidEnclaves,
-          Jawa_GeonosianFoundryHive, Jawa_WildsteamClan and Jawa_AscendantHelix.
+          ruling. Also dropped, also deliberately: RUT_Jawa_FreeDroidEnclaves,
+          RUT_Jawa_GeonosianFoundryHive, RUT_Jawa_WildsteamClan and RUT_Jawa_AscendantHelix.
           Do not "helpfully" restore any of the six.
         -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/FactionDef[defName="Empire"]/permanentEnemyToEveryoneExcept</xpath>
           <value>
             <permanentEnemyToEveryoneExcept>
-              <li>Jawa_HuttCartel</li>
-              <li>Jawa_DeepwaterCompact</li>
-              <li>Jawa_IndigenousTribes</li>
-              <li>Jawa_Junkers</li>
+              <li>RUT_Jawa_HuttCartel</li>
+              <li>RUT_Jawa_DeepwaterCompact</li>
+              <li>RUT_Jawa_IndigenousTribes</li>
+              <li>RUT_Jawa_Junkers</li>
               <li>OutlanderCivil</li>
               <li>TribeCivil</li>
               <li>Pirate</li>
@@ -357,7 +357,7 @@
 
                    🔑 THE SHARE IS OF POINTS, NOT OF PICKS, so the weights are sized
                    against combatPower, not eyeballed. Read off the live 600-mod dump
-                   2026-09-08 (Jawa_Empire_Grunt 101 / Heavy 129 / Specialist 119 -
+                   2026-09-08 (RUT_Jawa_Empire_Grunt 101 / Heavy 129 / Specialist 119 -
                    the Grunt is 101, NOT the 87 this file's own header comment still
                    records from 2026-08-21; the roster generator has been re-run since):
 
@@ -382,9 +382,9 @@
                 <xpath>/Defs/FactionDef[defName="Empire"]/pawnGroupMakers/li[kindDef="Combat"][commonality="100"]/options</xpath>
                 <value>
                   <options>
-                    <Jawa_Empire_Grunt>5</Jawa_Empire_Grunt>
-                    <Jawa_Empire_Heavy>2</Jawa_Empire_Heavy>
-                    <Jawa_Empire_Specialist>1.5</Jawa_Empire_Specialist>
+                    <RUT_Jawa_Empire_Grunt>5</RUT_Jawa_Empire_Grunt>
+                    <RUT_Jawa_Empire_Heavy>2</RUT_Jawa_Empire_Heavy>
+                    <RUT_Jawa_Empire_Specialist>1.5</RUT_Jawa_Empire_Specialist>
                     <RSW_DW_OuterRim_ImperialKXSecurityDroid MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_OuterRim_ImperialKXSecurityDroid>
                     <RSW_DW_KotORDroidBad_DevWD_weak MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_KotORDroidBad_DevWD_weak>
                     <RSW_DW_JDSCIS_BX_Commando_Droid MayRequire="mandrake.rsw.droidworks">1.5</RSW_DW_JDSCIS_BX_Commando_Droid>
@@ -399,9 +399,9 @@
                 <xpath>/Defs/FactionDef[defName="Empire"]/pawnGroupMakers/li[kindDef="Combat"][commonality="10"]/options</xpath>
                 <value>
                   <options>
-                    <Jawa_Empire_Grunt>5</Jawa_Empire_Grunt>
-                    <Jawa_Empire_Heavy>2</Jawa_Empire_Heavy>
-                    <Jawa_Empire_Specialist>1.5</Jawa_Empire_Specialist>
+                    <RUT_Jawa_Empire_Grunt>5</RUT_Jawa_Empire_Grunt>
+                    <RUT_Jawa_Empire_Heavy>2</RUT_Jawa_Empire_Heavy>
+                    <RUT_Jawa_Empire_Specialist>1.5</RUT_Jawa_Empire_Specialist>
                     <OuterRim_ImpRangeTrooper MayRequire="Neronix17.OuterRim.GalacticEmpire">2</OuterRim_ImpRangeTrooper>
                     <OuterRim_ImpDeathTrooper MayRequire="Neronix17.OuterRim.GalacticEmpire">1.5</OuterRim_ImpDeathTrooper>
                     <OuterRim_ImpISBAgent MayRequire="Neronix17.OuterRim.GalacticEmpire">1</OuterRim_ImpISBAgent>
@@ -439,9 +439,9 @@
                 <xpath>/Defs/FactionDef[defName="Empire"]/pawnGroupMakers/li[kindDef="Settlement"]/options</xpath>
                 <value>
                   <options>
-                    <Jawa_Empire_Grunt>5</Jawa_Empire_Grunt>
-                    <Jawa_Empire_Heavy>2</Jawa_Empire_Heavy>
-                    <Jawa_Empire_Specialist>1.5</Jawa_Empire_Specialist>
+                    <RUT_Jawa_Empire_Grunt>5</RUT_Jawa_Empire_Grunt>
+                    <RUT_Jawa_Empire_Heavy>2</RUT_Jawa_Empire_Heavy>
+                    <RUT_Jawa_Empire_Specialist>1.5</RUT_Jawa_Empire_Specialist>
                     <!-- C1: the same four droid entries at the same four weights as
                          the common raid, for the same reason B40 mirrored the troops
                          here - a player walks onto that map and chooses when to
@@ -490,7 +490,7 @@
     <xpath>/Defs/FactionDef[defName="Empire"]/allowedCultures</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/FactionDef[defName="Empire"]/allowedCultures</xpath>
-      <value><allowedCultures><li>Jawa_Culture_Empire</li></allowedCultures></value>
+      <value><allowedCultures><li>RUT_Jawa_Culture_Empire</li></allowedCultures></value>
     </match>
   </Operation>
 

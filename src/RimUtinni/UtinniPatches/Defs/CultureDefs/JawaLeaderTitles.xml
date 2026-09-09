@@ -66,7 +66,7 @@
 
   <!-- Jawa Trade Moot -> "Prime Trader" -->
   <RulePackDef>
-    <defName>Jawa_LeaderTitle_TradeMoot</defName>
+    <defName>RUT_Jawa_LeaderTitle_TradeMoot</defName>
     <rulePack>
       <rulesStrings>
         <li>r_leaderTitle(p=1000)->Prime Trader</li>
@@ -75,10 +75,10 @@
   </RulePackDef>
 
   <CultureDef>
-    <defName>Jawa_Culture_TradeMoot</defName>
+    <defName>RUT_Jawa_Culture_TradeMoot</defName>
     <label>jawa trade moot</label>
     <description>An ancient culture common among rimworld tribes.</description>
-    <leaderTitleMaker>Jawa_LeaderTitle_TradeMoot</leaderTitleMaker>
+    <leaderTitleMaker>RUT_Jawa_LeaderTitle_TradeMoot</leaderTitleMaker>
     <ideoNameMaker>NamerIdeoCorunan</ideoNameMaker>
     <deityNameMaker>NamerDeityCorunan</deityNameMaker>
     <deityTypeMaker>DeityTypeMakerCorunan</deityTypeMaker>
@@ -103,7 +103,7 @@
 
   <!-- the Junkers -> "Scraplord" -->
   <RulePackDef>
-    <defName>Jawa_LeaderTitle_Junkers</defName>
+    <defName>RUT_Jawa_LeaderTitle_Junkers</defName>
     <rulePack>
       <rulesStrings>
         <li>r_leaderTitle(p=1000)->Scraplord</li>
@@ -112,10 +112,10 @@
   </RulePackDef>
 
   <CultureDef>
-    <defName>Jawa_Culture_Junkers</defName>
+    <defName>RUT_Jawa_Culture_Junkers</defName>
     <label>the junkers</label>
     <description>A broad category describing the styles and practices of many pirate groups.</description>
-    <leaderTitleMaker>Jawa_LeaderTitle_Junkers</leaderTitleMaker>
+    <leaderTitleMaker>RUT_Jawa_LeaderTitle_Junkers</leaderTitleMaker>
     <ideoNameMaker>NamerIdeoKriminul</ideoNameMaker>
     <deityNameMaker>NamerDeityKriminul</deityNameMaker>
     <deityTypeMaker>DeityTypeMakerKriminul</deityTypeMaker>
@@ -140,7 +140,7 @@
 
   <!-- Hutt Cartel -> "Lord" -->
   <RulePackDef>
-    <defName>Jawa_LeaderTitle_Hutt</defName>
+    <defName>RUT_Jawa_LeaderTitle_Hutt</defName>
     <rulePack>
       <rulesStrings>
         <li>r_leaderTitle(p=1000)->Lord</li>
@@ -149,10 +149,10 @@
   </RulePackDef>
 
   <CultureDef>
-    <defName>Jawa_Culture_Hutt</defName>
+    <defName>RUT_Jawa_Culture_Hutt</defName>
     <label>hutt cartel</label>
     <description>A hardy industrial culture common among rimworld outlanders.</description>
-    <leaderTitleMaker>Jawa_LeaderTitle_Hutt</leaderTitleMaker>
+    <leaderTitleMaker>RUT_Jawa_LeaderTitle_Hutt</leaderTitleMaker>
     <ideoNameMaker>NamerIdeoRustican</ideoNameMaker>
     <deityNameMaker>NamerDeityRustican</deityNameMaker>
     <deityTypeMaker>DeityTypeMakerRustican</deityTypeMaker>
@@ -175,7 +175,7 @@
 
   <!-- Deepwater Compact -> "High Warden" -->
   <RulePackDef>
-    <defName>Jawa_LeaderTitle_Deepwater</defName>
+    <defName>RUT_Jawa_LeaderTitle_Deepwater</defName>
     <rulePack>
       <rulesStrings>
         <li>r_leaderTitle(p=1000)->High Warden</li>
@@ -184,10 +184,10 @@
   </RulePackDef>
 
   <CultureDef>
-    <defName>Jawa_Culture_Deepwater</defName>
+    <defName>RUT_Jawa_Culture_Deepwater</defName>
     <label>deepwater compact</label>
     <description>A hardy industrial culture common among rimworld outlanders.</description>
-    <leaderTitleMaker>Jawa_LeaderTitle_Deepwater</leaderTitleMaker>
+    <leaderTitleMaker>RUT_Jawa_LeaderTitle_Deepwater</leaderTitleMaker>
     <ideoNameMaker>NamerIdeoRustican</ideoNameMaker>
     <deityNameMaker>NamerDeityRustican</deityNameMaker>
     <deityTypeMaker>DeityTypeMakerRustican</deityTypeMaker>
@@ -210,7 +210,7 @@
 
   <!-- Wildsteam Clan -> "Elder" -->
   <RulePackDef>
-    <defName>Jawa_LeaderTitle_Wildsteam</defName>
+    <defName>RUT_Jawa_LeaderTitle_Wildsteam</defName>
     <rulePack>
       <rulesStrings>
         <li>r_leaderTitle(p=1000)->Elder</li>
@@ -219,10 +219,10 @@
   </RulePackDef>
 
   <CultureDef>
-    <defName>Jawa_Culture_Wildsteam</defName>
+    <defName>RUT_Jawa_Culture_Wildsteam</defName>
     <label>wildsteam clan</label>
     <description>A hardy industrial culture common among rimworld outlanders.</description>
-    <leaderTitleMaker>Jawa_LeaderTitle_Wildsteam</leaderTitleMaker>
+    <leaderTitleMaker>RUT_Jawa_LeaderTitle_Wildsteam</leaderTitleMaker>
     <ideoNameMaker>NamerIdeoRustican</ideoNameMaker>
     <deityNameMaker>NamerDeityRustican</deityNameMaker>
     <deityTypeMaker>DeityTypeMakerRustican</deityTypeMaker>
@@ -245,7 +245,7 @@
 
   <!-- Geonosian Foundry Hive -> "Archduke" -->
   <RulePackDef>
-    <defName>Jawa_LeaderTitle_Geonosian</defName>
+    <defName>RUT_Jawa_LeaderTitle_Geonosian</defName>
     <rulePack>
       <rulesStrings>
         <li>r_leaderTitle(p=1000)->Archduke</li>
@@ -254,10 +254,10 @@
   </RulePackDef>
 
   <CultureDef>
-    <defName>Jawa_Culture_Geonosian</defName>
+    <defName>RUT_Jawa_Culture_Geonosian</defName>
     <label>geonosian foundry hive</label>
     <description>A hardy industrial culture common among rimworld outlanders.</description>
-    <leaderTitleMaker>Jawa_LeaderTitle_Geonosian</leaderTitleMaker>
+    <leaderTitleMaker>RUT_Jawa_LeaderTitle_Geonosian</leaderTitleMaker>
     <ideoNameMaker>NamerIdeoRustican</ideoNameMaker>
     <deityNameMaker>NamerDeityRustican</deityNameMaker>
     <deityTypeMaker>DeityTypeMakerRustican</deityTypeMaker>
@@ -280,7 +280,7 @@
 
   <!-- Free Droid Enclaves -> "First Speaker" -->
   <RulePackDef>
-    <defName>Jawa_LeaderTitle_Droid</defName>
+    <defName>RUT_Jawa_LeaderTitle_Droid</defName>
     <rulePack>
       <rulesStrings>
         <li>r_leaderTitle(p=1000)->First Speaker</li>
@@ -289,10 +289,10 @@
   </RulePackDef>
 
   <CultureDef>
-    <defName>Jawa_Culture_Droid</defName>
+    <defName>RUT_Jawa_Culture_Droid</defName>
     <label>free droid enclaves</label>
     <description>A hardy industrial culture common among rimworld outlanders.</description>
-    <leaderTitleMaker>Jawa_LeaderTitle_Droid</leaderTitleMaker>
+    <leaderTitleMaker>RUT_Jawa_LeaderTitle_Droid</leaderTitleMaker>
     <ideoNameMaker>NamerIdeoRustican</ideoNameMaker>
     <deityNameMaker>NamerDeityRustican</deityNameMaker>
     <deityTypeMaker>DeityTypeMakerRustican</deityTypeMaker>
@@ -315,7 +315,7 @@
 
   <!-- Ascendant Helix -> "Director" -->
   <RulePackDef>
-    <defName>Jawa_LeaderTitle_Helix</defName>
+    <defName>RUT_Jawa_LeaderTitle_Helix</defName>
     <rulePack>
       <rulesStrings>
         <li>r_leaderTitle(p=1000)->Director</li>
@@ -324,10 +324,10 @@
   </RulePackDef>
 
   <CultureDef>
-    <defName>Jawa_Culture_Helix</defName>
+    <defName>RUT_Jawa_Culture_Helix</defName>
     <label>ascendant helix</label>
     <description>A hardy industrial culture common among rimworld outlanders.</description>
-    <leaderTitleMaker>Jawa_LeaderTitle_Helix</leaderTitleMaker>
+    <leaderTitleMaker>RUT_Jawa_LeaderTitle_Helix</leaderTitleMaker>
     <ideoNameMaker>NamerIdeoRustican</ideoNameMaker>
     <deityNameMaker>NamerDeityRustican</deityNameMaker>
     <deityTypeMaker>DeityTypeMakerRustican</deityTypeMaker>
@@ -350,7 +350,7 @@
 
   <!-- Galactic Empire -> "Emperor" -->
   <RulePackDef>
-    <defName>Jawa_LeaderTitle_Empire</defName>
+    <defName>RUT_Jawa_LeaderTitle_Empire</defName>
     <rulePack>
       <rulesStrings>
         <li>r_leaderTitle(p=1000)->Emperor</li>
@@ -359,10 +359,10 @@
   </RulePackDef>
 
   <CultureDef>
-    <defName>Jawa_Culture_Empire</defName>
+    <defName>RUT_Jawa_Culture_Empire</defName>
     <label>galactic empire</label>
     <description>A techno-feudal culture centered on the planet Sophiamunda.</description>
-    <leaderTitleMaker>Jawa_LeaderTitle_Empire</leaderTitleMaker>
+    <leaderTitleMaker>RUT_Jawa_LeaderTitle_Empire</leaderTitleMaker>
     <ideoNameMaker>NamerIdeoSophian</ideoNameMaker>
     <deityNameMaker>NamerDeitySophian</deityNameMaker>
     <deityTypeMaker>DeityTypeMakerSophian</deityTypeMaker>
@@ -384,7 +384,7 @@
 
   <!-- Blackstar Company -> "Captain" -->
   <RulePackDef>
-    <defName>Jawa_LeaderTitle_Blackstar</defName>
+    <defName>RUT_Jawa_LeaderTitle_Blackstar</defName>
     <rulePack>
       <rulesStrings>
         <li>r_leaderTitle(p=1000)->Captain</li>
@@ -393,10 +393,10 @@
   </RulePackDef>
 
   <CultureDef>
-    <defName>Jawa_Culture_Blackstar</defName>
+    <defName>RUT_Jawa_Culture_Blackstar</defName>
     <label>blackstar company</label>
     <description>A broad category describing the styles and practices of many pirate groups.</description>
-    <leaderTitleMaker>Jawa_LeaderTitle_Blackstar</leaderTitleMaker>
+    <leaderTitleMaker>RUT_Jawa_LeaderTitle_Blackstar</leaderTitleMaker>
     <ideoNameMaker>NamerIdeoKriminul</ideoNameMaker>
     <deityNameMaker>NamerDeityKriminul</deityNameMaker>
     <deityTypeMaker>DeityTypeMakerKriminul</deityTypeMaker>
@@ -421,7 +421,7 @@
 
   <!-- Deep Desert Tribes -> "War Chief" -->
   <RulePackDef>
-    <defName>Jawa_LeaderTitle_DeepDesert</defName>
+    <defName>RUT_Jawa_LeaderTitle_DeepDesert</defName>
     <rulePack>
       <rulesStrings>
         <li>r_leaderTitle(p=1000)->War Chief</li>
@@ -430,10 +430,10 @@
   </RulePackDef>
 
   <CultureDef>
-    <defName>Jawa_Culture_DeepDesert</defName>
+    <defName>RUT_Jawa_Culture_DeepDesert</defName>
     <label>deep desert tribes</label>
     <description>An ancient culture common among rimworld tribes.</description>
-    <leaderTitleMaker>Jawa_LeaderTitle_DeepDesert</leaderTitleMaker>
+    <leaderTitleMaker>RUT_Jawa_LeaderTitle_DeepDesert</leaderTitleMaker>
     <ideoNameMaker>NamerIdeoCorunan</ideoNameMaker>
     <deityNameMaker>NamerDeityCorunan</deityNameMaker>
     <deityTypeMaker>DeityTypeMakerCorunan</deityTypeMaker>
@@ -458,7 +458,7 @@
 
   <!-- Homestead Defense League -> "High Marshal" -->
   <RulePackDef>
-    <defName>Jawa_LeaderTitle_Homestead</defName>
+    <defName>RUT_Jawa_LeaderTitle_Homestead</defName>
     <rulePack>
       <rulesStrings>
         <li>r_leaderTitle(p=1000)->High Marshal</li>
@@ -467,10 +467,10 @@
   </RulePackDef>
 
   <CultureDef>
-    <defName>Jawa_Culture_Homestead</defName>
+    <defName>RUT_Jawa_Culture_Homestead</defName>
     <label>homestead defense league</label>
     <description>A hardy industrial culture common among rimworld outlanders.</description>
-    <leaderTitleMaker>Jawa_LeaderTitle_Homestead</leaderTitleMaker>
+    <leaderTitleMaker>RUT_Jawa_LeaderTitle_Homestead</leaderTitleMaker>
     <ideoNameMaker>NamerIdeoRustican</ideoNameMaker>
     <deityNameMaker>NamerDeityRustican</deityNameMaker>
     <deityTypeMaker>DeityTypeMakerRustican</deityTypeMaker>

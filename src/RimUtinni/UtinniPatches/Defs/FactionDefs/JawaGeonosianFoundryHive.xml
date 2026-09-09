@@ -48,7 +48,7 @@
 <Defs>
 
   <FactionDef ParentName="OutlanderFactionBase">
-    <defName>Jawa_GeonosianFoundryHive</defName>
+    <defName>RUT_Jawa_GeonosianFoundryHive</defName>
     <label>Geonosian Foundry Hive</label>
     <fixedName>Geonosian Foundry Hive</fixedName>
     <description>A hive mass-producing droids in ancient factories under the rock, ruled by winged aristocrats under one immobile queen.\n\nIt is the only power on the planet that can sustain a siege in deep desert, because it does not need to bring water — it brings a line that never stops walking.</description>
@@ -84,7 +84,7 @@
          two at random - the title would then be right on roughly half of all worlds, which
          is worse than wrong because it looks fixed. -->
     <allowedCultures Inherit="False">
-      <li>Jawa_Culture_Geonosian</li>
+      <li>RUT_Jawa_Culture_Geonosian</li>
     </allowedCultures>
 
     <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
@@ -151,18 +151,18 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <Jawa_Geonosian_Grunt>10</Jawa_Geonosian_Grunt>
-          <Jawa_Geonosian_Heavy>4</Jawa_Geonosian_Heavy>
-          <Jawa_Geonosian_Specialist>2</Jawa_Geonosian_Specialist>
-          <Jawa_Geonosian_Leader>1</Jawa_Geonosian_Leader>
+          <RUT_Jawa_Geonosian_Grunt>10</RUT_Jawa_Geonosian_Grunt>
+          <RUT_Jawa_Geonosian_Heavy>4</RUT_Jawa_Geonosian_Heavy>
+          <RUT_Jawa_Geonosian_Specialist>2</RUT_Jawa_Geonosian_Specialist>
+          <RUT_Jawa_Geonosian_Leader>1</RUT_Jawa_Geonosian_Leader>
         </options>
       </li>
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <Jawa_Geonosian_Grunt>10</Jawa_Geonosian_Grunt>
-          <Jawa_Geonosian_Heavy>3</Jawa_Geonosian_Heavy>
-          <Jawa_Geonosian_Specialist>2</Jawa_Geonosian_Specialist>
+          <RUT_Jawa_Geonosian_Grunt>10</RUT_Jawa_Geonosian_Grunt>
+          <RUT_Jawa_Geonosian_Heavy>3</RUT_Jawa_Geonosian_Heavy>
+          <RUT_Jawa_Geonosian_Specialist>2</RUT_Jawa_Geonosian_Specialist>
         </options>
       </li>
     </pawnGroupMakers>

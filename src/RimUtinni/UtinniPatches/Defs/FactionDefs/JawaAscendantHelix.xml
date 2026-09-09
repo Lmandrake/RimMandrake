@@ -41,7 +41,7 @@
 <Defs>
 
   <FactionDef ParentName="OutlanderFactionBase">
-    <defName>Jawa_AscendantHelix</defName>
+    <defName>RUT_Jawa_AscendantHelix</defName>
     <label>Ascendant Helix</label>
     <fixedName>Ascendant Helix</fixedName>
     <description>A small, obscenely wealthy gene-cult that believes the body is a rough draft and the species is a project — and despises the manufactured underclass it made itself.\n\nIt does not raid. It retrieves. What it comes for is usually a person, and it has already decided which one.</description>
@@ -77,7 +77,7 @@
          two at random - the title would then be right on roughly half of all worlds, which
          is worse than wrong because it looks fixed. -->
     <allowedCultures Inherit="False">
-      <li>Jawa_Culture_Helix</li>
+      <li>RUT_Jawa_Culture_Helix</li>
     </allowedCultures>
 
     <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
@@ -165,10 +165,10 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <Jawa_Helix_Grunt>10</Jawa_Helix_Grunt>
-          <Jawa_Helix_Heavy>4</Jawa_Helix_Heavy>
-          <Jawa_Helix_Specialist>2</Jawa_Helix_Specialist>
-          <Jawa_Helix_Leader>1</Jawa_Helix_Leader>
+          <RUT_Jawa_Helix_Grunt>10</RUT_Jawa_Helix_Grunt>
+          <RUT_Jawa_Helix_Heavy>4</RUT_Jawa_Helix_Heavy>
+          <RUT_Jawa_Helix_Specialist>2</RUT_Jawa_Helix_Specialist>
+          <RUT_Jawa_Helix_Leader>1</RUT_Jawa_Helix_Leader>
         </options>
       </li>
       <li>
@@ -196,9 +196,9 @@
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <Jawa_Helix_Grunt>10</Jawa_Helix_Grunt>
-          <Jawa_Helix_Heavy>3</Jawa_Helix_Heavy>
-          <Jawa_Helix_Specialist>2</Jawa_Helix_Specialist>
+          <RUT_Jawa_Helix_Grunt>10</RUT_Jawa_Helix_Grunt>
+          <RUT_Jawa_Helix_Heavy>3</RUT_Jawa_Helix_Heavy>
+          <RUT_Jawa_Helix_Specialist>2</RUT_Jawa_Helix_Specialist>
         </options>
       </li>
     </pawnGroupMakers>

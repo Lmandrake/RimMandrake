@@ -3866,8 +3866,8 @@ namespace JawaBench.BridgeTools
                 // 🔴 PAWNKIND_AUDIT_TAGLESS_BLIND_1. A kind with no weaponTags is USUALLY a
                 // deliberate civilian - see the comment below - but a COMBAT role that has
                 // LOST its tags looks identical and used to vanish into that same bucket.
-                // It is not hypothetical: Jawa_Droid_Leader, Jawa_Droid_Specialist and
-                // Jawa_TradeMoot_Specialist each shipped for a while with no weaponTags
+                // It is not hypothetical: RUT_Jawa_Droid_Leader, RUT_Jawa_Droid_Specialist and
+                // RUT_Jawa_TradeMoot_Specialist each shipped for a while with no weaponTags
                 // field at all, and this tool called all three intentionally-unarmed
                 // civilians. So the tagless are now SPLIT, and the suspicious half gets its
                 // own line rather than being folded into the exclusion.

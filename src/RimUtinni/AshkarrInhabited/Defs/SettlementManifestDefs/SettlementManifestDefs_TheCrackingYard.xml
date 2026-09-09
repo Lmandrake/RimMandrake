@@ -3,7 +3,7 @@
 
   <!--
     DISTRICT_TEMPLATE_LIBRARY_1, Free Droid Enclaves set (2026-09-05). The
-    Cracking Yard: Jawa_FreeDroidEnclaves, tile 13177, ExtremeDesert, "they
+    Cracking Yard: RUT_Jawa_FreeDroidEnclaves, tile 13177, ExtremeDesert, "they
     settle on water nobody else can drink and crack it for fuel, so attackers
     arrive thirsty at a source that would kill them"
     (world/ASHKARR_WORLDMAP_settlements.csv row 107). Chosen over the Rust
@@ -21,7 +21,7 @@
     <label>The Cracking Yard</label>
     <description>A free droid enclave on water no organic can drink: a refinery cracking it to fuel inside a walled yard, a charging hall where the residents stand down, a fabrication shop, and a bunker holding the charge. No beds, no kitchens, no prisoners, and no grudges.</description>
     <settlementName>The Cracking Yard</settlementName>
-    <factionDefName>Jawa_FreeDroidEnclaves</factionDefName>
+    <factionDefName>RUT_Jawa_FreeDroidEnclaves</factionDefName>
     <securityProfile>Inhabited_SecurityProfile_FreeDroids</securityProfile>
     <place>RM_InhabitedPlace_MachineHold</place>
     <districts>

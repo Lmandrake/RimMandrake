@@ -21,7 +21,7 @@
 
   <Operation Class="PatchOperationReplace">
     <xpath>/Defs/PlanetLayerDef[defName="Surface"]/backgroundBiome</xpath>
-    <value><backgroundBiome>Jawa_BackgroundWater</backgroundBiome></value>
+    <value><backgroundBiome>RUT_Jawa_BackgroundWater</backgroundBiome></value>
   </Operation>
 
 </Patch>

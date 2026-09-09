@@ -32,7 +32,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # Utils -> RimMandrake -> src -> repo root.
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 CSPROJ = os.path.join(
-    REPO, "src", "RimMandrake", "Property", "Source", "SelfTest",
+    REPO, "src", "RimMandrake", "RimProperty", "Source", "SelfTest",
     "RimMandrakeProperty.SelfTest.csproj",
 )
 

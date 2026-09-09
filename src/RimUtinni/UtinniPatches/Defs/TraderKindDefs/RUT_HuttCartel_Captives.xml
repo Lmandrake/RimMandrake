@@ -46,12 +46,12 @@
   machine; Hutt's existing combat guards (RSW_DW_KotORDroidColonist_ADMkI/
   SentWD, JawaHuttCartel.xml pawnGroupMakers, C1) are untouched.
 
-  Faction: `Jawa_HuttCartel` (this same mod's own FactionDef, JawaHuttCartel.xml,
+  Faction: `RUT_Jawa_HuttCartel` (this same mod's own FactionDef, JawaHuttCartel.xml,
   authored 2026-08-14) — the REAL, loadable Hutt Cartel FactionDef, not a
   stand-in. Recorded because DROIDWORKS_HEADS_BRAINS_SPIKES_1 (B3, same session)
   keyed its Hutt data-spike to `OuterRim_BinaryStarRaiders`, asserting "no
   dedicated Hutt Cartel FactionDef exists anywhere in the stack" — that
-  assertion is WRONG as of this file: `Jawa_HuttCartel` is ours, is
+  assertion is WRONG as of this file: `RUT_Jawa_HuttCartel` is ours, is
   SettlementManifestDefs_GorgaPalace.xml's own `factionDefName`, and is exactly
   the Hutt faction this item's captives belong to. Not fixing B3's own
   already-closed item here (out of scope for C6); flagged so nobody re-derives

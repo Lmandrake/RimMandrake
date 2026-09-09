@@ -5,8 +5,8 @@
 // the authored 21,872-tile world:
 //
 //   TEN OF THE ELEVEN CAMPAIGN FACTIONS WERE WEARING NAMES THE DICE PICKED.
-//   `Jawa_Junkers` was "Marina's Asteroids". `Jawa_HuttCartel` was "Southeast
-//   Thiourhium". `Jawa_IndigenousTribes` - the Jawa Trade Moot, the player's own
+//   `RUT_Jawa_Junkers` was "Marina's Asteroids". `RUT_Jawa_HuttCartel` was "Southeast
+//   Thiourhium". `RUT_Jawa_IndigenousTribes` - the Jawa Trade Moot, the player's own
 //   people - was "Union of Aloisa". Only `Empire` was right, and only because it
 //   is the single def carrying a `fixedName`.
 //

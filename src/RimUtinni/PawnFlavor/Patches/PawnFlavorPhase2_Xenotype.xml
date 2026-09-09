@@ -392,30 +392,30 @@
         <li Class="PatchOperationSequence">
           <operations>
             <li Class="PatchOperationConditional">
-              <xpath>Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/label</xpath>
+              <xpath>Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/label</xpath>
               <match Class="PatchOperationReplace">
-                <xpath>Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/label</xpath>
+                <xpath>Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/label</xpath>
                 <value>
                   <label>Gamorrean</label>
                 </value>
               </match>
               <nomatch Class="PatchOperationAdd">
-                <xpath>Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]</xpath>
+                <xpath>Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]</xpath>
                 <value>
                   <label>Gamorrean</label>
                 </value>
               </nomatch>
             </li>
             <li Class="PatchOperationConditional">
-              <xpath>Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/description</xpath>
+              <xpath>Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/description</xpath>
               <match Class="PatchOperationReplace">
-                <xpath>Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/description</xpath>
+                <xpath>Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/description</xpath>
                 <value>
                   <description>Big, tusked, from a wet green world that ruined them for a desert. Strong backs, short patience — put them on hauling and lifting, never on a delicate deal. Feed them well and they won't ask questions about where the meat came from.</description>
                 </value>
               </match>
               <nomatch Class="PatchOperationAdd">
-                <xpath>Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]</xpath>
+                <xpath>Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]</xpath>
                 <value>
                   <description>Big, tusked, from a wet green world that ruined them for a desert. Strong backs, short patience — put them on hauling and lifting, never on a delicate deal. Feed them well and they won't ask questions about where the meat came from.</description>
                 </value>

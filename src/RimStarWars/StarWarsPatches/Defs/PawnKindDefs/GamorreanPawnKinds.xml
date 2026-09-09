@@ -66,7 +66,7 @@
 
   <!-- Door muscle. What stands either side of a Hutt's dais. -->
   <PawnKindDef>
-    <defName>Jawa_Gamorrean_Guard</defName>
+    <defName>RSW_Jawa_Gamorrean_Guard</defName>
     <label>Gamorrean guard</label>
     <labelPlural>Gamorrean guards</labelPlural>
     <race>Human</race>
@@ -77,7 +77,7 @@
     <useFactionXenotypes>false</useFactionXenotypes>
     <xenotypeSet>
       <xenotypeChances>
-        <Jawa_Xeno_Gamorrean>1.0</Jawa_Xeno_Gamorrean>
+        <RSW_Jawa_Xeno_Gamorrean>1.0</RSW_Jawa_Xeno_Gamorrean>
       </xenotypeChances>
     </xenotypeSet>
     <itemQuality>Poor</itemQuality>
@@ -101,7 +101,7 @@
 
   <!-- The one in the battle harness carrying the axe it is named for. -->
   <PawnKindDef>
-    <defName>Jawa_Gamorrean_Enforcer</defName>
+    <defName>RSW_Jawa_Gamorrean_Enforcer</defName>
     <label>Gamorrean enforcer</label>
     <labelPlural>Gamorrean enforcers</labelPlural>
     <race>Human</race>
@@ -112,7 +112,7 @@
     <useFactionXenotypes>false</useFactionXenotypes>
     <xenotypeSet>
       <xenotypeChances>
-        <Jawa_Xeno_Gamorrean>1.0</Jawa_Xeno_Gamorrean>
+        <RSW_Jawa_Xeno_Gamorrean>1.0</RSW_Jawa_Xeno_Gamorrean>
       </xenotypeChances>
     </xenotypeSet>
     <itemQuality>Normal</itemQuality>

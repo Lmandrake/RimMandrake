@@ -25,7 +25,7 @@
 
     🔴 NO INGESTIBLE IS TAGGED HERE, and three that were have been taken out:
     `TarisianAle`, `FungusBeer`, `BMT_MushroomLog`. Measured 2026-08-21: two of five
-    `Jawa_Tribal_Scavenger` generated holding a BOTTLE OF ALE as their primary weapon.
+    `RUT_Jawa_Tribal_Scavenger` generated holding a BOTTLE OF ALE as their primary weapon.
     None of the three carries `weaponTags` in its own mod - this file gave them, off
     `techLevel Neolithic` plus `weaponClasses [Melee, MeleeBlunt]`. weapon_tag_audit.py
     now excludes `ingestible` at source, so a regenerate will not put them back.

@@ -122,9 +122,9 @@
        2. Hutts wear nothing
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="Jawa_Spawn_Hutt"]/apparelMoney</xpath>
+    <xpath>/Defs/PawnKindDef[defName="RSW_Jawa_Spawn_Hutt"]/apparelMoney</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/PawnKindDef[defName="Jawa_Spawn_Hutt"]</xpath>
+      <xpath>/Defs/PawnKindDef[defName="RSW_Jawa_Spawn_Hutt"]</xpath>
       <value>
         <apparelMoney>0</apparelMoney>
       </value>

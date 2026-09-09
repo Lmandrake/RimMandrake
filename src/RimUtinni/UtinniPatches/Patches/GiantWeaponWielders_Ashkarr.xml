@@ -8,7 +8,7 @@
   include both the Nine plus seven plausible as a yes."
 
   Sixteen Star Wars species may wield giant and warcasket weapons. Fifteen are
-  patched here; the sixteenth, Jawa_Xeno_Gamorrean, is OUR OWN def and the gene
+  patched here; the sixteenth, RSW_Jawa_Xeno_Gamorrean, is OUR OWN def and the gene
   is written straight into Defs/XenotypeDefs/GamorreanXenotype.xml instead —
   patching your own mod's def from your own mod's Patches folder is indirection
   for nothing.

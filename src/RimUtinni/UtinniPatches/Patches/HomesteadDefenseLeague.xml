@@ -187,7 +187,7 @@
 
     Reachable by nobody until now, all five authored in
     `Defs/PawnKindDefs/JawaFactionRoster.xml`:
-      Jawa_Homestead_Grunt · _Heavy · _Specialist · _Leader · _DesertRanger
+      RUT_Jawa_Homestead_Grunt · _Heavy · _Specialist · _Leader · _DesertRanger
 
     ⚠️ THIS REACHES EVERY OUTLANDER FACTION, not just the League. That is the
     accepted cost of the approval, and the reason the weights are what they are.
@@ -251,11 +251,11 @@
           <kindDef>Combat</kindDef>
           <commonality>5</commonality>
           <options>
-            <Jawa_Homestead_Grunt>10</Jawa_Homestead_Grunt>
-            <Jawa_Homestead_DesertRanger>10</Jawa_Homestead_DesertRanger>
-            <Jawa_Homestead_Heavy>6</Jawa_Homestead_Heavy>
-            <Jawa_Homestead_Specialist>4</Jawa_Homestead_Specialist>
-            <Jawa_Homestead_Leader>1</Jawa_Homestead_Leader>
+            <RUT_Jawa_Homestead_Grunt>10</RUT_Jawa_Homestead_Grunt>
+            <RUT_Jawa_Homestead_DesertRanger>10</RUT_Jawa_Homestead_DesertRanger>
+            <RUT_Jawa_Homestead_Heavy>6</RUT_Jawa_Homestead_Heavy>
+            <RUT_Jawa_Homestead_Specialist>4</RUT_Jawa_Homestead_Specialist>
+            <RUT_Jawa_Homestead_Leader>1</RUT_Jawa_Homestead_Leader>
             <RSW_DW_KotORDroidColonist_KM1MD MayRequire="mandrake.rsw.droidworks">4</RSW_DW_KotORDroidColonist_KM1MD>
             <RSW_DW_KotORDroidColonist_R8009UD MayRequire="mandrake.rsw.droidworks">4</RSW_DW_KotORDroidColonist_R8009UD>
             <RSW_DW_KotORDroidGood_3C MayRequire="mandrake.rsw.droidworks">3</RSW_DW_KotORDroidGood_3C>
@@ -267,10 +267,10 @@
           <kindDef>Peaceful</kindDef>
           <commonality>5</commonality>
           <options>
-            <Jawa_Homestead_Grunt>10</Jawa_Homestead_Grunt>
-            <Jawa_Homestead_DesertRanger>10</Jawa_Homestead_DesertRanger>
-            <Jawa_Homestead_Heavy>4</Jawa_Homestead_Heavy>
-            <Jawa_Homestead_Specialist>4</Jawa_Homestead_Specialist>
+            <RUT_Jawa_Homestead_Grunt>10</RUT_Jawa_Homestead_Grunt>
+            <RUT_Jawa_Homestead_DesertRanger>10</RUT_Jawa_Homestead_DesertRanger>
+            <RUT_Jawa_Homestead_Heavy>4</RUT_Jawa_Homestead_Heavy>
+            <RUT_Jawa_Homestead_Specialist>4</RUT_Jawa_Homestead_Specialist>
             <!-- C1: the League is `raidsForbidden`, so a peaceful visit is where
                  the player actually meets it and therefore where its droids have
                  to be visible at all. Same four kinds, same weights. -->
@@ -295,10 +295,10 @@
             <Alpaca>2</Alpaca>
           </carriers>
           <guards>
-            <Jawa_Homestead_DesertRanger>10</Jawa_Homestead_DesertRanger>
-            <Jawa_Homestead_Grunt>8</Jawa_Homestead_Grunt>
-            <Jawa_Homestead_Heavy>6</Jawa_Homestead_Heavy>
-            <Jawa_Homestead_Specialist>3</Jawa_Homestead_Specialist>
+            <RUT_Jawa_Homestead_DesertRanger>10</RUT_Jawa_Homestead_DesertRanger>
+            <RUT_Jawa_Homestead_Grunt>8</RUT_Jawa_Homestead_Grunt>
+            <RUT_Jawa_Homestead_Heavy>6</RUT_Jawa_Homestead_Heavy>
+            <RUT_Jawa_Homestead_Specialist>3</RUT_Jawa_Homestead_Specialist>
             <!-- C1, the protocol-droid row of §3.2: "every trader kind | a
                  protocol droid, with a mechanical trade advantage". ⛔ THE PRICE
                  MECHANIC IS NOT BUILT HERE - that is C4
@@ -322,11 +322,11 @@
           <kindDef>Settlement</kindDef>
           <commonality>5</commonality>
           <options>
-            <Jawa_Homestead_Grunt>10</Jawa_Homestead_Grunt>
-            <Jawa_Homestead_DesertRanger>10</Jawa_Homestead_DesertRanger>
-            <Jawa_Homestead_Heavy>8</Jawa_Homestead_Heavy>
-            <Jawa_Homestead_Specialist>5</Jawa_Homestead_Specialist>
-            <Jawa_Homestead_Leader>2</Jawa_Homestead_Leader>
+            <RUT_Jawa_Homestead_Grunt>10</RUT_Jawa_Homestead_Grunt>
+            <RUT_Jawa_Homestead_DesertRanger>10</RUT_Jawa_Homestead_DesertRanger>
+            <RUT_Jawa_Homestead_Heavy>8</RUT_Jawa_Homestead_Heavy>
+            <RUT_Jawa_Homestead_Specialist>5</RUT_Jawa_Homestead_Specialist>
+            <RUT_Jawa_Homestead_Leader>2</RUT_Jawa_Homestead_Leader>
             <!-- C1: the farm droids are at the homestead too, which is where a
                  player raiding one meets them. -->
             <RSW_DW_KotORDroidColonist_KM1MD MayRequire="mandrake.rsw.droidworks">4</RSW_DW_KotORDroidColonist_KM1MD>
@@ -354,7 +354,7 @@
     <xpath>/Defs/FactionDef[defName="OutlanderCivil"]</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/FactionDef[defName="OutlanderCivil"]</xpath>
-      <value><allowedCultures Inherit="False"><li>Jawa_Culture_Homestead</li></allowedCultures></value>
+      <value><allowedCultures Inherit="False"><li>RUT_Jawa_Culture_Homestead</li></allowedCultures></value>
     </match>
   </Operation>
 

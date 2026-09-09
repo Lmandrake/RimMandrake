@@ -3,7 +3,7 @@
 
   <!--
     DISTRICT_TEMPLATE_LIBRARY_1, Deepwater Compact set (2026-09-05).
-    Deepwater Hold: Jawa_DeepwaterCompact, tile 2919, AridShrubland, "the
+    Deepwater Hold: RUT_Jawa_DeepwaterCompact, tile 2919, AridShrubland, "the
     Twilight Sea, the largest standing water on Ash'karr"
     (world/ASHKARR_WORLDMAP_settlements.csv row 24). The Compact's name-seat
     on its biggest water; chosen over the Scald-shore and Grey Sea holds
@@ -22,7 +22,7 @@
     <label>Deepwater Hold</label>
     <description>The Compact's seat on the Twilight Sea: a columned cistern hall where the water stands in tanks on mosaic, a hospital, growing beds under lamps, and a layered gate that searches every leaver. Neutral to everyone, armed against everyone, and never leaving its walls.</description>
     <settlementName>Deepwater Hold</settlementName>
-    <factionDefName>Jawa_DeepwaterCompact</factionDefName>
+    <factionDefName>RUT_Jawa_DeepwaterCompact</factionDefName>
     <securityProfile>Inhabited_SecurityProfile_Deepwater</securityProfile>
     <place>RM_InhabitedPlace_WaterHold</place>
     <districts>

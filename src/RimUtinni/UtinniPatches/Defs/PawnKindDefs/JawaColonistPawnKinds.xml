@@ -39,7 +39,7 @@
        restated here verbatim from Core `PawnKinds_Player.xml`. A ParentName that
        resolves to nothing does not warn: the def is DISCARDED at load. -->
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>Jawa_Colonist</defName>
+    <defName>RUT_Jawa_Colonist</defName>
     <label>Jawa scavenger</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <chemicalAddictionChance>0.06</chemicalAddictionChance>
@@ -119,7 +119,7 @@
        `TribalWarriorBase` is Core's `Tribal_Warrior` — the tribal melee line.
        `Tribal_Berserker` sits beside it with no `Name=` and cannot be a parent. -->
   <PawnKindDef ParentName="TribalWarriorBase">
-    <defName>Jawa_Tribal_Scavenger</defName>
+    <defName>RUT_Jawa_Tribal_Scavenger</defName>
     <label>Jawa scrounger</label>
     <xenotypeSet>
       <xenotypeChances>
@@ -175,7 +175,7 @@
   </PawnKindDef>
 
   <PawnKindDef ParentName="TribalArcherBase">
-    <defName>Jawa_Tribal_Slinger</defName>
+    <defName>RUT_Jawa_Tribal_Slinger</defName>
     <label>Jawa slinger</label>
     <xenotypeSet>
       <xenotypeChances>
@@ -238,7 +238,7 @@
        scavenger and the slinger need nothing. Tags copied from
        `Tribal_ChiefMelee`, which is the kind this one stands in for. -->
   <PawnKindDef ParentName="TribalChiefBase">
-    <defName>Jawa_Tribal_Elder</defName>
+    <defName>RUT_Jawa_Tribal_Elder</defName>
     <label>Jawa clan elder</label>
     <weaponTags>
       <li>NeolithicMeleeAdvanced</li>

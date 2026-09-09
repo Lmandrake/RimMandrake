@@ -49,7 +49,7 @@
        purpose: an inherited field is not a set field, and restating them means a
        future change of parent cannot silently strip the faction's names. -->
   <FactionDef ParentName="TribeBase">
-    <defName>Jawa_IndigenousTribes</defName>
+    <defName>RUT_Jawa_IndigenousTribes</defName>
     <label>Jawa Trade Moot</label>
     <fixedName>Jawa Trade Moot</fixedName>
     <humanlikeFaction>true</humanlikeFaction>
@@ -97,7 +97,7 @@
          two at random - the title would then be right on roughly half of all worlds, which
          is worse than wrong because it looks fixed. -->
     <allowedCultures Inherit="False">
-      <li>Jawa_Culture_TradeMoot</li>
+      <li>RUT_Jawa_Culture_TradeMoot</li>
     </allowedCultures>
 
     <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
@@ -149,7 +149,7 @@
            -50 mood at 60 days in place. That precept carries, at
            `workshop/content/294100/2636329500/1.6/Defs/PreceptDefs/Precepts_PermanentBases.xml:19`:
                <enabledForNPCFactions>false</enabledForNPCFactions>
-           `Jawa_IndigenousTribes` is NPC-generated, so the precept NEVER FIRES here. What
+           `RUT_Jawa_IndigenousTribes` is NPC-generated, so the precept NEVER FIRES here. What
            is left is what the owner likes: the Nomadism symbol pack, the name and
            description generation, `VME_Travel_Desired`, `VME_Ranching_Nomadic`
            (TameAnimalChance x1.25, TrainAnimalChance x1.25) and an auto-granted
@@ -188,13 +188,13 @@
                purpose and carry the faction's own flavour, so they ride alongside at
                lower weight rather than being replaced. Dropping them would have been a
                scope call, not a build. -->
-          <Jawa_TradeMoot_Grunt>10</Jawa_TradeMoot_Grunt>
-          <Jawa_TradeMoot_Heavy>4</Jawa_TradeMoot_Heavy>
-          <Jawa_TradeMoot_Specialist>2</Jawa_TradeMoot_Specialist>
-          <Jawa_TradeMoot_Leader>1</Jawa_TradeMoot_Leader>
-          <Jawa_Tribal_Scavenger>5</Jawa_Tribal_Scavenger>
-          <Jawa_Tribal_Slinger>5</Jawa_Tribal_Slinger>
-          <Jawa_Tribal_Elder>1</Jawa_Tribal_Elder>
+          <RUT_Jawa_TradeMoot_Grunt>10</RUT_Jawa_TradeMoot_Grunt>
+          <RUT_Jawa_TradeMoot_Heavy>4</RUT_Jawa_TradeMoot_Heavy>
+          <RUT_Jawa_TradeMoot_Specialist>2</RUT_Jawa_TradeMoot_Specialist>
+          <RUT_Jawa_TradeMoot_Leader>1</RUT_Jawa_TradeMoot_Leader>
+          <RUT_Jawa_Tribal_Scavenger>5</RUT_Jawa_Tribal_Scavenger>
+          <RUT_Jawa_Tribal_Slinger>5</RUT_Jawa_Tribal_Slinger>
+          <RUT_Jawa_Tribal_Elder>1</RUT_Jawa_Tribal_Elder>
           <!-- ═══ DROID_FACTION_LOADOUTS_1 (packet C1), 2026-09-08 ═══════════════
                Ruling 2: "the Trade Moot loves droids of all kinds and buys/sells
                them, just like you." A faction that trades droids owns droids, and
@@ -214,8 +214,8 @@
       <li>
         <kindDef>Peaceful</kindDef>
         <options>
-          <Jawa_Tribal_Scavenger>10</Jawa_Tribal_Scavenger>
-          <Jawa_Tribal_Slinger>5</Jawa_Tribal_Slinger>
+          <RUT_Jawa_Tribal_Scavenger>10</RUT_Jawa_Tribal_Scavenger>
+          <RUT_Jawa_Tribal_Slinger>5</RUT_Jawa_Tribal_Slinger>
           <!-- C1: a Moot party that is not fighting is the commonest way the player
                sees this faction at all, so the droids have to be in it. -->
           <RSW_DW_KotORDroidColonist_KM1MD MayRequire="mandrake.rsw.droidworks">3</RSW_DW_KotORDroidColonist_KM1MD>
@@ -226,18 +226,18 @@
       <li>
         <kindDef>Trader</kindDef>
         <options>
-          <Jawa_Tribal_Elder>1</Jawa_Tribal_Elder>
+          <RUT_Jawa_Tribal_Elder>1</RUT_Jawa_Tribal_Elder>
         </options>
         <traders>
-          <Jawa_Tribal_Elder>1</Jawa_Tribal_Elder>
+          <RUT_Jawa_Tribal_Elder>1</RUT_Jawa_Tribal_Elder>
         </traders>
         <carriers>
           <Muffalo>6</Muffalo>
           <Dromedary>5</Dromedary>
         </carriers>
         <guards>
-          <Jawa_Tribal_Scavenger>10</Jawa_Tribal_Scavenger>
-          <Jawa_Tribal_Slinger>8</Jawa_Tribal_Slinger>
+          <RUT_Jawa_Tribal_Scavenger>10</RUT_Jawa_Tribal_Scavenger>
+          <RUT_Jawa_Tribal_Slinger>8</RUT_Jawa_Tribal_Slinger>
           <!-- C1: the protocol droid of §3.2's trader row (presence only - the price
                mechanic is C4's), plus a war droid, because this is the one faction
                whose caravan is CARRYING droids to sell. Highest protocol weight of

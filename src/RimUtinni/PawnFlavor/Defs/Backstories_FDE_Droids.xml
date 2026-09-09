@@ -13,15 +13,15 @@
      file never does.
 
      WIRING: only Jawa_Droid_* kinds exist with an FDE faction assignment today
-     (defaultFactionDef Jawa_FreeDroidEnclaves, in JawaFactionRoster.xml). Droidworks
+     (defaultFactionDef RUT_Jawa_FreeDroidEnclaves, in JawaFactionRoster.xml). Droidworks
      wave 1 generated DW_ kinds carry NO faction assignment at all yet (gen_droidworks_
      defs.py's own printed note: no kind matched "jawa" in extraction.json). So this
-     wave wires Jawa_Droid_Grunt/Heavy/Specialist/Leader only, via backstoryFilters
+     wave wires RUT_Jawa_Droid_Grunt/Heavy/Specialist/Leader only, via backstoryFilters
      added directly onto each PawnKindDef in JawaFactionRoster.xml (JawaBSC_FDECathedral
      + JawaBSC_FDENightside, both categories on all four kinds — the owner's geography
      ruling names two settlements but no kind-to-settlement split, and inventing one
      would be a guess). RE-POINT OWED once Droidworks wave 2 assigns DW_ kinds to
-     Jawa_FreeDroidEnclaves: wire the same two categories onto those kinds too. -->
+     RUT_Jawa_FreeDroidEnclaves: wire the same two categories onto those kinds too. -->
 <Defs>
 
   <!-- ===== CATHEDRAL ===== -->
