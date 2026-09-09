@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-08T23:57:03Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-09T00:13:57Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -504,6 +504,24 @@ kind:     task
 summary:  Thin when filed — no spec/verify/criteria in the queue entry itself, but fully
 prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
 
+## DROID_RETIRE_KOTORDROIDS_1 Retire guy762.kotordroids (wave R1) after modules, heads, loadouts, FDE repoint and Distress Call are closed; cold load
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  (no items/DROID_RETIRE_KOTORDROIDS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_RETIRE_KOTORDROIDS_1.md
+
+## DROIDWORKS_MODULE_PERSONALITY_1 Installed modules carry attitudes: CompModulePersonality trait-hediffs while worn
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. A ThingComp on a module ThingDef adds a personality HediffDef to the
+prose:    infrastructure/state/items/DROIDWORKS_MODULE_PERSONALITY_1.md
+
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -689,16 +707,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROID_RETIRE_ABF_SYNCORE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_RETIRE_ABF_SYNCORE_1.md
 
-## DROID_RETIRE_KOTORDROIDS_1 Retire guy762.kotordroids (wave R1) after modules, heads, loadouts, FDE repoint and Distress Call are closed; cold load
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_RETIRE_KOTORDROIDS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_RETIRE_KOTORDROIDS_1.md
-
 ## DROID_RETIRE_DEPOT_ASIMOV_1 Retire Droid Depot + Asimov + MSEDroidFix (wave R3); repoint the Empire KX kind; retire NoDroidManufacture; cold load
 state:    proposed
 row:      unassigned
@@ -728,16 +736,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROIDWORKS_SERVICE_RECORD_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROIDWORKS_SERVICE_RECORD_DRIFT_1.md
-
-## DROIDWORKS_MODULE_PERSONALITY_1 Installed modules carry attitudes: CompModulePersonality trait-hediffs while worn
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_MODULE_PERSONALITY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_MODULE_PERSONALITY_1.md
 
 ## ARMOURY_LOADAFTER_STALE_1 Armoury declares 3 loadAfter packageIds against roughly 40 mods its patches actually target
 state:    proposed
@@ -1139,16 +1137,6 @@ thin:     spec, verify and criteria all present
 summary:  R9 (owner, 2026-09-08): Pyrelands ships as a self-contained generic RM
 prose:    infrastructure/state/items/PYRELANDS_GENERIC_TEXT_1.md
 
-## SPRINT_SRC_WRITE_FREEZE_1 NOTICE: src/ write freeze while BENCH executes the consolidation map (mod folders moving under you) — finish DROIDWORKS_APPARELMONEY_MISSING_1 (Droidworks itself does not move), start nothing new in src/ until this closes
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  BENCH is executing MODCONSOLIDATIONSPRINT1 (owner's word, 2026-09-08):
-prose:    infrastructure/state/items/SPRINT_SRC_WRITE_FREEZE_1.md
-
 ## CHRONICLE_NINEFOLD_DECOUPLE_1 Decouple Aftermath from Ninefold per CHRONICLE_EVENT_SPINE.md: subscription API, drop hard modDependency+csproj ref, godTie God enum to string (C#, model=opus)
 state:    proposed
 row:      unassigned
@@ -1178,3 +1166,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/NAMESPACE_RETIER_PASS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/NAMESPACE_RETIER_PASS_1.md
+
+## DROIDWORKS_WIP_SWEPT_NOTICE_1 NOTICE: your uncommitted ModulePersonality WIP (hediffs+comp+csproj+DLL) was swept into BENCH commit 0f7da95c by a directory add — verify its state before continuing; nothing was lost, attribution is wrong
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_WIP_SWEPT_NOTICE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_WIP_SWEPT_NOTICE_1.md
