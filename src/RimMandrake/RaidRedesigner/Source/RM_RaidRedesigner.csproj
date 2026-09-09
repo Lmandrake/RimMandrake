@@ -42,7 +42,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RimMandrakePropertyDll)' == ''">
-    <RimMandrakePropertyDll>..\..\Property\Assemblies\RimMandrakeProperty.dll</RimMandrakePropertyDll>
+    <RimMandrakePropertyDll>..\..\RimProperty\Assemblies\RimMandrakeProperty.dll</RimMandrakePropertyDll>
   </PropertyGroup>
 
   <ItemGroup>
