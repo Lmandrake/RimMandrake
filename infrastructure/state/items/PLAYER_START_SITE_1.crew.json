@@ -1,0 +1,24 @@
+{
+  "_source": "design/Jawa/worldbuilding/jawa_crew_personas.md (the Five Founders); fidelity scope only — characterful, not optimal",
+  "remove_test_colonists": ["Brandy", "Zelph", "Gender"],
+  "founders": [
+    {"name": "Nekko Vok",  "nick": "Captain",   "role": "leader",  "age": "old, near aging threshold",
+     "skills": {"Social": 9, "Intellectual": 6, "Shooting": 2, "Mining": 1, "Construction": 1},
+     "traits": ["Iron-willed"], "notes": "wielder of The First Fusioncutter; succession-arc clock"},
+    {"name": "Tobb Nkik",  "nick": "Keeper",    "role": "moral guide", "age": "adult",
+     "skills": {"Intellectual": 9, "Social": 7, "Melee": 1, "Shooting": 1},
+     "traits": ["Ascetic"], "notes": "droid-mourner; quotes the Articles"},
+    {"name": "Griz Utinn", "nick": "The Hands", "role": "crafter", "age": "adult",
+     "skills": {"Crafting": 9, "Construction": 8, "Mining": 6, "Social": 3},
+     "traits": ["Hard worker", "Greedy"], "notes": "droid-theft arc lead; repair monologues"},
+    {"name": "Yeku",       "nick": "First-Hatched", "role": "shooter", "age": "just-adult",
+     "skills": {"Shooting": 8, "Animals": 5, "Crafting": 2},
+     "traits": ["Trigger-happy"], "notes": "love-gate candidate; fast-growth proof"},
+    {"name": "Wim Ateeka", "nick": "Twice-Kin", "role": "medic", "age": "adult",
+     "skills": {"Medicine": 9, "Intellectual": 6, "Social": 4},
+     "traits": ["Kind"], "notes": "naturalized outsider; the living love-gate precedent"}
+  ],
+  "xenotype": "Jawa (force via bridge if spawn kind does not carry it)",
+  "spawn_kind_hint": "MandrakeJawa* PawnKind (read the live kind list, never guess)",
+  "placement": "aboard the ship, visible rooms (fog rule: unpawned rooms spawn fogged)"
+}
