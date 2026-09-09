@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MANYWATERS_COLOR_SUPPORT_1 v1 — five tinted `Steam` FleckDef clones, one per
+  colour, consumed by the matching `RM_Slime_<Colour>` TerrainDef's `fleckData`
+  (Defs/TerrainDefs/RM_ColoredWater.xml) for the ambient bubble effect.
+
+  MECHANISM: cloning vanilla's own `Steam` (`Data/Ideology/Defs/Effects/
+  Fleck_Visual.xml:143-154`, `ParentName="FleckBase_Thrown"`) and adding
+  `graphicData.color` is exactly the design's own finding — the Steam fleck uses
+  the `Mote` shader and tints from its graphic's colour, so this needs zero new art
+  and zero C#. Not `MayRequire`-gated: these flecks are pure vanilla-plus-Ideology
+  cousins, no cross-mod texture dependency (unlike the slime terrain itself, which
+  IS gated — see the terrain file).
+-->
+<Defs>
+
+  <FleckDef ParentName="FleckBase_Thrown">
+    <defName>RM_Fleck_Steam_Rust</defName>
+    <graphicData>
+      <texPath>Things/Mote/Smoke</texPath>
+      <renderInstanced>true</renderInstanced>
+      <color>(168,92,58)</color>
+    </graphicData>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.20</fadeInTime>
+    <solidTime>1.2</solidTime>
+    <fadeOutTime>0.35</fadeOutTime>
+    <growthRate>0.1</growthRate>
+  </FleckDef>
+
+  <FleckDef ParentName="FleckBase_Thrown">
+    <defName>RM_Fleck_Steam_Verdigris</defName>
+    <graphicData>
+      <texPath>Things/Mote/Smoke</texPath>
+      <renderInstanced>true</renderInstanced>
+      <color>(70,168,140)</color>
+    </graphicData>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.20</fadeInTime>
+    <solidTime>1.2</solidTime>
+    <fadeOutTime>0.35</fadeOutTime>
+    <growthRate>0.1</growthRate>
+  </FleckDef>
+
+  <FleckDef ParentName="FleckBase_Thrown">
+    <defName>RM_Fleck_Steam_Amber</defName>
+    <graphicData>
+      <texPath>Things/Mote/Smoke</texPath>
+      <renderInstanced>true</renderInstanced>
+      <color>(198,150,60)</color>
+    </graphicData>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.20</fadeInTime>
+    <solidTime>1.2</solidTime>
+    <fadeOutTime>0.35</fadeOutTime>
+    <growthRate>0.1</growthRate>
+  </FleckDef>
+
+  <FleckDef ParentName="FleckBase_Thrown">
+    <defName>RM_Fleck_Steam_Violet</defName>
+    <graphicData>
+      <texPath>Things/Mote/Smoke</texPath>
+      <renderInstanced>true</renderInstanced>
+      <color>(120,80,168)</color>
+    </graphicData>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.20</fadeInTime>
+    <solidTime>1.2</solidTime>
+    <fadeOutTime>0.35</fadeOutTime>
+    <growthRate>0.1</growthRate>
+  </FleckDef>
+
+  <FleckDef ParentName="FleckBase_Thrown">
+    <defName>RM_Fleck_Steam_Chalk</defName>
+    <graphicData>
+      <texPath>Things/Mote/Smoke</texPath>
+      <renderInstanced>true</renderInstanced>
+      <color>(200,196,178)</color>
+    </graphicData>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.20</fadeInTime>
+    <solidTime>1.2</solidTime>
+    <fadeOutTime>0.35</fadeOutTime>
+    <growthRate>0.1</growthRate>
+  </FleckDef>
+
+</Defs>
