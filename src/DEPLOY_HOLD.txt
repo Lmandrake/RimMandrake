@@ -51,7 +51,7 @@ Armoury/Patches/Armour_Ratings.xml           # owner: SHIP NEITHER, 2026-08-12
 # texture inside GravshipAstronautFix, which also carries the earlier astronaut
 # typo fixes that are NOT part of the ruling. Holding the single file keeps
 # those live. Lift this the moment the owner rules on the genebank's north view.
-GravshipAstronautFix/Textures/Things/Structures/GravshipGenebank/GravshipGenebank_north.png   # owner: pulled pending art verification, 2026-08-14
+MandrakePatches/Textures/Things/Structures/GravshipGenebank/GravshipGenebank_north.png   # owner: pulled pending art verification, 2026-08-14
 
 # --- DesertVehicleReskin: the fuel assembly, held on TWO counts ---------------
 # 1. The game was UP when it was built (2026-08-21). Assemblies load only at
@@ -137,7 +137,7 @@ GravshipAstronautFix/Textures/Things/Structures/GravshipGenebank/GravshipGeneban
 # ⚠️ NOT a candidate for lifting. This is not art pending a ruling; it is source
 # that has a rendered destination. If a facing set is missing from Textures/,
 # copy THAT file — do not lift this hold.
-SeaBeasts/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+SWBestiary/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the game copies
 
 # --- Armoury/Defs/Absorbed_KotorCore: HELD until guy762.mm.kotorcore retires --
 # 2026-09-06 (FOUNDRY), ARMOURY_ABSORBED_KOTORCORE_DUPES_1. These files carry a
