@@ -91,11 +91,20 @@
          why they keep their names. Their shipped `predator` flag is stripped by
          BiomeFaunaStatAdjustments_Generated.xml, per the same roster.
          🔴 No <li>: the node NAME is the animal, the node TEXT is the commonality.
-         ⚠️ No animalDensity declared (engine default 0), impassable background biome. -->
+         ⚠️ No animalDensity was declared and the engine default is 0, so neither
+         sando could ever spawn. CLOSED 2026-09-09 (fix wave,
+         BIOME_FAUNA_ASSIGNMENT_SITTING_1): 0.15 declared below. -->
     <wildAnimals>
       <RSW_SandoAquaMonster MayRequire="mandrake.rsw.swbestiary">0.03</RSW_SandoAquaMonster>   <!-- sando aqua monster - bottom-walker adult, import -->
       <RSW_ElderSando MayRequire="mandrake.rsw.swbestiary">0.005</RSW_ElderSando>              <!-- elder sando - bottom-walker elder, import -->
     </wildAnimals>
+    <!-- animalDensity: undeclared (engine default 0) -> 0.15, DESIGNED interim
+         (2026-09-09 fix wave). the_scald.md is NOT a terminator sea (prep §6.5): it is
+         a hot, productive crater whose quiet floor is where the boil gentles - a
+         living bottom, so it sits ABOVE the two cold terminator seas (0.1) and below
+         vanilla IceSheet's 0.2 (both MEASURED from the def dump). ⚠️ A quicktest tune
+         is OWED. -->
+    <animalDensity>0.15</animalDensity>
     <coastalWildAnimals />
 
     <!-- GRAVTIDE SUPPORT, added 2026-09-07 (UNDERWATER_BIOME_SUPPORT_1).
