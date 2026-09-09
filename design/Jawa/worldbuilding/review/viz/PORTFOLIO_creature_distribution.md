@@ -1,5 +1,16 @@
 # Visual portfolio — creature DISTRIBUTION analysis (economy · lethality · biome law · dominance · husbandry)
 
+> ⭐ **AMENDED 2026-09-09 — residency now comes from the ROSTERS.** figs 6 and 7 were
+> rebuilt against `design/Jawa/worldbuilding/biomes/rosters/*.json` through the shared
+> join `design/Jawa/worldbuilding/review/rosters_residency.py`. The register's own
+> `biomes` / `group` / `topCommonality` fields are the **MODS' default residency on a
+> vanilla planet** and are **STALE for placement** since
+> `BIOME_FAUNA_ASSIGNMENT_SITTING_1` landed; the register remains the STATS source and
+> nothing else. figs 4, 5 and 8 are biome-free and are unchanged. The per-biome
+> analyses that the rosters made possible ship as **figs 9–11**
+> (`gen_biome_assignment_portfolio.py`) and the flora side as **figs F1–F3**
+> (`gen_flora_distribution_portfolio.py`, `PORTFOLIO_flora_distribution.md`).
+
 **Built 2026-09-05** by `design/Jawa/worldbuilding/review/gen_creature_distribution_portfolio.py`
 (MandrakeVisuals stack: visual-intent → visual-portfolio → visual-encoding /
 visual-composition / scientific-visualization → visual-critic / visual-render-qa).
@@ -42,8 +53,8 @@ supplementary exploration figures — honesty over quota, and they feed the expl
 |---|---|---|
 | **RELATIONSHIP** (yield vs size, two reference laws) | fig4 | ✅ measured stat + measured laws (MegafaunaYield.xml read directly) |
 | **COMPARISON_ACROSS_GROUPS** (K coefficient by mod) | fig5 | ✅ same derived measure, common denominator (÷bodySize), per-mod strips |
-| **DEVIATION** (fauna vs sheet law, per biome) | fig6 | ✅ sheet bans are written checkable; thresholds stated where the sheet gives prose |
-| MAGNITUDE/ubiquity (spread × commonality) | fig7 (supplementary) | ✅ but off the renorm decision — curation aid |
+| **DEVIATION** (landed roster vs sheet law, per biome) | fig6 | ✅ sheet bans are written checkable; thresholds stated where the sheet gives prose. **Since 2026-09-09 this is a regression gate, not a workload meter** |
+| MAGNITUDE/ubiquity (roster spread × roster commonality) | fig7 (supplementary) | ✅ post-assignment ubiquity check — the before/after on the prep §9 trim |
 | DISTRIBUTION (husbandry cross-tab) | fig8 (supplementary) | ✅ but descriptive, no current decision hangs on it |
 | CHANGE_OVER_TIME / FLOW / SPATIAL | — | ❌ no time field, no edges, set-membership not geography |
 
@@ -107,39 +118,49 @@ Live flesh with bodySize ≥ 1 and melee tools: **n=496**. In the Law-3 band (12
 - ⚠️ Caveat: K uses max single tool power; DPS/cooldown shape (Law 3's sublinear
   half) is not tested here — a quicktest instrument, not this register, owns that.
 
-### F3 — The biome sheets' bans vs the actual fauna: the curation gap is the majority of each roster (fig6)
-The sheets are the TARGET (authored 2026-09-05); the mod-assigned fauna predates
-them. These are workloads, not bugs:
-- **Desert** (`Desert`, law: no pursuit predators): 172 live residents, **110
-  predators (64%), 52 pursuit-capable** (predator special + moveSpeed ≥ 4.5 — stated
-  proxy). Top by spawn weight: Wraid (comm 0.8, spd 5), Scurrier (0.8), Gutkurr
-  (0.8), Meganeura (0.7, spd 8!), then GR_Manwolf, JOE_Cephalope (spd 8.8), Nexu,
-  AA_SandLion. The desert as assigned is a chase arena.
-- **Arid shrubland** (`AridShrubland`, law: small·medium·VOID·huge): 222 residents,
-  **95 in the banned large band (43%)** [bands stated: 1.5 ≤ bs ≤ 3.5]. Top by
-  weight: Jamel (0.8), Dactillion (0.8), IridonianReek (0.8), Uvak (0.8), Zeer (0.8),
-  Gutkurr (0.8) — the SW collection parks its whole midrange here (59 of the 95 are
-  SW). Huge-young exemption UNMEASURED (no life-stage data in the register).
-- **Dune sea** (`ExtremeDesert`, law: giant or grain-scale only): 116 residents,
-  **88 medium (76%)** [banned band stated: 0.3–3.0]. Top: Shyrack (0.8), LavaFlea
-  (0.8), Sketto (0.7), StoneCrab (0.7), BMT_Glowtail (0.7).
-- Other sheet biomes (poison forest, nightside, terminator, wreck fields, fall line,
-  deep desert): **UNMEASURED here** — no confirmed BiomeDef binding in the register
-  (fall line is injected onto existing defs by design; the rest need a def mapping
-  before their fauna bans can be linted).
-- ⭐ Also measured while resolving residency: the register's biome table is still
-  the mods' own default worldview — temperate forest is the most-populated biome
-  (282 live residents) on a planet that has none. **Biome-side curation is the
-  bigger half of the fauna work, and none of it has landed yet.**
+### F3 — 🔴 fig6 is now a REGRESSION INSTRUMENT, and it reads clean (fig6)
+Residency comes from the rosters — the sheets' own product — so a base-roster violation
+bar **should be zero, and a nonzero one is a roster defect to be fixed in the roster**,
+not explained away on the figure. Post-assignment (MEASURED 2026-09-09):
 
-### F4 — Ubiquity, not any single bad def, is what kills biome identity (fig7, supplementary)
-**25 live creatures are both widespread (≥20 spawn biomes) and common (top ≥ 0.3)**
-— 11 of them Alpha Animals (AA_PebbleMit in **45** of 52 BiomeDefs, FissionMouse/
-Swarmling 40, Aerofleet 35, CrystalMit 33), plus vanilla's Rat (comm 3.0, 23
-biomes), Hare, WildBoar, Boomalope, Muffalo, and SW's GraniteSlug/Mynock/Neebray/
-Scavrat. Whatever the per-biome curation does, these will be the connective tissue
-of every map unless their per-biome records are cut deliberately. (Spread counts all
-52 registered BiomeDefs — an upper bound on campaign ubiquity, disclosed on-figure.)
+| panel | sheet law | base-roster residents | violations |
+|---|---|---|---|
+| **Desert** | no pursuit predators | 45 (20 of them predators) | **0** |
+| **Arid shrubland** | small · medium · VOID · huge | 42 | **0** |
+| **Dune sea + deep desert** (`ExtremeDesert`) | giant or grain-scale only | 12 | **1** |
+
+- The one non-zero is **`AA_Dunealisk`** (bodySize 2.0, commonality 0.1), and it carries
+  its own law line in the roster — band `giant-subsurface`, *"subsurface strike only —
+  the one legal predator archetype (dune sea §6, prep §1.4)"*. So it is a **stated
+  exception**, not an unexplained violation, and the "banned medium = 0.3–3.0" band is
+  this figure's analytic choice, not the sheet's number. It is still drawn red: a stated
+  exception that stops being stated is exactly what this instrument exists to catch.
+- **The Desert panel reads zero because the assignment moved a stat, not a creature.**
+  `Wraid` 5.0→4.4 and `Gutkurr` 4.5→4.4 are roster `stat_adjustments` (adjust-keep) and
+  are drawn as OPEN markers — DESIGNED, not yet built. If those adjustments never ship,
+  the panel is wrong; that dependency is on the figure.
+- **Injection layers are judged separately and drawn as ◆.** The Fall Line injects 13
+  rows over Desert/AridShrubland/ExtremeDesert, 13 of which sit in `ExtremeDesert`'s
+  banned medium band and one (`Scavrat`) is a pursuit-capable predator in `Desert`.
+  Those are legal under `fall_line.md`'s own law (transient ship vermin over the
+  underlying def, ban 1: it is not a BiomeDef); folding them into the host's bar would
+  manufacture violations the sheets never made.
+- ⚠️ The huge-young exemption (shrubland) stays **UNMEASURED** — the register carries no
+  life-stage data.
+
+### F4 — Ubiquity is gone: the assignment killed the homogenizers (fig7)
+Both axes are now roster-side. **Max biome spread fell from 45 BiomeDefs to 5**, and
+**162 of the 242 rostered creatures (67%) live in exactly one biome.** The pre-pass
+scale (spread to 45, commonality to 3.0) is quoted in the title as the state that was
+replaced and is **not plotted** — the stale layer is never mixed back in.
+- Only **8 creatures** are both widespread (≥4 biomes) and common (top ≥0.3), and seven
+  of the eight are the Star Wars collection's connective-tissue species, not Alpha
+  Animals: `Gizka` and `Kreetle` (5 biomes, comm 1.0), `Mynock` and `Nuna` (5, 0.5),
+  `AA_Aerofleet` (5, 0.4 — the one AA survivor, trimmed to the two seas + terminator),
+  `Eopie` (4, 0.8), `Whisperbird` (4, 0.7), `Convor` (4, 0.3).
+- The prep §9 ubiquity-25 trim did what it was for: **`AA_PebbleMit` went from 45
+  BiomeDefs to homeless-reserve**, and vanilla's Rat survives only as a Fall Line
+  injection at commonality 0.1.
 
 ### F5 — Husbandry space: taming difficulty, not trainability, is the gate (fig8, supplementary)
 Live animals+insectoids with wildness: 752. The single biggest cell is
@@ -169,7 +190,7 @@ on-figure. Repairs: band label moved out of title collision, gutter labels moved
 inside bars, clipped-note relocated. Grayscale-safe (marker shape ▼/●/▲ carries
 band position redundantly with hue).
 
-### fig6_biome_law_gap — DEVIATION — **SHIP**
+### fig6_biome_law_gap — DEVIATION — **SHIP** *(rebuilt 2026-09-09 against the rosters)*
 Three small multiples, each on its law's natural axis (speed for the pursuit ban,
 log bodySize for the two size bans), ban regions shaded, violators = red triangles,
 marker area ∝ √commonality (disclosed), stated analytic thresholds printed on-panel,
@@ -178,6 +199,10 @@ UNMEASURED huge-young exemption are on the figure. Repairs: annotations pinned
 inside axes (ylim fixed), footer/xlabel separation, right-edge clipping.
 Note: panels deliberately do NOT share an x quantity (different laws) — each panel
 is self-labeled, per the render-QA small-multiples exception.
+2026-09-09 rebuild: residency swapped to `rosters_residency.py`; base roster and
+injection layer split into separate marker series and separate y-bands; roster
+`stat_adjustments` applied and drawn OPEN so a DESIGNED value is never read as
+MEASURED; a per-panel ✓/✗ verdict line makes the regression call explicit.
 
 ### fig7_dominance / fig8_husbandry — supplementary, not scored
 Both pass the hard gates (sources, units, log disclosure, colorbar on fig8,
@@ -206,6 +231,12 @@ embedded), offline, opens straight from disk.
 - **Any-axis scatter**: 15 axes (bodySize, drawSize, healthScale, moveSpeed,
   wildness, meat, leather, armorSharp, bestHit, K=bestHit/bs, health/bs, meat/bs,
   topCommonality, biome spread, art px/cell), log toggles per axis.
+- ⭐ **2026-09-09:** the page's `topCommonality`, `biome spread`, the biome filter and
+  the colour-by-cluster grouping all read the ROSTERS now. A creature with no roster
+  home shows spread 0 and groups as `(homeless-reserve)`, `(cut)` or `(unrostered)` —
+  a real state, not missing data. The deck (`deck/build_creature_deck.py`) and the
+  FiftyOne dataset (`fiftyone/build_dataset.py`) cluster by the same roster sheet, so
+  all three artifacts and the figures agree on where a creature lives.
 - **Reference laws draw themselves** when the axis pair has one (meat: both yield
   laws; bestHit: the 12–15 band; drawSize: vanilla's 1.9·√bs).
 - Color by kind / top-12 mods / cut status; filter live-only, by biome residency,
@@ -237,12 +268,25 @@ embedded), offline, opens straight from disk.
    Animals (89 flesh bs≥1, median K 8) and VGE (71, K 6.7) are the two biggest
    blocks; the 8 named giants (F2) are the marquee inversions; decide whether
    Core's own animals (24, K 6.5) are in scope or vanilla-sacred.
-4. **Biome fauna curation is unstarted** (F3): the sheets need BiomeDef bindings
-   for the remaining 6 sheet-biomes before their bans can be linted, and the three
-   bindable ones each need half their roster moved or cut. The fig6 violator lists
-   (top-commonality first) are the cut order.
-5. **The 25 homogenizers (F4)** should be ruled on once, globally (per-biome
-   commonality cuts), not rediscovered per biome.
+4. **Biome fauna curation LANDED** (F3/F4, 2026-09-09): 242 defs across 30 BiomeDefs,
+   486 to the homeless reserve, 45 defs cut over 88 dispositions. fig6 is now the
+   regression gate — re-run it after every roster edit and treat a nonzero base bar as
+   a defect. The per-biome consequences (commonality mass, size ladder, the def×biome
+   matrix) are figs 9–11.
+5. **The 25 homogenizers (F4) were ruled on globally and the trim held** — max spread 5.
+
+## The rest of the assignment's picture (built 2026-09-09, separate generators)
+
+| fig | file | what it answers |
+|---|---|---|
+| fig9 | `fig9_commonality_mass.png` | Σ commonality + roster row count per BiomeDef, each bar tagged with its sheet's stated population doctrine. The normalization instrument. |
+| fig10 | `fig10_size_ladder.png` | per-biome bodySize strip against Large Pawns' LIVE multi-cell thresholds (2.5/4.5/10) and TITANIC_CREATURES_MOD_1's draft tiers (4/8/20). Feeds that item's tier table. |
+| fig11 | `fig11_biome_matrix.png` | 242 defs × 30 BiomeDefs presence matrix, grouped by primary sheet. The zoo-effect picture. |
+| figF1–F3 | `PORTFOLIO_flora_distribution.md` | the flora side: landed vs purged, temperature fit, flammability. |
+
+Generators: `gen_biome_assignment_portfolio.py` (9–11),
+`gen_flora_distribution_portfolio.py` (F1–F3). Both import the same
+`rosters_residency.py` join.
 
 ## Lessons already filed to LESSONS_INBOX
 - Provenance beats tolerance when classifying against a law (the meatStatBase-None
