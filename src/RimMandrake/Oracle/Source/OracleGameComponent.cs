@@ -66,11 +66,11 @@ namespace RimMandrake.Oracle
                 DeliverFallback(letterLabel, fallbackText, "kill switch off");
                 return;
             }
-            if (string.IsNullOrEmpty(settings.apiKey) && !settings.baseUrl.Contains("127.0.0.1") && !settings.baseUrl.Contains("localhost"))
-            {
-                DeliverFallback(letterLabel, fallbackText, "no API key and not a local endpoint");
-                return;
-            }
+            // No credential gate any more: the Claude Code CLI authenticates
+            // through the machine's own login, so there is nothing here to check
+            // that would not amount to guessing. A CLI that is missing, logged
+            // out or broken fails inside the call below and lands in the same
+            // fallback as every other failure.
             if (godsCallsToday >= settings.godsBudgetPerDay)
             {
                 DeliverFallback(letterLabel, fallbackText, "budget exhausted for today (" + godsCallsToday + "/" + settings.godsBudgetPerDay + ")");
@@ -84,9 +84,9 @@ namespace RimMandrake.Oracle
             {
                 try
                 {
-                    string content = await OracleHttpClient.RequestChatCompletion(
-                        settings.baseUrl, settings.apiKey, settings.model,
-                        system, contextSummary, settings.timeoutSeconds).ConfigureAwait(false);
+                    string content = await OracleClient.RequestCompletion(
+                        system, contextSummary,
+                        settings.timeoutSeconds, settings.claudeCliPath).ConfigureAwait(false);
 
                     if (OracleValidator.TryValidateOhm(content, out string rejectReason))
                     {

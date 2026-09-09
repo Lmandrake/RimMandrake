@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    ORACLE_EXPERIMENT_SPIKE_1: thin OpenAI-compatible client plus ONE god-letter
-    consumer (Ohm), end to end. See design/RimMandrake/llm_ingame_wiring_spec.md.
+    The Oracle: a Claude Code CLI client (`claude -p` as a child process, per the
+    owner's 2026-09-05 ruling in CLAUDE.md) plus ONE god-letter consumer (Ohm),
+    end to end. See design/RimMandrake/llm_ingame_wiring_spec.md.
     The Oracle is the Narrator's engine, not any god's (owner 2026-08-30): Ohm is
     the first of nine consumers, not the ship and not the Oracle.
     No Harmony: nothing here patches anything, it is pure new behavior behind
@@ -62,16 +63,10 @@
       <Private>false</Private>
     </Reference>
     <!--
-      System.Net.Http.dll DOES ship in RimWorld's own Managed/ folder (Unity's
-      trimmed Mono BCL includes it): confirmed by directory listing, not
-      assumed. Referenced from RimWorldManaged like the game's own assemblies
-      above, not from the NuGet reference-assemblies package, so what we
-      compile against is what will actually be present at runtime.
+      No System.Net.Http reference: the transport is System.Diagnostics.Process
+      (mscorlib/System), not HTTP, since the 2026-09-05 ruling. Nothing in this
+      assembly opens a socket.
     -->
-    <Reference Include="System.Net.Http">
-      <HintPath>$(RimWorldManaged)\System.Net.Http.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
   </ItemGroup>
 
 </Project>

@@ -13,7 +13,9 @@
      non-interactive mode, authenticates via the owner's claude.ai login, no
      API key). The two laws below, the threading/timeout/kill-switch shape,
      and every consumer-facing contract are UNCHANGED — only §1's transport
-     layer needs a rewrite. -->
+     layer changed. That rewrite is BUILT (ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1,
+     2026-09-08: src/RimMandrake/Oracle/Source/OracleClient.cs); its live proof
+     is still owed. -->
 # The Oracle — in-game LLM wiring
 
 ## 0. The two laws over everything
@@ -33,11 +35,22 @@
 ## 1. Architecture — `RimMandrake.Oracle` (companion module)
 
 ⛔ **SUPERSEDED, owner 2026-09-05**: `OracleClient` is no longer an HTTP client.
-It shells out to `claude -p "<prompt>"` (Claude Code CLI, non-interactive,
-authenticates via the owner's claude.ai login) via `System.Diagnostics.Process`
-and reads stdout — no base URL, no model string, no API key, no local Ollama.
-The diagram below is otherwise unchanged; only the `OracleClient` box's
-transport differs from what it says.
+It shells out to `claude -p` (Claude Code CLI, non-interactive, authenticates via
+the owner's claude.ai login) via `System.Diagnostics.Process` and reads stdout —
+no base URL, no model string, no API key, no local Ollama. The diagram below is
+otherwise unchanged; only the `OracleClient` box's transport differs from what it
+says.
+
+**The invocation, verified 2026-09-08 against both the owner's Windows binary and
+this checkout's, not assumed** — `claude -p --output-format text --system-prompt
+"<persona block>" --disallowed-tools <list>`, with the CONTEXT written to the
+child's stdin (never as a trailing argument, which the variadic tool list would
+swallow) and stdin then closed, which is what tells the CLI the prompt is
+complete. The reply is the whole of stdout as plain text. Exit code is the only
+success signal: stderr carries unrelated warnings on successful runs. CLI
+versions differ across machines and do not accept the same flags — `--restricted`
+exists on 2.1.266 and not on the game machine's 2.1.228, where it exits 1 — so
+any new flag must be checked against the version the GAME machine has.
 
 ```
 game event ──► OracleRequest (consumer id, context slots, fallback text)

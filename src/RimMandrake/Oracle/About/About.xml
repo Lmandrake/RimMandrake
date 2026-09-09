@@ -6,14 +6,16 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>The Oracle — in-game LLM wiring (design/RimMandrake/llm_ingame_wiring_spec.md), campaign-agnostic plumbing. In the campaign it is the NARRATOR's engine (the ship's old non-egoic mind voicing the nine gods); no god is the Oracle, and Ohm is only its first consumer. This build is ORACLE_EXPERIMENT_SPIKE_1: the thin OpenAI-compatible client + ONE god-letter consumer (Ohm the All-Current, per design/RimMandrake/nine_voices_cast_bible.md), end to end, gated by two debug actions (Debug Actions Menu -> Oracle) rather than any live game trigger yet:
+  <description>The Oracle — in-game LLM wiring (design/RimMandrake/llm_ingame_wiring_spec.md), campaign-agnostic plumbing. In the campaign it is the NARRATOR's engine (the ship's old non-egoic mind voicing the nine gods); no god is the Oracle, and Ohm is only its first consumer. This build carries the transport plus ONE god-letter consumer (Ohm the All-Current, per design/RimMandrake/nine_voices_cast_bible.md), end to end, gated by two debug actions (Debug Actions Menu -> RimMandrake.Oracle) rather than any live game trigger yet:
 
-"RimMandrake.Oracle: Selftest validator" runs the register lint against canned good/bad text with no network call.
-"RimMandrake.Oracle: Test Ohm letter" fires one real async call through OracleGameComponent against whatever endpoint is configured in Mod Settings (a local mock stub, or a real OpenAI-compatible cloud endpoint with an API key) and delivers a letter -- the model's text if it passes the register lint, the prescribed fallback if the call fails, times out, or the output is rejected. Nothing about this ships live to any consumer yet; the v1 posture (dormant vs consumer-live) is the owner's call after he sees this work.
+"Selftest validator (no network call)" runs the register lint against canned good/bad text, launching nothing.
+"Test Ohm letter (live call)" fires one real async call through OracleGameComponent and delivers a letter -- the model's text if it passes the register lint, the prescribed fallback if the call fails, times out, or the output is rejected. Nothing about this ships live to any consumer yet; the v1 posture (dormant vs consumer-live) is the owner's call after he sees this work.
 
-No Harmony, no def patches. Everything is opt-in through Mod Settings, defaults to a blank API key (silently falls back), and a global kill switch.
+Transport: the Claude Code CLI, run non-interactively as a child process -- `claude -p` with the persona block passed as --system-prompt and the context written to the child's stdin, reading its plain-text stdout. There is no HTTP call, no endpoint, no model string and no API key anywhere in this mod; the CLI authenticates through the machine's own claude.ai login (owner ruling 2026-09-05, CLAUDE.md "In-game LLM access is the Claude Code CLI, never a hosted API key").
 
-Transport note: the OpenAI-compatible HTTP client described above is the ORIGINAL spike transport, still what this build's code runs today. Owner ruling 2026-09-05 supersedes it in favor of shelling out to the Claude Code CLI (`claude -p`, no API key) -- see CLAUDE.md and ORACLE_EXPERIMENT_SPIKE_1's own supersession note. That rewrite has not landed yet; this description will stop matching the code once it does.</description>
+ENVIRONMENT DEPENDENCY: this mod does nothing at all unless the Claude Code CLI is installed AND logged in on the machine running the game. That is a fact about the machine, not a Mod Settings value -- the only related setting is an optional full path to the claude executable, for when the game process's PATH does not carry it. With the CLI absent, logged out, or broken, every call fails and every consumer ships its prescribed fallback text: the game is whole with the LLM entirely absent, by design, and that is never allowed to become untrue.
+
+No Harmony, no def patches. Everything is opt-in through Mod Settings behind a global kill switch (off = no process is ever launched) and a per-day call budget.</description>
 
   <loadAfter>
     <li>Ludeon.RimWorld</li>
