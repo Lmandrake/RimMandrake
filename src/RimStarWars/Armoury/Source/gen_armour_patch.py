@@ -251,10 +251,42 @@ ds = build(D_CONFIG, D_WORKSHOP, D_LOCAL, D_DATA,
 OWN_MODS = {r.modName for r in ds.records
             if (r.packageId or "").lower().startswith("mandrake.")}
 
+# ds.get() / ds.defs is LAST-IN-LOAD-ORDER-WINS over EVERY def sharing a
+# (defType, defName) key. That is fine when only one mod ever declares a key,
+# but a def we have ABSORBED (guy762_*, KotOR*) is co-declared by both our own
+# Absorbed_* copy and the still-live donor mod, and which one is "last" is not
+# something this generator should ever let ride on scan order -- os.walk()
+# within a mod's own Defs/ is not guaranteed stable, and even mod load order
+# is an input, not a constant. ARMOURY_DECLARER_ATTRIBUTION_FLIP_1: a regen
+# with no repo changes flipped guy762_RangedDamage_sonic and four siblings
+# from PatchOperationConditional (own attribution) to PatchOperationFindMod
+# (donor attribution) between two runs. Index every co-declared record up
+# front so the getter below can always prefer OUR OWN copy when one exists,
+# instead of whichever copy happened to scan last.
+_BY_KEY = collections.defaultdict(list)
+for _r in ds.records:
+    if _r.defName:
+        _BY_KEY[(_r.defType, _r.defName)].append(_r)
+
+
+def own_get(defType, defname):
+    """ds.get(), but deterministic across runs for a co-declared def.
+
+    When (defType, defname) is declared by more than one mod and at least one
+    of them is OWN_MODS, always return OUR OWN record -- never whichever copy
+    the offline scan happened to see last. Falls back to plain ds.get() (still
+    last-in-load-order-wins) when no OWN_MODS copy exists at all, which is the
+    ordinary single-declarer case and unaffected by this tiebreak.
+    """
+    for _r in reversed(_BY_KEY.get((defType, defname), ())):
+        if _r.modName in OWN_MODS:
+            return _r
+    return ds.get(defType, defname)
+
 
 def declarer(defname, node, defType="ThingDef"):
     """Patches hit raw XML before inheritance; aim at whoever DECLARES node."""
-    rec = ds.get(defType, defname)
+    rec = own_get(defType, defname)
     if rec is None:
         return None, None, None
     if rec.own.find(node) is not None:
@@ -416,7 +448,7 @@ def set_field(fn, mod, comment, defpath, parent_xpath, tag, value):
 
 # ========================================================== 1. categories
 for dn, cat in CATEGORY_FIX.items():
-    rec = ds.get("DamageDef", dn)
+    rec = own_get("DamageDef", dn)
     if rec is None:
         continue
     cur = rec.element.findtext("armorCategory")
