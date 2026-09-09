@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_Miasma                                     UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
+    the_miasma.md (FROZEN). Replaces the donor `AB_MiasmicMangrove` (Alpha Biomes).
+
+    MEASURED (sheet SS0): 93 tiles strung along the Salt Gate (the Grey Sea's
+    deltas). Elevation median 22 m, the lowest ground on the dayside; 32 river
+    tiles, 6 sea tiles; temp median 42.8 C. Rain: zero on 89 of 93 tiles — "the
+    delta itself has never once been rained on" (the donor's Rain/RainyThunderstorm
+    commonalities are kept anyway, see below, because the biome's own SS3 breath-tide
+    mechanism reads them as SEA SURGE, not sky rain).
+
+    animalDensity/movementDifficulty/diseaseMtbDays kept at the donor's own values:
+    sheet SS0 explicitly names all three as "kept and explained" — 6.5 is refugee
+    crowding (SS3 "the lifeboat"), 4 is the root-maze and muck, 15 is "the Working's
+    failures leaking out" (SS4b, fever-forged).
+
+    Weather: ban 5 ("No rain — the swamp is fed by river and sea only") is read
+    here as banning RAIN AS THE WATER SOURCE, not the WeatherDef slot itself — the
+    donor's own Rain/RainyThunderstorm/FoggyRain commonalities are kept as the
+    mechanical stand-in for the surge/breath-tide (SS3, "when the terminator storms
+    pile the Grey Sea against the Salt Gate shore, the sea surges") pending a real
+    surge WeatherDef (SS Owed, `MIASMA_MECHANICS_1`) — flagged, not silently
+    invented. Snow zeroed (42.8 C median).
+
+    diseases: the three Alpha Biomes-specific entries (BacterialGangrene/
+    ViralAbasia/RavagingIntestinalParasites) kept MayRequire-gated — these ARE
+    "the Working's failures" (SS3/SS4b), i.e. the sheet's own central mechanism, not
+    generic dressing.
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/the_miasma.json.
+
+    NOT this pass's scope: `MIASMA_MECHANICS_1` (surge/salt-line system, fever-forged
+    boon tables, warden-mother set-piece placement); the attar refinement chain; any
+    world repaint.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_Miasma</defName>
+    <label>the Miasma</label>
+    <description>A salt-crusted, stilt-rooted mangal forest standing in brackish channels between a dying sea and the rivers that feed it, under a green-gold haze of its own breath. Walking is hard, the air hangs thick, and the water crowds with life -- because everything ends up here: the water, the sins it carries, and the life running from the salt. Threaded through the stink, improbably, beauty: rainbow-hued plants, young animals everywhere, and the stubborn sense the place is on the verge of something.</description>
+    <workerClass>AlphaBiomes.BiomeWorker_MiasmicMangrove</workerClass>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>6.5</animalDensity>
+    <plantDensity>0.7</plantDensity>
+    <forageability>1.0</forageability>
+    <movementDifficulty>4</movementDifficulty>
+    <texture>Biomes/AB_MiasmicMangrove</texture>
+    <diseaseMtbDays>15</diseaseMtbDays>
+    <diseases>
+      <li MayRequire="sarg.alphabiomes">
+        <diseaseInc>AB_Disease_BacterialGangrene</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li MayRequire="sarg.alphabiomes">
+        <diseaseInc>AB_Disease_ViralAbasia</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li MayRequire="sarg.alphabiomes">
+        <diseaseInc>AB_Disease_RavagingIntestinalParasites</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>160</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SleepingSickness</diseaseInc>
+        <commonality>140</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Mud</terrain>
+        <min>-999</min>
+        <max>0.65</max>
+      </li>
+      <li>
+        <terrain>AB_FertileMud</terrain>
+        <min>0.65</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>8</Clear>
+      <Fog>5</Fog>
+      <Rain>10</Rain>
+      <DryThunderstorm>0.9</DryThunderstorm>
+      <RainyThunderstorm>5</RainyThunderstorm>
+      <FoggyRain>4</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <Kreetle MayRequire="mlie.starwarsanimalcollection">1.0</Kreetle>  <!-- kreetle - arthropod-floor, keep -->
+      <Yobshrimp MayRequire="mlie.starwarsanimalcollection">0.8</Yobshrimp>  <!-- yobshrimp - arthropod-floor, import -->
+      <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.7</VFEI2_Swarmling>  <!-- swarmlings - vermin, keep -->
+      <BMT_Gembug MayRequire="biomesteam.biomescaverns">0.5</BMT_Gembug>  <!-- gembug - arthropod-floor, keep -->
+      <Runyip MayRequire="mlie.starwarsanimalcollection">0.5</Runyip>  <!-- runyip - muck-forager, adjust-keep -->
+      <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals">0.5</VFEI2_BlackSwarmling>  <!-- black swarmlings - vermin, keep -->
+      <BMT_CrestedDragon MayRequire="biomesteam.biomescaverns">0.4</BMT_CrestedDragon>  <!-- crested dragon - channel-predator, keep -->
+      <RSW_Mee MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Mee>  <!-- mee scalefish - nursery, import -->
+      <Shiro MayRequire="mlie.starwarsanimalcollection">0.4</Shiro>  <!-- shiro - arthropod-floor, keep -->
+      <BMT_AaroxisDendoria MayRequire="biomesteam.biomescaverns">0.3</BMT_AaroxisDendoria>  <!-- aaroxis dendoria - strange, keep -->
+      <RSW_Faa MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Faa>  <!-- faa scalefish - nursery, import -->
+      <RSW_Laa MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Laa>  <!-- laa scalefish - nursery, import -->
+      <RSW_Yobshrimp MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Yobshrimp>  <!-- pale yobshrimp - nursery, import -->
+      <Anooba MayRequire="mlie.starwarsanimalcollection">0.3</Anooba>  <!-- anooba - scavenger, keep -->
+      <Grank MayRequire="mlie.starwarsanimalcollection">0.3</Grank>  <!-- Grank - channel-predator, import -->
+      <Whisperbird MayRequire="mlie.starwarsanimalcollection">0.3</Whisperbird>  <!-- whisperbird - flier, keep -->
+      <RSW_RustNipper MayRequire="mandrake.rsw.swbestiary">0.25</RSW_RustNipper>  <!-- rust nipper - nursery, import -->
+      <RSW_SiltLamprey MayRequire="mandrake.rsw.swbestiary">0.25</RSW_SiltLamprey>  <!-- silt lamprey - nursery, import -->
+      <AA_Lockjaw MayRequire="sarg.alphaanimals">0.2</AA_Lockjaw>  <!-- lockjaw - channel-predator, keep -->
+      <AA_Mantrap MayRequire="sarg.alphaanimals">0.2</AA_Mantrap>  <!-- mantrap - root-ambush, keep -->
+      <AA_RaptorShrimp MayRequire="sarg.alphaanimals">0.2</AA_RaptorShrimp>  <!-- raptor shrimp - channel-predator, keep -->
+      <Vornskyr MayRequire="mlie.starwarsanimalcollection">0.15</Vornskyr>  <!-- vornskyr - strange, keep -->
+      <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.1</AA_BloodShrimp>  <!-- blood shrimp - channel-predator, keep -->
+      <AA_DecayDrake MayRequire="sarg.alphaanimals">0.1</AA_DecayDrake>  <!-- decay drake - composter, keep -->
+      <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - strange, keep -->
+      <AA_Slurrypede MayRequire="sarg.alphaanimals">0.1</AA_Slurrypede>  <!-- slurrypede - composter, adjust-keep -->
+      <AA_Thermadon MayRequire="sarg.alphaanimals">0.1</AA_Thermadon>  <!-- thermadon - channel-predator, keep -->
+      <RSW_OpeeSeaKiller MayRequire="mandrake.rsw.swbestiary">0.05</RSW_OpeeSeaKiller>  <!-- opee sea killer - nursery-guard, import -->
+      <Zakkeg MayRequire="mlie.starwarsanimalcollection">0.05</Zakkeg>  <!-- zakkeg - big-wanderer, keep -->
+      <AA_Plasmorph MayRequire="sarg.alphaanimals">0.05</AA_Plasmorph>  <!-- plasmorph - strange, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_MangroveTree>25</AB_MangroveTree>  <!-- mangrove tree - tree -->
+      <AB_ParasiticMangrove>8</AB_ParasiticMangrove>  <!-- parasitic mangrove -->
+      <AB_MangrovePalm>6</AB_MangrovePalm>  <!-- mangrove palm - tree -->
+      <BMT_Plant_TreeTanglerootMangrove>1.5</BMT_Plant_TreeTanglerootMangrove>  <!-- tangleroot mangrove - tree -->
+      <BMT_Plant_SewerReed>0.8</BMT_Plant_SewerReed>  <!-- sewer reed -->
+      <BMT_RainbowTongue>0.6</BMT_RainbowTongue>  <!-- rainbow tongue -->
+      <BMT_Plant_Snaketails>0.5</BMT_Plant_Snaketails>  <!-- snaketails -->
+    </wildPlants>
+    <wildPlantRegrowDays>13</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

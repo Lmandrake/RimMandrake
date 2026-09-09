@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_FeverWood                                  UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
+    the_fever_wood.md (FROZEN). Replaces the donor `COMIGO_GreaterSwamp_Tropical`
+    (Comigo's Greater Swamps, donor label "tropical swamp"). Sheet name: THE FEVER
+    WOOD (the map's own region name).
+
+    MEASURED (sheet SS0): 43 tiles, every one in the Fever Wood region, one
+    contiguous lowland patch at 22 m, flat (43/43). Sun median +43 deg; temp median
+    45.5 C. **Zero rivers, zero water tiles, zero rain** — the wet is the water
+    table, tamed (SS3).
+
+    Weather zeroed hard on rain and river-adjacent entries (Rain/RainyThunderstorm/
+    FoggyRain all 0): the sheet's own MEASURED line is explicit — zero rain, zero
+    rivers — the water table feeds the roots, not the sky (SS3 "Water from below,
+    life from above. No rain, no rivers"). Fog kept modest (dim ground level, "dark
+    mirrors... unrippled," SS1) but this is a placeholder, not a sheet-named weather
+    event — no bespoke WeatherDef exists for the crown-vs-ground light split
+    (SS Owed, `FEVER_WOOD_MECHANICS_1`).
+
+    animalDensity/plantDensity kept at the donor's own values (sheet SS0: "kept and
+    explained — animalDensity 2.3 low (the ground level's emptiness; the crown is
+    where the life is), plantDensity 0.9" — note 0.9 read down slightly here since
+    ground-level plantDensity in the engine cannot distinguish "crown" from "floor";
+    flagged as an interim compromise, not a measured figure).
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/the_fever_wood.json. Ban 1 (the deep thing
+    never resolved in ordinary play) and ban 2 (the Ants never an existing faction)
+    are both plot/roster-level, not BiomeDef fields, and are not claimed satisfied by
+    this def alone.
+
+    NOT this pass's scope: `FEVER_WOOD_MECHANICS_1` in full (boughway network,
+    nectar-for-safety economy, the two-front war, the deep thing built in full);
+    Sporefall's treetop-town template; any world repaint.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_FeverWood</defName>
+    <label>the Fever Wood</label>
+    <description>The place where trees finally won. Great solid trunks, much more than one tile wide, have rooted the backswamp still and solid, tamed the flowing waters into shallow surface pools with deep, deep mud beneath. Their arches and branches have grown into byways well above the dark still pools -- roads made of living wood. In the crown: a whole arboreal world. Below: the black mirrors, unrippled. Nothing goes in the water here. Everything remembers why.</description>
+    <workerClass>ReGrowthCore.UniversalBiomeWorker</workerClass>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>2.3</animalDensity>
+    <plantDensity>0.7</plantDensity>
+    <forageability>0.6</forageability>
+    <movementDifficulty>5</movementDifficulty>
+    <texture>World/Biomes/GreaterTropicalSwamp</texture>
+    <diseaseMtbDays>20</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>70</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>140</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>75</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>70</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Soil</terrain>
+        <min>-999</min>
+        <max>0.9</max>
+      </li>
+      <li>
+        <terrain>SoilRich</terrain>
+        <min>0.9</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>30</Clear>
+      <Fog>10</Fog>
+      <Rain>0</Rain>
+      <DryThunderstorm>1</DryThunderstorm>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">2</Overcast>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <BMT_GlowSlug MayRequire="biomesteam.biomescaverns">0.5</BMT_GlowSlug>  <!-- glowslug - sap-drinker, keep -->
+      <Urusai MayRequire="mlie.starwarsanimalcollection">0.5</Urusai>  <!-- urusai - crown-flier, keep -->
+      <VFEI2_Megathrips MayRequire="oskarpotocki.vfe.insectoid2">0.5</VFEI2_Megathrips>  <!-- megathrips - wood-borer, keep -->
+      <Gelagrub MayRequire="mlie.starwarsanimalcollection">0.4</Gelagrub>  <!-- gelagrub - crown-grazer, adjust-keep -->
+      <Nuna MayRequire="mlie.starwarsanimalcollection">0.4</Nuna>  <!-- nuna - grazer, keep -->
+      <Convor MayRequire="mlie.starwarsanimalcollection">0.3</Convor>  <!-- convor - crown-flier, import -->
+      <LongtailGorg MayRequire="mlie.starwarsanimalcollection">0.3</LongtailGorg>  <!-- longtail gorg - wait-ambush, keep -->
+      <Whisperbird MayRequire="mlie.starwarsanimalcollection">0.3</Whisperbird>  <!-- whisperbird - crown-flier, import -->
+      <BMT_JewelBeetle MayRequire="biomesteam.biomescaverns">0.2</BMT_JewelBeetle>  <!-- jewel beetle - crown-grazer, import -->
+      <BMT_AcidSlug MayRequire="biomesteam.biomescaverns">0.05</BMT_AcidSlug>  <!-- acid slug - ground-slow, keep -->
+      <Fambaa MayRequire="mlie.starwarsanimalcollection">0.02</Fambaa>  <!-- fambaa - the-terribly-lost, import -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <Plant_HydenockTree_Wild>1.5</Plant_HydenockTree_Wild>  <!-- wild hydenock tree - tree -->
+      <AB_KeeningCordax>1.2</AB_KeeningCordax>  <!-- keening cordax - tree -->
+      <BMT_GiantLeaf>0.8</BMT_GiantLeaf>  <!-- giant leaf -->
+      <Plant_JoganTree_Wild>0.6</Plant_JoganTree_Wild>  <!-- wild jogan tree - tree -->
+      <AB_Iashiphus>0.5</AB_Iashiphus>  <!-- iashiphus -->
+      <AB_Gomphoeria>0.4</AB_Gomphoeria>  <!-- gomphoeria -->
+      <Plant_Chakroot_Wild>0.4</Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
+    </wildPlants>
+    <wildPlantRegrowDays>15</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

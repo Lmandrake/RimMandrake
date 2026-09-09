@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_Greentide                                  UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
+    the_greentide.md (FROZEN). Replaces the donor `BiomeCypreJungle` (GRiNDTerra
+    Biomes — "Cypre" was the donor's tree name, dies with the eviction).
+
+    MEASURED live on V26 (sheet SS0): 235 tiles, 199 of them river tiles (85%) —
+    "no river, no jungle" is the biome in one number. Arc 11.3-58.3 (median 44.7,
+    sun +45 deg — extreme-desert energy). Temp median 45.5 C.
+
+    Weather rebuilt around SS4c's "steam kit," NOT the donor's temperate-jungle
+    table: donor Clear was 18 (a mild-jungle read); dropped hard, because this is
+    "the most furiously productive ground on the planet" under Extreme-Desert sun —
+    the Roil (standing ground-hugging hot fog) is the norm, not an event. No
+    dedicated Roil/Breaklight/underlight-rain WeatherDefs exist yet (SS Owed,
+    `GREENTIDE_MECHANICS_1`) — Fog itself is NOT substituted here (fog reads as
+    cool/grey, wrong for a hot steam-jungle) and left at 0 rather than mis-cast;
+    flagged as a real gap pending that item. Snow zeroed outright (45 C median makes
+    it absurd — not a named ban, a thematic call). GrayPall/Overcast (both
+    MayRequire-gated) zeroed to 0 rather than removed, keeping the slots visible for
+    whoever authors GREENTIDE_MECHANICS_1's real weather next.
+
+    diseases kept at the donor's own set (diseaseMtbDays 50, "a heavy disease load —
+    also accidentally honest" per SS0). animalDensity/plantDensity kept at the
+    donor's own 3.5/0.9+ (SS0 explicitly: "animalDensity 3.5... §4 explains why it is
+    accidentally right").
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/the_greentide.json.
+
+    NOT this pass's scope: `GREENTIDE_MECHANICS_1` in full (wet-bulb condition, dry-
+    air blower, scald damage + steam devils, Roil/Breaklight/underlight weathers,
+    churnmud, causeway map-gen, the Greatbole class); `EXPLOSIVE_PLANT_GROWTH_1`; any
+    world repaint.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_Greentide</defName>
+    <label>the Greentide</label>
+    <description>A gallery jungle hugging every mile of the rivers that fall off the Scald's rain-peaks -- a green ribbon a few tiles wide through country that gets deep-desert sun, visible from the dunes as a line of steam. The rivers steam all the time; the air holds more water than the river does. Under the steam, everything grows at a speed you can watch, everything eats everything in the open, and the crashing of trees is the background percussion of the place. There is no truce here.</description>
+    <workerClass>BiomeWorker_CypreJungle</workerClass>
+    <lakeBeachTerrain>Riverbank</lakeBeachTerrain>
+    <mudTerrain>CypreJungleMud</mudTerrain>
+    <riverbankTerrain>Riverbank</riverbankTerrain>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>3.5</animalDensity>
+    <plantDensity>0.9</plantDensity>
+    <forageability>1.0</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <texture>World/Biomes/Biome_CypreJungle</texture>
+    <diseaseMtbDays>50</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>75</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>75</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>75</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>75</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>75</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_OrganDecay</diseaseInc>
+        <commonality>10</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>CypreJungleSoil</terrain>
+        <min>-999</min>
+        <max>0.5</max>
+      </li>
+      <li>
+        <terrain>LightGrass</terrain>
+        <min>0.5</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>6</Clear>
+      <Fog>0</Fog>
+      <Rain>2</Rain>
+      <DryThunderstorm>0.3</DryThunderstorm>
+      <RainyThunderstorm>1.7</RainyThunderstorm>
+      <FoggyRain>1</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">0</GrayPall>
+      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">0</Overcast>
+      <TorrentialRain>0</TorrentialRain>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <Gizka MayRequire="mlie.starwarsanimalcollection">1.0</Gizka>  <!-- gizka - floor-vermin, keep -->
+      <Clodhopper MayRequire="mlie.starwarsanimalcollection">0.7</Clodhopper>  <!-- clodhopper - floor-vermin, keep -->
+      <Whisperbird MayRequire="mlie.starwarsanimalcollection">0.7</Whisperbird>  <!-- whisperbird - flier, keep -->
+      <Worrt MayRequire="mlie.starwarsanimalcollection">0.7</Worrt>  <!-- worrt - ambush, keep -->
+      <Shiro MayRequire="mlie.starwarsanimalcollection">0.5</Shiro>  <!-- shiro - floor-ambush, keep -->
+      <ShiroTrap MayRequire="mlie.starwarsanimalcollection">0.5</ShiroTrap>  <!-- shiro-trap - floor-ambush, keep -->
+      <BMT_Diggerpede MayRequire="biomesteam.biomescaverns">0.4</BMT_Diggerpede>  <!-- diggerpede - floor-predator, keep -->
+      <Klorslug MayRequire="mlie.starwarsanimalcollection">0.4</Klorslug>  <!-- k'lor'slug - gnawer, keep -->
+      <Mott MayRequire="mlie.starwarsanimalcollection">0.4</Mott>  <!-- mott - brake, import -->
+      <Nuna MayRequire="mlie.starwarsanimalcollection">0.4</Nuna>  <!-- nuna - brake, import -->
+      <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.4</VFEI2_Swarmling>  <!-- swarmlings - floor-vermin, adjust-keep -->
+      <Convor MayRequire="mlie.starwarsanimalcollection">0.3</Convor>  <!-- convor - flier, import -->
+      <Falumpaset MayRequire="mlie.starwarsanimalcollection">0.3</Falumpaset>  <!-- falumpaset - brake, import -->
+      <Gelagrub MayRequire="mlie.starwarsanimalcollection">0.3</Gelagrub>  <!-- gelagrub - gnawer, import -->
+      <Kinrath MayRequire="mlie.starwarsanimalcollection">0.3</Kinrath>  <!-- kinrath - canopy-ambush, adjust-keep -->
+      <AA_Needlepost MayRequire="sarg.alphaanimals">0.3</AA_Needlepost>  <!-- needlepost - floor-vermin, keep -->
+      <Fambaa MayRequire="mlie.starwarsanimalcollection">0.25</Fambaa>  <!-- fambaa - shatterer, import -->
+      <PekoPeko MayRequire="mlie.starwarsanimalcollection">0.2</PekoPeko>  <!-- Peko-peko - flier, import -->
+      <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.2</AA_BloodShrimp>  <!-- blood shrimp - margin-predator, keep -->
+      <AA_Razorjack MayRequire="sarg.alphaanimals">0.2</AA_Razorjack>  <!-- razorjack - floor-predator, keep -->
+      <Dalgo MayRequire="mlie.starwarsanimalcollection">0.18</Dalgo>  <!-- dalgo - brake, keep -->
+      <Hawkbat MayRequire="mlie.starwarsanimalcollection">0.18</Hawkbat>  <!-- hawk-bat - flier-predator, keep -->
+      <Hssiss MayRequire="mlie.starwarsanimalcollection">0.18</Hssiss>  <!-- hssiss - lunger-junior, keep -->
+      <Dianoga MayRequire="mlie.starwarsanimalcollection">0.15</Dianoga>  <!-- dianoga - lunger, adjust-keep -->
+      <Dragonsnake MayRequire="mlie.starwarsanimalcollection">0.12</Dragonsnake>  <!-- Dragonsnake - lunger, adjust-keep -->
+      <Lylek MayRequire="mlie.starwarsanimalcollection">0.05</Lylek>  <!-- lylek - apex, keep -->
+      <Beldon MayRequire="mlie.starwarsanimalcollection">0.008</Beldon>  <!-- beldon - flier-giant, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_JungleTree>3.0</AB_JungleTree>  <!-- deep jungle tree - tree -->
+      <Plant_HydenockTree_Wild>1.5</Plant_HydenockTree_Wild>  <!-- wild hydenock tree - tree -->
+      <Plant_JoganTree_Wild>1.2</Plant_JoganTree_Wild>  <!-- wild jogan tree - tree -->
+      <BMT_GiantLeaf>1.0</BMT_GiantLeaf>  <!-- giant leaf -->
+      <Plant_MujaFruit_Wild>1.0</Plant_MujaFruit_Wild>  <!-- wild muja fruit bush -->
+      <Plant_HubbaGourd_Wild>0.8</Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
+      <AB_SugarFamewort>0.6</AB_SugarFamewort>  <!-- sugar famewort -->
+      <Plant_FelucianGlowspore_Wild>0.6</Plant_FelucianGlowspore_Wild>  <!-- wild felucian glowspore - tree -->
+      <Plant_Bubblespore_Wild>0.5</Plant_Bubblespore_Wild>  <!-- wild bubble spore plant -->
+      <Plant_Chakroot_Wild>0.5</Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
+      <Plant_TookeTrap_Wild>0.5</Plant_TookeTrap_Wild>  <!-- wild tooke-trap plant -->
+    </wildPlants>
+    <wildPlantRegrowDays>18</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

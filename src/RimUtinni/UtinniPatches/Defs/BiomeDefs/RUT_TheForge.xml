@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_TheForge                                   UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
+    the_forge.md (FROZEN). "Defines three defs as one place" (sheet SS0, owner:
+    "combining them is very welcome") — this ONE owned def replaces all three thin
+    donors: `AB_PyroclasticConflagration` (Alpha Biomes, ash skirts), `LavaField`
+    (Odyssey, the flows) and `Volcano` (Advanced Biomes, the cones). The sheet's own
+    roster (rosters/the_forge.json) ALREADY lands one unified fauna/flora list for
+    all three defNames ("ONE roster for all three defs... the sheet distinguishes
+    zones by elevation, not fauna") — confirmed by extraction (identical entries
+    across all three donor cast-patch blocks) — so merging the def is not inventing
+    a new decision, it is following the roster's own already-ruled shape. Which of
+    the three donor defNames' worker/texture/terrain to inherit is this def's one
+    real choice: took AB_PyroclasticConflagration's (Alpha Biomes) as the base, since
+    its terrain family (black pebbles/hardened grass) is the closest visual match to
+    "obsidian gloss, ash grey, seam-red" (sheet SS9) of the three donors.
+
+    MEASURED (sheet SS0): 44 tiles, one compact massif in the Dune Sea interior.
+    Zonation by elevation: Volcano median 1,875 m (cones), LavaField median 2,010 m
+    (flows), Pyroclastic median 1,382 m (skirts) — all inside this ONE def now.
+    Dayside sun +51..+64 deg, temps 42-56 C.
+
+    allowRivers FALSE: hard ban 6 ("No ordinary rain — the closed boiling cycle
+    only") plus SS3's "the massif is its own weather engine... the only rain in the
+    Dune Sea" argues no ordinary river network belongs here; the donor
+    AB_PyroclasticConflagration itself already carries allowRivers false.
+
+    Weather: rebuilt around SS3's closed boiling-rain cycle and ban 6 — ordinary
+    Rain/RainyThunderstorm/Snow all zeroed. AB_VolcanicAsh/AB_VolcanicAshRain (Alpha
+    Biomes WeatherDefs, MayRequire-gated) kept from the donor as the nearest existing
+    stand-in for "sudden violent boiling rain that flashes back to steam... within
+    seconds" (SS3) — a bespoke Scald-type WeatherDef for the Forge's own boiling
+    rain is still un-owed (`FORGE_MECHANICS_1`, SS Owed) and NOT invented here.
+    RSW_SW_RedFog kept MayRequire-gated per the donor's own live weather table
+    (matches the def dump's currently-active entry on this donor).
+
+    diseases trimmed to the vanilla-adjacent set (dropped BMT_Disease_Mutapox);
+    diseaseMtbDays kept at the Pyroclastic donor's own 65 (not disputed by the
+    sheet).
+
+    plantDensity/animalDensity kept close to the Pyroclastic donor's own values
+    (0.4/1.2): ban 3 ("No furred, chilled, or lush-register fauna — heat-adapted and
+    few") argues sparse, matching the donor read rather than the higher LavaField/
+    Volcano donor figures.
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/the_forge.json, using ONLY the
+    AB_PyroclasticConflagration cast-patch block (all three donor blocks carry
+    IDENTICAL entries per the roster's own "one roster" ruling — concatenating all
+    three would have produced duplicate XML child elements).
+
+    NOT this pass's scope: `FORGE_MECHANICS_1` (boiling-rain weather, beldon herd +
+    tibanna harvest, vapor-column flight layer, tower dungeon shell, the Contagion
+    die-off ring); `TIBANNA_EMBARGO_PLOT_1`; nothing lives in the lava (ban 1 — the
+    moving machines in the melt are never a roster entry, matched: none of this
+    def's wildAnimals is lava-native); any world repaint.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_TheForge</defName>
+    <label>the Forge</label>
+    <description>One mountain, three zones, and the only vertical skyline in the Dune Sea: tall, dark foundry towers rising defiantly against the sun, streaming vent-steam like banners, visible for a hundred kilometres. Below them the red seams and the flows; around them the ash skirts; above them, improbably, herds -- vast placid gas-grazers drifting in the vapor columns. The mountain rains on itself in scalding bursts, and mosses drink in the seconds between fall and flash.</description>
+    <workerClass>AlphaBiomes.BiomeWorker_PyroclasticConflagration</workerClass>
+    <foragedFood>AB_RawBrownBarrelCactus</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>false</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>1.2</animalDensity>
+    <plantDensity>0.4</plantDensity>
+    <forageability>0.5</forageability>
+    <movementDifficulty>1.5</movementDifficulty>
+    <texture>Biomes/AB_PyroclasticConflagration</texture>
+    <diseaseMtbDays>65</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>AB_BlackPebbles</terrain>
+        <min>-999</min>
+        <max>0.7</max>
+      </li>
+      <li>
+        <terrain>AB_HardenedGrass</terrain>
+        <min>0.7</min>
+        <max>0.9</max>
+      </li>
+      <li>
+        <terrain>AB_HardenedGrassFertile</terrain>
+        <min>0.9</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>40</Clear>
+      <AB_VolcanicAsh MayRequire="sarg.alphabiomes">20</AB_VolcanicAsh>
+      <AB_VolcanicAshRain MayRequire="sarg.alphabiomes">6</AB_VolcanicAshRain>
+      <RSW_SW_RedFog MayRequire="mandrake.rsw.swbestiary">8</RSW_SW_RedFog>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <AA_Aerofleet MayRequire="sarg.alphaanimals">0.4</AA_Aerofleet>  <!-- aerofleet - sky, adjust-keep -->
+      <LavaSnail MayRequire="sarg.alphabiomes">0.35</LavaSnail>  <!-- lava snail - ground-slow, import -->
+      <LavaFlea MayRequire="mlie.starwarsanimalcollection">0.25</LavaFlea>  <!-- lava flea - ground-herd, import -->
+      <AA_Cinderlisk MayRequire="sarg.alphaanimals">0.2</AA_Cinderlisk>  <!-- cinderlisk - ground-predator, import -->
+      <BMT_Maguana MayRequire="biomesteam.biomescaverns">0.15</BMT_Maguana>  <!-- maguana - ground-slow, import -->
+      <AA_Metallovore MayRequire="sarg.alphaanimals">0.15</AA_Metallovore>  <!-- metallovore - ground-slow, keep -->
+      <Beldon MayRequire="mlie.starwarsanimalcollection">0.08</Beldon>  <!-- beldon - sky-herd, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <Plant_Fireweed>0.9</Plant_Fireweed>  <!-- fireweed -->
+      <Plant_MagmaCactus>0.7</Plant_MagmaCactus>  <!-- magma cactus -->
+      <BMT_FireLavender>0.6</BMT_FireLavender>  <!-- fire lavender -->
+      <AG_Gamma>0.5</AG_Gamma>  <!-- gamma -->
+      <BMT_Sagecrust>0.4</BMT_Sagecrust>  <!-- sagecrust -->
+      <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass>  <!-- primordial grass -->
+      <AB_GiantGamma>0.3</AB_GiantGamma>  <!-- giant gamma -->
+      <AB_TinkleGrass>0.3</AB_TinkleGrass>  <!-- tinkle grass -->
+      <IronScruff_PrimordialTallGrass>0.3</IronScruff_PrimordialTallGrass>  <!-- primordial tall grass -->
+      <AG_Septimum>0.25</AG_Septimum>  <!-- septimum -->
+      <IronScruff_Bindweed>0.25</IronScruff_Bindweed>  <!-- bindweed -->
+      <AB_FirevineTree>0.2</AB_FirevineTree>  <!-- firevine tree - tree -->
+      <BMT_HeatsinkFungus>0.2</BMT_HeatsinkFungus>  <!-- heatsink fungus - tree -->
+    </wildPlants>
+    <wildPlantRegrowDays>27</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

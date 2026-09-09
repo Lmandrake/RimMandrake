@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_TheRot                                     UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/the_rot.md
+    (FROZEN). Replaces the donor `AB_MycoticJungle` (Alpha Biomes' "Mycotic
+    Jungle"). Sheet-named "THE ROT" (owner's pick).
+
+    MEASURED live on V25 (sheet SS0, post cold-tail repaint 2026-09-08): 2,258 tiles,
+    arc 74-135, temp p10/median/p90 -35.5/-18.8/+12.9 C.
+
+    Weather LEFT AT DONOR VALUES, deliberately: ban 3 reads "No water rain (R-H1) —
+    the Sheen is emission; a water-rain weather def here is a violation," but SS4b
+    is explicit that this is a RESKIN, not a removal — "Sheen-fall (re-skin of the
+    donor's 'very common rains')." The donor's Rain/RainyThunderstorm/FoggyRain
+    commonalities ARE the Sheen mechanically; renaming the WeatherDefs themselves is
+    separate, un-owed content (no bespoke WeatherDef exists yet). Kept as-is rather
+    than zeroed, which would have silently deleted the Sheen instead of reskinning
+    it.
+
+    diseaseMtbDays/animalDensity/plantDensity(plant density trimmed from donor's 0.2
+    — see below) match the donor's read-in values (sheet SS0 "Donor inventory taken
+    in"). plantDensity: donor dump showed 0.2; kept close (0.6 chosen mid-range, see
+    Owed) is NOT grounded in a sheet number — flagged: the sheet gives no explicit
+    plantDensity figure, and "dense beyond anything dayside... this is the
+    nightside's lush" (SS2) argues for HIGH density on a fungal-jungle read. Left at
+    an interim value pending a quicktest tune, same pattern RUT_TheScald/RUT_GreySea
+    used for their animalDensity.
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/the_rot.json. Ban 1 (no conventional
+    plants) and ban 2 (no pure-animal residents, hybrid-or-out) are roster-level
+    bans already enforced by that JSON.
+
+    NOT this pass's scope: the heat-generating gene (still unauthored, SS Owed); the
+    live-tea/symbiont mechanics (storage ban 4); the pale-tree anima reskin; the
+    Fungal Forest raid-merge contents (SS7b, its own item `FUNGALFOREST_RAID_MERGE_1`).
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_TheRot</defName>
+    <label>the Rot</label>
+    <description>A pale fungal continent on the night shoulder of the stormwall: bone-white and lilac towers under a black sky, a glow-moss floor warm to lie on while the air above it would kill you, milky ponds that are not water. Nothing here is a plant. Nothing here is quite an animal. Everything is connected, everything is warm from the inside, and everything -- including what you take away with you -- is still alive.</description>
+    <workerClass>AlphaBiomes.BiomeWorker_MycoticJungle</workerClass>
+    <foragedFood>RawFungus</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>1.9</animalDensity>
+    <plantDensity>0.6</plantDensity>
+    <forageability>0.5</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <texture>Biomes/AB_MycoticJungle</texture>
+    <diseaseMtbDays>35</diseaseMtbDays>
+    <diseases>
+      <li MayRequire="sarg.alphabiomes">
+        <diseaseInc>AB_Disease_SporesAllergy</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li MayRequire="sarg.alphabiomes">
+        <diseaseInc>AB_Disease_AnimalSporesAllergy</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>AB_MycoticGrass</terrain>
+        <min>-999</min>
+        <max>0.87</max>
+      </li>
+      <li>
+        <terrain>AB_MycoticSoilRich</terrain>
+        <min>0.87</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>8</Clear>
+      <Rain>10</Rain>
+      <DryThunderstorm>1</DryThunderstorm>
+      <RainyThunderstorm>10</RainyThunderstorm>
+      <FoggyRain>10</FoggyRain>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <BMT_ChemSnail MayRequire="biomesteam.biomescaverns">0.7</BMT_ChemSnail>  <!-- chem snail - ingest-strange, keep -->
+      <BMT_FungalWeevil MayRequire="biomesteam.biomescaverns">0.4</BMT_FungalWeevil>  <!-- fungal weevil - ingest-strange, import -->
+      <BMT_GlowBat MayRequire="biomesteam.biomescaverns">0.4</BMT_GlowBat>  <!-- bioluminescent bat - ingest-strange, import -->
+      <BMT_Pillbug MayRequire="biomesteam.biomescaverns">0.4</BMT_Pillbug>  <!-- pillbug - ingest-strange, import -->
+      <BMT_GiantSlug MayRequire="biomesteam.biomescaverns">0.3</BMT_GiantSlug>  <!-- giant slug - ingest-strange, import -->
+      <AA_Swarmling MayRequire="sarg.alphaanimals">0.3</AA_Swarmling>  <!-- swarmling - hybrid-vermin, adjust-keep -->
+      <AA_Agaripod MayRequire="sarg.alphaanimals">0.25</AA_Agaripod>  <!-- agaripod - hybrid-native, keep -->
+      <AA_MycoidColossus MayRequire="sarg.alphaanimals">0.25</AA_MycoidColossus>  <!-- mycoid colossus - hybrid-giant, keep -->
+      <BMT_BovineBeetle MayRequire="biomesteam.biomescaverns">0.2</BMT_BovineBeetle>  <!-- bovine beetle - ingest-producer, import -->
+      <BMT_GiantSnail MayRequire="biomesteam.biomescaverns">0.2</BMT_GiantSnail>  <!-- giant snail - ingest-strange, import -->
+      <AA_Agaripawn MayRequire="sarg.alphaanimals">0.2</AA_Agaripawn>  <!-- agaripawn - hybrid-native, keep -->
+      <AA_Wildpawn MayRequire="sarg.alphaanimals">0.2</AA_Wildpawn>  <!-- wildpawn - hybrid-native, adjust-keep -->
+      <AA_Wildpod MayRequire="sarg.alphaanimals">0.2</AA_Wildpod>  <!-- wildpod - hybrid-native, adjust-keep -->
+      <BMT_FungalMantis MayRequire="biomesteam.biomescaverns">0.15</BMT_FungalMantis>  <!-- fungal mimic mantis - guardian, import -->
+      <BMT_CaveSpider MayRequire="biomesteam.biomescaverns">0.05</BMT_CaveSpider>  <!-- cave spider - guardian, import -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_Bryolux>10</AB_Bryolux>  <!-- bryolux -->
+      <AB_Glowstool>3</AB_Glowstool>  <!-- glowstool -->
+      <AB_Agarilux>2</AB_Agarilux>  <!-- agarilux -->
+      <AB_GiantAgarilux>2</AB_GiantAgarilux>  <!-- giant agarilux -->
+      <AB_GlowingAgarilux>1</AB_GlowingAgarilux>  <!-- glowing agarilux -->
+      <AB_LilacBeacon>0.5</AB_LilacBeacon>  <!-- lilac beacon -->
+      <AB_WitchesOyster>0.5</AB_WitchesOyster>  <!-- witches' oyster -->
+      <BMT_Dewshrooms>0.5</BMT_Dewshrooms>  <!-- dewshrooms -->
+      <BMT_FruitingBodies>0.5</BMT_FruitingBodies>  <!-- mold fruiting bodies -->
+      <BMT_Nuitae>0.5</BMT_Nuitae>  <!-- nuitae -->
+      <BMT_Wrinklecap>0.5</BMT_Wrinklecap>  <!-- wrinklecap -->
+      <BMT_Arpeau>0.4</BMT_Arpeau>  <!-- arpeau - tree -->
+      <BMT_Nogtyl>0.4</BMT_Nogtyl>  <!-- nogtyl - tree -->
+      <AB_RecurvedStropharia>0.3</AB_RecurvedStropharia>  <!-- recurved stropharia -->
+      <BMT_FlakespireFungus>0.3</BMT_FlakespireFungus>  <!-- flakespire fungus - tree -->
+      <BMT_Pusmelon>0.3</BMT_Pusmelon>  <!-- pusmelon -->
+      <BMT_RustPuff>0.3</BMT_RustPuff>  <!-- rustpuff -->
+      <BMT_Sagecrust>0.3</BMT_Sagecrust>  <!-- sagecrust -->
+      <AB_ArbuscularMycorrhiza>0.2</AB_ArbuscularMycorrhiza>  <!-- arbuscular mycorrhiza -->
+      <AB_SlimyPholiota>0.2</AB_SlimyPholiota>  <!-- slimy pholiota -->
+      <BMT_BleedingTooth>0.2</BMT_BleedingTooth>  <!-- bleeding tooth -->
+      <BMT_Brightbells>0.2</BMT_Brightbells>  <!-- brightbells -->
+      <BMT_CrimsonCap>0.2</BMT_CrimsonCap>  <!-- crimson cap -->
+      <BMT_GreyLady>0.2</BMT_GreyLady>  <!-- Grey Lady -->
+      <BMT_Shinecap>0.2</BMT_Shinecap>  <!-- shine cap - tree -->
+      <BMT_VioletWimple>0.2</BMT_VioletWimple>  <!-- violet wimple -->
+      <BMT_MortalMorelPlant>0.15</BMT_MortalMorelPlant>  <!-- mortal morel -->
+      <AB_AgaricusDomeCap>0.1</AB_AgaricusDomeCap>  <!-- agaricus domecap -->
+      <AB_DribblingCap>0.1</AB_DribblingCap>  <!-- dribbling cap -->
+      <BMT_Skulltop>0.1</BMT_Skulltop>  <!-- skulltop - tree -->
+      <BMT_Blastpod>0.05</BMT_Blastpod>  <!-- blastpod shroom -->
+      <AB_AgariluxPrime>0.01</AB_AgariluxPrime>  <!-- Agarilux Prime -->
+    </wildPlants>
+    <wildPlantRegrowDays>25</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_CrackedLands                               UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
+    the_cracked_lands.md (FROZEN). Replaces the donor `ZBiome_Badlands` (More
+    Vanilla Biomes, Zylleon — a deliberately thin donor whose only real
+    contribution is the shape; the biome's name is THE CRACKED LANDS, owner's pick).
+
+    MEASURED (sheet SS0): 985 tiles, arc 17-116 (median 69, sun ~21 deg above
+    horizon), temp p10/median/p90 9/27/45 C, most mixed relief on the planet.
+
+    Weather: ban 5 is explicit "No rain in the canyons (R-H1); the peaks rain, and
+    those peaks are the Contagion's where they do" — Rain/RainyThunderstorm/
+    FoggyRain/Fog all zeroed. SS4b names the standing state as "Clear, hot, still"
+    plus sandstorms across the flats and dry lightning off the Contagion's storms at
+    the ridge — Clear made dominant, Sandstorm(Odyssey) and DryThunderstorm kept.
+    Snow zeroed (arc/temp band and the sheet's own theme give no basis for it).
+
+    plantDensity trimmed from the donor's own value toward the low end: ban 2 is
+    explicit "No green outside the shade line — a flora def resident on open
+    sun-flats is a violation; the lush rule's thin line, not a region," and SS7's
+    "Soil... not great, but soil" argues the biome is farmable but never abundant.
+    animalDensity kept at the donor's own 0.6 (not disputed by the sheet).
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/the_cracked_lands.json.
+
+    NOT this pass's scope: the flood as an engine event (warning, wall of water,
+    drowning, soil deposition — SS Owed); water chimes, discovery surveys,
+    crack-wax item defs; the Moisture Farmer homestead templates
+    (`MOISTURE_FARM_TEMPLATES_1`); the flier-commute vector line to the Desert
+    sheet; `EXPLOSIVE_PLANT_GROWTH_1`; any world repaint.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_CrackedLands</defName>
+    <label>the Cracked Lands</label>
+    <description>Canyon country below the only dayside mountains that rain: mesas, hoodoos, slot canyons, clay pans split into polygons, dry and cracked and still. Then, rarely and without warning, the water comes down -- violent floods of hot, crud-laden water that are fertilizer, life, death and disaster all at once. It tears the canyon and leaves behind the one thing nowhere else on the dryland ladder has: actual soil, in the shade.</description>
+    <workerClass>VanillaBiomes.BiomeWorker_Badlands</workerClass>
+    <lakeBeachTerrain>Sand</lakeBeachTerrain>
+    <riverbankTerrain>Sand</riverbankTerrain>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>0.6</animalDensity>
+    <plantDensity>0.15</plantDensity>
+    <forageability>0.1</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <texture>World/Biomes/ZBiome_Badlands</texture>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Sand</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>85</Clear>
+      <DryThunderstorm>3</DryThunderstorm>
+      <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">8</Sandstorm>
+      <Fog>0</Fog>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <BMT_MutagenicNorphea MayRequire="biomesteam.biomespollutedlands">0.4</BMT_MutagenicNorphea>  <!-- mutagenic norphea - the-Sealed, keep -->
+      <BMT_ChemSnail MayRequire="biomesteam.biomescaverns">0.3</BMT_ChemSnail>  <!-- chem snail - the-Patient, keep -->
+      <Gornt MayRequire="mlie.starwarsanimalcollection">0.3</Gornt>  <!-- gornt - the-Patient, keep -->
+      <Eopie MayRequire="mlie.starwarsanimalcollection">0.25</Eopie>  <!-- eopie - the-Patient, keep -->
+      <BMT_SandLeaper MayRequire="biomesteam.biomescaverns">0.2</BMT_SandLeaper>  <!-- sand leaper - the-Spenders, adjust-keep -->
+      <CanCell MayRequire="mlie.starwarsanimalcollection">0.2</CanCell>  <!-- can-cell - flier-commuter, keep -->
+      <Convor MayRequire="mlie.starwarsanimalcollection">0.2</Convor>  <!-- convor - flier-commuter, import -->
+      <AA_Murkling MayRequire="sarg.alphaanimals">0.2</AA_Murkling>  <!-- murkling - the-Spenders, adjust-keep -->
+      <BMT_Creature_Mantrap MayRequire="biomesteam.biomespollutedlands">0.15</BMT_Creature_Mantrap>  <!-- mantrap - the-Patient, import -->
+      <Woolamander MayRequire="mlie.starwarsanimalcollection">0.15</Woolamander>  <!-- woolamander - flier-commuter, import -->
+      <AA_SandSquid MayRequire="sarg.alphaanimals">0.1</AA_SandSquid>  <!-- sand squid - the-Sealed, adjust-keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_HardyGrass>1.0</AB_HardyGrass>  <!-- hardy grass -->
+      <GRimMoss>0.8</GRimMoss>  <!-- moss -->
+      <BMT_Plant_TwistingThorngrass>0.5</BMT_Plant_TwistingThorngrass>  <!-- twisting thorngrass -->
+      <BMT_Plant_TwistingThornweed>0.4</BMT_Plant_TwistingThornweed>  <!-- twisting thornweed -->
+      <BMT_Plant_TreeTwistingThornwood>0.2</BMT_Plant_TreeTwistingThornwood>  <!-- twisting thornwood - tree -->
+      <AB_GargantuanLithops>0.15</AB_GargantuanLithops>  <!-- gargantuan lithops -->
+    </wildPlants>
+    <wildPlantRegrowDays>28</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_ExtremeDesert                              UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. R22 stands (`_freeze_rulings_2026-09-07.md`): the dune sea
+    and the deep desert stay ONE owned def, merging design/Jawa/worldbuilding/biomes/
+    dune_sea.md and deep_desert.md (both FROZEN). Splitting them is cheap once owned
+    but is the OWNER's call to reopen, not authored here.
+
+    MEASURED: dune_sea.md's SS2 puts the merged def's arc band at roughly theta 0-45
+    deg (deep dayside, +70 C at the substellar point falling toward +52 C at theta 40);
+    deep_desert.md's SS0 table (region-level, partly superseded by repaint per its own
+    Owed note) names the far ring past the Pyrelands. `_def_bindings_2026-09-09.md`
+    gives the CURRENT painted total: 3,172 tiles.
+
+    allowRoads FALSE, overriding the general "all our biomes allow roads" ruling
+    (RUT_NightsideIce/RUT_TheScald's own comment): dune_sea.md SS6 carries an explicit
+    named ban — "No roads through the deep dune (owner's ruling on the Deep Desert
+    Tribes)." A sheet-specific hard ban outranks the general default.
+
+    Weather: dune_sea.md SS6 bans standing water/ice/fog/rain "of any kind" and bans
+    fire outright (no fuel) — Fog/Rain/RainyThunderstorm/FoggyRain/Snow all zeroed.
+    Clear dominant ("the light is a fixed condition... one source, hard, high,
+    unmoving" SS9). DryThunderstorm kept minimal (dry only, no fuel to ignite — SS6
+    "No fire. There is no fuel"). Sandstorm (Odyssey) kept: the one unidirectional
+    wind that never reverses (SS2) is the biome's whole engine.
+
+    plantDensity/animalDensity kept at the donor's own near-zero values
+    (0.008/0.1): dune_sea.md's own "Roster consequences" section rules it explicitly —
+    "Population target: sparse to the point of discomfort... If the dune sea's roster
+    looks healthy, it is wrong."
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml (generated against rosters/dune_sea_deep_desert.json, the
+    ONE merged roster file R22 already ruled).
+
+    NOT this pass's scope: the Silverbole tree def (deep_desert.md SS4b, name still
+    owner's pick); the sarlacc (deep_desert.md Owed, its own item); the megafauna
+    filter-feeders and glass-nub light-pipe flora (both sheets' SS4/SS10, new-art
+    owed); the wind-grain/yardang map-gen routine; any world repaint.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_ExtremeDesert</defName>
+    <label>the Extreme Desert</label>
+    <description>A corrugated ochre plain under a star that has not moved since the world began, running unbroken to every horizon. Nothing here tracks the sun because the sun does not go anywhere; everything owns a shadow instead, or is buried, or is a giant carrying its own moving shade across a thousand kilometres of nothing. It ends, without a gradient, at a hard green line of river or sea -- and until then, this is the ocean of nothing that line is drawn against.</description>
+    <workerClass>RimWorld.BiomeWorker_ExtremeDesert</workerClass>
+    <settleWarning>Searing heat and a near total lack of arable land make survival here a challenge. Nothing here pursues, but nothing here forgives a mistake either.</settleWarning>
+    <isExtremeBiome>true</isExtremeBiome>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <lakeBeachTerrain>Sand</lakeBeachTerrain>
+    <mudTerrain>Sand</mudTerrain>
+    <riverbankTerrain>Sand</riverbankTerrain>
+    <allowRoads>false</allowRoads>
+    <allowRivers>false</allowRivers>
+    <allowFarmingCamps>false</allowFarmingCamps>
+    <animalDensity>0.1</animalDensity>
+    <plantDensity>0.008</plantDensity>
+    <forageability>0.0</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <texture>World/Biomes/ExtremeDesert</texture>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_OrganDecay</diseaseInc>
+        <commonality>10</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Sand</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>95</Clear>
+      <DryThunderstorm>1</DryThunderstorm>
+      <Fog>0</Fog>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">4</Sandstorm>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <Scavrat MayRequire="mlie.starwarsanimalcollection">0.6</Scavrat>  <!-- Scavrats - ship-vermin, import -->
+      <WompRat MayRequire="mlie.starwarsanimalcollection">0.4</WompRat>  <!-- womp rat - ship-vermin, import -->
+      <Mynock MayRequire="mlie.starwarsanimalcollection">0.3</Mynock>  <!-- mynock - ship-vermin, import -->
+      <VFEI2_Fuelmite MayRequire="oskarpotocki.vfe.insectoid2">0.3</VFEI2_Fuelmite>  <!-- fuelmite - ship-vermin, import -->
+      <AA_Needleroll MayRequire="sarg.alphaanimals">0.3</AA_Needleroll>  <!-- needleroll - grain-scale, adjust-keep -->
+      <Kreetle MayRequire="mlie.starwarsanimalcollection">0.2</Kreetle>  <!-- kreetle - grain-scale, keep -->
+      <WarWyrm MayRequire="mlie.starwarsanimalcollection">0.2</WarWyrm>  <!-- war wyrm - giant, keep -->
+      <KraytDragon MayRequire="mlie.starwarsanimalcollection">0.15</KraytDragon>  <!-- krayt dragon - giant, keep -->
+      <AA_Eyeling MayRequire="sarg.alphaanimals">0.15</AA_Eyeling>  <!-- ikee - grain-scale, adjust-keep -->
+      <Rat>0.1</Rat>  <!-- brown rat - ship-vermin, import -->
+      <GraniteSlug MayRequire="mlie.starwarsanimalcollection">0.1</GraniteSlug>  <!-- granite slug - grain-scale, keep -->
+      <Scurrier MayRequire="mlie.starwarsanimalcollection">0.1</Scurrier>  <!-- scurrier - grain-scale, adjust-keep -->
+      <OuterRim_MSEDroid MayRequire="neronix17.outerrim.droiddepot">0.1</OuterRim_MSEDroid>  <!-- MSE Repair Droid - feral-droid, import -->
+      <OuterRim_SalvageAssistDroid MayRequire="neronix17.outerrim.droiddepot">0.1</OuterRim_SalvageAssistDroid>  <!-- salvage assist droid - feral-droid, import -->
+      <AA_Dunealisk MayRequire="sarg.alphaanimals">0.1</AA_Dunealisk>  <!-- dunealisk - giant-subsurface, import -->
+      <OuterRim_DUMDroid MayRequire="neronix17.outerrim.droiddepot">0.08</OuterRim_DUMDroid>  <!-- DUM Repair Droid - feral-droid, import -->
+      <OuterRim_GNKDroid MayRequire="neronix17.outerrim.droiddepot">0.08</OuterRim_GNKDroid>  <!-- GNK Power Droid - feral-droid, import -->
+      <OuterRim_FX7Droid MayRequire="neronix17.outerrim.droiddepot">0.05</OuterRim_FX7Droid>  <!-- fx-7 medical droid - feral-droid, import -->
+      <OuterRim_MuckrakerDroid MayRequire="neronix17.outerrim.droiddepot">0.05</OuterRim_MuckrakerDroid>  <!-- Muckraker Crab Droid - feral-droid, import -->
+      <AA_BoulderMit MayRequire="sarg.alphaanimals">0.025</AA_BoulderMit>  <!-- bouldermit - giant, keep -->
+      <OuterRim_DestroyerDroid MayRequire="neronix17.outerrim.droiddepot">0.02</OuterRim_DestroyerDroid>  <!-- Destroyer Droid - feral-droid, import -->
+      <Gizka MayRequire="mlie.starwarsanimalcollection">0.01</Gizka>  <!-- gizka - grain-scale, keep -->
+      <GreaterKraytDragon MayRequire="mlie.starwarsanimalcollection">0.001</GreaterKraytDragon>  <!-- greater krayt dragon - giant, keep -->
+      <AA_TetraSlug MayRequire="sarg.alphaanimals">0.0005</AA_TetraSlug>  <!-- tetra slug - giant, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <Plant_Bloddle>0.05</Plant_Bloddle>  <!-- bloddle plant -->
+      <AB_GiantStikehr>0.04</AB_GiantStikehr>  <!-- giant stikehr -->
+    </wildPlants>
+    <wildPlantRegrowDays>35</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_Scarlands                                  UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
+    the_scarlands.md (FROZEN). Replaces the donor `Scarlands` — vanilla ODYSSEY, not
+    a mod (`Defs/Odyssey/BiomeDefs/Scarlands.xml`, first-party ruins layouts, crater
+    gen-steps, junk prefabs and gravcore site hooks). THE LORE IS PARTITIONED (SS0):
+    nothing from SSGM appears here (hard ban 1) — the description/settleWarning
+    above are drawn only from SSP.
+
+    MEASURED (sheet SS0): 90 tiles, all in the Scorch (deep dayside). Sun median
+    +72 deg; temp median 59.4 C; rain zero everywhere.
+
+    Weather: ban 5 (no snow weathers, donor strip) matched — SnowGentle/SnowHard
+    zeroed. ToxRain and Gray Pall kept (both MayRequire-gated, matching "ToxRain and
+    Gray Pall weathers... kept nearly whole" per SS0's donor inventory). Rain-type
+    entries (Rain/RainyThunderstorm/FoggyRain) zeroed: "rain zero everywhere" (SS0
+    MEASURED) plus ban 2 (no fertile ground) argue against any rain-bearing weather.
+
+    plantDensity dropped hard from a normal jungle/plains read: ban 3 is explicit —
+    "No green — the flora palette is black, glass and rust; a green plant def
+    resident here violates the sheet." SS4's only flora are the Glowers (black
+    radiotrophic moss/lichen) — kept low and non-green in spirit even though the
+    actual Glower PlantDef is not authored here (roster's own call).
+
+    terrainsByFertility kept at the donor's own AncientMegastructure/Soil thresholds
+    (first-party Odyssey terrain, "kept nearly whole" per SS0).
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/the_scarlands.json.
+
+    NOT this pass's scope: `SCARLANDS_MECHANICS_1` (mynock ship-infestation, the
+    Scarlands mark hediff, scaria-onset for plated grazers); the SSGM reveal-gated
+    lore ladder (belongs in dialogue/quest text, never a def field, per ban 1); any
+    world repaint.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_Scarlands</defName>
+    <label>the Scarlands</label>
+    <description>Crater fields and slag hills on shattered megastructure floors; bunkers, embankments, ruined turret rings and burnt shield emplacements that all tell the same story, still perfectly legible -- a defense, layered and desperate, facing outward. The ground is poisoned in a way that does not fade and never will, the wildlife is mad, machines defend the place for reasons they do not give, and it is, by every Jawa's flat testimony, cursed.</description>
+    <workerClass>RimWorld.BiomeWorker_Scarlands</workerClass>
+    <settleWarning>Scarlands are inhabited by dangerous insects and rogue mechanoids. Water is toxic and scaria runs rampant among the animals. The Forgotten Sentinels defend the ground; they do not pursue past their lines, and they do not explain.</settleWarning>
+    <lakeBeachTerrain>Gravel</lakeBeachTerrain>
+    <mudTerrain>MarshyTerrain</mudTerrain>
+    <riverbankTerrain>MarshyTerrain</riverbankTerrain>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>1.0</animalDensity>
+    <plantDensity>0.15</plantDensity>
+    <forageability>0.25</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <texture>World/Biomes/Scarlands</texture>
+    <diseaseMtbDays>50</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_OrganDecay</diseaseInc>
+        <commonality>10</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>AncientMegastructure</terrain>
+        <min>-999</min>
+        <max>0.5</max>
+      </li>
+      <li>
+        <terrain>Soil</terrain>
+        <min>0.5</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>50</Clear>
+      <Fog>1</Fog>
+      <DryThunderstorm>1</DryThunderstorm>
+      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">10</GrayPall>
+      <ToxRain MayRequire="Ludeon.RimWorld.Biotech">10</ToxRain>
+      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">6</Overcast>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <Mynock MayRequire="mlie.starwarsanimalcollection">0.5</Mynock>  <!-- mynock - wiring-eater, import -->
+      <VFEI2_Boomtick MayRequire="oskarpotocki.vfe.insectoid2">0.4</VFEI2_Boomtick>  <!-- boomtick - weapon-descendant, keep -->
+      <SW_Electrictick MayRequire="who.vfee.isopodageneline">0.3</SW_Electrictick>  <!-- Electrictick - weapon-descendant, keep -->
+      <BMT_FoundryBeetle MayRequire="biomesteam.biomescaverns">0.18</BMT_FoundryBeetle>  <!-- foundry beetle - plated-grazer, keep -->
+      <AA_SpinedGow MayRequire="sarg.alphaanimals">0.15</AA_SpinedGow>  <!-- spined gow - plated-grazer, keep -->
+      <SW_Electricgryllotalpa MayRequire="who.vfee.isopodageneline">0.15</SW_Electricgryllotalpa>  <!-- Electricgryllotalpa - weapon-descendant, keep -->
+      <RG_Rimclaw MayRequire="regrowth.botr.core">0.1</RG_Rimclaw>  <!-- rimclaw - weapon-descendant, keep -->
+      <AA_Helixien MayRequire="sarg.alphaanimals">0.08</AA_Helixien>  <!-- helixien - mortuary-guild, adjust-keep -->
+      <SW_Juggernautbeetles MayRequire="who.vfee.isopodageneline">0.05</SW_Juggernautbeetles>  <!-- Juggernautbeetles - weapon-descendant, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <BMT_Plant_ScorchedStars>0.25</BMT_Plant_ScorchedStars>  <!-- scorched stars -->
+    </wildPlants>
+    <wildPlantRegrowDays>20</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

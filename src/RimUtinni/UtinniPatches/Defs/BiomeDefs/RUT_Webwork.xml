@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_Webwork                                    UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
+    the_webwork.md (FROZEN). Replaces the donor `AB_FeraliskInfestedJungle` (Alpha
+    Biomes). The species keeps both its names by standing ruling: Wyyyschokk to the
+    galaxy, Feralisk on this world.
+
+    MEASURED live on V26 (sheet SS0): 161 tiles, 0 river tiles, 0 water tiles ("the
+    water is inside," §1, §5 — now literally true on the map per the 2026-09-08
+    amendment). Sun median +51 deg. Temp p10/median/p90 38.6/49.2/58.2 C.
+
+    animalDensity CORRECTED HARD from the donor's 5.4: sheet SS0 rules this
+    explicitly — "Corrected — animalDensity 5.4 inverts to low-but-lethal: this
+    jungle's ordinary wildlife has been eaten (§4b)." Dropped to 1.0 as a DESIGNED
+    interim (same pattern RUT_TheScald/RUT_GreySea used for their own animalDensity)
+    — a real quicktest tune against how the Wyyyschokk's own predation numbers land
+    is still owed. plantDensity kept high (donor 0.9): the thicket "churns against
+    itself" (SS4c) and is explicitly dense, unlike the animal population.
+
+    Weather has no sheet-named signature event beyond "eerily silent" (SS1) and
+    "direct sunlight is lethal to the owners; clearings are the only safe ground"
+    (SS5) — read as a mechanic (light-moat, SS7b), not a weather-commonality field.
+    Kept close to the donor's own jungle table with Clear raised to dominant (a
+    silent, sun-capped canopy jungle, not a storm-driven one); Snow zeroed (58 C max
+    temp makes it absurd).
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/the_webwork.json. 🔴 CORRECTION
+    (this file, review pass): an earlier draft of this comment claimed the
+    Wyyyschokk/Feralisk is never placed as a wildAnimals entry — that is WRONG.
+    rosters/the_webwork.json §fauna explicitly lands it at commonality 0.4,
+    action "import" (§4's "THE species... dormant-until-triggered"), and it is
+    present below. Ban 1 ("no tamed/traded/negotiated Wyyyschokk") is a
+    TAMEABILITY restriction on the RaceDef, not a ban on wild commonality-rolled
+    spawning — the two are independent fields; nothing here contradicts the ban.
+
+    NOT this pass's scope: `WEBWORK_MECHANICS_1` in full (web-sense MapComponent,
+    Shokk-bound hediff, the light-moat, commandable adhesion, beetle/mite mechanics,
+    margin creep); `SHOKKWEAVE_SOLE_SOURCE_1`; any world repaint.
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_Webwork</defName>
+    <label>the Webwork</label>
+    <description>The place where the plants grew so dense and thick that they drank their entire river -- soaked it up into a thicket of terrible, nightmare plants ever churning against itself. The map shows a jungle with no water because the water is inside. It is eerily silent -- most of the animals have been eaten, and few will enter. Those who do frequently discover a shadow, seconds before it lands upon them, and know nothing more.</description>
+    <workerClass>AlphaBiomes.BiomeWorker_FeraliskInfestedJungle</workerClass>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>1.0</animalDensity>
+    <plantDensity>0.9</plantDensity>
+    <forageability>1.0</forageability>
+    <movementDifficulty>2</movementDifficulty>
+    <texture>Biomes/AB_FeraliskInfestedJungle</texture>
+    <diseaseMtbDays>35</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>160</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SleepingSickness</diseaseInc>
+        <commonality>140</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>AB_DenseMud</terrain>
+        <min>-999</min>
+        <max>0.35</max>
+      </li>
+      <li>
+        <terrain>AB_DenseGrass</terrain>
+        <min>0.35</min>
+        <max>0.87</max>
+      </li>
+      <li>
+        <terrain>SoilRich</terrain>
+        <min>0.87</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>50</Clear>
+      <Fog>5</Fog>
+      <Rain>5</Rain>
+      <DryThunderstorm>1</DryThunderstorm>
+      <RainyThunderstorm>5</RainyThunderstorm>
+      <FoggyRain>3</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <Wyyyschokk MayRequire="mlie.starwarsanimalcollection">0.4</Wyyyschokk>  <!-- wyyyschokk - owner, import -->
+      <BMT_JewelBeetle MayRequire="biomesteam.biomescaverns">0.3</BMT_JewelBeetle>  <!-- jewel beetle - anchor-beetle, import -->
+      <Kreetle MayRequire="mlie.starwarsanimalcollection">0.2</Kreetle>  <!-- kreetle - trace-prey, adjust-keep -->
+      <Shyrack MayRequire="mlie.starwarsanimalcollection">0.2</Shyrack>  <!-- shyrack - trace-flier, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_JungleTree>1.1</AB_JungleTree>  <!-- deep jungle tree - tree -->
+      <RG_Plant_TropicalChokevine>1.0</RG_Plant_TropicalChokevine>  <!-- chokevine -->
+      <AB_TangleTea>0.4</AB_TangleTea>  <!-- tangle tea -->
+      <Plant_TookeTrap_Wild>0.3</Plant_TookeTrap_Wild>  <!-- wild tooke-trap plant -->
+      <AB_Gomphoeria>0.15</AB_Gomphoeria>  <!-- gomphoeria -->
+      <AB_RedBugloss>0.07</AB_RedBugloss>  <!-- red bugloss -->
+      <AB_Aaklac>0.05</AB_Aaklac>  <!-- aaklac -->
+    </wildPlants>
+    <wildPlantRegrowDays>15</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

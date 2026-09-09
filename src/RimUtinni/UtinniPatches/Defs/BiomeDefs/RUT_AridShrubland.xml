@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_AridShrubland                              UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
+    arid_shrubland.md (FROZEN).
+
+    MEASURED (sheet SS0): 665 tiles, arc p10/median/p90 62.1/82.2/102.3 (sun 9.2 deg
+    above horizon at the core), temp p10/median/p90 -0.8/19.7/32.1 C, flat core
+    (312/361 core tiles). Thematic handle: "the hush," gesture "everything leans
+    toward the light."
+
+    Weather is the sheet's whole mechanism: ban 1 is explicit "No rain (planet-wide,
+    R-H1). Fog only" — so Rain/RainyThunderstorm/FoggyRain are zeroed and Fog carries
+    the biome (SS3 "the only water is fog on that wind"). Snow zeroed to match: the
+    sheet names exactly one water source (fog) and nothing else. Clear stays present
+    (SS5 "always wind," not always fog) but ban 5 also stands — "No still-air
+    baseline... calm exists only as the Stall event" — a wind-hediff/event concern,
+    not a weather-commonality field, carried here as a flag rather than a value
+    change (no WeatherDef exists yet for the Stall/Gale; SS Owed).
+
+    terrainsByFertility kept at the donor's own Sand/Soil/SoilRich thresholds: the
+    sheet's own SS4 "Sand is gone — held down by roots... the ground is root-bound
+    crust" reads as a texture/graphic note (ban 7 bans open SAND TERRAIN on core
+    tiles), not a threshold change this pass can safely re-author without inventing a
+    new TerrainDef; flagged rather than invented.
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/arid_shrubland.json.
+
+    NOT this pass's scope: venomvine as a dungeon-thicket TerrainDef/structure; the
+    sweetline trees (owner's pick, huge/ancient, TREE_GRAPHICS_OWNERSHIP_1); the
+    giants, snake-analogs, bird-analogs (names owner's pick, SS Owed); the Stall/Gale
+    WeatherDefs and their AI hooks (SS Owed, engine feasibility pass not run); the
+    band-mend repaint (WORLDMAP_DESERT_BAND_REPAIR_1).
+
+  -->
+
+  <BiomeDef>
+    <defName>RUT_AridShrubland</defName>
+    <label>the arid shrubland</label>
+    <description>Knee-high silver-green fuzz at eerily even spacing, running unbroken to every horizon, all of it leaning the same way, all of it moving -- because the wind never stops. No rain falls here; the only water is fog carried in on the ground-wind, thinning with every sunward metre. Sightlines are gone under the fuzz-canopy and cover is everywhere, for everything, all the time: the moment the environment stops trying to kill you, the danger becomes each other.</description>
+    <workerClass>RimWorld.BiomeWorker_AridShrubland</workerClass>
+    <riverbankTerrain>Riverbank</riverbankTerrain>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>false</allowFarmingCamps>
+    <animalDensity>1.8</animalDensity>
+    <plantDensity>0.35</plantDensity>
+    <forageability>0.5</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <texture>World/Biomes/AridShrubland1</texture>
+    <diseaseMtbDays>65</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_OrganDecay</diseaseInc>
+        <commonality>10</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Sand</terrain>
+        <min>-999</min>
+        <max>0.45</max>
+      </li>
+      <li>
+        <terrain>Soil</terrain>
+        <min>0.45</min>
+        <max>0.9</max>
+      </li>
+      <li>
+        <terrain>SoilRich</terrain>
+        <min>0.9</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>30</Clear>
+      <Fog>45</Fog>
+      <DryThunderstorm>1</DryThunderstorm>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">1</GrayPall>
+      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">5</Overcast>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <FrilledGorg MayRequire="mlie.starwarsanimalcollection">1.0</FrilledGorg>  <!-- frilled gorg - small-runway, keep -->
+      <Gorg MayRequire="mlie.starwarsanimalcollection">1.0</Gorg>  <!-- gorg - small-runway, keep -->
+      <Iriaz MayRequire="mlie.starwarsanimalcollection">1.0</Iriaz>  <!-- iriaz - small-herd, keep -->
+      <LongtailGorg MayRequire="mlie.starwarsanimalcollection">1.0</LongtailGorg>  <!-- longtail gorg - medium-interface, keep -->
+      <Eopie MayRequire="mlie.starwarsanimalcollection">0.8</Eopie>  <!-- eopie - medium-pack, keep -->
+      <Kreetle MayRequire="mlie.starwarsanimalcollection">0.8</Kreetle>  <!-- kreetle - small-runway, keep -->
+      <Lothcat MayRequire="mlie.starwarsanimalcollection">0.8</Lothcat>  <!-- loth-cat - small-runway, keep -->
+      <Mudhorn MayRequire="mlie.starwarsanimalcollection">0.8</Mudhorn>  <!-- mudhorn - huge-predator-exception, keep -->
+      <Ronto MayRequire="mlie.starwarsanimalcollection">0.8</Ronto>  <!-- ronto - huge-grazer, keep -->
+      <Scurrier MayRequire="mlie.starwarsanimalcollection">0.8</Scurrier>  <!-- scurrier - small-runway, keep -->
+      <Sketto MayRequire="mlie.starwarsanimalcollection">0.8</Sketto>  <!-- sketto - small-runway, keep -->
+      <BMT_ImperialToad MayRequire="biomesteam.biomescaverns">0.7</BMT_ImperialToad>  <!-- imperial toad - small-runway, keep -->
+      <Terrorworm MayRequire="mlie.horrors">0.7</Terrorworm>  <!-- terrorworm - medium-tunnel, keep -->
+      <Igitz MayRequire="mlie.starwarsanimalcollection">0.7</Igitz>  <!-- igitz - small-runway, keep -->
+      <Urusai MayRequire="mlie.starwarsanimalcollection">0.7</Urusai>  <!-- urusai - medium-interface, keep -->
+      <Kybuck MayRequire="mlie.starwarsanimalcollection">0.6</Kybuck>  <!-- kybuck - medium-runner, keep -->
+      <Massiff MayRequire="mlie.starwarsanimalcollection">0.6</Massiff>  <!-- massiff - medium-interface, keep -->
+      <Scavrat MayRequire="mlie.starwarsanimalcollection">0.6</Scavrat>  <!-- Scavrats - ship-vermin, import -->
+      <Bantha MayRequire="mlie.starwarsanimalcollection">0.5</Bantha>  <!-- bantha - huge-grazer, keep -->
+      <Pufferpig MayRequire="mlie.starwarsanimalcollection">0.5</Pufferpig>  <!-- Pufferpig - small-runway, keep -->
+      <Anooba MayRequire="mlie.starwarsanimalcollection">0.4</Anooba>  <!-- anooba - medium-interface, adjust-keep -->
+      <Corinathoth MayRequire="mlie.starwarsanimalcollection">0.4</Corinathoth>  <!-- corinathoth - huge-grazer, keep -->
+      <Gizka MayRequire="mlie.starwarsanimalcollection">0.4</Gizka>  <!-- gizka - small-runway, keep -->
+      <Nuna MayRequire="mlie.starwarsanimalcollection">0.4</Nuna>  <!-- nuna - small-runway, keep -->
+      <WompRat MayRequire="mlie.starwarsanimalcollection">0.4</WompRat>  <!-- womp rat - ship-vermin, import -->
+      <Worrt MayRequire="mlie.starwarsanimalcollection">0.4</Worrt>  <!-- worrt - small-runway, keep -->
+      <BMT_MossBeetle MayRequire="biomesteam.biomescaverns">0.3</BMT_MossBeetle>  <!-- moss beetle - small-runway, keep -->
+      <Mynock MayRequire="mlie.starwarsanimalcollection">0.3</Mynock>  <!-- mynock - ship-vermin, import -->
+      <VFEI2_Fuelmite MayRequire="oskarpotocki.vfe.insectoid2">0.3</VFEI2_Fuelmite>  <!-- fuelmite - ship-vermin, import -->
+      <AA_Cactipine MayRequire="sarg.alphaanimals">0.25</AA_Cactipine>  <!-- cactipine - small-venom, keep -->
+      <Grank MayRequire="mlie.starwarsanimalcollection">0.2</Grank>  <!-- Grank - medium-interface, keep -->
+      <Qormot MayRequire="mlie.starwarsanimalcollection">0.2</Qormot>  <!-- qormot - medium-interface, keep -->
+      <Strill MayRequire="mlie.starwarsanimalcollection">0.2</Strill>  <!-- strill - medium-interface, keep -->
+      <Cannok MayRequire="mlie.starwarsanimalcollection">0.16</Cannok>  <!-- cannok - medium-interface, keep -->
+      <Whisperbird MayRequire="mlie.starwarsanimalcollection">0.15</Whisperbird>  <!-- whisperbird - flier-interface, keep -->
+      <Rat>0.1</Rat>  <!-- brown rat - ship-vermin, import -->
+      <Pikobis MayRequire="mlie.starwarsanimalcollection">0.1</Pikobis>  <!-- pikobis - medium-runner, keep -->
+      <OuterRim_MSEDroid MayRequire="neronix17.outerrim.droiddepot">0.1</OuterRim_MSEDroid>  <!-- MSE Repair Droid - feral-droid, import -->
+      <OuterRim_SalvageAssistDroid MayRequire="neronix17.outerrim.droiddepot">0.1</OuterRim_SalvageAssistDroid>  <!-- salvage assist droid - feral-droid, import -->
+      <AA_Needlepost MayRequire="sarg.alphaanimals">0.1</AA_Needlepost>  <!-- needlepost - small-venom, adjust-keep -->
+      <AA_Wildpawn MayRequire="sarg.alphaanimals">0.1</AA_Wildpawn>  <!-- wildpawn - medium-venom, keep -->
+      <Convor MayRequire="mlie.starwarsanimalcollection">0.08</Convor>  <!-- convor - flier-interface, keep -->
+      <Skalder MayRequire="mlie.starwarsanimalcollection">0.08</Skalder>  <!-- skalder - huge-grazer, keep -->
+      <Vulptex MayRequire="mlie.starwarsanimalcollection">0.08</Vulptex>  <!-- vulptex - small-runway, keep -->
+      <OuterRim_DUMDroid MayRequire="neronix17.outerrim.droiddepot">0.08</OuterRim_DUMDroid>  <!-- DUM Repair Droid - feral-droid, import -->
+      <OuterRim_GNKDroid MayRequire="neronix17.outerrim.droiddepot">0.08</OuterRim_GNKDroid>  <!-- GNK Power Droid - feral-droid, import -->
+      <OuterRim_FX7Droid MayRequire="neronix17.outerrim.droiddepot">0.05</OuterRim_FX7Droid>  <!-- fx-7 medical droid - feral-droid, import -->
+      <OuterRim_MuckrakerDroid MayRequire="neronix17.outerrim.droiddepot">0.05</OuterRim_MuckrakerDroid>  <!-- Muckraker Crab Droid - feral-droid, import -->
+      <FeralNerf MayRequire="mlie.starwarsanimalcollection">0.04</FeralNerf>  <!-- feral nerf - medium-runner, keep -->
+      <Porg MayRequire="mlie.starwarsanimalcollection">0.04</Porg>  <!-- porg - small-runway, keep -->
+      <AA_Wildpod MayRequire="sarg.alphaanimals">0.025</AA_Wildpod>  <!-- wildpod - huge-sessile, keep -->
+      <Voorpak MayRequire="mlie.starwarsanimalcollection">0.02</Voorpak>  <!-- voorpak - small-runway, keep -->
+      <OuterRim_DestroyerDroid MayRequire="neronix17.outerrim.droiddepot">0.02</OuterRim_DestroyerDroid>  <!-- Destroyer Droid - feral-droid, import -->
+      <KowakianMonkeyLizard MayRequire="mlie.starwarsanimalcollection">0.01</KowakianMonkeyLizard>  <!-- kowakian monkey-lizard - small-runway, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <Plant_ShrubLow>0.9</Plant_ShrubLow>  <!-- low grell -->
+      <RG_Plant_AridGrass>0.5</RG_Plant_AridGrass>  <!-- grass -->
+      <Plant_Brambles>0.3</Plant_Brambles>  <!-- brambles -->
+      <Plant_Bush>0.3</Plant_Bush>  <!-- grellbush -->
+      <Plant_Ripthorn>0.3</Plant_Ripthorn>  <!-- ripthorn -->
+      <Plant_HealrootWild>0.25</Plant_HealrootWild>  <!-- wild healroot -->
+      <Plant_Nysyllin_Wild>0.22</Plant_Nysyllin_Wild>  <!-- wild nysyllin plant -->
+      <RG_Plant_CreepStern>0.2</RG_Plant_CreepStern>  <!-- creep stern -->
+      <RG_Plant_CrimsonCushion>0.2</RG_Plant_CrimsonCushion>  <!-- crimson cushion -->
+      <RG_Plant_Dervish>0.2</RG_Plant_Dervish>  <!-- dervish -->
+    </wildPlants>
+    <wildPlantRegrowDays>27</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>
