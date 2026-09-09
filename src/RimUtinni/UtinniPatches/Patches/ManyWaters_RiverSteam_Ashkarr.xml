@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Ash'karr's river steam, wired as DATA (MANYWATERS_GENERIC_SPLIT_1).
+
+       ManyWaters (mandrake.rm.manywaters) is a RimMandrake-tier generic
+       water-effects engine, so it names no biome of its own. Until this patch
+       existed, MapComponent_RiverSteam gated on the literal string
+       "ZBiome_Grasslands" inside the engine's C# — backwards: which biome
+       steams is campaign wiring, and campaign wiring lives here.
+
+       ZBiome_Grasslands is zylle's More Vanilla Biomes grasslands def,
+       reskinned as the Pyrelands ("stormy savanna") by BiomeNames_Ashkarr.xml
+       and friends. See design/Jawa/worldbuilding — ASHKARR_WORLD_DEFINITION.md's
+       biome table.
+
+       ⚠️ Gated twice, both deliberately:
+       - PatchOperationFindMod on ManyWaters, because a `Class=` naming a type
+         no loaded assembly has DISCARDS THE WHOLE BiomeDef, silently, and
+         takes every biome in that file with it. If ManyWaters is cut, this
+         must be a no-op, not a dead grassland.
+       - PatchOperationConditional on the def itself, because
+         ZBiome_Grasslands comes from a third-party mod that may not be
+         active; a bare Add against a missing xpath is a patch error.
+
+       🔑 REFACTOR, NOT A FEATURE CHANGE. Every field on
+       RiverSteamBiomeExtension defaults to the value the engine used while
+       the biome was hardcoded (Steam fleck, 90~260 tick gap, 1~1.8 scale,
+       60~120 deg, 0.15~0.3 speed), so this empty declaration reproduces the
+       old behaviour exactly. Override a field here — never in the engine — if
+       the Pyrelands should ever steam differently from anywhere else. -->
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>ManyWaters</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]</xpath>
+      <match Class="PatchOperationConditional">
+        <!-- Checked against More Vanilla Biomes 1.6's own
+             Defs/BiomeDefs/ZBiome_Grasslands.xml, 2026-09-08: no
+             <modExtensions> there, so the nomatch branch is the live one.
+             The match branch exists because a SECOND <modExtensions> element
+             on one def is not a merge — the loader reads one and the other's
+             contents are silently gone. -->
+        <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/modExtensions</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/modExtensions</xpath>
+          <value>
+            <li Class="RiverSteamHook.RiverSteamBiomeExtension" />
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]</xpath>
+          <value>
+            <modExtensions>
+              <li Class="RiverSteamHook.RiverSteamBiomeExtension" />
+            </modExtensions>
+          </value>
+        </nomatch>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>
