@@ -39,10 +39,7 @@
     </products>
     <workSkill>Crafting</workSkill>
     <skillRequirements>
-      <li>
-        <skill>Crafting</skill>
-        <minLevel>3</minLevel>
-      </li>
+      <Crafting>3</Crafting>
     </skillRequirements>
     <recipeUsers>
       <li>HandTailoringBench</li>

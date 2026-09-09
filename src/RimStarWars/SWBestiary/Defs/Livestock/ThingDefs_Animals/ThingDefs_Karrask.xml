@@ -118,7 +118,6 @@
       <baseHungerRate>0.2</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
       <leatherDef>Leather_Plain</leatherDef>
-      <leatherLabel>karrask hide</leatherLabel>
       <meatLabel>karrask meat</meatLabel>
       <roamMtbDays>5</roamMtbDays>
       <gestationPeriodDays>10</gestationPeriodDays>
