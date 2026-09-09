@@ -7,21 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T07:27:32Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-09T14:53:31Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
 
-## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
+## BIOME_FAUNA_ASSIGNMENT_SITTING_1 Joint sitting: review all biome sheets, finish remaining biome descriptions (candidates: AB_RockyCrags, AB_MycoticJungle), then assign fauna/flora per sheet laws — prep pack being built overnight 2026-09-05
 state:    ready
 row:      unassigned
-needs:    bridge
+needs:    owner
 target:   v1
 kind:     task
-summary:  WORLDMAPFINALREVIEW1 — the studio review: is this THE map?
-prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
+summary:  BIOMEFAUNAASSIGNMENTSITTING1 — the morning sitting, prepped
+prose:    infrastructure/state/items/BIOME_FAUNA_ASSIGNMENT_SITTING_1.md
 
 # IN PROGRESS
 
@@ -126,6 +126,16 @@ waiting:  needs `deploy`, game is UP
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
+## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is UP
+summary:  WORLDMAPFINALREVIEW1 — the studio review: is this THE map?
+prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
+
 # NOT THIS TARGET
 
 _none._
@@ -153,16 +163,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/LOCAL_IMAGEGEN_TRACK_PARKED_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/LOCAL_IMAGEGEN_TRACK_PARKED_1.md
-
-## BIOME_FAUNA_ASSIGNMENT_SITTING_1 Joint sitting: review all biome sheets, finish remaining biome descriptions (candidates: AB_RockyCrags, AB_MycoticJungle), then assign fauna/flora per sheet laws — prep pack being built overnight 2026-09-05
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  BIOMEFAUNAASSIGNMENTSITTING1 — the morning sitting, prepped
-prose:    infrastructure/state/items/BIOME_FAUNA_ASSIGNMENT_SITTING_1.md
 
 ## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
 state:    proposed
@@ -470,6 +470,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/COMPANION_SILENT_FAILURE_HARDENING_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  Companion silent-failure hardening
 prose:    infrastructure/state/items/COMPANION_SILENT_FAILURE_HARDENING_1.md
