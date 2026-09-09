@@ -1,0 +1,1395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    The full flora raid named in the_rot.md §7b: marsh fungi (nuitae, wrinklecap,
+    nogtyl, arpeau), dewshrooms, fruiting bodies, pusmelon, rust puff, sagecrust,
+    flakespire, bleeding tooth, crimson cap, violet wimple, grey lady, shinecap,
+    mortal morel, "inkcap" and the Skultop defender, plus dulcis and blastpod (drugs
+    bullet). Ported from vendor/mod_sources/BiomesCaverns_src 1.6/Defs/Plants/*.xml,
+    field-for-field, onto RUT_CavePlantBase/RUT_CaveTreeBase/RUT_CaveBushBase or plain
+    vanilla PlantBase/TreeBase where the donor used those directly. All donor
+    `thingClass>BMT.BiomesPlant<` overrides dropped (custom donor class; vanilla Plant
+    behavior is used instead) and all `BiomesCore.DefModExtensions.*` tuning
+    extensions dropped, so none of this needs BiomesCore or BiomesCaverns present.
+
+    Identity note: the_rot.md's flora bullet names "inkcap (fiber, no light)" but no
+    BMT_Inkcap def exists in the donor's 1.6 source. Resolved as BMT_MoonlessStripesPlant
+    ("moonless stripes") — the donor's only no-light-requirement (growMinGlow 0) fiber
+    plant, and the source of the moonless-stripes carpet material this same sheet
+    entry names. Flagged here as a judgment call, not a guess at an absent defName.
+
+    Skultop's defense mechanic uses AlphaBiomes' own CompProperties_GasProducer
+    (fields verified against vendor/mod_sources/AlphaBiomes_src, same mechanism as
+    AB_AgariluxPrime) rather than guessing at BiomesCore's spore comp — AlphaBiomes is
+    already a hard dependency of this biome (RUT_TheRot.xml's workerClass).
+
+    RUT_BlastpodShroom (blastpod -> chemfuel): ruled WILD-ONLY, owner 2026-09-06 — "not
+    so bad as long as we're harvesting it" — so sowWork/sowMinSkill/sowTags/
+    sowResearchPrerequisites are all dropped; it can only ever be wild-harvested.
+  -->
+
+  <!-- ============== Skulltop — the biome's lesser defender ============== -->
+  <ThingDef ParentName="RUT_CaveTreeBase">
+    <defName>RUT_Skulltop</defName>
+    <label>skulltop</label>
+    <description>An extremely deadly mushroom that steadily releases polluting toxic spores into the air. These spores rapidly produce toxic buildup in creatures not immune to poisons.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Skulltop/Skulltop</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.1</Nutrition>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <pathCost>60</pathCost>
+    <blockWind>false</blockWind>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>8</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <soundHarvesting>Harvest_Standard</soundHarvesting>
+      <soundHarvestFinish>Harvest_Standard_Finish</soundHarvestFinish>
+      <visualSizeRange>0.3~0.7</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>500</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+      <neverBlightable>true</neverBlightable>
+      <dieFromToxicFallout>False</dieFromToxicFallout>
+      <pollution>Any</pollution>
+      <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
+    </plant>
+    <selectable>true</selectable>
+    <minifiedDef>MinifiedTree</minifiedDef>
+    <comps>
+      <li Class="AlphaBiomes.CompProperties_GasProducer" MayRequire="sarg.alphabiomes">
+        <gasType>AB_MycoticSpores</gasType>
+        <rate>0.15</rate>
+        <radius>5</radius>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ============== Dewshrooms ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_Dewshrooms</defName>
+    <label>dewshrooms</label>
+    <description>Dewshrooms light up to attract small prey, which becomes trapped in their sticky gills.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Seadew</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilitySensitivity>0.0</fertilitySensitivity>
+      <growDays>3.5</growDays>
+      <fertilityMin>0.05</fertilityMin>
+      <maxMeshCount>9</maxMeshCount>
+      <visualSizeRange>0.3~0.5</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>8</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3.9</glowRadius>
+        <glowColor>(15,104,106,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ============== Fruiting bodies ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_FruitingBodies</defName>
+    <label>mold fruiting bodies</label>
+    <description>The fruiting bodies of a mold that grows in caverns.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/FruitingBodies</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilitySensitivity>0.0</fertilitySensitivity>
+      <growDays>4.5</growDays>
+      <fertilityMin>0.05</fertilityMin>
+      <pollution>Any</pollution>
+      <maxMeshCount>25</maxMeshCount>
+      <visualSizeRange>0.3~0.5</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>250</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Nuitae (+ marsh variant) ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_Nuitae</defName>
+    <label>nuitae</label>
+    <description>While its cap's exterior is largely dark in color, its underside glows brightly. It grows most often in water or extremely wet environments.</description>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Flammability>0.0</Flammability>
+      <Nutrition>0.60</Nutrition>
+    </statBases>
+    <selectable>true</selectable>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Nuitae</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <ingestible/>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <pollution>Any</pollution>
+      <growDays>3</growDays>
+      <harvestWork>80</harvestWork>
+      <visualSizeRange>0.4~0.6</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <interferesWithRoof>false</interferesWithRoof>
+      <wildTerrainTags>
+        <li>Mud</li>
+        <li>WaterFreshShallow</li>
+        <li>WaterMarshy</li>
+        <li>MarshySoil</li>
+      </wildTerrainTags>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_NuitaeMarsh</defName>
+    <label>nuitae</label>
+    <description>While its cap's exterior is largely dark in color, its underside glows brightly. It grows most often in water or extremely wet environments.</description>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Flammability>0.0</Flammability>
+      <Nutrition>0.60</Nutrition>
+    </statBases>
+    <selectable>true</selectable>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Nuitae</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <ingestible/>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <pollution>Any</pollution>
+      <growDays>3</growDays>
+      <harvestWork>80</harvestWork>
+      <visualSizeRange>0.4~0.6</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <interferesWithRoof>false</interferesWithRoof>
+      <wildTerrainTags>
+        <li>MarshySoil</li>
+      </wildTerrainTags>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Wrinklecap (+ marsh variant) ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_Wrinklecap</defName>
+    <label>wrinklecap</label>
+    <description>A subterranean fungus that grows in damp environments. It is often eaten by fungivores.</description>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Flammability>0.0</Flammability>
+      <Nutrition>1.20</Nutrition>
+    </statBases>
+    <selectable>true</selectable>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Wrinklecap</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <ingestible/>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>3</growDays>
+      <harvestWork>80</harvestWork>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.7~0.85</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <interferesWithRoof>false</interferesWithRoof>
+      <wildTerrainTags>
+        <li>Mud</li>
+        <li>WaterFreshShallow</li>
+        <li>WaterMarshy</li>
+        <li>MarshySoil</li>
+      </wildTerrainTags>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3.9</glowRadius>
+        <glowColor>(126, 108, 155, 0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_WrinklecapMarsh</defName>
+    <label>wrinklecap</label>
+    <description>A subterranean fungus that grows in damp environments. It is often eaten by fungivores.</description>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Flammability>0.0</Flammability>
+      <Nutrition>1.20</Nutrition>
+    </statBases>
+    <selectable>true</selectable>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Wrinklecap</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <ingestible/>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>3</growDays>
+      <harvestWork>80</harvestWork>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.7~0.85</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <interferesWithRoof>false</interferesWithRoof>
+      <wildTerrainTags>
+        <li>MarshySoil</li>
+      </wildTerrainTags>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3.9</glowRadius>
+        <glowColor>(126, 108, 155, 0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ============== Arpeau (+ green variant), aquatic tree -> mushroom log ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_Arpeau</defName>
+    <label>arpeau</label>
+    <description>Fast-growing, but doesn't yield much usable material. Aquatic fungus.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Arpeau</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.2, 0.35, 0.13)</volume>
+        <offset>(0,0,-0.42)</offset>
+      </shadowData>
+    </graphicData>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <blockWind>true</blockWind>
+    <statBases>
+      <Beauty>2</Beauty>
+      <Flammability>0.0</Flammability>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>150</Mass>
+    </statBases>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.25</fillPercent>
+    <minifiedDef>MinifiedTree</minifiedDef>
+    <rotatable>false</rotatable>
+    <ingestible>
+      <foodType>Tree</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <lifespanDaysPerGrowDays>9</lifespanDaysPerGrowDays>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <soundHarvesting>Harvest_Tree</soundHarvesting>
+      <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
+      <sowWork>4000</sowWork>
+      <sowMinSkill>6</sowMinSkill>
+      <sowResearchPrerequisites>
+        <li>TreeSowing</li>
+      </sowResearchPrerequisites>
+      <sowTags Inherit="False">
+        <li MayRequire="vanillaexpanded.vplantsemore">VCE_Aquatic</li>
+      </sowTags>
+      <wildTerrainTags>
+        <li>Mud</li>
+        <li>WaterFreshShallow</li>
+        <li>WaterMarshy</li>
+      </wildTerrainTags>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <wildClusterRadius>20</wildClusterRadius>
+      <wildClusterWeight>1</wildClusterWeight>
+      <growDays>5</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestWork>800</harvestWork>
+      <harvestYield>20</harvestYield>
+      <wildOrder>1</wildOrder>
+      <neverBlightable>true</neverBlightable>
+      <harvestedThingDef>RUT_MushroomLog</harvestedThingDef>
+      <harvestMinGrowth>0.40</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <blockAdjacentSow>true</blockAdjacentSow>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+      <treeCategory>Full</treeCategory>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <interferesWithRoof>false</interferesWithRoof>
+      <harvestTag>Wood</harvestTag>
+      <visualSizeRange>1.5~2.5</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>4</glowRadius>
+        <glowColor>(78, 226, 229, 0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_GreenArpeau</defName>
+    <label>arpeau</label>
+    <description>Fast-growing, but doesn't yield much usable material. Aquatic fungus.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/ArpeauGreen</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.2, 0.35, 0.13)</volume>
+        <offset>(0,0,-0.42)</offset>
+      </shadowData>
+    </graphicData>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <blockWind>true</blockWind>
+    <statBases>
+      <Beauty>2</Beauty>
+      <Flammability>0.0</Flammability>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>150</Mass>
+    </statBases>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.25</fillPercent>
+    <minifiedDef>MinifiedTree</minifiedDef>
+    <rotatable>false</rotatable>
+    <ingestible>
+      <foodType>Tree</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <lifespanDaysPerGrowDays>9</lifespanDaysPerGrowDays>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <soundHarvesting>Harvest_Tree</soundHarvesting>
+      <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
+      <sowWork>4000</sowWork>
+      <sowMinSkill>6</sowMinSkill>
+      <sowResearchPrerequisites>
+        <li>TreeSowing</li>
+      </sowResearchPrerequisites>
+      <sowTags Inherit="False">
+        <li MayRequire="vanillaexpanded.vplantsemore">VCE_Aquatic</li>
+      </sowTags>
+      <wildTerrainTags>
+        <li>Mud</li>
+        <li>WaterFreshShallow</li>
+        <li>WaterMarshy</li>
+        <li>MarshySoil</li>
+      </wildTerrainTags>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <wildClusterRadius>20</wildClusterRadius>
+      <wildClusterWeight>1</wildClusterWeight>
+      <growDays>5</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestWork>800</harvestWork>
+      <harvestYield>20</harvestYield>
+      <wildOrder>1</wildOrder>
+      <neverBlightable>true</neverBlightable>
+      <harvestedThingDef>RUT_MushroomLog</harvestedThingDef>
+      <harvestMinGrowth>0.40</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <blockAdjacentSow>true</blockAdjacentSow>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+      <treeCategory>Full</treeCategory>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <interferesWithRoof>false</interferesWithRoof>
+      <harvestTag>Wood</harvestTag>
+      <visualSizeRange>1.5~2.5</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>4</glowRadius>
+        <glowColor>(78, 226, 229, 0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ============== Nogtyl (+ marsh variant) ============== -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RUT_Nogtyl</defName>
+    <label>nogtyl</label>
+    <description>A strong wood-like mushroom. Fast-growing, but doesn't yield much usable material. It can only be grown by people on marshy soil.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Nogtyl</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.2, 0.35, 0.13)</volume>
+        <offset>(0,0,-0.42)</offset>
+      </shadowData>
+    </graphicData>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <blockWind>true</blockWind>
+    <statBases>
+      <Beauty>2</Beauty>
+      <Flammability>0.0</Flammability>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>150</Mass>
+    </statBases>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.25</fillPercent>
+    <minifiedDef>MinifiedTree</minifiedDef>
+    <rotatable>false</rotatable>
+    <ingestible>
+      <foodType>Tree</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <lifespanDaysPerGrowDays>9</lifespanDaysPerGrowDays>
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0.7</fertilitySensitivity>
+      <pollution>Any</pollution>
+      <soundHarvesting>Harvest_Tree</soundHarvesting>
+      <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <growDays>7</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestWork>500</harvestWork>
+      <harvestYield>20</harvestYield>
+      <wildOrder>1</wildOrder>
+      <neverBlightable>true</neverBlightable>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.40</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <blockAdjacentSow>true</blockAdjacentSow>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+      <treeCategory>Full</treeCategory>
+      <wildTerrainTags>
+        <li>Mud</li>
+        <li>WaterFreshShallow</li>
+        <li>WaterMarshy</li>
+        <li>MarshySoil</li>
+      </wildTerrainTags>
+      <completelyIgnoreFertility>false</completelyIgnoreFertility>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <mustBeWildToSow>false</mustBeWildToSow>
+      <interferesWithRoof>false</interferesWithRoof>
+      <harvestTag>Wood</harvestTag>
+      <visualSizeRange>1.5~2.5</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RUT_NogtylMarsh</defName>
+    <label>nogtyl</label>
+    <description>A strong wood-like mushroom. Fast-growing, but doesn't yield much usable material. It can only be grown by people on marshy soil.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Nogtyl</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.2, 0.35, 0.13)</volume>
+        <offset>(0,0,-0.42)</offset>
+      </shadowData>
+    </graphicData>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <blockWind>true</blockWind>
+    <statBases>
+      <Beauty>2</Beauty>
+      <Flammability>0.0</Flammability>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>150</Mass>
+    </statBases>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.25</fillPercent>
+    <minifiedDef>MinifiedTree</minifiedDef>
+    <rotatable>false</rotatable>
+    <ingestible>
+      <foodType>Tree</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <lifespanDaysPerGrowDays>9</lifespanDaysPerGrowDays>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.7</fertilitySensitivity>
+      <pollution>Any</pollution>
+      <soundHarvesting>Harvest_Tree</soundHarvesting>
+      <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
+      <sowWork>4000</sowWork>
+      <sowMinSkill>6</sowMinSkill>
+      <sowResearchPrerequisites>
+        <li>TreeSowing</li>
+      </sowResearchPrerequisites>
+      <wildClusterRadius>15</wildClusterRadius>
+      <wildClusterWeight>1000</wildClusterWeight>
+      <growDays>7</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestWork>500</harvestWork>
+      <harvestYield>20</harvestYield>
+      <wildOrder>1</wildOrder>
+      <neverBlightable>true</neverBlightable>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.40</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <blockAdjacentSow>true</blockAdjacentSow>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+      <treeCategory>Full</treeCategory>
+      <sowTags Inherit="False">
+        <li MayRequire="vanillaexpanded.vplantsemore">VCE_Aquatic</li>
+        <li>Ground</li>
+      </sowTags>
+      <wildTerrainTags>
+        <li>MarshySoil</li>
+      </wildTerrainTags>
+      <completelyIgnoreFertility>false</completelyIgnoreFertility>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <mustBeWildToSow>false</mustBeWildToSow>
+      <interferesWithRoof>false</interferesWithRoof>
+      <harvestTag>Wood</harvestTag>
+      <visualSizeRange>1.5~2.5</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Flakespire fungus (tree) ============== -->
+  <ThingDef ParentName="RUT_CaveTreeBase">
+    <defName>RUT_FlakespireFungus</defName>
+    <label>flakespire fungus</label>
+    <description>A strong purple mushroom tree. Slow-growing, but this woody fungus is very strong and attractive.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/FlakespireFungus</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <Beauty>4</Beauty>
+    </statBases>
+    <plant>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>1000</wildClusterWeight>
+      <growDays>18</growDays>
+      <topWindExposure>0</topWindExposure>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestWork>600</harvestWork>
+      <harvestYield>30</harvestYield>
+      <wildOrder>3</wildOrder>
+      <neverBlightable>true</neverBlightable>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+      <wildTerrainTags>
+        <li>SoilBasic</li>
+        <li>SoilRich</li>
+      </wildTerrainTags>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Pusmelon ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_Pusmelon</defName>
+    <label>pusmelon</label>
+    <description>A green, gourd-like fungus that produces sacs of foul-smelling liquid.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Pusmelon</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.7</fertilitySensitivity>
+      <growDays>3.8</growDays>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.3~0.7</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>20</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Rustpuff ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_RustPuff</defName>
+    <label>rustpuff</label>
+    <description>A large puffball mushroom with flaky, rust-colored spores.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/RustPuff</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>5.5</growDays>
+      <fertilityMin>0.05</fertilityMin>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.25~0.6</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>2</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Sagecrust ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_Sagecrust</defName>
+    <label>sagecrust</label>
+    <description>A tough, leafy lichen that can survive with minimal light.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Sagecrust</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilitySensitivity>0.0</fertilitySensitivity>
+      <growDays>3.5</growDays>
+      <fertilityMin>0.05</fertilityMin>
+      <maxMeshCount>9</maxMeshCount>
+      <visualSizeRange>0.2~0.5</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>200</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Bleeding tooth ============== -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RUT_BleedingTooth</defName>
+    <label>bleeding tooth</label>
+    <description>A huge mushroom that secretes a red, blood-like fluid.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/BleedingTooth</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <interferesWithRoof>false</interferesWithRoof>
+      <pollution>Any</pollution>
+      <topWindExposure>0.0</topWindExposure>
+    </plant>
+    <selectable>true</selectable>
+    <ingestible>
+      <foodType>Plant</foodType>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+  </ThingDef>
+
+  <!-- ============== Crimson cap ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_CrimsonCap</defName>
+    <label>crimson cap</label>
+    <description>A large crimson-capped mushroom. It is pretty enough to be used for decor but not much else.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/CrimsonCap</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.25</Nutrition>
+      <Flammability>0.35</Flammability>
+      <Beauty>10</Beauty>
+      <BeautyOutdoors>10</BeautyOutdoors>
+    </statBases>
+    <ingestible/>
+    <selectable>true</selectable>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>5</growDays>
+      <fertilityMin>0.05</fertilityMin>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.8~1</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>8</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <interferesWithRoof>false</interferesWithRoof>
+      <purpose>Beauty</purpose>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Grey Lady ============== -->
+  <ThingDef ParentName="RUT_CavePlantBase">
+    <defName>RUT_GreyLady</defName>
+    <label>Grey Lady</label>
+    <description>A grey fungus that grows cloth-like lace from its cap.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>40</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>14</pathCost>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilityMin>0.70</fertilityMin>
+      <wildClusterRadius>3</wildClusterRadius>
+      <growDays>8</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <immatureGraphicPath>RotSporeKit/Things/Plant/GreyLady/GreyLadyImmature</immatureGraphicPath>
+      <harvestYield>16</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>Cloth</harvestedThingDef>
+      <sowTags>
+        <li>Ground</li>
+        <li>RUT_Fungiponics</li>
+      </sowTags>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <neverBlightable>false</neverBlightable>
+      <visualSizeRange>0.4~1.0</visualSizeRange>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Shine cap (+ Glimmerslime fruit) ============== -->
+  <ThingDef ParentName="RUT_CaveTreeBase">
+    <defName>RUT_Shinecap</defName>
+    <label>shine cap</label>
+    <description>This large mushroom lives in symbiosis with a surprisingly tasty slime mold called Glimmerslime.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>1.25</Nutrition>
+      <Beauty>2</Beauty>
+      <BeautyOutdoors>2</BeautyOutdoors>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Shinecap/ShinecapGrown</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.15, 0.3, 0.15)</volume>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <ingestible/>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilitySensitivity>0.7</fertilitySensitivity>
+      <growDays>30</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <immatureGraphicPath>RotSporeKit/Things/Plant/Shinecap/ShinecapImmature</immatureGraphicPath>
+      <harvestYield>20</harvestYield>
+      <sowMinSkill>6</sowMinSkill>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <topWindExposure>0</topWindExposure>
+      <harvestWork>800</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.15</harvestAfterGrowth>
+      <harvestFailable>true</harvestFailable>
+      <harvestedThingDef>RUT_Glimmerslime</harvestedThingDef>
+      <visualSizeRange>1.5~2.5</visualSizeRange>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RUT_Glimmerslime</defName>
+    <label>glimmerslime</label>
+    <description>Glimmerslime is a slime mold, not a real mushroom at all. It lives in symbiosis with the shinecaps.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/Crops/Glimmerslime/Glimmerslime</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Mass>0.027</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>10</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">Fungus</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+  </ThingDef>
+
+  <!-- ============== Brightbell (donor label "shinebell") ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_Brightbell</defName>
+    <label>shinebell</label>
+    <description>A small pretty mushroom that glows in the dark.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Brightbell</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Beauty>12</Beauty>
+      <BeautyOutdoors>14</BeautyOutdoors>
+      <Nutrition>1.25</Nutrition>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <altitudeLayer>Building</altitudeLayer>
+    <ingestible/>
+    <selectable>true</selectable>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>5</growDays>
+      <fertilityMin>0.05</fertilityMin>
+      <visualSizeRange>0.3~0.7</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RawFungus</harvestedThingDef>
+      <harvestYield>2</harvestYield>
+      <sowTags>
+        <li>Ground</li>
+        <li>Decorative</li>
+      </sowTags>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3</glowRadius>
+        <glowColor>(238,211,148,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ============== Violet wimple ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RUT_VioletWimple</defName>
+    <label>violet wimple</label>
+    <description>A big violet-capped mushroom. While not very productive, it does produce edible fungus.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/VioletWimple</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.25</Nutrition>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <ingestible/>
+    <selectable>true</selectable>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>5</growDays>
+      <fertilityMin>0.05</fertilityMin>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.3~0.7</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RawFungus</harvestedThingDef>
+      <harvestYield>4</harvestYield>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Mortal morel (+ growable variant, + fungal medicine item) ============== -->
+  <ThingDef ParentName="RUT_CavePlantBase">
+    <defName>RUT_MortalMorelPlant</defName>
+    <label>mortal morel</label>
+    <description>A slow-growing mushroom which yields fungal medicine when harvested. Sowing and harvesting this fungus are both very labor-intensive because of its delicate structure.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/MortalMorel</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <minGrowthTemperature>-50</minGrowthTemperature>
+      <maxGrowthTemperature>352.222</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>-45</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>352.222</maxOptimalGrowthTemperature>
+      <fertilityMin>1.0</fertilityMin>
+      <wildClusterRadius>4</wildClusterRadius>
+      <growDays>10</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestWork>400</harvestWork>
+      <harvestYield>1</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RUT_MedicineFungal</harvestedThingDef>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <neverBlightable>false</neverBlightable>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.6~1.0</visualSizeRange>
+      <purpose>Health</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="RUT_CavePlantBase">
+    <defName>RUT_MortalMorelPlantGrowable</defName>
+    <label>mortal morel</label>
+    <description>A slow-growing mushroom which yields fungal medicine when harvested. Sowing and harvesting this fungus are both very labor-intensive because of its delicate structure.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/MortalMorel</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <minGrowthTemperature>-50</minGrowthTemperature>
+      <maxGrowthTemperature>352.222</maxGrowthTemperature>
+      <fertilityMin>1.0</fertilityMin>
+      <growDays>10</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestWork>400</harvestWork>
+      <harvestYield>1</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RUT_MedicineFungal</harvestedThingDef>
+      <sowMinSkill>8</sowMinSkill>
+      <sowTags>
+        <li>Ground</li>
+        <li>RUT_Fungiponics</li>
+      </sowTags>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <neverBlightable>false</neverBlightable>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.6~1.0</visualSizeRange>
+      <purpose>Health</purpose>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="MedicineBase">
+    <defName>RUT_MedicineFungal</defName>
+    <label>fungal medicine</label>
+    <description>A pack of fungal concoctions extracted from the mortal morel. It is less potent than industrial pharmaceuticals, but much better than nothing.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/Crops/MortalMorel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <techLevel>Neolithic</techLevel>
+    <statBases>
+      <MarketValue>10</MarketValue>
+      <Mass>0.35</Mass>
+      <Flammability>1.3</Flammability>
+      <MedicalPotency>0.60</MedicalPotency>
+      <MedicalQualityMax>0.70</MedicalQualityMax>
+      <DeteriorationRate>6</DeteriorationRate>
+    </statBases>
+    <tickerType>Rare</tickerType>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>150</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <allowedArchonexusCount>20</allowedArchonexusCount>
+  </ThingDef>
+
+  <!-- ============== "Inkcap" = moonless stripes (fiber, no light) ============== -->
+  <ThingDef ParentName="RUT_CavePlantBase">
+    <defName>RUT_MoonlessStripesPlant</defName>
+    <label>moonless stripes</label>
+    <description>Heat-loving and durable, this bizarre fungus thrives in the depths of the earth. While it can be grown anywhere, it requires high heat to grow properly and no light at all. Its sturdy layered stalk can be used as a leathery textile.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/MoonlessStripes</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>14</pathCost>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <minGrowthTemperature>50</minGrowthTemperature>
+      <maxGrowthTemperature>352.222</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>50</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>352.222</maxOptimalGrowthTemperature>
+      <fertilityMin>0.7</fertilityMin>
+      <fertilitySensitivity>0.7</fertilitySensitivity>
+      <wildClusterRadius>3</wildClusterRadius>
+      <growDays>8</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestWork>300</harvestWork>
+      <harvestYield>16</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RUT_MoonlessSilk</harvestedThingDef>
+      <sowTags>
+        <li>Ground</li>
+        <li>RUT_Fungiponics</li>
+      </sowTags>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <neverBlightable>false</neverBlightable>
+      <visualSizeRange>0.8~1.0</visualSizeRange>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_MoonlessSilk</defName>
+    <label>moonless leather</label>
+    <description>Tanned, dried, scraped mushroom layers. A good underground material for making clothes and bags.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/Crops/MoonlessSilk</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <StuffPower_Armor_Sharp>0.50</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.9</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>3.75</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>25</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>40</StuffPower_Insulation_Heat>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>4.5</MarketValue>
+      <Mass>0.026</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+    </statBases>
+    <burnableByRecipe>true</burnableByRecipe>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <minRewardCount>30</minRewardCount>
+    <stuffProps>
+      <categories>
+        <li>Leathery</li>
+      </categories>
+      <commonality>0.20</commonality>
+      <statFactors>
+        <Flammability>0.05</Flammability>
+        <MaxHitPoints>1.0</MaxHitPoints>
+        <Beauty>3.0</Beauty>
+      </statFactors>
+    </stuffProps>
+    <thingCategories>
+      <li>Leathers</li>
+    </thingCategories>
+  </ThingDef>
+
+  <!-- ============== Dulcis (+ raw item) — fungiponics' default grow target ============== -->
+  <ThingDef ParentName="RUT_CaveBushBase">
+    <defName>RUT_DulcisPlant</defName>
+    <label>dulcis</label>
+    <description>An oddly sweet mushroom grown by cave dwellers in place of berries. It can survive in a wide range of temperatures and levels of pollution.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Dulcis/DulcisGrown</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <Flammability>0.1</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <minGrowthTemperature>-45</minGrowthTemperature>
+      <maxGrowthTemperature>352.222</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>-45</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>352.222</maxOptimalGrowthTemperature>
+      <mustBeWildToSow>true</mustBeWildToSow>
+      <fertilityMin>0.70</fertilityMin>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>250</wildClusterWeight>
+      <growDays>7</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestWork>200</harvestWork>
+      <harvestYield>12</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.1</harvestAfterGrowth>
+      <harvestedThingDef>RUT_RawDulcis</harvestedThingDef>
+      <sowMinSkill>4</sowMinSkill>
+      <sowTags>
+        <li>Ground</li>
+        <li>RUT_Fungiponics</li>
+      </sowTags>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <neverBlightable>false</neverBlightable>
+      <immatureGraphicPath>RotSporeKit/Things/Plant/Dulcis/DulcisImmature</immatureGraphicPath>
+      <leaflessGraphicPath>RotSporeKit/Things/Plant/Dulcis/DulcisHarvested</leaflessGraphicPath>
+      <visualSizeRange>0.5~1.3</visualSizeRange>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+      <pollution>Any</pollution>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RUT_RawDulcis</defName>
+    <label>dulcis</label>
+    <description>Dulcis mushrooms. Nice to eat, even raw, if you like fungus.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/Crops/Dulcis/Dulcis</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Mass>0.027</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>16</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <foodType>Fungus</foodType>
+    </ingestible>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">Fungus</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+  </ThingDef>
+
+  <!-- ============== Blastpod (-> chemfuel, WILD-ONLY per owner ruling 2026-09-06) ============== -->
+  <ThingDef ParentName="RUT_CaveBushBase">
+    <defName>RUT_BlastpodShroom</defName>
+    <label>blastpod shroom</label>
+    <description>A wild fungus prized for its dangerously volatile pods, which can be refined into chemfuel. It cannot be cultivated — at least not by Jawa.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <Flammability>0.0</Flammability>
+      <Nutrition>2</Nutrition>
+      <Mass>0.50</Mass>
+    </statBases>
+    <ingestible/>
+    <selectable>true</selectable>
+    <plant>
+      <immatureGraphicPath>RotSporeKit/Things/Plant/Boomshroom/BoomshroomImmature</immatureGraphicPath>
+      <growMinGlow>0</growMinGlow>
+      <fertilityMin>0.7</fertilityMin>
+      <minGrowthTemperature>50</minGrowthTemperature>
+      <maxGrowthTemperature>352.222</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>50</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>352.222</maxOptimalGrowthTemperature>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>5</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.7~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RUT_BlastSpore</harvestedThingDef>
+      <harvestYield>8</harvestYield>
+      <interferesWithRoof>false</interferesWithRoof>
+      <purpose>Health</purpose>
+      <!-- No sowWork/sowMinSkill/sowTags/sowResearchPrerequisites: WILD-ONLY, ruled 2026-09-06. -->
+    </plant>
+    <minifiedDef>MinifiedTree</minifiedDef>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_BlastSpore</defName>
+    <label>blast spore sac</label>
+    <description>The spore sac of a blastpod fungus. It's a good fuel for campfires and generators, and can be refined into chemfuel.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/BoomSpore</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <tickerType>Normal</tickerType>
+    <soundInteract>Grain_Drop</soundInteract>
+    <soundDrop>Grain_Drop</soundDrop>
+    <techLevel>Neolithic</techLevel>
+    <stackLimit>75</stackLimit>
+    <equipmentType>Primary</equipmentType>
+    <alwaysHaulable>true</alwaysHaulable>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <statBases>
+      <MaxHitPoints>75</MaxHitPoints>
+      <MarketValue>1</MarketValue>
+      <Mass>0.1</Mass>
+      <Flammability>2.0</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+      <RangedWeapon_Cooldown>2.66</RangedWeapon_Cooldown>
+      <SellPriceFactor>0.10</SellPriceFactor>
+    </statBases>
+    <weaponClasses>
+      <li>Ranged</li>
+    </weaponClasses>
+    <weaponTags>
+      <li>GrenadeDestructive</li>
+      <li>GrenadeFlame</li>
+    </weaponTags>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+      <li>Grenades</li>
+    </thingCategories>
+    <techHediffsTags>
+      <li>Poor</li>
+    </techHediffsTags>
+    <verbs>
+      <li>
+        <label>throw spore sac</label>
+        <verbClass>Verb_LaunchProjectile</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <range>10</range>
+        <forcedMissRadius>1</forcedMissRadius>
+        <warmupTime>0.5</warmupTime>
+        <noiseRadius>4</noiseRadius>
+        <soundCast>ThrowGrenade</soundCast>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+        <defaultProjectile>RUT_Proj_BlastSporeSac</defaultProjectile>
+        <rangedFireRulepack>Combat_RangedFire_Thrown</rangedFireRulepack>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <explosiveRadius>1.1</explosiveRadius>
+        <explosiveDamageType>Flame</explosiveDamageType>
+        <requiredDamageTypeToExplode>Flame</requiredDamageTypeToExplode>
+        <explosiveExpandPerStackcount>0.037</explosiveExpandPerStackcount>
+        <startWickOnDamageTaken>
+          <li>Flame</li>
+        </startWickOnDamageTaken>
+        <startWickHitPointsPercent>0.333</startWickHitPointsPercent>
+        <preExplosionSpawnThingDef>Filth_Fuel</preExplosionSpawnThingDef>
+        <preExplosionSpawnChance>1</preExplosionSpawnChance>
+        <wickTicks>70~150</wickTicks>
+      </li>
+      <li>
+        <compClass>CompEquippable</compClass>
+      </li>
+      <li Class="CompProperties_Forbiddable"/>
+    </comps>
+    <tradeTags>
+      <li>WeaponRanged</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseIncendiaryProjectile">
+    <defName>RUT_Proj_BlastSporeSac</defName>
+    <label>blast spore sac</label>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Item/BoomSpore/BoomSpore_A</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <explosionRadius>0.8</explosionRadius>
+      <damageDef>Flame</damageDef>
+      <preExplosionSpawnThingDef>Filth_Fuel</preExplosionSpawnThingDef>
+      <ai_IsIncendiary>true</ai_IsIncendiary>
+      <shadowSize>0.3</shadowSize>
+      <screenShakeFactor>0.2</screenShakeFactor>
+    </projectile>
+  </ThingDef>
+</Defs>

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T19:34:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T19:35:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -666,6 +666,15 @@ kind:     design
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
+## BIOMESKIT_RENDER_LAYER_MISSING_1 BiomesKit's 1.6 DLL dropped BiomesKitWorldLayer entirely -- worldmap decoration icons' current source unknown
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  (no items/BIOMESKIT_RENDER_LAYER_MISSING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOMESKIT_RENDER_LAYER_MISSING_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -921,16 +930,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  names ready
 prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
-
-## BIOMESKIT_RENDER_LAYER_MISSING_1 BiomesKit's 1.6 DLL dropped BiomesKitWorldLayer entirely -- worldmap decoration icons' current source unknown
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BIOMESKIT_RENDER_LAYER_MISSING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOMESKIT_RENDER_LAYER_MISSING_1.md
 
 ## DROIDWORKS_PERSONALITY_VERIFY_1 Live-verify chassis personality bias: 20 spawns per family show the forced traits + protocol pedantry
 state:    proposed

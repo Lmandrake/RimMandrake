@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Ported from BiomesCaverns_src BMT_MushroomLog.xml, BMT_MortalMorel.xml, BMT_Blastpod.xml. -->
+
+  <RecipeDef>
+    <defName>RUT_Make_MushroomLeather</defName>
+    <label>make mushroom leather</label>
+    <description>Skin mushroom logs to create weak mushroom leather.</description>
+    <jobString>Making mushroom leather.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Tailor</effectWorking>
+    <soundWorking>Recipe_Tailor</soundWorking>
+    <workAmount>1200</workAmount>
+    <recipeUsers>
+      <li>CraftingSpot</li>
+      <li>ElectricTailoringBench</li>
+      <li>HandTailoringBench</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_MushroomLog</li>
+          </thingDefs>
+        </filter>
+        <count>100</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_MushroomLog</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_MushroomLeather>50</RUT_MushroomLeather>
+    </products>
+    <workSkill>Crafting</workSkill>
+    <displayPriority>0</displayPriority>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RUT_IndustrialMedicineFromFungal</defName>
+    <label>make medicine from fungal medicine</label>
+    <description>Make medicine.</description>
+    <jobString>Making medicine.</jobString>
+    <workSpeedStat>DrugSynthesisSpeed</workSpeedStat>
+    <workSkill>Intellectual</workSkill>
+    <workAmount>600</workAmount>
+    <recipeUsers>
+      <li>DrugLab</li>
+    </recipeUsers>
+    <researchPrerequisite>MedicineProduction</researchPrerequisite>
+    <skillRequirements>
+      <Crafting>4</Crafting>
+      <Intellectual>4</Intellectual>
+    </skillRequirements>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_MedicineFungal</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Neutroamine</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Cloth</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+    </ingredients>
+    <products>
+      <MedicineIndustrial>1</MedicineIndustrial>
+    </products>
+    <soundWorking>Recipe_Drug</soundWorking>
+  </RecipeDef>
+
+  <!--
+    RUT_BlastpodShroom -> chemfuel, ruled WILD-ONLY (owner, 2026-09-06): no sow tags
+    for Jawa. The recipe still lets a colonist refine harvested wild spore sacs.
+  -->
+  <RecipeDef>
+    <defName>RUT_Make_ChemfuelFromBlastSpore</defName>
+    <label>make chemfuel from blast spore sac</label>
+    <description>Extracting a batch of chemfuel from blast spore sacs.</description>
+    <jobString>Refining chemfuel from blast spore sacs.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>1000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_BlastSpore</li>
+          </thingDefs>
+        </filter>
+        <count>50</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_BlastSpore</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <Chemfuel>40</Chemfuel>
+    </products>
+    <recipeUsers Inherit="false">
+      <li>BiofuelRefinery</li>
+    </recipeUsers>
+  </RecipeDef>
+</Defs>

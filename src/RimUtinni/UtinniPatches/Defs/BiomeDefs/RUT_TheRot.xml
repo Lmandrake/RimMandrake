@@ -34,9 +34,17 @@
     bans already enforced by that JSON.
 
     NOT this pass's scope: the heat-generating gene (still unauthored, SS Owed); the
-    live-tea/symbiont mechanics (storage ban 4); the pale-tree anima reskin; the
-    Fungal Forest raid-merge contents (SS7b, its own item `FUNGALFOREST_RAID_MERGE_1`).
+    live-tea/symbiont mechanics (storage ban 4); the pale-tree anima reskin.
 
+    UPDATE (FUNGALFOREST_RAID_MERGE_1, offline half, this pass): the wildPlants list
+    below now points at our own `RUT_`-prefixed flora
+    (`src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_Flora.xml`)
+    instead of the donor's `BMT_`-prefixed defs, per the ingestion ruling in
+    `the_rot.md` §7b. wildAnimals is UNCHANGED (still donor `BMT_`/`AA_` defNames,
+    MayRequire'd) — fauna admission is a separate sitting,
+    `BIOME_FAUNA_ASSIGNMENT_SITTING_1`. The 425-tile `BMT_FungalForest` -> biome-merge
+    repaint itself (the other half of that item) has NOT happened yet — still owed,
+    gated on the owner reviewing the offline render this pass produced.
   -->
 
   <BiomeDef>
@@ -141,30 +149,30 @@
       <AB_GlowingAgarilux>1</AB_GlowingAgarilux>  <!-- glowing agarilux -->
       <AB_LilacBeacon>0.5</AB_LilacBeacon>  <!-- lilac beacon -->
       <AB_WitchesOyster>0.5</AB_WitchesOyster>  <!-- witches' oyster -->
-      <BMT_Dewshrooms>0.5</BMT_Dewshrooms>  <!-- dewshrooms -->
-      <BMT_FruitingBodies>0.5</BMT_FruitingBodies>  <!-- mold fruiting bodies -->
-      <BMT_Nuitae>0.5</BMT_Nuitae>  <!-- nuitae -->
-      <BMT_Wrinklecap>0.5</BMT_Wrinklecap>  <!-- wrinklecap -->
-      <BMT_Arpeau>0.4</BMT_Arpeau>  <!-- arpeau - tree -->
-      <BMT_Nogtyl>0.4</BMT_Nogtyl>  <!-- nogtyl - tree -->
+      <RUT_Dewshrooms>0.5</RUT_Dewshrooms>  <!-- dewshrooms - RUT_ (raided, FUNGALFOREST_RAID_MERGE_1) -->
+      <RUT_FruitingBodies>0.5</RUT_FruitingBodies>  <!-- mold fruiting bodies - RUT_ (raided) -->
+      <RUT_Nuitae>0.5</RUT_Nuitae>  <!-- nuitae - RUT_ (raided) -->
+      <RUT_Wrinklecap>0.5</RUT_Wrinklecap>  <!-- wrinklecap - RUT_ (raided) -->
+      <RUT_Arpeau>0.4</RUT_Arpeau>  <!-- arpeau - tree - RUT_ (raided) -->
+      <RUT_Nogtyl>0.4</RUT_Nogtyl>  <!-- nogtyl - tree - RUT_ (raided) -->
       <AB_RecurvedStropharia>0.3</AB_RecurvedStropharia>  <!-- recurved stropharia -->
-      <BMT_FlakespireFungus>0.3</BMT_FlakespireFungus>  <!-- flakespire fungus - tree -->
-      <BMT_Pusmelon>0.3</BMT_Pusmelon>  <!-- pusmelon -->
-      <BMT_RustPuff>0.3</BMT_RustPuff>  <!-- rustpuff -->
-      <BMT_Sagecrust>0.3</BMT_Sagecrust>  <!-- sagecrust -->
+      <RUT_FlakespireFungus>0.3</RUT_FlakespireFungus>  <!-- flakespire fungus - tree - RUT_ (raided) -->
+      <RUT_Pusmelon>0.3</RUT_Pusmelon>  <!-- pusmelon - RUT_ (raided) -->
+      <RUT_RustPuff>0.3</RUT_RustPuff>  <!-- rustpuff - RUT_ (raided) -->
+      <RUT_Sagecrust>0.3</RUT_Sagecrust>  <!-- sagecrust - RUT_ (raided) -->
       <AB_ArbuscularMycorrhiza>0.2</AB_ArbuscularMycorrhiza>  <!-- arbuscular mycorrhiza -->
       <AB_SlimyPholiota>0.2</AB_SlimyPholiota>  <!-- slimy pholiota -->
-      <BMT_BleedingTooth>0.2</BMT_BleedingTooth>  <!-- bleeding tooth -->
-      <BMT_Brightbells>0.2</BMT_Brightbells>  <!-- brightbells -->
-      <BMT_CrimsonCap>0.2</BMT_CrimsonCap>  <!-- crimson cap -->
-      <BMT_GreyLady>0.2</BMT_GreyLady>  <!-- Grey Lady -->
-      <BMT_Shinecap>0.2</BMT_Shinecap>  <!-- shine cap - tree -->
-      <BMT_VioletWimple>0.2</BMT_VioletWimple>  <!-- violet wimple -->
-      <BMT_MortalMorelPlant>0.15</BMT_MortalMorelPlant>  <!-- mortal morel -->
+      <RUT_BleedingTooth>0.2</RUT_BleedingTooth>  <!-- bleeding tooth - RUT_ (raided) -->
+      <RUT_Brightbell>0.2</RUT_Brightbell>  <!-- shinebell - RUT_ (raided); was BMT_Brightbells, a defName that never existed in the donor (real donor defName is singular BMT_Brightbell) - fixed on ingest -->
+      <RUT_CrimsonCap>0.2</RUT_CrimsonCap>  <!-- crimson cap - RUT_ (raided) -->
+      <RUT_GreyLady>0.2</RUT_GreyLady>  <!-- Grey Lady - RUT_ (raided) -->
+      <RUT_Shinecap>0.2</RUT_Shinecap>  <!-- shine cap - tree - RUT_ (raided) -->
+      <RUT_VioletWimple>0.2</RUT_VioletWimple>  <!-- violet wimple - RUT_ (raided) -->
+      <RUT_MortalMorelPlant>0.15</RUT_MortalMorelPlant>  <!-- mortal morel - RUT_ (raided) -->
       <AB_AgaricusDomeCap>0.1</AB_AgaricusDomeCap>  <!-- agaricus domecap -->
       <AB_DribblingCap>0.1</AB_DribblingCap>  <!-- dribbling cap -->
-      <BMT_Skulltop>0.1</BMT_Skulltop>  <!-- skulltop - tree -->
-      <BMT_Blastpod>0.05</BMT_Blastpod>  <!-- blastpod shroom -->
+      <RUT_Skulltop>0.1</RUT_Skulltop>  <!-- skulltop - tree - RUT_ (raided) -->
+      <RUT_BlastpodShroom>0.05</RUT_BlastpodShroom>  <!-- blastpod shroom - RUT_ (raided); wild-only per owner ruling 2026-09-06, no sow tags -->
       <AB_AgariluxPrime>0.01</AB_AgariluxPrime>  <!-- Agarilux Prime -->
     </wildPlants>
     <wildPlantRegrowDays>25</wildPlantRegrowDays>

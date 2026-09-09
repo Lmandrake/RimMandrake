@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    Ported from BiomesCaverns_src 1.6/Defs/ResearchDefs/CavernsResearchProjects.xml
+    (BMT_AdvancedFungi only — BMT_CrystalIncubator belongs to the Crystal Caverns
+    biome, out of scope). The donor's own prerequisite, BMT_ResearchMushrooms, is not
+    in the vendored source (a BiomesCore/Caverns base-tech project we don't have and
+    won't guess at) — left with NO prerequisite instead of inventing one, so this
+    reads as a freestanding neolithic research row. Revisit if a real prereq chain is
+    wanted later.
+  -->
+
+  <ResearchProjectDef>
+    <defName>RUT_AdvancedFungi</defName>
+    <label>specialized fungi</label>
+    <description>Research how to grow strange fungi with unique functions, from cooling to exploding.</description>
+    <techLevel>Neolithic</techLevel>
+    <baseCost>1200</baseCost>
+    <researchViewX>5.00</researchViewX>
+    <researchViewY>0.7</researchViewY>
+  </ResearchProjectDef>
+</Defs>

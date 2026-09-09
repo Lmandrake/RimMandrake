@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    Ported from BiomesCaverns_src 1.6/Defs/Buildings/BMT_AdvancedFungiponics.xml and
+    1.6/Defs/Buildings/BMT_TorchLamp.xml. Only the fungal-flavored, biologically-lit
+    torches are ingested (BMT_GlowGooTorch, BMT_FungalGlowGooTorch) — the crystal torch
+    variants cost BMT_ResourceBlueCrystal (Crystal Caverns biome, out of scope).
+    BMT_FungalPowerGenerator is explicitly CUT per owner ruling 2026-09-06 and is not
+    here.
+  -->
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_FungiponicsBasin</defName>
+    <label>fungiponics basin</label>
+    <description>An artificial nutrient bath for growing fungi. The nutrient pumps must work continuously; the plants will die if power is cut.</description>
+    <thingClass>Building_PlantGrower</thingClass>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Building/AdvFungiponics/AdvFungiponics</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,4)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <castEdgeShadows>true</castEdgeShadows>
+    <altitudeLayer>LowPlant</altitudeLayer>
+    <defaultPlacingRot>East</defaultPlacingRot>
+    <passability>PassThroughOnly</passability>
+    <pathCost>30</pathCost>
+    <constructEffect>ConstructMetal</constructEffect>
+    <fillPercent>0.30</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <statBases>
+      <WorkToBuild>2800</WorkToBuild>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <size>(1,4)</size>
+    <costList>
+      <Steel>100</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <fertility>2.8</fertility>
+    <building>
+      <defaultPlantToGrow>RUT_DulcisPlant</defaultPlantToGrow>
+      <sowTag>RUT_Fungiponics</sowTag>
+      <buildingTags>
+        <li>Production</li>
+      </buildingTags>
+    </building>
+    <tickerType>Rare</tickerType>
+    <comps>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>70</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+    </comps>
+    <researchPrerequisites>
+      <li>RUT_AdvancedFungi</li>
+      <li>Hydroponics</li>
+    </researchPrerequisites>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <designationCategory>Production</designationCategory>
+  </ThingDef>
+
+  <ThingDef ParentName="TorchLamp">
+    <defName>RUT_GlowGooTorch</defName>
+    <label>glow goo torch</label>
+    <description>A specially-treated torch that produces a light over a large area, fueled by biological glow goo instead of fire.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Building/GlowGooTorch</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <uiIconPath>RotSporeKit/Things/Building/GlowGooTorch/GlowGooTorch</uiIconPath>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <statBases>
+      <Mass>1</Mass>
+    </statBases>
+    <costList>
+      <RUT_GlowGoo>5</RUT_GlowGoo>
+    </costList>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps Inherit="False">
+      <li Class="CompProperties_Glower">
+        <glowRadius>10</glowRadius>
+        <glowColor>(222, 245, 158, 0)</glowColor>
+      </li>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>1.5</fuelConsumptionRate>
+        <fuelCapacity>20.0</fuelCapacity>
+        <initialFuelPercent>0.1</initialFuelPercent>
+        <fuelConsumptionPerTickInRain>0.0006</fuelConsumptionPerTickInRain>
+        <fuelFilter>
+          <thingDefs>
+            <li>RUT_GlowGoo</li>
+          </thingDefs>
+        </fuelFilter>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+      </li>
+    </comps>
+    <placeWorkers Inherit="False" />
+    <drawPlaceWorkersWhileSelected>false</drawPlaceWorkersWhileSelected>
+  </ThingDef>
+
+  <ThingDef ParentName="TorchLamp">
+    <defName>RUT_FungalGlowGooTorch</defName>
+    <label>fungal glow goo torch</label>
+    <description>A specially-treated torch that produces a light over a large area, its crown grown from raw fungus and lit with glow goo.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Building/FungalGlowGooTorch</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <uiIconPath>RotSporeKit/Things/Building/FungalGlowGooTorch/FungalGlowGooTorch</uiIconPath>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <statBases>
+      <Mass>1</Mass>
+    </statBases>
+    <costList Inherit="False">
+      <RawFungus>20</RawFungus>
+      <RUT_GlowGoo>5</RUT_GlowGoo>
+    </costList>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps Inherit="False">
+      <li Class="CompProperties_Glower">
+        <glowRadius>10</glowRadius>
+        <glowColor>(222, 245, 158, 0)</glowColor>
+      </li>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>1.5</fuelConsumptionRate>
+        <fuelCapacity>20.0</fuelCapacity>
+        <initialFuelPercent>0.1</initialFuelPercent>
+        <fuelConsumptionPerTickInRain>0.0006</fuelConsumptionPerTickInRain>
+        <fuelFilter>
+          <thingDefs>
+            <li>RUT_GlowGoo</li>
+          </thingDefs>
+        </fuelFilter>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+      </li>
+    </comps>
+    <placeWorkers Inherit="False" />
+    <drawPlaceWorkersWhileSelected>false</drawPlaceWorkersWhileSelected>
+  </ThingDef>
+</Defs>

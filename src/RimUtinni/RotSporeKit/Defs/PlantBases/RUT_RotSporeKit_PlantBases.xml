@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    Ported from vendor/mod_sources/BiomesCaverns_src 1.6/Defs/Plants/PlantBases.xml
+    (BMT_CaveTreeBase / BMT_CavePlantBase / BMT_CaveBushBase), renamed under our own
+    tier grammar. Pure XML abstracts (ParentName only, no custom compClass), so fully
+    portable with no donor dependency. Simplified: dropped the donor's
+    burnedThingDef/smashedThingDef/choppedThingDef overrides (BMT_BurnedMushroom /
+    BMT_CavernMycelium — not ingested, out of this pass's scope) so ported trees fall
+    back to vanilla TreeBase debris/burn art. Owed: bespoke burned-mushroom-stump and
+    cavern-mycelium-debris art if that flavor is wanted later.
+  -->
+
+  <ThingDef ParentName="TreeBase" Name="RUT_CaveTreeBase" Abstract="True">
+    <statBases>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <interferesWithRoof>false</interferesWithRoof>
+      <harvestTag>Wood</harvestTag>
+      <harvestedThingDef>RUT_MushroomLog</harvestedThingDef>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase" Name="RUT_CavePlantBase" Abstract="True">
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="RUT_CavePlantBase" Name="RUT_CaveBushBase" Abstract="True">
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <selectable>true</selectable>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <interferesWithRoof>false</interferesWithRoof>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>3</growDays>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>5</wildClusterWeight>
+      <visualSizeRange>0.7~1.1</visualSizeRange>
+    </plant>
+  </ThingDef>
+</Defs>

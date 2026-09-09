@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: Rot Spore Kit</name>
+  <packageId>mandrake.rut.rotsporekit</packageId>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>FUNGALFOREST_RAID_MERGE_1 — the "raid" half of dissolving `BMT_FungalForest`
+(Biomes! Caverns) into the Rot (`design/Jawa/worldbuilding/biomes/the_rot.md` §7b,
+owner ruling 2026-09-06: "raid this biome for its cool contents"). Ships the spore-warfare
+kit, fungal materials/terrain, two buildings, one research row, two drugs and nineteen
+flora species as our own `RUT_`-prefixed defs, ported field-for-field from the donor's
+1.6 source (`vendor/mod_sources/BiomesCaverns_src`) per the absorption precedent
+(`Absorbed_KotorCore`). Art copied from the live Workshop install
+(steamapps/workshop/content/294100/2969748433) at matching texPath, not generated.
+
+Two rulings on file (owner, 2026-09-06): `RUT_BlastpodShroom` -&gt; chemfuel is
+WILD-ONLY, no sow tags for Jawa; `BMT_FungalPowerGenerator` is CUT, not ingested.
+
+Decoupled from the donor where its own custom classes were involved: flora use vanilla
+`Plant`/`Plant` parent chains (not `BMT.BiomesPlant`), `BiomesCore.DefModExtensions.*`
+tuning extensions dropped, and `RUT_Skulltop`'s spore defense uses AlphaBiomes' own
+already-relied-upon `CompProperties_GasProducer` (field names verified against
+`vendor/mod_sources/AlphaBiomes_src`, same mechanism as `AB_AgariluxPrime`) instead of
+guessing at BiomesCore's own spore comp. One exception kept donor-dependent on purpose:
+`RUT_SporeCloud`'s `conditionClass` still points at
+`BiomesCaverns.GameCondition_SporeCloud` (`MayRequire="biomesteam.biomescaverns"`) — a
+full C# port is owed, tracked on `FUNGALFOREST_RAID_MERGE_1`, and this only matters once
+BiomesCaverns actually retires.
+
+Fauna (thrumbungus the creature, fungal mantis, cave spider, etc.) is explicitly NOT
+ingested here — that admission rides `BIOME_FAUNA_ASSIGNMENT_SITTING_1` per the item's
+own scope split. `RUT_FungalMantisScythe`'s claw ingredient still names the donor's
+`BMT_FungalMantisClaw` pending that sitting.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>sarg.alphabiomes</li>
+    <li>biomesteam.biomescaverns</li>
+  </loadAfter>
+</ModMetaData>
