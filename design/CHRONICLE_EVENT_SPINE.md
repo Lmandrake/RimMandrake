@@ -69,3 +69,9 @@ absent. Emission point: `MapComponent_BattleRecorder.Close()`, where
   (research, trade, marriage, …) stay Ninefold-internal, not spine kinds.
 - Any universal recorder ambition; no persistence, no history query API beyond
   the recorder's existing `closedHistory` cap.
+
+## Roster amendment — owner nod, 2026-09-09
+`chronicle.rule.queued` joins the v1 kinds (producer: the rule runner at
+rule-queue time; consumer: Ninefold, which resolves the rule's godTie
+string). Forced by godTie's God→string demotion in the decouple; within
+law (named consumer). Shipped in 35e0756c.
