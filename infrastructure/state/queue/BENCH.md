@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T04:03:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T04:19:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  WORLDMAPFINALREVIEW1 — the studio review: is this THE map?
+prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
 
 # IN PROGRESS
 
