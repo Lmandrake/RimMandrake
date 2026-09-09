@@ -25,25 +25,39 @@ gets penned like a chicken. This mod makes mass have consequences.
    else they arrive as scripted events/quests with warning (footfall tremors first).
    Wake damage applies to any structure including the player's — that is the point.
 
-## The multi-cell foundation: Large Pawns (FOUND, ACTIVE — verify, then decide ride-vs-absorb)
+## The multi-cell foundation: Large Pawns — RIDE-WITH-CONFIG (decompile verdict, 2026-09-09)
 
-`neku.largepawns`, workshop `3777700657`, **ACTIVE in the live list** (the owner
-remembered it inactive — corrected by sweep of all 1,269 subscribed About.xml,
-2026-09-09). Generic framework: bodySize ≥2.5 → 2x2, ≥4.5 → 3x3, ≥10 → 4x4;
-movement, combat, interaction, visuals, reachability across the footprint;
-`Current/Assemblies/LargePawns.dll`, Harmony-based. No subscribed mod depends on it.
+`neku.largepawns`, workshop `3777700657`, **ACTIVE**. Full decompile findings:
+`design/Jawa/worldbuilding/research/large_pawns_decompile_2026-09-09.md` (`017af47c`).
+The verdict and its consequences, binding on the build:
 
-- ⚠️ **Its live behavior is UNPROVEN on our 590-mod list** — active is not working.
-  First build step: bridge quicktest, spawn a bs 12 creature, prove multi-cell
-  occupancy with a getter (pathing blocked by a 1-tile gap; body blocks 2x2), never
-  the mod's word.
-- ⚠️ **Its thresholds are aggressive for our stack**: bs ≥2.5 catches Ronto (6),
-  Bantha (4), Fambaa (6), most herd giants — every pen, barn and caravan interaction
-  changes. Decide: configure its thresholds up (if it has settings), or absorb the
-  approach into our own assembly so the tier table below is the single authority.
-  ⛔ Do not let two size ladders coexist (its 2.5/4.5/10 vs our tiers).
-- Vehicle Framework (`smashphil.vehicleframework`, ACTIVE) proves the same
-  mechanics vehicle-scoped — a second reference implementation, not a dependency.
+- **Ride it, configured** — it already implements card #2 exactly (bodySize tiers +
+  per-def override table in both directions: 1 = force 1x1, 2–4 = force size). The
+  alternative is reimplementing 68 Harmony patches; and it ships **no license**, so
+  "absorb" could only ever mean independent reimplementation, never copying.
+- 🔑 **Integration surface: `GenAdj.OccupiedRect(Thing)`** — Large Pawns
+  Prefix-patches vanilla's own method to return the true square, so our wake comp
+  reads the footprint with NO reference to LargePawns and degrades cleanly to 1x1
+  if the mod is absent. Build against vanilla's API only.
+- **One size ladder**: reflectively set `LargePawns.Main.settings` thresholds and
+  push our per-def override rows, then `NotifyEdited()` — its config table becomes a
+  projection of OUR tier table at startup. ⛔ Never two ladders.
+- ⚠️ **4x4 is its hard ceiling** (no size-5 branch): bs 20/32/40 all land 4x4. T3's
+  extra presence must come from OUR wake radius/footfall, not footprint.
+- ⚠️ **It has its own wall-break feature** (`PathClearingUtility`, three settings
+  bools) — turn it OFF and let our curated crush-table be the only destruction
+  authority (theirs is uncurated, which card #3 forbids).
+- ⚠️ **Doors: blocked, never squeezed** — a 1-tile gap stops a 2x2; it mass-opens
+  doors under the footprint. Its region/door connectivity is the author's least
+  settled area (his own test scripts chase a 2-wide-door bug). Quicktest exactly this.
+- ⚠️ **Predicted defects it does nothing about**: pens (a titan can be penned behind
+  a fence gate its square can't pass), caravan forming, and a per-tick O(all pawns)
+  cache scan (`UpdateLargePawnsCache`) — measure TPS on the full list before and
+  after activating our tiers; nothing is scribed so uninstall is clean.
+- Live behavior still UNPROVEN on our 590-mod list: first build step remains the
+  bridge quicktest (spawn bs 12, prove occupancy by getter, path a 1-tile gap).
+- Vehicle Framework is force-excluded by it (vehicles pinned to size 1) — no
+  interaction to design for.
 
 ## Tier table (draft — the mod's single size authority; per-def override list beside it)
 
