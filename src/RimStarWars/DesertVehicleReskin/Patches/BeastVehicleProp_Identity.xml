@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  BeastVehicleProp_Identity.xml        DesertVehicleReskin · authored 2026-09-09
+  ============================================================================
+
+  Closes VFEPD_HORSECART_IDENTITY_LEAK_1. `EopieSled_Identity.xml` fixed the
+  shared-texPath leak for one prop/vehicle pair on 2026-08-15 (VFEPD_DogSled
+  vs AV_DogSled); `BeastVehicle_Identity.xml` fixed the VEHICLE-side words for
+  four more pairs on 2026-08-22 but never touched their PROPS. This file is
+  the missing prop half for those four.
+
+  SAME LEAK, DIFFERENT SHAPE FROM DogSled's. VFE Props and Decor's
+  Alpha-Vehicles compat pack (workshop 2102143149, packageId
+  VanillaExpanded.VFEPropsandDecor, path
+  `1.6/Mods/AlphaVehiclesNeolithic/Defs/ThingDefs_Buildings/
+  Buildings_AlphaVehiclesNeolithic.xml`) ships four non-functional props that
+  reuse our vehicles' texPaths and still carry the donor's label/description:
+
+      prop                  shares texPath with   donor label         donor description said
+      VFEPD_Chariot         AV_Chariot             "Chariot"           "a simple horse-driven cart ... Even the horse is fake"
+      VFEPD_WarChariot      AV_WarChariot          "War chariot"       "steering the chariot with his reins"
+      VFEPD_CoveredCarriage AV_CoveredCarriage      "Covered Carriage"  "horse-drawn ... Even the horses are fake"
+      VFEPD_OxCart          AV_OxCart               "Ox cart"           "pulled by oxen ... Even the oxen are fake"
+  (verified against the donor XML on disk 2026-09-09; text quoted above is
+  exact, not paraphrased)
+
+  🔑 NO COLOUR PATCH HERE, UNLIKE EopieSled_Identity's prop half. DogSled's
+  prop needed repainting because the VEHICLE had been retinted
+  (DogSledTint_Brown.xml, to (99,65,24)) while the prop kept the donor's
+  original (71,71,71) grey, so the two fell out of sync. These four vehicles
+  were never retinted — BeastVehicle_Identity.xml changed only their words —
+  so AV_Chariot/AV_WarChariot/AV_CoveredCarriage/AV_OxCart still carry the
+  donor's own colours. Read against the live Alpha Vehicles VehicleDefs
+  (`.../3028675048/1.6/Defs/VehicleDefs/Tier0/**/*_VehiclePawn.xml`), those
+  colours are IDENTICAL, RGB-for-RGB, to what the props already carry:
+
+      Chariot / WarChariot   vehicle (192,146,94)  == prop (192,146,94)
+      CoveredCarriage        vehicle (80,63,32)    == prop (80,63,32)
+      OxCart                 vehicle (58,41,10)    == prop (58,41,10)
+
+  So the prop and the vehicle are already tinted alike — there is no colour
+  mismatch to fix, only the words. Patching colour here anyway would be
+  editing the one thing that was not broken.
+
+  BEAST ASSIGNMENT is not re-derived here — it is the same call
+  BeastVehicle_Identity.xml already made and cited to Source/EAST_COMMISSION.md:
+  one dewback (Chariot), two dewbacks (WarChariot), two rontos
+  (CoveredCarriage), two banthas (OxCart). These props are the same vehicles,
+  standing still, so they take the same animal.
+
+  Each operation carries `MayRequire` for its own mod, so an absent mod makes
+  its half a silent no-op rather than a red error on a def that is not there.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod" MayRequire="VanillaExpanded.VFEPropsandDecor">
+    <mods>
+      <li>Vanilla Furniture Expanded - Props and Decor</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- ═══ VFEPD_Chariot — one dewback ════════════════════════════════ -->
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEPD_Chariot"]/label</xpath>
+          <value><label>dewback chariot (prop)</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEPD_Chariot"]/description</xpath>
+          <value>
+            <description>A dewback and a yoke, gone still. The dewback is a frame and hide-scrap shell, posed mid-step by someone who knew the grey-green slouch of the real thing.\n\nIt hauls nothing and it eats nothing. Set it at the mouth of a garage bay and it says, without a word, that someone here still remembers how to move fast.</description>
+          </value>
+        </li>
+
+        <!-- ═══ VFEPD_WarChariot — two dewbacks and a shooting rail ═══════ -->
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEPD_WarChariot"]/label</xpath>
+          <value><label>dewback war chariot (prop)</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEPD_WarChariot"]/description</xpath>
+          <value>
+            <description>A pair of dewbacks in double harness and a shooting rail braced over the axle, all of it gone still. The dewbacks are frames and hide-scrap, posed leaning into a yoke that goes nowhere.\n\nIt hauls nothing, it shoots nothing, and it eats nothing. Set it outside a watchtower and it says, without a word, that this post has fought back before.</description>
+          </value>
+        </li>
+
+        <!-- ═══ VFEPD_CoveredCarriage — two rontos and a hide roof ════════ -->
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEPD_CoveredCarriage"]/label</xpath>
+          <value><label>ronto wagon (prop)</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEPD_CoveredCarriage"]/description</xpath>
+          <value>
+            <description>Two rontos in front of the wagon they never actually pull, hide roof and all, gone still. The rontos are frames and hide-scrap, posed with the nervous forward lean of something that expects to bolt.\n\nIt hauls nothing and it eats nothing. Set it in a caravan yard and it says, without a word, that travellers pass through here and arrive whole.</description>
+          </value>
+        </li>
+
+        <!-- ═══ VFEPD_OxCart — two banthas ════════════════════════════════ -->
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEPD_OxCart"]/label</xpath>
+          <value><label>bantha cart (prop)</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEPD_OxCart"]/description</xpath>
+          <value>
+            <description>Two banthas and a cart, gone still. The banthas are frames and hide-scrap under a pair of carved spiral horns, posed with the flat patient stare of something that has never once hurried.\n\nIt hauls nothing and it eats nothing. Set it beside a storehouse and it says, without a word, that this clan can move more than it can carry.</description>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
