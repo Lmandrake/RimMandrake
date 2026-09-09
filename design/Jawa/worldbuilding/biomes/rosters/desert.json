@@ -1,0 +1,1241 @@
+{
+  "sheet": "desert",
+  "defNames": [
+    "Desert"
+  ],
+  "tiles": 3932,
+  "authored": "2026-09-09",
+  "law_sources": [
+    "desert.md §5/§6",
+    "_assignment_prep.md §2, §3.5 (bulk-move accepted), §9",
+    "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09"
+  ],
+  "fauna": [
+    {
+      "def": "Bantha",
+      "commonality": 0.8,
+      "action": "adjust-keep",
+      "band": "huge-herd",
+      "law": "ICON; herd = mobile shade structure (desert.md §4); comm raised 0.5→0.8 per prep §2.2 recommendation",
+      "note": "icon"
+    },
+    {
+      "def": "Ronto",
+      "commonality": 0.4,
+      "action": "keep",
+      "band": "huge-herd",
+      "law": "icon, herd, leggy giant — carries its own shade (prep §2.2)"
+    },
+    {
+      "def": "Jamel",
+      "commonality": 0.4,
+      "action": "keep",
+      "band": "herd",
+      "law": "slow herd endurer, camel-analog inside the familiar-architecture carve-out (prep §2.2; ban 9 wants architecture, not nameable species)"
+    },
+    {
+      "def": "Eopie",
+      "commonality": 0.3,
+      "action": "keep",
+      "band": "herd",
+      "law": "icon pack animal (prep §2.2); spd 4.3 non-pursuit"
+    },
+    {
+      "def": "AA_DesertAve",
+      "commonality": 0.4,
+      "action": "keep",
+      "band": "navigator",
+      "law": "fast NON-predator = endurance-navigator archetype; ban 3 bans only pursuit predators (prep §2.5 q3: yes)"
+    },
+    {
+      "def": "Wraid",
+      "commonality": 0.4,
+      "action": "adjust-keep",
+      "band": "burst-predator",
+      "law": "owner card 2026-09-09: slowed 5.0→4.4 — legal burst predator under ban 3 proxy (predator + spd < 4.5)"
+    },
+    {
+      "def": "Gutkurr",
+      "commonality": 0.4,
+      "action": "adjust-keep",
+      "band": "burst-predator",
+      "law": "owner card 2026-09-09: slowed 4.5→4.4 — legal burst predator under ban 3"
+    },
+    {
+      "def": "Kreetle",
+      "commonality": 0.8,
+      "action": "keep",
+      "band": "ambush-small",
+      "law": "ban 3 pass: predator spd 3.5 < 4.5 (MEASURED); patch-rim ambusher (prep §2.2)"
+    },
+    {
+      "def": "BMT_Jellypot",
+      "commonality": 0.7,
+      "action": "keep",
+      "band": "ambush-small",
+      "law": "sits-and-waits — \"own a shadow\" predator in one def (prep §2.2); spd 1.65 (MEASURED)"
+    },
+    {
+      "def": "Shyrack",
+      "commonality": 0.6,
+      "action": "keep",
+      "band": "ambush-flier",
+      "law": "ban 3 pass: spd 1.5 (MEASURED); cave-mouth ambusher",
+      "note": "flier claim UNMEASURED (broken register flag)"
+    },
+    {
+      "def": "Gorg",
+      "commonality": 0.4,
+      "action": "keep",
+      "band": "ambush-small",
+      "law": "SW ambush frog, spd 2.9 (MEASURED) — positional (prep §2.2)"
+    },
+    {
+      "def": "LongtailGorg",
+      "commonality": 0.4,
+      "action": "keep",
+      "band": "ambush-small",
+      "law": "SW ambush frog, spd 2.3 (MEASURED)"
+    },
+    {
+      "def": "FrilledGorg",
+      "commonality": 0.2,
+      "action": "keep",
+      "band": "ambush-small",
+      "law": "SW ambush frog, spd 2.3 (MEASURED)"
+    },
+    {
+      "def": "Sketto",
+      "commonality": 0.4,
+      "action": "keep",
+      "band": "ambush-small",
+      "law": "desert skitterer, spd 3.0 (MEASURED) (prep §2.2)"
+    },
+    {
+      "def": "Worrt",
+      "commonality": 0.2,
+      "action": "keep",
+      "band": "ambush-small",
+      "law": "Tatooine ambush frog, spd 2.5 (MEASURED) — positional icon"
+    },
+    {
+      "def": "WompRat",
+      "commonality": 0.4,
+      "action": "keep",
+      "band": "ambush-small",
+      "law": "ban 3 pass: spd 3.9 < 4.5 (MEASURED); icon; also injected on the Fall Line"
+    },
+    {
+      "def": "Gizka",
+      "commonality": 0.1,
+      "action": "keep",
+      "band": "ambush-small",
+      "law": "icon (KOTOR); spd 3.0 (MEASURED)"
+    },
+    {
+      "def": "Krykna",
+      "commonality": 0.1,
+      "action": "keep",
+      "band": "ambush-small",
+      "law": "SW desert spider icon (Rebels); spd 2.5 positional (MEASURED)"
+    },
+    {
+      "def": "Clodhopper",
+      "commonality": 0.1,
+      "action": "keep",
+      "band": "ambush-small",
+      "law": "SW small, spd 2.0 (MEASURED) — positional"
+    },
+    {
+      "def": "Voorpak",
+      "commonality": 0.05,
+      "action": "keep",
+      "band": "ambush-small",
+      "law": "SW small, spd 3.0 (MEASURED)"
+    },
+    {
+      "def": "Nuna",
+      "commonality": 0.2,
+      "action": "keep",
+      "band": "herd-small",
+      "law": "SW herbivore bird, spd 3.0 (MEASURED)"
+    },
+    {
+      "def": "Iriaz",
+      "commonality": 0.1,
+      "action": "keep",
+      "band": "herd-small",
+      "law": "SW herd herbivore, spd 4.0 non-predator (MEASURED)"
+    },
+    {
+      "def": "AA_Needleroll",
+      "commonality": 0.2,
+      "action": "keep",
+      "band": "grain",
+      "law": "light-feeder, non-pursuit (MEASURED spd 2.5); dual home with ExtremeDesert"
+    },
+    {
+      "def": "AA_SandProwler",
+      "commonality": 0.05,
+      "action": "keep",
+      "band": "ambush-burrow",
+      "law": "sand-burrow ambush is legal off pavement (§4: \"some sand burrowing is possible wherever sand exists\"); ban 6 covers pavement only; spd 4.0 < 4.5"
+    },
+    {
+      "def": "AA_SandSquid",
+      "commonality": 0.025,
+      "action": "keep",
+      "band": "subsurface-slow",
+      "law": "slow sand-filter body (spd 1.0, MEASURED) — reads the buried-canopy layer (§4b)"
+    },
+    {
+      "def": "AA_MammothWorm",
+      "commonality": 0.015,
+      "action": "keep",
+      "band": "subsurface-slow",
+      "law": "slow burrower-predator spd 2.0 < 4.5 (MEASURED), soft-sand positional"
+    },
+    {
+      "def": "AA_Terramorph",
+      "commonality": 0.035,
+      "action": "keep",
+      "band": "ambush-flat",
+      "law": "flat oriented terrain-mimic — \"anything hiding becomes flat and oriented\" (§4); spd 1.8 (MEASURED)"
+    },
+    {
+      "def": "AA_Gigantelope",
+      "commonality": 0.05,
+      "action": "keep",
+      "band": "herd",
+      "law": "herd herbivore, spd 4.5 non-predator (ban 3 bans predators only)"
+    },
+    {
+      "def": "Nerf",
+      "commonality": 0.2,
+      "action": "keep",
+      "band": "herd",
+      "law": "SW icon herd beast, spd 3.2 (MEASURED)"
+    },
+    {
+      "def": "Uvak",
+      "commonality": 0.3,
+      "action": "import",
+      "band": "herd",
+      "law": "bulk-move of SW herd stock from shrubland (prep §3.3/§3.5, accepted); spd 3.0 (MEASURED)",
+      "note": "register predator flag noted; prep names it herd stock"
+    },
+    {
+      "def": "Zeer",
+      "commonality": 0.3,
+      "action": "import",
+      "band": "herd",
+      "law": "bulk-move from shrubland large band (ban 4 there); spd 3.0 herd herbivore (MEASURED)"
+    },
+    {
+      "def": "Varactyl",
+      "commonality": 0.3,
+      "action": "import",
+      "band": "herd",
+      "law": "bulk-move; fast herbivore legal (ban 3 bans predators only); spd 5.5 non-pred (MEASURED)"
+    },
+    {
+      "def": "IridonianReek",
+      "commonality": 0.3,
+      "action": "import",
+      "band": "herd",
+      "law": "bulk-move; herd herbivore spd 5.5 non-pred (MEASURED)"
+    },
+    {
+      "def": "Falumpaset",
+      "commonality": 0.2,
+      "action": "import",
+      "band": "herd",
+      "law": "SW pack herbivore, spd 4.3 (MEASURED); prep §11 flagged it homeless without a move"
+    },
+    {
+      "def": "Hrumph",
+      "commonality": 0.3,
+      "action": "import",
+      "band": "herd",
+      "law": "bulk-move from shrubland (bs 2.5 in banned 1.5–3.5 there); spd 4.5 non-pred"
+    },
+    {
+      "def": "Jimvu",
+      "commonality": 0.3,
+      "action": "import",
+      "band": "herd",
+      "law": "bulk-move; fast herbivore (spd 6.0 non-pred, MEASURED) — endurance navigator"
+    },
+    {
+      "def": "Kwi",
+      "commonality": 0.3,
+      "action": "import",
+      "band": "herd",
+      "law": "bulk-move; herd herbivore spd 5.0 non-pred (MEASURED)"
+    },
+    {
+      "def": "Shaak",
+      "commonality": 0.2,
+      "action": "import",
+      "band": "herd",
+      "law": "bulk-move; slow herd grazer spd 2.4 (MEASURED)"
+    },
+    {
+      "def": "TeeMuss",
+      "commonality": 0.2,
+      "action": "import",
+      "band": "herd",
+      "law": "bulk-move; herd herbivore spd 4.3 (MEASURED)"
+    },
+    {
+      "def": "Jakobeast",
+      "commonality": 0.2,
+      "action": "import",
+      "band": "herd",
+      "law": "bulk-move; herd herbivore spd 4.5 (MEASURED)"
+    },
+    {
+      "def": "Bolotaur",
+      "commonality": 0.1,
+      "action": "import",
+      "band": "herd",
+      "law": "bulk-move; fast herbivore spd 5.5 non-pred (MEASURED)"
+    },
+    {
+      "def": "Runyip",
+      "commonality": 0.1,
+      "action": "import",
+      "band": "herd",
+      "law": "bulk-move; slow forager spd 2.0 (MEASURED)"
+    },
+    {
+      "def": "FeralGrazer",
+      "commonality": 0.1,
+      "action": "import",
+      "band": "herd",
+      "law": "bulk-move; slow grazer spd 2.0 (MEASURED)"
+    },
+    {
+      "def": "Horax",
+      "commonality": 0.01,
+      "action": "import",
+      "band": "megafauna",
+      "law": "interim burst-flagship stat-passer named by prep §2.4: bs 15, spd 2.0 predator < 4.5 — positional megafauna until the shade-whale def lands"
+    },
+    {
+      "def": "Skalder",
+      "commonality": 0.3,
+      "action": "import",
+      "band": "huge-herd",
+      "law": "herds wanted — mobile shade (prep §1.3: herd giants belong to Desert)",
+      "note": "completes dune_sea's move:Desert; bs 4.0, herd migrant (MEASURED)"
+    }
+  ],
+  "evictions": [
+    {
+      "def": "AA_Aerofleet",
+      "reason": "§9 (binding): TRIM — terminator-adjacent only; shrubland fog country is its one arid home — ubiquity-25 §9 trim: terminator-adjacent only (keeps the two seas)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_AngelMoth",
+      "reason": "cast discipline (§5); no desert read",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_AngelMothLarva",
+      "reason": "cast discipline (§5)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_AuroraSylph",
+      "reason": "§9 TRIM; wasteland halo-storm question unruled — reserve until that sheet claims it",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Barbslinger",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 4.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_BoulderMit",
+      "reason": "ExtremeDesert giant keep (prep §1.2)",
+      "disposition": "move:ExtremeDesert"
+    },
+    {
+      "def": "AA_Bumbledrone",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_BumbledroneQueen",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Cactipine",
+      "reason": "ban 3 pursuit: predator + spd 4.5 (MEASURED); cactus-mashup name borderline",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_ChameleonYak",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Cinderlisk",
+      "reason": "ban 3 pursuit: predator + spd 5.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_CrescendoAnole",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_CrystalMit",
+      "reason": "§9 (binding): crystal belongs to CrystalCaverns/PoisonForest",
+      "disposition": "move:PoisonForest"
+    },
+    {
+      "def": "AA_DarkVandal",
+      "reason": "ban 1: no nocturnal/day-night content — night/dusk-keyed by name (behaviour UNMEASURED; name evidence); also predator spd 4.6",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Drainer",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_DrainerLarva",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Dunealisk",
+      "reason": "ban 3 pursuit: predator + spd 5.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_DuskProwler",
+      "reason": "ban 1: no nocturnal/day-night content — night/dusk-keyed by name (behaviour UNMEASURED; name evidence); also predator spd 6.0",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Erin",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 4.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_FissionMouse",
+      "reason": "§9 (binding): RESKIN → Wasteland radiotroph",
+      "disposition": "move:Wasteland"
+    },
+    {
+      "def": "AA_GreatDevourer",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 2.8) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_LuciferBug",
+      "reason": "ban 1: no nocturnal/day-night content — night/dusk-keyed by name (behaviour UNMEASURED; name evidence); also predator spd 3.0",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Mantrap",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_MatureFleshbeast",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 2.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_MeadowAve",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_MegaLouse",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Murkling",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Needlepost",
+      "reason": "venom-armed small — shrubland signature boost (prep §3.4 q4: yes)",
+      "disposition": "move:AridShrubland"
+    },
+    {
+      "def": "AA_NightAve",
+      "reason": "ban 1: no nocturnal/day-night content — night/dusk-keyed by name (behaviour UNMEASURED; name evidence); also predator spd 7.0",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Nightling",
+      "reason": "ban 1: no nocturnal/day-night content — night/dusk-keyed by name (behaviour UNMEASURED; name evidence); also predator spd 5.0",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_OcularJelly",
+      "reason": "poison forest import lane — eye-heavy in the name (prep §5.2)",
+      "disposition": "move:PoisonForest"
+    },
+    {
+      "def": "AA_PebbleMit",
+      "reason": "§9 (binding): trim to rock/cavern biomes — §9 trim target (crags) rejected it on the single-transplanted-family law",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_PedigreedRaptor",
+      "reason": "§9: reads dinosaur — evict planet-wide (deeper-cut rule)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Ravager",
+      "reason": "ban 3 pursuit: predator + spd 5.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Razorjack",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 4.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_RoughPlatedMonitor",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_RoyalAve",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_SandLion",
+      "reason": "ban 3 pursuit: predator + spd 6.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_ShadowCharger",
+      "reason": "ban 1: no nocturnal/day-night content — night/dusk-keyed by name (behaviour UNMEASURED; name evidence); also predator spd 3.5",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Slurrypede",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 1.9) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Swarmling",
+      "reason": "ban 3 pursuit: predator + spd 5.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_TeratogenicOriginator",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_TetraSlug",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 0.6) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Thermadon",
+      "reason": "ban 3 pursuit: predator + spd 5.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Thunderox",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_WindBeast",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Acklay",
+      "reason": "ban 3 pursuit: predator + spd 5.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Anooba",
+      "reason": "ban 3 pursuit: spd 5.0 (MEASURED); legal in shrubland medium band (prep §3.2)",
+      "disposition": "move:AridShrubland"
+    },
+    {
+      "def": "BMT_CactusCrab",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.5) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_Diggerpede",
+      "reason": "ban 3 pursuit: predator + spd 5.2 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_PustuleHornetSpawned",
+      "reason": "Polluted Lands register → Wasteland (prep §4.4)",
+      "disposition": "move:Wasteland"
+    },
+    {
+      "def": "BMT_Stoneback",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.25) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Beldon",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 2.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Blurrg",
+      "reason": "ban 3 proxy fails: predator + spd 5.0 (MEASURED) — icon; CONFLICT flagged for owner review sheet",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Bogwing",
+      "reason": "bog-named swamp flier in a rainless desert — recognizability/theme fail (ban 9 spirit); river-country sheets may claim it",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Borcatu",
+      "reason": "wasteland wretched register keep (prep §4.2); spd 4.1 passes here but its read is ruin-vermin",
+      "disposition": "move:Wasteland"
+    },
+    {
+      "def": "Brezak",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.5) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Cannok",
+      "reason": "ban 3 pursuit: predator + spd 4.6 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Convor",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "DA_BlackScribe",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 4.3) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "DA_Karabal",
+      "reason": "ban 3 pursuit: predator + spd 5.5 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "DA_Pilgrim",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Dactillion",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Dewback",
+      "reason": "ban 3 proxy fails: register predator flag + spd 4.7 (MEASURED) — SW icon, likely flag noise; CONFLICT flagged for owner review sheet",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Dinocrocuta",
+      "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+      "disposition": "cut:creature_recognizability_rule.md §6"
+    },
+    {
+      "def": "Dinornis",
+      "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+      "disposition": "cut:creature_recognizability_rule.md §6"
+    },
+    {
+      "def": "Doedicurus",
+      "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+      "disposition": "cut:creature_recognizability_rule.md §6"
+    },
+    {
+      "def": "Drexl",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "ERN_Amaro",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "EnergySpider",
+      "reason": "ban 3 pursuit: predator + spd 5.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Boomabear",
+      "reason": "no §2.2 wanted niche admits it: the VGE chimera reads mutant/in-joke, which the desert's familiar-architecture doctrine does not want, and the exploding in-joke lane is Boomalope's alone (prep §9); passes no hard ban — curation eviction",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Boombeetle",
+      "reason": "no §2.2 wanted niche admits it: the VGE chimera reads mutant/in-joke, which the desert's familiar-architecture doctrine does not want, and the exploding in-joke lane is Boomalope's alone (prep §9); passes no hard ban — curation eviction",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Boomcat",
+      "reason": "no §2.2 wanted niche admits it: the VGE chimera reads mutant/in-joke, which the desert's familiar-architecture doctrine does not want, and the exploding in-joke lane is Boomalope's alone (prep §9); passes no hard ban — curation eviction",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Boomffalo",
+      "reason": "no §2.2 wanted niche admits it: the VGE chimera reads mutant/in-joke, which the desert's familiar-architecture doctrine does not want, and the exploding in-joke lane is Boomalope's alone (prep §9); passes no hard ban — curation eviction",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Boomsnake",
+      "reason": "no §2.2 wanted niche admits it: the VGE chimera reads mutant/in-joke, which the desert's familiar-architecture doctrine does not want, and the exploding in-joke lane is Boomalope's alone (prep §9); passes no hard ban — curation eviction",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Boomsquirrel",
+      "reason": "no §2.2 wanted niche admits it: the VGE chimera reads mutant/in-joke, which the desert's familiar-architecture doctrine does not want, and the exploding in-joke lane is Boomalope's alone (prep §9); passes no hard ban — curation eviction",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Catalope",
+      "reason": "no §2.2 wanted niche admits it: the VGE chimera reads mutant/in-joke, which the desert's familiar-architecture doctrine does not want, and the exploding in-joke lane is Boomalope's alone (prep §9); passes no hard ban — curation eviction",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Chickenlope",
+      "reason": "no §2.2 wanted niche admits it: the VGE chimera reads mutant/in-joke, which the desert's familiar-architecture doctrine does not want, and the exploding in-joke lane is Boomalope's alone (prep §9); passes no hard ban — curation eviction",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_FleshGrowth",
+      "reason": "no §2.2 wanted niche admits it: the VGE chimera reads mutant/in-joke, which the desert's familiar-architecture doctrine does not want, and the exploding in-joke lane is Boomalope's alone (prep §9); passes no hard ban — curation eviction",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Manwolf",
+      "reason": "desert ban 3: predator + moveSpeed 6.5 ≥ 4.5 — pursuit (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Needlechicken",
+      "reason": "no §2.2 wanted niche admits it: the VGE chimera reads mutant/in-joke, which the desert's familiar-architecture doctrine does not want, and the exploding in-joke lane is Boomalope's alone (prep §9); passes no hard ban — curation eviction",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_ParagonBoomalope",
+      "reason": "no §2.2 wanted niche admits it: the VGE chimera reads mutant/in-joke, which the desert's familiar-architecture doctrine does not want, and the exploding in-joke lane is Boomalope's alone (prep §9); passes no hard ban — curation eviction",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Squirralope",
+      "reason": "no §2.2 wanted niche admits it: the VGE chimera reads mutant/in-joke, which the desert's familiar-architecture doctrine does not want, and the exploding in-joke lane is Boomalope's alone (prep §9); passes no hard ban — curation eviction",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GiantToad",
+      "reason": "ban 9: instantly nameable (a toad); also pursuit spd 6.0 predator (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GraniteSlug",
+      "reason": "§9 (binding): trim to dune sea + poison forest",
+      "disposition": "move:ExtremeDesert"
+    },
+    {
+      "def": "Grank",
+      "reason": "ban 3 pursuit: predator + spd 5.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GreaterKraytDragon",
+      "reason": "dune sea icon (prep §1.2)",
+      "disposition": "move:ExtremeDesert"
+    },
+    {
+      "def": "Gundark",
+      "reason": "ban 3 pursuit: predator + spd 5.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Insectomorph",
+      "reason": "ban 3 pursuit: predator + spd 5.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JOE_Cephalope",
+      "reason": "ban 3 pursuit: predator + spd 8.8 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWBagaceratops",
+      "reason": "dino lane: reads dinosaur (deeper-cut rule, prep §3.2/§9 pattern)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWBaseopsis",
+      "reason": "dino lane: reads dinosaur (deeper-cut rule, prep §3.2/§9 pattern)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWBrachytrachelopan",
+      "reason": "dino lane: reads dinosaur (deeper-cut rule, prep §3.2/§9 pattern)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWEuoplocephalus",
+      "reason": "dino lane: reads dinosaur (deeper-cut rule, prep §3.2/§9 pattern)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWGeralinura",
+      "reason": "dino lane: reads dinosaur (deeper-cut rule, prep §3.2/§9 pattern)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWGorgonops",
+      "reason": "dino lane: reads dinosaur (deeper-cut rule, prep §3.2/§9 pattern)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWProtosolpuga",
+      "reason": "dino lane: reads dinosaur (deeper-cut rule, prep §3.2/§9 pattern)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWQantassaurus",
+      "reason": "dino lane: reads dinosaur (deeper-cut rule, prep §3.2/§9 pattern)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Jerbal",
+      "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Beasts of the Rim",
+      "disposition": "cut:creature_recognizability_rule.md §6"
+    },
+    {
+      "def": "KellDragon",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 4.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Kinrath",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Klorslug",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "KraytDragon",
+      "reason": "belongs to the dune sea — subsurface dune-swimmer (prep §3.3); pursuit-illegal here anyway (spd 5.0 predator)",
+      "disposition": "move:ExtremeDesert"
+    },
+    {
+      "def": "LavaFlea",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Ling_Cockroach",
+      "reason": "ban 9: instantly nameable (a cockroach), bs 2.0",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Lothcat",
+      "reason": "ban 3 pursuit: predator + spd 4.5 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Lylek",
+      "reason": "ban 3 pursuit: spd 5.0 predator (MEASURED), top-weight offender (prep §2.3)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "MA_Hellboar",
+      "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Mythic Ages",
+      "disposition": "cut:creature_recognizability_rule.md §6"
+    },
+    {
+      "def": "MA_Raptorkhan",
+      "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Mythic Ages",
+      "disposition": "cut:creature_recognizability_rule.md §6"
+    },
+    {
+      "def": "Massiff",
+      "reason": "ban 3 pursuit: spd 5.0 (MEASURED); owner card: AridShrubland medium band",
+      "disposition": "move:AridShrubland"
+    },
+    {
+      "def": "Meganeura",
+      "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+      "disposition": "cut:creature_recognizability_rule.md §6"
+    },
+    {
+      "def": "Megasloth",
+      "reason": "ban 9: instantly nameable terrestrial animal (a sloth); familiar ARCHITECTURE wanted, nameable species not",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Mudhorn",
+      "reason": "owner card 2026-09-09: Mudhorn is AridShrubland's ONE huge-predator icon exception — its home is there",
+      "disposition": "move:AridShrubland"
+    },
+    {
+      "def": "Mynock",
+      "reason": "§9 (binding): trim to Fall Line + poison forest — a parasite needs hosts/hulls",
+      "disposition": "move:fall_line"
+    },
+    {
+      "def": "Neebray",
+      "reason": "§9 (binding): trim to poison forest + caves",
+      "disposition": "move:PoisonForest"
+    },
+    {
+      "def": "Nexu",
+      "reason": "ban 3 pursuit: predator + spd 6.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Orray",
+      "reason": "ban 3 pursuit: predator + spd 5.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "PaintedSpat",
+      "reason": "ban 3 pursuit: predator + spd 5.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Pulmonoscorpius",
+      "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+      "disposition": "cut:creature_recognizability_rule.md §6"
+    },
+    {
+      "def": "RG_Rimclaw",
+      "reason": "ban 3 pursuit: predator + spd 5.2 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Rancor",
+      "reason": "icon — belongs in a lair/dungeon context, not open desert (prep §3.3); pursuit-illegal (spd 5.0 predator)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Roggwart",
+      "reason": "ban 3 pursuit: predator + spd 4.5 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Scavrat",
+      "reason": "ban 3 pursuit: spd 4.9 (MEASURED); the name is the job — Fall Line ship vermin (prep §8.4)",
+      "disposition": "move:fall_line"
+    },
+    {
+      "def": "Scurrier",
+      "reason": "ban 3 pursuit: predator + spd 4.5 (MEASURED); owner card keeps it in ExtremeDesert at comm ≤0.1",
+      "disposition": "move:ExtremeDesert"
+    },
+    {
+      "def": "Skalder",
+      "reason": "cast discipline under §5 small-steady populations: not in the designed cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Snoruuk",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 1.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "TYR_HotfootRat",
+      "reason": "reads as a rat — Earth-nameable on sight (ban 9; Earth-five spirit)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Thranta",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.0) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Tooke",
+      "reason": "ban 3 pursuit: predator + spd 6.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Toraton",
+      "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Beasts of the Rim",
+      "disposition": "cut:creature_recognizability_rule.md §6"
+    },
+    {
+      "def": "Toxalope",
+      "reason": "owner card 2026-09-09 (prep §4.4): wretched in-joke belongs to the Wasteland",
+      "disposition": "move:Wasteland"
+    },
+    {
+      "def": "Tukata",
+      "reason": "ban 3 pursuit: predator + spd 5.0 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "TuskCat",
+      "reason": "ban 3 pursuit: predator + spd 5.5 ≥ 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Urusai",
+      "reason": "shrubland medium-band keep (prep §3.2); avoids double-home noise here",
+      "disposition": "move:AridShrubland"
+    },
+    {
+      "def": "VQEA_Splicetoot",
+      "reason": "cast discipline under §5 small-steady populations; quest-mod critter with no desert read",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Vapaad",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.8) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Vulptex",
+      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.1) not in the designed positional cast",
+      "disposition": "homeless-reserve"
+    }
+  ],
+  "stat_adjustments": [
+    {
+      "def": "Wraid",
+      "field": "moveSpeed",
+      "from": 5.0,
+      "to": 4.4,
+      "authority": "owner card 2026-09-09: SW staples adjust-and-keep"
+    },
+    {
+      "def": "Gutkurr",
+      "field": "moveSpeed",
+      "from": 4.5,
+      "to": 4.4,
+      "authority": "owner card 2026-09-09: SW staples adjust-and-keep"
+    }
+  ],
+  "flora": [
+    {
+      "def": "AB_HardyGrass",
+      "commonality": 0.6,
+      "law": "meagre alien grass, trimmed 2.2→0.6 — ban 8: vegetation meagre, never green in quantity"
+    },
+    {
+      "def": "Plant_Chakroot_Wild",
+      "commonality": 0.3,
+      "law": "SW donor plant (chak-root), alien-named, arid"
+    },
+    {
+      "def": "Plant_HubbaGourd_Wild",
+      "commonality": 0.2,
+      "law": "SW icon desert gourd (Tatooine), wild variant only"
+    },
+    {
+      "def": "AB_Aaklac",
+      "commonality": 0.12,
+      "law": "Alpha Biomes alien arid form"
+    },
+    {
+      "def": "AB_DessertTree",
+      "commonality": 0.06,
+      "law": "alien tree at trace — a rare vertical is a shade-maker landmark (§9)"
+    }
+  ],
+  "flora_purged": [
+    {
+      "def": "Plant_SaguaroCactus",
+      "reason": "Earth-nameable (saguaro) — owner card 2026-09-09"
+    },
+    {
+      "def": "Plant_Agave",
+      "reason": "Earth-nameable (agave) — owner card"
+    },
+    {
+      "def": "GRimAgave",
+      "reason": "Earth-nameable + Grindterra reskin"
+    },
+    {
+      "def": "GRimAgavePlant",
+      "reason": "Earth-nameable + Grindterra reskin"
+    },
+    {
+      "def": "GRimSaguaroCactus",
+      "reason": "Earth-nameable + Grindterra reskin"
+    },
+    {
+      "def": "GRim1SaguaroCactus",
+      "reason": "Earth-nameable + Grindterra reskin"
+    },
+    {
+      "def": "Plant_PincushionCactus",
+      "reason": "Earth-nameable cactus"
+    },
+    {
+      "def": "GRimPincushionCactus",
+      "reason": "Earth-nameable + Grindterra reskin"
+    },
+    {
+      "def": "GRim1PincushionCactus",
+      "reason": "Earth-nameable + Grindterra reskin"
+    },
+    {
+      "def": "Plant_PebbleCactus",
+      "reason": "Earth-nameable cactus"
+    },
+    {
+      "def": "GRimPebbleCactus",
+      "reason": "Earth-nameable + Grindterra reskin"
+    },
+    {
+      "def": "GRim1PebbleCactus",
+      "reason": "Earth-nameable + Grindterra reskin"
+    },
+    {
+      "def": "AB_BrownBarrelCactus",
+      "reason": "Earth-nameable (barrel cactus)"
+    },
+    {
+      "def": "RG_FlowerCactus",
+      "reason": "Earth-nameable cactus"
+    },
+    {
+      "def": "AreebianCactus",
+      "reason": "Earth cactus form + Grindterra biome plant"
+    },
+    {
+      "def": "Plant_DesertDandelion",
+      "reason": "Earth-nameable (dandelion)"
+    },
+    {
+      "def": "Plant_TreeDrago",
+      "reason": "Earth-nameable (dragon tree)"
+    },
+    {
+      "def": "TreeDragoberry",
+      "reason": "Grindterra plant (fails on sight)"
+    },
+    {
+      "def": "VEE_Plant_HoodiaCactus",
+      "reason": "Earth-nameable (hoodia)"
+    },
+    {
+      "def": "VCE_Plant_JadePlant",
+      "reason": "Earth houseplant (jade plant)"
+    },
+    {
+      "def": "VCE_Plant_AloeVera",
+      "reason": "Earth-nameable (aloe) — owner card names it"
+    },
+    {
+      "def": "VCE_Plant_SnakePlant",
+      "reason": "Earth houseplant (snake plant)"
+    },
+    {
+      "def": "GRimYellowGrass",
+      "reason": "Grindterra reskin"
+    },
+    {
+      "def": "Plant_HubbaGourd",
+      "reason": "crop def — the wild variant carries the wild slot"
+    },
+    {
+      "def": "Plant_Chakroot",
+      "reason": "crop def — the wild variant carries the wild slot"
+    }
+  ],
+  "fish": {
+    "ruling": "no fish — the def is rainless with no standing water (ban 2; §5); the only moisture is the dew-line at shade rims; rivers are the riparian LINE, a different sheet (dune_sea §2 lush rule)",
+    "list": []
+  },
+  "new_defs": [
+    {
+      "name": "ultracactus (owner's own name, stands)",
+      "kind": "plant",
+      "mechanic_load": "none blocking",
+      "from_sheet": "desert §4b"
+    },
+    {
+      "name": "staggerseed cycle plant + prepared-seed euphoric dish",
+      "kind": "plant",
+      "mechanic_load": "C#: corpse-dispersal + cuisine hediff",
+      "from_sheet": "desert §4b"
+    },
+    {
+      "name": "defending shade plants (thorn/venom patch flora)",
+      "kind": "plant",
+      "mechanic_load": "none blocking",
+      "from_sheet": "desert §4b"
+    },
+    {
+      "name": "filter-feeding shade-whale megafauna (body donor: GR_Paraceramuffalo bs 16 — RESKIN SOURCE ONLY, GR_ defs never placed as-is)",
+      "kind": "creature",
+      "mechanic_load": "C#: sand filter-feeding; def can land first",
+      "from_sheet": "desert §4c / prep §2.4"
+    },
+    {
+      "name": "glitter-birds (megafauna shadow commensals)",
+      "kind": "creature",
+      "mechanic_load": "C#: shade-follow",
+      "from_sheet": "desert §4c"
+    },
+    {
+      "name": "burst-predator flagship (bursts, grabs, retreats to cool)",
+      "kind": "creature",
+      "mechanic_load": "nearly-native staged statFactors (GhoulFrenzy pattern) + one C# line",
+      "from_sheet": "desert §4 / §10"
+    },
+    {
+      "name": "shade grid MapComponent (ShadeAt) — the keystone",
+      "kind": "C#",
+      "mechanic_load": "C#: MapComponent; AI + hediffs read it",
+      "from_sheet": "desert §10"
+    }
+  ],
+  "confidence": [
+    {
+      "claim": "Dewback/Blurrg predator flags are real (they read as omnivore mounts)",
+      "status": "UNMEASURED",
+      "why": "register special may be flag noise; both evicted on the proxy and CONFLICT-flagged for the owner review sheet"
+    },
+    {
+      "claim": "boom-and-bust audit (ban 4) for kept insects",
+      "status": "UNMEASURED",
+      "why": "no register field; VFEI2 hive rows all evicted anyway"
+    },
+    {
+      "claim": "nocturnal ban (ban 1) enforcement",
+      "status": "UNMEASURED",
+      "why": "name-level evidence only; def audit owed"
+    },
+    {
+      "claim": "Wraid/Gutkurr moveSpeed values 5.0/4.5",
+      "status": "MEASURED",
+      "why": "register 2026-09-05"
+    },
+    {
+      "claim": "GR_ prefix resolution",
+      "status": "RESOLVED",
+      "why": "GR_ = VGE chimeras, judged per law. GR_Manwolf fails ban 3 (spd 6.5, predator); the 12 other GR_ rows are curation evictions (no wanted niche), not prefix bans."
+    }
+  ]
+}

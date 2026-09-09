@@ -1,0 +1,347 @@
+{
+ "sheet": "the_fever_wood",
+ "defNames": [
+  "COMIGO_GreaterSwamp_Tropical"
+ ],
+ "tiles": 43,
+ "authored": "2026-09-09",
+ "law_sources": [
+  "the_fever_wood.md §4/§6",
+  "_freeze_rulings_2026-09-07.md R10/R15",
+  "_assignment_prep.md §9",
+  "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09"
+ ],
+ "notes": "Ban 3 is the roster's spine: no native chase predators — natives wait or graze; pursuit arrives only with the two off-map raiders (Feralisks, the Ants). Ground level mostly empty (donor animalDensity 2.3 kept); the crown holds the life. R15: the spore fever is the wood's own load — disease defs ride FEVER_WOOD_MECHANICS_1, not this roster.",
+ "fauna": [
+  {
+   "def": "Urusai",
+   "commonality": 0.5,
+   "action": "keep",
+   "band": "crown-flier",
+   "law": "§4 crown residents in ambivalent harmony; patient scavenger-predator, spd 3.0 (MEASURED) — waits, does not chase"
+  },
+  {
+   "def": "VFEI2_Megathrips",
+   "commonality": 0.5,
+   "action": "keep",
+   "band": "wood-borer",
+   "law": "§4 borers eating cave-systems into living wood; small patient predator allowed by §4"
+  },
+  {
+   "def": "BMT_GlowSlug",
+   "commonality": 0.5,
+   "action": "keep",
+   "band": "sap-drinker",
+   "law": "§4 sap-drinkers at the bark; spd 0.8 (MEASURED) — the stillness incarnate"
+  },
+  {
+   "def": "Gelagrub",
+   "commonality": 0.4,
+   "action": "adjust-keep",
+   "band": "crown-grazer",
+   "law": "§4 canopy grazers; herd grub (MEASURED special); comm 0.18→0.4 — the crown is where the life is"
+  },
+  {
+   "def": "Nuna",
+   "commonality": 0.4,
+   "action": "keep",
+   "band": "grazer",
+   "law": "§4 natives wait or graze; herd (MEASURED special); SW icon"
+  },
+  {
+   "def": "LongtailGorg",
+   "commonality": 0.3,
+   "action": "keep",
+   "band": "wait-ambush",
+   "law": "§4 small patient predators; spd 2.3 (MEASURED) — sits at bore-mouths, never chases (ban 3 passed)"
+  },
+  {
+   "def": "BMT_JewelBeetle",
+   "commonality": 0.2,
+   "action": "import",
+   "band": "crown-grazer",
+   "law": "§4 harmony guild; slow non-predator bs 2.45 spd 3.1 (MEASURED); bark-working beetle body"
+  },
+  {
+   "def": "Whisperbird",
+   "commonality": 0.3,
+   "action": "import",
+   "band": "crown-flier",
+   "law": "§4 crown life; R17 fliers cross biomes"
+  },
+  {
+   "def": "Convor",
+   "commonality": 0.3,
+   "action": "import",
+   "band": "crown-flier",
+   "law": "§4 crown watcher; SW icon; R17"
+  },
+  {
+   "def": "BMT_AcidSlug",
+   "commonality": 0.05,
+   "action": "keep",
+   "band": "ground-slow",
+   "law": "§4 the ground is for the brave; spd 1.5 (MEASURED) — waits; trace, the floor stays mostly empty"
+  },
+  {
+   "def": "Fambaa",
+   "commonality": 0.02,
+   "action": "import",
+   "band": "the-terribly-lost",
+   "law": "§4 big animals wander in, drink at the mirrors, and are subtracted — trace commonality IS the ambient tragedy"
+  }
+ ],
+ "evictions": [
+  {
+   "def": "BMT_SandLeaper",
+   "reason": "desert-form leaper in a backswamp — theme fail vs §1; also fast (spd 4.25) against the giant stillness",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_Chickenlope",
+   "reason": "curation: crown guild (§4) is arboreal waiters/grazers/borers — a ground-level chicken chimera staffs no guild (bs 0.18 spd 2.15 non-predator MEASURED, so ban 3 is not the ground); 'chicken' recognizability read flagged",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_Mancat",
+   "reason": "ban 3: no native chase predators — predator special + spd 4.0 MEASURED; the humanlike-hybrid read fits no §4 guild",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "HermitCrab",
+   "reason": "ban 7 Earth-nameable (crab) — 'a crab is a crab' (prep §6.4)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_FungalWeevil",
+   "reason": "ban 5: no fungal miracle — fungal fauna reads the Rot; the_rot.md §7b names it a keep there",
+   "disposition": "move:AB_MycoticJungle"
+  },
+  {
+   "def": "BMT_Glowtail",
+   "reason": "ban 3: chase predator (spd 4.0, predator MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Yobshrimp",
+   "reason": "§5 nothing goes in the water here — a water-dwelling creature contradicts the empty mirrors; the Miasma's crowding wants it",
+   "disposition": "move:AB_MiasmicMangrove"
+  },
+  {
+   "def": "AA_InfectedAerofleet",
+   "reason": "prep §5.2 names it a Poison Forest keep ('infected' is that biome's adjective); ubiquity-trim family (§9 aerofleet lane)",
+   "disposition": "move:PoisonForest"
+  },
+  {
+   "def": "ColossusToad",
+   "reason": "ban 7 Earth-nameable (toad)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_CaveCricket",
+   "reason": "ban 7 Earth-nameable (cricket); the Rot ingests its EGGS as food, not the creature",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "RG_Rimclaw",
+   "reason": "ban 3: chase predator (spd 5.2 MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_Basilisk",
+   "reason": "ban 3: chase predator (spd 4.6); Earth-myth name fails on sight",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Grank",
+   "reason": "ban 3: chase predator (spd 5.0); wet SW body fits the lifeboat's crowding",
+   "disposition": "move:AB_MiasmicMangrove"
+  },
+  {
+   "def": "AA_Erin",
+   "reason": "ban 3: chase predator (spd 4.0)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Feralisk",
+   "reason": "§4 the raiders bring pursuit FROM OFF-MAP — a resident feralisk violates ban 3 and the two-front war design; raids are incident-driven",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Mawvorr",
+   "reason": "ban 3: chase predator (spd 4.5)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Nexu",
+   "reason": "ban 3: chase predator (spd 6.0); SW icon — reserve for events/raids, not wild here",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_Crystalope",
+   "reason": "crystal clade belongs to CrystalCaverns/PoisonForest lanes (prep §9 crystal row); '-lope' Earth-mash name",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Jimvu",
+   "reason": "spd 6.0 dispersal-runner contradicts the giant stillness (§5)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Reek",
+   "reason": "ban 3: pursuit-capable (spd 5.0, predator); SW icon — reserve for events",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Varactyl",
+   "reason": "spd 5.5 runner vs stillness; SW icon — reserve",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Behemoth",
+   "reason": "bs 32 predator is a headline threat the crown's harmony forbids (§4); the deep thing is the only allowed monster and it is plot-reserved (ban 1)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWProtosolpuga",
+   "reason": "dinosaur-mod lane, 0% recognizability survival (prep §10.4 deeper-cut)",
+   "disposition": "homeless-reserve"
+  }
+ ],
+ "stat_adjustments": [],
+ "flora": [
+  {
+   "def": "AB_KeeningCordax",
+   "commonality": 1.2,
+   "law": "§1 great alien trees — interim single-tile body for the tower-trunks"
+  },
+  {
+   "def": "Plant_HydenockTree_Wild",
+   "commonality": 1.5,
+   "law": "§4/§8 the Wookiee canton works a wroshyr-analog crown; SW tree"
+  },
+  {
+   "def": "Plant_JoganTree_Wild",
+   "commonality": 0.6,
+   "law": "§7 crown economy fruit; SW"
+  },
+  {
+   "def": "BMT_GiantLeaf",
+   "commonality": 0.8,
+   "law": "§1 understory in the dim ground level"
+  },
+  {
+   "def": "AB_Iashiphus",
+   "commonality": 0.5,
+   "law": "alien groundcover — thin floor is doctrine (§3 ground mostly empty)"
+  },
+  {
+   "def": "AB_Gomphoeria",
+   "commonality": 0.4,
+   "law": "alien groundcover"
+  },
+  {
+   "def": "Plant_Chakroot_Wild",
+   "commonality": 0.4,
+   "law": "SW root plant — water-table feeder read (§3)"
+  }
+ ],
+ "flora_purged": [
+  {
+   "def": "Plant_TallGrass",
+   "reason": "vanilla Earth flora (ban 7)"
+  },
+  {
+   "def": "Plant_ShrubLow",
+   "reason": "vanilla Earth flora"
+  },
+  {
+   "def": "Plant_TreeWillow",
+   "reason": "Earth-nameable (willow)"
+  },
+  {
+   "def": "Plant_TreeCypress",
+   "reason": "Earth-nameable (cypress)"
+  },
+  {
+   "def": "Plant_TreeMaple",
+   "reason": "Earth-nameable (maple)"
+  },
+  {
+   "def": "Plant_Chokevine",
+   "reason": "vanilla Earth flora"
+  },
+  {
+   "def": "Plant_Alocasia",
+   "reason": "Earth-nameable (alocasia)"
+  },
+  {
+   "def": "Plant_Bush",
+   "reason": "vanilla Earth flora"
+  },
+  {
+   "def": "Plant_Clivia",
+   "reason": "Earth-nameable (clivia)"
+  },
+  {
+   "def": "Plant_Berry",
+   "reason": "vanilla Earth flora"
+  },
+  {
+   "def": "Plant_Rafflesia",
+   "reason": "Earth-nameable (rafflesia)"
+  }
+ ],
+ "fish": {
+  "ruling": "No fish — ruled from the sheet: the black mirrors are kept empty by the deep thing (§4); nothing native drinks at them, nothing lives in them, and their emptiness is the biome's central evidence (§5, §7b). Stocking them would resolve the deep thing ambiently, violating ban 1.",
+  "list": []
+ },
+ "new_defs": [
+  {
+   "name": "thornbug (nectar-beast)",
+   "kind": "creature",
+   "mechanic_load": "C#: fear-gated nectar yield (FEVER_WOOD_MECHANICS_1) — ban 6: never yields under fear",
+   "from_sheet": "the_fever_wood §4"
+  },
+  {
+   "name": "the deep thing (tentacled monstrosity)",
+   "kind": "creature",
+   "mechanic_load": "C#: plot-reserved emergence, pool-evidence events; sarlacc_spec.md family register",
+   "from_sheet": "the_fever_wood §4/§6 ban 1"
+  },
+  {
+   "name": "ant raider wiring (theft-hauling, two-front war)",
+   "kind": "creature",
+   "mechanic_load": "C#: off-map raids, thornbug theft, raid-back quests; factionless (ban 2)",
+   "from_sheet": "the_fever_wood §4"
+  },
+  {
+   "name": "seep-oil surface deposits",
+   "kind": "plant",
+   "mechanic_load": "none (gather point) — or terrain feature at mechanics item",
+   "from_sheet": "the_fever_wood §3/§7"
+  }
+ ],
+ "confidence": [
+  {
+   "claim": "They! (Giant Ants) GiantAnt_Race is a usable literal source for the Ants",
+   "status": "PARTIAL",
+   "why": "register row live (MEASURED: insectoid, bs 2.0, spd 3.8, predator, no wild biomes) — passes the register half of BENCH's delegated test; art recognizability is the owner's eye test, owed. Either way it wires as an off-map raider (ban 3), never a wildAnimals resident, so this roster is unaffected"
+  },
+  {
+   "claim": "Urusai/Whisperbird/Convor are fliers",
+   "status": "UNMEASURED",
+   "why": "register flies flag broken"
+  },
+  {
+   "claim": "no donor def exists for a nectar-secreting bark insect",
+   "status": "MEASURED",
+   "why": "no 'produces a harvestable resource' row in the register is bark-clamped/nectar-themed; thornbug goes to new_defs"
+  },
+  {
+   "claim": "GR_Chickenlope/GR_Mancat re-adjudicated on real law (curation / ban 3)",
+   "status": "RESOLVED",
+   "why": "GR_/GRim prefix correction pass 2026-09-09: GR_* = Vanilla Genetics Expanded chimeras, judged per sheet law (no Grindterra card); GRim* = GRiNDTerra Earth analogs, homeless-by-default. Register stats MEASURED."
+  }
+ ]
+}

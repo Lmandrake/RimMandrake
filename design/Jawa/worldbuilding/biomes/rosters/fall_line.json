@@ -1,0 +1,155 @@
+{
+ "sheet": "fall_line",
+ "defNames": [
+  "ExtremeDesert",
+  "Desert",
+  "AridShrubland"
+ ],
+ "tiles": 308,
+ "authored": "2026-09-09",
+ "injection_layer": true,
+ "note": "NOT a BiomeDef (ban 1). Entries are ADDITIONS injected over the underlying defs in region The Fall Line; the base rosters show through.",
+ "law_sources": [
+  "fall_line.md §6/§8b",
+  "_assignment_prep.md §8, §9",
+  "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09"
+ ],
+ "fauna": [
+  {
+   "def": "Scavrat",
+   "commonality": 0.6,
+   "action": "import",
+   "band": "ship-vermin",
+   "law": "the name is the job — eats what falls (prep §8.4); generalist, fast-cycling, non-territorial (ban 6 pass)"
+  },
+  {
+   "def": "WompRat",
+   "commonality": 0.4,
+   "action": "import",
+   "band": "ship-vermin",
+   "law": "icon; nests under hulls (prep §8.4)"
+  },
+  {
+   "def": "Mynock",
+   "commonality": 0.3,
+   "action": "import",
+   "band": "ship-vermin",
+   "law": "icon — hull parasite, its literal canon niche (prep §8.4); §9 trims it to here + poison forest"
+  },
+  {
+   "def": "VFEI2_Fuelmite",
+   "commonality": 0.3,
+   "action": "import",
+   "band": "ship-vermin",
+   "law": "\"fuelmite\" — eats fuel (prep §8.4); homeless after the dune-sea band cut"
+  },
+  {
+   "def": "Rat",
+   "commonality": 0.1,
+   "action": "import",
+   "band": "ship-vermin",
+   "law": "owner card 2026-09-09: the Earth five appear NOWHERE except Rat here (prep §9: trim to Fall Line/settlements); ship rats fell with the ships"
+  },
+  {
+   "def": "OuterRim_MSEDroid",
+   "commonality": 0.1,
+   "action": "import",
+   "band": "feral-droid",
+   "law": "Outer Rim Droid Depot animal-classed droid (meatless, butcher-less — prep §8.4, MEASURED fig4); feral, Faction=null by wild spawn"
+  },
+  {
+   "def": "OuterRim_SalvageAssistDroid",
+   "commonality": 0.1,
+   "action": "import",
+   "band": "feral-droid",
+   "law": "as MSEDroid; salvage-assist body fits the belt"
+  },
+  {
+   "def": "OuterRim_AstromechDroid",
+   "commonality": 0.08,
+   "action": "import",
+   "band": "feral-droid",
+   "law": "icon-protected feral droid (prep §8.4)"
+  },
+  {
+   "def": "OuterRim_DUMDroid",
+   "commonality": 0.08,
+   "action": "import",
+   "band": "feral-droid",
+   "law": "pit droid — feral crash survivor"
+  },
+  {
+   "def": "OuterRim_FX7Droid",
+   "commonality": 0.05,
+   "action": "import",
+   "band": "feral-droid",
+   "law": "medical droid gone feral"
+  },
+  {
+   "def": "OuterRim_GNKDroid",
+   "commonality": 0.08,
+   "action": "import",
+   "band": "feral-droid",
+   "law": "power droid — lives longest beside live wrecks (§5)"
+  },
+  {
+   "def": "OuterRim_MuckrakerDroid",
+   "commonality": 0.05,
+   "action": "import",
+   "band": "feral-droid",
+   "law": "salvage body"
+  },
+  {
+   "def": "OuterRim_DestroyerDroid",
+   "commonality": 0.02,
+   "action": "import",
+   "band": "feral-droid",
+   "law": "rare dangerous fall; still flee-prone by ruling (§8b)"
+  }
+ ],
+ "evictions": [],
+ "stat_adjustments": [],
+ "flora": [],
+ "flora_purged": [],
+ "fish": {
+  "ruling": "no fish — ban 5: no water; median rainfall 0; the only water is what a wreck's condenser makes",
+  "list": []
+ },
+ "new_defs": [
+  {
+   "name": "feral races (crash survivors: pawnkind + permanent mental-scar hediff + capture→slave wiring)",
+   "kind": "creature",
+   "mechanic_load": "C#, ours (no donor ships capturable feral sentients) — §8b verbatim ruling",
+   "from_sheet": "fall_line §8b"
+  },
+  {
+   "name": "feral droid behaviour (flee-prone, memwipe-capture, no droid-relations hit on kill)",
+   "kind": "C#",
+   "mechanic_load": "C#, ours (fall_line §8b; scoping open — prep §8.5 q2)",
+   "from_sheet": "fall_line §8b"
+  },
+  {
+   "name": "wreck-shade flora pockets (gate hardy smalls on wreck mutators — flora authoring, not new species)",
+   "kind": "plant",
+   "mechanic_load": "injection gating (ban 2: any plant here is wreck-shade-gated)",
+   "from_sheet": "fall_line §6 / prep §8.4"
+  }
+ ],
+ "confidence": [
+  {
+   "claim": "OuterRim droids spawn Faction=null as wild kinds (bans 3/4)",
+   "status": "UNMEASURED",
+   "why": "wild-spawn channel should carry no faction, but the defs' factionRelation wiring needs a def-level check before XML lands"
+  },
+  {
+   "claim": "droids are meatless/butcher-less",
+   "status": "MEASURED",
+   "why": "prep §8.4 cites fig4 droid note"
+  },
+  {
+   "claim": "no injected fauna is long-lived/territorial (ban 6)",
+   "status": "UNMEASURED",
+   "why": "lifespan/territory not register fields; all picks are generalist vermin by design"
+  }
+ ]
+}

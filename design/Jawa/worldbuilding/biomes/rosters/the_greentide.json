@@ -1,0 +1,440 @@
+{
+ "sheet": "the_greentide",
+ "defNames": [
+  "BiomeCypreJungle"
+ ],
+ "tiles": 235,
+ "authored": "2026-09-09",
+ "law_sources": [
+  "the_greentide.md §4/§6",
+  "_assignment_prep.md §9",
+  "_freeze_rulings_2026-09-07.md R17/R24",
+  "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09"
+ ],
+ "notes": "Admission test (§4): grows or eats at Greentide speed, carries no truce, no Earth names. animalDensity 3.5 is doctrine — a BUSY roster is correct here; there is no pursuit ban and no sparseness law. Sorts staffed: Gnawers/Shatterers/Brakes/Lungers/Swingers/Fliers.",
+ "fauna": [
+  {
+   "def": "Gizka",
+   "commonality": 1.0,
+   "action": "keep",
+   "band": "floor-vermin",
+   "law": "§4 fruit strategy — free calories breed vermin; SW icon (KOTOR)"
+  },
+  {
+   "def": "Worrt",
+   "commonality": 0.7,
+   "action": "keep",
+   "band": "ambush",
+   "law": "§4 open free-for-all; positional water-margin ambusher, spd 2.5 (MEASURED); SW icon"
+  },
+  {
+   "def": "Clodhopper",
+   "commonality": 0.7,
+   "action": "keep",
+   "band": "floor-vermin",
+   "law": "§4 everything eats everything — small hopper prey base"
+  },
+  {
+   "def": "Shiro",
+   "commonality": 0.5,
+   "action": "keep",
+   "band": "floor-ambush",
+   "law": "§4 free-for-all; slow sit-and-wait (spd 1.0 MEASURED)"
+  },
+  {
+   "def": "ShiroTrap",
+   "commonality": 0.5,
+   "action": "keep",
+   "band": "floor-ambush",
+   "law": "§4 free-for-all; trap-form ambusher"
+  },
+  {
+   "def": "Whisperbird",
+   "commonality": 0.7,
+   "action": "keep",
+   "band": "flier",
+   "law": "§4 The Fliers — absolutely everywhere, screaming; R17"
+  },
+  {
+   "def": "Hawkbat",
+   "commonality": 0.18,
+   "action": "keep",
+   "band": "flier-predator",
+   "law": "§4 The Fliers; canopy predator (bs 2.0 MEASURED)"
+  },
+  {
+   "def": "Convor",
+   "commonality": 0.3,
+   "action": "import",
+   "band": "flier",
+   "law": "§4 The Fliers; SW icon, swamp-forest native (register biomes MEASURED)"
+  },
+  {
+   "def": "PekoPeko",
+   "commonality": 0.2,
+   "action": "import",
+   "band": "flier",
+   "law": "§4 The Fliers; floats over water (MEASURED special) — river-line bird analog"
+  },
+  {
+   "def": "Beldon",
+   "commonality": 0.008,
+   "action": "keep",
+   "band": "flier-giant",
+   "law": "R17 fliers cross biomes; trace giant over the steam"
+  },
+  {
+   "def": "VFEI2_Swarmling",
+   "commonality": 0.4,
+   "action": "adjust-keep",
+   "band": "floor-vermin",
+   "law": "§4 filth-and-sprouts carpet is the strategy working; comm trimmed 1.0→0.4 (design choice)"
+  },
+  {
+   "def": "BMT_Diggerpede",
+   "commonality": 0.4,
+   "action": "keep",
+   "band": "floor-predator",
+   "law": "§4 no pursuit ban here; root-tangle predator"
+  },
+  {
+   "def": "Kinrath",
+   "commonality": 0.3,
+   "action": "adjust-keep",
+   "band": "canopy-ambush",
+   "law": "§4 Swinger-predator; venomous (MEASURED); SW icon (KOTOR); comm 0.4→0.3 so the Webwork keeps spider primacy"
+  },
+  {
+   "def": "Klorslug",
+   "commonality": 0.4,
+   "action": "keep",
+   "band": "gnawer",
+   "law": "§4 The Gnawers — insectoid chewing the wet floor; SW canon swamp slug"
+  },
+  {
+   "def": "Gelagrub",
+   "commonality": 0.3,
+   "action": "import",
+   "band": "gnawer",
+   "law": "§4 The Gnawers — herd grub indifferent to predation (Felucia, SW icon)"
+  },
+  {
+   "def": "AA_Needlepost",
+   "commonality": 0.3,
+   "action": "keep",
+   "band": "floor-vermin",
+   "law": "§4 free-for-all; venom-armed herd (MEASURED special)"
+  },
+  {
+   "def": "AA_BloodShrimp",
+   "commonality": 0.2,
+   "action": "keep",
+   "band": "margin-predator",
+   "law": "§4 free-for-all; wet fast predator at the waterline"
+  },
+  {
+   "def": "AA_Razorjack",
+   "commonality": 0.2,
+   "action": "keep",
+   "band": "floor-predator",
+   "law": "§4 free-for-all"
+  },
+  {
+   "def": "Dalgo",
+   "commonality": 0.18,
+   "action": "keep",
+   "band": "brake",
+   "law": "§4 The Brakes — fast-metabolism grazer-pack mowing the growth line"
+  },
+  {
+   "def": "Hssiss",
+   "commonality": 0.18,
+   "action": "keep",
+   "band": "lunger-junior",
+   "law": "§4 The Lungers (junior); venomous water lizard, SW icon (KOTOR dark-side dragon)"
+  },
+  {
+   "def": "Dianoga",
+   "commonality": 0.15,
+   "action": "adjust-keep",
+   "band": "lunger",
+   "law": "§4 The Lungers + ban 6 no safe standing water — THE submerged invisible predator; SW icon; comm 0.05→0.15 (deep water must carry risk)"
+  },
+  {
+   "def": "Dragonsnake",
+   "commonality": 0.12,
+   "action": "adjust-keep",
+   "band": "lunger",
+   "law": "§4 The Lungers + ban 6; Dagobah water predator, SW icon; comm 0.05→0.12"
+  },
+  {
+   "def": "Lylek",
+   "commonality": 0.05,
+   "action": "keep",
+   "band": "apex",
+   "law": "§9 the ambient ducks before the apex arrives — the biome requires an apex terror; evicted from both deserts (prep §1.3/§2.3), legal here where pursuit is not banned"
+  },
+  {
+   "def": "Fambaa",
+   "commonality": 0.25,
+   "action": "import",
+   "band": "shatterer",
+   "law": "§4 The Shatterers — bs 6.0 herd megafauna (MEASURED), migrates in herds (MEASURED special); Naboo swamp icon"
+  },
+  {
+   "def": "Falumpaset",
+   "commonality": 0.3,
+   "action": "import",
+   "band": "brake",
+   "law": "§4 The Brakes — bs 3.0 swamp herd (MEASURED); Naboo icon"
+  },
+  {
+   "def": "Mott",
+   "commonality": 0.4,
+   "action": "import",
+   "band": "brake",
+   "law": "§4 The Brakes — small swamp grazer herd (MEASURED); grazing suppresses encroachment"
+  },
+  {
+   "def": "Nuna",
+   "commonality": 0.4,
+   "action": "import",
+   "band": "brake",
+   "law": "§4 fruit-eater herd; SW icon; passes-seed-quickly read"
+  }
+ ],
+ "evictions": [
+  {
+   "def": "BMT_SonarRabbit",
+   "reason": "ban 2 Earth-nameable (rabbit); the_rot.md §7b evicts the same def by name",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AM_Dryad_Spitter",
+   "reason": "Gauranlen-mechanic creature functioning wild (prep §5.5 flag) — mechanic-orphan, not a Greentide sort",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_LandOctopus",
+   "reason": "ban 2 Earth-nameable (octopus) — nameable on sight despite terrestrial form",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_Boomcat",
+   "reason": "curation: staffs no §4 sort (Lunger/Shatterer/Brake/Gnawer/apex — non-predator, bs 1.5 spd 3.75 MEASURED); the exploding in-joke lane is Boomalope's alone (prep §9); not an Earth animal, so no ban-2 ground",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Needleroll",
+   "reason": "dry-heat dune creature in saturated jungle — theme fail against §1; already a dune-sea KEEP (prep §1.2)",
+   "disposition": "move:ExtremeDesert"
+  },
+  {
+   "def": "AA_FireWasp",
+   "reason": "§4b fire is not the tool — fire-themed fauna contradicts the saturated-growth doctrine",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_DesertAve",
+   "reason": "desert endurance-navigator archetype (prep §2.2) — wrong biome",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Jamel",
+   "reason": "slow desert herd endurer (prep §2.2 Desert KEEP) — wrong biome",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Gutkurr",
+   "reason": "owner card 3, 2026-09-09: Gutkurr slowed <4.5 → legal burst predator in Desert — that ruling names its home",
+   "disposition": "move:Desert"
+  }
+ ],
+ "stat_adjustments": [],
+ "flora": [
+  {
+   "def": "AB_JungleTree",
+   "commonality": 3.0,
+   "law": "§1 gallery jungle canopy; alien donor tree (Alpha Biomes)"
+  },
+  {
+   "def": "Plant_HydenockTree_Wild",
+   "commonality": 1.5,
+   "law": "§7b tree ladder — big SW hardwood body toward the giant end"
+  },
+  {
+   "def": "Plant_JoganTree_Wild",
+   "commonality": 1.2,
+   "law": "§4 the fruit yearns to be eaten — SW fruit tree"
+  },
+  {
+   "def": "Plant_MujaFruit_Wild",
+   "commonality": 1.0,
+   "law": "§4 fruit law — SW fruit bush"
+  },
+  {
+   "def": "Plant_HubbaGourd_Wild",
+   "commonality": 0.8,
+   "law": "§4 fruit law — SW gourd"
+  },
+  {
+   "def": "Plant_FelucianGlowspore_Wild",
+   "commonality": 0.6,
+   "law": "§9 green-black canopy; Felucia jungle tree, maxGrowthTemp 75 covers 64 °C tiles (MEASURED pool)"
+  },
+  {
+   "def": "BMT_GiantLeaf",
+   "commonality": 1.0,
+   "law": "§1 understory mass"
+  },
+  {
+   "def": "Plant_TookeTrap_Wild",
+   "commonality": 0.5,
+   "law": "§7 every export has a tooth in it — predatory SW plant"
+  },
+  {
+   "def": "Plant_Bubblespore_Wild",
+   "commonality": 0.5,
+   "law": "floor cover, SW alien"
+  },
+  {
+   "def": "Plant_Chakroot_Wild",
+   "commonality": 0.5,
+   "law": "floor cover, SW alien"
+  },
+  {
+   "def": "AB_SugarFamewort",
+   "commonality": 0.6,
+   "law": "§4 sweet free-calorie groundcover"
+  }
+ ],
+ "flora_purged": [
+  {
+   "def": "GRimGreenGrass",
+   "reason": "GRim retexture of Earth grass; sheet §0: GRim flora replaced"
+  },
+  {
+   "def": "GRimBrambles",
+   "reason": "Earth-nameable (brambles), GRim retexture"
+  },
+  {
+   "def": "GRimGreenTallGrass",
+   "reason": "Earth-nameable, GRim retexture"
+  },
+  {
+   "def": "GRim2ShrubLow",
+   "reason": "vanilla shrub retexture"
+  },
+  {
+   "def": "GRimClivia",
+   "reason": "Earth-nameable (clivia)"
+  },
+  {
+   "def": "GRim2Chokevine",
+   "reason": "vanilla retexture"
+  },
+  {
+   "def": "GRim2Alocasia",
+   "reason": "Earth-nameable (alocasia)"
+  },
+  {
+   "def": "GRimReeds",
+   "reason": "Earth-nameable (reeds)"
+  },
+  {
+   "def": "JungleShrub",
+   "reason": "vanilla Earth flora (standard eviction, ban 2)"
+  },
+  {
+   "def": "TreeCypre",
+   "reason": "sheet §0: 'Cypre was the donor's tree name and dies with the eviction'"
+  },
+  {
+   "def": "TreeGrimber",
+   "reason": "GRim donor tree — sheet §0 replaced"
+  },
+  {
+   "def": "TreeDragoberry",
+   "reason": "GRim donor tree — sheet §0 replaced"
+  }
+ ],
+ "fish": {
+  "ruling": "Fish, graded by the dying river (§3): clean-to-living reaches carry scalefish shoals (SW analogs, no Earth names); downstream brine reaches and the river graves carry none — the water dies before the fish law does. Binding mechanism (wildAnimals water spawn vs Odyssey fishing table) decided at generation.",
+  "list": [
+   {
+    "def": "RSW_Mee",
+    "note": "scalefish shoal, upstream/midstream",
+    "commonality": 0.4
+   },
+   {
+    "def": "RSW_Faa",
+    "note": "scalefish, midstream predator of the smaller",
+    "commonality": 0.3
+   },
+   {
+    "def": "RSW_Laa",
+    "note": "scalefish, midstream",
+    "commonality": 0.3
+   }
+  ]
+ },
+ "new_defs": [
+  {
+   "name": "digestive-accelerant fruit (the fruit that yearns)",
+   "kind": "plant",
+   "mechanic_load": "C#: eat-fast/pass-seed hediff + filth",
+   "from_sheet": "the_greentide §4"
+  },
+  {
+   "name": "Greatbole living tower",
+   "kind": "plant",
+   "mechanic_load": "C#: GREENTIDE_MECHANICS_1 (mineable heartwood, regrowth crush, sealant)",
+   "from_sheet": "the_greentide §7b"
+  },
+  {
+   "name": "Gnawer proper (huge tree-base insect)",
+   "kind": "creature",
+   "mechanic_load": "C#: three-feller fall event hook",
+   "from_sheet": "the_greentide §4"
+  },
+  {
+   "name": "Shatterer proper (tree-felling megafauna)",
+   "kind": "creature",
+   "mechanic_load": "C#: fall event; Fambaa is the interim body",
+   "from_sheet": "the_greentide §4"
+  },
+  {
+   "name": "canopy Swinger",
+   "kind": "creature",
+   "mechanic_load": "none blocking (falls into water as flavor)",
+   "from_sheet": "the_greentide §4"
+  }
+ ],
+ "confidence": [
+  {
+   "claim": "Owner card places GRimTortoise in BiomeCypreJungle",
+   "status": "MEASURED-CONTRARY",
+   "why": "register (595-mod dump) shows GRimTortoise resident only in unpainted GRim donor biomes; nothing to evict from this def — the global cut rides RETEXTURED_EARTH_FAUNA_BANNED_1 regardless"
+  },
+  {
+   "claim": "Whisperbird/Hawkbat/Convor/PekoPeko/Beldon are fliers",
+   "status": "UNMEASURED",
+   "why": "register flies flag broken; by-name knowledge"
+  },
+  {
+   "claim": "flora rows satisfy ban 3 (no high-Flammability natives)",
+   "status": "UNMEASURED",
+   "why": "plant_pool.csv carries no flammability column — generator must verify against mod XML or patch flammability down"
+  },
+  {
+   "claim": "RSW scalefish spawn on in-biome river cells",
+   "status": "UNMEASURED",
+   "why": "water-spawn channel not proven (prep §6.5); verify at generation"
+  },
+  {
+   "claim": "GR_Boomcat re-adjudicated: evicted on curation/no-sort, not the Grindterra card",
+   "status": "RESOLVED",
+   "why": "GR_/GRim prefix correction pass 2026-09-09: GR_* = Vanilla Genetics Expanded chimeras, judged per sheet law (no Grindterra card); GRim* = GRiNDTerra Earth analogs, homeless-by-default. Register stats MEASURED."
+  }
+ ]
+}

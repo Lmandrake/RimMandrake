@@ -1,0 +1,448 @@
+{
+  "sheet": "the_scarlands",
+  "defNames": [
+    "Scarlands"
+  ],
+  "tiles": 90,
+  "authored": "2026-09-09",
+  "law_sources": [
+    "the_scarlands.md §4 (the sorts), §6 bans, §0 donor inventory (scaria 0.5 kept, fish population zero kept)",
+    "_assignment_prep.md §9",
+    "_freeze_rulings_2026-09-07.md R23 (war aerosol, not rain), R25 (§GM never in player text), R17",
+    "owner cards 2026-09-09"
+  ],
+  "fauna": [
+    {
+      "def": "Mynock",
+      "commonality": 0.5,
+      "action": "import",
+      "band": "wiring-eater",
+      "law": "§4: CANON AND LIVE — proposed true home here, grazing the dead war machines; a parasite needs hulls and this is the hull province; R17 lets it range",
+      "note": "⚠️ register shows Mynock ZEROED in Scarlands by Cherry Picker config — un-zero required before this row spawns (rail: biome_commonality_zeroed.py --ours; prove by reading the live config back). Its 3 legacy homes include dissolved HorrorWastes. flier claim UNMEASURED (broken flag)",
+      "ubiquity_exception": "the sheet argues Scarlands as true home vs §9's poison-forest naming — conflict flagged for the owner"
+    },
+    {
+      "def": "AA_SpinedGow",
+      "commonality": 0.15,
+      "action": "keep",
+      "band": "plated-grazer",
+      "law": "§4: the plated grazers — armored browser, herd, non-predator (bs 2.75 / spd 3.9 MEASURED); the biome scaria host (donor wildAnimalScariaChance 0.5 kept, §0): built beyond fear, guaranteed to lose its mind",
+      "note": "interim body — the rhino-plated signature grazer stays on the new-def ledger"
+    },
+    {
+      "def": "BMT_FoundryBeetle",
+      "commonality": 0.18,
+      "action": "keep",
+      "band": "plated-grazer",
+      "law": "§4: crust/wreck-lichen browser — non-predator plated insectoid (bs 2.4 MEASURED), industrial read; dormant special fits pre-sprung dressing (§8)"
+    },
+    {
+      "def": "AA_Helixien",
+      "commonality": 0.08,
+      "action": "adjust-keep",
+      "band": "mortuary-guild",
+      "law": "§4: the Mortuary Guild — corpse decayer special (MEASURED), slow (spd 0.6), uncannily calm where everything else is mad; the one safe animal here and the most disturbing"
+    },
+    {
+      "def": "VFEI2_Boomtick",
+      "commonality": 0.4,
+      "action": "keep",
+      "band": "weapon-descendant",
+      "law": "§4: feral living munitions breeding true — pops on death, small blast (MEASURED special); §GM meaning stays out of def text (ban 1)"
+    },
+    {
+      "def": "SW_Electrictick",
+      "commonality": 0.3,
+      "action": "keep",
+      "band": "weapon-descendant",
+      "law": "§4: runs on a power cell and dies when it empties; explodes when destroyed (MEASURED specials) — a munition with legs"
+    },
+    {
+      "def": "SW_Electricgryllotalpa",
+      "commonality": 0.15,
+      "action": "keep",
+      "band": "weapon-descendant",
+      "law": "§4: it SHOOTS — a ranged attack special (MEASURED); still executing fragments of a dead war's doctrine"
+    },
+    {
+      "def": "SW_Juggernautbeetles",
+      "commonality": 0.05,
+      "action": "keep",
+      "band": "weapon-descendant",
+      "law": "§4: burning blade special (MEASURED) — incendiary doctrine remnant; kept rare (bs 3 predator)"
+    },
+    {
+      "def": "RG_Rimclaw",
+      "commonality": 0.1,
+      "action": "keep",
+      "band": "weapon-descendant",
+      "law": "§4: bursts into a toxic cloud on death (MEASURED) — the war's toxin breeding true"
+    }
+  ],
+  "evictions": [
+    {
+      "def": "Scurrier",
+      "reason": "owner card 3 (2026-09-09): Scurrier trimmed to comm ≤0.1 grain-scale in ExtremeDesert — its ruled home",
+      "disposition": "move:ExtremeDesert"
+    },
+    {
+      "def": "BMT_ColonyPustuleHornet",
+      "reason": "Polluted Lands hive fauna — contamination-authored for the Wasteland register (prep §4.4); not a war sort",
+      "disposition": "homeless-reserve",
+      "note": "Wasteland import candidate — that batch rules it"
+    },
+    {
+      "def": "BMT_FamineLocust",
+      "reason": "as ColonyPustuleHornet; flock+fast besides",
+      "disposition": "homeless-reserve",
+      "note": "Wasteland candidate"
+    },
+    {
+      "def": "BMT_PustuleHornet",
+      "reason": "as ColonyPustuleHornet",
+      "disposition": "homeless-reserve",
+      "note": "Wasteland candidate"
+    },
+    {
+      "def": "BMT_PustuleHornetSpawned",
+      "reason": "as ColonyPustuleHornet",
+      "disposition": "homeless-reserve",
+      "note": "Wasteland candidate"
+    },
+    {
+      "def": "BMT_CarrionVulture",
+      "reason": "retextured/reskinned Earth animal — fails on sight (owner card 2026-09-09; EARTH_FAUNA_EXCLUDED.txt known gap)",
+      "disposition": "cut:RETEXTURED_EARTH_FAUNA_BANNED_1"
+    },
+    {
+      "def": "BMT_Megaphorid",
+      "reason": "as ColonyPustuleHornet",
+      "disposition": "homeless-reserve",
+      "note": "Wasteland candidate"
+    },
+    {
+      "def": "BMT_Creature_Mantrap",
+      "reason": "not a §4 sort; a sit-and-wait lure predator (spd 0.15 MEASURED) is the Cracked Lands seep-kill embodied (that sheet §10, R6 lethal water)",
+      "disposition": "move:ZBiome_Badlands"
+    },
+    {
+      "def": "Woolamander",
+      "reason": "not a §4 sort; SW flier — re-homed to the fliers' country",
+      "disposition": "move:ZBiome_Badlands",
+      "note": "feeds there, nests in Desert (that sheet ban 4); flier claim UNMEASURED"
+    },
+    {
+      "def": "AA_AcanthamoebaGiganteaSmall",
+      "reason": "ubiquity-25 BINDING: TRIM to wasteland/pans — amoeba reads contamination (prep §9)",
+      "disposition": "move:Wasteland"
+    },
+    {
+      "def": "GRimLavaSnail",
+      "reason": "Grindterra/VGE Earth-analog hybrid — GR_* homeless-by-default, never get a home (owner card 2026-09-09; prefix wrinkle flagged in confidence)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_Swarmcaller",
+      "reason": "as ColonyPustuleHornet",
+      "disposition": "homeless-reserve",
+      "note": "Wasteland candidate"
+    },
+    {
+      "def": "Rycrit",
+      "reason": "SW; not a §4 sort",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "SW_Electricfish",
+      "reason": "weapon-descendant family but a 'fish' silhouette in a biome whose only water is poison pools reads wrong; the four kept munitions carry the sort",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Chickenspider",
+      "reason": "no §4 sort fits — no munition/detonation special (MEASURED), not a plated grazer (predator); chimera, NOT a retexture, so the RETEXTURED cut does not apply",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_FireSalamander",
+      "reason": "salamander = Earth-nameable reskin (fails on sight, owner card) + fire-province flavor",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_AcanthamoebaGiganteaLarge",
+      "reason": "the Slime sheet names the giant trash-eating acanthamoeba as a resistant native (the_slime.md §4)",
+      "disposition": "move:AB_GelatinousSuperorganism"
+    },
+    {
+      "def": "LavaFlea",
+      "reason": "fire-province flavor, not a war sort",
+      "disposition": "homeless-reserve",
+      "note": "Forge/Pyrelands batch candidate"
+    },
+    {
+      "def": "BMT_CaveSpider",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 4 / spd 5.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "SW_Emperorisopod",
+      "reason": "can-be-drafted special (MEASURED) reads faction-creature, not wildlife; not a §4 sort",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Mantrap",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 2 / spd 3 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_SandSquid",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 2 / spd 1 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Ravager",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 2.5 / spd 5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_BloodShrimp",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 1 / spd 5.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_MatureFleshbeast",
+      "reason": "swallows-a-pawn-whole apex (bs 6 MEASURED) — wildlife-as-headline-threat contradicts §1: the machines and the madness are the threat here",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_AngelMoth",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 0.75 / spd 3 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_AngelMothLarva",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 0.1 / spd 2 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_GreatDevourer",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 2.5 / spd 2.8 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Razorjack",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 1 / spd 4 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_MycoidColossus",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 6 / spd 2 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Arthropleura",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
+    },
+    {
+      "def": "Pulmonoscorpius",
+      "reason": "mod retirement (Megafauna)",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
+    },
+    {
+      "def": "AA_Erin",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 1 / spd 4 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_TeratogenicOriginator",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 5 / spd 0.6 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_LuciferBug",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 0.15 / spd 3 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_PedigreedRaptor",
+      "reason": "ubiquity-25 BINDING: EVICT planet-wide — reads dinosaur (prep §9)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Bumbledrone",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 0.79 / spd 5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_AuroraSylph",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 0.5 / spd 2 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_MegaLouse",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 0.5 / spd 3 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Slurrypede",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 2 / spd 1.9 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_FissionMouse",
+      "reason": "ubiquity-25: RESKIN → Wasteland radiotroph — the name is already the archetype (prep §9)",
+      "disposition": "move:Wasteland"
+    },
+    {
+      "def": "AA_Dunealisk",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 2 / spd 5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_CrescendoAnole",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 0.3 / spd 3 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Feralisk",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 1 / spd 5.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_CrystalMit",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 0.5 / spd 1.8 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_PebbleMit",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 0.5 / spd 1.8 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_MammothWorm",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 3 / spd 2 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Swarmling",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 0.3 / spd 5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Thermadon",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 1.5 / spd 5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_RayHound",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 1.5 / spd 3 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_LarvalAtispec",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 0.1 / spd 2 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_BoulderMit",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 4 / spd 1 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_ChameleonYak",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 2.5 / spd 4 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_RipperHound",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 1.5 / spd 5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Terramorph",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 1.5 / spd 1.8 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Darkbeast",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 1.5 / spd 4 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_DecayDrake",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 1 / spd 4 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_DarkVandal",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 1.2 / spd 4.6 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_TetraSlug",
+      "reason": "not one of the §4 sorts (glowers / plated grazers / mynock / mortuary guild / weapon-descendants) — 'everything alive here eats what the war left'; bs 5 / spd 0.6 (MEASURED)",
+      "disposition": "homeless-reserve"
+    }
+  ],
+  "stat_adjustments": [],
+  "flora": [
+    {
+      "def": "BMT_Plant_ScorchedStars",
+      "commonality": 0.25,
+      "law": "interim crust — Polluted Lands, contamination-authored, reads burnt; stands in for the Glowers until the new def lands",
+      "note": "eye test owed: must read black/glass, never green (ban 3)"
+    }
+  ],
+  "flora_purged": [
+    {
+      "def": "(donor vanilla wildPlants, wholesale)",
+      "reason": "sheet §0: vanilla wildPlants evicted (all-alien rule; the flora here is §4 crusts, not grass); ban 2/3: no fertile ground, no green"
+    }
+  ],
+  "fish": {
+    "ruling": "no fish — donor fish population zero KEPT (§0); the water that rises here is the ancients' leaking plumbing and the rainbow pools: self-replenishing weapon chemistry, hot from their own reactions — 'the color isn't life, it's reaction and acid' (§8) (FISH_BY_BIOME_1 data row)",
+    "list": []
+  },
+  "new_defs": [
+    {
+      "name": "the Glowers — black radiotrophic crust flora (crater-bowl varnish; harvestable radiogenic fuel + pigment)",
+      "kind": "plant",
+      "mechanic_load": "none blocking for the def; glower-fuel harvest rides SCARLANDS_MECHANICS_1",
+      "from_sheet": "the_scarlands.md §4"
+    },
+    {
+      "name": "plated grazer signature (rhino-armored crust browser, the scaria host)",
+      "kind": "creature",
+      "mechanic_load": "C#: scaria-onset behavior (SCARLANDS_MECHANICS_1); AA_SpinedGow is the interim body",
+      "from_sheet": "the_scarlands.md §4"
+    },
+    {
+      "name": "mortuary guild carrion-specialist (dedicated body)",
+      "kind": "creature",
+      "mechanic_load": "none blocking; AA_Helixien is the interim body",
+      "from_sheet": "the_scarlands.md §4"
+    }
+  ],
+  "confidence": [
+    {
+      "claim": "Mynock import needs a Cherry Picker un-zero for Scarlands",
+      "status": "MEASURED",
+      "why": "register zeroedBiomes lists Scarlands for Mynock; prove the un-cut by reading the live config back (cherrypicker three-cut-sources lesson)"
+    },
+    {
+      "claim": "Mynock ≤2-named-homes trim",
+      "status": "FLAGGED",
+      "why": "prep §9 recommended Fall Line + poison forest; the frozen sheet proposes true home HERE. Landed: Scarlands as named home #1; the Fall Line injection (other batch) is the natural #2 — poison forest yields. R17 covers sightings elsewhere"
+    },
+    {
+      "claim": "weapon-descendant §GM meaning absent from def text",
+      "status": "RULED",
+      "why": "ban 1 / R25 — generator must not write authorship into any description"
+    },
+    {
+      "claim": "GR_Chickenspider disposition softened cut→homeless-reserve (chimera, not a retexture)",
+      "status": "RESOLVED",
+      "why": "GR_ prefix correction pass 2026-09-09: GRim*=Grindterra homeless; GR_*=VGE chimeras judged per sheet law (RETEXTURED_EARTH_FAUNA_BANNED_1: leave chimeras)"
+    }
+  ]
+}

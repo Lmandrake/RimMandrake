@@ -1,0 +1,39 @@
+{
+ "sheet": "wreck_fields",
+ "defNames": [],
+ "tiles": 0,
+ "authored": "2026-09-09",
+ "law_sources": [
+  "wreck_fields.md (⛔ SUPERSEDED 2026-09-05 by fall_line.md — its own header: \"Nothing here is authoritative\"; and 🔴 UNRULED — BENCH proposal the owner has not accepted)",
+  "_def_bindings_2026-09-09.md §2 flags (deliberately unbound to any painted def)",
+  "_SCHEMA.md (injection-layer convention)"
+ ],
+ "injection": true,
+ "fauna": [],
+ "evictions": [],
+ "stat_adjustments": [],
+ "flora": [],
+ "flora_purged": [],
+ "fish": {
+  "ruling": "no ruling possible — the sheet is unruled and binds no painted def; no water exists in the proposal beyond oasis melt pockets",
+  "list": []
+ },
+ "new_defs": [],
+ "confidence": [
+  {
+   "claim": "this file intentionally commits NOTHING",
+   "status": "RULED-BY-THE-SHEET",
+   "why": "wreck_fields.md closes: \"nothing may be committed to this roster until the sheet is ruled. If the owner rejects the premise, this admission test is void along with it\" — and the sheet is superseded by fall_line.md besides. The schema requires the file to exist as an injection layer; an empty additions file satisfies it without violating the sheet"
+  },
+  {
+   "claim": "if the owner RULES the premise (live powered wrecks), the roster wanted-list is ready",
+   "status": "DEFERRED",
+   "why": "sheet Roster consequences: crystalline metal-sequestering flora/sessile fauna one-palette-per-patch · cavity-nesters · lean cold-crossers · EM/heat-homing hunters · one hull-breaking giant — all NEW ART/DEF (no donor); barred on sight: rust, open-ground life, mechanoids, poison-forest-plated look, lush, nameable"
+  },
+  {
+   "claim": "underlying defs unknown",
+   "status": "UNMEASURED",
+   "why": "the proposed θ 100–135 band is not painted as a wreck-field anything; unlike fall_line (308 tiles over ExtremeDesert/Desert/AridShrubland), no tile census exists to inject over"
+  }
+ ]
+}

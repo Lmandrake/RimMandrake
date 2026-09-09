@@ -37,6 +37,16 @@ PAINTED_DEFS = {
     'RUT_BlueDesert',
 }
 REQUIRED_KEYS = {'sheet', 'defNames', 'fauna', 'evictions', 'flora', 'fish'}
+# prep §9's 25 homogenizers — the owner-accepted ≤2-home trim binds THESE rows;
+# other creatures get a zoo-effect warning at ≥4 homes, never an error.
+UBIQUITY_25 = {
+    'AA_PebbleMit', 'AA_FissionMouse', 'AA_Swarmling', 'AA_Aerofleet',
+    'AA_CrystalMit', 'AA_MegaLouse', 'AA_AnimusVox', 'AA_LuciferBug',
+    'AA_Bumbledrone', 'AA_AcanthamoebaGigantea', 'AA_PedigreedRaptor',
+    'Boomalope', 'Rat', 'GraniteSlug', 'WildBoar', 'Warg', 'AA_Murkling',
+    'Mynock', 'Hare', 'AA_AuroraSylph', 'AA_Drainer', 'Raccoon', 'Muffalo',
+    'Neebray', 'Scavrat',
+}
 
 
 def load_register():
@@ -79,7 +89,9 @@ def check(path, reg, plants):
         if dn.startswith('GRim'):
             problems.append(f'{name}: {dn} is Grindterra (GRim*) — homeless by owner ruling')
         if dn in EARTH_FIVE:
-            problems.append(f'{name}: {dn} is one of the Earth five — banned planet-wide')
+            # prep §9 carve-out: Rat is trimmed TO the Fall Line/settlements, not banned there
+            if not (dn == 'Rat' and name == 'fall_line.json'):
+                problems.append(f'{name}: {dn} is one of the Earth five — banned planet-wide')
         if dn in RULED_CUTS:
             problems.append(f'{name}: {dn} is cut by freeze R20')
         if dn not in reg:
@@ -111,6 +123,69 @@ def check(path, reg, plants):
     return problems, warnings
 
 
+def cross_check(paths, reg):
+    """Cross-file consistency: move-target pairing, >2-home ubiquity breaches,
+    cut collection. Prints findings; returns problem count."""
+    homes = {}          # def -> [sheet, ...]
+    moves = []          # (from_sheet, def, target_defname)
+    cuts = []           # (sheet, def, ruling)
+    sheets_by_defname = {}
+    data = {}
+    for p in paths:
+        try:
+            with open(p) as f:
+                d = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            continue
+        data[d.get('sheet', os.path.basename(p))] = d
+        # injection layers list the defs they inject OVER — they must not claim them
+        if d.get('sheet') in ('fall_line', 'wreck_fields', 'the_lantern_deeps'):
+            continue
+        for dn in d.get('defNames', []):
+            sheets_by_defname[dn] = d.get('sheet')
+    exceptions = {}     # def -> [(sheet, reason), ...]
+    for sheet, d in data.items():
+        injection = sheet in ('fall_line', 'wreck_fields', 'the_lantern_deeps')
+        for row in d.get('fauna', []):
+            homes.setdefault(row.get('def', ''), []).append(
+                sheet + (' (injection)' if injection else ''))
+            if row.get('ubiquity_exception'):
+                exceptions.setdefault(row.get('def', ''), []).append(
+                    (sheet, row['ubiquity_exception']))
+        for row in d.get('evictions', []):
+            disp = row.get('disposition', '') or ''
+            if disp.startswith('move:'):
+                target = disp[5:].strip().split('(')[0].strip()
+                moves.append((sheet, row.get('def', ''), target))
+            if disp.startswith('cut:'):
+                cuts.append((sheet, row.get('def', ''), disp[4:].strip()))
+    problems = 0
+    for sheet, dn, target in moves:
+        tsheet = sheets_by_defname.get(target)
+        target_d = data.get(tsheet) if tsheet else data.get(target)
+        if target_d is None:
+            print(f'⚠️  cross: {sheet} moves {dn} -> {target}: target roster file not loaded')
+            continue
+        if dn not in {r.get('def') for r in target_d.get('fauna', [])}:
+            print(f'🔴 cross: {sheet} evicts {dn} as move:{target}, but '
+                  f'{target_d.get("sheet")} does not roster it')
+            problems += 1
+    for dn, hs in sorted(homes.items()):
+        real = [h for h in hs if not h.endswith('(injection)')]
+        n_exempt = len(exceptions.get(dn, []))
+        if dn in UBIQUITY_25 and len(real) - n_exempt > 2:
+            print(f'🔴 cross: {dn} (ubiquity-25) has {len(real)} home biomes {real} '
+                  f'({n_exempt} excepted) — the owner-accepted trim is ≤2')
+            problems += 1
+        elif dn not in UBIQUITY_25 and len(real) >= 4:
+            print(f'⚠️  cross: {dn} has {len(real)} home biomes {real} — zoo-effect watch (review-sheet material, not an error)')
+    if cuts:
+        print(f'ℹ️  cross: {len(cuts)} cut dispositions collected for _global.json:')
+        for sheet, dn, ruling in sorted(cuts):
+            print(f'   cut {dn} ({sheet}; {ruling})')
+    return problems
+
+
 def main(paths):
     reg = load_register()
     plants = load_plants()
@@ -129,9 +204,15 @@ def main(paths):
 
 if __name__ == '__main__':
     args = sys.argv[1:]
+    do_cross = '--cross' in args
+    args = [a for a in args if a != '--cross']
     if not args:
         args = sorted(
             os.path.join(HERE, f) for f in os.listdir(HERE)
             if f.endswith('.json') and not f.startswith('_')
         )
-    sys.exit(main(args))
+    rc = main(args)
+    if do_cross:
+        if cross_check(args, load_register()):
+            rc = 1
+    sys.exit(rc)

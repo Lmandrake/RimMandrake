@@ -1,0 +1,626 @@
+{
+ "sheet": "the_rot",
+ "defNames": [
+  "AB_MycoticJungle"
+ ],
+ "tiles": 2258,
+ "authored": "2026-09-09",
+ "law_sources": [
+  "the_rot.md §4/§6/§7b",
+  "_freeze_rulings_2026-09-07.md R25/R29/R30",
+  "_assignment_prep.md §9",
+  "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09"
+ ],
+ "notes": "Ban 2 is the admission test, applied literally: no hybrid nature, no residence. The kept cast is the donor fungus/animal natives plus the sheet §7b keep-the-strange ingest from the dissolved BMT_FungalForest (its 425 tiles merged here under R29 — the creatures follow the tiles). Ban 1: all-fungus flora; the donor twelve-suite stays wholesale. R25: nothing in any def text names the Assailants.",
+ "fauna": [
+  {
+   "def": "AA_Agaripawn",
+   "commonality": 0.2,
+   "action": "keep",
+   "band": "hybrid-native",
+   "law": "§0 donor natives; ban 2 passed by construction (fungus/animal hybrid)"
+  },
+  {
+   "def": "AA_Agaripod",
+   "commonality": 0.25,
+   "action": "keep",
+   "band": "hybrid-native",
+   "law": "§0 donor natives; ban 2 passed"
+  },
+  {
+   "def": "AA_Wildpawn",
+   "commonality": 0.2,
+   "action": "adjust-keep",
+   "band": "hybrid-native",
+   "law": "§0 donor natives; comm 0.035→0.2 — the natives ARE the biome; Miasma's strays consolidate here"
+  },
+  {
+   "def": "AA_Wildpod",
+   "commonality": 0.2,
+   "action": "adjust-keep",
+   "band": "hybrid-native",
+   "law": "§0 donor natives; comm 0.035→0.2"
+  },
+  {
+   "def": "AA_MycoidColossus",
+   "commonality": 0.25,
+   "action": "keep",
+   "band": "hybrid-giant",
+   "law": "§0 donor natives; §9 'the Colossus as a walking piece of the forest'"
+  },
+  {
+   "def": "AA_Swarmling",
+   "commonality": 0.3,
+   "action": "adjust-keep",
+   "band": "hybrid-vermin",
+   "law": "§0 donor natives name the Swarmlings; this is one of its ≤2-3 ubiquity-trimmed homes (prep §9)"
+  },
+  {
+   "def": "BMT_ChemSnail",
+   "commonality": 0.7,
+   "action": "keep",
+   "band": "ingest-strange",
+   "law": "§7b keep the strange — chem snail (already resident, weight kept)"
+  },
+  {
+   "def": "BMT_GlowBat",
+   "commonality": 0.4,
+   "action": "import",
+   "band": "ingest-strange",
+   "law": "§7b keep the strange — glow bats; §5 all useful light is biological; R29 the FungalForest's creatures follow its tiles"
+  },
+  {
+   "def": "BMT_Pillbug",
+   "commonality": 0.4,
+   "action": "import",
+   "band": "ingest-strange",
+   "law": "§7b keep the strange — pillbug; eats-a-specific-thing special (MEASURED) fits the gut"
+  },
+  {
+   "def": "BMT_FungalWeevil",
+   "commonality": 0.4,
+   "action": "import",
+   "band": "ingest-strange",
+   "law": "§7b keep the strange — fungal weevil (evicted from the Fever Wood's ban 5 into its true home)"
+  },
+  {
+   "def": "BMT_FungalMantis",
+   "commonality": 0.15,
+   "action": "import",
+   "band": "guardian",
+   "law": "§7b fungal mantis; §4 guardianship law — an armed defender near the prizes; dormant-ambush special (MEASURED)"
+  },
+  {
+   "def": "BMT_GiantSlug",
+   "commonality": 0.3,
+   "action": "import",
+   "band": "ingest-strange",
+   "law": "§7b giant slugs; slow wet gloss-dweller"
+  },
+  {
+   "def": "BMT_GiantSnail",
+   "commonality": 0.2,
+   "action": "import",
+   "band": "ingest-strange",
+   "law": "§7b giant snails; retaliates-when-attacked (MEASURED) — the connected biology defends itself"
+  },
+  {
+   "def": "BMT_BovineBeetle",
+   "commonality": 0.2,
+   "action": "import",
+   "band": "ingest-producer",
+   "law": "§7b the bovine beetle's milk economy; producer special (MEASURED: animal thing spawner)"
+  },
+  {
+   "def": "BMT_CaveSpider",
+   "commonality": 0.05,
+   "action": "import",
+   "band": "guardian",
+   "law": "§7b cave spider; trace — a guardian-thicket terror, not an ambient one (bs 4.0, spd 5.5 MEASURED)"
+  }
+ ],
+ "evictions": [
+  {
+   "def": "BMT_Megakrill",
+   "reason": "ban 2: pure animal, no fungal nature; Earth-nameable-adjacent (krill)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_Rabbitchicken",
+   "reason": "ban 2: resident fauna must be FUNGUS/animal hybrid — a VGE animal/animal chimera is a pure-animal resident in the sheet's sense (bs 0.1 spd 5.8 MEASURED; 'rabbitchicken' also fails the evict-the-nameable line of §7b)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_Doedicoon",
+   "reason": "ban 2: resident fauna must be FUNGUS/animal hybrid — a VGE animal/animal chimera is a pure-animal resident in the sheet's sense (predator, bs 0.3 spd 4.1 MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_Thrumborat",
+   "reason": "ban 2: resident fauna must be FUNGUS/animal hybrid — a VGE animal/animal chimera is a pure-animal resident in the sheet's sense (bs 1.5 spd 5.25 MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_ParagonMuffalo",
+   "reason": "ban 2: resident fauna must be FUNGUS/animal hybrid — a VGE animal/animal chimera is a pure-animal resident in the sheet's sense (bs 2.5 spd 4.7 MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_Thrumbochicken",
+   "reason": "ban 2: resident fauna must be FUNGUS/animal hybrid — a VGE animal/animal chimera is a pure-animal resident in the sheet's sense (predator, bs 3.0 spd 8.0 MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_Thrumbalope",
+   "reason": "ban 2: resident fauna must be FUNGUS/animal hybrid — a VGE animal/animal chimera is a pure-animal resident in the sheet's sense (bs 4.0 spd 4.0 MEASURED; gargantuan death-explosion also fails ban 7 adjacency)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_Varmot",
+   "reason": "ban 2: pure animal; pollution vermin",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Leaftail",
+   "reason": "ban 2: plant-mimic is not fungus/animal hybrid; SW small — reserve",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_MutagenicNorphea",
+   "reason": "ban 2: pure animal; not on the §7b keep list",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "WasteRat",
+   "reason": "Earth-nameable (rat) + ban 2",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AM_UnshackledDryad",
+   "reason": "ban 2: Gauranlen plant-creature, not fungal; mechanic-orphan wild (prep §5.5 flag)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "VQE_IceCrawler",
+   "reason": "quest-mod creature; wrong axis for wild rosters + ban 2",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_Snowstalker",
+   "reason": "ban 2 + §7b names only the strange; ice-lane predator",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_Swarmcaller",
+   "reason": "ban 2: pure animal; not on the §7b keep list",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_SilverSheep",
+   "reason": "Earth-nameable (sheep) — §7b's own evict-the-nameable rule",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "FeralNerf",
+   "reason": "ban 2: pure animal; SW icon — reserve as livestock/faction-kind candidate (sitting item: livestock is out of wild-roster scope)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Strill",
+   "reason": "ban 2: pure animal; SW icon — reserve for events",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "SW_Electricgryllotalpa",
+   "reason": "ban 2; electric theme is the Wasteland's brine-battery lane (prep §4.4)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_FissionMouse",
+   "reason": "ubiquity-25: RESKIN → Wasteland radiotroph (prep §9); mouse-nameable",
+   "disposition": "move:Wasteland"
+  },
+  {
+   "def": "AA_FissionMouseSecond",
+   "reason": "fission mouse family follows the Wasteland reskin ruling — the §9 radiotroph reskin lane rides AA_FissionMouse alone",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_FissionMouseThird",
+   "reason": "fission mouse family follows the Wasteland reskin ruling — the §9 radiotroph reskin lane rides AA_FissionMouse alone",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Murkling",
+   "reason": "ubiquity-25 TRIM (prep §9) + ban 2",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "TYR_MousePoison",
+   "reason": "Earth-nameable (mouse), Little Critters recognizability fail (prep §5.2)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "DA_BeardedTroll",
+   "reason": "fantasy-mod fauna, recognizability lane",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Bursa",
+   "reason": "ban 2: pure animal; SW — reserve",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_BeardedYak",
+   "reason": "Earth-nameable (yak)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Grazer",
+   "reason": "ban 2: pure animal herd",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "HiveQueen",
+   "reason": "ban 2 + hive spawns ride the insectoid-incident axis, not wild rosters",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Bumbledrone",
+   "reason": "ubiquity-25 TRIM (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Cinderlisk",
+   "reason": "ban 2 + fire theme against a wet fungal gut",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_BoulderMit",
+   "reason": "mineral dormant giant — dune-sea lane (prep §1.2)",
+   "disposition": "move:ExtremeDesert"
+  },
+  {
+   "def": "AA_Aerofleet",
+   "reason": "ubiquity-25 TRIM (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_DrainerLarva",
+   "reason": "ubiquity-trim family (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Drainer",
+   "reason": "ubiquity-25 TRIM (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_AnimusVox",
+   "reason": "ubiquity-25 TRIM to one strange home (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Razorjack",
+   "reason": "ban 2: pure animal",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_CrystalMit",
+   "reason": "ubiquity-25 TRIM to CrystalCaverns/PoisonForest (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_PebbleMit",
+   "reason": "ubiquity-25 TRIM to rock/cavern biomes (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_RoughPlatedMonitor",
+   "reason": "Earth-nameable (monitor lizard)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_LarvalAtispec",
+   "reason": "ban 2; atispec family evicted from the Wasteland too (prep §4.3)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_RipperHound",
+   "reason": "ban 2: pure-animal pursuit pack",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Thunderbeast",
+   "reason": "ban 2: pure animal",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Meganeura",
+   "reason": "Megafauna mod: 0% recognizability survival, retirement ruled (prep §10.4)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Pulmonoscorpius",
+   "reason": "Megafauna mod retirement",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Arthropleura",
+   "reason": "Megafauna mod retirement",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Dinornis",
+   "reason": "Megafauna mod retirement",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Gallatross",
+   "reason": "ban 2: pure-animal giant; Alpha icon — reserve for events",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_LuciferBug",
+   "reason": "ubiquity-25 TRIM (prep §9) + ban 2 (glow fits §5, but hybrid-or-out is absolute)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_PedigreedRaptor",
+   "reason": "ubiquity-25 EVICT planet-wide — reads dinosaur (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_AnimaColossus",
+   "reason": "ban 2: anima (psychic-tree) creature, not fungal; the pale tree owns that register alone (§7)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_WindBeast",
+   "reason": "ban 2: pure animal",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_TetraSlug",
+   "reason": "mineral goo-shelf lane (prep §1.2/§7.2), not fungal",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_AcanthamoebaGiganteaSmall",
+   "reason": "ubiquity-25 TRIM to wasteland/pans (prep §9)",
+   "disposition": "homeless-reserve"
+  }
+ ],
+ "stat_adjustments": [],
+ "flora": [
+  {
+   "def": "AB_Bryolux",
+   "commonality": 10,
+   "law": "§4 donor twelve-suite kept wholesale (ban 1 all-fungus); the glow-carpet heated floor"
+  },
+  {
+   "def": "AB_Glowstool",
+   "commonality": 3,
+   "law": "§4 donor suite; §5 biological light"
+  },
+  {
+   "def": "AB_Agarilux",
+   "commonality": 2,
+   "law": "§4 donor suite; wood-substitute"
+  },
+  {
+   "def": "AB_GiantAgarilux",
+   "commonality": 2,
+   "law": "§4 donor suite"
+  },
+  {
+   "def": "AB_GlowingAgarilux",
+   "commonality": 1,
+   "law": "§4 donor suite"
+  },
+  {
+   "def": "AB_WitchesOyster",
+   "commonality": 0.5,
+   "law": "§4 donor suite"
+  },
+  {
+   "def": "AB_LilacBeacon",
+   "commonality": 0.5,
+   "law": "§4 donor suite; §9 lilac palette"
+  },
+  {
+   "def": "AB_RecurvedStropharia",
+   "commonality": 0.3,
+   "law": "§4 donor suite"
+  },
+  {
+   "def": "AB_SlimyPholiota",
+   "commonality": 0.2,
+   "law": "§4 donor suite"
+  },
+  {
+   "def": "AB_ArbuscularMycorrhiza",
+   "commonality": 0.2,
+   "law": "§4 donor suite; the mycelial network made visible"
+  },
+  {
+   "def": "AB_DribblingCap",
+   "commonality": 0.1,
+   "law": "§4 donor suite"
+  },
+  {
+   "def": "AB_AgaricusDomeCap",
+   "commonality": 0.1,
+   "law": "§4 donor suite"
+  },
+  {
+   "def": "AB_AgariluxPrime",
+   "commonality": 0.01,
+   "law": "§4 the celebrated guardian exemplar — permanent predatory mushroom (CompProperties_GasProducer MEASURED from donor); ban 8's proof that prizes defend themselves"
+  },
+  {
+   "def": "BMT_Nuitae",
+   "commonality": 0.5,
+   "law": "§7b ingested marsh fungi — the milk ponds' own plants"
+  },
+  {
+   "def": "BMT_Wrinklecap",
+   "commonality": 0.5,
+   "law": "§7b marsh fungi"
+  },
+  {
+   "def": "BMT_Nogtyl",
+   "commonality": 0.4,
+   "law": "§7b marsh fungi (tree-form)"
+  },
+  {
+   "def": "BMT_Arpeau",
+   "commonality": 0.4,
+   "law": "§7b marsh fungi (tree-form)"
+  },
+  {
+   "def": "BMT_Dewshrooms",
+   "commonality": 0.5,
+   "law": "§7b ingested"
+  },
+  {
+   "def": "BMT_FruitingBodies",
+   "commonality": 0.5,
+   "law": "§7b ingested"
+  },
+  {
+   "def": "BMT_Pusmelon",
+   "commonality": 0.3,
+   "law": "§7b ingested"
+  },
+  {
+   "def": "BMT_RustPuff",
+   "commonality": 0.3,
+   "law": "§7b ingested"
+  },
+  {
+   "def": "BMT_Sagecrust",
+   "commonality": 0.3,
+   "law": "§7b ingested"
+  },
+  {
+   "def": "BMT_FlakespireFungus",
+   "commonality": 0.3,
+   "law": "§7b ingested (tree-form)"
+  },
+  {
+   "def": "BMT_BleedingTooth",
+   "commonality": 0.2,
+   "law": "§7b ingested"
+  },
+  {
+   "def": "BMT_CrimsonCap",
+   "commonality": 0.2,
+   "law": "§7b ingested"
+  },
+  {
+   "def": "BMT_VioletWimple",
+   "commonality": 0.2,
+   "law": "§7b ingested; §9 lilac palette"
+  },
+  {
+   "def": "BMT_GreyLady",
+   "commonality": 0.2,
+   "law": "§7b ingested (grey lady lace)"
+  },
+  {
+   "def": "BMT_Shinecap",
+   "commonality": 0.2,
+   "law": "§7b ingested; biological light"
+  },
+  {
+   "def": "BMT_Brightbells",
+   "commonality": 0.2,
+   "law": "§7b ingested; biological light"
+  },
+  {
+   "def": "BMT_MortalMorelPlant",
+   "commonality": 0.15,
+   "law": "§7b ingested — fungal medicine"
+  },
+  {
+   "def": "BMT_Skulltop",
+   "commonality": 0.1,
+   "law": "§7b the Skultop defender — defName now MEASURED against the pool (BMT_Skulltop); sibling of the Agarilux Prime (ban 8)"
+  },
+  {
+   "def": "BMT_Blastpod",
+   "commonality": 0.05,
+   "law": "§7b blastpod→chemfuel chain, ruled wild-only; see confidence — donor temp range confines it to hot caverns"
+  }
+ ],
+ "flora_purged": [],
+ "fish": {
+  "ruling": "No fish — the milk ponds are not-water (§3: reclaimed Sheen; the only 'surface water' on the night shoulder, and none of it is water); anything living in them is fungal and rostered as flora (the marsh fungi). The 54 Twilight Sea shore tiles are open sea owned by terminator_sea.md/the_twilight_deep.md (def-bindings flag: both sheets claim RUT_TwilightSea) — the Rot rules no sea water.",
+  "list": []
+ },
+ "new_defs": [
+  {
+   "name": "heat-generating gene",
+   "kind": "creature",
+   "mechanic_load": "C#/gene: AUTHORED (no donor GeneDef — MEASURED, genepack_mods_plunder 2026-09-06); IgniFurnace/IgniWarm hediffs nearest numbers",
+   "from_sheet": "the_rot §3/Owed"
+  },
+  {
+   "name": "tea-source guardian mushrooms (per-species defense repertoire)",
+   "kind": "plant",
+   "mechanic_load": "C#: generic defender-plant comp (ALPHA_FAMILY_SOURCE_REVIEW_1); ban 8 no undefended prizes",
+   "from_sheet": "the_rot §7"
+  },
+  {
+   "name": "symbiont parasites (three ratified bargain pairs)",
+   "kind": "creature",
+   "mechanic_load": "C#: live-preparation viability clock (ban 4)",
+   "from_sheet": "the_rot §7"
+  },
+  {
+   "name": "the pale tree (anima reskin, Light-side psycast subset)",
+   "kind": "plant",
+   "mechanic_load": "Royalty anima reskin + restricted vanilla power list (ban 6)",
+   "from_sheet": "the_rot §7"
+  },
+  {
+   "name": "health-share species tagging (both variants)",
+   "kind": "creature",
+   "mechanic_load": "C#: wound-splitting comp + tend-aura comp on chosen keepers",
+   "from_sheet": "the_rot §4"
+  }
+ ],
+ "confidence": [
+  {
+   "claim": "R30 warm-tail roster implication",
+   "status": "MEASURED",
+   "why": "arc grew to 75.3-132.9; Sweatwood/Tallow Ground sit at +12..+24 °C — donor flora T=[0,58] covers the warm end fine; the exposure is the COLD end (median −18.8, floor −42 vs minGrowthTemp 0 on every kept fungus): the metabolic-mat lore (§3) needs either temp-tolerance patches or a growth-law mechanic before the cold-end tiles grow anything. Flag to NORMALIZE_TEMPERATURE_TOLERANCES_1 / the generator"
+  },
+  {
+   "claim": "BMT_Blastpod grows wild here",
+   "status": "MEASURED-CONTRARY",
+   "why": "pool: minGrowthTemp 50, cavePlant — it can only live in hot caves; the wild-only ruling stands but its wild presence is cavern-gated, not surface"
+  },
+  {
+   "claim": "§7b 'silk moths' ingest",
+   "status": "UNMEASURED",
+   "why": "no BMT silk-moth defName found in register or pool under that reading; verify the actual defName before generation — do not guess"
+  },
+  {
+   "claim": "§7b keeps (glow bat, cave spider, bovine beetle, pillbug, slugs/snails) vs ban 2 hybrid-or-out",
+   "status": "DESIGN",
+   "why": "the sheet's own §7b keep-the-strange list is read as the ruling for the ingested FungalForest fauna (they are fungal-cavern clade); if the owner reads ban 2 stricter, these rows drop to homeless-reserve — surfaced for the review sheet"
+  },
+  {
+   "claim": "'inkcap' (fiber, no light) ingest",
+   "status": "UNMEASURED",
+   "why": "no inkcap defName in plant_pool.csv; verify or drop at generation"
+  },
+  {
+   "claim": "six GR_ chimeras re-adjudicated: evicted on ban 2 (fungus/animal hybrid required), not the Grindterra card",
+   "status": "RESOLVED",
+   "why": "GR_/GRim prefix correction pass 2026-09-09: GR_* = Vanilla Genetics Expanded chimeras, judged per sheet law (no Grindterra card); GRim* = GRiNDTerra Earth analogs, homeless-by-default. Register stats MEASURED."
+  }
+ ]
+}
