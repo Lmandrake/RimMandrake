@@ -292,8 +292,11 @@ def git(args):
     "cannot tell, fall back / refuse", never as silent success, so a
     timeout is always safe, just less informative."""
     try:
+        # surrogateescape: with core.quotePath=false a non-UTF-8 tracked path
+        # (possible on WSL's ext4 side) must degrade, not traceback the caller.
         return subprocess.run(["git"] + args, cwd=ROOT, capture_output=True,
-                               text=True, timeout=GIT_TIMEOUT)
+                               text=True, errors="surrogateescape",
+                               timeout=GIT_TIMEOUT)
     except subprocess.TimeoutExpired:
         return subprocess.CompletedProcess(args, -1, "", "git timed out after %ss" % GIT_TIMEOUT)
     except OSError as e:
@@ -388,7 +391,10 @@ def cmd_check(paths):
             any_dirty = True
             print(f"UNREVIEWABLE  {p}  (outside the repo root)")
             continue
-        if os.path.isdir(os.path.join(ROOT, rel)):
+        if os.path.isdir(os.path.join(ROOT, rel)) and data.get(rel) is None:
+            # With a recorded entry, fall through: clean_state answers
+            # "path is now a directory", telling the operator a stale entry
+            # exists for prune to drop — check and list must agree.
             any_dirty = True
             print(f"UNREVIEWABLE  {rel}  (a directory, not a file)")
             continue
