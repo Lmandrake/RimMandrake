@@ -74,3 +74,23 @@ ship at footprint 143,59,86,133 on the colony map, tile 16869).
 8. Pre-flight save (the landing chain can wedge — no retry exists).
 9. Launch → target tile 17007 → land; the map generates with the Zeddo ruin-field
    mutators. 10. Ready-for-play pass + CANONICAL save.
+
+## FLIGHT ATTEMPT FINDING (BENCH, overnight 2026-09-09) — the bridge cannot fly the launch
+Reached: ship printed + deck cleared (823 rocks) + claimed + engine inspected + pilot
+console built + Five Founders spawned/named aboard. Blocked at fuel→launch. Root finding:
+**driving the vanilla gravship launch through the bridge requires running UNPAUSED time
+(colonist inspection, refueling), and every second of running time mutates or destroys
+the staged state.** Measured, each expensive:
+- Colonists MINIFY bridge-placed fuel tanks and haul them to a corner stockpile.
+- Loose spawned fuel (astrofuel/chemfuel) is hauled to stockpiles before a refuel job grabs it.
+- Pawn thing-IDs shift on every save-reload (Founder IDs changed 3×).
+- A `Dialog_NamePlayerGravship` christening modal PAUSES the sim every tick until answered
+  (was the real cause of "time won't advance") — clicking OK via click_ui_target clears it.
+- An extended blind run LOST THE ENTIRE COLONY (35→0 player pawns; a wandered Ancient +
+  attrition). Confirms rimbridge skill §4b applies to friendly pawns and to long runs.
+⇒ **The launch is a hands-on-keyboard PLAYER task**, exactly as the gravship-layout skill
+warned ("landing chain can wedge forever under bridge automation"). The durable artifact is
+**EXPERIMENTAL_shipcrewed_2026-09-09.rws** — ship + cleared deck + Founders, paused,
+pre-fuel. The owner (or a future in-person sitting) fuels the two ChemfuelTanks with
+chemfuel, lets a Founder top the console, and clicks the gravship launch gizmo → target
+tile 17007. Everything up to the wheel is done.
