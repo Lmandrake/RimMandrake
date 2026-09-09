@@ -203,7 +203,48 @@ def save(data):
 
 
 def repo_rel(path):
-    return os.path.relpath(os.path.abspath(path), ROOT).replace(os.sep, "/")
+    ap = os.path.abspath(path)
+    rel = os.path.relpath(ap, ROOT).replace(os.sep, "/")
+    if (rel.startswith("../") or rel == "..") and \
+            ap.lower().startswith(ROOT.rstrip("/").lower() + "/"):
+        # drvfs resolves case-insensitively, so /mnt/d/luke/... IS this repo;
+        # a case-mismatched ROOT prefix must not read as "outside the repo".
+        rel = ap[len(ROOT.rstrip("/")) + 1:].replace(os.sep, "/")
+    return rel
+
+
+_dir_cache = {}
+
+
+def exact_case_isfile(rel):
+    """True iff every segment of rel exists with EXACTLY this spelling.
+    os.path.isfile on drvfs answers case-insensitively, so after a case-only
+    rename the stale spelling still 'exists' and would read CLEAN forever.
+    Pure listdir + cache — no subprocess, safe in list's 1500-entry loop.
+    Unreadable directories answer True: ignorance must not invent DIRTY."""
+    cur = ROOT
+    for part in rel.split("/"):
+        names = _dir_cache.get(cur)
+        if names is None:
+            try:
+                names = set(os.listdir(cur))
+            except OSError:
+                return True
+            _dir_cache[cur] = names
+        if part not in names:
+            # The cache can be stale for files created after it filled (a
+            # long-lived importer, the selftest): re-list before concluding
+            # absence. A stale True only delays phantom detection one call;
+            # a stale False would invent DIRTY, so absence must be re-proven.
+            try:
+                names = set(os.listdir(cur))
+            except OSError:
+                return True
+            _dir_cache[cur] = names
+            if part not in names:
+                return False
+        cur = os.path.join(cur, part)
+    return True
 
 
 def canonical_rels(rels):
@@ -289,11 +330,13 @@ def file_hash(relpath):
             for chunk in iter(lambda: f.read(1 << 20), b""):
                 h.update(chunk)
             return h.hexdigest()
-    except (FileNotFoundError, NotADirectoryError):
+    except (FileNotFoundError, NotADirectoryError, IsADirectoryError):
+        # IsADirectoryError must land here, not in UNREADABLE: the FILE is
+        # gone, and clean_state's "path is now a directory" branch reads it.
         return None
     except OSError:
-        # Exists but cannot be read (permissions, drvfs IO fault, a directory
-        # at the path). NOT the same answer as "gone" — the remedies differ.
+        # Exists but cannot be read (permissions, drvfs IO fault). NOT the
+        # same answer as "gone" — the remedies differ.
         return UNREADABLE
 
 
@@ -320,6 +363,10 @@ def clean_state(rel, entry):
     if current != recorded_hash:
         return "DIRTY", "content changed since clean mark at %s on %s" % (
             entry.get("sha", "?"), entry.get("date", "?"))
+    if not exact_case_isfile(rel):
+        # drvfs found the bytes case-insensitively, but this exact spelling
+        # is gone (case-only rename): a phantom entry, not a clean file.
+        return "DIRTY", "recorded spelling no longer exists on disk (case-renamed?) — reopen or prune this entry"
     return "CLEAN", "clean at %s on %s" % (entry.get("sha", "?"), entry.get("date", "?"))
 
 
@@ -486,7 +533,11 @@ def cmd_reopen(paths, reason):
     preview = load()   # unlocked peek, validation UX only — the locked
     # section below re-checks membership before mutating anything.
     for path in paths:
-        rel = canon[repo_rel(path)]
+        raw = repo_rel(path)
+        # The typed spelling wins when IT holds the entry: canonicalizing
+        # unconditionally made reopen retract a DIFFERENT key than asked and
+        # exit 0 while the stale entry survived (case-rename phantom).
+        rel = raw if raw in preview else canon[raw]
         if rel.startswith("../") or rel == "..":
             print(f"FAIL: {rel} is outside the repo root.", file=sys.stderr)
             return 2
@@ -536,7 +587,10 @@ def cmd_prune(apply):
     try to guess where content moved to.
     """
     data = load()
-    orphans = [rel for rel in data if not os.path.isfile(os.path.join(ROOT, rel))]
+    orphans = [rel for rel in data
+               if not os.path.isfile(os.path.join(ROOT, rel))
+               or not exact_case_isfile(rel)]  # drvfs: a case-renamed spelling
+                                               # "exists" but is a phantom
     if not orphans:
         print("(nothing to prune - every recorded path still exists on disk)")
         return 0
