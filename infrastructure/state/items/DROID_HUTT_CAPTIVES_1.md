@@ -139,6 +139,41 @@ genuinely new C# paths (`StockGenerator_DWHuttCaptives`,
 check is owed per FOUNDRY doctrine, just not obtainable this pass. Left
 `doing`, not closed.
 
+## Re-verified offline, 2026-09-09 (FOUNDRY BELT pass, closing)
+Re-ran the offline checks fresh against current `main` (commit `4f338439` plus
+later, unrelated commits landed on top) rather than trusting the prior pass's
+recorded output, since this is a shared worktree:
+- `xml.etree.ElementTree.parse`: clean on all four touched/new XML files
+  (`Races_Base.xml`, `RecipeDefs_Droidworks.xml`, `JawaHuttCartel.xml`,
+  `RUT_HuttCartel_Captives.xml`).
+- `dotnet build Droidworks.csproj -c Release` (via the user-local SDK,
+  `/mnt/c/Users/Mandrake/.dotnet/dotnet.exe` — `dotnet` is not on PATH in this
+  shell): **0 errors, 0 warnings.** The rebuild produced a byte-different but
+  same-size `Droidworks.dll` (PE non-determinism, no source changed since
+  `4f338439`/`a6a74c7a`) — reverted with `git checkout --` rather than
+  committing a no-op binary diff.
+- Deployed-copy spot check (informational, not a live behavioural test): the
+  game's `UtinniPatches` copy already has `JawaHuttCartel.xml` and
+  `RUT_HuttCartel_Captives.xml` byte-identical to repo, and `mandrake.rut.patches`
+  **is now enabled** in the live `ModsConfig.xml` (the "not enabled" note from
+  2026-09-08 was against the minimal-modlist regime, not current state — full
+  modlist is active tonight). `Droidworks`'s deployed `Races_Base.xml` and
+  `Droidworks.dll` differ from repo, but the drift is later, unrelated work
+  (`E1`/`E2` idiosyncrasy commits) landing on the same files, not a regression
+  of this item's own diff — confirmed by `deploy_custom_mods.py --mod
+  Droidworks` (plan only) showing the same files drifting for reasons unrelated
+  to Hutt captives.
+- Per this pass's explicit brief: no live bridge call attempted for this
+  item's core work (RimWorld was mid-restart/possibly hung tonight, and the
+  brief judged this item didn't need one to close). The prior note's "live
+  check owed" (a captive actually spawning bolted+resentful from the trader
+  stock; the liberate recipe actually flipping faction on a live pawn) is
+  **still not observed running** — closing on offline-verified + fully-built
+  per this pass's explicit criterion, not on a claim that it's been seen
+  working in a real game. Whoever next has the bridge free and this mod
+  deployed should still spend one quicktest caravan-trade + one liberate-bill
+  cycle on it opportunistically.
+
 ## Assumptions recorded (Charter: "record what you assumed")
 1. Purchased/rescued captives arrive **still bolted** (not a clean unbolted
    purchase) — FOUNDRY's own call: it reuses the existing resentment/rebellion
