@@ -202,7 +202,7 @@ colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_T
 | 0.1 | **agaricus domecap** |  | `AB_AgaricusDomeCap` · Alpha Biomes |
 | 0.1 | **dribbling cap** |  | `AB_DribblingCap` · Alpha Biomes |
 | 0.1 | **skulltop** | 🌳 | `BMT_Skulltop` · Biomes! Caverns |
-| 0.05 | **blastpod shroom** |  | `BMT_Blastpod` · Biomes! Caverns |
+| 0.05 | **boomshroom** |  | `Boomshroom` · Odyssey |
 | 0.01 | **Agarilux Prime** |  | `AB_AgariluxPrime` · Alpha Biomes |
 
 ### `AB_RockyCrags` — 1,170 tiles · -24 … 31 °C (median -10) · plantDensity 0.085

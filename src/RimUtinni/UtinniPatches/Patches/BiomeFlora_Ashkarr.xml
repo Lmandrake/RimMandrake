@@ -222,7 +222,7 @@
           <AB_AgaricusDomeCap>0.1</AB_AgaricusDomeCap> <!-- agaricus domecap -->
           <AB_DribblingCap>0.1</AB_DribblingCap> <!-- dribbling cap -->
           <BMT_Skulltop>0.1</BMT_Skulltop> <!-- skulltop - tree -->
-          <BMT_Blastpod>0.05</BMT_Blastpod> <!-- blastpod shroom -->
+          <Boomshroom>0.05</Boomshroom> <!-- boomshroom -->
           <AB_AgariluxPrime>0.01</AB_AgariluxPrime> <!-- Agarilux Prime -->
         </wildPlants>
       </value>

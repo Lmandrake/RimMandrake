@@ -121,7 +121,7 @@ FAMILIES = {
     'AB_SlimyPholiota': 0.2, 'BMT_BleedingTooth': 0.2, 'BMT_Brightbells': 0.2,
     'BMT_CrimsonCap': 0.2, 'BMT_GreyLady': 0.2, 'BMT_Shinecap': 0.2,
     'BMT_VioletWimple': 0.2, 'BMT_MortalMorelPlant': 0.15, 'AB_AgaricusDomeCap': 0.1,
-    'AB_DribblingCap': 0.1, 'BMT_Skulltop': 0.1, 'BMT_Blastpod': 0.05,
+    'AB_DribblingCap': 0.1, 'BMT_Skulltop': 0.1, 'Boomshroom': 0.05,
     'AB_AgariluxPrime': 0.01},
   'AB_RockyCrags': {   # 1,170 tiles · 6 plants
     'AB_GlowingGrass': 1.0, 'AB_ToxicGamma': 0.6, 'AB_GiantGamma': 0.5,
