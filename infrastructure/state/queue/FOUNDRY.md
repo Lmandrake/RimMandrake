@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T19:07:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T19:11:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -170,15 +170,6 @@ target:   v1
 kind:     task
 summary:  FLUIDCANALMECHANIC1 — general canal/fluid-flow mechanic, RimMandrake tier
 prose:    infrastructure/state/items/FLUID_CANAL_MECHANIC_1.md
-
-## STARWARS_DONOR_SUNSET_1 Retire ALL remaining third-party Star Wars donors (12 mods, 4 waves; Mlie+TSDA first)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  STARWARSDONORSUNSET1 — retire the remaining third-party Star Wars donors
-prose:    infrastructure/state/items/STARWARS_DONOR_SUNSET_1.md
 
 ## MLIE_FAUNA_ABSORPTION_1 Absorb Mlie starwarsanimalcollection: port ~150 creature defs before retiring the donor
 state:    doing
@@ -444,7 +435,7 @@ prose:    infrastructure/state/items/DROID_ORACLE_VOICE_DESIGN_1.md
 ## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     task
 summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
@@ -636,7 +627,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     design
-summary:  (no items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md yet — write one when you have something to say)
+summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
 # BLOCKED — something is WRONG and someone must act
@@ -974,3 +965,13 @@ kind:     fix
 thin:     spec, verify and criteria all present
 summary:  Decouple Inhabited (mandrake.rm.inhabited) from StructureInjections
 prose:    infrastructure/state/items/INHABITED_INJECTIONS_DECOUPLE_1.md
+
+## DROIDWORKS_PERSONALITY_VERIFY_1 Live-verify chassis personality bias: 20 spawns per family show the forced traits + protocol pedantry
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  DROIDWORKSPERSONALITYVERIFY1
+prose:    infrastructure/state/items/DROIDWORKS_PERSONALITY_VERIFY_1.md
