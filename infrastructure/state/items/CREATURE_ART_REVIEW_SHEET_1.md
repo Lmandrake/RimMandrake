@@ -69,3 +69,18 @@ plan / silhouette, not a material reskin of the existing terrestrial shape.**
 ## criteria
 - [ ] Atispec and Revenant art tasks do not recur without a fresh owner
   decision to reopen them.
+
+## 2026-09-09 (BENCH): the FULL sheet is built — `b459ec0a`
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\creature_art_register.html`
+— 277 rows / 27 groups: all 242 rostered defs at true relative in-game scale
+(19.5 px/cell, 380px cap stated in-page), + reserve highlights (22) + ruled/flagged
+off-roster (13). Prefill: 175 rows carry the owner's frozen 08-23 verdicts, 6 the
+09-06 rulings (Atispec/Revenant shown CANCELLED, never re-asked), 96 agent guesses
+(marked). check_sheet 0 FAIL. Serve per the review-sheets sidecar; verdicts ride the
+same sitting as the assignment sheets (ASSIGNMENT_SHEETS_VERDICT_SITTING_1's flow).
+🔑 Finding: Enhydriodon, Gorilla, Capybara, GR_Catbear are Cherry-Picker CUT and
+Revenant/Noctol are entities — four of the six 09-06 art-ruling subjects are not on
+the planet at all; their redraw questions may be moot, shown in the ⚡ group for the
+owner's confirmation. Two rosterled defs have NO texture on disk (AA_ShadowCharger,
+AA_Thunderox — register texture not_found): art-pipeline candidates regardless of
+verdicts.
