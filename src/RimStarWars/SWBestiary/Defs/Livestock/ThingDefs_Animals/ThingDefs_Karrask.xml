@@ -22,8 +22,19 @@
      AnimalThingBase, QuadrupedAnimalWithHooves is Alpaca's own body, but
      karrask is "armadillo-to-pangolin... low and armored" so this uses
      QuadrupedAnimalWithPawsAndTail instead - the same body already proven
-     in this mod for Cindermare). Mass = bodySize * 60 per
-     beast_normalization_spec's 60 kg/bs scale (0.6 * 60 = 36).
+     in this mod for Cindermare).
+
+     2026-09-09 fix (LIVESTOCK_STARTER_TRIO_1, this pass): statBases/Mass
+     was 36 (bodySize 0.6 * beast_normalization_spec's 60 kg/bs scale,
+     pre-computed) - but the Mass StatDef carries StatPart_BodySize
+     (RimSage read_csharp_symbol: TransformValue does `val *= bodySize`),
+     which multiplies WHATEVER statBases/Mass says by bodySize again. A
+     pre-multiplied 36 was landing at an actual 21.6 kg (36 * 0.6), not the
+     intended 36. The spec's own Law 2 says leave the engine's flat-60
+     convention alone (measured: 1,019 of 1,022 vanilla animals carry the
+     literal statBases/Mass 60, letting StatPart_BodySize do the bodySize
+     multiplication) - so this now reads the vanilla flat 60, and the
+     engine produces the intended 36 kg (60 * 0.6) itself.
 
      NOT live-verified this pass (offline defs-only build - see
      LIVESTOCK_STARTER_TRIO_1's item file). Sprite generated
@@ -91,7 +102,7 @@
     <statBases>
       <MoveSpeed>3.2</MoveSpeed>
       <MarketValue>260</MarketValue>
-      <Mass>36</Mass>
+      <Mass>60</Mass>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <ComfyTemperatureMax>55</ComfyTemperatureMax>
       <ArmorRating_Sharp>0.22</ArmorRating_Sharp>
