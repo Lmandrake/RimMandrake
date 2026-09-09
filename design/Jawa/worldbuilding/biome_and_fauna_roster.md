@@ -1,4 +1,12 @@
-<!-- status: aspirational -->
+<!-- status: SUPERSEDED 2026-09-09 by the biome sheets (design/Jawa/worldbuilding/biomes/*.md)
+     and the assignment pass under BIOME_FAUNA_ASSIGNMENT_SITTING_1 (owner ruling, 2026-09-09).
+     Specifically inverted by the sheets: "SW Animal Collection: KEEP ALL" (the shrubland size
+     ladder evicts the SW midrange); herds parked in AridShrubland (herds belong to Desert,
+     where a herd is a mobile shade structure); "do NOT cut on predator grounds" (the desert
+     sheet's no-pursuit law is an ecology law, not a difficulty cut). Its §2 in/out
+     worldgen-weight table died earlier still — there is no worldgen (owner, 2026-08-15) and
+     the one map paints biomes this table ruled out. Do not source any assignment from this
+     file; the sheets are the admission tests. Kept as the record of the 2026-08-13 thinking. -->
 # biome_and_fauna_roster.md — which biomes, which beasts, and what makes each tile feel like itself
 
 _Authored 2026-08-13 by **a retired seat**, overnight, on the owner's brief: "Decide
