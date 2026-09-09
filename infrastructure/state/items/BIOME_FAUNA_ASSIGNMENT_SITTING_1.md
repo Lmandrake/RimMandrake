@@ -83,6 +83,16 @@ no XML was ever generated from it — nothing to revert).
   becomes queue items; rosters land from existing defs only.
 - Fliers cross biomes (freeze R17) — a cross-biome appearance is not a conflict.
 
+## Enforcement gap the build lane MUST close (found 2026-09-09, BENCH)
+Replacing `BiomeDef.wildAnimals` does not evict an animal whose own
+`race.wildBiomes` names a painted biome with weight > 0 — the load-time padder
+(`WILD_ANIMALS_PADDED_LISTS_1` spec) materializes those weights back INTO
+`wildAnimals` at load. So the cast patch alone under-enforces every eviction.
+Fix: an animal-side patch stripping `wildBiomes` entries that point at any of the
+29 painted defs for every creature NOT in that biome's roster — the same
+animal-side removal `biome_animal_conflicts.py` already performs for duplicates,
+generalized. Verify post-load with a fresh def dump, not disk XML.
+
 ## Execution safety rails (binding)
 - After ANY cast/roster regen: re-run the de-dup union over ALL previously-found pairs
   (`BIOME_DUPLICATES_STILL_LIVE_1` — the `ChooseWildAnimalSpawns` static-ctor crash).
