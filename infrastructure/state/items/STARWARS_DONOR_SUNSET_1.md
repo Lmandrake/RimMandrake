@@ -79,12 +79,9 @@ next wave. Never bundle waves 1 and 3 into one restart — different risk classe
 - [x] Wave 3 folded into `DROID_SYSTEM_BUILD_1`/`DROID_DONOR_PATCH_GATE_1`'s
       existing plan rather than duplicated — this file already points there
       and no separate wave-3 item was ever filed.
-- [ ] Wave 4's two open questions: lightsaber reconfirmed STAYS UPSTREAM
-      (owner card, 2026-09-02, recorded above) — resolved. `lumi.doorsexpanded`
-      (blocked on porting `BlastDoorFrameAsyncFix`'s modDependencies first, or
-      accepting the async-fix bug's return) is still an open owner call —
-      not answered by any ruling on file. This is the sole remaining blocker
-      on this item.
+- [x] Wave 4 resolved and executed. Lightsaber STAYS UPSTREAM (owner card,
+      2026-09-02). `lumi.doorsexpanded` ported (`BLASTDOOR_LUMI_PORT_1`,
+      2026-09-08) then retired (2026-09-09, below).
 
 ## Open questions for the owner
 
@@ -170,3 +167,62 @@ owner's ruling — this rides whatever load happens next):
 accept the async-door bug returning, and do not leave it upstream
 indefinitely. This is the sole remaining blocker on the item; unblocking now
 for FOUNDRY to execute.
+
+## Wave 4 EXECUTED (FOUNDRY, 2026-09-09, game UP)
+
+**There was never a Harmony patch.** `BlastDoorFrameAsyncFix` was a pure
+texture-override mod (6 PNGs, no Defs, no Patches, no C#), and the port the
+owner ruled for was completed a day earlier as a def absorption under
+`BLASTDOOR_LUMI_PORT_1` (closed `437b8b81`): the 3 blast-door ThingDefs
+(`PH_DoorThickBlastBDoor`, `PH_DoorBlastCDoor`, `PH_DoorBlastDDoor`), their
+4 SoundDefs, 2 ResearchProjectDefs and 1 ResearchTabDef now live in
+`src/RimStarWars/StarWarsPatches/Defs/Absorbed_LumiDoorsExpanded/`, with the
+textures and sound clips folded into that mod's own trees. The fix mod's
+packageId `mandrake.rsw.blastdoorframeasyncfix` is already gone from
+`ModsConfig.xml` (0 hits). So this wave was a retirement, not a port.
+
+Independence verified before removing the donor:
+- All 12 `texPath`s and both `clipFolderPath`s resolve inside
+  `StarWarsPatches`' own `Textures/`/`Sounds/` — 0 missing.
+- Every cross-reference in the absorbed defs resolves to vanilla
+  (`BuildingBase`, `Structure`, `Metallic`, `HiTechResearchBench`,
+  `BulletImpact_Metal`, `PlaceWorker_DoorLearnOpeningSpeed`), to the absorbed
+  files themselves (`ProjectHeron_*`, `HeronSWBlastDoor*`), or to the two
+  **frameworks that remain active** — `jecrell.doorsexpanded`
+  (`DoorsExpanded.Building_DoorExpanded`, `CompProperties_*`) and
+  `jecrell.jecstools` (`JecsTools.PlaceWorker_Outline`). Both are already in
+  `StarWarsPatches`' `loadAfter`; neither is a Star Wars donor.
+- No mod anywhere on disk (599-mod active set + full workshop tree) declares a
+  dependency on `Lumi.doorsexpanded` except the donor's own About.xml and our
+  own absorbed-def header comments.
+
+Removal: live `ModsConfig.xml` backed up to
+`infrastructure/state/modlists/ModsConfig_2026-09-09_pre_lumi_doorsexpanded_retire.xml`,
+`<li>lumi.doorsexpanded</li>` removed by exact-tag match (1 match, `<li>`
+count 595 → 594), confirmed absent by case-insensitive re-grep;
+`jecrell.doorsexpanded` confirmed still present. `sync_mod_state.py --apply`
+not run — the game is up, same as Wave 1.
+
+**Known, accepted residue in `CANONICAL_ASHKARR_2026-09-09.rws`** (measured,
+not assumed): the save's bookkeeping rosters — the completed-research list and
+the per-`thingDef` history records — name 10 of Lumi's *unported* defs
+(`PH_Autodoor{B..F}`, `PH_MonoDoor{A..D}`, `SW_DoorJail`) plus
+`ProjectHeron_PrisonDoors`. **No placed building uses any of them**; the three
+ported blast doors and both ported research projects resolve because their
+defNames were preserved verbatim. Expect one round of
+`Could not load reference to` Scribe warnings on the first load, after which
+RimWorld re-saves the lists without them — the identical pattern Wave 1 left,
+which is why `starwars.themedsounds`, `lumi.swlights` and TSDA are already
+absent from this save's `modIds`.
+
+**Owed to the next natural cold load** (no dedicated restart, per this item's
+own established pattern):
+- No `Could not resolve cross-reference` naming any `PH_Door*`/`ProjectHeron_*`
+  def — those must resolve from our absorbed copies.
+- The three blast doors buildable, textured (including the fixed east-facing
+  split frames) and audible.
+- `harvest_log.py` baseline otherwise unchanged.
+
+This closes the item: every wave is now either executed, folded into
+`DROID_SYSTEM_BUILD_1`/`DROID_DONOR_PATCH_GATE_1`, scoped out as
+`MLIE_FAUNA_ABSORPTION_1`, or ruled out of scope (lightsaber).
