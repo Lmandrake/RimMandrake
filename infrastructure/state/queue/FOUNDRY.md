@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T02:02:51Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-09T02:10:09Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -522,6 +522,42 @@ kind:     task
 summary:  1. A ThingComp on a module ThingDef adds a personality HediffDef to the
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_PERSONALITY_1.md
 
+## ARMOURY_LOADAFTER_STALE_1 Armoury declares 3 loadAfter packageIds against roughly 40 mods its patches actually target
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/ARMOURY_LOADAFTER_STALE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARMOURY_LOADAFTER_STALE_1.md
+
+## PATCHMODS_LOADAFTER_SWEEP_1 StarWarsPatches and UtinniPatches have the same undeclared-loadAfter gap; sweep every mod of ours that patches somebody else
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/PATCHMODS_LOADAFTER_SWEEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PATCHMODS_LOADAFTER_SWEEP_1.md
+
+## PATCH_LEDGER_MINUS_ONE_OSCILLATES_1 87 patch_ledger entries record an original of -1, and any op emitted onto one oscillates in and out on alternate runs
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/PATCH_LEDGER_MINUS_ONE_OSCILLATES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PATCH_LEDGER_MINUS_ONE_OSCILLATES_1.md
+
+## ARMOURY_SUBSTRING_RUNG_TRAP_1 gen_armoury_patch's 'repeater'/'heavy'/'cannon' substring rung can retune any third-party projectile a turret drags in
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/ARMOURY_SUBSTRING_RUNG_TRAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARMOURY_SUBSTRING_RUNG_TRAP_1.md
+
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -746,46 +782,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROIDWORKS_SERVICE_RECORD_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROIDWORKS_SERVICE_RECORD_DRIFT_1.md
-
-## ARMOURY_LOADAFTER_STALE_1 Armoury declares 3 loadAfter packageIds against roughly 40 mods its patches actually target
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ARMOURY_LOADAFTER_STALE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ARMOURY_LOADAFTER_STALE_1.md
-
-## PATCHMODS_LOADAFTER_SWEEP_1 StarWarsPatches and UtinniPatches have the same undeclared-loadAfter gap; sweep every mod of ours that patches somebody else
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PATCHMODS_LOADAFTER_SWEEP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PATCHMODS_LOADAFTER_SWEEP_1.md
-
-## PATCH_LEDGER_MINUS_ONE_OSCILLATES_1 87 patch_ledger entries record an original of -1, and any op emitted onto one oscillates in and out on alternate runs
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PATCH_LEDGER_MINUS_ONE_OSCILLATES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PATCH_LEDGER_MINUS_ONE_OSCILLATES_1.md
-
-## ARMOURY_SUBSTRING_RUNG_TRAP_1 gen_armoury_patch's 'repeater'/'heavy'/'cannon' substring rung can retune any third-party projectile a turret drags in
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ARMOURY_SUBSTRING_RUNG_TRAP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ARMOURY_SUBSTRING_RUNG_TRAP_1.md
 
 ## FUNGALFOREST_RAID_MERGE_1 Dissolve BMT_FungalForest (an underground def on 425 surface tiles) into its neighbors per the measured cluster table (the Rot; Wasteland at South Crags sector 9), and ingest its spore kit, materials, flora into the Rot as our own defs
 state:    proposed
@@ -1153,8 +1149,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CHRONICLE_NINEFOLD_DECOUPLE_1.md yet — write one when you have something to say)
+thin:     no ## verify, no ## criteria
+summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
 prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
 
 ## MANYWATERS_GENERIC_SPLIT_1 ManyWaters is not generic yet: RiverSteamHook.cs hardcodes ZBiome_Grasslands — split the Ashkarr wiring out as a RUT patch/data hook (C#)
@@ -1196,3 +1192,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROIDWORKS_MODULE_SMELT_CONFIG_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROIDWORKS_MODULE_SMELT_CONFIG_1.md
+
+## PYRELANDS_SELF_CONTAINED_BIOME_1 Author RM Pyrelands' own BiomeDef, self-contained: ScorchFruit, strange weather, ash-as-snow, Cinderfall storms, fast grass (owner ruled the R9 fork: OWN it, 2026-09-09)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_SELF_CONTAINED_BIOME_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_SELF_CONTAINED_BIOME_1.md
