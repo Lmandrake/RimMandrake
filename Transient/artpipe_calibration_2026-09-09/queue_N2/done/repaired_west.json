@@ -1,0 +1,27 @@
+{
+ "job_id": "repaired_west",
+ "kind": "generate",
+ "prompt": "a squat riveted industrial smelting furnace, RimWorld top-down orthographic game sprite, viewed from directly above at a slight angle, seen from the west side. Domed rounded clean grey-green metal top with a central hex bolt, intact riveted side panels, a ring of small glowing amber indicator lights around the dome's base, three sealed shutter vent bays across the base, light weathering only, clearly powered and working. 4:5 portrait canvas, subject centred and filling most of the frame, real transparent alpha background, no floor plane, no shadow, no backdrop.",
+ "out": "/mnt/d/Luke/dev/Rimworld/Transient/artpipe_calibration_2026-09-09/queue_N2/../N2/out/repaired_west.png",
+ "images": [],
+ "manifest": {
+  "job_id": "repaired_west",
+  "kind": "generate",
+  "out": "/mnt/d/Luke/dev/Rimworld/Transient/artpipe_calibration_2026-09-09/N2/out/repaired_west.png",
+  "worker_slot": 1,
+  "duration_s": 150.3,
+  "codex_image_exit": 0,
+  "file_landed": true,
+  "rate_limits": {
+   "ok": true,
+   "rollout": "/mnt/d/Luke/dev/Rimworld/Transient/artpipe_calibration_2026-09-09/queue_N2/.worker_homes/w1/sessions/2026/09/09/rollout-2026-09-09T15-31-20-01a0884c-0dd9-7280-9976-14fb8deb0a25.jsonl",
+   "primary_used_percent": 25.0,
+   "primary_window_minutes": 300,
+   "primary_resets_at": 1789007441,
+   "secondary_used_percent": 17.0,
+   "secondary_window_minutes": 10080,
+   "secondary_resets_at": 1789448705,
+   "grumpy": false
+  }
+ }
+}
