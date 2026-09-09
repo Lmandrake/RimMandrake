@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T19:03:13Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-09T19:06:21Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -332,15 +332,6 @@ target:   v1
 kind:     task
 summary:  Reproduced live, 2026-09-06, while working BIOMESPAWNFLORAAUDIT1 on
 prose:    infrastructure/state/items/NINEFOLD_DEBUG_GAME_READY_CRASH_1.md
-
-## WORLDMAP_DESERT_BAND_REPAIR_1 Repair the Desert def's climate outliers on the frozen world map, re-freeze the savegame
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  WORLDMAPDESERTBANDREPAIR1
-prose:    infrastructure/state/items/WORLDMAP_DESERT_BAND_REPAIR_1.md
 
 ## TREE_GRAPHICS_OWNERSHIP_1 Own tree art at our scales: generate custom tree graphics (sweetline trees first — huge, ancient); remove tree-mod rescaling of our designs
 state:    doing
@@ -970,6 +961,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     fix
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_LORE_NAMING_DRIFT_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Found by PYRELANDSSELFCONTAINEDBIOME1's closing agent (2026-09-09), out of that
 prose:    infrastructure/state/items/PYRELANDS_LORE_NAMING_DRIFT_1.md
