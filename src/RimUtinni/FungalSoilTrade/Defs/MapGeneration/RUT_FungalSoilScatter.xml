@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- FUNGAL_SOIL_TRADE_1. GenStep_ScatterFungalGround self-gates to
+       AB_MycoticJungle (the Rot), so adding it to the shared base generator
+       (see ../../Patches/RUT_FungalSoilScatter_MapGenPatch.xml) is safe: it
+       no-ops on every other biome's maps, the same shape
+       RUT_LanternDeepEmergence_Scatter uses.
+
+       Density is the anti-exponential lever together with the mineable def's
+       own fixed per-knot yield: coveredCellsPer10Cells 0~0.01 on a typical
+       ~64x64-250x250 Rot map works out to roughly a handful of small clusters,
+       not a field of them - a placeholder density pending the owner's actual
+       call, same status LanternDeeps' own chancePerMap carries. -->
+
+  <GenStepDef>
+    <defName>RUT_FungalSoilScatter</defName>
+    <order>322</order>
+    <genStep Class="RimMandrake.Utinni.FungalSoilTrade.GenStep_ScatterFungalGround">
+      <minSpacing>28</minSpacing>
+      <groups>
+        <li>
+          <things>
+            <RUT_MineableFungalGround>1</RUT_MineableFungalGround>
+          </things>
+          <coveredCellsPer10Cells>0~0.01</coveredCellsPer10Cells>
+          <clusterRectRadius>1~2</clusterRectRadius>
+        </li>
+      </groups>
+      <validators>
+        <li Class="ScattererValidator_Buildable">
+          <affordance>Heavy</affordance>
+        </li>
+        <li Class="ScattererValidator_NoNonNaturalEdifices" />
+      </validators>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

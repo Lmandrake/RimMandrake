@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- FUNGAL_SOIL_TRADE_1 - "the good". A discrete, impassable knot in the Rot's
+       mycelial mat, mined with the ordinary vanilla Mine job (Designator_Mine /
+       WorkGiver_Miner / JobDriver_Mine, all unmodified - Mineable.DestroyMined
+       is the exact vanilla hook FungalSoilTrade's Harmony patch listens on).
+
+       Pattern: ParentName="RockBase", same shape as vanilla MineableSteel /
+       MineablePlasteel (read via mcp__rimsage__get_def_details, inheritance
+       confirmed live, not guessed) - "the remains of X, rich in Y" reskinned as
+       a fungal growth. The donor pattern named in the item spec,
+       BMT_MycelialSoil (BiomesTeam.BiomesCaverns), turned out on inspection
+       (vendor/mod_sources/BiomesCaverns_src/1.6/Defs/TerrainDef/
+       BiomesCaverns_Floor.xml) to be a FloorBase-derived BUILT terrain
+       (costList BMT_MushroomLog, constructionSkillPrerequisite 5) - a
+       colonist-laid floor, not a naturally dug deposit - so it does not fit
+       "dig it up" and was not reused directly; this def is the same idea (soil
+       thick with mycelium) built on the pattern that actually supports digging.
+
+       PLACEHOLDER ART: reuses vanilla's own RockFlecked_Atlas (the same texture
+       MineableSteel/MineablePlasteel/MineableUranium etc. all share, tinted via
+       color/colorTwo per the_rot.md section 9's palette - bone white, lilac,
+       milk white, glow-blue). No new texture asset required to compile or load;
+       real bespoke art is owed. -->
+
+  <ThingDef ParentName="RockBase">
+    <defName>RUT_MineableFungalGround</defName>
+    <label>fungal ground knot</label>
+    <description>A dense, swollen knot in the mycelial mat, engorged with years of nutrient-rich soil the fungus has built up around itself. Cutting into it tears the connected network underneath it - and the network feels the tear.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(214,204,232)</color>
+      <colorTwo>(150,214,232)</colorTwo>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>900</MaxHitPoints>
+    </statBases>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RUT_FungalSoil</mineableThing>
+      <!-- Per-node cap, the anti-exponential floor: a fixed, small, non-renewing
+           yield. Placement density (how many knots a map gets at all) is capped
+           separately by the scatter GenStepDef's coveredCellsPer10Cells. -->
+      <mineableYield>18</mineableYield>
+      <mineableDropChance>1</mineableDropChance>
+      <!-- veinMineable=false and mineableScatterCommonality=0: this def is NOT
+           placed by vanilla's rock-vein scatter systems at all. Placement is
+           entirely GenStep_ScatterFungalGround (RUT_FungalSoilScatter), a
+           biome-gated GenStep_ScatterGroup - discrete knots, not a strip-minable
+           vein, so there is no way to expand a single map's yield by digging
+           more of "the same" deposit. -->
+      <veinMineable>false</veinMineable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+    </building>
+  </ThingDef>
+
+</Defs>
