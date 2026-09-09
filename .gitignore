@@ -263,3 +263,4 @@ infrastructure/state/BRIDGE.tmp
 Transient/codebase_health_hook.log
 infrastructure/state/*.lock
 infrastructure/state/*.tmp.*
+infrastructure/artpipe/_codex_homes/
