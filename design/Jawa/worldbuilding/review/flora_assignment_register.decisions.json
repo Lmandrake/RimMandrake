@@ -1,0 +1,1584 @@
+{
+ "sheet": "flora_assignment_register",
+ "posture": "blacklist",
+ "postureMeaning": "LANDED unless overruled. Rows with no entry stand as landed.",
+ "criterion": "Rows pass their biome sheet's admission tests — which rank LAWFULNESS, not worth; commonality values are agent-chosen throughout.",
+ "generatedBy": "gen_flora_assignment_sheet.py",
+ "generatedFrom": "design/Jawa/worldbuilding/biomes/rosters/*.json @ 2026-09-09",
+ "invented": [
+  "Every commonality value on every flora row is agent-chosen. Nothing measures how much of a plant a biome should carry — these are a first pass at relative abundance.",
+  "Interim flora stand-ins: where a sheet demands a signature plant that does not exist, the biome is held together by the best-available alien donor plant and the real one sits in the NEW ART/DEF ledger. Those donor rows are place-holders, not designs — several biomes are thin on purpose and will read thin until the ledger is commissioned.",
+  "\"Earth-nameable\" was applied by NAME, one agent's reading of each label. A plant whose label reads as a species you could point at on Earth was purged; the judgement is unverified per row and the purge summary lists exactly what went.",
+  "Thin is acceptable (owner card 4) — so where the alien donor pool ran out, the pass left the biome sparse rather than refilling it with a near-miss. That is a choice, and the opposite choice is available to you row by row.",
+  "The NEW ART/DEF ledger is a list of things the sheets DEMAND, not things anyone has agreed to build. Nothing here is authored (owner card: new creatures and plants are not authored in this pass) — Keep on a ledger row commissions it as a queue item.",
+  "The ledger's creature and mechanic rows are carried on this sheet rather than the fauna one, because the new-art queue is one queue and splitting it across two sheets with different verbs would lose half of it.",
+  "The Mynock ≤2-home resolution, the Aerofleet Fumerider exception, and the Dunealisk and Skalder imports are fauna calls — they are declared on the fauna sheet and named here so this page is not read as the whole of the pass's invented rules."
+ ],
+ "decisions": {
+  "c:dune_sea + deep_desert:1": {
+   "decision": "defer",
+   "prefill": "defer",
+   "note": "left undecided on purpose: the pass could not settle this from sheet law alone."
+  },
+  "c:the_forge:3": {
+   "decision": "defer",
+   "prefill": "defer",
+   "note": "left undecided on purpose: the pass could not settle this from sheet law alone."
+  },
+  "c:the_pyrelands:0": {
+   "decision": "defer",
+   "prefill": "defer",
+   "note": "left undecided on purpose: the pass could not settle this from sheet law alone."
+  },
+  "c:the_pyrelands:1": {
+   "decision": "defer",
+   "prefill": "defer",
+   "note": "left undecided on purpose: the pass could not settle this from sheet law alone."
+  },
+  "c:the_rot:1": {
+   "decision": "defer",
+   "prefill": "defer",
+   "note": "left undecided on purpose: the pass could not settle this from sheet law alone."
+  },
+  "p:weeping_stones:BMT_Dewshrooms": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_forge:Plant_Fireweed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_fever_wood:AB_KeeningCordax": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:arid_shrubland:Plant_ShrubLow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_webwork:AB_RedBugloss": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_scarlands:BMT_Plant_ScorchedStars": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_cracked_lands:BMT_Plant_TreeTwistingThornwood": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_pyrelands:Plant_YellowGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:arid_shrubland:Plant_Brambles": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:arid_shrubland:Plant_Bush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:arid_shrubland:RG_Plant_CreepStern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:arid_shrubland:RG_Plant_CrimsonCushion": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:arid_shrubland:RG_Plant_Dervish": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:arid_shrubland:RG_Plant_AridGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:arid_shrubland:Plant_Ripthorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:arid_shrubland:Plant_HealrootWild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:arid_shrubland:Plant_Nysyllin_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:arid_shrubland": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:desert:AB_Aaklac": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:desert:AB_DessertTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:desert:AB_HardyGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:desert:Plant_Chakroot_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:desert:Plant_HubbaGourd_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:desert": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:dune_sea + deep_desert:Plant_Bloddle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:dune_sea + deep_desert:AB_GiantStikehr": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:dune_sea + deep_desert": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:forsaken_crags:AB_GiantGamma": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:forsaken_crags:AB_GiantSeptimum": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:forsaken_crags:AB_GiantStikehr": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:forsaken_crags:AB_GlowingGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:forsaken_crags:AB_ToxicGamma": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:forsaken_crags:AB_WildRadagast": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:forsaken_crags": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "purge:nightside_ice": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:poison_forest:AB_GiantAgariTox": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:poison_forest:AB_BloodBouquet": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:poison_forest:AB_CrystalFlower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:poison_forest:AB_CrystalHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:poison_forest:AB_KeeningCordax": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:poison_forest:BMT_Plant_TreeMartyr": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:poison_forest:AB_RavenNettle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:poison_forest:AB_RedBugloss": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:poison_forest:BMT_Plant_TreeTwistingThornwood": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:poison_forest": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "purge:the_blue_desert": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:the_contagion:AB_BloodBouquet": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_contagion:AB_EyeGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_contagion:AB_GlobularPlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_contagion:AB_HalfAlienTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_contagion:AB_AlienTree_Polluted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_contagion:AB_AlienGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_contagion:AB_RedLeaves": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_contagion:AB_RedPlantsTall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_contagion:AB_AlienTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_contagion:AB_TentacularPlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:the_contagion": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:the_cracked_lands:AB_GargantuanLithops": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_cracked_lands:AB_HardyGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_cracked_lands:GRimMoss": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_cracked_lands:BMT_Plant_TwistingThorngrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_cracked_lands:BMT_Plant_TwistingThornweed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:the_cracked_lands": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:the_fever_wood:BMT_GiantLeaf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_fever_wood:AB_Gomphoeria": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_fever_wood:AB_Iashiphus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_fever_wood:Plant_Chakroot_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_fever_wood:Plant_HydenockTree_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_fever_wood:Plant_JoganTree_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:the_fever_wood": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:the_forge:IronScruff_Bindweed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_forge:BMT_FireLavender": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_forge:AB_FirevineTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_forge:AG_Gamma": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_forge:AB_GiantGamma": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_forge:BMT_HeatsinkFungus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_forge:Plant_MagmaCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_forge:IronScruff_PrimordialGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_forge:IronScruff_PrimordialTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_forge:BMT_Sagecrust": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_forge:AG_Septimum": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_forge:AB_TinkleGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:the_forge": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:the_greentide:AB_JungleTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_greentide:BMT_GiantLeaf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_greentide:AB_SugarFamewort": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_greentide:Plant_Bubblespore_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_greentide:Plant_Chakroot_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_greentide:Plant_FelucianGlowspore_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_greentide:Plant_HubbaGourd_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_greentide:Plant_HydenockTree_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_greentide:Plant_JoganTree_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_greentide:Plant_MujaFruit_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_greentide:Plant_TookeTrap_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:the_greentide": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:the_miasma:AB_MangrovePalm": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_miasma:AB_MangroveTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_miasma:AB_ParasiticMangrove": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_miasma:BMT_RainbowTongue": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_miasma:BMT_Plant_SewerReed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_miasma:BMT_Plant_Snaketails": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_miasma:BMT_Plant_TreeTanglerootMangrove": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:the_miasma": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:the_propane_lakes:AB_CrystalFlower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_propane_lakes:AB_CrystalHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_propane_lakes:AB_FrostLeaf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_propane_lakes:AB_RimeNodules": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_pyrelands:AB_HardyGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_pyrelands:Plant_YellowTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:the_pyrelands": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:the_rot:AB_AgaricusDomeCap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:AB_Agarilux": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:AB_AgariluxPrime": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:AB_ArbuscularMycorrhiza": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_Arpeau": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_Blastpod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_BleedingTooth": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_Brightbells": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:AB_Bryolux": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_CrimsonCap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_Dewshrooms": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:AB_DribblingCap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_FlakespireFungus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:AB_GiantAgarilux": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:AB_GlowingAgarilux": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:AB_Glowstool": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_GreyLady": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:AB_LilacBeacon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_FruitingBodies": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_MortalMorelPlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_Nogtyl": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_Nuitae": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_Pusmelon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:AB_RecurvedStropharia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_RustPuff": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_Sagecrust": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_Shinecap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_Skulltop": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:AB_SlimyPholiota": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_VioletWimple": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:AB_WitchesOyster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_rot:BMT_Wrinklecap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:the_rust_cathedral": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "purge:the_scarlands": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:the_slime:AB_LargeSlimyTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_slime:AB_Slimecasia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_slime:AB_SlimyFern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_slime:AB_SlimyPholiota": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_slime:AB_SlimyTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_slime:AB_TallSlimyGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:the_slime": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:the_sump:AB_TarPuddle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:the_sump": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:the_webwork:AB_Aaklac": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_webwork:RG_Plant_TropicalChokevine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_webwork:AB_JungleTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_webwork:AB_Gomphoeria": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_webwork:AB_TangleTea": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:the_webwork:Plant_TookeTrap_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:the_webwork": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:wasteland:PoisonPlantBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:BMT_Plant_Doomsprout": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:BMT_Plant_EclipsusFlower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:BMT_Plant_EclipsusLeaves": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:AB_GiantToxicFlower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:Plant_GrayGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:BMT_Plant_GutterPlantain": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:PoisonShrub": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:VRE_PoluxBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:Plant_TreePolux": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:BMT_Plant_PoxSorghum": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:BMT_RainbowTongue": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:BMT_Plant_ScorchedStars": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:BMT_Plant_Snaketails": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:PoisonPlantTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:RG_Plant_TallToxiGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:AB_ToxiGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:AB_ToxiBulb": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:BMT_Plant_ToxicIvy": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:RG_Plant_ToxiGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:Plant_Toxipotato": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:BMT_Plant_TumorbulbHyacinth": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:BMT_Plant_TwistedDandelion": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:AB_WeepingToxberry": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:wasteland:BMT_Plant_WildRashroot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:wasteland": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "p:weeping_stones:Plant_Ambrosia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:weeping_stones:AB_GreenRockFern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "p:weeping_stones:Plant_Reeds": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "purge:weeping_stones": {
+   "decision": "purge",
+   "prefill": "purge",
+   "note": ""
+  },
+  "nd:arid_shrubland:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:arid_shrubland:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:arid_shrubland:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:desert:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:desert:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:desert:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:dune_sea + deep_desert:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:dune_sea + deep_desert:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:fall_line:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:nightside_ice:5": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:poison_forest:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_blue_desert:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_cracked_lands:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_cracked_lands:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_fever_wood:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_greentide:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_greentide:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:terminator_sea + the_grey_deep:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:terminator_sea + the_grey_deep:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_miasma:4": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_pyrelands:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_pyrelands:4": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_rot:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_rot:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_scald:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_scarlands:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_sump:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_sump:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:terminator_sea + the_twilight_deep:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:terminator_sea + the_twilight_deep:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_webwork:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_webwork:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:wasteland:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:weeping_stones:6": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:weeping_stones:7": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:arid_shrubland:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:arid_shrubland:4": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:arid_shrubland:5": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:arid_shrubland:6": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:desert:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:desert:4": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:desert:5": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:desert:6": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:dune_sea + deep_desert:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:dune_sea + deep_desert:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:dune_sea + deep_desert:4": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:dune_sea + deep_desert:5": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:dune_sea + deep_desert:6": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:dune_sea + deep_desert:7": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:fall_line:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:fall_line:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:forsaken_crags:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:forsaken_crags:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:forsaken_crags:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:forsaken_crags:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:nightside_ice:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:nightside_ice:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:nightside_ice:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:nightside_ice:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:nightside_ice:4": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:poison_forest:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:poison_forest:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_blue_desert:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_blue_desert:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_blue_desert:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_contagion:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_cracked_lands:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_cracked_lands:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_fever_wood:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_fever_wood:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_fever_wood:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_forge:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_forge:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_forge:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_greentide:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_greentide:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_greentide:4": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:terminator_sea + the_grey_deep:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:terminator_sea + the_grey_deep:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:terminator_sea + the_grey_deep:4": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_miasma:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_miasma:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_miasma:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_miasma:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_propane_lakes:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_propane_lakes:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_pyrelands:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_pyrelands:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_pyrelands:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_rot:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_rot:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_rot:4": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_rust_cathedral:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_rust_cathedral:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_scald:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_scald:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_scarlands:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_scarlands:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_slime:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_sump:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_sump:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:terminator_sea + the_twilight_deep:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:terminator_sea + the_twilight_deep:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:terminator_sea + the_twilight_deep:4": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:terminator_sea + the_twilight_deep:5": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:terminator_sea + the_twilight_deep:6": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_webwork:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:the_webwork:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:wasteland:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:wasteland:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:wasteland:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:wasteland:4": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:weeping_stones:0": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:weeping_stones:1": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:weeping_stones:2": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:weeping_stones:3": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:weeping_stones:4": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "nd:weeping_stones:5": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  }
+ }
+}
