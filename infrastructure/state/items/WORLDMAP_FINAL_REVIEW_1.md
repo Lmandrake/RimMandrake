@@ -74,3 +74,11 @@ in-window. Read-only against the world unless the owner rules otherwise per find
 ## criteria
 The owner reads one report and can answer "is this THE map?" — with a punch list whose
 items are each: the finding, the evidence, the corrective, the cost.
+
+## 2026-09-09 (BENCH, AFK): deliberately NOT started despite bridge-free
+The paint is mid-churn: BIOME_OWNERSHIP_WAVE_1 is being executed live by the other
+window (RUT_BlueDesert already repainted; RUT_Sump/TheForge/TheRot/Umbra/… defs
+authored and switching). A FINAL review measured now audits a moving target and its
+verdicts decay within hours; the STARE half needs the owner besides. Run it after
+the ownership switches settle — its Phase-0 fresh exports will then measure the map
+the owner is actually judging.

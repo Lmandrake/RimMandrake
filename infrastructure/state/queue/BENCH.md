@@ -7,12 +7,39 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T16:27:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T16:49:23Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## CREATURE_ART_REVIEW_SHEET_1 Full creature-art review sheet: every nonhuman at true in-game scale, biome-clustered, verdict+priority+notes - start of the art regeneration pipeline
+state:    ready
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  Full creature-art review sheet, per design/Jawa/fauna/creatureartdecisions.json
+prose:    infrastructure/state/items/CREATURE_ART_REVIEW_SHEET_1.md
+
+## ALPHA_FAMILY_SOURCE_REVIEW_1 Study the whole Alpha family from its public source (github.com/juanosarg/AlphaBiomes + AlphaAnimals): catalog the C# mechanics, replicate the ones worth owning as generic comps (active-defender plants, terrain attacks, sensor fog), broaden the concepts for Ash'karr
+state:    ready
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  1. Inventory the family: which Alpha mods are in our stack (ModsConfig, MEASURED) and
+prose:    infrastructure/state/items/ALPHA_FAMILY_SOURCE_REVIEW_1.md
+
+## STAGED_LORE_DESCRIPTIONS_1 Engine feasibility: scenario-driven staged descriptions - biome/terrain/def texts that change as lore reveal gates open; Scarlands P/GM ladder is the first consumer (BENCH-filed from the owner's musing, not a ruling)
+state:    ready
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  STAGEDLOREDESCRIPTIONS1 — descriptions that change as the story is learned
+prose:    infrastructure/state/items/STAGED_LORE_DESCRIPTIONS_1.md
 
 ## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
 state:    ready
@@ -26,15 +53,6 @@ prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## CREATURE_ART_REVIEW_SHEET_1 Full creature-art review sheet: every nonhuman at true in-game scale, biome-clustered, verdict+priority+notes - start of the art regeneration pipeline
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  Full creature-art review sheet, per design/Jawa/fauna/creatureartdecisions.json
-prose:    infrastructure/state/items/CREATURE_ART_REVIEW_SHEET_1.md
 
 ## GEONOSIAN_BRAINWORM_MORPH_1 Research Space Worms mod + Geonosian brain worm canon (Brain Invaders arc), author our own RSW_ brain worms — cold-vulnerable, host-puppeting
 state:    doing
@@ -72,15 +90,6 @@ kind:     task
 summary:  - Identify the mod: which import ships the orange glowing crystal (candidates to
 prose:    infrastructure/state/items/CRYSTAL_MODS_INGEST_1.md
 
-## ALPHA_FAMILY_SOURCE_REVIEW_1 Study the whole Alpha family from its public source (github.com/juanosarg/AlphaBiomes + AlphaAnimals): catalog the C# mechanics, replicate the ones worth owning as generic comps (active-defender plants, terrain attacks, sensor fog), broaden the concepts for Ash'karr
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  1. Inventory the family: which Alpha mods are in our stack (ModsConfig, MEASURED) and
-prose:    infrastructure/state/items/ALPHA_FAMILY_SOURCE_REVIEW_1.md
-
 ## ANCIENT_RUINS_MOD_AUDIT_1 Deep audit of the ancient-ruins mod (the mall-maps one — identify exact packageId from the live list first): anything redeemable? full ThingDef inventory triage; and study HOW it generates its maps/items before any removal decision
 state:    doing
 row:      unassigned
@@ -89,15 +98,6 @@ target:   v1
 kind:     task
 summary:  ANCIENTRUINSMODAUDIT1 — the mall-maps mod: cut, keep, or learn from
 prose:    infrastructure/state/items/ANCIENT_RUINS_MOD_AUDIT_1.md
-
-## STAGED_LORE_DESCRIPTIONS_1 Engine feasibility: scenario-driven staged descriptions - biome/terrain/def texts that change as lore reveal gates open; Scarlands P/GM ladder is the first consumer (BENCH-filed from the owner's musing, not a ruling)
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  STAGEDLOREDESCRIPTIONS1 — descriptions that change as the story is learned
-prose:    infrastructure/state/items/STAGED_LORE_DESCRIPTIONS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
