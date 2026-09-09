@@ -26,3 +26,14 @@ goes into dungeons injected onto nightside tiles.
 Faction has 0 settlements on the frozen world; a nightside quicktest map shows injected
 nest objects; a raid arrives from the Horrors faction under the reach rule; no Horror
 raid on a dayside test map.
+
+## Owner RULED — question card, 2026-09-09
+
+**Gating confirmed**: nightside/cold-reach (a threat you walk toward, not one
+that finds you) is the intended rule — BENCH's reading stands.
+
+**Sequencing confirmed: hold the WHOLE item**, both the FactionDef reshape and
+the dungeon-injection half, until `HORRORWASTES_BIOME_DISSOLVE_1`'s
+owner-reviewed tile-reassignment render lands. Do not start the offline
+FactionDef work early — do both halves together in one pass once that render
+is ruled.

@@ -99,3 +99,29 @@ roster past the single quicktest-gate check without that ruling.
 - `SteadyEnvironmentEffects.throwFleckChance` was only read as firing on
   outdoor unroofed cells (line 171) — worth confirming for roofed canal
   cells if that matters to the design.
+
+## Owner RULED — question card, 2026-09-09
+
+**Skip the one-def gate test — author the full v1 slice now** (12
+TerrainDefs + 5 FleckDefs, still saved as a look-and-pick savegame per the
+"options he must LOOK at ship as a savegame" rule; if the WaterDepth-overlay
+tint gate turns out to fail, fix forward with the texture-recolour fallback
+rather than blocking on a separate pre-test).
+
+**Added scope, owner verbatim (paraphrased from voice): "if the thirst kid is
+present, we should have different bottles of the colored waters too.
+Conditional mod check. Look for other water-related mod interactions like
+this — like maybe the whole diving mod, and rain."**
+
+- Identify what mod actually provides a drinkable water-bottle/canteen item
+  with a thirst mechanic on the live modlist (candidates to check: Dubs Bad
+  Hygiene's water bottles, RimWorld of Magic, any "Thirst"-named mod, a
+  child/"kid" mechanic mod referencing thirst) — do not guess the packageId,
+  read `ModsConfig.xml` and the candidate's own defs.
+- If found: add colour-matched bottled-water item variants, gated behind a
+  `MayRequire`/`PatchOperationFindMod` on that mod's packageId — never
+  ungated.
+- Separately check for any other live mod with a genuine water-COLOUR
+  interaction worth coordinating with: a diving/underwater mod, and any
+  rain-collection or weather mod that reads terrain water colour. Report
+  what's found even if nothing is actionable.
