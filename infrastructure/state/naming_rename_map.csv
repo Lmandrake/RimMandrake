@@ -1,7 +1,7 @@
 kind,old,new,tier,confidence,note
 mod,src/Jawa/DesertVehicleReskin,src/RimStarWars/DesertVehicleReskin,RimStarWars,RULED,R11 2026-09-08: aesthetic reskins take the tier of the aesthetic; moved whole (ships C#)
 packageId,mandrake.desertvehiclereskin,mandrake.rm.desertvehiclereskin,RimMandrake,RULED,
-namespace,DesertVehicleReskin,RimMandrake.DesertVehicleReskin,RimMandrake,RULED,
+namespace,DesertVehicleReskin,RimMandrake.StarWars.DesertVehicleReskin,RimStarWars,RULED,NAMESPACE_RETIER_PASS_1 2026-09-09: follows the R11 mod move to src/RimStarWars/
 mod,src/Jawa/Droidworks,src/RimStarWars/Droidworks,RimStarWars,HIGH,plan 7 recommends full RSW_ (drop DW_); map emits RSW_DW_* deterministically - owner signs which
 packageId,mandrake.droidworks,mandrake.rsw.droidworks,RimStarWars,HIGH,
 def,DW_BoltResentment,RSW_DW_BoltResentment,RimStarWars,HIGH,
@@ -1404,6 +1404,7 @@ mod,src/RimMandrake/TheftHauler,src/RimMandrake/RimProperty,RimMandrake,RULED,ab
 mod,src/RimStarWars/WeatherSuite,src/RimMandrake/WeatherSuite,RimMandrake,RULED,R9 engine promotion (2026-09-08)
 mod,src/RimStarWars/FireEcology,src/RimMandrake/Pyrelands,RimMandrake,RULED,R9 self-contained biome (2026-09-08)
 mod,src/RimUtinni/RiverSteam,src/RimMandrake/ManyWaters,RimMandrake,RULED,R10 water effects engine (2026-09-08)
+namespace,RiverSteamHook,RimMandrake.ManyWaters,RimMandrake,RULED,NAMESPACE_RETIER_PASS_1 2026-09-09: AssemblyName stays RiverSteamHook.dll (DLL filename is not a naming-scheme surface)
 mod,src/RimMandrake/MandrakePatches,src/RimMandrake/MandrakePatches,RimMandrake,RULED,patches cell; split destination + 5 fix folds (2026-09-08)
 mod,src/RimStarWars/StarWarsPatches,src/RimStarWars/StarWarsPatches,RimStarWars,RULED,patches cell; split destination + 2 fix folds (2026-09-08)
 mod,src/RimUtinni/UtinniPatches,src/RimUtinni/UtinniPatches,RimUtinni,RULED,patches cell; split destination + FactionSlate (2026-09-08)

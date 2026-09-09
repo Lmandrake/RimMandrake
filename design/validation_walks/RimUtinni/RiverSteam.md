@@ -12,7 +12,7 @@ status-hint: Pure-ambience MapComponent — periodic steam-puff flecks over rive
 - No heat, no fire, no colonist-visible mechanical effect of any kind — ambience only.
 
 ## the walk
-1. [L] Player.log after load contains no "Config error in mandrake.rut.riversteam" and no XML error naming RiverSteamHook — load-time (this mod ships no XML at all, so a clean load is the only load-time signal there is)
+1. [L] Player.log after load contains no "Config error in mandrake.rut.riversteam" and no XML error naming RimMandrake.ManyWaters — load-time (this mod ships no XML at all, so a clean load is the only load-time signal there is)
 2. [D] def read-back: FleckDef `Steam` exists (vanilla dependency `MapComponent_RiverSteam.FinalizeInit` resolves via `GetNamedSilentFail("Steam")` — confirms the silent-fail path can't be tripped by a renamed vanilla def)
 3. [B] `jawa/map_info` on a generated Ash'karr Pyrelands (ZBiome_Grasslands) map → biome defName reads `ZBiome_Grasslands`
 4. [B] `jawa/get_terrain_batch` over that map's river cells → at least one cell reports a terrain with `IsRiver` true (precondition for `riverCells` to be non-empty)

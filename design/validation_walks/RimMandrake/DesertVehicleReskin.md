@@ -17,7 +17,7 @@ status-hint: redraws Alpha Vehicles - Neolithic's draught animals as desert faun
 3. [D] def read-back: `Vehicles.VehicleDef` `AV_DogSled` `label` = "eopie sled"; `graphicData/color` = `(99, 65, 24)`; `graphicData/colorTwo` = `(115, 93, 57)`
 4. [D] def read-back: `Vehicles.VehicleDef` `AV_WarChariot` `label` = "dewback war chariot"; `AV_CoveredCarriage` `label` = "ronto wagon"; `AV_OxCart` `label` = "bantha cart"
 5. [D] def read-back (only if `VanillaExpanded.VFEPropsandDecor` active): `ThingDef` `VFEPD_DogSled` `label` = "eopie sled (prop)"; `graphicData/color` = `(99, 65, 24)`
-6. [D] def read-back: each of `AV_Chariot`/`AV_WarChariot`/`AV_OxCart`/`AV_CoveredCarriage`/`AV_DogSled` carries a `modExtensions` `li` of `Class="RimMandrake.DesertVehicleReskin.RM_DraughtFuelExtension"`
+6. [D] def read-back: each of `AV_Chariot`/`AV_WarChariot`/`AV_OxCart`/`AV_CoveredCarriage`/`AV_DogSled` carries a `modExtensions` `li` of `Class="RimMandrake.StarWars.DesertVehicleReskin.RM_DraughtFuelExtension"`
 7. [B] jawa/vehicle_spawn_airdrop (or the mod's own spawn route) an `AV_OxCart`, then attempt to refuel it from a non-Hay vegetable item (e.g. a potato/`RawPotatoes`) via `jawa/order_pawn`/refuel job → expect the fuel comp accepts it (no "no valid fuel" refusal)
 8. [B] repeat step 7 with a meat item (e.g. `Meat_Human` or any `Meat*` defName) → expect REFUSAL — meat is explicitly excluded even though it is nutrition-giving
 
