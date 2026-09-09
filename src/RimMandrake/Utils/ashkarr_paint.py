@@ -1066,16 +1066,23 @@ def write_bundle(w):
         comp = max(components(mask, w["nbl"]), key=len)
         v = geo.vec[list(comp)].mean(axis=0)
         v = v / np.linalg.norm(v)
-        spread = float(np.degrees(np.arccos(np.clip(
-            geo.vec[list(comp)].dot(v), -1, 1))).max())
+        # 🔴 This must MATCH, not merely approximate, the live importer's formula
+        # (JawaBenchWorldTools.cs WorldFeaturesImport, ~L4695) or this field lies
+        # about what the game will actually draw the moment someone reads it as
+        # authoritative. That importer groups the tiles CSV's `region` column by
+        # name and computes size from the FULL region tile count (== len(tiles)
+        # here, not the largest-connected-component `mass`), as
+        # `max(6, sqrt(count) * 1.35)`. WORLD_FEATURE_LABELS_OVERSIZED_1: the old
+        # angular-spread formula here (`2.0 * spread / 1.35`) was a second,
+        # independently-drifting formula nothing live ever read - the importer
+        # recomputes from the CSV itself and ignores this field entirely - but a
+        # human or a future consumer reading meta.json has no way to know that.
         features.append({"id": i, "name": name, "kind": kind,
                          "tiles": int(len(tiles)), "mass": int(len(comp)),
                          "drawCenter": [round(float(x), 6) for x in v],
                          "lat": round(float(np.degrees(np.arcsin(v[1]))), 4),
                          "lon": round(float(np.degrees(np.arctan2(v[2], v[0]))), 4),
-                         # extent in TILES, which is what maxDrawSizeInTiles wants:
-                         # mean tile spacing on a 21872-tile sphere is ~1.35 deg.
-                         "maxDrawSizeInTiles": round(2.0 * spread / 1.35, 1)})
+                         "maxDrawSizeInTiles": round(max(6.0, math.sqrt(len(tiles)) * 1.35), 1)})
 
     with open(BUNDLE + "_tiles.csv", "w", newline="", encoding="utf-8") as fh:
         wr = _csv.writer(fh)

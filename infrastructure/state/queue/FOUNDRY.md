@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T19:12:18Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-09T19:17:41Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -585,6 +585,15 @@ kind:     fix
 summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
 
+## WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1 181 land-biome tiles (AridShrubland/Desert/Wasteland/AB_RockyCrags/AB_MycoticJungle/ZBiome_Badlands) sit at the three seas' own elevation (-350), unmasked now that WORLD_LINT_WATER_HARDCODE_1 stopped conflating them with the seas' own tiles
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  Unmasked 2026-09-08 while live-verifying WORLDLINTWATERHARDCODE1 on the real
+prose:    infrastructure/state/items/WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1.md
+
 ## CHRONICLE_NINEFOLD_DECOUPLE_1 Decouple Aftermath from Ninefold per CHRONICLE_EVENT_SPINE.md: subscription API, drop hard modDependency+csproj ref, godTie God enum to string (C#, model=opus)
 state:    doing
 row:      unassigned
@@ -865,16 +874,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BRIDGETOOLS_DLL_GM_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BRIDGETOOLS_DLL_GM_DRIFT_1.md
 
-## WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1 181 land-biome tiles (AridShrubland/Desert/Wasteland/AB_RockyCrags/AB_MycoticJungle/ZBiome_Badlands) sit at the three seas' own elevation (-350), unmasked now that WORLD_LINT_WATER_HARDCODE_1 stopped conflating them with the seas' own tiles
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  Unmasked 2026-09-08 while live-verifying WORLDLINTWATERHARDCODE1 on the real
-prose:    infrastructure/state/items/WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1.md
-
 ## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
 state:    proposed
 row:      unassigned
@@ -954,16 +953,6 @@ kind:     fix
 thin:     spec, verify and criteria all present
 summary:  Found by PYRELANDSSELFCONTAINEDBIOME1's closing agent (2026-09-09), out of that
 prose:    infrastructure/state/items/PYRELANDS_LORE_NAMING_DRIFT_1.md
-
-## INHABITED_INJECTIONS_DECOUPLE_1 Decouple Inhabited from StructureInjections (Law-1 sweep confirmed violation)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     fix
-thin:     spec, verify and criteria all present
-summary:  Decouple Inhabited (mandrake.rm.inhabited) from StructureInjections
-prose:    infrastructure/state/items/INHABITED_INJECTIONS_DECOUPLE_1.md
 
 ## DROIDWORKS_PERSONALITY_VERIFY_1 Live-verify chassis personality bias: 20 spawns per family show the forced traits + protocol pedantry
 state:    proposed
