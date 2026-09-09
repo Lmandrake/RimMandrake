@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T02:20:00Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-09T02:34:07Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1172,8 +1172,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_SELF_CONTAINED_BIOME_1.md yet — write one when you have something to say)
+thin:     no ## verify, no ## criteria
+summary:  Owner, verbatim (2026-09-09): "The pyre land has no biome of its own. It
 prose:    infrastructure/state/items/PYRELANDS_SELF_CONTAINED_BIOME_1.md
 
 ## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
@@ -1185,3 +1185,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
+
+## MOVING_DUNES_ENGINE_1 RM aeolian-transport engine idea: deposition so deep it forms dunes that CREEP — erode windward, deposit leeward, along the wind vector (owner spark, 2026-09-09; design-first, no build)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MOVING_DUNES_ENGINE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MOVING_DUNES_ENGINE_1.md
