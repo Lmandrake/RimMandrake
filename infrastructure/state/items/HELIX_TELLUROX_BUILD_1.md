@@ -276,3 +276,66 @@ reading of "traced"), Helix origin/registry naming in the def (unchanged from
 2026-09-02). `validate_patch.py`: 0 errors on the mod's own new-art texPath,
 4 errors remaining are the confirmed false-positive class shared with the
 already-shipped Karrask sibling.
+
+## 2026-09-09 (FOUNDRY) — offline re-verification only, no rebuild; folder moved under a merge this item didn't cause
+
+Re-read this file plus the git history before touching anything (per this
+pass's own instructions — several other items tonight turned out further
+along than their last entry suggested). Found the standalone
+`src/RimStarWars/HelixTellurox/` mod folder is gone: commit `247cd6d4`
+("Sprint wave A ... fauna → SWBestiary") absorbed it, unchanged, into
+`src/RimStarWars/SWBestiary/Defs/HelixTellurox/ThingDefs_Races/Races_Tellurox.xml`
+and `Textures/Things/Pawn/Animal/Tellurox/Tellurox.png` under
+`mandrake.rsw.swbestiary`. `SWBestiary/About/About.xml` already documents the
+absorption verbatim ("Absorbed HelixTellurox ... the Tellurox draft/pack
+beast def and texture; not yet wired into any biome's wild-spawn cast") —
+this item's own outstanding gap carried over correctly, nothing lost in the
+merge. `mandrake.rsw.swbestiary` is active in the live `ModsConfig.xml`
+(confirmed by reading it directly, not assumed).
+
+Did not attempt any live bridge call this pass — RimWorld was mid-cold-load
+on the full ~600-mod list at the time (`rimflow bridge who` read FREE, but a
+mid-load game is not a safe target regardless of bridge-lock state, and this
+item's own verify plan calls for a MINIMAL-list relaunch, which a full-list
+load in progress is not). All work this pass was offline re-verification:
+
+- `validate_patch.py` re-run against the whole (now-merged) `SWBestiary` mod,
+  `--defs` pointed at the real installed Data/Mods/Workshop roots (not the
+  def dump — `--defs` scans mods on disk, `--live`/`--defnames` is the dump
+  flag, and no dump path exists in this repo right now to hand it). Result
+  unchanged from the 2026-09-05/06 entry: **0 structural errors**, exactly 4
+  texPath ERRORs on `Races_Tellurox.xml`, all on reused-vanilla paths
+  (`RSW_TelluroxShell`'s `Leather_Plain`, `RSW_Tellurox`'s 3x
+  `Dessicated_Muffalo` corpse fallback). Independently re-confirmed the
+  false-positive class this time, not just trusted the prior log: the
+  *same* mod file throws the identical error shape on `RSW_KarraskShedRaw`/
+  `RSW_KarraskPlate` (`Leather` reuse, 2 errors) and on two unrelated
+  creatures merged into the same mod, `RSW_Protovermes`
+  (`Dessicated_Boomrat`, 3 errors) and `RSW_Jerba` (`Dessicated_Dromedary`,
+  3 errors) — all already-shipped, all the same "own top-level texture
+  namespace makes a vanilla-reuse miss read as a hard error" class
+  documented in `validate_patch.py`. Tellurox's own new-art texPath
+  (`Things/Pawn/Animal/Tellurox/Tellurox`) throws nothing.
+- Sprite re-measured with `validate_sprite.py --describe` directly (not
+  taken on faith): `Tellurox.png` is 512x512, real alpha, clean chroma-key
+  corners `[0,0,0,0]`, alpha mix 77.65% clear / 0.32% fringe / 20.55% solid —
+  re-confirms the 2026-09-05/06 entry's own numbers against the shipped
+  `Cindermare.png` sibling (77.00%/0.18%/21.74%), same convention, same
+  quality bar.
+- Also ran `validate_sprite.py --reference karrask_opt3.png --candidate
+  Tellurox.png --strict`: it REJECTs (canvas 512² vs 1536x1024, subject
+  -71%/-77% span, aspect squashed). **This is the tool applied outside its
+  contract, not a real defect** — per `generating-rimworld-sprites/SKILL.md`,
+  `--reference`/`--candidate` conformance checks a same-subject variant
+  against its own canvas (a damaged version of one sprite), not a
+  first-of-kind sprite deliberately re-scaled off a raw, un-keyed mockup
+  into an unrelated sibling's canvas convention — which is exactly what the
+  2026-09-05/06 pass did and documented. Recording the REJECT here so a
+  future pass doesn't re-run this exact invocation and mistake it for a
+  regression.
+
+**No design/stat decision was open to fill, so nothing was invented.**
+Everything still owed on this item (spawn proof, permanent-shell butcher
+proof, `HorrorWastes` wild-spawn cast row) requires the live bridge on a
+minimal mod list per the verify block above — genuinely blocked tonight, not
+skipped. **Left `doing`.**
