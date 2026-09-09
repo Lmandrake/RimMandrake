@@ -129,3 +129,30 @@ the save's reference to it, or (c) the owner rules a different path (e.g. a
 save without that dependency). Once a stable `Playing` (or `Page_SelectStartingSite`
 with `hasCurrentGame: true`) state is reached on this world, `python.exe
 D:\Luke\dev\Rimworld\Transient\place_poison_forest.py` is ready to run as-is.
+
+## Update, same night: the wall moved, did not close
+
+A sibling agent (coordinating this exact game-state issue) confirmed the root
+cause — `STARWARS_DONOR_SUNSET_1` Wave 4 retired `lumi.doorsexpanded` after a
+clean mod-dependency sweep that couldn't see the canonical save has PLACED
+doors built from that donor's own ThingDefs. They restored the mod and
+triggered a fresh reboot. I waited for it properly (bridge token, then
+`get_ui_state` confirming genuine `Entry`/`hasCurrentGame:false`, not assumed),
+confirmed `lumi.doorsexpanded` is active in `ModsConfig.xml`, and tried the
+**plain, non-forced** `rimworld/load_game` this time.
+
+It refused again — on three DIFFERENT mods this time: `neronix17.asimov`,
+`mandrake.rsw.msedroidfix`, `neronix17.outerrim.droiddepot` (active count
+589→587 since the last check). All three verified genuinely absent (not in
+`ModsConfig.xml`, no `About.xml` anywhere under the Workshop content folder).
+This lines up with tonight's separate droid-consolidation wave (recent
+commits "Droid service-record drift (E2)", "Droidworks chassis personality
+(E1)"; `Transient/*kotordroids_retire*`/`*consolidation_swap*` files) —
+almost certainly the same failure shape as the doors regression, one donor
+retirement over. **Did not force-load past this one** — one reproduced crash
+on a hypothesis was enough; repeating the same bypass on a different
+missing-mod set without knowing whether THIS save also has placed Things
+from these donors would be guessing with the shared live game. Reported to
+the coordinating sibling agent and released the bridge without touching
+anything further. Item unchanged: `doing`, `needs: bridge`, plan still fully
+prepped and unaffected by any of this.
