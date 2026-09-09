@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T19:45:32Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-09T19:52:35Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -477,6 +477,15 @@ kind:     task
 summary:  Thin when filed — no spec/verify/criteria in the queue entry itself, but fully
 prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
 
+## DROID_RETIRE_ABF_SYNCORE_1 Retire ABF + SynCore (wave R2); DroidDonor_ABFGate fires; remove DroidsAreMachines ABF half; cold load
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  (no items/DROID_RETIRE_ABF_SYNCORE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_RETIRE_ABF_SYNCORE_1.md
+
 ## DROID_RETIRE_KOTORDROIDS_1 Retire guy762.kotordroids (wave R1) after modules, heads, loadouts, FDE repoint and Distress Call are closed; cold load
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -485,6 +494,15 @@ target:   v1
 kind:     task
 summary:  DROIDRETIREKOTORDROIDS1
 prose:    infrastructure/state/items/DROID_RETIRE_KOTORDROIDS_1.md
+
+## DROID_RETIRE_DEPOT_ASIMOV_1 Retire Droid Depot + Asimov + MSEDroidFix (wave R3); repoint the Empire KX kind; retire NoDroidManufacture; cold load
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  (no items/DROID_RETIRE_DEPOT_ASIMOV_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_RETIRE_DEPOT_ASIMOV_1.md
 
 ## DROIDWORKS_MODULE_PERSONALITY_1 Installed modules carry attitudes: CompModulePersonality trait-hediffs while worn
 state:    doing
@@ -645,7 +663,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-summary:  (no items/SEA_ENRICHMENT_LANDMARKS_1.md yet — write one when you have something to say)
+summary:  Status: left doing — game went unreachable before any write, nothing applied
 prose:    infrastructure/state/items/SEA_ENRICHMENT_LANDMARKS_1.md
 
 ## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
@@ -654,7 +672,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-summary:  names ready
+summary:  Source
 prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
 
 ## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
@@ -868,26 +886,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DROID_RETIRE_ABF_SYNCORE_1 Retire ABF + SynCore (wave R2); DroidDonor_ABFGate fires; remove DroidsAreMachines ABF half; cold load
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_RETIRE_ABF_SYNCORE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_RETIRE_ABF_SYNCORE_1.md
-
-## DROID_RETIRE_DEPOT_ASIMOV_1 Retire Droid Depot + Asimov + MSEDroidFix (wave R3); repoint the Empire KX kind; retire NoDroidManufacture; cold load
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_RETIRE_DEPOT_ASIMOV_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_RETIRE_DEPOT_ASIMOV_1.md
 
 ## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
 state:    proposed
