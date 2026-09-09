@@ -49,7 +49,7 @@
   <ThingDef ParentName="BaseHumanMakeableGun">
     <defName>RM_FE_FirefoamSprayer</defName>
     <label>firefoam sprayer</label>
-    <description>A salvaged tank-and-nozzle rig, cobbled together from scrap rather than issued Imperial firefighting gear. It throws a short-ranged splash of retardant foam — enough to buy a colonist the seconds needed to walk into a scorch-fruit window and back out.</description>
+    <description>A salvaged tank-and-nozzle rig, cobbled together from scrap rather than issued firefighting gear. It throws a short-ranged splash of retardant foam — enough to buy a colonist the seconds needed to walk into a scorch-fruit window and back out.</description>
     <allowedArchonexusCount>10</allowedArchonexusCount>
     <altitudeLayer>Item</altitudeLayer>
     <alwaysHaulable>true</alwaysHaulable>

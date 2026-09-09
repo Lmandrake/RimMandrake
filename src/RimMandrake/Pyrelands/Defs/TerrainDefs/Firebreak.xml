@@ -18,7 +18,7 @@
   <TerrainDef ParentName="FlagstoneBase">
     <defName>RM_FE_FirebreakLine</defName>
     <label>firebreak line</label>
-    <description>A thin strip of foam-hardened, ash-packed ground, sprayed down rather than built. Nothing flammable grows in it and fire will not cross it — the same trick the Deep Desert Tribes use to lay a controlled burn line, done with a sprayer instead of a walked-and-lit fuse.</description>
+    <description>A thin strip of foam-hardened, ash-packed ground, sprayed down rather than built. Nothing flammable grows in it and fire will not cross it — a controlled burn line laid with a sprayer instead of a walked-and-lit fuse.</description>
     <texturePath>Terrain/Surfaces/RoughHewnRock</texturePath>
     <color>(196, 188, 170)</color>
     <fertility>0</fertility>

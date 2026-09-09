@@ -76,3 +76,23 @@ STILL OPEN on this item:
 - Incident recorded: DROIDWORKS_WIP_SWEPT_NOTICE_1 (BENCH directory-add
   swept FOUNDRY's uncommitted Droidworks WIP into 0f7da95c; preserved,
   misattributed; explicit file lists used from then on).
+
+## PROOF LOAD PASSED — 2026-09-09 (BENCH game window)
+Root cause of the first failed load: the ModsConfig dedupe kept DONOR
+slots — all three load-last patch catch-alls fell to mid-order
+(UtinniPatches 582→188), aborting play-data load in AlphaGenes'
+implied-gene pass. Lists rebuilt (destination keeps own slot, else last
+donor's; fc103b59). Second full load: UP in ~17 min, 590 active, zero
+texture errors (was 3,260), zero play-data exceptions, harvest at
+baseline everywhere except +6 config-error lines belonging to FOUNDRY's
+DW armor modules (filed DROIDWORKS_MODULE_SMELT_CONFIG_1). Fresh dump
+captured (2026-09-09T01-54-07Z). Karrask latent bugs fixed and proven
+(0 hits). Runbook CLOSED; bridge released; FOUNDRY safe to restart.
+
+⚠️ R9 fork escalated to owner (Pyrelands agent, 2026-09-09): Pyrelands
+has NO BiomeDef of its own — the "biome" is the donor's ZBiome_Grasslands
+(zylle.morevanillabiomes) patched in place by the RUT wiring. "Self-
+contained" requires authoring/absorbing a BiomeDef — owner picks: absorb
+now (donor-retirement coordination) or keep the dep and amend R9's
+promise. About.xml's "self-contained" claim is currently wrong; held for
+the ruling.
