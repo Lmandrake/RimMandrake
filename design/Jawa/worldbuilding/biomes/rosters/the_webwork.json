@@ -1,0 +1,455 @@
+{
+ "sheet": "the_webwork",
+ "defNames": [
+  "AB_FeraliskInfestedJungle"
+ ],
+ "tiles": 161,
+ "authored": "2026-09-09",
+ "law_sources": [
+  "the_webwork.md §0/§1/§4/§4b/§6",
+  "_freeze_rulings_2026-09-07.md R16/R17/R25",
+  "_assignment_prep.md §9",
+  "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09"
+ ],
+ "notes": "The sheet's own density correction is the roster law: donor animalDensity 5.4 inverts to LOW-BUT-LETHAL — 'most of the animals have been eaten' (§1). The resident cast is the owner clade, its two internal wars (anchor-beetles, egg-mites), and trace prey. Everything else is evicted as eaten; the near-emptiness IS the design. R16: the silk air hazard is a mechanics def, not a roster row.",
+ "eviction_default": "eaten — §1/§0 density correction: this jungle's ordinary wildlife has been consumed; no resident cast beyond the owner clade, its wars, and trace prey",
+ "fauna": [
+  {
+   "def": "Wyyyschokk",
+   "commonality": 0.4,
+   "action": "import",
+   "band": "owner",
+   "law": "§4 THE species (SW mod ships it: insectoid, bs 3.0, spd 4.5 MEASURED; dormant-until-triggered special MEASURED — the concealed-burst read); Wyyyschokk to the galaxy, Feralisk on this world (header ruling)"
+  },
+  {
+   "def": "BMT_JewelBeetle",
+   "commonality": 0.3,
+   "action": "import",
+   "band": "anchor-beetle",
+   "law": "§4b the anchor-beetles — neutral, unbothered, slow (non-predator, spd 3.1 MEASURED); interim body, chew-behaviour C# rides WEBWORK_MECHANICS_1"
+  },
+  {
+   "def": "Kreetle",
+   "commonality": 0.2,
+   "action": "adjust-keep",
+   "band": "trace-prey",
+   "law": "§1 'few will enter' — a thin prey trickle keeps the hunts visible; comm 1.0→0.2"
+  },
+  {
+   "def": "Shyrack",
+   "commonality": 0.2,
+   "action": "keep",
+   "band": "trace-flier",
+   "law": "R17 fliers cross biomes; slow cave-mouth rooster (spd 1.5 MEASURED, flier claim UNMEASURED)"
+  }
+ ],
+ "evictions": [
+  {
+   "def": "GR_Catalope",
+   "reason": "§4 eaten-default: the Wyyyschokk owns the ground and the silence; no web-adaptation on record, so a resident this size is prey, not fauna (bs 0.26, predator special, spd 3.75 MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_Crocorse",
+   "reason": "§4 eaten-default: the Wyyyschokk owns the ground and the silence; no web-adaptation on record, so a resident this size is prey, not fauna (bs 2.75, venomous, spd 3.5 MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_Muffalokomodo",
+   "reason": "§4 eaten-default: the Wyyyschokk owns the ground and the silence; no web-adaptation on record, so a resident this size is prey, not fauna (bs 3.5, venomous, spd 3.5 MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_Thrumbolizard",
+   "reason": "§4 eaten-default: the Wyyyschokk owns the ground and the silence; no web-adaptation on record, so a resident this size is prey, not fauna (bs 3.5, venomous, spd 5.25 MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "TYR_HotfootRat",
+   "reason": "Earth-nameable (rat) + eaten",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_BrownBat",
+   "reason": "Earth-nameable (brown bat) + eaten",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "VAEWaste_Hydra",
+   "reason": "Earth-myth name + eaten",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_CrestedDragon",
+   "reason": "eaten (default); already kept in the Miasma",
+   "disposition": "move:AB_MiasmicMangrove"
+  },
+  {
+   "def": "WompRat",
+   "reason": "prep §8.4: ship vermin re-home to the Fall Line",
+   "disposition": "move:fall_line"
+  },
+  {
+   "def": "BMT_SmogMoth",
+   "reason": "eaten; pollution-lane creature",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_Creature_Mantrap",
+   "reason": "eaten; a rival sessile ambusher dilutes the owner's monopoly on ambush (§1)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "ShiroTrap",
+   "reason": "eaten; rival ambusher — the shadow that lands must be the Wyyyschokk",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Massiff",
+   "reason": "owner card 3, 2026-09-09: Massiff → shrubland medium band",
+   "disposition": "move:AridShrubland"
+  },
+  {
+   "def": "BMT_MutatingTumorfishFry",
+   "reason": "no surface water in the biome (§0: 0 water tiles) — a fish resident is a contradiction",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_MucklurkerCatfish",
+   "reason": "Earth-nameable (catfish) + no surface water (§0)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "LavaSnail",
+   "reason": "volcanic theme fail + eaten",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "VAEWaste_Toxiguana",
+   "reason": "Earth-nameable (iguana) + eaten",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_CrescendoAnole",
+   "reason": "Earth-nameable (anole) + eaten",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Erin",
+   "reason": "eaten (default)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Junglelisk",
+   "reason": "name-collision kin of the owner clade (Alpha '-lisk' family) — the Wyyyschokk story admits no rival spider lineage (§4 'this is a plantation')",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Animalisk",
+   "reason": "'-lisk' rival lineage, as AA_Junglelisk",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Feralisk",
+   "reason": "'-lisk' rival lineage; the local name Feralisk belongs to the Wyyyschokk by standing ruling (header)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Dunealisk",
+   "reason": "'-lisk' rival + prep §1.4 names it the dune-sea subsurface-strike import candidate",
+   "disposition": "move:ExtremeDesert"
+  },
+  {
+   "def": "AA_Cinderlisk",
+   "reason": "'-lisk' rival + fire-themed",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "DA_Pilgrim",
+   "reason": "fantasy-mod fauna, recognizability lane + eaten",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "MA_Sporemole",
+   "reason": "Mythic Ages: 0% recognizability survival, retirement ruled (prep §10.4)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Swarmling",
+   "reason": "ubiquity-25 TRIM (prep §9); Rot keeps it as a donor-native home",
+   "disposition": "move:AB_MycoticJungle"
+  },
+  {
+   "def": "AA_Mantrap",
+   "reason": "eaten; rival ambusher",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_BoulderMit",
+   "reason": "mineral dormant giant — dune-sea lane (prep §1.2)",
+   "disposition": "move:ExtremeDesert"
+  },
+  {
+   "def": "AA_RipperHound",
+   "reason": "eaten (default) — a pursuit pack cannot coexist with the owner's monopoly",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Bumbledrone",
+   "reason": "ubiquity-25 TRIM (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_DrainerLarva",
+   "reason": "ubiquity-trim family (prep §9 AA_Drainer row)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Drainer",
+   "reason": "ubiquity-25 TRIM (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_DecayDrake",
+   "reason": "eaten; already kept in the Miasma as a composter",
+   "disposition": "move:AB_MiasmicMangrove"
+  },
+  {
+   "def": "AA_Lockjaw",
+   "reason": "eaten; already kept in the Miasma",
+   "disposition": "move:AB_MiasmicMangrove"
+  },
+  {
+   "def": "AA_AnimusVox",
+   "reason": "ubiquity-25 TRIM to one strange home (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Razorjack",
+   "reason": "eaten (default)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_CrystalMit",
+   "reason": "ubiquity-25 TRIM to CrystalCaverns/PoisonForest (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_PebbleMit",
+   "reason": "ubiquity-25 TRIM to rock/cavern biomes (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Thunderbeast",
+   "reason": "eaten (default)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_RaptorShrimp",
+   "reason": "eaten; kept in the Miasma",
+   "disposition": "move:AB_MiasmicMangrove"
+  },
+  {
+   "def": "AA_Helixien",
+   "reason": "eaten; kept in the Miasma",
+   "disposition": "move:AB_MiasmicMangrove"
+  },
+  {
+   "def": "AA_Skiphound",
+   "reason": "eaten (default)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_OvergrownColossus",
+   "reason": "eaten (default); a giant the spiders could not eat would falsify §1",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Ronto",
+   "reason": "desert herd infrastructure (prep §2.2) — placement absurdity here",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Meganeura",
+   "reason": "Megafauna mod: retirement ruled (prep §10.4)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Pulmonoscorpius",
+   "reason": "Megafauna mod retirement",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Arthropleura",
+   "reason": "Megafauna mod retirement",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Titanis",
+   "reason": "Megafauna mod retirement",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_BloodShrimp",
+   "reason": "eaten; kept in Greentide/Miasma waters",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Aerofleet",
+   "reason": "ubiquity-25 TRIM (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_LuciferBug",
+   "reason": "ubiquity-25 TRIM (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_PedigreedRaptor",
+   "reason": "ubiquity-25 EVICT planet-wide — reads dinosaur (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_FissionMouse",
+   "reason": "ubiquity-25: RESKIN → Wasteland radiotroph (prep §9)",
+   "disposition": "move:Wasteland"
+  },
+  {
+   "def": "AA_AnimaColossus",
+   "reason": "eaten (default)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_AcanthamoebaGiganteaSmall",
+   "reason": "ubiquity-25 TRIM to wasteland/pans (prep §9)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_WindBeast",
+   "reason": "eaten (default)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_TetraSlug",
+   "reason": "mineral goo-shelf lane (prep §1.2/§7.2)",
+   "disposition": "homeless-reserve"
+  }
+ ],
+ "stat_adjustments": [],
+ "flora": [
+  {
+   "def": "AB_JungleTree",
+   "commonality": 1.1,
+   "law": "§1 the thicket — donor tree, donor weight kept"
+  },
+  {
+   "def": "RG_Plant_TropicalChokevine",
+   "commonality": 1.0,
+   "law": "§4c the thicket churns against itself — hostile vine mass"
+  },
+  {
+   "def": "AB_TangleTea",
+   "commonality": 0.4,
+   "law": "§4c churn understory — tangle-form"
+  },
+  {
+   "def": "Plant_TookeTrap_Wild",
+   "commonality": 0.3,
+   "law": "§1 nightmare plants — predatory SW flora"
+  },
+  {
+   "def": "AB_Gomphoeria",
+   "commonality": 0.15,
+   "law": "donor understory kept"
+  },
+  {
+   "def": "AB_RedBugloss",
+   "commonality": 0.07,
+   "law": "donor understory kept (alien art; label obscure enough to pass the nameable test — flagged for the eye pass)"
+  },
+  {
+   "def": "AB_Aaklac",
+   "commonality": 0.05,
+   "law": "donor understory kept"
+  }
+ ],
+ "flora_purged": [
+  {
+   "def": "Plant_Grass",
+   "reason": "vanilla Earth flora (ban 3)"
+  },
+  {
+   "def": "Plant_TallGrass",
+   "reason": "vanilla Earth flora"
+  },
+  {
+   "def": "Plant_ShrubLow",
+   "reason": "vanilla Earth flora"
+  },
+  {
+   "def": "Plant_Alocasia",
+   "reason": "Earth-nameable (alocasia)"
+  },
+  {
+   "def": "Plant_Berry",
+   "reason": "vanilla Earth flora"
+  }
+ ],
+ "fish": {
+  "ruling": "No fish — MEASURED §0: 0 river tiles, 0 water tiles; the river was drunk (§1) and the water is inside. Silk-gutter irrigation is plumbing, not habitat; a fishable cell anywhere in this biome would falsify the sheet's central image.",
+  "list": []
+ },
+ "new_defs": [
+  {
+   "name": "egg-mite (fist-sized silk-runner)",
+   "kind": "creature",
+   "mechanic_load": "C#: nest-seeking pathing — the living treasure map (WEBWORK_MECHANICS_1)",
+   "from_sheet": "the_webwork §4b"
+  },
+  {
+   "name": "pale flowers (web-tracing bloom)",
+   "kind": "plant",
+   "mechanic_load": "C#: placement follows web architecture; fresh/withered state as route-signal",
+   "from_sheet": "the_webwork §4c"
+  },
+  {
+   "name": "Wyyyschokk guild pawnkinds (nettik/chirrik/rothrik)",
+   "kind": "creature",
+   "mechanic_load": "pawnkind authoring over the one race def; Shokk-bound hediff rides WEBWORK_MECHANICS_1",
+   "from_sheet": "the_webwork §4/Owed"
+  },
+  {
+   "name": "parasitic root-mat flora (the stolen river's plumbing)",
+   "kind": "plant",
+   "mechanic_load": "none blocking (terrain/art)",
+   "from_sheet": "the_webwork §3"
+  }
+ ],
+ "confidence": [
+  {
+   "claim": "Owner card places GRimCobra/GRimMonitorLizard in AB_FeraliskInfestedJungle",
+   "status": "MEASURED-CONTRARY",
+   "why": "register shows both resident only in unpainted GRim donor biomes — nothing to evict from this def; the global cut rides RETEXTURED_EARTH_FAUNA_BANNED_1 regardless"
+  },
+  {
+   "claim": "Wyyyschokk drawSize-over-bodySize frame and UV-sensitivity gene wiring",
+   "status": "UNMEASURED",
+   "why": "sheet §4 implementation anchors — verify the exact gene def and melee authoring at WEBWORK_MECHANICS_1, never from this roster"
+  },
+  {
+   "claim": "Shyrack is a slow flier",
+   "status": "UNMEASURED",
+   "why": "register flies flag broken"
+  },
+  {
+   "claim": "Wyyyschokk commonality 0.4 preserves 'eerily silent'",
+   "status": "DESIGN",
+   "why": "low-but-lethal: one owner kind at moderate weight over a near-empty cast; tune at the owner's review sheet"
+  },
+  {
+   "claim": "four GR_ chimeras re-adjudicated: evicted on the §4 eaten-default, not the Grindterra card",
+   "status": "RESOLVED",
+   "why": "GR_/GRim prefix correction pass 2026-09-09: GR_* = Vanilla Genetics Expanded chimeras, judged per sheet law (no Grindterra card); GRim* = GRiNDTerra Earth analogs, homeless-by-default. Register stats MEASURED."
+  }
+ ]
+}

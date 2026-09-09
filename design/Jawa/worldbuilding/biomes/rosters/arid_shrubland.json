@@ -1,0 +1,1568 @@
+{
+ "sheet": "arid_shrubland",
+ "defNames": [
+  "AridShrubland"
+ ],
+ "tiles": 665,
+ "authored": "2026-09-09",
+ "law_sources": [
+  "arid_shrubland.md §4 (size ladder)/§6",
+  "_assignment_prep.md §3, §9",
+  "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09"
+ ],
+ "fauna": [
+  {
+   "def": "Gorg",
+   "commonality": 1.0,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "small band pass: bs 0.3 (MEASURED); runway-nation resident (prep §3.2)"
+  },
+  {
+   "def": "FrilledGorg",
+   "commonality": 1.0,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "bs 0.4 (MEASURED); runway nation"
+  },
+  {
+   "def": "Lothcat",
+   "commonality": 0.8,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "icon (bs 0.35, MEASURED); prep §3.2"
+  },
+  {
+   "def": "Sketto",
+   "commonality": 0.8,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "bs 0.4 (MEASURED); prep §3.2"
+  },
+  {
+   "def": "Kreetle",
+   "commonality": 0.8,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "bs 0.2 (MEASURED); prep §3.2"
+  },
+  {
+   "def": "Scurrier",
+   "commonality": 0.8,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "bs 0.2 (MEASURED); small-band legal here (no small speed ban); prep §3.2"
+  },
+  {
+   "def": "BMT_ImperialToad",
+   "commonality": 0.7,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "bs 0.3 (MEASURED); prep §3.2"
+  },
+  {
+   "def": "Igitz",
+   "commonality": 0.7,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "SW small predator, bs 0.32 (MEASURED) — under-fuzz hunter"
+  },
+  {
+   "def": "Pufferpig",
+   "commonality": 0.5,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "SW small non-predator, bs 0.5 (MEASURED)"
+  },
+  {
+   "def": "Gizka",
+   "commonality": 0.4,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "icon; bs 0.18 (MEASURED)"
+  },
+  {
+   "def": "Worrt",
+   "commonality": 0.4,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "bs 0.6 boundary (MEASURED); slow ambusher"
+  },
+  {
+   "def": "Nuna",
+   "commonality": 0.4,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "SW herbivore bird, bs 0.6 (MEASURED)"
+  },
+  {
+   "def": "Iriaz",
+   "commonality": 1.0,
+   "action": "keep",
+   "band": "small-herd",
+   "law": "bs 0.7 (MEASURED) herd herbivore — top small resident"
+  },
+  {
+   "def": "Vulptex",
+   "commonality": 0.08,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "SW icon (Crait); bs 0.55 (MEASURED)"
+  },
+  {
+   "def": "Whisperbird",
+   "commonality": 0.15,
+   "action": "keep",
+   "band": "flier-interface",
+   "law": "SW bird-analog — the dive route on the interface (§4)",
+   "note": "flier claim UNMEASURED"
+  },
+  {
+   "def": "Convor",
+   "commonality": 0.08,
+   "action": "keep",
+   "band": "flier-interface",
+   "law": "SW icon bird-analog",
+   "note": "flier claim UNMEASURED"
+  },
+  {
+   "def": "Porg",
+   "commonality": 0.04,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "SW icon; bs 0.18 (MEASURED)"
+  },
+  {
+   "def": "KowakianMonkeyLizard",
+   "commonality": 0.01,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "SW icon; bs 0.35 (MEASURED)"
+  },
+  {
+   "def": "Voorpak",
+   "commonality": 0.02,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "SW small; bs 0.35 (MEASURED)"
+  },
+  {
+   "def": "AA_Needlepost",
+   "commonality": 0.1,
+   "action": "adjust-keep",
+   "band": "small-venom",
+   "law": "venom-armed small (register venomous, MEASURED special); signature boost"
+  },
+  {
+   "def": "AA_Cactipine",
+   "commonality": 0.25,
+   "action": "keep",
+   "band": "small-venom",
+   "law": "venom-quilled small, bs 0.5 (MEASURED)",
+   "note": "name is an Earth mashup — eye test owed"
+  },
+  {
+   "def": "Terrorworm",
+   "commonality": 0.7,
+   "action": "keep",
+   "band": "medium-tunnel",
+   "law": "tunnel-shaped predator — \"long, thin, terrible things shaped like the corridors\" donor (prep §3.4)"
+  },
+  {
+   "def": "BMT_MossBeetle",
+   "commonality": 0.3,
+   "action": "keep",
+   "band": "small-runway",
+   "law": "bs 0.45 non-predator (MEASURED); soil-floor texture (first true soil, §4)"
+  },
+  {
+   "def": "Massiff",
+   "commonality": 0.6,
+   "action": "keep",
+   "band": "medium-interface",
+   "law": "owner card 2026-09-09: Massiff to shrubland medium band; bs 0.85, spd 5.0 legal HERE (prep §3.2 tunnel-runner shape)"
+  },
+  {
+   "def": "Anooba",
+   "commonality": 0.4,
+   "action": "adjust-keep",
+   "band": "medium-interface",
+   "law": "interface killer, bs 0.95 spd 5.0 (MEASURED; prep §3.2); comm raised 0.16→0.4 absorbing its Desert eviction"
+  },
+  {
+   "def": "Urusai",
+   "commonality": 0.7,
+   "action": "keep",
+   "band": "medium-interface",
+   "law": "bs 0.75 (MEASURED); prep §3.2"
+  },
+  {
+   "def": "LongtailGorg",
+   "commonality": 1.0,
+   "action": "keep",
+   "band": "medium-interface",
+   "law": "bs 0.6 (MEASURED); prep §3.2"
+  },
+  {
+   "def": "Kybuck",
+   "commonality": 0.6,
+   "action": "keep",
+   "band": "medium-runner",
+   "law": "non-predator runner, bs 1.0 spd 6.0 (MEASURED); prep §3.2"
+  },
+  {
+   "def": "Eopie",
+   "commonality": 0.8,
+   "action": "keep",
+   "band": "medium-pack",
+   "law": "pack icon, bs 1.4 (MEASURED); prep §3.2"
+  },
+  {
+   "def": "Qormot",
+   "commonality": 0.2,
+   "action": "keep",
+   "band": "medium-interface",
+   "law": "SW edge-pouncer, bs 1.0 (MEASURED)"
+  },
+  {
+   "def": "Grank",
+   "commonality": 0.2,
+   "action": "keep",
+   "band": "medium-interface",
+   "law": "SW interface killer, bs 0.85 spd 5.0 (MEASURED)"
+  },
+  {
+   "def": "Strill",
+   "commonality": 0.2,
+   "action": "keep",
+   "band": "medium-interface",
+   "law": "SW icon (Mandalorian strill), bs 1.0 (MEASURED)"
+  },
+  {
+   "def": "Cannok",
+   "commonality": 0.16,
+   "action": "keep",
+   "band": "medium-interface",
+   "law": "SW (KOTOR), bs 0.85 (MEASURED)"
+  },
+  {
+   "def": "Pikobis",
+   "commonality": 0.1,
+   "action": "keep",
+   "band": "medium-runner",
+   "law": "SW, bs 0.6 (MEASURED)"
+  },
+  {
+   "def": "FeralNerf",
+   "commonality": 0.04,
+   "action": "keep",
+   "band": "medium-runner",
+   "law": "bs 1.0 non-predator (MEASURED)"
+  },
+  {
+   "def": "AA_Wildpawn",
+   "commonality": 0.1,
+   "action": "keep",
+   "band": "medium-venom",
+   "law": "venom-armed (MEASURED special), bs 1.4 — forbids rather than flees (§4 small doctrine, scaled up)"
+  },
+  {
+   "def": "Ronto",
+   "commonality": 0.8,
+   "action": "keep",
+   "band": "huge-grazer",
+   "law": "indifferent giant, herd (prep §3.2); the giants' floor"
+  },
+  {
+   "def": "Bantha",
+   "commonality": 0.5,
+   "action": "keep",
+   "band": "huge-grazer",
+   "law": "icon herd giant (prep §3.2)"
+  },
+  {
+   "def": "Corinathoth",
+   "commonality": 0.4,
+   "action": "keep",
+   "band": "huge-grazer",
+   "law": "slow herd giant, bs 4.0 spd 2.0 (MEASURED); prep §3.2"
+  },
+  {
+   "def": "Skalder",
+   "commonality": 0.08,
+   "action": "keep",
+   "band": "huge-grazer",
+   "law": "herd giant, bs 4.0 (MEASURED); prep §3.2"
+  },
+  {
+   "def": "Mudhorn",
+   "commonality": 0.8,
+   "action": "keep",
+   "band": "huge-predator-exception",
+   "law": "owner card 2026-09-09: the ONE huge-predator icon exception to the giants-are-indifferent law"
+  },
+  {
+   "def": "AA_Wildpod",
+   "commonality": 0.025,
+   "action": "keep",
+   "band": "huge-sessile",
+   "law": "bs 4.0 slow venm pod (MEASURED spd 3.0) — indifferent, plant-like giant"
+  }
+ ],
+ "evictions": [
+  {
+   "def": "AA_AcanthamoebaGiganteaSmall",
+   "reason": "§9 (binding): amoeba reads contamination — wasteland/pans",
+   "disposition": "move:Wasteland"
+  },
+  {
+   "def": "AA_AngelMoth",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_AngelMothLarva",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_AnimusVox",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_AuroraSylph",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Barbslinger",
+   "reason": "ban 4 large-band void: bs 2.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_BedBug",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_BloodShrimp",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_BoulderMit",
+   "reason": "ExtremeDesert giant keep (prep §1.2)",
+   "disposition": "move:ExtremeDesert"
+  },
+  {
+   "def": "AA_Bumbledrone",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_BumbledroneHierophant",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_ChameleonYak",
+   "reason": "ban 4 large-band void: bs 2.5 in banned 1.5–3.5 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Cinderlisk",
+   "reason": "ban 4 large-band void: bs 2.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_CrescendoAnole",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_CrystalMit",
+   "reason": "§9 (binding): CrystalCaverns/PoisonForest",
+   "disposition": "move:PoisonForest"
+  },
+  {
+   "def": "AA_DarkVandal",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_DesertAve",
+   "reason": "Desert navigator keep (prep §2.2); ban 4 large band N/A (bs 1.0) but ≤2-home discipline",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "AA_Drainer",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_DrainerLarva",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Dunealisk",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_DuskProwler",
+   "reason": "ban 4 large-band void: bs 1.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Erin",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_FissionMouse",
+   "reason": "§9 (binding): RESKIN → Wasteland radiotroph",
+   "disposition": "move:Wasteland"
+  },
+  {
+   "def": "AA_Gigantelope",
+   "reason": "Desert herd keep; ban 4 large band here (bs 2.0, MEASURED)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "AA_GreatDevourer",
+   "reason": "ban 4 large-band void: bs 2.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Helixien",
+   "reason": "huge predator failing indifference; bs 4.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_LarvalAtispec",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_LuciferBug",
+   "reason": "§9 (binding): TRIM; glow ban conflicts on nightside; not a shrubland form",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_MammothWorm",
+   "reason": "Desert subsurface-slow keep",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "AA_Mantrap",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_MatureFleshbeast",
+   "reason": "huge predator failing indifference; gore read",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_MeadowAve",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_MegaLouse",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_NightAve",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Nightling",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_PebbleMit",
+   "reason": "§9 (binding): rock/cavern biomes — §9 trim target (crags) rejected it on the single-transplanted-family law",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_PedigreedRaptor",
+   "reason": "§9: reads dinosaur — evict planet-wide",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Radyak",
+   "reason": "ban 4 large-band void: bs 2.5 in banned 1.5–3.5 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Ravager",
+   "reason": "ban 4 large-band void: bs 2.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_RayHound",
+   "reason": "ban 4 large-band void: bs 1.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Razorjack",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_RipperHound",
+   "reason": "ban 4 large-band void: bs 1.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_RoughPlatedMonitor",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_RoyalAve",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_SandLion",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_SandProwler",
+   "reason": "Desert sand-ambusher keep (prep §1.4 pattern)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "AA_SandSquid",
+   "reason": "Desert subsurface-slow keep",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "AA_ShadowCharger",
+   "reason": "ban 4 large-band void: bs 2.5 in banned 1.5–3.5 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Skiphound",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Slurrypede",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Swarmling",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_TeratogenicOriginator",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Terramorph",
+   "reason": "ban 4 large-band void: bs 1.5 in banned 1.5–3.5 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_TetraSlug",
+   "reason": "ExtremeDesert giant keep (prep §1.2)",
+   "disposition": "move:ExtremeDesert"
+  },
+  {
+   "def": "AA_Thermadon",
+   "reason": "ban 4 large-band void: bs 1.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Thunderbeast",
+   "reason": "ban 4 large-band void: bs 1.5 in banned 1.5–3.5 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Thunderox",
+   "reason": "ban 4 large-band void: bs 2.5 in banned 1.5–3.5 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_WindBeast",
+   "reason": "ban 4 large-band void: bs 1.5 in banned 1.5–3.5 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Acklay",
+   "reason": "ban 4 large-band void: bs 3.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Akk",
+   "reason": "ban 4 large-band void: bs 3.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Arthropleura",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "BMT_FungalFerret",
+   "reason": "Earth-nameable on sight (a ferret) — recognizability (ban 10)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_FungalWeevil",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_GoetoTadpole",
+   "reason": "a tadpole needs standing water — there is none (§5: fog only); Earth-nameable besides",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_TruffleMole",
+   "reason": "Earth-nameable on sight (a mole) — recognizability (ban 10)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Behemoth",
+   "reason": "huge pursuit predator failing giants-are-indifferent (§4); bs 6.0 spd 4.7 predator (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Beldon",
+   "reason": "giants-are-indifferent law (§4): huge predator (bs 6.0, MEASURED); Mudhorn is the one ruled exception",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Blurrg",
+   "reason": "ban 4 large-band void: bs 2.5 (MEASURED); predator-flag conflict noted at desert.json",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Bolotaur",
+   "reason": "ban 4 large-band void: bs 3.0 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Boma",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Borcatu",
+   "reason": "wasteland wretched register (prep §4.2)",
+   "disposition": "move:Wasteland"
+  },
+  {
+   "def": "Brezak",
+   "reason": "ban 4 large-band void: bs 3.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Bursa",
+   "reason": "ban 4 large-band void: bs 2.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Clodhopper",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "DA_BlackScribe",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "DA_Karabal",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "DA_Pilgrim",
+   "reason": "ban 4 large-band void: bs 2.4 in banned 1.5–3.5 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Dactillion",
+   "reason": "ban 4 large-band void: bs 3.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Dalgo",
+   "reason": "ban 4 large-band void: bs 2.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Dewback",
+   "reason": "ban 4 large-band void: bs 3.0 (MEASURED); predator-flag conflict noted at desert.json",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Dinocrocuta",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "Dinornis",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "Doedicurus",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "Drexl",
+   "reason": "giants-are-indifferent law (§4): huge predator (bs 5.0, MEASURED); Mudhorn is the one ruled exception",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "ERN_Amaro",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "EnergySpider",
+   "reason": "ban 4 large-band void: bs 3.0 (MEASURED); energy-web read belongs elsewhere",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Falumpaset",
+   "reason": "ban 4 large-band void: bs 3.0 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "FancyRat",
+   "reason": "retextured Earth twin (a fancy rat)",
+   "disposition": "cut:RETEXTURED_EARTH_FAUNA_BANNED_1"
+  },
+  {
+   "def": "FeralGrazer",
+   "reason": "ban 4 large-band void: bs 2.0 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "GR_AberrantFleshbeast",
+   "reason": "not admitted by §3.2's huge menu: the huge class is indifferent grazers with young; a slow flesh-aberration (bs 5.0, spd 1.0 MEASURED) reads contamination, not pastoral — curation eviction",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_Fleshling",
+   "reason": "small band wants runway nations / venom-armed (§3.2); a flesh-aberration reads contamination, not shrubland — curation eviction",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_Lizardochs",
+   "reason": "shrubland ban 4: bodySize 3.0 in the banned 1.5–3.5 large band (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GiantToad",
+   "reason": "Earth-nameable on sight (a toad) — recognizability (ban 10)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GraniteSlug",
+   "reason": "§9 (binding): dune sea + poison forest",
+   "disposition": "move:ExtremeDesert"
+  },
+  {
+   "def": "Gundark",
+   "reason": "ban 4 large-band void: bs 3.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Gutkurr",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); owner card: Desert burst predator at 4.4",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Hawkbat",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Horax",
+   "reason": "huge predator; imported to Desert instead as interim megafauna (prep §2.4)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Hrumph",
+   "reason": "ban 4 large-band void: bs 2.5 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Insectomorph",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "IridonianReek",
+   "reason": "ban 4 large-band void: bs 3.0 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "JRWBagaceratops",
+   "reason": "dino lane: reads dinosaur (deeper-cut rule)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWBaseopsis",
+   "reason": "dino lane: reads dinosaur (deeper-cut rule)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWBrachytrachelopan",
+   "reason": "dino lane: reads dinosaur (deeper-cut rule)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWCaihong",
+   "reason": "dino lane: reads dinosaur (deeper-cut rule)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWDiplocaulus",
+   "reason": "dino lane: reads dinosaur (deeper-cut rule)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWEuoplocephalus",
+   "reason": "dino lane: reads dinosaur (deeper-cut rule)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWGeralinura",
+   "reason": "dino lane: reads dinosaur (deeper-cut rule)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWGorgonops",
+   "reason": "dino lane: reads dinosaur (deeper-cut rule)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWIschigualastia",
+   "reason": "dino lane: reads dinosaur (deeper-cut rule)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWMeganeura",
+   "reason": "dino lane: reads dinosaur (deeper-cut rule)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWProtosolpuga",
+   "reason": "dino lane: reads dinosaur (deeper-cut rule)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWProtovermes",
+   "reason": "dino lane: reads dinosaur (deeper-cut rule)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWQantassaurus",
+   "reason": "dino lane: reads dinosaur (deeper-cut rule)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Jakobeast",
+   "reason": "ban 4 large-band void: bs 2.6 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Jamel",
+   "reason": "ban 4 large-band void: bs 1.9 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Jerbal",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Beasts of the Rim",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "Jimvu",
+   "reason": "ban 4 large-band void: bs 2.0 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Katarn",
+   "reason": "giants-are-indifferent law (§4): huge predator (bs 4.0, MEASURED); Mudhorn is the one ruled exception",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Kinrath",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Klorslug",
+   "reason": "ban 4 large-band void: bs 1.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "KraytDragon",
+   "reason": "huge predator failing the indifference read; belongs to the dune sea (prep §3.3)",
+   "disposition": "move:ExtremeDesert"
+  },
+  {
+   "def": "Krykna",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Kwi",
+   "reason": "ban 4 large-band void: bs 3.0 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "LavaFlea",
+   "reason": "ban 4 large-band void: bs 2.4 in banned 1.5–3.5 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Ling_Cockroach",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "LothWolf",
+   "reason": "reads wolf (Warg-adjacent, Earth-five spirit); huge-band predator besides",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Lylek",
+   "reason": "giants-are-indifferent law (§4): huge predator (bs 5.0, MEASURED); Mudhorn is the one ruled exception",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "MA_Hellboar",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Mythic Ages",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "MA_Raptorkhan",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Mythic Ages",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "MA_Sivatherium",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Mythic Ages",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "MA_Worhin",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Mythic Ages",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "Maalraas",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Macrauchenia",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "Manka",
+   "reason": "ban 4 large-band void: bs 3.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "MastiffPhalone",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Mawvorr",
+   "reason": "ban 4 large-band void: bs 2.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Megavole",
+   "reason": "Earth-nameable on sight (a vole) — recognizability (ban 10)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Mynock",
+   "reason": "§9 (binding): Fall Line + poison forest",
+   "disposition": "move:fall_line"
+  },
+  {
+   "def": "Narglatch",
+   "reason": "huge predator failing indifference (prep §3.3)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Neebray",
+   "reason": "§9 (binding): poison forest + caves",
+   "disposition": "move:PoisonForest"
+  },
+  {
+   "def": "Nerf",
+   "reason": "ban 4 large-band void: bs 2.0 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Nexu",
+   "reason": "ban 4 large-band void: bs 2.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Orray",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "PaintedSpat",
+   "reason": "ban 4 large-band void: bs 1.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "PekoPeko",
+   "reason": "ban 4 large-band void: bs 2.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Pulmonoscorpius",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "Rancor",
+   "reason": "icon — lair/dungeon context, not open shrubland (prep §3.3)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Raxshir",
+   "reason": "ban 4 large-band void: bs 3.5 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Reek",
+   "reason": "ban 4 large-band void: bs 3.0 (MEASURED); register predator+spd 5.0 fails Desert triage — icon, CONFLICT flagged",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Runyip",
+   "reason": "ban 4 large-band void: bs 1.5 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Scavrat",
+   "reason": "Fall Line ship vermin (prep §8.4); pursuit-ish spd 4.9",
+   "disposition": "move:fall_line"
+  },
+  {
+   "def": "Shaak",
+   "reason": "ban 4 large-band void: bs 2.0 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Shiro",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "ShiroTrap",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Shyrack",
+   "reason": "Desert keep (prep §2.2); ≤2-home discipline; fliers still range (R17)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Silooth",
+   "reason": "ban 4 large-band void: bs 3.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Sivatherium",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "Snoruuk",
+   "reason": "cast discipline: quiet-wild doctrine (§5) — not in the designed ladder cast",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "TeeMuss",
+   "reason": "ban 4 large-band void: bs 2.1 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Thranta",
+   "reason": "giants-are-indifferent law (§4): huge predator (bs 4.0, MEASURED); Mudhorn is the one ruled exception",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Titanis",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "Tooke",
+   "reason": "pursuit predator spd 6.0 (MEASURED) small band wants forbidders, not chasers; sparse-cast discipline",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Toraton",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Beasts of the Rim",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "Torton",
+   "reason": "huge predator failing indifference; bs 6.0 predator (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Tukata",
+   "reason": "huge predator failing indifference (prep §3.3)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "TuskCat",
+   "reason": "ban 4 large-band void: bs 3.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Uintatherium",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "Uvak",
+   "reason": "ban 4 large-band void: bs 3.0 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "VAEWaste_Megatardi",
+   "reason": "waste-marked animal — Wasteland is the marked-fauna biome (ban 4 there wants it)",
+   "disposition": "move:Wasteland"
+  },
+  {
+   "def": "Vapaad",
+   "reason": "huge predator failing indifference (prep §3.3)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Varactyl",
+   "reason": "ban 4 large-band void: bs 3.0 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Veermok",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Vornskyr",
+   "reason": "ban 4 large-band void: bs 2.0 (MEASURED); predator — triage default is reserve (homeless default = reserve, owner card)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "WompRat",
+   "reason": "homes are Desert + Fall Line (prep §2.2/§8.4); ≤2-home discipline",
+   "disposition": "move:fall_line"
+  },
+  {
+   "def": "Wraid",
+   "reason": "ban 4 large-band void: bs 3.0 (MEASURED); owner card: Desert burst predator at 4.4",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Zakkeg",
+   "reason": "huge predator failing indifference; bs 8.2 (MEASURED); prep §2.4 notes it as interim Desert stat-passer — reserve",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Zeer",
+   "reason": "ban 4 large-band void: bs 3.0 in banned 1.5–3.5 (MEASURED); SW herd/pack herbivore bulk-move (prep §3.5, owner-accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "AA_Aerofleet",
+   "reason": "ubiquity-25 §9 trim: terminator-adjacent only",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Murkling",
+   "reason": "ubiquity-25 §9 trim to ≤2 (keeps crags + cracked lands)",
+   "disposition": "homeless-reserve"
+  }
+ ],
+ "stat_adjustments": [],
+ "flora": [
+  {
+   "def": "Plant_ShrubLow",
+   "commonality": 0.9,
+   "law": "the knee-high fuzz stand-in until the fuzz def lands (§1); spaced, low, generic — not Earth-nameable"
+  },
+  {
+   "def": "RG_Plant_AridGrass",
+   "commonality": 0.5,
+   "law": "\"short grasses struggling between\" the quincunx (§4)"
+  },
+  {
+   "def": "Plant_Bush",
+   "commonality": 0.3,
+   "law": "generic spaced shrub — quincunx-legal, no thicket"
+  },
+  {
+   "def": "Plant_Brambles",
+   "commonality": 0.3,
+   "law": "thorny holdout — venomvine-adjacent read (§4 venomvine)"
+  },
+  {
+   "def": "Plant_Ripthorn",
+   "commonality": 0.3,
+   "law": "alien thorn (Biotech), forbids-rather-than-flees flora"
+  },
+  {
+   "def": "Plant_HealrootWild",
+   "commonality": 0.25,
+   "law": "RimWorld-native fiction herb, not Earth-nameable"
+  },
+  {
+   "def": "RG_Plant_Dervish",
+   "commonality": 0.2,
+   "law": "alien-named low form"
+  },
+  {
+   "def": "RG_Plant_CreepStern",
+   "commonality": 0.2,
+   "law": "alien-named low form"
+  },
+  {
+   "def": "RG_Plant_CrimsonCushion",
+   "commonality": 0.2,
+   "law": "alien-named cushion form"
+  },
+  {
+   "def": "Plant_Nysyllin_Wild",
+   "commonality": 0.22,
+   "law": "SW medicinal herb (nysyllin), wild variant — not a food crop, ban 8 clean"
+  }
+ ],
+ "flora_purged": [
+  {
+   "def": "VEE_Gorse",
+   "reason": "Earth-nameable (gorse); also quick-burning — ban 9"
+  },
+  {
+   "def": "VEE_Heather",
+   "reason": "Earth-nameable (heather)"
+  },
+  {
+   "def": "VEE_Plant_JuniperBush",
+   "reason": "Earth-nameable (juniper)"
+  },
+  {
+   "def": "IronScruff_Juniper",
+   "reason": "Earth-nameable (juniper)"
+  },
+  {
+   "def": "VEE_Knapweed",
+   "reason": "Earth-nameable (knapweed)"
+  },
+  {
+   "def": "VEE_Loosestrife",
+   "reason": "Earth-nameable (loosestrife)"
+  },
+  {
+   "def": "VEE_ButtercupFlower",
+   "reason": "Earth-nameable (buttercup)"
+  },
+  {
+   "def": "VEE_ForgetMeNot",
+   "reason": "Earth-nameable (forget-me-not)"
+  },
+  {
+   "def": "VEE_Plant_Bluebell",
+   "reason": "Earth-nameable (bluebell)"
+  },
+  {
+   "def": "VEE_Plant_Gardenia",
+   "reason": "Earth-nameable (gardenia)"
+  },
+  {
+   "def": "VEE_Plant_Gentian",
+   "reason": "Earth-nameable (gentian)"
+  },
+  {
+   "def": "VEE_Plant_Petunia",
+   "reason": "Earth-nameable (petunia)"
+  },
+  {
+   "def": "RG_Plant_Oxalis",
+   "reason": "Earth-nameable (oxalis)"
+  },
+  {
+   "def": "RG_Plant_LupineIceland",
+   "reason": "Earth-nameable (lupine)"
+  },
+  {
+   "def": "RG_Plant_TigerLily",
+   "reason": "Earth-nameable (tiger lily)"
+  },
+  {
+   "def": "RG_Plant_Plumeria",
+   "reason": "Earth-nameable (plumeria)"
+  },
+  {
+   "def": "Plant_Astragalus",
+   "reason": "Earth-nameable (astragalus)"
+  },
+  {
+   "def": "Plant_Clivia",
+   "reason": "Earth-nameable (clivia)"
+  },
+  {
+   "def": "Plant_Daylily",
+   "reason": "Earth-nameable (daylily)"
+  },
+  {
+   "def": "Plant_Rose",
+   "reason": "Earth-nameable (rose)"
+  },
+  {
+   "def": "ZBiome_Plant_WildDaylily",
+   "reason": "Earth-nameable (daylily)"
+  },
+  {
+   "def": "ZBiome_Plant_WildRose",
+   "reason": "Earth-nameable (rose)"
+  },
+  {
+   "def": "RotR_RoseOfRebirth",
+   "reason": "Earth-nameable (rose)"
+  },
+  {
+   "def": "GRimClivia",
+   "reason": "Earth-nameable + Grindterra reskin"
+  },
+  {
+   "def": "Plant_Berry",
+   "reason": "ban 8: no unprotected outdoor food crops — a wild edible berry bush contradicts the farming-under-cover ruling"
+  },
+  {
+   "def": "GRimBerryBush",
+   "reason": "ban 8 + Grindterra reskin"
+  },
+  {
+   "def": "GRim1BerryBush",
+   "reason": "ban 8 + Grindterra reskin"
+  },
+  {
+   "def": "GRim2BerryBush",
+   "reason": "ban 8 + Grindterra reskin"
+  },
+  {
+   "def": "GRim3BerryBush",
+   "reason": "ban 8 + Grindterra reskin"
+  },
+  {
+   "def": "GRim4BerryBush",
+   "reason": "ban 8 + Grindterra reskin"
+  },
+  {
+   "def": "GRim5BerryBush",
+   "reason": "ban 8 + Grindterra reskin"
+  },
+  {
+   "def": "Plant_MujaFruit_Wild",
+   "reason": "ban 8: wild edible fruit — edible plants do not grow well here outside protection (SW name noted; reserve for settlement growing)"
+  },
+  {
+   "def": "Plant_MujaFruit",
+   "reason": "crop def — ban 8"
+  },
+  {
+   "def": "Plant_Nysyllin",
+   "reason": "crop def — wild variant carries the slot"
+  },
+  {
+   "def": "Plant_Healroot",
+   "reason": "crop def — wild variant carries the slot"
+  },
+  {
+   "def": "Plant_Berry_Leafless",
+   "reason": "seasonal leafless variant — Ash'karr has no seasons (no day/night ban 3, fixed sun)"
+  },
+  {
+   "def": "Plant_Brambles_Leafless",
+   "reason": "seasonal variant — no seasons"
+  },
+  {
+   "def": "Plant_Bush_Leafless",
+   "reason": "seasonal variant — no seasons"
+  },
+  {
+   "def": "GRim1Bush",
+   "reason": "Grindterra reskin"
+  },
+  {
+   "def": "GRim2Bush",
+   "reason": "Grindterra reskin"
+  },
+  {
+   "def": "GRim3Bush",
+   "reason": "Grindterra reskin"
+  },
+  {
+   "def": "GRim4Bush",
+   "reason": "Grindterra reskin"
+  },
+  {
+   "def": "GRimBush",
+   "reason": "Grindterra reskin"
+  },
+  {
+   "def": "AreebianBush",
+   "reason": "Grindterra biome plant"
+  },
+  {
+   "def": "BushDandys",
+   "reason": "Grindterra junk-named bush"
+  },
+  {
+   "def": "Grim3Shrub",
+   "reason": "Grindterra reskin"
+  },
+  {
+   "def": "NewGreenBush",
+   "reason": "Grindterra junk-named bush"
+  },
+  {
+   "def": "GRim1ShrubLow",
+   "reason": "Grindterra reskin"
+  },
+  {
+   "def": "GRim2ShrubLow",
+   "reason": "Grindterra reskin"
+  },
+  {
+   "def": "GRimShrubLow",
+   "reason": "Grindterra reskin"
+  },
+  {
+   "def": "RG_Plant_BramblesRed",
+   "reason": "trim: one brambles def carries the thorn slot (quincunx sparsity, ban 6)"
+  },
+  {
+   "def": "RG_Plant_BramblesYellow",
+   "reason": "trim: one brambles def carries the slot"
+  },
+  {
+   "def": "GRimBrambles",
+   "reason": "Grindterra reskin"
+  },
+  {
+   "def": "GRim1BushPoplar",
+   "reason": "Earth-nameable (poplar) + Grindterra"
+  },
+  {
+   "def": "GRim2BushPoplar",
+   "reason": "Earth-nameable + Grindterra"
+  },
+  {
+   "def": "GRimBushPoplar",
+   "reason": "Earth-nameable + Grindterra"
+  }
+ ],
+ "fish": {
+  "ruling": "no fish — the biome's only water is fog on the ground-wind (§5: it does not rain, it does not sprinkle); the def's 37 mapped water/river tiles are margin artifacts belonging to the river and sea sheets, not shrubland standing water",
+  "list": []
+ },
+ "new_defs": [
+  {
+   "name": "the fuzz (knee-high silver-green canopy plant)",
+   "kind": "plant",
+   "mechanic_load": "none blocking; graze-adapted crown-below-soil",
+   "from_sheet": "arid_shrubland §1/§4"
+  },
+  {
+   "name": "venomvine (fortress flora, passability by body size)",
+   "kind": "plant",
+   "mechanic_load": "C#: size-gated passability; venom scratch",
+   "from_sheet": "arid_shrubland §4"
+  },
+  {
+   "name": "sweetline trees (huge, ancient; giant-wool snag harvest)",
+   "kind": "plant",
+   "mechanic_load": "TREE_GRAPHICS_OWNERSHIP_1 (filed)",
+   "from_sheet": "arid_shrubland §4"
+  },
+  {
+   "name": "tunnel snake-analog (the signature corridor predator)",
+   "kind": "creature",
+   "mechanic_load": "none blocking (Terrorworm is interim)",
+   "from_sheet": "arid_shrubland §4 / prep §3.4"
+  },
+  {
+   "name": "scrap-nest bird-analogs (glittering treasure nests; steal from bases — candidate)",
+   "kind": "creature",
+   "mechanic_load": "C#: nest-theft/scrap-hoard",
+   "from_sheet": "arid_shrubland §4 / prep §3.4"
+  },
+  {
+   "name": "THE huge grazer + large young + parental enrage (body donors: Fambaa/Mastmot bs 6, both MEASURED live)",
+   "kind": "creature",
+   "mechanic_load": "C#: life-stage + enrage-on-approach",
+   "from_sheet": "arid_shrubland §4 / prep §3.4"
+  },
+  {
+   "name": "tree-guardian uniques (owner candidate, not yet ruled)",
+   "kind": "creature",
+   "mechanic_load": "unruled",
+   "from_sheet": "arid_shrubland §Owed"
+  }
+ ],
+ "confidence": [
+  {
+   "claim": "kept flora satisfies ban 9 (no flammable living flora)",
+   "status": "UNMEASURED",
+   "why": "plant_pool.csv carries no flammability column; stat pass owed before XML lands"
+  },
+  {
+   "claim": "venom-armed specials on AA_Murkling/AA_Needlepost/AA_Wildpawn",
+   "status": "MEASURED",
+   "why": "register specials"
+  },
+  {
+   "claim": "Whisperbird/Convor fly",
+   "status": "UNMEASURED",
+   "why": "register flies flag broken; by-name knowledge"
+  },
+  {
+   "claim": "huge-young exemptions for the large band",
+   "status": "UNMEASURED",
+   "why": "life stages absent from register; none granted"
+  },
+  {
+   "claim": "GR_ prefix resolution",
+   "status": "RESOLVED",
+   "why": "GR_ = VGE chimeras, judged per law. Lizardochs fails ban 4 (bs 3.0); the two flesh-aberrations are curation evictions."
+  }
+ ]
+}

@@ -1,0 +1,659 @@
+{
+  "sheet": "the_cracked_lands",
+  "defNames": [
+    "ZBiome_Badlands"
+  ],
+  "tiles": 985,
+  "authored": "2026-09-09",
+  "law_sources": [
+    "the_cracked_lands.md §10 (the sorts — fauna divided by TIME: Sealed/Spenders/Patient — SORTS ARE LAW, named animals are gravy), §4 (fliers feed, never nest — ban 4), §6 bans",
+    "_freeze_rulings_2026-09-07.md R6 (truce fails in enclosed water — the planet's ONE lethal water), R17",
+    "_assignment_prep.md §9",
+    "owner cards 2026-09-09"
+  ],
+  "fauna": [
+    {
+      "def": "BMT_MutagenicNorphea",
+      "commonality": 0.4,
+      "action": "keep",
+      "band": "the-Sealed",
+      "law": "§10 Sealed: lies-dormant-until-woken special (MEASURED) — the donor mechanic for creatures that sleep through the dry years (prep §1.4's 107-dormant-rows family); wake trigger re-pointed at water rides the flora/mechanics item"
+    },
+    {
+      "def": "AA_SandSquid",
+      "commonality": 0.1,
+      "action": "adjust-keep",
+      "band": "the-Sealed",
+      "law": "§10 Sealed: terrain-changer burrower, slow (spd 1 MEASURED) — a buried sleeper under the pans; comm raised 0.0025→0.1"
+    },
+    {
+      "def": "AA_Murkling",
+      "commonality": 0.2,
+      "action": "adjust-keep",
+      "band": "the-Spenders",
+      "law": "§10 Spenders: corpse decayer (MEASURED) — the flood delivers its own drowned dead and this eats the first feast; ubiquity-25 TRIM satisfied: a named home (prep §9)"
+    },
+    {
+      "def": "BMT_SandLeaper",
+      "commonality": 0.2,
+      "action": "adjust-keep",
+      "band": "the-Spenders",
+      "law": "§10 Spenders: small frantic flood-week life; comm trimmed 1.0→0.2 — 'you see nothing all day' bars a standing high-comm small"
+    },
+    {
+      "def": "Eopie",
+      "commonality": 0.25,
+      "action": "keep",
+      "band": "the-Patient",
+      "law": "§10 Patient: moss-browser on the real shade soil; SW icon carve-out (§6 ban 7); herd special (MEASURED)"
+    },
+    {
+      "def": "Gornt",
+      "commonality": 0.3,
+      "action": "keep",
+      "band": "the-Patient",
+      "law": "§10 Patient: ambush country — the kill happens at the seep and the shade line; predator bs 0.85 / spd 4.6 (MEASURED), an edge-pouncer not a pursuit sprinter (no speed ban in this sheet)"
+    },
+    {
+      "def": "BMT_ChemSnail",
+      "commonality": 0.3,
+      "action": "keep",
+      "band": "the-Patient",
+      "law": "§10 Patient: slow crack-dweller at the seep (spd 1.2 MEASURED); retaliates-when-attacked fits no-truce water (R6)"
+    },
+    {
+      "def": "BMT_Creature_Mantrap",
+      "commonality": 0.15,
+      "action": "import",
+      "band": "the-Patient",
+      "law": "§10/R6: sit-and-wait lure predator (lure-prey special, spd 0.15 MEASURED) — the no-truce kill at the hidden water, embodied; imported from Scarlands",
+      "note": "zeroed only in TropicalRainforest (MEASURED) — no Cherry Picker conflict here"
+    },
+    {
+      "def": "CanCell",
+      "commonality": 0.2,
+      "action": "keep",
+      "band": "flier-commuter",
+      "law": "§4: the fliers' country — feeds in the chasms, NESTS IN THE DESERT (ban 4); some dip to fish at the 27 water tiles (R6/FISH_BY_BIOME_1); flier claim UNMEASURED (broken flag)"
+    },
+    {
+      "def": "Convor",
+      "commonality": 0.2,
+      "action": "import",
+      "band": "flier-commuter",
+      "law": "§4 fliers + R17; SW icon; imported from the Contagion eviction; nests in Desert (ban 4); flier UNMEASURED"
+    },
+    {
+      "def": "Woolamander",
+      "commonality": 0.15,
+      "action": "import",
+      "band": "flier-commuter",
+      "law": "§4 fliers + R17; imported from the Scarlands eviction; nests in Desert (ban 4); flier UNMEASURED"
+    }
+  ],
+  "evictions": [
+    {
+      "def": "FancyRat",
+      "reason": "retextured/reskinned Earth animal — fails on sight (owner card 2026-09-09; EARTH_FAUNA_EXCLUDED.txt known gap)",
+      "disposition": "cut:RETEXTURED_EARTH_FAUNA_BANNED_1"
+    },
+    {
+      "def": "DZY_RNGChicken",
+      "reason": "retextured/reskinned Earth animal — fails on sight (owner card 2026-09-09; EARTH_FAUNA_EXCLUDED.txt known gap)",
+      "disposition": "cut:RETEXTURED_EARTH_FAUNA_BANNED_1"
+    },
+    {
+      "def": "AA_LuciferBug",
+      "reason": "ubiquity-25: TRIM (prep §9); no §10 sort",
+      "disposition": "trim: named homes ride _global.json"
+    },
+    {
+      "def": "AA_SmallButterfly",
+      "reason": "butterfly = Earth-nameable on sight (AA_EmpressButterfly precedent, prep §4.3)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Bearmole",
+      "reason": "no §10 TIME sort passes on MEASURED specials — no dormancy/burrow special in register (mole-read is by-name, UNMEASURED); walker-predator fits no sort",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Chickenhorse",
+      "reason": "no §10 TIME sort — spd 7.5 open runner is neither Sealed, a flood-week Spender, nor Patient; chimera, NOT a retexture, so the RETEXTURED cut does not apply",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Warg",
+      "reason": "Earth five — EVICT planet-wide (owner ruling 2026-09-09; prep §9 BINDING)",
+      "disposition": "cut:UBIQUITY_25 Earth-five eviction"
+    },
+    {
+      "def": "GR_Mancat",
+      "reason": "no §10 TIME sort — walker-predator with no ambush/lure special (MEASURED); the Patient seep-killer slot is cast",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_FissionMouseSecond",
+      "reason": "ubiquity-25: RESKIN → Wasteland radiotroph — the name is already the archetype (prep §9) — the §9 radiotroph reskin lane rides AA_FissionMouse alone",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_FissionMouseThird",
+      "reason": "ubiquity-25: RESKIN → Wasteland radiotroph — the name is already the archetype (prep §9) — the §9 radiotroph reskin lane rides AA_FissionMouse alone",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_PedigreedRaptor",
+      "reason": "ubiquity-25 BINDING: EVICT planet-wide — reads dinosaur (prep §9)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Bumbledrone",
+      "reason": "Sump named home — donor hives kept there (the_sump.md §0)",
+      "disposition": "move:AB_TarPits"
+    },
+    {
+      "def": "AA_BumbledroneHierophant",
+      "reason": "rides the Bumbledrone hive home",
+      "disposition": "move:AB_TarPits"
+    },
+    {
+      "def": "GR_Groundffalo",
+      "reason": "no §10 TIME sort — no herd special in register (MEASURED) for the Patient browser slot, no dormancy for Sealed",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "VQEA_Splicefiend",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 4 / spd 4.2 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWEuoplocephalus",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Agaripawn",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 1.4 / spd 4 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "VQEA_Spliceling",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 2 / spd 3.25 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Hurseman",
+      "reason": "no §10 TIME sort — midsize walker-predator, no sort-qualifying special (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Manffalo",
+      "reason": "no §10 TIME sort — not slow-Patient (spd 4.5), no herd special, no Sealed special (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_BovineBeetle",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 2.45 / spd 3.1 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Hrumph",
+      "reason": "SW herd stock — herds are Desert infrastructure (prep §2.1: herds WANTED there)",
+      "disposition": "homeless-reserve",
+      "note": "Desert import candidate — that batch rules it"
+    },
+    {
+      "def": "AA_Aerofleet",
+      "reason": "ubiquity-25 TRIM — its named home in this batch is the Slime (terminator-adjacent, prep §9) — ubiquity-25 §9 trim: terminator-adjacent only (keeps the two seas)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWNyctosaurus",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWQuetzalcoatlus",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWPteranodon",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWGeosternbergia",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWGorgonops",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWCaihong",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Gigantelope",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 2 / spd 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWArchaeopteryx",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_MeadowAve",
+      "reason": "fast open-ground runner (spd 7 MEASURED) — 'the open sun kills; nothing crosses the flats by day' (§4)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWBrachytrachelopan",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWBagaceratops",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWIschigualastia",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Behemoth",
+      "reason": "huge pursuit predator (bs 6 / spd 4.7 MEASURED, predator) — nothing in §10 admits an apex that hunts in the open; shrubland already evicted it (prep §3.3)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Wildpawn",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 1.4 / spd 4 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWQantassaurus",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Nightling",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 1 / spd 5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_DuskProwler",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 1.5 / spd 6 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWGeralinura",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWProtosolpuga",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWEuphoberia",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JRWArthropleura",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_FissionMouse",
+      "reason": "ubiquity-25: RESKIN → Wasteland radiotroph — the name is already the archetype (prep §9)",
+      "disposition": "move:Wasteland"
+    },
+    {
+      "def": "AA_PebbleMit",
+      "reason": "ubiquity-25: TRIM to rock/cavern biomes (prep §9)",
+      "disposition": "trim: named homes ride _global.json"
+    },
+    {
+      "def": "AA_Swarmling",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 0.3 / spd 5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_AngelMoth",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 0.75 / spd 3 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_AngelMothLarva",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 0.1 / spd 2 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Thunderox",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 2.5 / spd 4 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Mantrap",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 2 / spd 3 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_AnimusVox",
+      "reason": "ubiquity-25: TRIM to one strange home — not this one (prep §9)",
+      "disposition": "trim: named homes ride _global.json"
+    },
+    {
+      "def": "AA_ChameleonYak",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 2.5 / spd 4 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_RipperHound",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 1.5 / spd 5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Wildpod",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 4 / spd 3 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_RayHound",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 1.5 / spd 3 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_DrainerLarva",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 0.1 / spd 1.2 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_AuroraSylph",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 0.5 / spd 2 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_MegaLouse",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 0.5 / spd 3 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Drainer",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 0.5 / spd 3 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_BedBug",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 0.5 / spd 3 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Razorjack",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 1 / spd 4 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_DarkVandal",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 1.2 / spd 4.6 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_BoulderMit",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 4 / spd 1 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_BloodShrimp",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 1 / spd 5.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_ShadowCharger",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 2.5 / spd 3.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_CrystalMit",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 0.5 / spd 1.8 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_LarvalAtispec",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 0.1 / spd 2 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Titanis",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
+    },
+    {
+      "def": "AA_GreatDevourer",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 2.5 / spd 2.8 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Dinornis",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
+    },
+    {
+      "def": "Pulmonoscorpius",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
+    },
+    {
+      "def": "AA_Thunderbeast",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 1.5 / spd 4 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Macrauchenia",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
+    },
+    {
+      "def": "AA_Ravager",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 2.5 / spd 5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_MatureFleshbeast",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 6 / spd 2 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_NightAve",
+      "reason": "as MeadowAve; night-keyed besides",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Platybelodon",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
+    },
+    {
+      "def": "AA_Helixien",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 4 / spd 0.6 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_GreyCoatedMouflon",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 0.8 / spd 2 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_AcanthamoebaGiganteaSmall",
+      "reason": "ubiquity-25 BINDING: TRIM to wasteland/pans — amoeba reads contamination (prep §9)",
+      "disposition": "move:Wasteland"
+    },
+    {
+      "def": "AA_Terramorph",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 1.5 / spd 1.8 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Arthropleura",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
+    },
+    {
+      "def": "AA_TeratogenicOriginator",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 5 / spd 0.6 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Slurrypede",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 2 / spd 1.9 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Thermadon",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 1.5 / spd 5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_GiantCrownedSilkie",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 1.1 / spd 3 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_RoyalAve",
+      "reason": "as MeadowAve",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Skiphound",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 0.79 / spd 4 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Doedicurus",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
+    },
+    {
+      "def": "Uintatherium",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
+    },
+    {
+      "def": "AA_WindBeast",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 1.5 / spd 4.75 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_TetraSlug",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 5 / spd 0.6 (MEASURED)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Radyak",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 2.5 / spd 4.5 (MEASURED)",
+      "disposition": "homeless-reserve"
+    }
+  ],
+  "stat_adjustments": [],
+  "flora": [
+    {
+      "def": "AB_HardyGrass",
+      "commonality": 1.0,
+      "law": "§4: grasses first — alien-authored analog grass (fert 0.30 floor fits the thin shade soil); placement gated to the shade line by ban 2 (generator/mapgen concern, not a def cut)"
+    },
+    {
+      "def": "GRimMoss",
+      "commonality": 0.8,
+      "law": "§4: mosses first — generic moss shape, nothing nameable; terrestrial-analog allowed by owner ruling"
+    },
+    {
+      "def": "BMT_Plant_TwistingThorngrass",
+      "commonality": 0.5,
+      "law": "§4: alien scrub at the seep line — twisted, unnameable"
+    },
+    {
+      "def": "BMT_Plant_TwistingThornweed",
+      "commonality": 0.4,
+      "law": "§4: as thorngrass"
+    },
+    {
+      "def": "AB_GargantuanLithops",
+      "commonality": 0.15,
+      "law": "pan flora — stone-mimic, non-green, legal outside the shade line by silhouette (ban 2 is a green ban)"
+    },
+    {
+      "def": "BMT_Plant_TreeTwistingThornwood",
+      "commonality": 0.2,
+      "law": "§4: occasional twisted trees — interim body for the authored trees (TREE_GRAPHICS_OWNERSHIP_1); owner-favourite donor (prep §5.4)",
+      "note": "shared with poison forest's flora assignment — plants dual-home freely"
+    }
+  ],
+  "flora_purged": [
+    {
+      "def": "(donor vanilla flora: oak, berry, dandelion, grass)",
+      "reason": "sheet §0: vanilla flora REPLACED (all-alien, terrestrial-analog allowed); Earth-nameable purge (owner card 2026-09-09)"
+    }
+  ],
+  "fish": {
+    "ruling": "FISH PRESENT — at the measured 27 enclosed-water tiles only (§6 ban 1), and this is the planet's ONE lethal water: R6 — the truce's mechanism is sightline distance, and slot-canyon/roofed water has none, so there is no truce; the kill happens at the water; the fliers dip down to fish (§4). Species list UNMEASURED: the creature register carries no fish kind (kindOf census: animal/insectoid/mechanoid/vehicle/entity/dryad/leviathan — MEASURED); selection rides FISH_BY_BIOME_1 against the Odyssey fish-def census",
+    "list": []
+  },
+  "new_defs": [
+    {
+      "name": "emperor vulture (the sky's undertaker, rides the flats' thermals)",
+      "kind": "creature",
+      "mechanic_load": "none blocking",
+      "from_sheet": "the_cracked_lands.md §10 — no live def answers to it (Odyssey Vulture is Earth-nameable, banned; BMT_CarrionVulture a reskin)"
+    },
+    {
+      "name": "Sealed signature sleeper (wax-lined burrow, water-wake, sheds crack-wax)",
+      "kind": "creature",
+      "mechanic_load": "C#: water-trigger wake + crack-wax product; borrow the dormant comp (107-row family)",
+      "from_sheet": "the_cracked_lands.md §10/§11"
+    },
+    {
+      "name": "bloom crop (flood-week boom-bust harvest, visible growth)",
+      "kind": "plant",
+      "mechanic_load": "C#: EXPLOSIVE_PLANT_GROWTH_1 (world mechanic born here, §10b)",
+      "from_sheet": "the_cracked_lands.md §10b"
+    },
+    {
+      "name": "twisted trees + shade-line grasses/mosses (our own vegetation, our own scales)",
+      "kind": "plant",
+      "mechanic_load": "none blocking",
+      "from_sheet": "the_cracked_lands.md §4 (TREE_GRAPHICS_OWNERSHIP_1)"
+    }
+  ],
+  "confidence": [
+    {
+      "claim": "all flier rows (CanCell, Convor, Woolamander) are fliers",
+      "status": "UNMEASURED",
+      "why": "register flies special broken; by-name knowledge; nesting-elsewhere is design register (ban 4), not def-encoded"
+    },
+    {
+      "claim": "29-row legacy cast graded",
+      "status": "DONE",
+      "why": "cast_assignment.csv ZBiome_Badlands rows graded against §10 sorts: 8 re-kept/imported above; the rest fail a sort or a planet-wide ruling and appear in evictions"
+    },
+    {
+      "claim": "no wake-on-water mechanic exists yet for the Sealed",
+      "status": "MEASURED",
+      "why": "dormant comp exists (107 live rows); the water trigger is new C# (new_defs)"
+    },
+    {
+      "claim": "GR_ rows re-adjudicated per §10 TIME sorts; GR_Chickenhorse cut softened to homeless-reserve",
+      "status": "RESOLVED",
+      "why": "GR_ prefix correction pass 2026-09-09: GRim*=Grindterra homeless; GR_*=VGE chimeras judged per sheet law (RETEXTURED_EARTH_FAUNA_BANNED_1: leave chimeras)"
+    }
+  ]
+}

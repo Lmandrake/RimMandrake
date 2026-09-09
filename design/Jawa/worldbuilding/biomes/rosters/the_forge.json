@@ -1,0 +1,625 @@
+{
+  "sheet": "the_forge",
+  "defNames": [
+    "AB_PyroclasticConflagration",
+    "LavaField",
+    "Volcano"
+  ],
+  "tiles": 44,
+  "authored": "2026-09-09",
+  "law_sources": [
+    "the_forge.md §4 admission ('lives in the flash-interval, or in the sky'), §6 bans",
+    "_freeze_rulings_2026-09-07.md R12",
+    "_assignment_prep.md §9",
+    "owner cards 2026-09-09"
+  ],
+  "note": "ONE roster for all three defs — the sheet defines 'three defs as one place' and distinguishes zones by elevation, not fauna; the sheet names no per-def fauna split.",
+  "fauna": [
+    {
+      "def": "Beldon",
+      "commonality": 0.08,
+      "action": "keep",
+      "band": "sky-herd",
+      "law": "§4 sheet-named: 'vast, placid, drifting over the melt'; icon carve-out in full; tibanna monopoly basis (§6 ban 5); MEASURED bs 6, spd 2, floats, detonates on death",
+      "note": "register also lists a predator special — contradicts the ruled 'placid' read; flag for the beastnorm pass, commonality kept near-zero either way"
+    },
+    {
+      "def": "AA_Aerofleet",
+      "commonality": 0.4,
+      "action": "adjust-keep",
+      "band": "sky",
+      "law": "§4 sheet-RULED: 'Fumeriders (the Alpha Animals Aerofleet, renamed — recorded for the roster)'; MEASURED bs 0.2, spd 2.8, floats, produces a harvestable resource",
+      "note": "ubiquity-25 TRIM satisfied: the Forge is its named home #1 (sheet law outranks the prep's 'terminator-adjacent?' guess); rename rides MLIE/naming pass",
+      "ubiquity_exception": "the forge sheet names it the Fumerider — sheet-specific ruled role; flagged for owner review"
+    },
+    {
+      "def": "AA_Cinderlisk",
+      "commonality": 0.2,
+      "action": "import",
+      "band": "ground-predator",
+      "law": "§4 heat-adapted-and-few; register desc names it volcanic, 'burning bite' special (MEASURED); bs 2.5 — was a Wasteland ban-3 evictee (prep §4.3), re-homed where heat is the point"
+    },
+    {
+      "def": "LavaSnail",
+      "commonality": 0.35,
+      "action": "import",
+      "band": "ground-slow",
+      "law": "§4 heat-adapted-and-few; MEASURED desc: volcanic-planet mollusk, protective slime, spd 0.85 — lives between the rain-flashes by being too slow to care",
+      "note": "Odyssey def — NOT the Grindterra retexture GRimLavaSnail, which never gets a home (owner card)"
+    },
+    {
+      "def": "BMT_Maguana",
+      "commonality": 0.15,
+      "action": "import",
+      "band": "ground-slow",
+      "law": "§4 heat-adapted-and-few; MEASURED desc: magma-patterned camouflage lizard, spd 0.6; moved from the Pyrelands cast where it had no story"
+    },
+    {
+      "def": "LavaFlea",
+      "commonality": 0.25,
+      "action": "import",
+      "band": "ground-herd",
+      "law": "§4 flash-interval ground life; SW canon lava-country herd hopper (Mustafar), MEASURED bs 2.4, herd, non-predator, carries cargo; a dune-sea medium-band evictee (R22) re-homed",
+      "note": "the one ground herd — grazes the flash-flora at the skirts"
+    },
+    {
+      "def": "AA_Metallovore",
+      "commonality": 0.15,
+      "action": "keep",
+      "band": "ground-slow",
+      "law": "incumbent; 'eats something no normal animal eats' (MEASURED — metal) — a metal-eater under the foundry towers is on-theme; spd 2.0, few"
+    }
+  ],
+  "evictions": [
+    {
+      "def": "Dewback",
+      "reason": "RULED move (owner 2026-09-06, weeping_stones.md Owed + WEEPING_STONES_ROSTER_1): the dew-drinking lizard was mis-cast to LavaField",
+      "disposition": "move:ZBiome_DesertOasis"
+    },
+    {
+      "def": "Megascarab",
+      "reason": "no heat story; vanilla hive insect",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Megaspider",
+      "reason": "no heat story; vanilla hive insect",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Spelopede",
+      "reason": "no heat story; vanilla hive insect",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_FacetMoth",
+      "reason": "cavern register, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_SmogMoth",
+      "reason": "pollution register — the Forge's air is steam and ash, not smog-lure country",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_SmogMothLarvae",
+      "reason": "as BMT_SmogMoth",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_TaintedTurtle",
+      "reason": "polluted-lands turtle; 'turtle' Earth-nameable; no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_MucklurkerCatfish",
+      "reason": "a catfish on a lava massif — placement absurdity; Earth-nameable",
+      "disposition": "cut:owner card 2026-09-09 Earth-nameable (global lane)"
+    },
+    {
+      "def": "BMT_MutatingTumorfishFry",
+      "reason": "fish in a biome with no persistent liquid water (§3 closed boiling cycle)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_MutatingTumorfishSpawn",
+      "reason": "as MutatingTumorfishFry",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Tooke",
+      "reason": "Naboo rodent, nocturnal (desc MEASURED); no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Shyrack",
+      "reason": "prep §2.2 keeps it as the Desert's slow cave-mouth ambusher — its home lane",
+      "disposition": "move:Desert"
+    },
+    {
+      "def": "Tach",
+      "reason": "forest monkey-analog; lush register (§6 ban 3)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "MarshHaunt",
+      "reason": "a MARSH creature on lava (§6 ban 3 lush register)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "MastiffPhalone",
+      "reason": "SW midband predator, no heat story (shrubland-band stock, prep §3.3)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Veermok",
+      "reason": "no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "KellDragon",
+      "reason": "big pursuit predator, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Mudhorn",
+      "reason": "owner card 2026-09-09 ruling 3: Mudhorn kept as the shrubland's ONE huge-predator icon exception",
+      "disposition": "move:AridShrubland"
+    },
+    {
+      "def": "Roggwart",
+      "reason": "big pursuit predator, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "JungleRancor",
+      "reason": "JUNGLE rancor; lush register (§6 ban 3)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_BlackScarab",
+      "reason": "no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_BlackSpider",
+      "reason": "no heat story; fast predator",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_RayHound",
+      "reason": "EMP predator — Rust Cathedral lane if anywhere, not the Forge's",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "DA_Phrak",
+      "reason": "no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Squirralope",
+      "reason": "fails §4 heat-adapted-and-few — register carries no heat adaptation in desc or specials (MEASURED); nothing unadapted admits to the massif",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Muffalopede",
+      "reason": "fails §4 heat-adapted-and-few — register carries no heat adaptation in desc or specials (MEASURED); nothing unadapted admits to the massif",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Wolfhorse",
+      "reason": "fails §4 heat-adapted-and-few — register carries no heat adaptation in desc or specials (MEASURED); nothing unadapted admits to the massif",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Fleshling",
+      "reason": "fails §4 heat-adapted-and-few — register carries no heat adaptation in desc or specials (MEASURED); nothing unadapted admits to the massif",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Spidercat",
+      "reason": "fails §4 heat-adapted-and-few — register carries no heat adaptation in desc or specials (MEASURED); nothing unadapted admits to the massif",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "GR_Wolfscarab",
+      "reason": "fails §4 heat-adapted-and-few — register carries no heat adaptation in desc or specials (MEASURED); nothing unadapted admits to the massif",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BI_Queen",
+      "reason": "hive queen, no heat story; infestation axis is not wild-roster business",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_GlowBat",
+      "reason": "cave bat on a volcano; bat retexture lane (RETEXTURED_EARTH_FAUNA_BANNED_1 adjacent)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_BrownBat",
+      "reason": "'brown bat' — Earth-nameable",
+      "disposition": "cut:owner card 2026-09-09 Earth-nameable (global lane)"
+    },
+    {
+      "def": "BMT_SandLeaper",
+      "reason": "cavern register, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_SonarRabbit",
+      "reason": "rabbit retexture — retextured Earth twin (RETEXTURED_EARTH_FAUNA_BANNED_1)",
+      "disposition": "cut:RETEXTURED_EARTH_FAUNA_BANNED_1"
+    },
+    {
+      "def": "BMT_GlowSlug",
+      "reason": "cavern register; glow is the wrong province",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_Mole",
+      "reason": "'mole' — Earth-nameable",
+      "disposition": "cut:owner card 2026-09-09 Earth-nameable (global lane)"
+    },
+    {
+      "def": "BMT_ShimmershellSnail",
+      "reason": "cavern register; LavaSnail owns the slow-mollusk niche here",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_DarkAxolotl",
+      "reason": "'axolotl' — Earth-nameable; a lake-bed feeder on lava",
+      "disposition": "cut:owner card 2026-09-09 Earth-nameable (global lane)"
+    },
+    {
+      "def": "BMT_Xyrion",
+      "reason": "cavern register, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_GiantSnail",
+      "reason": "as ShimmershellSnail",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_Megabat",
+      "reason": "cave bat, fast predator, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_LandOctopus",
+      "reason": "'octopus' — Earth-nameable",
+      "disposition": "cut:owner card 2026-09-09 Earth-nameable (global lane)"
+    },
+    {
+      "def": "BMT_Polluwog",
+      "reason": "pollution register; lake-bed feeder with no water here",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_ToxSheep",
+      "reason": "'sheep' — retextured Earth twin, pollution register",
+      "disposition": "cut:RETEXTURED_EARTH_FAUNA_BANNED_1"
+    },
+    {
+      "def": "BMT_SludgeCrawler",
+      "reason": "pollution register",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_GoetoTadpole",
+      "reason": "tadpole needs water the Forge does not hold (§3)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_GoetoToad",
+      "reason": "as GoetoTadpole",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_CrystalMantis",
+      "reason": "crystal belongs to the caverns/poison-forest lanes (prep §9 AA_CrystalMit ruling's spirit)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_GiantSlug",
+      "reason": "cavern register; LavaSnail owns the niche",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_Megapleura",
+      "reason": "cavern register, spd 7.5 sprinter, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "BMT_BloodletterPetrel",
+      "reason": "polluted-lands pack hunter — Wasteland's register (prep §4.2 keeps it THERE)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "ERN_Amaro",
+      "reason": "Final Fantasy fauna — 0%-recognizability lane risk, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Iriaz",
+      "reason": "docile grassland herd — belongs with the Pyrelands ash-grazers",
+      "disposition": "move:ZBiome_Grasslands"
+    },
+    {
+      "def": "KowakianMonkeyLizard",
+      "reason": "no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Pikobis",
+      "reason": "no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Scavrat",
+      "reason": "ubiquity-25 TRIM to Fall Line (prep §9/§8.4 — 'the name is the job')",
+      "disposition": "move:fall_line"
+    },
+    {
+      "def": "Kaadu",
+      "reason": "swamp runner (Naboo wetlands), lush register",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Skalder",
+      "reason": "herd giant; prep §3.2 lists it a shrubland keep candidate — that roster's call, not the Forge's",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Tukata",
+      "reason": "fast predator, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Uvak",
+      "reason": "prep §3.3 names it natural desert herd stock — the Desert roster's call",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "ChrysalideRancor",
+      "reason": "spd 5.5 pursuit giant, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Katarn",
+      "reason": "fast predator, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Taozin",
+      "reason": "dormant giant, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Mott",
+      "reason": "wetland herbivore, lush register",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Squall",
+      "reason": "grassland lagomorph-analog, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Kybuck",
+      "reason": "grassland runner, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "Massiff",
+      "reason": "owner card 2026-09-09 ruling 3: Massiff to the shrubland medium band",
+      "disposition": "move:AridShrubland"
+    },
+    {
+      "def": "AA_BlackSpelopede",
+      "reason": "no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_RipperHound",
+      "reason": "fast predator, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Thunderbeast",
+      "reason": "storm-electric theme — Stormwall/wasteland lane, not vulcanism",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_IronhuskBeetle",
+      "reason": "slow producer but no heat story; few means few",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_Animalisk",
+      "reason": "no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_RaptorShrimp",
+      "reason": "no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AA_NightMule",
+      "reason": "'mule' — Earth-nameable pack animal; chilled register (§6 ban 3)",
+      "disposition": "cut:owner card 2026-09-09 Earth-nameable (global lane)"
+    },
+    {
+      "def": "AA_MammothWorm",
+      "reason": "'mammoth' name + siege attacker; no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "AM_Dryad_Spitter",
+      "reason": "Gauranlen-mechanic creature — does not function wild (prep §5.5 flags the same for poison forest)",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "DA_Snaptoad",
+      "reason": "toad, no heat story",
+      "disposition": "homeless-reserve"
+    },
+    {
+      "def": "VAEWaste_Toxiguana",
+      "reason": "pollution register; 'iguana' Earth-nameable root",
+      "disposition": "homeless-reserve"
+    }
+  ],
+  "stat_adjustments": [
+    {
+      "def": "Beldon",
+      "field": "predator",
+      "from": true,
+      "to": false,
+      "authority": "the_forge.md §4 sheet-named ‘vast, placid, drifting over the melt’ vs register predator special (MEASURED) — adjust-and-keep pattern (owner card 2026-09-09), same treatment the Scald gave the sandos"
+    }
+  ],
+  "flora": [
+    {
+      "def": "Plant_Fireweed",
+      "commonality": 0.9,
+      "law": "§4 SIGNATURE — 'fireweed, whose heat-proof fiber is the source material of the heat-gear economy'; Odyssey def as interim body (fiber yield needs the FORGE_MECHANICS_1 reconcile)"
+    },
+    {
+      "def": "BMT_FireLavender",
+      "commonality": 0.6,
+      "law": "§4 flash-interval flora; grow range 50–352 °C (MEASURED pool) — the one donor plant that literally lives at Forge temperatures"
+    },
+    {
+      "def": "Plant_MagmaCactus",
+      "commonality": 0.7,
+      "law": "§4 shocking-tolerance shrubs; Odyssey def, grow to 74 °C (MEASURED pool) — replaces the purged Grindterra twin"
+    },
+    {
+      "def": "BMT_HeatsinkFungus",
+      "commonality": 0.2,
+      "law": "§4 flash-interval flora; grow 50–352 °C (MEASURED pool); tree-class — the 'even trees of shocking tolerance'"
+    },
+    {
+      "def": "AB_FirevineTree",
+      "commonality": 0.2,
+      "law": "§4; Alpha Biomes' own pyroclastic-donor tree, opt to 100 °C (MEASURED pool)"
+    },
+    {
+      "def": "AB_TinkleGrass",
+      "commonality": 0.3,
+      "law": "ash-skirt ground cover, opt to 100 °C (MEASURED pool); Alpha pyroclastic donor family"
+    },
+    {
+      "def": "BMT_Sagecrust",
+      "commonality": 0.4,
+      "law": "§4 'beautiful heat-resistant mosses' — crust form on the rock between flashes"
+    },
+    {
+      "def": "AG_Gamma",
+      "commonality": 0.5,
+      "law": "incumbent Alpha gamma family — alien, reads volcanic-mineral; kept per pyroclastic donor inventory (§0 keep)"
+    },
+    {
+      "def": "AB_GiantGamma",
+      "commonality": 0.3,
+      "law": "as AG_Gamma"
+    },
+    {
+      "def": "AG_Septimum",
+      "commonality": 0.25,
+      "law": "as AG_Gamma"
+    },
+    {
+      "def": "IronScruff_PrimordialGrass",
+      "commonality": 0.35,
+      "law": "Primordial Geysers flora — R12: the Forge is the geothermal field's densest point; geyser flora is its ground truth"
+    },
+    {
+      "def": "IronScruff_PrimordialTallGrass",
+      "commonality": 0.3,
+      "law": "as IronScruff_PrimordialGrass"
+    },
+    {
+      "def": "IronScruff_Bindweed",
+      "commonality": 0.25,
+      "law": "as IronScruff_PrimordialGrass"
+    }
+  ],
+  "flora_purged": [
+    {
+      "def": "GRimMagmaCactus",
+      "reason": "Grindterra flora — donor retiring; Odyssey Plant_MagmaCactus is the identical niche, nothing lost"
+    },
+    {
+      "def": "GRimFireweed",
+      "reason": "Grindterra flora — Plant_Fireweed (Odyssey) covers it"
+    },
+    {
+      "def": "GRim1Fireweed",
+      "reason": "as GRimFireweed (clone row)"
+    },
+    {
+      "def": "AB_ToxicGamma",
+      "reason": "toxic/pollution register — the Forge is clean heat, not contamination (§1 corpse-ring is the Contagion FAILING here)"
+    }
+  ],
+  "fish": {
+    "ruling": "no fish — no persistent liquid water: the closed rain boils, falls, and flashes back to steam within seconds (§3); §6 ban 6 allows no ordinary rain",
+    "list": []
+  },
+  "new_defs": [
+    {
+      "name": "fleet fliers (small darting fireweed-eaters)",
+      "kind": "creature",
+      "mechanic_load": "none blocking (vapor-column flight layer is FORGE_MECHANICS_1)",
+      "from_sheet": "the_forge §4 — no small donor flier passes heat-adapted; register flies flag broken so no candidate is provable anyway"
+    },
+    {
+      "name": "tibanna gland/harvest on the Beldon",
+      "kind": "creature-product",
+      "mechanic_load": "C#: herd harvest system (FORGE_MECHANICS_1)",
+      "from_sheet": "the_forge §7"
+    },
+    {
+      "name": "Contagion corpse-ring ambient die-off",
+      "kind": "event, not roster",
+      "mechanic_load": "C# ambient event",
+      "from_sheet": "the_forge §4"
+    }
+  ],
+  "confidence": [
+    {
+      "claim": "Beldon is placid",
+      "status": "CONTRADICTED by register (predator special MEASURED)",
+      "why": "sheet rules placid gas-grazer; def as shipped hunts — needs the adjust pass before it drifts over a colony"
+    },
+    {
+      "claim": "AA_Aerofleet rename to Fumerider",
+      "status": "RULED (sheet §4)",
+      "why": "recorded for the roster by the sheet itself; ride the naming/MLIE pass, no RSW_ anticipation"
+    },
+    {
+      "claim": "kept ground fauna tolerate 42-56 °C",
+      "status": "UNMEASURED",
+      "why": "register carries no ComfortableTemperatureMax; picks are by desc/theme (volcanic-native descs cited)"
+    },
+    {
+      "claim": "'fireweed'/'fire lavender' survive the Earth-nameable flora purge",
+      "status": "OWNER-EYE",
+      "why": "fireweed and lavender are real Earth plant names, but the frozen sheet names fireweed as the signature — sheet law kept them; flag for his review sheet"
+    },
+    {
+      "claim": "nothing lives in the lava",
+      "status": "HELD",
+      "why": "no roster entry is lava-native (§6 ban 1); LavaFlea/LavaSnail live on rock at the margins"
+    },
+    {
+      "claim": "GR_ rows re-adjudicated per §4 heat law; Beldon predator flag stripped to match the ruled placid read",
+      "status": "RESOLVED",
+      "why": "GR_ prefix correction pass 2026-09-09: GRim*=Grindterra homeless; GR_*=VGE chimeras judged per sheet law (RETEXTURED_EARTH_FAUNA_BANNED_1: leave chimeras)"
+    }
+  ]
+}

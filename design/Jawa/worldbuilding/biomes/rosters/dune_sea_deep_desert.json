@@ -1,0 +1,774 @@
+{
+ "sheet": "dune_sea + deep_desert",
+ "defNames": [
+  "ExtremeDesert"
+ ],
+ "tiles": 3172,
+ "authored": "2026-09-09",
+ "law_sources": [
+  "dune_sea.md §6/§Roster",
+  "deep_desert.md §6",
+  "_freeze_rulings_2026-09-07.md R22 (one merged roster, strict intersection)",
+  "_assignment_prep.md §1, §9",
+  "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09"
+ ],
+ "fauna": [
+  {
+   "def": "GraniteSlug",
+   "commonality": 0.1,
+   "action": "keep",
+   "band": "grain-scale",
+   "law": "passes R22 size law: bs 0.2, spd 1.0 (MEASURED); slow mineral-eater, alien; prep §1.2 model grain resident; §9 trims it to dune sea + poison forest",
+   "note": "deep desert ban 3 (no mineralized LOOK) is an owner eye test — flagged in confidence"
+  },
+  {
+   "def": "AA_Needleroll",
+   "commonality": 0.3,
+   "action": "adjust-keep",
+   "band": "grain-scale",
+   "law": "passes R22: bs 0.15 (MEASURED); non-pursuit; feeds on light — fits eternal-noon energy surplus (dune sea §2); trimmed 0.75→0.3 for sparseness target"
+  },
+  {
+   "def": "AA_Eyeling",
+   "commonality": 0.15,
+   "action": "adjust-keep",
+   "band": "grain-scale",
+   "law": "passes R22: bs 0.13 (MEASURED); subsurface-plausible micro-fauna (prep §1.2); trimmed 0.25→0.15 for sparseness"
+  },
+  {
+   "def": "Kreetle",
+   "commonality": 0.2,
+   "action": "keep",
+   "band": "grain-scale",
+   "law": "passes R22: bs 0.2 (MEASURED); SW desert beetle (prep §1.2)"
+  },
+  {
+   "def": "Gizka",
+   "commonality": 0.01,
+   "action": "keep",
+   "band": "grain-scale",
+   "law": "passes R22: bs 0.18 (MEASURED); SW icon (KOTOR), carve-out (dune sea ban list: icons protected)"
+  },
+  {
+   "def": "Scurrier",
+   "commonality": 0.1,
+   "action": "adjust-keep",
+   "band": "grain-scale",
+   "law": "passes R22: bs 0.2 (MEASURED); owner card 2026-09-09: trimmed to commonality ≤0.1 grain-scale here",
+   "note": "comm 1.0→0.1 by owner card"
+  },
+  {
+   "def": "KraytDragon",
+   "commonality": 0.15,
+   "action": "keep",
+   "band": "giant",
+   "law": "passes R22: bs 12 (MEASURED); ICON — canonical dune-swimmer, subsurface strike is its native read (prep §1.2)"
+  },
+  {
+   "def": "GreaterKraytDragon",
+   "commonality": 0.001,
+   "action": "keep",
+   "band": "giant",
+   "law": "passes R22: bs 15 (MEASURED); icon; commonality already correctly near-zero (prep §1.2)"
+  },
+  {
+   "def": "WarWyrm",
+   "commonality": 0.2,
+   "action": "keep",
+   "band": "giant",
+   "law": "owner card 2026-09-09: ruled a BURROWER — subsurface-strike read satisfies R22 predator law; bs 15 passes size (MEASURED)"
+  },
+  {
+   "def": "AA_BoulderMit",
+   "commonality": 0.025,
+   "action": "keep",
+   "band": "giant",
+   "law": "passes R22: bs 4.0, spd 1.0 (MEASURED); slow dormant-looking giant (prep §1.2)",
+   "note": "ban 3 mineralized-look eye test owed — see confidence"
+  },
+  {
+   "def": "AA_TetraSlug",
+   "commonality": 0.0005,
+   "action": "keep",
+   "band": "giant",
+   "law": "passes R22: bs 5.0, spd 0.6 (MEASURED); barely-moving alien giant (prep §1.2)"
+  },
+  {
+   "def": "AA_Dunealisk",
+   "commonality": 0.1,
+   "action": "import",
+   "band": "giant-subsurface",
+   "law": "subsurface strike only — the one legal predator archetype (dune sea §6, prep §1.4)",
+   "note": "review-flagged import; completes the_webwork's move:ExtremeDesert"
+  }
+ ],
+ "evictions": [
+  {
+   "def": "AA_Barbslinger",
+   "reason": "R22 size ban: bodySize 2.5 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Cactipine",
+   "reason": "R22 size ban: bodySize 0.5 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_ChameleonYak",
+   "reason": "R22 size ban: bodySize 2.5 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Cinderlisk",
+   "reason": "R22 size ban: bodySize 2.5 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_CrescendoAnole",
+   "reason": "R22 size ban: bodySize 0.3 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_CrystalMit",
+   "reason": "§9 (binding): crystal belongs to CrystalCaverns/PoisonForest; also deep desert ban 3 (mineralized)",
+   "disposition": "move:PoisonForest"
+  },
+  {
+   "def": "AA_DesertAve",
+   "reason": "R22 size ban: bs 1.0 (MEASURED); fast NON-predator navigator is the Desert archetype (prep §2.2)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "AA_Dunealisk",
+   "reason": "R22 size ban: bs 2.0 (MEASURED) — strict intersection evicts it despite the subsurface-donor pattern (prep §1.4 note)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_DuskProwler",
+   "reason": "R22 size ban: bodySize 1.5 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Erin",
+   "reason": "R22 size ban: bodySize 1.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_FissionMouse",
+   "reason": "§9 (binding): RESKIN → Wasteland radiotroph; R22 size ban bs 0.5 (MEASURED)",
+   "disposition": "move:Wasteland"
+  },
+  {
+   "def": "AA_MammothWorm",
+   "reason": "R22 size ban: bodySize 3.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Mantrap",
+   "reason": "R22 size ban: bodySize 2.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Murkling",
+   "reason": "R22 size ban: bodySize 0.35 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Needlepost",
+   "reason": "R22 size ban: bodySize 0.79 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Nightling",
+   "reason": "R22 size ban: bodySize 1.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_PebbleMit",
+   "reason": "§9 (binding): TRIM to rock/cavern biomes; R22 size ban bs 0.5 (MEASURED) — §9 trim target (crags) rejected it on the single-transplanted-family law",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Razorjack",
+   "reason": "R22 size ban: bodySize 1.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_RoughPlatedMonitor",
+   "reason": "R22 size ban: bodySize 2.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_SandLion",
+   "reason": "R22 size ban: bodySize 2.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_SandProwler",
+   "reason": "R22 size ban: bs 2.0 (MEASURED); its terrain-hiding XML remains the subsurface pattern cite (dune sea §10); Desert-legal ambusher",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "AA_SandSquid",
+   "reason": "R22 size ban: bodySize 2.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Slurrypede",
+   "reason": "R22 size ban: bodySize 2.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Swarmling",
+   "reason": "R22 size ban: bodySize 0.3 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_TeratogenicOriginator",
+   "reason": "population target \"sparse to the point of discomfort\" (dune sea §Roster) — giants limited to the ruled five",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Terramorph",
+   "reason": "R22 size ban: bodySize 1.5 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "AA_Thunderox",
+   "reason": "R22 size ban: bodySize 2.5 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Anooba",
+   "reason": "R22 size ban: bodySize 0.95 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_BloodropMoth",
+   "reason": "R22 size ban: bodySize 0.77 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_ColonyPustuleHornetQueen",
+   "reason": "R22 size ban bs 1.0 (MEASURED); Polluted Lands → Wasteland (prep §4.4)",
+   "disposition": "move:Wasteland"
+  },
+  {
+   "def": "BMT_Glowtail",
+   "reason": "R22 size ban: bodySize 0.32 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "BMT_PustuleHornetQueen",
+   "reason": "R22 size ban bs 1.0 (MEASURED); Polluted Lands register is contamination-shaped → Wasteland (prep §4.4)",
+   "disposition": "move:Wasteland"
+  },
+  {
+   "def": "Beldon",
+   "reason": "deep desert ban 7: herd giant bs 6.0 (MEASURED); predator flag not subsurface",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Brezak",
+   "reason": "R22 size ban: bodySize 3.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Cannok",
+   "reason": "R22 size ban: bodySize 0.85 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "DA_BlackScribe",
+   "reason": "R22 size ban: bodySize 0.5 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "DA_Karabal",
+   "reason": "R22 size ban: bodySize 1.4 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "DA_Pilgrim",
+   "reason": "R22 size ban: bodySize 2.4 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Dactillion",
+   "reason": "R22 size ban: bodySize 3.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Devourers",
+   "reason": "R22 size ban: bodySize 2.5 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Doedicurus",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "Drexl",
+   "reason": "R22 predator law: predator, not subsurface-strike (bs 5.0, spd 3.0 MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "EnergySpider",
+   "reason": "R22 size ban: bodySize 3.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Eopie",
+   "reason": "R22 size ban: bs 1.4 (MEASURED); SW pack icon, Desert resident already (prep §2.2)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Falumpaset",
+   "reason": "R22 size ban: bs 3.0 (MEASURED); SW pack herbivore, spd 4.3 < 4.5 Desert-legal",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "FrilledGorg",
+   "reason": "R22 size ban: bs 0.4 (MEASURED); Desert/shrubland small-band keep",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "GR_Manscarab",
+   "reason": "R22 strict intersection §1.1: bodySize 1.0 sits in the banned 0.3–3.0 band (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "GR_ParagonInsectoid",
+   "reason": "R22 strict intersection §1.1: bodySize 2.5 sits in the banned 0.3–3.0 band (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Gorg",
+   "reason": "R22 size ban: bs 0.3 boundary (MEASURED); SW ambush frog is a Desert keep (prep §2.2)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Gutkurr",
+   "reason": "R22 size ban: bs 2.0 (MEASURED); owner card: adjust-and-keep in Desert at moveSpeed 4.4",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "HermitCrab",
+   "reason": "recognizability, doubly strict here (dune sea ban list): a crab is a crab (prep §6.4)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Iriaz",
+   "reason": "R22 size ban: bodySize 0.7 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "IridonianReek",
+   "reason": "R22 size ban: bs 3.0 (MEASURED); SW herd herbivore bulk-move (prep §3.5)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "JRWBaseopsis",
+   "reason": "R22 size ban: bodySize 3.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWGeralinura",
+   "reason": "R22 size ban: bodySize 1.5 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "JRWProtosolpuga",
+   "reason": "R22 size ban: bodySize 1.5 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Jamel",
+   "reason": "R22 size ban: bs 1.9 (MEASURED); slow herd endurer, Desert keep (prep §2.2)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Jerbal",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Beasts of the Rim",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "KellDragon",
+   "reason": "R22 predator law: predator, not subsurface-strike (bs 4.0, spd 4.0 MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Kinrath",
+   "reason": "R22 size ban: bodySize 1.2 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Klorslug",
+   "reason": "R22 size ban: bodySize 1.5 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Krykna",
+   "reason": "R22 size ban: bodySize 0.8 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "KwazelMaw",
+   "reason": "R22 predator law: ambush-from-water, not subsurface sand strike (bs 4.0, MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "LavaFlea",
+   "reason": "R22 size ban: bodySize 2.4 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Ling_Cockroach",
+   "reason": "R22 size ban: bodySize 2.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Locust",
+   "reason": "R22 size ban: bodySize 0.6 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "LongtailGorg",
+   "reason": "R22 size ban: bs 0.6 (MEASURED); shrubland medium keep (prep §3.2)",
+   "disposition": "move:AridShrubland"
+  },
+  {
+   "def": "Lylek",
+   "reason": "R22 predator law: pursuit giant, spd 5.0 predator (MEASURED) — \"nothing charges out of a bush; there is no bush\"",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "MA_Hellboar",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Mythic Ages",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "MA_Raptorkhan",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Mythic Ages",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "Massiff",
+   "reason": "R22 size ban: bs 0.85 (MEASURED); owner card: moves to AridShrubland medium band",
+   "disposition": "move:AridShrubland"
+  },
+  {
+   "def": "Mynock",
+   "reason": "R22 size ban: bs 0.5 (MEASURED); §9 trims Mynock to Fall Line + poison forest (parasite needs hosts/hulls)",
+   "disposition": "move:fall_line"
+  },
+  {
+   "def": "Neebray",
+   "reason": "§9 ubiquity trim (binding): Neebray to poison forest + caves; bs 0.2 passes size but the trim rules it",
+   "disposition": "move:PoisonForest"
+  },
+  {
+   "def": "Orray",
+   "reason": "R22 size ban: bodySize 2.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "PaintedSpat",
+   "reason": "R22 size ban: bodySize 1.5 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Pulmonoscorpius",
+   "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Megafauna",
+   "disposition": "cut:creature_recognizability_rule.md §6"
+  },
+  {
+   "def": "Roggwart",
+   "reason": "R22 predator law: predator, not subsurface-strike (bs 5.0, spd 4.5 MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Ronto",
+   "reason": "deep desert ban 7: no large surface herds — bs 6.0 herd (MEASURED); herds belong to Desert where a herd is infrastructure (desert.md §4)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Scavrat",
+   "reason": "R22 size ban: bs 0.5 (MEASURED); re-homed to the Fall Line where scurrying between wrecks is correct (prep §8.4)",
+   "disposition": "move:fall_line"
+  },
+  {
+   "def": "Shyrack",
+   "reason": "R22 size ban: bs 0.75 (MEASURED); Desert keep as slow cave-mouth ambusher (prep §2.2); flier claim UNMEASURED",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Skalder",
+   "reason": "deep desert ban 7: herd giant, bs 4.0 (MEASURED); herds are Desert infrastructure",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Sketto",
+   "reason": "R22 size ban: bs 0.4 (MEASURED); Desert keep (prep §2.2)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Stintaril",
+   "reason": "R22 size ban: bodySize 0.5 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "StoneCrab",
+   "reason": "recognizability, doubly strict here: a crab is a crab (prep §6.4)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Thranta",
+   "reason": "deep desert ban 7 herd + predator not subsurface (MEASURED bs 4.0); flier claim UNMEASURED (register flies flag broken)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Tooke",
+   "reason": "R22 predator law: predator + spd 6.0 (MEASURED) = pursuit, not subsurface strike",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Tukata",
+   "reason": "R22 predator law: predator, not subsurface-strike (bs 4.0, spd 5.0 MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Urusai",
+   "reason": "R22 size ban: bs 0.75 (MEASURED); shrubland medium keep (prep §3.2)",
+   "disposition": "move:AridShrubland"
+  },
+  {
+   "def": "Uvak",
+   "reason": "R22 size ban: bs 3.0 (MEASURED); prep §3.3 names it natural desert herd stock (register predator flag noted as discrepancy)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "VFEI2_Acidspitter",
+   "reason": "R22 size ban: bodySize 1.8 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "VFEI2_Boomtick",
+   "reason": "population target \"sparse to discomfort\" (dune sea §Roster) at comm 1.0; predator mode not subsurface (UNMEASURED behaviour)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "VFEI2_Fuelmite",
+   "reason": "R22 size ban: bs 1.35 (MEASURED); \"fuelmite\" eats fuel — Fall Line niche (prep §8.4)",
+   "disposition": "move:fall_line"
+  },
+  {
+   "def": "VFEI2_Gigalocust",
+   "reason": "R22 size ban: bodySize 2.2 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "VFEI2_Hellbeetle",
+   "reason": "R22 size ban: bodySize 1.2 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "VFEI2_Macrofly",
+   "reason": "R22 size ban: bodySize 0.8 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "VFEI2_Megathrips",
+   "reason": "R22 size ban: bodySize 0.35 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "VFEI2_Megawasp",
+   "reason": "R22 size ban: bodySize 1.35 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "VFEI2_Queen",
+   "reason": "R22 predator law + boom-and-bust hive structure; bs 4.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Vapaad",
+   "reason": "R22 predator law: predator, not subsurface-strike (bs 4.0, spd 3.8 MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "Varactyl",
+   "reason": "R22 size ban: bs 3.0 in 0.3–3.0 (MEASURED); SW herd herbivore — bulk-move ruling (prep §3.5, accepted)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Vulptex",
+   "reason": "deep desert ban 3: crystalline fox — mineralized/shiny on sight; also R22 size ban bs 0.55 (MEASURED)",
+   "disposition": "homeless-reserve"
+  },
+  {
+   "def": "WompRat",
+   "reason": "R22 size ban: bs 0.75 (MEASURED); icon — Fall Line ship vermin (prep §8.4); also Desert-legal ambusher",
+   "disposition": "move:fall_line"
+  },
+  {
+   "def": "Worrt",
+   "reason": "R22 size ban: bs 0.6 (MEASURED); slow positional predator, Desert-legal (spd 2.5)",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Wraid",
+   "reason": "R22 size ban: bs 3.0 (MEASURED); owner card: adjust-and-keep in Desert as burst predator at moveSpeed 4.4",
+   "disposition": "move:Desert"
+  },
+  {
+   "def": "Wyyyschokk",
+   "reason": "R22 size ban: bodySize 3.0 in banned 0.3–3.0 (MEASURED)",
+   "disposition": "homeless-reserve"
+  }
+ ],
+ "stat_adjustments": [],
+ "flora": [
+  {
+   "def": "AB_GiantStikehr",
+   "commonality": 0.04,
+   "law": "alien spike form, not Earth-nameable; dry standing form at trace density (dune sea §5: density absurdly low)"
+  },
+  {
+   "def": "Plant_Bloddle",
+   "commonality": 0.05,
+   "law": "SW donor plant, alien name; trace density",
+   "note": "appearance eye test owed — dune sea bans green/leafy above-ground parts; see confidence"
+  }
+ ],
+ "flora_purged": [
+  {
+   "def": "AB_EuphorbiaRimworldia",
+   "reason": "Earth-nameable genus (euphorbia) — owner card 2026-09-09 planet-wide purge"
+  },
+  {
+   "def": "AB_EuphorbiaDesiccata",
+   "reason": "Earth-nameable genus (euphorbia)"
+  },
+  {
+   "def": "AB_GargantuanLithops",
+   "reason": "Earth-nameable genus (lithops)"
+  },
+  {
+   "def": "VCE_Plant_PincushionPlant",
+   "reason": "Earth houseplant (pincushion)"
+  },
+  {
+   "def": "VCE_Plant_Echeveria",
+   "reason": "Earth-nameable genus (echeveria)"
+  },
+  {
+   "def": "VCE_Plant_FairyWashboard",
+   "reason": "Earth houseplant (haworthia)"
+  },
+  {
+   "def": "VCE_Plant_SweetheartPlant",
+   "reason": "Earth houseplant (hoya)"
+  },
+  {
+   "def": "TreeDead",
+   "reason": "deep desert §8: there is NO fuel here — the fire-scarcity loop forbids scattered dead wood"
+  },
+  {
+   "def": "GRimTreeDead",
+   "reason": "Grindterra reskin (fails on sight) + the same no-fuel law"
+  },
+  {
+   "def": "AB_DeadBowerTree",
+   "reason": "deep desert §8 no-fuel law: dead standing wood is imported treasure, never scenery"
+  }
+ ],
+ "fish": {
+  "ruling": "no fish — there is no water of any kind: no standing water, no ice, no fog, no condensate (dune sea §5); the only brine is cavern seeps metres wide (deep desert §8)",
+  "list": []
+ },
+ "new_defs": [
+  {
+   "name": "glass-nub light-pipe flora",
+   "kind": "plant",
+   "mechanic_load": "none (defs now); buried-canopy render trick",
+   "from_sheet": "dune_sea §4"
+  },
+  {
+   "name": "silverbole (owner to name; silver required) — heat/flame-immune wood, sharp/blunt-weak",
+   "kind": "plant",
+   "mechanic_load": "material stat signature",
+   "from_sheet": "deep_desert §4b"
+  },
+  {
+   "name": "mirror-plated sun-axis asymmetric giant",
+   "kind": "creature",
+   "mechanic_load": "none blocking",
+   "from_sheet": "dune_sea §4/§Roster"
+  },
+  {
+   "name": "shade-commensal micro-fauna living under a walking giant",
+   "kind": "creature",
+   "mechanic_load": "C#: shade-follow (no donor mechanic keys to another creature's shadow)",
+   "from_sheet": "dune_sea §4"
+  },
+  {
+   "name": "egg-trap clutch (birth-trap eggs)",
+   "kind": "creature",
+   "mechanic_load": "C#: hatch-on-approach",
+   "from_sheet": "deep_desert §4"
+  },
+  {
+   "name": "drum-lure subsurface predator (lures that drum juicy)",
+   "kind": "creature",
+   "mechanic_load": "C#: vibration lure",
+   "from_sheet": "deep_desert §4"
+  },
+  {
+   "name": "cavern beast with prized massive eggs (Mandalorian reference)",
+   "kind": "creature",
+   "mechanic_load": "cavern authoring item",
+   "from_sheet": "deep_desert §8"
+  },
+  {
+   "name": "dormancy-trigger dune fauna (reskin lane: 107 live VFEI2 dormant rows carry the mechanic)",
+   "kind": "creature",
+   "mechanic_load": "reskin, no new C#",
+   "from_sheet": "dune_sea §4 / prep §1.4"
+  }
+ ],
+ "confidence": [
+  {
+   "claim": "GraniteSlug / AA_BoulderMit pass deep desert ban 3 (no mineralized/shiny look)",
+   "status": "UNMEASURED",
+   "why": "eye test is the owner's; stone-named but matte-dusty reads plausible"
+  },
+  {
+   "claim": "Plant_Bloddle has no green leafy above-ground parts",
+   "status": "UNMEASURED",
+   "why": "texture eye test owed"
+  },
+  {
+   "claim": "nocturnal-behaviour ban (dune sea ban 1) enforced",
+   "status": "UNMEASURED",
+   "why": "no register field covers activity cycles; def-level lint owed (prep §1.5 q5)"
+  },
+  {
+   "claim": "all flier reasoning (Shyrack, Thranta)",
+   "status": "UNMEASURED",
+   "why": "register flies special is broken (set on ~every row)"
+  },
+  {
+   "claim": "SandWorm_Thing and RUT_LongHunger excluded from every stat test",
+   "status": "UNMEASURED",
+   "why": "statsResolved false; leviathan kindOf — not wild-roster material anyway"
+  },
+  {
+   "claim": "GR_ prefix resolution",
+   "status": "RESOLVED",
+   "why": "GR_ = Vanilla Genetics Expanded chimeras, judged per law (GRim* = Grindterra, homeless). Both GR_ evictions here re-grounded on the R22 size band, not the prefix card."
+  }
+ ]
+}
