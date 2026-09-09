@@ -132,8 +132,15 @@ def resolve_xeno(defname, xenos):
         return None, "dead (stale duplicate; superseded by RSW_RimMandrakeJawa)"
     if defname in xenos:
         return defname, None
+    # PAWNFLAVOR_GEN_BEHIND_1: the RSW_ tier-rename isn't limited to defNames
+    # that already started with "RimMandrake" (RimMandrakeAbednedo ->
+    # RSW_RimMandrakeAbednedo) - it also re-prefixed names that didn't
+    # (Jawa_Xeno_Gamorrean -> RSW_Jawa_Xeno_Gamorrean, dump-confirmed still
+    # owned by mandrake.rsw.patches/"RimStarWars Patches"). Gating this
+    # fallback on startswith("RimMandrake") silently dropped that row's
+    # flavor text on every regen; try the alias unconditionally instead.
     alias = "RSW_" + defname
-    if defname.startswith("RimMandrake") and alias in xenos:
+    if alias in xenos:
         return alias, None
     return None, "not found in dump under its census name or the RSW_ tier-rename pattern"
 
