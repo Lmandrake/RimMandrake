@@ -53,3 +53,24 @@ GAPING_DOOM_SITE_1 and the Junkers).
 - The formal start exists on THE map, matches the crawl ("mountain of the galaxy's
   discards"), and both promised skylines — ruined ships and old megastructures — are
   present at the site (one real, one injected).
+
+## RUN-SHEET — the flight to Zeddo's Yard (state as of 2026-09-09 05:40Z, game DOWN)
+Owner's overnight mandate: fly it, crew it, ready the map for play. Baseline save:
+**EXPERIMENTAL_shipprint_2026-09-09.rws** (V28 content + A4 spur clear + the printed
+ship at footprint 143,59,86,133 on the colony map, tile 16869).
+1. Game-up (FOUNDRY owns the relaunch) → `rimflow bridge take` → load EXPERIMENTAL save.
+2. ⚠️ Re-read faction with the RIGHT field: `list_things` returns **`faction`**, not
+   `factionName` — the "everything factionless" reading was my wrong key. If truly
+   unclaimed: per-cell Claim designator id
+   `architect-designator:orders:highlight-designator-tutortagnotset-7` (cell apply only).
+3. Clear the rocks: `destroy_batch` chunks/outcrops in and beside the footprint (the
+   pre-clear sweep I owed — owner saw rocks right of the ship).
+4. Build `PilotConsole` (vanilla Odyssey def — the layout ships none) on powered
+   substructure near the engine (187,150); conduit if needed.
+5. Fuel: fill the 2 ChemfuelTanks (dev refuel route), verify thruster pipe nets see it.
+6. Engine inspection by a colonist (order a pawn; gate is upstream of everything).
+7. Crew: apply `Transient/final_review/crew_spec.json` — remove the 3 test colonists,
+   spawn + author the Five Founders aboard (fidelity scope, characterful not optimal).
+8. Pre-flight save (the landing chain can wedge — no retry exists).
+9. Launch → target tile 17007 → land; the map generates with the Zeddo ruin-field
+   mutators. 10. Ready-for-play pass + CANONICAL save.
