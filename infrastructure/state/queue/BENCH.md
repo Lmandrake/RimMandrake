@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T03:09:08Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-09T03:18:44Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -453,3 +453,13 @@ kind:     task
 thin:     no ## criteria
 summary:  - Measure first: current live memory footprint (RSS of the RimWorld process) at a
 prose:    infrastructure/state/items/RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1.md
+
+## BENCH_REBOOT_HANDOFF_202609082018 Reboot handoff: consolidation sitting complete, MODERN baseline recorded, next = worldmap sitting with the owner (bridge work)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BENCH_REBOOT_HANDOFF_202609082018.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BENCH_REBOOT_HANDOFF_202609082018.md

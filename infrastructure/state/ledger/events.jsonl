@@ -6196,3 +6196,12 @@
 {"seat":"BENCH","event":"capability","system":"ManyWaters","function_rung":"implemented","content_rung":"none","evidence_ref":"MOD_CONSOLIDATION_SPRINT_1 proof load 2026-09-09 R10: gathers RiverSteam steam fleck effect C# into a generic RM water-effects engine; CSV row83","note":"known gap: not generic yet, see MANYWATERS_GENERIC_SPLIT_1","ts":"2026-09-09T03:09:08Z"}
 {"seat":"FOUNDRY","event":"close","id":"BIOME_LABEL_CAMPAIGN_NAMES_1","sha":"457d21f51d6eb4b6bae79debf1f394014e449d5f","ts":"2026-09-09T03:12:36Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-09T03:16:39Z"}
+{"seat":"FOUNDRY","event":"claim","id":"UTINNI_SHELL_DEFNAME_BUG_1","ts":"2026-09-09T03:18:25Z"}
+{"seat":"FOUNDRY","event":"start","id":"UTINNI_SHELL_DEFNAME_BUG_1","ts":"2026-09-09T03:18:26Z"}
+{"seat":"FOUNDRY","event":"claim","id":"STARWARSRACES_TOOLBOX_SOFT_DEP_1","ts":"2026-09-09T03:18:27Z"}
+{"seat":"FOUNDRY","event":"start","id":"STARWARSRACES_TOOLBOX_SOFT_DEP_1","ts":"2026-09-09T03:18:27Z"}
+{"seat":"FOUNDRY","event":"claim","id":"RAIDREDESIGNER_HARD_PROPERTY_REF_1","ts":"2026-09-09T03:18:28Z"}
+{"seat":"FOUNDRY","event":"start","id":"RAIDREDESIGNER_HARD_PROPERTY_REF_1","ts":"2026-09-09T03:18:29Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1","ts":"2026-09-09T03:18:30Z"}
+{"seat":"FOUNDRY","event":"start","id":"LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1","ts":"2026-09-09T03:18:30Z"}
+{"seat":"BENCH","event":"file","id":"BENCH_REBOOT_HANDOFF_202609082018","title":"Reboot handoff: consolidation sitting complete, MODERN baseline recorded, next = worldmap sitting with the owner (bridge work)","kind":"task","target":"v1","for":"BENCH","ts":"2026-09-09T03:18:44Z"}
