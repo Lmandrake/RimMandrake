@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T03:18:44Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-09T03:28:57Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -461,5 +461,5 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BENCH_REBOOT_HANDOFF_202609082018.md yet — write one when you have something to say)
+summary:  BENCH reboot handoff — 2026-09-08 evening
 prose:    infrastructure/state/items/BENCH_REBOOT_HANDOFF_202609082018.md

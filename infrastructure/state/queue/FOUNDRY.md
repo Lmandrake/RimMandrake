@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T03:09:08Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T03:28:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -540,14 +540,14 @@ kind:     task
 summary:  Per CLAUDE.md's own note: the two laws (text/menu authority only; the game
 prose:    infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md
 
-## BIOME_LABEL_CAMPAIGN_NAMES_1 Relabel the 26 donor biomes to their campaign names -- the planet currently shows 'Cypre Jungle', 'Mycotic Jungle', 'GRimond' instead of the Greentide, the Rot, the Blue Desert
+## UTINNI_SHELL_DEFNAME_BUG_1 UtinniShell emits Config error every full-list load: defName 'Utinni Shellmandrake.rut.shell' — name and packageId concatenated somewhere in its def authoring
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     task
-summary:  the symptom
-prose:    infrastructure/state/items/BIOME_LABEL_CAMPAIGN_NAMES_1.md
+kind:     bug
+summary:  (no items/UTINNI_SHELL_DEFNAME_BUG_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/UTINNI_SHELL_DEFNAME_BUG_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -945,26 +945,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BRIDGETOOLS_DLL_GM_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BRIDGETOOLS_DLL_GM_DRIFT_1.md
 
-## UTINNI_SHELL_DEFNAME_BUG_1 UtinniShell emits Config error every full-list load: defName 'Utinni Shellmandrake.rut.shell' — name and packageId concatenated somewhere in its def authoring
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/UTINNI_SHELL_DEFNAME_BUG_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/UTINNI_SHELL_DEFNAME_BUG_1.md
-
-## STARWARSRACES_TOOLBOX_SOFT_DEP_1 StarWarsRaces DefModExt_HeadTypeStuff depends on neronix17.toolbox with no MayRequire — every HeadTypeDef silently vanishes if Tabula Rasa goes inactive (walk-authoring find)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/STARWARSRACES_TOOLBOX_SOFT_DEP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/STARWARSRACES_TOOLBOX_SOFT_DEP_1.md
-
 ## ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1 AshkarrFlora RUT_SweetlineTree texture folder is empty; 11 candidate PNGs sit unmoved in _artsrc — wire or cut (walk-authoring find)
 state:    proposed
 row:      unassigned
@@ -974,26 +954,6 @@ kind:     fix
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1.md
-
-## RAIDREDESIGNER_HARD_PROPERTY_REF_1 RaidRedesigner DLL hard-references RimMandrakeProperty (PropertyEngine.Fire) but About.xml declares only soft loadAfter — declare the hard dep or guard the call
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RAIDREDESIGNER_HARD_PROPERTY_REF_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RAIDREDESIGNER_HARD_PROPERTY_REF_1.md
-
-## LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1 LanternDeeps GenStep biome allowlist names biomes from mods its About.xml never declares — on most lists the scatter step silently never fires (walk-authoring find)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1.md
 
 ## KOTOR_CRYSTAL_GENSTEP_DRIFT_1 Deployed KOTOR_CrystalFormation genstep scatters only Stygium; repo's absorbed copy lists 12 crystal variants — diff repo vs deployed, redeploy or pull (crystal-inventory find)
 state:    proposed
@@ -1184,3 +1144,23 @@ kind:     bug
 thin:     no ## spec
 summary:  ARMOURYLEATHERRATINGSREGENSTALE1
 prose:    infrastructure/state/items/ARMOURY_LEATHER_RATINGS_REGEN_STALE_1.md
+
+## PROPANE_LAKES_SELF_CONTAINED_BIOME_1 Author the Propane Lakes' own self-contained BiomeDef (RM tier), replacing donor AB_PropaneLakes — owner-delegated pick, worldmap sitting 2026-09-08; mirror the Pyrelands pattern: own weather (fuel snow, dry lightning, reconnection storms), crystal flora 1-day regrow, propane-sea terrain, 110d clock; sheet: design/Jawa/worldbuilding/biomes/the_propane_lakes.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PROPANE_LAKES_SELF_CONTAINED_BIOME_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PROPANE_LAKES_SELF_CONTAINED_BIOME_1.md
+
+## PROPANE_LAKES_WORLD_SWITCH_1 Switch Ashkarr's AB_PropaneLakes tiles (MEASURED 2,531 on live V24) to the new RM Propane Lakes biome once it proves out in a quicktest — same lane as PYRELANDS_WORLD_SWITCH_1, rides a deploy+restart window
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PROPANE_LAKES_WORLD_SWITCH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PROPANE_LAKES_WORLD_SWITCH_1.md
