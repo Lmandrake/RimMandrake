@@ -383,7 +383,7 @@ h1{font-family:"Archivo",sans-serif;font-size:17px;margin:0;font-weight:800;lett
 .legend .sw i{width:9px;height:11px;display:inline-block}
 .legend .dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;
   vertical-align:-1px}
-main{max-width:1360px;margin:0 auto;padding:16px 22px}
+main{max-width:1860px;margin:0 auto;padding:16px 22px}
 section.block{margin-bottom:22px}
 h2{font-family:"Archivo",sans-serif;font-size:12px;text-transform:uppercase;
   letter-spacing:.09em;color:var(--dim);margin:0 0 10px;display:flex;
@@ -552,7 +552,7 @@ svg.reg{width:100%;height:190px;display:block}
       <div class="mid">
         <div>
           <h2>Maturity grid <span class="n" id="gridN"></span></h2>
-          <div class="panel"><div id="gridWrap" style="overflow-x:auto"></div></div>
+          <div class="panel"><div id="gridWrap" style="overflow-x:auto;scrollbar-width:thin"></div><div class="muted" id="gridScrollHint" style="display:none;font-size:10px;margin-top:4px">⟷ grid wider than panel — scroll horizontally</div></div>
         </div>
         <div class="rail">
           <div>
@@ -805,6 +805,7 @@ document.getElementById("gridN").textContent =
     .concat([el("td", {"class":"marg"}, [String(total)])]));
   table.appendChild(tf);
   wrap.appendChild(table);
+  requestAnimationFrame(()=>{ if(wrap.scrollWidth > wrap.clientWidth + 4) document.getElementById("gridScrollHint").style.display="block"; });
 })();
 
 /* ---- roster: filter + sort ---- */
