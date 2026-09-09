@@ -18,5 +18,15 @@
   <loadAfter>
     <li>BiomesTeam.BiomesCaverns</li>
     <li>m00nl1ght.GeologicalLandforms</li>
+    <!-- LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1: GenStep_ScatterCavePortal's host-biome
+         allowlist checks map.Biome.defName against RUT_NightsideIce and RUT_PropaneLake
+         (mandrake.rut.patches) and BiomeGRimond (grimterra.biomesmod, "GRiNDTerra
+         Biomes" - the_blue_desert.md's donor). Neither was declared here, so on most
+         lists neither host mod was guaranteed present/ordered relative to this one.
+         Soft loadAfter, not modDependencies: the GenStep already self-gates to a no-op
+         when a host biome is absent (see the .cs), so this mod stays fully loadable
+         without any of them - it just never scatters. -->
+    <li>mandrake.rut.patches</li>
+    <li>grimterra.biomesmod</li>
   </loadAfter>
 </ModMetaData>
