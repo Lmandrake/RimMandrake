@@ -27,8 +27,8 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/DamageDef[defName="guy762_RangedDamage_sonic"]</xpath>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Star Wars KotOR Resources and Materials</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
         <!-- guy762_RangedDamage_sonic: Sharp -> Blunt -->
@@ -36,27 +36,11 @@
           <xpath>/Defs/DamageDef[defName="guy762_RangedDamage_sonic"]/armorCategory</xpath>
           <value><armorCategory>Blunt</armorCategory></value>
         </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/DamageDef[defName="guy762_MeleeDamage_sonic"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
         <!-- guy762_MeleeDamage_sonic: Sharp -> Blunt -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/DamageDef[defName="guy762_MeleeDamage_sonic"]/armorCategory</xpath>
           <value><armorCategory>Blunt</armorCategory></value>
         </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/DamageDef[defName="guy762_GrenadeDamage_sonic"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
         <!-- guy762_GrenadeDamage_sonic: Sharp -> Blunt -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/DamageDef[defName="guy762_GrenadeDamage_sonic"]/armorCategory</xpath>
