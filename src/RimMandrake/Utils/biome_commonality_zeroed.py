@@ -61,7 +61,12 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
-CAST_PATCH = os.path.join(REPO, "src", "SPLIT_Phase3", "Jawa_Patches", "Patches", "BiomeCast_Ashkarr.xml")
+# ⚠️ This pointed at src/SPLIT_Phase3/Jawa_Patches/ - a path that has not existed since
+# JAWA_PATCHES_SPLIT_1 - and ours() returned {} for a missing file, so the flag that
+# scopes this whole instrument to OUR cast reported "0 at commonality 0" while reading
+# nothing at all. A confident zero from a file that is not there. Corrected 2026-09-09.
+CAST_PATCH = os.path.join(REPO, "src", "RimUtinni", "UtinniPatches", "Patches",
+                          "BiomeCast_Ashkarr.xml")
 
 sys.path.insert(0, os.path.join(REPO, "design", "Jawa", "fauna"))
 import cherrypicker                                            # noqa: E402 — same dir
@@ -99,19 +104,41 @@ def load_biomes(capture):
 
 
 def ours():
-    """{biome: {animal: commonality}} that OUR cast patch writes, or {} if absent."""
+    """{biome: {animal: commonality}} that OUR cast patch writes.
+
+    ⛔ Never returns {} for a missing or unparseable file - it exits. An empty answer
+    here reads as "nothing of ours is zeroed", which is the exact false clean this
+    instrument exists to prevent, and it shipped once (see CAST_PATCH above).
+
+    🔑 TWO OPERATION SHAPES, and reading only the first halves the answer silently.
+    The base rows arrive as PatchOperationReplace with <value><wildAnimals>…; every
+    donor-gated row arrives as PatchOperationAdd whose xpath already points AT
+    wildAnimals, so its animals sit DIRECTLY in <value>. Most of the cast is donor-
+    gated, so the Replace-only regex saw a small fraction of it.
+    """
+    import xml.etree.ElementTree as ET
     if not os.path.isfile(CAST_PATCH):
-        return {}
-    text = open(CAST_PATCH, encoding="utf-8").read()
+        sys.exit("UNMEASURED: no cast patch at " + CAST_PATCH + " - refusing to report "
+                 "a clean scope built from a file that is not there.")
+    xp_re = re.compile(r'/Defs/BiomeDef\[defName="([^"]+)"\]/wildAnimals')
     out = {}
-    for m in re.finditer(
-            r'PatchOperationReplace">\s*<xpath>/Defs/BiomeDef\[defName="([^"]+)"\]'
-            r'/wildAnimals</xpath>\s*<value>\s*<wildAnimals>(.*?)</wildAnimals>',
-            text, re.S):
-        out[m.group(1)] = {
-            e.group(1): float(e.group(2))
-            for e in re.finditer(r"<(\w+)>([\d.]+)</\1>", m.group(2))
-        }
+    root = ET.parse(CAST_PATCH).getroot()
+    for op in root.iter("Operation"):
+        m = xp_re.fullmatch((op.findtext("xpath") or "").strip())
+        if not m:
+            continue
+        for val in op.iter("value"):
+            wrapped = val.find("wildAnimals")
+            for kid in (wrapped if wrapped is not None else val):
+                if not isinstance(kid.tag, str):
+                    continue
+                try:
+                    out.setdefault(m.group(1), {})[kid.tag] = float(kid.text)
+                except (TypeError, ValueError):
+                    continue
+    if not out:
+        sys.exit("UNMEASURED: " + CAST_PATCH + " parsed to zero cast entries - its shape "
+                 "changed, and a scoped run would report a false clean.")
     return out
 
 
