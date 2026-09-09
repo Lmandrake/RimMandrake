@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Absorbed from Lumi.doorsexpanded (workshop 3550435517), source files
+     Defs/ResearchProjectDefs/Heron_ResearchProjects.xml and
+     Heron_ResearchTab.xml, BLASTDOOR_LUMI_PORT_1 (2026-09-08).
+
+     Only the 2 research projects the ported blast doors reference
+     (ProjectHeron_Swdoors gates PH_DoorThickBlastBDoor,
+     ProjectHeron_BlastDoors gates PH_DoorBlastCDoor/PH_DoorBlastDDoor) plus
+     their tab. Lumi's other research projects (prisoner containment etc.)
+     are out of scope.
+
+     defNames preserved verbatim - completed research is save-referenced by
+     defName, so these must not change ahead of NAMING_SCHEME_EXECUTION_1
+     even though the tab now only has these 2 entries under this mod. -->
+<Defs>
+
+  <ResearchTabDef>
+    <defName>Heron_ResearchTab</defName>
+    <label>Doors Research</label>
+  </ResearchTabDef>
+
+  <ResearchProjectDef>
+    <defName>ProjectHeron_Swdoors</defName>
+    <label>Star Wars Doors</label>
+    <description>Gives you the door that you dreamed about.</description>
+    <baseCost>800</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>Heron_ResearchTab</tab>
+    <researchViewX>2</researchViewX>
+    <researchViewY>3</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>ProjectHeron_BlastDoors</defName>
+    <label>blast doors</label>
+    <description>Allows for the production of blast absorbing pressurized blast doors.</description>
+    <baseCost>3000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+    <tab>Heron_ResearchTab</tab>
+    <researchViewX>2</researchViewX>
+    <researchViewY>2</researchViewY>
+  </ResearchProjectDef>
+
+</Defs>
