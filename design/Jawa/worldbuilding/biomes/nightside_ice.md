@@ -23,9 +23,11 @@ sheet is now the column's top.
 
 ## 0. The measurements everything rests on
 
-MEASURED off `world/ASHKARR_WORLDMAP_tiles.csv`: the def holds **1,406 tiles**. Arc
-111→139 (p10/median/p90 117/125/135); |lat| median 31°; temp p10/median/p90
-**−45 / −32 / −22 °C**, summer maximum below 0 °C on every tile; **elevation median 748 m
+MEASURED live on V26 (2026-09-08): the def holds **1,506 tiles**. *(Amendment: +90
+arrived from the Rot's cold-tail repaint, owner ruled 2026-09-08 — the sub-−42 °C
+Ashwood/Blindwood/Stillwood/Capwood clusters at arc 130–142 are ice now; earlier passes
+account for the last 10 over the old 1,406.)* Temp p10/median/p90
+**−45.8 / −33.4 / −22 °C**, summer maximum below 0 °C on every tile; **elevation median ~748 m
 (max 1,884) — the deep night's mountains, under ice.** Zero water tiles. Regions Deadstone
 663, Sunreach 263, Gray Crags 105, Nightspill 105, South Crags 78, Rimewall 64, Twilight
 Crags 60, Cinderdark 42, The Verge 15, Quiet Ground 7 (+4: Ammonia Flats 2, Ashen Wastes 1,
@@ -346,7 +348,7 @@ strange, and mostly not obviously fauna at all.
 ## Owed
 
 - `NIGHTSIDE_ICE_DEF_1` — author `RUT_NightsideIce` (inherit vanilla's shape, override every
-  list, no arctic zoo, no snow table); paint its 1,406 tiles under
+  list, no arctic zoo, no snow table); paint its tiles (1,506 as of V26) under
   `HORRORWASTES_BIOME_DISSOLVE_1`; add it to the world tools' biome list.
 - **Name** — owner's pick if the dirty-ice plateau wants one beyond "the Nightside Ice."
 - **Tunnelers and icy insects** — authoring (art to the NEW-ART ledger; the within-ice

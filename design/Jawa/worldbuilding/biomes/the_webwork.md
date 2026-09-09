@@ -32,8 +32,9 @@ on the map. Saved as `WORLDMAP_V26_webwork_rivers_2026-09-09`.)* Sun median **+5
 than the Greentide. Temp p10/median/p90 38.6 / 49.2 / 58.2 °C (max 63.9).
 High-relief: 34 mountainous + 9 impassable + 56 large-hill of 169 (55 flat, 15
 small-hill); elevation median 361 m,
-to 1,255 m. Regions: **Dune Sea 81, Scald Spine 43**, Dew Belt 16, Hollow Verge
-16, Anvil 12, Dew Horn 1.
+to 1,255 m. Regions: **Dune Sea 79, Scald Spine 41**, Dew Belt 14, Hollow Verge
+16, Anvil 10, Dew Horn 1. *(Amendment 2026-09-08: −2 each from Dune Sea, Scald Spine,
+Dew Belt and Anvil — the 8 through-river tiles transferred to the Greentide.)*
 
 🔴 **The rain is bimodal and it is the biome's skeleton: 96 tiles get ZERO rain;
 the other 73 climb to 1,529 mm** — near the heaviest on the planet, on green

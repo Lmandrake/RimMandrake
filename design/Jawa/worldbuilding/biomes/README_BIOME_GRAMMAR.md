@@ -122,7 +122,7 @@ Order is by **similarity — slowly vary** (owner, 2026-09-05).
 | `desert.md` | `Desert` | ✅ done |
 | `arid_shrubland.md` | `AridShrubland` | ✅ done 2026-09-05 |
 | `wasteland.md` | `Wasteland` | ✅ done 2026-09-05 — the dryland ladder is complete |
-| `forsaken_crags.md` | `AB_RockyCrags` (Forsaken Crags, 1,225 tiles MEASURED — an earlier "4,440" here was wrong) | ✅ done 2026-09-06 — donor content incorporated wholesale, the Dark's physics ratified |
+| `forsaken_crags.md` | `AB_RockyCrags` (Forsaken Crags, 1,170 tiles MEASURED on V26 — earlier "1,225" and "4,440" here were stale; the sheet's own §0 is the number's home) | ✅ done 2026-09-06 — donor content incorporated wholesale, the Dark's physics ratified |
 | `the_rot.md` | `AB_MycoticJungle` ("The Rot", owner-named; 1,939 tiles MEASURED) | ✅ done 2026-09-06 — the planet's gut; nightside-lush honored; gene-reactor mechanic RESERVED for `AB_GelatinousSuperorganism` |
 | `the_slime.md` | `AB_GelatinousSuperorganism` ("The Slime", owner-named; 96 tiles MEASURED) | ✅ done 2026-09-06 — the living registry; Assailant-sibling of The Rot; gene machine, slime rain, Slime Pit |
 | `assailant_weapon_remnants.md` | `HorrorWastes` ⛔ DISSOLVED · `AB_OcularForest` → the Overdrive site | ✅ ruled 2026-09-06 — neither is a biome: Horrors = raiding faction + injected dungeons; Ocular = named site + custom dungeon |

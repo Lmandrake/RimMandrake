@@ -27,10 +27,12 @@ tiles (85%).** That is the biome in one number: no river, no jungle. *(Amendment
 ruled 2026-09-08: the 36 riverless tiles are read as **the dying river and its graves** —
 its own canon, no repaint; and 8 through-river tiles arrive from the Webwork, whose sheet
 keeps no surface river — dayside river lines are the Greentide's by the lush rule.)* Arc 11.3→58.3 (median 44.7 — the sun **+45° up**,
-Extreme Desert energy). Temp median **45.5 °C** (39.1..64.4). Elevation median
+Extreme Desert energy). Temp median **45.5 °C** (35.5..64.4 — the floor dropped with
+the 8 arrivals). Elevation median
 287 m, but nearly half the tiles are large-hill/mountainous/impassable (39+78+8) —
-**gorge country**, not flat jungle. Regions: Dune Sea 81, Scald Spine 58, Dew Belt
-41, Hollow Verge 13, Anvil 13, Dew Horn 11, Fever Wood 10 — two green groves
+**gorge country**, not flat jungle. Regions: Dune Sea 83, Scald Spine 60, Dew Belt
+43, Hollow Verge 13, Anvil 15, Dew Horn 11, Fever Wood 10 *(+2 each to Dune Sea, Scald
+Spine, Dew Belt, Anvil — the Webwork's river tiles, 2026-09-08)* — two green groves
 flanking the Scald plus ribbons out into open sand. Wildsteam holds two seats here
 on the owner's own coordinates: **Oilpalm** (tile 4271, 58.6 °C, on the river — the
 clan's hottest) and **Warthorn** (tile 16641, 1,128 m, river + CaveLakes — its
