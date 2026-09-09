@@ -218,8 +218,10 @@ def canonical_rels(rels):
     ask = [r for r in rels if not (r.startswith("../") or r == "..")]
     if not ask:
         return out
+    # (icase,literal): literal kills glob interpretation — "[", "*", "?" in a
+    # filename are pathspec magic by default and would match a DIFFERENT file.
     r = git(["-c", "core.quotePath=false", "ls-files", "--"]
-            + [":(icase)" + a for a in ask])
+            + [":(icase,literal)" + a for a in ask])
     if r.returncode != 0:
         return out
     lines = r.stdout.splitlines()
@@ -273,6 +275,10 @@ def git_bytes(args):
         return subprocess.CompletedProcess(args, -1, b"", b"git could not run: %s" % str(e).encode())
 
 
+#: file_hash sentinel — compare with `is`. Never a valid hex digest.
+UNREADABLE = "<unreadable>"
+
+
 def file_hash(relpath):
     """SHA-256 of the file's current bytes on disk, or None if it doesn't
     exist / can't be read. This is the WHOLE clean/dirty answer now — no
@@ -283,8 +289,12 @@ def file_hash(relpath):
             for chunk in iter(lambda: f.read(1 << 20), b""):
                 h.update(chunk)
             return h.hexdigest()
-    except OSError:
+    except (FileNotFoundError, NotADirectoryError):
         return None
+    except OSError:
+        # Exists but cannot be read (permissions, drvfs IO fault, a directory
+        # at the path). NOT the same answer as "gone" — the remedies differ.
+        return UNREADABLE
 
 
 def clean_state(rel, entry):
@@ -302,7 +312,11 @@ def clean_state(rel, entry):
         return "DIRTY", "legacy entry with no recorded hash — needs re-verification"
     current = file_hash(rel)
     if current is None:
+        if os.path.isdir(os.path.join(ROOT, rel)):
+            return "DIRTY", "path is now a directory"
         return "DIRTY", "file no longer exists on disk"
+    if current is UNREADABLE:
+        return "DIRTY", "file exists but could not be read (permissions/IO?) — not evidence of change"
     if current != recorded_hash:
         return "DIRTY", "content changed since clean mark at %s on %s" % (
             entry.get("sha", "?"), entry.get("date", "?"))
@@ -355,7 +369,7 @@ def cmd_mark_clean(path, sha):
         print(f"FAIL: {rel} does not exist under the repo root.", file=sys.stderr)
         return 2
     current_hash = file_hash(rel)
-    if current_hash is None:
+    if current_hash is None or current_hash is UNREADABLE:
         print(f"FAIL: could not read {rel} to hash it.", file=sys.stderr)
         return 2
     # A path git does not track has no commit to anchor a clean mark to.
@@ -363,7 +377,9 @@ def cmd_mark_clean(path, sha):
     # tracking): a clean mark should point at real, shippable, committed
     # content. `vendor/mod_sources/**` is ignored, and this tool's docstring
     # puts .cs mod source in scope.
-    tracked = git(["ls-files", "--error-unmatch", "--", rel])
+    # :(literal) — a bare rel is a glob pathspec, and "a[b].xml" would match
+    # tracked "ab.xml", letting an untracked file through this gate as CLEAN.
+    tracked = git(["ls-files", "--error-unmatch", "--", ":(literal)" + rel])
     if tracked.returncode not in (0, 1):
         # A timeout/lock/missing-git failure must not wear the untracked
         # message — that told reviewers to `git add` already-tracked files.
@@ -386,7 +402,7 @@ def cmd_mark_clean(path, sha):
     # is not the hashed bytes — exactly what the explicit --sha path refuses.
     head = git(["rev-parse", "--short", "HEAD"])
     head_sha = head.stdout.strip() if head.returncode == 0 and head.stdout.strip() else None
-    diff = git(["diff", "--quiet", head_sha or "HEAD", "--", rel])
+    diff = git(["diff", "--quiet", head_sha or "HEAD", "--", ":(literal)" + rel])
     if diff.returncode not in (0, 1):
         print(f"FAIL: git could not report status for {rel} (index lock? bad path?). Try again.", file=sys.stderr)
         return 2
@@ -525,7 +541,8 @@ def cmd_prune(apply):
         print("(nothing to prune - every recorded path still exists on disk)")
         return 0
     for rel in sorted(orphans):
-        print(("would drop" if not apply else "dropped") + f"  {rel}  (no longer exists on disk)")
+        why = "path is now a directory" if os.path.isdir(os.path.join(ROOT, rel)) else "no longer exists on disk"
+        print(("would drop" if not apply else "dropped") + f"  {rel}  ({why})")
     if not apply:
         print(f"\n{len(orphans)} orphaned entr{'y' if len(orphans) == 1 else 'ies'} - re-run with --apply to remove.")
         return 0
