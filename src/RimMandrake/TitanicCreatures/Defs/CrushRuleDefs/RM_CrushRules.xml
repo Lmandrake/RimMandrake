@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    The curated crush table (item ruling #3: "a data table says which thing
+    categories/defs crush under a titan and which don't... never everything
+    in radius"). CrushTableUtility checks an exact-def row before a category
+    row, and anything matching NEITHER is never crushed - the safe default
+    the ruling demands.
+
+    STARTER TABLE ONLY - this build populates what the item itself already
+    names explicitly ("walls yes") plus the two broad category buckets the
+    tier table implies (flora at T1, buildings at T2+). It deliberately does
+    NOT invent defNames for "chunks, ancient ruins pieces, specific quest
+    items" beyond protecting Chunks wholesale for now: the item names those
+    as needing INDIVIDUAL rulings, and CLAUDE.md forbids guessing a defName.
+    Real ancient-ruins-piece and quest-item ThingDefs need to be looked up
+    (RimSage search_defs, once specific pieces are named) and given their own
+    rows here - open question, flagged in the build report, not resolved.
+  -->
+
+  <RM_CrushRuleDef>
+    <defName>RM_Crush_Walls</defName>
+    <thing>Wall</thing>
+    <crushable>true</crushable>
+    <minTier>T2</minTier>
+  </RM_CrushRuleDef>
+
+  <RM_CrushRuleDef>
+    <defName>RM_Crush_Buildings</defName>
+    <category>Buildings</category>
+    <crushable>true</crushable>
+    <minTier>T2</minTier>
+  </RM_CrushRuleDef>
+
+  <RM_CrushRuleDef>
+    <defName>RM_Crush_Plants</defName>
+    <category>Plants</category>
+    <crushable>true</crushable>
+    <minTier>T1</minTier>
+  </RM_CrushRuleDef>
+
+  <!-- Explicit protect, not just an absence: chunks are named in the ruling
+       as needing individual review, so this is a deliberate placeholder
+       "no" rather than a silent gap that would read the same either way. -->
+  <RM_CrushRuleDef>
+    <defName>RM_Crush_Chunks</defName>
+    <category>Chunks</category>
+    <crushable>false</crushable>
+    <minTier>T1</minTier>
+  </RM_CrushRuleDef>
+
+</Defs>

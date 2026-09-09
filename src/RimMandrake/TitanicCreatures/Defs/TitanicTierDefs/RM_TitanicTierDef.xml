@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    The mod's single size-ladder authority (TitanicTierUtility.Thresholds
+    reads whichever RM_TitanicTierDef loads first - keep exactly one).
+
+    Boundaries below are the item's own BENCH-draft tier table
+    (infrastructure/state/items/TITANIC_CREATURES_MOD_1.md), not owner-ruled:
+    tune HERE against the real creature roster once one exists (the item
+    names bs 12 Krayt, bs 15 GreaterKrayt/WarWyrm/SummitCrab, bs 16
+    Paraceramuffalo, bs 20 ElderSando, bs 32 Reefback, bs 40 Lanternwhale as
+    the scale this exists for), never by editing RM_TitanicTierDef.cs.
+  -->
+  <RM_TitanicTierDef>
+    <defName>RM_TitanicTiers_Default</defName>
+    <t1MinBodySize>4</t1MinBodySize>
+    <t2MinBodySize>8</t2MinBodySize>
+    <t3MinBodySize>20</t3MinBodySize>
+  </RM_TitanicTierDef>
+
+</Defs>

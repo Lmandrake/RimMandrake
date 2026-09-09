@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Titanic Creatures</name>
+  <packageId>mandrake.rm.titaniccreatures</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Mass has consequences.
+
+The engine gives every pawn one cell, so even the largest creature walks
+through a doorway, hides behind a sandbag, and gets penned like a chicken.
+This mod makes a truly titanic pawn behave like one: a real multi-cell
+footprint, a destruction wake that flattens curated crushables and holes
+thin roofs as it passes (while never pathing under an overhead-mountain
+roof), an auto-attaching size tier driven by bodySize with a curated
+per-def override, and a largest-tier corpse that becomes a harvestable map
+landmark over days instead of an instant meat pile.
+
+This is the ENGINE only. No creature in this mod list is wired to it here -
+that is campaign content, added separately by giving a race ThingDef the
+RM_TitanicExtension modExtension (or simply a high enough bodySize).
+
+Rides neku.largepawns (Large Pawns) for the multi-cell footprint itself
+when present, reconciling its size thresholds to this mod's curated tier
+table rather than running two ladders; degrades cleanly to single-cell
+footprints (destruction wake, roofs and corpse-site still work) if Large
+Pawns is absent. Full design: design/Jawa/worldbuilding/research and
+infrastructure/state/items/TITANIC_CREATURES_MOD_1.md in the source repo.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>brrainz.harmony</li>
+    <!-- Soft integration only (reflection, About.xml has no MayRequire lever
+         for a non-required dependency) - see LargePawnsBridge.cs. Loading
+         after it, when present, is what lets our reconciliation see its
+         already-populated per-def override table before we rewrite it. -->
+    <li>neku.largepawns</li>
+  </loadAfter>
+</ModMetaData>

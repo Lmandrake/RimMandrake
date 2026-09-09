@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RM_TitanicCorpseSite_Source>Remains of: {0}</RM_TitanicCorpseSite_Source>
+  <RM_TitanicCorpseSite_Remaining>Remaining: {0} meat, {1} leather</RM_TitanicCorpseSite_Remaining>
+</LanguageData>
