@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T20:48:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T20:51:07Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -521,15 +521,6 @@ target:   v1
 kind:     bug
 summary:  symptom
 prose:    infrastructure/state/items/WORLD_FEATURE_LABELS_OVERSIZED_1.md
-
-## W9_RUN_STAGE_RESULTS_UNCHECKED_1 w9_run.py logs stage bridge-call results but never checks success before continuing to the next stage
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  - src/RimMandrake/Utils/w9run.py's stages are strictly ordered and each invalidates
-prose:    infrastructure/state/items/W9_RUN_STAGE_RESULTS_UNCHECKED_1.md
 
 ## GL_EMIT_FLOATRANGE_GENERIC_DROP_1 gl_emit.py silently drops any FloatRange field on a non-worldTileReq node type
 state:    doing  (BLOCKED)
