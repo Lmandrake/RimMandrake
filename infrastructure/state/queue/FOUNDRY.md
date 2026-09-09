@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T20:13:19Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-09T20:16:56Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -431,15 +431,6 @@ target:   v1
 kind:     task
 summary:  Packet B10 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_WIPE_SEVERITY_1.md
-
-## DROID_FDE_GOODWILL_CAP_1 Free Droid Enclaves goodwill cap via GoodwillSituationDef (spec: restraining_bolt_technical.md)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Implement design/Jawa/worldbuilding/restrainingbolttechnical.md's "Build note"
-prose:    infrastructure/state/items/DROID_FDE_GOODWILL_CAP_1.md
 
 ## DROID_HUTT_CAPTIVES_1 Droids held in Hutt torture chambers as a rescue-or-purchase source at Hutt sites
 state:    doing
