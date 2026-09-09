@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T19:41:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T19:44:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -609,7 +609,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/MOVING_DUNES_BUILD_1.md yet — write one when you have something to say)
+summary:  Werner slab transport on Odyssey's Map.sandGrid, source/sink map edges,
 prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
 
 ## GAPING_DOOM_SITE_1 The Gaping Doom: dead-sarlacc toxic-waste pit at tile 2403 (32.12N 94.76E, Cracked Lands, Junker territory) — landmark + green-throat art derived from sw_DeadSarlacc; world-threatening buildup is a plot element (owner, 2026-09-08)
@@ -638,6 +638,15 @@ target:   v1
 kind:     task
 summary:  (no items/SEA_ENRICHMENT_LANDMARKS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SEA_ENRICHMENT_LANDMARKS_1.md
+
+## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  names ready
+prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
 
 ## MANYWATERS_COLOR_SUPPORT_1 ManyWaters: support many colors of water and many colors of slime
 state:    doing
@@ -672,7 +681,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-summary:  (no items/BIOMESKIT_RENDER_LAYER_MISSING_1.md yet — write one when you have something to say)
+summary:  Original concern: "BiomesKit's 1.6 DLL dropped BiomesKitWorldLayer entirely —
 prose:    infrastructure/state/items/BIOMESKIT_RENDER_LAYER_MISSING_1.md
 
 ## DROIDWORKS_PERSONALITY_VERIFY_1 Live-verify chassis personality bias: 20 spawns per family show the forced traits + protocol pedantry
@@ -919,13 +928,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BIOME_ENRICHMENT_POISON_FOREST_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_POISON_FOREST_1.md
-
-## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  names ready
-prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
