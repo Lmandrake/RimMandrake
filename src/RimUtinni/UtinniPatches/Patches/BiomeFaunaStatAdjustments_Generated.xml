@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ==========================================================================
+  BiomeFaunaStatAdjustments_Generated.xml    GENERATED - do not hand-edit
+  ==========================================================================
+  Regenerate:  python3 design/Jawa/fauna/gen_stat_adjustments.py, flag `write`
+  (⛔ the flag is spelled with two hyphens, which XML forbids inside a comment.)
+
+  SOURCE     design/Jawa/worldbuilding/biomes/rosters/*.json, `stat_adjustments`.
+  AUTHORITY  owner cards 2026-09-09, BIOME_FAUNA_ASSIGNMENT_SITTING_1:
+             "SW staples: adjust-and-keep - icons survive by fitting the law."
+             Every row below exists because a biome sheet's admission test
+             failed on one number, and the owner ruled the icon stays and the
+             number moves. The roster row carries the full argument; the
+             comment on each operation carries its head.
+
+  5 adjustment(s) across 5 def(s).
+
+  ⚠️ Match-only conditionals, no <nomatch>. Beldon carries race.predator=true
+  in the live dump but has no <predator> node in its own mod XML - another
+  mod patches it in - so an Add here could race that patch and leave two
+  nodes. A no-op is visible to validate_patch and harmless; a duplicate is
+  neither. Load this mod LAST.
+-->
+<Patch>
+
+  <!-- Beldon.predator: true -> false   (the_forge.json)
+       the_forge.md §4 sheet-named ‘vast, placid, drifting over the melt’ vs register predator special (MEASURED) — adjust-and-keep pattern (owner card 2026-09-09), same treatment the Scald gave the sandos -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Beldon"]/race/predator</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Beldon"]/race/predator</xpath>
+      <value><predator>false</predator></value>
+    </match>
+  </Operation>
+
+  <!-- Gutkurr.moveSpeed: 4.5 -> 4.4   (desert.json)
+       owner card 2026-09-09: SW staples adjust-and-keep -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Gutkurr"]/statBases/MoveSpeed</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Gutkurr"]/statBases/MoveSpeed</xpath>
+      <value><MoveSpeed>4.4</MoveSpeed></value>
+    </match>
+  </Operation>
+
+  <!-- RSW_ElderSando.predator: true -> false   (the_scald.json)
+       owner card 2026-09-09: SW staples adjust-and-keep — icons survive by fitting the law; the_scald §4 walkers are 'armored, slow, pastoral' mat-mowers, and ban 3's spirit bars a hunting giant in the water -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_ElderSando"]/race/predator</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RSW_ElderSando"]/race/predator</xpath>
+      <value><predator>false</predator></value>
+    </match>
+  </Operation>
+
+  <!-- RSW_SandoAquaMonster.predator: true -> false   (the_scald.json)
+       same — one lineage, one ruling; both carry predator + manhunter-on-hurt 100% (MEASURED) as shipped, which the pastoral read cannot keep -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_SandoAquaMonster"]/race/predator</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RSW_SandoAquaMonster"]/race/predator</xpath>
+      <value><predator>false</predator></value>
+    </match>
+  </Operation>
+
+  <!-- Wraid.moveSpeed: 5.0 -> 4.4   (desert.json)
+       owner card 2026-09-09: SW staples adjust-and-keep -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Wraid"]/statBases/MoveSpeed</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Wraid"]/statBases/MoveSpeed</xpath>
+      <value><MoveSpeed>4.4</MoveSpeed></value>
+    </match>
+  </Operation>
+
+</Patch>
