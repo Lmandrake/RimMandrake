@@ -49,5 +49,29 @@ namespace RimMandrake.Property
         // Virtual (computed, unrecorded) claim strengths.
         public const float SituationalClaimStrength = 0.9f;
         public const float TerritorialClaimStrength = 0.5f;
+
+        // AnimalTheft (RIMPROPERTY_ANIMAL_THEFT_1): a "small unattended item"
+        // an animal could plausibly drag off. StatDefOf.Mass on vanilla
+        // items runs roughly 0.05 (a meal) to ~2 (a steel bar, most guns);
+        // 2.5kg covers those without also covering furniture-scale haulables
+        // that a raccoon or monkey has no business moving.
+        public const float AnimalTheftMaxItemMassKg = 2.5f;
+
+        // How far AnimalTheftUtility.FindStealTarget searches from the
+        // pawn's own position — generous enough to find something on a
+        // normal colony map without scanning the whole map every check.
+        public const float AnimalTheftSearchRadius = 24f;
+
+        // Mean-time-between for the two ThinkTreeDefs_AnimalSteal.xml
+        // ChancePerHour nodes. Trained pets check more often than wild
+        // animals (a taught trick is intentional and frequent; a wild
+        // animal's opportunistic grab is rarer) — both numbers are flat
+        // engine defaults per this file's own header, not RimUtinni tuning.
+        public const float AnimalTheftTrainedMtbHours = 4f;
+        public const float AnimalTheftWildMtbHours = 10f;
+
+        // How far (in cells) the thief wanders off with its loot before
+        // dropping it — JobDriver_RM_AnimalSteal's WanderOffWithLoot toil.
+        public const int AnimalTheftWanderRadius = 6;
     }
 }

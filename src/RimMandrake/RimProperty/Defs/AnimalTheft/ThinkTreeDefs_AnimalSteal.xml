@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       RIMPROPERTY_ANIMAL_THEFT_1's think-tree wiring. Both entries use
+       vanilla's own supported modder insertion hook — Defs/Core/
+       ThinkTreeDefs/Animal.xml's <li Class="ThinkNode_SubtreesByTag">
+       <insertTag>Animal_PreWander</insertTag></li> node — rather than a
+       Harmony transpiler or a PatchOperation into the vanilla Animal
+       ThinkTreeDef directly (see Defs/Core/ThinkTreeDefs/SubTrees_Misc.xml's
+       own commented-out "Test of insertion hooks" example for the same
+       mechanism). No MayRequire needed: Animal_PreWander is Core.
+  ======================================================================== -->
+
+  <!-- Trained-pet route: gated by ThinkNode_ConditionalOfPlayerFaction (only
+       tame colony/caravan animals) then the SAME ChancePerHour +
+       RequireCapacities(Manipulation) + ConditionalTrainableCompleted shape
+       vanilla's own Haul trainable node uses one section earlier in
+       Animal.xml (that section is INSIDE its own ConditionalOfPlayerFaction
+       wrapper already, which is why this insertion, spliced in AFTER that
+       section at Animal_PreWander, needs its own copy of the same guard). -->
+  <ThinkTreeDef>
+    <defName>RM_AnimalTheft_TrainedSteal</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>50</insertPriority>
+    <thinkRoot Class="ThinkNode_ConditionalOfPlayerFaction">
+      <subNodes>
+        <li Class="ThinkNode_ChancePerHour_Constant">
+          <mtbHours>4</mtbHours>
+          <subNodes>
+            <li Class="ThinkNode_ConditionalRequireCapacities">
+              <requiredCapacities>
+                <li>Manipulation</li>
+              </requiredCapacities>
+              <subNodes>
+                <li Class="ThinkNode_ConditionalTrainableCompleted">
+                  <trainable>RM_Steal</trainable>
+                  <subNodes>
+                    <li Class="ThinkNode_Tagger">
+                      <tagToGive>TrainedAnimalBehavior</tagToGive>
+                      <subNodes>
+                        <li Class="RimMandrake.AnimalTheft.JobGiver_RM_TrainedSteal" />
+                      </subNodes>
+                    </li>
+                  </subNodes>
+                </li>
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+  <!-- Wild-animal route: gated by ThinkNode_ConditionalHasFaction
+       invert="true" — the SAME "wild animal" test Animal.xml's own
+       dig-out-if-starving and leave-map-randomly sections use earlier in
+       the same file. The species mark itself (WildTheftExtension) is
+       checked in C# by JobGiver_RM_WildSteal, not here — there is no XML
+       per-species hook at this splice point to check it against. -->
+  <ThinkTreeDef>
+    <defName>RM_AnimalTheft_WildSteal</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>50</insertPriority>
+    <thinkRoot Class="ThinkNode_ConditionalHasFaction">
+      <invert>true</invert>
+      <subNodes>
+        <li Class="ThinkNode_ChancePerHour_Constant">
+          <mtbHours>10</mtbHours>
+          <subNodes>
+            <li Class="ThinkNode_ConditionalRequireCapacities">
+              <requiredCapacities>
+                <li>Manipulation</li>
+              </requiredCapacities>
+              <subNodes>
+                <li Class="ThinkNode_Tagger">
+                  <tagToGive>Misc</tagToGive>
+                  <subNodes>
+                    <li Class="RimMandrake.AnimalTheft.JobGiver_RM_WildSteal" />
+                  </subNodes>
+                </li>
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

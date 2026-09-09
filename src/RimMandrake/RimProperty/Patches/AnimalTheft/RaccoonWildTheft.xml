@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RaccoonWildTheft.xml     AnimalTheft · RIMPROPERTY_ANIMAL_THEFT_1
+
+  Owner, 2026-09-08 (verbatim): "...as do some wild animals." Marks Core's
+  own Raccoon (Defs/Core/ThingDefs_Races/Races_Animal_SquirrelGroup.xml,
+  defName Raccoon) with WildTheftExtension — read directly out of the
+  vanilla def, not invented. Raccoon is the obvious fit: trainability None
+  (so it can never learn RM_Steal — the two theft routes stay disjoint, per
+  species), and its OWN vanilla flavor text already is this feature:
+  "A small, hardy animal... happy to break into your garbage container, or
+  your kitchen, to eat almost anything."
+
+  No MayRequire: Raccoon ships in Core, which is always active. Wrapped in
+  PatchOperationConditional anyway (validate_patch.py's own suggested idiom,
+  same shape MandrakePatches/HeadSetForFA_Revive.xml uses) purely against a
+  future RimWorld version renaming or dropping the def upstream — not a
+  cross-mod presence guard, since Core cannot be absent.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Raccoon"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Raccoon"]</xpath>
+      <value>
+        <modExtensions>
+          <li Class="RimMandrake.AnimalTheft.WildTheftExtension" />
+        </modExtensions>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

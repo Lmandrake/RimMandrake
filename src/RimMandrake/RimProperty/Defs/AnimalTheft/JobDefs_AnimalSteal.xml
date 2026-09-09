@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       RM_AnimalSteal — RIMPROPERTY_ANIMAL_THEFT_1. Backs RimMandrake.
+       AnimalTheft.JobDriver_RM_AnimalSteal, dispatched by BOTH
+       JobGiver_RM_TrainedSteal (trained pet, gated by the RM_Steal
+       TrainableDef) and JobGiver_RM_WildSteal (wild animal, gated by
+       WildTheftExtension) — same job, two AI routes into it. Fires the
+       ownership fabric's TakingEvent(Act=Take) at the moment the item is
+       picked up, before the carry-off toils run.
+  ======================================================================== -->
+  <JobDef>
+    <defName>RM_AnimalSteal</defName>
+    <driverClass>RimMandrake.AnimalTheft.JobDriver_RM_AnimalSteal</driverClass>
+    <reportString>sneaking off with TargetA.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+
+</Defs>
