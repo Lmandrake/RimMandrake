@@ -1,0 +1,94 @@
+{
+  "_purpose": "FISH_BY_BIOME_1 data pass — fish DEF inventory (MEASURED from the live def dump) and per-water candidates for the four biomes ruled fish=YES. Underscore prefix keeps this out of the roster validator. Read alongside each biome's own roster fish{} block, which carries the ruling verbatim.",
+  "measured": {
+    "source": "DefDump/captures/2026-09-09T01-54-07Z (gameVersion 1.6.4871 rev591, 599-mod live list) — ThingDef.json filtered on fields.thingCategories contains 'Fish'",
+    "fish_thingdef_count": 87,
+    "def_type_named_FishDef_exists": false,
+    "note": "No FishDef def type in the stack. 'Fish' is a thingCategory tag on ordinary ThingDefs (category Item), not a def type — confirmed by manifest.json defCounts, which lists no FishDef but does list FishProcessTemplateDef (1, a butchering/processing recipe template, unrelated to species) and NegativeFishingOutcomeDef (31, failed-catch flavor text, unrelated to species binding).",
+    "by_mod": [
+      {"mod": "Odyssey (vanilla)", "packageId": "ludeon.rimworld.odyssey", "count": 14, "recognizability": "ALL 14 fail — every one is an instantly-nameable Earth fish (salmon/bass/tilapia/cod/bluefish/guppy/catfish/piranha/dogfish/marlin/tuna/flounder) or a thin Earth-name variant (frostfish, toxfish — both still read as 'a kind of fish' on sight via a real English fish-name root)"},
+      {"mod": "GravTide", "packageId": "gravtide.mod", "count": 29, "recognizability": "ALL fail — real deep-sea taxonomic names (rockfish, anglerfish, moray eel, hagfish, chimaera, octopus, cuttlefish, nautilus, lobster, isopod, etc.); this donor is built for an underwater/deep-sea scenario, not this campaign"},
+      {"mod": "Star Wars Animal Collection (Continued)", "packageId": "mlie.starwarsanimalcollection", "prefix": "swfish_", "count": 12, "recognizability": "mixed — SW-lore invented names pass (Burra, Dactopus, Daggert, Doshianjelly, Nyork, See); Ray and SinkCrab fail (Earth root visible in the compound); FleekEel and PaddyFrog borderline-fail (Eel/Frog Earth roots)"},
+      {"mod": "Biomes! Caverns", "packageId": "biomesteam.biomescaverns", "prefix": "BMT_", "count": 12, "recognizability": "mixed — invented compounds pass (Rocktooth, Boneblade, Lumineel*); most of the set fails on a real fish/crustacean genus embedded in the name (Tetra, Pupfish, Catfish, Shrimp, Crab, Lobster, Cuttlefish, Salamander); *Lumineel still fails on the 'eel' root", "cave_register": "this whole set reads as CAVE fauna in-lore (Biomes! Caverns) — a fit for enclosed/roofed water, a mismatch for weeping_stones which explicitly evicts 'cave register' fauna"},
+      {"mod": "Vanilla Fishing Expanded (VCEF)", "packageId": "unresolved in dump (modName/packageId null on these 20 rows — VCEF_ rows carry no mod attribution field; located by grep to workshop id 1841354677, 1.6/Defs/ThingDefs_Items/Items_Resource_Fish.xml)", "prefix": "VCEF_", "count": 20, "recognizability": "mixed — invented/generic-alien compounds pass (FrigidSwimmer, HabdakLongfin, Jellyfungus, OcularFish, PropaneBag, ShadowFry, Slimefish, Spiderfish, Spinyfish); most fail on a real fish-family root (AbyssalEel, BloodLeech, BorealSardine, DuskySprat, ForsakenAnglerfish, GiantPolarPrawn, MudSplasherCarp, MutantFlatfish, PinkBlobfish, Sturgeon)", "note": "the biome-authoring note (FISH_BY_BIOME_1 item text) already names ForsakenAnglerfish/DuskySprat as VCEF's own donor assignment to the Forsaken Crags and Jellyfungus to the Rot — those are THIS mod's own biome bindings via its own BiomeDef patches, already live, not something this pass touches"},
+      {"mod": "Dark Ages: Beasts and Monsters", "packageId": "van.beasts", "count": 1, "recognizability": "DA_Fish_SnappingTadpole fails — 'tadpole' is an Earth-nameable amphibian-larva root"}
+    ]
+  },
+  "mechanics": {
+    "def_type": "Fish are ordinary ThingDefs (category=Item, thingClass=ThingWithComps, thingCategories:[\"Fish\"]), almost always ParentName-chained to an abstract base (vanilla: FishBase in Odyssey/Defs/ThingDefs_Items/Items_Resource_Fish.xml). No FishDef, no per-fish water-type field, no biome-reference field ANYWHERE on the ThingDef itself — confirmed by reading VCEF_DuskySprat's and Fish_Salmon's full field dumps: neither carries anything named biome/water/salinity/temperature.",
+    "binding_field": "BiomeDef.fishTypes — a nested dict with exactly four buckets: freshwater_Common, freshwater_Uncommon, saltwater_Common, saltwater_Uncommon. Each bucket is {defName: commonalityWeight} (vanilla weights are flat 1 — the buckets themselves carry the rarity tier, not a weight spread). A fifth key, rareCatchesSetMaker, points to a ThingSetMakerDef (e.g. RareFishingCatches_Cold) for the occasional non-fish rare catch.",
+    "implication_for_this_task": "Fish placement per water is BIOME work, not def work. A fish ThingDef is completely reusable across any biome's fishTypes list — the same Fish_Salmon def could legally sit in ten different BiomeDefs' saltwater_Common bucket with zero edits to the def. So the only reason to write a NEW fish ThingDef is when no existing def clears the recognizability bar for a given water's register — never because an existing, passing def is somehow 'bound' elsewhere. The freshwater/saltwater split is the only chemistry Odyssey's own mechanism understands; brine/lethal/pollution/milk-pond flavor (this campaign's water-kinds taxonomy) has no engine hook at all — it is pure flavor text on top of freshwater or saltwater, same as every other biome's fishTypes block already is.",
+    "verified_against": ["Data/Odyssey/Defs/BiomeDefs/Glowforest.xml (freshwater bucket)", "Data/Core/Defs/BiomeDefs/Biomes_Cold.xml (IceSheet, both buckets, MayRequire-gated)", "ThingDef.json field dump of Fish_Salmon and VCEF_DuskySprat"]
+  },
+  "per_water": {
+    "weeping_stones": {
+      "biome_def": "ZBiome_DesertOasis",
+      "roster_ruling_verbatim": "YES — fish live in the true pools: the biome's §4 law is 'reliable standing fresh water' with pilgrimage density, the pools are breeding/ritual grounds (§4 truce), and a dead-silent pool is the sheet's image of a DEAD oasis (§10b). Water is map-scale (world-scale water 0, §0) so fish ride the pool terrain, not world water.",
+      "water_chemistry": "freshwater, standing, sacred/truce — hard constraints from the sheet: nothing pollution-flavored (no tumorfish, §10 sacrilege), nothing that turns the pool into a hunting story (§6 ambush-at-water ban)",
+      "fishTypes_bucket": "freshwater_Common / freshwater_Uncommon",
+      "candidates": [
+        {"def": "swfish_Burra", "mod": "Star Wars Animal Collection (Continued)", "verdict": "PASS", "reason": "SW-invented name, no Earth root, no predator/ambush flavor in the name; freshwater-plausible generic fish body"},
+        {"def": "swfish_Daggert", "mod": "Star Wars Animal Collection (Continued)", "verdict": "PASS", "reason": "SW-invented name, no Earth root; 'dagger' shape reads as a fish silhouette description, not a species name — acceptable analog"},
+        {"def": "swfish_Nyork", "mod": "Star Wars Animal Collection (Continued)", "verdict": "PASS", "reason": "SW-invented name, no Earth root, no violent/pollution flavor"},
+        {"def": "swfish_See", "mod": "Star Wars Animal Collection (Continued)", "verdict": "PASS", "reason": "SW-invented name, no Earth root"},
+        {"def": "swfish_Dactopus", "mod": "Star Wars Animal Collection (Continued)", "verdict": "borderline", "reason": "invented compound but the '-octopus' echo risks reading as the banned octopus form (the_greentide already evicts BMT_LandOctopus on exactly this ground) — flag for owner LOOK before use"},
+        {"def": "BMT_* (Biomes! Caverns set)", "mod": "Biomes! Caverns", "verdict": "REJECT (all 12)", "reason": "cave register — weeping_stones' own evictions list already cuts BMT_Batbird/BMT_Stoneback/BMT_CaveCricket etc. by name for exactly this reason ('cave register, no comb, no water story'); the fish set is the same donor family and most rows also fail recognizability outright (Tetra/Pupfish/Catfish/Shrimp/Crab/Lobster/Cuttlefish/Salamander roots)"},
+        {"def": "Fish_* (vanilla Odyssey set)", "mod": "Odyssey", "verdict": "REJECT (all 14)", "reason": "every row is an instantly-nameable Earth fish — the doctrine's own worked example (salmon) is literally in this set"},
+        {"def": "VCEF_FrigidSwimmer / VCEF_Slimefish / VCEF_Spinyfish / VCEF_OcularFish", "mod": "Vanilla Fishing Expanded", "verdict": "secondary PASS", "reason": "generic invented names clear recognizability, but tonally read as cold/hazard-water rather than a sacred desert pool; hold as backups behind the swfish_ set"}
+      ],
+      "recommendation": "4 confident SW-analog donors (Burra, Daggert, Nyork, See) clear both recognizability and the sheet's own bans without a new def. No new-def gap here.",
+      "open_flag": "school/shoal special on any swfish_ row is UNMEASURED — the register's special-flags field is broken for several other creature families in this same dump (noted repeatedly across other rosters); do not assume schooling behavior without checking at generation."
+    },
+    "the_cracked_lands": {
+      "biome_def": "ZBiome_Badlands",
+      "roster_ruling_verbatim": "FISH PRESENT — at the measured 27 enclosed-water tiles only (§6 ban 1), and this is the planet's ONE lethal water: R6 — the truce's mechanism is sightline distance, and slot-canyon/roofed water has none, so there is no truce; the kill happens at the water; the fliers dip down to fish (§4). Species list UNMEASURED.",
+      "water_chemistry": "freshwater but NO-TRUCE (roofed/enclosed slot-canyon geometry breaks the sightline mechanism the rest of the planet's truce runs on) — this is explicitly the planet's one dangerous, ambush-legal water",
+      "fishTypes_bucket": "freshwater_Common / freshwater_Uncommon",
+      "candidates": [
+        {"def": "BMT_Rocktooth", "mod": "Biomes! Caverns", "verdict": "PASS", "reason": "invented compound, no Earth root, predator-toned name fits the no-truce/ambush theme; the enclosed slot-canyon setting is functionally a cave, so this donor's cave register is a THEME MATCH here (unlike weeping_stones, this biome never bans cave register)"},
+        {"def": "BMT_Boneblade", "mod": "Biomes! Caverns", "verdict": "PASS", "reason": "invented compound, no Earth root, aggressive/dangerous name fits R6's no-truce water"},
+        {"def": "VCEF_Spiderfish", "mod": "Vanilla Fishing Expanded", "verdict": "secondary PASS", "reason": "generic invented compound, ambush-predator connotation fits the theme"},
+        {"def": "VCEF_ShadowFry", "mod": "Vanilla Fishing Expanded", "verdict": "secondary PASS", "reason": "generic invented compound, dark/enclosed-water connotation fits the roofed canyon setting"},
+        {"def": "VCEF_ForsakenAnglerfish", "mod": "Vanilla Fishing Expanded", "verdict": "REJECT", "reason": "'anglerfish' is a real, instantly-nameable Earth fish family — fails on sight despite the tonally perfect 'Forsaken' prefix; also this exact def is already the mod's own donor to the Forsaken Crags biome, a different sheet"},
+        {"def": "Fish_* (vanilla Odyssey set)", "mod": "Odyssey", "verdict": "REJECT (all 14)", "reason": "Earth-nameable, doctrine violation on sight"}
+      ],
+      "recommendation": "2 confident donors (Rocktooth, Boneblade) plus 2 secondary backups clear recognizability and fit the no-truce/dangerous-water theme. No new-def gap here.",
+      "open_flag": "the fliers-dip-to-fish claim (§4) rides the same UNMEASURED flier-special caveat every other sheet in this batch carries."
+    },
+    "the_greentide": {
+      "biome_def": "BiomeCypreJungle",
+      "roster_ruling_verbatim": "Fish, graded by the dying river (§3): clean-to-living reaches carry scalefish shoals (SW analogs, no Earth names); downstream brine reaches and the river graves carry none — the water dies before the fish law does. Binding mechanism (wildAnimals water spawn vs Odyssey fishing table) decided at generation.",
+      "water_chemistry": "river gradient — clean/living upstream to brine/dead downstream; fish law tracks the living stretch only",
+      "fishTypes_bucket": "freshwater_Common / freshwater_Uncommon",
+      "status": "ALREADY ASSIGNED — no gap, no candidates needed",
+      "assigned": [
+        {"def": "RSW_Mee", "note": "scalefish shoal, upstream/midstream", "commonality": 0.4},
+        {"def": "RSW_Faa", "note": "scalefish, midstream predator of the smaller", "commonality": 0.3},
+        {"def": "RSW_Laa", "note": "scalefish, midstream", "commonality": 0.3}
+      ],
+      "provenance_note": "RSW_Faa and RSW_Laa are shipping-name-tier (RimStarWars) migrations of this same dump's swfish_Faa and swfish_Laa donor rows (Star Wars Animal Collection) — confirms the swfish_ set is this campaign's working donor pool for water fauna, consistent with the swfish_ candidates picked for weeping_stones above; RSW_Mee has no swfish_ row in this dump under that exact name and may be a further alias/rename not yet resolved in the live register — flag for whoever owns NAMING_SCHEME_EXECUTION_1.",
+      "open_flag": "roster's own confidence block already marks the water-spawn channel UNMEASURED ('RSW scalefish spawn on in-biome river cells' — not proven; verify at generation') — this pass does not change that."
+    },
+    "the_twilight_sea": {
+      "biome_def": "RUT_TwilightSea",
+      "roster_ruling_verbatim": "no surface fish — saturated brine plus the no-schools ban (terminator_sea §6); the silver shoals exist ONLY beneath the mat-roof (the_twilight_deep §4, 'the only ordinary fishing on the planet' §7) and ride the deferred diving-mods implementation; analogs only, owed as new defs (FISH_BY_BIOME_1)",
+      "water_chemistry": "surface = saturated brine, no-schools by planetary ban; sub-roof shoal water is a SEPARATE, deferred water body (the diving layer)",
+      "fishTypes_bucket": "N/A at surface (no fish assigned); sub-roof shoal is out of scope for the live BiomeDef entirely until diving mods land",
+      "status": "DEFERRED — correctly ruled no candidates now; this pass only records what a later diving-mods pass would draw on",
+      "candidates_for_the_deferred_subroof_shoal": [
+        {"def": "RSW_ColoClawFish", "mod": "already named in the roster's own new_defs list (RSW sea-beast pool)", "verdict": "candidate apex body (not a shoal fish)", "reason": "bs 3.0 / spd 4.0, predator (MEASURED) — currently homeless-reserve; the roster itself already flags this as the candidate donor body for the_twilight_deep's 'one true predator' when diving mods land"},
+        {"def": "swfish_Nyork / swfish_See / swfish_Burra", "mod": "Star Wars Animal Collection (Continued)", "verdict": "candidate small-shoal donors", "reason": "same recognizability-clean SW-invented pool used for weeping_stones; a schooling special on any of these rows is UNMEASURED — would need verification before use, and reuse across three sheets (weeping_stones, greentide's Faa/Laa lineage, here) risks flattening the planet's fish register to one donor family — flag for the owner"}
+      ],
+      "new_def_gap": "the roster's own new_defs list already calls for a bespoke 'silver shoal fish-analog (schools legal only below the roof)' — this pass finds no existing ThingDef in the 87-row census that both passes recognizability AND carries a measured schooling special, so that new-def call stands uncontradicted."
+    }
+  },
+  "new_def_gaps_summary": [
+    {"water": "the_twilight_sea (sub-roof shoal)", "gap": "no MEASURED-schooling, recognizability-clean donor exists; roster's own new-def call for a bespoke silver-shoal fish stands", "blocking": false, "reason_not_blocking": "diving-mods implementation is itself deferred; nothing in this campaign needs the def yet"}
+  ],
+  "candidate_counts": {
+    "weeping_stones": {"confident": 4, "secondary": 4, "rejected_sets": 2},
+    "the_cracked_lands": {"confident": 2, "secondary": 2, "rejected_sets": 2},
+    "the_greentide": {"confident": 0, "note": "already fully assigned, 3 species"},
+    "the_twilight_sea": {"confident": 0, "deferred": 2, "note": "surface ruled no-fish; sub-roof shoal deferred to diving mods"}
+  }
+}
