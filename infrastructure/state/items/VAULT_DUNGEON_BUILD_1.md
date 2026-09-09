@@ -13,7 +13,7 @@ settlement-free (`vault_siting_prep.md`):
 | V2 | 4000 | Scorch (Cathedral halo) | ① outer works | `AncientLaunchSite` |
 | V3 | 9167 | Fall Line | ① route-spread | `AncientGarrison` |
 | V4 | 17461 | Deadstone | ② | `AncientWarehouse` |
-| V5 | 37 | Slough (terminator) | ② | none — needs authoring |
+| V5 | 37 | Slough (terminator) | ② | `RUT_Slough_GelatinousBreach` — authored 2026-09-09, not yet placed |
 | V6 | 20853 | Umbra (deep nightside) | ③, the one | `AncientWarehouse` |
 
 **Structure** (RULED): one concentric grammar varied per type — outer ring
@@ -75,22 +75,24 @@ research task if picked up.
   (`mapSize` read off the game, never off a note).
 
 ## Watch out
-🔶 **This item is a build SPEC, not creative lock-in.** `FUTURE_VECTORS.md`
-names this arc explicitly as "with the owner." Leave `doing` until the owner
-has ruled the open calls in `dungeons_arc_spec.md` §3.9.
+🔶 **Template geometry is FOUNDRY's; per-site hand-finish, dialogue/letters
+and the six `world_commit` writes are "with the owner"** (`FUTURE_VECTORS.md`).
+Leave `doing` until those are done at a joint bench session — this item is a
+build spec for the templates, not a licence to hand-finish sites solo.
 
 ⛔ **Vaults do NOT get the Assailant dungeon's Anomaly exception**
 (canon.yml `anomaly_content` names only the Assailant dungeon and,
 tentatively, the sarlacc). Type-② guardians come from the existing
 bioweapon-class roster, not the Anomaly toolbox.
 
-🔑 **"Territories mod" is unresolved.** Do not assume a name or assess one
-without first identifying it — the owner's note names only its function
-("custom raids in proportion to settlements"), not the mod.
+🔑 **"Territories mod" is IDENTIFIED** (Faction Territories,
+`jaeger972.factionterritories`, `dungeons_arc_spec.md` §3.8) — assessing it
+for the V1–V3 conflict layer is its own separate item, not this one.
 
-⚠️ **V5 has no landmark yet.** Sites V1–V4 and V6 sit on pre-authored
-`AncientGarrison`/`AncientLaunchSite`/`AncientWarehouse` landmarks; V5 needs
-one authored before it reads as a place rather than bare terrain.
+✅ **V5's landmark is authored** — `RUT_Slough_GelatinousBreach`
+(`src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/`), offline XML + a
+procedurally-generated icon. Not yet placed on tile 37 — that write rides the
+same held-for-owner bridge pass as the other five sites.
 
 ## 2026-09-02 (FOUNDRY) — three parameterized templates built, offline only
 
@@ -256,3 +258,67 @@ GEOMETRY - it does not touch anything creative-lock-in.
 
 Commit: (this pass's commit, `gen_vault_layouts.py` +
 `Defs/{StructureLayoutDefs,SymbolDefs}_Vaults.xml`).
+
+## 2026-09-09 (FOUNDRY) — V5 landmark authored, offline; path correction
+
+Picked up mid-cold-load (owner's overnight full-list restart in progress),
+bridge confirmed held by a sibling FOUNDRY pass on a different item
+(`BIOME_ENRICHMENT_POISON_FOREST_1`) — no live bridge contact made this pass,
+per this session's own instruction.
+
+**Path correction (this file was stale, not the mod):** `src/RimUtinni/
+VaultDungeons/` (`mandrake.rut.vaultdungeons`) named above no longer exists.
+An unrelated reorg (`247cd6d4`, "Sprint wave A") absorbed it into
+`src/RimUtinni/StructureInjectionsRUT/{Defs,Source}/VaultDungeons/` under mod
+`mandrake.rut.injections` ("RimUtinni: Structure Injections") — its own
+About.xml says so ("Absorbed RimUtinni: Vault Dungeons"). All vault content
+(layouts, symbols, the VAULT_THAW_QUEST_FAMILY_1 quest layer, `RUT_VaultHeart`)
+lives there now. Re-ran `validate_patch.py` against the current paths (586
+active mods, Data+Mods+Workshop): **0 errors, 2 warnings** (both
+`QuestScriptDef` `Class="QuestNode_Incident"` unresolved — VAULT_THAW_QUEST_
+FAMILY_1's own already-filed C# gap, not this item's). One apparent ERROR
+(`RUT_VaultHeart`'s `ShipComputerCore` texPath) is a false positive of a bare
+`--defs` folder scan that cannot see inside the vanilla asset bundle —
+VAULT_THAW_QUEST_FAMILY_1's own `--live` run already classified this
+correctly as an advisory, not a defect; not re-litigated here, not this
+item's file anyway.
+
+**Built: `RUT_Slough_GelatinousBreach`, V5's landmark** (RULED name, owner
+2026-09-01; not authored until now). Offline only, following this repo's own
+established pattern for a hand-placed, never-worldgen-rolled landmark
+(`RUT_GapingDoom.xml`/`RUT_ComplexStructures.xml`, same folder):
+`commonality 0`, `category structure`, reused `NamerLandmark_Ruins`,
+`MayRequire="Ludeon.RimWorld.Odyssey"`.
+- `src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_Slough_GelatinousBreach.xml`
+  — description present-tense, what IS (a torn seam, pooled ooze, ground gone
+  soft around it — the type-② "breach" reading from §3.3, no plot content).
+- `src/RimUtinni/AshkarrLandmarkArt/make_slough_breach_icon.py` — a NEW
+  procedural icon generator (same approach as this folder's own
+  `make_complex_structures_icon.py`: deterministic, no RNG, no local
+  image-gen call), because local imagegen is PARKED (owner, 2026-09-05) and
+  this is unattended BELT work — the Codex `$imagegen` path pops an
+  interactive Windows UAC prompt that must not fire unsupervised. Writes
+  `Textures/World/Landmarks/Ashkarr/RUT_Slough_GelatinousBreach.png`
+  (1024×1024 RGBA, 2×2 atlas, 4 variants): a ragged torn-membrane patch with
+  pooled ooze and secondary tears, sickly yellow-green — checked by eye this
+  pass to read distinctly from `VEE_FleshPits` (pink, radial) and from this
+  same folder's `RUT_GapingDoom` (a single green maw).
+- `validate_patch.py` on the new def + art folder: 0 errors, 48 warnings (all
+  pre-existing, `LandmarkIcons.xml`'s ordinary add-if-missing
+  `PatchOperationConditional` shape — none caused by this pass's two new
+  files).
+
+**Not done, still correctly held for the owner** (per this item's own
+"Watch out", restated above): all six real-site hand-finish passes,
+wake/loot/leave dialogue and letters, the six bridge placement writes
+(V5's landmark included — authored, not yet placed on tile 37). **Also still
+open, not this pass's to chase**: the §3.7 Type-2 quicktest gap
+(`AA_BlackJellyWall`/`AA_GreenGoo`/`GR_Boomsnake`/`VFEI2_InfestedShipPart`
+`/Chunk`/`Fleshmass` symbols unverified live — their source mods aren't on
+the 22-mod MINIMAL test list; confirmed present on the real 596-mod list,
+per the 2026-09-06 pass) — did not touch `ModsConfig.MINIMAL.xml` this pass,
+the bridge/mod-list being actively in use by a sibling FOUNDRY item tonight.
+
+No file in this item's own scope required a creative decision not yet ruled;
+nothing invented beyond the owner's own "organic... distinct from V4" brief
+and this repo's existing landmark-authoring pattern.

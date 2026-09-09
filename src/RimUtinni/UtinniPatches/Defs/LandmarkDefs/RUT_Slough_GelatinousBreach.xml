@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RUT_Slough_GelatinousBreach — V5's landmark (VAULT_DUNGEON_BUILD_1,
+       dungeons_arc_spec.md SS3.2/SS3.9). Owner ruling 2026-09-01: "V5 gets a
+       NEW organic landmark ... V5 is the second type-2 vault and must read
+       as a breach, distinct from V4" (V4 reuses the pre-existing
+       AncientWarehouse landmark). Working name was RULED; this pass authors
+       the def itself, offline, following this repo's own precedent for a
+       hand-placed (never worldgen-rolled) landmark (RUT_GapingDoom.xml,
+       RUT_ComplexStructures.xml — same folder).
+
+       commonality 0 ON PURPOSE — worldgen must never roll it; it exists only
+       to be force-placed on tile 37 (the Slough) by the world-edit step this
+       item still owes (jawa/world_landmarks_set, HELD FOR the same
+       down-window pass as the other five sites' hand-finish, per this item's
+       own "Watch out"). Description is present-tense, what IS: the breach
+       and the danger it holds, matching the type-2 "torn open... the thing
+       that got out left a trail" ring reading (SS3.3) — no plot, no
+       V6-thread content.
+
+       Icon: procedural (make_slough_breach_icon.py, this mod's sibling
+       AshkarrLandmarkArt folder), not generated — local image generation is
+       PARKED (owner, 2026-09-05) and unattended FOUNDRY work must not risk
+       the Codex $imagegen UAC prompt. A ragged torn-membrane patch with
+       pooled ooze and secondary tears, sickly yellow-green — deliberately
+       distinct from VEE_FleshPits (pink, radial, a living thing) and from
+       this same folder's RUT_GapingDoom (a single green maw). -->
+
+  <LandmarkDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Slough_GelatinousBreach</defName>
+    <label>the gelatinous breach</label>
+    <description>Ground the colour of an old bruise, split open along a ragged seam. Ooze has pooled dark in the low points and dried to a crust the colour of a healing wound everywhere else; smaller tears radiate outward where the thing that broke through here first went looking for room. Nothing about the seam has closed, and the ground for a stone's throw around it has gone soft and wrong underfoot.</description>
+    <iconTexturePath>World/Landmarks/Ashkarr/RUT_Slough_GelatinousBreach</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0</commonality>
+    <category>structure</category>
+    <nameMaker>NamerLandmark_Ruins</nameMaker>
+  </LandmarkDef>
+
+</Defs>
