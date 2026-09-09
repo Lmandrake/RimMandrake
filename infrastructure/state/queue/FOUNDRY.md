@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T19:44:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T19:45:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -630,6 +630,15 @@ kind:     task
 summary:  BIOMEENRICHMENTDESERTWASTELAND1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
 
+## BIOME_ENRICHMENT_POISON_FOREST_1 Enrichment wave (review B1): Poison Forest is mutator-barren (74% zero-tile MEASURED) — place from its sheet's own kit: vent fields, metal-plated groves, condensation lines; verify by density + whole-planet loss diff
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  (no items/BIOME_ENRICHMENT_POISON_FOREST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_ENRICHMENT_POISON_FOREST_1.md
+
 ## SEA_ENRICHMENT_LANDMARKS_1 Enrichment wave (review B1): the Grey Sea holds ZERO landmarks in 429 tiles and the Twilight Sea is near-bare — seamounts, wreck moorings, mat features for the diving arc; respects the seas' sheets
 state:    doing
 row:      unassigned
@@ -674,15 +683,6 @@ target:   v1
 kind:     design
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
-
-## BIOMESKIT_RENDER_LAYER_MISSING_1 BiomesKit's 1.6 DLL dropped BiomesKitWorldLayer entirely -- worldmap decoration icons' current source unknown
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  Original concern: "BiomesKit's 1.6 DLL dropped BiomesKitWorldLayer entirely —
-prose:    infrastructure/state/items/BIOMESKIT_RENDER_LAYER_MISSING_1.md
 
 ## DROIDWORKS_PERSONALITY_VERIFY_1 Live-verify chassis personality bias: 20 spawns per family show the forced traits + protocol pedantry
 state:    doing
@@ -918,13 +918,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
-
-## BIOME_ENRICHMENT_POISON_FOREST_1 Enrichment wave (review B1): Poison Forest is mutator-barren (74% zero-tile MEASURED) — place from its sheet's own kit: vent fields, metal-plated groves, condensation lines; verify by density + whole-planet loss diff
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BIOME_ENRICHMENT_POISON_FOREST_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOME_ENRICHMENT_POISON_FOREST_1.md
