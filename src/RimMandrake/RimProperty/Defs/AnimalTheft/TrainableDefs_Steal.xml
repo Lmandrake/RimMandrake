@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       RM_Steal — RIMPROPERTY_ANIMAL_THEFT_1. Owner, 2026-09-08 (verbatim):
+       "some agile pets may be trained to steal". Backs JobGiver_RM_
+       TrainedSteal via Defs/AnimalTheft/ThinkTreeDefs_AnimalSteal.xml's
+       Animal_PreWander insertion hook, gated by ThinkNode_
+       ConditionalTrainableCompleted exactly the way vanilla's own Haul
+       trainable gates JobGiver_Haul (Defs/Core/ThinkTreeDefs/Animal.xml).
+
+       requiredTrainability: Intermediate, NOT Advanced. Rationale (item spec
+       leaves the threshold TBD, so this is the one judgment call this pass
+       makes): vanilla's Obedience — RM_Steal's own prerequisite — is itself
+       Intermediate, and the flagship "agile pet" species in the vanilla
+       roster, Monkey (Defs/Core/ThingDefs_Races/Races_Animal_CatGroup.xml,
+       trainability Intermediate, own flavor text: "clever, and can be
+       trained to carry out fairly complex tasks"), tops out at Intermediate.
+       Gating at Advanced (Haul's own tier) would exclude Monkey entirely —
+       exactly backwards for "agile pets" as a category, since Advanced-tier
+       animals in this mod list skew toward war dogs, not tricksters. Every
+       species BELOW Intermediate (trainability None — e.g. Raccoon) simply
+       cannot learn this trainable at all: RimWorld's own CanAssignToTrain
+       enforces requiredTrainability against race.trainability, so "no theft
+       possible for species without the mark" is enforced by the vanilla
+       trainability system itself for this route, with zero extra code.
+
+       icon reuses vanilla's own Haul icon (UI/Icons/Trainables/Haul) rather
+       than invent an unauthored texture path — closest existing fit (a
+       hand carrying something off) for a trick this pass doesn't ship new
+       art for.
+  ======================================================================== -->
+  <TrainableDef>
+    <defName>RM_Steal</defName>
+    <label>steal</label>
+    <description>The animal can be directed to sneak off with a small unattended item.</description>
+    <defaultTrainable>true</defaultTrainable>
+    <difficulty>400</difficulty>
+    <icon>UI/Icons/Trainables/Haul</icon>
+    <listPriority>390</listPriority>
+    <prerequisites>
+      <li>Obedience</li>
+    </prerequisites>
+    <requiredTrainability>Intermediate</requiredTrainability>
+    <steps>8</steps>
+    <tags>
+      <li>Work</li>
+    </tags>
+  </TrainableDef>
+
+</Defs>

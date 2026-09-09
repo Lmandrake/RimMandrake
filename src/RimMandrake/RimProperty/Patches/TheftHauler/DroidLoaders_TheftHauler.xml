@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DroidLoaders_TheftHauler.xml     TheftHauler · RIMPROPERTY_ANIMAL_THEFT_1
+
+  Owner, 2026-09-08 (verbatim): "Some droid loaders have this property."
+  MuckrakerChassis_TheftHauler.xml already marks the one Droidworks chassis
+  BUILDING_THEFT_HAULER_1 picked; this file adds MORE of the same DW_Family_
+  Labour ancestry (Races_Families.xml) so "some" reads as plural rather than
+  a single droid. Every defName below was read directly out of Droidworks'
+  own Races_*.xml — none invented (CLAUDE.md's "never guess a defName" rule).
+
+  RSW_DW_Race_OuterRim_ImperialLaborDroid (Races_OuterRim.xml) — the only
+  OTHER concrete Labour-family droid whose own label literally says
+  "Labor"/loader, not just a maintenance bot.
+
+  RSW_DW_Race_guy762_DroidRace_KM1MD "KM1-series Mining Droid" and
+  RSW_DW_Race_guy762_DroidRace_KM1HMD "KM1-B Excavation Droid"
+  (both Races_KotOR.xml) — baseBodySize 1.5, the two LARGEST bodies of any
+  concrete Labour-family droid across every Races_*.xml file (bigger even
+  than Muckraker's 1.2), i.e. the heaviest haulers Droidworks ships.
+
+  RSW_DW_Race_guy762_DroidRace_GE3LD "GE3-series labor droid"
+  (Races_KotOR.xml) — the baseline generic labor droid (no baseBodySize
+  override, inherits DW_Family_Labour's default 1.0), included so the
+  KotOR-absorbed half of Droidworks isn't left with zero loaders.
+
+  Same MayRequire-gated no-op shape as the Muckraker file: absent
+  Droidworks, every Operation below is a silent no-op and the engine mod
+  (TrainableDef/JobDef/JobDriver/FloatMenuOptionProvider/marker class)
+  stays fully functional for any other pawnkind marked directly.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod" MayRequire="mandrake.rsw.droidworks">
+    <mods>
+      <li>Droidworks</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/AlienRace.ThingDef_AlienRace[defName="RSW_DW_Race_OuterRim_ImperialLaborDroid"]</xpath>
+      <value>
+        <modExtensions>
+          <li Class="RimMandrake.TheftHauler.TheftHaulerExtension" />
+        </modExtensions>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod" MayRequire="mandrake.rsw.droidworks">
+    <mods>
+      <li>Droidworks</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/AlienRace.ThingDef_AlienRace[defName="RSW_DW_Race_guy762_DroidRace_KM1MD"]</xpath>
+      <value>
+        <modExtensions>
+          <li Class="RimMandrake.TheftHauler.TheftHaulerExtension" />
+        </modExtensions>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod" MayRequire="mandrake.rsw.droidworks">
+    <mods>
+      <li>Droidworks</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/AlienRace.ThingDef_AlienRace[defName="RSW_DW_Race_guy762_DroidRace_KM1HMD"]</xpath>
+      <value>
+        <modExtensions>
+          <li Class="RimMandrake.TheftHauler.TheftHaulerExtension" />
+        </modExtensions>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod" MayRequire="mandrake.rsw.droidworks">
+    <mods>
+      <li>Droidworks</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/AlienRace.ThingDef_AlienRace[defName="RSW_DW_Race_guy762_DroidRace_GE3LD"]</xpath>
+      <value>
+        <modExtensions>
+          <li Class="RimMandrake.TheftHauler.TheftHaulerExtension" />
+        </modExtensions>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

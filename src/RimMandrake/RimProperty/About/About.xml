@@ -13,7 +13,8 @@ Carries NO Star Wars content, no settlement/district data, and no RimUtinni tuni
 No Harmony hooks auto-fire TakingEvents from vanilla actions — that wiring is verb-job territory (SETTLEMENT_VERBS_WAVE_1). This mod is the API future code calls, proven with a plain GameComponent ledger, at the colony, with zero visit machinery.
 
 Absorbed mandrake.rm.property (SETTLEMENT_VERBS_WAVE_1's salvage-law pay-claim-fee float menu order) into this mod.
-Absorbed mandrake.rm.property (BUILDING_THEFT_HAULER_1's theft-haul uninstall heist verb, MayRequire-gated Muckraker Crab Droid patch included) into this mod.</description>
+Absorbed mandrake.rm.property (BUILDING_THEFT_HAULER_1's theft-haul uninstall heist verb, MayRequire-gated Muckraker Crab Droid patch included) into this mod.
+RIMPROPERTY_ANIMAL_THEFT_1 (2026-09-08): more MayRequire-gated Droidworks loader chassis marked with TheftHaulerExtension (Imperial Labor Droid, KM1-series Mining Droid, KM1-B Excavation Droid, GE3-series labor droid); the RM_Steal TrainableDef, letting an Intermediate-or-better-trainability pet be trained to sneak off with a small unattended item; and a wild-animal instinct doing the same, gated by a WildTheftExtension mark on Core's own Raccoon. All three routes fire the same TakingEvent spine as every other taking here.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>

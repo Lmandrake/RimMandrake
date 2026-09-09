@@ -65,6 +65,13 @@
     <Compile Include="TheftHauler\JobDriver_TheftHaulUninstall.cs" />
     <Compile Include="TheftHauler\TheftHaulerDefOf.cs" />
     <Compile Include="TheftHauler\TheftHaulerExtension.cs" />
+    <!-- RIMPROPERTY_ANIMAL_THEFT_1: trained-pet + wild-animal theft routes. -->
+    <Compile Include="AnimalTheft\AnimalTheftDefOf.cs" />
+    <Compile Include="AnimalTheft\AnimalTheftUtility.cs" />
+    <Compile Include="AnimalTheft\JobDriver_RM_AnimalSteal.cs" />
+    <Compile Include="AnimalTheft\JobGiver_RM_TrainedSteal.cs" />
+    <Compile Include="AnimalTheft\JobGiver_RM_WildSteal.cs" />
+    <Compile Include="AnimalTheft\WildTheftExtension.cs" />
   </ItemGroup>
 
   <ItemGroup>
