@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SAND_SWIMMERS_MOD_1 — the item half of the sand-swimmer family: the catch
+  (RSW_DuneCrawler) and the rare prize (RSW_GlassPearl). The predator half
+  (RSW_SandStalker, "the thing that catches the catcher") is a live creature —
+  see ThingDefs_Races/RSW_SandStalker.xml — and enters the loop as a rare catch
+  corpse via ThingSetMakerDefs/RSW_RareSandCatches.xml, not as an item here.
+
+  PRECEDENT CHECK (done before designing, per the item's own instruction):
+  - "sand prowler burrow-swim precedent" — CONFIRMED REAL. Alpha Animals' AA_SandProwler
+    (`sarg.alphaanimals`) fakes "burrows in sand" with zero C#, via VEF's
+    `CompProperties_GraphicByTerrain` (swaps to a `_Hidden` graphic while standing on
+    listed sand terrains) + hediff `AA_BurrowingUnderSand`. Full technical writeup:
+    design/Jawa/worldbuilding/desert_ecology_feasibility.md §7 and §9. This mod does
+    NOT reuse that comp (see RSW_SandStalker.xml header for why), but the precedent is
+    real and is where the "sand-swimmer" vocabulary in this campaign comes from.
+  - "Blue Desert's sand-swimmer gene" — the ITEM's citation is WRONG ABOUT THE BIOME,
+    though the gene itself is real. Gene A26 "Sand-swimmer" ("+0.5 move on sand, no
+    footprints there") lives in `design/Jawa/worldbuilding/biomes/the_slime_gene_lists.md`
+    — THE SLIME's gene-machine roster, riders picked up from visitors to that biome —
+    not in `the_blue_desert.md`, which has no "sand-swimmer" or "sand-swim" text at all
+    (checked directly). Flagging this rather than silently repeating the item's claim.
+
+  NEVER FISH-SHAPED (owner's explicit instruction): both items below are armored/
+  crystalline analogs, described and iconed accordingly, not as fish.
+
+  ANTI-EXPONENTIAL: Nutrition/MarketValue held at or below vanilla Fish_* tier
+  (FishBase: Nutrition 0.25, MarketValue 6.5) — no yield multiplier over ordinary
+  fishing. The population cap that actually keeps this a "thin windfall, not a farm"
+  lives on the biome side (RUT: Patches/SandFishing_CrackedLands.xml's
+  maxFishPopulation), not here.
+
+  ART — PLACEHOLDER for both items (owed, not generated this pass). validate_patch.py
+  proved a plain cross-mod vanilla texPath reference does NOT check out here (vanilla
+  Core's own art is packed into resources.assets/AssetBundles, not loose PNGs under
+  Data/, so this repo's static texture scan can't see it, and this project's own
+  convention — RSW_Jerba reusing the already-absorbed Bantha sprite — is to point at
+  art that is physically present in THIS mod's own Textures/ folder). Reused instead,
+  both confirmed present on disk and both already free of the fish silhouette:
+  RSW_DuneCrawler  -> swresource/AbsorbedEggs/RSW_InsectEgg (an egg/chitin read)
+  RSW_GlassPearl   -> swresource/Trophies/BanthaHorn (a distinct valuable-prize read)
+-->
+<Defs>
+
+  <ThingDef ParentName="FishBase">
+    <defName>RSW_DuneCrawler</defName>
+    <label>dune crawler</label>
+    <description>A fist-sized, many-legged scavenger with a fused mineral shell, pulled up out of deep sand on a fishing line. It spends its whole life below the surface filtering decayed organics out of the sand — silverbole leaf-fall, dead things the dune swallowed, whatever a wreck sheds — and only ever reaches the light when something eats it or something catches it. Nothing about it says "fish." Cooked, it eats like a shrimp with regrets.</description>
+    <graphicData>
+      <texPath>swresource/AbsorbedEggs/RSW_InsectEgg</texPath>
+      <!-- PLACEHOLDER — see header. -->
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_GlassPearl</defName>
+    <label>glass pearl</label>
+    <description>A smooth, water-clear nodule fused out of silica deep inside a deep-sand pool — kin to the light-pipe nubs that dot the dune sea's surface, but rounder, and rarer, because nothing usually digs this deep to find one. Ash'karr's optics trade calls a good one "a lens that grew a skin." Sold whole, or cut for what's inside.</description>
+    <graphicData>
+      <texPath>swresource/Trophies/BanthaHorn</texPath>
+      <!-- PLACEHOLDER — see header. -->
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>38</MarketValue>
+      <Mass>0.15</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>4</Beauty>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>25</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>
