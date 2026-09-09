@@ -9,9 +9,18 @@ Plus, minutes later: *"We can set the appropriate temperatures later, don't worr
 a constraint"* ⇒ climate tolerance is `NORMALIZE_TEMPERATURE_TOLERANCES_1`, not a filter here.
 **Assignment is by LOOK and LORE.**
 
-🔑 **The rule that shapes every list below: no plant appears in two FAMILIES.** The eight
-families are the design; inside one, a shared plant is deliberate kinship, across two it is the
-zoo effect the owner objected to. `--check` fails the build if any plant crosses a family.
+🔴 **THE SOURCE MOVED, 2026-09-09.** `FAMILIES` is no longer authored here — it is written
+from `design/Jawa/worldbuilding/biomes/rosters/*.json` (`flora` / `flora_purged`), which
+BIOME_FAUNA_ASSIGNMENT_SITTING_1 landed on the owner's cards. A plant is in a biome because
+that biome's sheet law admitted it; the roster row carries the argument. ⛔ Edit the ROSTER
+and re-derive, never this dict — `--check` fails the build if the two disagree.
+
+🔑 **The rule that shapes every list below: no plant appears in two FAMILIES.** Inside one
+family a shared plant is deliberate kinship; across two it is the zoo effect the owner
+objected to, and `--check` fails the build. The families are therefore no longer narrative
+categories: they are the connected components of "shares a plant with", computed from the
+rosters, which is the only grouping that can satisfy the rule without editing the design.
+Five of them, where there used to be eight.
 
 🔴 **`wildPlants` IS a `LoadDataFromXmlCustom` field and `<li>` DESTROYS THE DEF.** Read from
 source, not assumed — `BiomePlantRecord.LoadDataFromXmlCustom` takes the **node NAME** as the
@@ -39,7 +48,7 @@ defect, not a preference; `--check` cannot catch it because the def dump predate
 went stale the moment anyone edited `FAMILIES`. It lives here now: one file owns the rosters,
 the patch and the prose about them.
 """
-import argparse, collections, csv, json, os, sqlite3, sys, textwrap
+import argparse, collections, csv, glob, json, os, sqlite3, sys, textwrap
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
@@ -47,7 +56,12 @@ sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils"))
 from game_paths import DUMP_ROOT  # noqa: E402
 DB = os.path.join(DUMP_ROOT, "defs.sqlite")
 TILES = os.path.join(ROOT, 'world', 'ASHKARR_WORLDMAP_tiles.csv')
-PATCH = os.path.join(ROOT, 'src', 'Jawa', 'Jawa_Patches', 'Patches', 'BiomeFlora_Ashkarr.xml')
+# ⚠️ This used to point at src/Jawa/Jawa_Patches/, which JAWA_PATCHES_SPLIT_1 retired.
+# The deployed file has been under RimUtinni since that split; `--write` was silently
+# creating a fresh dead directory instead of updating anything. Corrected 2026-09-09.
+PATCH = os.path.join(ROOT, 'src', 'RimUtinni', 'UtinniPatches', 'Patches',
+                     'BiomeFlora_Ashkarr.xml')
+ROSTERS = os.path.join(ROOT, 'design', 'Jawa', 'worldbuilding', 'biomes', 'rosters')
 POOL = os.path.join(HERE, 'plant_pool.csv')
 DOC = os.path.join(ROOT, 'design', 'Jawa', 'worldbuilding', 'biome_flora_rosters.md')
 
@@ -57,383 +71,156 @@ DOC = os.path.join(ROOT, 'design', 'Jawa', 'worldbuilding', 'biome_flora_rosters
 #   2.0+  the ground cover you always see      0.5-1.0  the mid layer you notice
 #   0.2-0.5  punctuation                       <0.2     trees and set pieces
 FAMILIES = {
-
- 'A. dayside desert': {
-  'Desert': {                       # 4,648 tiles - the face of the planet
-    'AB_HardyGrass': 2.2, 'Plant_PincushionCactus': 0.8, 'Plant_Agave': 0.6,
-    'Plant_DesertDandelion': 0.45, 'AB_BrownBarrelCactus': 0.25,
-    'Plant_PebbleCactus': 0.35,     # tree - walk list: reads correctly for desert ground
-    'Plant_SaguaroCactus': 0.12,    # tree
-    'Plant_TreeDrago': 0.08,  # tree - owner: "I love the strange drago tree"
-    # --- second pass 2026-08-23: use the content we already have ---
-    'AreebianCactus': 0.30, 'RG_FlowerCactus': 0.25, 'GRimPebbleCactus': 0.22,
-    'GRim1PebbleCactus': 0.20, 'GRimPincushionCactus': 0.35, 'GRim1PincushionCactus': 0.30,
-    'GRimAgave': 0.30, 'GRimSaguaroCactus': 0.10, 'GRim1SaguaroCactus': 0.10,
-    'VEE_Plant_HoodiaCactus': 0.18, 'AB_DessertTree': 0.06, 'TreeDragoberry': 0.15,
-    'Plant_HubbaGourd_Wild': 0.25, 'Plant_Chakroot_Wild': 0.30, 'Plant_HubbaGourd': 0.05,
-    'Plant_Chakroot': 0.05, 'GRimYellowGrass': 0.60, 'AB_Aaklac': 0.12,
-    # --- residue sweep 2026-08-23: clones follow their twin into the same biome ---
-    'GRimAgavePlant': 0.24,
-    # --- third pass 2026-08-23, DECIDE: succulents on a desert world (1 of 3) ---
-    'VCE_Plant_JadePlant': 0.30, 'VCE_Plant_AloeVera': 0.28, 'VCE_Plant_SnakePlant': 0.25},
-  'ExtremeDesert': {                # 3,214 - plantDensity 0.008, all but sterile
-    'AB_EuphorbiaRimworldia': 0.30, 'VCE_Plant_PincushionPlant': 0.25,
-    'AB_GargantuanLithops': 0.20,   # living stones
-    'AB_EuphorbiaDesiccata': 0.06,  # tree
-    # --- second pass 2026-08-23: use the content we already have ---
-    'AB_DeadBowerTree': 0.05, 'TreeDead': 0.04, 'GRimTreeDead': 0.04, 'AB_GiantStikehr': 0.04,
-    'Plant_Bloddle': 0.10,
-    # --- third pass 2026-08-23, DECIDE: succulents on a desert world (2 of 3) ---
-    # the small water-hoarders, which is all this ground will carry
-    'VCE_Plant_Echeveria': 0.25, 'VCE_Plant_FairyWashboard': 0.22,
-    'VCE_Plant_SweetheartPlant': 0.20},
-  'AridShrubland': {                # 709 - scrub, and the planet's herb garden
-    'Plant_ShrubLow': 1.4, 'VEE_Gorse': 0.7, 'VEE_Heather': 0.6,
-    'VEE_Plant_JuniperBush': 0.5, 'Plant_Ripthorn': 0.3,
-    'Plant_HealrootWild': 0.25,  # owner licensed player-grown flora
-    # --- second pass 2026-08-23: use the content we already have ---
-    'GRim1Bush': 0.35, 'GRim2Bush': 0.35, 'GRim3Bush': 0.30, 'GRim4Bush': 0.30,
-    'GRimBush': 0.35, 'AreebianBush': 0.30, 'BushDandys': 0.25, 'Grim3Shrub': 0.25,
-    'NewGreenBush': 0.25, 'GRim1ShrubLow': 0.40, 'GRim2ShrubLow': 0.40, 'GRimShrubLow': 0.40,
-    'Plant_Bush': 0.30, 'Plant_Brambles': 0.30, 'RG_Plant_BramblesRed': 0.25,
-    'RG_Plant_BramblesYellow': 0.25, 'GRimBrambles': 0.25, 'VEE_Knapweed': 0.30,
-    'VEE_Loosestrife': 0.30, 'VEE_ButtercupFlower': 0.25, 'VEE_ForgetMeNot': 0.25,
-    'RG_Plant_AridGrass': 0.70, 'RG_Plant_Oxalis': 0.25, 'RG_Plant_Dervish': 0.20,
-    'RG_Plant_CreepStern': 0.20, 'RG_Plant_CrimsonCushion': 0.20,
-    'RG_Plant_LupineIceland': 0.20, 'RG_Plant_TigerLily': 0.18, 'Plant_Astragalus': 0.25,
-    'Plant_Clivia': 0.20, 'Plant_Daylily': 0.20, 'Plant_Rose': 0.15,
-    'RG_Plant_Plumeria': 0.15, 'GRimClivia': 0.18, 'IronScruff_Juniper': 0.25,
-    'Plant_MujaFruit_Wild': 0.22, 'Plant_Nysyllin_Wild': 0.22, 'Plant_MujaFruit': 0.05,
-    'Plant_Nysyllin': 0.05, 'Plant_Berry': 0.20, 'GRimBerryBush': 0.18,
-    'GRim1BerryBush': 0.15, 'GRim2BerryBush': 0.15, 'GRim3BerryBush': 0.15,
-    'GRim4BerryBush': 0.15, 'GRim5BerryBush': 0.15,
-    # --- residue sweep 2026-08-23: clones follow their twin into the same biome ---
-    'Plant_Healroot': 0.20, 'GRim1BushPoplar': 0.28, 'GRim2BushPoplar': 0.28,
-    'GRimBushPoplar': 0.28, 'ZBiome_Plant_WildDaylily': 0.16, 'ZBiome_Plant_WildRose': 0.12,
-    'Plant_Berry_Leafless': 0.16, 'Plant_Brambles_Leafless': 0.24,
-    'Plant_Bush_Leafless': 0.24,
-    # --- third pass 2026-08-23, DECIDE: the ornamentals, and the rose ---
-    'VEE_Plant_Bluebell': 0.15, 'VEE_Plant_Gardenia': 0.15, 'VEE_Plant_Gentian': 0.15,
-    'VEE_Plant_Petunia': 0.15, 'RotR_RoseOfRebirth': 0.12},
-  'ZBiome_Badlands': {              # 545 - the cactus garden, kept whole in one place
-    'VEE_Plant_ChollaCactus': 0.40, 'VEE_Plant_HedgehogCactus': 0.40,
-    'VEE_Plant_BeavertailCactus': 0.35, 'VEE_Plant_BarrelCactus': 0.30,
-    'VEE_Plant_OrganPipeCactus': 0.25,
-    'Plant_Psychoid_Wild': 0.20,  # player-grown
-    # --- second pass 2026-08-23: use the content we already have ---
-    'GRim1Ripthorn': 0.30, 'GRim2Ripthorn': 0.30, 'GRimRipthorn': 0.30,
-    'GRim1Thornvine': 0.28, 'GRim2Thornvine': 0.28, 'GRimThornvine': 0.28,
-    'RG_Plant_LureWeed': 0.20, 'AB_RavenNettle': 0.25, 'AB_RedBugloss': 0.25,
-    'Plant_TookeTrap_Wild': 0.20, 'Plant_TookeTrap': 0.05, 'BMT_Plant_Mantrap': 0.15,
-    # --- residue sweep 2026-08-23: clones follow their twin into the same biome ---
-    'Plant_Psychoid': 0.16, 'Plant_Thornvine': 0.22,
-    # --- third pass 2026-08-23, DECIDE: succulents (3 of 3) - the CACTUS three,
-    # which belong with the cactus garden rather than out on the open sand ---
-    'VCE_Plant_BunnyEarsCactus': 0.32, 'VCE_Plant_PeyotePlant': 0.28,
-    'VCE_Plant_Schlumbergera': 0.25},
-  'ZBiome_DesertOasis': {           # 227 - the only place that reads WET on the dayside
-    'Plant_Reeds': 1.2, 'Plant_Bulrush': 1.0, 'Plant_Alocasia': 0.6,
-    'VEE_Plant_DatePalm': 0.35, 'AB_FanPalm': 0.30,
-    'Plant_Smokeleaf_Wild': 0.20,   # player-grown
-    'Plant_Ambrosia': 0.12,
-    # --- second pass 2026-08-23: use the content we already have ---
-    'GRimReeds': 0.60, 'GRim1Reeds': 0.60, 'GRimBulrush': 0.55, 'GRim1Alocasia': 0.35,
-    'GRim2Alocasia': 0.35, 'GRimAlocasia': 0.35, 'TreePalma': 0.20, 'GRim1RatPalm': 0.18,
-    'GRim2RatPalm': 0.18, 'GRimRatPalm': 0.18, 'Plant_RatPalm': 0.18,
-    'RG_Plant_TallPalmTree': 0.15, 'RG_Plant_TreeDwarfPalm': 0.15, 'Plant_TreePalm': 0.15,
-    'VEE_Plant_ScrewPine': 0.12, 'RG_Plant_Tidalis': 0.20, 'Plant_Rafflesia': 0.10,
-    'Plant_JoganTree_Wild': 0.18, 'Plant_Meiloorun_Wild': 0.18, 'Plant_JoganTree': 0.05,
-    'Plant_Meiloorun': 0.05, 'Plant_HydenockTree_Wild': 0.15, 'Plant_HydenockTree': 0.04,
-    'Plant_Hops': 0.12, 'Plant_Strawberry': 0.10,
-    # ⛔ RG_Plant_Raspberry removed 2026-08-23 - the owner CUT it. See the header.
-    # --- residue sweep 2026-08-23: clones follow their twin into the same biome ---
-    'Plant_Smokeleaf': 0.16, 'Plant_MotherAmbrosiaLGE': 0.10, 'Plant_Strawberry_Wild': 0.08,
-    # --- third pass 2026-08-23, DECIDE's rulings: the oasis grove ---
-    # The surviving hardwoods. They get Star Wars names in a separate rename patch, so
-    # they will not read as Earth trees standing in a desert oasis.
-    'Plant_TreeOak': 0.08, 'Plant_TreeMaple': 0.08, 'VEE_Plant_TreeOak_Auburn': 0.07,
-    'VEE_Plant_TreeMaple_Auburn': 0.07, 'VEE_Plant_TreeBirch_Auburn': 0.06,
-    'VEE_Plant_TreePoplar_Auburn': 0.06, 'VEE_Plant_Laurel': 0.06,
-    'VEE_Plant_Firewood': 0.06, 'RG_Plant_TreeSplitpine': 0.05,
-    # crops and drinks - the oasis is the only dayside ground worth planting
-    'VBE_Plant_Coffee': 0.25, 'VBE_Plant_Tea': 0.25, 'VBE_Plant_Tobacco': 0.22,
-    'VCE_Allspice': 0.20,
-    # standing water, the one place on the dayside that has any
-    'Plant_LilyPad': 0.30, 'Plant_Lotus': 0.25},
-  'ZBiome_Grasslands': {            # 233 - hot grass plain
-    'Plant_YellowGrass': 2.4, 'Plant_YellowTallGrass': 2.0, 'Plant_Haygrass': 0.5,
-    'Plant_Tinctoria_Wild': 0.30,   # owner named tinctoria by name
-    'Plant_Cotton_Wild': 0.30,
-    # --- second pass 2026-08-23: use the content we already have ---
-    'GRimBlackGrass': 0.50, 'GRimBlueGrass': 0.50, 'GRimGreenGrass': 0.50,
-    'GRimNavyGrass': 0.50, 'GRimOrangeGrass': 0.50, 'GRimPurpleGrass': 0.50,
-    'GRimRedGrass': 0.50, 'GRimTealGrass': 0.50, 'GRimBlackTallGrass': 0.40,
-    'GRimBlueTallGrass': 0.40, 'GRimGreenTallGrass': 0.40, 'GRimNavyTallGrass': 0.40,
-    'GRimOrangeTallGrass': 0.40, 'GRimPurpleTallGrass': 0.40, 'GRimRedTallGrass': 0.40,
-    'GRimTealTallGrass': 0.40, 'GRimYellowTallGrass': 0.40, 'DandyGrass': 0.45,
-    'DandyTallGrass': 0.40, 'Dandys': 0.35, 'Plant_Grass': 0.80, 'Plant_TallGrass': 0.70,
-    'PlantTallYellowGrass': 0.50, 'Plant_Dandelion': 0.35, 'RG_Plant_BlueDandelion': 0.25,
-    'RG_Plant_RedDandelion': 0.25, 'Plant_Corn': 0.10, 'Plant_Rice': 0.08,
-    'Plant_Potato': 0.10, 'Plant_Dantuber_Wild': 0.20, 'Plant_Dantuber': 0.05,
-    'SavannaBush': 0.30, 'SavannaTreeAcacia': 0.10, 'SavannaTreeBaobab': 0.06,
-    # --- residue sweep 2026-08-23: clones follow their twin into the same biome ---
-    'Plant_Cotton': 0.24, 'Plant_Tinctoria': 0.24,
-    # --- third pass 2026-08-23, DECIDE: the field crops go where a field is ---
-    'VCE_Wheat': 0.30, 'VCE_Sugarcane': 0.25, 'Plant_Fibercorn_Wild': 0.25,
-    'Plant_Fibercorn': 0.20},
+ 'A. dayside desert, badlands and the river jungles': {
+  'Desert': {   # 3,932 tiles · 5 plants
+    'AB_HardyGrass': 0.6, 'Plant_Chakroot_Wild': 0.3, 'Plant_HubbaGourd_Wild': 0.2,
+    'AB_Aaklac': 0.12, 'AB_DessertTree': 0.06},
+  'AB_PropaneLakes': {   # 2,531 tiles · 4 plants
+    'AB_CrystalHorn': 1.0, 'AB_CrystalFlower': 0.8, 'AB_FrostLeaf': 0.6,
+    'AB_RimeNodules': 0.4},
+  'ZBiome_Badlands': {   # 985 tiles · 6 plants
+    'AB_HardyGrass': 1.0, 'GRimMoss': 0.8, 'BMT_Plant_TwistingThorngrass': 0.5,
+    'BMT_Plant_TwistingThornweed': 0.4, 'BMT_Plant_TreeTwistingThornwood': 0.2,
+    'AB_GargantuanLithops': 0.15},
+  'PoisonForest': {   # 557 tiles · 9 plants
+    'BMT_Plant_TreeTwistingThornwood': 0.6, 'AB_CrystalFlower': 0.5,
+    'BMT_Plant_TreeMartyr': 0.5, 'AB_BloodBouquet': 0.4, 'AB_CrystalHorn': 0.4,
+    'AB_RavenNettle': 0.4, 'AB_GiantAgariTox': 0.3, 'AB_RedBugloss': 0.3,
+    'AB_KeeningCordax': 0.2},
+  'BiomeCypreJungle': {   # 235 tiles · 11 plants
+    'AB_JungleTree': 3.0, 'Plant_HydenockTree_Wild': 1.5, 'Plant_JoganTree_Wild': 1.2,
+    'BMT_GiantLeaf': 1.0, 'Plant_MujaFruit_Wild': 1.0, 'Plant_HubbaGourd_Wild': 0.8,
+    'AB_SugarFamewort': 0.6, 'Plant_FelucianGlowspore_Wild': 0.6,
+    'Plant_Bubblespore_Wild': 0.5, 'Plant_Chakroot_Wild': 0.5, 'Plant_TookeTrap_Wild': 0.5},
+  'ZBiome_Grasslands': {   # 222 tiles · 3 plants
+    'Plant_YellowGrass': 2.4, 'Plant_YellowTallGrass': 2.0, 'AB_HardyGrass': 0.4},
+  'AB_OcularForest': {   # 179 tiles · 10 plants
+    'AB_AlienGrass': 1.0, 'AB_AlienTree': 1.0, 'AB_EyeGrass': 0.6, 'AB_RedLeaves': 0.6,
+    'AB_HalfAlienTree': 0.5, 'AB_RedPlantsTall': 0.5, 'AB_GlobularPlant': 0.4,
+    'AB_TentacularPlant': 0.4, 'AB_BloodBouquet': 0.3, 'AB_AlienTree_Polluted': 0.15},
+  'AB_FeraliskInfestedJungle': {   # 161 tiles · 7 plants
+    'AB_JungleTree': 1.1, 'RG_Plant_TropicalChokevine': 1.0, 'AB_TangleTea': 0.4,
+    'Plant_TookeTrap_Wild': 0.3, 'AB_Gomphoeria': 0.15, 'AB_RedBugloss': 0.07,
+    'AB_Aaklac': 0.05},
+  'RUT_PropaneLake': {   # 57 tiles · 4 plants
+    'AB_CrystalHorn': 1.0, 'AB_CrystalFlower': 0.8, 'AB_FrostLeaf': 0.6,
+    'AB_RimeNodules': 0.4},
+  'COMIGO_GreaterSwamp_Tropical': {   # 43 tiles · 7 plants
+    'Plant_HydenockTree_Wild': 1.5, 'AB_KeeningCordax': 1.2, 'BMT_GiantLeaf': 0.8,
+    'Plant_JoganTree_Wild': 0.6, 'AB_Iashiphus': 0.5, 'AB_Gomphoeria': 0.4,
+    'Plant_Chakroot_Wild': 0.4},
  },
 
- 'B. contamination': {              # §6c: the danger is the GROUND, not the wildlife
-  'Wasteland': {                    # 1,721
-    'RG_Plant_ToxiGrass': 2.0, 'RG_Plant_TallToxiGrass': 1.2,
-    'BMT_Plant_GutterPlantain': 0.6, 'BMT_Plant_ToxicIvy': 0.5,
-    'BMT_Plant_TwistedDandelion': 0.5, 'BMT_Plant_ScorchedStars': 0.30,
-    'BMT_Plant_WildRashroot': 0.20, 'BMT_Plant_Doomsprout': 0.15,
-    # --- second pass 2026-08-23: use the content we already have ---
-    'PoisonAlocasia': 0.30, 'PoisonBrambles': 0.30, 'PoisonRafflesia': 0.12,
-    'PoisonShrub': 0.35, 'PoisonPlantBush': 0.30, 'PoisonPlantDandelion': 0.30,
-    'PoisonPlantTallGrass': 0.50, 'PoisonMushroom': 0.20, 'PoisonPlantRaspberry': 0.15,
-    'AB_ToxiGrass': 0.60, 'AB_ToxiBulb': 0.10, 'AB_GiantToxicFlower': 0.08,
-    'AB_WeepingToxberry': 0.20, 'BMT_Plant_CottonCap': 0.20, 'BMT_Plant_GreyFern': 0.30,
-    'BMT_Plant_PigsEars': 0.25, 'BMT_RainbowTongue': 0.15, 'BMT_Plant_PoxSorghum': 0.25,
-    'RG_Plant_TreeToxipine': 0.10, 'RG_Plant_TreeToxiTeak': 0.10,
-    'PoisonPlantTreeCecropia': 0.08, 'PoisonTreeCypress': 0.08, 'PoisonTreePalm': 0.08,
-    'PoisonPlantTreeTeak': 0.08, 'PoisonTreeWillow': 0.08, 'BMT_Plant_EclipsusFlower': 0.15,
-    'BMT_Plant_EclipsusLeaves': 0.15,
-    # --- residue sweep 2026-08-23: clones follow their twin into the same biome ---
-    'BMT_Plant_Rashroot': 0.16, 'Plant_TreeCypress': 0.06,
-    # --- third pass 2026-08-23, DECIDE: the last of the Polluted Lands ground ---
-    'Plant_GrayGrass': 0.35, 'BMT_Plant_Snaketails': 0.30,
-    'BMT_Plant_TumorbulbHyacinth': 0.25, 'BMT_SpinyHops': 0.22, 'Plant_Toxipotato': 0.20,
-    # the polux pair EAT pollution, so they belong where the pollution is
-    'Plant_TreePolux': 0.10, 'VRE_PoluxBush': 0.08},
-  'AB_TarPits': {                   # 57
-    'AB_TarPuddle': 1.5, 'BMT_Plant_BloomingCorpse': 0.30,
-    'BMT_Plant_TreeSnakeWillow': 0.15, 'BMT_Plant_TreeSeepingEucalyptus': 0.12,
-    # --- second pass 2026-08-23: use the content we already have ---
-    'AB_PollutedStikehr': 0.10, 'BMT_Plant_TreeBarbedLarch': 0.10,
-    'BMT_Plant_TreeClawhandCitron': 0.10, 'BMT_Plant_CryingWolfberryBush': 0.12,
-    'RG_Plant_SwampPod': 0.20},
+ 'B. the mycoid and fire massif': {
+  'ExtremeDesert': {   # 3,172 tiles · 2 plants
+    'Plant_Bloddle': 0.05, 'AB_GiantStikehr': 0.04},
+  'AB_MycoticJungle': {   # 2,258 tiles · 32 plants
+    'AB_Bryolux': 10, 'AB_Glowstool': 3, 'AB_Agarilux': 2, 'AB_GiantAgarilux': 2,
+    'AB_GlowingAgarilux': 1, 'AB_LilacBeacon': 0.5, 'AB_WitchesOyster': 0.5,
+    'BMT_Dewshrooms': 0.5, 'BMT_FruitingBodies': 0.5, 'BMT_Nuitae': 0.5,
+    'BMT_Wrinklecap': 0.5, 'BMT_Arpeau': 0.4, 'BMT_Nogtyl': 0.4,
+    'AB_RecurvedStropharia': 0.3, 'BMT_FlakespireFungus': 0.3, 'BMT_Pusmelon': 0.3,
+    'BMT_RustPuff': 0.3, 'BMT_Sagecrust': 0.3, 'AB_ArbuscularMycorrhiza': 0.2,
+    'AB_SlimyPholiota': 0.2, 'BMT_BleedingTooth': 0.2, 'BMT_Brightbells': 0.2,
+    'BMT_CrimsonCap': 0.2, 'BMT_GreyLady': 0.2, 'BMT_Shinecap': 0.2,
+    'BMT_VioletWimple': 0.2, 'BMT_MortalMorelPlant': 0.15, 'AB_AgaricusDomeCap': 0.1,
+    'AB_DribblingCap': 0.1, 'BMT_Skulltop': 0.1, 'BMT_Blastpod': 0.05,
+    'AB_AgariluxPrime': 0.01},
+  'AB_RockyCrags': {   # 1,170 tiles · 6 plants
+    'AB_GlowingGrass': 1.0, 'AB_ToxicGamma': 0.6, 'AB_GiantGamma': 0.5,
+    'AB_WildRadagast': 0.5, 'AB_GiantStikehr': 0.3, 'AB_GiantSeptimum': 0.2},
+  'ZBiome_DesertOasis': {   # 223 tiles · 4 plants
+    'Plant_Reeds': 1.0, 'AB_GreenRockFern': 0.4, 'BMT_Dewshrooms': 0.4,
+    'Plant_Ambrosia': 0.12},
+  'AB_GelatinousSuperorganism': {   # 96 tiles · 6 plants
+    'AB_TallSlimyGrass': 1.0, 'AB_SlimyFern': 0.5, 'AB_SlimyTree': 0.5,
+    'AB_Slimecasia': 0.4, 'AB_SlimyPholiota': 0.4, 'AB_LargeSlimyTree': 0.3},
+  'AB_PyroclasticConflagration': {   # 31 tiles · 13 plants
+    'Plant_Fireweed': 0.9, 'Plant_MagmaCactus': 0.7, 'BMT_FireLavender': 0.6,
+    'AG_Gamma': 0.5, 'BMT_Sagecrust': 0.4, 'IronScruff_PrimordialGrass': 0.35,
+    'AB_GiantGamma': 0.3, 'AB_TinkleGrass': 0.3, 'IronScruff_PrimordialTallGrass': 0.3,
+    'AG_Septimum': 0.25, 'IronScruff_Bindweed': 0.25, 'AB_FirevineTree': 0.2,
+    'BMT_HeatsinkFungus': 0.2},
+  'LavaField': {   # 8 tiles · 13 plants
+    'Plant_Fireweed': 0.9, 'Plant_MagmaCactus': 0.7, 'BMT_FireLavender': 0.6,
+    'AG_Gamma': 0.5, 'BMT_Sagecrust': 0.4, 'IronScruff_PrimordialGrass': 0.35,
+    'AB_GiantGamma': 0.3, 'AB_TinkleGrass': 0.3, 'IronScruff_PrimordialTallGrass': 0.3,
+    'AG_Septimum': 0.25, 'IronScruff_Bindweed': 0.25, 'AB_FirevineTree': 0.2,
+    'BMT_HeatsinkFungus': 0.2},
+  'Volcano': {   # 5 tiles · 13 plants
+    'Plant_Fireweed': 0.9, 'Plant_MagmaCactus': 0.7, 'BMT_FireLavender': 0.6,
+    'AG_Gamma': 0.5, 'BMT_Sagecrust': 0.4, 'IronScruff_PrimordialGrass': 0.35,
+    'AB_GiantGamma': 0.3, 'AB_TinkleGrass': 0.3, 'IronScruff_PrimordialTallGrass': 0.3,
+    'AG_Septimum': 0.25, 'IronScruff_Bindweed': 0.25, 'AB_FirevineTree': 0.2,
+    'BMT_HeatsinkFungus': 0.2},
  },
 
- 'C. mycoid belt': {                # 2,968 tiles, ZERO river tiles - watered by the terminator
-  'AB_MycoticJungle': {             # 1,939 - Alpha Biomes' fungal set, kept intact
-    'AB_Agarilux': 1.2, 'AB_GlowingAgarilux': 0.6, 'AB_AgaricusDomeCap': 0.5,
-    'AB_RecurvedStropharia': 0.4, 'AB_SlimyPholiota': 0.4, 'AB_WitchesOyster': 0.35,
-    'AB_GiantAgarilux': 0.30, 'AB_DribblingCap': 0.20,
-    'AB_GiantAgariTox': 0.15,       # tree
-    'Plant_Devilstrand': 0.10,  # player-grown, and it is genuinely a fungus
-    # --- second pass 2026-08-23: use the content we already have ---
-    'AB_AgariluxPrime': 0.30, 'AB_Glowstool': 0.40, 'AB_Bryolux': 0.40, 'AB_LandCoral': 0.25,
-    'AB_ArbuscularMycorrhiza': 0.20, 'AB_Gomphoeria': 0.25, 'AB_LilacBeacon': 0.25,
-    'AB_Iashiphus': 0.20, 'AB_WildRadagast': 0.20, 'AB_SugarFamewort': 0.20,
-    'AB_TangleTea': 0.20, 'AB_TinkleGrass': 0.35, 'AB_Flowers': 0.30, 'AB_GlowingGrass': 0.50,
-    'AB_GiantSeptimum': 0.08, 'AB_LuminescentTree': 0.08, 'AB_GiantSunflower': 0.06,
-    'AB_GiantTulip': 0.06, 'Plant_ManaxFungus': 0.25, 'Plant_MunchFungus_Wild': 0.22,
-    'Plant_MunchFungus': 0.05, 'Plant_Bubblespore_Wild': 0.22, 'Plant_Bubblespore': 0.05,
-    'Plant_FelucianGlowspore_Wild': 0.14, 'Plant_FelucianGlowspore': 0.04},
-  'BMT_FungalForest': {             # 425 - Biomes! Caverns' set, kept intact
-    'BMT_Wrinklecap': 1.0, 'BMT_Fibershroom': 0.8, 'BMT_Gleamtip': 0.6,
-    'BMT_Chromacap': 0.5, 'BMT_Greatbulb': 0.4,
-    'BMT_Shimbershroom': 0.25, 'BMT_Poptop': 0.20, 'BMT_Dishcap': 0.20,
-    'BMT_Shinecap': 0.18,
-    # --- second pass 2026-08-23: use the content we already have ---
-    'BMT_BalefulBolete': 0.25, 'BMT_BleedingTooth': 0.25, 'BMT_BrightWispcap': 0.30,
-    'BMT_BrightWisptoll': 0.12, 'BMT_DarkWispcap': 0.30, 'BMT_DarkWisptoll': 0.12,
-    'BMT_Candlesnuff': 0.12, 'BMT_CarveShroom': 0.25, 'BMT_Chubshroom': 0.30,
-    'BMT_CoralClub': 0.25, 'BMT_CrimsonCap': 0.25, 'BMT_Curlbranch': 0.12,
-    'BMT_Dewshrooms': 0.30, 'BMT_ExplodingAngel': 0.10, 'BMT_FlakespireFungus': 0.12,
-    'BMT_FloorMold': 0.40, 'BMT_Frigu': 0.12, 'BMT_Fungusfern': 0.35, 'BMT_GiantLeaf': 0.20,
-    'BMT_Glittercap': 0.25, 'BMT_GlowingSucculent': 0.20, 'BMT_LuminousSpout': 0.25,
-    'BMT_FruitingBodies': 0.35, 'BMT_Mycelium': 0.40, 'BMT_CavernMycelium': 0.35,
-    'BMT_Nogtyl': 0.12, 'BMT_NogtylMarsh': 0.10, 'BMT_Nuitae': 0.25, 'BMT_NuitaeMarsh': 0.20,
-    'BMT_PowerFungus': 0.20, 'BMT_Pusmelon': 0.20, 'BMT_Ravelmush': 0.12,
-    'BMT_Brightbell': 0.25, 'BMT_Skulltop': 0.12, 'BMT_StinkLattice': 0.12,
-    'BMT_FungalTendril': 0.30, 'BMT_VioletWimple': 0.25, 'BMT_WatOrbs': 0.25,
-    'BMT_Wheelshroom': 0.25, 'BMT_Arpeau': 0.12, 'BMT_GreenArpeau': 0.12,
-    'BMT_BiolumiAlgaeCarnelian': 0.20, 'BMT_BiolumiAlgaeChrysoberyl': 0.20,
-    'BMT_BiolumiAlgaeCitrine': 0.20, 'BMT_BiolumiAlgaeKunzite': 0.20,
-    'BMT_BiolumiAlgaeTanzanite': 0.20, 'BMT_BiolumiAlgaeTurquoise': 0.20,
-    'BMT_BlackLily': 0.20, 'BMT_WrinklecapMarsh': 0.25, 'RG_SychiCap': 0.20,
-    'RG_Cibarius': 0.20, 'RG_NeoAmanita': 0.20, 'RG_Potokus': 0.20, 'RG_Tripaloski': 0.20,
-    'VEE_Plant_MysticCap': 0.15, 'BMT_JuiceCactus': 0.15, 'BMT_BloomingCactus': 0.15,
-    'Plant_Timbershroom': 0.10,
-    # --- third pass 2026-08-23, DECIDE: the two Caverns strays ---
-    'BMT_HealrootGrass': 0.25, 'BMT_YumBulbs': 0.22},
-  'PoisonForest': {                 # 604 - Polluted Lands' set
-    'BMT_Plant_PaganThorns': 0.8, 'BMT_Plant_PlagueFans': 0.7,
-    'BMT_Plant_Toxcaps': 0.6, 'BMT_Plant_Pestia': 0.5,
-    'BMT_Plant_WeepingHagbloom': 0.30,
-    'BMT_Plant_TreeTwistingThornwood': 0.18,  # owner: "I love the … twisting thornwood"
-    'BMT_Plant_TreeBlotBirch': 0.15, 'BMT_Plant_TreeScalpedCypress': 0.12,
-    'BMT_Plant_TreeMartyr': 0.10,   # owner: "I love the … martyr"
-    'BMT_Plant_TreeWormoak': 0.10,
-    # --- second pass 2026-08-23: use the content we already have ---
-    'GRim1Witchwood': 0.12, 'GRim2Witchwood': 0.12, 'GRimWitchwood': 0.12,
-    'GRim1TreeSnagroot': 0.12, 'GRimTreeSnagroot': 0.12, 'Mushpine': 0.12, 'GrimMush': 0.30,
-    'GrimShroom': 0.30, 'GRimPsilocap': 0.20, 'VEE_DayBoomshroom': 0.15,
-    'VEE_DayPsilocap': 0.15, 'VEE_DayWillowgill': 0.15, 'RG_Plant_MutatedFern': 0.25,
-    'RG_Plant_MutatedFungus': 0.25, 'RG_Plant_Cathedralis': 0.15, 'RG_Plant_GlowLeaf': 0.20,
-    # --- residue sweep 2026-08-23: clones follow their twin into the same biome ---
-    'Plant_Witchwood': 0.10, 'Boomshroom': 0.12, 'Plant_Psilocap': 0.12,
-    'Plant_TreeSnagroot': 0.10, 'Plant_Willowgill': 0.12, 'Plant_Psilocap_Farmed': 0.12,
-    # --- third pass 2026-08-23, DECIDE: beside their sibling thornwood ---
-    'BMT_Plant_TwistingThorngrass': 0.30, 'BMT_Plant_TwistingThornweed': 0.25,
-    'BMT_Plant_TreeWhistlingCane': 0.10},
+ 'C. contamination': {
+  'Wasteland': {   # 1,126 tiles · 25 plants
+    'RG_Plant_ToxiGrass': 1.2, 'RG_Plant_TallToxiGrass': 0.8, 'AB_ToxiGrass': 0.6,
+    'BMT_Plant_GutterPlantain': 0.5, 'BMT_Plant_ToxicIvy': 0.5,
+    'BMT_Plant_TwistedDandelion': 0.5, 'PoisonPlantTallGrass': 0.4, 'Plant_GrayGrass': 0.35,
+    'PoisonShrub': 0.35, 'BMT_Plant_ScorchedStars': 0.3, 'BMT_Plant_Snaketails': 0.3,
+    'PoisonPlantBush': 0.3, 'BMT_Plant_PoxSorghum': 0.25,
+    'BMT_Plant_TumorbulbHyacinth': 0.25, 'AB_WeepingToxberry': 0.2,
+    'BMT_Plant_WildRashroot': 0.2, 'Plant_Toxipotato': 0.2, 'BMT_Plant_Doomsprout': 0.15,
+    'BMT_Plant_EclipsusFlower': 0.15, 'BMT_Plant_EclipsusLeaves': 0.15,
+    'BMT_RainbowTongue': 0.15, 'AB_ToxiBulb': 0.1, 'Plant_TreePolux': 0.1,
+    'AB_GiantToxicFlower': 0.08, 'VRE_PoluxBush': 0.08},
+  'AB_MiasmicMangrove': {   # 93 tiles · 7 plants
+    'AB_MangroveTree': 25, 'AB_ParasiticMangrove': 8, 'AB_MangrovePalm': 6,
+    'BMT_Plant_TreeTanglerootMangrove': 1.5, 'BMT_Plant_SewerReed': 0.8,
+    'BMT_RainbowTongue': 0.6, 'BMT_Plant_Snaketails': 0.5},
+  'Scarlands': {   # 90 tiles · 1 plants
+    'BMT_Plant_ScorchedStars': 0.25},
  },
 
- 'D. river jungle': {               # 599 tiles, 233 of them river - it stands in water
-  'AB_FeraliskInfestedJungle': {    # 534
-    'AB_TallSlimyGrass': 1.8, 'AB_GreenRockFern': 0.7,
-    'AB_JungleTree': 0.30, 'AB_JungleTree_Polluted': 0.15,
-    'AB_KeeningCordax': 0.12, 'AB_GiantFlower': 0.10,
-    # --- second pass 2026-08-23: use the content we already have ---
-    'RG_Plant_TropicalFern': 0.40, 'RG_Plant_TropicalIvy': 0.35,
-    'RG_Plant_TropicalBrambles': 0.30, 'RG_Plant_TropicalChokevine': 0.30,
-    'JungleShrub': 0.35, 'GRim1Chokevine': 0.25, 'GRim2Chokevine': 0.25,
-    'GRim3Chokevine': 0.25, 'GRimChokevine': 0.25, 'Plant_Chokevine': 0.30,
-    'Plant_TreeCecropia': 0.12, 'Plant_TreeTeak': 0.10, 'Plant_TreeBamboo': 0.12,
-    'TreeCedar': 0.08, 'SwordFern': 0.35, 'RG_Plant_TemperateFern': 0.30,
-    'RG_Plant_BorealFern': 0.25, 'VEE_Plant_Fern': 0.30, 'GRim1BambooBush': 0.25,
-    'GRimBambooBush': 0.25, 'TreeAreeb': 0.10, 'TreeBlareebian': 0.10, 'TreeCypre': 0.08,
-    'TreeGralma': 0.08, 'TreeGrimber': 0.08, 'GRimTreePolux': 0.08, 'GrimPepper': 0.15,
-    'Plant_TreeCocoa': 0.08,
-    # --- residue sweep 2026-08-23: clones follow their twin into the same biome ---
-    'Plant_TreeCocoa_Wild': 0.06, 'RG_Plant_TemperateIvy': 0.28, 'VCE_ChocolateBush': 0.06,
-    # --- third pass 2026-08-23, DECIDE: it stands in water, so the water flora lands here ---
-    'VFEI2_TendrilmossVines': 0.30, 'Plant_TreeArchean': 0.06},
-  'AB_MiasmicMangrove': {           # 65
-    'BMT_Plant_SewerReed': 1.2, 'AB_ParasiticMangrove': 0.4,
-    'AB_MangroveTree': 0.35, 'AB_MangrovePalm': 0.30,
-    'BMT_Plant_TreeTanglerootMangrove': 0.20, 'VEE_Mangrove': 0.20,
-    # --- second pass 2026-08-23: use the content we already have ---
-    'WetlandTreeMangrove': 0.15, 'GrimCoral': 0.25, 'CoralTreeBlack': 0.12,
-    'CoralTreeBlue': 0.12, 'CoralTreeOrange': 0.12, 'BiomesIslands_CoconutPalm': 0.15,
-    'GRimTreeWillow': 0.10, 'Plant_TreeWillow': 0.10, 'RG_Plant_TreeWhiteWillow': 0.10,
-    'RG_Plant_TreeCornish': 0.08},
+ 'D. the shrub belt': {
+  'AridShrubland': {   # 665 tiles · 10 plants
+    'Plant_ShrubLow': 0.9, 'RG_Plant_AridGrass': 0.5, 'Plant_Brambles': 0.3,
+    'Plant_Bush': 0.3, 'Plant_Ripthorn': 0.3, 'Plant_HealrootWild': 0.25,
+    'Plant_Nysyllin_Wild': 0.22, 'RG_Plant_CreepStern': 0.2, 'RG_Plant_CrimsonCushion': 0.2,
+    'RG_Plant_Dervish': 0.2},
  },
 
- 'E. frozen nightside': {
-  'AB_RockyCrags': {                # 3,816 - the dark. Sparse on purpose.
-    'AB_FrostLeaf': 0.9, 'AB_RimeNodules': 0.6, 'BMT_RimeFlower': 0.4,
-    'AB_FlashFrozenTree': 0.10,
-    # --- second pass 2026-08-23: use the content we already have ---
-    'RG_Plant_Coldheart': 0.30, 'RG_Plant_TundraGrass': 0.45,
-    'RG_Plant_TundraTallGrass': 0.35, 'RG_Plant_TundraCotton': 0.25, 'BMT_ReindeerMoss': 0.40,
-    'GRim1Moss': 0.35, 'GRim2Moss': 0.35, 'GRim3Moss': 0.35, 'GRim4Moss': 0.35,
-    'GRimMoss': 0.35, 'Plant_Moss': 0.40, 'RG_Plant_Nightguide': 0.25,
-    'RG_Tree_TundraTreePine': 0.06, 'VEE_Plant_GnarledPine': 0.05, 'GRim1TreeGrayPine': 0.05,
-    'GRim2TreeGrayPine': 0.05, 'GRimTreeGrayPine': 0.05,
-    'Plant_TreeGrayPine': 0.05,     # was 0.00 - a 0.0 entry NEVER spawns; matched to its
-                                    # three GRiNDTerra siblings above
-    # --- residue sweep 2026-08-23: clones follow their twin into the same biome ---
-    # ⛔ Plant_TreePine removed 2026-08-23 - the owner CUT it. See the header.
-    'RG_Plant_BlueTreePine': 0.05, 'RG_Plant_LargeTreePine': 0.05,
-    'RG_Plant_OrangeTreePine': 0.05,
-    # --- third pass 2026-08-23, DECIDE: the night plants, on the permanent nightside.
-    # That is the whole point of them. ---
-    'Plant_Nightgrass': 0.35, 'Plant_NightRafflesia': 0.20},
-  'AB_PropaneLakes': {              # 554 - an industrial accident, frozen
-    'AB_CrystalFlower': 0.5, 'AB_CrystalHorn': 0.4, 'BMT_Crystal_BlueSowable': 0.30,
-    # --- second pass 2026-08-23: use the content we already have ---
-    'CaveCrystal': 0.45, 'TreeCrystal': 0.10, 'BMT_RimeFlowerGrowable': 0.20},
-  # 'HorrorWastes' — REMOVED 2026-09-08 (BIOME_FLORA_ROSTER_GAP_1): the biome was
-  # dissolved (HORRORWASTES_BIOME_DISSOLVE_1) and holds zero tiles. Its BIOWEAPON
-  # roster (HorrorWeb, the AB_ flesh/blood plants, Grimtacle, AA_RottingMound) is in
-  # git at this line — a candidate list for the CONTAGION at the assignment sitting,
-  # not a decision made here.
-  # 'BMT_CrystalCaverns' — REMOVED 2026-09-08 (BIOME_FLORA_ROSTER_GAP_1): no longer
-  # a worldmap biome (the_lantern_deeps.md ruling — it became the injected cave-map
-  # layer, LANTERN_DEEPS_INJECTION_1). Its full crystal/fungal roster is in git at
-  # this line — the natural candidate list when the Lantern Deeps cave layer takes
-  # its flora, decided there, not here.
- },
-
- 'F. volcanic': {
-  'Volcano': {                      # 23 - owner ruled it needs NO wood, so no tree here
-    'Plant_Fireweed': 0.9, 'GRimMagmaCactus': 0.6, 'BMT_Sagecrust': 0.4,
-    # --- second pass 2026-08-23: use the content we already have ---
-    'GRimFireweed': 0.50,
-    # --- residue sweep 2026-08-23: clones follow their twin into the same biome ---
-    'GRim1Fireweed': 0.72,
-    # --- third pass 2026-08-23, DECIDE: geysers are volcanic (1 of 2) ---
-    'IronScruff_PrimordialGrass': 0.35, 'IronScruff_PrimordialTallGrass': 0.30},
-  'LavaField': {                    # 15
-    'Plant_MagmaCactus': 0.7, 'BMT_FireLavender': 0.6, 'BMT_HeatsinkFungus': 0.20,
-    # --- third pass 2026-08-23, DECIDE: geysers are volcanic (2 of 2) ---
-    'IronScruff_Bindweed': 0.25},
-  'AB_PyroclasticConflagration': {  # 31
-    'AG_Gamma': 0.5, 'AB_GiantGamma': 0.30, 'AB_FirevineTree': 0.20,
-    'AB_ToxicGamma': 0.15,
-    # --- second pass 2026-08-23: use the content we already have ---
-    'AG_Septimum': 0.25},
- },
-
- 'G. machine and scar': {
-  'AB_MechanoidIntrusion': {        # 236 - contamination class, computronium ground
-    'BMT_VoltaicFungus': 0.30, 'AB_TechnoTree': 0.15, 'AB_SessileMechanoid': 0.12,
-    'AB_GoldenCubeTree': 0.08},
-  'Scarlands': {                    # 90 - where a weapon was used and left
-    'BMT_RustPuff': 0.8, 'BMT_BurnedMushroom': 0.6, 'AG_DarkGamma': 0.4,
-    'BurnedTree': 0.20},
- },
-
- 'H. alien': {                      # bioweapon class, but ENGINEERED LIFE rather than cold
-  'AB_GelatinousSuperorganism': {   # 96
-    'AB_SlimyFern': 0.9, 'AB_Slimecasia': 0.6, 'AB_SlimyTree': 0.30,
-    'AB_LargeSlimyTree': 0.20,
-    # --- third pass 2026-08-23, DECIDE: VEE's alien flora reads genuinely alien (1 of 2) ---
-    'VEE_Plant_VyspStrands': 0.30, 'VEE_Plant_CyllenCluster': 0.25,
-    'VEE_Plant_MyrloxTree': 0.20},
-  'AB_OcularForest': {              # 3 - it watches
-    'AB_EyeGrass': 1.2, 'AB_RedLeaves': 0.7, 'AB_RedPlantsTall': 0.5,
-    'AB_AlienTree': 0.4, 'AB_AlienTree_Polluted': 0.20, 'AB_HalfAlienTree': 0.15,
-    # --- second pass 2026-08-23: use the content we already have ---
-    'AA_AlienTree': 0.20, 'AA_AlienGrass': 0.60, 'AA_RedLeaves': 0.40,
-    'AA_RedPlantsTall': 0.35, 'AB_AlienGrass': 0.50, 'AA_Heat_Ambrosia': 0.10,
-    'AA_Plant_PollenTrumpet': 0.20,
-    # --- third pass 2026-08-23, DECIDE: VEE's alien flora (2 of 2) ---
-    'VEE_Plant_PinkGrass': 0.35, 'VEE_Plant_TallPinkGrass': 0.30,
-    'VEE_Plant_PhoraxTree': 0.22, 'VEE_Plant_XyrilTree': 0.20},
+ 'E. the tar': {
+  'AB_TarPits': {   # 42 tiles · 1 plants
+    'AB_TarPuddle': 0.6},
  },
 
  # ══════════════════════════════════════════════════════════════════════════════════════
- # DELIBERATELY UNPLACED - DECIDE's third-pass ruling, 2026-08-23. NOT an oversight.
- # Each of these is absent from every roster above for a reason. Do not "finish the job"
- # by adding one; check here first.
+ # DELIBERATELY UNPLACED, and this is now a SHORT list because the rule changed.
+ # Until 2026-09-09 these rosters were a sweep of the whole plant pool and this block
+ # explained every plant left out of it. The rosters replaced that: a plant is in a
+ # biome because that biome's sheet law admitted it, and everything else is simply not
+ # admitted. There is no longer a per-plant case to answer.
  #
- #   ANIMA and GAURANLEN (16)  Plant_TreeAnima · Plant_GrassAnima · Plant_TreeGauranlen ·
- #     Plant_PodGauranlen · Plant_MossGauranlen · AM_Plant_CorruptedPodGauranlen ·
- #     VEE_Plant_AnimaBell · VEE_Plant_AnimaBrambles · VEE_Plant_AnimaBush ·
- #     VEE_Plant_AnimaHeartBlossom · VEE_Plant_AnimaHusk · VEE_Plant_AnimaRoot ·
- #     VEE_Plant_FakeAnimaTree · VEE_Plant_GrandAnimaTree · VEE_Plant_TreeAnima_Ancient ·
- #     VEE_Plant_YoungAnimaTree
- #     They arrive by their OWN mechanisms - meditation focus, Gauranlen pods and Dryads,
- #     VLE landmark spawns - never through a biome's wildPlants. A wildPlants entry would
- #     scatter sacred trees like weeds and break the mechanic that gives them meaning.
- #
- #   EVENT- AND ENTITY-SPAWNED   Plant_PsychicLotus · Plant_PsychicLotusSeedling ·
- #     Plant_TreeHarbinger. The lotus arrives with its event; the harbinger tree arrives
- #     with the entity. Neither is terrain.
- #
- #   Plant_TreeBonsai            decorative only - sowTags is DecorativeTree.
- #   Plant_HydroDevilstrand_GT   hydroponics-only variant of Plant_Devilstrand, which is
- #                               already placed in AB_MycoticJungle.
- #   VGE_OxyalgaePlant           gravship life support. Not terrain flora at all.
- #
- #   ⛔ CUT BY THE OWNER, and this is the hard one:
+ #   ⛔ CUT BY THE OWNER, and this one still bites:
  #     Plant_TreePine · Plant_TreeBirch · Plant_TreePoplar · RG_Plant_Raspberry
  #     Cherry Picker DELETES these ThingDefs at load. Naming one in a BiomeDef throws
- #     `Could not resolve cross-reference` on every single load. See the header.
+ #     `Could not resolve cross-reference` on every single load, and the check below
+ #     cannot catch it because the def dump predates the cut.
  #
- #   Also unplaced and not worth a line each: every ChoppedStump_*/SmashedStump_* (they
- #   are what a felled tree leaves behind), every *_Wilted VEE variant (an event state),
- #   and the *Planted/*Cultivated/*Decorative/*Growable player-sown twins of plants
- #   already placed wild.
+ #   Anima, Gauranlen, the psychic lotus and the harbinger tree arrive by their own
+ #   mechanisms - meditation focus, pods and Dryads, an event, an entity - never through
+ #   wildPlants. A wildPlants entry would scatter them like weeds and break the mechanic
+ #   that gives them meaning. No roster names one; none should.
  # ══════════════════════════════════════════════════════════════════════════════════════
 }
 
-PLANTLESS = {'Ocean', 'Lake', 'SeaIce', 'IceSheet'}   # by design, not by omission
+# Painted defs that carry NO flora, each by a roster ruling rather than by omission.
+#   RUT_NightsideIce   nightside_ice.json flora_purged "ALL": §6 admits no photosynthesis
+#                      or photosynthetic tissue of any kind, no soil, nothing that reads
+#                      as a plant.
+#   RUT_BlueDesert     the_blue_desert.json lands zero flora rows (§6 ban 1).
+#   AB_MechanoidIntrusion  the_rust_cathedral.json lands zero flora rows.
+#   RUT_TwilightSea / RUT_GreySea / RUT_TheScald  the sea rosters name mats and giants,
+#                      no wildPlants; the sea-bottom flora rides the deferred diving mods.
+# Ocean/Lake/SeaIce/IceSheet are not painted on Ash'karr at all and are kept only so this
+# set still answers for a world that carries them.
+PLANTLESS = {'RUT_NightsideIce', 'RUT_BlueDesert', 'AB_MechanoidIntrusion',
+             'RUT_TwilightSea', 'RUT_GreySea', 'RUT_TheScald',
+             'Ocean', 'Lake', 'SeaIce', 'IceSheet'}
 
 # 🔴 DECIDE'S DENSITY RULING, 2026-08-23 (`BARE_BIOMES_NEED_DENSITY_1`).
 # A roster nobody sees fixes nothing. Two biomes ship a `plantDensity` so low that whatever
@@ -525,9 +312,43 @@ def placed():
     return c
 
 
+def roster_flora():
+    """biome -> {plant defName: commonality}, straight out of the roster JSONs.
+
+    The rosters are the SOURCE for FAMILIES since 2026-09-09. This exists so `--check`
+    can prove the dict still says what they say - a derived artifact that nothing
+    compares back to its source is a copy waiting to go stale, and this repo has been
+    bitten by exactly that (the cast patch and its CSV drifted by four biomes).
+    """
+    out = collections.defaultdict(dict)
+    for fp in sorted(glob.glob(os.path.join(ROSTERS, '*.json'))):
+        if os.path.basename(fp).startswith('_'):
+            continue
+        with open(fp, encoding='utf-8') as fh:
+            d = json.load(fh)
+        for b in d.get('defNames') or []:
+            for r in d.get('flora') or []:
+                out[b][r['def']] = r['commonality']
+    return out
+
+
 def check(plants, biomes, tiles):
     bad = 0
     owner = {}                       # plant -> family
+
+    # ── FAMILIES must still say exactly what the rosters say ──────────────────────
+    want = roster_flora()
+    have = collections.defaultdict(dict)
+    for _fam, _bs in FAMILIES.items():
+        for _b, _r in _bs.items():
+            have[_b].update(_r)
+    for b in sorted(set(want) | set(have)):
+        if want.get(b, {}) != have.get(b, {}):
+            only_r = {p: w for p, w in want.get(b, {}).items() if have.get(b, {}).get(p) != w}
+            only_f = {p: w for p, w in have.get(b, {}).items() if want.get(b, {}).get(p) != w}
+            print(f"🔴 FAMILIES DISAGREES WITH THE ROSTERS for {b}: "
+                  f"roster-only/differs {only_r}, dict-only/differs {only_f}")
+            bad += 1
     for fam, bs in FAMILIES.items():
         for b, roster in bs.items():
             if b not in biomes:
