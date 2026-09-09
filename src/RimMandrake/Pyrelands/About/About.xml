@@ -6,7 +6,13 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>self-contained fire-ecology biome (engine promoted from RSW FireEcology; texts pending PYRELANDS_GENERIC_TEXT_1)</description>
+  <description>Adds the pyrelands: a hot savanna biome that burns on a cycle of its own, and everything the cycle needs.
+
+Ember grass regrows in under a day and dries to tinder almost as fast, so the fuel bed is always ready. Dry lightning takes it. Ground that burns turns to ash, and ash that burns again banks up through four deepening layers until nothing will root in it. Ash falls out of the sky like snow for days after a big burn and drifts against whatever is standing; a cinderfall brings it down live, with lightning in it. The only rain here is black rain, which arrives when a fire gets large enough to pull it down, puts the fire out, and washes the loose ash away.
+
+Fire also pays. A scorch-fruit pod only exists where flame has just cracked it open and rots within a day, so the harvest happens during the burn or not at all. Lightning striking sand leaves fulgurite behind. A sprayed firebreak line and a firefoam sprayer let you decide where the next burn stops.
+
+Self-contained: the biome, its terrains, its plants and its weather all ship here, and it places itself on an ordinary generated world with no other mod required.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>

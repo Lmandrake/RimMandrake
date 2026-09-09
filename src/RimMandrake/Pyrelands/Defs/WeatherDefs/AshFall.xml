@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Ash fall — "ash that blows like snow" (owner's ruling, 2026-09-09).
+
+    THE FALLING VISUAL IS PURE XML, NO NEW OVERLAY CLASS. Vanilla tints
+    every active weather overlay with the CURRENT WEATHER'S OWN sky
+    `overlay` colour: Verse/SkyManager.cs:117 takes
+    `curSky.colors.overlay` for any SkyOverlay that does not declare a
+    ForcedOverlayColor, and WeatherOverlay_SnowGentle declares none
+    (RimSage, RimWorld/WeatherOverlay_SnowGentle.cs). So borrowing the
+    gentle-snow particle sheet and setting `<overlay>` to a warm dark grey
+    below gives grey ash drifting down at snow's pace and snow's density —
+    the ruling's own comparison, delivered by the field that already
+    exists. `curSky.colors.overlay` is read nowhere else in the engine, so
+    darkening it has no side effects.
+
+    ⚠️ WHAT THE ENGINE WILL NOT DO FOR US. `snowRate` is the field that
+    makes falling weather ACCUMULATE, and it accumulates into
+    map.snowGrid — white snow, drawn white, melting above freezing
+    (SteadyEnvironmentEffects.cs:96 AddFallenSnowAt). On a 25 degC+ biome
+    it would both look wrong and melt instantly, so snowRate stays 0 and
+    the accumulation is done instead by MapComponent_PyrelandsAshfall
+    (Source/FireEcologyHook.cs), which lays down this mod's own
+    RM_FE_Filth_LooseAsh — the same filth the fire hook already drops, so
+    a drift laid by weather and a drift laid by a fire are the same thing
+    and both wash away under RM_FE_BlackRain.
+
+    🔑 rainRate STAYS 0. Anything above 0.1 would (a) put out the fires
+    this biome exists to have, via Fire.TickInterval's rain extinguish,
+    and (b) collect the 15x large-fire commonality multiplier that
+    RM_FE_BlackRain relies on being alone in owning. Ash is dry.
+
+    Favorability is Neutral, not Bad, on purpose: WeatherDecider refuses
+    any weather with favorability below Neutral for the first 8 days after
+    settling (WeatherDecider.cs:156). Ash fall is this biome's signature
+    and should be seen in the first week; Cinderfall, which is genuinely
+    dangerous, accepts that gate.
+  -->
+
+  <WeatherDef>
+    <defName>RM_FE_Weather_AshFall</defName>
+    <label>ash fall</label>
+    <description>Fine ash drifting down out of a flat grey sky, thick enough to blur the far side of the map and settle in banks against anything upright. It is the tail of a burn somewhere upwind, and it can last for days. Nothing about it is wet.</description>
+    <durationRange>25000~70000</durationRange>
+    <favorability>Neutral</favorability>
+    <isBad>false</isBad>
+    <perceivePriority>2</perceivePriority>
+    <accuracyMultiplier>0.85</accuracyMultiplier>
+    <moveSpeedMultiplier>0.95</moveSpeedMultiplier>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <windSpeedFactor>1.2</windSpeedFactor>
+    <windSpeedOffset>0.5</windSpeedOffset>
+    <preventSkygaze>true</preventSkygaze>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_SnowGentle</li>
+      <li>WeatherOverlay_Fog</li>
+    </overlayClasses>
+    <!-- `overlay` is the ash colour itself — see the header. `saturation`
+         must never be 0 or WeatherDef.ConfigErrors complains. -->
+    <skyColorsDay>
+      <sky>(0.62,0.58,0.54)</sky>
+      <shadow>(0.90,0.90,0.90)</shadow>
+      <overlay>(0.42,0.39,0.35)</overlay>
+      <saturation>0.55</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.66,0.54,0.46)</sky>
+      <shadow>(0.90,0.90,0.90)</shadow>
+      <overlay>(0.40,0.36,0.32)</overlay>
+      <saturation>0.55</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.26,0.26,0.27)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.30,0.28,0.26)</overlay>
+      <saturation>0.55</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.24,0.24,0.25)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.28,0.26,0.24)</overlay>
+      <saturation>0.55</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_FE_Pyrelands — the mod's OWN biome. Until this def existed, every
+    piece of fire-ecology machinery in this mod (the ash ladder, the
+    scorchable ground clones, black rain, the scorch-fruit pod, the
+    firebreak) had to be patched onto somebody else's BiomeDef by a
+    separate wiring mod. This def is what makes the mod self-contained:
+    the terrains, the plants and the weather it ships are the terrains,
+    plants and weather THIS biome uses, with no patch and no donor.
+
+    ⚠️ PLACEMENT IS NOT AN XML FIELD. BiomeDef has no temperature,
+    rainfall or elevation range — RimWorld picks a tile's biome by asking
+    every BiomeDef's `workerClass` for a score and taking the highest
+    (Verse/RimWorld: Planet/WorldGenStep_Terrain.cs:288 BiomeFrom). So the
+    ranges live on the modExtension below, read by
+    RM_FE_BiomeWorker_Pyrelands (Source/FireEcologyHook.cs) — the ONLY way
+    to place a biome at all. Tune the numbers here; no rebuild needed.
+
+    The niche is deliberately narrow so this does not evict vanilla biomes
+    wholesale on a generic world: hot (>= 25 degC mean) tiles in the
+    rainfall corridor 550-1000mm. Below 600mm vanilla Desert owns the
+    ground; at 800mm+ vanilla Grasslands starts competing; the band in
+    between is otherwise AridShrubland's alone, and Pyrelands only beats
+    AridShrubland's score once the tile is genuinely hot. See the worker's
+    own comment for the arithmetic.
+  -->
+
+  <BiomeDef>
+    <defName>RM_FE_Pyrelands</defName>
+    <label>pyrelands</label>
+    <description>A hot, wind-scoured savanna that burns on a schedule of its own. Coarse fast grass carpets the ground faster than anything can eat it, dries out within days of growing, and goes up at the first dry-storm strike. What is left behind is ash: falling out of the sky for days after a big burn, banking into drifts, and packing down into a grey hardpan that nothing roots through. The rare rain here is black with it. Little grows tall enough to matter, so the horizon is nothing but grass, scars and smoke.</description>
+    <workerClass>RimMandrake.StarWars.FireEcology.BiomeWorker_Pyrelands</workerClass>
+    <texture>World/Biomes/RM_FE_Pyrelands</texture>
+
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.FireEcology.PyrelandsBiomeRanges">
+        <!-- Mean annual tile temperature, degC. Below min the tile is not
+             considered at all; score climbs from min upward. -->
+        <temperature>25~60</temperature>
+        <!-- Tile rainfall, mm. Half-open: min inclusive, max exclusive,
+             matching vanilla's own biome workers. -->
+        <rainfall>550~1000</rainfall>
+        <!-- Tile elevation, m. Wide on purpose — the ceiling only keeps
+             the biome off genuine highland. -->
+        <elevation>0~2200</elevation>
+        <!-- Score = baseScore + (temp - temperature.min) * degreeWeight
+                            + (rain - rainfall.min) / rainfallDivisor.
+             Calibrated against BiomeWorker_AridShrubland
+             (22.5 + (T-20)*2.2 + (R-600)/100): at T=30/R=700 this scores
+             46.9 vs its 45.5, and at T=24 it loses to it. Raise baseScore
+             to make the biome commoner, lower it to make it rarer. -->
+        <baseScore>30</baseScore>
+        <degreeWeight>2.6</degreeWeight>
+        <rainfallDivisor>120</rainfallDivisor>
+      </li>
+    </modExtensions>
+
+    <animalDensity>2.1</animalDensity>
+    <plantDensity>0.85</plantDensity>
+    <!-- Fast: the whole point of the grass below is that the fuel bed
+         comes back before the scar has cooled. Vanilla savanna is 26-27. -->
+    <wildPlantRegrowDays>9</wildPlantRegrowDays>
+    <settlementSelectionWeight>0.7</settlementSelectionWeight>
+    <movementDifficulty>1</movementDifficulty>
+    <forageability>0.45</forageability>
+    <foragedFood>RawAgave</foragedFood>
+    <diseaseMtbDays>65</diseaseMtbDays>
+
+    <!-- Our own scorchable clones, so mapgen lays ground that can actually
+         burn down the ash ladder. Left null: waterShallow/waterDeep/mud/
+         riverbank fall back to vanilla (MapGenUtility.cs:187/226/651). -->
+    <lakeBeachTerrain>RM_FE_Ground_Sand</lakeBeachTerrain>
+    <gravelTerrain>RM_FE_Ground_Gravel</gravelTerrain>
+    <riverbankTerrain>Riverbank</riverbankTerrain>
+    <riverbankSizeRange>5~7</riverbankSizeRange>
+
+    <soundsAmbient>
+      <li>Ambient_NightInsects_Standard</li>
+    </soundsAmbient>
+
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+    </diseases>
+
+    <terrainsByFertility>
+      <li>
+        <terrain>RM_FE_Ground_Sand</terrain>
+        <min>-999</min>
+        <max>0.10</max>
+      </li>
+      <li>
+        <terrain>RM_FE_Ground_Gravel</terrain>
+        <min>0.10</min>
+        <max>0.46</max>
+      </li>
+      <li>
+        <terrain>RM_FE_Ground_Soil</terrain>
+        <min>0.46</min>
+        <max>0.92</max>
+      </li>
+      <li>
+        <terrain>RM_FE_Ground_SoilRich</terrain>
+        <min>0.92</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+
+    <terrainPatchMakers>
+      <!-- Old burn scars, already on the ground when you arrive. The
+           thresholds walk the same trace -> light -> heavy rungs the live
+           ash ladder uses (AshLadder.xml), so a scar generated at mapgen
+           is indistinguishable from one the colony's own fires made, and
+           burns onward the same way. Deep ash is deliberately absent —
+           that rung is earned in play, not handed out at worldgen. -->
+      <li>
+        <perlinFrequency>0.018</perlinFrequency>
+        <thresholds>
+          <li>
+            <terrain>RM_FE_Ash_Trace</terrain>
+            <min>0.66</min>
+            <max>0.80</max>
+          </li>
+          <li>
+            <terrain>RM_FE_Ash_Light</terrain>
+            <min>0.80</min>
+            <max>0.93</max>
+          </li>
+          <li>
+            <terrain>RM_FE_Ash_Heavy</terrain>
+            <min>0.93</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+      <!-- The rare standing water, and the one green ring around it. -->
+      <li>
+        <perlinFrequency>0.012</perlinFrequency>
+        <thresholds>
+          <li>
+            <terrain>RM_FE_Ground_SoilRich</terrain>
+            <min>0.80</min>
+            <max>0.90</max>
+          </li>
+          <li>
+            <terrain>Mud</terrain>
+            <min>0.90</min>
+            <max>1.00</max>
+          </li>
+          <li>
+            <terrain>WaterShallow</terrain>
+            <min>1.00</min>
+            <max>1.10</max>
+          </li>
+          <li>
+            <terrain>WaterDeep</terrain>
+            <min>1.10</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+    </terrainPatchMakers>
+
+    <!--
+      🔑 NO VANILLA RAIN IN THIS TABLE, AND THAT IS THE MECHANISM, NOT A
+      FLOURISH. WeatherDecider.CurrentWeatherCommonality multiplies ANY
+      weather with rainRate > 0.1 by 15 while map.fireWatcher's
+      LargeFireDangerPresent is true (RimSage, WeatherDecider.cs:185), and
+      re-rolls 4x more often while it is. RM_FE_BlackRain is the only
+      rain-rated entry here, so it sits at 3 (never) most of the time and
+      jumps to an effective 45 — the single likeliest roll — the moment a
+      real fire is burning. Adding vanilla Rain back would dilute that.
+
+      Snow is absent for the same honesty: this biome's placement band
+      starts at 25 degC, so SnowGentle/SnowHard could never fire anyway
+      (their temperatureRange is -999~-0.5).
+    -->
+    <baseWeatherCommonalities>
+      <Clear>40</Clear>
+      <DryThunderstorm>20</DryThunderstorm>
+      <RM_FE_Weather_AshFall>14</RM_FE_Weather_AshFall>
+      <RM_FE_Weather_Cinderfall>4</RM_FE_Weather_Cinderfall>
+      <RM_FE_BlackRain>3</RM_FE_BlackRain>
+      <Fog>2</Fog>
+      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">1</GrayPall>
+      <Windy MayRequire="Ludeon.RimWorld.Odyssey">2</Windy>
+      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">2</Overcast>
+    </baseWeatherCommonalities>
+
+    <!--
+      RM_FE_Plant_EmberGrass dominates on purpose: it IS the fuel bed, and
+      a fire ecology with a thin fuel bed is just a desert. Vanilla grass
+      still shows up so the map does not read as a single-plant tileset.
+      RM_FE_Plant_ScorchFruit is deliberately NOT here — that plant only
+      ever exists where a fire has just been (see ScorchFruit.xml).
+    -->
+    <wildPlants>
+      <RM_FE_Plant_EmberGrass>9.0</RM_FE_Plant_EmberGrass>
+      <Plant_Grass>2.2</Plant_Grass>
+      <Plant_TallGrass>1.6</Plant_TallGrass>
+      <Plant_Bush>0.55</Plant_Bush>
+      <Plant_Agave>0.35</Plant_Agave>
+      <Plant_PincushionCactus>0.3</Plant_PincushionCactus>
+      <Plant_TreeDrago>0.12</Plant_TreeDrago>
+      <Plant_Dandelion>0.3</Plant_Dandelion>
+    </wildPlants>
+
+    <!--
+      Core-only roster, plains register, modest density. Boomalope and
+      boomrat are weighted up rather than down: a biome whose whole loop is
+      ignition should have something on it that explodes.
+    -->
+    <wildAnimals>
+      <Hare>1.2</Hare>
+      <Rat>1.0</Rat>
+      <Gazelle>0.7</Gazelle>
+      <Ostrich>0.5</Ostrich>
+      <Emu>0.5</Emu>
+      <Dromedary>0.4</Dromedary>
+      <Muffalo>0.35</Muffalo>
+      <Boomalope>0.6</Boomalope>
+      <Boomrat>0.6</Boomrat>
+      <Iguana>0.4</Iguana>
+      <Elephant>0.25</Elephant>
+      <Rhinoceros>0.2</Rhinoceros>
+      <Cougar>0.12</Cougar>
+      <Fox_Fennec>0.12</Fox_Fennec>
+      <Warg>0.05</Warg>
+    </wildAnimals>
+
+    <allowedPackAnimals>
+      <li>Muffalo</li>
+      <li>Dromedary</li>
+      <li>Elephant</li>
+    </allowedPackAnimals>
+  </BiomeDef>
+
+</Defs>

@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 
 namespace RimMandrake.StarWars.FireEcology
@@ -204,6 +205,200 @@ namespace RimMandrake.StarWars.FireEcology
             {
                 Log.WarningOnce("[RimMandrake.StarWars.FireEcology] fire-tick-ash-scorchfruit: "
                                 + e.Message, 0x46E02);
+            }
+        }
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // BIOME PLACEMENT — the second thing in this mod that XML cannot do.
+    //
+    // BiomeDef has NO temperature, rainfall or elevation field. RimWorld
+    // assigns a tile's biome by asking every BiomeDef's `workerClass` for
+    // a score and keeping the highest (RimSage,
+    // RimWorld/Planet/WorldGenStep_Terrain.cs:288 BiomeFrom), so a biome
+    // with no C# worker simply never generates anywhere. This is that
+    // worker, and it is the ONLY route.
+    //
+    // The numbers themselves stay in XML so they can be retuned without a
+    // rebuild — see the <modExtensions> block on RM_FE_Pyrelands in
+    // Defs/BiomeDefs/Pyrelands.xml.
+    // ════════════════════════════════════════════════════════════════════
+
+    // TRIGGERED BY: the <modExtensions><li Class="...PyrelandsBiomeRanges">
+    // block on a BiomeDef. Absent, the defaults below apply unchanged.
+    public class PyrelandsBiomeRanges : DefModExtension
+    {
+        public FloatRange temperature = new FloatRange(25f, 60f);
+        public FloatRange rainfall = new FloatRange(550f, 1000f);
+        public FloatRange elevation = new FloatRange(0f, 2200f);
+        public float baseScore = 30f;
+        public float degreeWeight = 2.6f;
+        public float rainfallDivisor = 120f;
+    }
+
+    // TRIGGERED BY: <workerClass> on the RM_FE_Pyrelands BiomeDef.
+    //
+    // Scored against vanilla's own BiomeWorker_AridShrubland, which owns
+    // this rainfall corridor today (22.5 + (T-20)*2.2 + (R-600)/100). With
+    // the shipped numbers the crossover sits near 25 degC: cooler tiles
+    // stay arid shrubland, hotter ones become pyrelands, and outside
+    // 550-1000mm rainfall this worker returns 0 and never competes at all.
+    public class BiomeWorker_Pyrelands : BiomeWorker
+    {
+        private static readonly PyrelandsBiomeRanges FallbackRanges = new PyrelandsBiomeRanges();
+
+        public override float GetScore(BiomeDef biome, Tile tile, PlanetTile planetTile)
+        {
+            if (tile == null || tile.WaterCovered)
+            {
+                return -100f;
+            }
+
+            PyrelandsBiomeRanges r = biome.GetModExtension<PyrelandsBiomeRanges>() ?? FallbackRanges;
+
+            if (tile.temperature < r.temperature.min || tile.temperature > r.temperature.max)
+            {
+                return 0f;
+            }
+            // Half-open on rainfall, matching vanilla's own workers exactly
+            // so the band edges butt up against theirs with no overlap.
+            if (tile.rainfall < r.rainfall.min || tile.rainfall >= r.rainfall.max)
+            {
+                return 0f;
+            }
+            if (tile.elevation < r.elevation.min || tile.elevation > r.elevation.max)
+            {
+                return 0f;
+            }
+            // Grass savanna, not highland: same exclusion BiomeWorker_Grasslands makes.
+            if (tile.hilliness == Hilliness.Mountainous || tile.hilliness == Hilliness.Impassable)
+            {
+                return 0f;
+            }
+
+            float divisor = (r.rainfallDivisor > 0.0001f) ? r.rainfallDivisor : 1f;
+            return r.baseScore
+                 + (tile.temperature - r.temperature.min) * r.degreeWeight
+                 + (tile.rainfall - r.rainfall.min) / divisor;
+        }
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // ASH ACCUMULATION DURING ASH FALL — the third thing XML cannot do.
+    //
+    // TRIGGERED BY: WeatherDef RM_FE_Weather_AshFall (and, at under half
+    // the rate, RM_FE_Weather_Cinderfall) being the map's current weather.
+    //
+    // WHY NOT `snowRate`. That is the vanilla field for "falling weather
+    // that piles up", and it piles into map.snowGrid: white, drawn white,
+    // and melted the instant outdoor temperature is above freezing
+    // (RimSage, SteadyEnvironmentEffects.cs:96 AddFallenSnowAt). This
+    // biome's placement band starts at 25 degC, so snowRate would deposit
+    // nothing at all, and would look like snow if it did. `sandRate` is
+    // Odyssey-gated (SteadyEnvironmentEffects.cs:101 checks
+    // ModsConfig.OdysseyActive) and deposits sand, not ash.
+    //
+    // So the drifts are laid as RM_FE_Filth_LooseAsh — the SAME filth the
+    // fire-tick hook above already drops, deliberately: a bank left by
+    // weather and a bank left by a fire are one thing, they thicken into
+    // each other, and both are washed off by RM_FE_BlackRain through
+    // vanilla's own rainWashes handling. No new grid, no new save data.
+    // ════════════════════════════════════════════════════════════════════
+    public class MapComponent_PyrelandsAshfall : MapComponent
+    {
+        // A batch every 250 ticks (~4 per in-game hour) rather than a
+        // per-tick roll: this component exists on EVERY map in every save,
+        // including ones with no Pyrelands anywhere, so the not-my-weather
+        // path has to be nearly free.
+        private const int CheckIntervalTicks = 250;
+
+        // One deposit attempt per this many map cells per batch. A 250x250
+        // map (62,500 cells) gets ~15 per batch, ~60 per in-game hour —
+        // visible drifts over an afternoon, not a filth explosion.
+        private const float CellsPerDepositAttempt = 4000f;
+
+        private const float CinderfallRateFactor = 0.45f;
+
+        private static ThingDef ashFilthDef;
+        private static WeatherDef ashFallWeather;
+        private static WeatherDef cinderfallWeather;
+        private static bool defsResolved;
+
+        public MapComponent_PyrelandsAshfall(Map map)
+            : base(map)
+        {
+        }
+
+        private static void ResolveDefs()
+        {
+            defsResolved = true;
+            ashFilthDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
+            ashFallWeather = DefDatabase<WeatherDef>.GetNamedSilentFail("RM_FE_Weather_AshFall");
+            cinderfallWeather = DefDatabase<WeatherDef>.GetNamedSilentFail("RM_FE_Weather_Cinderfall");
+        }
+
+        public override void MapComponentTick()
+        {
+            if (Find.TickManager.TicksGame % CheckIntervalTicks != 0)
+            {
+                return;
+            }
+            if (!defsResolved)
+            {
+                ResolveDefs();
+            }
+            if (ashFilthDef == null)
+            {
+                return;
+            }
+
+            WeatherManager wm = map.weatherManager;
+            WeatherDef current = (wm != null) ? wm.curWeather : null;
+            if (current == null)
+            {
+                return;
+            }
+
+            float rate;
+            if (current == ashFallWeather)
+            {
+                rate = 1f;
+            }
+            else if (current == cinderfallWeather)
+            {
+                rate = CinderfallRateFactor;
+            }
+            else
+            {
+                return;
+            }
+
+            int attempts = (int)((float)map.Area / CellsPerDepositAttempt * rate);
+            if (attempts < 1)
+            {
+                attempts = 1;
+            }
+
+            try
+            {
+                for (int i = 0; i < attempts; i++)
+                {
+                    IntVec3 c = CellFinder.RandomCell(map);
+                    // Under a roof the ash never lands; on water it sinks.
+                    // FilthMaker itself rejects unwalkable cells, and
+                    // shouldPropagate:false stops it hunting an 8-way
+                    // neighbour every time it hits a wall.
+                    if (map.roofGrid.Roofed(c) || c.GetTerrain(map).IsWater)
+                    {
+                        continue;
+                    }
+                    FilthMaker.TryMakeFilth(c, map, ashFilthDef, 1, FilthSourceFlags.None, false);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.WarningOnce("[RimMandrake.StarWars.FireEcology] ashfall-accumulation: "
+                                + e.Message, 0x46E03);
             }
         }
     }
