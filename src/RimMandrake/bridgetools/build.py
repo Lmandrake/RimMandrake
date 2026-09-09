@@ -111,9 +111,14 @@ def build(clean, gm):
     # incremental build keys off timestamps, not properties. Skipping it would
     # let a --gm run hand back the previous non-GM DLL (or worse, the reverse).
     # The whole build is under a second, so there is nothing to save here.
-    r = sh([DOTNET, "build", PROJECT, "-c", "Release", "--nologo",
-            "--no-incremental", "-p:JawaGmTools=%s" % ("true" if gm else "false")],
-           capture_output=True, text=True)
+    cmd = [DOTNET, "build", PROJECT, "-c", "Release", "--nologo",
+           "--no-incremental", "-p:JawaGmTools=%s" % ("true" if gm else "false")]
+    # The Oracle reference defaults to the DEPLOYED game copy, which lags the repo
+    # whenever the shutdown deploy is still owed (it broke this build 2026-09-09,
+    # missing OracleSettings.claudeCliPath). ORACLE_MOD_DIR overrides it.
+    if os.environ.get("ORACLE_MOD_DIR"):
+        cmd.append("-p:OracleModDir=%s" % os.environ["ORACLE_MOD_DIR"])
+    r = sh(cmd, capture_output=True, text=True)
     sys.stdout.write(r.stdout)
     if r.returncode != 0:
         sys.stderr.write(r.stderr)
