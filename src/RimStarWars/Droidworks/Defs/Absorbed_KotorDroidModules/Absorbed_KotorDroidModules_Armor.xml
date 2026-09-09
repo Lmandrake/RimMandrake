@@ -58,6 +58,7 @@
       <li>guy762TT_DroidEquipment</li>
       <li>guy762TT_DroidArmor</li>
     </tradeTags>
+    <smeltable>false</smeltable>
   </ThingDef>
 
   <ThingDef ParentName="RSW_DW_ModuleBase_Armor">
@@ -473,6 +474,7 @@
       <li>guy762TT_DroidEquipment</li>
       <li>guy762TT_DroidArmor</li>
     </tradeTags>
+    <smeltable>false</smeltable>
   </ThingDef>
 
   <ThingDef ParentName="RSW_DW_ModuleBase_Armor">
@@ -888,6 +890,7 @@
       <li>guy762TT_DroidEquipment</li>
       <li>guy762TT_DroidArmor</li>
     </tradeTags>
+    <smeltable>false</smeltable>
   </ThingDef>
 
   <ThingDef ParentName="RSW_DW_ModuleBase_Armor">
