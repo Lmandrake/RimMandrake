@@ -65,6 +65,7 @@ import fcntl
 import hashlib
 import json
 import os
+import stat as stat_mod
 import subprocess
 import sys
 import time
@@ -470,6 +471,13 @@ def cmd_mark_clean(path, sha):
         # stale", which reads as a repo fault rather than a bad argument, and the
         # bogus mark still burned a cleanCount increment on the health board.
         r = git(["rev-parse", "--verify", "--short", "%s^{commit}" % sha])
+        if r.returncode == -1:
+            # A git failure must not wear the bad-argument message — that
+            # sends a reviewer chasing a nonexistent typo.
+            print(f"FAIL: git could not answer whether --sha {sha} resolves "
+                  f"({(r.stderr or '').strip() or 'timeout/lock?'}). Try again.",
+                  file=sys.stderr)
+            return 2
         if r.returncode != 0 or not r.stdout.strip():
             print(f"FAIL: --sha {sha} does not resolve to a commit.", file=sys.stderr)
             return 2
@@ -477,7 +485,13 @@ def cmd_mark_clean(path, sha):
         # And it must be an ancestor of HEAD. `git log <sha>..HEAD` is empty for
         # any sha HEAD can already reach FROM, so a mark against a commit ahead
         # of HEAD would read CLEAN no matter what HEAD's copy of the file says.
-        if git(["merge-base", "--is-ancestor", sha, "HEAD"]).returncode != 0:
+        anc = git(["merge-base", "--is-ancestor", sha, "HEAD"])
+        if anc.returncode not in (0, 1):
+            print(f"FAIL: git could not answer whether --sha {sha} is an "
+                  f"ancestor ({(anc.stderr or '').strip() or 'timeout/lock?'}). "
+                  "Try again.", file=sys.stderr)
+            return 2
+        if anc.returncode == 1:
             print(f"FAIL: --sha {sha} is not an ancestor of HEAD; a clean mark "
                   "there could never be measured dirty.", file=sys.stderr)
             return 2
@@ -592,11 +606,24 @@ def cmd_prune(apply):
     rename fix belongs at the NEW path via mark-clean, not here) - it does not
     try to guess where content moved to.
     """
+    def _gone(rel):
+        # PROVEN absent (or no longer a regular file) only. os.path.isfile
+        # answers False for IGNORANCE too (EACCES/EIO/drvfs stale read), and
+        # pruning on ignorance permanently destroys a valid clean entry —
+        # ignorance must never read as gone.
+        try:
+            st = os.stat(os.path.join(ROOT, rel))
+        except (FileNotFoundError, NotADirectoryError):
+            return True
+        except OSError:
+            return False
+        return not stat_mod.S_ISREG(st.st_mode)
+
     def _orphaned(rel):
         # One predicate for the scan AND the under-lock re-test — the two
         # briefly disagreed and prune --apply printed "dropped" for a
         # case-rename phantom while removing nothing (review 2026-09-09).
-        return (not os.path.isfile(os.path.join(ROOT, rel))
+        return (_gone(rel)
                 or not exact_case_isfile(rel))  # drvfs: a case-renamed
                                                 # spelling "exists" but is
                                                 # a phantom
