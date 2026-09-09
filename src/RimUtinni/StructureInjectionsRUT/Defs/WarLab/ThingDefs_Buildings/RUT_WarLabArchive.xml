@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_WarLabArchive - ANCIENT_WAR_LAB_1's core reveal-beat.
+
+  Item spec (infrastructure/state/items/ANCIENT_WAR_LAB_1.md, "build spec"
+  band 3): "the study records (terminal/archive prop — exact defName HELD,
+  confirm at hand-finish; the payoff is informational/reveal-beat, not
+  loot-ladder)." This IS that hand-finish pass. Same discipline as
+  RUT_DarkTowerControlConsole (StructureInjectionsRUT/Defs/DarkTower/
+  ThingDefs_Buildings/RUT_DarkTowerControlConsole.xml): a narrative anchor
+  object, not a new mechanic. No C# reveal system exists yet for "the study
+  records" (no analog to RUST_CATHEDRAL_MECHANICS_1's hum-mood kit is filed
+  for this beat) - so this ships as a claimable, non-mechanical building
+  whose label/description CARRY the reveal in text, matching the item's own
+  "informational/reveal-beat, not loot-ladder" framing. Whoever later wires
+  an actual readable-lore/quest-flavor system should hook this defName
+  rather than duplicate it.
+
+  Text draws only from already-ruled lore (the_propane_lakes.md SS3 "The
+  machine", SS8 "the ancient war lab"; ANCIENT_WAR_LAB_1.md's own spec:
+  "mutual learning, mutual destruction: every study taught the weapon") -
+  nothing new is invented here, only compiled into an in-fiction object.
+
+  Art: reuses Things/Building/Ship/ShipComputerCore, the SAME placeholder
+  RUT_VaultHeart and RUT_DarkTowerControlConsole already use (both of those
+  files say so explicitly - "no new art authored this pass" is the
+  established convention for this narrative-anchor class of object, not a
+  shortcut unique to this file).
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_WarLabArchive</defName>
+    <label>the study archive</label>
+    <description>A bank of data-spikes and specimen logs, still faintly lit. Every entry here was written by someone convinced they still had time: what the weapon did to the first hosts, what containment held and did not, what the weapon learned from being watched.\n\nMutual learning, mutual destruction. The lab and the Assailants studied each other until neither one still fit the description written on the door.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Ship/ShipComputerCore</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1.5,1.5)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>800</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-5</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>false</deconstructible>
+      <claimable>true</claimable>
+    </building>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>7</glowRadius>
+        <glowColor>(150,255,180,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>
