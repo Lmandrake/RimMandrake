@@ -20,7 +20,7 @@
       <li>RSW_AbednedoHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -33,7 +33,7 @@
       <li>RSW_AqualishHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
@@ -47,7 +47,7 @@
       <li>RSW_AqualishHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
@@ -61,7 +61,7 @@
       <li>RSW_BithHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
@@ -75,7 +75,7 @@
       <li>RSW_BothanHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -88,7 +88,7 @@
       <li>RSW_BothanHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -101,7 +101,7 @@
       <li>RSW_CatharHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
@@ -115,7 +115,7 @@
       <li>RSW_CatharHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
@@ -129,7 +129,7 @@
       <li>RSW_CereanHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -142,7 +142,7 @@
       <li>RSW_CereanHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -152,7 +152,7 @@
       <li>RSW_DathomirianHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
@@ -212,7 +212,7 @@
       <li>RSW_DurosHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -225,7 +225,7 @@
       <li>RSW_DurosHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -358,7 +358,7 @@
       <li>RSW_GeonosianHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
@@ -382,7 +382,7 @@
       <li>RSW_GunganHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -395,7 +395,7 @@
       <li>RSW_GunganHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -414,7 +414,7 @@
       <li>RSW_HerglicHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -427,7 +427,7 @@
       <li>RSW_IktotchiHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
@@ -441,7 +441,7 @@
       <li>RSW_IktotchiHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
@@ -465,7 +465,7 @@
       <li>RSW_IthorianHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -478,7 +478,7 @@
       <li>RSW_KaminoanHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -491,7 +491,7 @@
       <li>RSW_KaminoanHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -591,7 +591,7 @@
       <li>RSW_MirialanHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -634,7 +634,7 @@
       <li>RSW_MonCalamariHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -647,7 +647,7 @@
       <li>RSW_NiktoHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
@@ -658,7 +658,7 @@
       <li>RSW_PantoranHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
@@ -762,7 +762,7 @@
       <li>RSW_PykeHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -775,7 +775,7 @@
       <li>RSW_QuarrenHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -813,7 +813,7 @@
       <li>RSW_SelkathHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -838,7 +838,7 @@
       <li>RSW_TogrutaHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
         <shaderType>CutoutComplex</shaderType>
       </li>
@@ -892,7 +892,7 @@
       <li>RSW_TrandoshanHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -912,7 +912,7 @@
       <li>RSW_TwilekHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -925,7 +925,7 @@
       <li>RSW_TwilekHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -938,7 +938,7 @@
       <li>RSW_TwilekHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -951,7 +951,7 @@
       <li>RSW_TwilekHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
@@ -964,7 +964,7 @@
       <li>RSW_WookieeHead</li>
     </requiredGenes>
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_HeadTypeStuff">
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
         <useSkinShader>false</useSkinShader>
       </li>
     </modExtensions>
