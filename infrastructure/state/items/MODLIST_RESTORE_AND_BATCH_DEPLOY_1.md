@@ -80,6 +80,121 @@ ones. Order matters; do each step and verify before the next.
    comes back clean (do not close the items' full criteria if other live-proof
    steps remain beyond just loading — read each one's own remaining bar).
 
+## EXECUTION — FOUNDRY, 2026-09-09 15:30-onward
+
+### 🔴 The premise of this item's "finding" section was WRONG, and that matters
+
+The live list was **not** swapped down to a minimal list by another agent. **RimWorld
+reset it itself.** `Player.log` from before anything was touched tonight carries
+`Caught exception while loading play data but there are active mods other than Core.
+Resetting mods config and trying again.` — the engine's own corrupted-mods recovery,
+which writes a 6-mod `ModsConfig.xml` to disk and relaunches. The same reset, with the
+**identical** exception fingerprint `[Ref 24E2AAB2]`, is also in
+`Player_log_failed_fullload_2026-09-08.log` (2026-09-08 18:30). ⇒ **the full list has
+been failing to cold-load since at least 2026-09-08 18:30**, and every "an agent left
+it on vanilla" reading tonight was reading the symptom.
+
+### Step 1-2 — modlist reconstruction: MATCHES the save exactly
+
+| reading | value |
+|---|---|
+| save `CANONICAL_ASHKARR_2026-09-09.rws` `<modIds>` | **590** |
+| `ModsConfig_before_droid_donor_fix_2026-09-09.xml` `<activeMods>` | **587** |
+| save − 587-list | exactly `neronix17.asimov`, `neronix17.outerrim.droiddepot`, `mandrake.rsw.msedroidfix` |
+| 587-list − save | **∅** |
+
+587 + the 3 restored droid mods = **590 = the save's set, exactly.** No mismatch, no
+side to pick. Order taken from the 13:38 587-list (the most recent full ordering); the
+3 droid mods re-inserted after the same predecessors they had in
+`ModsConfig_2026-09-09_pre_depot_asimov_msedroidfix_retire.xml` (13:01) — verified that
+the two lists' 586 common ids are in **identical relative order**, so the splice cannot
+reorder anything.
+
+Then −13 Wave 1 (`STAT_NORM_WAVE1_RETIRE_1`, all 13 confirmed present first) = **577**.
+All 582 target ids resolved against all three install roots
+(workshop / `Mods` / `Data`, `About.xml` **direct child** `packageId` only): 0 unresolved.
+
+⚠️ `mandrake.rut.droidrepairjobs` is absent from the save's own 590 too, so it is not
+list drift against the save — left alone as this item instructed.
+
+### Step 3 — the 4 new mods' real packageIds, read from their own About.xml
+
+| mod | packageId | placed |
+|---|---|---|
+| ManyWaters | `mandrake.rm.manywaters` | after `mandrake.rut.fireecology` |
+| Moving Dunes | `mandrake.rm.movingdunes` | ″ |
+| Fluid Canals | `mandrake.rm.fluidcanals` | ″ |
+| Oracle | `mandrake.rm.oracle` | ″ |
+
+All four sit in the existing RM content cluster, **before** `mandrake.rm.rimdefdump`
+(which must observe the fully assembled game) and after every `loadAfter` target each
+declares (`sarg.alphabiomes` @50, `dubwise.dubsbadhygiene.lite` @127, `brrainz.harmony`
+@1, `ludeon.rimworld.odyssey` @9). Their two `Patches/` files validated against the
+reconstructed list itself (`validate_patch.py --defs` × 3 roots `--mods-config` target):
+**0 errors**, predicted hit counts 2 and 1.
+
+### 🔴 Step 4 — the real defect: SEVEN of our own C# types were missing from the DEPLOYED DLLs
+
+The first launch on the reconstructed list reset again, same `[Ref 24E2AAB2]`. Diffing
+today's log against the last clean full load
+(`Player_log_before_overnight_restart_2026-09-09.log`, 2026-09-08 23:22) isolated it:
+**7 `Could not find type named …` lines that the clean load does not have**, all naming
+our own namespaces.
+
+| type | owning mod | in REPO dll | in DEPLOYED dll |
+|---|---|---|---|
+| `RimMandrake.AnimalTheft.JobGiver_RM_TrainedSteal` | RimProperty | ✅ | ❌ |
+| `RimMandrake.AnimalTheft.JobGiver_RM_WildSteal` | RimProperty | ✅ | ❌ |
+| `RimMandrake.AnimalTheft.WildTheftExtension` | RimProperty | ✅ | ❌ |
+| `RimMandrake.ProximityHatch.CompProperties_ProximityHatch` | ProximityHatch | ✅ | mod NOT DEPLOYED AT ALL |
+| `RimMandrake.StarWars.FireEcology.PyrelandsBiomeRanges` | Pyrelands | ✅ | ❌ |
+| `RimMandrake.StarWars.Livestock.CompProperties_KilnBelly` | SWBestiary | ✅ | ❌ |
+| `RimMandrake.StarWars.Livestock.CompProperties_KilnFeed` | SWBestiary | ✅ | ❌ |
+
+**Every one is in the repo build and absent from the game copy** — the consolidation
+rebuild's assemblies were never deployed, because an assembly can only be written in a
+game-down window and there has not been one since.
+
+**The causal chain, end to end:**
+`ThingDefs_Onnik.xml` carries `CompProperties_KilnBelly`/`KilnFeed` → type absent →
+🔴 **the WHOLE ThingDef is discarded** → `PawnKindDefs_Onnik.xml`'s pawnkind is left
+with a null `race` → Alpha Genes' `GeneDefGenerator.ImpliedGeneDefs` postfix iterates
+pawnkinds and **NullReferences on it** → RimWorld catches it, resets `ModsConfig.xml`
+to 6, relaunches. The 2026-09-08 18:30 failure is the same shape one animal earlier
+(`[Def Error]: RSW_Karrask`, also SWBestiary).
+
+**Fixed** (game DOWN, verified each type present in the game copy afterwards by byte
+scan of the deployed DLL): `RimProperty`, `Pyrelands`, `SWBestiary` assemblies
+redeployed; `ProximityHatch` deployed for the first time and **added to the modlist**
+immediately before `mandrake.rsw.swbestiary` (whose About already declares
+`loadAfter mandrake.rm.proximityhatch`) ⇒ final list is **582**, not 581.
+
+### 🔴 New trap found: `MayRequire` on a `<Operation>` inside a Patch file DOES NOTHING
+
+`SWBestiary/Patches/ProximityHatch/RSW_ProtovermesEgg_ProximityHatch.xml` guards its op
+with `MayRequire="mandrake.rm.proximityhatch"` and its own comment says "absent it, this
+file is a silent no-op". It is not. Read from the engine source
+(`Source/Verse/LoadedModManager.cs`): `ApplyPatches()` runs
+`runningMods.SelectMany(rm => rm.Patches)` and calls `item.Apply(xmlDoc)`
+**unconditionally** — it never looks at attributes. The `MayRequire` check at line 395
+is inside `ParseAndProcessXML()` and applies only to **top-level def nodes in the
+unified XML**, never to `<Operation>` elements. `mandrake.rm.proximityhatch` has never
+been in any modlist snapshot, and the op applied anyway, discarding
+`RSW_ProtovermesEggFertilized`.
+⇒ **The only working guard for a patch operation is `PatchOperationFindMod`.**
+
+### Other deploys done in the same window
+
+- `build.py --gm --apply` → `RimWorld/BridgeTools/JawaBench/`. Build 0 warnings /
+  0 errors, `selftest_tool_metadata.py` **317 tools, GM pair included**, repo and game
+  copies **md5-identical** (`c8a3ca5b…`). Carries the
+  `WORLD_FEATURE_LABELS_OVERSIZED_1` fix (`sqrt(count) * 1.35f`, confirmed at
+  `JawaBenchWorldTools.cs:4695` in the source that built).
+- All four new mods deployed / verified in sync; all four DLLs md5-identical repo↔game.
+- Live 6-mod `ModsConfig.xml` archived to
+  `infrastructure/state/modlists/ModsConfig_LIVE_6mod_before_restore_20260909_154141.xml`;
+  the written list archived as `ModsConfig_RESTORE_582_2026-09-09.xml`.
+
 ## verify
 Live `ModsConfig.xml` active-mod count matches the reconstructed target
 exactly; `harvest_log.py` runs clean against the NEW run (not a stale dump);
