@@ -102,3 +102,4 @@ stay,RimStarWars/JawaVoice/Patches/JawaVoice_Interactions.xml,,RimStarWars,,,MED
 stay,RimStarWars/JawaVoice/Patches/JawaVoice_prisoners.xml,,RimStarWars,,,HIGH,generic Jawaese lines
 stay,RimStarWars/JawaVoice/Patches/JawaVoice_romance.xml,,RimStarWars,,,HIGH,generic Jawaese lines
 rename-file,RimStarWars/StarWarsPatches/Patches/PlantNames_Ashkarr.xml,RimStarWars/StarWarsPatches/Patches/PlantNames_CanonSW.xml,RSW,,,HIGH,filename lies: contents are canon SW plant names; RUT twin keeps Ashkarr name — same-name-two-tiers is the misplace shape (sweep 2026-09-08)
+stay,RimStarWars/Armoury/Defs/MiscDefs/Absorbed_SovSith_Misc.xml,,RimStarWars,,,VERIFY,"un-mapped legacy Pureblood xenotype fragment; likely duplicate of StarWarsRaces RSW_RimMandrakeSithKissaiPureblood — content-compare then retire or move, never on grep alone (2026-09-08)"

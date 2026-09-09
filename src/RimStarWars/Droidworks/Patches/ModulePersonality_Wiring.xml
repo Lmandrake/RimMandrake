@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DROIDWORKS_MODULE_PERSONALITY_1 (packet E3). Wires
+  RimMandrake.StarWars.Droidworks.CompProperties_ModulePersonality onto three
+  of the absorbed KotOR droid modules (Absorbed_KotorDroidModules_Tech.xml,
+  DROIDWORKS_MODULE_ABSORB_1) - one per absorbed slot family (hardware,
+  sensor, software) - rather than hand-editing that generated file. Each
+  target ThingDef already has a <comps> list; PatchOperationAdd appends.
+  See Effects_Droidworks_ModulePersonality.xml for the "spider-arm" substitution
+  note and the three HediffDefs.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[defName="RSW_DW_Module_DroidHardware_agility"]/comps</xpath>
+    <value>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_ModulePersonality">
+        <personalityHediff>RSW_DW_ModulePersonality_Twitchy</personalityHediff>
+      </li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[defName="RSW_DW_Module_DroidSensor_perception"]/comps</xpath>
+    <value>
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_ModulePersonality">
+        <personalityHediff>RSW_DW_ModulePersonality_Paranoid</personalityHediff>
+      </li>
+    </value>
+  </Operation>
+
+  <!-- RSW_DW_Module_DroidSoftware_lockout has no pre-existing <comps> element
+       (unlike the other two targets above), so this one adds the whole
+       <comps> node onto the ThingDef rather than appending inside it - an
+       xpath into a nonexistent <comps> would match nothing and log nothing. -->
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[defName="RSW_DW_Module_DroidSoftware_lockout"]</xpath>
+    <value>
+      <comps>
+        <li Class="RimMandrake.StarWars.Droidworks.CompProperties_ModulePersonality">
+          <personalityHediff>RSW_DW_ModulePersonality_Pedantic</personalityHediff>
+        </li>
+      </comps>
+    </value>
+  </Operation>
+
+</Patch>

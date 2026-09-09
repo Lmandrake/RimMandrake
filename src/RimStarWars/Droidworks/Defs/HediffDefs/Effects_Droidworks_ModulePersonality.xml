@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     DROIDWORKS_MODULE_PERSONALITY_1 (packet E3, unit 12): "installed modules
+     carry attitudes ... the spider-arm changes who you are." Added/removed by
+     Source/Droidworks/CompModulePersonality.cs, wired onto three chosen
+     absorbed modules by Patches/ModulePersonality_Wiring.xml (the absorbed
+     module files themselves are generator output - do not hand-edit).
+
+     No literal "spider-arm" module exists among the six-slot KotOR modules
+     absorbed by DROIDWORKS_MODULE_ABSORB_1 (weapon/gadget/shield slots were
+     excluded there for framework-dependency reasons - see that packet's
+     EXCLUDED manifest). RSW_DW_Module_DroidHardware_agility is the closest
+     analogue: a hardware-slot module described as tying "directly in with a
+     droid's motivators ... increasing their reaction time", i.e. an
+     actuator/limb-motion module, same family as a manipulator arm. Recorded
+     substitution, not a guess.
+
+     Same house shape as Effects_Droidworks.xml (HediffWithComps, isBad flag,
+     one capMod/statOffset stage) - scope kept to 3 modules (one per absorbed
+     slot family: hardware, sensor, software) rather than all six, per the
+     packet's own "S" size estimate in droid_system_build_spec.md unit 12.
+     Each offset is deliberately a stat/capacity the module's own
+     equippedStatOffsets does NOT already touch, so the personality effect is
+     visibly attributable to this hediff rather than doubling up. -->
+<Defs>
+
+  <HediffDef>
+    <defName>RSW_DW_ModulePersonality_Twitchy</defName>
+    <label>twitchy (module-worn)</label>
+    <description>The motivator upgrade wired into this droid's limbs runs hot on its own initiative - it flinches, over-corrects, and moves like it is always one step ahead of a threat that hasn't arrived yet. Installed by a hardware module; substitutes for the "spider-arm" reference in the packet's own verify line (no literal spider-arm module exists among the absorbed KotOR modules).</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <statOffsets>
+          <MeleeDodgeChance>0.05</MeleeDodgeChance>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_DW_ModulePersonality_Paranoid</defName>
+    <label>hyperaware (module-worn)</label>
+    <description>The perception sensor cluster never really stops scanning. This droid tracks every doorway, every shadow, every pawn that gets too close - whether or not anything is actually wrong.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li><capacity>Sight</capacity><offset>0.05</offset></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_DW_ModulePersonality_Pedantic</defName>
+    <label>pedantic (module-worn)</label>
+    <description>The security-interface module buries this droid in cross-references and citations. It will tell you the correct procedure, at length, whether or not you asked.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <statOffsets>
+          <GlobalLearningFactor>0.05</GlobalLearningFactor>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

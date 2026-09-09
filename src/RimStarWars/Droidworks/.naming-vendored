@@ -1,0 +1,5 @@
+# Absorbed third-party content: defNames preserved for save/cross-mod compat
+# (WEAPONS_ABSORPTION_WAVE_1 convention). naming_lint exempts these prefixes.
+# Copied from Armoury/.naming-vendored (WAVE_B extraction, ARMOURY row 38):
+# only the entry covering Absorbed_KotorCore_RulePacks_DroidNameMakers.xml.
+SWCP_
