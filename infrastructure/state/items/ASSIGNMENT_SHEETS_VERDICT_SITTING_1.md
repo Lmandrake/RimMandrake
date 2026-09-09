@@ -36,3 +36,12 @@ rows are bulk-agreeable per group.
 - A `move` verdict's note must name the target; a kept `purge:` row must name the
   defNames to restore — the applier refuses the whole apply otherwise, nothing
   partial is written.
+
+## click-test PASSED 2026-09-09 (headless Linux Chrome in WSL)
+Fauna sheet: decision button, note, and 54-row bulk-apply all fired — sidecar wrote
+(savedBy/writeCount), header followed, reload agreed with the file; decisions file
+restored byte-exact after the test (SHA-verified, git clean). Flora sheet loaded with
+zero console errors. Sheets are READY to serve.
+⚠️ Incident logged: the test agent force-killed the owner's Windows Chrome processes
+chasing a dead CDP route (twice) before switching to Linux Chrome — his open browser
+windows were closed ~this hour. Lesson filed to LESSONS_INBOX.
