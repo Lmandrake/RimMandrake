@@ -136,3 +136,11 @@ generalized. Verify post-load with a fresh def dump, not disk XML.
   flagged here, not solo-edited.
 - ⚠️ Fix-wave sequencing: roster edits shift positional sheet row-ids — regenerate
   both review sheets after any roster fix, BEFORE the owner's verdict pass.
+
+## Cross-item verification (2026-09-09): RETEXTURED_EARTH_FAUNA_BANNED_1 (FOUNDRY's, already closed)
+Re-verified against the REGENERATED cast at `90727e48`: the five twins are in
+EARTH_FAUNA_EXCLUDED.txt (lines 125–129), the new cast greps 0 for GRim*/Wolf_Great,
+rosters refilled every touched biome, and GRimStoneCrab (Miasma) — a sixth twin the
+original spec missed — was caught and evicted by this pass. Note for FOUNDRY: the
+deployed cast now lives at `src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml`;
+that item's verify snippet still greps the old src/Jawa path and would false-pass.
