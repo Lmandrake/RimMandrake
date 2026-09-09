@@ -23,3 +23,11 @@ not all of them should!)"*
 ## verify
 The table exists; the owner has ruled each denied row; the storyteller/incident
 restrictions needed to enforce it are listed with defNames.
+
+## 2026-09-09: DRAFT table built (BENCH, owner AFK) — awaiting his ruling
+`design/Jawa/worldbuilding/mechanoid_biome_presence_draft.md` (`d927f4b7`): per-biome
+AMBIENT/ANCIENT/RAIDS verdicts argued from the sheets; the two poles marked RULED;
+two UNDECIDED (AridShrubland ancients, FeverWood pools). Carries one doctrine
+proposal needing his word: random mech RAIDS deny planet-wide — mech violence is
+provoked/scripted only (consistent with both poles). Mechanism notes verified via
+source where possible; per-biome raid gating would need Harmony, planet-wide is XML.
