@@ -6508,3 +6508,4 @@
 {"seat":"FOUNDRY","event":"note","id":"DROID_FDE_GOODWILL_CAP_1","text":"Offline re-verify pass (build clean, validate_patch clean, selftests 43/46 w/ unrelated failures). Closing per this session's criteria; live-observed goodwill-cap-in-effect test stays owed (bridge unavailable, game mid-cold-load) -- see item doc.","ts":"2026-09-09T20:16:40Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROID_FDE_GOODWILL_CAP_1","sha":"61789b97086798ba0d4406a3060c0551798a493a","ts":"2026-09-09T20:16:40Z"}
 {"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-09-09T20:16:56Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROID_HUTT_CAPTIVES_1","sha":"41c5c7f3","ts":"2026-09-09T20:18:17Z"}
