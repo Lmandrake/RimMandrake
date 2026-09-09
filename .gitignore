@@ -261,3 +261,4 @@ src/**/obj/
 infrastructure/state/BRIDGE
 infrastructure/state/BRIDGE.tmp
 Transient/codebase_health_hook.log
+infrastructure/state/*.lock

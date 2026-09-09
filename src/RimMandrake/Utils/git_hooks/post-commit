@@ -29,7 +29,10 @@
 REPO="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
 [ -n "$REPO" ] || exit 0
 
-LOG="/tmp/rimworld_codebase_health_hook.log"
+# Human/agent debugging artifact -> Transient/ (gitignored), not /tmp (tmpfs,
+# erased on reboot -- and this log is the detached rebuild's only error channel).
+LOG="$REPO/Transient/codebase_health_hook.log"
+mkdir -p "$REPO/Transient" 2>/dev/null
 
 # Detached from the commit: no stdin, output to the log, and the shell does not wait.
 (

@@ -92,7 +92,7 @@ def _trigger_health_rebuild():
     to spawning, same as always; MIN_INTERVAL is mirrored from
     codebase_health_publish.py.
     """
-    MIN_INTERVAL = 300
+    MIN_INTERVAL = 900
     try:
         with open(os.path.join(ROOT, "infrastructure", "state",
                                 "codebase_health_last.json")) as fh:
@@ -101,7 +101,10 @@ def _trigger_health_rebuild():
             return
     except (OSError, ValueError):
         pass
-    log_path = "/tmp/rimworld_codebase_health_hook.log"
+    # The log is a human/agent debugging artifact (the publisher's only error
+    # channel), so it lives in Transient/ — gitignored there, NOT /tmp: /tmp is
+    # tmpfs here and a reboot would erase the diagnostics.
+    log_path = os.path.join(ROOT, "Transient", "codebase_health_hook.log")
     try:
         os.makedirs(os.path.dirname(log_path), exist_ok=True)
         with open(log_path, "a") as fh:
@@ -162,6 +165,17 @@ def save(data):
         finally:
             os.close(fd)
         os.replace(tmp, LOG_PATH)
+        # fsync the containing directory too: the rename itself is unsynced
+        # otherwise, and a crash could lose a clean mark the caller was told
+        # succeeded. drvfs may refuse directory fsync — degrade silently.
+        try:
+            dfd = os.open(os.path.dirname(LOG_PATH) or ".", os.O_RDONLY)
+            try:
+                os.fsync(dfd)
+            finally:
+                os.close(dfd)
+        except OSError:
+            pass
     except BaseException:
         # The unique tmp name means a leaked file is never overwritten and so
         # never noticed — it just accumulates untracked next to the log, in a
@@ -178,6 +192,25 @@ def repo_rel(path):
     return os.path.relpath(os.path.abspath(path), ROOT).replace(os.sep, "/")
 
 
+def canonical_rel(rel):
+    """/mnt/d (drvfs) resolves paths case-insensitively, but the ledger and
+    git are case-sensitive: a mis-cased argument reads as "never reviewed"
+    and then fails mark-clean's tracked-file gate with a false message. Ask
+    git for the tracked spelling; on any ambiguity or git failure, keep the
+    caller's spelling unchanged."""
+    if rel.startswith("../") or rel == "..":
+        return rel
+    r = git(["ls-files", "--", ":(icase)" + rel])
+    if r.returncode == 0:
+        lines = r.stdout.splitlines()
+        if rel in lines:
+            return rel
+        ci = [l for l in lines if l.lower() == rel.lower()]
+        if len(ci) == 1:
+            return ci[0]
+    return rel
+
+
 def git(args):
     """Run git with a hard timeout, decoding output as text. A
     `.git/index.lock` collision (many concurrent callers, exactly this
@@ -190,6 +223,10 @@ def git(args):
                                text=True, timeout=GIT_TIMEOUT)
     except subprocess.TimeoutExpired:
         return subprocess.CompletedProcess(args, -1, "", "git timed out after %ss" % GIT_TIMEOUT)
+    except OSError as e:
+        # git missing/unexecutable must degrade to refuse like every other
+        # git failure, not traceback past the documented contract.
+        return subprocess.CompletedProcess(args, -1, "", "git could not run: %s" % e)
 
 
 def git_bytes(args):
@@ -202,6 +239,8 @@ def git_bytes(args):
                                text=False, timeout=GIT_TIMEOUT)
     except subprocess.TimeoutExpired:
         return subprocess.CompletedProcess(args, -1, b"", b"git timed out after %ds" % GIT_TIMEOUT)
+    except OSError as e:
+        return subprocess.CompletedProcess(args, -1, b"", b"git could not run: %s" % str(e).encode())
 
 
 def file_hash(relpath):
@@ -245,6 +284,23 @@ def cmd_check(paths):
     any_dirty = False
     for p in paths:
         rel = repo_rel(p)
+        # Answer honestly for paths that cannot be reviewed at all, instead
+        # of a reassuring "DIRTY (never marked clean)" that is
+        # indistinguishable from a real file awaiting review.
+        if rel.startswith("../") or rel == "..":
+            any_dirty = True
+            print(f"UNREVIEWABLE  {p}  (outside the repo root)")
+            continue
+        if os.path.isdir(os.path.join(ROOT, rel)):
+            any_dirty = True
+            print(f"UNREVIEWABLE  {rel}  (a directory, not a file)")
+            continue
+        if data.get(rel) is None:
+            rel = canonical_rel(rel)
+        if data.get(rel) is None and not os.path.isfile(os.path.join(ROOT, rel)):
+            any_dirty = True
+            print(f"UNREVIEWABLE  {rel}  (no such file under the repo root)")
+            continue
         state, detail = clean_state(rel, data.get(rel))
         if state == "DIRTY":
             any_dirty = True
@@ -255,7 +311,7 @@ def cmd_check(paths):
 
 
 def cmd_mark_clean(path, sha):
-    rel = repo_rel(path)
+    rel = canonical_rel(repo_rel(path))
     if rel.startswith("../") or rel == "..":
         print(f"FAIL: {rel} is outside the repo root.", file=sys.stderr)
         return 2
@@ -348,7 +404,7 @@ def cmd_reopen(paths, reason):
     # command whose entire job is undoing a wrong clean mark.
     rels = []
     for path in paths:
-        rel = repo_rel(path)
+        rel = canonical_rel(repo_rel(path))
         if rel.startswith("../") or rel == "..":
             print(f"FAIL: {rel} is outside the repo root.", file=sys.stderr)
             return 2
