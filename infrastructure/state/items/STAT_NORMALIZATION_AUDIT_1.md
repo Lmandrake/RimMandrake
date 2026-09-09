@@ -149,3 +149,25 @@ retirable and taken the campaign with it. Same shape one order down:
 
 **Nothing was retired. `ModsConfig.xml` was not touched.** Four questions for
 the owner are at the foot of the census doc; the item stays open for his ruling.
+
+## Wave 1 execution → `STAT_NORM_WAVE1_RETIRE_1` (open, 2026-09-09)
+
+Question 1 ("Wave 1 — go?") was **RULED GO** by the owner, verbatim: *"retire
+wave 1 items. We don't need those. The animal plant rework will work on the rest
+later when we revisit."* Execution is owned by
+`infrastructure/state/items/STAT_NORM_WAVE1_RETIRE_1.md` — **not** by this item.
+
+**Status as of 2026-09-09 15:28 PDT: checks done, nothing retired yet.** That
+item re-ran both this census's checks from scratch against the 587-mod snapshot
+and the current save — 44,197 files swept, exactly 2 external references found
+(both in our own mods, both mechanically inert), and **0 placed `<def>`
+instances for all 13**. So this census's Wave 1 numbers are **confirmed still
+current** and no mod was pulled from the wave.
+
+The removal itself is blocked: the live `ModsConfig.xml` holds **6** active mods
+(core + 5 DLC, zero third-party), unchanged since 13:50, and `harvest_log.py`
+refuses. ⚠️ **The final live-file cross-check this doc records as OWED is
+therefore still owed** — it could not be run against a 6-mod file. Full evidence
+and the resume steps are in `STAT_NORM_WAVE1_RETIRE_1`.
+
+Waves 2-4 and questions 2-4 remain unruled and stay with this item.
