@@ -371,7 +371,9 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = true,
+                    // Derived, not hardcoded (2026-09-09 hardening): a write that touched
+                    // nothing (all rows errored, or nothing matched) is not a success.
+                    success = errors.Count == 0 && (written > 0 || ids.Count == 0),
                     written,
                     requested = ids.Count,
                     errors,
@@ -824,7 +826,8 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = true,
+                    // Derived (2026-09-09 hardening): an apply that wrote nothing is a failure.
+                    success = !apply || applied > 0,
                     dryRun = !apply,
                     path,
                     header = string.Join(",", csv.Header.ToArray()),
@@ -1200,7 +1203,8 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = true, kind, def, laid, pairs = Math.Max(0, ids.Count - 1),
+                    // Derived (2026-09-09 hardening): all pairs refused = not a success.
+                    success = laid > 0 || ids.Count < 2, kind, def, laid, pairs = Math.Max(0, ids.Count - 1),
                     refusedByPriority,
                     refused,
                     laidNote = "`laid` is READ BACK off the grid after each Overlay call, not counted from the calls made.",
@@ -1500,7 +1504,10 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = true, dryRun = !apply, path, rows, rivers, roads,
+                    // Derived (2026-09-09 hardening): unknown defs, non-adjacent refusals, or
+                    // an apply that laid nothing all mean the import did not do what was asked.
+                    success = unknown.Count == 0 && nonAdjacent == 0 && (!apply || rivers + roads > 0),
+                    dryRun = !apply, path, rows, rivers, roads,
                     clearedFirst = clearFirst && apply,
                     nonAdjacentRefused = nonAdjacent,
                     silentlyRefused,
@@ -1926,7 +1933,8 @@ namespace JawaBench.BridgeTools
                 }
                 return (object)new
                 {
-                    success = true, action, added, removed,
+                    // Derived (2026-09-09 hardening): any per-row error means not a clean success.
+                    success = errors.Count == 0, action, added, removed,
                     // Uncapped, over EVERY tile written - not just the `readBack` sample.
                     displacedCount = displacedN,
                     displacedByDef = displacedBy.OrderByDescending(k => k.Value).ToDictionary(k => k.Key, k => k.Value),
@@ -2811,7 +2819,8 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = true, changed, refused,
+                    // Derived (2026-09-09 hardening): every requested field refused = failure.
+                    success = refused.Count == 0, changed, refused,
                     info = new { name = w.name, seedString = w.seedString, pollution = w.pollution,
                                  overallPopulation = w.overallPopulation.ToString(),
                                  landmarkDensity = w.landmarkDensity.ToString() },

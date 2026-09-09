@@ -908,7 +908,9 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = true, action, cellsTried = tried,
+                    // success = no cell failed (2026-09-09 hardening): a fully-failed batch
+                    // (cellsFailed == cellsTried from real exceptions) was reporting true.
+                    success = failed == 0, action, cellsTried = tried,
                     firesStarted = started, firesExtinguished = doused,
                     cellsFailed = failed,
                     errors = cellErrors,
@@ -1198,7 +1200,7 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = true, started, gathering = gd.defName, forced = force, notes,
+                    success = started, gathering = gd.defName, forced = force, notes,
                     organizer = org != null ? org.LabelShort : "(game picked)",
                     lordsBefore, lordsAfter = map.lordManager.lords.Count,
                     hint = "Attendees self-join over the next ticks - step time to see them gather. jawa/social_cancel clears a stuck one.",
@@ -1394,7 +1396,9 @@ namespace JawaBench.BridgeTools
                 int after = map.lordManager.lords.Count;
                 return (object)new
                 {
-                    success = true,
+                    // success = started (2026-09-09 hardening): ritual TryExecuteOn fails
+                    // silently, so a hardcoded true reported a no-fire ritual as launched.
+                    success = after > before,
                     started = after > before,
                     precept = pr.def.defName,
                     organizer = org.LabelShort,

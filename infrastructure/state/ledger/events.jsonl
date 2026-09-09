@@ -6287,3 +6287,4 @@
 {"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-09T07:11:19Z"}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"owner: freeze current world as canonical, prune saves","ts":"2026-09-09T07:12:07Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-09T07:15:52Z"}
+{"seat":"OWNER","event":"file","id":"COMPANION_SILENT_FAILURE_HARDENING_1","title":"Harden the JawaBench companion against silent-failure modes (39-finding audit): success:true hardcoded across 7 world tools, playerForced missing on prioritized_work, factionName absent on list_things, etc. — the bug class that cost hours during the ship work","kind":"task","target":"v1","needs":"offline","for":"BENCH","ownerSaid":"What piece of very deep work could you do... ultra code review","ts":"2026-09-09T07:27:32Z"}

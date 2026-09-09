@@ -211,7 +211,8 @@ namespace JawaBench.BridgeTools
 
                 return new
                 {
-                    success = true,
+                    // Derived (2026-09-09 hardening): every entry refused = not a success.
+                    success = refused.Count == 0,
                     message = changed.Count + " change(s) applied" + (refused.Count > 0 ? ", " + refused.Count + " REFUSED" : "") + ".",
                     target,
                     kind = parent.GetType().Name,
@@ -465,6 +466,12 @@ namespace JawaBench.BridgeTools
                 var job = a.HasValue
                     ? (b.HasValue ? JobMaker.MakeJob(jd, a.Value, b.Value) : JobMaker.MakeJob(jd, a.Value))
                     : JobMaker.MakeJob(jd);
+                // A prioritized-work order IS a player order — same fix as jawa/ordered_job
+                // (JawaBenchJobTools.cs, 2026-09-09). Without it, any driver carrying a
+                // `!job.playerForced && <auto condition>` FailOn line (vanilla
+                // JobDriver_Refuel.cs:34, etc.) kills the job on its first tick and the tool
+                // reports accepted-then-Wait. The fix had landed on ordered_job but not here.
+                job.playerForced = true;
                 if (count.HasValue) job.count = count.Value;
 
                 if (cellX >= 0 && cellZ >= 0)

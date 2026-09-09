@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T04:46:37Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-09T07:27:32Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -463,3 +463,13 @@ kind:     task
 thin:     no ## spec
 summary:  The player's formal start site — the Hutt junkyard (owner, 2026-09-08)
 prose:    infrastructure/state/items/PLAYER_START_SITE_1.md
+
+## COMPANION_SILENT_FAILURE_HARDENING_1 Harden the JawaBench companion against silent-failure modes (39-finding audit): success:true hardcoded across 7 world tools, playerForced missing on prioritized_work, factionName absent on list_things, etc. — the bug class that cost hours during the ship work
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/COMPANION_SILENT_FAILURE_HARDENING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/COMPANION_SILENT_FAILURE_HARDENING_1.md
