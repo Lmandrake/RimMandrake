@@ -36,7 +36,10 @@ nothing here is fast, and almost nothing here makes noise on purpose.
 
 ## 2. Planetary position
 
-**Terminator band (θ ≈ 75-105°), cold but not frozen.**
+**Terminator band (θ ≈ 75-105°), cold but not frozen.** *(MEASURED live on V26, owner
+accepted 2026-09-08: 557 tiles, arc envelope 56–115, core p10/p90 82–107, median 91.3 —
+the ≈ window holds at the core, and the tails (15 tiles dayside of 75; 75 tiles out to
+115 at −10..−3 °C) stay, ruled in-character for a band that straddles the terminator.)*
 - **Energy regime:** permanent scattered twilight. A real photosynthetic budget
   exists — it is simply a *terrible* one.
 - **Temperature:** cold and remarkably STABLE. No day-night swing exists to drive
