@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-09T20:21:02Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-09T20:22:13Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -887,6 +887,6 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Wave 4 retired lumi.doorsexpanded after a thorough whole-modlist XML/def cross-reference
 prose:    infrastructure/state/items/DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1.md
