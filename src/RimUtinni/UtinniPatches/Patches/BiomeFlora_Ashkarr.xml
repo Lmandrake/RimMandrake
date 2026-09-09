@@ -155,21 +155,6 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_PropaneLake"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="RUT_PropaneLake"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_CrystalHorn>1.0</AB_CrystalHorn> <!-- crystal horn -->
-          <AB_CrystalFlower>0.8</AB_CrystalFlower> <!-- crystal flower -->
-          <AB_FrostLeaf>0.6</AB_FrostLeaf> <!-- frost leaf -->
-          <AB_RimeNodules>0.4</AB_RimeNodules> <!-- rime nodules -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildPlants</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildPlants</xpath>
@@ -466,6 +451,25 @@
       </value>
     </match>
   </Operation>
+
+  <!-- ============ flora exclusions - biomes a SHARED roster does not plant ============
+
+       These BiomeDefs appear in a roster's defNames but get NO wildPlants
+       operation above, deliberately. There is nothing to patch: BiomeDef.cs
+       declares `public float plantDensity;` (default 0) and `wildPlants = new
+       List<BiomePlantRecord>()` (default empty), and these defs declare neither -
+       so the absence of an operation IS the exclusion, and it is durable.
+       biome_flora.py refuses to build if any other roster plants one of them.
+
+       RUT_PropaneLake  (the_propane_lakes.json)
+         A LIQUID-PROPANE SEA GROWS NOTHING. Ruled by BENCH, 2026-09-09 fix wave. This file's
+         four flora rows are the LAND crystal flora of AB_PropaneLakes (the fuel-snow shore,
+         2,531 tiles); def-binding handed the same four to the 57 water tiles of RUT_PropaneLake,
+         where the medium is liquid propane at ~-79 °C and no photosynthetic or crystal-accreting
+         surface exists. The lake's life is the ruled propane-native exotics (the V-wake creature
+         and kin) — creatures owed as new defs, never wildPlants. Same split the fauna rows
+         already make: every fauna row here binds AB_PropaneLakes only.
+  -->
 
   <!-- ============ plantDensity - the named exception list ============ -->
   <!-- Wasteland: 0.0099 -> 0.12.

@@ -102,9 +102,6 @@ FAMILIES = {
     'AB_JungleTree': 1.1, 'RG_Plant_TropicalChokevine': 1.0, 'AB_TangleTea': 0.4,
     'Plant_TookeTrap_Wild': 0.3, 'AB_Gomphoeria': 0.15, 'AB_RedBugloss': 0.07,
     'AB_Aaklac': 0.05},
-  'RUT_PropaneLake': {   # 57 tiles · 4 plants
-    'AB_CrystalHorn': 1.0, 'AB_CrystalFlower': 0.8, 'AB_FrostLeaf': 0.6,
-    'AB_RimeNodules': 0.4},
   'COMIGO_GreaterSwamp_Tropical': {   # 43 tiles · 7 plants
     'Plant_HydenockTree_Wild': 1.5, 'AB_KeeningCordax': 1.2, 'BMT_GiantLeaf': 0.8,
     'Plant_JoganTree_Wild': 0.6, 'AB_Iashiphus': 0.5, 'AB_Gomphoeria': 0.4,
@@ -216,10 +213,14 @@ FAMILIES = {
 #   AB_MechanoidIntrusion  the_rust_cathedral.json lands zero flora rows.
 #   RUT_TwilightSea / RUT_GreySea / RUT_TheScald  the sea rosters name mats and giants,
 #                      no wildPlants; the sea-bottom flora rides the deferred diving mods.
+#   RUT_PropaneLake    the_propane_lakes.json `flora_def_exclusions`: the roster's four
+#                      crystal-flora rows are the fuel-snow SHORE's (AB_PropaneLakes);
+#                      the lake itself is liquid propane at ~-79 °C and grows nothing.
+#                      Its life is the ruled propane-native exotics, owed as new defs.
 # Ocean/Lake/SeaIce/IceSheet are not painted on Ash'karr at all and are kept only so this
 # set still answers for a world that carries them.
 PLANTLESS = {'RUT_NightsideIce', 'RUT_BlueDesert', 'AB_MechanoidIntrusion',
-             'RUT_TwilightSea', 'RUT_GreySea', 'RUT_TheScald',
+             'RUT_TwilightSea', 'RUT_GreySea', 'RUT_TheScald', 'RUT_PropaneLake',
              'Ocean', 'Lake', 'SeaIce', 'IceSheet'}
 
 # 🔴 DECIDE'S DENSITY RULING, 2026-08-23 (`BARE_BIOMES_NEED_DENSITY_1`).
@@ -326,9 +327,32 @@ def roster_flora():
             continue
         with open(fp, encoding='utf-8') as fh:
             d = json.load(fh)
+        # 🔑 `flora_def_exclusions` — a roster whose `defNames` list several BiomeDefs
+        # hands its flora to ALL of them. That is right when the defs are one place split
+        # by paint, and wrong when one of them is a different medium: the_propane_lakes
+        # covers the fuel-snow SHORE (AB_PropaneLakes) and the LIQUID sea
+        # (RUT_PropaneLake), and a liquid-propane sea grows nothing (BENCH, 2026-09-09).
+        # Excluded defs get no flora rows at all and must therefore be in PLANTLESS.
+        skip = {x['def'] for x in (d.get('flora_def_exclusions') or [])}
         for b in d.get('defNames') or []:
+            if b in skip:
+                continue
             for r in d.get('flora') or []:
                 out[b][r['def']] = r['commonality']
+    return out
+
+
+def flora_exclusions():
+    """[(biomeDef, sheet, reason), ...] — defs a shared roster deliberately does NOT plant."""
+    out = []
+    for fp in sorted(glob.glob(os.path.join(ROSTERS, '*.json'))):
+        if os.path.basename(fp).startswith('_'):
+            continue
+        with open(fp, encoding='utf-8') as fh:
+            d = json.load(fh)
+        for x in d.get('flora_def_exclusions') or []:
+            out.append((x['def'], d.get('sheet') or os.path.basename(fp)[:-5],
+                        ' '.join((x.get('reason') or '').split())))
     return out
 
 
@@ -366,6 +390,15 @@ def check(plants, biomes, tiles):
     missing = set(tiles) - covered - PLANTLESS
     for b in sorted(missing):
         print(f"🔴 PLACED BIOME WITH NO ROSTER: {b} ({tiles[b]} tiles)"); bad += 1
+    # An excluded def must be plantless everywhere, not merely dropped by its own sheet:
+    # another roster naming it would silently re-plant it.
+    for b, sheet, _why in flora_exclusions():
+        if b in covered:
+            print(f"🔴 FLORA EXCLUSION CONTRADICTED: {sheet} excludes {b}, but a roster "
+                  f"still plants it"); bad += 1
+        if b not in PLANTLESS:
+            print(f"🔴 FLORA EXCLUSION NOT DECLARED PLANTLESS: {b} (add it to PLANTLESS, "
+                  f"or `check` will call it an uncovered biome)"); bad += 1
     return bad, owner
 
 
@@ -515,6 +548,23 @@ def main() -> int:
             out.append('    </match>')
             out.append('  </Operation>')
             out.append('')
+    excl = flora_exclusions()
+    if excl:
+        out.append('  <!-- ============ flora exclusions - biomes a SHARED roster does not plant ============')
+        out.append('')
+        out.append('       These BiomeDefs appear in a roster\'s defNames but get NO wildPlants')
+        out.append('       operation above, deliberately. There is nothing to patch: BiomeDef.cs')
+        out.append('       declares `public float plantDensity;` (default 0) and `wildPlants = new')
+        out.append('       List<BiomePlantRecord>()` (default empty), and these defs declare neither -')
+        out.append('       so the absence of an operation IS the exclusion, and it is durable.')
+        out.append('       biome_flora.py refuses to build if any other roster plants one of them.')
+        for b, sheet, why in excl:
+            out.append('')
+            out.append(f'       {b}  ({sheet}.json)')
+            for line in textwrap.wrap(why, 88):
+                out.append(f'         {line}')
+        out.append('  -->')
+        out.append('')
     out.append('  <!-- ============ plantDensity - the named exception list ============ -->')
     for b, (new_d, old_d, why) in DENSITY.items():
         out.append(f'  <!-- {b}: {old_d} -> {new_d}.')
