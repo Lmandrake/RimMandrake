@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 """Procedural war-debris ring strip for RW Planet Atmosphere (TransparentObject_Ring).
 Shader samples tex2Dlod(ringMap, (u, 0.5)) -> horizontal axis = radial (left inner, right outer).
-Outputs a 2048x128 RGBA strip + a polar-warp preview."""
+Outputs a 2048x128 RGBA strip + a polar-warp preview.
+
+🔴 BAND-LIMITED ON PURPOSE (owner: "terrible artifacting... at no zoom does it resolve
+nicely", 2026-09-08). tex2Dlod pins LOD 0 — the shader NEVER mipmaps — and on screen the
+2048-texel radial axis is minified ~10:1, so any feature narrower than ~20 texels moirés
+irreparably. The first version packed ~70 hard alpha edges into the strip. The fix is
+baked in here: fewer/broader lanes, no hard in-band holes, no 1-3px glints, and a final
+sigma-8 radial low-pass. Do not re-sharpen this file; sharpening IS the artifact."""
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
@@ -44,15 +51,15 @@ bands = []
 x = 0.03
 br = np.random.default_rng(77)
 while x < 0.96:
-    w = br.uniform(0.012, 0.075)
+    w = br.uniform(0.05, 0.14)                # broad lanes: >=100 texels, survives 10:1
     if x + w > 0.97: break
     bands.append((x + w / 2, w, br.uniform(0.55, 1.0), br.integers(0, len(pal))))
-    x += w + br.uniform(0.008, 0.06)          # gap after the band (hard, sometimes wide)
+    x += w + br.uniform(0.02, 0.07)           # gap after the band
 for c, w, pk, pi in bands:
     inb = (u > c - w / 2) & (u < c + w / 2)
-    inner = fbm(W, 140, int(c * 10000), 3)             # in-band chunkiness
+    inner = fbm(W, 16, int(c * 10000), 3)              # low-frequency chunkiness only
     a = pk * (0.55 + 0.45 * inner)
-    a *= (inner > 0.22)                                # holes inside the band
+    a *= np.clip((inner - 0.10) * 4, 0.25, 1.0)        # dips, never hard holes
     col = pal[pi] * (0.7 + 0.6 * inner)[:, None]
     col = col * (1 - 0.3 * fbm(W, 30, int(c * 7777), 2))[:, None] + steel * (0.3 * fbm(W, 30, int(c * 7777), 2))[:, None]
     alpha[inb] = np.maximum(alpha[inb], a[inb])
@@ -64,13 +71,22 @@ for c, w in [(0.22, 0.03), (0.47, 0.045), (0.71, 0.02), (0.86, 0.035)]:
 alpha *= (u > 0.012 + 0.02 * value_noise(W, 40, 11)) & (u < 0.985 - 0.02 * value_noise(W, 40, 12))
 alpha = np.clip(alpha, 0, 1)
 shell = alpha
-# --- glints: sparse bright fragments (thin bright arcs in the ring) -------
-glint_cols = rng.choice(np.where(alpha > 0.3)[0], size=30, replace=False)
+# --- glints: soft wide sheens (1-3px glints were pure moire bait) ---------
+glint_cols = rng.choice(np.where(alpha > 0.3)[0], size=8, replace=False)
+xs = np.arange(W)
 for c in glint_cols:
-    wid = rng.integers(1, 3)
+    wid = rng.integers(30, 70)
     tone = np.array([0.95, 0.90, 0.80]) if rng.random() < 0.7 else np.array([0.85, 0.95, 1.0])
-    rgb[c:c + wid] = tone
-    alpha[c:c + wid] = np.maximum(alpha[c:c + wid], 0.85)
+    g = np.exp(-0.5 * ((xs - c) / (wid / 2.5)) ** 2)
+    rgb = rgb * (1 - 0.5 * g[:, None]) + tone[None, :] * (0.5 * g[:, None])
+    alpha = np.maximum(alpha, alpha * (1 + 0.3 * g))
+
+# --- final radial low-pass: nothing above what ~10:1 minification keeps ---
+k = np.exp(-0.5 * (np.arange(-24, 25) / 8.0) ** 2); k /= k.sum()
+alpha = np.convolve(alpha, k, mode="same")
+for ch in range(3):
+    rgb[:, ch] = np.convolve(rgb[:, ch], k, mode="same")
+alpha = np.clip(alpha, 0, 1)
 
 strip = np.zeros((H, W, 4), dtype=np.float32)
 strip[..., :3] = np.clip(rgb, 0, 1)[None]
