@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- LIVESTOCK_STARTER_TRIO_1 - onnik PawnKindDef. Same shape as karrask's
+     own (ParentName AnimalKindBase, Graphic_Single per lifeStage at
+     increasing drawSize) - see PawnKindDefs_Karrask.xml's own header. -->
+<Defs>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Onnik</defName>
+    <label>onnik</label>
+    <labelPlural>onniks</labelPlural>
+    <race>RSW_Onnik</race>
+    <combatPower>40</combatPower>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <wildGroupSize>1~2</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>onnik calf</label>
+        <labelPlural>onnik calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Onnik/Onnik</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Onnik/Onnik</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.35)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Onnik/Onnik</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.55, 0.55, 0.45)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

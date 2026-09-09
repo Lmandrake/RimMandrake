@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- LIVESTOCK_STARTER_TRIO_1 - onnik (kiln-belly), the doc's other v1 entry
+     alongside karrask (design/Jawa/proposals/ludicrous_livestock_deep_design.md
+     "Onnik - the kiln-belly"; owner card 2026-09-02: "The ceramic should be
+     an art material that makes beautiful bricks, art pieces, etc."). Zero
+     new job types: feeding is the ordinary animal-eats-food loop and firing
+     spawns product directly beside the animal - see CompKilnBelly.cs's own
+     header for the full mechanism and the two implementation decisions it
+     documents (rushed-dump threshold, non-exclusive diet).
+
+     Numbers taken directly from the doc, not invented: 3 spaced doses over
+     a day for a good batch, a rushed dump fires cracked ceramic, underfed
+     over a day cools the kiln, ~4 days between batches (all live as
+     CompProperties_KilnBelly defaults in CompKilnBelly.cs, so only the def
+     references and product counts need stating here).
+
+     Body/stat shape: "ox-sized, squat and thick-walled - think a barrel
+     with legs" -> QuadrupedAnimalWithHooves (Muffalo's own body, RimSage
+     get_def_details), bodySize 1.1 sits between karrask (0.6) and vanilla
+     Muffalo (2.4) per beast_normalization_spec Law 1 (bodySize =
+     (drawSize/1.9)^2, drawSize 2.0 -> bodySize ~1.1). statBases/Mass is the
+     vanilla flat 60 (Law 2 - see ThingDefs_Karrask.xml's 2026-09-09 fix
+     note for why NOT to pre-multiply by bodySize); the engine's own
+     StatPart_BodySize produces the real ~66 kg.
+
+     Feed and product items reuse validated vanilla texPaths with distinct
+     tints, same placeholder-art discipline karrask's own ShedRaw/Plate
+     already use (Things/Item/Resource/Leather) - no bespoke icon art this
+     pass, only the animal body gets a generated sprite. RSW_FiredCeramicware
+     is deliberately a real Stuff (StoneBlocksBase, positive Beauty) per the
+     owner's "art material... beautiful bricks" ruling, and its name is
+     kept generic per this item's own spec note so the cuisine mod's
+     sand-oven cookware can share it later instead of minting its own.
+
+     NOT live-verified this pass (offline build only, per this item's own
+     karrask precedent - see LIVESTOCK_STARTER_TRIO_1's item file). -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_KilnClay</defName>
+    <label>raw kiln clay</label>
+    <description>Clay-rich sand and raw silica, the only thing an onnik will actually digest into ceramic. Dumped in all at once it fires cold and cracked; fed to a hungry onnik in small, spaced handfuls across a day, it comes out glazed and sellable.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Resource/Leather</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.9</drawSize>
+      <color>(194,161,116)</color>
+    </graphicData>
+    <stackLimit>150</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>0.5</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Plant</foodType>
+      <preferability>RawBad</preferability>
+      <optimalityOffsetFeedingAnimals>10</optimalityOffsetFeedingAnimals>
+      <babiesCanIngest>false</babiesCanIngest>
+    </ingestible>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="RimMandrake.StarWars.Livestock.CompProperties_KilnFeed"/>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="StoneBlocksBase">
+    <defName>RSW_FiredCeramicware</defName>
+    <label>fired ceramicware</label>
+    <description>Glazed brick and vessel-ware, fired in an onnik's gut over three properly spaced feeds. Tougher and better-looking than raw stone block - a real building and art material, not just industrial fill. (Name kept generic: this is the same fired ceramic the sand-oven cuisine line will want for cookware.)</description>
+    <graphicData>
+      <color>(178,101,64)</color>
+    </graphicData>
+    <statBases>
+      <Mass>1</Mass>
+      <MarketValue>2.6</MarketValue>
+      <Beauty>2</Beauty>
+      <SharpDamageMultiplier>0.55</SharpDamageMultiplier>
+    </statBases>
+    <stuffProps>
+      <color>(178,101,64)</color>
+      <stuffAdjective>ceramic</stuffAdjective>
+      <statFactors>
+        <Beauty>1.6</Beauty>
+        <MaxHitPoints>1.2</MaxHitPoints>
+      </statFactors>
+      <canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff>
+    </stuffProps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_CrackedCeramicShards</defName>
+    <label>cracked ceramic shards</label>
+    <description>What an onnik's gut produces when it was dumped a whole day's clay at once instead of fed in spaced doses - fired too fast, cracked through, and worthless for building or crafting. Good for nothing but the trash heap.</description>
+    <possessionCount>4</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Resource/StoneBlocks</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(120,116,110)</color>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <MarketValue>0.1</MarketValue>
+      <Mass>0.8</Mass>
+      <Beauty>-6</Beauty>
+      <Flammability>0</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_Onnik</defName>
+    <label>onnik</label>
+    <description>A squat, thick-walled grazer, barrel-bodied on four sturdy legs, always faintly warm to the touch from the slow mineral-oxidation reaction running in its gut - a real kiln, just biological. Fed clay in one spaced day of small doses it fires a glazed batch of ceramic; dump a day's clay in all at once and it fires cold, cracked, and worthless. Placid and slow, and colonists like leaning on it in the cold.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <MarketValue>450</MarketValue>
+      <Mass>60</Mass>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <FilthRate>8</FilthRate>
+      <Wildness>0.25</Wildness>
+    </statBases>
+    <uiIconScale>1.3</uiIconScale>
+    <comps>
+      <li Class="RimMandrake.StarWars.Livestock.CompProperties_KilnBelly">
+        <doseFeedDef>RSW_KilnClay</doseFeedDef>
+        <goodProductDef>RSW_FiredCeramicware</goodProductDef>
+        <goodProductCount>6</goodProductCount>
+        <badProductDef>RSW_CrackedCeramicShards</badProductDef>
+        <badProductCount>2</badProductCount>
+      </li>
+    </comps>
+    <race>
+      <thinkTreeMain>Animal</thinkTreeMain>
+      <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+      <trainability>None</trainability>
+      <body>QuadrupedAnimalWithHooves</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>1.1</baseBodySize>
+      <baseHealthScale>1.3</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <meatLabel>onnik meat</meatLabel>
+      <roamMtbDays>4</roamMtbDays>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <lifeExpectancy>16</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Muffalo_Wounded</soundWounded>
+          <soundDeath>Pawn_Muffalo_Death</soundDeath>
+          <soundCall>Pawn_Muffalo_Call</soundCall>
+          <soundAngry>Pawn_Muffalo_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalFarm</li>
+    </tradeTags>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <graphicData>
+      <!-- see file header: conformed from the owner's picked mockup,
+           art/Livestock/mockups/onnik_opt2.png -->
+      <texPath>Things/Pawn/Animal/Onnik/Onnik</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>2.0</drawSize>
+    </graphicData>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+</Defs>

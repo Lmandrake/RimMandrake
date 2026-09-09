@@ -127,3 +127,107 @@ karrask's own pass.
 **Moornak stays blocked** on the same scope question raised above (this
 item's spec vs. the design doc's later, materially richer owner ruling) —
 not re-litigated here, still needs a call before anyone writes code for it.
+
+## 2026-09-09 — onnik built and offline-verified; 2/3, moornak still the gap (FOUNDRY, BELT, offline)
+
+Game was mid-cold-load all pass (bridge confirmed FREE via `rimflow bridge who`
+but never taken — this item's own scope is offline defs/art/C#, per the
+dispatching note). Read the item and the design doc's onnik section
+(`ludicrous_livestock_deep_design.md` "Onnik - the kiln-belly") before
+writing anything, per the standing instruction to check what's already
+built.
+
+**Karrask (re-verified, one real fix):** defs, art (256x256, real alpha,
+visually matches the owner's pick) and RecipeDef were already fully built
+and shipped (commits `1931db8e`, `83c215e8`, `ba4fadec`, `42166e1a`, plus
+the asymmetric-claw and code-review passes since) — did NOT re-author.
+Found one real defect while reading the mechanism: `statBases/Mass` was
+hand-set to 36 (bodySize 0.6 x the spec's 60 kg/bs convention,
+pre-computed), but the `Mass` StatDef carries `StatPart_BodySize`
+(confirmed via RimSage `read_csharp_symbol`: `TransformValue` does
+`val *= bodySize`) - so a pre-multiplied 36 was landing at an ACTUAL
+21.6 kg (36 x 0.6), not the intended 36. Fixed to the vanilla flat
+`<Mass>60</Mass>` (matching 1,019/1,022 vanilla animals per
+`beast_normalization_spec.md`), letting the engine's own multiplication
+produce the correct 36 kg. `validate_patch.py --live` clean except the
+two already-known `Things/Item/Resource/Leather` texPath lines, confirmed
+false positives this pass by cross-checking vanilla `Leather_Plain`'s own
+ThingDef via RimSage (identical texPath, real vanilla asset-bundle art,
+not a loose file the validator can see) - not a defect, a validator blind
+spot already on record.
+
+**Onnik (built this pass, 0 -> fully offline-verified):** the doc's other
+v1 entry (owner card 2026-09-02: "The ceramic should be an art material
+that makes beautiful bricks, art pieces, etc."). Built:
+- `Defs/Livestock/ThingDefs_Animals/ThingDefs_Onnik.xml` -
+  `RSW_KilnClay` (feed), `RSW_FiredCeramicware` (good batch, a real Stuff
+  off `StoneBlocksBase` per the owner's art-material ruling - positive
+  Beauty, kept generically named so the cuisine mod's sand-oven cookware
+  can share it later), `RSW_CrackedCeramicShards` (mis-feed junk), and
+  `RSW_Onnik` itself (`AnimalThingBase`, `QuadrupedAnimalWithHooves`,
+  bodySize 1.1 via beast_normalization Law 1 off a 2.0 drawSize).
+- `Defs/Livestock/PawnKindDefs/PawnKindDefs_Onnik.xml` - same
+  Graphic_Single-per-lifeStage shape as karrask's own.
+- `Source/Livestock/CompKilnBelly.cs` - new `CompKilnBelly` (on the
+  animal) + `CompKilnFeed` (on the feed item), wired through the real
+  vanilla `Thing.Ingested` -> `ThingComp.PostIngested` hook (same pipeline
+  `CompDrug` uses, confirmed via RimSage `search_source`/
+  `read_csharp_symbol`, not guessed). All three doc numbers (3 spaced
+  doses over a day, underfed-a-day cools the kiln, ~4 days between
+  batches) are the class's own defaults; the two judgment calls the doc's
+  prose doesn't pin down (what counts as "a single dump" vs "spaced," and
+  that onnik's diet is NOT clay-exclusive this pass) are written into the
+  file's own header, not hidden. Zero new job types - firing spawns
+  product beside the animal via `GenPlace.TryPlaceThing`, the same call
+  this mod's own `CompDWPartDropper` already uses.
+- Fixed a real build-path bug found while building: the csproj's
+  `OutputPath` (`..\Assemblies\`) and its own header's build-invocation
+  comment both still named the PRE-MOVE `src/RimStarWars/Livestock/`
+  layout from before the "Sprint wave A" fauna-to-SWBestiary move
+  (`247cd6d4`) - every build since that move had been landing the DLL at
+  `Source/Assemblies/`, which nothing deploys, never touching the real
+  `SWBestiary/Assemblies/RimMandrakeLivestockRSW.dll` the game loads.
+  Fixed to `..\..\Assemblies\`; rebuilt with
+  `"%USERPROFILE%\.dotnet\dotnet.exe" build` and confirmed by file mtime
+  that the fix landed the new DLL beside `JawaIkee.dll` at the mod root
+  this time, not the stray `Source/Assemblies/` (deleted, was untracked).
+- Art: chroma-keyed the owner's already-picked `onnik_opt2.png` mockup
+  (clean key, zero fringe measured), cropped to its alpha bbox, scaled and
+  centered onto a transparent 256x256 canvas (matching the 2.0 drawSize /
+  128px-per-cell target). `validate_sprite.py --describe`: canvas 256x256,
+  real alpha, 0 corners solid, 30.6% coverage, 0.28% fringe (negligible,
+  the smoke-wisp's soft edge). Looked at the composited result directly -
+  reads clearly as the picked design (tortoise-shell kiln-brick seams,
+  chimney vent, heat-shimmer smoke) at both generation and thumbnail size.
+- `validate_patch.py --live` clean except the two already-known
+  `Things/Item/Resource/Leather` / `Things/Item/Resource/StoneBlocks`
+  texPath lines (same confirmed-vanilla-asset-bundle false positive as
+  karrask's own, checked against `BlocksSandstone`/`BlocksGranite`'s real
+  use of that exact path).
+- NOT live-verified (no bridge call made - the game was mid-cold-load all
+  pass, per this item's own dispatch constraint and karrask's own
+  precedent). The verify section's onnik checks (feed-cycle, mis-feed,
+  cold-kiln reset) are still owed to whoever next holds the bridge free.
+
+**Moornak: still the one open gap, unchanged from 2026-09-02.** Did not
+build it and did not resolve the scope question myself - this item's own
+spec (simple mood buff + hidden ledger + release-on-death) genuinely
+conflicts with a later, richer owner ruling recorded in the design doc's
+"RULED — owner sitting" table (self-tames readily, arrives pre-loaded with
+grief, a colony-wide "unsettled" hediff, 30-day release duration, triggers
+manhunter on release, sells but never buys back, trap/abandon only) - and
+that table's own summary line does NOT list moornak among the rows
+"delivered and RULED ON" (only drassik/duskhide/coo'la accepted, grubbin
+cut), so it is genuinely unclear whether that richer text is a live ruling
+or a still-deferred PROPOSAL_SUITE_REVIEW_1 row. Building the richer
+version unilaterally would be inventing scope no one has actually ruled;
+building the item's own simpler version would risk contradicting an owner
+ruling that already exists in writing. Needs an explicit owner/BENCH call
+naming which spec ships, not another pass guessing at it.
+
+**Verdict: item stays in `doing`.** 2 of 3 creatures fully built and
+offline-verified (karrask re-verified + one real fix, onnik built new);
+moornak is the sole remaining gap and it is a decision gap, not a build
+gap - closing criteria (all three creatures, full cycles observed) is not
+met. Whoever picks this up next: the moornak scope call is the one thing
+standing between this item and FOUNDRY closing it.
