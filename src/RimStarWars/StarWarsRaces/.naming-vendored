@@ -1,0 +1,8 @@
+# Absorbed third-party content: defNames preserved for save/cross-mod compat
+# (WEAPONS_ABSORPTION_WAVE_1 convention). naming_lint exempts these prefixes.
+# Copied from Armoury/.naming-vendored (WAVE_B extraction, ARMOURY row 36/37):
+# only the entries covering Absorbed_SovSith_Genes.xml / Absorbed_SovSith_HeadTypes.xml.
+GS_
+Head_Bone
+Male_HeavyBoneNormal
+Female_HeavyBoneNormal
