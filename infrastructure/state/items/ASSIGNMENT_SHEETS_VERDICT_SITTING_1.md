@@ -27,3 +27,12 @@ rows are bulk-agreeable per group.
 - Overrides read as a GROUP before acting (the skill's rule) — eight scattered
   disagreements may be one rule the sheets didn't know.
 - Freeze both decisions files when he says done.
+
+## traps
+- ⚠️ Sheet row-ids for confidence/new_defs entries are POSITIONAL (`c:`/`nd:` +
+  index): if any roster's arrays shift before the owner reviews, regenerate the
+  sheets first or verdicts land on the wrong entry (the applier errors on
+  out-of-range, but an in-range shift is silent).
+- A `move` verdict's note must name the target; a kept `purge:` row must name the
+  defNames to restore — the applier refuses the whole apply otherwise, nothing
+  partial is written.
