@@ -38,3 +38,59 @@ dump resolves each def.
   `src/RimStarWars/SWBestiary/.../RSW_SandStalker.xml`, `ManyWaters/Defs/` — untracked
   in their tree as of this note). Their custom-def approach and this census's donor
   candidates for the Cracked Lands must merge into ONE fishTypes ruling per water.
+
+## 2026-09-09 progress (Fable, buildable-half pass)
+- **Written**: `src/RimUtinni/UtinniPatches/Patches/BiomeFishTypes_Ashkarr.xml` +
+  generator `design/Jawa/mods/gen_fish_types.py`, reading `_fish_candidates.json`.
+  Sets `ZBiome_DesertOasis` (weeping_stones) `fishTypes` — `freshwater_Common` <-
+  the 4 confident swfish_ donors (Burra/Daggert/Nyork/See, MayRequire
+  mlie.starwarsanimalcollection), `freshwater_Uncommon` <- the 4 secondary VCEF_
+  picks (FrigidSwimmer/Slimefish/Spinyfish/OcularFish — verified these are
+  actually shipped BY Alpha Biomes, ParentName="AB_RawFishBase", packageId
+  sarg.alphabiomes, not a separate "Vanilla Fishing Expanded" package as the
+  census's mod field implied). Replaces the donor mod's own vanilla Earth-named
+  defaults (Fish_Tilapia/Fish_Piranha/Fish_Bluefish/Fish_Tuna/Fish_Flounder,
+  confirmed on the live def on disk) on the freshwater buckets only; saltwater
+  is untouched (no sea at this water). Each replace wrapped in
+  `PatchOperationConditional` on the target bucket xpath, gated on
+  `PatchOperationFindMod "More Vanilla Biomes"` + `MayRequire
+  Ludeon.RimWorld.Odyssey`. Validator (`validate_patch.py`, `--live` against the
+  2026-09-09T01-54-07Z dump, `--defs` against Data/Workshop/Mods): **OK, 0
+  errors, 0 warnings** — both PatchOperationConditional checks and their
+  PatchOperationReplace matches hit exactly 1 (`ZBiome_DesertOasis.xml`) each,
+  i.e. really applied, not a silent no-op. NOT deployed (per instruction).
+- **Left to the other window**: `the_cracked_lands` / `ZBiome_Badlands`. Read
+  their uncommitted `SandFishing_CrackedLands.xml` (read-only, per instruction —
+  not edited, moved or committed here): it already
+  `PatchOperationReplace`s both `freshwater_Common` (RSW_DuneCrawler) and
+  `freshwater_Uncommon` (deliberately empty) plus `rareCatchesSetMaker`
+  (RSW_RareSandCatches) and `maxFishPopulation` on this exact def, gated the
+  same way (PatchOperationFindMod "More Vanilla Biomes"). Fully covered —
+  nothing added here, no conflict to merge.
+- **Real gap found, not fixed here**: `the_greentide` / `BiomeCypreJungle`'s
+  roster claim that RSW_Mee/Faa/Laa are "already assigned" does **not** hold.
+  Checked the live def (`src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml`
+  — no `fishTypes` block at all) and the donor XML
+  (`src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml`): RSW_Mee/Faa/Laa
+  (commonality 0.4/0.3/0.3, matching the roster's numbers exactly) are wired into
+  a `wildAnimals` bucket on a **different** biome — `AB_MiasmicMangrove` /
+  `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml` (the_miasma) — not
+  into `BiomeCypreJungle`'s/`RUT_Greentide`'s `fishTypes`. Likely a copy-paste
+  mix-up in the roster's own `_fish_candidates.json` `the_greentide.assigned`
+  block, or the RSW_Mee/Faa/Laa assignment was planned for the greentide and
+  landed on the miasma instead. Out of this pass's instructed scope to fix
+  (task said verify-and-do-nothing-if-present; it is not present) — whoever
+  picks this item back up should decide whether the_greentide gets its own
+  `fishTypes` patch (its own roster ruling — graded shoal fish on the living
+  reach only — never actually got written), and whether the_miasma's
+  RSW_Mee/Faa/Laa wildAnimals placement is itself correct or should move.
+  Also unresolved, separately noted by that def's own second grimterra.biomesmod-
+  gated `BiomeCypreJungle` xpath block in `BiomeCast_Ashkarr.xml`: two live defs
+  (`BiomeCypreJungle` from grimterra.biomesmod, active; and `RUT_Greentide`, this
+  repo's own) carry near-duplicate wildAnimals content — which one is actually
+  the world-tile-assigned "the Greentide" biome was not resolved here.
+- **What remains**: the_greentide's own fishTypes patch (never written, per
+  above); the twilight sub-roof shoal new-def (`twilight sea`, deferred to
+  diving mods per the census, non-blocking); confirming which of
+  `BiomeCypreJungle`/`RUT_Greentide` is the live greentide def before anyone
+  writes that patch.
