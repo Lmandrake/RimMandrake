@@ -641,6 +641,12 @@
     "hash": "b554c4343e4760e57c11f9efe6fe07d98ebebc865ca1b2632092a0edd9813862",
     "sha": "3ea1ca20"
   },
+  "src/RimMandrake/Aftermath/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "5ed4b469"
+  },
   "src/RimMandrake/Aftermath/Source/AftermathMod.cs": {
     "cleanCount": 1,
     "date": "2026-09-06",
@@ -743,6 +749,12 @@
     "hash": "a02af506bc65480069b355cca286ae4ce98810d32f40294772ed086e178a4b78",
     "sha": "f3a684e1"
   },
+  "src/RimMandrake/Aftermath/Source/RM_Aftermath.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "9bebac875e67e6c538d9d811324d0cd1ba1de97d1c5b37e4c29810e42b389bea",
+    "sha": "5ed4b469"
+  },
   "src/RimMandrake/Aftermath/Source/RM_AftermathRuleDef.cs": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -760,6 +772,12 @@
     "date": "2026-09-09",
     "hash": "46c4f5d0b2d4aa03ade8f47a9572a9f5ab619360ebb7fdce353fb55b66578664",
     "sha": "3ea1ca20"
+  },
+  "src/RimMandrake/Aftermath/Source/SelfTest/RimMandrakeAftermath.SelfTest.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "72337e77d743df4d66bf2badeabab766d2e3c0a5a3ec26efa6da4473f9661d9f",
+    "sha": "5ed4b469"
   },
   "src/RimMandrake/FluidCanals/About/About.xml": {
     "cleanCount": 1,
