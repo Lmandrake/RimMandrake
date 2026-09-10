@@ -88,4 +88,20 @@
     <earliestDay>20</earliestDay>
   </IncidentDef>
 
+  <!-- RUT_SCAVENGEREVENTS_BUILD_1, mechanism 6 of 8: Stroke. category
+       DiseaseHuman, pointsScaleable false: matches the donor's own
+       IncidentDef. Ported from MoreIncidents.MOIncidentWorker_Stroke. -->
+  <IncidentDef>
+    <defName>RUT_Stroke</defName>
+    <label>stroke</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>DiseaseHuman</category>
+    <workerClass>RimMandrake.Utinni.ScavengerEvents.IncidentWorker_Stroke</workerClass>
+    <baseChance>1.5</baseChance>
+    <minRefireDays>15</minRefireDays>
+    <pointsScaleable>false</pointsScaleable>
+  </IncidentDef>
+
 </Defs>

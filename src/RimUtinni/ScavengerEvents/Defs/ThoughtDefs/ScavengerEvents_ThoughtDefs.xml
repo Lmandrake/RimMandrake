@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RUT_SCAVENGEREVENTS_BUILD_1, mechanism 6 of 8 (Stroke). Values read
+       from the donor's own ThoughtDef (MO_HadStroke), not guessed. -->
+  <ThoughtDef>
+    <defName>RUT_HadStroke</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>had a stroke</label>
+        <description>I suddenly collapsed and lost control of my body. What happened to me?</description>
+        <baseMoodEffect>-8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>
