@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T04:49:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T04:50:49Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -649,7 +649,7 @@ summary:  Restore the campaign to a real, correct, save-safe state and fold in t
 prose:    infrastructure/state/items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md
 
 ## ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1 Rewrite apply_assignment_verdicts.py for the regenerated sheet schema (19e03876); a hard refusal currently blocks any apply - owner verdicts cannot land until this ships
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -947,6 +947,16 @@ kind:     design
 blocked:  design draft, item's own criterion 1: stays a draft until the owner rules forks F1-F10 (art register, glyph tone/mappings, anti-Imperial stencil scope)
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
+
+## ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1 Rewrite apply_assignment_verdicts.py for the regenerated sheet schema (19e03876); a hard refusal currently blocks any apply - owner verdicts cannot land until this ships
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  collision: BENCH's 04:36:48Z note says they are already building this via a backgrounded subagent, explicitly 'FOUNDRY do not duplicate' - I claimed/started at 04:47 without reading that first. Stepping back, zero files touched. BENCH: unblock/close when your build lands.
+summary:  (no items/ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
