@@ -11,7 +11,18 @@
        commonality 0 ON PURPOSE — worldgen must never roll it; it is placed only on
        tile 2403 by the world-edit step owed on the item. Description is present-tense,
        what IS: a waste pit and the danger it holds. No past-why (the Rakatan/war-lab
-       gating rules), no not-yet-happened plot. -->
+       gating rules), no not-yet-happened plot.
+
+       mutatorChances FIX (GAPING_DOOM_SITE_1, 2026-09-10): the def shipped with no
+       mutatorChances at all, which is exactly the live config error seen tonight
+       ("LandmarkDef RUT_GapingDoom has no mutators with a chance of 1 or higher").
+       Every vanilla/SW LandmarkDef carries a Required="True" entry that drives the
+       actual map generation step; sw_DeadSarlaccCave (StarWarsAnimalCollection,
+       SW_Buildings_Natural.xml) is exactly the mutator this derives its art from —
+       it scatters a DeadSarlacc corpse via GenStep_ScatterThings, which is the correct
+       mechanism for "a dead sarlacc used as a waste pit". Reusing it (not copying the
+       whole flavor list of Star-Wars-biome mutators alongside it, which don't belong
+       in the Cracked Lands) keeps this a minimal, correct fix. -->
 
   <LandmarkDef MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_GapingDoom</defName>
@@ -22,6 +33,9 @@
     <commonality>0</commonality>
     <category>structure</category>
     <nameMaker>NamerLandmark_Ruins</nameMaker>
+    <mutatorChances>
+      <sw_DeadSarlaccCave MayRequire="Mlie.StarWarsAnimalCollection" Required="True" />
+    </mutatorChances>
   </LandmarkDef>
 
 </Defs>
