@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T07:12:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T07:13:22Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -630,15 +630,6 @@ kind:     bug
 summary:  Wave 4 retired lumi.doorsexpanded after a thorough whole-modlist XML/def cross-reference
 prose:    infrastructure/state/items/DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1.md
 
-## DROID_DONOR_SAVE_COMPAT_REGRESSION_1 Asimov/DroidDepot/MSEDroidFix retirement broke CANONICAL_ASHKARR save load; mods restored, real fix still owed
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  DROIDRETIREDEPOTASIMOV1 retired Neronix17.Asimov, Neronix17.OuterRim.DroidDepot,
-prose:    infrastructure/state/items/DROID_DONOR_SAVE_COMPAT_REGRESSION_1.md
-
 ## STAT_NORMALIZATION_AUDIT_1 Census third-party mods that adjust animal/plant stats, rarity, appearance, size, growth before a self-owned-content normalization pass
 state:    doing
 row:      unassigned
@@ -961,3 +952,13 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  CHERRYPICKERSHIPBASELINESTALE1
 prose:    infrastructure/state/items/CHERRYPICKER_SHIP_BASELINE_STALE_1.md
+
+## RUT_PLANT_BIOMEPLANTRECORD_CROSSREF_1 18 RUT_* plant ThingDefs unresolvable as BiomePlantRecord entries in some UtinniPatches biome (found live, unrelated to droid retirement work)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## criteria
+summary:  1. Find which BiomeDef(s) carry these 18-19 names in wildPlants — grep
+prose:    infrastructure/state/items/RUT_PLANT_BIOMEPLANTRECORD_CROSSREF_1.md
