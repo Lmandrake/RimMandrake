@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T01:43:08Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T02:18:56Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -55,7 +55,7 @@ summary:  design/Jawa/worldbuilding/structureinjectionroster.md (the content
 prose:    infrastructure/state/items/TILE_STRUCTURE_DESIGNS_1.md
 
 ## JAWA_PATCHES_SPLIT_1 Phase 3: triage src/SPLIT_Phase3/Jawa_Patches per-file (125 TBD defs) - Ashkarr/Rakata/DeepDesert/Pyrelands to RUT, animal/texture/generic to RSW or RM; plus straddle extractions (SacredGraffiti marks, WreckedMachines relics, Droidworks campaign layer, Armoury doctrine, JawaVoice campaign lines)
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -120,7 +120,7 @@ prose:    infrastructure/state/items/BUILDING_THEFT_HAULER_1.md
 ## LIVESTOCK_STARTER_TRIO_1 Livestock v1: onnik kiln-belly + karrask molt-plate + moornak grief-eater, shared-art batch
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     build
 summary:  Per the doc's rosters and §7.2 shared-art batching:
@@ -261,32 +261,14 @@ kind:     task
 summary:  NINEFOLDFIREHOOKRATELIMITED1 — hook built, not yet proven live
 prose:    infrastructure/state/items/NINEFOLD_FIRE_HOOK_RATELIMITED_1.md
 
-## NINEFOLD_RUNTIME_PROOF_BLOCKED_1 Ninefold compile-fix VERIFIED (ready:14, was 6); runtime firing UNPROVEN - GameComponent.Instance null on ignoreModCompatibility loads, all hooks incl. research silent; needs a normal-load or fresh new-game test
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  NINEFOLDRUNTIMEPROOFBLOCKED1 — PROVEN 2026-09-05
-prose:    infrastructure/state/items/NINEFOLD_RUNTIME_PROOF_BLOCKED_1.md
-
 ## MULTIVIEW_FACING_PIPELINE_1 Productionize the multi-view-mesh facing pipeline: InstantMesh (4 sprites -> volumetric mesh) + meshfuse projection; local/free on the 5080; proven 2/3 facings, fix north/south pose-collision (per-view az bias) + UV-texture path for sharpness (needs nvcc)
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 summary:  MULTIVIEWFACINGPIPELINE1 — pose-collision bug fixed; owner judged the OUTPUT unusable ("crushed tin cans")
 prose:    infrastructure/state/items/MULTIVIEW_FACING_PIPELINE_1.md
-
-## BIOME_SPAWN_FLORA_AUDIT_1 Spawn each biome in game and photograph what actually grows - normalize before adjusting; also identify the rainbow prolific unclickable bushes the owner keeps seeing
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
 
 ## NINEFOLD_DEBUG_GAME_READY_CRASH_1 start_debug_game_ready crashes RimWorldWin64 outright - observed live during BIOME_SPAWN_FLORA_AUDIT_1, correlates with Ninefold satiation hook firing on a burst of debug auto-research completions
 state:    doing
@@ -298,22 +280,13 @@ summary:  Reproduced live, 2026-09-06, while working BIOMESPAWNFLORAAUDIT1 on
 prose:    infrastructure/state/items/NINEFOLD_DEBUG_GAME_READY_CRASH_1.md
 
 ## TREE_GRAPHICS_OWNERSHIP_1 Own tree art at our scales: generate custom tree graphics (sweetline trees first — huge, ancient); remove tree-mod rescaling of our designs
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
 summary:  Owner, verbatim (filed on the item): "Rather than use the whole Comingo tree
 prose:    infrastructure/state/items/TREE_GRAPHICS_OWNERSHIP_1.md
-
-## LIGHTFALL_CHASM_AUTHORING_1 Author the Lightfall chasm landmark on the Damp chain (terminator suture, deepest at tile 9023) — site+name owner-ratified 2026-09-06, spec in forsaken_crags.md §3
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
-prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
 
 ## UNUSED_MUTATORS_WORLD_ASSIGNMENT_1 Put the unused tile mutators and Geological Landforms landforms on the frozen world — 88 of ~380 in use, zero GL_* (owner 2026-09-06)
 state:    doing
@@ -327,7 +300,7 @@ prose:    infrastructure/state/items/UNUSED_MUTATORS_WORLD_ASSIGNMENT_1.md
 ## MACRO_GENERATOR_V0_1 Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     task
 summary:  - Input: a biome sheet paragraph (design/Jawa/worldbuilding/biomes/.md, start
@@ -345,7 +318,7 @@ prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
 ## MAPGEN_GL_SHEET_1 Map generator: 8 plans through the GL emitter, quicktest screenshots beside painter renders — the real terrain, one sheet (owner 2026-09-06: both routes)
 state:    doing
 row:      unassigned
-needs:    bridge
+needs:    owner
 target:   v1
 kind:     task
 summary:  - Input: the 8 plans Transient/mapgenv0/seed01-8.plan.json (or fresh ones from
@@ -363,7 +336,7 @@ prose:    infrastructure/state/items/MAPGEN_CONVERGENCE_LOOP_1.md
 ## MAPGEN_PAINTER_V1_1 Map generator painter v1: organic masks, elevation→terrain bands, hydrology with cause; v1 comparator sheet (owner 2026-09-06)
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
@@ -442,7 +415,7 @@ summary:  Thin when filed — no spec/verify/criteria in the queue entry itself,
 prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
 
 ## DROID_RETIRE_ABF_SYNCORE_1 Retire ABF + SynCore (wave R2); DroidDonor_ABFGate fires; remove DroidsAreMachines ABF half; cold load
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    game-up
 target:   v1
@@ -460,7 +433,7 @@ summary:  DROIDRETIREKOTORDROIDS1
 prose:    infrastructure/state/items/DROID_RETIRE_KOTORDROIDS_1.md
 
 ## DROID_RETIRE_DEPOT_ASIMOV_1 Retire Droid Depot + Asimov + MSEDroidFix (wave R3); repoint the Empire KX kind; retire NoDroidManufacture; cold load
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    game-up
 target:   v1
@@ -494,6 +467,15 @@ target:   v1
 kind:     feature
 summary:  STATUS 2026-09-10 ~01:00: live-proof attempt made — the GAME crashed mid quicktest-map-gen before jawa/setbed…
 prose:    infrastructure/state/items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md
+
+## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
+prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing
@@ -550,7 +532,7 @@ summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
 prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
 
 ## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -577,7 +559,7 @@ summary:  - Location: 32.12N 94.76E → tile 2403 (MEASURED off the canon CSV: l
 prose:    infrastructure/state/items/GAPING_DOOM_SITE_1.md
 
 ## BIOME_ENRICHMENT_DESERT_WASTELAND_1 Enrichment wave (review B1): Desert (53% zero-mutator) + Wasteland (63%) — the two largest land biomes read thin where caravans travel most; place from their sheets' shade-line and plant-vault kits; dune sea stays barren by rule
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    bridge
 target:   v1
@@ -708,6 +690,16 @@ blocked:  creative lock-in owed with the owner (FUTURE_VECTORS.md line 22, item'
 summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §2. Summary:
 prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
 
+## JAWA_PATCHES_SPLIT_1 Phase 3: triage src/SPLIT_Phase3/Jawa_Patches per-file (125 TBD defs) - Ashkarr/Rakata/DeepDesert/Pyrelands to RUT, animal/texture/generic to RSW or RM; plus straddle extractions (SacredGraffiti marks, WreckedMachines relics, Droidworks campaign layer, Armoury doctrine, JawaVoice campaign lines)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  physical split executed (commit 2385af29); close-out is gated on unclaimed MOD_CONSOLIDATION_SPRINT_1 / COLD_LOAD_RUN_SHEET_3, can't progress solo
+summary:  design/NAMINGSCHEMEPLAN.md §5 Phase 3: "JawaPatches triage; extract
+prose:    infrastructure/state/items/JAWA_PATCHES_SPLIT_1.md
+
 ## NINEFOLD_ENGINE_M0_1 Build RimMandrake Ninefold M0: GodStates satiation ledger + five easiest event hooks + first-contact chains + signed corpus letters (provisional voice approval; owner redlines live text). Felt-only diegesis ruled - no panels ever
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -758,6 +750,16 @@ blocked:  Same stuck-agent recovery as RIVER_STEAM_ANIMATION_1 - owner's mod lis
 summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
 prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
 
+## MULTIVIEW_FACING_PIPELINE_1 Productionize the multi-view-mesh facing pipeline: InstantMesh (4 sprites -> volumetric mesh) + meshfuse projection; local/free on the 5080; proven 2/3 facings, fix north/south pose-collision (per-view az bias) + UV-texture path for sharpness (needs nvcc)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  ledger/prose mismatch found in doing-backlog audit: owner reviewed the fused-mesh renders 2026-09-05 and called them 'crushed tin cans, not useful' (commit 972c64ae); item's own text says explicitly 'Not closing or advancing this item further without that call' — ledger was stuck at start with no record of this. Awaiting owner decision on whether the InstantMesh direction continues at all.
+summary:  MULTIVIEWFACINGPIPELINE1 — pose-collision bug fixed; owner judged the OUTPUT unusable ("crushed tin cans")
+prose:    infrastructure/state/items/MULTIVIEW_FACING_PIPELINE_1.md
+
 ## SARLACC_NATIVE_HABITAT_1 Sarlacc: native deep-desert habitat, three life-cycle stages, dungeon module
 state:    proposed  (BLOCKED)
 row:      unassigned
@@ -767,6 +769,16 @@ kind:     task
 blocked:  stale-drop-adjacent: draft already delivered 2026-09-06 (design/Jawa/worldbuilding/sarlacc_native_habitat_draft.md, three stages + dungeon module + ban-5 wording, nine forks in §7) and awaits owner review before further creative work; re-drafting without his read is wasted motion
 summary:  SARLACCNATIVEHABITAT1
 prose:    infrastructure/state/items/SARLACC_NATIVE_HABITAT_1.md
+
+## TREE_GRAPHICS_OWNERSHIP_1 Own tree art at our scales: generate custom tree graphics (sweetline trees first — huge, ancient); remove tree-mod rescaling of our designs
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  true blocker moved and was never synced: commit c8b4ad38 (2026-09-09) found 14 recovered sweetline-tree art candidates awaiting an owner pick (_artsrc/sweetline_orphans_2026-09-06/README.md + CONTACT_SHEET.png) - not the old 'Codex contention' blocker this item's last note (2026-09-06) still names
+summary:  Owner, verbatim (filed on the item): "Rather than use the whole Comingo tree
+prose:    infrastructure/state/items/TREE_GRAPHICS_OWNERSHIP_1.md
 
 ## HORRORS_RAIDING_FACTION_1 Horrors become a RAIDING faction (no settlements, nightside-gated encounters) + nests/sinkholes/crysalises injected as nightside dungeon content — the starved-cold Assailant weapon on patrol
 state:    proposed  (BLOCKED)
@@ -784,7 +796,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     bug
-blocked:  fixed source-side (572413c0, lastLaunchTick gate), adversarially reviewed CLEAN; live PROVE/EXPECT quicktest still owed to a game-up session
+blocked:  ledger/prose mismatch: item's own text ends 'Left doing, blocked. Recommend the owner rule on scope' — TryLaunch's gizmo path is disabled whenever CanLaunch() is false, so the item's own live-verify plan targets a gravship code path that doesn't exist in the shipped game; source-side fix (572413c0) still stands for pods/shuttles. Needs an owner scope ruling: rescope to pods/shuttles + file a new gravship-specific item, or move the patch target to Building_GravEngine.InitiateTakeoff.
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
 
@@ -798,6 +810,16 @@ blocked:  mechanics built and committed at 5c80b1797677af906691d2d0f5dd331eb17f3
 summary:  Packet B9 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
 
+## DROID_RETIRE_ABF_SYNCORE_1 Retire ABF + SynCore (wave R2); DroidDonor_ABFGate fires; remove DroidsAreMachines ABF half; cold load
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+blocked:  ABF/SynCore retirement violates DROID_RETIREMENT_ORDER_ASSERT_1 while guy762.kotordroids/kotorcore stay active (commit itself titled 'blocked')
+summary:  DROIDRETIREABFSYNCORE1 — retire ABF + SynCore (wave R2)
+prose:    infrastructure/state/items/DROID_RETIRE_ABF_SYNCORE_1.md
+
 ## DROID_RETIRE_KOTORDROIDS_1 Retire guy762.kotordroids (wave R1) after modules, heads, loadouts, FDE repoint and Distress Call are closed; cold load
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -807,6 +829,16 @@ kind:     task
 blocked:  cold load found 4 NEW cross-reference errors (guy762_DroidWeapon_microrocket/railgun/seekerrocket/trishot) via kotorcore's _DroidsBase folder (IfModActive=guy762.KotORDroids) feeding Armoury's ungated Absorbed_KotorWeapons ammoDef consumers; reverted ModsConfig.xml+About.xml, see item file for the fix needed
 summary:  DROIDRETIREKOTORDROIDS1
 prose:    infrastructure/state/items/DROID_RETIRE_KOTORDROIDS_1.md
+
+## DROID_RETIRE_DEPOT_ASIMOV_1 Retire Droid Depot + Asimov + MSEDroidFix (wave R3); repoint the Empire KX kind; retire NoDroidManufacture; cold load
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+blocked:  retirement executed then fully reverted (commit 7982a712) due to a save-compat regression; blocked pending DROID_DONOR_SAVE_COMPAT_REGRESSION_1's real fix before re-attempting
+summary:  DROIDRETIREDEPOTASIMOV1 — wave R3 (DROIDUNIFIEDFRAMEWORKDESIGN.md §2 row D4)
+prose:    infrastructure/state/items/DROID_RETIRE_DEPOT_ASIMOV_1.md
 
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    ready  (BLOCKED)
@@ -848,9 +880,49 @@ blocked:  Not a repo bug: repo's Absorbed_KotorCore_CrystalMapGenerator.xml alre
 summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
 
+## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  candidate sheet delivered (commit 620bc909); awaiting owner's style pick per mockups-first doctrine, do not build until then
+summary:  Owner (2026-09-09, verbatim on the event): commission art INSPIRED BY the
+prose:    infrastructure/state/items/DESERT_WRAPS_ART_COMMISSION_1.md
+
+## BIOME_ENRICHMENT_DESERT_WASTELAND_1 Enrichment wave (review B1): Desert (53% zero-mutator) + Wasteland (63%) — the two largest land biomes read thin where caravans travel most; place from their sheets' shade-line and plant-vault kits; dune sea stays barren by rule
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+blocked:  no concrete placeable defNames in desert.md/wasteland.md kits per the item's own note; needs owner to name mutators or rule on density approach
+summary:  BIOMEENRICHMENTDESERTWASTELAND1
+prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## BIOME_SPAWN_FLORA_AUDIT_1 Spawn each biome in game and photograph what actually grows - normalize before adjusting; also identify the rainbow prolific unclickable bushes the owner keeps seeing
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+waiting:  needs `game-up`, game is DOWN
+summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
+
+## LIGHTFALL_CHASM_AUTHORING_1 Author the Lightfall chasm landmark on the Damp chain (terminator suture, deepest at tile 9023) — site+name owner-ratified 2026-09-06, spec in forsaken_crags.md §3
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is DOWN
+summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
+prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
 
 # NOT THIS TARGET
 
@@ -859,16 +931,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## OASIS_LANDMARK_PLACEMENT_1 Hand-place and hand-name the Oasis landmarks on Weeping Stones tiles with per-site mutator loadouts (uplink/haven/stockpile/dead ring); seep-oasis siting waits on VAPOR_EMITTER_PLACEMENT_1
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
-prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
 ## SCALD_RIVER_REPAINT_1 Redirect the Scald's rivers outward on the painted worldmap to match R1 -- R18 step 2, blocked on ASHKARR_RIVER_LEDGER_1, verify tile-by-tile
 state:    proposed
