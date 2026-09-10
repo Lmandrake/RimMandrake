@@ -1,5 +1,25 @@
 # Ash'karr river ledger — DRAFT for owner ratification (ASHKARR_RIVER_LEDGER_1)
 
+## OWNER RULINGS — 2026-09-10 sitting (resolves the 4 conflicts; naming still open)
+
+1. **FULL R1 OUTFLOW.** Every Scald river is an OUTFLOW — the Scald is the perched
+   source, not a sink. This overrides the draft's "seven in, one out" compromise AND
+   the frozen `the_scald.md` "eight rivers in, none out" line (owner override of a
+   frozen sheet, recorded here). Owner believes the current game map already encodes
+   this (riverDist re-graded) — **UNVERIFIED: `tiles.csv` carries no riverDist; the
+   check is the canonical save's `tileRiverDistances` or the live game, and is now
+   the first step of `SCALD_RIVER_REPAINT_1`.**
+2. **The Notch / largest river = R02 the Saltward** — longest (91 tiles), the one
+   river reaching open sea (the Twilight Sea).
+3. **R03 IS a river** (not a coolant loop). The old "coolant leak flowing into the
+   Scald" briefing is **RETIRED**. New canon: the Scald *occurred* and was built into
+   the Rust Cathedral as a **coolant access after the civilization's collapse — an
+   adaptation made while the machine still had some ability to modify and repair
+   itself.** Amends `the_scald.md` + `the_rust_cathedral.md` under the freeze rule
+   (adds history, changes no standing ruling); carried by `RUST_CATHEDRAL_SCALD_HISTORY_1`.
+4. **Names:** structure accepted; the owner renames all 16 at the naming sitting — the
+   names below are placeholders, not ratified.
+
 _Drafted 2026-09-10 (Fable subagent) against `river_graph_2026-09-07.md` (the 16 measured
 rivers R01–R16, frozen world CSVs), the perched-Scald ruling (`the_one_map.md` §"THE SCALD
 IS A PERCHED LAKE, AND IT SPILLS", 2026-08-18) and the frozen biome sheets. Nothing here is
