@@ -41,6 +41,17 @@ roster, not biome fauna":
 | VQEA_Splicefiend | VQE_ANCIENTS_CURATION_1 | flesh-mutant |
 | VQEA_Splicetoot | VQE_ANCIENTS_CURATION_1 | flesh-mutant (defName is singular — the donor's own containment building is "...Containments", the race is not) |
 
+Added, `GOO_BOOM_COMMISSION_1` (2026-09-10) — the ONE creature that replaces the cut boom
+family (§9), owner-said "Keep one big reskin boom creature for the assailant dungeon, but
+redo it to be fleshy-based with sacks of explosive goo, and be done with them". New
+RimUtinni def, not a donor; brief: `design/Jawa/worldbuilding/creatures/goo_boom_commission.md`.
+Assailant row (dungeon-owner column per the 2026-09-10 ruling below); ⛔ never a biome
+`wildAnimals` entry:
+
+| creature | source | note |
+|---|---|---|
+| RUT_Vhessk | GOO_BOOM_COMMISSION_1 | flesh-mutant, detonates on death (Boomalope's `DeathActionWorker_BigExplosion` lineage, re-flavored as rupturing goo sacs); NOT BUILT — design brief only |
+
 ## 2. trader-beasts (1 explicit, 0 inferred)
 
 | creature | source row | owner's words | confidence |
