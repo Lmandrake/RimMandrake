@@ -1,4 +1,6 @@
-# Ash'karr river ledger — DRAFT for owner ratification (ASHKARR_RIVER_LEDGER_1)
+# Ash'karr river ledger — RATIFIED (ASHKARR_RIVER_LEDGER_1)
+
+_Names ruled by the owner at the naming sitting, 2026-09-10. Source/course/fate and the 4 conflict rulings ratified the same sitting. River IDs (R01–R16) are stable keys; the repaint and all downstream work cite them._
 
 ## OWNER RULINGS — 2026-09-10 sitting (resolves the 4 conflicts; naming still open)
 
@@ -9,7 +11,7 @@
    this (riverDist re-graded) — **UNVERIFIED: `tiles.csv` carries no riverDist; the
    check is the canonical save's `tileRiverDistances` or the live game, and is now
    the first step of `SCALD_RIVER_REPAINT_1`.**
-2. **The Notch / largest river = R02 the Saltward** — longest (91 tiles), the one
+2. **The Notch / largest river = R02 Duskflow** — longest (91 tiles), the one
    river reaching open sea (the Twilight Sea).
 3. **R03 IS a river** (not a coolant loop). The old "coolant leak flowing into the
    Scald" briefing is **RETIRED**. New canon: the Scald *occurred* and was built into
@@ -17,8 +19,7 @@
    adaptation made while the machine still had some ability to modify and repair
    itself.** Amends `the_scald.md` + `the_rust_cathedral.md` under the freeze rule
    (adds history, changes no standing ruling); carried by `RUST_CATHEDRAL_SCALD_HISTORY_1`.
-4. **Names:** structure accepted; the owner renames all 16 at the naming sitting — the
-   names below are placeholders, not ratified.
+4. **Names RULED (2026-09-10):** R02→**Duskflow**, R03→**Rustwave**, R01→**the Wynd**, R11→**the Chime**, R08→**Dewdrop**, R04→**the Braid**, R14→**the Muck**, R12→**the Catch**, R16→**the Mist**; R09 the Greyfall + R05 Feverwash / R06 Stiltwater / R07 Redthread / R10 Shortfall / R13 Hushwater / R15 Sprout kept as drafted.
 
 _Drafted 2026-09-10 (Fable subagent) against `river_graph_2026-09-07.md` (the 16 measured
 rivers R01–R16, frozen world CSVs), the perched-Scald ruling (`the_one_map.md` §"THE SCALD
@@ -52,26 +53,26 @@ DATA are inferred from elevation only._
 
 | id | lore name | class | source (lore) | fate | biomes threaded |
 |---|---|---|---|---|---|
-| R01 | **the Long Steam** | LargeRiver, 102 t | Scald Spine peaks (Contagion, 2,021 m) | grave: **Ashgrave Pan**, Pyrelands, 1 m | Contagion → Greentide → Forge skirts → Greentide → Pyrelands |
-| R02 | **the Saltward** | HugeRiver, 91 t | **the Scald notch** + Dew Horn tributaries | **Twilight Sea** (tile 3450) | Greentide → Shrubland → Miasma → Greentide → Miasma |
-| R03 | **the Ironwater** | HugeRiver, 32 t | Scald rim (Anvil) | grave: inland mangal sump, Dune Sea, 71 m | Greentide → Rust Cathedral canals → Scarlands → Greentide → Miasma |
-| R04 | **the Three-Thread** | Creek, 11 t | three Dune Sea gorge heads (991 m) | grave, Greentide gorge, 84 m | Greentide |
+| R01 | **the Wynd** | LargeRiver, 102 t | Scald Spine peaks (Contagion, 2,021 m) | grave: **Ashgrave Pan**, Pyrelands, 1 m | Contagion → Greentide → Forge skirts → Greentide → Pyrelands |
+| R02 | **Duskflow** | HugeRiver, 91 t | **the Scald notch** + Dew Horn tributaries | **Twilight Sea** (tile 3450) | Greentide → Shrubland → Miasma → Greentide → Miasma |
+| R03 | **Rustwave** | HugeRiver, 32 t | Scald rim (Anvil) | grave: inland mangal sump, Dune Sea, 71 m | Greentide → Rust Cathedral canals → Scarlands → Greentide → Miasma |
+| R04 | **the Braid** | Creek, 11 t | three Dune Sea gorge heads (991 m) | grave, Greentide gorge, 84 m | Greentide |
 | R05 | **the Feverwash** | River, 11 t | Scald rim (Fever Wood side) | grave: Fever Wood mangal, 26 m | Greentide → Miasma |
 | R06 | **the Stiltwater** | River, 10 t | Scald rim (Fever Wood side) | grave: Fever Wood mangal, 13 m | Greentide → Miasma |
 | R07 | **the Redthread** | Creek, 7 t | Dew Horn peak (Contagion, 1,329 m) | grave: Long Sand, 459 m | Contagion → Shrubland |
-| R08 | **the Little Steam** | Creek, 7 t | Scald Spine, two heads (551 m) | grave: **Dew Belt pan** (11915, 1 m) | Greentide |
+| R08 | **Dewdrop** | Creek, 7 t | Scald Spine, two heads (551 m) | grave: **Dew Belt pan** (11915, 1 m) | Greentide |
 | R09 | **the Greyfall** | Creek, 6 t | Ashfall Range peak (Contagion, 1,720 m) | **Grey Sea** (16893) | Contagion → Shrubland |
 | R10 | **the Shortfall** | Creek, 6 t | Ashfall Range peak (Contagion, 1,342 m) | grave: Ashfall foot, 1 m — a sea's-width short | Contagion → Shrubland |
-| R11 | **the Chimewater** | Creek, 5 t | Ashfall Range peak (Contagion, 1,627 m) | **Grey Sea** (16897) | Contagion → Shrubland → Cracked Lands |
-| R12 | **the Catchrun** | Creek, 5 t | Scald Spine, two heads (1,587 m) | the Scald pan (11943) | Contagion → Greentide |
+| R11 | **the Chime** | Creek, 5 t | Ashfall Range peak (Contagion, 1,627 m) | **Grey Sea** (16897) | Contagion → Shrubland → Cracked Lands |
+| R12 | **the Catch** | Creek, 5 t | Scald Spine, two heads (1,587 m) | the Scald pan (11943) | Contagion → Greentide |
 | R13 | **the Hushwater** | Creek, 5 t | Anvil-edge hills (612 m) | grave: Dune Sea, 1 m | Shrubland |
-| R14 | **the Hidden Green** | Creek, 5 t | Dune Sea gorge head (1,045 m) | grave, Greentide gorge, 99 m | Greentide |
+| R14 | **the Muck** | Creek, 5 t | Dune Sea gorge head (1,045 m) | grave, Greentide gorge, 99 m | Greentide |
 | R15 | **the Sprout** | Creek, 3 t | Scald Spine foot (392 m) | grave: **Dew Belt pan** (11914, 1 m) | Greentide |
-| R16 | **the Two-Step** | Creek, 2 t | Dew Belt bench (287 m) | grave, 145 m | Greentide |
+| R16 | **the Mist** | Creek, 2 t | Dew Belt bench (287 m) | grave, 145 m | Greentide |
 
 ## The rivers
 
-### R01 — the Long Steam · LargeRiver · 102 tiles · terminal basin
+### R01 — the Wynd · LargeRiver · 102 tiles · terminal basin
 **Source.** Twenty-two heads on the Scald Spine's Contagion peaks (highest 2,021 m) and the
 Forge-type highs (Volcano/LavaField) — the Scald's breath, condensed, red, and sterilized on the
 way down. **Course.** The Greentide's spine: 74 of its tiles are this river — the living reach,
@@ -82,7 +83,7 @@ droids at the crust. The Greentide's "every river ends in a grave" made literal 
 **Character.** The dayside's great dying river — glass-clear at the top, milk and brine at the
 end. Data and lore agree (no Scald contact).
 
-### R02 — the Saltward · HugeRiver · 91 tiles · reaches Twilight Sea AND the Scald
+### R02 — Duskflow · HugeRiver · 91 tiles · reaches Twilight Sea AND the Scald
 **Source (lore).** The Scald's notch — the perched lake spilling ~5,000 units through the Spine —
 joined by Dew Horn tributaries (1,473 m). **Course.** Greentide gorge, a dry Shrubland crossing
 (Dew Belt), the Fever Wood mangals, Greentide again, then the Miasma proper: 22 mangrove
@@ -95,7 +96,7 @@ outflow through ONE notch. Reconcile: one of the four Scald contacts is the Notc
 17342, the LargeRiver-class edge); the other three are Spine runoff *into* the pan and stay
 inflows. Which is a repaint call.
 
-### R03 — the Ironwater · HugeRiver · 32 tiles · reaches the Scald
+### R03 — Rustwave · HugeRiver · 32 tiles · reaches the Scald
 **Source (lore).** The Scald's Anvil rim. **Course.** Greentide, then eight tiles of
 **coolant canal** through the Rust Cathedral (ruled: not water — coolant, eels, the hum), three
 tiles of the Scarlands' leaking plumbing (its sheet flags them: nothing should flow there), a
@@ -108,7 +109,7 @@ sump. If R02 is the Notch, R03 must be an INFLOW (a perched lake has one spill),
 badly. Recommend: R03 is the **coolant loop**, not a river at all — the Cathedral draws Scald
 water, and the Scald end is an intake. Owner rules.
 
-### R04 — the Three-Thread · Creek · 11 tiles · terminal basin
+### R04 — the Braid · Creek · 11 tiles · terminal basin
 Three gorge heads (991/733/461 m) braid into one Greentide creek in the Dune Sea and die at
 84 m without leaving the gorge. A nursery reach for Gnawers; no faction water. Sibling of
 R14 (same gorge country, lat −16..−22).
@@ -128,7 +129,7 @@ Rises red on a Dew Horn Contagion peak (1,329 m), sterilizes on the descent, thr
 Shrubland's leaning fuzz and dies in the Long Sand at 459 m — a Cracked-Lands-style hidden
 water: Moisture Farmers' cistern country. Data and lore agree.
 
-### R08 — the Little Steam · Creek · 7 tiles · terminal basin
+### R08 — Dewdrop · Creek · 7 tiles · terminal basin
 Two Scald Spine heads (551/387 m), a Greentide creek, dies at 1 m in the **Dew Belt pan**
 (tile 11915). Its grave is shared with R15's (11914) — one salt pan, two mouths; a droid
 enclave's obvious seat.
@@ -141,11 +142,11 @@ the planet, through Shrubland into the Deepwater vigil's shrinking brine. Agrees
 Its neighbour's twin (1,342 m head, same range) that dies at 1 m *beside* the Grey Sea and
 never reaches it — the Jawa joke is the name. Agrees with lore.
 
-### R11 — the Chimewater · Creek · 5 tiles · reaches the Grey Sea
+### R11 — the Chime · Creek · 5 tiles · reaches the Grey Sea
 Ashfall Range peak (1,627 m) through Shrubland and one Cracked Lands tile — water chimes ring
 in the crack before the flood — to the Grey Sea at 16897. Agrees with lore.
 
-### R12 — the Catchrun · Creek · 5 tiles · reaches the Scald
+### R12 — the Catch · Creek · 5 tiles · reaches the Scald
 Two heads on the Scald Spine (1,587/1,407 m) through the Contagion and Greentide into the
 pan at 11943 — the **steam-catch runnel**: the Scald's breath falling straight back into the
 Scald. ⚠️ Data: inflow. R1: outflow. Recommend it stays an INFLOW in the lore (a 5-tile creek
@@ -156,13 +157,13 @@ its steam."
 A Shrubland creek in the Dune Sea's sunward tail near the Anvil (612 m → 1 m): fog-fed,
 silent, dies in sand. Agrees with lore.
 
-### R14 — the Hidden Green · Creek · 5 tiles · terminal basin
+### R14 — the Muck · Creek · 5 tiles · terminal basin
 A Dune Sea gorge head (1,045 m) running a Greentide slot to 99 m. Sibling of R04.
 
 ### R15 — the Sprout · Creek · 3 tiles · terminal basin
 Scald Spine foot (392 m) to the Dew Belt pan (11914, 1 m) — R08's grave-mate.
 
-### R16 — the Two-Step · Creek · 2 tiles · terminal basin
+### R16 — the Mist · Creek · 2 tiles · terminal basin
 Two tiles, 287 m to 145 m, Greentide. Two steps and it is gone.
 
 ## Conflicts — data vs the perched-Scald ruling
@@ -171,7 +172,7 @@ Two tiles, 287 m to 145 m, Greentide. Two steps and it is gone.
    Scald is −350 m, the planet's floor). The ruling says the Scald spills through ONE notch. The
    frozen `the_scald.md` says "eight rivers in, none out." Reconciliation offered: the eight
    shore contacts ARE the sheet's "eight rivers" (R02×4, R03, R05, R06, R12); ONE of them is
-   the Notch (R02's 17342 edge) and the ruling's "largest river" is **the Saltward** to the
+   the Notch (R02's 17342 edge) and the ruling's "largest river" is **Duskflow** to the
    Twilight Sea; the other seven stay inflows. This amends `the_scald.md` §3/§5 by one word
    ("seven in, one out") and leaves R1 intact.
 2. **R03 (Ironwater)**: max flow 28,936 — numerically the largest — but 32 tiles ending in an
