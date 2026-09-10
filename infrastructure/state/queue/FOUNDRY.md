@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T20:23:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T22:19:02Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -594,6 +594,15 @@ kind:     build
 summary:  Build RUTScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events
 prose:    infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
 
+## CRYPTOFORGE_HARVEST_RETIRE_1 Harvest then retire VQE Cryptoforge: (1) reproduce the 18 SALVAGE_PALETTE-cited props as owned RUT_/RSW_ ThingDefs with OWNED art (citation swap - Workshop art is not ours to ship); (2) copy the 38 KCSG StructureLayoutDef XMLs into design/ as authoring reference, strip to owned symbols before any shipping use; (3) delete our two FindMod-gated patches (Armoury_RangedDamage.xml VQE bullet block, MegafaunaYield.xml VQE_Megamidge block) in the same change as removal; (4) remove from ModsConfig, cold-load check, resave canonical per the donor-retire pattern (save footprint is zero-placed: only workgiver rows + filters, which drop with warnings); (5) fauna sheets: IceCrawler/Megamidge are ruled out-of-canon - their rows resolve Out, coordinate with the owner's live review before applying. Optional design salvage: the thaw-pulse mechanic (heat wakes the ice) may be re-fictioned as terramanufacture content - separate design item if wanted. CherryPicker rows for its 2 turrets become moot at removal.
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Owner-said: "Retire-after-harvest." Harvest then retire VQE Cryptoforge:
+prose:    infrastructure/state/items/CRYPTOFORGE_HARVEST_RETIRE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -828,6 +837,16 @@ blocked:  7/8 mechanisms built, compiled clean, deployed, queued in ModsConfig f
 summary:  Build RUTScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events
 prose:    infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
 
+## CRYPTOFORGE_HARVEST_RETIRE_1 Harvest then retire VQE Cryptoforge: (1) reproduce the 18 SALVAGE_PALETTE-cited props as owned RUT_/RSW_ ThingDefs with OWNED art (citation swap - Workshop art is not ours to ship); (2) copy the 38 KCSG StructureLayoutDef XMLs into design/ as authoring reference, strip to owned symbols before any shipping use; (3) delete our two FindMod-gated patches (Armoury_RangedDamage.xml VQE bullet block, MegafaunaYield.xml VQE_Megamidge block) in the same change as removal; (4) remove from ModsConfig, cold-load check, resave canonical per the donor-retire pattern (save footprint is zero-placed: only workgiver rows + filters, which drop with warnings); (5) fauna sheets: IceCrawler/Megamidge are ruled out-of-canon - their rows resolve Out, coordinate with the owner's live review before applying. Optional design salvage: the thaw-pulse mechanic (heat wakes the ice) may be re-fictioned as terramanufacture content - separate design item if wanted. CherryPicker rows for its 2 turrets become moot at removal.
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  steps 2-3 of 5 done (harvest reference copied, both FindMod patches deleted, 0 validate_patch errors). Steps 1 (18-22 owned-art props), 4 (ModsConfig removal + cold load + resave) and 5 (owner fauna-sheet coordination) are separate passes - see item
+summary:  Owner-said: "Retire-after-harvest." Harvest then retire VQE Cryptoforge:
+prose:    infrastructure/state/items/CRYPTOFORGE_HARVEST_RETIRE_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -859,16 +878,6 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  CHERRYPICKERSHIPBASELINESTALE1
 prose:    infrastructure/state/items/CHERRYPICKER_SHIP_BASELINE_STALE_1.md
-
-## CRYPTOFORGE_HARVEST_RETIRE_1 Harvest then retire VQE Cryptoforge: (1) reproduce the 18 SALVAGE_PALETTE-cited props as owned RUT_/RSW_ ThingDefs with OWNED art (citation swap - Workshop art is not ours to ship); (2) copy the 38 KCSG StructureLayoutDef XMLs into design/ as authoring reference, strip to owned symbols before any shipping use; (3) delete our two FindMod-gated patches (Armoury_RangedDamage.xml VQE bullet block, MegafaunaYield.xml VQE_Megamidge block) in the same change as removal; (4) remove from ModsConfig, cold-load check, resave canonical per the donor-retire pattern (save footprint is zero-placed: only workgiver rows + filters, which drop with warnings); (5) fauna sheets: IceCrawler/Megamidge are ruled out-of-canon - their rows resolve Out, coordinate with the owner's live review before applying. Optional design salvage: the thaw-pulse mechanic (heat wakes the ice) may be re-fictioned as terramanufacture content - separate design item if wanted. CherryPicker rows for its 2 turrets become moot at removal.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CRYPTOFORGE_HARVEST_RETIRE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CRYPTOFORGE_HARVEST_RETIRE_1.md
 
 ## VQE_ANCIENTS_CURATION_1 Curate VQE Ancients per the ratified verdict: (1) CherryPicker-cut AbilityDefs Levitation/Invisibility/InfernoSpew + their granting GeneDefs + the hellsphere cannon (cut(deftype,name) never cut_name; prove by reading live config back; rebuild tag->surviving-item index after; validate live dump for silently-discarded defs referencing cut genes); (2) keep mid-tier stat genes (Herculean/Prowess) as scarce vault loot; (3) audit/strip its Empire FactionDef patch - nothing archite ships under our Galactic Empire reskin without a ruling; (4) string relabel pass: quest letters saying pre-collapse-human-civilization -> Forsaken/Assailant exonym register (same family as the six pawn-kind relabels); (5) keep all 6 quest chains; when VQE_AncientLabComplex fires (~day 118, self-scheduled in canonical save) verify the site tile lands in an ANCIENT-ALLOW biome (wasteland/desert), relocate via bridge if not; consider wiring later chain entries into vault_thaw_quest_family.md rather than VEF self-scheduling - decision point, flag when reached; (6) feed VQEA_Spliceling/Splicehulk/Splicefiend/Splicetoot into the dungeon-guardians draft roster, not biome fauna. Leave CookSpeed/dodge/disease/EnvironmentDark tweaks (note EnvironmentDark x permanent nightside - glance in play).
 state:    proposed
