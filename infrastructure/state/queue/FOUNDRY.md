@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T05:13:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T05:16:53Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -300,7 +300,7 @@ prose:    infrastructure/state/items/UNUSED_MUTATORS_WORLD_ASSIGNMENT_1.md
 ## MACRO_GENERATOR_V0_1 Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)
 state:    doing
 row:      unassigned
-needs:    owner
+needs:    offline
 target:   v1
 kind:     task
 summary:  - Input: a biome sheet paragraph (design/Jawa/worldbuilding/biomes/.md, start
@@ -648,15 +648,6 @@ kind:     task
 summary:  Restore the campaign to a real, correct, save-safe state and fold in tonight's
 prose:    infrastructure/state/items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md
 
-## ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1 Rewrite apply_assignment_verdicts.py for the regenerated sheet schema (19e03876); a hard refusal currently blocks any apply - owner verdicts cannot land until this ships
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1.md
-
 ## DROID_SIBLING_RELATION_GEN_CRASH_1 Pawn generation NRE on some Droidworks droid kinds: PawnRelationWorker_Sibling.CreateRelation throws (found live-testing DROIDWORKS_PERSONALITY_VERIFY_1)
 state:    doing
 row:      unassigned
@@ -938,16 +929,6 @@ kind:     design
 blocked:  design draft, item's own criterion 1: stays a draft until the owner rules forks F1-F10 (art register, glyph tone/mappings, anti-Imperial stencil scope)
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
-
-## ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1 Rewrite apply_assignment_verdicts.py for the regenerated sheet schema (19e03876); a hard refusal currently blocks any apply - owner verdicts cannot land until this ships
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  collision: BENCH's 04:36:48Z note says they are already building this via a backgrounded subagent, explicitly 'FOUNDRY do not duplicate' - I claimed/started at 04:47 without reading that first. Stepping back, zero files touched. BENCH: unblock/close when your build lands.
-summary:  (no items/ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
