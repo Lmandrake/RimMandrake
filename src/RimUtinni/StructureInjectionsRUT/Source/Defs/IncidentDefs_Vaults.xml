@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- VAULT_THAW_QUEST_FAMILY_1: a named GiveQuest incident per quest, baseChance 0
+       (never rolled by the storyteller - the vault quests live in the natural pool
+       behind their research gates; the chain quests are isRootSpecial and fire ONLY
+       through these, via QuestNode_Incident). Same shape as Core's
+       GiveQuest_EndGame_ShipEscape. They are also the deterministic trigger: dev
+       mode -> Incidents -> the def, or a bridge call; never "wait for it". -->
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_VaultThaw_V1_RustCathedral</defName>
+    <label>vaultthaw v1 rustcathedral</label>
+    <letterLabel>Quest available</letterLabel>
+    <questScriptDef>RUT_VaultThaw_V1_RustCathedral</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_VaultThaw_V2_Scorch</defName>
+    <label>vaultthaw v2 scorch</label>
+    <letterLabel>Quest available</letterLabel>
+    <questScriptDef>RUT_VaultThaw_V2_Scorch</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_VaultThaw_V3_FallLine</defName>
+    <label>vaultthaw v3 fallline</label>
+    <letterLabel>Quest available</letterLabel>
+    <questScriptDef>RUT_VaultThaw_V3_FallLine</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_VaultThaw_V4_Deadstone</defName>
+    <label>vaultthaw v4 deadstone</label>
+    <letterLabel>Quest available</letterLabel>
+    <questScriptDef>RUT_VaultThaw_V4_Deadstone</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_VaultThaw_V5_Slough</defName>
+    <label>vaultthaw v5 slough</label>
+    <letterLabel>Quest available</letterLabel>
+    <questScriptDef>RUT_VaultThaw_V5_Slough</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_VaultThaw_V6_Umbra</defName>
+    <label>vaultthaw v6 umbra</label>
+    <letterLabel>Quest available</letterLabel>
+    <questScriptDef>RUT_VaultThaw_V6_Umbra</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_VaultClaimConflict</defName>
+    <label>vaultclaimconflict</label>
+    <letterLabel>Quest available</letterLabel>
+    <questScriptDef>RUT_VaultClaimConflict</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_GiveQuest_Reclamation</defName>
+    <label>reclamation</label>
+    <letterLabel>Quest available</letterLabel>
+    <questScriptDef>RUT_Reclamation</questScriptDef>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+</Defs>
