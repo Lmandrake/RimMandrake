@@ -49,3 +49,4 @@
 - drvfs served minutes-stale worker-script bytes to SOME concurrent spawns (fresh to others); cure = read source once, feed spawns via stdin (artpiped.py 2026-09-10).
 - A failed `git add` under lock contention leaves the index loaded; the retry-loop's commit ships it under the wrong message — read `git log --stat` after any contended commit.
 - Daemon gemini budget is cumulative from throughput.jsonl, not per-run; and never pipe a live daemon through `head` (SIGPIPE kills it mid-billing).
+- OpenAI strict structured-output (codex --output-schema) rejects any schema whose required[] omits a property or that uses minimum/maximum/maxLength — HTTP 400 before generation, worker exit 1, looks like a dead channel; codex channel shipped untested against it (fixed 69f46929, caught by the 3-job attended calibration)
