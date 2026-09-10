@@ -6991,3 +6991,8 @@
 {"seat":"FOUNDRY","event":"file","id":"VALIDATE_PATCH_TEXPATH_CLASSIFIER_1","title":"validate_patch.py's texPath ERROR/WARN classifier false-positives on any mod whose own Textures/ tree happens to share a universal top-level folder name (Things/Pawn/Buildings/etc.) with a legitimate vanilla texPath reference - fix: compare against a fixed list of RimWorld's own top-level categories, never classify those as mod-owned from a first-segment match alone","kind":"task","target":"v1","needs":"offline","caused_by":"RSW_PROTOVERMES_TEXPATH_MISSING_1","for":"FOUNDRY","ts":"2026-09-10T22:30:38Z"}
 {"seat":"FOUNDRY","event":"close","id":"RSW_PROTOVERMES_TEXPATH_MISSING_1","sha":"f56ded83","ts":"2026-09-10T22:31:08Z"}
 {"seat":"FOUNDRY","event":"close","id":"VALIDATE_PATCH_TEXPATH_CLASSIFIER_1","sha":"52ed389a","ts":"2026-09-10T22:35:01Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PYRELANDS_WORLD_SWITCH_1","ts":"2026-09-10T22:35:34Z"}
+{"seat":"FOUNDRY","event":"block","id":"PYRELANDS_WORLD_SWITCH_1","reason":"static readiness already established (PYRELANDS_SELF_CONTAINED_BIOME_1 closed 2026-09-09, 0 validate_patch errors). Remaining gate is a LIVE quicktest to prove the biome out, which requires start_debug_game_ready - that discards the current map, and the owner has been actively driving the live campaign map all session (behemoths/fire/plants). Not safe to run unannounced","ts":"2026-09-10T22:35:34Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ROSE_OF_REBIRTH_CONTAINMENT_1","ts":"2026-09-10T22:35:39Z"}
+{"seat":"FOUNDRY","event":"start","id":"ROSE_OF_REBIRTH_CONTAINMENT_1","ts":"2026-09-10T22:35:40Z"}
+{"seat":"FOUNDRY","event":"close","id":"ROSE_OF_REBIRTH_CONTAINMENT_1","sha":"0ae4d103","ts":"2026-09-10T22:38:41Z"}

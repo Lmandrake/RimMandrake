@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T22:35:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T22:38:41Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -806,6 +806,16 @@ blocked:  Not a repo bug: repo's Absorbed_KotorCore_CrystalMapGenerator.xml alre
 summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
 
+## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  static readiness already established (PYRELANDS_SELF_CONTAINED_BIOME_1 closed 2026-09-09, 0 validate_patch errors). Remaining gate is a LIVE quicktest to prove the biome out, which requires start_debug_game_ready - that discards the current map, and the owner has been actively driving the live campaign map all session (behemoths/fire/plants). Not safe to run unannounced
+summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
+
 ## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -878,16 +888,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
-
 ## CHERRYPICKER_SHIP_BASELINE_STALE_1 Cherry Picker SHIP baseline stale since 2026-09-02: live config has drifted 617 added / 178 removed vs tracked snapshot, bundles a near-total backstory un-cut that needs confirming before re-baselining
 state:    proposed
 row:      unassigned
@@ -907,16 +907,6 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GOO_BOOM_COMMISSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
-
-## ROSE_OF_REBIRTH_CONTAINMENT_1 Investigate why RotR_RoseOfRebirth (Romance On The Rim) has 476 instances on the live Ash'karr colony map when its def forbids wild-spread and sowing; owner wants it controlled tightly
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Owner, live 2026-09-10, watching the colony map: "There are also 'Rose of
-prose:    infrastructure/state/items/ROSE_OF_REBIRTH_CONTAINMENT_1.md
 
 ## CODEX_WORKER_SANDBOX_WRITE_1 Codex art worker generates the image but cannot resize/copy it into its job workspace: worker exits 1, daemon sees no image (validator never runs), dies at ~241s = the edit-timeout+grace, not a slow run
 state:    proposed
