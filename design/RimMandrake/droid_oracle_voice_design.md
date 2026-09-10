@@ -4,9 +4,9 @@
      llm_ingame_wiring_spec.md (the two laws, the pipeline), nine_voices_cast_bible.md (the
      persona-block pattern), OracleRegisterBlocks.cs / OracleValidator.cs (the one built
      consumer, Ohm), droid_system_spec.md §3–§7 (embodied software, tiers, spikes, the bolt).
-     Transport is `claude -p` per CLAUDE.md; this doc assumes only "a prompt string goes in, a
-     reply string comes out, or nothing does". Blocked on ORACLE_EXPERIMENT_SPIKE_1's client
-     rewrite for the LIVE path; the prescribed fallbacks below need no LLM at all. -->
+     Transport is the BUILT OracleClient.cs (`claude -p`, ef628781, re-verified d9b909c8); §2.6
+     states what that transport does to every consumer. The prescribed fallbacks below need no
+     LLM at all. Reconciled against the live client 2026-09-09. -->
 # Droid voice through the Oracle — four consumers, dormant
 
 ## 0. What "dormant" means here
@@ -14,10 +14,16 @@
 Each of the four moments ships as **prescribed text first** — the fallback lines
 in §3–§6 ARE the v1 deliverable and run with zero LLM calls. The Oracle call is
 an enrichment layered on top, behind `OracleGameComponent`'s existing kill-switch
-(`OracleSettings.enabled`, default off) and a per-consumer enable flag; when the
-call is off, times out, or fails the lint, the prescribed line ships and nothing
-tells the player (wiring spec Law #2). Nothing in this doc lets free text name a
-def, move a number, or start a job (Law #1).
+(`OracleSettings.enabled`, default off) and a per-consumer enable flag; on every
+failure the built client can produce (§2.6 lists them all) the prescribed line
+ships through the same `DeliverFallback` path Ohm uses, and nothing tells the
+player (wiring spec Law #2). Nothing in this doc lets free text name a def, move a
+number, or start a job (Law #1).
+
+"Dormant" is the owner's word (framework §0 card 14: *"design now as dormant
+E5"*), not a backlog state: it means **design it, do not build it**. What un-parks
+it is his read of this doc — nothing else. The live path additionally waits on
+the E2 and E4 hook points (§5, §6), which are unbuilt.
 
 Delivery is a **letter** (`Find.LetterStack`), exactly the Ohm consumer's shape:
 prescribed label, generated-or-fallback body. Not a speech bubble — the bubble
@@ -135,6 +141,74 @@ per-game-day is the wrong unit (*"Capping it to # per real-world hour or
 something is likely more relevant"*, `llm_driven_mods_deep_design.md` ruling
 table) — **the number and the unit are his; TBD owner**, default suggestion 2 per
 real-world hour. Exceeding it silently falls back.
+
+### 2.6 Transport consequences — what the built `OracleClient` does to a consumer
+
+`OracleClient.cs` is real now (ef628781; invocation verified against both the
+owner's Windows binary and this checkout). It is not "prompt in, text out"; it
+has a shape, and each part of that shape lands on the consumers:
+
+**Two channels, not one.** The client runs
+`claude -p --output-format text --system-prompt "<system>" --disallowed-tools …`
+with the user prompt on **stdin**. So: `DroidLaw` + the consumer block + the
+register line (§2.2) are the `--system-prompt` argument; the slots (§2.4) are the
+stdin user prompt. The argument is quoted for `CommandLineToArgvW` and a Windows
+command line caps at 32,767 chars — the three system pieces total ~1.5k and no
+slot value ever goes there. Stdin is unbounded UTF-8, so the slot list may carry
+trait labels with any glyph. The assembler's order rule stands: block first,
+slots after, but they travel in different channels.
+
+**The failure ladder — every rung ships the prescribed line.** In the order the
+built component checks them, with the reason string it logs
+(`RimMandrake.Oracle: falling back for "<label>" -- <reason>`):
+
+| rung | where | retried? | reason logged |
+|---|---|---|---|
+| kill switch off | component, synchronous | — | `kill switch off` |
+| bucket exhausted | component, synchronous | — | `budget exhausted …` |
+| binary cannot start | client, `FileNotFoundException` after every candidate path | never (a config fact) | `call failed: could not start the Claude Code CLI …` |
+| timeout | client, process killed, `TimeoutException` | never (the window is spent) | `call failed: claude -p timed out after Ns` |
+| non-zero exit | client | once | `call failed: claude -p exited N -- <stderr head>` |
+| exit 0, empty stdout | client, `FormatException` | once (generic catch) | `call failed: … produced no output` |
+| lint reject | component, `TryValidate*` | never | `validator rejected: <reason>` |
+
+Two consequences for this doc's contracts. First, **stderr is not a failure
+signal** — the client observed unrelated warnings on a good run — so no consumer
+may ever read it; the exit code and the lint are the whole verdict. Second, the
+retry means the worst-case wall time is **2 × `timeoutSeconds`** (default 60 s,
+floor 5 s), and a Node cold start is seconds even when it succeeds. **No consumer
+blocks on the reply**: the recipe or incident completes on its own tick, the
+letter arrives when it arrives, up to ~2 min later. That is acceptable for a
+letter (it is a letter) and is the reason §0 rules out speech bubbles.
+
+**In-flight loss.** `pendingDeliveries` is not scribed and a `Task` in flight dies
+with the process. A save-and-quit inside the window loses the letter entirely —
+tolerable for Ohm's flavour letter, not for these four, where the letter IS the
+moment's text. Rule: a consumer records its moment (pawn, consumer, slot
+snapshot, fallback text) in a **scribed pending list** on the component at fire
+time and clears it on delivery; on load, every still-pending moment ships its
+prescribed line with reason `pending across load`. This is the one addition to the
+built component that the droid consumers need beyond generalising
+`RequestOhmLetter` (which hard-wires Ohm's block, `TryValidateOhm` and the gods
+bucket) into a `RequestLetter(system, user, validator, label, fallback, bucket)`.
+
+**One process per call, so at most one droid call in flight.** A wild-droid
+incident (§5) may land several seekers on one tick; a bench may finish two wipes
+in a row. A droid moment that fires while another droid call is in flight ships
+its prescribed line at once (reason `droid call already in flight`). Calls are
+never queued — a queue of Node processes behind a paused game is the worst of
+both worlds, and the prescribed line is the deliverable anyway.
+
+**The child is sandboxed, which does not help the lint.** Tools `Bash Edit Write
+Read Glob Grep WebFetch WebSearch Task NotebookEdit` are denied and the working
+directory is `%TEMP%`, so the model cannot look up pawn names, defs or the save.
+That protects the install; it does nothing for the text. The invented-person
+check (§2.3) is still the only defence against a named colonist, and it is a
+lint, not a sandbox.
+
+**No new flags.** The design uses only what the client already passes. Any flag
+added later must exist on the game machine's binary (2.1.228 at verification —
+`--restricted` did not), per the client's own header.
 
 ## 3. Consumer W — the wipe reaction
 
@@ -337,7 +411,7 @@ opinion colonist — handed over, so it may name them); `rebootCount`;
 
 ## 8. Build order when un-dormanted (not filed; owner's call after review)
 
-1. `ORACLE_EXPERIMENT_SPIKE_1`'s client rewrite (`claude -p` transport) — blocks everything live.
+1. Generalise the component (§2.6): `RequestLetter(...)` beside `RequestOhmLetter`, the scribed pending list, the one-in-flight cap, the `droids` bucket. The transport itself is built and needs nothing.
 2. `DroidLaw` + `TryValidateDroid` + the four `TryValidate*` as pure C# with an offline selftest (the Ohm pattern: canned pass/reject strings per consumer, explicit N/N).
-3. Consumers W and B against their built hooks; letters ship prescribed first, `enabled` off.
+3. Consumers W and B against their built hooks; letters ship prescribed first, `enabled` off. Prove each rung of the §2.6 ladder once through the `claudeCliPath` stub seam (item file, `## verify`).
 4. O rides E4; R rides E2 (+B4a for parts provenance). Each fires its prescribed letter from day one of that packet, Oracle or not.
