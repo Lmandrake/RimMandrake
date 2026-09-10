@@ -109,3 +109,87 @@ call 2's action body actually runs with `pt=703` in scope, or is somehow
 handed call 1's already-completed result by the dispatcher — which would
 point squarely at `MainThread.InvokeAsync`'s own result-correlation logic
 rather than anything in this repo's C# or in RimWorld itself.
+
+## 2026-09-09, closed-source layer read directly (FOUNDRY, offline, game down) — every layer now exonerated
+
+Game was down all session (crashed twice on quicktest; no relaunch attempted,
+no bridge call made — pure static analysis). Got a decompiler this session:
+`dotnet tool install -g ilspycmd` via the user-local Windows SDK
+(`C:\Users\Mandrake\.dotnet\dotnet.exe`, already installed — the bare `dotnet`
+on WSL PATH is not it) plus a Python `dnfile`/`dncil` venv for raw metadata
+cross-checks. This closes the exact gap the 2026-09-05 pass named: the
+previously-unreadable closed-source SDK and transport layers are no longer
+closed-source to this session.
+
+Decompiled and read in full, straight from the shipped DLLs (workshop
+`3727949765`'s `1.6/Assemblies/`, not source excerpts):
+
+- **`Lib.GAB.Server.GabpServer.HandleToolsCallAsync`** — deserializes params,
+  calls `_toolRegistry.CallToolAsync(name, parameters)`, replies via
+  `SendResponseAsync(connection, request.Id, result)`. Keyed on the
+  request's own `Id` every time. No cache, no reuse.
+- **`Lib.GAB.Tools.ToolRegistry.CallToolAsync` / `CreateHandler`** — every
+  call does a fresh `ConvertParameters` (dictionary rebuilt from the
+  request JSON, no pooling) then `method.Invoke(instance, parameters2)` via
+  reflection. `RegisteredTool.Handler` is a per-tool delegate set once at
+  registration; it carries no per-call state at all.
+- **`RimBridgeServer.RimBridgeMainThreadClient`** (the concrete
+  `IRimBridgeMainThread` handed to companion tools as `ctx.MainThread`) —
+  a bare passthrough to the static `RimBridgeMainThread.InvokeAsync`.
+- **`RimBridgeServer.RimBridgeMainThread`** (the actual dispatcher this
+  item's whole "MainThread.InvokeAsync" suspicion was about) — a private
+  `Queue<IMainThreadWorkItem> Pending` drained by `Pump()` on the main
+  thread. Every `InvokeAsync<T>` call `new MainThreadWorkItem<T>(func)`s a
+  **fresh** object holding its own `Func<T> _func` (the caller's closure,
+  so `pt=703` is captured correctly), its own
+  `TaskCompletionSource<T> _completion`, and an `Interlocked`-guarded
+  `_state` so `ExecuteIfPending`/`CancelIfPending` can't double-fire. No
+  static/shared mutable field carries a result or a tile between calls; no
+  pooling of `MainThreadWorkItem` instances. The awaited `Task<T>` is
+  `workItem.Completion.Task` — always that specific item's own TCS, never
+  a shared one.
+- **Vanilla, re-verified directly this time instead of via RimSage
+  excerpts**: `Verse.GetOrGenerateMapUtility.GetOrGenerateMap`,
+  `Verse.Game.FindMap(PlanetTile)`,
+  `RimWorld.Planet.WorldObjectsHolder.MapParentAt`,
+  `RimWorld.Planet.PlanetTile.Equals`/`GetHashCode`, and
+  `RimWorld.Planet.WorldObject.Tile`'s get/set — all strict, tileId-keyed,
+  no clamping/relocation/pooling. `PlanetTile.Equals` does
+  `tileId != other.tileId → return false` as its FIRST check, so 701 and
+  703 can never alias regardless of the `layerId` root-surface carve-out
+  further down.
+
+**Every named suspect in this item, across two sessions, is now read and
+clean: the wire protocol, the tool dispatch, the main-thread queue, and
+vanilla map generation.** I did not find a code path anywhere in this chain
+that can hand call 2 call 1's map, its tile, or its result object. This is a
+stronger negative than the 2026-09-05 pass could produce (RimSage does not
+index the closed-source assemblies at all; this pass decompiled the actual
+shipped bytes).
+
+**I still did not find the root cause.** No code change made this session —
+there is nothing left in the deterministic call graph to fix with
+confidence, and guessing at this point would be exactly the "flagging a
+wrong thing" failure mode this repo has hit before. The existing guard
+(`2e3336f4`, `map.Tile != pt` refusal) stands as the only real mitigation:
+callers can no longer be lied to, even though why the wrong map got
+returned in the first place is unexplained.
+
+**What could still explain the original 2026-09-04 measurement, none of
+them fixable from source:**
+1. A one-off environmental confound in that specific trap session — e.g.
+   the two calls landing on different `Current.Game` instances (a
+   quicktest reload between them) without the tester's connection or
+   `jawa/world_tile_get` probe crossing that boundary the same way.
+2. A timing/ordering effect inside `MapGenerator.GenerateMap`/its GenSteps
+   that no static field enumeration can see (the 2026-09-05 pass already
+   enumerated and ccleared every `MapGenerator` static field via
+   `ClearWorkingData()`, and this pass adds nothing new there).
+
+**Owed, unchanged**: live re-repro is the only way forward now — two
+`world_tile_map_generate` calls at two distinct, confirmed-empty tiles in
+one session, this time with the `map.Tile != pt` guard live so a mismatch
+refuses loudly instead of lying, plus independent instruments
+(`get_game_info` mapCount, `jawa/map_info`) after each call. If the guard
+never fires across several repro attempts, the 2026-09-04 measurement itself
+becomes the prime suspect (confound in the test, not a bug in the tool).
