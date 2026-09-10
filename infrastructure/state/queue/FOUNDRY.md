@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T01:14:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T01:18:15Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -231,7 +231,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/INHABITED_AUGMENTATION_BUILD_1.md yet — write one when you have something to say)
+summary:  INHABITEDAUGMENTATIONBUILD1
 prose:    infrastructure/state/items/INHABITED_AUGMENTATION_BUILD_1.md
 
 ## PLOT_MECHANISM_MODS_WAVE_1 Build wave: LLM raid-redesigner + post-battle/event hostility creation + plot-gap mods (from plot_mechanisms_wave.md)
