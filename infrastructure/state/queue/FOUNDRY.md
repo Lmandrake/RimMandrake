@@ -7,30 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T07:13:22Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-10T07:21:40Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## BIOME_SPAWN_FLORA_AUDIT_1 Spawn each biome in game and photograph what actually grows - normalize before adjusting; also identify the rainbow prolific unclickable bushes the owner keeps seeing
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
-
-## LIGHTFALL_CHASM_AUTHORING_1 Author the Lightfall chasm landmark on the Damp chain (terminator suture, deepest at tile 9023) — site+name owner-ratified 2026-09-06, spec in forsaken_crags.md §3
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
-prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -913,7 +895,27 @@ prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## BIOME_SPAWN_FLORA_AUDIT_1 Spawn each biome in game and photograph what actually grows - normalize before adjusting; also identify the rainbow prolific unclickable bushes the owner keeps seeing
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+waiting:  needs `game-up`, game is DOWN
+summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
+
+## LIGHTFALL_CHASM_AUTHORING_1 Author the Lightfall chasm landmark on the Damp chain (terminator suture, deepest at tile 9023) — site+name owner-ratified 2026-09-06, spec in forsaken_crags.md §3
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is DOWN
+summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
+prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
 
 # NOT THIS TARGET
 
@@ -953,12 +955,12 @@ thin:     no ## spec, no ## criteria
 summary:  CHERRYPICKERSHIPBASELINESTALE1
 prose:    infrastructure/state/items/CHERRYPICKER_SHIP_BASELINE_STALE_1.md
 
-## RUT_PLANT_BIOMEPLANTRECORD_CROSSREF_1 18 RUT_* plant ThingDefs unresolvable as BiomePlantRecord entries in some UtinniPatches biome (found live, unrelated to droid retirement work)
+## ROTSPOREKIT_ENABLE_DECISION_1 Enable mandrake.rut.rotsporekit in ModsConfig and cold-load-verify (finished FungalForest-raid content, currently deployed but not active)
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    game-up
 target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  1. Find which BiomeDef(s) carry these 18-19 names in wildPlants — grep
-prose:    infrastructure/state/items/RUT_PLANT_BIOMEPLANTRECORD_CROSSREF_1.md
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROTSPOREKIT_ENABLE_DECISION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROTSPOREKIT_ENABLE_DECISION_1.md
