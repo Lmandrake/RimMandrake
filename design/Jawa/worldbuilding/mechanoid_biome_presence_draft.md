@@ -10,6 +10,28 @@ Verified at drafting: `_freeze_matrix.csv` has no mechanoid column and
 `_freeze_rulings_2026-09-07.md` no mechanoid ruling — this table is the first and now
 authoritative data on the axis.
 
+## 🔴 WHAT THE "ANCIENT" AXIS ACTUALLY IS — owner canon, 2026-09-10 (record clearly, do not lose)
+
+The ANCIENT column below is **RimWorld's own ubiquitous "ancient danger"** — the sealed
+sub-structures the engine scatters across most biome maps, holding **sleeping ancients +
+guardians (mechanoids OR Assailant flesh creatures)**. **We are reskinning that standard
+behavior, not building a new system.** Owner, verbatim: *"That is why we reskinned the
+ancients to look like rakata so we could just leverage this standard behavior."*
+
+- The **sleeping ancients are Rakata** — reskinned via **VQE Ancients + the AreRakata
+  patches** (`VQEPatients_AreRakata.xml` / `AncientsAreRakata.xml`, see
+  `VQE_ANCIENTS_CURATION_1`). They are the **adult grandchildren of the last true members
+  of the Rakatan empire**, who slept until now. **Earlier generations remain only at
+  special sites** — the frozen war lab at the **antipode** (antistellar propane lakes,
+  `ANCIENT_WAR_LAB_1`).
+- The **guardians** are the vault's mechanoids (the Forgotten Sentinels' kin) or Assailant
+  flesh creatures — vanilla ancient-shrine contents, reskinned.
+- So the ANCIENT-ALLOW rows below are **where the reskinned Rakatan sleepers + guardians
+  are permitted to generate** by default mapgen; ANCIENT-DENY rows suppress the genstep
+  (per the MECHANISM section). The Lantern Deeps' mechanoid production facility
+  (`MECHANOID_ORIGIN_CANON_1`) is the **night-side sentry factory** the Rust Cathedral
+  would restart (`RUST_CATHEDRAL_SCALD_HISTORY_1`).
+
 ## The three axes
 
 1. **AMBIENT** — mechanoid map presence / mech clusters as random storyteller events.
