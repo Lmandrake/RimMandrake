@@ -417,11 +417,14 @@ function build(ctx)
     -- by testing trading_post.lua's own wall_lights() calls directly: ZERO
     -- WALL_LIGHT across 20 independent seeds. `wall_lights(r,...)` steps ONE
     -- CELL PAST r's own edge looking for a wall, so it only works when r's
-    -- wall ring sits one cell inside an ACTUAL wall (i.e. r should be the
-    -- INTERIOR rect) - passing the OUTER office_r (this template's own
-    -- draft, and trading_post.lua's, and homestead.lua's before it) makes
-    -- it structurally unable to find one anywhere not coincidentally
-    -- adjacent to a second wall. Combined with STOOL being NULLED for
+    -- wall ring sits one cell inside an ACTUAL wall (i.e. r must be the
+    -- INTERIOR rect) - this template (both here and the bld_r call below)
+    -- and trading_post.lua were passing the OUTER shell rect instead of the
+    -- already-available interior rect (`office_i`/`bld_i`), which is what
+    -- every other template's ~30 wall_lights() call sites do correctly and
+    -- what wall_cells()'s own doc comment says it expects
+    -- (WALL_LIGHTS_HELPER_BROKEN_1) - now fixed here to pass `office_i`.
+    -- Combined with STOOL being NULLED for
     -- Jawa_FreeDroidEnclaves (canon: droids do not sit - the desk's own
     -- chair silently fails there too), this office had ZERO real
     -- secondaries on that faction's `abandoned` state - "no-secondary"
@@ -430,12 +433,11 @@ function build(ctx)
     -- never touches at all: BARREL, walkability-guarded the same way
     -- SHELF_SMALL was. PLANT_POT stays as a nice-to-have where available
     -- (unguarded - it is passable, so it cannot itself break the aisle
-    -- proof); `wall_lights()` stays too (harmless even where it cannot
-    -- actually place anything, and it evidently DOES work once a room
-    -- happens to sit against another wall) but is no longer trusted alone.
+    -- proof); `wall_lights()` now gets a real INTERIOR rect and is trusted
+    -- as the guaranteed-secondary it was meant to be.
     local ocx, ocz = center(office_i)
     try_near(ctx, "PLANT_POT", ocx, ocz, 0, 1, office_i)
-    wall_lights(ctx, office_r, 1)
+    wall_lights(ctx, office_i, 1)
     local barrel_ok = false
     for _, side in ipairs(shuffle({ fr.side("N"), fr.side("E"), fr.side("W"), fr.side("S") })) do
       for _, c in ipairs(shuffle(wall_cells(office_i, side))) do
@@ -640,7 +642,7 @@ function build(ctx)
   -- a couple of the long walls (FloodLight has no verified defName in this
   -- stack's index tonight - StandingLamp/TorchLamp, the palette's own LIGHT
   -- role per tech tier, stands in; the spec's own dressing note, not guessed).
-  local lamps = wall_lights(ctx, bld_r, rng.int(2, 3))
+  local lamps = wall_lights(ctx, bld_i, rng.int(2, 3))
   -- REAL BUG this pass's own first lint run caught (fixed twice, both real):
   -- (1) `fr.cell(...)` returns TWO values (x, z), and Lua only expands a
   -- multi-return expression when it is the LAST argument in a call - used
