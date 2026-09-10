@@ -127,7 +127,8 @@ def main():
             else:
                 number = None
             plan.append("gh " + " ".join(create[:6]) + " …")
-            mmap[item.id] = {"number": number, "fp": fp, "open": True}
+            mmap[item.id] = {"number": number, "fp": fp, "open": True,
+                             "labels": want["labels"]}
             continue
 
         if have.get("fp") == fp:
@@ -141,7 +142,14 @@ def main():
             edit = ["issue", "edit", num, "-R", REPO, "--body", want["body"]]
             for lb in want["labels"]:
                 edit += ["--add-label", lb]
+            # 🔴 `--add-label` only ADDS. Without removing labels that no longer
+            # apply, a reassign (seat:BENCH -> seat:FOUNDRY) or a `needs` change
+            # left BOTH labels on the issue forever — the mirror silently drifted
+            # from the ledger it exists to reflect.
+            for lb in set(have.get("labels", [])) - set(want["labels"]):
+                edit += ["--remove-label", lb]
             gh(edit, args.apply, plan)
+            have["labels"] = want["labels"]
         have.update({"fp": fp, "open": want["open"]})
 
     if args.apply:

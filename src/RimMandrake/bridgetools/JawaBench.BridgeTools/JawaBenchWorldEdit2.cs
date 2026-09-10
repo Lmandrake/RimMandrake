@@ -96,7 +96,11 @@ namespace JawaBench.BridgeTools
 
                 if (string.IsNullOrWhiteSpace(gender)) return Fail("Give 'gender': Male, Female or None.");
                 Gender g;
-                if (!Enum.TryParse(gender.Trim(), true, out g))
+                // Enum.TryParse accepts any integer literal ("99") without Enum.IsDefined,
+                // which would silently write an out-of-range Gender straight onto the pawn -
+                // the same trap already fixed for Passion/QualityCategory/MedicalCareCategory
+                // elsewhere in this DLL.
+                if (!Enum.TryParse(gender.Trim(), true, out g) || !Enum.IsDefined(typeof(Gender), g))
                     return Fail("'" + gender + "' is not a Gender. Accepted: " + string.Join(", ", Enum.GetNames(typeof(Gender))));
 
                 Gender before = p.gender;

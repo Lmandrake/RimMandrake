@@ -499,8 +499,15 @@ namespace JawaBench.BridgeTools
                 if (level >= 0) sr.Level = Mathf.Clamp(level, 0, 20);
                 if (!string.IsNullOrEmpty(passion))
                 {
-                    try { sr.passion = (Passion)Enum.Parse(typeof(Passion), passion.Trim(), true); }
-                    catch { return Fail("Bad passion '" + passion + "'. None|Minor|Major."); }
+                    // Enum.Parse accepts any integer literal ("99"), silently producing an
+                    // out-of-range Passion that gets scribed straight into the savegame and
+                    // indexed by the skills-tab UI - the same trap already fixed for
+                    // QualityCategory/MedicalCareCategory/JobTag elsewhere in this DLL.
+                    // Enum.IsDefined is what rejects it.
+                    Passion pn;
+                    if (!Enum.TryParse(passion.Trim(), true, out pn) || !Enum.IsDefined(typeof(Passion), pn))
+                        return Fail("Bad passion '" + passion + "'. None|Minor|Major.");
+                    sr.passion = pn;
                 }
                 if (resetXp) sr.xpSinceLastLevel = 0f;
 
@@ -727,8 +734,14 @@ namespace JawaBench.BridgeTools
                     QualityCategory q = QualityCategory.Normal; bool setQ = false;
                     if (!string.IsNullOrEmpty(quality))
                     {
-                        try { q = (QualityCategory)Enum.Parse(typeof(QualityCategory), quality.Trim(), true); setQ = true; }
-                        catch { return Fail("Bad quality '" + quality + "'."); }
+                        // Enum.Parse accepts any integer literal ("99"), silently producing an
+                        // out-of-range QualityCategory that later indexes QualityUtility's
+                        // per-category label/colour arrays out of bounds - the same trap
+                        // already fixed for this exact enum in JawaBenchJobTools.cs /
+                        // JawaBenchZoneTools.cs. Enum.IsDefined is what rejects it.
+                        if (!Enum.TryParse(quality.Trim(), true, out q) || !Enum.IsDefined(typeof(QualityCategory), q))
+                            return Fail("Bad quality '" + quality + "'.", new { accepted = Enum.GetNames(typeof(QualityCategory)) });
+                        setQ = true;
                     }
 
                     // equip/wear can drop a conflicting item via MakeRoomFor/Wear, and
@@ -1336,11 +1349,16 @@ namespace JawaBench.BridgeTools
                 // BEFORE anything is written - which also stops a bad chronological value
                 // landing after the biological write already took.
                 const float MAX_YEARS = 10000f;
-                if (biologicalYears > MAX_YEARS || chronologicalYears > MAX_YEARS)
-                    return Fail("Age out of range: max " + MAX_YEARS + " years (biologicalYears=" + biologicalYears +
+                // float.IsNaN check added: a comparison against NaN is always false, so
+                // "biologicalYears > MAX_YEARS" alone let NaN sail past this guard (unlike
+                // Infinity, which IS > MAX_YEARS and was already caught) straight into the
+                // tick maths below, producing an unspecified long from the NaN->long cast.
+                if (float.IsNaN(biologicalYears) || float.IsNaN(chronologicalYears) ||
+                    biologicalYears > MAX_YEARS || chronologicalYears > MAX_YEARS)
+                    return Fail("Age out of range or NaN: max " + MAX_YEARS + " years (biologicalYears=" + biologicalYears +
                                 ", chronologicalYears=" + chronologicalYears + "). DebugSetAge walks one BirthdayBiological " +
                                 "per year, so a large forward jump freezes the game, and the tick maths overflows long " +
-                                "well before the pawn would be meaningful.");
+                                "well before the pawn would be meaningful. NaN survives a bare '>' comparison unblocked.");
 
                 var before = new
                 {

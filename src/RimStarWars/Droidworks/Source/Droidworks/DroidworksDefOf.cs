@@ -48,7 +48,7 @@ namespace RimMandrake.StarWars.Droidworks
         public static ThingDef RSW_DW_RepairBench;
         public static PawnKindDef RSW_DW_OuterRim_ImperialLaborDroid;
         public static PawnKindDef RSW_DW_OuterRim_ProtocolDroid;
-        public static PawnKindDef RSW_DW_OuterRim_AstromechDroid;
+        public static PawnKindDef RSW_DW_OuterRim_RSeriesDroid;
         public static PawnKindDef RSW_DW_OuterRim_BattleDroid;
         public static PawnKindDef RSW_DW_OuterRim_SuperTacticalDroid;
         public static PawnKindDef RSW_DW_KotORDroidColonist_KX12UPD;
