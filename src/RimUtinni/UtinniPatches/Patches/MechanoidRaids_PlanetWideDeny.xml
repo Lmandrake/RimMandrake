@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  MechanoidRaids_PlanetWideDeny.xml       UtinniPatches - new file 2026-09-10
+  ============================================================================
+  MECH_PRESENCE_ENFORCEMENT_1, piece 3/4. Enforces the RATIFIED planet-wide
+  axis-3 doctrine (design/Jawa/worldbuilding/mechanoid_biome_presence_draft.md,
+  "Planet-wide doctrine for axis 3", owner 2026-09-10): random mechanoid RAIDS
+  are DENY everywhere. Mechanoid violence reaches the player only as
+  scripted/provoked response (Cathedral trespass, war-lab breach, Deeps
+  mining, Forge/Scald tower assault) - never a storyteller-rolled raid.
+
+  VERIFIED before writing (rimsage read_csharp_symbol/get_def_details, 2026-09-10):
+  - The raid-faction weighting chain
+    (`IncidentWorker_RaidEnemy.TryResolveRaidFaction` ->
+    `PawnGroupMakerUtility.TryGetRandomFactionForCombatPawnGroupWeighted` ->
+    `FactionCanBeGroupSource`) weights candidate factions by
+    `f.def.RaidCommonalityFromPoints(points)` - no BiomeDef reference
+    anywhere, confirmed by the spec's own verification pass (cited in its
+    MECHANISM section). Zeroing this curve on the mechanoid FactionDef kills
+    random-raid selection globally, in XML, with no biome-scoping needed.
+  - The exact field, confirmed on the LIVE def via `get_def_details`
+    (defType FactionDef, defName `Mechanoid`, label "mechanoid hive"/
+    "the Forgotten Arsenal" per this campaign's own faction-lore patch):
+      <raidCommonalityFromPointsCurve>
+        <points>
+          <li>(300,  0)</li>
+          <li>(700,  1)</li>
+          <li>(1400, 1.8)</li>
+          <li>(2800, 2.2)</li>
+          <li>(4000, 2.6)</li>
+        </points>
+      </raidCommonalityFromPointsCurve>
+    This is `SimpleCurve`, not a plain float - "zero the curve" means every
+    point's commonality collapses to 0, not deleting the field (an absent/
+    empty curve is a different failure mode - RaidCommonalityFromPoints on an
+    empty curve is undefined/0-length, where a single (0,0) point is an
+    explicit, always-0 curve).
+  - Only ONE FactionDef in the live def dump both looks mechanoid-flavoured
+    and carries a `raidCommonalityFromPointsCurve`: `Mechanoid` itself
+    (checked every FactionDef with a non-empty curve for "mech" in defName
+    or label - one hit). No second mechanoid-adjacent raid faction exists to
+    zero alongside it.
+  - `earliestRaidDays`, `permanentEnemy`, `hostileToFactionlessHumanlikes`,
+    `pawnGroupMakers` (used by scripted mech-cluster/site-defense content,
+    NOT by the random-raid weighting chain above) are all left untouched -
+    this patch only removes the RANDOM-RAID selection weight, exactly the
+    doctrine's scope. Scripted/provoked mechanoid violence (mech clusters,
+    site defenders, quest content) is unaffected.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Mechanoid"]/raidCommonalityFromPointsCurve</xpath>
+
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/FactionDef[defName="Mechanoid"]/raidCommonalityFromPointsCurve/points</xpath>
+      <value>
+        <points>
+          <li>(0,0)</li>
+        </points>
+      </value>
+    </match>
+
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="Mechanoid"]</xpath>
+      <value>
+        <raidCommonalityFromPointsCurve>
+          <points>
+            <li>(0,0)</li>
+          </points>
+        </raidCommonalityFromPointsCurve>
+      </value>
+    </nomatch>
+  </Operation>
+
+</Patch>
