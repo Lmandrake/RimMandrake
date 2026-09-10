@@ -1,5 +1,28 @@
 # DRAFT amendment for owner ratification (RUST_CATHEDRAL_SCALD_HISTORY_1) — freeze rule: adds history/detail, changes no standing ruling.
 
+## OWNER RESOLUTIONS — the 5 open questions, ruled 2026-09-10 (fold these into the text below before it lands)
+
+1. **Night-side sentry factory = the Lantern Deeps' mechanoid production facility**
+   (`MECHANOID_ORIGIN_CANON_1`). One factory; the Cathedral would like it restarted.
+2. **The sealed guardians + sleeping Rakata ARE RimWorld's standard "ancient danger"
+   sealed structures, RESKINNED** (VQE Ancients + AreRakata). Not a Cathedral-specific
+   vault — the ubiquitous mapgen mechanic, spread across the ANCIENT-ALLOW biomes
+   (`mechanoid_biome_presence`). Recorded there as the axis's foundational canon.
+3. **Why it hides from the player (NEW plot canon):** the Cathedral has been studied
+   every century since it fell; it survives by looking **exceptionally dull and giving
+   boring, expected answers**, which is *why it permits salvage* — the extraction loop
+   IS the cover. Few grasp how massive/deep it is; it wants it that way. The **Empire's
+   modern presence is the top threat** (Rebel-vs-Empire surface clashes before that). It
+   dreads being pulled into a "local skirmish." **The player's Rakatan gravship flying
+   around agitating the Empire is exactly the danger it fears — so it dislikes the player
+   at first and hides from them for a long while.** (Belongs in the plot / §7b Cathedral-play canon.)
+4. **Last Rakatan command's orders:** sourced from the Scald dark tower's ground-based
+   high command (`SCALD_DARK_TOWER_1`) — confirm-as-drafted.
+5. **War children = adult grandchildren of the last true Rakatan empire**, who slept
+   until now. **Earlier generations only at the antipode war lab** (`ANCIENT_WAR_LAB_1`).
+   NOT literal children in caskets.
+
+
 _Drafted 2026-09-10 (Fable subagent) from the owner's rulings at the 2026-09-10
 question-card sitting. Targets: `the_rust_cathedral.md` §3/§GM (frozen,
 `BIOME_FREEZE_FABLE_REVIEW_1`), a companion note for
