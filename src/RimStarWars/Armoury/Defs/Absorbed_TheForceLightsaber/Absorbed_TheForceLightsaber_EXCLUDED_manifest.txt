@@ -1,0 +1,15 @@
+lee.theforce.lightsaber elements EXCLUDED from this absorption pass on
+purpose (scope cut, see generator module docstring): the downstream dark/
+light-side crystal crafting chain (Force_CraftSyntheticCrystal recipe and
+Force_SyntheticCrystal/Force_BledCrystal/Force_CleansedCrystal items), not
+part of 'the natural scatter' this item gates. Their ParentName
+(KyberCrystalBase) keeps resolving against the donor's own live
+Force_KyberCrystal, which stays active -- excluding them here orphans
+nothing. Not written to any Defs/ file; regenerate this list by rerunning
+gen_theforcelightsaber_kyber_absorption.py.
+
+defName	source file	element type
+Force_CraftSyntheticCrystal	ThingDefs_Misc/Kyber.xml	RecipeDef
+Force_SyntheticCrystal	ThingDefs_Misc/Kyber.xml	ThingDef
+Force_BledCrystal	ThingDefs_Misc/Kyber.xml	ThingDef
+Force_CleansedCrystal	ThingDefs_Misc/Kyber.xml	ThingDef
