@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T11:41:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T11:47:10Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -278,6 +278,15 @@ target:   v1
 kind:     build
 summary:  Owner, verbatim (filed on the item): "Rather than use the whole Comingo tree
 prose:    infrastructure/state/items/TREE_GRAPHICS_OWNERSHIP_1.md
+
+## LIGHTFALL_CHASM_AUTHORING_1 Author the Lightfall chasm landmark on the Damp chain (terminator suture, deepest at tile 9023) — site+name owner-ratified 2026-09-06, spec in forsaken_crags.md §3
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
+prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
 
 ## UNUSED_MUTATORS_WORLD_ASSIGNMENT_1 Put the unused tile mutators and Geological Landforms landforms on the frozen world — 88 of ~380 in use, zero GL_* (owner 2026-09-06)
 state:    doing
@@ -831,16 +840,6 @@ kind:     task
 waiting:  needs `game-up`, game is DOWN
 summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
-
-## LIGHTFALL_CHASM_AUTHORING_1 Author the Lightfall chasm landmark on the Damp chain (terminator suture, deepest at tile 9023) — site+name owner-ratified 2026-09-06, spec in forsaken_crags.md §3
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-waiting:  needs `bridge`, game is DOWN
-summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
-prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
 
 # NOT THIS TARGET
 
