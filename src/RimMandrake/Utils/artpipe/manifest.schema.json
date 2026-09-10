@@ -4,7 +4,7 @@
   "description": "Passed to `codex exec --output-schema` (or the equivalent --output-schema flag on codex_image.py's generate/edit); the worker's FINAL chat message must match this exactly, no prose around it, and `codex exec`'s own -o flag captures it — the worker does not choose where this is written. The daemon treats this as one input among several and re-validates the returned file independently with validate_sprite.py, which is authoritative over anything reported here — see AGENTS.md's 'Failure is reported, never disguised'.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "status", "note"],
+  "required": ["id", "status", "out", "width", "height", "has_alpha", "corners_transparent", "background_used", "attempts", "note"],
   "properties": {
     "id": {
       "type": "string",
@@ -18,24 +18,27 @@
       "type": ["string", "null"],
       "description": "Absolute path to the finished PNG, or null. A missing `out` with status \"ok\" is the worst outcome available to a worker — verify the file exists before writing \"ok\"."
     },
-    "width": {"type": "integer", "minimum": 0},
-    "height": {"type": "integer", "minimum": 0},
-    "has_alpha": {"type": "boolean"},
-    "corners_transparent": {"type": "boolean"},
+    "width": {
+      "type": ["integer", "null"],
+      "description": "Pixel width of the saved file, >= 0; null if no file was produced."
+    },
+    "height": {
+      "type": ["integer", "null"],
+      "description": "Pixel height of the saved file, >= 0; null if no file was produced."
+    },
+    "has_alpha": {"type": ["boolean", "null"]},
+    "corners_transparent": {"type": ["boolean", "null"]},
     "background_used": {
-      "type": "string",
-      "description": "\"transparent\" or the hex key actually rendered, e.g. \"#10e010\"."
+      "type": ["string", "null"],
+      "description": "\"transparent\" or the hex key actually rendered, e.g. \"#10e010\"; null if nothing was rendered."
     },
     "attempts": {
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 2,
-      "description": "1 unless a genuine tool error or refusal forced ONE retry (never used to chase a better result — the worker does not run validate_sprite.py itself and has no mechanical-reject loop of its own; that judgment is entirely the daemon's, after the fact)."
+      "type": ["integer", "null"],
+      "description": "1 or 2: 1 unless a genuine tool error or refusal forced ONE retry (never used to chase a better result — the worker does not run validate_sprite.py itself and has no mechanical-reject loop of its own; that judgment is entirely the daemon's, after the fact)."
     },
     "note": {
       "type": "string",
-      "maxLength": 200,
-      "description": "What changed from the prompt, or why it failed. A refusal's own words, never paraphrased."
+      "description": "What changed from the prompt, or why it failed, in at most ~200 characters. A refusal's own words, never paraphrased."
     }
   }
 }
