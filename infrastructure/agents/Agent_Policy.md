@@ -40,7 +40,7 @@ loud, and dangerous exactly where it is silent.
 |---|---|---|
 | **Fable 5** | 1M | **Design, always as a backgrounded subagent**: design judgment, decision drafting, synthesis across contradictory evidence, the skill-curation session. Never a window |
 | **Opus 5** (+fast mode) | 1M | **BENCH's window** — the orchestrator. Also per-item escalation: Harmony/C#, bridge writes, the frozen world, multi-file forensics. Fast mode for interactive latency, same model |
-| **Sonnet 5** | 1M | FOUNDRY's default: patches, defs, deploys, quicktests, log triage, interpretive sweeps, first drafts |
+| **Sonnet 5** | 1M | FOUNDRY's default: patches, defs, deploys, quicktests, log triage, interpretive sweeps, first drafts. Also ARTIST's interim launch model while that seat is inactive (`infrastructure/agents/ARTIST.md`) — revisit when the seat is defined |
 | **Haiku 4.5** | 200K | Disposable subagents: greps, censuses, existence checks, inventories. Never a window |
 
 Escalate the **model**, never the ceremony: a hard problem gets a smarter model on

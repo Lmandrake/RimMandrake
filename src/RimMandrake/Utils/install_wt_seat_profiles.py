@@ -21,7 +21,7 @@ Profiles do all of it, before the shell even starts.
 
 WHAT IT WRITES
 ==============
-One profile per window — `AGENT BENCH`, `AGENT FOUNDRY` — each with
+One profile per window — `AGENT BENCH`, `AGENT FOUNDRY`, `AGENT ARTIST` — each with
 
   * a colour scheme cloned from Campbell with the seat's foreground,
   * `tabColor`, so the tab strip is colour-coded,
@@ -136,12 +136,20 @@ LAUNCH = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
 SEATS = {
     "BENCH":   ("#7BC96F", "claude-fable-5", "green — with the owner, permanent bench", None),
     "FOUNDRY": ("#E5A03C", "sonnet", "amber — the autonomous queue window", None),
+    "ARTIST":  ("#B48EFF", "sonnet", "purple — the art-pipeline seat (NOT YET ACTIVE, "
+                "see infrastructure/agents/ARTIST.md)", None),
     "HESTIA":  ("#FFC83D", "claude-fable-5", "gold-amber — the Hestia project, not a seat here",
                 ("/mnt/d/Luke/dev/Hestia", r"D:\Luke\dev\Hestia")),
 }
 
 # Profiles from the retired four-seat fleet, removed on --apply.
 RETIRED = ("DECIDE", "BUILD", "CHECK", "REP")
+
+# Hand-made drafts replaced by installer-owned profiles. Matched by their literal
+# guids — they predate seat_guid() so the derived form cannot find them — and
+# removed on --apply exactly like RETIRED. The 2026-09-09 'Artist' draft launched
+# the artpipe daemon directly instead of a Claude seat; reconciled same day.
+STALE_GUIDS = ("{95f50bf2-5cff-4e02-866c-a04b142b4b17}",)   # 'Artist', hand-made
 
 # Campbell, Windows Terminal's default scheme. Only `foreground` and
 # `cursorColor` differ per seat; everything else is left identical so ordinary
@@ -247,11 +255,11 @@ def main():
     # The retired four-seat profiles and schemes are removed, matched by their
     # stable guids / scheme names so a hand-made profile is never touched.
     removed = 0
-    for seat in RETIRED:
-        g = seat_guid(seat)
+    for g in [seat_guid(seat) for seat in RETIRED] + list(STALE_GUIDS):
         n0 = len(plist)
         plist[:] = [p for p in plist if p.get("guid") != g]
         removed += n0 - len(plist)
+    for seat in RETIRED:
         schemes[:] = [s for s in schemes if s.get("name") != f"Seat {seat}"]
 
     # Font size goes in profiles.defaults, NOT in the seat profiles. The owner's
