@@ -222,3 +222,75 @@ quicktest:
 
 **Still owed, unchanged from above**: real G2 sprite art, the
 owner-facing savegame. Item stays `doing`+blocked.
+
+## FOUNDRY, 2026-09-09 — real G2 sprite art (game down tonight, offline-only)
+
+Mechanics were already complete and committed (above) and re-checked as
+current before starting. Discharged the art half of this packet:
+`generating-rimworld-sprites` skill, Codex `image_gen` (`codex_image.py`,
+`auth_mode: chatgpt`) — **`probe` on this install now reports native
+transparency available**, superseding that skill's older
+chroma-key-is-mandatory text for this Codex version; used `generate` (not
+`edit` — one `edit` call lost the alpha channel entirely, returning a
+checkerboard baked into RGB rather than real transparency, discarded).
+
+**South facing needed 10 `generate` attempts** to find a stance the
+goose-necked/thin-frame design brief could hold while landing inside the
+canvas-fit band `conform_sprite.py` + `validate_sprite.py` need to pass a
+silhouette check against `DUM_south.png` (the placeholder's own reference):
+plain/slender poses landed aspect 0.32-0.46, a deliberately wide/T-pose
+stance overshot to 0.66-0.88, nothing landed in the ~0.52-0.59 band. Kept
+the best-reading result (aspect 0.457) rather than continuing to burn
+generations chasing the band — visually the clear best match to the brief
+and the only one still reading as goose-necked (not T-posed) at true sprite
+size on `contact_sheet.py`'s 96px row. East/north needed one `generate`
+call each (aspect 0.432 / 0.498).
+
+**All three facings REJECT on `validate_sprite.py` against DUM** — root-caused,
+not worked around: `DUM_south.png` measures a wide mushroom-dome-headed stub
+body (122x219, aspect 0.557); the design doc's G2 is explicitly the opposite
+build (tall, thin, goose-necked), so no faithful drawing of the actual brief
+can ever land inside DUM's footprint tolerance — confirmed by all three
+facings failing the identical way (width/aspect/origin, never alpha/corner/
+fringe/fragment/coverage). DUM was only ever "closest existing shape" for a
+**placeholder**; that placeholder reasoning is deleted here (CLAUDE.md:
+"inaccurate material is deleted, not superseded-in-place"), not kept as a
+caveat. Every reference-independent check (`validate_sprite.py`'s single-file
+describe mode) is clean on all three: canvas exact 256x256, real alpha,
+corners `[0,0,0,0]`, fringe within tolerance (WARN only), no mid-alpha mass,
+no fragments. `selftest.py` re-run against `DUM_south.png`: 9/9. Full
+`run_selftests.py`: 47/47.
+
+**Wired in** (`Defs/Races_Primitive.xml`): body path
+`DW/Primitive/G2` (`Textures/DW/Primitive/G2_{south,east,north}.png` — `DW/`
+is this mod's own hand-authored-art namespace, already holding
+`blank_*.png`; picked over `OuterRim/` to stop implying donor-mod
+provenance for original art). Dropped the DUM-era `colorChannels` multiply
+override entirely (RGBA(112,68,55,255) existed only to recolour DUM's own
+white/grey texture; the new art is baked-palette, nothing to recolour) —
+matches `Races_JDS.xml`'s 16 races exactly (no colorChannels override,
+same skinShader/headTypes/bodyTypes shape), an already-shipped precedent,
+not a novel risk.
+
+**Not done, and explicitly owed** (game confirmed down tonight after two
+quicktest crashes — no bridge call attempted, per this session's own
+brief):
+- **"G2 renders in a savegame for the owner"** — the packet's own
+  remaining verify line. Route once the bridge is back: spawn
+  `RSW_DW_Race_Primitive_G2Unit`'s kind (`jawa/spawn_pawn` or the
+  reassembly harness — check the live PawnKindDef defName before spawning,
+  don't guess it off this note) and save per CLAUDE.md's "Options he must
+  LOOK at ship as a savegame". Prediction: a slender goose-necked droid,
+  visibly not the stocky DUM/mushroom-dome placeholder silhouette.
+- Palette/pose are this session's own calls (worn brass/rust-orange, the
+  aspect-0.457 stance), not a design-doc-specified exact value — reasonable
+  for Fable-tier/owner review to revise; the shape (goose-neck, twin
+  lamp-eyes, claws, three-toed feet, exposed cabling, tube-and-plate frame)
+  is not in question, it is straight from the design doc.
+
+Scratch/review art (raw generations, rejected stances, contact sheets) left
+under `Transient/art_gen/droidworks_g2/` per the Transient convention — not
+cited from any committed doc, human-look-once only.
+
+Item stays `doing`. Only the live-savegame look remains, and that needs the
+game up.
