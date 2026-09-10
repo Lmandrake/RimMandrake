@@ -6873,3 +6873,6 @@
 {"seat":"FOUNDRY","event":"close","id":"BIOME_ENRICHMENT_POISON_FOREST_1","sha":"256f239f2668b89c4a879107d6cd7ce52f914769","ts":"2026-09-10T11:19:35Z"}
 {"seat":"FOUNDRY","event":"unblock","id":"DROID_RETIRE_ABF_SYNCORE_1","ts":"2026-09-10T11:20:26Z"}
 {"seat":"FOUNDRY","event":"note","id":"DROID_RETIRE_ABF_SYNCORE_1","text":"Unblocking: DROID_RETIREMENT_ORDER_ASSERT_1's constraint (guy762.kotordroids AND guy762.mm.kotorcore active together requires ABF/SynCore also active) no longer triggers - guy762.kotordroids was retired tonight (DROID_RETIRE_KOTORDROIDS_1, closed live-verified). Ran retirement_order.check_order() against the live ModsConfig just now: zero violations. Safe to proceed with this item's original spec.","ts":"2026-09-10T11:20:27Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DROID_RETIRE_ABF_SYNCORE_1","ts":"2026-09-10T11:21:13Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-10T11:41:30Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROID_RETIRE_ABF_SYNCORE_1","sha":"0c289802072fc2170ff3c5655a3234c1268dbbba","ts":"2026-09-10T11:41:36Z"}
