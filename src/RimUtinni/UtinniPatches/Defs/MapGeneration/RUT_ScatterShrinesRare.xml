@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_ScatterShrinesRare.xml             UtinniPatches - new file 2026-09-10
+  ============================================================================
+  MECH_PRESENCE_ENFORCEMENT_1, piece 2/4 support file. The ratified ANCIENT
+  column (design/Jawa/worldbuilding/mechanoid_biome_presence_draft.md) marks
+  four biomes RARE rather than ALLOW/DENY: ExtremeDesert, BiomeGRimond,
+  PoisonForest, BiomeCypreJungle. The MECHANISM section's own recipe for a
+  RARE ancient-danger biome: "prevent the stock genstep and add a cloned
+  GenStepDef with a lower countPer10kCellsRange via extraGenSteps." This is
+  that clone; AncientDangerGenSteps_AmbientDoctrine.xml is what wires it onto
+  the four biomes (alongside preventGenSteps->ScatterShrines to stop the
+  stock, full-rate version).
+
+  EVERY FIELD BELOW IS COPIED FROM THE SHIPPED DONOR
+  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Core\Defs\MapGeneration\BasePlayerMapGenerator.xml:18-25
+    <GenStepDef>
+      <defName>ScatterShrines</defName>
+      <order>750</order>
+      <genStep Class="GenStep_ScatterShrines">
+        <allowInWaterBiome>false</allowInWaterBiome>
+        <countPer10kCellsRange><min>0.12</min><max>0.25</max></countPer10kCellsRange>
+      </genStep>
+    </GenStepDef>
+  order and genStep Class are unchanged; allowInWaterBiome is unchanged (none
+  of the four RARE biomes are water biomes anyway). The one deliberate change
+  is countPer10kCellsRange, quartered from 0.12-0.25 to 0.03-0.0625 -
+  "present but tuned sparse" per the table's own legend, and a concrete
+  number this item has to pick since the spec names no ratio. Documented here
+  rather than guessed silently; noted on MECH_PRESENCE_ENFORCEMENT_1 for the
+  owner's awareness. True per-incident-worker tuning (matching AMBIENT's own
+  RARE rows) would need C#/Harmony and is out of this item's XML-only scope.
+
+  GenStepDef.cs / GenStep_ScatterShrines.cs read via rimsage confirm nothing
+  else about this class is order- or biome-sensitive beyond these two fields;
+  the class inherits GenStep_ScatterRuinsSimple's shrine-placement logic
+  unchanged (guardian/pod content is resolved elsewhere - see the
+  AncientDangerGenSteps_AmbientDoctrine.xml note on why shrine CONTENT
+  curation, piece 4, could not be built in XML).
+  ============================================================================
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RUT_ScatterShrinesRare</defName>
+    <order>750</order>
+    <genStep Class="GenStep_ScatterShrines">
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <countPer10kCellsRange><min>0.03</min><max>0.0625</max></countPer10kCellsRange>
+    </genStep>
+  </GenStepDef>
+
+</Defs>
