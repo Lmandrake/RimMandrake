@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -42,6 +43,7 @@ sys.path.insert(0, str(REPO_ROOT / "skills" / "generating-images" / "scripts"))
 import pnglib  # noqa: E402
 
 MOCK_WORKER = HERE / "mock_codex_worker.py"
+MOCK_GEMINI_WORKER = HERE / "mock_gemini_worker.py"
 VALIDATOR = common.DEFAULT_VALIDATOR
 SCHEMA = common.MANIFEST_SCHEMA
 
@@ -75,21 +77,24 @@ def make_reference(path: Path, w: int = 64, h: int = 64) -> None:
 
 
 def job_dict(job_id: str, reference: Path | str | None, priority: int = 100,
-             prompt: str = "a small weathered supply crate, top-down game sprite") -> dict:
+             prompt: str = "a small weathered supply crate, top-down game sprite",
+             channel: str = "codex") -> dict:
     return {
         "id": job_id, "rimflow_item_id": "SELFTEST_ARTPIPE",
         "reference": str(reference) if reference else None,
         "canvas": {"width": 64, "height": 64},
         "prompt": prompt,
         "style_notes": "", "priority": priority, "background": "transparent",
-        "facing": None, "facings": [],
+        "channel": channel, "facing": None, "facings": [],
     }
 
 
 def make_job(pending_dir: Path, job_id: str, reference: Path | None,
-             priority: int = 100, prompt: str | None = None) -> Path:
+             priority: int = 100, prompt: str | None = None,
+             channel: str = "codex") -> Path:
     job = job_dict(job_id, reference, priority,
-                   prompt or "a small weathered supply crate, top-down game sprite")
+                   prompt or "a small weathered supply crate, top-down game sprite",
+                   channel)
     dest = pending_dir / f"{job_id}.json"
     common.atomic_write_json(dest, job)
     return dest
@@ -106,6 +111,7 @@ class Queue:
         self.failed = tmp / "failed"
         self.artsrc = tmp / "_artsrc"
         self.codex_homes = tmp / "_codex_homes"
+        self.throughput_log = tmp / "throughput.jsonl"
         common.ensure_queue_dirs(self.pending, self.active, self.done,
                                   self.failed, self.artsrc)
         self.reference = tmp / "reference.png"
@@ -116,8 +122,10 @@ class Queue:
                 "--pending-dir", str(self.pending), "--active-dir", str(self.active),
                 "--done-dir", str(self.done), "--failed-dir", str(self.failed),
                 "--artsrc-dir", str(self.artsrc), "--codex-home-root", str(self.codex_homes),
-                "--throughput-log", str(self.root / "throughput.jsonl"),
-                "--worker-script", str(MOCK_WORKER), "--validator-script", str(VALIDATOR),
+                "--throughput-log", str(self.throughput_log),
+                "--worker-script", str(MOCK_WORKER),
+                "--gemini-worker-script", str(MOCK_GEMINI_WORKER),
+                "--validator-script", str(VALIDATOR),
                 "--manifest-schema", str(SCHEMA), "--poll-interval", "0.1",
                 *extra]
 
@@ -220,7 +228,14 @@ def test_row1_rate_limit_hard_stop():
         # hard_stop) before the daemon ever considers claiming after1/after2.
         proc = q.run({"ratelimited1": "rate_limited", "after1": "ok", "after2": "ok"},
                       "--once", "--workers", "1")
-        ok("row1: daemon exits 0", proc.returncode == 0, proc.stderr)
+        # Finding 5: a hard stop with real work left behind (after1/after2
+        # still pending) is now a NONZERO exit — "clean drain" and "wedged
+        # mid-run" must be distinguishable from outside without parsing the
+        # log line.
+        ok("row1: daemon exits NONZERO — real work was abandoned by the wedge",
+           proc.returncode != 0, proc.stdout + proc.stderr)
+        ok("row1: the final line says ABANDONED WORK", "ABANDONED WORK" in proc.stdout,
+           proc.stdout)
         ok("row1: ratelimited1 failed", (q.failed / "ratelimited1.json").is_file())
 
         m_path = q.failed / "ratelimited1.manifest.json"
@@ -275,7 +290,8 @@ def test_stale_output_never_accepted_after_worker_failure():
         q = Queue(Path(td))
         job_id = "staleoutput"
         make_job(q.pending, job_id, q.reference)
-        stale_path = q.artsrc / f"{job_id}.png"
+        stale_path = q.artsrc / job_id / f"{job_id}.png"  # the real per-job scratch dir
+        stale_path.parent.mkdir(parents=True, exist_ok=True)
         make_reference(stale_path)  # a genuinely valid image — just STALE
         ok("fixture: the stale file really is there before the run",
            stale_path.is_file())
@@ -505,16 +521,33 @@ def test_two_concurrent_daemons_claim_atomically():
         ok("atomicity: exactly one manifest per job, no duplicates",
            len(manifests) == n, f"{len(manifests)} manifests for {n} jobs")
 
-        # Finding: codex_home dirs were "w<slot>" — unique only within ONE
-        # process. Two daemons sharing --codex-home-root, both filling slots
-        # 0..2, would have collided on identical paths before the pid-scoped
-        # fix. Real end-to-end proof (not just the pure-path check above):
-        # every codex_home directory either daemon actually created must
-        # carry a pid, and at least two distinct pids must appear.
-        home_dirs = [p.name for p in q.codex_homes.iterdir() if p.is_dir()]
-        pids_seen = {name.rsplit("-", 1)[-1] for name in home_dirs if "-" in name}
-        ok("atomicity: codex_home dirs are pid-scoped across the two real daemons",
-           len(pids_seen) >= 2, f"home dirs: {home_dirs}")
+        # Finding 1 (this pass): codex_home dirs are now a bounded, LEASED
+        # pool ("w0".."wN-1", no pid in the name) rather than one dir per
+        # pid — so growth is bounded across restarts. The collision-safety
+        # proof is different now: with --workers 3 on each of 2 daemons
+        # running CONCURRENTLY, the flock lease means neither process can
+        # ever be handed a slot the other is actively holding, so exactly
+        # 2*3=6 DISTINCT slot dirs must exist (no sharing/reuse WITHIN one
+        # concurrent run), and each slot's lockfile must name one of the
+        # two real child pids — proving both processes actually acquired
+        # leases, not just that six directories happen to exist.
+        home_dirs = sorted(p for p in q.codex_homes.iterdir() if p.is_dir())
+        ok("atomicity: exactly 2*workers distinct leased codex_home dirs, no cross-daemon reuse",
+           len(home_dirs) == 6, f"home dirs: {[p.name for p in home_dirs]}")
+
+        real_pids = {str(p.pid) for p in procs}
+        lock_pids = set()
+        for home in home_dirs:
+            lock = home / ".artpipe_lease.lock"
+            if lock.is_file():
+                text = lock.read_text()
+                m = re.search(r"pid=(\d+)", text)
+                if m:
+                    lock_pids.add(m.group(1))
+        ok("atomicity: every leased home's lockfile names one of the two real daemon pids",
+           lock_pids and lock_pids <= real_pids, f"lock_pids={lock_pids} real_pids={real_pids}")
+        ok("atomicity: BOTH real daemon pids actually appear across the leases",
+           lock_pids == real_pids, f"lock_pids={lock_pids} real_pids={real_pids}")
 
 
 def test_dry_run_never_touches_the_queue():
@@ -539,7 +572,7 @@ def test_dry_run_never_touches_the_queue():
         ok("dry-run: nothing moved into active/", not any(q.active.glob("*.json")))
         ok("dry-run: nothing moved into done/ or failed/",
            not any(q.done.glob("*.json")) and not any(q.failed.glob("*.json")))
-        ok("dry-run: no image ever written to _artsrc/", not any(q.artsrc.glob("*.png")))
+        ok("dry-run: no image ever written to _artsrc/", not any(q.artsrc.rglob("*.png")))
 
 
 def test_fill_queue_refuses_duplicate_id():
@@ -753,6 +786,491 @@ def test_rate_limit_marker_strips_prompt_echo_but_not_real_refusals():
        artpiped._looks_rate_limited(real_refusal, prompt))
 
 
+# --------------------------------------------------------------------------
+# fresh-review fixes (cf488dd8 -> this pass): 9 findings + Gemini backend
+# --------------------------------------------------------------------------
+
+def test_codex_home_root_default_is_outside_the_repo():
+    """Finding: infrastructure/artpipe/_codex_homes/ was INSIDE this public
+    repo, and seeding a worker home copies auth.json there — a credential
+    leak, not a config choice. The real fix moves the default out; a
+    .gitignore entry is a backstop only."""
+    root = common.DEFAULT_CODEX_HOME_ROOT
+    ok("codex-home-root: default is not inside the repo",
+       common.REPO_ROOT not in root.parents and root != common.REPO_ROOT, str(root))
+
+
+def test_codex_home_lease_bounds_growth_and_avoids_collision():
+    """Finding: growth must be BOUNDED (no pid-in-name accumulation across
+    restarts) while still never letting two live holders share one
+    codex_home (openai/codex #11435's interference). Two separate open()
+    calls on the same lockfile — even in one process — get two distinct
+    open file descriptions, so this genuinely exercises flock contention,
+    not just two Python objects agreeing not to collide."""
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        home1, fh1 = common.acquire_codex_home_lease(root, max_slots=4)
+        home2, fh2 = common.acquire_codex_home_lease(root, max_slots=4)
+        ok("lease: two concurrent leases get two DISTINCT slots", home1 != home2,
+           f"{home1} vs {home2}")
+        ok("lease: slot dirs are small bounded names, not pid-suffixed",
+           home1.name in ("w0", "w1") and home2.name in ("w0", "w1"),
+           f"{home1.name}, {home2.name}")
+
+        fh1.close()  # release — simulates that holder's process exiting
+        home1b, fh1b = common.acquire_codex_home_lease(root, max_slots=4)
+        ok("lease: releasing a slot lets the NEXT acquire REUSE it, not grow",
+           home1b == home1, f"{home1b} vs {home1}")
+
+        existing_slots = [p for p in root.iterdir() if p.is_dir()]
+        ok("lease: still only 2 slot directories exist after release+reuse (bounded)",
+           len(existing_slots) == 2, [p.name for p in existing_slots])
+        fh1b.close()
+        fh2.close()
+
+
+def test_reference_less_job_size_mismatch_is_caught():
+    """Finding: a reference-less job used to accept ANY returned image as
+    ok — validate_sprite.py is skipped entirely with no reference, and
+    nothing else checked the size. The image tool is KNOWN to ignore
+    requested size (design addendum §2.3) — this is the normal case."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "norefwrongsize"
+        make_job(q.pending, job_id, None)  # no reference -> generate, validator skipped
+        proc = q.run({job_id: "wrong_size"}, "--once", "--workers", "1")
+        ok("size-check: daemon exits 0", proc.returncode == 0, proc.stderr)
+        ok("size-check: a reference-less job with a size mismatch FAILS, never a silent ok",
+           (q.failed / f"{job_id}.json").is_file())
+        manifest = q.failed / f"{job_id}.manifest.json"
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("size-check: worker_status is size_mismatch",
+               m.get("worker_status") == "size_mismatch", str(m))
+            ok("size-check: width/height recorded in the manifest",
+               m.get("width") == 32 and m.get("height") == 32, str(m))
+
+
+def test_reference_less_job_correct_size_still_passes():
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "norefrightsize"
+        make_job(q.pending, job_id, None)
+        proc = q.run({job_id: "ok"}, "--once", "--workers", "1")
+        ok("size-check: daemon exits 0", proc.returncode == 0, proc.stderr)
+        ok("size-check: a reference-less job with the RIGHT size still passes",
+           (q.done / f"{job_id}.json").is_file())
+        manifest = q.done / f"{job_id}.manifest.json"
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("size-check: width/height recorded even on the happy path",
+               m.get("width") == 64 and m.get("height") == 64, str(m))
+            ok("size-check: validator is 'skipped' (no reference), not a silent PASS",
+               m.get("validator") == "skipped", str(m))
+
+
+def test_worker_self_report_folded_into_manifest_and_detects_row1():
+    """Finding: the worker's --output-last-message file was never READ,
+    only deleted. Its structured content must fold into the daemon's own
+    manifest and participate in row 1 detection — the spec names "-o last
+    message" as a detection source, not just the raw transcript."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "refusedinmanifest"
+        make_job(q.pending, job_id, q.reference)
+        proc = q.run({job_id: "refused_rate_limit_in_manifest"}, "--once", "--workers", "1")
+        ok("self-report: daemon exits NONZERO — a hard stop is its own wedge signal",
+           proc.returncode != 0, proc.stdout + proc.stderr)
+        manifest = q.failed / f"{job_id}.manifest.json"
+        ok("self-report: job fails", manifest.is_file())
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("self-report: detector_row is 1 — caught via the -o last-message note, "
+               "not the (clean) transcript", m.get("detector_row") == 1, str(m))
+            wsr = m.get("worker_self_report") or {}
+            ok("self-report: the worker's own manifest is folded into the daemon's",
+               wsr.get("status") == "refused" and "TooManyRequests" in (wsr.get("note") or ""),
+               str(wsr))
+
+
+def test_detector_deescalates_after_fresh_healthy_reading():
+    """Finding: one 93% weekly reading used to wedge refuse_new/n_override
+    FOREVER, even after the window resets. Every threshold must be
+    RECOMPUTED from the current reading — only row 1's hard_stop stays
+    latched."""
+    d = artpiped.Detector()
+    # WEEKLY_STOP is 97.0 — 98% is the stop_all band, not 93% (that's the
+    # 90-97 refuse_new band, a different assertion below covers it).
+    d.note_meters({"ok": True, "secondary_used_percent": 98.0, "primary_used_percent": 10.0})
+    ok("deescalate: 98% weekly sets stop_all", d.stop_all and d.admission_blocked())
+
+    d.note_meters({"ok": True, "secondary_used_percent": 1.0, "primary_used_percent": 1.0})
+    ok("deescalate: a fresh 1% reading clears stop_all/refuse_new",
+       not d.stop_all and not d.refuse_new and not d.admission_blocked())
+
+    d1b = artpiped.Detector()
+    d1b.note_meters({"ok": True, "secondary_used_percent": 93.0, "primary_used_percent": 10.0})
+    ok("deescalate: 93% weekly (the 90-97 band) sets refuse_new, not stop_all",
+       d1b.refuse_new and not d1b.stop_all and d1b.admission_blocked())
+    d1b.note_meters({"ok": True, "secondary_used_percent": 1.0, "primary_used_percent": 1.0})
+    ok("deescalate: a fresh 1% reading clears refuse_new too",
+       not d1b.refuse_new and not d1b.admission_blocked())
+
+    d2 = artpiped.Detector()
+    d2.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": 75.0})
+    ok("deescalate: 75% five-hour drops to N=1", d2.current_n(4) == 1)
+    d2.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": 5.0})
+    ok("deescalate: a fresh low five-hour reading restores full N",
+       d2.current_n(4) == 4 and d2.n_override is None and d2.sleep_until is None)
+
+    d3 = artpiped.Detector()
+    d3.note_rate_limited()
+    ok("deescalate: hard_stop is set", d3.hard_stop)
+    d3.note_meters({"ok": True, "secondary_used_percent": 1.0, "primary_used_percent": 1.0})
+    ok("deescalate: hard_stop STAYS latched even after a healthy reading — "
+       "only row 1's state never clears", d3.hard_stop and d3.admission_blocked())
+
+
+def test_detector_resets_at_coercion_never_crashes():
+    """Finding: an ISO-string resets_at would TypeError the main thread
+    comparing `time.time() < sleep_until`; a seconds-remaining value would
+    silently no-op the sleep forever. Anything not a plain numeric epoch is
+    treated as unknown — logged, falls back to the milder N=1 action,
+    never crashes."""
+    d = artpiped.Detector()
+    d.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": 95.0,
+                   "primary_resets_at": "2026-09-10T00:00:00Z"})
+    ok("resets_at: an ISO string does not crash the detector — reaching this line IS the proof",
+       True)
+    ok("resets_at: an unusable resets_at falls back to N=1, never a trusted sleep",
+       d.sleep_until is None and d.n_override == 1)
+
+    d2 = artpiped.Detector()
+    d2.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": 95.0,
+                    "primary_resets_at": None})
+    ok("resets_at: a missing resets_at falls back to N=1, never crashes",
+       d2.sleep_until is None and d2.n_override == 1)
+
+    d3 = artpiped.Detector()
+    d3.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": 95.0,
+                    "primary_resets_at": {"weird": "object"}})
+    ok("resets_at: non-scalar garbage does not crash the detector, falls back",
+       d3.sleep_until is None and d3.n_override == 1)
+
+    d4 = artpiped.Detector()
+    good_epoch = time.time() + 500
+    d4.note_meters({"ok": True, "secondary_used_percent": 5.0, "primary_used_percent": 95.0,
+                    "primary_resets_at": good_epoch})
+    ok("resets_at: a genuine numeric epoch IS trusted and used directly",
+       d4.sleep_until == good_epoch and d4.n_override is None)
+
+
+def test_exit_code_zero_on_clean_drain_with_healthy_meters():
+    """The contrasting case to the row1/self-report tests above: a
+    genuinely clean run — nothing wedged, nothing left behind — must still
+    exit 0."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "healthyjob", q.reference)
+        proc = q.run({"healthyjob": {"behavior": "ok", "weekly": 10.0}}, "--once", "--workers", "1")
+        ok("exit-code: a genuinely clean drain exits 0", proc.returncode == 0,
+           proc.stdout + proc.stderr)
+        ok("exit-code: the final line says CLEAN DRAIN", "CLEAN DRAIN" in proc.stdout, proc.stdout)
+
+
+def test_per_job_scratch_directory_is_real_not_shared():
+    """Finding: AGENTS.md claimed per-job scratch dirs but codex_image.py
+    sets its workdir to the shared _artsrc/ root — either make the code
+    true or the doc honest. Fixed by giving each job a REAL subdirectory
+    (out lives at _artsrc/<job_id>/<job_id>.png), which IS the worker's
+    cwd (codex_image.py sets workdir = out.parent)."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "scratchA", q.reference)
+        make_job(q.pending, "scratchB", q.reference)
+        proc = q.run({"scratchA": "ok", "scratchB": "ok"}, "--once", "--workers", "2")
+        ok("scratch: daemon exits 0", proc.returncode == 0, proc.stderr)
+        a_png = q.artsrc / "scratchA" / "scratchA.png"
+        b_png = q.artsrc / "scratchB" / "scratchB.png"
+        ok("scratch: job A's output lives in ITS OWN per-job subdir", a_png.is_file())
+        ok("scratch: job B's output lives in ITS OWN per-job subdir", b_png.is_file())
+        ok("scratch: the two jobs do NOT share one flat directory — no <id>.png "
+           "sitting directly in _artsrc/",
+           not (q.artsrc / "scratchA.png").is_file() and not (q.artsrc / "scratchB.png").is_file())
+
+
+def test_codex_one_retry_rescues_transient_failure():
+    """Finding: row 1 spec requires ONE retry max on a failed request —
+    none existed. fail_then_ok fails on invocation 1, succeeds on
+    invocation 2; the mock's own invocation counter proves it was called
+    exactly twice, never a third time."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "retryok"
+        make_job(q.pending, job_id, q.reference)
+        proc = q.run({job_id: "fail_then_ok"}, "--once", "--workers", "1")
+        ok("retry: daemon exits 0", proc.returncode == 0, proc.stderr)
+        ok("retry: the job succeeds after ONE retry", (q.done / f"{job_id}.json").is_file())
+        manifest = q.done / f"{job_id}.manifest.json"
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("retry: daemon_attempts is 2", m.get("daemon_attempts") == 2, str(m))
+        counter = q.artsrc / job_id / f".{job_id}.invocations"
+        ok("retry: the mock was invoked exactly twice, never a third time",
+           counter.is_file() and counter.read_text().strip() == "2",
+           counter.read_text() if counter.is_file() else "no counter file")
+
+
+def test_codex_retry_never_applied_to_rate_limited():
+    """The other half: a throttle refusal must go straight to the hard
+    stop, never spend the one retry on it."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "noretryratelimit"
+        make_job(q.pending, job_id, q.reference)
+        proc = q.run({job_id: "rate_limited"}, "--once", "--workers", "1")
+        ok("no-retry: daemon exits nonzero (a hard stop, per finding 5)", proc.returncode != 0)
+        counter = q.artsrc / job_id / f".{job_id}.invocations"
+        ok("no-retry: rate_limited is invoked EXACTLY ONCE — never retried",
+           counter.is_file() and counter.read_text().strip() == "1",
+           counter.read_text() if counter.is_file() else "no counter file")
+
+
+def test_detector_wall_clock_uses_rolling_median_not_naive_last_three():
+    """Finding: row 4 must be the ROLLING MEDIAN of the last 5 readings for
+    3 consecutive calls — not "the last 3 readings were each individually
+    slow". Sequence [200, 200, 1]: the naive "all of the last 3 above
+    threshold" check would NOT fire (1 fails it), but the rolling median of
+    [200, 200, 1] is 200, comfortably above 2x baseline — and this is the
+    3rd consecutive call with a >threshold median, so it SHOULD fire. If
+    this assertion fails, the old naive statistic crept back in."""
+    d = artpiped.Detector()
+    threshold = artpiped.BASELINE_WALL_CLOCK_S * artpiped.WALL_CLOCK_MULTIPLIER
+    d.note_wall_clock(threshold + 76, configured_n=4)   # slow
+    ok("median: 1 slow reading does not yet halve N", d.current_n(4) == 4)
+    d.note_wall_clock(threshold + 76, configured_n=4)   # slow
+    ok("median: 2 slow readings do not yet halve N", d.current_n(4) == 4)
+    d.note_wall_clock(1.0, configured_n=4)              # a FAST outlier
+    ok("median: a 3rd call whose window's ROLLING MEDIAN is still above "
+       "threshold halves N, even though the raw 3rd reading itself was "
+       "fast — proving this is the median statistic, not 'all of the last 3'",
+       d.current_n(4) == 2)
+
+
+def test_repair_completes_manifest_written_but_not_moved_crash():
+    """Finding: reconcile() deliberately leaves this crash state (manifest
+    written, job file never moved out of active/) for a human with no
+    tool. --repair (folded into --reconcile-only) completes it."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "crashmidmove", q.reference)
+        active_path = artpiped.claim_next(q.pending, q.active)
+        ok("fixture: claimed via the real claim path", active_path is not None)
+        # Simulate the crash: the manifest got written (as finalize_job's
+        # FIRST step does) but the process died before moving the job file.
+        common.atomic_write_json(q.done / "crashmidmove.manifest.json",
+                                 {"id": "crashmidmove", "status": "ok", "channel": "codex"})
+        ok("fixture: active/ file still sitting there (the crash state)", active_path.is_file())
+
+        proc = q.run({}, "--reconcile-only", "--reconcile-min-age", "600")
+        ok("repair: exits 0", proc.returncode == 0, proc.stderr)
+        ok("repair: completed the move into done/", (q.done / "crashmidmove.json").is_file())
+        ok("repair: active/ no longer holds the stuck file", not active_path.is_file())
+        ok("repair: reported in the output", "repaired crashmidmove" in proc.stdout, proc.stdout)
+
+
+def test_repair_leaves_genuinely_ambiguous_state_alone():
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "ambiguous", q.reference)
+        active_path = artpiped.claim_next(q.pending, q.active)
+        common.atomic_write_json(q.done / "ambiguous.manifest.json",
+                                 {"id": "ambiguous", "status": "ok"})
+        common.atomic_write_json(q.failed / "ambiguous.manifest.json",
+                                 {"id": "ambiguous", "status": "failed"})
+        moved = artpiped.repair(q.active, q.done, q.failed)
+        ok("repair: BOTH manifests existing is genuinely ambiguous — left alone",
+           not any(jid == "ambiguous" for jid, _ in moved) and active_path.is_file())
+
+
+def test_repair_standalone_flag_works_without_reconcile_only():
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "repaironly", q.reference)
+        active_path = artpiped.claim_next(q.pending, q.active)
+        common.atomic_write_json(q.failed / "repaironly.manifest.json",
+                                 {"id": "repaironly", "status": "failed"})
+        proc = q.run({}, "--repair")
+        ok("repair-only: exits 0", proc.returncode == 0, proc.stderr)
+        ok("repair-only: completed the move into failed/", (q.failed / "repaironly.json").is_file())
+        ok("repair-only: prints a repair-only summary", "repair-only" in proc.stdout, proc.stdout)
+        ok("repair-only: active_path is gone", not active_path.is_file())
+
+
+# --------------------------------------------------------------------------
+# GEMINI_WORKER_BACKEND_1
+# --------------------------------------------------------------------------
+
+def test_gemini_channel_routes_and_records_cost():
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "geminijob"
+        make_job(q.pending, job_id, q.reference, channel="gemini")
+        proc = q.run({job_id: "ok"}, "--once", "--workers", "1")
+        ok("gemini: daemon exits 0", proc.returncode == 0, proc.stderr)
+        ok("gemini: job succeeds via the mock gemini worker", (q.done / f"{job_id}.json").is_file())
+        manifest = q.done / f"{job_id}.manifest.json"
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("gemini: channel recorded as gemini", m.get("channel") == "gemini", str(m))
+            ok("gemini: cost_usd matches gemini-3-pro-image's known price",
+               m.get("cost_usd") == 0.134, str(m))
+            ok("gemini: model recorded", m.get("model") == "gemini-3-pro-image", str(m))
+            ok("gemini: validator ran and passed", m.get("validator") == "PASS", str(m))
+        lines = [json.loads(l) for l in q.throughput_log.read_text().splitlines() if l.strip()]
+        gemini_lines = [l for l in lines if l.get("channel") == "gemini"]
+        ok("gemini: throughput.jsonl carries the channel + cost",
+           len(gemini_lines) == 1 and gemini_lines[0].get("cost_usd") == 0.134, lines)
+
+
+def test_gemini_bad_image_is_caught_by_revalidation_and_still_billed():
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "geminibad"
+        make_job(q.pending, job_id, q.reference, channel="gemini")
+        proc = q.run({job_id: "bad_image"}, "--once", "--workers", "1")
+        ok("gemini-bad: daemon exits 0", proc.returncode == 0, proc.stderr)
+        ok("gemini-bad: job fails", (q.failed / f"{job_id}.json").is_file())
+        manifest = q.failed / f"{job_id}.manifest.json"
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("gemini-bad: validator REJECT", m.get("validator") == "REJECT", str(m))
+            ok("gemini-bad: still billed — the API call itself succeeded (exit 0)",
+               m.get("cost_usd") == 0.134, str(m))
+
+
+def test_gemini_api_error_never_billed():
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "geminierror"
+        make_job(q.pending, job_id, q.reference, channel="gemini")
+        proc = q.run({job_id: "api_error"}, "--once", "--workers", "1")
+        ok("gemini-error: daemon exits 0", proc.returncode == 0, proc.stderr)
+        manifest = q.failed / f"{job_id}.manifest.json"
+        ok("gemini-error: job fails", manifest.is_file())
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("gemini-error: NOT billed — the API call itself never succeeded",
+               m.get("cost_usd") == 0.0, str(m))
+
+
+def test_gemini_wrong_size_caught_independent_of_validator():
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "geminiwrongsize"
+        make_job(q.pending, job_id, None, channel="gemini")  # no reference — validator skipped
+        proc = q.run({job_id: "wrong_size"}, "--once", "--workers", "1")
+        ok("gemini-size: daemon exits 0", proc.returncode == 0, proc.stderr)
+        manifest = q.failed / f"{job_id}.manifest.json"
+        ok("gemini-size: job fails on size, not a silent ok", manifest.is_file())
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("gemini-size: worker_status is size_mismatch",
+               m.get("worker_status") == "size_mismatch", str(m))
+
+
+def test_gemini_budget_hard_stop():
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "geminicap1", q.reference, priority=1, channel="gemini")
+        make_job(q.pending, "geminicap2", q.reference, priority=2, channel="gemini")
+        # gemini-3-pro-image costs $0.134/image — cap at one image's worth
+        # so the second job is refused before it ever runs.
+        proc = q.run({"geminicap1": "ok", "geminicap2": "ok"},
+                     "--once", "--workers", "1", "--gemini-budget-usd", "0.134")
+        ok("gemini-budget: daemon exits nonzero (a wedge, per finding 5)",
+           proc.returncode != 0, proc.stdout + proc.stderr)
+        ok("gemini-budget: the first job spends the budget and succeeds",
+           (q.done / "geminicap1.json").is_file())
+        ok("gemini-budget: the second job is NEVER claimed — still pending",
+           (q.pending / "geminicap2.json").is_file())
+        ok("gemini-budget: nothing claimed into active/ afterward",
+           not any(q.active.glob("*.json")))
+
+
+def test_gemini_budget_is_durable_across_restarts():
+    """Cost is tracked in throughput.jsonl and the cap is read from it — a
+    SECOND daemon invocation (simulating a restart) must inherit the spend
+    already recorded, not start counting from zero."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "restart1", q.reference, channel="gemini")
+        proc1 = q.run({"restart1": "ok"}, "--once", "--workers", "1",
+                      "--gemini-budget-usd", "1000")
+        ok("gemini-restart: first run succeeds", proc1.returncode == 0, proc1.stderr)
+        ok("gemini-restart: first job done", (q.done / "restart1.json").is_file())
+
+        make_job(q.pending, "restart2", q.reference, channel="gemini")
+        proc2 = q.run({"restart2": "ok"}, "--once", "--workers", "1",
+                      "--gemini-budget-usd", "0.10")
+        ok("gemini-restart: second (fresh) run exits nonzero — already over budget",
+           proc2.returncode != 0, proc2.stdout + proc2.stderr)
+        ok("gemini-restart: second job never claimed", (q.pending / "restart2.json").is_file())
+        ok("gemini-restart: the refusal is logged before any claim attempt",
+           "already at/over its $0.10 budget" in proc2.stderr, proc2.stderr)
+
+
+def test_gemini_never_touches_codex_homes():
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "onlygemini", q.reference, channel="gemini")
+        proc = q.run({"onlygemini": "ok"}, "--once", "--workers", "2")
+        ok("gemini-isolation: daemon exits 0", proc.returncode == 0, proc.stderr)
+        ok("gemini-isolation: the job succeeds", (q.done / "onlygemini.json").is_file())
+        no_homes = not q.codex_homes.is_dir() or not any(q.codex_homes.iterdir())
+        ok("gemini-isolation: NO codex_home directory was ever created for a gemini-only run",
+           no_homes, list(q.codex_homes.iterdir()) if q.codex_homes.is_dir() else "codex_homes/ absent")
+
+
+def test_mixed_channel_queue_codex_wedge_does_not_block_gemini():
+    """A codex hard-stop must not stall gemini jobs sitting in the same
+    queue, and vice versa — claim_next()'s channel_blocked filtering."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "codexratelimited", q.reference, priority=1, channel="codex")
+        make_job(q.pending, "geminihealthy", q.reference, priority=2, channel="gemini")
+        proc = q.run({"codexratelimited": "rate_limited", "geminihealthy": "ok"},
+                     "--once", "--workers", "1")
+        ok("mixed: daemon exits nonzero (the codex wedge is real)", proc.returncode != 0)
+        ok("mixed: the codex job hard-stopped", (q.failed / "codexratelimited.json").is_file())
+        ok("mixed: the UNRELATED gemini job still got claimed and finished",
+           (q.done / "geminihealthy.json").is_file())
+
+
+def test_fill_queue_channel_flag_and_per_row_override():
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        art_list = q.root / "mixed.json"
+        art_list.write_text(json.dumps([
+            {"id": "viagemini", "rimflow_item_id": "SELFTEST_ARTPIPE", "prompt": "x",
+             "canvas_w": 64, "canvas_h": 64},
+            {"id": "viacodexoverride", "rimflow_item_id": "SELFTEST_ARTPIPE", "prompt": "x",
+             "canvas_w": 64, "canvas_h": 64, "channel": "codex"},
+        ]))
+        fill = [sys.executable, str(HERE / "fill_queue.py"), "--input", str(art_list),
+                "--pending-dir", str(q.pending), "--active-dir", str(q.active),
+                "--done-dir", str(q.done), "--failed-dir", str(q.failed),
+                "--channel", "gemini"]
+        proc = subprocess.run(fill, capture_output=True, text=True, timeout=30)
+        ok("fill_queue --channel: exits 0", proc.returncode == 0, proc.stdout + proc.stderr)
+        job1 = json.loads((q.pending / "viagemini.json").read_text())
+        ok("fill_queue --channel: --channel gemini applies when the row is silent",
+           job1.get("channel") == "gemini", job1)
+        job2 = json.loads((q.pending / "viacodexoverride.json").read_text())
+        ok("fill_queue --channel: a row's own 'channel' overrides --channel",
+           job2.get("channel") == "codex", job2)
+
+
 def main() -> int:
     for fn in (
         test_crash_reconciliation,
@@ -777,6 +1295,30 @@ def main() -> int:
         test_detector_wall_clock_halving,
         test_row6_timeout_language_never_reads_as_rate_limited,
         test_rate_limit_marker_strips_prompt_echo_but_not_real_refusals,
+        test_codex_home_root_default_is_outside_the_repo,
+        test_codex_home_lease_bounds_growth_and_avoids_collision,
+        test_reference_less_job_size_mismatch_is_caught,
+        test_reference_less_job_correct_size_still_passes,
+        test_worker_self_report_folded_into_manifest_and_detects_row1,
+        test_detector_deescalates_after_fresh_healthy_reading,
+        test_detector_resets_at_coercion_never_crashes,
+        test_exit_code_zero_on_clean_drain_with_healthy_meters,
+        test_per_job_scratch_directory_is_real_not_shared,
+        test_codex_one_retry_rescues_transient_failure,
+        test_codex_retry_never_applied_to_rate_limited,
+        test_detector_wall_clock_uses_rolling_median_not_naive_last_three,
+        test_repair_completes_manifest_written_but_not_moved_crash,
+        test_repair_leaves_genuinely_ambiguous_state_alone,
+        test_repair_standalone_flag_works_without_reconcile_only,
+        test_gemini_channel_routes_and_records_cost,
+        test_gemini_bad_image_is_caught_by_revalidation_and_still_billed,
+        test_gemini_api_error_never_billed,
+        test_gemini_wrong_size_caught_independent_of_validator,
+        test_gemini_budget_hard_stop,
+        test_gemini_budget_is_durable_across_restarts,
+        test_gemini_never_touches_codex_homes,
+        test_mixed_channel_queue_codex_wedge_does_not_block_gemini,
+        test_fill_queue_channel_flag_and_per_row_override,
     ):
         print(f"--- {fn.__name__} ---")
         try:
