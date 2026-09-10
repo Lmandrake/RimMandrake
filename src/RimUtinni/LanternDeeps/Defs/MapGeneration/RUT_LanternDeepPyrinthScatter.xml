@@ -10,12 +10,25 @@
   MapGeneratorDef's genSteps list (see RUT_LanternDeepGenerator.xml), so it can only ever
   fire while generating a Lantern Deep pocket map === the same "gate by list membership"
   trick RUT_LanternDeepEmergence_Scatter uses, no custom biome-check C# needed here.
+
+  order=330, not 210 (DIRTY_CODE_REVIEW_STANDING_LOOP_1 fix): MapGenerator.
+  GenerateContentsIntoMap sorts ALL genSteps globally by GenStepDef.order (ties broken
+  by def.index) === the XML list POSITION in RUT_LanternDeepGenerator.genSteps (after
+  BMT_CrystalsGenerator, before PlaceCaveExit) has no effect on execution order. The
+  original order=210 tied this scatter with vanilla Terrain (also order 210) and put it
+  BEFORE MutatorPostTerrain(220) and BMT_CrystalsGenerator(320) === buildings placed
+  before terrain mutation finishes, and before the crystal generator this scatter is
+  meant to sit alongside. 330 puts it where the list position always implied: right
+  after BMT_CrystalsGenerator(320), well before PlaceCaveExit(400), matching both this
+  mod's own sibling (RUT_LanternDeepEmergence_Scatter, order 320) and vanilla's own
+  GenStep_ScatterGroup convention (Anomaly's Fleshbulbs, order 550, on an analogous
+  underground map).
 -->
 <Defs>
 
   <GenStepDef>
     <defName>RUT_LanternDeepPyrinthScatter</defName>
-    <order>210</order>
+    <order>330</order>
     <genStep Class="GenStep_ScatterGroup">
       <minSpacing>15</minSpacing>
       <groups>

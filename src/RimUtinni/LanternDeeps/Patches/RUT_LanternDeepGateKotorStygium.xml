@@ -35,11 +35,28 @@
      every normal Ash'karr colony map today, not gated to the Lantern Deeps at all. This
      is the item's actual live violation, independent of the MayRequire question above.
 
-  Fix: remove KOTOR_CrystalFormation from all three genSteps lists. The colorful KOTOR
+  Fix: remove KOTOR_CrystalFormation from Base_Player's genSteps. The colorful KOTOR
   family (including Stygium) remains available inside the Deeps via
   Absorbed_Kotorweapons_BiomesCaverns_Patch_KotORCrystalFormationInjector.xml's own
   addition to BMT_CrystalsGenerator, which RUT_LanternDeepGenerator.genSteps already
   includes === so this removal loses nothing, it only stops the everywhere-leak.
+
+  DIRTY_CODE_REVIEW_STANDING_LOOP_1 fix: this originally shipped with three
+  PatchOperationRemove entries, one each for Base_Player, BasePlayer_SecondArchonexusCycle
+  and BasePlayer_ThirdArchonexusCycle (matching the live def dump's post-inheritance
+  finding that all three carried the entry). But LoadedModManager runs ApplyPatches()
+  fully BEFORE XmlInheritance.Resolve() (confirmed in source) === at patch time, Second/
+  ThirdArchonexusCycle's OWN raw genSteps only ever contained their one
+  ArchonexusResearchBuildings_* entry; "KOTOR_CrystalFormation" only exists in Base_Player's
+  raw node, and only becomes visible on the two ArchonexusCycle children AFTER inheritance
+  merges Base_Player's list into theirs (XmlInheritance.RecursiveNodeCopyOverwriteElements
+  appends a List<> child's own <li>s onto the copied-down parent list, it does not
+  replace it). So the Second/Third removals could never match anything and were silent,
+  permanent no-ops (exactly the "patch that matches nothing logs nothing" trap) === removing
+  KOTOR_CrystalFormation from Base_Player alone is both necessary and sufficient: Second/
+  Third inherit Base_Player's (now-fixed) list, so the entry never reaches them either.
+  Deleted the two dead operations rather than leave them implying more work was done than
+  actually was.
 
   NOT done this pass (left for a future small follow-up, not invented here): retargeting
   BMT_CrystalsGenerator's injection off the GLOBAL GenStepDef onto a Deeps-only genstep,
@@ -54,22 +71,8 @@
     <mods>
       <li>Star Wars KotOR Resources and Materials</li>
     </mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-
-        <li Class="PatchOperationRemove">
-          <xpath>Defs/MapGeneratorDef[defName="Base_Player"]/genSteps/li[text()="KOTOR_CrystalFormation"]</xpath>
-        </li>
-
-        <li Class="PatchOperationRemove">
-          <xpath>Defs/MapGeneratorDef[defName="BasePlayer_SecondArchonexusCycle"]/genSteps/li[text()="KOTOR_CrystalFormation"]</xpath>
-        </li>
-
-        <li Class="PatchOperationRemove">
-          <xpath>Defs/MapGeneratorDef[defName="BasePlayer_ThirdArchonexusCycle"]/genSteps/li[text()="KOTOR_CrystalFormation"]</xpath>
-        </li>
-
-      </operations>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/MapGeneratorDef[defName="Base_Player"]/genSteps/li[text()="KOTOR_CrystalFormation"]</xpath>
     </match>
   </Operation>
 
