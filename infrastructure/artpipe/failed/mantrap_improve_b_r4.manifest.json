@@ -1,0 +1,17 @@
+{
+  "channel": "gemini",
+  "cost_usd": 0.134,
+  "daemon_attempts": 1,
+  "elapsed_s": 16.28759850300048,
+  "height": 1024,
+  "id": "mantrap_improve_b_r4",
+  "meter_after": null,
+  "meter_before": null,
+  "model": "gemini-3-pro-image",
+  "note": "returned 1024x1024, job asked for 256x256 \u2014 the image tool is known to ignore requested size; never a silent ok, reference or not",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "width": 1024,
+  "worker_status": "size_mismatch"
+}

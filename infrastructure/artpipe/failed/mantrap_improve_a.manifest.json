@@ -1,0 +1,15 @@
+{
+  "channel": "gemini",
+  "cost_usd": 0.134,
+  "daemon_attempts": 1,
+  "elapsed_s": 16.550447209001504,
+  "id": "mantrap_improve_a",
+  "meter_after": null,
+  "meter_before": null,
+  "model": "gemini-3-pro-image",
+  "note": "could not read the returned file's PNG header: /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/mantrap_improve_a/mantrap_improve_a.png is not a PNG",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_status": "unreadable_png"
+}

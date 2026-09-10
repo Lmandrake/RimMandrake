@@ -1,0 +1,15 @@
+{
+  "channel": "gemini",
+  "cost_usd": 0.134,
+  "daemon_attempts": 1,
+  "elapsed_s": 16.46223567800007,
+  "id": "lockjaw_improve_b",
+  "meter_after": null,
+  "meter_before": null,
+  "model": "gemini-3-pro-image",
+  "note": "could not read the returned file's PNG header: /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/lockjaw_improve_b/lockjaw_improve_b.png is not a PNG",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_status": "unreadable_png"
+}

@@ -1,0 +1,17 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "gemini",
+  "created": "2026-09-10T06:20:22Z",
+  "facing": null,
+  "facings": [],
+  "id": "lockjaw_improve_a_r2",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view facing east, painterly vanilla-RimWorld style matching the reference: a huge whale-bodied ambush beast with alligator-like plated skin, sitting heavy and still, staring forward mid-ambush, jaw closed but coiled to SNAP. Muted swamp-grey palette. Single creature, no ground shadow, plain background.",
+  "reference": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw2_east.png",
+  "rimflow_item_id": "ART_PIPELINE_DAEMON_1",
+  "style_notes": "owner direction: 'Make it like a huge whale with alligator-like skin sitting and staring... then SNAP.'"
+}

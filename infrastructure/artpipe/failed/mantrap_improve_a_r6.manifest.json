@@ -1,0 +1,15 @@
+{
+  "channel": "gemini",
+  "cost_usd": 0.0,
+  "daemon_attempts": 1,
+  "elapsed_s": 57.2069968729993,
+  "id": "mantrap_improve_a_r6",
+  "meter_after": null,
+  "meter_before": null,
+  "model": "gemini-3-pro-image",
+  "note": "gemini worker exited 1: ed: /usr/lib/python3.14/multiprocessing/resource_tracker.py:396: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown: {'/mp-8nec07tw'}\n  warnings.warn(",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_status": "worker_error"
+}
