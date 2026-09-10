@@ -9604,10 +9604,10 @@
     "sha": "629956d2"
   },
   "src/RimUtinni/LanternDeeps/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "bf115628d6d0f3b11fb28aca6c72162bfe4102a2f6ed977e02b100f59052cd80",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "c5989991693c601f92df38dfb2a8a1f992f8ef7cbd7c3e2ec9371967ca3e6769",
+    "sha": "1dc7382d"
   },
   "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepEmergence_Scatter.xml": {
     "cleanCount": 1,
@@ -9616,10 +9616,22 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepGenerator.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "0bae636d91edba5970720563a91817898503efddf5c955568ff1b05183a0632c",
+    "sha": "1dc7382d"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepKyberScatter.xml": {
     "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "500c7f744b3e77abb01ddf4d3ce0d62a560cfa5678f1130526d226f40a9624be",
-    "sha": "bb73b6bd"
+    "date": "2026-09-10",
+    "hash": "1280e3dd1c04262c7c45a41780e764147ffaa4b310290027b4e23d01d4916c40",
+    "sha": "1dc7382d"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepPyrinthScatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "f352251d94036f59735ec75adb17dc1874c2c6e6f8d5dda3bb5e5ec0c034589e",
+    "sha": "1dc7382d"
   },
   "src/RimUtinni/LanternDeeps/Defs/ThingDefs_Buildings/RUT_LanternDeepEmergence.xml": {
     "cleanCount": 1,
@@ -9638,6 +9650,30 @@
     "date": "2026-09-09",
     "hash": "fbe0bd117a9a6c199b7f8464ed904194e06b9b9d89372d9fffb389197d07001c",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepGateKotorStygium.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "8db2743d94f73f532a5986ec8e095c62591b83389d0533508bf0c58607f6c00d",
+    "sha": "1dc7382d"
+  },
+  "src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepGateKyber.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "d7bd8a1c9fcdad21f7590b2296cbcb9b100b96b2d3ff955aaaba71453404edd3",
+    "sha": "1dc7382d"
+  },
+  "src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepGatePyrinth.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "871253eb4902422674ed58a6ab18f1dce2867c21c163f8d4b76c34cf6d4badca",
+    "sha": "1dc7382d"
+  },
+  "src/RimUtinni/LanternDeeps/Patches/RUT_LanternstoneFictionRename.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "09dacaf2198c44a292b1ec1cf2721faf07f7ad97eaf6e7264c1ab406f02e6dee",
+    "sha": "1dc7382d"
   },
   "src/RimUtinni/LanternDeeps/Source/GenStep_ScatterCavePortal.cs": {
     "cleanCount": 1,
