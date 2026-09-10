@@ -27,11 +27,19 @@ FileNotFoundError on the rename itself — a mitigation, not a proof. Watch
 `throughput.jsonl` for duplicate or vanished ids if two daemons (or a daemon
 and a human editing the queue by hand) are ever run against the real
 `/mnt/d` queue at once.
+
+🔴 `DEFAULT_CODEX_HOME_ROOT` is deliberately OUTSIDE this repo (see
+`_default_codex_home_root()`) — an earlier version pointed inside it
+(`infrastructure/artpipe/_codex_homes/`), and seeding a worker home copies
+`auth.json` there. A `.gitignore` entry for that path is a backstop only;
+never point `--codex-home-root` back inside the repo.
 """
 from __future__ import annotations
 
+import fcntl
 import json
 import os
+import sys
 import time
 from pathlib import Path
 
@@ -45,15 +53,43 @@ DEFAULT_DONE = QUEUE_ROOT / "done"
 DEFAULT_FAILED = QUEUE_ROOT / "failed"
 DEFAULT_ARTSRC = QUEUE_ROOT / "_artsrc"
 DEFAULT_THROUGHPUT_LOG = QUEUE_ROOT / "throughput.jsonl"
-DEFAULT_CODEX_HOME_ROOT = QUEUE_ROOT / "_codex_homes"
 
 HERE = Path(__file__).resolve().parent
 DEFAULT_WORKER_SCRIPT = (REPO_ROOT / "skills" / "generating-images" / "scripts"
                           / "codex_image.py")
+DEFAULT_GEMINI_WORKER_SCRIPT = (REPO_ROOT / "skills" / "generating-images" / "scripts"
+                                / "gemini_image.py")
 DEFAULT_VALIDATOR = (REPO_ROOT / "skills" / "generating-rimworld-sprites"
                       / "scripts" / "validate_sprite.py")
 MANIFEST_SCHEMA = HERE / "manifest.schema.json"
 AGENTS_MD = HERE / "AGENTS.md"
+
+
+def _default_codex_home_root() -> Path:
+    """Where per-slot worker CODEX_HOMEs live — OUTSIDE the repo, always.
+
+    `infrastructure/artpipe/_codex_homes/` (the original default) is inside
+    this PUBLIC repo, and seeding a worker home copies `auth.json` into it —
+    a credential leak, not a config choice. The owner has gitignored that
+    path as a backstop; this function is the actual fix: never point there
+    in the first place. Prefers the Windows user profile (codex.exe is a
+    Windows binary, and a genuinely NEW home needs a one-time UAC-gated
+    sandbox setup — see codex_image.py's own SANDBOX_SEED_* — so this must
+    be a real persistent directory, never tmpfs/`/tmp`, or every restart
+    re-pays that prompt). Falls back to a directory beside (never inside)
+    the repo when no `/mnt/c` profile is discoverable at all — a WSL-only
+    dev box with no Windows filesystem to use.
+    """
+    sys.path.insert(0, str(REPO_ROOT / "skills" / "generating-images" / "scripts"))
+    import codex_image  # noqa: E402
+    wh = codex_image.windows_home()
+    if wh is not None:
+        return wh / ".codex_workers" / "artpipe"
+    return REPO_ROOT.parent / "artpipe_codex_workers"
+
+
+DEFAULT_CODEX_HOME_ROOT = _default_codex_home_root()
+MAX_CODEX_HOME_SLOTS = 64
 
 # What a job file must carry (ART_PIPELINE_DAEMON_1's field list: id,
 # rimflow item id, reference path, canvas, facings, style notes, priority —
@@ -153,3 +189,40 @@ def ensure_queue_dirs(pending: Path, active: Path, done: Path, failed: Path,
                        artsrc: Path) -> None:
     for d in (pending, active, done, failed, artsrc):
         d.mkdir(parents=True, exist_ok=True)
+
+
+def acquire_codex_home_lease(codex_home_root: Path, max_slots: int = MAX_CODEX_HOME_SLOTS):
+    """Find (or reuse) a per-slot codex_home this process can hold
+    exclusively. Returns (home_path, open_lockfile_handle) — keep the handle
+    open for the daemon's whole lifetime; closing it (or the process dying)
+    releases the lock immediately.
+
+    Bounds growth WITHOUT naming a home after a pid: tries `w0`, `w1`, ...
+    up to `max_slots`, `flock`-ing each candidate's lockfile non-blocking.
+    A slot already held by a LIVE process fails the lock and this moves on
+    to the next candidate — so two daemons never share one CODEX_HOME
+    (openai/codex #11435's interference), without either naming homes after
+    a pid (which accumulated one home per restart forever) or needing a
+    separate dead-pid cleanup pass on start: a crashed process's flock is
+    released by the kernel the instant it dies, so the very next daemon to
+    probe that slot acquires it immediately, no cleanup step required.
+    """
+    codex_home_root.mkdir(parents=True, exist_ok=True)
+    for i in range(max_slots):
+        home = codex_home_root / f"w{i}"
+        home.mkdir(parents=True, exist_ok=True)
+        lock_path = home / ".artpipe_lease.lock"
+        fh = open(lock_path, "a+")
+        try:
+            fcntl.flock(fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            fh.close()
+            continue
+        fh.seek(0)
+        fh.truncate()
+        fh.write(f"pid={os.getpid()} acquired={time.time()}\n")
+        fh.flush()
+        return home, fh
+    raise RuntimeError(
+        f"no free codex_home lease among w0..w{max_slots - 1} under {codex_home_root} "
+        f"— either genuinely {max_slots} daemons are live, or a lease is stuck")

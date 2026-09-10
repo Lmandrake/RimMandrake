@@ -25,6 +25,9 @@ CSV columns (JSON: same keys; `facings` may be a JSON list there):
                        A blank CSV cell reads as '' (not a missing key) and
                        is treated the same as absent, not as int('').
     background         optional, default "transparent"
+    channel            optional per-row override — "codex" or "gemini".
+                       Every row otherwise gets --channel's value
+                       (default "codex"); see GEMINI_WORKER_BACKEND_1.
 
 Refuses a duplicate job id — checked against pending/active/done/failed all
 at once, so an id already claimed, finished or failed is exactly as
@@ -79,10 +82,18 @@ def load_rows(path: Path) -> list[dict]:
         return list(csv.DictReader(fh))
 
 
-def row_to_jobs(row: dict) -> list[dict]:
+def row_to_jobs(row: dict, default_channel: str = "codex") -> list[dict]:
     missing = [f for f in REQUIRED_ROW_FIELDS if not row.get(f)]
     if missing:
         raise ValueError(f"row {row.get('id', '?')!r} missing {missing}")
+
+    # A per-row "channel" always wins over --channel, if the row bothers to
+    # name one; otherwise every row in this invocation gets --channel's
+    # value (default "codex").
+    channel = str(row.get("channel") or default_channel).strip() or default_channel
+    if channel not in ("codex", "gemini"):
+        raise ValueError(f"row {row.get('id', '?')!r} has unknown channel "
+                          f"{channel!r} — only 'codex' or 'gemini'")
 
     base_id = str(row["id"]).strip()
     facings = _split_facings(row.get("facings"))
@@ -122,6 +133,7 @@ def row_to_jobs(row: dict) -> list[dict]:
             "style_notes": row.get("style_notes") or "",
             "priority": priority,
             "background": row.get("background") or "transparent",
+            "channel": channel,
             "facing": facing,
             "facings": facings,
             "created": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -171,6 +183,9 @@ def main(argv=None) -> int:
     ap.add_argument("--active-dir", type=Path, default=common.DEFAULT_ACTIVE)
     ap.add_argument("--done-dir", type=Path, default=common.DEFAULT_DONE)
     ap.add_argument("--failed-dir", type=Path, default=common.DEFAULT_FAILED)
+    ap.add_argument("--channel", choices=("codex", "gemini"), default="codex",
+                     help="default channel for every row in this file — a row's own "
+                          "'channel' column/field, if present, overrides this")
     ap.add_argument("--dry-run", action="store_true",
                      help="print what would be filed, write nothing")
     args = ap.parse_args(argv)
@@ -191,7 +206,7 @@ def main(argv=None) -> int:
     filed, duplicates, errors = 0, [], []
     for row in rows:
         try:
-            jobs = row_to_jobs(row)
+            jobs = row_to_jobs(row, default_channel=args.channel)
         except ValueError as exc:
             errors.append(str(exc))
             continue

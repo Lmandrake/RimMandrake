@@ -51,6 +51,24 @@ Behaviors:
                   path on the job without the worker itself tripping over
                   it, so the daemon's own re-validation is what discovers
                   the reference is unusable.
+    wrong_size    writes a valid-looking 32x32 PNG regardless of the job's
+                  real canvas — proves the daemon's own size check fires
+                  even with no reference to make validate_sprite.py catch it.
+    fail_then_ok  fails (tool_error-style) on its FIRST invocation for a
+                  given job id, succeeds normally on the second — proves
+                  the daemon's one-retry (row 1 spec: one retry max, never
+                  for a throttle refusal) actually rescues a transient
+                  failure. Invocation count is tracked in a per-job marker
+                  file beside the output, so a THIRD invocation (which
+                  should never happen — max 2 attempts) would keep failing
+                  rather than silently succeeding, making a bug visible.
+    refused_rate_limit_in_manifest
+                  exits 0 (!) with CLEAN stdout/stderr, but writes a
+                  schema-valid manifest whose status is "refused" and whose
+                  note names TooManyRequests — proves row 1 detection reads
+                  the -o last-message file's content, not just the raw
+                  transcript (the spec names "-o last message" as a
+                  detection source).
 """
 from __future__ import annotations
 
@@ -138,6 +156,22 @@ def write_opaque_bad_image(ref_path: Path | None, out_path: Path) -> tuple[int, 
     return w, h
 
 
+def bump_invocation_counter(out: Path) -> int:
+    """How many times THIS mock has been invoked for this exact --out path
+    (persists as a marker file beside it, in the job's own per-job scratch
+    dir) — lets a behavior act differently on attempt 1 vs attempt 2
+    without any state the daemon itself provides."""
+    counter_path = out.parent / f".{out.stem}.invocations"
+    try:
+        n = int(counter_path.read_text().strip()) if counter_path.is_file() else 0
+    except (OSError, ValueError):
+        n = 0
+    n += 1
+    counter_path.parent.mkdir(parents=True, exist_ok=True)
+    counter_path.write_text(str(n))
+    return n
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -177,6 +211,7 @@ def main(argv=None) -> int:
     home = Path(args.codex_home).resolve() if args.codex_home else None
     images = [Path(i) for i in (getattr(args, "image", None) or [])]
     reference = images[0] if images else None
+    invocation_n = bump_invocation_counter(out)
 
     def write_manifest(status, note, **extra):
         if not args.output_last_message:
@@ -220,6 +255,41 @@ def main(argv=None) -> int:
                         width=w, height=h, has_alpha=True, corners_transparent=True,
                         background_used="transparent")
         print(f"OK {out}")
+        return 0
+
+    if behavior == "wrong_size":
+        w, h = 32, 32
+        pnglib.write_rgba(str(out), w, h, bytes(4 * w * h))
+        write_manifest("ok", "mock: wrong size on purpose", width=w, height=h,
+                        has_alpha=True, corners_transparent=True,
+                        background_used="transparent")
+        print(f"OK {out}")
+        return 0
+
+    if behavior == "fail_then_ok":
+        if invocation_n == 1:
+            print("codex: transient tool error, try again", file=sys.stderr)
+            return 1
+        # second (and any later) invocation: succeed normally.
+        if reference is not None:
+            w, h = mutate_reference(reference, out)
+        else:
+            w, h = 64, 64
+            pnglib.write_rgba(str(out), w, h, bytes(4 * w * h))
+        write_manifest("ok", f"mock: succeeded on invocation {invocation_n}",
+                        width=w, height=h, has_alpha=True, corners_transparent=True,
+                        background_used="transparent")
+        print(f"OK {out}")
+        return 0
+
+    if behavior == "refused_rate_limit_in_manifest":
+        # Exit 0, CLEAN stdout/stderr - the throttle signal lives ONLY in
+        # the -o last-message manifest's own note, not the transcript.
+        write_manifest("refused", "TooManyRequests — image generation request "
+                                   "was rate limited", width=0, height=0,
+                        has_alpha=False, corners_transparent=False,
+                        background_used="transparent")
+        print(f"refused {out}")
         return 0
 
     if home is not None:
