@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T09:11:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T09:32:15Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -620,15 +620,6 @@ target:   v1
 kind:     task
 summary:  Restore the campaign to a real, correct, save-safe state and fold in tonight's
 prose:    infrastructure/state/items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md
-
-## FISH_TYPES_PATCH_BUILD_1 Build the RULED fishTypes patches: fill SandFishing_CrackedLands.xml uncommon with BMT_Rocktooth+BMT_Boneblade; trim weeping-stones patch to 4 swfish_ donors (VCEF four out); write the Greentide fishTypes (Mee/Faa/Laa dual placement, resolve which of the two near-duplicate defs is live); then the strip-sweep of live fishTypes on ruled no-fish biomes, starting with a measure
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  (no items/FISH_TYPES_PATCH_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FISH_TYPES_PATCH_BUILD_1.md
 
 ## CRYSTAL_INGEST_EXECUTION_1 Execute the RATIFIED crystal ingest: absorb det.epochspyrinth into our tier + gate its scatter to Lantern Deeps maps; absorb lee.theforce.lightsaber kyber + gate its genstep to the Deeps; KOTOR formations labeling pass + resolve the live Stygium-only vs repo 12-entry genstep discrepancy; lanternstone rename in fiction only. Natural scatter gated to the Deeps; trader/loot pricing rides ECONOMY_TRADE_SWEEP_1
 state:    doing
