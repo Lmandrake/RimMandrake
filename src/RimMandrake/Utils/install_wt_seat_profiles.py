@@ -21,7 +21,8 @@ Profiles do all of it, before the shell even starts.
 
 WHAT IT WRITES
 ==============
-One profile per window — `AGENT BENCH`, `AGENT FOUNDRY`, `AGENT ARTIST` — each with
+One profile per window — `AGENT BENCH`, `AGENT FOUNDRY`, and the non-Claude
+`Artist` daemon tile — each with
 
   * a colour scheme cloned from Campbell with the seat's foreground,
   * `tabColor`, so the tab strip is colour-coded,
@@ -136,8 +137,13 @@ LAUNCH = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
 SEATS = {
     "BENCH":   ("#7BC96F", "claude-fable-5", "green — with the owner, permanent bench", None),
     "FOUNDRY": ("#E5A03C", "sonnet", "amber — the autonomous queue window", None),
-    "ARTIST":  ("#B48EFF", "sonnet", "purple — the art-pipeline seat (NOT YET ACTIVE, "
-                "see infrastructure/agents/ARTIST.md)", None),
+    # ⭐ ARTIST IS NOT A CLAUDE SEAT. `model=None` routes build() to the daemon
+    # commandline: the tile is the artpipe daemon's live console
+    # (ART_PIPELINE_DAEMON_1: "dumb local Python daemon, no LLM"), so it gets no
+    # AGENT prefix, no AGENT_SEAT export, no claude launch. On 2026-09-09 this
+    # window was briefly converted into a Claude seat on a mistaken premise and
+    # reverted the same day — the daemon console IS the design, don't "fix" it.
+    "ARTIST":  ("#B48EFF", None, "purple — the artpipe daemon's console, NOT a Claude seat", None),
     "HESTIA":  ("#FFC83D", "claude-fable-5", "gold-amber — the Hestia project, not a seat here",
                 ("/mnt/d/Luke/dev/Hestia", r"D:\Luke\dev\Hestia")),
 }
@@ -147,8 +153,9 @@ RETIRED = ("DECIDE", "BUILD", "CHECK", "REP")
 
 # Hand-made drafts replaced by installer-owned profiles. Matched by their literal
 # guids — they predate seat_guid() so the derived form cannot find them — and
-# removed on --apply exactly like RETIRED. The 2026-09-09 'Artist' draft launched
-# the artpipe daemon directly instead of a Claude seat; reconciled same day.
+# removed on --apply exactly like RETIRED. The 2026-09-09 hand-made 'Artist'
+# draft was folded into the installer-owned entry above (same daemon
+# commandline, stable derived guid).
 STALE_GUIDS = ("{95f50bf2-5cff-4e02-866c-a04b142b4b17}",)   # 'Artist', hand-made
 
 # Campbell, Windows Terminal's default scheme. Only `foreground` and
@@ -177,7 +184,9 @@ def build(seat):
     # ⭐ `AGENT` is this fleet's prefix, so only a seat of this fleet carries it
     # (owner, 2026-09-02, on HESTIA: "Just HESTIA"). The label is the tab name AND
     # the `--name` peers address, and those two must not drift apart.
-    label = f"AGENT {seat}" if not home else seat
+    # `model is None` marks a non-Claude tile (ARTIST): bare name, no AGENT_SEAT,
+    # and a daemon commandline instead of LAUNCH.
+    label = seat.capitalize() if model is None else (f"AGENT {seat}" if not home else seat)
     scheme = dict(CAMPBELL, name=f"Seat {seat}", foreground=colour,
                   cursorColor=colour)
     # A LOGIN shell, so the owner's PATH applies and `claude` resolves exactly as
@@ -186,9 +195,15 @@ def build(seat):
     # spawns inherit it — that variable is the whole zero-typing mechanism.
     # Claude Code is NOT exec'd into: when the owner quits it the tab drops to a
     # login shell that still carries AGENT_SEAT, rather than closing the window.
-    export = "" if home else f"export AGENT_SEAT={seat} && "
-    inner = (f"cd {home_wsl} && {export}"
-             f"{LAUNCH.format(label=label, model=model)}; exec $SHELL -l")
+    if model is None:
+        # The daemon's console, not a session. `exec $SHELL -l` keeps the tab
+        # alive when the daemon exits, same as the seat tabs.
+        inner = (f"cd {home_wsl} && "
+                 f"python3 src/RimMandrake/Utils/artpipe/artpiped.py; exec $SHELL -l")
+    else:
+        export = "" if home else f"export AGENT_SEAT={seat} && "
+        inner = (f"cd {home_wsl} && {export}"
+                 f"{LAUNCH.format(label=label, model=model)}; exec $SHELL -l")
     profile = {
         "guid": seat_guid(seat),
         "name": label,
@@ -275,8 +290,8 @@ def main():
           f"{updated} to update, {removed} retired profile(s) to remove, "
           f"{len(SEATS)} scheme(s) synced")
     for seat, (colour, model, why, home) in SEATS.items():
-        label = f"AGENT {seat}" if not home else seat
-        print(f"  {label:<14} {colour}  model {model:<15} tab+text  {why}")
+        label = seat.capitalize() if model is None else (f"AGENT {seat}" if not home else seat)
+        print(f"  {label:<14} {colour}  model {model or 'none (daemon)':<15} tab+text  {why}")
         if home:
             print(f"  {'':<14}opens in {home[1]}, and does NOT export AGENT_SEAT")
     if args.font_size:

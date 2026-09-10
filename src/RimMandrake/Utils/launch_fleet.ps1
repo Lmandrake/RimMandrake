@@ -2,7 +2,7 @@
 launch_fleet.ps1 — open the four agent windows, each Windows Terminal window placed.
 
     TOP-LEFT     HESTIA        (separate project, D:\Luke\dev\Hestia)
-    TOP-RIGHT    AGENT ARTIST  (purple — the art-pipeline seat, above EMERGENCY)
+    TOP-RIGHT    Artist        (purple — the artpipe daemon's console, no LLM, above EMERGENCY)
     TOP-RIGHT    EMERGENCY     (small floating window, D:\Luke\dev)
     BOTTOM-LEFT  AGENT BENCH   (green — with the owner)
     BOTTOM-RIGHT AGENT FOUNDRY (amber — the autonomous queue)
@@ -164,7 +164,7 @@ $place = [ordered]@{
 # to a single "AGENT $seat" format string.
 $titleFor = [ordered]@{
     HESTIA    = 'HESTIA'
-    ARTIST    = 'AGENT ARTIST'
+    ARTIST    = 'Artist'
     EMERGENCY = 'EMERGENCY'
     BENCH     = 'AGENT BENCH'
     FOUNDRY   = 'AGENT FOUNDRY'
