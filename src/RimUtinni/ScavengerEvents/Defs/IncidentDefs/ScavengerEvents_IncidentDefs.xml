@@ -22,4 +22,35 @@
     <earliestDay>1</earliestDay>
   </IncidentDef>
 
+  <!-- RUT_SCAVENGEREVENTS_BUILD_1, mechanism 2 of 8: SurvivalPod.
+       Unconditional drop pod: Hyperweave survival outfit + 4 survival meals
+       + an autopistol. Ported from MoreIncidents.MOIncidentWorker_SurvivalPod. -->
+  <IncidentDef>
+    <defName>RUT_SurvivalPod</defName>
+    <label>survival pod</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.Utinni.ScavengerEvents.IncidentWorker_SurvivalPod</workerClass>
+    <baseChance>1.5</baseChance>
+    <minRefireDays>25</minRefireDays>
+  </IncidentDef>
+
+  <!-- RUT_SCAVENGEREVENTS_BUILD_1, mechanism 7 of 8: Thanksgiving.
+       Food-relief-when-hungry, gated on a non-hostile faction existing and
+       the colony's edible nutrition running low. Ported from
+       MoreIncidents.MOIncidentWorker_Thanksgiving. -->
+  <IncidentDef>
+    <defName>RUT_Thanksgiving</defName>
+    <label>clan tribute</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.Utinni.ScavengerEvents.IncidentWorker_Thanksgiving</workerClass>
+    <baseChance>2</baseChance>
+    <minRefireDays>40</minRefireDays>
+  </IncidentDef>
+
 </Defs>
