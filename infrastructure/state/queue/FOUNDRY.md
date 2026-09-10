@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T03:06:49Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-10T03:09:32Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -612,15 +612,6 @@ kind:     design
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
-## DROIDWORKS_PERSONALITY_VERIFY_1 Live-verify chassis personality bias: 20 spawns per family show the forced traits + protocol pedantry
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  DROIDWORKSPERSONALITYVERIFY1
-prose:    infrastructure/state/items/DROIDWORKS_PERSONALITY_VERIFY_1.md
-
 ## DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1 lumi.doorsexpanded retirement broke CANONICAL_ASHKARR save load; mod restored, real fix still owed
 state:    doing
 row:      unassigned
@@ -1002,3 +993,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/HUMAN_QUEUE_NEEDS_OWNER_RENDER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/HUMAN_QUEUE_NEEDS_OWNER_RENDER_1.md
+
+## DROID_SIBLING_RELATION_GEN_CRASH_1 Pawn generation NRE on some Droidworks droid kinds: PawnRelationWorker_Sibling.CreateRelation throws (found live-testing DROIDWORKS_PERSONALITY_VERIFY_1)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  1. Reproduce on a clean quicktest: spawn ~10 of RSWDWOuterRimProtocolDroid
+prose:    infrastructure/state/items/DROID_SIBLING_RELATION_GEN_CRASH_1.md
