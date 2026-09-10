@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T22:05:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T22:14:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -411,3 +411,13 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ECONOMY_TRADE_SWEEP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ECONOMY_TRADE_SWEEP_1.md
+
+## CATHEDRAL_PLAYER_CONCEALMENT_ARC_1 Design the Rust Cathedral <-> player relationship arc: it hides from and dislikes the player at first because the player's Rakatan gravship agitating the Empire is the scrutiny it has spent millennia avoiding (salvage loop = its cover); how the wariness thaws, what the player can do to expose or protect it, the reveal of how massive/deep it truly is. Canon now in the_rust_cathedral.md §7b - this is the plot/mechanism build owed
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CATHEDRAL_PLAYER_CONCEALMENT_ARC_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CATHEDRAL_PLAYER_CONCEALMENT_ARC_1.md
