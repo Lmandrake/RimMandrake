@@ -107,7 +107,10 @@ def _trigger_health_rebuild():
             last_ts = json.load(fh).get("ts")
         if last_ts is not None and (time.time() - last_ts) < MIN_INTERVAL:
             return
-    except (OSError, ValueError):
+    except Exception:
+        # The contract above is "never fail the caller": a wrong-shaped but
+        # valid-JSON state file (multi-window-written) must fall through to
+        # spawning, not traceback AFTER a mutation was recorded as success.
         pass
     # The log is a human/agent debugging artifact (the publisher's only error
     # channel), so it lives in Transient/ — gitignored there, NOT /tmp: /tmp is
@@ -324,6 +327,20 @@ def git_bytes(args):
 UNREADABLE = "<unreadable>"
 
 
+def proven_gone(rel):
+    """PROVEN absent (or no longer a regular file) only. os.path.isfile
+    answers False for IGNORANCE too (EACCES/EIO/drvfs stale read); acting
+    on ignorance destroys valid entries (prune) or tells a caller an
+    existing file does not exist (check). Ignorance answers False here."""
+    try:
+        st = os.stat(os.path.join(ROOT, rel))
+    except (FileNotFoundError, NotADirectoryError):
+        return True
+    except OSError:
+        return False
+    return not stat_mod.S_ISREG(st.st_mode)
+
+
 def file_hash(relpath):
     """SHA-256 of the file's current bytes on disk, or None if it doesn't
     exist / can't be read. This is the WHOLE clean/dirty answer now — no
@@ -401,7 +418,9 @@ def cmd_check(paths):
             continue
         if data.get(rel) is None:
             rel = canon.get(rel, rel)
-        if data.get(rel) is None and not os.path.isfile(os.path.join(ROOT, rel)):
+        if data.get(rel) is None and proven_gone(rel):
+            # proven_gone, not isfile: an unreadable-but-existing path must
+            # answer "never marked clean", never a false "no such file".
             any_dirty = True
             print(f"UNREVIEWABLE  {rel}  (no such file under the repo root)")
             continue
@@ -606,24 +625,11 @@ def cmd_prune(apply):
     rename fix belongs at the NEW path via mark-clean, not here) - it does not
     try to guess where content moved to.
     """
-    def _gone(rel):
-        # PROVEN absent (or no longer a regular file) only. os.path.isfile
-        # answers False for IGNORANCE too (EACCES/EIO/drvfs stale read), and
-        # pruning on ignorance permanently destroys a valid clean entry —
-        # ignorance must never read as gone.
-        try:
-            st = os.stat(os.path.join(ROOT, rel))
-        except (FileNotFoundError, NotADirectoryError):
-            return True
-        except OSError:
-            return False
-        return not stat_mod.S_ISREG(st.st_mode)
-
     def _orphaned(rel):
         # One predicate for the scan AND the under-lock re-test — the two
         # briefly disagreed and prune --apply printed "dropped" for a
         # case-rename phantom while removing nothing (review 2026-09-09).
-        return (_gone(rel)
+        return (proven_gone(rel)
                 or not exact_case_isfile(rel))  # drvfs: a case-renamed
                                                 # spelling "exists" but is
                                                 # a phantom
