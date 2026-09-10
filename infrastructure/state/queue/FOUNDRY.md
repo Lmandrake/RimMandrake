@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T11:20:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T11:41:36Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -404,15 +404,6 @@ target:   v1
 kind:     task
 summary:  Thin when filed — no spec/verify/criteria in the queue entry itself, but fully
 prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
-
-## DROID_RETIRE_ABF_SYNCORE_1 Retire ABF + SynCore (wave R2); DroidDonor_ABFGate fires; remove DroidsAreMachines ABF half; cold load
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  DROIDRETIREABFSYNCORE1 — retire ABF + SynCore (wave R2)
-prose:    infrastructure/state/items/DROID_RETIRE_ABF_SYNCORE_1.md
 
 ## FUNGALFOREST_RAID_MERGE_1 Dissolve BMT_FungalForest (an underground def on 425 surface tiles) into its neighbors per the measured cluster table (the Rot; Wasteland at South Crags sector 9), and ingest its spore kit, materials, flora into the Rot as our own defs
 state:    doing
