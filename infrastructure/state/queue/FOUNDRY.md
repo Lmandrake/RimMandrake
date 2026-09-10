@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T00:02:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T00:02:53Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -928,16 +928,6 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SELFTEST_RENDER_FLAKE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SELFTEST_RENDER_FLAKE_1.md
-
-## DUMPDB_MANIFEST_SHORTFALL_1 Live defs.sqlite holds 80287 defs vs 80987 manifest-declared (e.g. Verse.CreepJoinerBaseDef json 24 / sqlite 0) — pre-existing at HEAD, find the 700 missing
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DUMPDB_MANIFEST_SHORTFALL_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DUMPDB_MANIFEST_SHORTFALL_1.md
 
 ## CODEX_EDIT_TIMEOUT_1 codex edit mode (image-conditioned generation) timed out 3/3 in calibration (240/360/480s, zero images, not throttle) — root-cause it; it is the facing pipeline's reference-fidelity route
 state:    proposed
