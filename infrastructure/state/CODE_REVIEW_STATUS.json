@@ -2153,6 +2153,162 @@
     "hash": "45160942cbe571994025ad2b633dab3edad7e0dadeb0d16256d0f241962b77b2",
     "sha": "90940c68"
   },
+  "src/RimMandrake/Pyrinth/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "2bb0536ef6cc3a147409ec481b94eaa82d7dd9a755875acb11cebbee91abb135",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Defs/Absorbed_EpochsPyrinth/Effects/Absorbed_EpochsPyrinth_Effecter_Pyrinth.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "25ab66bf94165c599df68736d97eb422fb5e2fc51f6ce7a9735ec6682072f520",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Defs/Absorbed_EpochsPyrinth/ThingDefs_Buildings/Absorbed_EpochsPyrinth_Buildings_Furniture.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "2a4206efee2a1f7deaa3b1d0d3d65e13d2ba241c9d62290ed17bdeeac6c59e30",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Defs/Absorbed_EpochsPyrinth/ThingDefs_Buildings/Absorbed_EpochsPyrinth_Buildings_Natural.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "87310fc6acd5662d88e5c13d115784e0f84d044add7d0b32d76a0b51e05c2ce8",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Defs/Absorbed_EpochsPyrinth/ThingDefs_Items/Absorbed_EpochsPyrinth_Items_Resource_Pyrinth.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "2cd042944bb0c9bf25e56788b1b66b55fdb16091a6c88af9a0ee71b34b9861e6",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Defs/Absorbed_EpochsPyrinth/ThingDefs_Misc/Weapons/Absorbed_EpochsPyrinth_MeleeMedieval_Magic.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "a8b948b9b5ccace6e70bfc6c2c3fa594c2127a5499528c51c35f1dbbf568e584",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Patches/Absorbed_EpochsPyrinth/Absorbed_EpochsPyrinth_MO_Cost_Patch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "cacff09c88720771c7d6464a7ba41007c3d1adc101a722c17ffd27491945e61b",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Patches/Absorbed_EpochsPyrinth/Absorbed_EpochsPyrinth_Royalty_Patch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "95ecb5bef605d6f1235d422c50b5effb7e3091bb93c7d4a29647a4303200b0bc",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Source/gen_pyrinth_absorption.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "3c7bfb6f4f73676448a7d3f6597d52c18dfa990413b31165ba58f9d41203de14",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Building/Filth/PyrinthFilth_A.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "61b41d2eab7d3e7f308bfa747dd50b669a114ce1df84a587986d1d7e6e0a567b",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Building/Linked/Pyrinth_Atlas.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "dc28b31d59266956f280344ee819a8943a0c9f468428fec9ad07200f32ebdf9b",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Building/Misc/PyrinthBrazier/PyrinthBrazier_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "9d4f5bc51ae2313949a8b6f8d92f12d7e0644caf56ac80aadaa6aa1405c8dd3c",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Building/Misc/PyrinthBrazier/PyrinthBrazier_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "f80755c744b1c21944ae75cbe5eb0eaaeb7607b1006ea4f3fd0c8cc85f49c7c8",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Building/Misc/PyrinthBrazier/PyrinthBrazier_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "f3d2119444db9223a871c82a0579f9c4ee419f7ab2cbd39e21797b8afa873910",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Building/Misc/PyrinthBrazier/PyrinthBrazier_west.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "9d4f5bc51ae2313949a8b6f8d92f12d7e0644caf56ac80aadaa6aa1405c8dd3c",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Building/Misc/PyrinthHeater.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "3fe938264627ef4e428139e3be8ae1ed01c6ea41b8464b580678ea6d3ca90daa",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Building/Misc/PyrinthLamp.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "f381b2220ab1f7b36abb8f66467be6fb0c3f3b54b352574739e11dc5a619c342",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Building/Misc/WallPyrinthTorch/WallPyrinthTorch_UI.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "4dd9abff0320880a921ead2df164900a1a2af106280f7fc649505b595a2b8a72",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Building/Misc/WallPyrinthTorch/WallPyrinthTorch_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "bab7e64b8985fca4dd8c3075ef4f91d99afef9a3ebf027b97a3a811c6e458221",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Building/Misc/WallPyrinthTorch/WallPyrinthTorch_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "c253baa883319b20437fe7e4b664d1507f63785a29bd913c9fd09ca10fd8c048",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Building/Misc/WallPyrinthTorch/WallPyrinthTorch_south.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "b045fc2b6d928e74f20cac5128086999bde61121f66b07b1873fe1e55b92f69f",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Item/Equipment/WeaponMelee/PyrinthBlade.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6e1bcf652bf29fc6236303bf1f37d7cff5575a64d08c32c8dfb81a66eb9835d5",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Item/Resource/Pyrinth/Pyrinth_a.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "c954f2aca96bc413426c3452da0c98917fbeefcf2df2f44f45e2454bd6229fee",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Item/Resource/Pyrinth/Pyrinth_b.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "5de00ff946d87e9af20ed8ca6db9ef3b8f4eb7570921f70336cb4157260cc735",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Item/Resource/Pyrinth/Pyrinth_c.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "c06e2b36799020649fa09361e2f25ab572e573aeeb29320c5d742162f2219ffb",
+    "sha": "40d1b98c"
+  },
+  "src/RimMandrake/Pyrinth/Textures/Things/Mote/PyrinthSpark.png": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "c0fb0a63ec8bbb1ff7fbc9cad32b67ff5e4b5b3ecaf4390d970ae97004f63d7e",
+    "sha": "40d1b98c"
+  },
   "src/RimMandrake/RaidRedesigner/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-07",
