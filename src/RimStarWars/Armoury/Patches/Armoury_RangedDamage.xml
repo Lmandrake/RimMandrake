@@ -370,24 +370,6 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Vanilla Quests Expanded - Cryptoforge</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- VQE_AncientShieldedTurret_Bullet : 40 -> 86 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="VQE_AncientShieldedTurret_Bullet"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>86</damageAmountBase></value>
-        </li>
-        <!-- VQE_AncientSpacerAutocannon_Bullet : 64 -> 125 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="VQE_AncientSpacerAutocannon_Bullet"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>125</damageAmountBase></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
     <mods><li>[HMC]Wall Furniture</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
