@@ -268,11 +268,13 @@ def canonical_rels(rels):
         return out, True
     # (icase,literal): literal kills glob interpretation — "[", "*", "?" in a
     # filename are pathspec magic by default and would match a DIFFERENT file.
-    r = git(["-c", "core.quotePath=false", "ls-files", "--"]
+    # -z: NUL-separated is the only mode git never quotes in ('"' and '\\'
+    # are still C-quoted even under quotePath=false).
+    r = git(["ls-files", "-z", "--"]
             + [":(icase,literal)" + a for a in ask])
     if r.returncode != 0:
         return out, False
-    lines = r.stdout.splitlines()
+    lines = [l for l in r.stdout.split("\0") if l]
     exact = set(lines)
     by_fold = {}
     for l in lines:
@@ -385,13 +387,17 @@ def clean_state(rel, entry):
         return "DIRTY", "file no longer exists on disk"
     if current is UNREADABLE:
         return "DIRTY", "file exists but could not be read (permissions/IO?) — not evidence of change"
-    if current != recorded_hash:
-        return "DIRTY", "content changed since clean mark at %s on %s" % (
-            entry.get("sha", "?"), entry.get("date", "?"))
+    # Phantom test BEFORE the hash comparison: a case-renamed entry whose
+    # content ALSO changed must name the phantom (whose remedy, reopen/prune,
+    # actually works) — "content changed" would send the reviewer to a
+    # mark-clean that refuses on the dead spelling.
     if not exact_case_isfile(rel):
         # drvfs found the bytes case-insensitively, but this exact spelling
         # is gone (case-only rename): a phantom entry, not a clean file.
         return "DIRTY", "recorded spelling no longer exists on disk (case-renamed?) — reopen or prune this entry"
+    if current != recorded_hash:
+        return "DIRTY", "content changed since clean mark at %s on %s" % (
+            entry.get("sha", "?"), entry.get("date", "?"))
     return "CLEAN", "clean at %s on %s" % (entry.get("sha", "?"), entry.get("date", "?"))
 
 
@@ -403,9 +409,9 @@ def cmd_check(paths):
                if not (r.startswith("../") or r == "..")
                and data.get(r) is None
                and not os.path.isdir(os.path.join(ROOT, r))]
-    canon = (canonical_rels(missing)[0] if missing else {})
-    # (check errs safe on canonicalization ignorance: a recorded path then
-    # reads "never marked clean", rc 1 — no false CLEAN is possible.)
+    canon, canon_certain = (canonical_rels(missing) if missing else ({}, True))
+    # (check errs safe on canonicalization ignorance — no false CLEAN is
+    # possible — but the never-marked reason gets an honesty caveat below.)
     any_dirty = False
     for p, rel in zip(paths, rels):
         # Answer honestly for paths that cannot be reviewed at all, instead
@@ -431,6 +437,9 @@ def cmd_check(paths):
             print(f"UNREVIEWABLE  {rel}  (no such file under the repo root)")
             continue
         state, detail = clean_state(rel, data.get(rel))
+        if state == "DIRTY" and data.get(rel) is None and not canon_certain:
+            detail += ("; NOTE git could not answer case canonicalization — "
+                       "a mis-cased recorded spelling would also read this way")
         if state == "DIRTY":
             any_dirty = True
             print(f"DIRTY  {rel}  ({detail})")
@@ -711,13 +720,14 @@ def find_untracked(data):
     be true only for the ~917 paths ever entered here, out of 1,402 real
     .py/.cs/.xml files under src/ - the other ~485 were never tracked at all.
     """
-    # core.quotePath=false: git C-quotes non-ASCII paths by default
-    # ("src/caf\303\251.py", literal quotes), which fails endswith() and
-    # silently drops the file from the census this instrument exists for.
-    r = git(["-c", "core.quotePath=false", "ls-files", "--", UNTRACKED_SCAN_DIR])
+    # -z (NUL-separated): the ONLY mode git never quotes in. quotePath=false
+    # still C-quotes '"', '\\' and control chars, silently dropping such a
+    # path from the census this instrument exists for.
+    r = git(["ls-files", "-z", "--", UNTRACKED_SCAN_DIR])
     if r.returncode != 0:
         return None  # caller must not treat this as "no untracked files"
-    tracked = [p for p in r.stdout.splitlines() if p.endswith(UNTRACKED_SCAN_EXTS)]
+    tracked = [p for p in r.stdout.split("\0")
+               if p and p.endswith(UNTRACKED_SCAN_EXTS)]
     return sorted(p for p in tracked if p not in data)
 
 
@@ -838,7 +848,10 @@ def main():
     elif args.cmd == "list":
         sys.exit(cmd_list(args.show_untracked))
     elif args.cmd == "migrate-hashes":
-        sys.exit(cmd_migrate_hashes())
+        rc = cmd_migrate_hashes()
+        if rc == 0:
+            _trigger_health_rebuild()  # it flips DIRTY->CLEAN like the others
+        sys.exit(rc)
     elif args.cmd == "prune":
         rc = cmd_prune(args.apply)
         if rc == 0 and args.apply:
