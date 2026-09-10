@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T04:52:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T04:53:30Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -89,15 +89,6 @@ target:   v1
 kind:     task
 summary:  - Identify the mod: which import ships the orange glowing crystal (candidates to
 prose:    infrastructure/state/items/CRYSTAL_MODS_INGEST_1.md
-
-## ANCIENT_RUINS_MOD_AUDIT_1 Deep audit of the ancient-ruins mod (the mall-maps one — identify exact packageId from the live list first): anything redeemable? full ThingDef inventory triage; and study HOW it generates its maps/items before any removal decision
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  ANCIENTRUINSMODAUDIT1 — the mall-maps mod: cut, keep, or learn from
-prose:    infrastructure/state/items/ANCIENT_RUINS_MOD_AUDIT_1.md
 
 ## ART_PIPELINE_DAEMON_1 Constant background art pipeline: dumb daemon + N codex exec receiving-agent workers, seats fill the queue
 state:    doing
