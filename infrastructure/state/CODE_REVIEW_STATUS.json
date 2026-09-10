@@ -1715,11 +1715,23 @@
     "hash": "08b41a0aa443ead918e05a04db4f2dd56ba48833db6f06c2f201a0ba819cb05f",
     "sha": "3ea1ca20"
   },
+  "src/RimMandrake/Oracle/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "80f5da8f"
+  },
   "src/RimMandrake/Oracle/Source/DebugActions_Oracle.cs": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "hash": "1199cf03c4a3d475de6eefdf6ebb6c808da30955330b8c8e0fdac9677e44b5a5",
     "sha": "43f96b1b"
+  },
+  "src/RimMandrake/Oracle/Source/Oracle.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "5ab131fed8ff7cf5faf714d279c04f646d2d57da9ee81c6c5b10b2f7b95996c5",
+    "sha": "80f5da8f"
   },
   "src/RimMandrake/Oracle/Source/OracleClient.cs": {
     "cleanCount": 1,
