@@ -1553,6 +1553,12 @@
     "hash": "95c67fbb64929a7bd20f4a19c21e7423b0c44fee3fc4a3c34a5dc29c07abece5",
     "sha": "3ea1ca20"
   },
+  "src/RimMandrake/Ninefold/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "87f6db62"
+  },
   "src/RimMandrake/Ninefold/Source/ChronicleSubscriber.cs": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -1582,6 +1588,12 @@
     "date": "2026-09-05",
     "hash": "00d2ade98db0be652955ccb2d9b1efb6a8a3a0a415395fc401a2ad123a58b221",
     "sha": "239af5dc"
+  },
+  "src/RimMandrake/Ninefold/Source/Ninefold.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "1bd84090c615fe3d55f665d6c46bab460df4005210264168aa6e66776e1e8278",
+    "sha": "87f6db62"
   },
   "src/RimMandrake/Ninefold/Source/NinefoldMod.cs": {
     "cleanCount": 1,
