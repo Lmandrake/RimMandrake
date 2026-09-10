@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T05:06:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T05:11:29Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -318,7 +318,7 @@ prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
 ## MAPGEN_GL_SHEET_1 Map generator: 8 plans through the GL emitter, quicktest screenshots beside painter renders — the real terrain, one sheet (owner 2026-09-06: both routes)
 state:    doing
 row:      unassigned
-needs:    owner
+needs:    bridge
 target:   v1
 kind:     task
 summary:  - Input: the 8 plans Transient/mapgenv0/seed01-8.plan.json (or fresh ones from
@@ -336,7 +336,7 @@ prose:    infrastructure/state/items/MAPGEN_CONVERGENCE_LOOP_1.md
 ## MAPGEN_PAINTER_V1_1 Map generator painter v1: organic masks, elevation→terrain bands, hydrology with cause; v1 comparator sheet (owner 2026-09-06)
 state:    doing
 row:      unassigned
-needs:    owner
+needs:    offline
 target:   v1
 kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram

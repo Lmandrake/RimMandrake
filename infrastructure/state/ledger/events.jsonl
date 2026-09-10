@@ -6716,3 +6716,5 @@
 {"seat":"BENCH","event":"close","id":"ANCIENT_RUINS_MOD_AUDIT_1","sha":"e7d9bd4c","ts":"2026-09-10T04:53:30Z"}
 {"seat":"FOUNDRY","event":"claim","id":"ANCIENT_RUINS_FAMILY_CUT_1","ts":"2026-09-10T05:06:52Z"}
 {"seat":"FOUNDRY","event":"start","id":"ANCIENT_RUINS_FAMILY_CUT_1","ts":"2026-09-10T05:06:52Z"}
+{"seat":"FOUNDRY","event":"needs","id":"MAPGEN_GL_SHEET_1","to":"bridge","reason":"stale needs:owner cleared - owner's round-3 grade already landed (MAPGEN_ROUND3_VERDICT_LANDING_1); this item is now the lead and needs FOUNDRY to actually run the live quicktest comparison, not owner attention","ts":"2026-09-10T05:11:28Z"}
+{"seat":"FOUNDRY","event":"needs","id":"MAPGEN_PAINTER_V1_1","to":"offline","reason":"stale needs:owner cleared - owner already graded round 3 (FAIL); painter round 4 is on hold pending MAPGEN_GL_SHEET_1's comparison, not owner attention","ts":"2026-09-10T05:11:29Z"}
