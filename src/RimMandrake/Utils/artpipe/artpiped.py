@@ -103,8 +103,8 @@ def _baseline_for_mode(mode: str) -> float:
 WEEKLY_WARN, WEEKLY_REFUSE, WEEKLY_STOP = 80.0, 90.0, 97.0
 FIVE_H_DROP_N1, FIVE_H_SLEEP = 70.0, 90.0
 
-DEFAULT_TIMEOUT_GENERATE_S = 150
-DEFAULT_TIMEOUT_EDIT_S = 220
+DEFAULT_TIMEOUT_GENERATE_S = 300  # measured 2026-09-10: solo edit runs 119-130s; 3-way concurrency blew the old 150/220 ceilings
+DEFAULT_TIMEOUT_EDIT_S = 420  # measured 2026-09-10: both codexcal attempts died at ~240s under -N 3; solo is ~130s
 WORKER_SUBPROCESS_GRACE_S = 30  # on top of --timeout, so our own kill never
                                  # races the worker's own harvest-with-grace.
 
