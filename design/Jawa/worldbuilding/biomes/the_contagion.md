@@ -13,6 +13,13 @@ then bent). **The biome's name is THE CONTAGION** (owner's pick; the earlier wor
 image: **a red valley under a storm that never stops, where the clear sky is the thing to
 fear.**_
 
+⭐ **AMENDMENT 2026-09-10 (owner, `OCULAR_OVERDRIVE_SITE_1`):** the name **THE
+CONTAGION** stands as the canonical name — but **"the Overdrive" is not dead, it is
+the HELIX's name for it.** The Helix call the Contagion the Overdrive (their
+in-faction term for the place and what they do to it); the campaign and everyone
+else call it the Contagion. Refines the intro's "superseded" — the working name is
+repurposed as faction voice, not retired.
+
 🔑 **Read against `assailant_weapon_remnants.md` and its siblings.** The Assailant
 bioweapon's fourth end: here it **malfunctioned yet again — so aggressive it is in its own
 way.** Mutation upon mutation, it changes forms faster than it can finish the last one.
