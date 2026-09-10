@@ -84,12 +84,13 @@ seat_colour() {
     case "$1" in
         BENCH)   printf '#7BC96F' ;;   # green — with the owner, permanent bench
         FOUNDRY) printf '#E5A03C' ;;   # amber — the autonomous queue window
+        ARTIST)  printf '#B48EFF' ;;   # purple — the art-pipeline seat (not yet active)
     esac
 }
-SEATS="BENCH FOUNDRY"
+SEATS="BENCH FOUNDRY ARTIST"
 
 usage() {
-    echo "usage: $0 {BENCH|FOUNDRY} [detail]" >&2
+    echo "usage: $0 {BENCH|FOUNDRY|ARTIST} [detail]" >&2
     echo "       $0 --preview | --reset-colour" >&2
     echo "  identities: infrastructure/agents/<SEAT>.md   shared rules: infrastructure/agents/POLICY.md" >&2
 }
@@ -134,7 +135,7 @@ ROLE="${1:-}"
 DETAIL="${2:-}"
 
 case "$ROLE" in
-    BENCH|FOUNDRY) ;;
+    BENCH|FOUNDRY|ARTIST) ;;
     *)
         usage; exit 2 ;;
 esac
