@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CRYSTAL_INGEST_EXECUTION_1 item 5 (design/Jawa/mods/crystal_mods_inventory.md ss3,
+  ratified 2026-09-10): "Leave as-is, rename in fiction only... Mechanically it already
+  IS lanternstone (volatile, glowing, blasting-grade)... No code change; a label/
+  description pass (owner-ratified name is already 'lanternstone') is enough."
+
+  TEXT ONLY. defNames (BMT_ResourceBlueCrystal, BMT_Crystal_Blue{Small,Medium,Large,
+  Huge,Sowable}), mechanics (explosive comp, wickTicks, harvestYield, growDays,
+  scatter/wildPlants wiring) and every other field are UNCHANGED === this patches label/
+  description strings only, on Biomes! Caverns' own live defs (its native blue crystal
+  is the Lantern Deeps' donor mod, already fully credited in the_lantern_deeps.md).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Biomes! Caverns</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="BMT_ResourceBlueCrystal"]/label</xpath>
+          <value>
+            <label>lanternstone</label>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="BMT_ResourceBlueCrystal"]/description</xpath>
+          <value>
+            <description>Lanternstone, cut from the crystal caverns below. It glows faintly and
+burns hot and fast when struck -- blasting-grade, if you can afford to lose the light.</description>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="BMT_Crystal_BlueSmall"]/label</xpath>
+          <value>
+            <label>small lanternstone vein</label>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="BMT_Crystal_BlueSmall"]/description</xpath>
+          <value>
+            <description>A small vein of lanternstone, glowing faintly in the dark. It is surprisingly volatile.</description>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="BMT_Crystal_BlueMedium"]/label</xpath>
+          <value>
+            <label>lanternstone vein</label>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="BMT_Crystal_BlueMedium"]/description</xpath>
+          <value>
+            <description>A vein of lanternstone, glowing faintly in the dark. It is surprisingly volatile.</description>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="BMT_Crystal_BlueLarge"]/label</xpath>
+          <value>
+            <label>large lanternstone vein</label>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="BMT_Crystal_BlueLarge"]/description</xpath>
+          <value>
+            <description>A large vein of lanternstone, glowing faintly in the dark. It is surprisingly volatile.</description>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="BMT_Crystal_BlueHuge"]/label</xpath>
+          <value>
+            <label>huge lanternstone vein</label>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="BMT_Crystal_BlueHuge"]/description</xpath>
+          <value>
+            <description>A huge vein of lanternstone, glowing faintly in the dark. Large enough that a smaller
+piece could break off from it. It is surprisingly volatile.</description>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="BMT_Crystal_BlueSowable"]/label</xpath>
+          <value>
+            <label>fast-growing lanternstone</label>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="BMT_Crystal_BlueSowable"]/description</xpath>
+          <value>
+            <description>Unlike its more unstable wild cousins, this cultivated lanternstone grows very fast and
+does not explode when damaged. It still needs fertile soil.</description>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

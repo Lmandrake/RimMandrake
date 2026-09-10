@@ -18,6 +18,13 @@
   <loadAfter>
     <li>BiomesTeam.BiomesCaverns</li>
     <li>m00nl1ght.GeologicalLandforms</li>
+    <!-- CRYSTAL_INGEST_EXECUTION_1 item 4: RUT_LanternDeepGateKotorStygium.xml removes a
+         <li> that guy762.mm.kotorcore's OWN patch adds to Base_Player/BasePlayer_Second
+         ArchonexusCycle/BasePlayer_ThirdArchonexusCycle's genSteps at patch time === our
+         PatchOperationRemove must run after that PatchOperationAdd has already fired. -->
+    <li>guy762.mm.kotorcore</li>
+    <li>lee.theforce.lightsaber</li>
+    <li>det.epochspyrinth</li>
     <!-- LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1: GenStep_ScatterCavePortal's host-biome
          allowlist checks map.Biome.defName against RUT_NightsideIce and RUT_PropaneLake
          (mandrake.rut.patches) and BiomeGRimond (grimterra.biomesmod, "GRiNDTerra
