@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T03:15:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T04:42:26Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1010,6 +1010,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MAPGEN_ROUND3_VERDICT_LANDING_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## verify
+summary:  MAPGENROUND3VERDICTLANDING1 — the owner's round-3 grade, for FOUNDRY to absorb
 prose:    infrastructure/state/items/MAPGEN_ROUND3_VERDICT_LANDING_1.md
