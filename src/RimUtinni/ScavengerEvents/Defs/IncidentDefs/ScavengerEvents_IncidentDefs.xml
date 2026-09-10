@@ -104,4 +104,20 @@
     <pointsScaleable>false</pointsScaleable>
   </IncidentDef>
 
+  <!-- RUT_SCAVENGEREVENTS_BUILD_1, mechanism 8 of 8: ShipBreak. Donor
+       defName was MO_ShipBreak; letter keys were MO_CargoRain (the class
+       name and the shipped incident text don't match in the donor either).
+       Ported from MoreIncidents.MOIncidentWorker_ShipBreak. -->
+  <IncidentDef>
+    <defName>RUT_ShipBreak</defName>
+    <label>ship break</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.Utinni.ScavengerEvents.IncidentWorker_ShipBreak</workerClass>
+    <baseChance>1</baseChance>
+    <minRefireDays>15</minRefireDays>
+  </IncidentDef>
+
 </Defs>

@@ -17,4 +17,7 @@
 
   <RUT_Stroke>Stroke</RUT_Stroke>
   <RUT_StrokeDesc>{PAWN_label} has suffered a stroke and collapsed.</RUT_StrokeDesc>
+
+  <RUT_CargoRain>Cargo rain</RUT_CargoRain>
+  <RUT_CargoRainDesc>Wreckage from a broken ship has rained down nearby -- salvageable cargo, a wounded survivor, and a body.</RUT_CargoRainDesc>
 </LanguageData>
