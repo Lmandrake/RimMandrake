@@ -113,3 +113,37 @@ number multiplied. Actually traced it this pass:
 window), restart, then verify by LOOKING — `jawa/world_features_get` numbers
 + a globe screenshot, per this item's own gates. Not attempted here; game is
 currently up and in active use.
+
+## VERIFIED 2026-09-10 (FOUNDRY) — LOOKED at the globe, labels read fine. Closing.
+
+Bridge taken/released cleanly (`rimflow bridge take/release`). Campaign was live
+with a blocking `RimWorld.Dialog_NamePlayerGravship` modal in the way (unrelated
+new-gravship-naming prompt) — dismissed by accepting the pre-filled default name
+"Emotionless Eagle" via `rimworld/click_ui_target` on its OK button
+(`rimworld/get_ui_layout` → `ui-element:2:3:7`), not by inventing a name myself.
+
+**`jawa/world_features_get` (71 features) reads FLAT, not formula-scaled:**
+every feature — "Pan" (79 tiles) through "Deadstone" (2051 tiles) through "Dune
+Sea" (1692 tiles) — reports `maxDrawSizeInTiles: 10.0`, `effectiveDrawSize: 15.0`,
+exactly. That is neither the old buggy value (varying, max 99.6) nor this item's
+predicted post-fix value (varying, Deadstone≈61/Dune Sea≈55.5/mean≈21). `10.0`
+is suspicious in its own right — it is exactly the first knot of vanilla's
+`EffectiveDrawSizeCurve` (`CurvePoint(10f, 15f)`) — but `maxDrawSizeInTiles` is
+Scribe-serialized (`WorldFeature.ExposeData`), so whatever produced this flat
+value was baked into the save at some point and a DLL redeploy alone cannot
+change it retroactively — only a fresh `world_features_import` run recomputes
+it. **Did not chase this further** — out of scope for a quick visual check, and
+the item's own gate says judge by looking, not by the number.
+
+**Screenshot** (world view, altitude 350, orbit camera):
+`D:\Luke\dev\Rimworld\Transient\WORLD_FEATURE_LABELS_OVERSIZED_1_verify_20260910c.png`
+— "Fall Line", "Fall Line Barrens", "The Abandoned Mines", "Grey Sea", "Salt",
+"Ashfall Range", "Gray Crags", "Notch", "Cinders", "Damp", "Scorch", "Rust
+Cauldron" are all a normal, readable size, non-overlapping, comparable to
+vanilla map-label proportions. **No sign of the original "HUUUGE"/overlapping
+symptom.** Judged by looking, per the item's own instruction: fixed. Closing.
+
+Open thread for whoever touches world features next: the flat-10 number means
+the sqrt-scaled formula in `JawaBenchWorldTools.cs:4695` / `ashkarr_paint.py`
+is not what actually produced the live label sizes on THIS save — worth a look
+before trusting `maxDrawSizeInTiles` as evidence of which code path ran.
