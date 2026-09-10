@@ -125,6 +125,32 @@ DEFAULT_GEMINI_TIMEOUT_S = 200  # gemini_image.py's own urllib call times out at
 # actual model (and therefore actual cost) is known — see GeminiBudget.
 GEMINI_RESERVE_ESTIMATE_USD = max(GEMINI_MODEL_COST_USD.values())
 
+# gemini_image.py's own error shape on a throttle/quota refusal:
+# `sys.exit("API error %s %s: %s" % (code, status, message))` where a
+# 429/RESOURCE_EXHAUSTED response prints literally as
+# "API error 429 RESOURCE_EXHAUSTED: ...". Specific phrasing, like
+# RATE_LIMIT_MARKERS — never a bare "429" (a byte count or a prompt could
+# contain that number innocently).
+GEMINI_QUOTA_MARKERS = ("resource_exhausted", "api error 429",
+                        "quota exceeded", "rate limit exceeded")
+GEMINI_BACKOFF_BASE_S = 10.0
+GEMINI_BACKOFF_CAP_S = 300.0
+GEMINI_BACKOFF_MAX_STREAK = 6  # 10,20,40,80,160,300(capped) — never grows past this
+
+
+def _looks_gemini_quota_error(text: str) -> bool:
+    """True if stderr/stdout text names an exhausted-quota / rate-limit
+    condition rather than a genuine, retryable-immediately worker fault.
+    Case-insensitive substring match against GEMINI_QUOTA_MARKERS — the
+    real gemini_image.py CLI's error text is not pinned down by any spec
+    here, so this is deliberately loose (a false POSITIVE just costs one
+    extra backoff sleep; a false NEGATIVE burns real budget hammering a
+    provider that has already said no)."""
+    if not text:
+        return False
+    lowered = text.lower()
+    return any(marker in lowered for marker in GEMINI_QUOTA_MARKERS)
+
 VALIDATOR_TIMEOUT_S = 60  # run_validator's own subprocess.run ceiling.
 
 # Cheap startup maintenance: _artsrc/<id>/ scratch dirs for terminally-
@@ -304,18 +330,34 @@ def _gemini_model_cost(model: str) -> float:
     return GEMINI_MODEL_COST_USD.get(model, GEMINI_MODEL_COST_USD[DEFAULT_GEMINI_MODEL])
 
 
-def read_gemini_spend(throughput_log: Path) -> float:
-    """Sum of every past gemini job's recorded `cost_usd` in
-    throughput.jsonl — the budget is DURABLE across restarts, not an
-    in-memory counter that forgets everything the moment the daemon
-    restarts."""
+def read_gemini_spend(throughput_log: Path) -> tuple[float, int]:
+    """Returns (total_spent_usd, skipped_line_count).
+
+    Sum of every past gemini job's recorded `cost_usd` in throughput.jsonl
+    — the budget is DURABLE across restarts, not an in-memory counter that
+    forgets everything the moment the daemon restarts. Rows with
+    `"record": "intent"` (a billing-INTENT written before the API call
+    even ran — see `_write_gemini_billing_intent`) carry no `cost_usd` and
+    are never summed; only `"record": "final"` (or a legacy row with no
+    `record` field at all, from before intent records existed) counts.
+
+    A `skipped` line is one that failed to parse as JSON at all — a
+    torn/partial write (a crash mid-append; `common.append_jsonl`'s single
+    `os.write` makes this rare but not impossible on a stale-read
+    filesystem). Skipping it silently used to make a torn row read as a
+    HIGHER effective budget than reality (its cost, if any, is invisible)
+    — the caller (`GeminiBudget`) treats a nonzero skip count as a reason
+    to refuse further gemini admission until a human looks, rather than
+    quietly under-counting spend.
+    """
     if not throughput_log.is_file():
-        return 0.0
+        return 0.0, 0
     try:
         text = throughput_log.read_text(errors="replace")
     except OSError:
-        return 0.0
+        return 0.0, 0
     total = 0.0
+    skipped = 0
     for line in text.splitlines():
         line = line.strip()
         if not line:
@@ -323,25 +365,29 @@ def read_gemini_spend(throughput_log: Path) -> float:
         try:
             obj = json.loads(line)
         except ValueError:
+            skipped += 1
             continue
-        if obj.get("channel") == "gemini":
+        if obj.get("channel") == "gemini" and obj.get("record") != "intent":
             cost = obj.get("cost_usd")
             if isinstance(cost, (int, float)) and not isinstance(cost, bool):
                 total += cost
-    return total
+    return total, skipped
 
 
 def _throughput_has_entry(throughput_log: Path, job_id: str) -> bool:
-    """True if throughput.jsonl already has ANY row for this job id.
+    """True if throughput.jsonl already has ANY row for this job id —
+    including a billing-INTENT row with no matching final row yet (see
+    `_write_gemini_billing_intent`).
 
     Under normal operation this is only ever True for a job reconcile()
-    is currently deciding whether to requeue: finalize_job now writes
-    throughput BEFORE the manifest, so a row existing with no manifest
-    anywhere means a PRIOR attempt at this exact id got far enough to
-    append its cost before the daemon died. reconcile() uses this to
-    refuse auto-requeuing a gemini orphan in that state, rather than
-    silently retrying (and, for a job that had already spent real money,
-    possibly spending it again) — see reconcile()'s own docstring.
+    is currently deciding whether to requeue: an intent row (written
+    BEFORE the gemini worker subprocess even runs) or a final row
+    (finalize_job now writes throughput before the manifest) existing
+    with no manifest anywhere means a PRIOR attempt at this exact id got
+    far enough to possibly have spent real money before the daemon died.
+    reconcile() uses this to refuse auto-requeuing a gemini orphan in
+    that state, rather than silently retrying it — see reconcile()'s own
+    docstring.
     """
     if not throughput_log.is_file():
         return False
@@ -362,16 +408,44 @@ def _throughput_has_entry(throughput_log: Path, job_id: str) -> bool:
     return False
 
 
+def _write_gemini_billing_intent(throughput_log: Path, job_id: str, attempt: int = 1) -> None:
+    """Written BEFORE spawning the gemini worker subprocess — the OTHER
+    half of closing the crash-then-requeue billing risk. finalize_job
+    writing throughput before the manifest only closes the (tiny,
+    microsecond-scale) gap between the API call FINISHING and the
+    manifest being written; a kill -9 DURING the API call itself (up to
+    the full `--gemini-timeout`, which can be minutes) used to leave
+    NOTHING on disk at all, and reconcile() would then requeue the orphan
+    for a fresh attempt with no idea the first one might already have
+    spent real money. This intent record gives reconcile() something to
+    detect for that entire window, not just the tail of it. Never counted
+    as spend itself (no `cost_usd`, `"record": "intent"` — see
+    read_gemini_spend()'s own filtering)."""
+    common.append_jsonl(throughput_log, {
+        "ts": time.time(), "id": job_id, "channel": "gemini",
+        "record": "intent", "attempt": attempt,
+    })
+
+
 def _gemini_reservation_lock_path(throughput_log: Path) -> Path:
     return throughput_log.parent / (throughput_log.name + ".reservation.lock")
 
 
-def read_gemini_spend_locked(throughput_log: Path) -> float:
+def read_gemini_spend_locked(throughput_log: Path, cache: dict | None = None) -> tuple[float, int]:
     """read_gemini_spend(), serialized across PROCESSES via an flock on a
     sibling lockfile — so every admission check sees the LATEST persisted
     spend, not a value cached once at daemon startup. This is what makes
     the SPENT side of the cap account-wide across N daemons (see
-    GeminiBudget's own docstring for what this does NOT cover)."""
+    GeminiBudget's own docstring for what this does NOT cover).
+
+    `cache`, if given (a small dict the CALLER owns and reuses across
+    calls), avoids re-reading and re-parsing the WHOLE log on every poll
+    tick when nothing has changed: the file's `(size, mtime)` is compared
+    against the cached key, and the expensive full read only happens on a
+    genuine change (or when no cache is given at all, e.g. a one-off
+    read). The lockfile itself is still acquired every call — cheap — so
+    a change made by another process is never missed.
+    """
     lock_path = _gemini_reservation_lock_path(throughput_log)
     try:
         lock_path.parent.mkdir(parents=True, exist_ok=True)
@@ -381,7 +455,20 @@ def read_gemini_spend_locked(throughput_log: Path) -> float:
             except OSError:
                 pass  # DrvFs/9p may refuse advisory locks — read anyway, best effort.
             try:
-                return read_gemini_spend(throughput_log)
+                if cache is None:
+                    return read_gemini_spend(throughput_log)
+                try:
+                    st = throughput_log.stat()
+                    key = (st.st_size, st.st_mtime)
+                except OSError:
+                    key = None
+                if key is not None and cache.get("key") == key:
+                    return cache["value"]
+                result = read_gemini_spend(throughput_log)
+                if key is not None:
+                    cache["key"] = key
+                    cache["value"] = result
+                return result
             finally:
                 try:
                     fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
@@ -401,46 +488,98 @@ class GeminiBudget:
     ⚠️ RESIDUAL CONCURRENCY WINDOW, STATED PLAINLY (not claimed away): the
     SPENT side of the cap IS account-wide and live across N daemon
     processes — every `admission_blocked()`/`reserve()` call re-reads
-    `throughput.jsonl` fresh, under `read_gemini_spend_locked()`'s
-    cross-process flock, rather than trusting a value cached once at this
-    process's startup (a straight per-process cache would let N daemons
-    each independently believe there was room for a full cap's worth,
-    collectively spending up to N times it). `reserved_usd`, however, is
-    NOT shared — it exists only in THIS process's memory, for THIS
-    process's own currently-claimed-but-not-yet-finished jobs. Two daemons
-    each sitting near the cap can therefore still each reserve their own
-    estimate in the SAME instant and, together, spend up to one extra
-    reservation's worth over the cap before either one's REAL cost lands in
-    throughput.jsonl and the other's next re-read sees it. A fully
-    account-wide reservation would need a SHARED reservations file under
-    that same flock (proposed and deliberately NOT built — disproportionate
-    to this item's scope); re-reading the DECIDED, persisted spend live is
-    the honest minimum that closes the larger, unbounded per-process-cache
-    version of this gap while leaving the much smaller in-flight-guess
-    window named rather than hidden.
+    `throughput.jsonl` fresh (through a small size/mtime cache — see
+    `read_gemini_spend_locked()`), under a cross-process flock, rather
+    than trusting a value cached once at this process's startup (a
+    straight per-process cache would let N daemons each independently
+    believe there was room for a full cap's worth, collectively spending
+    up to N times it). `reserved_usd`, however, is NOT shared — it exists
+    only in THIS process's memory, for THIS process's own currently-
+    claimed-but-not-yet-finished jobs. Two daemons each sitting near the
+    cap can therefore still each reserve their own estimate in the SAME
+    instant and, together, spend up to one extra reservation's worth over
+    the cap before either one's REAL cost lands in throughput.jsonl and
+    the other's next re-read sees it. A fully account-wide reservation
+    would need a SHARED reservations file under that same flock (proposed
+    and deliberately NOT built — disproportionate to this item's scope);
+    re-reading the DECIDED, persisted spend live is the honest minimum
+    that closes the larger, unbounded per-process-cache version of this
+    gap while leaving the much smaller in-flight-guess window named
+    rather than hidden.
+
+    `admission_blocked()` and `reserve()` now share ONE predicate
+    (`_would_fit`) — they used to disagree (`>=` vs a separate `>` check
+    against a DIFFERENT threshold), so a fractional remainder smaller than
+    one reservation's estimate could pass admission, get claimed, fail to
+    reserve, and (in the old code) run anyway on a bare WARNING — silently
+    overshooting the cap by up to N x the estimate in one process, THEN
+    releasing a reservation that job never actually held (stealing
+    another job's real one). See `reserve()`'s own docstring for the fix.
+
+    A quota/throttle refusal from the gemini API itself (see
+    `GEMINI_QUOTA_MARKERS`) triggers a capped exponential backoff
+    (`note_quota_error()`) that gates admission the same way the dollar
+    cap does — the channel pauses claiming, it never retries the SAME
+    job (process_gemini_job has no retry loop at all, unlike codex's one
+    allowed retry).
     """
 
-    def __init__(self, cap_usd: float, throughput_log: Path, spent_so_far: float = 0.0):
+    def __init__(self, cap_usd: float, throughput_log: Path, spent_so_far: float = 0.0,
+                 ledger_strict: bool = True):
         self.cap_usd = cap_usd
         self.throughput_log = throughput_log
         self.spent_usd = spent_so_far  # last known reading; _refresh_spent() keeps it live
         self.reserved_usd = 0.0
         self.hard_stop = spent_so_far >= cap_usd
+        self.ledger_strict = ledger_strict
+        self.ledger_skipped = 0
+        self._spend_cache: dict = {}
+        self._warned_skip = False
+        self.backoff_sleep_until = 0.0
+        self._backoff_streak = 0
 
     def _refresh_spent(self) -> float:
-        self.spent_usd = read_gemini_spend_locked(self.throughput_log)
+        spent, skipped = read_gemini_spend_locked(self.throughput_log, self._spend_cache)
+        self.spent_usd = spent
+        self.ledger_skipped = skipped
+        if skipped:
+            if not self._warned_skip:
+                print(f"artpiped: WARNING throughput.jsonl has {skipped} unparseable "
+                      f"line(s) — a torn row makes the ledger's true spend UNKNOWN, "
+                      f"never LOWER than what's readable"
+                      + (" — refusing gemini admission until a human looks "
+                         "(--gemini-ledger-strict)" if self.ledger_strict else ""),
+                      file=sys.stderr)
+                self._warned_skip = True
+        else:
+            self._warned_skip = False  # a later clean read can warn again if it recurs
         if self.spent_usd >= self.cap_usd:
             self.hard_stop = True
         return self.spent_usd
 
-    def reserve(self, estimated_cost_usd: float) -> bool:
-        """Reserve budget for a job claimed but not yet run. Returns False
-        (nothing reserved) if the cap is already spent+reserved — the
-        caller must not claim in that case."""
+    def _would_fit(self, estimated_cost_usd: float) -> bool:
+        """The ONE predicate admission_blocked() and reserve() both use —
+        see the class docstring for why they must never disagree again."""
         if self.hard_stop:
             return False
+        if time.time() < self.backoff_sleep_until:
+            return False
         spent = self._refresh_spent()
-        if spent >= self.cap_usd or (spent + self.reserved_usd + estimated_cost_usd) > self.cap_usd:
+        if self.ledger_strict and self.ledger_skipped:
+            return False
+        if spent >= self.cap_usd:
+            return False
+        return (spent + self.reserved_usd + estimated_cost_usd) <= self.cap_usd
+
+    def admission_blocked(self, estimated_cost_usd: float = GEMINI_RESERVE_ESTIMATE_USD) -> bool:
+        return not self._would_fit(estimated_cost_usd)
+
+    def reserve(self, estimated_cost_usd: float) -> bool:
+        """Reserve budget for a job claimed but not yet run. Returns False
+        if there genuinely isn't room for the FULL estimate — the caller
+        must NEVER run the job unreserved in that case (return the claim
+        to pending/ instead); see main()'s own claim loop."""
+        if not self._would_fit(estimated_cost_usd):
             return False
         self.reserved_usd += estimated_cost_usd
         return True
@@ -448,9 +587,15 @@ class GeminiBudget:
     def release_reservation(self, estimated_cost_usd: float, actual_cost_usd: float) -> None:
         """The job finished (success or failure) — drop its reservation and
         record whatever it actually cost (0.0 for a failure that was never
-        billed). `actual_cost_usd` was already durably appended to
-        throughput.jsonl by finalize_job before this is called, so the next
-        `_refresh_spent()` (this process or any other) will see it
+        billed). `estimated_cost_usd` MUST be the exact amount THIS job's
+        own `reserve()` call actually reserved (tracked per-job by the
+        caller, e.g. 0.0 for a job that never successfully reserved at
+        all) — releasing a fixed constant regardless of what a specific
+        job held used to let a job that never reserved anything still
+        "release" (steal) budget out of another job's real, outstanding
+        reservation. `actual_cost_usd` was already durably appended to
+        throughput.jsonl by finalize_job before this is called, so the
+        next `_refresh_spent()` (this process or any other) will see it
         regardless — this local bookkeeping just keeps `hard_stop` correct
         without waiting for that next re-read."""
         self.reserved_usd = max(0.0, self.reserved_usd - estimated_cost_usd)
@@ -459,11 +604,22 @@ class GeminiBudget:
         if self.spent_usd >= self.cap_usd:
             self.hard_stop = True
 
-    def admission_blocked(self) -> bool:
-        if self.hard_stop:
-            return True
-        spent = self._refresh_spent()
-        return (spent + self.reserved_usd) >= self.cap_usd
+    def note_quota_error(self) -> None:
+        """An explicit throttle/quota refusal from the gemini API itself —
+        capped exponential backoff on the WHOLE channel (never a retry of
+        the same job; process_gemini_job has no retry loop to begin
+        with)."""
+        self._backoff_streak = min(self._backoff_streak + 1, GEMINI_BACKOFF_MAX_STREAK)
+        delay = min(GEMINI_BACKOFF_BASE_S * (2 ** (self._backoff_streak - 1)), GEMINI_BACKOFF_CAP_S)
+        self.backoff_sleep_until = time.time() + delay
+
+    def note_recovered(self) -> None:
+        """A gemini job completed WITHOUT a quota error — resets the
+        backoff STREAK (so one flaky throttle hit doesn't permanently
+        escalate later backoffs), but deliberately does NOT clear an
+        already-armed `backoff_sleep_until` early; a cooldown in progress
+        still runs its own course."""
+        self._backoff_streak = 0
 
 
 # Specific throttle phrasing, not a bare "rate limited" substring — that
@@ -789,7 +945,7 @@ class RunCtx:
     def __init__(self, worker_script, validator_script, manifest_schema,
                  artsrc_dir, active_dir, codex_home_root, workers_count,
                  timeout_generate, timeout_edit, reasoning_effort, verbose, slots,
-                 gemini_worker_script, gemini_timeout):
+                 gemini_worker_script, gemini_timeout, throughput_log=None):
         self.worker_script = worker_script
         self.validator_script = validator_script
         self.manifest_schema = manifest_schema
@@ -803,6 +959,14 @@ class RunCtx:
         self.slots = slots  # queue.Queue of free worker-slot ints (codex channel only)
         self.gemini_worker_script = gemini_worker_script
         self.gemini_timeout = gemini_timeout
+        # Needed ONLY so process_gemini_job can write a billing-INTENT row
+        # (_write_gemini_billing_intent) before it spawns the worker
+        # subprocess — see that function's own docstring for the crash
+        # window this closes. None is tolerated (skips the intent write)
+        # so any test/caller that never cared about that crash window
+        # doesn't have to thread a throughput_log through just to build a
+        # RunCtx.
+        self.throughput_log = throughput_log
         # No `dry_run` field: --dry-run is handled entirely in main()'s
         # run_dry_run(), before a RunCtx is ever built.
 
@@ -1196,6 +1360,19 @@ def process_gemini_job(job: dict, job_id: str, reference, out_png: Path, ctx: Ru
         pass
 
     model = job.get("model") or DEFAULT_GEMINI_MODEL
+
+    # Written BEFORE the subprocess spawns, deliberately — this is the
+    # ONLY record of this job that exists during the actual API call, and
+    # the API call is real money in flight for however long it takes. If
+    # the daemon dies right here, reconcile() finds this row via
+    # _throughput_has_entry() and refuses to silently requeue the job (see
+    # reconcile()'s own docstring) — a human has to look, instead of the
+    # crash silently double-spending on retry. ctx.throughput_log is None
+    # only for callers (tests) that never wired one up; skip rather than
+    # crash on write.
+    if ctx.throughput_log is not None:
+        _write_gemini_billing_intent(ctx.throughput_log, job_id)
+
     code, out, err, elapsed, timed_out = run_gemini_worker(
         ctx.gemini_worker_script, prompt, out_png, reference, model, ctx.gemini_timeout)
 
@@ -1212,7 +1389,17 @@ def process_gemini_job(job: dict, job_id: str, reference, out_png: Path, ctx: Ru
               "meter_before": None, "meter_after": None, "daemon_attempts": 1}
 
     if code != 0 or timed_out:
-        result.update(status="failed", worker_status="worker_error", validator="not_run",
+        # A quota/429 exhaustion is NOT an ordinary worker fault: hammering
+        # it again next tick just burns wall-clock against a provider that
+        # has already said no. finalize_job's gemini branch reads this
+        # worker_status back to drive GeminiBudget's backoff (see
+        # note_quota_error/note_recovered) — every OTHER failure counts as
+        # "recovered" (resets any existing backoff streak), since a normal
+        # error says nothing about the provider's own rate-limit state.
+        is_quota = _looks_gemini_quota_error(err) or _looks_gemini_quota_error(out)
+        result.update(status="failed",
+                       worker_status="quota_error" if is_quota else "worker_error",
+                       validator="not_run",
                        note=(f"gemini worker exited {code}"
                              + (" (timed out)" if timed_out else "")
                              + (f": {err.strip()[-200:]}" if err else "")))
@@ -1293,7 +1480,15 @@ def process_job(job_path: Path, ctx: RunCtx) -> dict:
 
 def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
                   active_dir: Path, throughput_log: Path, detector: Detector,
-                  gemini_budget: GeminiBudget, configured_n: int) -> None:
+                  gemini_budget: GeminiBudget, configured_n: int,
+                  reserved_usd: float = 0.0) -> None:
+    """`reserved_usd` MUST be the exact amount THIS job's own claim-time
+    reserve() call actually reserved — 0.0 for anything that never
+    reserved at all (a non-gemini job, or a gemini job from the
+    JobError/exception fallbacks that never got a chance to claim/reserve
+    in the first place). Releasing a fixed constant regardless used to
+    let a job that never reserved anything "release" (steal) budget out
+    of a DIFFERENT job's real, outstanding reservation."""
     job_id = result.get("id", job_path.stem)
     channel = result.get("channel", "codex")
     ok = result.get("status") == "ok"
@@ -1355,10 +1550,16 @@ def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
             pass
 
     if channel == "gemini":
-        # Drops this job's CLAIM-time reservation and records whatever it
-        # actually cost (0.0 if it never got billed) — see GeminiBudget's
-        # own docstring for why the reservation existed at all.
-        gemini_budget.release_reservation(GEMINI_RESERVE_ESTIMATE_USD, result.get("cost_usd") or 0.0)
+        # Drops EXACTLY what this job's own claim-time reserve() call
+        # reserved (0.0 if it never successfully reserved at all) and
+        # records whatever it actually cost (0.0 if it never got billed)
+        # — see GeminiBudget's own docstring for why the reservation
+        # existed and why the amount must be tracked per-job.
+        gemini_budget.release_reservation(reserved_usd, result.get("cost_usd") or 0.0)
+        if result.get("worker_status") == "quota_error":
+            gemini_budget.note_quota_error()
+        else:
+            gemini_budget.note_recovered()
         return  # the codex Detector never sees a gemini job's numbers at all
 
     if result.get("detector_row") == 1:
@@ -1400,6 +1601,14 @@ def parse_args(argv=None) -> argparse.Namespace:
                           "read from throughput.jsonl, durable across restarts — "
                           "reaches this")
     ap.add_argument("--gemini-timeout", type=int, default=DEFAULT_GEMINI_TIMEOUT_S)
+    ap.add_argument("--gemini-ledger-strict", dest="gemini_ledger_strict",
+                     action="store_true", default=True,
+                     help="refuse gemini admission entirely if throughput.jsonl has "
+                          "ANY unparseable line (a torn row could be hiding real "
+                          "spend, never less than what's readable) — default on")
+    ap.add_argument("--no-gemini-ledger-strict", dest="gemini_ledger_strict",
+                     action="store_false",
+                     help="disable the ledger-strict refusal above")
     ap.add_argument("--validator-script", type=Path, default=common.DEFAULT_VALIDATOR)
     ap.add_argument("--manifest-schema", type=Path, default=common.MANIFEST_SCHEMA)
     ap.add_argument("-N", "--workers", type=int, default=3)
@@ -1440,24 +1649,33 @@ def parse_args(argv=None) -> argparse.Namespace:
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args(argv)
     if args.reconcile_min_age is None:
-        args.reconcile_min_age = default_reconcile_min_age(args.timeout_edit)
+        args.reconcile_min_age = default_reconcile_min_age(args.timeout_edit, args.gemini_timeout)
     return args
 
 
-def default_reconcile_min_age(timeout_edit: int) -> float:
-    """The real worst case a single codex job can legitimately still be
-    running: one attempt's outer ceiling (--timeout-edit +
+def default_reconcile_min_age(timeout_edit: int, gemini_timeout: int = DEFAULT_GEMINI_TIMEOUT_S) -> float:
+    """The real worst case ANY single job — codex or gemini — can
+    legitimately still be running, times a GENEROUS safety margin, not a
+    razor-thin one.
+
+    codex: one attempt's outer ceiling (--timeout-edit +
     WORKER_SUBPROCESS_GRACE_S), times the max attempts a row-1 retry can
-    cost, plus the validator's own timeout — times a GENEROUS safety
-    margin, not a razor-thin one. A hardcoded 600s default used to have
-    only 40s of margin over this at the DEFAULT --timeout-edit (220), and
-    didn't move at all if --timeout-edit was raised — silently reopening
-    the exact double-claim race this gate exists to close the moment
-    someone needed a longer timeout for a bigger canvas or a slower model.
+    cost, plus the validator's own timeout.
+    gemini: --gemini-timeout (no retry — process_gemini_job has none)
+    plus the validator's own timeout.
+
+    This used to derive from --timeout-edit ALONE — a hardcoded 600s
+    default had only 40s of margin over codex's worst case at ITS
+    default, and didn't move if --timeout-edit was raised; separately,
+    ignoring --gemini-timeout entirely meant raising IT past roughly 530s
+    let a still-genuinely-running gemini job get stolen back by
+    reconcile() as a false orphan. Taking the max of both configured
+    values is what makes raising EITHER timeout safe.
     """
-    worst_case = (timeout_edit + WORKER_SUBPROCESS_GRACE_S) * MAX_CODEX_ATTEMPTS \
+    codex_worst_case = (timeout_edit + WORKER_SUBPROCESS_GRACE_S) * MAX_CODEX_ATTEMPTS \
         + VALIDATOR_TIMEOUT_S
-    return worst_case * 1.5
+    gemini_worst_case = gemini_timeout + VALIDATOR_TIMEOUT_S
+    return max(codex_worst_case, gemini_worst_case) * 1.5
 
 
 def run_dry_run(args: argparse.Namespace) -> int:
@@ -1535,11 +1753,17 @@ def prune_old_scratch_dirs(artsrc_dir: Path, done_dir: Path, failed_dir: Path,
 
 def main(argv=None) -> int:
     args = parse_args(argv)
-    common.ensure_queue_dirs(args.pending_dir, args.active_dir, args.done_dir,
-                              args.failed_dir, args.artsrc_dir)
 
+    # --dry-run promises to touch nothing — ensure_queue_dirs (mkdir) must
+    # come AFTER this check, not before it. run_dry_run() itself already
+    # wraps its pending_dir.glob() in try/except OSError, so a directory
+    # that genuinely doesn't exist yet is handled gracefully rather than
+    # requiring mkdir first.
     if args.dry_run:
         return run_dry_run(args)
+
+    common.ensure_queue_dirs(args.pending_dir, args.active_dir, args.done_dir,
+                              args.failed_dir, args.artsrc_dir)
 
     pruned = prune_old_scratch_dirs(args.artsrc_dir, args.done_dir, args.failed_dir,
                                      args.prune_scratch_days)
@@ -1569,8 +1793,12 @@ def main(argv=None) -> int:
     for i in range(args.workers):
         slots.put(i)
 
-    gemini_spent = read_gemini_spend(args.throughput_log)
-    gemini_budget = GeminiBudget(args.gemini_budget_usd, args.throughput_log, gemini_spent)
+    gemini_spent, gemini_skipped_at_start = read_gemini_spend(args.throughput_log)
+    gemini_budget = GeminiBudget(args.gemini_budget_usd, args.throughput_log, gemini_spent,
+                                  ledger_strict=args.gemini_ledger_strict)
+    if gemini_skipped_at_start:
+        print(f"artpiped: WARNING throughput.jsonl has {gemini_skipped_at_start} "
+              f"unparseable line(s) at startup", file=sys.stderr)
     if gemini_budget.hard_stop:
         print(f"artpiped: gemini channel already at/over its ${args.gemini_budget_usd:.2f} "
               f"budget (${gemini_spent:.2f} spent, per throughput.jsonl) — gemini jobs "
@@ -1583,7 +1811,8 @@ def main(argv=None) -> int:
     ctx = RunCtx(args.worker_script, args.validator_script, args.manifest_schema,
                  args.artsrc_dir, args.active_dir, args.codex_home_root, args.workers,
                  args.timeout_generate, args.timeout_edit, args.reasoning_effort,
-                 args.verbose, slots, args.gemini_worker_script, args.gemini_timeout)
+                 args.verbose, slots, args.gemini_worker_script, args.gemini_timeout,
+                 throughput_log=args.throughput_log)
     detector = Detector()
     stop_event = threading.Event()
 
@@ -1604,11 +1833,11 @@ def main(argv=None) -> int:
 
     try:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
-            futures: dict = {}  # future -> (job_path, channel)
+            futures: dict = {}  # future -> (job_path, channel, reserved_usd)
             while True:
                 if not stop_event.is_set():
                     while len(futures) < args.workers:
-                        codex_in_flight = sum(1 for _, ch in futures.values() if ch == "codex")
+                        codex_in_flight = sum(1 for _, ch, _r in futures.values() if ch == "codex")
                         current_codex_n = detector.current_n(args.workers)
 
                         def _claim_blocked(ch, _in_flight=codex_in_flight, _cap=current_codex_n):
@@ -1621,25 +1850,38 @@ def main(argv=None) -> int:
                         if job_path is None:
                             break
                         ch = _channel_of(job_path)
+                        reserved_usd = 0.0
                         if ch == "gemini":
                             # Reserve the CONSERVATIVE estimate right now,
                             # before this job ever runs — closes the race
                             # where N claims in the same instant (none has
                             # reported a real cost back yet) could
                             # collectively overshoot the cap by up to N-1
-                            # jobs' worth. _claim_blocked already checked
-                            # admission_blocked() (which itself now
-                            # accounts for reserved_usd) moments ago in
-                            # this same single-threaded loop, so this
-                            # should always succeed — logged if it somehow
-                            # doesn't, since the job is already claimed and
-                            # can't be un-claimed from here.
-                            if not gemini_budget.reserve(GEMINI_RESERVE_ESTIMATE_USD):
-                                print(f"artpiped: WARNING claimed {job_path.name} as gemini "
-                                      f"but the budget reservation was refused immediately "
-                                      f"after — proceeding anyway (already claimed)",
-                                      file=sys.stderr)
-                        futures[pool.submit(process_job, job_path, ctx)] = (job_path, ch)
+                            # jobs' worth. admission_blocked() and reserve()
+                            # now share ONE predicate (_would_fit), so this
+                            # should always succeed given _claim_blocked's
+                            # own check moments ago — but a fresh
+                            # cross-process spend landing in that tiny gap
+                            # is possible, and a job is NEVER run unreserved:
+                            # if reserve() genuinely refuses, the claim is
+                            # returned to pending/ (never "proceed anyway"),
+                            # and this inner loop stops for this pass rather
+                            # than risking a tight reclaim/fail loop.
+                            if gemini_budget.reserve(GEMINI_RESERVE_ESTIMATE_USD):
+                                reserved_usd = GEMINI_RESERVE_ESTIMATE_USD
+                            else:
+                                dest = args.pending_dir / job_path.name
+                                if not dest.exists():
+                                    try:
+                                        os.rename(job_path, dest)
+                                    except FileNotFoundError:
+                                        pass
+                                print(f"artpiped: claimed {job_path.name} as gemini but "
+                                      f"the reservation was refused moments later (a fresh "
+                                      f"cross-process spend landed in between) — returned "
+                                      f"to pending/, never run unreserved", file=sys.stderr)
+                                break
+                        futures[pool.submit(process_job, job_path, ctx)] = (job_path, ch, reserved_usd)
 
                 # Finding 4: an independent meter refresh. note_meters()'s
                 # only OTHER caller is finalize_job of a COMPLETING codex
@@ -1671,7 +1913,7 @@ def main(argv=None) -> int:
                 done, _ = wait(list(futures.keys()), timeout=args.poll_interval,
                                return_when=FIRST_COMPLETED)
                 for fut in done:
-                    job_path, ch = futures.pop(fut)
+                    job_path, ch, reserved_usd = futures.pop(fut)
                     try:
                         result = fut.result()
                     except Exception as exc:  # never let a worker-thread crash kill the daemon
@@ -1688,7 +1930,7 @@ def main(argv=None) -> int:
                                   "note": f"process_job raised: {type(exc).__name__}: {exc}"}
                     finalize_job(job_path, result, args.done_dir, args.failed_dir,
                                  args.active_dir, args.throughput_log, detector,
-                                 gemini_budget, args.workers)
+                                 gemini_budget, args.workers, reserved_usd)
 
                 if stop_event.is_set() and not futures:
                     break

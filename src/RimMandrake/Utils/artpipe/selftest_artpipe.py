@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import json
 import os
+import queue
 import re
 import subprocess
 import sys
@@ -1144,7 +1145,11 @@ def test_gemini_channel_routes_and_records_cost():
             ok("gemini: model recorded", m.get("model") == "gemini-3-pro-image", str(m))
             ok("gemini: validator ran and passed", m.get("validator") == "PASS", str(m))
         lines = [json.loads(l) for l in q.throughput_log.read_text().splitlines() if l.strip()]
-        gemini_lines = [l for l in lines if l.get("channel") == "gemini"]
+        # A pre-flight billing-INTENT row (finding 2) also carries
+        # channel="gemini" — filter it out to isolate the actual
+        # completion row this test cares about.
+        gemini_lines = [l for l in lines
+                        if l.get("channel") == "gemini" and l.get("record") != "intent"]
         ok("gemini: throughput.jsonl carries the channel + cost",
            len(gemini_lines) == 1 and gemini_lines[0].get("cost_usd") == 0.134, lines)
 
@@ -1392,7 +1397,8 @@ def test_gemini_validator_error_preserves_channel_and_bills_correctly():
             ok("gemini-validator-crash: worker_status is validator_could_not_run",
                m.get("worker_status") == "validator_could_not_run", str(m))
         lines = [json.loads(l) for l in q.throughput_log.read_text().splitlines() if l.strip()]
-        gemini_lines = [l for l in lines if l.get("channel") == "gemini"]
+        gemini_lines = [l for l in lines
+                        if l.get("channel") == "gemini" and l.get("record") != "intent"]
         ok("gemini-validator-crash: throughput.jsonl correctly attributes the "
            "cost to gemini, not codex",
            len(gemini_lines) == 1 and gemini_lines[0].get("cost_usd") == 0.134, lines)
@@ -1622,8 +1628,12 @@ def test_gemini_cost_billed_only_on_genuine_success_not_exit_0_alone():
             ok("no-image-billing: cost_usd is 0.0 — never billed for a no-op",
                m.get("cost_usd") == 0.0, str(m))
         lines = [json.loads(l) for l in q.throughput_log.read_text().splitlines() if l.strip()]
+        # lines[0] is now the pre-flight intent row (finding 2) — the
+        # completion row (with the real cost_usd this test cares about) is
+        # whichever row is NOT tagged record="intent".
+        completion = [l for l in lines if l.get("record") != "intent"]
         ok("no-image-billing: throughput.jsonl agrees — 0.0, not the per-image price",
-           lines[0].get("cost_usd") == 0.0, lines)
+           completion and completion[0].get("cost_usd") == 0.0, lines)
 
 
 def test_gemini_budget_reservation_prevents_concurrent_overshoot():
@@ -2017,6 +2027,409 @@ def test_finalize_job_feeds_per_attempt_not_summed_wall_clock():
            detector.wall_clock_history)
 
 
+def gemini_run_ctx(q: "Queue") -> artpiped.RunCtx:
+    """A minimal RunCtx for calling process_gemini_job() directly, in
+    process, without going through a whole daemon subprocess — the gemini
+    path never touches ctx.slots/codex_home_root at all, so a placeholder
+    empty Queue is enough."""
+    return artpiped.RunCtx(
+        worker_script=MOCK_WORKER, validator_script=VALIDATOR,
+        manifest_schema=SCHEMA, artsrc_dir=q.artsrc, active_dir=q.active,
+        codex_home_root=q.codex_homes, workers_count=1,
+        timeout_generate=60, timeout_edit=60, reasoning_effort="low",
+        verbose=False, slots=queue.Queue(), gemini_worker_script=MOCK_GEMINI_WORKER,
+        gemini_timeout=60, throughput_log=q.throughput_log)
+
+
+def set_mock_control(root: Path, control: dict) -> None:
+    """For tests that call process_gemini_job()/run_gemini_worker() directly
+    (in-process), rather than through Queue.run()'s own subprocess — the
+    mock worker is still a CHILD subprocess either way, and it reads
+    $ARTPIPE_MOCK_CONTROL from whatever environment it inherits."""
+    control_path = root / "control.json"
+    control_path.write_text(json.dumps(control))
+    os.environ["ARTPIPE_MOCK_CONTROL"] = str(control_path)
+
+
+# --------------------------------------------------------------------------
+# Round 5 (fifth review, 7e874fdd): budget/billing edge cases. Every
+# existing gemini-budget test above uses a cap that is an EXACT MULTIPLE of
+# GEMINI_RESERVE_ESTIMATE_USD (0.134) — 0.134, 1000.0, etc — so the "cap
+# minus what's already committed" remainder is always either the full
+# per-image cost or exactly zero. The fractional-cap tests below use caps
+# that are NOT multiples, so a nonzero-but-insufficient remainder actually
+# occurs — the exact window finding 1 was about.
+# --------------------------------------------------------------------------
+
+def test_gemini_budget_admission_and_reserve_share_predicate_with_fractional_cap():
+    """Finding 1's precise bug: admission_blocked() and reserve() used to
+    apply DIFFERENT thresholds (admission ignored the estimate entirely;
+    reserve() didn't). A cap that is an exact multiple of the per-image
+    cost can never show this — spent+reserved always lands EXACTLY on a
+    boundary, never in the fractional gap between "some room" and "not
+    quite enough room for one more". cap=0.2 sits between 1x (0.134) and
+    2x (0.268) the per-image cost, so after one reservation the remainder
+    (0.066) is real, nonzero, and still short of a second image."""
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        throughput_log = tdp / "throughput.jsonl"
+        cap = 0.2  # deliberately NOT a multiple of 0.134
+        est = artpiped.GEMINI_RESERVE_ESTIMATE_USD
+        budget = artpiped.GeminiBudget(cap, throughput_log, spent_so_far=0.0)
+
+        ok("fractional-cap: starts unblocked with nothing spent or reserved",
+           not budget.admission_blocked())
+        ok("fractional-cap: first reservation succeeds", budget.reserve(est))
+
+        # Now spent=0, reserved=est=0.134, cap=0.2. A SECOND reservation
+        # attempt must be refused by BOTH admission_blocked() and reserve()
+        # — the old bug's whole failure mode was these two disagreeing.
+        ok("fractional-cap: admission_blocked() now says no room for a second image",
+           budget.admission_blocked())
+        ok("fractional-cap: reserve() independently agrees — refuses the second slot",
+           not budget.reserve(est))
+
+        # The first job actually completes for its real, billed cost — a
+        # REAL throughput row, since spend is always re-read live from
+        # throughput_log (cross-process consistency), never trusted from
+        # in-memory bookkeeping alone; see GeminiBudget._refresh_spent.
+        common.append_jsonl(throughput_log, {"id": "j1", "channel": "gemini", "cost_usd": est})
+        budget.release_reservation(est, est)
+        remainder = cap - budget.spent_usd
+        ok("fractional-cap: a real, nonzero remainder exists after the first job",
+           0 < remainder < est, remainder)
+        ok("fractional-cap: that remainder is still too small to admit another image "
+           "— the window the review named actually opens, and admission still refuses",
+           budget.admission_blocked())
+        ok("fractional-cap: reserve() agrees post-release too",
+           not budget.reserve(est))
+
+
+def test_gemini_budget_never_overshoots_cap_with_concurrent_gemini_workers_end_to_end():
+    """Finding 1, end to end against the real mock/daemon machinery: two
+    gemini jobs, --workers 2, and a fractional cap (0.2) sized for exactly
+    one image with a nonzero leftover. Before the reserve-or-return fix, a
+    same-tick second claim could slip through on admission_blocked()
+    alone and only get caught (too late) by reserve() — this proves the
+    daemon now keeps the SECOND job in pending/ rather than ever billing
+    past the cap."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "fraccap1", q.reference, priority=1, channel="gemini")
+        make_job(q.pending, "fraccap2", q.reference, priority=2, channel="gemini")
+        proc = q.run({"fraccap1": "ok", "fraccap2": "ok"},
+                      "--once", "--workers", "2", "--gemini-budget-usd", "0.2")
+        ok("no-overshoot: fraccap1 (fits the cap) completes",
+           (q.done / "fraccap1.json").is_file(), proc.stdout + proc.stderr)
+        ok("no-overshoot: fraccap2 is left in pending — never claimed, never billed",
+           (q.pending / "fraccap2.json").is_file())
+        spent, skipped = artpiped.read_gemini_spend(q.throughput_log)
+        ok("no-overshoot: total recorded spend never exceeds the cap",
+           spent <= 0.2 + 1e-9, spent)
+        ok("no-overshoot: no unparseable throughput lines from this run", skipped == 0, skipped)
+
+
+def test_gemini_intent_row_written_before_worker_runs_and_excluded_from_spend():
+    """Finding 2's core mechanism: process_gemini_job() must journal a
+    billing-INTENT row for this job id BEFORE the worker subprocess (the
+    thing that actually spends real money) even runs — that's the ONLY
+    record that survives a crash mid-API-call. Calling process_gemini_job()
+    directly (never finalize_job(), which writes the separate completion
+    row) isolates that this row exists purely from the pre-flight write,
+    and that read_gemini_spend() must never count it as spend on its own."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "intentcheck"
+        job = job_dict(job_id, q.reference, channel="gemini")
+        set_mock_control(Path(td), {job_id: "ok"})
+        ctx = gemini_run_ctx(q)
+        out_png = q.artsrc / job_id / f"{job_id}.png"
+        result = artpiped.process_gemini_job(job, job_id, q.reference, out_png, ctx)
+        ok("intent: process_gemini_job itself still reports success",
+           result.get("status") == "ok", result)
+
+        lines = [json.loads(l) for l in q.throughput_log.read_text().splitlines() if l.strip()]
+        ok("intent: exactly one throughput row exists (the intent — finalize_job "
+           "never ran, so no completion row exists yet)", len(lines) == 1, lines)
+        ok("intent: it is tagged record=intent for this exact job id",
+           lines and lines[0].get("record") == "intent" and lines[0].get("id") == job_id,
+           lines)
+        spent, skipped = artpiped.read_gemini_spend(q.throughput_log)
+        ok("intent: an intent-only row must NOT count as spend on its own "
+           "(it carries no confirmed cost — see read_gemini_spend's docstring)",
+           spent == 0.0 and skipped == 0, (spent, skipped))
+
+
+def test_reconcile_catches_crash_during_gemini_api_call_via_intent_row():
+    """Finding 2, end to end: the crash window this closes is DURING the
+    API call itself — before finalize_job ever gets a chance to write
+    anything. Simulated here by writing ONLY the intent row (as
+    process_gemini_job does right before spawning the worker) and then
+    killing the job with no completion row at all, exactly as a real kill
+    -9 mid-call would leave things. reconcile() must treat this exactly
+    like the already-covered post-completion crash: routed to failed/ as
+    ambiguous_billing_crash, never silently requeued to retry (and
+    potentially double-spend)."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "midcallcrash"
+        make_job(q.pending, job_id, q.reference, channel="gemini")
+        claimed = artpiped.claim_next(q.pending, q.active)
+        ok("mid-call-crash: fixture claimed the job via the real claim path",
+           claimed is not None)
+
+        # The ONLY thing a real mid-call crash would have produced: the
+        # pre-flight intent row, written before the worker subprocess ever
+        # ran — no completion row, no manifest, nothing else.
+        artpiped._write_gemini_billing_intent(q.throughput_log, job_id)
+
+        old = time.time() - 900
+        os.utime(claimed, (old, old))
+
+        moved = artpiped.reconcile(q.active, q.pending, q.done, q.failed,
+                                    q.throughput_log, min_age_s=600.0)
+        ok("mid-call-crash: never silently requeued to pending/",
+           not (q.pending / f"{job_id}.json").is_file())
+        ok("mid-call-crash: routed to failed/ instead",
+           (q.failed / f"{job_id}.json").is_file())
+        manifest_path = q.failed / f"{job_id}.manifest.json"
+        if manifest_path.is_file():
+            m = json.loads(manifest_path.read_text())
+            ok("mid-call-crash: manifest flags it ambiguous_billing_crash",
+               m.get("worker_status") == "ambiguous_billing_crash", m)
+
+
+def test_default_reconcile_min_age_accounts_for_gemini_timeout_too():
+    """Finding 3: min_age used to derive from --timeout-edit alone. A long
+    --gemini-timeout with a short --timeout-edit used to compute a min_age
+    far too small to protect a genuinely still-running gemini call from
+    being falsely reconciled as an orphan mid-flight."""
+    codex_only = artpiped.default_reconcile_min_age(60)
+    with_long_gemini = artpiped.default_reconcile_min_age(60, gemini_timeout=2000)
+    ok("reconcile-min-age: a long --gemini-timeout raises the computed min_age "
+       "well past what --timeout-edit alone would give",
+       with_long_gemini > codex_only * 2, (codex_only, with_long_gemini))
+    ok("reconcile-min-age: a short gemini_timeout leaves the codex-driven "
+       "worst case in charge (max(), not gemini overriding unconditionally)",
+       artpiped.default_reconcile_min_age(600, gemini_timeout=10) >= codex_only,
+       artpiped.default_reconcile_min_age(600, gemini_timeout=10))
+
+
+def test_dry_run_never_creates_queue_directories():
+    """Finding 4: --dry-run promises to touch nothing. Before the fix,
+    main() called ensure_queue_dirs() (mkdir's pending/active/done/failed/
+    _artsrc) BEFORE checking args.dry_run at all — so even a pure
+    --dry-run against a brand-new tree silently created every queue
+    directory. This only proves anything if the directories provably do
+    NOT exist beforehand — never use the Queue fixture here, it creates
+    them itself."""
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        pending, active, done, failed, artsrc = (
+            tdp / "pending", tdp / "active", tdp / "done", tdp / "failed", tdp / "_artsrc")
+        ok("dry-run fixture: none of the queue dirs exist yet",
+           not any(p.exists() for p in (pending, active, done, failed, artsrc)))
+
+        proc = subprocess.run(
+            [sys.executable, str(HERE / "artpiped.py"),
+             "--pending-dir", str(pending), "--active-dir", str(active),
+             "--done-dir", str(done), "--failed-dir", str(failed),
+             "--artsrc-dir", str(artsrc), "--codex-home-root", str(tdp / "_codex_homes"),
+             "--throughput-log", str(tdp / "throughput.jsonl"),
+             "--worker-script", str(MOCK_WORKER),
+             "--gemini-worker-script", str(MOCK_GEMINI_WORKER),
+             "--validator-script", str(VALIDATOR), "--manifest-schema", str(SCHEMA),
+             "--dry-run"],
+            capture_output=True, text=True, timeout=30)
+        ok("dry-run: exits 0 with nothing pending", proc.returncode == 0, proc.stderr)
+        ok("dry-run: STILL creates none of the queue directories",
+           not any(p.exists() for p in (pending, active, done, failed, artsrc)),
+           [str(p) for p in (pending, active, done, failed, artsrc) if p.exists()])
+
+
+def test_read_gemini_spend_counts_skipped_unparseable_lines():
+    """Finding 5, first half: a torn/unparseable throughput.jsonl line
+    used to be silently invisible to read_gemini_spend() — total spend
+    read back as though the line never existed at all, with no signal
+    that the ledger itself might be incomplete."""
+    with tempfile.TemporaryDirectory() as td:
+        log = Path(td) / "throughput.jsonl"
+        log.write_text(
+            json.dumps({"id": "a", "channel": "gemini", "cost_usd": 0.134}) + "\n"
+            + "{not valid json at all\n"
+            + "\n"  # blank lines are NOT torn lines — must not be counted
+            + json.dumps({"id": "b", "channel": "gemini", "cost_usd": 0.134}) + "\n"
+        )
+        spent, skipped = artpiped.read_gemini_spend(log)
+        ok("skip-count: valid rows still sum correctly", abs(spent - 0.268) < 1e-9, spent)
+        ok("skip-count: exactly the one torn line is counted, blank lines are not",
+           skipped == 1, skipped)
+
+
+def test_gemini_budget_ledger_strict_refuses_admission_on_torn_line():
+    """Finding 5, second half: a torn line makes the ledger's TRUE spend
+    unknown, never provably lower than what's readable — so under
+    --gemini-ledger-strict (the default), any unparseable line must
+    refuse gemini admission outright until a human looks, regardless of
+    how much headroom the readable rows alone suggest. --no-gemini-
+    ledger-strict is the documented opt-out back to the old, permissive
+    behaviour."""
+    with tempfile.TemporaryDirectory() as td:
+        log = Path(td) / "throughput.jsonl"
+        log.write_text("{not valid json\n")
+
+        strict = artpiped.GeminiBudget(1000.0, log, ledger_strict=True)
+        ok("ledger-strict: refuses admission on a torn line even with a huge cap "
+           "and zero readable spend", strict.admission_blocked())
+
+        lenient = artpiped.GeminiBudget(1000.0, log, ledger_strict=False)
+        ok("ledger-lenient: --no-gemini-ledger-strict allows admission through "
+           "the same torn line (documented opt-out)", not lenient.admission_blocked())
+
+
+def test_read_gemini_spend_locked_caches_by_size_and_mtime():
+    """Finding 5, third half: re-reading and re-summing the WHOLE
+    throughput.jsonl on every single poll tick doesn't scale. Given a
+    cache dict, read_gemini_spend_locked() must skip the actual re-read
+    entirely when the file's (size, mtime) hasn't changed since the last
+    call, and must re-read when it has."""
+    with tempfile.TemporaryDirectory() as td:
+        log = Path(td) / "throughput.jsonl"
+        common.append_jsonl(log, {"id": "a", "channel": "gemini", "cost_usd": 0.134})
+
+        calls = []
+        orig = artpiped.read_gemini_spend
+
+        def spy(path):
+            calls.append(1)
+            return orig(path)
+
+        artpiped.read_gemini_spend = spy
+        try:
+            cache: dict = {}
+            r1 = artpiped.read_gemini_spend_locked(log, cache)
+            r2 = artpiped.read_gemini_spend_locked(log, cache)
+            ok("cache: unchanged file does NOT trigger a second real read",
+               len(calls) == 1, calls)
+            ok("cache: both calls return the same, correct value", r1 == r2 == (0.134, 0))
+
+            common.append_jsonl(log, {"id": "b", "channel": "gemini", "cost_usd": 0.134})
+            r3 = artpiped.read_gemini_spend_locked(log, cache)
+            ok("cache: a real change (new size/mtime) DOES trigger a fresh read",
+               len(calls) == 2, calls)
+            ok("cache: the fresh read reflects the new total", abs(r3[0] - 0.268) < 1e-9, r3)
+        finally:
+            artpiped.read_gemini_spend = orig
+
+
+def test_looks_gemini_quota_error_detects_429_but_not_generic_error():
+    """Finding 6's classifier, in isolation: must recognize the markers a
+    real quota/429 exhaustion is expected to use, and must NOT
+    mis-classify an ordinary, unrelated worker failure as one (a false
+    positive there just costs one needless backoff sleep; a false
+    negative burns real budget hammering a provider that already said
+    no — but over-eager matching would make EVERY failure look like a
+    quota error, which is just as useless)."""
+    ok("quota-detect: recognizes a 429/RESOURCE_EXHAUSTED message",
+       artpiped._looks_gemini_quota_error("API error 429 RESOURCE_EXHAUSTED: rate limit exceeded"))
+    ok("quota-detect: recognizes bare 'quota exceeded' phrasing",
+       artpiped._looks_gemini_quota_error("Quota Exceeded for this project"))
+    ok("quota-detect: does not flag an unrelated worker error",
+       not artpiped._looks_gemini_quota_error(
+           "gemini_image.py: unexpected response shape from the API"))
+    ok("quota-detect: does not flag empty/None text", not artpiped._looks_gemini_quota_error(""))
+
+
+def test_process_gemini_job_marks_quota_error_worker_status_end_to_end():
+    """Finding 6, end to end against the real mock subprocess: a quota/429
+    failure must come back tagged worker_status="quota_error" (so
+    finalize_job's gemini branch can drive GeminiBudget's backoff), while
+    an ordinary worker fault must still come back as the pre-existing
+    "worker_error" — the classifier must not blur the two."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+
+        job_id = "quotafail"
+        job = job_dict(job_id, q.reference, channel="gemini")
+        set_mock_control(Path(td), {job_id: "api_error"})
+        ctx = gemini_run_ctx(q)
+        out_png = q.artsrc / job_id / f"{job_id}.png"
+        result = artpiped.process_gemini_job(job, job_id, q.reference, out_png, ctx)
+        ok("quota-error: status is failed", result.get("status") == "failed", result)
+        ok("quota-error: worker_status is quota_error, not the generic worker_error",
+           result.get("worker_status") == "quota_error", result)
+        ok("quota-error: never billed", result.get("cost_usd") == 0.0, result)
+
+        job_id2 = "genericfail"
+        job2 = job_dict(job_id2, q.reference, channel="gemini")
+        set_mock_control(Path(td), {job_id2: "generic_error"})
+        out_png2 = q.artsrc / job_id2 / f"{job_id2}.png"
+        result2 = artpiped.process_gemini_job(job2, job_id2, q.reference, out_png2, ctx)
+        ok("generic-error: worker_status stays worker_error — not mis-classified as quota",
+           result2.get("worker_status") == "worker_error", result2)
+
+
+def test_gemini_budget_backs_off_after_quota_error_and_recovers():
+    """Finding 6's backoff mechanics in isolation: consecutive quota
+    errors must escalate the sleep (base, then doubled), and a single
+    note_recovered() call must reset the streak back to the base delay —
+    never leaving a transient quota bump escalating forever once the
+    provider has actually recovered."""
+    with tempfile.TemporaryDirectory() as td:
+        log = Path(td) / "throughput.jsonl"
+        budget = artpiped.GeminiBudget(1000.0, log)
+        ok("backoff: unblocked before any quota error", not budget.admission_blocked())
+
+        budget.note_quota_error()
+        ok("backoff: admission blocked immediately after a quota error",
+           budget.admission_blocked())
+        delay1 = budget.backoff_sleep_until - time.time()
+        ok("backoff: first sleep is ~= GEMINI_BACKOFF_BASE_S",
+           8.0 <= delay1 <= artpiped.GEMINI_BACKOFF_BASE_S + 1.0, delay1)
+
+        budget.note_quota_error()
+        delay2 = budget.backoff_sleep_until - time.time()
+        ok("backoff: a second consecutive quota error roughly doubles the sleep",
+           18.0 <= delay2 <= 2 * artpiped.GEMINI_BACKOFF_BASE_S + 1.0, delay2)
+
+        budget.note_recovered()
+        budget.backoff_sleep_until = 0.0  # simulate the earlier sleep having elapsed
+        ok("backoff: admission unblocked again once the wait elapses and streak resets",
+           not budget.admission_blocked())
+
+        budget.note_quota_error()
+        delay3 = budget.backoff_sleep_until - time.time()
+        ok("backoff: after note_recovered(), the NEXT quota error restarts at the "
+           "base delay rather than continuing to escalate from before",
+           8.0 <= delay3 <= artpiped.GEMINI_BACKOFF_BASE_S + 1.0, delay3)
+
+
+def test_gemini_quota_error_backs_off_and_blocks_next_gemini_job_end_to_end():
+    """Finding 6, full end to end through the real daemon subprocess: a
+    quota-erroring gemini job must trip GeminiBudget's backoff, and a
+    second, otherwise-healthy gemini job queued right behind it must be
+    left untouched in pending/ for the duration of that backoff — never
+    claimed and hammered against a provider that just said no."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "quotajob1", q.reference, priority=1, channel="gemini")
+        make_job(q.pending, "quotajob2", q.reference, priority=2, channel="gemini")
+        proc = q.run({"quotajob1": "api_error", "quotajob2": "ok"},
+                      "--once", "--workers", "1", "--gemini-budget-usd", "1000")
+        ok("quota-backoff: daemon exits nonzero — real work is still pending",
+           proc.returncode != 0, proc.stdout + proc.stderr)
+        ok("quota-backoff: quotajob1 failed with quota_error",
+           (q.failed / "quotajob1.json").is_file())
+        m_path = q.failed / "quotajob1.manifest.json"
+        if m_path.is_file():
+            m = json.loads(m_path.read_text())
+            ok("quota-backoff: manifest records worker_status quota_error",
+               m.get("worker_status") == "quota_error", m)
+        ok("quota-backoff: quotajob2 was never claimed — still sitting in pending/",
+           (q.pending / "quotajob2.json").is_file())
+        ok("quota-backoff: quotajob2 was never billed", not (q.done / "quotajob2.json").is_file())
+
+
 def main() -> int:
     for fn in (
         test_crash_reconciliation,
@@ -2089,6 +2502,19 @@ def main() -> int:
         test_reconcile_still_requeues_codex_orphan_regardless_of_throughput_row,
         test_wall_clock_baseline_is_per_mode_not_pooled,
         test_finalize_job_feeds_per_attempt_not_summed_wall_clock,
+        test_gemini_budget_admission_and_reserve_share_predicate_with_fractional_cap,
+        test_gemini_budget_never_overshoots_cap_with_concurrent_gemini_workers_end_to_end,
+        test_gemini_intent_row_written_before_worker_runs_and_excluded_from_spend,
+        test_reconcile_catches_crash_during_gemini_api_call_via_intent_row,
+        test_default_reconcile_min_age_accounts_for_gemini_timeout_too,
+        test_dry_run_never_creates_queue_directories,
+        test_read_gemini_spend_counts_skipped_unparseable_lines,
+        test_gemini_budget_ledger_strict_refuses_admission_on_torn_line,
+        test_read_gemini_spend_locked_caches_by_size_and_mtime,
+        test_looks_gemini_quota_error_detects_429_but_not_generic_error,
+        test_process_gemini_job_marks_quota_error_worker_status_end_to_end,
+        test_gemini_budget_backs_off_after_quota_error_and_recovers,
+        test_gemini_quota_error_backs_off_and_blocks_next_gemini_job_end_to_end,
     ):
         print(f"--- {fn.__name__} ---")
         try:
