@@ -76,6 +76,34 @@ key ready, billing NOT yet enabled — reconfirm with the owner before any
 enable); unacceptable views/consistency → Gemini contrast batch
 (GRAPHICS_GEMINI_BILLING_DECISION_1 holds that protocol).
 
+## rulings — owner, 2026-09-09, by question card
+
+Asked while an "ARTIST seat" was briefly (mistakenly) being defined; that seat
+was reverted the same day — the Artist window is the no-LLM daemon's console,
+as specced above. The answers stand as rulings about the PIPELINE, recast here
+into the ratified division of labor:
+
+- **Loop: continuous churn.** The queue is kept fed at all times; a contact
+  sheet is published at each wave boundary, and the pipeline keeps churning
+  the next wave while the owner's verdicts are pending. Rejections re-enter
+  as corrected jobs whenever he gets to them — never wave-and-pause.
+- **Daemon lifecycle: the tending seat owns it.** Whichever seat is tending
+  the pipeline starts the daemon if it is down, restarts it on a wedge, and
+  tunes N — within the detector's rails, no asking. Not systemd-autostart,
+  not owner-manual. (The Artist tile runs it in the foreground as its
+  console; a seat restarting it detached is equally valid.)
+- **Budget: the detector's rails ARE the permission.** Inside the specced
+  rails (80% weekly warn / 90 refuse / 97 stop; the 5h throttles) seats spend
+  the Codex window on this freely. Gemini billing still needs the owner's
+  explicit word before any enable — unchanged.
+- **Scope: seats sequence the backlog themselves** (flora NEW-ART, creature
+  regen verdicts, wrecked machines, standing commissions), turn verdict
+  sheets into jobs, and commit accepted art to the repo. **Deploys to the
+  game stay FOUNDRY's**, per the standing bench-work-that-turns-live rule.
+- **Review: the wave-runner publishes the review sheet itself** — a working
+  keep/cut page whose decisions save as data, handed to the owner as a link.
+  No BENCH-publishes handoff required.
+
 ## verify
 - Calibration table exists with MEASURED img/h and %window/image for each N,
   and a written projection (weeks at $20) the owner has seen.
