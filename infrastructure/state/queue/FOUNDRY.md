@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T12:09:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T12:10:29Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -414,15 +414,6 @@ kind:     task
 summary:  Thin when filed — no spec/verify/criteria in the queue entry itself, but fully
 prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
 
-## FUNGALFOREST_RAID_MERGE_1 Dissolve BMT_FungalForest (an underground def on 425 surface tiles) into its neighbors per the measured cluster table (the Rot; Wasteland at South Crags sector 9), and ingest its spore kit, materials, flora into the Rot as our own defs
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  FUNGALFORESTRAIDMERGE1 — dissolve BMTFungalForest into its neighbors; ingest its content into the Rot
-prose:    infrastructure/state/items/FUNGALFOREST_RAID_MERGE_1.md
-
 ## PITCELL_PRISONER_BED_BRIDGE_GAP_1 PITCELL_PRISONER_BED_BRIDGE_GAP_1
 state:    doing
 row:      unassigned
@@ -593,15 +584,6 @@ target:   v1
 kind:     task
 summary:  Restore the campaign to a real, correct, save-safe state and fold in tonight's
 prose:    infrastructure/state/items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md
-
-## ROTSPOREKIT_ENABLE_DECISION_1 Enable mandrake.rut.rotsporekit in ModsConfig and cold-load-verify (finished FungalForest-raid content, currently deployed but not active)
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  (no items/ROTSPOREKIT_ENABLE_DECISION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROTSPOREKIT_ENABLE_DECISION_1.md
 
 ## MECH_PRESENCE_ENFORCEMENT_1 Enforce the RULED mechanoid/ancient-danger table: XML only - MechCluster allowed/disallowedBiomes patch, per-biome preventGenSteps/extraGenSteps for the ANCIENT column, zero the mechanoid FactionDef raid-commonality curve (confirm exact field name on the def first); curate shrine contents where ANCIENT-ALLOW meets AMBIENT-DENY
 state:    doing
