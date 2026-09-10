@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T00:02:53Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T00:07:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -98,15 +98,6 @@ target:   v1
 kind:     task
 summary:  Division of labor (the design decision, incl. the ruled pushback):
 prose:    infrastructure/state/items/ART_PIPELINE_DAEMON_1.md
-
-## GEMINI_WORKER_BACKEND_1 artpiped: add a gemini_image.py worker backend (per-job channel field; keep codex path) so the daemon can run the scale channel the contrast batch validated
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/GEMINI_WORKER_BACKEND_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GEMINI_WORKER_BACKEND_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

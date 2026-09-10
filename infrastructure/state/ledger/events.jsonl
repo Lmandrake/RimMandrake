@@ -6575,3 +6575,4 @@
 {"seat":"BENCH","event":"reassign","id":"DUMPDB_MANIFEST_SHORTFALL_1","to":"BENCH","ts":"2026-09-10T00:02:51Z"}
 {"seat":"BENCH","event":"claim","id":"DUMPDB_MANIFEST_SHORTFALL_1","ts":"2026-09-10T00:02:52Z"}
 {"seat":"BENCH","event":"close","id":"DUMPDB_MANIFEST_SHORTFALL_1","sha":"d09744bd63138b59bdc718c934461fade6a3cff9","ts":"2026-09-10T00:02:53Z"}
+{"seat":"BENCH","event":"close","id":"GEMINI_WORKER_BACKEND_1","sha":"477dfb06f3761403de9604661cd1dec4c95668aa","ts":"2026-09-10T00:07:31Z"}
