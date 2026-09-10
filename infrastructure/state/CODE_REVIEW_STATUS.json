@@ -10186,10 +10186,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheRot.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "b024a8b151b1b4f34703b9f2fe8d278d10b480fce0975bdabea64e7902e571e5",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "ba4762a90047ac3ca96a1b8096e65d6857306802aba8c0d104226943b8d9721c",
+    "sha": "f183a403"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheScald.xml": {
     "cleanCount": 2,
