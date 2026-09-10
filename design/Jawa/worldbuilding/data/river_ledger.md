@@ -14,10 +14,12 @@ _Names ruled by the owner at the naming sitting, 2026-09-10. Source/course/fate 
 2. **The Notch / largest river = R02 Duskflow** — longest (91 tiles), the one
    river reaching open sea (the Twilight Sea).
 3. **R03 IS a river** (not a coolant loop). The old "coolant leak flowing into the
-   Scald" briefing is **RETIRED**. New canon: the Scald *occurred* and was built into
-   the Rust Cathedral as a **coolant access after the civilization's collapse — an
-   adaptation made while the machine still had some ability to modify and repair
-   itself.** Amends `the_scald.md` + `the_rust_cathedral.md` under the freeze rule
+   Scald" briefing is **RETIRED**. New canon (refined at the 2026-09-10 question-card
+   sitting): the Scald was **always the terramanufacture design's intended coolant
+   reservoir**; after the collapse the still-capable Cathedral **re-tapped it and
+   captured R03's outflow into its canals** to cool its surviving mind and covertly
+   dump heat. R03 is a real river the Cathedral seized — part river, part aqueduct.
+   Amends `the_scald.md` + `the_rust_cathedral.md` under the freeze rule
    (adds history, changes no standing ruling); carried by `RUST_CATHEDRAL_SCALD_HISTORY_1`.
 4. **Names RULED (2026-09-10):** R02→**Duskflow**, R03→**Rustwave**, R01→**the Wynd**, R11→**the Chime**, R08→**Dewdrop**, R04→**the Braid**, R14→**the Muck**, R12→**the Catch**, R16→**the Mist**; R09 the Greyfall + R05 Feverwash / R06 Stiltwater / R07 Redthread / R10 Shortfall / R13 Hushwater / R15 Sprout kept as drafted.
 
