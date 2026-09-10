@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T13:05:13Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-10T13:10:25Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -879,3 +879,13 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FISH_BESTIARY_COMMISSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FISH_BESTIARY_COMMISSION_1.md
+
+## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RUT_SCAVENGEREVENTS_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
