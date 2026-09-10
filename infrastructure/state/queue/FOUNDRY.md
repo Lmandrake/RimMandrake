@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T00:51:16Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-10T00:53:53Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -512,15 +512,6 @@ target:   v1
 kind:     task
 summary:  Per CLAUDE.md's own note: the two laws (text/menu authority only; the game
 prose:    infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md
-
-## WORLD_FEATURE_LABELS_OVERSIZED_1 World feature labels render HUGE and overlap the globe -- our maxDrawSizeInTiles multiplier is 1.63x vanilla's
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  symptom
-prose:    infrastructure/state/items/WORLD_FEATURE_LABELS_OVERSIZED_1.md
 
 ## GL_EMIT_FLOATRANGE_GENERIC_DROP_1 gl_emit.py silently drops any FloatRange field on a non-worldTileReq node type
 state:    doing  (BLOCKED)
