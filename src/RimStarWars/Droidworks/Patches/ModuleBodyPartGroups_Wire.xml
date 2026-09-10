@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DROID_MODULE_BODYGROUP_WIRING_GAP_1. Found live-testing
+  DROIDWORKS_MODULE_PERSONALITY_1: every Droidworks module apparel
+  (Absorbed_KotorDroidModules_{Tech,Armor,Bases}.xml) requires one of
+  RSW_DW_BG_ModuleHardware / RSW_DW_BG_ModuleSensor / RSW_DW_BG_ModuleSoftware
+  in its <apparel><bodyPartGroups>, but nothing in this mod ever assigned
+  those groups to a BodyPartRecord - every Droidworks race traces to
+  DW_Race_Base, which uses the unmodified vanilla Human body
+  (Races_Base.xml:50) - so no droid could wear ANY module. Live-confirmed:
+  "success: true" on the wear debug action, but its own log said "has no
+  body parts required to wear it", and jawa/pawn_get showed apparel stayed
+  empty.
+
+  Fix: add all three groups onto vanilla Human's own Waist BodyPartRecord -
+  zero coverage, no organs, already exists purely to host the Belt apparel
+  layer (see Human's own BodyDef). The three modules all use <layers><li>Belt</li>
+  but each requires a DIFFERENT bodyPartGroup, so RimWorld's own
+  ApparelUtility.CanWearTogether (conflict = shared group AND shared layer)
+  lets a droid wear all three simultaneously - matching this mod's own design
+  of three independent slots (hardware/software/sensor).
+
+  Deliberately NOT a new BodyDef: Waist already carries zero coverage and
+  no gameplay weight beyond hosting apparel, so adding these groups here
+  costs nothing to any other Human-bodied pawn (nobody else has a module to
+  put there) and needs no re-pointing of every Droidworks race's <race><body>.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/BodyDef[defName="Human"]/corePart/parts/li[def="Waist"]/groups</xpath>
+    <value>
+      <li>RSW_DW_BG_ModuleHardware</li>
+      <li>RSW_DW_BG_ModuleSensor</li>
+      <li>RSW_DW_BG_ModuleSoftware</li>
+    </value>
+  </Operation>
+
+</Patch>
