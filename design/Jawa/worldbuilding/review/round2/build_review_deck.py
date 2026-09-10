@@ -1,0 +1,379 @@
+#!/usr/bin/env python3
+"""build_review_deck.py — the per-biome fauna+flora examination deck.
+
+Assembles ONE review page from the round-2 artifacts so the owner can examine
+every creature and plant currently assigned to each biome, at correct relative
+size, with the description/intention on hover, the biome's own text, and BENCH's
+per-biome comments — plus sheets for the decided non-biome groupings.
+
+Reads (never writes) the owner's decision files. Correct per-biome cast =
+in-rows keyed to the biome  +  move-rows resolving to it (via move_mapping_v2).
+Sizing is true drawSize (beast_census), not the 4-tier bin. Cut families
+(boom-15, the two retiring Cryptoforge creatures) are dropped with a footnote.
+
+Output: fauna_review_deck.html (self-contained, sprites embedded as data URIs).
+"""
+from __future__ import annotations
+import base64, csv, io, json, re, sys
+from pathlib import Path
+
+ROOT = Path("/mnt/d/Luke/dev/Rimworld")
+REVIEW = ROOT / "design/Jawa/worldbuilding/review"
+R2 = REVIEW / "round2"
+BIOMES = ROOT / "design/Jawa/worldbuilding/biomes"
+FAUNA_SPRITES = ROOT / "design/Jawa/fauna/sprites"
+FLORA_SPRITES = ROOT / "design/Jawa/mods/plant_sprites"
+
+from PIL import Image
+
+CUT_BOOM = {"Boomalope","Boomrat","VFEI2_Boomtick","GR_Bearalope","GR_Boomabear",
+ "GR_Boomalisk","GR_Boombeetle","GR_Boomcat","GR_Boomffalo","GR_Boomsnake",
+ "GR_Boomsquirrel","GR_Chickenlope","GR_Manalope","GR_ParagonBoomalope","GR_Squirralope"}
+CRYPTO_OUT = {"VQE_IceCrawler","VQE_Megamidge"}
+DROPPED = CUT_BOOM | CRYPTO_OUT
+
+THUMB = 128  # px longest side for embedded sprites
+
+# ---- sprite cache: defName -> data URI (deduped) -------------------------
+_sprite_cache: dict[str, str | None] = {}
+def sprite(defName: str, folder: Path) -> str | None:
+    if defName in _sprite_cache:
+        return _sprite_cache[defName]
+    uri = None
+    p = folder / f"{defName}.png"
+    if p.exists():
+        try:
+            im = Image.open(p).convert("RGBA")
+            im.thumbnail((THUMB, THUMB), Image.LANCZOS)
+            buf = io.BytesIO(); im.save(buf, "PNG", optimize=True)
+            uri = "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+        except Exception:
+            uri = None
+    _sprite_cache[defName] = uri
+    return uri
+
+# ---- census: label, drawSize, bodySize -----------------------------------
+def load_census():
+    info: dict[str, dict] = {}
+    for r in csv.DictReader(open(ROOT/"design/Jawa/fauna/animal_census.csv")):
+        info[r["defName"]] = {"label": r.get("label") or r["defName"],
+                              "bodySize": _f(r.get("bodySize")), "drawSize": None,
+                              "mod": r.get("mod","")}
+    for r in csv.DictReader(open(ROOT/"design/Jawa/worldbuilding/data/beast_census.csv")):
+        d = info.setdefault(r["defName"], {"label": r["defName"], "bodySize": None,
+                                           "drawSize": None, "mod": r.get("mod","")})
+        d["drawSize"] = _f(r.get("drawSize")) or d.get("drawSize")
+        if not d.get("bodySize"): d["bodySize"] = _f(r.get("bodySize"))
+    return info
+def _f(x):
+    try: return float(x)
+    except (TypeError, ValueError): return None
+
+# ---- move map: row_key -> resolved target --------------------------------
+def load_moves():
+    m = {}
+    for line in (R2/"move_mapping_v2.md").read_text().splitlines():
+        if not line.startswith("| `"): continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) < 4: continue
+        key = cells[0].strip("` "); target = cells[-1]
+        m[key] = target
+    return m
+
+# ---- biome sheet excerpt (identity prose, bounded) -----------------------
+def biome_text(sheet_key: str) -> str:
+    fn = sheet_key.split(" + ")[0].strip()
+    p = BIOMES / f"{fn}.md"
+    if not p.exists(): return "(no sheet found)"
+    lines = p.read_text().splitlines()
+    out, started = [], False
+    for ln in lines:
+        s = ln.strip()
+        if s.startswith("# "): started = True; continue
+        if not started: continue
+        if s.startswith(">") or s.startswith("🧊") or s.startswith("_Owner"): continue
+        if s.startswith("#"):  # next header ends the intro
+            if out: break
+            continue
+        if s: out.append(s)
+        if sum(len(x) for x in out) > 1400: break
+    return " ".join(out) or "(no prose found)"
+
+# ---- BENCH per-biome findings --------------------------------------------
+def load_findings():
+    txt = (R2/"biome_findings.md").read_text()
+    blocks = {}
+    cur = None; buf = []
+    for ln in txt.splitlines():
+        m = re.match(r"^##\s+(.+?)\s+—\s+churn", ln)
+        if m:
+            if cur: blocks[cur] = "\n".join(buf).strip()
+            cur = m.group(1).strip(); buf = []
+        elif cur is not None:
+            buf.append(ln)
+    if cur: blocks[cur] = "\n".join(buf).strip()
+    return {canon(k): v for k, v in blocks.items()}
+
+def canon(b: str) -> str:
+    """One biome, one key: bare sea keys and their 'terminator_sea + …' twins merge."""
+    if b.startswith("terminator_sea + "):
+        return b.split(" + ", 1)[1]
+    return b
+
+FACTION_KW = ("hutt","helix","wildsteam","moisture","farmer","spicemine")
+def build_faction_group(census):
+    """The ninth roster — creatures the owner assigned to a FACTION's ground, not a
+    biome. These live in move_mapping_v2 as OPEN/GROUP rows with faction language."""
+    rows = []
+    for line in (R2/"move_mapping_v2.md").read_text().splitlines():
+        if not line.startswith("| `"): continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) < 4: continue
+        defName = re.sub(r"[`]", "", cells[1]).strip()
+        words = cells[2].lower()
+        tgt = cells[3]
+        fac = next((k for k in FACTION_KW if k in words), None)
+        if not fac: continue
+        faction = {"hutt":"Hutt","helix":"Helix","wildsteam":"Wildsteam",
+                   "moisture":"Moisture Farmers","farmer":"Moisture Farmers",
+                   "spicemine":"Hutt"}[fac]
+        c = census.get(defName, {})
+        rows.append({"defName": defName, "label": c.get("label", defName),
+            "drawSize": c.get("drawSize") or c.get("bodySize") or 1.0,
+            "note": cells[2], "conf": faction, "img": sprite(defName, FAUNA_SPRITES)})
+    return rows
+
+# ---- assemble per-biome casts --------------------------------------------
+def build_biomes(fauna, flora, moves, census):
+    animals: dict[str, list] = {}
+    def add(biome, defName, note, decision, art, origin=None):
+        if defName in DROPPED: return
+        biome = canon(biome)
+        c = census.get(defName, {})
+        animals.setdefault(biome, []).append({
+            "defName": defName, "label": c.get("label", defName),
+            "drawSize": c.get("drawSize") or c.get("bodySize") or 1.0,
+            "note": note or "", "decision": decision, "art": art,
+            "origin": origin, "mod": c.get("mod",""),
+            "img": sprite(defName, FAUNA_SPRITES)})
+    for k, v in fauna.items():
+        p = k.split(":")
+        if p[0] != "fauna": continue
+        biome, defName = p[1], p[2]
+        dec = v.get("decision")
+        if dec == "in":
+            add(biome, defName, v.get("note"), "in", v.get("art"))
+        elif dec == "move":
+            tgt = moves.get(k, "")
+            if tgt and tgt not in ("OUT",) and not tgt.startswith("GROUP") and tgt != "OPEN":
+                add(tgt, defName, v.get("note"), "arrived", v.get("art"), origin=biome)
+    plants: dict[str, list] = {}
+    for k, v in flora.items():
+        p = k.split(":")
+        if len(p) < 3 or p[0] != "flora": continue
+        if v.get("decision") != "in": continue
+        biome, defName = canon(p[1]), p[2]
+        plants.setdefault(biome, []).append({
+            "defName": defName, "label": defName, "note": v.get("note") or "",
+            "img": sprite(defName, FLORA_SPRITES)})
+    return animals, plants
+
+# ---- grouping sheets ------------------------------------------------------
+def load_groups(census):
+    """Parse reserved_groups_draft.md tables into {group: [rows]}."""
+    txt = (R2/"reserved_groups_draft.md").read_text()
+    groups: dict[str, list] = {}
+    cur = None
+    for ln in txt.splitlines():
+        m = re.match(r"^##\s+(.+)", ln)
+        if m: cur = m.group(1).strip(); groups.setdefault(cur, [])
+        elif ln.startswith("|") and cur and "creature" not in ln.lower() and "---" not in ln:
+            cells = [c.strip() for c in ln.strip().strip("|").split("|")]
+            if len(cells) >= 2 and cells[0] and cells[0] != "creature":
+                defName = re.sub(r"[`*]", "", cells[0]).split()[0]
+                note = cells[2] if len(cells) > 2 else (cells[1] if len(cells)>1 else "")
+                conf = cells[-1] if len(cells) >= 4 else ""
+                c = census.get(defName, {})
+                groups[cur].append({"defName": defName, "label": c.get("label", defName),
+                    "drawSize": c.get("drawSize") or c.get("bodySize") or 1.0,
+                    "note": note, "conf": conf, "img": sprite(defName, FAUNA_SPRITES)})
+    return {g: rows for g, rows in groups.items() if rows}
+
+# ---- render ---------------------------------------------------------------
+def render(animals, plants, findings, groups):
+    biome_order = sorted(animals, key=lambda b: -(len(animals.get(b,[]))+len(plants.get(b,[]))))
+    data = {"biomes": [], "groups": []}
+    for b in biome_order:
+        data["biomes"].append({
+            "key": b, "text": biome_text(b),
+            "findings": findings.get(b, ""),
+            "animals": sorted(animals.get(b,[]), key=lambda a: -a["drawSize"]),
+            "plants": plants.get(b, [])})
+    for g, rows in groups.items():
+        data["groups"].append({"key": g, "rows": sorted(rows, key=lambda r: -r.get("drawSize",1))})
+    return HTML.replace("/*DATA*/", json.dumps(data))
+
+HTML = r"""<title>Ash'karr Fauna & Flora Deck</title>
+<style>
+:root{--bg:#221a12;--panel:#2e2318;--panel2:#37291a;--ink:#f0e3d0;--dim:#b9a488;
+--line:#4a382550;--accent:#c98a3e;--in:#7fae6a;--arr:#5b9bd5;--cut:#c9635b;--stage:#1a140d;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,system-ui,sans-serif;margin:0}
+header{position:sticky;top:0;z-index:20;background:#1b140dee;backdrop-filter:blur(6px);
+ border-bottom:1px solid var(--line);padding:10px 16px}
+header h1{margin:0;font-size:16px;color:var(--accent);letter-spacing:.3px}
+nav{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+nav a{font-size:11px;color:var(--dim);text-decoration:none;background:var(--panel);
+ padding:2px 8px;border-radius:10px;border:1px solid var(--line)}
+nav a:hover{color:var(--ink);border-color:var(--accent)}
+nav a.grp{color:var(--accent)}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+section{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+ margin-bottom:26px;overflow:hidden;scroll-margin-top:88px}
+.head{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;
+ align-items:baseline;gap:12px;flex-wrap:wrap}
+.head h2{margin:0;font-size:19px;color:var(--accent);text-transform:capitalize}
+.head .count{font-size:12px;color:var(--dim)}
+.stage{background:var(--stage);padding:16px 18px 6px}
+.lbl{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin:0 0 8px}
+.row{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px;min-height:40px}
+.crit{position:relative}
+.crit img{display:block;image-rendering:auto;filter:drop-shadow(0 2px 3px #0007)}
+.crit .cap{font-size:9.5px;color:var(--dim);text-align:center;margin-top:3px;max-width:90px;
+ overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.crit .dot{position:absolute;top:-3px;right:8px;width:7px;height:7px;border-radius:50%}
+.d-in{background:var(--in)}.d-arr{background:var(--arr)}
+.ruler{display:flex;flex-direction:column;align-items:center;opacity:.5;align-self:flex-end}
+.ruler .human{width:2px;background:var(--accent);border-radius:2px}
+.ruler .cap{font-size:9px;color:var(--accent)}
+.plants{background:#241a10}
+.boxes{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.box{padding:14px 18px}
+.box+.box{border-left:1px solid var(--line)}
+.box h3{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.box.biome h3{color:var(--dim)}
+.box.me h3{color:var(--accent)}
+.box .body{font-size:12.5px;color:var(--ink);white-space:pre-wrap;max-height:280px;overflow:auto}
+.box.biome .body{color:var(--dim)}
+.foot{font-size:10.5px;color:#8a7355;padding:6px 18px 12px}
+#tip{position:fixed;z-index:50;pointer-events:none;max-width:320px;background:#120d07f5;
+ border:1px solid var(--accent);border-radius:8px;padding:9px 11px;font-size:12px;
+ color:var(--ink);box-shadow:0 6px 24px #000a;display:none}
+#tip .t{color:var(--accent);font-weight:600;font-size:13px}
+#tip .m{color:var(--dim);font-size:10.5px;margin-bottom:4px}
+#tip .k{color:var(--dim)}
+#tip .note{margin-top:5px;font-style:italic}
+@media(max-width:720px){.boxes{grid-template-columns:1fr}.box+.box{border-left:none;border-top:1px solid var(--line)}}
+</style>
+<header>
+ <h1>Ash'karr — Fauna &amp; Flora Assignment Deck · round 2 examination</h1>
+ <nav id="nav"></nav>
+</header>
+<div class="wrap" id="deck"></div>
+<div id="tip"></div>
+<script id="DATA" type="application/json">/*DATA*/</script>
+<script>
+const D=JSON.parse(document.getElementById('DATA').textContent);
+const PX=40, MINH=20, MAXH=190, HUMAN=1.35;
+const tip=document.getElementById('tip');
+function hpx(ds){return Math.max(MINH, Math.min(MAXH, PX*(ds||1)));}
+function esc(s){return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function crit(a, isGroup){
+  const h=hpx(a.drawSize), clamped = PX*(a.drawSize||1) > MAXH;
+  const d=document.createElement('div'); d.className='crit';
+  const dotcls = a.decision==='arrived'?'d-arr':(a.decision==='in'?'d-in':'');
+  d.innerHTML = (a.img?`<img src="${a.img}" style="height:${h}px">`
+                     :`<div style="height:${h}px;width:${h*.8}px;display:flex;align-items:center;justify-content:center;border:1px dashed #6a533560;border-radius:6px;font-size:9px;color:#7a6242">no art</div>`)
+    + (dotcls?`<span class="dot ${dotcls}"></span>`:'')
+    + `<div class="cap">${esc(a.label)}</div>`;
+  d.dataset.j = JSON.stringify({...a, clamped, img:undefined, isGroup});
+  d.addEventListener('mouseenter',showTip); d.addEventListener('mousemove',moveTip);
+  d.addEventListener('mouseleave',()=>tip.style.display='none');
+  return d;
+}
+function showTip(e){
+  const a=JSON.parse(e.currentTarget.dataset.j);
+  let s=`<div class="t">${esc(a.label)}</div><div class="m">${esc(a.defName)}${a.mod?' · '+esc(a.mod):''}</div>`;
+  if(a.drawSize) s+=`<div><span class="k">size</span> drawSize ${a.drawSize}${a.clamped?' (shown clamped)':''}</div>`;
+  if(a.decision==='arrived') s+=`<div><span class="k">moved in from</span> ${esc(a.origin||'')}</div>`;
+  else if(a.decision==='in') s+=`<div><span class="k">assigned here</span></div>`;
+  if(a.art) s+=`<div><span class="k">art</span> ${esc(a.art)}</div>`;
+  if(a.conf) s+=`<div><span class="k">grouping</span> ${esc(a.conf)}</div>`;
+  if(a.note) s+=`<div class="note">“${esc(a.note)}”</div>`;
+  tip.innerHTML=s; tip.style.display='block'; moveTip(e);
+}
+function moveTip(e){
+  const pad=14; let x=e.clientX+pad, y=e.clientY+pad;
+  const r=tip.getBoundingClientRect();
+  if(x+r.width>innerWidth) x=e.clientX-r.width-pad;
+  if(y+r.height>innerHeight) y=e.clientY-r.height-pad;
+  tip.style.left=x+'px'; tip.style.top=y+'px';
+}
+function ruler(){
+  const r=document.createElement('div'); r.className='ruler';
+  r.innerHTML=`<div class="human" style="height:${hpx(HUMAN)}px"></div><div class="cap">human</div>`;
+  return r;
+}
+const deck=document.getElementById('deck'), nav=document.getElementById('nav');
+D.biomes.forEach(b=>{
+  const id='b_'+b.key.replace(/[^a-z0-9]+/gi,'_');
+  const a=document.createElement('a'); a.href='#'+id; a.textContent=b.key; nav.appendChild(a);
+  const sec=document.createElement('section'); sec.id=id;
+  sec.innerHTML=`<div class="head"><h2>${esc(b.key)}</h2>
+    <span class="count">${b.animals.length} animals · ${b.plants.length} plants</span></div>`;
+  const stage=document.createElement('div'); stage.className='stage';
+  stage.innerHTML='<p class="lbl">Animals — sized by drawSize (hover for intent)</p>';
+  const arow=document.createElement('div'); arow.className='row';
+  arow.appendChild(ruler());
+  b.animals.forEach(x=>arow.appendChild(crit(x)));
+  stage.appendChild(arow); sec.appendChild(stage);
+  const pstage=document.createElement('div'); pstage.className='stage plants';
+  pstage.innerHTML='<p class="lbl">Plants</p>';
+  const prow=document.createElement('div'); prow.className='row';
+  if(b.plants.length) b.plants.forEach(x=>prow.appendChild(crit({...x,drawSize:0.9})));
+  else prow.innerHTML='<span style="color:#7a6242;font-size:12px">— none assigned —</span>';
+  pstage.appendChild(prow); sec.appendChild(pstage);
+  const boxes=document.createElement('div'); boxes.className='boxes';
+  boxes.innerHTML=`<div class="box biome"><h3>Biome text (for review)</h3><div class="body">${esc(b.text)}</div></div>
+    <div class="box me"><h3>BENCH per-biome comments</h3><div class="body">${esc(b.findings)||'—'}</div></div>`;
+  sec.appendChild(boxes);
+  deck.appendChild(sec);
+});
+const gsep=document.createElement('a'); gsep.textContent='— groupings —'; gsep.style.color='#7a6242'; nav.appendChild(gsep);
+D.groups.forEach(g=>{
+  const id='g_'+g.key.replace(/[^a-z0-9]+/gi,'_');
+  const a=document.createElement('a'); a.href='#'+id; a.className='grp'; a.textContent=g.key.split('(')[0].trim().slice(0,26); nav.appendChild(a);
+  const sec=document.createElement('section'); sec.id=id;
+  sec.innerHTML=`<div class="head"><h2 style="text-transform:none">${esc(g.key)}</h2><span class="count">${g.rows.length} creatures</span></div>`;
+  const stage=document.createElement('div'); stage.className='stage';
+  const row=document.createElement('div'); row.className='row';
+  row.appendChild(ruler());
+  g.rows.forEach(x=>row.appendChild(crit(x,true)));
+  stage.appendChild(row); sec.appendChild(stage);
+  deck.appendChild(sec);
+});
+</script>
+<div class="wrap"><p style="color:#7a6242;font-size:11px">Cut families excluded: the 15-creature boom family and the two retiring Cryptoforge creatures (VQE_IceCrawler, VQE_Megamidge). Green dot = assigned here; blue dot = moved in from another sheet. Sizes are true drawSize, clamped for titans (noted in tooltip).</p></div>
+"""
+
+def main():
+    fauna = json.load(open(REVIEW/"round2/decisions_propagated.json"))["decisions"]
+    flora = json.load(open(REVIEW/"flora_assignment_register.decisions.json"))["decisions"]
+    census = load_census()
+    moves = load_moves()
+    animals, plants = build_biomes(fauna, flora, moves, census)
+    findings = load_findings()
+    groups = load_groups(census)
+    fac = build_faction_group(census)
+    if fac:
+        groups["9. faction-territory fauna (ninth roster — Hutt / Helix / Wildsteam / Moisture Farmers)"] = fac
+    html = render(animals, plants, findings, groups)
+    out = R2 / "fauna_review_deck.html"
+    out.write_text(html)
+    na = sum(len(v) for v in animals.values()); npl = sum(len(v) for v in plants.values())
+    withart = sum(1 for v in animals.values() for a in v if a["img"])
+    print(f"biomes={len(animals)} animals={na} (art {withart}) plants={npl} "
+          f"groups={len(groups)} size={out.stat().st_size/1e6:.2f}MB -> {out}")
+
+if __name__ == "__main__":
+    main()
