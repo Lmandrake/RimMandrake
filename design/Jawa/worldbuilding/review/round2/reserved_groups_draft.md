@@ -29,6 +29,18 @@ Note: the boom family's CUT commission traces to this group — Boomalope's own 
 "dungeon" without "assailant" (Hutt spicemines, mechanoid/rust cathedral) — held OUT of this
 group, see NOTABLE in the parent report.
 
+Added, `VQE_ANCIENTS_CURATION_1` (2026-09-10) — not from `fauna_assignment_register
+.decisions.json` (VQE Ancients wasn't in the original review pool), owner-said "feed
+VQEA_Spliceling/Splicehulk/Splicefiend/Splicetoot into the dungeon-guardians draft
+roster, not biome fauna":
+
+| creature | source | note |
+|---|---|---|
+| VQEA_Spliceling | VQE_ANCIENTS_CURATION_1 | flesh-mutant, same register as GR_FleshGrowth/GR_AberrantFleshbeast above |
+| VQEA_Splicehulk | VQE_ANCIENTS_CURATION_1 | flesh-mutant |
+| VQEA_Splicefiend | VQE_ANCIENTS_CURATION_1 | flesh-mutant |
+| VQEA_Splicetoot | VQE_ANCIENTS_CURATION_1 | flesh-mutant (defName is singular — the donor's own containment building is "...Containments", the race is not) |
+
 ## 2. trader-beasts (1 explicit, 0 inferred)
 
 | creature | source row | owner's words | confidence |
