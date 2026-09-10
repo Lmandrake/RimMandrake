@@ -1855,6 +1855,35 @@ class TextureIndex:
             self._listing[key] = got
         return got
 
+    def own_parent_exists(self, texpath: str) -> bool:
+        """True if texpath's immediate containing directory exists under any
+        of this mod's own Textures/ roots.
+
+        Stronger than checking the bare top-level segment against `own_top`:
+        "Things" and "UI" are RimWorld's own universal categories, reused by
+        vanilla AND by nearly every mod that ships any loose art at all, so a
+        mod with its own Textures/Things/... tree collides with vanilla on
+        that top segment alone. VALIDATE_PATCH_TEXPATH_CLASSIFIER_1, measured
+        2026-09-10: RimStarWars/SWBestiary owns Things/Pawn/Animal/<6 real
+        creature folders>, which put "things" in `own_top` - and a def in
+        that SAME mod legitimately pointing at vanilla's
+        Things/Pawn/Animal/Boomrat/Dessicated_Boomrat (real Core art, packed
+        in resources.assets, invisible to this scanner) got called an ERROR
+        ("this mod's own namespace, nothing else can supply it") purely
+        because "things" matched, even though the mod owns no
+        Things/Pawn/Animal/Boomrat/ folder at all. Checking the full parent
+        chain rather than one segment tells the two apart correctly.
+        """
+        rel = texpath.replace("\\", "/").strip().strip("/")
+        if not rel:
+            return False
+        parent_rel, _, _base = rel.rpartition("/")
+        for root in self.roots:
+            d = os.path.join(root, *parent_rel.split("/")) if parent_rel else root
+            if os.path.isdir(d):
+                return True
+        return False
+
     def find(self, texpath: str) -> tuple[str | None, bool]:
         """(absolute path of the first hit, exact-case) or (None, False)."""
         rel = texpath.replace("\\", "/").strip().strip("/")
@@ -2066,7 +2095,7 @@ def check_def_structure(root: ET.Element, path: str, f: Findings,
                 hit, exact = tex.find(tp)
                 if hit is None:
                     top = tp.replace("\\", "/").strip("/").split("/")[0].lower()
-                    mine = top in tex.own_top
+                    mine = top in tex.own_top and tex.own_parent_exists(tp)
                     where = (f"<{el.tag}>{tp}</{el.tag}> - no file, folder or "
                              f"_north/_south/_east/_west variant of that path "
                              f"exists under any Textures/ root scanned.")
