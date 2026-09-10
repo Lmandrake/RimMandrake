@@ -1,0 +1,3819 @@
+{
+  "196": {
+    "tile": 196,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "376": {
+    "tile": 376,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "377": {
+    "tile": 377,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "401": {
+    "tile": 401,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "455": {
+    "tile": 455,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "482": {
+    "tile": 482,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "486": {
+    "tile": 486,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "915": {
+    "tile": 915,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "917": {
+    "tile": 917,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "918": {
+    "tile": 918,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "1023": {
+    "tile": 1023,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      },
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "1094": {
+    "tile": 1094,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "1353": {
+    "tile": 1353,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "1801": {
+    "tile": 1801,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "1890": {
+    "tile": 1890,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "1965": {
+    "tile": 1965,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "1976": {
+    "tile": 1976,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "1977": {
+    "tile": 1977,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "1979": {
+    "tile": 1979,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      },
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "1981": {
+    "tile": 1981,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "2147": {
+    "tile": 2147,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "2192": {
+    "tile": 2192,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "2220": {
+    "tile": 2220,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "2627": {
+    "tile": 2627,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "2629": {
+    "tile": 2629,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "2643": {
+    "tile": 2643,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "2719": {
+    "tile": 2719,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "3374": {
+    "tile": 3374,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "3416": {
+    "tile": 3416,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "3417": {
+    "tile": 3417,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "3421": {
+    "tile": 3421,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      },
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "3597": {
+    "tile": 3597,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "3773": {
+    "tile": 3773,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "3814": {
+    "tile": 3814,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4669": {
+    "tile": 4669,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4678": {
+    "tile": 4678,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4680": {
+    "tile": 4680,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4682": {
+    "tile": 4682,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4683": {
+    "tile": 4683,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4684": {
+    "tile": 4684,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4685": {
+    "tile": 4685,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4688": {
+    "tile": 4688,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4694": {
+    "tile": 4694,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4695": {
+    "tile": 4695,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4826": {
+    "tile": 4826,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4828": {
+    "tile": 4828,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4829": {
+    "tile": 4829,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4831": {
+    "tile": 4831,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4893": {
+    "tile": 4893,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "4896": {
+    "tile": 4896,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "5215": {
+    "tile": 5215,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "5234": {
+    "tile": 5234,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "5237": {
+    "tile": 5237,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "5238": {
+    "tile": 5238,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "5319": {
+    "tile": 5319,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "5552": {
+    "tile": 5552,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "5558": {
+    "tile": 5558,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "5562": {
+    "tile": 5562,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "5647": {
+    "tile": 5647,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "5693": {
+    "tile": 5693,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "5694": {
+    "tile": 5694,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "5750": {
+    "tile": 5750,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "5751": {
+    "tile": 5751,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "5768": {
+    "tile": 5768,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "6851": {
+    "tile": 6851,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "6852": {
+    "tile": 6852,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "6853": {
+    "tile": 6853,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "6990": {
+    "tile": 6990,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "7245": {
+    "tile": 7245,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "7252": {
+    "tile": 7252,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "7253": {
+    "tile": 7253,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "7502": {
+    "tile": 7502,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "7503": {
+    "tile": 7503,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "7917": {
+    "tile": 7917,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "7918": {
+    "tile": 7918,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "8234": {
+    "tile": 8234,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "8236": {
+    "tile": 8236,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "8276": {
+    "tile": 8276,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "8277": {
+    "tile": 8277,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "8281": {
+    "tile": 8281,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "8459": {
+    "tile": 8459,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "8461": {
+    "tile": 8461,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "8609": {
+    "tile": 8609,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      },
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "8611": {
+    "tile": 8611,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "8675": {
+    "tile": 8675,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "9426": {
+    "tile": 9426,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "9537": {
+    "tile": 9537,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "9540": {
+    "tile": 9540,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "9545": {
+    "tile": 9545,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "9549": {
+    "tile": 9549,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "9554": {
+    "tile": 9554,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "9555": {
+    "tile": 9555,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "9687": {
+    "tile": 9687,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "9691": {
+    "tile": 9691,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "9756": {
+    "tile": 9756,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10074": {
+    "tile": 10074,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10089": {
+    "tile": 10089,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10092": {
+    "tile": 10092,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10093": {
+    "tile": 10093,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10097": {
+    "tile": 10097,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10173": {
+    "tile": 10173,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10175": {
+    "tile": 10175,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      },
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10176": {
+    "tile": 10176,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10179": {
+    "tile": 10179,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10183": {
+    "tile": 10183,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10196": {
+    "tile": 10196,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10408": {
+    "tile": 10408,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10418": {
+    "tile": 10418,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10422": {
+    "tile": 10422,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10550": {
+    "tile": 10550,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10553": {
+    "tile": 10553,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      },
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10611": {
+    "tile": 10611,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "10628": {
+    "tile": 10628,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "11710": {
+    "tile": 11710,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "11712": {
+    "tile": 11712,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "11713": {
+    "tile": 11713,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12766": {
+    "tile": 12766,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12768": {
+    "tile": 12768,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12769": {
+    "tile": 12769,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12772": {
+    "tile": 12772,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12774": {
+    "tile": 12774,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12779": {
+    "tile": 12779,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12780": {
+    "tile": 12780,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12782": {
+    "tile": 12782,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12784": {
+    "tile": 12784,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12786": {
+    "tile": 12786,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12788": {
+    "tile": 12788,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12791": {
+    "tile": 12791,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12792": {
+    "tile": 12792,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12798": {
+    "tile": 12798,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12924": {
+    "tile": 12924,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "12925": {
+    "tile": 12925,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13311": {
+    "tile": 13311,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13313": {
+    "tile": 13313,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13329": {
+    "tile": 13329,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13330": {
+    "tile": 13330,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13331": {
+    "tile": 13331,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13336": {
+    "tile": 13336,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13338": {
+    "tile": 13338,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13412": {
+    "tile": 13412,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13416": {
+    "tile": 13416,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13418": {
+    "tile": 13418,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13419": {
+    "tile": 13419,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13420": {
+    "tile": 13420,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13422": {
+    "tile": 13422,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13431": {
+    "tile": 13431,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13434": {
+    "tile": 13434,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13435": {
+    "tile": 13435,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13444": {
+    "tile": 13444,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13445": {
+    "tile": 13445,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13848": {
+    "tile": 13848,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13849": {
+    "tile": 13849,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13875": {
+    "tile": 13875,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "13877": {
+    "tile": 13877,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "14957": {
+    "tile": 14957,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "14958": {
+    "tile": 14958,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "14959": {
+    "tile": 14959,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "15401": {
+    "tile": 15401,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "15666": {
+    "tile": 15666,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      },
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "15900": {
+    "tile": 15900,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "15901": {
+    "tile": 15901,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "15920": {
+    "tile": 15920,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      },
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "16050": {
+    "tile": 16050,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "16066": {
+    "tile": 16066,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "16067": {
+    "tile": 16067,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "17818": {
+    "tile": 17818,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      },
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "17819": {
+    "tile": 17819,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "18061": {
+    "tile": 18061,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "18065": {
+    "tile": 18065,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "18066": {
+    "tile": 18066,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "18067": {
+    "tile": 18067,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "18080": {
+    "tile": 18080,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "18082": {
+    "tile": 18082,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "18086": {
+    "tile": 18086,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19064": {
+    "tile": 19064,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19070": {
+    "tile": 19070,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19136": {
+    "tile": 19136,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19144": {
+    "tile": 19144,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19149": {
+    "tile": 19149,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19154": {
+    "tile": 19154,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      },
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19155": {
+    "tile": 19155,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19160": {
+    "tile": 19160,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19163": {
+    "tile": 19163,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19164": {
+    "tile": 19164,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19165": {
+    "tile": 19165,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19169": {
+    "tile": 19169,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19210": {
+    "tile": 19210,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19218": {
+    "tile": 19218,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19910": {
+    "tile": 19910,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19915": {
+    "tile": 19915,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19922": {
+    "tile": 19922,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19924": {
+    "tile": 19924,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19926": {
+    "tile": 19926,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19927": {
+    "tile": 19927,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "19930": {
+    "tile": 19930,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20043": {
+    "tile": 20043,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20047": {
+    "tile": 20047,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20051": {
+    "tile": 20051,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20054": {
+    "tile": 20054,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20068": {
+    "tile": 20068,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20069": {
+    "tile": 20069,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20070": {
+    "tile": 20070,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      },
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20163": {
+    "tile": 20163,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20165": {
+    "tile": 20165,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20193": {
+    "tile": 20193,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "UndergroundCave",
+        "label": "underground cave",
+        "genOrder": -100.0
+      },
+      {
+        "def": "AB_AncientGreyPallVent",
+        "label": "gray pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20198": {
+    "tile": 20198,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20203": {
+    "tile": 20203,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20433": {
+    "tile": 20433,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientToxVent",
+        "label": "ancient toxic vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20434": {
+    "tile": 20434,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20446": {
+    "tile": 20446,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20592": {
+    "tile": 20592,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20593": {
+    "tile": 20593,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientFreezingVent",
+        "label": "ancient freezing vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20600": {
+    "tile": 20600,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20601": {
+    "tile": 20601,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AncientSmokeVent",
+        "label": "ancient smoke vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "20602": {
+    "tile": 20602,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 1,
+    "mutators": [
+      {
+        "def": "AB_AncientBloodRainVent",
+        "label": "blood rain vent",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  },
+  "21726": {
+    "tile": 21726,
+    "biome": "PoisonForest",
+    "waterCovered": false,
+    "isCoastal": false,
+    "mutatorCount": 2,
+    "mutators": [
+      {
+        "def": "AB_AncientDeathPallVent",
+        "label": "death pall vent",
+        "genOrder": 0.0
+      },
+      {
+        "def": "FoggyMutator",
+        "label": "foggy",
+        "genOrder": 0.0
+      }
+    ],
+    "landmark": null,
+    "landmarkName": null,
+    "landmarkIsCombo": false
+  }
+}
