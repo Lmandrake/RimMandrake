@@ -214,24 +214,29 @@ What keeps the watching *dangerous* rather than cute:
   always enough to survive it (the flood design's law, shared); comfort
   never is.
 
-## 7. Open questions for the owner (4)
+## 7. Owner rulings (2026-09-10 morning batch — all four answered)
 
-1. **Burst lethality.** May the default Burst down or kill a colonist
-   standing on top of it at the pop, or is the ceiling injury+knockdown,
-   with lethality reserved for flagship performances (the flood carpet, a
-   sabotaged doorway)? Same shape as the flood design's Q1 — could rule both
-   at one stroke.
-2. **The irrigation pump.** Soaking a crop field with drinking water buys a
-   near-instant harvest — water becomes food at a player-chosen rate. Is
-   that the water economy *sharpening* (PLANT_GROWTH_SPEC's own argument for
-   not exempting crops) or does soak-farming need a brake (diminishing
-   returns per re-soak 🄸, or soaked crops always racing to burst)?
-3. **The Fever Wood.** Does the mechanic enter at all? The Nectar Flush
-   variant (§3) keeps the stillness and feeds the thornbug economy, but the
-   sheet is frozen and "growth you watch" is arguably against its register —
-   ruling needed either way: variant in, or the biome joins the carve-outs.
-4. **The shipping look.** Is stepped time-lapse growth (staged re-prints)
-   acceptable as the default everywhere, with smooth per-frame swelling only
-   on the capped close-up layer — or is smooth growth on every charged plant
-   a requirement, in which case the perf gate's pass bar decides how dense a
-   soak can ever be?
+1. **Burst lethality: injury+knockdown ceiling.** The default Burst cannot
+   down-to-death or kill; lethality is reserved for flagship performances
+   (the flood carpet, a sabotaged doorway). Ruled at one stroke with the
+   flood design's Q1. Note: `troopersmith1.deathrattle` is live in the mod
+   list (MEASURED, ModsConfig 2026-09-10), so even flagship-lethal outcomes
+   resolve through Death Rattle's dying-state rescue window rather than
+   instant death — that mod is the existing protection layer; do not build a
+   second one.
+2. **The irrigation pump: working as intended.** Water→food conversion IS
+   the sharpened water economy. No brake, no diminishing returns.
+3. **The Fever Wood: Nectar Flush variant IN.**
+4. **The shipping look: stepped default + smooth close-up cap.** The perf
+   gate still runs before any density promise.
+
+### Ambient register ruling (owner, 2026-09-10, verbatim intent)
+
+*"All the jungle and river and miasma tiles should have the uncomfortable
+groaning swelling of ever shifting growth."* — a STANDING ambient register,
+not soak-triggered: jungle, river and miasma biomes carry visible ever-shifting
+growth with a groaning audio bed at all times. Proposed biome mapping (BENCH):
+the_greentide (the river), the_miasma, the_rot and the_fever_wood (the
+jungles). This is atmosphere on top of the soak mechanic, and for the Fever
+Wood it sits alongside — and by the owner's later word tempers — the frozen
+sheet's "giant stillness" register: the stillness now groans and shifts.

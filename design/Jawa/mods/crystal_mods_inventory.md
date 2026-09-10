@@ -77,6 +77,17 @@ crystal harvest lives in one place."* Given what's actually in the stack:
 | **Alpha Biomes crystal flora (`AB_CrystalHorn`/`AB_CrystalFlower`)** | **Leave.** No glow, no cavern tie, own Alpha Biomes habitat — nothing here reads as Lantern Deeps material. Not a candidate for unification. | **None.** |
 | **Crystal-studded fauna (Alpha Animals + Biomes! Caverns crystalope line)** | **Already ruled — evicted** (sheet §0, owner's ruling). No further action; listed here only so the census is complete. | — |
 
+### RULED (owner, 2026-09-10 morning batch)
+
+The §3 ingest table is **ratified** — natural abundance gated uniquely to the
+Lantern Deeps as recommended (pyrinth absorb+gate, kyber absorb+gate, KOTOR
+labeling pass + live-vs-repo genstep resolution, lanternstone rename-in-fiction).
+**Addition, his words:** crystals showing up *"in trader inventories or as loot is
+very fun. It should be expensive indeed."* — so the Deeps gate applies to natural
+scatter only; expensive trader stock and loot appearances are wanted. Priced and
+placed under `ECONOMY_TRADE_SWEEP_1` (a full what-is-sold-where-and-when sweep,
+scheduled for the end of the world sweeps).
+
 **Bottom line for the owner's ruling:** two real crystal-resource systems already sit in
 the stack pointed at the Deeps — KOTOR-family formations (already
 absorbed; the family's orange member is NOT §1's pyrinth) and the lightsaber mod's kyber (not yet absorbed) — plus the native

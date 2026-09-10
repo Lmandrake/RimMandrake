@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T07:36:15Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-10T07:46:47Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -964,3 +964,53 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ROTSPOREKIT_ENABLE_DECISION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROTSPOREKIT_ENABLE_DECISION_1.md
+
+## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FISH_BESTIARY_COMMISSION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FISH_BESTIARY_COMMISSION_1.md
+
+## MECH_PRESENCE_ENFORCEMENT_1 Enforce the RULED mechanoid/ancient-danger table: XML only - MechCluster allowed/disallowedBiomes patch, per-biome preventGenSteps/extraGenSteps for the ANCIENT column, zero the mechanoid FactionDef raid-commonality curve (confirm exact field name on the def first); curate shrine contents where ANCIENT-ALLOW meets AMBIENT-DENY
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MECH_PRESENCE_ENFORCEMENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MECH_PRESENCE_ENFORCEMENT_1.md
+
+## FISH_TYPES_PATCH_BUILD_1 Build the RULED fishTypes patches: fill SandFishing_CrackedLands.xml uncommon with BMT_Rocktooth+BMT_Boneblade; trim weeping-stones patch to 4 swfish_ donors (VCEF four out); write the Greentide fishTypes (Mee/Faa/Laa dual placement, resolve which of the two near-duplicate defs is live); then the strip-sweep of live fishTypes on ruled no-fish biomes, starting with a measure
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FISH_TYPES_PATCH_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FISH_TYPES_PATCH_BUILD_1.md
+
+## CRYSTAL_INGEST_EXECUTION_1 Execute the RATIFIED crystal ingest: absorb det.epochspyrinth into our tier + gate its scatter to Lantern Deeps maps; absorb lee.theforce.lightsaber kyber + gate its genstep to the Deeps; KOTOR formations labeling pass + resolve the live Stygium-only vs repo 12-entry genstep discrepancy; lanternstone rename in fiction only. Natural scatter gated to the Deeps; trader/loot pricing rides ECONOMY_TRADE_SWEEP_1
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CRYSTAL_INGEST_EXECUTION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CRYSTAL_INGEST_EXECUTION_1.md
+
+## WALL_LIGHTS_HELPER_BROKEN_1 prelude.lua's wall_lights() helper silently places nothing when called with a room's outer shell rect (needs the interior rect instead) - affects road_warehouse/trading_post/homestead
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WALL_LIGHTS_HELPER_BROKEN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WALL_LIGHTS_HELPER_BROKEN_1.md

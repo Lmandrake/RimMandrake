@@ -1,13 +1,14 @@
-# Mechanoid & ancient-danger presence per biome — DRAFT for the owner's ruling
+# Mechanoid & ancient-danger presence per biome — RULED
 
-**DRAFT — nothing here is decided.** Feeds `MECHANOID_BIOME_PRESENCE_REVIEW_1`; the
-owner rules every row. Only two rows arrive pre-ruled: the Rust Cathedral
-(`AB_MechanoidIntrusion`) and the antistellar war lab under the propane lakes
-(`ANCIENT_WAR_LAB_1`). Everything else is argued from that biome's sheet
-(`design/Jawa/worldbuilding/biomes/*.md`, bindings per `_def_bindings_2026-09-09.md`)
-and is a case, not a fact. Verified: `_freeze_matrix.csv` has no mechanoid column and
-`_freeze_rulings_2026-09-07.md` no mechanoid ruling — this table is the first data on
-the axis.
+**RULED by the owner, 2026-09-10 morning batch** (`MECHANOID_BIOME_PRESENCE_REVIEW_1`,
+`MORNING_RULING_BATCH_1` item 9): the table below is ratified as written, the axis-3
+planet-wide doctrine is ratified, and both formerly-UNDECIDED rows are DENY.
+Enforcement (the XML patches per the MECHANISM section) is FOUNDRY build work —
+`MECH_PRESENCE_ENFORCEMENT_1`. Rows argued from each biome's sheet
+(`design/Jawa/worldbuilding/biomes/*.md`, bindings per `_def_bindings_2026-09-09.md`).
+Verified at drafting: `_freeze_matrix.csv` has no mechanoid column and
+`_freeze_rulings_2026-09-07.md` no mechanoid ruling — this table is the first and now
+authoritative data on the axis.
 
 ## The three axes
 
@@ -18,7 +19,7 @@ the axis.
 Verdicts: **ALLOW** / **DENY** / **RARE** (present but tuned sparse) / **RULED**
 (owner already decided) / **UNDECIDED** (sheet gives no purchase; the decider is named).
 
-## Proposed planet-wide doctrine for axis 3 (needs the owner's ruling)
+## Planet-wide doctrine for axis 3 — RULED (owner, 2026-09-10)
 
 **Random mechanoid raids: DENY everywhere.** The Scarlands sheet states the law of the
 planet's machines: the Forgotten Sentinels *"defend, never raid, never pursue... never
@@ -28,8 +29,9 @@ rolling a raid. Under this doctrine mechanoid violence reaches the player only a
 scripted/provoked response: Cathedral trespass, war-lab breach, Deeps mining, Forge-tower
 or Scald-tower assault. This is also the cheap doctrine to enforce (see MECHANISM: a
 planet-wide DENY is XML; per-biome mixed legality needs C#). Every RAIDS cell below
-assumes it; if the owner wants vanilla-style random mech raids anywhere, that row
-reopens.
+assumes it. Ratified 2026-09-10 — no biome keeps vanilla-style random mech raids, so
+axis-3 enforcement is the XML-only route (zero the mechanoid FactionDef's
+raid-commonality curve; confirm the exact field name on the def before patching).
 
 ## The table
 
@@ -58,8 +60,8 @@ reopens.
 | `ZBiome_Grasslands` (222) | the_pyrelands | DENY | DENY | DENY | The Rakatan legacy here is genetic and alive — an engineered crop still burning 25,000 years on; nothing of theirs is buried steel, and the standing burn keeps no ruins. |
 | `RUT_NightsideIce` (1506) | nightside_ice | DENY (sheet-explicit) | DENY (calving is the channel) | DENY | The sheet already defers: mech clusters/psychic drone are "not here by default — the propane country and the Deeps." Its war debris ("the terramanufacture's collapsing machine, the war's cocoons") arrives by glacial calving — the biome's own delivery mechanic, not mapgen scatter. |
 | `AB_RockyCrags` (1170) | forsaken_crags | DENY | DENY | DENY | The Dark's register is Cryptid-only ("the Forsakens never appear"); its ruins are wind-farms and seep-works, fugitive infrastructure — machine dangers would floodlight a biome built on dread. |
-| `AridShrubland` (665) | arid_shrubland | DENY | **UNDECIDED** | DENY | "The hush" gives machines nothing — concealment favours living ambushers. Decider for ANCIENT: does the hush belt share the desert's dig-site archaeology, or is it deliberately clean ground between the desert and the shade? The sheet is silent. |
-| `COMIGO_GreaterSwamp_Tropical` (43) | the_fever_wood | DENY | **UNDECIDED** | DENY | The giant stillness has no machine mention at all. Decider for ANCIENT: whether the black still pools preserve/hide anything pre-war under them (a Sump-like "remembers" reading) or the trees drank the history along with the chaos. |
+| `AridShrubland` (665) | arid_shrubland | DENY | **DENY** (ruled 2026-09-10) | DENY | "The hush" gives machines nothing — concealment favours living ambushers. Owner ruled ANCIENT DENY: the hush belt is deliberately clean ground between the desert and the shade, not dig-site country. |
+| `COMIGO_GreaterSwamp_Tropical` (43) | the_fever_wood | DENY | **DENY** (ruled 2026-09-10) | DENY | The giant stillness has no machine mention at all. Owner ruled ANCIENT DENY: the trees drank the history along with the chaos — the black still pools hide nothing pre-war. |
 | `RUT_TwilightSea` (479) | terminator_sea + the_twilight_deep | DENY | DENY | DENY | The last ordinary sea — purely biological, Compact-held below; the engine already refuses shrine scatter in water biomes (see MECHANISM), so DENY costs nothing. Sea-bottom content is deferred to the diving mods. |
 | `RUT_GreySea` (429) | terminator_sea + the_grey_deep | DENY | DENY | DENY | The statuary's encased soldiers and ruined vehicles are a PRESERVATION register (third of the tar/scar/brine triptych), meant to be seen, not to wake — an ancient danger that fights back would break the stillness that is the sheet's whole point. |
 
@@ -74,11 +76,10 @@ reopens.
 | Wreck fields (superseded by fall_line) | dead proposal | DENY (its own hard ban) | "No mechanoids, no active machines, no functioning AI... If a wreck fights back, it is Cathedral content and belongs at θ 0." |
 | Assailant weapon remnants (Horrors) | separate axis by ruling | out of scope here | The item's own line: "the Horrors are not mechanoids." Raid-only faction, no settlements — ruled on its own sheet. |
 
-## UNDECIDED list
+## UNDECIDED list — empty (all three resolved by the owner, 2026-09-10)
 
-- `AridShrubland` — ANCIENT axis (decider: is the hush belt dig-site country or clean ground?).
-- `COMIGO_GreaterSwamp_Tropical` — ANCIENT axis (decider: do the still pools remember anything?).
-- The axis-3 planet-wide doctrine itself (random mech raids DENY everywhere, provoked-only) is a proposal, not a ruling.
+- `AridShrubland` ANCIENT → DENY (clean ground). `COMIGO_GreaterSwamp_Tropical`
+  ANCIENT → DENY (the pools remember nothing). Axis-3 doctrine → ratified.
 
 ## MECHANISM sketch — how each axis is actually enforced
 
