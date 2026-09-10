@@ -1811,6 +1811,12 @@
     "hash": "ada02fe81cfc7e1d6279bd5ce14959d70ea6fd3cabed98a37d8b777587924184",
     "sha": "71cceeb1"
   },
+  "src/RimMandrake/Pits/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "b88a6f90"
+  },
   "src/RimMandrake/Pits/Languages/English/Keyed/Pit_Keys.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -2519,6 +2525,12 @@
     "hash": "b56a0691689f2a5c0145895622f0f1af1fc84fbc70b79451d6a4e413d151732c",
     "sha": "629956d2"
   },
+  "src/RimMandrake/StructureInjections/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "b88a6f90"
+  },
   "src/RimMandrake/StructureInjections/Source/GenStep_RimplacePlan.cs": {
     "cleanCount": 2,
     "date": "2026-09-05",
@@ -2531,11 +2543,29 @@
     "hash": "3ff31404625d13c46cf7fe07ef443e0d9f61e7df39346f58902442396df3001e",
     "sha": "555430a2"
   },
+  "src/RimMandrake/StructureInjections/Source/StructureInjections.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "7fdf59873ff70bc447d72633c027aed1cdaade45e62548593e14878b1e213e15",
+    "sha": "b88a6f90"
+  },
   "src/RimMandrake/StructureInjections/Source/StructureInjectionsDebugActions.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "hash": "2b0c2c1f7d379f241837a385a0f36c109c7a3c925d68c62fd4e5616f4cf47bfc",
     "sha": "9c1523eb"
+  },
+  "src/RimMandrake/StructureInjections/Templates/dwelling_test.txt": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "60d08a461c3eb9f3bd5b504d95f76c2b9a328399d188724b5f4ed545927cd222",
+    "sha": "b88a6f90"
+  },
+  "src/RimMandrake/StructureInjections/Templates/moisture_farm_test.txt": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "1e47f06805b3a331dabbeda3cbbe8cc3889468130b5caa89b5dea10445867a1f",
+    "sha": "b88a6f90"
   },
   "src/RimMandrake/TitanicCreatures/About/About.xml": {
     "cleanCount": 1,
