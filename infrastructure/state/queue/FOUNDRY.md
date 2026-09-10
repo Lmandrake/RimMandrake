@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T19:14:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T19:49:14Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -586,7 +586,7 @@ summary:  (no items/MECH_PRESENCE_ENFORCEMENT_1.md yet — write one when you ha
 prose:    infrastructure/state/items/MECH_PRESENCE_ENFORCEMENT_1.md
 
 ## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -818,6 +818,16 @@ blocked:  design draft, item's own criterion 1: stays a draft until the owner ru
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
+## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  7/8 mechanisms built, compiled clean, deployed, queued in ModsConfig for next load - blocked on: (1) a restart to prove-fires (owner was mid-session on the live map all session, did not force one), (2) a design decision on RescueTraitor (turned out to be a half-decompiled body-horror mimicry mechanic, not a simple port - see item for the corrected finding)
+summary:  Build RUTScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events
+prose:    infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -870,16 +880,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VQE_ANCIENTS_CURATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VQE_ANCIENTS_CURATION_1.md
 
-## BOOM_FAMILY_CUT_1 Cut the 15-creature boom family (Boomalope, Boomrat, VFEI2_Boomtick, GR_Bearalope/Boomabear/Boomalisk/Boombeetle/Boomcat/Boomffalo/Boomsnake/Boomsquirrel/Chickenlope/Manalope/ParagonBoomalope/Squirralope): CherryPicker cuts with cut(deftype,name), prove by live-config readback; remove from biome-cast wildAnimals patches; rebuild the tag->surviving-item index after (content-moderation trap); check nothing else spawns/references them (traders, quests, chemfuel economy - Boomalope milk)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BOOM_FAMILY_CUT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BOOM_FAMILY_CUT_1.md
-
 ## GOO_BOOM_COMMISSION_1 Commission ONE big Assailant-dungeon boom creature: fleshy-based, sacks of explosive goo, new def + new art - replaces the entire cut boom family (Boomalope, Boomrat, VFEI2_Boomtick, 12 GR_ boom creatures); lives on the dungeon-guardians roster, never a biome spawn
 state:    proposed
 row:      unassigned
@@ -909,3 +909,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CODEX_WORKER_SANDBOX_WRITE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CODEX_WORKER_SANDBOX_WRITE_1.md
+
+## RSW_PROTOVERMES_TEXPATH_MISSING_1 RSW_Protovermes (and its 7 sibling RSW_Absorbed_* files?) has a texPath that resolves to nothing: Things/Pawn/Animal/Boomrat/Dessicated_Boomrat - validate_patch.py flags 3 ERRORs, pink-placeholder risk, pre-existing and unrelated to BOOM_FAMILY_CUT_1 which found it as a side effect
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RSW_PROTOVERMES_TEXPATH_MISSING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RSW_PROTOVERMES_TEXPATH_MISSING_1.md
