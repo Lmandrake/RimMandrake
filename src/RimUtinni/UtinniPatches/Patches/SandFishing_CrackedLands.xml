@@ -63,11 +63,19 @@
         <li Class="PatchOperationReplace" MayRequire="Ludeon.RimWorld.Odyssey">
           <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/fishTypes/freshwater_Uncommon</xpath>
           <value>
-            <!-- Deliberately empty — the family is kept small on purpose (item's own
-                 "small family" instruction); the second freshwater bucket is the
-                 uncommon SPECIES slot and this family has only one catch species.
-                 An empty list is a safe no-op for WaterBody.SetFishTypes.TryRandomElement. -->
+            <!-- FISH_TYPES_PATCH_BUILD_1 (2026-09-10): the merged Cracked Lands ruling
+                 (_fish_assignment_proposal.md §2/§5.1, owner-ratified) fills what was
+                 deliberately left empty here — the canyon slot-water's own predator
+                 pair, donors from Biomes! Caverns (BMT_, packageId
+                 biomesteam.biomescaverns; already a live donor on this def's sibling
+                 RUT_Greentide wildAnimals, e.g. BMT_Diggerpede). Common catch
+                 everywhere in the biome stays RSW_DuneCrawler (above); this bucket now
+                 pulls the deeper canyon line. The census's VCEF_Spiderfish/
+                 VCEF_ShadowFry secondaries are dropped per the ruling — three species
+                 is enough for one biome. -->
             <freshwater_Uncommon>
+              <BMT_Rocktooth MayRequire="biomesteam.biomescaverns">1</BMT_Rocktooth>
+              <BMT_Boneblade MayRequire="biomesteam.biomescaverns">1</BMT_Boneblade>
             </freshwater_Uncommon>
           </value>
         </li>
