@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  MechClusterBiomes_AmbientDoctrine.xml   UtinniPatches - new file 2026-09-10
+  ============================================================================
+  MECH_PRESENCE_ENFORCEMENT_1, piece 1/4. Enforces the ratified AMBIENT column
+  (mechanoid map presence / mech clusters as random storyteller events) from
+  design/Jawa/worldbuilding/mechanoid_biome_presence_draft.md.
+
+  VERIFIED before writing (rimsage read_csharp_symbol/get_def_details, 2026-09-10):
+  - `IncidentDef.cs` declares `public List<BiomeDef> allowedBiomes;` and
+    `public List<BiomeDef> disallowedBiomes;` - a whitelist/blacklist pair.
+    `ConfigErrors()` rejects a def with BOTH populated ("allowedBiomes (white
+    list) and disallowedBiomes (black list) are both defined"), so this file
+    uses `allowedBiomes` only - everything else is denied by omission.
+  - The live `MechCluster` IncidentDef sets neither field today.
+    `IncidentWorker_MechCluster.CanFireNowSub` (per the ratified spec's own
+    verified MECHANISM section) checks only Royalty + Faction.OfMechanoids -
+    no biome filter - so the whole AMBIENT column was previously unenforced.
+  - Every biome defName below is the CONFIRMED live/painted def (never a
+    donor placeholder or a pending RUT_-tier replacement) per
+    design/Jawa/worldbuilding/biomes/_def_bindings_2026-09-09.md's
+    wildAnimals-owner column (BiomeCast_Ashkarr.xml/"own def file" = live;
+    "pending-switch target...not live yet" = skip), cross-checked against
+    the def dump fresh-captured today (DefDump/captures/2026-09-10T08-36-27Z,
+    fingerprint: 577/577 active mods, matches live ModsConfig.xml exactly).
+
+  ALLOWED (RULED, from the table):
+    AB_MechanoidIntrusion, AB_PropaneLakes, RUT_PropaneLake - the two RULED
+      poles (Rust Cathedral; the propane-lakes approach to the ancient war lab).
+    Scarlands       - ALLOW (Forgotten Sentinels, resident emplaced defenders).
+    AB_PyroclasticConflagration, LavaField, Volcano - "the Forge" (one sheet,
+      one massif; native old-mechanoid-type machines only).
+    RUT_TheScald    - the dark tower's own defenders (sheet: "tower only";
+      MechCluster's biome-level filter cannot express "near the tower", only
+      "on this biome" - accepted at this granularity, matching every other
+      row in this column).
+
+  FOLDED TO DENY (a judgment call this item's own MECHANISM section
+  anticipated: "'RARE' is finer than on/off and would need a Harmony patch...
+  or accept ALLOW/DENY only"):
+    Wasteland (1126 tiles) and Desert (3932 tiles) are AMBIENT=RARE
+    ("dormant"). Desert is explicitly "the calm home biome of the sprint
+    economy...sparse and dead, never a front"; folding RARE to ALLOW would
+    give the planet's two largest biomes the SAME mech-cluster frequency as
+    the Rust Cathedral pole (this field has no finer dial), which directly
+    contradicts that characterization. Folding to DENY loses the "still
+    present, tuned sparse" nuance but is the coarsening that costs doctrine
+    the least. True per-biome frequency needs the Harmony patch on
+    IncidentWorker_MechCluster.CanFireNowSub the MECHANISM section names -
+    out of this item's XML-only scope. Noted on MECH_PRESENCE_ENFORCEMENT_1.
+
+  Every other painted biome on the table is AMBIENT=DENY outright and needs
+  no entry - absent from a whitelist is denied.
+
+  STRUCTURE: three independent operations, each self-contained (Conditional
+  on the container's existence: nomatch CREATES <allowedBiomes> with this
+  operation's own entries, match APPENDS into whatever a prior operation in
+  this file already created) so the three are order-independent regardless
+  of PatchOperation execution order. Alpha Biomes / Advanced Biomes
+  (Continued) blocks are gated with PatchOperationFindMod matching this
+  repo's established convention (FishTypesStrip_NoFishBiomes.xml); Odyssey
+  core biomes get a bare MayRequire; RUT_-tier and RUT_TheScald need neither -
+  they ship with this campaign's own always-loaded UtinniPatches mod.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- RUT-tier (always loaded with this campaign) + Odyssey-core entries. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/IncidentDef[defName="MechCluster"]/allowedBiomes</xpath>
+
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/IncidentDef[defName="MechCluster"]</xpath>
+      <value>
+        <allowedBiomes>
+          <li>RUT_PropaneLake</li>
+          <li>RUT_TheScald</li>
+          <li MayRequire="Ludeon.RimWorld.Odyssey">Scarlands</li>
+          <li MayRequire="Ludeon.RimWorld.Odyssey">LavaField</li>
+        </allowedBiomes>
+      </value>
+    </nomatch>
+
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/IncidentDef[defName="MechCluster"]/allowedBiomes</xpath>
+      <value>
+        <li>RUT_PropaneLake</li>
+        <li>RUT_TheScald</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Scarlands</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">LavaField</li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Alpha Biomes entries. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alpha Biomes</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/IncidentDef[defName="MechCluster"]/allowedBiomes</xpath>
+
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/IncidentDef[defName="MechCluster"]</xpath>
+        <value>
+          <allowedBiomes>
+            <li>AB_MechanoidIntrusion</li>
+            <li>AB_PropaneLakes</li>
+            <li>AB_PyroclasticConflagration</li>
+          </allowedBiomes>
+        </value>
+      </nomatch>
+
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/IncidentDef[defName="MechCluster"]/allowedBiomes</xpath>
+        <value>
+          <li>AB_MechanoidIntrusion</li>
+          <li>AB_PropaneLakes</li>
+          <li>AB_PyroclasticConflagration</li>
+        </value>
+      </match>
+    </match>
+  </Operation>
+
+  <!-- Advanced Biomes (Continued) entry: Volcano. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Advanced Biomes (Continued)</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/IncidentDef[defName="MechCluster"]/allowedBiomes</xpath>
+
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/IncidentDef[defName="MechCluster"]</xpath>
+        <value>
+          <allowedBiomes>
+            <li>Volcano</li>
+          </allowedBiomes>
+        </value>
+      </nomatch>
+
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/IncidentDef[defName="MechCluster"]/allowedBiomes</xpath>
+        <value>
+          <li>Volcano</li>
+        </value>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>
