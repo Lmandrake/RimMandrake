@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T06:49:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T06:54:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -107,6 +107,15 @@ target:   v1
 kind:     task
 summary:  - Odyssey's fishing is live in the stack (donor biome defs carry fishTypes blocks —
 prose:    infrastructure/state/items/FISH_BY_BIOME_1.md
+
+## FLOOD_WITNESS_EVENT_1 Plot event: the player witnesses a Cracked Lands flood (chimes, wall of water, explosive growth) at least once — organized as part of the plot, since natural timing won't show it
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  FLOODWITNESSEVENT1 — the player sees the flood, once, on purpose
+prose:    infrastructure/state/items/FLOOD_WITNESS_EVENT_1.md
 
 ## ART_PIPELINE_DAEMON_1 Constant background art pipeline: dumb daemon + N codex exec receiving-agent workers, seats fill the queue
 state:    doing
@@ -232,16 +241,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  EXPLOSIVEPLANTGROWTH1 — visible plant growth as a world mechanic
 prose:    infrastructure/state/items/EXPLOSIVE_PLANT_GROWTH_1.md
-
-## FLOOD_WITNESS_EVENT_1 Plot event: the player witnesses a Cracked Lands flood (chimes, wall of water, explosive growth) at least once — organized as part of the plot, since natural timing won't show it
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  FLOODWITNESSEVENT1 — the player sees the flood, once, on purpose
-prose:    infrastructure/state/items/FLOOD_WITNESS_EVENT_1.md
 
 ## GREENTIDE_MECHANICS_1 The Greentide C# kit: wet-bulb condition+gear, dry-air blower, scald damage+steam devils, Roil/Breaklight weathers, churnmud+causeways, three-feller tree fall, Lunger ambush, grazing suppression, silence cue, Greatbole mineable-living-tree class — spec the_greentide.md
 state:    proposed
