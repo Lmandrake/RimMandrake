@@ -80,17 +80,52 @@ assembly — read via a scratch copy of `ilprobe` (repointed `DLL` in
 
 **Dropped per spec** (Nausea, Amnesia) — not decompiled, out of scope.
 
-## NOT yet done
-No RUT_ IncidentWorker C# has been written, built or bridge-tested yet — this
-is the mechanism-reference phase only. Still owed: RUT_ letter-text keys (all
-8 above are `MO_*`, none are ours to ship verbatim per the license-check
-instruction), IncidentDef XML wiring with our own per-event baseChance,
+## progress: mechanism 1 of 8 built, deployed, awaiting a proven-fires load
+`mandrake.rut.scavengerevents` scaffolded at `src/RimUtinni/ScavengerEvents/`
+(About/Defs/Languages/Source, mirrors `RestrainingBolts`' csproj shape) with
+`RUT_Migration` (`IncidentWorker_Migration.cs`) — the ambient-wildlife-passage
+mechanic. Own defName, own `RUT_Migration`/`RUT_MigrationDesc` Keyed strings,
+own `IncidentDef` (`targetTags Map_PlayerHome`, `category Misc`, `baseChance 5`,
+`minRefireDays 7`, `earliestDay 1` — matches the donor's own IncidentDef
+shape, read from its XML rather than guessed). The donor's animal-count
+formula was an opaque integer-division artifact (poolCount canceled out of
+its own ratio, then a no-op `Math.Round` on an already-integer value) — not
+intentional tuning, so replaced with a plain `Rand.RangeInclusive(2, 8)` per
+"port behavior not bugs."
+
+- **Built clean**: `dotnet.exe build ... -c Release` → 0 warnings, 0 errors —
+  every guessed API signature (`RCellFinder.TryFindRandomPawnEntryCell`,
+  `CellFinder.RandomClosewalkCellNear`, the `Job`/`StartJob` overloads,
+  `Pawn_MindState.exitMapAfterTick`, `Map.Biome`/`Center`,
+  `BiomeDef.AllWildAnimals`, `LetterStack.ReceiveLetter`) compiled against the
+  real `Assembly-CSharp.dll`, not just against the decompile.
+- **Deployed clean**: `deploy_custom_mods.py --mod ScavengerEvents --apply` —
+  4 files, nothing else touched, VERIFIED in sync.
+- **Enabled for the NEXT load only**: added `mandrake.rut.scavengerevents`
+  to `ModsConfig.xml` right after `mlie.moevents` (no patches/Harmony, so no
+  load-order sensitivity) — backup at
+  `Transient/ModsConfig_before_scavengerevents_add_2026-09-10.xml`. **Not
+  restarted** — the owner was mid-session on the live campaign map when this
+  was built; forcing a restart to prove-fires would have pulled the game out
+  from under him. Whoever restarts next (owner or FOUNDRY) will load it.
+- **NOT yet proven-fires** — needs a bridge test (quicktest map, biome with
+  a non-empty `AllWildAnimals`, `IncidentDefOf`-style manual fire or
+  `DebugTools` "do incident" call, verify the letter + the pawns actually
+  spawn and walk off) once a load happens. This is the next concrete step for
+  this item — do it before starting mechanism 2.
+
+## still owed (mechanisms 2-8, and the close-out)
+The remaining 7 workers (ShipBreak, PodCrashTribal, RescueTraitor, Insect,
+Thanksgiving, Stroke — RescueTraitor and Insect both touch `SpaceRefugee`/
+combat-relevant mechanics and deserve more care than Migration did). Also:
 salvage-economy loot substitution for ShipBreak/Thanksgiving/SurvivalPod's
 fixed item lists, the `MO_RTWorker` def investigation, `stroke::IncidentStroke`
-and `RescueTraitor`'s closure predicate (both un-expanded above), a
-proven-fires bridge test per worker, the Mlie continuation-license check, the
-interim MO_ baseChance zeroing, and the final `mlie.moevents` retirement +
-`animal_census.csv` MO_AbominationRace row deletion.
+and `RescueTraitor`'s closure predicate (both un-expanded in the mechanism
+reference above), a proven-fires bridge test per worker, the Mlie
+continuation-license check, the interim MO_ baseChance zeroing, and the final
+`mlie.moevents` retirement + `animal_census.csv` MO_AbominationRace row
+deletion.
 
 ## verify
-Not started — see "NOT yet done".
+Migration: build clean (done), deploy clean (done), proven-fires bridge test
+(owed, blocked on a restart). The other 7: not started.

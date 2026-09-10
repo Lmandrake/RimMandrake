@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.scavengerevents</packageId>
+  <name>Jawa Scavenger Events</name>
+  <author>Mandrake</author>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <description>RUT_SCAVENGEREVENTS_BUILD_1. Our own IncidentWorkers for the map
+events Mo'Events (mlie.moevents) offered, ported behavior-not-bugs from a
+decompile of MoreIncidents.dll (see infrastructure/state/items/
+RUT_SCAVENGEREVENTS_BUILD_1.md for the mechanism reference this was built
+from). Own letter text, own defNames, own baseChance settings. Retires
+mlie.moevents once all eight land.</description>
+</ModMetaData>

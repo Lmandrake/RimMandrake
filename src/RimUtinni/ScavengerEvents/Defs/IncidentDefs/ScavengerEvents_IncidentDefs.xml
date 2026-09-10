@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RUT_SCAVENGEREVENTS_BUILD_1, mechanism 1 of 8: Migration.
+       Ambient wildlife passage - a small herd of biome-correct animals walks
+       across the map and leaves. Not a threat, no manhunter state. Ported
+       from MoreIncidents.MOIncidentWorker_Migration; see the mechanism
+       reference in infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
+       for what was kept and what was cleaned up (the donor's animal-count
+       formula was an opaque integer-division artifact, not load-bearing
+       design; replaced with a plain Rand.RangeInclusive(2,8)). -->
+  <IncidentDef>
+    <defName>RUT_Migration</defName>
+    <label>migration</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.Utinni.ScavengerEvents.IncidentWorker_Migration</workerClass>
+    <baseChance>5</baseChance>
+    <minRefireDays>7</minRefireDays>
+    <earliestDay>1</earliestDay>
+  </IncidentDef>
+
+</Defs>
