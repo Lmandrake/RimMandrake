@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T01:04:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T01:09:01Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -177,7 +177,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  SHIELDMODSLEVERAGE1 — survey done, scoping (BENCH, 2026-09-02)
+summary:  SHIELDMODSLEVERAGE1 — v1 build slice in place, offline-verified only (FOUNDRY, 2026-09-09)
 prose:    infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md
 
 ## STICK_FOOD_INGEST_1 Ingest the stuff-on-a-stick food mod(s) into our own recipe-discovery tree, then retire them

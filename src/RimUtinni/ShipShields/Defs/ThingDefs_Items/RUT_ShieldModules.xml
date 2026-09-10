@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    shd:loadout-tradeoff modules. Consumed once by CompShieldModuleSwitch's
+    "Install shield module" gizmo to permanently unlock a field on an
+    already-built RUT_ShieldGenerator (Bubble ships unlocked by default, no
+    module needed). recipeMaker modeled directly on vanilla's own
+    Apparel_ShieldBelt (Defs/Core/ThingDefs_Misc/Apparel_Belts.xml) —
+    same bench, same work stat, same effects — rather than guessed values.
+    Placeholder art: reuses a vanilla resource icon; real art owed.
+  -->
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_ShieldModule_Thermal</defName>
+    <label>thermal veil module</label>
+    <description>A modulation core tuned to reflect external heat outward and hold the worst of it at bay. Installed on a modulated shield generator, it permanently unlocks thermal rejection as one of that generator's field configurations.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/ComponentSpacer</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>10</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <techLevel>Spacer</techLevel>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>320</MarketValue>
+      <Mass>3</Mass>
+      <Flammability>0.2</Flammability>
+      <DeteriorationRate>2.0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <costList>
+      <ComponentIndustrial>2</ComponentIndustrial>
+      <Plasteel>10</Plasteel>
+    </costList>
+    <recipeMaker>
+      <researchPrerequisite>RUT_ModulatedShieldFields</researchPrerequisite>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Machining</soundWorking>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <skillRequirements>
+        <Crafting>6</Crafting>
+      </skillRequirements>
+      <displayPriority>450</displayPriority>
+    </recipeMaker>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_ShieldModule_Particulate</defName>
+    <label>particulate screen module</label>
+    <description>A modulation core tuned to deflect wind, ash, vapour, spores, smoke, sand and rain instead of solid impactors. Installed on a modulated shield generator, it permanently unlocks a particulate screen as one of that generator's field configurations.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/ComponentSpacer</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>10</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <techLevel>Spacer</techLevel>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>280</MarketValue>
+      <Mass>3</Mass>
+      <Flammability>0.2</Flammability>
+      <DeteriorationRate>2.0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <costList>
+      <ComponentIndustrial>2</ComponentIndustrial>
+      <Steel>15</Steel>
+    </costList>
+    <recipeMaker>
+      <researchPrerequisite>RUT_ModulatedShieldFields</researchPrerequisite>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Machining</soundWorking>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <skillRequirements>
+        <Crafting>6</Crafting>
+      </skillRequirements>
+      <displayPriority>451</displayPriority>
+    </recipeMaker>
+  </ThingDef>
+
+</Defs>
