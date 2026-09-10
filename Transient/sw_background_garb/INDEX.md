@@ -1,0 +1,63 @@
+# SW background-garb reference harvest
+
+Reference-only images for later original RimMandrake apparel design (inspired-not-copied). Source: Wookieepedia (starwars.fandom.com), fetched via the Fandom MediaWiki API + static.wikia.nocookie.net CDN.
+
+- **rodian_1.jpg** — Rodian — seen: Wookieepedia species/Alien Archive card — garb: leather harness over tunic, bandolier pouches — apparel idea: *Rodian scav-tunic + bandolier harness*
+- **rodian_2.jpg** — Rodian — seen: bounty hunter character render — garb: flight jacket, goggles, utility straps — apparel idea: *Rodian bounty-hunter flight jacket + goggles*
+- **duros_1.jpg** — Duros (Cad Bane) — seen: Cad Bane character render — garb: long duster coat, wide-brim hat, twin bandoliers, gloves — apparel idea: *desert gunslinger duster + bandolier rig*
+- **duros_2.jpg** — Duros — seen: species render — garb: simple flight jumpsuit — apparel idea: *Duros pilot jumpsuit*
+- **aqualish_1.jpg** — Aqualish — seen: warrior character render — garb: chest wrap harness, arm bracers — apparel idea: *Aqualish wrap-harness + bracers*
+- **aqualish_2.jpg** — Aqualish — seen: arms dealer render — garb: long duster coat over vest — apparel idea: *Aqualish arms-dealer duster*
+- **ithorian_1.jpg** — Ithorian — seen: character render — garb: draped robes, wide collar — apparel idea: *Ithorian draped hierophant robe*
+- **ithorian_2.jpg** — Ithorian — seen: species render — garb: simple robe — apparel idea: *Ithorian plain robe variant*
+- **ithorian_3_momaw_nadon.jpg** — Ithorian (Momaw Nadon) — seen: A New Hope cantina, wide shot — garb: hooded robe — apparel idea: *Ithorian hooded cantina robe*
+- **bith_1.jpg** — Bith — seen: character render — garb: utility vest, high collar — apparel idea: *Bith utility vest + high collar*
+- **bith_2.jpg** — Bith — seen: art card — garb: tunic with piping — apparel idea: *Bith piped tunic*
+- **devaronian_1.jpg** — Devaronian — seen: bounty hunter render — garb: bandolier vest, leather straps — apparel idea: *Devaronian bandolier vest*
+- **devaronian_2.jpg** — Devaronian — seen: prisoner render — garb: prison jumpsuit — apparel idea: *Devaronian utility jumpsuit texture ref*
+- **snivvian_1.jpg** — Snivvian — seen: species render — garb: hooded wrap, layered scarves — apparel idea: *Snivvian hooded desert wrap*
+- **snivvian_2.jpg** — Snivvian — seen: Mandalorian-era bounty hunter render — garb: armored vest, goggles — apparel idea: *Snivvian bounty-hunter vest + goggles*
+- **weequay_1.jpg** — Weequay — seen: cantina bartender render — garb: apron over vest — apparel idea: *Weequay bartender apron+vest*
+- **weequay_2.jpg** — Weequay (Pagetti Rook) — seen: Return of the Jedi skiff guard render — garb: desert wrap, goggles, harness — apparel idea: *Weequay skiff-guard desert wrap + goggles*
+- **nikto_1.jpg** — Nikto (Kintan strider subspecies) — seen: speeder bikers render — garb: bandanas, goggles, leather jackets — apparel idea: *Nikto biker bandana+goggles+jacket*
+- **nikto_2.jpg** — Nikto — seen: Jabba's palace guard render — garb: hooded robe, harness — apparel idea: *Nikto palace-guard hooded robe*
+- **klatooinian_1.jpg** — Klatooinian — seen: cantina patron render — garb: simple tunic — apparel idea: *Klatooinian plain cantina tunic*
+- **klatooinian_2_barada.jpg** — Klatooinian (Barada) — seen: Jabba's palace henchman databank render — garb: leather vest, wrist guards — apparel idea: *Klatooinian henchman vest + wrist guards*
+- **gran_1.jpg** — Gran (Mawhonic) — seen: podracer pilot databank render — garb: racing harness, goggles — apparel idea: *Gran podracer harness + goggles*
+- **gran_2.jpg** — Gran — seen: senator card render — garb: formal robes — apparel idea: *Gran formal senate robe*
+- **kubaz_1.jpg** — Kubaz — seen: character render — garb: full-cover hooded robe, snout goggles — apparel idea: *Kubaz full-cover dust robe + snout goggles*
+- **kubaz_2.jpg** — Kubaz — seen: courier render — garb: hooded courier robe — apparel idea: *Kubaz courier robe variant*
+- **toydarian_1_watto.jpg** — Toydarian (Watto) — seen: promotional render — garb: vest, apron, harness straps — apparel idea: *Toydarian shopkeeper vest + apron*
+- **dug_1.jpg** — Dug — seen: full body render — garb: minimal wrap, harness straps — apparel idea: *Dug harness/strap rig (quadruped-friendly apparel)*
+- **dug_2.jpg** — Dug — seen: podracer modder render — garb: tool belt, goggles — apparel idea: *Dug modder tool-belt + goggles*
+- **abyssin_1.jpg** — Abyssin — seen: warrior render — garb: fur wrap, one-eyed helm — apparel idea: *Abyssin fur wrap + head wrap*
+- **abyssin_2.jpg** — Abyssin — seen: card render — garb: variant wrap — apparel idea: *Abyssin alt wrap texture*
+- **arcona_1.jpg** — Arcona — seen: smuggler render — garb: leather jacket — apparel idea: *Arcona smuggler jacket*
+- **arcona_2.jpg** — Arcona — seen: character render — garb: desert gear — apparel idea: *Arcona desert gear variant*
+- **ranat_1.jpg** — Ranat — seen: character render — garb: scavenger wraps, satchels — apparel idea: *Ranat scavenger wrap + satchel rig*
+- **chadrafan_1.jpg** — Chadra-Fan — seen: render — garb: jumpsuit, goggles — apparel idea: *Chadra-Fan jumpsuit + goggles*
+- **chadrafan_2.jpg** — Chadra-Fan — seen: scout render — garb: scout gear, hood — apparel idea: *Chadra-Fan hooded scout gear*
+- **talz_1.jpg** — Talz — seen: render — garb: fur, layered wrap — apparel idea: *Talz layered fur wrap*
+- **talz_2_muftak.jpg** — Talz (Muftak) — seen: Mos Eisley cantina, A New Hope — garb: poncho-like fur drape, harness — apparel idea: *Talz cantina poncho-drape*
+- **ugnaught_1_kuiil.jpg** — Ugnaught (Kuiil) — seen: The Mandalorian render — garb: hooded poncho, wrap — apparel idea: *Ugnaught hooded poncho*
+- **ugnaught_2.jpg** — Ugnaught — seen: Bespin workers, Empire Strikes Back — garb: work overalls, group — apparel idea: *Ugnaught worker overalls*
+- **gotal_1.jpg** — Gotal — seen: render — garb: robe, head-cone visible — apparel idea: *Gotal robe with head-cone silhouette*
+- **gotal_2.jpg** — Gotal — seen: gambler card render — garb: gambler jacket — apparel idea: *Gotal gambler jacket*
+- **garindan_1.jpg** — Kubaz (Garindan) — seen: A New Hope informant render — garb: full-cover hooded robe, snout goggles/mask — apparel idea: *Kubaz informant full-cover robe + snout mask*
+- **garindan_2.jpg** — Kubaz (Garindan) — seen: art render — garb: variant robe — apparel idea: *Kubaz informant robe variant*
+- **pondababa_1.jpg** — Aqualish (Ponda Baba) + human duo — seen: Mos Eisley cantina, A New Hope — garb: flight jacket, goggles — apparel idea: *Aqualish cantina flight jacket*
+- **pondababa_2.jpg** — Aqualish (Ponda Baba) — seen: card render — garb: jacket close-up — apparel idea: *Aqualish jacket detail*
+- **bibfortuna_1.jpg** — Twi'lek (Bib Fortuna) — seen: Jabba's palace render — garb: layered majordomo robes — apparel idea: *Twi'lek majordomo layered robe*
+- **bibfortuna_2.jpg** — Twi'lek (Bib Fortuna) — seen: card render — garb: robe variant — apparel idea: *Twi'lek robe variant*
+- **gamorrean_1.jpg** — Gamorrean — seen: palace guard render — garb: leather harness armor, axe rig — apparel idea: *Gamorrean leather harness armor*
+- **gamorrean_2.jpg** — Gamorrean — seen: render — garb: variant harness — apparel idea: *Gamorrean harness variant*
+- **klaatu_1.jpg** — unidentified species (Klaatu) — seen: Return of the Jedi skiff guard — garb: desert wrap, hood, bandolier — apparel idea: *skiff-guard desert wrap + hood + bandolier*
+- **klatooinian_3_barada_art.jpg** — Klatooinian — seen: bounty-hunter art card — garb: leather rig — apparel idea: *Klatooinian leather rig alt art*
+- **sysnootles_1.jpg** — Pa'lowick (Sy Snootles) — seen: Jabba's palace band render — garb: frilly jazz-singer garb, beaded straps — apparel idea: *Pa'lowick frilly beaded stage garb*
+- **wattambor_1.jpg** — Skakoan (Wat Tambor) — seen: Attack of the Clones render — garb: pressurized breather suit, mask — apparel idea: *Skakoan pressurized breather suit + mask*
+- **whiphid_1.jpg** — Whiphid — seen: render — garb: fur wrap, tusked helm-like head — apparel idea: *Whiphid fur wrap garb*
+- **yuzzum_1.jpg** — Yuzzum — seen: group render — garb: varied ragged wraps — apparel idea: *Yuzzum ragged wrap variety*
+- **kabe_1.jpg** — Chadra-Fan (Kabe) — seen: Mos Eisley cantina, A New Hope — garb: jacket over jumpsuit — apparel idea: *Chadra-Fan cantina jacket*
+- **feltiperntrevagg_1.jpg** — unidentified species (Feltipern Trevagg) — seen: Mos Eisley cantina, A New Hope — garb: vest, wrap collar — apparel idea: *cantina-patron vest + wrap collar*
+- **maxrebo_1.jpg** — Ortolan (Max Rebo) — seen: databank render — garb: bandleader vest — apparel idea: *Ortolan bandleader vest*
+- **yarna_1.jpg** — Askajian (Yarna d'al' Gargan) — seen: concept art, Return of the Jedi — garb: wrap dress, layered jewelry — apparel idea: *Askajian wrap-dress + layered jewelry*
