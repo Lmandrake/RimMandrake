@@ -41,6 +41,7 @@
     <Compile Include="IncidentWorker_Thanksgiving.cs" />
     <Compile Include="IncidentWorker_PodCrashTribal.cs" />
     <Compile Include="IncidentWorker_Insect.cs" />
+    <Compile Include="IncidentWorker_Stroke.cs" />
   </ItemGroup>
 
   <ItemGroup>

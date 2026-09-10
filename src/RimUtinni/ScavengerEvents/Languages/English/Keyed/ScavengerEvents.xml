@@ -14,4 +14,7 @@
 
   <RUT_Insects>Insect swarm</RUT_Insects>
   <RUT_InsectsDesc>A swarm of hungry insects has emerged nearby and is attacking.</RUT_InsectsDesc>
+
+  <RUT_Stroke>Stroke</RUT_Stroke>
+  <RUT_StrokeDesc>{PAWN_label} has suffered a stroke and collapsed.</RUT_StrokeDesc>
 </LanguageData>
