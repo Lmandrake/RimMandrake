@@ -1965,6 +1965,15 @@
 			<li>ThingDef/GR_Manalope</li>
 			<li>ThingDef/GR_ParagonBoomalope</li>
 			<li>ThingDef/GR_Squirralope</li>
+			<li>AbilityDef/VQEA_Levitation</li>
+			<li>GeneDef/VQEA_Levitation</li>
+			<li>AbilityDef/VQEA_Invisibility</li>
+			<li>GeneDef/VQEA_Invisibility</li>
+			<li>AbilityDef/VQEA_InfernoSpew</li>
+			<li>GeneDef/VQEA_InfernoSpew</li>
+			<li>AbilityDef/VQEA_HellsphereBlast</li>
+			<li>GeneDef/VQEA_HellsphereBlast</li>
+			<li>ThingDef/VQEA_Bullet_HellsphereCannonGun</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>
