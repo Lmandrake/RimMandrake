@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T05:12:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T05:13:57Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -656,15 +656,6 @@ target:   v1
 kind:     task
 summary:  (no items/ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1.md
-
-## SCORCHFRUIT_FULGURITE_DEF_VERIFY_1 Verify RSW_FE_Plant_ScorchFruit and RSW_FE_Fulgurite defs actually exist - a decayed claim rode the Pyrelands rebind note; fix or delete the reference
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/SCORCHFRUIT_FULGURITE_DEF_VERIFY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SCORCHFRUIT_FULGURITE_DEF_VERIFY_1.md
 
 ## DROID_SIBLING_RELATION_GEN_CRASH_1 Pawn generation NRE on some Droidworks droid kinds: PawnRelationWorker_Sibling.CreateRelation throws (found live-testing DROIDWORKS_PERSONALITY_VERIFY_1)
 state:    doing
