@@ -283,7 +283,7 @@
     <!-- </researchPrerequisites> -->
   </ModularWeapons2.ModularPartsDef>
 
-  <ModularWeapons2.ModularPartsDef Name="guy762_KotORpartArmorTech_kneerocket" ParentName="guy762_KotORModularPartBase">
+  <ModularWeapons2.ModularPartsDef Name="guy762_KotORpartArmorTech_kneerocket" ParentName="guy762_KotORModularPartBase" MayRequire="guy762.KotORDroids">
     <defName>guy762_KotORpartArmorTech_kneerocket</defName>
     <label>knee-mounted micro-rocket launcher</label>
     <labelShort>knee-mounted micro-rocket launcher</labelShort>
@@ -314,7 +314,7 @@
     </researchPrerequisites>
   </ModularWeapons2.ModularPartsDef>
 
-  <AbilityDef>
+  <AbilityDef MayRequire="guy762.KotORDroids">
     <defName>guy762_MW2WeaponVerbAbility_kneerocket</defName>
     <label>knee-mounted micro-rocket launcher</label>
     <description>Adds an additional attack verb which fires a pair of micro-rockets.</description>
