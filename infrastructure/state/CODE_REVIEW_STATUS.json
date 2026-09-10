@@ -7432,10 +7432,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Patch_ShouldHaveNeed_Power.cs": {
-    "cleanCount": 3,
+    "cleanCount": 4,
     "date": "2026-09-09",
-    "hash": "1c0387e1e935a5d71110969d6c4b3654d9549e6f3817756d774efbf36d36815f",
-    "sha": "3ea1ca20"
+    "hash": "114bbcbeec90c4cb066c2ad5c1a9f6f7dd598568977c2aa088fa62049e791034",
+    "sha": "492520c2"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_AssembleDroid.cs": {
     "cleanCount": 1,
