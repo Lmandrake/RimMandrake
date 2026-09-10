@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T15:40:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T16:22:53Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -420,3 +420,13 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ECONOMY_TRADE_SWEEP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ECONOMY_TRADE_SWEEP_1.md
+
+## RUST_CATHEDRAL_SCALD_HISTORY_1 Author the retired-coolant-leak replacement canon: the Scald formed and was built into the Rust Cathedral as post-collapse coolant access (self-repair adaptation); R03 is a river; amend the frozen the_scald.md + the_rust_cathedral.md under the freeze rule (adds history, changes no ruling)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RUST_CATHEDRAL_SCALD_HISTORY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RUST_CATHEDRAL_SCALD_HISTORY_1.md
