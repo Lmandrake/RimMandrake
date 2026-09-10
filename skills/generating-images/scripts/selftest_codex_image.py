@@ -440,6 +440,99 @@ def test_sandbox_seed_template() -> None:
             os.environ.pop("CODEX_SANDBOX_SEED", None)
 
 
+# --------------------------------------------------------------------------
+# 4. orphaned windows-sandbox helper cleanup (CODEX_EDIT_TIMEOUT_1)
+# --------------------------------------------------------------------------
+
+def test_kill_orphaned_sandbox_helpers_parses_pids() -> None:
+    """The powershell call's stdout (one PID per line) is counted correctly."""
+    real_run = subprocess.run
+
+    def fake_run(cmd, **kwargs):
+        if cmd[0] != "powershell.exe":
+            return real_run(cmd, **kwargs)  # e.g. wsl_to_win's own `wslpath`
+        check("targets codex.exe by name", "codex.exe" in cmd[-1])
+        check("filters on --run-as-windows-sandbox",
+              "--run-as-windows-sandbox" in cmd[-1])
+        return types.SimpleNamespace(stdout="1234\n5678\n", stderr="", returncode=0)
+
+    subprocess.run = fake_run
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            n = ci.kill_orphaned_sandbox_helpers(Path(td))
+            check("counts one PID per stdout line", n == 2, f"n={n}")
+    finally:
+        subprocess.run = real_run
+
+
+def test_kill_orphaned_sandbox_helpers_survives_powershell_failure() -> None:
+    """A powershell/OS failure is swallowed - this is best-effort cleanup,
+    never something that should turn a successful harvest into a crash."""
+    real_run = subprocess.run
+    subprocess.run = lambda *a, **k: (_ for _ in ()).throw(OSError("no powershell.exe"))
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            n = ci.kill_orphaned_sandbox_helpers(Path(td))
+            check("OSError from the subprocess call is swallowed, not raised",
+                  n == 0, f"n={n}")
+    finally:
+        subprocess.run = real_run
+
+
+def test_orphan_cleanup_only_fires_on_timeout_with_home_override() -> None:
+    """Cleanup must never run for the shared default home (--codex-home
+    unset) - a concurrent unrelated call could legitimately have its own
+    helper there - and must never run on a clean (non-timeout) exit."""
+    real_run_codex, real_base, real_kill, real_codex_home = (
+        ci.run_codex, ci.base_codex_home, ci.kill_orphaned_sandbox_helpers,
+        ci.codex_home)
+    real_grace = ci.HARVEST_GRACE_S
+    calls: list[Path] = []
+    ci.kill_orphaned_sandbox_helpers = lambda home: (calls.append(home) or 0)
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            home = Path(td) / "codexhome"
+            (home / ci.GENERATED_SUBDIR).mkdir(parents=True)
+            worker_home = Path(td) / "worker0"
+            (worker_home / ci.GENERATED_SUBDIR).mkdir(parents=True)
+            ci.base_codex_home = lambda: home
+            # Real codex_home() refuses a /tmp path as not Windows-visible -
+            # correct behaviour, but out of scope here: this test is only
+            # about do_image's OWN decision of when to call cleanup.
+            ci.codex_home = lambda override=None: (
+                worker_home if override else home)
+            ci.HARVEST_GRACE_S = 0.0
+
+            def timed_out_no_image(prompt, images, workdir, timeout, verbose,
+                                    model=None, hm=None, reasoning_effort=None, **_kw):
+                return 124, "", True
+            ci.run_codex = timed_out_no_image
+
+            # shared home (no --codex-home override): must NOT clean up.
+            ci.do_image(args_for(Path(td) / "a.png"))
+            check("no cleanup against the shared default home", calls == [])
+
+            # isolated home override + timeout: MUST clean up.
+            ci.do_image(args_for(Path(td) / "b.png", home=worker_home))
+            check("cleanup runs for a timed-out isolated-home call",
+                  calls == [worker_home], str(calls))
+
+            # isolated home, but a clean (non-timeout) run: must NOT clean up.
+            calls.clear()
+
+            def clean_no_image(prompt, images, workdir, timeout, verbose,
+                                model=None, hm=None, reasoning_effort=None, **_kw):
+                return 1, "codex: some other failure", False
+            ci.run_codex = clean_no_image
+            ci.do_image(args_for(Path(td) / "c.png", home=worker_home))
+            check("no cleanup for a non-timeout failure", calls == [])
+    finally:
+        ci.run_codex, ci.base_codex_home = real_run_codex, real_base
+        ci.kill_orphaned_sandbox_helpers = real_kill
+        ci.codex_home = real_codex_home
+        ci.HARVEST_GRACE_S = real_grace
+
+
 def test_home_must_be_windows_visible() -> None:
     if not ci.in_wsl():
         print("  skip /mnt guard (not running under WSL)")
@@ -458,6 +551,9 @@ def main() -> int:
                test_output_schema_passthrough,
                test_harvest_grace,
                test_child_env_wslenv, test_seed_home, test_sandbox_seed_template,
+               test_kill_orphaned_sandbox_helpers_parses_pids,
+               test_kill_orphaned_sandbox_helpers_survives_powershell_failure,
+               test_orphan_cleanup_only_fires_on_timeout_with_home_override,
                test_home_must_be_windows_visible):
         print(fn.__name__)
         fn()

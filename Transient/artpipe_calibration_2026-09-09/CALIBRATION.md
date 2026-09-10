@@ -112,11 +112,21 @@ must watch.
 
 ## 6. What blocked / what to fix before the daemon is built
 
-1. **`edit` with an alpha-carrying reference PNG is currently broken or very
-   slow on this install** — 3/3 hangs, no image, up to 480s each. Needs
-   isolated diagnosis (try a flat-background reference, try a smaller
-   reference, try higher timeout) before the daemon can do real reskins of
-   existing art; `generate`-only cannot hit the geometric validator.
+1. **RESOLVED — `CODEX_EDIT_TIMEOUT_1`, 2026-09-09**
+   (`infrastructure/state/items/CODEX_EDIT_TIMEOUT_1.md`). Root cause: an
+   isolated per-worker `--codex-home` makes `codex exec` spawn a separate
+   elevated `--run-as-windows-sandbox` helper process, and a timed-out
+   call's own kill never reached it — it leaked as a permanent orphan (4
+   found still alive 3+ hours later). The 3 documented failures were 3
+   sequential attempts against the SAME already-fouled `w0` worker home,
+   not `edit` mode being broken: a fresh, uncontended isolated-home `edit`
+   call completed and landed its image (~200s). Fixed in `codex_image.py`
+   (`kill_orphaned_sandbox_helpers`, runs on every isolated-home timeout) so
+   a worker's home can no longer be handed to its own next job already
+   fouled. Residual: the elevated-sandbox path is measurably slower than
+   the shared home (~150-250s vs ~71s for an identical job) for BOTH `edit`
+   and `generate` — budget isolated-worker timeouts at ≥250-300s, not this
+   sweep's 240s floor.
 2. Grumpiness detector's `GRUMPY_SECONDARY_PCT=70` / hard-stop-at-90/97 in
    `codex_grumpiness.py` were never exercised (we stayed at 20%) — still
    UNVERIFIED under real load.
