@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T04:47:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T04:49:42Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -675,6 +675,15 @@ kind:     task
 summary:  (no items/HUMAN_QUEUE_NEEDS_OWNER_RENDER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/HUMAN_QUEUE_NEEDS_OWNER_RENDER_1.md
 
+## DROID_SIBLING_RELATION_GEN_CRASH_1 Pawn generation NRE on some Droidworks droid kinds: PawnRelationWorker_Sibling.CreateRelation throws (found live-testing DROIDWORKS_PERSONALITY_VERIFY_1)
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  1. Reproduce on a clean quicktest: spawn ~10 of RSWDWOuterRimProtocolDroid
+prose:    infrastructure/state/items/DROID_SIBLING_RELATION_GEN_CRASH_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -990,13 +999,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
-
-## DROID_SIBLING_RELATION_GEN_CRASH_1 Pawn generation NRE on some Droidworks droid kinds: PawnRelationWorker_Sibling.CreateRelation throws (found live-testing DROIDWORKS_PERSONALITY_VERIFY_1)
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  1. Reproduce on a clean quicktest: spawn ~10 of RSWDWOuterRimProtocolDroid
-prose:    infrastructure/state/items/DROID_SIBLING_RELATION_GEN_CRASH_1.md
