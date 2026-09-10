@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T07:00:24Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-10T07:11:08Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -40,6 +40,15 @@ target:   v1
 kind:     task
 summary:  STAGEDLOREDESCRIPTIONS1 — descriptions that change as the story is learned
 prose:    infrastructure/state/items/STAGED_LORE_DESCRIPTIONS_1.md
+
+## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  WORLDMAPFINALREVIEW1 — the studio review: is this THE map?
+prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
 
 ## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
 state:    ready
@@ -108,6 +117,15 @@ kind:     task
 summary:  - Odyssey's fishing is live in the stack (donor biome defs carry fishTypes blocks —
 prose:    infrastructure/state/items/FISH_BY_BIOME_1.md
 
+## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  VAPOREMITTERPLACEMENT1 — worldmap review of every vapor/smoke/gas emitter
+prose:    infrastructure/state/items/VAPOR_EMITTER_PLACEMENT_1.md
+
 ## EXPLOSIVE_PLANT_GROWTH_1 World mechanic: water-soaked plants grow VISIBLY on screen; design the terminal moment (what happens at the top), then custom mod actions so players experience and replay it — jungles visibly grow
 state:    doing
 row:      unassigned
@@ -152,16 +170,6 @@ kind:     bug
 waiting:  needs `deploy`, game is UP
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
-
-## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-waiting:  needs `bridge`, game is UP
-summary:  WORLDMAPFINALREVIEW1 — the studio review: is this THE map?
-prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
 
 # NOT THIS TARGET
 
@@ -220,16 +228,6 @@ kind:     task
 thin:     no ## criteria
 summary:  - Reconcile with existing canon: the Rust Cathedral (ABMechanoidIntrusion, the
 prose:    infrastructure/state/items/MECHANOID_ORIGIN_CANON_1.md
-
-## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  VAPOREMITTERPLACEMENT1 — worldmap review of every vapor/smoke/gas emitter
-prose:    infrastructure/state/items/VAPOR_EMITTER_PLACEMENT_1.md
 
 ## CANON_LORE_PROPAGATION_1 Wednesday 2026-09-09 after 4pm (token reset): full propagation of canon back into the lore docs, AND re-think the three-layers-of-canon design with the owner — either fix the standing contradictions or explain why they are tolerated
 state:    proposed

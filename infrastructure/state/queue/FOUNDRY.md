@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T07:00:24Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-10T07:11:08Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -450,15 +450,6 @@ kind:     task
 summary:  DROIDRETIREKOTORDROIDS1
 prose:    infrastructure/state/items/DROID_RETIRE_KOTORDROIDS_1.md
 
-## DROID_RETIRE_DEPOT_ASIMOV_1 Retire Droid Depot + Asimov + MSEDroidFix (wave R3); repoint the Empire KX kind; retire NoDroidManufacture; cold load
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  DROIDRETIREDEPOTASIMOV1 — wave R3 (DROIDUNIFIEDFRAMEWORKDESIGN.md §2 row D4)
-prose:    infrastructure/state/items/DROID_RETIRE_DEPOT_ASIMOV_1.md
-
 ## FUNGALFOREST_RAID_MERGE_1 Dissolve BMT_FungalForest (an underground def on 425 surface tiles) into its neighbors per the measured cluster table (the Rot; Wasteland at South Crags sector 9), and ingest its spore kit, materials, flora into the Rot as our own defs
 state:    doing
 row:      unassigned
@@ -848,16 +839,6 @@ kind:     task
 blocked:  cold load found 4 NEW cross-reference errors (guy762_DroidWeapon_microrocket/railgun/seekerrocket/trishot) via kotorcore's _DroidsBase folder (IfModActive=guy762.KotORDroids) feeding Armoury's ungated Absorbed_KotorWeapons ammoDef consumers; reverted ModsConfig.xml+About.xml, see item file for the fix needed
 summary:  DROIDRETIREKOTORDROIDS1
 prose:    infrastructure/state/items/DROID_RETIRE_KOTORDROIDS_1.md
-
-## DROID_RETIRE_DEPOT_ASIMOV_1 Retire Droid Depot + Asimov + MSEDroidFix (wave R3); repoint the Empire KX kind; retire NoDroidManufacture; cold load
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-blocked:  retirement executed then fully reverted (commit 7982a712) due to a save-compat regression; blocked pending DROID_DONOR_SAVE_COMPAT_REGRESSION_1's real fix before re-attempting
-summary:  DROIDRETIREDEPOTASIMOV1 — wave R3 (DROIDUNIFIEDFRAMEWORKDESIGN.md §2 row D4)
-prose:    infrastructure/state/items/DROID_RETIRE_DEPOT_ASIMOV_1.md
 
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    ready  (BLOCKED)
