@@ -6749,3 +6749,5 @@
 {"seat":"BENCH","event":"note","id":"SW_BACKGROUND_GARB_HARVEST_1","text":"harvest landed: 59 images, 9.1MB, contact sheet + index committed 0c6391ee; owner review next","ts":"2026-09-10T06:06:36Z"}
 {"seat":"BENCH","event":"close","id":"SW_BACKGROUND_GARB_HARVEST_1","sha":"0c6391ee","ts":"2026-09-10T06:07:32Z"}
 {"seat":"BENCH","event":"note","id":"MORNING_RULING_BATCH_1","text":"(6) added overnight: browse the SW background-garb harvest - 59 refs, one glance at D:\\Luke\\dev\\Rimworld\\Transient\\sw_background_garb\\CONTACT_SHEET.png (INDEX.md beside it) - then say which garbs become the apparel wave","ts":"2026-09-10T06:07:33Z"}
+{"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-09-10T06:09:04Z"}
+{"seat":"BENCH","event":"note","id":"CODEX_UAC_STORM_1","text":"version-aware seeding + daemon preflight landed (commit 31a92df6), selftests green; seed template already recaptured to 0.153.4; LIVE zero-UAC confirmation deferred to first attended run","ts":"2026-09-10T06:13:44Z"}
