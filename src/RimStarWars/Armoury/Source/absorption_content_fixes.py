@@ -134,6 +134,18 @@ MAYREQUIRE_FIXES = {
     "guy762_MW2WeaponVerbAbility_wristgun_flamethrower": "guy762.KotORDroids",
 }
 
+# A THIRD-generation consumer of the same gated parts: guy762_armband_wristgun
+# (Absorbed_KotorWeapons_GadgetApparel_KotORModularWristLauncher.xml) lists
+# guy762_KotORpartWristgun_microrocket as a CompProperties_ModularWeapon
+# <defaultParts><li> -- a nested reference the whole-def MAYREQUIRE_FIXES
+# above cannot reach, since guy762_armband_wristgun is not itself gated (it
+# has other, ungated parts too). Found live 2026-09-10 when this exact gap
+# produced the cross-reference error MAYREQUIRE_FIXES was built to prevent,
+# one hop further down. Keyed by (owning ThingDef defName, partsDef value).
+DEFAULT_PARTS_MAYREQUIRE_FIXES = {
+    ("guy762_armband_wristgun", "guy762_KotORpartWristgun_microrocket"): "guy762.KotORDroids",
+}
+
 
 def apply_content_fixes(el, note=print):
     """Mutate `el` (a top-level def Element already parsed from donor
@@ -153,6 +165,22 @@ def apply_content_fixes(el, note=print):
             note("MAYREQUIRE FIX SKIPPED (already has different MayRequire=%r): %s" % (cur, dn))
         # else: already correctly gated (e.g. a future regen re-reading this
         # generator's own prior output) -- no-op.
+
+    if dn:
+        for li in el.iter("li"):
+            pd_el = li.find("partsDef")
+            if pd_el is None or not pd_el.text:
+                continue
+            key = (dn, pd_el.text.strip())
+            if key not in DEFAULT_PARTS_MAYREQUIRE_FIXES:
+                continue
+            want = DEFAULT_PARTS_MAYREQUIRE_FIXES[key]
+            cur = li.get("MayRequire")
+            if cur is None:
+                li.set("MayRequire", want)
+                note("DEFAULT_PARTS MAYREQUIRE FIX APPLIED: %s <defaultParts> %s -> MayRequire=%r" % (dn, key[1], want))
+            elif cur != want:
+                note("DEFAULT_PARTS MAYREQUIRE FIX SKIPPED (already has different MayRequire=%r): %s / %s" % (cur, dn, key[1]))
 
     if not dn or dn not in FIXES:
         return

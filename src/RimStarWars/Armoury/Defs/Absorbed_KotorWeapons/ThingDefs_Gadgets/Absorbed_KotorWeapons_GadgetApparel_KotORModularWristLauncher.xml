@@ -90,7 +90,7 @@
           </li>
         </partsMounts>
         <defaultParts>
-          <li>
+          <li MayRequire="guy762.KotORDroids">
             <partsDef>guy762_KotORpartWristgun_microrocket</partsDef>
             <attachMountDef>guy762_KotORMount_wristgun</attachMountDef>
           </li>
