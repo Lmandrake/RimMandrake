@@ -6981,3 +6981,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"CRYPTOFORGE_HARVEST_RETIRE_1","ts":"2026-09-10T22:19:01Z"}
 {"seat":"FOUNDRY","event":"start","id":"CRYPTOFORGE_HARVEST_RETIRE_1","ts":"2026-09-10T22:19:02Z"}
 {"seat":"FOUNDRY","event":"block","id":"CRYPTOFORGE_HARVEST_RETIRE_1","reason":"steps 2-3 of 5 done (harvest reference copied, both FindMod patches deleted, 0 validate_patch errors). Steps 1 (18-22 owned-art props), 4 (ModsConfig removal + cold load + resave) and 5 (owner fauna-sheet coordination) are separate passes - see item","ts":"2026-09-10T22:19:02Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"VQE_ANCIENTS_CURATION_1: read-only check of current game day / AncientLabComplex quest fire state","ts":"2026-09-10T22:24:19Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-10T22:24:39Z"}
+{"seat":"FOUNDRY","event":"claim","id":"VQE_ANCIENTS_CURATION_1","ts":"2026-09-10T22:25:43Z"}
+{"seat":"FOUNDRY","event":"start","id":"VQE_ANCIENTS_CURATION_1","ts":"2026-09-10T22:25:43Z"}
+{"seat":"FOUNDRY","event":"block","id":"VQE_ANCIENTS_CURATION_1","reason":"steps 1/3/6 of 6 done and verified. Step 2 needs no action (never touched). Step 4 (string relabel) needs a dedicated pass - the owner's phrase is a paraphrase, not a quotable donor string, and the Forsaken/Assailant register needs care across 6 quest chains. Step 5 confirmed not-yet-fireable (ticksGame 109173, ~day 1.8, nowhere near day 30/118)","ts":"2026-09-10T22:25:44Z"}
