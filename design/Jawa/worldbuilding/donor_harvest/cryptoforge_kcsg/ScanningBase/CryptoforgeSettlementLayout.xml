@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <KCSG.SettlementLayoutDef>
+        <defName>VQE_Cryptoforge_ScanningLocation</defName>
+        <settlementSize>100,100</settlementSize>
+        <avoidBridgeable>true</avoidBridgeable>
+        <avoidMountains>true</avoidMountains>
+        <centerBuildings>
+            <centerSize>15,15</centerSize>
+            <spaceAround>0</spaceAround>
+            <forceClean>true</forceClean>
+            <allowedStructures>
+                <li>
+                    <count>1~1</count>
+                    <tag>VQE_ScanningBase</tag>
+                </li>
+            </allowedStructures>
+            <centralBuildingTags>
+                <li>VQE_ScanningBase</li>
+            </centralBuildingTags>
+        </centerBuildings>
+        <peripheralBuildings>
+            <allowedStructures>
+                <li>
+                    <count>8~8</count>
+                    <tag>VQE_Minefield</tag>
+                </li>
+            </allowedStructures>
+        </peripheralBuildings>
+    </KCSG.SettlementLayoutDef>
+</Defs>
