@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FISH_TYPES_PATCH_BUILD_1 (2026-09-10) — the strip-sweep the spec doc's §4
+  flagged as "starting with a measure, not a grep": which of the planet's
+  RULED no-fish biomes (_fish_assignment_proposal.md §3, every entry FINAL,
+  nothing reopened here) still carry a donor mod's own live `fishTypes` today.
+
+  MEASURED (live XML read directly off disk, not the offline dump — every def
+  below is third-party or vanilla-core content the dump does not index, same
+  as the sibling ZBiome_Badlands/ZBiome_DesertOasis patches): of the 24
+  §3-listed no-fish waters/dry biomes, **16 painted defs carry a live,
+  non-empty `fishTypes` today** (donor default, never touched by this repo):
+
+    Alpha Biomes (workshop 1841354677, packageId sarg.alphabiomes):
+      AB_FeraliskInfestedJungle (the_webwork), AB_GelatinousSuperorganism
+      (the_slime), AB_MycoticJungle (the_rot), AB_OcularForest
+      (the_contagion), AB_PropaneLakes (the_propane_lakes), AB_TarPits
+      (the_sump), AB_RockyCrags (forsaken_crags, file Biomes_ForsakenCrags.xml)
+    GRiNDTerra Biomes (workshop 3537211820, packageId GRimTerra.Biomesmod):
+      BiomeGRimond (the_blue_desert)
+    More Vanilla Biomes (workshop 1931453053, packageId zylle.MoreVanillaBiomes):
+      ZBiome_Grasslands (the_pyrelands)
+    Vanilla/Odyssey core (no donor mod, MayRequire Odyssey only):
+      Desert, ExtremeDesert (dune_sea + deep_desert), AridShrubland, LavaField
+      (the_forge)
+    Advanced Biomes (Continued) (workshop 3541022508, packageId
+    Mlie.AdvancedBiomes): PoisonForest (poison_forest), Volcano (the_forge)
+    Comigo's Greater Swamps (Continued) (workshop 3620545124, packageId
+    zal.comigogreaterswamps): COMIGO_GreaterSwamp_Tropical (the_fever_wood) —
+    INHERITED, not own: its `fishTypes` lives on the ABSTRACT PARENT
+    `COMIGO_GreaterSwamp`, which is why this patch targets the parent, not the
+    child — a raw-XML xpath patch runs BEFORE XmlInheritance.Resolve(), so a
+    xpath aimed at the child's own node would silently hit zero matches (a
+    documented validate_patch.py trap, CLAUDE.md's own warning). The parent's
+    only other children, COMIGO_GreaterSwamp_Temperate/_Cold, are not painted
+    anywhere on this frozen world (design/Jawa/worldbuilding/biomes/
+    _def_bindings_2026-09-09.md's full painted-def table has no entry for
+    either), so stripping the parent is safe — nothing else on this world
+    inherits from it. validate_patch.py WARNs that this xpath hits 2 nodes in
+    one mod folder (the mod ships a second, structurally-identical
+    LoadFolders-gated copy under Compat/WMBP/ for World Map Beautification
+    Project compatibility, loaded instead of the base copy when that mod is
+    active) — both copies carry the same fishTypes block, so stripping both
+    is correct, not the "meant one, add a positional predicate" case the
+    warning is written for.
+
+  NOT touched here, and why: `AB_MechanoidIntrusion` (the_rust_cathedral) and
+  `Wasteland`/`Scarlands` (already `maxFishPopulation 0`, no `fishTypes` tag —
+  already the no-fish state this patch is establishing everywhere else); the
+  5 `RUT_`-tier own-authored defs (RUT_TheScald/RUT_TwilightSea/RUT_GreySea/
+  RUT_PropaneLake/RUT_NightsideIce) already ship `fishTypes` empty,
+  documented, at authoring time; `RUT_BlueDesert`/`BiomeCypreJungle`'s
+  `RUT_Greentide` sibling defs are not this world's live paint (see
+  BiomeFishTypes_Greentide.xml's own note) so nothing to strip there beyond
+  what that file already does; `fall_line`/`the_lantern_deeps`/`wreck_fields`
+  bind to no painted def at all (§3's own text). `AB_MiasmicMangrove`
+  (the_miasma) is explicitly OUT of this sweep — its own ruling (§1 row 4) is
+  "fauna channel, not fishTypes", a different category from §3's FINAL
+  no-fish list, and reconciling it is a separate call this item does not make.
+
+  Convention: `PatchOperationConditional` + `PatchOperationRemove` on
+  `fishTypes` (killing the bucket data entirely, not just emptying it — there
+  is no recognizability fix to apply on a biome that should never fish) plus
+  a `PatchOperationReplace` zeroing `maxFishPopulation`, matching the
+  no-fish state already shipped on this world's `Wasteland`/`Scarlands`/
+  `AB_MechanoidIntrusion`. Every block is Conditional-gated on the target
+  xpath so a donor's shape change fails safe (0 hits) instead of silently
+  matching nothing elsewhere; confirmed applied via validate_patch.py's live
+  xpath hit counts, not assumed from 0-errors alone.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alpha Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+
+        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/fishTypes</xpath>
+          <match Class="PatchOperationSequence">
+            <success>Always</success>
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/fishTypes</xpath>
+              </li>
+              <li Class="PatchOperationReplace">
+                <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/maxFishPopulation</xpath>
+                <value><maxFishPopulation>0</maxFishPopulation></value>
+              </li>
+            </operations>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/fishTypes</xpath>
+          <match Class="PatchOperationSequence">
+            <success>Always</success>
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/fishTypes</xpath>
+              </li>
+              <li Class="PatchOperationReplace">
+                <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/maxFishPopulation</xpath>
+                <value><maxFishPopulation>0</maxFishPopulation></value>
+              </li>
+            </operations>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/fishTypes</xpath>
+          <match Class="PatchOperationSequence">
+            <success>Always</success>
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/fishTypes</xpath>
+              </li>
+              <li Class="PatchOperationReplace">
+                <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/maxFishPopulation</xpath>
+                <value><maxFishPopulation>0</maxFishPopulation></value>
+              </li>
+            </operations>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/fishTypes</xpath>
+          <match Class="PatchOperationSequence">
+            <success>Always</success>
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/fishTypes</xpath>
+              </li>
+              <li Class="PatchOperationReplace">
+                <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/maxFishPopulation</xpath>
+                <value><maxFishPopulation>0</maxFishPopulation></value>
+              </li>
+            </operations>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/fishTypes</xpath>
+          <match Class="PatchOperationSequence">
+            <success>Always</success>
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/fishTypes</xpath>
+              </li>
+              <li Class="PatchOperationReplace">
+                <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/maxFishPopulation</xpath>
+                <value><maxFishPopulation>0</maxFishPopulation></value>
+              </li>
+            </operations>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/fishTypes</xpath>
+          <match Class="PatchOperationSequence">
+            <success>Always</success>
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/fishTypes</xpath>
+              </li>
+              <li Class="PatchOperationReplace">
+                <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/maxFishPopulation</xpath>
+                <value><maxFishPopulation>0</maxFishPopulation></value>
+              </li>
+            </operations>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/fishTypes</xpath>
+          <match Class="PatchOperationSequence">
+            <success>Always</success>
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/fishTypes</xpath>
+              </li>
+              <li Class="PatchOperationReplace">
+                <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/maxFishPopulation</xpath>
+                <value><maxFishPopulation>0</maxFishPopulation></value>
+              </li>
+            </operations>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>GRiNDTerra Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+
+        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/fishTypes</xpath>
+          <match Class="PatchOperationSequence">
+            <success>Always</success>
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/fishTypes</xpath>
+              </li>
+              <li Class="PatchOperationReplace">
+                <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/maxFishPopulation</xpath>
+                <value><maxFishPopulation>0</maxFishPopulation></value>
+              </li>
+            </operations>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>More Vanilla Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+
+        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/fishTypes</xpath>
+          <match Class="PatchOperationSequence">
+            <success>Always</success>
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/fishTypes</xpath>
+              </li>
+              <li Class="PatchOperationReplace">
+                <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/maxFishPopulation</xpath>
+                <value><maxFishPopulation>0</maxFishPopulation></value>
+              </li>
+            </operations>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Advanced Biomes (Continued)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+
+        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="PoisonForest"]/fishTypes</xpath>
+          <match Class="PatchOperationSequence">
+            <success>Always</success>
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>/Defs/BiomeDef[defName="PoisonForest"]/fishTypes</xpath>
+              </li>
+              <li Class="PatchOperationReplace">
+                <xpath>/Defs/BiomeDef[defName="PoisonForest"]/maxFishPopulation</xpath>
+                <value><maxFishPopulation>0</maxFishPopulation></value>
+              </li>
+            </operations>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="Volcano"]/fishTypes</xpath>
+          <match Class="PatchOperationSequence">
+            <success>Always</success>
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>/Defs/BiomeDef[defName="Volcano"]/fishTypes</xpath>
+              </li>
+              <li Class="PatchOperationReplace">
+                <xpath>/Defs/BiomeDef[defName="Volcano"]/maxFishPopulation</xpath>
+                <value><maxFishPopulation>0</maxFishPopulation></value>
+              </li>
+            </operations>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Comigo's Greater Swamps (Continued)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+
+        <!-- Targets the ABSTRACT PARENT COMIGO_GreaterSwamp, not the painted
+             child COMIGO_GreaterSwamp_Tropical — see file header. -->
+        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp"]/fishTypes</xpath>
+          <match Class="PatchOperationSequence">
+            <success>Always</success>
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp"]/fishTypes</xpath>
+              </li>
+            </operations>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- Vanilla/Odyssey core — no donor mod to gate on, only the DLC field itself. -->
+
+  <Operation Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+    <xpath>/Defs/BiomeDef[defName="Desert"]/fishTypes</xpath>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/BiomeDef[defName="Desert"]/fishTypes</xpath>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/BiomeDef[defName="Desert"]/maxFishPopulation</xpath>
+          <value><maxFishPopulation>0</maxFishPopulation></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/fishTypes</xpath>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/fishTypes</xpath>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/maxFishPopulation</xpath>
+          <value><maxFishPopulation>0</maxFishPopulation></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/fishTypes</xpath>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/BiomeDef[defName="AridShrubland"]/fishTypes</xpath>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/BiomeDef[defName="AridShrubland"]/maxFishPopulation</xpath>
+          <value><maxFishPopulation>0</maxFishPopulation></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+    <xpath>/Defs/BiomeDef[defName="LavaField"]/fishTypes</xpath>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/BiomeDef[defName="LavaField"]/fishTypes</xpath>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/BiomeDef[defName="LavaField"]/maxFishPopulation</xpath>
+          <value><maxFishPopulation>0</maxFishPopulation></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
