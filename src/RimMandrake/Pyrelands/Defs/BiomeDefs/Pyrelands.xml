@@ -254,9 +254,7 @@
     </wildPlants>
 
     <!--
-      Core-only roster, plains register, modest density. Boomalope and
-      boomrat are weighted up rather than down: a biome whose whole loop is
-      ignition should have something on it that explodes.
+      Core-only roster, plains register, modest density.
     -->
     <wildAnimals>
       <Hare>1.2</Hare>
@@ -266,8 +264,6 @@
       <Emu>0.5</Emu>
       <Dromedary>0.4</Dromedary>
       <Muffalo>0.35</Muffalo>
-      <Boomalope>0.6</Boomalope>
-      <Boomrat>0.6</Boomrat>
       <Iguana>0.4</Iguana>
       <Elephant>0.25</Elephant>
       <Rhinoceros>0.2</Rhinoceros>

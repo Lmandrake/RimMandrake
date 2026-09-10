@@ -7372,47 +7372,6 @@
       </value>
     </nomatch>
   </Operation>
-
-  <!-- bearalope (GR_Bearalope) - 1721 tiles, home demands -49.3 … 43.5 °C  -30..40 -> -50.3..44.5 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="GR_Bearalope"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Bearalope"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Bearalope"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-50.3</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Bearalope"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-50.3</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Bearalope"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Bearalope"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>44.5</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Bearalope"]/statBases</xpath>
-            <value><ComfyTemperatureMax>44.5</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="GR_Bearalope"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-50.3</ComfyTemperatureMin>
-          <ComfyTemperatureMax>44.5</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-  </Operation>
-
   <!-- bearcat (GR_Bearcat) - 1721 tiles, home demands -49.3 … 43.5 °C  -25..40 -> -50.3..44.5 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="GR_Bearcat"]/statBases</xpath>
@@ -7772,47 +7731,6 @@
       </value>
     </nomatch>
   </Operation>
-
-  <!-- boomabear (GR_Boomabear) - 4648 tiles, home demands -18.2 … 59.3 °C  -35..40 -> -35..60.3 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="GR_Boomabear"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomabear"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomabear"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-35</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomabear"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-35</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomabear"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomabear"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>60.3</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomabear"]/statBases</xpath>
-            <value><ComfyTemperatureMax>60.3</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="GR_Boomabear"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-35</ComfyTemperatureMin>
-          <ComfyTemperatureMax>60.3</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-  </Operation>
-
   <!-- boomachicken (GR_Boomachicken) - 4648 tiles, home demands -18.2 … 59.3 °C  -5..40 -> -19.2..60.3 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="GR_Boomachicken"]/statBases</xpath>
@@ -7852,47 +7770,6 @@
       </value>
     </nomatch>
   </Operation>
-
-  <!-- boomalisk (GR_Boomalisk) - 3 tiles, home demands 7.7 … 37.9 °C  10..40 -> 6.7..40 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="GR_Boomalisk"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomalisk"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomalisk"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>6.7</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomalisk"]/statBases</xpath>
-            <value><ComfyTemperatureMin>6.7</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomalisk"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomalisk"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>40</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomalisk"]/statBases</xpath>
-            <value><ComfyTemperatureMax>40</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="GR_Boomalisk"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>6.7</ComfyTemperatureMin>
-          <ComfyTemperatureMax>40</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-  </Operation>
-
   <!-- booman (GR_Booman) - 709 tiles, home demands -20.4 … 71.8 °C  -8..40 -> -21.4..72.8 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="GR_Booman"]/statBases</xpath>
@@ -7932,127 +7809,6 @@
       </value>
     </nomatch>
   </Operation>
-
-  <!-- boombeetle (GR_Boombeetle) - 4648 tiles, home demands -18.2 … 59.3 °C  -15..60 -> -19.2..60.3 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="GR_Boombeetle"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boombeetle"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boombeetle"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-19.2</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boombeetle"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-19.2</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boombeetle"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boombeetle"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>60.3</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boombeetle"]/statBases</xpath>
-            <value><ComfyTemperatureMax>60.3</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="GR_Boombeetle"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-19.2</ComfyTemperatureMin>
-          <ComfyTemperatureMax>60.3</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <!-- boomcat (GR_Boomcat) - 4648 tiles, home demands -18.2 … 59.3 °C  -25..40 -> -25..60.3 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="GR_Boomcat"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomcat"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomcat"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-25</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomcat"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-25</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomcat"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomcat"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>60.3</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomcat"]/statBases</xpath>
-            <value><ComfyTemperatureMax>60.3</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="GR_Boomcat"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-25</ComfyTemperatureMin>
-          <ComfyTemperatureMax>60.3</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <!-- boomffalo (GR_Boomffalo) - 4648 tiles, home demands -18.2 … 59.3 °C  -45..40 -> -45..60.3 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-45</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-45</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>60.3</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/statBases</xpath>
-            <value><ComfyTemperatureMax>60.3</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-45</ComfyTemperatureMin>
-          <ComfyTemperatureMax>60.3</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-  </Operation>
-
   <!-- boomhorse (GR_Boomhorse) - 4648 tiles, home demands -18.2 … 59.3 °C  -35..40 -> -35..60.3 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="GR_Boomhorse"]/statBases</xpath>
@@ -8092,47 +7848,6 @@
       </value>
     </nomatch>
   </Operation>
-
-  <!-- boomsquirrel (GR_Boomsquirrel) - 4648 tiles, home demands -18.2 … 59.3 °C  -40..40 -> -40..60.3 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-40</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-40</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>60.3</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]/statBases</xpath>
-            <value><ComfyTemperatureMax>60.3</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-40</ComfyTemperatureMin>
-          <ComfyTemperatureMax>60.3</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-  </Operation>
-
   <!-- boomwolf (GR_Boomwolf) - 4648 tiles, home demands -18.2 … 59.3 °C  -35..40 -> -35..60.3 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="GR_Boomwolf"]/statBases</xpath>
@@ -8532,47 +8247,6 @@
       </value>
     </nomatch>
   </Operation>
-
-  <!-- chickenlope (GR_Chickenlope) - 4648 tiles, home demands -18.2 … 59.3 °C  -15..40 -> -19.2..60.3 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="GR_Chickenlope"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Chickenlope"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Chickenlope"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-19.2</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Chickenlope"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-19.2</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Chickenlope"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Chickenlope"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>60.3</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Chickenlope"]/statBases</xpath>
-            <value><ComfyTemperatureMax>60.3</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="GR_Chickenlope"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-19.2</ComfyTemperatureMin>
-          <ComfyTemperatureMax>60.3</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-  </Operation>
-
   <!-- chickenrabbit (GR_Chickenrabbit) - 96 tiles, home demands -15.3 … 34.9 °C  0..40 -> -16.3..40 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="GR_Chickenrabbit"]/statBases</xpath>
@@ -10292,47 +9966,6 @@
       </value>
     </nomatch>
   </Operation>
-
-  <!-- squirralope (GR_Squirralope) - 4648 tiles, home demands -18.2 … 59.3 °C  -30..40 -> -30..60.3 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="GR_Squirralope"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Squirralope"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Squirralope"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-30</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Squirralope"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-30</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Squirralope"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Squirralope"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>60.3</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Squirralope"]/statBases</xpath>
-            <value><ComfyTemperatureMax>60.3</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="GR_Squirralope"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-30</ComfyTemperatureMin>
-          <ComfyTemperatureMax>60.3</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-  </Operation>
-
   <!-- thrumbalope (GR_Thrumbalope) - 1939 tiles, home demands -57 … 30.9 °C  -45..40 -> -58..40 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="GR_Thrumbalope"]/statBases</xpath>

@@ -126,7 +126,6 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <Mynock MayRequire="mlie.starwarsanimalcollection">0.5</Mynock>  <!-- mynock - wiring-eater, import -->
-      <VFEI2_Boomtick MayRequire="oskarpotocki.vfe.insectoid2">0.4</VFEI2_Boomtick>  <!-- boomtick - weapon-descendant, keep -->
       <SW_Electrictick MayRequire="who.vfee.isopodageneline">0.3</SW_Electrictick>  <!-- Electrictick - weapon-descendant, keep -->
       <BMT_FoundryBeetle MayRequire="biomesteam.biomescaverns">0.18</BMT_FoundryBeetle>  <!-- foundry beetle - plated-grazer, keep -->
       <AA_SpinedGow MayRequire="sarg.alphaanimals">0.15</AA_SpinedGow>  <!-- spined gow - plated-grazer, keep -->

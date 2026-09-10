@@ -68,9 +68,6 @@ PAWN_SYMBOLS = [
     ("RUT_Symbol_GreenGoo", "AA_GreenGoo",
      "HorrorWastes-native (cast_assignment.csv) - bioweapon-adjacent guardian, not the Anomaly toolbox. Third-party (Alpha Animals) -> not KCSG-auto-symbol'd, needs this wrapper.",
      None),
-    ("RUT_Symbol_Boomsnake", "GR_Boomsnake",
-     "HorrorWastes-native (cast_assignment.csv). Third-party (Genesis Regrown) -> needs this wrapper.",
-     None),
     ("RUT_Symbol_MechLancer", "Mech_Lancer",
      "Type-1 garrison guardian. Core PawnKindDef (auto-symbol'd bare name would resolve fine) "
      "but needs this wrapper anyway - see the module comment above; explicit Mechanoid faction "
@@ -332,7 +329,7 @@ def main():
         size=51, outer_wall="RUT_Symbol_BlackJellyWall", outer_thick=5,
         garrison_floor="Flesh",
         garrison_symbols=[
-            "RUT_Symbol_GreenGoo", "RUT_Symbol_Boomsnake",
+            "RUT_Symbol_GreenGoo",
             "RUT_Symbol_GreenGoo", "RUT_Symbol_InfestedShipPart",
             "RUT_Symbol_InfestedShipChunk", "RUT_Symbol_Fleshmass",
         ],

@@ -1950,6 +1950,21 @@
 			<li>ThingDef/Frame_AM_VirutalMiner</li>
 			<li>ThingDef/LEGO_MediumCrane_Accomplish</li>
 			<li>ThingDef/Techprint_AM_RecyclingAssembly</li>
+			<li>ThingDef/Boomalope</li>
+			<li>ThingDef/Boomrat</li>
+			<li>ThingDef/VFEI2_Boomtick</li>
+			<li>ThingDef/GR_Bearalope</li>
+			<li>ThingDef/GR_Boomabear</li>
+			<li>ThingDef/GR_Boomalisk</li>
+			<li>ThingDef/GR_Boombeetle</li>
+			<li>ThingDef/GR_Boomcat</li>
+			<li>ThingDef/GR_Boomffalo</li>
+			<li>ThingDef/GR_Boomsnake</li>
+			<li>ThingDef/GR_Boomsquirrel</li>
+			<li>ThingDef/GR_Chickenlope</li>
+			<li>ThingDef/GR_Manalope</li>
+			<li>ThingDef/GR_ParagonBoomalope</li>
+			<li>ThingDef/GR_Squirralope</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>

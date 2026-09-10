@@ -10,15 +10,6 @@
     <defendSpawnPoint>true</defendSpawnPoint>
   </KCSG.SymbolDef>
   <KCSG.SymbolDef>
-    <defName>RUT_Symbol_Boomsnake</defName>
-    <pawnKindDef>GR_Boomsnake</pawnKindDef>
-    <spawnPartOfFaction>false</spawnPartOfFaction>
-    <numberToSpawn>1</numberToSpawn>
-    <spawnDead>false</spawnDead>
-    <spawnRotten>false</spawnRotten>
-    <defendSpawnPoint>true</defendSpawnPoint>
-  </KCSG.SymbolDef>
-  <KCSG.SymbolDef>
     <defName>RUT_Symbol_MechLancer</defName>
     <pawnKindDef>Mech_Lancer</pawnKindDef>
     <spawnPartOfFaction>false</spawnPartOfFaction>
