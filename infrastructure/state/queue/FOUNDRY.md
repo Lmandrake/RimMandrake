@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T04:42:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T04:47:57Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -648,6 +648,33 @@ kind:     task
 summary:  Restore the campaign to a real, correct, save-safe state and fold in tonight's
 prose:    infrastructure/state/items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md
 
+## ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1 Rewrite apply_assignment_verdicts.py for the regenerated sheet schema (19e03876); a hard refusal currently blocks any apply - owner verdicts cannot land until this ships
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1.md
+
+## SCORCHFRUIT_FULGURITE_DEF_VERIFY_1 Verify RSW_FE_Plant_ScorchFruit and RSW_FE_Fulgurite defs actually exist - a decayed claim rode the Pyrelands rebind note; fix or delete the reference
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/SCORCHFRUIT_FULGURITE_DEF_VERIFY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCORCHFRUIT_FULGURITE_DEF_VERIFY_1.md
+
+## HUMAN_QUEUE_NEEDS_OWNER_RENDER_1 queue/HUMAN.md renderer never surfaces needs:owner rows - it read NOTHING IS WAITING since 2026-08-23 while 4 items waited on the owner (found in tonight's backlog-audit review)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/HUMAN_QUEUE_NEEDS_OWNER_RENDER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/HUMAN_QUEUE_NEEDS_OWNER_RENDER_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -964,36 +991,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
 
-## ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1 Rewrite apply_assignment_verdicts.py for the regenerated sheet schema (19e03876); a hard refusal currently blocks any apply - owner verdicts cannot land until this ships
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1.md
-
-## SCORCHFRUIT_FULGURITE_DEF_VERIFY_1 Verify RSW_FE_Plant_ScorchFruit and RSW_FE_Fulgurite defs actually exist - a decayed claim rode the Pyrelands rebind note; fix or delete the reference
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SCORCHFRUIT_FULGURITE_DEF_VERIFY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SCORCHFRUIT_FULGURITE_DEF_VERIFY_1.md
-
-## HUMAN_QUEUE_NEEDS_OWNER_RENDER_1 queue/HUMAN.md renderer never surfaces needs:owner rows - it read NOTHING IS WAITING since 2026-08-23 while 4 items waited on the owner (found in tonight's backlog-audit review)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/HUMAN_QUEUE_NEEDS_OWNER_RENDER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/HUMAN_QUEUE_NEEDS_OWNER_RENDER_1.md
-
 ## DROID_SIBLING_RELATION_GEN_CRASH_1 Pawn generation NRE on some Droidworks droid kinds: PawnRelationWorker_Sibling.CreateRelation throws (found live-testing DROIDWORKS_PERSONALITY_VERIFY_1)
 state:    proposed
 row:      unassigned
@@ -1003,13 +1000,3 @@ kind:     task
 thin:     no ## criteria
 summary:  1. Reproduce on a clean quicktest: spawn ~10 of RSWDWOuterRimProtocolDroid
 prose:    infrastructure/state/items/DROID_SIBLING_RELATION_GEN_CRASH_1.md
-
-## MAPGEN_ROUND3_VERDICT_LANDING_1 Land the owner's round-3 mapgen verdict (FAIL 0/8) on MACRO_GENERATOR_V0_1: absorb the three translated defects, hold painter round 4, run MAPGEN_GL_SHEET_1 first
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  MAPGENROUND3VERDICTLANDING1 — the owner's round-3 grade, for FOUNDRY to absorb
-prose:    infrastructure/state/items/MAPGEN_ROUND3_VERDICT_LANDING_1.md
