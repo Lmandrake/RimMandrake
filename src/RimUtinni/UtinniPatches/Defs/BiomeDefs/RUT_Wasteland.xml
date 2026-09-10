@@ -129,9 +129,15 @@
       <AA_AcanthamoebaGiganteaSmall MayRequire="sarg.alphaanimals">0.1</AA_AcanthamoebaGiganteaSmall>  <!-- acanthamoeba gigantea, small - wretched-small, import -->
     </wildAnimals>
     <coastalWildAnimals />
-    <wildPlants>
-      <plantDensity>0.12</plantDensity>
-    </wildPlants>
+    <!-- wildPlants intentionally left empty here: the roster
+         (design/Jawa/worldbuilding/biomes/rosters/wasteland.json "flora", 25 rows)
+         was never transplanted onto this def - a stray duplicate of the
+         plantDensity field (see above) sat in this dictionary instead, which
+         would fail to resolve as a ThingDef and error at load. Removed rather
+         than guessed: populating the real 25-species list needs the same
+         MayRequire verification pass the sibling BiomeDefs in this folder
+         already did, not invented here. Flagged as owed, not silently fixed. -->
+    <wildPlants />
     <wildPlantRegrowDays>15</wildPlantRegrowDays>
   </BiomeDef>
 
