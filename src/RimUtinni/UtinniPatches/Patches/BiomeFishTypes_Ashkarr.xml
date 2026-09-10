@@ -11,12 +11,21 @@
 
   Donors: freshwater_Common gets the 4 confident swfish_ analogs (Star Wars
   Animal Collection; invented names, no Earth root, clear the sheet's own
-  bans on pollution/ambush flavor for a sacred oasis pool). freshwater_Uncommon
-  gets the 4 secondary VCEF_-prefixed picks, which are actually shipped BY
-  Alpha Biomes (ParentName="AB_RawFishBase", packageId sarg.alphabiomes;
-  verified on the live donor XML, not the census's "unresolved" mod field).
-  Both buckets use flat weight 1, matching vanilla's own convention where the
-  bucket, not the weight, carries the rarity tier.
+  bans on pollution/ambush flavor for a sacred oasis pool). Flat weight 1,
+  matching vanilla's own convention where the bucket, not the weight, carries
+  the rarity tier.
+
+  FISH_TYPES_PATCH_BUILD_1 (2026-09-10): freshwater_Uncommon TRIMMED to empty
+  per the owner's ratified ruling (_fish_assignment_proposal.md §5.2) — the
+  4 VCEF_-prefixed secondaries (FrigidSwimmer/Slimefish/Spinyfish/OcularFish)
+  are OUT, tonally wrong for the sacred truce pools, and stay benched;
+  swfish_Dactopus was considered as a fifth donor and NOT adopted. The bucket
+  is explicitly emptied here rather than left unpatched, so the donor mod's
+  own vanilla Earth-named default (Fish_Piranha) cannot silently return —
+  same "safe no-op for WaterBody.SetFishTypes.TryRandomElement" pattern as
+  the sibling SandFishing_CrackedLands.xml used before its own Uncommon
+  bucket was filled. The weeping-stones family is 4 species total, v1
+  placeholder pending FISH_BESTIARY_COMMISSION_1.
 
   Only freshwater is touched. `ZBiome_DesertOasis` also carries saltwater_Common/
   Uncommon in the donor's own default def; weeping_stones' roster ruling is a
@@ -33,12 +42,10 @@
   substitute for validating the actual applied result.
 
   the_cracked_lands / ZBiome_Badlands is deliberately NOT touched here; the
-  other window's SandFishing_CrackedLands.xml already replaces both freshwater
-  buckets and rareCatchesSetMaker on that exact def. the_greentide /
-  BiomeCypreJungle is also NOT touched; the roster's "already assigned"
-  claim for RSW_Mee/Faa/Laa did not hold on inspection (they are wired into a
-  wildAnimals bucket on a different biome, RUT_Miasma, not into this biome's
-  fishTypes); that gap is recorded in the item note, not fixed in this pass.
+  other window's SandFishing_CrackedLands.xml (filled by FISH_TYPES_PATCH_BUILD_1)
+  already replaces both freshwater buckets and rareCatchesSetMaker on that
+  exact def. the_greentide gets its own sibling patch,
+  BiomeFishTypes_Greentide.xml, targeting the live BiomeCypreJungle def.
 -->
 <Patch>
 
@@ -71,10 +78,6 @@
             <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/fishTypes/freshwater_Uncommon</xpath>
             <value>
               <freshwater_Uncommon>
-                <VCEF_FrigidSwimmer MayRequire="sarg.alphabiomes">1</VCEF_FrigidSwimmer>
-                <VCEF_Slimefish MayRequire="sarg.alphabiomes">1</VCEF_Slimefish>
-                <VCEF_Spinyfish MayRequire="sarg.alphabiomes">1</VCEF_Spinyfish>
-                <VCEF_OcularFish MayRequire="sarg.alphabiomes">1</VCEF_OcularFish>
               </freshwater_Uncommon>
             </value>
           </match>
