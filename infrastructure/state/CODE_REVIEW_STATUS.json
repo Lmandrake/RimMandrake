@@ -3006,10 +3006,10 @@
     "sha": "46ac7699"
   },
   "src/RimMandrake/Utils/cherrypick_build.py": {
-    "cleanCount": 2,
-    "date": "2026-09-04",
-    "hash": "0b37649302d20802f764ce896f9f7f1ebad504499f28f1b87283777d02570f0d",
-    "sha": "43f96b1b"
+    "cleanCount": 3,
+    "date": "2026-09-09",
+    "hash": "e20672c2b1a187e6de1471ad0d96f4ad9b19a6a8e447cea0babd427422b8f642",
+    "sha": "afcfa347"
   },
   "src/RimMandrake/Utils/cherrypick_review.py": {
     "cleanCount": 1,
@@ -5794,10 +5794,10 @@
     "sha": "85401ce7"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_HelmetArmorTech.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "2ec5e20bb79208ec7858089852a3ee62350fcfa639642b0c281b44de3a0d61eb",
-    "sha": "e67f2cc0"
+    "cleanCount": 2,
+    "date": "2026-09-09",
+    "hash": "b7b697707761741f319189142519c92057c99c64a84d9585e27b63c816a3014b",
+    "sha": "afcfa347"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_JetpackMissile.xml": {
     "cleanCount": 2,
@@ -5884,10 +5884,10 @@
     "sha": "85401ce7"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_Wristgun.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "6a996eec26c8eaf3b647ed4089d2b56910e78c36d7e3ea26effe7b139aafd456",
-    "sha": "85401ce7"
+    "cleanCount": 3,
+    "date": "2026-09-09",
+    "hash": "1ea4ab47c910ba5f7fa5e80e83c11630744f6ebc6402dd01948d47a7dbbbf447",
+    "sha": "afcfa347"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_ImmortalusSithLords.xml": {
     "cleanCount": 3,
@@ -6742,10 +6742,10 @@
     "sha": "4e362542"
   },
   "src/RimStarWars/Armoury/Source/absorption_content_fixes.py": {
-    "cleanCount": 1,
-    "date": "2026-09-07",
-    "hash": "a25d25a87462e51f84951d69aae604130dde1df3b4a83a803a8bf2442877ec82",
-    "sha": "972798af"
+    "cleanCount": 2,
+    "date": "2026-09-09",
+    "hash": "f6b105d4aaa86733c111844619c3a76e7117eba6c7c9a70fef2a19676fbac972",
+    "sha": "afcfa347"
   },
   "src/RimStarWars/Armoury/Source/census_turrets.py": {
     "cleanCount": 1,
