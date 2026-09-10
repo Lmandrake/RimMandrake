@@ -10851,6 +10851,12 @@
     "hash": "92a82d08e8734592169dd8f3ac2407ed774a15c64c581433c104c1ef91399b32",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/UtinniPatches/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "429d1760"
+  },
   "src/RimUtinni/UtinniPatches/Languages/English/Keyed/ImperialVocabulary.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -10924,10 +10930,16 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeFishTypes_Ashkarr.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "f013d2cfab5c6805ceb1a2b4eb218a58748b8fb7dcdf4ad5c75bd9cdc905c80f",
+    "sha": "429d1760"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/BiomeFishTypes_Greentide.xml": {
     "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "6223fa5ac2941636da98c899f49ccfc3e79de97ab55bb7ef8625bc4c0cb624ad",
-    "sha": "bb73b6bd"
+    "date": "2026-09-10",
+    "hash": "e3d5b050fa6a9f357bb4b5f461d0f8e9b70bcb7f3fd1a8c6cd985536345f7f01",
+    "sha": "429d1760"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeFloraStatAdjustments_Generated.xml": {
     "cleanCount": 1,
@@ -10982,6 +10994,12 @@
     "date": "2026-09-09",
     "hash": "2316487c0076c830ab0fecd873d4ffba96a4d823e3311918656374b473d460ea",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/FishTypesStrip_NoFishBiomes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "49a6f90ed16aaff894220b52497c3d2f763c18a5b98b263bc111f46a3d236e20",
+    "sha": "429d1760"
   },
   "src/RimUtinni/UtinniPatches/Patches/Fleshbeast_TrispikeCull.xml": {
     "cleanCount": 1,
@@ -11128,10 +11146,10 @@
     "sha": "948cdbc9"
   },
   "src/RimUtinni/UtinniPatches/Patches/SandFishing_CrackedLands.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "ffcc04389079f07a8ee410993ca96de49a14fc2fc10539819419f5020d3ee118",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "8752876f2cdd692cd6e82f951ffb631c3897e35a950f091406c7b1870eb8251d",
+    "sha": "429d1760"
   },
   "src/RimUtinni/UtinniPatches/Patches/VQEPatients_AreRakata.xml": {
     "cleanCount": 1,
