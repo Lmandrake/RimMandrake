@@ -18,5 +18,16 @@ namespace RimMandrake.Aftermath
             if (survivors < def.minSurvivors) return false;
             return true;
         }
+
+        // Rule 6 ("Zizzik's aftermath"). The trigger's own conditions --
+        // within 2 days of a battle, Zizzik >= Content -- are checked by the
+        // caller (AftermathRuleRunner.OnMentalBreakNearBattle) before this is
+        // ever reached; this predicate is purely "is this def even the right
+        // shape," kept separate so it stays offline-testable with no live
+        // Game/tick/Ninefold dependency, same reasoning as IsEligible above.
+        public static bool IsEligibleMentalBreakNearBattle(RM_AftermathRuleDef def)
+        {
+            return def != null && def.triggerKind == AftermathTriggerKind.MentalBreakNearBattle;
+        }
     }
 }

@@ -6,9 +6,10 @@ using Verse;
 namespace RimMandrake.Aftermath
 {
     // design/Jawa/proposals/plot_mechanisms_wave.md §2.1's rule engine.
-    // Currently evaluates BattleOutcome-triggered rules only (1, 2, 3 in the
-    // doc's table) - see AftermathTriggerKind.cs for exactly which of the
-    // other five are shipped as DATA but not yet WIRED, and why.
+    // Evaluates BattleOutcome-triggered rules (1, 2, 3) AND
+    // MentalBreakNearBattle (rule 6, PLOT_MECHANISM_MODS_WAVE_1 2026-09-09
+    // wiring pass) - see AftermathTriggerKind.cs for exactly which of the
+    // remaining four are shipped as DATA but not yet WIRED, and why.
     public class AftermathRuleRunner : GameComponent
     {
         // §2.2: "No stacking beyond one queued aftermath per faction and two
@@ -17,7 +18,20 @@ namespace RimMandrake.Aftermath
         private const int MaxPerFaction = 1;
         private const int MaxTotal = 2;
 
+        // Rule 6's own window ("a mental break WITHIN 2 DAYS after a
+        // battle"). GenDate.TicksPerDay, same constant TryQueue already uses
+        // for delayDays -> delayTicks below.
+        private const int MentalBreakNearBattleWindowTicks = 2 * GenDate.TicksPerDay;
+
         private List<QueuedAftermathMarker> queued = new List<QueuedAftermathMarker>();
+
+        // Per-map "last battle that closed here", for rule 6's trigger. IN-
+        // MEMORY ONLY, not scribed - same documented limitation BattleRecord
+        // and MapComponent_BattleRecorder's closedHistory already carry: a
+        // mental break that happens to land just after a save/reload will
+        // not see a battle that closed before the reload. Acceptable per
+        // this item's own bar (a missed escalation is not a broken one).
+        private readonly Dictionary<Map, BattleRecord> lastClosedByMap = new Dictionary<Map, BattleRecord>();
 
         public AftermathRuleRunner(Game game)
         {
@@ -35,12 +49,46 @@ namespace RimMandrake.Aftermath
 
         public void OnBattleClosed(BattleRecord record)
         {
+            if (record?.Map != null) lastClosedByMap[record.Map] = record;
             if (record?.RaidFaction == null) return;
 
             int survivors = record.CountSurvivedAndExited();
             foreach (RM_AftermathRuleDef def in DefDatabase<RM_AftermathRuleDef>.AllDefsListForReading)
             {
                 if (!AftermathRuleEligibility.IsEligible(def, record.Outcome, survivors)) continue;
+                TryQueue(def, record);
+            }
+        }
+
+        // Rule 6 ("Zizzik's aftermath"): "a mental break within 2 days after
+        // a battle while Zizzik >= Content." Called from
+        // Patch_MentalBreakNearBattle's postfix on the SAME vanilla seam
+        // Ninefold's own mental-break hook patches
+        // (MentalStateHandler.TryStartMentalState) - a different Harmony id,
+        // coexists safely. Reuses the same TryQueue path as rules 1-3 (same
+        // discipline caps, same cooldown-mod bypass, same telegraph/chronicle
+        // wiring) against the CACHED record of whichever battle closed here
+        // most recently, rather than duplicating that logic.
+        public void OnMentalBreakNearBattle(Pawn pawn)
+        {
+            Map map = pawn?.Map;
+            if (map == null) return;
+            if (!lastClosedByMap.TryGetValue(map, out BattleRecord record) || record == null) return;
+
+            int sinceBattle = Find.TickManager.TicksGame - record.ClosedTick;
+            if (sinceBattle < 0 || sinceBattle > MentalBreakNearBattleWindowTicks) return;
+
+            // NinefoldBandBridge is a soft-hook reflection query (the mirror
+            // of ChronicleSubscriber's soft-hook subscribe on Ninefold's own
+            // side) - CHRONICLE_NINEFOLD_DECOUPLE_1 forbids a hard reference
+            // in either direction. Ninefold absent/renamed -> false -> this
+            // rule simply never fires (law 2: whole with the consumer
+            // absent), same as every other Ninefold-tied rule's null guard.
+            if (!NinefoldBandBridge.ZizzikAtLeastContent()) return;
+
+            foreach (RM_AftermathRuleDef def in DefDatabase<RM_AftermathRuleDef>.AllDefsListForReading)
+            {
+                if (!AftermathRuleEligibility.IsEligibleMentalBreakNearBattle(def)) continue;
                 TryQueue(def, record);
             }
         }

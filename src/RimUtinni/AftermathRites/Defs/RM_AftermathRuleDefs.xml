@@ -122,7 +122,7 @@
     <letterText>Sh'kaar has noticed you. Every old wrong you are owed is coming due at once.</letterText>
   </RimMandrake.Aftermath.RM_AftermathRuleDef>
 
-  <!-- ══ RULE 6 — Zizzik's aftermath (DATA ONLY - not wired) ══════════════ -->
+  <!-- ══ RULE 6 — Zizzik's aftermath (WIRED, 2026-09-09) ═══════════════════ -->
   <RimMandrake.Aftermath.RM_AftermathRuleDef>
     <defName>RM_AftermathRule_ZizziksAftermath</defName>
     <label>Zizzik's aftermath</label>
