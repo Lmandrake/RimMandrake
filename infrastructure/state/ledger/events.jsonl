@@ -6771,3 +6771,6 @@
 {"seat":"BENCH","event":"claim","id":"FLOOD_WITNESS_EVENT_1","ts":"2026-09-10T06:49:46Z"}
 {"seat":"BENCH","event":"start","id":"FLOOD_WITNESS_EVENT_1","ts":"2026-09-10T06:49:47Z"}
 {"seat":"BENCH","event":"note","id":"FLOOD_WITNESS_EVENT_1","text":"design draft written (flood_witness_event_design.md, commit 22400524): full prose spec + quest machinery map, 4 owner questions; awaiting a sitting, not morning-urgent","ts":"2026-09-10T06:54:54Z"}
+{"seat":"BENCH","event":"claim","id":"EXPLOSIVE_PLANT_GROWTH_1","ts":"2026-09-10T06:55:31Z"}
+{"seat":"BENCH","event":"start","id":"EXPLOSIVE_PLANT_GROWTH_1","ts":"2026-09-10T06:55:31Z"}
+{"seat":"BENCH","event":"note","id":"EXPLOSIVE_PLANT_GROWTH_1","text":"design draft written (explosive_plant_growth_design.md, commit 734a25fb): terminal moments per biome family + player verbs + mechanism sketch with the perf gate; 4 owner questions; awaiting a sitting","ts":"2026-09-10T07:00:24Z"}
