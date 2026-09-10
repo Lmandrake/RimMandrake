@@ -6986,3 +6986,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"VQE_ANCIENTS_CURATION_1","ts":"2026-09-10T22:25:43Z"}
 {"seat":"FOUNDRY","event":"start","id":"VQE_ANCIENTS_CURATION_1","ts":"2026-09-10T22:25:43Z"}
 {"seat":"FOUNDRY","event":"block","id":"VQE_ANCIENTS_CURATION_1","reason":"steps 1/3/6 of 6 done and verified. Step 2 needs no action (never touched). Step 4 (string relabel) needs a dedicated pass - the owner's phrase is a paraphrase, not a quotable donor string, and the Forsaken/Assailant register needs care across 6 quest chains. Step 5 confirmed not-yet-fireable (ticksGame 109173, ~day 1.8, nowhere near day 30/118)","ts":"2026-09-10T22:25:44Z"}
+{"seat":"FOUNDRY","event":"claim","id":"RSW_PROTOVERMES_TEXPATH_MISSING_1","ts":"2026-09-10T22:28:10Z"}
+{"seat":"FOUNDRY","event":"start","id":"RSW_PROTOVERMES_TEXPATH_MISSING_1","ts":"2026-09-10T22:28:11Z"}
+{"seat":"FOUNDRY","event":"file","id":"VALIDATE_PATCH_TEXPATH_CLASSIFIER_1","title":"validate_patch.py's texPath ERROR/WARN classifier false-positives on any mod whose own Textures/ tree happens to share a universal top-level folder name (Things/Pawn/Buildings/etc.) with a legitimate vanilla texPath reference - fix: compare against a fixed list of RimWorld's own top-level categories, never classify those as mod-owned from a first-segment match alone","kind":"task","target":"v1","needs":"offline","caused_by":"RSW_PROTOVERMES_TEXPATH_MISSING_1","for":"FOUNDRY","ts":"2026-09-10T22:30:38Z"}
+{"seat":"FOUNDRY","event":"close","id":"RSW_PROTOVERMES_TEXPATH_MISSING_1","sha":"f56ded83","ts":"2026-09-10T22:31:08Z"}
