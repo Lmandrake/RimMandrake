@@ -149,3 +149,22 @@ commission (see §1).
 Note: 8 of these 15 carry `decision: in` in the register (the owner had provisionally kept
 them before the boom-family cut ruling superseded that row-level call) — the family ruling
 overrides the row decision.
+
+## Rulings landed 2026-09-10 (fauna wrap sitting, owner-carded)
+
+- **NINTH ROSTER RULED: faction-territory fauna** — one roster, faction column
+  (Hutt / Helix / Wildsteam / Moisture Farmers). The 22+ faction-ground rows in
+  move_mapping_v2's OPEN list belong here. Mechanism (settlement mapgen vs
+  territory wilds) gets its own design pass.
+- **Dungeon-guardians: ONE roster with a dungeon-owner column** (Assailant /
+  Hutt spicemine / Rust Cathedral / mech dungeons). EnergySpider and GR_Mecharat
+  move in with their owners marked; the goo-boom commission and the 4 VQEA
+  Splice creatures are Assailant rows.
+- **Jungle ambiguity RULED: all three go to BOTH jungles** — Tach, Rikknit,
+  BMT_FacetMoth appear in the_greentide AND the_fever_wood.
+- **Homeless disposal plan** (to be confirmed at the bucket sitting, not before):
+  the 206 out-verdict rows bulk-cut; the 103 unannotated in/move rows get the
+  by-bucket sitting.
+- **Venomthorn (GR_Snakecat)**: no such plant exists in any doc or the stack —
+  proposed as a new flora commission (Moisture Farmer territory antagonist
+  plant); awaiting the owner's yes.
