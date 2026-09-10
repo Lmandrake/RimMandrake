@@ -582,8 +582,8 @@
         </partsMounts>
       </li>
       <li Class="CompProperties_Art">
-        <nameMaker>NamerArtWeaponMelee</nameMaker>
-        <descriptionMaker>ArtDescription_WeaponMelee</descriptionMaker>
+        <nameMaker>NamerArtWeaponGun</nameMaker>
+        <descriptionMaker>ArtDescription_WeaponGun</descriptionMaker>
       </li>
     </comps>
     <thingSetMakerTags>

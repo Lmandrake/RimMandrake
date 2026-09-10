@@ -90,8 +90,14 @@ def main():
         te = rb.call("jawa/world_tile_export",
                      {"path": r"D:\Luke\dev\Rimworld\Transient\cs_place_tiles.csv"})
         import csv as _csv
+        # 🔴 The bridge call above writes on the GAME's (Windows) filesystem, so its
+        # path argument stays Windows-style. But this process may be python3 under
+        # WSL, where `D:\...\cs_place_tiles.csv` is not openable (no drive letter,
+        # backslashes aren't separators) - it must read back via the REPO-relative
+        # path in ITS OWN native form.
+        local_csv = os.path.join(REPO, "Transient", "cs_place_tiles.csv")
         biome_of = {int(x["tile"]): x["biome"] for x in _csv.DictReader(
-            open(r"D:\Luke\dev\Rimworld\Transient\cs_place_tiles.csv"))}
+            open(local_csv, encoding="utf-8"))}
         dense = sorted(t for t, m in before.items() if len(m) >= a.threshold)
         denied = [t for t in dense if biome_of.get(t) in BIOME_DENYLIST]
         dense = [t for t in dense if biome_of.get(t) not in BIOME_DENYLIST]

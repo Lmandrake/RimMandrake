@@ -30,7 +30,7 @@ namespace RimMandrake.StarWars.Droidworks
             {
                 case "RSW_DW_Head_Labour": return DroidworksDefOf.RSW_DW_OuterRim_ImperialLaborDroid;
                 case "RSW_DW_Head_Protocol": return DroidworksDefOf.RSW_DW_OuterRim_ProtocolDroid;
-                case "RSW_DW_Head_Astromech": return DroidworksDefOf.RSW_DW_OuterRim_AstromechDroid;
+                case "RSW_DW_Head_Astromech": return DroidworksDefOf.RSW_DW_OuterRim_RSeriesDroid;
                 case "RSW_DW_Head_Battle": return DroidworksDefOf.RSW_DW_OuterRim_BattleDroid;
                 case "RSW_DW_Head_Heavy": return DroidworksDefOf.RSW_DW_OuterRim_SuperTacticalDroid;
                 case "RSW_DW_Head_Probe": return DroidworksDefOf.RSW_DW_KotORDroidColonist_KX12UPD;

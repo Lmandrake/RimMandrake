@@ -160,7 +160,11 @@ namespace JawaBench.BridgeTools
                 if (priority != null)
                 {
                     StoragePriority pr;
-                    if (!Enum.TryParse(priority.Trim(), true, out pr))
+                    // Enum.TryParse accepts any integer literal ("99") without Enum.IsDefined,
+                    // which would silently accept an out-of-range StoragePriority scribed into
+                    // the savegame - the same trap already fixed for QualityCategory/JobTag/
+                    // etc. elsewhere in this DLL.
+                    if (!Enum.TryParse(priority.Trim(), true, out pr) || !Enum.IsDefined(typeof(StoragePriority), pr))
                         return Fail($"Unknown priority '{priority}'.", new { accepted = Enum.GetNames(typeof(StoragePriority)) });
                     parsedPriority = pr;
                 }
