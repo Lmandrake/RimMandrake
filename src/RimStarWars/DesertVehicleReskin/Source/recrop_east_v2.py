@@ -134,8 +134,16 @@ def main() -> None:
     # this file's directory, so `Source/art/...` from the mod root and
     # `art/...` from Source/ both work. Joining HERE unconditionally produced
     # `Source/Source/art/...` and a confusing chroma_key failure.
+    #
+    # The OUTPUT path never exists yet, so `os.path.exists(p)` alone always
+    # missed it and fell through to the HERE-joined (buggy) branch, writing
+    # to a nonexistent `Source/Source/art/...` instead of the intended
+    # `Source/art/...`. Falling back on whether the parent directory exists
+    # relative to CWD covers both the existing-input and new-output cases.
     def _resolve(p):
-        if os.path.isabs(p) or os.path.exists(p):
+        if os.path.isabs(p):
+            return os.path.abspath(p)
+        if os.path.exists(p) or os.path.isdir(os.path.dirname(p) or "."):
             return os.path.abspath(p)
         return os.path.join(HERE, p)
 

@@ -35,7 +35,7 @@ Writes: ../Defs/StructureLayoutDefs_Vaults.xml, ../Defs/SymbolDefs_Vaults.xml
 """
 import os
 
-OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "Defs")
+OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "Defs", "VaultDungeons")
 
 # --- Pawn symbols -----------------------------------------------------
 # 🔴 CORRECTED 2026-09-06 after a live quicktest crash (VAULT_DUNGEON_BUILD_1

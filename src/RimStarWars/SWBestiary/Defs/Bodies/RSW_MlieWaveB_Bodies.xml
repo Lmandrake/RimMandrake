@@ -320,7 +320,7 @@
               </groups>
             </li>
             <li>
-              <def>RSW_SW_LeftClaw</def>
+              <def>RSW_SW_RightClaw</def>
               <customLabel>front right pincer claw</customLabel>
               <coverage>0.2</coverage>
               <groups>

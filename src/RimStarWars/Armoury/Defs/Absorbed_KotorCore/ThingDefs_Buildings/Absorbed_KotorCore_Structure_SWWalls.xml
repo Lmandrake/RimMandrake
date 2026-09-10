@@ -185,10 +185,6 @@
       <MaxHitPoints>1000</MaxHitPoints>
     </statBases>
     <building>
-      <relatedBuildCommands>
-        <li>guy762_Autodoor1x1_DoomgiverA</li>
-        <li>guy762_DoubleAutodoor_DoomgiverVerticalA</li>
-      </relatedBuildCommands>
     </building>
     <costList>
       <KOTOR_AlloyDurasteel>6</KOTOR_AlloyDurasteel>
@@ -217,10 +213,6 @@
       <MaxHitPoints>1000</MaxHitPoints>
     </statBases>
     <building>
-      <relatedBuildCommands>
-        <li>guy762_Autodoor1x1_DreadnaughtA</li>
-        <li>guy762_DoubleAutodoor_DreadnaughtVerticalA</li>
-      </relatedBuildCommands>
     </building>
     <costList>
       <KOTOR_AlloyDurasteel>6</KOTOR_AlloyDurasteel>
@@ -273,9 +265,6 @@
       <MaxHitPoints>500</MaxHitPoints>
     </statBases>
     <building>
-      <relatedBuildCommands>
-        <li>guy762_Autodoor1x1_SandcrawlerA</li>
-      </relatedBuildCommands>
     </building>
     <costList>
       <Steel>7</Steel>
@@ -299,10 +288,6 @@
       <MaxHitPoints>200</MaxHitPoints>
     </statBases>
     <building>
-      <relatedBuildCommands>
-        <li>guy762_Autodoor1x1_TatooineA</li>
-        <li>guy762_DoubleAutodoor_TatooineVerticalA</li>
-      </relatedBuildCommands>
     </building>
     <killedLeavings Inherit="false" />
     <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
@@ -329,10 +314,6 @@
       <MaxHitPoints>200</MaxHitPoints>
     </statBases>
     <building>
-      <relatedBuildCommands>
-        <li>guy762_Autodoor1x1_TatooineA</li>
-        <li>guy762_DoubleAutodoor_TatooineVerticalA</li>
-      </relatedBuildCommands>
     </building>
     <killedLeavings Inherit="false" />
     <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
@@ -362,10 +343,6 @@
       <MaxHitPoints>200</MaxHitPoints>
     </statBases>
     <building>
-      <relatedBuildCommands>
-        <li>guy762_Autodoor1x1_TatooineA</li>
-        <li>guy762_DoubleAutodoor_TatooineVerticalA</li>
-      </relatedBuildCommands>
     </building>
     <killedLeavings Inherit="false" />
     <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
@@ -392,9 +369,6 @@
     </statBases>
     <damageMultipliers Inherit="false" />
     <building>
-      <relatedBuildCommands>
-        <li>guy762_Autodoor1x1_SandcrawlerA</li>
-      </relatedBuildCommands>
     </building>
     <costList>
       <KOTOR_AlloyDurasteel>8</KOTOR_AlloyDurasteel>

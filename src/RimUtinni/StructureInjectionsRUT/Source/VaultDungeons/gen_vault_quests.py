@@ -70,7 +70,7 @@ Run: python3 gen_vault_quests.py
 """
 import os
 
-OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "Defs")
+OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "Defs", "VaultDungeons")
 DAY = 60000
 
 # ---------------------------------------------------------------------------
@@ -578,7 +578,7 @@ def reclamation():
 
         <!-- The Helix flip: hostile, with the reason on the faction tab. -->
         <li Class="QuestNode_ChangeFactionGoodwill">
-          <faction>Jawa_AscendantHelix</faction>
+          <faction>RUT_Jawa_AscendantHelix</faction>
           <change>-100</change>
           <ensureHostile>true</ensureHostile>
           <canSendLetter>true</canSendLetter>
@@ -608,7 +608,7 @@ def reclamation():
         <!-- Wave two: the Helix, a day and a half behind - local collaboration, not a joint column. -->
         <li Class="QuestNode_Set">
           <name>enemyFaction</name>
-          <value>Jawa_AscendantHelix</value>
+          <value>RUT_Jawa_AscendantHelix</value>
         </li>
         <li Class="QuestNode_Delay">
           <delayTicks>$(1.5*60000)</delayTicks>

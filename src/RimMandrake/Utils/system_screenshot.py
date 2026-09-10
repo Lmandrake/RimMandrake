@@ -45,7 +45,17 @@ bmi.biPlanes = 1
 bmi.biBitCount = 24
 bmi.biCompression = 0
 
-buf_size = width * height * 3
+# GDI's DIB row stride is padded to a 4-byte boundary
+# (((width*bitcount + 31) / 32) * 4, per BITMAPINFOHEADER's documented
+# layout) — NOT the naive width*3 for 24bpp. Those agree only when width*3
+# is already a multiple of 4 (e.g. a single 1920-wide monitor); a
+# multi-monitor SM_CXVIRTUALSCREEN width (two monitors side by side, e.g.
+# 3286) routinely is not. GetDIBits always writes using the padded stride
+# regardless of the buffer's actual size, so an undersized buffer here was
+# a silent heap overrun / sheared image, never a raised error.
+bytes_per_row = ((width * 3 + 3) // 4) * 4
+buf_size = bytes_per_row * height
+bmi.biSizeImage = buf_size
 buf = ctypes.create_string_buffer(buf_size)
 gdi32.GetDIBits(img_dc, bmp, 0, height, buf, ctypes.byref(bmi), 0)
 

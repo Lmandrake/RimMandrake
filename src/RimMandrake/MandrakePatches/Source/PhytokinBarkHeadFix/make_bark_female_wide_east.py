@@ -35,7 +35,7 @@ from PIL import Image
 DONOR = ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/"
          "2927323805/Textures/Things/Pawn/Humanlike/Heads")
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT_DIR = os.path.join(os.path.dirname(HERE),
+OUT_DIR = os.path.join(os.path.dirname(os.path.dirname(HERE)),
                        "Textures", "Things", "Pawn", "Humanlike", "Heads")
 OUT = os.path.join(OUT_DIR, "BarkSkinFemale_Wide_Normal_east.png")
 

@@ -32,7 +32,7 @@ from PIL import Image
 DONOR = ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/"
          "3609835606/Textures/Things/Structures/GravshipGenebank")
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT_DIR = os.path.join(os.path.dirname(HERE),
+OUT_DIR = os.path.join(os.path.dirname(os.path.dirname(HERE)),
                        "Textures", "Things", "Structures", "GravshipGenebank")
 OUT = os.path.join(OUT_DIR, "GravshipGenebank_north.png")
 
