@@ -1,1588 +1,2134 @@
 {
  "sheet": "flora_assignment_register",
  "posture": "blacklist",
- "postureMeaning": "LANDED unless overruled. Rows with no entry stand as landed.",
- "criterion": "Rows pass their biome sheet's admission tests — which rank LAWFULNESS, not worth; commonality values are agent-chosen throughout.",
- "generatedBy": "gen_flora_assignment_sheet.py",
- "generatedFrom": "design/Jawa/worldbuilding/biomes/rosters/*.json @ 2026-09-09",
+ "postureMeaning": "Stands as recommended unless overruled. In on a new-things row commissions it; Out drops it for good.",
+ "criterion": "Rows are what the biome sheets ADMIT — a lawfulness test, not a worth test. Plant facts are measured from the game's own data; every spawn rate and every purge-by-name call was mine, and your overrules are the point.",
+ "generatedBy": "gen_flora_assignment_sheet.py (2026-09-09 rulings rebuild)",
+ "generatedFrom": "design/Jawa/worldbuilding/biomes/rosters/*.json",
  "invented": [
-  "Every commonality value on every flora row is agent-chosen. Nothing measures how much of a plant a biome should carry — these are a first pass at relative abundance.",
-  "Interim flora stand-ins: where a sheet demands a signature plant that does not exist, the biome is held together by the best-available alien donor plant and the real one sits in the NEW ART/DEF ledger. Those donor rows are place-holders, not designs — several biomes are thin on purpose and will read thin until the ledger is commissioned.",
-  "\"Earth-nameable\" was applied by NAME, one agent's reading of each label. A plant whose label reads as a species you could point at on Earth was purged; the judgement is unverified per row and the purge summary lists exactly what went.",
-  "Thin is acceptable (owner card 4) — so where the alien donor pool ran out, the pass left the biome sparse rather than refilling it with a near-miss. That is a choice, and the opposite choice is available to you row by row.",
-  "The NEW ART/DEF ledger is a list of things the sheets DEMAND, not things anyone has agreed to build. Nothing here is authored (owner card: new creatures and plants are not authored in this pass) — Keep on a ledger row commissions it as a queue item.",
-  "The ledger's creature and mechanic rows are carried on this sheet rather than the fauna one, because the new-art queue is one queue and splitting it across two sheets with different verbs would lose half of it.",
-  "The Mynock ≤2-home resolution, the Aerofleet Fumerider exception, and the Dunealisk and Skalder imports are fauna calls — they are declared on the fauna sheet and named here so this page is not read as the whole of the pass's invented rules."
+  "Size bins are mine, same as the fauna sheet: small < 1.0 squares on screen · medium 1.0–2.2 (a person is 1.5) · large 2.2–5.0 · TITAN over 5.0 — measured at full growth. Pick a different bin and the plant gets rescaled to match.",
+  "True-scale rule: every panel in a biome group shares one px-per-game-square, chosen so the group's biggest plant fits about 460px. Scale is honest WITHIN a group; different groups use different zoom levels. The colonist figure is the same one as the fauna sheet, per your ruling.",
+  "'Earth-nameable' was applied by NAME — one agent's reading of each label. A plant whose label reads as a species you could point at on Earth was purged planet-wide; nothing verified that per row.",
+  "Several biomes are held together by stand-in donor plants while the plant the sheet really wants sits on the new-art list — those rows say so, and they are placeholders, not designs.",
+  "Every spawn rate on every row is agent-chosen.",
+  "The new-things list is what the biome sheets DEMAND, not what anyone agreed to build — In on one of those rows commissions it as a real queue item.",
+  "The retirement flag works as on the fauna sheet: the ⚑ badge only for mods actually named for retirement; softer wind-down states ride the mod line."
  ],
  "decisions": {
-  "c:dune_sea + deep_desert:1": {
-   "decision": "defer",
-   "prefill": "defer",
-   "note": "left undecided on purpose: the pass could not settle this from sheet law alone."
-  },
-  "c:the_forge:3": {
-   "decision": "defer",
-   "prefill": "defer",
-   "note": "left undecided on purpose: the pass could not settle this from sheet law alone."
-  },
-  "c:the_pyrelands:0": {
-   "decision": "defer",
-   "prefill": "defer",
-   "note": "left undecided on purpose: the pass could not settle this from sheet law alone."
-  },
-  "c:the_pyrelands:1": {
-   "decision": "defer",
-   "prefill": "defer",
-   "note": "left undecided on purpose: the pass could not settle this from sheet law alone."
-  },
-  "c:the_rot:1": {
-   "decision": "defer",
-   "prefill": "defer",
-   "note": "left undecided on purpose: the pass could not settle this from sheet law alone."
-  },
-  "p:weeping_stones:BMT_Dewshrooms": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_forge:Plant_Fireweed": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_fever_wood:AB_KeeningCordax": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:arid_shrubland:Plant_ShrubLow": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_webwork:AB_RedBugloss": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_scarlands:BMT_Plant_ScorchedStars": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_cracked_lands:BMT_Plant_TreeTwistingThornwood": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_pyrelands:Plant_YellowGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:arid_shrubland:Plant_Brambles": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:arid_shrubland:Plant_Bush": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:arid_shrubland:RG_Plant_CreepStern": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:arid_shrubland:RG_Plant_CrimsonCushion": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:arid_shrubland:RG_Plant_Dervish": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:arid_shrubland:RG_Plant_AridGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:arid_shrubland:Plant_Ripthorn": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:arid_shrubland:Plant_HealrootWild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:arid_shrubland:Plant_Nysyllin_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:arid_shrubland": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:desert:AB_Aaklac": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:desert:AB_DessertTree": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:desert:AB_HardyGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:desert:Plant_Chakroot_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:desert:Plant_HubbaGourd_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:desert": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:dune_sea + deep_desert:Plant_Bloddle": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:dune_sea + deep_desert:AB_GiantStikehr": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:dune_sea + deep_desert": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:forsaken_crags:AB_GiantGamma": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:forsaken_crags:AB_GiantSeptimum": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:forsaken_crags:AB_GiantStikehr": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:forsaken_crags:AB_GlowingGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:forsaken_crags:AB_ToxicGamma": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:forsaken_crags:AB_WildRadagast": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:forsaken_crags": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "purge:nightside_ice": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:poison_forest:AB_GiantAgariTox": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:poison_forest:AB_BloodBouquet": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:poison_forest:AB_CrystalFlower": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:poison_forest:AB_CrystalHorn": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:poison_forest:AB_KeeningCordax": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:poison_forest:BMT_Plant_TreeMartyr": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:poison_forest:AB_RavenNettle": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:poison_forest:AB_RedBugloss": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:poison_forest:BMT_Plant_TreeTwistingThornwood": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:poison_forest": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "purge:the_blue_desert": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:the_contagion:AB_BloodBouquet": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_contagion:AB_EyeGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_contagion:AB_GlobularPlant": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_contagion:AB_HalfAlienTree": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_contagion:AB_AlienTree_Polluted": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_contagion:AB_AlienGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_contagion:AB_RedLeaves": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_contagion:AB_RedPlantsTall": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_contagion:AB_AlienTree": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_contagion:AB_TentacularPlant": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:the_contagion": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:the_cracked_lands:AB_GargantuanLithops": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_cracked_lands:AB_HardyGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_cracked_lands:GRimMoss": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_cracked_lands:BMT_Plant_TwistingThorngrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_cracked_lands:BMT_Plant_TwistingThornweed": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:the_cracked_lands": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:the_fever_wood:BMT_GiantLeaf": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_fever_wood:AB_Gomphoeria": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_fever_wood:AB_Iashiphus": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_fever_wood:Plant_Chakroot_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_fever_wood:Plant_HydenockTree_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_fever_wood:Plant_JoganTree_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:the_fever_wood": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:the_forge:IronScruff_Bindweed": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_forge:BMT_FireLavender": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_forge:AB_FirevineTree": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_forge:AG_Gamma": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_forge:AB_GiantGamma": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_forge:BMT_HeatsinkFungus": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_forge:Plant_MagmaCactus": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_forge:IronScruff_PrimordialGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_forge:IronScruff_PrimordialTallGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_forge:BMT_Sagecrust": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_forge:AG_Septimum": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_forge:AB_TinkleGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:the_forge": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:the_greentide:AB_JungleTree": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_greentide:BMT_GiantLeaf": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_greentide:AB_SugarFamewort": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_greentide:Plant_Bubblespore_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_greentide:Plant_Chakroot_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_greentide:Plant_FelucianGlowspore_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_greentide:Plant_HubbaGourd_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_greentide:Plant_HydenockTree_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_greentide:Plant_JoganTree_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_greentide:Plant_MujaFruit_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_greentide:Plant_TookeTrap_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:the_greentide": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:the_miasma:AB_MangrovePalm": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_miasma:AB_MangroveTree": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_miasma:AB_ParasiticMangrove": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_miasma:BMT_RainbowTongue": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_miasma:BMT_Plant_SewerReed": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_miasma:BMT_Plant_Snaketails": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_miasma:BMT_Plant_TreeTanglerootMangrove": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:the_miasma": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:the_propane_lakes:AB_CrystalFlower": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_propane_lakes:AB_CrystalHorn": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_propane_lakes:AB_FrostLeaf": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_propane_lakes:AB_RimeNodules": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_pyrelands:AB_HardyGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_pyrelands:Plant_YellowTallGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:the_pyrelands": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:the_rot:AB_AgaricusDomeCap": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:AB_Agarilux": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:AB_AgariluxPrime": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:AB_ArbuscularMycorrhiza": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_Arpeau": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_BleedingTooth": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:Boomshroom": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_Brightbells": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:AB_Bryolux": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_CrimsonCap": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_Dewshrooms": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:AB_DribblingCap": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_FlakespireFungus": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:AB_GiantAgarilux": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:AB_GlowingAgarilux": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:AB_Glowstool": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_GreyLady": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:AB_LilacBeacon": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_FruitingBodies": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_MortalMorelPlant": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_Nogtyl": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_Nuitae": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_Pusmelon": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:AB_RecurvedStropharia": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_RustPuff": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_Sagecrust": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_Shinecap": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_Skulltop": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:AB_SlimyPholiota": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_VioletWimple": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:AB_WitchesOyster": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_rot:BMT_Wrinklecap": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:the_rot": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "purge:the_rust_cathedral": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "purge:the_scarlands": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:the_slime:AB_LargeSlimyTree": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_slime:AB_Slimecasia": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_slime:AB_SlimyFern": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_slime:AB_SlimyPholiota": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_slime:AB_SlimyTree": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_slime:AB_TallSlimyGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:the_slime": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:the_sump:AB_TarPuddle": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:the_sump": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:the_webwork:AB_Aaklac": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_webwork:RG_Plant_TropicalChokevine": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_webwork:AB_JungleTree": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_webwork:AB_Gomphoeria": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_webwork:AB_TangleTea": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:the_webwork:Plant_TookeTrap_Wild": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:the_webwork": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:wasteland:PoisonPlantBush": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:BMT_Plant_Doomsprout": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:BMT_Plant_EclipsusFlower": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:BMT_Plant_EclipsusLeaves": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:AB_GiantToxicFlower": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:Plant_GrayGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:BMT_Plant_GutterPlantain": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:PoisonShrub": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:VRE_PoluxBush": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:Plant_TreePolux": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:BMT_Plant_PoxSorghum": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:BMT_RainbowTongue": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:BMT_Plant_ScorchedStars": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:BMT_Plant_Snaketails": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:PoisonPlantTallGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:RG_Plant_TallToxiGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:AB_ToxiGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:AB_ToxiBulb": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:BMT_Plant_ToxicIvy": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:RG_Plant_ToxiGrass": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:Plant_Toxipotato": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:BMT_Plant_TumorbulbHyacinth": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:BMT_Plant_TwistedDandelion": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:AB_WeepingToxberry": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:wasteland:BMT_Plant_WildRashroot": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:wasteland": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "p:weeping_stones:Plant_Ambrosia": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:weeping_stones:AB_GreenRockFern": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "p:weeping_stones:Plant_Reeds": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "purge:weeping_stones": {
-   "decision": "purge",
-   "prefill": "purge",
-   "note": ""
-  },
-  "nd:arid_shrubland:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:arid_shrubland:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:arid_shrubland:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:desert:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:desert:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:desert:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:dune_sea + deep_desert:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:dune_sea + deep_desert:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:fall_line:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:nightside_ice:5": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:poison_forest:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_blue_desert:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_cracked_lands:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_cracked_lands:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_fever_wood:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_greentide:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_greentide:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:terminator_sea + the_grey_deep:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:terminator_sea + the_grey_deep:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_miasma:4": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_pyrelands:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_pyrelands:4": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_rot:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_rot:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_scald:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_scarlands:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_sump:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_sump:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:terminator_sea + the_twilight_deep:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:terminator_sea + the_twilight_deep:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_webwork:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_webwork:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:wasteland:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:weeping_stones:6": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:weeping_stones:7": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:arid_shrubland:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:arid_shrubland:4": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:arid_shrubland:5": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:arid_shrubland:6": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:desert:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:desert:4": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:desert:5": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:desert:6": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:dune_sea + deep_desert:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:dune_sea + deep_desert:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:dune_sea + deep_desert:4": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:dune_sea + deep_desert:5": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:dune_sea + deep_desert:6": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:dune_sea + deep_desert:7": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:fall_line:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:fall_line:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:forsaken_crags:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:forsaken_crags:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:forsaken_crags:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:forsaken_crags:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:nightside_ice:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:nightside_ice:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:nightside_ice:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:nightside_ice:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:nightside_ice:4": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:poison_forest:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:poison_forest:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_blue_desert:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_blue_desert:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_blue_desert:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_contagion:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_cracked_lands:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_cracked_lands:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_fever_wood:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_fever_wood:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_fever_wood:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_forge:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_forge:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_forge:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_greentide:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_greentide:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_greentide:4": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:terminator_sea + the_grey_deep:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:terminator_sea + the_grey_deep:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:terminator_sea + the_grey_deep:4": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_miasma:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_miasma:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_miasma:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_miasma:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_propane_lakes:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_propane_lakes:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_pyrelands:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_pyrelands:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_pyrelands:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_rot:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_rot:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_rot:4": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_rust_cathedral:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_rust_cathedral:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_scald:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_scald:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_scarlands:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_scarlands:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_slime:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_sump:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_sump:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:terminator_sea + the_twilight_deep:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:terminator_sea + the_twilight_deep:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:terminator_sea + the_twilight_deep:4": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:terminator_sea + the_twilight_deep:5": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:terminator_sea + the_twilight_deep:6": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_webwork:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:the_webwork:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:wasteland:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:wasteland:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:wasteland:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:wasteland:4": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:weeping_stones:0": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:weeping_stones:1": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:weeping_stones:2": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:weeping_stones:3": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:weeping_stones:4": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "nd:weeping_stones:5": {
-   "decision": "keep",
-   "prefill": "keep",
+  "q:the_forge:earth-plant-names": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "flora:arid_shrubland:RG_Plant_Dervish": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:arid_shrubland:RG_Plant_AridGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:arid_shrubland:Plant_HealrootWild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:arid_shrubland:RG_Plant_CrimsonCushion": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:arid_shrubland:Plant_Bush": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:arid_shrubland:Plant_ShrubLow": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:arid_shrubland:Plant_Ripthorn": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:arid_shrubland:RG_Plant_CreepStern": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:arid_shrubland:Plant_Nysyllin_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:arid_shrubland:Plant_Brambles": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:desert:AB_HardyGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:desert:Plant_HubbaGourd_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:desert:Plant_Chakroot_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:desert:AB_Aaklac": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:desert:AB_DessertTree": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:dune_sea + deep_desert:Plant_Bloddle": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:dune_sea + deep_desert:AB_GiantStikehr": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:forsaken_crags:AB_GlowingGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:forsaken_crags:AB_GiantGamma": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:forsaken_crags:AB_WildRadagast": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:forsaken_crags:AB_GiantSeptimum": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:forsaken_crags:AB_ToxicGamma": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:forsaken_crags:AB_GiantStikehr": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:poison_forest:AB_CrystalHorn": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:poison_forest:AB_RavenNettle": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:poison_forest:AB_KeeningCordax": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:poison_forest:AB_RedBugloss": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:poison_forest:AB_BloodBouquet": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:poison_forest:BMT_Plant_TreeMartyr": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:poison_forest:BMT_Plant_TreeTwistingThornwood": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:poison_forest:AB_CrystalFlower": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:poison_forest:AB_GiantAgariTox": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "titan",
+   "sizeBinPrefill": "titan",
+   "art": "redo",
+   "artPrefill": "redo"
+  },
+  "flora:the_contagion:AB_EyeGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_contagion:AB_AlienGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_contagion:AB_RedLeaves": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_contagion:AB_RedPlantsTall": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_contagion:AB_BloodBouquet": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_contagion:AB_GlobularPlant": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_contagion:AB_HalfAlienTree": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_contagion:AB_TentacularPlant": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_contagion:AB_AlienTree_Polluted": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_contagion:AB_AlienTree": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_cracked_lands:AB_HardyGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_cracked_lands:GRimMoss": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_cracked_lands:BMT_Plant_TwistingThorngrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_cracked_lands:AB_GargantuanLithops": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_cracked_lands:BMT_Plant_TwistingThornweed": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_cracked_lands:BMT_Plant_TreeTwistingThornwood": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_fever_wood:BMT_GiantLeaf": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_fever_wood:Plant_Chakroot_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_fever_wood:AB_Gomphoeria": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_fever_wood:AB_Iashiphus": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_fever_wood:AB_KeeningCordax": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_fever_wood:Plant_HydenockTree_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_fever_wood:Plant_JoganTree_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_forge:IronScruff_Bindweed": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_forge:BMT_Sagecrust": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_forge:IronScruff_PrimordialGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_forge:Plant_Fireweed": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_forge:BMT_HeatsinkFungus": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_forge:IronScruff_PrimordialTallGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_forge:BMT_FireLavender": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_forge:AB_TinkleGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_forge:AG_Septimum": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_forge:Plant_MagmaCactus": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "redo",
+   "artPrefill": "redo"
+  },
+  "flora:the_forge:AG_Gamma": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_forge:AB_GiantGamma": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_forge:AB_FirevineTree": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_greentide:Plant_Bubblespore_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_greentide:Plant_HubbaGourd_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_greentide:Plant_TookeTrap_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_greentide:BMT_GiantLeaf": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_greentide:Plant_Chakroot_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_greentide:Plant_MujaFruit_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_greentide:AB_SugarFamewort": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_greentide:Plant_HydenockTree_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_greentide:Plant_JoganTree_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_greentide:Plant_FelucianGlowspore_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_greentide:AB_JungleTree": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_miasma:BMT_RainbowTongue": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_miasma:BMT_Plant_SewerReed": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_miasma:BMT_Plant_Snaketails": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_miasma:AB_ParasiticMangrove": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_miasma:AB_MangrovePalm": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_miasma:BMT_Plant_TreeTanglerootMangrove": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_miasma:AB_MangroveTree": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_propane_lakes:AB_CrystalHorn": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_propane_lakes:AB_FrostLeaf": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_propane_lakes:AB_RimeNodules": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_propane_lakes:AB_CrystalFlower": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_pyrelands:AB_HardyGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_pyrelands:Plant_YellowGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_pyrelands:Plant_YellowTallGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_Dewshrooms": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_FruitingBodies": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_Sagecrust": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_Nuitae": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_RustPuff": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:AB_Glowstool": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_Pusmelon": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_Skulltop": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_VioletWimple": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_Wrinklecap": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:AB_Bryolux": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_BleedingTooth": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_CrimsonCap": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_GreyLady": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_MortalMorelPlant": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_Brightbells": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:AB_Agarilux": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:Boomshroom": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:AB_AgaricusDomeCap": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_FlakespireFungus": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:AB_GlowingAgarilux": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:AB_LilacBeacon": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "redo",
+   "artPrefill": "redo"
+  },
+  "flora:the_rot:AB_WitchesOyster": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_Arpeau": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_Nogtyl": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:BMT_Shinecap": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:AB_ArbuscularMycorrhiza": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_rot:AB_DribblingCap": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "titan",
+   "sizeBinPrefill": "titan",
+   "art": "redo",
+   "artPrefill": "redo"
+  },
+  "flora:the_rot:AB_RecurvedStropharia": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "titan",
+   "sizeBinPrefill": "titan",
+   "art": "redo",
+   "artPrefill": "redo"
+  },
+  "flora:the_rot:AB_SlimyPholiota": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "titan",
+   "sizeBinPrefill": "titan",
+   "art": "redo",
+   "artPrefill": "redo"
+  },
+  "flora:the_rot:AB_GiantAgarilux": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "titan",
+   "sizeBinPrefill": "titan",
+   "art": "redo",
+   "artPrefill": "redo"
+  },
+  "flora:the_rot:AB_AgariluxPrime": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "titan",
+   "sizeBinPrefill": "titan",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_scarlands:BMT_Plant_ScorchedStars": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_slime:AB_TallSlimyGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_slime:AB_Slimecasia": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_slime:AB_SlimyFern": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_slime:AB_SlimyTree": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_slime:AB_LargeSlimyTree": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_slime:AB_SlimyPholiota": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "titan",
+   "sizeBinPrefill": "titan",
+   "art": "redo",
+   "artPrefill": "redo"
+  },
+  "flora:the_sump:AB_TarPuddle": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_webwork:AB_TangleTea": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_webwork:Plant_TookeTrap_Wild": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_webwork:AB_Aaklac": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_webwork:RG_Plant_TropicalChokevine": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_webwork:AB_Gomphoeria": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_webwork:AB_RedBugloss": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:the_webwork:AB_JungleTree": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:BMT_Plant_TwistedDandelion": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:Plant_GrayGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:AB_ToxiGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:BMT_Plant_ToxicIvy": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:RG_Plant_ToxiGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:BMT_Plant_PoxSorghum": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:PoisonPlantTallGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:RG_Plant_TallToxiGrass": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:Plant_Toxipotato": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:BMT_Plant_WildRashroot": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:BMT_Plant_TumorbulbHyacinth": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:PoisonPlantBush": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "redo",
+   "artPrefill": "redo"
+  },
+  "flora:wasteland:BMT_Plant_Doomsprout": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:PoisonShrub": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "redo",
+   "artPrefill": "redo"
+  },
+  "flora:wasteland:BMT_Plant_ScorchedStars": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:BMT_RainbowTongue": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:BMT_Plant_EclipsusFlower": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:BMT_Plant_EclipsusLeaves": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:BMT_Plant_GutterPlantain": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:BMT_Plant_Snaketails": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:VRE_PoluxBush": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:AB_WeepingToxberry": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:Plant_TreePolux": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:AB_ToxiBulb": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:wasteland:AB_GiantToxicFlower": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "large",
+   "sizeBinPrefill": "large",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:weeping_stones:BMT_Dewshrooms": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:weeping_stones:Plant_Reeds": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "small",
+   "sizeBinPrefill": "small",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:weeping_stones:Plant_Ambrosia": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "flora:weeping_stones:AB_GreenRockFern": {
+   "decision": "in",
+   "prefill": "in",
+   "note": "",
+   "sizeBin": "medium",
+   "sizeBinPrefill": "medium",
+   "art": "keep",
+   "artPrefill": "keep"
+  },
+  "ledger:weeping_stones:blade-flora-with-bladder-fruit-forage-target-re-points-donor": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_cracked_lands:bloom-crop-flood-week-boom-bust-harvest-visible-growth": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:nightside_ice:chemical-frosts-ambiguously-alive": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:poison_forest:dark-crust-phototroph-flora-black-purple-red-films-on-starwa": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:desert:defending-shade-plants-thorn-venom-patch-flora": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_greentide:digestive-accelerant-fruit-the-fruit-that-yearns": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_sump:edge-chemotroph-ring-flora-waxy-grey-greens-feeding-on-the-t": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:dune_sea + deep_desert:glass-nub-light-pipe-flora": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_greentide:greatbole-living-tower": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_webwork:pale-flowers-web-tracing-bloom": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_webwork:parasitic-root-mat-flora-the-stolen-river-s-plumbing": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_pyrelands:quickgrass-rakatan-feral-forage-crop": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:wasteland:radiotroph-flora-dosimeter-lawn-vault-root-sequestration-tre": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_miasma:rainbow-flora-suite-3-4-genuinely-benign-blooms": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:terminator_sea + the_twilight_deep:salt-rimed-blade-flora-black-sail-on-white-pan-planar-vertic": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:terminator_sea + the_grey_deep:salt-rimed-blade-flora-grey-shore-variant-distinct-def-from-": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_pyrelands:scorch-fruit-plant-yield": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_fever_wood:seep-oil-surface-deposits": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:dune_sea + deep_desert:silverbole-owner-to-name-silver-required-heat-flame-immune-w": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:desert:staggerseed-cycle-plant-prepared-seed-euphoric-dish": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:arid_shrubland:sweetline-trees-huge-ancient-giant-wool-snag-harvest": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_rot:tea-source-guardian-mushrooms-per-species-defense-repertoire": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:arid_shrubland:the-fuzz-knee-high-silver-green-canopy-plant": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_scarlands:the-glowers-black-radiotrophic-crust-flora-crater-bowl-varni": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:terminator_sea + the_twilight_deep:the-mold-mat-roof-organism-twilight-monoculture-shore-to-sho": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_rot:the-pale-tree-anima-reskin-light-side-psycast-subset": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:terminator_sea + the_grey_deep:the-pillar-mason-grey-monoculture-crystal-binding-film-that-": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_blue_desert:transparent-fractal-flora-set-ferns-dandelion-heads-fuzzball": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_cracked_lands:twisted-trees-shade-line-grasses-mosses-our-own-vegetation-o": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:desert:ultracactus-owner-s-own-name-stands": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:arid_shrubland:venomvine-fortress-flora-passability-by-body-size": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:weeping_stones:weep-mat-drip-garden-corduroy-mats-ridged-wind-square": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_scald:welcome-blanket-thermophile-mats-rainbow-banded-by-temperatu": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_sump:wick-plant-slow-burning-stems-candles-and-lamp-stock-farmed-": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:fall_line:wreck-shade-flora-pockets-gate-hardy-smalls-on-wreck-mutator": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_fever_wood:ant-raider-wiring-theft-hauling-two-front-war": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:wasteland:brine-battery-pool-owner-ion-gradient-discharge": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_scald:bubble-sailor-jellyfish-analog-rides-boiling-bubble-lines-li": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_blue_desert:burner-fast-oxidizer-blue-fire-halo-at-speed-explodes-when-g": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_propane_lakes:burner-polar-ascendant-form-blue-fire-halo-as-locomotion-alm": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:weeping_stones:burrak-burradar-well-digger-claw-combs-elder-form": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_pyrelands:burrower-grazer-dives-under-the-burn-emerges-into-ash": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:desert:burst-predator-flagship-bursts-grabs-retreats-to-cool": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_greentide:canopy-swinger": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:dune_sea + deep_desert:cavern-beast-with-prized-massive-eggs-mandalorian-reference": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:forsaken_crags:cindermare": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:terminator_sea + the_twilight_deep:condensate-drinker-fog-lick-fauna": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_forge:contagion-corpse-ring-ambient-die-off": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_rust_cathedral:coolant-eels": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:forsaken_crags:darkbeast-dark-halo-behaviour": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_miasma:delta-loam-composter-castings-producer": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:dune_sea + deep_desert:dormancy-trigger-dune-fauna-reskin-lane-107-live-vfei2-dorma": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:dune_sea + deep_desert:drum-lure-subsurface-predator-lures-that-drum-juicy": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:forsaken_crags:dusk-rat-art-redo": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_webwork:egg-mite-fist-sized-silk-runner": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:dune_sea + deep_desert:egg-trap-clutch-birth-trap-eggs": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_cracked_lands:emperor-vulture-the-sky-s-undertaker-rides-the-flats-thermal": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:wasteland:excretor-herd-creature-metal-salt-bezoar-product-def": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:poison_forest:eyeless-vibration-sensing-ambusher-the-signature": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:fall_line:feral-droid-behaviour-flee-prone-memwipe-capture-no-droid-re": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:fall_line:feral-races-crash-survivors-pawnkind-permanent-mental-scar-h": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_slime:filter-feeder-line-scooping-mouthed-slime-grazers": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:desert:filter-feeding-shade-whale-megafauna-body-donor-gr-paraceram": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_pyrelands:fire-hawk-twig-carrying-raptor-analog": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_forge:fleet-fliers-small-darting-fireweed-eaters": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_pyrelands:furnace-beast-thermal-circuit-megafauna": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:desert:glitter-birds-megafauna-shadow-commensals": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_greentide:gnawer-proper-huge-tree-base-insect": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_rot:health-share-species-tagging-both-variants": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_rot:heat-generating-gene": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:nightside_ice:hectare-scale-sessile-catalytic-sheets-landform-catalysts": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:nightside_ice:icy-insects-of-the-inclusions": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_miasma:karr-fever-swarm-vector-pollinator-one-swarm": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_rust_cathedral:living-bolts": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:weeping_stones:mirrik-dew-smoke-swarm-dewsilk-cocoon-source": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:dune_sea + deep_desert:mirror-plated-sun-axis-asymmetric-giant": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_scarlands:mortuary-guild-carrion-specialist-dedicated-body": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_blue_desert:picker-ablation-line-scavenger": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_scarlands:plated-grazer-signature-rhino-armored-crust-browser-the-scar": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:wasteland:radiothermal-solitary-living-furnace-spacing-law": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:terminator_sea + the_twilight_deep:rename-ledger-rsw-lanternwhale-twilight-gardener-endemic-lab": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:terminator_sea + the_grey_deep:rename-ledger-rsw-reefback-brine-warden-adult-the-crusted-gi": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:arid_shrubland:scrap-nest-bird-analogs-glittering-treasure-nests-steal-from": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_cracked_lands:sealed-signature-sleeper-wax-lined-burrow-water-wake-sheds-c": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:desert:shade-grid-mapcomponent-shadeat-the-keystone": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:dune_sea + deep_desert:shade-commensal-micro-fauna-living-under-a-walking-giant": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:terminator_sea + the_twilight_deep:shadow-lane-detritivore": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:terminator_sea + the_grey_deep:shadow-lane-detritivore-condensate-drinker-grey-shore-distin": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_greentide:shatterer-proper-tree-felling-megafauna": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:terminator_sea + the_twilight_deep:shore-scavenger-on-stranded-carcasses-stonecrab-hermitcrab-b": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:weeping_stones:sillik-weep-face-licker-whisker-combs-prey-base": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_scald:silver-shoal-fish-analog-thermophile-dung-fall-feeder": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:forsaken_crags:skarnix": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:weeping_stones:ssurr-crest-fan-display-reptile-the-romance-ruling-made-anim": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_sump:sump-mouse-splay-footed-oil-shedding-mouse-analog-prey-base-": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_blue_desert:swallower-sealed-armored-herbivore-whole-root-swallow-anaero": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_rot:symbiont-parasites-three-ratified-bargain-pairs": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_sump:tar-beast-patient-family-slow-station-eating-set-piece-woken": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_fever_wood:the-deep-thing-tentacled-monstrosity": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:arid_shrubland:the-huge-grazer-large-young-parental-enrage-body-donors-famb": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:nightside_ice:the-one-move-animal": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:terminator_sea + the_grey_deep:the-ossuary-shrimp-man-sized-skeletal-seeming-shy-and-evasiv": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_miasma:the-stranded-transitional-orphan-forms-2-3-species": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:wasteland:the-three-storm-weather-defs-ash-radiation-halo-plasma-termi": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:nightside_ice:the-tunnelers-within-ice-blind-thermal": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:terminator_sea + the_twilight_deep:the-twilight-deep-set-deferred-to-diving-mods-kelp-forest-fl": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_contagion:the-unfinished-random-stat-short-lived-chimera-spawns-goo-co": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:nightside_ice:thermal-sensing-seam-striker": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_fever_wood:thornbug-nectar-beast": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_forge:tibanna-gland-harvest-on-the-beldon": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:weeping_stones:tirbak-walking-cistern-caravan-colossus-dorsal-rain-fins": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:poison_forest:toxic-prized-meat-def-property-on-the-4-flagged-keepers-neeb": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:arid_shrubland:tree-guardian-uniques-owner-candidate-not-yet-ruled": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:arid_shrubland:tunnel-snake-analog-the-signature-corridor-predator": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_propane_lakes:v-wake-propane-sea-exotic-kin-propane-native-agitated-by-pum": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:weeping_stones:vhakk-the-warden-margin-apex-never-hunts-at-water-by-design": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_miasma:warden-mother-brine-broken-elder-cr-che-guard": {
+   "decision": "in",
+   "prefill": "in",
+   "note": ""
+  },
+  "ledger:the_webwork:wyyyschokk-guild-pawnkinds-nettik-chirrik-rothrik": {
+   "decision": "in",
+   "prefill": "in",
    "note": ""
   }
  }

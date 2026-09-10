@@ -1,0 +1,1175 @@
+{
+ "figure": "assets/human_anchor_south.png (the fauna sheet's colonist)",
+ "pxPerCell": 64,
+ "humanCells": 1.5,
+ "panels": {
+  "AB_Aaklac": {
+   "file": "plant_art/AB_Aaklac.anchor.png",
+   "w": 197,
+   "h": 126,
+   "shownPct": 100,
+   "cells": 1.65,
+   "mesh": 1
+  },
+  "AB_AgaricusDomeCap": {
+   "file": "plant_art/AB_AgaricusDomeCap.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "AB_Agarilux": {
+   "file": "plant_art/AB_Agarilux.anchor.png",
+   "w": 187,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.5,
+   "mesh": 1
+  },
+  "AB_AgariluxPrime": {
+   "file": "plant_art/AB_AgariluxPrime.anchor.png",
+   "w": 603,
+   "h": 532,
+   "shownPct": 100,
+   "cells": 8.0,
+   "mesh": 1
+  },
+  "AB_AlienGrass": {
+   "file": "plant_art/AB_AlienGrass.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 9
+  },
+  "AB_AlienTree": {
+   "file": "plant_art/AB_AlienTree.anchor.png",
+   "w": 331,
+   "h": 260,
+   "shownPct": 100,
+   "cells": 3.75,
+   "mesh": 1
+  },
+  "AB_AlienTree_Polluted": {
+   "file": "plant_art/AB_AlienTree_Polluted.anchor.png",
+   "w": 331,
+   "h": 260,
+   "shownPct": 100,
+   "cells": 3.75,
+   "mesh": 1
+  },
+  "AB_ArbuscularMycorrhiza": {
+   "file": "plant_art/AB_ArbuscularMycorrhiza.anchor.png",
+   "w": 315,
+   "h": 244,
+   "shownPct": 100,
+   "cells": 3.5,
+   "mesh": 1
+  },
+  "AB_BloodBouquet": {
+   "file": "plant_art/AB_BloodBouquet.anchor.png",
+   "w": 251,
+   "h": 180,
+   "shownPct": 100,
+   "cells": 2.5,
+   "mesh": 1
+  },
+  "AB_Bryolux": {
+   "file": "plant_art/AB_Bryolux.anchor.png",
+   "w": 142,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.95,
+   "mesh": 4,
+   "patched": true
+  },
+  "AB_CrystalFlower": {
+   "file": "plant_art/AB_CrystalFlower.anchor.png",
+   "w": 315,
+   "h": 244,
+   "shownPct": 100,
+   "cells": 3.5,
+   "mesh": 1
+  },
+  "AB_CrystalHorn": {
+   "file": "plant_art/AB_CrystalHorn.anchor.png",
+   "w": 168,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.2,
+   "mesh": 1
+  },
+  "AB_DessertTree": {
+   "file": "plant_art/AB_DessertTree.anchor.png",
+   "w": 283,
+   "h": 212,
+   "shownPct": 100,
+   "cells": 3.0,
+   "mesh": 1
+  },
+  "AB_DribblingCap": {
+   "file": "plant_art/AB_DribblingCap.anchor.png",
+   "w": 411,
+   "h": 340,
+   "shownPct": 100,
+   "cells": 5.0,
+   "mesh": 1
+  },
+  "AB_EyeGrass": {
+   "file": "plant_art/AB_EyeGrass.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 9
+  },
+  "AB_FirevineTree": {
+   "file": "plant_art/AB_FirevineTree.anchor.png",
+   "w": 334,
+   "h": 263,
+   "shownPct": 100,
+   "cells": 3.8,
+   "mesh": 1
+  },
+  "AB_FrostLeaf": {
+   "file": "plant_art/AB_FrostLeaf.anchor.png",
+   "w": 168,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.2,
+   "mesh": 1
+  },
+  "AB_GargantuanLithops": {
+   "file": "plant_art/AB_GargantuanLithops.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.0,
+   "mesh": 1
+  },
+  "AB_GiantAgariTox": {
+   "file": "plant_art/AB_GiantAgariTox.anchor.png",
+   "w": 411,
+   "h": 340,
+   "shownPct": 100,
+   "cells": 5.0,
+   "mesh": 1
+  },
+  "AB_GiantAgarilux": {
+   "file": "plant_art/AB_GiantAgarilux.anchor.png",
+   "w": 475,
+   "h": 404,
+   "shownPct": 100,
+   "cells": 6.0,
+   "mesh": 1
+  },
+  "AB_GiantGamma": {
+   "file": "plant_art/AB_GiantGamma.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "AB_GiantSeptimum": {
+   "file": "plant_art/AB_GiantSeptimum.anchor.png",
+   "w": 251,
+   "h": 180,
+   "shownPct": 100,
+   "cells": 2.5,
+   "mesh": 1
+  },
+  "AB_GiantStikehr": {
+   "file": "plant_art/AB_GiantStikehr.anchor.png",
+   "w": 334,
+   "h": 263,
+   "shownPct": 100,
+   "cells": 3.8,
+   "mesh": 1
+  },
+  "AB_GiantToxicFlower": {
+   "file": "plant_art/AB_GiantToxicFlower.anchor.png",
+   "w": 334,
+   "h": 263,
+   "shownPct": 100,
+   "cells": 3.8,
+   "mesh": 1
+  },
+  "AB_GlobularPlant": {
+   "file": "plant_art/AB_GlobularPlant.anchor.png",
+   "w": 283,
+   "h": 212,
+   "shownPct": 100,
+   "cells": 3.0,
+   "mesh": 1
+  },
+  "AB_GlowingAgarilux": {
+   "file": "plant_art/AB_GlowingAgarilux.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "AB_GlowingGrass": {
+   "file": "plant_art/AB_GlowingGrass.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 9
+  },
+  "AB_Glowstool": {
+   "file": "plant_art/AB_Glowstool.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.7,
+   "mesh": 4
+  },
+  "AB_Gomphoeria": {
+   "file": "plant_art/AB_Gomphoeria.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "AB_GreenRockFern": {
+   "file": "plant_art/AB_GreenRockFern.anchor.png",
+   "w": 187,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.5,
+   "mesh": 1
+  },
+  "AB_HalfAlienTree": {
+   "file": "plant_art/AB_HalfAlienTree.anchor.png",
+   "w": 283,
+   "h": 212,
+   "shownPct": 100,
+   "cells": 3.0,
+   "mesh": 1
+  },
+  "AB_HardyGrass": {
+   "file": "plant_art/AB_HardyGrass.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 9
+  },
+  "AB_Iashiphus": {
+   "file": "plant_art/AB_Iashiphus.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "AB_JungleTree": {
+   "file": "plant_art/AB_JungleTree.anchor.png",
+   "w": 334,
+   "h": 263,
+   "shownPct": 100,
+   "cells": 3.8,
+   "mesh": 1
+  },
+  "AB_KeeningCordax": {
+   "file": "plant_art/AB_KeeningCordax.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "AB_LargeSlimyTree": {
+   "file": "plant_art/AB_LargeSlimyTree.anchor.png",
+   "w": 334,
+   "h": 263,
+   "shownPct": 100,
+   "cells": 3.8,
+   "mesh": 1
+  },
+  "AB_LilacBeacon": {
+   "file": "plant_art/AB_LilacBeacon.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "AB_MangrovePalm": {
+   "file": "plant_art/AB_MangrovePalm.anchor.png",
+   "w": 251,
+   "h": 180,
+   "shownPct": 100,
+   "cells": 2.5,
+   "mesh": 1
+  },
+  "AB_MangroveTree": {
+   "file": "plant_art/AB_MangroveTree.anchor.png",
+   "w": 334,
+   "h": 263,
+   "shownPct": 100,
+   "cells": 3.8,
+   "mesh": 1
+  },
+  "AB_ParasiticMangrove": {
+   "file": "plant_art/AB_ParasiticMangrove.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "AB_RavenNettle": {
+   "file": "plant_art/AB_RavenNettle.anchor.png",
+   "w": 183,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.445,
+   "mesh": 4
+  },
+  "AB_RecurvedStropharia": {
+   "file": "plant_art/AB_RecurvedStropharia.anchor.png",
+   "w": 411,
+   "h": 340,
+   "shownPct": 100,
+   "cells": 5.0,
+   "mesh": 1
+  },
+  "AB_RedBugloss": {
+   "file": "plant_art/AB_RedBugloss.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "AB_RedLeaves": {
+   "file": "plant_art/AB_RedLeaves.anchor.png",
+   "w": 168,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.2,
+   "mesh": 1
+  },
+  "AB_RedPlantsTall": {
+   "file": "plant_art/AB_RedPlantsTall.anchor.png",
+   "w": 168,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.2,
+   "mesh": 1
+  },
+  "AB_RimeNodules": {
+   "file": "plant_art/AB_RimeNodules.anchor.png",
+   "w": 168,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.2,
+   "mesh": 1
+  },
+  "AB_Slimecasia": {
+   "file": "plant_art/AB_Slimecasia.anchor.png",
+   "w": 232,
+   "h": 161,
+   "shownPct": 100,
+   "cells": 2.2,
+   "mesh": 1
+  },
+  "AB_SlimyFern": {
+   "file": "plant_art/AB_SlimyFern.anchor.png",
+   "w": 232,
+   "h": 161,
+   "shownPct": 100,
+   "cells": 2.2,
+   "mesh": 1
+  },
+  "AB_SlimyPholiota": {
+   "file": "plant_art/AB_SlimyPholiota.anchor.png",
+   "w": 411,
+   "h": 340,
+   "shownPct": 100,
+   "cells": 5.0,
+   "mesh": 1
+  },
+  "AB_SlimyTree": {
+   "file": "plant_art/AB_SlimyTree.anchor.png",
+   "w": 270,
+   "h": 199,
+   "shownPct": 100,
+   "cells": 2.8,
+   "mesh": 1
+  },
+  "AB_SugarFamewort": {
+   "file": "plant_art/AB_SugarFamewort.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "AB_TallSlimyGrass": {
+   "file": "plant_art/AB_TallSlimyGrass.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.85,
+   "mesh": 9
+  },
+  "AB_TangleTea": {
+   "file": "plant_art/AB_TangleTea.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.0,
+   "mesh": 1
+  },
+  "AB_TarPuddle": {
+   "file": "plant_art/AB_TarPuddle.anchor.png",
+   "w": 174,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.3,
+   "mesh": 1
+  },
+  "AB_TentacularPlant": {
+   "file": "plant_art/AB_TentacularPlant.anchor.png",
+   "w": 283,
+   "h": 212,
+   "shownPct": 100,
+   "cells": 3.0,
+   "mesh": 1
+  },
+  "AB_TinkleGrass": {
+   "file": "plant_art/AB_TinkleGrass.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.9,
+   "mesh": 9
+  },
+  "AB_ToxiBulb": {
+   "file": "plant_art/AB_ToxiBulb.anchor.png",
+   "w": 270,
+   "h": 199,
+   "shownPct": 100,
+   "cells": 2.8,
+   "mesh": 1
+  },
+  "AB_ToxiGrass": {
+   "file": "plant_art/AB_ToxiGrass.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 9
+  },
+  "AB_ToxicGamma": {
+   "file": "plant_art/AB_ToxicGamma.anchor.png",
+   "w": 270,
+   "h": 199,
+   "shownPct": 100,
+   "cells": 2.8,
+   "mesh": 1
+  },
+  "AB_WeepingToxberry": {
+   "file": "plant_art/AB_WeepingToxberry.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 4
+  },
+  "AB_WildRadagast": {
+   "file": "plant_art/AB_WildRadagast.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "AB_WitchesOyster": {
+   "file": "plant_art/AB_WitchesOyster.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "AG_Gamma": {
+   "file": "plant_art/AG_Gamma.anchor.png",
+   "w": 187,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.5,
+   "mesh": 1
+  },
+  "AG_Septimum": {
+   "file": "plant_art/AG_Septimum.anchor.png",
+   "w": 158,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.05,
+   "mesh": 1
+  },
+  "BMT_Arpeau": {
+   "file": "plant_art/BMT_Arpeau.anchor.png",
+   "w": 251,
+   "h": 180,
+   "shownPct": 100,
+   "cells": 2.5,
+   "mesh": 1
+  },
+  "BMT_BleedingTooth": {
+   "file": "plant_art/BMT_BleedingTooth.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.0,
+   "mesh": 1
+  },
+  "BMT_Brightbells": {
+   "file": "plant_art/BMT_Brightbells.anchor.png",
+   "w": 145,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.05,
+   "mesh": 1,
+   "patched": true
+  },
+  "BMT_CrimsonCap": {
+   "file": "plant_art/BMT_CrimsonCap.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.0,
+   "mesh": 4
+  },
+  "BMT_Dewshrooms": {
+   "file": "plant_art/BMT_Dewshrooms.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.5,
+   "mesh": 9
+  },
+  "BMT_FireLavender": {
+   "file": "plant_art/BMT_FireLavender.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.9,
+   "mesh": 4
+  },
+  "BMT_FlakespireFungus": {
+   "file": "plant_art/BMT_FlakespireFungus.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "BMT_FruitingBodies": {
+   "file": "plant_art/BMT_FruitingBodies.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.5,
+   "mesh": 9
+  },
+  "BMT_GiantLeaf": {
+   "file": "plant_art/BMT_GiantLeaf.anchor.png",
+   "w": 174,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.3,
+   "mesh": 9
+  },
+  "BMT_GreyLady": {
+   "file": "plant_art/BMT_GreyLady.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.0,
+   "mesh": 1
+  },
+  "BMT_HeatsinkFungus": {
+   "file": "plant_art/BMT_HeatsinkFungus.anchor.png",
+   "w": 136,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.7,
+   "mesh": 1
+  },
+  "BMT_MortalMorelPlant": {
+   "file": "plant_art/BMT_MortalMorelPlant.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.0,
+   "mesh": 4
+  },
+  "BMT_Nogtyl": {
+   "file": "plant_art/BMT_Nogtyl.anchor.png",
+   "w": 251,
+   "h": 180,
+   "shownPct": 100,
+   "cells": 2.5,
+   "mesh": 1
+  },
+  "BMT_Nuitae": {
+   "file": "plant_art/BMT_Nuitae.anchor.png",
+   "w": 129,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 1
+  },
+  "BMT_Plant_Doomsprout": {
+   "file": "plant_art/BMT_Plant_Doomsprout.anchor.png",
+   "w": 172,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.265,
+   "mesh": 1
+  },
+  "BMT_Plant_EclipsusFlower": {
+   "file": "plant_art/BMT_Plant_EclipsusFlower.anchor.png",
+   "w": 187,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.5,
+   "mesh": 1
+  },
+  "BMT_Plant_EclipsusLeaves": {
+   "file": "plant_art/BMT_Plant_EclipsusLeaves.anchor.png",
+   "w": 187,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.5,
+   "mesh": 1
+  },
+  "BMT_Plant_GutterPlantain": {
+   "file": "plant_art/BMT_Plant_GutterPlantain.anchor.png",
+   "w": 187,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.5,
+   "mesh": 1
+  },
+  "BMT_Plant_PoxSorghum": {
+   "file": "plant_art/BMT_Plant_PoxSorghum.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.8,
+   "mesh": 4
+  },
+  "BMT_Plant_ScorchedStars": {
+   "file": "plant_art/BMT_Plant_ScorchedStars.anchor.png",
+   "w": 172,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.265,
+   "mesh": 1
+  },
+  "BMT_Plant_SewerReed": {
+   "file": "plant_art/BMT_Plant_SewerReed.anchor.png",
+   "w": 187,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.5,
+   "mesh": 1
+  },
+  "BMT_Plant_Snaketails": {
+   "file": "plant_art/BMT_Plant_Snaketails.anchor.png",
+   "w": 187,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.5,
+   "mesh": 1
+  },
+  "BMT_Plant_ToxicIvy": {
+   "file": "plant_art/BMT_Plant_ToxicIvy.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 9
+  },
+  "BMT_Plant_TreeMartyr": {
+   "file": "plant_art/BMT_Plant_TreeMartyr.anchor.png",
+   "w": 283,
+   "h": 212,
+   "shownPct": 100,
+   "cells": 3.0,
+   "mesh": 1
+  },
+  "BMT_Plant_TreeTanglerootMangrove": {
+   "file": "plant_art/BMT_Plant_TreeTanglerootMangrove.anchor.png",
+   "w": 283,
+   "h": 212,
+   "shownPct": 100,
+   "cells": 3.0,
+   "mesh": 1
+  },
+  "BMT_Plant_TreeTwistingThornwood": {
+   "file": "plant_art/BMT_Plant_TreeTwistingThornwood.anchor.png",
+   "w": 283,
+   "h": 212,
+   "shownPct": 100,
+   "cells": 3.0,
+   "mesh": 1
+  },
+  "BMT_Plant_TumorbulbHyacinth": {
+   "file": "plant_art/BMT_Plant_TumorbulbHyacinth.anchor.png",
+   "w": 163,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.125,
+   "mesh": 1
+  },
+  "BMT_Plant_TwistedDandelion": {
+   "file": "plant_art/BMT_Plant_TwistedDandelion.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.4,
+   "mesh": 9
+  },
+  "BMT_Plant_TwistingThorngrass": {
+   "file": "plant_art/BMT_Plant_TwistingThorngrass.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.69,
+   "mesh": 4
+  },
+  "BMT_Plant_TwistingThornweed": {
+   "file": "plant_art/BMT_Plant_TwistingThornweed.anchor.png",
+   "w": 172,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.265,
+   "mesh": 1
+  },
+  "BMT_Plant_WildRashroot": {
+   "file": "plant_art/BMT_Plant_WildRashroot.anchor.png",
+   "w": 161,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.1,
+   "mesh": 1
+  },
+  "BMT_Pusmelon": {
+   "file": "plant_art/BMT_Pusmelon.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.7,
+   "mesh": 4
+  },
+  "BMT_RainbowTongue": {
+   "file": "plant_art/BMT_RainbowTongue.anchor.png",
+   "w": 181,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.4,
+   "mesh": 1
+  },
+  "BMT_RustPuff": {
+   "file": "plant_art/BMT_RustPuff.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 4
+  },
+  "BMT_Sagecrust": {
+   "file": "plant_art/BMT_Sagecrust.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.5,
+   "mesh": 9
+  },
+  "BMT_Shinecap": {
+   "file": "plant_art/BMT_Shinecap.anchor.png",
+   "w": 251,
+   "h": 180,
+   "shownPct": 100,
+   "cells": 2.5,
+   "mesh": 1
+  },
+  "BMT_Skulltop": {
+   "file": "plant_art/BMT_Skulltop.anchor.png",
+   "w": 136,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.7,
+   "mesh": 1
+  },
+  "BMT_VioletWimple": {
+   "file": "plant_art/BMT_VioletWimple.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.7,
+   "mesh": 4
+  },
+  "BMT_Wrinklecap": {
+   "file": "plant_art/BMT_Wrinklecap.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.85,
+   "mesh": 4
+  },
+  "Boomshroom": {
+   "file": "plant_art/Boomshroom.anchor.png",
+   "w": 174,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.5,
+   "mesh": 1,
+   "patched": true
+  },
+  "GRimMoss": {
+   "file": "plant_art/GRimMoss.anchor.png",
+   "w": 142,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 9,
+   "patched": true
+  },
+  "IronScruff_Bindweed": {
+   "file": "plant_art/IronScruff_Bindweed.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.5,
+   "mesh": 9
+  },
+  "IronScruff_PrimordialGrass": {
+   "file": "plant_art/IronScruff_PrimordialGrass.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 9
+  },
+  "IronScruff_PrimordialTallGrass": {
+   "file": "plant_art/IronScruff_PrimordialTallGrass.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.85,
+   "mesh": 9
+  },
+  "Plant_Ambrosia": {
+   "file": "plant_art/Plant_Ambrosia.anchor.png",
+   "w": 161,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.1,
+   "mesh": 1
+  },
+  "Plant_Bloddle": {
+   "file": "plant_art/Plant_Bloddle.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 9
+  },
+  "Plant_Brambles": {
+   "file": "plant_art/Plant_Brambles.anchor.png",
+   "w": 170,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.4449999999999998,
+   "mesh": 4,
+   "patched": true
+  },
+  "Plant_Bubblespore_Wild": {
+   "file": "plant_art/Plant_Bubblespore_Wild.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.0,
+   "mesh": 4
+  },
+  "Plant_Bush": {
+   "file": "plant_art/Plant_Bush.anchor.png",
+   "w": 137,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.9199999999999999,
+   "mesh": 1,
+   "patched": true
+  },
+  "Plant_Chakroot_Wild": {
+   "file": "plant_art/Plant_Chakroot_Wild.anchor.png",
+   "w": 187,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.5,
+   "mesh": 1
+  },
+  "Plant_FelucianGlowspore_Wild": {
+   "file": "plant_art/Plant_FelucianGlowspore_Wild.anchor.png",
+   "w": 283,
+   "h": 212,
+   "shownPct": 100,
+   "cells": 3.0,
+   "mesh": 1
+  },
+  "Plant_Fireweed": {
+   "file": "plant_art/Plant_Fireweed.anchor.png",
+   "w": 142,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6000000000000001,
+   "mesh": 4,
+   "patched": true
+  },
+  "Plant_GrayGrass": {
+   "file": "plant_art/Plant_GrayGrass.anchor.png",
+   "w": 142,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 9,
+   "patched": true
+  },
+  "Plant_HealrootWild": {
+   "file": "plant_art/Plant_HealrootWild.anchor.png",
+   "w": 142,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.8,
+   "mesh": 1
+  },
+  "Plant_HubbaGourd_Wild": {
+   "file": "plant_art/Plant_HubbaGourd_Wild.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.0,
+   "mesh": 1
+  },
+  "Plant_HydenockTree_Wild": {
+   "file": "plant_art/Plant_HydenockTree_Wild.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "Plant_JoganTree_Wild": {
+   "file": "plant_art/Plant_JoganTree_Wild.anchor.png",
+   "w": 219,
+   "h": 148,
+   "shownPct": 100,
+   "cells": 2.0,
+   "mesh": 1
+  },
+  "Plant_MagmaCactus": {
+   "file": "plant_art/Plant_MagmaCactus.anchor.png",
+   "w": 161,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.3,
+   "mesh": 1,
+   "patched": true
+  },
+  "Plant_MujaFruit_Wild": {
+   "file": "plant_art/Plant_MujaFruit_Wild.anchor.png",
+   "w": 187,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.5,
+   "mesh": 1
+  },
+  "Plant_Nysyllin_Wild": {
+   "file": "plant_art/Plant_Nysyllin_Wild.anchor.png",
+   "w": 174,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.3,
+   "mesh": 9
+  },
+  "Plant_Reeds": {
+   "file": "plant_art/Plant_Reeds.anchor.png",
+   "w": 142,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.8,
+   "mesh": 4,
+   "patched": true
+  },
+  "Plant_Ripthorn": {
+   "file": "plant_art/Plant_Ripthorn.anchor.png",
+   "w": 154,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.19,
+   "mesh": 4,
+   "patched": true
+  },
+  "Plant_ShrubLow": {
+   "file": "plant_art/Plant_ShrubLow.anchor.png",
+   "w": 145,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.05,
+   "mesh": 4,
+   "patched": true
+  },
+  "Plant_TookeTrap_Wild": {
+   "file": "plant_art/Plant_TookeTrap_Wild.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.0,
+   "mesh": 1
+  },
+  "Plant_Toxipotato": {
+   "file": "plant_art/Plant_Toxipotato.anchor.png",
+   "w": 145,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.05,
+   "mesh": 1,
+   "patched": true
+  },
+  "Plant_TreePolux": {
+   "file": "plant_art/Plant_TreePolux.anchor.png",
+   "w": 212,
+   "h": 154,
+   "shownPct": 100,
+   "cells": 2.1,
+   "mesh": 1,
+   "patched": true
+  },
+  "Plant_YellowGrass": {
+   "file": "plant_art/Plant_YellowGrass.anchor.png",
+   "w": 142,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 9,
+   "patched": true
+  },
+  "Plant_YellowTallGrass": {
+   "file": "plant_art/Plant_YellowTallGrass.anchor.png",
+   "w": 142,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.85,
+   "mesh": 9,
+   "patched": true
+  },
+  "PoisonPlantBush": {
+   "file": "plant_art/PoisonPlantBush.anchor.png",
+   "w": 159,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.265,
+   "mesh": 1,
+   "patched": true
+  },
+  "PoisonPlantTallGrass": {
+   "file": "plant_art/PoisonPlantTallGrass.anchor.png",
+   "w": 142,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.85,
+   "mesh": 9,
+   "patched": true
+  },
+  "PoisonShrub": {
+   "file": "plant_art/PoisonShrub.anchor.png",
+   "w": 159,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.265,
+   "mesh": 1,
+   "patched": true
+  },
+  "RG_Plant_AridGrass": {
+   "file": "plant_art/RG_Plant_AridGrass.anchor.png",
+   "w": 142,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 9,
+   "patched": true
+  },
+  "RG_Plant_CreepStern": {
+   "file": "plant_art/RG_Plant_CreepStern.anchor.png",
+   "w": 161,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 1.3,
+   "mesh": 4,
+   "patched": true
+  },
+  "RG_Plant_CrimsonCushion": {
+   "file": "plant_art/RG_Plant_CrimsonCushion.anchor.png",
+   "w": 142,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.9,
+   "mesh": 9,
+   "patched": true
+  },
+  "RG_Plant_Dervish": {
+   "file": "plant_art/RG_Plant_Dervish.anchor.png",
+   "w": 142,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.5,
+   "mesh": 9,
+   "patched": true
+  },
+  "RG_Plant_TallToxiGrass": {
+   "file": "plant_art/RG_Plant_TallToxiGrass.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.85,
+   "mesh": 9
+  },
+  "RG_Plant_ToxiGrass": {
+   "file": "plant_art/RG_Plant_ToxiGrass.anchor.png",
+   "w": 155,
+   "h": 116,
+   "shownPct": 100,
+   "cells": 0.6,
+   "mesh": 9
+  },
+  "RG_Plant_TropicalChokevine": {
+   "file": "plant_art/RG_Plant_TropicalChokevine.anchor.png",
+   "w": 205,
+   "h": 147,
+   "shownPct": 100,
+   "cells": 1.98,
+   "mesh": 4,
+   "patched": true
+  },
+  "VRE_PoluxBush": {
+   "file": "plant_art/VRE_PoluxBush.anchor.png",
+   "w": 200,
+   "h": 129,
+   "shownPct": 100,
+   "cells": 1.7,
+   "mesh": 1
+  }
+ }
+}

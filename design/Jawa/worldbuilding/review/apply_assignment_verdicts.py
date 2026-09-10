@@ -113,6 +113,21 @@ def load_rosters(rosters_dir: str) -> tuple[dict, dict]:
 def load_decisions(path: str, allow_unfrozen: bool) -> dict:
     with open(path, encoding="utf-8") as fh:
         doc = json.load(fh)
+    # ── schema guard ─────────────────────────────────────────────────────────
+    # The sheets were rebuilt 2026-09-09 to the owner's rulings: new row ids
+    # (fauna:/flora:/homeless:/ledger:/q:), new verdict keys (in/move/out/later)
+    # and two extra per-row lanes (sizeBin, art). This applier predates that
+    # schema and would map its verdicts wrongly — refuse rather than guess.
+    ids = list((doc.get("decisions") or {}).keys())
+    if any(i.split(":", 1)[0] in ("fauna", "flora", "homeless", "ledger", "q")
+           for i in ids):
+        raise Refuse(RC_NO_SIDECAR, (
+            f"🔴 REFUSING {os.path.basename(path)}: this decisions file uses the "
+            "2026-09-09 rulings schema (fauna:/flora:/homeless:/ledger: row ids, "
+            "in/move/out/later verdicts, sizeBin and art lanes).\n"
+            "   apply_assignment_verdicts.py has not been rewritten for it yet — "
+            "applying with the old mapping would corrupt the rosters. Rewrite the "
+            "applier against the new generators' header blocks first."))
     missing = [k for k in SIDECAR_KEYS if not doc.get(k)]
     if missing:
         raise Refuse(RC_NO_SIDECAR, (
