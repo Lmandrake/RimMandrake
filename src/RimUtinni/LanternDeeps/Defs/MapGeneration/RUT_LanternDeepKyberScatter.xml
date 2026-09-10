@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CRYSTAL_INGEST_EXECUTION_1 item 2: kyber's replacement Deeps-only scatter. Same "gate
+  by genStep-list membership" trick as RUT_LanternDeepPyrinthScatter.xml === this
+  GenStepDef always exists (it is ours), but every `things` entry carries
+  MayRequire="lee.theforce.lightsaber", so it is a harmless no-op if that mod is ever
+  inactive, and RUT_LanternDeepGenerator.genSteps can reference it unconditionally.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RUT_LanternDeepKyberScatter</defName>
+    <order>211</order>
+    <genStep Class="GenStep_ScatterGroup">
+      <minSpacing>20</minSpacing>
+      <groups>
+        <li>
+          <things>
+            <Force_CrystalFormation_Small MayRequire="lee.theforce.lightsaber">0.4</Force_CrystalFormation_Small>
+            <Force_CrystalFormation_Medium MayRequire="lee.theforce.lightsaber">0.4</Force_CrystalFormation_Medium>
+            <Force_CrystalFormation_Large MayRequire="lee.theforce.lightsaber">0.2</Force_CrystalFormation_Large>
+          </things>
+          <coveredCellsPer10Cells>0~0.4</coveredCellsPer10Cells>
+          <clusterRectRadius>1~2</clusterRectRadius>
+        </li>
+      </groups>
+      <validators>
+        <li Class="ScattererValidator_Buildable">
+          <affordance>Heavy</affordance>
+        </li>
+      </validators>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CRYSTAL_INGEST_EXECUTION_1 item 2 (design/Jawa/mods/crystal_mods_inventory.md ss1/ss3,
+  ratified 2026-09-10): "gate its genstep to Lantern Deeps maps" for lee.theforce.
+  lightsaber's kyber. Measured two things before touching anything (per the item's own
+  "verify which genstep is actually firing" instruction, same discipline as the KOTOR
+  discrepancy check):
+
+  1. Force_CrystalFormation_{Small,Medium,Large} each ship `mineableScatterCommonality
+     0.25` / `mineableScatterLumpSizeRange` with no biome gate === vanilla
+     GenStep_RocksFromGrid (order 200) reads that field on every rocky player map, same
+     universal-leak shape as pyrinth.
+  2. The donor's OWN dedicated genstep, `Force_CrystalFormation` (ThingDef_Building/
+     CrystalMapGenerator.xml, order 1100, Class Lightsaber.GenStep_ScatterLightsaberCrystals),
+     is NOT wired into any MapGeneratorDef's genSteps list today === live def dump query:
+     `SELECT def_name FROM defs WHERE def_type='MapGeneratorDef' AND
+     json_extract(json,'$.fields.genSteps') LIKE '%Force_CrystalFormation%'` returns 0
+     rows (mods=577/6fdca6f582164e2a, captured 2026-09-10T08:36:27Z). So it never fires
+     via any known map generator, and needs no PatchOperationRemove today === only the
+     universal mineableScatterCommonality leak (point 1) is a live problem.
+
+  Zeroing mineableScatterCommonality here stops the universal vanilla scatter; the
+  replacement Deeps-only scatter is RUT_LanternDeepKyberScatter.xml (referenced from
+  RUT_LanternDeepGenerator's own genSteps list, which only ever generates a Lantern Deep
+  pocket map).
+
+  Patches the LIVE, ACTIVE donor defs directly (lee.theforce.lightsaber is not retired
+  === see src/RimStarWars/Armoury/Defs/Absorbed_TheForceLightsaber/'s own header) rather
+  than the dormant absorbed copy, because the donor's defs are what the running game
+  actually loads today.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Star Wars : The Force - Lightsaber</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="Force_CrystalFormation_Small"]/building/mineableScatterCommonality</xpath>
+          <value>
+            <mineableScatterCommonality>0</mineableScatterCommonality>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="Force_CrystalFormation_Medium"]/building/mineableScatterCommonality</xpath>
+          <value>
+            <mineableScatterCommonality>0</mineableScatterCommonality>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="Force_CrystalFormation_Large"]/building/mineableScatterCommonality</xpath>
+          <value>
+            <mineableScatterCommonality>0</mineableScatterCommonality>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
