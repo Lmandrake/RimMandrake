@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T13:27:11Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-10T13:30:09Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -503,15 +503,6 @@ target:   v1
 kind:     task
 summary:  Werner slab transport on Odyssey's Map.sandGrid, source/sink map edges,
 prose:    infrastructure/state/items/MOVING_DUNES_BUILD_1.md
-
-## GAPING_DOOM_SITE_1 The Gaping Doom: dead-sarlacc toxic-waste pit at tile 2403 (32.12N 94.76E, Cracked Lands, Junker territory) — landmark + green-throat art derived from sw_DeadSarlacc; world-threatening buildup is a plot element (owner, 2026-09-08)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - Location: 32.12N 94.76E → tile 2403 (MEASURED off the canon CSV: lat 32.1169,
-prose:    infrastructure/state/items/GAPING_DOOM_SITE_1.md
 
 ## BIOME_ENRICHMENT_DESERT_WASTELAND_1 Enrichment wave (review B1): Desert (53% zero-mutator) + Wasteland (63%) — the two largest land biomes read thin where caravans travel most; place from their sheets' shade-line and plant-vault kits; dune sea stays barren by rule
 state:    doing  (BLOCKED)
