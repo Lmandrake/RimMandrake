@@ -205,3 +205,85 @@ are confirmed absent.
 Campaign is back to a real, playable, save-safe state with tonight's vetted
 new work folded in, verified by one clean cold load — not left sitting on a
 bare vanilla list.
+
+## 🔴 SECOND DEFECT, introduced BY this batch: ManyWaters kills every `Game..ctor()`
+
+The first relaunch on the 582-mod list **loaded the mod list perfectly** — bridge
+up in 19.5 min, `harvest_log.py` clean, no reset — and then could not construct a
+game at all. Loading the campaign, starting a colony and quicktest all died in
+the same place:
+
+```
+Verse.GameDataSaveLoader.<LoadGame>g__PreLoadAct → Verse.Game..ctor()
+  → RimWorld.ReadingPolicyDatabase..ctor() → GenerateStartingPolicies()
+    → Verse.GenTypes.SameOrSubclassOf(baseType, parentType)   ← NullReferenceException
+```
+
+`ReadingPolicyDatabase.GenerateStartingPolicies()`
+(`Source/RimWorld/ReadingPolicyDatabase.cs:69`) walks **every** ThingDef and
+dereferences `thingClass` with no null guard. ManyWaters' five
+`RM_WaterBottle_*` defs have a null `thingClass` (`ParentName="DBH_WaterBottle"`
+not supplying it) — and the load had said so plainly, five times:
+`Config error in RM_WaterBottle_Amber: has null thingClass.`
+
+🔑 **A healthy main menu proves nothing about whether a game can be loaded.** No
+`Game` object exists at the menu, so a defect that only fires in `Game..ctor()`
+is invisible until something tries to play. The symptom presents as "the save
+won't load" and has nothing to do with the save, the mod list, or load order.
+
+⛔ **`Config error in <X>: has null thingClass` is a game-breaking finding, not a
+warning to note in passing.** It was in this pass's own error diff and was read
+as minor def-quality noise. It was the blocker.
+
+Full detail and the owed repair are recorded on `MANYWATERS_COLOR_SUPPORT_1`.
+
+## OUTCOME — campaign restored and LOADED, on 581
+
+`mandrake.rm.manywaters` removed (582 → 581); relaunched 17:13:09, bridge token
+**17:32:58 (19.8 min — a normal cold load)**, campaign save loaded ~40 s later.
+
+| reading | value |
+|---|---|
+| live `activeMods` | **581** |
+| `Resetting mods config` / `Exception from asynchronous event` | **0 / 0** |
+| `has null thingClass` / `Could not find type named RimMandrake` | **0 / 0** |
+| `[Def Error]` set | **identical to the last known-good load** (8, all third-party, all pre-existing) |
+| `harvest_log.py` | ran, did **not** refuse; dead mods 0, defs discarded 0, Harmony failures 1 = baseline |
+| `programState` / `hasCurrentGame` / `ticksGame` | `Playing` / `true` / **108,949** |
+| map | tile 16869, 250×250, AridShrubland, `PlayerColony` "New Arrivals", **5 colonists** (Captain, First-Hatched, Keeper, The Hands, Twice-Kin) |
+| live bridge | **441 tools**, GM pair (`jawa/fire_incident`, `jawa/send_letter`) present |
+| def dump | refreshed on this load — **581 mods**, captured 2026-09-10T00:28:43Z |
+
+### The two `harvest_log.py` REDs — both are this batch's intended consequence
+
+- **stale saved data (Scribe) = 10** — every one is the `KibbleDispenser`
+  family (`Blueprint_`, `Blueprint_Install_`, `Frame_`, `Techprint_`,
+  `_ReplaceStuff`, the ResearchProjectDef, and the ThingDef itself) from the
+  retired `coldcrow.betterkibble`. This is exactly the reference-residue
+  `STAT_NORM_WAVE1_RETIRE_1` characterised and accepted in advance: Scribe drops
+  the roster entry and continues. **Nothing from the other 12 retired mods.**
+- **cross-reference (def loader) = 4** — `Pawn_Badger_{Angry,Call,Death,Wounded}`
+  SoundDefs, referenced by our own
+  `SWBestiary/Defs/ThingDefs_Races/RSW_SandStalker.xml`, whose supplier left with
+  Wave 1. The engine says "using undefined sound instead" — the animal works and
+  is silent. ⚠️ Follow-on owed on SWBestiary: repoint those four to a surviving
+  SoundDef or ship them. Not a blocker, not fixed here.
+
+### Cold-load proof this satisfies
+- `STAT_NORM_WAVE1_RETIRE_1` — 13 retired, live-verified, only the pre-accepted
+  Kibble residue.
+- `BRIDGETOOLS_DLL_GM_DRIFT_1` — deployed, 317 tools, GM pair live on the bridge.
+- `WORLD_FEATURE_LABELS_OVERSIZED_1` — the fixed DLL is deployed and loaded.
+  ⚠️ Its own bar is **judged by LOOKING at the globe**, not by a clean load —
+  still owed.
+- `MOVING_DUNES_BUILD_1`, `FLUID_CANAL_MECHANIC_1`,
+  `ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1` — first-ever load, clean, all three
+  confirmed in the live running-mod list. Their own in-game behaviour is
+  unproven; a clean load is not a feature test.
+- `MANYWATERS_COLOR_SUPPORT_1` — **NOT** proven; excluded, blocker filed there.
+
+### Left `doing`, and exactly why
+Three of the four new mods landed; ManyWaters did not. Re-run step 3 for it once
+its `thingClass` repair lands. Also still open, unchanged and out of scope here:
+`mandrake.rut.droidrepairjobs` is absent from the save's own 590 as well, so it
+is not drift against the save.

@@ -231,3 +231,74 @@ mod-activation step:
 7. Only then close the item.
 
 This item stays in `doing` — do not close on this commit.
+
+## 🔴 BLOCKER FOUND 2026-09-09 (FOUNDRY, `MODLIST_RESTORE_AND_BATCH_DEPLOY_1`) — this mod HARD-CRASHES every game construction
+
+Step 0 above was executed as part of the batch restore: ManyWaters was deployed
+and added to the live `ModsConfig.xml`. **The mod list loaded fine and the main
+menu was healthy, but no game could be constructed at all** — loading the
+campaign save, starting a colony and quicktest all died identically:
+
+```
+Verse.GameDataSaveLoader.<LoadGame>g__PreLoadAct
+ → Verse.Game..ctor()
+   → RimWorld.ReadingPolicyDatabase..ctor()
+     → ReadingPolicyDatabase.GenerateStartingPolicies()
+       → Verse.GenTypes.SameOrSubclassOf(baseType, parentType)   ← NullReferenceException
+```
+
+**Cause.** `Defs/ThingDefs/RM_ColoredWaterBottles.xml` defines five ThingDefs —
+`RM_WaterBottle_Amber`, `_Chalk`, `_Rust`, `_Verdigris`, `_Violet` — with
+`ParentName="DBH_WaterBottle"`, and that inheritance is **not supplying a
+`thingClass`**. The live load says so directly, five times:
+
+```
+Config error in RM_WaterBottle_Amber: has null thingClass.        (and the other four)
+```
+
+`ReadingPolicyDatabase.GenerateStartingPolicies()` (`Source/RimWorld/ReadingPolicyDatabase.cs:69`)
+walks **every** ThingDef in the database and dereferences the field with no null
+guard:
+
+```csharp
+foreach (ThingDef item in DefDatabase<ThingDef>.AllDefsListForReading)
+    if (item.thingClass.SameOrSubclassOf<Book>())
+```
+
+Because that constructor runs inside `Game..ctor()`, a single null `thingClass`
+anywhere in the database makes the game **unable to start or load anything**.
+🔑 This is why the symptom looked like "the save won't load": it is not about
+the save, the mod list, or load order. Every entry point into `Game..ctor()`
+hits it — which is also why an attempted quicktest produced RimWorld's
+"Error while generating a map" dialog from the same root cause.
+
+**Action taken**: `mandrake.rm.manywaters` was REMOVED from the live
+`ModsConfig.xml` (582 → 581) and the campaign relaunched without it. The mod
+folder is still deployed under `RimWorld/Mods/ManyWaters` — inert while
+inactive. Snapshots: `infrastructure/state/modlists/ModsConfig_582_before_manywaters_drop_2026-09-09.xml`
+(with it) and `ModsConfig_RESTORE_581_no_manywaters_2026-09-09.xml` (without).
+Evidence log kept at
+`D:\Luke\dev\Rimworld\Transient\Player_log_manywaters_thingclass_NRE_2026-09-09.log`.
+
+### The repair this item now owes, BEFORE step 0 is retried
+
+1. Establish why `ParentName="DBH_WaterBottle"` yields a null `thingClass` —
+   read Dubs Bad Hygiene Lite's own `1.6/Defs/ThingDefs_Items/Items_Resource_Stuff.xml`
+   and confirm the parent's real defName, whether it is abstract, and whether
+   `thingClass` is declared anywhere on its inheritance chain. 🔴 Do not guess
+   the parent's name or assume the chain — a dangling `ParentName` and a parent
+   that simply never sets `thingClass` produce the same null and need different
+   fixes.
+2. Whichever it is, give the five defs an explicit `<thingClass>` rather than
+   relying on inheritance for it. The correct value comes from the parent's
+   chain (vanilla `ThingWithComps` for an ingestible resource, but **read it,
+   do not assume**).
+3. ⛔ **A def-level null `thingClass` is not a cosmetic config error.** Treat
+   `Config error in <X>: has null thingClass` in any future load as a
+   game-breaking finding, not a warning to note and move past.
+4. Re-verify offline before ever re-enabling the mod: after the fix, a load
+   must show **zero** `has null thingClass` lines, and the proof that the mod
+   is safe is a game that actually constructs — a clean main menu proves
+   nothing here.
+
+This item stays in `doing`.
