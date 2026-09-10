@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T04:53:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T05:06:52Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -684,6 +684,15 @@ kind:     task
 summary:  1. Reproduce on a clean quicktest: spawn ~10 of RSWDWOuterRimProtocolDroid
 prose:    infrastructure/state/items/DROID_SIBLING_RELATION_GEN_CRASH_1.md
 
+## ANCIENT_RUINS_FAMILY_CUT_1 Cut the ancient-urban-ruins family per owner ruling 2026-09-09: xmb.ancienturbanruins.mo + aurad + aurvl + orphaned Charlie.Muzzle.Flash patch, via Cherry Picker; FIRST re-run tag-survivor cross-check vs live dump, and spend <=1h decompiling GenStep_RandomAncientComplex/ACM_AncientRandomComplex_Loot as ComplexLayoutDef reference
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/ANCIENT_RUINS_FAMILY_CUT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ANCIENT_RUINS_FAMILY_CUT_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1009,13 +1018,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
-
-## ANCIENT_RUINS_FAMILY_CUT_1 Cut the ancient-urban-ruins family per owner ruling 2026-09-09: xmb.ancienturbanruins.mo + aurad + aurvl + orphaned Charlie.Muzzle.Flash patch, via Cherry Picker; FIRST re-run tag-survivor cross-check vs live dump, and spend <=1h decompiling GenStep_RandomAncientComplex/ACM_AncientRandomComplex_Loot as ComplexLayoutDef reference
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ANCIENT_RUINS_FAMILY_CUT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ANCIENT_RUINS_FAMILY_CUT_1.md
