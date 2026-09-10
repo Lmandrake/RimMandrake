@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T07:46:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T07:47:06Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -80,33 +80,6 @@ target:   v1
 kind:     task
 summary:  - Inventory, from the live def dump + mod XML (never guess a defName):
 prose:    infrastructure/state/items/MUTATION_MODIFIERS_SURVEY_1.md
-
-## MECHANOID_BIOME_PRESENCE_REVIEW_1 Review which biomes contain mechanoids and ancient dangers — not all should; the two magnetic poles (Rust Cathedral, the antistellar war lab) by ruling, everything else argued
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - Inventory, per biome, everything mechanoid-class and ancient-danger-class that can
-prose:    infrastructure/state/items/MECHANOID_BIOME_PRESENCE_REVIEW_1.md
-
-## CRYSTAL_MODS_INGEST_1 Find the orange glowing crystal's source mod; inventory every crystal harvest in the stack; assess ingesting it so all crystals live in the Lantern Deeps
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  - Identify the mod: which import ships the orange glowing crystal (candidates to
-prose:    infrastructure/state/items/CRYSTAL_MODS_INGEST_1.md
-
-## FISH_BY_BIOME_1 Fish in every biome where relevant — inventory the stack's fish defs and each biome's fishTypes; rule per water kind (milk, propane, red water, brine); analogs only
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - Odyssey's fishing is live in the stack (donor biome defs carry fishTypes blocks —
-prose:    infrastructure/state/items/FISH_BY_BIOME_1.md
 
 ## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
 state:    doing
