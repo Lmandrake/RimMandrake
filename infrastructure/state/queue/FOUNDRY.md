@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T04:50:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T04:52:15Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1009,3 +1009,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
+
+## ANCIENT_RUINS_FAMILY_CUT_1 Cut the ancient-urban-ruins family per owner ruling 2026-09-09: xmb.ancienturbanruins.mo + aurad + aurvl + orphaned Charlie.Muzzle.Flash patch, via Cherry Picker; FIRST re-run tag-survivor cross-check vs live dump, and spend <=1h decompiling GenStep_RandomAncientComplex/ACM_AncientRandomComplex_Loot as ComplexLayoutDef reference
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ANCIENT_RUINS_FAMILY_CUT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ANCIENT_RUINS_FAMILY_CUT_1.md
