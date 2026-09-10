@@ -28,6 +28,7 @@ import json
 import os
 import queue
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -120,11 +121,51 @@ class Queue:
         self.reference = tmp / "reference.png"
         make_reference(self.reference)
 
+        # CODEX_UAC_STORM_1's daemon-startup sandbox-fingerprint preflight
+        # (common.codex_sandbox_preflight) runs unconditionally in
+        # artpiped.main() — every scenario here, codex-channel or not, would
+        # otherwise fall through to comparing against this MACHINE's real
+        # /mnt/c/Users/*/.codex, which this file's own module docstring
+        # forbids ("NEVER touch real Codex"). A fresh Queue therefore always
+        # carries its OWN matching fixture pair, wired in via
+        # --codex-sandbox-base (the "installed" side) and $CODEX_SANDBOX_SEED
+        # (the "template" side, run()'s own env) — see set_sandbox_fingerprint()
+        # for the two tests that deliberately break this match.
+        self.codex_sandbox_base = tmp / "_codex_sandbox_base"
+        self.codex_sandbox_template = tmp / "_codex_sandbox_template"
+        self.set_sandbox_fingerprint("9.9.9", "9.9.9")
+
+    def set_sandbox_fingerprint(self, base_version: str | None,
+                                 template_version: str | None,
+                                 template_has_bin: bool = True) -> None:
+        """(Re)write this queue's fixture sandbox-base/template pair.
+        `None` for either version means "no codex-command-runner-*.exe at
+        all on that side" (the fingerprint-unknown case); `template_has_bin
+        =False` means the template has no `.sandbox-bin` DIRECTORY at all.
+        Matching versions is the default (set by __init__) so every
+        pre-existing scenario in this file sees a healthy preflight without
+        having to know this fixture exists."""
+        shutil.rmtree(self.codex_sandbox_base, ignore_errors=True)
+        (self.codex_sandbox_base / ".sandbox-bin").mkdir(parents=True)
+        if base_version is not None:
+            (self.codex_sandbox_base / ".sandbox-bin" /
+             f"codex-command-runner-{base_version}.exe").write_bytes(b"x")
+
+        shutil.rmtree(self.codex_sandbox_template, ignore_errors=True)
+        (self.codex_sandbox_template / ".sandbox").mkdir(parents=True)
+        (self.codex_sandbox_template / ".sandbox" / "setup_marker.json").write_text("{}")
+        if template_has_bin:
+            (self.codex_sandbox_template / ".sandbox-bin").mkdir()
+            if template_version is not None:
+                (self.codex_sandbox_template / ".sandbox-bin" /
+                 f"codex-command-runner-{template_version}.exe").write_bytes(b"y")
+
     def daemon_args(self, *extra: str) -> list[str]:
         return [sys.executable, str(HERE / "artpiped.py"),
                 "--pending-dir", str(self.pending), "--active-dir", str(self.active),
                 "--done-dir", str(self.done), "--failed-dir", str(self.failed),
                 "--artsrc-dir", str(self.artsrc), "--codex-home-root", str(self.codex_homes),
+                "--codex-sandbox-base", str(self.codex_sandbox_base),
                 "--throughput-log", str(self.throughput_log),
                 "--worker-script", str(MOCK_WORKER),
                 "--gemini-worker-script", str(MOCK_GEMINI_WORKER),
@@ -137,6 +178,7 @@ class Queue:
         control_path.write_text(json.dumps(control))
         env = dict(os.environ)
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
+        env["CODEX_SANDBOX_SEED"] = str(self.codex_sandbox_template)
         return subprocess.run(self.daemon_args(*extra), capture_output=True,
                                text=True, timeout=timeout, env=env)
 
@@ -498,6 +540,7 @@ def test_two_concurrent_daemons_claim_atomically():
         control_path.write_text(json.dumps(control))
         env = dict(os.environ)
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
+        env["CODEX_SANDBOX_SEED"] = str(q.codex_sandbox_template)
 
         procs = [subprocess.Popen(q.daemon_args("--once", "--workers", "3"),
                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -831,6 +874,73 @@ def test_codex_home_lease_bounds_growth_and_avoids_collision():
            len(existing_slots) == 2, [p.name for p in existing_slots])
         fh1b.close()
         fh2.close()
+
+
+def test_codex_sandbox_preflight_matching_allows_codex_jobs():
+    """The default Queue fixture's base/template pair matches (both '9.9.9')
+    — the ordinary, healthy case. A codex job must run exactly as it always
+    has, and the daemon must say so in its own log line."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "sandboxok", q.reference, channel="codex")
+        proc = q.run({"sandboxok": "ok"}, "--once", "--workers", "1")
+        ok("sandbox-preflight match: daemon exits 0", proc.returncode == 0, proc.stderr)
+        ok("sandbox-preflight match: the codex job actually ran",
+           (q.done / "sandboxok.json").is_file())
+        ok("sandbox-preflight match: logged as ok, naming the matched build",
+           "codex sandbox preflight ok" in proc.stdout and "9.9.9" in proc.stdout,
+           proc.stdout)
+
+
+def test_codex_sandbox_preflight_mismatch_blocks_codex_not_gemini():
+    """CODEX_UAC_STORM_1's actual root cause, reproduced with fixtures only:
+    a seed template captured against one build, an installed build that has
+    since moved on. The daemon must refuse the WHOLE codex channel for this
+    run (never claim the job, never spawn a worker that could pop an
+    unattended UAC prompt) while a gemini job in the same queue proceeds
+    completely normally."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        q.set_sandbox_fingerprint(base_version="0.153.4", template_version="0.153.1")
+        make_job(q.pending, "codexstuck", q.reference, priority=1, channel="codex")
+        make_job(q.pending, "geminifine", q.reference, priority=2, channel="gemini")
+        proc = q.run({"codexstuck": "ok", "geminifine": "ok"}, "--once", "--workers", "2")
+
+        ok("sandbox-preflight mismatch: exits nonzero — codex work remains stuck",
+           proc.returncode != 0, proc.stdout + proc.stderr)
+        ok("sandbox-preflight mismatch: the codex job was NEVER claimed",
+           (q.pending / "codexstuck.json").is_file()
+           and not (q.active / "codexstuck.json").is_file(), proc.stderr)
+        ok("sandbox-preflight mismatch: no codex worker home was ever leased",
+           not q.codex_homes.is_dir() or not any(q.codex_homes.iterdir()))
+        ok("sandbox-preflight mismatch: the gemini job in the SAME queue still ran",
+           (q.done / "geminifine.json").is_file(), proc.stdout + proc.stderr)
+        ok("sandbox-preflight mismatch: the log names the CHANNEL DISABLED state",
+           "CODEX CHANNEL DISABLED" in proc.stderr, proc.stderr)
+        ok("sandbox-preflight mismatch: the log names BOTH builds",
+           "0.153.1" in proc.stderr and "0.153.4" in proc.stderr, proc.stderr)
+        ok("sandbox-preflight mismatch: the log names the recapture command",
+           "cp -r" in proc.stderr, proc.stderr)
+
+
+def test_codex_sandbox_preflight_missing_bin_refuses_not_passes():
+    """A template with `.sandbox/setup_marker.json` but no `.sandbox-bin` at
+    all (an incomplete or pre-fingerprint-era capture) must REFUSE, never
+    silently pass just because a template directory exists."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        q.set_sandbox_fingerprint(base_version="1.0.0", template_version=None,
+                                   template_has_bin=False)
+        make_job(q.pending, "nobinjob", q.reference, channel="codex")
+        proc = q.run({"nobinjob": "ok"}, "--once", "--workers", "1")
+
+        ok("sandbox-preflight no-bin: exits nonzero — the job was never claimed",
+           proc.returncode != 0, proc.stdout + proc.stderr)
+        ok("sandbox-preflight no-bin: job still sitting in pending/",
+           (q.pending / "nobinjob.json").is_file())
+        ok("sandbox-preflight no-bin: logged as CHANNEL DISABLED, not as ok",
+           "CODEX CHANNEL DISABLED" in proc.stderr
+           and "codex sandbox preflight ok" not in proc.stdout, proc.stderr)
 
 
 def test_reference_less_job_size_mismatch_is_caught():
@@ -1790,6 +1900,7 @@ def test_gemini_budget_live_reread_sees_concurrent_external_spend_end_to_end():
         control_path.write_text(json.dumps({"livereread1": "ok", "livereread2": "ok"}))
         env = dict(os.environ)
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
+        env["CODEX_SANDBOX_SEED"] = str(q.codex_sandbox_template)
 
         proc = subprocess.Popen(
             q.daemon_args("--workers", "1", "--poll-interval", "0.1",
@@ -1886,6 +1997,7 @@ def test_daemon_unwedges_codex_channel_without_restart_end_to_end():
         }))
         env = dict(os.environ)
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
+        env["CODEX_SANDBOX_SEED"] = str(q.codex_sandbox_template)
 
         proc = subprocess.Popen(
             q.daemon_args("--workers", "1", "--poll-interval", "0.1",
@@ -2456,6 +2568,9 @@ def main() -> int:
         test_rate_limit_marker_strips_prompt_echo_but_not_real_refusals,
         test_codex_home_root_default_is_outside_the_repo,
         test_codex_home_lease_bounds_growth_and_avoids_collision,
+        test_codex_sandbox_preflight_matching_allows_codex_jobs,
+        test_codex_sandbox_preflight_mismatch_blocks_codex_not_gemini,
+        test_codex_sandbox_preflight_missing_bin_refuses_not_passes,
         test_reference_less_job_size_mismatch_is_caught,
         test_reference_less_job_correct_size_still_passes,
         test_worker_self_report_folded_into_manifest_and_detects_row1,

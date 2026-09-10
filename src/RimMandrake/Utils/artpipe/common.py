@@ -78,6 +78,16 @@ MANIFEST_SCHEMA = HERE / "manifest.schema.json"
 AGENTS_MD = HERE / "AGENTS.md"
 
 
+def _import_codex_image():
+    """The one place this module reaches into codex_image.py — shared by
+    `_default_codex_home_root()` and `codex_sandbox_preflight()` so both use
+    the identical import path rather than two copies of the same
+    sys.path dance."""
+    sys.path.insert(0, str(REPO_ROOT / "skills" / "generating-images" / "scripts"))
+    import codex_image  # noqa: E402
+    return codex_image
+
+
 def _default_codex_home_root() -> Path:
     """Where per-slot worker CODEX_HOMEs live — OUTSIDE the repo, always.
 
@@ -93,12 +103,40 @@ def _default_codex_home_root() -> Path:
     the repo when no `/mnt/c` profile is discoverable at all — a WSL-only
     dev box with no Windows filesystem to use.
     """
-    sys.path.insert(0, str(REPO_ROOT / "skills" / "generating-images" / "scripts"))
-    import codex_image  # noqa: E402
+    codex_image = _import_codex_image()
     wh = codex_image.windows_home()
     if wh is not None:
         return wh / ".codex_workers" / "artpipe"
     return REPO_ROOT.parent / "artpipe_codex_workers"
+
+
+def codex_sandbox_preflight(base: Path | None = None) -> tuple[bool, str]:
+    """Run ONCE at daemon startup, before ANY worker home is leased
+    (CODEX_UAC_STORM_1, 2026-09-09) — the same check
+    codex_image.seed_sandbox_from_template() runs per-home, done here once
+    so a version-incompatible (or altogether missing) seed template blocks
+    the WHOLE codex channel up front, instead of letting every one of N
+    concurrent workers independently discover it by each trying (and
+    failing, or UAC-prompting) its own first job.
+
+    Returns (ok, message). `ok` is False for BOTH a proven "mismatch" and
+    for "no_template" — this preflight cannot know whether a template-less
+    machine will hit a *reachable* UAC prompt (a human happens to be
+    watching) or an unattended one, so it treats "unknown" the same as
+    "known bad": codex workers are refused, never let to gamble. The
+    gemini channel is entirely unaffected — see main()'s own admission
+    checks, which only gate the codex channel on this.
+    """
+    codex_image = _import_codex_image()
+    try:
+        resolved_base = base if base is not None else codex_image.base_codex_home()
+    except codex_image.EnvError as exc:
+        return False, f"cannot find the shared/base codex home to check against: {exc}"
+    status, _template_fp, installed_fp, message = \
+        codex_image.check_sandbox_fingerprint(resolved_base)
+    if status == "match":
+        return True, f"sandbox seed template matches the installed build ({installed_fp})"
+    return False, message
 
 
 DEFAULT_CODEX_HOME_ROOT = _default_codex_home_root()

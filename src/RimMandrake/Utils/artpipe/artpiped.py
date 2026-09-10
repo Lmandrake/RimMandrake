@@ -1590,6 +1590,12 @@ def parse_args(argv=None) -> argparse.Namespace:
     ap.add_argument("--artsrc-dir", type=Path, default=common.DEFAULT_ARTSRC)
     ap.add_argument("--throughput-log", type=Path, default=common.DEFAULT_THROUGHPUT_LOG)
     ap.add_argument("--codex-home-root", type=Path, default=common.DEFAULT_CODEX_HOME_ROOT)
+    ap.add_argument("--codex-sandbox-base", type=Path, default=None,
+                     help="the 'installed build' side of the CODEX_UAC_STORM_1 "
+                          "sandbox-fingerprint preflight — normally the real "
+                          "shared codex home (auto-discovered). Override only "
+                          "for tests: points the check at a fixture directory "
+                          "instead of the real /mnt/c home.")
     ap.add_argument("--worker-script", type=Path,
                      default=Path(os.environ.get("ARTPIPE_WORKER_SCRIPT",
                                                    str(common.DEFAULT_WORKER_SCRIPT))))
@@ -1804,6 +1810,20 @@ def main(argv=None) -> int:
               f"budget (${gemini_spent:.2f} spent, per throughput.jsonl) — gemini jobs "
               f"will not be claimed this run", file=sys.stderr)
 
+    # CODEX_UAC_STORM_1: one fingerprint check, before ANY worker home is
+    # leased — never per-slot, never per-job. A stale/missing seed template
+    # otherwise lets each of N workers independently discover the problem by
+    # each triggering its own (possibly unattended) UAC prompt. On a
+    # mismatch the codex channel is refused for this whole run (never
+    # rechecked — recapturing the template needs a fresh daemon start); the
+    # gemini channel is entirely unaffected.
+    codex_sandbox_ok, codex_sandbox_msg = common.codex_sandbox_preflight(args.codex_sandbox_base)
+    if codex_sandbox_ok:
+        print(f"artpiped: codex sandbox preflight ok — {codex_sandbox_msg}")
+    else:
+        print(f"artpiped: CODEX CHANNEL DISABLED for this run — {codex_sandbox_msg}",
+              file=sys.stderr)
+
     # codex_home leases are NOT acquired here — RunCtx acquires each slot's
     # lease lazily, on that slot's first CODEX job (see codex_home_for_slot).
     # A run that only ever processes gemini jobs therefore never creates a
@@ -1827,7 +1847,7 @@ def main(argv=None) -> int:
     def _channel_permanently_blocked(ch: str) -> bool:
         if ch == "gemini":
             return gemini_budget.admission_blocked()
-        return detector.admission_blocked()
+        return (not codex_sandbox_ok) or detector.admission_blocked()
 
     last_meter_refresh = 0.0
 
@@ -1843,7 +1863,8 @@ def main(argv=None) -> int:
                         def _claim_blocked(ch, _in_flight=codex_in_flight, _cap=current_codex_n):
                             if ch == "gemini":
                                 return gemini_budget.admission_blocked()
-                            return detector.admission_blocked() or _in_flight >= _cap
+                            return ((not codex_sandbox_ok) or detector.admission_blocked()
+                                    or _in_flight >= _cap)
 
                         job_path = claim_next(args.pending_dir, args.active_dir,
                                               channel_blocked=_claim_blocked)
