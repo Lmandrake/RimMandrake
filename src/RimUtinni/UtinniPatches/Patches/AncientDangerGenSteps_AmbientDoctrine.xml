@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  AncientDangerGenSteps_AmbientDoctrine.xml   UtinniPatches - new 2026-09-10
+  ============================================================================
+  MECH_PRESENCE_ENFORCEMENT_1, piece 2/4. Enforces the ratified ANCIENT column
+  (ancient dangers/cryptosleep ruins at map generation) from
+  design/Jawa/worldbuilding/mechanoid_biome_presence_draft.md.
+
+  VERIFIED before writing (rimsage, 2026-09-10):
+  - `BiomeDef.cs`: `public List<GenStepDef> extraGenSteps` and
+    `public List<GenStepDef> preventGenSteps` are real fields (both default
+    to an empty, already-instantiated List<GenStepDef> - so an empty `[]` in
+    the def dump proves nothing about whether the raw XML node exists).
+  - The scatterer itself: Core's `BasePlayerMapGenerator.xml` registers
+    `GenStepDef defName="ScatterShrines"` (order 750, `genStep Class=
+    "GenStep_ScatterShrines"`, `allowInWaterBiome=false`,
+    `countPer10kCellsRange` 0.12-0.25) - fires on every player-home map
+    (75% skip chance on non-starting maps is in `ShouldSkipMap`, C#, not a
+    field). Confirmed live precedent for the exact patch shape: two vanilla-
+    adjacent biomes already ship `preventGenSteps: [ScatterShrines]` in the
+    current def dump - `ZBiome_Iceberg_NoBeach` and `ZBiome_Sandbar_NoBeach`
+    (More Vanilla Biomes) - so `<li>ScatterShrines</li>` inside
+    `<preventGenSteps>` is the real, working shape, not invented here.
+  - Biome defNames confirmed live/painted the same way as the sibling
+    MechClusterBiomes_AmbientDoctrine.xml (against
+    `_def_bindings_2026-09-09.md`'s wildAnimals-owner column, cross-checked
+    against today's fresh def dump, fingerprint 577/577 matching live
+    ModsConfig.xml).
+  - `COMIGO_GreaterSwamp_Tropical`'s owning mod ships NEITHER
+    `preventGenSteps` NOR `extraGenSteps` on either the abstract parent
+    `COMIGO_GreaterSwamp` or the concrete child (raw XML read directly,
+    `.../3620545124/1.6/Defs/BiomeDefs/GreaterSwamps.xml` - no such element
+    on either). Unlike the sibling fish patch (which had to target the
+    ABSTRACT PARENT for `fishTypes` because patches run before
+    `ParentName` inheritance resolves and the field lived only on the
+    parent), there is nothing to inherit here - this patch targets the
+    CONCRETE CHILD directly and simply creates the field fresh, no
+    inheritance-timing trap.
+
+  RARE rows (ExtremeDesert, BiomeGRimond, PoisonForest, BiomeCypreJungle)
+  follow the MECHANISM section's own recipe: prevent the stock full-rate
+  `ScatterShrines` and add `RUT_ScatterShrinesRare`
+  (Defs/MapGeneration/RUT_ScatterShrinesRare.xml, this same commit) - a clone
+  with a quartered `countPer10kCellsRange`, documented there.
+
+  ANCIENT=ALLOW rows (the two poles, Scarlands, the Forge, RUT_TheScald,
+  Wasteland, AB_TarPits, ZBiome_DesertOasis, ZBiome_Badlands, Desert) get NO
+  patch here - default vanilla behaviour already allows the stock genstep,
+  and this item's spec does not ask for anything tighter on those rows.
+  RUT_TwilightSea/RUT_GreySea (ANCIENT=DENY) are confirmed `isWaterBiome:
+  true` in the live def dump - `ScatterShrines`'s own `allowInWaterBiome:
+  false` already excludes them, matching the ratified table's own text
+  ("the engine already refuses shrine scatter in water biomes...so DENY
+  costs nothing") - no patch needed there either.
+
+  Piece 4 (curating shrine CONTENTS where ANCIENT-ALLOW/RARE meets
+  AMBIENT-DENY, so a shrine can't wake mechanoid guardians in a biome that
+  bans mech clusters) is NOT built here - see the rimflow note on
+  MECH_PRESENCE_ENFORCEMENT_1: `GenStep_ScatterShrines.ScatterAt` pushes a
+  hardcoded symbol ("ancientTemple" -> `SymbolResolver_AncientTemple` ->
+  "interior_ancientTemple") through `RimWorld.BaseGen`/`SketchGen`, gated
+  only by the GLOBAL `Storyteller.difficulty.peacefulTemples` toggle - no
+  per-biome or per-GenStepDef XML field selects guardian type/faction. There
+  is no field to patch; doing this for real needs a Harmony postfix on the
+  resolver, which is C#, out of this item's XML-only scope.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- Alpha Biomes: 6 ANCIENT-DENY rows, prevent only. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alpha Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/preventGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]</xpath>
+            <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/preventGenSteps</xpath>
+            <value><li>ScatterShrines</li></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/preventGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]</xpath>
+            <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/preventGenSteps</xpath>
+            <value><li>ScatterShrines</li></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/preventGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]</xpath>
+            <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/preventGenSteps</xpath>
+            <value><li>ScatterShrines</li></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/preventGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]</xpath>
+            <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/preventGenSteps</xpath>
+            <value><li>ScatterShrines</li></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/preventGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]</xpath>
+            <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/preventGenSteps</xpath>
+            <value><li>ScatterShrines</li></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/preventGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]</xpath>
+            <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/preventGenSteps</xpath>
+            <value><li>ScatterShrines</li></value>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- More Vanilla Biomes: ZBiome_Grasslands, ANCIENT-DENY. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>More Vanilla Biomes</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/preventGenSteps</xpath>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]</xpath>
+        <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+      </nomatch>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/preventGenSteps</xpath>
+        <value><li>ScatterShrines</li></value>
+      </match>
+    </match>
+  </Operation>
+
+  <!-- RimUtinni own tier: RUT_NightsideIce, ANCIENT-DENY. No FindMod needed. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RUT_NightsideIce"]/preventGenSteps</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RUT_NightsideIce"]</xpath>
+      <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+    </nomatch>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RUT_NightsideIce"]/preventGenSteps</xpath>
+      <value><li>ScatterShrines</li></value>
+    </match>
+  </Operation>
+
+  <!-- GRiNDTerra Terrain Retexture: AridShrubland (DENY), ExtremeDesert (RARE). -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>GRiNDTerra Terrain Retexture</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="AridShrubland"]/preventGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="AridShrubland"]</xpath>
+            <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="AridShrubland"]/preventGenSteps</xpath>
+            <value><li>ScatterShrines</li></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/preventGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]</xpath>
+            <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/preventGenSteps</xpath>
+            <value><li>ScatterShrines</li></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/extraGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]</xpath>
+            <value><extraGenSteps><li>RUT_ScatterShrinesRare</li></extraGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/extraGenSteps</xpath>
+            <value><li>RUT_ScatterShrinesRare</li></value>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- GRiNDTerra Biomes: BiomeGRimond, BiomeCypreJungle, both RARE. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>GRiNDTerra Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/preventGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]</xpath>
+            <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/preventGenSteps</xpath>
+            <value><li>ScatterShrines</li></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/extraGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]</xpath>
+            <value><extraGenSteps><li>RUT_ScatterShrinesRare</li></extraGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/extraGenSteps</xpath>
+            <value><li>RUT_ScatterShrinesRare</li></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/preventGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]</xpath>
+            <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/preventGenSteps</xpath>
+            <value><li>ScatterShrines</li></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/extraGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]</xpath>
+            <value><extraGenSteps><li>RUT_ScatterShrinesRare</li></extraGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/extraGenSteps</xpath>
+            <value><li>RUT_ScatterShrinesRare</li></value>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- Advanced Biomes (Continued): PoisonForest, RARE. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Advanced Biomes (Continued)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="PoisonForest"]/preventGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="PoisonForest"]</xpath>
+            <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="PoisonForest"]/preventGenSteps</xpath>
+            <value><li>ScatterShrines</li></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="PoisonForest"]/extraGenSteps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="PoisonForest"]</xpath>
+            <value><extraGenSteps><li>RUT_ScatterShrinesRare</li></extraGenSteps></value>
+          </nomatch>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="PoisonForest"]/extraGenSteps</xpath>
+            <value><li>RUT_ScatterShrinesRare</li></value>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- Comigo's Greater Swamps (Continued): COMIGO_GreaterSwamp_Tropical, DENY.
+       Targets the CONCRETE CHILD directly - see file header, no inheritance
+       trap here (neither field exists on parent or child). -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Comigo's Greater Swamps (Continued)</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/preventGenSteps</xpath>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]</xpath>
+        <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+      </nomatch>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/preventGenSteps</xpath>
+        <value><li>ScatterShrines</li></value>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>
