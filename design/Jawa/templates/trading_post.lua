@@ -442,7 +442,7 @@ function build(ctx)
     local c = counter_cells[1]
     counter_lamp = near_walkable(ctx, "LIGHT", c[1], c[2], 1, shop_i, outer(shop_i))
   end
-  wall_lights(ctx, shop_r, 1)
+  wall_lights(ctx, shop_i, 1)
 
   -- ---- windows: one per side wall away from the sun, none on destitute;
   -- Empire additionally cuts one on the road wall itself (spec's own line)
@@ -570,7 +570,7 @@ function build(ctx)
       { role = "PLANT_POT", weight = 2 }, { role = "STOOL", weight = 1 },
     }, clutter_n(back_i), outer(back_i))
   end
-  wall_lights(ctx, back_r, 1)
+  wall_lights(ctx, back_i, 1)
 
   local back_ok, back_cov, back_unreached = aisle_ok(ctx, back_r)
   if not back_ok then
