@@ -1535,6 +1535,12 @@
     "hash": "c02687d8a8a8cf01961ff59cca238bc71bdfdf56bf7b94fb4b87160c70a5fa69",
     "sha": "bb73b6bd"
   },
+  "src/RimMandrake/MovingDunes/Source/RimMandrake_MovingDunes.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "951114f61c647448e1e5796e796dbc9bcb62ca23c6ad260b0c0da4e412237a79",
+    "sha": "5c4a5137"
+  },
   "src/RimMandrake/MovingDunes/Source/SectionLayer_DuneSand.cs": {
     "cleanCount": 1,
     "date": "2026-09-09",
