@@ -17,7 +17,6 @@
       <value>
         <wildAnimals>
           <Rat>0.1</Rat> <!-- brown rat - ship-vermin, import -->
-          <!-- SKIPPED OuterRim_AstromechDroid - Astromech Droid: not a PawnKindDef; wildAnimals cannot resolve it -->
         </wildAnimals>
       </value>
     </match>
@@ -33,12 +32,39 @@
     </match>
   </Operation>
 
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.droidworks">   <!-- donor: mandrake.rsw.droidworks -->
+    <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
+      <value>
+        <RSW_DW_OuterRim_MSEDroid>0.1</RSW_DW_OuterRim_MSEDroid> <!-- MSE Repair Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_SalvageAssistDroid>0.1</RSW_DW_OuterRim_SalvageAssistDroid> <!-- salvage assist droid - feral-droid, import -->
+        <RSW_DW_OuterRim_DUMDroid>0.08</RSW_DW_OuterRim_DUMDroid> <!-- DUM Repair Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_GNKDroid>0.08</RSW_DW_OuterRim_GNKDroid> <!-- GNK Power Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_RSeriesDroid>0.08</RSW_DW_OuterRim_RSeriesDroid> <!-- Astromech Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_FX7Droid>0.05</RSW_DW_OuterRim_FX7Droid> <!-- fx-7 medical droid - feral-droid, import -->
+        <RSW_DW_OuterRim_MuckrakerDroid>0.05</RSW_DW_OuterRim_MuckrakerDroid> <!-- Muckraker Crab Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_DestroyerDroid>0.02</RSW_DW_OuterRim_DestroyerDroid> <!-- Destroyer Droid - feral-droid, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
+    <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
+      <value>
+        <RSW_Bantha>0.8</RSW_Bantha> <!-- bantha - huge-herd, adjust-keep -->
+        <RSW_Nuna>0.2</RSW_Nuna> <!-- nuna - herd-small, keep -->
+      </value>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
     <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
       <value>
-        <RSW_Bantha>0.8</RSW_Bantha> <!-- bantha - huge-herd, adjust-keep; MLIE_FAUNA_ABSORPTION_1 Wave A: repointed to our own port -->
         <Kreetle>0.8</Kreetle> <!-- kreetle - ambush-small, keep -->
         <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
         <Shyrack>0.6</Shyrack> <!-- shyrack - ambush-flier, keep -->
@@ -65,7 +91,6 @@
         <Jakobeast>0.2</Jakobeast> <!-- jakobeast - herd, import -->
         <Nerf>0.2</Nerf> <!-- nerf - herd, keep -->
         <Nuna>0.2</Nuna> <!-- nuna - herd-small, keep -->
-        <RSW_Nuna>0.2</RSW_Nuna> <!-- MLIE_FAUNA_ABSORPTION_1 Wave B: Nuna collision, owner ruling 2026-09-02 - port kept alongside vanilla Nuna -->
         <Shaak>0.2</Shaak> <!-- shaak - herd, import -->
         <TeeMuss>0.2</TeeMuss> <!-- tee muss - herd, import -->
         <Worrt>0.2</Worrt> <!-- worrt - ambush-small, keep -->
@@ -78,22 +103,6 @@
         <Runyip>0.1</Runyip> <!-- runyip - herd, import -->
         <Voorpak>0.05</Voorpak> <!-- voorpak - ambush-small, keep -->
         <Horax>0.01</Horax> <!-- horax - megafauna, import -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="neronix17.outerrim.droiddepot">   <!-- donor: neronix17.outerrim.droiddepot -->
-    <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
-      <value>
-        <OuterRim_MSEDroid>0.1</OuterRim_MSEDroid> <!-- MSE Repair Droid - feral-droid, import -->
-        <OuterRim_SalvageAssistDroid>0.1</OuterRim_SalvageAssistDroid> <!-- salvage assist droid - feral-droid, import -->
-        <OuterRim_DUMDroid>0.08</OuterRim_DUMDroid> <!-- DUM Repair Droid - feral-droid, import -->
-        <OuterRim_GNKDroid>0.08</OuterRim_GNKDroid> <!-- GNK Power Droid - feral-droid, import -->
-        <OuterRim_FX7Droid>0.05</OuterRim_FX7Droid> <!-- fx-7 medical droid - feral-droid, import -->
-        <OuterRim_MuckrakerDroid>0.05</OuterRim_MuckrakerDroid> <!-- Muckraker Crab Droid - feral-droid, import -->
-        <OuterRim_DestroyerDroid>0.02</OuterRim_DestroyerDroid> <!-- Destroyer Droid - feral-droid, import -->
       </value>
     </match>
   </Operation>
@@ -131,7 +140,6 @@
       <value>
         <wildAnimals>
           <Rat>0.1</Rat> <!-- brown rat - ship-vermin, import -->
-          <!-- SKIPPED OuterRim_AstromechDroid - Astromech Droid: not a PawnKindDef; wildAnimals cannot resolve it -->
         </wildAnimals>
       </value>
     </match>
@@ -144,6 +152,36 @@
       <value>
         <BMT_ImperialToad>0.7</BMT_ImperialToad> <!-- imperial toad - small-runway, keep -->
         <BMT_MossBeetle>0.3</BMT_MossBeetle> <!-- moss beetle - small-runway, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.droidworks">   <!-- donor: mandrake.rsw.droidworks -->
+    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
+      <value>
+        <RSW_DW_OuterRim_MSEDroid>0.1</RSW_DW_OuterRim_MSEDroid> <!-- MSE Repair Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_SalvageAssistDroid>0.1</RSW_DW_OuterRim_SalvageAssistDroid> <!-- salvage assist droid - feral-droid, import -->
+        <RSW_DW_OuterRim_DUMDroid>0.08</RSW_DW_OuterRim_DUMDroid> <!-- DUM Repair Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_GNKDroid>0.08</RSW_DW_OuterRim_GNKDroid> <!-- GNK Power Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_RSeriesDroid>0.08</RSW_DW_OuterRim_RSeriesDroid> <!-- Astromech Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_FX7Droid>0.05</RSW_DW_OuterRim_FX7Droid> <!-- fx-7 medical droid - feral-droid, import -->
+        <RSW_DW_OuterRim_MuckrakerDroid>0.05</RSW_DW_OuterRim_MuckrakerDroid> <!-- Muckraker Crab Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_DestroyerDroid>0.02</RSW_DW_OuterRim_DestroyerDroid> <!-- Destroyer Droid - feral-droid, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
+    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
+      <value>
+        <RSW_Bantha>0.5</RSW_Bantha> <!-- bantha - huge-grazer, keep -->
+        <RSW_Nuna>0.4</RSW_Nuna> <!-- nuna - small-runway, keep -->
+        <RSW_Vulptex>0.08</RSW_Vulptex> <!-- vulptex - small-runway, keep -->
+        <RSW_Porg>0.04</RSW_Porg> <!-- porg - small-runway, keep -->
       </value>
     </match>
   </Operation>
@@ -179,13 +217,11 @@
         <Kybuck>0.6</Kybuck> <!-- kybuck - medium-runner, keep -->
         <Massiff>0.6</Massiff> <!-- massiff - medium-interface, keep -->
         <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
-        <RSW_Bantha>0.5</RSW_Bantha> <!-- bantha - huge-grazer, keep; MLIE_FAUNA_ABSORPTION_1 Wave A: repointed to our own port -->
         <Pufferpig>0.5</Pufferpig> <!-- Pufferpig - small-runway, keep -->
         <Anooba>0.4</Anooba> <!-- anooba - medium-interface, adjust-keep -->
         <Corinathoth>0.4</Corinathoth> <!-- corinathoth - huge-grazer, keep -->
         <Gizka>0.4</Gizka> <!-- gizka - small-runway, keep -->
         <Nuna>0.4</Nuna> <!-- nuna - small-runway, keep -->
-        <RSW_Nuna>0.4</RSW_Nuna> <!-- MLIE_FAUNA_ABSORPTION_1 Wave B: Nuna collision, owner ruling 2026-09-02 - port kept alongside vanilla Nuna -->
         <WompRat>0.4</WompRat> <!-- womp rat - ship-vermin, import -->
         <Worrt>0.4</Worrt> <!-- worrt - small-runway, keep -->
         <Mynock>0.3</Mynock> <!-- mynock - ship-vermin, import -->
@@ -197,27 +233,9 @@
         <Pikobis>0.1</Pikobis> <!-- pikobis - medium-runner, keep -->
         <Convor>0.08</Convor> <!-- convor - flier-interface, keep -->
         <Skalder>0.08</Skalder> <!-- skalder - huge-grazer, keep -->
-        <RSW_Vulptex>0.08</RSW_Vulptex> <!-- vulptex - small-runway, keep; MLIE_FAUNA_ABSORPTION_1 Wave B: repointed to our own port -->
         <FeralNerf>0.04</FeralNerf> <!-- feral nerf - medium-runner, keep -->
-        <RSW_Porg>0.04</RSW_Porg> <!-- porg - small-runway, keep; MLIE_FAUNA_ABSORPTION_1 Wave B: repointed to our own port -->
         <Voorpak>0.02</Voorpak> <!-- voorpak - small-runway, keep -->
         <KowakianMonkeyLizard>0.01</KowakianMonkeyLizard> <!-- kowakian monkey-lizard - small-runway, keep -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="neronix17.outerrim.droiddepot">   <!-- donor: neronix17.outerrim.droiddepot -->
-    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
-      <value>
-        <OuterRim_MSEDroid>0.1</OuterRim_MSEDroid> <!-- MSE Repair Droid - feral-droid, import -->
-        <OuterRim_SalvageAssistDroid>0.1</OuterRim_SalvageAssistDroid> <!-- salvage assist droid - feral-droid, import -->
-        <OuterRim_DUMDroid>0.08</OuterRim_DUMDroid> <!-- DUM Repair Droid - feral-droid, import -->
-        <OuterRim_GNKDroid>0.08</OuterRim_GNKDroid> <!-- GNK Power Droid - feral-droid, import -->
-        <OuterRim_FX7Droid>0.05</OuterRim_FX7Droid> <!-- fx-7 medical droid - feral-droid, import -->
-        <OuterRim_MuckrakerDroid>0.05</OuterRim_MuckrakerDroid> <!-- Muckraker Crab Droid - feral-droid, import -->
-        <OuterRim_DestroyerDroid>0.02</OuterRim_DestroyerDroid> <!-- Destroyer Droid - feral-droid, import -->
       </value>
     </match>
   </Operation>
@@ -352,6 +370,16 @@
     </match>
   </Operation>
 
+  <Operation Class="PatchOperationConditional" MayRequire="grimterra.biomesmod,mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
+    <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
+      <value>
+        <RSW_Nuna>0.4</RSW_Nuna> <!-- nuna - brake, import -->
+      </value>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationConditional" MayRequire="grimterra.biomesmod,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
     <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -366,7 +394,6 @@
         <Klorslug>0.4</Klorslug> <!-- k'lor'slug - gnawer, keep -->
         <Mott>0.4</Mott> <!-- mott - brake, import -->
         <Nuna>0.4</Nuna> <!-- nuna - brake, import -->
-        <RSW_Nuna>0.4</RSW_Nuna> <!-- MLIE_FAUNA_ABSORPTION_1 Wave B: Nuna collision, owner ruling 2026-09-02 - port kept alongside vanilla Nuna -->
         <Convor>0.3</Convor> <!-- convor - flier, import -->
         <Falumpaset>0.3</Falumpaset> <!-- falumpaset - brake, import -->
         <Gelagrub>0.3</Gelagrub> <!-- gelagrub - gnawer, import -->
@@ -413,8 +440,34 @@
       <value>
         <wildAnimals>
           <Rat>0.1</Rat> <!-- brown rat - ship-vermin, import -->
-          <!-- SKIPPED OuterRim_AstromechDroid - Astromech Droid: not a PawnKindDef; wildAnimals cannot resolve it -->
         </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.droidworks">   <!-- donor: mandrake.rsw.droidworks -->
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+      <value>
+        <RSW_DW_OuterRim_MSEDroid>0.1</RSW_DW_OuterRim_MSEDroid> <!-- MSE Repair Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_SalvageAssistDroid>0.1</RSW_DW_OuterRim_SalvageAssistDroid> <!-- salvage assist droid - feral-droid, import -->
+        <RSW_DW_OuterRim_DUMDroid>0.08</RSW_DW_OuterRim_DUMDroid> <!-- DUM Repair Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_GNKDroid>0.08</RSW_DW_OuterRim_GNKDroid> <!-- GNK Power Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_RSeriesDroid>0.08</RSW_DW_OuterRim_RSeriesDroid> <!-- Astromech Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_FX7Droid>0.05</RSW_DW_OuterRim_FX7Droid> <!-- fx-7 medical droid - feral-droid, import -->
+        <RSW_DW_OuterRim_MuckrakerDroid>0.05</RSW_DW_OuterRim_MuckrakerDroid> <!-- Muckraker Crab Droid - feral-droid, import -->
+        <RSW_DW_OuterRim_DestroyerDroid>0.02</RSW_DW_OuterRim_DestroyerDroid> <!-- Destroyer Droid - feral-droid, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+      <value>
+        <RSW_Wampa>0.02</RSW_Wampa> <!-- wampa - apex-nocturnal, import -->
       </value>
     </match>
   </Operation>
@@ -434,22 +487,6 @@
         <Scurrier>0.1</Scurrier> <!-- scurrier - grain-scale, adjust-keep -->
         <Gizka>0.01</Gizka> <!-- gizka - grain-scale, keep -->
         <GreaterKraytDragon>0.001</GreaterKraytDragon> <!-- greater krayt dragon - giant, keep -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="neronix17.outerrim.droiddepot">   <!-- donor: neronix17.outerrim.droiddepot -->
-    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-      <value>
-        <OuterRim_MSEDroid>0.1</OuterRim_MSEDroid> <!-- MSE Repair Droid - feral-droid, import -->
-        <OuterRim_SalvageAssistDroid>0.1</OuterRim_SalvageAssistDroid> <!-- salvage assist droid - feral-droid, import -->
-        <OuterRim_DUMDroid>0.08</OuterRim_DUMDroid> <!-- DUM Repair Droid - feral-droid, import -->
-        <OuterRim_GNKDroid>0.08</OuterRim_GNKDroid> <!-- GNK Power Droid - feral-droid, import -->
-        <OuterRim_FX7Droid>0.05</OuterRim_FX7Droid> <!-- fx-7 medical droid - feral-droid, import -->
-        <OuterRim_MuckrakerDroid>0.05</OuterRim_MuckrakerDroid> <!-- Muckraker Crab Droid - feral-droid, import -->
-        <OuterRim_DestroyerDroid>0.02</OuterRim_DestroyerDroid> <!-- Destroyer Droid - feral-droid, import -->
       </value>
     </match>
   </Operation>
@@ -474,16 +511,6 @@
         <AA_Dunealisk>0.1</AA_Dunealisk> <!-- dunealisk - giant-subsurface, import -->
         <AA_BoulderMit>0.025</AA_BoulderMit> <!-- bouldermit - giant, keep -->
         <AA_TetraSlug>0.0005</AA_TetraSlug> <!-- tetra slug - giant, keep -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
-    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-      <value>
-        <RSW_Wampa>0.02</RSW_Wampa> <!-- wampa - apex-nocturnal, MLIE_FAUNA_ABSORPTION_1 Wave B: owner ruling 2026-09-02 (wire in, "night-side") - Wampa has no natural desert wildBiomes fit; placed here as ExtremeDesert's rare, dangerous cold-hour predator -->
       </value>
     </match>
   </Operation>
@@ -752,6 +779,65 @@
     </match>
   </Operation>
 
+  <Operation Class="PatchOperationConditional" MayRequire="zal.comigogreaterswamps">
+    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zal.comigogreaterswamps,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
+    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+      <value>
+        <BMT_GlowSlug>0.5</BMT_GlowSlug> <!-- glowslug - sap-drinker, keep -->
+        <BMT_JewelBeetle>0.2</BMT_JewelBeetle> <!-- jewel beetle - crown-grazer, import -->
+        <BMT_AcidSlug>0.05</BMT_AcidSlug> <!-- acid slug - ground-slow, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zal.comigogreaterswamps,mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
+    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+      <value>
+        <RSW_Nuna>0.4</RSW_Nuna> <!-- nuna - grazer, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zal.comigogreaterswamps,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
+    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+      <value>
+        <Urusai>0.5</Urusai> <!-- urusai - crown-flier, keep -->
+        <Gelagrub>0.4</Gelagrub> <!-- gelagrub - crown-grazer, adjust-keep -->
+        <Nuna>0.4</Nuna> <!-- nuna - grazer, keep -->
+        <Convor>0.3</Convor> <!-- convor - crown-flier, import -->
+        <LongtailGorg>0.3</LongtailGorg> <!-- longtail gorg - wait-ambush, keep -->
+        <Whisperbird>0.3</Whisperbird> <!-- whisperbird - crown-flier, import -->
+        <Fambaa>0.02</Fambaa> <!-- fambaa - the-terribly-lost, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zal.comigogreaterswamps,oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
+    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
+      <value>
+        <VFEI2_Megathrips>0.5</VFEI2_Megathrips> <!-- megathrips - wood-borer, keep -->
+      </value>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
     <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
@@ -779,56 +865,6 @@
         <AA_RoughPlatedMonitor>0.1</AA_RoughPlatedMonitor> <!-- rough-plated monitor - the-basker, keep -->
         <AA_Swarmling>0.1</AA_Swarmling> <!-- swarmling - the-pickers, adjust-keep -->
         <AA_DrainerLarva>0.05</AA_DrainerLarva> <!-- drainer larva - the-thieves, keep -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zal.comigogreaterswamps">
-    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zal.comigogreaterswamps,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
-      <value>
-        <BMT_GlowSlug>0.5</BMT_GlowSlug> <!-- glowslug - sap-drinker, keep -->
-        <BMT_JewelBeetle>0.2</BMT_JewelBeetle> <!-- jewel beetle - crown-grazer, import -->
-        <BMT_AcidSlug>0.05</BMT_AcidSlug> <!-- acid slug - ground-slow, keep -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zal.comigogreaterswamps,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
-      <value>
-        <Urusai>0.5</Urusai> <!-- urusai - crown-flier, keep -->
-        <Gelagrub>0.4</Gelagrub> <!-- gelagrub - crown-grazer, adjust-keep -->
-        <Nuna>0.4</Nuna> <!-- nuna - grazer, keep -->
-        <RSW_Nuna>0.4</RSW_Nuna> <!-- MLIE_FAUNA_ABSORPTION_1 Wave B: Nuna collision, owner ruling 2026-09-02 - port kept alongside vanilla Nuna -->
-        <Convor>0.3</Convor> <!-- convor - crown-flier, import -->
-        <LongtailGorg>0.3</LongtailGorg> <!-- longtail gorg - wait-ambush, keep -->
-        <Whisperbird>0.3</Whisperbird> <!-- whisperbird - crown-flier, import -->
-        <Fambaa>0.02</Fambaa> <!-- fambaa - the-terribly-lost, import -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zal.comigogreaterswamps,oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
-    <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
-      <value>
-        <VFEI2_Megathrips>0.5</VFEI2_Megathrips> <!-- megathrips - wood-borer, keep -->
       </value>
     </match>
   </Operation>
@@ -891,83 +927,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <ColossusToad>0.4</ColossusToad> <!-- colossus toad - medium-resident, keep -->
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-      <value>
-        <Ollopom>0.7</Ollopom> <!-- ollopom - small-resident, keep -->
-        <Fanback>0.5</Fanback> <!-- fanback - large-resident, adjust-keep -->
-        <RSW_Dewback>0.4</RSW_Dewback> <!-- dewback - large-resident, import; MLIE_FAUNA_ABSORPTION_1 Wave B: repointed to our own port -->
-        <Boma>0.15</Boma> <!-- boma - large-margin, keep -->
-        <Dactillion>0.15</Dactillion> <!-- dactillion - flier-mount, keep -->
-        <RSW_Bantha>0.1</RSW_Bantha> <!-- bantha - pilgrim, import; MLIE_FAUNA_ABSORPTION_1 Wave A: repointed to our own port -->
-        <Eopie>0.1</Eopie> <!-- eopie - pilgrim, import -->
-        <Jamel>0.1</Jamel> <!-- Jamel - pilgrim, import -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-      <value>
-        <AA_Eyeling>0.1</AA_Eyeling> <!-- ikee - omen, import -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-      <value>
-        <AA_GreenGoo>2.0</AA_GreenGoo> <!-- green goo - substrate, keep -->
-        <AA_AcanthamoebaGiganteaLarge>0.15</AA_AcanthamoebaGiganteaLarge> <!-- acanthamoeba gigantea, large - resistant-native, import -->
-        <AA_Plasmorph>0.1</AA_Plasmorph> <!-- plasmorph - resistant-native, adjust-keep -->
-        <AA_Helixien>0.075</AA_Helixien> <!-- helixien - resistant-native, keep -->
-        <AA_DecayDrake>0.02</AA_DecayDrake> <!-- decay drake - trace-experiment, keep -->
-        <AA_Mime>0.01</AA_Mime> <!-- mime - trace-experiment, keep -->
-        <AA_Thunderbeast>0.005</AA_Thunderbeast> <!-- thunderbeast - trace-experiment, keep -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-      <value>
-        <GR_Chickenrabbit>0.005</GR_Chickenrabbit> <!-- chickenrabbit - trace-tail, import -->
-        <GR_Manbear>0.002</GR_Manbear> <!-- manbear - trace-tail, import -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
@@ -985,6 +944,16 @@
       <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
       <value>
         <BMT_FoundryBeetle>0.18</BMT_FoundryBeetle> <!-- foundry beetle - plated-grazer, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
+    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+      <value>
+        <RSW_Acklay>0.05</RSW_Acklay> <!-- acklay - apex-predator, import -->
       </value>
     </match>
   </Operation>
@@ -1042,12 +1011,50 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
-    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
       <value>
-        <RSW_Acklay>0.05</RSW_Acklay> <!-- acklay - apex-predator, MLIE_FAUNA_ABSORPTION_1 Wave B: owner ruling 2026-09-02 (wire in, "wherever fits") - armored arena predator fits the war-wreckage register -->
+        <wildAnimals>
+          <ColossusToad>0.4</ColossusToad> <!-- colossus toad - medium-resident, keep -->
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+      <value>
+        <RSW_Dewback>0.4</RSW_Dewback> <!-- dewback - large-resident, import -->
+        <RSW_Bantha>0.1</RSW_Bantha> <!-- bantha - pilgrim, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+      <value>
+        <Ollopom>0.7</Ollopom> <!-- ollopom - small-resident, keep -->
+        <Fanback>0.5</Fanback> <!-- fanback - large-resident, adjust-keep -->
+        <Boma>0.15</Boma> <!-- boma - large-margin, keep -->
+        <Dactillion>0.15</Dactillion> <!-- dactillion - flier-mount, keep -->
+        <Eopie>0.1</Eopie> <!-- eopie - pilgrim, import -->
+        <Jamel>0.1</Jamel> <!-- Jamel - pilgrim, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+      <value>
+        <AA_Eyeling>0.1</AA_Eyeling> <!-- ikee - omen, import -->
       </value>
     </match>
   </Operation>
@@ -1064,6 +1071,16 @@
     </match>
   </Operation>
 
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+      <value>
+        <RSW_Nuna>0.5</RSW_Nuna> <!-- nuna - small, adjust-keep -->
+      </value>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
     <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -1072,7 +1089,6 @@
         <Zeer>0.6</Zeer> <!-- zeer - large-herd, adjust-keep -->
         <Iriaz>0.5</Iriaz> <!-- iriaz - small-herd, import -->
         <Nuna>0.5</Nuna> <!-- nuna - small, adjust-keep -->
-        <RSW_Nuna>0.5</RSW_Nuna> <!-- MLIE_FAUNA_ABSORPTION_1 Wave B: Nuna collision, owner ruling 2026-09-02 - port kept alongside vanilla Nuna -->
         <Anooba>0.35</Anooba> <!-- anooba - medium-predator, import -->
         <Gizka>0.3</Gizka> <!-- gizka - grain, adjust-keep -->
         <Orray>0.25</Orray> <!-- orray - medium, import -->
@@ -1096,6 +1112,44 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
       <value>
         <GR_Mantistanis>0.05</GR_Mantistanis> <!-- mantistanis - large-predator, import -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
+    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+      <value>
+        <wildAnimals>
+        </wildAnimals>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,sarg.alphaanimals">   <!-- donor: sarg.alphaanimals -->
+    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+      <value>
+        <AA_GreenGoo>2.0</AA_GreenGoo> <!-- green goo - substrate, keep -->
+        <AA_AcanthamoebaGiganteaLarge>0.15</AA_AcanthamoebaGiganteaLarge> <!-- acanthamoeba gigantea, large - resistant-native, import -->
+        <AA_Plasmorph>0.1</AA_Plasmorph> <!-- plasmorph - resistant-native, adjust-keep -->
+        <AA_Helixien>0.075</AA_Helixien> <!-- helixien - resistant-native, keep -->
+        <AA_DecayDrake>0.02</AA_DecayDrake> <!-- decay drake - trace-experiment, keep -->
+        <AA_Mime>0.01</AA_Mime> <!-- mime - trace-experiment, keep -->
+        <AA_Thunderbeast>0.005</AA_Thunderbeast> <!-- thunderbeast - trace-experiment, keep -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
+    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
+      <value>
+        <GR_Chickenrabbit>0.005</GR_Chickenrabbit> <!-- chickenrabbit - trace-tail, import -->
+        <GR_Manbear>0.002</GR_Manbear> <!-- manbear - trace-tail, import -->
       </value>
     </match>
   </Operation>
