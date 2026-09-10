@@ -2,4 +2,10 @@
 <LanguageData>
   <RUT_Migration>Migration</RUT_Migration>
   <RUT_MigrationDesc>A herd of animals is passing through the area.</RUT_MigrationDesc>
+
+  <RUT_SurvivalPod>Survival pod</RUT_SurvivalPod>
+  <RUT_SurvivalPodDesc>A survival pod has landed nearby, containing basic supplies for a stranded traveler.</RUT_SurvivalPodDesc>
+
+  <RUT_Thanksgiving>Clan tribute</RUT_Thanksgiving>
+  <RUT_ThanksgivingDesc>Word of your colony's hunger has reached a nearby clan. They have sent food as a gesture of goodwill.</RUT_ThanksgivingDesc>
 </LanguageData>
