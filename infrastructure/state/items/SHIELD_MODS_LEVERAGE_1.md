@@ -1,4 +1,96 @@
-# SHIELD_MODS_LEVERAGE_1 — survey done, scoping (BENCH, 2026-09-02)
+# SHIELD_MODS_LEVERAGE_1 — v1 build slice in place, offline-verified only (FOUNDRY, 2026-09-09)
+
+## Build (FOUNDRY, 2026-09-09)
+
+Scoping WAS complete before this session started: the owner ruled 2026-09-04
+by card (`design/Jawa/canon_reintegration_plan.md` sec G.9): "bespoke
+building-scale comp, NOW. The full fantasy owned immediately; the new C#
+system's maintenance cost accepted. SHIELD_MODS_LEVERAGE_1 unblocked." That
+ruling superseded the earlier lean toward forking VEF (this item's own
+2026-09-02 source-verification had already found `CompShieldField` is a
+pawn-apparel comp, not building-scale, which is WHY the owner ruled bespoke).
+An `OWNER unblock` ledger event on 2026-09-04 was itself refused by the
+process guard ("OWNER may not `unblock` SHIELD_MODS_LEVERAGE_1 — it belongs
+to FOUNDRY") but the ruling text and its authorization stand regardless —
+recorded in canon_reintegration_plan.md, not contingent on that one ledger
+write.
+
+Built this session, all under `src/RimUtinni/ShipShields/`
+(`mandrake.rut.shipshields`, depends on Odyssey):
+
+- **`RUT_ShieldGenerator`**, one building, one field active at a time,
+  switched by installing a module (shd:loadout-tradeoff) instead of four
+  separate buildings.
+- **Bubble/kinetic field (shd:bubble-not-wall)**, default, unlocked from the
+  start. `CompShieldGenerator` is a real subclass of vanilla's own
+  `CompProjectileInterceptor` — the same base class Odyssey's native
+  `CompGravshipShieldGenerator` uses (confirmed via rimsage source read, not
+  guessed) — not a fork of any mod's engine. Forcibly draining it to 0 hit
+  points fires a `GenExplosion.DoExplosion` collapse (shd:bubble-not-wall's
+  "prone to overheating or even explosion when forcibly collapsed").
+- **Canon-wide slow-pass-through (shd:shield-collapse-evacuate)**:
+  `CompProjectileInterceptor.CheckIntercept` is a normal instance method, not
+  virtual, so a Harmony prefix (`HarmonyPatches.cs`) adds a
+  `projectile.def.projectile.SpeedTilesPerTick` gate — below
+  `slowPassThroughSpeed` (0.3 tiles/tick default), the projectile is let
+  through untouched. Scoped by `__instance is CompShieldGenerator` type
+  check, so vanilla's own gravship/mech shields are untouched — extending
+  this canon-wide (the owner's note reads "including the crew," i.e.
+  arguably every shield) is a separate, larger call left open, not silently
+  done here.
+- **Thermal veil (shd:thermal-veil)**, module-gated. `CompShieldThermalVeil`
+  reuses the same two primitives vanilla's own heaters/coolers are built on
+  (`GenTemperature.ControlTemperatureTempChange` + `PushHeat`), applying only
+  `rejectionFactor` (0.45 default) of the ideal correction each interval —
+  the room still drifts toward outdoor extremes, just far more slowly,
+  matching "reflect heat outward... but not nearly as badly."
+- **Particulate screen (shd:particulate-screen), module-gated — PARTIAL.**
+  `CompShieldParticulateScreen` only sweeps and destroys weather-deposited
+  `Filth` in radius each interval. It does NOT implement small-animal
+  repulsion or direct negation of wind/ash/sand/rain damage — the ruling's
+  "handle... damage completely as well as repel small animals" is only
+  partly built. This is the one shd: row this session did not finish.
+
+Defs: `Buildings_ShieldGenerator` XML fields (`radius`, `hitPoints`, `color`,
+`activeSound`, etc.) and the placeholder `texPath`
+(`Things/Building/GravshipShieldGenerator`) are copied from vanilla's own
+`GravshipShieldGenerator` ThingDef via rimsage, not guessed. The two module
+items' `recipeMaker` blocks are copied from vanilla's own `Apparel_ShieldBelt`
+(same bench, same work stat, same effecter/sound). Research prerequisite
+`ShieldBelt` (vanilla's personal-shield research) verified via rimsage, not
+invented. Real building/module art is NOT done — placeholder vanilla
+textures only.
+
+**Verification performed**: `dotnet build` against the real
+`Assembly-CSharp.dll`/`0Harmony.dll` on this machine — 0 warnings, 0 errors
+— plus well-formedness checks on every new XML file (caught and fixed three
+files where prose inside XML comments used a bare `--`, illegal in XML
+comments). This is compile-only, offline verification; there is NO live
+game-load or bridge test of this session's work — the bridge was held by
+another agent for an unrelated check all session, and this item's own
+instructions scoped it to offline work only.
+
+**Remaining gap, precise** (why this stays `doing`, not closed):
+1. Particulate screen's small-animal repulsion and direct weather-damage
+   negation (see above) — not built.
+2. shd:shield-collapse-evacuate's *predictive* failure alert ("shields that
+   are slowly failing due to an environmental stressor can predict and
+   alert to let the crew return and leave") — not built. Only the
+   slow-pass-through half of that ruling row is done.
+3. shd:no-hard-landing-gate — not started. This is a separate mechanism
+   (a landing-site hazard advisory), not part of the shield generator's own
+   comp; it rides on the same design doc but needs its own hook into
+   gravship landing, which nothing in this build touches.
+4. No live verification at all: the building has never been spawned, no
+   projectile has ever been fired at it, the module-install gizmo has never
+   been clicked, and the Harmony patch has never been proven to actually
+   fire in a running game. Compile-clean is not behavior-correct. First
+   live pass should: spawn `RUT_ShieldGenerator` via the bridge, shoot both
+   a fast and a slow-moving projectile at it in Bubble mode, install a
+   module and confirm mode-cycling changes behavior, and force-drain its
+   hit points to confirm the collapse explosion fires exactly once.
+
+## Local ground-truth check (FOUNDRY, 2026-09-02) — BENCH's survey was WebSearch-only
 
 Survey: research/Jawa/shield_mods_survey_2026-09-02.md. Recommended shape:
 - **Foundation: VEF's shield engine** (`CompShieldField`, MIT, already in our

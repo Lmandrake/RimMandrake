@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    SHIELD_MODS_LEVERAGE_1 v1 slice (owner ruling, canon_reintegration_plan.md
+    sec G.9, 2026-09-04: "bespoke building-scale comp, NOW"). One shield
+    generator, three field modes switched by installing modules
+    (shd:loadout-tradeoff) instead of four separate buildings:
+      - Bubble/kinetic (shd:bubble-not-wall), default, unlocked from the
+        start — RimMandrake.Utinni.ShipShields.CompShieldGenerator, a real
+        subclass of vanilla's CompProjectileInterceptor (the same base class
+        Odyssey's native GravshipShieldGenerator uses).
+      - Thermal veil (shd:thermal-veil) and particulate screen
+        (shd:particulate-screen), module-gated — see
+        Defs/ThingDefs_Items/RUT_ShieldModules.xml.
+
+    <color>, <activeSound>, <hitPoints>, <rechargeHitPointsIntervalTicks> and
+    the overall comps shape are adapted directly from vanilla's own
+    GravshipShieldGenerator ThingDef (rimsage), not guessed.
+
+    Placeholder art: reuses vanilla's own
+    Things/Building/GravshipShieldGenerator texture (Odyssey DLC — this mod
+    hard-depends on Odyssey already). Real art is owed; do not treat this
+    texPath as final.
+
+    NOT in this build (see About.xml / item file for the full account):
+    predictive shield-failure alerts, small-animal repulsion and direct
+    weather-damage negation under the particulate screen, and the
+    no-hard-landing-gate landing advisory.
+  -->
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_ShieldGenerator</defName>
+    <label>modulated shield generator</label>
+    <description>A building-scale plasma field projector. It holds one field configuration at a time — kinetic deflection against impactors and blaster fire, thermal rejection against extreme heat, or a particulate screen against wind, sand and ash — and is reconfigured by installing the matching module. Every field is porous to slow-moving things by design: nothing here "holds out water," it simply doesn't work that way.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/GravshipShieldGenerator</texPath>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+    <size>(3,3)</size>
+    <fillPercent>0.6</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <pathCost>20</pathCost>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <drawOffscreen>true</drawOffscreen>
+    <repairEffect>Repair</repairEffect>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <constructEffect>ConstructMetal</constructEffect>
+    <terrainAffordanceNeeded>Substructure</terrainAffordanceNeeded>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Beauty>-6</Beauty>
+      <Mass>80</Mass>
+      <WorkToBuild>4000</WorkToBuild>
+    </statBases>
+    <costList>
+      <Steel>180</Steel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+      <Plasteel>40</Plasteel>
+    </costList>
+    <researchPrerequisites>
+      <li>RUT_ModulatedShieldFields</li>
+    </researchPrerequisites>
+    <designationCategory>Structure</designationCategory>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>400</basePowerConsumption>
+      </li>
+      <li Class="RimMandrake.Utinni.ShipShields.CompProperties_ShieldGenerator">
+        <radius>14.9</radius>
+        <interceptGroundProjectiles>true</interceptGroundProjectiles>
+        <interceptAirProjectiles>true</interceptAirProjectiles>
+        <color>(0.45, 0.55, 0.6)</color>
+        <activeSound>BulletShield_Ambience</activeSound>
+        <hitPoints>260</hitPoints>
+        <startWithMaxHitPoints>true</startWithMaxHitPoints>
+        <hitPointsRestoreInstantlyAfterCharge>false</hitPointsRestoreInstantlyAfterCharge>
+        <rechargeHitPointsIntervalTicks>75</rechargeHitPointsIntervalTicks>
+        <disarmedByEmpForTicks>0</disarmedByEmpForTicks>
+        <slowPassThroughSpeed>0.3</slowPassThroughSpeed>
+        <collapseExplosionRadius>4.5</collapseExplosionRadius>
+        <collapseExplosionDamage>Bomb</collapseExplosionDamage>
+        <collapseExplosionDamageAmount>80</collapseExplosionDamageAmount>
+      </li>
+      <li Class="RimMandrake.Utinni.ShipShields.CompProperties_ShieldThermalVeil">
+        <rejectionFactor>0.45</rejectionFactor>
+        <comfortTemperature>21</comfortTemperature>
+        <intervalTicks>250</intervalTicks>
+      </li>
+      <li Class="RimMandrake.Utinni.ShipShields.CompProperties_ShieldParticulateScreen">
+        <radius>9.9</radius>
+        <intervalTicks>250</intervalTicks>
+      </li>
+      <li Class="RimMandrake.Utinni.ShipShields.CompProperties_ShieldModuleSwitch">
+        <defaultMode>Bubble</defaultMode>
+        <moduleMappings>
+          <li>
+            <moduleDef>RUT_ShieldModule_Thermal</moduleDef>
+            <mode>Thermal</mode>
+          </li>
+          <li>
+            <moduleDef>RUT_ShieldModule_Particulate</moduleDef>
+            <mode>Particulate</mode>
+          </li>
+        </moduleMappings>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

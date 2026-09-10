@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: Ship Shields — Modulated Plasma Fields</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.shipshields</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>SHIELD_MODS_LEVERAGE_1 — the bespoke building-scale shield comp,
+ruled owner/2026-09-04 by card (design/Jawa/canon_reintegration_plan.md sec G.9:
+"bespoke building-scale comp, NOW... the new C# system's maintenance cost
+accepted"), superseding the earlier survey's lean toward forking a Vanilla
+Expanded engine (VEF's CompShieldField turned out to be a pawn-apparel comp,
+not building-scale; see the item file's source-verification section).
+
+One `RUT_ShieldGenerator` building, one field active at a time, switched by
+installing a module (shd:loadout-tradeoff) rather than four separate
+buildings:
+
+  - Bubble/kinetic (shd:bubble-not-wall, default, no module needed): a real
+    subclass of vanilla's own `CompProjectileInterceptor` (the same base
+    class Odyssey's native gravship shield generator uses,
+    RimWorld/CompGravshipShieldGenerator.cs) rather than a fork of any mod's
+    engine. Forcibly draining it to 0 hit points triggers a collapse
+    explosion (shd:bubble-not-wall's "prone to overheating or even explosion
+    when forcibly collapsed").
+  - Thermal veil (shd:thermal-veil, module-gated): partially rejects outdoor
+    temperature drift via `GenTemperature.ControlTemperatureTempChange` +
+    `PushHeat` (the same primitives vanilla heaters/coolers use), power-only,
+    never a full cancellation — the room still climbs toward extremes, just
+    far more slowly.
+  - Particulate screen (shd:particulate-screen, module-gated): v1 slice only
+    clears weather-deposited filth in radius each interval. Small-animal
+    repulsion and direct weather-damage negation are NOT yet implemented —
+    see the item file's remaining-gap note.
+
+Canon-wide "slow-moving things pass through every shield" (shd:shield-
+collapse-evacuate) is implemented as a Harmony prefix on
+`CompProjectileInterceptor.CheckIntercept`, scoped to this mod's own
+`CompShieldGenerator` only — vanilla's native gravship/mech shields are left
+untouched pending a separate, larger call on whether to extend it further.
+
+Predictive shield-failure alerts (shd:shield-collapse-evacuate's evacuation
+warning) and the landing-hazard advisory (shd:no-hard-landing-gate) are
+explicitly OUT of this build — they are separate mechanisms, not part of the
+shield generator's own comp, and remain open work.
+
+Full spec: design/Jawa/proposals/ship_shields_deep_design.md. Survey and
+scoping history: infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md,
+research/Jawa/shield_mods_survey_2026-09-02.md.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>Odyssey</displayName>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld.Odyssey</li>
+  </loadAfter>
+</ModMetaData>

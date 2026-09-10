@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    Prerequisite verified against the live def dump (rimsage), not guessed:
+    vanilla's ResearchProjectDef "ShieldBelt" (label "shields") is what
+    already unlocks the personal shield belt — scaling that tech up to a
+    building-mounted, reconfigurable field is the natural next rung.
+    researchViewX/Y are a provisional placement (RUT_AdvancedFungi's own
+    freestanding-row pattern, no existing RimUtinni ship-tree anchor was
+    found to hook into instead); revisit once the "Utinni" tree relabel
+    (canon_reintegration_plan.md sec G.14) lands.
+  -->
+  <ResearchProjectDef>
+    <defName>RUT_ModulatedShieldFields</defName>
+    <label>modulated shield fields</label>
+    <description>Building-scale plasma field projection: a single reconfigurable shield generator, and the modules that retune its field between kinetic deflection, thermal rejection, and a particulate screen.</description>
+    <baseCost>1600</baseCost>
+    <techLevel>Spacer</techLevel>
+    <prerequisites>
+      <li>ShieldBelt</li>
+    </prerequisites>
+    <researchViewX>7.0</researchViewX>
+    <researchViewY>4.4</researchViewY>
+  </ResearchProjectDef>
+</Defs>
