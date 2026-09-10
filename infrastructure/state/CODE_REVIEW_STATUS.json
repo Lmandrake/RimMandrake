@@ -10959,6 +10959,12 @@
     "hash": "e7914cf086fd9a37af034d1cead0462558172c053cd5ef7355c6d549492ca013",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_Lightfall.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "d0806918b3ff96d3f53d8a14f3162cfad01a89ab4467bfebee5b05e88f265ac7",
+    "sha": "50af6a2b"
+  },
   "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_Slough_GelatinousBreach.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -10976,6 +10982,12 @@
     "date": "2026-09-09",
     "hash": "1a2bae355f4a9364933aa3e5e70901dc7cf4fdb42584129273caf93ee2d4ae27",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ScatterShrinesRare.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "5df94702da39fc52b792aee0213d21c18fb894e07bb3c332440e4e925fee84f8",
+    "sha": "50af6a2b"
   },
   "src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaColonistPawnKinds.xml": {
     "cleanCount": 2,
@@ -11066,6 +11078,12 @@
     "date": "2026-09-06",
     "hash": "e65e442b51938a3fdd565d44e854808c0b33a370aa0e35fc51774ecde4328d04",
     "sha": "b87a3622"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/AncientDangerGenSteps_AmbientDoctrine.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "4d917378d7d6f852f2eec669ea12f9fa2441ede9bde8faeedfb22046bd4a8c60",
+    "sha": "50af6a2b"
   },
   "src/RimUtinni/UtinniPatches/Patches/AncientsAreRakata.xml": {
     "cleanCount": 1,
@@ -11301,11 +11319,23 @@
     "hash": "f573abba763b79c8637cf895e9c07c5d187645513500a795482a08092d6d79fe",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/UtinniPatches/Patches/MechClusterBiomes_AmbientDoctrine.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "3d1dbe92a57cb4d2995e6c738e092576e8b18fc066b558449e1ec9d63e9e4bab",
+    "sha": "50af6a2b"
+  },
   "src/RimUtinni/UtinniPatches/Patches/MechanoidIntrusion_AllowRivers.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
     "hash": "ee4027307cb34b0814650f01dd5c60655ae071f60fb0586fc2ee96019f316a7a",
     "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/MechanoidRaids_PlanetWideDeny.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "912e872b958b7e2af69600dc66b5398b234e02d1951a7fa5086c5e4111887267",
+    "sha": "50af6a2b"
   },
   "src/RimUtinni/UtinniPatches/Patches/OasisMutator_DesertOasis.xml": {
     "cleanCount": 1,
