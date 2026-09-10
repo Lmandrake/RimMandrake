@@ -77,6 +77,13 @@ Behaviors:
                   decision itself (not just the final row-1 verdict) reads
                   the note before deciding to retry against an already-
                   throttled account.
+    recovered_from_throttle
+                  exits 0 with a genuinely good image, but the note
+                  narrates an HONEST internal recovery ("first attempt
+                  returned TooManyRequests; retried once internally and
+                  succeeded") — proves a real success is never
+                  retroactively failed or made to trip the account
+                  hard-stop by its own note's words.
 """
 from __future__ import annotations
 
@@ -260,6 +267,26 @@ def main(argv=None) -> int:
                         has_alpha=False, corners_transparent=False,
                         background_used="transparent")
         return 1
+
+    if behavior == "recovered_from_throttle":
+        # Exit 0, a genuinely good image, but the note HONESTLY narrates
+        # an internal recovery from a throttle — exactly the AGENTS.md-
+        # allowed one retry ("first attempt returned TooManyRequests;
+        # retried once and succeeded"). This must never be filed failed
+        # or trip the account hard-stop: a real success is not
+        # retroactively punished for what its own note says about how it
+        # got there.
+        if reference is not None:
+            w, h = mutate_reference(reference, out)
+        else:
+            w, h = 64, 64
+            pnglib.write_rgba(str(out), w, h, bytes(4 * w * h))
+        write_manifest("ok", "first attempt returned TooManyRequests; retried "
+                              "once internally and succeeded",
+                        width=w, height=h, has_alpha=True, corners_transparent=True,
+                        background_used="transparent")
+        print(f"OK {out}")
+        return 0
 
     if behavior == "fail_with_image":
         if reference is not None:

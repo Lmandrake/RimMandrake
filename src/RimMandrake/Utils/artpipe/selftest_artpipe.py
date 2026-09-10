@@ -37,10 +37,12 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import common  # noqa: E402
 import artpiped  # noqa: E402
+import mock_codex_worker  # noqa: E402 — reused directly for write_rollout() in a couple of tests
 
 REPO_ROOT = HERE.parents[3]
 sys.path.insert(0, str(REPO_ROOT / "skills" / "generating-images" / "scripts"))
 import pnglib  # noqa: E402
+import codex_grumpiness  # noqa: E402
 
 MOCK_WORKER = HERE / "mock_codex_worker.py"
 MOCK_GEMINI_WORKER = HERE / "mock_gemini_worker.py"
@@ -193,7 +195,8 @@ def test_claim_next_stamps_fresh_mtime_not_filing_time():
             ok("claim: stamps a FRESH mtime, not the original ~20min-old filing time",
                age < 5, f"age={age:.1f}s (would read ~1200s on the old bug)")
 
-            moved = artpiped.reconcile(q.active, q.pending, q.done, q.failed, min_age_s=600.0)
+            moved = artpiped.reconcile(q.active, q.pending, q.done, q.failed,
+                                      q.throughput_log, min_age_s=600.0)
             ok("claim: a job filed >10min ago but claimed JUST NOW is not stolen by reconcile",
                not any(jid == "oldfiled" for jid, _ in moved) and claimed.is_file())
 
@@ -1451,7 +1454,8 @@ def test_reconcile_ignores_worker_last_message_sidecar():
         os.utime(claimed, (old, old))
         os.utime(sidecar, (old, old))
 
-        moved = artpiped.reconcile(q.active, q.pending, q.done, q.failed, min_age_s=600.0)
+        moved = artpiped.reconcile(q.active, q.pending, q.done, q.failed,
+                                  q.throughput_log, min_age_s=600.0)
         ok("reconcile: the real orphaned job is reconciled back to pending",
            any(jid == job_id for jid, _ in moved), moved)
         ok("reconcile: the sidecar is NEVER promoted to pending as a phantom job",
@@ -1678,7 +1682,7 @@ def test_finalize_job_writes_throughput_before_manifest():
         artpiped.common.atomic_write_json = spy_write
         try:
             detector = artpiped.Detector()
-            budget = artpiped.GeminiBudget(1000.0)
+            budget = artpiped.GeminiBudget(1000.0, q.throughput_log)
             artpiped.finalize_job(claimed, result, q.done, q.failed, q.active,
                                   q.throughput_log, detector, budget, 1)
         finally:
@@ -1691,6 +1695,326 @@ def test_finalize_job_writes_throughput_before_manifest():
         ok("ordering: the throughput row itself carries the right channel/cost",
            lines and lines[0].get("channel") == "gemini" and lines[0].get("cost_usd") == 0.134,
            lines)
+
+
+# --------------------------------------------------------------------------
+# fourth review (de58a58f -> this pass): 4 confirmed findings + 2 lower notes
+# --------------------------------------------------------------------------
+
+def test_malformed_gemini_job_preserves_channel_and_releases_reservation():
+    """Finding 1: a malformed GEMINI job used to hardcode channel="codex"
+    in the JobError fallback, so finalize_job's gemini branch (which
+    releases the claim-time reservation) never ran for it — the
+    reservation leaked forever, and enough malformed gemini jobs would
+    eventually block the whole channel at $0 real spend."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "malformedgemini"
+        # channel=gemini but missing canvas/prompt/rimflow_item_id —
+        # common.load_job raises JobError before ever seeing job.get("channel").
+        common.atomic_write_json(q.pending / f"{job_id}.json",
+                                 {"id": job_id, "channel": "gemini"})
+        proc = q.run({}, "--once", "--workers", "1", "--gemini-budget-usd", "0.134")
+        ok("malformed-gemini: daemon exits 0", proc.returncode == 0, proc.stderr)
+        manifest = q.failed / f"{job_id}.manifest.json"
+        ok("malformed-gemini: job fails", manifest.is_file())
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("malformed-gemini: channel is gemini, NOT hardcoded codex",
+               m.get("channel") == "gemini", str(m))
+
+        # If the reservation had leaked, a SECOND, perfectly healthy
+        # gemini job would be refused even though nothing was ever really
+        # spent (reserved_usd alone reaching the cap).
+        make_job(q.pending, "healthygemini", q.reference, channel="gemini")
+        proc2 = q.run({"healthygemini": "ok"}, "--once", "--workers", "1",
+                      "--gemini-budget-usd", "0.134")
+        ok("malformed-gemini: a second, healthy gemini job is NOT blocked by "
+           "a leaked reservation from the malformed one", proc2.returncode == 0,
+           proc2.stdout + proc2.stderr)
+        ok("malformed-gemini: the healthy job actually ran",
+           (q.done / "healthygemini.json").is_file())
+
+
+def test_gemini_budget_spend_is_read_live_not_cached_at_construction():
+    """Finding 2 core mechanism: N daemons each used to read spend ONCE at
+    construction and cache it — so N daemons would each independently
+    believe there was room for a full cap's worth. Two GeminiBudget
+    objects sharing one throughput_log, neither ever told directly about
+    the other's spend, must each see it live on their next check."""
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        throughput_log = tdp / "throughput.jsonl"
+        budget_a = artpiped.GeminiBudget(0.134, throughput_log, spent_so_far=0.0)
+        budget_b = artpiped.GeminiBudget(0.134, throughput_log, spent_so_far=0.0)
+        ok("live-spend: both budgets start unblocked",
+           not budget_a.admission_blocked() and not budget_b.admission_blocked())
+
+        # Simulate a DIFFERENT process's job finishing for real.
+        common.append_jsonl(throughput_log, {"id": "x", "channel": "gemini", "cost_usd": 0.134})
+
+        ok("live-spend: budget_b sees the spend WITHOUT ever being told directly",
+           budget_b.admission_blocked())
+        ok("live-spend: budget_a also sees it on its own next check",
+           budget_a.admission_blocked())
+
+
+def test_gemini_budget_live_reread_sees_concurrent_external_spend_end_to_end():
+    """Finding 2, end to end: while a SINGLE real daemon process is
+    running (not just at its own startup), an EXTERNAL throughput row —
+    simulating a DIFFERENT daemon's concurrent spend — lands on disk
+    between this daemon's first and second claim attempts. The second
+    must see it live, without this process's own gemini_budget ever
+    being told about it directly."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        # job2 is deliberately NOT filed yet — with only job1 pending, a
+        # fast mock could claim+finish it and go straight to idle-polling
+        # well before this test's own poll loop even notices job1 is done,
+        # racing the injection below for no reason. Filing job2 only AFTER
+        # the injection removes that race entirely while still exercising
+        # the real mechanism: the daemon's own poll loop discovering
+        # newly-available work under an already-tightened budget.
+        make_job(q.pending, "livereread1", q.reference, priority=1, channel="gemini")
+        control_path = q.root / "control.json"
+        control_path.write_text(json.dumps({"livereread1": "ok", "livereread2": "ok"}))
+        env = dict(os.environ)
+        env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
+
+        proc = subprocess.Popen(
+            q.daemon_args("--workers", "1", "--poll-interval", "0.1",
+                         "--gemini-budget-usd", "0.268"),  # exactly 2 images' worth
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=env)
+        try:
+            deadline = time.time() + 15
+            while time.time() < deadline and not (q.done / "livereread1.json").is_file():
+                time.sleep(0.05)
+            ok("live-reread e2e: job1 completed", (q.done / "livereread1.json").is_file())
+
+            # The "other daemon's" spend, landing WHILE this process keeps
+            # running — exhausts the remaining half of the cap BEFORE job2
+            # ever exists for this daemon to find.
+            common.append_jsonl(q.throughput_log, {"id": "external-other-daemon",
+                                                    "channel": "gemini", "cost_usd": 0.134})
+            make_job(q.pending, "livereread2", q.reference, priority=2, channel="gemini")
+            time.sleep(1.0)  # several poll cycles for the running daemon to react
+
+            ok("live-reread e2e: job2 was NEVER claimed after the external "
+               "spend landed — still pending", (q.pending / "livereread2.json").is_file())
+        finally:
+            proc.terminate()
+            try:
+                proc.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait(timeout=5)
+
+
+def test_recovered_throttle_note_never_fails_a_successful_job():
+    """Finding 3: _looks_rate_limited ran UNCONDITIONALLY on the -o note
+    after the retry loop — a worker that recovered from an INTERNAL
+    throttle (its own note honestly narrates "first attempt returned
+    TooManyRequests; retried once and succeeded", exit 0, good image) got
+    filed FAILED and latched the account hard-stop, punishing a success."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "recoveredjob"
+        make_job(q.pending, job_id, q.reference)
+        proc = q.run({job_id: "recovered_from_throttle"}, "--once", "--workers", "1")
+        ok("recovered: daemon exits 0", proc.returncode == 0, proc.stdout + proc.stderr)
+        ok("recovered: the job SUCCEEDS despite the note mentioning TooManyRequests",
+           (q.done / f"{job_id}.json").is_file())
+        manifest = q.done / f"{job_id}.manifest.json"
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("recovered: status is ok", m.get("status") == "ok", str(m))
+            ok("recovered: detector_row is NOT 1 — no hard-stop for a success",
+               m.get("detector_row") != 1, str(m))
+        ok("recovered: hard_stop is NOT latched", "hard_stop=False" in proc.stdout, proc.stdout)
+
+
+def test_detector_unwedges_via_direct_meter_reread_without_a_new_job():
+    """Finding 4 core mechanism: note_meters()'s only OTHER caller is
+    finalize_job of a COMPLETING codex job, but admission_blocked() then
+    refuses to let any NEW codex job be claimed while wedged — a catch-22
+    that used to last until restart. Re-reading meters DIRECTLY
+    (codex_grumpiness.read_meters needs no job) and feeding note_meters
+    must de-escalate exactly the way a job-triggered reading would."""
+    with tempfile.TemporaryDirectory() as td:
+        home = Path(td) / "codex_home"
+        d = artpiped.Detector()
+        d.note_meters({"ok": True, "secondary_used_percent": 98.0, "primary_used_percent": 5.0})
+        ok("unwedge: stop_all is set", d.stop_all and d.admission_blocked())
+
+        day_dir = home / "sessions" / "2026" / "01" / "01"
+        day_dir.mkdir(parents=True)
+        (day_dir / "rollout-1-fresh.jsonl").write_text(json.dumps({
+            "payload": {"type": "token_count", "info": {},
+                        "rate_limits": {"primary": {"used_percent": 1.0},
+                                        "secondary": {"used_percent": 1.0}}},
+        }) + "\n")
+        fresh = codex_grumpiness.read_meters(home)
+        d.note_meters(fresh)
+        ok("unwedge: a direct re-read (no job involved at all) clears stop_all",
+           not d.stop_all and not d.admission_blocked())
+
+
+def test_daemon_unwedges_codex_channel_without_restart_end_to_end():
+    """Finding 4, end to end: a persistent (non---once) daemon wedges
+    stop_all via job1, with job2 still pending. It must claim and finish
+    job2 WITHOUT a restart once a fresh, healthy meter reading appears in
+    the ALREADY-LEASED codex_home — proving main()'s own periodic refresh
+    is actually wired up, not just the Detector method in isolation."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "wedgejob1", q.reference, priority=1)
+        make_job(q.pending, "wedgejob2", q.reference, priority=2)
+        control_path = q.root / "control.json"
+        control_path.write_text(json.dumps({
+            "wedgejob1": {"behavior": "ok", "weekly": 98.0},
+            "wedgejob2": "ok",
+        }))
+        env = dict(os.environ)
+        env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
+
+        proc = subprocess.Popen(
+            q.daemon_args("--workers", "1", "--poll-interval", "0.1",
+                         "--meter-refresh-interval", "0.1"),
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=env)
+        try:
+            deadline = time.time() + 15
+            while time.time() < deadline and not (q.done / "wedgejob1.json").is_file():
+                time.sleep(0.05)
+            ok("unwedge e2e: job1 completed (and wedged stop_all)",
+               (q.done / "wedgejob1.json").is_file())
+
+            time.sleep(0.3)
+            ok("unwedge e2e: job2 is genuinely blocked right after the wedge",
+               (q.pending / "wedgejob2.json").is_file())
+
+            # --workers 1 means the first (only) lease is always w0 —
+            # deterministic, since this fresh codex_homes root has no
+            # contention.
+            fresh_home = q.codex_homes / "w0"
+            mock_codex_worker.write_rollout(fresh_home, weekly=1.0, five_h=1.0)
+
+            deadline2 = time.time() + 15
+            while time.time() < deadline2 and not (q.done / "wedgejob2.json").is_file():
+                time.sleep(0.05)
+            ok("unwedge e2e: job2 is claimed and finished WITHOUT a restart, "
+               "once a fresh healthy reading appeared",
+               (q.done / "wedgejob2.json").is_file())
+        finally:
+            proc.terminate()
+            try:
+                proc.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait(timeout=5)
+
+
+def test_reconcile_never_requeues_gemini_orphan_with_existing_throughput_row():
+    """Lower note: a crash between the throughput append and the manifest
+    write used to let reconcile() silently requeue the orphan for a full
+    fresh retry — for a GEMINI job that already spent real money before
+    crashing, the retry could spend it again with no human ever told.
+    Fixed: such an orphan is routed to failed/ with an
+    ambiguous_billing_crash manifest, never auto-requeued."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "crashedgeminibilling"
+        make_job(q.pending, job_id, q.reference, channel="gemini")
+        claimed = artpiped.claim_next(q.pending, q.active)
+        ok("fixture: claimed via the real claim path", claimed is not None)
+        # Simulate the crash: throughput row exists (written FIRST, per
+        # finalize_job's own ordering), but no manifest anywhere and the
+        # job file is still sitting in active/ — exactly what a kill
+        # between those two steps leaves behind.
+        common.append_jsonl(q.throughput_log, {"id": job_id, "channel": "gemini",
+                                                "cost_usd": 0.134, "status": "ok"})
+        old = time.time() - 1200
+        os.utime(claimed, (old, old))
+
+        moved = artpiped.reconcile(q.active, q.pending, q.done, q.failed,
+                                  q.throughput_log, min_age_s=600.0)
+        ok("no-rebill: the job is NEVER requeued to pending",
+           not (q.pending / f"{job_id}.json").is_file())
+        ok("no-rebill: routed to failed/ instead", (q.failed / f"{job_id}.json").is_file())
+        manifest = q.failed / f"{job_id}.manifest.json"
+        ok("no-rebill: manifest exists", manifest.is_file())
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("no-rebill: worker_status is ambiguous_billing_crash",
+               m.get("worker_status") == "ambiguous_billing_crash", str(m))
+        ok("no-rebill: reported in the moved list", any(jid == job_id for jid, _ in moved), moved)
+
+
+def test_reconcile_still_requeues_codex_orphan_regardless_of_throughput_row():
+    """Companion: a CODEX orphan (never billed, regardless) is unaffected
+    by this check — still requeued to pending/ normally, even in the
+    implausible case a throughput row already exists for it."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "crashedcodexnobilling"
+        make_job(q.pending, job_id, q.reference, channel="codex")
+        claimed = artpiped.claim_next(q.pending, q.active)
+        common.append_jsonl(q.throughput_log, {"id": job_id, "channel": "codex", "status": "ok"})
+        old = time.time() - 1200
+        os.utime(claimed, (old, old))
+
+        moved = artpiped.reconcile(q.active, q.pending, q.done, q.failed,
+                                  q.throughput_log, min_age_s=600.0)
+        ok("codex-unaffected: still requeued to pending normally",
+           (q.pending / f"{job_id}.json").is_file())
+        ok("codex-unaffected: NOT routed to failed/", not (q.failed / f"{job_id}.json").is_file())
+
+
+def test_wall_clock_baseline_is_per_mode_not_pooled():
+    """Lower note: 62.0s is the GENERATE median while edit timings (a
+    220s default timeout) are a different population entirely — pooling
+    them into one statistic would trip row 4 constantly for an edit-heavy
+    workload under perfectly ordinary conditions. The SAME wall-clock
+    value must be judged differently depending on which mode it came
+    from."""
+    edit_typical = 140.0  # under edit's OWN 2x-baseline (300s), over generate's (124s)
+
+    d = artpiped.Detector()
+    for _ in range(3):
+        d.note_wall_clock(edit_typical, configured_n=4, mode="edit")
+    ok("per-mode: edit-typical wall clocks do NOT halve N under edit's own baseline",
+       d.current_n(4) == 4)
+
+    d2 = artpiped.Detector()
+    for _ in range(3):
+        d2.note_wall_clock(edit_typical, configured_n=4, mode="generate")
+    ok("per-mode: the SAME value DOES halve N when (deliberately, for this test) "
+       "evaluated against generate's baseline — proving the two are genuinely "
+       "separate histories, not a shared one", d2.current_n(4) == 2)
+
+
+def test_finalize_job_feeds_per_attempt_not_summed_wall_clock():
+    """Lower note: elapsed_s is the RETRY-SUMMED total (useful for
+    reporting how long the whole job took, retries included);
+    attempt_elapsed_s is the LAST attempt's own elapsed — what row 4
+    should see. A job that used its one retry (e.g. 40s + 40s = 80s
+    summed) must not look like an 80s single request to the detector."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "attemptcheck"
+        make_job(q.pending, job_id, q.reference, channel="codex")
+        claimed = artpiped.claim_next(q.pending, q.active)
+        result = {"id": job_id, "channel": "codex", "status": "ok",
+                 "worker_status": "ok", "validator": "PASS",
+                 "elapsed_s": 80.0, "attempt_elapsed_s": 40.0, "mode": "generate",
+                 "meter_before": None, "meter_after": None, "daemon_attempts": 2}
+        detector = artpiped.Detector()
+        budget = artpiped.GeminiBudget(1000.0, q.throughput_log)
+        artpiped.finalize_job(claimed, result, q.done, q.failed, q.active,
+                              q.throughput_log, detector, budget, 4)
+        ok("per-attempt: the detector's generate history recorded 40.0 (the "
+           "per-attempt value), not 80.0 (the retry-summed total)",
+           detector.wall_clock_history.get("generate") == [40.0],
+           detector.wall_clock_history)
 
 
 def main() -> int:
@@ -1755,6 +2079,16 @@ def main() -> int:
         test_gemini_cost_billed_only_on_genuine_success_not_exit_0_alone,
         test_gemini_budget_reservation_prevents_concurrent_overshoot,
         test_finalize_job_writes_throughput_before_manifest,
+        test_malformed_gemini_job_preserves_channel_and_releases_reservation,
+        test_gemini_budget_spend_is_read_live_not_cached_at_construction,
+        test_gemini_budget_live_reread_sees_concurrent_external_spend_end_to_end,
+        test_recovered_throttle_note_never_fails_a_successful_job,
+        test_detector_unwedges_via_direct_meter_reread_without_a_new_job,
+        test_daemon_unwedges_codex_channel_without_restart_end_to_end,
+        test_reconcile_never_requeues_gemini_orphan_with_existing_throughput_row,
+        test_reconcile_still_requeues_codex_orphan_regardless_of_throughput_row,
+        test_wall_clock_baseline_is_per_mode_not_pooled,
+        test_finalize_job_feeds_per_attempt_not_summed_wall_clock,
     ):
         print(f"--- {fn.__name__} ---")
         try:
