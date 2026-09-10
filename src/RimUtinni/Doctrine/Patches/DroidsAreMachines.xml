@@ -105,21 +105,5 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>ABF: Synstructs Core</li></mods>
-    <match Class="PatchOperationConditional">
-      <!-- 22 KotOR droid races: 3C series, AD Mk I and Mk IV, Dev AD and WD,
-           GE3LD, HK series, war droids and their Sith variants. -->
-      <xpath>/Defs/FleshTypeDef[defName="ABF_FleshType_Synstruct_Base"]/isOrganic</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>/Defs/FleshTypeDef[defName="ABF_FleshType_Synstruct_Base"]/isOrganic</xpath>
-        <value><isOrganic>false</isOrganic></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/FleshTypeDef[defName="ABF_FleshType_Synstruct_Base"]</xpath>
-        <value><isOrganic>false</isOrganic></value>
-      </nomatch>
-    </match>
-  </Operation>
 
 </Patch>
