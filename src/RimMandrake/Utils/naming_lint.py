@@ -13,8 +13,13 @@ Checks per mod folder (any dir with About/About.xml under src/):
   folder      parent dir is the tier dir (src/<Tier>/)
   leak        shipping XML/C# must not reference exempt tooling (JawaBench, "jawa/")
 
-Tier per mod comes from infrastructure/state/naming_rename_map.csv (mod rows);
-a mod absent from the map lints as UNASSIGNED (every check skipped except leak).
+Tier per mod: an explicit row in infrastructure/state/naming_rename_map.csv wins
+(it's the record of a deliberate ruling — a move, a split, a SPLIT-triage flag);
+absent that, tier is derived from the mod's own parent directory
+(src/RimMandrake|RimStarWars|RimUtinni/<mod>) — that folder IS the tier for
+every mod that already lives in one. Only a mod in neither the map nor a
+canonical tier folder (e.g. still under src/Jawa/) lints as UNASSIGNED (every
+check skipped except leak).
 """
 import argparse, csv, re, sys
 from pathlib import Path
@@ -41,6 +46,17 @@ def load_map():
             elif row["kind"] == "def" and row["old"] == row["new"]:
                 sanctioned.add(row["old"])
     return tiers, sanctioned
+
+
+def resolve_tier(mod: Path, tiers: dict) -> str:
+    """CSV override wins (a recorded ruling); else derive from the mod's own
+    parent directory when it's a canonical tier dir; else UNASSIGNED."""
+    mapped = tiers.get(mod.name)
+    if mapped:
+        return mapped
+    if mod.parent.name in TIER_PREFIX:
+        return mod.parent.name
+    return "UNASSIGNED"
 
 
 def lint_mod(mod: Path, tier: str, sanctioned: set):
@@ -106,12 +122,13 @@ def main():
     mods = sorted(p.parent.parent for p in SRC.glob("*/*/About/About.xml"))
     total, dirty = 0, 0
     for mod in mods:
-        v = lint_mod(mod, tiers.get(mod.name, "UNASSIGNED"), sanctioned)
+        tier = resolve_tier(mod, tiers)
+        v = lint_mod(mod, tier, sanctioned)
         total += len(v)
         if v:
             dirty += 1
             if not args.quiet:
-                print(f"{mod.relative_to(ROOT)}  [{tiers.get(mod.name, 'UNASSIGNED')}]")
+                print(f"{mod.relative_to(ROOT)}  [{tier}]")
                 for kind, msg in v:
                     print(f"  {kind:10} {msg}")
     print(f"\nnaming_lint: {len(mods)} mods, {dirty} non-compliant, "
