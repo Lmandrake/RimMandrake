@@ -143,6 +143,18 @@
     "hash": "f14c042c6c53573975c2e6270e61a546d8bd35bdf34c2107acb964ceca61bc7c",
     "sha": "43f96b1b"
   },
+  "design/Jawa/fauna/BiomeCast_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d8d392becd228c680a12baa3d985518cdd93f7002cf02baed0e1f5df493cc1bd",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/fauna/CreatureNames_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d01b5a3a245b228a0b8270efda84c5f431ebcd27a1f8a91776c2b0539a7243e4",
+    "sha": "bb73b6bd"
+  },
   "design/Jawa/fauna/allocate_cast.py": {
     "cleanCount": 2,
     "date": "2026-09-07",
@@ -191,17 +203,47 @@
     "hash": "d0bc1927888b7b4da93afcb47cc37c677f0ac8c3a759ea23c282490deb8a7e7b",
     "sha": "43f96b1b"
   },
+  "design/Jawa/fauna/gen_stat_adjustments.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "8c9caff6dc26ab2a425b8568d4131de2ce2b1129843174f188b4453406f4c418",
+    "sha": "bb73b6bd"
+  },
   "design/Jawa/fauna/refill_cast.py": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "hash": "703c01feb263c607cd08a0904666a0953f6d0008ff0f2bdbd858dc2080e2bb5d",
     "sha": "43f96b1b"
   },
+  "design/Jawa/fauna/rosters_to_cast.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a86f4702705cb1215a64e38a52ed9598188b1d7aa96c5b13eea3b2e54a2d305f",
+    "sha": "bb73b6bd"
+  },
   "design/Jawa/mods/biome_flora.py": {
     "cleanCount": 3,
     "date": "2026-09-09",
     "hash": "1d2243ce4d1d788d65d4e8113d699aff30c8892b545ac3af76c63a5d59f6e5dd",
     "sha": "3ea1ca20"
+  },
+  "design/Jawa/mods/gen_fish_types.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2cd963aeb2410e78480375b2708cdb17353c1a34d953e0f2fd5e4899b59b85f6",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/mods/gen_flora_stat_adjustments.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "627bd06d72c92d7569d5ddca01488826f1465ccffd4422aa6ae302cc383cbe52",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/mods/gen_plant_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "5d74ab3ba7393fc349913061e5fe48b10b68dcbad073a22e9ff567ac5b6b1c97",
+    "sha": "bb73b6bd"
   },
   "design/Jawa/mods/plant_harvest_coverage.py": {
     "cleanCount": 2,
@@ -233,17 +275,191 @@
     "hash": "80d0307d576e2e1447aaff98df1bdadacc1a649b78b51742472a34f29095b693",
     "sha": "43f96b1b"
   },
+  "design/Jawa/research_review/build_retag_patches.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "173b75d9c7d1d3b11cc153a9b837378d85f1dd6bfbdac705c95cd2abbd8806d7",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/research_review/build_tree_pptx.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d49d109a14732d031eca3b08d8c896ac5bc385d6e63da82df572fafd13d0fc4b",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/research_review/build_tree_visual_v4.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d4624acc2a9498757c2ee416f5ef3b2ab0ca63bdfc2e9d3a957569dfb99f0e1f",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/research_review/check_recovery_coverage.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c712cbe8a5c2e310d8acb95f02db865acf8158fc1bd28e16f02ad8faa7e02acf",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/research_review/classify_v4.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e09fba8c2c98555b3cddfe8124e8f35ad31dd149c5a1eccad87728ad237df965",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/research_review/make_research_delta.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "7baf2f2d7820cfd2f23c6242d2b8922fe4b855b6a02cfd41855bd06a9b5bd0f7",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/research_review/make_research_prefill.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1afaac5aed753bb2c1d7a697064700f6565e2ae06ff4f8123ddbe4f36b32fc15",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/TidallyLocked_Preset.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "723219e83c8284f14195a0ce315d2e30089b9f11f3f74e02790770bfd28d2599",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/biomes/rosters/_consolidate.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2fdfaf689c5990cf54be2bfaeafa05c65769126695bdeab57cf42a0968fdf4b1",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/biomes/rosters/_validate.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "32eef85eb52a471b02bbc09441513886075e1cd0c6b82aec4f147fdd58db2548",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/apply_assignment_verdicts.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "03f1dc2e53f9ff17a55812c6f1c74af1bbaa9bb88688094bb0e380768d9920e2",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/deck/build_creature_deck.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c82aeb0d373ca920257dca31eb6c3e73e9a3e5705e50e82195a028f7ac25d0bc",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/deck/read_creature_deck.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "420c0f215137897508d1527ae62f6949c92e911172833a2ce505c031c3e5682f",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/deck/simulate_owner_edit.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4bf0154f9643a421e0dc503d6403f9f21eb2150630c3a753d75d0e197458c622",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/fiftyone/build_dataset.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b4ba6f2e79ce7031fc3ae8e539a84bdcfe81179a29a754602bfe96c5566f9614",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/fiftyone/fiftyone_sync.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "bab537557c449f907c9f0282aaa9b371c0aa0e61a5662f68b1b6fcce81e86955",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/fiftyone/prove_roundtrip.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b1d933d4d00fc503de8674925de712c36e429651c12ae441e1221b8120670244",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/gen_biome_assignment_portfolio.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "94096259b8dbd2f36f334ec0c2b264763ab741249e5c8e886fd99a060382bdf9",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/gen_creature_art_register.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1a4190c420743174c472202985c541418458cac7ca66517ccd9db9a1f1d410c2",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/gen_creature_distribution_portfolio.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "01305802c534aa55388f0f6b5a96c876f1afed1d62f686ccb0fb1a9efb78dfa3",
+    "sha": "bb73b6bd"
+  },
   "design/Jawa/worldbuilding/review/gen_creature_explorer.py": {
     "cleanCount": 2,
     "date": "2026-09-09",
     "hash": "8dc7f1c50fe7add1f4c450446dc51908fcb02c0e0b2475b90f13383c52bca54c",
     "sha": "3ea1ca20"
   },
+  "design/Jawa/worldbuilding/review/gen_creature_size_portfolio.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "5abdeb13640876d24ebaea77804340bbb6f69a184d25ccb3c2b29af84611690c",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/gen_fauna_assignment_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c550c86ac7f0f86d0097c4f6b40e0b9cda5d1b952724c4e24e7aaf2e2cacdd77",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/gen_flora_assignment_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a42d999b52ac2492a1e8d867b6090e2b83c74367de932f840583d0ebb7256adb",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/gen_flora_distribution_portfolio.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "87d6745a33e690cf55b2de611d154b3ed9b305b3a0c210d8a4371ab38aeaf494",
+    "sha": "bb73b6bd"
+  },
   "design/Jawa/worldbuilding/review/gen_proposal_suite_sheet.py": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "hash": "84bb49f1bf4499c4197ab5df8974b6dde1c9ed0a4db06ebf7e7f9dd64b51cdc6",
     "sha": "43f96b1b"
+  },
+  "design/Jawa/worldbuilding/review/gen_turret_register.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "02647feb62dbbf0e0a84550577c82cae1554a7850ee7aa81ffe8dc75bb016596",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/regen_flora_scale_panels.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "47fa7639af1cd284264ada5b0db022d2663c0f2b01b23d4b19ba8343111c1c56",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/review/rosters_residency.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a273fbe6e1d008ebd42f2e95cf8662eb241a5714abe13a441027247bc7343c3d",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/ship_build/exported/Gravship_v1.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e434f617ea301127366701f1a8b503c0d16da8600582d05b0472c1f7c571dedd",
+    "sha": "bb73b6bd"
+  },
+  "design/Jawa/worldbuilding/ship_build/exported/JawaTestSled.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "559b80c27179e31601bbb03bc2cd8f322a0ba81868d206ef5537a04b2dd6dbc2",
+    "sha": "bb73b6bd"
   },
   "skills/deciding-and-superseding/scripts/stale_directives.py": {
     "cleanCount": 1,
@@ -359,11 +575,29 @@
     "hash": "0e55e33760c52caa966b9c9d724457323c81ee6ff1a26d80a01785cbce3fc4cf",
     "sha": "f3a684e1"
   },
+  "src/RimMandrake/Aftermath/Source/ChronicleEvent.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "60130624b8ca5254c0298ca0495ef72beba555dd4e2da464c2a8ec2ac9d17416",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/Aftermath/Source/ChronicleEvents.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4d1bba8a034c9df969880a11381f1731b8c1118f2da12970e0022ef72534dcf7",
+    "sha": "bb73b6bd"
+  },
   "src/RimMandrake/Aftermath/Source/MapComponent_BattleRecorder.cs": {
     "cleanCount": 2,
     "date": "2026-09-09",
     "hash": "e64f3279c9863818a53bb90021c13b8e9c1e86bca1626aa4c250236cb95f15c3",
     "sha": "3ea1ca20"
+  },
+  "src/RimMandrake/Aftermath/Source/NinefoldBandBridge.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a9e1076b49ef00509cf957631159ea74d27e0a7e37f8cea9b870e35679b07935",
+    "sha": "bb73b6bd"
   },
   "src/RimMandrake/Aftermath/Source/Patch_ColonistCasualty.cs": {
     "cleanCount": 1,
@@ -376,6 +610,12 @@
     "date": "2026-09-06",
     "hash": "f64d05a744304c914ef8d91ef646bb5e0098862f3f3740e75d33c3152d348d97",
     "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/Patch_MentalBreakNearBattle.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "0ec6d1044b37697da18c36915ff1d6784b82dc93ab44de0bcce7f2f16dcfebe4",
+    "sha": "bb73b6bd"
   },
   "src/RimMandrake/Aftermath/Source/Patch_RaidGenerated.cs": {
     "cleanCount": 1,
@@ -935,6 +1175,12 @@
     "hash": "8d4a0214fcb6984cd4a550a428b8cf636a2698a6c8266208ff1695163d1f2702",
     "sha": "3ea1ca20"
   },
+  "src/RimMandrake/Inhabited/Source/StructureInjectionsBridge.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "fe474516955256a49a18fddd8bcd48f31eb0e2eb6fade0b9d71c2496d1dfcfc4",
+    "sha": "bb73b6bd"
+  },
   "src/RimMandrake/Inhabited/Source/WorldObject_Inhabited.cs": {
     "cleanCount": 3,
     "date": "2026-09-05",
@@ -1019,17 +1265,59 @@
     "hash": "52af343beb45b58c019e9bfd90bc1f6b0853477ca3f504e4e5941e9f8706d14c",
     "sha": "21d72dc5"
   },
+  "src/RimMandrake/MandrakePatches/Source/GravshipAstronautFix/make_genebank_north.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a24ccc6505fa62763086afc875bdf7b06a2e6d3e95b8dbc656af3740520ccf75",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MandrakePatches/Source/PhytokinBarkHeadFix/make_bark_female_wide_east.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "096afc50b43b4138e8be4e800529100c8472de69f87c64c3820e2ee7701805a5",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MandrakePatches/Source/ResearchKitEastFix/mirror_research_kit_easts.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d6269c4d8e56a012e626e01bb58244643168028dda6678e47d60c810b6c99572",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MandrakePatches/Source/ToolBeltFix/mirror_toolbelt_west.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "9296150cf86557eed9f1c26edf524ec4becef7cd531e9d18f399ac38a1c1d269",
+    "sha": "bb73b6bd"
+  },
   "src/RimMandrake/ManyWaters/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
     "hash": "6b096a846a8257717ce2e96ea7964b3ab89336e39770bafb9129f3fdd7718500",
     "sha": "3ea1ca20"
   },
+  "src/RimMandrake/ManyWaters/Defs/FleckDefs/RM_ColoredSteam.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "5f0a33a236fc1b9f2a4c27b2ab8ede45b9a5f31dab9e3e2ef817b8d83286e9d0",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/ManyWaters/Defs/TerrainDefs/RM_ColoredWater.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "fe344ba2a637ded82b8a396ad9ae11a73674bb4da848cf3c2fd2dc17fae1d40b",
+    "sha": "bb73b6bd"
+  },
   "src/RimMandrake/ManyWaters/Defs/TerrainDefs/RM_DeepSand.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
     "hash": "8ac3d2024b8bd1e6a95ed3b4839eca9247015bb6fbc45292a1f7c30f67992fdd",
     "sha": "0c9c0cff"
+  },
+  "src/RimMandrake/ManyWaters/Defs/ThingDefs/RM_ColoredWaterBottles.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "20fc40d27e0d3ac8d8c6497c267b2853a96d6b081fd09c3629bee89f303c0427",
+    "sha": "bb73b6bd"
   },
   "src/RimMandrake/ManyWaters/LICENSE": {
     "cleanCount": 1,
@@ -1049,17 +1337,125 @@
     "hash": "d14fd1b0f4eb5fce6998d54214d4f18afd377bcc43ee3d7067f9fbb5c00bb875",
     "sha": "0c9c0cff"
   },
+  "src/RimMandrake/MovingDunes/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "82877aa5a26ffc5b5555d2a66c4bf18e667ec91fc6f2f527fbd78b8904c39e4d",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Defs/DuneMaterialDefs/Materials.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "45cb388aa3b8ca90ccc83e2fc0c2b2cce6b66ed5cdfc788e23bd64b0da611101",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Defs/ThingDefs/BuriedCache.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "658f4cfa9880e091be517556c14aafee4c5315286bbd906bef47627d3c7da528",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Languages/English/Keyed/MovingDunes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "daa1c8ba0c76feb286638183dc8ad520d609a224560913ee4e09583fd1a2da3b",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Patches/BiomeBindings.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "fd1663566d2746e7ac890b49db0eb5df0fcbda0f4394824a592fb123b6d91948",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Source/DuneBurialUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "325e820384ea7217d277d1e887be6972f605b2a94595b23aee173045eab91770",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Source/DuneFieldExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b1f7b69d21784876dd27a126de6c800b5bed6c818256b7caa17e68ee0423181a",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Source/DuneFieldRegistry.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3ff7e1a2a09b22769dad89c15e3058de190836015936aac90cf03cb410225f2d",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Source/MapComponent_DuneField.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "62f7829ca0c9a80676dfe79b2a2936c0b502dc8be7e4cc576757d2112ef8cd76",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Source/MovingDunesDebugActions.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "10b36f223f0f7b24cc499d751e33260189d5ee0adf1d67a433c00d6df37c33c3",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Source/MovingDunesMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "85360f6f84a806a8bcd9d70abb45a1073c61df6903d9e227ee48f1e680e1c0bb",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Source/Patch_SandGrid.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2a4f7ffe3667b320733679cf43edfd5a62de15475f22568412ab309b7be0af02",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Source/RM_DuneMaterialDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c02687d8a8a8cf01961ff59cca238bc71bdfdf56bf7b94fb4b87160c70a5fa69",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Source/SectionLayer_DuneSand.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ebb664308540e0f663eeb9c3772f020ee28e24a7e953ec4acc053dde6a7e6221",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Source/Thing_BuriedCache.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e849d6290f5151f3500717dd59feaa4831146cfeb4c7e7e59a794847262db228",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/MovingDunes/Source/selftest_moving_dunes_constants.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "955aa90871e2ef40244150eb10140d4eea47340c1b1e72c8dfe0877048d08a5f",
+    "sha": "bb73b6bd"
+  },
   "src/RimMandrake/Ninefold/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
     "hash": "95c67fbb64929a7bd20f4a19c21e7423b0c44fee3fc4a3c34a5dc29c07abece5",
     "sha": "3ea1ca20"
   },
+  "src/RimMandrake/Ninefold/Source/ChronicleSubscriber.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6b2b7c899ed0bfbe783bb014b0e5df6a0a47842763599b98edc3ff98a739c38c",
+    "sha": "bb73b6bd"
+  },
   "src/RimMandrake/Ninefold/Source/EventMagnitude.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "hash": "2dcd545bdefe6408d8abae51b2e62458fde6156eab5a81d7de955cba5e9c8940",
     "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Ninefold/Source/FirstContactCorpus.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e7d93e7ab341027b752fad493a787b57f08022531707e6ef20fa7081f528270d",
+    "sha": "bb73b6bd"
   },
   "src/RimMandrake/Ninefold/Source/GameComponent_Ninefold.cs": {
     "cleanCount": 3,
@@ -1198,6 +1594,12 @@
     "date": "2026-09-04",
     "hash": "1199cf03c4a3d475de6eefdf6ebb6c808da30955330b8c8e0fdac9677e44b5a5",
     "sha": "43f96b1b"
+  },
+  "src/RimMandrake/Oracle/Source/OracleClient.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b8ec61f2e58fa448d3bed79f2e4ad94e907f4702b4249d3a0abc1121b72690be",
+    "sha": "bb73b6bd"
   },
   "src/RimMandrake/Oracle/Source/OracleGameComponent.cs": {
     "cleanCount": 2,
@@ -1625,6 +2027,12 @@
     "hash": "fd5389f3a88325e070d8016a571a6476fee04b59e3cef58837167ba041cdb561",
     "sha": "b1655903"
   },
+  "src/RimMandrake/RaidRedesigner/Source/Spike_ThreatPointReplace.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d71b79585ef721a6738eabd5391c776c0235fbafc613b4e70670e5d732973776",
+    "sha": "bb73b6bd"
+  },
   "src/RimMandrake/RaidRedesigner/Source/WorldPawnPinning.cs": {
     "cleanCount": 1,
     "date": "2026-09-07",
@@ -1991,6 +2399,174 @@
     "hash": "2b0c2c1f7d379f241837a385a0f36c109c7a3c925d68c62fd4e5616f4cf47bfc",
     "sha": "9c1523eb"
   },
+  "src/RimMandrake/TitanicCreatures/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "911a7d3afa2cf5e5c6401894eb76e12edd289cbdeed99f5a908809f3a76805d3",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Defs/CrushRuleDefs/RM_CrushRules.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "65ee375a0c4d875fd9bcc618867891d449394beb716a983fbfa3e097e6302d74",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Defs/JobDefs/RM_JobDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d505f2de181b87bb4522eab8d7464576005ea645832422c26be31c0fb67b1c4d",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Defs/ThingDefs/RM_TitanicCorpseSite.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f11282589639ff5a89c482da0009e4bc8421f3bead43df619d743bd37ca318e9",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Defs/TitanicTierDefs/RM_TitanicTierDef.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6c99be4039d700ba0d119a3132d10894aec3fcd871aeaab5d9b8c12f441d455d",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Defs/WorkGiverDefs/RM_WorkGivers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "214ef0aa26bc8dd3866a024ad722f2d1c53b69cc34d116ace3587e6807cd04fa",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Languages/English/Keyed/RM_TitanicCreatures.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2dd04e212cecf8d15c6e980e5874d0cdeaa66259c6c13015718562bb39c307dd",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/CorpseSite/Building_TitanicCorpseSite.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b6c494150fe81780e1c15562440f4d7ef53bdebbf0cd2d4d2eb4a0dde9d44e42",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/CorpseSite/JobDriver_HarvestTitanicCorpse.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "9a1de181ef5b5b6b1323fdd0c53fbe03272aedf12ff00cb8418d818840e2d94f",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/CorpseSite/Patch_CorpseSiteConversion.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e9ca16be6662cda1ff5d20dec6af8bf7208899d7f23bbb4d37ee093a859473a0",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/CorpseSite/TitanicCorpseSiteUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a50fe931fcec9c01df0f4b1e2eb974ec6c253ba883544dd9db492a3455229421",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/CorpseSite/WorkGiver_HarvestTitanicCorpse.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f8198c4bc9dd421c042e959456f15e50db078bc55c629e4ad7e428b8bf6967d8",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/Footprint/LargePawnsBridge.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f250824ec7b3cc3094030235ad9580b564d00336e1e9740350fc4aca38c386d3",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/Footprint/Patch_ThickRoofAvoidance.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e817b6d915253bd84e101875f24b152a5e322450c15af37393bcf55f66f80c81",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/RM_TitanicCreaturesDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1cb4965a9d98f7c5d44c9f8c319669226e025139f83d1157cb3f15514730db1d",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/RM_TitanicCreaturesMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "43cd00162fb13325bd3ffd7d5be1e1f00f7c848aa32e8c58f01edb4867ed4e9f",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/Tiering/RM_TitanicExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e080d63c8575cb7ffd248fd67ab5a7e4edb4343b4fabfff6aedc7dc05b9d3311",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/Tiering/RM_TitanicTierDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "63ebec96b05dda8cbfa7e9d1d2a9024c4dcee8d34fd6d895f7431d28dc0e96be",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/Tiering/TitanicTier.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ee3ef1fee3dcd820840ca85d76cb0c609f7bda902cca5b09eb8a66d64bec4cac",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/Tiering/TitanicTierUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ee02f4ccb65fca06de56ff4b6c28ce49bb6df3fde85e64b3a04acc30d2dbe230",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/Wake/CompProperties_TitanicWake.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "601d79d83d57294ed17b5abbd44acf1ef3fb927b42666e2d97231e577fc69cc8",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/Wake/CompTitanicWake.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2a83b4c69162c45250add14300c474ac007a4c0ae7d5ba3b7d2af3b2be5614fd",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/Wake/CrushTableUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "044cd5d92a96f624ea66931160c26d10c83594226c99e43354ef81900fe62905",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/Wake/Patch_ButcherYieldCurve.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c95226da1f1557771006c7da559c43d97a612a67fd0f85a5389301e9a98564f7",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/Wake/Patch_Thing_Position_Wake.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "9d57e340bbef5ae467b24dbc0b1d28bb521ba92be05e5812f24c1e02955d0934",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/Wake/RM_CrushRuleDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f006d80e3abf6227da2dfa55bb846d8c758f01f59134a7def7e5ea34f62703c9",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/Wake/TitanicWakeProcessor.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6055332361b3230511611125cc6d98b4531ca28a9696e8f5aeffb7e30df8206c",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/TitanicCreatures/Source/Wake/YieldCurveUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "12c8299bfea966f9bf659c9cb25f617d5c79741cca4d25f7c13e33a3140e494d",
+    "sha": "bb73b6bd"
+  },
   "src/RimMandrake/Utils/animal_contact_sheet.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -2026,6 +2602,42 @@
     "date": "2026-09-05",
     "hash": "a618380326af472016c640bc41bda02adce5ff424a77b333560b2d5c28417a10",
     "sha": "3287ca65"
+  },
+  "src/RimMandrake/Utils/artpipe/artpiped.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "99f6dbfbb0fe7c1611cd3ab5c46ee0f926adbb89450e89883ad2cd94ba1367fc",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/Utils/artpipe/common.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "90e569b61cea7724ebeee9d3dde23ab584dfb2a0ea9dd97747280de2e4dc8c6f",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/Utils/artpipe/fill_queue.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "fa059aa4e129f2c1909cc6418dbf7b32141059ad136fa4148a4b60ed3dabf5c0",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/Utils/artpipe/mock_codex_worker.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "055d73afdc0d74ac124a42655b9a4e87176f737ca21c07d4bae90cb54465c9de",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/Utils/artpipe/mock_gemini_worker.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c1042d43910261512691a122cf5f96a6ab0e5f9f39b484839d98aa1e63c0f210",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/Utils/artpipe/selftest_artpipe.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1019d6c9b5609f4c7aa94600b951b274c2104b6ea4962396e75554f56f2eb10b",
+    "sha": "bb73b6bd"
   },
   "src/RimMandrake/Utils/ashkarr_clamp_rain.py": {
     "cleanCount": 2,
@@ -2176,6 +2788,18 @@
     "date": "2026-09-09",
     "hash": "bae7939b21f6cf86e00de530f2433d4f4dc2c4224154a9a894c4f634f4fa53ec",
     "sha": "3ea1ca20"
+  },
+  "src/RimMandrake/Utils/biome_sheet_stats.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "0e39618d35a3def3efce4bcc9c25d52b19fb21378d6ac4df26adbce49329bdb6",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/Utils/biome_wildbiomes_evictions.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3c20faeeaf232d18cf46e6d23d794c81d5f290db23a9baa80ed97fbb1f03d4a8",
+    "sha": "bb73b6bd"
   },
   "src/RimMandrake/Utils/bridge_latency.py": {
     "cleanCount": 1,
@@ -2733,6 +3357,12 @@
     "hash": "2ab950ca3743f5c4173a10f3721797d4234b82f27e3cdd8b3e7e0963fe5b27df",
     "sha": "d8cd2139"
   },
+  "src/RimMandrake/Utils/project_maturity_dashboard.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a28ad82c61c0dfc53d1450f75ad5a64b23c420dcd6360997665d10624d818c0e",
+    "sha": "bb73b6bd"
+  },
   "src/RimMandrake/Utils/queue_staleness_review.py": {
     "cleanCount": 2,
     "date": "2026-09-05",
@@ -2816,6 +3446,12 @@
     "date": "2026-09-03",
     "hash": "144d2228096dd73e4eb14ef438a901b210e5981ed4415a1223444785b5f9d63f",
     "sha": "86de40c5"
+  },
+  "src/RimMandrake/Utils/rimbench/gl_emit.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c1d21fe8dc9f35db81b6bd3f16649ef4b8c4c74c98c1d726fe92769294d34b18",
+    "sha": "bb73b6bd"
   },
   "src/RimMandrake/Utils/rimbench/gl_schema_census.py": {
     "cleanCount": 1,
@@ -3159,6 +3795,24 @@
     "hash": "b1818b94e68fb949abe5f3fd387e9563a00db1339632f7a0295412e08d759232",
     "sha": "c057fb96"
   },
+  "src/RimMandrake/Utils/structure_roster_lint.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "287292817ac0f223c9c022c71f9ca1aa11256f0eb56d1d272fcaca04539894cb",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/Utils/system_click.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2f2a5702df5ceb945ae4a845e470c1b9f8878df76ad3340791bb503d22fba714",
+    "sha": "bb73b6bd"
+  },
+  "src/RimMandrake/Utils/system_screenshot.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "9ab8605d1076cca6a85bd0ac6bb36fcea59c0ec6dc0c51be59bae7254ae50c19",
+    "sha": "bb73b6bd"
+  },
   "src/RimMandrake/Utils/test_resolve_texture.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -3471,6 +4125,12 @@
     "hash": "931be407df1b055da9e4f95e628cf725ecb8b6ca636e10e9fff40e8791fa1112",
     "sha": "46567cc0"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchBedTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "64772a513dd431655cb4f5cabb59725804c4a8ca0d699ce520148e760dd1ed19",
+    "sha": "bb73b6bd"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchBillTools.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -3590,6 +4250,12 @@
     "date": "2026-09-03",
     "hash": "ce6f8478db5fed277bcc1ee0ad728bcd536a14ec0dd2e642a64b12ba4a6af572",
     "sha": "8b25e71d"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchLandmarkNameTool.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "cb158338e5cfdf3659660f6d3cf9c46136473152fa96d112ea97e8cdf4cde437",
+    "sha": "bb73b6bd"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchLoadStallProbe.cs": {
     "cleanCount": 1,
@@ -3741,6 +4407,12 @@
     "hash": "5452e62f2846ab743b8b65238766b637d33401cd5d6b6dc12a98a720e0253843",
     "sha": "3ea1ca20"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTradeProbeTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6d728d29e989ab36fb02175944d73767a05c5f7b0facea3459458fec5dc87d68",
+    "sha": "bb73b6bd"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTypeInspect.cs": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -3866,6 +4538,12 @@
     "date": "2026-09-08",
     "hash": "f75d5a92c8d3ba804c898f309cd316a18e77e912c9aac80021c80d3b1abba4df",
     "sha": "2174503f"
+  },
+  "src/RimMandrake/bridgetools/prove_trade_price_probe.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b803b3cbf3fbf54be8777f570392b205d7f41c5b36a503e6d1bf1f77c600959e",
+    "sha": "bb73b6bd"
   },
   "src/RimMandrake/bridgetools/prove_world_cache_audit.py": {
     "cleanCount": 1,
@@ -4269,6 +4947,12 @@
     "hash": "77aaef5ef16d077f5d5fac3c441f829890d1ac7ca2cc98d4add51a74ea00c9b8",
     "sha": "85401ce7"
   },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/VEF/Absorbed_Kotorcore_VEF_Ysalamiri.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "9f0c72e7ac864ad64254bb4365bbc38cbcba554f6bfd2f904abe009ca24e8409",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorweapons/ShowMeYourHands/Absorbed_Kotorweapons_ShowMeYourHands_handmodpositioning.xml": {
     "cleanCount": 1,
     "date": "2026-09-06",
@@ -4335,6 +5019,12 @@
     "hash": "b8f17e0cf10446e1353260387bb130655fabe4cff4392440a07fc4ecce252b06",
     "sha": "85401ce7"
   },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_MotesAndFlecks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "81a561758691a3e5bb44bcacec17a472c8f174dfe4a9e21d39b50df8a2f116f7",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_PawnGroupKind_TaxCollectors.xml": {
     "cleanCount": 2,
     "date": "2026-09-06",
@@ -4370,6 +5060,12 @@
     "date": "2026-09-06",
     "hash": "3b56fc3b63cb8d8dbe4a69ef310cff229569c43d41ac65a888090d2d758930bc",
     "sha": "85401ce7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/DamageDefs/Absorbed_KotorCore_DamageAndProjectileDefs_KotORDroidUtilityWeapons.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "555abde9e03af87d10ee0bac1ab8f2efc98f33956aef3a896ac9c07a2b2e7cc6",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/DamageDefs/Absorbed_KotorCore_GrenadeDamages.xml": {
     "cleanCount": 2,
@@ -4436,6 +5132,12 @@
     "date": "2026-09-06",
     "hash": "4c9b22377b893d9aa7de96a729fc8cefdacb5740f3fb8116376e86f18825db20",
     "sha": "85401ce7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ProjectileDefs/Absorbed_KotorCore_Bullets_Kinetics.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d274b6bc62d97ce74c9d99dc45e224b3101cd5e3fd71d5745fa70930ce820c74",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ProjectileDefs/Absorbed_KotorCore_Bullets_KotORGrenades.xml": {
     "cleanCount": 2,
@@ -4653,6 +5355,18 @@
     "hash": "4221e5f2743d834823ddaedf555dfb5dd24fa6e3ce40a399f23ec1caaf42ef99",
     "sha": "85401ce7"
   },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Structure_SWDoors.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "03dac86844a6e679a84709b2fa1de8655914010f01923dad60e4e4fe7d54d633",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Structure_SWWalls.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2ded5466d5359b33d9db7c310d90c15d3d85765bb26880d863f4d7046354bfed",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Terrain_SWFloors.xml": {
     "cleanCount": 2,
     "date": "2026-09-06",
@@ -4766,6 +5480,12 @@
     "date": "2026-09-06",
     "hash": "f9c765118b388dc10bf23c4e32940b090c9013a064527b45cf4effd324f778e9",
     "sha": "85401ce7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Metals2.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "229e5144d1b90d13526070e93f518a291e3aaaf0c7e9d8e751a613414c14b023",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_MiscCraftingItems.xml": {
     "cleanCount": 2,
@@ -4910,6 +5630,12 @@
     "date": "2026-09-06",
     "hash": "0adbedebb41695dfd4fbcf5647663cd75d58741df353b48506143906bcd06138",
     "sha": "85401ce7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore__BASE_SWKotORWeapons.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2f52ca080f655650cb7da8d6dccbdd90cfecd34fc32987a30726a3f947594a76",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/interfaceDefs/Absorbed_KotorCore_Kotor_Build_Designator.xml": {
     "cleanCount": 2,
@@ -6135,11 +6861,83 @@
     "hash": "ccf074fece7b4d6d17fcb494cb2253357e12ed539ba617e8de24cfa1b5513793",
     "sha": "77a61de0"
   },
+  "src/RimStarWars/DesertVehicleReskin/Source/Fuel/VehicleFuelPatches.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "7e2fe16dd6d0d55956150e50250c95562c12907555b0468a5405cc273134c2b3",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/DesertVehicleReskin/Source/Fuel/check_fuel_predicate.py": {
     "cleanCount": 1,
     "date": "2026-09-09",
     "hash": "b72426304b6aa433f703afb639615b9ec97e1fe8482727d0f39c107754c619ab",
     "sha": "77a61de0"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/build_beast_vehicle.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "11e84febdb7ad07cce3080a90091a8d30eb936eb5cf1acea183cc464fd378912",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/build_eopie_sled_east.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "dda59e846c3410810bd203a7f2f3e3d3ec76b29e120e07ea4456ca0743e213c9",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/build_eopie_sled_north.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a3482d9df5aaa90f72b030fed0615e566cb0ffb923fc1c4bbb9b4472c81224bb",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/build_eopie_sled_south.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "355012360f2fe4ada08facfb461cc79b4def76728c93e10b4dfddfa146fc79da",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/despeckle.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3069797f18d3a28352e567dcea7563124a11f432011a518473545b4aea015bfc",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/preview_derived_facings.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a7f606c8fd871fdb7324155e861c9cf5993abe222b1f5af5a77783fe1932b195",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/preview_tint.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "50c162d677ee1418eb29797e46773cc5baee544b2c0e8db8752c5fe3a6354edd",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/recolour_ronto.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "11f811d4d0dc109be59d61e16bded08e78a5f19785e53e5ddaa0b35e3e40f927",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/recrop_east_v2.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "de66bbe30a9ea2d511953bea74b077d60bf70b06d8c3d2941ec6f354cf86af4d",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/review_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "5b28cae14952a702dbcee086be67c258bd5658f40c450f6f4fef054a07ba4502",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/DesertVehicleReskin/Source/trim_to_band_aspect.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "59b40f3dbb5e66a279e89a69211ca9114d42ab61fd22e2b6a9262113e1a46230",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/Droidworks/About/About.xml": {
     "cleanCount": 2,
@@ -6147,17 +6945,77 @@
     "hash": "ea990a13c3e95c129bbeb63d035b88dbbbd9f2743e73738da30280095b1754e2",
     "sha": "3ea1ca20"
   },
+  "src/RimStarWars/Droidworks/Defs/Absorbed_KotorCore/Absorbed_KotorCore_RulePacks_DroidNameMakers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c2d4d64c2da2861ea8bc71bb1750903979753e88e49eb27a60687134b6b218c0",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/Absorbed_KotorDroidModules/Absorbed_KotorDroidModules_Armor.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "554d593c1586cb06bffa578e03d192c4f22658dfe125a94156184f00fbd8aa05",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/Absorbed_KotorDroidModules/Absorbed_KotorDroidModules_Bases.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "555f54a731200eb484c3c4dfdbc7db7e24ee41bc454a5f1cc4f5204143a554a6",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/Absorbed_KotorDroidModules/Absorbed_KotorDroidModules_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "8019c8f94512bf84ca088ad9175bfb4edfb30f49b69d7a05147ebef66cb5125f",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/Absorbed_KotorDroidModules/Absorbed_KotorDroidModules_Tech.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "247742ea8f3d2f7c50912fbb0f94dc82daa4698df99dc36e51966e1d6a44cb1b",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/HediffDefs/Effects_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4384b90d5056df9ebf19dbfc38a164b31ff65ac472298280216846f84edcdafa",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/HediffDefs/Effects_Droidworks_ModulePersonality.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "79517d7167b00d798e03dbe62909746a712562e547b71264078e6bf74b532aa5",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/HediffDefs/Effects_Droidworks_Primitive.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "32dc8913ba182fede55a2c6e5a3f63ba08d14d1b74fcc0de117a2ed8c2b70d82",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Droidworks/Defs/HediffDefs/HediffDefs_Droidworks.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
     "hash": "da2c0c28d9f73a4cb1e690952de7cb9e4cf0ccafa13e8c44b8a53e6d20f9a5ec",
     "sha": "3ea1ca20"
   },
+  "src/RimStarWars/Droidworks/Defs/IncidentDefs/IncidentDefs_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "9e29d43606fe0d1fb5225e12bd23a7aad146c299e79d283c9864287d1e0839c0",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Droidworks/Defs/JobDefs/JobDefs_Droidworks.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
     "hash": "f04abcd62cc4fd36376f288a8fac580a5f56fefba1730c7581a2040077e98ee4",
     "sha": "3ea1ca20"
+  },
+  "src/RimStarWars/Droidworks/Defs/Misc/Ethics_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "96ac4bbab8caeb43b3d4a9f1bb67512e7e2f62aa8d227a0d6c089023e4ca568b",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/Droidworks/Defs/NeedDefs/NeedDefs_Droidworks.xml": {
     "cleanCount": 1,
@@ -6182,6 +7040,12 @@
     "date": "2026-09-09",
     "hash": "c757cde2c4bd6c9125f20c70678496137044b874914e3ad2f79c9fdff35227a4",
     "sha": "3ea1ca20"
+  },
+  "src/RimStarWars/Droidworks/Defs/PawnKinds_Primitive.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3e53a8e9c39b6600a7a8be80c2f3cfce60918afcab2bca0c8bee449f113167d4",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/Droidworks/Defs/Races_Base.xml": {
     "cleanCount": 2,
@@ -6213,11 +7077,47 @@
     "hash": "396607af74251c8cd42a3df53b6688a701892eccd162500b6058f001c6c607f6",
     "sha": "78944107"
   },
+  "src/RimStarWars/Droidworks/Defs/Races_Primitive.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ad4534292539bbed8ab03b9c5a72bccfeb4219cae505c25756118c7e1b538b41",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/RecipeDefs/AssemblyRecipes_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f49ae4f2c4e6c114a6345f0a44e07d355bafdb227a61830c39a5790d602666e4",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/RecipeDefs/PartRecipes_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "7ac70c44978297ec0a53f5a28118b1a3fe6a22d84c81f0500c1ba23673134835",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/RecipeDefs/PartRecipes_Droidworks_Primitive.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "31d5017896a2afa93e93c8a9edf014dfe20361570fd3870efd88fcd281bd33b0",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Droidworks/Defs/RecipeDefs/RecipeDefs_Droidworks.xml": {
     "cleanCount": 3,
     "date": "2026-09-09",
     "hash": "b26bbb18aca7b63aa77fd73805a76734c641fc9e7224baaae219f6d92589f316",
     "sha": "3ea1ca20"
+  },
+  "src/RimStarWars/Droidworks/Defs/ResearchProjectDefs/ResearchProjects_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "81f18b980bae99144c2b262c4b532f56a931bc7ac42bce39ef0ebf6050257735",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/ThingDefs/BrainTrio_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "071d539f8b01f8a672dda1305066b856cdd925a3cd25cf43f360c2cecb3c0687",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/Droidworks/Defs/ThingDefs/Buildings_Charging.xml": {
     "cleanCount": 2,
@@ -6225,11 +7125,47 @@
     "hash": "070a770572e16d759dc14090786a2685238a9c98da580eb0df779fcca8085ea8",
     "sha": "3ea1ca20"
   },
+  "src/RimStarWars/Droidworks/Defs/ThingDefs/Buildings_ShopBenches.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "5273a0a9e7078822c82bd73623ca3c25169da542aff23ab033744019f535cad5",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/ThingDefs/DataSpikes_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ede5e0aab656e8301885ec83e8b867ef126b6ce646bae593e89e79625563e837",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/ThingDefs/Heads_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "9b59089a28aafe57b1d1ce72963365b3ce74c06d586c9baced9d877f581c82a2",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Droidworks/Defs/ThingDefs/Items_Droidworks.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
     "hash": "e323b2c2cba9d26cd190279bbafc3393dde0b7519d397d880367271669bd0437",
     "sha": "3ea1ca20"
+  },
+  "src/RimStarWars/Droidworks/Defs/ThingDefs/Modules_Droidworks_Primitive.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3a1422550e6682f86dd9b37699581bb5e87ec01798a5c6213b4692409b394213",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/ThingDefs/Parts_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "332305e2189a71a491f1efad46de10f53452966fe84cd35ba679fb19a3d2c1d2",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/ThingDefs/Parts_Droidworks_Primitive.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "834fa08eb5d522ed9f764d2e5ade01982008120c0ba75ab39173b1a86c702263",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/Droidworks/Defs/ThinkTreeDefs/ThinkTreeDefs_DWRecharge.xml": {
     "cleanCount": 1,
@@ -6237,11 +7173,53 @@
     "hash": "afe532dcbd2f6e1274677f1d858ba888f82f5dd932de42da7372ee3f4bae0cde",
     "sha": "78944107"
   },
+  "src/RimStarWars/Droidworks/Defs/ThoughtDefs/ThoughtDefs_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "89e32fa3e55a7a4171f4d7d71bf8f17ba368aa51acba3a7a863d784009c11210",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/TraitDefs/TraitDefs_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "37235db7e527136b7241a98bdbd1356d0aea68f1f85b8acefee5dfe9796670c2",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Defs/TraitDefs/TraitDefs_Droidworks_Idiosyncrasies.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3405b7e965e8eeb8e3f75644c53c39912e65974921298e03363cf92e0848afe3",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Patches/BTD_DistressCall_Repoint.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1397a297492b309477e21d3b142a5bd60a2b002ae646f84f73c8736c223a9552",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Droidworks/Patches/IonBuildup_PowersDownDroid.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
     "hash": "e398ec3af041fa5c4e8afafef6e8302db5d5d14d2422a701629b6595977455a5",
     "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Patches/ModuleBodyPartGroups_Wire.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "9a71151897523e97d2562e16c31e522c1062f4d8bd9f7df7fe838042eb098b7c",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Patches/ModulePersonality_Wiring.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c1c6e8e21637b163211fa4b2dd2b687d848b84c31312711409c97f19a308c688",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Patches/PawnKind_HumanoidDroidResistanceWill.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "5e5cdae9142df83f8b1942f2108cbf593ccd73e4e17d02a896d2e0ed2de82138",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/Droidworks/Source/BoltCore/BoltCorePatches.cs": {
     "cleanCount": 2,
@@ -6267,17 +7245,77 @@
     "hash": "fb73fa2e53ffb8981091a4f0f8c3cd878315fe5620148aafcc666942e416fca2",
     "sha": "3ea1ca20"
   },
+  "src/RimStarWars/Droidworks/Source/Droidworks/CompDWFormatTier.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f23a634341313f558a74890e59533db48300ecf1bc820ede1f25c13b9f857a68",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/CompDWHeadDropper.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ca3200754e2fd4615f08008e2c5e330af04001aaa3526a750a100508d670a224",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/CompDWPartDropper.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "00eae2ed0b2feb0bf43d780e07ff195142f5c4ddf54951c4fd617311292e0658",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/CompDWServiceRecord.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3d360b67b1d2537e78b477dd119529270480e10e801c9660f44da8998d44ae64",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Droidworks/Source/Droidworks/CompDroidDetonation.cs": {
     "cleanCount": 3,
     "date": "2026-09-09",
     "hash": "b68d9a042374f4d3ac898230004b70c12f195d0fdee4637e3f6765125afae7d5",
     "sha": "3ea1ca20"
   },
+  "src/RimStarWars/Droidworks/Source/Droidworks/CompHeadIdentity.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a38f8dfee410696b3402e0b72f68e0671855c842891d048a993d2d53ff644009",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/CompModulePersonality.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "cd765cdb6d2387750f179266bf3105da245f29a602fe395c835cea4c7f8ff1d7",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Droidworks/Source/Droidworks/CompTargetable_DWDataSpike.cs": {
     "cleanCount": 3,
     "date": "2026-09-09",
     "hash": "53fe87cbc2897dbcb95da90e7c98a285ba0ee37a2ef6b9ba70f2033cc8aa507d",
     "sha": "3ea1ca20"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/DroidAssembly.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "30223ba5846e675b1631e33b4258500ab8ab249596442892de9896857f0a6742",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/DroidEthicsExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "86d13ebaaa020dc749fee962262d3ca738b4f40e957beed4c7c7342e802c0925",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/DroidFormatTier.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "48cb8ee373d5f54380c972927b8bd9d222703f4378f592dc74ed3a30461e1f7e",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/DroidServiceRecord.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d3b856c592fe7ad86daa5f39a5c690ad68f3e73e3fb7243693efd4adc53c1084",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Droidworks.csproj": {
     "cleanCount": 2,
@@ -6297,6 +7335,12 @@
     "hash": "a7b252e6fa89da2db7df295d12bb1592d7b57d1a9ba888292dd3bbe64dcc2050",
     "sha": "3ea1ca20"
   },
+  "src/RimStarWars/Droidworks/Source/Droidworks/DroidworksHardwareQuirks.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "8e5ba24c088431daa6af6ece4229f8d8cb28b2c652fb738a943585d105c007b5",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Droidworks/Source/Droidworks/DroidworksModExtension.cs": {
     "cleanCount": 3,
     "date": "2026-09-09",
@@ -6309,6 +7353,18 @@
     "hash": "e3548c0a9a0ace5d798a02e120ecb82e747b501a3038310db4ce919e53af60f7",
     "sha": "78944107"
   },
+  "src/RimStarWars/Droidworks/Source/Droidworks/HediffComp_DWBoltShear.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b90739589c91503983a5c9988302342ba6700d2e1f9a148badcc6221fbea5288",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/HediffComp_DWWipeStumble.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1a014d3019b43600c1baa486574754857930bc97a2f54531c16d6849d576d346",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Droidworks/Source/Droidworks/HediffComp_IonOverloadsDroid.cs": {
     "cleanCount": 2,
     "date": "2026-09-05",
@@ -6320,6 +7376,12 @@
     "date": "2026-09-05",
     "hash": "61b2c2b0f150c210c08db69308627a6700e06574ee0ebbf3f3c428d12e0601fb",
     "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/IncidentWorker_WildDroidCrash.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "510bde4f97c8ed0e4acf8a5930b8b8c8fcd09db047acb626a589efa91901c9e3",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/JobDriver_DWClampBolt.cs": {
     "cleanCount": 2,
@@ -6339,6 +7401,12 @@
     "hash": "2f495478426f15728a732186c95772baa1dfe4f38189cf2839e36de37293ac57",
     "sha": "78944107"
   },
+  "src/RimStarWars/Droidworks/Source/Droidworks/JobDriver_DWUnclampBolt.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "5d18934886d286a5f9e30ea115c0c95c1cfe20c545c6518ec57cfe7a50e5623d",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Droidworks/Source/Droidworks/JobGiver_DWRecharge.cs": {
     "cleanCount": 2,
     "date": "2026-09-05",
@@ -6351,11 +7419,35 @@
     "hash": "56680790e13f39fa8b55584356273014096f258a6fa40dc87e5bd1ccbf8d23ab",
     "sha": "78944107"
   },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Patch_ApparelForDroids.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1bac4b9232016c236db8f6fd004b1d2e4eeb19184c4dad0dfdc4afe3d058eb0f",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Patch_ProtocolTradeAdvantage.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a05e52869ffaf08208e3ca3a5b1bddd439f59799727a124f27e01dd6c07f15be",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Droidworks/Source/Droidworks/Patch_ShouldHaveNeed_Power.cs": {
     "cleanCount": 3,
     "date": "2026-09-09",
     "hash": "1c0387e1e935a5d71110969d6c4b3654d9549e6f3817756d774efbf36d36815f",
     "sha": "3ea1ca20"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_AssembleDroid.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2e64c64e9ba413f842009c463f69ebe6f03f8337cc0c39f5195e91a478198bcc",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_DWFormat.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6ed4df2c2766afd3fa7f39f8df1cd68b2f2f6d09046f0c363bcbab9b65e1c727",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_DWMemoryWipe.cs": {
     "cleanCount": 3,
@@ -6363,11 +7455,35 @@
     "hash": "1d5e5372ba5b2f6dfdb8828e66ee9e66aee29c3bcc4522120679f34d9703ffba",
     "sha": "3ea1ca20"
   },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_InstallDroidPart.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f312730ebe070593d4aa967c28a6586b5b56b68bef92355f2888d1399bba8f0f",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_InstallDroidPartAtBench.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2b92d9f882726a9d9779fb00be112b7b52bffed9e4a349cddb3dfcc4e212db83",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_InstallRestrainingBolt.cs": {
     "cleanCount": 2,
     "date": "2026-09-05",
     "hash": "39c44ebb16d4dfc8a57636a637ff8fc5163c96e01e2904387fd443b0e5a331a3",
     "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_LiberateHuttCaptive.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ace25aecfb4a4f98d273f48423962762526ce9378d374a7d1686da536351b248",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_OverclockDroid.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "98dc507c5455f5547ae18a745f708a927fd55a62663280572a0b8088b52e8fc4",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_RebootDroid.cs": {
     "cleanCount": 2,
@@ -6381,11 +7497,41 @@
     "hash": "204b0fac1a23a23e1d0198a01353192ed0a1bc3faeb7d556cc0e1830d6c71b0c",
     "sha": "3ea1ca20"
   },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_ShopRebuild.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ec5bea696846f2af78c04a3c5adb37a80e7255c9e6ac565d494a9cbfbfeb6ffe",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/StockGenerator_DWDroids.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4a472fcb4f6385cc28038154addc5d2ff3eb418e36f45619fe8027aa5c07aaf0",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/StockGenerator_DWHuttCaptives.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "044ee0b03149ffcfb61f0661ae802f12a7e40c25d1f062c6c55e7b5b8da764e0",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/ThoughtWorker_NearBoltedDroid.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "9640c3067b52977fdbb0386d6c73c7bd6e77751c7ab199cec8891f1d79a2dd5c",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/Droidworks/Source/gen_droidworks_defs.py": {
     "cleanCount": 3,
     "date": "2026-09-09",
     "hash": "457ee481a902b1275534a9940b6a50f1a8bedbd40d4a7aea316adb6978ade962",
     "sha": "3ea1ca20"
+  },
+  "src/RimStarWars/Droidworks/Source/gen_droidworks_modules.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "447501ff1aa49949cbae4d3add3b7f1674eb165d7af35de2cc3c68b644a3ebdc",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/JawaIonWeapons/About/About.xml": {
     "cleanCount": 1,
@@ -6783,6 +7929,126 @@
     "hash": "e9c6fe363abe7bedfa2eaa5d9da78a1b4f5157d09bcc5431f00ec32adb7b2404",
     "sha": "3ea1ca20"
   },
+  "src/RimStarWars/SWBestiary/Defs/AbilityDefs/RSW_MlieWaveB_Abilities.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e293c7bb81b8718811c481713bbfd110a7046f54bebd22f508966414aee39d9a",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Bodies/RSW_MlieWaveB_Bodies.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2d692fe33bec3b4a36edbb6b3817d57325f3be9ed3d402bf3b279232ca77d98c",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Bodies/RSW_MlieWaveB_BodyParts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e3322bea02cab5b30acf8ef7b1810ad50d22139ae6b27ce97b951fbf2301c828",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/HelixTellurox/ThingDefs_Races/Races_Tellurox.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "7930e17483230836faf3864c66118136c2b895b8967562145da74a944cdb2e2d",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/JawaIkee/ThoughtDefs/Thought_IkeeWatching.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4ceaab44c6c784e0a1c28119b4f4c25b046bca27c821300880292082024f7d6e",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Livestock/DamageDefs/DamageDefs_ColdDrain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c9d80ba2ffdb6d4b591221862a8ea94fc862ad7bf1ea1447b78cbb8bf6c4486b",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Livestock/HediffDefs/HediffDefs_ColdDrain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4a6b8bb35858688dc39225583fecf8942500cbe275e46d2d1c6f10a5b2fc4627",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Livestock/PawnKindDefs/PawnKindDefs_ForsakenCrags.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3f131ee2533cca4d61e22534de6b118386e69728387e314793bf60d7ef3267be",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Livestock/PawnKindDefs/PawnKindDefs_Karrask.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4cfbcb13757688559b890aaa607364e36ed9d666427e5c3659dca00b3fb18704",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Livestock/PawnKindDefs/PawnKindDefs_Onnik.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3f386f207e88a9b5c77924248f3964bb2c0b9bfaaa5a73a869359a746ea48158",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Livestock/RecipeDefs/RecipeDefs_Karrask.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "41d9ee22e6a233c46d334b8a4c3d4ae3135d39c285f4c6895567e7afa0687330",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Livestock/ThingDefs_Animals/ThingDefs_ForsakenCrags.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "197c9381e2a1a10b049afa2ccf1db5033cf7cd88145a61f71e2d62eb5a264533",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Livestock/ThingDefs_Animals/ThingDefs_Karrask.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "fd73efd17f6601b616950cd1e68511522969c342731f4b25cd5580295ed9a90d",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/Livestock/ThingDefs_Animals/ThingDefs_Onnik.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "0c07be20346f9ea2374004deb0bafa2f368a9ab623eedf9f62e67dc7829c6e52",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colo.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e4e09fc21ec527c676601637e522383ea5771cf083d3a9fa68c3832c907b08f7",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colossi.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c9ef97feb730e540098c95ff04c803aefc2fc35a747ca76f21d52bd127e90fd4",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Opee.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b06eb988ea3b7675678de0367cffceb4f844b24ac893a0d18341256ecbc2090d",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Sando.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "34db6b61ce7e38a8526e6b512c9e4b561f573373d908055fe789e641ee2d405f",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Scalefish.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "0fbbe3059a758d17483244ae0b488d10835f39d5db0e247cd9ae5a6312fdfcdf",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Swarm.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "465cb8f676db305c20588264830360d445c496dfe025cc4608afc8f9cc2e3f54",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/SWBestiary/Defs/SoundDefs/SoundDefs_SWBestiary.xml": {
     "cleanCount": 1,
     "date": "2026-09-06",
@@ -6800,6 +8066,18 @@
     "date": "2026-09-06",
     "hash": "afe7de302d26b46714cfb232db4907884a86483bf0e35faac8447a86f97691ea",
     "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_MlieWaveB_Resources.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "68753f908fa25083d5e7dc1f2f589e1e2cae73b571c5b6c8e184bb7df12aa3fc",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_SandSwimmer_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d7eca0c39d6ace4a04334f1a7e22fb71152160749a0e0ca026e2af66161b5280",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Baseopsis.xml": {
     "cleanCount": 1,
@@ -6849,11 +8127,23 @@
     "hash": "4e4af80883b9b004c160a325af76dd2533491d1c557ebcbad4ddedc78a36ff4a",
     "sha": "bd07c0e6"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Acklay.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1599f09004f1e3032423feb575de7c414d5bee92c01bb648a62c1fb8c38cbf2e",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Bantha.xml": {
     "cleanCount": 1,
     "date": "2026-09-06",
     "hash": "3c64248838987bda6bfc52907a8e57efa08b28e5650c1f08bc576bc395e47bd8",
     "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Dewback.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "eaeb14f6cfeb571f857baf7b5dbff8e0ac89e24578e5164b7ca80d44d40179f8",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Jerba.xml": {
     "cleanCount": 1,
@@ -6861,17 +8151,161 @@
     "hash": "b4a35657a08f413293dd5e058afe62c6869f56d17ee493ed5d61675a26d27b7c",
     "sha": "bd07c0e6"
   },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Nuna.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "db0fdeae38567d7926ebac44e8c3b90cd7d937ea249b800dfd1f3e7f637e22a8",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Porg.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "340f65eeb54aab43bb4f236c6d12efe87e701f92c3c4b6d8f3e93e2e022ad34d",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_SandStalker.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a2a52b01edd28f8a02af7aa343346adffc6e5a1417a82bbcef67c04dc429fc71",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Vulptex.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "9d79fa6c975b0539d83d0d5a7be544e2ef9d7512bf558e806e1b34ae88f683ad",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Wampa.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2d47142c0f08cf7e11127f13c19850e12e190d283fb53b518d5eb219d4250e35",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingSetMakerDefs/RSW_RareSandCatches.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e4f6075529fc09c6b85713615b05f923dec747bf86e062ef6b3abecdc4aebe0d",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/SWBestiary/Defs/ThoughtDefs/RSW_Bantha_Thoughts.xml": {
     "cleanCount": 1,
     "date": "2026-09-06",
     "hash": "ce49b8a96817193c56cd9f13806b280f0f2aeeed6b1c94f6013e7746c253f85d",
     "sha": "bd07c0e6"
   },
+  "src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "799c648b2156685e14cd804f65420f97fdf3a68878dc2f0bfefd08522f66a290",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Patches/Livestock/ForsakenCrags_WildSpawns.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "be5725b22067d7190881eee95365bec29e7c79d1075381f5d7d85d01a4355255",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Patches/ProximityHatch/RSW_ProtovermesEgg_ProximityHatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6c2ccb32a43c4c16e1ddd69b4d13c81fa253276985454417540e2d2fc7ce9963",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Patches/SeasWaterline/Waterline_Lane1.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "75ffab558da1c78ad9a13996febbbbf74b91afa18101e41c2b37d3b20a52db9a",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Source/JawaIkee/ThoughtWorker_IkeeNearby.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ce9df77d3eb6ce0edc1896e76e4cc17828b79dddaac3a4042e8c0ba74b1e1aae",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Source/Livestock/CompKilnBelly.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "9924c5231c58f986629ff953f829901ac0c4f6d53f9102c8fc0cb52eadf129fa",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/Source/Livestock/CompLightAversion.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c2ef14ba9eae77d21a0c51aa32332cfc394cef9c220d294c9c42257d6a7991b9",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/art/Livestock/gen_livestock_mockups.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "5a9fbcf74b1c12adde553a029847ccbe4ab49c3a962c165933f35c2708e695b6",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/art/SeaBeasts/gen_sea_mockups.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "393cee2ac08e2ff149d4378e8f1b7fba94b638e7e2421df682e51343e464a0b8",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/art/SeaBeasts/tools/build_sea_facings.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e34b6694dbcf6f2e67b88410a1f615946aaa846b610e48a1a86d1934a3493d24",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/art/SeaBeasts/tools/gen_sea_facings.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "db20b71e93634ea49480341d5bb26f1e9f721eb654d5f436fca43580970a4379",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/art/SeaBeasts/tools/sea_creatures.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "071637a543a6b0d91f5daf2716280cc8d82c48a0055472c2cc51084d7c01d1d8",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/art/SeaBeasts/tools/seacheck.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a60ccee8f206854ea1d2e762ffa5106a9ce8bad4b9e10c165c65de8f5a9268d7",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/art/SeaBeasts/tools/seafit.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3fa4152eb1e7934a6d745baa4fc4c40f1f72fa85596dbdf1f41602f2dd1f30f4",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/SWBestiary/art/SeaBeasts/tools/write_sea_plan.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "caf9223ff4470f0db0798cf1c4261fa7170ff9e0f125912640379650e6adc455",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/StarWarsPatches/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
     "hash": "695ef23f203e63e5ab460fec6de9a8120b386b9f4c0f108956495d6cd69ee401",
     "sha": "3ea1ca20"
+  },
+  "src/RimStarWars/StarWarsPatches/Defs/Absorbed_LumiDoorsExpanded/Absorbed_Lumi_BlastDoors_ResearchProjects.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "fdb5874a5918c2b6f458e3b2f39965133e0a68b468b9a5b405ea38ff0fa5ace5",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/StarWarsPatches/Defs/Absorbed_LumiDoorsExpanded/Absorbed_Lumi_BlastDoors_SoundDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2dcafa2912ff33b679237cf25a33d8219aa6b5b9dd6525cf8b82dd0df1a50236",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/StarWarsPatches/Defs/Absorbed_LumiDoorsExpanded/Absorbed_Lumi_BlastDoors_ThingDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "dcba3ab9f37a84b91757a789c32f4d1ac936a9b191e603455a740e288db2ba09",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/StarWarsPatches/Defs/PawnKindDefs/AlienSpawnEnablers.xml": {
     "cleanCount": 2,
@@ -6975,6 +8409,12 @@
     "hash": "fd263b18a9094ab807ffa4a373253b5a663b05322c4ecf2b7ab81fb6988e174e",
     "sha": "3ea1ca20"
   },
+  "src/RimStarWars/StarWarsPatches/Patches/PlantNames_CanonSW.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "27335a7fb05a720d85a5e7a0072ce345b83f78b75e8fb977e8d8d2811c79322a",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/StarWarsPatches/Patches/PodCarIsLandspeeder.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -7029,11 +8469,47 @@
     "hash": "b961930d9c89b801b29cef78307be458c339fda976b44a8ac49119325b780d6d",
     "sha": "3ea1ca20"
   },
+  "src/RimStarWars/StarWarsPatches/Source/BlastDoorFrameAsyncFix/build_frameasync_east.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "962cbf50d911e282547fdb9d59f75b73938a9b9fa02fe1c189fbb7f5b4c73e80",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/StarWarsPatches/Source/BlastDoorFrameAsyncFix/render_review.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e7d19b3ac1240649881e2028881a7ebe09802a3c9f2b2e8312fcd78ba2fba16b",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/StarWarsPatches/Source/BlastDoorFrameAsyncFix/verify_frameasync_east.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e8b3fd1158d93002476f3868f5e19f1c0d0b7c578702dfada0c94b26adc2efb2",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/StarWarsPatches/Source/CereanManeFix/draw_mane_south.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1a574721ee7c00fc550193d49be5da098c9292a5ace87145c781bfefb748a03a",
+    "sha": "bb73b6bd"
+  },
   "src/RimStarWars/StarWarsRaces/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
     "hash": "d8c84c76e337bfebaa344fc1f0e1008f60bd3a42cc1032f9db2f66a1a4141a83",
     "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/AbsorbedSovSith/Absorbed_SovSith_Genes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4bdd10d702f57a643288c7ad10995f0e2fd9df02ea8f48d3b759b14e3869fb86",
+    "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/AbsorbedSovSith/Absorbed_SovSith_HeadTypes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f47fc4e8c445f076497a16b3c7cd9e0cb9f1515cf25cb0790721c2495ac12bb0",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/StarWarsRaces/Defs/GeneDefs/Jawa_EyeColours.xml": {
     "cleanCount": 1,
@@ -7124,6 +8600,12 @@
     "date": "2026-09-09",
     "hash": "75166224f2b6d374a9cca8c25e80797591c1eb4c2d96248b8421366158b177e9",
     "sha": "3ea1ca20"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/BeastLairs/ThingDefs_Buildings/RSW_BeastLairs_Buildings.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "08c1320f97d23ccfc24a95d5065ef6fea163ba78e2201f39f83a906a3cca9f61",
+    "sha": "bb73b6bd"
   },
   "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_Batch2.xml": {
     "cleanCount": 1,
@@ -7346,6 +8828,12 @@
     "date": "2026-09-08",
     "hash": "a78f068fbf86d0c8a904c5a2deb1df96b627fdecfd396caf85f3fd105789ab17",
     "sha": "f658d7a0"
+  },
+  "src/RimUtinni/AshkarrLandmarkArt/make_slough_breach_icon.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f5a880c3de6033ef4c2593e7a57e6fbfc2546b6f97ab3392c2c76dd010d51c46",
+    "sha": "bb73b6bd"
   },
   "src/RimUtinni/AshkarrWeatherSuite/About/About.xml": {
     "cleanCount": 2,
@@ -7599,6 +9087,42 @@
     "hash": "c71178cfea9a00a702d86db174ff5ddae73fe5ad22d1befd122da6bc94f8f3ce",
     "sha": "629956d2"
   },
+  "src/RimUtinni/LanternDeeps/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "bf115628d6d0f3b11fb28aca6c72162bfe4102a2f6ed977e02b100f59052cd80",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepEmergence_Scatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "589e61683fce127816b29ec470e6e1c6215e16da75f78ae73c17f62cd4545123",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepGenerator.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "500c7f744b3e77abb01ddf4d3ce0d62a560cfa5678f1130526d226f40a9624be",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/LanternDeeps/Defs/ThingDefs_Buildings/RUT_LanternDeepEmergence.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "696f2d1c63f6137b6671a9533ca3c7f8f65cb3003f7475c3a323da0250f056f2",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepEmergence_MapGenPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e36aa47c342fff52b65154b1db4befdbf70f646c9136a57e835401c9fb59005b",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepEvictCrystalFauna.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "fbe0bd117a9a6c199b7f8464ed904194e06b9b9d89372d9fffb389197d07001c",
+    "sha": "bb73b6bd"
+  },
   "src/RimUtinni/LanternDeeps/Source/GenStep_ScatterCavePortal.cs": {
     "cleanCount": 1,
     "date": "2026-09-08",
@@ -7670,6 +9194,18 @@
     "date": "2026-09-06",
     "hash": "7127ea6292a433d7fdb0d479645b81ceb58e9fd9ae55c27648dfc181c6c69798",
     "sha": "52dee04f"
+  },
+  "src/RimUtinni/MenuShell/Defs/UtinniShell/VBE_Backgrounds_Utinni.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f6251da76f7d23714abc7eafa5cfc9b50898e3eacb70c7e850cf73127099a04f",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/meta.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c3cd069eef20e6bde89534741bb24a24ef435e7ae13a8d943839249136fa5787",
+    "sha": "bb73b6bd"
   },
   "src/RimUtinni/PawnFlavor/About/About.xml": {
     "cleanCount": 2,
@@ -7899,6 +9435,102 @@
     "hash": "4930f8790918f4d7b9fe42eba32e7be4ae33d034e70b3799d6bd057593a6a5fb",
     "sha": "dad4e548"
   },
+  "src/RimUtinni/RotSporeKit/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "70c9030298d858a9b4566283b143e67c6fcea7c59358a9c115e6517028670999",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/DamageDefs/RUT_RotSporeKit_DamageDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f57469019a0dc82b7d646a82aecc74cecaba0aec38cbeed79defed177766d181",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/Drugs/RUT_RotSporeKit_Drugs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3e42da9b654dd65b751cf39dece455c84886e11bb40096e00b6631e55216823b",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/GameConditionDefs/RUT_RotSporeKit_SporeCloud.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "12cdc5f2e949e9874c83585f8fd76ebfad8c14369213ff9afbf9976ce1812b15",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/HediffDefs/RUT_RotSporeKit_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "06f79663c081267ee0dfa91d1b11136a11b6aa1cdf84e12ce374db7249bfeff3",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/PlantBases/RUT_RotSporeKit_PlantBases.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a007adec2498062a97e1ce93f5d92f7a5d220fae7f8119792624a58e73ed1ac0",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/RecipeDefs/RUT_RotSporeKit_Recipes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a152ae48ecf0e08258736058504e753aa1229060be85394e1ebd6de8d461f5d5",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/ResearchDefs/RUT_RotSporeKit_Research.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3b706618f2775dc05e4501f7c014ce1b4a825c73d92455e5e5f27d94c57fc794",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/StuffCategoryDefs/RUT_RotSporeKit_StuffCategories.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a37475a9ae5132968698ce887adacf5ad1a99c10958ec06eab9bf1cb9a39d153",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/TerrainDefs/RUT_RotSporeKit_Terrain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "05c1fffcb6753eb2e7c6548930bf13402dbe18a75c862afb4d56c6a944321fd9",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Apparel/RUT_RotSporeKit_ChitinSpiderHelmet.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a7a94f1cb48a59551d2a410f9556ade603ccfb9d01d13818e1cb7a5337dbdd92",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Buildings/RUT_RotSporeKit_Buildings.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e73c5c7d7db4bcc8875629c86b7ace73344f9e4f0bf263c922102bb89caf1701",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Items/RUT_RotSporeKit_Resources.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "8b7ffd05d3297ec03051ad2b0cdd97458c01dc0e0e9f0229cb60aa93ac2af977",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Plants/RUT_RotSporeKit_Flora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "cf9a8730b0798d80db8dadb40f91322600473d353391258562607fd334b62d37",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Weapons/RUT_RotSporeKit_MantisScythe.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "da6a00dba15a5626de639f90f77b966faeeb55cb9776300c93452527568c8d3d",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Weapons/RUT_RotSporeKit_ThrumbungusShroom.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "53da16716f9695cba3d9436482d70071f9b7222a33d3ae19958e53f818c6c034",
+    "sha": "bb73b6bd"
+  },
   "src/RimUtinni/ShipMemory/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -7935,11 +9567,131 @@
     "hash": "09ae8ecfad05ea0fa0d3547d0ee516d4445888b5db1bba5f15bc53291e885aa6",
     "sha": "46cdec42"
   },
+  "src/RimUtinni/ShipShields/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4ad7afc0c103aebeb12640154fc5411ac71ffabca00e1ee825a82f40bfb2b174",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Defs/ResearchProjectDefs/RUT_ShieldGenerator_Research.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "085527d699e5adf68506b60318f29d9cc0d6bf30cd8649815c4b4f0bef2ee5dc",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Defs/ThingDefs_Buildings/RUT_ShieldGenerator.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "699da61c511b87cf191e403abfd6cfd0cadd2cf6a5b29b469988c2e998680961",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Defs/ThingDefs_Items/RUT_ShieldModules.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "dab4c7cc13b4f2cf269e51d34681f7f7976d67d2ac79d5928d30fd4bec38294e",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Source/CompProperties_ShieldGenerator.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3f65f248e70e9c7d4f05d732f89c6ecfe3ce0da60a3026efe5aff328526bde41",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Source/CompProperties_ShieldModuleSwitch.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a6febaf8ca78f73bd2f4518a7a8f7ca5233a37a971c31a5892741b1e81850984",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Source/CompProperties_ShieldParticulateScreen.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "14cea0d418d358714740a3de3f3c26ed78039e67adbccf0c4a8ff3d7d704a6b0",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Source/CompProperties_ShieldThermalVeil.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "7ea3901320748d3cb291313d1804c7199da3795d873520109de0100e96b09dba",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Source/CompShieldGenerator.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d9b9df65e6fb723b62bd6d40c8c19d97ac34796d07593c13a31c39988ab6116c",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Source/CompShieldModuleSwitch.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "605113c1b3b48a9922ddc0bae682becb88adbc9437c2d93ccb88fecf1a50b5df",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Source/CompShieldParticulateScreen.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "9a69b867f3c1420858145cb79577c2ee03a88ce2215ad0a27645412ccac04aae",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Source/CompShieldThermalVeil.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "579728e4d6afb3d89b93f175f05b92ce301942b50b97af07e915ceaa92a0744c",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Source/HarmonyPatches.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2e5cb25f5e0aa002390897c323a6ccd72c3dc3f6c8bf131ac22d9c77d58cfd45",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Source/ShieldFieldMode.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "566dbc12c2df1e1b7b4827d5f1790e91be6545ba2ee2e259f8b5a250a747dc4f",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Source/ShieldModuleMapping.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "616e6386c463523fd0266737786296062bf0867f4997200a48923bdc8852e5ca",
+    "sha": "bb73b6bd"
+  },
   "src/RimUtinni/StructureInjectionsRUT/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
     "hash": "ff3fd521f8a2f66f39da4de20ba4f229c6653ba27ad025ad270330aa40701bc3",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/DarkTower/SitePartDefs_DarkTower.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b5e33bcc2b9074f61c79b58ebafac9a01ff05ef79b310b27842d53182239eb23",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/DarkTower/StructureLayoutDefs_DarkTower.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "af43657f8bedcb21312b8952a31df27aebedad684d032c87d1b28e72d6450245",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/DarkTower/SymbolDefs_DarkTower.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "91ec6329f8ba78b49c24627da0fa8f4d843498b05fabaf68ebc9ce8c7752cab5",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/DarkTower/ThingDefs_Buildings/RUT_DarkTowerControlConsole.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4ca8ed7a0cc92d15231a394d59e40be0e66c50199f6cb11c7464812b506623f8",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/DesertFixtures/ThingDefs_Buildings/RUT_DesertFixtures_Buildings.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "7bd5d284d3811df1528d422f41e13fe7c0e4680a2e885081f651b6b0b386c2c7",
+    "sha": "bb73b6bd"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Batch3.xml": {
     "cleanCount": 1,
@@ -7966,10 +9718,16 @@
     "sha": "e67f2cc0"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Homestead.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-09",
+    "hash": "29dea7ef36ee5535a03bacd54100636cacdece1073e0dd25a306097db912e90d",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_MoistureFarm.xml": {
     "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "d4a952ef3e1bf94e14137c20554c2c741f590704c373afdd6a7fc06d11a10cf3",
-    "sha": "e67f2cc0"
+    "date": "2026-09-09",
+    "hash": "9985f61974479c32ba1e31865e5983077f94bf9ff478cca10c89feb6c70704df",
+    "sha": "bb73b6bd"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/TileMutatorDefs_Batch3.xml": {
     "cleanCount": 1,
@@ -8000,6 +9758,132 @@
     "date": "2026-09-06",
     "hash": "70084841834e5ef73b642bca4dd9d556786d095b315f31cf99963ad23af1cc0a",
     "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/TileMutatorDefs_MoistureFarm.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "16227fbfe14eccf67ea26e410986ab133cdd1dd8ee8f79148a752941040df16f",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/HistoryEventDefs_Vaults.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ee7d6c25887ee1bb252f913f2633a08db169d53871536387db7503818b141457",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/IncidentDefs_Vaults.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ea29468cc6e966dcde5f12c29d15232274854cc52bb2091344435d74cd243a51",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/QuestScriptDefs/RUT_VaultThaw.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "5eb3fda23e18822cbc623516c7b4bff082b6f602d5fffb6bf56fec55d7cb7d3c",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/SitePartDefs_Vaults.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b1997b9fd744bb5cba8de8807b8cec480e301db47861479a5a6e72d613a8cfd2",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/StructureLayoutDefs_Vaults.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a315712b1a22b29b33a2ced9af46cbf9d9c43490089727a42948a271af0ec874",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/SymbolDefs_Vaults.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "0f02baa108f8e71977c0f2dc1c25a08f880796964aff5f5df1dfb7518f953057",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/ThingDefs_Buildings/RUT_VaultHeart.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "917dd8a90afc6d8c5d664cff81c4b6a745da0a40cae2668c31066573d7afef47",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/WarLab/SitePartDefs_WarLab.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3096cf8ff75a86173c7c194e9a09dfc4237ab026218c7c0d28e14d9b57e7d111",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/WarLab/StructureLayoutDefs_WarLab.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "0102b3098f2bece7cf3666c77c9125403e1ba342e782c4fe649639eb691161f3",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/WarLab/SymbolDefs_WarLab.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "75fa47286bebe11f1f07347daf99425942c85c96fa56e0e2745d5dba7472638d",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/WarLab/ThingDefs_Buildings/RUT_WarLabArchive.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "26802e774e15a53935a2297815aaf7eb14fdb7c130e14451478bd6e8488d7ea3",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/WarLab/ThingDefs_Buildings/RUT_WarLabContainmentCell.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "771b6e5b14626253e03d8fb27acc399f4bd3c025a84e9078e63bcde2d9b8fbef",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/DarkTower/gen_dark_tower_layout.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "bfc740b463dc3e53b8f2dd4c6b4da257cbdaa2c5126a400f72471643b81679a4",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/Defs/HistoryEventDefs_Vaults.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ee7d6c25887ee1bb252f913f2633a08db169d53871536387db7503818b141457",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/Defs/IncidentDefs_Vaults.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ea29468cc6e966dcde5f12c29d15232274854cc52bb2091344435d74cd243a51",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/Defs/QuestScriptDefs/RUT_VaultThaw.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "70ab5adc16a03521d3779796be21df13dd580a310644d0c733d450904a921876",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/Defs/SitePartDefs_Vaults.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b1997b9fd744bb5cba8de8807b8cec480e301db47861479a5a6e72d613a8cfd2",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/gen_vault_layouts.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "257adaa77fee714733238a8d565fbb2edf35c0adee1e4ac5a86a7c17a5330f9d",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/gen_vault_quests.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6e5f7dda0c60540d36999c64114059f18f6a84ae1257ef1ab4dffcb85821dcba",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/WarLab/gen_war_lab_layout.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "247d54dc3c0ce5e89d485b54e66c64c94b705bf7da13c22ca9c2be52f51ce0cb",
+    "sha": "bb73b6bd"
   },
   "src/RimUtinni/StructureInjectionsRUT/Templates/broken_ring.txt": {
     "cleanCount": 1,
@@ -8073,11 +9957,71 @@
     "hash": "6fa09661b1d9c5a36a1d77029dd2d2089a686ad8b03fc937fbe38ef640bec5ce",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_AridShrubland.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "aee61a52409909e061faaf4eb501132265b479490522734473f045e23c1eca65",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_BlueDesert.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d6ed718f77fe765ba9e82a4a4c1494067fc93dd6d66f4763a92d75a723270583",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Contagion.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f142ba552d1c84ed4e1f1aafee178f094eba6840b2c93399bd6af49a6735ffdf",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f599d643733ef55d927c0d38b432a2ba6362c7165f627fde752e53650d4df938",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "8f1a07a9c17710858994e7a2d5ab2c72772551d4d688ab793d467bfb53614e26",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ExtremeDesert.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "02dfa4b308f014f617ecbda036c6813634b2fb8f03b72a199e0ac820d4739fae",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "485e83a1e3e062c2e6db88a919895bcdd9cdb4dab7f8abda6cf9a2c446ada688",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ForsakenCrags.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ad0126c5a246a8425e5c73506e0d8315a0bd47e3957aae27e0ca8fc2255e1fe4",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2279abbd5439981f8ba278853541e033a6037a338dfa50c11ab2030c9079a8e0",
+    "sha": "bb73b6bd"
+  },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
     "hash": "19c448aa75c9e8782a30caaa8faa695ed043928ac552e5c2b3396ce5d6e2d7e0",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "dd3095ab40d55189f1e0e70d433e6dc7b904a7f18ef52a7f70d34d42738827e4",
+    "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml": {
     "cleanCount": 2,
@@ -8085,11 +10029,53 @@
     "hash": "ce3abd4deb9af896b42250d3549972c89372904976ff57c0fc7173697190afcc",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PoisonForest.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6204f5edf24da0831c0efcaf457ec0cf761ae6b6c44c27a7b5c027c407adf19b",
+    "sha": "bb73b6bd"
+  },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
     "hash": "65868ca5c155f97cee77de51f26b0aa288b9accabb7701604c3d9f7121354d6a",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_RustCathedral.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6b4469ea965909485e22950e96eddf29b0255cc8b7279bbab3e3ba479220e51a",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f53a797e39c30127fd49336e157e9cd21774ee1be5ca169a9e2c7ceeff25f0be",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Slime.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "55cadf6b8300ff8451c1eeb287cc5682334290669222184b6d7ece7cf5e4f248",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Sump.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c758a693e946b58832039beffc6c9d6b580e589d1e697f1cffa693ec3b5ebefa",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheForge.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "dd69fe04ddcc119bb085344a4b3c2d574553a07efe7f5208226b1b8c30470a67",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheRot.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b024a8b151b1b4f34703b9f2fe8d278d10b480fce0975bdabea64e7902e571e5",
+    "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheScald.xml": {
     "cleanCount": 2,
@@ -8102,6 +10088,30 @@
     "date": "2026-09-09",
     "hash": "d01aa05c4af16bc92422d3880211d0bf53600587fbfd39d68be39effcdc535bf",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Umbra.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "16073a5b000d103a53bbad80f6b0bb36243f0c026e857525dc141790b8737807",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Wasteland.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "28cc70ecd33803e4665a750d1f4f026db327ba96a97ff8d995a00c07100df1cb",
+    "sha": "e5c9d120"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Webwork.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "bfa28e81f5b3714bfa2b87b69b4bc3e6ee11c9417c8d264657eb0c7453719e33",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_WeepingStones.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3df21908cb255945d5c49d36e8d4f08e13935cd7baea821ba1fde94debaeff5e",
+    "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/CultureDefs/JawaLeaderTitles.xml": {
     "cleanCount": 2,
@@ -8156,6 +10166,24 @@
     "date": "2026-09-09",
     "hash": "a437559251e4d717244c8bb5af3538e353a430eae29ecbb8278b6ac45bde81dc",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_ComplexStructures.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4862277ce770edfaacf2c31f17d99bf83fb7dc629013d13677cf0fde1f5f7c6f",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_GapingDoom.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "e7914cf086fd9a37af034d1cead0462558172c053cd5ef7355c6d549492ca013",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_Slough_GelatinousBreach.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1744193085f8390f8d62b5cec256f5898041f819c282122f17961961eee792e7",
+    "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/MapGeneration/JawaGroundHulk.xml": {
     "cleanCount": 2,
@@ -8229,6 +10257,18 @@
     "hash": "8061fd856d4a6f02ba3b276ec92178b4fcc930ec252367b6f3a4df24cef69748",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Defs/TraderKindDefs/RUT_HuttCartel_Captives.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "976551124859648eb71e85f2281578117d5b04f38cab81e2f026897846500675",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/TraderKindDefs/RUT_TradeMootDroids.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "92a82d08e8734592169dd8f3ac2407ed774a15c64c581433c104c1ef91399b32",
+    "sha": "bb73b6bd"
+  },
   "src/RimUtinni/UtinniPatches/Languages/English/Keyed/ImperialVocabulary.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -8277,17 +10317,53 @@
     "hash": "e75f84e6c0801794bfa36814a40af50c32e1f2a037a51607d648af335deaf1ec",
     "sha": "d92f5459"
   },
+  "src/RimUtinni/UtinniPatches/Patches/BiomeAllowRoads_PropaneLakes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "7e66b76be498862ad8036e2332e147bd87f0ebfff36b0d021a6c5af5fbffb5fc",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "7a269c9bcdc91da830bc5f4ade7d4a42425919f3b38902aff61db450d2d58375",
+    "sha": "bb73b6bd"
+  },
   "src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml": {
     "cleanCount": 3,
     "date": "2026-09-09",
     "hash": "bac39c4d2b8f55c0f4be7ab608431b442c721d65c71213a6f1bf899db1509902",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Patches/BiomeFaunaStatAdjustments_Generated.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d3170d3f7181320d807d9b24bc4ad31e7f4e107c8492366be84212e31d4c8a8e",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/BiomeFishTypes_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6223fa5ac2941636da98c899f49ccfc3e79de97ab55bb7ef8625bc4c0cb624ad",
+    "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/BiomeFloraStatAdjustments_Generated.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "85d6c26568fde9f055c864e810af21dc5b1f6f033375804f768d26a44bd7a535",
+    "sha": "bb73b6bd"
+  },
   "src/RimUtinni/UtinniPatches/Patches/BiomeFlora_Ashkarr.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
     "hash": "8f447c1bbc3774c5c152e589cf3f2ba4912e2e66b02ebb97a9799ce8f6255964",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/BiomeNames_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "a6bc86920290ee2db7e8d230cf0d209e41ea1c6f70296d8ca19089c02784bb7e",
+    "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Patches/BlackstarCompany.xml": {
     "cleanCount": 2,
@@ -8319,6 +10395,12 @@
     "hash": "1036f43bb57da4b56aae9001c6980f5de36c8d0268d3a733ba46f882d6b1c896",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Patches/FactionSlate/OnlyOurFactions.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "2316487c0076c830ab0fecd873d4ffba96a4d823e3311918656374b473d460ea",
+    "sha": "bb73b6bd"
+  },
   "src/RimUtinni/UtinniPatches/Patches/Fleshbeast_TrispikeCull.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -8336,6 +10418,12 @@
     "date": "2026-09-09",
     "hash": "6d11ef2997fca9241012a4ade3ce2e6c89bfa92967e2d72e50546cb5e8043d14",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/GeothermalDensityField.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "496343e3ee6505b688a175c50614a44401cdd41ecf3c1b306fc969f6137b6ed2",
+    "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Patches/GiantWeaponWielders_Ashkarr.xml": {
     "cleanCount": 2,
@@ -8409,11 +10497,23 @@
     "hash": "2a4576a9ac2313534602ce84aa575091c424def7eb5cad9de5bbcd4b0627d595",
     "sha": "d9ff62d8"
   },
+  "src/RimUtinni/UtinniPatches/Patches/ManyWaters_RiverSteam_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "f573abba763b79c8637cf895e9c07c5d187645513500a795482a08092d6d79fe",
+    "sha": "bb73b6bd"
+  },
   "src/RimUtinni/UtinniPatches/Patches/MechanoidIntrusion_AllowRivers.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
     "hash": "ee4027307cb34b0814650f01dd5c60655ae071f60fb0586fc2ee96019f316a7a",
     "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/OasisMutator_DesertOasis.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "0a98800c0e5c10e72a62ed54a9d538f8551912f239e81b44540aba02b3cbfbf7",
+    "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Patches/PirateWaster_Yield.xml": {
     "cleanCount": 1,
@@ -8445,6 +10545,12 @@
     "hash": "ea7ccf24a0867af0506bd2f1a1f17c046ada23386633077efca05bfd390343a3",
     "sha": "948cdbc9"
   },
+  "src/RimUtinni/UtinniPatches/Patches/SandFishing_CrackedLands.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "ffcc04389079f07a8ee410993ca96de49a14fc2fc10539819419f5020d3ee118",
+    "sha": "bb73b6bd"
+  },
   "src/RimUtinni/UtinniPatches/Patches/VQEPatients_AreRakata.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -8456,6 +10562,12 @@
     "date": "2026-09-09",
     "hash": "dfb7959378f72f7b16bf6355bfa981049a67bc9bb0c1d721151f66d4a66e5bd1",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/UtinniPatches/Source/GeothermalDensityField.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4ab2b32aa6358a0f5fc4ffe44d1b0e682c374342ac270e2cb01226c177ccfa9c",
+    "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Source/build_claim_rumour.py": {
     "cleanCount": 1,
