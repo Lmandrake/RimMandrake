@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T13:30:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T13:44:14Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -513,15 +513,6 @@ kind:     task
 summary:  BIOMEENRICHMENTDESERTWASTELAND1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
 
-## SEA_ENRICHMENT_LANDMARKS_1 Enrichment wave (review B1): the Grey Sea holds ZERO landmarks in 429 tiles and the Twilight Sea is near-bare — seamounts, wreck moorings, mat features for the diving arc; respects the seas' sheets
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  Status: left doing — game went unreachable before any write, nothing applied
-prose:    infrastructure/state/items/SEA_ENRICHMENT_LANDMARKS_1.md
-
 ## LANDMARK_NAMING_PASS_1 Review B2: 32 landmark names reused (worst 'Dead Sarlacc' x7) — hand-name the ~15 that matter in faction/region voice, namer variety for the rest; needs a rename route (landmarks_set has no name param — check for a tool or add one via rimbridge-companion)
 state:    doing
 row:      unassigned
@@ -575,6 +566,15 @@ target:   v1
 kind:     task
 summary:  Restore the campaign to a real, correct, save-safe state and fold in tonight's
 prose:    infrastructure/state/items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md
+
+## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  (no items/FISH_BESTIARY_COMMISSION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FISH_BESTIARY_COMMISSION_1.md
 
 ## MECH_PRESENCE_ENFORCEMENT_1 Enforce the RULED mechanoid/ancient-danger table: XML only - MechCluster allowed/disallowedBiomes patch, per-biome preventGenSteps/extraGenSteps for the ANCIENT column, zero the mechanoid FactionDef raid-commonality curve (confirm exact field name on the def first); curate shrine contents where ANCIENT-ALLOW meets AMBIENT-DENY
 state:    doing
@@ -860,16 +860,6 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  CHERRYPICKERSHIPBASELINESTALE1
 prose:    infrastructure/state/items/CHERRYPICKER_SHIP_BASELINE_STALE_1.md
-
-## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FISH_BESTIARY_COMMISSION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FISH_BESTIARY_COMMISSION_1.md
 
 ## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
 state:    proposed
