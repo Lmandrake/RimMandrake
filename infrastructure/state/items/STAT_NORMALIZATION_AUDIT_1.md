@@ -106,6 +106,39 @@ in that state; use `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`
 or the most recent dated full-list backup, and cross-check against the live
 file once the full list is confirmed restored.
 
+## Owner REQUESTED, NOT ruled — 2026-09-10
+
+Owner, verbatim intent: a report surfaced mods messing with plants/animals
+inappropriately; make sure tree-resizing mods and "comingo" (= **Comigo**, the
+mod author) stuff go on this list for a later deep dive — "we can make our
+trees be the size we want without them most likely." **This is a scope request
+for the census above, not a ruling on any of the below** — no mod named here
+is decided as keep/cut; that call rides this item's own wave process.
+
+Checked the live `ModsConfig.xml` for candidates matching "tree resiz*" /
+"comigo" (2026-09-10) — add these to the census's active-mod sweep:
+
+- `chaoticenrico.bettertrees`
+- `maal.bettertreesmod`
+- `qux.comigo.bettertreesmod` — the literal Comigo tree mod
+- `zal.comigogreaterswamps` — same author (Comigo), different topic (swamps,
+  not trees); flagged because the owner named the author family, not just
+  "trees"
+- Possibly relevant, unverified, worth the census's own look rather than a
+  guess here: `regrowth.botr.core`, `smxrez.makeshiftreexamined`,
+  `ali.growodysseyplants` (Odyssey plant growth — may be DLC-adjacent, not a
+  third-party balance mod)
+- **Not third-party** — exclude: `mandrake.rut.plantgrowth` is our own mod.
+- Checked and ruled OUT as unrelated to plants/animals despite matching the
+  same grep (`grow`/`tree`/`scale`): `arkymn.bettergrowthmoments` and
+  `zal.randomgrowthchoices` are colonist life-stage "growth moment" mods, not
+  plant growth; `rwnodetree.rwplanetatmosphere` is an unrelated tech-tree mod.
+
+The owner's underlying point: our own `mandrake.rut.plantgrowth` may already
+let us set tree size ourselves, making one or more of the above donor mods
+redundant rather than merely conflicting — the deep dive should weigh
+absorb-then-retire, not just flag-and-normalize.
+
 ## CENSUS + WAVE PLAN DELIVERED (FOUNDRY, 2026-09-09, offline — game mid-reboot)
 
 📄 **`design/Jawa/mods/stat_normalization_audit_2026-09-09.md`** — the full
