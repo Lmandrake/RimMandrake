@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FISH_TYPES_PATCH_BUILD_1 (2026-09-10) — biome wiring: sets the_greentide's
+  fishTypes to the roster's own Mee/Faa/Laa scalefish (RSW_Mee/RSW_Faa/RSW_Laa,
+  src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Scalefish.xml),
+  replacing the donor mod's vanilla Earth-named defaults (Fish_Tilapia/
+  Fish_Piranha) on the freshwater buckets — same recognizability fix already
+  applied to weeping_stones (BiomeFishTypes_Ashkarr.xml) and the Cracked Lands
+  (SandFishing_CrackedLands.xml).
+
+  WHICH DEF IS LIVE — checked, not guessed: two near-duplicate BiomeDefs exist
+  in the repo for "the Greentide" — this repo's own `RUT_Greentide`
+  (Defs/BiomeDefs/RUT_Greentide.xml, whose own header claims to "replace" the
+  donor) and the donor `BiomeCypreJungle` (GRiNDTerra Biomes,
+  packageId GRimTerra.Biomesmod). `RUT_Greentide` does NOT win: per
+  design/Jawa/worldbuilding/mod_retirement_audit.md §4/§10, `BiomeCypreJungle`
+  is painted on 191 tiles of the FROZEN world (design/Jawa/worldbuilding/
+  data/river_graph_2026-09-07.csv confirms 191 hits for BiomeCypreJungle,
+  0 for RUT_Greentide), carrying the two named Wildsteam Clan settlements
+  (Oilpalm, Warthorn) — "a biome def missing under a world that names it is
+  unrecoverable." Every sibling Ash'karr authoring patch already targets
+  `BiomeCypreJungle` for exactly this reason (BiomeCast_Ashkarr.xml's
+  wildAnimals, BiomeFlora_Ashkarr.xml's wildPlants, BiomeNames_Ashkarr.xml's
+  label — none of them touch RUT_Greentide either). This patch follows that
+  same established convention. RUT_Greentide appears to be an unused/aspirational
+  def — real, but out of this item's scope to reconcile or delete.
+
+  Donor XML read directly off disk (not in the offline dump — third-party
+  BiomeDef, same as ZBiome_Badlands/ZBiome_DesertOasis):
+  .../workshop/content/294100/3537211820/1.6/Defs/BiomeDefs/Biome_CypreJungle.xml
+  — it already carries `fishTypes MayRequire="Ludeon.RimWorld.Odyssey"`:
+  freshwater_Common Fish_Tilapia(1); freshwater_Uncommon Fish_Piranha(1);
+  saltwater_Common Fish_Bluefish(1); saltwater_Uncommon Fish_Tuna(1)+
+  Fish_Flounder(1); rareCatchesSetMaker RareFishingCatches_Tropical;
+  maxFishPopulation 720.
+
+  Weights and bucket placement are the spec doc's own
+  (_fish_assignment_proposal.md §1/§5.3, dual-placement owner ruling): RSW_Mee
+  0.4 in freshwater_Common (the shoal bulk, foodType None, not itself a
+  predator); RSW_Faa 0.3 + RSW_Laa 0.3 in freshwater_Uncommon (Faa is the
+  carnivore of the trio; Laa the prized, harder-to-net catch). Same population,
+  two registers: these three defNames are ALSO wired as `wildAnimals` on
+  `RUT_Miasma` (protected juveniles in the nursery channels) — accepted by the
+  owner as one biological population appearing in both a fishing table here
+  and a fauna list there (§5.3).
+
+  Only freshwater is touched — saltwater_Common/Uncommon (Fish_Bluefish/
+  Fish_Tuna/Fish_Flounder) are left as the donor's own default, same as the
+  sibling patches' convention (this river/jungle biome has no salt-bodied
+  terrain, so the inert saltwater Earth names are a smaller-scope version of
+  the same lingering-but-inert issue flagged for ZBiome_DesertOasis in
+  _fish_assignment_proposal.md §4 — left for that sweep, not fixed here).
+
+  Wrapped in PatchOperationConditional (checking the target bucket xpath
+  exists) rather than a bare PatchOperationReplace, matching
+  BiomeFishTypes_Ashkarr.xml's pattern — PatchOperationConditional and
+  PatchOperationFindMod both report success even on a false condition
+  (CLAUDE.md's own warning), so the conditional's match on PatchOperationReplace
+  is a defensive shape check, not a substitute for validating the actual
+  applied result via validate_patch.py.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>GRiNDTerra Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+
+        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/fishTypes/freshwater_Common</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/fishTypes/freshwater_Common</xpath>
+            <value>
+              <freshwater_Common>
+                <RSW_Mee MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Mee>
+              </freshwater_Common>
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
+          <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/fishTypes/freshwater_Uncommon</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/fishTypes/freshwater_Uncommon</xpath>
+            <value>
+              <freshwater_Uncommon>
+                <RSW_Faa MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Faa>
+                <RSW_Laa MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Laa>
+              </freshwater_Uncommon>
+            </value>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

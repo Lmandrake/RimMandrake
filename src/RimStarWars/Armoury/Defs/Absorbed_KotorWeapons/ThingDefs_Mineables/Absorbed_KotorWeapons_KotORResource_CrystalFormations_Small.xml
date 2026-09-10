@@ -62,7 +62,7 @@
   <ThingDef ParentName="KOTOR_CrystalFormation_Base">
     <defName>KOTOR_SmallCrystal_orange</defName>
     <label>small crystal formation, orange</label>
-    <description>A small-sized crystal formation, warm to the touch. It radiates with Force energy.</description>
+    <description>A small-sized crystal formation, warm to the touch. Down in the Lantern Deeps this warm-hued vein is prized as much for its glow as for the sliver of Force-attuned lattice at its core -- most who dig here are after light and heat, not a blade.</description>
     <graphicData>
       <texPath>Buildings/Crystal_Formations/small_dyeable</texPath>
       <graphicClass>Graphic_Random</graphicClass>

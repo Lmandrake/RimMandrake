@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CRYSTAL_INGEST_EXECUTION_1 item 4 (design/Jawa/mods/crystal_mods_inventory.md ss1/ss3/
+  ss4, ratified 2026-09-10): "resolve the live Stygium-only vs repo 12-entry genstep
+  discrepancy" for KOTOR_CrystalFormation, per the item's own instruction to "verify
+  which genstep is actually firing before touching either."
+
+  MEASURED, not guessed:
+  1. Two copies of the KOTOR_CrystalFormation GenStepDef exist: guy762.mm.kotorcore's
+     own LIVE def (1.6/Defs/ThingDefs_Resources/CrystalMapGenerator.xml, still active in
+     ModsConfig) and our dormant absorbed copy (Absorbed_KotorCore_CrystalMapGenerator.xml,
+     NOT deployed === its own header says so, and it is confirmed absent from the deployed
+     Mods/Armoury/Defs/ tree). The live def dump attributes KOTOR_CrystalFormation to
+     "Star Wars KotOR Resources and Materials" (guy762.mm.kotorcore) === our copy is inert.
+  2. The donor's own live groups carry `MayRequire="guy762.KotORWeapons"` on all 10
+     color/medium entries (confirmed by direct read of kotorcore's shipped 1.6 XML) ===
+     absent from our absorbed copy's serialization, which was captured from an EARLIER
+     donor version while guy762.KotORWeapons (kotorweapons) was still active and
+     un-absorbed. guy762.KotORWeapons is now RETIRED (absent from the live ModsConfig,
+     confirmed) === so those 10 entries correctly evaluate to nothing today, and only
+     the ungated KOTOR_StygiumCrystal entry remains. kotorcore's OWN patch file
+     (1.6/Patches/Patch_SaberCrystalMapGenWhichIsStillNeededBecauseItSpawnsStygium.xml)
+     confirms this is INTENTIONAL donor behavior, not drift: the genstep is kept alive
+     specifically because it still spawns Stygium once the other colors' MayRequire
+     goes false. Not a bug in either copy === both are internally consistent with their
+     own point in time; the "12-entry vs Stygium-only" difference is exactly MayRequire
+     doing its job against a mod list where kotorweapons happens to be retired.
+  3. BUT: that same kotorcore patch file ALSO adds KOTOR_CrystalFormation to
+     Base_Player's genSteps (plus BasePlayer_SecondArchonexusCycle and
+     BasePlayer_ThirdArchonexusCycle === confirmed via the live def dump: `SELECT
+     def_name FROM defs WHERE def_type='MapGeneratorDef' AND
+     json_extract(json,'$.fields.genSteps') LIKE '%KOTOR_CrystalFormation%'` returns all
+     three, mods=577/6fdca6f582164e2a, captured 2026-09-10T08:36:27Z). Base_Player is
+     the ordinary player-colony map generator === so Stygium crystal is scattering on
+     every normal Ash'karr colony map today, not gated to the Lantern Deeps at all. This
+     is the item's actual live violation, independent of the MayRequire question above.
+
+  Fix: remove KOTOR_CrystalFormation from all three genSteps lists. The colorful KOTOR
+  family (including Stygium) remains available inside the Deeps via
+  Absorbed_Kotorweapons_BiomesCaverns_Patch_KotORCrystalFormationInjector.xml's own
+  addition to BMT_CrystalsGenerator, which RUT_LanternDeepGenerator.genSteps already
+  includes === so this removal loses nothing, it only stops the everywhere-leak.
+
+  NOT done this pass (left for a future small follow-up, not invented here): retargeting
+  BMT_CrystalsGenerator's injection off the GLOBAL GenStepDef onto a Deeps-only genstep,
+  the way pyrinth/kyber were just done === per JawaWorld_BiomeMix.xml, BMT_CrystalCaverns
+  is not placed on the frozen, hand-authored Ash'karr world (worldgen-gated scoring there
+  only configures the disposable reference world Ash'karr is painted FROM), so this is a
+  soft robustness concern (a stray quicktest/dev map), not a live leak like this one.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Star Wars KotOR Resources and Materials</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/MapGeneratorDef[defName="Base_Player"]/genSteps/li[text()="KOTOR_CrystalFormation"]</xpath>
+        </li>
+
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/MapGeneratorDef[defName="BasePlayer_SecondArchonexusCycle"]/genSteps/li[text()="KOTOR_CrystalFormation"]</xpath>
+        </li>
+
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/MapGeneratorDef[defName="BasePlayer_ThirdArchonexusCycle"]/genSteps/li[text()="KOTOR_CrystalFormation"]</xpath>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

@@ -85,6 +85,23 @@ FIXES = {
     "guy762_vblade_sanasiki": {
         "statBases/MeleeHitChance": ("1.2", None),
     },
+    # CRYSTAL_INGEST_EXECUTION_1 item 3 (design/Jawa/mods/crystal_mods_inventory.md
+    # ss3, ratified 2026-09-10): "fold the color naming into KOTOR_SmallCrystal_
+    # orange's in-fiction identity so it reads as a Deeps mineral rather than a
+    # leftover lightsaber-crystal palette." Text-only (fiction) -- defName, label,
+    # graphicData/comps/modExtensions all UNCHANGED; the mineable still yields the
+    # same guy762_crystalitem_orange lightsaber-crystal-part item. Scoped to the
+    # orange member per the item's own wording; the other 6 colors + 3 medium + 2
+    # large + Stygium share the same generic "It radiates with Force energy."
+    # description and could get the same treatment in a follow-up pass.
+    "KOTOR_SmallCrystal_orange": {
+        "description": (
+            "A small-sized crystal formation, warm to the touch. It radiates with Force energy.",
+            "A small-sized crystal formation, warm to the touch. Down in the Lantern Deeps this "
+            "warm-hued vein is prized as much for its glow as for the sliver of Force-attuned "
+            "lattice at its core -- most who dig here are after light and heat, not a blade.",
+        ),
+    },
     # Three texture-distinct children shared the abstract base's placeholder
     # label/description verbatim instead of getting their own.
     "GS_Carpet_Star": {
