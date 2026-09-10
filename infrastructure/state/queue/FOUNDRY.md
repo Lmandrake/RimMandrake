@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T07:59:11Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-10T08:43:14Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -423,15 +423,6 @@ kind:     task
 summary:  DROIDRETIREABFSYNCORE1 — retire ABF + SynCore (wave R2)
 prose:    infrastructure/state/items/DROID_RETIRE_ABF_SYNCORE_1.md
 
-## DROID_RETIRE_KOTORDROIDS_1 Retire guy762.kotordroids (wave R1) after modules, heads, loadouts, FDE repoint and Distress Call are closed; cold load
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  DROIDRETIREKOTORDROIDS1
-prose:    infrastructure/state/items/DROID_RETIRE_KOTORDROIDS_1.md
-
 ## FUNGALFOREST_RAID_MERGE_1 Dissolve BMT_FungalForest (an underground def on 425 surface tiles) into its neighbors per the measured cluster table (the Rot; Wasteland at South Crags sector 9), and ingest its spore kit, materials, flora into the Rot as our own defs
 state:    doing
 row:      unassigned
@@ -630,15 +621,6 @@ kind:     task
 summary:  Restore the campaign to a real, correct, save-safe state and fold in tonight's
 prose:    infrastructure/state/items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md
 
-## DROID_SIBLING_RELATION_GEN_CRASH_1 Pawn generation NRE on some Droidworks droid kinds: PawnRelationWorker_Sibling.CreateRelation throws (found live-testing DROIDWORKS_PERSONALITY_VERIFY_1)
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  1. Reproduce on a clean quicktest: spawn ~10 of RSWDWOuterRimProtocolDroid
-prose:    infrastructure/state/items/DROID_SIBLING_RELATION_GEN_CRASH_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -802,16 +784,6 @@ kind:     task
 blocked:  ABF/SynCore retirement violates DROID_RETIREMENT_ORDER_ASSERT_1 while guy762.kotordroids/kotorcore stay active (commit itself titled 'blocked')
 summary:  DROIDRETIREABFSYNCORE1 — retire ABF + SynCore (wave R2)
 prose:    infrastructure/state/items/DROID_RETIRE_ABF_SYNCORE_1.md
-
-## DROID_RETIRE_KOTORDROIDS_1 Retire guy762.kotordroids (wave R1) after modules, heads, loadouts, FDE repoint and Distress Call are closed; cold load
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-blocked:  cold load found 4 NEW cross-reference errors (guy762_DroidWeapon_microrocket/railgun/seekerrocket/trishot) via kotorcore's _DroidsBase folder (IfModActive=guy762.KotORDroids) feeding Armoury's ungated Absorbed_KotorWeapons ammoDef consumers; reverted ModsConfig.xml+About.xml, see item file for the fix needed
-summary:  DROIDRETIREKOTORDROIDS1
-prose:    infrastructure/state/items/DROID_RETIRE_KOTORDROIDS_1.md
 
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    ready  (BLOCKED)
