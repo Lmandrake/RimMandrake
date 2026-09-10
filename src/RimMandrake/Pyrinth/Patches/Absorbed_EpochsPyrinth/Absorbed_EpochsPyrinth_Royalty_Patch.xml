@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Absorbed verbatim from det.epochspyrinth (workshop 3336544632), source
+     file 1.6/Patches/Royalty_Patch.xml, CRYSTAL_INGEST_EXECUTION_1 item 1. GENERATED
+     by src/RimMandrake/Pyrinth/Source/gen_pyrinth_absorption.py. Own
+     cross-mod gate (PatchOperationFindMod/MayRequire) is UNCHANGED. -->
+
+
+<Patch>
+	<!-- Throne requirement -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/RoyalTitleDef[defName="Acolyte" or defName="Knight" or defName="Praetor" or defName="Baron" or defName="Count" or @Name="BaseEmpireTitleNPC"]/throneRoomRequirements/li[@Class="RoomRequirement_ThingAnyOfCount"][things/li="Brazier"]/things</xpath>
+		<value>
+			<li MayRequire="Ludeon.RimWorld.Royalty">DV_PyrinthBrazier</li>
+		</value>
+	</Operation>
+	
+	<!-- Brazier must be lit -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/RoyalTitleDef[defName="Acolyte" or defName="Knight" or defName="Praetor" or defName="Baron" or defName="Count" or @Name="BaseEmpireTitleNPC"]/throneRoomRequirements/li[@Class="RoomRequirement_AllThingsAnyOfAreGlowing"][labelKey="RoomRequirementAllBraziersMustBeLit"]/things</xpath>
+		<value>
+			<li MayRequire="Ludeon.RimWorld.Royalty">DV_PyrinthBrazier</li>
+		</value>
+	</Operation>
+	
+	<!-- Add meditation focus to vanilla/DLC items -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="Campfire" or defName="TorchLamp" or defName="DarktorchFungus" or defName="Darktorch" or defName="Brazier" or defName="DarklightBrazier"]/comps/li[@Class="CompProperties_MeditationFocus"]/offsets/li[@Class="FocusStrengthOffset_BuildingDefsLit"]/defs</xpath>
+		<value>
+			<li MayRequire="Ludeon.RimWorld.Royalty">DV_PyrinthBrazier</li>
+		</value>
+	</Operation>
+</Patch>

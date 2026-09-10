@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CRYSTAL_INGEST_EXECUTION_1 item 1: pyrinth's replacement Deeps-only scatter. This
+  GenStepDef always exists (it is ours), but the `things` entry it scatters carries
+  MayRequire="det.epochspyrinth" === if that mod is ever inactive the group resolves
+  empty and this genstep is a harmless no-op, so RUT_LanternDeepGenerator.genSteps can
+  reference it unconditionally.
+
+  Gated to the Deeps purely by WHERE it is referenced: this defName appears in no other
+  MapGeneratorDef's genSteps list (see RUT_LanternDeepGenerator.xml), so it can only ever
+  fire while generating a Lantern Deep pocket map === the same "gate by list membership"
+  trick RUT_LanternDeepEmergence_Scatter uses, no custom biome-check C# needed here.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RUT_LanternDeepPyrinthScatter</defName>
+    <order>210</order>
+    <genStep Class="GenStep_ScatterGroup">
+      <minSpacing>15</minSpacing>
+      <groups>
+        <li>
+          <things>
+            <DV_MineablePyrinth MayRequire="det.epochspyrinth">1</DV_MineablePyrinth>
+          </things>
+          <coveredCellsPer10Cells>0~0.6</coveredCellsPer10Cells>
+          <clusterRectRadius>2~3</clusterRectRadius>
+        </li>
+      </groups>
+      <validators>
+        <li Class="ScattererValidator_Buildable">
+          <affordance>Heavy</affordance>
+        </li>
+      </validators>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Absorbed verbatim from det.epochspyrinth (workshop 3336544632), source
+     file 1.6/Patches/MO_Cost_Patch.xml, CRYSTAL_INGEST_EXECUTION_1 item 1. GENERATED
+     by src/RimMandrake/Pyrinth/Source/gen_pyrinth_absorption.py. Own
+     cross-mod gate (PatchOperationFindMod/MayRequire) is UNCHANGED. -->
+
+<Patch>
+
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Medieval Overhaul</li>
+		</mods>
+		<match Class="PatchOperationSequence">
+			<operations>
+
+				<li Class="PatchOperationReplace">
+					<xpath>Defs/ThingDef[defName = "DV_PyrinthHeater"]/costList</xpath>
+					<value>
+						<costList>
+							<DankPyon_IronIngot>30</DankPyon_IronIngot>
+							<DV_Pyrinth>20</DV_Pyrinth>
+						</costList>
+					</value>
+				</li>
+
+			</operations>
+		</match>
+	</Operation>
+</Patch>

@@ -20,6 +20,10 @@
       <li>MutatorPostTerrain</li>
       <li>RockChunks</li>
       <li>BMT_CrystalsGenerator</li>
+      <!-- CRYSTAL_INGEST_EXECUTION_1: Deeps-only mineable scatters, gated by list
+           membership (this MapGeneratorDef only ever produces a Lantern Deep pocket
+           map) rather than a biome check === see each GenStepDef's own header. -->
+      <li>RUT_LanternDeepPyrinthScatter</li>
       <li>PlaceCaveExit</li>
       <li>Plants</li>
       <li>MutatorFinal</li>

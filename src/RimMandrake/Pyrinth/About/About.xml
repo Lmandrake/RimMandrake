@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Pyrinth</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.pyrinth</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Absorbed copy of det.epochspyrinth ("Epochs - Pyrinth"): the glowing orange
+  pyrinth ore, its torch/wall-torch/pylon/heater furniture family, the pyrinth blade melee
+  weapon, and its sparking mote effects (CRYSTAL_INGEST_EXECUTION_1 item 1,
+  design/Jawa/mods/crystal_mods_inventory.md). Generic content, no Star Wars or campaign
+  material === RimMandrake tier per design/NAMING_SCHEME_PLAN.md.
+
+  NOT YET DEPLOYABLE: det.epochspyrinth is still active in the live mod list and this pack
+  preserves its defNames verbatim, so loading both together collides. This mod stays
+  dormant in the repo until a future retirement item removes det.epochspyrinth from the
+  mod list. The Lantern-Deeps natural-scatter gate (CRYSTAL_INGEST_EXECUTION_1's actual
+  live-effect deliverable) patches the LIVE donor def directly instead === see
+  src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepGatePyrinth.xml.</description>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+  </loadAfter>
+</ModMetaData>
