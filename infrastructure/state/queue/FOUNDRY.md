@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T11:19:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T11:20:27Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -406,7 +406,7 @@ summary:  Thin when filed — no spec/verify/criteria in the queue entry itself,
 prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
 
 ## DROID_RETIRE_ABF_SYNCORE_1 Retire ABF + SynCore (wave R2); DroidDonor_ABFGate fires; remove DroidsAreMachines ABF half; cold load
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    game-up
 target:   v1
@@ -756,16 +756,6 @@ kind:     task
 blocked:  mechanics built and committed at 5c80b1797677af906691d2d0f5dd331eb17f318e, G2 art + live savegame verify owed to a parent session
 summary:  Packet B9 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
-
-## DROID_RETIRE_ABF_SYNCORE_1 Retire ABF + SynCore (wave R2); DroidDonor_ABFGate fires; remove DroidsAreMachines ABF half; cold load
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-blocked:  ABF/SynCore retirement violates DROID_RETIREMENT_ORDER_ASSERT_1 while guy762.kotordroids/kotorcore stay active (commit itself titled 'blocked')
-summary:  DROIDRETIREABFSYNCORE1 — retire ABF + SynCore (wave R2)
-prose:    infrastructure/state/items/DROID_RETIRE_ABF_SYNCORE_1.md
 
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    ready  (BLOCKED)
