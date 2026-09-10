@@ -1,3 +1,43 @@
+## STATUS 2026-09-10 ~01:00: live-proof attempt made — the GAME crashed mid quicktest-map-gen before `jawa/set_bed_owner_type` could even be called. Still not closeable.
+
+Bridge was FREE, campaign was up (5 colonists, stable, per handoff note). Took the
+bridge, called `rimworld/go_to_main_menu` then `rimworld/start_debug_game_ready`
+per the `rimworld-debug-testing` skill (quicktest, not the real campaign). The
+`start_debug_game_ready` call exceeded the 30 s client timeout as the skill warns
+it will — did not retry it, opened a fresh connection and polled `jawa/list_pawns`
+instead. `Player.log` shows `start_debug_game_ready` DID begin real work (a fresh
+world tile 110145, "River & RiverTerrain" landform, ore-generation loop, research
+satiation ticks from mods) — then the log **stops cold mid map-gen**, no exception,
+no `ConfigErrors`, no shutdown line, nothing. `tasklist.exe` confirms
+`RimWorldWin64.exe` is no longer running. This is a silent full-process crash
+during quicktest world/map generation **on the live ~600-mod list**, not on the
+13-mod minimal list the debug-testing skill's timings assume — matches this
+session's stated context ("multiple crash incidents tonight from bridge-driving
+quicktests"). Ran bare `./game`, which measured NOT RUNNING and corrected the
+ledger from the stale `UP` it held. Released the bridge (`bridge release`).
+
+**`jawa/set_bed_owner_type` itself was never reached** — the crash happened
+during `start_debug_game_ready`'s own map generation, one step before a bed
+could be spawned. This session settles NOTHING about the tool's correctness; it
+only reconfirms the environment's crash-on-quicktest problem on the full mod
+list. Did not attempt a cold-load restart to retry: that is expensive-list
+ceremony (~15 min) and, given the crash pattern already flagged for tonight, a
+second attempt without changing anything would risk repeating it for no new
+information. Left `doing`, not closed, not dropped — the tool is unverified
+either way, exactly as before this pass, plus the crash symptom is now on
+record.
+
+**For whoever picks this up next:** either (a) run this same live-proof but on
+the 3-mod or minimal-list bridge tier (`modset_builder.py --tier bridge`) where
+quicktest map-gen is seconds not a hang risk — proves the mechanism, not the
+full-list interaction — or (b) retry on the full list only after a deliberate
+cold-load slot, watching `/proc/loadavg` and Player.log live during
+`start_debug_game_ready` instead of polling blind. The original criteria and
+verify checklist below are unchanged; only the tool's own correctness remains
+open, since it was never invoked this pass.
+
+---
+
 ## STATUS 2026-09-09: tool built and committed, blocked on a live-proof pass — not closeable right now
 
 The companion tool this item asked for exists on disk and is already committed:
