@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T01:04:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T01:14:29Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -454,3 +454,13 @@ kind:     task
 thin:     no ## criteria
 summary:  Serve with python3 /home/mandrake/.claude/skills/review-sheets/assets/servesheet.py
 prose:    infrastructure/state/items/ASSIGNMENT_SHEETS_VERDICT_SITTING_1.md
+
+## CODEX_UAC_STORM_1 ~30 UAC prompts queued by calibration's fresh codex homes DESPITE a valid .codex_sandbox_seed template — root-cause the template bypass (codex version bump? seeding path skipped?) before artpiped's first live run; the daemon must be UAC-silent
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CODEX_UAC_STORM_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CODEX_UAC_STORM_1.md

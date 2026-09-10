@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T01:09:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T01:14:29Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -636,7 +636,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/PLANETARY_BEAUTY_LOADSCREENS_1.md yet — write one when you have something to say)
+summary:  PLANETARYBEAUTYLOADSCREENS1 — mechanism identified, two candidates offered
 prose:    infrastructure/state/items/PLANETARY_BEAUTY_LOADSCREENS_1.md
 
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
