@@ -27,67 +27,286 @@
   `MayRequire` on the TerrainDef tag itself (not a PatchOperationFindMod file) —
   the whole node is skipped, never loaded, never a dangling ParentName error, when
   Lite is absent. Never ungated, per the owner's own instruction.
+
+  🔴 FIXED 2026-09-10 (DIRTY_CODE_REVIEW_STANDING_LOOP_1, live NRE lead from
+  Player_log_manywaters_thingclass_NRE_2026-09-09.log — five "Config error in
+  RM_WaterBottle_*: has null thingClass" lines, one per variant): the original
+  `ParentName="DBH_WaterBottle"` never resolved. Verified against the live donor
+  XML (Items_Resource_Stuff.xml:108-109 in Dubs Bad Hygiene Lite): DBH_WaterBottle
+  is declared `<ThingDef ParentName="ResourceBasedMom" DBHThirst="true">` with only
+  a `<defName>` element — it has no `Name="..."` XML attribute. RimWorld's
+  XmlInheritance resolves ParentName only against another def's `Name=` attribute
+  (registered in nodesByName), never against defName as a fallback — the same
+  engine-verified trap already documented in
+  `src/RimStarWars/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml`. So every
+  field below was silently uninherited: null thingClass (hence the config error),
+  no WaterExt modExtension (no thirst-seeking behaviour at all), no ingestible
+  block, no stats. Fixed by inheriting from `ResourceBasedMom` instead (it DOES
+  carry `Name="ResourceBasedMom"`, so that link is real) and restating
+  DBH_WaterBottle's own delta on top of it — statBases/comps/thingCategories are
+  list fields that APPEND under XmlInheritance, so this reproduces exactly what
+  `ParentName="DBH_WaterBottle"` would have produced had it worked.
 -->
 <Defs>
 
-  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="DBH_WaterBottle">
+  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="ResourceBasedMom">
     <defName>RM_WaterBottle_Rust</defName>
     <label>rust-tinted water</label>
     <description>A bottle of water carrying enough dissolved iron oxide to run the colour of old blood. Still drinkable — just don't ask where it came from.</description>
+    <modExtensions>
+      <li Class="DubsBadHygiene.WaterExt">
+        <water>1</water>
+        <UseForWashing>true</UseForWashing>
+        <SeekForThirst>true</SeekForThirst>
+      </li>
+    </modExtensions>
     <graphicData>
       <texPath>DBH/Things/Resource/WaterBottles</texPath>
       <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
       <drawSize>0.8</drawSize>
       <color>(168,92,58)</color>
     </graphicData>
+    <comps>
+      <li Class="CompProperties">
+        <compClass>DubsBadHygiene.CompContamination</compClass>
+      </li>
+    </comps>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Mass>0.5</Mass>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <generateAllowChance>0</generateAllowChance>
+    <generateCommonality>0</generateCommonality>
+    <stackLimit>10</stackLimit>
+    <tradeNeverStack>false</tradeNeverStack>
+    <tradeability>None</tradeability>
+    <ingestible>
+      <baseIngestTicks>240</baseIngestTicks>
+      <preferability>NeverForNutrition</preferability>
+      <foodType>Fluid</foodType>
+      <nurseable>false</nurseable>
+      <ingestSound>Ingest_Beer</ingestSound>
+      <ingestHoldOffsetStanding>
+        <northDefault>
+          <offset>(0.18,0,0)</offset>
+        </northDefault>
+      </ingestHoldOffsetStanding>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <chairSearchRadius>5</chairSearchRadius>
+    </ingestible>
   </ThingDef>
 
-  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="DBH_WaterBottle">
+  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="ResourceBasedMom">
     <defName>RM_WaterBottle_Verdigris</defName>
     <label>verdigris water</label>
     <description>A bottle of water tinted teal-green by dissolved copper salts.</description>
+    <modExtensions>
+      <li Class="DubsBadHygiene.WaterExt">
+        <water>1</water>
+        <UseForWashing>true</UseForWashing>
+        <SeekForThirst>true</SeekForThirst>
+      </li>
+    </modExtensions>
     <graphicData>
       <texPath>DBH/Things/Resource/WaterBottles</texPath>
       <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
       <drawSize>0.8</drawSize>
       <color>(70,168,140)</color>
     </graphicData>
+    <comps>
+      <li Class="CompProperties">
+        <compClass>DubsBadHygiene.CompContamination</compClass>
+      </li>
+    </comps>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Mass>0.5</Mass>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <generateAllowChance>0</generateAllowChance>
+    <generateCommonality>0</generateCommonality>
+    <stackLimit>10</stackLimit>
+    <tradeNeverStack>false</tradeNeverStack>
+    <tradeability>None</tradeability>
+    <ingestible>
+      <baseIngestTicks>240</baseIngestTicks>
+      <preferability>NeverForNutrition</preferability>
+      <foodType>Fluid</foodType>
+      <nurseable>false</nurseable>
+      <ingestSound>Ingest_Beer</ingestSound>
+      <ingestHoldOffsetStanding>
+        <northDefault>
+          <offset>(0.18,0,0)</offset>
+        </northDefault>
+      </ingestHoldOffsetStanding>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <chairSearchRadius>5</chairSearchRadius>
+    </ingestible>
   </ThingDef>
 
-  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="DBH_WaterBottle">
+  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="ResourceBasedMom">
     <defName>RM_WaterBottle_Amber</defName>
     <label>amber water</label>
     <description>A bottle of water gone gold-brown with dissolved resin or spice residue.</description>
+    <modExtensions>
+      <li Class="DubsBadHygiene.WaterExt">
+        <water>1</water>
+        <UseForWashing>true</UseForWashing>
+        <SeekForThirst>true</SeekForThirst>
+      </li>
+    </modExtensions>
     <graphicData>
       <texPath>DBH/Things/Resource/WaterBottles</texPath>
       <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
       <drawSize>0.8</drawSize>
       <color>(198,150,60)</color>
     </graphicData>
+    <comps>
+      <li Class="CompProperties">
+        <compClass>DubsBadHygiene.CompContamination</compClass>
+      </li>
+    </comps>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Mass>0.5</Mass>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <generateAllowChance>0</generateAllowChance>
+    <generateCommonality>0</generateCommonality>
+    <stackLimit>10</stackLimit>
+    <tradeNeverStack>false</tradeNeverStack>
+    <tradeability>None</tradeability>
+    <ingestible>
+      <baseIngestTicks>240</baseIngestTicks>
+      <preferability>NeverForNutrition</preferability>
+      <foodType>Fluid</foodType>
+      <nurseable>false</nurseable>
+      <ingestSound>Ingest_Beer</ingestSound>
+      <ingestHoldOffsetStanding>
+        <northDefault>
+          <offset>(0.18,0,0)</offset>
+        </northDefault>
+      </ingestHoldOffsetStanding>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <chairSearchRadius>5</chairSearchRadius>
+    </ingestible>
   </ThingDef>
 
-  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="DBH_WaterBottle">
+  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="ResourceBasedMom">
     <defName>RM_WaterBottle_Violet</defName>
     <label>violet water</label>
     <description>A bottle of water stained a deep violet. Nobody at the trading post could say by what.</description>
+    <modExtensions>
+      <li Class="DubsBadHygiene.WaterExt">
+        <water>1</water>
+        <UseForWashing>true</UseForWashing>
+        <SeekForThirst>true</SeekForThirst>
+      </li>
+    </modExtensions>
     <graphicData>
       <texPath>DBH/Things/Resource/WaterBottles</texPath>
       <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
       <drawSize>0.8</drawSize>
       <color>(120,80,168)</color>
     </graphicData>
+    <comps>
+      <li Class="CompProperties">
+        <compClass>DubsBadHygiene.CompContamination</compClass>
+      </li>
+    </comps>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Mass>0.5</Mass>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <generateAllowChance>0</generateAllowChance>
+    <generateCommonality>0</generateCommonality>
+    <stackLimit>10</stackLimit>
+    <tradeNeverStack>false</tradeNeverStack>
+    <tradeability>None</tradeability>
+    <ingestible>
+      <baseIngestTicks>240</baseIngestTicks>
+      <preferability>NeverForNutrition</preferability>
+      <foodType>Fluid</foodType>
+      <nurseable>false</nurseable>
+      <ingestSound>Ingest_Beer</ingestSound>
+      <ingestHoldOffsetStanding>
+        <northDefault>
+          <offset>(0.18,0,0)</offset>
+        </northDefault>
+      </ingestHoldOffsetStanding>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <chairSearchRadius>5</chairSearchRadius>
+    </ingestible>
   </ThingDef>
 
-  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="DBH_WaterBottle">
+  <ThingDef MayRequire="Dubwise.DubsBadHygiene.Lite" ParentName="ResourceBasedMom">
     <defName>RM_WaterBottle_Chalk</defName>
     <label>chalky water</label>
     <description>A bottle of water clouded pale with dissolved minerals.</description>
+    <modExtensions>
+      <li Class="DubsBadHygiene.WaterExt">
+        <water>1</water>
+        <UseForWashing>true</UseForWashing>
+        <SeekForThirst>true</SeekForThirst>
+      </li>
+    </modExtensions>
     <graphicData>
       <texPath>DBH/Things/Resource/WaterBottles</texPath>
       <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
       <drawSize>0.8</drawSize>
       <color>(200,196,178)</color>
     </graphicData>
+    <comps>
+      <li Class="CompProperties">
+        <compClass>DubsBadHygiene.CompContamination</compClass>
+      </li>
+    </comps>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Mass>0.5</Mass>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <generateAllowChance>0</generateAllowChance>
+    <generateCommonality>0</generateCommonality>
+    <stackLimit>10</stackLimit>
+    <tradeNeverStack>false</tradeNeverStack>
+    <tradeability>None</tradeability>
+    <ingestible>
+      <baseIngestTicks>240</baseIngestTicks>
+      <preferability>NeverForNutrition</preferability>
+      <foodType>Fluid</foodType>
+      <nurseable>false</nurseable>
+      <ingestSound>Ingest_Beer</ingestSound>
+      <ingestHoldOffsetStanding>
+        <northDefault>
+          <offset>(0.18,0,0)</offset>
+        </northDefault>
+      </ingestHoldOffsetStanding>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <chairSearchRadius>5</chairSearchRadius>
+    </ingestible>
   </ThingDef>
 
 </Defs>
