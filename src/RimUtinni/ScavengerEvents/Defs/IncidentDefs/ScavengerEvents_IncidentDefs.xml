@@ -70,4 +70,22 @@
     <minRefireDays>20</minRefireDays>
   </IncidentDef>
 
+  <!-- RUT_SCAVENGEREVENTS_BUILD_1, mechanism 5 of 8: Insect (item's "desert
+       fauna"). Genuinely hostile: manhunter Spelopedes + Megaspiders, count
+       scaled off colonist count. category ThreatBig, not Misc: matches the
+       donor's own IncidentDef, which is the one mechanism here NOT filed
+       under Misc. Ported from MoreIncidents.MOIncidentWorker_Insect. -->
+  <IncidentDef>
+    <defName>RUT_Insects</defName>
+    <label>insect</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>ThreatBig</category>
+    <workerClass>RimMandrake.Utinni.ScavengerEvents.IncidentWorker_Insect</workerClass>
+    <baseChance>1.5</baseChance>
+    <minRefireDays>30</minRefireDays>
+    <earliestDay>20</earliestDay>
+  </IncidentDef>
+
 </Defs>

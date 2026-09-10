@@ -11,4 +11,7 @@
 
   <RUT_TribalAid>Pod crash</RUT_TribalAid>
   <RUT_TribalAidDesc>An escape pod has crashed nearby, carrying a wounded traveler in need of aid.</RUT_TribalAidDesc>
+
+  <RUT_Insects>Insect swarm</RUT_Insects>
+  <RUT_InsectsDesc>A swarm of hungry insects has emerged nearby and is attacking.</RUT_InsectsDesc>
 </LanguageData>
