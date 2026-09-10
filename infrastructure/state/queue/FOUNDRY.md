@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T02:18:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T02:28:03Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -568,7 +568,7 @@ summary:  BIOMEENRICHMENTDESERTWASTELAND1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
 
 ## BIOME_ENRICHMENT_POISON_FOREST_1 Enrichment wave (review B1): Poison Forest is mutator-barren (74% zero-tile MEASURED) — place from its sheet's own kit: vent fields, metal-plated groves, condensation lines; verify by density + whole-planet loss diff
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    bridge
 target:   v1
@@ -899,6 +899,16 @@ kind:     task
 blocked:  no concrete placeable defNames in desert.md/wasteland.md kits per the item's own note; needs owner to name mutators or rule on density approach
 summary:  BIOMEENRICHMENTDESERTWASTELAND1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
+
+## BIOME_ENRICHMENT_POISON_FOREST_1 Enrichment wave (review B1): Poison Forest is mutator-barren (74% zero-tile MEASURED) — place from its sheet's own kit: vent fields, metal-plated groves, condensation lines; verify by density + whole-planet loss diff
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+blocked:  245-row plan ready, but live bridge session crashes loading CANONICAL_ASHKARR_2026-09-09.rws on missing lumi.doorsexpanded; blocked until that regression's real fix lands (on DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1)
+summary:  BIOMEENRICHMENTPOISONFOREST1
+prose:    infrastructure/state/items/BIOME_ENRICHMENT_POISON_FOREST_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
