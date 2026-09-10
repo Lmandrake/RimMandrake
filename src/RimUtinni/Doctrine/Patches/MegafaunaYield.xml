@@ -2849,30 +2849,6 @@
             <value><BoneAmount>120</BoneAmount></value>
           </nomatch>
         </li>
-        <!-- Boomalope MeatAmount: bodySize 2.00, base 280, yields 560 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="Boomalope"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="Boomalope"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>280</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="Boomalope"]/statBases</xpath>
-            <value><MeatAmount>280</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- Boomalope BoneAmount: bodySize 2.00, base 100, yields 200 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="Boomalope"]/statBases/BoneAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="Boomalope"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>100</BoneAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="Boomalope"]/statBases</xpath>
-            <value><BoneAmount>100</BoneAmount></value>
-          </nomatch>
-        </li>
         <!-- Muffalo MeatAmount: bodySize 2.40, base 336, yields 806 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="Muffalo"]/statBases/MeatAmount</xpath>
@@ -3240,11 +3216,6 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Cow"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>12</milkAmount></value>
-        </li>
-        <!-- Boomalope milkAmount: bodySize 2.00, 11 -> 8 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Boomalope"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>8</milkAmount></value>
         </li>
         <!-- Dromedary milkAmount: bodySize 2.10, 18 -> 9 -->
         <li Class="PatchOperationReplace">
@@ -8231,30 +8202,6 @@
             <value><BoneAmount>100</BoneAmount></value>
           </nomatch>
         </li>
-        <!-- GR_Boomalisk MeatAmount: bodySize 2.00, base 280, yields 560 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomalisk"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomalisk"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>280</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomalisk"]/statBases</xpath>
-            <value><MeatAmount>280</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- GR_Boomalisk BoneAmount: bodySize 2.00, base 100, yields 200 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomalisk"]/statBases/BoneAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomalisk"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>100</BoneAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomalisk"]/statBases</xpath>
-            <value><BoneAmount>100</BoneAmount></value>
-          </nomatch>
-        </li>
         <!-- GR_Groundffalo MeatAmount: bodySize 3.00, base 420, yields 1260 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="GR_Groundffalo"]/statBases/MeatAmount</xpath>
@@ -8363,54 +8310,6 @@
             <value><BoneAmount>1000</BoneAmount></value>
           </nomatch>
         </li>
-        <!-- GR_Boomabear MeatAmount: bodySize 2.50, base 350, yields 875 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomabear"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomabear"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>350</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomabear"]/statBases</xpath>
-            <value><MeatAmount>350</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- GR_Boomabear BoneAmount: bodySize 2.50, base 125, yields 312 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomabear"]/statBases/BoneAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomabear"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>125</BoneAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomabear"]/statBases</xpath>
-            <value><BoneAmount>125</BoneAmount></value>
-          </nomatch>
-        </li>
-        <!-- GR_Boomffalo MeatAmount: bodySize 2.25, base 315, yields 709 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>315</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/statBases</xpath>
-            <value><MeatAmount>315</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- GR_Boomffalo BoneAmount: bodySize 2.25, base 112, yields 253 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/statBases/BoneAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>112</BoneAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/statBases</xpath>
-            <value><BoneAmount>112</BoneAmount></value>
-          </nomatch>
-        </li>
         <!-- GR_Boomwolf MeatAmount: bodySize 1.50, base 210, yields 315 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="GR_Boomwolf"]/statBases/MeatAmount</xpath>
@@ -8432,54 +8331,6 @@
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="GR_Boomwolf"]/statBases</xpath>
-            <value><BoneAmount>75</BoneAmount></value>
-          </nomatch>
-        </li>
-        <!-- GR_Boomsquirrel MeatAmount: bodySize 1.30, base 182, yields 237 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>182</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]/statBases</xpath>
-            <value><MeatAmount>182</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- GR_Boomsquirrel BoneAmount: bodySize 1.30, base 65, yields 85 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]/statBases/BoneAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>65</BoneAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]/statBases</xpath>
-            <value><BoneAmount>65</BoneAmount></value>
-          </nomatch>
-        </li>
-        <!-- GR_Boomcat MeatAmount: bodySize 1.50, base 210, yields 315 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomcat"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomcat"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>210</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomcat"]/statBases</xpath>
-            <value><MeatAmount>210</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- GR_Boomcat BoneAmount: bodySize 1.50, base 75, yields 112 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomcat"]/statBases/BoneAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomcat"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>75</BoneAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomcat"]/statBases</xpath>
             <value><BoneAmount>75</BoneAmount></value>
           </nomatch>
         </li>
@@ -9131,30 +8982,6 @@
             <value><BoneAmount>150</BoneAmount></value>
           </nomatch>
         </li>
-        <!-- GR_Boombeetle MeatAmount: bodySize 1.50, base 210, yields 315 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boombeetle"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boombeetle"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>210</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boombeetle"]/statBases</xpath>
-            <value><MeatAmount>210</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- GR_Boombeetle BoneAmount: bodySize 1.50, base 75, yields 112 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boombeetle"]/statBases/BoneAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boombeetle"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>75</BoneAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boombeetle"]/statBases</xpath>
-            <value><BoneAmount>75</BoneAmount></value>
-          </nomatch>
-        </li>
         <!-- GR_Chickenspider MeatAmount: bodySize 1.10, base 154, yields 169 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="GR_Chickenspider"]/statBases/MeatAmount</xpath>
@@ -9467,30 +9294,6 @@
             <value><BoneAmount>148</BoneAmount></value>
           </nomatch>
         </li>
-        <!-- GR_ParagonBoomalope MeatAmount: bodySize 2.20, base 308, yields 678 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_ParagonBoomalope"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_ParagonBoomalope"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>308</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_ParagonBoomalope"]/statBases</xpath>
-            <value><MeatAmount>308</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- GR_ParagonBoomalope BoneAmount: bodySize 2.20, base 110, yields 242 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_ParagonBoomalope"]/statBases/BoneAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_ParagonBoomalope"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>110</BoneAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_ParagonBoomalope"]/statBases</xpath>
-            <value><BoneAmount>110</BoneAmount></value>
-          </nomatch>
-        </li>
         <!-- GR_ParagonMuffalo MeatAmount: bodySize 2.50, base 350, yields 875 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="GR_ParagonMuffalo"]/statBases/MeatAmount</xpath>
@@ -9659,30 +9462,6 @@
             <value><BoneAmount>175</BoneAmount></value>
           </nomatch>
         </li>
-        <!-- GR_Boomsnake MeatAmount: bodySize 1.50, base 210, yields 315 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomsnake"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomsnake"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>210</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomsnake"]/statBases</xpath>
-            <value><MeatAmount>210</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- GR_Boomsnake BoneAmount: bodySize 1.50, base 75, yields 112 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Boomsnake"]/statBases/BoneAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Boomsnake"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>75</BoneAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Boomsnake"]/statBases</xpath>
-            <value><BoneAmount>75</BoneAmount></value>
-          </nomatch>
-        </li>
         <!-- GR_Muffalokomodo MeatAmount: bodySize 3.50, base 490, yields 1715 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="GR_Muffalokomodo"]/statBases/MeatAmount</xpath>
@@ -9827,30 +9606,6 @@
             <value><BoneAmount>75</BoneAmount></value>
           </nomatch>
         </li>
-        <!-- GR_Bearalope MeatAmount: bodySize 1.50, base 210, yields 315 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Bearalope"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Bearalope"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>210</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Bearalope"]/statBases</xpath>
-            <value><MeatAmount>210</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- GR_Bearalope BoneAmount: bodySize 1.50, base 75, yields 112 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GR_Bearalope"]/statBases/BoneAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GR_Bearalope"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>75</BoneAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GR_Bearalope"]/statBases</xpath>
-            <value><BoneAmount>75</BoneAmount></value>
-          </nomatch>
-        </li>
         <!-- GR_Bearffalo MeatAmount: bodySize 1.50, base 210, yields 315 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="GR_Bearffalo"]/statBases/MeatAmount</xpath>
@@ -9938,11 +9693,6 @@
           <xpath>/Defs/ThingDef[defName="GR_WoolyWolf"]/comps/li[woolAmount]/woolAmount</xpath>
           <value><woolAmount>45</woolAmount></value>
         </li>
-        <!-- GR_Boomffalo woolAmount: bodySize 2.25, 90 -> 68 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/comps/li[woolAmount]/woolAmount</xpath>
-          <value><woolAmount>68</woolAmount></value>
-        </li>
         <!-- GR_Wolffalo woolAmount: bodySize 1.50, 20 -> 45 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="GR_Wolffalo"]/comps/li[woolAmount]/woolAmount</xpath>
@@ -9997,11 +9747,6 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="GR_Groundffalo"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>18</milkAmount></value>
-        </li>
-        <!-- GR_Boomffalo milkAmount: bodySize 2.25, 12 -> 10 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>10</milkAmount></value>
         </li>
         <!-- GR_Wolffalo milkAmount: bodySize 1.50, 5 -> 4 -->
         <li Class="PatchOperationReplace">

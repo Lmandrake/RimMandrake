@@ -54,7 +54,7 @@ import biome_flora as bf                                            # noqa: E402
 
 ROOT = bf.ROOT
 CAST = os.path.join(HERE, 'cast_assignment.csv')
-PATCH = os.path.join(ROOT, 'src', 'Jawa', 'Jawa_Patches', 'Patches',
+PATCH = os.path.join(ROOT, 'src', 'RimUtinni', 'UtinniPatches', 'Patches',
                      'AnimalTolerances_Ashkarr.xml')
 
 MIN, MAX = 'ComfyTemperatureMin', 'ComfyTemperatureMax'

@@ -968,16 +968,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
-    <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
-      <value>
-        <VFEI2_Boomtick>0.4</VFEI2_Boomtick> <!-- boomtick - weapon-descendant, keep -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="regrowth.botr.core">   <!-- donor: regrowth.botr.core -->
     <xpath>/Defs/BiomeDef[defName="Scarlands"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -1055,18 +1045,6 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
       <value>
         <AA_Eyeling>0.1</AA_Eyeling> <!-- ikee - omen, import -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <Boomalope>0.3</Boomalope> <!-- boomalope - medium, import -->
-        </wildAnimals>
       </value>
     </match>
   </Operation>
