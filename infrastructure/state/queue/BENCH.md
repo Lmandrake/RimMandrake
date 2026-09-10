@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T23:15:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T23:24:49Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -429,5 +429,15 @@ needs:    offline
 target:   v1
 kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CANON_DRAIN_1.md yet — write one when you have something to say)
+summary:  the goal (owner, 2026-09-10)
 prose:    infrastructure/state/items/CANON_DRAIN_1.md
+
+## CANON_STORAGE_ARCHITECTURE_1 Decide how to store the growing canon: options+tradeoffs report written (design/CANON_STORAGE_ARCHITECTURE_options.md) - recommends hybrid (prose canonical + derived claim/entity index + certainty tiers + self-healing checker); awaits owner review sitting
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CANON_STORAGE_ARCHITECTURE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CANON_STORAGE_ARCHITECTURE_1.md
