@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T22:38:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T22:41:58Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -612,6 +612,15 @@ kind:     build
 summary:  Owner-said: "Keep-curated." Curate VQE Ancients per the ratified verdict —
 prose:    infrastructure/state/items/VQE_ANCIENTS_CURATION_1.md
 
+## GOO_BOOM_COMMISSION_1 Commission ONE big Assailant-dungeon boom creature: fleshy-based, sacks of explosive goo, new def + new art - replaces the entire cut boom family (Boomalope, Boomrat, VFEI2_Boomtick, 12 GR_ boom creatures); lives on the dungeon-guardians roster, never a biome spawn
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
+prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -876,6 +885,16 @@ blocked:  steps 1/3/6 of 6 done and verified. Step 2 needs no action (never touc
 summary:  Owner-said: "Keep-curated." Curate VQE Ancients per the ratified verdict —
 prose:    infrastructure/state/items/VQE_ANCIENTS_CURATION_1.md
 
+## GOO_BOOM_COMMISSION_1 Commission ONE big Assailant-dungeon boom creature: fleshy-based, sacks of explosive goo, new def + new art - replaces the entire cut boom family (Boomalope, Boomrat, VFEI2_Boomtick, 12 GR_ boom creatures); lives on the dungeon-guardians roster, never a biome spawn
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+blocked:  design brief complete and filed (design/Jawa/worldbuilding/creatures/goo_boom_commission.md, commit 477ab973) - RUT_Vhessk fully specified: mechanic grounded in real Core source (a real life-stage-index trap caught), art direction grounded in real donor palette sampling. NOT closing: the item's own title includes 'new def + new art', i.e. the actual BUILD, and the brief leaves 8 concrete open calls (v1/v2 worker, healthScale, melee numbers, market value, butchery yield, BodyDef, glow, spawn timing) that need an owner ruling before building makes sense - building now would mean silently deciding them
+summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
+prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -897,16 +916,6 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  CHERRYPICKERSHIPBASELINESTALE1
 prose:    infrastructure/state/items/CHERRYPICKER_SHIP_BASELINE_STALE_1.md
-
-## GOO_BOOM_COMMISSION_1 Commission ONE big Assailant-dungeon boom creature: fleshy-based, sacks of explosive goo, new def + new art - replaces the entire cut boom family (Boomalope, Boomrat, VFEI2_Boomtick, 12 GR_ boom creatures); lives on the dungeon-guardians roster, never a biome spawn
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GOO_BOOM_COMMISSION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
 
 ## CODEX_WORKER_SANDBOX_WRITE_1 Codex art worker generates the image but cannot resize/copy it into its job workspace: worker exits 1, daemon sees no image (validator never runs), dies at ~241s = the edit-timeout+grace, not a slow run
 state:    proposed

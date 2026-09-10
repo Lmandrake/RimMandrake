@@ -6996,3 +6996,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"ROSE_OF_REBIRTH_CONTAINMENT_1","ts":"2026-09-10T22:35:39Z"}
 {"seat":"FOUNDRY","event":"start","id":"ROSE_OF_REBIRTH_CONTAINMENT_1","ts":"2026-09-10T22:35:40Z"}
 {"seat":"FOUNDRY","event":"close","id":"ROSE_OF_REBIRTH_CONTAINMENT_1","sha":"0ae4d103","ts":"2026-09-10T22:38:41Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GOO_BOOM_COMMISSION_1","ts":"2026-09-10T22:41:24Z"}
+{"seat":"FOUNDRY","event":"start","id":"GOO_BOOM_COMMISSION_1","ts":"2026-09-10T22:41:25Z"}
+{"seat":"FOUNDRY","event":"block","id":"GOO_BOOM_COMMISSION_1","reason":"design brief complete and filed (design/Jawa/worldbuilding/creatures/goo_boom_commission.md, commit 477ab973) - RUT_Vhessk fully specified: mechanic grounded in real Core source (a real life-stage-index trap caught), art direction grounded in real donor palette sampling. NOT closing: the item's own title includes 'new def + new art', i.e. the actual BUILD, and the brief leaves 8 concrete open calls (v1/v2 worker, healthScale, melee numbers, market value, butchery yield, BodyDef, glow, spawn timing) that need an owner ruling before building makes sense - building now would mean silently deciding them","ts":"2026-09-10T22:41:58Z"}
