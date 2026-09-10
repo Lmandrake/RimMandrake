@@ -24,8 +24,15 @@ Behaviors:
                   validate_sprite.py (which is skipped entirely when there's
                   no reference).
     api_error     exits 1 with a message mimicking gemini_image.py's own
-                  sys.exit() on an API error — no file written, and the
-                  daemon must not bill this attempt.
+                  sys.exit() on a quota/429 exhaustion — no file written,
+                  the daemon must not bill this attempt, AND the daemon
+                  must recognize this specific text as a quota error
+                  (worker_status="quota_error") so GeminiBudget backs off
+                  instead of hammering the provider again next tick.
+    generic_error exits 1 with a message that names no quota/rate-limit
+                  condition at all — proves the daemon does NOT
+                  mis-categorize an ordinary worker fault as a quota
+                  error (worker_status stays "worker_error").
     ok_no_image   exits 0 and prints the SAME success line "ok" does
                   (model=... included), but never actually writes the PNG —
                   proves cost is billed only once a real image is confirmed
@@ -65,6 +72,10 @@ def main(argv=None) -> int:
 
     if behavior == "api_error":
         print("API error 429 RESOURCE_EXHAUSTED: rate limit exceeded", file=sys.stderr)
+        return 1
+
+    if behavior == "generic_error":
+        print("gemini_image.py: unexpected response shape from the API", file=sys.stderr)
         return 1
 
     if behavior == "ok_no_image":
