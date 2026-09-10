@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T13:44:14Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-10T14:19:51Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -260,6 +260,15 @@ target:   v1
 kind:     task
 summary:  MULTIVIEWFACINGPIPELINE1 — pose-collision bug fixed; owner judged the OUTPUT unusable ("crushed tin cans")
 prose:    infrastructure/state/items/MULTIVIEW_FACING_PIPELINE_1.md
+
+## BIOME_SPAWN_FLORA_AUDIT_1 Spawn each biome in game and photograph what actually grows - normalize before adjusting; also identify the rainbow prolific unclickable bushes the owner keeps seeing
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
 
 ## NINEFOLD_DEBUG_GAME_READY_CRASH_1 start_debug_game_ready crashes RimWorldWin64 outright - observed live during BIOME_SPAWN_FLORA_AUDIT_1, correlates with Ninefold satiation hook firing on a burst of debug auto-research completions
 state:    doing
@@ -811,17 +820,7 @@ prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## BIOME_SPAWN_FLORA_AUDIT_1 Spawn each biome in game and photograph what actually grows - normalize before adjusting; also identify the rainbow prolific unclickable bushes the owner keeps seeing
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-waiting:  needs `game-up`, game is LOADING
-summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -890,3 +889,23 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VQE_ANCIENTS_CURATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VQE_ANCIENTS_CURATION_1.md
+
+## BOOM_FAMILY_CUT_1 Cut the 15-creature boom family (Boomalope, Boomrat, VFEI2_Boomtick, GR_Bearalope/Boomabear/Boomalisk/Boombeetle/Boomcat/Boomffalo/Boomsnake/Boomsquirrel/Chickenlope/Manalope/ParagonBoomalope/Squirralope): CherryPicker cuts with cut(deftype,name), prove by live-config readback; remove from biome-cast wildAnimals patches; rebuild the tag->surviving-item index after (content-moderation trap); check nothing else spawns/references them (traders, quests, chemfuel economy - Boomalope milk)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BOOM_FAMILY_CUT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BOOM_FAMILY_CUT_1.md
+
+## GOO_BOOM_COMMISSION_1 Commission ONE big Assailant-dungeon boom creature: fleshy-based, sacks of explosive goo, new def + new art - replaces the entire cut boom family (Boomalope, Boomrat, VFEI2_Boomtick, 12 GR_ boom creatures); lives on the dungeon-guardians roster, never a biome spawn
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GOO_BOOM_COMMISSION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
