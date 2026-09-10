@@ -257,18 +257,21 @@ def canonical_rels(rels):
     and then fails mark-clean's tracked-file gate with a false message. Ask
     git for the tracked spelling — in ONE `ls-files` spawn for the whole
     batch, because a spawn per path is the exact bottleneck this rewrite
-    removed. Returns {rel: canonical}; identity for anything out-of-repo,
-    ambiguous, unknown to git, or on git failure."""
+    removed. Returns ({rel: canonical}, certain): identity for anything
+    out-of-repo, ambiguous, or unknown to git; certain is False when git
+    itself could not answer (timeout/lock) — a caller whose CORRECTNESS
+    depends on canonicalization must refuse on ignorance, not proceed on
+    the identity mapping as if it were an answer."""
     out = {r: r for r in rels}
     ask = [r for r in rels if not (r.startswith("../") or r == "..")]
     if not ask:
-        return out
+        return out, True
     # (icase,literal): literal kills glob interpretation — "[", "*", "?" in a
     # filename are pathspec magic by default and would match a DIFFERENT file.
     r = git(["-c", "core.quotePath=false", "ls-files", "--"]
             + [":(icase,literal)" + a for a in ask])
     if r.returncode != 0:
-        return out
+        return out, False
     lines = r.stdout.splitlines()
     exact = set(lines)
     by_fold = {}
@@ -280,12 +283,13 @@ def canonical_rels(rels):
         ci = by_fold.get(a.lower(), [])
         if len(ci) == 1:
             out[a] = ci[0]
-    return out
+    return out, True
 
 
 def canonical_rel(rel):
-    """Single-path form of canonical_rels()."""
-    return canonical_rels([rel])[rel]
+    """Single-path form of canonical_rels(); identity on ignorance (the
+    callers behind this form all have their own honest git-failure gates)."""
+    return canonical_rels([rel])[0][rel]
 
 
 def git(args):
@@ -399,7 +403,9 @@ def cmd_check(paths):
                if not (r.startswith("../") or r == "..")
                and data.get(r) is None
                and not os.path.isdir(os.path.join(ROOT, r))]
-    canon = canonical_rels(missing) if missing else {}
+    canon = (canonical_rels(missing)[0] if missing else {})
+    # (check errs safe on canonicalization ignorance: a recorded path then
+    # reads "never marked clean", rc 1 — no false CLEAN is possible.)
     any_dirty = False
     for p, rel in zip(paths, rels):
         # Answer honestly for paths that cannot be reviewed at all, instead
@@ -568,9 +574,19 @@ def cmd_reopen(paths, reason):
     # operator meant to retract stays marked CLEAN — a silent no-op in the one
     # command whose entire job is undoing a wrong clean mark.
     rels = []
-    canon = canonical_rels([repo_rel(p) for p in paths])
+    raws = [repo_rel(p) for p in paths]
+    canon, certain = canonical_rels(raws)
     preview = load()   # unlocked peek, validation UX only — the locked
     # section below re-checks membership before mutating anything.
+    if not certain and any(r not in preview for r in raws):
+        # With git down, a mis-cased path would look up the wrong key and
+        # print the reassuring "(already not clean)" rc 0 while the wrong
+        # CLEAN mark stays live — the exact silent no-op this command
+        # exists to prevent. Refuse rather than guess.
+        print("FAIL: git could not answer path canonicalization "
+              "(timeout/lock?) and a typed path is not an exact ledger key — "
+              "cannot tell which entry you mean. Try again.", file=sys.stderr)
+        return 2
     for path in paths:
         raw = repo_rel(path)
         # The typed spelling wins when IT holds the entry: canonicalizing
