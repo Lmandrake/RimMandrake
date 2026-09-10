@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T03:06:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T03:06:49Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -972,16 +972,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
-
-## DROID_MODULE_BODYGROUP_WIRING_GAP_1 Droid apparel modules unwearable: RSW_DW_BG_Module* body part groups never wired to any droid BodyDef (found live-testing DROIDWORKS_MODULE_PERSONALITY_1)
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Give Droidworks its own, donor-independent way to satisfy these three
-prose:    infrastructure/state/items/DROID_MODULE_BODYGROUP_WIRING_GAP_1.md
 
 ## ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1 Rewrite apply_assignment_verdicts.py for the regenerated sheet schema (19e03876); a hard refusal currently blocks any apply - owner verdicts cannot land until this ships
 state:    proposed
