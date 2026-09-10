@@ -475,6 +475,58 @@ def harvest_with_grace(home: Path, before: set[Path], grace: float) -> list[Path
         time.sleep(HARVEST_POLL_S)
 
 
+def kill_orphaned_sandbox_helpers(home: Path) -> int:
+    """Best-effort: kill leftover `--run-as-windows-sandbox` helpers for `home`.
+
+    ROOT CAUSE (CODEX_EDIT_TIMEOUT_1, 2026-09-09): an `edit` call needs a
+    "root: read" filesystem grant (for the attached reference image, which
+    lives outside the job's own workdir). Against an ISOLATED/freshly-seeded
+    `--codex-home` (the per-worker pattern `codex_queue_runner.py` uses),
+    codex.exe enforces that grant by spawning a SEPARATE, elevated
+    `codex.exe --run-as-windows-sandbox --windows-sandbox-private-desktop
+    ... --codex-run-as-fs-helper` child. Against the long-lived SHARED home
+    this child is never spawned at all (measured: an identical `edit` job
+    took 71s with no helper against the shared home, and needed the full
+    200s+harvest-grace path with a helper present against an isolated home).
+    `subprocess.run(..., timeout=...)`'s own kill only reaches the immediate
+    `codex exec` child - Windows does not cascade-kill a child's children -
+    so a timed-out isolated-home `edit` leaves this helper running forever.
+    Confirmed live: 4 such helpers were still alive and idle 3+ hours after
+    a calibration run, one naming a worker-home directory already deleted
+    from disk. This does not fix the underlying slowness/unreliability of
+    the elevated-sandbox path itself (that is upstream Codex-on-Windows
+    behaviour, not something this wrapper controls) - it only stops every
+    timeout from leaking a process.
+
+    Matches on `--codex-home <this home's Windows path>` in the command
+    line, so it can only ever touch a helper for THIS call's home - never a
+    concurrent sibling job's helper, and never the persistent `app-server`
+    process (which carries no `--codex-home` flag at all). Only called when
+    the caller passed an explicit `--codex-home` override (see do_image) -
+    never against the shared default home, where a concurrent unrelated
+    call could legitimately be running.
+    """
+    if not in_wsl():
+        return 0
+    try:
+        needle = wsl_to_win(home)
+    except EnvError:
+        return 0
+    escaped = needle.replace("'", "''")
+    ps = (
+        "Get-CimInstance Win32_Process -Filter \"Name='codex.exe'\" | "
+        "Where-Object { $_.CommandLine -like '*--run-as-windows-sandbox*' "
+        f"-and $_.CommandLine -like '*{escaped}*' }} | "
+        "ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue; $_.ProcessId }"
+    )
+    try:
+        out = subprocess.run(["powershell.exe", "-NoProfile", "-Command", ps],
+                              capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        return 0
+    return sum(1 for line in out.stdout.splitlines() if line.strip().isdigit())
+
+
 # --------------------------------------------------------------------------
 # the two operations
 # --------------------------------------------------------------------------
@@ -547,7 +599,8 @@ def do_image(args) -> int:
     # 🔴 Harvest on EVERY path, timeout included. The agent was asked to copy
     # the file here; whether it did, and whether our own ceiling expired while
     # it was still narrating, are separate questions from whether an image
-    # exists. A harvested image is a success.
+    # exists. A harvested image is a success. Harvest BEFORE any cleanup below
+    # - never risk a late-arriving file for the sake of tidiness.
     if not fresh:
         candidates = harvest_with_grace(
             home, before, HARVEST_GRACE_S if timed_out else 0.0)
@@ -559,6 +612,15 @@ def do_image(args) -> int:
                    if timed_out else "agent did not place the file")
             print(f"note: {why}; harvested {chosen.name} from "
                   f"{GENERATED_SUBDIR}/", file=sys.stderr)
+
+    if timed_out and getattr(args, "codex_home", None) is not None:
+        # Isolated/per-worker home only - see kill_orphaned_sandbox_helpers.
+        # Never against the shared default home: a concurrent unrelated call
+        # could legitimately have its own helper running there.
+        killed = kill_orphaned_sandbox_helpers(home)
+        if killed:
+            print(f"note: killed {killed} orphaned windows-sandbox helper(s) "
+                  f"for {home} left behind by this timeout", file=sys.stderr)
 
     if not fresh:
         if timed_out:
