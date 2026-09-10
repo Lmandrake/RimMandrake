@@ -857,6 +857,12 @@
     "hash": "a86de451fef2be3b5e75f09fc7b6d3a0dd96bf34ebcf146adea97ed8e1f27b97",
     "sha": "43f96b1b"
   },
+  "src/RimMandrake/FluidCanals/Source/RimMandrake_FluidCanals.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "92040e4edef90ea2bd41c9339256f24f4d1e77a6ec4485d83f68d4486af6590c",
+    "sha": "a13a5975"
+  },
   "src/RimMandrake/FluidCanals/Source/WorkGiver_DigCanal.cs": {
     "cleanCount": 1,
     "date": "2026-09-04",
