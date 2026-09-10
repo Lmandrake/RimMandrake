@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T07:47:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T07:59:11Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1004,13 +1004,3 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CRYSTAL_INGEST_EXECUTION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CRYSTAL_INGEST_EXECUTION_1.md
-
-## WALL_LIGHTS_HELPER_BROKEN_1 prelude.lua's wall_lights() helper silently places nothing when called with a room's outer shell rect (needs the interior rect instead) - affects road_warehouse/trading_post/homestead
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  1. Read walllights() in design/Jawa/templates/prelude.lua (or wherever
-prose:    infrastructure/state/items/WALL_LIGHTS_HELPER_BROKEN_1.md
