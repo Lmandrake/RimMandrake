@@ -1,989 +1,600 @@
 #!/usr/bin/env python3
 """apply_assignment_verdicts.py — the CONSUMER side of the fauna/flora assignment sheets.
 
-The generators (gen_fauna_assignment_sheet.py / gen_flora_assignment_sheet.py) write the
-sheet and its PRE-FILL. This reads the decisions file back and amends the roster JSONs
-under design/Jawa/worldbuilding/biomes/rosters/ — but only for rows whose decision
-DIFFERS from the landed prefill. Rows the owner left alone are never touched.
+Rewritten for the 2026-09-09 rulings schema (commit 19e03876). The old applier
+(row ids f:/e:/p:/purge:/nd:/c:/h:, verdicts keep/adjust/move/evict/open/...)
+is DEAD — the sheets now emit q:/fauna:/flora:/homeless:/ledger: row ids and
+in/move/out/later verdicts, plus two extra per-row lanes (sizeBin, art). This
+reads gen_fauna_assignment_sheet.py / gen_flora_assignment_sheet.py's own
+header text and the live sheets/decisions files as the schema authority —
+never guessed.
 
-🔴 THE GUARD THAT MATTERS (review-sheets skill §8). A pre-fill and a reviewed file look
-identical. Only the sidecar can stamp savedBy/writeCount/savedAt, so this tool REFUSES to
-run without them: an agent's own guesses must never be applied as the owner's verdicts.
-
-Normal path: owner reviews -> owner freezes (§7) -> this runs.
-
-    python3 apply_assignment_verdicts.py                    # report only, both sheets
-    python3 apply_assignment_verdicts.py --apply            # write the rosters
+    python3 apply_assignment_verdicts.py                 # report only, both sheets
+    python3 apply_assignment_verdicts.py --apply          # write rosters + worklists
     python3 apply_assignment_verdicts.py fauna_assignment_register.decisions.json --apply
-    python3 apply_assignment_verdicts.py --selftest         # synthetic end-to-end proof
+    python3 apply_assignment_verdicts.py --selftest       # delegates to the selftest file
 
-ROW-ID SCHEME (emitted by the two generators; see the header block in each)
-    f:<sheet>:<defName>    a fauna[] row              keep|adjust|move|evict|open
-    e:<sheet>:<defName>    an evictions[] row         (flagged ones only)
-    p:<sheet>:<defName>    a flora[] row              keep|thin|purge|defer|drop
-    purge:<sheet>          the per-biome flora_purged[] SUMMARY row (one per biome)
-    nd:<sheet>:<index>     new_defs[<index>] — the NEW-ART/DEF ledger
-    c:<sheet>:<index>      confidence[<index>] — an unsettled claim
-    h:<defName>            _global.json ruled.in_jokes_kept_reskinned — no home landed
+🔴 THE GUARD THAT MATTERS (review-sheets skill §8). A pre-fill and a reviewed
+file look byte-similar. Only the sidecar can stamp savedBy/writeCount — a
+pre-fill generator can never emit them — so this REFUSES to touch a decisions
+file lacking that stamp: an agent's own guesses must never be applied as the
+owner's verdicts. `frozen` is NOT checked — freezing happens at review end,
+and a frozen file is exactly as safe to apply as a live one; only an
+UNSTAMPED file is refused.
 
-⚠️ <sheet> is the roster's `sheet` FIELD, not its filename, and it is not a valid path
-component: `the_grey_sea.json` carries sheet "terminator_sea + the_grey_deep" and
-`dune_sea_deep_desert.json` carries "dune_sea + deep_desert". Resolve it by loading every
-roster and indexing on the field. It also contains ':'-free spaces and '+', so parse a row
-id as prefix / rsplit(':', 1) — never str.split(':').
+ROW-ID SCHEME (see gen_fauna_assignment_sheet.py / gen_flora_assignment_sheet.py):
+    q:<sheet>:<slug>          a question card               decision in {in,out,later}
+    fauna:<sheet>:<defName>   an in-biome creature row       decision in {in,move,out,later}
+                              + sizeBin (small|medium|large|titan), art (keep|improve|redo)
+    flora:<sheet>:<defName>   an in-biome plant row          same shape as fauna: rows
+    homeless:<defName>        a no-home-yet creature row     decision in {in,move,out,later}
+                              "in" = carry out the row's GROUP recommendation (read from
+                              the sheet's ITEMS block — decisions.json does not carry it);
+                              "move" = a real biome named in the note; "out" = CUT FOR REAL
+                              regardless of which of the 6 recommendation groups it sat in
+    ledger:<sheet>:<slug>     a NEW-ART/NEW-DEF commission row (fauna sheet has none;
+                              flora sheet's "New things to create" rows)  decision in
+                              {in,out,later}: in = commission, out = drop for good
 
-Exit codes: 0 ok · 2 no sidecar stamp · 3 not frozen · 4 validator went red
-            5 a verdict could not be resolved (nothing was written)
+⚠️ <sheet> is the roster's `sheet` FIELD, not its filename (`the_grey_sea.json` carries
+sheet "terminator_sea + the_grey_deep"). Resolve by loading every roster and indexing on
+that field — never guess it from the filename.
+
+WHAT THIS WRITES (only under --apply; report mode never touches disk):
+    rosters/<file>.json                  in-biome Move/Out edits (per decisions file's biomes)
+    rosters/_draft_<cave|sea|dungeon>_layer.json   the 3 strange-strata homeless groups,
+                                                    "in" verdicts — leading "_" keeps
+                                                    _validate.py's bare glob from eating them
+    <sheet>.homeless_events_quest_pool.json        homeless "keep for events & quests" group
+    <sheet>.homeless_livestock_trader_stock.json   homeless "livestock & trader stock" group
+    <sheet>.cherry_pick_cut_list.json              every real "cut for real" disposition —
+                                                    NEVER runs Cherry Picker itself
+    <sheet>.size_rescale_worklist.json             defName/current bin/chosen bin/grow-shrink,
+                                                    for FOUNDRY — this tool never edits a def
+    <sheet>.art_queue.json                         art verdicts != keep, + ledger commissions
+
+Nothing partial: each decisions file's whole plan is built in memory first: an
+unparseable/missing Move target refuses THAT FILE's entire apply (report still
+runs) and nothing from it is written. Out-of-scope top-level keys in a decisions
+file are carried through untouched (this tool never rewrites the decisions file).
+
+Exit codes: 0 ok · 2 no sidecar stamp (nothing applied) · 5 a Move target could
+not be resolved (nothing from that file was written) · 6 the post-apply
+rosters/_validate.py --cross run reported problems (the writes already landed)
 """
 from __future__ import annotations
 
 import argparse
-import datetime as _dt
+import glob as _glob
 import json
 import os
 import re
-import shutil
 import subprocess
 import sys
-import tempfile
+from datetime import datetime, timezone
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 ROSTERS = os.path.join(ROOT, "design", "Jawa", "worldbuilding", "biomes", "rosters")
+REVIEW = HERE
+
 DEFAULT_DECISIONS = [
-    os.path.join(HERE, "fauna_assignment_register.decisions.json"),
-    os.path.join(HERE, "flora_assignment_register.decisions.json"),
+    os.path.join(REVIEW, "fauna_assignment_register.decisions.json"),
+    os.path.join(REVIEW, "flora_assignment_register.decisions.json"),
 ]
 
-SIDECAR_KEYS = ("savedBy", "writeCount", "savedAt")
+STAMP_BY = "review-sheet-sidecar"   # assets/serve_sheet.py's STAMP_BY — the unforgeable mark
+RC_OK, RC_NO_SIDECAR, RC_UNRESOLVED, RC_VALIDATOR = 0, 2, 5, 6
 
-RC_OK, RC_NO_SIDECAR, RC_NOT_FROZEN, RC_VALIDATOR, RC_UNRESOLVED = 0, 2, 3, 4, 5
+SIZE_ORDER = ["small", "medium", "large", "titan"]
 
-# NEW-ART ledger verdict -> the status written onto the new_defs entry.
-LEDGER_STATUS = {
-    "keep": "commission",
-    "thin": "commission (reduced scope — see owner_note)",
-    "purge": "drop",
-    "drop": "drop",
-    "defer": "defer",
-    "adjust": "commission (reduced scope — see owner_note)",
-    "evict": "drop",
-    "move": "defer",
-    "open": "defer",
+# Verbatim from gen_fauna_assignment_sheet.py's HOMELESS_GROUPS — the label text IS the
+# only place a homeless row's recommendation-group lives (decisions.json does not carry
+# it). Kept as a literal table, not re-derived, so a generator wording change fails LOUD
+# (KeyError on an unrecognised group) instead of silently mis-bucketing a verdict.
+HOMELESS_GROUPS = {
+    "No home yet → my call: the underground & cave layer (draft roster)": "cave",
+    "No home yet → my call: the deep seas & underwater layer (draft roster)": "sea",
+    "No home yet → my call: dungeon & vault guardians (draft palette)": "dungeon",
+    "No home yet → my call: keep for events & quests only": "events",
+    "No home yet → my call: livestock & trader stock only": "livestock",
+    "No home yet → my call: cut for real": "cut",
 }
-CLOSING = {"keep", "adjust", "thin", "move", "evict", "purge", "drop"}
+DRAFT_ROSTER_NAME = {"cave": "_draft_cave_layer.json",
+                      "sea": "_draft_sea_layer.json",
+                      "dungeon": "_draft_dungeon_guardians.json"}
 
 
 class Refuse(Exception):
-    """A guard refused. Nothing is written."""
-
-    def __init__(self, code: int, message: str):
-        super().__init__(message)
-        self.code = code
+    """A guard refused. Nothing from this decisions file is written."""
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# loading
-# ─────────────────────────────────────────────────────────────────────────────
+# ═══════════════════════════════════════════════════════════════ loading
 
-def load_rosters(rosters_dir: str) -> tuple[dict, dict]:
-    """-> ({sheet field: {path, doc}}, {'path':..., 'doc':...} for _global.json)."""
-    by_sheet: dict[str, dict] = {}
-    glob_entry: dict = {}
-    for name in sorted(os.listdir(rosters_dir)):
-        if not name.endswith(".json"):
-            continue
-        path = os.path.join(rosters_dir, name)
-        with open(path, encoding="utf-8") as fh:
-            doc = json.load(fh)
-        if name == "_global.json":
-            glob_entry = {"path": path, "doc": doc, "dirty": False}
-            continue
-        sheet = doc.get("sheet")
-        if not sheet:
-            continue
-        if sheet in by_sheet:
-            raise Refuse(RC_UNRESOLVED,
-                         f"two rosters both carry sheet {sheet!r}: "
-                         f"{by_sheet[sheet]['path']} and {path}")
-        by_sheet[sheet] = {"path": path, "doc": doc, "dirty": False}
-    return by_sheet, glob_entry
-
-
-def load_decisions(path: str, allow_unfrozen: bool) -> dict:
+def load_decisions(path: str) -> dict:
     with open(path, encoding="utf-8") as fh:
         doc = json.load(fh)
-    # ── schema guard ─────────────────────────────────────────────────────────
-    # The sheets were rebuilt 2026-09-09 to the owner's rulings: new row ids
-    # (fauna:/flora:/homeless:/ledger:/q:), new verdict keys (in/move/out/later)
-    # and two extra per-row lanes (sizeBin, art). This applier predates that
-    # schema and would map its verdicts wrongly — refuse rather than guess.
-    ids = list((doc.get("decisions") or {}).keys())
-    if any(i.split(":", 1)[0] in ("fauna", "flora", "homeless", "ledger", "q")
-           for i in ids):
-        raise Refuse(RC_NO_SIDECAR, (
-            f"🔴 REFUSING {os.path.basename(path)}: this decisions file uses the "
-            "2026-09-09 rulings schema (fauna:/flora:/homeless:/ledger: row ids, "
-            "in/move/out/later verdicts, sizeBin and art lanes).\n"
-            "   apply_assignment_verdicts.py has not been rewritten for it yet — "
-            "applying with the old mapping would corrupt the rosters. Rewrite the "
-            "applier against the new generators' header blocks first."))
-    missing = [k for k in SIDECAR_KEYS if not doc.get(k)]
-    if missing:
-        raise Refuse(RC_NO_SIDECAR, (
-            f"🔴 REFUSING {os.path.basename(path)}: sidecar keys absent ({', '.join(missing)}).\n"
-            "   This file is still the generator's PRE-FILL — the agent's own guesses. Only\n"
-            "   serve_sheet.py stamps savedBy/writeCount/savedAt, and a generator cannot forge\n"
-            "   them, so their absence means no review has ever landed on disk (review-sheets\n"
-            "   skill §8).\n"
-            "   Recovery: the work is almost certainly still in the browser's localStorage —\n"
-            "   reopen the sheet, click 'copy JSON', and save through the sidecar:\n"
-            "     python3 ~/.claude/skills/review-sheets/assets/serve_sheet.py \\\n"
-            f"       --sheet {os.path.basename(path).replace('.decisions.json', '.html')} \\\n"
-            f"       --decisions {os.path.basename(path)}\n"
-            "   Clearing browsing data destroys it; nothing else does."))
-    if doc.get("frozen") is not True and not allow_unfrozen:
-        raise Refuse(RC_NOT_FROZEN, (
-            f"🔴 REFUSING {os.path.basename(path)}: \"frozen\" is not set.\n"
-            "   The normal path is: the owner finishes, the file is frozen (review-sheets §7 —\n"
-            "   `\"frozen\": true` plus frozenOn/frozenMeaning, after which the sidecar returns\n"
-            "   423 and the sheet goes read-only), and only THEN is it consumed. Applying an\n"
-            "   unfrozen file races the owner's next click.\n"
-            "   Pass --allow-unfrozen to consume a mid-review file deliberately."))
+    if not isinstance(doc, dict) or not isinstance(doc.get("decisions"), dict):
+        raise Refuse(f"{os.path.basename(path)}: not a decisions file (no 'decisions' object)")
+    touched = doc.get("savedBy") == STAMP_BY and isinstance(doc.get("writeCount"), int) \
+        and doc.get("writeCount", 0) >= 1
+    if not touched:
+        raise Refuse(
+            f"🔴 REFUSING {os.path.basename(path)}: not stamped by the sidecar "
+            f"(savedBy={doc.get('savedBy')!r}, writeCount={doc.get('writeCount')!r}). "
+            "An untouched pre-fill is the agent's guesses, never the owner's review — "
+            "open the sheet, let the owner save at least once, then run this again. "
+            "(frozen is not checked here — a frozen file is fine to apply.)")
     return doc
 
 
-def overrides_of(doc: dict) -> list[dict]:
-    """Rows whose decision differs from the landed prefill. Order preserved."""
-    out = []
-    for rid, row in (doc.get("decisions") or {}).items():
-        if not isinstance(row, dict):
+def _find_script_json(html: str, script_id: str):
+    """The template's own header text mentions `<script id="...">` inside an HTML
+    comment before the real tag — take the LAST occurrence that parses as JSON."""
+    idxs = [m.start() for m in re.finditer(rf'<script id="{script_id}"', html)]
+    for i in reversed(idxs):
+        start = html.find(">", i) + 1
+        end = html.find("</script>", start)
+        if start <= 0 or end < 0:
             continue
-        decision, prefill = row.get("decision"), row.get("prefill")
-        if decision is None or decision == prefill:
+        try:
+            return json.loads(html[start:end])
+        except json.JSONDecodeError:
             continue
-        out.append({"id": rid, "decision": decision, "prefill": prefill,
-                    "note": (row.get("note") or "").strip()})
-    return out
-
-
-def parse_id(rid: str) -> tuple[str, str, str]:
-    """-> (prefix, sheet, tail). `sheet` may contain spaces and '+'."""
-    prefix, _, rest = rid.partition(":")
-    if prefix == "h":
-        return "h", "", rest
-    if prefix == "purge":
-        return "purge", rest, ""
-    if ":" not in rest:
-        return prefix, rest, ""
-    sheet, _, tail = rest.rpartition(":")
-    return prefix, sheet, tail
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# note mining — the owner's free text is the only place a target or a value lives
-# ─────────────────────────────────────────────────────────────────────────────
-
-MOVE_PATTERNS = (
-    re.compile(r"move\s*:\s*([A-Za-z_][\w]*)", re.I),
-    re.compile(r"(?:->|→|=>)\s*([A-Za-z_][\w]*)"),
-    re.compile(r"\b(?:to|into|home(?:s)?\s+(?:in|to))\s+([A-Za-z_][\w]*)", re.I),
-)
-COMM_RE = re.compile(r"\bcomm(?:onality)?\s*[:= ]\s*([0-9]*\.?[0-9]+)", re.I)
-
-
-def mined_target(note: str) -> str | None:
-    for pat in MOVE_PATTERNS:
-        m = pat.search(note or "")
-        if m:
-            return m.group(1)
     return None
 
 
-def mined_commonality(note: str, default: float) -> float:
-    m = COMM_RE.search(note or "")
-    return float(m.group(1)) if m else default
+def load_items(html_path: str) -> dict:
+    """id -> item dict from the sheet's ITEMS block. Best-effort: a missing/unparseable
+    sheet degrades label quality and disables homeless-group classification, but never
+    crashes the report (it can still print raw ids and every fauna:/flora: in-biome row,
+    whose biome is already in the id)."""
+    if not os.path.isfile(html_path):
+        return {}
+    try:
+        html = open(html_path, encoding="utf-8").read()
+    except OSError:
+        return {}
+    items = _find_script_json(html, "ITEMS")
+    if not isinstance(items, list):
+        return {}
+    return {it["id"]: it for it in items if isinstance(it, dict) and "id" in it}
 
 
-def named_in_note(note: str, candidates: list[str], labels: dict[str, str]) -> list[str]:
-    """Which of `candidates` (defNames) the owner named — by defName or by label."""
-    text = (note or "")
-    hit = []
-    for dn in candidates:
-        if re.search(rf"(?<![\w]){re.escape(dn)}(?![\w])", text):
-            hit.append(dn)
+def load_roster_index() -> dict:
+    """sheet-FIELD -> (path, doc). Never index by filename — the_grey_sea.json's sheet
+    field is 'terminator_sea + the_grey_deep', not derivable from the path."""
+    index = {}
+    for path in sorted(_glob.glob(os.path.join(ROSTERS, "*.json"))):
+        name = os.path.basename(path)
+        if name.startswith("_"):
             continue
-        lab = labels.get(dn)
-        if lab and len(lab) > 3 and re.search(re.escape(lab), text, re.I):
-            hit.append(dn)
-    return hit
+        with open(path, encoding="utf-8") as fh:
+            doc = json.load(fh)
+        key = doc.get("sheet")
+        if not key:
+            continue
+        index[key] = {"path": path, "doc": doc}
+    return index
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# the plan
-# ─────────────────────────────────────────────────────────────────────────────
+# ═══════════════════════════════════════════════════════════════ row-id parsing
 
-class Change:
-    def __init__(self, rid: str, what: str, fn):
-        self.id, self.what, self.fn = rid, what, fn
-
-    def apply(self):
-        self.fn()
-
-
-def _verdict(date: str, decision: str, note: str) -> str:
-    tail = f" — {note}" if note else ""
-    return f"owner verdict {date}: {decision}{tail}"
+def parse_row_id(item_id: str):
+    """-> (kind, sheet_or_None, rest). Sheet keys hold spaces and '+' but never ':',
+    so a bounded split is safe; homeless: rows carry no sheet segment at all."""
+    kind, _, tail = item_id.partition(":")
+    if kind == "homeless":
+        return kind, None, tail
+    sheet, _, rest = tail.partition(":")
+    return kind, sheet, rest
 
 
-def build_plan(dec_doc: dict, rows: list[dict], by_sheet: dict, glob: dict,
-               date: str) -> tuple[list[Change], list[str]]:
-    changes: list[Change] = []
-    errors: list[str] = []
-    kind = "flora" if "flora" in str(dec_doc.get("sheet", "")) else "fauna"
+# ═══════════════════════════════════════════════════════ Move target resolution
 
-    def sheet_entry(sheet: str, rid: str):
-        entry = by_sheet.get(sheet)
-        if entry is None:
-            errors.append(f"{rid}: no roster carries sheet {sheet!r} "
-                          f"(known: {', '.join(sorted(by_sheet)[:4])}, ...)")
-        return entry
+def _sheet_terms(sheet_key: str) -> list[str]:
+    plain = sheet_key.replace("_", " ")
+    terms = [plain]
+    if plain.startswith("the "):
+        terms.append(plain[4:])
+    return terms
 
-    def resolve_move_target(rid: str, note: str) -> tuple[str, dict] | None:
-        target = mined_target(note)
-        if not target:
-            errors.append(
-                f"{rid}: verdict 'move' with no target in the note. The note must name the "
-                f"destination — 'move:<BiomeDefName>' or '-> <sheet>'. Note was: {note!r}")
-            return None
-        entry = by_sheet.get(target)
-        if entry is None:
-            for cand in by_sheet.values():
-                if target in (cand["doc"].get("defNames") or []):
-                    entry = cand
-                    break
-        if entry is None:
-            errors.append(f"{rid}: move target {target!r} is neither a roster sheet nor a "
-                          f"painted biome defName in any roster.")
-            return None
-        return target, entry
 
-    def mark(entry: dict):
-        entry["dirty"] = True
-
-    def add_fauna(entry: dict, defname: str, commonality: float, law: str,
-                  note: str, action: str = "import"):
-        fauna = entry["doc"].setdefault("fauna", [])
-        for row in fauna:
-            if row.get("def") == defname:
-                row["law"] = (row.get("law") or "") + f"  — {law}"
-                if note:
-                    row["owner_note"] = note
-                mark(entry)
-                return
-        new = {"def": defname, "commonality": commonality, "action": action, "law": law}
-        if note:
-            new["owner_note"] = note
-        fauna.append(new)
-        mark(entry)
-
-    def to_evictions(entry: dict, defname: str, disposition: str, reason: str,
-                     note: str, carried: dict | None):
-        evictions = entry["doc"].setdefault("evictions", [])
-        for row in evictions:
-            if row.get("def") == defname:
-                row["disposition"] = disposition
-                row["reason"] = reason
-                if note:
-                    row["owner_note"] = note
-                mark(entry)
-                return
-        row = {"def": defname, "reason": reason, "disposition": disposition}
-        if note:
-            row["owner_note"] = note
-        if carried:
-            # carry the landed row's own record through, minus the fields that only
-            # mean something while it is rostered
-            for key, val in carried.items():
-                if key not in {"def", "commonality", "action", "law", "band"}:
-                    row.setdefault(key, val)
-        evictions.append(row)
-        mark(entry)
-
-    def take_from(lst: list, defname: str) -> dict | None:
-        for i, row in enumerate(lst):
-            if row.get("def") == defname:
-                return lst.pop(i)
-        return None
-
-    def find(lst: list, defname: str) -> dict | None:
-        for row in lst:
-            if row.get("def") == defname:
-                return row
-        return None
-
-    for row in rows:
-        rid, decision, note = row["id"], row["decision"], row["note"]
-        prefix, sheet, tail = parse_id(rid)
-        verdict = _verdict(date, decision, note)
-
-        # ── h: the homeless in-joke rows, which live in _global.json ────────────────
-        if prefix == "h":
-            if not glob:
-                errors.append(f"{rid}: _global.json not loaded")
+def resolve_move_target(note: str, own_sheet, roster_index: dict):
+    """-> sheet_key, or None if the note names no single unambiguous destination.
+    Tiered: prefer a full sheet-phrase match (handles 'the rot' safely) and only fall
+    back to a bare single word when no phrase matched anywhere, to avoid 'desert'
+    swallowing 'dune_sea + deep_desert'. Ambiguity is failure, not a guess."""
+    text = (note or "").lower()
+    tier1, tier2 = set(), set()
+    for key in roster_index:
+        if key == own_sheet:
+            continue
+        for term in _sheet_terms(key):
+            if not term:
                 continue
-            defname = tail
+            pat = r"\b" + re.escape(term) + r"\b"
+            if re.search(pat, text):
+                (tier1 if " " in term or len(term) > 6 else tier2).add(key)
+                break
+    hit = tier1 or tier2
+    return next(iter(hit)) if len(hit) == 1 else None
 
-            def do_h(defname=defname, decision=decision, verdict=verdict):
-                ruled = glob["doc"].setdefault("ruled", {})
-                jokes = ruled.setdefault("in_jokes_kept_reskinned", {})
-                jokes[defname] = f"{jokes.get(defname, '')}  — {verdict}".strip()
-                if decision in {"evict", "purge", "drop"}:
-                    reserve = glob["doc"].setdefault("reserve_for_events", [])
-                    if defname not in reserve:
-                        reserve.append(defname)
-                        reserve.sort()
-                glob["dirty"] = True
 
-            changes.append(Change(rid, f"_global.json in_jokes[{defname}] ← {decision}", do_h))
-            continue
+# ═══════════════════════════════════════════════════════════════ the plan
 
-        entry = sheet_entry(sheet, rid)
-        if entry is None:
-            continue
-        doc = entry["doc"]
+class Plan:
+    def __init__(self, sheet_kind: str, source: str):
+        self.sheet_kind = sheet_kind          # "fauna" | "flora"
+        self.source = source                  # decisions file basename, for provenance
+        self.overrides: list[dict] = []       # decision != prefill, ALL kinds
+        self.q_rulings: list[dict] = []
+        self.roster_writes: dict = {}         # sheet_key -> doc (mutated in place)
+        self.draft_additions: dict = {}       # gkey(cave/sea/dungeon) -> [entries]
+        self.cut_list: list[dict] = []
+        self.events_pool: list[dict] = []
+        self.livestock_pool: list[dict] = []
+        self.size_worklist: list[dict] = []
+        self.art_queue: list[dict] = []
+        self.errors: list[str] = []
+        self.noop = 0
 
-        # ── c: an unsettled confidence[] claim ─────────────────────────────────────
-        if prefix == "c":
-            conf = doc.get("confidence") or []
-            try:
-                idx = int(tail)
-                target_row = conf[idx]
-            except (ValueError, IndexError):
-                errors.append(f"{rid}: confidence[{tail}] does not exist in {sheet!r} "
-                              f"({len(conf)} entries) — the roster changed since the sheet "
-                              f"was generated; regenerate the sheet before applying.")
-                continue
 
-            def do_c(target_row=target_row, decision=decision, note=note, entry=entry,
-                     verdict=verdict):
-                target_row["owner_verdict"] = decision
-                if note:
-                    target_row["owner_note"] = note
-                if decision in CLOSING:
-                    target_row["status"] = f"RULED — {verdict}"
-                mark(entry)
+def _label(items: dict, item_id: str, fallback: str) -> str:
+    it = items.get(item_id)
+    return (it.get("label") if it else None) or fallback
 
-            changes.append(Change(rid, f"{sheet}: confidence[{tail}] ← {decision}", do_c))
-            continue
 
-        # ── nd: the NEW-ART/DEF ledger ─────────────────────────────────────────────
-        if prefix == "nd":
-            news = doc.get("new_defs") or []
-            try:
-                idx = int(tail)
-                target_row = news[idx]
-            except (ValueError, IndexError):
-                errors.append(f"{rid}: new_defs[{tail}] does not exist in {sheet!r} "
-                              f"({len(news)} entries) — regenerate the sheet first.")
-                continue
-            status = LEDGER_STATUS.get(decision, decision)
+def _now_stamp() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
-            def do_nd(target_row=target_row, status=status, note=note, entry=entry,
-                      verdict=verdict):
-                target_row["status"] = status
-                target_row["owner_verdict"] = verdict
-                if note:
-                    target_row["owner_note"] = note
-                mark(entry)
 
-            changes.append(Change(
-                rid, f"{sheet}: new_defs[{tail}] "
-                     f"({target_row.get('name', '?')[:40]}) status ← {status}", do_nd))
-            continue
+def _law_text(kind: str, verdict: str, source_sheet, target_sheet, note: str) -> str:
+    bits = [f"owner review {_now_stamp()} ({verdict})"]
+    if source_sheet and target_sheet:
+        bits.append(f"{source_sheet} → {target_sheet}")
+    if note:
+        bits.append(note.strip())
+    return "; ".join(bits)
 
-        # ── purge: the one-per-biome flora_purged summary row ──────────────────────
-        if prefix == "purge":
-            purged = doc.get("flora_purged") or []
-            if decision in {"keep", "thin"}:
-                labels = {p.get("def", ""): p.get("label", "") for p in purged}
-                named = named_in_note(note, [p.get("def", "") for p in purged], labels)
-                if not named:
-                    errors.append(
-                        f"{rid}: overruled to {decision!r} but the note names none of the "
-                        f"{len(purged)} purged plants, so there is nothing to restore. The "
-                        f"note must name the defNames to bring back. Note was: {note!r}")
-                    continue
 
-                def do_restore(entry=entry, named=named, verdict=verdict, note=note):
-                    d = entry["doc"]
-                    for defname in named:
-                        gone = take_from(d.setdefault("flora_purged", []), defname)
-                        law = f"{verdict} — restored"
-                        if gone and gone.get("reason"):
-                            law += f" (was purged: {gone['reason']})"
-                        flora = d.setdefault("flora", [])
-                        if not find(flora, defname):
-                            flora.append({"def": defname,
-                                          "commonality": mined_commonality(note, 0.5),
-                                          "law": law, "owner_note": note})
-                    mark(entry)
+def _remove_def(doc: dict, listkey: str, defname: str):
+    doc[listkey] = [r for r in (doc.get(listkey) or []) if r.get("def") != defname]
 
-                changes.append(Change(
-                    rid, f"{sheet}: RESTORE {len(named)} purged plant(s) "
-                         f"({', '.join(named)}) to flora[]", do_restore))
+
+def build_plan(doc: dict, sheet_kind: str, items: dict, roster_index: dict,
+               source_name: str) -> Plan:
+    plan = Plan(sheet_kind, source_name)
+    decisions = doc["decisions"]
+
+    for item_id, entry in decisions.items():
+        decision = entry.get("decision")
+        prefill = entry.get("prefill")
+        note = (entry.get("note") or "").strip()
+        kind, sheet, rest = parse_row_id(item_id)
+        label = _label(items, item_id, rest or item_id)
+        group = (items.get(item_id) or {}).get("group", "")
+
+        if decision != prefill:
+            plan.overrides.append({
+                "id": item_id, "kind": kind, "group": group or sheet or "?",
+                "label": label, "decision": decision, "prefill": prefill, "note": note,
+            })
+
+        # size / art lanes ride on top of ANY kind that carries them, independent
+        # of the disposition below (dispositions decide WHERE it lives, not HOW big
+        # or well-drawn — a rescale/redraw target only matters for a thing staying
+        # in the game, so "out"/"later" rows are excluded here).
+        keeps_playing = decision in ("in", "move")
+        if keeps_playing and "sizeBin" in entry:
+            cur, chosen = entry.get("sizeBinPrefill"), entry.get("sizeBin")
+            if cur in SIZE_ORDER and chosen in SIZE_ORDER:
+                delta = SIZE_ORDER.index(chosen) - SIZE_ORDER.index(cur)
+                direction = "grow" if delta > 0 else "shrink" if delta < 0 else "same"
             else:
-                def do_purge_note(entry=entry, verdict=verdict, decision=decision):
-                    entry["doc"].setdefault("owner_verdicts", []).append(
-                        {"row": "flora_purged (whole-biome)", "verdict": verdict})
-                    mark(entry)
+                direction = "unknown"
+            plan.size_worklist.append({
+                "defName": rest, "sheet": sheet or "homeless",
+                "currentBin": cur, "chosenBin": chosen, "direction": direction,
+            })
+        if keeps_playing and entry.get("art") not in (None, "keep"):
+            plan.art_queue.append({
+                "defName": rest, "sheet": sheet or "homeless", "kind": "regrade",
+                "verdict": entry.get("art"), "note": note,
+            })
 
-                changes.append(Change(
-                    rid, f"{sheet}: flora_purged summary annotated ← {decision}",
-                    do_purge_note))
+        if kind == "q":
+            plan.q_rulings.append({"id": item_id, "label": label, "decision": decision,
+                                    "note": note})
             continue
 
-        defname = tail
+        if kind == "ledger":
+            if decision == "in":
+                plan.art_queue.append({
+                    "id": item_id, "sheet": sheet, "label": label, "kind": "commission",
+                    "verdict": "commission", "note": note,
+                })
+            # out/later: nothing exists yet to write anywhere; the report already
+            # carries the ruling via overrides/q_rulings-style bookkeeping is not
+            # needed since "in" (commission) is the sheet's own prefill for these.
+            continue
 
-        # ── p: a landed flora[] row ────────────────────────────────────────────────
-        if prefix == "p":
-            flora = doc.get("flora") or []
-            target_row = find(flora, defname)
-            if target_row is None:
-                errors.append(f"{rid}: {defname} is not in {sheet!r} flora[] — the roster "
-                              f"changed since the sheet was generated.")
+        if kind in ("fauna", "flora"):
+            listkey = kind  # "fauna" or "flora" list name matches the row kind
+            defname = rest
+            if decision == "in" or decision == "later":
+                continue  # stands as recommended, or parked on purpose — no write
+            src = roster_index.get(sheet)
+            if src is None:
+                plan.errors.append(f"{item_id}: source sheet {sheet!r} not found in rosters/")
                 continue
-            if decision in {"purge", "drop", "evict"}:
-                def do_p_purge(entry=entry, defname=defname, verdict=verdict, note=note):
-                    d = entry["doc"]
-                    take_from(d.setdefault("flora", []), defname)
-                    row = {"def": defname, "reason": verdict}
-                    if note:
-                        row["owner_note"] = note
-                    d.setdefault("flora_purged", []).append(row)
-                    mark(entry)
-
-                changes.append(Change(rid, f"{sheet}: flora {defname} → flora_purged[]",
-                                      do_p_purge))
+            src_doc = src["doc"]
+            src_entry = next((r for r in (src_doc.get(listkey) or [])
+                              if r.get("def") == defname), None)
+            if decision == "out":
+                _remove_def(src_doc, listkey, defname)
+                if kind == "fauna":
+                    src_doc.setdefault("evictions", []).append({
+                        "def": defname,
+                        "reason": _law_text(kind, "out", sheet, None, note),
+                        "disposition": "homeless-reserve",
+                    })
+                else:
+                    src_doc.setdefault("flora_purged", []).append({
+                        "def": defname, "reason": _law_text(kind, "out", sheet, None, note),
+                    })
+                plan.roster_writes[sheet] = src["path"]
+            elif decision == "move":
+                target = resolve_move_target(note, sheet, roster_index)
+                if target is None:
+                    plan.errors.append(
+                        f"{item_id}: Move but the note does not name one unambiguous "
+                        f"biome — note={note!r}")
+                    continue
+                _remove_def(src_doc, listkey, defname)
+                tgt = roster_index[target]
+                new_row = {"def": defname,
+                           "commonality": (src_entry or {}).get("commonality", 0.5),
+                           "law": _law_text(kind, "move", sheet, target, note)}
+                if kind == "fauna":
+                    new_row["action"] = "import"
+                    if src_entry and src_entry.get("band"):
+                        new_row["band"] = src_entry["band"]
+                    src_doc.setdefault("evictions", []).append({
+                        "def": defname,
+                        "reason": _law_text(kind, "move", sheet, target, note),
+                        "disposition": f"move:{tgt['doc'].get('defNames', [target])[0] if tgt['doc'].get('defNames') else target}",
+                    })
+                tgt["doc"].setdefault(listkey, []).append(new_row)
+                plan.roster_writes[sheet] = src["path"]
+                plan.roster_writes[target] = tgt["path"]
             else:
-                # thin / defer / keep — an annotation plus a flag for the commonality edit
-                def do_p_note(entry=entry, target_row=target_row, decision=decision,
-                              note=note, verdict=verdict, defname=defname):
-                    target_row["owner_verdict"] = verdict
-                    if note:
-                        target_row["owner_note"] = note
-                    if decision == "thin":
-                        entry["doc"].setdefault("owner_pending_edits", []).append(
-                            {"def": defname, "kind": "flora commonality",
-                             "verdict": verdict})
-                    mark(entry)
-
-                changes.append(Change(
-                    rid, f"{sheet}: flora {defname} annotated ← {decision}"
-                         + (" (flagged for the commonality edit)" if decision == "thin" else ""),
-                    do_p_note))
+                plan.errors.append(f"{item_id}: unrecognised decision {decision!r}")
             continue
 
-        # ── f: a landed fauna[] row ────────────────────────────────────────────────
-        if prefix == "f":
-            fauna = doc.get("fauna") or []
-            target_row = find(fauna, defname)
-            if target_row is None:
-                errors.append(f"{rid}: {defname} is not in {sheet!r} fauna[] — the roster "
-                              f"changed since the sheet was generated.")
+        if kind == "homeless":
+            defname = rest
+            if decision == "later":
                 continue
-
-            if decision == "evict":
-                def do_evict(entry=entry, defname=defname, verdict=verdict, note=note):
-                    carried = take_from(entry["doc"].setdefault("fauna", []), defname)
-                    to_evictions(entry, defname, "homeless-reserve", verdict, note, carried)
-
-                changes.append(Change(
-                    rid, f"{sheet}: fauna {defname} → evictions[] (homeless-reserve)",
-                    do_evict))
-
-            elif decision == "move":
-                resolved = resolve_move_target(rid, note)
-                if resolved is None:
-                    continue
-                target, tentry = resolved
-
-                def do_move(entry=entry, tentry=tentry, target=target, defname=defname,
-                            verdict=verdict, note=note, sheet=sheet):
-                    carried = take_from(entry["doc"].setdefault("fauna", []), defname)
-                    to_evictions(entry, defname, f"move:{target}", verdict, note, carried)
-                    add_fauna(tentry, defname,
-                              mined_commonality(note, carried.get("commonality", 0.4)
-                                                if carried else 0.4),
-                              f"{verdict} — moved here from {sheet}", note)
-
-                changes.append(Change(
-                    rid, f"{sheet}: fauna {defname} → evictions[] (move:{target}) "
-                         f"AND rostered into {tentry['doc'].get('sheet')}", do_move))
-
-            elif decision == "adjust":
-                def do_adjust(entry=entry, target_row=target_row, defname=defname,
-                              verdict=verdict, note=note):
-                    target_row["action"] = "adjust-keep"
-                    target_row["owner_verdict"] = verdict
-                    if note:
-                        target_row["owner_note"] = note
-                    entry["doc"].setdefault("owner_pending_edits", []).append(
-                        {"def": defname, "kind": "stat/commonality", "verdict": verdict})
-                    mark(entry)
-
-                changes.append(Change(
-                    rid, f"{sheet}: fauna {defname} annotated ← adjust "
-                         f"(flagged for the stat/commonality edit)", do_adjust))
-
-            else:  # keep / open — annotate; 'keep' also cancels a pending adjust
-                def do_keep(entry=entry, target_row=target_row, decision=decision,
-                            verdict=verdict, note=note):
-                    if decision == "keep":
-                        target_row["action"] = "keep"
-                    target_row["owner_verdict"] = verdict
-                    if note:
-                        target_row["owner_note"] = note
-                    mark(entry)
-
-                changes.append(Change(
-                    rid, f"{sheet}: fauna {defname} annotated ← {decision}", do_keep))
-            continue
-
-        # ── e: an evictions[] row the sheet flagged ────────────────────────────────
-        if prefix == "e":
-            evictions = doc.get("evictions") or []
-            target_row = find(evictions, defname)
-            if target_row is None:
-                errors.append(f"{rid}: {defname} is not in {sheet!r} evictions[] — the "
-                              f"roster changed since the sheet was generated.")
+            if decision == "out":
+                plan.cut_list.append({"defName": defname, "note": note,
+                                       "reason": "owner review: Out on a no-home row"})
                 continue
-
-            if decision in {"keep", "adjust"}:
-                def do_restore(entry=entry, defname=defname, verdict=verdict, note=note,
-                               decision=decision):
-                    gone = take_from(entry["doc"].setdefault("evictions", []), defname)
-                    law = verdict + " — restored to the roster"
-                    if gone and gone.get("reason"):
-                        law += f" (was evicted: {gone['reason']})"
-                    add_fauna(entry, defname, mined_commonality(note, 0.4), law, note,
-                              action="adjust-keep" if decision == "adjust" else "keep")
-                    if decision == "adjust":
-                        entry["doc"].setdefault("owner_pending_edits", []).append(
-                            {"def": defname, "kind": "stat/commonality", "verdict": verdict})
-
-                changes.append(Change(
-                    rid, f"{sheet}: RESTORE {defname} evictions[] → fauna[] ({decision})",
-                    do_restore))
-
-            elif decision == "move":
-                resolved = resolve_move_target(rid, note)
-                if resolved is None:
+            if decision == "move":
+                target = resolve_move_target(note, None, roster_index)
+                if target is None:
+                    plan.errors.append(
+                        f"{item_id}: Move but the note does not name one unambiguous "
+                        f"biome — note={note!r}")
                     continue
-                target, tentry = resolved
-
-                def do_emove(entry=entry, tentry=tentry, target=target, defname=defname,
-                             verdict=verdict, note=note, sheet=sheet):
-                    to_evictions(entry, defname, f"move:{target}", verdict, note, None)
-                    add_fauna(tentry, defname, mined_commonality(note, 0.4),
-                              f"{verdict} — moved here from {sheet}", note)
-
-                changes.append(Change(
-                    rid, f"{sheet}: eviction {defname} → move:{target} AND rostered "
-                         f"into {tentry['doc'].get('sheet')}", do_emove))
-
-            else:  # evict / open / drop
-                def do_e_note(entry=entry, defname=defname, verdict=verdict, note=note,
-                              decision=decision):
-                    to_evictions(entry, defname, "homeless-reserve", verdict, note, None)
-
-                changes.append(Change(
-                    rid, f"{sheet}: eviction {defname} ← {decision} (homeless-reserve)",
-                    do_e_note))
+                tgt = roster_index[target]
+                tgt["doc"].setdefault("fauna", []).append({
+                    "def": defname, "commonality": 0.5, "action": "import",
+                    "law": _law_text(kind, "move", None, target, note),
+                })
+                plan.roster_writes[target] = tgt["path"]
+                continue
+            # decision == "in": carry out the row's own recommendation group
+            gkey = HOMELESS_GROUPS.get(group)
+            if gkey is None:
+                plan.errors.append(
+                    f"{item_id}: homeless row's group {group!r} does not match any "
+                    "known HOMELESS_GROUPS label — sheet text may have changed; "
+                    "refusing rather than guessing its destiny "
+                    "(is the ITEMS block loadable? check the .html sibling exists)")
+                continue
+            if gkey == "cut":
+                plan.cut_list.append({"defName": defname, "note": note,
+                                       "reason": "owner review: stands as recommended (cut)"})
+            elif gkey == "events":
+                plan.events_pool.append({"defName": defname, "note": note})
+            elif gkey == "livestock":
+                plan.livestock_pool.append({"defName": defname, "note": note})
+            else:  # cave / sea / dungeon draft rosters
+                plan.draft_additions.setdefault(gkey, []).append({
+                    "def": defname, "commonality": 0.5,
+                    "law": _law_text(kind, "in", None, gkey, note),
+                })
             continue
 
-        errors.append(f"{rid}: unknown row-id prefix {prefix!r} — this consumer knows "
-                      f"f/e/p/purge/nd/c/h. Was the sheet generator changed?")
+        plan.errors.append(f"{item_id}: unrecognised row-id kind {kind!r}")
 
-    return changes, errors
+    return plan
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# reporting
-# ─────────────────────────────────────────────────────────────────────────────
+# ═══════════════════════════════════════════════════════════════ report + write
 
-def print_override_group(name: str, doc: dict, rows: list[dict]) -> None:
-    """review-sheets §3: read the overrides as a GROUP, not row by row."""
-    total = len(doc.get("decisions") or {})
-    print(f"\n{'=' * 78}\n{name}  —  {len(rows)} override(s) of {total} row(s) "
-          f"({(len(rows) / total * 100 if total else 0):.1f}%)\n{'=' * 78}")
-    if not rows:
-        print("  no overrides. Every row stands as landed.\n"
-              "  ⚠️  zero overrides means EITHER the prefill was right OR disagreeing was "
-              "too hard — the file cannot tell you which (review-sheets §3).")
+def print_overrides(plan: Plan):
+    if not plan.overrides:
+        print(f"  (no overrides — every row still reads as its own prefill)")
         return
-    by_decision: dict[str, list[dict]] = {}
-    for row in rows:
-        by_decision.setdefault(row["decision"], []).append(row)
-    for decision in sorted(by_decision):
-        group = by_decision[decision]
-        print(f"\n  ── {decision.upper()}  ({len(group)}) "
-              f"{'─' * max(0, 60 - len(decision))}")
-        for row in group:
-            prefix, sheet, tail = parse_id(row["id"])
-            where = f"{sheet}:{tail}" if sheet else tail
-            print(f"    [{prefix:>5}] {where}   (was {row['prefill']})")
-            if row["note"]:
-                print(f"            note: {row['note']}")
-    notes = [r for r in rows if r["note"]]
-    print(f"\n  {len(notes)} of {len(rows)} overrides carry a note. Read them together "
-          f"before implementing any one of them —\n  scattered disagreements are usually "
-          f"one rule the sheet did not know.")
+    by_group: dict[str, list] = {}
+    for o in plan.overrides:
+        by_group.setdefault(o["group"], []).append(o)
+    for group, rows in sorted(by_group.items()):
+        print(f"  ── {group} ──")
+        for o in rows:
+            note = f"  — {o['note']}" if o["note"] else ""
+            print(f"    [{o['kind']}] {o['label']}: {o['prefill']} → {o['decision']}{note}")
 
 
-REGEN = [
-    ("python3 design/Jawa/fauna/rosters_to_cast.py",
-     "rosters -> cast_assignment.csv"),
-    ("python3 design/Jawa/fauna/gen_cast_patch.py",
-     "cast_assignment.csv -> BiomeCast_Ashkarr.xml"),
-    ("python3 design/Jawa/mods/biome_flora.py --write --doc",
-     "rosters -> the flora patch + its doc"),
-    ("python3 design/Jawa/worldbuilding/review/gen_fauna_assignment_sheet.py --sheet-only",
-     "re-render the fauna sheet (SAFE: --sheet-only never touches the decisions file)"),
-    ("python3 design/Jawa/worldbuilding/review/gen_flora_assignment_sheet.py --sheet-only",
-     "re-render the flora sheet (same guard)"),
-]
+def print_report(plan: Plan):
+    print(f"\n=== {plan.source} — overrides (decision != prefill), as groups ===")
+    print_overrides(plan)
+    if plan.q_rulings:
+        print(f"\n=== {plan.source} — question-card rulings ===")
+        for q in plan.q_rulings:
+            note = f"  — {q['note']}" if q["note"] else ""
+            print(f"  {q['label']}: {q['decision']}{note}")
+    print(f"\n=== {plan.source} — write plan ===")
+    print(f"  rosters touched: {len(plan.roster_writes)}")
+    print(f"  draft-group additions: { {k: len(v) for k, v in plan.draft_additions.items()} }")
+    print(f"  cut-for-real: {len(plan.cut_list)}")
+    print(f"  events/quest pool: {len(plan.events_pool)}")
+    print(f"  livestock/trader pool: {len(plan.livestock_pool)}")
+    print(f"  size-rescale worklist rows: {len(plan.size_worklist)}")
+    print(f"  art-queue rows: {len(plan.art_queue)}")
+    if plan.errors:
+        print(f"\n🔴 {len(plan.errors)} BLOCKING error(s) — nothing from {plan.source} "
+              "will be written:")
+        for e in plan.errors:
+            print(f"    - {e}")
 
 
-def print_regen(changed: list[str]) -> None:
-    print(f"\n{'=' * 78}\nREGENERATION OWED — {len(changed)} roster file(s) changed. "
-          f"NOT run by this tool.\n{'=' * 78}")
-    for path in changed:
-        print(f"  changed: {path}")
-    print("\n  From the repo root, in this order:")
-    for cmd, why in REGEN:
-        print(f"    {cmd}\n        # {why}")
-    print("\n  ⛔ Do NOT run the sheet generators without --sheet-only: they rewrite the\n"
-          "     decisions file with the agent's prefill and eat the owner's verdicts.")
-
-
-def run_validator(validator: str, rosters_dir: str) -> int:
-    print(f"\n{'=' * 78}\nVALIDATOR: {validator} --cross\n{'=' * 78}")
-    proc = subprocess.run([sys.executable, validator, "--cross"],
-                          cwd=rosters_dir, capture_output=True, text=True)
-    out = (proc.stdout or "") + (proc.stderr or "")
-    red = [ln for ln in out.splitlines() if ln.startswith("🔴")]
-    warn = [ln for ln in out.splitlines() if ln.startswith("⚠️")]
-    for line in red + warn:
-        print("  " + line)
-    print(f"  -> exit {proc.returncode}; {len(red)} red, {len(warn)} warning(s)")
-    if proc.returncode != 0 or red:
-        print("\n🔴🔴 VALIDATOR WENT RED AFTER THE APPLY. The rosters ON DISK are now\n"
-              "     inconsistent. Fix the findings above, or `git checkout --` the roster\n"
-              "     files listed and re-run with corrected verdict notes. Do NOT regenerate\n"
-              "     the cast or flora patches from a red roster set.")
-        return RC_VALIDATOR
-    return RC_OK
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# main
-# ─────────────────────────────────────────────────────────────────────────────
-
-def write_rosters(by_sheet: dict, glob: dict) -> list[str]:
+def apply_all(plan: Plan, roster_index: dict, sheet_stem: str):
     written = []
-    for entry in list(by_sheet.values()) + ([glob] if glob else []):
-        if not entry.get("dirty"):
-            continue
-        with open(entry["path"], "w", encoding="utf-8") as fh:
-            json.dump(entry["doc"], fh, indent=2, ensure_ascii=False)
+    for sheet_key, path in plan.roster_writes.items():
+        doc = roster_index[sheet_key]["doc"]
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(doc, fh, indent=2, ensure_ascii=False, sort_keys=True)
             fh.write("\n")
-        written.append(entry["path"])
+        written.append(path)
+
+    for gkey, rows in plan.draft_additions.items():
+        path = os.path.join(ROSTERS, DRAFT_ROSTER_NAME[gkey])
+        doc = {"sheet": f"_draft_{gkey}", "draft": True,
+               "draftMeaning": "no biome/layer exists for this yet — a first-cut roster "
+                                "from the homeless review, not a real biome file",
+               "generatedFrom": os.path.basename(plan.source), "fauna": []}
+        if os.path.isfile(path):
+            doc = json.load(open(path, encoding="utf-8"))
+        doc.setdefault("fauna", []).extend(rows)
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(doc, fh, indent=2, ensure_ascii=False, sort_keys=True)
+            fh.write("\n")
+        written.append(path)
+
+    def _side(name, rows):
+        if not rows:
+            return
+        path = os.path.join(REVIEW, f"{sheet_stem}.{name}.json")
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(rows, fh, indent=2, ensure_ascii=False, sort_keys=True)
+            fh.write("\n")
+        written.append(path)
+
+    _side("cherry_pick_cut_list", plan.cut_list)
+    _side("homeless_events_quest_pool", plan.events_pool)
+    _side("homeless_livestock_trader_stock", plan.livestock_pool)
+    _side("size_rescale_worklist", plan.size_worklist)
+    _side("art_queue", plan.art_queue)
     return written
 
 
-def run(argv: list[str]) -> int:
-    ap = argparse.ArgumentParser(
-        description="Apply owner verdicts from an assignment review sheet to the rosters.")
-    ap.add_argument("decisions", nargs="*", help="decisions JSON (default: both sheets)")
-    ap.add_argument("--apply", action="store_true",
-                    help="write the rosters (default: report only)")
-    ap.add_argument("--allow-unfrozen", action="store_true",
-                    help="consume a decisions file that has not been frozen")
-    ap.add_argument("--rosters", default=ROSTERS, help="roster directory")
-    ap.add_argument("--validator", default=None,
-                    help="validator script (default: <rosters>/_validate.py)")
-    ap.add_argument("--no-validate", action="store_true",
-                    help="skip the post-apply validator (for a dry lane only)")
-    ap.add_argument("--date", default=_dt.date.today().isoformat(),
-                    help="the date stamped into every verdict line")
-    ap.add_argument("--selftest", action="store_true")
+def run_validate_cross():
+    script = os.path.join(ROSTERS, "_validate.py")
+    if not os.path.isfile(script):
+        print(f"\n(no rosters/_validate.py at {script} — skipping the post-apply "
+              "cross-check; this is expected in a selftest fixture, never in a real run)")
+        return 0
+    proc = subprocess.run([sys.executable, script, "--cross"],
+                           cwd=ROSTERS, capture_output=True, text=True)
+    print("\n=== rosters/_validate.py --cross ===")
+    print(proc.stdout.strip())
+    if proc.stderr.strip():
+        print(proc.stderr.strip())
+    return proc.returncode
+
+
+REGEN_COMMANDS = [
+    "python3 design/Jawa/worldbuilding/biomes/rosters/_validate.py --cross",
+    "python3 design/Jawa/worldbuilding/biomes/rosters/_consolidate.py   "
+    "# recomputes _global.json's reserve_for_events from the edited per-biome rosters "
+    "— never hand-edit _global.json",
+    "python3 design/Jawa/worldbuilding/review/gen_fauna_assignment_sheet.py",
+    "python3 design/Jawa/worldbuilding/review/gen_flora_assignment_sheet.py",
+]
+
+
+def print_regen_commands():
+    print("\n=== regeneration commands to run next ===")
+    for c in REGEN_COMMANDS:
+        print(f"  {c}")
+
+
+# ═══════════════════════════════════════════════════════════════ main
+
+def sheet_kind_of(path: str) -> str:
+    base = os.path.basename(path)
+    if "flora" in base:
+        return "flora"
+    return "fauna"
+
+
+def html_for(decisions_path: str) -> str:
+    return decisions_path[:-len(".decisions.json")] + ".html" \
+        if decisions_path.endswith(".decisions.json") else decisions_path + ".html"
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser(description=__doc__,
+                                  formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("decisions", nargs="*", default=None,
+                     help="decisions.json file(s); default: both fauna and flora sheets")
+    ap.add_argument("--apply", action="store_true", help="write rosters + worklists")
     args = ap.parse_args(argv)
 
-    if args.selftest:
-        return selftest()
-
     paths = args.decisions or DEFAULT_DECISIONS
-    validator = args.validator or os.path.join(args.rosters, "_validate.py")
+    overall_rc = RC_OK
+    any_written = False
 
-    try:
-        by_sheet, glob = load_rosters(args.rosters)
-        all_changes: list[Change] = []
-        all_errors: list[str] = []
-        for path in paths:
-            doc = load_decisions(path, args.allow_unfrozen)
-            rows = overrides_of(doc)
-            print_override_group(os.path.basename(path), doc, rows)
-            changes, errors = build_plan(doc, rows, by_sheet, glob, args.date)
-            all_changes += changes
-            all_errors += errors
-    except Refuse as exc:
-        print(str(exc))
-        return exc.code
+    for path in paths:
+        if not os.path.isfile(path):
+            print(f"(skip) {path}: no such file")
+            continue
+        try:
+            doc = load_decisions(path)
+        except Refuse as exc:
+            print(str(exc))
+            overall_rc = max(overall_rc, RC_NO_SIDECAR)
+            continue
 
-    print(f"\n{'=' * 78}\nPLAN — {len(all_changes)} roster amendment(s)\n{'=' * 78}")
-    for change in all_changes:
-        print(f"  {change.what}")
-    if not all_changes:
-        print("  (nothing to do)")
+        sheet_stem = os.path.basename(path).replace(".decisions.json", "")
+        kind = sheet_kind_of(path)
+        items = load_items(html_for(path))
+        roster_index = load_roster_index()
+        plan = build_plan(doc, kind, items, roster_index, os.path.basename(path))
+        print_report(plan)
 
-    if all_errors:
-        print(f"\n{'=' * 78}\n🔴 {len(all_errors)} VERDICT(S) COULD NOT BE RESOLVED — "
-              f"NOTHING WAS WRITTEN\n{'=' * 78}")
-        for err in all_errors:
-            print(f"  {err}")
-        return RC_UNRESOLVED
+        if plan.errors:
+            overall_rc = max(overall_rc, RC_UNRESOLVED)
+            continue
 
-    if not args.apply:
-        print("\n  report only. Nothing written. Re-run with --apply to amend the rosters.")
-        return RC_OK
+        if args.apply:
+            written = apply_all(plan, roster_index, sheet_stem)
+            any_written = True
+            print(f"\n  wrote {len(written)} file(s):")
+            for w in written:
+                print(f"    {w}")
 
-    for change in all_changes:
-        change.apply()
-    written = write_rosters(by_sheet, glob)
-    print(f"\n  wrote {len(written)} roster file(s).")
+    if args.apply and any_written:
+        rc = run_validate_cross()
+        if rc:
+            overall_rc = max(overall_rc, RC_VALIDATOR)
+        print_regen_commands()
 
-    rc = RC_OK
-    if not args.no_validate:
-        rc = run_validator(validator, args.rosters)
-    print_regen(written)
-    return rc
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# selftest — a synthetic roster + decisions pair, proving the four contracts
-# ─────────────────────────────────────────────────────────────────────────────
-
-SELFTEST_ROSTER = {
-    "sheet": "synth_one",
-    "defNames": ["SynthBiome"],
-    "unknown_top_key": {"kept": "carry me through untouched"},
-    "law_sources": ["synth.md"],
-    "fauna": [
-        {"def": "SynthKeeper", "commonality": 0.5, "action": "keep", "law": "stays put",
-         "unknown_row_key": 42},
-        {"def": "SynthEvictee", "commonality": 0.3, "action": "keep", "law": "landed"},
-        {"def": "SynthMover", "commonality": 0.6, "action": "keep", "law": "landed"},
-        {"def": "SynthAdjustee", "commonality": 0.7, "action": "keep", "law": "landed"},
-    ],
-    "evictions": [
-        {"def": "SynthReturner", "reason": "flagged for owner review",
-         "disposition": "homeless-reserve"},
-    ],
-    "stat_adjustments": [],
-    "flora": [{"def": "SynthPlant", "commonality": 0.4, "law": "landed"}],
-    "flora_purged": [{"def": "SynthPurged", "reason": "Earth-nameable"}],
-    "fish": {"ruling": "none", "list": []},
-    "new_defs": [{"name": "synth signature plant", "kind": "plant",
-                  "mechanic_load": "none", "from_sheet": "synth §1"}],
-    "confidence": [{"claim": "SynthMover flies", "status": "UNMEASURED",
-                    "why": "register flag broken"}],
-}
-
-SELFTEST_ROSTER_TWO = {
-    "sheet": "synth two + deep",
-    "defNames": ["SynthBiomeTwo"],
-    "fauna": [], "evictions": [], "flora": [], "flora_purged": [],
-    "fish": {"ruling": "none", "list": []}, "new_defs": [], "confidence": [],
-}
-
-SELFTEST_DECISIONS = {
-    "sheet": "fauna_assignment_register",
-    "posture": "blacklist",
-    "unknown_top_key": "carried",
-    "decisions": {
-        "f:synth_one:SynthKeeper": {"decision": "keep", "prefill": "keep", "note": ""},
-        "f:synth_one:SynthEvictee": {"decision": "evict", "prefill": "keep",
-                                     "note": "does not belong"},
-        "f:synth_one:SynthMover": {"decision": "move", "prefill": "keep",
-                                   "note": "move:SynthBiomeTwo comm 0.25"},
-        "f:synth_one:SynthAdjustee": {"decision": "adjust", "prefill": "keep",
-                                      "note": "too fast, halve moveSpeed"},
-        "e:synth_one:SynthReturner": {"decision": "keep", "prefill": "evict",
-                                      "note": "I want this one, comm 0.2"},
-        "nd:synth_one:0": {"decision": "defer", "prefill": "keep", "note": "later"},
-        "c:synth_one:0": {"decision": "keep", "prefill": "open", "note": "it flies"},
-    },
-}
-
-STUB_OK = ("import sys, pathlib\n"
-           "pathlib.Path(__file__).with_name('VALIDATOR_RAN').write_text(' '.join(sys.argv))\n"
-           "print('OK')\n")
-STUB_RED = ("print('\\U0001f534 cross: synthetic failure')\nraise SystemExit(1)\n")
-
-
-def _run_tool(argv, cwd=None):
-    proc = subprocess.run([sys.executable, os.path.abspath(__file__)] + argv,
-                          capture_output=True, text=True, cwd=cwd)
-    return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
-
-
-def selftest() -> int:
-    failures = []
-
-    def check(name, cond, detail=""):
-        print(("  ✅ " if cond else "  ❌ ") + name + (f"  {detail}" if not cond else ""))
-        if not cond:
-            failures.append(name)
-
-    with tempfile.TemporaryDirectory() as tmp:
-        rosters = os.path.join(tmp, "rosters")
-        os.makedirs(rosters)
-        for doc in (SELFTEST_ROSTER, SELFTEST_ROSTER_TWO):
-            name = doc["sheet"].replace(" ", "_").replace("+", "and") + ".json"
-            with open(os.path.join(rosters, name), "w", encoding="utf-8") as fh:
-                json.dump(doc, fh, indent=2)
-        pristine = os.path.join(tmp, "pristine")
-        shutil.copytree(rosters, pristine)
-
-        stub_ok = os.path.join(tmp, "stub_validate.py")
-        stub_red = os.path.join(tmp, "stub_red.py")
-        open(stub_ok, "w").write(STUB_OK)
-        open(stub_red, "w").write(STUB_RED)
-        marker = os.path.join(tmp, "VALIDATOR_RAN")
-
-        prefill = os.path.join(tmp, "prefill.decisions.json")
-        with open(prefill, "w", encoding="utf-8") as fh:
-            json.dump(SELFTEST_DECISIONS, fh, indent=1)
-
-        signed = json.loads(json.dumps(SELFTEST_DECISIONS))
-        signed.update({"savedBy": "review-sheet-sidecar", "writeCount": 12,
-                       "savedAt": "2026-09-09T10:00:00+0000"})
-        unfrozen = os.path.join(tmp, "unfrozen.decisions.json")
-        with open(unfrozen, "w", encoding="utf-8") as fh:
-            json.dump(signed, fh, indent=1)
-
-        frozen_doc = dict(signed, frozen=True, frozenOn="2026-09-09")
-        frozen = os.path.join(tmp, "frozen.decisions.json")
-        with open(frozen, "w", encoding="utf-8") as fh:
-            json.dump(frozen_doc, fh, indent=1)
-
-        base = ["--rosters", rosters, "--validator", stub_ok, "--date", "2026-09-09"]
-
-        print("\n1. the touchedBySheet guard — a PREFILL must never be consumed")
-        rc, out = _run_tool([prefill, "--apply"] + base)
-        check("refuses without the sidecar keys", rc == RC_NO_SIDECAR, f"rc={rc}")
-        check("names the missing keys", all(k in out for k in SIDECAR_KEYS))
-        check("hands back the localStorage recovery", "localStorage" in out)
-        check("wrote nothing", _same_tree(rosters, pristine))
-
-        print("\n2. the freeze guard")
-        rc, out = _run_tool([unfrozen, "--apply"] + base)
-        check("refuses an unfrozen decisions file", rc == RC_NOT_FROZEN, f"rc={rc}")
-        rc, out = _run_tool([unfrozen, "--allow-unfrozen"] + base)
-        check("--allow-unfrozen lets it through", rc == RC_OK, f"rc={rc}")
-
-        print("\n3. report first, apply second")
-        rc, out = _run_tool([frozen] + base)
-        check("report mode exits 0", rc == RC_OK, f"rc={rc}")
-        check("prints the overrides grouped by verdict", "── EVICT" in out and "── MOVE" in out)
-        check("prints the plan", "PLAN — " in out)
-        check("report mode writes NOTHING", _same_tree(rosters, pristine))
-        check("report mode does not run the validator", not os.path.exists(marker))
-
-        rc, out = _run_tool([frozen, "--apply"] + base)
-        check("apply exits 0", rc == RC_OK, f"rc={rc}\n{out[-2000:]}")
-        check("apply runs the validator with --cross", os.path.exists(marker)
-              and "--cross" in open(marker).read())
-        check("prints the regeneration commands owed",
-              "rosters_to_cast.py" in out and "biome_flora.py --write --doc" in out)
-        check("does not RUN them", "wrote cast_assignment" not in out)
-
-        with open(os.path.join(rosters, "synth_one.json"), encoding="utf-8") as fh:
-            after = json.load(fh)
-        fauna = {r["def"]: r for r in after["fauna"]}
-        evic = {r["def"]: r for r in after["evictions"]}
-        with open(os.path.join(rosters, "synth_two_and_deep.json"), encoding="utf-8") as fh:
-            after2 = json.load(fh)
-
-        print("\n4. the verdicts landed")
-        check("evict → evictions[] homeless-reserve",
-              "SynthEvictee" not in fauna
-              and evic.get("SynthEvictee", {}).get("disposition") == "homeless-reserve")
-        check("evict reason is 'owner verdict <date>'",
-              evic.get("SynthEvictee", {}).get("reason", "").startswith(
-                  "owner verdict 2026-09-09"))
-        check("move → evictions[] move:<target from the note>",
-              evic.get("SynthMover", {}).get("disposition") == "move:SynthBiomeTwo")
-        check("move also rosters the def in the TARGET (or _validate goes red)",
-              any(r["def"] == "SynthMover" for r in after2["fauna"]))
-        check("move carries the note's commonality",
-              any(r["def"] == "SynthMover" and r["commonality"] == 0.25
-                  for r in after2["fauna"]))
-        check("adjust annotates + flags the stat edit",
-              fauna["SynthAdjustee"].get("owner_note") == "too fast, halve moveSpeed"
-              and any(e["def"] == "SynthAdjustee"
-                      for e in after.get("owner_pending_edits", [])))
-        check("keep on an eviction row restores it to fauna[]",
-              "SynthReturner" in fauna and "SynthReturner" not in evic
-              and "owner verdict" in fauna["SynthReturner"]["law"])
-        check("NEW-ART ledger verdict rewrites new_defs status",
-              after["new_defs"][0].get("status") == "defer")
-        check("confidence[] verdict is recorded and closed",
-              after["confidence"][0].get("owner_verdict") == "keep"
-              and after["confidence"][0]["status"].startswith("RULED"))
-
-        print("\n5. rows the owner did not override, and unknown keys")
-        check("a non-overridden row is untouched",
-              fauna["SynthKeeper"] == SELFTEST_ROSTER["fauna"][0])
-        check("unknown TOP-LEVEL key carried through",
-              after.get("unknown_top_key") == {"kept": "carry me through untouched"})
-        check("unknown ROW-LEVEL key carried through",
-              fauna["SynthKeeper"].get("unknown_row_key") == 42)
-        check("untouched roster file not rewritten at all",
-              json.load(open(os.path.join(rosters, "synth_two_and_deep.json"))) != {}
-              and set(SELFTEST_ROSTER_TWO) <= set(after2))
-
-        print("\n6. an unresolvable verdict refuses the WHOLE apply")
-        bad = json.loads(json.dumps(frozen_doc))
-        bad["decisions"] = {"f:synth_one:SynthKeeper":
-                            {"decision": "move", "prefill": "keep", "note": "somewhere"}}
-        bad_path = os.path.join(tmp, "bad.decisions.json")
-        json.dump(bad, open(bad_path, "w"))
-        shutil.rmtree(rosters)
-        shutil.copytree(pristine, rosters)
-        rc, out = _run_tool([bad_path, "--apply"] + base)
-        check("move with no target in the note is refused", rc == RC_UNRESOLVED, f"rc={rc}")
-        check("nothing written on an unresolved plan", _same_tree(rosters, pristine))
-
-        print("\n7. a red validator is loud and non-zero")
-        rc, out = _run_tool([frozen, "--apply", "--rosters", rosters,
-                             "--validator", stub_red, "--date", "2026-09-09"])
-        check("red validator → exit 4", rc == RC_VALIDATOR, f"rc={rc}")
-        check("says so loudly", "VALIDATOR WENT RED" in out)
-
-    print(f"\n{'PASS' if not failures else 'FAIL'} — "
-          f"{len(failures)} failure(s){': ' + ', '.join(failures) if failures else ''}")
-    return 1 if failures else 0
-
-
-def _same_tree(a: str, b: str) -> bool:
-    names = sorted(os.listdir(a))
-    if names != sorted(os.listdir(b)):
-        return False
-    return all(open(os.path.join(a, n), "rb").read() == open(os.path.join(b, n), "rb").read()
-               for n in names)
+    return overall_rc
 
 
 if __name__ == "__main__":
-    sys.exit(run(sys.argv[1:]))
+    sys.exit(main())
