@@ -101,13 +101,59 @@ FIXES = {
     },
 }
 
+# A cross-mod dependency this pack's OWN content creates, gated at generation
+# time for the same "survive every regen" reason as FIXES above --
+# DROID_RETIRE_KOTORDROIDS_1 traced 4 guy762_DroidWeapon_{microrocket,railgun,
+# seekerrocket,trishot} ammo ThingDefs (consumed via <ammoDef>/<costList> by
+# this pack's own ModularPartDefs_HelmetArmorTech.xml/_Wristgun.xml content)
+# to guy762.mm.kotorcore's 1.6/AdditionalMods/_DroidsBase folder, which
+# kotorcore's OWN LoadFolders.xml gates on IfModActive="guy762.KotORDroids"
+# (confirmed; see gen_kotorcore_absorption.py's docstring, which deliberately
+# never walks that folder -- it is out of scope for that generator too).
+# Retiring guy762.kotordroids therefore silently stops that folder loading
+# as well, discarding the 4 ammo ThingDefs out from under these 12 defs (6
+# ModularPartsDef consumers + their 6 paired AbilityDefs) with no direct
+# reference to kotordroids anywhere in kotorweapons' own source to warn a
+# per-donor grep. Gate each with the same MayRequire value this pack's own
+# TraderKindDefs already use for this identical dependency
+# (Absorbed_KotorWeapons_{Base,Orbital}Trader_Baragwin.xml) -- accepting
+# that each ability loses its ammo requirement entirely once kotordroids
+# retires, per DROID_RETIRE_KOTORDROIDS_1 option 2 (gate, don't absorb).
+MAYREQUIRE_FIXES = {
+    "guy762_KotORpartArmorTech_kneerocket": "guy762.KotORDroids",
+    "guy762_MW2WeaponVerbAbility_kneerocket": "guy762.KotORDroids",
+    "guy762_KotORpartWristgun_trishot": "guy762.KotORDroids",
+    "guy762_MW2WeaponVerbAbility_wristgun_trishot": "guy762.KotORDroids",
+    "guy762_KotORpartWristgun_microrocket": "guy762.KotORDroids",
+    "guy762_MW2WeaponVerbAbility_wristgun_microrocket": "guy762.KotORDroids",
+    "guy762_KotORpartWristgun_seeker": "guy762.KotORDroids",
+    "guy762_MW2WeaponVerbAbility_wristgun_seeker": "guy762.KotORDroids",
+    "guy762_KotORpartWristgun_railgun": "guy762.KotORDroids",
+    "guy762_MW2WeaponVerbAbility_wristgun_railgun": "guy762.KotORDroids",
+    "guy762_KotORpartWristgun_flamethrower": "guy762.KotORDroids",
+    "guy762_MW2WeaponVerbAbility_wristgun_flamethrower": "guy762.KotORDroids",
+}
+
 
 def apply_content_fixes(el, note=print):
     """Mutate `el` (a top-level def Element already parsed from donor
-    source) in place per FIXES, keyed by its own <defName>. No-op if the
-    defName isn't in FIXES."""
+    source) in place per FIXES (text/field fixes) and MAYREQUIRE_FIXES
+    (whole-def MayRequire gating), both keyed by its own <defName>. No-op
+    for either table the defName isn't in."""
     dn_el = el.find("defName")
     dn = dn_el.text.strip() if dn_el is not None and dn_el.text else None
+
+    if dn and dn in MAYREQUIRE_FIXES:
+        want = MAYREQUIRE_FIXES[dn]
+        cur = el.get("MayRequire")
+        if cur is None:
+            el.set("MayRequire", want)
+            note("MAYREQUIRE FIX APPLIED: %s -> MayRequire=%r" % (dn, want))
+        elif cur != want:
+            note("MAYREQUIRE FIX SKIPPED (already has different MayRequire=%r): %s" % (cur, dn))
+        # else: already correctly gated (e.g. a future regen re-reading this
+        # generator's own prior output) -- no-op.
+
     if not dn or dn not in FIXES:
         return
     for path, (expected_old, new) in FIXES[dn].items():

@@ -43,7 +43,7 @@
     </costList>
   </ModularWeapons2.ModularPartsDef>
 
-  <ModularWeapons2.ModularPartsDef ParentName="guy762_KotORModularPartBase">
+  <ModularWeapons2.ModularPartsDef ParentName="guy762_KotORModularPartBase" MayRequire="guy762.KotORDroids">
     <defName>guy762_KotORpartWristgun_trishot</defName>
     <label>tri-shot</label>
     <labelShort>tri-shot</labelShort>
@@ -69,7 +69,7 @@
     <!-- </researchPrerequisites> -->
   </ModularWeapons2.ModularPartsDef>
 
-  <AbilityDef>
+  <AbilityDef MayRequire="guy762.KotORDroids">
     <defName>guy762_MW2WeaponVerbAbility_wristgun_trishot</defName>
     <label>tri-shot</label>
     <description>Adds an additional attack verb which fires three blaster bolts at once.</description>
@@ -206,7 +206,7 @@
     </verbProperties>
   </AbilityDef>
 
-  <ModularWeapons2.ModularPartsDef ParentName="guy762_KotORModularPartBase">
+  <ModularWeapons2.ModularPartsDef ParentName="guy762_KotORModularPartBase" MayRequire="guy762.KotORDroids">
     <defName>guy762_KotORpartWristgun_microrocket</defName>
     <label>micro-rocket launcher</label>
     <labelShort>micro-rockets</labelShort>
@@ -235,7 +235,7 @@
     <!-- </researchPrerequisites> -->
   </ModularWeapons2.ModularPartsDef>
 
-  <AbilityDef>
+  <AbilityDef MayRequire="guy762.KotORDroids">
     <defName>guy762_MW2WeaponVerbAbility_wristgun_microrocket</defName>
     <label>micro-rocket launcher</label>
     <description>Adds an additional attack verb which fires a burst of micro-rockets.</description>
@@ -268,7 +268,7 @@
     <!-- </comps> -->
   </AbilityDef>
 
-  <ModularWeapons2.ModularPartsDef ParentName="guy762_KotORModularPartBase">
+  <ModularWeapons2.ModularPartsDef ParentName="guy762_KotORModularPartBase" MayRequire="guy762.KotORDroids">
     <defName>guy762_KotORpartWristgun_seeker</defName>
     <label>seeker-missile launcher</label>
     <labelShort>seeker-missile</labelShort>
@@ -297,7 +297,7 @@
     <!-- </researchPrerequisites> -->
   </ModularWeapons2.ModularPartsDef>
 
-  <AbilityDef>
+  <AbilityDef MayRequire="guy762.KotORDroids">
     <defName>guy762_MW2WeaponVerbAbility_wristgun_seeker</defName>
     <label>seeker-missile launcher</label>
     <description>Adds an additional attack verb which fires a homing seeker-missile.</description>
@@ -325,7 +325,7 @@
     </verbProperties>
   </AbilityDef>
 
-  <ModularWeapons2.ModularPartsDef ParentName="guy762_KotORModularPartBase">
+  <ModularWeapons2.ModularPartsDef ParentName="guy762_KotORModularPartBase" MayRequire="guy762.KotORDroids">
     <defName>guy762_KotORpartWristgun_railgun</defName>
     <label>rail gun</label>
     <labelShort>railgun</labelShort>
@@ -351,7 +351,7 @@
     </researchPrerequisites>
   </ModularWeapons2.ModularPartsDef>
 
-  <AbilityDef>
+  <AbilityDef MayRequire="guy762.KotORDroids">
     <defName>guy762_MW2WeaponVerbAbility_wristgun_railgun</defName>
     <label>rail gun</label>
     <description>Adds an additional attack verb which fires an armor penetrating high-velocity projectile.</description>
@@ -376,7 +376,7 @@
     </verbProperties>
   </AbilityDef>
 
-  <ModularWeapons2.ModularPartsDef ParentName="guy762_KotORModularPartBase">
+  <ModularWeapons2.ModularPartsDef ParentName="guy762_KotORModularPartBase" MayRequire="guy762.KotORDroids">
     <defName>guy762_KotORpartWristgun_flamethrower</defName>
     <label>flamethrower</label>
     <labelShort>flamethrower</labelShort>
@@ -402,7 +402,7 @@
     </researchPrerequisites>
   </ModularWeapons2.ModularPartsDef>
 
-  <AbilityDef>
+  <AbilityDef MayRequire="guy762.KotORDroids">
     <defName>guy762_MW2WeaponVerbAbility_wristgun_flamethrower</defName>
     <label>flamethrower</label>
     <description>Adds an additional attack verb which spews a burst of flame over a short area.</description>

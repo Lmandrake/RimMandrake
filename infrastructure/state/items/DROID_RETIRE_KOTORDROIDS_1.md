@@ -117,6 +117,86 @@ LIES    trusting the D1 census's per-donor "every reference in src/ and every
         that crosses THROUGH a third mod's own conditional LoadFolders gate
 ```
 
+## 2026-09-09 — Option 2 (gating) applied, offline only
+Picked up the "check both, gate, don't guess" fix left above. Read both
+consumer files in full first.
+
+**Shapes found** (both already visible in the item's own error text, now
+confirmed by direct read): `<ammoDef>` is a scalar field on the `<ability>`
+block, `ModularWeapons2.MWAbilityProperties` (microrocket x2, seekerrocket
+x1); the `guy762_DroidWeapon_railgun`/`_trishot` references are
+`<costList>` entries, `Verse.ThingDefCountClass` shorthand (railgun x2 --
+also consumed by `guy762_KotORpartWristgun_flamethrower`'s costList, a
+donor-original reuse of the same item as flamethrower fuel, not something
+this pass introduced; trishot x1). Total 6 usages across 2 defs needing
+ammo (`..._kneerocket`, `..._wristgun_microrocket`) + 4 defs needing
+costList (`..._wristgun_trishot`, `_seeker`, `_railgun`, `_flamethrower`) --
+12 top-level defs once each paired `AbilityDef` is counted.
+
+Neither shape can be conditionally patched in place (both are scalar/
+inline values inside a GENERATED, defName-preserving `<Defs>` file, not a
+`<Patch>` file with xpaths to guard). Checked precedent in these exact
+sibling files first, per the item's steer: both files already carry
+donor-authored `MayRequire="kentington.saveourship2"` (EVA armor tech) and
+`MayRequire="Ludeon.RimWorld.Biotech"` (toxdart part + its AbilityDef) on
+whole `ModularPartsDef`/`AbilityDef` elements -- the exact same "def
+references content requiring another mod's presence" shape as here.
+Applied the same mechanism: `MayRequire="guy762.KotORDroids"` (casing
+matches this pack's own already-shipped
+`Absorbed_KotorWeapons_{Base,Orbital}Trader_Baragwin.xml`, not the
+lowercase `guy762.kotordroids` ModsConfig packageId string -- RimWorld's
+own MayRequire match is case-insensitive and this is the value already
+proven live) on all 6 `ModularPartsDef` consumers and their 6 paired
+`AbilityDef`s. Accepts the item's stated cost: each ability (not just its
+ammo requirement) disappears entirely once kotordroids retires -- judged
+acceptable since these are donor flavor abilities, not load-bearing to any
+Jawa/Armoury system.
+
+**Generator checked, and fixed, not just hand-patched.**
+`gen_kotorweapons_absorption.py` had no mechanism at all for this --
+its only per-element filter is the unrelated rule-6 "blocked namespace"
+list (Class=/compClass= tied to a DLL that retires with kotorcore).
+`gen_kotorcore_absorption.py`'s docstring confirms the droid-ammo folder
+was OUT OF SCOPE for that generator on purpose (never walks
+`_DroidsBase`), so no generator anywhere already absorbs or gates these
+4 ammoDefs. `absorption_content_fixes.py`, though, already exists as
+exactly this injection point -- "known content issue, corrected at
+generation time so the fix survives every regen instead of being hand-
+edited into a file whose header says GENERATED" -- so extended it rather
+than leaving the gate as a hand-edit a future regen would silently drop:
+added `MAYREQUIRE_FIXES` (defName -> required packageId) alongside the
+existing text-fix `FIXES` table, and had `apply_content_fixes()` set the
+`MayRequire` attribute on the top-level element (no-op if already
+correctly set; warns and skips rather than overwriting if some future
+donor update sets a different one). Verified programmatically that
+running `apply_content_fixes()` against each of the 12 defNames now
+produces `MayRequire="guy762.KotORDroids"` -- matches the hand-patch
+applied to the two already-committed generated files below (did NOT
+rerun the full generator, to avoid the unrelated-churn risk of a whole-
+file regen; the two files were edited by hand to the exact state a
+regen with this fix would produce).
+
+**Files changed:**
+- `src/RimStarWars/Armoury/Source/absorption_content_fixes.py` (new
+  `MAYREQUIRE_FIXES` table + `apply_content_fixes()` extended to apply it)
+- `src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_HelmetArmorTech.xml`
+  (2 defs gated: `guy762_KotORpartArmorTech_kneerocket` +
+  `guy762_MW2WeaponVerbAbility_kneerocket`)
+- `src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_Wristgun.xml`
+  (10 defs gated: `guy762_KotORpartWristgun_{trishot,microrocket,seeker,
+  railgun,flamethrower}` + their 5 paired `AbilityDef`s)
+
+**Validation:** `validate_patch.py` against both edited files with all
+three live `--defs` roots (Data/Mods/workshop, 581 active mods per the
+live `ModsConfig.xml` at time of this pass) -- `OK, 0 errors, 0 warnings`
+on both files.
+
+**Not done in this pass, on purpose:** no live game touched, no
+`ModsConfig.xml` edit, no cold load. This was offline-only per the
+instruction handing this off; the actual repeat-the-retirement-attempt
+verify (remove kotordroids, cold load, expect `check_config_errors.py`
+CLEAN) is still owed and left to whoever resumes State/Verify below.
+
 ## State left behind
 - `ModsConfig.xml` (live, game machine): restored to the pre-attempt 600-mod
   full list, kotordroids present — byte-identical to
