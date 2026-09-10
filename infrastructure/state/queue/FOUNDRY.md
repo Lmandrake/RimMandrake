@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T02:53:11Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-10T03:06:44Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -440,15 +440,6 @@ target:   v1
 kind:     task
 summary:  DROIDRETIREDEPOTASIMOV1 — wave R3 (DROIDUNIFIEDFRAMEWORKDESIGN.md §2 row D4)
 prose:    infrastructure/state/items/DROID_RETIRE_DEPOT_ASIMOV_1.md
-
-## DROIDWORKS_MODULE_PERSONALITY_1 Installed modules carry attitudes: CompModulePersonality trait-hediffs while worn
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. A ThingComp on a module ThingDef adds a personality HediffDef to the
-prose:    infrastructure/state/items/DROIDWORKS_MODULE_PERSONALITY_1.md
 
 ## FUNGALFOREST_RAID_MERGE_1 Dissolve BMT_FungalForest (an underground def on 425 surface tiles) into its neighbors per the measured cluster table (the Rot; Wasteland at South Crags sector 9), and ingest its spore kit, materials, flora into the Rot as our own defs
 state:    doing
@@ -991,3 +982,33 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Give Droidworks its own, donor-independent way to satisfy these three
 prose:    infrastructure/state/items/DROID_MODULE_BODYGROUP_WIRING_GAP_1.md
+
+## ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1 Rewrite apply_assignment_verdicts.py for the regenerated sheet schema (19e03876); a hard refusal currently blocks any apply - owner verdicts cannot land until this ships
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ASSIGNMENT_APPLIER_SCHEMA_REWRITE_1.md
+
+## SCORCHFRUIT_FULGURITE_DEF_VERIFY_1 Verify RSW_FE_Plant_ScorchFruit and RSW_FE_Fulgurite defs actually exist - a decayed claim rode the Pyrelands rebind note; fix or delete the reference
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SCORCHFRUIT_FULGURITE_DEF_VERIFY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCORCHFRUIT_FULGURITE_DEF_VERIFY_1.md
+
+## HUMAN_QUEUE_NEEDS_OWNER_RENDER_1 queue/HUMAN.md renderer never surfaces needs:owner rows - it read NOTHING IS WAITING since 2026-08-23 while 4 items waited on the owner (found in tonight's backlog-audit review)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/HUMAN_QUEUE_NEEDS_OWNER_RENDER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/HUMAN_QUEUE_NEEDS_OWNER_RENDER_1.md
