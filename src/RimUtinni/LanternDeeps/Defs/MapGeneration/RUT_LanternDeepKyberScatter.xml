@@ -5,12 +5,19 @@
   GenStepDef always exists (it is ours), but every `things` entry carries
   MayRequire="lee.theforce.lightsaber", so it is a harmless no-op if that mod is ever
   inactive, and RUT_LanternDeepGenerator.genSteps can reference it unconditionally.
+
+  order=335, not 211 (DIRTY_CODE_REVIEW_STANDING_LOOP_1 fix, see
+  RUT_LanternDeepPyrinthScatter.xml's header for the full mechanism): genStep execution
+  order is global GenStepDef.order, not XML list position. 211 tied this against vanilla
+  Terrain(210)/MutatorPostTerrain(220), long before BMT_CrystalsGenerator(320) it was
+  meant to sit alongside. 335 keeps it right after Pyrinth's 330, both before
+  PlaceCaveExit(400).
 -->
 <Defs>
 
   <GenStepDef>
     <defName>RUT_LanternDeepKyberScatter</defName>
-    <order>211</order>
+    <order>335</order>
     <genStep Class="GenStep_ScatterGroup">
       <minSpacing>20</minSpacing>
       <groups>
