@@ -91,6 +91,14 @@ HOME_SEED_DIRS = ("skills",)
 SANDBOX_SEED_DIRS = (".sandbox", ".sandbox-bin", ".sandbox-secrets")
 SANDBOX_SEED_FILES = (".sandbox_migration",)
 
+# Optional stamp a future capture step could write into a template
+# directory. Nothing in this file writes one today (the 2026-09-09
+# recapture was a manual `cp -r`, not a call through this module) — reading
+# it is still wired up so a future automated capture only has to write the
+# file, not touch the read side. template_sandbox_fingerprint() ALWAYS
+# falls back to deriving straight from `.sandbox-bin` when this is absent.
+SANDBOX_SEED_STAMP = "sandbox_fingerprint.json"
+
 
 def sandbox_seed_template() -> Path | None:
     """Where the captured elevated-setup template lives, if it exists.
@@ -104,18 +112,143 @@ def sandbox_seed_template() -> Path | None:
     return p if (p / ".sandbox" / "setup_marker.json").is_file() else None
 
 
-def seed_sandbox_from_template(home: Path) -> bool:
+def _version_key(exe_name: str) -> tuple:
+    """Sortable key from a codex-command-runner filename's version — the
+    NUMERIC runs only, so 0.153.10 correctly sorts after 0.153.4 (a bare
+    string sort would not: "10" < "4"), and a pre-release "-alpha.N" suffix
+    still participates (0.147.0-alpha.6.6 sorts below the non-alpha 0.148.0
+    that follows it). MEASURED 2026-09-09: both the shared home's and the
+    seed template's own `.sandbox-bin` accumulate EVERY version's runner
+    exe forever (nothing here ever deletes an old one), so picking "the
+    newest" cannot rely on directory or file mtime — a `cp -r` recapture
+    gives several files the same copy-time mtime — it must parse the
+    version out of the filename itself.
+    """
+    return tuple(int(n) for n in re.findall(r"\d+", exe_name))
+
+
+def sandbox_bin_fingerprint(root: Path) -> str | None:
+    """The newest `codex-command-runner-*.exe` filename under
+    `root/.sandbox-bin`, or None if that directory doesn't exist or holds
+    none. This filename is what codex.exe's own installed build keys
+    sandbox-setup compatibility on (CODEX_UAC_STORM_1, 2026-09-09): a
+    0.153.1-vintage seed template survived a silent Windows-build
+    auto-update to 0.153.4 untouched, and every worker home seeded from it
+    got version-incompatible sandbox artifacts that 0.153.4 did not
+    recognise as "already set up" — it re-ran the elevated sandbox-user
+    setup instead, ~30 UAC prompts across one wave of fresh homes.
+    """
+    d = root / ".sandbox-bin"
+    try:
+        runners = list(d.glob("codex-command-runner-*.exe"))
+    except OSError:
+        return None
+    if not runners:
+        return None
+    return max(runners, key=lambda p: _version_key(p.name)).name
+
+
+def installed_sandbox_fingerprint(base: Path | None = None) -> str | None:
+    """The sandbox-runner build actually installed right now, read from the
+    shared/base codex home's own `.sandbox-bin` (never guessed — see
+    base_codex_home() for how that home is discovered)."""
+    return sandbox_bin_fingerprint(base if base is not None else base_codex_home())
+
+
+def template_sandbox_fingerprint(template: Path) -> str | None:
+    """The build a captured seed template was made FOR.
+
+    Prefers a stamp written at capture time (SANDBOX_SEED_STAMP) but ALWAYS
+    falls back to reading the template's own `.sandbox-bin` directly when
+    there is no stamp — which is the only path that exists today, and the
+    reason tonight's (2026-09-09) manually-recaptured template, which
+    carries no stamp, still validates correctly.
+    """
+    stamp = template / SANDBOX_SEED_STAMP
+    if stamp.is_file():
+        try:
+            fp = json.loads(stamp.read_text()).get("fingerprint")
+            if isinstance(fp, str) and fp:
+                return fp
+        except (OSError, ValueError):
+            pass
+    return sandbox_bin_fingerprint(template)
+
+
+def check_sandbox_fingerprint(base: Path | None = None, template: Path | None = None
+                               ) -> tuple[str, str | None, str | None, str]:
+    """The ONE fingerprint comparison shared by seed_sandbox_from_template()
+    below and artpiped.py's own startup preflight (common.py's
+    codex_sandbox_preflight(), CODEX_UAC_STORM_1) — so a seeder call and a
+    daemon-wide gate can never quietly disagree about what "compatible"
+    means.
+
+    Returns (status, template_fp, installed_fp, message):
+      "no_template" - sandbox_seed_template() found nothing at all (a
+                       genuinely new machine that has never captured one —
+                       the original, pre-CODEX_UAC_STORM_1 state).
+      "match"       - both fingerprints known and IDENTICAL: safe to seed.
+      "mismatch"    - anything else, INCLUDING either side being unknown
+                       (e.g. a template with no `.sandbox-bin` at all, or a
+                       base home with none). An unknown side is treated the
+                       same as a proven mismatch, never as a pass — "cannot
+                       prove compatible" is not "compatible".
+    `message` is empty for "match"; for the other two it is the full
+    human-facing explanation (including, for "mismatch", the recapture
+    command).
+    """
+    base = base if base is not None else base_codex_home()
+    template = template if template is not None else sandbox_seed_template()
+    if template is None:
+        return ("no_template", None, None,
+                "no sandbox seed template found (set $CODEX_SANDBOX_SEED, or "
+                "see sandbox_seed_template() in codex_image.py)")
+    template_fp = template_sandbox_fingerprint(template)
+    installed_fp = installed_sandbox_fingerprint(base)
+    if template_fp is not None and installed_fp is not None and template_fp == installed_fp:
+        return "match", template_fp, installed_fp, ""
+    return ("mismatch", template_fp, installed_fp,
+            f"sandbox seed template at {template} was captured against codex "
+            f"build {template_fp or 'UNKNOWN (no .sandbox-bin/codex-command-runner-*.exe)'}, "
+            f"but the currently installed build's sandbox runner is "
+            f"{installed_fp or 'UNKNOWN (no .sandbox-bin/codex-command-runner-*.exe)'} "
+            f"(read from {base}) — seeding a new home from this template would "
+            f"carry version-incompatible sandbox artifacts and still trigger a "
+            f"fresh elevated setup (UAC prompt) on that home's first real call. "
+            f"Recapture the template — once {base} is itself through elevated "
+            f"setup on the CURRENT build — with: "
+            f"cp -r {base}/.sandbox {base}/.sandbox-bin {base}/.sandbox-secrets {template}/ "
+            f"then retry.")
+
+
+def seed_sandbox_from_template(home: Path, base: Path | None = None) -> bool:
     """Copy the captured sandbox setup into `home` if it doesn't have one yet.
 
     Returns True if the home now has (or already had) a sandbox setup, False
     if there is no template AND this home has none either - the caller's cue
     that a live call against `home` may still trigger a UAC prompt.
+
+    🔴 VERSION-AWARE since CODEX_UAC_STORM_1 (2026-09-09): a template
+    captured against an OLD codex build silently survives a later
+    auto-update (nothing on this machine ever invalidates it), and
+    codex.exe itself keys "is this home already set up for MY build" on the
+    sandbox-runner exe's own filename — seeding an incompatible template
+    does not fail loudly on its own, it just produces artifacts the NEW
+    build doesn't recognise, so the home still pays the UAC-gated setup on
+    its first real call, just later and less visibly (against an isolated
+    worker home instead of this call). Raises EnvError — rather than
+    quietly returning True — on a PROVEN mismatch, so a doomed home is
+    never seeded and no caller can mistake this for success; see
+    check_sandbox_fingerprint() for what counts as proven.
     """
     if (home / ".sandbox" / "setup_marker.json").is_file():
         return True  # already set up (either real, or seeded on a prior call)
     template = sandbox_seed_template()
     if template is None:
         return False
+    status, _template_fp, _installed_fp, message = check_sandbox_fingerprint(base, template)
+    if status == "mismatch":
+        raise EnvError(message)
     for name in SANDBOX_SEED_DIRS:
         src = template / name
         if src.is_dir() and not (home / name).is_dir():
@@ -218,7 +351,7 @@ def seed_codex_home(base: Path, home: Path) -> Path:
     print(f"note: seeded worker CODEX_HOME {home} from {base} "
           f"({', '.join(copied) or 'nothing new'})", file=sys.stderr)
 
-    if seed_sandbox_from_template(home):
+    if seed_sandbox_from_template(home, base):
         print(f"note: seeded {home}'s sandbox setup from "
               f"{sandbox_seed_template()} - no UAC prompt expected", file=sys.stderr)
     else:

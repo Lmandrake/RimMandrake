@@ -328,6 +328,22 @@ def test_child_env_wslenv() -> None:
 
 
 def test_seed_home() -> None:
+    # Isolate CODEX_SANDBOX_SEED so this test's result never depends on
+    # whatever real template this machine happens to have captured (or not)
+    # at the real default path — sandbox seeding itself is exercised by
+    # test_sandbox_seed_template() and test_sandbox_fingerprint(), not here.
+    real_env = os.environ.get("CODEX_SANDBOX_SEED")
+    os.environ["CODEX_SANDBOX_SEED"] = "/nonexistent/no-template-here"
+    try:
+        _test_seed_home_body()
+    finally:
+        if real_env is not None:
+            os.environ["CODEX_SANDBOX_SEED"] = real_env
+        else:
+            os.environ.pop("CODEX_SANDBOX_SEED", None)
+
+
+def _test_seed_home_body() -> None:
     with tempfile.TemporaryDirectory() as td:
         base = Path(td) / "base"
         (base / "skills" / ".system" / "imagegen").mkdir(parents=True)
@@ -365,23 +381,30 @@ def test_sandbox_seed_template() -> None:
             (template / ".sandbox").mkdir(parents=True)
             (template / ".sandbox" / "setup_marker.json").write_text('{"version": 5}')
             (template / ".sandbox-bin").mkdir()
-            (template / ".sandbox-bin" / "codex-command-runner.exe").write_bytes(b"x")
+            (template / ".sandbox-bin" / "codex-command-runner-1.2.3.exe").write_bytes(b"x")
             (template / ".sandbox-secrets").mkdir()
             (template / ".sandbox-secrets" / "sandbox_users.json").write_text("{}")
             (template / ".sandbox_migration").write_text("1")
             os.environ["CODEX_SANDBOX_SEED"] = str(template)
+
+            # The "installed" side — a matching runner version, so this is
+            # the CODEX_UAC_STORM_1 "compatible" case.
+            installed_base = Path(td) / "installed_base"
+            (installed_base / ".sandbox-bin").mkdir(parents=True)
+            (installed_base / ".sandbox-bin" / "codex-command-runner-1.2.3.exe").write_bytes(b"y")
 
             check("sandbox_seed_template() finds a valid template",
                   ci.sandbox_seed_template() == template)
 
             fresh = Path(td) / "fresh_worker"
             fresh.mkdir()
-            got = ci.seed_sandbox_from_template(fresh)
-            check("seed_sandbox_from_template reports success with a template", got is True)
+            got = ci.seed_sandbox_from_template(fresh, installed_base)
+            check("seed_sandbox_from_template reports success with a matching template",
+                  got is True)
             check("sandbox setup marker copied into the fresh home",
                   (fresh / ".sandbox" / "setup_marker.json").is_file())
             check("sandbox-bin copied into the fresh home",
-                  (fresh / ".sandbox-bin" / "codex-command-runner.exe").is_file())
+                  (fresh / ".sandbox-bin" / "codex-command-runner-1.2.3.exe").is_file())
             check("sandbox-secrets copied into the fresh home",
                   (fresh / ".sandbox-secrets" / "sandbox_users.json").is_file())
             check(".sandbox_migration file copied into the fresh home",
@@ -422,12 +445,19 @@ def test_sandbox_seed_template() -> None:
             template = Path(td2) / "template"
             (template / ".sandbox").mkdir(parents=True)
             (template / ".sandbox" / "setup_marker.json").write_text("{}")
+            (template / ".sandbox-bin").mkdir()
+            (template / ".sandbox-bin" / "codex-command-runner-9.9.9.exe").write_bytes(b"x")
             os.environ["CODEX_SANDBOX_SEED"] = str(template)
 
             base = Path(td2) / "base"
             base.mkdir()
             (base / "auth.json").write_text("{}")
             (base / "config.toml").write_text("{}")
+            # seed_codex_home()'s own `base` IS what seed_sandbox_from_template
+            # compares against (see its call site) — give it a MATCHING
+            # .sandbox-bin so this stays the "compatible" case.
+            (base / ".sandbox-bin").mkdir()
+            (base / ".sandbox-bin" / "codex-command-runner-9.9.9.exe").write_bytes(b"y")
 
             worker = Path(td2) / "worker"
             ci.seed_codex_home(base, worker)
@@ -437,6 +467,171 @@ def test_sandbox_seed_template() -> None:
         if real_env is not None:
             os.environ["CODEX_SANDBOX_SEED"] = real_env
         else:
+            os.environ.pop("CODEX_SANDBOX_SEED", None)
+
+
+# --------------------------------------------------------------------------
+# 3b. version-aware sandbox seeding (CODEX_UAC_STORM_1, 2026-09-09)
+# --------------------------------------------------------------------------
+
+def test_sandbox_bin_fingerprint_picks_newest_by_version() -> None:
+    """Real machine state, 2026-09-09: BOTH the shared home's and the seed
+    template's `.sandbox-bin` hold every codex build's runner exe ever seen
+    (nothing prunes old ones), and a `cp -r` recapture gives several of
+    them the SAME copy-time mtime. The fingerprint must therefore be the
+    highest VERSION, not the newest file by mtime or a bare string sort."""
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        d = root / ".sandbox-bin"
+        d.mkdir()
+        for name in ("codex-command-runner-0.147.0-alpha.6.6.exe",
+                     "codex-command-runner-0.148.0-alpha.9.exe",
+                     "codex-command-runner-0.153.4.exe",
+                     "codex-command-runner-0.153.1.exe"):
+            (d / name).write_bytes(b"x")
+        check("newest-by-version wins even though it is not last created",
+              ci.sandbox_bin_fingerprint(root) == "codex-command-runner-0.153.4.exe")
+
+        # A bare string sort would get this one wrong: "10" < "4" as text.
+        (d / "codex-command-runner-0.153.10.exe").write_bytes(b"x")
+        check("0.153.10 sorts after 0.153.4 numerically, not as a string",
+              ci.sandbox_bin_fingerprint(root) == "codex-command-runner-0.153.10.exe")
+
+        check("no .sandbox-bin at all -> None, not an exception",
+              ci.sandbox_bin_fingerprint(root / "nope") is None)
+
+        empty = root / "empty" / ".sandbox-bin"
+        empty.mkdir(parents=True)
+        check("a .sandbox-bin with no runner exe -> None",
+              ci.sandbox_bin_fingerprint(empty.parent) is None)
+
+
+def test_check_sandbox_fingerprint() -> None:
+    """check_sandbox_fingerprint() is the ONE comparison the seeder and the
+    daemon preflight both use — proven directly here, independent of
+    whichever caller invokes it."""
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+
+        # no template at all - stub sandbox_seed_template() itself (rather
+        # than relying on real machine/env state) so `template=None` really
+        # means "none configured", not "let the real lookup decide".
+        real_template_fn = ci.sandbox_seed_template
+        ci.sandbox_seed_template = lambda: None
+        try:
+            status, tfp, ifp, msg = ci.check_sandbox_fingerprint(root / "base", None)
+        finally:
+            ci.sandbox_seed_template = real_template_fn
+        check("no template -> status no_template", status == "no_template", status)
+        check("no_template carries no fingerprints", tfp is None and ifp is None)
+        check("no_template message names the env var", "CODEX_SANDBOX_SEED" in msg, msg)
+
+        # matching versions -> match
+        base = root / "base_match"
+        (base / ".sandbox-bin").mkdir(parents=True)
+        (base / ".sandbox-bin" / "codex-command-runner-1.0.0.exe").write_bytes(b"x")
+        template = root / "template_match"
+        (template / ".sandbox").mkdir(parents=True)
+        (template / ".sandbox" / "setup_marker.json").write_text("{}")
+        (template / ".sandbox-bin").mkdir()
+        (template / ".sandbox-bin" / "codex-command-runner-1.0.0.exe").write_bytes(b"y")
+        status, tfp, ifp, msg = ci.check_sandbox_fingerprint(base, template)
+        check("matching versions -> status match", status == "match", status)
+        check("match carries no message", msg == "", msg)
+        check("match reports both fingerprints", tfp == ifp == "codex-command-runner-1.0.0.exe")
+
+        # mismatched versions (the actual CODEX_UAC_STORM_1 root cause)
+        base2 = root / "base_mismatch"
+        (base2 / ".sandbox-bin").mkdir(parents=True)
+        (base2 / ".sandbox-bin" / "codex-command-runner-0.153.4.exe").write_bytes(b"x")
+        template2 = root / "template_mismatch"
+        (template2 / ".sandbox").mkdir(parents=True)
+        (template2 / ".sandbox" / "setup_marker.json").write_text("{}")
+        (template2 / ".sandbox-bin").mkdir()
+        (template2 / ".sandbox-bin" / "codex-command-runner-0.153.1.exe").write_bytes(b"y")
+        status, tfp, ifp, msg = ci.check_sandbox_fingerprint(base2, template2)
+        check("mismatched versions -> status mismatch", status == "mismatch", status)
+        check("mismatch message names the template build", "0.153.1" in msg, msg)
+        check("mismatch message names the installed build", "0.153.4" in msg, msg)
+        check("mismatch message names the recapture command", "cp -r" in msg, msg)
+        check("mismatch message names the template path", str(template2) in msg, msg)
+
+        # template with .sandbox/setup_marker.json but NO .sandbox-bin at all
+        # -> unknown, refused, never a silent pass.
+        base3 = root / "base_for_no_bin"
+        (base3 / ".sandbox-bin").mkdir(parents=True)
+        (base3 / ".sandbox-bin" / "codex-command-runner-1.0.0.exe").write_bytes(b"x")
+        template3 = root / "template_no_bin"
+        (template3 / ".sandbox").mkdir(parents=True)
+        (template3 / ".sandbox" / "setup_marker.json").write_text("{}")
+        status, tfp, ifp, msg = ci.check_sandbox_fingerprint(base3, template3)
+        check("template with no .sandbox-bin -> status mismatch, not match",
+              status == "mismatch", status)
+        check("unknown template fingerprint is reported as UNKNOWN", tfp is None)
+
+        # capture-time stamp, if present, wins over deriving from .sandbox-bin
+        template4 = root / "template_stamped"
+        (template4 / ".sandbox").mkdir(parents=True)
+        (template4 / ".sandbox" / "setup_marker.json").write_text("{}")
+        (template4 / ".sandbox-bin").mkdir()
+        (template4 / ".sandbox-bin" / "codex-command-runner-1.0.0.exe").write_bytes(b"x")
+        (template4 / ci.SANDBOX_SEED_STAMP).write_text('{"fingerprint": "stamped-value"}')
+        check("a capture-time stamp overrides deriving from .sandbox-bin",
+              ci.template_sandbox_fingerprint(template4) == "stamped-value")
+
+
+def test_seed_sandbox_from_template_refuses_on_mismatch() -> None:
+    """The seeder itself: a proven mismatch raises EnvError naming both
+    builds and the recapture command, and NEVER copies anything into the
+    doomed home first."""
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        base = root / "base"
+        (base / ".sandbox-bin").mkdir(parents=True)
+        (base / ".sandbox-bin" / "codex-command-runner-2.0.0.exe").write_bytes(b"x")
+        template = root / "template"
+        (template / ".sandbox").mkdir(parents=True)
+        (template / ".sandbox" / "setup_marker.json").write_text("{}")
+        (template / ".sandbox-bin").mkdir()
+        (template / ".sandbox-bin" / "codex-command-runner-1.0.0.exe").write_bytes(b"y")
+        os.environ["CODEX_SANDBOX_SEED"] = str(template)
+        real_env = None
+        try:
+            home = root / "doomed_worker"
+            home.mkdir()
+            try:
+                ci.seed_sandbox_from_template(home, base)
+                check("a version mismatch raises EnvError", False, "no exception raised")
+            except ci.EnvError as exc:
+                check("mismatch EnvError names both builds",
+                      "1.0.0" in str(exc) and "2.0.0" in str(exc), str(exc))
+                check("mismatch EnvError names the recapture command",
+                      "cp -r" in str(exc), str(exc))
+            check("no sandbox artifacts were copied into the doomed home",
+                  not (home / ".sandbox-bin").exists())
+        finally:
+            os.environ.pop("CODEX_SANDBOX_SEED", None)
+
+        # And the false-confidence print this item also fixes: seed_codex_home
+        # must propagate the raise rather than printing "no UAC prompt
+        # expected" over a home it never actually finished seeding.
+        os.environ["CODEX_SANDBOX_SEED"] = str(template)
+        try:
+            base_home = root / "base_full"
+            base_home.mkdir()
+            (base_home / "auth.json").write_text("{}")
+            (base_home / "config.toml").write_text("{}")
+            (base_home / ".sandbox-bin").mkdir()
+            (base_home / ".sandbox-bin" / "codex-command-runner-2.0.0.exe").write_bytes(b"x")
+            worker = root / "worker_full"
+            try:
+                ci.seed_codex_home(base_home, worker)
+                check("seed_codex_home propagates the sandbox mismatch", False,
+                      "no exception raised")
+            except ci.EnvError as exc:
+                check("seed_codex_home's own EnvError is the sandbox mismatch",
+                      "sandbox" in str(exc).lower(), str(exc))
+        finally:
             os.environ.pop("CODEX_SANDBOX_SEED", None)
 
 
@@ -551,6 +746,9 @@ def main() -> int:
                test_output_schema_passthrough,
                test_harvest_grace,
                test_child_env_wslenv, test_seed_home, test_sandbox_seed_template,
+               test_sandbox_bin_fingerprint_picks_newest_by_version,
+               test_check_sandbox_fingerprint,
+               test_seed_sandbox_from_template_refuses_on_mismatch,
                test_kill_orphaned_sandbox_helpers_parses_pids,
                test_kill_orphaned_sandbox_helpers_survives_powershell_failure,
                test_orphan_cleanup_only_fires_on_timeout_with_home_override,
