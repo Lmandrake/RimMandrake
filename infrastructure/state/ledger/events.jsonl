@@ -6739,3 +6739,4 @@
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-10T05:49:19Z"}
 {"seat":"BENCH","event":"claim","id":"CODEX_UAC_STORM_1","ts":"2026-09-10T05:49:41Z"}
 {"seat":"BENCH","event":"start","id":"CODEX_UAC_STORM_1","ts":"2026-09-10T05:49:43Z"}
+{"seat":"BENCH","event":"note","id":"DESERT_WRAPS_ART_COMMISSION_1","text":"OWNER RULED 2026-09-09: ALL FOUR wrap styles ship (A spiral dyeable, B banded, C segmented raider, D draped shawl) - 'stunning, we need all of them'. Full body-type matrix now covers 4 apparel defs. Head shape pick still open (explained to owner, answer pending)","ts":"2026-09-10T05:57:04Z"}
