@@ -6352,10 +6352,10 @@
     "sha": "85401ce7"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_GadgetApparel_KotORModularWristLauncher.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "e9e8ebeecc141fa26b2e258545beacbd5c437781e60845ab4a01535a1150f50d",
-    "sha": "85401ce7"
+    "cleanCount": 3,
+    "date": "2026-09-10",
+    "hash": "1b4dc018c76dde8113f5c10d0c42e70f5d36c866440833b382d43b44c878531d",
+    "sha": "6784196e"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_GadgetApparel_KotORMountedWeapons.xml": {
     "cleanCount": 2,
@@ -6412,10 +6412,10 @@
     "sha": "85401ce7"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Mineables/Absorbed_KotorWeapons_KotORResource_CrystalFormations_Small.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "86ae5e593c4ae6e05c2b7a44b13a0a6dbf2706012ad4eff600e3a806899eba57",
-    "sha": "85401ce7"
+    "cleanCount": 3,
+    "date": "2026-09-10",
+    "hash": "2a738f7c959e25d51bc67a6a338ffb172d1922ef646416056bd9398dcd056fb0",
+    "sha": "6784196e"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Mineables/Absorbed_KotorWeapons_ThingDefs_UpgradeItems_Lightsaber.xml": {
     "cleanCount": 2,
@@ -6602,6 +6602,24 @@
     "date": "2026-09-06",
     "hash": "a97b0b278e879dd2e78987588f500b547e84c13745fa0c1f74b671d22b8db89c",
     "sha": "85401ce7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_TheForceLightsaber/ThingDef_Building/Absorbed_TheForceLightsaber_CrystalMapGenerator.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "3d5911ccb8fe6bf8db5e86e5a4ab4f7971ee5c163889a0b61294bac96c14f540",
+    "sha": "6784196e"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_TheForceLightsaber/ThingDef_Building/Absorbed_TheForceLightsaber_ForceCrystal_Formations.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "399ac1837de22ddbb812fe9c83742ab38beaf78f8b3d2b63ac7f1ea5505c037f",
+    "sha": "6784196e"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_TheForceLightsaber/ThingDefs_Misc/Absorbed_TheForceLightsaber_Kyber.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "e74d4a247c14d48a156e2a041a145af8fc6f6d3ad38bb56bc4ab3520a89f358a",
+    "sha": "6784196e"
   },
   "src/RimStarWars/Armoury/Defs/DamageDefs/Absorbed_Eweb_Damage.xml": {
     "cleanCount": 1,
@@ -7078,10 +7096,10 @@
     "sha": "4e362542"
   },
   "src/RimStarWars/Armoury/Source/absorption_content_fixes.py": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "f6b105d4aaa86733c111844619c3a76e7117eba6c7c9a70fef2a19676fbac972",
-    "sha": "afcfa347"
+    "cleanCount": 3,
+    "date": "2026-09-10",
+    "hash": "005ff3049ec9ea44fe1eb1df8929b65a9441bd0137a162cd14e57711fa819971",
+    "sha": "6784196e"
   },
   "src/RimStarWars/Armoury/Source/census_turrets.py": {
     "cleanCount": 1,
@@ -7137,6 +7155,12 @@
     "hash": "c83e506d57275db5e2b80b1b2f7124219e6b3c599304a1e6160cbc063995a703",
     "sha": "ee0b3ad6"
   },
+  "src/RimStarWars/Armoury/Source/gen_theforcelightsaber_kyber_absorption.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "5a7a18311934ba4bf54b268b822b4ade99c8d808a0112042e0b7602ad1d4af20",
+    "sha": "6784196e"
+  },
   "src/RimStarWars/Armoury/Source/gen_torpedo_speed.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
@@ -7190,6 +7214,24 @@
     "date": "2026-09-03",
     "hash": "437574fa4b16d527e4589dfd3fa651ec76f505af9c47cc5867f0815e6e83e1be",
     "sha": "70cd2206"
+  },
+  "src/RimStarWars/Armoury/_artsrc/desert_wraps_candidates_2026-09-09/work/gen.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "3998d50f9ba02d801e5ee50c996ac1fccf042cff4146567c0742937800633ff5",
+    "sha": "6784196e"
+  },
+  "src/RimStarWars/Armoury/_artsrc/desert_wraps_candidates_2026-09-09/work/make_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "b6f6baae459c457ea7b658808bd5504f44f9ace5e58824f10fa9f25760981293",
+    "sha": "6784196e"
+  },
+  "src/RimStarWars/Armoury/_artsrc/desert_wraps_candidates_2026-09-09/work/pipeline.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "76b5f9e2ed7e11312636984ac4e769b82284b5af24fbe7ec18d7f5b52b44dd6b",
+    "sha": "6784196e"
   },
   "src/RimStarWars/Cuisine/About/About.xml": {
     "cleanCount": 1,
