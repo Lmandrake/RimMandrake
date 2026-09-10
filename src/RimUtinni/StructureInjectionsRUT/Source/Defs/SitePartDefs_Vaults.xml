@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- VAULT_THAW_QUEST_FAMILY_1: one SitePartDef per vault type. Map content comes
+       from the linked GenStepDef running KCSG.GenStep_CustomStructureGen on the
+       template VAULT_DUNGEON_BUILD_1 already ships - the vanilla site-part ->
+       gen-step shape (Core/Defs/Sites/Parts/ItemStash.xml). minMapSize carries
+       the RULED 325x325 (dungeons_arc_spec.md SS3.9). wantsThreatPoints is
+       false: the layout IS the threat; nothing extra is rolled. -->
+  <SitePartDef>
+    <defName>RUT_VaultSite_Type1</defName>
+    <label>Forsaken vault (held)</label>
+    <description>A Forsaken vault that did its job. The garrison inside is still switched on.</description>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/AncientStructure</expandingIconTexture>
+    <minMapSize>(325,1,325)</minMapSize>
+    <wantsThreatPoints>false</wantsThreatPoints>
+    <gravShipsCanLandOn>true</gravShipsCanLandOn>
+    <considerEnteringAsAttack>true</considerEnteringAsAttack>
+    <forceExitAndRemoveMapCountdownDurationDays>4</forceExitAndRemoveMapCountdownDurationDays>
+    <tags>
+      <li>RUT_Vault</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_VaultSite_Type1</defName>
+    <linkWithSite>RUT_VaultSite_Type1</linkWithSite>
+    <order>400</order>
+    <genStep Class="KCSG.GenStep_CustomStructureGen">
+      <fullClear>true</fullClear>
+      <clearFogInRect>false</clearFogInRect>
+      <structureLayoutDefs>
+        <li>RUT_VaultType1_MechanoidGarrison</li>
+      </structureLayoutDefs>
+    </genStep>
+  </GenStepDef>
+
+  <SitePartDef>
+    <defName>RUT_VaultSite_Type2</defName>
+    <label>Forsaken vault (breached)</label>
+    <description>A Forsaken vault torn open from the inside. What killed the defenders is still multiplying.</description>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/AncientStructure</expandingIconTexture>
+    <minMapSize>(325,1,325)</minMapSize>
+    <wantsThreatPoints>false</wantsThreatPoints>
+    <gravShipsCanLandOn>true</gravShipsCanLandOn>
+    <considerEnteringAsAttack>true</considerEnteringAsAttack>
+    <forceExitAndRemoveMapCountdownDurationDays>4</forceExitAndRemoveMapCountdownDurationDays>
+    <tags>
+      <li>RUT_Vault</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_VaultSite_Type2</defName>
+    <linkWithSite>RUT_VaultSite_Type2</linkWithSite>
+    <order>400</order>
+    <genStep Class="KCSG.GenStep_CustomStructureGen">
+      <fullClear>true</fullClear>
+      <clearFogInRect>false</clearFogInRect>
+      <structureLayoutDefs>
+        <li>RUT_VaultType2_FleshWeaponLoose</li>
+      </structureLayoutDefs>
+    </genStep>
+  </GenStepDef>
+
+  <SitePartDef>
+    <defName>RUT_VaultSite_Type3</defName>
+    <label>Forsaken vault (frozen)</label>
+    <description>A Forsaken vault, dark and frost-locked. Nothing in it is switched on. Nothing in it is dead.</description>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/AncientStructure</expandingIconTexture>
+    <minMapSize>(325,1,325)</minMapSize>
+    <wantsThreatPoints>false</wantsThreatPoints>
+    <gravShipsCanLandOn>true</gravShipsCanLandOn>
+    <considerEnteringAsAttack>true</considerEnteringAsAttack>
+    <forceExitAndRemoveMapCountdownDurationDays>4</forceExitAndRemoveMapCountdownDurationDays>
+    <tags>
+      <li>RUT_Vault</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_VaultSite_Type3</defName>
+    <linkWithSite>RUT_VaultSite_Type3</linkWithSite>
+    <order>400</order>
+    <genStep Class="KCSG.GenStep_CustomStructureGen">
+      <fullClear>true</fullClear>
+      <clearFogInRect>false</clearFogInRect>
+      <structureLayoutDefs>
+        <li>RUT_VaultType3_FrozenRakata</li>
+      </structureLayoutDefs>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

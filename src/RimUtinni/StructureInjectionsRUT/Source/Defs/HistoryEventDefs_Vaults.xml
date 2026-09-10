@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- VAULT_THAW_QUEST_FAMILY_1: what the game REMEMBERS. QuestNode_RecordHistoryEvent
+       writes these into Find.HistoryEventsManager on each branch; nothing in vanilla
+       QuestGen reads them back, but the Narrator (Oracle recap), Ideology precepts and
+       the Reclamation's future roster can - this is the "the Narrator remembers"
+       substrate, vanilla-persisted. RUT_HelixSidedWithTheWoken is also the goodwill
+       reason on the Helix flip (the line on the faction tab). -->
+  <HistoryEventDef>
+    <defName>RUT_VaultVisited</defName>
+    <label>walked into a Forsaken vault and came back</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>RUT_VaultGarrisonBroken</defName>
+    <label>broke a Forsaken garrison</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>RUT_VaultSleepersWoken</defName>
+    <label>woke the Forsaken sleepers</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>RUT_VaultSleepersKilled</defName>
+    <label>killed the Forsaken sleepers in their caskets</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>RUT_VaultLeftSleeping</defName>
+    <label>left the Forsaken sleepers to their cold</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>RUT_WokenClaimRefused</defName>
+    <label>refused the woken their ship</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>RUT_HelixSidedWithTheWoken</defName>
+    <label>the Ascendant Helix sided with the woken Forsaken</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>RUT_ReclamationSurvived</defName>
+    <label>survived the Reclamation</label>
+  </HistoryEventDef>
+
+</Defs>
