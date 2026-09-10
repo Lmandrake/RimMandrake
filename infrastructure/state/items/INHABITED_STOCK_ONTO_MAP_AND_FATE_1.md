@@ -246,3 +246,97 @@ paperwork.
   rimplace and its offline compiler.
 * **`Squatted`.** No trigger exists to invent one from.
 * **Reachability.** Both gaps are pre-existing and named under OWED.
+
+---
+
+## Revisited 2026-09-10 (FOUNDRY) — both reachability gaps are now CLOSED, fate still not live-proven
+
+Continuing from the state above, not re-deciding anything. Checked both blockers
+named under OWED before doing anything else:
+
+* **`INHABITED_SETTLEMENT_MAPPARENT_GAP_1` — CLOSED 2026-09-04** (sha `6007e0fd`).
+  Owner ruled REBASE (`canon_reintegration_plan.md` G10); `WorldObject_Inhabited`
+  now derives `MapParent`; live-verified (`world_tile_map_generate` on
+  `Inhabited_Settlement` succeeds, `mapCount` 1→2, no stray second `Settlement`).
+* **`INHABITED_TILEMUTATOR_NO_ENTRY_1` — CLOSED 2026-09-05** (sha `d92f5459`, BENCH,
+  on the owner's "fully work it to completion"). **The wilderness `RM_InhabitedPlace`
+  mutator route was proven live, end to end, on a full 595-mod session**: roster
+  held=3→held=0/alive=0/state=Inhabited (cast consumed), and the mod's own log line
+  `put 145 of Test place's goods on the ground at (87,0,87) (3 stacks)` (larder
+  Meal10+Chemfuel60+Steel75=145, matching `RM_InhabitedPlace_Scrapyard` exactly) —
+  then `FillStock`+`DumpOnto`+`CollectFrom` proven again directly (145 out / 145
+  back). **This already satisfies this item's own criteria 1 and 2 live**, not just
+  in code, through the sibling item's own test.
+
+So criterion 5 ("reachable in play") is no longer blocked by either named gap —
+both close, and the closing item's own test drove exactly this item's `InhabitedStock`
+code live. **What is still NOT live-proven anywhere in the ledger is criterion 3,
+the fate cause/consequence** (`InhabitedFateWorker.DetectCause`/`Apply`) — BENCH's
+2026-09-05 pass proved cast and stock, not fate; grepped the ledger for
+`FleeIfThreatened`/`InhabitedFateWorker`/`DetectCause` and found no live test of
+either.
+
+**This pass's own verify, in order:**
+
+1. **Offline first.** `dotnet build Inhabited.csproj -c Release --no-incremental`
+   (via `/mnt/c/Users/Mandrake/.dotnet/dotnet.exe`, the WSL-visible path to the
+   user-local Windows SDK): 0 warnings, 0 errors, unchanged since the 2026-09-03
+   build — confirmed no regression from `INHABITED_INJECTIONS_DECOUPLE_1` (touched
+   only `GenStep_ComposeSettlementDistrict.cs`/csproj/About.xml, never the
+   stock/fate files) or `DISTRICT_TEMPLATE_LIBRARY_1` (added three more
+   `InhabitedPlaceDef` archetypes, all `Resident`, alongside the existing
+   `RM_InhabitedPlace_Scrapyard` which stays `FleeIfThreatened` — read the def file
+   to confirm before trusting "Create place"'s `AllDefsListForReading.FirstOrDefault()`
+   would still pick a fate-bearing archetype; the debug menu's own "Set place
+   archetype" action sidesteps the ordering question anyway).
+2. **Bridge check before taking it** (context brief: another window mid a quick
+   PitCell live-verify). `rimflow bridge who` showed it FREE once that finished, so
+   it was taken cleanly (`rimflow bridge take --for "...spawn-map-collect-fate
+   cycle..."`).
+3. **The live attempt itself did not run.** `python.exe rimbridge_client.py --call
+   rimworld/get_game_info` (and `rimbridge/ping`) both returned `WinError 10061
+   actively refused` against `127.0.0.1:5174`, retried twice. `Player.log` shows
+   `[RimBridge] GABP server running standalone on port 5174` and a live token
+   printed earlier this session, but `netstat -ano` on the Windows side shows **no
+   listener on 5174 at all** — the bridge service is down even though
+   `RimWorldWin64.exe` is very much alive and the campaign is actively simulating
+   (fresh `Player.log` lines: research completions, pawns downed in battle,
+   `[Ninefold]` satiation ticks — this is real play in progress, not a hang or a
+   frozen main menu). No exception logged around the GABP startup line; it simply
+   stopped answering with nothing in the log to say why. **Not this item's
+   mechanism failing** — the bridge transport itself is unreachable right now.
+4. **Released the bridge claim immediately** rather than hold it uselessly or
+   force a restart: the owner's campaign is live-playing, a cold reload costs
+   ~15 minutes and real disruption, and this repo has already had multiple
+   crash-adjacent incidents tonight from bridge-driving quicktests — restarting
+   solely to close one debug-action live check is not a reasonable trade against
+   a working campaign in progress. Left for whoever next holds a healthy bridge.
+
+**What the fate live-check still needs, spelled out so it costs nobody a second
+investigation** (per this item's own six debug actions, all still present in
+`DebugActions_Inhabited.cs`, unchanged): on a throwaway quicktest map (never the
+campaign) — `Create place at current tile`, `Set place archetype` →
+`RM_InhabitedPlace_Scrapyard` (explicit pick, do not rely on load-order default),
+`Stock: dump onto this map`, spawn a `Fire` inside `place.StockArea` (the granary),
+`Fate: test the cause now` and read `cause=InhabitedFateBurned` off the log line,
+then `Stock: collect from this map` and `Fate: fire the consequence now` and read
+the resulting `state` (Looted/Abandoned) off the log line. Three lines, per the
+debug-testing skill's validation-plan discipline:
+
+```
+PROVE    the six DebugActions_Inhabited.cs actions above, in that order, on a quicktest map
+EXPECT   "cause=InhabitedFateBurned" from Fate: test the cause now; state resolves to
+         Looted or Abandoned depending on how much stock the fire actually destroyed
+LIES     a false pass if the Fire thing lands outside place.StockArea (silently reads
+         as cause=none, not an error) or if the archetype picked has fate=Resident
+         (all four now-authored InhabitedPlaceDefs after DISTRICT_TEMPLATE_LIBRARY_1
+         — only Scrapyard has FleeIfThreatened, so pin it explicitly)
+```
+
+**Staying `doing`, not closing.** Criteria 1/2/4 are code-complete AND now
+live-proven (via the sibling item's own test, not fabricated for this note).
+Criterion 3 (fate) is code-complete but still has zero live proof anywhere in the
+ledger, and criterion 5 depends on it. This is a narrower gap than the one this
+item opened with — not "unreachable by construction", just "the one remaining
+untested code path" — but it is real and not this pass's to wave through on the
+strength of an adjacent proof.
