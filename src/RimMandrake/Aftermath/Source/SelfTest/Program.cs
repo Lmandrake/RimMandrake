@@ -170,6 +170,44 @@ namespace RimMandrake.Aftermath.SelfTest
             Case("Eligibility_null_def_is_never_eligible", () =>
                 Assert(!AftermathRuleEligibility.IsEligible(null, BattleOutcome.Repelled, 0), "null def must not throw and must be ineligible"));
 
+            // ------------------------------------- IsEligibleMentalBreakNearBattle -
+            // Rule 6 ("Zizzik's aftermath"), wired 2026-09-09. The trigger's
+            // own tick-window and Zizzik-band conditions live in
+            // AftermathRuleRunner.OnMentalBreakNearBattle (needs a live
+            // Game/Ninefold, not offline-testable); this predicate is just
+            // "is this def even the right trigger kind."
+            Case("MentalBreakEligibility_ZizziksAftermath_is_eligible", () =>
+            {
+                var def = new RM_AftermathRuleDef { triggerKind = AftermathTriggerKind.MentalBreakNearBattle };
+                Assert(AftermathRuleEligibility.IsEligibleMentalBreakNearBattle(def),
+                    "a MentalBreakNearBattle-kind def must be eligible via this path");
+            });
+            Case("MentalBreakEligibility_BattleOutcome_kind_is_never_eligible_via_this_path", () =>
+            {
+                var def = new RM_AftermathRuleDef
+                {
+                    triggerKind = AftermathTriggerKind.BattleOutcome,
+                    triggerOutcomes = new List<BattleOutcome> { BattleOutcome.Repelled },
+                };
+                Assert(!AftermathRuleEligibility.IsEligibleMentalBreakNearBattle(def),
+                    "a BattleOutcome-kind rule must never be eligible via the mental-break path");
+            });
+            Case("MentalBreakEligibility_other_unwired_kinds_are_never_eligible_via_this_path", () =>
+            {
+                foreach (AftermathTriggerKind kind in new[]
+                {
+                    AftermathTriggerKind.PrisonerHeldDuration, AftermathTriggerKind.GodBandCrossed,
+                    AftermathTriggerKind.RootedClockQuadrum, AftermathTriggerKind.TakingEventWitnessed,
+                })
+                {
+                    var def = new RM_AftermathRuleDef { triggerKind = kind };
+                    Assert(!AftermathRuleEligibility.IsEligibleMentalBreakNearBattle(def),
+                        "a " + kind + "-kind rule must never be eligible via the mental-break path");
+                }
+            });
+            Case("MentalBreakEligibility_null_def_is_never_eligible", () =>
+                Assert(!AftermathRuleEligibility.IsEligibleMentalBreakNearBattle(null), "null def must not throw and must be ineligible"));
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }

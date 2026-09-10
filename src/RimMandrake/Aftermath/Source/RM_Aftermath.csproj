@@ -56,6 +56,8 @@
     <Compile Include="Patch_RaidGenerated.cs" />
     <Compile Include="Patch_LordLifecycle.cs" />
     <Compile Include="Patch_ColonistCasualty.cs" />
+    <Compile Include="Patch_MentalBreakNearBattle.cs" />
+    <Compile Include="NinefoldBandBridge.cs" />
     <Compile Include="AftermathTriggerKind.cs" />
     <Compile Include="AftermathPayloadFactionMode.cs" />
     <Compile Include="RM_AftermathRuleDef.cs" />

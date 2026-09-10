@@ -183,6 +183,86 @@ covers a `deactivated` faction) — the bypass needed no patch of our own; it
 falls out of setting the fields the doc's own discipline rule already
 required. Full citation inline in `AftermathRuleRunner.cs`.
 
+## build log (2026-09-09, FOUNDRY BELT-mode continuation)
+
+**Rule 6 ("Zizzik's aftermath") wired** — the trigger engine, not just the
+data. `AftermathTriggerKind.MentalBreakNearBattle` was DATA-only per the
+2026-09-05 build log; this pass adds:
+- `Patch_MentalBreakNearBattle.cs` — a Harmony postfix on
+  `Verse.AI.MentalStateHandler.TryStartMentalState` (verified via rimsage:
+  the single call site every mental STATE, not just breaks, passes through —
+  same seam Ninefold's own `Patch_MentalBreakStarted` already patches, under
+  a DIFFERENT Harmony id, which is the standard safe way two independent
+  mods share one vanilla method). Filtered to player humanlike pawns only,
+  mirroring Ninefold's own `MentalBreakUtility.ApplyBreakDelta` guard.
+- `AftermathRuleRunner.OnMentalBreakNearBattle(Pawn)` — looks up the most
+  recently CLOSED battle on that pawn's map (a new `Dictionary<Map,
+  BattleRecord> lastClosedByMap`, populated in the existing `OnBattleClosed`
+  for every closed battle, not just BattleOutcome-eligible ones), checks the
+  doc's own 2-day window (`GenDate.TicksPerDay * 2`), checks Zizzik's band
+  via `NinefoldBandBridge`, then reuses the EXISTING `TryQueue(def, record)`
+  path unchanged — same discipline caps, same `mlie.factionraidcooldown`
+  bypass, same telegraph/chronicle wiring rules 1-3 already use. No
+  duplicated queueing logic.
+- `NinefoldBandBridge.cs` — a soft-hook reflection QUERY, the mirror image
+  of Ninefold's own `ChronicleSubscriber.cs` (which subscribes to this
+  engine's spine by reflection): `CHRONICLE_NINEFOLD_DECOUPLE_1` forbids a
+  `<Reference>` to Ninefold in this mod's `.csproj` (confirmed still true —
+  the csproj's own header says so), so `GameComponent_Ninefold.Instance` and
+  `.GetBand(God.Zizzik)` are read via `AccessTools.TypeByName` +
+  cached `PropertyInfo`/`MethodInfo`, verified against Ninefold's actual
+  source (`GameComponent_Ninefold.cs`, `God.cs`, `SatiationBand.cs`) rather
+  than guessed. Ninefold absent, renamed, or reshaped all read as "never
+  eligible" (warn once, never throw) — rule 6 simply does not fire, which is
+  this item's own law 2 ("the game is whole with the LLM/consumer absent"),
+  applied to a god-satiation consumer instead of the LLM.
+- `AftermathRuleEligibility.IsEligibleMentalBreakNearBattle(def)` — pure,
+  offline-testable (4 new selftest cases: the rule's own kind is eligible,
+  BattleOutcome-kind and every other unwired kind are not, null is not).
+  15/15 selftests pass (11 prior + 4 new); `dotnet build` clean, 0
+  warnings/errors.
+- `RM_AftermathRuleDefs.xml`'s rule 6 comment updated DATA-ONLY → WIRED. The
+  def itself (`payloadIncidentDefName=ShortCircuit`,
+  `payloadFactionMode=SameAsTrigger`) was untouched — the ALREADY-shipped
+  plain-ShortCircuit payload is what fires; the doc's fuller rule-6 flavor
+  (weakest-hull-wall targeting, `mlie.slaverebellionsimproved`'s incident,
+  the 1-in-4 rival-fight variant) is NOT built this pass, same "ship the
+  plain IncidentDef, not the flavor" call the 2026-09-05 build already made
+  for rules 1-3 — see that log's own "Deliberately not built" section.
+
+**Not picked up this pass, and why (so the next agent does not re-derive
+it):**
+- **Part 1 (raid-redesigner proper)** was reconsidered as unblocked
+  (`OracleClient`'s claude-p rewrite landed and re-verified tonight per this
+  item's own task briefing) but was NOT started: (a) its seam A (deferral)
+  and seam B (menu-field application) both sit on
+  `IncidentWorker_Raid.TryGenerateRaidInfo`/`IncidentWorker_RaidEnemy.
+  TryExecuteWorker`, and reading the REAL 1.6 source (rimsage) this pass
+  shows `parms.faction` is null on entry to BOTH of those seams for the
+  common (non-forced, non-quest) raid roll — `TryResolveRaidFaction` only
+  resolves it deep inside `TryGenerateRaidInfo`, well after where the doc's
+  own seam A/B sit. The doc does not say how the deferred Oracle prompt is
+  supposed to know the raiding faction it needs to describe (§1.3's `raid:
+  faction defName...`) before that resolution has run — this is a design
+  gap, not a guessable implementation detail, and building the deferral
+  scaffold blind against an unverified assumption risks exactly the
+  "dramatic findings need a second look" failure this repo has hit before.
+  (b) Independently, the Oracle system-prompt (§1.3) needs a
+  per-faction ~120-word register block from the `mandrake.rut.raidregister`
+  companion, which does not exist — the doc shows worked examples for only
+  3 of the 13 factions, so authoring the rest is content design outside
+  this item's own 333-line doc, not mechanical wiring. Flagging both rather
+  than inventing either.
+- **Rules 4, 5, 7, 8's trigger engines** remain the biggest owed piece.
+  4 (prisoner-held-duration) and 8 (Property-fabric/Hutt) are plausibly
+  mechanical but each needs a design call this doc does not fully make
+  (rule 4's "reuse `geojak.tributedemand`'s dialog, do not rewrite" needs
+  that mod's actual dialog API read first, not assumed); 5 needs a Ninefold
+  band-CHANGE signal that does not exist (Ninefold currently only exposes a
+  band-READ, which is all rule 6 needed); 7 needs read access to Ninefold's
+  own PRIVATE Ta'Baa `lastLaunchTick` field, which is an encapsulation
+  boundary, not a missing patch.
+
 **Deliberately not built, and why:**
 - Rules 4-8's trigger engines (above).
 - Composition-bias / attackTargets-targeting / alternate-misfortune-list
@@ -223,11 +303,12 @@ required. Full citation inline in `AftermathRuleRunner.cs`.
       second patch on `Pawn.Kill` for a god-delta purpose). `f12c9bdb`,
       `2003769c`.
 - [~] All 8 `RM_AftermathRuleDef`s are BUILT (real payload IncidentDef, real
-      god tie, real telegraph/letter text per rule) — but only 3 of 8
-      (Regroup and return, The allies arrive, Scavengers on the field) have
-      a live trigger engine this pass. Rules 4/5/6/7/8 ship as data only;
-      see the build log above and `AftermathTriggerKind.cs` for exactly
-      which engine piece each still needs. NOT fully closing this criterion.
+      god tie, real telegraph/letter text per rule) — 4 of 8 (Regroup and
+      return, The allies arrive, Scavengers on the field, and — 2026-09-09 —
+      Zizzik's aftermath) now have a live trigger engine. Rules 4/5/7/8 ship
+      as data only; see the build log above and `AftermathTriggerKind.cs`
+      for exactly which engine piece each still needs. NOT fully closing
+      this criterion.
 - [x] `mlie.factionraidcooldown` bypass verified working via its own shipped
       DLL + the real vanilla call chain (not assumed) — see build log above.
 - [x] Nothing here requires `mandrake.rm.oracle` to be active to ship its
