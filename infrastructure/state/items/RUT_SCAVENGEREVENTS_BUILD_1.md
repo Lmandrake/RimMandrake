@@ -37,12 +37,41 @@ assembly — read via a scratch copy of `ilprobe` (repointed `DLL` in
   instance's own `NewQuest` `LetterDef` field (quest-hook letter, not a plain
   Positive/Negative), keys `MO_TribalAid`/`MO_TribalAidDesc`.
 
-- **MOIncidentWorker_RescueTraitor** — spawns one `MO_RTWorker` ThingDef at a
-  random cell (`CellFinderLoose.RandomCellWith`, search radius 1000, predicate
-  closure not further disassembled — likely a walkable/unroofed check) via
-  plain `GenSpawn.Spawn`, **no letter at all** in the decompiled path. Thinnest
-  of the 8 — confirm `MO_RTWorker`'s own def (creature vs. structure) before
-  porting; the name implies a caged/rescuable pawn, not the thing spawned here.
+- **MOIncidentWorker_RescueTraitor** — ⚠️ **correction, same session**: an
+  earlier pass here wrongly concluded `Ticker_RTWorker` (the `MO_RTWorker`
+  ThingDef's `thingClass`) doesn't exist in `MoreIncidents.dll` and called
+  this mechanism dead. That was a search-tool miss, not a fact about the
+  mod — the class is real, at typedef row 26, and it is NOT a simple
+  "rescue" incident. `TryExecuteWorker` just spawns the invisible
+  `MO_RTWorker` ticker Thing at a random cell (`CellFinderLoose.RandomCellWith`,
+  radius 1000); the REAL mechanism lives in `Ticker_RTWorker.Tick()`, which
+  this session decompiled about half of:
+  - A `timer` field counts down once per tick from spawn.
+  - At `timer == 690`: picks a random non-hostile faction
+    (`RandomNonHostileFaction(false, false, true, TechLevel.Spacer)` — note,
+    different flags/tech level than every other mechanism's faction lookup),
+    generates a `SpaceRefugee`-kind pawn, and overrides its
+    `RaceProperties.thinkTreeMain` to a ThinkTreeDef named
+    `"HumanlikeTheThing"` (`GetNamed` with `errorOnFail=false`) — this is
+    Mo'Events' body-horror "The Thing" mimicry sub-system (see the
+    assembly's own `Pawn_theThing`/`theThing_Utility` classes), not a plain
+    pawn.
+  - At `timer == 0` (once, gated by a `doOnce` flag): drops that pawn in a
+    pod, `DamageUntilDowned`s it, and sends a letter using **vanilla's own**
+    `"LetterLabelRefugeePodCrash"`/`"RefugeePodCrash"` keys (reused directly
+    from the base game's own refugee-pod-crash incident, not a `MO_*` key)
+    with `NeutralEvent`.
+  - Falls through into a SEPARATE, **not yet decompiled**, `timemut`/
+    `facemutated`/`mutplace` mutation timer that this session did not read —
+    the pawn is very likely NOT what it appears to be, and reveals or
+    transforms into something else later. Field names alone (`Face`,
+    `facemutated`, `mutjustspawned`, `mutplace`) are not enough to safely
+    author a port from.
+  **This is not "port behavior not bugs" territory** — it is unread content
+  design (a slow-burn impostor/monster reveal), not a mechanical port, and it
+  deserves a design decision (does Ash'karr want this at all, and if so what
+  should the reveal be) before any C# gets written. Left unbuilt this
+  session; see "still owed" below.
 
 - **MOIncidentWorker_Insect** (item's "desert fauna") — resolves the live
   `Insect` FactionDef, spawns `count = round(colonistCount/3, min 2)` pawns
@@ -80,52 +109,64 @@ assembly — read via a scratch copy of `ilprobe` (repointed `DLL` in
 
 **Dropped per spec** (Nausea, Amnesia) — not decompiled, out of scope.
 
-## progress: mechanism 1 of 8 built, deployed, awaiting a proven-fires load
+## progress: 7 of 8 named mechanisms built, compiled, deployed
 `mandrake.rut.scavengerevents` scaffolded at `src/RimUtinni/ScavengerEvents/`
-(About/Defs/Languages/Source, mirrors `RestrainingBolts`' csproj shape) with
-`RUT_Migration` (`IncidentWorker_Migration.cs`) — the ambient-wildlife-passage
-mechanic. Own defName, own `RUT_Migration`/`RUT_MigrationDesc` Keyed strings,
-own `IncidentDef` (`targetTags Map_PlayerHome`, `category Misc`, `baseChance 5`,
-`minRefireDays 7`, `earliestDay 1` — matches the donor's own IncidentDef
-shape, read from its XML rather than guessed). The donor's animal-count
-formula was an opaque integer-division artifact (poolCount canceled out of
-its own ratio, then a no-op `Math.Round` on an already-integer value) — not
-intentional tuning, so replaced with a plain `Rand.RangeInclusive(2, 8)` per
-"port behavior not bugs."
+(About/Defs/Languages/Source, mirrors `RestrainingBolts`' csproj shape).
+Built, in order: `RUT_Migration`, `RUT_SurvivalPod`, `RUT_PodCrash` (donor
+defName, not "PodCrashTribal"), `RUT_Thanksgiving`, `RUT_Insects`,
+`RUT_Stroke`, `RUT_ShipBreak` (donor defName `MO_ShipBreak`) — 7
+IncidentWorker classes total. Every one of them:
 
-- **Built clean**: `dotnet.exe build ... -c Release` → 0 warnings, 0 errors —
-  every guessed API signature (`RCellFinder.TryFindRandomPawnEntryCell`,
-  `CellFinder.RandomClosewalkCellNear`, the `Job`/`StartJob` overloads,
-  `Pawn_MindState.exitMapAfterTick`, `Map.Biome`/`Center`,
-  `BiomeDef.AllWildAnimals`, `LetterStack.ReceiveLetter`) compiled against the
-  real `Assembly-CSharp.dll`, not just against the decompile.
-- **Deployed clean**: `deploy_custom_mods.py --mod ScavengerEvents --apply` —
-  4 files, nothing else touched, VERIFIED in sync.
-- **Enabled for the NEXT load only**: added `mandrake.rut.scavengerevents`
-  to `ModsConfig.xml` right after `mlie.moevents` (no patches/Harmony, so no
+- **Builds clean**: `dotnet.exe build ... -c Release` → 0 warnings, 0 errors,
+  every single time, including every guessed API signature (constructors,
+  overloads, enum values) confirmed against the real `Assembly-CSharp.dll`,
+  not just the decompile. A handful of guesses were WRONG and the compiler
+  caught them immediately (`RandomNonHostileFaction`'s 4th param really is
+  `TechLevel`; `DropPodUtility.DropThingsNear`'s bool ordering needed
+  positional args, not named, since the real names weren't verified).
+- **Deploys clean**: `deploy_custom_mods.py --mod ScavengerEvents --apply`
+  after every mechanism, VERIFIED in sync each time. The deploy tool's own
+  malformed-XML guard caught two `--` inside XML *comments* (illegal there,
+  fine in element text) before anything shipped with broken defs.
+- **Own IncidentDef values are the donor's real ones, not assumed** — every
+  `baseChance`/`minRefireDays`/`earliestDay`/`category` was read off Mo'Events'
+  own `IncidentDefs.xml`, not copy-pasted from Migration's. `RUT_Insects` is
+  the one filed under `ThreatBig`, not `Misc`.
+- **Enabled for the NEXT load only**: `mandrake.rut.scavengerevents` sits in
+  `ModsConfig.xml` right after `mlie.moevents` (no patches/Harmony, so no
   load-order sensitivity) — backup at
-  `Transient/ModsConfig_before_scavengerevents_add_2026-09-10.xml`. **Not
-  restarted** — the owner was mid-session on the live campaign map when this
-  was built; forcing a restart to prove-fires would have pulled the game out
-  from under him. Whoever restarts next (owner or FOUNDRY) will load it.
-- **NOT yet proven-fires** — needs a bridge test (quicktest map, biome with
-  a non-empty `AllWildAnimals`, `IncidentDefOf`-style manual fire or
-  `DebugTools` "do incident" call, verify the letter + the pawns actually
-  spawn and walk off) once a load happens. This is the next concrete step for
-  this item — do it before starting mechanism 2.
+  `Transient/ModsConfig_before_scavengerevents_add_2026-09-10.xml`. **Never
+  restarted this session** — the owner was mid-session on the live campaign
+  map throughout; forcing a restart to prove-fires would have pulled the
+  game out from under him.
+- **NOT yet proven-fires, any of the 7** — needs a load (quicktest is fine
+  for all but Thanksgiving, which needs a hungry colony to trigger) and a
+  manual incident fire per worker, verifying the letter and the actual
+  spawned things/pawns. This is the next concrete step for this item, before
+  touching RescueTraitor.
 
-## still owed (mechanisms 2-8, and the close-out)
-The remaining 7 workers (ShipBreak, PodCrashTribal, RescueTraitor, Insect,
-Thanksgiving, Stroke — RescueTraitor and Insect both touch `SpaceRefugee`/
-combat-relevant mechanics and deserve more care than Migration did). Also:
-salvage-economy loot substitution for ShipBreak/Thanksgiving/SurvivalPod's
-fixed item lists, the `MO_RTWorker` def investigation, `stroke::IncidentStroke`
-and `RescueTraitor`'s closure predicate (both un-expanded in the mechanism
-reference above), a proven-fires bridge test per worker, the Mlie
-continuation-license check, the interim MO_ baseChance zeroing, and the final
-`mlie.moevents` retirement + `animal_census.csv` MO_AbominationRace row
-deletion.
+## RescueTraitor: NOT a simple port, held back on purpose
+See the mechanism reference above — decompiling this one properly (rather
+than trusting an earlier, WRONG "the class doesn't exist" finding from this
+same session) turned up a half-decompiled body-horror mimicry/reveal
+mechanic, not a plain rescue. Needs the rest of `Ticker_RTWorker.Tick()`
+decompiled (the `timemut`/`facemutated` mutation branch) and a design
+decision on whether Ash'karr wants an impostor-reveal event at all before
+any C# gets written. This is the one mechanism of the 8 that is genuinely
+NOT ready to build.
+
+## still owed
+- Proven-fires bridge test for all 7 built workers (biggest remaining gap).
+- The rest of `Ticker_RTWorker.Tick()` + the design call on RescueTraitor.
+- Salvage-economy loot substitution for ShipBreak/Thanksgiving/SurvivalPod's
+  fixed item lists (all three currently use the donor's own item choices
+  verbatim — a deliberate placeholder, not yet salvage-economy-integrated).
+- The Mlie continuation-license check, the interim MO_ baseChance zeroing,
+  and the final `mlie.moevents` retirement + `animal_census.csv`
+  MO_AbominationRace row deletion — none of these can happen before the 7
+  built workers are proven-fires AND a RescueTraitor decision lands.
 
 ## verify
-Migration: build clean (done), deploy clean (done), proven-fires bridge test
-(owed, blocked on a restart). The other 7: not started.
+All 7 built workers: build clean (done), deploy clean (done), proven-fires
+bridge test (owed, blocked on a restart — the owner was mid-session all
+session). RescueTraitor: mechanism only half-understood, not started.
