@@ -77,10 +77,63 @@ def generate(args):
         sys.exit("no image in response. finishReason=%s text=%s" % (
             (resp.get("candidates") or [{}])[0].get("finishReason"), txt[:300]))
     os.makedirs(os.path.dirname(os.path.abspath(args.out)) or ".", exist_ok=True)
-    with open(args.out, "wb") as f:
-        f.write(img)
-    print("wrote %s (%d bytes), model=%s, refs=%d" % (
-        args.out, len(img), args.model, len(args.ref or [])))
+    # The API's inline_data mime is not trustworthy and the model returns JPEG
+    # today (measured 2026-09-09) — sniff the real format via PIL and always
+    # write a genuine PNG, since every consumer here validates the PNG header.
+    import io
+    from PIL import Image
+    try:
+        im = Image.open(io.BytesIO(img))
+        im.load()
+    except Exception as exc:
+        sys.exit("API returned bytes PIL cannot read as an image: %s" % exc)
+    src_size = im.size
+    if im.mode not in ("RGB", "RGBA"):
+        im = im.convert("RGBA")
+    if getattr(args, "cutout", False):
+        # Gemini has no native alpha (this file's own header): the designed
+        # pairing is a rembg cutout, run at NATIVE resolution before any
+        # downscale so the alpha edge survives the LANCZOS. Refuse rather
+        # than deliver an opaque image every downstream validator rejects.
+        import fcntl, subprocess, tempfile
+        rembg_py = os.path.expanduser("~/.venvs/rwgfx/bin/python")
+        if not os.path.isfile(rembg_py):
+            sys.exit("--cutout: no rembg venv at " + rembg_py)
+        # Serialize cutouts machine-wide: N concurrent rembg loads are N
+        # ONNX models in RAM at once — measured 2026-09-09, three at once
+        # died in multiprocessing's resource_tracker under a bounded cgroup.
+        lock_path = os.path.expanduser("~/.cache/rwgfx_rembg.lock")
+        os.makedirs(os.path.dirname(lock_path), exist_ok=True)
+        lock_fh = open(lock_path, "w")
+        fcntl.flock(lock_fh, fcntl.LOCK_EX)
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tf:
+            opaque = tf.name
+        cut = opaque + ".cut.png"
+        im.save(opaque, "PNG")
+        r = subprocess.run([rembg_py, "-c", (
+            "import sys; from rembg import remove; from PIL import Image; "
+            "im=Image.open(sys.argv[1]); out=remove(im); out.save(sys.argv[2],'PNG')"),
+            opaque, cut], capture_output=True, text=True, timeout=300)
+        os.unlink(opaque)
+        if r.returncode != 0:
+            sys.exit("--cutout: rembg failed: " + (r.stderr or r.stdout)[-300:])
+        im = Image.open(cut)
+        im.load()
+        os.unlink(cut)
+    if args.size:
+        try:
+            w, h = (int(x) for x in args.size.lower().split("x"))
+        except ValueError:
+            sys.exit("--size must look like 256x256, got %r" % args.size)
+        if src_size[0] < w or src_size[1] < h:
+            sys.exit("API returned %dx%d, smaller than requested %dx%d — "
+                     "refusing to upscale-mangle" % (*src_size, w, h))
+        if im.size != (w, h):
+            im = im.resize((w, h), Image.LANCZOS)
+    im.save(args.out, "PNG")
+    print("wrote %s (%d bytes api, %s %s -> %dx%d png), model=%s, refs=%d" % (
+        args.out, len(img), im.format or "reencoded", "%dx%d" % src_size,
+        im.width, im.height, args.model, len(args.ref or [])))
 
 
 def probe(args):
@@ -102,6 +155,16 @@ def main():
     g.add_argument("--out", required=True)
     g.add_argument("--ref", action="append", help="reference image(s); repeatable")
     g.add_argument("--model", default=DEFAULT_MODEL)
+    g.add_argument("--size", help="WxH the caller actually needs, e.g. 256x256. "
+                   "The API ignores requested dimensions (measured 2026-09-09: "
+                   "gemini-3-pro-image returns 1024x1024 JPEG regardless), so the "
+                   "returned image is converted to real PNG and LANCZOS-DOWNSCALED "
+                   "to exactly this; a return SMALLER than this refuses rather than "
+                   "upscale-mangle. Without --size the bytes are still format-"
+                   "sniffed and re-encoded as PNG at whatever size came back.")
+    g.add_argument("--cutout", action="store_true",
+                   help="run a rembg background cutout (rwgfx venv) on the result "
+                        "so it carries real alpha — gemini emits none natively")
     g.set_defaults(fn=generate)
     p = sub.add_parser("probe")
     p.set_defaults(fn=probe)

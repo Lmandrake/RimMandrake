@@ -957,7 +957,16 @@ class RunCtx:
         self.reasoning_effort = reasoning_effort
         self.verbose = verbose
         self.slots = slots  # queue.Queue of free worker-slot ints (codex channel only)
-        self.gemini_worker_script = gemini_worker_script
+        # 🔴 Script bytes are read ONCE here and fed to every spawn via
+        # stdin (`python - <args>`). Measured 2026-09-09 (mantrap_improve_b
+        # r2/r3/r4/r6): drvfs intermittently served a minutes-STALE copy of
+        # the worker script to some spawns — in one drain three threads ran
+        # the current script and one silently ran the pre-edit version.
+        # One read at ctx build makes every worker deterministically run the
+        # same code; cwd stays at the script's own directory so a worker's
+        # sibling imports (the mock's _codex_mock/pnglib) still resolve.
+        self.gemini_worker_script = Path(gemini_worker_script)
+        self.gemini_worker_source = self.gemini_worker_script.read_text()
         self.gemini_timeout = gemini_timeout
         # Needed ONLY so process_gemini_job can write a billing-INTENT row
         # (_write_gemini_billing_intent) before it spawns the worker
@@ -1056,18 +1065,38 @@ _GEMINI_MODEL_RE = re.compile(r"model=([^,\s]+)")
 
 
 def run_gemini_worker(worker_script: Path, prompt: str, out_png: Path, reference,
-                       model: str, timeout: int) -> tuple[int, str, str, float, bool]:
+                       model: str, timeout: int, canvas=None,
+                       cutout: bool = False,
+                       script_source: str | None = None) -> tuple[int, str, str, float, bool]:
     """gemini_image.py's CLI is much thinner than codex_image.py's: no
     --codex-home, no --output-schema/-o, no per-job structured reply — just
-    `generate --prompt --out [--ref ...] --model`, a plain success line to
-    stdout, or a sys.exit() message to stderr on failure."""
-    cmd = [sys.executable, str(worker_script), "generate",
-           "--prompt", prompt, "--out", str(out_png), "--model", model]
+    `generate --prompt --out [--ref ...] --model [--size WxH]`, a plain success
+    line to stdout, or a sys.exit() message to stderr on failure.
+
+    `--size` exists because the API ignores requested dimensions and (measured
+    2026-09-09, gemini-3-pro-image) returns 1024x1024 JPEG regardless — the
+    worker script owns converting/downscaling to the job's exact canvas, and
+    _check_size_and_validate() still verifies the result independently."""
+    if script_source is not None:
+        # `python - <args>` runs the ONE source read at ctx build (see
+        # RunCtx.gemini_worker_source) — immune to drvfs serving a stale
+        # copy of the file to this particular spawn. cwd = the script's own
+        # directory so sibling imports keep resolving.
+        cmd = [sys.executable, "-", "generate"]
+    else:
+        cmd = [sys.executable, str(worker_script), "generate"]
+    cmd += ["--prompt", prompt, "--out", str(out_png), "--model", model]
+    if canvas:
+        cmd += ["--size", f"{canvas['width']}x{canvas['height']}"]
+    if cutout:
+        cmd += ["--cutout"]
     if reference:
         cmd += ["--ref", str(reference)]
     started = time.monotonic()
     try:
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout,
+                               input=script_source,
+                               cwd=str(Path(worker_script).parent))
         return proc.returncode, proc.stdout, proc.stderr, time.monotonic() - started, False
     except subprocess.TimeoutExpired as exc:
         out = exc.stdout.decode() if isinstance(exc.stdout, bytes) else (exc.stdout or "")
@@ -1374,7 +1403,10 @@ def process_gemini_job(job: dict, job_id: str, reference, out_png: Path, ctx: Ru
         _write_gemini_billing_intent(ctx.throughput_log, job_id)
 
     code, out, err, elapsed, timed_out = run_gemini_worker(
-        ctx.gemini_worker_script, prompt, out_png, reference, model, ctx.gemini_timeout)
+        ctx.gemini_worker_script, prompt, out_png, reference, model, ctx.gemini_timeout,
+        canvas=job.get("canvas"),
+        cutout=(job.get("background", "transparent") == "transparent"),
+        script_source=getattr(ctx, "gemini_worker_source", None))
 
     m = _GEMINI_MODEL_RE.search(out or "")
     actual_model = m.group(1) if m else model
@@ -1386,7 +1418,13 @@ def process_gemini_job(job: dict, job_id: str, reference, out_png: Path, ctx: Ru
     # not merely that the process exited 0.
     result = {"id": job_id, "channel": "gemini", "elapsed_s": elapsed,
               "timed_out": timed_out, "model": actual_model, "cost_usd": 0.0,
-              "meter_before": None, "meter_after": None, "daemon_attempts": 1}
+              "meter_before": None, "meter_after": None, "daemon_attempts": 1,
+              # The worker's own success line states what it believes it wrote
+              # ("... 1024x1024 -> 256x256 png"); kept on every manifest so a
+              # worker-says vs daemon-reads mismatch is diagnosable from the
+              # manifest alone (it cost three blind retries on 2026-09-09).
+              "worker_stdout_tail": (out or "")[-300:],
+              "worker_stderr_tail": (err or "")[-300:]}
 
     if code != 0 or timed_out:
         # A quota/429 exhaustion is NOT an ordinary worker fault: hammering
