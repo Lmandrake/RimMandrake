@@ -175,6 +175,17 @@ python3 src/RimMandrake/rimflow/cli.py …            the ledger: file/claim/clo
 node --check <file.js>                              Node 22 is installed user-local
 python3 src/RimMandrake/Utils/run_selftests.py      run every selftest before a commit — parallel,
                                                      explicit N/N, never silently truncated
+python3 src/RimMandrake/Utils/system_screenshot.py <out.bmp>   OS-level desktop capture (ctypes,
+                                                     DPI-aware) — not the game's own F10/bridge
+                                                     screenshot. Owner ruling 2026-09-09: always
+                                                     OK to take one when in doubt of live state —
+                                                     no asking first. Convert with PIL if needed.
+python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click at real screen
+                                                     coordinates (from a system_screenshot.py
+                                                     capture, scaled to its actual resolution) —
+                                                     for a Windows dialog a bridge call can't
+                                                     reach (UAC/firewall prompts, native error
+                                                     boxes). Same DPI-awareness as above.
 ```
 
 ## Options he must LOOK at ship as a savegame — owner, 2026-09-02
