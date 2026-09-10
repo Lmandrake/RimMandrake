@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T01:00:48Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-10T01:03:46Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -492,7 +492,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     feature
-summary:  STATUS 2026-09-09: tool built and committed, blocked on a live-proof pass — not closeable right now
+summary:  STATUS 2026-09-10 ~01:00: live-proof attempt made — the GAME crashed mid quicktest-map-gen before jawa/setbed…
 prose:    infrastructure/state/items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md
 
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
@@ -701,15 +701,6 @@ target:   v1
 kind:     task
 summary:  Restore the campaign to a real, correct, save-safe state and fold in tonight's
 prose:    infrastructure/state/items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md
-
-## CODEX_EDIT_TIMEOUT_1 codex edit mode (image-conditioned generation) timed out 3/3 in calibration (240/360/480s, zero images, not throttle) — root-cause it; it is the facing pipeline's reference-fidelity route
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/CODEX_EDIT_TIMEOUT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CODEX_EDIT_TIMEOUT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
