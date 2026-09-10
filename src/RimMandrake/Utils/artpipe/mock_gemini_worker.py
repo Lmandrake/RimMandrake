@@ -61,6 +61,12 @@ def main(argv=None) -> int:
     g.add_argument("--out", required=True)
     g.add_argument("--ref", action="append")
     g.add_argument("--model", default="gemini-3-pro-image")
+    # Accepted like the real gemini_image.py (the daemon always passes the
+    # job's canvas). Honored only in the reference-less "ok" branch; the
+    # `wrong_size` behavior deliberately ignores it to keep proving the
+    # daemon's own size check.
+    g.add_argument("--size")
+    g.add_argument("--cutout", action="store_true")   # accepted like the real script; mock output already carries alpha
     args = ap.parse_args(argv)
 
     out = Path(args.out).resolve()
@@ -94,7 +100,10 @@ def main(argv=None) -> int:
     elif reference is not None:
         w, h = _codex_mock.mutate_reference(reference, out)
     else:
-        w, h = 64, 64
+        if args.size:
+            w, h = (int(x) for x in args.size.lower().split("x"))
+        else:
+            w, h = 64, 64
         pnglib.write_rgba(str(out), w, h, bytes(4 * w * h))
 
     # The EXACT format gemini_image.py's own generate() prints on success —
