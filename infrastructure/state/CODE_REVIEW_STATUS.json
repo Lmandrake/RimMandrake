@@ -528,10 +528,10 @@
     "sha": "6a7759f2"
   },
   "skills/generating-images/scripts/codex_image.py": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "89a1dfc38def87d0fdfed162189f89316bcb98d75b4b28d19affbdadcdc4766c",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-10",
+    "hash": "b4c4d65e56d6b765ce4399e2506d887a82b4cf22dfe3034b7c4e4ae82f49e0ff",
+    "sha": "7dabaa86"
   },
   "skills/generating-images/scripts/codex_queue_runner.py": {
     "cleanCount": 1,
@@ -540,10 +540,10 @@
     "sha": "6a7759f2"
   },
   "skills/generating-images/scripts/gemini_image.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "c751111ae22480eddcc0a661aef981218710daac0201f1e2acf451794e7d9d94",
-    "sha": "6a7759f2"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "25ec8e518d94a5376bbcd67de31206bdd317d214959d0de8e87e2701457d8197",
+    "sha": "7dabaa86"
   },
   "skills/generating-images/scripts/make_sprite.py": {
     "cleanCount": 1,
@@ -576,10 +576,10 @@
     "sha": "6a7759f2"
   },
   "skills/generating-images/scripts/selftest_codex_image.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "15b141535c88aa5b5db7c1594118e00711281f0cbbfd79d3bcea10f22d8d4f29",
-    "sha": "6a7759f2"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "32e1f5b98b03c8108fbb41380ec6569c632f46c64e4f3888c5872bec7b0cdb34",
+    "sha": "7dabaa86"
   },
   "skills/generating-images/scripts/selftest_codex_queue_runner.py": {
     "cleanCount": 1,
@@ -2718,16 +2718,16 @@
     "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/artpipe/artpiped.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "99f6dbfbb0fe7c1611cd3ab5c46ee0f926adbb89450e89883ad2cd94ba1367fc",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "784589382d10d12e0beede17eed2ba2d76b3f83010c8b56907c3067eeab38526",
+    "sha": "7dabaa86"
   },
   "src/RimMandrake/Utils/artpipe/common.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "90e569b61cea7724ebeee9d3dde23ab584dfb2a0ea9dd97747280de2e4dc8c6f",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "cb314d327ea35b308a26591fc62c78628a90ce9d3338b23a653ae87719965809",
+    "sha": "7dabaa86"
   },
   "src/RimMandrake/Utils/artpipe/fill_queue.py": {
     "cleanCount": 1,
@@ -2742,16 +2742,16 @@
     "sha": "bb73b6bd"
   },
   "src/RimMandrake/Utils/artpipe/mock_gemini_worker.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "c1042d43910261512691a122cf5f96a6ab0e5f9f39b484839d98aa1e63c0f210",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "6723c0a93a72fa5ff987ad1829b843e5141dc4419dceb945661cf85b9317df93",
+    "sha": "7dabaa86"
   },
   "src/RimMandrake/Utils/artpipe/selftest_artpipe.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "1019d6c9b5609f4c7aa94600b951b274c2104b6ea4962396e75554f56f2eb10b",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "2fa87d863259c8a6a050a437d9183ea1dd926b7f9c6be16b6d8cb0a623266718",
+    "sha": "7dabaa86"
   },
   "src/RimMandrake/Utils/ashkarr_clamp_rain.py": {
     "cleanCount": 2,
