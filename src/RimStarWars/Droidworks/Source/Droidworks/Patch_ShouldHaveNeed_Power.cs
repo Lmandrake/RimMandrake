@@ -72,6 +72,17 @@ namespace RimMandrake.StarWars.Droidworks
                 Log.Error("[RimMandrake.StarWars.Droidworks] Failed to apply the droid apparel gate lift - "
                     + "every Droidworks pawn will spawn with no apparel regardless of apparelTags/apparelMoney. " + ex);
             }
+
+            try
+            {
+                Patch_SkipRelationGenerationForDroids.Apply(harmony);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("[RimMandrake.StarWars.Droidworks] Failed to apply the droid sibling-relation NRE "
+                    + "guard - droid pawn generation may intermittently NRE in "
+                    + "PawnRelationWorker_Sibling.CreateRelation (DROID_SIBLING_RELATION_GEN_CRASH_1). " + ex);
+            }
         }
     }
 
@@ -150,6 +161,67 @@ namespace RimMandrake.StarWars.Droidworks
             // Royalty active - exactly matching what a flesh pawn would have.
             if (ModsConfig.RoyaltyActive && pawn.psychicEntropy == null)
                 pawn.psychicEntropy = new Pawn_PsychicEntropyTracker(pawn);
+        }
+    }
+
+    /// <summary>
+    /// DROID_SIBLING_RELATION_GEN_CRASH_1.
+    ///
+    /// `PawnRelationWorker_Sibling.CreateRelation` (RimWorld/PawnRelationWorker_Sibling.cs)
+    /// never null-checks what its own `GenerateParent` helper returns:
+    ///
+    ///     Pawn newMother = GenerateParent(generated, other, Gender.Female, request, flag2);
+    ///     other.SetMother(newMother);   // NRE if newMother is null
+    ///
+    /// `GenerateParent` fixes the requested parent's gender explicitly on a nested
+    /// `PawnGenerationRequest` (`fixedGender: genderToGenerate`), so
+    /// `RaceProperties.hasGenders` is never even consulted on this path - a `hasGenders`
+    /// fix was tried and confirmed not to help. Every Droidworks race restricts
+    /// `<bodyTypes Inherit="False">`/`<headTypes Inherit="False">` to a single gender
+    /// (Defs/Races_Base.xml), so nested generation for the opposite-gender parent fails
+    /// after RimWorld's internal retry cap and `PawnGenerator.GeneratePawn` returns null
+    /// - which `CreateRelation` then dereferences.
+    ///
+    /// `PawnGenerator.GeneratePawnRelations` (Verse/PawnGenerator.cs:2049) gates the
+    /// entire relations pass on `RaceProps.Humanlike` alone, and every Droidworks race
+    /// keeps `Humanlike=true` (needed for the mood/personality system), so every droid
+    /// pawn attempts family-relation generation exactly like a human despite having no
+    /// biological family. Other `PawnRelationWorker_*` subtypes reached from the same
+    /// method share the identical "trust GenerateParent's/other lookup's return value"
+    /// shape, so this prefixes the one shared gate rather than patching
+    /// `PawnRelationWorker_Sibling` (and every sibling class) individually - the same
+    /// "is this pawn a droid" signal `Patch_ShouldHaveNeed_Power` and
+    /// `HediffComp_IonOverloadsDroid` already use. `GeneratePawnRelations` is `private`;
+    /// other mods already prefix this exact method (VEF's `DisableRelations`, AlienRace's
+    /// `GeneratePawnRelationsPrefix` - both visible in this bug's own log stack trace),
+    /// confirming it is a stable, reachable Harmony target.
+    /// </summary>
+    public static class Patch_SkipRelationGenerationForDroids
+    {
+        public static void Apply(Harmony harmony)
+        {
+            var target = AccessTools.Method(typeof(PawnGenerator), "GeneratePawnRelations",
+                new[] { typeof(Pawn), typeof(PawnGenerationRequest).MakeByRefType() });
+            if (target == null)
+            {
+                Log.Error("[RimMandrake.StarWars.Droidworks] PawnGenerator.GeneratePawnRelations not found "
+                    + "by reflection - vanilla API has moved. Droid sibling-relation NRE guard NOT applied.");
+                return;
+            }
+            harmony.Patch(target,
+                prefix: new HarmonyMethod(typeof(Patch_SkipRelationGenerationForDroids), nameof(Prefix)));
+        }
+
+        /// <summary>
+        /// Returning false skips vanilla's relation-generation pass entirely for
+        /// droid-fleshtype pawns - no siblings, no non-family relations, no NRE. Every
+        /// other Humanlike race (and any droid race not yet retagged) is untouched.
+        /// </summary>
+        public static bool Prefix(Pawn pawn)
+        {
+            if (pawn?.RaceProps?.FleshType == DroidworksDefOf.RSW_DW_FleshType_Droid)
+                return false;
+            return true;
         }
     }
 }
