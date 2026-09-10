@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T22:25:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T22:31:08Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -928,12 +928,12 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CODEX_WORKER_SANDBOX_WRITE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CODEX_WORKER_SANDBOX_WRITE_1.md
 
-## RSW_PROTOVERMES_TEXPATH_MISSING_1 RSW_Protovermes (and its 7 sibling RSW_Absorbed_* files?) has a texPath that resolves to nothing: Things/Pawn/Animal/Boomrat/Dessicated_Boomrat - validate_patch.py flags 3 ERRORs, pink-placeholder risk, pre-existing and unrelated to BOOM_FAMILY_CUT_1 which found it as a side effect
+## VALIDATE_PATCH_TEXPATH_CLASSIFIER_1 validate_patch.py's texPath ERROR/WARN classifier false-positives on any mod whose own Textures/ tree happens to share a universal top-level folder name (Things/Pawn/Buildings/etc.) with a legitimate vanilla texPath reference - fix: compare against a fixed list of RimWorld's own top-level categories, never classify those as mod-owned from a first-segment match alone
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RSW_PROTOVERMES_TEXPATH_MISSING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RSW_PROTOVERMES_TEXPATH_MISSING_1.md
+summary:  (no items/VALIDATE_PATCH_TEXPATH_CLASSIFIER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/VALIDATE_PATCH_TEXPATH_CLASSIFIER_1.md
