@@ -6578,3 +6578,19 @@
 {"seat":"BENCH","event":"close","id":"GEMINI_WORKER_BACKEND_1","sha":"477dfb06f3761403de9604661cd1dec4c95668aa","ts":"2026-09-10T00:07:31Z"}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-10T00:13:09Z"}
 {"seat":"BENCH","event":"file","id":"SYSTEM_TOOLS_SELFTEST_1","title":"system_screenshot.py/system_click.py (6fac2cd1) crash at import under WSL python3 (ctypes.windll) — selftest_documented_commands FAILs; guard the import or exempt as windows-only","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-10T00:20:02Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-10T00:33:07Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SYSTEM_TOOLS_SELFTEST_1","ts":"2026-09-10T00:42:24Z"}
+{"seat":"FOUNDRY","event":"start","id":"SYSTEM_TOOLS_SELFTEST_1","ts":"2026-09-10T00:42:25Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1","ts":"2026-09-10T00:42:27Z"}
+{"seat":"FOUNDRY","event":"start","id":"DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1","ts":"2026-09-10T00:42:29Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROID_DONOR_SAVE_COMPAT_REGRESSION_1","ts":"2026-09-10T00:42:31Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROID_DONOR_SAVE_COMPAT_REGRESSION_1","ts":"2026-09-10T00:42:33Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SELFTEST_RENDER_FLAKE_1","ts":"2026-09-10T00:42:35Z"}
+{"seat":"FOUNDRY","event":"start","id":"SELFTEST_RENDER_FLAKE_1","ts":"2026-09-10T00:42:38Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CODEX_EDIT_TIMEOUT_1","ts":"2026-09-10T00:42:40Z"}
+{"seat":"FOUNDRY","event":"start","id":"CODEX_EDIT_TIMEOUT_1","ts":"2026-09-10T00:42:43Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-10T00:43:16Z"}
+{"seat":"FOUNDRY","event":"close","id":"SYSTEM_TOOLS_SELFTEST_1","sha":"ea283906bac3016596969c24f0b1b0778e33828a","ts":"2026-09-10T00:46:12Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"WORLD_FEATURE_LABELS_OVERSIZED_1: visual verify","ts":"2026-09-10T00:47:22Z"}
+{"seat":"FOUNDRY","event":"note","id":"DROID_DONOR_SAVE_COMPAT_REGRESSION_1","text":"Root cause scoped, item file updated (b7e7d6af): DroidDepot/MSEDroidFix have ZERO placed content in CANONICAL_ASHKARR (confirmed via def+id Thing-instance scan + Class= Scribe-component scan) -- pure mod-cache registry residue only. Asimov has a real dependency: 78 live Asimov.Need_Energy components on non-droid pawns (colonists, animals, mechs) + 1 Asimov.WorldComp_EnergyNeed, because DROID_ASIMOV_SAVE_SCRUB_1's 2026-09-06 scrub covered WORLDMAP_V1_original_c.rws and gravship_scratch_d.rws only -- this save didn't exist yet / wasn't in scope. No pawnkind/building porting needed; fix is the same scrub technique applied to this save. Not closing -- scoping only, scrub/retry not performed.","ts":"2026-09-10T00:50:58Z"}
+{"seat":"FOUNDRY","event":"close","id":"SELFTEST_RENDER_FLAKE_1","sha":"bff84af8b8ccff3064274aa3ecd5ebf018eebcfe","ts":"2026-09-10T00:51:16Z"}
