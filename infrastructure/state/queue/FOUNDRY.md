@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T10:26:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T11:19:35Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -531,15 +531,6 @@ kind:     task
 summary:  BIOMEENRICHMENTDESERTWASTELAND1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
 
-## BIOME_ENRICHMENT_POISON_FOREST_1 Enrichment wave (review B1): Poison Forest is mutator-barren (74% zero-tile MEASURED) — place from its sheet's own kit: vent fields, metal-plated groves, condensation lines; verify by density + whole-planet loss diff
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  BIOMEENRICHMENTPOISONFOREST1
-prose:    infrastructure/state/items/BIOME_ENRICHMENT_POISON_FOREST_1.md
-
 ## SEA_ENRICHMENT_LANDMARKS_1 Enrichment wave (review B1): the Grey Sea holds ZERO landmarks in 429 tiles and the Twilight Sea is near-bare — seamounts, wreck moorings, mat features for the diving arc; respects the seas' sheets
 state:    doing
 row:      unassigned
@@ -585,15 +576,6 @@ kind:     design
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
-## DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1 lumi.doorsexpanded retirement broke CANONICAL_ASHKARR save load; mod restored, real fix still owed
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  Wave 4 retired lumi.doorsexpanded after a thorough whole-modlist XML/def cross-reference
-prose:    infrastructure/state/items/DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1.md
-
 ## STAT_NORMALIZATION_AUDIT_1 Census third-party mods that adjust animal/plant stats, rarity, appearance, size, growth before a self-owned-content normalization pass
 state:    doing
 row:      unassigned
@@ -611,6 +593,15 @@ target:   v1
 kind:     task
 summary:  Restore the campaign to a real, correct, save-safe state and fold in tonight's
 prose:    infrastructure/state/items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md
+
+## MECH_PRESENCE_ENFORCEMENT_1 Enforce the RULED mechanoid/ancient-danger table: XML only - MechCluster allowed/disallowedBiomes patch, per-biome preventGenSteps/extraGenSteps for the ANCIENT column, zero the mechanoid FactionDef raid-commonality curve (confirm exact field name on the def first); curate shrine contents where ANCIENT-ALLOW meets AMBIENT-DENY
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/MECH_PRESENCE_ENFORCEMENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MECH_PRESENCE_ENFORCEMENT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -836,16 +827,6 @@ blocked:  no concrete placeable defNames in desert.md/wasteland.md kits per the 
 summary:  BIOMEENRICHMENTDESERTWASTELAND1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md
 
-## BIOME_ENRICHMENT_POISON_FOREST_1 Enrichment wave (review B1): Poison Forest is mutator-barren (74% zero-tile MEASURED) — place from its sheet's own kit: vent fields, metal-plated groves, condensation lines; verify by density + whole-planet loss diff
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-blocked:  245-row plan ready, but live bridge session crashes loading CANONICAL_ASHKARR_2026-09-09.rws on missing lumi.doorsexpanded; blocked until that regression's real fix lands (on DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1)
-summary:  BIOMEENRICHMENTPOISONFOREST1
-prose:    infrastructure/state/items/BIOME_ENRICHMENT_POISON_FOREST_1.md
-
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -937,13 +918,3 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FISH_BESTIARY_COMMISSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FISH_BESTIARY_COMMISSION_1.md
-
-## MECH_PRESENCE_ENFORCEMENT_1 Enforce the RULED mechanoid/ancient-danger table: XML only - MechCluster allowed/disallowedBiomes patch, per-biome preventGenSteps/extraGenSteps for the ANCIENT column, zero the mechanoid FactionDef raid-commonality curve (confirm exact field name on the def first); curate shrine contents where ANCIENT-ALLOW meets AMBIENT-DENY
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MECH_PRESENCE_ENFORCEMENT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MECH_PRESENCE_ENFORCEMENT_1.md
