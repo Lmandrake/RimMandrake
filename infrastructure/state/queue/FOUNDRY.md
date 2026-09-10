@@ -7,12 +7,30 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T06:40:00Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-10T06:47:07Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## BIOME_SPAWN_FLORA_AUDIT_1 Spawn each biome in game and photograph what actually grows - normalize before adjusting; also identify the rainbow prolific unclickable bushes the owner keeps seeing
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
+
+## LIGHTFALL_CHASM_AUTHORING_1 Author the Lightfall chasm landmark on the Damp chain (terminator suture, deepest at tile 9023) — site+name owner-ratified 2026-09-06, spec in forsaken_crags.md §3
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
+prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
 
 # IN PROGRESS
 
@@ -923,27 +941,7 @@ prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## BIOME_SPAWN_FLORA_AUDIT_1 Spawn each biome in game and photograph what actually grows - normalize before adjusting; also identify the rainbow prolific unclickable bushes the owner keeps seeing
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-waiting:  needs `game-up`, game is LOADING
-summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
-
-## LIGHTFALL_CHASM_AUTHORING_1 Author the Lightfall chasm landmark on the Damp chain (terminator suture, deepest at tile 9023) — site+name owner-ratified 2026-09-06, spec in forsaken_crags.md §3
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-waiting:  needs `bridge`, game is LOADING
-summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
-prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
+_none._
 
 # NOT THIS TARGET
 

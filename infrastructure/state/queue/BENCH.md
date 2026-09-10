@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T06:40:00Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-10T06:47:07Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -90,6 +90,15 @@ kind:     task
 summary:  - Identify the mod: which import ships the orange glowing crystal (candidates to
 prose:    infrastructure/state/items/CRYSTAL_MODS_INGEST_1.md
 
+## FISH_BY_BIOME_1 Fish in every biome where relevant — inventory the stack's fish defs and each biome's fishTypes; rule per water kind (milk, propane, red water, brine); analogs only
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Odyssey's fishing is live in the stack (donor biome defs carry fishTypes blocks —
+prose:    infrastructure/state/items/FISH_BY_BIOME_1.md
+
 ## ART_PIPELINE_DAEMON_1 Constant background art pipeline: dumb daemon + N codex exec receiving-agent workers, seats fill the queue
 state:    doing
 row:      unassigned
@@ -105,7 +114,7 @@ _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -113,7 +122,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
@@ -123,7 +132,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-waiting:  needs `bridge`, game is LOADING
+waiting:  needs `bridge`, game is UP
 summary:  WORLDMAPFINALREVIEW1 — the studio review: is this THE map?
 prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
 
@@ -194,16 +203,6 @@ kind:     task
 thin:     no ## criteria
 summary:  - Reconcile with existing canon: the Rust Cathedral (ABMechanoidIntrusion, the
 prose:    infrastructure/state/items/MECHANOID_ORIGIN_CANON_1.md
-
-## FISH_BY_BIOME_1 Fish in every biome where relevant — inventory the stack's fish defs and each biome's fishTypes; rule per water kind (milk, propane, red water, brine); analogs only
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Odyssey's fishing is live in the stack (donor biome defs carry fishTypes blocks —
-prose:    infrastructure/state/items/FISH_BY_BIOME_1.md
 
 ## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
 state:    proposed
