@@ -39,6 +39,19 @@ rescale worklist and art queue unchanged; this doc maps HOMES only.
 | "Electrostatic flyer over Propane Lakes" (AA_Skyeel) | 1 | the_propane_lakes, with the flier caveat (flies data unreliable). |
 | "Helix territory only" (GR_Manbear) | 1 | **OPEN** — Helix = the helixien-gas country; propose the_propane_lakes unless the Forge is meant. |
 
+## ⚠️ HELD — the owner's review is still in progress (2026-09-10)
+
+Asked at the morning sitting, the owner declined to bulk-agree: *"Not done
+yet!"* — his sheet review is live and this mapping must not be applied until he
+closes it. Two clarifications he DID give, to fold in when the review completes:
+
+- **"ocular" = the Contagion.** The 4 ocular rows (AA_BloodShrimp ×2,
+  AA_Eyeling, AA_FungalHusk, AA_OcularNightling) map to `the_contagion` —
+  open call 1 below is resolved; no Ocular Grove roster.
+- **"only over Volcanic" (Beldon) means the actually-volcanic biomes** — the
+  Forge family's defs (`AB_PyroclasticConflagration`/`LavaField`/`Volcano`),
+  not the_pyrelands — open call 3's recommendation is overruled.
+
 ## Genuinely open (need his word — the only rows that block bulk apply)
 
 1. **"ocular" / "occular" / "ocular only"** — 4 rows (AA_BloodShrimp ×2,

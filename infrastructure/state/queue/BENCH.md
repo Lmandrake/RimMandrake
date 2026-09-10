@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T07:36:15Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-10T07:46:47Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -439,3 +439,13 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  Companion silent-failure hardening
 prose:    infrastructure/state/items/COMPANION_SILENT_FAILURE_HARDENING_1.md
+
+## ECONOMY_TRADE_SWEEP_1 Full economic sweep of what is sold where and when, scheduled at the END of the world sweeps; includes Deeps-gated crystals (pyrinth/kyber/KOTOR/lanternstone) as expensive trader stock and loot
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ECONOMY_TRADE_SWEEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ECONOMY_TRADE_SWEEP_1.md

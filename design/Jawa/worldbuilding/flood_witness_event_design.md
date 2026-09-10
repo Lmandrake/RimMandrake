@@ -20,16 +20,19 @@ The flood is the Cracked Lands' whole story — death, then soil, then the bloom
 and it almost never happens while anyone is standing there; the plot puts the
 colony on the ledge when it does.
 
-### The fiction of the offer 🄸 INVENTED (Q3 asks who speaks)
+### The fiction of the offer — RULED: a Moisture Farmer invitation (owner, 2026-09-10)
 
-**Flood-news.** The sheet's §12 already gives the Jawa their rhythm: *"a flood is
-a salvage strike… crawler crews follow flood-news the way prospectors follow
-gold."* The offer letter IS flood-news reaching the player's clan: the Contagion's
+**A Moisture Farmer speaks.** The owner chose the warmer voice over the drafted
+Jawa flood-news: the offer letter is an invitation from the Moisture Farmers,
+seeding that relationship early. The substance is unchanged — the Contagion's
 storm is building on the Dew Horn peaks, a named canyon is going to take the wall
 within days, and whoever is on the refuge ledge when it passes gets first pick of
-whatever the water tears open. The timing is honest inside the fiction — the storm
-is *already forming* when the letter arrives, which is why the plot, not weather
-RNG, owns the clock.
+whatever the water tears open; the Farmers know because they read the sky for a
+living, and they are inviting the clan to see it. The sheet's §12 salvage-strike
+rhythm stays Jawa property — the Farmers bring the news, the clan brings the
+crawlers. The timing is honest inside the fiction — the storm is *already
+forming* when the letter arrives, which is why the plot, not weather RNG, owns
+the clock.
 
 ### Beat by beat
 
@@ -299,21 +302,18 @@ any deploy; the known-expected warning is the firing route.
 
 ---
 
-## 5. Open questions for the owner (4)
+## 5. Owner rulings (2026-09-10 morning batch — all four answered)
 
-1. **Lethality.** May a pawn who ignores every one of five warnings drown in
-   the scripted first flood (survivable-by-attention), or must the first flood
-   be incapable of killing colonists outright? And the same question for the
-   post-witness natural floods (§2's proposed standing incident).
-2. **One canonical canyon, or a floating site?** Fixed authored tile = full
-   control of ledges/ruin/chimes and a nameable place in the campaign;
-   floating near-player site = less travel friction, one small custom C#
-   tile-picker, generic layout. The design assumes fixed.
-3. **Whose flood-news?** The offer letter's voice: Jawa salvage-network
-   flood-news (drafted above), or a Moisture Farmer invitation (warmer, seeds
-   the Farmer relationship, but §12 gives the salvage-strike rhythm to the
-   Jawa). Colors goodwill and any later Farmer content.
-4. **Which campaign beat pulls the trigger?** First gravship landing within
-   range of the Cracked Lands, a fixed campaign day, or a hand you want on
-   the lever (a plot table at a sitting)? The scheduler builds the same
-   either way; the beat is a plot decision, not a design one.
+1. **Lethality: injury+knockdown ceiling**, first flood AND the post-witness
+   natural floods — nobody drowns outright; lethality lives only in flagship
+   set-pieces (ruled at one stroke with the growth design's Q1).
+   `troopersmith1.deathrattle` is live in the mod list, so any edge-case
+   mortal outcome resolves through its dying-state rescue window — that mod is
+   the protection layer; build no second one.
+2. **Site: one canonical, fixed authored tile** in the Cracked Lands — full
+   control of ledges/ruin/chimes, a nameable place in the campaign. No
+   floating site, no custom tile-picker C#.
+3. **Voice: a Moisture Farmer invitation** (see the rewritten offer fiction
+   above). Colors goodwill toward later Farmer content.
+4. **Trigger beat: first gravship landing within range** of the Cracked
+   Lands — tied to player motion, not the calendar and not a held lever.

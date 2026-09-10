@@ -112,31 +112,25 @@ measure, not a grep. Also noted: `ZBiome_DesertOasis`'s untouched saltwater
 buckets still name Fish_Bluefish/Fish_Tuna — inert (the water has no salt-bodied
 terrain) but Earth names linger in def data; the sweep should take them too.
 
-## 5. Owner questions (everything else above is proposed as bulk-agreeable)
+## 5. Owner rulings (2026-09-10 morning batch — every question answered)
 
-1. **Cracked Lands merge (§2):** one freshwater table for both waters —
-   Common = dune crawler, Uncommon = Rocktooth + Boneblade, rare = glass pearl /
-   stalker corpse — dropping the VCEF secondaries and the committed patch's
-   empty-Uncommon decision. Ratify?
-2. **Weeping stones Uncommon bucket:** the written patch fills it with four VCEF
-   names (FrigidSwimmer/Slimefish/Spinyfish/OcularFish); the census graded those
-   "tonally cold/hazard-water, hold as backups" for a sacred desert pool. Ship
-   the 8-species patch as written, or trim to the 4 swfish_ donors only?
-   (Sub-option: swfish_Dactopus could replace one — census flags its "-octopus"
-   echo for your LOOK before use.)
-3. **Greentide vs Miasma:** RSW_Mee/Faa/Laa turned out to be wired into the
-   Miasma's wildAnimals, not the Greentide's fishTypes (item file, Fable pass).
-   Proposal §1 gives the Greentide its own fishTypes with the same three species
-   — adults upriver, juveniles in the nursery, one population in two registers.
-   Accept the dual placement, or is the Miasma nursery their single home (leaving
-   the Greentide needing different species)?
-4. **One donor family across the planet:** the swfish_ pool now backs weeping
-   stones, the Greentide lineage (Mee/Faa/Laa), and the deferred twilight-shoal
-   candidates — the census flags the risk of flattening the planet's fish
-   register to one family. Accept for v1 (renames diverge them later under
-   NAMING_SCHEME_EXECUTION_1), or commission distinct new defs for one of the
-   three waters now?
-5. **New-def commissioning order (all non-blocking):** the rulings leave four
-   fish-adjacent defs owed — the Scald thermophile shoal, the Rust Cathedral
-   coolant eel, the wasteland brine-battery, the twilight silver shoal. Any you
-   want pulled forward, or do all four wait for their biomes' build passes?
+1. **Cracked Lands merge (§2): RATIFIED.** Fill the committed patch's empty
+   `freshwater_Uncommon` with BMT_Rocktooth (1) + BMT_Boneblade (1); VCEF
+   secondaries dropped. One edit to `SandFishing_CrackedLands.xml` — FOUNDRY
+   build work (`FISH_TYPES_PATCH_BUILD_1`).
+2. **Weeping stones: TRIM to the 4 swfish_ donors only.** The VCEF four come
+   OUT of the written patch's Uncommon bucket (tonally wrong for the sacred
+   pools); they stay benched. swfish_Dactopus not adopted.
+3. **Greentide vs Miasma: DUAL PLACEMENT accepted.** Mee/Faa/Laa in both
+   registers — fishable adults in the Greentide's fishTypes, protected juveniles
+   as Miasma wildAnimals. One population, two registers.
+4. **One donor family: SUPERSEDED by a commission.** The owner rejects the
+   flatten-to-one-family outcome the other way — *"Commission lots of fishes!
+   ... a plethora of different kinds for each biome ... Squid like. Octopus
+   like. Eel like. Crustaceans. Floaters. Jellyfish. Cucumbers. Bring in that
+   Star Wars creature richness."* Filed as `FISH_BESTIARY_COMMISSION_1`; the
+   swfish_-backed tables above ship as v1 placeholders until the bestiary lands.
+5. **New-def commissioning order: all four wait** for their biomes' build passes
+   (Scald thermophile, Cathedral coolant eel, wasteland brine-battery, twilight
+   silver shoal) — but they fold into the `FISH_BESTIARY_COMMISSION_1` scope
+   when that item runs.
