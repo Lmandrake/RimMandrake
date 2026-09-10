@@ -327,6 +327,11 @@ class Detector:
 # --------------------------------------------------------------------------
 
 def _gemini_model_cost(model: str) -> float:
+    if model not in GEMINI_MODEL_COST_USD:
+        print(f"artpiped: WARNING unrecognised gemini model {model!r} — billing it at "
+              f"the only known price point (${GEMINI_MODEL_COST_USD[DEFAULT_GEMINI_MODEL]:.3f}, "
+              f"{DEFAULT_GEMINI_MODEL}), which may be wrong and would silently skew "
+              f"the dollar budget if it is", file=sys.stderr)
     return GEMINI_MODEL_COST_USD.get(model, GEMINI_MODEL_COST_USD[DEFAULT_GEMINI_MODEL])
 
 
