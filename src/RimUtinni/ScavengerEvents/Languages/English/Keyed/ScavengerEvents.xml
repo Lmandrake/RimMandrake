@@ -8,4 +8,7 @@
 
   <RUT_Thanksgiving>Clan tribute</RUT_Thanksgiving>
   <RUT_ThanksgivingDesc>Word of your colony's hunger has reached a nearby clan. They have sent food as a gesture of goodwill.</RUT_ThanksgivingDesc>
+
+  <RUT_TribalAid>Pod crash</RUT_TribalAid>
+  <RUT_TribalAidDesc>An escape pod has crashed nearby, carrying a wounded traveler in need of aid.</RUT_TribalAidDesc>
 </LanguageData>

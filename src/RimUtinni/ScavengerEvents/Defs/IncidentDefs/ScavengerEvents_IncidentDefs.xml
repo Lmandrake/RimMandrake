@@ -53,4 +53,21 @@
     <minRefireDays>40</minRefireDays>
   </IncidentDef>
 
+  <!-- RUT_SCAVENGEREVENTS_BUILD_1, mechanism 3 of 8: PodCrashTribal
+       (item's "spacer rescue"). Unconditional: one downed Villager-kind pawn
+       from a random non-hostile faction, dropped in a pod, quest-hook
+       letter. Ported from MoreIncidents.MOIncidentWorker_PodCrashTribal
+       (donor defName MO_PodCrash). -->
+  <IncidentDef>
+    <defName>RUT_PodCrash</defName>
+    <label>pod crash</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.Utinni.ScavengerEvents.IncidentWorker_PodCrashTribal</workerClass>
+    <baseChance>2</baseChance>
+    <minRefireDays>20</minRefireDays>
+  </IncidentDef>
+
 </Defs>
