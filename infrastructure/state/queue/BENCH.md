@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T13:10:25Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T13:20:06Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -50,14 +50,14 @@ kind:     task
 summary:  Serve with python3 /home/mandrake/.claude/skills/review-sheets/assets/servesheet.py
 prose:    infrastructure/state/items/ASSIGNMENT_SHEETS_VERDICT_SITTING_1.md
 
-## CRYPTOFORGE_DECK_RETIREMENT_1 Full retirement analysis of VQE Cryptoforge (vanillaquestsexpanded.cryptoforge): contents census, cross-mod coupling, repo references, save references, CherryPicker state - verdict on whether it still belongs in the deck
+## VQE_ANCIENTS_DEEP_ANALYSIS_1 Deep analysis of VQE The Ancients (vanillaquestsexpanded.ancients): content census, lore-canon comparison (incl. our VQEPatients_AreRakata ingestion), compatibility/coupling - verdict on its place in the deck
 state:    ready
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     decision
-summary:  (no items/CRYPTOFORGE_DECK_RETIREMENT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CRYPTOFORGE_DECK_RETIREMENT_1.md
+summary:  (no items/VQE_ANCIENTS_DEEP_ANALYSIS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/VQE_ANCIENTS_DEEP_ANALYSIS_1.md
 
 # IN PROGRESS
 

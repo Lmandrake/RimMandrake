@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T13:10:25Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T13:20:06Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -889,3 +889,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RUT_SCAVENGEREVENTS_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
+
+## CRYPTOFORGE_HARVEST_RETIRE_1 Harvest then retire VQE Cryptoforge: (1) reproduce the 18 SALVAGE_PALETTE-cited props as owned RUT_/RSW_ ThingDefs with OWNED art (citation swap - Workshop art is not ours to ship); (2) copy the 38 KCSG StructureLayoutDef XMLs into design/ as authoring reference, strip to owned symbols before any shipping use; (3) delete our two FindMod-gated patches (Armoury_RangedDamage.xml VQE bullet block, MegafaunaYield.xml VQE_Megamidge block) in the same change as removal; (4) remove from ModsConfig, cold-load check, resave canonical per the donor-retire pattern (save footprint is zero-placed: only workgiver rows + filters, which drop with warnings); (5) fauna sheets: IceCrawler/Megamidge are ruled out-of-canon - their rows resolve Out, coordinate with the owner's live review before applying. Optional design salvage: the thaw-pulse mechanic (heat wakes the ice) may be re-fictioned as terramanufacture content - separate design item if wanted. CherryPicker rows for its 2 turrets become moot at removal.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CRYPTOFORGE_HARVEST_RETIRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CRYPTOFORGE_HARVEST_RETIRE_1.md
