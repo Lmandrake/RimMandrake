@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T10:12:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T10:26:28Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -947,13 +947,3 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MECH_PRESENCE_ENFORCEMENT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MECH_PRESENCE_ENFORCEMENT_1.md
-
-## NAMING_LINT_RENAME_MAP_STALE_1 naming_lint's rename map is stale: 8 mods incl. Pyrinth read UNASSIGNED instead of their real tier
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NAMING_LINT_RENAME_MAP_STALE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NAMING_LINT_RENAME_MAP_STALE_1.md
