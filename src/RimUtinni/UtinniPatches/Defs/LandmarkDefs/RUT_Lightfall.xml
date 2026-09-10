@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RUT_Lightfall — the Forsaken Crags' one massive chasm (owner-named 2026-09-06:
+       "where light falls in — the one place the Dark always dies";
+       forsaken_crags.md §3). A distinct LandmarkDef, not a reskin of vanilla Chasm,
+       because this is the singular deepest etch-scar on the planet — the Damp
+       chain's terminator suture, ten thousand years of the Dark's collapse-rain
+       eating one spot deepest. Reuses the vanilla Chasm icon (already repainted by
+       mandrake.rut.ashkarrlandmarkart, World/Landmarks/Ashkarr/Chasm) rather than
+       bespoke art: the owner left "what waits at the bottom" unwritten, so no new
+       visual content is invented here — only the mechanism ruled in §3 (a chasm,
+       the deepest one) is drawn.
+
+       commonality 0 ON PURPOSE — worldgen must never roll it; it exists only to be
+       force-placed on tile 9023 (MEASURED: hilliness 5, elev 919 m, current
+       mutators Cliffs+HotSprings, no Chasm mutator yet) by the world-edit step this
+       item still owes (jawa/world_landmarks_set + world_commit, LIGHTFALL_CHASM_
+       AUTHORING_1, bridge work). mutatorChances carries Chasm Required="True" so
+       placement adds the actual chasm mutator to the tile if it is not already
+       there — same anchor vanilla Chasm and IshkoDarkLandmarks' RUT_ShadowedOverhang
+       use. Description is present-tense, what IS: the scar and its cause, no
+       not-yet-ruled content about what has been lowered into it. -->
+
+  <LandmarkDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Lightfall</defName>
+    <label>Lightfall</label>
+    <description>The deepest etch on the whole planet — the one place, on the terminator suture where damp air meets the Dark, that the Dark has died longest. Ten thousand years of falling ash-grains, each one settling and dissolving a little more rock before the next clear pocket forms above the last, have eaten a chasm too deep to see the bottom of by lamp alone. Ropes, ladders, and worse have gone down over the years the way rumor always outruns confirmation; what any of them found is not something anyone who came back talks about.</description>
+    <iconTexturePath>World/Landmarks/Ashkarr/Chasm</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0</commonality>
+    <category>mountain</category>
+    <mutatorChances>
+      <Chasm Required="True"></Chasm>
+    </mutatorChances>
+    <nameMaker>NamerLandmark_Chasm</nameMaker>
+  </LandmarkDef>
+
+</Defs>
