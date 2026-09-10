@@ -3149,19 +3149,21 @@
       "sizeBinPrefill": "small"
     },
     "homeless:AA_AcanthamoebaGiganteaHuge": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:31:12.987Z",
+      "decision": "move",
+      "note": "Slime",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_AngelMoth": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:28:51.363Z",
+      "decision": "move",
+      "note": "Rot",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3169,8 +3171,9 @@
     "homeless:AA_AngelMothLarva": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:44:22.398Z",
+      "decision": "move",
+      "note": "Wildsteam biomes",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3178,8 +3181,9 @@
     "homeless:AA_AnimaColossus": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:56:48.947Z",
+      "decision": "move",
+      "note": "Rot",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -3187,17 +3191,19 @@
     "homeless:AA_Animalisk": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:49:44.596Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_AnimusVox": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:04:41.590Z",
       "decision": "in",
-      "note": "",
+      "note": "sold as a pet by the Helix faction, ",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3205,35 +3211,39 @@
     "homeless:AA_ArcticLion": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:47:27.053Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_Atispec": {
-      "art": "redo",
+      "art": "keep",
       "artPrefill": "redo",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:54:38.131Z",
+      "decision": "move",
+      "note": "Scald",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_AuroraSylph": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:31:35.273Z",
+      "decision": "move",
+      "note": "Perfect Propane Lake creature",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_Barbslinger": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:04:59.572Z",
+      "decision": "move",
+      "note": "wherever needed in hot biomes",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3241,15 +3251,17 @@
     "homeless:AA_Behemoth": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:45:09.812Z",
+      "decision": "move",
+      "note": "crag, 16 squares",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
     },
     "homeless:AA_BlackScarab": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:47:12.207Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -3257,8 +3269,9 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:AA_BlackSpelopede": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:56:36.807Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -3266,8 +3279,9 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:AA_BlackSpider": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:20:34.988Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -3277,17 +3291,19 @@
     "homeless:AA_Bobeene": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:33:39.175Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_BumbledroneQueen": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:06:42.195Z",
+      "decision": "move",
+      "note": "goes with the rest of the bumbledrones",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3295,7 +3311,8 @@
     "homeless:AA_ChameleonYak": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:34:56.018Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -3304,26 +3321,29 @@
     "homeless:AA_ChemfuelMyrmidon": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:34:58.923Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_ColossalAerofleet": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:21:14.128Z",
+      "decision": "move",
+      "note": "rare creature wherever normal aerofleets end up",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_CrescendoAnole": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:47:58.202Z",
+      "decision": "move",
+      "note": "volcanic biomes",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3331,17 +3351,19 @@
     "homeless:AA_DunealiskClutchMother": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:53:13.923Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_EmpressButterfly": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:30:00.909Z",
+      "decision": "move",
+      "note": "Wildsteam areas",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3349,26 +3371,29 @@
     "homeless:AA_EmpressButterflyLarva": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:44:27.027Z",
+      "decision": "move",
+      "note": "Wildsteam biomes",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:AA_EngorgedTentacularAberration": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:40:10.147Z",
       "decision": "in",
-      "note": "",
+      "note": "Assailant",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_Erin": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:30:15.098Z",
+      "decision": "move",
+      "note": "Wherever it's needed",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3376,8 +3401,9 @@
     "homeless:AA_Feralisk": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:48:08.659Z",
+      "decision": "move",
+      "note": "Should be reskinned to the Wysokk of the Web biome. Merge",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3385,7 +3411,8 @@
     "homeless:AA_FeraliskClutchMother": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:53:16.855Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -3394,7 +3421,8 @@
     "homeless:AA_FissionMouseSecond": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:48:11.885Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
@@ -3403,7 +3431,8 @@
     "homeless:AA_FissionMouseThird": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:43:51.533Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
@@ -3412,7 +3441,8 @@
     "homeless:AA_FrostAve": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:52:57.329Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -3429,8 +3459,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:AA_Gallatross": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:55:00.908Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -3438,8 +3469,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:AA_GallatrossMoribund": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:55:19.547Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -3447,35 +3479,39 @@
       "sizeBinPrefill": "large"
     },
     "homeless:AA_GreatDevourer": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:53:47.194Z",
+      "decision": "move",
+      "note": "Relative of the Sarlacc wandering the desert",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_GreyCoatedMouflon": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:21:27.292Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_Groundrunner": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:21:40.358Z",
+      "decision": "move",
+      "note": "desert",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_IronhuskBeetle": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:53:53.734Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -3485,17 +3521,19 @@
     "homeless:AA_Junglelisk": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:49:46.922Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_LarvalAtispec": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:44:52.189Z",
+      "decision": "move",
+      "note": "wherever the atispec ends up",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3503,17 +3541,19 @@
     "homeless:AA_Locusts": {
       "art": "improve",
       "artPrefill": "improve",
+      "at": "2026-09-10T12:45:40.490Z",
       "decision": "in",
-      "note": "",
+      "note": "0.1 cell, smallest critter in huge numbers, eats plants ravenously and won't stop, event",
       "prefill": "in",
-      "sizeBin": "medium",
+      "sizeBin": "small",
       "sizeBinPrefill": "medium"
     },
     "homeless:AA_LuciferBug": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:49:05.420Z",
+      "decision": "move",
+      "note": "poison forest",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3521,15 +3561,17 @@
     "homeless:AA_MatureFleshbeast": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:44:30.537Z",
+      "decision": "move",
+      "note": "desert, immature sarlacc",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
     },
     "homeless:AA_MeadowAve": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:52:45.032Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -3537,8 +3579,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:AA_MegaLouse": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:12:45.317Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -3558,26 +3601,29 @@
     "homeless:AA_OvergrownColossus": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:57:58.224Z",
+      "decision": "move",
+      "note": "The Slime (make the trees into slime trees)",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
     },
     "homeless:AA_PebbleMit": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:15:20.698Z",
+      "decision": "move",
+      "note": "along any shoreline or oasis",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:AA_PedigreedRaptor": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:30:50.530Z",
+      "decision": "move",
+      "note": "TOTALLY Hutt settlements and territories",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3585,15 +3631,17 @@
     "homeless:AA_Radyak": {
       "art": "redo",
       "artPrefill": "redo",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:37:49.070Z",
+      "decision": "move",
+      "note": "Poison Forest",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_Ravager": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:38:06.549Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -3601,26 +3649,29 @@
       "sizeBinPrefill": "large"
     },
     "homeless:AA_RayHound": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:23:46.725Z",
+      "decision": "move",
+      "note": "Scald beast",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_RipperHound": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:24:10.442Z",
+      "decision": "move",
+      "note": "Poison Forest",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_RoyalAve": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:52:51.186Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -3628,19 +3679,21 @@
       "sizeBinPrefill": "large"
     },
     "homeless:AA_SandLion": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:24:23.408Z",
+      "decision": "move",
+      "note": "Sand burrower swimmer deserts",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_ShockGoat": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:24:56.014Z",
+      "decision": "move",
+      "note": "Refashion into nightside biomes, your choice of extreme cold area, make pale blue aura around it",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3667,17 +3720,19 @@
     "homeless:AA_SmallButterfly": {
       "art": "improve",
       "artPrefill": "improve",
+      "at": "2026-09-10T12:46:30.775Z",
       "decision": "in",
-      "note": "",
+      "note": "0.2 cell, flits around the arid shrubland ",
       "prefill": "in",
-      "sizeBin": "medium",
+      "sizeBin": "small",
       "sizeBinPrefill": "medium"
     },
     "homeless:AA_TeratogenicOriginator": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:38:39.946Z",
+      "decision": "move",
+      "note": "Slime, tint green",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3685,15 +3740,17 @@
     "homeless:AA_UnblinkingEye": {
       "art": "keep",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:41:15.494Z",
       "decision": "in",
-      "note": "",
+      "note": "assailant",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_WindBeast": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:48:45.662Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -3701,10 +3758,11 @@
       "sizeBinPrefill": "large"
     },
     "homeless:AG_OcularSlinger": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:12:53.775Z",
+      "decision": "move",
+      "note": "contagion",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3712,33 +3770,37 @@
     "homeless:AM_UnshackledDryad": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
+      "at": "2026-09-10T12:55:54.669Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:Acklay": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:50:34.609Z",
+      "decision": "move",
+      "note": "Hutt arena fodder and territories",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:Aiwha": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:20:23.808Z",
+      "decision": "move",
+      "note": "HUGE flyer, could appear anywhere, mountable, air, sea, land, Helix territories",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:Akk": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:31:17.682Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -3757,15 +3819,17 @@
     "homeless:AlphaThrumbo": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
+      "at": "2026-09-10T13:56:25.703Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
     },
     "homeless:BI_Queen": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:33:05.501Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -3795,7 +3859,8 @@
     "homeless:BMT_BarbedPangolin": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:47:24.388Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
@@ -3834,7 +3899,8 @@
     "homeless:BMT_BiliousVarog": {
       "art": "redo",
       "artPrefill": "redo",
-      "decision": "in",
+      "at": "2026-09-10T13:54:02.019Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -3891,10 +3957,11 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:BMT_BunkerBug": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:33:58.809Z",
+      "decision": "move",
+      "note": "Superb for the Fall wreckage creature",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3930,10 +3997,11 @@
       "sizeBinPrefill": "large"
     },
     "homeless:BMT_ColonyPustuleHornet": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:44:04.665Z",
+      "decision": "move",
+      "note": "the Rot",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3969,10 +4037,11 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:BMT_CrystalCrab": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:16:23.404Z",
+      "decision": "move",
+      "note": "crystal caverns",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -4040,7 +4109,8 @@
     "homeless:BMT_FamineLocust": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:48:09.683Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
@@ -4049,7 +4119,8 @@
     "homeless:BMT_FenridStoat": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:20:12.519Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
@@ -4118,7 +4189,8 @@
     "homeless:BMT_GastroToad": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:40:16.393Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "small",
@@ -4207,7 +4279,8 @@
     "homeless:BMT_Maxolotl": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:53:03.757Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -4224,28 +4297,31 @@
       "sizeBinPrefill": "large"
     },
     "homeless:BMT_Megakrill": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:49:46.950Z",
+      "decision": "move",
+      "note": "Fishing result, the Grey Sea",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:BMT_Megaphorid": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:50:08.452Z",
+      "decision": "move",
+      "note": "injectable hives",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:BMT_MegaphoridLarva": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:42:13.924Z",
+      "decision": "move",
+      "note": "scarlands",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4263,7 +4339,8 @@
     "homeless:BMT_Megaroach": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:50:23.480Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
@@ -4360,19 +4437,21 @@
       "sizeBinPrefill": "large"
     },
     "homeless:BMT_Polluwog": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:42:38.588Z",
+      "decision": "move",
+      "note": "Grey sea",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:BMT_PustuleHornet": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:50:54.792Z",
+      "decision": "move",
+      "note": "the Rot",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4418,8 +4497,9 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:BMT_Sacapillar": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:47:04.939Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -4489,7 +4569,8 @@
     "homeless:BMT_SludgeCrawler": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
+      "at": "2026-09-10T13:49:51.215Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -4498,8 +4579,9 @@
     "homeless:BMT_SmogMoth": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:58:48.333Z",
+      "decision": "move",
+      "note": "Neat flier in the Rot",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4507,15 +4589,17 @@
     "homeless:BMT_SmogMothLarvae": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:42:44.875Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:BMT_SmogPupa": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:46:42.729Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -4555,7 +4639,8 @@
     "homeless:BMT_Swarmcaller": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:54:26.307Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
@@ -4564,7 +4649,8 @@
     "homeless:BMT_TaintedTurtle": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:43:44.721Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
@@ -4583,7 +4669,8 @@
     "homeless:BMT_TripleSnapper": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
+      "at": "2026-09-10T13:53:59.245Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -4602,7 +4689,8 @@
     "homeless:BMT_Varmot": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:56:04.068Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
@@ -4668,8 +4756,9 @@
     "homeless:Behemoth": {
       "art": "keep",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:59:37.665Z",
       "decision": "in",
-      "note": "",
+      "note": "huuuge trader pack animal",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -4684,10 +4773,11 @@
       "sizeBinPrefill": "large"
     },
     "homeless:Blarth": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:06:18.413Z",
+      "decision": "move",
+      "note": "Miasma, domesticatable, Hutt pets, 1 cell",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4695,17 +4785,19 @@
     "homeless:Blixus": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:57:34.420Z",
+      "decision": "move",
+      "note": "The Grey Sea and the Maiasma",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
     },
     "homeless:Blurrg": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:33:29.994Z",
+      "decision": "move",
+      "note": "Moisture Farmers territory, domesticated",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -4720,10 +4812,11 @@
       "sizeBinPrefill": "large"
     },
     "homeless:Bogwing": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:45:09.129Z",
+      "decision": "move",
+      "note": "miasma flyer",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4738,8 +4831,9 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:Bordok": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:46:54.293Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -4747,19 +4841,21 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:Brezak": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:56:04.689Z",
+      "decision": "move",
+      "note": "Hutt areas",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
     },
     "homeless:BroodLord": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:37:51.548Z",
       "decision": "in",
-      "note": "",
+      "note": "Injectable horror content",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -4774,19 +4870,21 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:Bulwark": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:27:07.059Z",
+      "decision": "move",
+      "note": "Horror injectibles for the night side",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:Bursa": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:34:52.281Z",
       "decision": "in",
-      "note": "",
+      "note": "domesticated settlement fodder",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -4828,10 +4926,11 @@
       "sizeBinPrefill": "titan"
     },
     "homeless:CorellianHound": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:59:35.353Z",
       "decision": "in",
-      "note": "",
+      "note": "Used as domesticated dog alternative everywhere... so most settlements",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4864,18 +4963,20 @@
       "sizeBinPrefill": "large"
     },
     "homeless:DA_BeardedTroll": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:25:47.878Z",
+      "decision": "move",
+      "note": "Semi-sentient guardian used by Wildsteam, trainable, sometimes seen wild in their territory, mostly fur with little face",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:DA_BlackScribe": {
-      "art": "redo",
+      "art": "improve",
       "artPrefill": "redo",
-      "decision": "out",
+      "at": "2026-09-10T14:01:18.950Z",
+      "decision": "in",
       "note": "",
       "prefill": "out",
       "sizeBin": "medium",
@@ -4884,7 +4985,8 @@
     "homeless:DA_Crestel": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:53:10.645Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -4902,7 +5004,8 @@
     "homeless:DA_Goldilox": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:53:26.782Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -4911,7 +5014,8 @@
     "homeless:DA_ImperialRedhound": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:32:13.303Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -4948,7 +5052,8 @@
     "homeless:DA_NorthernDrog": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:55:24.630Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -4982,10 +5087,11 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:DA_RockTroll": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:33:46.152Z",
+      "decision": "move",
+      "note": "Cracked biome",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -4993,7 +5099,8 @@
     "homeless:DA_Snaptoad": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:28:47.174Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5002,7 +5109,8 @@
     "homeless:DA_SnowTaraal": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:48:34.495Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5011,7 +5119,8 @@
     "homeless:DA_Taraal": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:48:37.063Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5027,8 +5136,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:Devourers": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:35:10.435Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5045,8 +5155,9 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:Drexl": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:43:33.737Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5099,9 +5210,10 @@
       "sizeBinPrefill": "small"
     },
     "homeless:ERN_Amaro": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:49:41.989Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5137,8 +5249,9 @@
     "homeless:EnergySpider": {
       "art": "keep",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:52:32.828Z",
       "decision": "in",
-      "note": "",
+      "note": "Hutt spicemines dungeon",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5162,44 +5275,49 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:FrogDog": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:48:31.363Z",
+      "decision": "move",
+      "note": "Hutt territories and pet and settlements",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:GR_AberrantFleshbeast": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:31:03.402Z",
       "decision": "in",
-      "note": "",
+      "note": "Assailant territory",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_AnimusHare": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:47:09.051Z",
       "decision": "in",
-      "note": "",
+      "note": "0.8 cells, pet, settlements",
       "prefill": "in",
-      "sizeBin": "medium",
+      "sizeBin": "small",
       "sizeBinPrefill": "medium"
     },
     "homeless:GR_ArchotechCentipede": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:43:25.979Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
     },
     "homeless:GR_BearBug": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:31:48.049Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5207,10 +5325,11 @@
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Bearalope": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:32:13.839Z",
       "decision": "in",
-      "note": "",
+      "note": "follow the boom beasts",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5218,7 +5337,8 @@
     "homeless:GR_Bearcat": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:32:18.687Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5227,15 +5347,17 @@
     "homeless:GR_Bearffalo": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:39:10.563Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Bearhorse": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:19:45.290Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5243,19 +5365,21 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:GR_Bearman": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:32:27.831Z",
       "decision": "in",
-      "note": "",
+      "note": "Helix territory",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Bearmole": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:05:27.620Z",
+      "decision": "move",
+      "note": "wherever needed in any dayside biome",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5263,15 +5387,17 @@
     "homeless:GR_Bearodile": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:32:40.077Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Bearscarab": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:20:33.435Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5281,7 +5407,8 @@
     "homeless:GR_Boomabear": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:33:41.553Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5290,26 +5417,29 @@
     "homeless:GR_Boomalisk": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:20:38.281Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Boombeetle": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:06:24.681Z",
       "decision": "in",
-      "note": "",
+      "note": "go with the boom",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:GR_Boomcat": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:06:31.463Z",
       "decision": "in",
-      "note": "",
+      "note": "go with the boom",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5317,26 +5447,29 @@
     "homeless:GR_Boomffalo": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:33:43.334Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Boomsnake": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:20:55.635Z",
+      "decision": "move",
+      "note": "Pyrelands",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Boomsquirrel": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:20:26.583Z",
       "decision": "in",
-      "note": "",
+      "note": "with the boom creatures",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5344,7 +5477,8 @@
     "homeless:GR_Catalope": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:39:14.075Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5353,44 +5487,49 @@
     "homeless:GR_Catchicken": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:39:16.909Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Chickenhorse": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:07:00.514Z",
+      "decision": "move",
+      "note": "Helix areas",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:GR_Chickenlizard": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:07:09.636Z",
+      "decision": "move",
+      "note": "Helix areas",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:GR_Chickenlope": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:40:11.503Z",
       "decision": "in",
-      "note": "",
+      "note": "goes along with the other boom creatures",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
     },
     "homeless:GR_Chickenspider": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:29:37.133Z",
+      "decision": "move",
+      "note": "Baby evil spider in the Web biome Wysok(sp?)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5398,15 +5537,17 @@
     "homeless:GR_Crocorse": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:35:05.535Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Doedicoon": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:20:03.315Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5414,8 +5555,9 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:GR_Elasmobearium": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:41:48.716Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5432,19 +5574,21 @@
       "sizeBinPrefill": "large"
     },
     "homeless:GR_FleshGrowth": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:36:09.202Z",
       "decision": "in",
-      "note": "",
+      "note": "assailant",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_FleshMonstrosity": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:36:14.222Z",
       "decision": "in",
-      "note": "",
+      "note": "assailant",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5452,8 +5596,9 @@
     "homeless:GR_Fleshling": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:40:30.886Z",
+      "decision": "move",
+      "note": "Contagion",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5461,15 +5606,17 @@
     "homeless:GR_Groundffalo": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:40:14.036Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Hurseman": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:20:08.824Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5477,8 +5624,9 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:GR_Lizardochs": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:40:23.182Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5488,17 +5636,19 @@
     "homeless:GR_Manalope": {
       "art": "keep",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:59:51.868Z",
       "decision": "in",
-      "note": "",
+      "note": "wherever the boom creatures go",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:GR_Mancat": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:11:57.690Z",
+      "decision": "move",
+      "note": "Helix territories",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5506,15 +5656,17 @@
     "homeless:GR_Manffalo": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:39:24.677Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Manscarab": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:21:44.547Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5524,7 +5676,8 @@
     "homeless:GR_Manwolf": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:36:42.384Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5533,7 +5686,8 @@
     "homeless:GR_MeadowLizard": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:37:06.355Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5542,15 +5696,17 @@
     "homeless:GR_Mechabear": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:37:10.466Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Mechacat": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:21:49.493Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5558,10 +5714,11 @@
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Mechachicken": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:12:14.466Z",
+      "decision": "move",
+      "note": "rust cathedral",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5569,7 +5726,8 @@
     "homeless:GR_Mechahorse": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:30:23.779Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5578,7 +5736,8 @@
     "homeless:GR_Mechalope": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:37:13.450Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5587,7 +5746,8 @@
     "homeless:GR_Mechamime": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:12:40.961Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
@@ -5596,17 +5756,19 @@
     "homeless:GR_Mechamuffalo": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:40:26.428Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Mecharat": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:49:24.168Z",
+      "decision": "move",
+      "note": "rust cathedral and mechanoid dungeons",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5614,17 +5776,19 @@
     "homeless:GR_Mechaspider": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:40:28.944Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Mechathrumbo": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:43:59.276Z",
       "decision": "in",
-      "note": "",
+      "note": "might want to reskin and add to Mechanoids",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -5632,15 +5796,17 @@
     "homeless:GR_Mechaturtle": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:12:42.095Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:GR_Mechawolf": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:21:59.254Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5648,8 +5814,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Moleman": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:23:31.729Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5659,17 +5826,19 @@
     "homeless:GR_Muffalokomodo": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:39:30.821Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Muffaloman": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:37:29.045Z",
       "decision": "in",
-      "note": "",
+      "note": "Helix area",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5677,7 +5846,8 @@
     "homeless:GR_Muffalope": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:37:31.497Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5686,7 +5856,8 @@
     "homeless:GR_Muffalopede": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:37:33.992Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5695,17 +5866,19 @@
     "homeless:GR_Muffalorat": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:40:31.776Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Needlechicken": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:54:02.377Z",
+      "decision": "move",
+      "note": "Helix territory",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5730,17 +5903,19 @@
       "sizeBinPrefill": "large"
     },
     "homeless:GR_ParagonBoomalope": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:27:17.109Z",
       "decision": "in",
-      "note": "",
+      "note": "with the boom",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_ParagonIguana": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:20:16.822Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5748,8 +5923,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:GR_ParagonInsectoid": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:21:42.940Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5759,26 +5935,29 @@
     "homeless:GR_ParagonMuffalo": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:39:07.722Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_ParagonThrumbo": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:42:54.309Z",
       "decision": "in",
-      "note": "",
+      "note": "7 squares, deep desert, very rare, very dangerous, rename to Great Thrumbo",
       "prefill": "in",
-      "sizeBin": "large",
+      "sizeBin": "titan",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Rabbitchicken": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:53:58.869Z",
+      "decision": "move",
+      "note": "sold as pet by the Helix faction",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5786,17 +5965,19 @@
     "homeless:GR_Ratffalo": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:40:34.707Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Snakecat": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:01:51.600Z",
+      "decision": "move",
+      "note": "venomthorn dweller",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5804,26 +5985,29 @@
     "homeless:GR_Spiderhorse": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:38:14.649Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Spidersnake": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:52:10.183Z",
+      "decision": "move",
+      "note": "Helix area",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:GR_Squirralope": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:53:51.891Z",
       "decision": "in",
-      "note": "",
+      "note": "with the other boom creatures",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5831,7 +6015,8 @@
     "homeless:GR_Thrumbalope": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
+      "at": "2026-09-10T13:39:37.048Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5840,7 +6025,8 @@
     "homeless:GR_Thrumbear": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:42:01.651Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5849,7 +6035,8 @@
     "homeless:GR_Thrumbocat": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:38:48.639Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5858,7 +6045,8 @@
     "homeless:GR_Thrumbochicken": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:42:57.913Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5867,7 +6055,8 @@
     "homeless:GR_Thrumbolizard": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
+      "at": "2026-09-10T13:39:44.021Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5876,7 +6065,8 @@
     "homeless:GR_Thrumboman": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:43:01.202Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5885,7 +6075,8 @@
     "homeless:GR_Thrumborat": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:43:03.952Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5894,7 +6085,8 @@
     "homeless:GR_Thrumbospider": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
+      "at": "2026-09-10T13:40:02.413Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5903,7 +6095,8 @@
     "homeless:GR_Thrumdraeodon": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:41:20.129Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5912,7 +6105,8 @@
     "homeless:GR_Thrumffalo": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:43:08.088Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5921,7 +6115,8 @@
     "homeless:GR_Thrumhorse": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:43:14.846Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -5930,15 +6125,17 @@
     "homeless:GR_Wolfhorse": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:30:56.279Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:GR_Wolfscarab": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:27:08.635Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -5948,7 +6145,8 @@
     "homeless:GRimBullfrog": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:43:48.484Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
@@ -5957,7 +6155,8 @@
     "homeless:GRimLavaSnail": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:19:55.145Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
@@ -5976,7 +6175,8 @@
     "homeless:GRimTortoise": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:47:42.578Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
@@ -5985,8 +6185,9 @@
     "homeless:GiantAnt_Race": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:28:13.692Z",
+      "decision": "move",
+      "note": "Only the raiding events in the greentide jungles and surrounding area",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5994,7 +6195,8 @@
     "homeless:GiantToad": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T13:46:57.197Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
@@ -6046,17 +6248,19 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:Grazer": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:28:33.196Z",
       "decision": "in",
-      "note": "",
+      "note": "only in settlements",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:Gualaar": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:52:38.004Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6073,19 +6277,21 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:Gullipud": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:41:53.221Z",
+      "decision": "move",
+      "note": "oases and pets",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:Gundark": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:32:44.199Z",
+      "decision": "move",
+      "note": "Problemmatic semi-sentient predator of the wildsteam territories, can form small raids, this creature steals. Hutt arena material",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6100,17 +6306,19 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:Harvester": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:36:56.889Z",
       "decision": "in",
-      "note": "",
+      "note": "injected horror",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
     },
     "homeless:HarvesterBeetle": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:40:17.687Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6128,8 +6336,9 @@
       "sizeBinPrefill": "small"
     },
     "homeless:HiveQueen": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:34:04.943Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6164,17 +6373,19 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:Insectomorph": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:10:26.030Z",
       "decision": "in",
-      "note": "",
+      "note": "ridable mount associated with the Drug, found near Hutt settlements",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:IthorianReek": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:39:21.072Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6182,28 +6393,31 @@
       "sizeBinPrefill": "large"
     },
     "homeless:JOE_Cephalope": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:17:54.301Z",
+      "decision": "move",
+      "note": "sand burrower & swimmer, absorb & retire mod, anywhere there is deep hot sand",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:JOE_Landopus": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:39:14.408Z",
+      "decision": "move",
+      "note": "desert water defender type",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
     },
     "homeless:JOE_Nautilant": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:37:23.223Z",
+      "decision": "move",
+      "note": "scald",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -6302,7 +6516,8 @@
     "homeless:JRWEuoplocephalus": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:21:20.667Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "titan",
@@ -6464,15 +6679,17 @@
     "homeless:JungleRancor": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:59:55.822Z",
+      "decision": "move",
+      "note": "wildsteam jungle biom, tree breaker",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
     },
     "homeless:Kaadu": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:48:30.101Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6480,8 +6697,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:Katarn": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:40:21.783Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6489,10 +6707,11 @@
       "sizeBinPrefill": "large"
     },
     "homeless:KellDragon": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:32:36.813Z",
+      "decision": "move",
+      "note": "Hutt territories and area pits",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6500,8 +6719,9 @@
     "homeless:KingToad": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:56:15.664Z",
+      "decision": "out",
+      "note": "likely retire this mod",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -6525,10 +6745,11 @@
       "sizeBinPrefill": "small"
     },
     "homeless:Leaftail": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:42:03.720Z",
+      "decision": "move",
+      "note": "wildsteam biomes",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -6543,8 +6764,9 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:LothWolf": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:36:35.707Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6598,8 +6820,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:MO_AbominationRace": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:57:46.828Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6607,17 +6830,19 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:Maalraas": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:11:45.664Z",
       "decision": "in",
-      "note": "",
+      "note": "3 cells, dangerous, ability to cloak and hunt, dangerous event",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:Manka": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:36:36.962Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6625,17 +6850,19 @@
       "sizeBinPrefill": "large"
     },
     "homeless:MarshHaunt": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:36:51.973Z",
       "decision": "in",
-      "note": "",
+      "note": "Maisma",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:MastiffPhalone": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:52:39.997Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6643,8 +6870,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:Mastmot": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:41:50.300Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6652,8 +6880,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:Mawvorr": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:39:27.586Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6690,7 +6919,8 @@
     "homeless:Megaspider": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "out",
+      "at": "2026-09-10T14:02:30.548Z",
+      "decision": "in",
       "note": "",
       "prefill": "out",
       "sizeBin": "large",
@@ -6734,8 +6964,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:Narglatch": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:39:35.406Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6743,19 +6974,21 @@
       "sizeBinPrefill": "large"
     },
     "homeless:Nexu": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:04:07.066Z",
+      "decision": "move",
+      "note": "combat pets of the Wildsteam",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:PaintedSpat": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:14:54.362Z",
+      "decision": "move",
+      "note": "Slot in nearly anywhere needed on dayside",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -6781,17 +7014,19 @@
     "homeless:PoisonButterfly": {
       "art": "keep",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:47:35.737Z",
       "decision": "in",
-      "note": "",
+      "note": "Maybe a pet for beauty?",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:Prowler": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:32:59.368Z",
+      "decision": "move",
+      "note": "injectable horror material",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6806,19 +7041,21 @@
       "sizeBinPrefill": "small"
     },
     "homeless:RSW_AbyssalColo": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:16:42.996Z",
+      "decision": "move",
+      "note": "Twilight",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:RSW_ColoClawFish": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:15:59.222Z",
+      "decision": "move",
+      "note": "Scald",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6844,10 +7081,11 @@
       "sizeBinPrefill": "large"
     },
     "homeless:RSW_Starmaw": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:22:11.443Z",
+      "decision": "move",
+      "note": "Twilight Sea",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -6855,8 +7093,9 @@
     "homeless:RSW_StormSando": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:21:53.606Z",
+      "decision": "move",
+      "note": "Twilight Sea",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -6864,9 +7103,9 @@
     "homeless:RSW_ThornbackColo": {
       "art": "improve",
       "artPrefill": "keep",
-      "at": "2026-09-10T05:43:33.588Z",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:15:48.794Z",
+      "decision": "move",
+      "note": "Scald",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6892,15 +7131,17 @@
     "homeless:Rancor": {
       "art": "improve",
       "artPrefill": "improve",
+      "at": "2026-09-10T12:36:40.401Z",
       "decision": "in",
-      "note": "",
+      "note": "Hutt arena fodder, some escaped living near Oasis and terrifying locals",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
     },
     "homeless:Raxshir": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:38:08.843Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6908,8 +7149,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:Reek": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:38:11.448Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6926,37 +7168,41 @@
       "sizeBinPrefill": "large"
     },
     "homeless:Rikknit": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:17:45.527Z",
+      "decision": "move",
+      "note": "Large tree biomes. \"rikknit was a crustacean native to New Plympto. They had eight to twelve legs and lived at the tops of hiakk trees. Rikknit spun webs for nests and storage. Female rikknit had ovum sacs connected to their abdomens. The Nosaurians removed these to harvest their eggs, which were sold offworld as a delicacy. They also harvested ovum sacks from rikknit and processed them into an addictive substance called ji rikknit\" So good source for Star Wars Cruisine. 0.4 cells",
       "prefill": "in",
-      "sizeBin": "medium",
+      "sizeBin": "small",
       "sizeBinPrefill": "medium"
     },
     "homeless:Roggwart": {
       "art": "improve",
       "artPrefill": "improve",
+      "at": "2026-09-10T12:35:37.551Z",
       "decision": "in",
-      "note": "",
+      "note": "definitely look up web art for this, Hutt arena fodder",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:Rycrit": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:01:32.848Z",
+      "decision": "move",
+      "note": "herd animal near oases",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:SWPotF_RaceDef_ysalamir": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:56:33.284Z",
+      "decision": "move",
+      "note": "Wherever needed in arid and hot zones",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -6972,8 +7218,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:SW_Emperorisopod": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:36:04.839Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -6981,19 +7228,21 @@
       "sizeBinPrefill": "titan"
     },
     "homeless:SW_Grenadierworm": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:28:58.323Z",
+      "decision": "move",
+      "note": "scarlands",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:Scuttlebug": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:51:51.483Z",
       "decision": "in",
-      "note": "",
+      "note": "donor for the Genosian Mind Worm",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7008,8 +7257,9 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:Silooth": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:52:55.379Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7017,10 +7267,11 @@
       "sizeBinPrefill": "large"
     },
     "homeless:Snoruuk": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:43:39.595Z",
+      "decision": "move",
+      "note": "The Rot",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7037,17 +7288,19 @@
     "homeless:Spelopede": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "out",
+      "at": "2026-09-10T14:00:53.254Z",
+      "decision": "in",
       "note": "",
       "prefill": "out",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:Squall": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:53:27.335Z",
+      "decision": "move",
+      "note": "injectable wreck creatures in the Fall Zone",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7062,12 +7315,13 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:Stintaril": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:03:17.615Z",
       "decision": "in",
-      "note": "",
+      "note": "Hideous vermin that can appear literally anywhere, especially injected wrecks, settlements, or attempting to infest the player's ship in events. 1 cell",
       "prefill": "in",
-      "sizeBin": "medium",
+      "sizeBin": "small",
       "sizeBinPrefill": "medium"
     },
     "homeless:StoneCrab": {
@@ -7090,17 +7344,19 @@
       "sizeBinPrefill": "small"
     },
     "homeless:Tach": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:55:45.411Z",
+      "decision": "move",
+      "note": "1 cell, this creature can steal, lives in the Jungle",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:Taozin": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:54:44.996Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7108,10 +7364,11 @@
       "sizeBinPrefill": "large"
     },
     "homeless:Tauntaun": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:47:18.808Z",
+      "decision": "move",
+      "note": "white ice night biome",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7127,8 +7384,9 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:Thranta": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:40:37.957Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7138,7 +7396,8 @@
     "homeless:ThrumbaToad": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
+      "at": "2026-09-10T12:33:14.985Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -7147,7 +7406,8 @@
     "homeless:Thrumbo": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
+      "at": "2026-09-10T13:55:27.890Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "large",
@@ -7156,17 +7416,19 @@
     "homeless:Tibidee": {
       "art": "improve",
       "artPrefill": "improve",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:46:45.876Z",
+      "decision": "move",
+      "note": "volcanic areas",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
     },
     "homeless:Tooke": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:38:30.196Z",
       "decision": "in",
-      "note": "",
+      "note": "cute vermin that come in festing numbers anywhere near settlements",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
@@ -7181,8 +7443,9 @@
       "sizeBinPrefill": "titan"
     },
     "homeless:Tukata": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:40:51.431Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7199,8 +7462,9 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:TuskCat": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:38:52.181Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7210,8 +7474,9 @@
     "homeless:VAEWaste_Hydra": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:48:47.965Z",
+      "decision": "move",
+      "note": "venomvine patch predator",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7219,24 +7484,27 @@
     "homeless:VAEWaste_Toxiguana": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:55:50.668Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:VFEI2_Acidspitter": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:26:31.391Z",
+      "decision": "move",
+      "note": "Scarlands",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:VFEI2_BlackEmpress": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:56:28.808Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7244,8 +7512,9 @@
       "sizeBinPrefill": "titan"
     },
     "homeless:VFEI2_BlackQueen": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:53:06.640Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7253,17 +7522,19 @@
       "sizeBinPrefill": "large"
     },
     "homeless:VFEI2_Durapod": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:24:26.084Z",
       "decision": "in",
-      "note": "",
+      "note": "Infestation",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:VFEI2_Empress": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:36:10.251Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7271,8 +7542,9 @@
       "sizeBinPrefill": "titan"
     },
     "homeless:VFEI2_Gigalocust": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:28:21.118Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7280,8 +7552,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:VFEI2_Gigamite": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:34:09.484Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7289,8 +7562,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:VFEI2_Hellbeetle": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:28:22.926Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7298,8 +7572,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:VFEI2_Ironclad": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:32:18.340Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7307,17 +7582,19 @@
       "sizeBinPrefill": "large"
     },
     "homeless:VFEI2_Macrofly": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:23:50.029Z",
+      "decision": "move",
+      "note": "0.9 cells in great numbers, emerging out of hives when disturbed, can appear Inhabited in arid shrubland",
       "prefill": "in",
-      "sizeBin": "medium",
+      "sizeBin": "small",
       "sizeBinPrefill": "medium"
     },
     "homeless:VFEI2_Megapede": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:28:29.114Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7325,8 +7602,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:VFEI2_Megawasp": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:28:35.174Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7334,8 +7612,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:VFEI2_Patriarch": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:36:12.754Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7343,8 +7622,9 @@
       "sizeBinPrefill": "titan"
     },
     "homeless:VFEI2_Queen": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:33:19.988Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7361,8 +7641,9 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:VFEI2_RoyalMegaspider": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:33:07.276Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7370,26 +7651,29 @@
       "sizeBinPrefill": "large"
     },
     "homeless:VFEI2_RoyalSpelopede": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:26:38.454Z",
+      "decision": "move",
+      "note": "Scarlands",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:VFEI2_Silverfish": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T12:21:04.934Z",
+      "decision": "move",
+      "note": "Grey Sea and surrounding Salt flats of the dessicated sea bed",
       "prefill": "in",
-      "sizeBin": "large",
+      "sizeBin": "titan",
       "sizeBinPrefill": "large"
     },
     "homeless:VFEI2_Tankroach": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:28:38.731Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7397,8 +7681,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:VFEI2_Teramantis": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:35:44.024Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7406,8 +7691,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:VFEI2_Titantick": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:35:46.006Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7415,8 +7701,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:VFEI2_Venomite": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:28:40.238Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7424,8 +7711,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:VQEA_Splicefiend": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:38:17.081Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7433,8 +7721,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:VQEA_Splicehulk": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:27:02.528Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7442,8 +7731,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:VQEA_Spliceling": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:17:59.552Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7451,8 +7741,9 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:VQEA_Splicetoot": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:19:42.074Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7462,15 +7753,17 @@
     "homeless:VQE_IceCrawler": {
       "art": "keep",
       "artPrefill": "keep",
+      "at": "2026-09-10T12:57:11.962Z",
       "decision": "in",
-      "note": "",
+      "note": "We must completely examine ",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:VQE_Megamidge": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:22:03.855Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7480,15 +7773,17 @@
     "homeless:VRE_CompanionDryad": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
+      "at": "2026-09-10T12:26:12.653Z",
+      "decision": "out",
       "note": "",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
     "homeless:Vapaad": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:39:57.607Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7496,8 +7791,9 @@
       "sizeBinPrefill": "large"
     },
     "homeless:Veermok": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:38:54.813Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7514,17 +7810,19 @@
       "sizeBinPrefill": "medium"
     },
     "homeless:Wampa": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "at": "2026-09-10T13:39:03.175Z",
+      "decision": "move",
+      "note": "Ice plains",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
     "homeless:Warbird": {
-      "art": "keep",
+      "art": "improve",
       "artPrefill": "keep",
+      "at": "2026-09-10T13:56:21.924Z",
       "decision": "in",
       "note": "",
       "prefill": "in",
@@ -7642,8 +7940,8 @@
   ],
   "posture": "blacklist",
   "postureMeaning": "Stands as recommended unless overruled. Out on a homeless row = cut from the game for real.",
-  "savedAt": "2026-09-09T22:43:34-0700",
+  "savedAt": "2026-09-10T07:02:31-0700",
   "savedBy": "review-sheet-sidecar",
   "sheet": "fauna_assignment_register",
-  "writeCount": 413
+  "writeCount": 1134
 }
