@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T15:18:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T15:40:12Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -40,6 +40,15 @@ target:   v1
 kind:     task
 summary:  STAGEDLOREDESCRIPTIONS1 — descriptions that change as the story is learned
 prose:    infrastructure/state/items/STAGED_LORE_DESCRIPTIONS_1.md
+
+## ASHKARR_RIVER_LEDGER_1 Author the lore river ledger: every river named, source-course-fate, built on R1's Scald outflow -- R18 step 1, unblocks the assignment pass
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/ASHKARR_RIVER_LEDGER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ASHKARR_RIVER_LEDGER_1.md
 
 ## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
 state:    ready
@@ -341,16 +350,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SCALD_MECHANICS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SCALD_MECHANICS_1.md
-
-## ASHKARR_RIVER_LEDGER_1 Author the lore river ledger: every river named, source-course-fate, built on R1's Scald outflow -- R18 step 1, unblocks the assignment pass
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ASHKARR_RIVER_LEDGER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ASHKARR_RIVER_LEDGER_1.md
 
 ## POISON_FOREST_REPASS_1 poison_forest.md second pass: MEASURED block, weather table, R13's chemical venting, struck phrasing removed
 state:    proposed
