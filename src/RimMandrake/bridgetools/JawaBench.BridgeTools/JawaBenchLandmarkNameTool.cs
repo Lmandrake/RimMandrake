@@ -15,7 +15,12 @@ namespace JawaBench.BridgeTools
     // reused planet-wide and the fix is hand names, which need a setter.
     // Landmark.name is a plain public string (Source/RimWorld/Landmark.cs:9),
     // scribed by IExposable — a write survives the save with no regeneration.
-    public static class JawaBenchLandmarkNameTool
+    //
+    // Must extend the shared JawaBenchTerrainTools partial class like every
+    // other [Tool]-bearing file in this assembly — a standalone type here
+    // never enters RimBridgeServer's discovered Type space (root-caused
+    // 2026-09-10, LANDMARK_NAMING_PASS_1).
+    public sealed partial class JawaBenchTerrainTools
     {
         [Tool(
             "jawa/world_landmark_rename",
