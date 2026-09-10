@@ -355,10 +355,24 @@ def t_bench_actually_renders_items_into_the_views():
     stage timed two file writes: 400 events reported 20.5 ms for zero item lines,
     against 68.0 ms once the items were actually there. It could only ever come in
     under target.
+
+    ⚠️ THIS CASE CHECKS CORRECTNESS, NOT THE 100 MS BUDGET. `bench()`'s return code
+    also encodes whether the render beat its wall-clock target, and that target is a
+    fact about the MACHINE'S CURRENT LOAD, not about this code — asserting on it here
+    made the whole correctness suite flaky under load average as ordinary as several
+    concurrent `rimflow` sessions (measured 2026-09-09: loadavg 26.8 on 14 cores, one
+    render took 172 ms against the 100 ms target, with the ledger stage alone at 19 ms
+    — SELFTEST_RENDER_FLAKE_1, which first suspected a shared-fixture race with the
+    real ledger and found none: `fresh()` already redirects `model.EVENTS`,
+    `model.ITEMS`, `render.QUEUE/DERIVED/PREVIEW` to a private tree under
+    `derived/.selftest`, and `bench()`'s own scratch dir never touches it either. The
+    100 ms number stays meaningful as information for whoever runs
+    `render.py bench` by hand; it is not a correctness property this file may assert.
     """
     d = os.path.join(render.DERIVED, ".bench")
     rc, out = quiet(lambda: render.bench(200))
-    assert rc == 0, out
+    assert rc in (0, 1), out          # only these two returns are defined; anything
+                                       # else is bench() breaking, not being slow
     assert "rendered into the views" in out, (
         "bench no longer says how many items it rendered — that count is the thing "
         "that makes an empty benchmark visible: %s" % out)
