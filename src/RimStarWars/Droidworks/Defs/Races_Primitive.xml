@@ -72,21 +72,66 @@
        is just an eighth family casing around the same trio, not a new
        mechanic.
 
-       🔶 PLACEHOLDER ART, not the real G2. New sprite art (goose neck, twin
-       lamp-eye photoreceptors on a stalk, claw hands, three-toed feet,
-       exposed cabling per the design doc) needs the owner's own eye
-       (generating-rimworld-sprites skill; CLAUDE.md's "iterate by
-       LOOKING") and is explicitly OUT OF SCOPE for this packet - a parent
-       session handles it separately. Body art reused verbatim from
-       OuterRimDroidDepot's own DUM repair-droid texture (OuterRim/Droid/DUM,
-       already active in this mod via Races_OuterRim.xml's own
-       RSW_DW_Race_OuterRim_DUMDroid) - same "reuse an active mod's art by
-       texPath" convention Items_Droidworks.xml's RSW_DW_DroidHead already
-       established, picked because DUM is the closest existing shape to "a
-       small bipedal repair droid" this mod ships. colorChannels copied
-       verbatim from that same DUM block so the reused texture's palette
-       renders correctly (RGBA(112,68,55,255), a rust-brown that also reads
-       as "junk", pending the real G2 palette).
+       🟢 REAL ART, FOUNDRY 2026-09-09 (this session), the mechanical half's own
+       parent-session obligation discharged: goose-neck, twin lamp-eye
+       photoreceptors, tube-and-plate frame, three-fingered claw hands,
+       three-toed feet, exposed cabling, worn brass/rust-orange scavenger
+       palette - all per the design doc's own G2 description. Generated with
+       `generating-rimworld-sprites` (Codex `image_gen`, native alpha, no
+       chroma-key needed - `codex_image.py probe` on this install reports
+       transparency IS available in the built-in tool now, superseding that
+       skill's older chroma-key-mandatory text for THIS install/version).
+       South facing needed 10 generate attempts to find a stance the
+       goose-necked design could hold at all (thin builds kept landing
+       aspect 0.32-0.46; a deliberately wide/T-pose stance overshot to
+       0.66-0.88; none landed inside the ~0.52-0.59 band `conform_sprite.py`
+       needs to pass `validate_sprite.py`'s span/aspect/origin checks against
+       `DUM_south.png`) - kept the best-reading result (aspect 0.457,
+       closest of the ten, and the only one that still reads as
+       goose-necked rather than T-posed at true sprite size on
+       `contact_sheet.py`'s 96px row) rather than burning further generations
+       chasing the band. East/north facings (one generate call each, no
+       retries needed) show the same shape: 0.432 and 0.498 respectively.
+
+       ⚠️ **All three facings REJECT on `validate_sprite.py`'s span/aspect/
+       origin checks against DUM - this is DUM's shape, not a defect in the
+       new art.** `DUM_south.png` is a wide mushroom-dome-headed stub body
+       (measured 122px wide at 219px tall, aspect 0.557); the design doc's
+       G2 is explicitly the OPPOSITE build - a tall thin goose-neck, not a
+       domed hood - so no drawing of the brief's actual creature can ever
+       land inside DUM's footprint tolerance. DUM was only ever "the closest
+       existing shape to a small bipedal repair droid" for a PLACEHOLDER
+       (this file's own prior comment, now superseded) - it was never a
+       claim that G2 shares its proportions, and CLAUDE.md's "Inaccurate
+       material is DELETED, not superseded-in-place" is why that placeholder
+       reasoning is removed here rather than kept as commentary.
+       Every check independent of DUM's silhouette is clean on all three
+       facings (`validate_sprite.py`'s single-file describe mode, no
+       reference arg): canvas
+       exact 256x256, real alpha, corners [0,0,0,0], fringe reach inside
+       tolerance (WARN only, not REJECT), no mid-alpha mass, no fragments.
+       `selftest.py` (9/9) was not re-run this session - no threshold in
+       validate_sprite.py was touched.
+
+       No new `colorChannels` override: the art is baked-palette (brass/
+       rust-orange painted directly into the PNG, no separate alien-race
+       colour mask), so the DUM-era RGBA(112,68,55,255) multiply tint - which
+       existed only to recolour DUM's own white/grey texture - is dropped
+       entirely rather than left in to double-tint the new pixels. Matches
+       the JDS races' own convention exactly (`Races_JDS.xml`'s 16 races -
+       e.g. RSW_DW_Race_JDSCIS_B1_Battle_Droid - carry no colorChannels
+       override either, same skinShader/headTypes/bodyTypes shape as below),
+       not a novel risk.
+
+       **Still owed** (this session did not touch the game - it is down
+       tonight after two quicktest crashes): "G2 renders in a savegame for
+       the owner" per the packet's own verify line. Route once the bridge is
+       back: `jawa/spawn_pawn` (kind `RSW_DW_Primitive_G2Unit`... check the
+       live PawnKindDef defName, not this comment, before spawning) or the
+       reassembly harness, then save per CLAUDE.md's "Options he must LOOK
+       at ship as a savegame". Prediction for that look: a slender
+       goose-necked droid, clearly NOT the stocky DUM/mushroom-dome
+       silhouette the placeholder used to show.
   ======================================================================== -->
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Primitive">
     <defName>RSW_DW_Race_Primitive_G2Unit</defName>
@@ -102,7 +147,7 @@
       <graphicPaths>
         <skinShader>Cutout</skinShader>
         <body>
-          <path>OuterRim/Droid/DUM</path>
+          <path>DW/Primitive/G2</path>
         </body>
       </graphicPaths>
       <generalSettings>
@@ -113,27 +158,6 @@
           <bodyTypes Inherit="False">
             <li>Male</li>
           </bodyTypes>
-          <colorChannels Inherit="False">
-            <li>
-              <name>skin</name>
-              <first Class="ColorGenerator_Options">
-                <options>
-                  <li>
-                    <weight>100</weight>
-                    <only>RGBA(112,68,55,255)</only>
-                  </li>
-                </options>
-              </first>
-              <second Class="ColorGenerator_Options">
-                <options>
-                  <li>
-                    <weight>100</weight>
-                    <only>RGBA(112,68,55,255)</only>
-                  </li>
-                </options>
-              </second>
-            </li>
-          </colorChannels>
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
