@@ -1428,10 +1428,10 @@
     "sha": "0c9c0cff"
   },
   "src/RimMandrake/ManyWaters/Defs/ThingDefs/RM_ColoredWaterBottles.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "20fc40d27e0d3ac8d8c6497c267b2853a96d6b081fd09c3629bee89f303c0427",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "e1dc11470288cf22bcdbcdb1ebe0dd51c8910fd498b08cfbe1f5b7544d72e734",
+    "sha": "3e7a8571"
   },
   "src/RimMandrake/ManyWaters/LICENSE": {
     "cleanCount": 1,
@@ -2464,6 +2464,18 @@
     "date": "2026-09-06",
     "hash": "5dff27c1592bec937d6e42605a444056688c0891dd158d13863027a7f57bba6a",
     "sha": "52dee04f"
+  },
+  "src/RimMandrake/RustChrome/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "7d23de24"
+  },
+  "src/RimMandrake/RustChrome/Source/RustChrome.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "314444e25edad65a2340e36b07059c07032b4918f5a377a007c89c96125e3045",
+    "sha": "7d23de24"
   },
   "src/RimMandrake/RustChrome/Source/RustChromeColors.cs": {
     "cleanCount": 1,
