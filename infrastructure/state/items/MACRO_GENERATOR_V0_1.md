@@ -43,3 +43,36 @@ LIES    a map that matches every statistic and reads as nothing; a chooser that 
 
 Structures, residents, dressing (steps 7-9), the micro synthesis (step 5), the
 LLM plan author (step 8). Terrain and one idea, nothing else.
+
+## Round 3 verdict, absorbed 2026-09-10
+
+Round 3's comparator sheet (`Transient/mapgen_v3/comparator_sheet.png`) went to
+the owner and came back **FAIL — 0 of 8 premises readable**, against this
+item's own ≥3 bar. Full grade and disposition:
+`infrastructure/state/items/MAPGEN_ROUND3_VERDICT_LANDING_1.md`.
+
+Three things this item's next round must fix, not the corpus-stats regression:
+
+1. **Passing every measured statistic is not the acceptance test.** A map can
+   sit in-band on `corpus_stats.py` and still read as nothing beside the real
+   corpus at thumbnail size — the owner's eye is the acceptance gate, the
+   stats page above is calibration/regression only, and round 3 confirms the
+   spec's own LIES row rather than contradicting it.
+2. **A premise must be visible, not just present in the plan JSON.** The
+   choke-point premises ("only way through is at the narrows/head/lip/ring
+   centre") produced nothing the owner could locate on the rendered map. If a
+   passage doesn't read as a passage at thumbnail size, the premise did not
+   ship.
+3. **The chooser's one-idea-per-map rule is failing at differentiation, not
+   just rendering.** Four canyon maps (two sharing a premise sentence) all
+   read as the same map. Distinct premises must produce visibly distinct
+   maps, or the ≥4-distinct-premises check in this item's own LIES row is not
+   actually being tested by the sheet.
+
+Disposition (BENCH's sequencing via the verdict item, owner may veto): **hold
+painter round 4.** `MAPGEN_GL_SHEET_1` is now the lead — it settles whether
+the gestalt gap is in the content/chooser or in the offline painter's
+rendering, before another painter iteration spends effort on the wrong side of
+that question. Do not tune the next round toward `corpus_stats.py` — it is
+measuring the wrong thing per the verdict; treat it as a regression check
+only, never the pass/fail bar.

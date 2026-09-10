@@ -21,3 +21,17 @@ LIES    statistics inside the corpus band on a map that still reads as a diagram
 ## not chasing
 
 GL fidelity (that is MAPGEN_CONVERGENCE_LOOP_1's comparison); structures; plants beyond terrain.
+
+## Correction, 2026-09-10 — corpus_stats tuning superseded, painter round 4 on hold
+
+The round-3 owner grade (`MAPGEN_ROUND3_VERDICT_LANDING_1`, FAIL, 0/8 premises
+readable) found maps in-band on `corpus_stats.py`'s measures (distinct
+terrains, perimeter/area) that still read as nothing beside the corpus at
+thumbnail size — this item's corpus-stats targets (§2, the ≥10 distinct
+terrains / 2.4-3.3 perimeter/area selftest) are a regression floor, not the
+acceptance bar, and are not the right next tuning target on their own.
+Disposition: hold the next painter round until `MAPGEN_GL_SHEET_1` (now lead)
+settles whether the gap is content/chooser or the painter's own rendering.
+See `MAPGEN_ROUND3_VERDICT_LANDING_1` for the full grade and
+`MACRO_GENERATOR_V0_1`'s "Round 3 verdict, absorbed" section for how the
+chooser side must change.
