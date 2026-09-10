@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T11:47:10Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-10T11:53:21Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -594,6 +594,15 @@ kind:     task
 summary:  Restore the campaign to a real, correct, save-safe state and fold in tonight's
 prose:    infrastructure/state/items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md
 
+## ROTSPOREKIT_ENABLE_DECISION_1 Enable mandrake.rut.rotsporekit in ModsConfig and cold-load-verify (finished FungalForest-raid content, currently deployed but not active)
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  (no items/ROTSPOREKIT_ENABLE_DECISION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROTSPOREKIT_ENABLE_DECISION_1.md
+
 ## MECH_PRESENCE_ENFORCEMENT_1 Enforce the RULED mechanoid/ancient-danger table: XML only - MechCluster allowed/disallowedBiomes patch, per-biome preventGenSteps/extraGenSteps for the ANCIENT column, zero the mechanoid FactionDef raid-commonality curve (confirm exact field name on the def first); curate shrine contents where ANCIENT-ALLOW meets AMBIENT-DENY
 state:    doing
 row:      unassigned
@@ -829,7 +838,7 @@ prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BIOME_SPAWN_FLORA_AUDIT_1 Spawn each biome in game and photograph what actually grows - normalize before adjusting; also identify the rainbow prolific unclickable bushes the owner keeps seeing
 state:    ready
@@ -837,7 +846,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-waiting:  needs `game-up`, game is DOWN
+waiting:  needs `game-up`, game is LOADING
 summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
 
@@ -878,16 +887,6 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  CHERRYPICKERSHIPBASELINESTALE1
 prose:    infrastructure/state/items/CHERRYPICKER_SHIP_BASELINE_STALE_1.md
-
-## ROTSPOREKIT_ENABLE_DECISION_1 Enable mandrake.rut.rotsporekit in ModsConfig and cold-load-verify (finished FungalForest-raid content, currently deployed but not active)
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROTSPOREKIT_ENABLE_DECISION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROTSPOREKIT_ENABLE_DECISION_1.md
 
 ## FISH_BESTIARY_COMMISSION_1 Commission a per-biome fish bestiary: many new fish defs per fished water (squid/octopus/eel/crustacean/floater/jellyfish/cucumber registers, Star Wars richness); folds in the 4 owed defs (Scald thermophile, Cathedral coolant eel, brine-battery, twilight shoal); swfish_ tables are v1 placeholders
 state:    proposed
