@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T06:47:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T06:47:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -80,6 +80,15 @@ target:   v1
 kind:     task
 summary:  - Inventory, from the live def dump + mod XML (never guess a defName):
 prose:    infrastructure/state/items/MUTATION_MODIFIERS_SURVEY_1.md
+
+## MECHANOID_BIOME_PRESENCE_REVIEW_1 Review which biomes contain mechanoids and ancient dangers — not all should; the two magnetic poles (Rust Cathedral, the antistellar war lab) by ruling, everything else argued
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Inventory, per biome, everything mechanoid-class and ancient-danger-class that can
+prose:    infrastructure/state/items/MECHANOID_BIOME_PRESENCE_REVIEW_1.md
 
 ## CRYSTAL_MODS_INGEST_1 Find the orange glowing crystal's source mod; inventory every crystal harvest in the stack; assess ingesting it so all crystals live in the Lantern Deeps
 state:    doing
@@ -163,16 +172,6 @@ kind:     task
 thin:     no ## criteria
 summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
 prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
-
-## MECHANOID_BIOME_PRESENCE_REVIEW_1 Review which biomes contain mechanoids and ancient dangers — not all should; the two magnetic poles (Rust Cathedral, the antistellar war lab) by ruling, everything else argued
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Inventory, per biome, everything mechanoid-class and ancient-danger-class that can
-prose:    infrastructure/state/items/MECHANOID_BIOME_PRESENCE_REVIEW_1.md
 
 ## TERRAMANUFACTURE_CANON_1 Propagate the terramanufacture ancient history (dynamo at the substellar pole, Cathedral as remnant, unplanned war lab, mutual learning) into the world definition and canon docs; card contradictions
 state:    proposed

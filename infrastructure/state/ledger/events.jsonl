@@ -6762,3 +6762,6 @@
 {"seat":"BENCH","event":"claim","id":"FISH_BY_BIOME_1","ts":"2026-09-10T06:42:51Z"}
 {"seat":"BENCH","event":"start","id":"FISH_BY_BIOME_1","ts":"2026-09-10T06:42:52Z"}
 {"seat":"BENCH","event":"note","id":"FISH_BY_BIOME_1","text":"merged fishTypes proposal written (_fish_assignment_proposal.md, commit 552b03b7): every water RULED or PROPOSED, sand-fishing customs reconciled with donor census; 5 owner questions staged","ts":"2026-09-10T06:47:07Z"}
+{"seat":"BENCH","event":"note","id":"MORNING_RULING_BATCH_1","text":"(8) fish: 5 condensed questions in D:\\Luke\\dev\\Rimworld\\design\\Jawa\\worldbuilding\\biomes\\rosters\\_fish_assignment_proposal.md - Cracked Lands merge ratification, weeping-stones bucket trim, Mee/Faa/Laa dual home, one-family-three-waters, and which of 4 owed new fish defs pull forward. 16 no-fish rulings restated FINAL, nothing reopened","ts":"2026-09-10T06:47:53Z"}
+{"seat":"BENCH","event":"claim","id":"MECHANOID_BIOME_PRESENCE_REVIEW_1","ts":"2026-09-10T06:47:54Z"}
+{"seat":"BENCH","event":"start","id":"MECHANOID_BIOME_PRESENCE_REVIEW_1","ts":"2026-09-10T06:47:54Z"}
