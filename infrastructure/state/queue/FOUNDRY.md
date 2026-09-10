@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T03:09:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T03:15:50Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1003,3 +1003,13 @@ kind:     task
 thin:     no ## criteria
 summary:  1. Reproduce on a clean quicktest: spawn ~10 of RSWDWOuterRimProtocolDroid
 prose:    infrastructure/state/items/DROID_SIBLING_RELATION_GEN_CRASH_1.md
+
+## MAPGEN_ROUND3_VERDICT_LANDING_1 Land the owner's round-3 mapgen verdict (FAIL 0/8) on MACRO_GENERATOR_V0_1: absorb the three translated defects, hold painter round 4, run MAPGEN_GL_SHEET_1 first
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MAPGEN_ROUND3_VERDICT_LANDING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MAPGEN_ROUND3_VERDICT_LANDING_1.md
