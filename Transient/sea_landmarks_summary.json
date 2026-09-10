@@ -1,0 +1,13 @@
+{
+  "grey_before": 0,
+  "grey_after": 279,
+  "grey_total": 472,
+  "twilight_before": 1,
+  "twilight_after": 311,
+  "twilight_total": 607,
+  "rows_attempted": 589,
+  "rows_added_reported": 589,
+  "missing_count": 0,
+  "mutator_losses": {},
+  "mutator_gains": {}
+}
