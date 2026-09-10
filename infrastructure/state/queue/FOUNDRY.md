@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T02:29:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T02:32:41Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -370,7 +370,7 @@ summary:  Six entries, each a reading that could not be taken offline. See histo
 prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_4.md
 
 ## DROID_ORACLE_VOICE_DESIGN_1 Design (dormant): four droid Oracle consumers with prescribed fallbacks, claude -p transport
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -613,7 +613,7 @@ summary:  PLANETARYBEAUTYLOADSCREENS1 — mechanism identified, two candidates o
 prose:    infrastructure/state/items/PLANETARY_BEAUTY_LOADSCREENS_1.md
 
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -800,6 +800,16 @@ blocked:  ledger/prose mismatch: item's own text ends 'Left doing, blocked. Reco
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
 
+## DROID_ORACLE_VOICE_DESIGN_1 Design (dormant): four droid Oracle consumers with prescribed fallbacks, claude -p transport
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  dormant design per owner card 14 (design now, do not build); nothing closes it but the owner's read of droid_oracle_voice_design.md
+summary:  Design (dormant, per DROIDUNIFIEDFRAMEWORKDESIGN.md §0 card 14 / §3.4 E5) for
+prose:    infrastructure/state/items/DROID_ORACLE_VOICE_DESIGN_1.md
+
 ## DROIDWORKS_PRIMITIVE_TIER_1 Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -909,6 +919,16 @@ kind:     task
 blocked:  245-row plan ready, but live bridge session crashes loading CANONICAL_ASHKARR_2026-09-09.rws on missing lumi.doorsexpanded; blocked until that regression's real fix lands (on DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1)
 summary:  BIOMEENRICHMENTPOISONFOREST1
 prose:    infrastructure/state/items/BIOME_ENRICHMENT_POISON_FOREST_1.md
+
+## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+blocked:  design draft, item's own criterion 1: stays a draft until the owner rules forks F1-F10 (art register, glyph tone/mappings, anti-Imperial stencil scope)
+summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
+prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
