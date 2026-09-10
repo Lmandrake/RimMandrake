@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T14:19:51Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-10T15:17:36Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -260,15 +260,6 @@ target:   v1
 kind:     task
 summary:  MULTIVIEWFACINGPIPELINE1 — pose-collision bug fixed; owner judged the OUTPUT unusable ("crushed tin cans")
 prose:    infrastructure/state/items/MULTIVIEW_FACING_PIPELINE_1.md
-
-## BIOME_SPAWN_FLORA_AUDIT_1 Spawn each biome in game and photograph what actually grows - normalize before adjusting; also identify the rainbow prolific unclickable bushes the owner keeps seeing
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
 
 ## NINEFOLD_DEBUG_GAME_READY_CRASH_1 start_debug_game_ready crashes RimWorldWin64 outright - observed live during BIOME_SPAWN_FLORA_AUDIT_1, correlates with Ninefold satiation hook firing on a burst of debug auto-research completions
 state:    doing
@@ -594,6 +585,15 @@ kind:     build
 summary:  (no items/MECH_PRESENCE_ENFORCEMENT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MECH_PRESENCE_ENFORCEMENT_1.md
 
+## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/RUT_SCAVENGEREVENTS_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -748,6 +748,16 @@ blocked:  mechanics built and committed at 5c80b1797677af906691d2d0f5dd331eb17f3
 summary:  Packet B9 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
 
+## SCALD_RIVER_REPAINT_1 Redirect the Scald's rivers outward on the painted worldmap to match R1 -- R18 step 2, blocked on ASHKARR_RIVER_LEDGER_1, verify tile-by-tile
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  blocked on ASHKARR_RIVER_LEDGER_1 (BENCH, proposed, never started/written) - no river ledger to repaint from yet
+summary:  ⛔ THE OBVIOUS APPROACH IS A NO-OP — read this before planning anything
+prose:    infrastructure/state/items/SCALD_RIVER_REPAINT_1.md
+
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    ready  (BLOCKED)
 row:      unassigned
@@ -830,16 +840,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## SCALD_RIVER_REPAINT_1 Redirect the Scald's rivers outward on the painted worldmap to match R1 -- R18 step 2, blocked on ASHKARR_RIVER_LEDGER_1, verify tile-by-tile
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  ⛔ THE OBVIOUS APPROACH IS A NO-OP — read this before planning anything
-prose:    infrastructure/state/items/SCALD_RIVER_REPAINT_1.md
-
 ## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
 state:    proposed
 row:      unassigned
@@ -859,16 +859,6 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  CHERRYPICKERSHIPBASELINESTALE1
 prose:    infrastructure/state/items/CHERRYPICKER_SHIP_BASELINE_STALE_1.md
-
-## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RUT_SCAVENGEREVENTS_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
 
 ## CRYPTOFORGE_HARVEST_RETIRE_1 Harvest then retire VQE Cryptoforge: (1) reproduce the 18 SALVAGE_PALETTE-cited props as owned RUT_/RSW_ ThingDefs with OWNED art (citation swap - Workshop art is not ours to ship); (2) copy the 38 KCSG StructureLayoutDef XMLs into design/ as authoring reference, strip to owned symbols before any shipping use; (3) delete our two FindMod-gated patches (Armoury_RangedDamage.xml VQE bullet block, MegafaunaYield.xml VQE_Megamidge block) in the same change as removal; (4) remove from ModsConfig, cold-load check, resave canonical per the donor-retire pattern (save footprint is zero-placed: only workgiver rows + filters, which drop with warnings); (5) fauna sheets: IceCrawler/Megamidge are ruled out-of-canon - their rows resolve Out, coordinate with the owner's live review before applying. Optional design salvage: the thaw-pulse mechanic (heat wakes the ice) may be re-fictioned as terramanufacture content - separate design item if wanted. CherryPicker rows for its 2 turrets become moot at removal.
 state:    proposed
@@ -909,3 +899,23 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GOO_BOOM_COMMISSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
+
+## ROSE_OF_REBIRTH_CONTAINMENT_1 Investigate why RotR_RoseOfRebirth (Romance On The Rim) has 476 instances on the live Ash'karr colony map when its def forbids wild-spread and sowing; owner wants it controlled tightly
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Owner, live 2026-09-10, watching the colony map: "There are also 'Rose of
+prose:    infrastructure/state/items/ROSE_OF_REBIRTH_CONTAINMENT_1.md
+
+## CODEX_WORKER_SANDBOX_WRITE_1 Codex art worker generates the image but cannot resize/copy it into its job workspace: worker exits 1, daemon sees no image (validator never runs), dies at ~241s = the edit-timeout+grace, not a slow run
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CODEX_WORKER_SANDBOX_WRITE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CODEX_WORKER_SANDBOX_WRITE_1.md
