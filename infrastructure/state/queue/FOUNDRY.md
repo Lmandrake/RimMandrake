@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T19:12:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T19:14:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -747,16 +747,6 @@ kind:     task
 blocked:  mechanics built and committed at 5c80b1797677af906691d2d0f5dd331eb17f318e, G2 art + live savegame verify owed to a parent session
 summary:  Packet B9 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
-
-## SCALD_RIVER_REPAINT_1 Redirect the Scald's rivers outward on the painted worldmap to match R1 -- R18 step 2, blocked on ASHKARR_RIVER_LEDGER_1, verify tile-by-tile
-state:    proposed  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  blocked on ASHKARR_RIVER_LEDGER_1 (BENCH, proposed, never started/written) - no river ledger to repaint from yet
-summary:  ⛔ THE OBVIOUS APPROACH IS A NO-OP — read this before planning anything
-prose:    infrastructure/state/items/SCALD_RIVER_REPAINT_1.md
 
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    ready  (BLOCKED)
