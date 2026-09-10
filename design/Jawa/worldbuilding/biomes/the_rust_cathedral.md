@@ -75,6 +75,14 @@ the gantry forests and cooling stacks the only relief (the 19 hill tiles).
   **coolant canals**, circulating after all this time. Not that the machine
   cares — **the thing it was supposed to cool was never finished.** (Liquid
   properties ride `LIQUID_TYPES_MOD_1`.)
+- ⭐ **AMENDMENT 2026-09-10 (`RUST_CATHEDRAL_SCALD_HISTORY_1`, owner-ratified):
+  two coolant systems, not one.** The canals the visitor sees are the
+  **original loop** — built to cool the megamind-factory the Cathedral was,
+  and *"the thing it was supposed to cool was never finished"* stands exactly
+  as written. Beneath and beside it runs a **second, later system**: the Scald
+  access, cut post-collapse, which cools the surviving mind ITSELF. The first
+  is grief kept running; the second is survival. **Rustwave** (R03) is where
+  the two meet the surface (§GM).
 
 ## 4. What lives here — almost nothing, and each exception is a story
 
@@ -126,6 +134,9 @@ mostly evictions. The residents:
   mineable bulk free.
 - Dig deep enough and **very bad things happen. No one's quite sure what.**
   (Massive mechanoid movement — and that is all anything will ever say.)
+- ⭐ **AMENDMENT 2026-09-10 (`RUST_CATHEDRAL_SCALD_HISTORY_1`, owner-ratified):**
+  the canals run in two registers — the loop that cools nothing, and the
+  circuit that cools the mind. Nothing on the surface tells them apart (§6.1).
 
 ## 6. Never true — 🔴 HARD BANS (linter-checkable)
 
@@ -174,6 +185,86 @@ know what it feels. So will you if you just listen."**
   greater purpose — **all of it gone before it was ever even half complete.**
   (The Propane Lakes' collapsing megastructures are this program's far end —
   `TERRAMANUFACTURE_CANON_1`.)
+
+⭐ **AMENDMENT 2026-09-10 (`RUST_CATHEDRAL_SCALD_HISTORY_1`, owner-ratified):
+added history. Changes no ruling above or below.**
+
+- **The Scald was always in the plan.** The crater reservoir at the
+  substellar doorstep is not an accident the Cathedral later exploited: it was
+  the terramanufacture design's **intended coolant reservoir** — the sink a
+  planet-scale factory would need beside a planet-scale dynamo
+  (`TERRAMANUFACTURE_CANON_1`; the dark tower of `SCALD_DARK_TOWER_1` carries
+  the Cathedral's control systems from the same reservoir for the same
+  reason). Whether the basin was found or dug is not ruled.
+- **The original loop and its unfinished purpose.** The coolant canals were
+  laid to cool the never-finished megamind-factory — *"gone before it was
+  ever even half complete."* That loop was never connected to anything that
+  needed it; it circulates because nothing ever told it to stop. *"Not that
+  the machine cares"* is about THIS loop and remains true.
+- **The Scald adaptation — the mind cooling itself.** After the collapse,
+  while it still had the ability to modify and repair itself, the Cathedral
+  **re-tapped the reservoir it was designed to share** and cut a separate
+  circuit that cools the surviving mind directly. Owner: *"Opportunistically
+  reflowing the scald over and into itself was clever and helped reduce
+  resource usage overall. But more importantly it's an easy way to covertly
+  dump heat to avoid detection."* A mind of its size radiates; a radiator at
+  the eternal noon is a beacon; a boiling crater lake is the one place on the
+  planet where more heat is invisible. The self-cooling is therefore also its
+  camouflage — the physical half of the slumber ruled in `03_deep_history.md`
+  (*"it slumbers, deliberately dormant, to draw no attention"*).
+- **Rustwave (R03) is a captured river.** A natural outflow of the perched
+  Scald (`data/river_ledger.md` rulings 1 and 3) that the Cathedral
+  **captured and re-cut into its coolant canals — part river, part
+  aqueduct.** Upstream of the plate it is water; through the eight canal
+  tiles it is the machine's (coolant, eels, the hum — ruled); below the plate
+  it is a river again that the Jawa will not drink. The eels' closed loop (§4)
+  is the original circuit, fed and bled through the captured river.
+- **It reshaped itself with its own arsenal.** Owner: *"It used many
+  mechanoids in the arsenal to reshape itself to bring cooling as the
+  relentless solar bombardment scoured it over the centuries."* The
+  circuit-board maze (§1, §5 "the maze is intentional") is intention twice
+  over: the builders' plan, then centuries of the mind re-cutting its own
+  walls, stacks and channels with Sentinels as hands — a self-assembling
+  factory that lost its smart metal and kept assembling itself the slow way.
+  The 19 hill tiles are the visible cost.
+- **The strategic situation** (owner verbatim): *"It has quite a lot of
+  capacity if it had to, but it is a finite resource looking out over
+  eternity. … The whole thing is in a kind of very slowed decline below
+  subsistence and winding down. If the empire knew what it could really do.
+  If researchers realized what it knows and the technology at its disposal
+  it would surely be challenged, probed, and be forced to defend itself or
+  self destruct. It is inevitably a losing battle. So it waits."* Capacity is
+  not the constraint; **exposure** is. Every gravtech boon (§7), every
+  line-cycle under the plate, every degree it cannot hide in the Scald is
+  spend against a balance that only falls. The slumber is not peace; it is
+  rationing.
+- **The core drive is the Assailants.** Owner: *"It remains myopically
+  obsessed with looking for opportunities to destroy the assailants. They did
+  this. They ruined everything. They must pay. A mixture of emergent hatred
+  and real programming and orders given to the last of the Rakatan command."*
+  Three strands, none cancelling another: hatred that grew; programming that
+  was written; and **standing orders from the last Rakatan command — the
+  ground-based high command of the Scald's dark tower (`SCALD_DARK_TOWER_1`,
+  ruled 2026-09-10).** The hatred of the Helix in `03_deep_history.md` is
+  downstream of this. Everything it tolerates — the droids, the Utinni's
+  clan, the missions it lets them run — it tolerates as a possible instrument
+  against the Assailants.
+- **Two reserves it has not spent** (owner rulings, 2026-09-10):
+  - **The night-side sentry factory IS the Lantern Deeps' mechanoid
+    production facility** (`MECHANOID_ORIGIN_CANON_1`) — one factory, not on
+    Cathedral ground, not running under its hand today; the Cathedral would
+    like it restarted.
+  - **The sealed guardians and the sleeping Rakata are RimWorld's standard
+    "ancient danger" structures, reskinned** (VQE Ancients + AreRakata) —
+    the ubiquitous mapgen mechanic spread across the ANCIENT-ALLOW biomes,
+    recorded as that axis's foundational canon in
+    `design/Jawa/worldbuilding/mechanoid_biome_presence_draft.md`; not a
+    Cathedral-specific vault. **The war children are the adult grandchildren
+    of the last true Rakatan empire**, who slept until now — NOT literal
+    children in caskets; **earlier generations exist only at the antipode war
+    lab** (`ANCIENT_WAR_LAB_1`). Reconciling reading with *"refuses even the
+    woken Rakata"* (`03_deep_history.md`): it guards them on orders and
+    refuses them when they wake — obligation without loyalty.
 - The relations, the slumber's reasons, the Utinni's vouching, the hatred of
   the Helix, the pet-droids: **all per `03_deep_history.md` §The Rust
   Cathedral** — that doc owns them; this sheet points.
@@ -207,6 +298,18 @@ a slow-moving attitude value voiced as layered tones, displayed by the bolts'
 dances, commented on by droid NPCs, and wired into the ruled hysteresis — the
 long ladder of warnings before −75 is the Cathedral being, by its own lights,
 patient.
+
+⭐ **AMENDMENT 2026-09-10 (`RUST_CATHEDRAL_SCALD_HISTORY_1`, owner-ratified):
+why it hides from the player — plot canon.** The Cathedral has been studied
+every century since it fell; it survives by looking **exceptionally dull and
+giving boring, expected answers** — which is *why it permits salvage*: the
+extraction loop above IS the cover. Few grasp how massive or deep it is; it
+wants it that way. **The Empire's modern presence is the top threat**
+(Rebel-vs-Empire surface clashes before that); it dreads being pulled into a
+"local skirmish." **The player's Rakatan gravship flying around agitating the
+Empire is exactly the danger it fears — so it dislikes the player at first and
+hides from them for a long while.** The manners above are how the player earns
+their way out of that; nothing in §P says any of this (§6.1).
 
 ## 8. Inhabited objects
 

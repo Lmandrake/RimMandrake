@@ -170,6 +170,14 @@ the dung-and-mat economy.**
   propane-lakes war lab) with a similar theme — the two are not the same site and not
   the same item. Does not change any ruling above; the tower sits IN the crater lake,
   it does not touch the boil, the roster, or the two-faith shore.
+- ⭐ **AMENDMENT 2026-09-10 (`RUST_CATHEDRAL_SCALD_HISTORY_1`, owner-ratified)**: the
+  Scald was the terramanufacture design's **intended coolant reservoir** — the sink
+  planned beside the Rust Cathedral's works (`TERRAMANUFACTURE_CANON_1`), which is why
+  the dark tower above carries the Cathedral's control systems from the same basin.
+  After the collapse the Cathedral **re-tapped it** as a coolant access for the mind
+  itself, dumping its heat where a boiling lake makes more heat invisible; **Rustwave**
+  (R03) is the captured outflow. Detail in `the_rust_cathedral.md` §3/§GM. Changes no
+  ruling here: the boil, the two-faith shore and the tower stand as written.
 
 ## 9. Artistic theme
 

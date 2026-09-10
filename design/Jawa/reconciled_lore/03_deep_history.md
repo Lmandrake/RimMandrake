@@ -155,6 +155,31 @@ Assailant to prove her value, while the Cathedral privately hopes she
 perishes in a pyrrhic victory. Every gravtech boon it grants is a risk it
 takes by being seen to act.
 
+⭐ **AMENDMENT 2026-09-10 (`RUST_CATHEDRAL_SCALD_HISTORY_1`, owner-ratified) —
+why it slumbers, in full.** The Cathedral is a finite resource looking out
+over eternity — great capacity, no resupply, in a slowed decline below
+subsistence. If the Empire or its researchers understood what it knows and
+what it can do, it would be probed and forced to defend itself or
+self-destruct; it judges that fight already lost, so it waits and hides — and
+it survives by looking dull and giving boring answers, which is why it permits
+salvage. **Two coolant systems:** the visible canals are the original loop for
+the never-finished megamind-factory (still cooling nothing); a second circuit,
+cut post-collapse through the Scald (the reservoir the terramanufacture design
+always intended for it), cools the surviving mind — and heat dumped into a
+boiling lake is heat nobody can see, so the self-cooling is also the
+concealment. What it waits FOR is the Assailants — emergent hatred, real
+programming, and the last orders of the Rakatan command (the Scald's dark
+tower, `SCALD_DARK_TOWER_1`), all pointing one way; the Helix hatred above is
+downstream of that. Its two unspent reserves: the Lantern Deeps' sentry
+factory on the night side (`MECHANOID_ORIGIN_CANON_1`), and the sealed
+guardians over the sleeping war children — which ARE the reskinned vanilla
+ancient dangers of §The war and the sleepers (canon at
+`worldbuilding/mechanoid_biome_presence_draft.md`): those sleepers are the
+adult grandchildren of the last true Rakatan empire; earlier generations exist
+only at the antipode war lab (`ANCIENT_WAR_LAB_1`). It guards them on orders
+and still refuses them awake — the sentence above, read twice. Detail:
+`worldbuilding/biomes/the_rust_cathedral.md` §GM and §7b.
+
 ## The Utinni was there at the beginning
 
 The ship is a Forsaken **initiator** — one of the vessels that started this
