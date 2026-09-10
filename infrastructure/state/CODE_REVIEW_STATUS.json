@@ -6699,6 +6699,12 @@
     "hash": "df754b822f1cf37916b20fc326e339f06a9127aded70858769684affc6b31cc3",
     "sha": "1cb620ea"
   },
+  "src/RimStarWars/Armoury/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
+  },
   "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorcore/ATC/Absorbed_Kotorcore_ATC_Patch_DroidIngestibleBlacklist.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -9231,6 +9237,12 @@
     "hash": "0cd13fd0864d83b3885ca9ab4814ddc23e591233731d78739bfce01535724612",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/AftermathRites/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
+  },
   "src/RimUtinni/Antiquities/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-04",
@@ -9266,6 +9278,12 @@
     "date": "2026-09-05",
     "hash": "7b97329086ede42838160c54f074e17f72452e6d03d1f89c54bd84e9e051162f",
     "sha": "629956d2"
+  },
+  "src/RimUtinni/Antiquities/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
   },
   "src/RimUtinni/Antiquities/Languages/English/Keyed/RUT_Antiquities.xml": {
     "cleanCount": 1,
@@ -9321,6 +9339,12 @@
     "hash": "0c040dfbf1cc485c68ff323c7a96af5078b4e5e8d224c44ead529970c4c27227",
     "sha": "52dee04f"
   },
+  "src/RimUtinni/AshkarrFlora/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
+  },
   "src/RimUtinni/AshkarrFlora/Patches/BetterTrees_SweetlineTree_Immunity.xml": {
     "cleanCount": 1,
     "date": "2026-09-06",
@@ -9369,11 +9393,23 @@
     "hash": "d08da9cbff14c0c553999f9510d30930f7a933085933cfcb80ee525dc0da0c95",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/AshkarrInhabited/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
+  },
   "src/RimUtinni/AshkarrLandmarkArt/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
     "hash": "a82e94ff950c80145d0bb194ab8fab6806279d160a814314a64671d1862773c5",
     "sha": "629956d2"
+  },
+  "src/RimUtinni/AshkarrLandmarkArt/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
   },
   "src/RimUtinni/AshkarrLandmarkArt/Patches/LandmarkIcons.xml": {
     "cleanCount": 1,
@@ -9405,6 +9441,12 @@
     "hash": "396aaa90fa66c700a02980e41bd492c1d819a9fe741e5766bdd28f642c81552a",
     "sha": "52dee04f"
   },
+  "src/RimUtinni/AshkarrWeatherSuite/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
+  },
   "src/RimUtinni/AshkarrWeatherSuite/Patches/AshkarrWeather_FolkSigns.xml": {
     "cleanCount": 1,
     "date": "2026-09-06",
@@ -9423,11 +9465,23 @@
     "hash": "4572544ffaa19e187e899a0cd7d208b80150e024db6ab8c93f49ef4b4ee1435e",
     "sha": "4201a45a"
   },
+  "src/RimUtinni/BirthHatchDemo/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
+  },
   "src/RimUtinni/Doctrine/About/About.xml": {
     "cleanCount": 4,
     "date": "2026-09-09",
     "hash": "bf8a04aefa68d3128a3f7bcd2fba1204e5922feab6df59bcb7c09df8665edeeb",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/Doctrine/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
   },
   "src/RimUtinni/Doctrine/Patches/DroidsAreMachines.xml": {
     "cleanCount": 1,
@@ -9645,6 +9699,12 @@
     "hash": "c71178cfea9a00a702d86db174ff5ddae73fe5ad22d1befd122da6bc94f8f3ce",
     "sha": "629956d2"
   },
+  "src/RimUtinni/IshkoDarkLandmarks/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
+  },
   "src/RimUtinni/LanternDeeps/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-10",
@@ -9680,6 +9740,12 @@
     "date": "2026-09-09",
     "hash": "696f2d1c63f6137b6671a9533ca3c7f8f65cb3003f7475c3a323da0250f056f2",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/LanternDeeps/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
   },
   "src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepEmergence_MapGenPatch.xml": {
     "cleanCount": 1,
@@ -9752,6 +9818,12 @@
     "date": "2026-09-05",
     "hash": "a512a5a7029c7a41f2af8f15c05ac07d7272089991782a9195d4bad4e9fac5da",
     "sha": "3e9a9f20"
+  },
+  "src/RimUtinni/LongHunger/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
   },
   "src/RimUtinni/LongHunger/Source/IncidentWorker_LongHungerSurfaces.cs": {
     "cleanCount": 2,
@@ -9921,6 +9993,12 @@
     "hash": "a290e0c6eee3717d40066097c32e9979ff233e035501eafa27f2ddff758d0425",
     "sha": "629956d2"
   },
+  "src/RimUtinni/PawnFlavor/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
+  },
   "src/RimUtinni/PawnFlavor/Patches/FactionBackstoryWiring.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -9957,6 +10035,12 @@
     "hash": "6c6443737ac50e98921f3f9eed549a425a12d1ae5ef35b56b5ab2ad1d51ae6d0",
     "sha": "ff35f27f"
   },
+  "src/RimUtinni/PlantGrowth/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
+  },
   "src/RimUtinni/PlantGrowth/Source/JawaPlantGrowth.csproj": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -9986,6 +10070,12 @@
     "date": "2026-09-09",
     "hash": "3e9ea234fc33fc800a0259c56fbfb77c2cf18391eabb8dd77d72347877c8184f",
     "sha": "3ea1ca20"
+  },
+  "src/RimUtinni/PyrelandsFireEcology/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
   },
   "src/RimUtinni/PyrelandsFireEcology/Patches/PyrelandsGround_ScorchableTerrain.xml": {
     "cleanCount": 2,
@@ -10017,6 +10107,12 @@
     "hash": "431b0ad6e1788d6c5f687c3351375aff72bf01c30ca3c3bc61e02ea2cb64a74f",
     "sha": "53661e66"
   },
+  "src/RimUtinni/ResearchRetag/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
+  },
   "src/RimUtinni/ResearchRetag/Patches/RUT_ResearchRetag.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -10047,6 +10143,12 @@
     "hash": "19e3a7ee715eee436031cb235786307cd7a45b33046212f716897e1b65819d2b",
     "sha": "b1655903"
   },
+  "src/RimUtinni/RestrainingBolts/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
+  },
   "src/RimUtinni/RestrainingBolts/Source/DefOfs.cs": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -10070,6 +10172,12 @@
     "date": "2026-09-04",
     "hash": "13f3469783ddc3ad0a69bea53ad3c5b07c55ee7144fc6f0a719a11bffe322609",
     "sha": "2e3336f4"
+  },
+  "src/RimUtinni/Rites/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
   },
   "src/RimUtinni/RiverColors/About/About.xml": {
     "cleanCount": 1,
@@ -10202,6 +10310,12 @@
     "date": "2026-09-04",
     "hash": "37f1ddce33c73a8ae81df68a7d99ca42ece0b62caff6e0344586a47804e59b65",
     "sha": "46cdec42"
+  },
+  "src/RimUtinni/ShipMemory/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
   },
   "src/RimUtinni/ShipMemory/Languages/English/Keyed/RUT_ShipMemory.xml": {
     "cleanCount": 1,
@@ -10496,6 +10610,12 @@
     "date": "2026-09-09",
     "hash": "771b6e5b14626253e03d8fb27acc399f4bd3c025a84e9078e63bcde2d9b8fbef",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "6e65d276"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/DarkTower/gen_dark_tower_layout.py": {
     "cleanCount": 1,
