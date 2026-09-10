@@ -39,6 +39,7 @@
     <Compile Include="IncidentWorker_Migration.cs" />
     <Compile Include="IncidentWorker_SurvivalPod.cs" />
     <Compile Include="IncidentWorker_Thanksgiving.cs" />
+    <Compile Include="IncidentWorker_PodCrashTribal.cs" />
   </ItemGroup>
 
   <ItemGroup>
