@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T05:57:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T05:59:13Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -107,6 +107,15 @@ target:   v1
 kind:     bug
 summary:  (no items/CODEX_UAC_STORM_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CODEX_UAC_STORM_1.md
+
+## SW_BACKGROUND_GARB_HARVEST_1 Harvest reference art of Star Wars BACKGROUND characters' garb (especially aliens - cantina/palace/street crowds) into Transient/sw_background_garb/ with an index + contact sheet; owner reviews later, then an apparel wave gets designed from it (inspired-not-copied)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/SW_BACKGROUND_GARB_HARVEST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SW_BACKGROUND_GARB_HARVEST_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
