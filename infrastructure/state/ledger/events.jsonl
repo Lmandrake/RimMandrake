@@ -6990,3 +6990,4 @@
 {"seat":"FOUNDRY","event":"start","id":"RSW_PROTOVERMES_TEXPATH_MISSING_1","ts":"2026-09-10T22:28:11Z"}
 {"seat":"FOUNDRY","event":"file","id":"VALIDATE_PATCH_TEXPATH_CLASSIFIER_1","title":"validate_patch.py's texPath ERROR/WARN classifier false-positives on any mod whose own Textures/ tree happens to share a universal top-level folder name (Things/Pawn/Buildings/etc.) with a legitimate vanilla texPath reference - fix: compare against a fixed list of RimWorld's own top-level categories, never classify those as mod-owned from a first-segment match alone","kind":"task","target":"v1","needs":"offline","caused_by":"RSW_PROTOVERMES_TEXPATH_MISSING_1","for":"FOUNDRY","ts":"2026-09-10T22:30:38Z"}
 {"seat":"FOUNDRY","event":"close","id":"RSW_PROTOVERMES_TEXPATH_MISSING_1","sha":"f56ded83","ts":"2026-09-10T22:31:08Z"}
+{"seat":"FOUNDRY","event":"close","id":"VALIDATE_PATCH_TEXPATH_CLASSIFIER_1","sha":"52ed389a","ts":"2026-09-10T22:35:01Z"}
