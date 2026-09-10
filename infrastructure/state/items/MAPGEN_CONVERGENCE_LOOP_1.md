@@ -18,3 +18,15 @@ PROVE   round table in this file grows by one row set per round; the last round'
 EXPECT  convergence features move toward each other round over round; quality keeps rise
 LIES    tuning the painter to the GL grid's statistics while both still read as diagrams — the corpus row on the sheet is the control against that
 ```
+
+## Correction, 2026-09-10 — corpus_stats convergence tuning superseded
+
+The round-3 owner grade (`MAPGEN_ROUND3_VERDICT_LANDING_1`, FAIL, 0/8 premises
+readable) ruled out tuning toward `corpus_stats.py` as the acceptance
+mechanism — maps sat in-band on every measured statistic and still read as
+nothing beside the corpus. This item's `corpus_stats.py`-based convergence
+measure in step 3 above is superseded as the next step: it grades the wrong
+thing. `MAPGEN_GL_SHEET_1` is now the lead item (settling content vs.
+rendering before more convergence rounds run); see
+`MAPGEN_ROUND3_VERDICT_LANDING_1` for the full grade and disposition. Do not
+resume corpus-stats-driven convergence work here without a fresh ruling.
