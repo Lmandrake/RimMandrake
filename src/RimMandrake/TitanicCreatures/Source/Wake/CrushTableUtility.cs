@@ -55,15 +55,19 @@ namespace RimMandrake.TitanicCreatures
                 return exact.crushable && tier >= exact.minTier;
             }
 
-            if (t.def.thingCategories != null)
+            for (int i = 0; i < categoryRules.Count; i++)
             {
-                for (int i = 0; i < categoryRules.Count; i++)
+                RM_CrushRuleDef rule = categoryRules[i];
+                // ContainedInThisOrDescendant (Verse/ThingCategoryDef.cs), not a
+                // direct thingCategories.Contains: a ThingDef's XML lists only its
+                // own LEAF category (e.g. BuildingsFurniture, BuildingsArt) - it
+                // never repeats an ancestor like "Buildings" onto itself - so a
+                // parent-category row such as RM_Crush_Buildings matched nothing
+                // at all under a direct Contains check (confirmed against
+                // TorchLamp/Campfire/SculptureSmall - none carry "Buildings").
+                if (rule.category.ContainedInThisOrDescendant(t.def))
                 {
-                    RM_CrushRuleDef rule = categoryRules[i];
-                    if (t.def.thingCategories.Contains(rule.category))
-                    {
-                        return rule.crushable && tier >= rule.minTier;
-                    }
+                    return rule.crushable && tier >= rule.minTier;
                 }
             }
 

@@ -13,8 +13,8 @@ canvas would be an upscale of art that does not contain 2048px of detail.
 The three colossi therefore ship at 85-96 px/cell rather than 128.
 """
 
-MOCKUPS = "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SeaBeasts/art/mockups"
-FINAL = "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SeaBeasts/art/final"
+MOCKUPS = "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/art/SeaBeasts/mockups"
+FINAL = "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/art/SeaBeasts/final"
 RAW = "/mnt/d/Luke/dev/Rimworld/Transient/sea_raw"
 
 

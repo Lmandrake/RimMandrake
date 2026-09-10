@@ -12,7 +12,7 @@ facings must be one canvas and one animal size. Graphic_Multi failures are
 silent - a missing or mis-scaled facing renders nothing or renders wrong, and
 magenta never fires.
 
-    python3 seacheck.py src/RimStarWars/SeaBeasts/art/final/CrimsonOpee
+    python3 seacheck.py src/RimStarWars/SWBestiary/art/SeaBeasts/final/CrimsonOpee
 
 Exit 0 all clear (warnings allowed), 1 any REJECT, 2 the set is incomplete.
 """

@@ -17,9 +17,9 @@ from sea_creatures import CREATURES, FINAL, TELL, canvas_for  # noqa: E402
 FACINGS = ("south", "east", "north", "west")
 
 DOC = """<!-- SW_SEA_MONSTERS_ART_1 — the facing set. The shipping copies live in
-     src/RimStarWars/SeaBeasts/Textures/Things/Pawn/Animal/SeaBeasts/{slug}/;
+     src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/{slug}/;
      art/ is DEPLOY_HOLD'd source (src/DEPLOY_HOLD.txt) and never ships.
-     Approved concept: src/RimStarWars/SeaBeasts/art/mockups/{stem}.png (KEPT by the
+     Approved concept: src/RimStarWars/SWBestiary/art/SeaBeasts/mockups/{stem}.png (KEPT by the
      owner 2026-08-31; this set must read as the SAME animal and was not re-rolled).
      Roster: design/Jawa/worldbuilding/sea_beasts_roster.md · def spec:
      design/Jawa/worldbuilding/sea_beasts_def_spec.md §5. -->
@@ -43,7 +43,7 @@ How this set was built, because it decides what can be wrong with it:
 ## 1. Offline — done, this commit
 
 ```
-PROVE    src/RimStarWars/SeaBeasts/art/tools/seacheck.py on the folder: validate_sprite.measure() plus the
+PROVE    src/RimStarWars/SWBestiary/art/SeaBeasts/tools/seacheck.py on the folder: validate_sprite.measure() plus the
          reference-free half of its gate on each facing, then the set-level
          checks a per-file validator cannot make (one canvas, one animal size,
          east != west, four distinct images, no missing facing)
@@ -63,7 +63,7 @@ Measured on the committed PNGs:
 ## 2. In game — owed
 
 The `{defname}` ThingDef and PawnKindDef are authored under
-`src/RimStarWars/SeaBeasts/Defs/ThingDefs_Races/`, so there is something to spawn:
+`src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/`, so there is something to spawn:
 
 ```
 PROVE    spawn {defname} on a quicktest map, select it, and rotate it through

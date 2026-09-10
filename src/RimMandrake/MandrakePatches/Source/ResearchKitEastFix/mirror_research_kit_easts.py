@@ -49,7 +49,7 @@ from PIL import Image
 
 WS = r"C:\Program Files (x86)\Steam\steamapps\workshop\content\294100"
 RRR = "3279243445"                     # Research Reinvented Retextured
-HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+HERE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(HERE, "Textures")
 
 KITS = ["SimpleResearchKit", "MultiAnalyzerResearchKit",

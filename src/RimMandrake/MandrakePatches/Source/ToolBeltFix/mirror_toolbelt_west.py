@@ -40,7 +40,7 @@ from PIL import Image
 
 WS = r"C:\Program Files (x86)\Steam\steamapps\workshop\content\294100"
 VAEA = "2521176396"                    # Vanilla Apparel Expanded - Accessories
-HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+HERE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(HERE, "Textures")
 
 REL = os.path.join("Things", "Apparel", "ToolBelt", "ToolBelt")

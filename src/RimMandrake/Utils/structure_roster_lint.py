@@ -20,8 +20,9 @@ Re-sync this table whenever structure_injection_roster.md's numbered lists
 change.
 
 Usage: python3 structure_roster_lint.py [--json]
-Exit 0 always (report tool, not a gate) unless --strict and any row is
-UNKNOWN (a row this table has not classified at all — should never happen).
+Exit nonzero whenever any promise row is MISSING-RESPONDER, MISSING-TEMPLATE
+or MISSING-BOTH (a coverage-law violation) — exit 0 on a clean run. There is
+no --strict flag; every lint failure gates the exit code, always.
 """
 import argparse
 import json
