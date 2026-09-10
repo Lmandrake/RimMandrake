@@ -461,11 +461,59 @@
     "hash": "559b80c27179e31601bbb03bc2cd8f322a0ba81868d206ef5537a04b2dd6dbc2",
     "sha": "bb73b6bd"
   },
+  "infrastructure/output/pawn_flavor_phase2_census_gen.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "52e7c6208228bd39a88c63a47de08106a17685f23609d8a2d475fd71a4a81ead",
+    "sha": "6a7759f2"
+  },
+  "infrastructure/state/evidence/raid_split_2026-08-30/kinds.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "dc280a8b8bb336ff43f2a2c5e0c7bbc4ffe79b24d633602d915e346cd6da1750",
+    "sha": "6a7759f2"
+  },
+  "infrastructure/state/evidence/raid_split_2026-08-30/run11.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4877414dcba9f874acbb4429911b87e92284f5d68374cd1dc5e3943ebc2b6dc1",
+    "sha": "6a7759f2"
+  },
+  "infrastructure/state/evidence/raid_split_2026-08-30/run12.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "dc473bd359c12916dab29e7e364579f866bb6451b19d53cb7821525cb16400e7",
+    "sha": "6a7759f2"
+  },
+  "infrastructure/state/evidence/raid_split_2026-08-30/split.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "6b18db9043823965d6f19556c48daa32a5b8e614118f90ceaf0b9344015d7a07",
+    "sha": "6a7759f2"
+  },
+  "infrastructure/state/evidence/seven_faction_raids_2026-08-31/prove_modal.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "1b26ac6c5bedff10053cfb6c931fd59c2b8c7b5ada92f200ccf3c7d6194674ca",
+    "sha": "6a7759f2"
+  },
+  "infrastructure/state/evidence/seven_faction_raids_2026-08-31/prove_seven_raids.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "32bd246d3e47ba983df08d2785a53dced6745c11234a013609a508d873de84eb",
+    "sha": "6a7759f2"
+  },
   "skills/deciding-and-superseding/scripts/stale_directives.py": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "hash": "598e0fd3b322592e39d5f8165a10af6e22d85c16deeee0d14c9294bf8b3ddbae",
     "sha": "43f96b1b"
+  },
+  "skills/editing-images/scripts/compare_images.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c9200b428363509d6ffb2383bed06a5572fcd0688abefa6a0855058e4d509aad",
+    "sha": "6a7759f2"
   },
   "skills/generating-images/scripts/chroma_key.py": {
     "cleanCount": 2,
@@ -473,11 +521,35 @@
     "hash": "8156c196b7aa886f6125c2341b012703539f9c43968865e66d501e317c01cba6",
     "sha": "56b17db2"
   },
+  "skills/generating-images/scripts/codex_grumpiness.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "3049bb863c0f6de8e353d717c23f1ca874a12013a1855f74a5d0a4ef284d94be",
+    "sha": "6a7759f2"
+  },
   "skills/generating-images/scripts/codex_image.py": {
     "cleanCount": 3,
     "date": "2026-09-09",
     "hash": "89a1dfc38def87d0fdfed162189f89316bcb98d75b4b28d19affbdadcdc4766c",
     "sha": "3ea1ca20"
+  },
+  "skills/generating-images/scripts/codex_queue_runner.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "b8368a436b4131ea144de82cac4170b17c99510f0297b3706252923f799efca2",
+    "sha": "6a7759f2"
+  },
+  "skills/generating-images/scripts/gemini_image.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "c751111ae22480eddcc0a661aef981218710daac0201f1e2acf451794e7d9d94",
+    "sha": "6a7759f2"
+  },
+  "skills/generating-images/scripts/make_sprite.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "95f0fc693e0135bfaac97e34a3030e2f7deaf9425876c55825a046ce7b48b928",
+    "sha": "6a7759f2"
   },
   "skills/generating-images/scripts/pnglib.py": {
     "cleanCount": 1,
@@ -491,6 +563,30 @@
     "hash": "12714286386e66b0a2df22328638844e9f14ca526a4b138af27619e83af1cb69",
     "sha": "43f96b1b"
   },
+  "skills/generating-images/scripts/rembg_cut.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "d01f188d9f50468762199c786bbee4c4100592d76c1d684bd924bef788b8e5a5",
+    "sha": "6a7759f2"
+  },
+  "skills/generating-images/scripts/selftest_codex_grumpiness.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "4608790c87254f8fa2b4c73c1da5ebf43db854d1a85a669d14bf3f3593622787",
+    "sha": "6a7759f2"
+  },
+  "skills/generating-images/scripts/selftest_codex_image.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "15b141535c88aa5b5db7c1594118e00711281f0cbbfd79d3bcea10f22d8d4f29",
+    "sha": "6a7759f2"
+  },
+  "skills/generating-images/scripts/selftest_codex_queue_runner.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "47eef111811fcbd82319faf4fc42e21b41e9747bc89ed04a99f3d305d782a9c7",
+    "sha": "6a7759f2"
+  },
   "skills/generating-rimworld-sprites/scripts/conform_sprite.py": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -503,11 +599,29 @@
     "hash": "a3c3df3fe9cadd37f8a9f95bd3d1e72aa62fcd89cc5a20660ab42a5576a9086c",
     "sha": "43f96b1b"
   },
+  "skills/generating-rimworld-sprites/scripts/selftest.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "427345c93bdf57664882a098fdd0a05408b5f17a2c3d54c4456bdaa696069256",
+    "sha": "6a7759f2"
+  },
   "skills/generating-rimworld-sprites/scripts/validate_sprite.py": {
     "cleanCount": 2,
     "date": "2026-09-07",
     "hash": "1b34b5ece00643bb3a2858b2dededf1faef95bf47bc42f500a99ded5ecfc004a",
     "sha": "a0e9f2d6"
+  },
+  "skills/rimworld-modding/scripts/validate_patch.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "8db016daa742310458fe7c8cebcb08eb940702af33b2c67885f7c84a313f67fb",
+    "sha": "6a7759f2"
+  },
+  "skills/rimworld-quests/scripts/validate_quest.py": {
+    "cleanCount": 1,
+    "date": "2026-09-09",
+    "hash": "020612e622b7365662ce5346b01bca78ad76722df2ea3cc8e24766ce503e07d7",
+    "sha": "6a7759f2"
   },
   "skills/rimworld-start-prep/scripts/sync_mod_state.py": {
     "cleanCount": 1,
