@@ -9561,11 +9561,77 @@
     "hash": "f6251da76f7d23714abc7eafa5cfc9b50898e3eacb70c7e850cf73127099a04f",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/MenuShell/LICENSE": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
+    "sha": "fa90b445"
+  },
   "src/RimUtinni/MenuShell/RimThemes/Utinni Shell/meta.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
     "hash": "c3cd069eef20e6bde89534741bb24a24ef435e7ae13a8d943839249136fa5787",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/animate_god_ozzik.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "a82f10682c0fad6e06136ff34e039497be7615edb73da948bc606a28742c2d01",
+    "sha": "fa90b445"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/animate_god_shkaar.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "0e3d1e70ceb8b613617ae559ec9502a1c712dbb657ee48dc27877987641dcc47",
+    "sha": "fa90b445"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/animate_god_tabaa.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6df6808d979c40b739832a307edce5144df1902f926ddb87c518a95ccbb97f5f",
+    "sha": "fa90b445"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/animate_god_zizzik.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "175cc5450cb628d569d3c6e7cdc0fcca5fe2526f7c1f30a653388c428dd0d18e",
+    "sha": "fa90b445"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/animate_gods.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "d413d10b7a2aa49f0d214daf70b9b0f39e087874d8dfa70cc0f35324d16d4d35",
+    "sha": "fa90b445"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/animate_menu.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "f3d21545db284255b8d78f7ee2cc744662fd57d03222e9163e419934f47164d4",
+    "sha": "fa90b445"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/animate_menu_richer.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6077dbc1384c0be6a92b0f79d4e9d706c7930996ac07459281de5e7ac0e3bcea",
+    "sha": "fa90b445"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/gen_bg.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "0260e3fff4f32f07eae453d7c958543f19e874ee52bb21413a53c75dc8704319",
+    "sha": "fa90b445"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/gen_textures.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "783cbc1c1638f6d9d4969e6e0c1d6ba2a674c4376669fbc658e4392374bb2fc3",
+    "sha": "fa90b445"
+  },
+  "src/RimUtinni/MenuShell/_artsrc/scene_anim.py": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "2f09edfba2acbe24551c6150a40d469ef9127bd44c1a9bade929e19dd5c62d6b",
+    "sha": "fa90b445"
   },
   "src/RimUtinni/PawnFlavor/About/About.xml": {
     "cleanCount": 2,
