@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CRYSTAL_INGEST_EXECUTION_1 item 1 (design/Jawa/mods/crystal_mods_inventory.md ss1/ss3,
+  ratified 2026-09-10): "retarget its ungated 0.1 scatter to Lantern Deeps maps." Measured
+  (det.epochspyrinth's own 1.6/Defs/ThingDefs_Buildings/Buildings_Natural.xml):
+  DV_MineablePyrinth ships `mineableScatterCommonality 0.1` / `mineableScatterLumpSizeRange
+  5~6` with NO biome gate === vanilla's GenStep_RocksFromGrid (defName RocksFromGrid, order
+  200) reads mineableScatterCommonality globally on every rocky player map, so pyrinth
+  currently appears on ordinary maps everywhere, exactly like the doc's kyber finding.
+
+  Zeroing mineableScatterCommonality here stops the universal vanilla scatter; the
+  replacement Deeps-only scatter is RUT_LanternDeepPyrinthScatter.xml (referenced from
+  RUT_LanternDeepGenerator's own genSteps list, which only ever generates a Lantern Deep
+  pocket map) === density there is NOT trying to reproduce the original 0.1/5~6 numbers
+  exactly, since ScatterGroup's coveredCellsPer10Cells/clusterRectRadius are a different
+  mechanic; it's tuned by eye to read as a natural, fairly common vein.
+
+  Patches the LIVE, ACTIVE donor def directly (det.epochspyrinth is not retired === see
+  src/RimMandrake/Pyrinth/'s own header) rather than a dormant absorbed copy, because the
+  donor's def is what the running game actually loads today.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Epochs - Pyrinth</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="DV_MineablePyrinth"]/building/mineableScatterCommonality</xpath>
+          <value>
+            <mineableScatterCommonality>0</mineableScatterCommonality>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
