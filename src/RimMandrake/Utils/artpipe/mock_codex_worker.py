@@ -69,6 +69,14 @@ Behaviors:
                   the -o last-message file's content, not just the raw
                   transcript (the spec names "-o last message" as a
                   detection source).
+    rate_limited_note_only_nonzero_exit
+                  exits 1 with CLEAN stdout/stderr (so the retry loop even
+                  considers retrying), but the -o last-message note names
+                  TooManyRequests — every invocation behaves identically,
+                  so the invocation counter proves whether the RETRY
+                  decision itself (not just the final row-1 verdict) reads
+                  the note before deciding to retry against an already-
+                  throttled account.
 """
 from __future__ import annotations
 
@@ -237,6 +245,20 @@ def main(argv=None) -> int:
     if behavior == "tool_error_echo_prompt":
         print("--- last codex output ---", file=sys.stderr)
         print(args.prompt, file=sys.stderr)
+        return 1
+
+    if behavior == "rate_limited_note_only_nonzero_exit":
+        # Exit 1 (a "failed" attempt, so the retry loop even CONSIDERS
+        # retrying) with perfectly CLEAN stdout/stderr — the ONLY place a
+        # throttle is visible is the -o last-message manifest's own note.
+        # Proves the retry decision reads that note BEFORE deciding to
+        # retry, not just stdout/stderr — every invocation behaves
+        # identically, so the invocation counter tells the test whether it
+        # was (wrongly) retried.
+        write_manifest("refused", "TooManyRequests — image generation request "
+                                   "was rate limited", width=0, height=0,
+                        has_alpha=False, corners_transparent=False,
+                        background_used="transparent")
         return 1
 
     if behavior == "fail_with_image":

@@ -26,6 +26,10 @@ Behaviors:
     api_error     exits 1 with a message mimicking gemini_image.py's own
                   sys.exit() on an API error — no file written, and the
                   daemon must not bill this attempt.
+    ok_no_image   exits 0 and prints the SAME success line "ok" does
+                  (model=... included), but never actually writes the PNG —
+                  proves cost is billed only once a real image is confirmed
+                  on disk, never merely because the process exited 0.
 """
 from __future__ import annotations
 
@@ -62,6 +66,12 @@ def main(argv=None) -> int:
     if behavior == "api_error":
         print("API error 429 RESOURCE_EXHAUSTED: rate limit exceeded", file=sys.stderr)
         return 1
+
+    if behavior == "ok_no_image":
+        # Exit 0, print the normal success line, but never touch `out` at
+        # all — an exit-0-no-image no-op must never be billed.
+        print("wrote %s (0 bytes), model=%s, refs=%d" % (out, args.model, len(refs)))
+        return 0
 
     out.parent.mkdir(parents=True, exist_ok=True)
 

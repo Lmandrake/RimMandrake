@@ -228,13 +228,13 @@ def test_row1_rate_limit_hard_stop():
         # hard_stop) before the daemon ever considers claiming after1/after2.
         proc = q.run({"ratelimited1": "rate_limited", "after1": "ok", "after2": "ok"},
                       "--once", "--workers", "1")
-        # Finding 5: a hard stop with real work left behind (after1/after2
-        # still pending) is now a NONZERO exit — "clean drain" and "wedged
-        # mid-run" must be distinguishable from outside without parsing the
-        # log line.
-        ok("row1: daemon exits NONZERO — real work was abandoned by the wedge",
+        # Finding 5: exit code tracks whether work ACTUALLY REMAINS
+        # (pending/), not merely whether a wedge happened — here after1/
+        # after2 are genuinely still pending (blocked by the hard stop),
+        # so this run correctly exits nonzero.
+        ok("row1: daemon exits NONZERO — real work is still pending",
            proc.returncode != 0, proc.stdout + proc.stderr)
-        ok("row1: the final line says ABANDONED WORK", "ABANDONED WORK" in proc.stdout,
+        ok("row1: the final line says WORK REMAINS", "WORK REMAINS" in proc.stdout,
            proc.stdout)
         ok("row1: ratelimited1 failed", (q.failed / "ratelimited1.json").is_file())
 
@@ -879,8 +879,15 @@ def test_worker_self_report_folded_into_manifest_and_detects_row1():
         job_id = "refusedinmanifest"
         make_job(q.pending, job_id, q.reference)
         proc = q.run({job_id: "refused_rate_limit_in_manifest"}, "--once", "--workers", "1")
-        ok("self-report: daemon exits NONZERO — a hard stop is its own wedge signal",
-           proc.returncode != 0, proc.stdout + proc.stderr)
+        # Finding 5: this hard-stops the codex Detector, but nothing else
+        # was queued behind it — pending/ drains clean, so the daemon
+        # correctly exits 0 (a wedge that leaves no work behind is not
+        # "abandoned work"; see test_row1_rate_limit_hard_stop for the
+        # contrasting case where real work IS left pending).
+        ok("self-report: daemon exits 0 — the hard stop happened but nothing "
+           "was left pending behind it", proc.returncode == 0, proc.stdout + proc.stderr)
+        ok("self-report: the final line still reports hard_stop=True honestly",
+           "hard_stop=True" in proc.stdout, proc.stdout)
         manifest = q.failed / f"{job_id}.manifest.json"
         ok("self-report: job fails", manifest.is_file())
         if manifest.is_file():
@@ -1029,7 +1036,13 @@ def test_codex_retry_never_applied_to_rate_limited():
         job_id = "noretryratelimit"
         make_job(q.pending, job_id, q.reference)
         proc = q.run({job_id: "rate_limited"}, "--once", "--workers", "1")
-        ok("no-retry: daemon exits nonzero (a hard stop, per finding 5)", proc.returncode != 0)
+        # Finding 5: exit code tracks remaining PENDING work, not merely a
+        # wedge — a single job hard-stopping with nothing queued behind it
+        # exits 0. hard_stop is still reported honestly in the log line.
+        ok("no-retry: daemon exits 0 — nothing was left pending behind the wedge",
+           proc.returncode == 0, proc.stdout + proc.stderr)
+        ok("no-retry: hard_stop is still reported honestly", "hard_stop=True" in proc.stdout,
+           proc.stdout)
         counter = q.artsrc / job_id / f".{job_id}.invocations"
         ok("no-retry: rate_limited is invoked EXACTLY ONCE — never retried",
            counter.is_file() and counter.read_text().strip() == "1",
@@ -1241,7 +1254,13 @@ def test_mixed_channel_queue_codex_wedge_does_not_block_gemini():
         make_job(q.pending, "geminihealthy", q.reference, priority=2, channel="gemini")
         proc = q.run({"codexratelimited": "rate_limited", "geminihealthy": "ok"},
                      "--once", "--workers", "1")
-        ok("mixed: daemon exits nonzero (the codex wedge is real)", proc.returncode != 0)
+        # Finding 5: both jobs are fully accounted for (one failed, one
+        # done) and nothing is left pending — a clean drain, exit 0, even
+        # though the codex channel genuinely wedged along the way.
+        ok("mixed: daemon exits 0 — nothing left pending despite the codex wedge",
+           proc.returncode == 0, proc.stdout + proc.stderr)
+        ok("mixed: hard_stop is still reported honestly", "hard_stop=True" in proc.stdout,
+           proc.stdout)
         ok("mixed: the codex job hard-stopped", (q.failed / "codexratelimited.json").is_file())
         ok("mixed: the UNRELATED gemini job still got claimed and finished",
            (q.done / "geminihealthy.json").is_file())
@@ -1269,6 +1288,409 @@ def test_fill_queue_channel_flag_and_per_row_override():
         job2 = json.loads((q.pending / "viacodexoverride.json").read_text())
         ok("fill_queue --channel: a row's own 'channel' overrides --channel",
            job2.get("channel") == "codex", job2)
+
+
+# --------------------------------------------------------------------------
+# third review (477dfb06 -> this pass): 7 confirmed findings + 4 lower notes
+# --------------------------------------------------------------------------
+
+def _write_stub_script(path: Path, body: str) -> Path:
+    path.write_text("#!/usr/bin/env python3\n" + body)
+    return path
+
+
+def test_run_validator_never_raises_on_timeout_or_bad_exit():
+    """Finding 1 (half): run_validator's bare subprocess.run(timeout=60)
+    used to be able to raise TimeoutExpired straight into its caller — and
+    ANY non-{0,1,2} exit used to be folded into "cannot_validate" (finding
+    4), blaming the job's reference for the validator's own crash. Direct
+    unit test of run_validator() itself, with real (fast) stub scripts —
+    no need to actually wait out the real 60s timeout to prove the
+    exception path is closed: a short custom timeout on a script that
+    sleeps past it exercises the identical code path."""
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        sleepy = _write_stub_script(tdp / "sleepy_validator.py",
+                                     "import time\ntime.sleep(5)\n")
+        crashy = _write_stub_script(tdp / "crashy_validator.py",
+                                     "import sys\nsys.exit(42)\n")
+        ref = tdp / "ref.png"
+        make_reference(ref)
+        cand = tdp / "cand.png"
+        make_reference(cand)
+
+        verdict, findings = artpiped.run_validator(sleepy, str(ref), cand, timeout=0.5)
+        ok("run_validator: a hung validator returns 'validator_error', never raises",
+           verdict == "validator_error", (verdict, findings))
+        ok("run_validator: the timeout is named in the findings", any("s" in f for f in findings),
+           findings)
+
+        verdict2, findings2 = artpiped.run_validator(crashy, str(ref), cand, timeout=10)
+        ok("run_validator: an exit code outside 0/1/2 (a crash) is 'validator_error', "
+           "NOT folded into 'cannot_validate' (finding 4)", verdict2 == "validator_error",
+           (verdict2, findings2))
+        ok("run_validator: the bad exit code is named", any("42" in f for f in findings2), findings2)
+
+        missing = tdp / "does_not_exist.py"
+        verdict3, findings3 = artpiped.run_validator(missing, str(ref), cand, timeout=10)
+        ok("run_validator: a missing/non-executable validator script also "
+           "returns 'validator_error', never raises", verdict3 == "validator_error",
+           (verdict3, findings3))
+
+
+def test_validator_crash_reported_as_validator_error_not_bad_reference_end_to_end():
+    """Finding 4, end to end through the real daemon: point --validator-script
+    at a script that exits a nonstandard code (simulating the validator
+    itself being broken) against a job with a perfectly GOOD reference —
+    the daemon must blame the validator, not the job's reference."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        tdp = Path(td)
+        crashy = _write_stub_script(tdp / "crashy_validator.py", "import sys\nsys.exit(42)\n")
+        job_id = "validatorcrash"
+        make_job(q.pending, job_id, q.reference)
+        proc = q.run({job_id: "ok"}, "--once", "--workers", "1",
+                     "--validator-script", str(crashy))
+        ok("validator-crash e2e: daemon exits 0", proc.returncode == 0, proc.stderr)
+        manifest = q.failed / f"{job_id}.manifest.json"
+        ok("validator-crash e2e: job fails", manifest.is_file())
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("validator-crash e2e: worker_status is validator_could_not_run, "
+               "NOT bad_reference_path", m.get("worker_status") == "validator_could_not_run",
+               str(m))
+            ok("validator-crash e2e: validator field is ERROR, not CANNOT_VALIDATE",
+               m.get("validator") == "ERROR", str(m))
+
+
+def test_gemini_validator_error_preserves_channel_and_bills_correctly():
+    """Finding 1, end to end: a gemini job whose IMAGE generation genuinely
+    succeeded (billable) but whose VALIDATION step then breaks (the
+    validator itself crashes) must still land with channel=gemini and the
+    correct cost recorded — not silently miscounted as codex."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        tdp = Path(td)
+        crashy = _write_stub_script(tdp / "crashy_validator.py", "import sys\nsys.exit(42)\n")
+        job_id = "geminivalidatorcrash"
+        make_job(q.pending, job_id, q.reference, channel="gemini")
+        proc = q.run({job_id: "ok"}, "--once", "--workers", "1",
+                     "--validator-script", str(crashy))
+        ok("gemini-validator-crash: daemon exits 0", proc.returncode == 0, proc.stderr)
+        manifest = q.failed / f"{job_id}.manifest.json"
+        ok("gemini-validator-crash: job fails", manifest.is_file())
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("gemini-validator-crash: channel is STILL gemini, never defaulted to codex",
+               m.get("channel") == "gemini", str(m))
+            ok("gemini-validator-crash: the image WAS generated so this IS billed "
+               "(the validator breaking afterward doesn't refund it)",
+               m.get("cost_usd") == 0.134, str(m))
+            ok("gemini-validator-crash: worker_status is validator_could_not_run",
+               m.get("worker_status") == "validator_could_not_run", str(m))
+        lines = [json.loads(l) for l in q.throughput_log.read_text().splitlines() if l.strip()]
+        gemini_lines = [l for l in lines if l.get("channel") == "gemini"]
+        ok("gemini-validator-crash: throughput.jsonl correctly attributes the "
+           "cost to gemini, not codex",
+           len(gemini_lines) == 1 and gemini_lines[0].get("cost_usd") == 0.134, lines)
+
+
+def test_process_job_exception_safety_net_preserves_gemini_channel_and_cost():
+    """Direct pin of finding 1's exact original mechanism: an unexpected
+    exception raised INSIDE process_gemini_job (run_validator's own
+    subprocess.run used to be able to raise TimeoutExpired straight
+    through it, before this whole review pass) must never surface as a
+    result missing 'channel' — that is what let finalize_job default a
+    REAL gemini job to "codex" and permanently under-count the durable
+    budget. Proven by monkeypatching process_gemini_job to raise, in
+    process, and calling process_job() directly — the cheapest, most
+    precise way to pin this exact safety net without needing a real
+    subprocess to misbehave."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "explodes"
+        job_path = make_job(q.pending, job_id, q.reference, channel="gemini")
+
+        class _CtxStub:
+            artsrc_dir = q.artsrc
+
+        def boom(*_a, **_k):
+            raise RuntimeError("simulated unexpected failure deep inside process_gemini_job")
+
+        original = artpiped.process_gemini_job
+        artpiped.process_gemini_job = boom
+        try:
+            result = artpiped.process_job(job_path, _CtxStub())
+        finally:
+            artpiped.process_gemini_job = original
+
+        ok("safety-net: the result from a raised exception still carries channel=gemini",
+           result.get("channel") == "gemini", result)
+        ok("safety-net: cost_usd is a safe 0.0, never missing/None",
+           result.get("cost_usd") == 0.0, result)
+        ok("safety-net: status is failed", result.get("status") == "failed", result)
+
+
+def test_reconcile_ignores_worker_last_message_sidecar():
+    """Finding 2: a naive `*.json` glob over active/ also matches
+    <id>.worker_last_message.json (it ends in .json too) — reconcile()
+    used to treat it as a phantom job (job_id = "foo.worker_last_message",
+    a bogus id no manifest will ever exist for) and promote it to
+    pending/, where it gets claimed, fails common.load_job's required-
+    field check, and is written into throughput.jsonl as a fake failed
+    job."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "orphanwithsidecar"
+        make_job(q.pending, job_id, q.reference)
+        claimed = artpiped.claim_next(q.pending, q.active)
+        ok("fixture: claimed via the real claim path", claimed is not None)
+        sidecar = q.active / f"{job_id}.worker_last_message.json"
+        sidecar.write_text(json.dumps({"id": job_id, "status": "ok", "note": "x"}))
+        old = time.time() - 1200
+        os.utime(claimed, (old, old))
+        os.utime(sidecar, (old, old))
+
+        moved = artpiped.reconcile(q.active, q.pending, q.done, q.failed, min_age_s=600.0)
+        ok("reconcile: the real orphaned job is reconciled back to pending",
+           any(jid == job_id for jid, _ in moved), moved)
+        ok("reconcile: the sidecar is NEVER promoted to pending as a phantom job",
+           not (q.pending / f"{job_id}.worker_last_message.json").is_file())
+        ok("reconcile: the sidecar itself is cleaned up, not left behind either",
+           not sidecar.is_file())
+
+
+def test_repair_ignores_worker_last_message_sidecar():
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "repairsidecar"
+        make_job(q.pending, job_id, q.reference)
+        claimed = artpiped.claim_next(q.pending, q.active)
+        sidecar = q.active / f"{job_id}.worker_last_message.json"
+        sidecar.write_text(json.dumps({"id": job_id, "status": "ok"}))
+        common.atomic_write_json(q.done / f"{job_id}.manifest.json",
+                                 {"id": job_id, "status": "ok", "channel": "codex"})
+
+        moved = artpiped.repair(q.active, q.done, q.failed)
+        ok("repair: the real job is repaired (moved into done/)",
+           any(jid == job_id for jid, _ in moved), moved)
+        ok("repair: the sidecar is never treated as a phantom job needing repair",
+           not (q.done / f"{job_id}.worker_last_message.json").is_file()
+           and not (q.failed / f"{job_id}.worker_last_message.json").is_file())
+        ok("repair: the sidecar itself is cleaned up too", not sidecar.is_file())
+
+
+def test_retry_decision_reads_last_message_note_before_retrying():
+    """Finding 3: the retry decision used to read ONLY stdout+stderr — a
+    throttle visible ONLY in the -o last-message note (clean transcript,
+    nonzero exit) would be RETRIED against an already-throttled account.
+    rate_limited_note_only_nonzero_exit behaves identically on every
+    invocation, so the mock's own invocation counter proves whether a
+    (wasteful, wrong) retry happened."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "noteonlythrottle"
+        make_job(q.pending, job_id, q.reference)
+        proc = q.run({job_id: "rate_limited_note_only_nonzero_exit"}, "--once", "--workers", "1")
+        ok("note-retry: daemon exits 0 (a lone hard-stopped job, nothing pending after)",
+           proc.returncode == 0, proc.stdout + proc.stderr)
+        manifest = q.failed / f"{job_id}.manifest.json"
+        ok("note-retry: job fails", manifest.is_file())
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("note-retry: detector_row is 1 — caught via the note", m.get("detector_row") == 1,
+               str(m))
+            ok("note-retry: daemon_attempts is 1 — NEVER retried against a throttled account",
+               m.get("daemon_attempts") == 1, str(m))
+        counter = q.artsrc / job_id / f".{job_id}.invocations"
+        ok("note-retry: the mock was invoked exactly once — the old bug would show 2",
+           counter.is_file() and counter.read_text().strip() == "1",
+           counter.read_text() if counter.is_file() else "no counter file")
+
+
+def test_reconcile_min_age_derives_from_timeout_edit():
+    """Finding 6: a hardcoded 600s default had only 40s of margin over the
+    real worst case at the DEFAULT --timeout-edit (560s), and didn't move
+    at all if --timeout-edit was raised — silently reopening the double-
+    claim race reconcile() exists to close."""
+    default_220 = artpiped.default_reconcile_min_age(220)
+    ok("reconcile-min-age: derived default at timeout_edit=220 has real margin "
+       "over the hardcoded 600s's thin 40s cushion", default_220 > 600, default_220)
+
+    default_400 = artpiped.default_reconcile_min_age(400)
+    ok("reconcile-min-age: raising --timeout-edit raises the derived default too "
+       "(a hardcoded value would not move at all)", default_400 > default_220,
+       (default_220, default_400))
+
+    args = artpiped.parse_args(["--timeout-edit", "300"])
+    ok("reconcile-min-age: parse_args uses the DERIVED default when not overridden",
+       args.reconcile_min_age == artpiped.default_reconcile_min_age(300), args.reconcile_min_age)
+
+    args2 = artpiped.parse_args(["--timeout-edit", "300", "--reconcile-min-age", "42"])
+    ok("reconcile-min-age: an explicit --reconcile-min-age still overrides the derivation",
+       args2.reconcile_min_age == 42.0, args2.reconcile_min_age)
+
+
+def test_agents_md_manifest_example_uses_absolute_path_wording():
+    """Finding 7 (doc-only, no code path to pin — checked textually): the
+    manifest example must say "absolute path", matching
+    manifest.schema.json's own "out" description, not "the filename you
+    saved" (which reads as a bare cwd-relative name)."""
+    text = common.AGENTS_MD.read_text()
+    ok("AGENTS.md: the manifest example's 'out' field says ABSOLUTE path",
+       "ABSOLUTE path" in text or "absolute path" in text.lower())
+    ok("AGENTS.md: no longer claims a crashed-with-nothing-captured run is "
+       "reconciled to pending/ (the real code fails it to failed/ immediately)",
+       "reconciles the job back to `pending/` for it" not in text)
+
+
+def test_prune_old_scratch_dirs_removes_only_old_terminally_decided_jobs():
+    """Lower note: _artsrc/<id>/ scratch dirs were never cleaned up at all.
+    Pruned only when BOTH terminally decided (a manifest exists) AND that
+    manifest is old — never a dir with no manifest (might still be
+    pending/active, or not a real job at all)."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+
+        old_done_dir = q.artsrc / "olddonejob"
+        old_done_dir.mkdir(parents=True)
+        (old_done_dir / "olddonejob.png").write_bytes(b"x")
+        manifest = q.done / "olddonejob.manifest.json"
+        common.atomic_write_json(manifest, {"id": "olddonejob", "status": "ok"})
+        old_time = time.time() - 20 * 86400
+        os.utime(manifest, (old_time, old_time))
+
+        fresh_dir = q.artsrc / "freshdonejob"
+        fresh_dir.mkdir(parents=True)
+        (fresh_dir / "freshdonejob.png").write_bytes(b"x")
+        common.atomic_write_json(q.done / "freshdonejob.manifest.json",
+                                 {"id": "freshdonejob", "status": "ok"})
+
+        orphan_dir = q.artsrc / "notdonejob"
+        orphan_dir.mkdir(parents=True)
+        (orphan_dir / "notdonejob.png").write_bytes(b"x")
+
+        pruned = artpiped.prune_old_scratch_dirs(q.artsrc, q.done, q.failed, max_age_days=14.0)
+        ok("prune: the old, terminally-decided job's scratch dir is removed",
+           "olddonejob" in pruned and not old_done_dir.is_dir())
+        ok("prune: a fresh terminally-decided job's scratch dir is left alone",
+           "freshdonejob" not in pruned and fresh_dir.is_dir())
+        ok("prune: a scratch dir with NO manifest at all is never touched",
+           "notdonejob" not in pruned and orphan_dir.is_dir())
+
+        pruned_disabled = artpiped.prune_old_scratch_dirs(q.artsrc, q.done, q.failed,
+                                                            max_age_days=0)
+        ok("prune: max_age_days<=0 disables pruning entirely", pruned_disabled == [])
+
+
+def test_prune_wired_into_daemon_startup():
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        old_dir = q.artsrc / "staledonejob"
+        old_dir.mkdir(parents=True)
+        (old_dir / "staledonejob.png").write_bytes(b"x")
+        manifest = q.done / "staledonejob.manifest.json"
+        common.atomic_write_json(manifest, {"id": "staledonejob", "status": "ok"})
+        old_time = time.time() - 20 * 86400
+        os.utime(manifest, (old_time, old_time))
+
+        proc = q.run({}, "--reconcile-only", "--prune-scratch-days", "14")
+        ok("prune e2e: exits 0", proc.returncode == 0, proc.stderr)
+        ok("prune e2e: the stale scratch dir is gone", not old_dir.is_dir())
+        ok("prune e2e: reported in the output", "pruned old scratch dir for staledonejob"
+           in proc.stdout, proc.stdout)
+
+
+def test_gemini_cost_billed_only_on_genuine_success_not_exit_0_alone():
+    """Lower note: cost used to be computed from `code == 0` alone, before
+    ever checking an image actually existed — an exit-0-no-image no-op was
+    billed even though nothing was generated."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "geminiexit0noimage"
+        make_job(q.pending, job_id, q.reference, channel="gemini")
+        proc = q.run({job_id: "ok_no_image"}, "--once", "--workers", "1")
+        ok("no-image-billing: daemon exits 0", proc.returncode == 0, proc.stderr)
+        manifest = q.failed / f"{job_id}.manifest.json"
+        ok("no-image-billing: job fails (exit 0 but no image)", manifest.is_file())
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("no-image-billing: cost_usd is 0.0 — never billed for a no-op",
+               m.get("cost_usd") == 0.0, str(m))
+        lines = [json.loads(l) for l in q.throughput_log.read_text().splitlines() if l.strip()]
+        ok("no-image-billing: throughput.jsonl agrees — 0.0, not the per-image price",
+           lines[0].get("cost_usd") == 0.0, lines)
+
+
+def test_gemini_budget_reservation_prevents_concurrent_overshoot():
+    """Lower note: admission was checked ONLY at claim time against
+    spent_usd alone — with N workers, up to N gemini jobs could all be
+    claimed in the SAME instant (none has reported cost back yet),
+    collectively overshooting the cap by up to (N-1) jobs' worth.
+    Reserving the conservative estimate AT claim time closes this: with 3
+    gemini jobs queued, --workers 3, and a budget that fits exactly ONE
+    image, only ONE should ever be claimed, not up to 3."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        for i in range(3):
+            make_job(q.pending, f"reserve{i}", q.reference, priority=i, channel="gemini")
+        control = {f"reserve{i}": "ok" for i in range(3)}
+        proc = q.run(control, "--once", "--workers", "3", "--gemini-budget-usd", "0.134")
+        ok("reservation: daemon exits nonzero — 2 of 3 jobs are still pending",
+           proc.returncode != 0, proc.stdout + proc.stderr)
+        done_ids = {p.stem for p in q.done.glob("reserve*.json") if not p.name.endswith(".manifest.json")}
+        ok("reservation: exactly ONE of the three gemini jobs ran, not up to 3",
+           len(done_ids) == 1, done_ids)
+        ok("reservation: the other two were never even claimed — still pending",
+           len(list(q.pending.glob("reserve*.json"))) == 2)
+        ok("reservation: nothing left dangling in active/", not any(q.active.glob("*.json")))
+
+
+def test_finalize_job_writes_throughput_before_manifest():
+    """Lower note: a crash between writing the manifest and appending to
+    throughput.jsonl used to lose the cost row forever (read_gemini_spend()
+    only ever sums that file, never scans manifests). Mechanically pins
+    the reordering fix by spying on both common functions and recording
+    call order — append_jsonl (throughput) must run before
+    atomic_write_json (the manifest)."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "orderingcheck"
+        make_job(q.pending, job_id, q.reference, channel="gemini")
+        claimed = artpiped.claim_next(q.pending, q.active)
+        result = {"id": job_id, "channel": "gemini", "status": "ok",
+                 "worker_status": "ok", "validator": "PASS", "cost_usd": 0.134,
+                 "elapsed_s": 1.0, "model": "gemini-3-pro-image", "daemon_attempts": 1}
+
+        call_order = []
+        orig_append = common.append_jsonl
+        orig_write = common.atomic_write_json
+
+        def spy_append(*a, **k):
+            call_order.append("throughput")
+            return orig_append(*a, **k)
+
+        def spy_write(*a, **k):
+            call_order.append("manifest")
+            return orig_write(*a, **k)
+
+        artpiped.common.append_jsonl = spy_append
+        artpiped.common.atomic_write_json = spy_write
+        try:
+            detector = artpiped.Detector()
+            budget = artpiped.GeminiBudget(1000.0)
+            artpiped.finalize_job(claimed, result, q.done, q.failed, q.active,
+                                  q.throughput_log, detector, budget, 1)
+        finally:
+            artpiped.common.append_jsonl = orig_append
+            artpiped.common.atomic_write_json = orig_write
+
+        ok("ordering: throughput.jsonl is written BEFORE the manifest",
+           call_order == ["throughput", "manifest"], call_order)
+        lines = [json.loads(l) for l in q.throughput_log.read_text().splitlines() if l.strip()]
+        ok("ordering: the throughput row itself carries the right channel/cost",
+           lines and lines[0].get("channel") == "gemini" and lines[0].get("cost_usd") == 0.134,
+           lines)
 
 
 def main() -> int:
@@ -1319,6 +1741,20 @@ def main() -> int:
         test_gemini_never_touches_codex_homes,
         test_mixed_channel_queue_codex_wedge_does_not_block_gemini,
         test_fill_queue_channel_flag_and_per_row_override,
+        test_run_validator_never_raises_on_timeout_or_bad_exit,
+        test_validator_crash_reported_as_validator_error_not_bad_reference_end_to_end,
+        test_gemini_validator_error_preserves_channel_and_bills_correctly,
+        test_process_job_exception_safety_net_preserves_gemini_channel_and_cost,
+        test_reconcile_ignores_worker_last_message_sidecar,
+        test_repair_ignores_worker_last_message_sidecar,
+        test_retry_decision_reads_last_message_note_before_retrying,
+        test_reconcile_min_age_derives_from_timeout_edit,
+        test_agents_md_manifest_example_uses_absolute_path_wording,
+        test_prune_old_scratch_dirs_removes_only_old_terminally_decided_jobs,
+        test_prune_wired_into_daemon_startup,
+        test_gemini_cost_billed_only_on_genuine_success_not_exit_0_alone,
+        test_gemini_budget_reservation_prevents_concurrent_overshoot,
+        test_finalize_job_writes_throughput_before_manifest,
     ):
         print(f"--- {fn.__name__} ---")
         try:

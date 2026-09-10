@@ -33,6 +33,19 @@ and a human editing the queue by hand) are ever run against the real
 (`infrastructure/artpipe/_codex_homes/`), and seeding a worker home copies
 `auth.json` there. A `.gitignore` entry for that path is a backstop only;
 never point `--codex-home-root` back inside the repo.
+
+⚠️ A SEPARATE, NARROWER caveat for `acquire_codex_home_lease()`'s lockfiles,
+which normally live under `DEFAULT_CODEX_HOME_ROOT` on `/mnt/c` (the Windows
+user profile, not `/mnt/d`): `flock()` there coordinates ONLY the processes
+sharing this ONE WSL distro's kernel/VFS view of that path. It does NOT
+coordinate with a Windows-side process touching the same directory directly
+(codex.exe itself never takes this lock — it doesn't know it exists), and it
+does NOT coordinate with a SECOND WSL distro that also mounts `/mnt/c` — a
+different distro's kernel holds its own, entirely independent lock state
+over what is, from Windows' side, the same physical files. "Never lets two
+live holders share one codex_home" is true only among daemons run from
+*this* distro; a daemon started from a different WSL distro, or run
+natively on Windows, is invisible to this lease mechanism entirely.
 """
 from __future__ import annotations
 

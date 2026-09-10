@@ -47,6 +47,7 @@ import json
 import os
 import queue
 import re
+import shutil
 import signal
 import statistics
 import subprocess
@@ -103,6 +104,16 @@ GEMINI_MODEL_COST_USD = {"gemini-3-pro-image": 0.134}
 DEFAULT_GEMINI_MODEL = "gemini-3-pro-image"
 DEFAULT_GEMINI_BUDGET_USD = 20.0
 DEFAULT_GEMINI_TIMEOUT_S = 200  # gemini_image.py's own urllib call times out at 180s.
+# The conservative upper bound reserved at CLAIM time, before a job's
+# actual model (and therefore actual cost) is known — see GeminiBudget.
+GEMINI_RESERVE_ESTIMATE_USD = max(GEMINI_MODEL_COST_USD.values())
+
+VALIDATOR_TIMEOUT_S = 60  # run_validator's own subprocess.run ceiling.
+
+# Cheap startup maintenance: _artsrc/<id>/ scratch dirs for terminally-
+# decided jobs are pruned once they're this old (the repo's own Transient/
+# convention is ~14 days; matching it here for consistency).
+DEFAULT_ARTSRC_PRUNE_DAYS = 14.0
 
 
 # --------------------------------------------------------------------------
@@ -282,21 +293,49 @@ class GeminiBudget:
     grumpiness detector does not gate gemini jobs). Latched, not
     de-escalating — a dollar cap does not reset itself the way a percentage
     meter resets on a rolling time window; once a run's spend reaches the
-    cap it stays hit for the rest of that run."""
+    cap it stays hit for the rest of that run.
+
+    `reserved_usd` closes a real race: admission used to be checked ONLY at
+    claim time, against `spent_usd` alone — so with N workers, up to N
+    gemini jobs could all be claimed in the same instant (none of them has
+    reported its cost back yet, so `spent_usd` hasn't moved), collectively
+    overshooting the cap by up to (N-1) jobs' worth before any of them
+    finishes. `reserve()` charges the CONSERVATIVE upper-bound estimate the
+    instant a job is claimed — before it runs — so a second claim in the
+    same window sees the reservation and is refused; `release_reservation()`
+    drops the estimate and records the REAL cost once the job finishes,
+    whatever it actually was. Reservations are never persisted — only
+    realized `spent_usd` survives a restart, read from throughput.jsonl.
+    """
 
     def __init__(self, cap_usd: float, spent_so_far: float = 0.0):
         self.cap_usd = cap_usd
         self.spent_usd = spent_so_far
+        self.reserved_usd = 0.0
         self.hard_stop = spent_so_far >= cap_usd
 
-    def note_spend(self, cost_usd: float) -> None:
-        if cost_usd:
-            self.spent_usd += cost_usd
+    def reserve(self, estimated_cost_usd: float) -> bool:
+        """Reserve budget for a job claimed but not yet run. Returns False
+        (nothing reserved) if the cap is already spent+reserved — the
+        caller must not claim in that case."""
+        if self.admission_blocked() or \
+           (self.spent_usd + self.reserved_usd + estimated_cost_usd) > self.cap_usd:
+            return False
+        self.reserved_usd += estimated_cost_usd
+        return True
+
+    def release_reservation(self, estimated_cost_usd: float, actual_cost_usd: float) -> None:
+        """The job finished (success or failure) — drop its reservation and
+        record whatever it actually cost (0.0 for a failure that was never
+        billed)."""
+        self.reserved_usd = max(0.0, self.reserved_usd - estimated_cost_usd)
+        if actual_cost_usd:
+            self.spent_usd += actual_cost_usd
         if self.spent_usd >= self.cap_usd:
             self.hard_stop = True
 
     def admission_blocked(self) -> bool:
-        return self.hard_stop
+        return self.hard_stop or (self.spent_usd + self.reserved_usd) >= self.cap_usd
 
 
 # Specific throttle phrasing, not a bare "rate limited" substring — that
@@ -407,6 +446,22 @@ def _queue_empty(pending_dir: Path) -> bool:
         return True
 
 
+def _job_files(dir_path: Path) -> list[Path]:
+    """Every REAL job file directly in `dir_path` — never a
+    `<id>.worker_last_message.json` sidecar. That sidecar also ends in
+    `.json`, so a naive `*.json` glob over `active/` matches it too;
+    `reconcile()`/`repair()` used to then treat it as a phantom job (its
+    `.stem` is `<id>.worker_last_message`, a bogus id that no manifest will
+    ever exist for), promoting it to `pending/` where it gets claimed,
+    fails common.load_job's required-field check, and is written into
+    throughput.jsonl as a fake failed job."""
+    try:
+        return sorted(p for p in dir_path.glob("*.json")
+                      if not p.name.endswith(".worker_last_message.json"))
+    except OSError:
+        return []
+
+
 def _any_claimable(pending_dir: Path, channel_blocked) -> bool:
     """True if pending/ holds at least one job whose channel is not
     currently blocked — used to tell "genuinely nothing left to do" apart
@@ -445,10 +500,7 @@ def reconcile(active_dir: Path, pending_dir: Path, done_dir: Path,
     `repair()` is the tool for that.
     """
     moved = []
-    try:
-        actives = sorted(active_dir.glob("*.json"))
-    except OSError:
-        return moved
+    actives = _job_files(active_dir)
     now = time.time()
     for p in actives:
         job_id = p.stem
@@ -456,7 +508,15 @@ def reconcile(active_dir: Path, pending_dir: Path, done_dir: Path,
            (failed_dir / f"{job_id}.manifest.json").is_file():
             # Already terminally decided, just not moved — repair()'s job,
             # not reconcile()'s: guessing which of two manifests (if there
-            # were ever two) is authoritative is worse than asking.
+            # were ever two) is authoritative is worse than asking. Still
+            # clean up the last-message stray here too, so this state
+            # doesn't also leave litter behind while it waits for repair().
+            stray = active_dir / f"{job_id}.worker_last_message.json"
+            if stray.is_file():
+                try:
+                    stray.unlink()
+                except OSError:
+                    pass
             continue
         try:
             age = now - p.stat().st_mtime
@@ -496,11 +556,7 @@ def repair(active_dir: Path, done_dir: Path, failed_dir: Path) -> list[tuple[str
     does, that IS genuinely ambiguous) this leaves it alone for a human.
     """
     repaired = []
-    try:
-        actives = sorted(active_dir.glob("*.json"))
-    except OSError:
-        return repaired
-    for p in actives:
+    for p in _job_files(active_dir):
         job_id = p.stem
         done_manifest = done_dir / f"{job_id}.manifest.json"
         failed_manifest = failed_dir / f"{job_id}.manifest.json"
@@ -525,6 +581,12 @@ def repair(active_dir: Path, done_dir: Path, failed_dir: Path) -> list[tuple[str
             continue
         repaired.append((job_id, f"completed the move into {target_dir.name}/ "
                                   f"(its manifest already existed there)"))
+        stray = active_dir / f"{job_id}.worker_last_message.json"
+        if stray.is_file():
+            try:
+                stray.unlink()
+            except OSError:
+                pass
     return repaired
 
 
@@ -653,30 +715,68 @@ def run_gemini_worker(worker_script: Path, prompt: str, out_png: Path, reference
         return 124, out, err, time.monotonic() - started, True
 
 
-def run_validator(validator_script: Path, reference, candidate: Path):
-    """Returns (verdict, findings). verdict is one of:
-      None              — skipped, no reference on this job (never a silent pass)
-      "pass"             — validate_sprite.py exit 0
-      "reject"           — exit 1: the IMAGE is not shippable
-      "cannot_validate"  — exit 2 (or anything else): the INPUT was unusable
-                            (e.g. a missing/unreadable reference path) — a
-                            data problem on the job, never the same thing as
-                            the worker having produced a bad image, and must
-                            never be reported to the owner as an art-quality
-                            rejection.
+def run_validator(validator_script: Path, reference, candidate: Path,
+                   timeout: float = VALIDATOR_TIMEOUT_S):
+    """Returns (verdict, findings). `timeout` defaults to the real
+    VALIDATOR_TIMEOUT_S; overridable so a selftest can prove the
+    TimeoutExpired path never raises without actually waiting 60s for it.
+    verdict is one of:
+      None               — skipped, no reference on this job (never a silent pass)
+      "pass"              — validate_sprite.py exit 0
+      "reject"            — exit 1: the IMAGE is not shippable
+      "cannot_validate"   — exit 2, EXACTLY: the INPUT was unusable (e.g. a
+                             missing/unreadable reference path) — a data
+                             problem on the job, never the same thing as the
+                             worker having produced a bad image.
+      "validator_error"   — the validator itself could not be RUN or could
+                             not finish at all (missing/non-executable
+                             script, it timed out, or it exited with
+                             anything other than its own documented 0/1/2) —
+                             the validator's OWN failure, never blamed on
+                             the job's reference the way exit 2 is. NEVER
+                             raises past this function — a subprocess
+                             timeout used to propagate as a bare
+                             TimeoutExpired into the caller, which (before
+                             this fix) could lose the job's channel/cost in
+                             a generic exception fallback.
     """
     if not reference:
         return None, ["no reference on this job — validator skipped, not a pass"]
-    proc = subprocess.run(
-        [sys.executable, str(validator_script), "--reference", str(reference),
-         "--candidate", str(candidate)],
-        capture_output=True, text=True, timeout=60)
+    # A missing validator script makes `python3 <missing>.py` exit 2 from
+    # the LAUNCHER's own "can't open file" error — which coincidentally
+    # collides with validate_sprite.py's own documented exit-2 meaning
+    # ("bad reference input"), and would otherwise be silently
+    # misattributed to the job. Checked explicitly, before ever spawning
+    # anything, so this specific collision can't happen.
+    if not Path(validator_script).is_file():
+        return "validator_error", [f"validator script does not exist: {validator_script}"]
+    try:
+        proc = subprocess.run(
+            [sys.executable, str(validator_script), "--reference", str(reference),
+             "--candidate", str(candidate)],
+            capture_output=True, text=True, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return "validator_error", [f"validate_sprite.py did not finish within "
+                                    f"{timeout}s — the validator itself "
+                                    f"is the problem here, not the job's reference"]
+    except OSError as exc:
+        return "validator_error", [f"could not run validate_sprite.py at "
+                                    f"{validator_script}: {exc}"]
     findings = (proc.stdout + proc.stderr).strip().splitlines()
     if proc.returncode == 0:
         return "pass", findings
     if proc.returncode == 1:
         return "reject", findings
-    return "cannot_validate", findings
+    if proc.returncode == 2:
+        return "cannot_validate", findings
+    # Any OTHER exit code (a crash, an uncaught exception inside the
+    # validator, a nonstandard interpreter exit) is ALSO the validator's
+    # own problem — not exit 2's documented "unusable input" meaning, and
+    # not a REJECT either.
+    return "validator_error", findings + [
+        f"validate_sprite.py exited {proc.returncode} — not its documented "
+        f"0 (pass) / 1 (reject) / 2 (bad input); the validator itself is the "
+        f"problem here"]
 
 
 def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
@@ -713,6 +813,15 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
                        validator="REJECT",
                        note="validate_sprite.py rejected the returned file — "
                             "the worker's own manifest is never trusted")
+        return result
+    if verdict == "validator_error":
+        # The validator ITSELF could not be run or finish — never blamed on
+        # the job's reference (that's exit-2's meaning, checked separately
+        # below). This is infrastructure broken, not a bad job.
+        result.update(status="failed", worker_status="validator_could_not_run",
+                       validator="ERROR",
+                       note=("validate_sprite.py could not be run/finish — "
+                             + ("; ".join(findings[-2:]) if findings else "no detail"))[:200])
         return result
     if verdict == "cannot_validate":
         # exit 2: the INPUT was unusable (e.g. a missing/unreadable
@@ -772,8 +881,25 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
                 ctx.reasoning_effort, ctx.verbose)
             elapsed_total += elapsed
             combined = (out or "") + (err or "")
+            # Read the -o last-message note BEFORE deciding whether to
+            # retry — a throttle visible ONLY there (clean stdout/stderr,
+            # a schema-valid "refused" manifest whose note names
+            # TooManyRequests) must never be retried against an already-
+            # throttled account. Retry decisions used to look only at
+            # stdout+stderr, checked again (identically) below AFTER the
+            # loop for the final row-1 verdict — this is that same check,
+            # done early enough to matter for the retry itself.
+            attempt_note = ""
+            if last_msg_path.is_file():
+                try:
+                    attempt_report = json.loads(last_msg_path.read_text())
+                    if isinstance(attempt_report, dict):
+                        attempt_note = str(attempt_report.get("note") or "")
+                except (OSError, ValueError):
+                    pass
+            combined_with_note = combined + " " + attempt_note
             failed = (code != 0) or timed_out
-            rate_limited_now = failed and _looks_rate_limited(combined, prompt)
+            rate_limited_now = failed and _looks_rate_limited(combined_with_note, prompt)
             if not failed or rate_limited_now or attempts >= MAX_CODEX_ATTEMPTS:
                 break
             # Retryable: a genuine tool error or timeout, NOT a throttle
@@ -863,13 +989,14 @@ def process_gemini_job(job: dict, job_id: str, reference, out_png: Path, ctx: Ru
 
     m = _GEMINI_MODEL_RE.search(out or "")
     actual_model = m.group(1) if m else model
-    # Only a genuinely successful call is billable — a nonzero exit means
-    # gemini_image.py's own sys.exit fired before an image was written,
-    # which is the one case this does NOT charge for.
-    cost_usd = _gemini_model_cost(actual_model) if code == 0 else 0.0
 
+    # cost_usd starts at 0.0 and is set ONLY once a real image is confirmed
+    # on disk (below) — computing it from `code == 0` alone used to bill an
+    # exit-0-but-no-image no-op, which is not a genuine success. "Only a
+    # genuinely successful call is billable" means an image actually landed,
+    # not merely that the process exited 0.
     result = {"id": job_id, "channel": "gemini", "elapsed_s": elapsed,
-              "timed_out": timed_out, "model": actual_model, "cost_usd": cost_usd,
+              "timed_out": timed_out, "model": actual_model, "cost_usd": 0.0,
               "meter_before": None, "meter_after": None, "daemon_attempts": 1}
 
     if code != 0 or timed_out:
@@ -884,15 +1011,34 @@ def process_gemini_job(job: dict, job_id: str, reference, out_png: Path, ctx: Ru
                        note="exit 0 but no image was written")
         return result
 
+    # Now, and only now, with a real file confirmed to exist: this is
+    # billable regardless of what the size check / validator decide next —
+    # the API call itself succeeded and returned pixels.
+    result["cost_usd"] = _gemini_model_cost(actual_model)
+
     return _check_size_and_validate(result, job, reference, out_png, ctx.validator_script)
 
 
 def process_job(job_path: Path, ctx: RunCtx) -> dict:
+    """The one hard rule here: whatever comes back ALWAYS carries the
+    correct `channel` and a `cost_usd` the caller can trust — even on a
+    totally unexpected exception. Before this, an exception raised inside
+    process_gemini_job (run_validator's own subprocess.run could raise
+    TimeoutExpired straight through it) propagated all the way to main()'s
+    generic `except Exception` fallback, which built a result with NO
+    `channel` key at all — finalize_job then defaulted it to "codex" and
+    silently billed a REAL gemini spend as $0 against the wrong channel,
+    permanently under-counting the durable budget read back from
+    throughput.jsonl. run_validator no longer raises (it returns a
+    "validator_error" verdict instead), so this is now a pure safety net,
+    but the net is real: it is the only thing that can still see the
+    correct channel if some other, truly unanticipated exception occurs.
+    """
     try:
         job = common.load_job(job_path)
     except common.JobError as exc:
         return {"id": job_path.stem, "channel": "codex", "status": "failed", "note": str(exc),
-                "worker_status": "bad_job_file", "validator": "not_run"}
+                "worker_status": "bad_job_file", "validator": "not_run", "cost_usd": 0.0}
 
     job_id = job["id"]
     channel = job.get("channel") or "codex"
@@ -901,12 +1047,25 @@ def process_job(job_path: Path, ctx: RunCtx) -> dict:
     out_png = job_scratch / f"{job_id}.png"
 
     if channel == "gemini":
-        return process_gemini_job(job, job_id, reference, out_png, ctx)
+        try:
+            return process_gemini_job(job, job_id, reference, out_png, ctx)
+        except Exception as exc:
+            return {"id": job_id, "channel": "gemini", "status": "failed", "cost_usd": 0.0,
+                    "worker_status": "daemon_error", "validator": "not_run",
+                    "note": (f"process_gemini_job raised {type(exc).__name__}: {exc} — "
+                             f"billed $0.0 because no confirmed cost survives this exception; "
+                             f"if the API call had already succeeded, check the worker's own "
+                             f"logs/billing directly")[:400]}
     if channel != "codex":
-        return {"id": job_id, "channel": channel, "status": "failed",
+        return {"id": job_id, "channel": channel, "status": "failed", "cost_usd": 0.0,
                 "worker_status": "bad_job_file", "validator": "not_run",
                 "note": f"unknown channel {channel!r} — only 'codex' or 'gemini'"}
-    return process_codex_job(job, job_id, reference, out_png, ctx)
+    try:
+        return process_codex_job(job, job_id, reference, out_png, ctx)
+    except Exception as exc:
+        return {"id": job_id, "channel": "codex", "status": "failed",
+                "worker_status": "daemon_error", "validator": "not_run",
+                "note": f"process_codex_job raised {type(exc).__name__}: {exc}"}
 
 
 def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
@@ -916,6 +1075,28 @@ def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
     channel = result.get("channel", "codex")
     ok = result.get("status") == "ok"
     target_dir = done_dir if ok else failed_dir
+
+    # Throughput FIRST, before the manifest write or the job-file move: a
+    # crash in between those two steps used to lose the cost row entirely
+    # (the manifest — moved or not — still carries cost_usd, but
+    # read_gemini_spend() only ever sums throughput.jsonl, never scans
+    # manifests). One cheap atomic append, moved earlier, closes that
+    # window — the only remaining unrecorded-crash case is before ANY of
+    # this runs, which is exactly the ordinary no-manifest-at-all orphan
+    # reconcile() already handles by retrying the job from scratch (no
+    # double-counting risk, because nothing about it was ever recorded).
+    common.append_jsonl(throughput_log, {
+        "ts": time.time(), "id": job_id, "channel": channel,
+        "status": result.get("status"),
+        "worker_status": result.get("worker_status"),
+        "elapsed_s": result.get("elapsed_s"),
+        "validator": result.get("validator"),
+        "meter_before": result.get("meter_before"),
+        "meter_after": result.get("meter_after"),
+        "cost_usd": result.get("cost_usd"),
+        "model": result.get("model"),
+        "daemon_attempts": result.get("daemon_attempts"),
+    })
 
     dest_job = target_dir / f"{job_id}.json"
     manifest_path = target_dir / f"{job_id}.manifest.json"
@@ -937,21 +1118,11 @@ def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
         except OSError:
             pass
 
-    common.append_jsonl(throughput_log, {
-        "ts": time.time(), "id": job_id, "channel": channel,
-        "status": result.get("status"),
-        "worker_status": result.get("worker_status"),
-        "elapsed_s": result.get("elapsed_s"),
-        "validator": result.get("validator"),
-        "meter_before": result.get("meter_before"),
-        "meter_after": result.get("meter_after"),
-        "cost_usd": result.get("cost_usd"),
-        "model": result.get("model"),
-        "daemon_attempts": result.get("daemon_attempts"),
-    })
-
     if channel == "gemini":
-        gemini_budget.note_spend(result.get("cost_usd") or 0.0)
+        # Drops this job's CLAIM-time reservation and records whatever it
+        # actually cost (0.0 if it never got billed) — see GeminiBudget's
+        # own docstring for why the reservation existed at all.
+        gemini_budget.release_reservation(GEMINI_RESERVE_ESTIMATE_USD, result.get("cost_usd") or 0.0)
         return  # the codex Detector never sees a gemini job's numbers at all
 
     if result.get("detector_row") == 1:
@@ -1004,13 +1175,39 @@ def parse_args(argv=None) -> argparse.Namespace:
                           "moving the job file (active/<id>.json + a matching "
                           "done/failed manifest, no ambiguity) — folded automatically "
                           "into --reconcile-only, or run alone")
-    ap.add_argument("--reconcile-min-age", type=float, default=600.0,
+    ap.add_argument("--reconcile-min-age", type=float, default=None,
                      help="seconds an active/ job with no manifest must sit "
                           "untouched before reconcile() treats it as an orphan "
-                          "rather than another live daemon's in-flight claim "
-                          "(default comfortably above --timeout-edit's worst case)")
+                          "rather than another live daemon's in-flight claim. "
+                          "Default is DERIVED from --timeout-edit (see "
+                          "default_reconcile_min_age()) so raising the timeout "
+                          "can't silently reopen the double-claim race — pass "
+                          "this explicitly only to override that derivation.")
+    ap.add_argument("--prune-scratch-days", type=float, default=DEFAULT_ARTSRC_PRUNE_DAYS,
+                     help="remove _artsrc/<id>/ scratch dirs for terminally-decided "
+                          "jobs (a manifest exists in done/ or failed/) once that "
+                          "manifest is this many days old — 0 disables")
     ap.add_argument("--verbose", action="store_true")
-    return ap.parse_args(argv)
+    args = ap.parse_args(argv)
+    if args.reconcile_min_age is None:
+        args.reconcile_min_age = default_reconcile_min_age(args.timeout_edit)
+    return args
+
+
+def default_reconcile_min_age(timeout_edit: int) -> float:
+    """The real worst case a single codex job can legitimately still be
+    running: one attempt's outer ceiling (--timeout-edit +
+    WORKER_SUBPROCESS_GRACE_S), times the max attempts a row-1 retry can
+    cost, plus the validator's own timeout — times a GENEROUS safety
+    margin, not a razor-thin one. A hardcoded 600s default used to have
+    only 40s of margin over this at the DEFAULT --timeout-edit (220), and
+    didn't move at all if --timeout-edit was raised — silently reopening
+    the exact double-claim race this gate exists to close the moment
+    someone needed a longer timeout for a bigger canvas or a slower model.
+    """
+    worst_case = (timeout_edit + WORKER_SUBPROCESS_GRACE_S) * MAX_CODEX_ATTEMPTS \
+        + VALIDATOR_TIMEOUT_S
+    return worst_case * 1.5
 
 
 def run_dry_run(args: argparse.Namespace) -> int:
@@ -1045,6 +1242,47 @@ def run_dry_run(args: argparse.Namespace) -> int:
     return 0
 
 
+def prune_old_scratch_dirs(artsrc_dir: Path, done_dir: Path, failed_dir: Path,
+                            max_age_days: float) -> list[str]:
+    """Remove `_artsrc/<id>/` scratch directories for jobs that are already
+    terminally decided (a manifest exists in `done/` or `failed/`) AND
+    whose manifest is at least `max_age_days` old — the PNG has had that
+    long to be picked up by whatever consumes it. A dir with NO matching
+    manifest is never touched (that job might still be pending, active, or
+    simply doesn't correspond to a real job at all) — this only ever
+    reclaims space for work that is provably finished and provably old.
+    `max_age_days <= 0` disables pruning entirely.
+    """
+    pruned: list[str] = []
+    if max_age_days <= 0:
+        return pruned
+    cutoff = time.time() - max_age_days * 86400
+    try:
+        job_dirs = [p for p in artsrc_dir.iterdir() if p.is_dir()]
+    except OSError:
+        return pruned
+    for d in job_dirs:
+        job_id = d.name
+        manifest = None
+        for cand in (done_dir / f"{job_id}.manifest.json", failed_dir / f"{job_id}.manifest.json"):
+            if cand.is_file():
+                manifest = cand
+                break
+        if manifest is None:
+            continue  # not terminally decided — never prune
+        try:
+            if manifest.stat().st_mtime >= cutoff:
+                continue  # not old enough yet
+        except OSError:
+            continue
+        try:
+            shutil.rmtree(d)
+            pruned.append(job_id)
+        except OSError:
+            pass
+    return pruned
+
+
 def main(argv=None) -> int:
     args = parse_args(argv)
     common.ensure_queue_dirs(args.pending_dir, args.active_dir, args.done_dir,
@@ -1052,6 +1290,11 @@ def main(argv=None) -> int:
 
     if args.dry_run:
         return run_dry_run(args)
+
+    pruned = prune_old_scratch_dirs(args.artsrc_dir, args.done_dir, args.failed_dir,
+                                     args.prune_scratch_days)
+    for job_id in pruned:
+        print(f"artpiped: pruned old scratch dir for {job_id}")
 
     fixed: list[tuple[str, str]] = []
     if args.repair or args.reconcile_only:
@@ -1126,6 +1369,24 @@ def main(argv=None) -> int:
                         if job_path is None:
                             break
                         ch = _channel_of(job_path)
+                        if ch == "gemini":
+                            # Reserve the CONSERVATIVE estimate right now,
+                            # before this job ever runs — closes the race
+                            # where N claims in the same instant (none has
+                            # reported a real cost back yet) could
+                            # collectively overshoot the cap by up to N-1
+                            # jobs' worth. _claim_blocked already checked
+                            # admission_blocked() (which itself now
+                            # accounts for reserved_usd) moments ago in
+                            # this same single-threaded loop, so this
+                            # should always succeed — logged if it somehow
+                            # doesn't, since the job is already claimed and
+                            # can't be un-claimed from here.
+                            if not gemini_budget.reserve(GEMINI_RESERVE_ESTIMATE_USD):
+                                print(f"artpiped: WARNING claimed {job_path.name} as gemini "
+                                      f"but the budget reservation was refused immediately "
+                                      f"after — proceeding anyway (already claimed)",
+                                      file=sys.stderr)
                         futures[pool.submit(process_job, job_path, ctx)] = (job_path, ch)
 
                 if not futures:
@@ -1139,11 +1400,20 @@ def main(argv=None) -> int:
                 done, _ = wait(list(futures.keys()), timeout=args.poll_interval,
                                return_when=FIRST_COMPLETED)
                 for fut in done:
-                    job_path, _ch = futures.pop(fut)
+                    job_path, ch = futures.pop(fut)
                     try:
                         result = fut.result()
                     except Exception as exc:  # never let a worker-thread crash kill the daemon
-                        result = {"id": job_path.stem, "status": "failed",
+                        # `ch` is what claim_next() actually claimed THIS
+                        # job as — preserved here even though process_job
+                        # now wraps its own dispatch and structurally
+                        # should never let this fire for a channel mismatch
+                        # any more. Belt and suspenders: a bare "codex"
+                        # default here (the old behaviour) is exactly what
+                        # let a real gemini spend get billed as $0 codex.
+                        result = {"id": job_path.stem, "channel": ch, "status": "failed",
+                                  "cost_usd": 0.0, "worker_status": "daemon_error",
+                                  "validator": "not_run",
                                   "note": f"process_job raised: {type(exc).__name__}: {exc}"}
                     finalize_job(job_path, result, args.done_dir, args.failed_dir,
                                  args.active_dir, args.throughput_log, detector,
@@ -1160,19 +1430,28 @@ def main(argv=None) -> int:
             except OSError:
                 pass
 
-    # Finding 5: a hard stop / budget wedge with real work left behind is a
-    # DIFFERENT outcome from a clean drain (queue empty) or a deliberate
-    # SIGTERM stop with healthy, unblocked work simply not yet started —
-    # the latter is not abandonment, it is exactly what was asked for.
+    # Exit nonzero IFF work actually remains — never merely because a wedge
+    # occurred at some point during the run. `hard_stop`/`stop_all`/a
+    # gemini budget hard-stop are worth REPORTING (the printed fields below
+    # still show them honestly), but a wedge whose queue nonetheless
+    # drained clean (nothing left pending) is not abandonment — reporting
+    # it as one is a claim the actual queue state doesn't back up.
+    #
+    # Deliberately pending/ ALONE, not active/ too: active/ is SHARED
+    # between concurrent daemons, and a job sitting there might be another
+    # daemon's perfectly healthy in-flight claim, not this daemon's own
+    # abandoned work — checking it here raced exactly that way in testing
+    # (one of two daemons in a clean 2-daemon/10-job run saw the OTHER
+    # daemon's still-processing job in active/ and wrongly reported
+    # "work remains"). pending/ has no such ambiguity: a file is either
+    # still there (unclaimed) or it isn't, full stop.
     pending_remaining = not _queue_empty(args.pending_dir)
-    wedged = detector.hard_stop or detector.stop_all or gemini_budget.hard_stop
-    abandoned = wedged or (pending_remaining and
-                           (detector.admission_blocked() or gemini_budget.admission_blocked()))
-    exit_code = 1 if abandoned else 0
+    work_remains = pending_remaining
+    exit_code = 1 if work_remains else 0
     print(f"artpiped: stopped. hard_stop={detector.hard_stop} refuse_new={detector.refuse_new} "
           f"stop_all={detector.stop_all} gemini_hard_stop={gemini_budget.hard_stop} "
           f"gemini_spent=${gemini_budget.spent_usd:.2f} pending_remaining={pending_remaining} — "
-          f"{'ABANDONED WORK' if abandoned else 'CLEAN DRAIN'} (exit {exit_code})")
+          f"{'WORK REMAINS' if work_remains else 'CLEAN DRAIN'} (exit {exit_code})")
     return exit_code
 
 
