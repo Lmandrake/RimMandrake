@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T00:07:31Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-10T00:20:02Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -938,3 +938,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CODEX_EDIT_TIMEOUT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CODEX_EDIT_TIMEOUT_1.md
+
+## SYSTEM_TOOLS_SELFTEST_1 system_screenshot.py/system_click.py (6fac2cd1) crash at import under WSL python3 (ctypes.windll) — selftest_documented_commands FAILs; guard the import or exempt as windows-only
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SYSTEM_TOOLS_SELFTEST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SYSTEM_TOOLS_SELFTEST_1.md
