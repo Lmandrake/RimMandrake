@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T01:40:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T01:43:08Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -522,15 +522,6 @@ kind:     bug
 summary:  Found 2026-09-08, FOUNDRY code-review loop (subagent review of glemit.py,
 prose:    infrastructure/state/items/GL_EMIT_FLOATRANGE_GENERIC_DROP_1.md
 
-## BRIDGETOOLS_DLL_GM_DRIFT_1 JawaBench DLL is 41 tools behind source (built without GM pair); selftest_tool_metadata FAILs until companion rebuild+redeploy on a game-down window
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-summary:  BRIDGETOOLSDLLGMDRIFT1
-prose:    infrastructure/state/items/BRIDGETOOLS_DLL_GM_DRIFT_1.md
-
 ## ASHKARR_FLORA_SWEETLINE_ART_UNWIRED_1 AshkarrFlora RUT_SweetlineTree texture folder is empty; 11 candidate PNGs sit unmoved in _artsrc — wire or cut (walk-authoring find)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -683,15 +674,6 @@ target:   v1
 kind:     task
 summary:  This is a census + risk-ordered retirement PLAN. Do not retire anything in this
 prose:    infrastructure/state/items/STAT_NORMALIZATION_AUDIT_1.md
-
-## STAT_NORM_WAVE1_RETIRE_1 Retire the 13 zero-content/zero-save-presence mods from STAT_NORMALIZATION_AUDIT_1's Wave 1
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  Retire these 13 mods, per STATNORMALIZATIONAUDIT1's Wave 1 (measured
-prose:    infrastructure/state/items/STAT_NORM_WAVE1_RETIRE_1.md
 
 ## MODLIST_RESTORE_AND_BATCH_DEPLOY_1 Restore the abandoned full campaign modlist, apply Wave 1 retirement, enable tonight's new own-built mods, redeploy updated DLLs, one clean restart
 state:    doing
