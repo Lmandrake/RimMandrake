@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T00:20:02Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-10T00:51:16Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -666,6 +666,24 @@ kind:     task
 summary:  DROIDWORKSPERSONALITYVERIFY1
 prose:    infrastructure/state/items/DROIDWORKS_PERSONALITY_VERIFY_1.md
 
+## DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1 lumi.doorsexpanded retirement broke CANONICAL_ASHKARR save load; mod restored, real fix still owed
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  Wave 4 retired lumi.doorsexpanded after a thorough whole-modlist XML/def cross-reference
+prose:    infrastructure/state/items/DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1.md
+
+## DROID_DONOR_SAVE_COMPAT_REGRESSION_1 Asimov/DroidDepot/MSEDroidFix retirement broke CANONICAL_ASHKARR save load; mods restored, real fix still owed
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  DROIDRETIREDEPOTASIMOV1 retired Neronix17.Asimov, Neronix17.OuterRim.DroidDepot,
+prose:    infrastructure/state/items/DROID_DONOR_SAVE_COMPAT_REGRESSION_1.md
+
 ## STAT_NORMALIZATION_AUDIT_1 Census third-party mods that adjust animal/plant stats, rarity, appearance, size, growth before a self-owned-content normalization pass
 state:    doing
 row:      unassigned
@@ -692,6 +710,15 @@ target:   v1
 kind:     task
 summary:  Restore the campaign to a real, correct, save-safe state and fold in tonight's
 prose:    infrastructure/state/items/MODLIST_RESTORE_AND_BATCH_DEPLOY_1.md
+
+## CODEX_EDIT_TIMEOUT_1 codex edit mode (image-conditioned generation) timed out 3/3 in calibration (240/360/480s, zero images, not throttle) — root-cause it; it is the facing pipeline's reference-fidelity route
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/CODEX_EDIT_TIMEOUT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CODEX_EDIT_TIMEOUT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -898,53 +925,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
-
-## DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1 lumi.doorsexpanded retirement broke CANONICAL_ASHKARR save load; mod restored, real fix still owed
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  Wave 4 retired lumi.doorsexpanded after a thorough whole-modlist XML/def cross-reference
-prose:    infrastructure/state/items/DOORSEXPANDED_SAVE_COMPAT_REGRESSION_1.md
-
-## DROID_DONOR_SAVE_COMPAT_REGRESSION_1 Asimov/DroidDepot/MSEDroidFix retirement broke CANONICAL_ASHKARR save load; mods restored, real fix still owed
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  DROIDRETIREDEPOTASIMOV1 retired Neronix17.Asimov, Neronix17.OuterRim.DroidDepot,
-prose:    infrastructure/state/items/DROID_DONOR_SAVE_COMPAT_REGRESSION_1.md
-
-## SELFTEST_RENDER_FLAKE_1 selftest_render.py fails intermittently under the parallel suite (passes 17/17 solo) — likely contention with live rimflow writes; make it hermetic
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SELFTEST_RENDER_FLAKE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SELFTEST_RENDER_FLAKE_1.md
-
-## CODEX_EDIT_TIMEOUT_1 codex edit mode (image-conditioned generation) timed out 3/3 in calibration (240/360/480s, zero images, not throttle) — root-cause it; it is the facing pipeline's reference-fidelity route
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CODEX_EDIT_TIMEOUT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CODEX_EDIT_TIMEOUT_1.md
-
-## SYSTEM_TOOLS_SELFTEST_1 system_screenshot.py/system_click.py (6fac2cd1) crash at import under WSL python3 (ctypes.windll) — selftest_documented_commands FAILs; guard the import or exempt as windows-only
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SYSTEM_TOOLS_SELFTEST_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SYSTEM_TOOLS_SELFTEST_1.md
