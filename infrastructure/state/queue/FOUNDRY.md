@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-10T07:46:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-10T07:47:06Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1011,6 +1011,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WALL_LIGHTS_HELPER_BROKEN_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  1. Read walllights() in design/Jawa/templates/prelude.lua (or wherever
 prose:    infrastructure/state/items/WALL_LIGHTS_HELPER_BROKEN_1.md
