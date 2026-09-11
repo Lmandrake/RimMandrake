@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T04:00:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T04:04:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -471,3 +471,13 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PALETTE_ANCHOR_DRAFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PALETTE_ANCHOR_DRAFT_1.md
+
+## GELATINOUS_SLIME_MOD_1 The Gelatinous Slime Biome as a universal RimMandrake mod (mandrake.rm tier): biome + genetic archive + gene-extraction machine + slimification hediff; gather ALL in-game slime ecology, nothing more
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GELATINOUS_SLIME_MOD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GELATINOUS_SLIME_MOD_1.md
