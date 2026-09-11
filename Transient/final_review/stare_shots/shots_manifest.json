@@ -1,0 +1,212 @@
+[
+ {
+  "name": "substellar",
+  "tile": 19337,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_substellar.png",
+  "ok": true
+ },
+ {
+  "name": "dayside_N",
+  "tile": 8064,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_dayside_N.png",
+  "ok": true
+ },
+ {
+  "name": "dayside_S",
+  "tile": 8034,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_dayside_S.png",
+  "ok": true
+ },
+ {
+  "name": "dayside_E",
+  "tile": 8074,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_dayside_E.png",
+  "ok": true
+ },
+ {
+  "name": "dayside_W",
+  "tile": 8160,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_dayside_W.png",
+  "ok": true
+ },
+ {
+  "name": "terminator_000",
+  "tile": 20791,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_terminator_000.png",
+  "ok": true
+ },
+ {
+  "name": "terminator_045",
+  "tile": 15600,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_terminator_045.png",
+  "ok": true
+ },
+ {
+  "name": "terminator_090",
+  "tile": 8281,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_terminator_090.png",
+  "ok": true
+ },
+ {
+  "name": "terminator_135",
+  "tile": 15527,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_terminator_135.png",
+  "ok": true
+ },
+ {
+  "name": "terminator_180",
+  "tile": 18631,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_terminator_180.png",
+  "ok": true
+ },
+ {
+  "name": "terminator_225",
+  "tile": 15816,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_terminator_225.png",
+  "ok": true
+ },
+ {
+  "name": "terminator_270",
+  "tile": 8627,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_terminator_270.png",
+  "ok": true
+ },
+ {
+  "name": "terminator_315",
+  "tile": 16067,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_terminator_315.png",
+  "ok": true
+ },
+ {
+  "name": "nightside_N",
+  "tile": 7984,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_nightside_N.png",
+  "ok": true
+ },
+ {
+  "name": "nightside_S",
+  "tile": 7960,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_nightside_S.png",
+  "ok": true
+ },
+ {
+  "name": "nightside_E",
+  "tile": 8110,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_nightside_E.png",
+  "ok": true
+ },
+ {
+  "name": "nightside_W",
+  "tile": 8164,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_nightside_W.png",
+  "ok": true
+ },
+ {
+  "name": "antistellar",
+  "tile": 18991,
+  "altitude": 800,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_antistellar.png",
+  "ok": true
+ },
+ {
+  "name": "closeup_Scald",
+  "tile": 11942,
+  "altitude": 350,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_closeup_Scald.png",
+  "ok": true
+ },
+ {
+  "name": "closeup_Anvil",
+  "tile": 11228,
+  "altitude": 350,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_closeup_Anvil.png",
+  "ok": true
+ },
+ {
+  "name": "closeup_Dune_Sea",
+  "tile": 11298,
+  "altitude": 350,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_closeup_Dune_Sea.png",
+  "ok": true
+ },
+ {
+  "name": "closeup_Twilight_Sea",
+  "tile": 11840,
+  "altitude": 350,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_closeup_Twilight_Sea.png",
+  "ok": true
+ },
+ {
+  "name": "closeup_Fall_Line",
+  "tile": 11436,
+  "altitude": 350,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_closeup_Fall_Line.png",
+  "ok": true
+ },
+ {
+  "name": "closeup_Pyrelands",
+  "tile": 9384,
+  "altitude": 350,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_closeup_Pyrelands.png",
+  "ok": true
+ },
+ {
+  "name": "closeup_Cinders",
+  "tile": 11483,
+  "altitude": 350,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_closeup_Cinders.png",
+  "ok": true
+ },
+ {
+  "name": "closeup_Umbra",
+  "tile": 10743,
+  "altitude": 350,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_closeup_Umbra.png",
+  "ok": true
+ },
+ {
+  "name": "closeup_Long_Sand",
+  "tile": 10451,
+  "altitude": 350,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_closeup_Long_Sand.png",
+  "ok": true
+ },
+ {
+  "name": "closeup_Notch",
+  "tile": 11490,
+  "altitude": 350,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_closeup_Notch.png",
+  "ok": true
+ },
+ {
+  "name": "closeup_Dew_Belt",
+  "tile": 11853,
+  "altitude": 350,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_closeup_Dew_Belt.png",
+  "ok": true
+ },
+ {
+  "name": "closeup_Pan",
+  "tile": 8915,
+  "altitude": 350,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stare_closeup_Pan.png",
+  "ok": true
+ }
+]
