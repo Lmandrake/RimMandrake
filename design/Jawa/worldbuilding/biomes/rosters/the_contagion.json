@@ -28,7 +28,7 @@
     {"def": "GR_Manalope", "reason": "§4 ruled table is CLOSED (ban 3 admits nothing beyond the table) — no non-table def enters regardless of merit", "disposition": "homeless-reserve"},
     {"def": "Convor", "reason": "ban 3 — beyond the ruled table; a flier with a canyon-country read", "disposition": "move:ZBiome_Badlands", "note": "re-homed as a Cracked Lands commuting flier (that sheet §4)"},
     {"def": "Bordok", "reason": "ban 3 — no finished natives beyond the ruled §4 table ('a long-lived, stable new resident def contradicts open-throttle'); bs 1.4 / spd 5 (MEASURED)", "disposition": "homeless-reserve"},
-    {"def": "FrogDog", "reason": "ban 3; burrows-when-hungry read belongs to dryland ambush country", "disposition": "homeless-reserve", "note": "dryland batch candidate"},
+    {"def": "FrogDog", "reason": "ban 3 — no finished natives beyond the ruled §4 table; a docile 70-year pet species (petness 0.75, Wildness 0.10 MEASURED) contradicts open-throttle regardless", "disposition": "homeless-reserve"},
     {"def": "JRWArchaeopteryx", "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')", "disposition": "homeless-reserve"},
     {"def": "JRWEuphoberia", "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')", "disposition": "homeless-reserve"},
     {"def": "JRWHynerpeton", "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')", "disposition": "homeless-reserve"},
