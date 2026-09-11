@@ -302,3 +302,9 @@ ground condition → terrain; Filth transient only) — template §8.3 marked RU
 one sitting drains the 103 homeless rows to place/reserve/cut — filed
 HOMELESS_DISPOSITION_SITTING_1 (needs owner).
 (d) BASILISK: kept — excluded from the 'lisk cull; mountain-grey ruling stands.
+
+**10. Flora-template card rulings (owner, 2026-09-10 — all recommendations accepted):**
+palettes = draft + color-board review (PALETTE_ANCHOR_DRAFT_1, Fable agent running);
+twinkle = timeboxed spike (TWINKLE_FLORA_SPIKE_1, FOUNDRY); contrast law RATIFIED as
+written; set sizes default 3 with card override. Template §8 now fully ruled — the
+118-thing commission wave has no open design gates left except palette delivery.

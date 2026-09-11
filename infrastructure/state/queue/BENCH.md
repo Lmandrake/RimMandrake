@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T02:44:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T02:49:12Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -461,3 +461,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/HOMELESS_DISPOSITION_SITTING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/HOMELESS_DISPOSITION_SITTING_1.md
+
+## PALETTE_ANCHOR_DRAFT_1 Draft per-biome palette hex anchors from sheet prose + existing art; deliver ONE color-board review sheet for the owner's eye (owner card ruling)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PALETTE_ANCHOR_DRAFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PALETTE_ANCHOR_DRAFT_1.md
