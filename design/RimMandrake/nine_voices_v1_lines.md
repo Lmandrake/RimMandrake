@@ -100,7 +100,14 @@ trade (Mob'Unloo), launch/rooted (Ta'Baa), droid-online (Ohm):
 
 ---
 
-## Narrator silent-god readouts — DRAFT, not yet blessed
+## Narrator silent-god readouts — DRAFT, and now REGISTER-SUPERSEDED
+
+⚠️ 2026-09-11, later the same sitting: the owner ruled the Narrator's true
+register (canon.yml `narrator.butler_register_src`) — a mournful, bemused
+butler ghost, a REAL voice on the ship's speakers, never impersonal caption
+prose. The 18 lines below were drafted impersonal BEFORE that ruling: they
+need a butler-register redraft before any bless. Kept as content notes (the
+per-god environmental tells are still right); the voice is not.
 
 Owner asked (2026-09-11) for narrator descriptions of each god pleased /
 displeased "as they look on the events dominated by others but do not
