@@ -1079,6 +1079,19 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
       <value>
         <AA_FireWasp>0.4</AA_FireWasp> <!-- fire wasp - small-predator, keep -->
+        <AA_Razorjack>0.2</AA_Razorjack> <!-- razorjack - fire-follower, PYRELANDS_FIRE_WEB_COMMISSION_1 -->
+        <AA_Barbslinger>0.15</AA_Barbslinger> <!-- barbslinger - ash-grazer, PYRELANDS_FIRE_WEB_COMMISSION_1 -->
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">   <!-- own defs: RimUtinni Pyrelands commission, PYRELANDS_FIRE_WEB_COMMISSION_1 -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
+      <value>
+        <RUT_FireHawk>0.15</RUT_FireHawk> <!-- fire-hawk - igniter-flier, commission -->
+        <RUT_FurnaceBeast>0.08</RUT_FurnaceBeast> <!-- furnace-beast - igniter-megafauna, commission -->
       </value>
     </match>
   </Operation>

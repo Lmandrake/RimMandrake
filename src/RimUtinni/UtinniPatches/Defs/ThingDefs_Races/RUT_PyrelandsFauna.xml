@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PYRELANDS_FIRE_WEB_COMMISSION_1: owner sitting ruling, 2026-09-10: commission
+  the fire-hawk and furnace-beast, the biome's two "irreplaceable igniters"
+  (design/Jawa/worldbuilding/biomes/the_pyrelands.md SS4). Roster entry:
+  design/Jawa/worldbuilding/biomes/rosters/the_pyrelands.json "new_defs".
+
+  Scope: the roster-level def (stats, art, wildAnimals placement) only. The
+  special mechanics named in the sheet: fire-hawk twig-carrying, furnace-beast
+  heat aura and bed-down ignition: are explicitly OWED as their own item
+  (PYRELANDS_MECHANICS_1, not yet filed) and are NOT implemented here; these
+  defs behave as ordinary wild animals until that mechanic work lands.
+
+  Art: generated for real via the live artpipe daemon (infrastructure/artpipe/),
+  transparent background, one east-facing sprite each: see
+  infrastructure/artpipe/done/pyrelands_firehawk_v1.manifest.json and
+  pyrelands_furnacebeast_v1.manifest.json for the generation record. Single
+  texPath reused across all lifeStages, matching this campaign's own sea-beast
+  precedent (SWBestiary/Defs/SeaBeasts) rather than inventing a facing set this
+  pass owes no design gate for.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_FireHawk</defName>
+    <label>fire-hawk</label>
+    <description>A lean raptor of the standing burn, ash-grey and ember-orange, that flushes prey ahead of the flame-line and is said to carry a burning twig from one fire to the next when the burn stalls. The Pyrelands' first igniter with wings.</description>
+    <statBases>
+      <MoveSpeed>5.2</MoveSpeed>
+      <MarketValue>180</MarketValue>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>65</ComfyTemperatureMax>
+      <ArmorRating_Heat>0.3</ArmorRating_Heat>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>talons</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>talons</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <predator>true</predator>
+      <maxPreyBodySize>0.5</maxPreyBodySize>
+      <baseBodySize>0.65</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.35</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <trainability>Intermediate</trainability>
+      <gestationPeriodDays>7</gestationPeriodDays>
+      <manhunterOnDamageChance>0.15</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 0.5)</li>
+          <li>(2.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>14</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_FireHawk</defName>
+    <label>fire-hawk</label>
+    <race>RUT_FireHawk</race>
+    <combatPower>60</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.85</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_FurnaceBeast</defName>
+    <label>furnace-beast</label>
+    <description>A migratory megafauna whose banded mineral hide stores heat like a stove: weeks basking in the deep dayside, then walking out across the grass radiating warmth from glowing seams between its plates. Travelers follow the herds for warmth in the cold and give them a wide, respectful berth in the dry -- their bed-down grounds have been known to smolder alight on their own. Nothing on this planet has ever kept one.</description>
+    <statBases>
+      <MoveSpeed>3.6</MoveSpeed>
+      <MarketValue>900</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>70</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.35</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.3</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.6</ArmorRating_Heat>
+      <Wildness>0.97</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>horn</label>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left foot</label>
+        <labelNoLocation>foot</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foot</label>
+        <labelNoLocation>foot</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_Untameable" MayRequire="oskarpotocki.vanillafactionsexpanded.core">
+        <message>Nothing on this planet has ever kept a furnace-beast.</message>
+        <sendMessage>true</sendMessage>
+        <goesManhunter>false</goesManhunter>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHorn</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <baseBodySize>3.2</baseBodySize>
+      <baseHealthScale>2.8</baseHealthScale>
+      <baseHungerRate>1.4</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <manhunterOnDamageChance>0.15</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.9</manhunterOnTameFailChance>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>45</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_FurnaceBeast</defName>
+    <label>furnace-beast</label>
+    <race>RUT_FurnaceBeast</race>
+    <combatPower>220</combatPower>
+    <wildGroupSize>3~7</wildGroupSize>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.2</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
