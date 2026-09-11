@@ -17,12 +17,13 @@ load order wins the same-path resolution - same mechanism this repo already
 uses for donor-texture overrides (formerly BlastDoorFrameAsyncFix, now folded
 into StarWarsPatches).
 
-UNVERIFIED as of authoring: the donor ships these textures inside a Unity
-AssetBundle (AssetBundles/, no loose Textures/swanimals/ folder at all), not as
-loose files. Loose-overrides-loose-by-load-order is proven elsewhere in this
-repo; loose-overrides-AssetBundle-by-load-order is NOT yet confirmed working
-for this specific donor. Needs a live look (spawn/view a Mynock in-game) before
-this mod is trusted.</description>
+VERIFIED 2026-09-11 (ART_REGEN_WAVE1_WIRE_IN_1): the donor ships these textures
+inside a Unity AssetBundle (AssetBundles/, no loose Textures/swanimals/ folder
+at all), not as loose files. Confirmed live via a bridge quicktest spawn +
+screenshot that this mod's loose PNG wins the same-path resolution over the
+donor's AssetBundle-packed texture by load order - the mechanism this whole
+family of override mods (Mynock, Kreetle, Horax, Fambaa, Dragonsnake, Zakkeg)
+depends on is real for this donor on RimWorld 1.6.4871.</description>
   <loadAfter>
     <li>mlie.starwarsanimalcollection</li>
   </loadAfter>
