@@ -9472,10 +9472,10 @@
     "sha": "6e65d276"
   },
   "src/RimUtinni/Doctrine/About/About.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-09",
-    "hash": "bf8a04aefa68d3128a3f7bcd2fba1204e5922feab6df59bcb7c09df8665edeeb",
-    "sha": "3ea1ca20"
+    "cleanCount": 5,
+    "date": "2026-09-10",
+    "hash": "beda616b8a402fa057153881f2deedacdd5b02944e2fb5a643b5f0a629000da3",
+    "sha": "4b81823b"
   },
   "src/RimUtinni/Doctrine/LICENSE": {
     "cleanCount": 1,
@@ -9484,16 +9484,16 @@
     "sha": "6e65d276"
   },
   "src/RimUtinni/Doctrine/Patches/DroidsAreMachines.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "dbbab1fe8f25844bd1b881a0cbe0708e009c3eebe566323f544a93f93fdd55d4",
-    "sha": "c9acb340"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "cbc56dcfc581a8a6bd5e4eb4ef3eb76964714720b36a81936c983619601f03ce",
+    "sha": "4b81823b"
   },
   "src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-07",
-    "hash": "93a662860ac0c562765cd65e72878ee84f70a903f269527bb5284fa326fdd414",
-    "sha": "f51159cb"
+    "cleanCount": 4,
+    "date": "2026-09-10",
+    "hash": "ce0a79fa2d8c671efff3f2b1912d2b9046b4ae97c61d6f86f64d726a60aaf2ad",
+    "sha": "4b81823b"
   },
   "src/RimUtinni/Doctrine/Patches/NoDroidManufacture.xml": {
     "cleanCount": 1,
@@ -10564,16 +10564,16 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/StructureLayoutDefs_Vaults.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "a315712b1a22b29b33a2ced9af46cbf9d9c43490089727a42948a271af0ec874",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "8792d08bca870ddb27b13842e3d23840a6fe258b249fe827aa7107e1214e80fb",
+    "sha": "4b81823b"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/SymbolDefs_Vaults.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "0f02baa108f8e71977c0f2dc1c25a08f880796964aff5f5df1dfb7518f953057",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "9848f582a899a7bbd8c9171efcb526bef239b3dfe11d82c74467a870ab27bedd",
+    "sha": "4b81823b"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/ThingDefs_Buildings/RUT_VaultHeart.xml": {
     "cleanCount": 1,
@@ -10648,10 +10648,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/gen_vault_layouts.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "257adaa77fee714733238a8d565fbb2edf35c0adee1e4ac5a86a7c17a5330f9d",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "7089ec75b9fd1cc4a53d9c30074ab629feef13ecc1397a5a154f57cac855aff6",
+    "sha": "4b81823b"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/gen_vault_quests.py": {
     "cleanCount": 1,
