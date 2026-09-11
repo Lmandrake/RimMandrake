@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Absorbed verbatim from joe.cephaloids ("Cephaloids", workshop 3753477123),
+     source file Patches/Joes_Cephaloids_Patches.xml. STAT_NORM_WAVE2_RETIRE_1.
+     This is the donor's ENTIRE patch surface (17 ops, 1 file); own gates
+     (MayRequire="Ludeon.Rimworld.Odyssey") unchanged. Of the 23 biomes this
+     repo paints as Ash'karr, AridShrubland/Desert/ExtremeDesert/Scarlands/
+     LavaField are the 5 that receive an addition here (JOE_Cephalope and/or
+     JOE_Nautilant); the remaining operations target biomes not painted on
+     the frozen Ash'karr world and are inert there, same as upstream. -->
+<Patch>
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName = "BorealForest"]/wildAnimals</xpath>
+        <value>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName = "Tundra"]/wildAnimals</xpath>
+        <value>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName = "ColdBog"]/wildAnimals</xpath>
+        <value>
+            <JOE_Cephalope>0.07</JOE_Cephalope>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName = "IceSheet"]/wildAnimals</xpath>
+        <value>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName = "SeaIce"]/wildAnimals</xpath>
+        <value>
+            <JOE_Cephalope>0.01</JOE_Cephalope>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName = "AridShrubland"]/wildAnimals</xpath>
+        <value>
+            <JOE_Cephalope>0.07</JOE_Cephalope>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName = "Desert"]/wildAnimals</xpath>
+        <value>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName = "ExtremeDesert"]/wildAnimals</xpath>
+        <value>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName = "TropicalRainforest"]/wildAnimals</xpath>
+        <value>
+            <JOE_Landopus>0.1</JOE_Landopus>
+            <JOE_Cephalope>0.07</JOE_Cephalope>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName = "TropicalSwamp"]/wildAnimals</xpath>
+        <value>
+            <JOE_Landopus>1</JOE_Landopus>
+            <JOE_Cephalope>0.5</JOE_Cephalope>
+            <JOE_Nautilant>0.07</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName = "TemperateForest"]/wildAnimals</xpath>
+        <value>
+            <JOE_Landopus>0.1</JOE_Landopus>
+            <JOE_Cephalope>0.07</JOE_Cephalope>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName = "TemperateSwamp"]/wildAnimals</xpath>
+        <value>
+            <JOE_Landopus>1</JOE_Landopus>
+            <JOE_Cephalope>0.5</JOE_Cephalope>
+            <JOE_Nautilant>0.05</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.Rimworld.Odyssey">
+        <xpath>/Defs/BiomeDef[defName = "GlacialPlain"]/wildAnimals</xpath>
+        <value>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.Rimworld.Odyssey">
+        <xpath>/Defs/BiomeDef[defName = "Scarlands"]/wildAnimals</xpath>
+        <value>
+            <JOE_Cephalope>0.07</JOE_Cephalope>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.Rimworld.Odyssey">
+        <xpath>/Defs/BiomeDef[defName = "LavaField"]/wildAnimals</xpath>
+        <value>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.Rimworld.Odyssey">
+        <xpath>/Defs/BiomeDef[defName = "Grasslands"]/wildAnimals</xpath>
+        <value>
+            <JOE_Landopus>0.1</JOE_Landopus>
+            <JOE_Cephalope>0.2</JOE_Cephalope>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd" MayRequire="Ludeon.Rimworld.Odyssey">
+        <xpath>/Defs/BiomeDef[defName = "Glowforest"]/wildAnimals</xpath>
+        <value>
+            <JOE_Landopus>0.1</JOE_Landopus>
+            <JOE_Cephalope>0.07</JOE_Cephalope>
+            <JOE_Nautilant>0.01</JOE_Nautilant>
+        </value>
+    </Operation>
+</Patch>
