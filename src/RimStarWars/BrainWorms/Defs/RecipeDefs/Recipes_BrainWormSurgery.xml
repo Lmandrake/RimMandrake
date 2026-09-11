@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       RSW_RemoveBrainWorm — BRAINWORM_MOD_BUILD_1. The spec's "surgery remains as
+       the risky fast path", next to the cold cure which is slow, safe and a
+       journey.
+
+       Shape copied from vanilla ExciseCarcinoma (Recipe_RemoveHediff,
+       targetsBodyPart false), which is the engine's own "cut a thing out of
+       someone" recipe. Two properties of that worker matter here and are not
+       accidents:
+         - it only offers itself while the hediff is VISIBLE, so a latent,
+           undiscovered worm cannot be operated on. You cannot cut out what nobody
+           has found.
+         - it removes by def, so it takes the worm out at any severity, including
+           mid-puppeting (down the host first — a puppet will not lie on a bed).
+
+       Risky on purpose: Medicine 9, a success factor under 1, and a real chance of
+       killing the patient. The cheap safe answer is the nightside.
+
+       Attached to races by Patches/BrainWormSurgery_RecipeUsers.xml rather than
+       recipeUsers, so it reaches every alien race in the load order that copied
+       vanilla's own surgery list — not just Human.
+  ======================================================================== -->
+  <RecipeDef ParentName="SurgeryFlesh">
+    <defName>RSW_RemoveBrainWorm</defName>
+    <label>extract brain worm</label>
+    <description>Cut a Geonosian brain worm out of a host's skull. The parasite is wound into the base of the brain and does not want to come out. A steady hand and good medicine can do it; a shaky one kills the patient.</description>
+    <workerClass>Recipe_RemoveHediff</workerClass>
+    <jobString>Extracting brain worm.</jobString>
+    <workAmount>4000</workAmount>
+    <hideBodyPartNames>true</hideBodyPartNames>
+    <isViolation>false</isViolation>
+    <targetsBodyPart>false</targetsBodyPart>
+    <removesHediff>RSW_BrainWormInfection</removesHediff>
+    <successfullyRemovedHediffMessage>{0} has cut the brain worm out of {1}.</successfullyRemovedHediffMessage>
+    <surgerySuccessChanceFactor>0.75</surgerySuccessChanceFactor>
+    <deathOnFailedSurgeryChance>0.35</deathOnFailedSurgeryChance>
+    <skillRequirements>
+      <Medicine>9</Medicine>
+    </skillRequirements>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>Medicine</li>
+          </categories>
+        </filter>
+        <count>3</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>Medicine</li>
+      </categories>
+      <disallowedThingDefs>
+        <li>MedicineHerbal</li>
+      </disallowedThingDefs>
+    </fixedIngredientFilter>
+  </RecipeDef>
+
+</Defs>

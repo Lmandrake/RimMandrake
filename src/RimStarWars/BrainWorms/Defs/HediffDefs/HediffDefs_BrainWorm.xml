@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       RSW_BrainWormInfection — BRAINWORM_MOD_BUILD_1. The three-stage ladder the
+       spec rules: latent (discoverable, days) → influenced (social/work debuffs,
+       whispering) → puppeted.
+
+       The stage LADDER is here; the three things that move it are comps:
+         - HediffComp_Discoverable   vanilla. Stage 0 sets becomeVisible false, so
+                                     the infection is invisible until it crosses
+                                     0.35 and then this fires the letter.
+         - HediffComp_BrainWormProgress   ours. Severity per day, positive while
+                                     warm and NEGATIVE below freezing — progression
+                                     and the cold cure are one number with a sign.
+         - HediffComp_BrainWormPuppeteer  ours. At/above 0.8 it holds the host in
+                                     RSW_BrainWormPuppet, the Hediff_Scaria way.
+
+       🔴 LIVING HOSTS ONLY (owner, 2026-09-11: "Never corpse-walker. Too gross.")
+       A hediff stops ticking when its pawn dies, and the puppeteer comp refuses a
+       dead pawn on top of that. Nothing here reanimates anything. Do not add a
+       death-triggered stage or a corpse path.
+
+       Cure paths, both real:
+         - COLD. severityPerDayWhenCold -3 clears a fully puppeted host in roughly
+           eight hours of below-freezing ambient. On a tidally locked world that is
+           a journey to the nightside, not a recipe.
+         - SURGERY. RSW_RemoveBrainWorm (RecipeDefs_BrainWorm.xml), the risky fast
+           path. Vanilla Recipe_RemoveHediff only offers itself while the hediff is
+           VISIBLE, which is exactly right: you cannot cut out a worm nobody has
+           found yet.
+
+       Deliberately NOT tendable and NOT everCurableByItem: no medicine, no serum.
+       The two doors above are the only two doors.
+  ======================================================================== -->
+  <HediffDef>
+    <defName>RSW_BrainWormInfection</defName>
+    <label>brain worm</label>
+    <description>A Geonosian hive parasite lodged behind the eyes. It entered through the nose or the mouth as a finger-length worm and it is now wound into the base of the brain, where it feeds slowly and listens. For the first few days the host notices nothing. Then the host starts to hear the hive — and, eventually, to answer it.\n\nThe parasite is a creature of a hot world and dies below freezing. Get the host into the cold and keep them there and the worm will let go. A surgeon can also cut it out, if the surgeon is good and the host is lucky.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.75, 0.35)</defaultLabelColor>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <comps>
+      <li Class="HediffCompProperties_Discoverable">
+        <sendLetterWhenDiscovered>true</sendLetterWhenDiscovered>
+        <discoverLetterLabel>Brain worm: {0}</discoverLetterLabel>
+        <discoverLetterText>{0} has a Geonosian brain worm. It has been in there for days. It is talking to them now, and before long it will be doing the talking.\n\nCold kills it — get them below freezing and keep them there. A surgeon can also cut it out, at a risk.</discoverLetterText>
+        <letterType>ThreatSmall</letterType>
+      </li>
+      <li Class="RimMandrake.StarWars.BrainWorms.HediffCompProperties_BrainWormProgress">
+        <severityPerDay>0.14</severityPerDay>
+        <coldThreshold>0</coldThreshold>
+        <severityPerDayWhenCold>-3</severityPerDayWhenCold>
+        <expelledWorm>RSW_BrainWormKind</expelledWorm>
+      </li>
+      <li Class="RimMandrake.StarWars.BrainWorms.HediffCompProperties_BrainWormPuppeteer">
+        <!-- Keep in step with the "puppeted" stage's minSeverity below. -->
+        <puppetSeverity>0.8</puppetSeverity>
+        <mentalState>RSW_BrainWormPuppet</mentalState>
+      </li>
+      <li Class="RimMandrake.StarWars.BrainWorms.HediffCompProperties_BrainWormWhispers">
+        <minSeverity>0.35</minSeverity>
+        <maxSeverity>0.8</maxSeverity>
+        <mtbHours>4</mtbHours>
+        <texts>
+          <li>"...not yet..."</li>
+          <li>"...Karina..."</li>
+          <li>"...I can hear the nest..."</li>
+          <li>"...it is warm in here..."</li>
+          <li>"...we are so many..."</li>
+        </texts>
+      </li>
+    </comps>
+    <stages>
+
+      <!-- LATENT. Invisible; becomeVisible false is what makes
+           HediffComp_Discoverable's whole design work. ~2.5 days at 0.14/day. -->
+      <li>
+        <label>latent</label>
+        <minSeverity>0</minSeverity>
+        <becomeVisible>false</becomeVisible>
+      </li>
+
+      <!-- INFLUENCED. The host is still theirs, mostly. ~3 days at 0.14/day. -->
+      <li>
+        <label>influenced</label>
+        <minSeverity>0.35</minSeverity>
+        <socialFightChanceFactor>3</socialFightChanceFactor>
+        <opinionOfOthersFactor>0.4</opinionOfOthersFactor>
+        <restFallFactor>1.4</restFallFactor>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.10</offset>
+          </li>
+        </capMods>
+        <statFactors>
+          <li>
+            <WorkSpeedGlobal>0.8</WorkSpeedGlobal>
+          </li>
+        </statFactors>
+        <statOffsets>
+          <li>
+            <SocialImpact>-0.35</SocialImpact>
+          </li>
+        </statOffsets>
+      </li>
+
+      <!-- PUPPETED. The hive is driving. No capacity penalties on purpose: the
+           body has to be able to fight, that IS the threat. Pain is turned down
+           because the thing steering does not care about the vehicle. -->
+      <li>
+        <label>puppeted</label>
+        <minSeverity>0.8</minSeverity>
+        <lifeThreatening>true</lifeThreatening>
+        <painFactor>0.3</painFactor>
+        <opinionOfOthersFactor>0</opinionOfOthersFactor>
+        <blocksInspirations>true</blocksInspirations>
+      </li>
+
+    </stages>
+  </HediffDef>
+
+</Defs>

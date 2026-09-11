@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       RSW_BrainWormCargoPod — BRAINWORM_MOD_BUILD_1, vector 2: salvaged cargo. The
+       Ahsoka route, and the scavenger fantasy of dragging home something that
+       hatches.
+
+       Presents as the ordinary cargo-pod crash it imitates, right down to the
+       PositiveEvent letter: what lands really is a useful salvage haul, with an egg
+       cluster in it. The player is never told. The egg's own inspect string is the
+       only warning, and only if someone looks.
+
+       Rare on purpose (baseChance a third of vanilla's cargo pod, 15-day refire
+       floor): this is a campaign event you remember, not weather.
+  ======================================================================== -->
+  <IncidentDef>
+    <defName>RSW_BrainWormCargoPod</defName>
+    <label>cargo pod crash</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.StarWars.BrainWorms.IncidentWorker_BrainWormCargo</workerClass>
+    <baseChance>0.33</baseChance>
+    <minRefireDays>15</minRefireDays>
+    <canOccurOnAllPlanetLayers>true</canOccurOnAllPlanetLayers>
+  </IncidentDef>
+
+</Defs>
