@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 107.57099430798553,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 107.57099430798553,
+  "height": 512,
+  "id": "anooba_v1_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 16.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T12-22-07-01a091eb-8801-7492-b523-b686390218e1.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 40.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 6.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T10-30-14-01a09185-1c03-7381-9624-64aedcc2d4f5.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 38.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "anooba_v1_north",
+    "note": "Generated with built-in imagegen and downscaled to exactly 512x512 while preserving transparent alpha. Canonical north-facing Anooba with heavy black linework.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\anooba_v1_north\\anooba_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/anooba_v1_north/anooba_v1_north.png\n    512x512  rgba  253,141 bytes  (107s)\n"
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 101.71264607500052,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 101.71264607500052,
+  "height": 512,
+  "id": "anooba_v1_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 16.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T12-22-07-01a091eb-87d8-7de0-a0a8-8deeaf4da9c1.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 40.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 8.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T10-32-57-01a09187-9613-7680-bc3a-fcadc0f27aa5.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 39.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "anooba_v1_east",
+    "note": "Generated via built-in imagegen and normalized to exactly 512x512 while preserving transparent alpha and fully transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\anooba_v1_east\\anooba_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/anooba_v1_east/anooba_v1_east.png\n    512x512  rgba  171,754 bytes  (102s)\n"
+}

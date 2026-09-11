@@ -7347,3 +7347,8 @@
 {"seat":"BENCH","event":"file","id":"GOD_LINES_ORACLE_PACKS_1","title":"Author the Ninefold god statement/reaction lines + Oracle persona prompt packs (voice law locked, zero lines exist); owner sittings, BENCH holds the pen - text_lore_load_report.md S5","kind":"task","target":"v1","needs":"owner","for":"BENCH","ts":"2026-09-11T19:11:32Z"}
 {"seat":"BENCH","event":"file","id":"DUNGEON_SETPIECE_TEXT_1","title":"Dungeon set-piece prose held for the owner: Assailant reveal letters + 6 Forsaken vault hand-finish text per dungeons_arc_spec.md - text_lore_load_report.md S5","kind":"task","target":"v1","needs":"owner","for":"BENCH","ts":"2026-09-11T19:11:33Z"}
 {"seat":"OWNER","event":"close","id":"TEXT_LORE_LOAD_CENSUS_1","sha":"55c77ef69","ownerSaid":"Fan out.","override":"OWNER may not `close` TEXT_LORE_LOAD_CENSUS_1 — it belongs to FOUNDRY. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-09-11T19:12:09Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LOCKJAW_ART_WIRE_IN_1","ts":"2026-09-11T19:17:51Z"}
+{"seat":"FOUNDRY","event":"start","id":"LOCKJAW_ART_WIRE_IN_1","ts":"2026-09-11T19:17:51Z"}
+{"seat":"FOUNDRY","event":"spawn","name":"ART_REGEN_WAVE4_QUEUE_1","kind":"build","needs":"offline","for":"FOUNDRY","from":"ART_REGEN_WAVE3_QUEUE_1","ts":"2026-09-11T19:21:49Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ART_REGEN_WAVE4_QUEUE_1","ts":"2026-09-11T19:21:56Z"}
+{"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE4_QUEUE_1","ts":"2026-09-11T19:21:57Z"}

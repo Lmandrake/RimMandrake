@@ -342,3 +342,9 @@
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "puffmite_v1_east", "notes": "", "target": "puffmite/east", "ts": 1789154524.8912916}
 {"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE4_QUEUE_1", "target": "puffmite/north", "ts": 1789154524.896868}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "puffmite_v1_north", "notes": "", "target": "puffmite/north", "ts": 1789154524.9024599}
+{"by": "artpiped", "elapsed_s": 83.70592232700437, "event": "generated", "job_id": "anooba_v1_south", "target": "anooba/south", "ts": 1789154609.7822638}
+{"by": "artpiped", "event": "validated", "job_id": "anooba_v1_south", "target": "anooba/south", "ts": 1789154609.7881198, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 101.71264607500052, "event": "generated", "job_id": "anooba_v1_east", "target": "anooba/east", "ts": 1789154627.7011223}
+{"by": "artpiped", "event": "validated", "job_id": "anooba_v1_east", "target": "anooba/east", "ts": 1789154627.7069294, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 107.57099430798553, "event": "generated", "job_id": "anooba_v1_north", "target": "anooba/north", "ts": 1789154633.6079512}
+{"by": "artpiped", "event": "validated", "job_id": "anooba_v1_north", "target": "anooba/north", "ts": 1789154633.6137094, "verdict": "pass"}

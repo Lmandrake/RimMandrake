@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T19:12:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T19:21:57Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -710,6 +710,15 @@ target:   v1
 kind:     build
 summary:  infrastructure/artpipe/done/lockjawimprovear7.json and br7.json (plus
 prose:    infrastructure/state/items/LOCKJAW_ART_WIRE_IN_1.md
+
+## ART_REGEN_WAVE4_QUEUE_1 ART_REGEN_WAVE4_QUEUE_1
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/ART_REGEN_WAVE4_QUEUE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ART_REGEN_WAVE4_QUEUE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
