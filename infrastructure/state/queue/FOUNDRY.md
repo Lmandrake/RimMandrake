@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T07:58:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T08:03:19Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -638,15 +638,6 @@ target:   v1
 kind:     task
 summary:  RESEARCHTRIORETIRE1 — retire steppingstones + als.gravtech x2, reconcile the recost
 prose:    infrastructure/state/items/RESEARCH_TRIO_RETIRE_1.md
-
-## FAUNA_STATS_BRIDGE_TOOL_1 New companion tool jawa/animal_stats for the normalization graphs: per ThingDef return race.baseBodySize, wildness, ComfortableTemperatureMin/Max + MeatAmount/LeatherAmount via GetStatValueAbstract, best melee tool power+cooldown - MEASURED 2026-09-11: jawa/get_defs cannot reach nested race fields or list contents; rimbridge-companion skill pattern, deploy at next game-down
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  (no items/FAUNA_STATS_BRIDGE_TOOL_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FAUNA_STATS_BRIDGE_TOOL_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
