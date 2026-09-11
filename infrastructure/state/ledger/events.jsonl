@@ -7361,3 +7361,23 @@
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-11T19:33:49Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-11T19:48:32Z"}
 {"seat":"FOUNDRY","event":"close","id":"GREENTIDE_STANDALONE_MOD_1","sha":"c71fb0fbf","ts":"2026-09-11T19:48:41Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-11T19:49:36Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"confirm creaturebehaviors fix + shipvermin/shokk/greentide combined load, full list","ts":"2026-09-11T19:50:40Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T19:50:41Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-11T19:50:47Z"}
+{"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T19:50:48Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T19:50:49Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-11T20:07:03Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-11T20:08:44Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T20:09:28Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-11T20:09:32Z"}
+{"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T20:09:38Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T20:09:39Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T20:10:25Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T20:11:33Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-11T20:11:37Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-11T20:11:56Z"}
+{"seat":"FOUNDRY","event":"claim","id":"TIER_GRAMMAR_TEXT_FIXES_1","ts":"2026-09-11T20:23:19Z"}
+{"seat":"FOUNDRY","event":"start","id":"TIER_GRAMMAR_TEXT_FIXES_1","ts":"2026-09-11T20:23:20Z"}
+{"seat":"FOUNDRY","event":"file","id":"JAWA_PHRASING_RSW_TIER_CARD_1","title":"Card: is Jawa-clan phrasing allowed at RSW tier, or must it stay RUT-only?","kind":"decision","target":"v1","needs":"owner","spec":"TIER_GRAMMAR_TEXT_FIXES_1 fixed 3 confirmed tier-grammar violations (RM_OpenPit_Oubliette's stray 'droids', RM_WM_AutomatedSmelterRestoration's 'Jawa's own', RSW_GlassPearl's 'Ash'karr's'). Left open per that item: whether Jawa-CLAN phrasing in general (not the specific proper noun 'Ash'karr', which is definitely RUT-only, but generic 'Jawa' as a species/culture reference) is allowed inside RSW-tier text at all, since RSW is meant to work for ANY Star Wars scenario and Jawas are canon SW species usable outside Utinni specifically - or whether even that should be pushed to RUT to keep RSW strictly species-generic. text_lore_load_report.md S3 has the full context.","for":"OWNER","ts":"2026-09-11T20:25:26Z"}
+{"seat":"FOUNDRY","event":"close","id":"TIER_GRAMMAR_TEXT_FIXES_1","sha":"e35831086","ts":"2026-09-11T20:26:10Z"}
