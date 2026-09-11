@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Quickgrass — the engineered lawn. The pyrelands sheet's ruling
+    (the_pyrelands.md §water answer, owner 2026-09-10): a Rakatan-engineered
+    forage crop gone feral — roots driven to the water table by design,
+    regrowth in days by design, dominance by design. The war left a lawn,
+    still working as built. It is the "quickgrass sprints back" step of the
+    ruled fire chain, and with the generic grasses evicted (owner card,
+    2026-09-11: pyrelands ground layer = quickgrass + commissioned fire-chain
+    flora only) it is the biome's forage base.
+
+    Division of labour with EmberGrass.xml: ember grass is the FUEL —
+    standing tinder, flammability 1.6, everything into height and nothing
+    into water. Quickgrass is the FORAGE — taproot to the water table, so it
+    comes back green onto warm ash and feeds the ash-grazers. It burns like
+    an ordinary lawn (0.7), not like the fuel bed; the fire passes THROUGH
+    it and it is back inside two days, which is the engineered point.
+
+    growDays 0.5: "regrowth in days by design", faster even than ember grass
+    (0.8) — the burn never outruns the lawn. Same lifespan trap as ember
+    grass: lifespanDaysPerGrowDays 42 puts the lifespan back at a normal
+    ~21 days.
+
+    ⚠️ Same flagged-not-guessed tint assumption as EmberGrass.xml /
+    ScorchFruit.xml: no vanilla plant sets graphicData <color>; if CutoutPlant
+    ignores it the plant renders plain green — cosmetic only. The colour is
+    the ruled flora accent, regrowth green #62c944.
+  -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_FE_Plant_Quickgrass</defName>
+    <label>quickgrass</label>
+    <description>A low, dense forage grass that comes back onto burned ground while the ash is still warm, green against the black inside a day or two. Its roots run absurdly deep for its size — down to the water table, in defiance of everything the surface suggests — and its blades carry more food than any wild grass has a right to. It was engineered that way, twenty-five millennia ago, by gardeners who wanted this ground to feed things. The gardeners are gone. The lawn is still working.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <!-- An ordinary lawn's burn, not the fuel bed's: the fire chain
+           needs it back two days after the front passes, and it is the
+           water-carrier of the pair. -->
+      <Flammability>0.7</Flammability>
+      <!-- Engineered forage: above ember grass (0.45) by design — this is
+           what the ash-grazers and the Tribes' herds actually live on. -->
+      <Nutrition>0.7</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Grass</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(98, 201, 68)</color>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <ingestible />
+    <plant>
+      <!-- The taproot is the fertility story: it grows on a fresh ash
+           trace and a light bank exactly as ember grass does, and stops at
+           the same heavy-ash rungs, so the ash ladder keeps its meaning. -->
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.1</fertilitySensitivity>
+      <growDays>0.5</growDays>
+      <lifespanDaysPerGrowDays>42</lifespanDaysPerGrowDays>
+      <leaflessGraphicPath>Things/Plant/Grass_Leafless</leaflessGraphicPath>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>9</maxMeshCount>
+      <visualSizeRange>0.4~0.7</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>18</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <!-- Same engineered span as the rest of the kit: still growing on
+           ground hot enough to scorch, unbothered by a night frost. -->
+      <minGrowthTemperature>-4</minGrowthTemperature>
+      <minOptimalGrowthTemperature>8</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>50</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>80</maxGrowthTemperature>
+      <growMinGlow>0.31</growMinGlow>
+    </plant>
+  </ThingDef>
+
+</Defs>

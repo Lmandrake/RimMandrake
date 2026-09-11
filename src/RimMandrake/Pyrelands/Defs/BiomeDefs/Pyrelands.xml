@@ -237,15 +237,18 @@
 
     <!--
       RM_FE_Plant_EmberGrass dominates on purpose: it IS the fuel bed, and
-      a fire ecology with a thin fuel bed is just a desert. Vanilla grass
-      still shows up so the map does not read as a single-plant tileset.
-      RM_FE_Plant_ScorchFruit is deliberately NOT here — that plant only
-      ever exists where a fire has just been (see ScorchFruit.xml).
+      a fire ecology with a thin fuel bed is just a desert. Owner ruling
+      2026-09-11: "the grass here has to be unique" — every generic grass
+      (vanilla Plant_Grass/Plant_TallGrass included) is evicted; the second
+      grass is RM_FE_Plant_Quickgrass, the Rakatan forage lawn (Quickgrass.xml).
+      Non-grass vanilla plants stay so the map does not read as a
+      single-plant tileset. RM_FE_Plant_ScorchFruit is deliberately NOT
+      here — that plant only ever exists where a fire has just been
+      (see ScorchFruit.xml).
     -->
     <wildPlants>
       <RM_FE_Plant_EmberGrass>9.0</RM_FE_Plant_EmberGrass>
-      <Plant_Grass>2.2</Plant_Grass>
-      <Plant_TallGrass>1.6</Plant_TallGrass>
+      <RM_FE_Plant_Quickgrass>3.8</RM_FE_Plant_Quickgrass>
       <Plant_Bush>0.55</Plant_Bush>
       <Plant_Agave>0.35</Plant_Agave>
       <Plant_PincushionCactus>0.3</Plant_PincushionCactus>
