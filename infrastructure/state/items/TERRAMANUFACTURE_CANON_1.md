@@ -21,3 +21,13 @@ magnetic pole there); the war lab was never planned; mutual learning / mutual de
 ## verify
 Every doc that narrates the planet's past either agrees with the ruling or carries the
 pointer line; the owner has ruled each contradiction card.
+
+## Ruling 2026-09-11 — the last open card is closed
+
+The forgotten-war contradiction (the 2026-08-20 verbatim "They were
+terraformers and mega builders" vs the 2026-09-06 terramanufacture ruling) is
+RULED: **the quote stands as quote; the newer ruling refines it** —
+terraformers-and-mega-builders reads as terramanufacture, and surrounding
+prose updates to that frame. Recorded at `the_forgotten_war.md` R-W3 block.
+No cards remain open; the item's propagation work is UNBLOCKED and can
+proceed per the spec above.

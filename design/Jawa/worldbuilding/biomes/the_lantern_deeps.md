@@ -181,9 +181,26 @@ after all, and the Deeps' crystal minds are their "wild cousins."** They may **t
 player**, asking for help and defense against **"the insane enslaved one"** — the Rust
 Cathedral — which seeks to mine them all up and use them in its never-ending hunger.
 Somewhere out here: **a mechanoid production facility still working**, restocking the
-**Forgotten Sentries** (owner's spelling "Senties" read as Sentries — confirm) at a very
+**Forgotten Sentries** (owner's spelling "Senties"; RULED 2026-09-11: canon name is
+**Forgotten Sentinels**, "Sentries" survives as in-world speech) at a very
 slow rate — or a slumbering one the Rust Cathedral would like turned back on. **Restore
 its "true children" and it might no longer love its Free Droids quite so much.**
+
+**Ruled detail (card sitting 2026-09-11, `RUT_mechanoid_origin_canon.md` §5):**
+the open forks above are settled — the facility runs an **autonomous trickle** on
+the last standing orders (that trickle is where ten millennia of Sentinel attrition
+replacement came from; the mindstone-seeding line is dark; "restore" = hand it to
+the Cathedral). Wider automated infrastructure survives only because it is slept
+religiously: *"To use them is to risk them"* — kept at the most basic level, slowly
+winding down, more cautious than ever with the Empire so close. The "never-ending
+hunger" is the cousins' timeless memory of the hunger-that-WAS — no active
+crystal-mind mining today; the threat is the restore itself. "Enslaved" is
+testimony register (engineered-to-purpose), not a hidden master. The new race is
+**the Kindled** (`RUT_Kindled`); the crystal keeps the name **mindstone**
+(`RUT_Mindstone`); a mindstone head is immune to wipes and spikes (they fail with
+text). Taxonomy: droid = mechanical body + mechanical mind; mechanoid =
+partless pseudo-organic construct **fused with a crystal mind**; Kindled =
+parts-based mechanical body + crystal operating the neural circuits — new life form.
 
 ### 🔴 The kyber trade (owner — `KYBER_TRADE_PLOT_1`)
 Selling kyber is **extremely illegal to the Empire**: heat rises substantially per sale;
@@ -220,8 +237,9 @@ help the Rebellion *elsewhere* (🔴 still no way to help it here: they lost, th
 - `MECHANOID_ORIGIN_CANON_1` — the mindstone race, the wild-cousins reading of the
   mechanoids, the production facility, the Cathedral's "true children."
 - `KYBER_TRADE_PLOT_1` — heat, Hutts, the alleged Jedi, the donation-and-smuggle plot.
-- **Names owed**: the mindstone; the new race; the Forgotten Sentries (spelling
-  confirmed).
+- **Names — RULED 2026-09-11**: the mindstone keeps its name (`RUT_Mindstone`);
+  the new race is the Kindled (`RUT_Kindled`); the units are canonically the
+  Forgotten Sentinels ("Sentries"/"Forsaken" live on only as in-world speech).
 - **Crystal-life authoring**: art (NEW-ART ledger) and C# — piezo/light-draw behaviors,
   the Creep's accretion, the Cleavers' fracture movement, the Shard-mind animating dead
   gear (a possessed-corpse/droid pattern).

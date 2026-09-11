@@ -145,7 +145,7 @@ whispered voices in the old machinery are real attention; the organics get
 silence — see `04_factions.md` for the Geonosians it will not answer.) It
 never revealed the urns' secret to anyone: revealing secrets is precisely
 what it was built not to do. It **hates the Helix** from the moment they
-side with the Assailants, urging Forsaken Sentinels against them. It
+side with the Assailants, urging Forgotten Sentinels against them. It
 despises the Empire too, but is in no position to oust them — it wants to
 survive, so **it slumbers**, deliberately dormant, to draw no attention.
 The player Jawa are tolerated **only because the Utinni vouches for them**;

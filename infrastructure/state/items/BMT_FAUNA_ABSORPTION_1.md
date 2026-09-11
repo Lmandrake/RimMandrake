@@ -88,6 +88,22 @@ Greentide/Scarlands/PoisonForest/TheRot/Webwork/Wasteland.xml` +
 plus **26 rows in `design/Jawa/fauna/cast_assignment.csv`** (defName + `mod`
 column repointed to `RimMandrake: SW — Bestiary`, reason field annotated).
 
+## Owner rulings, 2026-09-11 card sitting (BENCH) — the two open calls are made
+
+1. **Retirement STANDS.** The same-day conflict (00:03 "port then RETIRE" vs
+   the ~00:18 Wave-4 "keep-and-suppress for … the Biomes-team family") is
+   RULED: the specific correction wins — the three `biomesteam.*` mods RETIRE
+   **after** the three escalation gates below clear and the RSW_ port is
+   proven live. The Wave-4 record in
+   `design/Jawa/mods/stat_normalization_audit_2026-09-09.md` now carries the
+   exception. Does NOT change MVB/Alpha Animals keep-and-suppress.
+2. **The 7 stragglers are CUT** (escalation §2's roster: `BMT_ChemSnail` at
+   BOTH `the_cracked_lands` and `the_rot`, `BMT_CaveSpider`, `BMT_GiantSlug`,
+   `BMT_GiantSnail`, `BMT_Pillbug`, `BMT_GlowBat`): delete their live biome
+   entries (the `MayRequire`-gated wildAnimals/butcherProducts rows and the
+   flier extraction) so nothing dangles at retirement. They are NOT added to
+   the port. FOUNDRY executes with the rest of this item.
+
 ## ESCALATION — retirement is NOT safe yet, three open items
 
 1. **`src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml` is

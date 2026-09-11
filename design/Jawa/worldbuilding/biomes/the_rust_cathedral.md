@@ -265,7 +265,21 @@ added history. Changes no ruling above or below.**
   - **The night-side sentry factory IS the Lantern Deeps' mechanoid
     production facility** (`MECHANOID_ORIGIN_CANON_1`) — one factory, not on
     Cathedral ground, not running under its hand today; the Cathedral would
-    like it restarted.
+    like it restarted. **Ruled detail (2026-09-11 sitting,
+    `RUT_mechanoid_origin_canon.md` §5)**: the factory runs an autonomous
+    trickle on the last standing orders — the source of ten millennia of
+    Sentinel attrition replacement; its mindstone-seeding line is dark;
+    "restore" = hand it to the Cathedral. The surviving automated mining/
+    supply/manufacturing lines persist only because the Cathedral sleeps
+    them religiously (*"To use them is to risk them"* — owner), held at the
+    most basic level and slowly winding down; it doubts it could ever spiral
+    up again, and the Empire's arrival makes every activation dearer. It is
+    NOT actively mining crystal minds today — the cousins' "never-ending
+    hunger" is their timeless memory of the hunger-that-was, and crystal
+    minds remain among the scarcest resources it needs to build more
+    Sentinels (and itself). Taxonomy detail: the Sentinels/mechanoids are
+    partless pseudo-organic constructs **fused with crystal minds** — kin,
+    which is why the wild cousins' fear is personal.
   - **The sealed guardians and the sleeping Rakata are RimWorld's standard
     "ancient danger" structures, reskinned** (VQE Ancients + AreRakata) —
     the ubiquitous mapgen mechanic spread across the ANCIENT-ALLOW biomes,

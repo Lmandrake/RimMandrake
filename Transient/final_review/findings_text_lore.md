@@ -87,7 +87,10 @@ low-stakes, ambient; Dead Sarlacc ×7 dupes are already punch row 4.
 **Scenario nit:** the file's own header vows no invented duration ("A first draft
 had… 'twenty thousand years'; neither is in any founding doc") — yet the shipped text
 says "in a language nobody on this world has heard in **ten thousand years**." One
-phrase to cut or ratify.
+phrase to cut or ratify. **RULED 2026-09-11 (card sitting): CUT the number** —
+reword to a non-numeric span; filed as `SCENARIO_DURATION_CUT_1` (FOUNDRY,
+needs deploy). Blast radius: the scenario narration only — design docs'
+"ten thousand years" prose is not bound by the scenario header's vow.
 
 **Best 5 strings, worth celebrating:**
 1. Scenario close: "The hull is yours because you woke it, and a thing that could

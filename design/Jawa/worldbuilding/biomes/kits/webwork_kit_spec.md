@@ -52,7 +52,9 @@ Constraints honored:
 - **Kit resolution** (§4 below): reimplement the *sunlight* variant of that hediff
   shape at RM_ tier, using the same `InSunlight` primitive the UV gene uses
   (`SanguophageUtility.InSunlight`: unroofed AND `skyManager.CurSkyGlow > 0.1`),
-  so overcast/night genuinely weakens the moat as the sheet demands. This honors
+  so overcast weather genuinely weakens the moat as the sheet demands (RULED
+  2026-09-11: there is no night on Ash'karr's dayside — weather is the only
+  moat-off). This honors
   the owner's pointer — same mechanism, same primitives — moved to a carrier an
   animal can hold. The sheet itself says "verify the exact def at build, never
   guess it"; this is that verification.
@@ -186,8 +188,10 @@ route on the basic spit. **Deferred**: ability-based volley. **Effort: S.**
 
 **Player experience** (sheet §3, §7b). Owners are helpless in direct sunlight: a
 cut, burned, kept-open ring of ground is a fortress wall made of light. Overcast
-skies and nightfall genuinely weaken it; regrowth and an untrimmed margin erode
-it. Fire is architecture.
+skies genuinely weaken it (RULED 2026-09-11, owner-verbatim: "There is no night
+here, and no light a player can make has the effect of this planet's terrible
+sun." — no night cycle applies, and lamps never substitute); regrowth and an
+untrimmed margin erode it. Fire is architecture.
 
 **Engine route.** Per §0: the gene is Humanlike-only, so the kit ships the same
 mechanism on an animal-legal carrier:
@@ -195,12 +199,15 @@ mechanism on an animal-legal carrier:
   `Hediff_LightExposure` tick shape but keyed to
   `SanguophageUtility.InSunlight` — unroofed + `CurSkyGlow > 0.1` — the same
   primitive `ConditionalStatAffecter_InSunlight` uses, so lamps/torches do NOT
-  scald and night/overcast genuinely opens the moat, both sheet-required).
+  scald and overcast weather genuinely opens the moat, both sheet-required;
+  night does not exist here per the 2026-09-11 ruling).
   Severity climbs fast in sun, decays in shade ❓ (rates invented; start near
   LightExposure's 0.4/−0.25 per sec and tune hotter — "helpless", not "annoyed").
 - **`RUT_Webwork_SunScald`** HediffDef (XML): staged like `LightExposure`
-  (verified stages pattern) but ending harder — top stage Moving `setMax` low
-  enough to down ❓, plus pain. A downed spider in your moat is loot, not siege.
+  (verified stages pattern). RULED 2026-09-11: top stage CRIPPLES, never downs
+  — MoveSpeed ~×0.3, the spider crawls for shade; no loot piñata in the moat.
+  (Supersedes the earlier "setMax low enough to down" literal reading of the
+  sheet's "helpless".)
 - Attached via **`PawnKindDef.startingHediffs`** (verified vanilla,
   `PawnGenerator` applies at generation) — no comp, no HediffGiver needed.
 - Behavioral aversion ("physically cannot cross open sunlit ground"): the kit's
@@ -348,29 +355,41 @@ independent (boundary carded).
    `ALPHA_MECHANICS_KIT_1` and the web Things, and its sole-source boundary card
    answered (or ships no-yield).
 
-## Owner cards
+## Owner rulings (card sitting, 2026-09-11 — all seven cards ruled)
 
-1. **Light-moat hardness**: should full sun *down* a Wyyyschokk (loot piñata in
-   your moat) or only cripple it (MoveSpeed ~×0.3, still crawling for shade)?
-   Sheet says "helpless"; downed is the literal reading — confirm before tuning.
-2. **Night/overcast moat failure**: v1 makes the moat genuinely OFF at night and
-   under heavy overcast (sun-keyed, lamps do nothing — sheet lists overcast as a
-   threat). Confirm night assaults are wanted as a core rhythm, since this makes
-   the biome markedly harder than the donor's.
-3. **Shokk-bound vs. player abuse**: bound pawns are downed-not-dying for days —
-   players may deliberately feed a colonist to bait convergence. Accept as
-   emergent story, or add a "the spider collects bound prey" behavior (drag to
-   nest — M extra, deferred by default)?
-4. **Sole-source boundary** (with `SHOKKWEAVE_SOLE_SOURCE_1`): does cutting
-   creep-web on a border map count as an in-biome harvest route? Until ruled,
-   creep-web is a no-yield variant.
-5. **Assembly home**: RM_ classes into `mandrake.rm.environmentalhazards`
-   alongside the six ruled comps (default), or a separate RM_ "creature
-   behaviors" assembly since half this kit is JobGiver/MapComponent shaped?
-6. **Tier of `RUT_ShokkBound` and the spit damage def**: the Wyyyschokk is canon
-   Star Wars fauna (sheet §7 amendment) — if the roster lands the species at
-   RSW_ tier, these two defs should be RSW_ and move with it. Named RUT_ here per
-   this item's instruction; flag for the roster pass.
-7. **Ambusher concealment art**: dormant-state graphic swap vs. a destroyable
-   web-lump Thing hiding the pawn — small build difference, visible-to-player
-   difference; his eye should pick.
+1. **Light-moat hardness — RULED: cripple, never down.** MoveSpeed ~×0.3 at
+   top stage, the spider crawls for shade; no loot piñata. Refines the
+   sheet's "helpless" — helpless-in-practice, not executable-at-will. §4
+   amended in place.
+2. **Moat off-switch — RULED: sun-keyed only; there is no night.**
+   Owner-verbatim: "There is no night here, and no light a player can make
+   has the effect of this planet's terrible sun." Lamps never substitute;
+   Ash'karr's dayside has no night cycle, so weather/overcast is the ONLY
+   moat-off. The "night assaults as core rhythm" framing is dead — overcast
+   assaults remain. §0/§4 amended in place. (Canon note: this binds any
+   future sun-keyed mechanic on this world.)
+3. **Bound-bait — RULED: accept as emergent story.** Feeding a bound
+   colonist out as convergence bait is legitimate player cunning; no
+   collect-prey behavior is built (not deferred — not built).
+4. **Sole-source boundary — RULED: border creep-web YIELDS, with teeth.**
+   Owner-verbatim: "(2) but it has a small chance of SPAWNING an emergent
+   Shokk to get you." Cutting creep-web on a border map is a real harvest
+   route, and each cut carries a small chance of spawning an emergent Shokk.
+   Supersedes the no-yield-variant placeholder; feeds
+   `SHOKKWEAVE_SOLE_SOURCE_1` (recorded on that item).
+5. **Assembly home — RULED (via the Scarlands sitting): the separate RM_
+   creature-behaviors assembly**, in the ShipVermin/behaviors family — NOT
+   `mandrake.rm.environmentalhazards`. The six ruled comps stay where they
+   are.
+6. **Tier — RULED: the Shokk is its own RimStarWars-tier mod.**
+   Owner-verbatim: "The Shokk feels like it's becoming its own
+   MandrakeStarWars level mod, with the rest of the mechanics in this biome
+   party of the Utinni scenario." The Wyyyschokk species, `ShokkBound` and
+   the spit damage def go RSW_ and move into `SHOKK_RSW_MOD_1`; the rest of
+   this kit's biome mechanics stay RUT_/Utinni. (The defs named RUT_ in this
+   spec re-token RSW_ at build.)
+7. **Ambusher concealment — RULED: the destroyable concealment Thing**,
+   styled from the local environment to read as a small debris pile (owner:
+   "built out of the local environment to look like a small debris pile.
+   Too clever..."). Counterplay is visible: shoot the suspicious pile or eat
+   the ambush.
