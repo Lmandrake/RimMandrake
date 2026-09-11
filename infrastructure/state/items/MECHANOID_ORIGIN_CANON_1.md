@@ -26,3 +26,23 @@ love its Free Droids quite so much.**
 ## verify
 Canon docs updated with pointer lines; the design reviewed with the owner; names ruled
 (mindstone, the race, the Sentries).
+
+## Rulings landed — 2026-09-11 card sitting
+
+All 9 cards (C1-C5, N1-N4) plus the flagged wipe/spike-immunity invention are
+RULED; the full rulings with the owner's verbatim live in
+`design/Jawa/worldbuilding/creatures/RUT_mechanoid_origin_canon.md` §5.
+Shorthand: trickle adopted (C1+C4, enriched — slept infrastructure, winding
+down); intent-not-act (C2 — no active crystal-mind mining today); testimony
+register (C3); head-carried confirmed with ruled taxonomy (C5 — Sentinels are
+crystal-mind-fused constructs); mindstone kept (`RUT_Mindstone`); the race is
+the Kindled (`RUT_Kindled`); Forgotten Sentinels is official canon (variants
+= in-world speech only); the RSW_DW_Head_Mindstone seam accepted with rich
+lore owed (`MINDSTONE_LEGENDS_ENTRIES_1`, owner-authored); wipe/spike
+immunity ratified. Frozen-sheet amendments landed as detail on
+`the_lantern_deeps.md` §8 and `the_rust_cathedral.md` §GM; doc-voice loser
+spellings corrected.
+
+Still owed on this item: B3 inherits the ruled stats charge;
+`MECHANOID_BIOME_PRESENCE_REVIEW_1` fed per its spec (presence rows updated
+2026-09-11).

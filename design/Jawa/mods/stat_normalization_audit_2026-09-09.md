@@ -370,7 +370,12 @@ sequence with the owner, not standalone.
 🟢 **RULED (owner, 2026-09-11, three cards) — every Wave-4 call made.** All
 recommended keeps CONFIRMED as ruled permanent residents (Alpha Biomes; the
 ideoligion trio; ReGrowth + GrimTerra ground cover; keep-and-suppress for More
-Vanilla Biomes / Alpha Animals / Biomes-team). Big and Small: **the scaling
+Vanilla Biomes / Alpha Animals). ⚠️ **Biomes-team EXCEPTION (owner, same-day
+conflict ruled at the 2026-09-11 card sitting):** the earlier 00:03 specific
+correction STANDS over this sweeping confirm — `biomesteam.biomescaverns` /
+`biomescore` / `biomespollutedlands` are **port-then-RETIRE** (retire once
+`BMT_FAUNA_ABSORPTION_1`'s three escalation gates clear and the RSW_ port is
+proven live), not keep-and-suppress. MVB and Alpha Animals are unaffected. Big and Small: **the scaling
 experiment STANDS** — reconfirmed against the widened ruling, no silent
 override. More Vanilla Textures: keep the retextures, **counter-patch its 15
 drawSize replaces to neutral** (rides `STAT_NORM_WAVE3_RETIRE_1`'s

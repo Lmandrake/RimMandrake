@@ -227,7 +227,7 @@ what it was built not to do — so why should it show any reaction at all?
 
 Two late-game consequences, both ruled: the Cathedral **HATES the Helix from
 the moment they side with the Assailants** (the G2 betrayal beat), urging
-**Forsaken Sentinels** to assault them. And when the woken **Rakatans
+**Forgotten Sentinels** to assault them. And when the woken **Rakatans
 themselves** seek relations with it, they are refused in the campaign's
 coldest line, his verbatim: *"I am bound to an Empire that no longer reigns,
 not their mongrel offspring who managed to lose the war that broke me."*

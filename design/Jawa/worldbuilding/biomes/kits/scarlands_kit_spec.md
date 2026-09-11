@@ -228,8 +228,11 @@ def-driven (`spawnablePawnKinds`, `defendRadius`, interval, points cap).
 **Reuse:** vanilla `CompSpawnerPawn` (as designed); no RC comp applies. New
 C#: `RM_LordJob_DefendPerimeter` (+ possible toil subclass).
 
-**INVENTED parameters:** defend radius 40, wander radius 12, acquire/keep radii
-36/40, spawner points cap per site.
+**Parameters (RULED 2026-09-11, owner: "Double them, then accept"):** defend
+radius 80, wander radius 24, acquire/keep radii 72/80; spawner points cap per
+site still INVENTED. Same ruling allows local reprisal: Sentinels may attack
+their structure's destroyer while in range (never the colony) — see the
+Owner rulings section.
 
 **v1:** the lord + duty + spawner wiring. **Deferred:** patrol *routes* (multi-
 point walks between grave-wards — needs a custom LordToil rotation, M),
@@ -306,22 +309,35 @@ Verification per step: quicktest map + bridge (`rimworld-debug-testing`),
 never a cold load; the mynock launch-carry claim gets one live gravship
 launch test before the boarding JobGiver is tuned.
 
-## Owner cards
+## Owner rulings (card sitting, 2026-09-11 — all seven cards ruled)
 
-1. **Mod placement**: fold this kit's RM_ classes into
-   `mandrake.rm.environmentalhazards` (one mechanics mod) vs. a separate
-   `mandrake.rm.hullvermin` for the vermin/AI classes.
-2. **Mynock pressure knobs**: boarding rate, breed interval/cap, gnaw damage —
-   all INVENTED above; how mean should the ship tax feel?
-3. **Mynock race**: patch the donor mod's mynock in place vs. ship our own
-   `RSW_Mynock` clone kind (interacts with the roster re-cast the sheet owes).
-4. **Mark permanence**: the never-fades floor value and what a lifelong mark
-   does at rest (small permanent mood hit? nightmares gone once off-map?).
-5. **Grazer taming cruelty**: verified vanilla makes a tamed scaria animal
-   rage instantly and bans taming scaria carriers — keep the trap as-is, or
-   soften for the "mynock pets" register the Jawa culture wants elsewhere?
-6. **Sentinel bounds numbers**: defend/wander/acquire radii; and the ruling
-   that destroying a Sentinel spawner structure must NOT anger survivors
-   beyond their lines (the vanilla leak we're deleting — confirm intended).
-7. **Dressing density** and whether the directional crater-string (Last Line
-   readable battle vector) is promoted into v1 or stays deferred.
+1. **Mod placement — RULED: a separate vermin/behaviors mod, named
+   "ShipVermin".** Owner-verbatim: 'gather all the "ship infesting" critters
+   together into a single mod "ShipVermin" that allows the mechanics,
+   creatures, and future cool ideas to emerge. Some are cute, some are
+   hideous, some live inside, some can live outside in vaccuum (the mynock
+   for example).' The vermin/AI classes and the mynock land there — NOT in
+   `mandrake.rm.environmentalhazards`. Filed as `SHIP_VERMIN_MOD_1`. The
+   non-vermin RM_ classes of this kit are unaffected.
+2. **Mynock pressure — RULED: "Nuisance unless there are many"** (owner-
+   verbatim). Individual pressure low; meanness scales with population. The
+   drafted knobs are tuned to that curve, not to a flat tax.
+3. **Mynock race — RULED: ship our own `RSW_Mynock` clone** per the
+   donor-retirement pattern; no in-place donor patch.
+4. **Mark permanence — RULED: both.** A small permanent mood hit AND
+   nightmares while on Scarlands maps; leaving the map ends the nightmares,
+   never the mark.
+5. **Grazer taming cruelty — RULED: keep the trap as-is.** Vanilla scaria
+   rage and the taming ban stand; scaria carriers are a lesson, not a pet.
+   Does NOT change the mynock-pets register elsewhere.
+6. **Sentinel bounds — RULED: local reprisal allowed; radii doubled.**
+   (a) Sentinels MAY attack the destroyer of their structure while in range,
+   but NEVER march on the colony — the vanilla assault-switch leak
+   (`LordToil_AssaultColony` transition) is still deleted by design;
+   `RM_LordJob_DefendPerimeter` stands, with reprisal bounded by the chase
+   radii. (b) The INVENTED radii are doubled then accepted: **acquire 72 /
+   keep 80 / wander 24 / defend 80** (supersedes §4's drafted 36/40/12/40).
+   Test: destroy a grave-ward in a quicktest — survivors strike the wrecker
+   in range, then walk back; no base assault.
+7. **Dressing — RULED: crater-string promoted to v1**; density as drafted.
+   The Last Line reads as a directional battle vector in the first playable.

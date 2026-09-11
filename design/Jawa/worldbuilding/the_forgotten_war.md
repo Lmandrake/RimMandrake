@@ -70,6 +70,11 @@ should be visible in all three.
 > ⭐ **What IS ruled v1:** the frozen sleepers are Rakata — the terraformers and
 > mega-builders who made this world and were nearly destroyed for it. See
 > `ANCIENTS_AS_RAKATA_SPEC.md`. **They are the victims in this war, not its authors.**
+> 🟢 **RULED 2026-09-11 (card sitting): the quote STANDS AS QUOTE** beside the
+> 2026-09-06 terramanufacture ruling (`TERRAMANUFACTURE_CANON_1`) — the newer
+> ruling REFINES it: "terraformers and mega builders" reads as
+> terramanufacture (the planet as a tremendous factory), and surrounding prose
+> updates to that frame. No contradiction; the verbatim is not superseded.
 >
 > ~~Original erroneous text follows.~~
 > *"Let's go all out for v1 here. 'Ancients' is so boring! Let's get us some precursor

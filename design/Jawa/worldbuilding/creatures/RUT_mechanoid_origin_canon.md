@@ -202,64 +202,66 @@ no worldgen — reached through a Deep's mouth per the ruled map-chain.
   not build: a Helix expedition sniffing the Deep after any restore is the
   natural follow-on quest seed (`KYBER_TRADE_PLOT_1`-adjacent register).
 
-## 5. 🔴 Contradiction cards and name cards — owner rulings wanted
+## 5. 🟢 RULED — the card sitting of 2026-09-11 (all nine cards + the flagged invention)
 
-**Contradiction cards** (what stands vs what this wants; no silent resolutions):
+**Contradiction rulings:**
 
-- **C1 — Working vs slumbering.** `the_lantern_deeps.md` §8 (frozen): *"still
-  working… at a very slow rate — or a slumbering one"* left it open;
-  `the_rust_cathedral.md` §GM 2026-09-10 (frozen): *"not running under its
-  hand today; the Cathedral would like it restarted"* / `03_deep_history.md`:
-  an *"unspent reserve."* §4 proposes the reconciliation (autonomous trickle,
-  seeding line dark, restore = hand it to the Cathedral). RULING WANTED: adopt,
-  or pick a pure state.
-- **C2 — "Never-ending hunger" vs rationed slumber.** The cousins' testimony
-  (Deeps §8: the Cathedral *"seeks to mine them all up… never-ending hunger"*)
-  vs the Cathedral's frozen strategic register (§GM 2026-09-10: decline below
-  subsistence, exposure-rationed, *"so it waits"* — active nightside mining is
-  spend and exposure it cannot afford). Proposed: the hunger is TRUE AS INTENT
-  and deferred as spend — what restoring the factory would unleash — and the
-  cousins speak of intent as act. RULING WANTED: is the Cathedral actively
-  mining crystal minds today, or is the threat the restore itself?
-- **C3 — "Enslaved one" vs no-master canon.** "The insane **enslaved** one"
-  (owner, Deeps §8) vs `the_rust_cathedral.md` §GM: it acts on emergent hatred,
-  real programming, and the last Rakatan command's standing orders — bound,
-  but no living master. Proposed: "enslaved" is the wild minds' word for
-  engineered-to-purpose; no canon change. RULING WANTED: confirm this is
-  testimony register, not a hidden literal enslaver.
-- **C4 — Who restocked the Arsenal all along.** Cathedral §GM: it reshaped
-  itself *"using many mechanoids in the arsenal"* and the Sentinels garrison
-  planetwide, yet the factory is *"not running under its hand."* §4's C1
-  proposal (autonomous trickle on standing orders) is also the answer to where
-  ten millennia of attrition replacement came from. RULING WANTED with C1 —
-  they resolve together or not at all.
-- **C5 — "New race" vs ruling 3's head.** Deeps §8 (frozen): *"not really a
-  droid any more: a new race"* vs framework §0 ruling 3 (owner, later):
-  *"a Droidworks chassis with a special head."* §2b treats ruling 3 as the
-  binding mechanical form and "race" as lore register. RULING WANTED: confirm
-  — or order a distinct chassis/art identity so the race is visible on sight.
+- **C1+C4 — ADOPTED: the autonomous trickle, enriched.** The factory runs an
+  autonomous trickle on the last standing orders — which is also where ten
+  millennia of Sentinel attrition replacement came from; the mindstone-seeding
+  line is dark; "restore" means handing it to the Cathedral. Owner-verbatim:
+  *"the slow trickle shows that there ARE still automated mining facilities
+  working, automated supply lines slowly delivering, automated manufacturing.
+  But most was found and destroyed, and only by sleeping most of them
+  religiously has it maintained them. To use them is to risk them, so it's
+  kept at the most basic level that actually is slowly winding down.
+  Especially now that the Empire is so close. There has ALWAYS been someone
+  dangerous too close... it doesn't even know if it could ever start to
+  spiral up again. Likely not, just slow the decay."* Supersedes the
+  working-vs-slumbering open fork in Deeps §8's phrasing; does NOT change the
+  Cathedral's "not running under its hand" line — both frozen sheets stand.
+- **C2 — ADOPTED: intent, not act.** No active crystal-mind mining today; the
+  threat IS the restore. Owner-verbatim: *"the crystal entities have little
+  concept of time, so their memory is of the voracious hunger that WAS when
+  it was operating and growing. The crystals are one of the most limited
+  resources the Cathedral needs to build more of its sentinel (and self).
+  Very rare and difficult to get access to."* Both frozen registers stand;
+  the cousins' testimony is a timeless memory of the hunger-that-was.
+- **C3 — CONFIRMED: testimony register.** "Enslaved" is the wild minds' word
+  for engineered-to-purpose; there is no hidden literal enslaver and no canon
+  change.
+- **C5 — CONFIRMED: head-carried identity, with a ruled taxonomy.**
+  Owner-verbatim: *"Droids are parts-based mechanical body + mechanical mind.
+  Mechanoids (sentinel) are pseudo-organic inorganic constructs without parts
+  fused with a crystal mind. The new creation would be parts-based mechanical
+  body + crystal-operating-neural-circuits manually. New life form."* So:
+  the mechanoids/Sentinels are ALREADY crystal-mind-fused constructs (this is
+  now canon detail on both sheets); the Kindled are the third form. "Race"
+  stays lore register; no distinct chassis — body incidental is the point.
 
-**Name cards** (explicit rulings wanted):
+**Name rulings:**
 
-- **N1 — "mindstone"**: working name, rename owed (Deeps §3, §Owed). Keep, or
-  rule the true name. Def grammar on keep: `RUT_Mindstone`.
-- **N2 — the race**: unnamed everywhere. Wanted: the in-world name (what the
-  cousins, the droids and the Cathedral each call them may differ) and the def
-  token (`RUT_<Name>` on the campaign side; head stays RSW per N4).
-- **N3 — Sentries / Sentinels / Forsaken**: three live spellings — **Forgotten
-  Sentries** (Deeps §8 ×2 + `mechanoid_biome_presence_draft.md:96`; owner's
-  original "Senties"), **Forgotten Sentinels** (Cathedral sheet's frozen
-  naming settlement: *"'Sentinels' names the units in speech"*), **Forsaken
-  Sentinels** (`03_deep_history.md`). One name wanted; the losers get deleted
-  in propagation, not superseded in place.
-- **N4 — the RSW/RUT seam on the head**: `RSW_DW_Head_Mindstone` (B3, platform
-  tier) carries a campaign-lore crystal's name. Accept the seam (platform slot,
-  campaign filler), or rename the platform item generic
-  (`RSW_DW_Head_Crystal`?) with RUT lore on top.
+- **N1 — KEEP "mindstone."** Def token `RUT_Mindstone`.
+- **N2 — the race is THE KINDLED.** Def token `RUT_Kindled`. (Per-speaker
+  variant names remain available as flavor; "the Kindled" is the primary.)
+- **N3 — "Forgotten Sentinels" is official canon.** Owner-verbatim: *"While
+  (1) should be the official canon, all of them should easily map to the same
+  thing"* — canon docs and defs say Forgotten Sentinels; "Forgotten Sentries"
+  and "Forsaken Sentinels" survive ONLY as in-world speech variants in
+  dialogue/flavor text, never in doc voice or def tokens. Doc-voice
+  occurrences corrected in this propagation.
+- **N4 — ACCEPT the seam.** `RSW_DW_Head_Mindstone` stands as the platform
+  slot the campaign fills — with rich lore owed. Owner-verbatim: *"(1) but
+  with big, thick lore to explain it richly. Making my own legends entries."*
+  The legends entries are an OWNER-authored deliverable, filed as
+  `MINDSTONE_LEGENDS_ENTRIES_1`.
+- **Wipe/spike immunity (§2b) — RATIFIED.** Wipes and spikes fail with text
+  on a mindstone head; the mineral mind cannot be erased. The §2b invention
+  is now ruled mechanics.
 
-## Owed on ruling
+## Owed on ruling — status after the 2026-09-11 propagation
 
-Propagation is NOT this draft's to do: on the owner's rulings, the cards above
-land as amendments on the two frozen sheets (freeze rule: detail only), the
-loser names are deleted repo-wide, B3 inherits the ruled stats charge, and
-`MECHANOID_BIOME_PRESENCE_REVIEW_1` is fed per the item spec.
+Amendments landed as detail on the two frozen sheets; doc-voice loser names
+corrected (in-world speech variants deliberately retained). Still owed: B3
+inherits the ruled stats charge, and `MECHANOID_BIOME_PRESENCE_REVIEW_1` is
+fed per the item spec.

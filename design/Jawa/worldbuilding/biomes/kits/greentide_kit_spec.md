@@ -484,15 +484,22 @@ Cross-item dependencies restated: `EXPLOSIVE_PLANT_GROWTH_1` (M2, M10),
 consumer, no dependency), roster pass (creatures for M6/M7's comps to ride),
 salinity map-gen (separate Owed item — deliberately NOT in this kit).
 
-## What needs an owner card (short — the lore is ruled)
+## Owner rulings (card sitting, 2026-09-11 — all three cards ruled)
 
-1. **Churnmud swallow scope**: does mud under a player stockpile zone swallow
-   stored items, or is zoned/home-area ground exempt? Pure griefing-tolerance
-   tuning; the sheet doesn't say. (Default drafted: no exemption — dig or floor
-   it.)
-2. **Toxin sealant recipe**: drafted as crafted from §7 sap/resin (INVENTED
-   economic link). One-line confirm, since it prices the Greatbole base-type.
-3. **Breaklight scramble + silence cue deferrals**: v1 ships Breaklight without
-   the seek-shade AI and defers the silence cue whole to v1.1. Both are §9
-   texture, not §5 law — confirm the deferrals are acceptable for the first
-   playable.
+1. **Churnmud swallow scope — RULED: no exemption.** Mud under a player
+   stockpile zone swallows stored items too; dig or floor it. Reason:
+   griefing-tolerance set to "the biome makes you engineer." Supersedes the
+   open card; the drafted default stands as written. Does NOT change the
+   swallow mechanic itself.
+2. **Toxin sealant recipe — RULED: confirmed.** Crafted from §7 sap/resin;
+   the economic link is canon and prices the Greatbole base-type.
+3. **Deferrals — RULED: REJECTED, both in v1.** The Breaklight seek-shade
+   scramble AI AND the silence cue (M10/M11) ship in the first playable.
+   Supersedes this spec's v1/v1.1 split for those two items only (M11's
+   "v1.1" line above and M10's deferral read as v1 now); nothing else moves
+   tiers. Test: v1 build carries both behaviors.
+4. **NEW ruling — Greentide is its own RimMandrake-tier mod.** Owner-verbatim
+   (on the churnmud card): "This is a really cool mechanic and suggests
+   making the Biome Greentide its own RimMandrake level mod too." Filed as
+   `GREENTIDE_STANDALONE_MOD_1`. Does NOT change what this kit specifies —
+   only where it ships (packageId per `design/NAMING_SCHEME_PLAN.md`).
