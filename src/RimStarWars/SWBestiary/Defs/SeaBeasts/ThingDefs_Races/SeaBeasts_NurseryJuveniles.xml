@@ -26,7 +26,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="RSW_Mee" MayRequire="mandrake.rsw.swbestiary">
+  <ThingDef ParentName="RSW_Mee">
     <defName>RSW_MeeJuv</defName>
     <label>young mee scalefish</label>
     <description>A mee scalefish too young for the open sea, still schooling in the mangal shallows where it hatched. Small, quick, and almost charming -- and every scavenger who has fished a delta channel knows better than to wonder where its mother is.</description>
@@ -44,7 +44,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="RSW_Mee" MayRequire="mandrake.rsw.swbestiary">
+  <PawnKindDef ParentName="RSW_Mee">
     <defName>RSW_MeeJuv</defName>
     <label>young mee scalefish</label>
     <race>RSW_MeeJuv</race>
@@ -77,7 +77,7 @@
   </PawnKindDef>
 
 
-  <ThingDef ParentName="RSW_Faa" MayRequire="mandrake.rsw.swbestiary">
+  <ThingDef ParentName="RSW_Faa">
     <defName>RSW_FaaJuv</defName>
     <label>young faa scalefish</label>
     <description>A faa scalefish still too small to hunt the open channels, taking fry and drift-shrimp in the mangal shallows where it was spawned. The gold-olive dot-line is already bright; the temper comes later.</description>
@@ -95,7 +95,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="RSW_Faa" MayRequire="mandrake.rsw.swbestiary">
+  <PawnKindDef ParentName="RSW_Faa">
     <defName>RSW_FaaJuv</defName>
     <label>young faa scalefish</label>
     <race>RSW_FaaJuv</race>
@@ -128,7 +128,7 @@
   </PawnKindDef>
 
 
-  <ThingDef ParentName="RSW_Laa" MayRequire="mandrake.rsw.swbestiary">
+  <ThingDef ParentName="RSW_Laa">
     <defName>RSW_LaaJuv</defName>
     <label>young laa scalefish</label>
     <description>A laa scalefish not yet grown into the ornate streamer-fins and eye-spot false faces that make the adult so hard to net. Still schooling with its own kind in the shallows, waiting to be worth catching.</description>
@@ -146,7 +146,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="RSW_Laa" MayRequire="mandrake.rsw.swbestiary">
+  <PawnKindDef ParentName="RSW_Laa">
     <defName>RSW_LaaJuv</defName>
     <label>young laa scalefish</label>
     <race>RSW_LaaJuv</race>
@@ -179,7 +179,7 @@
   </PawnKindDef>
 
 
-  <ThingDef ParentName="RSW_Yobshrimp" MayRequire="mandrake.rsw.swbestiary">
+  <ThingDef ParentName="RSW_Yobshrimp">
     <defName>RSW_YobshrimpJuv</defName>
     <label>young pale yobshrimp</label>
     <description>A pale yobshrimp too small yet to swarm a carcass with the rest of its kind, picking over what the shallows offer instead.</description>
@@ -197,7 +197,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="RSW_Yobshrimp" MayRequire="mandrake.rsw.swbestiary">
+  <PawnKindDef ParentName="RSW_Yobshrimp">
     <defName>RSW_YobshrimpJuv</defName>
     <label>young pale yobshrimp</label>
     <race>RSW_YobshrimpJuv</race>
@@ -230,7 +230,7 @@
   </PawnKindDef>
 
 
-  <ThingDef ParentName="RSW_SiltLamprey" MayRequire="mandrake.rsw.swbestiary">
+  <ThingDef ParentName="RSW_SiltLamprey">
     <defName>RSW_SiltLampreyJuv</defName>
     <label>young silt lamprey</label>
     <description>A silt lamprey not yet grown into the round maw that makes the adult the swarm's nasty edge. Still working the shallows for what it can latch onto.</description>
@@ -248,7 +248,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="RSW_SiltLamprey" MayRequire="mandrake.rsw.swbestiary">
+  <PawnKindDef ParentName="RSW_SiltLamprey">
     <defName>RSW_SiltLampreyJuv</defName>
     <label>young silt lamprey</label>
     <race>RSW_SiltLampreyJuv</race>
@@ -281,7 +281,7 @@
   </PawnKindDef>
 
 
-  <ThingDef ParentName="RSW_RustNipper" MayRequire="mandrake.rsw.swbestiary">
+  <ThingDef ParentName="RSW_RustNipper">
     <defName>RSW_RustNipperJuv</defName>
     <label>young rust nipper</label>
     <description>A rust nipper too small yet to join a massed crawl over a wreck, its shell not hardened, its eyes barely glowing.</description>
@@ -299,7 +299,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="RSW_RustNipper" MayRequire="mandrake.rsw.swbestiary">
+  <PawnKindDef ParentName="RSW_RustNipper">
     <defName>RSW_RustNipperJuv</defName>
     <label>young rust nipper</label>
     <race>RSW_RustNipperJuv</race>
@@ -337,7 +337,7 @@
        level (never reaches AnimalAdult minAge 0.3333), which lands it at
        drawSize 1.80 forever: a real threat, visibly short of the full
        2.25 adult that owns the open Grey Sea. -->
-  <ThingDef ParentName="RSW_OpeeSeaKiller" MayRequire="mandrake.rsw.swbestiary">
+  <ThingDef ParentName="RSW_OpeeSeaKiller">
     <defName>RSW_OpeeSeaKillerJuv</defName>
     <label>sub-adult opee sea killer</label>
     <description>An opee sea killer not yet grown to its full twenty-metre patience, lingering at the crèche mouths where it hatched rather than claiming a stretch of the open sea. Still armored, still fast on the tongue -- "don't kill what's small here" was written for beasts exactly this size.</description>
@@ -355,7 +355,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="RSW_OpeeSeaKiller" MayRequire="mandrake.rsw.swbestiary">
+  <PawnKindDef ParentName="RSW_OpeeSeaKiller">
     <defName>RSW_OpeeSeaKillerJuv</defName>
     <label>sub-adult opee sea killer</label>
     <race>RSW_OpeeSeaKillerJuv</race>

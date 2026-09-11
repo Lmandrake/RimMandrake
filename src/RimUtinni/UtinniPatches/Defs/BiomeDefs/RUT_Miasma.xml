@@ -39,7 +39,7 @@
     world repaint.
 
     MIASMA_NURSERY_KINDS_1 (2026-09-10): the nursery-band RSW_* entries below spawn
-    the *Juv defNames (ThingDefs_Races/RUT_MiasmaNurseryJuveniles.xml), not the base
+    the *Juv defNames (SWBestiary SeaBeasts_NurseryJuveniles.xml (moved 2026-09-11: cross-mod ParentName inheritance is unsupported, defs now live beside their parents)), not the base
     species: those are juvenile-locked (lifeStageAges dropped below AnimalAdult, so
     LifeStageUtility caps them at Juvenile forever regardless of rolled age). The
     Grey Sea/terminator roster keeps the un-capped base defNames for the adults.
