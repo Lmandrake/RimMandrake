@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  FISH_TYPES_PATCH_BUILD_1 (2026-09-10) — biome wiring: sets the_greentide's
-  fishTypes to the roster's own Mee/Faa/Laa scalefish (RSW_Mee/RSW_Faa/RSW_Laa,
-  src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Scalefish.xml),
-  replacing the donor mod's vanilla Earth-named defaults (Fish_Tilapia/
-  Fish_Piranha) on the freshwater buckets — same recognizability fix already
-  applied to weeping_stones (BiomeFishTypes_Ashkarr.xml) and the Cracked Lands
-  (SandFishing_CrackedLands.xml).
+  GREENTIDE_FISH_ITEMS_FIX_1 (2026-09-10) — repairs FISH_TYPES_PATCH_BUILD_1:
+  that patch put the scalefish RACE ThingDefs (RSW_Mee/RSW_Faa/RSW_Laa,
+  ParentName="AnimalThingBase", SeaBeasts_Scalefish.xml) straight into fishTypes.
+  FishingUtility.GetCatchesFor -> ThingMaker.MakeThing has no category guard, so
+  a net cast here would make a bare Pawn with a stack count, not a fish item.
+  fishTypes now names the item ThingDefs instead: RSW_MeeCatch/RSW_FaaCatch/
+  RSW_LaaCatch (new, src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/
+  RSW_ScalefishCatch_Items.xml — the donor's own swfish_ item family has no
+  swfish_Mee to fall back on, so all three ship as our own RSW_ tier rather than
+  leaving freshwater_Common without a Mee catch). The RSW_Mee/Faa/Laa RACE defs
+  are untouched and still wildAnimals on RUT_Miasma/BiomeCast_Ashkarr.xml — the
+  dual-placement ruling stands, just with the right def on each side now.
+
+  FISH_TYPES_PATCH_BUILD_1's original framing (2026-09-10) — biome wiring: sets
+  the_greentide's fishTypes to the roster's own Mee/Faa/Laa scalefish, replacing
+  the donor mod's vanilla Earth-named defaults (Fish_Tilapia/Fish_Piranha) on the
+  freshwater buckets — same recognizability fix already applied to weeping_stones
+  (BiomeFishTypes_Ashkarr.xml) and the Cracked Lands (SandFishing_CrackedLands.xml).
 
   WHICH DEF IS LIVE — checked, not guessed: two near-duplicate BiomeDefs exist
   in the repo for "the Greentide" — this repo's own `RUT_Greentide`
@@ -35,14 +46,15 @@
   maxFishPopulation 720.
 
   Weights and bucket placement are the spec doc's own
-  (_fish_assignment_proposal.md §1/§5.3, dual-placement owner ruling): RSW_Mee
-  0.4 in freshwater_Common (the shoal bulk, foodType None, not itself a
-  predator); RSW_Faa 0.3 + RSW_Laa 0.3 in freshwater_Uncommon (Faa is the
-  carnivore of the trio; Laa the prized, harder-to-net catch). Same population,
-  two registers: these three defNames are ALSO wired as `wildAnimals` on
-  `RUT_Miasma` (protected juveniles in the nursery channels) — accepted by the
-  owner as one biological population appearing in both a fishing table here
-  and a fauna list there (§5.3).
+  (_fish_assignment_proposal.md §1/§5.3, dual-placement owner ruling): the mee
+  catch 0.4 in freshwater_Common (the shoal bulk, foodType None on the live
+  animal, not itself a predator); the faa catch 0.3 + laa catch 0.3 in
+  freshwater_Uncommon (Faa is the carnivore of the trio; Laa the prized,
+  harder-to-net catch). Same population, two registers: the RSW_Mee/Faa/Laa
+  RACE defNames are ALSO wired as `wildAnimals` on `RUT_Miasma` (protected
+  juveniles in the nursery channels) — accepted by the owner as one biological
+  population appearing in both a fishing table here (as the RSW_*Catch item
+  defs, GREENTIDE_FISH_ITEMS_FIX_1) and a fauna list there (§5.3).
 
   Only freshwater is touched — saltwater_Common/Uncommon (Fish_Bluefish/
   Fish_Tuna/Fish_Flounder) are left as the donor's own default, same as the
@@ -75,7 +87,7 @@
             <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/fishTypes/freshwater_Common</xpath>
             <value>
               <freshwater_Common>
-                <RSW_Mee MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Mee>
+                <RSW_MeeCatch MayRequire="mandrake.rsw.swbestiary">0.4</RSW_MeeCatch>
               </freshwater_Common>
             </value>
           </match>
@@ -87,8 +99,8 @@
             <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/fishTypes/freshwater_Uncommon</xpath>
             <value>
               <freshwater_Uncommon>
-                <RSW_Faa MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Faa>
-                <RSW_Laa MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Laa>
+                <RSW_FaaCatch MayRequire="mandrake.rsw.swbestiary">0.3</RSW_FaaCatch>
+                <RSW_LaaCatch MayRequire="mandrake.rsw.swbestiary">0.3</RSW_LaaCatch>
               </freshwater_Uncommon>
             </value>
           </match>
