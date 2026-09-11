@@ -46,9 +46,7 @@
   ],
   "stat_adjustments": [],
   "flora": [
-    {"def": "Plant_YellowGrass", "commonality": 2.4, "law": "§1 'grass to the horizon, gold and dry' — gold grass architecture, generic form not Earth-nameable; interim body until the quickgrass def lands"},
-    {"def": "Plant_YellowTallGrass", "commonality": 2.0, "law": "same — the standing dry fuel of the ruled R-H3/R-H4 loop"},
-    {"def": "AB_HardyGrass", "commonality": 0.4, "law": "alien hardy grass — regrowth-sprint texture (§3 freakish growth)"}
+    {"def": "RM_FE_Plant_Quickgrass", "commonality": 4.0, "law": "owner review 2026-09-11: 'the grass here has to be unique' — all generic grasses evicted (YellowGrass/YellowTallGrass/AB_HardyGrass); the Rakatan feral forage lawn per §3, def landed src/RimMandrake/Pyrelands (ember grass in ThingDefs_Plants remains the fuel bed)"}
   ],
   "flora_purged": [
     {"def": "Plant_Haygrass", "reason": "Earth farm crop (owner card 2026-09-09 Earth-nameable purge)"},
