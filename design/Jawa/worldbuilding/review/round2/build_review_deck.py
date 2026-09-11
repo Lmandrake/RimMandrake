@@ -158,15 +158,26 @@ def build_biomes(fauna, flora, moves, census):
             "img": sprite(defName, FAUNA_SPRITES)})
     for k, v in fauna.items():
         p = k.split(":")
-        if p[0] != "fauna": continue
-        biome, defName = p[1], p[2]
         dec = v.get("decision")
-        if dec == "in":
-            add(biome, defName, v.get("note"), "in", v.get("art"))
-        elif dec == "move":
-            tgt = moves.get(k, "")
-            if tgt and tgt not in ("OUT",) and not tgt.startswith("GROUP") and tgt != "OPEN":
-                add(tgt, defName, v.get("note"), "arrived", v.get("art"), origin=biome)
+        if p[0] == "fauna":
+            biome, defName = p[1], p[2]
+            if dec == "in":
+                add(biome, defName, v.get("note"), "in", v.get("art"))
+            elif dec == "move":
+                tgt = moves.get(k, "")
+                if tgt and tgt not in ("OUT",) and not tgt.startswith("GROUP") and tgt != "OPEN":
+                    add(tgt, defName, v.get("note"), "arrived", v.get("art"), origin=biome)
+        elif p[0] == "homeless":
+            # 🔴 Fixed 2026-09-10: homeless:<name> rows with decision "move" were
+            # previously dropped entirely — 117 such rows (81 resolving to a real
+            # biome, e.g. homeless:JRWBeelzebufo -> the_miasma) never appeared on
+            # any slide. Joined the same way as a fauna: move row, origin "homeless"
+            # since there is no origin biome sheet for a homeless creature.
+            defName = p[1]
+            if dec == "move":
+                tgt = moves.get(k, "")
+                if tgt and tgt not in ("OUT",) and not tgt.startswith("GROUP") and tgt != "OPEN":
+                    add(tgt, defName, v.get("note"), "arrived", v.get("art"), origin="homeless")
     plants: dict[str, list] = {}
     for k, v in flora.items():
         p = k.split(":")
