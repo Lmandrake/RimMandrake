@@ -6784,10 +6784,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimStarWars/Armoury/Patches/Armoury_RangedDamage.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-09",
-    "hash": "ef226006789ecee13c6478eb3a48c8c52e4781a9b3ed16cf4a371f1fb251db5b",
-    "sha": "3ea1ca20"
+    "cleanCount": 5,
+    "date": "2026-09-10",
+    "hash": "80168abed28e1af6a0c94412799974636fbf3093ea5e57181212ba3039918775",
+    "sha": "ecccefa4"
   },
   "src/RimStarWars/Armoury/Patches/Armoury_TorpedoSpeed.xml": {
     "cleanCount": 1,
@@ -8566,10 +8566,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Opee.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "b06eb988ea3b7675678de0367cffceb4f844b24ac893a0d18341256ecbc2090d",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "63c1832f039f817b67fd0b341515f334b870ee507c19513e0da1cadcb07fbeca",
+    "sha": "ecccefa4"
   },
   "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Sando.xml": {
     "cleanCount": 1,
@@ -8578,16 +8578,16 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Scalefish.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "0fbbe3059a758d17483244ae0b488d10835f39d5db0e247cd9ae5a6312fdfcdf",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "981b63f9b3989e0e9449be7cdc90d1e8a69583ae3e723a33b49781f8b3df2561",
+    "sha": "ecccefa4"
   },
   "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Swarm.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "465cb8f676db305c20588264830360d445c496dfe025cc4608afc8f9cc2e3f54",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "96b113860cddcde14556a587a70474117b11512bb5bd2f637aef7d9f7b92987f",
+    "sha": "ecccefa4"
   },
   "src/RimStarWars/SWBestiary/Defs/SoundDefs/SoundDefs_SWBestiary.xml": {
     "cleanCount": 1,
@@ -8650,10 +8650,10 @@
     "sha": "bd07c0e6"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Protovermes.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "2f29fd2ffac33ee3f43b196c60f6b6f1d87e4c28cc514f866a517cec42a1299a",
-    "sha": "bd07c0e6"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "57fc8e807e8eb19c549a6724f0228d924ab668e2edee98d55d84ed9c71148d9c",
+    "sha": "ecccefa4"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Segnosaurus.xml": {
     "cleanCount": 1,
