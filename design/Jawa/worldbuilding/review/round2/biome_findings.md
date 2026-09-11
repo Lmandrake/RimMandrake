@@ -133,7 +133,7 @@ INCONSISTENCIES:
 OPPORTUNITIES:
 1. A sarlacc growth ladder (MatureFleshbeast → GreatDevourer → offmap Sarlacc) told as one organism turns niche-duplication into the biome's deepest lore hook.
 
-## the_contagion — churn 7 (cast 11 → 16)
+## the_contagion — churn 7 (cast 11 → 16) · RedGoo → TITAN (ruled bigger)
 Arrivals (5, deduped — AA_BloodShrimp already resident): AA_Eyeling, AA_FungalHusk, AA_OcularNightling, AG_OcularSlinger, GR_Fleshling. Flier extracted: AA_InfectedAerofleet.
 
 INCONSISTENCIES:
@@ -155,7 +155,7 @@ OPPORTUNITIES:
 1. Commission one native furnace-beast (the §4 heat-banking grazer) or route AA_Barbslinger ("wherever needed in hot biomes", OPEN) here as the fire-cycle animal.
 2. Razorjack as the burn-front follower (hunts fleeing animals ahead of fires) gives the arrival a fire-web role instead of a generic predator slot.
 
-## nightside_ice — churn 6 (cast 6 → 9)
+## nightside_ice — churn 9 (cast 6 → 6) ⚠ NEEDS MORE — sitting 2026-09-10: TetraSlug (cathedral-only), Slurrypede (dungeons-only), RedGoo all OUT; owner: this biome needs more creatures — first pick of homeless/commissions
 Arrivals (4 residents): AA_ShockGoat (refashion ruled), BMT_CaveLemming (rename ruled), Tauntaun, Wampa. Injectable, not resident: Bulwark ("horror injectibles"). Sitting 2026-09-10: AA_Terramorph out (dayside won the either-or).
 
 INCONSISTENCIES:
@@ -166,7 +166,7 @@ INCONSISTENCIES:
 OPPORTUNITIES:
 1. ShockGoat's "pale blue aura" is the biome's first visible-from-distance creature cue — a legible hazard in a sensor-dead biome.
 
-## dune_sea + deep_desert — churn 5 (cast 12 → 17)
+## dune_sea + deep_desert — churn 7 (cast 12 → 15) — sitting 2026-09-10: AA_TetraSlug out (cathedral-only), AA_Dunealisk CUT from game; GIANTS VERY RARE here (owner: giant creatures at trace commonality)
 Arrivals (5, deduped across the combined sheets): AA_SpinedGow, AA_SandLion, BMT_TruffleMole (0.4 cells), JOE_Cephalope, GR_ParagonThrumbo ("Great Thrumbo", 7 sq, very rare).
 
 INCONSISTENCIES:
@@ -177,8 +177,8 @@ INCONSISTENCIES:
 OPPORTUNITIES:
 1. Great Thrumbo as the deep-desert white whale (very rare, very dangerous) fills the sheet's legend slot beside the Krayts.
 
-## poison_forest — churn 8 (cast 17 → 21)
-Arrivals (5): Lylek, AA_Plasmorph, AA_LuciferBug, AA_Radyak, AA_RipperHound. Flier extracted: AA_InfectedAerofleet. Horror ruling: Visceral out (injected dark-side art only). Sitting 2026-09-10: Skalder arrives from arid.
+## poison_forest — churn 9 (cast 17 → 20)
+Arrivals (5): Lylek, AA_Plasmorph, AA_LuciferBug, AA_Radyak, AA_RipperHound. Flier extracted: AA_InfectedAerofleet. Horror ruling: Visceral out (injected dark-side art only). Sitting 2026-09-10: Skalder arrives from arid; AA_Wildpod OUT.
 
 INCONSISTENCIES:
 1. Ban: "Nothing fast. No sprinters, no pursuit predators" — Lylek and RipperHound are both pursuit-built; admit only with a rewritten slow/ambush hunting story.
@@ -193,7 +193,7 @@ Arrivals (2, deduped — Beldon already resident): AA_CrescendoAnole, Tibidee. F
 
 INCONSISTENCIES:
 1. Tibidee is canonically a flying ray — flier-roster candidate that slipped the extraction; decide roster vs resident before it lands.
-2. Ban 5: beldons are the only tibanna source — greentide's Beldon move consolidates the herd here correctly; keep one def, one biome.
+2. Ban 5: beldons are the only tibanna source — greentide's Beldon move consolidates the herd here correctly; keep one def, one biome. Sitting 2026-09-10: ONLY ONE beldon entry on the slide — resident+arrival of the same def must render once (per-biome dedup ruling, all biomes).
 
 OPPORTUNITIES:
 1. CrescendoAnole as the machine-watcher (basks on cooling flows near the lava-machines) ties fauna to the biome's central mystery without revealing it (ban 2).
@@ -242,7 +242,7 @@ INCONSISTENCIES:
 OPPORTUNITIES:
 1. If Hssiss stays: a dark-side dragon sleeping in preserved tar suits ban 1's partial-remains register better than a wetland story.
 
-## the_rust_cathedral — churn 2 (cast 1 → 3)
+## the_rust_cathedral — churn 3 (cast 1 → 4) — sitting 2026-09-10: AA_TetraSlug arrives (sole home). COMMISSIONS ruled: mechanical cockroach + the little gear-like dancing creatures (to be made); organic cockroach already resident (Ling_Cockroach)
 Arrivals (2): GR_Mechachicken, GR_Mecharat.
 1. Ban 7 (nothing organic outside §4's short list): both are mech-analog — add them to §4's list explicitly or the linter flags them.
 2. "Mechachicken" fails recognizability on name; rename with the pass (Mecharat borderline, WompRat precedent).
@@ -253,7 +253,7 @@ Arrivals (2): AA_Feralisk (ruled: reskin/merge INTO Wysokk), GR_Chickenspider ("
 2. Resident Kreetle carries the owner's "arid type only" note — the webwork copy should depart; unpropagated leftover.
 3. OPPORTUNITY: Chickenspider-as-juvenile gives the Wyyyschokk a brood ecology — eggs in the dark cells (ban 6 synergy). Rename owed (chicken).
 
-## forsaken_crags — churn 2 (cast 14 → 16)
+## forsaken_crags — churn 4 (cast 14 → 14) — sitting 2026-09-10: AA_SandProwler + AA_Frostling OUT
 Arrivals (2): AA_Behemoth (16 sq — distinct from trader-beast "Behemoth"), GR_Nighthrumbo.
 1. Both fit the dark register (ban 6: no sun-dependent life). Watch the name collision AA_Behemoth vs homeless:Behemoth (trader pack animal) — two rosters, one word.
 2. OPPORTUNITY: 16-square Behemoth as the thing you hear in the gust-dark — the cryptid register (§8) made flesh without showing the Forsakens.
@@ -267,7 +267,7 @@ Arrivals (1): AA_AuroraSylph ("perfect Propane Lake creature"). Flier→roster: 
 Arrivals (1): AA_Thunderbeast (electric — fits the detonation register).
 1. One creature. The hydrocarbon-flora biome has no herbivore eating that flora (warm-detonation ban makes this a genuinely novel niche) — commission or route from the hot-biome OPEN pool (Barbslinger, ysalamir).
 
-## weeping_stones — churn 0 (cast 10 → 10)
+## weeping_stones — churn 1 (cast 10 → 9) — sitting 2026-09-10: ColossusToad OUT
 1. AA_Eyeling's row here is the unresolved propagation conflict — "ocular" routes it to the Contagion; this copy likely departs. Decide at the sitting.
 2. Dactillion is canonically a flying mount — flier-roster candidate never extracted.
 3. OPPORTUNITY: Rycrit ("herd animal near oases") and Gullipud ("oases and pets") placement rules land here first — the oasis register is their obvious anchor.

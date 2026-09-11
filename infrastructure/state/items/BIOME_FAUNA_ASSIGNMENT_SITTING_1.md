@@ -262,3 +262,16 @@ ART_BACKGROUND_TEMPLATE_1 (standard black-background template + prove-out log).
 Pustule queens question answered: two queen DEFS ship in the mod (lone
 BMT_PustuleHornetQueen + BMT_ColonyPustuleHornetQueen) — one organism, five defs,
 counted as one admission per the rot's findings.
+
+**6. Six-biome batch + cathedral commissions (sitting, 2026-09-10):** poison_forest
+drops Wildpod; contagion RedGoo → TITAN; crags drop AA_SandProwler + Frostling;
+dune sea: TetraSlug cathedral-only, Dunealisk CUT from game, giants VERY RARE;
+weeping stones drop ColossusToad; nightside_ice drops TetraSlug/Slurrypede
+(dungeons-only)/RedGoo and is ruled NEEDS-MORE (first pick of homeless+commissions).
+Rust cathedral: TetraSlug arrives (sole home, add to ban-7 shortlist); ruled
+commissions — mechanical cockroach + little gear-like dancing creatures (to be made);
+Ling_Cockroach is the organic roach, already resident. Megabat + Woollybat: already
+`out` in round 1 — cut confirmed. PER-BIOME DEDUP ruled for every slide (same def
+never renders twice). Blood-shrimp-x3 and beldon-x2 explained: resident + move-in
+rows of the same def rendering separately — the dedup defect, not data.
+Trader-beasts: web research commissioned for SW herd animals (background agent).
