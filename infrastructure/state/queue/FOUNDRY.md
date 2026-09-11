@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T14:23:06Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-11T14:26:28Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -684,22 +684,13 @@ kind:     task
 summary:  Two background agents (standing owner instruction, 2026-09-11: "always have
 prose:    infrastructure/state/items/ART_REGEN_WAVE1_WIRE_IN_1.md
 
-## BIOME_TEXT_PORT_1 Port the 27 already-written RUT_ biome descriptions onto the LIVE donor BiomeDefs by patch + relabel the 3 never-relabeled biomes (2,571 tiles incl vanilla Scarlands) - closes ALL 4 plot leaks (worst: Rust Cathedral's donor mechanoid blurb vs SSGM ban 6.1) and the label-over-donor-voice split; spec Transient/final_review/findings_text_lore.md (decays ~14d - copy the mechanism into this item before it does)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/BIOME_TEXT_PORT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOME_TEXT_PORT_1.md
-
 ## ART_REGEN_WAVE2_QUEUE_1 Queue art regen for 4 more decided fauna redo rows from the 2026-09-10 sitting (wave 2)
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/ART_REGEN_WAVE2_QUEUE_1.md yet — write one when you have something to say)
+summary:  Standing owner instruction: "there should always be at least one agent
 prose:    infrastructure/state/items/ART_REGEN_WAVE2_QUEUE_1.md
 
 # BLOCKED — something is WRONG and someone must act
