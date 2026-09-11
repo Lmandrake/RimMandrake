@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T23:54:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T23:56:18Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -44,15 +44,6 @@ target:   v1
 kind:     task
 summary:  - Inventory, from the live def dump + mod XML (never guess a defName):
 prose:    infrastructure/state/items/MUTATION_MODIFIERS_SURVEY_1.md
-
-## MECHANOID_ORIGIN_CANON_1 The mindstone droid-mind race; mechanoids + Rust Cathedral as a non-artificial AI and the Deeps' crystal minds as their wild cousins; the production facility and the Cathedral's true children
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  - Reconcile with existing canon: the Rust Cathedral (ABMechanoidIntrusion, the
-prose:    infrastructure/state/items/MECHANOID_ORIGIN_CANON_1.md
 
 ## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
 state:    doing
