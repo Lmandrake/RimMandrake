@@ -76,10 +76,16 @@ Sorted by player exposure.
 | RimUtinni (RUT_) | 545 | 296 | 249¹ | 12 | 0 (allowed) |
 
 ¹ Much "missing" is structural (JobDef, GenStepDef etc. never carry text in
-vanilla). The REAL description debt: **Armoury 740 + SWBestiary 856 missing**,
-plus 233 placeholder lines ("An inconspicuous floor panel." ×211 storage-panel
-clones, a literal "TBD" on RSW_ToxinDependence, 10 thin Cuisine one-liners).
-PawnFlavor's label=0 is a parser artifact (degreeDatas nesting), not debt.
+vanilla). **CORRECTED 2026-09-11 (wave-1 re-measure with ParentName
+inheritance resolved):** the real Armoury+SWBestiary description debt was
+**~57 entries** (42 defs shipping a literal "." inherited by 69 concrete
+defs, 4 smuggling panels, 2 "TBD", 7 truly absent, 2 terrains) — the earlier
+740/856/211 figures counted inherit-resolved and never-text def types. All
+57 were written, registered in the absorption generator
+(DESCRIPTION_BACKFILL entries, regen byte-identical), committed b8da9f097.
+Remainder classification: design/Jawa/text/armoury_bestiary_desc_remainder.csv
+(1,447 of 1,458 rows structural). PawnFlavor's label=0 is a parser artifact
+(degreeDatas nesting), not debt.
 
 **Tier-grammar violations (the owner's outside-scenario ruling made real):**
 - CONFIRMED `RM_OpenPit_Oubliette` (Pits): says "droids" — RM tier must say
@@ -143,11 +149,13 @@ near-lore already — lowest rename priority.
 
 ## 6. The load, triaged (ESTIMATE ranges; entries × typical words)
 
-**GENERATE NOW (locked lore, tickets filed — §7):** ~55–75k words
-- Armoury+SWBestiary description backfill: ~1,830 entries × ~35 words ≈ 65k
-  (biome sheets + naming grammar + SW register are the locked sources)
-- Tier-grammar fixes + tier-generic variants for RM/RSW text: 5 confirmed
-  fixes now; variant sweep rides the backfill (same files)
+**GENERATE NOW (locked lore, tickets filed — §7):** ~10–20k words
+*(revised down 2026-09-11: the backfill line was an overcount — see §3
+correction; both the backfill and the tier fixes shipped same-day)*
+- Armoury+SWBestiary description backfill: **DONE** — real debt was ~57
+  entries, written and generator-registered (b8da9f097)
+- Tier-grammar fixes: **DONE** (e35831086, FOUNDRY); "Jawa clan" ruled NOT
+  allowed at RSW — two rewordings owed (RSW_DW_Research_Reboot, RSW_Karrask)
 - Donor proper-noun renames (bounded set once scanned): patch text, ~2–5k
 - Biome/faction/scenario polish from frozen sheets: ~3–5k
 

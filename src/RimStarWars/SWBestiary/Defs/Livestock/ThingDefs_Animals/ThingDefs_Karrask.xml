@@ -98,7 +98,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_Karrask</defName>
     <label>karrask</label>
-    <description>A low, heavily plated grazer that forages mineral-rich rock lichen across the desert flats. Every molt cycle it sheds its entire carapace at once, curling into its molting corner for a day while the new plate hardens beneath - disturb it mid-molt and it turns aggressive, and the ruined shed is wasted. Left alone, the shed cures into some of the toughest, easiest-worked material a Jawa clan can get its hands on.</description>
+    <description>A low, heavily plated grazer that forages mineral-rich rock lichen across the desert flats. Every molt cycle it sheds its entire carapace at once, curling into its molting corner for a day while the new plate hardens beneath - disturb it mid-molt and it turns aggressive, and the ruined shed is wasted. Left alone, the shed cures into some of the toughest, easiest-worked material a desert scavenger can get their hands on.</description>
     <statBases>
       <MoveSpeed>3.2</MoveSpeed>
       <MarketValue>260</MarketValue>
