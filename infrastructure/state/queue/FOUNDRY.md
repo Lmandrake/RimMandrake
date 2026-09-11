@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T06:01:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T06:02:41Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -564,7 +564,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     design
-summary:  (no items/FISH_BESTIARY_COMMISSION_1.md yet — write one when you have something to say)
+summary:  Owner-said (2026-09-10): "Commission lots of fishes! I would like there to be a
 prose:    infrastructure/state/items/FISH_BESTIARY_COMMISSION_1.md
 
 ## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
@@ -957,3 +957,13 @@ kind:     bug
 thin:     no ## criteria
 summary:  Diagnosis pass 2026-09-11 (BENCH lane, sourced from
 prose:    infrastructure/state/items/BAREHANDED_MELEE_FALLBACK_1.md
+
+## GREENTIDE_FISH_ITEMS_FIX_1 BiomeFishTypes_Greentide.xml lists scalefish RACE defs (RSW_Mee/Faa/Laa) in fishTypes instead of item defs -- fishing there makes a bare Pawn, no category guard in FishingUtility.GetCatchesFor
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREENTIDE_FISH_ITEMS_FIX_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREENTIDE_FISH_ITEMS_FIX_1.md
