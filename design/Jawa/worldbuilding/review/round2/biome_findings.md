@@ -12,9 +12,11 @@ Ordered by churn (arrivals+departures+cuts+flier extractions), highest first.
 
 ---
 
-## the_miasma — churn 22 (cast 30 → 23)
+## the_miasma — churn 22 (cast 30 → 23) · NURSERY (ruled 2026-09-10)
 Arrivals (7): Dianoga, RSW_SandoAquaMonster, BMT_PodWorm, Blarth, Blixus, JRWBeelzebufo, MarshHaunt. Flier→roster arriving: Bogwing.
 Departures (12 moves): entire aquatic cast to the seas (RSW_Faa/Laa/Mee/OpeeSeaKiller/SiltLamprey, Yobshrimp) + AA_BloodShrimp, AA_Helixien, AA_Plasmorph, AA_Slurrypede, BMT_Gembug, Kreetle. Insect ruling: VFEI2_Swarmling + VFEI2_BlackSwarmling out (faction-only).
+
+NURSERY RULING (owner, 2026-09-10): the sea creatures use the Miasma as a young-raising ground — juvenile-only spawns via per-species young PawnKindDefs (same race, maxGenerationAge capped below adulthood, reduced combatPower) in the Miasma wildAnimals list. Engine-verified: PawnKindDef.minGenerationAge/maxGenerationAge. Build filed for FOUNDRY.
 
 INCONSISTENCIES:
 1. JRWBeelzebufo reads as "giant frog" — collides with ban 7 (no vanilla-Earth fauna) and the recognizability rule; rename/reskin owed.
@@ -173,8 +175,8 @@ INCONSISTENCIES:
 OPPORTUNITIES:
 1. Great Thrumbo as the deep-desert white whale (very rare, very dangerous) fills the sheet's legend slot beside the Krayts.
 
-## poison_forest — churn 6 (cast 17 → 21)
-Arrivals (5): Lylek, AA_Plasmorph, AA_LuciferBug, AA_Radyak, AA_RipperHound. Flier extracted: AA_InfectedAerofleet.
+## poison_forest — churn 7 (cast 17 → 20)
+Arrivals (5): Lylek, AA_Plasmorph, AA_LuciferBug, AA_Radyak, AA_RipperHound. Flier extracted: AA_InfectedAerofleet. Horror ruling: Visceral out (injected dark-side art only).
 
 INCONSISTENCIES:
 1. Ban: "Nothing fast. No sprinters, no pursuit predators" — Lylek and RipperHound are both pursuit-built; admit only with a rewritten slow/ambush hunting story.
@@ -215,8 +217,8 @@ INCONSISTENCIES:
 OPPORTUNITIES:
 1. Glowtail vs the no-free-light law (ban 6): make its glow a light-draw *cost* mechanic — the creature that eats your lamplight.
 
-## arid_shrubland — churn 4 (cast 42 → 43)
-Arrivals (2, deduped — Kreetle already resident): BMT_Stoneback, VAEWaste_Hydra ("venomvine patch predator"). Insect ruling: VFEI2_Macrofly arrival VOIDED (faction-only). Flier extracted: Convor.
+## arid_shrubland — churn 5 (cast 42 → 42)
+Arrivals (2, deduped — Kreetle already resident): BMT_Stoneback, VAEWaste_Hydra ("venomvine patch predator"). Insect ruling: VFEI2_Macrofly arrival VOIDED (faction-only). Horror ruling: Terrorworm out (injected dark-side art only). Flier extracted: Convor.
 
 INCONSISTENCIES:
 1. Ban 4: no resident LARGE-band creature (large only as juvenile of huge) — the register bins Wildpod, Bantha, Corinathoth, Mudhorn, Ronto, Skalder LARGE. Six standing violations; rebin as juveniles-of-huge or move.

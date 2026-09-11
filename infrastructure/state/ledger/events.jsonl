@@ -7006,3 +7006,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"CODEX_WORKER_SANDBOX_WRITE_1","ts":"2026-09-11T00:36:49Z"}
 {"seat":"FOUNDRY","event":"start","id":"CODEX_WORKER_SANDBOX_WRITE_1","ts":"2026-09-11T00:36:50Z"}
 {"seat":"FOUNDRY","event":"close","id":"CODEX_WORKER_SANDBOX_WRITE_1","sha":"d4a4c10d9960b87eb081b9510683a4d77976be18","ts":"2026-09-11T00:58:05Z"}
+{"seat":"OWNER","event":"file","id":"FLORA_COMMISSION_TEMPLATE_1","title":"Design the plant-commission template: per-biome ecosystem coherence rules + renderer guidance for the 118 commissioned plants","kind":"design","target":"v1","for":"BENCH","ownerSaid":"Seems like making plants might need a different template then animals, so the ecosystem stays coherent and the renderer likely needs a lot more guidance on what's a good idea. Worth thinking very deeply about that.","ts":"2026-09-11T01:46:24Z"}
