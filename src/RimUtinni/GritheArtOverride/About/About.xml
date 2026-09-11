@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rut.gritheartoverride</packageId>
+  <name>Grithe Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces VanillaExpanded.VGeneticsE's GR_ParagonRat art and
+label/description (primary look, south/east/north facings only - the
+dessicated-corpse texture stays on donor art) per the 2026-09-11 owner
+ruling on `art: "improve"` rows: non-SW names are free to be reimagined
+(general kind fixed, specific name/character not). GR_ParagonRat is
+reimagined as **Grithe**, a chitin-plated insectoid-rodent scavenger with
+oversized grasping forepaws - not a literal rat. Full regeneration, heavy
+black outline required.
+
+defName is NOT renamed (this is a donor mod's def, not ours - a real rename
+would mean absorbing the def into our own mod wholesale, out of scope for an
+art-wiring pass). Instead: loose Textures/ at the same relative path
+(Things/Pawn/Animal/Paragon/Rat/GR_ParagonRat_&lt;facing&gt;) the donor uses,
+so this mod's later load order wins the same-path resolution, plus a small
+Patches/ pass renaming the label/description on both the ThingDef and the
+PawnKindDef so the in-game name reads as the new character.</description>
+  <loadAfter>
+    <li>VanillaExpanded.VGeneticsE</li>
+  </loadAfter>
+</ModMetaData>

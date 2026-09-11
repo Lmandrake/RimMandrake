@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-11T19:22:04Z",
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "dewback_v1_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Dewback \u2014 a large, docile reptilian mount native to Tatooine-like deserts. Thick, tough grey-green scaly hide, a bulky low-slung body on four short stumpy legs, a long thick neck ending in a blunt broad-snouted head with small deep-set eyes, a short stubby tail. Slow, plodding, heat-tolerant desert-lizard posture. Reads as a hardy pack/riding reptile, not aggressive. Single creature, centered, standing pose, no ground shadow, no background scenery, no saddle or riding gear. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE4_QUEUE_1",
+  "style_notes": "SW canon identity KEPT per owner ruling 2026-09-11 ('improve' semantics): Dewback's name means the canonical Tatooine reptilian mount \u2014 converge on its known look (thick grey-green scaly hide, blunt-snouted, stumpy-legged). Large sizeBin. Full regen, same mechanism as 'redo'. Explicit outline-thickness requirement per the same ruling."
+}

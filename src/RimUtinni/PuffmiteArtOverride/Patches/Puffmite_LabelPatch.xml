@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Puffmite_LabelPatch.xml                     PuffmiteArtOverride - new file
+
+  Renames BMT_FleeceSpider's label/description to the reimagined character
+  "Puffmite" per the 2026-09-11 owner ruling on `art: "improve"` rows
+  (general kind fixed - a tiny cavern-dwelling arachnid pet - specific
+  name/character free). defName stays BMT_FleeceSpider (donor def, not ours
+  - see About.xml). Both the ThingDef and the PawnKindDef carry their own
+  label; both are patched.
+-->
+<Patch>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="BMT_FleeceSpider"]/label</xpath>
+    <value><label>puffmite</label></value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="BMT_FleeceSpider"]/description</xpath>
+    <value><description>A filament-tufted, faintly bioluminescent tiny arachnid, its crystalline hairs catching what little light reaches the caverns it favors. Harmless and easily fed from whatever scraps hit the floor, it has become a popular pet among cavern-dwellers despite - or because of - how little it resembles anything found on the surface.</description></value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="BMT_FleeceSpider"]/label</xpath>
+    <value><label>puffmite</label></value>
+    <success>Always</success>
+  </Operation>
+</Patch>

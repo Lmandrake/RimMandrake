@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rut.puffmiteartoverride</packageId>
+  <name>Puffmite Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces BiomesTeam.BiomesCaverns' BMT_FleeceSpider art and
+label/description (all facings - this donor has no dessicated-corpse
+variant to preserve) per the 2026-09-11 owner ruling on `art: "improve"`
+rows: non-SW names are free to be reimagined (general kind fixed, specific
+name/character not). BMT_FleeceSpider is reimagined as **Puffmite**, a
+filament-tufted, crystalline/bioluminescent tiny arachnid - not a literal
+fleece spider. Full regeneration, heavy black outline required.
+
+defName is NOT renamed (donor mod's def, not ours - see GritheArtOverride
+for the same reasoning). loose Textures/ at the same relative path
+(BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider_&lt;facing&gt;) the donor
+uses, plus a small Patches/ pass renaming the label/description on both the
+ThingDef and the PawnKindDef.</description>
+  <loadAfter>
+    <li>BiomesTeam.BiomesCaverns</li>
+  </loadAfter>
+</ModMetaData>

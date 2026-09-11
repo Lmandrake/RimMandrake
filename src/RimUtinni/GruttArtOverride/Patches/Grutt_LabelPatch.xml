@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Grutt_LabelPatch.xml                            GruttArtOverride - new file
+
+  Renames GR_Molebear's label/description to the reimagined character
+  "Grutt" per the 2026-09-11 owner ruling on `art: "improve"` rows (general
+  kind fixed - a tusked, plated burrower - specific name/character free).
+  defName stays GR_Molebear (donor def, not ours - see About.xml). Both the
+  ThingDef and the PawnKindDef carry their own label; both are patched.
+-->
+<Patch>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="GR_Molebear"]/label</xpath>
+    <value><label>grutt</label></value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="GR_Molebear"]/description</xpath>
+    <value><description>A tusked, armor-plated burrower, blind but for vestigial eyes it has no real use for underground. Its oversized digging claws work as well through rock as through an enemy's hide, and it will periodically surface with whatever raw metal it happened to dig up. Too independent to train as a fighter, but tough enough that few things bother trying to make it one.</description></value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="GR_Molebear"]/label</xpath>
+    <value><label>grutt</label></value>
+    <success>Always</success>
+  </Operation>
+</Patch>

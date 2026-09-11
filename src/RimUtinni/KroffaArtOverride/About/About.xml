@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rut.kroffaartoverride</packageId>
+  <name>Kroffa Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces BiomesTeam.BiomesPollutedLands' BMT_Maligoat art and
+label/description (primary look, south/east/north facings only - the
+dessicated-corpse textures stay on donor art) per the 2026-09-11 owner
+ruling on `art: "improve"` rows: non-SW names are free to be reimagined
+(general kind fixed, specific name/character not). BMT_Maligoat is
+reimagined as **Kroffa**, a six-legged plated desert grazer with curling
+horns and mandible-like mouthparts - not a literal goat. Full regeneration,
+heavy black outline required.
+
+The donor splits every life stage by gender (BMT_PollutedLands/Things/
+Animal/Maligoat/MaligoatMale and MaligoatFemale) - only one look was
+generated for this wave, so the SAME new art is wired to BOTH
+MaligoatMale_&lt;facing&gt; and MaligoatFemale_&lt;facing&gt; rather than leaving
+does on the old donor look (same reasoning as AnoobaArtOverride).
+
+defName is NOT renamed (donor mod's def, not ours - see GritheArtOverride
+for the same reasoning). A small Patches/ pass renames the label,
+labelFemale and description on both the ThingDef and the PawnKindDef.</description>
+  <loadAfter>
+    <li>BiomesTeam.BiomesPollutedLands</li>
+  </loadAfter>
+</ModMetaData>
