@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T06:36:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T06:38:11Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## STAGED_LORE_DESCRIPTIONS_1 Engine feasibility: scenario-driven staged descriptions - biome/terrain/def texts that change as lore reveal gates open; Scarlands P/GM ladder is the first consumer (BENCH-filed from the owner's musing, not a ruling)
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  STAGEDLOREDESCRIPTIONS1 — descriptions that change as the story is learned
-prose:    infrastructure/state/items/STAGED_LORE_DESCRIPTIONS_1.md
 
 ## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
 state:    ready
