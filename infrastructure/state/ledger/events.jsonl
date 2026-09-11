@@ -7123,3 +7123,35 @@
 {"seat":"BENCH","event":"claim","id":"STAGED_LORE_DESCRIPTIONS_1","ts":"2026-09-11T06:37:56Z"}
 {"seat":"BENCH","event":"note","id":"STAGED_LORE_DESCRIPTIONS_1","text":"Owner GO, 2026-09-11 (card sequence: initial card, VoidMonolith clarified as engine-precedent-only, then 'let's do it'). Feasibility half was already delivered+verified; build spun off as STAGED_LORE_BUILD_1 (FOUNDRY). The authoring sitting for stage texts rides the build's completion. R25 stands: the top stage never names the Assailants.","ts":"2026-09-11T06:37:57Z"}
 {"seat":"BENCH","event":"close","id":"STAGED_LORE_DESCRIPTIONS_1","sha":"927fc9f0","ts":"2026-09-11T06:38:11Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-11T06:38:20Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"owner: verify Oracle/ScavengerEvents live, fauna stat harvest, dump refresh","ts":"2026-09-11T06:40:29Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PYRELANDS_MECHANICS_1","ts":"2026-09-11T06:40:33Z"}
+{"seat":"FOUNDRY","event":"start","id":"PYRELANDS_MECHANICS_1","ts":"2026-09-11T06:40:34Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SLIME_MOD_BUILD_1","ts":"2026-09-11T06:40:35Z"}
+{"seat":"FOUNDRY","event":"start","id":"SLIME_MOD_BUILD_1","ts":"2026-09-11T06:40:35Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ROSTER_MOVE_APPLY_1","ts":"2026-09-11T06:40:36Z"}
+{"seat":"FOUNDRY","event":"start","id":"ROSTER_MOVE_APPLY_1","ts":"2026-09-11T06:40:37Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ALPHA_MECHANICS_KIT_1","ts":"2026-09-11T06:40:37Z"}
+{"seat":"FOUNDRY","event":"start","id":"ALPHA_MECHANICS_KIT_1","ts":"2026-09-11T06:40:38Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BRAINWORM_MOD_BUILD_1","ts":"2026-09-11T06:40:39Z"}
+{"seat":"FOUNDRY","event":"start","id":"BRAINWORM_MOD_BUILD_1","ts":"2026-09-11T06:40:39Z"}
+{"seat":"FOUNDRY","event":"claim","id":"RESTORE_FALLOUT_TRIAGE_1","ts":"2026-09-11T06:40:40Z"}
+{"seat":"FOUNDRY","event":"start","id":"RESTORE_FALLOUT_TRIAGE_1","ts":"2026-09-11T06:40:41Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BAREHANDED_MELEE_FALLBACK_1","ts":"2026-09-11T06:40:42Z"}
+{"seat":"FOUNDRY","event":"start","id":"BAREHANDED_MELEE_FALLBACK_1","ts":"2026-09-11T06:40:42Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_FISH_ITEMS_FIX_1","ts":"2026-09-11T06:40:43Z"}
+{"seat":"FOUNDRY","event":"start","id":"GREENTIDE_FISH_ITEMS_FIX_1","ts":"2026-09-11T06:40:43Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LAW3_RETARGET_RSW_1","ts":"2026-09-11T06:40:44Z"}
+{"seat":"FOUNDRY","event":"start","id":"LAW3_RETARGET_RSW_1","ts":"2026-09-11T06:40:45Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BMT_FAUNA_ABSORPTION_1","ts":"2026-09-11T06:40:45Z"}
+{"seat":"FOUNDRY","event":"start","id":"BMT_FAUNA_ABSORPTION_1","ts":"2026-09-11T06:40:46Z"}
+{"seat":"FOUNDRY","event":"claim","id":"STAT_NORM_WAVE2_RETIRE_1","ts":"2026-09-11T06:40:47Z"}
+{"seat":"FOUNDRY","event":"start","id":"STAT_NORM_WAVE2_RETIRE_1","ts":"2026-09-11T06:40:47Z"}
+{"seat":"FOUNDRY","event":"claim","id":"STAT_NORM_WAVE3_RETIRE_1","ts":"2026-09-11T06:40:48Z"}
+{"seat":"FOUNDRY","event":"start","id":"STAT_NORM_WAVE3_RETIRE_1","ts":"2026-09-11T06:40:49Z"}
+{"seat":"FOUNDRY","event":"claim","id":"RESEARCH_TRIO_RETIRE_1","ts":"2026-09-11T06:40:49Z"}
+{"seat":"FOUNDRY","event":"start","id":"RESEARCH_TRIO_RETIRE_1","ts":"2026-09-11T06:40:50Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MIASMA_JUVENILES_NULL_THINGCLASS_1","ts":"2026-09-11T06:40:51Z"}
+{"seat":"FOUNDRY","event":"start","id":"MIASMA_JUVENILES_NULL_THINGCLASS_1","ts":"2026-09-11T06:40:51Z"}
+{"seat":"FOUNDRY","event":"claim","id":"STAGED_LORE_BUILD_1","ts":"2026-09-11T06:40:52Z"}
+{"seat":"FOUNDRY","event":"start","id":"STAGED_LORE_BUILD_1","ts":"2026-09-11T06:40:53Z"}

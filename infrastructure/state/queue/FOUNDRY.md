@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T06:38:11Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-11T06:40:53Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -423,6 +423,15 @@ kind:     task
 summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
 prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 
+## PYRELANDS_MECHANICS_1 Pyrelands C# kit: migrating burn-line presence + burn intelligence, fire-hawk twig-carrying, furnace-beast thermal circuit (heat aura, bed-down ignition), flame-harvest + fire-raid events (unplanned-burn detection), ruled weather table - spec the_pyrelands.md
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  The authoritative brief is design/Jawa/worldbuilding/creatures/RUTruledcommissionswave2.md
+prose:    infrastructure/state/items/PYRELANDS_MECHANICS_1.md
+
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing
 row:      unassigned
@@ -602,6 +611,132 @@ target:   v1
 kind:     build
 summary:  Piece 4/4 of MECHPRESENCEENFORCEMENT1 (curate shrine contents where
 prose:    infrastructure/state/items/SHRINE_GUARDIAN_BIOME_GATE_1.md
+
+## SLIME_MOD_BUILD_1 Build the Gelatinous Slime universal mod (mandrake.rm tier) from the ruled design: biome + genetic archive + gene-extraction machine + slimification hediff + RM_GeneSeeker — spec design/RimMandrake/RM_gelatinous_slime_mod.md
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/SLIME_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SLIME_MOD_BUILD_1.md
+
+## ROSTER_MOVE_APPLY_1 Write the 114 ruled fauna moves into biomes/rosters/*.json from round2/move_mapping_v2.md (0 of 114 landed, MEASURED 2026-09-11) — extend apply_assignment_verdicts.py to consume the mapping as target source, then _validate --cross + regeneration commands
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  MEASURED 2026-09-11 (BENCH spot-verified): of the 169-row move table in
+prose:    infrastructure/state/items/ROSTER_MOVE_APPLY_1.md
+
+## ALPHA_MECHANICS_KIT_1 Build the RM_-tier mechanics kit: ALL SIX generalized Alpha comps ruled in (owner 2026-09-11) — ActiveGasEmitter, PeriodicAreaAttack, BiomeGlowMultiplier, EnvironmentalWeather, ScaledDeathExplosion, TargetedHediffAffliction — spec design/Jawa/worldbuilding/alpha_family_source_review.md SS4
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/ALPHA_MECHANICS_KIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ALPHA_MECHANICS_KIT_1.md
+
+## BRAINWORM_MOD_BUILD_1 Build RSW_ Geonosian brain worms per the reviewed spec: worm + staged infection hediff + living-host puppeting ThinkTree C# + cold-place cure; vectors = ruin dungeons, salvaged cargo, weaponized-egg war retribution. NEVER corpse-walker (owner ruling). Spec design/RimStarWars/brain_worm_spec.md
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/BRAINWORM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BRAINWORM_MOD_BUILD_1.md
+
+## RESTORE_FALLOUT_TRIAGE_1 CherryPicker restore fallout: config errors 95 vs 23 baseline - duplicate animal records (ZBiome_Grasslands x5 species), orphaned RSW_ juveniles (parents still cut), duplicate-key exceptions (AA_Eyeling, RSW_Nuna) - re-cut or restore-parents per family
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  MEASURED off the live Player.log after the 2026-09-11 batch restart (the first
+prose:    infrastructure/state/items/RESTORE_FALLOUT_TRIAGE_1.md
+
+## BAREHANDED_MELEE_FALLBACK_1 18 of 23 bare-handed pawn kinds have 100% ranged weapon pools with zero melee fallback (shooting-disabled pawns spawn bare) - re-run pool join vs today's post-restore cut list first, then add melee tags per faction voice; 5 kinds still undiagnosed
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  Diagnosis pass 2026-09-11 (BENCH lane, sourced from
+prose:    infrastructure/state/items/BAREHANDED_MELEE_FALLBACK_1.md
+
+## GREENTIDE_FISH_ITEMS_FIX_1 BiomeFishTypes_Greentide.xml lists scalefish RACE defs (RSW_Mee/Faa/Laa) in fishTypes instead of item defs -- fishing there makes a bare Pawn, no category guard in FishingUtility.GetCatchesFor
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  Found during FISHBESTIARYCOMMISSION1's reconciliation pass, 2026-09-10.
+prose:    infrastructure/state/items/GREENTIDE_FISH_ITEMS_FIX_1.md
+
+## LAW3_RETARGET_RSW_1 BeastNorm Law 3 is DEAD live: all 105 patch xpaths target bare donor defNames (Bantha) while the campaign runs the RSW_ forks with raw stats (RSW_Bantha power 23 vs ruled 60.0, MEASURED) - regenerate the patch against RSW_ names from the manifest, validate --live+--defs, and prune the dead bare-name halves
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/LAW3_RETARGET_RSW_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LAW3_RETARGET_RSW_1.md
+
+## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/BMT_FAUNA_ABSORPTION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
+
+## STAT_NORM_WAVE2_RETIRE_1 Execute Wave 2 remainder (owner ruled 2026-09-11): port Cephaloids (10 defs) + VE Succulents (12 plants) + VAE Waste's 1-2 used animals into our tier then retire those three; verify-then-retire Megafauna/MythicAges/FFAnimals/LittleCritters/crossbreeding-pair (per-def roster+save re-check each, escalate any cast find); save cross-ref re-check before every cut
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/STAT_NORM_WAVE2_RETIRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STAT_NORM_WAVE2_RETIRE_1.md
+
+## STAT_NORM_WAVE3_RETIRE_1 Execute Wave 3 (owner ruled 2026-09-11): retire vsrexamined + survivaltools TOGETHER (save cleanup: 4 placed tools); counter-patch caravanadventures' stat edits to neutral (80 armour + bodySize/combatPower) keeping its quest layer live; research trio (steppingstones + gravtech x2) is NOT here - it folds into RESEARCH_TREE_NORMALIZATION_1; complexjobs is a RULED KEEP
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/STAT_NORM_WAVE3_RETIRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STAT_NORM_WAVE3_RETIRE_1.md
+
+## RESEARCH_TRIO_RETIRE_1 Retire steppingstones + als.gravtech x2 and re-validate the research recost after the cut (owner ruled Wave 3 'fold into the research pass' 2026-09-11 - the pass itself is closed, so this item carries it: cut, rerun the recost validator, reconcile the 112 collision rows)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/RESEARCH_TRIO_RETIRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RESEARCH_TRIO_RETIRE_1.md
+
+## MIASMA_JUVENILES_NULL_THINGCLASS_1 All 7 Miasma nursery juvenile ThingDefs (RSW_*Juv) load with null thingClass/trainability/renderTree despite valid ParentName -- not yet root-caused, static review missed it
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  All 7 juvenile ThingDefs in src/RimUtinni/UtinniPatches/Defs/ThingDefsRaces/RUTMiasmaNurseryJuveniles.xml
+prose:    infrastructure/state/items/MIASMA_JUVENILES_NULL_THINGCLASS_1.md
+
+## STAGED_LORE_BUILD_1 Build staged lore descriptions (owner GO 2026-09-11): scribed GameComponent lore stage + def-field description swap; reflection-clear ThingDef.descriptionDetailedCached AND HediffDef.descriptionCached; reset-to-baseline on every load (defs persist across savegames); first consumer Scarlands GM ladder; stage TEXTS come later at an authoring sitting - spec design/Jawa/worldbuilding/research/staged_lore_descriptions_feasibility_2026-09-09.md + items/STAGED_LORE_DESCRIPTIONS_1.md
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/STAGED_LORE_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STAGED_LORE_BUILD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -877,154 +1012,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## PYRELANDS_MECHANICS_1 Pyrelands C# kit: migrating burn-line presence + burn intelligence, fire-hawk twig-carrying, furnace-beast thermal circuit (heat aura, bed-down ignition), flame-harvest + fire-raid events (unplanned-burn detection), ruled weather table - spec the_pyrelands.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  The authoritative brief is design/Jawa/worldbuilding/creatures/RUTruledcommissionswave2.md
-prose:    infrastructure/state/items/PYRELANDS_MECHANICS_1.md
-
-## SLIME_MOD_BUILD_1 Build the Gelatinous Slime universal mod (mandrake.rm tier) from the ruled design: biome + genetic archive + gene-extraction machine + slimification hediff + RM_GeneSeeker — spec design/RimMandrake/RM_gelatinous_slime_mod.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SLIME_MOD_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SLIME_MOD_BUILD_1.md
-
-## ROSTER_MOVE_APPLY_1 Write the 114 ruled fauna moves into biomes/rosters/*.json from round2/move_mapping_v2.md (0 of 114 landed, MEASURED 2026-09-11) — extend apply_assignment_verdicts.py to consume the mapping as target source, then _validate --cross + regeneration commands
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  MEASURED 2026-09-11 (BENCH spot-verified): of the 169-row move table in
-prose:    infrastructure/state/items/ROSTER_MOVE_APPLY_1.md
-
-## ALPHA_MECHANICS_KIT_1 Build the RM_-tier mechanics kit: ALL SIX generalized Alpha comps ruled in (owner 2026-09-11) — ActiveGasEmitter, PeriodicAreaAttack, BiomeGlowMultiplier, EnvironmentalWeather, ScaledDeathExplosion, TargetedHediffAffliction — spec design/Jawa/worldbuilding/alpha_family_source_review.md SS4
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ALPHA_MECHANICS_KIT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ALPHA_MECHANICS_KIT_1.md
-
-## BRAINWORM_MOD_BUILD_1 Build RSW_ Geonosian brain worms per the reviewed spec: worm + staged infection hediff + living-host puppeting ThinkTree C# + cold-place cure; vectors = ruin dungeons, salvaged cargo, weaponized-egg war retribution. NEVER corpse-walker (owner ruling). Spec design/RimStarWars/brain_worm_spec.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BRAINWORM_MOD_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BRAINWORM_MOD_BUILD_1.md
-
-## RESTORE_FALLOUT_TRIAGE_1 CherryPicker restore fallout: config errors 95 vs 23 baseline - duplicate animal records (ZBiome_Grasslands x5 species), orphaned RSW_ juveniles (parents still cut), duplicate-key exceptions (AA_Eyeling, RSW_Nuna) - re-cut or restore-parents per family
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  MEASURED off the live Player.log after the 2026-09-11 batch restart (the first
-prose:    infrastructure/state/items/RESTORE_FALLOUT_TRIAGE_1.md
-
-## BAREHANDED_MELEE_FALLBACK_1 18 of 23 bare-handed pawn kinds have 100% ranged weapon pools with zero melee fallback (shooting-disabled pawns spawn bare) - re-run pool join vs today's post-restore cut list first, then add melee tags per faction voice; 5 kinds still undiagnosed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## criteria
-summary:  Diagnosis pass 2026-09-11 (BENCH lane, sourced from
-prose:    infrastructure/state/items/BAREHANDED_MELEE_FALLBACK_1.md
-
-## GREENTIDE_FISH_ITEMS_FIX_1 BiomeFishTypes_Greentide.xml lists scalefish RACE defs (RSW_Mee/Faa/Laa) in fishTypes instead of item defs -- fishing there makes a bare Pawn, no category guard in FishingUtility.GetCatchesFor
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  Found during FISHBESTIARYCOMMISSION1's reconciliation pass, 2026-09-10.
-prose:    infrastructure/state/items/GREENTIDE_FISH_ITEMS_FIX_1.md
-
-## LAW3_RETARGET_RSW_1 BeastNorm Law 3 is DEAD live: all 105 patch xpaths target bare donor defNames (Bantha) while the campaign runs the RSW_ forks with raw stats (RSW_Bantha power 23 vs ruled 60.0, MEASURED) - regenerate the patch against RSW_ names from the manifest, validate --live+--defs, and prune the dead bare-name halves
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LAW3_RETARGET_RSW_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LAW3_RETARGET_RSW_1.md
-
-## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BMT_FAUNA_ABSORPTION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
-
-## STAT_NORM_WAVE2_RETIRE_1 Execute Wave 2 remainder (owner ruled 2026-09-11): port Cephaloids (10 defs) + VE Succulents (12 plants) + VAE Waste's 1-2 used animals into our tier then retire those three; verify-then-retire Megafauna/MythicAges/FFAnimals/LittleCritters/crossbreeding-pair (per-def roster+save re-check each, escalate any cast find); save cross-ref re-check before every cut
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/STAT_NORM_WAVE2_RETIRE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/STAT_NORM_WAVE2_RETIRE_1.md
-
-## STAT_NORM_WAVE3_RETIRE_1 Execute Wave 3 (owner ruled 2026-09-11): retire vsrexamined + survivaltools TOGETHER (save cleanup: 4 placed tools); counter-patch caravanadventures' stat edits to neutral (80 armour + bodySize/combatPower) keeping its quest layer live; research trio (steppingstones + gravtech x2) is NOT here - it folds into RESEARCH_TREE_NORMALIZATION_1; complexjobs is a RULED KEEP
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/STAT_NORM_WAVE3_RETIRE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/STAT_NORM_WAVE3_RETIRE_1.md
-
-## RESEARCH_TRIO_RETIRE_1 Retire steppingstones + als.gravtech x2 and re-validate the research recost after the cut (owner ruled Wave 3 'fold into the research pass' 2026-09-11 - the pass itself is closed, so this item carries it: cut, rerun the recost validator, reconcile the 112 collision rows)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RESEARCH_TRIO_RETIRE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RESEARCH_TRIO_RETIRE_1.md
-
-## MIASMA_JUVENILES_NULL_THINGCLASS_1 All 7 Miasma nursery juvenile ThingDefs (RSW_*Juv) load with null thingClass/trainability/renderTree despite valid ParentName -- not yet root-caused, static review missed it
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  All 7 juvenile ThingDefs in src/RimUtinni/UtinniPatches/Defs/ThingDefsRaces/RUTMiasmaNurseryJuveniles.xml
-prose:    infrastructure/state/items/MIASMA_JUVENILES_NULL_THINGCLASS_1.md
-
-## STAGED_LORE_BUILD_1 Build staged lore descriptions (owner GO 2026-09-11): scribed GameComponent lore stage + def-field description swap; reflection-clear ThingDef.descriptionDetailedCached AND HediffDef.descriptionCached; reset-to-baseline on every load (defs persist across savegames); first consumer Scarlands GM ladder; stage TEXTS come later at an authoring sitting - spec design/Jawa/worldbuilding/research/staged_lore_descriptions_feasibility_2026-09-09.md + items/STAGED_LORE_DESCRIPTIONS_1.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/STAGED_LORE_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/STAGED_LORE_BUILD_1.md
+_none._
