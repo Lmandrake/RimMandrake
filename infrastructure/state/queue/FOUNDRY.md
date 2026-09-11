@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T07:01:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T07:03:21Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -676,12 +676,12 @@ summary:  (no items/LAW3_RETARGET_RSW_1.md yet — write one when you have somet
 prose:    infrastructure/state/items/LAW3_RETARGET_RSW_1.md
 
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-summary:  BMTFAUNAABSORPTION1 — BLOCKED: donor mod and creature count don't match, escalating
+summary:  BMTFAUNAABSORPTION1 — donor corrected to biomesteam., ready to port
 prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
 
 ## STAT_NORM_WAVE2_RETIRE_1 Execute Wave 2 remainder (owner ruled 2026-09-11): port Cephaloids (10 defs) + VE Succulents (12 plants) + VAE Waste's 1-2 used animals into our tier then retire those three; verify-then-retire Megafauna/MythicAges/FFAnimals/LittleCritters/crossbreeding-pair (per-def roster+save re-check each, escalate any cast find); save cross-ref re-check before every cut
@@ -992,16 +992,6 @@ kind:     design
 blocked:  design brief complete and filed (design/Jawa/worldbuilding/creatures/goo_boom_commission.md, commit 477ab973) - RUT_Vhessk fully specified: mechanic grounded in real Core source (a real life-stage-index trap caught), art direction grounded in real donor palette sampling. NOT closing: the item's own title includes 'new def + new art', i.e. the actual BUILD, and the brief leaves 8 concrete open calls (v1/v2 worker, healthScale, melee numbers, market value, butchery yield, BodyDef, glow, spawn timing) that need an owner ruling before building makes sense - building now would mean silently deciding them
 summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
-
-## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-blocked:  item's own donor/count don't cohere: queue names mlie.beastsoftherim (real donor, 19 species/64 defs, xml-verified) but the 71/41/30 figures trace to a DIFFERENT unrelated donor family (biomesteam.biomescaverns/biomescore/biomespollutedlands, BMT_-prefixed per decisions_propagated.json) with zero defName overlap. Needs owner/BENCH ruling: fix the donor name to biomesteam.*, or run a keep-or-port sitting on the real 19-species mlie.beastsoftherim first. See items/BMT_FAUNA_ABSORPTION_1.md
-summary:  BMTFAUNAABSORPTION1 — BLOCKED: donor mod and creature count don't match, escalating
-prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
