@@ -64,6 +64,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import common  # noqa: E402
+import artreg  # noqa: E402 — ART_REGEN_REGISTRY_1: sole writer of registry.jsonl;
+                # imported in-process (not shelled out) so a hot per-job
+                # finalize doesn't pay a subprocess spawn each time.
 
 # The rollout-reading path (find the newest rollout-*.jsonl under a
 # CODEX_HOME, pull its last rate_limits) and the PNG-header reader both
@@ -1584,6 +1587,27 @@ def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
         "model": result.get("model"),
         "daemon_attempts": result.get("daemon_attempts"),
     })
+
+    # ART_REGEN_REGISTRY_1: emit generated+validated through artreg — best
+    # effort, never fatal to the job itself. A job filed before this wiring
+    # existed (or filed by hand, with no `queued` event on record) has
+    # nothing for artreg to resolve its target from; that is logged and
+    # skipped rather than crashing finalize_job, which still owns getting
+    # the actual image into done/failed/ regardless of registry bookkeeping.
+    #
+    # Only against the REAL queue (default dirs) — see the matching guard in
+    # fill_queue.py's write_job for why: selftest_artpipe.py always finalizes
+    # into a tempfile.TemporaryDirectory(), and without this check every
+    # test run would permanently pollute the production registry.jsonl.
+    if done_dir == common.DEFAULT_DONE and failed_dir == common.DEFAULT_FAILED:
+        try:
+            artreg.record_generated(job_id, elapsed_s=result.get("elapsed_s"), by="artpiped")
+            artreg.record_validated(job_id, "pass" if ok else "fail", by="artpiped")
+        except artreg.RegError as exc:
+            print(f"artpiped: NOTE artreg event skipped for {job_id}: {exc}", file=sys.stderr)
+        except Exception as exc:  # never let registry bookkeeping take the daemon down
+            print(f"artpiped: WARNING artreg event emit raised {type(exc).__name__} "
+                  f"for {job_id}: {exc}", file=sys.stderr)
 
     dest_job = target_dir / f"{job_id}.json"
     manifest_path = target_dir / f"{job_id}.manifest.json"
