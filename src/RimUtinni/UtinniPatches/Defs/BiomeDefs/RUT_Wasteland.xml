@@ -106,8 +106,8 @@
       <RainyThunderstorm>0</RainyThunderstorm>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <BMT_FleeceSpider MayRequire="biomesteam.biomescaverns">0.7</BMT_FleeceSpider>  <!-- fleece spider - wretched-small, keep -->
-      <BMT_BloodletterPetrel MayRequire="biomesteam.biomespollutedlands">0.7</BMT_BloodletterPetrel>  <!-- bloodletter petrel - wretched-small, keep -->
+      <RSW_FleeceSpider MayRequire="mandrake.rsw.swbestiary">0.7</RSW_FleeceSpider>  <!-- fleece spider - wretched-small, keep -->
+      <RSW_BloodletterPetrel MayRequire="mandrake.rsw.swbestiary">0.7</RSW_BloodletterPetrel>  <!-- bloodletter petrel - wretched-small, keep -->
       <Borcatu MayRequire="mlie.starwarsanimalcollection">0.7</Borcatu>  <!-- Borcatu - wretched-small, keep -->
       <GR_Beetlefleet MayRequire="vanillaexpanded.vgeneticse">0.7</GR_Beetlefleet>  <!-- beetlefleet - wretched-small, keep -->
       <GR_ParagonRat MayRequire="vanillaexpanded.vgeneticse">0.7</GR_ParagonRat>  <!-- rodent paragon - wretched-small, keep -->
@@ -116,14 +116,14 @@
       <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals">0.6</VFEI2_BlackSwarmling>  <!-- black swarmlings - wretched-small, adjust-keep -->
       <SW_Electrictick MayRequire="who.vfee.isopodageneline">0.5</SW_Electrictick>  <!-- Electrictick - extremophile-odd, adjust-keep -->
       <Toxalope MayRequire="mlie.advancedbiomes">0.4</Toxalope>  <!-- toxalope - wretched-herd, import -->
-      <BMT_Maligoat MayRequire="biomesteam.biomespollutedlands">0.4</BMT_Maligoat>  <!-- maligoat - wretched-herd, keep -->
-      <BMT_Screecher MayRequire="biomesteam.biomespollutedlands">0.4</BMT_Screecher>  <!-- screecher - wretched-pack, import -->
+      <RSW_Maligoat MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Maligoat>  <!-- maligoat - wretched-herd, keep -->
+      <RSW_Screecher MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Screecher>  <!-- screecher - wretched-pack, import -->
       <GR_Molebear MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Molebear>  <!-- molebear - wretched-medium, keep -->
       <GR_Spidercat MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Spidercat>  <!-- spidercat - wretched-medium, keep -->
-      <BMT_PustuleHornetQueen MayRequire="biomesteam.biomespollutedlands">0.3</BMT_PustuleHornetQueen>  <!-- pustule queen - wretched-small, import -->
+      <RSW_PustuleHornetQueen MayRequire="mandrake.rsw.swbestiary">0.3</RSW_PustuleHornetQueen>  <!-- pustule queen - wretched-small, import -->
       <AA_FissionMouse MayRequire="sarg.alphaanimals">0.3</AA_FissionMouse>  <!-- fission mouse - extremophile-odd, import -->
-      <BMT_ColonyPustuleHornetQueen MayRequire="biomesteam.biomespollutedlands">0.2</BMT_ColonyPustuleHornetQueen>  <!-- pustule queen - wretched-small, import -->
-      <BMT_PustuleHornetSpawned MayRequire="biomesteam.biomespollutedlands">0.2</BMT_PustuleHornetSpawned>  <!-- pustule hornet - wretched-small, import -->
+      <RSW_ColonyPustuleHornetQueen MayRequire="mandrake.rsw.swbestiary">0.2</RSW_ColonyPustuleHornetQueen>  <!-- pustule queen - wretched-small, import -->
+      <RSW_PustuleHornetSpawned MayRequire="mandrake.rsw.swbestiary">0.2</RSW_PustuleHornetSpawned>  <!-- pustule hornet - wretched-small, import -->
       <AA_Terramorph MayRequire="sarg.alphaanimals">0.2</AA_Terramorph>  <!-- terramorph - extremophile-odd, keep -->
       <VAEWaste_Megatardi MayRequire="vanillaexpanded.vaewaste">0.18</VAEWaste_Megatardi>  <!-- megatardi - extremophile-odd, import -->
       <AA_AcanthamoebaGiganteaSmall MayRequire="sarg.alphaanimals">0.1</AA_AcanthamoebaGiganteaSmall>  <!-- acanthamoeba gigantea, small - wretched-small, import -->

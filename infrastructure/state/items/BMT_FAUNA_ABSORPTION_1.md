@@ -23,6 +23,118 @@ item proceeds).
 
 ---
 
+## FOUNDRY port pass, 2026-09-11 — 68/68 ported, retirement BLOCKED (see escalation)
+
+Read directly from the three donor mods on disk (`BiomesTeam.BiomesCaverns`
+2969748433, `BiomesTeam.BiomesCore` 2038000893, `BiomesTeam.BiomesPollutedLands`
+3390196656 under the Steam workshop content folder) — not guessed, not
+grepped from a stale dump. Cross-checked `decisions_propagated.json` (833
+rows) against `biome_findings.md`: only one conflict exists system-wide
+(`BMT_ChemSnail`, "in" at `the_cracked_lands` / "out" at `the_rot`) — see the
+escalation below, this resolution is now in question.
+
+**Port mechanics** (script-driven reference closure, not hand-typed): started
+from the 68 target defNames, walked every `ParentName`, `Name=` (abstract
+defs), leaf-text, and **dictionary-style XML tag** (`<butcherProducts><BMT_X>`
+— the tag itself is the ref) reference until closed. Landed on **274** total
+defs (68 species + 206 dependencies: bodies, eggs, leather/chitin/silk,
+sounds, hediffs, damage types, life stages, one FactionDef for the pustule
+hornet hive, one RulePackDef). Renamed `BMT_` → `RSW_` throughout (defName,
+`Name=`, `ParentName=`, dictionary tag names, leaf-text refs — all four
+reference shapes, verified zero leftover `BMT_`/`BiomesCore.` tokens outside
+free-text tradeTags strings, which carry no def and were left alone).
+Stripped every `modExtensions`/`comps`/`compClass`/`hediffClass`/`needClass`
+field naming a C# class in `BiomesCore.*`, `BMT_PollutedLands.*`,
+`PathfindingFramework.*` (inactive on this mod list) or
+`VEF.AnimalBehaviours.*` (presence unconfirmed) — the creature keeps its
+stats/body/art, not the donor-framework-only behaviour (pack defense,
+lure-prey AI, filth trail, water-walker, dig-periodically, hermaphroditic-mate
+job giver, corpse spawner, etc.); each def falls back to its vanilla base
+class. Two non-resident adult forms (`RSW_RoyalRhino`, `RSW_ShatterjawBeetle`)
+are ported as back-end `evolveIntoPawnKindDef` targets for their resident
+larva/pupa stages — "out" for biome residency per the ruling, but required so
+the vanilla evolve mechanism (confirmed vanilla, not donor C#) doesn't dangle.
+440 texture files + all referenced sound-clip folders copied verbatim from
+the donor's own `Textures`/`Sounds` trees, texPaths repathed to
+`swanimals/BiomesTeam/<original path>` (audio to `Sounds/BiomesTeam/...`);
+vanilla-Core reuse paths (`Things/...`, `World/...`) left untouched by design.
+
+Output: `src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/{ThingDefs_Races,
+ThingDefs_Items,Bodies,SoundDefs,Support}/RSW_BiomesTeamPort_*.xml`.
+`validate_patch.py --defs <Data> --defs <Workshop> --defs <Mods>`: **0
+errors** on 4/5 files; the 5th (`ThingDefs_Items`) flagged 2 as ERROR
+(`RSW_Filth_Acidic_Snail_Slime`/`RSW_Filth_Snail_Slime` reusing vanilla
+`Things/Filth/Spatter`) — **verified false positive**: that exact path is
+used by vanilla's own `Filth_Blood`/`Filth_BloodInsect`/`Filth_Slime`
+(`Data/Core/Defs/ThingDefs_Misc/Filth_Various.xml`); the validator mis-treats
+`Things/` as claimed by this mod because SWBestiary already carries other
+content under `Textures/Things/...`. 3 WARN on `RSW_Yooka` reusing vanilla
+`Dessicated_Alpaca` — expected caveat (validator can't see packed
+asset-bundle textures), Alpaca is a real vanilla animal.
+
+### Live wiring found and repointed (NOT part of the original brief — found
+while checking for dangling donor references)
+
+The three donor mods turned out to be **already load-bearing** in already-
+shipped RimUtinni content, gated with `MayRequire="biomesteam.*"` — retiring
+them blind would have silently dropped these from the live game. Repointed
+every occurrence whose defName is one of the ruled 68, `BMT_X
+MayRequire="biomesteam.*"` → `RSW_X MayRequire="mandrake.rsw.swbestiary"`
+(mirrors the pattern `SandFishing_CrackedLands.xml` already uses for
+`RSW_DuneCrawler`): **27 wildAnimals/butcherProducts entries across 12 hand-
+authored files** (`RUT_CrackedLands/Miasma/AridShrubland/Desert/FeverWood/
+Greentide/Scarlands/PoisonForest/TheRot/Webwork/Wasteland.xml` +
+`RUT_RotSporeKit_MantisScythe.xml`'s `BMT_FungalMantisClaw` butcher product),
+plus **26 rows in `design/Jawa/fauna/cast_assignment.csv`** (defName + `mod`
+column repointed to `RimMandrake: SW — Bestiary`, reason field annotated).
+
+## ESCALATION — retirement is NOT safe yet, three open items
+
+1. **`src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml` is
+   GENERATED** (`design/Jawa/fauna/gen_cast_patch.py` from
+   `cast_assignment.csv`, header says "do not hand-edit"). It still carries
+   ~10 `PatchOperationConditional MayRequire="biomesteam.*"` blocks for
+   in-scope species. The CSV source is now fixed (above), but regenerating
+   correctly requires the generator's own packageId resolution, which reads
+   `defName → packageId` from a **live def dump** — `RSW_*` won't resolve
+   until SWBestiary's new defs are deployed and the dump refreshed. That's a
+   deploy + dump cycle (CHARTER expensive-list territory), not something to
+   run unattended from an isolated worktree. **Next step: deploy, refresh the
+   dump, re-run `gen_cast_patch.py`, diff the result.**
+2. **7 defNames are live and marked "keep"/"import" in hand-authored biome
+   files but are NOT in the ruled 68** — `BMT_ChemSnail` (kept at BOTH
+   `the_cracked_lands` AND `the_rot`, contradicting this item's own read of
+   `biome_findings.md` as an "OUT" ruling — the_rot's "departure" list may
+   only mean departs-from-the_rot, not cut-from-the-game, and the
+   cracked_lands copy was never touched by the round-2 review at all),
+   `BMT_CaveSpider`, `BMT_GiantSlug`, `BMT_GiantSnail`, `BMT_Pillbug`
+   (all "departures" from `the_rot` per `biome_findings.md` but still live
+   with `MayRequire` gates on the donor — the live wiring in `RUT_TheRot.xml`
+   predates the round-2 review and was never updated to match it),
+   `BMT_GlowBat` (biome_findings.md: "flier extracted" from `the_rot` — a
+   different subsystem, possibly still needing a home). Left untouched
+   (still gated on the retiring donor — will silently stop spawning, not
+   error) rather than guessed into the port. **Needs an owner/BENCH call**:
+   either these are genuinely cut (fine, the entries can be deleted) or the
+   round-2 census undersold them and they need adding to the port.
+3. **Two mechanisms this port cannot carry over at all**:
+   `RUT_RotSporeKit_SporeCloud.xml`'s `conditionClass
+   MayRequire="biomesteam.biomescaverns">BiomesCaverns.GameCondition_SporeCloud`
+   reuses the donor's own **compiled C#** GameCondition (no data-only
+   substitute; needs a real replacement class or the mechanism is lost with
+   the donor) — and `SandFishing_CrackedLands.xml`'s `BMT_Rocktooth`/
+   `BMT_Boneblade` freshwater_Uncommon catch items, which are fish LOOT
+   ITEMS never covered by the fauna census at all (`decisions_propagated.json`
+   is fauna-only).
+
+**Until these three are resolved, do not flip `ModsConfig.xml`** — matching
+this project's own `bbf66830` precedent ("ModsConfig deliberately UNTOUCHED
+— unticking is the owner's action"), and this item's brief said the same.
+The mechanical def-port itself is complete and clean; only the retirement
+half is blocked.
+
+---
+
 ## Original escalation (superseded above, kept for provenance) — donor mod and creature count don't match
 
 ## What this pass found (measured, not guessed)

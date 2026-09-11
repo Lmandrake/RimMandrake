@@ -125,13 +125,13 @@
       <Kreetle MayRequire="mlie.starwarsanimalcollection">1.0</Kreetle>  <!-- kreetle - arthropod-floor, keep -->
       <Yobshrimp MayRequire="mlie.starwarsanimalcollection">0.8</Yobshrimp>  <!-- yobshrimp - arthropod-floor, import -->
       <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.7</VFEI2_Swarmling>  <!-- swarmlings - vermin, keep -->
-      <BMT_Gembug MayRequire="biomesteam.biomescaverns">0.5</BMT_Gembug>  <!-- gembug - arthropod-floor, keep -->
+      <RSW_Gembug MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Gembug>  <!-- gembug - arthropod-floor, keep -->
       <Runyip MayRequire="mlie.starwarsanimalcollection">0.5</Runyip>  <!-- runyip - muck-forager, adjust-keep -->
       <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals">0.5</VFEI2_BlackSwarmling>  <!-- black swarmlings - vermin, keep -->
-      <BMT_CrestedDragon MayRequire="biomesteam.biomescaverns">0.4</BMT_CrestedDragon>  <!-- crested dragon - channel-predator, keep -->
+      <RSW_CrestedDragon MayRequire="mandrake.rsw.swbestiary">0.4</RSW_CrestedDragon>  <!-- crested dragon - channel-predator, keep -->
       <RSW_MeeJuv MayRequire="mandrake.rsw.swbestiary">0.4</RSW_MeeJuv>  <!-- mee scalefish - nursery, juvenile-locked (MIASMA_NURSERY_KINDS_1) -->
       <Shiro MayRequire="mlie.starwarsanimalcollection">0.4</Shiro>  <!-- shiro - arthropod-floor, keep -->
-      <BMT_AaroxisDendoria MayRequire="biomesteam.biomescaverns">0.3</BMT_AaroxisDendoria>  <!-- aaroxis dendoria - strange, keep -->
+      <RSW_AaroxisDendoria MayRequire="mandrake.rsw.swbestiary">0.3</RSW_AaroxisDendoria>  <!-- aaroxis dendoria - strange, keep -->
       <RSW_FaaJuv MayRequire="mandrake.rsw.swbestiary">0.3</RSW_FaaJuv>  <!-- faa scalefish - nursery, juvenile-locked -->
       <RSW_LaaJuv MayRequire="mandrake.rsw.swbestiary">0.3</RSW_LaaJuv>  <!-- laa scalefish - nursery, juvenile-locked -->
       <RSW_YobshrimpJuv MayRequire="mandrake.rsw.swbestiary">0.3</RSW_YobshrimpJuv>  <!-- pale yobshrimp - nursery, juvenile-locked -->
