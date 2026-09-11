@@ -19,6 +19,7 @@
   <ThingDef ParentName="LampBase">
     <defName>GS_ImperialLamp</defName>
     <label>Imperial outdoor lamp</label>
+    <description>A tall Imperial standard lamp built for open ground. It throws a hard, even light across a wide arc, and draws power steadily to do it.</description>
     <fillPercent>0.30</fillPercent>
     <graphicData>
       <texPath>Furniture/Sovereign_ImperialDecor/Light/LightPost</texPath>

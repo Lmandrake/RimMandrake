@@ -10,6 +10,7 @@
   <ThingDef ParentName="guy762_SWGravshipOverlayBASE">
     <defName>guy762_SWGravshipOverlay_KT400Freighter</defName>
     <label>KT-400 freighter</label>
+    <description>Hull plating in the KT-400 pattern, a light freighter built in enormous numbers and flown long past the point of sense.</description>
     <graphicData>
       <texPath>Gravships/KT400/KT400</texPath>
       <graphicClass>Graphic_Single</graphicClass>

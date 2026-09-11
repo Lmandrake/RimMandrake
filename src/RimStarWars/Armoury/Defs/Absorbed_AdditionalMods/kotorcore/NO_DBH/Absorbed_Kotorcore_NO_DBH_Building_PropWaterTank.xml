@@ -10,6 +10,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>KotOR_watertank</defName>
     <label>water tank</label>
+    <description>A pressed-metal water tank of the sort bolted beside every moisture farm and dust-side outpost. This one is a prop: nothing can be drawn from it.</description>
     <graphicData>
       <texPath>Buildings/MoistureVaporators/watertank</texPath>
       <graphicClass>Graphic_Single</graphicClass>

@@ -19,7 +19,7 @@
   <ThingDef ParentName="KotORArmorModdable_hard">
     <defName>guy762_RebelPilot_suitbox</defName>
     <label>flight suit compressor</label>
-    <description>.</description>
+    <description>The chest-mounted life-support pack of a starfighter flight suit. It seals the wearer against cold and vacuum and steadies their hands at the controls, but it will not stop so much as a thrown rock.</description>
     <graphicData>
       <texPath>SWApparel/RebelPilot/Apparel</texPath>
       <graphicClass>Graphic_Single</graphicClass>

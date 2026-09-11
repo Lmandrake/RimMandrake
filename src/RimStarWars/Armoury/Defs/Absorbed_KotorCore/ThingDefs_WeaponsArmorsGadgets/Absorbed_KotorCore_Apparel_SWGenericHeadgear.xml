@@ -786,7 +786,7 @@
     <defName>guy762_ImpWorkerHelmet</defName>
     <label>worker's helmet</label>
     <techLevel>Spacer</techLevel>
-    <description>.</description>
+    <description>An Imperial labour helmet, sealed against fumes and dust and rigged to speed the cutting and smoothing of stone. It is armoured better than most soldiers' headgear, which says something about Imperial worksites.</description>
     <graphicData>
       <texPath>SWApparel/ImperialWorker/helmet</texPath>
       <graphicClass>Graphic_Single</graphicClass>

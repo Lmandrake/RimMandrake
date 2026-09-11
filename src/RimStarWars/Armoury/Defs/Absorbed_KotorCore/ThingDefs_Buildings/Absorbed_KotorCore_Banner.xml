@@ -66,6 +66,7 @@
   <ThingDef ParentName="GS_Banner_Temp">
     <defName>GS_Banner_Cult</defName>
     <label>Imperial cult banner</label>
+    <description>A long hanging banner bearing the sigil of an Imperial cult. Hung in a corridor, it announces at some length whose corridor it is.</description>
     <graphicData>
       <texPath>Furniture/Sovereign_ImperialDecor/Banner/BannerCult</texPath>
     </graphicData>
@@ -74,6 +75,7 @@
   <ThingDef ParentName="GS_Banner_Temp">
     <defName>GS_Banner_Forge</defName>
     <label>Imperial forge banner</label>
+    <description>A hanging banner marked with an Imperial forge sigil - the same stamp found on ordnance crates, worn here at three metres tall.</description>
     <graphicData>
       <texPath>Furniture/Sovereign_ImperialDecor/Banner/BannerForge</texPath>
     </graphicData>
@@ -82,6 +84,7 @@
   <ThingDef ParentName="GS_Banner_Temp">
     <defName>GS_Banner_Star</defName>
     <label>Imperial star banner</label>
+    <description>A hanging banner bearing the Imperial star. Standard issue for any wall the Empire intends to be seen owning.</description>
     <graphicData>
       <texPath>Furniture/Sovereign_ImperialDecor/Banner/BannerStar</texPath>
     </graphicData>

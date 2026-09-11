@@ -11,7 +11,7 @@
     <defName>guy762_KotORpartUnderlay_regen</defName>
     <label>Biorestorative underlay</label>
     <labelShort>Biorestorative underlay</labelShort>
-    <description>.</description>
+    <description>A mesh of biorestorative filaments worn against the skin, flooding wounds with clotting agents and growth stimulants. Injuries close markedly faster while it is worn.</description>
     <attachedTo>guy762_KotORMount_underlay</attachedTo>
     <effects>
       <statOffsets>
@@ -31,7 +31,7 @@
     <defName>guy762_KotORpartUnderlay_strength</defName>
     <label>strengthening underlay</label>
     <labelShort>strengthening underlay</labelShort>
-    <description>.</description>
+    <description>A powered myomer weave that takes some of the load off the wearer's own muscles. It hits harder, carries more, and shrugs off pain that would drop an unassisted body.</description>
     <attachedTo>guy762_KotORMount_underlay</attachedTo>
     <effects>
       <statOffsets>
@@ -53,7 +53,7 @@
     <defName>guy762_KotORpartUnderlay_armorweave</defName>
     <label>Armorweave underlay</label>
     <labelShort>Armorweave underlay</labelShort>
-    <description>.</description>
+    <description>A fire-resistant armorweave liner worn beneath the plate. It does nothing against a blade, but it is the difference between a scorch and a burn.</description>
     <attachedTo>guy762_KotORMount_underlay</attachedTo>
     <effects>
       <statOffsets>
@@ -71,7 +71,7 @@
     <defName>guy762_KotORpartUnderlay_durasteel</defName>
     <label>Durasteel underlay</label>
     <labelShort>Durasteel underlay</labelShort>
-    <description>.</description>
+    <description>A layer of durasteel scale sewn into the suit's lining. It turns blades and blunt force alike, at the cost of every bit of speed the wearer had.</description>
     <attachedTo>guy762_KotORMount_underlay</attachedTo>
     <effects>
       <statOffsets>
@@ -94,7 +94,7 @@
     <defName>guy762_KotORpartUnderlay_environment</defName>
     <label>Environment underlay</label>
     <labelShort>Environment underlay</labelShort>
-    <description>.</description>
+    <description>A sealed environmental liner circulating conditioned air through the suit. The wearer stops noticing the weather entirely, which on most worlds is worth the bulk.</description>
     <attachedTo>guy762_KotORMount_underlay</attachedTo>
     <effects>
       <statOffsets>
@@ -113,7 +113,7 @@
     <defName>guy762_KotORpartOverlay_pockets</defName>
     <label>integrated pockets</label>
     <labelShort>integrated pockets</labelShort>
-    <description>.</description>
+    <description>Armorweave pouches and load loops stitched over the plate. Unglamorous, and the single most useful thing you can bolt onto a suit.</description>
     <attachedTo>guy762_KotORMount_overlay</attachedTo>
     <effects>
       <equippedStatOffsets>
@@ -129,7 +129,7 @@
     <defName>guy762_KotORpartOverlay_heat</defName>
     <label>heat shielding</label>
     <labelShort>heat shielding</labelShort>
-    <description>.</description>
+    <description>Ablative heat shielding laid over the shell. It blunts blaster scoring and keeps the wearer from cooking inside their own armour.</description>
     <attachedTo>guy762_KotORMount_overlay</attachedTo>
     <effects>
       <statOffsets>
@@ -150,7 +150,7 @@
     <defName>guy762_KotORpartOverlay_energy</defName>
     <label>energy shielding</label>
     <labelShort>energy shielding</labelShort>
-    <description>.</description>
+    <description>A layered energy-dispersive overlay that scatters an incoming bolt across the whole plate rather than one hole in it. Excellent against blasters, useless against a knife.</description>
     <attachedTo>guy762_KotORMount_overlay</attachedTo>
     <effects>
       <statOffsets>
@@ -168,7 +168,7 @@
     <defName>guy762_KotORpartOverlay_ballistic</defName>
     <label>ballistic shielding</label>
     <labelShort>ballistic shielding</labelShort>
-    <description>.</description>
+    <description>Ballistic composite panels bonded to the outside of the suit. Made for slugthrowers and shrapnel, which the galaxy has never quite stopped producing.</description>
     <attachedTo>guy762_KotORMount_overlay</attachedTo>
     <effects>
       <statOffsets>
@@ -187,7 +187,7 @@
     <defName>guy762_KotORpartOverlay_armorply</defName>
     <label>Armorply plating</label>
     <labelShort>Armorply plating</labelShort>
-    <description>.</description>
+    <description>Light armorply panels, matted and contoured to break up the wearer's outline. It adds nothing to the suit's protection; what it buys is free movement and a silhouette that game and sentries both miss.</description>
     <attachedTo>guy762_KotORMount_overlay</attachedTo>
     <effects>
       <statOffsets>
