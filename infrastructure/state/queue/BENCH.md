@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T07:05:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T07:10:53Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -401,3 +401,23 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
 prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
+
+## KIT_SPECS_CARD_SITTING_1 One card sitting over the 18 open calls from the three drafted kit specs (Greentide 3 / Scarlands 7 / Webwork 7 - full lists in kits/*_kit_spec.md owner-card sections) + 1 terramanufacture card (the_forgotten_war owner-verbatim 'terraformers' vs the ruled terramanufacture word)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/KIT_SPECS_CARD_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/KIT_SPECS_CARD_SITTING_1.md
+
+## FAUNA_GRAPHS_SITTING_1 Owner LOOKS at the 4 canonical fauna graphs (Transient/fauna_graphs_2026-09-11/) and rules: Law-3 K band for the full roster, the 23 narrow temp tolerances to widen, outlier dispositions (JOE_Nautilant 830pw etc), products axis next step
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FAUNA_GRAPHS_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FAUNA_GRAPHS_SITTING_1.md

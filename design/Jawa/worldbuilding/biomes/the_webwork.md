@@ -256,6 +256,11 @@ aversion in pathing; the moat maintains itself only as long as you do.
 
 ## Owed
 
+⭐ **C# kit spec DRAFTED 2026-09-11** (`WEBWORK_MECHANICS_1`):
+`kits/webwork_kit_spec.md` — 7 mechanics engine-mapped; UV-sensitivity def FOUND
+(Biotech genes, Humanlike-only — kit reimplements the InSunlight primitive on a
+hediff carrier); 7 owner cards open (rides `KIT_SPECS_CARD_SITTING_1`).
+
 - `WEBWORK_MECHANICS_1` — the C# kit: web-sense MapComponent (felt-marks, pack
   convergence, kilometer tracking), concealed-burst ambush, Shokk-bound hediff,
   the light-moat (existing UV-sensitivity mechanism — verify the def, never

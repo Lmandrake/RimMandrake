@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T07:05:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T07:10:39Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -666,15 +666,6 @@ kind:     bug
 summary:  Found during FISHBESTIARYCOMMISSION1's reconciliation pass, 2026-09-10.
 prose:    infrastructure/state/items/GREENTIDE_FISH_ITEMS_FIX_1.md
 
-## LAW3_RETARGET_RSW_1 BeastNorm Law 3 is DEAD live: all 105 patch xpaths target bare donor defNames (Bantha) while the campaign runs the RSW_ forks with raw stats (RSW_Bantha power 23 vs ruled 60.0, MEASURED) - regenerate the patch against RSW_ names from the manifest, validate --live+--defs, and prune the dead bare-name halves
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/LAW3_RETARGET_RSW_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LAW3_RETARGET_RSW_1.md
-
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
 state:    doing
 row:      unassigned
@@ -703,12 +694,12 @@ summary:  (no items/STAT_NORM_WAVE3_RETIRE_1.md yet — write one when you have 
 prose:    infrastructure/state/items/STAT_NORM_WAVE3_RETIRE_1.md
 
 ## RESEARCH_TRIO_RETIRE_1 Retire steppingstones + als.gravtech x2 and re-validate the research recost after the cut (owner ruled Wave 3 'fold into the research pass' 2026-09-11 - the pass itself is closed, so this item carries it: cut, rerun the recost validator, reconcile the 112 collision rows)
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/RESEARCH_TRIO_RETIRE_1.md yet — write one when you have something to say)
+summary:  RESEARCHTRIORETIRE1 — retire steppingstones + als.gravtech x2, reconcile the recost
 prose:    infrastructure/state/items/RESEARCH_TRIO_RETIRE_1.md
 
 ## MIASMA_JUVENILES_NULL_THINGCLASS_1 All 7 Miasma nursery juvenile ThingDefs (RSW_*Juv) load with null thingClass/trainability/renderTree despite valid ParentName -- not yet root-caused, static review missed it
@@ -992,6 +983,16 @@ kind:     design
 blocked:  design brief complete and filed (design/Jawa/worldbuilding/creatures/goo_boom_commission.md, commit 477ab973) - RUT_Vhessk fully specified: mechanic grounded in real Core source (a real life-stage-index trap caught), art direction grounded in real donor palette sampling. NOT closing: the item's own title includes 'new def + new art', i.e. the actual BUILD, and the brief leaves 8 concrete open calls (v1/v2 worker, healthScale, melee numbers, market value, butchery yield, BodyDef, glow, spawn timing) that need an owner ruling before building makes sense - building now would mean silently deciding them
 summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
+
+## RESEARCH_TRIO_RETIRE_1 Retire steppingstones + als.gravtech x2 and re-validate the research recost after the cut (owner ruled Wave 3 'fold into the research pass' 2026-09-11 - the pass itself is closed, so this item carries it: cut, rerun the recost validator, reconcile the 112 collision rows)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  steppingstones/gravtech own 17 ResearchProjectDefs nothing else defines (RUT_ResearchRetag only patches tab/tier onto them); several carry dated owner rulings (GravWeapon/GravForge/GravBionics, 2026-09-01/09-04) a bare retire would silently reverse; als.gravtech.bc + a 4th mod (gravtechbigcannons) hard-depend on it too. 3 routes laid out in items/RESEARCH_TRIO_RETIRE_1.md: port the 17 rows first, accept the content loss, or counter-patch and keep the mods (Wave-4-MV-Textures style). Owner AFK, not FOUNDRY's to pick.
+summary:  RESEARCHTRIORETIRE1 — retire steppingstones + als.gravtech x2, reconcile the recost
+prose:    infrastructure/state/items/RESEARCH_TRIO_RETIRE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
