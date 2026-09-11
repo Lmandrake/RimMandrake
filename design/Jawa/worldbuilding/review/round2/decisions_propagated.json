@@ -1710,8 +1710,8 @@
     "fauna:the_forge:AA_Cinderlisk": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT — all 'lisks retired (owner) (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -1728,8 +1728,8 @@
     "fauna:the_forge:BMT_Maguana": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT from the game (owner) (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3432,7 +3432,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:48:08.659Z",
       "decision": "move",
-      "note": "Should be reskinned to the Wysokk of the Web biome. Merge",
+      "note": "Should be reskinned to the Wysokk of the Web biome. Merge | REFINED: Wyyyschokk DUPLICATES feralisk's properties/attacks (stats, combat verbs), then AA_Feralisk retires ENTIRELY — build filed WYYYSCHOKK_FERALISK_MERGE_1 (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3761,7 +3761,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:38:39.946Z",
       "decision": "move",
-      "note": "Slime, tint green",
+      "note": "Slime, tint green | SIZE RULED: drawSize 3 ONLY (current def bodySize 5 — oversized); stays large bin (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7974,6 +7974,12 @@
       "art": "keep",
       "sizeBin": "large",
       "note": "ARRIVAL (owner ruling 2026-09-10: nightside visitor law): visitor-dying margin predator, follows the straying herds, low commonality"
+    },
+    "homeless:AB_Feralisk": {
+      "decision": "out",
+      "prefill": "in",
+      "art": "keep",
+      "note": "CUT — all 'lisks retired (owner) (sitting ruling 2026-09-10); def had no register row, added for the record"
     }
   },
   "generatedBy": "gen_fauna_assignment_sheet.py (2026-09-09 rulings rebuild)",
