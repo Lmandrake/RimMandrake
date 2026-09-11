@@ -46,7 +46,7 @@ FIXES = {
     # CrystalPart_mantle's description under a different label/defName.
     "guy762_SWForceLightsabers_CrystalPart_heart": {
         "description": (
-            "The Mantle of the Force is an item assembled by Suvam Tan from pieces found in the ruins of Exar Kun's temples on the fourth moon orbiting Yavin. It appears to be the remains of an even older artifact of unknown origin. It is not known if it was used by Exar Kun, or just uncovered when his temples were destroyed. Nor is it known what the original properties of the item were, but given the current abilities, in its original state it must have been fearsome indeed.\n\nThe Mantle is a crystalline lattice, resembling a lightsaber crystal in many ways, but having the additional property of being able to radically alter the flow of energy that passes through it. Additionally, the Mantle seems to almost act as a focusing tool for Force-sensitive individuals, leading to the idea that the original artifact may once have been a powerful tool of the Sith, or perhaps something they took with them when the dark Jedi originally split from the Order.",
+            "The Mantle of the Force is an item assembled by Suvam Tan from pieces found in the ruins of Exar Kun's temples on the fourth moon orbiting Yavin. It appears to be the remains of an even older artifact of unknown origin. It is not known if it was used by Exar Kun, or just uncovered when his temples were destroyed. Nor is it known what the original properties of the item were, but given the current abilities, in its original state it must have been fearsome indeed.\\n\\nThe Mantle is a crystalline lattice, resembling a lightsaber crystal in many ways, but having the additional property of being able to radically alter the flow of energy that passes through it. Additionally, the Mantle seems to almost act as a focusing tool for Force-sensitive individuals, leading to the idea that the original artifact may once have been a powerful tool of the Sith, or perhaps something they took with them when the dark Jedi originally split from the Order.",
             "The Heart of the Guardian shares the Mantle of the Force's crystalline lattice, recovered from the same ruined temples on Yavin's fourth moon, but where the Mantle unmakes and redirects the energy that passes through it, the Heart holds steady -- it seems built to anchor a wielder rather than to focus one, and radiates a faint warmth even when cut from its housing.",
         ),
     },
@@ -56,7 +56,7 @@ FIXES = {
     # here -- this is the shape every other entry in these files follows).
     "guy762_MalgusArmor": {
         "description": (
-            ".\n\nUPGRADE SLOTS:\n- Armor Underlay (heavy)\n- Armor Overlay (heavy)\n- Armor Tech",
+            ".\\n\\nUPGRADE SLOTS:\\n- Armor Underlay (heavy)\\n- Armor Overlay (heavy)\\n- Armor Tech",
             "Salvaged from Darth Malgus' own war-plate, this powered battle armor still carries the weight and menace of the man who wore it into the Jedi Temple itself.\n\nUPGRADE SLOTS:\n- Armor Underlay (heavy)\n- Armor Overlay (heavy)\n- Armor Tech",
         ),
     },
@@ -80,14 +80,14 @@ FIXES = {
     },
     "guy762_VisasRobes": {
         "description": (
-            ".\n\nUPGRADE SLOTS:\n- Armor Underlay (robe)",
+            ".\\n\\nUPGRADE SLOTS:\\n- Armor Underlay (robe)",
             "Plain robes worn by a wanderer who trusts her other senses more than her eyes.\n\nUPGRADE SLOTS:\n- Armor Underlay (robe)",
         ),
     },
     # Typo: "wanteed" -> "wanted".
     "guy762_brifle_jurgan": {
         "description": (
-            "Jurgan Kalta wanteed to make a big noise in the galaxy. If it was the screams of his enemies, all the better. This weapon was his favorite because it shared his adaptability.\n\nUPGRADE SLOTS:\n- Scope\n- Power Cell\n- Firing Chamber\n- Beam Splitter\n- Trigger",
+            "Jurgan Kalta wanteed to make a big noise in the galaxy. If it was the screams of his enemies, all the better. This weapon was his favorite because it shared his adaptability.\\n\\nUPGRADE SLOTS:\\n- Scope\\n- Power Cell\\n- Firing Chamber\\n- Beam Splitter\\n- Trigger",
             "Jurgan Kalta wanted to make a big noise in the galaxy. If it was the screams of his enemies, all the better. This weapon was his favorite because it shared his adaptability.\n\nUPGRADE SLOTS:\n- Scope\n- Power Cell\n- Firing Chamber\n- Beam Splitter\n- Trigger",
         ),
     },
@@ -178,7 +178,7 @@ DEFAULT_PARTS_MAYREQUIRE_FIXES = {
 }
 
 
-def apply_content_fixes(el, note=print):
+def apply_content_fixes(el, note=print, warn=None):
     """Mutate `el` (a top-level def Element already parsed from donor
     source) in place per FIXES (text/field fixes) and MAYREQUIRE_FIXES
     (whole-def MayRequire gating), both keyed by its own <defName>. No-op
@@ -187,7 +187,19 @@ def apply_content_fixes(el, note=print):
     FIXES additionally accepts an ABSTRACT def keyed by its Name= attribute, so
     a placeholder inherited by a whole variant family can be corrected once on
     the parent. MAYREQUIRE_FIXES stays defName-only -- gating an abstract would
-    gate every child, which is never what is wanted."""
+    gate every child, which is never what is wanted.
+
+    `warn` (falls back to `note` if the caller doesn't pass one -- this stays
+    a no-crash no-op for any older caller) is used specifically for the two
+    "the FIXES table's own expected_old no longer matches reality" cases --
+    ABSORPTION_FIX_NEWLINE_ESCAPES_1: a mismatched expected_old means the fix
+    is silently dead, which is exactly the class of bug that shipped 4 broken
+    entries (real newlines in expected_old vs. the donor's literal backslash-n)
+    for weeks with nobody noticing among routine NOTE lines. A caller whose
+    Report distinguishes warn from note (gen_kotorweapons_absorption.py,
+    gen_kotorcore_absorption.py) will surface these in its warnings count."""
+    if warn is None:
+        warn = note
     dn_el = el.find("defName")
     dn = dn_el.text.strip() if dn_el is not None and dn_el.text else None
     # Abstract defs carry no <defName>; FIXES may key them by Name=.
@@ -241,11 +253,11 @@ def apply_content_fixes(el, note=print):
             note("CONTENT FIX APPLIED (added): %s <%s>" % (dn, path))
             continue
         if field_el is None:
-            note("CONTENT FIX SKIPPED (no such field): %s <%s>" % (dn, path))
+            warn("CONTENT FIX SKIPPED (no such field): %s <%s>" % (dn, path))
             continue
         cur = field_el.text
         if expected_old is not None and cur != expected_old:
-            note("CONTENT FIX SKIPPED (donor text no longer matches expected): %s <%s>" % (dn, path))
+            warn("CONTENT FIX SKIPPED (donor text no longer matches expected): %s <%s>" % (dn, path))
             continue
         if new is None:
             if "/" in path:

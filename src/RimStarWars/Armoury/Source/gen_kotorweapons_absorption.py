@@ -371,7 +371,7 @@ def main():
             dn_el = el.find("defName")
             dn = dn_el.text.strip() if dn_el is not None and dn_el.text else None
 
-            apply_content_fixes(el, note=R.note)
+            apply_content_fixes(el, note=R.note, warn=R.warn)
 
             blocked_ns = matched_blocked_namespace(el)
             if blocked_ns:
