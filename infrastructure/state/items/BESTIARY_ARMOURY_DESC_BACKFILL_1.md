@@ -32,7 +32,11 @@ defs were the only real ones and are written in this wave.
 description debt named in §6 is closed. What remains is a different kind of
 work, listed under "not this item" below.
 
-### What was written — 55 descriptions
+### What was written — 57 descriptions
+
+55 in Armoury (all registered in the generator hook) + 2 in SWBestiary (a
+hand-ported file with no generator). They resolve **84 concrete defs**, because
+27 more inherit a corrected line from an abstract parent.
 
 | group | n | note |
 |---|---|---|
