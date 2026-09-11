@@ -130,7 +130,12 @@ conversation, not a committed assignment.
 | `Pawn_GrowOnCombat` (AlphaAnimals, `PawnClasses/Pawn_GrowOnCombat.cs`) | Every 100 ticks, if the pawn is awake and mid-melee-attack and doesn't already carry a "grown"/"exhausted" hediff, adds a growth hediff to its body-core part. A **combat-triggered transformation pawn class** (berserker/enrage-growth archetype). | none matched by grep | **S** |
 | `Ability_SpawnOnRadius` / `Ability_Summon` (AlphaAnimals, `Abilities/Generic/`) | Both are `VEF.Abilities.Ability` subclasses driven entirely by DefExtension fields (`thingToSpawn`/`probability`/population-cap; `pawnToSpawn`/`numberCreated`/faction/enrage-on-spawn) — **fully generic "spawn N things/pawns on cast, population-capped" abilities**, no per-creature code at all. This is the cleanest "already generalized, just port the pattern" example in the whole catalog. | `the_contagion.md` (swarm/summon concepts), general hive/nest creature candidates | **S** |
 
-## 4. Generalized comp proposals (tier grammar, CARDS not rulings)
+## 4. Generalized comp proposals — RULED 2026-09-11: ALL SIX replicate
+
+🟢 **Owner ruling, 2026-09-11 (card): all six comps below are ruled IN**, at the
+RM_ tier with per-sheet RSW_/RUT_ content defs exactly as this section proposes.
+Build item: `ALPHA_MECHANICS_KIT_1` (FOUNDRY). License posture unchanged — design
+borrowed, no shipped code or art.
 
 Per `design/NAMING_SCHEME_PLAN.md`, a mechanic with **no Star Wars or Utinni
 specificity** — these are engine-level patterns (a gas that ticks and damages, a
