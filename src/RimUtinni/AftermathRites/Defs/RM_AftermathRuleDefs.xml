@@ -4,9 +4,10 @@
   §2.1's eight rules, as data for mandrake.rm.aftermath's AftermathRuleRunner.
 
   ENGINE STATUS (see src/RimMandrake/Aftermath/Source/AftermathTriggerKind.cs
-  for the exact reasons): only the three defs with
-  <triggerKind>BattleOutcome</triggerKind> (rules 1-3) are evaluated live this
-  build. Rules 4-8 below carry real data (payload, telegraph, letter, god
+  for the exact reasons): the defs with <triggerKind>BattleOutcome</triggerKind>
+  (rules 1-3), <triggerKind>MentalBreakNearBattle</triggerKind> (rule 6) and
+  <triggerKind>PrisonerHeldDuration</triggerKind> (rule 4) are evaluated
+  live. Rules 5, 7, 8 below carry real data (payload, telegraph, letter, god
   tie) but AftermathRuleRunner does not yet evaluate their trigger kind -
   see this item's own item-file entry
   (infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md) for what each
@@ -88,11 +89,12 @@
     <letterText>The Junkers were never going to let good salvage rot. They come for what {0} left behind — and for whoever else is still standing on it.</letterText>
   </RimMandrake.Aftermath.RM_AftermathRuleDef>
 
-  <!-- ══ RULE 4 — They come for their own (DATA ONLY - not wired) ════════ -->
+  <!-- ══ RULE 4 — They come for their own (WIRED, 2026-09-10) ══════════════ -->
   <RimMandrake.Aftermath.RM_AftermathRuleDef>
     <defName>RM_AftermathRule_TheyComeForTheirOwn</defName>
     <label>they come for their own</label>
     <triggerKind>PrisonerHeldDuration</triggerKind>
+    <minHeldDays>3</minHeldDays>
     <delayDaysMin>4</delayDaysMin>
     <delayDaysMax>10</delayDaysMax>
     <telegraphLabel>Comms chatter</telegraphLabel>

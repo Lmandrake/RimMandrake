@@ -208,6 +208,45 @@ namespace RimMandrake.Aftermath.SelfTest
             Case("MentalBreakEligibility_null_def_is_never_eligible", () =>
                 Assert(!AftermathRuleEligibility.IsEligibleMentalBreakNearBattle(null), "null def must not throw and must be ineligible"));
 
+            // ------------------------------------- IsEligiblePrisonerHeldDuration --
+            // Rule 4 ("They come for their own"), wired 2026-09-10. The
+            // trigger's own faction/hostility/raidsForbidden conditions live
+            // in AftermathRuleRunner.OnPrisonerHeldTooLong (needs a live
+            // Pawn/Faction, not offline-testable); this predicate is just
+            // "has this def's own held-days threshold been met."
+            Case("PrisonerHeldEligibility_TheyComeForTheirOwn_fires_at_or_past_minHeldDays", () =>
+            {
+                var def = new RM_AftermathRuleDef
+                {
+                    triggerKind = AftermathTriggerKind.PrisonerHeldDuration,
+                    minHeldDays = 3f,
+                };
+                Assert(AftermathRuleEligibility.IsEligiblePrisonerHeldDuration(def, 3f),
+                    "exactly minHeldDays must be eligible");
+                Assert(AftermathRuleEligibility.IsEligiblePrisonerHeldDuration(def, 3.5f),
+                    "past minHeldDays must be eligible");
+                Assert(!AftermathRuleEligibility.IsEligiblePrisonerHeldDuration(def, 2.99f),
+                    "short of minHeldDays must NOT be eligible");
+                Assert(!AftermathRuleEligibility.IsEligiblePrisonerHeldDuration(def, 0f),
+                    "zero held days must NOT be eligible");
+            });
+            Case("PrisonerHeldEligibility_other_kinds_are_never_eligible_via_this_path", () =>
+            {
+                foreach (AftermathTriggerKind kind in new[]
+                {
+                    AftermathTriggerKind.BattleOutcome, AftermathTriggerKind.GodBandCrossed,
+                    AftermathTriggerKind.MentalBreakNearBattle, AftermathTriggerKind.RootedClockQuadrum,
+                    AftermathTriggerKind.TakingEventWitnessed,
+                })
+                {
+                    var def = new RM_AftermathRuleDef { triggerKind = kind, minHeldDays = 3f };
+                    Assert(!AftermathRuleEligibility.IsEligiblePrisonerHeldDuration(def, 999f),
+                        "a " + kind + "-kind rule must never be eligible via the prisoner-held path, however many days");
+                }
+            });
+            Case("PrisonerHeldEligibility_null_def_is_never_eligible", () =>
+                Assert(!AftermathRuleEligibility.IsEligiblePrisonerHeldDuration(null, 999f), "null def must not throw and must be ineligible"));
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }
