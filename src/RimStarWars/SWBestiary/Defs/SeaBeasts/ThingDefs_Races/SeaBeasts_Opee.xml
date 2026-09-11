@@ -8,7 +8,7 @@
      Numbers per design/Jawa/worldbuilding/sea_beasts_def_spec.md §5.1. -->
 <Defs>
 
-  <ThingDef ParentName="AnimalThingBase">
+  <ThingDef ParentName="AnimalThingBase" Name="RSW_OpeeSeaKiller">
     <defName>RSW_OpeeSeaKiller</defName>
     <label>opee sea killer</label>
     <description>A brown-armored ambusher of the Naboo core-seas, part crab, part angler. It buries itself in the silt with only its lure stalks showing, then takes prey on an adhesive tongue faster than a diver can turn. Twenty metres of patience; it has never needed to chase anything.</description>
@@ -96,7 +96,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_OpeeSeaKiller">
     <defName>RSW_OpeeSeaKiller</defName>
     <label>opee sea killer</label>
     <race>RSW_OpeeSeaKiller</race>

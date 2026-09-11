@@ -6,7 +6,7 @@
      animal under a different label, no Cherry Picker cut needed. -->
 <Defs>
 
-  <ThingDef ParentName="AnimalThingBase">
+  <ThingDef ParentName="AnimalThingBase" Name="RSW_Yobshrimp">
     <defName>RSW_Yobshrimp</defName>
     <label>pale yobshrimp</label>
     <description>A pale, feather-antennaed isopod of the Naboo shallows that arrives at a carcass in dozens and leaves a clean frame. Harmless alone; the smell of blood is what makes it many.</description>
@@ -80,7 +80,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_Yobshrimp">
     <defName>RSW_Yobshrimp</defName>
     <label>pale yobshrimp</label>
     <race>RSW_Yobshrimp</race>
@@ -134,7 +134,7 @@
   </PawnKindDef>
 
 
-  <ThingDef ParentName="AnimalThingBase">
+  <ThingDef ParentName="AnimalThingBase" Name="RSW_SiltLamprey">
     <defName>RSW_SiltLamprey</defName>
     <label>silt lamprey</label>
     <description>A black, round-mawed eel of the silt beds that latches on to whatever is bleeding — and, unlike the shrimp, does not wait for it to die. The swarm's nasty edge: the wound you took on the way down is the one it finds.</description>
@@ -208,7 +208,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_SiltLamprey">
     <defName>RSW_SiltLamprey</defName>
     <label>silt lamprey</label>
     <race>RSW_SiltLamprey</race>
@@ -262,7 +262,7 @@
   </PawnKindDef>
 
 
-  <ThingDef ParentName="AnimalThingBase">
+  <ThingDef ParentName="AnimalThingBase" Name="RSW_RustNipper">
     <defName>RSW_RustNipper</defName>
     <label>rust nipper</label>
     <description>A red-shelled spiky crab with faintly glowing eyes, armored well enough to ignore a boot. Timid in ones; in a massed crawl over a wreck it turns on anything that steps in the middle of it.</description>
@@ -348,7 +348,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_RustNipper">
     <defName>RSW_RustNipper</defName>
     <label>rust nipper</label>
     <race>RSW_RustNipper</race>

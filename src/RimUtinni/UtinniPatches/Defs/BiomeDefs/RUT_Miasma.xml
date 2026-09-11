@@ -38,6 +38,12 @@
     boon tables, warden-mother set-piece placement); the attar refinement chain; any
     world repaint.
 
+    MIASMA_NURSERY_KINDS_1 (2026-09-10): the nursery-band RSW_* entries below spawn
+    the *Juv defNames (ThingDefs_Races/RUT_MiasmaNurseryJuveniles.xml), not the base
+    species: those are juvenile-locked (lifeStageAges dropped below AnimalAdult, so
+    LifeStageUtility caps them at Juvenile forever regardless of rolled age). The
+    Grey Sea/terminator roster keeps the un-capped base defNames for the adults.
+
   -->
 
   <BiomeDef>
@@ -123,17 +129,17 @@
       <Runyip MayRequire="mlie.starwarsanimalcollection">0.5</Runyip>  <!-- runyip - muck-forager, adjust-keep -->
       <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals">0.5</VFEI2_BlackSwarmling>  <!-- black swarmlings - vermin, keep -->
       <BMT_CrestedDragon MayRequire="biomesteam.biomescaverns">0.4</BMT_CrestedDragon>  <!-- crested dragon - channel-predator, keep -->
-      <RSW_Mee MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Mee>  <!-- mee scalefish - nursery, import -->
+      <RSW_MeeJuv MayRequire="mandrake.rsw.swbestiary">0.4</RSW_MeeJuv>  <!-- mee scalefish - nursery, juvenile-locked (MIASMA_NURSERY_KINDS_1) -->
       <Shiro MayRequire="mlie.starwarsanimalcollection">0.4</Shiro>  <!-- shiro - arthropod-floor, keep -->
       <BMT_AaroxisDendoria MayRequire="biomesteam.biomescaverns">0.3</BMT_AaroxisDendoria>  <!-- aaroxis dendoria - strange, keep -->
-      <RSW_Faa MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Faa>  <!-- faa scalefish - nursery, import -->
-      <RSW_Laa MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Laa>  <!-- laa scalefish - nursery, import -->
-      <RSW_Yobshrimp MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Yobshrimp>  <!-- pale yobshrimp - nursery, import -->
+      <RSW_FaaJuv MayRequire="mandrake.rsw.swbestiary">0.3</RSW_FaaJuv>  <!-- faa scalefish - nursery, juvenile-locked -->
+      <RSW_LaaJuv MayRequire="mandrake.rsw.swbestiary">0.3</RSW_LaaJuv>  <!-- laa scalefish - nursery, juvenile-locked -->
+      <RSW_YobshrimpJuv MayRequire="mandrake.rsw.swbestiary">0.3</RSW_YobshrimpJuv>  <!-- pale yobshrimp - nursery, juvenile-locked -->
       <Anooba MayRequire="mlie.starwarsanimalcollection">0.3</Anooba>  <!-- anooba - scavenger, keep -->
       <Grank MayRequire="mlie.starwarsanimalcollection">0.3</Grank>  <!-- Grank - channel-predator, import -->
       <Whisperbird MayRequire="mlie.starwarsanimalcollection">0.3</Whisperbird>  <!-- whisperbird - flier, keep -->
-      <RSW_RustNipper MayRequire="mandrake.rsw.swbestiary">0.25</RSW_RustNipper>  <!-- rust nipper - nursery, import -->
-      <RSW_SiltLamprey MayRequire="mandrake.rsw.swbestiary">0.25</RSW_SiltLamprey>  <!-- silt lamprey - nursery, import -->
+      <RSW_RustNipperJuv MayRequire="mandrake.rsw.swbestiary">0.25</RSW_RustNipperJuv>  <!-- rust nipper - nursery, juvenile-locked -->
+      <RSW_SiltLampreyJuv MayRequire="mandrake.rsw.swbestiary">0.25</RSW_SiltLampreyJuv>  <!-- silt lamprey - nursery, juvenile-locked -->
       <AA_Lockjaw MayRequire="sarg.alphaanimals">0.2</AA_Lockjaw>  <!-- lockjaw - channel-predator, keep -->
       <AA_Mantrap MayRequire="sarg.alphaanimals">0.2</AA_Mantrap>  <!-- mantrap - root-ambush, keep -->
       <AA_RaptorShrimp MayRequire="sarg.alphaanimals">0.2</AA_RaptorShrimp>  <!-- raptor shrimp - channel-predator, keep -->
@@ -143,7 +149,7 @@
       <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - strange, keep -->
       <AA_Slurrypede MayRequire="sarg.alphaanimals">0.1</AA_Slurrypede>  <!-- slurrypede - composter, adjust-keep -->
       <AA_Thermadon MayRequire="sarg.alphaanimals">0.1</AA_Thermadon>  <!-- thermadon - channel-predator, keep -->
-      <RSW_OpeeSeaKiller MayRequire="mandrake.rsw.swbestiary">0.05</RSW_OpeeSeaKiller>  <!-- opee sea killer - nursery-guard, import -->
+      <RSW_OpeeSeaKillerJuv MayRequire="mandrake.rsw.swbestiary">0.05</RSW_OpeeSeaKillerJuv>  <!-- opee sea killer - nursery-guard, juvenile-locked -->
       <Zakkeg MayRequire="mlie.starwarsanimalcollection">0.05</Zakkeg>  <!-- zakkeg - big-wanderer, keep -->
       <AA_Plasmorph MayRequire="sarg.alphaanimals">0.05</AA_Plasmorph>  <!-- plasmorph - strange, keep -->
     </wildAnimals>

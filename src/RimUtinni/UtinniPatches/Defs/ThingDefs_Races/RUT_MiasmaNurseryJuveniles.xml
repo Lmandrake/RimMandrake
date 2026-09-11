@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MIASMA_NURSERY_KINDS_1 — juvenile-locked variants of the Grey Sea's nursery
+  roster (design/Jawa/worldbuilding/biomes/the_miasma.md §4, R11: "the wild
+  roster carries only the YOUNG side; the adult rides the Grey Sea/terminator
+  sheets"). Owner ruling at the 2026-09-10 sitting: sea creatures raise their
+  young in the Miasma.
+
+  Mechanism, verified against Verse/PawnGenerator.cs and Verse/LifeStageUtility.cs
+  before use (never guess a mechanism): PawnKindDef.maxGenerationAge is an int,
+  years; these fish/crabs have an AnimalAdult threshold as low as 0.15 years
+  (~2 months), which no integer can express, and forcing y<=0 against a
+  continuous age-generation curve would fail its 300-try loop and spam
+  Log.Error on every spawn. The real, working mechanism is
+  LifeStageUtility.GetLifeStageAgeForYears: it returns the LAST entry in
+  race.lifeStageAges whose minAge is below the rolled age, capped at the
+  list's own length. Drop the AnimalAdult entry from lifeStageAges entirely
+  and the pawn plateaus at Juvenile forever, at any rolled age: no
+  maxGenerationAge needed. PawnKindDef.lifeStages is trimmed to match (2
+  entries instead of 3), so it never reaches for the 3rd (full-adult) texture
+  index. Same art, same tools/stats (inherited, unlisted fields stay
+  inherited under ParentName Def-inheritance); only the life-stage ceiling
+  changes. The Grey Sea/terminator roster keeps using the un-capped RSW_*
+  defNames for adults (out of this item's scope: only the Miasma wildAnimals
+  patch).
+-->
+<Defs>
+
+  <ThingDef ParentName="RSW_Mee" MayRequire="mandrake.rsw.swbestiary">
+    <defName>RSW_MeeJuv</defName>
+    <label>young mee scalefish</label>
+    <description>A mee scalefish too young for the open sea, still schooling in the mangal shallows where it hatched. Small, quick, and almost charming -- and every scavenger who has fished a delta channel knows better than to wonder where its mother is.</description>
+    <race>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RSW_Mee" MayRequire="mandrake.rsw.swbestiary">
+    <defName>RSW_MeeJuv</defName>
+    <label>young mee scalefish</label>
+    <race>RSW_MeeJuv</race>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Mee/Mee</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Mee/Mee</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Mee/Mee</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Mee/Mee</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="RSW_Faa" MayRequire="mandrake.rsw.swbestiary">
+    <defName>RSW_FaaJuv</defName>
+    <label>young faa scalefish</label>
+    <description>A faa scalefish still too small to hunt the open channels, taking fry and drift-shrimp in the mangal shallows where it was spawned. The gold-olive dot-line is already bright; the temper comes later.</description>
+    <race>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RSW_Faa" MayRequire="mandrake.rsw.swbestiary">
+    <defName>RSW_FaaJuv</defName>
+    <label>young faa scalefish</label>
+    <race>RSW_FaaJuv</race>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Faa/Faa</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Faa/Faa</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Faa/Faa</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Faa/Faa</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="RSW_Laa" MayRequire="mandrake.rsw.swbestiary">
+    <defName>RSW_LaaJuv</defName>
+    <label>young laa scalefish</label>
+    <description>A laa scalefish not yet grown into the ornate streamer-fins and eye-spot false faces that make the adult so hard to net. Still schooling with its own kind in the shallows, waiting to be worth catching.</description>
+    <race>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RSW_Laa" MayRequire="mandrake.rsw.swbestiary">
+    <defName>RSW_LaaJuv</defName>
+    <label>young laa scalefish</label>
+    <race>RSW_LaaJuv</race>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Laa/Laa</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.66</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Laa/Laa</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.66</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Laa/Laa</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.96</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Laa/Laa</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.96</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="RSW_Yobshrimp" MayRequire="mandrake.rsw.swbestiary">
+    <defName>RSW_YobshrimpJuv</defName>
+    <label>young pale yobshrimp</label>
+    <description>A pale yobshrimp too small yet to swarm a carcass with the rest of its kind, picking over what the shallows offer instead.</description>
+    <race>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RSW_Yobshrimp" MayRequire="mandrake.rsw.swbestiary">
+    <defName>RSW_YobshrimpJuv</defName>
+    <label>young pale yobshrimp</label>
+    <race>RSW_YobshrimpJuv</race>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="RSW_SiltLamprey" MayRequire="mandrake.rsw.swbestiary">
+    <defName>RSW_SiltLampreyJuv</defName>
+    <label>young silt lamprey</label>
+    <description>A silt lamprey not yet grown into the round maw that makes the adult the swarm's nasty edge. Still working the shallows for what it can latch onto.</description>
+    <race>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RSW_SiltLamprey" MayRequire="mandrake.rsw.swbestiary">
+    <defName>RSW_SiltLampreyJuv</defName>
+    <label>young silt lamprey</label>
+    <race>RSW_SiltLampreyJuv</race>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="RSW_RustNipper" MayRequire="mandrake.rsw.swbestiary">
+    <defName>RSW_RustNipperJuv</defName>
+    <label>young rust nipper</label>
+    <description>A rust nipper too small yet to join a massed crawl over a wreck, its shell not hardened, its eyes barely glowing.</description>
+    <race>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RSW_RustNipper" MayRequire="mandrake.rsw.swbestiary">
+    <defName>RSW_RustNipperJuv</defName>
+    <label>young rust nipper</label>
+    <race>RSW_RustNipperJuv</race>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.80</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <!-- The nursery-guard: not a fry like the rest, R11's "sub-adult lingering
+       at the crèche mouths" (the_miasma.md §4). Still capped at the mechanism
+       level (never reaches AnimalAdult minAge 0.3333), which lands it at
+       drawSize 1.80 forever: a real threat, visibly short of the full
+       2.25 adult that owns the open Grey Sea. -->
+  <ThingDef ParentName="RSW_OpeeSeaKiller" MayRequire="mandrake.rsw.swbestiary">
+    <defName>RSW_OpeeSeaKillerJuv</defName>
+    <label>sub-adult opee sea killer</label>
+    <description>An opee sea killer not yet grown to its full twenty-metre patience, lingering at the crèche mouths where it hatched rather than claiming a stretch of the open sea. Still armored, still fast on the tongue -- "don't kill what's small here" was written for beasts exactly this size.</description>
+    <race>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RSW_OpeeSeaKiller" MayRequire="mandrake.rsw.swbestiary">
+    <defName>RSW_OpeeSeaKillerJuv</defName>
+    <label>sub-adult opee sea killer</label>
+    <race>RSW_OpeeSeaKillerJuv</race>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.24</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.24</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.80</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.80</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
