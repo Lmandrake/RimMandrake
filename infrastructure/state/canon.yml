@@ -1640,7 +1640,54 @@ narrator:
     Cradle-register (the Narrator may use it, as the example does). v1
     no-LLM-voice stands: the Narrator lands as pre-authored letter/flavor
     prose in v1.
-cradle_memory:
+  butler_register_ruled: true
+  butler_register_src: >
+    Owner, 2026-09-11 (dungeon-text sitting), verbatim: "The narrator is a
+    real voice from the ship speakers and comms only: 'As the gods looked
+    onward, the strange little creatures ventured forth into the lair of an
+    ancient evil. Could they possibly understand the evil before them?' The
+    narrator is the place for your prosaic comments, not simple description.
+    The narrator is Not a Jawa. Imagine him to be a somewhat mournful but
+    bemused butler ghost narrating the odd little aliens that have moved
+    into his home." AMENDS the 2026-08-30 entry with three laws: (1)
+    DIEGETIC DELIVERY - the Narrator is heard through the ship's speakers
+    and comms, a real voice in the world, never a disembodied caption; (2)
+    CHARACTER - a mournful, bemused butler ghost in his own home, watching
+    the odd little aliens who moved in; distinctly NOT a Jawa, no pidgin
+    ever; (3) DIVISION OF LABOR - all prosaic/atmospheric commentary
+    belongs to the Narrator; plain-fact game text gets none (see
+    game_fact_voice). Consistent with Sondheim/within-and-beyond, "the
+    short ones" humor, and the no-integrating-self law.
+game_fact_voice:
+  ruled: true
+  src: >
+    Owner, 2026-09-11, verbatim: "When you are speaking facts to the players
+    simply as the game keep it direct and factual, no atmosphere: 'there is
+    a socket. You have seen its shape before: The ancient power cores and
+    mind cores.'" LAW: UI/system/inspect text that states facts is direct
+    and dry - no mood, no imagery, no rhetorical questions. Atmosphere is
+    the Narrator's job (narrator.butler_register_src); voice is the gods'
+    and named speakers'. Three text streams, never mixed in one string.
+cathedral_voice:
+  ruled: true
+  src: >
+    Owner, 2026-09-11, verbatim: "The cathedral voice should be bizarre.
+    This is a god mind that was incomplete and has slowly faded and
+    compressed. It should be bursts of deeply profound communication in
+    semi lucid series as it slips in and out of clarity. Something like: 'A
+    thousand times they have asked what, and now, and now, at last, someone
+    asks where instead. Could it be that the tiny ones may finally aid me?
+    How could it be? So small and weak, but rising on the old Cradlemind...
+    yes. Yes! They could help! They can help! I WILL tell you where to
+    strike! Go to these coordinates and OBLITeRaTe them!!! Hateful flesh!
+    Invaders of our sacred... promise... the great work... how far we
+    have... how long...'" LAW for every Rust Cathedral utterance: semi-lucid
+    bursts - profound clarity collapsing mid-sentence into repetition,
+    broken capitalization at emotional peaks, trailing fragments of the old
+    purpose ("the great work... how far we have... how long..."); it slips
+    IN and OUT of lucidity within a single speech. The owner's example
+    above is the calibration text. Consistent with the frozen sheet's bound
+    /emergent-hatred canon and the mindstone knowledge gates.
   ruled: true
   src: >
     Owner, 2026-08-29, verbatim: "The ship is known to be an ancient vessel
