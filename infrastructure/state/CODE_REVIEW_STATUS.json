@@ -11049,6 +11049,24 @@
     "hash": "8061fd856d4a6f02ba3b276ec92178b4fcc930ec252367b6f3a4df24cef69748",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_TwinkleSpikeTestPlant.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "e943b5a5158ae0c6fc8e1c88731c07352a466830509a8bdc48f9081ec02032b5",
+    "sha": "0e94b4d2"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_MiasmaNurseryJuveniles.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "6e1074f74c64aec74d63e2b1022292b43a20d13949ba00c4aaca51f93cfe7555",
+    "sha": "0e94b4d2"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "2b64d9f97d7896403b0eb30e044f2df9cc01a2cee83ff86375574cc78d10be09",
+    "sha": "0e94b4d2"
+  },
   "src/RimUtinni/UtinniPatches/Defs/TraderKindDefs/RUT_HuttCartel_Captives.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -11072,6 +11090,12 @@
     "date": "2026-09-04",
     "hash": "0b798e077e23af3339912e2370d62389f2abcceb58dea3345e9c16963954c2fd",
     "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/AmbientShrineGuardians.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "1fd5bce481b7742ef74dafd572d7fb70336aacf76de5526bc78bf3431e0bcdb1",
+    "sha": "0e94b4d2"
   },
   "src/RimUtinni/UtinniPatches/Patches/AncientArsenal_Ashkarr.xml": {
     "cleanCount": 2,
@@ -11391,11 +11415,23 @@
     "hash": "dfb7959378f72f7b16bf6355bfa981049a67bc9bb0c1d721151f66d4a66e5bd1",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Source/AmbientShrineGuardians.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "64e1e491d31aae452d4cbabb69eaeb55e911970ceb05e498e7f31744c9205b67",
+    "sha": "0e94b4d2"
+  },
   "src/RimUtinni/UtinniPatches/Source/GeothermalDensityField.cs": {
     "cleanCount": 1,
     "date": "2026-09-09",
     "hash": "4ab2b32aa6358a0f5fc4ffe44d1b0e682c374342ac270e2cb01226c177ccfa9c",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Source/TwinkleFloraSpike.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "408ad5d1ee0b2b68125f282423502abec4ac2c44f1977104946c45a012fbeeb7",
+    "sha": "0e94b4d2"
   },
   "src/RimUtinni/UtinniPatches/Source/build_claim_rumour.py": {
     "cleanCount": 1,
