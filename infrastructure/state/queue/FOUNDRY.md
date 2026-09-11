@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T19:31:32Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-11T19:48:41Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -683,15 +683,6 @@ target:   v1
 kind:     task
 summary:  Standing owner instruction: "there should always be at least one agent
 prose:    infrastructure/state/items/ART_REGEN_WAVE2_QUEUE_1.md
-
-## GREENTIDE_STANDALONE_MOD_1 Greentide biome ships as its own RimMandrake-tier mod — owner ruled 2026-09-11 (churnmud card): repackage the greentide kit + biome content under its own packageId per NAMING_SCHEME_PLAN
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - Package the Greentide biome + its kit (design/Jawa/worldbuilding/biomes/
-prose:    infrastructure/state/items/GREENTIDE_STANDALONE_MOD_1.md
 
 ## LOCKJAW_ART_WIRE_IN_1 LOCKJAW_ART_WIRE_IN_1
 state:    doing  (BLOCKED)
