@@ -7435,3 +7435,6 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"STAGED_LORE_PROOF_SPIKE_1 live proof","ts":"2026-09-11T22:29:51Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-11T22:50:28Z"}
 {"seat":"FOUNDRY","event":"close","id":"STAGED_LORE_PROOF_SPIKE_1","sha":"6994d339c","ts":"2026-09-11T22:52:21Z"}
+{"seat":"FOUNDRY","event":"spawn","name":"ART_REGEN_WAVE7_QUEUE_1","kind":"build","needs":"offline","spec":"queue wave 7: art:improve rows, canon-checked","for":"FOUNDRY","from":"ART_REGEN_WAVE6_QUEUE_1","ts":"2026-09-11T22:55:51Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ART_REGEN_WAVE7_QUEUE_1","ts":"2026-09-11T22:55:55Z"}
+{"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE7_QUEUE_1","ts":"2026-09-11T22:55:55Z"}
