@@ -59,3 +59,15 @@ correctly scoped (brief + roster row, no shipping content). Design phase
 of this item is complete; the actual build (ThingDef/PawnKindDef XML, the
 v1-or-v2 worker decision, art generation via `generating-rimworld-sprites`)
 is separate follow-on work, not started.
+
+## 2026-09-10 — all 9 open calls RULED (owner cards, recommendations accepted)
+1. **v1 zero-C# vanilla worker** — Bomb-class boom ships now; custom goo-burst C# stays
+   a v2 option if the boom reads wrong in test.
+2-5. **Stat package RATIFIED as briefed**: baseHealthScale 2.0 (pop-from-range
+   counterplay is the spine), melee in the ruled band, MarketValue unset, butchery 0.
+6. **Reuse Boomalope's body** (Hump = goo sac, targeting semantics correct).
+7. **Glow painted into the sprite** — no comp for v1.
+8. **Spawn wiring: builder defers to ASSAILANT_DUNGEON_BUILD_1's thaw-gate** when that
+   item is ruled; the Vhessk build does NOT wait on it.
+9. **Briefs live in `design/Jawa/worldbuilding/creatures/`** (new shelf — fire-hawk,
+   furnace-beast, gear-dancers incoming). UNBLOCKED: build phase is FOUNDRY's.
