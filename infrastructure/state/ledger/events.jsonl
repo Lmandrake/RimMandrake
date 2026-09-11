@@ -7404,3 +7404,7 @@
 {"seat":"FOUNDRY","event":"start","id":"ABSORPTION_FIX_NEWLINE_ESCAPES_1","ts":"2026-09-11T20:52:07Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-11T20:54:06Z"}
 {"seat":"BENCH","event":"file","id":"STAGED_LORE_PROOF_SPIKE_1","title":"Prove staged-lore text swaps live: one real description that changes by campaign stage in a running game (minimal mod, quicktest evidence, screenshot of before/after) - owner ordered the experiment 2026-09-11; build/no-build ruling waits on this proof","kind":"task","target":"v1","needs":"deploy","for":"FOUNDRY","ts":"2026-09-11T20:54:21Z"}
+{"seat":"FOUNDRY","event":"close","id":"ART_REGEN_WAVE4_WIRE_IN_1","sha":"8840fed2c","ts":"2026-09-11T20:56:35Z"}
+{"seat":"FOUNDRY","event":"close","id":"ABSORPTION_FIX_NEWLINE_ESCAPES_1","sha":"d029308ef","ts":"2026-09-11T21:05:06Z"}
+{"seat":"BENCH","event":"claim","id":"GOD_LINES_ORACLE_PACKS_1","ts":"2026-09-11T21:07:05Z"}
+{"seat":"BENCH","event":"close","id":"GOD_LINES_ORACLE_PACKS_1","sha":"a0c0fafbac5270d04e79ced842ae3c565107f416","ts":"2026-09-11T21:07:06Z"}

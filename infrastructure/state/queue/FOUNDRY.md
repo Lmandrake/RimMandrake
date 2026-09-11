@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T20:36:44Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-11T21:07:06Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -693,15 +693,6 @@ kind:     build
 summary:  infrastructure/artpipe/done/lockjawimprovear7.json and br7.json (plus
 prose:    infrastructure/state/items/LOCKJAW_ART_WIRE_IN_1.md
 
-## BESTIARY_ARMOURY_DESC_BACKFILL_1 Description backfill: ~1830 missing/placeholder descriptions in RSW Armoury + SWBestiary (incl 211 storage-panel clones, literal TBD), generated against frozen biome sheets + naming grammar, tier-generic discipline enforced - text_lore_load_report.md S6
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/BESTIARY_ARMOURY_DESC_BACKFILL_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BESTIARY_ARMOURY_DESC_BACKFILL_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1017,3 +1008,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DONOR_FACTION_PROPER_NOUN_RENAMES_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DONOR_FACTION_PROPER_NOUN_RENAMES_1.md
+
+## STAGED_LORE_PROOF_SPIKE_1 Prove staged-lore text swaps live: one real description that changes by campaign stage in a running game (minimal mod, quicktest evidence, screenshot of before/after) - owner ordered the experiment 2026-09-11; build/no-build ruling waits on this proof
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STAGED_LORE_PROOF_SPIKE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STAGED_LORE_PROOF_SPIKE_1.md
