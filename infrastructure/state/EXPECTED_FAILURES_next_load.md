@@ -1,45 +1,56 @@
-# Expected-failure signatures — MODLIST_RESTORE_AND_BATCH_DEPLOY_1, 2026-09-09 (FOUNDRY)
+# Expected-failure signatures — batch restart, 2026-09-10 (FOUNDRY)
 
-Written BEFORE launch per load-round §2/§3. Five assemblies ride this load under
-the owner's batching waiver; each fails in a distinguishable place.
+Written BEFORE launch per load-round §2/§3. Owner approved restart now
+(question card, "Restart batch" → "Go ahead and restart now"). Two real
+code changes ride this load; everything else already loaded clean on the
+prior restart (MODLIST_RESTORE_AND_BATCH_DEPLOY_1, 2026-09-09/10).
 
-## Assemblies riding this load
+## What's riding this load
 
-1. **RimMandrakeMovingDunes.dll** (`mandrake.rm.movingdunes`) — brand new mod,
-   never loaded before. Fails as: `TypeLoadException` / `Could not find class`
-   naming `RimMandrake.MovingDunes.*`, `DuneMaterialDef`, or a discarded
-   `DuneMaterialDef` def block; or a red error naming
-   `RM_MD_`/`BuriedCache`/`MovingDunes` from `Patches/BiomeBindings.xml`
-   (`PatchOperationAddModExtension`, unguarded — 2 matches predicted, in Core
-   `Biomes_WarmArid.xml` and GRiNDTerra `Biomes_NewArid.xml`).
-2. **RiverSteamHook.dll** (`mandrake.rm.manywaters`) — rebuilt, and the mod has
-   never been in the live list. Fails as: errors naming `RiverSteamHook`, or
-   discarded defs naming `RM_ColoredWater*` / `RM_DeepSand` / `RM_ColoredSteam`.
-3. **RimMandrakeOracle.dll** (`mandrake.rm.oracle`) — already on disk, mod never
-   enabled. Fails as: errors naming `RimMandrake.Oracle`, `OracleClient`,
-   `OracleHttpClient`, or a Mod-settings `Could not find class`.
-4. **RimMandrakeFluidCanals.dll** (`mandrake.rm.fluidcanals`) — already on disk,
-   mod never enabled. Fails as: errors naming `RimMandrake.FluidCanals`,
-   `RM_FluidCanal*`, or a `DesignationCategoryDef` failure from
-   `FluidCanal_OrdersPatch.xml` (1 match predicted, Core `DesignationCategories.xml`).
-5. **JawaBench.BridgeTools.dll** (companion, `RimWorld/BridgeTools/JawaBench/`) —
-   redeployed with `--gm` (317 tools) carrying the `WORLD_FEATURE_LABELS_OVERSIZED_1`
-   `maxDrawSizeInTiles` fix. Fails as: bridge tool count != 317, a missing
-   `Bridge token:` line, or `[JawaBench]` load errors. Note this one is NOT in
-   `ModsConfig.xml` at all — it is discovered by RimBridgeServer at bridge start.
+1. **`RimMandrake.Utinni.UtinniPatches.dll`** (`mandrake.rut.patches`, already
+   active, deployed this session) — new type `AmbientShrineGuardians.cs`
+   (subclass-swap via `PatchOperationAttributeSet` on `Rules_Interior.xml`'s
+   `ancientTemple` rule's resolver list, no Harmony). Fails as: an error
+   naming `RimMandrake.Utinni.UtinniPatches.AmbientShrineGuardians` /
+   `SymbolResolver_Interior_AncientTemple`, or a `PatchOperationAttributeSet`
+   miss on `Data/Core/Defs/RuleDefs/Rules_Interior.xml` (validate_patch.py
+   already confirmed 1/1 match against the live 576-mod set offline).
+2. **`mandrake.rut.scavengerevents`** — first-ever load (mod entry already in
+   ModsConfig, never loaded before tonight). Fails as: errors naming
+   `RimMandrake.Utinni.ScavengerEvents`, `MO_SurvivalPod`/`ShipBreak`/
+   `PodCrash`/`Insects`/`Migration`/`Thanksgiving`/`Stroke` IncidentWorkers,
+   or a discarded def in that mod's own Defs/.
+3. **Cherry Picker live config** (`Mod_3521312241_Mod_CherryPicker.xml`,
+   Config-only, not a repo file) — 141 genuine-reversal keys re-added per the
+   owner's ruling on `CHERRYPICKER_SHIP_BASELINE_STALE_1` (see that item: the
+   diagnosis doc's own prose said "139" but its enumerated defName lists
+   total 141 genuine / 37 self-pruned RBM_/tug.Minotaur — going with the
+   enumerated count, independently re-verified that tug.Minotaur is inactive
+   and the other three source mods are active). Not a load-failure risk (it's
+   a spawn-filter list, not a def), verified separately via
+   `cherrypicker.py --source live` after this load, not by a Player.log
+   signature.
 
-## Load decision strings
+## Also riding, from tonight's code-review fan-out (4 parallel waves, isolated worktrees)
 
-| item | expected-PRESENT | expected-ABSENT / at-baseline |
-|---|---|---|
-| the load itself | `Bridge token:` in Player.log; `activeMods` = **582** | `Resetting mods config and trying again` / `Recovered from incompatible or corrupted mods` |
-| the 7 restored C# types | zero `Could not find type named RimMandrake.` lines | any of the 7 recurring — the stale-DLL deploy did not take |
-| the 4 new mods | `Adding mandrake.rm.manywaters(`, `...movingdunes(`, `...fluidcanals(`, `...oracle(` | any `Could not find class` naming their namespaces |
-| Wave 1 retirement (13) | — | any `Could not load reference to` naming `KibbleDispenser` above the 3 known bookkeeping-roster tokens |
-| 3 droid mods restored | `Adding neronix17.asimov(`, `neronix17.outerrim.droiddepot(`, `mandrake.rsw.msedroidfix(` | `Could not resolve cross-reference` naming droid defs |
-| WORLD_FEATURE_LABELS | (post-load) `jawa/world_features_get` max `maxDrawSizeInTiles` ≈ **61** (was 99.6) | — |
-| overall | `harvest_log.py` exits without REFUSING | no new `^Config error in` / `Could not resolve cross-reference` above the last known-good baseline |
+4. **`Droidworks.dll`** (`mandrake.rsw.droidworks`, already active) — deployed a
+   pending Harmony prefix fix (commit `492520c2`, "suppresses sibling-relation-gen
+   crash for droids") that was committed but never deployed. Fails as: a
+   `HarmonyException` naming `Droidworks`, or the original sibling-relation-gen
+   crash recurring (meaning the prefix didn't take).
+5. **`RUT_Scarlands.xml`** (UtinniPatches, redeployed) — restored a missing
+   `ParentName` that left `extraGenSteps` empty (craters/ruins/junk-cluster
+   mapgen never fired). Fails as: a def-inheritance error naming `RUT_Scarlands`,
+   or (silently) Scarlands maps generating with no extra genstep content —
+   only visible by actually looking at a Scarlands map, not a log line.
+6. **`JawaBench.BridgeTools.dll`** (companion, rebuilt+redeployed) — fixed
+   `jawa/world_landmark_rename` to match on `PlanetTile` equality (surface vs.
+   orbit layer) instead of raw `tileId`. Fails as: `selftest_tool_metadata.py`
+   tool-count mismatch (already re-run clean, 317/317) or a bridge tool-list
+   discovery error naming `JawaBenchLandmarkNameTool`.
 
-**False pass to watch for**: the bridge answering is NOT proof of a load — an
-idle vanilla main menu answers too. The load is only real when `harvest_log.py`
-runs without refusing AND `activeMods` reads 581.
+## Everything else already proven on the prior restart, not re-tested here
+Oracle, FluidCanals, MovingDunes, Wave-1 retirement (13 mods), JawaBench GM
+pair — all confirmed clean on the 2026-09-09/10 restart per
+`MODLIST_RESTORE_AND_BATCH_DEPLOY_1`. ManyWaters stays excluded (its own
+`thingClass` blocker, unfixed).
