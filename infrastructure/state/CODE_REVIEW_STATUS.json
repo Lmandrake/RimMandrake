@@ -162,10 +162,10 @@
     "sha": "582e9432"
   },
   "design/Jawa/fauna/animal_tolerances.py": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "3e5c6463784c8b04b3a97a23610a69a6a12c372ecbd3a8060a27e24a8eda247a",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "b63988134359e5926f27064ce65fc94fb132139ce879bcea86e750929c6232d7",
+    "sha": "05e084a5"
   },
   "design/Jawa/fauna/biome_fit.py": {
     "cleanCount": 1,
@@ -3000,10 +3000,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimMandrake/Utils/animal_contact_sheet.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "ddfcbff6a86d8c6c4b28568c7d6f7e65d15a121a36b41dcea0ca3f1e700db11e",
-    "sha": "d17af88d"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "9a6730715d56df7e3e0585cfabe8819437909d43536ab67d453f54a1b31ced00",
+    "sha": "05e084a5"
   },
   "src/RimMandrake/Utils/animal_inventory.py": {
     "cleanCount": 1,
@@ -3437,10 +3437,10 @@
     "sha": "9f6f93ea"
   },
   "src/RimMandrake/Utils/extract_bundle_textures.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "2efcc528d84a7aca190d194d34a14f8bfa7c4a7cd43151b26092363cdf5304f3",
-    "sha": "ee52aad9"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "d9a61f4b78021dda0941f5638d8a09aa0bf9dd38f8a5d5a4dfa4ea03add09e93",
+    "sha": "05e084a5"
   },
   "src/RimMandrake/Utils/extract_mlie_sounds.py": {
     "cleanCount": 1,
@@ -3724,10 +3724,10 @@
     "sha": "09ce5b8f"
   },
   "src/RimMandrake/Utils/naming_lint.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "70139943c9ec266e7f4f95d6f3f78fa48b787ab51759066f1ce8d22a2868471d",
-    "sha": "39cd22d5"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "31111216d4f1a7846cc9a633f1f0ae375170ee41f3daf416d8ac2fe07cd72b3b",
+    "sha": "05e084a5"
   },
   "src/RimMandrake/Utils/nemotron_ceiling.py": {
     "cleanCount": 2,
@@ -4252,10 +4252,10 @@
     "sha": "39cd22d5"
   },
   "src/RimMandrake/Utils/thing_contact_sheet.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "a3393227575da1c65694759e38a2798ff8700610a839bc49f86d447110f21a22",
-    "sha": "891d0852"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "bb6f4799049f910bacc6df7b3e8f89904b874de45fdc78b0feb570d07cbafdf4",
+    "sha": "05e084a5"
   },
   "src/RimMandrake/Utils/validate_ideoligion.py": {
     "cleanCount": 1,
