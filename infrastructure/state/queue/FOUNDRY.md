@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T06:40:53Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-11T06:55:05Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1012,4 +1012,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## FAUNA_STATS_BRIDGE_TOOL_1 New companion tool jawa/animal_stats for the normalization graphs: per ThingDef return race.baseBodySize, wildness, ComfortableTemperatureMin/Max + MeatAmount/LeatherAmount via GetStatValueAbstract, best melee tool power+cooldown - MEASURED 2026-09-11: jawa/get_defs cannot reach nested race fields or list contents; rimbridge-companion skill pattern, deploy at next game-down
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FAUNA_STATS_BRIDGE_TOOL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FAUNA_STATS_BRIDGE_TOOL_1.md
