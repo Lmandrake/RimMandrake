@@ -44,7 +44,12 @@ namespace JawaBench.BridgeTools
                 var wl = Find.World.landmarks;
                 if (wl == null || wl.landmarks == null)
                     return new { success = false, message = "No landmark manager on this world." };
-                var hit = wl.landmarks.FirstOrDefault(kv => kv.Key.tileId == tile);
+                // PlanetTile numbers tile ids per-layer (surface, Odyssey orbit, ...),
+                // so a raw tileId match can hit a same-numbered tile on the wrong
+                // layer. Compare via PlanetTile equality against the surface layer,
+                // same convention as jawa/world_landmarks_set.
+                var target = new PlanetTile(tile, Find.WorldGrid.Surface);
+                var hit = wl.landmarks.FirstOrDefault(kv => kv.Key == target);
                 if (hit.Value == null)
                     return new { success = false, message = "Tile " + tile + " carries no landmark." };
                 var old = hit.Value.name;
