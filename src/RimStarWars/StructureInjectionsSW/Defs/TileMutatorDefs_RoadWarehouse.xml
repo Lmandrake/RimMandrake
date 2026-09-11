@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Road Warehouse - structure_procedural_spec.md section 8.5.
+       Same extraGenSteps responder shape as every prior batch (RSW_MiningSite,
+       RUT_Homestead, RSW_MoistureFarm, ...): the two Inhabited steps are
+       carried under MayRequire so a tile that also holds a WorldObject_Inhabited
+       place gets its cast and goods inside the floor (both steps no-op on a
+       tile without one).
+
+       The template's own road_dir param defaults to "S" and the exported bake
+       was taken at that default, so this responder reads best on a tile whose
+       road approaches from the south; a future batch can export additional
+       road_dir bakes as separate GenStepDef/TileMutatorDef pairs if a tile
+       needs a different approach, same as any other archetype's variant axis.
+
+       NOT YET PLACED on any Ash'karr tile - same deferral as every prior
+       batch. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_RoadWarehouse</defName>
+    <label>road warehouse</label>
+    <description>A long storehouse fronting the road: a wide loading door and dock, shelves three deep around a walkable floor, an office in the corner and a guard's bunk in the back.</description>
+    <extraGenSteps>
+      <li>RSW_GenStep_RoadWarehouse</li>
+      <li MayRequire="mandrake.rm.inhabited">Inhabited_Cast</li>
+      <li MayRequire="mandrake.rm.inhabited">RM_InhabitedStock</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>
