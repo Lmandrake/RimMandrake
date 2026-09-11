@@ -57,7 +57,11 @@ minerals crystallizing out of a sea with no exit.
 - **The masons never stop** (§4) — the pillar forest thickens and shifts;
   charts age.
 
-## 4. What lives here — three, and no more
+## 4. What lives here
+
+*Cap released (owner ruling, 2026-09-10): the "three, and no more" law is retired.
+The three below remain the anchor cast; the roster may grow beyond them. Schools and
+swarms stay out of the Grey — anything that schools lives in the Twilight Deep.*
 
 - **The pillar-mason** — the Grey's monoculture (the base sheet's "different
   one," now named): a crystal-binding film that *builds* — mineral columns

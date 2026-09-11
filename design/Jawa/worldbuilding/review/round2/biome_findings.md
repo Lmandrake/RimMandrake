@@ -63,13 +63,12 @@ OPPORTUNITIES:
 1. Electro-cluster (Electrictick, Electricfish, Electricgryllotalpa, Grenadierworm) is now a coherent "the ground still discharges" fauna story — name it in §4.
 2. MegaphoridLarva resident + Megaphorid adult as injectable hive = a life-cycle hook no other biome has.
 
-## terminator_sea + the_grey_deep — churn 11 (cast 2 → 10)
-Arrivals (9): RSW_SiltLamprey, RSW_ElderSando, BMT_Megakrill, BMT_MutatingTumorfish x3 (Adult/Fry/Spawn), BMT_Polluwog, Blixus, TetnissCrab (insect ruling: VFEI2_Silverfish arrival VOIDED — faction-only). Flier: AA_ColossalAerofleet arriving→roster; AA_Aerofleet extracted.
+## terminator_sea + the_grey_deep — churn 11 (cast 2 → 7) — CAP RELEASED 2026-09-10
+Arrivals (5): RSW_SiltLamprey, RSW_ElderSando, BMT_Polluwog, Blixus, TetnissCrab (insect ruling: VFEI2_Silverfish arrival VOIDED — faction-only). Ruled 2026-09-10: the sheet's "three, and no more" cap is RELEASED (sheet amended); schooling fish retargeted to the Twilight Deep — BMT_Megakrill (still a fishing result, never a spawn) + BMT_MutatingTumorfish x3. Flier: AA_ColossalAerofleet arriving→roster; AA_Aerofleet extracted.
 
 INCONSISTENCIES:
-1. Sheet §4 is titled "What lives here — three, and no more"; ten arrivals break the biome's central claim. Biggest sheet-vs-verdict collision of the wave.
-2. Terminator base bans: no schools/swarms, roster "capped at a handful". Megakrill (krill = swarm by definition), tumorfish Fry/Spawn all read as multiples.
-3. Tumorfish x3 is one organism's life cycle — one admission; Megakrill is ruled a *fishing result*, not a spawn — keep it off wildAnimals.
+1. RESOLVED by the 2026-09-10 ruling: schools/swarms ban stands in the Grey — the schooling set now lives in the Twilight.
+2. Tumorfish x3 is one organism's life cycle — one admission (now in the Twilight); Megakrill stays a *fishing result*, off wildAnimals, twilight waters.
 
 OPPORTUNITIES:
 1. If the cap is to survive: ElderSando (apex), SiltLamprey (parasite), Blixus (horror) honor "three, and no more" — the rest become fishing results/set-pieces.
@@ -88,8 +87,8 @@ OPPORTUNITIES:
 1. Faa (0.2) + Mee (0.3) give the boil its prey base — the temperature-banded rainbow mats (§4) as their grazing story writes itself.
 2. Atispec + LarvalAtispec life cycle at the vents = the biome's first native breeding fiction.
 
-## terminator_sea + the_twilight_deep — churn 10 (cast 2 → 9)
-Arrivals (8): RSW_Laa, RSW_OpeeSeaKiller, Yobshrimp, RSW_AbyssalColo, RSW_CrimsonOpee, RSW_Starmaw, RSW_StormSando, StoneCrab. Flier: ColossalAerofleet→roster; AA_Aerofleet extracted.
+## terminator_sea + the_twilight_deep — churn 12 (cast 2 → 12) — receives the Grey's schooling set (2026-09-10)
+Arrivals (11): RSW_Laa, RSW_OpeeSeaKiller, Yobshrimp, RSW_AbyssalColo, RSW_CrimsonOpee, RSW_Starmaw, RSW_StormSando, StoneCrab + from the Grey's cap ruling: BMT_MutatingTumorfish x3 (one organism); BMT_Megakrill arrives as a FISHING RESULT only. Flier: ColossalAerofleet→roster; AA_Aerofleet extracted.
 
 INCONSISTENCIES:
 1. Predator stack: OpeeSeaKiller (5 sq), CrimsonOpee (9 sq), Starmaw, StormSando, AbyssalColo — five mega-predators over prey of Laa, Yobshrimp, StoneCrab; chain is inverted.
