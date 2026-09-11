@@ -3482,9 +3482,9 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:37:15.350Z",
       "decision": "move",
-      "note": "occular",
+      "note": "occular | SIZE RULED: 2 cells (drawSize 2, medium bin) (sitting ruling 2026-09-10)",
       "prefill": "in",
-      "sizeBin": "large",
+      "sizeBin": "medium",
       "sizeBinPrefill": "large"
     },
     "homeless:AA_Gallatross": {
