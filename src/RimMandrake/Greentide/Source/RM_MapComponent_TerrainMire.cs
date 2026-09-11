@@ -68,7 +68,7 @@ namespace RimMandrake.Greentide
 			}
 			else if (existing != null)
 			{
-				const float decay = 0.02f;
+				float decay = ext?.mireDecayPerTick ?? 0.02f;
 				existing.Severity -= decay;
 				if (existing.Severity <= 0f)
 				{
