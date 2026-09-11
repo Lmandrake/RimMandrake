@@ -10299,6 +10299,30 @@
     "hash": "53da16716f9695cba3d9436482d70071f9b7222a33d3ae19958e53f818c6c034",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/ScavengerEvents/Source/IncidentWorker_Insect.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "cfe5b61bb8665e7335a80e21b83d2e0f7aaa139d55480ba49bee4dcc06264fea",
+    "sha": "c4a2ec83"
+  },
+  "src/RimUtinni/ScavengerEvents/Source/IncidentWorker_PodCrashTribal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "79db0079a15750f885d7f3de4c8da72afedb4ea895530cc9380fe9471723484c",
+    "sha": "c4a2ec83"
+  },
+  "src/RimUtinni/ScavengerEvents/Source/IncidentWorker_ShipBreak.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "060802e001bba2453e57cd6046b296cbbb1223450f2a669b5e0da1a6a58834ec",
+    "sha": "c4a2ec83"
+  },
+  "src/RimUtinni/ScavengerEvents/Source/IncidentWorker_SurvivalPod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-10",
+    "hash": "cb3e2672600a778d32791e6dc81fc6e5938e848bd966e444c85d4563018ffa88",
+    "sha": "c4a2ec83"
+  },
   "src/RimUtinni/ShipMemory/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
