@@ -4,7 +4,7 @@
 faction-only (infestation/raid events), never biome residents. The four VFEI2 move
 rows (Acidspitter, Macrofly, RoyalSpelopede, Silverfish) are VOIDED and removed;
 their decisions rows are marked FACTION-RESERVED in `decisions_propagated.json`.
-160 moves remain live.
+157 moves remain live (horror/injectable ruling 2026-09-10 voided Bulwark, Prowler, Squall — injected content, not biome arrivals).
 
 Rebuilt from the owner's completed fauna review (`design/Jawa/worldbuilding/review/fauna_assignment_register.decisions.json`, decidedCount 828, 164 `move` rows). Row key = the decisions.json dict key (`fauna:<originSheet>:<creature>` or `homeless:<creature>`); the owner's words are the verbatim `note` field on that row (truncated to 15 words), never invented. Seeded from `move_target_mapping_2026-09-09.md` (69 rows, validated nickname table); extended here to cover all 164. Standing corrections applied: ocular/occular -> the_contagion; Volcanic (fliers) -> the Forge family, not the_pyrelands.
 
@@ -117,7 +117,6 @@ Rebuilt from the owner's completed fauna review (`design/Jawa/worldbuilding/revi
 | `homeless:Blurrg` | Blurrg | Moisture Farmers territory, domesticated | OPEN |
 | `homeless:Bogwing` | Bogwing | miasma flyer | the_miasma |
 | `homeless:Brezak` | Brezak | Hutt areas | OPEN |
-| `homeless:Bulwark` | Bulwark | Horror injectibles for the night side | nightside_ice |
 | `homeless:DA_BeardedTroll` | DA_BeardedTroll | Semi-sentient guardian used by Wildsteam, trainable, sometimes seen wild in their territory, mostly fur with … | OPEN |
 | `homeless:DA_RockTroll` | DA_RockTroll | Cracked biome | the_cracked_lands |
 | `homeless:FrogDog` | FrogDog | Hutt territories and pet and settlements | OPEN |
@@ -148,7 +147,6 @@ Rebuilt from the owner's completed fauna review (`design/Jawa/worldbuilding/revi
 | `homeless:MA_Sporemole` | MA_Sporemole | The Rot | the_rot |
 | `homeless:Nexu` | Nexu | combat pets of the Wildsteam | OPEN |
 | `homeless:PaintedSpat` | PaintedSpat | Slot in nearly anywhere needed on dayside | OPEN |
-| `homeless:Prowler` | Prowler | injectable horror material | OPEN |
 | `homeless:RSW_AbyssalColo` | RSW_AbyssalColo | Twilight | the_twilight_deep |
 | `homeless:RSW_ColoClawFish` | RSW_ColoClawFish | Scald | the_scald |
 | `homeless:RSW_CrimsonOpee` | RSW_CrimsonOpee | Twilight Sea 9 squares long | the_twilight_deep |
@@ -162,7 +160,6 @@ Rebuilt from the owner's completed fauna review (`design/Jawa/worldbuilding/revi
 | `homeless:SW_Electricfish` | SW_Electricfish | scarlands | the_scarlands |
 | `homeless:SW_Grenadierworm` | SW_Grenadierworm | scarlands | the_scarlands |
 | `homeless:Snoruuk` | Snoruuk | The Rot | the_rot |
-| `homeless:Squall` | Squall | injectable wreck creatures in the Fall Zone | fall_line |
 | `homeless:StoneCrab` | StoneCrab | 0.3 squares, Twilight Sea | the_twilight_deep |
 | `homeless:Tach` | Tach | 1 cell, this creature can steal, lives in the Jungle | OPEN |
 | `homeless:Tauntaun` | Tauntaun | white ice night biome | nightside_ice |
@@ -218,7 +215,6 @@ Rebuilt from the owner's completed fauna review (`design/Jawa/worldbuilding/revi
 - **Leaftail**: "wildsteam biomes" (`homeless:Leaftail`)
 - **Nexu**: "combat pets of the Wildsteam" (`homeless:Nexu`)
 - **PaintedSpat**: "Slot in nearly anywhere needed on dayside" (`homeless:PaintedSpat`)
-- **Prowler**: "injectable horror material" (`homeless:Prowler`)
 - **Rikknit**: "Large tree biomes. "rikknit was a crustacean native to New Plympto. They had eight to …" (`homeless:Rikknit`)
 - **Rycrit**: "herd animal near oases" (`homeless:Rycrit`)
 - **SWPotF_RaceDef_ysalamir**: "Wherever needed in arid and hot zones" (`homeless:SWPotF_RaceDef_ysalamir`)

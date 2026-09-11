@@ -233,3 +233,20 @@ on the right look. Non-SW creatures: redo may mean a whole rename+redefine based
 the creature's function. **When in doubt, ask the owner — that is the default.**
 Review surfaces show creatures in SIDE PROFILE (east-facing) from now on; the
 south-facing headshot is illegible for many body plans.
+
+**3. Horror ruling** (owner, verbatim): *"I made a mistake assigning any of the formerly
+'horror' animals into normal places. They were all supposed to be injected art for the
+dark side. Please remove them from the biome lists."* The Horrors (Continued) six:
+Visceral, Bulwark, Terrorworm, BroodLord, Harvester, Prowler. Applied: Terrorworm
+(arid) + Visceral (poison_forest) resident rows → out; Bulwark/Prowler moves voided →
+INJECTABLE-RESERVED; BroodLord/Harvester notes tagged; Squall's move voided too (his
+own round-1 note already said "injectable wreck creatures" — same class, would have
+been joined as a deck arrival otherwise).
+
+**4. Miasma nursery ruling** (owner): the sea creatures use the Miasma as a
+young-raising ground — spawn there but juvenile/young only. Mechanism verified in
+engine source: `PawnKindDef.minGenerationAge`/`maxGenerationAge` (plain XML) — a young
+PawnKindDef per species (same race, capped generation age, lowered combatPower,
+`lifeStageAges` scales body/stats automatically), listed in the Miasma BiomeDef
+wildAnimals. Caveat recorded: on-map aging means an occasional grown-up in the rings —
+good fiction, not a defect. Build filed as MIASMA_NURSERY_KINDS_1 (FOUNDRY).

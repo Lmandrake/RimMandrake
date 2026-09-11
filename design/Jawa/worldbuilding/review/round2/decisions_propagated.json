@@ -334,8 +334,8 @@
     "fauna:arid_shrubland:Terrorworm": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "owner 2026-09-10 horror ruling: formerly-'horror' animals are injected dark-side art only, never biome residents",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -1353,8 +1353,8 @@
     "fauna:poison_forest:Visceral": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "owner 2026-09-10 horror ruling: formerly-'horror' animals are injected dark-side art only, never biome residents",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4884,7 +4884,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:37:51.548Z",
       "decision": "in",
-      "note": "Injectable horror content",
+      "note": "INJECTABLE-RESERVED; Injectable horror content",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -4902,8 +4902,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T12:27:07.059Z",
-      "decision": "move",
-      "note": "Horror injectibles for the night side",
+      "decision": "in",
+      "note": "INJECTABLE-RESERVED (owner 2026-09-10 horror ruling: formerly-'horror' animals are injected dark-side art only, never biome residents); voided move, was: Horror injectibles for the night side",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6339,7 +6339,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:36:56.889Z",
       "decision": "in",
-      "note": "injected horror",
+      "note": "INJECTABLE-RESERVED; injected horror",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -7054,8 +7054,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T12:32:59.368Z",
-      "decision": "move",
-      "note": "injectable horror material",
+      "decision": "in",
+      "note": "INJECTABLE-RESERVED (owner 2026-09-10 horror ruling: formerly-'horror' animals are injected dark-side art only, never biome residents); voided move, was: injectable horror material",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7328,8 +7328,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T12:53:27.335Z",
-      "decision": "move",
-      "note": "injectable wreck creatures in the Fall Zone",
+      "decision": "in",
+      "note": "INJECTABLE-RESERVED (owner 2026-09-10 horror ruling: formerly-'horror' animals are injected dark-side art only, never biome residents); voided move, was: injectable wreck creatures in the Fall Zone",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
