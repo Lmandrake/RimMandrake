@@ -2742,4 +2742,120 @@
       </value>
     </match>
   </Operation>
+
+  <!-- LAW3_RETARGET_RSW_1 (2026-09-11): mirrors of the 4 bare-donor blocks above whose
+       species now ALSO exist as a live RSW_ fork (MLIE_FAUNA_ABSORPTION_1 Waves A/B),
+       so the ruled stat lands on whichever ThingDef the wild population actually spawns.
+       MEASURED against validate_patch.py using live (capture 2026-09-11T06-28-49Z, 579
+       mods) and defs against the real Mods/Workshop tree: all 105 bare-donor xpaths
+       above still match exactly 1 node each (0 dead) - mlie.starwarsanimalcollection is
+       still active and most of the 105 in-scope beasts have NO RSW_ port at all.
+       Retargeting or pruning the bare-name halves, as this item's own brief assumed,
+       would have broken the patch for the ~101 unforked species and any other content
+       (faction pawnGroupMakers, traders) still referencing the bare donor defNames.
+       Only these 4
+       species (of 105) have a live RSW_ counterpart today: Bantha, Dewback, Acklay,
+       Wampa (checked against mlie_creature_defname_map_wave_a.json/wave_b.json, the
+       repo's own donor->RSW_ manifest). Tool li[] indices verified identical between
+       donor and RSW_ fork (ported verbatim) so the same index/value pairs apply. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Dewback"]/tools/li[2]/power</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Dewback"]/tools/li[2]/power</xpath>
+          <value>
+            <power>45.0</power>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Dewback"]/tools/li[2]/cooldownTime</xpath>
+          <value>
+            <cooldownTime>2.6</cooldownTime>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Bantha"]/tools/li[1]/power</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Bantha"]/tools/li[1]/power</xpath>
+          <value>
+            <power>60.0</power>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Bantha"]/tools/li[1]/cooldownTime</xpath>
+          <value>
+            <cooldownTime>3.0</cooldownTime>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Bantha"]/race/manhunterOnDamageChance</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RSW_Bantha"]/race/manhunterOnDamageChance</xpath>
+      <value>
+        <manhunterOnDamageChance>0.9</manhunterOnDamageChance>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Bantha"]/race/manhunterOnTameFailChance</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RSW_Bantha"]/race/manhunterOnTameFailChance</xpath>
+      <value>
+        <manhunterOnTameFailChance>0.4</manhunterOnTameFailChance>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Acklay"]/tools/li[1]/power</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Acklay"]/tools/li[1]/power</xpath>
+          <value>
+            <power>45.0</power>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Acklay"]/tools/li[1]/cooldownTime</xpath>
+          <value>
+            <cooldownTime>2.6</cooldownTime>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Wampa"]/tools/li[3]/power</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Wampa"]/tools/li[3]/power</xpath>
+          <value>
+            <power>90.0</power>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Wampa"]/tools/li[3]/cooldownTime</xpath>
+          <value>
+            <cooldownTime>3.67</cooldownTime>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
 </Patch>
