@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T07:29:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T07:47:39Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -622,7 +622,7 @@ summary:  Found during FISHBESTIARYCOMMISSION1's reconciliation pass, 2026-09-10
 prose:    infrastructure/state/items/GREENTIDE_FISH_ITEMS_FIX_1.md
 
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -903,6 +903,16 @@ blocked:  design brief complete and filed (design/Jawa/worldbuilding/creatures/g
 summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
 
+## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  68/68 ruled defNames ported clean (validate_patch 0 real errors), 27+26 live MayRequire=biomesteam.* references repointed to RSW_/mandrake.rsw.swbestiary. Retirement NOT safe yet: (1) BiomeCast_Ashkarr.xml is generated from cast_assignment.csv and needs a deploy+dump-refresh+regenerate cycle (expensive-list, not unattended); (2) 7 live defNames (ChemSnail/CaveSpider/GiantSlug/GiantSnail/Pillbug/GlowBat) are marked keep in hand-authored biome files but aren't in the ruled 68 - needs an owner/BENCH call on whether they're genuinely cut or the round-2 census undersold them; (3) RotSporeKit's GameCondition_SporeCloud has no data-only substitute for the donor's compiled C#. See items/BMT_FAUNA_ABSORPTION_1.md for full detail.
+summary:  BMTFAUNAABSORPTION1 — donor corrected to biomesteam., ready to port
+prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
+
 ## RESEARCH_TRIO_RETIRE_1 Retire steppingstones + als.gravtech x2 and re-validate the research recost after the cut (owner ruled Wave 3 'fold into the research pass' 2026-09-11 - the pass itself is closed, so this item carries it: cut, rerun the recost validator, reconcile the 112 collision rows)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -944,3 +954,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SAND_STALKER_BADGER_SOUNDS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SAND_STALKER_BADGER_SOUNDS_1.md
+
+## QUICKTEST_MAPGEN_NRE_1 Quicktest/new-game map generation crashes: NRE in ReadingPolicyDatabase.GenerateStartingPolicies via GenTypes.SameOrSubclassOf (null policy Type) - Player.log ~13268, hit on SetupForQuickTestPlay 2026-09-11; a def's reading-policy class resolves null on the post-restore set; quicktest debugging route is DOWN until fixed
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/QUICKTEST_MAPGEN_NRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/QUICKTEST_MAPGEN_NRE_1.md
