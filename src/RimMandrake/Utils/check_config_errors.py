@@ -84,6 +84,12 @@ def classify(line: str, entries: list[dict]) -> dict | None:
 
 
 def main() -> int:
+    # Windows' console defaults to cp1252, which can't encode the emoji this
+    # script prints -- reconfigure to UTF-8 so a real, unrelated finding
+    # doesn't get hidden behind a UnicodeEncodeError crash.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
     ap = argparse.ArgumentParser(description=__doc__,
                                   formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--log", default=PLAYER_LOG, help="Player.log to check (default: live)")
