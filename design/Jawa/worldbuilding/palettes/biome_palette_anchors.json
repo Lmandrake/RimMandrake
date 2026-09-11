@@ -179,28 +179,30 @@
   "poison_forest": {
    "family": [
     "#17191b",
-    "#38393a",
-    "#5e5e5c",
-    "#93928a",
-    "#d2d0c4"
+    "#4d4842",
+    "#888078",
+    "#b5b0a8",
+    "#d5d4d2"
    ],
-   "accent": "#d8c531",
-   "accentLabel": "sulfur-yellow crystal",
-   "accentDerivation": "prose+art",
+   "accent": "#eaac27",
+   "accentLabel": "mineral-ochre runoff band (owner reference)",
+   "accentDerivation": "owner-reference",
    "sheet": "design/Jawa/worldbuilding/biomes/poison_forest.md §9",
    "derivedFrom": [
     "§9: “wet black and slate ground · bone-pale trunks streaked with grey metal tears”",
-    "§9: “crystal in bruised blue and sulfur yellow; the dark red-purple films of the defeated phototrophs”"
+    "OWNER (2026-09-10): “Artistic reference for Poison Forest. Rainbow springs due to minerals and chemistry, not vulcanism.”"
    ],
    "sampledFrom": [
     "design/Jawa/worldbuilding/review/plant_art/AB_CrystalFlower.detail.png",
     "design/Jawa/worldbuilding/review/plant_art/BMT_Plant_TreeMartyr.detail.png",
-    "design/Jawa/worldbuilding/review/plant_art/AB_BloodBouquet.detail.png"
+    "design/Jawa/worldbuilding/review/plant_art/AB_BloodBouquet.detail.png",
+    "design/Jawa/worldbuilding/biomes/references/poison_forest_rainbow_springs_ref.png"
    ],
    "banned": [
-    "warm light (“no warm light anywhere”)"
+    "warm LIGHT (“no warm light anywhere”) — the ochre is mineral pigment, not lighting",
+    "volcanic/lava imagery — CANON: the rainbow coloration is MINERAL/CHEMISTRY, never volcanism"
    ],
-   "note": "Three accent candidates in prose (sulfur yellow, bruised blue, red-purple film); sulfur drafted — needs the owner's eye."
+   "note": "Recalibrated against the owner's spring-terrace reference (PIL-sampled): family = wet slate → silica white (#4d4842/#888078/#d5d4d2 sampled); accent contest resolved by the reference — ochre runoff wins (saturated core #eaac27, the image's dominant saturated register); runner-up milky turquoise (#d0e0e5, too close to silica white in value/sat); sulfur drops to third."
   },
   "terminator_sea": {
    "family": [

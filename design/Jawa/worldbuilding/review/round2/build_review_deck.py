@@ -77,10 +77,23 @@ def _f(x):
 # 🔴 The census merge above silently fell through drawSize -> bodySize -> 1.0.
 # RSW_Reefback (our own def, absent from BOTH harvest CSVs) rendered at 1.0
 # while its PawnKindDef's adult lifeStage says 10.7. Never default silently:
-# resolve the true drawSize from the def XML itself — repo mods first (a
-# plain scan, no ParentName merge needed since our own lifeStages are written
-# out in full), then the offline dump (already merged, covers modded races
-# whose raw XML we do not ship) — before ever touching bodySize.
+# resolve the true drawSize from the def XML itself.
+#
+# 🔴 CALIBRATION PASS 2026-09-11 — RESOLUTION ORDER FLIPPED. The harvested
+# census can carry a WRONG or unparseable value (`beast_census.csv`'s own
+# `drawSize` column is frequently the literal string "UNMEASURED (field not
+# captured by dump...)", not a number) and must never outrank the def files
+# themselves. New order, def truth first:
+#   1. our own repo mods (src/Rim*/**/Defs) — freshest, authoritative intent
+#   2. the LIVE active mod set (workshop + local Mods, ParentName-resolved via
+#      def_inventory.build) — what the game actually runs today; catches a
+#      third-party def we do not ship AND a stale-deployed copy of our own
+#   3. the offline captured dump — a cached snapshot, may be older than #2
+#   4. the harvested census — LAST, only when no def source resolves at all
+#   5. bodySize, or a bare 1.0 — both ALWAYS badged ⚠ UNMEASURED, never silent
+# All four resolve a PawnKindDef's ADULT lifeStage (index -1, matching the
+# race's own lifeStageAges 1:1 — RimWorld indexes lifeStages by that bracket,
+# not by counting backwards from some assumed "final" entry).
 _REPO_DRAWSIZE: dict[str, float] | None = None
 def _repo_drawsize_index() -> dict[str, float]:
     global _REPO_DRAWSIZE
@@ -112,6 +125,40 @@ def _repo_drawsize_index() -> dict[str, float]:
     _REPO_DRAWSIZE = idx
     return idx
 
+_LIVE_DRAWSIZE: dict[str, float] | None = None
+def _live_drawsize_index() -> dict[str, float]:
+    """The ACTIVE mod set (workshop + local Mods), ParentName-resolved.
+    Unlike the repo-only scan this handles third-party PawnKindDefs that
+    inherit their lifeStages from an abstract base — raw-XML grepping would
+    miss those entirely."""
+    global _LIVE_DRAWSIZE
+    if _LIVE_DRAWSIZE is not None:
+        return _LIVE_DRAWSIZE
+    idx: dict[str, float] = {}
+    try:
+        import def_inventory as DI
+        ds = DI.build(DI.D_CONFIG, DI.D_WORKSHOP, DI.D_LOCAL, DI.D_DATA,
+                      types=("PawnKindDef",), quiet=True)
+        for rec in ds.of_type("PawnKindDef"):
+            el = rec.element
+            race = (el.findtext("race") or "").strip()
+            if not race or race in idx:
+                continue
+            stages = el.findall("lifeStages/li")
+            if not stages:
+                continue
+            ds_el = stages[-1].find("bodyGraphicData/drawSize")
+            if ds_el is None or not (ds_el.text or "").strip():
+                continue
+            v = _f(ds_el.text.strip())
+            if v:
+                idx[race] = v
+            rec.release()
+    except Exception:                                    # noqa: BLE001
+        pass
+    _LIVE_DRAWSIZE = idx
+    return idx
+
 _DUMP_DRAWSIZE: dict[str, float] | None = None
 def _dump_drawsize_index() -> dict[str, float]:
     global _DUMP_DRAWSIZE
@@ -140,22 +187,29 @@ def _dump_drawsize_index() -> dict[str, float]:
     return idx
 
 def resolve_game_drawsize(defName: str) -> float | None:
-    """The PawnKindDef adult lifeStage drawSize, repo mods first, offline
-    dump second. None means truly unresolvable, never a guessed number."""
-    v = _repo_drawsize_index().get(defName)
-    if v: return v
-    return _dump_drawsize_index().get(defName)
+    """The PawnKindDef adult lifeStage drawSize: repo mods, then the live
+    active mod set, then the offline dump. None means truly unresolvable,
+    never a guessed number."""
+    for idx in (_repo_drawsize_index(), _live_drawsize_index(), _dump_drawsize_index()):
+        v = idx.get(defName)
+        if v:
+            return v
+    return None
 
 def resolve_size(defName: str, c: dict) -> tuple[float, bool, str]:
-    """(renderSize, unmeasured, gameDrawSize_display). `unmeasured` is True
-    the moment we render at anything other than a resolved drawSize — the
-    card MUST show the ⚠ UNMEASURED badge in that case, never silently."""
-    ds = c.get("drawSize")
-    if ds:
-        return ds, False, ds
+    """(renderSize, unmeasured, gameDrawSize_display). Def-XML truth first,
+    the harvested census LAST — a harvest row can carry a stale or literally
+    unparseable value (`beast_census.csv`'s "UNMEASURED (field not
+    captured...)" string) and must never outrank the game's own def files.
+    `unmeasured` is True the moment we render at anything other than a
+    resolved drawSize — the card MUST show the ⚠ UNMEASURED badge then,
+    never silently."""
     game_ds = resolve_game_drawsize(defName)
     if game_ds:
         return game_ds, False, game_ds
+    ds = c.get("drawSize")
+    if ds:
+        return ds, False, ds
     bs = c.get("bodySize")
     if bs:
         return bs, True, None
@@ -270,6 +324,30 @@ def is_visitor(note: str) -> bool:
     casing varies) and the card must mark them distinctly from residents."""
     return "visitor-dying" in (note or "").lower()
 
+# ---- family collapse (owner, 2026-09-11: "why do 5 identical pustules show
+# in the Rot") -------------------------------------------------------------
+# Explicit map, no regex magic: several organisms ship as multiple lifecycle
+# ThingDefs (larva/adult/queen/colony-variant, ...) that all land in the same
+# biome and, post-dedup, still render once EACH because dedup keys on
+# defName. Collapse every listed member into ONE card keyed by the family,
+# using the rep def's art/size; the tooltip lists every member def that
+# actually showed up in that biome.
+FAMILIES = {
+    "BMT_PustuleHornet": {
+        "members": ("BMT_PustuleHornet", "BMT_PustuleHornetQueen", "BMT_PustuleHornetSpawned",
+                    "BMT_ColonyPustuleHornet", "BMT_ColonyPustuleHornetQueen"),
+        "rep": "BMT_PustuleHornetQueen",
+        "label": "pustule hornet (x5 lifecycle defs, one organism)",
+    },
+    "BMT_MutatingTumorfish": {
+        "members": ("BMT_MutatingTumorfishAdult", "BMT_MutatingTumorfishFry",
+                    "BMT_MutatingTumorfishSpawn"),
+        "rep": "BMT_MutatingTumorfishAdult",
+        "label": "mutating tumorfish (x3 lifecycle defs, one organism)",
+    },
+}
+FAMILY_OF = {m: key for key, fam in FAMILIES.items() for m in fam["members"]}
+
 def build_biomes(fauna, flora, moves, census):
     # defName -> row, PER BIOME, so a def that is both resident ('in') and
     # arriving (a move resolving to the same biome) merges into ONE card
@@ -284,19 +362,37 @@ def build_biomes(fauna, flora, moves, census):
         if is_fishing_result(note): return
         biome = canon(biome)
         bucket = buckets.setdefault(biome, {})
-        entry = bucket.get(defName)
         visitor = is_visitor(note)
+
+        fam_key = FAMILY_OF.get(defName)
+        key = fam_key if fam_key else defName
+        entry = bucket.get(key)
         if entry is None:
-            c = census.get(defName, {})
-            size, unmeasured, gameDs = resolve_size(defName, c)
-            bucket[defName] = {
-                "defName": defName, "label": c.get("label", defName),
-                "drawSize": size, "unmeasured": unmeasured, "gameDrawSize": gameDs,
-                "sizeBin": sizeBin, "visitor": visitor,
-                "note": note or "", "decision": decision, "art": art,
-                "origins": [origin] if origin else [], "mod": c.get("mod",""),
-                "img": sprite(defName, FAUNA_SPRITES)}
+            if fam_key:
+                fam = FAMILIES[fam_key]
+                c = census.get(fam["rep"], {})
+                size, unmeasured, gameDs = resolve_size(fam["rep"], c)
+                bucket[key] = {
+                    "defName": fam["rep"], "label": fam["label"], "family": fam_key,
+                    "members": [defName],
+                    "drawSize": size, "unmeasured": unmeasured, "gameDrawSize": gameDs,
+                    "sizeBin": sizeBin, "visitor": visitor,
+                    "note": note or "", "decision": decision, "art": art,
+                    "origins": [origin] if origin else [], "mod": c.get("mod",""),
+                    "img": sprite(fam["rep"], FAUNA_SPRITES)}
+            else:
+                c = census.get(defName, {})
+                size, unmeasured, gameDs = resolve_size(defName, c)
+                bucket[key] = {
+                    "defName": defName, "label": c.get("label", defName),
+                    "drawSize": size, "unmeasured": unmeasured, "gameDrawSize": gameDs,
+                    "sizeBin": sizeBin, "visitor": visitor,
+                    "note": note or "", "decision": decision, "art": art,
+                    "origins": [origin] if origin else [], "mod": c.get("mod",""),
+                    "img": sprite(defName, FAUNA_SPRITES)}
             return
+        if fam_key and defName not in entry["members"]:
+            entry["members"].append(defName)
         if origin and origin not in entry["origins"]:
             entry["origins"].append(origin)
         if visitor:
@@ -452,11 +548,21 @@ const tip=document.getElementById('tip');
 function hpx(ds){return Math.max(MINH, Math.min(MAXH, PX*(ds||1)));}
 function esc(s){return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
 function crit(a, isGroup){
+  // 🔴 RENDER-MATH BUG (owner screenshot proof, 2026-09-11): the img got ONLY
+  // an inline height, no width — the browser auto-scaled width to the cached
+  // SPRITE'S OWN pixel aspect ratio, which varies wildly by capture pose
+  // (AA_Helixien's cache is 128x31, a near-4:1 sliver; AA_DrainerLarva's is
+  // 128x34). At height alone that stretched their width to ~4x every other
+  // card at the SAME drawSize, painting a "row-spanning caterpillar" that has
+  // nothing to do with drawSize. RimWorld draws every pawn in a SQUARE
+  // drawSize×drawSize footprint (the XML's <drawSize> is one scalar, not a
+  // width/height pair) — so the card must be square too, with the sprite
+  // fit INSIDE it (object-fit:contain), never stretched to fill it.
   const h=hpx(a.drawSize), clamped = PX*(a.drawSize||1) > MAXH;
   const d=document.createElement('div'); d.className='crit';
   const dotcls = a.visitor?'d-visit':(a.decision==='arrived'?'d-arr':(a.decision==='in'?'d-in':''));
-  d.innerHTML = (a.img?`<img src="${a.img}" style="height:${h}px">`
-                     :`<div style="height:${h}px;width:${h*.8}px;display:flex;align-items:center;justify-content:center;border:1px dashed #6a533560;border-radius:6px;font-size:9px;color:#7a6242">no art</div>`)
+  d.innerHTML = (a.img?`<img src="${a.img}" style="height:${h}px;width:${h}px;object-fit:contain">`
+                     :`<div style="height:${h}px;width:${h}px;display:flex;align-items:center;justify-content:center;border:1px dashed #6a533560;border-radius:6px;font-size:9px;color:#7a6242">no art</div>`)
     + (dotcls?`<span class="dot ${dotcls}"></span>`:'')
     + (a.unmeasured?`<span class="badge" title="drawSize unmeasured — sized by a fallback">⚠</span>`:'')
     + `<div class="cap">${esc(a.label)}</div>`;
@@ -474,6 +580,7 @@ function showTip(e){
   else if(a.unmeasured) s+=`<div><span class="k">current drawSize (game)</span> ⚠ UNMEASURED — shown at ${a.drawSize} (fallback)</div>`;
   if(a.sizeBin) s+=`<div><span class="k">ruled bin (register)</span> ${esc(a.sizeBin)}</div>`;
   if(a.visitor) s+=`<div><span class="k">status</span> visitor (nightside visitor law) — never native</div>`;
+  if(a.members) s+=`<div><span class="k">member defs</span> ${a.members.map(esc).join(', ')}</div>`;
   if(a.decision==='arrived') s+=`<div><span class="k">moved in from</span> ${esc(a.origin||'')}</div>`;
   else if(a.decision==='in') s+=`<div><span class="k">assigned here</span></div>`;
   if(a.art) s+=`<div><span class="k">art</span> ${esc(a.art)}</div>`;
