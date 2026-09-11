@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rsw.zakkegartoverride</packageId>
+  <name>Zakkeg Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces mlie.starwarsanimalcollection's Zakkeg art
+(south/east/north facings only - the dessicated-corpse texture stays on
+donor art) with custom generated art per the 2026-09-10 sitting ruling: art
+redo directed "lean, boney, and deeply disturbing" for this SW canon
+creature, never a rename. LABEL/ART ONLY - no defName touched, no Defs, no
+Patches, loose Textures/ only, same relative path
+(swanimals/Zakkeg/Zakkeg_&lt;facing&gt;) the donor uses so this mod's later
+load order wins the same-path resolution.
+
+UNVERIFIED as of authoring: the donor ships these textures inside a Unity
+AssetBundle (AssetBundles/, no loose Textures/swanimals/ folder at all), not
+as loose files. Loose-overrides-loose-by-load-order is proven elsewhere in
+this repo; loose-overrides-AssetBundle-by-load-order is NOT yet confirmed
+working for this donor - same open question as MynockArtOverride. Needs a
+live look (spawn/view a Zakkeg in-game) before this mod is trusted.</description>
+  <loadAfter>
+    <li>mlie.starwarsanimalcollection</li>
+  </loadAfter>
+</ModMetaData>
