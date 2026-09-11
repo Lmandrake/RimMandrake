@@ -40,6 +40,10 @@ The two failure modes are the grammar's own logic (one anomaly, two regimes):
 every interaction with the Assailants taught them to adapt and evolve to become more
 efficient at destroying their studiers. The war lab beneath the propane lake — built to
 study the weapon after it was already loose — is where that lesson was learned last.
+*(Amendment 2026-09-11, `TERRAMANUFACTURE_CANON_1` — detail from the same §3, no ruling
+changed: the lab **was never supposed to exist** — improvised by people who still felt
+strong and had no time left, mid-collapse of the terramanufacture program the war
+interrupted. The machine history itself lives in the propane sheet; this doc only points.)*
 
 ## 🔴 Rulings (owner, 2026-09-06)
 
