@@ -6,10 +6,11 @@ using Verse;
 namespace RimMandrake.Aftermath
 {
     // design/Jawa/proposals/plot_mechanisms_wave.md §2.1's rule engine.
-    // Evaluates BattleOutcome-triggered rules (1, 2, 3) AND
-    // MentalBreakNearBattle (rule 6, PLOT_MECHANISM_MODS_WAVE_1 2026-09-09
-    // wiring pass) - see AftermathTriggerKind.cs for exactly which of the
-    // remaining four are shipped as DATA but not yet WIRED, and why.
+    // Evaluates BattleOutcome-triggered rules (1, 2, 3), MentalBreakNearBattle
+    // (rule 6, PLOT_MECHANISM_MODS_WAVE_1 2026-09-09 wiring pass) AND
+    // PrisonerHeldDuration (rule 4, 2026-09-10 wiring pass) - see
+    // AftermathTriggerKind.cs for exactly which of the remaining two are
+    // shipped as DATA but not yet WIRED, and why.
     public class AftermathRuleRunner : GameComponent
     {
         // §2.2: "No stacking beyond one queued aftermath per faction and two
@@ -23,6 +24,11 @@ namespace RimMandrake.Aftermath
         // for delayDays -> delayTicks below.
         private const int MentalBreakNearBattleWindowTicks = 2 * GenDate.TicksPerDay;
 
+        // Rule 4's own poll cadence - same 5000-tick (~2 in-game hour)
+        // interval GameComponentTick already housekeeps `queued` on, so one
+        // tick-modulo check covers both.
+        private const int HousekeepingIntervalTicks = 5000;
+
         private List<QueuedAftermathMarker> queued = new List<QueuedAftermathMarker>();
 
         // Per-map "last battle that closed here", for rule 6's trigger. IN-
@@ -32,6 +38,17 @@ namespace RimMandrake.Aftermath
         // not see a battle that closed before the reload. Acceptable per
         // this item's own bar (a missed escalation is not a broken one).
         private readonly Dictionary<Map, BattleRecord> lastClosedByMap = new Dictionary<Map, BattleRecord>();
+
+        // Rule 4's per-prisoner clock: when this pawn was FIRST seen as a
+        // PrisonerOfColonySpawned by PollPrisoners, and whether the rule has
+        // already fired once for this captivity episode (cleared the moment
+        // the pawn stops being one of our spawned prisoners - escape,
+        // release, death, or a rescue - so a later recapture starts a fresh
+        // clock and can fire again). IN-MEMORY ONLY, same documented
+        // reload-resets-the-clock limitation as lastClosedByMap above: a
+        // save/reload loses the partial hold time, not the mechanism.
+        private readonly Dictionary<Pawn, int> prisonerFirstSeenTick = new Dictionary<Pawn, int>();
+        private readonly HashSet<Pawn> prisonerFiredFor = new HashSet<Pawn>();
 
         public AftermathRuleRunner(Game game)
         {
@@ -43,8 +60,74 @@ namespace RimMandrake.Aftermath
         public override void GameComponentTick()
         {
             base.GameComponentTick();
-            if (Find.TickManager.TicksGame % 5000 != 0) return; // hourly-ish housekeeping, cheap list
+            if (Find.TickManager.TicksGame % HousekeepingIntervalTicks != 0) return; // hourly-ish housekeeping, cheap list
             queued.RemoveAll(q => Find.TickManager.TicksGame >= q.FireTick);
+            PollPrisoners();
+        }
+
+        // Rule 4 ("They come for their own"): "prisoners of faction F held
+        // >= 3 days, F hostile." No Harmony seam is needed - "how long has
+        // this prisoner been held" is answerable by polling the vanilla
+        // per-map prisoner list on the same cadence GameComponentTick already
+        // wakes up on, same reasoning MapComponent_BattleRecorder's own
+        // fallback poll uses for "is this battle over."
+        private void PollPrisoners()
+        {
+            foreach (Map map in Find.Maps)
+            {
+                List<Pawn> current = map.mapPawns.PrisonersOfColonySpawned;
+                var currentSet = new HashSet<Pawn>(current);
+
+                // A pawn no longer one of our spawned prisoners here (escaped,
+                // released, died, rescued, transferred) drops out of tracking
+                // entirely - a later recapture is a fresh captivity episode
+                // with its own clock and its own chance to fire.
+                if (prisonerFirstSeenTick.Count > 0)
+                {
+                    foreach (Pawn tracked in prisonerFirstSeenTick.Keys.ToList())
+                    {
+                        if (currentSet.Contains(tracked)) continue;
+                        prisonerFirstSeenTick.Remove(tracked);
+                        prisonerFiredFor.Remove(tracked);
+                    }
+                }
+
+                int now = Find.TickManager.TicksGame;
+                foreach (Pawn prisoner in current)
+                {
+                    if (!prisonerFirstSeenTick.ContainsKey(prisoner)) prisonerFirstSeenTick[prisoner] = now;
+                    if (prisonerFiredFor.Contains(prisoner)) continue;
+
+                    float heldDays = (now - prisonerFirstSeenTick[prisoner]) / (float)GenDate.TicksPerDay;
+                    if (OnPrisonerHeldTooLong(prisoner, heldDays)) prisonerFiredFor.Add(prisoner);
+                }
+            }
+        }
+
+        // Doc's own trigger condition, checked here (not in
+        // AftermathRuleEligibility, which stays a bare-float predicate so it
+        // is offline-testable with no live Pawn/Faction): "F hostile", and
+        // §2.1 row 4's explicit callout ("Deepwater and Homestead never
+        // (raidsForbidden)").
+        public bool OnPrisonerHeldTooLong(Pawn prisoner, float heldDays)
+        {
+            Faction home = prisoner?.HomeFaction;
+            if (home == null) return false;
+            if (!home.HostileTo(Faction.OfPlayer)) return false;
+            if (home.def != null && home.def.raidsForbidden) return false;
+
+            Map map = prisoner.MapHeld;
+            if (map == null) return false;
+
+            bool queuedAny = false;
+            foreach (RM_AftermathRuleDef def in DefDatabase<RM_AftermathRuleDef>.AllDefsListForReading)
+            {
+                if (!AftermathRuleEligibility.IsEligiblePrisonerHeldDuration(def, heldDays)) continue;
+                float points = StorytellerUtility.DefaultThreatPointsNow(map);
+                if (TryQueue(def, home, map, points, new List<Pawn> { prisoner }, "PrisonerHeldTooLong"))
+                    queuedAny = true;
+            }
+            return queuedAny;
         }
 
         public void OnBattleClosed(BattleRecord record)
@@ -56,7 +139,9 @@ namespace RimMandrake.Aftermath
             foreach (RM_AftermathRuleDef def in DefDatabase<RM_AftermathRuleDef>.AllDefsListForReading)
             {
                 if (!AftermathRuleEligibility.IsEligible(def, record.Outcome, survivors)) continue;
-                TryQueue(def, record);
+                Faction targetFaction = ResolveTargetFaction(def, record);
+                if (targetFaction == null) continue;
+                TryQueue(def, targetFaction, record.Map, record.StorytellerPoints, record.OriginalPawns, record.Outcome.ToString());
             }
         }
 
@@ -89,23 +174,32 @@ namespace RimMandrake.Aftermath
             foreach (RM_AftermathRuleDef def in DefDatabase<RM_AftermathRuleDef>.AllDefsListForReading)
             {
                 if (!AftermathRuleEligibility.IsEligibleMentalBreakNearBattle(def)) continue;
-                TryQueue(def, record);
+                Faction targetFaction = ResolveTargetFaction(def, record);
+                if (targetFaction == null) continue;
+                TryQueue(def, targetFaction, record.Map, record.StorytellerPoints, record.OriginalPawns, record.Outcome.ToString());
             }
         }
 
-        private void TryQueue(RM_AftermathRuleDef def, BattleRecord record)
+        // General-purpose queue path, shared by every trigger kind. Battle-
+        // shaped triggers (1, 2, 3, 6) resolve their Faction/Map/points off a
+        // BattleRecord via ResolveTargetFaction before calling this; the
+        // prisoner-duration trigger (4) has no BattleRecord and resolves them
+        // directly off the held Pawn in OnPrisonerHeldTooLong. Returns
+        // whether this def actually queued something, so a caller that needs
+        // to know (OnPrisonerHeldTooLong, to mark the captivity episode as
+        // fired) can.
+        private bool TryQueue(RM_AftermathRuleDef def, Faction targetFaction, Map map, float points, List<Pawn> actors, string outcomeLabel)
         {
-            Faction targetFaction = ResolveTargetFaction(def, record);
-            if (targetFaction == null) return;
+            if (targetFaction == null || map == null) return false;
 
-            if (!PassesDiscipline(targetFaction)) return;
+            if (!PassesDiscipline(targetFaction)) return false;
 
             IncidentDef incidentDef = DefDatabase<IncidentDef>.GetNamedSilentFail(def.payloadIncidentDefName);
             if (incidentDef == null)
             {
                 Log.Warning("[RimMandrake.Aftermath] " + def.defName + ": payload IncidentDef '" +
                     def.payloadIncidentDefName + "' not found - skipping.");
-                return;
+                return false;
             }
 
             float delayDays = Rand.Range(def.delayDaysMin, def.delayDaysMax);
@@ -114,12 +208,14 @@ namespace RimMandrake.Aftermath
 
             IncidentParms parms = new IncidentParms
             {
-                target = record.Map,
+                target = map,
                 faction = targetFaction,
-                // §2.2: "points never exceed the storyteller's own" - reusing
-                // the ORIGINAL battle's own points trivially satisfies this
-                // (never more, and it is the storyteller's own number).
-                points = record.StorytellerPoints,
+                // §2.2: "points never exceed the storyteller's own" - the
+                // caller passes either the original battle's own points
+                // (rules 1, 2, 3, 6) or StorytellerUtility.DefaultThreatPointsNow
+                // (rule 4, which has no originating battle) - either way it is
+                // exactly the storyteller's own number, never more.
+                points = points,
                 forced = true, // CONFIRMED bypass of mlie.factionraidcooldown, not
                                 // assumed: `strings` on its actual shipped DLL
                                 // (Steam Workshop id 3547098393,
@@ -166,15 +262,17 @@ namespace RimMandrake.Aftermath
             ChronicleEvents.Raise(new ChronicleEvent(
                 ChronicleEventKind.RuleQueued,
                 Find.TickManager.TicksGame,
-                record.Map,
-                record.OriginalPawns,
+                map,
+                actors,
                 null,
-                record.Outcome.ToString(),
+                outcomeLabel,
                 def));
 
             if (Prefs.DevMode)
                 Log.Message("[RimMandrake.Aftermath] queued " + def.defName + " for " + targetFaction.Name +
                     " at tick " + fireTick + " (" + delayDays.ToString("F1") + "d).");
+
+            return true;
         }
 
         private Faction ResolveTargetFaction(RM_AftermathRuleDef def, BattleRecord record)
@@ -201,10 +299,14 @@ namespace RimMandrake.Aftermath
                     return ally;
 
                 default:
-                    // HuttClaimant / HeldPrisonerHome - rules 4/8, not wired
-                    // (see AftermathTriggerKind.cs). OnBattleClosed never
-                    // reaches a def with one of these modes today because
-                    // those defs' triggerKind is not BattleOutcome.
+                    // HuttClaimant (rule 8, NOT WIRED - see AftermathTriggerKind.cs)
+                    // and HeldPrisonerHome (rule 4, WIRED but resolved a
+                    // different way - OnPrisonerHeldTooLong reads
+                    // prisoner.HomeFaction directly, never through this
+                    // BattleRecord-shaped method). Neither triggerKind is
+                    // BattleOutcome or MentalBreakNearBattle, so OnBattleClosed
+                    // and OnMentalBreakNearBattle never reach this switch with
+                    // one of these modes.
                     return null;
             }
         }

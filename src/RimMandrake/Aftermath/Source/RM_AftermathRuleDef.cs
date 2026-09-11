@@ -16,6 +16,15 @@ namespace RimMandrake.Aftermath
         public List<BattleOutcome> triggerOutcomes;
         public int minSurvivors = 0;
 
+        // --- PrisonerHeldDuration trigger field (rule 4, WIRED 2026-09-10) --
+        // doc §2.1 row 4: "prisoners of faction F held >= 3 days, F hostile."
+        // AftermathRuleRunner.PollPrisoners tracks per-prisoner elapsed days
+        // in-memory (same documented not-scribed limitation as BattleRecord
+        // and lastClosedByMap: a reload resets the clock, not the mechanism)
+        // and AftermathRuleEligibility.IsEligiblePrisonerHeldDuration compares
+        // it against this field.
+        public float minHeldDays = 3f;
+
         // --- Delay + telegraph -----------------------------------------------
         public float delayDaysMin = 0.5f;
         public float delayDaysMax = 2f;
@@ -60,6 +69,9 @@ namespace RimMandrake.Aftermath
 
             if (delayDaysMax < delayDaysMin)
                 yield return "RM_AftermathRuleDef " + defName + ": delayDaysMax < delayDaysMin.";
+
+            if (triggerKind == AftermathTriggerKind.PrisonerHeldDuration && minHeldDays <= 0f)
+                yield return "RM_AftermathRuleDef " + defName + ": triggerKind is PrisonerHeldDuration but minHeldDays <= 0.";
         }
     }
 }
