@@ -56,7 +56,7 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RSW_GlassPearl</defName>
     <label>glass pearl</label>
-    <description>A smooth, water-clear nodule fused out of silica deep inside a deep-sand pool — kin to the light-pipe nubs that dot the dune sea's surface, but rounder, and rarer, because nothing usually digs this deep to find one. Ash'karr's optics trade calls a good one "a lens that grew a skin." Sold whole, or cut for what's inside.</description>
+    <description>A smooth, water-clear nodule fused out of silica deep inside a deep-sand pool — kin to the light-pipe nubs that dot the dune sea's surface, but rounder, and rarer, because nothing usually digs this deep to find one. Desert-world optics traders call a good one "a lens that grew a skin." Sold whole, or cut for what's inside.</description>
     <graphicData>
       <texPath>swresource/Trophies/BanthaHorn</texPath>
       <!-- PLACEHOLDER — see header. -->

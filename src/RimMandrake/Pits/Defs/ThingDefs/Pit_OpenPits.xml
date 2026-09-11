@@ -132,7 +132,7 @@
   <ThingDef ParentName="RM_OpenPitBase">
     <defName>RM_OpenPit_Oubliette</defName>
     <label>oubliette</label>
-    <description>An earthen pit with an ion charge at the bottom. Mechanoids and droids that fall in switch off.</description>
+    <description>An earthen pit with an ion charge at the bottom. Mechanoids that fall in switch off.</description>
     <comps>
       <!-- CompPitCoverTrigger is INHERITED from RM_OpenPitBase; RimWorld
            APPENDS a child <comps> list to its parent's, so redeclaring it

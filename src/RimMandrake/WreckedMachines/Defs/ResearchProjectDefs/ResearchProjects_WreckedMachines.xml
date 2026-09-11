@@ -49,7 +49,7 @@
   <ResearchProjectDef>
     <defName>RM_WM_AutomatedSmelterRestoration</defName>
     <label>automated smelter restoration</label>
-    <description>Study the wrecked automated smelter on the ship's own deck closely enough to understand how to rebuild it. This is not the smelter's original engineering — the Kolyska's makers already solved that — it is the Jawa's own accumulated, bodged, hard-won knowledge of how to bring a dead one back.\n\nStudying the wreck itself (Research Reinvented's Analyse) is the fast, primary route. Working it out from theory alone at a bench is possible but slow, and stays slow on purpose.</description>
+    <description>Study the wrecked automated smelter on the ship's own deck closely enough to understand how to rebuild it. This is not the smelter's original engineering — the Kolyska's makers already solved that — it is the colony's own accumulated, bodged, hard-won knowledge of how to bring a dead one back.\n\nStudying the wreck itself (Research Reinvented's Analyse) is the fast, primary route. Working it out from theory alone at a bench is possible but slow, and stays slow on purpose.</description>
     <baseCost>2000</baseCost>
     <techLevel>Industrial</techLevel>
     <tags>
