@@ -1,291 +1,5 @@
 {
-  "sheet": "the_propane_lakes",
-  "defNames": [
-    "AB_PropaneLakes",
-    "RUT_PropaneLake"
-  ],
-  "tiles": 2588,
   "authored": "2026-09-09",
-  "law_sources": [
-    "the_propane_lakes.md §0/§4 (admission: hydrocarbon- or ammonia-metabolic, cold-loving R-H10, not an icy dayside analog)",
-    "propane_gas_deep_design.md (v1 rows 2026-09-02)",
-    "_freeze_rulings_2026-09-07.md R5/R20",
-    "_assignment_prep.md §9",
-    "owner cards 2026-09-09"
-  ],
-  "fauna": [
-    {
-      "def": "AA_FrostboundBehemoth",
-      "commonality": 0.126,
-      "action": "keep",
-      "band": "huge — ammonia life of the Flats",
-      "law": "the_propane_lakes §4: 'what the polar solvent builds when it has a medium' — sheet-named keep (donor 1.0); bs 3.0, spd 2.0, non-predator (MEASURED)"
-    },
-    {
-      "def": "AA_Terramorph",
-      "commonality": 0.1,
-      "action": "adjust-keep",
-      "band": "medium — Flats mineral chemistry",
-      "law": "the_propane_lakes §4: 'the Terramorph belongs to the Flats' mineral chemistry' — sheet-named keep; bs 1.5, spd 1.8 (MEASURED)",
-      "note": "Its ≤2-named-home-biomes allowance under the ubiquity trims spends one home here; the other is the Wasteland roster's call."
-    },
-    {
-      "def": "AA_Frostmite",
-      "commonality": 0.35,
-      "action": "keep",
-      "band": "small — corpse-sweeper, the pole's undertaker",
-      "law": "the_propane_lakes §4 sheet-named keep (donor 1.0) + §5 'the dead of the Blue Desert arrive here and are eaten'; bs 0.5, spd 6.0 (MEASURED — no speed ban in this sheet)"
-    },
-    {
-      "def": "AA_Slurrypede",
-      "commonality": 0.02,
-      "action": "adjust-keep",
-      "band": "lab fauna — the containment facility's feeder, still running",
-      "law": "the_propane_lakes §4 re-read: sheet-named keep as LAB fauna; bs 2.0, spd 1.9 (MEASURED)",
-      "note": "Belongs near the Impact Site; kept at trace biome-wide until a lab-proximity injection exists (ANCIENT_WAR_LAB_1 territory)."
-    }
-  ],
-  "evictions": [
-    {
-      "def": "AA_Blizzarisk",
-      "reason": "R20: cut from the game — donor creature, never our canon; hyperweave violation resolved by removal",
-      "disposition": "cut:R20"
-    },
-    {
-      "def": "AA_BlizzariskClutchMother",
-      "reason": "same species' breeding form (register-live, biome-homeless); rostering or sparing it would hollow R20's cut — flagged so the Cherry Picker action covers both defs",
-      "disposition": "cut:R20"
-    },
-    {
-      "def": "AA_ArcticLion",
-      "reason": "icy dayside analog, named eviction (sheet §0 'arctic lion'); an arctic lion is a retextured Earth lion",
-      "disposition": "homeless-reserve",
-      "note": "cut-lane candidate: RETEXTURED_EARTH_FAUNA_BANNED_1 — _global.json's call"
-    },
-    {
-      "def": "AA_Frostling",
-      "reason": "sheet §0: 'the Frostling moves back to the crags' (owner, 2026-09-06)",
-      "disposition": "move:AB_RockyCrags"
-    },
-    {
-      "def": "GR_Paraceramuffalo",
-      "reason": "sheet §0 named eviction (legacy cast) + GR_* never get a home (owner card 2026-09-09)",
-      "disposition": "homeless-reserve",
-      "note": "reskin-source candidate for the Desert shade-whale (prep §2.4)"
-    },
-    {
-      "def": "GR_ParagonThrumbo",
-      "reason": "GR_* never get a home (owner card 2026-09-09); fails admission (not hydrocarbon/ammonia)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "GR_Spidersnake",
-      "reason": "GR_* never get a home (owner card 2026-09-09)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "GR_ParagonIguana",
-      "reason": "GR_* never get a home (owner card 2026-09-09)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "GR_Muffalorat",
-      "reason": "GR_* never get a home (owner card 2026-09-09)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "BMT_HoarfrostMastodon",
-      "reason": "Earth-nameable megafauna (a mastodon, on sight) — fails ban 1 (icy analog) and the Earth-reskins-fail-on-sight card",
-      "disposition": "homeless-reserve",
-      "note": "Earth-nameable cut-lane candidate — _global.json's call"
-    },
-    {
-      "def": "BMT_FreezerFrog",
-      "reason": "icy Earth-analog (a frog at −62 °C); fails §4 admission chemistry",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "BMT_Megakrill",
-      "reason": "Earth-nameable (krill); not hydrocarbon/ammonia-metabolic",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "TYR_Lemming",
-      "reason": "Earth-nameable (lemming; the recognizability-fail twin of prep §5.2's ruling)",
-      "disposition": "homeless-reserve",
-      "note": "cut-lane candidate"
-    },
-    {
-      "def": "Ling_Cockroach",
-      "reason": "Earth-nameable (giant cockroach)",
-      "disposition": "homeless-reserve",
-      "note": "cut-lane candidate"
-    },
-    {
-      "def": "Rabbuck",
-      "reason": "Beasts of the Rim — 0%-recognizability mod, retirement already ruled (prep §10.4)",
-      "disposition": "homeless-reserve",
-      "note": "resolves with the mod's retirement"
-    },
-    {
-      "def": "AA_FrostAve",
-      "reason": "icy dayside bird analog, spd 7.0 without the burn (MEASURED); fails §4 admission",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_WindBeast",
-      "reason": "fails §4 admission (not hydrocarbon/ammonia-metabolic, ordinary-animal read)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_Darkbeast",
-      "reason": "fails §4 admission here",
-      "disposition": "homeless-reserve",
-      "note": "the Dark is the crags' register (tholin cross-flow) — crags roster's call, not a propane resident"
-    },
-    {
-      "def": "AA_Skyeel",
-      "reason": "fails §4 admission chemistry",
-      "disposition": "homeless-reserve",
-      "note": "flier — R17 lets it visit without a resident row"
-    },
-    {
-      "def": "VQE_Megamidge",
-      "reason": "fails §4 admission (insect analog, no alien chemistry)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "Krykna",
-      "reason": "SW icon but fails §4 admission (ordinary spider chemistry; the sheet's cast is 'the most alien save the oceans')",
-      "disposition": "homeless-reserve",
-      "note": "icon-protected in reserve for events"
-    },
-    {
-      "def": "Jakobeast",
-      "reason": "SW icon (Crait) but an icy-analog read; fails §4 admission",
-      "disposition": "homeless-reserve",
-      "note": "icon-protected in reserve"
-    },
-    {
-      "def": "DA_SnowTaraal",
-      "reason": "fantasy-mod icy analog; fails §4 admission and recognizability lane",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "Mynock",
-      "reason": "ubiquity-25 (prep §9): trim to Fall Line + poison forest — a parasite needs hosts/hulls, not a fuel pan",
-      "disposition": "move:PoisonForest",
-      "note": "plus the Fall Line injection layer"
-    },
-    {
-      "def": "GraniteSlug",
-      "reason": "ubiquity-25 (prep §9): trim to dune sea + poison forest",
-      "disposition": "move:ExtremeDesert"
-    },
-    {
-      "def": "AA_CrystalMit",
-      "reason": "ubiquity-25 (prep §9): crystal belongs to CrystalCaverns/PoisonForest only",
-      "disposition": "move:PoisonForest"
-    },
-    {
-      "def": "AA_PebbleMit",
-      "reason": "ubiquity-25 (prep §9): trim to rock/cavern biomes",
-      "disposition": "homeless-reserve",
-      "note": "crags roster's call whether it lands there"
-    },
-    {
-      "def": "AA_Swarmling",
-      "reason": "ubiquity-25 (prep §9): generic swarm noise, trim",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_PedigreedRaptor",
-      "reason": "ubiquity-25 (prep §9): reads dinosaur — EVICT planet-wide under the deeper-cut rule",
-      "disposition": "homeless-reserve",
-      "note": "cut-lane candidate"
-    },
-    {
-      "def": "AA_GreyCoatedMouflon",
-      "reason": "Earth-nameable (mouflon)",
-      "disposition": "homeless-reserve",
-      "note": "cut-lane candidate"
-    },
-    {
-      "def": "AA_BedBug",
-      "reason": "fails §4 admission (ordinary vermin chemistry, nothing hydrocarbon/ammonia about it)",
-      "disposition": "homeless-reserve",
-      "note": "already a poison-forest resident (prep §5.2 keep candidate) — that biome's call, unaffected by this eviction"
-    },
-    {
-      "def": "AA_RedGoo",
-      "reason": "goo shelf — terrain-read life, but not sheet-named here; nightside-ice's goo-shelf allowance is the crags band's call (prep §7.2)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_GreenGoo",
-      "reason": "same as AA_RedGoo",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_BoulderMit",
-      "reason": "a dune-sea keep (prep §1.2: slow mineral giant); not sheet-named here",
-      "disposition": "move:ExtremeDesert"
-    },
-    {
-      "def": "AA_TetraSlug",
-      "reason": "a dune-sea keep (prep §1.2: barely-moving giant); not sheet-named here",
-      "disposition": "move:ExtremeDesert"
-    }
-  ],
-  "stat_adjustments": [],
-  "flora": [
-    {
-      "def": "AB_CrystalHorn",
-      "commonality": 1.0,
-      "law": "the_propane_lakes §0/§4: donor crystal flora kept — regrows daily from the fuel snow; ban 2: none of it is kyber (verified: plant_pool.csv row, growth −60..10 °C)"
-    },
-    {
-      "def": "AB_CrystalFlower",
-      "commonality": 0.8,
-      "law": "same — donor crystal flora; crystal wood source (§7)"
-    },
-    {
-      "def": "AB_FrostLeaf",
-      "commonality": 0.6,
-      "law": "same — donor crystal flora"
-    },
-    {
-      "def": "AB_RimeNodules",
-      "commonality": 0.4,
-      "law": "the_propane_lakes §0: 'extracts propane from the surrounding landscape... consumed as a very mild euphoric' — §7's rime-nodule euphoric; kept rarer than the structural crystals"
-    }
-  ],
-  "flora_def_exclusions": [
-    {
-      "def": "RUT_PropaneLake",
-      "reason": "A LIQUID-PROPANE SEA GROWS NOTHING. Ruled by BENCH, 2026-09-09 fix wave. This file's four flora rows are the LAND crystal flora of AB_PropaneLakes (the fuel-snow shore, 2,531 tiles); def-binding handed the same four to the 57 water tiles of RUT_PropaneLake, where the medium is liquid propane at ~-79 °C and no photosynthetic or crystal-accreting surface exists. The lake's life is the ruled propane-native exotics (the V-wake creature and kin) — creatures owed as new defs, never wildPlants. Same split the fauna rows already make: every fauna row here binds AB_PropaneLakes only.",
-      "scope": "flora only — this key deliberately does NOT touch the fauna cast, which already excludes RUT_PropaneLake by rostering the land def alone"
-    }
-  ],
-  "flora_purged": [],
-  "fish": {
-    "ruling": "no fish — the lake is liquid propane at ~−79 °C, not water; nothing with gills, no analogs possible in a fuel solvent. The sea's life is the ruled propane-native exotics (the V-wake creature and kin, propane_gas_deep_design v1 rows; agitated by pumping, attack pawns and pipe) — CREATURES owed as new defs, not fishTypes. FISH_BY_BIOME_1: ruled no-fish.",
-    "list": []
-  },
-  "new_defs": [
-    {
-      "name": "Burner, polar ascendant form (blue-fire halo as LOCOMOTION — 'almost required'; apex of the Blue Desert's line)",
-      "kind": "creature",
-      "mechanic_load": "C#: flame-halo movement VFX + detonation-on-death (shared authoring with the Blue Desert's Burners — the_blue_desert.md fauna-authoring owed)",
-      "from_sheet": "the_propane_lakes §4"
-    },
-    {
-      "name": "V-wake propane-sea exotic + kin (propane-native; agitated by pumping, attacks pawns and pipe on sight)",
-      "kind": "creature",
-      "mechanic_load": "C#: pumping-agitation aggression; lives on RUT_PropaneLake water",
-      "from_sheet": "the_propane_lakes §4; propane_gas_deep_design v1 rows (ruled 2026-09-02)"
-    }
-  ],
   "confidence": [
     {
       "claim": "tiles split: 2531 AB_PropaneLakes (land) + 57 RUT_PropaneLake (water, arc 170-179)",
@@ -317,5 +31,303 @@
       "status": "MEASURED",
       "why": "38 resident rows enumerated from creature_register_rows.json this pass; 4 kept, 34 resident evictions dispositioned, plus Blizzarisk ClutchMother added from outside the resident list for R20 coverage (35 eviction rows total)"
     }
-  ]
+  ],
+  "defNames": [
+    "AB_PropaneLakes",
+    "RUT_PropaneLake"
+  ],
+  "evictions": [
+    {
+      "def": "AA_Blizzarisk",
+      "disposition": "cut:R20",
+      "reason": "R20: cut from the game — donor creature, never our canon; hyperweave violation resolved by removal"
+    },
+    {
+      "def": "AA_BlizzariskClutchMother",
+      "disposition": "cut:R20",
+      "reason": "same species' breeding form (register-live, biome-homeless); rostering or sparing it would hollow R20's cut — flagged so the Cherry Picker action covers both defs"
+    },
+    {
+      "def": "AA_ArcticLion",
+      "disposition": "homeless-reserve",
+      "note": "cut-lane candidate: RETEXTURED_EARTH_FAUNA_BANNED_1 — _global.json's call",
+      "reason": "icy dayside analog, named eviction (sheet §0 'arctic lion'); an arctic lion is a retextured Earth lion"
+    },
+    {
+      "def": "AA_Frostling",
+      "disposition": "move:AB_RockyCrags",
+      "reason": "sheet §0: 'the Frostling moves back to the crags' (owner, 2026-09-06)"
+    },
+    {
+      "def": "GR_Paraceramuffalo",
+      "disposition": "homeless-reserve",
+      "note": "reskin-source candidate for the Desert shade-whale (prep §2.4)",
+      "reason": "sheet §0 named eviction (legacy cast) + GR_* never get a home (owner card 2026-09-09)"
+    },
+    {
+      "def": "GR_ParagonThrumbo",
+      "disposition": "homeless-reserve",
+      "reason": "GR_* never get a home (owner card 2026-09-09); fails admission (not hydrocarbon/ammonia)"
+    },
+    {
+      "def": "GR_Spidersnake",
+      "disposition": "homeless-reserve",
+      "reason": "GR_* never get a home (owner card 2026-09-09)"
+    },
+    {
+      "def": "GR_ParagonIguana",
+      "disposition": "homeless-reserve",
+      "reason": "GR_* never get a home (owner card 2026-09-09)"
+    },
+    {
+      "def": "GR_Muffalorat",
+      "disposition": "homeless-reserve",
+      "reason": "GR_* never get a home (owner card 2026-09-09)"
+    },
+    {
+      "def": "BMT_HoarfrostMastodon",
+      "disposition": "homeless-reserve",
+      "note": "Earth-nameable cut-lane candidate — _global.json's call",
+      "reason": "Earth-nameable megafauna (a mastodon, on sight) — fails ban 1 (icy analog) and the Earth-reskins-fail-on-sight card"
+    },
+    {
+      "def": "BMT_FreezerFrog",
+      "disposition": "homeless-reserve",
+      "reason": "icy Earth-analog (a frog at −62 °C); fails §4 admission chemistry"
+    },
+    {
+      "def": "BMT_Megakrill",
+      "disposition": "homeless-reserve",
+      "reason": "Earth-nameable (krill); not hydrocarbon/ammonia-metabolic"
+    },
+    {
+      "def": "TYR_Lemming",
+      "disposition": "homeless-reserve",
+      "note": "cut-lane candidate",
+      "reason": "Earth-nameable (lemming; the recognizability-fail twin of prep §5.2's ruling)"
+    },
+    {
+      "def": "Ling_Cockroach",
+      "disposition": "homeless-reserve",
+      "note": "cut-lane candidate",
+      "reason": "Earth-nameable (giant cockroach)"
+    },
+    {
+      "def": "Rabbuck",
+      "disposition": "homeless-reserve",
+      "note": "resolves with the mod's retirement",
+      "reason": "Beasts of the Rim — 0%-recognizability mod, retirement already ruled (prep §10.4)"
+    },
+    {
+      "def": "AA_FrostAve",
+      "disposition": "homeless-reserve",
+      "reason": "icy dayside bird analog, spd 7.0 without the burn (MEASURED); fails §4 admission"
+    },
+    {
+      "def": "AA_WindBeast",
+      "disposition": "homeless-reserve",
+      "reason": "fails §4 admission (not hydrocarbon/ammonia-metabolic, ordinary-animal read)"
+    },
+    {
+      "def": "AA_Darkbeast",
+      "disposition": "homeless-reserve",
+      "note": "the Dark is the crags' register (tholin cross-flow) — crags roster's call, not a propane resident",
+      "reason": "fails §4 admission here"
+    },
+    {
+      "def": "AA_Skyeel",
+      "disposition": "homeless-reserve",
+      "note": "flier — R17 lets it visit without a resident row",
+      "reason": "fails §4 admission chemistry"
+    },
+    {
+      "def": "VQE_Megamidge",
+      "disposition": "homeless-reserve",
+      "reason": "fails §4 admission (insect analog, no alien chemistry)"
+    },
+    {
+      "def": "Krykna",
+      "disposition": "homeless-reserve",
+      "note": "icon-protected in reserve for events",
+      "reason": "SW icon but fails §4 admission (ordinary spider chemistry; the sheet's cast is 'the most alien save the oceans')"
+    },
+    {
+      "def": "Jakobeast",
+      "disposition": "homeless-reserve",
+      "note": "icon-protected in reserve",
+      "reason": "SW icon (Crait) but an icy-analog read; fails §4 admission"
+    },
+    {
+      "def": "DA_SnowTaraal",
+      "disposition": "homeless-reserve",
+      "reason": "fantasy-mod icy analog; fails §4 admission and recognizability lane"
+    },
+    {
+      "def": "Mynock",
+      "disposition": "move:PoisonForest",
+      "note": "plus the Fall Line injection layer",
+      "reason": "ubiquity-25 (prep §9): trim to Fall Line + poison forest — a parasite needs hosts/hulls, not a fuel pan"
+    },
+    {
+      "def": "GraniteSlug",
+      "disposition": "move:ExtremeDesert",
+      "reason": "ubiquity-25 (prep §9): trim to dune sea + poison forest"
+    },
+    {
+      "def": "AA_CrystalMit",
+      "disposition": "move:PoisonForest",
+      "reason": "ubiquity-25 (prep §9): crystal belongs to CrystalCaverns/PoisonForest only"
+    },
+    {
+      "def": "AA_PebbleMit",
+      "disposition": "homeless-reserve",
+      "note": "crags roster's call whether it lands there",
+      "reason": "ubiquity-25 (prep §9): trim to rock/cavern biomes"
+    },
+    {
+      "def": "AA_Swarmling",
+      "disposition": "homeless-reserve",
+      "reason": "ubiquity-25 (prep §9): generic swarm noise, trim"
+    },
+    {
+      "def": "AA_PedigreedRaptor",
+      "disposition": "homeless-reserve",
+      "note": "cut-lane candidate",
+      "reason": "ubiquity-25 (prep §9): reads dinosaur — EVICT planet-wide under the deeper-cut rule"
+    },
+    {
+      "def": "AA_GreyCoatedMouflon",
+      "disposition": "homeless-reserve",
+      "note": "cut-lane candidate",
+      "reason": "Earth-nameable (mouflon)"
+    },
+    {
+      "def": "AA_BedBug",
+      "disposition": "homeless-reserve",
+      "note": "already a poison-forest resident (prep §5.2 keep candidate) — that biome's call, unaffected by this eviction",
+      "reason": "fails §4 admission (ordinary vermin chemistry, nothing hydrocarbon/ammonia about it)"
+    },
+    {
+      "def": "AA_RedGoo",
+      "disposition": "homeless-reserve",
+      "reason": "goo shelf — terrain-read life, but not sheet-named here; nightside-ice's goo-shelf allowance is the crags band's call (prep §7.2)"
+    },
+    {
+      "def": "AA_GreenGoo",
+      "disposition": "homeless-reserve",
+      "reason": "same as AA_RedGoo"
+    },
+    {
+      "def": "AA_BoulderMit",
+      "disposition": "move:ExtremeDesert",
+      "reason": "a dune-sea keep (prep §1.2: slow mineral giant); not sheet-named here"
+    },
+    {
+      "def": "AA_TetraSlug",
+      "disposition": "move:ExtremeDesert",
+      "reason": "a dune-sea keep (prep §1.2: barely-moving giant); not sheet-named here"
+    }
+  ],
+  "fauna": [
+    {
+      "action": "keep",
+      "band": "huge — ammonia life of the Flats",
+      "commonality": 0.126,
+      "def": "AA_FrostboundBehemoth",
+      "law": "the_propane_lakes §4: 'what the polar solvent builds when it has a medium' — sheet-named keep (donor 1.0); bs 3.0, spd 2.0, non-predator (MEASURED)"
+    },
+    {
+      "action": "adjust-keep",
+      "band": "medium — Flats mineral chemistry",
+      "commonality": 0.1,
+      "def": "AA_Terramorph",
+      "law": "the_propane_lakes §4: 'the Terramorph belongs to the Flats' mineral chemistry' — sheet-named keep; bs 1.5, spd 1.8 (MEASURED)",
+      "note": "Its ≤2-named-home-biomes allowance under the ubiquity trims spends one home here; the other is the Wasteland roster's call."
+    },
+    {
+      "action": "keep",
+      "band": "small — corpse-sweeper, the pole's undertaker",
+      "commonality": 0.35,
+      "def": "AA_Frostmite",
+      "law": "the_propane_lakes §4 sheet-named keep (donor 1.0) + §5 'the dead of the Blue Desert arrive here and are eaten'; bs 0.5, spd 6.0 (MEASURED — no speed ban in this sheet)"
+    },
+    {
+      "action": "adjust-keep",
+      "band": "lab fauna — the containment facility's feeder, still running",
+      "commonality": 0.02,
+      "def": "AA_Slurrypede",
+      "law": "the_propane_lakes §4 re-read: sheet-named keep as LAB fauna; bs 2.0, spd 1.9 (MEASURED)",
+      "note": "Belongs near the Impact Site; kept at trace biome-wide until a lab-proximity injection exists (ANCIENT_WAR_LAB_1 territory)."
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "AA_AuroraSylph",
+      "law": "owner review 2026-09 (round2 move mapping): Perfect Propane Lake creature"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "AA_Skyeel",
+      "law": "owner review 2026-09 (round2 move mapping): Electrostatic flyer over Propane Lakes"
+    }
+  ],
+  "fish": {
+    "list": [],
+    "ruling": "no fish — the lake is liquid propane at ~−79 °C, not water; nothing with gills, no analogs possible in a fuel solvent. The sea's life is the ruled propane-native exotics (the V-wake creature and kin, propane_gas_deep_design v1 rows; agitated by pumping, attack pawns and pipe) — CREATURES owed as new defs, not fishTypes. FISH_BY_BIOME_1: ruled no-fish."
+  },
+  "flora": [
+    {
+      "commonality": 1.0,
+      "def": "AB_CrystalHorn",
+      "law": "the_propane_lakes §0/§4: donor crystal flora kept — regrows daily from the fuel snow; ban 2: none of it is kyber (verified: plant_pool.csv row, growth −60..10 °C)"
+    },
+    {
+      "commonality": 0.8,
+      "def": "AB_CrystalFlower",
+      "law": "same — donor crystal flora; crystal wood source (§7)"
+    },
+    {
+      "commonality": 0.6,
+      "def": "AB_FrostLeaf",
+      "law": "same — donor crystal flora"
+    },
+    {
+      "commonality": 0.4,
+      "def": "AB_RimeNodules",
+      "law": "the_propane_lakes §0: 'extracts propane from the surrounding landscape... consumed as a very mild euphoric' — §7's rime-nodule euphoric; kept rarer than the structural crystals"
+    }
+  ],
+  "flora_def_exclusions": [
+    {
+      "def": "RUT_PropaneLake",
+      "reason": "A LIQUID-PROPANE SEA GROWS NOTHING. Ruled by BENCH, 2026-09-09 fix wave. This file's four flora rows are the LAND crystal flora of AB_PropaneLakes (the fuel-snow shore, 2,531 tiles); def-binding handed the same four to the 57 water tiles of RUT_PropaneLake, where the medium is liquid propane at ~-79 °C and no photosynthetic or crystal-accreting surface exists. The lake's life is the ruled propane-native exotics (the V-wake creature and kin) — creatures owed as new defs, never wildPlants. Same split the fauna rows already make: every fauna row here binds AB_PropaneLakes only.",
+      "scope": "flora only — this key deliberately does NOT touch the fauna cast, which already excludes RUT_PropaneLake by rostering the land def alone"
+    }
+  ],
+  "flora_purged": [],
+  "law_sources": [
+    "the_propane_lakes.md §0/§4 (admission: hydrocarbon- or ammonia-metabolic, cold-loving R-H10, not an icy dayside analog)",
+    "propane_gas_deep_design.md (v1 rows 2026-09-02)",
+    "_freeze_rulings_2026-09-07.md R5/R20",
+    "_assignment_prep.md §9",
+    "owner cards 2026-09-09"
+  ],
+  "new_defs": [
+    {
+      "from_sheet": "the_propane_lakes §4",
+      "kind": "creature",
+      "mechanic_load": "C#: flame-halo movement VFX + detonation-on-death (shared authoring with the Blue Desert's Burners — the_blue_desert.md fauna-authoring owed)",
+      "name": "Burner, polar ascendant form (blue-fire halo as LOCOMOTION — 'almost required'; apex of the Blue Desert's line)"
+    },
+    {
+      "from_sheet": "the_propane_lakes §4; propane_gas_deep_design v1 rows (ruled 2026-09-02)",
+      "kind": "creature",
+      "mechanic_load": "C#: pumping-agitation aggression; lives on RUT_PropaneLake water",
+      "name": "V-wake propane-sea exotic + kin (propane-native; agitated by pumping, attacks pawns and pipe on sight)"
+    }
+  ],
+  "sheet": "the_propane_lakes",
+  "stat_adjustments": [],
+  "tiles": 2588
 }

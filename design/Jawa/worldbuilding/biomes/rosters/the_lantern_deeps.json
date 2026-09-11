@@ -1,0 +1,58 @@
+{
+ "sheet": "the_lantern_deeps",
+ "defNames": [
+  "RUT_NightsideIce",
+  "RUT_BlueDesert",
+  "AB_PropaneLakes"
+ ],
+ "tiles": 57,
+ "authored": "2026-09-11",
+ "injection_layer": true,
+ "note": "NOT a BiomeDef (ban 1, the_lantern_deeps.md's own opener: owner \"that was a mistake\"). An injected underground cave-map layer (Biomes! Caverns' BMT_CrystalCaverns) beneath any host map at bio-temperature <= -40C; entries are ADDITIONS over the host roster, never replacements. tiles=57 is the MEASURED former-surface 'Lantern Deeps' region tile count (the_lantern_deeps.md §0); the layer's true footprint is however much of the three hosts' <=-40C tiles carry the injected cave map, not separately censused.",
+ "law_sources": [
+  "the_lantern_deeps.md §0 (host list + injection rule), §9 (art)",
+  "_SCHEMA.md (injection-layer convention: fall_line, wreck_fields, the_lantern_deeps)",
+  "ROSTER_MOVE_APPLY_1 (file created to land 3 owner-ruled moves that had no target roster: BMT_Gembug, BMT_CrystalCrab, BMT_FacetMothLarvae)"
+ ],
+ "fauna": [
+  {
+   "def": "BMT_Gembug",
+   "commonality": 0.5,
+   "action": "import",
+   "law": "owner review (round2 move mapping, 2026-09-11): note 'Crystal caverns' — Biomes! Caverns native, the crystal-cavern nickname this file is named for"
+  },
+  {
+   "def": "BMT_CrystalCrab",
+   "commonality": 0.5,
+   "action": "import",
+   "law": "owner review (round2 move mapping, 2026-09-11): note 'crystal caverns'"
+  },
+  {
+   "def": "BMT_FacetMothLarvae",
+   "commonality": 0.5,
+   "action": "import",
+   "law": "owner review (round2 move mapping, 2026-09-11): note 'crystal caverns'"
+  }
+ ],
+ "evictions": [],
+ "stat_adjustments": [],
+ "flora": [],
+ "flora_purged": [],
+ "fish": {
+  "ruling": "no fish — enclosed cave map, no standing water in the caverns donor (the_lantern_deeps.md §6: Calm weather, seep-down solutions only)",
+  "list": []
+ },
+ "new_defs": [],
+ "confidence": [
+  {
+   "claim": "RUT_BlueDesert is the correct defName for the Blue Desert host (not BiomeGRimond)",
+   "status": "UNMEASURED",
+   "why": "the_blue_desert.json lists both RUT_BlueDesert (pending-switch target, not yet live) and BiomeGRimond (current donor def) in its own defNames — this file names the pending-switch target per _validate.py's PAINTED_DEFS carve-out for it; if BiomeGRimond is still live when LANTERN_DEEPS_INJECTION_1 is built, add it here too"
+  },
+  {
+   "claim": "commonality 0.5 for all three imports",
+   "status": "UNMEASURED",
+   "why": "placeholder — the_lantern_deeps.md's own fauna density/species mix (beyond BMT_Gembug/CrystalCrab/FacetMothLarvae) is still Owed (LANTERN_DEEPS_INJECTION_1); these three are only the ROSTER_MOVE_APPLY_1 rows that had nowhere else to land"
+  }
+ ]
+}

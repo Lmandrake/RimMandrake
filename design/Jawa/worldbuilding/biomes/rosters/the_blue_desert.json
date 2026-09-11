@@ -1,40 +1,139 @@
 {
-  "sheet": "the_blue_desert",
-  "defNames": ["RUT_BlueDesert", "BiomeGRimond"],
-  "tiles": 1029,
   "authored": "2026-09-09",
-  "law_sources": ["the_blue_desert.md §4 admission (hydrocarbon-metabolic, cold-stable, warm-reactive), §6 bans", "owner card 2026-09-09 (one roster for both defs; GR fauna never a home)", "_assignment_prep.md §11"],
-  "note": "ONE roster for both defs so the pending world switch is a rebind, not a redesign (item ruling 2026-09-09). RUT_BlueDesert is the authored target (wildAnimals currently empty — correct); BiomeGRimond is the still-painted Grindterra donor carrying donor-default fauna with NO local override today (MEASURED, _def_bindings). This roster replacing the donor defaults is what enables retiring the Grindterra donor.",
-  "fauna": [],
-  "fauna_note": "Deliberately empty of existing defs. §4's admission test — hydrocarbon plumbing, no water-based life (§6 ban 1) — is failed by every one of the 895 live register rows: no donor creature is authored as non-water-metabolic (register carries no metabolism field; the claim is by-construction — RimWorld donor fauna are all ordinary organics). The biome opens on its authored trio (new_defs) exactly as the sheet writes them. Donor animal density 0.5 = 'the sparsest def defined' (§0); empty-then-authored honours it. Spore forms are injected cargo (HORRORS_RAIDING_FACTION_1), never wildAnimals (§4/§6 ban 6).",
-  "evictions": [
-    {"def": "GRimCobra", "reason": "Grindterra retexture of an Earth cobra — GR/GRim fauna never get a home (owner card 2026-09-09) + RETEXTURED_EARTH_FAUNA_BANNED_1; water-based besides (§6 ban 1)", "disposition": "cut:RETEXTURED_EARTH_FAUNA_BANNED_1"},
-    {"def": "GRimMonitorLizard", "reason": "Grindterra retexture of an Earth monitor — same double ban", "disposition": "cut:RETEXTURED_EARTH_FAUNA_BANNED_1"},
-    {"def": "Dromedary", "reason": "Earth-nameable donor-default resident (sheet §0 'Earth desert zoo evicted wholesale'); planet-wide fate is the global lane's", "disposition": "homeless-reserve"},
-    {"def": "Iguana", "reason": "Earth-nameable (sheet §0 eviction)", "disposition": "homeless-reserve"},
-    {"def": "Vulture", "reason": "Earth-nameable (sheet §0 eviction)", "disposition": "homeless-reserve"},
-    {"def": "Cougar", "reason": "Earth-nameable (sheet §0 eviction)", "disposition": "homeless-reserve"},
-    {"def": "Donkey", "reason": "Earth-nameable (sheet §0 eviction)", "disposition": "homeless-reserve"},
-    {"def": "GuineaPig", "reason": "Earth-nameable (sheet §0 eviction)", "disposition": "homeless-reserve"},
-    {"def": "Boomalope", "reason": "water-based organic at -42 °C (§6 ban 1); the in-joke KEEP (ubiquity §9) is honoured elsewhere", "disposition": "move:ZBiome_Grasslands"}
+  "confidence": [
+    {
+      "claim": "this roster retires the Grindterra donor's fauna presence",
+      "status": "DESIGN INTENT (owner, 2026-09-09)",
+      "why": "BiomeGRimond currently has no local wildAnimals override — generating this (empty-replace) roster against BOTH defNames removes the donor zoo now and survives the world switch as a rebind"
+    },
+    {
+      "claim": "Mynock and Neebray may still be seen here",
+      "status": "RECONCILED",
+      "why": "§6 ban 8's icon carve-out protects them from the legacy-cast recognizability cut, but ubiquity-25 (BINDING, prep §9) trims their HOMES to Fall Line/poison forest/caves — so they are not rostered here; R17 (fliers cross biomes) covers any cross-biome appearance without a roster row"
+    },
+    {
+      "claim": "no existing def passes the hydrocarbon admission test",
+      "status": "BY-CONSTRUCTION, not register-MEASURED",
+      "why": "the register has no metabolism field; the claim rests on donor mods authoring ordinary organics — if a hydrocarbon-native donor creature is ever found, it re-opens this roster, not the sheet"
+    },
+    {
+      "claim": "wildAnimals emptiness is safe against the runtime padder",
+      "status": "CAVEAT",
+      "why": "WILD_ANIMALS_PADDED_LISTS_1: a live dump will show every animal at commonality 0 — never audit this roster from a padded dump; compare authored XML only"
+    }
   ],
-  "stat_adjustments": [],
+  "defNames": [
+    "RUT_BlueDesert",
+    "BiomeGRimond"
+  ],
+  "evictions": [
+    {
+      "def": "GRimCobra",
+      "disposition": "cut:RETEXTURED_EARTH_FAUNA_BANNED_1",
+      "reason": "Grindterra retexture of an Earth cobra — GR/GRim fauna never get a home (owner card 2026-09-09) + RETEXTURED_EARTH_FAUNA_BANNED_1; water-based besides (§6 ban 1)"
+    },
+    {
+      "def": "GRimMonitorLizard",
+      "disposition": "cut:RETEXTURED_EARTH_FAUNA_BANNED_1",
+      "reason": "Grindterra retexture of an Earth monitor — same double ban"
+    },
+    {
+      "def": "Dromedary",
+      "disposition": "homeless-reserve",
+      "reason": "Earth-nameable donor-default resident (sheet §0 'Earth desert zoo evicted wholesale'); planet-wide fate is the global lane's"
+    },
+    {
+      "def": "Iguana",
+      "disposition": "homeless-reserve",
+      "reason": "Earth-nameable (sheet §0 eviction)"
+    },
+    {
+      "def": "Vulture",
+      "disposition": "homeless-reserve",
+      "reason": "Earth-nameable (sheet §0 eviction)"
+    },
+    {
+      "def": "Cougar",
+      "disposition": "homeless-reserve",
+      "reason": "Earth-nameable (sheet §0 eviction)"
+    },
+    {
+      "def": "Donkey",
+      "disposition": "homeless-reserve",
+      "reason": "Earth-nameable (sheet §0 eviction)"
+    },
+    {
+      "def": "GuineaPig",
+      "disposition": "homeless-reserve",
+      "reason": "Earth-nameable (sheet §0 eviction)"
+    },
+    {
+      "def": "Boomalope",
+      "disposition": "move:ZBiome_Grasslands",
+      "reason": "water-based organic at -42 °C (§6 ban 1); the in-joke KEEP (ubiquity §9) is honoured elsewhere"
+    }
+  ],
+  "fauna": [
+    {
+      "action": "import",
+      "band": "trace-experiment",
+      "commonality": 0.005,
+      "def": "AA_Thunderbeast",
+      "law": "owner review 2026-09 (round2 move mapping): blue desert"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "Vapaad",
+      "law": "owner review 2026-09 (round2 move mapping): PLACED: the_blue_desert — owner note: This goes in the blue desert... why couldn't I see that in the dropdown? (homeless disposition sitting, frozen 2026-09-10)"
+    }
+  ],
+  "fauna_note": "Deliberately empty of existing defs. §4's admission test — hydrocarbon plumbing, no water-based life (§6 ban 1) — is failed by every one of the 895 live register rows: no donor creature is authored as non-water-metabolic (register carries no metabolism field; the claim is by-construction — RimWorld donor fauna are all ordinary organics). The biome opens on its authored trio (new_defs) exactly as the sheet writes them. Donor animal density 0.5 = 'the sparsest def defined' (§0); empty-then-authored honours it. Spore forms are injected cargo (HORRORS_RAIDING_FACTION_1), never wildAnimals (§4/§6 ban 6).",
+  "fish": {
+    "list": [],
+    "ruling": "no fish — zero water, zero rivers (§0 MEASURED); at -42 °C median there is no liquid water on the def at all, and §6 ban 1 forbids water-based life besides"
+  },
   "flora": [],
   "flora_note": "Empty of existing defs by the same law: §6 ban 1 (no water-based plants) plus ban 2 (no cultivation) plus ban 3 (warm-detonation behaviour required) exclude the whole 669-row plant pool — no donor plant carries a warm-detonation comp. The Blareebian tree/cactus silhouettes are shape references only (§0). Thin-to-empty is doctrine here, not a gap.",
   "flora_purged": [
-    {"def": "grimpepper", "reason": "sheet §0 explicit eviction — 'grimpepper and every water-based plant'; Grindterra flora, donor retiring (defName as cited by sheet; donor XML spelling to be confirmed at patch-gen)"}
+    {
+      "def": "grimpepper",
+      "reason": "sheet §0 explicit eviction — 'grimpepper and every water-based plant'; Grindterra flora, donor retiring (defName as cited by sheet; donor XML spelling to be confirmed at patch-gen)"
+    }
   ],
-  "fish": {"ruling": "no fish — zero water, zero rivers (§0 MEASURED); at -42 °C median there is no liquid water on the def at all, and §6 ban 1 forbids water-based life besides", "list": []},
+  "law_sources": [
+    "the_blue_desert.md §4 admission (hydrocarbon-metabolic, cold-stable, warm-reactive), §6 bans",
+    "owner card 2026-09-09 (one roster for both defs; GR fauna never a home)",
+    "_assignment_prep.md §11"
+  ],
   "new_defs": [
-    {"name": "Swallower (sealed armored herbivore — whole-root swallow, anaerobic gut; detonates if wounded wrong)", "kind": "creature", "mechanic_load": "C#: wound-triggered explosion comp", "from_sheet": "the_blue_desert §4"},
-    {"name": "Burner (fast oxidizer — blue-fire halo at speed, explodes when gravely wounded)", "kind": "creature", "mechanic_load": "C#: halo VFX + detonation-on-death", "from_sheet": "the_blue_desert §4"},
-    {"name": "Picker (ablation-line scavenger)", "kind": "creature", "mechanic_load": "none blocking", "from_sheet": "the_blue_desert §4"},
-    {"name": "transparent fractal flora set (ferns, dandelion-heads, fuzzballs — each a butane charge)", "kind": "plant", "mechanic_load": "C#: warm-detonation comp; wild-only, unsowable (§6 bans 2/3)", "from_sheet": "the_blue_desert §4"}
+    {
+      "from_sheet": "the_blue_desert §4",
+      "kind": "creature",
+      "mechanic_load": "C#: wound-triggered explosion comp",
+      "name": "Swallower (sealed armored herbivore — whole-root swallow, anaerobic gut; detonates if wounded wrong)"
+    },
+    {
+      "from_sheet": "the_blue_desert §4",
+      "kind": "creature",
+      "mechanic_load": "C#: halo VFX + detonation-on-death",
+      "name": "Burner (fast oxidizer — blue-fire halo at speed, explodes when gravely wounded)"
+    },
+    {
+      "from_sheet": "the_blue_desert §4",
+      "kind": "creature",
+      "mechanic_load": "none blocking",
+      "name": "Picker (ablation-line scavenger)"
+    },
+    {
+      "from_sheet": "the_blue_desert §4",
+      "kind": "plant",
+      "mechanic_load": "C#: warm-detonation comp; wild-only, unsowable (§6 bans 2/3)",
+      "name": "transparent fractal flora set (ferns, dandelion-heads, fuzzballs — each a butane charge)"
+    }
   ],
-  "confidence": [
-    {"claim": "this roster retires the Grindterra donor's fauna presence", "status": "DESIGN INTENT (owner, 2026-09-09)", "why": "BiomeGRimond currently has no local wildAnimals override — generating this (empty-replace) roster against BOTH defNames removes the donor zoo now and survives the world switch as a rebind"},
-    {"claim": "Mynock and Neebray may still be seen here", "status": "RECONCILED", "why": "§6 ban 8's icon carve-out protects them from the legacy-cast recognizability cut, but ubiquity-25 (BINDING, prep §9) trims their HOMES to Fall Line/poison forest/caves — so they are not rostered here; R17 (fliers cross biomes) covers any cross-biome appearance without a roster row"},
-    {"claim": "no existing def passes the hydrocarbon admission test", "status": "BY-CONSTRUCTION, not register-MEASURED", "why": "the register has no metabolism field; the claim rests on donor mods authoring ordinary organics — if a hydrocarbon-native donor creature is ever found, it re-opens this roster, not the sheet"},
-    {"claim": "wildAnimals emptiness is safe against the runtime padder", "status": "CAVEAT", "why": "WILD_ANIMALS_PADDED_LISTS_1: a live dump will show every animal at commonality 0 — never audit this roster from a padded dump; compare authored XML only"}
-  ]
+  "note": "ONE roster for both defs so the pending world switch is a rebind, not a redesign (item ruling 2026-09-09). RUT_BlueDesert is the authored target (wildAnimals currently empty — correct); BiomeGRimond is the still-painted Grindterra donor carrying donor-default fauna with NO local override today (MEASURED, _def_bindings). This roster replacing the donor defaults is what enables retiring the Grindterra donor.",
+  "sheet": "the_blue_desert",
+  "stat_adjustments": [],
+  "tiles": 1029
 }

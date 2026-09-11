@@ -83,6 +83,59 @@ DEFAULT_DECISIONS = [
     os.path.join(REVIEW, "flora_assignment_register.decisions.json"),
 ]
 
+# ── ROSTER_MOVE_APPLY_1: the round2 move-mapping table as a target source ──
+# move_mapping_v2.md already resolves every Move row to a destination (or to
+# OUT/OPEN/GROUP:*/RESERVE, which are not roster moves at all) — this consumes
+# THAT table directly instead of re-parsing free-text notes, because the
+# owner's vocabulary there ("ocular only", "Pyrelands") is not machine-parseable
+# (113 blocking errors when tried against the old resolver).
+DEFAULT_MAPPING = os.path.join(REVIEW, "round2", "move_mapping_v2.md")
+DECISIONS_PROPAGATED = os.path.join(REVIEW, "round2", "decisions_propagated.json")
+
+NON_MOVE_TARGETS = {"OUT", "OPEN", "RESERVE", "RESERVED"}
+INJECTION_SHEETS = {"fall_line", "wreck_fields", "the_lantern_deeps"}  # matches
+    # rosters/_validate.py's cross_check literal tuple — these sheets' defNames are
+    # UNDERLYING hosts they inject over, never claimed as a home in disposition text.
+
+# Hand-verified once against every distinct '+'-joined target fragment actually
+# used in move_mapping_v2.md (ROSTER_MOVE_APPLY_1 measurement) — never re-derived
+# at runtime by fuzzy matching. A fragment absent from this table refuses rather
+# than guesses. `None` marks a fragment that names a shared/surface layer already
+# covered by a sibling fragment in the same compound target (e.g. 'terminator_sea'
+# is the shared surface both the_grey_sea and the_twilight_sea sit under — it is
+# never an independent destination on its own).
+MAPPING_TARGET_ALIASES = {
+    "arid_shrubland": "arid_shrubland",
+    "deep_desert": "dune_sea_deep_desert",
+    "desert": "desert",
+    "dune_sea": "dune_sea_deep_desert",
+    "fall_line": "fall_line",
+    "forsaken_crags": "forsaken_crags",
+    "nightside_ice": "nightside_ice",
+    "poison_forest": "poison_forest",
+    "the_blue_desert": "the_blue_desert",
+    "the_contagion": "the_contagion",
+    "the_cracked_lands": "the_cracked_lands",
+    "the_fever_wood": "the_fever_wood",
+    "the_forge": "the_forge",
+    "the_greentide": "the_greentide",
+    "the_grey_deep": "the_grey_sea",
+    "the_lantern_deeps": "the_lantern_deeps",
+    "the_miasma": "the_miasma",
+    "the_propane_lakes": "the_propane_lakes",
+    "the_pyrelands": "the_pyrelands",
+    "the_rot": "the_rot",
+    "the_rust_cathedral": "the_rust_cathedral",
+    "the_scald": "the_scald",
+    "the_scarlands": "the_scarlands",
+    "the_slime": "the_slime",
+    "the_sump": "the_sump",
+    "the_twilight_deep": "the_twilight_sea",
+    "the_webwork": "the_webwork",
+    "wasteland": "wasteland",
+    "terminator_sea": None,
+}
+
 STAMP_BY = "review-sheet-sidecar"   # assets/serve_sheet.py's STAMP_BY — the unforgeable mark
 RC_OK, RC_NO_SIDECAR, RC_UNRESOLVED, RC_VALIDATOR = 0, 2, 5, 6
 
@@ -532,6 +585,209 @@ def print_regen_commands():
         print(f"  {c}")
 
 
+# ═══════════════════════════════════ ROSTER_MOVE_APPLY_1: mapping-table mode
+
+def load_roster_index_by_stem() -> dict:
+    """filename-stem -> {"path", "doc"} — the key space MAPPING_TARGET_ALIASES's
+    values live in (unlike load_roster_index(), keyed by the sheet FIELD)."""
+    index = {}
+    for path in sorted(_glob.glob(os.path.join(ROSTERS, "*.json"))):
+        name = os.path.basename(path)
+        if name.startswith("_"):
+            continue
+        with open(path, encoding="utf-8") as fh:
+            doc = json.load(fh)
+        index[name[:-5]] = {"path": path, "doc": doc}
+    return index
+
+
+def parse_move_mapping(path: str) -> list[dict]:
+    """Parse move_mapping_v2.md's table into [{rowkey, creature, note, target}, …].
+    A simple pipe-split: the table's cells are never quoted and never contain a
+    literal '|', so this is safe (verified against all 169 rows, ROSTER_MOVE_APPLY_1)."""
+    rows = []
+    with open(path, encoding="utf-8") as fh:
+        for line in fh:
+            line = line.rstrip("\n")
+            if not line.startswith("| `"):
+                continue
+            parts = [p.strip() for p in line.strip().strip("|").split("|")]
+            if len(parts) != 4:
+                continue
+            rowkey, creature, note, target = parts
+            rows.append({"rowkey": rowkey.strip("`"), "creature": creature,
+                         "note": note, "target": target})
+    return rows
+
+
+def load_propagated_notes(path: str) -> dict:
+    """rowkey -> full (untruncated) note, from decisions_propagated.json, when that
+    file exists — the mapping table's own note is truncated to 15 words; the fuller
+    text (e.g. Wampa/Tauntaun's 'VISITOR-DYING, never native' ruling) is worth
+    carrying into the law field when available. Best-effort: never blocks a run."""
+    if not os.path.isfile(path):
+        return {}
+    try:
+        doc = json.load(open(path, encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    decisions = doc.get("decisions")
+    if not isinstance(decisions, dict):
+        return {}
+    return {k: v.get("note", "") for k, v in decisions.items() if isinstance(v, dict) and v.get("note")}
+
+
+def resolve_mapping_target(target_raw: str):
+    """-> (list_of_roster_stems, error_or_None). Splits a '+'-joined compound target
+    and resolves each fragment via MAPPING_TARGET_ALIASES. An unrecognised fragment
+    is a hard error (never guessed); a fragment aliased to None (a shared/surface
+    layer already covered by a sibling fragment) is dropped, not counted as missing."""
+    stems = []
+    for frag in [f.strip() for f in target_raw.split("+")]:
+        if frag not in MAPPING_TARGET_ALIASES:
+            return None, f"unrecognised target fragment {frag!r} in {target_raw!r}"
+        stem = MAPPING_TARGET_ALIASES[frag]
+        if stem is None:
+            continue
+        if stem not in stems:
+            stems.append(stem)
+    if not stems:
+        return None, f"target {target_raw!r} resolved to no roster file"
+    return stems, None
+
+
+def _mapping_law(rowkey: str, note: str, propagated: dict) -> str:
+    full_note = propagated.get(rowkey) or note
+    return f"owner review 2026-09 (round2 move mapping): {full_note}" if full_note \
+        else "owner review 2026-09 (round2 move mapping)"
+
+
+def _mapping_commonality(rowkey: str, note: str, propagated: dict, default: float) -> float:
+    """VISITOR-DYING rulings (Wampa, Tauntaun: 'follows the herds in', 'never native')
+    name an explicit LOW commonality in the owner's fuller words — never inherited from
+    an origin row (these are homeless: kind, no origin). Detected on the ruling text
+    itself, not a per-creature name list, so it generalises to any future visitor row."""
+    text = (propagated.get(rowkey) or note or "").upper()
+    return 0.03 if "VISITOR" in text else default
+
+
+def build_mapping_plan(rows: list[dict], stem_index: dict, propagated: dict) -> Plan:
+    """Pure roster moves only (fauna:/homeless: kinds; OUT/OPEN/GROUP:*/RESERVE(D)
+    are not roster moves — CLAUDE.md/ROSTER_MOVE_APPLY_1 says skip them here, they
+    are handled by the disposition apply and reserved-group drafts elsewhere)."""
+    plan = Plan("fauna", "move_mapping_v2.md")
+    for r in rows:
+        target_raw, rowkey = r["target"], r["rowkey"]
+        if target_raw in NON_MOVE_TARGETS or target_raw.startswith("GROUP:"):
+            plan.noop += 1
+            continue
+        kind, sheet, rest = parse_row_id(rowkey)
+        if kind not in ("fauna", "homeless"):
+            plan.errors.append(f"{rowkey}: unexpected row-id kind {kind!r} in mapping doc")
+            continue
+        defname = rest
+        targets, err = resolve_mapping_target(target_raw)
+        if err:
+            plan.errors.append(f"{rowkey} ({r['creature']}): {err}")
+            continue
+        missing = [t for t in targets if t not in stem_index]
+        if missing:
+            plan.errors.append(f"{rowkey} ({r['creature']}): target roster file(s) "
+                                f"missing from rosters/: {missing}")
+            continue
+        law = _mapping_law(rowkey, r["note"], propagated)
+        default_commonality = _mapping_commonality(rowkey, r["note"], propagated, 0.5)
+
+        origin_entry = None
+        if kind == "fauna":
+            origin = stem_index.get(sheet)
+            if origin is None:
+                plan.errors.append(f"{rowkey}: origin sheet {sheet!r} not found in rosters/")
+                continue
+            origin_doc = origin["doc"]
+            origin_entry = next((x for x in origin_doc.get("fauna", []) if x.get("def") == defname), None)
+
+        for stem in targets:
+            tgt = stem_index[stem]
+            tgt_doc = tgt["doc"]
+            if any(x.get("def") == defname for x in tgt_doc.get("fauna", [])):
+                continue  # already resident there — idempotent, no duplicate row
+            new_row = {"def": defname,
+                       "commonality": (origin_entry or {}).get("commonality", default_commonality),
+                       "action": "import", "law": law}
+            if origin_entry and origin_entry.get("band"):
+                new_row["band"] = origin_entry["band"]
+            elif default_commonality != 0.5:
+                new_row["band"] = "visitor"
+            tgt_doc.setdefault("fauna", []).append(new_row)
+            plan.roster_writes[stem] = tgt["path"]
+
+        if kind == "fauna":
+            if origin_entry is None:
+                # Not currently rostered under this exact defName at the origin (seen
+                # for the 5 RSW_* rows whose origin carries only the *Juv sibling,
+                # MIASMA_JUVENILES_NULL_THINGCLASS_1) — nothing to remove/evict; the
+                # move to target above still lands. Recorded, never silently dropped.
+                plan.overrides.append({
+                    "id": rowkey, "kind": "fauna-noop-origin", "group": sheet,
+                    "label": defname, "decision": "move", "prefill": "?",
+                    "note": "origin roster does not currently carry this exact defName "
+                            "— added at target only, no origin removal/eviction",
+                })
+            else:
+                origin_doc = stem_index[sheet]["doc"]
+                _remove_def(origin_doc, "fauna", defname)
+                for stem in targets:
+                    disp = f"move:{stem}" if stem in INJECTION_SHEETS else \
+                        f"move:{stem_index[stem]['doc'].get('defNames', [stem])[0]}"
+                    origin_doc.setdefault("evictions", []).append({
+                        "def": defname, "reason": law, "disposition": disp,
+                    })
+                plan.roster_writes[sheet] = stem_index[sheet]["path"]
+    return plan
+
+
+def run_mapping_mode(mapping_path: str, apply: bool) -> int:
+    rows = parse_move_mapping(mapping_path)
+    propagated = load_propagated_notes(DECISIONS_PROPAGATED)
+    stem_index = load_roster_index_by_stem()
+    plan = build_mapping_plan(rows, stem_index, propagated)
+
+    n_skip = sum(1 for r in rows if r["target"] in NON_MOVE_TARGETS or r["target"].startswith("GROUP:"))
+    n_candidates = len(rows) - n_skip
+    print(f"\n=== {os.path.basename(mapping_path)} — {len(rows)} total rows, "
+          f"{n_candidates} roster-move candidates, {n_skip} skipped (OUT/OPEN/GROUP/RESERVE) ===")
+    print(f"  rosters touched: {len(plan.roster_writes)}")
+    if plan.overrides:
+        print(f"  {len(plan.overrides)} row(s) landed at target with no origin-side removal:")
+        for o in plan.overrides:
+            print(f"    {o['id']}: {o['note']}")
+    if plan.errors:
+        print(f"\n🔴 {len(plan.errors)} unresolved row(s) — nothing for these was written:")
+        for e in plan.errors:
+            print(f"    - {e}")
+
+    if not apply:
+        return RC_UNRESOLVED if plan.errors else RC_OK
+
+    written = []
+    for stem, path in plan.roster_writes.items():
+        doc = stem_index[stem]["doc"]
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(doc, fh, indent=2, ensure_ascii=False, sort_keys=True)
+            fh.write("\n")
+        written.append(path)
+    print(f"\n  wrote {len(written)} file(s):")
+    for w in written:
+        print(f"    {w}")
+
+    rc = run_validate_cross()
+    print_regen_commands()
+    if plan.errors:
+        return RC_UNRESOLVED
+    return RC_VALIDATOR if rc else RC_OK
+
+
 # ═══════════════════════════════════════════════════════════════ main
 
 def sheet_kind_of(path: str) -> str:
@@ -552,7 +808,14 @@ def main(argv=None) -> int:
     ap.add_argument("decisions", nargs="*", default=None,
                      help="decisions.json file(s); default: both fauna and flora sheets")
     ap.add_argument("--apply", action="store_true", help="write rosters + worklists")
+    ap.add_argument("--from-mapping", metavar="PATH", nargs="?", const=DEFAULT_MAPPING,
+                     help="ROSTER_MOVE_APPLY_1: consume round2/move_mapping_v2.md's "
+                          "resolved-target table as the move source instead of a "
+                          "decisions.json's free-text notes (default: %(const)s)")
     args = ap.parse_args(argv)
+
+    if args.from_mapping:
+        return run_mapping_mode(args.from_mapping, args.apply)
 
     paths = args.decisions or DEFAULT_DECISIONS
     overall_rc = RC_OK

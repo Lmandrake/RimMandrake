@@ -1,482 +1,499 @@
 {
-  "sheet": "wasteland",
+  "authored": "2026-09-09",
+  "confidence": [
+    {
+      "claim": "kept fauna read as wretched/mutated (ban 4 eye component)",
+      "status": "UNMEASURED",
+      "why": "art eye test is the owner's; prep §4.1 recommends a REGENERATE art list alongside (§4.5 q1, unruled)"
+    },
+    {
+      "claim": "anomaly-entity count in roster = 0 (ban 1)",
+      "status": "MEASURED",
+      "why": "kindOf filter excludes entity/mechanoid rows by construction"
+    },
+    {
+      "claim": "SW_Electrictick slow-and-promote (prep §4.5 q3)",
+      "status": "UNMEASURED",
+      "why": "unruled — kept at register speed"
+    },
+    {
+      "claim": "GR_ prefix resolution",
+      "status": "RESOLVED",
+      "why": "GR_ = VGE chimeras, judged per law (GRim* = Grindterra). Restored Beetlefleet/ParagonRat/Molebear/Spidercat per §4.2; the six big predators + Wolfscarab stay evicted on §4.3's own bars. GR_Spidercat spd 6.0 noted: §4.3 names only Wolfscarab (9.0) as a fast-runner evictee and §4.2 protects Spidercat — owner review sheet may override."
+    }
+  ],
   "defNames": [
     "Wasteland"
-  ],
-  "tiles": 1126,
-  "authored": "2026-09-09",
-  "law_sources": [
-    "wasteland.md §4/§6",
-    "_assignment_prep.md §4, §9",
-    "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09"
-  ],
-  "fauna": [
-    {
-      "def": "VFEI2_Swarmling",
-      "commonality": 0.6,
-      "action": "adjust-keep",
-      "band": "wretched-small",
-      "law": "vermin-of-ruin read (prep §4.2); ban 3 pass: bs 0.2 (MEASURED); trimmed 1.0→0.6 — wildlife never the headline"
-    },
-    {
-      "def": "VFEI2_BlackSwarmling",
-      "commonality": 0.6,
-      "action": "adjust-keep",
-      "band": "wretched-small",
-      "law": "as VFEI2_Swarmling (prep §4.2)"
-    },
-    {
-      "def": "SW_Electrictick",
-      "commonality": 0.5,
-      "action": "adjust-keep",
-      "band": "extremophile-odd",
-      "law": "electric = on theme (prep §4.2); brine-battery-adjacent; trimmed 1.0→0.5",
-      "note": "prep §4.5 q3 (slow it?) unruled — no stat adjustment made"
-    },
-    {
-      "def": "Borcatu",
-      "commonality": 0.7,
-      "action": "keep",
-      "band": "wretched-small",
-      "law": "ruin-scavenger read (prep §4.2); bs 0.4 (MEASURED)"
-    },
-    {
-      "def": "BMT_FleeceSpider",
-      "commonality": 0.7,
-      "action": "keep",
-      "band": "wretched-small",
-      "law": "prep §4.2; bs 0.32 (MEASURED)"
-    },
-    {
-      "def": "BMT_BloodletterPetrel",
-      "commonality": 0.7,
-      "action": "keep",
-      "band": "wretched-small",
-      "law": "Polluted Lands — the mod's register is contamination-shaped (prep §4.2)"
-    },
-    {
-      "def": "AA_Eyeling",
-      "commonality": 0.6,
-      "action": "keep",
-      "band": "wretched-small",
-      "law": "born-wrong read (prep §4.2); bs 0.13 (MEASURED); dual home with ExtremeDesert"
-    },
-    {
-      "def": "BMT_Maligoat",
-      "commonality": 0.4,
-      "action": "keep",
-      "band": "wretched-herd",
-      "law": "\"maligoat\" is the wretched-herd read exactly (prep §4.2)"
-    },
-    {
-      "def": "AA_Terramorph",
-      "commonality": 0.2,
-      "action": "keep",
-      "band": "extremophile-odd",
-      "law": "crust-mimic oddity; slow (spd 1.8, MEASURED); ban 3 pass (non-headline)"
-    },
-    {
-      "def": "AA_FissionMouse",
-      "commonality": 0.3,
-      "action": "import",
-      "band": "extremophile-odd",
-      "law": "§9 (binding): RESKIN → the radiotroph archetype; the name is already the archetype (prep §4.4)",
-      "note": "reskin/rename owed before it reads right"
-    },
-    {
-      "def": "Toxalope",
-      "commonality": 0.4,
-      "action": "import",
-      "band": "wretched-herd",
-      "law": "owner card 2026-09-09 (prep §4.4): moves Desert → Wasteland; toxic-cloud death, marked (ban 4 pass)"
-    },
-    {
-      "def": "BMT_Screecher",
-      "commonality": 0.4,
-      "action": "import",
-      "band": "wretched-pack",
-      "law": "Polluted Lands register import (prep §4.4); pack vermin, bs 1.0 < 1.5 (ban 3 pass, MEASURED)"
-    },
-    {
-      "def": "BMT_PustuleHornetQueen",
-      "commonality": 0.3,
-      "action": "import",
-      "band": "wretched-small",
-      "law": "Polluted Lands pustule hornets (prep §4.4); bs 1.0 (MEASURED)"
-    },
-    {
-      "def": "BMT_ColonyPustuleHornetQueen",
-      "commonality": 0.2,
-      "action": "import",
-      "band": "wretched-small",
-      "law": "Polluted Lands (prep §4.4)"
-    },
-    {
-      "def": "BMT_PustuleHornetSpawned",
-      "commonality": 0.2,
-      "action": "import",
-      "band": "wretched-small",
-      "law": "Polluted Lands (prep §4.4); bs 0.32 (MEASURED)"
-    },
-    {
-      "def": "VAEWaste_Megatardi",
-      "commonality": 0.18,
-      "action": "import",
-      "band": "extremophile-odd",
-      "law": "waste-marked tardigrade-analog — extremophile-odd lane (ban 4 pass by marking)"
-    },
-    {
-      "def": "AA_AcanthamoebaGiganteaSmall",
-      "commonality": 0.1,
-      "action": "import",
-      "band": "wretched-small",
-      "law": "§9 (binding): amoeba reads contamination — wasteland/pans home"
-    },
-    {
-      "def": "GR_Beetlefleet",
-      "commonality": 0.7,
-      "action": "keep",
-      "band": "wretched-small",
-      "law": "§4.2 wretched register — named keep: vermin-of-ruin read (bs 0.3, spd 2.5 MEASURED); VGE hybrid, protected mechanics lane",
-      "note": "restored 2026-09-09 GR_ prefix correction (was wrongly evicted on the Grindterra card)"
-    },
-    {
-      "def": "GR_Molebear",
-      "commonality": 0.4,
-      "action": "keep",
-      "band": "wretched-medium",
-      "law": "§4.2 VGE-hybrid mutant read — protected mechanics lane, REGENERATE art where too cute (bs 1.0 passes §4.3's bs≥1.5 predator bar, MEASURED)",
-      "note": "restored 2026-09-09 GR_ prefix correction (was wrongly evicted on the Grindterra card)"
-    },
-    {
-      "def": "GR_ParagonRat",
-      "commonality": 0.7,
-      "action": "keep",
-      "band": "wretched-small",
-      "law": "§4.2 wretched register — named keep (bs 0.3 MEASURED); VGE hybrid, protected mechanics lane",
-      "note": "restored 2026-09-09 GR_ prefix correction (was wrongly evicted on the Grindterra card)"
-    },
-    {
-      "def": "GR_Spidercat",
-      "commonality": 0.4,
-      "action": "keep",
-      "band": "wretched-medium",
-      "law": "§4.2 VGE-hybrid mutant read — protected mechanics lane (bs 0.85 passes §4.3's predator bar, MEASURED)",
-      "note": "restored 2026-09-09 GR_ prefix correction (was wrongly evicted on the Grindterra card)"
-    }
   ],
   "evictions": [
     {
       "def": "AA_Aerofleet",
-      "reason": "§9 (binding): TRIM — its arid home is shrubland fog country — ubiquity-25 §9 trim: terminator-adjacent only (keeps the two seas)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "§9 (binding): TRIM — its arid home is shrubland fog country — ubiquity-25 §9 trim: terminator-adjacent only (keeps the two seas)"
     },
     {
       "def": "AA_AnimusVox",
-      "reason": "§9 (binding): TRIM to one strange home — not this one (unmarked, ban 4)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "§9 (binding): TRIM to one strange home — not this one (unmarked, ban 4)"
     },
     {
       "def": "AA_Atispec",
-      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 7.0, MEASURED; prep §4.3)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 7.0, MEASURED; prep §4.3)"
     },
     {
       "def": "AA_Barbslinger",
-      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.5, MEASURED; prep §4.3)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.5, MEASURED; prep §4.3)"
     },
     {
       "def": "AA_BloodShrimp",
-      "reason": "ban 4: unmarked wildlife — neither wretched-mutated nor extremophile-odd on sight",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: unmarked wildlife — neither wretched-mutated nor extremophile-odd on sight"
     },
     {
       "def": "AA_BoulderMit",
-      "reason": "ExtremeDesert giant keep (prep §1.2)",
-      "disposition": "move:ExtremeDesert"
+      "disposition": "move:ExtremeDesert",
+      "reason": "ExtremeDesert giant keep (prep §1.2)"
     },
     {
       "def": "AA_Bumbledrone",
-      "reason": "§9 (binding): TRIM; clean pollinator, unmarked (ban 4)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "§9 (binding): TRIM; clean pollinator, unmarked (ban 4)"
     },
     {
       "def": "AA_Cinderlisk",
-      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.5, MEASURED; prep §4.3)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.5, MEASURED; prep §4.3)"
     },
     {
       "def": "AA_ColossalAerofleet",
-      "reason": "ban 3: bs 2.0 large; clean floating jelly, unmarked (ban 4)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: bs 2.0 large; clean floating jelly, unmarked (ban 4)"
     },
     {
       "def": "AA_CrystalMit",
-      "reason": "§9 (binding): CrystalCaverns/PoisonForest",
-      "disposition": "move:PoisonForest"
+      "disposition": "move:PoisonForest",
+      "reason": "§9 (binding): CrystalCaverns/PoisonForest"
     },
     {
       "def": "AA_EmpressButterfly",
-      "reason": "ban 4: a pretty butterfly is the opposite of pathos (prep §4.3)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: a pretty butterfly is the opposite of pathos (prep §4.3)"
     },
     {
       "def": "AA_Feralisk",
-      "reason": "ban 4: unmarked wildlife — neither wretched-mutated nor extremophile-odd on sight",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: unmarked wildlife — neither wretched-mutated nor extremophile-odd on sight"
     },
     {
       "def": "AA_GreatDevourer",
-      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.5, MEASURED; prep §4.3)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.5, MEASURED; prep §4.3)"
     },
     {
       "def": "AA_MegaLouse",
-      "reason": "§9 (binding): TRIM — vermin texture capped; VFEI2 swarmlings carry the slot",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "§9 (binding): TRIM — vermin texture capped; VFEI2 swarmlings carry the slot"
     },
     {
       "def": "AA_Nightling",
-      "reason": "ban 4: unmarked wildlife — neither wretched-mutated nor extremophile-odd on sight",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: unmarked wildlife — neither wretched-mutated nor extremophile-odd on sight"
     },
     {
       "def": "AA_OcularJelly",
-      "reason": "poison forest import lane (prep §5.2)",
-      "disposition": "move:PoisonForest"
+      "disposition": "move:PoisonForest",
+      "reason": "poison forest import lane (prep §5.2)"
     },
     {
       "def": "AA_PebbleMit",
-      "reason": "§9 (binding): rock/cavern biomes — §9 trim target (crags) rejected it on the single-transplanted-family law",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "§9 (binding): rock/cavern biomes — §9 trim target (crags) rejected it on the single-transplanted-family law"
     },
     {
       "def": "AA_Razorjack",
-      "reason": "ban 4: unmarked wildlife — neither wretched-mutated nor extremophile-odd on sight",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: unmarked wildlife — neither wretched-mutated nor extremophile-odd on sight"
     },
     {
       "def": "AA_RipperHound",
-      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 1.5, MEASURED; prep §4.3)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 1.5, MEASURED; prep §4.3)"
     },
     {
       "def": "AA_RoughPlatedMonitor",
-      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.0, MEASURED; prep §4.3)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.0, MEASURED; prep §4.3)"
     },
     {
       "def": "AA_Skiphound",
-      "reason": "ban 4: clean hound, unmarked; Earth-ish name",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: clean hound, unmarked; Earth-ish name"
     },
     {
       "def": "AA_Slurrypede",
-      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.0, MEASURED; prep §4.3)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 2.0, MEASURED; prep §4.3)"
     },
     {
       "def": "AA_Swarmling",
-      "reason": "§9 (binding): TRIM to 2–3 biomes — the VFEI2 swarmlings carry the vermin slot here",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "§9 (binding): TRIM to 2–3 biomes — the VFEI2 swarmlings carry the vermin slot here"
     },
     {
       "def": "AA_TetraSlug",
-      "reason": "ExtremeDesert giant keep (prep §1.2)",
-      "disposition": "move:ExtremeDesert"
+      "disposition": "move:ExtremeDesert",
+      "reason": "ExtremeDesert giant keep (prep §1.2)"
     },
     {
       "def": "AA_Thermadon",
-      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 1.5, MEASURED; prep §4.3)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 3: wildlife never the headline threat — large capable predator (bs 1.5, MEASURED; prep §4.3)"
     },
     {
       "def": "Aiwha",
-      "reason": "ban 3 (bs 3.0 predator, MEASURED) and a flying whale in a fallout pan is a placement absurdity (prep §4.3); sea-beast lane may claim it",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 3 (bs 3.0 predator, MEASURED) and a flying whale in a fallout pan is a placement absurdity (prep §4.3); sea-beast lane may claim it"
     },
     {
       "def": "DA_Barog",
-      "reason": "ban 4: unmarked clean herd beast",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: unmarked clean herd beast"
     },
     {
       "def": "DA_DwarvenMuffton",
-      "reason": "ban 4: a clean fantasy farm animal — unmarked wildlife fails on sight (prep §4.3)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 4: a clean fantasy farm animal — unmarked wildlife fails on sight (prep §4.3)"
     },
     {
       "def": "DA_RedhornedLarpah",
-      "reason": "ban 4 unmarked + fast clean runner contradicts pathos (spd 6.5, MEASURED; prep §4.3)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "ban 4 unmarked + fast clean runner contradicts pathos (spd 6.5, MEASURED; prep §4.3)"
     },
     {
       "def": "GR_Bearalope",
-      "reason": "wasteland ban 3 (§4.3): predator + bodySize 1.5 (MEASURED) — wildlife never the headline threat",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "wasteland ban 3 (§4.3): predator + bodySize 1.5 (MEASURED) — wildlife never the headline threat"
     },
     {
       "def": "GR_Bearcat",
-      "reason": "wasteland ban 3 (§4.3): predator + bodySize 1.75 (MEASURED)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "wasteland ban 3 (§4.3): predator + bodySize 1.75 (MEASURED)"
     },
     {
       "def": "GR_Bearhorse",
-      "reason": "wasteland ban 3 (§4.3): predator + bodySize 3.5 (MEASURED)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "wasteland ban 3 (§4.3): predator + bodySize 3.5 (MEASURED)"
     },
     {
       "def": "GR_Bearscarab",
-      "reason": "wasteland ban 3 (§4.3): predator + bodySize 3.0 (MEASURED)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "wasteland ban 3 (§4.3): predator + bodySize 3.0 (MEASURED)"
     },
     {
       "def": "GR_Spiderhorse",
-      "reason": "wasteland ban 3 (§4.3): predator + bodySize 2.4 (MEASURED)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "wasteland ban 3 (§4.3): predator + bodySize 2.4 (MEASURED)"
     },
     {
       "def": "GR_Thrumbocat",
-      "reason": "wasteland ban 3 (§4.3): predator + bodySize 2.0 (MEASURED)",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "wasteland ban 3 (§4.3): predator + bodySize 2.0 (MEASURED)"
     },
     {
       "def": "GR_Wolfscarab",
-      "reason": "§4.3 fast clean runner: moveSpeed 9.0 (MEASURED) contradicts the pathos read",
-      "disposition": "homeless-reserve"
+      "disposition": "homeless-reserve",
+      "reason": "§4.3 fast clean runner: moveSpeed 9.0 (MEASURED) contradicts the pathos read"
     },
     {
       "def": "GraniteSlug",
-      "reason": "§9 (binding): dune sea + poison forest",
-      "disposition": "move:ExtremeDesert"
+      "disposition": "move:ExtremeDesert",
+      "reason": "§9 (binding): dune sea + poison forest"
+    },
+    {
+      "def": "AA_AcanthamoebaGiganteaSmall",
+      "disposition": "move:Scarlands",
+      "reason": "owner review 2026-09 (round2 move mapping): scarlands"
+    },
+    {
+      "def": "AA_Eyeling",
+      "disposition": "move:AB_OcularForest",
+      "reason": "owner review 2026-09 (round2 move mapping): ocular"
+    },
+    {
+      "def": "BMT_ColonyPustuleHornetQueen",
+      "disposition": "move:AB_MycoticJungle",
+      "reason": "owner review 2026-09 (round2 move mapping): The Rot"
+    },
+    {
+      "def": "BMT_PustuleHornetQueen",
+      "disposition": "move:AB_MycoticJungle",
+      "reason": "owner review 2026-09 (round2 move mapping): The Rot"
+    },
+    {
+      "def": "BMT_PustuleHornetSpawned",
+      "disposition": "move:AB_MycoticJungle",
+      "reason": "owner review 2026-09 (round2 move mapping): The Rot"
+    },
+    {
+      "def": "SW_Electrictick",
+      "disposition": "move:Scarlands",
+      "reason": "owner review 2026-09 (round2 move mapping): only scarlands"
     }
   ],
-  "stat_adjustments": [],
+  "fauna": [
+    {
+      "action": "adjust-keep",
+      "band": "wretched-small",
+      "commonality": 0.6,
+      "def": "VFEI2_Swarmling",
+      "law": "vermin-of-ruin read (prep §4.2); ban 3 pass: bs 0.2 (MEASURED); trimmed 1.0→0.6 — wildlife never the headline"
+    },
+    {
+      "action": "adjust-keep",
+      "band": "wretched-small",
+      "commonality": 0.6,
+      "def": "VFEI2_BlackSwarmling",
+      "law": "as VFEI2_Swarmling (prep §4.2)"
+    },
+    {
+      "action": "keep",
+      "band": "wretched-small",
+      "commonality": 0.7,
+      "def": "Borcatu",
+      "law": "ruin-scavenger read (prep §4.2); bs 0.4 (MEASURED)"
+    },
+    {
+      "action": "keep",
+      "band": "wretched-small",
+      "commonality": 0.7,
+      "def": "BMT_FleeceSpider",
+      "law": "prep §4.2; bs 0.32 (MEASURED)"
+    },
+    {
+      "action": "keep",
+      "band": "wretched-small",
+      "commonality": 0.7,
+      "def": "BMT_BloodletterPetrel",
+      "law": "Polluted Lands — the mod's register is contamination-shaped (prep §4.2)"
+    },
+    {
+      "action": "keep",
+      "band": "wretched-herd",
+      "commonality": 0.4,
+      "def": "BMT_Maligoat",
+      "law": "\"maligoat\" is the wretched-herd read exactly (prep §4.2)"
+    },
+    {
+      "action": "keep",
+      "band": "extremophile-odd",
+      "commonality": 0.2,
+      "def": "AA_Terramorph",
+      "law": "crust-mimic oddity; slow (spd 1.8, MEASURED); ban 3 pass (non-headline)"
+    },
+    {
+      "action": "import",
+      "band": "extremophile-odd",
+      "commonality": 0.3,
+      "def": "AA_FissionMouse",
+      "law": "§9 (binding): RESKIN → the radiotroph archetype; the name is already the archetype (prep §4.4)",
+      "note": "reskin/rename owed before it reads right"
+    },
+    {
+      "action": "import",
+      "band": "wretched-herd",
+      "commonality": 0.4,
+      "def": "Toxalope",
+      "law": "owner card 2026-09-09 (prep §4.4): moves Desert → Wasteland; toxic-cloud death, marked (ban 4 pass)"
+    },
+    {
+      "action": "import",
+      "band": "wretched-pack",
+      "commonality": 0.4,
+      "def": "BMT_Screecher",
+      "law": "Polluted Lands register import (prep §4.4); pack vermin, bs 1.0 < 1.5 (ban 3 pass, MEASURED)"
+    },
+    {
+      "action": "import",
+      "band": "extremophile-odd",
+      "commonality": 0.18,
+      "def": "VAEWaste_Megatardi",
+      "law": "waste-marked tardigrade-analog — extremophile-odd lane (ban 4 pass by marking)"
+    },
+    {
+      "action": "keep",
+      "band": "wretched-small",
+      "commonality": 0.7,
+      "def": "GR_Beetlefleet",
+      "law": "§4.2 wretched register — named keep: vermin-of-ruin read (bs 0.3, spd 2.5 MEASURED); VGE hybrid, protected mechanics lane",
+      "note": "restored 2026-09-09 GR_ prefix correction (was wrongly evicted on the Grindterra card)"
+    },
+    {
+      "action": "keep",
+      "band": "wretched-medium",
+      "commonality": 0.4,
+      "def": "GR_Molebear",
+      "law": "§4.2 VGE-hybrid mutant read — protected mechanics lane, REGENERATE art where too cute (bs 1.0 passes §4.3's bs≥1.5 predator bar, MEASURED)",
+      "note": "restored 2026-09-09 GR_ prefix correction (was wrongly evicted on the Grindterra card)"
+    },
+    {
+      "action": "keep",
+      "band": "wretched-small",
+      "commonality": 0.7,
+      "def": "GR_ParagonRat",
+      "law": "§4.2 wretched register — named keep (bs 0.3 MEASURED); VGE hybrid, protected mechanics lane",
+      "note": "restored 2026-09-09 GR_ prefix correction (was wrongly evicted on the Grindterra card)"
+    },
+    {
+      "action": "keep",
+      "band": "wretched-medium",
+      "commonality": 0.4,
+      "def": "GR_Spidercat",
+      "law": "§4.2 VGE-hybrid mutant read — protected mechanics lane (bs 0.85 passes §4.3's predator bar, MEASURED)",
+      "note": "restored 2026-09-09 GR_ prefix correction (was wrongly evicted on the Grindterra card)"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "BMT_Stoneback",
+      "law": "owner review 2026-09 (round2 move mapping): Anywhere on the dayside where it might be needed. 1.2 cells"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "BMT_Sacapillar",
+      "law": "owner review 2026-09 (round2 move mapping): PLACED: wasteland (homeless disposition sitting, frozen 2026-09-10)"
+    }
+  ],
+  "fish": {
+    "list": [],
+    "ruling": "no fish — the only standing water is hypersaline brine over mineral beds, sealed dead-river termini (§0/§2); nothing vertebrate lives in a half-charged voltaic cell; the pools' owners are the brine-battery archetype (new_defs)"
+  },
   "flora": [
     {
-      "def": "RG_Plant_ToxiGrass",
       "commonality": 1.2,
+      "def": "RG_Plant_ToxiGrass",
       "law": "contamination-marked ground cover — the vegetation is the dosimeter (§4)"
     },
     {
-      "def": "RG_Plant_TallToxiGrass",
       "commonality": 0.8,
+      "def": "RG_Plant_TallToxiGrass",
       "law": "contamination-marked"
     },
     {
-      "def": "AB_ToxiGrass",
       "commonality": 0.6,
+      "def": "AB_ToxiGrass",
       "law": "contamination-marked"
     },
     {
-      "def": "Plant_GrayGrass",
       "commonality": 0.35,
+      "def": "Plant_GrayGrass",
       "law": "Biotech pollution flora — the donor spine the sheet's Owed names (prep §4.4)"
     },
     {
-      "def": "PoisonShrub",
       "commonality": 0.35,
+      "def": "PoisonShrub",
       "law": "poison-marked shrub"
     },
     {
-      "def": "PoisonPlantTallGrass",
       "commonality": 0.4,
+      "def": "PoisonPlantTallGrass",
       "law": "poison-marked ground cover"
     },
     {
-      "def": "PoisonPlantBush",
       "commonality": 0.3,
+      "def": "PoisonPlantBush",
       "law": "poison-marked shrub"
     },
     {
-      "def": "BMT_Plant_GutterPlantain",
       "commonality": 0.5,
+      "def": "BMT_Plant_GutterPlantain",
       "law": "wretched-marked Earth descendant — ordinary lineages being ruined IS the biome (§4)"
     },
     {
+      "commonality": 0.5,
       "def": "BMT_Plant_ToxicIvy",
-      "commonality": 0.5,
       "law": "wretched-marked Earth descendant"
     },
     {
+      "commonality": 0.5,
       "def": "BMT_Plant_TwistedDandelion",
-      "commonality": 0.5,
       "law": "wretched-marked Earth descendant"
     },
     {
-      "def": "BMT_Plant_ScorchedStars",
       "commonality": 0.3,
+      "def": "BMT_Plant_ScorchedStars",
       "law": "ruin-marked alien"
     },
     {
-      "def": "BMT_Plant_Snaketails",
       "commonality": 0.3,
+      "def": "BMT_Plant_Snaketails",
       "law": "alien form"
     },
     {
-      "def": "BMT_Plant_WildRashroot",
       "commonality": 0.2,
+      "def": "BMT_Plant_WildRashroot",
       "law": "affliction-marked"
     },
     {
-      "def": "BMT_Plant_Doomsprout",
       "commonality": 0.15,
+      "def": "BMT_Plant_Doomsprout",
       "law": "ruin-marked"
     },
     {
-      "def": "BMT_Plant_TumorbulbHyacinth",
       "commonality": 0.25,
+      "def": "BMT_Plant_TumorbulbHyacinth",
       "law": "wretched-marked (tumorbulb) Earth descendant"
     },
     {
-      "def": "BMT_Plant_PoxSorghum",
       "commonality": 0.25,
+      "def": "BMT_Plant_PoxSorghum",
       "law": "wretched-marked (pox) Earth descendant"
     },
     {
-      "def": "BMT_RainbowTongue",
       "commonality": 0.15,
+      "def": "BMT_RainbowTongue",
       "law": "alien form (Polluted Lands)"
     },
     {
-      "def": "BMT_Plant_EclipsusFlower",
       "commonality": 0.15,
+      "def": "BMT_Plant_EclipsusFlower",
       "law": "alien-named (eclipsus)"
     },
     {
-      "def": "BMT_Plant_EclipsusLeaves",
       "commonality": 0.15,
+      "def": "BMT_Plant_EclipsusLeaves",
       "law": "alien-named"
     },
     {
-      "def": "AB_ToxiBulb",
       "commonality": 0.1,
+      "def": "AB_ToxiBulb",
       "law": "contamination-marked"
     },
     {
-      "def": "AB_GiantToxicFlower",
       "commonality": 0.08,
+      "def": "AB_GiantToxicFlower",
       "law": "contamination-marked point-source of wrong light (§9)"
     },
     {
-      "def": "AB_WeepingToxberry",
       "commonality": 0.2,
+      "def": "AB_WeepingToxberry",
       "law": "contamination-marked"
     },
     {
-      "def": "Plant_Toxipotato",
       "commonality": 0.2,
+      "def": "Plant_Toxipotato",
       "law": "Biotech pollution donor spine — mutant-marked crop gone feral"
     },
     {
-      "def": "Plant_TreePolux",
       "commonality": 0.1,
+      "def": "Plant_TreePolux",
       "law": "Biotech polux tree LITERALLY sequesters pollution — \"plants clean\" is the owner's ruling in one def (§4)"
     },
     {
-      "def": "VRE_PoluxBush",
       "commonality": 0.08,
+      "def": "VRE_PoluxBush",
       "law": "sequestration flora kin"
     }
   ],
@@ -554,62 +571,44 @@
       "reason": "duplicate — BMT_Plant_WildRashroot carries the wild slot"
     }
   ],
-  "fish": {
-    "ruling": "no fish — the only standing water is hypersaline brine over mineral beds, sealed dead-river termini (§0/§2); nothing vertebrate lives in a half-charged voltaic cell; the pools' owners are the brine-battery archetype (new_defs)",
-    "list": []
-  },
+  "law_sources": [
+    "wasteland.md §4/§6",
+    "_assignment_prep.md §4, §9",
+    "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09"
+  ],
   "new_defs": [
     {
-      "name": "radiotroph flora (dosimeter-lawn, vault-root sequestration trees)",
+      "from_sheet": "wasteland §4 / prep §4.4",
       "kind": "plant",
       "mechanic_load": "C#: dose layer; Biotech pollution spine is the donor",
-      "from_sheet": "wasteland §4 / prep §4.4"
+      "name": "radiotroph flora (dosimeter-lawn, vault-root sequestration trees)"
     },
     {
-      "name": "excretor herd creature + metal-salt bezoar product def",
+      "from_sheet": "wasteland §4 / prep §4.4",
       "kind": "creature",
       "mechanic_load": "mechanic EXISTS in donors (59 timed-producer rows); bezoar def is new",
-      "from_sheet": "wasteland §4 / prep §4.4"
+      "name": "excretor herd creature + metal-salt bezoar product def"
     },
     {
-      "name": "radiothermal solitary (living furnace; spacing law)",
+      "from_sheet": "wasteland §4 / prep §4.4",
       "kind": "creature",
       "mechanic_load": "NEW C#: heat emission + spacing",
-      "from_sheet": "wasteland §4 / prep §4.4"
+      "name": "radiothermal solitary (living furnace; spacing law)"
     },
     {
-      "name": "brine-battery pool owner (ion-gradient discharge)",
+      "from_sheet": "wasteland §4 / prep §4.4",
       "kind": "creature",
       "mechanic_load": "NEW ART/DEF; EMP/zap comps exist in donor C#",
-      "from_sheet": "wasteland §4 / prep §4.4"
+      "name": "brine-battery pool owner (ion-gradient discharge)"
     },
     {
-      "name": "the three storm weather defs (ash / radiation-halo / plasma-terminator-only)",
+      "from_sheet": "wasteland §4b",
       "kind": "weather",
       "mechanic_load": "C#: dose + exhumation reshuffle (own ruling owed on mutator churn)",
-      "from_sheet": "wasteland §4b"
+      "name": "the three storm weather defs (ash / radiation-halo / plasma-terminator-only)"
     }
   ],
-  "confidence": [
-    {
-      "claim": "kept fauna read as wretched/mutated (ban 4 eye component)",
-      "status": "UNMEASURED",
-      "why": "art eye test is the owner's; prep §4.1 recommends a REGENERATE art list alongside (§4.5 q1, unruled)"
-    },
-    {
-      "claim": "anomaly-entity count in roster = 0 (ban 1)",
-      "status": "MEASURED",
-      "why": "kindOf filter excludes entity/mechanoid rows by construction"
-    },
-    {
-      "claim": "SW_Electrictick slow-and-promote (prep §4.5 q3)",
-      "status": "UNMEASURED",
-      "why": "unruled — kept at register speed"
-    },
-    {
-      "claim": "GR_ prefix resolution",
-      "status": "RESOLVED",
-      "why": "GR_ = VGE chimeras, judged per law (GRim* = Grindterra). Restored Beetlefleet/ParagonRat/Molebear/Spidercat per §4.2; the six big predators + Wolfscarab stay evicted on §4.3's own bars. GR_Spidercat spd 6.0 noted: §4.3 names only Wolfscarab (9.0) as a fast-runner evictee and §4.2 protects Spidercat — owner review sheet may override."
-    }
-  ]
+  "sheet": "wasteland",
+  "stat_adjustments": [],
+  "tiles": 1126
 }
