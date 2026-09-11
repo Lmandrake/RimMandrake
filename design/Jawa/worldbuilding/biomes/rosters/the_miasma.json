@@ -29,13 +29,13 @@
     {"def": "AA_Slurrypede", "commonality": 0.1, "action": "adjust-keep", "band": "composter", "law": "§4 burrowing muck-worker digesting the sin-soup; comm 0.005→0.1 — composters are a named ring"},
     {"def": "AA_Plasmorph", "commonality": 0.05, "action": "keep", "band": "strange", "law": "§1 the Working's oddities"},
     {"def": "Zakkeg", "commonality": 0.05, "action": "keep", "band": "big-wanderer", "law": "§2 crowding brings big bodies to the fresh end; SW icon; trace"},
-    {"def": "RSW_Mee", "commonality": 0.4, "action": "import", "band": "nursery", "law": "R11 + §4 the nursery — the Grey Sea's roster breeds here; juveniles swarm the shallows"},
-    {"def": "RSW_Faa", "commonality": 0.3, "action": "import", "band": "nursery", "law": "R11 nursery ring"},
-    {"def": "RSW_Laa", "commonality": 0.3, "action": "import", "band": "nursery", "law": "R11 nursery ring"},
-    {"def": "RSW_Yobshrimp", "commonality": 0.3, "action": "import", "band": "nursery", "law": "R11 nursery — the pale young of the brine line"},
-    {"def": "RSW_SiltLamprey", "commonality": 0.25, "action": "import", "band": "nursery", "law": "R11 nursery; silt-working juvenile"},
-    {"def": "RSW_RustNipper", "commonality": 0.25, "action": "import", "band": "nursery", "law": "R11 nursery"},
-    {"def": "RSW_OpeeSeaKiller", "commonality": 0.05, "action": "import", "band": "nursery-guard", "law": "R11 — a sub-adult lingering at the crèche mouths; 'don't kill what's small here' (§4)"}
+    {"def": "RSW_MeeJuv", "commonality": 0.4, "action": "import", "band": "nursery", "law": "R11 + §4 the nursery — the Grey Sea's roster breeds here; juveniles swarm the shallows"},
+    {"def": "RSW_FaaJuv", "commonality": 0.3, "action": "import", "band": "nursery", "law": "R11 nursery ring"},
+    {"def": "RSW_LaaJuv", "commonality": 0.3, "action": "import", "band": "nursery", "law": "R11 nursery ring"},
+    {"def": "RSW_YobshrimpJuv", "commonality": 0.3, "action": "import", "band": "nursery", "law": "R11 nursery — the pale young of the brine line"},
+    {"def": "RSW_SiltLampreyJuv", "commonality": 0.25, "action": "import", "band": "nursery", "law": "R11 nursery; silt-working juvenile"},
+    {"def": "RSW_RustNipperJuv", "commonality": 0.25, "action": "import", "band": "nursery", "law": "R11 nursery"},
+    {"def": "RSW_OpeeSeaKillerJuv", "commonality": 0.05, "action": "import", "band": "nursery-guard", "law": "R11 — a sub-adult lingering at the crèche mouths; 'don't kill what's small here' (§4)"}
   ],
   "evictions": [
     {"def": "GRimStoneCrab", "reason": "retextured Earth twin (crab) fails on sight — owner card 2026-09-09; candidate to extend RETEXTURED_EARTH_FAUNA_BANNED_1", "disposition": "homeless-reserve"},
@@ -94,10 +94,10 @@
   "fish": {
     "ruling": "Fish are the nursery itself: brackish channels and shallows carry the Grey Sea roster's juveniles (RSW scalefish/lamprey/nipper — SW analogs, no Earth names), thinning to nothing on the brine side as the surge pushes salt up-channel; the adults are the Grey Sea's (terminator_sea.md owns the open water). Rostered above under band 'nursery'.",
     "list": [
-      {"def": "RSW_Mee", "note": "see fauna — nursery ring"},
-      {"def": "RSW_Faa", "note": "see fauna"},
-      {"def": "RSW_Laa", "note": "see fauna"},
-      {"def": "RSW_SiltLamprey", "note": "see fauna"}
+      {"def": "RSW_MeeJuv", "note": "see fauna — nursery ring"},
+      {"def": "RSW_FaaJuv", "note": "see fauna"},
+      {"def": "RSW_LaaJuv", "note": "see fauna"},
+      {"def": "RSW_SiltLampreyJuv", "note": "see fauna"}
     ]
   },
   "new_defs": [
