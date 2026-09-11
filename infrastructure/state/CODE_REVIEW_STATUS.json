@@ -144,10 +144,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/fauna/BiomeCast_Ashkarr.xml": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-10",
-    "hash": "94b90057a1d6be8644a580c791e16e2a570eb5f5ba4cdc07ceac61baa0bc98d5",
-    "sha": "1c96dd41"
+    "hash": "c6c53ddf851d0e62fd61564bb84288a78dfd34168200fe25a10921dfe70d1ddb",
+    "sha": "d3ffec03"
   },
   "design/Jawa/fauna/CreatureNames_Ashkarr.xml": {
     "cleanCount": 1,
@@ -10768,10 +10768,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ExtremeDesert.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "02dfa4b308f014f617ecbda036c6813634b2fb8f03b72a199e0ac820d4739fae",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "b8082a1741a3704f6e3432709810cdffe98a4d4ed25ae864f238256ad3defdb1",
+    "sha": "d3ffec03"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml": {
     "cleanCount": 1,
@@ -10798,10 +10798,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "dd3095ab40d55189f1e0e70d433e6dc7b904a7f18ef52a7f70d34d42738827e4",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "fffe94108b724c6d7df11f4399edc75cd790a78179c0e559ea6867d116ecfaff",
+    "sha": "d3ffec03"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml": {
     "cleanCount": 2,
@@ -10828,10 +10828,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "f53a797e39c30127fd49336e157e9cd21774ee1be5ca169a9e2c7ceeff25f0be",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "0480a43aef098565b7dda2fad6165ccc2ae1347930d0284f0c0c09798676b4f2",
+    "sha": "d3ffec03"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Slime.xml": {
     "cleanCount": 1,
@@ -10846,10 +10846,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheForge.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "dd69fe04ddcc119bb085344a4b3c2d574553a07efe7f5208226b1b8c30470a67",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "dad47cd3fc2e98f06f580d5cdaccdba52d2ea7cdfc1b766de0f9640d36d60e86",
+    "sha": "d3ffec03"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheRot.xml": {
     "cleanCount": 2,
@@ -10954,10 +10954,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_GapingDoom.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "e7914cf086fd9a37af034d1cead0462558172c053cd5ef7355c6d549492ca013",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "025a4737fab8b9b8e611e205f2ffe4a252060d67cfc92f931c4c2847492fc9ce",
+    "sha": "d3ffec03"
   },
   "src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_Lightfall.xml": {
     "cleanCount": 1,
@@ -11104,10 +11104,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "67ff1799c43e19c9421ce7046f08bc15cd04c2b400fea671dc076b21f75da024",
-    "sha": "b87a3622"
+    "cleanCount": 3,
+    "date": "2026-09-10",
+    "hash": "552f033235dbd82f890addcb17cd8c43a91b6304d5b7f6b8203e6cc5778332f5",
+    "sha": "d3ffec03"
   },
   "src/RimUtinni/UtinniPatches/Patches/ApparelTags_DeadTagRepair.xml": {
     "cleanCount": 1,
@@ -11134,10 +11134,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml": {
-    "cleanCount": 4,
+    "cleanCount": 5,
     "date": "2026-09-10",
-    "hash": "2290dce6edc095a0d21936ca16deeccd6777fca0018dc082c2ffa1fa93efe2a7",
-    "sha": "1c96dd41"
+    "hash": "9df74798a34914c06c8437d869a2450f2e29eae968e8aedb083edbe89302928b",
+    "sha": "d3ffec03"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeFaunaStatAdjustments_Generated.xml": {
     "cleanCount": 1,
