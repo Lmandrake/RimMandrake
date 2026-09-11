@@ -516,7 +516,209 @@ KEYS = [
     "ThingDef/Frame_AM_VirutalMiner", "ThingDef/LEGO_GiantRockExcavator_Accomplish", 
     "ThingDef/LEGO_HeavyCrane_Accomplish", "ThingDef/LEGO_LandmarkBuilding_Accomplish", 
     "ThingDef/LEGO_LightCrane_Accomplish", "ThingDef/LEGO_MediumCrane_Accomplish", 
-    "ThingDef/LEGO_Palace_Accomplish", "ThingDef/Techprint_AM_RecyclingAssembly", 
+    "ThingDef/LEGO_Palace_Accomplish", "ThingDef/Techprint_AM_RecyclingAssembly",
+
+    # DONOR_FACTION_PROPER_NOUN_RENAMES_1, owner ruling 2026-09-11: "Yes cut
+    # anything not possible to map to the Star Wars register" (DONOR_PROPER_NOUN_SCAN_1's
+    # Category 3, design/Jawa/donor_proper_noun_backlog.md — a web-research pass
+    # found no Norse-mythology faction/species anywhere in SW canon or Legends;
+    # Transient/sw_canon_names_web_research.md flags the gap as real, not a
+    # research shortfall). Cuts "Big and Small - Races" (redmattis.bigsmall) in
+    # full: 86 of its own defs (6 FactionDefs, 46 PawnKindDefs, 20 XenotypeDefs,
+    # the rest recipes/items/scenario/sound/trader), queried by package_id from
+    # the 2026-09-10T08:36:27Z dump (577 mods, fingerprint 6fdca6f582164e2a).
+    #
+    # ⚠️ "Big and Small - Genes & More" (redmattis.bigsmall.core) is a SEPARATE
+    # mod by the same author and is NOT touched — it is a live, load-bearing
+    # dependency of GiantWeaponWielders_Ashkarr.xml, BodySizeIsReal.xml and
+    # WeaponTags_Renormalise.xml (BS_LargeFrame/SmallFrame/RabbitFrame,
+    # HalfJotunFrame, BS_GiantWeaponWielder, the 12 giant/warcasket weapons,
+    # BS_AlienApperanceStandards) — none of those defNames belong to the
+    # Races pack; verified per-defName package_id, not by name-prefix guess.
+    #
+    # 🔴 TAG-SURVIVOR CHECK (the skill's own trap: cutting the last carrier of a
+    # weaponTag disarms every PawnKindDef requesting only that tag). Cutting
+    # ThingDef/VFEM_Bow_HeavyCrossbow zeroes the surviving-carrier count for
+    # weaponTags MedievalRangedHeavy, MedievalRanged and BS_CrossbowTag against
+    # the live (post-existing-cuts) dump — but every PawnKindDef that requests
+    # any of those three tags (BS_Crossbowman, BS_CrossbowDvergr,
+    # BS_DvergrTraditionalist, BS_DvergrSniper) is itself redmattis.bigsmall and
+    # is cut in this same batch, so no surviving pawn kind loses its last weapon.
+    # (WeaponTags_Renormalise.xml's own comment records this weapon was
+    # previously un-cut by HEAVY_CROSSBOW_UNCUT_1 specifically to arm these three
+    # kinds — reversing that is correct now that the kinds themselves are gone.)
+    # BS_BarbarianArmor/BS_Nisse_Cap carry tradeTags only, no apparelTags — no
+    # PawnKindDef apparel gate depends on them. VFEM_Arrow_HeavyBolt (ammo) has
+    # no other referrer in the dump.
+    #
+    # 🔑 COMPANION-MOD ORPHANS, cut alongside rather than left dangling: Outland
+    # - Genetics (neronix17.outland.genetics, a different donor) ships one
+    # "ascension" GeneDef and one "implanter" AbilityDef+GeneDef pair PER
+    # xenotype in the workshop, including these 21 (the 20 Races-pack xenotypes
+    # above plus the BS_Troll/TrollAdult/TrollOld trio counted separately from
+    # the 20). Cutting the source XenotypeDef leaves these three purpose-built
+    # for it with nothing to reference — 63 defs total, cut here too.
+    # NOT cut: BS_FrostJotunInBlue's Ascension/Implanter pair — that xenotype
+    # belongs to redmattis.bigsmall.core, which survives.
+    # ⚠️ RESIDUAL, ACCEPTED, NOT CHASED: dozens of OTHER mods' own
+    # xenotype-ascension GeneDefs (Alpha Genes' AG_Animusen/AG_Drakonori/... and
+    # ~275 more) embed a shared "known special xenotypes" DefModExt_Xenotype
+    # compatibility list that also names these 21 defNames — an exhaustive
+    # cross-mod convention, not a dependency on this pack. Cutting the 21
+    # produces expected "Could not resolve cross-reference to XenotypeDef"
+    # warnings from those unrelated genes at next load; verified 0 BiomeDef
+    # wildAnimals/wildPlants entries reference anything in this pack (the fatal
+    # NRE class this skill warns about), so this is log noise, not a break, and
+    # is not this repo's list to hand-edit in a third-party mod.
+    "FactionDef/BS_Dvergr_Medieval_Union",
+    "FactionDef/BS_JotunPlayerColony",
+    "FactionDef/BS_LittlePeople",
+    "FactionDef/BS_Muspelheim",
+    "FactionDef/BS_Niflheim",
+    "FactionDef/BS_OgreFaction",
+    "PawnKindDef/BS_CrossbowDvergr",
+    "PawnKindDef/BS_Crossbowman",
+    "PawnKindDef/BS_DvergrGunner",
+    "PawnKindDef/BS_DvergrMecha",
+    "PawnKindDef/BS_DvergrSniper",
+    "PawnKindDef/BS_DvergrTraditionalist",
+    "PawnKindDef/BS_Dvergr_Artificer",
+    "PawnKindDef/BS_Dvergr_Knight",
+    "PawnKindDef/BS_Dvergr_Lord",
+    "PawnKindDef/BS_FleshGolemWarrior",
+    "PawnKindDef/BS_Jotun_Berserker",
+    "PawnKindDef/BS_Jotun_Berserker_Limited",
+    "PawnKindDef/BS_Jotun_Berserker_Simple",
+    "PawnKindDef/BS_Jotun_Hunter",
+    "PawnKindDef/BS_Jotun_Javelin",
+    "PawnKindDef/BS_Jotun_Knight",
+    "PawnKindDef/BS_Jotun_Lord",
+    "PawnKindDef/BS_Jotun_Lord_Limited",
+    "PawnKindDef/BS_Jotun_Modernized",
+    "PawnKindDef/BS_Jotun_Modernized_Limited",
+    "PawnKindDef/BS_Jotun_MuspelKnight_Limited",
+    "PawnKindDef/BS_Jotun_NiflJavelin",
+    "PawnKindDef/BS_Jotun_NiflKnight",
+    "PawnKindDef/BS_Jotun_NiflKnight_Limited",
+    "PawnKindDef/BS_Jotun_Raider",
+    "PawnKindDef/BS_Jotun_RaiderLord",
+    "PawnKindDef/BS_Jotun_RaiderLord_Limited",
+    "PawnKindDef/BS_LittleBigVillager",
+    "PawnKindDef/BS_NisseGunner",
+    "PawnKindDef/BS_NisseMecha",
+    "PawnKindDef/BS_Nisse_Mage",
+    "PawnKindDef/BS_Ogre_Berserker",
+    "PawnKindDef/BS_Ogre_Chieftain",
+    "PawnKindDef/BS_Ogre_Cook",
+    "PawnKindDef/BS_Ogre_Hunter",
+    "PawnKindDef/BS_Ogre_Warrior",
+    "PawnKindDef/BS_PilotedFleshGolemWarrior",
+    "PawnKindDef/BS_RedcapSlasher",
+    "PawnKindDef/BS_RedcapSlasherMk2",
+    "PawnKindDef/BS_Troll_Archer_Young",
+    "PawnKindDef/BS_Troll_Raider_Adult",
+    "PawnKindDef/BS_Troll_Raider_Adult2",
+    "PawnKindDef/BS_Troll_Ranged_Adult",
+    "PawnKindDef/BS_Troll_Ranged_Adult2",
+    "PawnKindDef/BS_Troll_Simple_Adult",
+    "PawnKindDef/BS_Troll_Simple_Ancient",
+    "PawnKindDef/BS_Troll_Simple_Old",
+    "PawnKindDef/BS_Troll_Simple_Young",
+    "RecipeDef/Make_BS_BarbarianArmor",
+    "RecipeDef/Make_BS_Nisse_Cap",
+    "RecipeDef/Make_VFEM_Bow_HeavyCrossbow",
+    "ScenarioDef/BS_Exiled_Jotun_Adventurer",
+    "SoundDef/VFEM_Shot_HeavyCrossbow",
+    "ThingDef/BS_BarbarianArmor",
+    "ThingDef/BS_Nisse_Cap",
+    "ThingDef/VFEM_Arrow_HeavyBolt",
+    "ThingDef/VFEM_Bow_HeavyCrossbow",
+    "TraderKindDef/BS_Base_Ogre",
+    "TraderKindDef/BS_Caravan_Ogre",
+    "XenotypeDef/BS_BrokenTitan",
+    "XenotypeDef/BS_Corrupterd_Titan",
+    "XenotypeDef/BS_Dwarf",
+    "XenotypeDef/BS_FireJotun",
+    "XenotypeDef/BS_FleshGolemServant",
+    "XenotypeDef/BS_FrostJotun",
+    "XenotypeDef/BS_Gnome",
+    "XenotypeDef/BS_GreatOgre",
+    "XenotypeDef/BS_Half_Jotun",
+    "XenotypeDef/BS_Hearthdoll",
+    "XenotypeDef/BS_Hearthguard",
+    "XenotypeDef/BS_Jotun",
+    "XenotypeDef/BS_Ogre",
+    "XenotypeDef/BS_PilotableFleshGolem",
+    "XenotypeDef/BS_Redcap",
+    "XenotypeDef/BS_Surtr",
+    "XenotypeDef/BS_Svartalf",
+    "XenotypeDef/BS_Troll",
+    "XenotypeDef/BS_TrollAdult",
+    "XenotypeDef/BS_TrollOld",
+    "XenotypeDef/BS_Ymir",
+    "GeneDef/Outland_XenotypeAscension_BS_BrokenTitan",
+    "AbilityDef/Outland_XenotypeImplanter_BS_BrokenTitan",
+    "GeneDef/Outland_XenotypeImplanter_BS_BrokenTitan",
+    "GeneDef/Outland_XenotypeAscension_BS_Corrupterd_Titan",
+    "AbilityDef/Outland_XenotypeImplanter_BS_Corrupterd_Titan",
+    "GeneDef/Outland_XenotypeImplanter_BS_Corrupterd_Titan",
+    "GeneDef/Outland_XenotypeAscension_BS_Dwarf",
+    "AbilityDef/Outland_XenotypeImplanter_BS_Dwarf",
+    "GeneDef/Outland_XenotypeImplanter_BS_Dwarf",
+    "GeneDef/Outland_XenotypeAscension_BS_FireJotun",
+    "AbilityDef/Outland_XenotypeImplanter_BS_FireJotun",
+    "GeneDef/Outland_XenotypeImplanter_BS_FireJotun",
+    "GeneDef/Outland_XenotypeAscension_BS_FleshGolemServant",
+    "AbilityDef/Outland_XenotypeImplanter_BS_FleshGolemServant",
+    "GeneDef/Outland_XenotypeImplanter_BS_FleshGolemServant",
+    "GeneDef/Outland_XenotypeAscension_BS_FrostJotun",
+    "AbilityDef/Outland_XenotypeImplanter_BS_FrostJotun",
+    "GeneDef/Outland_XenotypeImplanter_BS_FrostJotun",
+    "GeneDef/Outland_XenotypeAscension_BS_Gnome",
+    "AbilityDef/Outland_XenotypeImplanter_BS_Gnome",
+    "GeneDef/Outland_XenotypeImplanter_BS_Gnome",
+    "GeneDef/Outland_XenotypeAscension_BS_GreatOgre",
+    "AbilityDef/Outland_XenotypeImplanter_BS_GreatOgre",
+    "GeneDef/Outland_XenotypeImplanter_BS_GreatOgre",
+    "GeneDef/Outland_XenotypeAscension_BS_Half_Jotun",
+    "AbilityDef/Outland_XenotypeImplanter_BS_Half_Jotun",
+    "GeneDef/Outland_XenotypeImplanter_BS_Half_Jotun",
+    "GeneDef/Outland_XenotypeAscension_BS_Hearthdoll",
+    "AbilityDef/Outland_XenotypeImplanter_BS_Hearthdoll",
+    "GeneDef/Outland_XenotypeImplanter_BS_Hearthdoll",
+    "GeneDef/Outland_XenotypeAscension_BS_Hearthguard",
+    "AbilityDef/Outland_XenotypeImplanter_BS_Hearthguard",
+    "GeneDef/Outland_XenotypeImplanter_BS_Hearthguard",
+    "GeneDef/Outland_XenotypeAscension_BS_Jotun",
+    "AbilityDef/Outland_XenotypeImplanter_BS_Jotun",
+    "GeneDef/Outland_XenotypeImplanter_BS_Jotun",
+    "GeneDef/Outland_XenotypeAscension_BS_Ogre",
+    "AbilityDef/Outland_XenotypeImplanter_BS_Ogre",
+    "GeneDef/Outland_XenotypeImplanter_BS_Ogre",
+    "GeneDef/Outland_XenotypeAscension_BS_PilotableFleshGolem",
+    "AbilityDef/Outland_XenotypeImplanter_BS_PilotableFleshGolem",
+    "GeneDef/Outland_XenotypeImplanter_BS_PilotableFleshGolem",
+    "GeneDef/Outland_XenotypeAscension_BS_Redcap",
+    "AbilityDef/Outland_XenotypeImplanter_BS_Redcap",
+    "GeneDef/Outland_XenotypeImplanter_BS_Redcap",
+    "GeneDef/Outland_XenotypeAscension_BS_Surtr",
+    "AbilityDef/Outland_XenotypeImplanter_BS_Surtr",
+    "GeneDef/Outland_XenotypeImplanter_BS_Surtr",
+    "GeneDef/Outland_XenotypeAscension_BS_Svartalf",
+    "AbilityDef/Outland_XenotypeImplanter_BS_Svartalf",
+    "GeneDef/Outland_XenotypeImplanter_BS_Svartalf",
+    "GeneDef/Outland_XenotypeAscension_BS_Troll",
+    "AbilityDef/Outland_XenotypeImplanter_BS_Troll",
+    "GeneDef/Outland_XenotypeImplanter_BS_Troll",
+    "GeneDef/Outland_XenotypeAscension_BS_TrollAdult",
+    "AbilityDef/Outland_XenotypeImplanter_BS_TrollAdult",
+    "GeneDef/Outland_XenotypeImplanter_BS_TrollAdult",
+    "GeneDef/Outland_XenotypeAscension_BS_TrollOld",
+    "AbilityDef/Outland_XenotypeImplanter_BS_TrollOld",
+    "GeneDef/Outland_XenotypeImplanter_BS_TrollOld",
+    "GeneDef/Outland_XenotypeAscension_BS_Ymir",
+    "AbilityDef/Outland_XenotypeImplanter_BS_Ymir",
+    "GeneDef/Outland_XenotypeImplanter_BS_Ymir",
 ]
 
 
