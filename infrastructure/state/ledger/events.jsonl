@@ -7189,3 +7189,5 @@
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"WORLDMAP_FINAL_REVIEW_1 Phase 0-2: load canonical save, fresh exports, audits, STARE screenshots","ts":"2026-09-11T07:15:50Z"}
 {"seat":"BENCH","event":"start","id":"WORLDMAP_FINAL_REVIEW_1","ts":"2026-09-11T07:15:51Z"}
 {"seat":"FOUNDRY","event":"close","id":"PYRELANDS_MECHANICS_1","sha":"6946c18735f6064247a0e09463fd9d30b4596357","ts":"2026-09-11T07:18:52Z"}
+{"seat":"FOUNDRY","event":"file","id":"SAND_STALKER_BADGER_SOUNDS_1","title":"RSW_SandStalker references nonexistent Pawn_Badger_* SoundDefs (4 cross-ref errors, pre-existing, traced to 9f8bc41f)","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-11T07:21:45Z"}
+{"seat":"FOUNDRY","event":"close","id":"RESTORE_FALLOUT_TRIAGE_1","sha":"097ec3110668f27c0033e7e1e3ac3df0cec183d4","ts":"2026-09-11T07:21:54Z"}

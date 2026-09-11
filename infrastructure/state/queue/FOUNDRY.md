@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T07:18:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T07:21:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -621,15 +621,6 @@ kind:     build
 summary:  (no items/BRAINWORM_MOD_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BRAINWORM_MOD_BUILD_1.md
 
-## RESTORE_FALLOUT_TRIAGE_1 CherryPicker restore fallout: config errors 95 vs 23 baseline - duplicate animal records (ZBiome_Grasslands x5 species), orphaned RSW_ juveniles (parents still cut), duplicate-key exceptions (AA_Eyeling, RSW_Nuna) - re-cut or restore-parents per family
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  MEASURED off the live Player.log after the 2026-09-11 batch restart (the first
-prose:    infrastructure/state/items/RESTORE_FALLOUT_TRIAGE_1.md
-
 ## BAREHANDED_MELEE_FALLBACK_1 18 of 23 bare-handed pawn kinds have 100% ranged weapon pools with zero melee fallback (shooting-disabled pawns spawn bare) - re-run pool join vs today's post-restore cut list first, then add melee tags per faction voice; 5 kinds still undiagnosed
 state:    doing
 row:      unassigned
@@ -997,3 +988,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FAUNA_STATS_BRIDGE_TOOL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FAUNA_STATS_BRIDGE_TOOL_1.md
+
+## SAND_STALKER_BADGER_SOUNDS_1 RSW_SandStalker references nonexistent Pawn_Badger_* SoundDefs (4 cross-ref errors, pre-existing, traced to 9f8bc41f)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SAND_STALKER_BADGER_SOUNDS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SAND_STALKER_BADGER_SOUNDS_1.md
