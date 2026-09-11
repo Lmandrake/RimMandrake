@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rut.frostmiteartoverride</packageId>
+  <name>Frostmite Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces sarg.alphaanimals' AA_Frostmite art (primary look,
+south/east/north facings only - the AA_FrostMite2/AA_FrostMite3 alternate
+looks and the dessicated-corpse texture stay on donor art) with custom
+generated art per the 2026-09-10 sitting ruling: propane-lake life should be
+utterly strange, not vanilla-Alpha-Animals-looking. LABEL/ART ONLY - no
+defName touched, no Defs, no Patches, loose Textures/ only, same relative
+path (Things/Pawn/Animal/AA_FrostMite/AA_FrostMite_&lt;facing&gt;) the donor
+uses so this mod's later load order wins the same-path resolution.
+
+Donor ships this art as loose PNGs already (not AssetBundle-packed), so this
+is a plain file overwrite by load order - the loose-PNG-over-AssetBundle
+question ART_REGEN_WAVE1_WIRE_IN_1 answered doesn't even apply here.</description>
+  <loadAfter>
+    <li>sarg.alphaanimals</li>
+  </loadAfter>
+</ModMetaData>

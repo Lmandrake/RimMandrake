@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rut.spidercatartoverride</packageId>
+  <name>Spidercat Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces vanillaexpanded.vgeneticse's GR_Spidercat art (south/
+east/north facings only - the GR_Dessicated_Spidercat corpse texture stays on
+donor art) with custom generated art per the 2026-09-10 sitting ruling:
+"spindly alien-like spidercat thing" for the Ash'karr wasteland cast. LABEL/
+ART ONLY - no defName touched, no Defs, no Patches, loose Textures/ only,
+same relative path (Things/Pawn/Animal/Insectoid/Spidercat/
+GR_Spidercat_&lt;facing&gt;) the donor uses so this mod's later load order
+wins the same-path resolution.
+
+Donor ships this art as loose PNGs already (not AssetBundle-packed), so this
+is a plain file overwrite by load order - the loose-PNG-over-AssetBundle
+question ART_REGEN_WAVE1_WIRE_IN_1 answered doesn't even apply here.</description>
+  <loadAfter>
+    <li>vanillaexpanded.vgeneticse</li>
+  </loadAfter>
+</ModMetaData>

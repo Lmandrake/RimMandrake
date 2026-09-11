@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rsw.insectomorphartoverride</packageId>
+  <name>Insectomorph Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces mlie.starwarsanimalcollection's Insectomorph art
+(south/east/north facings only - the dessicated-corpse texture stays on donor
+art) with custom generated art per the 2026-09-10 fauna/flora sitting: total
+art redo for this SW canon creature (native to Malastare), same treatment as
+Kreetle/Horax/Fambaa/Dragonsnake/Zakkeg. LABEL/ART ONLY - no defName touched,
+no Defs, no Patches, loose Textures/ only, same relative path
+(swanimals/Insectomorph/Insectomorph_&lt;facing&gt;) the donor uses so this
+mod's later load order wins the same-path resolution.
+
+Same donor as ART_REGEN_WAVE1_WIRE_IN_1's five overrides: the loose-PNG-over-
+AssetBundle mechanism was already proven live for mlie.starwarsanimalcollection
+on RimWorld 1.6.4871 (2026-09-11) - not re-proven here, only spot-checked.</description>
+  <loadAfter>
+    <li>mlie.starwarsanimalcollection</li>
+  </loadAfter>
+</ModMetaData>
