@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_Weather_SlimeRain (spec §2) — "organism-induced, brief intense
+    flooding, fast-draining, POTABLE (the body waters itself)".
+
+    🔑 POTABLE IS THE POINT AND IT IS A REAL FIELD, NOT FLAVOUR. rainRate > 0
+    is what makes vanilla treat this as rain at all: it fills roofless water
+    collection, extinguishes fires, washes rainWashes filth (including this
+    mod's own smear), and counts for plant growth. The campaign's Ash'karr
+    has an R-H1 rule that makes its rain non-potable; that rule is CAMPAIGN
+    canon (§1, left behind) and this mod deliberately does not carry it.
+
+    Brief and intense: durationRange is a third of vanilla Rain's and rainRate
+    is well above it, so the map floods and drains inside a few hours.
+
+    Favorability Neutral, not Bad, deliberately: WeatherDecider refuses any
+    below-Neutral weather for the first 8 days after settling
+    (RimWorld/WeatherDecider.cs:156) and this is the biome's signature — it
+    must be seen in the first week.
+
+    ART: vanilla rain overlays plus a green sky tint. SkyManager
+    (Verse/SkyManager.cs:117) tints any SkyOverlay with no ForcedOverlayColor
+    using curSky.colors.overlay, so the green below reaches the falling
+    particles for free — the same trick Pyrelands' ash fall uses. A bespoke
+    drip sheet is in §7's owed art bill.
+  -->
+
+  <WeatherDef>
+    <defName>RM_Weather_SlimeRain</defName>
+    <label>slime rain</label>
+    <description>The body sweats itself back into the sky and then lets it go all at once. Warm, heavy, faintly green, and over within a few hours; it fills every barrel on the map and drains away almost as fast. It is water — the organism is watering itself, and it is not fussy about who drinks. It also washes the smear off everything, which is the only free favour it does anybody.</description>
+    <durationRange>7000~22000</durationRange>
+    <favorability>Neutral</favorability>
+    <isBad>false</isBad>
+    <perceivePriority>3</perceivePriority>
+    <accuracyMultiplier>0.8</accuracyMultiplier>
+    <moveSpeedMultiplier>0.9</moveSpeedMultiplier>
+    <rainRate>1.5</rainRate>
+    <snowRate>0</snowRate>
+    <windSpeedFactor>0.9</windSpeedFactor>
+    <ambientSounds>
+      <li>Ambient_Rain</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Rain</li>
+      <li>WeatherOverlay_Fog</li>
+    </overlayClasses>
+    <!-- `saturation` must never be 0 or WeatherDef.ConfigErrors complains. -->
+    <skyColorsDay>
+      <sky>(0.60,0.70,0.55)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.46,0.62,0.40)</overlay>
+      <saturation>0.75</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.52,0.58,0.44)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.40,0.54,0.36)</overlay>
+      <saturation>0.70</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.20,0.26,0.20)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.22,0.32,0.22)</overlay>
+      <saturation>0.60</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.18,0.24,0.18)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.20,0.30,0.20)</overlay>
+      <saturation>0.60</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

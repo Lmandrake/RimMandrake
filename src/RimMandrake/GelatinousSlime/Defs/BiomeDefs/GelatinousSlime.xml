@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_GelatinousSlime — the body itself, as a biome (spec §2).
+
+    ⚠️ PLACEMENT IS NOT AN XML FIELD. BiomeDef has no temperature, rainfall or
+    elevation range — RimWorld scores every BiomeDef's `workerClass` per tile
+    and keeps the highest (RimSage, RimWorld/Planet/WorldGenStep_Terrain.cs:284
+    `surfaceTile.PrimaryBiome = BiomeFrom(...)`). A biome with no worker never
+    generates anywhere. BiomeWorker_GelatinousSlime (Source/SlimeBiome.cs) is
+    that worker and the ONLY route; the numbers stay in the modExtension below
+    so they retune without a rebuild.
+
+    🔴 RARITY IS THE RULED DEFAULT AND A PLAYER SETTING. Spec §2 round-2:
+    "1–3 rare patches per planet by default, with a Mod Settings rarity slider
+    allowing any rarity down to zero or up to common." The worker multiplies
+    its score by SlimeSettings.rarityFactor (Mod Settings), and at 0 returns
+    -100 so the biome cannot place at all. `spawnChance` below is the
+    per-qualifying-tile gate that keeps a qualifying BAND from becoming a
+    qualifying CONTINENT — see the worker's comment for the arithmetic.
+
+    🔑 This does not conflict with the campaign. Ash'karr's world is frozen and
+    hand-authored (CLAUDE.md, "There is no worldgen feature"); the RUT layer
+    (§9) places the campaign instance by hand. This worker serves OTHER
+    players' generated planets, which is the whole point of shipping at
+    RimMandrake tier.
+  -->
+
+  <BiomeDef>
+    <defName>RM_GelatinousSlime</defName>
+    <label>the gelatinous slime</label>
+    <description>A country-sized living body lying open to the sky. It was made to be a weapon and it won: it ate everything it was sent against, read every genome it ate, and filed them all, and then there was nothing left to be sent against and nobody left to report to. It is still filing. Walking across it is being read — slowly at first, as a sheen you can wipe off, and then not slowly. Nothing on it is hostile. It does not need to be.\n\nThere is no rock here and no soil worth the name; there is slime, which will feed you, cure you of any poison you have ever swallowed, and then take its fee in the only currency it understands.</description>
+    <workerClass>RimMandrake.GelatinousSlime.BiomeWorker_GelatinousSlime</workerClass>
+    <texture>World/Biomes/RM_GelatinousSlime</texture>
+
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.SlimeBiomeRanges">
+        <!-- Temperate-wet placement band [INVENTED — spec §2 flags this as a
+             build call]. The body cannot live dry (§4's fiction is the same
+             fact as its geography), so the rainfall floor is high and the
+             temperature band excludes anywhere that freezes solid. -->
+        <temperature>8~34</temperature>
+        <rainfall>1400~6000</rainfall>
+        <elevation>0~900</elevation>
+        <!-- Scored against BiomeWorker_TemperateForest / TropicalRainforest,
+             which own this corridor. baseScore alone would take every
+             qualifying tile on the planet; spawnChance is what makes it rare.
+             See BiomeWorker_GelatinousSlime for the worked arithmetic. -->
+        <baseScore>36</baseScore>
+        <degreeWeight>0.25</degreeWeight>
+        <rainfallDivisor>400</rainfallDivisor>
+        <!-- Fraction of QUALIFYING tiles the biome even competes for, before
+             the Mod Settings rarity factor multiplies it. 0.012 against the
+             temperate-wet band of a default 100% world is the ruled
+             "1-3 rare patches per planet" order of magnitude. -->
+        <spawnChance>0.012</spawnChance>
+      </li>
+    </modExtensions>
+
+    <animalDensity>1.4</animalDensity>
+    <plantDensity>1.1</plantDensity>
+    <wildPlantRegrowDays>6</wildPlantRegrowDays>
+    <!-- Nobody settles on it on purpose. -->
+    <settlementSelectionWeight>0.05</settlementSelectionWeight>
+    <campSelectionWeight>0.1</campSelectionWeight>
+    <!-- "Movement difficulty high" (§2). Above swamp (2.0), below impassable. -->
+    <movementDifficulty>2.4</movementDifficulty>
+    <!-- "forage 'edible barely'" (§2): the body feeds you, unpleasantly. -->
+    <forageability>0.7</forageability>
+    <foragedFood>RM_RawSlime</foragedFood>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <!-- 🔑 NO NATURAL ROCK — the compressor economy (§2) exists because of
+         this line. hasBedrock false means mapgen lays no mountain and no
+         stone; RM_SlimeCompressor is the only route to building blocks. -->
+    <hasBedrock>false</hasBedrock>
+    <noGravel>true</noGravel>
+    <allowRoads>false</allowRoads>
+    <!-- MustTranslate raw string, not a keyed lookup (Verse: BiomeDef.settleWarning). -->
+    <settleWarning>Settling on the gelatinous slime will begin converting every person and animal on the map, colonists included. Deserts, arid shrubland and the salt ocean halt and reverse the conversion; wet country does not. Do not settle here without a dry road out.</settleWarning>
+
+    <soundsAmbient>
+      <li>Ambient_NightInsects_Standard</li>
+    </soundsAmbient>
+
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+    </diseases>
+
+    <terrainsByFertility>
+      <li>
+        <terrain>RM_Slime_Hardened</terrain>
+        <min>-999</min>
+        <max>0.30</max>
+      </li>
+      <li>
+        <terrain>RM_Slime_Rich</terrain>
+        <min>0.30</min>
+        <max>0.86</max>
+      </li>
+      <li>
+        <terrain>RM_Slime_Grass</terrain>
+        <min>0.86</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+
+    <!-- Left null on purpose: waterShallow/waterDeep/riverbank fall back to
+         vanilla (Verse/MapGenUtility.cs). The body's own wet ground is the
+         patch maker below, not the river. -->
+    <lakeBeachTerrain>RM_Slime_Mud</lakeBeachTerrain>
+    <gravelTerrain>RM_Slime_Hardened</gravelTerrain>
+    <mudTerrain>RM_Slime_Mud</mudTerrain>
+
+    <terrainPatchMakers>
+      <!-- The currents: channels of liquid slime with a mud margin. These are
+           the extraction sites the gene seeker marks. -->
+      <li>
+        <perlinFrequency>0.015</perlinFrequency>
+        <thresholds>
+          <li>
+            <terrain>RM_Slime_Mud</terrain>
+            <min>0.62</min>
+            <max>0.82</max>
+          </li>
+          <li>
+            <terrain>RM_Slime_Liquid</terrain>
+            <min>0.82</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+      <!-- Dry margins: hardened shelves you can actually build on. -->
+      <li>
+        <perlinFrequency>0.021</perlinFrequency>
+        <thresholds>
+          <li>
+            <terrain>RM_Slime_Hardened</terrain>
+            <min>0.74</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+    </terrainPatchMakers>
+
+    <!-- Slime rain is the biome's signature and is organism-induced, not
+         meteorological: it is common here and exists nowhere else. Favorability
+         Neutral so WeatherDecider's 8-day post-settle gate
+         (RimWorld/WeatherDecider.cs:156) does not hide it for the first week. -->
+    <baseWeatherCommonalities>
+      <Clear>26</Clear>
+      <RM_Weather_SlimeRain>30</RM_Weather_SlimeRain>
+      <Fog>10</Fog>
+      <Rain>8</Rain>
+      <FoggyRain>6</FoggyRain>
+      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">6</Overcast>
+    </baseWeatherCommonalities>
+
+    <wildPlants>
+      <RM_Plant_SlimeGrass>10.0</RM_Plant_SlimeGrass>
+      <RM_Plant_Bellows>2.2</RM_Plant_Bellows>
+      <RM_Plant_Thumbstalk>1.6</RM_Plant_Thumbstalk>
+      <RM_Plant_Readerbloom>0.7</RM_Plant_Readerbloom>
+    </wildPlants>
+
+    <!--
+      🔑 THE ROSTER IS DELIBERATELY THIN, AND THAT IS SPIKE C.
+      RM_Gelatid is the body's own always-visible native. Everything else you
+      meet here WANDERED IN — SlimeVisitorSpawner (Source/SlimeVisitors.cs)
+      pulls arrivals from the NEIGHBOURING world tiles' own biomes, already
+      part-slimified, so the cast is whatever lives next door on this planet
+      with this mod set. A hand-written animal list would be a lie about a
+      biome whose whole fiction is "everything that ever touched it".
+    -->
+    <wildAnimals>
+      <RM_Gelatid>3.0</RM_Gelatid>
+    </wildAnimals>
+
+  </BiomeDef>
+
+</Defs>

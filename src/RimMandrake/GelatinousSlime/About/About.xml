@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: The Gelatinous Slime</name>
+  <packageId>mandrake.rm.gelatinousslime</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Inspired by the Gelatinous Superorganism of Alpha Biomes — full credit to the Alpha Biomes team for the original concept. This mod ships standalone: nothing of Alpha Biomes is required, referenced or included, and every terrain, plant, creature, weather and building here is its own.
+
+A country-sized body that reads everything that touches it. An ancient bioweapon that ate everything it was sent against and was unmade by victory, still filing entries for a master long dead.
+
+THE BIOME. Slime terrain from dry crust to liquid flow, slime-grass that promises fertility and takes the farm instead, slime rain that the body pulls down to water itself, a slime compressor that makes building stone out of ooze because there is no rock here, and a rendering pit that turns raw slime into food worth eating. Raw slime instantly cures poisons and toxic buildup. That is the wondrous half; the other half is the same mechanism.
+
+SLIMIFICATION. Stand on the body long enough and it starts reading you: a sheen, then a film, then a slowing, then you are returned to the flow and there is no corpse. Roughly a week, all four stages, colonists included. It never makes anything hostile — the library files entries, it does not recruit soldiers.
+
+CURE GEOGRAPHY. Deserts, arid shrubland and the salt ocean HALT it — dry country and brine leach the film away, on the map and on the road, so a caravan that walks home the dry way dries out and lives. The threat has a map-scale answer, and where you settle is the difficulty slider. Any mod can tag its own biome as drying: it is one modExtension, not code.
+
+THE GENE SEEKER (needs Biotech). Nothing in Biotech lets you point at a gene you do not own and go get it. This does. Craft a blank seeker, prime it against the archive with the gene you want, walk it out onto the body, place it on the marked flow and let it drink. What you carry home is an injectable — the gene you chose, plus one rider you did not. Injection grants both immediately, drops the patient into a xenogermination coma, and starts a fast slimification clock underneath. A friend must administer the antidote before the clock runs out. A lone colonist cannot do this and live.
+
+Without Biotech the seeker, the archive and the injectable simply do not spawn, and everything else works unchanged.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <!-- 🔑 No Harmony dependency, deliberately: every hook this mod uses is a
+       vanilla extension point (BiomeWorker, HediffComp, MapComponent,
+       ThingComp, JobDriver, ThoughtWorker, DefModExtension). Nothing here
+       patches an engine method, so nothing here breaks on a game update
+       that renames one. Do not add one without a reason written down. -->
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+  </loadAfter>
+</ModMetaData>

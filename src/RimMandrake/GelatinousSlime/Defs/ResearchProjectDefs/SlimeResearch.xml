@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    ⚠️ OPEN QUESTION 3 (spec §10): "Seeker crafting cost and research gate —
+    undesigned [INVENTED at build]; the gate is the machine's whole pacing
+    knob, worth a one-line ruling." These two projects and their costs are the
+    BUILD's guess, placed so the mod functions, and they are the first thing
+    to change when the owner rules. They are deliberately cheap to retune:
+    nothing but this file and the two recipeMakers reads them.
+  -->
+
+  <ResearchProjectDef>
+    <defName>RM_SlimeChemistry</defName>
+    <label>slime chemistry</label>
+    <description>Work out what the body is actually made of, which turns out to be the first step toward pressing it into walls, rendering it into food, and brewing the one thing that kills it inside a person.</description>
+    <baseCost>1400</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DrugProduction</li>
+    </prerequisites>
+    <researchViewX>6.0</researchViewX>
+    <researchViewY>3.4</researchViewY>
+  </ResearchProjectDef>
+
+  <!-- Biotech-only: it gates the seeker, and the seeker is genes.
+       MayRequire keeps the project out of the tree entirely when Biotech is
+       absent, which is the honest DLC split About.xml promises. -->
+  <ResearchProjectDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_GeneSeeking</defName>
+    <label>gene seeking</label>
+    <description>The body is a library and it never stopped filing. Learn to ask it for a specific entry, find where the current carrying that entry will surface, and take a sample without being taken in return. Mostly without.</description>
+    <baseCost>3400</baseCost>
+    <techLevel>Spacer</techLevel>
+    <prerequisites>
+      <li>RM_SlimeChemistry</li>
+      <li>GeneProcessor</li>
+    </prerequisites>
+    <researchViewX>7.2</researchViewX>
+    <researchViewY>3.4</researchViewY>
+  </ResearchProjectDef>
+
+</Defs>

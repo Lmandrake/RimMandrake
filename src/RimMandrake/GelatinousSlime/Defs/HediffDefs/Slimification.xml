@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_Slimification — the ladder (spec §3). Severity 0 -> 1.0 over ~7 days
+    on-biome. The 7-day total is RULED; every other number here is [INVENTED]
+    and flagged as such in the spec.
+
+    🔴 THE THREE LAWS, and where each one lives:
+
+    1. COLONISTS RIDE THE FULL LADDER, dissolution included. Nothing in this
+       def or its comp special-cases humanlikes out. The alert cascade is
+       Alert_Slimification (Source/SlimeAlerts.cs).
+    2. NEVER HOSTILE. No stage grants aggression, manhunter or faction change
+       on any creature ever. HediffComp_Slimification enforces this
+       POSITIVELY as well as by omission — at stage 3+ it ends any manhunter
+       or panic mental state the pawn is in, every rare tick. A future editor
+       adding a mentalStateGivers block here is reverting an owner ruling.
+    3. DRYING BIOMES REVERSE IT. §4, and it is entirely in the comp, driven by
+       the RM_DryingBiome modExtension on BiomeDefs (Patches/DryingBiomes.xml).
+
+    🔑 SEVERITY IS DRIVEN ENTIRELY BY HediffComp_Slimification, NOT by a
+    vanilla HediffCompProperties_SeverityPerDay. The rate depends on where the
+    pawn is (slime map / drying biome / anywhere else) and that is not
+    expressible in XML. The comp's numbers are its own constants; changing
+    them is a rebuild.
+
+    ART: §7's shared overlay (18 sprites + 6 humanlike buckets) is OWED and is
+    SPIKE B, which still has the apparel-layering question open. Nothing is
+    wired to renderNodeProperties here on purpose: pointing at textures that
+    do not exist would ship magenta. The stages below are legible without it
+    (label, description, real capacity penalties, the alert cascade).
+  -->
+
+  <HediffDef>
+    <defName>RM_Slimification</defName>
+    <label>slimification</label>
+    <description>The gelatinous body is reading this creature, and reading is not a passive act. A film settles, thickens, and begins substituting itself for tissue, working inward at its own unhurried pace. Left to finish, there is no body left to bury.\n\nDry country and salt halt it and slowly strip it away. The slime antidote ends it outright at any stage short of the last.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.45, 0.75, 0.35)</defaultLabelColor>
+    <initialSeverity>0.01</initialSeverity>
+    <maxSeverity>1.0</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>true</everCurableByItem>
+    <tendable>false</tendable>
+    <isBad>true</isBad>
+    <comps>
+      <li Class="RimMandrake.GelatinousSlime.HediffCompProperties_Slimification" />
+    </comps>
+    <stages>
+      <!-- TOUCHED: 0-0.2. A sheen. Self-reverses off slime terrain. -->
+      <li>
+        <label>touched</label>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+      <!-- SLICKED: 0.2-0.5. Green tint. No longer self-reverses: from here
+           it takes dry country or the antidote. -->
+      <li>
+        <label>slicked</label>
+        <minSeverity>0.2</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.15</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.10</offset>
+          </li>
+          <li>
+            <capacity>Sight</capacity>
+            <offset>-0.10</offset>
+          </li>
+        </capMods>
+      </li>
+      <!-- HALF-ABSORBED: 0.5-0.9. Heavy. Pain x0 and PLACID — the comp ends
+           manhunter/panic states here, which is law 2 made positive. -->
+      <li>
+        <label>half-absorbed</label>
+        <minSeverity>0.5</minSeverity>
+        <painFactor>0</painFactor>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.40</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.25</offset>
+          </li>
+          <li>
+            <capacity>Sight</capacity>
+            <offset>-0.25</offset>
+          </li>
+        </capMods>
+      </li>
+      <!-- RETURNED-TO-FLOW: 0.9-1.0. The last hours. Dissolution fires at
+           1.0 in the comp: no corpse, smear + raw slime. -->
+      <li>
+        <label>returning to the flow</label>
+        <minSeverity>0.9</minSeverity>
+        <painFactor>0</painFactor>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.70</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.60</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.40</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!--
+    RM_SlimeMarked (spec §5e, law P7) — "each machine gene stacks the
+    Slime-marked social/romance penalty; the marked are hard to love."
+
+    Severity IS the count of genes taken from the archive: one point per
+    injection, added by CompTargetEffect_InjectSlimeGenes. It is a permanent
+    record, not a condition — no capacity penalties, nothing to cure. The
+    penalty it carries is entirely social, read by ThoughtWorker_SlimeMarked.
+  -->
+  <HediffDef>
+    <defName>RM_SlimeMarked</defName>
+    <label>slime-marked</label>
+    <description>This person has been read by the gelatinous body and came back carrying something it filed. Whatever it left behind is visible in a way that is hard to describe and impossible not to notice: a translucency at the edges, a way light sits on the skin wrong. People mind. The more entries, the more they mind.</description>
+    <hediffClass>Hediff</hediffClass>
+    <defaultLabelColor>(0.45, 0.75, 0.35)</defaultLabelColor>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>8</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <stages>
+      <li>
+        <minSeverity>1</minSeverity>
+        <label>one entry</label>
+      </li>
+      <li>
+        <minSeverity>2</minSeverity>
+        <label>several entries</label>
+      </li>
+      <li>
+        <minSeverity>4</minSeverity>
+        <label>heavily filed</label>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

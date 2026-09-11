@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The smear. Left by dissolution (§3 stage 4) and by the wet terrains.
+       rainWashes true means RM_Weather_SlimeRain cleans the map it dirtied,
+       which is the body's one free favour (SlimeRain.xml's note). -->
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_SlimeSmear</defName>
+    <label>slime smear</label>
+    <description>A spreading film of the body, still faintly warm.</description>
+    <statBases>
+      <Beauty>-20</Beauty>
+      <Cleanliness>-4</Cleanliness>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Filth/Spatter</texPath>
+      <color>(96, 150, 78, 180)</color>
+    </graphicData>
+    <filth>
+      <disappearsInDays>12~20</disappearsInDays>
+      <rainWashes>true</rainWashes>
+      <cleaningWorkToReduceThickness>60</cleaningWorkToReduceThickness>
+      <canFilthAttach>true</canFilthAttach>
+      <cleaningSound>Interact_CleanFilth_Fluid</cleaningSound>
+    </filth>
+  </ThingDef>
+
+  <!--
+    RAW SLIME — the biome's forage, its building feedstock, its cuisine base,
+    and its universal antitoxin (spec §2).
+
+    🔴 "THE WONDROUS AND THE FATAL ARE ONE MECHANISM." Eating this instantly
+    clears poisons and toxic buildup AND bumps RM_Slimification. Both halves
+    live in CompUseEffect-free code: IngestionOutcomeDoer_SlimeDose
+    (Source/SlimeIngestion.cs), because the cure and the cost must be the
+    same call or someone will eventually patch one off and leave the other.
+  -->
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RM_RawSlime</defName>
+    <label>raw slime</label>
+    <description>A double handful of the living body, lifted out and still moving. It tastes of warm rainwater and old pennies and it is, technically, food.\n\nIt is also the best medicine anyone has ever found. Whatever is poisoning you — venom, tox buildup, a bad mushroom, industrial runoff — it finds and eats, thoroughly and at once. And then it starts on the rest of you, which is the same appetite and cannot be separated from it.</description>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Big</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(110, 172, 88)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>1.4</MarketValue>
+      <Mass>0.03</Mass>
+      <Flammability>0.2</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+      <Nutrition>0.05</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <!-- preferability RawBad is above DesperateOnlyForHumanlikes, and
+         IngestibleProperties.ConfigErrors() demands socialPropernessMatters
+         for anything above that or wardens loop picking it up in cells. -->
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <ingestible>
+      <foodType>AnimalProduct</foodType>
+      <preferability>RawBad</preferability>
+      <tasteThought>RM_AteRawSlime</tasteThought>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+      <optimalityOffsetHumanlikes>-20</optimalityOffsetHumanlikes>
+      <outcomeDoers>
+        <li Class="RimMandrake.GelatinousSlime.IngestionOutcomeDoer_SlimeDose" />
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <tickerType>Rare</tickerType>
+  </ThingDef>
+
+  <!-- Compressed slime blocks: the no-rock economy's building material.
+       Made at RM_SlimeCompressor. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SlimeBlock</defName>
+    <label>slime block</label>
+    <description>Slime driven through a press until the water is gone and what is left has nowhere to go but hard. It sets pale and slightly translucent, takes a wall load without complaint, and never entirely stops smelling like the place it came from. On a body with no bedrock it is the only stone there is.</description>
+    <thingCategories>
+      <li>StoneBlocks</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/StoneBlocks</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(160, 186, 140)</color>
+    </graphicData>
+    <stuffProps>
+      <categories>
+        <li>Stony</li>
+      </categories>
+      <appearance>Bricks</appearance>
+      <commonality>0</commonality>
+      <color>(160, 186, 140)</color>
+      <statOffsets>
+        <Beauty>-1</Beauty>
+      </statOffsets>
+      <statFactors>
+        <MaxHitPoints>0.85</MaxHitPoints>
+        <Beauty>0.9</Beauty>
+        <WorkToBuild>0.7</WorkToBuild>
+        <Flammability>0.1</Flammability>
+      </statFactors>
+    </stuffProps>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>0.6</MarketValue>
+      <Mass>0.5</Mass>
+      <Flammability>0.1</Flammability>
+      <StuffPower_Armor_Sharp>0.55</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.35</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>2</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>2</StuffPower_Insulation_Heat>
+    </statBases>
+    <stackLimit>75</stackLimit>
+  </ThingDef>
+
+  <!--
+    THE ANTIDOTE (spec §6). "An intentionally toxic purgative — poison aimed
+    at the reader in your blood," and the cure is honestly a poisoning: it
+    clears RM_Slimification at any stage below 1.0 and hands the patient a
+    slug of toxic buildup for the privilege.
+
+    🔴 IT MUST WORK ON A DOWNED OR COMATOSE PATIENT — that is the whole
+    social mechanic of §5d's race. The route is the verified vanilla
+    administer-to-another-pawn pair: CompTargetable_SinglePawn (the doctor
+    picks the patient) + a CompTargetEffect that does the work on the TARGET,
+    not on the user. Read off RimWorld/CompTargetable.cs and
+    CompTargetable_SinglePawn.cs, not guessed; MechSerumHealer is the shape
+    of the CompProperties_Usable half.
+
+    Campaign reskin (§9): the RUT layer re-sources this as Rot-derived. Item
+    behaviour is identical; only the recipe and the fiction move.
+  -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SlimeAntidote</defName>
+    <label>slime antidote</label>
+    <description>A squat glass ampoule of something deliberately awful: a purgative brewed from the slime itself and cut with enough neutroamine to make it lethal to slime and merely terrible for people. Administered into a converting patient, it kills what is reading them inside a few minutes, at the cost of a day or two of genuine poisoning.\n\nIt cannot help someone already returned to the flow. Before that, at any stage, it works every time.</description>
+    <thingCategories>
+      <li>Drugs</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Drug/Penoxycyline</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150, 196, 120)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>62</MarketValue>
+      <Mass>0.1</Mass>
+      <Flammability>0.4</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+      <WorkToMake>900</WorkToMake>
+    </statBases>
+    <stackLimit>25</stackLimit>
+    <techLevel>Industrial</techLevel>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Administer {0_label}</useLabel>
+        <useDuration>360</useDuration>
+        <showUseGizmo>true</showUseGizmo>
+      </li>
+      <li Class="CompProperties_Targetable">
+        <compClass>CompTargetable_SinglePawn</compClass>
+      </li>
+      <!-- ⚠️ There is NO generic CompProperties_TargetEffect in vanilla —
+           every shipped target effect declares its own props class
+           (CompProperties_TargetEffectResurrect, ..._BrainDamageChance).
+           Bare `CompProperties` with an explicit compClass is the route that
+           needs no props of its own. The item destroys itself inside
+           CompTargetEffect_SlimeAntidote rather than through
+           CompProperties_UseEffectDestroySelf, so there is exactly one
+           destroy path and no ordering question between the two comps. -->
+      <li Class="CompProperties">
+        <compClass>RimMandrake.GelatinousSlime.CompTargetEffect_SlimeAntidote</compClass>
+      </li>
+    </comps>
+    <recipeMaker>
+      <researchPrerequisite>RM_SlimeChemistry</researchPrerequisite>
+      <recipeUsers>
+        <li>DrugLab</li>
+      </recipeUsers>
+      <workSpeedStat>DrugSynthesisSpeed</workSpeedStat>
+      <workSkill>Intellectual</workSkill>
+      <skillRequirements>
+        <Intellectual>5</Intellectual>
+      </skillRequirements>
+      <displayPriority>2000</displayPriority>
+    </recipeMaker>
+    <costList>
+      <RM_RawSlime>25</RM_RawSlime>
+      <Neutroamine>2</Neutroamine>
+    </costList>
+  </ThingDef>
+
+</Defs>

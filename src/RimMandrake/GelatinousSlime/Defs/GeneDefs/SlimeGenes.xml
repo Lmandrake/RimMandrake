@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_Gene_SlimeResistance — spec §3 law 1: "the mod ships resistance as an
+    acquirable state (§5's archive carries a slime-resistance gene at the
+    machine's standard price)". This is the gene that makes the colonist
+    ladder survivable without abandoning the biome, and it is deliberately in
+    the archive: you buy immunity from the thing by letting the thing read you
+    once. The campaign adds its own mycoid-symbiote route in the RUT layer.
+
+    P4 — every gene is a trade — is honoured with a real metabolic cost, not a
+    token one: this is a whole second immune system.
+
+    🔑 The MECHANISM is not this def. MapComponent_SlimeExposure checks
+    `pawn.genes.HasActiveGene(this)` OR the RM_SlimeResistant modExtension on
+    the race, so a non-Biotech game still has a resistance route (the
+    extension) and this gene is the Biotech-side one.
+
+    Biotech-only by MayRequire: GeneDef does not exist without it.
+    iconPath reuses a vanilla gene icon — §7's art bill is OWED.
+  -->
+
+  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Gene_SlimeResistance</defName>
+    <label>slime-blind</label>
+    <labelShortAdj>slime-blind</labelShortAdj>
+    <description>Carriers cannot be read. Whatever the gelatinous body uses to recognise tissue as a filing candidate finds nothing here to hold onto — the film settles, fails to bind, and slides off. They can wade the currents all day and walk home dry.\n\nIt costs. The same modified surface chemistry that refuses the slime refuses a good deal of ordinary biology as well, and the carrier burns through food keeping it running.</description>
+    <iconPath>UI/Icons/Genes/Gene_TotalToxicityResistance</iconPath>
+    <displayCategory>ResistanceAndWeakness</displayCategory>
+    <displayOrderInCategory>80</displayOrderInCategory>
+    <customEffectDescriptions>
+      <li>Immune to slimification</li>
+    </customEffectDescriptions>
+    <biostatCpx>2</biostatCpx>
+    <biostatMet>-3</biostatMet>
+    <symbolPack>
+      <prefixSymbols>
+        <li>
+          <symbol>slick</symbol>
+        </li>
+        <li>
+          <symbol>glass</symbol>
+        </li>
+      </prefixSymbols>
+    </symbolPack>
+  </GeneDef>
+
+</Defs>

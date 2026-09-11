@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    THE GENETIC ARCHIVE (spec §5b) — "vanilla Biotech GeneDefs framed as 'what
+    has wandered in over the centuries', curated under the P-laws, replaceable
+    by the campaign/any mod (§9)."
+
+    🔑 THIS IS A DEF, NOT A LIST IN CODE, AND THAT IS THE WHOLE POINT. The RUT
+    layer swaps the campaign's frozen SW gene lists in by shipping its own
+    RM_GeneArchiveDef with a HIGHER `priority`; Dialog_GeneArchive reads
+    whichever archive wins. Nothing in this mod's C# names a single gene.
+
+    ⚠️ OPEN QUESTION 1 (spec §10): "Default archive size for the universal
+    list: ~12-20 vanilla/Biotech genes under the P-laws proposed [INVENTED] —
+    curate at a sitting or delegate to build?" This is the BUILD's curation,
+    17 targets and 19 riders, offered for the owner's sitting. Every defName
+    below was read out of the live GeneDef index (RimSage), not guessed.
+
+    THE P-LAWS, and how this list obeys them:
+
+    P4 — EVERY GENE IS A TRADE, never pure upside. The targets are genuinely
+      good; the price is not paid in the target, it is paid in the RIDER, the
+      coma, the antidote, the walk, and the Slime-marked penalty. A target
+      list of gifts with a guaranteed cost attached IS the anti-exponential
+      rule; a target list of gifts with no cost would not be.
+    P5 — RIDERS ARE VISIBLE AND FELT. Every rider below is one or the other
+      and most are both: a mood floor, a melee penalty, a fragility, or a
+      body change other pawns can see. NOTHING in the rider list is cosmetic-
+      only-and-harmless, and nothing in it is invisible-and-harmless.
+    P7 — the Slime-marked social penalty is applied per injection by
+      CompTargetEffect_InjectSlimeGenes, not listed here.
+    P8 — HERITABLE. The injector adds these as ENDOGENES
+      (Pawn_GeneTracker.AddGene(def, xenogene: false)), so the bloodline
+      carries them. That is in the C#, not here.
+
+    🔴 ONE EXCLUSION THAT IS A RULING, NOT A TASTE: no Aggression_Aggressive
+    or Aggression_HyperAggressive, anywhere, in either list. The never-hostile
+    law (§3 law 2) is about slimification, but the library filing a colonist
+    as "more likely to attack people" is the same ruling read one step out,
+    and a future editor should have to argue with this comment first.
+  -->
+
+  <RimMandrake.GelatinousSlime.GeneArchiveDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_Archive_Default</defName>
+    <label>the circulating archive</label>
+    <description>Everything that ever touched the body, still in circulation.</description>
+    <priority>0</priority>
+
+    <!-- What a player can ASK FOR. 17 entries: 16 vanilla, plus the one this
+         mod authors, which is the only way off the ladder short of leaving. -->
+    <targetGenes>
+      <li>RM_Gene_SlimeResistance</li>
+      <li>ToxResist_Total</li>
+      <li>ToxicEnvironmentResistance_Total</li>
+      <li>FireResistant</li>
+      <li>VacuumResistance_Partial</li>
+      <li>MoveSpeed_VeryQuick</li>
+      <li>Beauty_Beautiful</li>
+      <li>Learning_Fast</li>
+      <li>Mood_Sanguine</li>
+      <li>Pain_Reduced</li>
+      <li>MeleeDamage_Strong</li>
+      <li>MinTemp_LargeDecrease</li>
+      <li>MaxTemp_LargeIncrease</li>
+      <li>PsychicAbility_Enhanced</li>
+      <li>Coagulate</li>
+      <li>AcidSpray</li>
+      <li>FoamSpray</li>
+    </targetGenes>
+
+    <!-- What comes WITH it, one rolled per injection, unseen until it lands.
+         "Something fun but odd" (ruled) — but always felt. -->
+    <riderGenes>
+      <li>Beauty_VeryUgly</li>
+      <li>Beauty_Ugly</li>
+      <li>Mood_Pessimist</li>
+      <li>Mood_Depressive</li>
+      <li>Pain_Extra</li>
+      <li>Learning_Slow</li>
+      <li>Delicate</li>
+      <li>MeleeDamage_Weak</li>
+      <li>MinTemp_SmallIncrease</li>
+      <li>MaxTemp_SmallDecrease</li>
+      <li>PsychicAbility_Dull</li>
+      <li>Aggression_DeadCalm</li>
+      <li>Hair_LightGreen</li>
+      <li>Skin_PaleYellow</li>
+      <li>Ears_Floppy</li>
+      <li>Tail_Smooth</li>
+      <li>ElongatedFingers</li>
+      <li>Brow_Heavy</li>
+      <li>Head_Gaunt</li>
+    </riderGenes>
+  </RimMandrake.GelatinousSlime.GeneArchiveDef>
+
+</Defs>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    THE TWO BUILDINGS (spec §2). The console that used to sit here DIED in the
+    round-2 redesign — the gene machine is a handheld consumable now (§5), not
+    a building. Do not add one back without a new ruling.
+
+    ART: green-tinted vanilla workbench sheets, placeholder. §7 prices the
+    real bill at 2-4 textures.
+  -->
+
+  <!-- THE NO-ROCK ECONOMY. There is no bedrock on this biome (BiomeDef
+       hasBedrock false), so this press is the only source of building blocks
+       and it is what makes the place liveable at all. -->
+  <ThingDef ParentName="BenchBase">
+    <defName>RM_SlimeCompressor</defName>
+    <label>slime compressor</label>
+    <description>A screw press with a heated jacket and a drain. Feed it raw slime, wait, and it gives back pale blocks hard enough to build with. It is the single piece of equipment that makes a colony on the body possible, because there is no stone here to quarry and never will be.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/TableStonecutter</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3.5,1.5)</drawSize>
+      <color>(150, 180, 130)</color>
+    </graphicData>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.20</staticSunShadowHeight>
+    <altitudeLayer>Building</altitudeLayer>
+    <fillPercent>0.5</fillPercent>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <WorkToBuild>1800</WorkToBuild>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Flammability>0.6</Flammability>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <size>(3,1)</size>
+    <designationCategory>Production</designationCategory>
+    <passability>PassThroughOnly</passability>
+    <pathCost>60</pathCost>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <costList>
+      <Steel>60</Steel>
+      <WoodLog>30</WoodLog>
+    </costList>
+    <researchPrerequisites>
+      <li>RM_SlimeChemistry</li>
+    </researchPrerequisites>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+    </building>
+    <comps>
+      <li Class="CompProperties_AffectedByFacilities">
+        <linkableFacilities>
+          <li>ToolCabinet</li>
+        </linkableFacilities>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <!-- The cuisine vessel. The campaign's three-biome gourmet CHAIN stays
+       campaign-side (§1); the building itself generalizes and ships here. -->
+  <ThingDef ParentName="BenchBase">
+    <defName>RM_SlimePit</defName>
+    <label>slime pit</label>
+    <description>A lined, sunken vat with a slow burner under it. Raw slime rendered down long enough stops tasting of pennies and starts tasting of something a cook can work with. Everyone who has spent a season on the body has an opinion about how long is long enough.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/TableStoveFueled</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3.5,1.5)</drawSize>
+      <color>(140, 168, 118)</color>
+    </graphicData>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.20</staticSunShadowHeight>
+    <altitudeLayer>Building</altitudeLayer>
+    <fillPercent>0.5</fillPercent>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <WorkToBuild>1400</WorkToBuild>
+      <MaxHitPoints>160</MaxHitPoints>
+      <Flammability>0.6</Flammability>
+      <Cleanliness>-4</Cleanliness>
+    </statBases>
+    <size>(3,1)</size>
+    <designationCategory>Production</designationCategory>
+    <passability>PassThroughOnly</passability>
+    <pathCost>60</pathCost>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <costList>
+      <Steel>45</Steel>
+      <WoodLog>25</WoodLog>
+    </costList>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+    </building>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <!-- Recipes. Both live with their bench rather than in a RecipeDefs file:
+       there are two of them and they are the bench's whole purpose. -->
+  <RecipeDef>
+    <defName>RM_Make_SlimeBlock</defName>
+    <label>press slime blocks</label>
+    <description>Press raw slime into building blocks.</description>
+    <jobString>Pressing slime blocks.</jobString>
+    <workAmount>1100</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <recipeUsers>
+      <li>RM_SlimeCompressor</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_RawSlime</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_RawSlime</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_SlimeBlock>12</RM_SlimeBlock>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_Make_SlimeMeal</defName>
+    <label>render slime into a simple meal</label>
+    <description>Render raw slime down into something that reads as food.</description>
+    <jobString>Rendering slime.</jobString>
+    <workAmount>500</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <workSkill>Cooking</workSkill>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <recipeUsers>
+      <li>RM_SlimePit</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_RawSlime</li>
+          </thingDefs>
+        </filter>
+        <count>18</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_RawSlime</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <MealSimple>1</MealSimple>
+    </products>
+  </RecipeDef>
+
+</Defs>

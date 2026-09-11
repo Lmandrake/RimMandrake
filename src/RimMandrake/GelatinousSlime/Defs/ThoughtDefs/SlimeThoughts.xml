@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Eating the body. Nobody enjoys it; everybody who has been poisoned on
+       this biome has done it anyway. -->
+  <ThoughtDef>
+    <defName>RM_AteRawSlime</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>0.5</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackedEffectMultiplier>0.6</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>ate raw slime</label>
+        <description>I ate a handful of the ground. It was warm. It moved on the way down.</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!--
+    P7, the Slime-marked penalty (spec §5e): "each machine gene stacks the
+    Slime-marked social/romance penalty — the marked are hard to love."
+
+    A SOCIAL thought, so it is an opinion the OTHER pawn holds about the
+    marked one, which is what a romance/opinion penalty actually is. The
+    stage is chosen by ThoughtWorker_SlimeMarked from the target's
+    RM_SlimeMarked severity — one stage per band, matching that hediff's
+    three stages, so a heavily-filed colonist is genuinely hard to live with.
+  -->
+  <ThoughtDef>
+    <defName>RM_SlimeMarkedOpinion</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>RimMandrake.GelatinousSlime.ThoughtWorker_SlimeMarked</workerClass>
+    <stages>
+      <li>
+        <label>slime-marked</label>
+        <description>There is something wrong with how the light sits on them.</description>
+        <baseOpinionOffset>-12</baseOpinionOffset>
+      </li>
+      <li>
+        <label>slime-marked</label>
+        <description>They have been out there more than once, and it shows. I keep catching myself looking.</description>
+        <baseOpinionOffset>-22</baseOpinionOffset>
+      </li>
+      <li>
+        <label>heavily slime-marked</label>
+        <description>Whatever came back from the body wearing their face, it has been back several times. I would rather not be alone with them.</description>
+        <baseOpinionOffset>-36</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>
