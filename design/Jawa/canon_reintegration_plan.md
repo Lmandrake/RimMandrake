@@ -189,11 +189,10 @@ in the dynamo's surviving works). **The war lab was never supposed to exist** �
 built to study the weapon after it was already loose, by people who still felt
 strong and had no time left — and every interaction taught the Assailants to
 adapt: **mutual learning, mutual destruction.**
-*Consequence for F1:* reconciled_lore still carries the older word —
-`01_campaign.md` ("initiator vessels that terraformed this world") and
-`02_world.md` ("the Forsakens' failed terraforming") — and per doctrine the
-wrong word is DELETED and replaced with the ruling when the catch-up commit
-lands, not bannered over.
+*Consequence for F1:* LANDED 2026-09-11 under `TERRAMANUFACTURE_CANON_1` —
+`01_campaign.md` and `02_world.md` (and every other founding doc narrating the
+past) now carry the terramanufacture wording in place; F1's remaining scope is
+the canon.yml keys, the Antiquities paragraphs and the narrator corpus.
 
 ---
 
@@ -527,7 +526,7 @@ one deck-slide relabel + one manifest tab-string pass each):**
 
 | # | slice | contents | unblocks / feeds |
 |---|---|---|---|
-| F1 | **Canon catch-up commit** | canon.yml: `research_tree.trees_ruled` (16+1 roster), `antiquities_ruled`, B-item expansions as ruled lines; reconciled_lore: 03/04/05/06/09 gain Antiquities-aware paragraphs (B1–B4, C1–C3); the terramanufacture ruling (B10) replaces every "terraforming" in 01/02/03; narrator corpus gains `the_knowing.md` (C4) | every later slice cites it |
+| F1 | **Canon catch-up commit** | canon.yml: `research_tree.trees_ruled` (16+1 roster), `antiquities_ruled`, B-item expansions as ruled lines; reconciled_lore: 03/04/05/06/09 gain Antiquities-aware paragraphs (B1–B4, C1–C3); the terramanufacture ruling (B10) — 01/02/03 wording DONE 2026-09-11, `TERRAMANUFACTURE_CANON_1`; narrator corpus gains `the_knowing.md` (C4) | every later slice cites it |
 | F2 | **Manifest schema v2** | columns: access class + holder, theology tags (god-reaction rows, D2), antiquity stage-gates, hidden-reveal channel; Rites+Antiquities rows enter with fates | E's grammar becomes data |
 | F3 | **The C# manifest pass spike** | the ruled option-B loader: log-loudly field rewrite + tab defs + hidden prereqs; G1 decides ResearchRetag's fate | tab restructure; theology; gates |
 | F4 | **Antiquities slices 1–2** (tree, items, reading loop, fragment corpus with stage-gated registers per B3) | unblock `ANTIQUITIES_TREE_BUILD_1` after this plan is ruled | the world-unlock meter goes live |

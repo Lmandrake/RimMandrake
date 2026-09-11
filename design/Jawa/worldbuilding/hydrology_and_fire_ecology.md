@@ -310,7 +310,7 @@ and all three are true:
 | read it as | and it means |
 |---|---|
 | **the world that was split** | the tidal lock — day, terminator, night |
-| **the world that was broken** | the Forsakens' failed terraforming (`the_forgotten_war.md`) |
+| **the world that was broken** | the Forsakens' failed terramanufacture (`the_forgotten_war.md`) |
 | **the people who were sundered** | the war that ended them, and the sleepers still fighting it |
 
 ⇒ **A name that is simultaneously geography, history and elegy.** Nothing else on
@@ -525,7 +525,7 @@ merely poor, it is *not addressed to us*. That is what makes it the end of the
 world rather than just a bad tile.
 
 ⚠️ **A temptation to leave alone.** The crags' description already says an ancient
-race partly terraformed this world and left — the Forsakens — and R-H8 says the
+race partly terraformed this world and left — the Forsakens (true as the first stage: the terraforming served the terramanufacture — `TERRAMANUFACTURE_CANON_1`) — and R-H8 says the
 strange biomes carry an ancient bioweapon's genetics. **Do not weld those two
 together yet.** The crags read best as chemistry that was ALWAYS here and was
 never ours; the terminator biomes read best as something that was *done* to

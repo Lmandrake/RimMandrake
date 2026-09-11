@@ -338,6 +338,10 @@ than simply announce; why silence from one is loaded; why a "compromise" is poss
 has no compromise — a system of selves does). It also darkens the Oracle: the ship is not sane, and its
 prophecies are the output of a mind at war with itself that nonetheless keeps coming true.
 
+> 🔑 2026-09-11, owner (`TERRAMANUFACTURE_CANON_1` card): *"The SHIP was terraforming. The RACE
+> was evolving the planet towards terramanufacturing. This is consistent."* This doc's word
+> stands; the planet-program docs say terramanufacture.
+
 **★★ THE MASTER KEY — the Kolyska was a COLONY TERRAFORMER (user, 2026-08-08).** The old AI's *actual
 original function* was to **reshape worlds** — a terraforming/colony-seeding vessel with factories,
 salvage capacity, and (latent, half-broken) world-altering machinery. This single fact **retroactively

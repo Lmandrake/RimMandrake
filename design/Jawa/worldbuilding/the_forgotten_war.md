@@ -7,8 +7,8 @@ DECIDE owns this. **Owner's session, 2026-08-15.** This document is the planet's
 *history*, where `hydrology_and_fire_ecology.md` is its physics.
 
 **It builds on an answer already settled:** `what_the_machines_are.md` rules that
-this was the **Forsakens'** world, that they partly terraformed a tidally locked
-planet and failed, and that the machines are their defences still running. Nothing
+this was the **Forsakens'** world, that they had begun evolving a tidally locked
+planet towards terramanufacture — the terraforming its first stage — and failed, and that the machines are their defences still running. Nothing
 here contradicts that. It says what the war was, what is left of it, and — the
 largest addition — **who built the ship the player flies.**
 
@@ -367,7 +367,8 @@ habitable**, and they are using it to pick over the corpse of what it built.
   these are not somebody's ruins. They are **her** people's. The player is flying
   a survivor through the wreckage of its own project.
 - **The Forsakens' failure is the ship's failure.** She helped start a
-  terraforming that did not take. The world's brokenness is, in a small part,
+  terraforming that did not take — first stage of a terramanufacture never
+  finished. The world's brokenness is, in a small part,
   hers.
 - **It arms the sleepers.** A woken Ancient who sees the Utinni does not see a
   scavenger vessel. They see **an initiator** — with the wrong crew aboard.

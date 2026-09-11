@@ -13,7 +13,8 @@ A Jawa scavenger clan on the desert world **Ash'karr** breaks into the oldest
 hulk in a Hutt discard yard — a Rakatan vessel, dead since before the Cartel
 had a name for the sand — and wakes it by pressing a Jawa-patterned mind into
 its empty ancient core. The ship was the **Kolyska**, "Cradle", one of the
-initiator vessels that terraformed this world; the clan paints **The Utinni**
+initiator vessels that terraformed this world toward the terramanufacture —
+the planet-factory begun and never finished; the clan paints **The Utinni**
 on its flank and the machine has never once answered to it. The campaign opens
 the moment the stolen ship sets down and the hatch opens: the ship is home, the
 Hutts are furious, the Empire watches from orbit, and the flight hardware is

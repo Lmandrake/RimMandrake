@@ -52,7 +52,7 @@ its own punishment and nobody has to author a timer.
 `AB_RockyCrags` carries a **hardcoded 0.34 sun-glow multiplier** and can never
 roll clear weather — I had recorded that as a biome quirk. **It is not a quirk any
 more. It is physics.** The dark biome *is* the nightside, and its own description
-already says an ancient race partly terraformed this world and left.
+already says an ancient race partly terraformed this world and left (true as the first stage: the terraforming served the terramanufacture — `TERRAMANUFACTURE_CANON_1`).
 
 ⭐ **The Forsakens tried to fix a tidally locked planet and failed.** That is why
 the dark never lifted, and it is the best back-story this world has been offered.

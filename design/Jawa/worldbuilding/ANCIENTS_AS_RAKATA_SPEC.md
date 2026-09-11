@@ -109,7 +109,7 @@ victims' own machines, still fighting a war whose other side left no trace.
 the Rakata. **A Jawa, a Hutt factor or an Imperial clerk says *the Forsaken* or *the
 Forgotten*.** The word `Rakata` in a modern mouth is a scholar's word, or a sleeper's.
 
-⇒ **The campaign's shape, restated:** the Jawa are scavenging the corpse of a terraforming
+⇒ **The campaign's shape, restated:** the Jawa are scavenging the corpse of a terramanufacture
 project, its makers are asleep in boxes, **and the weapon that killed them is still running
 in the biomes.**
 

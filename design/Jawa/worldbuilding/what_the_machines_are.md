@@ -161,6 +161,10 @@ alone.
 
 _2026-08-13, from a full read of Alpha Biomes' `AB_RockyCrags`._
 
+> 🔑 Refined (`TERRAMANUFACTURE_CANON_1`; owner 2026-09-11): the terraforming below was real
+> and was the first stage — **the race was evolving the planet towards terramanufacture**,
+> the world built into a factory. The ships terraformed; the discovery stands unchanged.
+
 **The dark biome ships its own dead precursor civilisation, and nobody had
 noticed.** Its own description, verbatim:
 

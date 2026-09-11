@@ -63,7 +63,7 @@ sessions be recorded here for DESIGN to pick up later.
   §12.2. And ⚠️ vanilla's Mutators step (700) has already run by then (§12.3), so ours go
   on after a clear-and-re-roll, not into a generator slot. **Nothing is blocked.**
 - **The Rust Cathedral at the substellar centre** — already ruled as the one mega-structure
-  (`the_forgotten_war.md`, 2026-08-15). Now sited: the Rakatan terraforming works, irregular
+  (`the_forgotten_war.md`, 2026-08-15). Now sited: the Rakatan terramanufacture works, irregular
   but one solid mass, surviving at higher elevation where sand never buried it. The map
   content itself — acid lakes, charged floors, foundry leavings, its defenders — is that
   doc's job, not the repaint's.

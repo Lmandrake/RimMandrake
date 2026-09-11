@@ -2338,6 +2338,303 @@
     </match>
   </Operation>
 
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Leather_Saurian"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_Leather_Saurian : heat-adapted: ablative hide, resists energy (L11) -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Leather_Saurian"]/stuffProps/statFactors</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Leather_Saurian"]/stuffProps/statFactors</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.15</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.05</ArmorRating_Blunt>
+              <ArmorRating_Heat>1.30</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.00</Comfort>
+            </statFactors>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Leather_Saurian"]/stuffProps</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.15</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.05</ArmorRating_Blunt>
+              <ArmorRating_Heat>1.30</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.00</Comfort>
+            </statFactors>
+            </value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Leather_Crustapod"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_Leather_Crustapod : large beast -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Leather_Crustapod"]/stuffProps/statFactors</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Leather_Crustapod"]/stuffProps/statFactors</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.30</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.42</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.00</Comfort>
+            </statFactors>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Leather_Crustapod"]/stuffProps</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.30</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.42</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.00</Comfort>
+            </statFactors>
+            </value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Leather_SoftFur"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_Leather_SoftFur : baseline hide -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Leather_SoftFur"]/stuffProps/statFactors</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Leather_SoftFur"]/stuffProps/statFactors</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.40</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.15</Comfort>
+            </statFactors>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Leather_SoftFur"]/stuffProps</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.40</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.15</Comfort>
+            </statFactors>
+            </value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Leather_Wampa"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_Leather_Wampa : megafauna: thick mass armour -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Leather_Wampa"]/stuffProps/statFactors</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Leather_Wampa"]/stuffProps/statFactors</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.45</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.40</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.45</ArmorRating_Heat>
+              <Beauty>1.25</Beauty>
+              <Comfort>1.00</Comfort>
+            </statFactors>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Leather_Wampa"]/stuffProps</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.45</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.40</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.45</ArmorRating_Heat>
+              <Beauty>1.25</Beauty>
+              <Comfort>1.00</Comfort>
+            </statFactors>
+            </value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Leather_Reptavian"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_Leather_Reptavian : baseline hide -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Leather_Reptavian"]/stuffProps/statFactors</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Leather_Reptavian"]/stuffProps/statFactors</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.40</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.15</Comfort>
+            </statFactors>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Leather_Reptavian"]/stuffProps</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.40</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.15</Comfort>
+            </statFactors>
+            </value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Leather_Mammavian"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_Leather_Mammavian : vermin: protects nothing, but fine and beautiful -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Leather_Mammavian"]/stuffProps/statFactors</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Leather_Mammavian"]/stuffProps/statFactors</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>0.10</ArmorRating_Sharp>
+              <ArmorRating_Blunt>0.10</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.10</ArmorRating_Heat>
+              <Beauty>1.60</Beauty>
+              <Comfort>1.35</Comfort>
+            </statFactors>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Leather_Mammavian"]/stuffProps</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>0.10</ArmorRating_Sharp>
+              <ArmorRating_Blunt>0.10</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.10</ArmorRating_Heat>
+              <Beauty>1.60</Beauty>
+              <Comfort>1.35</Comfort>
+            </statFactors>
+            </value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- Ops on defs THIS mod declares (mostly absorbed donors). No
+       PatchOperationFindMod: def and patch ship in the same mod, so naming
+       ourselves is a tautology dressed as a guard, and that shape has
+       already failed twice here. When a donor was absorbed and RETIRED the
+       FindMod went on naming a mod nobody loads; FindMod returns true on no
+       match, so whole blocks silently never ran (ARMOURY_RETIRED_GUARD_FIX_1).
+       The guard that means something is the target def itself, which is also
+       true whichever copy of a co-declared def the load ends up holding. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_MushroomLeather"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RUT_MushroomLeather : baseline hide -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_MushroomLeather"]/stuffProps/statFactors</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_MushroomLeather"]/stuffProps/statFactors</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.40</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.15</Comfort>
+            </statFactors>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_MushroomLeather"]/stuffProps</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.40</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.15</Comfort>
+            </statFactors>
+            </value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RUT_MoonlessSilk"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RUT_MoonlessSilk : baseline hide -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RUT_MoonlessSilk"]/stuffProps/statFactors</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_MoonlessSilk"]/stuffProps/statFactors</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.40</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.15</Comfort>
+            </statFactors>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RUT_MoonlessSilk"]/stuffProps</xpath>
+            <value>
+            <statFactors>
+              <ArmorRating_Sharp>1.20</ArmorRating_Sharp>
+              <ArmorRating_Blunt>1.10</ArmorRating_Blunt>
+              <ArmorRating_Heat>0.40</ArmorRating_Heat>
+              <Beauty>1.05</Beauty>
+              <Comfort>1.15</Comfort>
+            </statFactors>
+            </value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationFindMod">
     <mods><li>Rimefeller</li></mods>
     <match Class="PatchOperationSequence">

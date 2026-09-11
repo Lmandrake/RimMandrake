@@ -536,7 +536,7 @@ later patch reshapes it.
 ⭐ **"Oddly shaped rather than round or reasonable" is the instruction that makes
 the map worth looking at.** A round sea reads as a generator artefact; a torn,
 irregular one reads as *something happened here* — which, on a world the
-Forsakens half-terraformed and abandoned, is the point. **Do not let a shaping
+Forsakens' terramanufacture left one-tenth built and abandoned, is the point. **Do not let a shaping
 pass smooth them.**
 
 ⭐ **And three bodies plus a few mountain-fed rivers gives the Three Waters its
