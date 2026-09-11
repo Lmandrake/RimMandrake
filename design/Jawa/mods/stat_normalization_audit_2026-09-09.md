@@ -319,6 +319,15 @@ numbers one.
 
 ### Wave 2 — save-clean but content-bearing: cut = lose creatures/plants *(9 mods)*
 
+🟢 **RULED (owner, 2026-09-11, three cards at the bench).** Execution items:
+`BMT_FAUNA_ABSORPTION_1` (port the 71 cast BMT creatures, then retire) and
+`STAT_NORM_WAVE2_RETIRE_1` (port Cephaloids + VE Succulents + VAE Waste's used
+animals, then retire those three; Megafauna / Mythic Ages / FF Animals /
+Little Critters / the dizzyeevee crossbreeding pair are verify-then-retire —
+per-def roster+save re-check each, any cast find escalates back to the owner).
+Measured basis: BMT had 124 sitting rows (41 in / 30 move / 53 out); JOE_ 3
+moves; VAEWaste_ 3 rows; the other five had zero rows under any known prefix.
+
 Zero placed instances, but each ships real content that vanishes on retirement.
 Each needs a keep-or-port call, not a delete.
 
