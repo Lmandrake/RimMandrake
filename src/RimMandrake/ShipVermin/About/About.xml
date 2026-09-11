@@ -45,15 +45,16 @@ framing). This is NOT the same asset as mandrake.rsw.mynockartoverride, which
 retextures a DIFFERENT, donor (mlie.starwarsanimalcollection) mynock and is
 untouched by this item.
 
-Live proof is OWED: this mod has not yet been loaded in a running game.</description>
+Live-verified 2026-09-11: mynock boards, breeds under the population cap, and
+gnaws power/lighting to rubble on a live bridge quicktest.</description>
   <modDependencies>
     <li>
       <packageId>mandrake.rm.creaturebehaviors</packageId>
-      <name>RimMandrake: Creature Behaviors</name>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
     </li>
     <li>
       <packageId>mandrake.rsw.swbestiary</packageId>
-      <name>RimMandrake: SW — Bestiary</name>
+      <displayName>RimMandrake: SW — Bestiary</displayName>
     </li>
   </modDependencies>
   <loadAfter>
