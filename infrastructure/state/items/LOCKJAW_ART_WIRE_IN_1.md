@@ -130,29 +130,79 @@ entirely on donor art — unchanged, still internally consistent — until
 `_south` resolves. The bare `AA_Lockjaw` variant remains out of scope, as
 before.
 
+## 2026-09-11 update — `AA_Lockjaw2` (grey) south facing PASSED on `r13`, seeded per owner ruling
+
+Owner's ruling, verbatim: *"Try seeding the failing one with the successful
+outcome of the other."* Diffed the actual prompts: `lockjaw_improve_b_r9_south`
+(brown, PASS) and `lockjaw_improve_a_r9_south` (grey, REJECT) were **already
+word-for-word identical apart from the palette clause** — so the failure was
+not a wording gap, it was generation variance on this specific reference
+(confirmed further: `AA_Lockjaw2_south.png` and `AA_Lockjaw3_south.png` have
+byte-identical measured silhouettes — `133x180 at (61,42), aspect 0.739` —
+same underlying pose, different palette only). Every one of the 4 fixed-prompt
+grey attempts (`r9`-`r12`) failed the same way: subject WIDTH overshoot (169,
+196, 240, 173px against the reference's 133px), never the height.
+
+Given a plain repeat of the successful wording had already been tried and
+failed (`r9`), true two-image anchoring was considered (pass
+`lockjaw_improve_b_r9_south.png`, the successful brown output, as a second
+`--ref`) — `gemini_image.py` itself supports repeatable `--ref`, and the
+documented codex-channel two-image hang does not apply to the gemini channel
+this asset uses. But `fill_queue.py`/`artpiped.py`'s job schema only carries
+one `reference` field per job, so true two-image anchoring would require
+calling the gemini worker directly, bypassing the daemon/queue entirely.
+Tried word-anchoring first instead, per the skill's "Anchor with WORDS
+instead" guidance and the task's own ordering: built `r13` from the brown
+`r9` prompt verbatim, and — the actual new ingredient, since the words alone
+had already failed once — added a sentence naming the sibling's numeric
+success explicitly ("a sibling variant of this exact same creature... already
+rendered correctly at a narrow silhouette, subject width about 52% of canvas
+width... reproduce that same narrow, compact width").
+
+**`r13` PASSED on the first attempt** (`infrastructure/artpipe/done/lockjaw_improve_a_r13_south.json`):
+subject `133x178` at `(61,44)`, aspect `0.747` against the reference's `133x180`/
+`0.739` — width matched the reference's `133px` exactly, no width overshoot, no
+REJECT findings, one WARN (faint fringe, same as every other Lockjaw pass).
+Two-image anchoring was never needed.
+
+**Shipped**: `src/RimStarWars/LockjawArtOverride/Textures/Things/Pawn/Animal/AA_Lockjaw/`
+now carries `AA_Lockjaw2_east.png` (`lockjaw_improve_a_r7`), `AA_Lockjaw2_north.png`
+(`lockjaw_improve_a_r9_north`), `AA_Lockjaw2_south.png` (`lockjaw_improve_a_r13_south`)
+alongside the already-shipped `AA_Lockjaw3_*` set — both "improve" variants now
+complete, all three facings each. Deployed (`deploy_custom_mods.py --mod
+LockjawArtOverride --apply`, 3 files, VERIFIED in sync).
+
+**Live verification deferred**: at deploy time the bridge was held by FOUNDRY
+for `SHOKK_RSW_MOD_1` (not stale — idle 3 min), and the live `ModsConfig.xml`
+was on a different minimal list (13 mods, no `mandrake.rsw.lockjawartoverride`)
+for that other work. Did not force the bridge. Whoever verifies next: spawn
+8-10 `AA_Lockjaw`, screenshot, confirm BOTH brown (`AA_Lockjaw3`, already
+live-verified 2026-09-11) and grey (`AA_Lockjaw2`, new) show upgraded art with
+no magenta/missing-texture, then close this item with that verification noted.
+
 ## What would unblock it now
-Get `AA_Lockjaw2_south` past the validator (a `r13`+ attempt, or a different
-approach — e.g. a still-image contact-sheet-style visual QA pass before
-resubmitting rather than another blind text-prompt retry) and wire it
-alongside the already-validated `_east`/`_north` into `LockjawArtOverride`,
-OR get an explicit owner ruling that `AA_Lockjaw2` may ship on donor art
-indefinitely while `AA_Lockjaw3` ships improved (an intentional two-tier
-outcome, not a defect).
+Live verification of the grey variant's new art (route above) — the art
+itself is done, validated and deployed; only the in-game confirmation and the
+`rimflow close` remain.
 
 ## verify
-Live, 2026-09-11: quicktest map, 6x `AA_Lockjaw` spawned (`jawa/list_pawns`
-confirmed `AA_Lockjaw40360`..`40365`), `rimworld/screenshot_cell_rect`
-close-ups on each — brown-plated new art visible on multiple spawns,
-donor pale/smooth look visible on the untouched bare variant, no magenta/
-missing-texture. `ModsConfig.xml` round-tripped through a real restart
-(rev590→rev591) with `mandrake.rsw.lockjawartoverride` active and no
-recovery-reset to 6 mods, i.e. the mod loads cleanly. Full canonical
-modlist restored afterward (`modlist_swap.py --restore --apply`,
+Brown (`AA_Lockjaw3`), live, 2026-09-11: quicktest map, 6x `AA_Lockjaw`
+spawned (`jawa/list_pawns` confirmed `AA_Lockjaw40360`..`40365`),
+`rimworld/screenshot_cell_rect` close-ups on each — brown-plated new art
+visible on multiple spawns, donor pale/smooth look visible on the untouched
+bare variant, no magenta/missing-texture. `ModsConfig.xml` round-tripped
+through a real restart (rev590→rev591) with `mandrake.rsw.lockjawartoverride`
+active and no recovery-reset to 6 mods, i.e. the mod loads cleanly. Full
+canonical modlist restored afterward (`modlist_swap.py --restore --apply`,
 confirmed `mandrake.rsw.lockjawartoverride` present in the restored live
 config).
 
+Grey (`AA_Lockjaw2`): art validated offline (PASS, see above) and deployed;
+live spawn/screenshot confirmation NOT YET DONE (bridge contention, see
+above) — do not close on this criterion until it is.
+
 ## criteria
-`AA_Lockjaw3` criterion (a) is MET and closed out below. `AA_Lockjaw2`
-remains open on the same two options as before: (a) get its `_south` facing
-validated and wire the complete set, or (b) an explicit owner ruling that
-grey stays on donor art rather than an agent deciding that alone.
+`AA_Lockjaw3` criterion (a) is MET and closed out above. `AA_Lockjaw2`
+criterion (a) — validated `_south` facing wired alongside the complete set —
+is now MET for the art; the item stays open only pending the live spawn
+verification noted above.

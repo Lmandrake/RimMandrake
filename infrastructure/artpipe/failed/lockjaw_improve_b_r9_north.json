@@ -1,0 +1,19 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "gemini",
+  "created": "2026-09-11T17:38:26Z",
+  "facing": "north",
+  "facings": [
+    "north"
+  ],
+  "id": "lockjaw_improve_b_r9_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, rear/back view facing away from the viewer (a north-facing RimWorld camera angle, NOT a side profile) \u2014 match the reference image's exact pose and silhouette proportions, which are noticeably narrower and taller than a side view: painterly vanilla-RimWorld style, a massive whale-like predator with cracked alligator hide and a wide underslung jaw, hunkered motionless like a boulder. Darker mud-brown variant. Single creature, no ground shadow, plain background.",
+  "reference": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw3_north.png",
+  "rimflow_item_id": "LOCKJAW_ART_WIRE_IN_1",
+  "style_notes": "owner direction: whale body + alligator skin, sit-and-stare ambusher. Prior attempt (lockjaw_improve_b_r8_north) failed because the model drew a broadside profile instead of a back view \u2014 this prompt drops 'side view' entirely and states the rear-facing framing explicitly."
+}
