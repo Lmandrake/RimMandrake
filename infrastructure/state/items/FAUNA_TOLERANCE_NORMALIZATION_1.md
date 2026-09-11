@@ -26,6 +26,30 @@ the first time — tolerance normalization can finally be judged per-biome.
    vs bodySize), outliers labeled by defName, one PNG set per axis pair, owner
    looks and rules, manifest freezes.
 
+## RULED — owner, 2026-09-11 (phone card sitting, graphs artifact a7327077)
+
+1. **Law 3 extension: K = 12–15 × bodySize for ALL 326 rostered animals.**
+   One band, whole roster — grazers rise too. Supersedes nothing (the 161 SW
+   beasts already sit in this band); AA_/BMT_/GR_/DA_/vanilla kinds now in play.
+2. **Tolerance law (Law 5): domain envelope +15 °C on BOTH sides.** Every
+   rostered animal's comfort range covers its assigned biome's temperature
+   envelope plus 15 °C margin each way. Numeric, checkable. The 23 flagged
+   narrows widen to meet it. Add to beast_normalization_spec.md, not a fork.
+3. **Products: bodySize-proportional defaults NOW** (meat/leather ∝ bodySize);
+   re-checked against live engine values when FAUNA_STATS_BRIDGE_TOOL_1 lands.
+   Accepted trade: may be redone on real numbers.
+4. **Above-band outliers come into the size band — no exemption list now.**
+   Owner verbatim: *"We need to look at the art and eventual description to
+   deduce whether a beast is particularly scary or harmless. Diversity is
+   good. I am less interested in forcing everyone to a scaling and more that
+   we allow huge things to terrify and tiny things to be harmless. So let's
+   scale by size first. Then we can make a later round of diversification
+   decision when we make the beast graphics and lore."* Size scaling is pass
+   one (JOE_Nautilant at bs 8 comes down to the band); per-beast
+   diversification is a LATER round tied to art+lore —
+   FAUNA_LORE_DIVERSIFICATION_1. Does NOT change: bodySize itself, per the
+   ceiling-fields lesson (each parameter its own law).
+
 ## traps
 - 🔴 The offline def dump has NO statBases and drops fields — the census must
   come from mod XML or a live harvest, fingerprint-matched to the CURRENT mod
