@@ -764,3 +764,131 @@ mussels growing around brine pool").
 4. **Harvest economy: COMMISSION THE ITEMS NOW** (owner overrode the flavor-only
    recommendation). Real item defs + recipes designed in this wave — sissal venom,
    vhaal stingers, bladderboil bladders, and natural extensions. Addendum §14 owed.
+
+---
+
+## 14. The harvest-item economy — commissioned per §13.4 (discharges §12.6)
+
+Design briefs, no XML. Every item: what it is · how obtained · ONE primary use ·
+market posture · the existing item it must NOT duplicate. 🔑 **Downstream
+reconciliation point: `ECONOMY_TRADE_SWEEP_1`** (BENCH queue: the full
+what-is-sold-where sweep at the end of the world sweeps) — every market posture below
+is a proposal that sweep ratifies or reprices; nothing here pre-empts it.
+
+**Duplication survey done first** (the campaign's existing adjacent economy, read
+before inventing): the Armoury carries an ABSORBED KOTOR poison system —
+`guy762_Poison_saber` hediff (`src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/HediffDefs/Absorbed_KotorCore_Hediff_Poison.xml`)
+plus ModularWeapons2 melee poison-upgrade parts (`Absorbed_Kotorcore_ModularWeapons2_*`)
+— so a new venom-coating SYSTEM would be a duplicate. The crystal economy is ruled and
+Deeps-gated: pyrinth (orange lighting family), kyber (crafting-only, `KYBER_TRADE_PLOT_1`
+illegality owed), lanternstone (`BMT_ResourceBlueCrystal` — volatile, blasting-grade)
+(`design/Jawa/mods/crystal_mods_inventory.md`, CRYSTAL_INGEST_EXECUTION_1 closed).
+ManyWaters ships water-bottle items (`RM_ColoredWaterBottles`). Chemfuel is vanilla's
+fuel currency, and the Blue Desert §7 already rules wild flora/fauna fuel as
+"a chemfuel windfall."
+
+### 14a. Sissal venom sac — `RUT_SissalVenom`
+
+- **What/how:** a translucent gland taken by butchering a sissal corpse (small yield,
+  1–2 **[INVENTED counts]**).
+- **Primary use — feed the existing system, don't fork it:** the reagent for the
+  Armoury's ALREADY-ABSORBED KOTOR poison melee-upgrade path, which currently has no
+  in-world material provenance — its upgrade recipes gain a sissal-venom ingredient
+  cost at build. One recipe edit, zero new mechanics, and the Twilight banks become
+  the named source of every poisoned blade on the planet.
+- **Market:** tradeable, modest — spacer/Compact demand; the sweep prices it.
+- **Must NOT duplicate:** `guy762_Poison_saber` and the ModularWeapons2 poison parts —
+  this item is their INPUT, never a second coating/hediff system. A medicine-precursor
+  use was considered and dropped: kolto (`KoltoTank`, same absorbed pack) already owns
+  the exotic-healing slot.
+
+### 14b. Vhaal stinger — `RUT_VhaalStinger`
+
+- **What/how:** the hollow arm-tip barb, recovered from a killed vhaal (building
+  leavings; 1–3 per stalk **[INVENTED]**).
+- **Primary use — COMPONENT, not trophy:** the tip material for the ruled
+  ignition-safe weapon register — `propane_gas_deep_design.md` row `saturation-heist`
+  (v1, owner verbatim): *"primitive javelains and catapults. Strictly non-flammable,
+  non-temperature-based… Vibro-weaponry."* A stinger-tipped javelin/spear recipe: a
+  cold-chemistry weapon usable inside saturation zones where everything thermal is
+  suicide. Trophy value rides for free in MarketValue; no separate trophy def.
+- **Market:** tradeable (a curiosity off-world, a tool on the nightside).
+- **Must NOT duplicate:** the sissal path (14a) — the stinger's sting chemistry does
+  NOT become a second poison reagent; its weapon carries the burn-cold flavor as
+  description, damage stays ordinary Sharp **[INVENTED restraint, keeps one venom
+  system on the planet]**.
+
+### 14c. Bladderboil bladder — `RUT_BladderboilBladder`
+
+- **What/how:** butchery of the bladderboil PAWN (the fishTypes catch item stays a
+  thin-food floater per §10c; the bladder comes only from real corpses — fishing
+  yields food, hunting yields the organ **[INVENTED split, keeps the catch item
+  anti-exponential]**).
+- **Correction on the waxblood tie, honestly:** the bladderboil is SCALD fauna —
+  water-chemistry thermophile under §4's dung-and-mat admission test, NOT waxblood
+  (§1's scope is the hydrocarbon nightside). Its bladder holds gas and heat, not
+  fuel; it has no chemfuel path and claiming one would be wrong-biome chemistry.
+- **Primary use:** a heat-proof organic vessel — the **kettle-skin**: a primitive
+  insulated container/canteen that carries boiling water safely; component for the
+  pilgrim still fiction (§3's ruled distillation chain — the Scald boils fouled, the
+  breath is clean).
+- **Market:** campaign-local trade (pilgrim economy); the sweep decides if it travels.
+- **Must NOT duplicate:** ManyWaters' `RM_ColoredWaterBottles` family — the
+  kettle-skin is the heatproof/primitive tier or an INGREDIENT for still/canteen
+  recipes, never a parallel bottle line. Flagged by name for ECONOMY_TRADE_SWEEP_1.
+
+### 14d. Aviir shard — `RUT_AviirShard`
+
+- **What/how:** shatter-butchery of an aviir; harvest of an aviir crown (§3c).
+- **Primary use — the tap component:** tap-grade piezo crystal, riding §13.1's
+  one-lineage ruling: the same crystal life the Deeps grows, expressed cold — and the
+  lake's expression harvests CHARGE (§3b piezo income). It is the component the
+  **electrojet tap** (`the_propane_lakes.md` §7, ruled building) wants: tap recipes
+  and surge-protection upgrades take aviir shards at build.
+- **Market:** **campaign-only for now** — NOT trader stock until ECONOMY_TRADE_SWEEP_1
+  rules, because that sweep already owns "Deeps-gated crystals as expensive trader
+  stock" and a second crystal entering trade must be priced beside them, not around
+  them.
+- **Must NOT duplicate:** lanternstone (`BMT_ResourceBlueCrystal` — ALSO a blue
+  glowing crystal: the collision risk found). Differentiation ruled into the def:
+  aviir shard is inert-stable and non-volatile (no blasting use, no glow-furniture
+  family — pyrinth owns lighting, lanternstone owns volatility) and carries nothing
+  of kyber (no Force content, `FORCE_POWERS_ARE_V2_1` untouched).
+
+### 14e. Rimshell — `RUT_RimshellMeat` + `RUT_RimshellShell`
+
+- **What/how:** harvesting a rimshell bed (§11c Plant-def harvest) yields both.
+- **Meat — primary use: food.** Raw shellfood, ordinary nutrition per the fish
+  commission's anti-exponential law; the risk-priced protein of the pool rims. NOT in
+  `thingCategories: Fish` (it is harvested, not fished — no fishing table exists in
+  the Grey) **[engine-posture call for the build]**.
+- **Shell — primary use: craft material,** small: inlay/ornament recipes (the
+  Compact's trade-jewelry register **[INVENTED]**); one use, not a stuff.
+- **Market:** meat campaign-local (it rots); shell tradeable as a minor luxury.
+- **Must NOT duplicate:** the FishBase catch items (32 species already commissioned —
+  the meat must not read as catch #33) and StoneCrab's tended-fishery yield.
+
+### 14f. Hearthwheel rim — `RUT_HearthwheelRim`
+
+- **What/how:** cropping the rosette's regrown outer ring (§8 tended plots; the plant
+  survives harvest — leaf-vegetable pattern).
+- **Primary use: food** — the banks' vegetable delicacy, the flora counterpart of the
+  StoneCrab fishery; cooked-meal ingredient, mild mood bonus as the "lamplit meal"
+  register **[INVENTED]**.
+- **Market:** Compact trade good (they sell water; this is the thing they DON'T sell
+  cheaply); build deferred with the biome (diving mods).
+- **Must NOT duplicate:** the kelp economy — kelp is ruled "food, fiber, and the wet
+  lattice-timber" (`the_twilight_deep.md` §4): staple vs delicacy; the hearthwheel
+  ships food-only, no fiber, no timber.
+
+### 14g. Natural extensions (per §13.4 "and natural extensions")
+
+- **Cold wax** (§1's generic waxblood butchery yield, all nightside species):
+  commissioned as ONE shared item, `RUT_ColdWax` — refines to chemfuel at a
+  cold-handled recipe (the Blue Desert §7 "chemfuel windfall," made mechanical). It
+  CONVERTS to chemfuel, never competes with it; warm storage detonates it (§6 ban 3
+  behavior carried on the item).
+- **Dovvik bladder** folds into cold wax (a dovvik butchers into more of the same
+  item, no bespoke def). **Skerrik chitin scrap is CUT** — §2c's open question closed
+  by this pass: it yields cold wax only; a fourth micro-material earns nothing.
+- **Sting-sacs** (§4c's vhaal option) fold into 14b's stinger — one drop, not two.
