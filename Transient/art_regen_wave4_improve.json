@@ -1,0 +1,95 @@
+{
+  "items": [
+    {
+      "id": "ronto_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE4_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Ronto — a massive, docile Jawa pack beast native to Tatooine-like desert worlds. Elephantine bulk on four short, thick, pillar-like legs; long droopy trunk-like snout hanging past a small, low-set head with tiny eyes; loose, deeply wrinkled grey-brown hide sagging in heavy folds over its flanks; a broad flat back suited to carrying cargo baskets. Reads as a slow, sturdy beast of burden, not a predator. Single creature, centered, standing pose, no ground shadow, no background scenery, no saddle or cargo rigging drawn on it. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "SW canon identity KEPT per owner ruling 2026-09-11 ('improve' semantics): Ronto's name means the canonical Jawa beast of burden — converge on its known look (huge, trunked, wrinkled grey-brown pack animal), do not reinvent it. Large sizeBin. Full regen, same mechanism as 'redo'. Explicit outline-thickness requirement per the same ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "anooba_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE4_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Anooba — a lean, hyena-like predator native to Tatooine-like deserts, domesticated by Jawas as a hunting and guard beast. Compact muscular body low to the ground, four sturdy legs built for a quick loping run, a wedge-shaped head with a short snout and sharp teeth, large alert triangular ears, short coarse tawny-brown fur with darker mottled patches along the back. Poised, watchful stance, ready to bolt after prey. Single creature, centered, standing/alert pose, no ground shadow, no background scenery, no collar or leash. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "SW canon identity KEPT per owner ruling 2026-09-11 ('improve' semantics): Anooba's name means the canonical Jawa hunting/guard beast — converge on its known look (lean, hyena-like, tawny, mottled). Medium sizeBin. Full regen, same mechanism as 'redo'. Explicit outline-thickness requirement per the same ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "dewback_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE4_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Dewback — a large, docile reptilian mount native to Tatooine-like deserts. Thick, tough grey-green scaly hide, a bulky low-slung body on four short stumpy legs, a long thick neck ending in a blunt broad-snouted head with small deep-set eyes, a short stubby tail. Slow, plodding, heat-tolerant desert-lizard posture. Reads as a hardy pack/riding reptile, not aggressive. Single creature, centered, standing pose, no ground shadow, no background scenery, no saddle or riding gear. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "SW canon identity KEPT per owner ruling 2026-09-11 ('improve' semantics): Dewback's name means the canonical Tatooine reptilian mount — converge on its known look (thick grey-green scaly hide, blunt-snouted, stumpy-legged). Large sizeBin. Full regen, same mechanism as 'redo'. Explicit outline-thickness requirement per the same ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "grithe_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE4_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien desert scavenger creature (working name 'Grithe') — a small, quick, kleptomaniac vermin that darts in to steal loose items. NOT a mundane Earth rat: a chitin-plated insectoid-rodent hybrid with a segmented armored back, oversized long-fingered grasping forepaws built for snatching and clutching stolen objects, a narrow pointed snout, large twitchy sensory antennae instead of rat whiskers, small beady multi-faceted eyes. Reads as a genuinely alien pest that belongs on a Star Wars-flavored desert world, not a reskinned rodent. Single creature, centered, low scurrying pose, no ground shadow, no background scenery, no stolen item in its grip. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (GR_ParagonRat) REIMAGINED per owner ruling 2026-09-11 ('improve' semantics): general kind fixed (a small thieving burrowing/scavenging rodent-analog per the row's 'This creature steals' note), specific name/character invented — 'Grithe', a chitin-plated insectoid-rodent scavenger, not a literal Earth rat. Small sizeBin, wasteland biome. Full regen. Explicit outline-thickness requirement per the same ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "kroffa_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE4_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien desert grazer creature (working name 'Kroffa') — a hardy, squat six-legged herbivore suited to wasteland grazing. NOT a mundane Earth goat: a broad low-slung barrel body on three pairs of short thick legs, tough overlapping plated hide instead of fur, a blunt insectile face with small mandible-like chewing mouthparts, a pair of thick backward-curling horns. Reads as an interesting alien grazing beast belonging on a Star Wars-flavored desert world, not a reskinned goat. Single creature, centered, standing pose, no ground shadow, no background scenery, no harness or bell. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (BMT_Maligoat) REIMAGINED per owner ruling 2026-09-11 ('improve' semantics): general kind fixed (a hardy desert grazing herbivore), specific name/character invented — 'Kroffa', a six-legged plated grazer, not a literal Earth goat. Medium sizeBin, wasteland biome. Full regen. Explicit outline-thickness requirement per the same ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "grutt_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE4_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien burrowing creature (working name 'Grutt') — a squat, powerful omnivore built for digging through wasteland hardpan. NOT a mundane Earth mole/bear mashup: a thick barrel-shaped body under overlapping armored plates, massive shovel-like digging foreclaws far larger than its hind legs, a wedge-shaped tusked snout for rooting, tiny vestigial blind eyes sunk into a heavily plated skull. Reads as a genuinely alien burrowing beast belonging on a Star Wars-flavored world, not a reskinned mole-bear. Single creature, centered, low ground-hugging stance mid-dig, no ground shadow, no background scenery, no dirt spray effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (GR_Molebear) REIMAGINED per owner ruling 2026-09-11 ('improve' semantics): general kind fixed (a burrowing armored omnivore), specific name/character invented — 'Grutt', tusked and plated with oversized digging claws, not a literal mole-bear. Medium sizeBin, wasteland biome. Full regen. Explicit outline-thickness requirement per the same ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "puffmite_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE4_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented tiny alien arachnid creature (working name 'Puffmite') — a very small (roughly 0.6-cell) wasteland critter. NOT a mundane Earth spider with wool: eight thin jointed alien legs, a round bulbous body covered in fine crystalline or faintly bioluminescent filament tufts instead of fleece, a cluster of small glinting eyes at the front rather than a spider's simple eye rows. Reads as a strange but harmless-looking wasteland alien, not a reskinned fleece spider. Single creature, centered, low resting pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (BMT_FleeceSpider) REIMAGINED per owner ruling 2026-09-11 ('improve' semantics): general kind fixed (a tiny arachnid, per the row's '0.6 cells' note), specific name/character invented — 'Puffmite', filament-tufted with a crystalline/bioluminescent sheen, not a literal fleece spider. Small sizeBin, wasteland biome. Full regen. Explicit outline-thickness requirement per the same ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    }
+  ]
+}
