@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T07:14:01Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-11T07:18:52Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -22,15 +22,6 @@ target:   v1
 kind:     task
 summary:  - Write the ruling INTO the docs that already speak of the planet's past (superseding
 prose:    infrastructure/state/items/TERRAMANUFACTURE_CANON_1.md
-
-## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  WORLDMAPFINALREVIEW1 — the studio review: is this THE map?
-prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
 
 ## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
 state:    ready
@@ -89,6 +80,15 @@ target:   v1
 kind:     task
 summary:  FLOODWITNESSEVENT1 — the player sees the flood, once, on purpose
 prose:    infrastructure/state/items/FLOOD_WITNESS_EVENT_1.md
+
+## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  WORLDMAPFINALREVIEW1 — the studio review: is this THE map?
+prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
 
 ## ART_PIPELINE_DAEMON_1 Constant background art pipeline: dumb daemon + N codex exec receiving-agent workers, seats fill the queue
 state:    doing
@@ -391,6 +391,6 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     decision
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FAUNA_GRAPHS_SITTING_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  The four PNGs at Transient/faunagraphs2026-09-11/ (committed 06c0a1be; data:
 prose:    infrastructure/state/items/FAUNA_GRAPHS_SITTING_1.md
