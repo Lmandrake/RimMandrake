@@ -7391,3 +7391,16 @@
 {"seat":"FOUNDRY","event":"close","id":"ART_REGEN_WAVE5_QUEUE_1","sha":"8bad11cae","ts":"2026-09-11T20:33:00Z"}
 {"seat":"FOUNDRY","event":"file","id":"DONOR_FACTION_PROPER_NOUN_RENAMES_1","title":"Retheme/patch the 7 confirmed off-lore donor factions (Orc Clan, Dark Ages Troll, Big&Small Norse pack, MiningCo., Horrors, Mo'Events Abomination, VRE Archon) named by DONOR_PROPER_NOUN_SCAN_1's backlog","kind":"task","target":"v1","needs":"owner","spec":"design/Jawa/donor_proper_noun_backlog.md","caused_by":"DONOR_PROPER_NOUN_SCAN_1","for":"FOUNDRY","ts":"2026-09-11T20:35:53Z"}
 {"seat":"FOUNDRY","event":"close","id":"DONOR_PROPER_NOUN_SCAN_1","sha":"aaa0b45e1","ts":"2026-09-11T20:36:44Z"}
+{"seat":"FOUNDRY","event":"spawn","name":"ART_REGEN_WAVE4_WIRE_IN_1","kind":"build","needs":"offline","for":"FOUNDRY","from":"ART_REGEN_WAVE4_QUEUE_1","ts":"2026-09-11T20:37:13Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ART_REGEN_WAVE4_WIRE_IN_1","ts":"2026-09-11T20:37:21Z"}
+{"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE4_WIRE_IN_1","ts":"2026-09-11T20:37:21Z"}
+{"seat":"OWNER","event":"claim","id":"BESTIARY_ARMOURY_DESC_BACKFILL_1","ownerSaid":"Let's do it","override":"OWNER may not `claim` BESTIARY_ARMOURY_DESC_BACKFILL_1 — it belongs to FOUNDRY. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-09-11T20:39:31Z"}
+{"seat":"BENCH","event":"file","id":"ABSORPTION_FIX_NEWLINE_ESCAPES_1","title":"4 absorption content fixes are silently dead: expected_old uses real newlines but the donor XML ships literal backslash-n, so every regen reverts the hand-edited good text","kind":"task","target":"v1","caused_by":"BESTIARY_ARMOURY_DESC_BACKFILL_1","for":"FOUNDRY","ts":"2026-09-11T20:40:26Z"}
+{"seat":"OWNER","event":"close","id":"BESTIARY_ARMOURY_DESC_BACKFILL_1","sha":"b8da9f0972c090e0b3dc10f06a026bbc8e46bee3","ownerSaid":"Let's do it","ts":"2026-09-11T20:41:48Z"}
+{"seat":"FOUNDRY","event":"note","id":"BESTIARY_ARMOURY_DESC_BACKFILL_1","text":"Residual gap in wave 1: RSW_Electrostaff_Stun (HediffDef, Absorbed_JDSArmory_Hediff.xml) still carried a literal '...' -- JDS Armory pack wasn't in wave 1's diff. Fixed via a small PatchOperationConditional (generator has no content-fix hook), not a hand-edit of the GENERATED file. See Patches/HediffDesc_ElectrostaffStun.xml.","ts":"2026-09-11T20:45:20Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"ART_REGEN_WAVE4_WIRE_IN_1 live verification","ts":"2026-09-11T20:46:39Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-11T20:51:23Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ABSORPTION_FIX_NEWLINE_ESCAPES_1","ts":"2026-09-11T20:52:07Z"}
+{"seat":"FOUNDRY","event":"start","id":"ABSORPTION_FIX_NEWLINE_ESCAPES_1","ts":"2026-09-11T20:52:07Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-11T20:54:06Z"}
+{"seat":"BENCH","event":"file","id":"STAGED_LORE_PROOF_SPIKE_1","title":"Prove staged-lore text swaps live: one real description that changes by campaign stage in a running game (minimal mod, quicktest evidence, screenshot of before/after) - owner ordered the experiment 2026-09-11; build/no-build ruling waits on this proof","kind":"task","target":"v1","needs":"deploy","for":"FOUNDRY","ts":"2026-09-11T20:54:21Z"}
