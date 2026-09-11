@@ -347,3 +347,10 @@ mech-vermin trimmed: GR_Mechachicken CUT; Mecharat + Deckroach + living bolts st
 Mechanoid audit (owner asked, MEASURED): zero vanilla Mech_* cuts in live Cherry
 Picker — all mechanoids available for dungeons/ancient dangers; only the two
 Mechanitor enemy pawn-kinds are cut (revisit if a mechanitor encounter is ever wanted).
+
+**15. Wave-2 final hand (owner, 2026-09-10):** chittik fast-while-warm carve-out
+GRANTED (thaw pulses are not ambient); gear-dancers = the sheet's living bolts,
+ONE species confirmed (RUT_LivingBolt); bolt-harm/shed-gear HOOKS INTO the
+Cathedral sacrilege/hum system (RUST_CATHEDRAL_MECHANICS_1 gains the dependency);
+furnace-beast hide BESPOKE NOW (owner overrode wait-for-sweep) — RUT_FurnaceHide
+heat-banking material, designed this wave. Card queue EMPTY.
