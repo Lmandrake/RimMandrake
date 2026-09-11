@@ -1,0 +1,2395 @@
+
+Here are the
+draft
+
+random encounter tables for my underground
+Veins of the Earth
+-inspired hexcrawl. You can read all previous posts with the
+Veinscrawl tag here
+.
+When I'm done, the whole thing will be released as one big free PDF. In the meantime, you get some sneak previews.
+
+Here's the
+draft
+map.
+Each hex is 6 hours across. Relative sizes vary. The map is a map of proximity in terms of travel, not in terms of actual 3D space. Some hexes might be folded over each other.
+The thick black lines are impassible terrain. Fissures, chasms, folds, solid waves of stone. You can still cross them, but it requires a difficult climb, a spell, a secret guide, a hidden path, etc. If the PCs really want to find a way they'll find one, but casual travelers or cave-addled lunatics can't easily cross.
+
+The blue lines are major, navigable rivers. The Veins are full of water, but these lakes and rivers are landmarks.
+Most hexes are controlled by a specific faction. Hexes marked with a dash instead of a name are neutral, contested, or deserted spaces. Each hex will have a brief terrain description, a major encounter or location, and a hidden encounter or location.
+Don't worry too much about mapping or navigation or rules at this stage. This article is just a sneak preview (and a handy way to generate and classify Veins encounters).
+
+Shahab Alizadeh
+
+Layers of the Veins
+
+Littoral:
+the light grey layer. The shoreline. Encounters here follow recognizable surface-world logic. Things here have seen the sun or know what it is.
+Profundal:
+the mid grey layer. The transition zone. The sun is a legend. Surface logic will actively get you killed.
+Abyssal:
+the dark grey layer. The depths. Beyond light, beyond hope. Encounters here follow their own deadly logic.
+In hexes controlled by a faction, roll on the Faction Random Encounter Table. In neutral hexes, roll on the appropriate Depth Encounter Table.
+
+Each encounter has an Omen. If the PCs are moving slowly and cautiously,
+they will get the Omen before they run into the Encounter. They might
+have time to douse their lights, hide, observe, or plan an ambush. As they learn to recognize Omens, they will be able to plan and manipulate encounters. Not all encounters are hostile; the usual Reaction rolls still apply.
+Side Note:
+the der0 Encounter Table and the Ruins Encounter Table aren't done yet. The Ruins are a high-level, high-challenge area full of explorers, looters, tomb-guardians, and traps. The der0 are... special.
+Side Note:
+the tables aren't finalized yet. Some might need tweaking or improvement. Page references will also link to a section in the hexcrawl PDF with extra information, tables, stats, etc.
+
+Depth Encounter Tables
+
+Littoral
+
+1d20
+
+Omen
+
+Encounter
+
+Page
+Reference
+
+1
+
+Fizzing,
+crackling,salt and bleach. Faint metal-on-glass scratching.
+
+1
+
+Alkalion
+, in a
+salt-cave-warren. 1d6 lion spores, drifting in the air.
+
+VotE
+pg. 16
+
+2
+
+Blind
+men tap-tap-tapping. Old books, straw, bones. Creak of pulleys.
+
+1
+
+Arachnopolis Rex,
+
+twitch-stalking,
+moving carefully. A curiosity, then a danger.
+
+VotE
+pg. 24
+
+3
+
+Silence,
+and the faintest click of claw on stone.
+
+1
+
+Blackfoot Gigaferret
+. Will
+stalk party until they sleep or wander into a dangerous area.
+
+VotE
+pg. 30
+
+4
+
+Oil,
+guano. Cacophonous maddening noise across the entire spectrum.
+
+1d6x1d100
+
+Lamenters
+, nesting, shitting,
+squawking. 1
+Ghost
+per 50 Lamenters.
+
+VotE
+pg. 78
+
+5
+
+Skittering,
+dripping. Faint fresh meat and dusty ice.
+
+1
+
+Mantis Shrimp
+. 5-in-6 chance
+there is a deep sump nearby. 1-in-6 chance of body parts.
+
+VotE
+pg. 82
+
+6
+
+Soft
+ridiculous plops. Hedge-trimmer clatter. Faint copper blood.
+
+3d20
+
+Scissorfish
+sprinting straight
+towards the party. A shallow stream in the cave.
+
+VotE
+pg. 110
+
+7
+
+Distant
+mining explosions, a rave, a rock concert in an oil refinery.
+
+5d8
+
+Sonic Pigs!
+
+A shuffling herd,
+faces against the rocks, paranoid and twitchy and noisy.
+
+VotE
+pg. 115
+
+8
+
+Dishes
+being stacked. Shifting glimmer of pearl shells.
+
+4d4
+
+Toraptoise
+, slowly licking the
+walls. They ignore strong prey.
+
+VotE
+pg. 139
+
+9
+
+Smells
+of sick children. A muffled cry, a swish of silk.
+
+1
+
+Trogloraptor
+, 2d4 children on
+its back. Just sedated one; PCs might hear it cry, might glimpse.
+
+VotE
+pg. 143
+
+10
+
+Stink
+like compost, with a faint wet slapping sound like wet leather boots.
+
+1
+
+Carrion Crawler
+, complacent,
+massive, eating a corpse. Roll again to see what it's eating.
+
+AD&D
+MM pg. 13
+
+11
+
+Faint
+hiss, like an hourglass. Slight reflection of light Long white feelers.
+
+2d6
+
+Cave Centipedes
+,
+loose and
+hungry, branded with Olm-marks. Reward for return.
+
+AD&D
+MM pg. 14
+
+12
+
+Chittering,
+faint echolocating clicks. Sharp guano stink. Fast footsteps.
+
+5x2d10
+
+Goblins
+, hunting. Blind and
+toothy. Bone knives and rocks. Swarming, chasing, cornering.
+
+AD&D
+MM pg. 47
+
+13
+
+Silver
+threads in the air. Silence. Shifting shadows.
+
+1
+
+Cave Spider
+, in the cave's
+highest point, patiently waiting for weak prey. Can speak; doesn't want to.
+
+AD&D
+MM pg. 92
+
+14
+
+Flutter
+of wings, copper smell. Whoosh like a lobbed baseball.
+
+2d6
+
+Stirge
+s
+, hanging and dropping like
+thrown knitting needles. Cave-mud nest, 1d6 fat larva.
+
+AD&D
+MM pg. 92
+
+15
+
+Splash
+of water, streak of white flesh. Stone that moves.
+
+1d6
+
+Cave Eels
+
+in a stream. Waiting
+for feet. Trip, then go for the throat. They look like white marble.
+
+AD&D
+MM pg. 36
+
+16
+
+Faint
+conversation. Light. Click of metal on stone.
+
+1d6
+
+Volume-Folk
+.
+Generate
+type/activity if not already known.
+
+17
+
+Hop-scratch,
+skitter, twitch. Small flicks of white among the stones.
+
+1d6
+rations worth of
+Cave Crickets
+.
+Tiny, mostly harmless, but tricky to catch. 0.5 hrs per ration.
+
+18
+
+Air
+pulling you forwards. Warmer, living air, faint scent of sulphur and spice.
+
+Chasm
+. Cannot see other side (40x1d10m across). Might be a way
+down/around. Delay 1d6 hrs.
+
+19
+
+Splash
+of water. Humidity rises. Faint drip and burble.
+
+Sump
+. Caves sink into the water. Can be navigated without swimming,
+but slowly. Delay 1d6 hrs.
+
+20
+
+Deja-vu.
+Unease and irritability, slowly rising into panic.
+
+Winding
+Passages
+.
+Way forward is blocked; way back is uncertain.
+Delay 2d6 hrs.
+
+Profundal
+
+1d20
+
+Omen
+
+Encounter
+
+Page
+Reference
+
+1
+
+Squeak
+and pop. Crackle and wheeze. Smells like sickness.
+
+1
+
+Calcinated Cancer Bear
+,
+sniffing its way towards fire and meat (in that order).
+
+VotE
+pg. 32
+
+2
+
+Food
+fight splats, monosylables, gawping, plopping. Aniseptic reek.
+
+4d6
+
+Cambrimen
+, blundering around,
+looking for something forgotten, inspecting everything.
+
+VotE
+pg. 34
+
+3
+
+Soil
+and wet clay. Slow landslide, methodical stomping.
+
+1
+
+Cromagnogolem
+, sniffing
+without lungs, cold vapour curls. Attacks relentlessly.
+
+VotE
+pg. 46
+
+4
+
+Chalky,
+ashen. Brittle creaking. Mad pool cue squeaks. Vein of black.
+
+1d4,
+exploding on a 4,
+Fossil Vampires
+. Half wedged in the rock, so so so easy to disturb.
+
+VotE
+pg. 53
+
+5
+
+Screaming,
+growing closer. A pit. A scrap of metal or a tangle of rope.
+
+1
+
+Panic Attack Jack
+barreling
+out of the dark, ropes slithering like snakes, inflicting the Rapture.
+
+VotE
+pg. 96
+
+6
+
+Wet
+dog, chlorine bleach. Scrabbling, panting, faint ultrasonic buzz.
+
+4d6
+
+Spotlight Dogs
+, hunting you in a
+long gallery. Blind, terrorize, harrass, and mark.
+
+VotE
+pg. 123
+
+7
+
+Distant
+scream from above. Two stalagmites appear.
+
+1
+
+Still-Tor-Man
+, fishing for
+delicious flesh. If you know what it is, run. If not, stare upwards.
+
+VotE
+pg. 126
+
+8
+
+Glass
+necklaces poured into a bowl. Ozone and fizz.
+
+1d50
+
+Stormsheep
+, searching for
+lightning, following gold-flecked quartz. 2-in-6 chance they are starving.
+
+VotE
+pg. 128
+
+9
+
+Soft
+leather shoe slap. Ammonia, urine, blood. Moisture.
+
+1
+
+Tetracharcarodron
+slithering
+along the roof of the cave. Bizzare, impossible. Then, the charge.
+
+VotE
+pg. 134
+
+10
+
+Coconut
+shell clatter, deep drums, claw clacks. Ozone and magic.
+
+1d4
+
+Titanskull Hermit Crabs
+
+waiting for good skulls. Might want yours. Might trade (in skulls).
+
+VotE
+pg. 136
+
+11
+
+Faint
+fluttering, slight musty odour. Purple-pain light, flickers of emotion.
+
+5d50
+
+Ultraviolet Butterflies,
+
+300-5d50
+caterpillars in skulls. 1d6-2
+Volume-Folk
+, deranged.
+
+VotE
+pg. 146
+
+12
+
+Did
+that column just move? Creak and click of stone, wet slap of flesh.
+
+1d6
+
+Ropers
+, lurking. Roll on
+Littoral table for scavengers waiting nearby.
+
+AD&D
+MM pg. 83
+
+13
+
+Bludgeoning
+crash of stone. Thump of heavy footfalls. Heavy breaths.
+
+1
+
+Umber Hulk
+,
+battering its way
+through stone and water. Scarred, dented, belligerent.
+
+AD&D
+MM pg. 98
+
+14
+
+Rattle
+and squelch like a subway train made of sausage meat.
+
+1
+
+Purple Worm
+, migrating,
+filling entire cave segments. Easy to avoid if you want to run blindly.
+
+AD&D
+MM pg. 80
+
+15
+
+Flick
+of fin, splash, rise in humidity. Polished bones in the water.
+
+2d6
+
+Floating Eyes
+in a stream.
+Hypnotize then drown. Phosphorescent cuttlefish pulses.
+
+AD&D
+MM pg. 40
+
+16
+
+Shuffling.
+Faint, hoarded light. Click of metal on stone.
+
+1d6
+
+Volume-Folk
+.
+Generate
+type/activity if not already known.
+
+17
+
+Deja-vu.
+Unease and irritability, slowly rising into panic.
+
+Winding
+Passages.
+
+Way forward is blocked; way back is uncertain.
+Delay 2d6 hrs.
+
+18
+
+Air
+pulling you forwards. Hot, angry air. Whorls of steam.
+
+Chasm
+. Cannot see other side (40x1d10m across). Might be a way
+down/around. Delay 1d6 hrs..
+
+19
+
+Splash
+of water. Humidity rises. Faint drip and burble.
+
+Sump
+.
+
+Caves sink into the water. Can be navigated without
+swimming, but slowly. Delay 1d6 hrs.
+
+20
+
+-
+
+Transient
+.
+Roll on either the Littoral or the Abyssal tables (50%
+chance).
+
+-
+
+Abyssal
+
+1d20
+
+Omen
+
+Encounter
+
+Page
+Reference
+
+1
+
+Two
+voices, bickering. Soft patter of crocodile feet. Vaguely fishy smell.
+
+1
+
+Fungal Ambassodile
+on a
+critical diplomatic mission. 50% chance it's dead, implicating PCs.
+
+VotE
+pg. 56
+
+2
+
+Gravel
+clatter, lime. Scrape and stomp. Muttering.
+
+1
+
+Gilgamash
+, roving on its
+quest. Shambling. Roll for goals, etc, before the PCs see it.
+
+VotE
+pg. 66
+
+3
+
+Chemicals,
+wings, fire, roar and clatter. Industrial accident at speed.
+
+1
+
+Igneous Wrath
+coming in like a
+dive bomber. Hungry, mad, and fast. Will hit and run.
+
+VotE
+pg. 68
+
+4
+
+Sulphur,
+faint crystallized magic, gentle bells, sizzling.
+
+1d20
+
+Ignimbrite Mites
+, living symbols,
+flickering like a constellation, trying to hit tongues.
+
+VotE
+pg. 71
+
+5
+
+Smells
+like nostalgia. Faint voices, soft and high and comforting.
+
+4d4
+
+Meanderthals
+, only real to
+humans. Murderously real. Otherwise, faint hateful ghosts.
+
+VotE
+pg. 84
+
+6
+
+Liquid
+moonlight glow, flickering shadows, nightmare hiss.
+
+1
+
+Mondmilch
+pool. Shimmering
+impossible nightmare forms and art. 1d6 gibbering artists.
+
+VotE
+pg. 87
+
+7
+
+Bleach.
+Falling glass, faintly musical. Twinkling light.
+
+1
+
+Radiolarian
+, drifting. PCs can
+observe it from a distance to gain insight into adjacent hex contents.
+
+VotE
+pg. 105
+
+8
+
+Burning
+stone, hot air. Thump of lead. Bullet whip-crack. Dents in walls.
+
+1d50
+
+Splinterlads
+, playfully
+swooping. Break things. Tear ropes, swords, teeth. Find chalk and quartz.
+
+VotE
+pg. 120
+
+9
+
+Clawed
+footprints, click of steps. Faint smell of salt. A shouted challenge.
+
+1
+
+Trilobite-Knight
+, roving,
+searching, testing its skills, telling tales.
+
+VotE
+pg. 141
+
+10
+
+Creak
+and scrape of bone and chalk. Dust in the air. Salt.
+
+2d4
+
+Zombie Coral
+, stumbling,
+reaching, grasping. Blood releases more.
+
+VotE
+pg. 150
+
+11
+
+Buzz
+of magic. Rage-screams. Explosions. Gnashing teeth. Blood.
+
+1
+
+Beholder
+, flying along,
+blasting or tormenting things. A lunatic with power. Frothing.
+
+AD&D
+MM pg. 10
+
+12
+
+Rustling,
+unfolding, skin on skin. A huge eye bulging in the dark.
+
+1
+slimy, boneless
+Giant.
+Worm-like, fast, crawling through gaps. Crushing fingers, wet suction mouth.
+
+AD&D
+MM pg. 45
+
+13
+
+Faint
+drip of water and hiss of snakes. Petrified bats, spiders, cave crickets.
+
+1
+
+Medusa
+
+and statue-cave.
+Polite. Prefers conversation, but will petrify beautiful people.
+
+AD&D
+MM pg. 66
+
+14
+
+Rumbling.
+Cracking stone, sliding tomb lids, click of claws. Dust.
+
+1d4,
+exploding on a 4,
+Fossil Dinosaurs
+. Could be harmless. Could be deadly. Watch the walls.
+
+AD&D
+MM pg. 23
+
+15
+
+Splashing
+water, deep pools. Swish of something dark and snake-like.
+
+2d6
+
+Lampreys
+from the Nightmare
+Sea in a deep pool. Want to drain blood, youth, and madness.
+
+AD&D
+MM pg. 59
+
+16
+
+Whispers.
+A clank in the dark. Sudden nausea, emotions, pain, ozone.
+
+der0
+Encounter
+.
+Roll on the der0 Encounter Table.
+
+17
+
+Terrible
+groans and shrieks and scrape of claws. You can hear the teeth.
+
+False
+Omen.
+Nothing. It passed by. Might induce paranoia.
+
+18
+
+Basalt
+walls, glass-smooth caves, nightmare sea incursions.
+
+Impossible
+Terrain
+.
+No way through; must go around. Delay 6 hours.
+
+19
+
+Shimmer
+of air, temperature drops slightly. Scraps of rope.
+
+Difficult
+Climb
+.
+Delay 1d6 hours. If Rapture attack delayed, it
+hits now.
+
+20
+
+Sweat
+becomes painful. Headache. Difficulty focusing on hands.
+
+Heat
+Exhaustion
+.
+Saps energy, awareness. Delay 1d6 hours. Lose
+1d6 HP (to 0 at worst).
+
+JiHun Lee
+
+Faction Encounter Tables
+
+Olm
+
+1d10
+
+Omen
+
+Encounter
+
+Page
+Reference
+
+1
+
+Faint
+pattering of feet, splash of water. Yeep of surprise.
+
+1
+lost
+Olm child
+. Terrified.
+Wants to get home. May have escaped from Trogloraptor or Drow.
+
+VotE
+pg. 90
+
+2
+
+Ragged
+breathing, blood spots, scraps of skin.
+
+1
+
+wounded Olm
+. Armed, dying.
+Will ask PCs to return body to sump in exchange for future favour.
+
+VotE
+pg. 90
+
+3
+
+Faintest
+glimpse of a white sine-wave tail.
+
+1
+
+Olm scout
+. Will observe PCs, follow
+them into adjacent hex. Might help, might not. Opportunistic.
+
+VotE
+pg. 90
+
+4
+
+Spear
+flies out of the darkness. Unless PCs are running, 4-in-6 chance to hit.
+
+3+1d6
+
+Olm
+in a raiding party
+.
+Spears, nets. Smart. Will make 1 kill and retreat. Might help PCs.
+
+VotE
+pg. 90
+
+5
+
+Muttering,
+glimmer of magic. Slow, exaggerated gestures in a clear cave.
+
+2
+
+Olm mages
+
+in a ritual duel.
+Will turn on PCs if hostile, help or ask to judge if polite.
+
+VotE
+pg. 90
+
+6
+
+Cold
+water, deeper and deeper. White corpses.
+
+3d10
+
+sleeping Olm
+in a small Olm-sump. 1
+is awake and watching PCs.
+
+VotE
+pg. 90
+
+7
+
+Flick
+of rope from above. Click-hiss of information. Clinks and scrapes.
+
+3d100
+
+Olm
+
+on epic migration-rappel.
+May ask PCs to assist, watch for air-threats.
+
+VotE
+pg. 90
+
+8
+
+Rising
+and falling hiss of legs, Olm singing, dancing.
+
+1d6
+
+Olm
+
+herding 2d10
+Cave
+Centipedes
+to a new pasture. Drunk as lords, cheerful.
+
+VotE
+pg. 90
+
+9
+
+-
+
+Roll
+on Depth Encounter Table.
+
+10
+
+-
+
+Roll
+again on this table, and also on the Depth Encounter Table, combining
+results.
+
+Drow
+
+1d10
+
+Omen
+
+Encounter
+
+Page
+Reference
+
+1
+
+Waltz-march
+of padded feet. Coloured silk, pale flesh.
+
+1
+
+Drow
+
+with 2d6
+Immaculate Slaves
+, carrying bales
+of silk to a buyer. Polite but very strange.
+
+2
+
+Eye-shine
+in the dark. A faint, perfect smile.
+
+1
+
+Drow
+
+sitting naked on a pillar
+or limestone shelf, watching PCs. Distant, disinterested.
+
+3
+
+Burst
+of magic, then violence. Joints lock, sleep-fog rolls.
+
+2d4
+
+Drow
+
+Slave-Takers
+, raiding, targeting the PCs. Sudden spells and pain.
+
+4
+
+Wailing,
+groaning. Red lanterns fly overhead.
+
+1d4
+
+Drow Slave-Masters
+, 2d6
+Immaculate Slaves
+, 2d6 freshly
+captured
+Volume-Folk
+slaves
+.
+
+5
+
+Soft
+red glow, careful steps.
+
+1
+
+Drow Memory-Seller
+. Will buy
+memories for silver, sell you others. Fear, love, power.
+
+6
+
+Blood
+trail, slightly disturbed silt. A fragment of silk in the air.
+
+2
+
+dead Drow
+. Murder, suicide,
+murder-suicide? 2 silver daggers, other treasure?
+
+7
+
+Brief
+shower of rose petals.
+
+Rose
+petals in drifts. Like a brief snowstorm. Beautiful, inexplicable.
+
+8
+
+Black
+stone gate, briar-pointed walkways. Cold stone halls.
+
+Abandoned
+fortress, or is it? 1
+Drow
+
+somewhere inside, watching PCs. Safe, but do not sleep here.
+
+9
+
+-
+
+Roll
+on Depth Encounter Table.
+
+10
+
+-
+
+Roll
+again on this table, and also on the Depth Encounter Table, combining
+results.
+
+Antling
+
+1d10
+
+Omen
+
+Encounter
+
+Page
+Reference
+
+1
+
+Chip
+chip chip of a pickaxe, then a crack, a clatter.
+
+1d6
+
+Antling Workers
+,
+mining. They
+just mined through the wall. Confused, alarmed.
+
+2
+
+Lanten
+light, cleared sightlines, spear-holes, a door.
+
+2d6
+
+Antling Soldiers
+, 1d4
+
+Antling Workers
+
+in a forward base.
+Worried, jumpy, hostile.
+
+3
+
+Conversation,
+lantern light, militant lockstep marching.
+
+1
+
+Antling Diplomat
+with 6
+
+Antling Soldiers
+
+and 1
+Spider Ant
+.
+On a vital mission.
+Suicidal.
+
+4
+
+Hiss
+of falling rope, arguing, click of hammers against pitons.
+
+1d6
+
+Antling Soldiers
+
+and 1
+
+Spider Ant
+on a training mission.
+Want to learn from PCs if possible.
+
+5
+
+Running
+feet, hasty conversation, dim light.
+
+1
+
+Antling Worker
+on the run with
+her
+V
+olume-Folk "husband"
+. Might be wiling, might not be. Romantic.
+
+6
+
+Militant
+marching, lantern light. Pauses and starts. Scratching.
+
+3d6
+
+Antling Soldiers
+, 1d6
+Antling Wizards
+, and 1d6
+Antling Workers
+
+on mass patrol.
+Jumpy.
+
+7
+
+Scraps
+of chitin, drips of blood. A leg twitches in the darkness.
+
+Massacre.
+1d6
+
+dead Antlings
+. Half are
+still edible. Whatever did this can't be far away.
+
+8
+
+Shuffling,
+clicking. Moaning. Lots of pauses. Drips of blood.
+
+1d6
+
+wounded
+
+Antling Soldiers
+trying to make
+their way home. Will warn of contents of next hex.
+
+9
+
+-
+
+Roll
+on Depth Encounter Table.
+
+10
+
+-
+
+Roll
+again on this table, and also on the Depth Encounter Table, combining
+results.
+
+Archaean
+
+1d10
+
+Omen
+
+Encounter
+
+Page
+Reference
+
+1
+
+Faint
+blue-green glow and a steady hiss. Glass glitters, folds.
+
+1
+
+Archaean
+
+strolling, touching
+the rock. Trying to get a good sightline on a quasar.
+
+VotE
+p.26
+
+2
+
+Steady
+buzzing, slow and low. Faint smell of sugar and ozone.
+
+2d6
+
+Atomic Bees
+,
+wandering. Track them
+to a buried atomic (1d4x100 bees) beehive, fresh atomic honey.
+
+VotE
+p.29
+
+3
+
+Creak
+and scrape of iron on iron. Slow fat stomping.
+
+1d4
+
+Rust Monsters
+. Surly. Focused
+on iron; don't really want to eat you. 1d6 eggs.
+
+AD&D
+MM pg. 83
+
+4
+
+Streaks
+of ash, bubbled rock, faint glow, nausea.
+
+1d6
+very confused irradiated
+Shadows
+,
+burnt onto the wall long ago by Archaeans.
+
+AD&D
+MM pg. 86
+
+5
+
+A
+busy kitchen next to a scrapyard. Clouds of toxic vapour.
+
+2
+
+Archaeans
+
+in heated debate or
+passion or something. Mercury droplets everywhere.
+
+6
+
+Ceramic
+snakes in and out of walls. Faint sizzle. Steam.
+
+1
+half-buried
+Snail Reactor
+
+in a
+stream. Warm, valuable, deadly.
+
+7
+
+Nausea,
+roaring, burning, crashing. Apocalyptic. Blood pours from ears.
+
+1
+enraged
+Cursed Metal Golem
+.
+Now would be a good time to run.
+
+8
+
+Glimmer
+of gold. Cracked stone. Toxic rust-red water streams by, scars skin.
+
+Pile
+of metal. Gold, silver, iron, other stranger ores, neatly stacked.
+
+9
+
+-
+
+Roll
+on Depth Encounter Table.
+
+10
+
+-
+
+Roll
+again on this table, and also on the Depth Encounter Table, combining
+results.
+
+Fungid  Valley
+
+1d20
+
+Omen
+
+Encounter
+
+Page
+Reference
+
+1
+
+Squelch-patter
+of feet, bobbing mushroom cap head, wheezeing.
+
+1
+
+Myconid
+, pre-sporulation,
+roving. Manic, looking for food, willing to kill.
+
+VotE
+p.59
+
+2
+
+Muttering,
+shuffling. Swaying heads close together.
+
+3d6
+
+Myconids
+guarding a fungal
+growth. Mild debate. Might attack, might not.
+
+VotE
+p.59
+
+3
+
+Shuffling,
+moaning. Faint yeasty smell. Blorping.
+
+2d4
+floating
+Psychomycosis Megaspores
+,
+3d6 zombies. Burbling, drifting. Shuffling, clawing.
+
+VotE
+p.100
+
+4
+
+Rumble,
+stilt-step of spiked legs. The wall appears to be moving.
+
+1
+
+Gill Beetle
+,
+roving, churning
+filter-mouthparts. Not hostile but does block tunnels.
+
+AD&D
+MM p. 9
+
+5
+
+Fat
+plops and squelches, spreading shadow.
+
+1
+
+Black Pudding
+searching for
+food. Surprisingly quick. Alpha predator.
+
+AD&D
+MM p. 10
+
+6
+
+Weird
+silhouettes, strange tumbling shapes, faint bitter smell.
+
+1d6
+
+Gas Spores
+, drifting. Roll on
+Littoral table for shape. Drift as if attacking.
+
+AD&D
+MM p. 42
+
+7
+
+Gently waving tendrils. Sickly-sweet smell. Puffs of
+purple spores.
+
+1
+patch of
+Violet Fungus.
+Tendrils
+reach out, seeking prey.
+
+AD&D
+MM p. 42
+
+8
+
+Sizzle,
+slight bare patch above and below slime.
+
+1
+patch of
+
+Green Slime
+.
+Drips
+slowly. More of a terrain hazard.
+
+AD&D
+MM p. 49
+
+9
+
+Faint
+caramel smell, drifts of brown spores.
+
+1
+patch of
+Brown Mold,
+
+blocking
+a portion of the cave.
+
+AD&D
+MM p. 71
+
+10
+
+Faint
+flour smell, drifts of brown spores.
+
+1
+patch of
+Yellow Mold
+,
+blocking
+a portion of the cave. 10% chance of being sentient.
+
+AD&D
+MM p. 71
+
+11
+
+Squishing,
+rolling. Difficult to notice.
+
+2d6
+minuscule
+
+Ochre Jellies
+,
+
+crawling around, trying to get into packs to eat rations.
+
+AD&D
+MM p. 75
+
+12
+
+Faint
+whistling, waving tendrils. Unusually vibrant growth.
+
+1d6
+
+Shriekers
+, hidden in other
+growth. Roll again if activated.
+
+AD&D
+MM p. 87
+
+13
+
+Mouse-like
+skittering, fleeing the light or sniffing for food.
+
+3d6
+
+Mushmice
+. 1 ration each,
+1-in-6 chance of being poisonous.
+
+14
+
+Luminous
+green-blue glow. Small clouds of flies.
+
+2
+
+Glowing Fungi
+branches. Can be
+used as torches. Last 3 hours.
+
+15
+
+Buzzing,
+growing louder. A flicker of wings. Tiny mushmice fleeing.
+
+1
+
+Burrowgrub Swarm
+.
+Envelops,
+looking to bite and lay eggs. Most dangerous if infected.
+
+16
+
+Noisy
+flapping, like pancakes being thrown at a cat. Flickering shadows.
+
+2d6
+
+Sporebats
+, flapping moistly.
+Will try to nest on PCs. Looking for coal and wood.
+
+17
+
+Deranged
+chanting, a humanoid head-shape bobbing, glint of steel.
+
+1d6
+
+Adapted Humanoids
+, gathering.
+Mad, fungus-addled, half-buried in walls. Hungry.
+
+18
+
+-
+
+Roll
+on the Rare Fungus table.
+
+-
+
+19
+
+-
+
+Roll
+again twice on this table.
+
+-
+
+20
+
+-
+
+Roll
+again on this table, and also on the Depth Encounter Table, combining
+results.
+
+-
+
+Cholerid
+
+1d10
+
+Omen
+
+Encounter
+
+Page
+Reference
+
+1
+
+Moaning,
+stink of flesh on stone.
+
+1d10
+
+Cholerids
+, melancholy but in
+the way.
+
+VotE
+p.38
+
+2
+
+Slap
+of feet and clap of hands.
+
+1d10
+
+Cholerids
+, dancing as if
+acting out a festival.
+
+VotE
+p.38
+
+3
+
+Patter
+of running feet, mad whispering.
+
+2d10
+
+Cholerids
+, seeking death.
+
+VotE
+p.38
+
+4
+
+Roar-whisper,
+awful stench.
+
+1d100
+
+Cholerids
+
+in an idle crowd.
+
+VotE
+p.38
+
+5
+
+Stampede,
+moans, rage, rot.
+
+1d100
+
+Cholerids
+
+in a raging swarm.
+
+VotE
+p.38
+
+6
+
+Slow
+stomp, then pause, then stomp.
+
+1
+lost
+Myconid
+, trying to find a
+way out.
+
+VotE
+p.59
+
+7
+
+Elegant
+steps, shuffling trail, clink of gold tomb-goods.
+
+1
+
+Cholerid
+
+noble
+in tomb-gold, 1d10 fawning
+courtiers.
+
+VotE
+p.38
+
+8
+
+Screams,
+slash of weapons, moans.
+
+1d6
+Volume-Folk
+
+besieged by 2d10
+Cholerids
+.
+
+VotE
+p.38
+
+9
+
+-
+
+Roll
+on Depth Encounter Table.
+
+10
+
+-
+
+Roll
+again on this table, and also on the Depth Encounter Table, combining
+results.
+
+Dvergr
+
+1d10
+
+Omen
+
+Encounter
+
+Page
+Reference
+
+1
+
+Faint
+fungal rot, glimmer of gemstone, signs of struggle.
+
+1
+
+Dvergr
+, dead for ages. Crystal
+core intact, tools looted.
+
+2
+
+Solid
+pillars, clear field of vision, huge doors, crossbow slits.
+
+Dvergr
+fortress. 5+2d10
+Dvergr
+
+inside, armed, guarding minehead.
+
+3
+
+Steam,
+smell of rotting fungi. Stone walls, copper drains.
+
+Dvergr
+farm-distillery. 5
+Dvergr
+
+guarding. 3d10
+Myconid
+
+slaves
+ready for slaughter.
+
+VotE
+p.59
+
+4
+
+Shuffling
+in the dark, quiet debate. Flash of blue-white lantern light.
+
+5
+
+Dvergr
+
+on an exploratory
+mission. Want to go to a random hex. Will pay in, gems, gold.
+
+5
+
+Shuffling
+in the dark, quiet debate. Flash of blue-white lantern light.
+
+5
+
+Dvergr
+
+on a trading mission.
+Trade less work for more work. Want to examine everything PCs have.
+
+6
+
+Walls
+become smooth, square, faceted.
+
+Dvergr
+mine-road, abandoned, engraved, semi-fortified. Safe to rest here.
+
+7
+
+Rumble,
+scrape of iron on stone, a whirring drill bursting through a wall.
+
+1
+
+Dvergr Mining Engine
+moving
+through stone. Might be able to follow it to another hex.
+
+8
+
+Warm
+air, sudden right-angle drop in the cave floor ahead.
+
+1
+Dvergr mineshaft, very deep, square, steep stairs. 5
+Dvergr
+
+working at the bottom.
+
+9
+
+-
+
+Roll
+on Depth Encounter Table.
+
+-
+
+10
+
+-
+
+Roll
+again on this table, and also on the Depth Encounter Table, combining
+results.
+
+-
+
+Ghoul
+
+1d10
+
+Omen
+
+Encounter
+
+Page
+Reference
+
+1
+
+Silence,
+dust. A ruined village. Lots of rooms to check.
+
+1d6
+
+Paralytic Ghouls
+, buried,
+claws out. Like feral landmines.
+
+2
+
+Hiss
+of breath. A shadow clambering over rubble. Disturbed dust.
+
+1d6
+
+Feral Ghouls
+,
+stalking and
+waiting. Hunger makes them impatient.
+
+3
+
+Groans,
+rattle of chains, barked orders, moans in response.
+
+1
+
+Rational Ghoul
+herding 2d6 chained
+
+Feral Ghouls
+.
+Polite, but wants PCs
+to move on quickly.
+
+4
+
+Creaking
+wheels, scrape of dragging wood. Barked orders.
+
+Corpse-caravan.
+6
+Rational Ghoul
+guards, 2d6
+Feral Ghoul
+shock troops, 3+3d10
+corpses. Alert.
+
+5
+
+Polite
+conversation, bursts of laughter. Screams and groans in response.
+
+1
+
+Noble Ghoul
+, holding an
+official visit. 2d6
+
+Rational Ghoul
+
+courtiers, 2d6
+Feral Ghoul
+subjects.
+
+6
+
+Faint
+out-of-tune music, shuffle of feet. A roofless, lightless ruin. Laughter.
+
+A
+party. 3d6
+Noble Ghouls
+,
+3d10
+Rational Ghoul
+guards. Food, drink.
+Darkness. Dancing.
+
+7
+
+Quite
+conversation, creak of wheels, whispered commands.
+
+1
+
+Noble Ghoul
+corpse-trader, 1d6
+Rational Ghoul
+
+assistants, 2d6
+corpses. Will make deals.
+
+8
+
+Imposing
+walls, cracked. Ragged banners.
+
+Small
+fortress. 2
+Noble Ghouls
+, 3d6
+
+Feral Ghouls
+
+in dungeon, 3d10
+Volume-Folk
+slaves
+in farm.
+
+9
+
+-
+
+Roll
+on Depth Encounter Table.
+
+-
+
+10
+
+-
+
+Roll
+again on this table, and also on the Depth Encounter Table, combining
+results.
+
+-
+
+Illithid
+
+1d10
+
+Omen
+
+Encounter
+
+Page
+Reference
+
+1
+
+Cries
+for help, struggles. Faint odour of blood.
+
+1
+
+Doppelganger
+. Resembles lost
+Volume-folk merchant. Offers reward to be taken to city.
+
+AD&D
+MM pg. 29
+
+2
+
+Faint
+footsteps. Conversation in all-too-familiar voices.
+
+Enough
+
+Doppelgangers
+
+to match the PCs. Not
+a great resemblance but close enough.
+
+AD&D
+MM pg. 29
+
+3
+
+Sudden
+headaches, nosebleeds. Faint hopping, padding sound.
+
+1
+
+Intellect Devourer
+,
+hopping
+along, seeking minds. Eternally hungry.
+
+AD&D
+MM pg. 54
+
+4
+
+Flicker
+of a tentacle. Burble of a stream. Faint photoreactive shimmer.
+
+1
+
+Cave Octopus
+,
+slithering in a
+shallow stream. Smart, opportunistic, camouflaged.
+
+AD&D
+MM pg. 75
+
+5
+
+Moist
+howling, stomp, buzz, roil. Ozone, blood. A mental thunderstorm.
+
+Near-feral
+exiled
+Illithid
+
+with 2d6
+Squidlings
+and 1
+Myrmidon
+. Desperate for brains.
+
+AD&D
+MM pg. 70
+
+6
+
+Buzz
+and pulse of unseen technology, groans.
+
+2d6
+
+Squidlings
+, fanatically loyal,
+on patrol. Will try to capture PCs if possible.
+
+7
+
+Wet
+leather slither, buzz and pulse of unseen technology, groans, begging.
+
+2d6
+
+Squidlings
+
+with 1
+Bagbeast
+
+containing 2d6
+Volume-Folk
+. Also 1d4
+Manaclebugs
+.
+
+8
+
+Glimmer
+of eye-shine and glass.
+
+1
+
+Watchman
+
+stuck high up.
+Monitoring, watching. Will alert 1d6
+Squidlings
+
+with 1d4
+Manaclebugs
+.
+
+9
+
+-
+
+Roll
+on Depth Encounter Table.
+
+-
+
+10
+
+-
+
+Roll
+again on this table, and also on the Depth Encounter Table, combining
+results.
+
+-
+
+Dracospawn
+
+1d10
+
+Omen
+
+Encounter
+
+Page
+Reference
+
+1
+
+Squeaking.
+Disturbed dust. The hints of a trap. Slithering rope.
+
+1d6
+
+Kobolds
+waiting to ambush.
+Might start the ambush, then back off apologetically.
+
+AD&D
+MM pg. 57
+
+2
+
+Bickering,
+rude noises, stomping feet. Indignant puffing.
+
+1d6
+
+Kobolds
+vs an equal number
+belonging to a different dragon. Feuding noisily. Ask PCs to judge.
+
+AD&D
+MM pg. 57
+
+3
+
+Shouting,
+clatter of weapons, marching feet, waving banners.
+
+40x1d10
+
+Kobolds
+in a war party, lead
+by 2d6
+Dragonborn
+.
+Disorganized, easy to distract.
+
+AD&D
+MM pg. 57
+
+4
+
+Lantern
+light. Quiet discussion. Glint of light off scales.
+
+2
+
+Dragonborn
+, guarding a
+junction in the caves. Polite but quick to anger.
+
+AD&D
+MM pg. 62
+
+5
+
+Quiet
+squeaking. Hesitant footsteps. Bitter smell.
+
+1
+
+Kobold
+explorer
+, completely
+lost. Wants to go to a random hex.
+
+AD&D
+MM pg. 57
+
+6
+
+Incense,
+bells. Statues and cleared pathways. Lantern light.
+
+Dragon
+shrine. Temple to nearest Dragon. Guarded by 2d6
+Dragonborn
+. Safe for pilgrims.
+
+7
+
+Chanting,
+cautions movement. Rustle of silk.
+
+2d6
+
+Sycophants
+, carrying offerings
+to the nearest Dragon.
+
+8
+
+Quiet
+footsteps, grunts, slithering rope.
+
+1d6
+
+Volume-Folk
+traders
+, laden
+with goods, well-fed. Shadowed by 1d6
+Sycophants
+.
+
+9
+
+-
+
+Roll
+on Depth Encounter Table.
+
+-
+
+10
+
+-
+
+Roll
+again on this table, and also on the Depth Encounter Table, combining
+results.
+
+-
+
+Not Appearing In This Hexcrawl
+
+For a Different Campaign:
+
+Anglerlich, Antiphoenix, Civilopede
+
+I Don't Know How To Run This Encounter (to my satisfaction):
+
+The Egengraü, Gegenscheim, Phantom Hand of Gargas, Silichominds, Tachyon Troll
+
+I Don't "Get" This:
+
+Knotsmen, Spectre of the Bröcken
+
+Separate, Map-Based Entries
+
+Egg-Dead, The Rapture, Oneirocetacean
