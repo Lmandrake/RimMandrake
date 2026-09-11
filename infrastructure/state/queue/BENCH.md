@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T11:52:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T11:53:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -22,6 +22,15 @@ target:   v1
 kind:     task
 summary:  - Write the ruling INTO the docs that already speak of the planet's past (superseding
 prose:    infrastructure/state/items/TERRAMANUFACTURE_CANON_1.md
+
+## MECHANOID_ORIGIN_CANON_1 The mindstone droid-mind race; mechanoids + Rust Cathedral as a non-artificial AI and the Deeps' crystal minds as their wild cousins; the production facility and the Cathedral's true children
+state:    ready
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  - Reconcile with existing canon: the Rust Cathedral (ABMechanoidIntrusion, the
+prose:    infrastructure/state/items/MECHANOID_ORIGIN_CANON_1.md
 
 ## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
 state:    ready
@@ -154,26 +163,6 @@ kind:     task
 thin:     no ## criteria
 summary:  - Wire the heat mechanic (the Empire's pursuit/attention system — find the existing
 prose:    infrastructure/state/items/KYBER_TRADE_PLOT_1.md
-
-## MECHANOID_ORIGIN_CANON_1 The mindstone droid-mind race; mechanoids + Rust Cathedral as a non-artificial AI and the Deeps' crystal minds as their wild cousins; the production facility and the Cathedral's true children
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Reconcile with existing canon: the Rust Cathedral (ABMechanoidIntrusion, the
-prose:    infrastructure/state/items/MECHANOID_ORIGIN_CANON_1.md
-
-## CANON_LORE_PROPAGATION_1 Wednesday 2026-09-09 after 4pm (token reset): full propagation of canon back into the lore docs, AND re-think the three-layers-of-canon design with the owner — either fix the standing contradictions or explain why they are tolerated
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  CANONLOREPROPAGATION1 — canon back into the lore docs, and the three-layers rethink
-prose:    infrastructure/state/items/CANON_LORE_PROPAGATION_1.md
 
 ## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
 state:    proposed
