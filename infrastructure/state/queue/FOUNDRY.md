@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T07:27:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T07:28:24Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -602,15 +602,6 @@ target:   v1
 kind:     build
 summary:  Piece 4/4 of MECHPRESENCEENFORCEMENT1 (curate shrine contents where
 prose:    infrastructure/state/items/SHRINE_GUARDIAN_BIOME_GATE_1.md
-
-## SLIME_MOD_BUILD_1 Build the Gelatinous Slime universal mod (mandrake.rm tier) from the ruled design: biome + genetic archive + gene-extraction machine + slimification hediff + RM_GeneSeeker — spec design/RimMandrake/RM_gelatinous_slime_mod.md
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/SLIME_MOD_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SLIME_MOD_BUILD_1.md
 
 ## BAREHANDED_MELEE_FALLBACK_1 18 of 23 bare-handed pawn kinds have 100% ranged weapon pools with zero melee fallback (shooting-disabled pawns spawn bare) - re-run pool join vs today's post-restore cut list first, then add melee tags per faction voice; 5 kinds still undiagnosed
 state:    doing
