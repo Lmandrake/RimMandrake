@@ -96,13 +96,13 @@ Rebuilt from the owner's completed fauna review (`design/Jawa/worldbuilding/revi
 | `homeless:BMT_CrystalFairyMole` | BMT_CrystalFairyMole | Scarlands, oddly. 1 cell | the_scarlands |
 | `homeless:BMT_FacetMoth` | BMT_FacetMoth | Make it brightly colored and put it in the jungle | OPEN |
 | `homeless:BMT_FacetMothLarvae` | BMT_FacetMothLarvae | crystal caverns | the_lantern_deeps |
-| `homeless:BMT_Megakrill` | BMT_Megakrill | Fishing result, the Grey Sea | the_grey_deep |
+| `homeless:BMT_Megakrill` | BMT_Megakrill | Fishing result, the Grey Sea → retargeted Twilight (2026-09-10 schooling ruling) | the_twilight_deep |
 | `homeless:BMT_Megaphorid` | BMT_Megaphorid | injectable hives | OPEN |
 | `homeless:BMT_MegaphoridLarva` | BMT_MegaphoridLarva | scarlands | the_scarlands |
 | `homeless:BMT_Megapleura` | BMT_Megapleura | wreckage-based creature for the Fall | fall_line |
-| `homeless:BMT_MutatingTumorfishAdult` | BMT_MutatingTumorfishAdult | Grey Sea | the_grey_deep |
-| `homeless:BMT_MutatingTumorfishFry` | BMT_MutatingTumorfishFry | Grey Sea | the_grey_deep |
-| `homeless:BMT_MutatingTumorfishSpawn` | BMT_MutatingTumorfishSpawn | Grey Sea | the_grey_deep |
+| `homeless:BMT_MutatingTumorfishAdult` | BMT_MutatingTumorfishAdult | Grey Sea → retargeted Twilight (2026-09-10 schooling ruling) | the_twilight_deep |
+| `homeless:BMT_MutatingTumorfishFry` | BMT_MutatingTumorfishFry | Grey Sea → retargeted Twilight (2026-09-10 schooling ruling) | the_twilight_deep |
+| `homeless:BMT_MutatingTumorfishSpawn` | BMT_MutatingTumorfishSpawn | Grey Sea → retargeted Twilight (2026-09-10 schooling ruling) | the_twilight_deep |
 | `homeless:BMT_PodWorm` | BMT_PodWorm | Maisma | the_miasma |
 | `homeless:BMT_Polluwog` | BMT_Polluwog | Grey sea | the_grey_deep |
 | `homeless:BMT_PustuleHornet` | BMT_PustuleHornet | the Rot | the_rot |

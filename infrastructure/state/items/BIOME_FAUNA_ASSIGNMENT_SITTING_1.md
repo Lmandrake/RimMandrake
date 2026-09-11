@@ -284,3 +284,10 @@ in the ShockGoat/CaveLemming refashions). NEEDS-MORE fills from the sheet's unbu
 natives — COMMISSIONED: tunneler warren creature, inclusion-insect swarm,
 aurora-current feeder. Visitors hunt by starlight/aurora (real, cold light) and are
 exempt from the thermal-only law.
+
+**8. Grey Deep cap released (owner, 2026-09-10):** the sheet's "three, and no more"
+law is RETIRED (sheet §4 amended in place — the three named natives remain the anchor
+cast). Schools/swarms still banned in the Grey: the schooling set retargets to the
+Twilight Deep — BMT_MutatingTumorfish x3 (one organism) as spawns, BMT_Megakrill as a
+FISHING RESULT only (never wildAnimals). Polluwog stays Grey (not flagged schooling).
+Grey Deep cast: 7 residents; Twilight: +3 defs +1 fishing result.

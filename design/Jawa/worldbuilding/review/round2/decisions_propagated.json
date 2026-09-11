@@ -4330,7 +4330,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:49:46.950Z",
       "decision": "move",
-      "note": "Fishing result, the Grey Sea",
+      "note": "Fishing result, the Grey Sea | RETARGET: the_twilight_deep — still a FISHING RESULT, never a wildAnimals spawn (owner ruling 2026-09-10: cap released; schooling fish to the Twilight Sea)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4430,7 +4430,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:41:14.879Z",
       "decision": "move",
-      "note": "Grey Sea",
+      "note": "Grey Sea | RETARGET: the_twilight_deep (schooling/multiples) (owner ruling 2026-09-10: cap released; schooling fish to the Twilight Sea)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4440,7 +4440,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:41:20.745Z",
       "decision": "move",
-      "note": "Grey Sea",
+      "note": "Grey Sea | RETARGET: the_twilight_deep (schooling/multiples) (owner ruling 2026-09-10: cap released; schooling fish to the Twilight Sea)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4450,7 +4450,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:40:38.785Z",
       "decision": "move",
-      "note": "Grey Sea",
+      "note": "Grey Sea | RETARGET: the_twilight_deep (schooling/multiples) (owner ruling 2026-09-10: cap released; schooling fish to the Twilight Sea)",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "medium"
@@ -4470,7 +4470,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:42:38.588Z",
       "decision": "move",
-      "note": "Grey sea",
+      "note": "Grey sea | STAYS Grey Deep — not flagged schooling; cap released so it is a resident (owner ruling 2026-09-10: cap released; schooling fish to the Twilight Sea)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
