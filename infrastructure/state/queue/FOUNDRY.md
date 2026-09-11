@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T07:28:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T07:29:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -638,15 +638,6 @@ target:   v1
 kind:     task
 summary:  RESEARCHTRIORETIRE1 — retire steppingstones + als.gravtech x2, reconcile the recost
 prose:    infrastructure/state/items/RESEARCH_TRIO_RETIRE_1.md
-
-## STAGED_LORE_BUILD_1 Build staged lore descriptions (owner GO 2026-09-11): scribed GameComponent lore stage + def-field description swap; reflection-clear ThingDef.descriptionDetailedCached AND HediffDef.descriptionCached; reset-to-baseline on every load (defs persist across savegames); first consumer Scarlands GM ladder; stage TEXTS come later at an authoring sitting - spec design/Jawa/worldbuilding/research/staged_lore_descriptions_feasibility_2026-09-09.md + items/STAGED_LORE_DESCRIPTIONS_1.md
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  (no items/STAGED_LORE_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/STAGED_LORE_BUILD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
