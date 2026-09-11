@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T14:26:28Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-11T14:35:00Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -674,15 +674,6 @@ target:   v1
 kind:     bug
 summary:  Found via harvestlog.py on game UP 2026-09-11 (570-mod session): "Outer Rim
 prose:    infrastructure/state/items/OUTERRIM_DROIDDEPOT_PATCH_GUARD_1.md
-
-## ART_REGEN_WAVE1_WIRE_IN_1 Wire 11 completed art-regen jobs into their mods' Textures/ trees
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Two background agents (standing owner instruction, 2026-09-11: "always have
-prose:    infrastructure/state/items/ART_REGEN_WAVE1_WIRE_IN_1.md
 
 ## ART_REGEN_WAVE2_QUEUE_1 Queue art regen for 4 more decided fauna redo rows from the 2026-09-10 sitting (wave 2)
 state:    doing
