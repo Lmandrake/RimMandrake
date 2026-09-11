@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T19:02:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T19:12:09Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -383,3 +383,23 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  - Runs AFTER the full-roster size scaling (Law 3 at 12–15×bodySize) lands and
 prose:    infrastructure/state/items/FAUNA_LORE_DIVERSIFICATION_1.md
+
+## GOD_LINES_ORACLE_PACKS_1 Author the Ninefold god statement/reaction lines + Oracle persona prompt packs (voice law locked, zero lines exist); owner sittings, BENCH holds the pen - text_lore_load_report.md S5
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GOD_LINES_ORACLE_PACKS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GOD_LINES_ORACLE_PACKS_1.md
+
+## DUNGEON_SETPIECE_TEXT_1 Dungeon set-piece prose held for the owner: Assailant reveal letters + 6 Forsaken vault hand-finish text per dungeons_arc_spec.md - text_lore_load_report.md S5
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DUNGEON_SETPIECE_TEXT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DUNGEON_SETPIECE_TEXT_1.md
