@@ -7318,3 +7318,25 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"SHIP_VERMIN_MOD_1 quicktest verification","ts":"2026-09-11T17:52:39Z"}
 {"seat":"BENCH","event":"file","id":"FAUNA_LORE_DIVERSIFICATION_1","title":"Per-beast damage diversification round AFTER size scaling: judge each beast by its art + description (scary vs harmless), diverge individuals from the 12-15x band deliberately - owner ruled 2026-09-11, rides the beast graphics/lore pass","kind":"task","target":"v1","needs":"owner","for":"BENCH","ts":"2026-09-11T17:52:53Z"}
 {"seat":"BENCH","event":"close","id":"FAUNA_GRAPHS_SITTING_1","sha":"85f46ea6be1673ee70df00d71c0c43615ba963a1","ts":"2026-09-11T17:53:20Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ts":"2026-09-11T17:53:36Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ts":"2026-09-11T17:53:43Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-11T17:54:26Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"ART_REGEN_WAVE2_WIRE_IN_1 - resolve AA_Frostmite alternate-graphic random roll","ts":"2026-09-11T17:54:48Z"}
+{"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-09-11T17:55:02Z"}
+{"seat":"FOUNDRY","event":"block","id":"LOCKJAW_ART_WIRE_IN_1","reason":"AA_Lockjaw3 (brown) DONE: all 3 facings validated, wired into LockjawArtOverride, deployed, verified live. AA_Lockjaw2 (grey) south facing failed validation 5x (r8-r12) after the broadside-pose prompt bug was found and fixed - stopped retrying per budget; grey stays on donor art (unchanged, internally consistent) until south resolves or owner rules it can ship two-tier. See items/LOCKJAW_ART_WIRE_IN_1.md 2026-09-11 update.","ts":"2026-09-11T17:55:19Z"}
+{"seat":"BENCH","event":"claim","id":"MINDSTONE_LEGENDS_ENTRIES_1","ts":"2026-09-11T17:57:59Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-11T18:03:18Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"SHIP_VERMIN_MOD_1 quicktest verification (mynock board/breed/gnaw + population curve)","ts":"2026-09-11T18:03:41Z"}
+{"seat":"FOUNDRY","event":"close","id":"ART_REGEN_WAVE2_WIRE_IN_1","sha":"21721c6a4","ts":"2026-09-11T18:04:55Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-11T18:35:53Z"}
+{"seat":"FOUNDRY","event":"close","id":"SHIP_VERMIN_MOD_1","sha":"565b9156f","ts":"2026-09-11T18:36:43Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-11T18:36:58Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_STANDALONE_MOD_1","ts":"2026-09-11T18:38:22Z"}
+{"seat":"FOUNDRY","event":"start","id":"GREENTIDE_STANDALONE_MOD_1","ts":"2026-09-11T18:38:23Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SHOKK_RSW_MOD_1","ts":"2026-09-11T18:38:47Z"}
+{"seat":"FOUNDRY","event":"start","id":"SHOKK_RSW_MOD_1","ts":"2026-09-11T18:38:48Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SCENARIO_DURATION_CUT_1","ts":"2026-09-11T18:39:11Z"}
+{"seat":"FOUNDRY","event":"start","id":"SCENARIO_DURATION_CUT_1","ts":"2026-09-11T18:39:12Z"}
+{"seat":"FOUNDRY","event":"close","id":"SCENARIO_DURATION_CUT_1","sha":"f490557ec","ts":"2026-09-11T18:39:46Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"SHOKK_RSW_MOD_1 live verification","ts":"2026-09-11T18:52:49Z"}
+{"seat":"BENCH","event":"close","id":"MINDSTONE_LEGENDS_ENTRIES_1","sha":"a1d9050a2637789823d36c7907dc83588cf612d4","ts":"2026-09-11T19:02:49Z"}
