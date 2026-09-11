@@ -275,3 +275,12 @@ Ling_Cockroach is the organic roach, already resident. Megabat + Woollybat: alre
 never renders twice). Blood-shrimp-x3 and beldon-x2 explained: resident + move-in
 rows of the same def rendering separately — the dedup defect, not data.
 Trader-beasts: web research commissioned for SW herd animals (background agent).
+
+**7. Nightside visitor law (owner: "Yes, precisely as you say", 2026-09-10):**
+Wampa/Tauntaun/Jakobeast admitted as VISITORS-AND-DYING (margin herds and their
+followers, low commonality), never natives — riding the sheet's own "visitor, a
+machine, or dying" clause, zero sheet rewrite. Natives are thermal-only (line owed
+in the ShockGoat/CaveLemming refashions). NEEDS-MORE fills from the sheet's unbuilt
+natives — COMMISSIONED: tunneler warren creature, inclusion-insect swarm,
+aurora-current feeder. Visitors hunt by starlight/aurora (real, cold light) and are
+exempt from the thermal-only law.
