@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T04:00:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T04:31:46Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -576,15 +576,6 @@ kind:     design
 summary:  (no items/FISH_BESTIARY_COMMISSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FISH_BESTIARY_COMMISSION_1.md
 
-## MECH_PRESENCE_ENFORCEMENT_1 Enforce the RULED mechanoid/ancient-danger table: XML only - MechCluster allowed/disallowedBiomes patch, per-biome preventGenSteps/extraGenSteps for the ANCIENT column, zero the mechanoid FactionDef raid-commonality curve (confirm exact field name on the def first); curate shrine contents where ANCIENT-ALLOW meets AMBIENT-DENY
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  (no items/MECH_PRESENCE_ENFORCEMENT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MECH_PRESENCE_ENFORCEMENT_1.md
-
 ## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -915,4 +906,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## SHRINE_GUARDIAN_BIOME_GATE_1 Harmony postfix on SymbolResolver_AncientTemple.Resolve to gate shrine guardian/loot per-biome (ANCIENT-ALLOW/RARE x AMBIENT-DENY) — piece 4/4 of MECH_PRESENCE_ENFORCEMENT_1, spun off as C#, XML-only scope can't reach it
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  Piece 4/4 of MECHPRESENCEENFORCEMENT1 (curate shrine contents where
+prose:    infrastructure/state/items/SHRINE_GUARDIAN_BIOME_GATE_1.md
