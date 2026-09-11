@@ -32,6 +32,13 @@ TIER_PREFIX = {"RimMandrake": "RM_", "RimStarWars": "RSW_", "RimUtinni": "RUT_"}
 TIER_PID = {"RimMandrake": "rm", "RimStarWars": "rsw", "RimUtinni": "rut"}
 PID_RX = re.compile(r"^mandrake\.(rm|rsw|rut)\.[a-z0-9]+$")
 LEAK_RX = re.compile(r'JawaBench|"jawa/')
+XML_COMMENT_RX = re.compile(r"<!--.*?-->", re.S)
+
+
+def _stripped(path: Path) -> str:
+    """XML text with comments removed, so a defName or leak string that only
+    appears inside a `<!-- -->` is not counted as shipping."""
+    return XML_COMMENT_RX.sub("", path.read_text(encoding="utf-8", errors="replace"))
 
 
 def load_map():
@@ -83,16 +90,16 @@ def lint_mod(mod: Path, tier: str, sanctioned: set):
         for x in mod.rglob("*.xml"):
             if x.name == "About.xml":
                 continue
-            for d in re.findall(r"<defName>([A-Za-z0-9_\-]+)</defName>",
-                                x.read_text(encoding="utf-8", errors="replace")):
+            for d in re.findall(r"<defName>([A-Za-z0-9_\-]+)</defName>", _stripped(x)):
                 if not d.startswith(prefix) and d not in sanctioned \
                         and not (vendored and d.startswith(vendored)):
                     bad += 1
         if bad:
             v.append(("defName", f"{bad} defs lack {prefix}"))
         for c in mod.rglob("*.cs"):
-            if "/obj/" in str(c):
-                continue
+            if "obj" in c.parts:          # build output, not shipped source —
+                continue                  # "obj" in .parts survives Windows AND WSL,
+                                          # unlike a "/obj/" substring check
             for ns in re.findall(r"^\s*namespace\s+([A-Za-z0-9_.]+)",
                                  c.read_text(encoding="utf-8", errors="replace"), re.M):
                 # ruled 2026-08-31: namespaces nest under the RimMandrake root —
@@ -103,7 +110,7 @@ def lint_mod(mod: Path, tier: str, sanctioned: set):
                 if not ns.startswith(want) and not (vendored and ns.startswith(vendored)):
                     v.append(("namespace", f"{ns} != {want}{mod.name}"))
                     break
-    for x in list(mod.rglob("*.xml")) + [c for c in mod.rglob("*.cs") if "/obj/" not in str(c)]:
+    for x in list(mod.rglob("*.xml")) + [c for c in mod.rglob("*.cs") if "obj" not in c.parts]:
         if x.name == "About.xml":
             continue
         if LEAK_RX.search(x.read_text(encoding="utf-8", errors="replace")):
