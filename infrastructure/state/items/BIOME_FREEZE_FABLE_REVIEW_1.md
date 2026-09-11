@@ -70,3 +70,15 @@ marked frozen per the frozen-artifacts discipline.
 This review is followed IMMEDIATELY by `SETTLEMENT_REJIGGER_ROUND2_1` (settlements
 re-shifted to the frozen biomes), and only then by the animal/plant assignment
 (`BIOME_FAUNA_ASSIGNMENT_SITTING_1`) and the inhabited injections.
+
+## founding-doc input — the terramanufacture history (added 2026-09-11, `TERRAMANUFACTURE_CANON_1`)
+The planet's past, as every sheet must reconcile against it: a one-tenth-built
+planet-factory (terramanufacture, not terraforming); planet-scale power dynamo with its
+intake at the substellar pole (why the magnetic pole is there — the Rust Cathedral its
+remnant, the Scald its intended coolant reservoir); the war lab never planned, built
+after the weapon was loose; mutual learning, mutual destruction with the Assailants.
+Authority: `design/Jawa/worldbuilding/biomes/the_propane_lakes.md` §3 "The machine".
+Propagated into the founding docs 2026-09-11 — a sheet contradicting it cards to the
+owner per framing rule 1. Refinement (owner, 2026-09-11): "The SHIP was terraforming.
+The RACE was evolving the planet towards terramanufacturing. This is consistent." —
+ship-level text keeps its word; planet-program text says terramanufacture.

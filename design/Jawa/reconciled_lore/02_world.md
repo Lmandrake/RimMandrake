@@ -10,7 +10,7 @@ rulings. Status: the map is **adopted and being authored in place**; the freeze
 is a savegame not yet taken (`canon.yml planet.status`).
 
 The name reads three true ways at once: the world split by the lock; the world
-broken by the Forsakens' failed terraforming; the people sundered by the war.
+broken by the Forsakens' failed terramanufacture; the people sundered by the war.
 
 ## The three condensers — the whole of the planet's chemistry [owner 2026-08-15]
 

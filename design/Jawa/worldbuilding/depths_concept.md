@@ -199,7 +199,7 @@ country with its own citizens, and that asymmetry is the design.
 ## 8. Why go — the reasons the sea tilemap earns its place
 
 1. **Salvage no one else can reach** — the sunken colonization-age fleet.
-   The terraformer that made these seas drowned its own support ships in
+   The terramanufacturers who made these seas drowned their own support ships in
    them; the wreck-vaults hold pre-fall technology (Rekko's "the whole Jawa
    future may already be aboard" extends: some of it is *below*).
 2. **Unique materials**: leviathan hide/bone (the armor tier the surface

@@ -101,7 +101,7 @@ as they are made; new-content ideas go to `worldgen_interactive_build_concepts.m
   is no sun, no crops, cold, fauna, and half a planet of distance. No timer needs authoring.
 - `AB_RockyCrags` (hardcoded 0.34 sun-glow, never clear weather) **is** the nightside, and
   its own description — an ancient race part-terraformed this world and left — is the
-  Forsaken back-story.
+  Forsaken back-story (true as the first stage: the terraforming served the terramanufacture — `TERRAMANUFACTURE_CANON_1`).
 
 ## The tile rule — every terrain fills four axes
 
@@ -234,8 +234,8 @@ positions need `jawa/world_tile_export`. The zero rows are not blurred.
 | **the Rust Cathedral** | the mechanoid-intrusion landscape. **Already ruled 2026-08-15** (`the_forgotten_war.md`): the one mega-structure, a map **made of** metal rather than containing it, defended viciously, acid lakes | ⭐ **the substellar centre** |
 
 ⭐ **The Rust Cathedral is WHY the substellar centre is flat and baked.** The ancient
-Rakatans began their great terraforming works there — the machinery that was once making
-this world come alive. **Irregular in outline but ONE SOLID MASS**, and it survives at
+Rakatans began their great terramanufacture works there — the machinery that was once building
+the planet-factory: the dynamo’s intake. **Irregular in outline but ONE SOLID MASS**, and it survives at
 **higher elevation**, where the sand never buried it. That single placement ties the
 Forsaken back-story, the mechanoid biome, the Empire's seat at the dead centre and the
 planet's flattest, deadest ground into one object.

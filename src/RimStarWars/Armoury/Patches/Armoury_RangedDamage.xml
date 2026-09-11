@@ -268,29 +268,6 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Outer Rim - Droid Depot</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- OuterRim_Bullet_BlasterCannon : 68 -> 69 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="OuterRim_Bullet_BlasterCannon"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>69</damageAmountBase></value>
-        </li>
-        <!-- OuterRim_Bullet_TwinWristBlaster : 32 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="OuterRim_Bullet_TwinWristBlaster"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-        <!-- OuterRim_Bullet_WristBlaster : 32 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="OuterRim_Bullet_WristBlaster"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
     <mods><li>Star Wars KotOR Resources and Materials</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -364,6 +341,24 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="VFES_Bullet_HMG"]/projectile/damageAmountBase</xpath>
           <value><damageAmountBase>200</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Vanilla Quests Expanded - Cryptoforge</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- VQE_AncientShieldedTurret_Bullet : 40 -> 86 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VQE_AncientShieldedTurret_Bullet"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>86</damageAmountBase></value>
+        </li>
+        <!-- VQE_AncientSpacerAutocannon_Bullet : 64 -> 125 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VQE_AncientSpacerAutocannon_Bullet"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>125</damageAmountBase></value>
         </li>
       </operations>
     </match>
