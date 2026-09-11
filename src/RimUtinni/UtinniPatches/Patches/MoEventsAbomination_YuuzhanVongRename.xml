@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  MoEventsAbomination_YuuzhanVongRename.xml  RimUtinni Patches - new file 2026-09-11
+  ============================================================================
+
+  DONOR_FACTION_PROPER_NOUN_RENAMES_1, owner ruling 2026-09-11 ("Yes, draft
+  them now"), item 4 of 6 from DONOR_PROPER_NOUN_SCAN_1's Category 6
+  (design/Jawa/donor_proper_noun_backlog.md). "Abomination" (Mo'Events) is an
+  unthemed flesh-horror faction with no place in a Star Wars register.
+
+  Canon fit: the web-research draft offered two options for this slot - "the
+  Nihil, again" or the Yuuzhan Vong (Legends-only). **The Nihil is used
+  instead for the Horrors donor** (Horrors_NihilRename.xml) because that
+  pairing (a raiding faction wielding the Nameless as a named weapon) is the
+  cleaner canon fit; using "the Nihil" here too would put two different
+  FactionDefs in this campaign under the identical label, which is its own
+  proper-noun clash and exactly the kind of "doesn't hold up on closer
+  inspection" case the owner's ruling says to catch. The Yuuzhan Vong -
+  extragalactic invaders who reject machine technology for grown
+  bio-technology, ritual scarification and body-modification, "assimilating"
+  what they conquer - is the correct fit for slow, hulking, flesh-manifesting
+  "Abominations" that "consume and assimilate, corpse by corpse." Legends-only
+  (the New Jedi Order invasion arc was not carried into post-2014 Canon), same
+  register as this repo's other Legends-sourced picks (Klatooinian/Trandoshan,
+  Offworld Mining) - the owner's ruling never restricted picks to Canon-only.
+
+  TEXT ONLY. defNames (MO_AbominationFaction, MO_AbominationPawnKind,
+  MO_AbominationRace, Corpse_MO_AbominationRace), mechanics (hediffs, combat
+  stats, spawn/raid tuning, faction relations) are UNCHANGED. This patches
+  label/description/leaderTitle strings only.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Mo'Events (Continued)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="MO_AbominationFaction"]/label</xpath>
+          <value><label>Yuuzhan Vong</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="MO_AbominationFaction"]/fixedName</xpath>
+          <value><fixedName>Yuuzhan Vong</fixedName></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="MO_AbominationFaction"]/description</xpath>
+          <value>
+            <description>Extragalactic invaders who hold every machine an abomination and every conquered world a canvas for their own grown, bio-engineered horrors. Slow, hulking, and relentless, their warriors' bodies are shaped and reshaped by ritual scarification until flesh itself becomes both weapon and armor - wounds close in minutes, and what they cannot kill outright they consume and assimilate, corpse by corpse.</description>
+          </value>
+        </li>
+        <!-- leaderTitle and pawnSingular have no literal XML node on the donor
+             def (both fall back to Verse.FactionDef's C# defaults, "leader"
+             and "member") - PatchOperationReplace cannot hit a node that was
+             never written, so both are Conditional Add-or-Replace. -->
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/FactionDef[defName="MO_AbominationFaction"]/leaderTitle</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/FactionDef[defName="MO_AbominationFaction"]</xpath>
+            <value><leaderTitle>Warmaster</leaderTitle></value>
+          </nomatch>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/FactionDef[defName="MO_AbominationFaction"]/leaderTitle</xpath>
+            <value><leaderTitle>Warmaster</leaderTitle></value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/FactionDef[defName="MO_AbominationFaction"]/pawnSingular</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/FactionDef[defName="MO_AbominationFaction"]</xpath>
+            <value><pawnSingular>Yuuzhan Vong warrior</pawnSingular></value>
+          </nomatch>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/FactionDef[defName="MO_AbominationFaction"]/pawnSingular</xpath>
+            <value><pawnSingular>Yuuzhan Vong warrior</pawnSingular></value>
+          </match>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="MO_AbominationFaction"]/pawnsPlural</xpath>
+          <value><pawnsPlural>Yuuzhan Vong</pawnsPlural></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="MO_AbominationPawnKind"]/label</xpath>
+          <value><label>Yuuzhan Vong warrior</label></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="MO_AbominationRace"]/label</xpath>
+          <value><label>Yuuzhan Vong warrior</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="MO_AbominationRace"]/description</xpath>
+          <value>
+            <description>Reshaped from birth by ritual scarification and grown bio-technology, Yuuzhan Vong warriors are slow, hulking, and relentless. Their bodies twist and contort to heal even major wounds quickly, and what they cannot kill outright they consume and assimilate, corpse by corpse.</description>
+          </value>
+        </li>
+
+        <!-- Corpse_MO_AbominationRace is Core's generic corpse ThingDef
+             machinery (RaceProps.corpseDef auto-generation) - it has no
+             literal label/description node of its own in the donor's XML, so
+             both are Conditional Add-or-Replace rather than a plain Replace. -->
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="Corpse_MO_AbominationRace"]/label</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="Corpse_MO_AbominationRace"]</xpath>
+            <value><label>Yuuzhan Vong corpse</label></value>
+          </nomatch>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="Corpse_MO_AbominationRace"]/label</xpath>
+            <value><label>Yuuzhan Vong corpse</label></value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="Corpse_MO_AbominationRace"]/description</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="Corpse_MO_AbominationRace"]</xpath>
+            <value><description>Dead body of a Yuuzhan Vong warrior.</description></value>
+          </nomatch>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="Corpse_MO_AbominationRace"]/description</xpath>
+            <value><description>Dead body of a Yuuzhan Vong warrior.</description></value>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

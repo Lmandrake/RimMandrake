@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  Horrors_NihilRename.xml                    RimUtinni Patches - new file 2026-09-11
+  ============================================================================
+
+  DONOR_FACTION_PROPER_NOUN_RENAMES_1, owner ruling 2026-09-11 ("Yes, draft
+  them now"), item 3 of 6 from DONOR_PROPER_NOUN_SCAN_1's Category 5
+  (design/Jawa/donor_proper_noun_backlog.md). "Horrors" is an unthemed
+  cosmic-horror faction with no place in a Star Wars register.
+
+  Canon fit RE-VERIFIED 2026-09-11 against Wookieepedia/High-Republic-era
+  material: the Nihil are the anarchistic marauder faction of the Galactic
+  Frontier, led (in their best-known era) by Marchion Ro - a "Mastermind"-
+  style figure who alone knew how to produce and control the Nameless, living
+  weapons that consume Force-sensitives with fear and hallucination. That
+  pairing (a raiding faction wielding a named cosmic-horror weapon) is the
+  reason this is the stronger of the donor's two possible landings - see
+  MoEventsAbomination_YuuzhanVongRename.xml for why "the Nihil" was NOT also
+  used there: two different FactionDefs in the same campaign both labelled
+  "the Nihil" would be its own proper-noun collision.
+
+  TEXT ONLY. defName MO_AbominationFaction is unaffected here (different
+  file); defName Horrors, its mechanics (raid tuning, faction relations,
+  hostility) are UNCHANGED. This patches label/description/leaderTitle/
+  pawnSingular/pawnsPlural strings only.
+
+  ⛔ NOT touched: BiomeDef/HorrorWastes. Per the backlog, this world has no
+  worldgen (the_one_map.md - one frozen, hand-authored planet) and the biome
+  is unlikely to ever be placed; if it ever needs a name it is a separate,
+  much smaller pass and not part of this faction-identity batch.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Horrors (Continued)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="Horrors"]/label</xpath>
+          <value><label>the Nihil</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="Horrors"]/description</xpath>
+          <value>
+            <description>Marauders out of the Galactic Frontier who answer to no government and follow no law but their own Tempest cells. What makes the Nihil truly feared is not their raiders but what their Mastermind sends ahead of them: the Nameless, hungering things that stalk the dark between the stars and feed on the minds of anyone who can touch the Force, leaving the rest to whatever is left of the raiding party.</description>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="Horrors"]/leaderTitle</xpath>
+          <value><leaderTitle>Mastermind</leaderTitle></value>
+        </li>
+        <!-- pawnSingular has no literal XML node on the donor def (it falls
+             back to Verse.FactionDef's C# default, "member") - PatchOperationReplace
+             cannot hit a node that was never written, so this is Conditional
+             Add-or-Replace instead of a plain Replace. -->
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/FactionDef[defName="Horrors"]/pawnSingular</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/FactionDef[defName="Horrors"]</xpath>
+            <value><pawnSingular>Nihil raider</pawnSingular></value>
+          </nomatch>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/FactionDef[defName="Horrors"]/pawnSingular</xpath>
+            <value><pawnSingular>Nihil raider</pawnSingular></value>
+          </match>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="Horrors"]/pawnsPlural</xpath>
+          <value><pawnsPlural>Nihil marauders</pawnsPlural></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
