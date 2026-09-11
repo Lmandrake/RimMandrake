@@ -7456,3 +7456,9 @@
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"Game is up — 27-mod Lockjaw verify","ts":"2026-09-11T23:52:33Z"}
 {"seat":"BENCH","event":"close","id":"TERRAMANUFACTURE_CANON_1","sha":"3c2993420c8a487abf02a0f5c3b66dd9c46d1fd6","ts":"2026-09-11T23:53:58Z"}
 {"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T23:54:02Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-11T23:54:07Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is going down — Lockjaw verification complete, restoring full list","ts":"2026-09-11T23:54:09Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-11T23:54:14Z"}
+{"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-11T23:54:34Z"}
+{"seat":"FOUNDRY","event":"close","id":"LOCKJAW_ART_WIRE_IN_1","sha":"0c50701fd","ts":"2026-09-11T23:54:35Z"}
+{"seat":"BENCH","event":"start","id":"MECHANOID_ORIGIN_CANON_1","ts":"2026-09-11T23:54:42Z"}

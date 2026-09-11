@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T23:54:02Z (the last event's own timestamp, not the render clock)
-game:  GOING_DOWN   bridge: FOUNDRY
+as-of: 2026-09-11T23:54:42Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -675,15 +675,6 @@ kind:     bug
 summary:  Found via harvestlog.py on game UP 2026-09-11 (570-mod session): "Outer Rim
 prose:    infrastructure/state/items/OUTERRIM_DROIDDEPOT_PATCH_GUARD_1.md
 
-## LOCKJAW_ART_WIRE_IN_1 LOCKJAW_ART_WIRE_IN_1
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  infrastructure/artpipe/done/lockjawimprovear7.json and br7.json (plus
-prose:    infrastructure/state/items/LOCKJAW_ART_WIRE_IN_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -967,16 +958,6 @@ kind:     bug
 blocked:  generator fix needs a Jawa_Patches-disabled dump recapture (a dedicated live cycle) to regenerate safely without hitting the documented post-patch-dump shrink trap; low severity (8 harmless log lines), not worth forcing now -- also open: owner call on whether DroidDepot staying inactive is permanent policy
 summary:  Found via harvestlog.py on game UP 2026-09-11 (570-mod session): "Outer Rim
 prose:    infrastructure/state/items/OUTERRIM_DROIDDEPOT_PATCH_GUARD_1.md
-
-## LOCKJAW_ART_WIRE_IN_1 LOCKJAW_ART_WIRE_IN_1
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-blocked:  AA_Lockjaw3 (brown) DONE: all 3 facings validated, wired into LockjawArtOverride, deployed, verified live. AA_Lockjaw2 (grey) south facing failed validation 5x (r8-r12) after the broadside-pose prompt bug was found and fixed - stopped retrying per budget; grey stays on donor art (unchanged, internally consistent) until south resolves or owner rules it can ship two-tier. See items/LOCKJAW_ART_WIRE_IN_1.md 2026-09-11 update.
-summary:  infrastructure/artpipe/done/lockjawimprovear7.json and br7.json (plus
-prose:    infrastructure/state/items/LOCKJAW_ART_WIRE_IN_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
