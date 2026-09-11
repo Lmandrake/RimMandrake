@@ -29,5 +29,18 @@ namespace RimMandrake.Aftermath
         {
             return def != null && def.triggerKind == AftermathTriggerKind.MentalBreakNearBattle;
         }
+
+        // Rule 4 ("They come for their own"), wired 2026-09-10. The trigger's
+        // own conditions -- which faction, hostility, raidsForbidden -- are
+        // resolved by the caller (AftermathRuleRunner.OnPrisonerHeldTooLong)
+        // from the live Pawn/Faction, which this predicate deliberately does
+        // not touch so it stays offline-testable with a bare float, same
+        // reasoning as IsEligible/IsEligibleMentalBreakNearBattle above.
+        public static bool IsEligiblePrisonerHeldDuration(RM_AftermathRuleDef def, float heldDays)
+        {
+            if (def == null) return false;
+            if (def.triggerKind != AftermathTriggerKind.PrisonerHeldDuration) return false;
+            return heldDays >= def.minHeldDays;
+        }
     }
 }
