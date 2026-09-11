@@ -68,7 +68,7 @@ Where the Rakatans used nuclear, radiation and chemical weaponry to devastate th
 (and, later, more modern forces): conventionally toxified, ruined, and left. Where rivers
 die, everything they carried is concentrated into salt and brine. Where the sky's exhaust
 falls and nothing ever washes. Nothing recycles here — water doesn't leave, fallout doesn't
-wash, history doesn't decay — and for a thousand years since the war it has also been the
+wash, history doesn't decay — and for all the ages since the war it has also been the
 place you throw what nobody wants, because it was already ruined.
 
 Creatures exist and may be dangerous — but **it is not they who did this**. They merely
@@ -250,7 +250,7 @@ One dead sarlacc has had so much hideousness thrown down it that **an unholy glo
 from it**, and the ground sometimes trembles as though it were moving or groaning. 🔴 **It
 is not alive and not undead, despite the rumors** (owner's ruling — the trembling is gas
 pockets and settling mass; the Junkers' "it's just settling" is technically true and
-completely beside the point). A thousand years of the worst casks are **mingling, changing,
+completely beside the point). Ages of the worst casks are **mingling, changing,
 reacting** into a serious regional hazard: potentially explosive, and potentially able to
 vent toxins high enough into the atmosphere to **poison a sizeable part of the world**. The
 Junkers refuse and refute all of it.
@@ -261,7 +261,7 @@ Junkers refuse and refute all of it.
   Junker toll gates.
 - **Rib-vaults** and the other dead sarlacc throats (bunker, vault, dungeon, the dump's
   dump).
-- **The buried crimes** — a thousand years of things hidden here *because* nothing rots and
+- **The buried crimes** — ages of things hidden here *because* nothing rots and
   nobody looks, all perfectly preserved.
 
 ## 9. Artistic theme

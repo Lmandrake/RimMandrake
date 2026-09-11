@@ -72,7 +72,7 @@ adult: keeps the yard's parts ledger. The ledger is immaculate. The shelves are 
 `item: Cloth`
 childhood: assigned to a household. The household is a scorch mark under eleven metres of sand.
 adult: works the yard for wages it has never once spent.
-> It trundles badly on a wheel rebuilt nine times and still not round, and every evening at the same hour it stops whatever it is doing and lays a place setting on an empty crate. Cup, plate, folded cloth. Four thousand years of this. Argue and it will fight you, and lose, because a firm shove puts it on its side for an hour.
+> It trundles badly on a wheel rebuilt nine times and still not round, and every evening at the same hour it stops whatever it is doing and lays a place setting on an empty crate. Cup, plate, folded cloth. Ages of this. Argue and it will fight you, and lose, because a firm shove puts it on its side for an hour.
 
 **Sump-Ten** · astromech-pattern, one leg replaced with a strut · none · 200 service-years
 `traits: NaturalMood(Depressive), FastLearner, Ascetic`

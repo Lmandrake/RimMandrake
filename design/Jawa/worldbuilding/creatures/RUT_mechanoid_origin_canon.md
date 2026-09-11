@@ -169,7 +169,7 @@ no worldgen — reached through a Deep's mouth per the ruled map-chain.
   slumbering one"* against *"not running under its hand today; the Cathedral
   would like it restarted"*: the factory **ticks over autonomously** — a
   trickle of Sentinels on ancient standing orders, which is what has restocked
-  faction 13 for millennia (and why the Arsenal never ran out) — but it is
+  faction 13 for ages (and why the Arsenal never ran out) — but it is
   **not under the Cathedral's command**, and its mind-seeding line (the part
   that grows crystal minds for the bodies) is dark. "Restore" means handing the
   Cathedral its factory back, seeding line and all.
@@ -207,8 +207,8 @@ no worldgen — reached through a Deep's mouth per the ruled map-chain.
 **Contradiction rulings:**
 
 - **C1+C4 — ADOPTED: the autonomous trickle, enriched.** The factory runs an
-  autonomous trickle on the last standing orders — which is also where ten
-  millennia of Sentinel attrition replacement came from; the mindstone-seeding
+  autonomous trickle on the last standing orders — which is also where the
+  ages of Sentinel attrition replacement came from; the mindstone-seeding
   line is dark; "restore" means handing it to the Cathedral. Owner-verbatim:
   *"the slow trickle shows that there ARE still automated mining facilities
   working, automated supply lines slowly delivering, automated manufacturing.

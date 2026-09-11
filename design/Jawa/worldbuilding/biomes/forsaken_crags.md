@@ -87,7 +87,7 @@ thermometer can tell the clear pocket from the wall of Dark beside it.
 Where the Dark dies, its compacted grains settle with their acid chemistry and **etch
 downward** — a slow, insidious rain eating the land. The famous obsidian-black twisted
 formations are causal, not decorative: **the wild rock is the trail of everywhere the Dark
-has been clearing for ten thousand years.** Where a standing clear-pocket has sat over one
+has been clearing for ages past.** Where a standing clear-pocket has sat over one
 spot geologically long, the etch goes deep — and the deepest is **LIGHTFALL**, the great
 chasm on the planet's terminator, the one massive feature of its kind (owner-named
 2026-09-06: where light falls in — the one place the Dark always dies). 🔴 **Placed on the

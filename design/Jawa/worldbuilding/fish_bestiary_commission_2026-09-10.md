@@ -696,7 +696,7 @@ graphicData    Graphic_StackCount · texPath RimUtinni/AshkarrWaters/Veen (owed 
                through the skin; cold-blue cast)
 ```
 > A coolant eel. Blind, pale, and cold to the touch, it has circled the
-> Cathedral's closed loop for ten thousand generations eating the microfouling —
+> Cathedral's closed loop for uncounted generations eating the microfouling —
 > dead micromachines, scale, silt — and the filters were reconfigured, once, to
 > let it pass. The machine keeps them: living maintenance for a cooling system
 > whose purpose died unfinished, tended anyway. Fishing them is possible. The hum

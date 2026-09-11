@@ -190,7 +190,7 @@ adult: tests every claim of communion, personally, on the hot plate.
 `traits: TooSmart, Abrasive, NaturalMood(Depressive)`
 `skills: Intellectual 20`
 childhood: out-calculated her instructors at ten and was disliked for it at eleven.
-adult: has a proof, four hundred pages, that the Rakatan AI is dead and has been for millennia.
+adult: has a proof, four hundred pages, that the Rakatan AI is dead and has been for ages.
 > It is correct. It has been correct for three years. She has read it aloud at four consecutive Meckgins to a polite, cheering, entirely unlistening crowd, and she keeps rewriting it shorter, as though the problem were the length. She is unbearable at dinner and she is *right*.
 
 **Old Umma** · Geonosian (drone) · f · 71

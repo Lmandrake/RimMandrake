@@ -93,7 +93,7 @@ mostly evictions. The residents:
   the Cathedral tolerates them, or grooms them, like a man brushing flies off
   a grave. (Shared with `the_scarlands.md`; one home, two ranges.)
 - ⭐ **The coolant eels** (owner: "why not?") — blind, pale things circling
-  the closed loop for ten thousand generations, eating the microfouling: dead
+  the closed loop for uncounted generations, eating the microfouling: dead
   micromachines, scale, silt. The filters were reconfigured, once, to let
   them pass — **"not that the machine cares" has exactly one exception.** The
   Cathedral keeps them: living maintenance for a cooling system whose purpose
@@ -267,7 +267,7 @@ added history. Changes no ruling above or below.**
     Cathedral ground, not running under its hand today; the Cathedral would
     like it restarted. **Ruled detail (2026-09-11 sitting,
     `RUT_mechanoid_origin_canon.md` §5)**: the factory runs an autonomous
-    trickle on the last standing orders — the source of ten millennia of
+    trickle on the last standing orders — the source of ages of
     Sentinel attrition replacement; its mindstone-seeding line is dark;
     "restore" = hand it to the Cathedral. The surviving automated mining/
     supply/manufacturing lines persist only because the Cathedral sleeps

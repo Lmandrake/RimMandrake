@@ -170,7 +170,7 @@ terramanufacture.** The builders had only begun — the sub-surface structures,
 the self-assembling megastructures, the **planet-scale power dynamo** — when
 the Assailants came and everything became surviving them. Since then it is **a
 one-tenth-built dream slowly grinding down, collapsing inward on itself over
-the millennia.**
+the ages.**
 
 - 🔑 **The sub-solar point needed all the power they could possibly channel
   into the planet** — that is why the planet's magnetic pole sits there: the

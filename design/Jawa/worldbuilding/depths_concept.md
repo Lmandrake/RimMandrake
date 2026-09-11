@@ -25,7 +25,7 @@ not. Fifty meters down there is no day, no horizon, no Searer — only a green
 darkness that ends three body-lengths from your faceplate, the tick of your
 own regulator, and the slow rain of the galaxy's garbage settling into the
 silt. Every wreck that ever fell into these seas is still down here. So is
-everything that learned, over ten thousand years, to eat around them.
+everything that learned, over the ages, to eat around them.
 
 **This is the one country Sh'kaar cannot enter.** The sun's writ ends at
 depth — the deep is Ishko's second kingdom, darkness so total it does not

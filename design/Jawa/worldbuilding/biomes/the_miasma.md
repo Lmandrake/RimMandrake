@@ -63,7 +63,7 @@ a war.** Two engines, and they are the same engine:
 
 - **The drain** — every drop of moving dayside water ends here or dies trying:
   the Contagion's sterilized mulch, the Greentide's washed-out fertility, the
-  salt, and the war's biological leftovers, carried downriver for millennia and
+  salt, and the war's biological leftovers, carried downriver for ages and
   settled into the muck.
 - **The lifeboat** — the Grey Sea is being pickled alive in its own basin, and
   the only refuge is the fresh end of the gradient: **an entire sea's endemic

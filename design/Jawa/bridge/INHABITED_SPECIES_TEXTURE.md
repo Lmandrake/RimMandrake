@@ -157,7 +157,7 @@ Finance, law, accounting, actuarial, engineering. Even a labourer is a numbers p
 - **No pulse and no body heat.** Any medical scan or biometric reads wrong.
 - Centuries of lifespan; puberty around 100. Many produce **one** book, one painting, one
   piece of music and never a second — perfecting a craft is pointless when everyone who
-  could judge it died a thousand years ago.
+  could judge it died an age ago.
 - Known to the galaxy only as folklore, and as "snot vampires".
 
 ## Herglic — too big for the furniture

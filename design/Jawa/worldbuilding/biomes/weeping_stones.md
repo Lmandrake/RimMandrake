@@ -179,7 +179,7 @@ The succession ladder, oldest to ultimate — and every oasis sits somewhere on 
 1. **The natural weep** — bare seep lines, mats, a catch-pool. No hand has touched it.
 2. **The ancient vane arrays** — the ancients found the best traps and built on them:
    upright condenser fins facing the wind, water sheeting into sunk cistern shafts.
-   Millennia on, each installation drifted into its own state: one still runs cold and
+   Ages on, each installation drifted into its own state: one still runs cold and
    true and holds a real pool; one leaks and made a hanging marsh; one runs half-wild
    and floods its canyon with fog; one died, and its oasis is a dry ring around a
    silent machine.
