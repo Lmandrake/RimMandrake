@@ -53,7 +53,7 @@ namespace RimMandrake.CreatureBehaviors
 
 		private void ScanForTrigger()
 		{
-			List<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
 			for (int i = 0; i < pawns.Count; i++)
 			{
 				Pawn pawn = pawns[i];
