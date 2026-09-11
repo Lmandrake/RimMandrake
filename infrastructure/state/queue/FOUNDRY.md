@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T04:31:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T04:42:39Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -612,6 +612,15 @@ kind:     design
 summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
 
+## SHRINE_GUARDIAN_BIOME_GATE_1 Harmony postfix on SymbolResolver_AncientTemple.Resolve to gate shrine guardian/loot per-biome (ANCIENT-ALLOW/RARE x AMBIENT-DENY) — piece 4/4 of MECH_PRESENCE_ENFORCEMENT_1, spun off as C#, XML-only scope can't reach it
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Piece 4/4 of MECHPRESENCEENFORCEMENT1 (curate shrine contents where
+prose:    infrastructure/state/items/SHRINE_GUARDIAN_BIOME_GATE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -852,7 +861,7 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-blocked:  needs owner: backstory un-cut (141->10) could be deliberate or a review-window leftover, can't confirm which without asking whoever touched Cherry Picker's UI tonight
+blocked:  RULED (owner, 2026-09-10): restore all 139 genuine reversals at next game-down, then capture-ship --apply. Execution spec is in the item file. Waiting on a game-down window, not an owner decision.
 summary:  CHERRYPICKERSHIPBASELINESTALE1
 prose:    infrastructure/state/items/CHERRYPICKER_SHIP_BASELINE_STALE_1.md
 
@@ -906,14 +915,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## SHRINE_GUARDIAN_BIOME_GATE_1 Harmony postfix on SymbolResolver_AncientTemple.Resolve to gate shrine guardian/loot per-biome (ANCIENT-ALLOW/RARE x AMBIENT-DENY) — piece 4/4 of MECH_PRESENCE_ENFORCEMENT_1, spun off as C#, XML-only scope can't reach it
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  Piece 4/4 of MECHPRESENCEENFORCEMENT1 (curate shrine contents where
-prose:    infrastructure/state/items/SHRINE_GUARDIAN_BIOME_GATE_1.md
+_none._
