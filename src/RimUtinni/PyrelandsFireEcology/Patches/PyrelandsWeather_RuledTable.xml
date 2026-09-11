@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  PyrelandsWeather_RuledTable.xml   RimUtinni: Fire Ecology   2026-09-11
+  ============================================================================
+  PYRELANDS_MECHANICS_1's last owed line: "the ruled weather table"
+  (the_pyrelands.md, "Owed"). Stage0 and BlackRain, in this same folder,
+  already did the two things FIRE_ECOLOGY_LOOP_1 budgeted — strip the rain,
+  crank the dry thunderstorm, wire Black Rain in at a low base. What they did
+  NOT do is finish the table, and the sheet's own register (§9: "a horizon
+  that is always smoking somewhere"; §3: ash "falling out of the sky for days
+  after a big burn") is still missing from the campaign's biome.
+
+  🔑 THE TARGET IS NOT INVENTED. mandrake.rm.pyrelands ships its own ruled
+  table on its own biome — RM_FE_Pyrelands, in
+  src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml — authored from the
+  same canon:
+
+      Clear 40 · DryThunderstorm 20 · AshFall 14 · Cinderfall 4 ·
+      BlackRain 3 · Fog 2 · GrayPall 1 · Windy 2 · Overcast 2
+
+  This file brings ZBiome_Grasslands (the campaign's Pyrelands) into line with
+  that, scaled to the commonalities Stage0 already set here. Stage0 left
+  Clear at 55 against the RM table's 40, a factor of ~1.375, so:
+
+      AshFall    14 * 1.375  ->  19
+      Cinderfall  4 * 1.375  ->   6
+
+  ⛔ BLACK RAIN IS DELIBERATELY NOT RAISED to the RM table's 3. Its own file
+  (PyrelandsWeather_BlackRain.xml) explains at length why 1 is correct HERE:
+  WeatherDecider's ChanceFactorRainOnFire multiplies it 15x exactly while a
+  large fire is burning, and Stage0 left it the only rain-rated weather in the
+  table, so 1 already means "almost never, except when the map is alight".
+  That is a reasoned, cited number and this file does not second-guess it.
+
+  ⛔ WINDY AND OVERCAST are likewise left at Stage0's 0.5 rather than raised to
+  the RM table's 2: neither is a Pyrelands signature, both are Odyssey-gated on
+  the donor def, and the sheet rules nothing about them.
+
+  SNOW IS REMOVED, and the RM biome's own comment is the reason: "this biome's
+  placement band starts at 25 degC, so SnowGentle/SnowHard could never fire
+  anyway (their temperatureRange is -999~-0.5)". The Pyrelands' measured temp
+  median is 53.6 degC (§0). Two dead entries in a weighted table are noise that
+  reads as a mistake to the next person who opens it.
+  ⚠️ Both removes are wrapped in PatchOperationConditional rather than run bare:
+  Stage0's header recorded SnowGentle 4 / SnowHard 4 in the live table on
+  2026-09-01, but a donor update could drop them, and a PatchOperationRemove
+  that matches nothing logs red. The conditional makes a changed donor a
+  silent no-op instead.
+
+  ORDER-INDEPENDENT. Patch files inside one mod's Patches/ folder apply
+  alphabetically, so this one runs BEFORE Stage0 ("R" < "S"). That is fine:
+  every operation here touches keys Stage0 and BlackRain never mention
+  (AshFall, Cinderfall, SnowGentle, SnowHard), so there is no ordering
+  dependency in either direction.
+
+  ⚠️ This only changes what a Pyrelands map's weather decider rolls FROM.
+  Existing saves pick it up on the next weather roll; no map regeneration is
+  needed, unlike the terrain patch in this same folder.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>More Vanilla Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- The two weathers that make the horizon smoke. Both ship in
+             mandrake.rm.pyrelands, which is a hard modDependency of this mod,
+             so neither needs a MayRequire. -->
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities</xpath>
+          <value>
+            <RM_FE_Weather_AshFall>19</RM_FE_Weather_AshFall>
+            <RM_FE_Weather_Cinderfall>6</RM_FE_Weather_Cinderfall>
+          </value>
+        </li>
+
+        <!-- Snow, if the donor still has it. -->
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities/SnowGentle</xpath>
+          <match Class="PatchOperationRemove">
+            <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities/SnowGentle</xpath>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities/SnowHard</xpath>
+          <match Class="PatchOperationRemove">
+            <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities/SnowHard</xpath>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

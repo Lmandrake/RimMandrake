@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       PYRELANDS_MECHANICS_1, mechanism 3 — how the fire-hawk gets to decide.
+
+       Uses vanilla's own supported modder insertion hook: Core's
+       Defs/ThinkTreeDefs/Animal.xml carries
+       <li Class="ThinkNode_SubtreesByTag"><insertTag>Animal_PreWander</insertTag></li>,
+       and a ThinkTreeDef declaring that insertTag is spliced in there. Not a
+       Harmony transpiler and not a PatchOperation into the vanilla Animal tree.
+       Same mechanism, same tag, as this repo's own animal-behaviour precedent:
+       src/RimMandrake/RimProperty/Defs/AnimalTheft/ThinkTreeDefs_AnimalSteal.xml
+       (which documents the hook at length). No MayRequire: Animal_PreWander is
+       Core.
+
+       NO FACTION GATE, deliberately. §7d rules the hawk tameable and rules what
+       that costs: "the fire a tamed hawk spreads is still nobody's friend."
+       A tamed hawk therefore carries twigs in your base exactly as a wild one
+       does. Adding a ThinkNode_ConditionalHasFaction wrapper here would quietly
+       undo that ruling.
+
+       The species gate is the comp (CompFireHawkSpread), checked in C# by the
+       job-giver — there is no per-species XML hook at this splice point, the
+       same reason JobGiver_RM_WildSteal gives for checking its own marker in
+       code. That is also what makes a second twig-carrier cost one XML node
+       and no C#.
+
+       insertPriority 55: above RimProperty's theft nodes (50) so a hawk that is
+       both a thief and an igniter reaches for the fire first. Nothing else in
+       this repo inserts at this tag.
+  ======================================================================== -->
+  <ThinkTreeDef>
+    <defName>RUT_FireHawk_CarryEmber</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>55</insertPriority>
+    <thinkRoot Class="ThinkNode_Tagger">
+      <tagToGive>Misc</tagToGive>
+      <subNodes>
+        <li Class="RimMandrake.Utinni.PyrelandsMechanics.JobGiver_RUT_FireHawkCarryEmber" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

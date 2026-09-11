@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       PYRELANDS_MECHANICS_1, mechanism 5a — the flame harvest.
+       the_pyrelands.md §8: the Deep Desert Tribes are the fire's farmers; the
+       burn-line is walked for scorch-fruit on their schedule.
+
+       Cannot fire unless a burn is actually standing on the map
+       (MapComponent_BurnLine.FireCount >= 10) and the Tribes are not hostile —
+       when they ARE hostile what arrives is RUT_FireRaid instead. baseChance
+       is generous because the gate is narrow: on a map with no fire on it, this
+       incident is simply unavailable.
+  ======================================================================== -->
+  <IncidentDef>
+    <defName>RUT_FlameHarvest</defName>
+    <label>flame harvest</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.Utinni.PyrelandsMechanics.IncidentWorker_FlameHarvest</workerClass>
+    <baseChance>4</baseChance>
+    <minRefireDays>5</minRefireDays>
+  </IncidentDef>
+
+  <!-- ========================================================================
+       PYRELANDS_MECHANICS_1, mechanism 5b — arson-justice.
+       the_pyrelands.md §8, canonised: "an unplanned burn — a careless camp, a
+       raider's torch, a player's mistake — is answered as arson-justice: short,
+       furious Tribes raids against whoever broke the schedule."
+
+       The gate is MapComponent_BurnLine's arson debt, which accrues ONLY for
+       fires whose Fire.instigator belongs to the player. Lightning burns — the
+       biome's own ruled storm loop — accrue nothing, so the Tribes never punish
+       the weather. Nothing about this incident can fire on a colony that has
+       not burned something.
+
+       pointsScaleable so the storyteller supplies a sane base; the worker then
+       cuts it to a fraction and forces ImmediateAttack + EdgeWalkIn, because
+       the sheet says short and furious, not a siege.
+  ======================================================================== -->
+  <IncidentDef>
+    <defName>RUT_FireRaid</defName>
+    <label>fire raid</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>ThreatBig</category>
+    <workerClass>RimMandrake.Utinni.PyrelandsMechanics.IncidentWorker_FireRaid</workerClass>
+    <baseChance>8</baseChance>
+    <minRefireDays>3</minRefireDays>
+    <pointsScaleable>true</pointsScaleable>
+    <tale>Raid</tale>
+  </IncidentDef>
+
+</Defs>

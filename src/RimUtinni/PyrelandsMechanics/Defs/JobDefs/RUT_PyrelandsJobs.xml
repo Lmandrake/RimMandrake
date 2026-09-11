@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       PYRELANDS_MECHANICS_1, mechanism 3 — the fire-hawk's twig.
+       Driver: RimMandrake.Utinni.PyrelandsMechanics.JobDriver_RUT_FireHawkCarryEmber.
+       Dispatched only by JobGiver_RUT_FireHawkCarryEmber, which will not issue
+       it unless a fire is ALREADY burning in scan range (the spread-only law,
+       RUT_ruled_commissions_wave2.md §7c, RATIFIED owner 2026-09-10).
+
+       TargetA is the fire the ember comes from; TargetB is the cell it goes to.
+
+       suspendable false, matching RM_AnimalSteal (this repo's own animal-job
+       precedent): a half-flown sortie that resumes days later with the source
+       fire long out is worse than one that simply ends.
+  ======================================================================== -->
+  <JobDef>
+    <defName>RUT_FireHawkCarryEmber</defName>
+    <driverClass>RimMandrake.Utinni.PyrelandsMechanics.JobDriver_RUT_FireHawkCarryEmber</driverClass>
+    <reportString>carrying an ember from TargetA.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+
+</Defs>

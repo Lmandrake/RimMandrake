@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.pyrelandsmechanics</packageId>
+  <name>RimMandrake: Utinni — Pyrelands Mechanics</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>PYRELANDS_MECHANICS_1 — the igniter kit the Pyrelands sheet (design/Jawa/worldbuilding/biomes/the_pyrelands.md) and the wave-2 commission brief (design/Jawa/worldbuilding/creatures/RUT_ruled_commissions_wave2.md §§7-8) owe.
+
+Five mechanisms, all riding defs that already exist:
+
+1. The burn-line as a persistent map presence. A map component watches every live fire on a Pyrelands map, keeps the burn's centre and size, and — because the sheet rules "the burn exists somewhere on the biome, always; only its address changes" — re-seeds a single smoulder far from the colony if the map has gone quiet for two days.
+
+2. Burn intelligence. The same component attributes each fire through Fire.instigator: a fire lit by anything the player owns (a colonist, a tamed fire-hawk, a tamed furnace-beast) accrues arson debt. Lightning-lit fire accrues none.
+
+3. The fire-hawk's twig. RUT_FireHawk gains a spread comp and a job: if — and only if — a fire is already burning within scan range, the hawk flies to its edge, takes an ember, carries it a short way out and lights one cell. Spread-only, never ex nihilo: the ruled law (owner, 2026-09-10).
+
+4. The furnace-beast's thermal circuit. A vanilla heat pusher for enclosed spaces, a warmth-aura comp for the open field (a hediff that widens cold tolerance and narrows heat tolerance — welcome company in the cold, terrible company in the dry), and a bed-down ignition comp that smoulders the ground a beast has slept on. No tamed exemption: the hazard is the point.
+
+5. The Tribes answer the burn. A flame-harvest party walks in to work a live burn-line; an unplanned burn the colony is responsible for is answered by arson-justice — a short, furious raid.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rut.patches</packageId>
+      <displayName>RimUtinni Patches (Jawa campaign)</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.pyrelands</li>
+    <li>mandrake.rut.fireecology</li>
+    <li>mandrake.rut.patches</li>
+  </loadAfter>
+</ModMetaData>

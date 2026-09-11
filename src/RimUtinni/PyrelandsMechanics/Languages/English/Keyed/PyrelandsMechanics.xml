@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- PYRELANDS_MECHANICS_1, mechanism 5a. {0} is the Tribes faction's name,
+       read from the faction rather than hard-coded, so a renamed or
+       differently-generated tribe still reads correctly. -->
+  <RUT_FlameHarvest>Flame harvest</RUT_FlameHarvest>
+  <RUT_FlameHarvestDesc>A file of harvesters from {0} has come onto your land, walking toward the burn with baskets and long hooks.\n\nThey are not here for you. Scorch-fruit opens only in the flame and spoils within a day, and the burn is standing right now — so they will work the fire-line while it lasts and be gone when it moves on.\n\nThey are watching how you treat the fire.</RUT_FlameHarvestDesc>
+
+  <!-- Mechanism 5b. Prepended to the standard raid letter, which still
+       supplies the arrival-mode and strategy prose. -->
+  <RUT_FireRaid>Fire raid</RUT_FireRaid>
+  <RUT_FireRaidDesc>A burn went up on this land that nobody scheduled, and it was yours.\n\n{0} do not consider fire a hazard. They consider it a crop, and a crop has an owner and a season. Burning outside the season is theft from a debt that is not yours to collect — and they answer it the short way.</RUT_FireRaidDesc>
+
+</LanguageData>
