@@ -32,6 +32,10 @@ specific correction — or vice versa. Which stands for the three biomesteam
 mods: port-then-retire, or port-then-keep-and-suppress? (The PORT half is
 compatible with both and proceeds either way; only the retirement half holds.)
 
+**Scenario nit (1)**: the shipped opening narration says "ten thousand years"
+while the scenario file's own header forbids invented durations — cut the
+number or ratify it (Phase-3 finding, findings_text_lore.md).
+
 ## verify
 - [ ] Every card above carries a ruling recorded at its home doc/item, and
       this item closes citing them.

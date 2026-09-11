@@ -366,3 +366,20 @@ Full judgment: `findings_stare.md` (all 30 shots SEEN). What it changes here:
 **Verdict after Phase 2: the provisional YES stands, and hardens.** Nothing
 seen needs re-authoring. Remaining before final: Phase 3 text/plot-leak pass
 and the owner's own read.
+
+## Phase 3 addendum — text & lore (2026-09-11, final lane)
+
+Full judgment: `findings_text_lore.md`. **4 plot leaks, all four inherited
+donor descriptions — zero in authored text.** Worst: the Rust Cathedral's
+donor blurb asserts a mechanoid past-why on THE gated biome. Root mechanism:
+`BiomeNames_Ashkarr.xml` is label-only and no patch ports our 27 written RUT_
+descriptions onto the live donor biomes — so ~23 of 29 biomes wear our label
+over the donor's voice. One S–M corrective closes all four leaks and the
+whole voice split: `BIOME_TEXT_PORT_1` (patch RUT descriptions onto live
+defs; relabel the three never-relabeled biomes, 2,571 tiles). Lore-vs-map:
+clean. Owner nit: the scenario's "ten thousand years" vs its own
+no-invented-durations header — cut or ratify (carded).
+
+## FINAL (pending the owner's read): **YES — this is THE map.**
+All four phases delivered. Every finding is finishing-pass work: 11 punch
+rows + 2 polish rows + BIOME_TEXT_PORT, all S/M. Nothing needs re-authoring.

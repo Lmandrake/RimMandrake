@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T11:10:50Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-11T11:52:11Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -657,6 +657,24 @@ kind:     task
 summary:  RESEARCHTRIORETIRE1 — retire steppingstones + als.gravtech x2, reconcile the recost
 prose:    infrastructure/state/items/RESEARCH_TRIO_RETIRE_1.md
 
+## NURSERY_JUVENILES_CRASH_1 Nursery juveniles crash EVERY game start once inheritance works: AlphaGenes ImpliedGeneDefs sweeps PawnKindDefs and element.RaceProps (race.race getter) NREs on a juvenile kind whose race is null at sweep time - bisect-proven 2026-09-11 (pull file = clean load, RESET 0). File sits in DEPLOY_HOLD; RUT_Miasma wildAnimals refs 9 absent Juv kinds meanwhile. Diagnose WHY kind.race resolves null (ThingDef discarded? resolution order?) before re-shipping
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  Nursery juveniles (SeaBeastsNurseryJuveniles.xml, MIASMANURSERYKINDS1)
+prose:    infrastructure/state/items/NURSERY_JUVENILES_CRASH_1.md
+
+## OUTERRIM_DROIDDEPOT_PATCH_GUARD_1 WeaponTags_Renormalise.xml logs 8 config errors when OuterRim DroidDepot isn't active
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  Found via harvestlog.py on game UP 2026-09-11 (570-mod session): "Outer Rim
+prose:    infrastructure/state/items/OUTERRIM_DROIDDEPOT_PATCH_GUARD_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -931,6 +949,16 @@ blocked:  steppingstones/gravtech own 17 ResearchProjectDefs nothing else define
 summary:  RESEARCHTRIORETIRE1 — retire steppingstones + als.gravtech x2, reconcile the recost
 prose:    infrastructure/state/items/RESEARCH_TRIO_RETIRE_1.md
 
+## OUTERRIM_DROIDDEPOT_PATCH_GUARD_1 WeaponTags_Renormalise.xml logs 8 config errors when OuterRim DroidDepot isn't active
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+blocked:  generator fix needs a Jawa_Patches-disabled dump recapture (a dedicated live cycle) to regenerate safely without hitting the documented post-patch-dump shrink trap; low severity (8 harmless log lines), not worth forcing now -- also open: owner call on whether DroidDepot staying inactive is permanent policy
+summary:  Found via harvestlog.py on game UP 2026-09-11 (570-mod session): "Outer Rim
+prose:    infrastructure/state/items/OUTERRIM_DROIDDEPOT_PATCH_GUARD_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -943,12 +971,22 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## NURSERY_JUVENILES_CRASH_1 Nursery juveniles crash EVERY game start once inheritance works: AlphaGenes ImpliedGeneDefs sweeps PawnKindDefs and element.RaceProps (race.race getter) NREs on a juvenile kind whose race is null at sweep time - bisect-proven 2026-09-11 (pull file = clean load, RESET 0). File sits in DEPLOY_HOLD; RUT_Miasma wildAnimals refs 9 absent Juv kinds meanwhile. Diagnose WHY kind.race resolves null (ThingDef discarded? resolution order?) before re-shipping
+## ART_REGEN_WAVE1_WIRE_IN_1 Wire 11 completed art-regen jobs into their mods' Textures/ trees
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     bug
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Two background agents (standing owner instruction, 2026-09-11: "always have
+prose:    infrastructure/state/items/ART_REGEN_WAVE1_WIRE_IN_1.md
+
+## BIOME_TEXT_PORT_1 Port the 27 already-written RUT_ biome descriptions onto the LIVE donor BiomeDefs by patch + relabel the 3 never-relabeled biomes (2,571 tiles incl vanilla Scarlands) - closes ALL 4 plot leaks (worst: Rust Cathedral's donor mechanoid blurb vs SSGM ban 6.1) and the label-over-donor-voice split; spec Transient/final_review/findings_text_lore.md (decays ~14d - copy the mechanism into this item before it does)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NURSERY_JUVENILES_CRASH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NURSERY_JUVENILES_CRASH_1.md
+summary:  (no items/BIOME_TEXT_PORT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_TEXT_PORT_1.md
