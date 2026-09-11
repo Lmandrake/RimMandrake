@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 86.62539363000542,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 86.62539363000542,
+  "height": 256,
+  "id": "bgtest_b_v2",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789105366,
+    "primary_used_percent": 12.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/10/rollout-2026-09-10T20-13-37-01a08e74-d772-7b11-b84f-371a69ec51b0.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 27.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789105366,
+    "primary_used_percent": 7.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/10/rollout-2026-09-10T17-54-15-01a08df5-4088-7221-8b3a-da14619bc7fc.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 26.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "#000000",
+    "corners_transparent": false,
+    "has_alpha": false,
+    "height": 256,
+    "id": "bgtest_b_v2",
+    "note": "Generated with built-in imagegen, copied into the workspace, and resized to exactly 256x256. Verified opaque RGB and solid black corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\bgtest_b_v2\\bgtest_b_v2.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/bgtest_b_v2/bgtest_b_v2.png\n    256x256  rgb  37,741 bytes  (86s)\n"
+}

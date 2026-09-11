@@ -33,6 +33,12 @@ being reskinned, or null for new art), `canvas` `{width,height}`, `prompt`,
 `background`. See `src/RimMandrake/Utils/artpipe/AGENTS.md` and
 `manifest.schema.json` for the worker's side of the contract.
 
+Need a solid black (non-transparent) backdrop instead of the usual
+`background: "transparent"` sprite pipeline? `BACKGROUND_TEMPLATE.md` has
+the proven wording — reference-less jobs skip the validator entirely, so
+that wording was tested empirically, not just written; see
+`BACKGROUND_TEMPLATE_LOG.md` for the raw results.
+
 ## Who writes here
 
 - `fill_queue.py` writes `pending/` only, refusing a duplicate id.
