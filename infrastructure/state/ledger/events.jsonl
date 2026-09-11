@@ -7444,3 +7444,15 @@
 {"seat":"BENCH","event":"start","id":"DUNGEON_DESIGN_RESEARCH_1","ts":"2026-09-11T21:24:42Z"}
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-11T23:42:39Z"}
 {"seat":"BENCH","event":"start","id":"TERRAMANUFACTURE_CANON_1","ts":"2026-09-11T23:44:10Z"}
+{"seat":"FOUNDRY","event":"close","id":"ART_REGEN_WAVE2_QUEUE_1","sha":"21721c6a4","ts":"2026-09-11T23:51:23Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"finish LOCKJAW_ART_WIRE_IN_1: verify both grey and brown variants live before handoff","ts":"2026-09-11T23:51:36Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T23:51:43Z"}
+{"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T23:51:44Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T23:51:45Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is going down — cheap list for Lockjaw final verification","ts":"2026-09-11T23:52:25Z"}
+{"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"FOUNDRY","ownerSaid":"Deploying — 27-mod list","ts":"2026-09-11T23:52:26Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T23:52:27Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"Game is loading — 27-mod list","ts":"2026-09-11T23:52:28Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"Game is up — 27-mod Lockjaw verify","ts":"2026-09-11T23:52:33Z"}
+{"seat":"BENCH","event":"close","id":"TERRAMANUFACTURE_CANON_1","sha":"3c2993420c8a487abf02a0f5c3b66dd9c46d1fd6","ts":"2026-09-11T23:53:58Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T23:54:02Z"}
