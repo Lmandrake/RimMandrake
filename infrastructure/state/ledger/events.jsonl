@@ -7193,3 +7193,4 @@
 {"seat":"FOUNDRY","event":"close","id":"RESTORE_FALLOUT_TRIAGE_1","sha":"097ec3110668f27c0033e7e1e3ac3df0cec183d4","ts":"2026-09-11T07:21:54Z"}
 {"seat":"FOUNDRY","event":"close","id":"STAT_NORM_WAVE2_RETIRE_1","sha":"5ad48a0786581de88fc406927da789bb16f2b8b5","ts":"2026-09-11T07:24:55Z"}
 {"seat":"FOUNDRY","event":"close","id":"MIASMA_JUVENILES_NULL_THINGCLASS_1","sha":"f1f305e177153efb4617d3e6f4a68c082caeb85b","ts":"2026-09-11T07:25:50Z"}
+{"seat":"FOUNDRY","event":"close","id":"BRAINWORM_MOD_BUILD_1","sha":"0d4f5701fbcd67fd21cbdcc408df5c84489677ab","ts":"2026-09-11T07:26:43Z"}
