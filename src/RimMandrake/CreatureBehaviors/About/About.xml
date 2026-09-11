@@ -56,5 +56,10 @@ Ships:
   6. RM_Alert_VerminPopulationBase — abstract Alert base; a concrete mod
      (ShipVermin's RM_Alert_ShipVermin) supplies the group tag and label.
 
-Live proof is OWED: this mod has not yet been loaded in a running game.</description>
+Live-loaded 2026-09-11: standalone (no consumer active) tripped a crash in
+RimWorld.AlertsReadout's ctor because the abstract RM_Alert_VerminPopulationBase
+became a reflection "leaf" with no concrete subclass loaded — fixed by
+RM_Alert_VerminPopulation_Inert, an always-inactive sealed subclass that keeps
+the base permanently non-leaf. See that class's header for the full root
+cause.</description>
 </ModMetaData>

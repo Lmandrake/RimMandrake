@@ -12,7 +12,7 @@ namespace RimMandrake.CreatureBehaviors
 	/// </summary>
 	public class RM_SilenceAuraExtension : DefModExtension
 	{
-		/// <summary>Trigger range from any player-home cell for a carrying pawn's hunt job to start the hush.</summary>
+		/// <summary>Trigger range from any free colonist (RM_MapComponent_SilenceCue.NearAnyColonist) for a carrying pawn's hunt job to start the hush.</summary>
 		public float triggerRadius = 20f;
 
 		/// <summary>How long the hush lasts once triggered, in ticks, before ambience is restored.</summary>
