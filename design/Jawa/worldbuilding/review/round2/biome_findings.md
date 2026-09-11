@@ -186,7 +186,7 @@ INCONSISTENCIES:
 OPPORTUNITIES:
 1. LuciferBug among the cold vents and black/purple phototrophs — the biome's light-lure predator; a natural fit, feature it.
 
-## the_forge — churn 4 (cast 7 → 9)
+## the_forge — churn 6 (cast 7 → 7) — sitting 2026-09-10: AA_Cinderlisk + BMT_Maguana CUT
 Arrivals (2, deduped — Beldon already resident): AA_CrescendoAnole, Tibidee. Flier arriving→roster: AA_ColossalAerofleet; extracted: AA_Aerofleet.
 
 INCONSISTENCIES:
