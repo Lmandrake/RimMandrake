@@ -291,3 +291,14 @@ cast). Schools/swarms still banned in the Grey: the schooling set retargets to t
 Twilight Deep — BMT_MutatingTumorfish x3 (one organism) as spawns, BMT_Megakrill as a
 FISHING RESULT only (never wildAnimals). Polluwog stays Grey (not flagged schooling).
 Grey Deep cast: 7 residents; Twilight: +3 defs +1 fishing result.
+
+**9. Four card rulings (owner, 2026-09-10 — all recommendations accepted):**
+(a) PYRELANDS: commission the fire-hawk + furnace-beast (irreplaceable igniters);
+recast Razorjack as fire-follower, route Barbslinger as ash-grazer; burrower from
+homeless or third commission — filed PYRELANDS_FIRE_WEB_COMMISSION_1.
+(b) FILMS & MATS standing rule: the interaction test (interactable-one → Plant def;
+ground condition → terrain; Filth transient only) — template §8.3 marked RULED.
+(c) THIN BIOMES: commission-first is standing policy for showcase/extreme biomes;
+one sitting drains the 103 homeless rows to place/reserve/cut — filed
+HOMELESS_DISPOSITION_SITTING_1 (needs owner).
+(d) BASILISK: kept — excluded from the 'lisk cull; mountain-grey ruling stands.

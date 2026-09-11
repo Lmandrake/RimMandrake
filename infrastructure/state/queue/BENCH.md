@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T02:41:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T02:44:40Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -451,3 +451,13 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FLORA_COMMISSION_TEMPLATE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FLORA_COMMISSION_TEMPLATE_1.md
+
+## HOMELESS_DISPOSITION_SITTING_1 One sitting drains the 103 homeless needs-owner rows to place/reserve/cut (commission-first policy rules showcase biomes out as destinations)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/HOMELESS_DISPOSITION_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/HOMELESS_DISPOSITION_SITTING_1.md
