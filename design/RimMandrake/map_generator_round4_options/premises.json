@@ -1,0 +1,50 @@
+{
+  "_what": "Three candidate 8-premise sets for MACRO_GENERATOR_V0_1 round 4, as silhouette-drawing params. Row A is the eight round-3 plans (MAPGEN_PAINTER_V1_1 round 3, 2026-09-09, seeds 1-8 on deep_desert.md) drawn literally: through-channels at the plan's orientation, anchor at the plan's cell_frac. Rows B and C are proposals. Doc: ../map_generator_round4_options.md",
+  "rows": [
+    {
+      "id": "A",
+      "seed": 11,
+      "title": "the round-3 plans as pure shape (control)",
+      "premises": [
+        {"landform": "Canyon", "premise": "A canyon shapes the whole map, anchored on the head.", "shape": "channel_through", "deg": -67, "width": 0.21, "anchor": [0.226, 0.384], "hydro": {"kind": "brine_seep", "at": [0.55, 0.42]}},
+        {"landform": "LoneMountain", "premise": "A lone rock shapes the whole map, anchored on the lee foot.", "shape": "island", "deg": -28, "centre": [0.5, 0.45], "axes": [0.30, 0.22], "anchor": [0.444, 0.368], "hydro": {"kind": "salt_pan", "at": [0.2, 0.75]}},
+        {"landform": "Canyon", "premise": "A canyon dominates the map; the only way through is at the narrows.", "shape": "channel_through", "deg": -56, "width": 0.18, "narrows_t": 0.0, "anchor": [0.55, 0.326], "hydro": {"kind": "brine_seep", "at": [0.42, 0.55]}},
+        {"landform": "Canyon", "premise": "A canyon dominates the map; the only way through is at the head.", "shape": "channel_through", "deg": -56, "width": 0.13, "anchor": [0.52, 0.152], "hydro": {"kind": "salt_pan", "at": [0.7, 0.3]}},
+        {"landform": "Sinkhole", "premise": "One sinkhole cuts the ground, and everything answers to the pit floor.", "shape": "pit", "radius": 0.30, "anchor": [0.61, 0.40]},
+        {"landform": "Sinkhole", "premise": "A sinkhole dominates the map; the only way through is at the lip.", "shape": "pit", "radius": 0.31, "anchor": [0.80, 0.501], "hydro": {"kind": "brine_seep", "at": [0.52, 0.5]}},
+        {"landform": "Crater", "premise": "A crater dominates the map; the only way through is at the ring centre.", "shape": "ring", "radius": 0.22, "rim": 0.045, "anchor": [0.551, 0.435]},
+        {"landform": "Canyon", "premise": "A canyon shapes the whole map, anchored on the head.", "shape": "channel_through", "deg": -48, "width": 0.22, "anchor": [0.625, 0.164], "hydro": {"kind": "brine_seep", "at": [0.45, 0.6]}}
+      ]
+    },
+    {
+      "id": "B",
+      "seed": 23,
+      "title": "topology-shape chooser: one shape class per map, no two alike",
+      "premises": [
+        {"landform": "Canyon", "shape_class": "CHANNEL-THROUGH", "premise": "The cut is the only road: one canyon corner to corner, held at the narrows.", "shape": "channel_through", "deg": 135, "width": 0.30, "narrows_t": 0.05, "anchor": [0.465, 0.535], "hydro": {"kind": "brine_seep", "at": [0, 0], "line": true}},
+        {"landform": "Canyon", "shape_class": "CHANNEL-BOX", "premise": "A box canyon walks in from the south and stops; its head is the deepest shade on the map.", "shape": "channel_box", "deg": -90, "centre": [0.5, 0.75], "head_t": 0.45, "width": 0.26, "anchor": [0.5, 0.33], "hydro": {"kind": "brine_seep", "at": [0, 0], "line": true}},
+        {"landform": "DesertPlateau", "shape_class": "STEP", "premise": "Half the map is a table above the other half; the one cliff between them is the whole geography.", "shape": "step", "deg": 20, "anchor": [0.42, 0.58]},
+        {"landform": "DesertPlateau", "shape_class": "BARRIER", "premise": "A cliff wall crosses the map; the one breach in it is the only door.", "shape": "barrier", "deg": 0, "width": 0.22, "gap_t": 0.12, "gap": 0.045, "anchor": [0.62, 0.5]},
+        {"landform": "Sinkhole", "shape_class": "PIT", "premise": "One throat swallows the middle of the map; the only living ground is the floor of the pit.", "shape": "pit", "radius": 0.30, "anchor": [0.5, 0.55], "hydro": {"kind": "brine_seep", "at": [0.47, 0.5]}},
+        {"landform": "Crater", "shape_class": "RING-BREACH", "premise": "A wreck fell and made the ring; the low gap in the rim is the only way in.", "shape": "ring", "centre": [0.42, 0.5], "radius": 0.2, "rim": 0.06, "breach_deg": 90, "anchor": [0.42, 0.73]},
+        {"landform": "LoneMountain", "shape_class": "ISLAND", "premise": "One rock in nothing; its shadow is the only shade and the only reason to stop.", "shape": "island", "deg": 30, "centre": [0.58, 0.42], "axes": [0.14, 0.09], "anchor": [0.58, 0.56]},
+        {"landform": "Rift", "shape_class": "TRENCH", "premise": "A wide trench runs the map; the shoulder above it is the one high ground.", "shape": "rift", "deg": 60, "width": 0.32, "anchor": [0.66, 0.405], "hydro": {"kind": "salt_pan", "at": [0.5, 0.5], "r": 0.05}}
+      ]
+    },
+    {
+      "id": "C",
+      "seed": 37,
+      "title": "the corpus premises transposed into deep-desert vocabulary (ceiling test)",
+      "premises": [
+        {"landform": "DryLake", "corpus": "In Memory of Rain", "premise": "A dead river braids in from the north and dies in the salt basin it once filled.", "shape": "dead_river", "deg": 90, "basin": [0.55, 0.62], "radius": 0.2, "anchor": [0.55, 0.40]},
+        {"landform": "LoneMountain", "corpus": "Deserted Trader", "premise": "One rock stands in a wide gap, and the halt in its shade is empty.", "shape": "island", "deg": 0, "centre": [0.5, 0.5], "axes": [0.13, 0.09], "anchor": [0.5, 0.62]},
+        {"landform": "Canyon", "corpus": "Lush River", "premise": "Every green thing on the map hugs one brine line down the canyon floor.", "shape": "channel_through", "deg": 80, "width": 0.24, "narrows_t": 0.1, "anchor": [0.517, 0.598], "hydro": {"kind": "brine_seep", "at": [0, 0], "line": true}},
+        {"landform": "DesertPlateau", "corpus": "Point Sea", "premise": "A tongue of plateau pushes into the sand; the only shelter is the cove in its lee.", "shape": "peninsula", "deg": 0, "root": [1.0, 0.35], "length": 0.7, "width": 0.3, "anchor": [0.75, 0.58]},
+        {"landform": "Canyon", "corpus": "Blood Gulch (at corpus scale)", "premise": "One red gulch cuts the map corner to corner; the only way across is the narrows.", "shape": "channel_through", "deg": 45, "width": 0.40, "floor_share": 0.3, "narrows_t": -0.08, "anchor": [0.394, 0.493], "hydro": {"kind": "salt_pan", "at": [0.7, 0.7], "r": 0.02}},
+        {"landform": "Canyon", "corpus": "Ruined Dam", "premise": "A rockfall dammed the canyon; the dry reservoir behind it is a salt pan.", "shape": "channel_through", "deg": -70, "width": 0.24, "narrows_t": 0.1, "anchor": [0.534, 0.406], "hydro": {"kind": "salt_pan", "at": [0.449, 0.641], "r": 0.06}},
+        {"landform": "Crater", "corpus": "Dragons Fall", "premise": "Something fell out of the west and the ring it made is the only shade; the debris ray points home.", "shape": "ring", "centre": [0.55, 0.5], "radius": 0.17, "rim": 0.06, "ray_deg": 180, "anchor": [0.55, 0.5]},
+        {"landform": "Sinkhole", "corpus": "the Dead City", "premise": "The whole map is the floor of one sinkhole; the plain is a rim you only see from below.", "shape": "pit", "radius": 0.42, "anchor": [0.5, 0.5], "hydro": {"kind": "brine_seep", "at": [0.4, 0.55]}}
+      ]
+    }
+  ]
+}
