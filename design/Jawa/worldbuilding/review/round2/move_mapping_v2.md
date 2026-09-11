@@ -1,5 +1,11 @@
 # Move-target mapping v2 — all 164 Move rows
 
+**Amended 2026-09-10 (owner insect ruling):** base-game/Black Hive insects stay
+faction-only (infestation/raid events), never biome residents. The four VFEI2 move
+rows (Acidspitter, Macrofly, RoyalSpelopede, Silverfish) are VOIDED and removed;
+their decisions rows are marked FACTION-RESERVED in `decisions_propagated.json`.
+160 moves remain live.
+
 Rebuilt from the owner's completed fauna review (`design/Jawa/worldbuilding/review/fauna_assignment_register.decisions.json`, decidedCount 828, 164 `move` rows). Row key = the decisions.json dict key (`fauna:<originSheet>:<creature>` or `homeless:<creature>`); the owner's words are the verbatim `note` field on that row (truncated to 15 words), never invented. Seeded from `move_target_mapping_2026-09-09.md` (69 rows, validated nickname table); extended here to cover all 164. Standing corrections applied: ocular/occular -> the_contagion; Volcanic (fliers) -> the Forge family, not the_pyrelands.
 
 | row key | creature | owner's words | resolved target |
@@ -163,10 +169,6 @@ Rebuilt from the owner's completed fauna review (`design/Jawa/worldbuilding/revi
 | `homeless:TetnissCrab` | TetnissCrab | 0.5 cells, grey sea | the_grey_deep |
 | `homeless:Tibidee` | Tibidee | volcanic areas | the_forge |
 | `homeless:VAEWaste_Hydra` | VAEWaste_Hydra | venomvine patch predator | arid_shrubland |
-| `homeless:VFEI2_Acidspitter` | VFEI2_Acidspitter | Scarlands | the_scarlands |
-| `homeless:VFEI2_Macrofly` | VFEI2_Macrofly | 0.9 cells in great numbers, emerging out of hives when disturbed, can appear Inhabited in … | arid_shrubland |
-| `homeless:VFEI2_RoyalSpelopede` | VFEI2_RoyalSpelopede | Scarlands | the_scarlands |
-| `homeless:VFEI2_Silverfish` | VFEI2_Silverfish | Grey Sea and surrounding Salt flats of the dessicated sea bed | the_grey_deep |
 | `homeless:Wampa` | Wampa | Ice plains | nightside_ice |
 
 ## Summary

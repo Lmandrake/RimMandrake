@@ -1007,8 +1007,8 @@
     "fauna:fall_line:VFEI2_Fuelmite": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "owner 2026-09-10 insect ruling: base-game/Black Hive insects stay faction-only (infestation/raid events), never biome residents",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
@@ -1682,8 +1682,8 @@
     "fauna:the_fever_wood:VFEI2_Megathrips": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "owner 2026-09-10 insect ruling: base-game/Black Hive insects stay faction-only (infestation/raid events), never biome residents",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -1998,8 +1998,8 @@
     "fauna:the_greentide:VFEI2_Swarmling": {
       "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "owner 2026-09-10 insect ruling: base-game/Black Hive insects stay faction-only (infestation/raid events), never biome residents",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small",
@@ -2267,8 +2267,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T05:01:55.276Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "owner 2026-09-10 insect ruling: base-game/Black Hive insects stay faction-only (infestation/raid events), never biome residents",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
@@ -2277,8 +2277,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T05:02:13.759Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "owner 2026-09-10 insect ruling: base-game/Black Hive insects stay faction-only (infestation/raid events), never biome residents",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
@@ -2707,8 +2707,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T05:14:55.046Z",
-      "decision": "in",
-      "note": "0.7 cells",
+      "decision": "out",
+      "note": "0.7 cells | owner 2026-09-10 insect ruling: base-game/Black Hive insects stay faction-only (infestation/raid events), never biome residents",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "medium"
@@ -3063,8 +3063,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T05:27:34.497Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "owner 2026-09-10 insect ruling: base-game/Black Hive insects stay faction-only (infestation/raid events), never biome residents",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
@@ -3072,8 +3072,8 @@
     "fauna:wasteland:VFEI2_Swarmling": {
       "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "owner 2026-09-10 insect ruling: base-game/Black Hive insects stay faction-only (infestation/raid events), never biome residents",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small",
@@ -6950,7 +6950,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T14:02:30.548Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "out",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7319,7 +7319,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T14:00:53.254Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "out",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7524,8 +7524,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T12:26:31.391Z",
-      "decision": "move",
-      "note": "Scarlands",
+      "decision": "in",
+      "note": "FACTION-RESERVED (owner 2026-09-10 insect ruling: base-game/Black Hive insects stay faction-only (infestation/raid events), never biome residents); voided move, was: Scarlands",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7535,7 +7535,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:56:28.808Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -7545,7 +7545,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:53:06.640Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7555,7 +7555,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:24:26.084Z",
       "decision": "in",
-      "note": "Infestation",
+      "note": "FACTION-RESERVED; Infestation",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7565,7 +7565,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:36:10.251Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -7575,7 +7575,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:28:21.118Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7585,7 +7585,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:34:09.484Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7595,7 +7595,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:28:22.926Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7605,7 +7605,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:32:18.340Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7614,8 +7614,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T12:23:50.029Z",
-      "decision": "move",
-      "note": "0.9 cells in great numbers, emerging out of hives when disturbed, can appear Inhabited in arid shrubland",
+      "decision": "in",
+      "note": "FACTION-RESERVED (owner 2026-09-10 insect ruling: base-game/Black Hive insects stay faction-only (infestation/raid events), never biome residents); voided move, was: 0.9 cells in great numbers, emerging out of hives when disturbed, can appear Inhabited in arid shrubland",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "medium"
@@ -7625,7 +7625,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:28:29.114Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7635,7 +7635,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:28:35.174Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7645,7 +7645,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:36:12.754Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -7655,7 +7655,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:33:19.988Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7664,7 +7664,7 @@
       "art": "keep",
       "artPrefill": "keep",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7674,7 +7674,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:33:07.276Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7683,8 +7683,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T12:26:38.454Z",
-      "decision": "move",
-      "note": "Scarlands",
+      "decision": "in",
+      "note": "FACTION-RESERVED (owner 2026-09-10 insect ruling: base-game/Black Hive insects stay faction-only (infestation/raid events), never biome residents); voided move, was: Scarlands",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7693,8 +7693,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T12:21:04.934Z",
-      "decision": "move",
-      "note": "Grey Sea and surrounding Salt flats of the dessicated sea bed",
+      "decision": "in",
+      "note": "FACTION-RESERVED (owner 2026-09-10 insect ruling: base-game/Black Hive insects stay faction-only (infestation/raid events), never biome residents); voided move, was: Grey Sea and surrounding Salt flats of the dessicated sea bed",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "large"
@@ -7704,7 +7704,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:28:38.731Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7714,7 +7714,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:35:44.024Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7724,7 +7724,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:35:46.006Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7734,7 +7734,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:28:40.238Z",
       "decision": "in",
-      "note": "",
+      "note": "FACTION-RESERVED",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"

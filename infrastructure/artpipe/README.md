@@ -39,3 +39,12 @@ being reskinned, or null for new art), `canvas` `{width,height}`, `prompt`,
 - `artpiped.py` (the daemon) is the only mover between directories and the
   only writer of `.manifest.json` files and `throughput.jsonl`.
 - Nothing else. If a file here looks hand-edited, treat it as suspect.
+
+## "redo" semantics (owner ruling, 2026-09-10 — binds every art pass reading a review sheet)
+
+A sheet row's `art: "redo"` means the art is particularly bad and must be **fully
+regenerated — possibly the whole creature**, not touched up. Star Wars creatures are
+**never renamed**: gather inspirational reference images online and converge on the
+canonical look. Non-SW creatures: redo may include a full rename+redefine from the
+creature's function. **When in doubt, ask the owner.** Review surfaces render
+creatures in side profile (east-facing), not the south-facing headshot.
