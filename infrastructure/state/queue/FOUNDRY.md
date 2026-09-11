@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T19:24:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T19:31:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -692,15 +692,6 @@ target:   v1
 kind:     task
 summary:  - Package the Greentide biome + its kit (design/Jawa/worldbuilding/biomes/
 prose:    infrastructure/state/items/GREENTIDE_STANDALONE_MOD_1.md
-
-## SHOKK_RSW_MOD_1 The Wyyyschokk/Shokk as its own RSW-tier mod (species, ShokkBound, spit defs, sun-scald cripple, emergent-Shokk spawn) - webwork biome mechanics stay RUT - owner ruled 2026-09-11
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - Extract the Shokk from the webwork kit into an RSW-tier mod (packageId
-prose:    infrastructure/state/items/SHOKK_RSW_MOD_1.md
 
 ## LOCKJAW_ART_WIRE_IN_1 LOCKJAW_ART_WIRE_IN_1
 state:    doing  (BLOCKED)
