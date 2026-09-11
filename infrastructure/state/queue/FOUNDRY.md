@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T07:15:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T07:18:52Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -422,15 +422,6 @@ target:   v1
 kind:     task
 summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
 prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
-
-## PYRELANDS_MECHANICS_1 Pyrelands C# kit: migrating burn-line presence + burn intelligence, fire-hawk twig-carrying, furnace-beast thermal circuit (heat aura, bed-down ignition), flame-harvest + fire-raid events (unplanned-burn detection), ruled weather table - spec the_pyrelands.md
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  The authoritative brief is design/Jawa/worldbuilding/creatures/RUTruledcommissionswave2.md
-prose:    infrastructure/state/items/PYRELANDS_MECHANICS_1.md
 
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing
