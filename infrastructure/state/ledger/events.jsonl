@@ -7390,3 +7390,4 @@
 {"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE5_QUEUE_1","ts":"2026-09-11T20:30:38Z"}
 {"seat":"FOUNDRY","event":"close","id":"ART_REGEN_WAVE5_QUEUE_1","sha":"8bad11cae","ts":"2026-09-11T20:33:00Z"}
 {"seat":"FOUNDRY","event":"file","id":"DONOR_FACTION_PROPER_NOUN_RENAMES_1","title":"Retheme/patch the 7 confirmed off-lore donor factions (Orc Clan, Dark Ages Troll, Big&Small Norse pack, MiningCo., Horrors, Mo'Events Abomination, VRE Archon) named by DONOR_PROPER_NOUN_SCAN_1's backlog","kind":"task","target":"v1","needs":"owner","spec":"design/Jawa/donor_proper_noun_backlog.md","caused_by":"DONOR_PROPER_NOUN_SCAN_1","for":"FOUNDRY","ts":"2026-09-11T20:35:53Z"}
+{"seat":"FOUNDRY","event":"close","id":"DONOR_PROPER_NOUN_SCAN_1","sha":"aaa0b45e1","ts":"2026-09-11T20:36:44Z"}
