@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T21:07:06Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-11T22:52:21Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -997,24 +997,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DONOR_FACTION_PROPER_NOUN_RENAMES_1 Retheme/patch the 7 confirmed off-lore donor factions (Orc Clan, Dark Ages Troll, Big&Small Norse pack, MiningCo., Horrors, Mo'Events Abomination, VRE Archon) named by DONOR_PROPER_NOUN_SCAN_1's backlog
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DONOR_FACTION_PROPER_NOUN_RENAMES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DONOR_FACTION_PROPER_NOUN_RENAMES_1.md
-
-## STAGED_LORE_PROOF_SPIKE_1 Prove staged-lore text swaps live: one real description that changes by campaign stage in a running game (minimal mod, quicktest evidence, screenshot of before/after) - owner ordered the experiment 2026-09-11; build/no-build ruling waits on this proof
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/STAGED_LORE_PROOF_SPIKE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/STAGED_LORE_PROOF_SPIKE_1.md
+_none._
