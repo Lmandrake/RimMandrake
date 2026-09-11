@@ -747,3 +747,20 @@ mussels growing around brine pool").
   rule; ToxCloud Biotech-gating finding)
 - `Alien_Bestiary.md` §1 (naming grammar), `design/NAMING_SCHEME_PLAN.md` (RUT_ tier)
 - The ten reference images under `creatures/references/` (each viewed)
+
+
+---
+
+## §13 — Owner card rulings, 2026-09-10 (closes §12)
+
+1. **Crystal lineage: YES, one lineage.** The aviir and the Lantern Deeps crystal cast
+   (Gembug, CrystalCrab, Glowtail) share one crystal-life origin expressed in two
+   extreme places. Canon thread; codex text may reference it.
+2. **Twilight accent: hearthwheel wins, WITH the teal rim** — a ruled one-species
+   exception to the ratified one-accent law (§8.4 of the flora template). Sissal's
+   iridescence stays confined to bulb-tips as drafted.
+3. **Name stands: rimshell.** "Mussel" stays out per frozen ban 6; mussel-seeming
+   silhouette is the recognizability channel.
+4. **Harvest economy: COMMISSION THE ITEMS NOW** (owner overrode the flavor-only
+   recommendation). Real item defs + recipes designed in this wave — sissal venom,
+   vhaal stingers, bladderboil bladders, and natural extensions. Addendum §14 owed.
