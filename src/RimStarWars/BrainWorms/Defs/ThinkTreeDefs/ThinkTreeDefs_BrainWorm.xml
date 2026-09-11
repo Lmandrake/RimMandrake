@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       RSW_BrainWormPuppetInsert — BRAINWORM_MOD_BUILD_1, the "custom ThinkTree node
+       (our C#)" the spec calls the one genuinely new piece.
+
+       NO HARMONY AND NO PATCH INTO Humanlike.xml. Vanilla ships a modder insertion
+       hook for exactly this — Core/ThinkTreeDefs/Humanlike.xml has a
+       ThinkNode_SubtreesByTag with insertTag Humanlike_PostMentalState, sitting
+       after the MentalStateCritical and MentalStateNonCritical subtrees and BEFORE
+       queued jobs, drafted orders, lord duties and all work. A puppeted host
+       therefore outranks everything the player or a lord would otherwise tell the
+       body to do, without this mod touching a vanilla def or a vanilla method.
+       (Droidworks uses the sibling Humanlike_PreMain hook the same way.)
+
+       The whole subtree is gated on ThinkNode_ConditionalMentalState, so for every
+       pawn in the game who is not currently puppeted this node answers "no" on its
+       first line and costs nothing.
+
+       ThinkNode_Tagger/InMentalState mirrors what vanilla's own MentalStateCritical
+       tree does around its roots — copied, not invented.
+  ======================================================================== -->
+  <ThinkTreeDef>
+    <defName>RSW_BrainWormPuppetInsert</defName>
+    <insertTag>Humanlike_PostMentalState</insertTag>
+    <insertPriority>100</insertPriority>
+    <thinkRoot Class="ThinkNode_ConditionalMentalState">
+      <state>RSW_BrainWormPuppet</state>
+      <subNodes>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>InMentalState</tagToGive>
+          <subNodes>
+            <li Class="ThinkNode_Priority">
+              <subNodes>
+                <!-- Hive-lensed berserk: attacks everything that is not the
+                     hive's own. See JobGiver_BrainWormPuppet. -->
+                <li Class="RimMandrake.StarWars.BrainWorms.JobGiver_BrainWormPuppet" />
+                <!-- Nothing to attack: the body still walks. Without this the
+                     puppet would fall through to normal work and look cured. -->
+                <li Class="JobGiver_WanderAnywhere">
+                  <maxDanger>Deadly</maxDanger>
+                </li>
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       RSW_BrainWormPuppet — BRAINWORM_MOD_BUILD_1. The spec's "hostile hive faction
+       lens": the host does not change faction, the ENGINE ASKS THE MENTAL STATE who
+       it is hostile to (MentalState.ForceHostileTo), and
+       MentalState_BrainWormPuppet answers "everyone except the hive's own".
+
+       Shape copied from vanilla BerserkPermanent, read with RimSage rather than
+       guessed — maxTicksBeforeRecovery 60000 / minTicksBeforeRecovery 99999999 is
+       how vanilla builds a state that ends on its own but is kept alive by a hediff
+       restarting it (Verse/Hediff_Scaria.cs). HediffComp_BrainWormPuppeteer is our
+       Scaria.
+
+       Two deliberate departures from BerserkPermanent:
+         - recoverFromSleep / recoverFromDowned / recoverFromCaptured are all FALSE.
+           The hive does not let go because the body slept, fell over, or got tied
+           to a bed. Only the cold or a surgeon ends this.
+         - allowGuilty FALSE. The host is not responsible for what the parasite does
+           with their hands; the colony should not treat them as a criminal for it.
+
+       🔴 The host is ALIVE, always. This state is only ever entered from
+       HediffComp_BrainWormPuppeteer, which refuses a dead pawn (owner's permanent
+       ruling, 2026-09-11: "Never corpse-walker. Too gross.").
+  ======================================================================== -->
+  <MentalStateDef ParentName="BaseMentalState">
+    <defName>RSW_BrainWormPuppet</defName>
+    <label>puppeted</label>
+    <stateClass>RimMandrake.StarWars.BrainWorms.MentalState_BrainWormPuppet</stateClass>
+    <category>Aggro</category>
+    <prisonersCanDo>true</prisonersCanDo>
+    <slavesCanDo>true</slavesCanDo>
+    <inCaravanCanDo>true</inCaravanCanDo>
+    <unspawnedNotInCaravanCanDo>true</unspawnedNotInCaravanCanDo>
+    <blockNormalThoughts>true</blockNormalThoughts>
+    <blockRandomInteraction>true</blockRandomInteraction>
+    <allowGuilty>false</allowGuilty>
+    <recoverFromSleep>false</recoverFromSleep>
+    <recoverFromDowned>false</recoverFromDowned>
+    <recoverFromCaptured>false</recoverFromCaptured>
+    <maxTicksBeforeRecovery>60000</maxTicksBeforeRecovery>
+    <minTicksBeforeRecovery>99999999</minTicksBeforeRecovery>
+    <recoveryMtbDays>0.166</recoveryMtbDays>
+    <stateEffecter>Berserk</stateEffecter>
+    <nameColor>(0.55, 0.75, 0.35)</nameColor>
+    <baseInspectLine>Mental state: Puppeted</baseInspectLine>
+    <recoveryMessage>The hive has lost its grip on {0}.</recoveryMessage>
+  </MentalStateDef>
+
+</Defs>

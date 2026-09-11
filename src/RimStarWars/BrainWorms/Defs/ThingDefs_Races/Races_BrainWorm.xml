@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       RSW_BrainWorm — BRAINWORM_MOD_BUILD_1, per design/RimStarWars/brain_worm_spec.md:
+       "tiny (bodySize ~0.1), slow, near harmless in the open — the worm is only
+       dangerous as a payload."
+
+       Everything dangerous about it is CompRSWWormBurrow, which does not fight: it
+       waits until a LIVING humanlike host is within reach and enters, silently. The
+       bite tool below exists so the pawn is capable of violence at all (a toolless
+       animal produces generation warnings and cannot defend itself); 2 power is
+       nothing.
+
+       ⚠️ ART OWED. texPath points at the vanilla megascarab body as a stand-in so
+       nothing renders magenta. Nobody has drawn a brain worm yet.
+
+       🔴 canBecomeShambler is false, explicitly. AnimalThingBase defaults it to
+       true, which would let Anomaly raise a dead worm as a shambler — a corpse
+       walking. The owner banned corpse-walking in this mod permanently
+       (2026-09-11, verbatim: "Never corpse-walker. Too gross."). Do not remove
+       this line.
+  ======================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_BrainWorm</defName>
+    <label>brain worm</label>
+    <description>A finger-length Geonosian hive parasite, pale and segmented, moving with a slow deliberate crawl that never looks like an animal's. On its own it is nearly harmless — it cannot outrun a walking pawn and its mouthparts barely break skin. It is not trying to hurt you. It is trying to get into you, through the nose or the mouth, and once it is in it does not come out on its own.\n\nThe hive tolerates heat and dies in cold. Below freezing a brain worm stops moving within the hour and does not start again.</description>
+    <statBases>
+      <MoveSpeed>1.2</MoveSpeed>
+      <MarketValue>0</MarketValue>
+      <Wildness>1.0</Wildness>
+      <LeatherAmount>0</LeatherAmount>
+      <ToxicResistance>1</ToxicResistance>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0</ArmorRating_Sharp>
+    </statBases>
+    <race>
+      <body>BeetleLike</body>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <baseBodySize>0.1</baseBodySize>
+      <baseHealthScale>0.15</baseHealthScale>
+      <baseHungerRate>0.05</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <lifeExpectancy>2</lifeExpectancy>
+      <petness>0</petness>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <canBecomeShambler>false</canBecomeShambler>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tools>
+      <li>
+        <label>mouthparts</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <!-- The canon cold weakness, on the creature. The matching host-side
+           mechanism is HediffComp_BrainWormProgress in the infection def. -->
+      <li Class="RimMandrake.StarWars.BrainWorms.CompProperties_RSWColdKill">
+        <lethalTemperature>0</lethalTemperature>
+        <ticksBelowBeforeDeath>2500</ticksBelowBeforeDeath>
+        <deathMessage>A brain worm has frozen to death.</deathMessage>
+      </li>
+      <!-- The payload. Refuses dead targets; see the class doc. -->
+      <li Class="RimMandrake.StarWars.BrainWorms.CompProperties_RSWWormBurrow">
+        <searchRadius>1.9</searchRadius>
+        <scanIntervalTicks>120</scanIntervalTicks>
+        <chancePerScanAwake>0.04</chancePerScanAwake>
+        <chancePerScanHelpless>0.6</chancePerScanHelpless>
+        <infectionHediff>RSW_BrainWormInfection</infectionHediff>
+        <initialSeverity>0.02</initialSeverity>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_BrainWormKind</defName>
+    <label>brain worm</label>
+    <race>RSW_BrainWorm</race>
+    <combatPower>15</combatPower>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megascarab/Megascarab</texPath>
+          <drawSize>0.55</drawSize>
+          <color>(206,200,178)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
+          <drawSize>0.55</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

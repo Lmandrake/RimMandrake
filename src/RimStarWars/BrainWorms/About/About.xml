@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rsw.brainworms</packageId>
+  <name>Geonosian Brain Worms</name>
+  <author>Mandrake</author>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <loadAfter>
+    <li>mandrake.rm.proximityhatch</li>   <!-- Patches/ optionally adds its comp to the egg cluster -->
+  </loadAfter>
+  <description>BRAINWORM_MOD_BUILD_1, built to design/RimStarWars/brain_worm_spec.md.
+
+A Geonosian hive parasite. The worm itself is near harmless in the open; it is
+only dangerous as a payload. It burrows into a LIVING host and rides a staged
+infection -- latent, influenced, puppeted -- until the hive is driving the body.
+Cold kills it: below freezing the parasite dies and is expelled, so on a tidally
+locked world the cure is a PLACE. Surgery is the risky fast path.
+
+Three infection vectors, all ruled by the owner 2026-09-11:
+  1. Geonosian ruin dungeons  -- egg clusters in ancient-complex room loot.
+  2. Salvaged cargo           -- the RSW_BrainWormCargoPod incident.
+  3. Weaponized-egg war retribution -- craftable mortar shells that burst into
+     worms where they land. Carry a mortar to their map, shell them, leave.
+
+RULING, PERMANENT (owner 2026-09-11, verbatim: "Never corpse-walker. Too gross."):
+this mod NEVER animates a corpse. Every puppeting path requires a living pawn --
+CompRSWWormBurrow refuses a dead target, the puppeteer comp stops the moment the
+host dies, and the worm race sets canBecomeShambler false so Anomaly cannot make
+one out of it either. Do not add a dead-host path to this mod.
+
+No Harmony: the puppet think tree rides vanilla's own Humanlike_PostMentalState
+insertTag hook, so there is no patch to collide with.
+
+Private campaign mod, not for redistribution.
+
+ART OWED: every texPath in this mod currently points at a vanilla stand-in
+(megascarab body, high-explosive shell). Nothing renders magenta, but nothing
+here is drawn yet either.</description>
+</ModMetaData>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BRAINWORM_MOD_BUILD_1. Attaches RSW_RemoveBrainWorm to every race that can be
+  operated on at all.
+
+  Vanilla attaches surgeries like ExciseCarcinoma through each race ThingDef's own
+  <recipes> list, not through RecipeDef.recipeUsers - so "already lists
+  ExciseCarcinoma" is the reliable marker for "this is a body a surgeon works on".
+  Patches run against the raw XML BEFORE def inheritance resolves, so matching the
+  two defs that DECLARE that list - Human (Races_Humanlike.xml) and the abstract
+  AnimalThingBase (Races_Animal_Base.xml) - reaches every vanilla race through
+  inheritance, and reaches any alien race in the load order that copied the vanilla
+  list rather than inheriting it.
+
+  Animals match too. Harmless: CompRSWWormBurrow refuses a non-Humanlike host, so
+  an animal never carries the hediff, and Recipe_RemoveHediff.AvailableOnNow
+  returns false when the hediff is absent - the bill never appears.
+
+  ⚠️ A patch that matches nothing logs nothing. If the extract-brain-worm bill is
+  missing from a race's operations tab, this xpath found no <recipes> on it; add
+  that race explicitly rather than assuming the patch ran.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[recipes/li="ExciseCarcinoma"]/recipes</xpath>
+    <value>
+      <li>RSW_RemoveBrainWorm</li>
+    </value>
+  </Operation>
+
+</Patch>

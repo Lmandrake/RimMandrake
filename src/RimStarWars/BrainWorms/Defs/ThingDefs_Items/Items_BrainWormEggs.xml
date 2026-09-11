@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       RSW_BrainWormEggCluster — BRAINWORM_MOD_BUILD_1. The thing all three ruled
+       vectors actually deliver.
+
+       Parented to vanilla EggFertBase on purpose, not written from scratch: that
+       base already carries tickerType Normal (CompHatcher needs it) and
+       CompProperties_TemperatureRuinable with minSafeTemperature 0, which IS the
+       spec's "dies outright below ~0 °C ambient (comp check, no C# needed)". A
+       cluster carried across the nightside is ruined and never hatches. No code of
+       ours is involved in that half at all.
+
+       CompProximityHatch (mandrake.rm.proximityhatch) makes it an ambush rather
+       than a timer: it hatches when something warm walks past, which is the whole
+       "eggs in the dark" reading of the ruin-dungeon vector. MayRequire-gated, so
+       without that mod the cluster silently falls back to its 4-day CompHatcher
+       timer and nothing errors.
+
+       ⚠️ ART OWED — texPath is vanilla's small bird egg tinted sickly green.
+  ======================================================================== -->
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_BrainWormEggCluster</defName>
+    <label>brain worm egg cluster</label>
+    <description>A knuckle of translucent, leathery eggs fused into one lump, the colour of old bone. Something is moving inside them. Geonosian hive broods are laid in the dark of ruins and packed into cargo by people who did not look closely enough at what they were loading.\n\nThey hatch when something warm comes near. They die if they get cold.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Resource/AnimalProductRaw/EggBirdSmall</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(178,190,146)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>4</MarketValue>
+      <Nutrition>0.1</Nutrition>
+      <DeteriorationRate>2</DeteriorationRate>
+    </statBases>
+    <tradeability>None</tradeability>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>4</hatcherDaystoHatch>
+        <hatcherPawn>RSW_BrainWormKind</hatcherPawn>
+      </li>
+      <li Class="RimMandrake.ProximityHatch.CompProperties_ProximityHatch" MayRequire="mandrake.rm.proximityhatch">
+        <!-- Two cells: "the pawn is standing on it", not "visible across the
+             room". A dungeon egg should get you when you reach for the loot. -->
+        <triggerRadius>2</triggerRadius>
+        <scanIntervalTicks>60</scanIntervalTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ========================================================================
+       RSW_Shell_BrainWormEgg — BRAINWORM_MOD_BUILD_1, vector 3: weaponized eggs as
+       war retribution. Owner, 2026-09-11, verbatim: "As punishment if they go to
+       war against the Jawa: bring a catapult and hurl eggs at their ship, then
+       leave."
+
+       The spec left the delivery mechanism as this build's design question
+       (catapult/launcher item vs caravan action). ANSWER: a mortar shell. It needs
+       no new world-map machinery, it is already how a RimWorld player "brings a
+       catapult" anywhere — minify a mortar, caravan it to the hostile settlement's
+       map, shell them, leave before the worms find anyone — and every piece of it
+       is vanilla artillery. projectileWhenLoaded is the entire wiring.
+
+       Deliberately NOT explosive: no CompProperties_Explosive, unlike every other
+       shell. A pile of these in a stockpile is not a bomb; it is a pile of eggs.
+
+       The research gate is Mortars, same as the vanilla shells it sits beside.
+  ======================================================================== -->
+  <ThingDef ParentName="MakeableShellBase">
+    <defName>RSW_Shell_BrainWormEgg</defName>
+    <label>brain worm egg shell</label>
+    <description>A mortar shell with the explosive filler stripped out and a Geonosian brood packed in its place, cushioned and insulated. It does almost nothing where it lands. Four days later, the people who live there start hearing things.\n\nHurling these at a faction that went to war with you is not a battle tactic. It is a message.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Resource/Shell/Shell_HighExplosive</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(178,190,146)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>90</MarketValue>
+      <Flammability>0.6</Flammability>
+    </statBases>
+    <tradeability>None</tradeability>
+    <projectileWhenLoaded>RSW_Bullet_Shell_BrainWormEgg</projectileWhenLoaded>
+    <costList>
+      <Steel>15</Steel>
+      <RSW_BrainWormEggCluster>1</RSW_BrainWormEggCluster>
+    </costList>
+    <recipeMaker>
+      <researchPrerequisite>Mortars</researchPrerequisite>
+    </recipeMaker>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>RSW_Bullet_Shell_BrainWormEgg</defName>
+    <label>brain worm egg shell</label>
+    <graphicData>
+      <texPath>Things/Projectile/ShellHighExplosive</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+      <color>(178,190,146)</color>
+    </graphicData>
+    <thingClass>RimMandrake.StarWars.BrainWorms.Projectile_BrainWormEgg</thingClass>
+    <projectile>
+      <damageDef>Blunt</damageDef>
+      <damageAmountBase>4</damageAmountBase>
+      <speed>41</speed>
+      <flyOverhead>true</flyOverhead>
+      <soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+      <soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
+      <soundAmbient>MortarRound_Ambient</soundAmbient>
+    </projectile>
+  </ThingDef>
+
+</Defs>

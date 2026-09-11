@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BRAINWORM_MOD_BUILD_1, vector 1: Geonosian ruin dungeons - eggs in the dark, an
+  exploration hazard.
+
+  MapGen_AncientComplexRoomLoot_Default is the ThingSetMaker vanilla runs for the
+  loot sitting in an ancient complex's rooms - the dungeon you crack open and walk
+  into. One more weighted option in its ThingSetMaker_RandomOption means some rooms
+  hold a brood instead of silver, and with mandrake.rm.proximityhatch active the
+  cluster hatches when someone walks up to it rather than on a timer.
+
+  Weight 0.6 against a pool whose common options are weight 1: uncommon, not rare.
+  A Jawa who loots ten ancient rooms should meet this.
+
+  ⚠️ A patch that matches nothing logs nothing. If ancient complexes never contain
+  eggs, check this defName still exists in the live def set before assuming the
+  drop rate is just unlucky.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingSetMakerDef[defName="MapGen_AncientComplexRoomLoot_Default"]/root/options</xpath>
+    <value>
+      <li>
+        <weight>0.6</weight>
+        <thingSetMaker Class="ThingSetMaker_StackCount">
+          <fixedParams>
+            <filter>
+              <thingDefs>
+                <li>RSW_BrainWormEggCluster</li>
+              </thingDefs>
+            </filter>
+            <countRange>1~3</countRange>
+          </fixedParams>
+        </thingSetMaker>
+      </li>
+    </value>
+  </Operation>
+
+</Patch>
