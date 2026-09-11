@@ -640,3 +640,7 @@
 {"by": "artpiped", "event": "validated", "job_id": "whisperbird_v1_north", "target": "whisperbird/north", "ts": 1789168175.240302, "verdict": "pass"}
 {"by": "artpiped", "elapsed_s": 98.58341432199813, "event": "generated", "job_id": "whisperbird_v1_south", "target": "whisperbird/south", "ts": 1789168274.0085633}
 {"by": "artpiped", "event": "validated", "job_id": "whisperbird_v1_south", "target": "whisperbird/south", "ts": 1789168274.0145411, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 97.37943043999257, "event": "generated", "job_id": "boma_v1_east", "target": "boma/east", "ts": 1789170382.442136}
+{"by": "artpiped", "event": "validated", "job_id": "boma_v1_east", "target": "boma/east", "ts": 1789170382.449198, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 115.11106811399804, "event": "generated", "job_id": "boma_v1_east", "target": "boma/east", "ts": 1789170523.107173}
+{"by": "artpiped", "event": "validated", "job_id": "boma_v1_east", "target": "boma/east", "ts": 1789170523.113727, "verdict": "pass"}
