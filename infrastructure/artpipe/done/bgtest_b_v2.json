@@ -1,0 +1,17 @@
+{
+  "background": "#000000",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-11T03:13:34Z",
+  "facing": null,
+  "facings": [],
+  "id": "bgtest_b_v2",
+  "priority": 50,
+  "prompt": "RimWorld creature sprite, side view facing east, painterly vanilla-RimWorld animal art style: a small lean avian scavenger with grey-brown plumage, wings folded, standing alert on thin legs. Single creature, centered, no ground shadow. Backdrop: studio photograph on solid black seamless paper, evenly lit from the front so the black stays pure black to every edge of the frame.",
+  "reference": null,
+  "rimflow_item_id": "ART_BACKGROUND_TEMPLATE_1",
+  "style_notes": ""
+}
