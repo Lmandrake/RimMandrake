@@ -144,18 +144,54 @@ def build_faction_group(census):
     return rows
 
 # ---- assemble per-biome casts --------------------------------------------
+NON_BIOME_TARGETS = ("OUT", "OPEN", "RESERVE")
+def is_biome_target(tgt: str) -> bool:
+    """move_mapping_v2.md targets that are NOT a biome — a creature going to
+    RESERVE (2026-09-10 arid sitting: Cannok/Vulptex/Kwi/AA_Gigantelope/
+    BMT_Diggerpede) or a GROUP:* sheet is exactly as much a non-arrival as
+    OUT or OPEN and must not spawn its own fake biome slide."""
+    return bool(tgt) and tgt not in NON_BIOME_TARGETS and not tgt.startswith("GROUP")
+
+RESERVED_TAGS = ("FACTION-RESERVED", "INJECTABLE-RESERVED", "DUNGEON-RESERVED")
+def is_reserved(note: str) -> bool:
+    """A row can carry decision 'in'/'move' AND a *-RESERVED tag at the same
+    time (sitting rulings sometimes leave the decision field stale while the
+    note overrides it — e.g. `fauna:the_miasma:AA_Slurrypede` is decision
+    'in' but its note reads 'Not here | DUNGEON-RESERVED...'). The tag always
+    wins: none of these ever belong on a biome slide (they live on the
+    reserved-groups sheet instead)."""
+    note = note or ""
+    return any(t in note for t in RESERVED_TAGS)
+
 def build_biomes(fauna, flora, moves, census):
-    animals: dict[str, list] = {}
+    # defName -> row, PER BIOME, so a def that is both resident ('in') and
+    # arriving (a move resolving to the same biome) merges into ONE card
+    # instead of rendering twice — owner ruling 2026-09-11, proven cases:
+    # Beldon x2 in the_forge, AA_BloodShrimp x3 in the_contagion. The resident
+    # row's fields (decision/note/art) win; every origin it arrived from is
+    # kept as a union so the tooltip still says where it came from.
+    buckets: dict[str, dict[str, dict]] = {}
     def add(biome, defName, note, decision, art, origin=None):
         if defName in DROPPED: return
+        if is_reserved(note): return
         biome = canon(biome)
-        c = census.get(defName, {})
-        animals.setdefault(biome, []).append({
-            "defName": defName, "label": c.get("label", defName),
-            "drawSize": c.get("drawSize") or c.get("bodySize") or 1.0,
-            "note": note or "", "decision": decision, "art": art,
-            "origin": origin, "mod": c.get("mod",""),
-            "img": sprite(defName, FAUNA_SPRITES)})
+        bucket = buckets.setdefault(biome, {})
+        entry = bucket.get(defName)
+        if entry is None:
+            c = census.get(defName, {})
+            bucket[defName] = {
+                "defName": defName, "label": c.get("label", defName),
+                "drawSize": c.get("drawSize") or c.get("bodySize") or 1.0,
+                "note": note or "", "decision": decision, "art": art,
+                "origins": [origin] if origin else [], "mod": c.get("mod",""),
+                "img": sprite(defName, FAUNA_SPRITES)}
+            return
+        if origin and origin not in entry["origins"]:
+            entry["origins"].append(origin)
+        if decision == "in" and entry["decision"] != "in":
+            # the resident row always wins the displayed fields once it shows up,
+            # regardless of whether an arrival got added to the bucket first
+            entry["decision"], entry["note"], entry["art"] = decision, note or "", art
     for k, v in fauna.items():
         p = k.split(":")
         dec = v.get("decision")
@@ -165,7 +201,7 @@ def build_biomes(fauna, flora, moves, census):
                 add(biome, defName, v.get("note"), "in", v.get("art"))
             elif dec == "move":
                 tgt = moves.get(k, "")
-                if tgt and tgt not in ("OUT",) and not tgt.startswith("GROUP") and tgt != "OPEN":
+                if is_biome_target(tgt):
                     add(tgt, defName, v.get("note"), "arrived", v.get("art"), origin=biome)
         elif p[0] == "homeless":
             # 🔴 Fixed 2026-09-10: homeless:<name> rows with decision "move" were
@@ -176,8 +212,15 @@ def build_biomes(fauna, flora, moves, census):
             defName = p[1]
             if dec == "move":
                 tgt = moves.get(k, "")
-                if tgt and tgt not in ("OUT",) and not tgt.startswith("GROUP") and tgt != "OPEN":
+                if is_biome_target(tgt):
                     add(tgt, defName, v.get("note"), "arrived", v.get("art"), origin="homeless")
+    animals: dict[str, list] = {}
+    for biome, bucket in buckets.items():
+        rows = []
+        for e in bucket.values():
+            e["origin"] = ", ".join(e.pop("origins")) or None
+            rows.append(e)
+        animals[biome] = rows
     plants: dict[str, list] = {}
     for k, v in flora.items():
         p = k.split(":")
