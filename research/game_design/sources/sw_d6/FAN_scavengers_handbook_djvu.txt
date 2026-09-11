@@ -1,0 +1,3435 @@
+» TAR. WARS 
+
+
+THE SCAVENGER’S HANDBOOK 
+
+
+A GUIDE TO SALVAGE IN THE GALAXY 
+
+
+Inspired by 
+
+
+Si 
+
+
+THE SCAVENGER’S HANDBOOK 
+
+
+A GUIDE TO SALVAGE IN THE GALAXY 
+
+
+Allen Nunis/Carios Garzon 
+
+
+Development: Mike Fraley 
+Cover art: Lucasfilm Ltd. 
+Interior art: Lucasfilm Ltd., Allen Nunis with Carlos Gazron 
+
+
+Special thanks to Phil Hatfield, David Stairs, Chris Campbell, 
+Jamie Collins, Jens-Arthur Leirbakk, 
+and Eric Nordquist for their suggestions and ideas. 
+
+
+Inspired by 
+WEST 
+
+he END 
+wAGAMES 
+
+
+All references to Star Wars, or any of the Star Wars films, characters, creatures, vehicles, droids, or other related content are ®, TM & © Lucasfilm Ltd. (LFL) and the 
+Walt Disney Corporation. All Rights Reserved, Trademarks of LFL, and Disney, are not used with any express permission of the holder. In no way does the 
+supplement intend to represent itself (as an entity) as licensed propriety of the license holder or trademark owner. This document is a “fan work” and is provided as 
+a free exchange of information under a Creative Commons license. Open D6 System is a copyright/license free, “open” system, no copyright is asserted on the 
+system mechanics, text, graphic design, art, or any other aspect of this document. All images and text contained herein which have not been created by the author 
+and are the property of the entities listed above have been sourced from freely-available and widely distributed internet sources with no intent to infringe on 
+protected material, and citations have been made wherever possible. 
+
+
+Mi The Salvager’s Life 
+
+
+Introduction 
+
+
+At a first glance, salvaging looks like little 
+more than garbage picking and scavenging one’s 
+way through the galaxy; taking an easy way out 
+of digging through debris to make a quick credit. 
+This illusion has seduced far too many free 
+traders who, having fallen on hard times, 
+swallowed their pride to do what they could to 
+make some sort of living. They made the 
+mistake of believing the illusion until mired in 
+government bureaucracy, ending up at the 
+wrong end of a claim jumper’s blaster, and 
+floundering with their dealings with the black 
+market underbelly of the galaxy. All too often 
+they find that a salvager’s life is one of far more 
+risks than rewards. 
+
+This supplement will help gamemasters 
+introduce salvagers into their current Star Wars 
+game, or perhaps develop new campaigns 
+around a scavenger’s life. The statistics and 
+game information is presented during the time 
+of the Galactic Empire. The general assumption 
+is that the galaxy is ruled by an oppressive and 
+callous regime, and the players are struggling 
+against the structures of political power as well 
+as hostile rivals in the universe. However, 
+gamemasters can adapt the information for use 
+in other eras of play. 
+
+
+Starting Out 
+
+
+There is a single, most common mistake that 
+any free trader-come-scavenger makes: 
+assuming anyone can wander out into the galaxy 
+and claim an unmanned wreck as his own and 
+walk away with what he wants. Finders keepers 
+is the rule of the galaxy right? While there is a 
+kernel of truth in this misperception, it is only a 
+kemel. After all, there are laws concerning who 
+can legally do salvaging expeditions, when a 
+disabled ship becomes legally salvageable, and 
+
+
+what ships may participate in the salvage 
+missions. 
+
+
+Salvage Licenses 
+
+Nothing is ever free, not even if it has been 
+abandoned in space for a century with no living 
+being to lay claim to it. If there is money to be 
+made, then someone else wants a cut - 
+especially the Empire. Where some beings 
+resort to thievery, threats, or other messier forms 
+of persuasion, the Empire’s method is that of 
+fees and licenses, and plenty of them. Any ship 
+captain beginning a salvage expedition must first 
+register for a galactic standard salvager’s license. 
+Usually, these are available at any galactic level 
+starport with Bureau of Ships and Services 
+(BoSS). Any starship captain capable of 
+providing a Ship’s Operating License, and a 
+Captain’s Accredited License - assuming the 
+captain has already paid the application fees for 
+them, that is - can then apply for a License for 
+Acquisition of Abandoned Property (LAAP). 
+Going through normal channels it costs 750 
+credits and takes approximately a galactic 
+standard week to process. During this time, 
+Imperial desk workers perform background 
+checks on the captain and check the ship’s 
+transponder code for any major infractions. 
+Some have managed to hasten the process by 
+paying an “expedition fee” of anywhere between 
+500 credits up to a few thousand if a petty 
+Imperial bureaucrat is sufficiently persuaded to 
+rush the background check. The LAAP must be 
+renewed annually to stay current. 
+
+
+In addition to the LAAP registration, the 
+Empire has a separate registration for any 
+starship undertaking salvaging expeditions. Most 
+independent starship captains see this for the 
+redundancy that it is. Though corporate salvage 
+company owners find it easier to acquire their 
+personal license, and then file for a Salvage 
+
+
+————— 
+
+
+m T 
+|| 
+
+
+Starship Permit (SSP) for each starship in the 
+company’s fleet. Nonetheless, some 
+independent captains often find the value of 
+paying for the SSP. Any ship suspected of pulling 
+illegal salvage are subject to boarding by patrols, 
+having their crew 
+questioned, cargo and 
+manifest examined, and any 
+number of minor infractions 
+logged and fines issued. Any 
+ship not broadcasting its SSP 
+along with its transponder 
+
+
+can be considered computer with 
+“suspected” of illegal 
+salvage, and thus prone to Do they try 
+
+
+petty harassment by 
+sufficiently bored or 
+particularly bullying patrols. 
+Broadcasting the SSP 
+removes some level of 
+potential suspicion - 
+whether real or imagined — and provides a 
+salvage crew with a bit more leeway during its 
+operation. Also, any ship that has filed for an SSP 
+is also allowed to file for an advanced weapons 
+and shielding permit in order to better fend off 
+claim jumpers. If the owner pays the weapons 
+permit fee, they are eligible to install a single 
+military-grade energy weapon on the starship. 
+The application for the Salvage Starship Permit is 
+500 for starfighter scale vessels, and up to 2,000 
+credits for capital scale vessels. 
+
+Independent starship crews operating 
+without a license or a starship permit are subject 
+to penalties for a Class Four infraction, with fines 
+from 1,000 to 5,000 credits. In some cases the 
+captain has been subject to a few months to a 
+year of imprisonment. 
+
+
+Forging Registrations 
+
+Filing for all of these forms and permits also 
+assumes that the captain has nothing to hide. 
+Should a starship captain wish to avoid all of 
+these legal hassles she could opt for taking on a 
+number of illegal hassles. A clever forger can 
+create a permit and registration as easily as the 
+Empire can issue one, but the cost is much 
+
+
+Adventure Idea 
+
+
+During an illegal salvage after 
+a battle with Rebel forces, the 
+characters find a navigational 
+
+
+coordinates to a Rebel base. 
+to sell the and 
+information? If so, to which 
+side? Alternatively, might they 
+join up to offer their services? 
+
+
+higher. For a convincing forgery one can pay 
+anywhere from 4,000 to anywhere above 10,000 
+credits. Convincingly encoding an SSP with the 
+ship’s transponder is one thing. Breaking into the 
+computer security systems to implant convincing 
+matching records is another. 
+It requires skills most 
+freighter captains lack. Even 
+if the captain has the funds, 
+dealing with the less 
+scrupulous members of 
+society comes with a cost 
+beyond credits. Should one 
+forgo legalities altogether 
+attempt to salvage 
+without any permits at all, 
+the captain restricts himself 
+to dealing outside the major 
+patrolled space lanes where 
+ships blaster cannons 
+become the rule of law, and 
+selling mostly to shadow ports where organized 
+crime is the way of life. In the most unsavory 
+shadow ports the crime is not even organized, 
+and there is no rule or code beyond what a 
+person can do and what he cannot do. Such a 
+way Of life is not for the green starship captain. It 
+is either for the very brave or the very stupid. 
+
+
+retrievable 
+
+
+Making a Claim 
+
+
+Now that you have license, a ship, and a 
+crew you are finally ready to start turning a profit. 
+But where do you look? How can you tell if 
+something is salvageable, and when can you 
+legally make a salvage claim? First, you must 
+understand that there are some guidelines 
+determining who can salvage what, and when a 
+being can make a claim. Imperial law states a 
+ship or other property must be kept out of space 
+lanes, and can only be unattended for a 
+reasonable period of time. Any property that is 
+abandoned is fair game for salvagers. Of course 
+what “reasonable” and “abandoned” means is 
+up for interpretation, and generally depends on 
+where the potential salvage is. 
+
+
+————— 
+
+
+SS -y y 
+Å—ARE 
+
+
+In-system Salvage Claims 
+
+Most planetary regulations state that a ship or 
+wreckage cannot be left in orbit to block space 
+traffic. On outer worlds, ships or wreckage are 
+not considered abandoned for approximately a 
+standard galactic week. The closer to the major 
+planets the time frame collapses to a narrow 
+band ranging from 36-50 standard hours. If a 
+crew must abandon ship, the owner must begin 
+to take action quickly or risk losing her ship. If 
+the captain is very lucky she may find that her 
+ship has only been impounded by local officials. 
+If the authorities are too preoccupied keeping 
+the peace, fending off pirates, or simply 
+harassing spacers, the local prefecture may 
+allow a subcontracted or independent salvage 
+corporation to collect the ship and store it 
+privately. Many less scrupulous corporate 
+salvage companies have made tidy profits by 
+charging storage fees to captains who did not get 
+a damaged ship to a stardock within a 
+“reasonable” time frame. 
+
+Once the reasonable time frame has expired, 
+or if the owner has officially waived claim to the 
+remains of a starship, a salvager may move to 
+the wreckage site and begin processing the 
+debris. Most planetary bodies have policies that 
+once a salvager has made a claim in system, 
+then the salvager must completely clear the 
+debris. This prevents single-minded salvagers 
+from poking into the wreckage to make off with 
+a few choice items, leaving the navigational 
+hazard for someone else to deal with. Planetary 
+systems are most concerned with keeping the 
+space ways free hazards, and keeping the steady 
+flow of star traffic going. Because of these 
+restrictions, it is almost always planet-based 
+salvage businesses that file for in-system claims. 
+Some are even contracted with the local 
+planetary government to keep the space ways 
+clean. 
+
+
+Interplanetary Space Lane Claims 
+Any trader knows that there are favored 
+hyperspace routes from one system to the next. 
+
+
+Occasionally accidents happen, clashes with 
+pirates leave remains of crippled ships, and 
+various other incidents create debris fields. The 
+likelihood of these fields creating a mass 
+shadow large enough to pull a ship from 
+hyperspace is relatively slim. So it there is 
+seldom any pressing need to clear the debris 
+field. But there is also no harm done in letting 
+someone else reclaim the mess. That assumes, 
+of course, that the original owners are not 
+coming back to sort out part of the wreckage. 
+Many times when cargo shipments do not arrive 
+at their destinations the intended recipients go 
+looking for the remains hoping to cut some of 
+the losses on the trip. Thus, the standard of a 
+“reasonable” time frame still remains in effect. 
+In major hyperspace routes the reasonable time 
+frame also depends on how well traveled the 
+area is and how close the region is to an 
+inhabited world. Most sector authorities allow 
+anywhere from one week to one month to file a 
+claim for damaged property or a disabled 
+starship. Salvagers are encouraged to use their 
+best judgment while scanning for engine 
+emissions, remnants of energy discharge, or any 
+records that may be recoverable from a ship’s 
+log. Any crew finding a starship intact must copy 
+the log to determine the last date of entry. If a 
+reasonable time frame has passed, then the 
+debris or starship is open for a salvager to post a 
+claim. 
+
+In actuality, this is one of the least 
+enforceable set of laws. Though some cargo 
+crews are able and wiling to wait out an 
+appropriate amount of time, there is little to stop 
+them from taking what they find in the galactic 
+flotsam without posting a claim. If a starship is 
+found intact but disabled, then the less 
+scrupulous have little difficulty doctoring the 
+logs. If the crew finds cargo that is not highly 
+traceable, there is little to say where it came 
+from or when. Such illegal salvage is a Class 
+Three galactic infraction. Patrols will arrest the 
+crew, impound the vessel, and the crew may be 
+subject with up to two years of imprisonment 
+and up to a 5,000 credit fine. This, of course, 
+
+
+———— 
+
+
+a + Y 
+0 | 2. 
+
+
+assumes that someone is actually picked up by a 
+patrol. 
+
+
+Deep Space Salvage Claims 
+
+Far out in the dark comers of the galaxy, far 
+from trade routes or inhabited systems there are 
+vast amounts of inadequately charted and 
+untraveled space. Here there are few onlookers 
+and little legal oversight. Most of the same 
+practical and legal guidelines from interplanetary 
+trade routes also apply to deep space salvage. 
+However, the time it required before a ship is 
+declared abandoned is usually between a month 
+and two months. If a ship is destroyed or 
+disabled, it could take a life pod a matter of 
+weeks to reach a safe port, and thus salvage 
+regulations allow for adequate time for a crew to 
+reclaim their losses. 
+
+The possibilities for the scavengers of the 
+galaxy are nearly endless. Uncharted space 
+battles, ships lost in hyperspace, and long- 
+abandoned space stations are potentially there 
+for the taking. Of course, there is also the 
+potential for cubic light years of absolutely 
+nothing. Still, with tales of lost cruise liners, 
+legendary forgotten battlefields, and so much 
+more, the temptation to venture out in hopes of 
+striking it big is ever present. And these galactic 
+vultures are all too willing to endure the weeks 
+and months of boredom at the controls. 
+
+
+Filing a Claim 
+Imperial regulations state legally salvageable 
+materials must first be marked with a 
+navigational hazard beacon. This warns other 
+ships not to venture into the area lest they risk a 
+
+
+collision. Once the crew places a beacon, the 
+salvagers may report to the nearest galactic level 
+starport to file a claim. The © starport 
+governmental office registers the claim with the 
+captain’s name (or corporate name), the 
+starships collecting the materials, the 
+coordinates of the salvage, the general contents 
+of the debris field, and the galactic stardate of 
+the claim. The captain or crew may return to the 
+same or another government clerk to update the 
+file to keep the claim current. Any salvage claim 
+expires after the wreckage is completely cleared 
+or if the salvager has abandoned the area for one 
+standard year. Abandonment of a salvage area is 
+defined as letting the claim expire, regardless of 
+whether the salvager continues to visit the area. 
+Filing costs 100 credits per claim for the first year 
+and 50 for each subsequent renewal. 
+
+That is the official procedure, of course. The 
+unofficial modes of operation are usually quite 
+different. Few salvagers are willing to drop a 
+beacon capable of alerting other starships to the 
+claim. Doing so only invites claim jumpers to 
+swoop in before the salvager may return from a 
+starport claims office. Those who leave beacons 
+modify the broadcast range to an area that 
+extends just barely beyond the debris field. This 
+satisfies the letter of the law without alerting 
+miscreants from getting any early pickings. Also, 
+most salvagers will file a post hoc claim. Once 
+they have dropped a beacon - if one is dropped 
+at all — they will investigate the potentials of the 
+flotsam, and take the best pickings with them to 
+the starport to sell as soon as the claim is filed. 
+When a starport official or customs officer 
+catches a captain doing so, the offender is 
+
+
+Adventure Idea 
+
+
+A salvage vessel comes on a field of years-old debris, and begins passive collection. While sorting, the 
+characters find a military grade space-ejection suit with a body in it. The identification card reveals a 
+pilot who had a distinguished military career. A man won a major appointment to a government office 
+three weeks ago leaning on the credentials and identity of the deceased pilot. So, if the man with the 
+
+
+credentials is dead, who is the man in office? What do the characters do with this information? Extort 
+the man in office? Sell it to an information dealer? Try to ignore the information? 
+
+
+———— 
+
+
+m 
+Ā—RE 
+
+
+seldom punished in any official capacity Rather, 
+the captain pays a small “off the books fine” — 
+also known as a bribe for officials to look the 
+other way for such a minor infraction. Should a 
+licensed salvager with no outstanding warrants 
+forgo the official procedures and begin collecting 
+without filing a claim or dropping a beacon, it 
+qualifies as a Class Five infraction with fines 
+commonly set at 500 credits for less traveled 
+regions. In-system or high traffic areas carry fines 
+of up to 1,500. 
+
+
+Claim Jumping 
+
+A ship’s crew found acquiring any materials 
+in an area claimed by a licensed salvage crew is 
+considered theft, and the guilty parties are 
+subject to charge with a Class Two infraction. 
+This means impound of the salvage vessel, 
+imprisonment of up to 10 years, and fines of up 
+to 10,000 credits. In highly patrolled areas, the 
+rule of Imperial law is a realistic deterrent. In the 
+remote areas of the galaxy, claim jumpers have 
+the wrath of the original claimant to deal with. 
+Any starship with a valid SSP is licensed to carry 
+limited military-grade weaponry and shielding 
+and there are no restrictions on blasting another 
+salvager pushing in on your claim. The claim 
+jumper’s ship just becomes another part of the 
+debris field. 
+
+Still, claim jumping happens more often than 
+the honest salvager likes to admit. Some will 
+simply wait for the original claimant to leave for 
+refueling, restocking, or to unload the new 
+acquisitions. Once the rightful owner is gone, the 
+claim jumper takes a few sweeps, or looks for 
+particularly enticing hardware that the honest 
+salvager may have missed. Other claim jumpers 
+use much more devious methods to make a 
+claim and put the law on their side. Some claim 
+jumpers will install relatively fast hyperdrives so 
+that if they find a navigational beacon, they can 
+destroy it, replace it with one of their own, and 
+make a hyperspace jump back to a stardock 
+before the original salvager can make it there. 
+Once the first salvager arrives she is alarmed and 
+dismayed to find that someone else just claimed 
+that section of space within a matter of days or 
+
+
+hours before. Alternatively, if word leaks out that 
+someone has found a particularly lucrative stash, 
+some claim jumpers are not above using 
+technological skullduggery to their advantage. 
+Electronically breaking in to a government 
+clerk’s secure files is no easy task, but it can be 
+done. Once inside, the data can be altered, 
+affixing the claim jumper’s personal and starship 
+data to the file. If the claim jumpers skills are up 
+to endeavor and if the electronic paperwork is 
+convincing enough a forgery, then the jumper 
+can prosecute the original claimant. Since this 
+requires altering several data entries to prove 
+that one person, and not another has been 
+making trips to a salvage field, it is simply easier 
+to alter the dates on the records to make it 
+appear as though the claim has expired, and it is 
+now open salvage again. 
+
+Regardless of tactics, a claim jumper is wise 
+not to haunt any given claim too long. Though 
+independent salvagers tend to be solitary people, 
+they are not above banding together to eliminate 
+a common threat. Claim jumpers are despised 
+by all remotely decent beings. And most beings 
+tend to protect their claims well when they 
+suspect claim jumpers are cutting into profits. 
+
+Working with starship wreckage can be a 
+dangerous job and bring you into contact with 
+hazardous - even explosive - materials. 
+Salvagers have known to seed their fields with 
+impromptu explosives when they expect to be 
+away for a length of time. Tampering with a 
+starship reactor core to make it prone to 
+detonation, or disguising unexploded military 
+munitions are reasonably common practices. 
+The scavenger-turned-saboteur knows where to 
+find her traps and disarms them before 
+continuing the operation. The newly arrived 
+claim jumper does not have that luxury. 
+
+Other salvagers are less subtle. Some are 
+known to power their ships down and wait 
+amongst the debris if they suspect someone 
+slipping in between visits to their claim. If the 
+hunch proves to be right, the stage is set for an 
+ambush. Even others, the less subtle have simply 
+found the identity of the claim jumper and buy 
+
+
+———— 
+
+
+a T 
+0 || 2. 
+
+
+them a drink at a nearby starport and serve a 
+blaster bolt as a chaser. 
+
+
+Military Salvage 
+
+Though one is free to pick through almost 
+any bits of space trash one may find drifting 
+about, there are a few places salvagers may not 
+go. The first is historical battle sites. When the 
+Empire decides that a site has become a 
+monumental part of galactic history, it may 
+declare it an historical battlefield. Many times 
+this is a stage for the Imperial Ministry of 
+Propaganda to launch a new campaign touting a 
+long string of victories. Most sites that have 
+existed long enough to become historical have 
+already been picked over to some degree. 
+However, on the rare occasion that a battle site 
+has actually stood the test of time and showed to 
+be worth historical value, the remains are 
+preserved for posterity. 
+
+
+Military salvage from contemporary 
+skirmishes carries its own restrictions. Neither 
+the Sector Moffs nor the officers of the Imperial 
+Navy are fool enough to let just anyone latch 
+onto the remains of a Star Destroyer or a gunship 
+and make off with functional capital-class 
+turrets. However, the Imperial Navy seldom 
+performs its own salvage missions, but normally 
+contracts out that work. The salvagers are most 
+often corporate entities that have been 
+thoroughly vetted for their loyalty to the Empire, 
+and extensive background’ checks are 
+performed on all members of the business as 
+well as their family members. Any hint of 
+disloyalty or association with unfavorable 
+
+
+individuals will nullify a military contract - and 
+incite more severe interrogations. Once the 
+Empire has given approval for a salvage 
+company to perform services on military 
+restricted sites, the salvage company has an 
+expectation of returning all salvageable material 
+to its rightful owner. Any enemy combatant ships 
+are to be dismantled, and any flight recorder 
+data, navigational computer data, or any 
+sensitive information is not to be accessed at any 
+time by the salvage company. A military salvage 
+contract can be very lucrative, though the 
+Empire only pays the salvage agency on 
+commission, rather than by the market value of 
+the items. Further, in times of peace, military 
+collections are few and far between. Fortunately 
+for salvage corporations, peace between the 
+Imperial military regime and the Rebellion is 
+nowhere in sight! 
+
+
+Similar to restrictions on military salvage, 
+there are also restrictions on any salvage claim 
+on all Imperial-owned ships. Any type of salvage 
+on any Imperial shuttle, courier, or cargo vessel 
+is strictly prohibited, and may only be carried out 
+by vetted salvage companies or individuals. This 
+restriction also applies to any independent 
+vessels contracted to carry Imperial cargo. 
+Where most abandoned or destroyed vessels 
+will eventually be declared legally abandoned, 
+Imperial or government contracted ships always 
+remain the property of the Galactic Empire. Any 
+attempt to retrieve items from such ships is 
+considered theft of Imperial property, is a Class 
+Two infraction, and carries a penalty of 10 years 
+imprisonment. 
+
+Though salvaging Imperial ships is illegal, 
+there are no innate restrictions on salvaging 
+refuse ejected from Imperial ships. One would 
+think such legislation ought to be unnecessary, 
+as who in their right minds would go looking in 
+space for government trash? However, it is 
+standard Imperial procedure to dump their 
+garbage before they go to light speed. Though 
+Star Destroyers and other cruisers are not likely 
+
+
+to dispose of a working or repairable laser turret, 
+there are often little treasures amongst the 
+drifting mass. For example coolant gas tanks are 
+disconnected from their systems once they 
+
+reach 20% to create a buffer against a 
+dangerous meltdown. The “empty” tank is 
+exchanged for a full tank before the techs 
+discard the low tank. A salvager collecting five 
+such tanks may have the remaining coolants 
+pumped and refill one of the tanks at maximum 
+capacity. Periodically a Star 
+
+Destroyer or other patrol craft may also 
+hastily discard perfectly serviceable replacement 
+parts and other useful gear. The reason for this is 
+that Imperial craft and particularly over-funded 
+military ships allocate as much space to such 
+cargo as they possibly can. When being 
+prepared for military engagements, the ships are 
+to be stocked full of replacement and repair 
+parts. Many times power actuators, blast door 
+servos, and other parts are stocked in crates in 
+multiple units. If the techs are in a hurry to make 
+room for restocking, they will periodically trash 
+containers that are only one third full. Though 
+
+such wastefulness would shock the average 
+citizen if they knew, the prodigal regime is not 
+particularly concerned with the general 
+populace’s opinion of how their extraordinarily 
+high taxes are spent. However, the general 
+
+
+—————— 
+
+
+citizen’s loss may be the salvager’s gain. The 
+savviest scavengers are able to recover and 
+repackage discarded equipment, and some are 
+even able to sell them back to the Empire via 
+legal suppliers. 
+
+
+Salvage Collection Methods 
+
+
+A variety of collection methods are common 
+in the galaxy, all of them require specialized 
+equipment. It would behoove the salvager to 
+plan what sort of salvage she will be doing and 
+outfit herself accordingly. Few salvagers devote 
+themselves to one type to complete exclusion to 
+the others, though salvagers are known to gear 
+their ships and crew to one type but will engage 
+on other collection methods if the pickings look 
+particularly favorable, or to help them through 
+harder times. Generally speaking there are three 
+types of collection methods, in toto, targeted 
+salvage, and passive collection. 
+
+
+In Toto 
+As mentioned above, there are some cases 
+where an entire debris field needs to be 
+collected and processed. It may come from a 
+need for clearing a navigational hazard from 
+traveled space, or possibly the Empire may want 
+an entire remains of a ship recovered and 
+
+
+processed for forensic study. Regardless of the 
+motive, when a salvager clears an entire area of 
+all debris, it is referred to salvage in toto, as the 
+totality is removed from space. 
+
+In toto salvage is most often conducted by 
+contract, usually by corporate entities, or sub- 
+contracted to other independent salvagers. Most 
+frequently there is at least one capital-scale 
+vessel first using plasma torches to slice the 
+larger sections of hull to manageable sections, 
+and then storing them away in the massive cargo 
+holds. Occasionally the remains of disabled 
+starfighter-scale starships may be towed in their 
+entirety to a port where they can either be 
+disassembled or disposed of. Such towing also 
+qualifies as in toto salvage. 
+
+
+Targeted Salvage 
+
+Though the large remains of a starship loom 
+in the viewport of a scavenger’s ship, he may not 
+want the whole vessel. A large star liner sitting 
+derelict in the vacuum of space may not be 
+something that a salvager has the resources or 
+interest to restore to working order. However, a 
+ship full of functional parts may be something in 
+which she has a keen interest. Looking in a 
+salvage field or a disabled starship for select 
+items, and bringing them aboard is called 
+targeted salvage. The crew only targets certain 
+items for collection. The rest is left and may hold 
+no interest for that particular salvager. Yes, 
+sections of the hull may be remade into hull 
+patches for other ships, true the wiring can be 
+stripped out and either recycled or resold, but 
+some salvagers are looking for items that hold a 
+particular interest. Maybe they are looking for 
+remaining cargo still in the hold. Perhaps they 
+want only the sensor systems. Or they just might 
+be looking for something a little more elicit left 
+tucked away in some comer of the remains. 
+Nonetheless, the salvager doing targeted 
+collection is usually on a mission for something, 
+or certain kinds of property. 
+
+
+ee 
+8 || 2. 
+
+
+Passive Collection 
+
+In contrast to targeted salvage, passive 
+collection is for the salvager who wants to spend 
+less of his time doing space walks, and is happy 
+enough to let his ship drift through a debris field 
+as automated systems pick up nearly everything 
+in range of the ship. Sometimes these collection 
+systems are computer-controlled appendages 
+linked with the ship’s sensor systems to pick up 
+debris capable of fitting through apertures in the 
+hull. Such systems have varying levels of 
+sophistication; some will pick up anything within 
+range, others will be more selective. At any rate, 
+the salvager is scavenging for more or less 
+anything and is not particular about what he 
+brings on board. After the mass of debris is in the 
+cargo hold, it must be separated and sorted. The 
+sorting varies from salvager to salvager. Some 
+have collecting areas for working parts, 
+repairable pieces of technology, and refuse. 
+Others are hoping to make a small profit by 
+turning the materials over to reclamation centers 
+to be recycled, and thus must be sorted by types 
+of materials. Those wishing to peddle scrap 
+metals likewise have to sort by composition. He 
+may put duroplast in Hold A: Section], narrilium 
+alloy in Hold C: Section 2, and so on. Of course 
+there are breeds of scavengers whose 
+“organization methods” elude any rational being. 
+
+Passive collection seems easier at the onset. 
+There is less risk involved insofar as one need 
+not leave the safety and comfort of the ship. 
+There are no dangerous spacewalks into 
+unstable hulls of broken ships. Though for those 
+with less sophisticated sensors, there is risk in 
+terms of what they bring on board. If the captain 
+is not diligent with sensor sweeps, he may very 
+well bring onboard radioactive or other 
+hazardous materials. There is less time spent in 
+the hunt for just the right kind of cargo, but the 
+passive collection means the crew spends 
+innumerable hours sorting through the collection 
+area trying to figure out what is on board, and 
+what the value of such items may or may not be. 
+
+
+10 
+
+
+Corporate and Independent 
+
+
+Salvage Operations 
+
+
+Generally speaking, if one expects to begin a 
+salvage business, there are two major models 
+represented in the galaxy. One may either 
+belong to a larger salvage corporation, or one 
+may belong to an independent salvage crew. 
+Both have different methods of operation and 
+both have different views of the other. 
+
+
+Corporate Salvage 
+
+Most larger planetary bodies have at least 
+one resident salvage corporation. Sometimes 
+the operation is locally owned, and other times 
+it is just an office of a larger sector-wide 
+business or galactic mega corporation. Though 
+the power structures and modes of operation 
+will vary as widely as any type of corporation, 
+there are some general themes that span 
+corporate salvage operations. Usually the 
+company is headed by an individual or small 
+board of beings who either handle or delegate 
+the day to day operations. Such companies own 
+multiple ships, and often operate at least one 
+capital-class starship per sector. In areas where 
+navigational anomalies make starship collisions 
+more likely, some corporate entities have at least 
+one capital ship on a planet with a corporate 
+office. Such fleets might initially seem 
+extravagant, as starship accidents do not happen 
+every day, but many spacefaring beings know 
+how useful a reliable salvage company can be. 
+Should a ship’s sublight engines become 
+disabled, or should a crew be forced to abandon 
+ship because of a failing life support system, 
+salvage companies are easy to contact, and tow 
+the crippled ship to a nearby starport. Because of 
+larger operation’s capability of taking ships in 
+toto, salvage operations become the primary 
+towing agencies in civilized space. As has 
+already been mentioned, incorporated bodies 
+are also trusted by local governments to keep 
+space lanes clear of hazardous debris, are 
+eligible for government and military contracts. 
+Corporate bodies are also more likely to conduct 
+in toto salvage. Not only because they handle in- 
+
+
+0 || 2. 
+
+
+system wrecks, but because they have large 
+enough of an employee base to make sorting 
+debris worthwhile. Many have the resources to 
+collect metals for reclamation and either sell 
+them, or melt the metals down for easier storage 
+once cooled. Stored metals are often kept for 
+speculation on the market, waiting for some 
+alloys to rise in value enough to make tuming 
+them in en masse more profitable. 
+
+
+Adventure Idea 
+
+
+The adventurers find a bulk freighter intact 
+drifting in space. Scans show life support is 
+inactive and no life signs aboard. All escape pods 
+are in their proper bays. When the characters 
+
+
+board the vessel they find that the ship was 
+smuggling military-grade Clone-Wars era droids. 
+The droids had killed the crew, and now they will 
+attempt to exterminate the new boarders and cut 
+off every chance of their escape. 
+
+
+Because of the nature of corporate licensing, 
+not every individual star pilot needs to have a 
+salvager’s LAAP (License to Acquire Abandoned 
+Property). For all practical purposes, the 
+corporation must obtain a single LAAP and 
+register for a SSP for each starship in the 
+corporate fleet. However, a corporate LAAP 
+carries a greater cost. It is only $5,000 for any 
+operation of 50 employees or less, but goes up 
+considerably for entities of a larger employment 
+base. The SSP (Starship Salvage permit) carries 
+the same registration costs for private individuals 
+and corporate salvagers, though every ship in a 
+corporate fleet must carry a current SSP. 
+
+The life of the corporate salvager is much 
+like any other labor job in the galaxy. In larger 
+companies here is a need for custodial 
+personnel, clerical workers in addition to 
+qualified pilots, mechanics, and many beings 
+willing to do the hours of grunt work necessary 
+to get the job done. The corporate salvager is 
+more likely to expect steady pay regardless of 
+what kinds of jobs the corporation takes. The 
+average worker is not getting paid by the job, 
+
+
+11 
+
+
+and there is considerably less risk, but also 
+much less freedom than a member of an 
+independent salvage crew. The corporate 
+salvage pilots and space-based crews often look 
+at independent salvagers with some suspicion. 
+They often perceive themselves as hard-working 
+beings trying to make an honest credit. By 
+contrast, they see the independents as treasure 
+hunters aimlessly drifting from wreck to wreck. 
+Corporate salvagers commonly portray the 
+independents as vultures trying to take the most 
+valuable morsels for themselves, and leaving the 
+rest of the remains to be the galaxy’s problem. 
+
+
+Adventure Idea 
+
+
+The characters come upon an ancient 
+derelict craft. Among the many strange and 
+potentially valuable artifacts, they discover an 
+
+
+ancient Sith in suspended animation. 
+Unfortunately, the characters’ activities on the 
+ship have awakened her, and they discover 
+her cruelty and lust for power. 
+
+
+Independent Salvage 
+
+Independent salvagers are not unlike the 
+tramp freighter crews of the galaxy. Some have 
+finally worked their way up to purchasing their 
+very own starship. Whether acquired through 
+loans or hard earned credits, the starship is the 
+key to a new way Of life. It is a free life where the 
+boundaries are as far as the distant reaches of 
+space. From there, the experiences and 
+motivations of individual salvagers vary greatly. 
+Some were originally free traders who had fallen 
+on hard times and found a lucky break by 
+stumbling on to a claim. Others sought solitude 
+and found that with a few labor droids they 
+could sustain themselves liberated from the 
+constraints of more civilized sectors of space. 
+Occasionally, there are scavengers who simply 
+love the thrill of the hunt. They enjoy pouring 
+over scanners and readouts hoping to come 
+upon the next exciting find. Others follow the 
+
+
+0 || 2. 
+
+
+history of lost ships and crews, counting on the 
+vacuum of space to preserve the long-lost 
+wreckage. For such crews the mystery of what 
+happened in the final moments of a dying ship is 
+almost as exciting as the salvage itself. 
+
+There are a few constants in an independent 
+salvager’s life. There is always a perceived need 
+of secrecy. When one stumbles on a reasonably 
+exploitable find, there is always the fear - or in 
+some cases, paranoid delusions — of claim 
+jumpers finding it as well. Anyone coming back 
+to the same port with holds full of functional 
+equipment is going to get some notice. Often 
+salvagers will travel from port to port as to avoid 
+drawing attentions to themselves. The more 
+paranoid will make numerous hyperspace 
+jumps to and from their precious finds to keep 
+their movements from becoming traceable. 
+Salvagers are also constantly under the scrutiny 
+of port authorities and galactic patrols. Piles of 
+seemingly random equipment make good hiding 
+places, and more than a few would-be salvagers 
+are little more than smugglers parading as 
+honest businessmen. Where a corporate 
+salvager may have a reasonable expectation of a 
+steady flow of credits, the independent is living 
+depends on what she finds or fails to find. Ships 
+need to be refueled, docking fees need to be 
+paid, ship systems always need repairs at the 
+worst times, and salvage ship crews need to 
+have profits to split. Independent salvage ships 
+are only three missed meals away from a 
+mutiny. 
+
+The independent salvager does have a few 
+opportunities that a corporate entity may never 
+receive. It is not uncommon for a cargo 
+company to hire a salvager to investigate a 
+missing shipment. Whether because of pirate 
+attacks, hyperspace mishaps, or one of a 
+thousand different kinds of incidents, shipments 
+go missing from time to time. Rather than waste 
+time and resources on tracking down the 
+missing craft, the cargo shippers often contact a 
+salvage crew, provide them with the last known 
+coordinates and intended hyperspace route, and 
+pay them to bring back sensor scan data and any 
+recoverable materials. Occasionally cargo 
+
+
+12 
+
+
+survives relatively intact, even if the ship is no 
+longer serviceable. A seller may want to avoid a 
+larger salvage company for any number of 
+reasons. Sometimes those reasons deal with 
+privacy and the corporate secrecy surrounding 
+the cargo in question. Other times less than legal 
+shipping operations are in play and if a local 
+salvage company is known to be sympathetic to 
+the Empire they could pose a significant risk. 
+When the shipment is arranged by organized 
+criminals to ship elicit goods, and hiring an 
+individual or small crew helps ensure that the 
+company can also buy the salvager’s silence. 
+Regardless of the reasons stemming from the 
+contract, many discreet recovery operations are 
+given to independent smugglers. However, 
+dealing with such elements involves a certain 
+amount of danger. Dealing with organized crime 
+may come with a high risk or with further strings 
+
+
+attached later on. Even legal operations 
+demanding high levels of secrecy involve 
+corporate espionage, and there is some 
+
+
+information that some beings would be willing 
+to kill for. 
+
+Despite the risks, the majority of the galaxy’s 
+independent salvagers prefer a life of wandering 
+to being planet-bound to a corporate master. 
+True, their lives may be harder than they would 
+have wished, but they are their own masters. If 
+trading quips with corporate salvagers at the 
+local spacer’s cantina, the independents are 
+likely to say that the corporate employees hardly 
+belong in the establishment. A spacer’s cantina 
+is a place for actual spacers, and not one who 
+hitches a ride on the big boss’s ship. The view of 
+corporate salvagers is of one who has accepted 
+a limited mundane life that is only a vague 
+shadow of the independent’s work. The 
+independent requires true grit to be rewarded 
+with freedom instead of comfort. 
+
+
+Buyers 
+Collecting salvage amounts to very little 
+unless the salvager can turn it into some sort of 
+profit. While there is some degree of useless 
+refuse that winds up in a salvager’s hold, the 
+
+
+|| 2. 
+
+
+purpose of the collection is to sell the valuable 
+materials. There are any number of beings in the 
+galaxy who may want some of the obscure 
+pieces and parts found in the far reaches of 
+space, but the salvager is challenged with the 
+task of getting the goods to those who want it. As 
+much as a salvager may be able to obtain 
+valuable items, it does him no good unless he 
+knows who to turn to when trying to turn those 
+collections into credits. 
+
+
+Junk Dealers 
+
+While most purveyors of secondhand and 
+refurbished goods would never deign to call 
+their wares junk, most of the rest of the galaxy 
+calls it as they see it. However, ship captains 
+tend to see that “junk” a little differently when 
+their ships need repairs and no one else has a 
+Type J-2 hyperdrive. And where do such 
+secondhand parts come from? In fact they come 
+from many places, but good salvagers know that 
+junk dealers will always have a need for intact 
+starship components. For those salvagers with a 
+skilled technician a part of their crew, many 
+collected parts can be repaired even if they were 
+not completely functional when first collected. 
+Such pieces do not garner as much attention 
+from the junk dealers, but when dealing in 
+components that have been out of production 
+for some time, even refurbished pieces can 
+bring credits in. Most salvagers try to establish a 
+relationship with a few junk dealers in various 
+locations and then make the circuit between 
+them when the holds are full. 
+
+
+13 
+
+
+Some of the more successful salvagers will 
+open their own junk shop on a planet or space 
+station within reasonable distance of their 
+claims. Less commonly some will try to 
+temporarily set down on a planet and try to 
+unload wares directly to starship techs in need of 
+repair parts. However, spacers are more likely to 
+trust an established business - even if only 
+marginally more so. Unscrupulous traveling 
+scavengers are just as likely to sell you a bad 
+load of parts and be off to the next system by 
+mid-day as to sell you working components. 
+Experienced spacers have learned to be wary of 
+such crooks and __half-witted tinkers. 
+Nonetheless, salvagers are anxious to seek top 
+prices for their collections, and selling them 
+directly to the consumer one means of doing so. 
+
+
+Industry Outposts 
+
+Mining colonies and deep space energy 
+collection centers are popular waypoints for 
+salvagers. Many such outposts are underfunded 
+and poorly supplied. Though the salvager is 
+unlikely to have replacement parts for the exact 
+models of equipment used at the outpost, the 
+workers and techs in these industrial centers are 
+very adept at jury rigging and adapting 
+equipment for their purposes. Many times such 
+outposts will send out a looped transmission for 
+continual broadcast inviting salvage vessels, 
+especially when they are in particular need for 
+replacement parts. 
+
+
+Tech Shops 
+
+Though junk dealers will take nearly anything 
+that barely works, tech and repair bays belong to 
+an industry where they depend on their good 
+name. Tech shops need to be able to sell quality 
+parts and provide reasonable repair services to 
+those in need of their wares. Thus, tech shops 
+will take items from salvagers, though it is not 
+nearly as easy a Sale as it would be with junk 
+dealers. Most often a salvager will present repair 
+parts that are in high enough demand and meet 
+a standard of quality. Techs will conditionally 
+
+
+m | 
+Å—ARE 
+
+
+accept the gear the salvager gives them, but will 
+perform a thorough inspection before offering 
+any credits. Usually there is at least a one or two 
+day turn around, afterward the salvager may 
+return to accept her credits as and take back any 
+rejected materials. 
+
+
+Information Brokers 
+
+Though undamaged cargo, reclaimable ship 
+materials, and repair parts are common 
+commodities, the physical materials are not the 
+only items of interest, and some things carry an 
+even greater value. Information brokers 
+specialize in evaluating the value of bits of data. 
+They either use that information as leverage, or 
+sell the information to those who can. The 
+question is, what is more valuable to the Empire, 
+a Rebellion prototype starfighter hull fragments, 
+or a surviving nav computer with coordinates for 
+its point of origin? Sector patrols putting together 
+an anti-piracy task force may pay a modest 
+amount to salvagers that recover flight recorder 
+data from attacked ships. At least then they will 
+be able to better determine the pirate’s tactics 
+and capabilities. There may be any number of 
+oddities found on or in ships that could be worth 
+something to someone, the information brokers 
+will know who and how much they are willing to 
+pay. Naturally one can get a higher price from 
+the eventual recipient by trying to sell the 
+information directly, but most salvagers are not 
+connected well enough to know exactly who to 
+whom they should sell the information. 
+Scavengers are also ill equipped to play the 
+dangerous game of using the information 
+without putting themselves in harm’s way. 
+
+
+Arms Dealers 
+
+One of the most dangerous segments of the 
+black market involves those who deal in 
+restricted or illegal military grade hardware. 
+Whether personnel weaponry or capital-scale 
+blaster batteries, there are those in the galaxy 
+who watch the careful balance of supply and 
+demand of illegal arms and are willing to evade 
+detection in order to keep their clients well 
+
+
+14 
+
+
+equipped. Though the tactics are many and 
+varied for transporting the contraband, 
+acquisition is always a challenge. Though many 
+well-connected dealers have arranged for 
+methods of supply from corrupt or inept 
+government officials, others have less steady 
+methods of getting their hands on the weaponry 
+they desire. That is where the salvager comes in. 
+Though military salvage is strictly regulated, 
+battles sites are often looted before the winning 
+side can come to collect materials and 
+information. Further, in rare occasions a salvager 
+to come upon the remains of archaic battleships 
+with sufficient weaponry either intact or 
+serviceable. When a salvager removes gun ports, 
+batteries, military power sources, ammunition 
+caches, and other such materials, they can fetch 
+premium prices to paramilitary organizations, 
+small militias, and rebel groups. Unfortunately, 
+the nature of such organizations is to remain 
+hidden lest they receive swift retribution from 
+the Imperial authorities. Further, one does not 
+simply stride through Imperial patrolled space 
+with a hold full of munitions and sell it to the first 
+being that has the credits. Such would be a plan 
+leading to immediate arrest and charged with 
+conspiracy and treason. The salvager punished 
+under a Class One infraction such as this would 
+mean a minimum of 30 years in prison, and is 
+more likely that they would become an enemy 
+of the Empire and suffer execution. Transporting 
+military-grade good means knowing the right 
+channels of information, following paths of 
+safehouses, knowing which documents to forge 
+(such as falsifying bills of landing, registered 
+militia end-use documents, and other such 
+necessities), having connections for credit 
+laundering, and knowing which officials to bribe 
+and not to bribe. Most salvagers do not have the 
+slightest idea where to begin in such a process. 
+However, an arms dealer is much easier to find 
+for those who have associations on the shadier 
+side of salvaging. Arms dealers have the 
+experience and connections to provide the 
+weaponry to those who desire it, though the 
+salvager will never earn as good of a price 
+through them as they would dealing with the 
+
+
+m |, 
+|| 
+
+
+recipients directly. Nonetheless, there is much 
+less risk selling to such dealers than unloading 
+goods to militias directly. Any crew selling 
+weapons directly also have another risk. Arms 
+dealers are middle men by nature, and they do 
+not appreciate a salvager trying to cut them out. 
+Almost invariably, those who have an interest in 
+arms are bound to notice a salvager who sells 
+parts and supplies compatible with military 
+ships. Such criminals are likely contact the 
+salvager, rather than the other way around. And 
+when they arms dealer comes to call, the crew 
+can count on an unfriendly reception. 
+
+
+The Rebel Alliance 
+
+The Empire is well known of its corruption, 
+bigotry, merciless retribution to those who 
+vocalize against public policy, and steady 
+oppression against those who seek to change 
+the New Order. It is far from surprising when 
+Imperial practices and crooked officials finally 
+push a salvager into the open arms of Rebel 
+Alliance. The needs of the Rebel Alliance are no 
+different than the needs of any active military 
+unit. The main difference is that the Alliance 
+freedom fighters are poorly funded, under 
+equipped, and always looking for new recruits. 
+Salvagers are unlikely to see any front line 
+fighting, but the Rebels are willing to take 
+whatever aid the freedom-loving beings in the 
+galaxy are willing to provide. Ships with large 
+holds can smuggle goods, transport support 
+equipment, and even help transport personnel. 
+However, there are more likely tasks for the 
+salvager. Every military needs good intelligence, 
+and often times the intelligence begins directly 
+after a military engagement. When the Rebel 
+forces win a victory against the Empire, 
+retrieving forensic data on new weaponry, 
+recovering flight recorders, and removing 
+navigational computers are much desired 
+support services. Also, recovering unexpended 
+munitions and obtaining salvageable goods 
+helps keep the Alliance in supply of badly 
+needed materials. 
+
+Of course, aiding and abetting any Rebel 
+group will immediately brand the salvager as a 
+
+
+15 
+
+
+—————— 
+
+
+eH y 
+|| 
+
+
+terrorist and enemy of the state. Any such 
+activities are listed as Class One infractions and 
+carry the death penalty, though it is highly 
+unlikely that the salvager would ever see any 
+official judicial process. If captured in any Rebel 
+activities, the salvager can expect to be 
+captured, tortured for information, and simply 
+disappear from society. If the salvager is very 
+lucky, she will find herself in one of the galaxy’s 
+secret penal colonies where she can expect to 
+waste away in anonymity. However, it is just as 
+likely that she will be processed for information, 
+and hastily disposed of. 
+
+
+Archaic Starship Collectors 
+
+The nobility of the Tapani sector are known 
+for their frivolous pastimes. Every foppish fifth 
+son of a Baron spends his hours in ways that 
+confound the majority of the universe. One such 
+diversion for the young nobles is collecting 
+antique starships. Some such antiques become 
+classics, and others are extraordinarily rare 
+oddities. Most ships stand incomplete in a family 
+hanger, as the young nobles wait until they can 
+finish the products of their labor, ending with a 
+functioning ancient ship. Certainly these high- 
+born collectors can commission missing 
+components for their prize collections, but 
+ultimately they strive for original pieces from the 
+ancient manufacturers. Most, if not all, of the 
+oldest starship manufacturers are no longer in 
+operation, and even those that are no longer 
+manufacture obsolete components. This leaves 
+the privileged dandies of Tapani throwing their 
+credits at anyone who can find and deliver 
+working parts. Salvagers who stumble on an 
+ancient starship adrift in the far reaches of space 
+can find a small fortune in a centuries-long 
+
+
+discontinued part by selling it to a dilettante who 
+does not understand the value of his credits, but 
+only his own desires to finish the prized starship. 
+
+
+Used Starship Dealers 
+
+There are some beings in the universe that 
+will buy almost anything. Especially so if they 
+believe the plausible lies they are told about the 
+starship’s past, and used starship dealers are just 
+the ones to tell such lies. It would be unfair to 
+depict all such starship dealers as such, but a 
+good salvager knows where to find the least 
+honest sellers. Some ships are taken in foto and 
+fetch reasonable prices from the used dealers — 
+at least a better price than selling the ship for 
+scrap. The dealers will then set their techs on to 
+getting the ship in working condition. However, 
+the word “working” is often qualified in very 
+small print in the bill of sale. Occasionally a used 
+starship dealer will accept vessels with multiple 
+hull breaches and other heavy damage, though 
+the vessel requires intensive labor to become 
+spaceworthy again. And even though the dealers 
+accept vessels that require days or weeks of his 
+techs’ time, there is a point of diminishing 
+returns. If he will have to pay his techs more 
+than he is expecting out of the starship, he will 
+simply pass on the vessel. True, the battered ship 
+may see a captain and crew again one day, but it 
+may not be worth his time and effort to be the 
+one to bring it up to the required minimums for 
+spaceworthiness. 
+
+
+Reclamation Centers 
+Pieces of hull, rent blast doors, conductive 
+wiring, and starship grade plastics are all 
+materials that are in high demand on space 
+faring worlds. The process of refining ore into 
+
+
+Market Rates for Common Metals 
+
+
+Plasteel Durasteel Transparasteel 
+Mill / H 1800 2550 
+Mill / L 1620 2295 
+Scrap/ H 720 1020 
+
+
+Scrap/L 648 918 
+
+
+Bronzium Duranium = Trimantium 
+
+
+Aluminium 
+1900 2650 
+1710 2385 
+760 1060 
+684 954 
+
+
+the finished product is a long an expensive one. 
+Many manufacturers find it just as easy to accept 
+recycled materials. Reclamation centers are the 
+refiners that accept the used resources and tum 
+them into industrial grade materials again. The 
+cost of turning blasted hull scraps into something 
+appealing to a starship company is higher than 
+most being expect. As such the market price for 
+scrap metal is relatively low. Though with 
+enough volume, a salvager may turn in the 
+contents of his holds for a meager profit. Before 
+accepting materials for recycling almost all 
+centers require the items be sorted. 
+
+The prices a salvager fetches depends on the 
+overall galactic market, changes in ore supplies, 
+and output capability of the industry. Supply and 
+demand also changes from sector to sector. 
+What metals may have been valuable last month 
+in this sector will be worth considerably less 
+next, where it may be more valuable two sectors 
+away. As has already been mentioned 
+previously, some salvagers may stock cargo 
+containers of sorted materials in hopes that the 
+market may improve. Because prices vary, most 
+captains will check and index of local 
+reclamation rates before making port. 
+
+
+Running a campaign 
+
+Salvage operations introduce countless 
+possibilities for gamemasters and players alike in 
+a Star Wars campaign. Like tramp freighter 
+campaigns, a group of salvagers highlight the 
+action and adventures that happen on the fringe 
+of the galaxy. The following section will help 
+provide some broad guidelines and helpful ideas 
+to keep the creative ideas flowing. 
+
+First, remember that adventures can only 
+sustain players’ interest if there is sufficient 
+challenge, though determining the sort of 
+challenge they desire will shape the campaign. If 
+the players want to have a financially-driven 
+campaign, then the players can feel the burden 
+of an independent startup operation. A 
+gamemaster can also set several financial 
+roadblocks, but also provide ways around the 
+normal routes. If the players cannot afford a ship, 
+
+
+m | 
+Ā—RE 
+
+
+then financing through a loan shark provides a 
+reoccurring pressure. The players may not be 
+able to navigate the licensing bureau, but find 
+that they can perform side-quests for a clerk 
+willing to bend a few laws. Also, in a financially- 
+driven campaign the players will likely want to 
+acquire more wealth to get the newest toy for 
+their ship. However, to keep the challenge going, 
+the players need to feel the financial squeeze 
+often enough to remember that they cannot own 
+the galaxy. Port docking fees, constant repairs on 
+the ship, refueling costs, and even the basics of 
+food and fresh water constantly need to have 
+them digging into their credit accounts. If the 
+players are willing to splurge for a new toy for 
+the starship, one may try throwing their 
+extravagance into sharp relief by having 
+something go terribly wrong on the next salvage 
+mission, requiring a repair or even overhaul of a 
+ship system, requiring an expense to repair. 
+Remember, keep the finances a challenge, 
+without creating a sense of dread or the 
+pressures of an undue burden. Keeping up 
+vehicle repairs is stress enough in the real world 
+that the gamemaster should add high-adventure 
+incentives to the finances. There should be a 
+constant temptation to earn money on the 
+shadier side of the business where the players 
+must choose between risky profits or honesty 
+money with only meager earnings. The moral 
+choice is one that gamemasters should always 
+put before the players. The consequences of the 
+player’s actions should commonly reflect that 
+there are very real costs to shirking moral norms. 
+Once they begin dealing with arms dealers, 
+there may be expectations to continue being 
+suppliers, and the dealers are more than eager 
+to react violently to those who do not meet 
+expectations. Crime lords and gangsters may 
+provide benefits, but they are not friends by any 
+means. Such criminals will demand a little quid 
+pro quo. The results can be extraordinarily 
+dangerous. 
+
+If your players favor plot lines more along the 
+paths of galactic level conflict and high 
+adventure, there are also plenty of opportunities. 
+Usually, such adventures make note of costs and 
+
+
+17 
+
+
+credits, but they do not have to focus on them 
+quite to such a degree as one would with a 
+finance-driven campaign. The tension of the 
+galactic threat should take the place of the 
+pressure of costs. Such campaigns can focus on 
+fighting a foe common to the entire galaxy, such 
+as a rising force that could threaten both Empire 
+and Rebel Alliance, or perhaps an ancient evil 
+awakened on a dark planet in a forgotten sector 
+of the galactic disc. In a game where the players 
+are fighting an enemy of the free people of the 
+universe, the tyrannical rule of the Empire may 
+fill this role, though it is not by any means the 
+only alternative. There are plenty of ideas for 
+helping military forces in their salvage efforts, 
+though intelligence gathering, capturing enemy 
+technology, and recover of critical materials can 
+play a role. However there should also be issues 
+of the human spirit in campaigns of galactic 
+conflict. If the players do not a story set amongst 
+the conflict between Empire and Rebellion, the 
+
+players could salvage bits of information 
+about starships periodically going missing, and a 
+new model of android can be vaguely 
+connected to such disappearances. As the 
+players gain more information, they discover a 
+mad cyborg slowly replacing major heads of 
+state and CEOs of corporations in the cyborg’s 
+plot for a revolt of synthetic life forms. 
+Regardless of the type of conflict , the 
+gamemaster should give the heroes human 
+connections and personal investments in 
+something outside their ships and ports of call. 
+Once the players make those connections, the 
+gameaster should move to heighten tension by 
+making galactic events threaten the things and 
+people that the characters love. 
+
+Regardless of the type of adventures the 
+gamemaster plans, she should always keep the 
+players on the ropes, so to speak. Yes, the 
+players should have rewards and be able to feel 
+the thrill of victories, but victory after victory or 
+achievements that happen too easily. The 
+players need to feel that they are sometimes just 
+one step ahead of their enemies, and 
+periodically feel as though they are just two 
+steps behind in those that challenge them. 
+
+
+|) 
+
+
+Note that most of the salvage mentioned in 
+the module deals with relatively mundane 
+salvage missions. True, the average salvager in 
+the galaxy spends most of his time drifting 
+through fields of space junk looking for 
+otherwise useless things to recycle. However 
+your players are not playing those sorts of 
+salvagers. They are playing heroes and 
+adventurers! Your players will be brushing with 
+claim jumpers, encountering bizarre threats that 
+have destroyed other ships, solving mysteries of 
+unknown destructive potential, and even finding 
+ancient alien artifacts. A gamemaster creating a 
+campaign for salvagers will not think solely 
+about the job, but about the tales that spin off of 
+people in that profession. Players should make 
+finds that are well out of the norm. Instead of a 
+field of debris, they can find ancient starships 
+whose crews have been wiped out by a strange 
+creature, but a creature that has been dormant 
+in the intervening centuries. Alternatively the 
+adventurers should find a ship that is completely 
+clawed, bitten, and smashed by an enormous 
+creature, the likes of which no one has ever put 
+on record. The infinite possibilities of rare finds 
+make the adventures worth playing, especially 
+when each one is enshrouded in mystery and 
+danger. 
+
+
+Adventure Idea 
+
+
+An old spacer is a long-time friend of the party. 
+The locals regard him as a washed-up has- 
+been. When the party is away doing a run, the 
+old man dies, leaving them his few material 
+possessions. Among them is a set of 
+
+
+coordinates that leads to an aged battle site 
+
+
+that has never been registered, but has several 
+salvageable weapons and pieces of military- 
+grade technology. The question is whether the 
+characters try to fence the weapons. If they do, 
+can they survive the dealings with the black 
+market? If they sell directly, how long before 
+the black marketers introduce themselves and 
+demand their cut? 
+
+
+18 
+
+
+Salvager Skills 
+
+
+Salvaging requires a crew to have a skill set 
+somewhat different than the average tramp 
+freighter. Though it is true that she may need the 
+same piloting skills, and nearly every character 
+should have a reasonable amount of dice in 
+blaster and dodge, there are several other skills 
+players need to consider for their characters. 
+Naturally a salvager is only going to be able to 
+claim what she can find. She cannot find space 
+debris if the ship has insufficient sensors, or if his 
+sensors stat is dismally low. Further, once he 
+finds a debris field how is he to know what is of 
+any use? Though value is an underused skill, it is 
+one that will play a major role in a financially- 
+oriented campaign. The value skill may also play 
+a role in helping a character discover whether or 
+not she has discovered a particularly rare 
+artifact. Once the character has established the 
+value of an item, there is a question of selling it. 
+Bargain then becomes a necessary skill. 
+
+The above skill set assumes that the 
+character is selling through legal means. If the 
+character is attempting to make contacts 
+through the black market, the character will 
+
+
+need a reasonable streetwise skill to help her 
+gather information without looking suspicious to 
+law enforcement, and without looking like law 
+enforcement to the suspicious. Contacting black 
+marketers is dangerous on any planet, and 
+requires a fairly decent roll to keep from running 
+afoul of those that would either take advantage 
+of the character or incarcerate her. 
+
+Any salvage ship needs a solid technician. A 
+player with a high Technical attribute is essential 
+to keeping the ship running, but also provides 
+necessary skills for repairing salvaged units. 
+Skills such as space transport repair, capital ship 
+repair, as well as other repair skills are vital to 
+making sure that all the parts are in good 
+working order before they are sold. An unhappy 
+seller is likely to take out his losses on the crew 
+the next time they come to port. 
+
+Finally, those working within the realm of the 
+Imperial government clerks should invest well in 
+bureaucracy. With the massive salvo of red tape 
+and endless petty government workers, any 
+player wanting to maintain the mere appearance 
+of a legal operation will get more than his 
+character points’ worth out of this skill. 
+
+
+19 
+
+
+E Hardware 
+
+
+The shifting drift of space debris is no place 
+for a decent person. With nothing between one’s 
+face and the cold vacuum of space but a thin 
+plasteel visor, it takes a different breed. It is hard 
+and dangerous work. Between dodging claim 
+jumpers, spacewalks through unstable wrecks, 
+and dealing with Imperial bureaucrats trying to 
+get their cut, half of the green salvagers give up 
+inside a standard year. Either give up or turn up 
+in a drift as someone else’s claim. 
+
+But once a being has a LAAP, and SSL 
+licenses, she is still not in business. To do the job 
+a salvager needs the tools of the trade. A 
+standard astromech is of limited use to the 
+professional salvager, and a run-of-the-mill 
+freighter will only get a being so far. 
+
+To get the job done right a salvager utilizes 
+specialized personal equipment, unique labor 
+droids, and starship modifications to get the job 
+done. 
+
+
+Personal Equipment 
+
+
+Tractor Beam Tracking Tags 
+
+Many salvagers have found it immensely 
+frustrating to lock on to a specific target with a 
+tractor beam, particularly when attempting to 
+cherry pick a target in a debris field. Tractor tags 
+simplify this process. Usually a space walk is 
+required for a being to secure a tractor tag ona 
+specific target, allowing the tractor beam gunner 
+to lock on to the tag’s signal. This is used to great 
+effect when masses of drifting debris would 
+otherwise interfere with a tractor beam’s 
+operation. The beam can also be set to shut 
+down when it does not have direct line of sight 
+to the tagged object. Though this becomes a 
+
+
+AR 
+ARST 
+
+
+slow process as the beam operates in short 
+bursts, it allows a crew to acquire a selected 
+item with little interference from surrounding 
+flotsam. 
+
+
+E Tractor Tag 
+Model: Starfire Inc. Traclock 6 Target Tag 
+Type: Tractor beam targeting beacon 
+Cost: 250 
+Availability: 2 
+Game Notes: Adds +3D to all Starship 
+gunnery: tractor beam rolls to any attempt to 
+lock on to a space-born object when the 
+tractor tag is affixed to it. 
+
+
+Magna Clamps 
+
+The problem with lifting awkward loads is 
+not only just weight, but a matter of hand holds. 
+Magna clamps are designed to not only alleviate 
+such problems of cumbersome loads, but also 
+provide easy attachment points for winch lines, 
+and any situation where a handle would be 
+useful. Magna clamps are little more than handle 
+on a powerful electromagnet. Once powered on, 
+the magna clamp affixes securely to the metal 
+object. Switching the clamp off easily releases 
+the object. 
+
+
+E Magna Clamp 
+Model: Borallis Metalworkings & Materials 
+PHJ-05V6 
+Type: Magnetic Grip 
+Cost: 60 
+Availability: 1 
+Game Notes: Adds +1D to lifting rolls to lift 
+awkward loads. 
+
+
+Synthrope Guide Line 
+Without the conveniences of shipboard lights 
+and artificial gravity, a derelict ship is often a 
+
+
+confusing mess. Even if the spacer is familiar 
+with the make and model of ship, he or she can 
+get disoriented. Guide line dispensers attach 
+easily to most wreck suits and trail a thin, but 
+tough strand of synthrope behind the salvager. 
+More advanced models even allow the salvager 
+to select the color of the dispensed line. This is a 
+convenient feature when multiple salvagers are 
+tying off on a main line and following different 
+paths. In the event of the need for a hasty 
+evacuation, the salvage crew need only follow 
+their own lines back to the main line and make 
+their way to the origin point. While not as strong 
+as its climbing-oriented counterparts, the 
+guidelines are resistant to breaking when put to 
+its intended use. 
+
+
+H Guide Line 
+Model: Czerka PL-52 A Guide Line 
+Type: Safety guide line 
+Cost: 30 for 250 meters 
+Availability: 1 
+
+
+Jump Bug 
+
+Derelict starships are full of sealed 
+bulkheads, unpowered hatches, and deactivated 
+ship systems. Small power mobile generators 
+and energy cells allow salvagers a way around 
+such problems. With variable power output 
+settings, and a number of electrical contact 
+connectors, jump bugs alow options for 
+connecting to individual components of a 
+starship. Once a technician has disconnected 
+the power leads from the ship’s inactive power 
+drive, she can connect the jump bug to the 
+leads, set the jump bug’s power settings, and 
+reactivate the component. Usually these are 
+small systems including a ship’s computer, door 
+servos, a turbolift, or other similar small system. 
+Being small-output units, jump bugs are unable 
+to power up a ship’s main drive, artificial gravity, 
+shields, or major weapon systems. 
+
+
+E Jump Bug 
+Model: Orfa Toolco V3-28 Jump Bug 
+Type: Mobile power unit 
+Skill: Appropriate related repair roll. 
+Cost: 225 
+
+
+m | | E 
+|| 2. 
+
+
+Availability: 2 
+
+Game Notes: Once the character has made 
+an Easy repair roll, the jump bug will power a 
+starship component or small system for up to 
+four hours. The jump bug can be easily 
+disconnected and used on other ship systems 
+at will, though it may only power one system 
+at a time. 
+
+
+Hydraulic Door Pry 
+
+While cutting lasers and plasma welders are 
+frequent choices for cutting through a ship’s 
+blast doors, they are not always the most 
+pragmatic choice. Most blast doors are designed 
+with energy resistance in mind, and if a door 
+maintains a magnetic seal, cutting through is 
+nearly impossible. On such occasions, brute 
+force is a simple and practical, but an altogether 
+time consuming solution. Hydraulic door levers 
+are portable pieces of heavy equipment 
+designed with two clamp-like diamagnetic 
+wedges. Once the thin wedges are fitted into any 
+crevice in the blast door, the diamagnetic 
+wedges begin to disrupt the magnetic seal while 
+the hydraulic pressures pry sections of the door 
+apart. 
+
+
+Hl Door Pry 
+Model: Startford Industries MGS-171 Door 
+
+
+Pries 
+
+Type: hydraulic door pry 
+
+Cost: 750 
+
+Availability: 2 
+
+Game Notes: Applies 1D of physical strength 
+to pry open starship door crevices. For every 5 
+minutes the pry is operational, the pry adds an 
+additional +1D up to a maximum of 8D. 
+
+
+Laser Power-Torch 
+
+Laser torches and plasma cutters are 
+standard tools across the galaxy, varying in price 
+and effectiveness. Most are heavy and 
+cumbersome, though smaller lower yield units 
+are found in machine shops across the galaxy. 
+Salvagers most often use power-torches for 
+cutting through doorways, walls, and decks. 
+Though the beam is relatively short, and the 
+power cell too bulky to be carried into combat, 
+
+
+21 
+
+
+power-torches can be used as an impromptu 
+weapon. 
+
+
+fl Laser Power-Torch 
+Model: Borallis Metalworking & Materials CT7- 
+9-Alpha 
+Type: Laser cutting torch 
+Skill: Various Technical skills 
+Cost: 310 
+Availability: 2 
+Damage: 5D 
+Game Notes: If trying to use a bulky power- 
+torch as an impromptu weapon, players incur 
+a -1D to their Technical roll to hit the target. 
+
+
+Exothermic Gel 
+
+Burning gels operate on a highly complex set 
+of chemical reactions initiated by an electrical 
+discharge ignition. The effect is a dramatic 
+exothermic reaction capable of melting through 
+nearly any material in use in the galaxy. 
+Exothermic gels have become known as “hull 
+bumers” by salvagers and rescue crews in need 
+of penetrating starship hulls and extemal 
+hatches for two reasons. First, their high 
+temperatures are capable of cutting into almost 
+any unshielded ship. Second, the chemical 
+reactions require no oxygen, and so the gels are 
+able to do their job in the vacuum of space. The 
+gels are ineffective on ships with active shields, 
+as energy shields disrupt the necessary 
+exothermic reactions. 
+
+
+E Exothermic Gel 
+Model: Gatrellis “Hullmelt” Burn Gel 
+Type: Hull-breeching incendiary gel 
+Skill: Demolitions 
+Cost: 150 
+Availability: 2, R 
+Game notes: With a successful Moderate 
+demolitions roll, it takes at least ten minutes to 
+apply the two-part compound to the desired 
+surface and attach the electrodes from the 
+ignition mechanism. Once the character uses 
+the ignition switch, the compound is activated 
+and begins its thermal reaction. The 
+compound does not require atmosphere to 
+activate, and burns even in the vacuum of 
+space. The activated compound delivers 7D 
+starfighter scale damage against any 
+
+
+m | E 
+Å—RE 
+
+
+unshielded hatch, door, or hull’s die code. If 
+the damage roll is successful, the reaction 
+creates a breech. 
+
+
+Salvage Suit 
+
+Though many salvagers make do with 
+standard vacuum suits, there are some who look 
+for just a bit more edge in making targeted 
+collection runs. A salvage suit adds a bit more 
+protection as well as a bit more comfort with 
+onboard heating and a rebreather atmosphere 
+scrubber. Further industrial tools are frequently 
+added to these suits to help zero gravity workers 
+get their jobs done. 
+
+
+E] Salvage Suit 
+Model: Industrial Space Suit 
+Type: Deep space suit 
+Scale: Character 
+Cost: 1,800 
+Availability: 2 
+Game Notes: 
+Atmosphere: Rebreather oxygen scrubbing 
+and onboard heating units provide for 10 
+hours of atmosphere. 
+Armor protection: Adds +1D to all Strength 
+rolls to resist physical and energy damage. 
+Short range scanner/comm package: Adds 
++1D to sensors and communications rolls. 
+Repulsors: Provide a move of 10 meters in 
+zero gravity. Skill: repulsorlift operation 
+Magna grappler: Includes magnetic grappler 
+with 20 meters of synth rope 
+Laser cutting tool: 4D damage (Skill: relevant 
+Technical skills) 
+
+
+Wreck Suit 
+
+Extraordinary circumstances call for training 
+and equipment far outside the common spacer 
+in a vacuum suit, and wreck suits are designed 
+with the extraordinary in mind. Though droids 
+are often relegated to the most dangerous 
+extravehicular evaluations and repairs, some 
+captains and work crews place a high value on 
+sentient judgment and would rather have a 
+capable being than any machine making the 
+calls. When dealing with unstable starship 
+wrecks, assessing catastrophic capital ship hull 
+damage, risky rescue operations, or recovery 
+missions wreck suits rise to the occasion. When 
+
+
+22 
+
+
+dealing with failing starship systems and 
+flickering gravity plates, or shifting masses of 
+wreckage the right suit can mean the difference 
+between success and failure, and even life and 
+death. With its wide array of equipment options, 
+some salvage captains make good use out of 
+wreck suits. Often used in selective salvage, 
+rather than dismantling entire starships, the 
+wreck suits allow a scavenger to find his way 
+into an unstable ship, locate special items of 
+value, and make his way back out. 
+
+
+WEVA Wreck Suit 
+Model: Scavani Engineering Recovery Series 
+VI Power Suit 
+Type: Deep space power suit 
+Skill: Powersuit operation: wreck suit 
+Crew: 1 
+Cover: Full 
+Cost: 2,700 
+Game Notes: 
+Atmosphere: Rebreather oxygen scrubbing 
+and onboard heating units provide for 16 
+hours of atmosphere. 
+Armor protection: +3D physical and +1D 
+energy, -1D to Dexterity. 
+Short range scanner/comm package: Adds 
++2D to sensors and communications rolls. 
+Jump jets: Jets have fuel for 5 bursts with a 
+speed of Space 1 and 1D maneuverability 
+Magna grappler: Includes magnetic grappler 
+with 20 meters of synth rope 
+Magnetic boots: Electromagnetic boots can be 
+activated to adhere to most metallic surfaces. 
+Plasma cutting torch: cuts through most 
+surfaces given enough time. For every 1D a 
+surface has in body strength, it takes the 
+plasma cutter 1D rounds to cut a 2 meter 
+diameter hole in the surface. For example, a 
+blast door with a rating of 5D strength, will 
+
+
+take 5D rounds to penetrate. Maximum 
+damage : 7D. 
+
+Grasping arm: Provides a standard 7D lifting 
+skill. 
+
+
+Poly-tool arm: Set of retractable tools adds 
++1D to relevant spacecraft repair rolls. 
+
+
+Droids 
+
+
+A number of deep-space salvagers have well 
+earned the reputation of being loaners. Some 
+have no desire to give anyone else a cut of the 
+
+
+en 
+| || 
+
+
+profits, or others just want their space. One way 
+or the other, a ship cannot run itself, and so most 
+of the loners have at least a droid or two. 
+Especially because salvage jobs need more than 
+just one set of hands. Most only own a pair of 
+labor droids, a load lifter, or an astromech. But a 
+few companies cater to salvagers, and made 
+droids just for deep-space recovery. 
+
+
+Retriever Droid 
+
+The basic model retriever droid is small and 
+simple, but adept at performing its limited range 
+of tasks. Specifically programmed for release in 
+larger debris fields, it will locate materials of size 
+and composition within the parameters 
+designated by its master. Given the relatively 
+small size of the droid, it is adept at working its 
+way through smaller crevices in breeched hulls, 
+or bringing back smaller materials. Though 
+when released en masse, they can quickly clear 
+debris fields of smaller flotsam, their small size 
+and limited thrust prevents them from acquiring 
+larger sections of recyclable materials. 
+
+
+| Retriever Droid 
+Type: Srori-nam G2 Retriever Droid 
+DEXTERITY 2D+1 
+KNOWLEDGE 1D+2 
+MECHANICAL 1D 
+PERCEPTION 2D+2 
+Search 4D 
+STRENGTH 1D+2 
+Lifting 3D 
+TECHNICAL 1D 
+Space transport repair 3D, 
+capital ship repair 3D 
+Equipped With: 
+e Two manipulator arms 
+e Zero-gravity maneuvering jets 
+e Repulsorlift propulsion 
+e internal comlink 
+e 4 retractable wheels 
+Move: 13 (flying) 5 (wheeled) 
+Size: 0.6 meters tall 
+Cost: 2,100 
+Availability: 1 
+Personality Matrix: None 
+
+
+23 
+
+
+Sorter Droid 
+
+Though similar to menial labor droids founds 
+throughout the galaxy, sorter droids come with a 
+distinct advantage to other models. Passive 
+salvage brings in vast amounts of materials. 
+Some of the debris is actually functional or 
+repairable. Other items are fit for no more than 
+recycling. Sorter droids are able to make 
+assessments of the condition of the materials 
+and sort them based on their relative value. Able 
+to stand the tedium of long shifts with little 
+recharge time, sorter droids are found in deep- 
+space passive salvage vessels throughout the 
+galaxy. They become particularly attractive to 
+captains who see no need to environmentally 
+seal their sorting bays. 
+
+
+| Sorter Droid 
+Type: Kovtharian Industries Industrial Sorter 
+Droid 
+DEXTERITY 1D 
+KNOWLEDGE 1D 
+Value 4D 
+MECHANICAL 1D 
+PERCEPTION 2D-+ 1 
+Search 3D 
+STRENGTH 3D 
+Lifting 4D 
+TECHNICAL 2D 
+Equipped With: 
+¢ Humanoid frame (two arms, legs, head) 
+e Basic vocabulator 
+e Two auditory receptors 
+¢ Two photoreceptors 
+Move: 7 
+Size: 1.4 meters 
+Cost: 1,900 
+Availability: 2 
+Personality Matrix: Simple 
+
+
+Survey Scanbot 
+
+Though some salvagers prefer the thrill and 
+danger of hazarding their way into a derelict or 
+half-destroyed starship in hopes of finding some 
+hidden gem of treasure, others prefer to do the 
+initial evaluation from the safety of their 
+starships. The Survey Scanbot is a simplified, 
+civilian version of a probe droid. The scanbot’s 
+features are relatively modest compared to their 
+military or espionage counterparts. Nonetheless, 
+
+
+OE 
+0 || 2. 
+
+
+they are well suited to maneuvering into small 
+areas while recording and transmitting their 
+findings. Further, a modest personality matrix 
+allows for easy communication and also some 
+interpretation of data with real-time 
+communication. Some search and rescue crews 
+have adapted some _ scanbot models by 
+equipping them with life form sensor packages 
+to assist in the rescue of trapped beings involved 
+in starship accidents. 
+
+
+| Survey Scanbot 
+Type: Kalvani Systems Model L33 Survey 
+Droid 
+DEXTERITY 2D 
+KNOWLEDGE 2D 
+Starship deckplans 3D 
+MECHANICAL 1D 
+PERCEPTION 3D 
+Search: 5D 
+STRENGTH 1D 
+TECHNICAL 1D 
+Equipped With: 
+e Hardened shell armor +1D to resist physical 
+damage 
+e Repulsorlift propulsion 
+e Short range sensor package +1D to search 
+in the ultraviolet and infrared spectrums as 
+well as electromagnetic fields 
+e Auditory sensors 
+* One visual sensor 
+e Broadband transmitter/receiver 
+e Holorecorder with simultaneous 
+holotransmission 
+Move: 17 
+Size: 0.3 meters 
+Cost: 4,550 
+Availability: 3 
+Personality Matrix: Elementary 
+
+
+Zero-G Scavenger Droid 
+
+Understanding the limitations of the retriever 
+droids, Srori-nam took their basic design and 
+began concepts for an advanced model capable 
+of providing greater personal assistance to 
+salvage crews. The result was the Zero-G 
+Scavenger Droid. A much larger and robust 
+model with more advanced features, the 
+Scavenger became a valuable asset to salvage 
+captains. The Scavenger was intelligent enough 
+
+
+24 
+
+
+to coordinate with industrial and independent 
+salvage crews, and had sufficient thrust to bring 
+desired components aboard the ship. This, 
+among its other features made the Scavenger a 
+popular model for targeted salvage missions. 
+Should the Scavenger find itself on board a ship 
+with active gravity plates, its retractable wheels 
+still allowed it to remain a functional unit. 
+
+
+I Zero-G Scavenger Droid 
+Type: Srori-nam C98 Scavenger Droid 
+DEXTERITY 2D +2 
+KNOWLEDGE 2D 
+Value 3D 
+MECHANICAL 1D 
+PERCEPTION 2D+2 
+Search 5D 
+STRENGTH 3D 
+Lifting 5D 
+TECHNICAL 1D 
+Space transport repair 3D, capital ship repair 
+3D 
+Equipped With: 
+e Two manipulator arms 
+* Retractable electromagnetic grappling units 
+* Fusion cutter (6D damage) 
+e Zero-gravity maneuvering jets 
+e Repulsorlift propulsion 
+e Retractable wheeled locomotion 
+e Basic vocabulator 
+¢ Short range transmitter/receiver 
+Move: 18 flying, 5 wheeled 
+Size: 1.2 meters tall 
+Cost: 3,100 
+Availability: 1 
+Personality Matrix: Simple 
+
+
+Starship Equipment and 
+Upgrades 
+
+
+Few ship designers cater specifically to 
+scavengers. Rather than start with an off-the-line 
+model, most salvage captains mod a light or 
+medium freighter. Most of us do it piecemeal 
+over time. After a good find, the crew will put 
+some credits into their ship to let them expand 
+the scope of their operations. 
+
+
+ee 
+| || 
+
+
+Salvage Grade Tractor Beams 
+
+Many salvage ship captains have found it 
+advantageous to use small-scale tractor beams 
+to aid in their collecting process. Relatively weak 
+in comparison to their larger, military-grade 
+counterparts, these tractor beams are not 
+designed to lock on to high velocity spacecraft 
+and resist the propulsion of their engines. Rather, 
+they can easily manipulate flotsam and space 
+debris as they idly drift on their paths and guide 
+them into a collection bay. 
+
+
+| Salvage Tractor Beam 
+Model: Starfire Inc. FFJ-1 Grappler 
+Type: Civilian issue salvage grade tractor 
+beam 
+Scale: Starfighter 
+Cost: 7,000 
+Weight: 7 metric tons 
+Availability: 1 
+Fire Arc: Front 
+Skill: Starship gunnery 
+Fire Control: 2D 
+Space Range: 1-3/10/20 
+Damage: 1D 
+
+
+Grav-Scoops 
+Though some salvagers prefer to hand pick 
+the pieces they bring on board, others prefer a 
+catch-all system where any piece of debris is 
+drawn into their collector, and the value of the 
+items is sorted out later. Gravitational scoops are 
+a favored method by those captains who utilize 
+the mass collection method. Grav-scoops 
+operate on similar methods as grav plates 
+installed in the decks of almost any standard 
+starship in the galaxy. Being little more than 
+large apertures lined on all sides with rows of 
+narrow but strong grav plates, the gravitational 
+scoops draw in space debris, and then fire in 
+series to pass them through to a collection area. 
+This method allows the captain to make slow 
+passes through fields of small debris making 
+
+sizable collections on each pass. 
+
+
+25 
+
+
+| Grav-Scoop 
+Model: Bostic Industries Charybdis 6 Grav- 
+scoop 
+Type: passive salvage collection system 
+Scale: Starfighter 
+Cost: 5,100 
+Weight: 1 metric ton 
+Availability: 2 
+Space Range: 1 
+Game Notes: Grav-scoops have relatively 
+large apertures situated on the exterior of the 
+ship which have considerable effects when 
+operating the ship in atmosphere. Any ship 
+with a grav-scoop has all in-atmosphere 
+maneuvers are increased by one difficulty 
+level. 
+
+
+Appendage Collection System 
+
+Some freelance scavengers have taken to 
+outfitting their ships with several droid brain 
+controlled appendage arms. The droid brain is 
+usually located in a central position inside the 
+ship as it controls several appendage arms at 
+once. Using the ships passive sensors, the droid 
+brain is able to detect floating space debris that 
+fits the criteria for mass or volume that the 
+captain desires. More elaborate units may scan 
+for the composition of the debris, discerning 
+between ice or rock debris and more valuable 
+reclaimable materials such as starship alloys. 
+The droid arms deliver the alloys into apertures 
+in the hull leading to the cargo bay or collection 
+area. 
+
+
+| Appendage Collection System 
+Model: Bostic Industries Scylla Acquisition 
+System - Series 3 
+Type: Passive salvage collection system 
+Scale: Starfighter 
+Cost: 4,600 
+Availability: 2 
+Space Range: 1 
+Game Notes: Appendage collection systems 
+can be installed on the exterior of a ship near 
+the craft’s cargo hold. Using droid controlled 
+arms they latch on to all space debris within 
+set parameters of volume or mass. The 
+appendages then deliver the items into 
+specially designed apertures that lead to the 
+cargo hold. 
+
+
+ee 
+|| 2. 
+
+
+Starship Plasma Cutting Torch 
+
+Cutting torches are a staple of targeted or 
+active salvage vessels, and found on almost 
+every corporate reclamation vessel. These 
+torches are often situated at the end of a 
+manipulator appendage, helping to compensate 
+for such short range. When large sections of a 
+starship’s hull are left intact, starship-mounted 
+plasma torches are necessary to break the ships 
+down to smaller size in order to remove them 
+from space lanes. Given enough time, the 
+torches are capable of slicing through nearly all 
+hull masses and will eventually disassemble 
+even the largest bulks of space debris. 
+
+
+| Plasma Cutting Torch 
+Model: Veldirian Industries Plasma Torch 
+Type: Starship-mouthed cutting torch 
+Scale: Starfighter 
+Cost: 4,350 
+Fire Arc: Front 
+Skill: Starship gunnery 
+Fire Control: 0D 
+Range: 10 meters 
+Damage: 8D 
+
+
+External Grappling Devices 
+
+Most large-scale collections require 
+specialized means of taking the cargo. Larger 
+ships with large external cargo bay doors are 
+capable of using manipulator arms to grasp hold 
+of larger salvage targets and guide them into the 
+hold. Manipulator arms are usually rugged and 
+sturdy enough to guide many tons of material in 
+the weightlessness of space, though they are not 
+usually designed for lifting materials in 
+atmosphere. Several ship captains have used 
+them to assist with repairs to help with rapid 
+cargo transfers, though few are willing to test the 
+limitations of the devices within standard 
+planetary gravity. 
+
+
+E Light Manipulator Arm 
+Model: Siryus Hydrolics FT-479 Loading Arm 
+Type: Loading bay manipulator arm 
+Scale: Starfighter 
+Cost: 2,300 
+Fire Arc: Front 
+Skill: Starship gunnery 
+
+
+26 
+
+
+Fire Control: 1D 
+Range: 3 meters 
+Note: Light manipulator arms easily move, 
+manipulate, and guide unsecured objects in 
+space. The manipulator arm can easily handle 
+loads up to 75 tons. Though the arm has a 
+limited reach, the crew may move the object 
+one meter per round in any direction within 
+the arm’s reach. 
+
+
+E Medium Manipulator Arm 
+Model: Kartog Industries Servo-Lifter 
+Type: Loading bay manipulator arm 
+Scale: Starfighter 
+Cost: 2,850 
+Fire Arc: Front 
+Skill: Starship gunnery 
+Fire Control: 1D 
+Range: 8 meters 
+Note: Medium manipulator arms easily move, 
+manipulate, and guide unsecured objects in 
+space. The medium manipulator can safely 
+maneuver loads of up to 150 tons. Though the 
+arm has a limited reach, the crew may move 
+the object two meters per round in any 
+direction within the arm’s reach. 
+
+
+H Heavy Manipulator Crane 
+Model: Siryus Hydrolics MG-9 Loading Arm 
+Type: Loading bay manipulator arm 
+Scale: Capital 
+Cost: 6,500 
+Fire Arc: Front 
+Skill: Starship gunnery 
+Fire Control: 1D 
+Range: 15 meters 
+Note: Heavy manipulator arms easily 
+manipulate and guide unsecured ob-jects in 
+space. The capital scale heavy manipulator is 
+capable of safely man-euvering even 
+starfighter-scale ships, or other extremely 
+large chunks of heavy debris. Though the arm 
+has a limited reach, the crew may move the 
+object four meters per round in any direction 
+within the arm’s reach. 
+
+
+Cargo and Landing Grips 
+Debris comes in all shapes and sizes, and 
+while many salvage captains are happy to spend 
+their hours using plasma punches to cut the 
+pieces of hull and half destroyed ships into 
+manageable sections, other captains would 
+much rather take the targets in their totality to 
+
+
+ee 
+|| 2. 
+
+
+major reclamation centers. Cargo claws are 
+specifically designed for latching on to 
+starfighter-scale pieces of debris and allowing 
+the salvage ship to take them to their intended 
+destination. Heavy claws allow the transport of 
+much larger targets. 
+
+In general utility, cargo claws allow a 
+Sstarfighter-scale ship to land and attach to 
+almost any surface in zero gravity, regardless of 
+the ship’s relative orientation. Starfighter-scale 
+ships with cargo grips may latch on to smaller 
+starships, take them through hyperspace as well 
+as maneuver and move with only modest 
+encumbrance. Many times such grips are used 
+so that two ships may dock together and transfer 
+passengers in space. Capital ships may be 
+equipped with starfighter-scale cargo grips for 
+makeshift starfighter launches, and they do so 
+without any loss of starship maneuverability. 
+Capital scale cargo clamps allow bulk and 
+medium freighters to transport large cargo 
+containers or sections of capital ship hull 
+material with only modest loss of performance. 
+
+
+| Landing Claw 
+Model: Surrilian Engineering Landing Claw 
+Type: Starship docking/landing device 
+Scale: Starfighter 
+Cost: 800 
+Weight: 2 metric tons 
+Game Notes: Any ship using a cargo grip takes 
+a -1D to maneuverability. If the ship takes 
+damage of Heavily Damaged or worse, the 
+Cargo Grip will lose its hold and all ships or 
+materials will be shaken loose. 
+
+
+| Cargo Grip 
+Model: SsanduSan Heavy Docking Grip 
+Type: Starship docking device 
+Scale: Capital 
+Cost: 2,000 
+Weight: 25 metric tons 
+Game Notes: Any capital ship using the cargo 
+clamp to transport a capital-scale section of 
+debris takes a -1D to maneuverability. If the 
+ship takes damage of Heavily Damaged or 
+worse, docking clamps lose their hold and all 
+ships are shaken loose. 
+
+
+27 
+
+
+External Bay Doors 
+
+When performing en masse collections, or 
+reclaiming large materials, it is almost 
+impossible to transport the items through a 
+normal air-lock. Though this is feasible when 
+doing small-scale targeted collections, it is far 
+too slow and cumbersome on most standard 
+ships. Thus many cargo vessels have been 
+retrofitted with large bay doors. These doors 
+span nearly the entire cargo area, providing as 
+much access as possible to large space-bom 
+objects. Making such retrofitting is terribly 
+expensive, and is usually performed only by 
+those starship owners who have come into the 
+salvaging trade after developing a deep love for 
+their starship. As this modification requires 
+turning a portion of the ship’s hull into either a 
+hinged or retractable door, it requires several 
+time-consuming steps. First, all major power 
+systems, environmental conduits, and all other 
+important systems that may happen to follow 
+that section of the hull must be rerouted. Once 
+completed, the sections of the hull must be 
+carefully cut and either replaced with or outfitted 
+to become a surface capable of opening and 
+closing. Servos, latches, and seals must be 
+carefully put into place and checked, and then 
+controls can be connected to the interior of the 
+bay and to the cockpit. And finally, additional 
+airlocks and environmental seals are put into 
+place to isolate the rest of the ship from 
+exposure to the vacuum of space. Only more 
+expensive versions of the systems allow for ships 
+to seal and pressurize the bay. Several 
+environmental controls and safety overrides 
+must be installed to safely allow the cargo bay to 
+become a non-suited being to work while the 
+ship is out of atmosphere. 
+
+
+| Cargo Bay Doors 
+Model: Ambelled Industries Bay Modification 
+System 
+Type: External bay door 
+Scale: Starfighter 
+Cost: 30% of base ship cost 
+Weight: 20 metric tons 
+Game Notes: Allows a ship’s cargo area to 
+have direct exposure to space. Requires three 
+
+
+8 |) 
+
+
+rounds to go from closed to fully open and vis 
+versa. 
+
+
+| Cargo Bay Pressurization System 
+Model: Ambelled Industries Bay Sealer 
+Type: Cargo bay 
+pressurization/depressurization system 
+Scale: Starfighter 
+
+
+Cost: 8,000 
+Weight: 2 metric tons 
+Game Notes: Allows for environmental 
+
+
+controls to restore breathable atmosphere to a 
+cargo bay. Requires 10 minutes to 
+depressurize or pressurize the cargo bay, 
+pumping atmosphere in or out of the cargo 
+area. 
+
+
+Hyperspace Tow 
+
+For those rare occasions that a salvager 
+cannot repair a vessel, but wishes to remove it 
+from a salvage site, she can opt to attach a 
+hyperspace tow rig. The tow is little more than 
+an external hyperspace docking rigging that 
+attaches to the exterior of the towed ship, and 
+patches into the astrogation computer of the 
+salvagers ship with a simplified slave circuit. It 
+allows the salvager to make short trips. 
+
+The average hyperspace tow can attach to 
+starfighter scale ships, usually no more than 45 
+meters in length. However, some manufacturers 
+make extended rigs for an additional cost. 
+Attachment requires at least three hours of labor, 
+and a Moderate space transport repair or 
+starfighter repair roll. 
+
+The cost of the rigging depends on the speed 
+of hyperdrive. Since the salvager is simply slaving 
+two independent hyperdrives together, it is vital 
+that the salvager purchases a hyperdrive rig with 
+the same hyperdrive multiplier as his main 
+vessel. 
+
+
+Hyperspace Tow 
+
+
+Multiplier 
+xl 
+
+
+x2 
+x3 
+x4 
+xd 
+
+
+28 
+
+
+Starships 
+
+
+There are starships of nearly every make and 
+model at any junker’s trading post. Most are 
+customized freighters, but one can find stock 
+salvage vessels as well. 
+
+Below are a variety of ships representative of 
+scavenger vessels. 
+
+
+Star Skimmer 
+
+The Star Skimmer is a popularized brand 
+name that asteroid miners and Stardock workers 
+use to refer to a variety of makes and models of 
+short range space-capable vehicles. Based on 
+the design of a heavy-duty swoop or speeder 
+bike, these open-air space-capable tugs have a 
+low top-speed and minimal range. However, 
+they prove to be a valuable resource for those 
+who need the fine-tuned controls that the small 
+crafts provide. The small stature of the craft 
+combined with the need for the full protection of 
+an environmental suit to ride one in open space 
+have elicited considerable criticism. Often, 
+spacers have classified them as vehicles and 
+would never consider them as starships in their 
+own right, and even the Correllean Engineering 
+has cataloged their model as a “space utility 
+vehicle.” The Star Skimmers have a complete 
+lack of aerodynamics and are designed 
+exclusively for zero-gravity, which make them 
+unacceptable choices for any atmospheric work. 
+Despite their shortcomings, Star Skimmers are in 
+wide use where the precision work of a small 
+craft is needed over the functions larger tugs 
+provide. There are several models in use 
+throughout asteroid mining projects, spacedock 
+and repair facilities, and on some salvage ships. 
+Even though Star Skimmers have relatively low 
+speeds, they are known for providing the 
+necessary torque for heavy lifting jobs. 
+
+
+E Star Skimmer 
+Craft: Corellian Engineering GG-135 Star 
+Skimmer 
+Type: Space utility tug 
+Scale: Speeder 
+
+
+m |, E 
+| || 2. 
+
+
+Length: 3.1 meters 
+Skill: Repulsorlift Operations: Star Skimmer 
+Crew: 1 
+Passengers: 0 
+Cargo Capacity: None 
+Cover: 1/4 
+Consumables: None 
+Cost: 7,620 (new), 3,821 (used) 
+Maneuverability: 2D 
+Space: 1 
+Body: 1D 
+Atmosphere: N/A 
+Body Strength: 4D 
+Starship Equipment: 
+1 Fine Manipulator Arm 
+Fire Arc: Front 
+Skill: Starship gunnery 
+Fire Control: 1D 
+Range: 1.5 meters 
+Note: Manipulator arms easily move and 
+guide unsecured objects in space. 
+Though the arm has a limited reach, the 
+crew may move the object two meters 
+per round in any direction within the 
+arm’s reach. 
+
+
+Cargo Tug 
+
+Any pilot who has spent his life near space 
+docks is no stranger to the cargo tug. Simple, 
+inelegant, and made for pure utility, these 
+working vessels populate many cargo transfer 
+stations, space docks, and loading points. Pilots 
+spend a full shift laboring in the cramped 
+conditions of a simple one-man tug. Not built for 
+comfort, these small crafts have a single purpose 
+in mind, moving space born objects from one 
+location to another. By using standard tractor 
+beam technology, they can lock on to relatively 
+large objects and deliver them to their 
+destination. Though not fast, their engines are 
+designed to deliver consistent performance 
+despite moving a considerable load. 
+
+
+| Cargo Tug 
+Craft: Slevurian Model 431 Hauler Tug 
+Type: Spacetug 
+Scale: Starfighter 
+Length: 7 meters 
+Skill: Space Transports: Slevurian Cargo Tug 
+Crew: 1 
+Passengers: 0 
+
+
+29 
+
+
+Cargo Capacity: None 
+Consumables: | day 
+Cost: 18,500 
+Maneuverability: 0D 
+Space: 2 
+Atmosphere: N/A 
+Hull: 1D 
+Sensors: 
+Passive: 5/+1 
+Scan: 10/1D 
+Search: 15/1D+1 
+Focus: 1/2D 
+Starship Equipment: 
+1 Tractor Beam Projector 
+Fire Arc: Front 
+Skill: Starship gunnery 
+Fire Control: 2D 
+Space Range: 1-5 
+Damage: 3D 
+
+
+Salvage Tug 
+
+Heavy salvage jobs require specialized tools 
+for the trade. When derelict bulk freighters 
+cannot be repaired or towed into dock for a 
+complete overhaul, or when capital ships meet 
+catastrophic ends, they must be dismantled and 
+disposed of. Usually based from another ship or 
+space dock, a salvage crew is often dispatched 
+in a salvage tug. Slightly roomier than the 
+average space tug, the salvage tugs come 
+equipped with fine manipulator arms, and 
+plasma cutting torches. The torches are similar, 
+but less powerful than their starship-based 
+counterparts used for breeching hulls in military 
+or pirate boarding operations. They are designed 
+to have close contact with the target vessel’s 
+hull, and slice through the wreckage with a 
+powerful short-range beam. Once separated 
+from the larger portion, the salvage tug uses its 
+tractor beam projectors to haul the pieces to a 
+collection ship or cargo container. 
+
+
+i Salvage Tug 
+Craft: Legurvio Industries Scavanger Tug 
+Type: Spacetug 
+Scale: Starfighter 
+Length: 10 meters 
+Skill: Space Transports: Scavenger Tug 
+Crew: 1 (2 can coordinate) 
+Passengers: 0 
+Cargo Capacity: None 
+
+
+ee 
+|) 
+
+
+Consumables: 2 days 
+Cost: 21,000 
+Maneuverability: 0D+2 
+Space: 3 
+Atmosphere: N/A 
+Hull: 1D+1 
+Sensors: 
+Passive: 5/+1 
+Scan: 15/1D 
+Search: 20/1D+1 
+Focus: 2/2D 
+Starship Equipment: 
+1 Tractor Beam Projector 
+Fire Arc: Front 
+Skill: Starship gunnery 
+Fire Control: 2D 
+Space Range: 1-3/5/10 
+Damage: 3D 
+1 Plasma Cutting Torch 
+Fire Arc: Front 
+Skill: Starship gunnery 
+Fire Control: 0D 
+Range: 10 meters 
+Damage: 8D 
+1 Medium Manipulator Arm 
+Fire Arc: Front 
+Skill: Starship gunnery 
+Fire Control: 1D 
+Range: 4 meters 
+Note: Manipulator arms easily move and 
+guide unsecured objects in space. 
+Though the arm has a limited reach, the 
+crew may move the object two meters 
+per round in any direction within the 
+arm’s reach. 
+
+
+Surronian L19-c Heavy Salvage Freighter 
+
+The Surronian L19 is a well recognized 
+model of heavy freighter in the galaxy, though 
+the specialized L19-c was a niche production 
+model meant to serve smaller independent 
+salvage crews. The design was well suited for 
+deep space passive collection, as well as being 
+versatile enough to cover additional functions as 
+well. The L19-c makes some sacrifices over the 
+original L-19 to accommodate the needs of a 
+salvage crew. Passenger space is reduced to 
+make room for additional consumables and 
+salvage collection needs. Some of the hull 
+strength is sacrificed to keep the production 
+costs within an affordable consumer range. 
+However, the main selling point is the L19-c’s 
+
+
+30 
+
+
+dual-cargo bays. To the port was a rather 
+unimpressive run-of-the-mill freighter 50 metric 
+ton cargo bay complete with loading ramp. To 
+starboard was a 150-ton pressurized salvage bay. 
+A freighter captain and copilot could handle the 
+ship easily, drifting through debris fields 
+collecting what they could via a grav scoop, 
+while the crew or onboard droids sorted the 
+material. However, the bay could also be 
+depressurized for large-scale active collection. In 
+the event that the captain was unwilling to risk 
+opening the doors with cargo in the hold, a 
+limited amount could be moved port for storage. 
+Further, the double hold system allowed salvage 
+crews to engage in limited cargo trading if the 
+opportunity presented itself without having to 
+remove a collection hold from active service. 
+
+
+| Heavy Salvage Freighter 
+Craft: Surronian L19-c Heavy Salvage 
+Freighter 
+Type: Heavy salvage freighter 
+Scale: Starfighter 
+Length: 58 meters 
+Skill: Space transports: Surronian L19 freighter 
+Crew: 2 
+Crew Skill: Varies widely 
+Passengers: 7 
+Cargo Capacity: 200 metric tons (50 Port 150 
+Starboard) 
+Consumables: 3 months 
+Cost: 81,000 (new), 37,000 (used) 
+Hyperdrive Multiplier: x3 
+Hyperdrive Backup: x16 
+Nav Computer: Yes 
+Maneuverability: 1D+1 
+Space: 5 
+Atmosphere: 280; 800 kmh 
+Hull: 6D 
+Shields: 1D 
+Sensors: 
+Passive: 30/1D 
+Scan: 80/2D 
+Search: 120/3D 
+Focus: 4/4D 
+Weapons: 
+1 Double Heavy Laser Cannon 
+Fire Arc: Turret 
+Skill: Starship gunnery 
+Fire Control: 1D+2 
+Space Range: 1-3/12/25 
+
+
+m | | 
+|| 2. 
+
+
+Atmosphere Range: 100-300/1.2/2.5 km 
+Damage: 4D 
+Starship Equipment: 
+
+Grav Scoop 
+
+Starboard Bay Doors 
+
+1 Tractor Beam Projector 
+
+Fire Arc: left 
+
+Skill: starship gunnery 
+
+Space Range: 1-5/15/30 
+
+Damage: 4D 
+
+
+Sranso Medium Scavenger 
+
+The Sranso was never considered an 
+attractive ship, but its function is nearly 
+uncontested. A medium freighter designed for 
+passive collection featuring three 50 ton cargo 
+bays (one port, one starboard and one aft), the 
+vessel has been known to venture into deep 
+space for months, patrolling for unreported 
+starship mishaps only to return with cargo bays 
+filled with reclaimable materials. However, the 
+ship is not a favorite among the most fiercely 
+independent captains, given the reliance on a 
+small crew. Nonetheless, for those willing to split 
+the meager profits of a scavenger’s life, the 
+Sranso has earned its place. 
+
+
+i Medium Salvage Freighter 
+Craft: Vanrium Inc. Sranso Mark II Medium Scavenger 
+Type: Medium Salvage Vessel 
+Scale: Starfighter 
+Length: 38 meters 
+Skill: Space transports: Sranso Medium Scavenger 
+Crew: 3 
+Passengers: 8 
+Cargo Capacity: 150 metric tons 
+Consumables: 6 months 
+Cost: 165,000 (used) 
+Hyperdrive Multiplier: x2 
+Hyperdrive Backup: x14 
+Nav Computer: Yes 
+Maneuverability: 1D 
+Space: 5 
+Atmosphere: 313; 900 kmh 
+Hull: 4D 
+Shields: 1D 
+Sensors: 
+
+Passive: 30/1D 
+
+Scan: 65/2D 
+
+Search: 110/3D 
+
+Focus: 4/4D 
+
+
+31 
+
+
+Weapons: 
+1 Blaster Cannon 
+Fire Arc: Turret 
+Skill: Starship gunnery 
+Fire Control: 2D 
+Space Range: 1-5/10/17 
+Atmosphere Range: 100-500/1/1.7 km 
+Damage: 4D 
+Starship Equipment: 
+Cargo Clamp 
+2 Grav Scoops (1 Port, 1 Starboard) 
+Bay Doors (on aft bay only) 
+2 Medium Grappler Arms (aft) 
+Carried Craft: 1 Cargo Tug 
+
+
+Modified YT-1300 
+
+Largely on account of the ease to 
+modifications, the Corellian Industries YT-1300 is 
+one of the more popular light freighters in the 
+galaxy. However, given their easy modifications, 
+there are hardly any examples of stock models 
+remaining. Because of their wide reputation and 
+how easily independent starship captains take to 
+them, it is hardly surprising that some salvagers 
+have taken to suiting a few models to their 
+specifications. 
+
+
+I Modified yT-1300 
+
+Craft: Modified Corellian Engineering Corp. 
+YT-1300 Transport 
+Type: Modified light freighter 
+Scale: Starfighter 
+Length: 27 meters 
+Skill: Space transports: YT-1300 
+Crew: 1 (2 can coordinate), gunners: 1 
+Passengers: 6 
+Cargo Capacity: 85 metric tons 
+Consumables: 2 months 
+Cost: 32,000 (used) 
+Hyperdrive Multiplier: x2 
+Hyperdrive Backup: x12 
+Nav Computer: Yes 
+Space: 4 
+Atmosphere: 480; 800 kmh 
+Hull: 4D 
+Sensors: 
+
+Passive: 15/0D 
+
+Scan: 30/1D 
+
+Search: 50/2D 
+
+Focus: 5/3D 
+Weapons: 
+1 Heavy Double Laser Cannon 
+
+
+m | 
+| || 
+
+
+Fire Arc: Turret 
+
+Crew: 1 
+
+Skill: Starship gunnery 
+
+Fire Control: 2D 
+
+Space Range: 1-3/12/25 
+
+Atmosphere Range: 
+
+100-300/1.2/2.5 km 
+
+Damage: 4D 
+Starship Equipment: 
+Appendage Collection System 
+Landing Claw 
+Double-Wide Airlock: A double-wide airlock 
+is a custom modification allowing the crew to 
+transport larger goods without compromising 
+the atmosphere inside the cargo area by 
+opening the cargo lifts. 
+Plasma Cutting Torch 
+
+Fire Arc: Front 
+
+Skill: Starship gunnery 
+
+Fire Control: 0D 
+
+Range: 10 meters 
+
+Damage: 8D 
+
+
+Mark-4 Bulk Salvage Ship 
+
+The Mark series freighter has served cargo 
+captains well for decades. With a solid 
+reputation for durability and reliable 
+performance it was hardly surprising that a 
+confederation of incorporated salvage 
+companies sent requests to Corellian 
+Engineering to produce a vessel designed for 
+their line of work. Since then, the Mark-4 Bulk 
+Salvage Ship has been a corporate favorite. With 
+extensive cargo bays and powerful cutting tools, 
+these ships and their crews can take a capital- 
+sized navigational hazard and clear a space lane 
+in no time. Though generally too large to be 
+operated by independent salvagers, the Mark-4 
+can be found in or near almost every civilized 
+system. Even when large-scale collisions are 
+unlikely, corporate entities often take smaller 
+disabled crafts in tow, ensuring safe space lanes. 
+
+
+| Mark-4 Bulk Salvage Vessel 
+Craft: Corellian Engineering Corp. Mark-4 
+Salvage Ship 
+Type: Bulk Salvage Ship 
+Scale: Capital 
+Length: 115 meters 
+Skill: Space transports: Mark-4 Bulk Salvage 
+Ship 
+
+
+32 
+
+
+—————— 
+
+
+Crew: 9, skeleton: 4/+5 
+Crew Skill: Varies widely 
+Passengers: 4 
+Cargo Capacity: 500,000 metric tons 
+Consumables: 2 months 
+Cost: 1.1 million (new), 650,000 (used) 
+Hyperdrive Multiplier: x3 
+Hyperdrive Backup: x20 
+Nav Computer: Limited to 4 jumps 
+Space: 4 
+Atmosphere: 225; 650 kmh 
+Hull: 2D 
+Shields: 1D 
+Sensors: 
+Passive: 20/0D 
+Scan: 30/1D 
+Search: 40/1D+2 
+Focus: 1/2D 
+Starship Equipment: 
+4 Tractor Beam Projectors (fire separately) 
+Fire Arc: 2 left, 2 right 
+Crew: 1 
+Skill: Capital ship gunnery 
+Space Range: 1-5/15/30 
+Damage: 4D 
+2 Heavy Manipulator Cranes 
+Fire Arc: 1 left, 1 right 
+Skill: capital ship gunnery 
+Fire Control: 1D 
+Range: 10 meters 
+Note: Heavy manipulator arms easily move, 
+manipulate, and guide unsecured objects in 
+space. Though the arm has a limited reach, 
+the crew may move the object four meters 
+per round in any direction within the arm’s 
+reach. 
+Carried craft: 4 Salvage Tugs 
+
+
+33 
+
+
+= TAR. WARS 
+
+
+THE SCAVENGER’S HANDBOOK 
+
+
+A GUIDE TO SALVAGE IN THE GALAXY 
+
+
+“One being’s trash is another being’s treasure.” 
+
+
+The life of a salvager is full of dangers, toils and snares. 
+A scavenger is ever dodging traps set by claim jumpers 
+and rival scavengers and evading the looming threat 
+of the ever-watchful eye of an oppressive Empire. The 
+unwary spacer is sure to have a short career. 
+
+
+Prepare to retrieve hidden treasure within derelict liner, 
+or steal away with illicit finds from a drifting warship. 
+The Scavenger’s Handbook gives players and GMs the 
+tools of the trade From navigating Imperial regulation 
+to ships and equipment, you are ready to find your 
+fortune in the distant reaches of the galaxy. 
+
+
+Inspired by 
+
+
+WUE 
+
+
+Available free. $0.00 
+
+
+| ranc ll com 
+
+
+wNGAMES 
+
+
