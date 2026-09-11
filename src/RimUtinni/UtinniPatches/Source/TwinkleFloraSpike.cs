@@ -80,7 +80,11 @@ namespace RimMandrake.Utinni.UtinniPatches
 				return;
 			}
 
-			int steps = Mathf.Max(1, Props.pulseSteps);
+			// Max(2, ...): step/(steps-1) below divides by (steps-1); a
+			// pulseSteps of 0 or 1 would make that 0/0 (NaN color) instead of
+			// clamping to a flat color. Never hit with this file's own def
+			// (pulseSteps 12), but nothing else guards a future one.
+			int steps = Mathf.Max(2, Props.pulseSteps);
 			float phase = (float)(parent.thingIDNumber % 997) / 997f; // per-instance offset so a field doesn't pulse in lockstep
 			float t = ((float)(Find.TickManager.TicksGame + parent.thingIDNumber) / Props.cyclePeriodTicks) + phase;
 			float wave = (Mathf.Sin(t * 2f * Mathf.PI) + 1f) * 0.5f; // 0..1
