@@ -110,3 +110,10 @@ nothing else needed the game up.
    Hutt Cartel FactionDef anywhere in the stack.
 3. Uniform stats across the 7 family heads (no per-family variance) — that's
    `DROIDWORKS_FINE_PARTS_1` (B4a) territory, not this packet.
+
+## Inherited charge — ruled 2026-09-11 (`MECHANOID_ORIGIN_CANON_1` card sitting)
+**Wipe/spike immunity is RATIFIED mechanics for the mindstone head**
+(`design/Jawa/worldbuilding/creatures/RUT_mechanoid_origin_canon.md` §5): a
+memory wipe or data spike used on `RSW_DW_Head_Mindstone` FAILS, with text —
+the mineral mind cannot be erased. Implement in this item alongside the ruled
+stats; the failure text is part of the deliverable.

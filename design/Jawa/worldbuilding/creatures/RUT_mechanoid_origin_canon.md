@@ -291,9 +291,12 @@ no worldgen — reached through a Deep's mouth per the ruled map-chain.
   forge dungeon (site identifier unresolved — resolve at wiring, do not
   guess) and as a Junkers goodwill unlock. Two sources, owner-ruled.
 
-## Owed on ruling — status after the 2026-09-11 propagation
+## Status after the 2026-09-11 propagation — nothing owed
 
 Amendments landed as detail on the two frozen sheets; doc-voice loser names
-corrected (in-world speech variants deliberately retained). Still owed: B3
-inherits the ruled stats charge, and `MECHANOID_BIOME_PRESENCE_REVIEW_1` is
-fed per the item spec.
+corrected (in-world speech variants deliberately retained);
+`MECHANOID_BIOME_PRESENCE_REVIEW_1` carries the origin-canon and
+legends-correction inputs; B3's item
+(`DROIDWORKS_HEADS_BRAINS_SPIKES_1`) carries the ruled-stats + wipe/spike
+immunity charge. Owner-authored legends entries ride
+`MINDSTONE_LEGENDS_ENTRIES_1`.
