@@ -7352,3 +7352,5 @@
 {"seat":"FOUNDRY","event":"spawn","name":"ART_REGEN_WAVE4_QUEUE_1","kind":"build","needs":"offline","for":"FOUNDRY","from":"ART_REGEN_WAVE3_QUEUE_1","ts":"2026-09-11T19:21:49Z"}
 {"seat":"FOUNDRY","event":"claim","id":"ART_REGEN_WAVE4_QUEUE_1","ts":"2026-09-11T19:21:56Z"}
 {"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE4_QUEUE_1","ts":"2026-09-11T19:21:57Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-11T19:24:10Z"}
+{"seat":"FOUNDRY","event":"close","id":"ART_REGEN_WAVE4_QUEUE_1","sha":"111b49013","ts":"2026-09-11T19:24:29Z"}
