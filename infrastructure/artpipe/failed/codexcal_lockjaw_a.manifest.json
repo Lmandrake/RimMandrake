@@ -1,0 +1,22 @@
+{
+  "attempt_elapsed_s": 240.54649495000194,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 489.5626575280039,
+  "id": "codexcal_lockjaw_a",
+  "meter_after": {
+    "ok": false,
+    "reason": "no rollout file found under this CODEX_HOME"
+  },
+  "meter_before": {
+    "ok": false,
+    "reason": "no rollout file found under this CODEX_HOME"
+  },
+  "mode": "edit",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error"
+}

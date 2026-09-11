@@ -1,0 +1,29 @@
+{
+  "attempt_elapsed_s": 240.78439091100154,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 481.5525304480034,
+  "id": "codexcal_lockjaw_b_r3",
+  "meter_after": {
+    "ok": false,
+    "reason": "no rollout file found under this CODEX_HOME"
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789068950,
+    "primary_used_percent": 3.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/10/rollout-2026-09-10T07-38-58-01a08bc1-f038-7de2-9f86-48c4c079966f.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 25.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "edit",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error"
+}

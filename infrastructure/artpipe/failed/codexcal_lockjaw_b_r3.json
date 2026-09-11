@@ -1,0 +1,17 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-10T14:59:36Z",
+  "facing": null,
+  "facings": [],
+  "id": "codexcal_lockjaw_b_r3",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view facing east, painterly vanilla-RimWorld style matching the reference: a massive whale-like predator with cracked alligator plating, hunkered low in ambush posture, eyes forward, mouth shut and tense. Muted swamp-grey palette. Single creature, no ground shadow, plain background.",
+  "reference": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw3_east.png",
+  "rimflow_item_id": "ART_PIPELINE_DAEMON_1",
+  "style_notes": "Codex-channel calibration twin of gemini lockjaw_improve_b_r7."
+}
