@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T04:52:18Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-11T05:20:53Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## ALPHA_FAMILY_SOURCE_REVIEW_1 Study the whole Alpha family from its public source (github.com/juanosarg/AlphaBiomes + AlphaAnimals): catalog the C# mechanics, replicate the ones worth owning as generic comps (active-defender plants, terrain attacks, sensor fog), broaden the concepts for Ash'karr
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  1. Inventory the family: which Alpha mods are in our stack (ModsConfig, MEASURED) and
-prose:    infrastructure/state/items/ALPHA_FAMILY_SOURCE_REVIEW_1.md
 
 ## STAGED_LORE_DESCRIPTIONS_1 Engine feasibility: scenario-driven staged descriptions - biome/terrain/def texts that change as lore reveal gates open; Scarlands P/GM ladder is the first consumer (BENCH-filed from the owner's musing, not a ruling)
 state:    ready
@@ -114,7 +105,7 @@ _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -122,7 +113,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is LOADING
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
@@ -132,7 +123,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is LOADING
 summary:  WORLDMAPFINALREVIEW1 — the studio review: is this THE map?
 prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
 

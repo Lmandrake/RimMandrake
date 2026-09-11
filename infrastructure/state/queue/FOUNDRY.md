@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T05:10:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T05:20:53Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -917,3 +917,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SLIME_MOD_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SLIME_MOD_BUILD_1.md
+
+## ROSTER_MOVE_APPLY_1 Write the 114 ruled fauna moves into biomes/rosters/*.json from round2/move_mapping_v2.md (0 of 114 landed, MEASURED 2026-09-11) — extend apply_assignment_verdicts.py to consume the mapping as target source, then _validate --cross + regeneration commands
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  MEASURED 2026-09-11 (BENCH spot-verified): of the 169-row move table in
+prose:    infrastructure/state/items/ROSTER_MOVE_APPLY_1.md
+
+## ALPHA_MECHANICS_KIT_1 Build the RM_-tier mechanics kit: ALL SIX generalized Alpha comps ruled in (owner 2026-09-11) — ActiveGasEmitter, PeriodicAreaAttack, BiomeGlowMultiplier, EnvironmentalWeather, ScaledDeathExplosion, TargetedHediffAffliction — spec design/Jawa/worldbuilding/alpha_family_source_review.md SS4
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ALPHA_MECHANICS_KIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ALPHA_MECHANICS_KIT_1.md
