@@ -2874,10 +2874,10 @@
     "sha": "31e9db1cd"
   },
   "src/RimMandrake/ShipVermin/Source/RM_Alert_ShipVermin.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
     "hash": "f726406953d3b54569672c1fcb3057100ba27b7c7dcd0012e2e4352b3ebdf1ee",
-    "sha": "31e9db1cd"
+    "sha": "6b397e6dd"
   },
   "src/RimMandrake/StrandedQuest/About/About.xml": {
     "cleanCount": 1,
@@ -3160,6 +3160,12 @@
     "date": "2026-09-10",
     "hash": "f89286118d12f7add0c5fdb8b1a6fadd1146d4e22f68ca2f1cec9129c95fe9de",
     "sha": "8abbec7b"
+  },
+  "src/RimMandrake/Utils/artpipe/artreg.py": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "6160386577afc04d9b2d5a693e41775cf0a89c2a6578d94b3c6bb428e4b8a02e",
+    "sha": "6b397e6dd"
   },
   "src/RimMandrake/Utils/artpipe/common.py": {
     "cleanCount": 2,
@@ -7204,10 +7210,10 @@
     "sha": "4e362542"
   },
   "src/RimStarWars/Armoury/Source/absorption_content_fixes.py": {
-    "cleanCount": 3,
-    "date": "2026-09-10",
-    "hash": "005ff3049ec9ea44fe1eb1df8929b65a9441bd0137a162cd14e57711fa819971",
-    "sha": "6784196e"
+    "cleanCount": 4,
+    "date": "2026-09-11",
+    "hash": "840ed5d8705bd6746ac40128e64220a449f2fd01ba3042fe67a59eaff279ddf6",
+    "sha": "6b397e6dd"
   },
   "src/RimStarWars/Armoury/Source/census_turrets.py": {
     "cleanCount": 1,
@@ -8936,6 +8942,12 @@
     "date": "2026-09-09",
     "hash": "caf9223ff4470f0db0798cf1c4261fa7170ff9e0f125912640379650e6adc455",
     "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Shokk/Source/RSW_CompEmergentSpawnOnDestroy.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "ab95e87b5c9c1f9d859407797a8a75125d410aca5f8ffa8e571dfa097c0f5a57",
+    "sha": "6b397e6dd"
   },
   "src/RimStarWars/StarWarsPatches/About/About.xml": {
     "cleanCount": 2,
