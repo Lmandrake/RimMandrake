@@ -242,8 +242,8 @@ INCONSISTENCIES:
 OPPORTUNITIES:
 1. If Hssiss stays: a dark-side dragon sleeping in preserved tar suits ban 1's partial-remains register better than a wetland story.
 
-## the_rust_cathedral — churn 3 (cast 1 → 4) — sitting 2026-09-10: AA_TetraSlug arrives (sole home). COMMISSIONS ruled: mechanical cockroach + the little gear-like dancing creatures (to be made); organic cockroach already resident (Ling_Cockroach)
-Arrivals (2): GR_Mechachicken, GR_Mecharat.
+## the_rust_cathedral — churn 4 (cast 1 → 3 + the two ruled commissions) — sitting 2026-09-10: AA_TetraSlug arrives (sole home). COMMISSIONS ruled: mechanical cockroach + the little gear-like dancing creatures (to be made); organic cockroach already resident (Ling_Cockroach)
+Arrivals: GR_Mecharat (GR_Mechachicken CUT — mech-vermin trim, owner card 2026-09-10).
 1. Ban 7 (nothing organic outside §4's short list): both are mech-analog — add them to §4's list explicitly or the linter flags them.
 2. "Mechachicken" fails recognizability on name; rename with the pass (Mecharat borderline, WompRat precedent).
 

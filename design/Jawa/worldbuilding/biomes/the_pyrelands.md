@@ -146,8 +146,10 @@ against fuel-as-danger, opposite poles of one design.
 4. 🔴 **No scorch-fruit that keeps** — spoilage stands; a preserved or
    stockpiled form breaks the harvest's meaning (processed foods at the
    roster's discretion, never the raw fruit).
-5. 🔴 **No tame furnace-beast** — you can follow one; nothing on this
-   planet keeps one.
+5. **Furnace-beasts and fire-hawks are TAMEABLE** (owner ruling 2026-09-10,
+   reversing the earlier ban: "Make them both tameable... and that's insane.
+   Fires all the time! I love it."). Keeping one is possible, hard, and a
+   standing fire hazard — the insanity is the point.
 6. 🔴 **No vanilla-Earth flora or fauna** (standard eviction).
 
 ## 7. Uniquely available

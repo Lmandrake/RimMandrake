@@ -336,3 +336,14 @@ RUT_. Gather everything slime-ecology in the game into it, nothing more.
 Never-hostile CONFIRMED as standing law. Caravan question superseded by a better
 owner idea: DRYING BIOMES (desert/arid, maybe the salt ocean) halt slimification —
 cure geography, to be designed in. Chickenrabbit renamed MURREL.
+
+**14. Wave-2 card rulings (owner, 2026-09-10):** BOTH Pyrelands igniters TAMEABLE —
+reverses the sheet's hard ban 5, amended in place (owner: "Make them both tameable...
+and that's insane. Fires all the time! I love it."). FOUNDRY NOTE: their uncommitted
+furnace-beast build carries VEF CompProperties_Untameable — REMOVE it; fire-hawk's
+trainability Intermediate stands. Fire-spread SPREAD-ONLY ratified (never ex nihilo).
+Ilverr corona-discharge reading ACCEPTED (sky's budget, not the body's). Cathedral
+mech-vermin trimmed: GR_Mechachicken CUT; Mecharat + Deckroach + living bolts stand.
+Mechanoid audit (owner asked, MEASURED): zero vanilla Mech_* cuts in live Cherry
+Picker — all mechanoids available for dungeons/ancient dangers; only the two
+Mechanitor enemy pawn-kinds are cut (revisit if a mechanitor encounter is ever wanted).
