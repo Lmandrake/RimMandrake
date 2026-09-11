@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T06:02:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T06:09:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -964,6 +964,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREENTIDE_FISH_ITEMS_FIX_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Found during FISHBESTIARYCOMMISSION1's reconciliation pass, 2026-09-10.
 prose:    infrastructure/state/items/GREENTIDE_FISH_ITEMS_FIX_1.md
+
+## LAW3_RETARGET_RSW_1 BeastNorm Law 3 is DEAD live: all 105 patch xpaths target bare donor defNames (Bantha) while the campaign runs the RSW_ forks with raw stats (RSW_Bantha power 23 vs ruled 60.0, MEASURED) - regenerate the patch against RSW_ names from the manifest, validate --live+--defs, and prune the dead bare-name halves
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LAW3_RETARGET_RSW_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LAW3_RETARGET_RSW_1.md
