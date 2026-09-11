@@ -807,8 +807,8 @@
     "fauna:dune_sea + deep_desert:AA_Dunealisk": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT from the game entirely (owner); cherry-picker cut owed at application (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -834,8 +834,8 @@
     "fauna:dune_sea + deep_desert:AA_TetraSlug": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "TetraSlug lives ONLY in the rust cathedral (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -1070,8 +1070,8 @@
     "fauna:forsaken_crags:AA_Frostling": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "removed from crags (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -1124,8 +1124,8 @@
     "fauna:forsaken_crags:AA_SandProwler": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "removed from crags (desert row untouched) (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -1160,8 +1160,8 @@
     "fauna:nightside_ice:AA_RedGoo": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "removed from ice (contagion is its home) (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
@@ -1169,8 +1169,8 @@
     "fauna:nightside_ice:AA_Slurrypede": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "Not here",
+      "decision": "out",
+      "note": "Not here | DUNGEON-RESERVED: dungeons only (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium",
@@ -1197,8 +1197,8 @@
     "fauna:nightside_ice:AA_TetraSlug": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "TetraSlug lives ONLY in the rust cathedral (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -1271,8 +1271,8 @@
     "fauna:poison_forest:AA_Wildpod": {
       "art": "improve",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "8 squares",
+      "decision": "out",
+      "note": "8 squares | removed from poison forest (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large",
@@ -1465,9 +1465,9 @@
       "art": "keep",
       "artPrefill": "keep",
       "decision": "in",
-      "note": "",
+      "note": "bigger ruled: large -> titan (sitting ruling 2026-09-10)",
       "prefill": "in",
-      "sizeBin": "large",
+      "sizeBin": "titan",
       "sizeBinPrefill": "large"
     },
     "fauna:the_contagion:AA_RedSpore": {
@@ -2098,8 +2098,8 @@
       "art": "keep",
       "artPrefill": "keep",
       "at": "2026-09-10T05:05:19.209Z",
-      "decision": "move",
-      "note": "Not here",
+      "decision": "in",
+      "note": "Not here | DUNGEON-RESERVED: dungeons only; any move voided (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -2347,8 +2347,8 @@
       "art": "keep",
       "artPrefill": "keep",
       "at": "2026-09-10T05:07:51.724Z",
-      "decision": "move",
-      "note": "not here",
+      "decision": "in",
+      "note": "not here | DUNGEON-RESERVED: dungeons only; any move voided (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3112,8 +3112,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T05:30:35.703Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "removed from weeping stones (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7960,6 +7960,13 @@
       "prefill": "in",
       "art": "improve",
       "note": "ARRIVAL by sitting ruling 2026-09-10: dayside lurker, Wasteland+Scarlands range"
+    },
+    "fauna:the_rust_cathedral:AA_TetraSlug": {
+      "decision": "in",
+      "prefill": "in",
+      "art": "keep",
+      "sizeBin": "large",
+      "note": "ARRIVAL (sitting ruling 2026-09-10): sole home; must be added to the sheet ban-7 organic shortlist"
     }
   },
   "generatedBy": "gen_fauna_assignment_sheet.py (2026-09-09 rulings rebuild)",
