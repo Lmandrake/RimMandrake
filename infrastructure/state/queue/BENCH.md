@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T14:35:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T16:00:55Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -170,8 +170,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SHOKKWEAVE_SOLE_SOURCE_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
 prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
 
 ## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
@@ -364,16 +364,6 @@ thin:     spec, verify and criteria all present
 summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
 prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
 
-## KIT_SPECS_CARD_SITTING_1 One card sitting over the 18 open calls from the three drafted kit specs (Greentide 3 / Scarlands 7 / Webwork 7 - full lists in kits/*_kit_spec.md owner-card sections) + 1 terramanufacture card (the_forgotten_war owner-verbatim 'terraformers' vs the ruled terramanufacture word)
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     decision
-thin:     no ## spec, no ## criteria
-summary:  KITSPECSCARDSITTING1 — one sitting, every open owner call
-prose:    infrastructure/state/items/KIT_SPECS_CARD_SITTING_1.md
-
 ## FAUNA_GRAPHS_SITTING_1 Owner LOOKS at the 4 canonical fauna graphs (Transient/fauna_graphs_2026-09-11/) and rules: Law-3 K band for the full roster, the 23 narrow temp tolerances to widen, outlier dispositions (JOE_Nautilant 830pw etc), products axis next step
 state:    proposed
 row:      unassigned
@@ -383,3 +373,23 @@ kind:     decision
 thin:     no ## criteria
 summary:  The four PNGs at Transient/faunagraphs2026-09-11/ (committed 06c0a1be; data:
 prose:    infrastructure/state/items/FAUNA_GRAPHS_SITTING_1.md
+
+## DASHBOARD_HUB_ARTIFACT_1 Single multi-tab dashboard hub artifact: thin tab shell + one data file per tab (per-seat republish, no collisions), per-tab freshness lamps, sheets linked not embedded — owner ruled 2026-09-11, spec in art_regen_registry_design.md §4
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  - One published artifact, stable URL, pinned for the owner. Thin tab shell
+prose:    infrastructure/state/items/DASHBOARD_HUB_ARTIFACT_1.md
+
+## MINDSTONE_LEGENDS_ENTRIES_1 Owner-authored legends entries: big thick lore for the mindstone head seam (RSW_DW_Head_Mindstone) - owner 2026-09-11: 'Making my own legends entries'; BENCH holds the pen
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  - A sitting with the owner (BENCH holds the pen) producing his legends
+prose:    infrastructure/state/items/MINDSTONE_LEGENDS_ENTRIES_1.md

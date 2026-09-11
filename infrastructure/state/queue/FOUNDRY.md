@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T14:35:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T16:00:55Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -944,7 +944,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-blocked:  68/68 ruled defNames ported clean (validate_patch 0 real errors), 27+26 live MayRequire=biomesteam.* references repointed to RSW_/mandrake.rsw.swbestiary. Retirement NOT safe yet: (1) BiomeCast_Ashkarr.xml is generated from cast_assignment.csv and needs a deploy+dump-refresh+regenerate cycle (expensive-list, not unattended); (2) 7 live defNames (ChemSnail/CaveSpider/GiantSlug/GiantSnail/Pillbug/GlowBat) are marked keep in hand-authored biome files but aren't in the ruled 68 - needs an owner/BENCH call on whether they're genuinely cut or the round-2 census undersold them; (3) RotSporeKit's GameCondition_SporeCloud has no data-only substitute for the donor's compiled C#. See items/BMT_FAUNA_ABSORPTION_1.md for full detail.
+blocked:  Retirement gates now 2 of 3: (1) BiomeCast_Ashkarr.xml regenerate needs deploy+dump-refresh cycle; (3) RotSporeKit GameCondition_SporeCloud has no data-only substitute. Gate (2) RULED 2026-09-11: the 7 stragglers are CUT - delete their biome entries, not ported (see item file). Retirement itself RULED to stand once gates clear.
 summary:  BMTFAUNAABSORPTION1 — donor corrected to biomesteam., ready to port
 prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
 
@@ -978,4 +978,54 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## ART_REGEN_REGISTRY_1 Art regen registry: artreg.py CLI + registry.jsonl event ledger (target/job identity, repurpose flow, retry cap 3, backfill) + burn-up status render per design/RimMandrake/art_regen_registry_design.md — done=committed, ruled 2026-09-11
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  - src/RimMandrake/Utils/artpipe/artreg.py: sole writer of
+prose:    infrastructure/state/items/ART_REGEN_REGISTRY_1.md
+
+## GREENTIDE_STANDALONE_MOD_1 Greentide biome ships as its own RimMandrake-tier mod — owner ruled 2026-09-11 (churnmud card): repackage the greentide kit + biome content under its own packageId per NAMING_SCHEME_PLAN
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  - Package the Greentide biome + its kit (design/Jawa/worldbuilding/biomes/
+prose:    infrastructure/state/items/GREENTIDE_STANDALONE_MOD_1.md
+
+## SHIP_VERMIN_MOD_1 ShipVermin mod: gather ALL ship-infesting critters (mynock first) - mechanics, creatures, future ideas; cute to hideous; inside and vacuum-capable - owner ruled 2026-09-11
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  - New RimMandrake-tier mod "ShipVermin" (packageId per
+prose:    infrastructure/state/items/SHIP_VERMIN_MOD_1.md
+
+## SHOKK_RSW_MOD_1 The Wyyyschokk/Shokk as its own RSW-tier mod (species, ShokkBound, spit defs, sun-scald cripple, emergent-Shokk spawn) - webwork biome mechanics stay RUT - owner ruled 2026-09-11
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  - Extract the Shokk from the webwork kit into an RSW-tier mod (packageId
+prose:    infrastructure/state/items/SHOKK_RSW_MOD_1.md
+
+## SCENARIO_DURATION_CUT_1 Cut 'ten thousand years' from Scenario_Utinni opening narration (header forbids invented durations) - owner ruled 2026-09-11; reword non-numeric, redeploy
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  - Reword that one phrase to a non-numeric span in the scenario's register
+prose:    infrastructure/state/items/SCENARIO_DURATION_CUT_1.md
