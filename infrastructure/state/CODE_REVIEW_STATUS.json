@@ -6904,10 +6904,10 @@
     "sha": "6a4499e0"
   },
   "src/RimStarWars/Armoury/Source/KoltoTank/CompKoltoTank.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-11",
     "hash": "218e50f6d513749914b36589665af08726e71520c7420d4c90b029975b32100e",
-    "sha": "6a4499e0"
+    "sha": "f490557ec"
   },
   "src/RimStarWars/Armoury/Source/KoltoTank/CompProperties_KoltoTank.cs": {
     "cleanCount": 1,
@@ -7220,6 +7220,12 @@
     "date": "2026-09-10",
     "hash": "76b5f9e2ed7e11312636984ac4e769b82284b5af24fbe7ec18d7f5b52b44dd6b",
     "sha": "6784196e"
+  },
+  "src/RimStarWars/BrainWorms/Source/HediffComp_BrainWormProgress.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "3d6b117f5608e4fceeb288639c965b904f07e384f666071877cb9bb3a912128f",
+    "sha": "f490557ec"
   },
   "src/RimStarWars/Cuisine/About/About.xml": {
     "cleanCount": 1,
@@ -7816,10 +7822,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/DroidworksBoltUtility.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
+    "cleanCount": 4,
+    "date": "2026-09-11",
     "hash": "c767b48f3a33fc40a9d0c0dcd73a697791e95e86afa246dbf2ae1f5db40b262e",
-    "sha": "3ea1ca20"
+    "sha": "f490557ec"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/DroidworksDefOf.cs": {
     "cleanCount": 3,
