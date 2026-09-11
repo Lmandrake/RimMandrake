@@ -7301,3 +7301,19 @@
 {"seat":"FOUNDRY","event":"claim","id":"ART_REGEN_REGISTRY_1","ts":"2026-09-11T17:32:37Z"}
 {"seat":"FOUNDRY","event":"start","id":"ART_REGEN_REGISTRY_1","ts":"2026-09-11T17:32:38Z"}
 {"seat":"FOUNDRY","event":"file","id":"ART_REGEN_WAVE4_SOURCE_DECISION_1","title":"Wave 4 art source: draw from the 338 art:improve rows, or rule on the 14 move rows?","kind":"decision","target":"v1","needs":"owner","spec":"ART_REGEN_WAVE3_QUEUE_1 found the round2 decisions_propagated.json redo:in pool (34 rows) fully exhausted across waves 1-2. Two untapped pools remain: (1) 338 rows tagged art:improve (unexamined scope/semantics for a touch-up vs full-regen pipeline - the redo-semantics ruling in infrastructure/artpipe/README.md only defines 'redo'), (2) 14 redo:move rows needing a biome-reassignment or rename/redefine call (Helix chicken-family placement, Aiwha, Gundark, AA_ShockGoat, three BMT/DA homeless creatures, JRWBeelzebufo). Either would keep the graphics daemon fed for another wave; FOUNDRY should not pull from either without a ruling on scope.","for":"OWNER","ts":"2026-09-11T17:33:05Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LOCKJAW_ART_WIRE_IN_1","ts":"2026-09-11T17:34:48Z"}
+{"seat":"FOUNDRY","event":"start","id":"LOCKJAW_ART_WIRE_IN_1","ts":"2026-09-11T17:34:48Z"}
+{"seat":"FOUNDRY","event":"spawn","name":"ART_REGEN_WAVE2_WIRE_IN_1","kind":"build","needs":"offline","for":"FOUNDRY","from":"ART_REGEN_WAVE1_WIRE_IN_1","ts":"2026-09-11T17:39:57Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ART_REGEN_WAVE2_WIRE_IN_1","ts":"2026-09-11T17:40:04Z"}
+{"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE2_WIRE_IN_1","ts":"2026-09-11T17:40:05Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-11T17:41:47Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"ART_REGEN_WAVE2_WIRE_IN_1 live verification","ts":"2026-09-11T17:43:51Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"LOCKJAW_ART_WIRE_IN_1 live verification of AA_Lockjaw3 art","ts":"2026-09-11T17:45:51Z"}
+{"seat":"FOUNDRY","event":"close","id":"PYRELANDS_FACING_COMPLETE_1","sha":"830202d99","ts":"2026-09-11T17:47:56Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ts":"2026-09-11T17:48:35Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ts":"2026-09-11T17:48:47Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ts":"2026-09-11T17:48:55Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-11T17:49:57Z"}
+{"seat":"FOUNDRY","event":"close","id":"ART_REGEN_REGISTRY_1","sha":"a223c9568","ts":"2026-09-11T17:50:01Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"SHIP_VERMIN_MOD_1 quicktest verification","ts":"2026-09-11T17:52:39Z"}
+{"seat":"BENCH","event":"file","id":"FAUNA_LORE_DIVERSIFICATION_1","title":"Per-beast damage diversification round AFTER size scaling: judge each beast by its art + description (scary vs harmless), diverge individuals from the 12-15x band deliberately - owner ruled 2026-09-11, rides the beast graphics/lore pass","kind":"task","target":"v1","needs":"owner","for":"BENCH","ts":"2026-09-11T17:52:53Z"}
