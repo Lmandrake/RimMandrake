@@ -338,15 +338,15 @@ def main():
             notags.append((defname, label))
             continue
 
-        priced, unpriced = [], []
-        computed = 0
+        # Dedup by defName: a weapon carrying MORE THAN ONE of this kind's tags
+        # would otherwise be counted once per matching tag, inflating both the
+        # "cheapest" candidate pool and every displayed unpriced/priced count.
+        seen = {}
         for t in tags:
-            for dn, mv, was_computed in by_tag.get(t, []):
-                if mv is None:
-                    unpriced.append((dn, mv))
-                else:
-                    priced.append((dn, mv))
-                    computed += 1 if was_computed else 0
+            for dn, mv, _was_computed in by_tag.get(t, []):
+                seen.setdefault(dn, mv)
+        priced = [(dn, mv) for dn, mv in seen.items() if mv is not None]
+        unpriced = [(dn, mv) for dn, mv in seen.items() if mv is None]
 
         if not priced and not unpriced:
             never.append((defname, label, lo, hi, None, "no weapon carries any of its tags"))
