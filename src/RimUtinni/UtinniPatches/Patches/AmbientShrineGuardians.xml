@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  AmbientShrineGuardians.xml      UtinniPatches   SHRINE_GUARDIAN_BIOME_GATE_1
+  ============================================================================
+  Piece 4/4 of MECH_PRESENCE_ENFORCEMENT_1 — curate shrine CONTENTS on the
+  eight biomes where the ratified ANCIENT column allows ancient dangers but
+  the AMBIENT column bans mechanoids
+  (design/Jawa/worldbuilding/mechanoid_biome_presence_draft.md).
+
+  The full reasoning — which resolver actually decides guardian and loot, why
+  the item spec's "Harmony postfix on SymbolResolver_AncientTemple" is the
+  wrong target, what is substituted on those eight rows, and every judgment
+  call made — lives in ONE place, the header of
+  Source/AmbientShrineGuardians.cs. Read that; it is not repeated here.
+
+  WHY NO HARMONY. Core's RuleDef Interior_AncientTemple
+  (Data/Core/Defs/RuleDefs/Rules_Interior.xml:20-28) carries its resolver as
+  `<li Class="SymbolResolver_Interior_AncientTemple">` inside a plain
+  `List<SymbolResolver>` field (RuleDef.cs) with no LoadDataFromXmlCustom
+  anywhere in the chain, and BaseGen.Resolve walks that list by reference —
+  so setting the Class attribute to our subclass is the whole patch. Same
+  no-Harmony, plain-subclass shape as Patches/GeothermalDensityField.xml.
+  The `<minRectSize>(1, 1)</minRectSize>` child on that li is untouched:
+  PatchOperationAttributeSet rewrites only the attribute.
+
+  SAFETY. Interior_AncientTemple is Core and always present, but per this
+  mod's convention (JawaResource_Scrapfields.xml's SAFETY note) the operation
+  is wrapped in a PatchOperationConditional whose xpath is IDENTICAL to the
+  inner operation's, so a future Core rename or restructure is a silent
+  no-op — vanilla shrine contents everywhere — rather than a red error on
+  every launch.
+
+  ⛔ A clean patch-apply proves the xpath matched, nothing more. The biome
+  gate itself is only proven by a quicktest map on one candidate biome; that
+  is still OWED on SHRINE_GUARDIAN_BIOME_GATE_1.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/RuleDef[defName="Interior_AncientTemple"]/resolvers/li</xpath>
+    <match Class="PatchOperationAttributeSet">
+      <xpath>Defs/RuleDef[defName="Interior_AncientTemple"]/resolvers/li</xpath>
+      <attribute>Class</attribute>
+      <value>RimMandrake.Utinni.UtinniPatches.SymbolResolver_Interior_AncientTemple_AmbientDoctrine</value>
+    </match>
+  </Operation>
+
+</Patch>
