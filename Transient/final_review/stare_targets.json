@@ -1,0 +1,20 @@
+{
+"S00_substellar": 19337,
+"D1_day_b0": 8074,
+"D2_day_b90": 8064,
+"D3_day_b180": 8160,
+"D4_day_b270": 8034,
+"T1_term_b0": 20791,
+"T2_term_b45": 7882,
+"T3_term_b90": 5239,
+"T4_term_b135": 7834,
+"T5_term_b180": 18631,
+"T6_term_b225": 7920,
+"T7_term_b270": 5549,
+"T8_term_b315": 7924,
+"N1_night_b0": 8110,
+"N2_night_b90": 7984,
+"N3_night_b180": 8164,
+"N4_night_b270": 7960,
+"S17_antistellar": 18991
+}
