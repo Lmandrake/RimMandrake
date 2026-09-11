@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T07:14:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T07:14:58Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -620,15 +620,6 @@ target:   v1
 kind:     task
 summary:  (no items/SLIME_MOD_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SLIME_MOD_BUILD_1.md
-
-## ALPHA_MECHANICS_KIT_1 Build the RM_-tier mechanics kit: ALL SIX generalized Alpha comps ruled in (owner 2026-09-11) — ActiveGasEmitter, PeriodicAreaAttack, BiomeGlowMultiplier, EnvironmentalWeather, ScaledDeathExplosion, TargetedHediffAffliction — spec design/Jawa/worldbuilding/alpha_family_source_review.md SS4
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/ALPHA_MECHANICS_KIT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ALPHA_MECHANICS_KIT_1.md
 
 ## BRAINWORM_MOD_BUILD_1 Build RSW_ Geonosian brain worms per the reviewed spec: worm + staged infection hediff + living-host puppeting ThinkTree C# + cold-place cure; vectors = ruin dungeons, salvaged cargo, weaponized-egg war retribution. NEVER corpse-walker (owner ruling). Spec design/RimStarWars/brain_worm_spec.md
 state:    doing
