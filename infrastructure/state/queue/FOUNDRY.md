@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T23:44:10Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-11T23:54:02Z (the last event's own timestamp, not the render clock)
+game:  GOING_DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -674,15 +674,6 @@ target:   v1
 kind:     bug
 summary:  Found via harvestlog.py on game UP 2026-09-11 (570-mod session): "Outer Rim
 prose:    infrastructure/state/items/OUTERRIM_DROIDDEPOT_PATCH_GUARD_1.md
-
-## ART_REGEN_WAVE2_QUEUE_1 Queue art regen for 4 more decided fauna redo rows from the 2026-09-10 sitting (wave 2)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Standing owner instruction: "there should always be at least one agent
-prose:    infrastructure/state/items/ART_REGEN_WAVE2_QUEUE_1.md
 
 ## LOCKJAW_ART_WIRE_IN_1 LOCKJAW_ART_WIRE_IN_1
 state:    doing  (BLOCKED)

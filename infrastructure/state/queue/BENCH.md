@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T23:44:10Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-11T23:54:02Z (the last event's own timestamp, not the render clock)
+game:  GOING_DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -53,15 +53,6 @@ target:   v1
 kind:     task
 summary:  - Inventory, from the live def dump + mod XML (never guess a defName):
 prose:    infrastructure/state/items/MUTATION_MODIFIERS_SURVEY_1.md
-
-## TERRAMANUFACTURE_CANON_1 Propagate the terramanufacture ancient history (dynamo at the substellar pole, Cathedral as remnant, unplanned war lab, mutual learning) into the world definition and canon docs; card contradictions
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  - Write the ruling INTO the docs that already speak of the planet's past (superseding
-prose:    infrastructure/state/items/TERRAMANUFACTURE_CANON_1.md
 
 ## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
 state:    doing
@@ -108,13 +99,22 @@ kind:     task
 summary:  Division of labor (the design decision, incl. the ruled pushback):
 prose:    infrastructure/state/items/ART_PIPELINE_DAEMON_1.md
 
+## DUNGEON_DESIGN_RESEARCH_1 Deep research: dungeon game design corpus + metrics -> research/game_design/ (renders to candidate skills, canon puzzles/events, map templates)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     research
+summary:  (no items/DUNGEON_DESIGN_RESEARCH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DUNGEON_DESIGN_RESEARCH_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is GOING_DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -122,7 +122,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is GOING_DOWN
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
