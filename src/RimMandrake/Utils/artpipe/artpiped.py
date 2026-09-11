@@ -1334,7 +1334,20 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
               "attempt_elapsed_s": last_attempt_elapsed, "mode": subcmd,
               "timed_out": timed_out, "meter_before": meter_before,
               "meter_after": meter_after, "daemon_attempts": attempts,
-              "worker_self_report": worker_self_report}
+              "worker_self_report": worker_self_report,
+              # Symmetric with process_gemini_job's own worker_stdout_tail/
+              # worker_stderr_tail (CODEX_WORKER_SANDBOX_WRITE_1): every
+              # codex-channel failure manifest used to say only "worker
+              # exited 1, image_present=False" with the actual diagnostic —
+              # codex_image.py's own "ERROR no image produced..." plus its
+              # "--- last codex output ---" dump — thrown away right here,
+              # never reaching done/failed/*.manifest.json. Only the LAST
+              # attempt's out/err is kept (a retry's first-attempt text is
+              # superseded, same as attempt_elapsed_s above). codex_image.py's
+              # own error block runs past 2000 chars (its own tail plus the
+              # ERROR line), so this tail is wider than gemini's 300.
+              "worker_stdout_tail": (out or "")[-300:],
+              "worker_stderr_tail": (err or "")[-2500:]}
 
     image_present = out_png.is_file()
     # A worker that RECOVERED from a throttle — its own internal first
