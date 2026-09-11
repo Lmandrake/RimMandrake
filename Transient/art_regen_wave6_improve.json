@@ -1,0 +1,95 @@
+{
+  "items": [
+    {
+      "id": "wyyyschokk_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE6_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Wyyyschokk — a large, nightmarish web-spinning predator native to a dark forbidding world. A hunched, many-limbed arachnid-insectoid body with a swollen bloated abdomen, long jointed grasping forelimbs tipped in hooked claws, a cluster of small glinting black eyes on an angular head, a distended mouth built for wrapping and hauling prey, mottled sickly grey-purple chitin with damp glistening patches. Reads as a genuinely repulsive ambush predator that lurks in dark webbed spaces. Single creature, centered, low predatory crouch pose, no ground shadow, no background scenery, no webbing effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "SW canon identity KEPT — checked directly against design/RimStarWars/star_wars_canon_names.md's master-bestiary list (Wyyyschokk, provenance [B], a genuine third-party creature-pack species name, not an invented one). The doc's Known Issues note flags that this campaign's web-silk-glob/mouth-loom MECHANIC is Utinni-original, but the species NAME itself is real SW — converge on a repulsive large web-predator look per the row's own note ('Perfectly hideous'). Large sizeBin, the_webwork biome. Full regen, same mechanism as 'redo'. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "boma_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE6_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Boma beast — a large, thick-hided draft and warfare beast bred for hauling and battle on a hostile jungle/rock moon. Massive barrel-shaped body low on four short powerful legs, a broad low-slung head with small deep-set eyes and a blunt tusked jaw, thick plated grey-brown hide scarred and calloused from labor, a heavy low tail. Reads as a slow, immensely strong beast of burden that can also fight. Single creature, centered, standing pose, no ground shadow, no background scenery, no harness or cargo rigging. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "SW canon identity KEPT — checked directly against design/RimStarWars/star_wars_canon_names.md's master-bestiary list (Boma, provenance [B]) and its Planets/Locations table (Dxun, 'Boma beast/Zakkeg refs'). Converge on the canonical look: a massive draft/warfare beast. Large sizeBin, weeping_stones biome. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "ollopom_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE6_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Ollopom — a small, alert desert scavenger creature. Compact rounded body carried low on quick slender legs, a small triangular head with large forward-facing eyes for spotting scraps and predators, short twitchy tufted ears, coarse sandy-tan fur with darker banding for camouflage against rock and dune. Reads as a nimble, skittish small desert survivor. Single creature, centered, alert crouched pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "SW canon identity KEPT — checked directly against design/RimStarWars/star_wars_canon_names.md's master-bestiary list (Ollopom, provenance [B]) — a genuine third-party SW creature-pack name, no individual Wookieepedia writeup exists yet so the general small-desert-scavenger kind is drawn from the row's own biome/size context (weeping_stones, small) rather than invented detail. Small sizeBin. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "sludrin_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE6_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien sump-dwelling creature (working name 'Sludrin') — a large, lumbering bloat-gutted wallower that guzzles tar-thick sludge for sustenance. NOT a mundane Earth animal: a heavy sagging barrel body on four short stumpy legs, a hugely distended gullet/throat sac hanging beneath a wide flat guzzling mouth, thick tar-slick blue-black hide with oily sheen, small sunken eyes on a blunt low head. Reads as a slow, gluttonous, oddly endearing sump-wallowing beast. Single creature, centered, standing/wallowing pose, no ground shadow, no background scenery, no sludge pool effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (AA_TarGuzzler) REIMAGINED — checked against design/RimStarWars/star_wars_canon_names.md and not found anywhere in it (an Alpha Animals donor-mod name, not SW). General kind fixed per the row's own note ('This is superb!!' — a well-liked large tar/sludge-guzzling sump wallower), specific name/character invented: 'Sludrin'. Large sizeBin, the_sump biome. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "cinderwing_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE6_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien pyrelands flying insect (working name 'Cinderwing') — a small, ember-bright flying stinging insect adapted to a volcanic/fire-scarred biome. NOT a mundane Earth wasp: a slender segmented thorax glowing faint orange-red at the seams like cooling embers, two pairs of thin heat-shimmer translucent wings edged in dark soot-black, a narrow tapered abdomen ending in a short venomous stinger, small glinting compound eyes. Reads as a striking, dangerous-looking small flying alien built for a scorched world. Single creature, centered, hovering/flight pose, no ground shadow, no background scenery, no fire or ember particle effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (AA_FireWasp) REIMAGINED — checked against design/RimStarWars/star_wars_canon_names.md and not found anywhere in it (an Alpha Animals donor-mod name, not SW). General kind fixed per the row's own note ('I like this a lot' — a well-liked small ember-themed flying pyrelands insect), specific name/character invented: 'Cinderwing'. Small sizeBin, the_pyrelands biome. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "verdaunt_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE6_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien miasma-swamp reptile (working name 'Verdaunt') — a medium crested reptilian predator/grazer adapted to a toxic swamp biome. NOT a mundane Earth dragon or lizard: a lean sinuous quadruped body with a tall thin sail-crest running from head to tail, green-and-black mottled scaled hide for camouflage in dense toxic foliage, a narrow snouted head with small alert eyes, short gripping claws. Reads as a striking, alien swamp-adapted reptile with distinctive green mottling. Single creature, centered, standing/alert pose, no ground shadow, no background scenery, no swamp/foliage effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (BMT_CrestedDragon) REIMAGINED — checked against design/RimStarWars/star_wars_canon_names.md and not found anywhere in it (a BiomesTeam donor-mod name, not SW). General kind fixed per the row's own note ('Make it green and mottled' — a crested miasma-swamp reptile), specific name/character invented: 'Verdaunt'. Medium sizeBin, the_miasma biome. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "scarrend_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE6_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien scarlands creature (working name 'Scarrend') — a large armored burrowing/climbing predator adapted to a rocky slag-scarred biome. NOT a mundane Earth crab or lobster: a low wide-bodied form with heavy overlapping rust-orange carapace plates, several short powerful jointed legs ending in gripping claws, one oversized serrated rimmed claw held forward for slashing and digging, small stalked eyes atop an armored head. Reads as a tough, aggressive armored ambush predator built for scarred rocky terrain. Single creature, centered, low aggressive stance with the large claw raised, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (RG_Rimclaw) REIMAGINED — checked against design/RimStarWars/star_wars_canon_names.md and not found anywhere in it (an RG-prefixed donor-mod name, not SW). General kind fixed (a large armored scarlands claw-predator), specific name/character invented: 'Scarrend'. Large sizeBin, the_scarlands biome. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    }
+  ]
+}
