@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T07:10:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T07:14:01Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -660,7 +660,7 @@ prose:    infrastructure/state/items/BAREHANDED_MELEE_FALLBACK_1.md
 ## GREENTIDE_FISH_ITEMS_FIX_1 BiomeFishTypes_Greentide.xml lists scalefish RACE defs (RSW_Mee/Faa/Laa) in fishTypes instead of item defs -- fishing there makes a bare Pawn, no category guard in FishingUtility.GetCatchesFor
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     bug
 summary:  Found during FISHBESTIARYCOMMISSION1's reconciliation pass, 2026-09-10.
