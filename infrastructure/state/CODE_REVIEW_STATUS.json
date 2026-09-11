@@ -4131,6 +4131,12 @@
     "hash": "410aef98b185d3741a33bb727f989dc28b85353606a0e533cf7806fabcfb9fc5",
     "sha": "6204e16b"
   },
+  "src/RimMandrake/Utils/selftest_lore_stages.py": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "5cf19c09f57688c01a02fd8672832efaddfa5ecf2a2a711b7818484eebc754d9",
+    "sha": "61dd3f0e3"
+  },
   "src/RimMandrake/Utils/selftest_one_path_seam.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -4294,16 +4300,16 @@
     "sha": "3ea1ca20"
   },
   "src/RimMandrake/Utils/weapon_affordability.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "2932f27fe013c41b762b14df614705699814b329f61c89dcb4c5724826e0071a",
-    "sha": "46cc98d3"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "228277fb55690a5f3006f0b37f8eceeb4adc46cf6c5abb0047182885dda546cd",
+    "sha": "61dd3f0e3"
   },
   "src/RimMandrake/Utils/weapon_pool_join.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "2060d4c13e175c65f20e129945672255f9d5565ece8021475ca29ba9029841bd",
-    "sha": "8e8fe001"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "8df793b52772cb307955c2da98e0d5cce4dc116bd814817ef7c939e217df2fad",
+    "sha": "61dd3f0e3"
   },
   "src/RimMandrake/Utils/weapon_tag_audit.py": {
     "cleanCount": 2,
