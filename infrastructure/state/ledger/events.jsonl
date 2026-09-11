@@ -7186,3 +7186,5 @@
 {"seat":"FOUNDRY","event":"note","id":"GREENTIDE_FISH_ITEMS_FIX_1","text":"Fixed: BiomeFishTypes_Greentide.xml now references new RSW_MeeCatch/FaaCatch/LaaCatch item defs (donor SWAC has no swfish_Mee to fall back to - confirmed on disk) instead of the race defs. validate_patch.py clean (0 errors), xpaths confirmed hitting live BiomeCypreJungle. Criteria's live-quicktest-fishing-proof still owed - needs bridge (BENCH holds it).","ts":"2026-09-11T07:13:58Z"}
 {"seat":"FOUNDRY","event":"needs","id":"GREENTIDE_FISH_ITEMS_FIX_1","to":"bridge","reason":"mechanism fix done and validator-clean; item's own criteria requires a live quicktest fishing pass before close","ts":"2026-09-11T07:14:01Z"}
 {"seat":"FOUNDRY","event":"close","id":"ALPHA_MECHANICS_KIT_1","sha":"ddd8d379f6d9f3127cfaa33f6429ee0c01f4f06f","ts":"2026-09-11T07:14:58Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"WORLDMAP_FINAL_REVIEW_1 Phase 0-2: load canonical save, fresh exports, audits, STARE screenshots","ts":"2026-09-11T07:15:50Z"}
+{"seat":"BENCH","event":"start","id":"WORLDMAP_FINAL_REVIEW_1","ts":"2026-09-11T07:15:51Z"}
