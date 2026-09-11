@@ -220,16 +220,16 @@
       "band": "igniter-flier",
       "commonality": 0.15,
       "def": "RUT_FireHawk",
-      "law": "§4 'the fire-hawks (ruled: absolutely)' — one of the two irreplaceable igniters; PYRELANDS_FIRE_WEB_COMMISSION_1",
-      "note": "built 2026-09-10: src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml, real generated art (transparent, artpipe job pyrelands_firehawk_v1). Twig-carrying fire-spread behaviour NOT implemented — owed to PYRELANDS_MECHANICS_1 (unfiled)."
+      "law": "§4 'the fire-hawks (ruled: absolutely)' — one of the two irreplaceable igniters; tameable under the reversed ban 5 (owner 2026-09-10); PYRELANDS_FIRE_WEB_COMMISSION_1",
+      "note": "built 2026-09-10: src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml, real generated art (transparent, artpipe job pyrelands_firehawk_v1). Twig-carrying fire-spread BUILT 2026-09-11 (PYRELANDS_MECHANICS_1): CompFireHawkSpread + JobGiver/JobDriver_RUT_FireHawkCarryEmber in src/RimUtinni/PyrelandsMechanics, spread-only (needs a pre-existing fire in scan range, never ex nihilo). Live-fire verification still owed."
     },
     {
       "action": "commission",
       "band": "igniter-megafauna",
       "commonality": 0.08,
       "def": "RUT_FurnaceBeast",
-      "law": "§4 'the furnace-beasts (owner)' — the second irreplaceable igniter; ban 5 no tame furnace-beast enforced via VEF CompProperties_Untameable; PYRELANDS_FIRE_WEB_COMMISSION_1",
-      "note": "built 2026-09-10: same file, real generated art (transparent, artpipe job pyrelands_furnacebeast_v1). Heat aura / bed-down ignition NOT implemented — owed to PYRELANDS_MECHANICS_1 (unfiled)."
+      "law": "§4 'the furnace-beasts (owner)' — the second irreplaceable igniter; TAMEABLE under the reversed ban 5 (owner 2026-09-10) — the VEF CompProperties_Untameable comp is removed, trainability Intermediate, wildness 0.97 (strictly under TameUtility.CanTame's 1.0 refusal); PYRELANDS_FIRE_WEB_COMMISSION_1",
+      "note": "built 2026-09-10: same file, real generated art (transparent, artpipe job pyrelands_furnacebeast_v1). Heat aura / bed-down ignition BUILT 2026-09-11 (PYRELANDS_MECHANICS_1): vanilla CompProperties_HeatPusher indoors + CompFurnaceWarmthAura (RUT_FurnaceWarmth hediff) outdoors + CompFurnaceBedIgnition, no tamed exemption. leatherDef is now RUT_FurnaceHide. Live-fire verification still owed."
     },
     {
       "action": "import",
@@ -355,13 +355,13 @@
     {
       "from_sheet": "the_pyrelands §4",
       "kind": "creature",
-      "mechanic_load": "C#: carries burning material, spreads fire deliberately — STILL OWED (PYRELANDS_MECHANICS_1, unfiled); def+art built as RUT_FireHawk, see fauna row",
+      "mechanic_load": "C#: carries burning material, spreads fire deliberately — BUILT 2026-09-11 (PYRELANDS_MECHANICS_1, src/RimUtinni/PyrelandsMechanics); def+art built as RUT_FireHawk, see fauna row",
       "name": "fire-hawk (twig-carrying raptor-analog)"
     },
     {
       "from_sheet": "the_pyrelands §4",
       "kind": "creature",
-      "mechanic_load": "C#: heat aura, bed-down ignition — STILL OWED (PYRELANDS_MECHANICS_1, unfiled); def+art built as RUT_FurnaceBeast, see fauna row",
+      "mechanic_load": "C#: heat aura, bed-down ignition — BUILT 2026-09-11 (PYRELANDS_MECHANICS_1, src/RimUtinni/PyrelandsMechanics); def+art built as RUT_FurnaceBeast, see fauna row",
       "name": "furnace-beast (thermal-circuit megafauna)"
     },
     {
