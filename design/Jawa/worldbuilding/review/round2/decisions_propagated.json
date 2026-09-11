@@ -23,8 +23,8 @@
     "fauna:arid_shrubland:AA_Wildpawn": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "move",
+      "note": "steaming jungle = the_greentide (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -79,8 +79,8 @@
     "fauna:arid_shrubland:Cannok": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "move",
+      "note": "to reserve (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -187,10 +187,10 @@
       "sizeBinPrefill": "small"
     },
     "fauna:arid_shrubland:Kreetle": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
       "decision": "in",
-      "note": "arid type only",
+      "note": "arid type only | art redo ruled (sitting ruling 2026-09-10) — SW creature: no rename, gather reference images",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small",
@@ -307,8 +307,8 @@
     "fauna:arid_shrubland:Skalder": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "move",
+      "note": "Poison Forest (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -361,8 +361,8 @@
     "fauna:arid_shrubland:Vulptex": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "move",
+      "note": "to reserve (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
@@ -615,10 +615,10 @@
       "sizeBinPrefill": "large"
     },
     "fauna:desert:Kreetle": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
       "decision": "in",
-      "note": "arid type only",
+      "note": "arid type only | art redo ruled (sitting ruling 2026-09-10) — SW creature: no rename, gather reference images",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small",
@@ -878,10 +878,10 @@
       "sizeBinPrefill": "titan"
     },
     "fauna:dune_sea + deep_desert:Kreetle": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
       "decision": "in",
-      "note": "arid type only",
+      "note": "arid type only | art redo ruled (sitting ruling 2026-09-10) — SW creature: no rename, gather reference images",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small",
@@ -2165,11 +2165,11 @@
       "sizeBinPrefill": "medium"
     },
     "fauna:the_miasma:Kreetle": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
       "at": "2026-09-10T04:59:41.437Z",
       "decision": "move",
-      "note": "arid type only",
+      "note": "arid type only | art redo ruled (sitting ruling 2026-09-10) — SW creature: no rename, gather reference images",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -2843,10 +2843,10 @@
       "sizeBinPrefill": "medium"
     },
     "fauna:the_webwork:Kreetle": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
       "decision": "in",
-      "note": "arid type only",
+      "note": "arid type only | art redo ruled (sitting ruling 2026-09-10) — SW creature: no rename, gather reference images",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small",

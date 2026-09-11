@@ -39,9 +39,9 @@ OPPORTUNITIES:
 1. Thrumbungus ("partially digesting itself") and Sporemole pass ban 2 cleanly — flagship arrivals; feature both in §4's cast table.
 2. AnimaColossus near the anima-analog (§7) makes a natural undefended-prize guardian (ban 8); wire them together.
 
-## the_greentide — churn 16 (cast 27 → 18)
+## the_greentide — churn 17 (cast 27 → 19)
 Arrivals (3): GiantAnt_Race (event-only, by ruling), Tach + Rikknit (both-jungles ruling). Flier→roster arriving: BMT_FacetMoth. Fliers extracted: Convor, Hawkbat.
-Departures (9 moves): AA_BloodShrimp, AA_Razorjack, Beldon, Dalgo, Dianoga, Falumpaset, Hssiss, Lylek, ShiroTrap. Insect ruling: VFEI2_Swarmling out (faction-only).
+Departures (9 moves): AA_BloodShrimp, AA_Razorjack, Beldon, Dalgo, Dianoga, Falumpaset, Hssiss, Lylek, ShiroTrap. Insect ruling: VFEI2_Swarmling out (faction-only). Sitting 2026-09-10: AA_Wildpawn arrives from arid (the steaming jungle).
 
 INCONSISTENCIES:
 1. GiantAnt_Race is event-only ("only the raiding events") — belongs on the event roster, not wildAnimals; keep it off the sheet's resident cast.
@@ -175,8 +175,8 @@ INCONSISTENCIES:
 OPPORTUNITIES:
 1. Great Thrumbo as the deep-desert white whale (very rare, very dangerous) fills the sheet's legend slot beside the Krayts.
 
-## poison_forest — churn 7 (cast 17 → 20)
-Arrivals (5): Lylek, AA_Plasmorph, AA_LuciferBug, AA_Radyak, AA_RipperHound. Flier extracted: AA_InfectedAerofleet. Horror ruling: Visceral out (injected dark-side art only).
+## poison_forest — churn 8 (cast 17 → 21)
+Arrivals (5): Lylek, AA_Plasmorph, AA_LuciferBug, AA_Radyak, AA_RipperHound. Flier extracted: AA_InfectedAerofleet. Horror ruling: Visceral out (injected dark-side art only). Sitting 2026-09-10: Skalder arrives from arid.
 
 INCONSISTENCIES:
 1. Ban: "Nothing fast. No sprinters, no pursuit predators" — Lylek and RipperHound are both pursuit-built; admit only with a rewritten slow/ambush hunting story.
@@ -217,8 +217,8 @@ INCONSISTENCIES:
 OPPORTUNITIES:
 1. Glowtail vs the no-free-light law (ban 6): make its glow a light-draw *cost* mechanic — the creature that eats your lamplight.
 
-## arid_shrubland — churn 5 (cast 42 → 42)
-Arrivals (2, deduped — Kreetle already resident): BMT_Stoneback, VAEWaste_Hydra ("venomvine patch predator"). Insect ruling: VFEI2_Macrofly arrival VOIDED (faction-only). Horror ruling: Terrorworm out (injected dark-side art only). Flier extracted: Convor.
+## arid_shrubland — churn 9 (cast 42 → 38)
+Arrivals (2, deduped — Kreetle already resident): BMT_Stoneback, VAEWaste_Hydra ("venomvine patch predator"). Insect ruling: VFEI2_Macrofly arrival VOIDED (faction-only). Horror ruling: Terrorworm out (injected dark-side art only). Flier extracted: Convor. Sitting 2026-09-10: Skalder→poison_forest, AA_Wildpawn→the_greentide, Cannok+Vulptex→reserve; Kreetle art REDO (SW: no rename).
 
 INCONSISTENCIES:
 1. Ban 4: no resident LARGE-band creature (large only as juvenile of huge) — the register bins Wildpod, Bantha, Corinathoth, Mudhorn, Ronto, Skalder LARGE. Six standing violations; rebin as juveniles-of-huge or move.
