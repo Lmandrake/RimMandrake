@@ -181,7 +181,7 @@ tremendous factory — a mega-project among mega-projects. Not terraforming:
 terramanufacture.** They had only begun — sub-surface structures,
 self-assembling megastructures, the **planet-scale power dynamo** — when the
 Assailants came; since then it is a one-tenth-built dream collapsing inward on
-itself over the millennia. **The sub-solar point needed all the power they
+itself over the ages. **The sub-solar point needed all the power they
 could possibly channel into the planet** — hence the magnetic pole there: the
 dynamo's intake, and the Rust Cathedral its remnant (C1's machine gains its
 original job — the mind that was to coordinate the planetary factory now sits

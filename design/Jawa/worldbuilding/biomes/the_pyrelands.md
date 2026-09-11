@@ -11,7 +11,8 @@ _Owner + BENCH, 2026-09-07, two rounds and ratified ("write it up!"). Defines
 ours). **The biome's name is THE PYRELANDS** — ruled 2026-08-15
 (`hydrology_and_fire_ecology.md`, the naming section); common name **the burning
 savanna**. Thematic handle: **the standing burn** — and its image: **a grassland
-that has been on fire for twenty-five thousand years, and a people walking the
+that has been on fire since ages before the war — twenty-five thousand years,
+some believe, though in truth little is known — and a people walking the
 flame-line collecting a debt.**_
 
 🔑 **This sheet is an assembly on ruled fire canon** — `hydrology_and_fire_ecology.md`
@@ -77,7 +78,7 @@ to the water table by design, regrowth in days by design, dominance by
 design. The war left a lawn, still working as built. 🔑 **And the theme is
 ruled with it** (owner, verbatim in intent): *the Rakatans genetically
 modified things — and this is NOT a "genetic tech is bad" argument; it's what
-you do with it.* An engineered landscape of generosity, twenty-five millennia
+you do with it.* An engineered landscape of generosity, ages
 after its gardeners died.
 
 **The permitted rain**: rare, bursty, violent, under unusual wind patterns

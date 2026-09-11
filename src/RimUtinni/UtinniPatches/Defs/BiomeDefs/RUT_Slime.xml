@@ -46,7 +46,7 @@
   <BiomeDef>
     <defName>RUT_Slime</defName>
     <label>the Slime</label>
-    <description>A country-sized body lying in the mildest weather on the planet, wearing a landscape as its skin: fields of its own grass, groves of its own trees, herds of its own cells. It was a weapon once. It ate everything it was sent against, and what it ate unmade it -- now it is a living registry and database, forever seeking to ingest, analyze, recombine, store and multiply, still faithfully serving a master a thousand years decayed.</description>
+    <description>A country-sized body lying in the mildest weather on the planet, wearing a landscape as its skin: fields of its own grass, groves of its own trees, herds of its own cells. It was a weapon once. It ate everything it was sent against, and what it ate unmade it -- now it is a living registry and database, forever seeking to ingest, analyze, recombine, store and multiply, still faithfully serving a master ages decayed.</description>
     <workerClass>AlphaBiomes.BiomeWorker_GelatinousSuperorganism</workerClass>
     <foragedFood>AB_RawSlime</foragedFood>
     <allowRoads>true</allowRoads>

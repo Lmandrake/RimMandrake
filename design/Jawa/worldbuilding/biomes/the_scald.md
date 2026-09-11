@@ -159,7 +159,7 @@ the dung-and-mat economy.**
 - **The groves** — the Greentide's twin flanks, with the Wildsteam's
   jungle seats a day's walk from the sacred baths they quietly prefer to
   their own Miasma pilgrimage's odds.
-- **Wrecks in the shallows** — what the pan swallowed over millennia,
+- **Wrecks in the shallows** — what the pan swallowed over the ages,
   cooked clean, visible through cyan glow on a still day: salvage priced
   in burns.
 - ⭐ **AMENDMENT, added detail, 2026-09-07 (owner ruling, `SCALD_DARK_TOWER_1`)**: a

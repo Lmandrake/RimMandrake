@@ -24,7 +24,7 @@ Traits verified. No `Pyromaniac`.
 ⭐ **`TERRAMANUFACTURE_CANON_1`** (owner 2026-09-06,
 `worldbuilding/biomes/the_propane_lakes.md` §3) gives the whole compound its shadow: the
 ancients the Helix claims were not terraformers but **terramanufacturers** — a planet-factory
-one-tenth built, collapsing inward for millennia — so the Helix's attempt to control the old
+one-tenth built, collapsing inward for ages — so the Helix's attempt to control the old
 technology now has a purpose to fail at. A cult that curates bodies one improvement per season
 is trying to inherit a species that drafted PLANETS, and the gap is the doctrine's quiet
 engine. Uu-Kanat knows exactly what the machine under the world was for, and complains about
@@ -183,7 +183,7 @@ adult: found alive in a Forsaken ruin forty-one years ago. The most valuable thi
 **Grrat** · Sith Massassi · m · ~30
 `traits: Brawler, TooSmart, Gourmand`
 `skills: Social 15`
-childhood: he was not raised. He was finished, four thousand years late, from somebody else's notes.
+childhood: he was not raised. He was finished, an age too late, from somebody else's notes.
 adult: exhibit. Prior art. Living proof that this was attempted before and done badly.
 > Two hundred kilos of red hide and folded-back tusks, and he performs the roar for visiting traders twice a day — on cue, professionally, and it is *magnificent*. He negotiated the terms himself. He is paid in meat, he renegotiated in the spring, and the curator who keeps calling him a weapon has never once got the better of him across a table.
 

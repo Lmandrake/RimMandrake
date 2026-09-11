@@ -58,8 +58,8 @@ iguana) **evicted**.
 
 ## 1. What it is
 
-A red valley on a scalded mountain, roofed by a thunderstorm that has not stopped in a
-thousand years. Under the cloud everything is wet, warm, and *unfinished*: trees half-way
+A red valley on a scalded mountain, roofed by a thunderstorm that has never been
+known to stop. Under the cloud everything is wet, warm, and *unfinished*: trees half-way
 to being something else, animals with one design completed and two abandoned, ground that
 is itself an organism budding new attempts every hour. And then the cloud tears — and the
 sun comes through like a sterilizing lamp, and everything alive dives for cover, because

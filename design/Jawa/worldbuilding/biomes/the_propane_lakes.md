@@ -98,8 +98,9 @@ Forsaken Crags with the Dark. The Dark is aurora-ash, blown toward the terminato
 ### Ignition has an engine
 
 A propane sea under an electrojet: induced ground currents, static off blowing ice sand,
-dry lightning. The lab beneath the surface has survived ten thousand years because nothing
-hot has touched that lake since the war; a spacecraft's thruster is the first (§8).
+dry lightning. The lab beneath the surface has survived since the war — ten thousand years,
+it is believed, though little is truly known — because nothing
+hot has touched that lake since; a spacecraft's thruster is the first (§8).
 
 ### The machine (owner's ancient history, 2026-09-06 — verbatim in intent)
 
@@ -108,7 +109,7 @@ Not terraforming: terramanufacture.** What they were going to build no longer ma
 They had only begun — the sub-surface structures, the self-assembling megastructures, the
 **planet-scale power dynamo** — when the Assailants came and everything became surviving
 them. Since then it is **a one-tenth-built dream slowly grinding down, falling down,
-collapsing inward on itself over the millennia.** 🔑 **The sub-solar point needed all the
+collapsing inward on itself over the ages.** 🔑 **The sub-solar point needed all the
 power they could possibly channel into the planet** — that is why the magnetic pole is
 there: the dynamo's intake, the Rust Cathedral its remnant. **The lab was never supposed
 to be there**: a war lab built to study the weapon *after* it was deployed and active,

@@ -335,8 +335,8 @@ one, the Cathedral's own vermin.
 > A cockroach the size of a hand, except it was never alive: stamped plates, pinned
 > joints, and no maker's mark anywhere on it. It grazes rust the way a beetle grazes
 > lichen, and the plate behind it is clean. Salvagers call them sweepings and let them
-> be — partly because the droids get quiet when you don't, and partly because in ten
-> thousand years nobody has ever found a dead one.
+> be — partly because the droids get quiet when you don't, and partly because
+> nobody has ever found a dead one.
 
 ## 6. The gear-dancers — the living bolts, made a def
 

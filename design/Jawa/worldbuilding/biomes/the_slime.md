@@ -53,7 +53,7 @@ A country-sized body lying in the mildest weather on the planet, wearing a lands
 its skin: fields of its own grass, groves of its own trees, herds of its own cells. It
 was a weapon once. It ate everything it was sent against, and what it ate unmade it —
 now it is a **living registry and database, forever seeking to ingest, analyze,
-recombine, store, and multiply**, still faithfully serving a master a thousand years
+recombine, store, and multiply**, still faithfully serving a master ages
 decayed. It shows little to no sentient activity — and some fear that will not last:
 that one day it becomes another **Mnggal-Mnggal** and spreads exponentially. So far, it
 only reads.
@@ -76,7 +76,7 @@ Information **slurms through sluggish currents** inside the organism, carrying b
 weaponized imperative and its loyalty to the decayed master. The genetic database
 is a **circulating library — the shelf you need is somewhere out on the tide.** Every genome
 that ever touched the Slime is in circulation: every creature that waded in, every Star
-Wars race that ever visited, every dead thing the rivers delivered for a thousand years.
+Wars race that ever visited, every dead thing the rivers delivered for ages.
 
 ### Slimification
 

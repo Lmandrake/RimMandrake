@@ -34,7 +34,7 @@ A cold grey plain, scattered with the intact hulls of ships that fell out of the
 and every hull that is still warm has a garden around it.
 
 The wrecks are not rusty. That is the first thing that is wrong with the place. It is
-too cold and too dry for metal to corrode, so a hull that came down two thousand years
+too cold and too dry for metal to corrode, so a hull that came down an age
 ago is still **bright** — scoured, dented, split open, but silver, and it throws hard
 reflections across a landscape that has nothing else shiny in it. From a distance a
 wreck field reads as a scatter of mirrors on slate.
@@ -77,9 +77,9 @@ they are dense here for two unrelated reasons that happen to agree:
    nightward arrivals are recognisable ships. The distinction is a real one and it
    is checkable in the art.
 2. **Behavioural.** The terminator is the only habitable band on the planet, so it is
-   where every ship for ten thousand years has tried to arrive. Failed approaches
+   where every ship, age after age, has tried to arrive. Failed approaches
    fall **short of** the thing they were aiming at — and short, on a night-to-day
-   approach, is nightward. ⇒ Ten millennia of bad landings pile up on the same lane.
+   approach, is nightward. ⇒ Ages of bad landings pile up on the same lane.
 
 ⇒ Physics and history point at the same strip. That is why this biome cannot simply
 be moved: dayward of the terminator the wrecks are dust and there is no cold; deep
@@ -98,8 +98,8 @@ a single vehicle.**
 
 ## 3. Driving forces
 
-**A cold, dry, non-corroding plain where ten thousand years of intact wreckage has
-concentrated, where ammonia frost leaches each hull into its own private soil, and
+**A cold, dry, non-corroding plain where what is believed to be ten thousand years
+of intact wreckage — though none can truly count them — has concentrated, where ammonia frost leaches each hull into its own private soil, and
 where a handful of machines are still warm.** Everything else follows.
 
 ## 4. How the biology adapted

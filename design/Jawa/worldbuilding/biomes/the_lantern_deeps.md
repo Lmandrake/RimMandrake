@@ -188,7 +188,7 @@ its "true children" and it might no longer love its Free Droids quite so much.**
 
 **Ruled detail (card sitting 2026-09-11, `RUT_mechanoid_origin_canon.md` §5):**
 the open forks above are settled — the facility runs an **autonomous trickle** on
-the last standing orders (that trickle is where ten millennia of Sentinel attrition
+the last standing orders (that trickle is where ages of Sentinel attrition
 replacement came from; the mindstone-seeding line is dark; "restore" = hand it to
 the Cathedral). Wider automated infrastructure survives only because it is slept
 religiously: *"To use them is to risk them"* — kept at the most basic level, slowly
