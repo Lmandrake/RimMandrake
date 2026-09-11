@@ -7018,3 +7018,20 @@
 {"seat":"BENCH","event":"file","id":"HOMELESS_DISPOSITION_SITTING_1","title":"One sitting drains the 103 homeless needs-owner rows to place/reserve/cut (commission-first policy rules showcase biomes out as destinations)","kind":"task","target":"v1","needs":"owner","for":"BENCH","ts":"2026-09-11T02:44:40Z"}
 {"seat":"BENCH","event":"file","id":"TWINKLE_FLORA_SPIKE_1","title":"Timeboxed spike: slow glow-pulse animation on ONE plant (comp/shader), measure per-plant tick cost, report feasibility (owner card ruling)","kind":"build","target":"v1","for":"FOUNDRY","ts":"2026-09-11T02:49:11Z"}
 {"seat":"BENCH","event":"file","id":"PALETTE_ANCHOR_DRAFT_1","title":"Draft per-biome palette hex anchors from sheet prose + existing art; deliver ONE color-board review sheet for the owner's eye (owner card ruling)","kind":"design","target":"v1","for":"BENCH","ts":"2026-09-11T02:49:12Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-11T02:49:36Z"}
+{"seat":"FOUNDRY","event":"block","id":"CHERRYPICKER_SHIP_BASELINE_STALE_1","reason":"needs owner: backstory un-cut (141->10) could be deliberate or a review-window leftover, can't confirm which without asking whoever touched Cherry Picker's UI tonight","ts":"2026-09-11T02:49:55Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MIASMA_NURSERY_KINDS_1","ts":"2026-09-11T02:50:20Z"}
+{"seat":"FOUNDRY","event":"start","id":"MIASMA_NURSERY_KINDS_1","ts":"2026-09-11T02:50:21Z"}
+{"seat":"FOUNDRY","event":"close","id":"MIASMA_NURSERY_KINDS_1","sha":"4b1f5b713709d592f7ab9bbe0f0a9373ccab2340","ts":"2026-09-11T03:07:33Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ART_BACKGROUND_TEMPLATE_1","ts":"2026-09-11T03:08:10Z"}
+{"seat":"FOUNDRY","event":"start","id":"ART_BACKGROUND_TEMPLATE_1","ts":"2026-09-11T03:08:11Z"}
+{"seat":"FOUNDRY","event":"close","id":"ART_BACKGROUND_TEMPLATE_1","sha":"62ea4f3c7093005e4fe41ab62fbe0708686f0158","ts":"2026-09-11T03:16:44Z"}
+{"seat":"FOUNDRY","event":"claim","id":"WYYYSCHOKK_FERALISK_MERGE_1","ts":"2026-09-11T03:16:57Z"}
+{"seat":"FOUNDRY","event":"start","id":"WYYYSCHOKK_FERALISK_MERGE_1","ts":"2026-09-11T03:16:58Z"}
+{"seat":"FOUNDRY","event":"close","id":"WYYYSCHOKK_FERALISK_MERGE_1","sha":"7bad94185e11a3b3025d07ed837da50186789357","ts":"2026-09-11T03:41:01Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PYRELANDS_FIRE_WEB_COMMISSION_1","ts":"2026-09-11T03:41:53Z"}
+{"seat":"FOUNDRY","event":"start","id":"PYRELANDS_FIRE_WEB_COMMISSION_1","ts":"2026-09-11T03:41:54Z"}
+{"seat":"FOUNDRY","event":"close","id":"PYRELANDS_FIRE_WEB_COMMISSION_1","sha":"9406d5e0838bfcf04e076b6dbaf22ce21ee699c2","ts":"2026-09-11T03:53:58Z"}
+{"seat":"FOUNDRY","event":"claim","id":"TWINKLE_FLORA_SPIKE_1","ts":"2026-09-11T03:54:13Z"}
+{"seat":"FOUNDRY","event":"start","id":"TWINKLE_FLORA_SPIKE_1","ts":"2026-09-11T03:54:14Z"}
+{"seat":"FOUNDRY","event":"close","id":"TWINKLE_FLORA_SPIKE_1","sha":"cc967cd5f59678905fef8ea5d1c56feea96c8f23","ts":"2026-09-11T04:00:36Z"}

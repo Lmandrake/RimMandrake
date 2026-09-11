@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 132.50714681499812,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 132.50714681499812,
+  "height": 320,
+  "id": "pyrelands_furnacebeast_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789105366,
+    "primary_used_percent": 16.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/10/rollout-2026-09-10T20-45-30-01a08e92-0a5f-73c1-8dfb-4c4d7bcec669.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 27.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789105366,
+    "primary_used_percent": 11.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/10/rollout-2026-09-10T20-11-09-01a08e72-94d9-7652-b40f-c38500954365.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 26.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 320,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 320,
+    "id": "pyrelands_furnacebeast_v1",
+    "note": "Generated with built-in imagegen, resized to exactly 320x320, and saved as a transparent RGBA PNG. One retry followed a local resizing command error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_furnacebeast_v1\\pyrelands_furnacebeast_v1.png",
+    "status": "ok",
+    "width": 320
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_furnacebeast_v1/pyrelands_furnacebeast_v1.png\n    320x320  rgba  116,094 bytes  (132s)\n"
+}

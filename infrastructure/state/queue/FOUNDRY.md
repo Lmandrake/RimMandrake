@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T02:49:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T04:00:36Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -855,6 +855,16 @@ blocked:  design draft, item's own criterion 1: stays a draft until the owner ru
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
 
+## CHERRYPICKER_SHIP_BASELINE_STALE_1 Cherry Picker SHIP baseline stale since 2026-09-02: live config has drifted 617 added / 178 removed vs tracked snapshot, bundles a near-total backstory un-cut that needs confirming before re-baselining
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+blocked:  needs owner: backstory un-cut (141->10) could be deliberate or a review-window leftover, can't confirm which without asking whoever touched Cherry Picker's UI tonight
+summary:  CHERRYPICKERSHIPBASELINESTALE1
+prose:    infrastructure/state/items/CHERRYPICKER_SHIP_BASELINE_STALE_1.md
+
 ## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -905,64 +915,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## CHERRYPICKER_SHIP_BASELINE_STALE_1 Cherry Picker SHIP baseline stale since 2026-09-02: live config has drifted 617 added / 178 removed vs tracked snapshot, bundles a near-total backstory un-cut that needs confirming before re-baselining
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  CHERRYPICKERSHIPBASELINESTALE1
-prose:    infrastructure/state/items/CHERRYPICKER_SHIP_BASELINE_STALE_1.md
-
-## MIASMA_NURSERY_KINDS_1 Miasma sea-nursery (owner ruling at 2026-09-10 sitting: sea creatures raise young in the Miasma): juvenile-only PawnKindDefs via maxGenerationAge cap + Miasma wildAnimals patch
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MIASMA_NURSERY_KINDS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MIASMA_NURSERY_KINDS_1.md
-
-## ART_BACKGROUND_TEMPLATE_1 Standard black-background creature-art generation template: write it, prove it out iteratively, keep a works/doesn't log for process improvement
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ART_BACKGROUND_TEMPLATE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ART_BACKGROUND_TEMPLATE_1.md
-
-## WYYYSCHOKK_FERALISK_MERGE_1 Wyyyschokk duplicates AA_Feralisk's properties/attacks (stats+verbs), then AA_Feralisk retires entirely; cut Cinderlisk, Maguana, AB_Feralisk and every other 'lisk (owner sitting ruling)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WYYYSCHOKK_FERALISK_MERGE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WYYYSCHOKK_FERALISK_MERGE_1.md
-
-## PYRELANDS_FIRE_WEB_COMMISSION_1 Pyrelands fire-web: commission fire-hawk + furnace-beast defs, recast Razorjack (fire-follower) + Barbslinger (ash-grazer), pick a burrower (owner card ruling)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_FIRE_WEB_COMMISSION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_FIRE_WEB_COMMISSION_1.md
-
-## TWINKLE_FLORA_SPIKE_1 Timeboxed spike: slow glow-pulse animation on ONE plant (comp/shader), measure per-plant tick cost, report feasibility (owner card ruling)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TWINKLE_FLORA_SPIKE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TWINKLE_FLORA_SPIKE_1.md
+_none._
