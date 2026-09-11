@@ -1,0 +1,40 @@
+<title>Mirrored Tickets</title>
+<style>
+:root{
+  --bg:#eeece4; --surface:#ffffff; --border:#dcd6c6;
+  --ink:#2a241d; --ink-2:#655c4d; --accent:#1f8f83;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#171310; --surface:#211c17; --border:#3a3025;
+    --ink:#f1e9db; --ink-2:#c2b6a0; --accent:#39c8b8;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#171310; --surface:#211c17; --border:#3a3025;
+  --ink:#f1e9db; --ink-2:#c2b6a0; --accent:#39c8b8;
+  color-scheme:dark;
+}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.6 "IBM Plex Sans",system-ui,sans-serif;
+  display:grid;place-items:center;min-height:100vh;padding:0 16px}
+.note{max-width:34rem;background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:28px 32px}
+h1{font-size:19px;margin:0 0 4px;text-wrap:balance}
+.stamp{font:12px "IBM Plex Mono",ui-monospace,monospace;color:var(--ink-2);
+  text-transform:uppercase;letter-spacing:.08em;margin:0 0 16px}
+p{margin:0 0 12px;color:var(--ink-2)}
+a{color:var(--accent)}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono&display=swap">
+<div class="note">
+  <h1>This board is retired</h1>
+  <p class="stamp">Owner ruling · 2026-09-11</p>
+  <p>The Mirrored Tickets board and its GitHub mirror scripts were removed from the
+  RimMandrake repo. The rimflow ledger (<code>infrastructure/state/</code>) remains the
+  single source of truth for project tracking.</p>
+  <p>Live views that continue: the <strong>Project Maturity</strong> dashboard and the
+  <strong>Repo Health Treemap</strong>.</p>
+</div>

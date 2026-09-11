@@ -5097,34 +5097,10 @@
     "hash": "38a2f17a4e83a062af51539440db0461096a9faf43f817b6aac781bb00d877c5",
     "sha": "43f96b1b"
   },
-  "src/RimMandrake/rimflow/board_labels.py": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "ce6f3e8085678852b6a582d9c56b598c01eb509e4e4ffa38b1588fcaa0a52858",
-    "sha": "43f96b1b"
-  },
-  "src/RimMandrake/rimflow/board_viz.py": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "a1c1e6c927aa08f395a7968881e7c0fd1ae093d7bc452f8e98718b61afcbada5",
-    "sha": "3ea1ca20"
-  },
   "src/RimMandrake/rimflow/cli.py": {
     "cleanCount": 3,
     "date": "2026-09-09",
     "hash": "80bbde27edc98629a77b15622fea0a29aba17efd27add22b29dd0f952abf0e46",
-    "sha": "3ea1ca20"
-  },
-  "src/RimMandrake/rimflow/github_mirror.py": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "d646c332af03063bae0a09df0f3917a5df34e74ea713b2281fdcda0b289f54a2",
-    "sha": "3ea1ca20"
-  },
-  "src/RimMandrake/rimflow/github_project.py": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "ea9c269be5eb9f83cab978a5daec06a83e94e2b1b348fbe6a3add6f0e1ca3b1c",
     "sha": "3ea1ca20"
   },
   "src/RimMandrake/rimflow/model.py": {
