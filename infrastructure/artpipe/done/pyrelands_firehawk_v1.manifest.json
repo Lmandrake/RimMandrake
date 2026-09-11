@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 108.32422049999877,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 108.32422049999877,
+  "height": 256,
+  "id": "pyrelands_firehawk_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789105366,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/10/rollout-2026-09-10T20-45-30-01a08e92-0aa3-7e63-80e6-c015b2888459.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 27.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789105366,
+    "primary_used_percent": 10.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/10/rollout-2026-09-10T20-11-09-01a08e72-94bf-7fe0-906b-6997ba31c822.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 26.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "pyrelands_firehawk_v1",
+    "note": "Generated with built-in imagegen, resized to exactly 256\u00d7256, and preserved genuine alpha transparency. Local image utility failure required one retry.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_firehawk_v1\\pyrelands_firehawk_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_firehawk_v1/pyrelands_firehawk_v1.png\n    256x256  rgba  66,110 bytes  (108s)\n"
+}
