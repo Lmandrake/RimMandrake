@@ -1,4 +1,29 @@
-# BMT_FAUNA_ABSORPTION_1 — BLOCKED: donor mod and creature count don't match, escalating
+# BMT_FAUNA_ABSORPTION_1 — donor corrected to biomesteam.*, ready to port
+
+## Owner ruling, 2026-09-11 (question-card sitting)
+
+Given the choice between (a) retargeting the item's donor to `biomesteam.*`
+since the 71/41/30 figures are real and already ruled, (b) filing a fresh
+keep-or-port sitting on the real `mlie.beastsoftherim`, or (c) leaving it
+blocked — the owner picked **(a)**: the 71/41/30 figures are correct and
+already ruled (`decisions_propagated.json`); the item named the wrong donor.
+
+**Corrected scope for this item:** port the 71 `BMT_`-prefixed creatures (38
+clean "in" + 30 "move" + `BMT_ChemSnail` resolved OUT per `biome_findings.md`
+= 68 unique defNames landing; the "41 in" in the old queue line becomes 38
+clean-in + `BMT_ChemSnail`'s conflict resolved as detailed below) from the
+**`biomesteam`** family — `biomesteam.biomescaverns`, `biomesteam.biomescore`,
+`biomesteam.biomespollutedlands` — into our own tier per the SWBestiary
+donor-retirement pattern, then retire those three `biomesteam.*` mods.
+
+`mlie.beastsoftherim` (the real 19-species/64-def donor) is UNAFFECTED by
+this item — it stays exactly as it was in the Wave 2 stat-normalization audit
+listing (its own keep-or-port sitting is separate, not required before this
+item proceeds).
+
+---
+
+## Original escalation (superseded above, kept for provenance) — donor mod and creature count don't match
 
 ## What this pass found (measured, not guessed)
 
