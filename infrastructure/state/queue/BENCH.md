@@ -7,12 +7,48 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T06:55:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T07:05:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## TERRAMANUFACTURE_CANON_1 Propagate the terramanufacture ancient history (dynamo at the substellar pole, Cathedral as remnant, unplanned war lab, mutual learning) into the world definition and canon docs; card contradictions
+state:    ready
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  - Write the ruling INTO the docs that already speak of the planet's past (superseding
+prose:    infrastructure/state/items/TERRAMANUFACTURE_CANON_1.md
+
+## GREENTIDE_MECHANICS_1 The Greentide C# kit: wet-bulb condition+gear, dry-air blower, scald damage+steam devils, Roil/Breaklight weathers, churnmud+causeways, three-feller tree fall, Lunger ambush, grazing suppression, silence cue, Greatbole mineable-living-tree class — spec the_greentide.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/GREENTIDE_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREENTIDE_MECHANICS_1.md
+
+## WEBWORK_MECHANICS_1 Webwork C# kit: web-sense felt-marks + pack convergence, concealed-burst ambush, Shokk-bound hediff, light-moat via existing UV-sensitivity mechanism (verify def), beetle anchor-chewing, margin creep, droid-priority targeting — spec the_webwork.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/WEBWORK_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_MECHANICS_1.md
+
+## SCARLANDS_MECHANICS_1 Scarlands C# kit: mynock ship-infestation (board/breed/eat conduit+flooring+lighting/hunt-out), Scarlands mark hediff, plated-grazer scaria onset, Sentinel defend-only AI bounds, pre-sprung danger dressing — spec the_scarlands.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/SCARLANDS_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCARLANDS_MECHANICS_1.md
 
 ## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
 state:    ready
@@ -136,16 +172,6 @@ thin:     no ## criteria
 summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
 prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
 
-## TERRAMANUFACTURE_CANON_1 Propagate the terramanufacture ancient history (dynamo at the substellar pole, Cathedral as remnant, unplanned war lab, mutual learning) into the world definition and canon docs; card contradictions
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Write the ruling INTO the docs that already speak of the planet's past (superseding
-prose:    infrastructure/state/items/TERRAMANUFACTURE_CANON_1.md
-
 ## KYBER_TRADE_PLOT_1 Selling kyber: Empire heat rises per sale, Hutt interest rises, alleged Jedi from the Moisture Farmers, the donate-and-smuggle plot (no helping the Rebellion here)
 state:    proposed
 row:      unassigned
@@ -176,26 +202,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  CANONLOREPROPAGATION1 — canon back into the lore docs, and the three-layers rethink
 prose:    infrastructure/state/items/CANON_LORE_PROPAGATION_1.md
 
-## GREENTIDE_MECHANICS_1 The Greentide C# kit: wet-bulb condition+gear, dry-air blower, scald damage+steam devils, Roil/Breaklight weathers, churnmud+causeways, three-feller tree fall, Lunger ambush, grazing suppression, silence cue, Greatbole mineable-living-tree class — spec the_greentide.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREENTIDE_MECHANICS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GREENTIDE_MECHANICS_1.md
-
-## WEBWORK_MECHANICS_1 Webwork C# kit: web-sense felt-marks + pack convergence, concealed-burst ambush, Shokk-bound hediff, light-moat via existing UV-sensitivity mechanism (verify def), beetle anchor-chewing, margin creep, droid-priority targeting — spec the_webwork.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WEBWORK_MECHANICS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WEBWORK_MECHANICS_1.md
-
 ## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
 state:    proposed
 row:      unassigned
@@ -205,16 +211,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SHOKKWEAVE_SOLE_SOURCE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
-
-## SCARLANDS_MECHANICS_1 Scarlands C# kit: mynock ship-infestation (board/breed/eat conduit+flooring+lighting/hunt-out), Scarlands mark hediff, plated-grazer scaria onset, Sentinel defend-only AI bounds, pre-sprung danger dressing — spec the_scarlands.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SCARLANDS_MECHANICS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SCARLANDS_MECHANICS_1.md
 
 ## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
 state:    proposed
