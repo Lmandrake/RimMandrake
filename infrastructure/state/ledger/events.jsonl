@@ -7317,3 +7317,4 @@
 {"seat":"FOUNDRY","event":"close","id":"ART_REGEN_REGISTRY_1","sha":"a223c9568","ts":"2026-09-11T17:50:01Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"SHIP_VERMIN_MOD_1 quicktest verification","ts":"2026-09-11T17:52:39Z"}
 {"seat":"BENCH","event":"file","id":"FAUNA_LORE_DIVERSIFICATION_1","title":"Per-beast damage diversification round AFTER size scaling: judge each beast by its art + description (scary vs harmless), diverge individuals from the 12-15x band deliberately - owner ruled 2026-09-11, rides the beast graphics/lore pass","kind":"task","target":"v1","needs":"owner","for":"BENCH","ts":"2026-09-11T17:52:53Z"}
+{"seat":"BENCH","event":"close","id":"FAUNA_GRAPHS_SITTING_1","sha":"85f46ea6be1673ee70df00d71c0c43615ba963a1","ts":"2026-09-11T17:53:20Z"}
