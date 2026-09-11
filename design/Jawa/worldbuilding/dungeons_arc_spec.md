@@ -384,9 +384,54 @@ conflict layer is its own item, not part of either dungeon build.
 - Per-vault hand-finish pass (set-pieces, the casket hall for V6) — "every
   vault then gets a bench hand-finish pass with the owner" (owner ruling,
   point 5).
-- All wake/loot/leave dialogue and letters, and the ship-claim thread that
-  opens from waking V6.
+- Wake/loot/leave dialogue and letters for V1–V5, the Assailant reveal beat,
+  and the ship-claim thread's continuation. **V6's five core text units are
+  drafted and owner-accepted-for-now (§3.10) — no longer held, but not
+  frozen.**
 - The six bridge placement writes.
+
+### 3.10 V6 text — drafted at a bench sitting, 2026-09-11 (PROVISIONAL)
+
+Owner: *"That is good for now. This will likely change in the future and
+that's ok."* — accepted as working text, explicitly revisable; wire it, but
+nothing downstream may treat it as frozen. Register guards honored: "the
+Forsaken" exonym in narrator text, Rakata endonym only in their own mouths;
+tyranny surfaces only AT the reveal (the wake).
+
+**Arrival letter (narrator):**
+> The vault at the cold end of the world is intact. No breach, no power, no
+> sound. Frost has sealed the doors from outside, and something older than
+> frost has sealed them from within. Whatever the Forsaken meant to keep
+> here, they meant to keep it a long time.
+
+**The casket hall (narrator, at the core):**
+> The hall holds rows of caskets, each fogged from the inside. The
+> instruments still tick, slower than any living pulse. These are not stores
+> and they are not weapons. They are people — Forsaken, frozen at the moment
+> their war was still worth surviving. The colony can wake them, take what
+> keeps them, or close the door.
+
+**WAKE (letter + first dialogue — the tyranny made present, per canon.yml
+`rakata.woken_brutality`):**
+> Letter: The caskets open. The Forsaken wake badly — coughing, furious,
+> giving orders in a language the translators strain at. There is no
+> gratitude in them. There was never going to be.
+>
+> First words (a woken commander, to whoever stands nearest): "Rakata do not
+> thank tools. Stand aside — report: what year, what front, who holds the
+> sky? … Speak slowly. You are a *scavenger*. Scavengers opened the caskets?"
+> *(a beat)* "And that hull outside. That is a colonizer ship of the Rakata.
+> What, exactly, is it doing under *your* feet?"
+
+**LOOT (the game says it plainly, per the ruled ladder):**
+> Stripping the caskets' cold-cores will kill everyone sleeping in them.
+> There is no version of this where they survive it. The cores are Forsaken
+> technology of the first rank.
+
+**LEAVE (the narrator remembers — `cradle_memory`):**
+> The colony closes the hall and reseals the outer door. The instruments tick
+> on, slower than any living pulse. Nothing on Ash'karr knows what was chosen
+> here. One thing does.
 
 ## 4. Cross-links
 
