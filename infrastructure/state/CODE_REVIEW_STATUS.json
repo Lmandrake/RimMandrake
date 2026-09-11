@@ -1716,10 +1716,10 @@
     "sha": "564bd122"
   },
   "src/RimMandrake/Ninefold/Source/Patch_GravshipLaunched.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "40424ef387773128f13d331087216ddb71399787bcf63b31a82be31130f96fd9",
-    "sha": "572413c0"
+    "cleanCount": 3,
+    "date": "2026-09-10",
+    "hash": "19a9d4a6cbd83ec1f437b26f3d6942d0f0360b7389018accb013ff44ee8f3433",
+    "sha": "50f52d6e"
   },
   "src/RimMandrake/Ninefold/Source/Patch_KillManner.cs": {
     "cleanCount": 1,
@@ -2058,10 +2058,10 @@
     "sha": "90940c68"
   },
   "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-10",
-    "hash": "ae6f5cf7a1aec813a6bafde3e0f0c496e7fb1d453106ca18391146d73746486c",
-    "sha": "8abbec7b"
+    "hash": "4a3300a258362eeded637aedbef165cd283c59682aa4cfecd73b93d1453eae0f",
+    "sha": "50f52d6e"
   },
   "src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshLadder.xml": {
     "cleanCount": 1,
@@ -3282,10 +3282,10 @@
     "sha": "377864eb"
   },
   "src/RimMandrake/Utils/check_config_errors.py": {
-    "cleanCount": 1,
-    "date": "2026-09-08",
-    "hash": "99942b39db460be641883539bbbd54f51a6bbc01052cce5c970d4e4218e5b228",
-    "sha": "e3212aae"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "fa8a531ce015d9fdd293358d8be5ad29ab74b5b62107bd3cb014543d3e759b9e",
+    "sha": "50f52d6e"
   },
   "src/RimMandrake/Utils/check_declarations.py": {
     "cleanCount": 1,
