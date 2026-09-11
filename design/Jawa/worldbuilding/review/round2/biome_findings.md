@@ -1,5 +1,7 @@
 # Per-biome inconsistency/opportunity review — post-move casts (round 2)
 
+STANDING RULING added at the disposition sitting (owner, 2026-09-10): BUG-FACTION LAW — bug-bodied creatures are never biome-placed; "let the bug factions control bugs so we don't break infestations" (extends the insect ruling beyond VFEI2 to bug shapes generally).
+
 Derived 2026-09-10 from `decisions_propagated.json` (828 rows) + `move_mapping_v2.md`
 (with the 2026-09-10 rulings: ninth faction-fauna roster, both-jungles trio, injectables,
 placement-rule creatures) + each biome sheet's own admission tests and hard bans.
@@ -175,7 +177,7 @@ INCONSISTENCIES:
 OPPORTUNITIES:
 1. Great Thrumbo as the deep-desert white whale (very rare, very dangerous) fills the sheet's legend slot beside the Krayts.
 
-## poison_forest — churn 9 (cast 17 → 20)
+## poison_forest — churn 10 (cast 17 → 21) — Silooth arrives (disposition sitting)
 Arrivals (5): Lylek, AA_Plasmorph, AA_LuciferBug, AA_Radyak, AA_RipperHound. Flier extracted: AA_InfectedAerofleet. Horror ruling: Visceral out (injected dark-side art only). Sitting 2026-09-10: Skalder arrives from arid; AA_Wildpod OUT.
 
 INCONSISTENCIES:
@@ -261,7 +263,7 @@ Arrivals (1): AA_AuroraSylph ("perfect Propane Lake creature"). Flier→roster: 
 1. Two residents for the "most alien life in the cast" biome — the showcase is empty; FrostboundBehemoth's alien redesign is the only pipeline and it's OPEN.
 2. OPPORTUNITY: admission test is strict (solvent-tolerant, ignition-safe) — commission 2-3 natives around AuroraSylph's aurora register rather than importing.
 
-## the_blue_desert — churn 1 (cast 0 → 1) ⚠ NEAR-EMPTY
+## the_blue_desert — churn 2 (cast 0 → 2) — Vapaad placed (owner override of commission-first, disposition sitting)
 Arrivals (1): AA_Thunderbeast (electric — fits the detonation register).
 1. One creature. The hydrocarbon-flora biome has no herbivore eating that flora (warm-detonation ban makes this a genuinely novel niche) — commission or route from the hot-biome OPEN pool (Barbslinger, ysalamir).
 

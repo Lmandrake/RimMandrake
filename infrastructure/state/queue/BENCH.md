@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T04:04:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T04:29:13Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -452,16 +452,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FLORA_COMMISSION_TEMPLATE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FLORA_COMMISSION_TEMPLATE_1.md
 
-## HOMELESS_DISPOSITION_SITTING_1 One sitting drains the 103 homeless needs-owner rows to place/reserve/cut (commission-first policy rules showcase biomes out as destinations)
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/HOMELESS_DISPOSITION_SITTING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/HOMELESS_DISPOSITION_SITTING_1.md
-
 ## PALETTE_ANCHOR_DRAFT_1 Draft per-biome palette hex anchors from sheet prose + existing art; deliver ONE color-board review sheet for the owner's eye (owner card ruling)
 state:    proposed
 row:      unassigned
@@ -479,5 +469,5 @@ needs:    offline
 target:   v1
 kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GELATINOUS_SLIME_MOD_1.md yet — write one when you have something to say)
+summary:  Owner card rulings, 2026-09-10 (round 2)
 prose:    infrastructure/state/items/GELATINOUS_SLIME_MOD_1.md

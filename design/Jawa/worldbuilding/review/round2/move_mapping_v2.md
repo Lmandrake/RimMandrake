@@ -4,7 +4,7 @@
 faction-only (infestation/raid events), never biome residents. The four VFEI2 move
 rows (Acidspitter, Macrofly, RoyalSpelopede, Silverfish) are VOIDED and removed;
 their decisions rows are marked FACTION-RESERVED in `decisions_propagated.json`.
-164 moves live (4 arid sitting rulings 2026-09-10 added; Cannok/Vulptex resolve to RESERVE, not a biome) (horror/injectable ruling 2026-09-10 voided Bulwark, Prowler, Squall — injected content, not biome arrivals).
+169 moves live (disposition sitting added 5; GR_ParagonThrumbo already mapped) (4 arid sitting rulings 2026-09-10 added; Cannok/Vulptex resolve to RESERVE, not a biome) (horror/injectable ruling 2026-09-10 voided Bulwark, Prowler, Squall — injected content, not biome arrivals).
 
 Rebuilt from the owner's completed fauna review (`design/Jawa/worldbuilding/review/fauna_assignment_register.decisions.json`, decidedCount 828, 164 `move` rows). Row key = the decisions.json dict key (`fauna:<originSheet>:<creature>` or `homeless:<creature>`); the owner's words are the verbatim `note` field on that row (truncated to 15 words), never invented. Seeded from `move_target_mapping_2026-09-09.md` (69 rows, validated nickname table); extended here to cover all 164. Standing corrections applied: ocular/occular -> the_contagion; Volcanic (fliers) -> the Forge family, not the_pyrelands.
 
@@ -176,6 +176,12 @@ Rebuilt from the owner's completed fauna review (`design/Jawa/worldbuilding/revi
 | `fauna:desert:Kwi` | Kwi | to reserve (sitting 2026-09-10) | RESERVE |
 | `fauna:desert:AA_Gigantelope` | AA_Gigantelope | to reserve (sitting 2026-09-10) | RESERVE |
 | `fauna:the_greentide:BMT_Diggerpede` | BMT_Diggerpede | to reserve (sitting 2026-09-10) | RESERVE |
+
+| `homeless:AA_SmallButterfly` | AA_SmallButterfly | move to jungle (disposition sitting) | the_greentide + the_fever_wood |
+| `homeless:BMT_Sacapillar` | BMT_Sacapillar | wretched-many pick (disposition sitting) | wasteland |
+| `homeless:MarshHaunt` | MarshHaunt | disposition sitting | the_miasma |
+| `homeless:Silooth` | Silooth | Poison Forest (disposition sitting) | poison_forest |
+| `homeless:Vapaad` | Vapaad | blue desert (owner override of commission-first) | the_blue_desert |
 
 ## Summary
 

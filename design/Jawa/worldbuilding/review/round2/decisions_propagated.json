@@ -3232,7 +3232,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:04:41.590Z",
       "decision": "in",
-      "note": "sold as a pet by the Helix faction, ",
+      "note": "sold as a pet by the Helix faction,  | TRADER-BEAST-RESERVED: joins the trader-beast roster (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3292,7 +3292,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:47:12.207Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3302,7 +3302,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:56:36.807Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3312,7 +3312,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:20:34.988Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3412,7 +3412,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:40:10.147Z",
       "decision": "in",
-      "note": "Assailant",
+      "note": "Assailant | RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3492,7 +3492,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:55:00.908Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3502,7 +3502,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:55:19.547Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3542,7 +3542,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:53:53.734Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3572,7 +3572,7 @@
       "artPrefill": "improve",
       "at": "2026-09-10T12:45:40.490Z",
       "decision": "in",
-      "note": "0.1 cell, smallest critter in huge numbers, eats plants ravenously and won't stop, event",
+      "note": "0.1 cell, smallest critter in huge numbers, eats plants ravenously and won't stop, event | RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "medium"
@@ -3601,8 +3601,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:52:45.032Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3612,7 +3612,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:12:45.317Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3672,7 +3672,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:38:06.549Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3702,7 +3702,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:52:51.186Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3730,8 +3730,8 @@
     "homeless:AA_Skiphound": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3750,8 +3750,8 @@
       "art": "improve",
       "artPrefill": "improve",
       "at": "2026-09-10T12:46:30.775Z",
-      "decision": "in",
-      "note": "0.2 cell, flits around the arid shrubland ",
+      "decision": "move",
+      "note": "0.2 cell, flits around the arid shrubland  | PLACED: the_greentide + the_fever_wood — owner note: move to jungle (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "medium"
@@ -3771,7 +3771,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:41:15.494Z",
       "decision": "in",
-      "note": "assailant",
+      "note": "assailant | RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3781,7 +3781,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:48:45.662Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3831,7 +3831,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:31:17.682Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3860,7 +3860,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:33:05.501Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3870,7 +3870,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:33:09.969Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "",
       "sizeBinPrefill": "medium"
@@ -3880,7 +3880,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:33:07.547Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3940,7 +3940,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:31:07.065Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
@@ -3960,7 +3960,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:31:23.647Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3970,7 +3970,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:32:03.019Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -3980,7 +3980,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:35:28.510Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4049,8 +4049,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T05:32:04.537Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4059,8 +4059,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T05:31:25.928Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4130,7 +4130,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:32:28.613Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4170,7 +4170,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:32:06.779Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4180,7 +4180,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:31:36.646Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4230,7 +4230,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:31:49.512Z",
       "decision": "in",
-      "note": "Crystal Caverns",
+      "note": "Crystal Caverns | RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4249,8 +4249,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T05:31:22.200Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
@@ -4280,7 +4280,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:32:08.127Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4290,7 +4290,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:31:56.377Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "",
       "sizeBinPrefill": "medium"
@@ -4400,7 +4400,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:31:18.909Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
@@ -4410,7 +4410,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:31:57.994Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4510,7 +4510,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:32:09.333Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4520,7 +4520,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:31:59.183Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4529,8 +4529,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:47:04.939Z",
-      "decision": "in",
-      "note": "",
+      "decision": "move",
+      "note": "PLACED: wasteland (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4560,7 +4560,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:32:10.587Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4570,7 +4570,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:32:01.476Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4630,7 +4630,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:46:42.729Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4787,7 +4787,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:59:37.665Z",
       "decision": "in",
-      "note": "huuuge trader pack animal",
+      "note": "huuuge trader pack animal | TRADER-BEAST-RESERVED: joins the trader-beast roster (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -4864,7 +4864,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:46:54.293Z",
       "decision": "in",
-      "note": "",
+      "note": "TRADER-BEAST-RESERVED: joins the trader-beast roster (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -4913,7 +4913,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:34:52.281Z",
       "decision": "in",
-      "note": "domesticated settlement fodder",
+      "note": "domesticated settlement fodder | NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -4949,7 +4949,7 @@
       "art": "improve",
       "artPrefill": "improve",
       "decision": "in",
-      "note": "",
+      "note": "NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -4959,7 +4959,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:59:35.353Z",
       "decision": "in",
-      "note": "Used as domesticated dog alternative everywhere... so most settlements",
+      "note": "Used as domesticated dog alternative everywhere... so most settlements | NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5006,7 +5006,7 @@
       "artPrefill": "redo",
       "at": "2026-09-10T14:01:18.950Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "out",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5169,7 +5169,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:35:10.435Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5188,7 +5188,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:43:33.737Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -5280,7 +5280,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:52:32.828Z",
       "decision": "in",
-      "note": "Hutt spicemines dungeon",
+      "note": "Hutt spicemines dungeon | RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5318,7 +5318,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:31:03.402Z",
       "decision": "in",
-      "note": "Assailant territory",
+      "note": "Assailant territory | RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5328,7 +5328,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:47:09.051Z",
       "decision": "in",
-      "note": "0.8 cells, pet, settlements",
+      "note": "0.8 cells, pet, settlements | NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "medium"
@@ -5348,7 +5348,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:31:48.049Z",
       "decision": "in",
-      "note": "",
+      "note": "NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5357,8 +5357,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:32:13.839Z",
-      "decision": "in",
-      "note": "follow the boom beasts",
+      "decision": "out",
+      "note": "follow the boom beasts | CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5387,8 +5387,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:19:45.290Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5398,7 +5398,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:32:27.831Z",
       "decision": "in",
-      "note": "Helix territory",
+      "note": "Helix territory | NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5428,7 +5428,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:20:33.435Z",
       "decision": "in",
-      "note": "",
+      "note": "NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5457,8 +5457,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:06:24.681Z",
-      "decision": "in",
-      "note": "go with the boom",
+      "decision": "out",
+      "note": "go with the boom | CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5467,8 +5467,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:06:31.463Z",
-      "decision": "in",
-      "note": "go with the boom",
+      "decision": "out",
+      "note": "go with the boom | CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5497,8 +5497,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:20:26.583Z",
-      "decision": "in",
-      "note": "with the boom creatures",
+      "decision": "out",
+      "note": "with the boom creatures | CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5547,8 +5547,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T12:40:11.503Z",
-      "decision": "in",
-      "note": "goes along with the other boom creatures",
+      "decision": "out",
+      "note": "goes along with the other boom creatures | CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
@@ -5577,8 +5577,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:20:03.315Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5588,7 +5588,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:41:48.716Z",
       "decision": "in",
-      "note": "",
+      "note": "NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5596,8 +5596,8 @@
     "homeless:GR_FleshFlies": {
       "art": "redo",
       "artPrefill": "redo",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5607,7 +5607,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:36:09.202Z",
       "decision": "in",
-      "note": "assailant",
+      "note": "assailant | RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5617,7 +5617,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:36:14.222Z",
       "decision": "in",
-      "note": "assailant",
+      "note": "assailant | RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5647,7 +5647,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:20:08.824Z",
       "decision": "in",
-      "note": "",
+      "note": "NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5657,7 +5657,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:40:23.182Z",
       "decision": "in",
-      "note": "",
+      "note": "NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5666,8 +5666,8 @@
       "art": "keep",
       "artPrefill": "keep",
       "at": "2026-09-10T12:59:51.868Z",
-      "decision": "in",
-      "note": "wherever the boom creatures go",
+      "decision": "out",
+      "note": "wherever the boom creatures go | CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -5696,8 +5696,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:21:44.547Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5736,8 +5736,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:21:49.493Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5817,7 +5817,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:43:59.276Z",
       "decision": "in",
-      "note": "might want to reskin and add to Mechanoids",
+      "note": "might want to reskin and add to Mechanoids | RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -5836,8 +5836,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:21:59.254Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5847,7 +5847,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:23:31.729Z",
       "decision": "in",
-      "note": "",
+      "note": "NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5866,8 +5866,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:37:29.045Z",
-      "decision": "in",
-      "note": "Helix area",
+      "decision": "out",
+      "note": "Helix area | CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5926,7 +5926,7 @@
       "art": "improve",
       "artPrefill": "improve",
       "decision": "in",
-      "note": "",
+      "note": "NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5935,8 +5935,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:27:17.109Z",
-      "decision": "in",
-      "note": "with the boom",
+      "decision": "out",
+      "note": "with the boom | CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5945,8 +5945,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:20:16.822Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5956,7 +5956,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:21:42.940Z",
       "decision": "in",
-      "note": "",
+      "note": "NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -5975,8 +5975,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:42:54.309Z",
-      "decision": "in",
-      "note": "7 squares, deep desert, very rare, very dangerous, rename to Great Thrumbo",
+      "decision": "move",
+      "note": "7 squares, deep desert, very rare, very dangerous, rename to Great Thrumbo | PLACED: dune_sea_deep_desert (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "large"
@@ -6035,8 +6035,8 @@
       "art": "redo",
       "artPrefill": "keep",
       "at": "2026-09-10T12:53:51.891Z",
-      "decision": "in",
-      "note": "with the other boom creatures",
+      "decision": "out",
+      "note": "with the other boom creatures | CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -6165,8 +6165,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:27:08.635Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6281,7 +6281,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:28:33.196Z",
       "decision": "in",
-      "note": "only in settlements",
+      "note": "only in settlements | NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6291,7 +6291,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:52:38.004Z",
       "decision": "in",
-      "note": "",
+      "note": "TRADER-BEAST-RESERVED: joins the trader-beast roster (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6349,7 +6349,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:40:17.687Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6369,7 +6369,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:34:04.943Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6406,7 +6406,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:10:26.030Z",
       "decision": "in",
-      "note": "ridable mount associated with the Drug, found near Hutt settlements",
+      "note": "ridable mount associated with the Drug, found near Hutt settlements | NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -6416,7 +6416,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:39:21.072Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6720,7 +6720,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:48:30.101Z",
       "decision": "in",
-      "note": "",
+      "note": "TRADER-BEAST-RESERVED: joins the trader-beast roster (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6730,7 +6730,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:40:21.783Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6759,7 +6759,7 @@
       "art": "improve",
       "artPrefill": "improve",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6797,7 +6797,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:36:35.707Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6852,8 +6852,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T12:57:46.828Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -6863,7 +6863,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:11:45.664Z",
       "decision": "in",
-      "note": "3 cells, dangerous, ability to cloak and hunt, dangerous event",
+      "note": "3 cells, dangerous, ability to cloak and hunt, dangerous event | RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -6873,7 +6873,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:36:36.962Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6882,8 +6882,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:36:51.973Z",
-      "decision": "in",
-      "note": "Maisma",
+      "decision": "move",
+      "note": "Maisma | PLACED: the_miasma (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6893,7 +6893,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:52:39.997Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6903,7 +6903,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:41:50.300Z",
       "decision": "in",
-      "note": "",
+      "note": "TRADER-BEAST-RESERVED: joins the trader-beast roster (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6913,7 +6913,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:39:27.586Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -6997,7 +6997,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:39:35.406Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7045,7 +7045,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:47:35.737Z",
       "decision": "in",
-      "note": "Maybe a pet for beauty?",
+      "note": "Maybe a pet for beauty? | RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7162,7 +7162,7 @@
       "artPrefill": "improve",
       "at": "2026-09-10T12:36:40.401Z",
       "decision": "in",
-      "note": "Hutt arena fodder, some escaped living near Oasis and terrifying locals",
+      "note": "Hutt arena fodder, some escaped living near Oasis and terrifying locals | NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -7172,7 +7172,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:38:08.843Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7182,7 +7182,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:38:11.448Z",
       "decision": "in",
-      "note": "",
+      "note": "TRADER-BEAST-RESERVED: joins the trader-beast roster (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7211,7 +7211,7 @@
       "artPrefill": "improve",
       "at": "2026-09-10T12:35:37.551Z",
       "decision": "in",
-      "note": "definitely look up web art for this, Hutt arena fodder",
+      "note": "definitely look up web art for this, Hutt arena fodder | NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7251,7 +7251,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:36:04.839Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -7271,7 +7271,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:51:51.483Z",
       "decision": "in",
-      "note": "donor for the Genosian Mind Worm",
+      "note": "donor for the Genosian Mind Worm | RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7289,8 +7289,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:52:55.379Z",
-      "decision": "in",
-      "note": "",
+      "decision": "move",
+      "note": "PLACED: poison_forest — owner note: Poison Forest (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7348,7 +7348,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:03:17.615Z",
       "decision": "in",
-      "note": "Hideous vermin that can appear literally anywhere, especially injected wrecks, settlements, or attempting to infest the player's ship in events. 1 cell",
+      "note": "Hideous vermin that can appear literally anywhere, especially injected wrecks, settlements, or attempting to infest the player's ship in events. 1 cell | RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "medium"
@@ -7387,7 +7387,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:54:44.996Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7417,7 +7417,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:40:37.957Z",
       "decision": "in",
-      "note": "",
+      "note": "TRADER-BEAST-RESERVED: joins the trader-beast roster (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7457,7 +7457,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T12:38:30.196Z",
       "decision": "in",
-      "note": "cute vermin that come in festing numbers anywhere near settlements",
+      "note": "cute vermin that come in festing numbers anywhere near settlements | NINTH-ROSTER: faction fauna (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
@@ -7466,7 +7466,7 @@
       "art": "improve",
       "artPrefill": "improve",
       "decision": "in",
-      "note": "",
+      "note": "TRADER-BEAST-RESERVED: joins the trader-beast roster (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -7476,7 +7476,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:40:51.431Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7495,7 +7495,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:38:52.181Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7744,7 +7744,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:38:17.081Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7754,7 +7754,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:27:02.528Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7764,7 +7764,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:17:59.552Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7774,7 +7774,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:19:42.074Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7783,8 +7783,8 @@
       "art": "keep",
       "artPrefill": "keep",
       "at": "2026-09-10T12:57:11.962Z",
-      "decision": "in",
-      "note": "We must completely examine ",
+      "decision": "out",
+      "note": "We must completely examine  | CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7793,8 +7793,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:22:03.855Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT at the disposition sitting (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7813,8 +7813,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T13:39:57.607Z",
-      "decision": "in",
-      "note": "",
+      "decision": "move",
+      "note": "PLACED: the_blue_desert — owner note: This goes in the blue desert... why couldn't I see that in the dropdown? (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7824,7 +7824,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:38:54.813Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7853,7 +7853,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:56:21.924Z",
       "decision": "in",
-      "note": "",
+      "note": "RESERVE (parked; posture: undecided stays reserve) (homeless disposition sitting, frozen 2026-09-10)",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
