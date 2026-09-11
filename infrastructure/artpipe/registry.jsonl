@@ -348,3 +348,295 @@
 {"by": "artpiped", "event": "validated", "job_id": "anooba_v1_east", "target": "anooba/east", "ts": 1789154627.7069294, "verdict": "pass"}
 {"by": "artpiped", "elapsed_s": 107.57099430798553, "event": "generated", "job_id": "anooba_v1_north", "target": "anooba/north", "ts": 1789154633.6079512}
 {"by": "artpiped", "event": "validated", "job_id": "anooba_v1_north", "target": "anooba/north", "ts": 1789154633.6137094, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 73.70842951000668, "event": "generated", "job_id": "dewback_v1_east", "target": "dewback/east", "ts": 1789154683.7203956}
+{"by": "artpiped", "event": "validated", "job_id": "dewback_v1_east", "target": "dewback/east", "ts": 1789154683.7270103, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 69.81973327099695, "event": "generated", "job_id": "dewback_v1_north", "target": "dewback/north", "ts": 1789154697.729341}
+{"by": "artpiped", "event": "validated", "job_id": "dewback_v1_north", "target": "dewback/north", "ts": 1789154697.7350802, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 86.06294097399223, "event": "generated", "job_id": "dewback_v1_south", "target": "dewback/south", "ts": 1789154719.8555846}
+{"by": "artpiped", "event": "validated", "job_id": "dewback_v1_south", "target": "dewback/south", "ts": 1789154719.8617294, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 69.0657720460149, "event": "generated", "job_id": "grithe_v1_south", "target": "grithe/south", "ts": 1789154789.1190915}
+{"by": "artpiped", "event": "validated", "job_id": "grithe_v1_south", "target": "grithe/south", "ts": 1789154789.1249077, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 94.39565999701153, "event": "generated", "job_id": "grithe_v1_north", "target": "grithe/north", "ts": 1789154792.3079016}
+{"by": "artpiped", "event": "validated", "job_id": "grithe_v1_north", "target": "grithe/north", "ts": 1789154792.3146217, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 122.95493102198816, "event": "generated", "job_id": "grithe_v1_east", "target": "grithe/east", "ts": 1789154806.953726}
+{"by": "artpiped", "event": "validated", "job_id": "grithe_v1_east", "target": "grithe/east", "ts": 1789154806.9600685, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 87.8853977789986, "event": "generated", "job_id": "grutt_v1_east", "target": "grutt/east", "ts": 1789154877.1879957}
+{"by": "artpiped", "event": "validated", "job_id": "grutt_v1_east", "target": "grutt/east", "ts": 1789154877.1939518, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 86.63742343900958, "event": "generated", "job_id": "grutt_v1_north", "target": "grutt/north", "ts": 1789154879.16838}
+{"by": "artpiped", "event": "validated", "job_id": "grutt_v1_north", "target": "grutt/north", "ts": 1789154879.1741235, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 85.53936046300805, "event": "generated", "job_id": "grutt_v1_south", "target": "grutt/south", "ts": 1789154892.6773741}
+{"by": "artpiped", "event": "validated", "job_id": "grutt_v1_south", "target": "grutt/south", "ts": 1789154892.6838453, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 80.7406456489989, "event": "generated", "job_id": "kroffa_v1_east", "target": "kroffa/east", "ts": 1789154958.1064723}
+{"by": "artpiped", "event": "validated", "job_id": "kroffa_v1_east", "target": "kroffa/east", "ts": 1789154958.112809, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 92.85231728700455, "event": "generated", "job_id": "kroffa_v1_north", "target": "kroffa/north", "ts": 1789154972.2729473}
+{"by": "artpiped", "event": "validated", "job_id": "kroffa_v1_north", "target": "kroffa/north", "ts": 1789154972.2793472, "verdict": "fail"}
+{"by": "artpiped", "elapsed_s": 88.40390308600035, "event": "generated", "job_id": "kroffa_v1_south", "target": "kroffa/south", "ts": 1789154981.2625835}
+{"by": "artpiped", "event": "validated", "job_id": "kroffa_v1_south", "target": "kroffa/south", "ts": 1789154981.2677352, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 81.86980226999731, "event": "generated", "job_id": "puffmite_v1_east", "target": "puffmite/east", "ts": 1789155040.1542022}
+{"by": "artpiped", "event": "validated", "job_id": "puffmite_v1_east", "target": "puffmite/east", "ts": 1789155040.159462, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 100.90053438101313, "event": "generated", "job_id": "puffmite_v1_north", "target": "puffmite/north", "ts": 1789155073.3541782}
+{"by": "artpiped", "event": "validated", "job_id": "puffmite_v1_north", "target": "puffmite/north", "ts": 1789155073.3595285, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 107.77470767099294, "event": "generated", "job_id": "puffmite_v1_south", "target": "puffmite/south", "ts": 1789155089.2083445}
+{"by": "artpiped", "event": "validated", "job_id": "puffmite_v1_south", "target": "puffmite/south", "ts": 1789155089.2138398, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 94.35899292299291, "event": "generated", "job_id": "ronto_v1_east", "target": "ronto/east", "ts": 1789155134.7032268}
+{"by": "artpiped", "event": "validated", "job_id": "ronto_v1_east", "target": "ronto/east", "ts": 1789155134.709007, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 86.32778607899672, "event": "generated", "job_id": "ronto_v1_north", "target": "ronto/north", "ts": 1789155159.8393714}
+{"by": "artpiped", "event": "validated", "job_id": "ronto_v1_north", "target": "ronto/north", "ts": 1789155159.845015, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 71.93792160897283, "event": "generated", "job_id": "ronto_v1_south", "target": "ronto/south", "ts": 1789155161.344589}
+{"by": "artpiped", "event": "validated", "job_id": "ronto_v1_south", "target": "ronto/south", "ts": 1789155161.350559, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "greaterkraytdragon/south", "ts": 1789158690.3514447}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "greaterkraytdragon_v1_south", "notes": "", "target": "greaterkraytdragon/south", "ts": 1789158690.3611255}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "greaterkraytdragon/east", "ts": 1789158690.3703446}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "greaterkraytdragon_v1_east", "notes": "", "target": "greaterkraytdragon/east", "ts": 1789158690.3773777}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "greaterkraytdragon/north", "ts": 1789158690.385712}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "greaterkraytdragon_v1_north", "notes": "", "target": "greaterkraytdragon/north", "ts": 1789158690.39286}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "vornskyr/south", "ts": 1789158690.4010906}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "vornskyr_v1_south", "notes": "", "target": "vornskyr/south", "ts": 1789158690.4090612}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "vornskyr/east", "ts": 1789158690.4166222}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "vornskyr_v1_east", "notes": "", "target": "vornskyr/east", "ts": 1789158690.4238977}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "vornskyr/north", "ts": 1789158690.4310417}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "vornskyr_v1_north", "notes": "", "target": "vornskyr/north", "ts": 1789158690.4366522}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "orray/south", "ts": 1789158690.4461586}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "orray_v1_south", "notes": "", "target": "orray/south", "ts": 1789158690.4532287}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "orray/east", "ts": 1789158690.460048}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "orray_v1_east", "notes": "", "target": "orray/east", "ts": 1789158690.466678}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "orray/north", "ts": 1789158690.4750319}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "orray_v1_north", "notes": "", "target": "orray/north", "ts": 1789158690.4823463}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "featherfeel/south", "ts": 1789158690.4898846}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "featherfeel_v1_south", "notes": "", "target": "featherfeel/south", "ts": 1789158690.4967017}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "featherfeel/east", "ts": 1789158690.5045178}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "featherfeel_v1_east", "notes": "", "target": "featherfeel/east", "ts": 1789158690.510589}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "featherfeel/north", "ts": 1789158690.5193152}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "featherfeel_v1_north", "notes": "", "target": "featherfeel/north", "ts": 1789158690.526762}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "duskram/south", "ts": 1789158690.5348203}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "duskram_v1_south", "notes": "", "target": "duskram/south", "ts": 1789158690.5416837}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "duskram/east", "ts": 1789158690.548882}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "duskram_v1_east", "notes": "", "target": "duskram/east", "ts": 1789158690.556221}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "duskram/north", "ts": 1789158690.5650613}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "duskram_v1_north", "notes": "", "target": "duskram/north", "ts": 1789158690.5710726}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "aa_terramorph/south", "ts": 1789158690.5812302}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "aa_terramorph_v1_south", "notes": "", "target": "aa_terramorph/south", "ts": 1789158690.587665}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "aa_terramorph/east", "ts": 1789158690.5992448}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "aa_terramorph_v1_east", "notes": "", "target": "aa_terramorph/east", "ts": 1789158690.6064775}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "aa_terramorph/north", "ts": 1789158690.6138048}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "aa_terramorph_v1_north", "notes": "", "target": "aa_terramorph/north", "ts": 1789158690.6195173}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "slagmaw/south", "ts": 1789158690.6298068}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "slagmaw_v1_south", "notes": "", "target": "slagmaw/south", "ts": 1789158690.6371047}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "slagmaw/east", "ts": 1789158690.6470182}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "slagmaw_v1_east", "notes": "", "target": "slagmaw/east", "ts": 1789158690.654853}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE5_QUEUE_1", "target": "slagmaw/north", "ts": 1789158690.661992}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "slagmaw_v1_north", "notes": "", "target": "slagmaw/north", "ts": 1789158690.667897}
+{"by": "artpiped", "elapsed_s": 101.55015252501471, "event": "generated", "job_id": "aa_terramorph_v1_south", "target": "aa_terramorph/south", "ts": 1789158793.7186437}
+{"by": "artpiped", "event": "validated", "job_id": "aa_terramorph_v1_south", "target": "aa_terramorph/south", "ts": 1789158793.7283173, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 117.71175130899064, "event": "generated", "job_id": "aa_terramorph_v1_east", "target": "aa_terramorph/east", "ts": 1789158809.48826}
+{"by": "artpiped", "event": "validated", "job_id": "aa_terramorph_v1_east", "target": "aa_terramorph/east", "ts": 1789158809.4955034, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 132.2126671820006, "event": "generated", "job_id": "aa_terramorph_v1_north", "target": "aa_terramorph/north", "ts": 1789158824.146659}
+{"by": "artpiped", "event": "validated", "job_id": "aa_terramorph_v1_north", "target": "aa_terramorph/north", "ts": 1789158824.1538925, "verdict": "fail"}
+{"by": "artpiped", "elapsed_s": 103.66267968399916, "event": "generated", "job_id": "duskram_v1_east", "target": "duskram/east", "ts": 1789158897.6905003}
+{"by": "artpiped", "event": "validated", "job_id": "duskram_v1_east", "target": "duskram/east", "ts": 1789158897.6967227, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 93.94723143998999, "event": "generated", "job_id": "duskram_v1_south", "target": "duskram/south", "ts": 1789158918.3674657}
+{"by": "artpiped", "event": "validated", "job_id": "duskram_v1_south", "target": "duskram/south", "ts": 1789158918.3727489, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 113.47500841401052, "event": "generated", "job_id": "duskram_v1_north", "target": "duskram/north", "ts": 1789158923.2953146}
+{"by": "artpiped", "event": "validated", "job_id": "duskram_v1_north", "target": "duskram/north", "ts": 1789158923.3010783, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE4_QUEUE_1", "target": "kroffa/north", "ts": 1789158949.1931524}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "kroffa_v2_north", "notes": "", "target": "kroffa/north", "ts": 1789158949.1999874}
+{"by": "artpiped", "elapsed_s": 99.37011047601118, "event": "generated", "job_id": "featherfeel_v1_east", "target": "featherfeel/east", "ts": 1789158997.5446012}
+{"by": "artpiped", "event": "validated", "job_id": "featherfeel_v1_east", "target": "featherfeel/east", "ts": 1789158997.5528173, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 110.00759233199642, "event": "generated", "job_id": "featherfeel_v1_north", "target": "featherfeel/north", "ts": 1789159028.580322}
+{"by": "artpiped", "event": "validated", "job_id": "featherfeel_v1_north", "target": "featherfeel/north", "ts": 1789159028.5860713, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 116.49994815600803, "event": "generated", "job_id": "featherfeel_v1_south", "target": "featherfeel/south", "ts": 1789159040.0287478}
+{"by": "artpiped", "event": "validated", "job_id": "featherfeel_v1_south", "target": "featherfeel/south", "ts": 1789159040.0342717, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 97.8594144259987, "event": "generated", "job_id": "kroffa_v2_north", "target": "kroffa/north", "ts": 1789159095.8680973}
+{"by": "artpiped", "event": "validated", "job_id": "kroffa_v2_north", "target": "kroffa/north", "ts": 1789159095.8817885, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 99.0587887459842, "event": "generated", "job_id": "greaterkraytdragon_v1_east", "target": "greaterkraytdragon/east", "ts": 1789159127.8435113}
+{"by": "artpiped", "event": "validated", "job_id": "greaterkraytdragon_v1_east", "target": "greaterkraytdragon/east", "ts": 1789159127.8486443, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 90.53774023399455, "event": "generated", "job_id": "greaterkraytdragon_v1_north", "target": "greaterkraytdragon/north", "ts": 1789159130.7588987}
+{"by": "artpiped", "event": "validated", "job_id": "greaterkraytdragon_v1_north", "target": "greaterkraytdragon/north", "ts": 1789159130.765486, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 83.89949154198985, "event": "generated", "job_id": "greaterkraytdragon_v1_south", "target": "greaterkraytdragon/south", "ts": 1789159180.0120282}
+{"by": "artpiped", "event": "validated", "job_id": "greaterkraytdragon_v1_south", "target": "greaterkraytdragon/south", "ts": 1789159180.0175943, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 78.01115016298718, "event": "generated", "job_id": "orray_v1_east", "target": "orray/east", "ts": 1789159258.2364023}
+{"by": "artpiped", "event": "validated", "job_id": "orray_v1_east", "target": "orray/east", "ts": 1789159258.2419665, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 141.43098025699146, "event": "generated", "job_id": "orray_v1_north", "target": "orray/north", "ts": 1789159399.9098232}
+{"by": "artpiped", "event": "validated", "job_id": "orray_v1_north", "target": "orray/north", "ts": 1789159399.9161012, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 108.14261883500149, "event": "generated", "job_id": "orray_v1_south", "target": "orray/south", "ts": 1789159508.2995808}
+{"by": "artpiped", "event": "validated", "job_id": "orray_v1_south", "target": "orray/south", "ts": 1789159508.3058574, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 105.59592818599776, "event": "generated", "job_id": "slagmaw_v1_east", "target": "slagmaw/east", "ts": 1789159614.1023352}
+{"by": "artpiped", "event": "validated", "job_id": "slagmaw_v1_east", "target": "slagmaw/east", "ts": 1789159614.1078732, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 89.2696178870101, "event": "generated", "job_id": "slagmaw_v1_north", "target": "slagmaw/north", "ts": 1789159703.6072562}
+{"by": "artpiped", "event": "validated", "job_id": "slagmaw_v1_north", "target": "slagmaw/north", "ts": 1789159703.6138532, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 88.58448391998536, "event": "generated", "job_id": "slagmaw_v1_south", "target": "slagmaw/south", "ts": 1789159792.4065473}
+{"by": "artpiped", "event": "validated", "job_id": "slagmaw_v1_south", "target": "slagmaw/south", "ts": 1789159792.4129083, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 112.7406197609962, "event": "generated", "job_id": "vornskyr_v1_east", "target": "vornskyr/east", "ts": 1789159905.3762453}
+{"by": "artpiped", "event": "validated", "job_id": "vornskyr_v1_east", "target": "vornskyr/east", "ts": 1789159905.3824847, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 95.58791593401111, "event": "generated", "job_id": "vornskyr_v1_north", "target": "vornskyr/north", "ts": 1789160001.3107777}
+{"by": "artpiped", "event": "validated", "job_id": "vornskyr_v1_north", "target": "vornskyr/north", "ts": 1789160001.32314, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 105.92866273398977, "event": "generated", "job_id": "vornskyr_v1_south", "target": "vornskyr/south", "ts": 1789160107.6363668}
+{"by": "artpiped", "event": "validated", "job_id": "vornskyr_v1_south", "target": "vornskyr/south", "ts": 1789160107.644382, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "wyyyschokk/south", "ts": 1789163967.6410654}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "wyyyschokk_v1_south", "notes": "", "target": "wyyyschokk/south", "ts": 1789163967.6479456}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "wyyyschokk/east", "ts": 1789163967.655731}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "wyyyschokk_v1_east", "notes": "", "target": "wyyyschokk/east", "ts": 1789163967.66283}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "wyyyschokk/north", "ts": 1789163967.6701164}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "wyyyschokk_v1_north", "notes": "", "target": "wyyyschokk/north", "ts": 1789163967.678223}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "boma/south", "ts": 1789163967.684798}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "boma_v1_south", "notes": "", "target": "boma/south", "ts": 1789163967.6913776}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "boma/east", "ts": 1789163967.6983216}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "boma_v1_east", "notes": "", "target": "boma/east", "ts": 1789163967.7039208}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "boma/north", "ts": 1789163967.711379}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "boma_v1_north", "notes": "", "target": "boma/north", "ts": 1789163967.7175498}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "ollopom/south", "ts": 1789163967.7248805}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "ollopom_v1_south", "notes": "", "target": "ollopom/south", "ts": 1789163967.7307177}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "ollopom/east", "ts": 1789163967.7374265}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "ollopom_v1_east", "notes": "", "target": "ollopom/east", "ts": 1789163967.7456317}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "ollopom/north", "ts": 1789163967.7519104}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "ollopom_v1_north", "notes": "", "target": "ollopom/north", "ts": 1789163967.758656}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "sludrin/south", "ts": 1789163967.7655096}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sludrin_v1_south", "notes": "", "target": "sludrin/south", "ts": 1789163967.772035}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "sludrin/east", "ts": 1789163967.7790356}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sludrin_v1_east", "notes": "", "target": "sludrin/east", "ts": 1789163967.785075}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "sludrin/north", "ts": 1789163967.7929366}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "sludrin_v1_north", "notes": "", "target": "sludrin/north", "ts": 1789163967.7998126}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "cinderwing/south", "ts": 1789163967.80692}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "cinderwing_v1_south", "notes": "", "target": "cinderwing/south", "ts": 1789163967.8129182}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "cinderwing/east", "ts": 1789163967.819305}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "cinderwing_v1_east", "notes": "", "target": "cinderwing/east", "ts": 1789163967.826402}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "cinderwing/north", "ts": 1789163967.8332012}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "cinderwing_v1_north", "notes": "", "target": "cinderwing/north", "ts": 1789163967.8395767}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "verdaunt/south", "ts": 1789163967.846802}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "verdaunt_v1_south", "notes": "", "target": "verdaunt/south", "ts": 1789163967.8522973}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "verdaunt/east", "ts": 1789163967.8596542}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "verdaunt_v1_east", "notes": "", "target": "verdaunt/east", "ts": 1789163967.8659}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "verdaunt/north", "ts": 1789163967.8734171}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "verdaunt_v1_north", "notes": "", "target": "verdaunt/north", "ts": 1789163967.8795075}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "scarrend/south", "ts": 1789163967.8858619}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "scarrend_v1_south", "notes": "", "target": "scarrend/south", "ts": 1789163967.893387}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "scarrend/east", "ts": 1789163967.9004476}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "scarrend_v1_east", "notes": "", "target": "scarrend/east", "ts": 1789163967.9068308}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE6_QUEUE_1", "target": "scarrend/north", "ts": 1789163967.913425}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "scarrend_v1_north", "notes": "", "target": "scarrend/north", "ts": 1789163967.9192014}
+{"by": "artpiped", "elapsed_s": 73.9971880549856, "event": "generated", "job_id": "boma_v1_south", "target": "boma/south", "ts": 1789165799.0093818}
+{"by": "artpiped", "event": "validated", "job_id": "boma_v1_south", "target": "boma/south", "ts": 1789165799.0166614, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 87.68048163098865, "event": "generated", "job_id": "boma_v1_north", "target": "boma/north", "ts": 1789165812.59037}
+{"by": "artpiped", "event": "validated", "job_id": "boma_v1_north", "target": "boma/north", "ts": 1789165812.597544, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 115.43786275401362, "event": "generated", "job_id": "boma_v1_east", "target": "boma/east", "ts": 1789165840.1666834}
+{"by": "artpiped", "event": "validated", "job_id": "boma_v1_east", "target": "boma/east", "ts": 1789165840.1735857, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 78.65021329099545, "event": "generated", "job_id": "cinderwing_v1_east", "target": "cinderwing/east", "ts": 1789165877.886151}
+{"by": "artpiped", "event": "validated", "job_id": "cinderwing_v1_east", "target": "cinderwing/east", "ts": 1789165877.8917687, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 110.59839651800576, "event": "generated", "job_id": "cinderwing_v1_north", "target": "cinderwing/north", "ts": 1789165923.4683712}
+{"by": "artpiped", "event": "validated", "job_id": "cinderwing_v1_north", "target": "cinderwing/north", "ts": 1789165923.4754379, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 67.72321619698778, "event": "generated", "job_id": "ollopom_v1_east", "target": "ollopom/east", "ts": 1789165945.8165483}
+{"by": "artpiped", "event": "validated", "job_id": "ollopom_v1_east", "target": "ollopom/east", "ts": 1789165945.8226438, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 120.86225644598017, "event": "generated", "job_id": "cinderwing_v1_south", "target": "cinderwing/south", "ts": 1789165961.2147799}
+{"by": "artpiped", "event": "validated", "job_id": "cinderwing_v1_south", "target": "cinderwing/south", "ts": 1789165961.2206786, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 90.2962302090018, "event": "generated", "job_id": "ollopom_v1_north", "target": "ollopom/north", "ts": 1789166013.9938843}
+{"by": "artpiped", "event": "validated", "job_id": "ollopom_v1_north", "target": "ollopom/north", "ts": 1789166014.000484, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 80.55390619797981, "event": "generated", "job_id": "ollopom_v1_south", "target": "ollopom/south", "ts": 1789166026.5627792}
+{"by": "artpiped", "event": "validated", "job_id": "ollopom_v1_south", "target": "ollopom/south", "ts": 1789166026.5690596, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 91.79584070600686, "event": "generated", "job_id": "scarrend_v1_east", "target": "scarrend/east", "ts": 1789166053.2499034}
+{"by": "artpiped", "event": "validated", "job_id": "scarrend_v1_east", "target": "scarrend/east", "ts": 1789166053.2557504, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 76.91156046898686, "event": "generated", "job_id": "scarrend_v1_north", "target": "scarrend/north", "ts": 1789166091.1087148}
+{"by": "artpiped", "event": "validated", "job_id": "scarrend_v1_north", "target": "scarrend/north", "ts": 1789166091.115141, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 76.74081089399988, "event": "generated", "job_id": "scarrend_v1_south", "target": "scarrend/south", "ts": 1789166103.504563}
+{"by": "artpiped", "event": "validated", "job_id": "scarrend_v1_south", "target": "scarrend/south", "ts": 1789166103.511166, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 93.62941461699666, "event": "generated", "job_id": "sludrin_v1_east", "target": "sludrin/east", "ts": 1789166147.0912862}
+{"by": "artpiped", "event": "validated", "job_id": "sludrin_v1_east", "target": "sludrin/east", "ts": 1789166147.0973558, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 86.84037766698748, "event": "generated", "job_id": "sludrin_v1_south", "target": "sludrin/south", "ts": 1789166190.5672011}
+{"by": "artpiped", "event": "validated", "job_id": "sludrin_v1_south", "target": "sludrin/south", "ts": 1789166190.5733168, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 115.02980864100391, "event": "generated", "job_id": "sludrin_v1_north", "target": "sludrin/north", "ts": 1789166206.3421166}
+{"by": "artpiped", "event": "validated", "job_id": "sludrin_v1_north", "target": "sludrin/north", "ts": 1789166206.348199, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 84.91061483402154, "event": "generated", "job_id": "verdaunt_v1_east", "target": "verdaunt/east", "ts": 1789166232.3270543}
+{"by": "artpiped", "event": "validated", "job_id": "verdaunt_v1_east", "target": "verdaunt/east", "ts": 1789166232.3350034, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 77.91235088300891, "event": "generated", "job_id": "verdaunt_v1_south", "target": "verdaunt/south", "ts": 1789166284.4754794}
+{"by": "artpiped", "event": "validated", "job_id": "verdaunt_v1_south", "target": "verdaunt/south", "ts": 1789166284.482568, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 96.7353345619922, "event": "generated", "job_id": "verdaunt_v1_north", "target": "verdaunt/north", "ts": 1789166287.5545352}
+{"by": "artpiped", "event": "validated", "job_id": "verdaunt_v1_north", "target": "verdaunt/north", "ts": 1789166287.562058, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 83.46248222902068, "event": "generated", "job_id": "wyyyschokk_v1_east", "target": "wyyyschokk/east", "ts": 1789166316.0736673}
+{"by": "artpiped", "event": "validated", "job_id": "wyyyschokk_v1_east", "target": "wyyyschokk/east", "ts": 1789166316.0809526, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 81.01304839798831, "event": "generated", "job_id": "wyyyschokk_v1_north", "target": "wyyyschokk/north", "ts": 1789166365.7397141}
+{"by": "artpiped", "event": "validated", "job_id": "wyyyschokk_v1_north", "target": "wyyyschokk/north", "ts": 1789166365.746612, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 103.18199117502081, "event": "generated", "job_id": "wyyyschokk_v1_south", "target": "wyyyschokk/south", "ts": 1789166390.969246}
+{"by": "artpiped", "event": "validated", "job_id": "wyyyschokk_v1_south", "target": "wyyyschokk/south", "ts": 1789166390.975969, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "whisperbird/south", "ts": 1789167420.3139749}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "whisperbird_v1_south", "notes": "", "target": "whisperbird/south", "ts": 1789167420.320829}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "whisperbird/east", "ts": 1789167420.3262937}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "whisperbird_v1_east", "notes": "", "target": "whisperbird/east", "ts": 1789167420.3310583}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "whisperbird/north", "ts": 1789167420.3364108}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "whisperbird_v1_north", "notes": "", "target": "whisperbird/north", "ts": 1789167420.3422463}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "hawkbat/south", "ts": 1789167420.3475044}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "hawkbat_v1_south", "notes": "", "target": "hawkbat/south", "ts": 1789167420.3543153}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "hawkbat/east", "ts": 1789167420.3597064}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "hawkbat_v1_east", "notes": "", "target": "hawkbat/east", "ts": 1789167420.3653111}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "hawkbat/north", "ts": 1789167420.3703523}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "hawkbat_v1_north", "notes": "", "target": "hawkbat/north", "ts": 1789167420.3753765}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "pekopeko/south", "ts": 1789167420.3804684}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pekopeko_v1_south", "notes": "", "target": "pekopeko/south", "ts": 1789167420.3859308}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "pekopeko/east", "ts": 1789167420.391796}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pekopeko_v1_east", "notes": "", "target": "pekopeko/east", "ts": 1789167420.3970296}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "pekopeko/north", "ts": 1789167420.4019809}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "pekopeko_v1_north", "notes": "", "target": "pekopeko/north", "ts": 1789167420.4068425}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "mycolith/south", "ts": 1789167420.412072}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "mycolith_v1_south", "notes": "", "target": "mycolith/south", "ts": 1789167420.4176345}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "mycolith/east", "ts": 1789167420.423112}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "mycolith_v1_east", "notes": "", "target": "mycolith/east", "ts": 1789167420.4291131}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "mycolith/north", "ts": 1789167420.4339485}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "mycolith_v1_north", "notes": "", "target": "mycolith/north", "ts": 1789167420.4399157}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "fenshear/south", "ts": 1789167420.4453335}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "fenshear_v1_south", "notes": "", "target": "fenshear/south", "ts": 1789167420.4512002}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "fenshear/east", "ts": 1789167420.4565296}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "fenshear_v1_east", "notes": "", "target": "fenshear/east", "ts": 1789167420.4624891}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "fenshear/north", "ts": 1789167420.4678078}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "fenshear_v1_north", "notes": "", "target": "fenshear/north", "ts": 1789167420.473246}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "grubhorn/south", "ts": 1789167420.4786553}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "grubhorn_v1_south", "notes": "", "target": "grubhorn/south", "ts": 1789167420.4844062}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "grubhorn/east", "ts": 1789167420.4903383}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "grubhorn_v1_east", "notes": "", "target": "grubhorn/east", "ts": 1789167420.4971824}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "grubhorn/north", "ts": 1789167420.5021076}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "grubhorn_v1_north", "notes": "", "target": "grubhorn/north", "ts": 1789167420.507136}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "emberscythe/south", "ts": 1789167420.5120978}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "emberscythe_v1_south", "notes": "", "target": "emberscythe/south", "ts": 1789167420.5174582}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "emberscythe/east", "ts": 1789167420.5227778}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "emberscythe_v1_east", "notes": "", "target": "emberscythe/east", "ts": 1789167420.528351}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE7_QUEUE_1", "target": "emberscythe/north", "ts": 1789167420.5333827}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "emberscythe_v1_north", "notes": "", "target": "emberscythe/north", "ts": 1789167420.5391967}
+{"by": "artpiped", "elapsed_s": 96.54450812799041, "event": "generated", "job_id": "emberscythe_v1_south", "target": "emberscythe/south", "ts": 1789167518.2536662}
+{"by": "artpiped", "event": "validated", "job_id": "emberscythe_v1_south", "target": "emberscythe/south", "ts": 1789167518.260515, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 103.31187660401338, "event": "generated", "job_id": "emberscythe_v1_north", "target": "emberscythe/north", "ts": 1789167525.1653652}
+{"by": "artpiped", "event": "validated", "job_id": "emberscythe_v1_north", "target": "emberscythe/north", "ts": 1789167525.1741245, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 111.28947888899711, "event": "generated", "job_id": "emberscythe_v1_east", "target": "emberscythe/east", "ts": 1789167532.8661373}
+{"by": "artpiped", "event": "validated", "job_id": "emberscythe_v1_east", "target": "emberscythe/east", "ts": 1789167532.872816, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 85.61739352397854, "event": "generated", "job_id": "fenshear_v1_east", "target": "fenshear/east", "ts": 1789167604.146292}
+{"by": "artpiped", "event": "validated", "job_id": "fenshear_v1_east", "target": "fenshear/east", "ts": 1789167604.1526575, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 89.7231978259515, "event": "generated", "job_id": "fenshear_v1_south", "target": "fenshear/south", "ts": 1789167622.8468509}
+{"by": "artpiped", "event": "validated", "job_id": "fenshear_v1_south", "target": "fenshear/south", "ts": 1789167622.8526416, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 147.42790004698327, "event": "generated", "job_id": "fenshear_v1_north", "target": "fenshear/north", "ts": 1789167673.0045915}
+{"by": "artpiped", "event": "validated", "job_id": "fenshear_v1_north", "target": "fenshear/north", "ts": 1789167673.0100002, "verdict": "fail"}
+{"by": "artpiped", "elapsed_s": 81.623333163996, "event": "generated", "job_id": "grubhorn_v1_east", "target": "grubhorn/east", "ts": 1789167685.986056}
+{"by": "artpiped", "event": "validated", "job_id": "grubhorn_v1_east", "target": "grubhorn/east", "ts": 1789167685.9919133, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 80.59227755200118, "event": "generated", "job_id": "grubhorn_v1_north", "target": "grubhorn/north", "ts": 1789167703.6666505}
+{"by": "artpiped", "event": "validated", "job_id": "grubhorn_v1_north", "target": "grubhorn/north", "ts": 1789167703.672415, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 94.01819755099132, "event": "generated", "job_id": "grubhorn_v1_south", "target": "grubhorn/south", "ts": 1789167767.2655876}
+{"by": "artpiped", "event": "validated", "job_id": "grubhorn_v1_south", "target": "grubhorn/south", "ts": 1789167767.2712748, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 96.79015048098518, "event": "generated", "job_id": "hawkbat_v1_east", "target": "hawkbat/east", "ts": 1789167782.9936004}
+{"by": "artpiped", "event": "validated", "job_id": "hawkbat_v1_east", "target": "hawkbat/east", "ts": 1789167783.0001915, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 94.96907930000452, "event": "generated", "job_id": "hawkbat_v1_north", "target": "hawkbat/north", "ts": 1789167798.8556185}
+{"by": "artpiped", "event": "validated", "job_id": "hawkbat_v1_north", "target": "hawkbat/north", "ts": 1789167798.8613484, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 82.24836446199333, "event": "generated", "job_id": "hawkbat_v1_south", "target": "hawkbat/south", "ts": 1789167849.7384655}
+{"by": "artpiped", "event": "validated", "job_id": "hawkbat_v1_south", "target": "hawkbat/south", "ts": 1789167849.744811, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 80.0250323349901, "event": "generated", "job_id": "mycolith_v1_east", "target": "mycolith/east", "ts": 1789167863.2672465}
+{"by": "artpiped", "event": "validated", "job_id": "mycolith_v1_east", "target": "mycolith/east", "ts": 1789167863.2737188, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 110.1196601279953, "event": "generated", "job_id": "mycolith_v1_north", "target": "mycolith/north", "ts": 1789167909.2070842}
+{"by": "artpiped", "event": "validated", "job_id": "mycolith_v1_north", "target": "mycolith/north", "ts": 1789167909.21277, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 118.66828983402229, "event": "generated", "job_id": "mycolith_v1_south", "target": "mycolith/south", "ts": 1789167968.6304839}
+{"by": "artpiped", "event": "validated", "job_id": "mycolith_v1_south", "target": "mycolith/south", "ts": 1789167968.6366787, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 106.39016081398586, "event": "generated", "job_id": "pekopeko_v1_east", "target": "pekopeko/east", "ts": 1789167969.9090643}
+{"by": "artpiped", "event": "validated", "job_id": "pekopeko_v1_east", "target": "pekopeko/east", "ts": 1789167969.9175112, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 81.327079167997, "event": "generated", "job_id": "pekopeko_v1_north", "target": "pekopeko/north", "ts": 1789167990.7617247}
+{"by": "artpiped", "event": "validated", "job_id": "pekopeko_v1_north", "target": "pekopeko/north", "ts": 1789167990.7676399, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 91.63508711801842, "event": "generated", "job_id": "pekopeko_v1_south", "target": "pekopeko/south", "ts": 1789168060.4837303}
+{"by": "artpiped", "event": "validated", "job_id": "pekopeko_v1_south", "target": "pekopeko/south", "ts": 1789168060.4902494, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 129.73902080699918, "event": "generated", "job_id": "whisperbird_v1_east", "target": "whisperbird/east", "ts": 1789168099.8830743}
+{"by": "artpiped", "event": "validated", "job_id": "whisperbird_v1_east", "target": "whisperbird/east", "ts": 1789168099.8888903, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 75.15249201099505, "event": "generated", "job_id": "whisperbird_v1_north", "target": "whisperbird/north", "ts": 1789168175.2347136}
+{"by": "artpiped", "event": "validated", "job_id": "whisperbird_v1_north", "target": "whisperbird/north", "ts": 1789168175.240302, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 98.58341432199813, "event": "generated", "job_id": "whisperbird_v1_south", "target": "whisperbird/south", "ts": 1789168274.0085633}
+{"by": "artpiped", "event": "validated", "job_id": "whisperbird_v1_south", "target": "whisperbird/south", "ts": 1789168274.0145411, "verdict": "pass"}
