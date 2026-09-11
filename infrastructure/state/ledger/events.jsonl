@@ -7354,3 +7354,6 @@
 {"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE4_QUEUE_1","ts":"2026-09-11T19:21:57Z"}
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-11T19:24:10Z"}
 {"seat":"FOUNDRY","event":"close","id":"ART_REGEN_WAVE4_QUEUE_1","sha":"111b49013","ts":"2026-09-11T19:24:29Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-11T19:30:31Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"GREENTIDE_STANDALONE_MOD_1 live verification","ts":"2026-09-11T19:31:01Z"}
+{"seat":"FOUNDRY","event":"close","id":"SHOKK_RSW_MOD_1","sha":"19fbedbfb","ts":"2026-09-11T19:31:32Z"}
