@@ -330,9 +330,10 @@ defect.
    animate a bush like this so that its little lights twinkle slowly?"*). Vanilla
    plants are static; twinkle needs a shader/comp lift (C#). Worth a spike item, or
    ruled out?
-3. **Films & mats slot** — several demands (mold-mat roof organism, welcome
-   blankets, glower crust, weep-mats) may be terrain/Filth-like rather than Plant
-   defs. Each card must declare which; does the owner want a standing preference?
+3. **Films & mats slot** — ✅ RULED (owner card, 2026-09-10): the INTERACTION TEST.
+   If a colonist ever interacts with ONE of it (harvest, cut, study) it is a Plant
+   def; a condition of the ground is terrain; Filth only for transient residue.
+   Each card declares which.
 4. **The accent-per-biome cap and the contrast law (§3)** are invented coherence
    rules — ratify, amend, or strike.
 5. **Set-demands** (rainbow suite "3–4 blooms", the fractal-flora set, the twilight

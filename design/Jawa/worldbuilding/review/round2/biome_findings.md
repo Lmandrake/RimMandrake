@@ -150,9 +150,10 @@ INCONSISTENCIES:
 1. The fire food-web (§4 — heat-banking furnace-beasts, boom-and-bust) now has NO creature expressing it: the boom cut removed the entire fire-linked fauna and the replacement goo-sack lives in dungeons.
 2. Desert ban 4 explicitly assigns boom-and-bust populations to the Pyrelands — the mechanic is now assigned to nobody.
 
-OPPORTUNITIES:
-1. Commission one native furnace-beast (the §4 heat-banking grazer) or route AA_Barbslinger ("wherever needed in hot biomes", OPEN) here as the fire-cycle animal.
-2. Razorjack as the burn-front follower (hunts fleeing animals ahead of fires) gives the arrival a fire-web role instead of a generic predator slot.
+RULED (owner card, 2026-09-10) — fire-web repopulation:
+1. COMMISSIONED: the fire-hawk (flier roster — carries burning twigs, flushes prey) and the furnace-beast (heat-banking migratory megafauna) — the two irreplaceable igniters.
+2. RECAST: Razorjack arrives as the fire-follower (flame-edge hunter); Barbslinger routed here as the ash-grazer.
+3. The burrower family slot fills from the homeless pool or a third commission — FOUNDRY's pick at build.
 
 ## nightside_ice — churn 10 (cast 6 → 9: 6 native + 3 visitors) — VISITOR LAW RULED 2026-09-10
 Natives: AA_ShockGoat (refashion ruled) + BMT_CaveLemming (rename ruled) arrive as natives — all natives get the thermal-only sensing line. VISITORS-AND-DYING (never native, low commonality, riding the sheet's own "visitor, a machine, or dying" clause): Tauntaun (margin herds straying in), Wampa (follows the herds), Jakobeast (rerouted from desert). Visitors hunt by starlight/aurora (real, cold light), exempt from thermal-only; every straying herd is a walking thermal beacon that ends as a tunneler-warren event. NEEDS-MORE fills from the sheet's own unbuilt natives, COMMISSIONED: tunneler warren creature, inclusion-insect swarm, aurora-current feeder. Injectable, not resident: Bulwark. AA_Terramorph out (dayside won the either-or).
