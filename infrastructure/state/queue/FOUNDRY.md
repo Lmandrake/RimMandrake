@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T02:00:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T02:41:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -936,3 +936,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ART_BACKGROUND_TEMPLATE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ART_BACKGROUND_TEMPLATE_1.md
+
+## WYYYSCHOKK_FERALISK_MERGE_1 Wyyyschokk duplicates AA_Feralisk's properties/attacks (stats+verbs), then AA_Feralisk retires entirely; cut Cinderlisk, Maguana, AB_Feralisk and every other 'lisk (owner sitting ruling)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WYYYSCHOKK_FERALISK_MERGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WYYYSCHOKK_FERALISK_MERGE_1.md
