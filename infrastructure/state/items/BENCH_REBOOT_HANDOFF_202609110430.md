@@ -75,5 +75,10 @@ Do not re-run any audit; the punch list files after HIS read, except
   ignoring the 9 retired mods — do NOT save over the canonical slot from this
   session without the owner)
 - recorded: UP · Bridge: FREE
-- Uncommitted: other seats' churn only (Transient health files, artpipe
-  throughput). Everything BENCH touched is pushed through `21b5fb52f`.
+- Uncommitted: other seats' churn (Transient health files, artpipe throughput)
+  **plus three regenerated Armoury patches + codebase_health_last.json from
+  tonight's `refresh.py --all` runs** — left deliberately uncommitted because
+  that run's validate step FAILED (the dead ABF patch) and its own verdict says
+  not to trust the artefacts against this load set. Next clean refresh (after
+  the fresh dump lands) regenerates and commits them deliberately. Everything
+  BENCH authored is pushed through `0dda17232`.
