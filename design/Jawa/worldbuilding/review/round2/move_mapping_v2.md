@@ -4,7 +4,7 @@
 faction-only (infestation/raid events), never biome residents. The four VFEI2 move
 rows (Acidspitter, Macrofly, RoyalSpelopede, Silverfish) are VOIDED and removed;
 their decisions rows are marked FACTION-RESERVED in `decisions_propagated.json`.
-161 moves live (4 arid sitting rulings 2026-09-10 added; Cannok/Vulptex resolve to RESERVE, not a biome) (horror/injectable ruling 2026-09-10 voided Bulwark, Prowler, Squall — injected content, not biome arrivals).
+164 moves live (4 arid sitting rulings 2026-09-10 added; Cannok/Vulptex resolve to RESERVE, not a biome) (horror/injectable ruling 2026-09-10 voided Bulwark, Prowler, Squall — injected content, not biome arrivals).
 
 Rebuilt from the owner's completed fauna review (`design/Jawa/worldbuilding/review/fauna_assignment_register.decisions.json`, decidedCount 828, 164 `move` rows). Row key = the decisions.json dict key (`fauna:<originSheet>:<creature>` or `homeless:<creature>`); the owner's words are the verbatim `note` field on that row (truncated to 15 words), never invented. Seeded from `move_target_mapping_2026-09-09.md` (69 rows, validated nickname table); extended here to cover all 164. Standing corrections applied: ocular/occular -> the_contagion; Volcanic (fliers) -> the Forge family, not the_pyrelands.
 
@@ -172,6 +172,10 @@ Rebuilt from the owner's completed fauna review (`design/Jawa/worldbuilding/revi
 | `fauna:arid_shrubland:AA_Wildpawn` | AA_Wildpawn | steaming jungle (sitting 2026-09-10) | the_greentide |
 | `fauna:arid_shrubland:Cannok` | Cannok | to reserve (sitting 2026-09-10) | RESERVE |
 | `fauna:arid_shrubland:Vulptex` | Vulptex | to reserve (sitting 2026-09-10) | RESERVE |
+
+| `fauna:desert:Kwi` | Kwi | to reserve (sitting 2026-09-10) | RESERVE |
+| `fauna:desert:AA_Gigantelope` | AA_Gigantelope | to reserve (sitting 2026-09-10) | RESERVE |
+| `fauna:the_greentide:BMT_Diggerpede` | BMT_Diggerpede | to reserve (sitting 2026-09-10) | RESERVE |
 
 ## Summary
 

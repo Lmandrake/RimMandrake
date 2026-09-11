@@ -39,9 +39,9 @@ OPPORTUNITIES:
 1. Thrumbungus ("partially digesting itself") and Sporemole pass ban 2 cleanly — flagship arrivals; feature both in §4's cast table.
 2. AnimaColossus near the anima-analog (§7) makes a natural undefended-prize guardian (ban 8); wire them together.
 
-## the_greentide — churn 17 (cast 27 → 19)
+## the_greentide — churn 19 (cast 27 → 17)
 Arrivals (3): GiantAnt_Race (event-only, by ruling), Tach + Rikknit (both-jungles ruling). Flier→roster arriving: BMT_FacetMoth. Fliers extracted: Convor, Hawkbat.
-Departures (9 moves): AA_BloodShrimp, AA_Razorjack, Beldon, Dalgo, Dianoga, Falumpaset, Hssiss, Lylek, ShiroTrap. Insect ruling: VFEI2_Swarmling out (faction-only). Sitting 2026-09-10: AA_Wildpawn arrives from arid (the steaming jungle).
+Departures (9 moves): AA_BloodShrimp, AA_Razorjack, Beldon, Dalgo, Dianoga, Falumpaset, Hssiss, Lylek, ShiroTrap. Insect ruling: VFEI2_Swarmling out (faction-only). Sitting 2026-09-10: AA_Wildpawn arrives from arid (the steaming jungle); BMT_Diggerpede to reserve; AA_Needlepost OUT; Fambaa + Dragonsnake TOTAL art redo + web research (SW, no rename).
 
 INCONSISTENCIES:
 1. GiantAnt_Race is event-only ("only the raiding events") — belongs on the event roster, not wildAnimals; keep it off the sheet's resident cast.
@@ -51,8 +51,8 @@ OPPORTUNITIES:
 1. Rikknit's ovum-sac cuisine note is a whole §7 Uniquely-available entry (ji rikknit, egg delicacy) — write it.
 2. Tach the Greatbole-canopy thief pairs with §7b's living towers; a steal-from-camps mechanic fits the register.
 
-## the_scarlands — churn 10 (cast 9 → 14)
-Arrivals (6, deduped): AA_AcanthamoebaGiganteaSmall, BMT_CrystalFairyMole, BMT_MegaphoridLarva, BMT_Stoneback, RSW_ShaleGorger, SW_Electricfish, SW_Grenadierworm (insect ruling: VFEI2_Acidspitter + VFEI2_RoyalSpelopede arrivals VOIDED — faction-only) (SW_Electrictick already resident — its wasteland row is consolidation, not arrival).
+## the_scarlands — churn 11 (cast 9 → 15)
+Arrivals (6, deduped): AA_AcanthamoebaGiganteaSmall, BMT_CrystalFairyMole, BMT_MegaphoridLarva, BMT_Stoneback, RSW_ShaleGorger, SW_Electricfish, SW_Grenadierworm (insect ruling: VFEI2_Acidspitter + VFEI2_RoyalSpelopede arrivals VOIDED — faction-only). Sitting 2026-09-10: AA_Terramorph arrives (dayside lurker, shared range with wasteland). (SW_Electrictick already resident — its wasteland row is consolidation, not arrival).
 Departures (2): AA_Helixien, AA_SpinedGow. Cut: VFEI2_Boomtick (boom family).
 
 INCONSISTENCIES:
@@ -100,8 +100,9 @@ OPPORTUNITIES:
 1. "Rich and varied as the land, by ruling" — this cast finally delivers it; distribute across §4's three habitats (columns, banks, dark between) explicitly.
 2. StoneCrab (0.3) on the lamplit banks is the Compact's harvest animal — a tended-fishery hook for §8.
 
-## wasteland — churn 11 (cast 21 → 12)
+## wasteland — churn 11 (cast 21 → 12) · Terramorph DAYSIDE
 Arrivals (1): BMT_Stoneback. Departures (7 moves): AcanthamoebaSmall, Eyeling, pustule hornets x3, SW_Electrictick, Toxalope; (1 out): AA_FissionMouse. Insect ruling: VFEI2_Swarmling + VFEI2_BlackSwarmling out (faction-only).
+Sitting 2026-09-10: AA_Terramorph ENFORCED dayside-only — resident here + the_scarlands, cut from nightside_ice and desert; terrain-matching color change noted as MAYBE.
 
 INCONSISTENCIES:
 1. None structural — losses are all correct routings; ban 3 ("wildlife never the headline threat") is easier to honor at 14.
@@ -119,8 +120,9 @@ INCONSISTENCIES:
 OPPORTUNITIES:
 1. Six residents is thin for a flagship biome; the Unfinished-adjacent transformation states of visitors could carry ambient density instead of new species.
 
-## desert — churn 8 (cast 45 → 53)
+## desert — churn 14 (cast 45 → 47)
 Arrivals (8): AA_GreatDevourer, AA_Groundrunner, AA_MatureFleshbeast, AA_SandLion, BMT_Stoneback, BMT_TruffleMole, JOE_Cephalope, JOE_Landopus.
+Sitting 2026-09-10: OUT Skalder, Jakobeast (ice predator — routing owed), AA_Terramorph (dayside range is wasteland+scarlands); to RESERVE: Kwi, AA_Gigantelope. Horax TOTAL art redo (SW references). Desert-wide art posture (owner): most of this cast needs new art except pieces already generated — rides the art-template ticket.
 
 INCONSISTENCIES:
 1. 53 residents is the planet's biggest cast — spawn dilution; nobody will ever see the rare ones. Thin toward the reserve pool.
@@ -153,8 +155,8 @@ OPPORTUNITIES:
 1. Commission one native furnace-beast (the §4 heat-banking grazer) or route AA_Barbslinger ("wherever needed in hot biomes", OPEN) here as the fire-cycle animal.
 2. Razorjack as the burn-front follower (hunts fleeing animals ahead of fires) gives the arrival a fire-web role instead of a generic predator slot.
 
-## nightside_ice — churn 5 (cast 6 → 10)
-Arrivals (4 residents): AA_ShockGoat (refashion ruled), BMT_CaveLemming (rename ruled), Tauntaun, Wampa. Injectable, not resident: Bulwark ("horror injectibles").
+## nightside_ice — churn 6 (cast 6 → 9)
+Arrivals (4 residents): AA_ShockGoat (refashion ruled), BMT_CaveLemming (rename ruled), Tauntaun, Wampa. Injectable, not resident: Bulwark ("horror injectibles"). Sitting 2026-09-10: AA_Terramorph out (dayside won the either-or).
 
 INCONSISTENCIES:
 1. Wampa (pursuit predator) and Tauntaun (fast, warm, flocking) violate the surface ban on warm/fast/pursuing/flocking fauna — the icon carve-out protects NAMES, not physics; owner ruling needed (margins-only? tunneler rewrite?).
