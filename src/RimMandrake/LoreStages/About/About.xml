@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Lore Stages</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.lorestages</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>STAGED_LORE_BUILD_1 — descriptions that change as a story is learned.
+
+A def's description, settle warning or label is rewritten to match how far a campaign's reveal ladder has advanced, so a place can read as an inexplicable wasteland until the player earns the truth and then read as what it is. The engine only; no lore text lives here.
+
+HOW: every display surface that matters reads a def FIELD at draw time (the world tile inspector reads BiomeDef.description directly, Thing.DescriptionFlavor is a virtual with no backing store, the settle confirmation re-reads BiomeDef.settleWarning every time), so a field write shows on the next frame and no Harmony patch is needed. Ludeon ships the same idea in the base game: Building_VoidMonolith stages its description by campaign level.
+
+THE TWO TRAPS IT HANDLES: (1) ThingDef.descriptionDetailedCached and HediffDef.descriptionCached are private memoized fields that NO engine path ever clears, so trade/transfer rows, storage filters and hediff tooltips would keep serving the previous stage's text for the rest of the session — this mod nulls both by reflection on every apply. (2) Defs are process-global and are not reloaded between savegames, so a stage-5 colony's text would still be on the def when a stage-0 save loads — every apply resets to the shipped baseline first and then applies the current stage from scratch.
+
+WHAT SHIPS: GameComponent_LoreStage (scribes a per-ladder stage into the .rws, applies on FinalizeInit — which covers both a new game and every load) and RM_LoreStageTableDef, the data-side ladder table that content mods provide. Ladders advance independently. Dev-mode debug actions under "Lore stages" set any ladder's rung and dump what every staged field currently holds.
+
+Loads and does nothing at all when no RM_LoreStageTableDef is present.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <!-- No mandrake.* dependency: this is the engine, and the content mods that
+       ship ladders depend on IT, never the other way round. -->
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>
