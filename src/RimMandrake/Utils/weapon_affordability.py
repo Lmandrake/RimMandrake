@@ -67,7 +67,7 @@ import dump_projection  # noqa: E402
 import cherrypicker  # noqa: E402
 ROSTER_GEN = os.path.join(HERE, "gen_pawnkind_roster.py")
 ROSTER_XML = os.path.join(
-    ROOT, "src", "SPLIT_Phase3", "Jawa_Patches", "Defs", "PawnKindDefs", "JawaFactionRoster.xml")
+    ROOT, "src", "RimUtinni", "UtinniPatches", "Defs", "PawnKindDefs", "JawaFactionRoster.xml")
 
 _DUMPS = [
     os.path.join(DEF_DUMP, "defs"),
@@ -253,7 +253,7 @@ def load_roster():
     rows, cut_rows = [], []
     for d in ET.parse(ROSTER_XML).getroot():
         dn = d.findtext("defName")
-        if not dn or not dn.startswith("Jawa_"):
+        if not dn or not dn.startswith("RUT_Jawa_"):
             continue
         wm = d.findtext("weaponMoney")
         wt = d.find("weaponTags")
@@ -294,7 +294,7 @@ def drift_vs_shadow(rows):
     live = {dn: (lo, hi, tags) for dn, _lab, lo, hi, tags in rows}
     out = []
     for fac, role, _label, wm, _am, _q, tags, _req in shadow:
-        dn = "Jawa_%s_%s" % (fac, role)
+        dn = "RUT_Jawa_%s_%s" % (fac, role)
         if dn not in live:
             out.append("%-28s in R, absent from the emitted XML" % dn)
             continue

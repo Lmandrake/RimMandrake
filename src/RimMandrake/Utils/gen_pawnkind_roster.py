@@ -114,6 +114,10 @@ EXTRAS = """\
     <weaponTags>
       <li>SimpleGun</li>
       <li>KotORRanged_mid</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: same practical sidearm blade the rest of
+           the Homestead's fielded kinds carry (KotORMelee_weak). Cheapest
+           carrier 120 against this kind's 200 floor - always arms. -->
+      <li>KotORMelee_weak</li>
     </weaponTags>
     <!-- PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1, owner ruling 2026-08-29: all 12
          factions. Hand-added here since this kind is EXTRAS, not the R table
@@ -483,6 +487,12 @@ KIT = {
     <initialWillRange>1~3</initialWillRange>
     <weaponTags>
       <li>ORImperialStandard</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: standard-issue vibroblade sidearm, not a
+           salvaged or personalised blade - B5 issued idiom, same Outer Rim vibro
+           family the other three Empire kinds now carry. Cheapest carrier 538
+           against this kind's 950 floor - always arms. -->
+      <li>ORVibroweapon</li>
+      <li>ORMeleeSharp</li>
     </weaponTags>
     <apparelRequired>
       <li>OuterRim_StormtrooperCuirass</li>
@@ -541,6 +551,10 @@ KIT = {
     <weaponTags>
       <li>ORImperialHeavy</li>
       <li>ORHeavyWeapon</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: same standard-issue vibroblade as the rest
+           of the Empire's kinds. -->
+      <li>ORVibroweapon</li>
+      <li>ORMeleeSharp</li>
     </weaponTags>
     <apparelRequired>
       <li>OuterRim_ImperialArmyCuirass</li>
@@ -590,6 +604,10 @@ KIT = {
     <weaponTags>
       <li>ORPistol</li>
       <li>ORImperialLight</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: same standard-issue vibroblade as the rest
+           of the Empire's kinds. -->
+      <li>ORVibroweapon</li>
+      <li>ORMeleeSharp</li>
     </weaponTags>
     <apparelRequired>
       <li>OuterRim_ImperialOfficerUniform</li>
@@ -636,6 +654,10 @@ KIT = {
     <weaponTags>
       <li>ORImperialSniper</li>
       <li>ORPistol</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: same standard-issue vibroblade as the rest
+           of the Empire's kinds. -->
+      <li>ORVibroweapon</li>
+      <li>ORMeleeSharp</li>
     </weaponTags>
     <apparelRequired>
       <li>OuterRim_ImperialOfficerUniform_Black</li>
@@ -670,6 +692,11 @@ KIT = {
     <weaponTags>
       <li>KotORRanged_weak</li>
       <li>SWKotORWeaponCategoryTag_pistol</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: HC_enforcer is a literal Hutt Cartel
+           enforcer tag (guy762_vblade et al) - the owner's own example, a Hutt
+           enforcer's vibroblade. Cheapest carrier 200 sits exactly at this
+           kind's 200 floor - always arms. -->
+      <li>HC_enforcer</li>
     </weaponTags>
       <apparelTags>
       <li>SaV_apparel_huttgoon</li>
@@ -716,6 +743,9 @@ KIT = {
     <weaponTags>
       <li>KotORRanged_mid</li>
       <li>SWKotORWeaponCategoryTag_heavyranged</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: same Hutt enforcer's vibroblade the other
+           two Hutt kinds now carry. -->
+      <li>HC_enforcer</li>
     </weaponTags>
       <apparelTags>
       <li>SaV_apparel_huttgoon</li>
@@ -762,6 +792,9 @@ KIT = {
     <weaponTags>
       <li>KotORRanged_mid</li>
       <li>SWKotORWeaponCategoryTag_pistol</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: same Hutt enforcer's vibroblade the other
+           two Hutt kinds now carry. -->
+      <li>HC_enforcer</li>
     </weaponTags>
       <apparelTags>
       <li>SaV_apparel_huttgoon</li>
@@ -955,6 +988,11 @@ KIT = {
     <weaponTags>
       <li>SniperRifle</li>
       <li>ORSniper</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: KotORMelee_weak - a cheap, common sidearm
+           blade/baton, not exclusive to any one culture, fitting the settler
+           militia's B1/B2 'repaired, modest, practical' idiom. Cheapest carrier
+           120 against this kind's 450 floor - always arms. -->
+      <li>KotORMelee_weak</li>
     </weaponTags>
     <maxApparelQuality>Good</maxApparelQuality>
       <apparelTags>
@@ -1004,6 +1042,9 @@ KIT = {
     <weaponTags>
       <li>ORPistol</li>
       <li>SWKotORWeaponCategoryTag_pistol</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: same practical sidearm blade the rest of
+           the Homestead's fielded kinds now carry. -->
+      <li>KotORMelee_weak</li>
     </weaponTags>
     <maxApparelQuality>Excellent</maxApparelQuality>
       <apparelTags>
@@ -1147,6 +1188,12 @@ KIT = {
     <initialWillRange>2~5</initialWillRange>
     <weaponTags>
       <li>SaV_tusken</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: same gaderffii/kinetic melee the other
+           three Deep Desert kinds carry - non-energy, taboo-safe (energy
+           weapons are sacrilege to this faction). Cheapest carrier 120 against
+           this kind's 2000 floor - always arms. -->
+      <li>ORTuskenMelee</li>
+      <li>NeolithicMeleeAdvanced</li>
     </weaponTags>
     <maxApparelQuality>Normal</maxApparelQuality>
       <apparelTags>
@@ -1611,6 +1658,12 @@ KIT = {
     <initialWillRange>4~7</initialWillRange>
     <weaponTags>
       <li>KotORBowcaster</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: same vibro melee the Wildsteam Specialist
+           already carries - matches this faction's own documented secondary
+           idiom (A6 vibro, "melee 45-60%"). Cheapest carrier 538 against this
+           kind's 1600 floor - always arms. -->
+      <li>ORMeleeSharp</li>
+      <li>ORVibroweapon</li>
     </weaponTags>
     <minApparelQuality>Excellent</minApparelQuality>
       <apparelTags>
@@ -2090,6 +2143,11 @@ KIT = {
     <weaponTags>
       <li>SWKotORWeaponCategoryTag_heavyranged</li>
       <li>KotORRanged_strong</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: KotORMelee_strong - an elite mercenary
+           blade, matching this faction's B4 'few and perfect, top tier'
+           idiom (same tier convention the ranged tags already use per-faction).
+           Cheapest carrier 800 against this kind's 2000 floor - always arms. -->
+      <li>KotORMelee_strong</li>
     </weaponTags>
     <minApparelQuality>Excellent</minApparelQuality>
       <apparelTags>
@@ -2193,6 +2251,9 @@ KIT = {
     <weaponTags>
       <li>KotORRanged_legendary</li>
       <li>KotORRanged_rare</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: same elite mercenary blade tier the
+           Helix Heavy now carries; trivially affordable at this kind's budget. -->
+      <li>KotORMelee_strong</li>
     </weaponTags>
     <itemQuality>Masterwork</itemQuality>
       <apparelTags>
@@ -2490,6 +2551,13 @@ KIT = {
       <li>Jawa_IonWeapon</li>
       <li>RSW_JawaIon_Damage</li>
       <li>KotORRanged_weak</li>
+      <!-- BAREHANDED_MELEE_FALLBACK_1: NeolithicMeleeBasic pulls in the scrap
+           metal-pipe cluster (Melee_MetalPipe et al) - a scavenged pipe or
+           torch, matching this faction's B2 salvage idiom without borrowing
+           another faction's signature weapon (ORMeleeBlunt's only carrier is
+           the Deep Desert Tribes' own gaderffii stick). Cheapest carrier ~1
+           against this kind's 450 floor - always arms with wide headroom. -->
+      <li>NeolithicMeleeBasic</li>
     </weaponTags>
     <maxApparelQuality>Normal</maxApparelQuality>
       <apparelRequired>

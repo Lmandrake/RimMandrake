@@ -53,7 +53,7 @@ top only guards the rare weapon that defines a genuinely melee-classed verb.
 USAGE
 -----
     python3 src/RimMandrake/Utils/weapon_pool_join.py
-    python3 src/RimMandrake/Utils/weapon_pool_join.py --kinds Jawa_Hutt_Grunt,Jawa_Junkers_Grunt
+    python3 src/RimMandrake/Utils/weapon_pool_join.py --kinds RUT_Jawa_Hutt_Grunt,RUT_Jawa_Junkers_Grunt
     python3 src/RimMandrake/Utils/weapon_pool_join.py --json out.json
 
 Exit 0 always (this attributes, it does not pass/fail) unless the dump/roster cannot be
@@ -74,14 +74,19 @@ import weapon_affordability as WA  # noqa: E402
 # Frozen here as the item's own scope, not re-derived at run time - the source JSON is a
 # point-in-time sample and could roll differently on a re-run; this join is about THESE
 # 23 kind's tag pools, which do not change roll to roll.
+# 🔴 RUT_-prefixed 2026-09-11: NAMING_SCHEME_EXECUTION_1 (commit b0e18f89) renamed every
+# Jawa_* defName in the emitted roster to RUT_Jawa_* — a straight 1:1 prefix, confirmed
+# against every <defName> in JawaFactionRoster.xml. This list is otherwise unchanged from
+# the 2026-08-29 item scope (same 23 kinds), just re-spelled to match what's on disk now.
 BARE_23 = [
-    "Jawa_Hutt_Grunt", "Jawa_Geonosian_Grunt", "Jawa_Empire_Grunt", "Jawa_Empire_Heavy",
-    "Jawa_Empire_Specialist", "Jawa_Empire_Leader", "Jawa_Hutt_Heavy", "Jawa_Hutt_Specialist",
-    "Jawa_Homestead_Specialist", "Jawa_Homestead_Leader", "Jawa_DeepDesert_Heavy",
-    "Jawa_DeepDesert_Specialist", "Jawa_Wildsteam_Specialist", "Jawa_Wildsteam_Leader",
-    "Jawa_Deepwater_Specialist", "Jawa_Deepwater_Leader", "Jawa_Geonosian_Heavy",
-    "Jawa_Geonosian_Specialist", "Jawa_Helix_Heavy", "Jawa_Helix_Leader",
-    "Jawa_TradeMoot_Heavy", "Jawa_Junkers_Grunt", "Jawa_Homestead_DesertRanger",
+    "RUT_Jawa_Hutt_Grunt", "RUT_Jawa_Geonosian_Grunt", "RUT_Jawa_Empire_Grunt",
+    "RUT_Jawa_Empire_Heavy", "RUT_Jawa_Empire_Specialist", "RUT_Jawa_Empire_Leader",
+    "RUT_Jawa_Hutt_Heavy", "RUT_Jawa_Hutt_Specialist", "RUT_Jawa_Homestead_Specialist",
+    "RUT_Jawa_Homestead_Leader", "RUT_Jawa_DeepDesert_Heavy", "RUT_Jawa_DeepDesert_Specialist",
+    "RUT_Jawa_Wildsteam_Specialist", "RUT_Jawa_Wildsteam_Leader", "RUT_Jawa_Deepwater_Specialist",
+    "RUT_Jawa_Deepwater_Leader", "RUT_Jawa_Geonosian_Heavy", "RUT_Jawa_Geonosian_Specialist",
+    "RUT_Jawa_Helix_Heavy", "RUT_Jawa_Helix_Leader", "RUT_Jawa_TradeMoot_Heavy",
+    "RUT_Jawa_Junkers_Grunt", "RUT_Jawa_Homestead_DesertRanger",
 ]
 
 
