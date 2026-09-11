@@ -250,3 +250,15 @@ PawnKindDef per species (same race, capped generation age, lowered combatPower,
 `lifeStageAges` scales body/stats automatically), listed in the Miasma BiomeDef
 wildAnimals. Caveat recorded: on-map aging means an occasional grown-up in the rings —
 good fiction, not a defect. Build filed as MIASMA_NURSERY_KINDS_1 (FOUNDRY).
+
+**5. Desert/Wasteland/Greentide batch (sitting, 2026-09-10):** Horax TOTAL redo (SW
+references); desert drops Skalder, Jakobeast (ice predator — final routing owed),
+Terramorph; Kwi + AA_Gigantelope to reserve. Terramorph ENFORCED dayside-XOR-nightside:
+dayside won — resident wasteland + scarlands only (terrain-matching color = MAYBE, not
+ruled). Greentide: Fambaa + Dragonsnake TOTAL redo + web research; Diggerpede to
+reserve; Needlepost out (greentide row only). Desert-wide art posture: most of the
+cast needs new art EXCEPT already-generated pieces — process rides
+ART_BACKGROUND_TEMPLATE_1 (standard black-background template + prove-out log).
+Pustule queens question answered: two queen DEFS ship in the mod (lone
+BMT_PustuleHornetQueen + BMT_ColonyPustuleHornetQueen) — one organism, five defs,
+counted as one admission per the rot's findings.

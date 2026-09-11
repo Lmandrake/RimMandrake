@@ -398,8 +398,8 @@
     "fauna:desert:AA_Gigantelope": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "move",
+      "note": "to reserve (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -443,8 +443,8 @@
     "fauna:desert:AA_Terramorph": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "dayside range is Wasteland+Scarlands only (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -554,7 +554,7 @@
       "art": "redo",
       "artPrefill": "redo",
       "decision": "in",
-      "note": "",
+      "note": "TOTAL art redo — SW creature: look up inspirational Star Wars art, no rename (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -589,8 +589,8 @@
     "fauna:desert:Jakobeast": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "ice predator — misplaced in desert; routing owed (nightside_ice or reserve, owner to say) (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -636,8 +636,8 @@
     "fauna:desert:Kwi": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "move",
+      "note": "to reserve (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -708,8 +708,8 @@
     "fauna:desert:Skalder": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "removed from desert (lives on in poison_forest) (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -1188,8 +1188,8 @@
     "fauna:nightside_ice:AA_Terramorph": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "dayside/nightside-ONLY enforcement: dayside won (wasteland+scarlands) (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -1634,10 +1634,10 @@
       "sizeBinPrefill": "medium"
     },
     "fauna:the_fever_wood:Fambaa": {
-      "art": "improve",
+      "art": "redo",
       "artPrefill": "improve",
       "decision": "in",
-      "note": "tree crusher",
+      "note": "tree crusher | TOTAL art redo + web research — SW creature, no rename (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan",
@@ -1775,8 +1775,8 @@
     "fauna:the_greentide:AA_Needlepost": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "removed from greentide (arid row untouched) (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "small"
@@ -1794,8 +1794,8 @@
     "fauna:the_greentide:BMT_Diggerpede": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "move",
+      "note": "to reserve (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -1849,11 +1849,11 @@
       "sizeBinPrefill": "large"
     },
     "fauna:the_greentide:Dragonsnake": {
-      "art": "improve",
+      "art": "redo",
       "artPrefill": "keep",
       "at": "2026-09-10T04:57:33.120Z",
       "decision": "in",
-      "note": "",
+      "note": "TOTAL art redo + web research — SW creature, no rename (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -1869,11 +1869,11 @@
       "sizeBinPrefill": "large"
     },
     "fauna:the_greentide:Fambaa": {
-      "art": "improve",
+      "art": "redo",
       "artPrefill": "improve",
       "at": "2026-09-10T04:58:29.380Z",
       "decision": "in",
-      "note": "tree crusher",
+      "note": "tree crusher | TOTAL art redo + web research — SW creature, no rename (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "titan",
       "sizeBinPrefill": "titan"
@@ -2906,7 +2906,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:28:32.457Z",
       "decision": "in",
-      "note": "",
+      "note": "DAYSIDE ruled: lurks Wasteland + Scarlands only; idea: terrain-matching color change (MAYBE, not ruled) (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7954,6 +7954,12 @@
       "decision": "later",
       "note": "left undecided on purpose — it commissions a whole art wave.",
       "prefill": "later"
+    },
+    "fauna:the_scarlands:AA_Terramorph": {
+      "decision": "in",
+      "prefill": "in",
+      "art": "improve",
+      "note": "ARRIVAL by sitting ruling 2026-09-10: dayside lurker, Wasteland+Scarlands range"
     }
   },
   "generatedBy": "gen_fauna_assignment_sheet.py (2026-09-09 rulings rebuild)",
