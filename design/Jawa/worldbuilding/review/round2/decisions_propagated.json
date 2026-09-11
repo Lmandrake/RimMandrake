@@ -4806,7 +4806,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:06:18.413Z",
       "decision": "move",
-      "note": "Miasma, domesticatable, Hutt pets, 1 cell",
+      "note": "Miasma, domesticatable, Hutt pets, 1 cell | DUAL-LISTED: Miasma wild resident AND ninth-roster faction animal (Hutt-adjacent); wild ones read as escaped/feral stock (owner card ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -6488,11 +6488,11 @@
       "sizeBinPrefill": "titan"
     },
     "homeless:JRWBeelzebufo": {
-      "art": "keep",
+      "art": "redo",
       "artPrefill": "keep",
       "at": "2026-09-10T05:41:57.828Z",
       "decision": "move",
-      "note": "Maisma",
+      "note": "Maisma | RENAME + REDEFINE ruled (non-SW): keep the giant-ambush-frog body plan, new name + alienized art via the redo pipeline (owner card ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -6930,8 +6930,8 @@
     "homeless:Megascarab": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "out",
-      "note": "",
+      "decision": "in",
+      "note": "FACTION-RESERVED (insect ruling extended): stays as Insect-faction/infestation content, never a biome resident — the round-1 out (cut) is reversed (owner card ruling 2026-09-10)",
       "prefill": "out",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"

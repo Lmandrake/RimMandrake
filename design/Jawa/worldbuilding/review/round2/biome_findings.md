@@ -16,7 +16,7 @@ Ordered by churn (arrivals+departures+cuts+flier extractions), highest first.
 Arrivals (7): Dianoga, RSW_SandoAquaMonster, BMT_PodWorm, Blarth, Blixus, JRWBeelzebufo, MarshHaunt. Flier→roster arriving: Bogwing.
 Departures (12 moves): entire aquatic cast to the seas (RSW_Faa/Laa/Mee/OpeeSeaKiller/SiltLamprey, Yobshrimp) + AA_BloodShrimp, AA_Helixien, AA_Plasmorph, AA_Slurrypede, BMT_Gembug, Kreetle. Insect ruling: VFEI2_Swarmling + VFEI2_BlackSwarmling out (faction-only).
 
-NURSERY RULING (owner, 2026-09-10): the sea creatures use the Miasma as a young-raising ground — juvenile-only spawns via per-species young PawnKindDefs (same race, maxGenerationAge capped below adulthood, reduced combatPower) in the Miasma wildAnimals list. Engine-verified: PawnKindDef.minGenerationAge/maxGenerationAge. Build filed for FOUNDRY.
+NURSERY RULING (owner, 2026-09-10; roster carded): NINE species raise young in the brine rings — the six ex-Miasma aquatics (RSW_Faa, RSW_Laa, RSW_Mee, RSW_OpeeSeaKiller, RSW_SiltLamprey, Yobshrimp) + Sando young + Blixus young + ElderSando young (lore backing: the crusted giant is "bred at the Miasma's crèches"). Juvenile-only via per-species young PawnKindDefs. Build: MIASMA_NURSERY_KINDS_1.
 
 INCONSISTENCIES:
 1. JRWBeelzebufo reads as "giant frog" — collides with ban 7 (no vanilla-Earth fauna) and the recognizability rule; rename/reskin owed.
