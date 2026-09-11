@@ -54,3 +54,26 @@ regenerated — possibly the whole creature**, not touched up. Star Wars creatur
 canonical look. Non-SW creatures: redo may include a full rename+redefine from the
 creature's function. **When in doubt, ask the owner.** Review surfaces render
 creatures in side profile (east-facing), not the south-facing headshot.
+
+## "improve" semantics (owner ruling, 2026-09-11 — binds wave 4 and every later `art: "improve"` pass)
+
+The current graphical quality on every `art: "improve"` row is unacceptable — this is
+not a light touch-up, it is a full regeneration, same mechanism as `redo`. What
+distinguishes `improve` from `redo` is naming discipline, not effort:
+
+- **Star Wars-named creatures keep their canon identity.** The name means that
+  creature — draw what it actually is, converging on the canonical look (same rule
+  as `redo`'s SW handling).
+- **Non-Star-Wars names are subject to change.** The *general kind* of creature
+  (e.g. "a burrowing rodent", "a chitinous flyer") is the part that's fixed; the
+  specific name/flavor is not — get inspired by what the creature seems like it was
+  supposed to be, and invent or draw on Star Wars canon for a new name/character if
+  the current one doesn't earn its place. The result should read as an interesting
+  alien that belongs on a Star Wars-themed world, not a reskinned Earth animal.
+- **Enforce proper black outline thickness.** Every `improve` prompt must ask for a
+  outline heavy enough to read clean at standard zoom and below — this is the
+  concrete, checkable half of "unacceptable quality": thin/absent outlines are the
+  first thing to fix regardless of what else changes.
+
+Same "when in doubt, ask the owner" rule as `redo` applies to any specific creature
+where canon-vs-invented naming isn't obvious.
