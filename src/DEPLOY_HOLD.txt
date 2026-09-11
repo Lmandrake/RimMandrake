@@ -170,4 +170,28 @@ SWBestiary/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the gam
 #   deploying: their donors are already gone, and the abstract parents they
 #   reach for come from the live kotorcore meanwhile.
 Armoury/Defs/Absorbed_KotorCore/*   # FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
-src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_NurseryJuveniles.xml  # pulled 2026-09-11 bisecting the AlphaGenes startup NRE — restore when cleared
+
+# --- SeaBeasts nursery juveniles: AlphaGenes startup NRE, ROOT-CAUSED AND FIXED --
+# Pulled 2026-09-11 while bisecting a NullReferenceException in
+# AlphaGenes_GeneDefGenerator_ImpliedGeneDefs_Patch.Postfix, thrown during
+# RimWorld.DefGenerator.GenerateImpliedDefs_PreResolve. Bisect-proven (clean
+# load without this file, RESET 0).
+#
+# ✅ RESOLVED 2026-09-11 (FOUNDRY), root cause confirmed from Player-prev.log:
+# a genuine XML error was sitting right next to the NRE — "<thingClass>Pawn
+# </thingClass> doesn't correspond to any field in type PawnKindDef" inside a
+# "Context: <ThingDef ParentName=\"RSW_Mee\">..." block. RimWorld's ParentName
+# lookup keys on the `Name=` attribute in a FLAT namespace, not scoped by def
+# type — and the SeaBeasts base files gave both the ThingDef AND the
+# PawnKindDef for each of the 7 races the SAME Name (e.g. `Name="RSW_Mee"` on
+# both). Nothing exercised `ParentName="RSW_Mee"` before this file added it
+# (grepped: sole consumer, both directions), so the collision was dormant.
+# The PawnKindDef half of the merge lost, silently ending up with a null
+# `race` — exactly what AlphaGenes' postfix NREs on.
+#
+# Fix: PawnKindDef `Name=` disambiguated to `RSW_<X>_Kind` in
+# SeaBeasts_Scalefish.xml/_Swarm.xml/_Opee.xml (defName unchanged); this
+# file's 7 `<PawnKindDef ParentName="RSW_X">` updated to `RSW_X_Kind`.
+# validate_patch.py: 0 errors on all 4 files. Live re-verify (AlphaGenes
+# sweep clean, RUT_Miasma's 9 dangling wildAnimals refs resolve again) owed
+# on the next full load — this hold is lifted, not superseded.

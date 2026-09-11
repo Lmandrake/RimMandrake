@@ -80,7 +80,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_Yobshrimp">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_Yobshrimp_Kind">
     <defName>RSW_Yobshrimp</defName>
     <label>pale yobshrimp</label>
     <race>RSW_Yobshrimp</race>
@@ -208,7 +208,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_SiltLamprey">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_SiltLamprey_Kind">
     <defName>RSW_SiltLamprey</defName>
     <label>silt lamprey</label>
     <race>RSW_SiltLamprey</race>
@@ -348,7 +348,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_RustNipper">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_RustNipper_Kind">
     <defName>RSW_RustNipper</defName>
     <label>rust nipper</label>
     <race>RSW_RustNipper</race>

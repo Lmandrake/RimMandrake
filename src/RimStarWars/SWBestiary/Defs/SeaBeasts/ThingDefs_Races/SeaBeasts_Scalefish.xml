@@ -79,7 +79,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_Mee">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_Mee_Kind">
     <defName>RSW_Mee</defName>
     <label>mee scalefish</label>
     <race>RSW_Mee</race>
@@ -205,7 +205,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_Faa">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_Faa_Kind">
     <defName>RSW_Faa</defName>
     <label>faa scalefish</label>
     <race>RSW_Faa</race>
@@ -328,7 +328,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_Laa">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_Laa_Kind">
     <defName>RSW_Laa</defName>
     <label>laa scalefish</label>
     <race>RSW_Laa</race>

@@ -44,7 +44,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="RSW_Mee">
+  <PawnKindDef ParentName="RSW_Mee_Kind">
     <defName>RSW_MeeJuv</defName>
     <label>young mee scalefish</label>
     <race>RSW_MeeJuv</race>
@@ -95,7 +95,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="RSW_Faa">
+  <PawnKindDef ParentName="RSW_Faa_Kind">
     <defName>RSW_FaaJuv</defName>
     <label>young faa scalefish</label>
     <race>RSW_FaaJuv</race>
@@ -146,7 +146,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="RSW_Laa">
+  <PawnKindDef ParentName="RSW_Laa_Kind">
     <defName>RSW_LaaJuv</defName>
     <label>young laa scalefish</label>
     <race>RSW_LaaJuv</race>
@@ -197,7 +197,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="RSW_Yobshrimp">
+  <PawnKindDef ParentName="RSW_Yobshrimp_Kind">
     <defName>RSW_YobshrimpJuv</defName>
     <label>young pale yobshrimp</label>
     <race>RSW_YobshrimpJuv</race>
@@ -248,7 +248,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="RSW_SiltLamprey">
+  <PawnKindDef ParentName="RSW_SiltLamprey_Kind">
     <defName>RSW_SiltLampreyJuv</defName>
     <label>young silt lamprey</label>
     <race>RSW_SiltLampreyJuv</race>
@@ -299,7 +299,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="RSW_RustNipper">
+  <PawnKindDef ParentName="RSW_RustNipper_Kind">
     <defName>RSW_RustNipperJuv</defName>
     <label>young rust nipper</label>
     <race>RSW_RustNipperJuv</race>
@@ -355,7 +355,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="RSW_OpeeSeaKiller">
+  <PawnKindDef ParentName="RSW_OpeeSeaKiller_Kind">
     <defName>RSW_OpeeSeaKillerJuv</defName>
     <label>sub-adult opee sea killer</label>
     <race>RSW_OpeeSeaKillerJuv</race>
