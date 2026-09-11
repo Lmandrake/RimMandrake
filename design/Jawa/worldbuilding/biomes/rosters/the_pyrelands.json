@@ -1,86 +1,390 @@
 {
-  "sheet": "the_pyrelands",
-  "defNames": ["ZBiome_Grasslands"],
-  "tiles": 222,
   "authored": "2026-09-09",
-  "law_sources": ["the_pyrelands.md §4-§6", "_assignment_prep.md §9-§12", "_freeze_rulings_2026-09-07.md R7/R14/R26", "owner cards 2026-09-09"],
-  "fauna": [
-    {"def": "Zeer", "commonality": 0.6, "action": "adjust-keep", "band": "large-herd", "law": "§4 ash-grazers — 'the great herds eating the regrowth sprint'; herd special MEASURED (bs 3.0, non-predator, migrates in herds)", "note": "incumbent at 0.05; raised — the herds are the wealth (§5)"},
-    {"def": "Iriaz", "commonality": 0.5, "action": "import", "band": "small-herd", "law": "§4 ash-grazers; MEASURED bs 0.7, herd, non-predator; Dantooine grassland canon — moved out of the Forge defs where a docile grazer violated heat-adapted-and-few"},
-    {"def": "Nuna", "commonality": 0.5, "action": "adjust-keep", "band": "small", "law": "§4 fire-followers need flushed prey — ground fowl flushed ahead of the flame-line; MEASURED bs 0.6, herd, non-predator"},
-    {"def": "Gizka", "commonality": 0.3, "action": "adjust-keep", "band": "grain", "law": "small quick forager between burns; MEASURED bs 0.18 spd 3.0; trimmed from 1.0 — second home beside ExtremeDesert (not a ubiquity-25 row, ≤2 homes fine)"},
-    {"def": "Anooba", "commonality": 0.35, "action": "import", "band": "medium-predator", "law": "§4 fire-followers — 'hunters working the flame edge and the flushed panic'; MEASURED predator, spd 5.0 (no pursuit ban in this sheet); SW pack hunter"},
-    {"def": "Orray", "commonality": 0.25, "action": "import", "band": "medium", "law": "§4 burrowers — register special 'burrows underground when hungry' (MEASURED), the one live def with the fire-diving mechanic; also a predator, so it doubles at the flame edge", "note": "was newly homeless per prep §11 — re-homed here"},
-    {"def": "AA_FireWasp", "commonality": 0.4, "action": "keep", "band": "small-predator", "law": "incumbent; 'burning bite that feeds on the wound' (MEASURED special) — a fire-armed native in the fire biome; slow (spd 1.5), no pursuit read"},
-    {"def": "Boomalope", "commonality": 0.3, "action": "import", "band": "medium", "law": "owner card 2026-09-09: KEEP reskinned, in-joke lane (ubiquity-25 §9); detonating chemfuel fauna belongs in the standing burn — one of its ≤2 named homes", "note": "reskin rides the in-joke lane art pass"},
-    {"def": "GR_Mantistanis", "commonality": 0.05, "action": "import", "band": "large-predator", "law": "§4 fire-followers — passes the flame-edge hunter test on stats (predator, spd 7.0 MEASURED, self-healing suits repeated burns); restored by the GR_ correction pass; second flame-edge hunter beside Anooba — owner may trim to one at review", "note": "VGE chimera, mantis-read (alien, not Earth); REGENERATE-art lane"},
-    {"def": "RUT_FireHawk", "commonality": 0.15, "action": "commission", "band": "igniter-flier", "law": "§4 'the fire-hawks (ruled: absolutely)' — one of the two irreplaceable igniters; PYRELANDS_FIRE_WEB_COMMISSION_1", "note": "built 2026-09-10: src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml, real generated art (transparent, artpipe job pyrelands_firehawk_v1). Twig-carrying fire-spread behaviour NOT implemented — owed to PYRELANDS_MECHANICS_1 (unfiled)."},
-    {"def": "RUT_FurnaceBeast", "commonality": 0.08, "action": "commission", "band": "igniter-megafauna", "law": "§4 'the furnace-beasts (owner)' — the second irreplaceable igniter; ban 5 no tame furnace-beast enforced via VEF CompProperties_Untameable; PYRELANDS_FIRE_WEB_COMMISSION_1", "note": "built 2026-09-10: same file, real generated art (transparent, artpipe job pyrelands_furnacebeast_v1). Heat aura / bed-down ignition NOT implemented — owed to PYRELANDS_MECHANICS_1 (unfiled)."},
-    {"def": "AA_Razorjack", "commonality": 0.2, "action": "import", "band": "fire-follower", "law": "§4 fire-followers — owner ruling PYRELANDS_FIRE_WEB_COMMISSION_1 (2026-09-10) recasts it here; MEASURED fast omnivore (spd 4.0, bs 1, predator, Wildness 0.75), already the_contagion.json's 'fast omnivore on the carcass economy' — the same read fits the flushed-panic flame edge"},
-    {"def": "AA_Barbslinger", "commonality": 0.15, "action": "move", "band": "ash-grazer", "law": "§4 ash-grazers — owner ruling PYRELANDS_FIRE_WEB_COMMISSION_1 (2026-09-10) routes it here, reversing the prior no-fire-story eviction below", "note": "MEASURED: predator/omnivore (bs 2.5, spd 4.0, Wildness 0.9), not a pure herbivore — cast as ash-grazer by the owner's routing call, not by diet; a role label, not a mechanical claim"}
+  "confidence": [
+    {
+      "claim": "roster rebinds to the self-contained RM Pyrelands def when PYRELANDS_SELF_CONTAINED_BIOME_1 / PYRELANDS_WORLD_SWITCH_1 land",
+      "status": "PENDING",
+      "why": "ZBiome_Grasslands is the currently painted donor def; rosters bind per def (R19a) so this file moves with the switch"
+    },
+    {
+      "claim": "RM_FE_Plant_ScorchFruit / RM_FE_Fulgurite exist as built defs",
+      "status": "CONFIRMED in src (MEASURED grep, 2026-09-09)",
+      "why": "src/RimMandrake/Pyrelands/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml and .../ThingDefs_Fulgurite/Fulgurite.xml define them, and FireEcologyHook.cs references both by name; the earlier NOT-FOUND finding was grepping the stale RSW_FE_ prefix — commit b2ebdfdb already renamed the tier to RM_FE_ across docs, this roster just missed that pass"
+    },
+    {
+      "claim": "no nocturnal-behaviour audit applied",
+      "status": "N/A",
+      "why": "the nocturnal ban is dune_sea/desert law, not this sheet's"
+    },
+    {
+      "claim": "kept fauna survive the actual flame front",
+      "status": "UNMEASURED",
+      "why": "no register field covers fire response; casting is by niche (herd/burrow/flame-edge), engine fire-flee is the default behaviour"
+    },
+    {
+      "claim": "GR_ rows re-adjudicated per §4 sorts; GR_Mantistanis restored as a passing fire-follower",
+      "status": "RESOLVED",
+      "why": "GR_ prefix correction pass 2026-09-09: GRim*=Grindterra homeless; GR_*=VGE chimeras judged per sheet law (RETEXTURED_EARTH_FAUNA_BANNED_1: leave chimeras)"
+    }
+  ],
+  "defNames": [
+    "ZBiome_Grasslands"
   ],
   "evictions": [
-    {"def": "HermitCrab", "reason": "Earth-nameable crab — 'a crab is a crab' (prep §6.4 recognizability); no burn-cycle story", "disposition": "homeless-reserve"},
-    {"def": "Megascarab", "reason": "vanilla hive insect, dormant special; no burn-cycle adaptation; thin is acceptable (owner card 4)", "disposition": "homeless-reserve"},
-    {"def": "BMT_Maguana", "reason": "magma-camouflage lizard (desc MEASURED) — wrong biome, right family", "disposition": "move:AB_PyroclasticConflagration"},
-    {"def": "BMT_MutatingTumorfishSpawn", "reason": "a mutating fish in a rain-zero fire grassland (rain 0 on 199/222, §0) — placement absurdity; pollution register", "disposition": "homeless-reserve"},
-    {"def": "BMT_Sacapillar", "reason": "dormant polluted-lands caterpillar; no fire story", "disposition": "homeless-reserve"},
-    {"def": "Clodhopper", "reason": "no burn-cycle adaptation; roster stays lean for the herd read", "disposition": "homeless-reserve"},
-    {"def": "FrilledGorg", "reason": "gorg family is shrubland/desert small stock (prep §2.2/§3.2); no fire story here", "disposition": "homeless-reserve"},
-    {"def": "Yobshrimp", "reason": "a shrimp on a burning savanna — placement absurdity", "disposition": "homeless-reserve"},
-    {"def": "Grank", "reason": "generic fast predator (spd 5.0 MEASURED), no fire story", "disposition": "homeless-reserve"},
-    {"def": "Klorslug", "reason": "dormant slug, no burn-cycle story", "disposition": "homeless-reserve"},
-    {"def": "Boarwolf", "reason": "boar+wolf Earth mashup — Earth reskins fail on sight (owner card 2026-09-09)", "disposition": "homeless-reserve"},
-    {"def": "Insectomorph", "reason": "SW midrange predator, no fire adaptation; shrubland-band stock (prep §3.3)", "disposition": "homeless-reserve"},
-    {"def": "KraytDragon", "reason": "dune-sea icon (prep §1.2 KEEP there); wrong province", "disposition": "move:ExtremeDesert"},
-    {"def": "AA_Eyeling", "reason": "this is the ikee (register label MEASURED) — ruled placed at the Weeping Stones, 'near water and traffic' (weeping_stones.md §10)", "disposition": "move:ZBiome_DesertOasis"},
-    {"def": "AA_DesertAve", "reason": "the Desert's endurance-navigator archetype (prep §2.2); ≤2-home discipline", "disposition": "move:Desert"},
-    {"def": "AA_Junglelisk", "reason": "jungle creature by name and register; no fire story", "disposition": "homeless-reserve"},
-    {"def": "AA_Plasmorph", "reason": "slow strange predator, no burn adaptation", "disposition": "homeless-reserve"},
-    {"def": "DA_Phrak", "reason": "small flier predator, no burn story; fliers may still cross (R17)", "disposition": "homeless-reserve"},
-    {"def": "VAEWaste_Hydra", "reason": "waste/pollution register — Wasteland's lane, not fire's", "disposition": "homeless-reserve"},
-    {"def": "GR_Needlechicken", "reason": "fails §4 mobility-through-the-burn — spd 2.0 MEASURED, no burrow or dormancy special; cannot survive the flame line; chicken-read aggravator", "disposition": "homeless-reserve"},
-    {"def": "GR_Boombeetle", "reason": "no §4 sort fits — the detonator niche is Boomalope’s ruled in-joke slot; too slow for the flame-edge hunter sort (spd 3.0 MEASURED predator)", "disposition": "homeless-reserve"},
-    {"def": "GR_Chickenspider", "reason": "no §4 sort fits — slow predator (spd 2.2 MEASURED) cannot work the flame edge; not an ash-grazer (predator)", "disposition": "homeless-reserve"},
-    {"def": "GR_Bearodile", "reason": "no §4 sort fits — ambush predator body (bs 3.5 MEASURED) on a coverless burn plain; flame-edge sort is cast", "disposition": "homeless-reserve"}
+    {
+      "def": "HermitCrab",
+      "disposition": "homeless-reserve",
+      "reason": "Earth-nameable crab — 'a crab is a crab' (prep §6.4 recognizability); no burn-cycle story"
+    },
+    {
+      "def": "Megascarab",
+      "disposition": "homeless-reserve",
+      "reason": "vanilla hive insect, dormant special; no burn-cycle adaptation; thin is acceptable (owner card 4)"
+    },
+    {
+      "def": "BMT_Maguana",
+      "disposition": "move:AB_PyroclasticConflagration",
+      "reason": "magma-camouflage lizard (desc MEASURED) — wrong biome, right family"
+    },
+    {
+      "def": "BMT_MutatingTumorfishSpawn",
+      "disposition": "homeless-reserve",
+      "reason": "a mutating fish in a rain-zero fire grassland (rain 0 on 199/222, §0) — placement absurdity; pollution register"
+    },
+    {
+      "def": "BMT_Sacapillar",
+      "disposition": "homeless-reserve",
+      "reason": "dormant polluted-lands caterpillar; no fire story"
+    },
+    {
+      "def": "Clodhopper",
+      "disposition": "homeless-reserve",
+      "reason": "no burn-cycle adaptation; roster stays lean for the herd read"
+    },
+    {
+      "def": "FrilledGorg",
+      "disposition": "homeless-reserve",
+      "reason": "gorg family is shrubland/desert small stock (prep §2.2/§3.2); no fire story here"
+    },
+    {
+      "def": "Yobshrimp",
+      "disposition": "homeless-reserve",
+      "reason": "a shrimp on a burning savanna — placement absurdity"
+    },
+    {
+      "def": "Grank",
+      "disposition": "homeless-reserve",
+      "reason": "generic fast predator (spd 5.0 MEASURED), no fire story"
+    },
+    {
+      "def": "Klorslug",
+      "disposition": "homeless-reserve",
+      "reason": "dormant slug, no burn-cycle story"
+    },
+    {
+      "def": "Boarwolf",
+      "disposition": "homeless-reserve",
+      "reason": "boar+wolf Earth mashup — Earth reskins fail on sight (owner card 2026-09-09)"
+    },
+    {
+      "def": "Insectomorph",
+      "disposition": "homeless-reserve",
+      "reason": "SW midrange predator, no fire adaptation; shrubland-band stock (prep §3.3)"
+    },
+    {
+      "def": "KraytDragon",
+      "disposition": "move:ExtremeDesert",
+      "reason": "dune-sea icon (prep §1.2 KEEP there); wrong province"
+    },
+    {
+      "def": "AA_Eyeling",
+      "disposition": "move:ZBiome_DesertOasis",
+      "reason": "this is the ikee (register label MEASURED) — ruled placed at the Weeping Stones, 'near water and traffic' (weeping_stones.md §10)"
+    },
+    {
+      "def": "AA_DesertAve",
+      "disposition": "move:Desert",
+      "reason": "the Desert's endurance-navigator archetype (prep §2.2); ≤2-home discipline"
+    },
+    {
+      "def": "AA_Junglelisk",
+      "disposition": "homeless-reserve",
+      "reason": "jungle creature by name and register; no fire story"
+    },
+    {
+      "def": "AA_Plasmorph",
+      "disposition": "homeless-reserve",
+      "reason": "slow strange predator, no burn adaptation"
+    },
+    {
+      "def": "DA_Phrak",
+      "disposition": "homeless-reserve",
+      "reason": "small flier predator, no burn story; fliers may still cross (R17)"
+    },
+    {
+      "def": "VAEWaste_Hydra",
+      "disposition": "homeless-reserve",
+      "reason": "waste/pollution register — Wasteland's lane, not fire's"
+    },
+    {
+      "def": "GR_Needlechicken",
+      "disposition": "homeless-reserve",
+      "reason": "fails §4 mobility-through-the-burn — spd 2.0 MEASURED, no burrow or dormancy special; cannot survive the flame line; chicken-read aggravator"
+    },
+    {
+      "def": "GR_Boombeetle",
+      "disposition": "homeless-reserve",
+      "reason": "no §4 sort fits — the detonator niche is Boomalope’s ruled in-joke slot; too slow for the flame-edge hunter sort (spd 3.0 MEASURED predator)"
+    },
+    {
+      "def": "GR_Chickenspider",
+      "disposition": "homeless-reserve",
+      "reason": "no §4 sort fits — slow predator (spd 2.2 MEASURED) cannot work the flame edge; not an ash-grazer (predator)"
+    },
+    {
+      "def": "GR_Bearodile",
+      "disposition": "homeless-reserve",
+      "reason": "no §4 sort fits — ambush predator body (bs 3.5 MEASURED) on a coverless burn plain; flame-edge sort is cast"
+    }
   ],
-  "stat_adjustments": [],
+  "fauna": [
+    {
+      "action": "adjust-keep",
+      "band": "large-herd",
+      "commonality": 0.6,
+      "def": "Zeer",
+      "law": "§4 ash-grazers — 'the great herds eating the regrowth sprint'; herd special MEASURED (bs 3.0, non-predator, migrates in herds)",
+      "note": "incumbent at 0.05; raised — the herds are the wealth (§5)"
+    },
+    {
+      "action": "import",
+      "band": "small-herd",
+      "commonality": 0.5,
+      "def": "Iriaz",
+      "law": "§4 ash-grazers; MEASURED bs 0.7, herd, non-predator; Dantooine grassland canon — moved out of the Forge defs where a docile grazer violated heat-adapted-and-few"
+    },
+    {
+      "action": "adjust-keep",
+      "band": "small",
+      "commonality": 0.5,
+      "def": "Nuna",
+      "law": "§4 fire-followers need flushed prey — ground fowl flushed ahead of the flame-line; MEASURED bs 0.6, herd, non-predator"
+    },
+    {
+      "action": "adjust-keep",
+      "band": "grain",
+      "commonality": 0.3,
+      "def": "Gizka",
+      "law": "small quick forager between burns; MEASURED bs 0.18 spd 3.0; trimmed from 1.0 — second home beside ExtremeDesert (not a ubiquity-25 row, ≤2 homes fine)"
+    },
+    {
+      "action": "import",
+      "band": "medium-predator",
+      "commonality": 0.35,
+      "def": "Anooba",
+      "law": "§4 fire-followers — 'hunters working the flame edge and the flushed panic'; MEASURED predator, spd 5.0 (no pursuit ban in this sheet); SW pack hunter"
+    },
+    {
+      "action": "import",
+      "band": "medium",
+      "commonality": 0.25,
+      "def": "Orray",
+      "law": "§4 burrowers — register special 'burrows underground when hungry' (MEASURED), the one live def with the fire-diving mechanic; also a predator, so it doubles at the flame edge",
+      "note": "was newly homeless per prep §11 — re-homed here"
+    },
+    {
+      "action": "keep",
+      "band": "small-predator",
+      "commonality": 0.4,
+      "def": "AA_FireWasp",
+      "law": "incumbent; 'burning bite that feeds on the wound' (MEASURED special) — a fire-armed native in the fire biome; slow (spd 1.5), no pursuit read"
+    },
+    {
+      "action": "import",
+      "band": "medium",
+      "commonality": 0.3,
+      "def": "Boomalope",
+      "law": "owner card 2026-09-09: KEEP reskinned, in-joke lane (ubiquity-25 §9); detonating chemfuel fauna belongs in the standing burn — one of its ≤2 named homes",
+      "note": "reskin rides the in-joke lane art pass"
+    },
+    {
+      "action": "import",
+      "band": "large-predator",
+      "commonality": 0.05,
+      "def": "GR_Mantistanis",
+      "law": "§4 fire-followers — passes the flame-edge hunter test on stats (predator, spd 7.0 MEASURED, self-healing suits repeated burns); restored by the GR_ correction pass; second flame-edge hunter beside Anooba — owner may trim to one at review",
+      "note": "VGE chimera, mantis-read (alien, not Earth); REGENERATE-art lane"
+    },
+    {
+      "action": "commission",
+      "band": "igniter-flier",
+      "commonality": 0.15,
+      "def": "RUT_FireHawk",
+      "law": "§4 'the fire-hawks (ruled: absolutely)' — one of the two irreplaceable igniters; PYRELANDS_FIRE_WEB_COMMISSION_1",
+      "note": "built 2026-09-10: src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml, real generated art (transparent, artpipe job pyrelands_firehawk_v1). Twig-carrying fire-spread behaviour NOT implemented — owed to PYRELANDS_MECHANICS_1 (unfiled)."
+    },
+    {
+      "action": "commission",
+      "band": "igniter-megafauna",
+      "commonality": 0.08,
+      "def": "RUT_FurnaceBeast",
+      "law": "§4 'the furnace-beasts (owner)' — the second irreplaceable igniter; ban 5 no tame furnace-beast enforced via VEF CompProperties_Untameable; PYRELANDS_FIRE_WEB_COMMISSION_1",
+      "note": "built 2026-09-10: same file, real generated art (transparent, artpipe job pyrelands_furnacebeast_v1). Heat aura / bed-down ignition NOT implemented — owed to PYRELANDS_MECHANICS_1 (unfiled)."
+    },
+    {
+      "action": "import",
+      "band": "fire-follower",
+      "commonality": 0.2,
+      "def": "AA_Razorjack",
+      "law": "§4 fire-followers — owner ruling PYRELANDS_FIRE_WEB_COMMISSION_1 (2026-09-10) recasts it here; MEASURED fast omnivore (spd 4.0, bs 1, predator, Wildness 0.75), already the_contagion.json's 'fast omnivore on the carcass economy' — the same read fits the flushed-panic flame edge"
+    },
+    {
+      "action": "move",
+      "band": "ash-grazer",
+      "commonality": 0.15,
+      "def": "AA_Barbslinger",
+      "law": "§4 ash-grazers — owner ruling PYRELANDS_FIRE_WEB_COMMISSION_1 (2026-09-10) routes it here, reversing the prior no-fire-story eviction below",
+      "note": "MEASURED: predator/omnivore (bs 2.5, spd 4.0, Wildness 0.9), not a pure herbivore — cast as ash-grazer by the owner's routing call, not by diet; a role label, not a mechanical claim"
+    },
+    {
+      "action": "import",
+      "band": "brake",
+      "commonality": 0.18,
+      "def": "Dalgo",
+      "law": "owner review 2026-09 (round2 move mapping): Pyrelands"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "GR_Boomsnake",
+      "law": "owner review 2026-09 (round2 move mapping): Pyrelands"
+    }
+  ],
+  "fish": {
+    "list": [],
+    "ruling": "no fish — rain zero on 199 of 222 tiles, 9 river tiles, no standing water (§0 MEASURED); the biome's water is a taproot, not a surface"
+  },
   "flora": [
-    {"def": "RM_FE_Plant_Quickgrass", "commonality": 4.0, "law": "owner review 2026-09-11: 'the grass here has to be unique' — all generic grasses evicted (YellowGrass/YellowTallGrass/AB_HardyGrass); the Rakatan feral forage lawn per §3, def landed src/RimMandrake/Pyrelands (ember grass in ThingDefs_Plants remains the fuel bed)"}
+    {
+      "commonality": 4.0,
+      "def": "RM_FE_Plant_Quickgrass",
+      "law": "owner review 2026-09-11: 'the grass here has to be unique' — all generic grasses evicted (YellowGrass/YellowTallGrass/AB_HardyGrass); the Rakatan feral forage lawn per §3, def landed src/RimMandrake/Pyrelands (ember grass in ThingDefs_Plants remains the fuel bed)"
+    }
   ],
   "flora_purged": [
-    {"def": "Plant_Haygrass", "reason": "Earth farm crop (owner card 2026-09-09 Earth-nameable purge)"},
-    {"def": "Plant_Tinctoria_Wild", "reason": "Earth-nameable dye crop (owner card 2026-09-09)"},
-    {"def": "Plant_Cotton_Wild", "reason": "Earth-nameable crop (owner card 2026-09-09)"},
-    {"def": "GRimBlackGrass", "reason": "Grindterra flora — donor retiring; rainbow grasses violate the one-species gold read (§1)"},
-    {"def": "GRimBlueGrass", "reason": "as GRimBlackGrass"},
-    {"def": "GRimGreenGrass", "reason": "as GRimBlackGrass"},
-    {"def": "GRimNavyGrass", "reason": "as GRimBlackGrass"},
-    {"def": "GRimOrangeGrass", "reason": "as GRimBlackGrass"},
-    {"def": "GRimPurpleGrass", "reason": "as GRimBlackGrass"},
-    {"def": "GRimRedGrass", "reason": "as GRimBlackGrass"},
-    {"def": "GRimTealGrass", "reason": "as GRimBlackGrass"},
-    {"def": "GRimBlackTallGrass", "reason": "as GRimBlackGrass (tall variants, all colours)"},
-    {"def": "GRimBlueTallGrass", "reason": "as GRimBlackGrass"},
-    {"def": "GRimGreenTallGrass", "reason": "as GRimBlackGrass"},
-    {"def": "GRimNavyTallGrass", "reason": "as GRimBlackGrass"},
-    {"def": "GRimOrangeTallGrass", "reason": "as GRimBlackGrass"},
-    {"def": "GRimPurpleTallGrass", "reason": "as GRimBlackGrass"},
-    {"def": "GRimRedTallGrass", "reason": "as GRimBlackGrass"}
+    {
+      "def": "Plant_Haygrass",
+      "reason": "Earth farm crop (owner card 2026-09-09 Earth-nameable purge)"
+    },
+    {
+      "def": "Plant_Tinctoria_Wild",
+      "reason": "Earth-nameable dye crop (owner card 2026-09-09)"
+    },
+    {
+      "def": "Plant_Cotton_Wild",
+      "reason": "Earth-nameable crop (owner card 2026-09-09)"
+    },
+    {
+      "def": "GRimBlackGrass",
+      "reason": "Grindterra flora — donor retiring; rainbow grasses violate the one-species gold read (§1)"
+    },
+    {
+      "def": "GRimBlueGrass",
+      "reason": "as GRimBlackGrass"
+    },
+    {
+      "def": "GRimGreenGrass",
+      "reason": "as GRimBlackGrass"
+    },
+    {
+      "def": "GRimNavyGrass",
+      "reason": "as GRimBlackGrass"
+    },
+    {
+      "def": "GRimOrangeGrass",
+      "reason": "as GRimBlackGrass"
+    },
+    {
+      "def": "GRimPurpleGrass",
+      "reason": "as GRimBlackGrass"
+    },
+    {
+      "def": "GRimRedGrass",
+      "reason": "as GRimBlackGrass"
+    },
+    {
+      "def": "GRimTealGrass",
+      "reason": "as GRimBlackGrass"
+    },
+    {
+      "def": "GRimBlackTallGrass",
+      "reason": "as GRimBlackGrass (tall variants, all colours)"
+    },
+    {
+      "def": "GRimBlueTallGrass",
+      "reason": "as GRimBlackGrass"
+    },
+    {
+      "def": "GRimGreenTallGrass",
+      "reason": "as GRimBlackGrass"
+    },
+    {
+      "def": "GRimNavyTallGrass",
+      "reason": "as GRimBlackGrass"
+    },
+    {
+      "def": "GRimOrangeTallGrass",
+      "reason": "as GRimBlackGrass"
+    },
+    {
+      "def": "GRimPurpleTallGrass",
+      "reason": "as GRimBlackGrass"
+    },
+    {
+      "def": "GRimRedTallGrass",
+      "reason": "as GRimBlackGrass"
+    }
   ],
-  "fish": {"ruling": "no fish — rain zero on 199 of 222 tiles, 9 river tiles, no standing water (§0 MEASURED); the biome's water is a taproot, not a surface", "list": []},
+  "law_sources": [
+    "the_pyrelands.md §4-§6",
+    "_assignment_prep.md §9-§12",
+    "_freeze_rulings_2026-09-07.md R7/R14/R26",
+    "owner cards 2026-09-09"
+  ],
   "new_defs": [
-    {"name": "fire-hawk (twig-carrying raptor-analog)", "kind": "creature", "mechanic_load": "C#: carries burning material, spreads fire deliberately — STILL OWED (PYRELANDS_MECHANICS_1, unfiled); def+art built as RUT_FireHawk, see fauna row", "from_sheet": "the_pyrelands §4"},
-    {"name": "furnace-beast (thermal-circuit megafauna)", "kind": "creature", "mechanic_load": "C#: heat aura, bed-down ignition — STILL OWED (PYRELANDS_MECHANICS_1, unfiled); def+art built as RUT_FurnaceBeast, see fauna row", "from_sheet": "the_pyrelands §4"},
-    {"name": "burrower-grazer (dives under the burn, emerges into ash)", "kind": "creature", "mechanic_load": "C#: burrow-on-fire behaviour; no clean donor body (Earth-named moles/voles purged)", "from_sheet": "the_pyrelands §4", "note": "PYRELANDS_FIRE_WEB_COMMISSION_1 (2026-09-10): checked FrogDog (mlie.starwarsanimalcollection, homeless from the_contagion.json) as a candidate — its eviction note claimed a 'burrows-when-hungry' special, but the LIVE def carries no such comp or field (it's a docile 70-year pet species, petness 0.75, Wildness 0.10 MEASURED); that note was wrong and has been corrected in the_contagion.json. No verified non-Earth burrower-grazer candidate found in the time this pass had. Orray already covers the burrowers band here (§4 register special, MEASURED) but is a predator hybrid, not a pure grazer. This slot stays OPEN for a third commission if the owner wants a dedicated grazer distinct from Orray."},
-    {"name": "quickgrass (Rakatan feral forage crop)", "kind": "plant", "mechanic_load": "none blocking — stats permit the R-H3 loop", "from_sheet": "the_pyrelands §3"},
-    {"name": "scorch-fruit plant + yield", "kind": "plant", "mechanic_load": "spoils-in-a-day harvest", "from_sheet": "the_pyrelands §7 — built as RM_FE_Plant_ScorchFruit / RM_FE_ScorchFruitYield in src/RimMandrake/Pyrelands/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml, wired into FireEcologyHook.cs; the sheet's RSW_FE_ prefix was stale (RM_ is the correct tier)"}
+    {
+      "from_sheet": "the_pyrelands §4",
+      "kind": "creature",
+      "mechanic_load": "C#: carries burning material, spreads fire deliberately — STILL OWED (PYRELANDS_MECHANICS_1, unfiled); def+art built as RUT_FireHawk, see fauna row",
+      "name": "fire-hawk (twig-carrying raptor-analog)"
+    },
+    {
+      "from_sheet": "the_pyrelands §4",
+      "kind": "creature",
+      "mechanic_load": "C#: heat aura, bed-down ignition — STILL OWED (PYRELANDS_MECHANICS_1, unfiled); def+art built as RUT_FurnaceBeast, see fauna row",
+      "name": "furnace-beast (thermal-circuit megafauna)"
+    },
+    {
+      "from_sheet": "the_pyrelands §4",
+      "kind": "creature",
+      "mechanic_load": "C#: burrow-on-fire behaviour; no clean donor body (Earth-named moles/voles purged)",
+      "name": "burrower-grazer (dives under the burn, emerges into ash)",
+      "note": "PYRELANDS_FIRE_WEB_COMMISSION_1 (2026-09-10): checked FrogDog (mlie.starwarsanimalcollection, homeless from the_contagion.json) as a candidate — its eviction note claimed a 'burrows-when-hungry' special, but the LIVE def carries no such comp or field (it's a docile 70-year pet species, petness 0.75, Wildness 0.10 MEASURED); that note was wrong and has been corrected in the_contagion.json. No verified non-Earth burrower-grazer candidate found in the time this pass had. Orray already covers the burrowers band here (§4 register special, MEASURED) but is a predator hybrid, not a pure grazer. This slot stays OPEN for a third commission if the owner wants a dedicated grazer distinct from Orray."
+    },
+    {
+      "from_sheet": "the_pyrelands §3",
+      "kind": "plant",
+      "mechanic_load": "none blocking — stats permit the R-H3 loop",
+      "name": "quickgrass (Rakatan feral forage crop)"
+    },
+    {
+      "from_sheet": "the_pyrelands §7 — built as RM_FE_Plant_ScorchFruit / RM_FE_ScorchFruitYield in src/RimMandrake/Pyrelands/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml, wired into FireEcologyHook.cs; the sheet's RSW_FE_ prefix was stale (RM_ is the correct tier)",
+      "kind": "plant",
+      "mechanic_load": "spoils-in-a-day harvest",
+      "name": "scorch-fruit plant + yield"
+    }
   ],
-  "confidence": [
-    {"claim": "roster rebinds to the self-contained RM Pyrelands def when PYRELANDS_SELF_CONTAINED_BIOME_1 / PYRELANDS_WORLD_SWITCH_1 land", "status": "PENDING", "why": "ZBiome_Grasslands is the currently painted donor def; rosters bind per def (R19a) so this file moves with the switch"},
-    {"claim": "RM_FE_Plant_ScorchFruit / RM_FE_Fulgurite exist as built defs", "status": "CONFIRMED in src (MEASURED grep, 2026-09-09)", "why": "src/RimMandrake/Pyrelands/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml and .../ThingDefs_Fulgurite/Fulgurite.xml define them, and FireEcologyHook.cs references both by name; the earlier NOT-FOUND finding was grepping the stale RSW_FE_ prefix — commit b2ebdfdb already renamed the tier to RM_FE_ across docs, this roster just missed that pass"},
-    {"claim": "no nocturnal-behaviour audit applied", "status": "N/A", "why": "the nocturnal ban is dune_sea/desert law, not this sheet's"},
-    {"claim": "kept fauna survive the actual flame front", "status": "UNMEASURED", "why": "no register field covers fire response; casting is by niche (herd/burrow/flame-edge), engine fire-flee is the default behaviour"},
-    {"claim": "GR_ rows re-adjudicated per §4 sorts; GR_Mantistanis restored as a passing fire-follower", "status": "RESOLVED", "why": "GR_ prefix correction pass 2026-09-09: GRim*=Grindterra homeless; GR_*=VGE chimeras judged per sheet law (RETEXTURED_EARTH_FAUNA_BANNED_1: leave chimeras)"}
-  ]
+  "sheet": "the_pyrelands",
+  "stat_adjustments": [],
+  "tiles": 222
 }

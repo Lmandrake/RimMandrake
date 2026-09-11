@@ -1,327 +1,339 @@
 {
- "sheet": "forsaken_crags",
- "defNames": [
-  "AB_RockyCrags"
- ],
- "tiles": 1170,
- "authored": "2026-09-09",
- "law_sources": [
-  "forsaken_crags.md \u00a74/\u00a75/\u00a76 (frozen; donor roster incorporated wholesale, then bent \u2014 owner's ruling)",
-  "FORSAKEN_CRAGS_FAUNA_1 (Cindermare/Skarnix wild, Tellurox livestock-excluded)",
-  "_assignment_prep.md \u00a79 (BINDING)",
-  "owner cards 2026-09-09"
- ],
- "fauna": [
-  {
-   "def": "AA_Nightling",
-   "commonality": 0.2,
-   "action": "keep",
-   "band": "medium-apex",
-   "law": "donor family \u00a74: quill-throwing apex predator; nocturnal-to-the-bone suite is the population (owner's wholesale ruling)"
+  "authored": "2026-09-09",
+  "confidence": [
+    {
+      "claim": "Tellurox is excluded from this wild roster",
+      "status": "RULED",
+      "why": "FORSAKEN_CRAGS_FAUNA_1: Helix LIVESTOCK — faction-kind, not wild (owner card: does NOT change livestock creatures); def also not in register (VERIFIED absent)"
+    },
+    {
+      "claim": "GR_* prefix = Grindterra",
+      "status": "CONFLICT NOTED",
+      "why": "register mods GR_* rows to Vanilla Genetics Expanded, while GRiNDTerra's defs are GRim*; the card's prefix is enforced as written — flagged for the owner's review sheet"
+    },
+    {
+      "claim": "donor family members are dark-adapted / non-sun-dependent",
+      "status": "UNMEASURED",
+      "why": "donor lore ('a RimWorld orbiting a very faint star') carried on the frozen sheet's authority, not a register field"
+    },
+    {
+      "claim": "GR_ prefix = Grindterra",
+      "status": "RESOLVED WRONG 2026-09-09",
+      "why": "GR_ is Vanilla Genetics Expanded; Grindterra is GRim*. All 8 GR_ evictions re-cited to the §4 family law (real basis); dispositions unchanged (homeless-reserve)."
+    }
+  ],
+  "defNames": [
+    "AB_RockyCrags"
+  ],
+  "evictions": [
+    {
+      "def": "GR_Spidersnake",
+      "disposition": "homeless-reserve",
+      "reason": "§4: outside the transplanted family (the donor roster is the population, nocturnal to the bone); no dark adaptation in evidence (UNMEASURED)"
+    },
+    {
+      "def": "GR_Chickenlizard",
+      "disposition": "homeless-reserve",
+      "reason": "§4: outside the transplanted family (the donor roster is the population, nocturnal to the bone); ban 8 recognizability: chicken read"
+    },
+    {
+      "def": "GR_ParagonIguana",
+      "disposition": "homeless-reserve",
+      "reason": "§4: outside the transplanted family (the donor roster is the population, nocturnal to the bone); recognizability: iguana (Earth-nameable read)"
+    },
+    {
+      "def": "GR_Muffalorat",
+      "disposition": "homeless-reserve",
+      "reason": "§4: outside the transplanted family (the donor roster is the population, nocturnal to the bone); recognizability: rat-mashup read"
+    },
+    {
+      "def": "GR_Muffalopede",
+      "disposition": "homeless-reserve",
+      "reason": "§4: outside the transplanted family (the donor roster is the population, nocturnal to the bone)"
+    },
+    {
+      "def": "GR_Snakecat",
+      "disposition": "homeless-reserve",
+      "reason": "§4: outside the transplanted family (the donor roster is the population, nocturnal to the bone)"
+    },
+    {
+      "def": "GR_Elasmobearium",
+      "disposition": "homeless-reserve",
+      "reason": "§4: outside the transplanted family (the donor roster is the population, nocturnal to the bone)"
+    },
+    {
+      "def": "GR_Thrumbospider",
+      "disposition": "homeless-reserve",
+      "reason": "§4: outside the transplanted family (the donor roster is the population, nocturnal to the bone)"
+    },
+    {
+      "def": "BMT_Megakrill",
+      "disposition": "homeless-reserve",
+      "reason": "§5: the fauna is one transplanted family — Polluted Lands vermin are contamination-shaped (wasteland's register, prep §4.2)"
+    },
+    {
+      "def": "BMT_Megaroach",
+      "disposition": "homeless-reserve",
+      "reason": "not the family (§5); its cousin is graded at the Rust Cathedral instead"
+    },
+    {
+      "def": "BMT_ColonyPustuleHornet",
+      "disposition": "homeless-reserve",
+      "reason": "not the family (§5); contamination-authored"
+    },
+    {
+      "def": "BMT_PustuleHornet",
+      "disposition": "homeless-reserve",
+      "reason": "not the family (§5)"
+    },
+    {
+      "def": "BMT_FamineLocust",
+      "disposition": "homeless-reserve",
+      "reason": "not the family (§5); flock-fast"
+    },
+    {
+      "def": "BMT_Megaphorid",
+      "disposition": "homeless-reserve",
+      "reason": "not the family (§5)"
+    },
+    {
+      "def": "BMT_Swarmcaller",
+      "disposition": "homeless-reserve",
+      "reason": "not the family (§5)"
+    },
+    {
+      "def": "BMT_BarbedPangolin",
+      "disposition": "homeless-reserve",
+      "reason": "not the family (§5); recognizability (pangolin)"
+    },
+    {
+      "def": "BMT_FreezerFrog",
+      "disposition": "homeless-reserve",
+      "reason": "not the family (§5); recognizability (frog)"
+    },
+    {
+      "def": "AA_Skyeel",
+      "disposition": "homeless-reserve",
+      "reason": "not the transplanted family (§5) — Alpha Animals but not the donor's crag suite"
+    },
+    {
+      "def": "AA_MegaLouse",
+      "disposition": "homeless-reserve",
+      "reason": "§9 BINDING trim + not the family (§5)"
+    },
+    {
+      "def": "AA_FungalHusk",
+      "disposition": "homeless-reserve",
+      "reason": "not the family (§5); fungal lane belongs to the Rot"
+    },
+    {
+      "def": "AA_Ravager",
+      "disposition": "homeless-reserve",
+      "reason": "not the family (§5)"
+    },
+    {
+      "def": "AA_SummitCrab",
+      "disposition": "move:RUT_NightsideIce",
+      "reason": "rostered to the nightside shelf — landform-scale body the ice needs more (prep §7.2)"
+    },
+    {
+      "def": "MA_PlastemmothAlpha",
+      "disposition": "cut:creature_recognizability_rule.md retirement",
+      "reason": "Mythic Ages 0% recognizability survival — retirement ruled (prep §10.4)"
+    },
+    {
+      "def": "Rat",
+      "disposition": "cut:owner card Earth-five + ubiquity §9",
+      "reason": "Earth five — appears nowhere (owner card 2026-09-09); the sheet's 'vanilla Rat at 0.101 rides the dusk-rat ruling' resolves as: the dusk rat keeps the niche and the name-joke, the vanilla Rat goes. Register shows no live crags residency (MEASURED) — the 0.101 sits in the donor XML; the generator's wholesale replace removes it"
+    }
+  ],
+  "fauna": [
+    {
+      "action": "keep",
+      "band": "medium-apex",
+      "commonality": 0.2,
+      "def": "AA_Nightling",
+      "law": "donor family §4: quill-throwing apex predator; nocturnal-to-the-bone suite is the population (owner's wholesale ruling)"
+    },
+    {
+      "action": "keep",
+      "band": "large",
+      "commonality": 0.09,
+      "def": "AA_NightRam",
+      "law": "donor family §4 (nightram)"
+    },
+    {
+      "action": "keep",
+      "band": "large",
+      "commonality": 0.5,
+      "def": "AA_NightMule",
+      "law": "donor family §4 (nightmule) — the domestic line; legal here at −10 °C median (MEASURED §0), unlike the nightside"
+    },
+    {
+      "action": "keep",
+      "band": "medium",
+      "commonality": 0.2,
+      "def": "AA_NightAve",
+      "law": "donor family §4 (night ave)"
+    },
+    {
+      "action": "keep",
+      "band": "small",
+      "commonality": 0.5,
+      "def": "AA_Murkling",
+      "law": "donor family §4 (murkling scavenger packs); §9 trim satisfied — the crags are its named home"
+    },
+    {
+      "action": "keep",
+      "band": "large",
+      "commonality": 0.35,
+      "def": "AA_CrepuscularBeetle",
+      "law": "donor family §4 (crepuscular beetle)"
+    },
+    {
+      "action": "keep",
+      "band": "large",
+      "commonality": 0.09,
+      "def": "AA_ShadowCharger",
+      "law": "donor family §4 (shadow charger)"
+    },
+    {
+      "action": "keep",
+      "band": "large",
+      "commonality": 0.09,
+      "def": "AA_Thunderox",
+      "law": "donor family §4 (thunderox)"
+    },
+    {
+      "action": "keep",
+      "band": "medium",
+      "commonality": 0.15,
+      "def": "AA_DarkVandal",
+      "law": "donor family §4 (dark vandal)"
+    },
+    {
+      "action": "keep",
+      "band": "medium-pred",
+      "commonality": 0.2,
+      "def": "AA_DuskProwler",
+      "law": "donor family §4 (dusk prowler)"
+    },
+    {
+      "action": "keep",
+      "band": "medium-pred",
+      "commonality": 0.075,
+      "def": "AA_SandProwler",
+      "law": "donor family §4 (sand prowler); terrain-hiding graphic (register special, MEASURED)"
+    },
+    {
+      "action": "keep",
+      "band": "small",
+      "commonality": 0.5,
+      "def": "AA_DuskRat",
+      "law": "§4 owner's ruling: the dusk rat stays, the art goes — behavior-named exemption (§6 ban 8); sprite is a placeholder in violation until redo"
+    },
+    {
+      "action": "keep",
+      "band": "medium",
+      "commonality": 0.005,
+      "def": "AA_Darkbeast",
+      "law": "§4 owner's ruling: wears a trailing halo of Dark — EM particle interaction; kept at trace, the moving knot of blindness"
+    },
+    {
+      "action": "import",
+      "band": "medium-pred",
+      "commonality": 0.05,
+      "def": "AA_Frostling",
+      "law": "sheet Owed: owner 2026-09-06 moved the Frostling back from the propane lakes — the Nightling's polar cousin; spd 6.0 pred (MEASURED) legal — crags carry no speed ban"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "AA_Behemoth",
+      "law": "owner review 2026-09 (round2 move mapping): crag, 16 squares"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "GR_Nighthrumbo",
+      "law": "owner review 2026-09 (round2 move mapping): Crags"
+    }
+  ],
+  "fish": {
+    "list": [],
+    "ruling": "no fish — 36 water tiles (MEASURED §0) sit under permanent Dark with etchfall acid chemistry settling into them (§3: collapsed-grain chemistry, never water rain, R-H1); §6 ban 6 forbids the sun-fed chain a fishery needs; a glow-fed cave fish would be a new def, not rostered now"
   },
-  {
-   "def": "AA_NightRam",
-   "commonality": 0.09,
-   "action": "keep",
-   "band": "large",
-   "law": "donor family \u00a74 (nightram)"
-  },
-  {
-   "def": "AA_NightMule",
-   "commonality": 0.5,
-   "action": "keep",
-   "band": "large",
-   "law": "donor family \u00a74 (nightmule) \u2014 the domestic line; legal here at \u221210 \u00b0C median (MEASURED \u00a70), unlike the nightside"
-  },
-  {
-   "def": "AA_NightAve",
-   "commonality": 0.2,
-   "action": "keep",
-   "band": "medium",
-   "law": "donor family \u00a74 (night ave)"
-  },
-  {
-   "def": "AA_Murkling",
-   "commonality": 0.5,
-   "action": "keep",
-   "band": "small",
-   "law": "donor family \u00a74 (murkling scavenger packs); \u00a79 trim satisfied \u2014 the crags are its named home"
-  },
-  {
-   "def": "AA_CrepuscularBeetle",
-   "commonality": 0.35,
-   "action": "keep",
-   "band": "large",
-   "law": "donor family \u00a74 (crepuscular beetle)"
-  },
-  {
-   "def": "AA_ShadowCharger",
-   "commonality": 0.09,
-   "action": "keep",
-   "band": "large",
-   "law": "donor family \u00a74 (shadow charger)"
-  },
-  {
-   "def": "AA_Thunderox",
-   "commonality": 0.09,
-   "action": "keep",
-   "band": "large",
-   "law": "donor family \u00a74 (thunderox)"
-  },
-  {
-   "def": "AA_DarkVandal",
-   "commonality": 0.15,
-   "action": "keep",
-   "band": "medium",
-   "law": "donor family \u00a74 (dark vandal)"
-  },
-  {
-   "def": "AA_DuskProwler",
-   "commonality": 0.2,
-   "action": "keep",
-   "band": "medium-pred",
-   "law": "donor family \u00a74 (dusk prowler)"
-  },
-  {
-   "def": "AA_SandProwler",
-   "commonality": 0.075,
-   "action": "keep",
-   "band": "medium-pred",
-   "law": "donor family \u00a74 (sand prowler); terrain-hiding graphic (register special, MEASURED)"
-  },
-  {
-   "def": "AA_DuskRat",
-   "commonality": 0.5,
-   "action": "keep",
-   "band": "small",
-   "law": "\u00a74 owner's ruling: the dusk rat stays, the art goes \u2014 behavior-named exemption (\u00a76 ban 8); sprite is a placeholder in violation until redo"
-  },
-  {
-   "def": "AA_Darkbeast",
-   "commonality": 0.005,
-   "action": "keep",
-   "band": "medium",
-   "law": "\u00a74 owner's ruling: wears a trailing halo of Dark \u2014 EM particle interaction; kept at trace, the moving knot of blindness"
-  },
-  {
-   "def": "AA_Frostling",
-   "commonality": 0.05,
-   "action": "import",
-   "band": "medium-pred",
-   "law": "sheet Owed: owner 2026-09-06 moved the Frostling back from the propane lakes \u2014 the Nightling's polar cousin; spd 6.0 pred (MEASURED) legal \u2014 crags carry no speed ban"
-  }
- ],
- "evictions": [
-  {
-   "def": "GR_Spidersnake",
-   "reason": "\u00a74: outside the transplanted family (the donor roster is the population, nocturnal to the bone); no dark adaptation in evidence (UNMEASURED)",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "GR_Chickenlizard",
-   "reason": "\u00a74: outside the transplanted family (the donor roster is the population, nocturnal to the bone); ban 8 recognizability: chicken read",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "GR_ParagonIguana",
-   "reason": "\u00a74: outside the transplanted family (the donor roster is the population, nocturnal to the bone); recognizability: iguana (Earth-nameable read)",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "GR_Muffalorat",
-   "reason": "\u00a74: outside the transplanted family (the donor roster is the population, nocturnal to the bone); recognizability: rat-mashup read",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "GR_Muffalopede",
-   "reason": "\u00a74: outside the transplanted family (the donor roster is the population, nocturnal to the bone)",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "GR_Snakecat",
-   "reason": "\u00a74: outside the transplanted family (the donor roster is the population, nocturnal to the bone)",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "GR_Elasmobearium",
-   "reason": "\u00a74: outside the transplanted family (the donor roster is the population, nocturnal to the bone)",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "GR_Thrumbospider",
-   "reason": "\u00a74: outside the transplanted family (the donor roster is the population, nocturnal to the bone)",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "BMT_Megakrill",
-   "reason": "\u00a75: the fauna is one transplanted family \u2014 Polluted Lands vermin are contamination-shaped (wasteland's register, prep \u00a74.2)",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "BMT_Megaroach",
-   "reason": "not the family (\u00a75); its cousin is graded at the Rust Cathedral instead",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "BMT_ColonyPustuleHornet",
-   "reason": "not the family (\u00a75); contamination-authored",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "BMT_PustuleHornet",
-   "reason": "not the family (\u00a75)",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "BMT_FamineLocust",
-   "reason": "not the family (\u00a75); flock-fast",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "BMT_Megaphorid",
-   "reason": "not the family (\u00a75)",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "BMT_Swarmcaller",
-   "reason": "not the family (\u00a75)",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "BMT_BarbedPangolin",
-   "reason": "not the family (\u00a75); recognizability (pangolin)",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "BMT_FreezerFrog",
-   "reason": "not the family (\u00a75); recognizability (frog)",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "AA_Skyeel",
-   "reason": "not the transplanted family (\u00a75) \u2014 Alpha Animals but not the donor's crag suite",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "AA_MegaLouse",
-   "reason": "\u00a79 BINDING trim + not the family (\u00a75)",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "AA_FungalHusk",
-   "reason": "not the family (\u00a75); fungal lane belongs to the Rot",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "AA_Ravager",
-   "reason": "not the family (\u00a75)",
-   "disposition": "homeless-reserve"
-  },
-  {
-   "def": "AA_SummitCrab",
-   "reason": "rostered to the nightside shelf \u2014 landform-scale body the ice needs more (prep \u00a77.2)",
-   "disposition": "move:RUT_NightsideIce"
-  },
-  {
-   "def": "MA_PlastemmothAlpha",
-   "reason": "Mythic Ages 0% recognizability survival \u2014 retirement ruled (prep \u00a710.4)",
-   "disposition": "cut:creature_recognizability_rule.md retirement"
-  },
-  {
-   "def": "Rat",
-   "reason": "Earth five \u2014 appears nowhere (owner card 2026-09-09); the sheet's 'vanilla Rat at 0.101 rides the dusk-rat ruling' resolves as: the dusk rat keeps the niche and the name-joke, the vanilla Rat goes. Register shows no live crags residency (MEASURED) \u2014 the 0.101 sits in the donor XML; the generator's wholesale replace removes it",
-   "disposition": "cut:owner card Earth-five + ubiquity \u00a79"
-  }
- ],
- "stat_adjustments": [],
- "flora": [
-  {
-   "def": "AB_GiantGamma",
-   "commonality": 0.5,
-   "law": "\u00a74: the Giant Gamma is a natural sunlamp \u2014 the lighting economy is the biome's farming; donor wholesale ruling"
-  },
-  {
-   "def": "AB_ToxicGamma",
-   "commonality": 0.6,
-   "law": "\u00a74: blue darklight gamma family; \u00a79 palette (glow-blue)"
-  },
-  {
-   "def": "AB_GiantStikehr",
-   "commonality": 0.3,
-   "law": "\u00a74: Giant Stikehr survives only where the mists protect it \u2014 donor wholesale"
-  },
-  {
-   "def": "AB_WildRadagast",
-   "commonality": 0.5,
-   "law": "\u00a74: Radagast glow-berries double as the gammas' growth medium"
-  },
-  {
-   "def": "AB_GlowingGrass",
-   "commonality": 1.0,
-   "law": "\u00a71: 'a carpet of glowing grass' \u2014 the land lit by its own lamps"
-  },
-  {
-   "def": "AB_GiantSeptimum",
-   "commonality": 0.2,
-   "law": "\u00a77: ultima fibers \u2014 the giant septimum's hardened line, per donor lore"
-  }
- ],
- "flora_purged": [
-  {
-   "def": "ALL-nonglow-donor-rows",
-   "reason": "\u00a76 ban 6: no sun-dependent resident life \u2014 any donor/vanilla wildPlant needing real sky light is a violation; the glow economy above is the complete list. Earth-nameable purge (owner card 4) applies on top at generation"
-  }
- ],
- "fish": {
-  "ruling": "no fish \u2014 36 water tiles (MEASURED \u00a70) sit under permanent Dark with etchfall acid chemistry settling into them (\u00a73: collapsed-grain chemistry, never water rain, R-H1); \u00a76 ban 6 forbids the sun-fed chain a fishery needs; a glow-fed cave fish would be a new def, not rostered now",
-  "list": []
- },
- "new_defs": [
-  {
-   "name": "Cindermare",
-   "kind": "creature",
-   "mechanic_load": "per FORSAKEN_CRAGS_FAUNA_1",
-   "from_sheet": "FORSAKEN_CRAGS_FAUNA_1 \u2014 ruled wild resident; def not yet in the register (VERIFIED absent 2026-09-09), enters this roster when authored"
-  },
-  {
-   "name": "Skarnix",
-   "kind": "creature",
-   "mechanic_load": "per FORSAKEN_CRAGS_FAUNA_1",
-   "from_sheet": "FORSAKEN_CRAGS_FAUNA_1 \u2014 ruled wild resident; def not yet in the register (VERIFIED absent), enters this roster when authored"
-  },
-  {
-   "name": "dusk rat art redo",
-   "kind": "creature",
-   "mechanic_load": "art only \u2014 rat-analog, anything but a rat; the name stays (owner: the name IS the joke)",
-   "from_sheet": "forsaken_crags \u00a74 / Owed"
-  },
-  {
-   "name": "darkbeast Dark-halo behaviour",
-   "kind": "creature",
-   "mechanic_load": "C#: trailing particle halo where the Dark cannot form",
-   "from_sheet": "forsaken_crags \u00a74 owner ruling"
-  }
- ],
- "confidence": [
-  {
-   "claim": "Tellurox is excluded from this wild roster",
-   "status": "RULED",
-   "why": "FORSAKEN_CRAGS_FAUNA_1: Helix LIVESTOCK \u2014 faction-kind, not wild (owner card: does NOT change livestock creatures); def also not in register (VERIFIED absent)"
-  },
-  {
-   "claim": "GR_* prefix = Grindterra",
-   "status": "CONFLICT NOTED",
-   "why": "register mods GR_* rows to Vanilla Genetics Expanded, while GRiNDTerra's defs are GRim*; the card's prefix is enforced as written \u2014 flagged for the owner's review sheet"
-  },
-  {
-   "claim": "donor family members are dark-adapted / non-sun-dependent",
-   "status": "UNMEASURED",
-   "why": "donor lore ('a RimWorld orbiting a very faint star') carried on the frozen sheet's authority, not a register field"
-  },
-  {
-   "claim": "GR_ prefix = Grindterra",
-   "status": "RESOLVED WRONG 2026-09-09",
-   "why": "GR_ is Vanilla Genetics Expanded; Grindterra is GRim*. All 8 GR_ evictions re-cited to the \u00a74 family law (real basis); dispositions unchanged (homeless-reserve)."
-  }
- ]
+  "flora": [
+    {
+      "commonality": 0.5,
+      "def": "AB_GiantGamma",
+      "law": "§4: the Giant Gamma is a natural sunlamp — the lighting economy is the biome's farming; donor wholesale ruling"
+    },
+    {
+      "commonality": 0.6,
+      "def": "AB_ToxicGamma",
+      "law": "§4: blue darklight gamma family; §9 palette (glow-blue)"
+    },
+    {
+      "commonality": 0.3,
+      "def": "AB_GiantStikehr",
+      "law": "§4: Giant Stikehr survives only where the mists protect it — donor wholesale"
+    },
+    {
+      "commonality": 0.5,
+      "def": "AB_WildRadagast",
+      "law": "§4: Radagast glow-berries double as the gammas' growth medium"
+    },
+    {
+      "commonality": 1.0,
+      "def": "AB_GlowingGrass",
+      "law": "§1: 'a carpet of glowing grass' — the land lit by its own lamps"
+    },
+    {
+      "commonality": 0.2,
+      "def": "AB_GiantSeptimum",
+      "law": "§7: ultima fibers — the giant septimum's hardened line, per donor lore"
+    }
+  ],
+  "flora_purged": [
+    {
+      "def": "ALL-nonglow-donor-rows",
+      "reason": "§6 ban 6: no sun-dependent resident life — any donor/vanilla wildPlant needing real sky light is a violation; the glow economy above is the complete list. Earth-nameable purge (owner card 4) applies on top at generation"
+    }
+  ],
+  "law_sources": [
+    "forsaken_crags.md §4/§5/§6 (frozen; donor roster incorporated wholesale, then bent — owner's ruling)",
+    "FORSAKEN_CRAGS_FAUNA_1 (Cindermare/Skarnix wild, Tellurox livestock-excluded)",
+    "_assignment_prep.md §9 (BINDING)",
+    "owner cards 2026-09-09"
+  ],
+  "new_defs": [
+    {
+      "from_sheet": "FORSAKEN_CRAGS_FAUNA_1 — ruled wild resident; def not yet in the register (VERIFIED absent 2026-09-09), enters this roster when authored",
+      "kind": "creature",
+      "mechanic_load": "per FORSAKEN_CRAGS_FAUNA_1",
+      "name": "Cindermare"
+    },
+    {
+      "from_sheet": "FORSAKEN_CRAGS_FAUNA_1 — ruled wild resident; def not yet in the register (VERIFIED absent), enters this roster when authored",
+      "kind": "creature",
+      "mechanic_load": "per FORSAKEN_CRAGS_FAUNA_1",
+      "name": "Skarnix"
+    },
+    {
+      "from_sheet": "forsaken_crags §4 / Owed",
+      "kind": "creature",
+      "mechanic_load": "art only — rat-analog, anything but a rat; the name stays (owner: the name IS the joke)",
+      "name": "dusk rat art redo"
+    },
+    {
+      "from_sheet": "forsaken_crags §4 owner ruling",
+      "kind": "creature",
+      "mechanic_load": "C#: trailing particle halo where the Dark cannot form",
+      "name": "darkbeast Dark-halo behaviour"
+    }
+  ],
+  "sheet": "forsaken_crags",
+  "stat_adjustments": [],
+  "tiles": 1170
 }

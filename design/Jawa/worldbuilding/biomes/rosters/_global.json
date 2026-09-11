@@ -1,5 +1,5 @@
 {
- "derived": "2026-09-09",
+ "derived": "2026-09-10",
  "ruled": {
   "authority": "owner cards 2026-09-09 (BIOME_FAUNA_ASSIGNMENT_SITTING_1) + prep §9 accepted in bulk",
   "earth_five_evicted_planet_wide": [
@@ -19,74 +19,46 @@
  },
  "measured": {
   "live_wild_creatures": 767,
-  "rostered_defs": 242,
-  "reserve_pool": 486,
+  "rostered_defs": 334,
+  "reserve_pool": 403,
   "cut_dispositions": 88,
   "grindterra_grim_defs_live": 8
  },
  "reserve_for_events": [
-  "AA_AcanthamoebaGiganteaHuge",
-  "AA_AngelMoth",
   "AA_AngelMothLarva",
-  "AA_AnimaColossus",
   "AA_Animalisk",
   "AA_AnimusVox",
   "AA_ArcticLion",
-  "AA_Atispec",
-  "AA_AuroraSylph",
-  "AA_Barbslinger",
-  "AA_Behemoth",
   "AA_BlackScarab",
   "AA_BlackSpelopede",
   "AA_BlackSpider",
   "AA_Bobeene",
-  "AA_BumbledroneQueen",
   "AA_ChameleonYak",
   "AA_ChemfuelMyrmidon",
-  "AA_ColossalAerofleet",
-  "AA_CrescendoAnole",
   "AA_DunealiskClutchMother",
   "AA_EmpressButterfly",
   "AA_EmpressButterflyLarva",
   "AA_EngorgedTentacularAberration",
   "AA_Erin",
-  "AA_Feralisk",
   "AA_FeraliskClutchMother",
   "AA_FissionMouseSecond",
   "AA_FissionMouseThird",
   "AA_FrostAve",
-  "AA_FungalHusk",
   "AA_Gallatross",
   "AA_GallatrossMoribund",
-  "AA_GreatDevourer",
   "AA_GreyCoatedMouflon",
-  "AA_Groundrunner",
   "AA_IronhuskBeetle",
   "AA_Junglelisk",
-  "AA_LarvalAtispec",
   "AA_Locusts",
-  "AA_LuciferBug",
-  "AA_MatureFleshbeast",
   "AA_MeadowAve",
   "AA_MegaLouse",
-  "AA_OcularNightling",
-  "AA_OvergrownColossus",
   "AA_PebbleMit",
   "AA_PedigreedRaptor",
-  "AA_Radyak",
   "AA_Ravager",
-  "AA_RayHound",
-  "AA_RipperHound",
   "AA_RoyalAve",
-  "AA_SandLion",
-  "AA_ShockGoat",
   "AA_Skiphound",
-  "AA_Skyeel",
-  "AA_SmallButterfly",
-  "AA_TeratogenicOriginator",
   "AA_UnblinkingEye",
   "AA_WindBeast",
-  "AG_OcularSlinger",
   "AM_UnshackledDryad",
   "Acklay",
   "Aiwha",
@@ -106,20 +78,14 @@
   "BMT_BloodropPupa",
   "BMT_BovineBeetleLarvae",
   "BMT_BovineBeetlePupa",
-  "BMT_BunkerBug",
   "BMT_CactusCrab",
   "BMT_CaveCricket",
-  "BMT_CaveLemming",
-  "BMT_ColonyPustuleHornet",
   "BMT_CrystalBeetle",
   "BMT_CrystalBeetleLarvae",
   "BMT_CrystalBeetlePupa",
-  "BMT_CrystalCrab",
-  "BMT_CrystalFairyMole",
   "BMT_CrystalMantis",
   "BMT_Crystalope",
   "BMT_FacetMoth",
-  "BMT_FacetMothLarvae",
   "BMT_FacetMothPupa",
   "BMT_FamineLocust",
   "BMT_FenridStoat",
@@ -140,59 +106,40 @@
   "BMT_MaceDrake",
   "BMT_Maxolotl",
   "BMT_Megabat",
-  "BMT_Megakrill",
   "BMT_Megaphorid",
-  "BMT_MegaphoridLarva",
-  "BMT_Megapleura",
   "BMT_Megaroach",
   "BMT_MetalloSnail",
   "BMT_Molebear",
   "BMT_MossBeetleLarvae",
   "BMT_MossBeetlePupa",
   "BMT_MossyFennec",
-  "BMT_MutatingTumorfishAdult",
-  "BMT_MutatingTumorfishFry",
-  "BMT_MutatingTumorfishSpawn",
-  "BMT_PodWorm",
-  "BMT_Polluwog",
-  "BMT_PustuleHornet",
   "BMT_Rimebeak",
   "BMT_RoyalRhino",
   "BMT_RoyalRhinoLarvae",
   "BMT_RoyalRhinoPupa",
-  "BMT_Sacapillar",
-  "BMT_SandPillar",
   "BMT_ShatterjawBeetle",
   "BMT_ShatterjawBeetleLarvae",
   "BMT_ShatterjawBeetlePupa",
   "BMT_ShimmershellSnail",
   "BMT_SilverSheep",
   "BMT_SludgeCrawler",
-  "BMT_SmogMoth",
   "BMT_SmogMothLarvae",
   "BMT_SmogPupa",
   "BMT_SmolderstingScorpion",
   "BMT_Snowstalker",
-  "BMT_Stoneback",
   "BMT_Swarmcaller",
   "BMT_TaintedTurtle",
-  "BMT_Thrumbungus",
   "BMT_TripleSnapper",
-  "BMT_TruffleMole",
   "BMT_Varmot",
   "BMT_Woollybat",
   "BMT_Xyrion",
-  "BMT_Yooka",
   "Bardelot",
   "Bear_Grizzly",
   "Bear_Polar",
   "Behemoth",
   "Bison",
-  "Blarth",
-  "Blixus",
   "Blurrg",
   "Boarwolf",
-  "Bogwing",
   "Boomrat",
   "Bordok",
   "Brezak",
@@ -221,7 +168,6 @@
   "DA_Phrak",
   "DA_Pilgrim",
   "DA_RedhornedLarpah",
-  "DA_RockTroll",
   "DA_Snaptoad",
   "DA_SnowTaraal",
   "DA_Taraal",
@@ -259,21 +205,18 @@
   "GR_Boombeetle",
   "GR_Boomcat",
   "GR_Boomffalo",
-  "GR_Boomsnake",
   "GR_Boomsquirrel",
   "GR_Catalope",
   "GR_Catchicken",
   "GR_Chickenhorse",
   "GR_Chickenlizard",
   "GR_Chickenlope",
-  "GR_Chickenspider",
   "GR_Crocorse",
   "GR_Doedicoon",
   "GR_Elasmobearium",
   "GR_FleshFlies",
   "GR_FleshGrowth",
   "GR_FleshMonstrosity",
-  "GR_Fleshling",
   "GR_Groundffalo",
   "GR_Hurseman",
   "GR_Lizardochs",
@@ -285,12 +228,10 @@
   "GR_MeadowLizard",
   "GR_Mechabear",
   "GR_Mechacat",
-  "GR_Mechachicken",
   "GR_Mechahorse",
   "GR_Mechalope",
   "GR_Mechamime",
   "GR_Mechamuffalo",
-  "GR_Mecharat",
   "GR_Mechaspider",
   "GR_Mechathrumbo",
   "GR_Mechaturtle",
@@ -302,7 +243,6 @@
   "GR_Muffalopede",
   "GR_Muffalorat",
   "GR_Needlechicken",
-  "GR_Nighthrumbo",
   "GR_Paraceramuffalo",
   "GR_ParagonBoomalope",
   "GR_ParagonIguana",
@@ -332,7 +272,6 @@
   "GRimLavaSnail",
   "GRimStoneCrab",
   "GRimTortoise",
-  "GiantAnt_Race",
   "GiantToad",
   "Giantala",
   "Gigantelope",
@@ -354,14 +293,10 @@
   "Iguana",
   "Insectomorph",
   "IthorianReek",
-  "JOE_Cephalope",
-  "JOE_Landopus",
-  "JOE_Nautilant",
   "JRWArchaeopteryx",
   "JRWArthropleura",
   "JRWBagaceratops",
   "JRWBaseopsis",
-  "JRWBeelzebufo",
   "JRWBernicia",
   "JRWBrachytrachelopan",
   "JRWCaihong",
@@ -399,11 +334,9 @@
   "MA_Aminox",
   "MA_Deermoss",
   "MA_Gnaut",
-  "MA_Sporemole",
   "MO_AbominationRace",
   "Maalraas",
   "Manka",
-  "MarshHaunt",
   "MastiffPhalone",
   "Mastmot",
   "Mawvorr",
@@ -423,13 +356,8 @@
   "PoisonButterfly",
   "Prowler",
   "Quail",
-  "RSW_AbyssalColo",
-  "RSW_ColoClawFish",
-  "RSW_CrimsonOpee",
-  "RSW_ShaleGorger",
-  "RSW_Starmaw",
-  "RSW_StormSando",
-  "RSW_ThornbackColo",
+  "RSW_RustNipper",
+  "RSW_Yobshrimp",
   "Rabbuck",
   "Raccoon",
   "Rancor",
@@ -440,34 +368,25 @@
   "Roggwart",
   "Rycrit",
   "SWPotF_RaceDef_ysalamir",
-  "SW_Electricfish",
   "SW_Emperorisopod",
-  "SW_Grenadierworm",
   "Scuttlebug",
   "Sheep",
-  "Silooth",
-  "Snoruuk",
   "Snowhare",
   "Spelopede",
   "Squall",
   "Squirrel",
   "Stintaril",
-  "StoneCrab",
   "TYR_Lemming",
   "Tach",
   "Taozin",
-  "Tauntaun",
-  "TetnissCrab",
   "Thranta",
   "ThrumbaToad",
   "Thrumbo",
-  "Tibidee",
   "Tooke",
   "Torton",
   "Tukata",
   "Turkey",
   "TuskCat",
-  "VAEWaste_Hydra",
   "VAEWaste_Toxiguana",
   "VFEI2_Acidspitter",
   "VFEI2_BlackEmpress",
@@ -498,10 +417,8 @@
   "VQE_IceCrawler",
   "VQE_Megamidge",
   "VRE_CompanionDryad",
-  "Vapaad",
   "Veermok",
   "Vulture",
-  "Wampa",
   "Warbird",
   "WasteRat",
   "WildBoar",
@@ -513,27 +430,11 @@
   "Zygolophodon"
  ],
  "reserve_evicted_from": {
-  "AA_AcanthamoebaGiganteaHuge": [
-   "the_rust_cathedral"
-  ],
-  "AA_AngelMoth": [
-   "arid_shrubland",
-   "desert",
-   "the_contagion",
-   "the_cracked_lands",
-   "the_scarlands"
-  ],
   "AA_AngelMothLarva": [
    "arid_shrubland",
    "desert",
    "the_cracked_lands",
    "the_scarlands"
-  ],
-  "AA_AnimaColossus": [
-   "the_contagion",
-   "the_rot",
-   "the_slime",
-   "the_webwork"
   ],
   "AA_Animalisk": [
    "the_forge",
@@ -551,28 +452,6 @@
   "AA_ArcticLion": [
    "the_propane_lakes"
   ],
-  "AA_Atispec": [
-   "wasteland"
-  ],
-  "AA_AuroraSylph": [
-   "arid_shrubland",
-   "desert",
-   "poison_forest",
-   "the_cracked_lands",
-   "the_scarlands"
-  ],
-  "AA_Barbslinger": [
-   "arid_shrubland",
-   "desert",
-   "dune_sea + deep_desert",
-   "the_pyrelands",
-   "the_sump",
-   "wasteland"
-  ],
-  "AA_Behemoth": [
-   "poison_forest",
-   "the_fever_wood"
-  ],
   "AA_BlackScarab": [
    "the_forge"
   ],
@@ -587,10 +466,6 @@
   "AA_Bobeene": [
    "the_sump"
   ],
-  "AA_BumbledroneQueen": [
-   "desert",
-   "weeping_stones"
-  ],
   "AA_ChameleonYak": [
    "arid_shrubland",
    "desert",
@@ -601,19 +476,6 @@
   ],
   "AA_ChemfuelMyrmidon": [
    "the_rust_cathedral"
-  ],
-  "AA_ColossalAerofleet": [
-   "wasteland"
-  ],
-  "AA_CrescendoAnole": [
-   "arid_shrubland",
-   "desert",
-   "dune_sea + deep_desert",
-   "the_miasma",
-   "the_scarlands",
-   "the_slime",
-   "the_sump",
-   "the_webwork"
   ],
   "AA_EmpressButterfly": [
    "wasteland"
@@ -628,14 +490,6 @@
    "the_sump",
    "the_webwork"
   ],
-  "AA_Feralisk": [
-   "the_fever_wood",
-   "the_miasma",
-   "the_scarlands",
-   "the_slime",
-   "the_webwork",
-   "wasteland"
-  ],
   "AA_FissionMouseSecond": [
    "the_cracked_lands",
    "the_rot"
@@ -647,26 +501,13 @@
   "AA_FrostAve": [
    "the_propane_lakes"
   ],
-  "AA_FungalHusk": [
-   "forsaken_crags"
-  ],
   "AA_Gallatross": [
    "the_rot"
-  ],
-  "AA_GreatDevourer": [
-   "arid_shrubland",
-   "desert",
-   "the_cracked_lands",
-   "the_scarlands",
-   "wasteland"
   ],
   "AA_GreyCoatedMouflon": [
    "poison_forest",
    "the_cracked_lands",
    "the_propane_lakes"
-  ],
-  "AA_Groundrunner": [
-   "poison_forest"
   ],
   "AA_IronhuskBeetle": [
    "the_forge"
@@ -675,33 +516,8 @@
    "the_pyrelands",
    "the_webwork"
   ],
-  "AA_LarvalAtispec": [
-   "arid_shrubland",
-   "the_contagion",
-   "the_cracked_lands",
-   "the_rot",
-   "the_scarlands",
-   "the_sump"
-  ],
   "AA_Locusts": [
    "the_sump"
-  ],
-  "AA_LuciferBug": [
-   "arid_shrubland",
-   "desert",
-   "nightside_ice",
-   "the_contagion",
-   "the_rot",
-   "the_rust_cathedral",
-   "the_scarlands",
-   "the_sump",
-   "the_webwork"
-  ],
-  "AA_MatureFleshbeast": [
-   "arid_shrubland",
-   "desert",
-   "the_cracked_lands",
-   "the_scarlands"
   ],
   "AA_MeadowAve": [
    "arid_shrubland",
@@ -718,11 +534,6 @@
    "the_cracked_lands",
    "the_scarlands",
    "wasteland"
-  ],
-  "AA_OvergrownColossus": [
-   "the_miasma",
-   "the_slime",
-   "the_webwork"
   ],
   "AA_PebbleMit": [
    "arid_shrubland",
@@ -751,11 +562,6 @@
    "the_scarlands",
    "the_webwork"
   ],
-  "AA_Radyak": [
-   "arid_shrubland",
-   "the_cracked_lands",
-   "the_sump"
-  ],
   "AA_Ravager": [
    "arid_shrubland",
    "desert",
@@ -763,38 +569,10 @@
    "the_cracked_lands",
    "the_scarlands"
   ],
-  "AA_RayHound": [
-   "arid_shrubland",
-   "the_cracked_lands",
-   "the_forge",
-   "the_scarlands"
-  ],
-  "AA_RipperHound": [
-   "arid_shrubland",
-   "poison_forest",
-   "the_contagion",
-   "the_cracked_lands",
-   "the_forge",
-   "the_rot",
-   "the_scarlands",
-   "the_sump",
-   "the_webwork",
-   "wasteland"
-  ],
   "AA_RoyalAve": [
    "arid_shrubland",
    "desert",
    "the_cracked_lands",
-   "the_sump"
-  ],
-  "AA_SandLion": [
-   "arid_shrubland",
-   "desert",
-   "dune_sea + deep_desert"
-  ],
-  "AA_ShockGoat": [
-   "poison_forest",
-   "the_contagion",
    "the_sump"
   ],
   "AA_Skiphound": [
@@ -803,20 +581,6 @@
    "the_slime",
    "the_webwork",
    "wasteland"
-  ],
-  "AA_Skyeel": [
-   "forsaken_crags",
-   "the_propane_lakes"
-  ],
-  "AA_SmallButterfly": [
-   "the_cracked_lands"
-  ],
-  "AA_TeratogenicOriginator": [
-   "arid_shrubland",
-   "desert",
-   "dune_sea + deep_desert",
-   "the_cracked_lands",
-   "the_scarlands"
   ],
   "AA_UnblinkingEye": [
    "the_contagion"
@@ -832,9 +596,6 @@
    "the_slime",
    "the_sump",
    "the_webwork"
-  ],
-  "AG_OcularSlinger": [
-   "the_miasma"
   ],
   "AM_UnshackledDryad": [
    "the_rot"
@@ -872,22 +633,12 @@
   "BMT_BloodropMoth": [
    "dune_sea + deep_desert"
   ],
-  "BMT_BunkerBug": [
-   "the_rust_cathedral"
-  ],
   "BMT_CactusCrab": [
    "desert"
   ],
   "BMT_CaveCricket": [
    "the_fever_wood",
    "weeping_stones"
-  ],
-  "BMT_CaveLemming": [
-   "poison_forest"
-  ],
-  "BMT_ColonyPustuleHornet": [
-   "forsaken_crags",
-   "the_scarlands"
   ],
   "BMT_CrystalBeetle": [
    "the_slime"
@@ -943,18 +694,9 @@
   "BMT_Megabat": [
    "the_forge"
   ],
-  "BMT_Megakrill": [
-   "forsaken_crags",
-   "nightside_ice",
-   "the_propane_lakes",
-   "the_rot"
-  ],
   "BMT_Megaphorid": [
    "forsaken_crags",
    "the_scarlands"
-  ],
-  "BMT_Megapleura": [
-   "the_forge"
   ],
   "BMT_Megaroach": [
    "forsaken_crags",
@@ -966,28 +708,6 @@
   "BMT_Molebear": [
    "the_miasma"
   ],
-  "BMT_MutatingTumorfishAdult": [
-   "weeping_stones"
-  ],
-  "BMT_MutatingTumorfishFry": [
-   "the_forge",
-   "the_webwork"
-  ],
-  "BMT_MutatingTumorfishSpawn": [
-   "the_forge",
-   "the_pyrelands"
-  ],
-  "BMT_Polluwog": [
-   "the_forge",
-   "weeping_stones"
-  ],
-  "BMT_PustuleHornet": [
-   "forsaken_crags",
-   "the_scarlands"
-  ],
-  "BMT_Sacapillar": [
-   "the_pyrelands"
-  ],
   "BMT_ShimmershellSnail": [
    "the_forge"
   ],
@@ -997,10 +717,6 @@
   "BMT_SludgeCrawler": [
    "the_forge"
   ],
-  "BMT_SmogMoth": [
-   "the_forge",
-   "the_webwork"
-  ],
   "BMT_SmogMothLarvae": [
    "the_forge"
   ],
@@ -1009,10 +725,6 @@
   ],
   "BMT_Snowstalker": [
    "the_rot"
-  ],
-  "BMT_Stoneback": [
-   "desert",
-   "weeping_stones"
   ],
   "BMT_Swarmcaller": [
    "forsaken_crags",
@@ -1025,9 +737,6 @@
   ],
   "BMT_TripleSnapper": [
    "weeping_stones"
-  ],
-  "BMT_TruffleMole": [
-   "arid_shrubland"
   ],
   "BMT_Varmot": [
    "the_rot"
@@ -1042,9 +751,6 @@
    "arid_shrubland",
    "the_cracked_lands"
   ],
-  "Blarth": [
-   "the_sump"
-  ],
   "Blurrg": [
    "arid_shrubland",
    "desert",
@@ -1052,9 +758,6 @@
   ],
   "Boarwolf": [
    "the_pyrelands"
-  ],
-  "Bogwing": [
-   "desert"
   ],
   "Boomrat": [
    "the_contagion"
@@ -1194,9 +897,6 @@
   "GR_Boomffalo": [
    "desert"
   ],
-  "GR_Boomsnake": [
-   "desert"
-  ],
   "GR_Boomsquirrel": [
    "desert"
   ],
@@ -1218,10 +918,6 @@
    "the_fever_wood",
    "weeping_stones"
   ],
-  "GR_Chickenspider": [
-   "the_pyrelands",
-   "the_scarlands"
-  ],
   "GR_Crocorse": [
    "the_webwork"
   ],
@@ -1236,10 +932,6 @@
   ],
   "GR_FleshMonstrosity": [
    "the_contagion"
-  ],
-  "GR_Fleshling": [
-   "arid_shrubland",
-   "the_forge"
   ],
   "GR_Groundffalo": [
    "the_cracked_lands"
@@ -1394,12 +1086,6 @@
    "desert",
    "the_pyrelands"
   ],
-  "JOE_Cephalope": [
-   "desert"
-  ],
-  "JOE_Landopus": [
-   "the_contagion"
-  ],
   "JRWArchaeopteryx": [
    "the_contagion",
    "the_cracked_lands"
@@ -1531,17 +1217,11 @@
   "LothWolf": [
    "arid_shrubland"
   ],
-  "MA_Sporemole": [
-   "the_webwork"
-  ],
   "Maalraas": [
    "arid_shrubland"
   ],
   "Manka": [
    "arid_shrubland"
-  ],
-  "MarshHaunt": [
-   "the_forge"
   ],
   "MastiffPhalone": [
    "arid_shrubland",
@@ -1607,26 +1287,11 @@
   "Rycrit": [
    "the_scarlands"
   ],
-  "SW_Electricfish": [
-   "the_rust_cathedral",
-   "the_scarlands"
-  ],
   "SW_Emperorisopod": [
    "the_scarlands"
   ],
-  "SW_Grenadierworm": [
-   "poison_forest"
-  ],
   "Scuttlebug": [
    "the_contagion",
-   "the_slime"
-  ],
-  "Silooth": [
-   "arid_shrubland"
-  ],
-  "Snoruuk": [
-   "arid_shrubland",
-   "desert",
    "the_slime"
   ],
   "Spelopede": [
@@ -1638,10 +1303,6 @@
   "Stintaril": [
    "dune_sea + deep_desert"
   ],
-  "StoneCrab": [
-   "dune_sea + deep_desert",
-   "the_contagion"
-  ],
   "TYR_Lemming": [
    "poison_forest",
    "the_propane_lakes"
@@ -1652,9 +1313,6 @@
   ],
   "Taozin": [
    "the_forge"
-  ],
-  "Tauntaun": [
-   "the_sump"
   ],
   "Thranta": [
    "arid_shrubland",
@@ -1679,10 +1337,6 @@
   "TuskCat": [
    "arid_shrubland",
    "desert"
-  ],
-  "VAEWaste_Hydra": [
-   "the_pyrelands",
-   "the_webwork"
   ],
   "VAEWaste_Toxiguana": [
    "the_forge",
@@ -1735,11 +1389,6 @@
   ],
   "VQE_Megamidge": [
    "the_propane_lakes"
-  ],
-  "Vapaad": [
-   "arid_shrubland",
-   "desert",
-   "dune_sea + deep_desert"
   ],
   "Veermok": [
    "arid_shrubland",

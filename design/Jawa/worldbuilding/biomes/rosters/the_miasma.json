@@ -1,117 +1,582 @@
 {
-  "sheet": "the_miasma",
-  "defNames": ["AB_MiasmicMangrove"],
-  "tiles": 93,
   "authored": "2026-09-09",
-  "law_sources": ["the_miasma.md §4/§6", "_freeze_rulings_2026-09-07.md R11/R24a", "_assignment_prep.md §9", "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09", "sea_beasts_roster.md (nursery pairing)"],
-  "notes": "Donor animalDensity 6.5 is doctrine — record density as refugee CROWDING, so this roster stays deliberately thick. Three rings staffed: nursery (Grey Sea juveniles, R11), warden mothers (placed set-pieces, NEVER wildAnimals rows — new_defs), the stranded (new_defs). R11 lifecycle: wardens breed and are born here, adults live in the Grey Sea, elders return as crèche-guarding mothers — the wild roster carries only the YOUNG side; the adult rides the Grey Sea/terminator sheets.",
-  "fauna": [
-    {"def": "Kreetle", "commonality": 1.0, "action": "keep", "band": "arthropod-floor", "law": "§4 crusty arthropods in uncountable numbers — the trophic floor"},
-    {"def": "BMT_Gembug", "commonality": 0.5, "action": "keep", "band": "arthropod-floor", "law": "§4 arthropod floor; herd (MEASURED special)"},
-    {"def": "Yobshrimp", "commonality": 0.8, "action": "import", "band": "arthropod-floor", "law": "§4 crusty arthropods, eaten by everything; SW swamp shrimp (moved in from the Fever Wood, whose mirrors forbid it)"},
-    {"def": "VFEI2_Swarmling", "commonality": 0.7, "action": "keep", "band": "vermin", "law": "§2 the drain — everything ends up here; crowding is the read"},
-    {"def": "VFEI2_BlackSwarmling", "commonality": 0.5, "action": "keep", "band": "vermin", "law": "§2 the drain"},
-    {"def": "Shiro", "commonality": 0.4, "action": "keep", "band": "arthropod-floor", "law": "§4 armored scuttler; slow (spd 1.0 MEASURED)"},
-    {"def": "BMT_CrestedDragon", "commonality": 0.4, "action": "keep", "band": "channel-predator", "law": "§2 lifeboat crowding — no chase ban here; alien wet lizard"},
-    {"def": "Runyip", "commonality": 0.5, "action": "adjust-keep", "band": "muck-forager", "law": "§4 composter-adjacent forager; Naboo swamp icon; herd (MEASURED); comm 0.4→0.5"},
-    {"def": "Whisperbird", "commonality": 0.3, "action": "keep", "band": "flier", "law": "R17 fliers cross biomes; delta flocks"},
-    {"def": "Anooba", "commonality": 0.3, "action": "keep", "band": "scavenger", "law": "§2 the compost of a war feeds scavenger packs; SW icon"},
-    {"def": "BMT_AaroxisDendoria", "commonality": 0.3, "action": "keep", "band": "strange", "law": "§1 on the verge of something — slow alien oddity (spd 2.0 MEASURED)"},
-    {"def": "Grank", "commonality": 0.3, "action": "import", "band": "channel-predator", "law": "§2 refugee crowding; wet SW predator (evicted from the Fever Wood's stillness)"},
-    {"def": "AA_RaptorShrimp", "commonality": 0.2, "action": "keep", "band": "channel-predator", "law": "§4 the water crowds with life — crustacean predator"},
-    {"def": "AA_Mantrap", "commonality": 0.2, "action": "keep", "band": "root-ambush", "law": "§3 the stilt-root maze is the terrain — root-maze ambusher"},
-    {"def": "AA_Lockjaw", "commonality": 0.2, "action": "keep", "band": "channel-predator", "law": "§4 the shallows' jaws; slow (spd 3.0 MEASURED)"},
-    {"def": "Vornskyr", "commonality": 0.15, "action": "keep", "band": "strange", "law": "§1 verge-of-something register; SW icon, venomous (MEASURED)"},
-    {"def": "AA_Thermadon", "commonality": 0.1, "action": "keep", "band": "channel-predator", "law": "§2 hot delta (42.8 °C median MEASURED)"},
-    {"def": "AA_Helixien", "commonality": 0.1, "action": "keep", "band": "strange", "law": "§1 strange slow bulk (spd 0.6 MEASURED)"},
-    {"def": "AA_BloodShrimp", "commonality": 0.1, "action": "keep", "band": "channel-predator", "law": "§4 crowded waters"},
-    {"def": "AA_DecayDrake", "commonality": 0.1, "action": "keep", "band": "composter", "law": "§4 the composters — decay-feeding is the biome's engine"},
-    {"def": "AA_Slurrypede", "commonality": 0.1, "action": "adjust-keep", "band": "composter", "law": "§4 burrowing muck-worker digesting the sin-soup; comm 0.005→0.1 — composters are a named ring"},
-    {"def": "AA_Plasmorph", "commonality": 0.05, "action": "keep", "band": "strange", "law": "§1 the Working's oddities"},
-    {"def": "Zakkeg", "commonality": 0.05, "action": "keep", "band": "big-wanderer", "law": "§2 crowding brings big bodies to the fresh end; SW icon; trace"},
-    {"def": "RSW_MeeJuv", "commonality": 0.4, "action": "import", "band": "nursery", "law": "R11 + §4 the nursery — the Grey Sea's roster breeds here; juveniles swarm the shallows"},
-    {"def": "RSW_FaaJuv", "commonality": 0.3, "action": "import", "band": "nursery", "law": "R11 nursery ring"},
-    {"def": "RSW_LaaJuv", "commonality": 0.3, "action": "import", "band": "nursery", "law": "R11 nursery ring"},
-    {"def": "RSW_YobshrimpJuv", "commonality": 0.3, "action": "import", "band": "nursery", "law": "R11 nursery — the pale young of the brine line"},
-    {"def": "RSW_SiltLampreyJuv", "commonality": 0.25, "action": "import", "band": "nursery", "law": "R11 nursery; silt-working juvenile"},
-    {"def": "RSW_RustNipperJuv", "commonality": 0.25, "action": "import", "band": "nursery", "law": "R11 nursery"},
-    {"def": "RSW_OpeeSeaKillerJuv", "commonality": 0.05, "action": "import", "band": "nursery-guard", "law": "R11 — a sub-adult lingering at the crèche mouths; 'don't kill what's small here' (§4)"}
+  "confidence": [
+    {
+      "claim": "Owner card places GRimCobra/GRimMonitorLizard in AB_MiasmicMangrove",
+      "status": "MEASURED-CONTRARY",
+      "why": "register shows both resident only in unpainted GRim donor biomes; nothing to evict from this def — the global cut rides RETEXTURED_EARTH_FAUNA_BANNED_1 regardless (GRimStoneCrab, which IS resident here, is evicted above)"
+    },
+    {
+      "claim": "BMT_RainbowTongue is genuinely benign (ban 2 requires it)",
+      "status": "UNMEASURED",
+      "why": "pool CSV carries no harm fields; verify the def before generation — if it is a trap/mimic it violates ban 2 and must swap to the new_defs suite"
+    },
+    {
+      "claim": "RSW juveniles spawn on channel/shallow cells",
+      "status": "UNMEASURED",
+      "why": "water-spawn channel unproven (prep §6.5); verify at generation"
+    },
+    {
+      "claim": "warden lifecycle stages",
+      "status": "UNMEASURED",
+      "why": "register carries no life stages; the whole R11 arc is def-authoring, not stat-verified"
+    },
+    {
+      "claim": "GR_* prefix rows are 'Grindterra'",
+      "status": "MEASURED-CONTRARY",
+      "why": "register attributes GR_* rows to Vanilla Genetics Expanded (GRiNDTerra uses GRim*); the ruling's defName prefix applied as written — flagged for the owner's review sheet"
+    }
+  ],
+  "defNames": [
+    "AB_MiasmicMangrove"
   ],
   "evictions": [
-    {"def": "GRimStoneCrab", "reason": "retextured Earth twin (crab) fails on sight — owner card 2026-09-09; candidate to extend RETEXTURED_EARTH_FAUNA_BANNED_1", "disposition": "homeless-reserve"},
-    {"def": "BMT_GlowBat", "reason": "Earth-nameable (bat) here; the_rot.md §7b keeps 'glow bats' by sheet law — its home is the Rot (R17: it still crosses as a flier)", "disposition": "move:AB_MycoticJungle"},
-    {"def": "WompRat", "reason": "prep §8.4 re-homes ship vermin to the Fall Line injection layer; Tatooine-dry icon in a delta is a placement absurdity", "disposition": "move:fall_line"},
-    {"def": "DA_Karabal", "reason": "fantasy-mod fauna, recognizability lane (prep §4.3 evicts DA_ kin on sight)", "disposition": "homeless-reserve"},
-    {"def": "LavaSnail", "reason": "volcanic-themed in a delta — Forge-lane creature", "disposition": "homeless-reserve"},
-    {"def": "JRWProtosolpuga", "reason": "dinosaur-mod lane, deeper-cut rule (prep §10.4)", "disposition": "homeless-reserve"},
-    {"def": "JRWGorgonops", "reason": "dinosaur-mod lane, deeper-cut rule", "disposition": "homeless-reserve"},
-    {"def": "AA_Swarmling", "reason": "ubiquity-25 TRIM (prep §9); the Rot keeps it as a donor-native home instead", "disposition": "move:AB_MycoticJungle"},
-    {"def": "AA_FireWasp", "reason": "fire-themed fauna in a waterlogged delta — theme fail", "disposition": "homeless-reserve"},
-    {"def": "TYR_MousePoison", "reason": "Earth-nameable (mouse); Little Critters recognizability fail (prep §5.2)", "disposition": "homeless-reserve"},
-    {"def": "AA_Feralisk", "reason": "feralisk identity belongs to the Webwork's Wyyyschokk story; Alpha's name-collision kin stays out of wet rosters (MLIE/naming absorption decides its fate)", "disposition": "homeless-reserve"},
-    {"def": "BMT_Molebear", "reason": "Earth-mash name (mole+bear) fails on sight", "disposition": "homeless-reserve"},
-    {"def": "AG_OcularSlinger", "reason": "ocular clade is the Contagion's identity (AB_OcularForest) — candidate import for that batch, not a delta resident", "disposition": "homeless-reserve"},
-    {"def": "AA_RoughPlatedMonitor", "reason": "Earth-nameable (monitor lizard)", "disposition": "homeless-reserve"},
-    {"def": "VFEI2_BlackQueen", "reason": "hive-queen spawns ride the insectoid-incident axis, not wild rosters (sitting item: mech/hive events are a separate axis)", "disposition": "homeless-reserve"},
-    {"def": "AA_Cinderlisk", "reason": "cinder-themed in a delta — theme fail", "disposition": "homeless-reserve"},
-    {"def": "AA_Wildpawn", "reason": "fungus/animal hybrid — the Rot's ban 2 makes it a Rot native, not a delta refugee", "disposition": "move:AB_MycoticJungle"},
-    {"def": "AA_Wildpod", "reason": "fungus hybrid — Rot native", "disposition": "move:AB_MycoticJungle"},
-    {"def": "AA_Bumbledrone", "reason": "ubiquity-25 TRIM (prep §9)", "disposition": "homeless-reserve"},
-    {"def": "AA_Erin", "reason": "generic midsize predator, no delta read", "disposition": "homeless-reserve"},
-    {"def": "AA_PebbleMit", "reason": "ubiquity-25 TRIM to rock/cavern biomes (prep §9)", "disposition": "homeless-reserve"},
-    {"def": "AA_AnimusVox", "reason": "ubiquity-25 TRIM to one strange home (prep §9)", "disposition": "homeless-reserve"},
-    {"def": "Arthropleura", "reason": "Megafauna mod: 0% recognizability survival, retirement ruled (prep §10.4)", "disposition": "homeless-reserve"},
-    {"def": "Meganeura", "reason": "Megafauna mod retirement (prep §10.4)", "disposition": "homeless-reserve"},
-    {"def": "Dinornis", "reason": "Megafauna mod retirement", "disposition": "homeless-reserve"},
-    {"def": "Titanis", "reason": "Megafauna mod retirement", "disposition": "homeless-reserve"},
-    {"def": "AA_PedigreedRaptor", "reason": "ubiquity-25 EVICT planet-wide — reads dinosaur (prep §9)", "disposition": "homeless-reserve"},
-    {"def": "AA_BoulderMit", "reason": "mineral dormant giant — dune-sea keep candidate (prep §1.2), wrong biome here", "disposition": "move:ExtremeDesert"},
-    {"def": "AA_OvergrownColossus", "reason": "the giant lane here is owned by warden mothers (placed set-pieces, §4) — a random giant dilutes them", "disposition": "homeless-reserve"},
-    {"def": "AA_CrescendoAnole", "reason": "Earth-nameable (anole)", "disposition": "homeless-reserve"},
-    {"def": "AA_AcanthamoebaGiganteaSmall", "reason": "ubiquity-25 TRIM to wasteland/pans (prep §9)", "disposition": "homeless-reserve"},
-    {"def": "AA_TetraSlug", "reason": "barely-moving mineral giant — dune-sea/nightside lane (prep §1.2/§7.2)", "disposition": "homeless-reserve"}
+    {
+      "def": "GRimStoneCrab",
+      "disposition": "homeless-reserve",
+      "reason": "retextured Earth twin (crab) fails on sight — owner card 2026-09-09; candidate to extend RETEXTURED_EARTH_FAUNA_BANNED_1"
+    },
+    {
+      "def": "BMT_GlowBat",
+      "disposition": "move:AB_MycoticJungle",
+      "reason": "Earth-nameable (bat) here; the_rot.md §7b keeps 'glow bats' by sheet law — its home is the Rot (R17: it still crosses as a flier)"
+    },
+    {
+      "def": "WompRat",
+      "disposition": "move:fall_line",
+      "reason": "prep §8.4 re-homes ship vermin to the Fall Line injection layer; Tatooine-dry icon in a delta is a placement absurdity"
+    },
+    {
+      "def": "DA_Karabal",
+      "disposition": "homeless-reserve",
+      "reason": "fantasy-mod fauna, recognizability lane (prep §4.3 evicts DA_ kin on sight)"
+    },
+    {
+      "def": "LavaSnail",
+      "disposition": "homeless-reserve",
+      "reason": "volcanic-themed in a delta — Forge-lane creature"
+    },
+    {
+      "def": "JRWProtosolpuga",
+      "disposition": "homeless-reserve",
+      "reason": "dinosaur-mod lane, deeper-cut rule (prep §10.4)"
+    },
+    {
+      "def": "JRWGorgonops",
+      "disposition": "homeless-reserve",
+      "reason": "dinosaur-mod lane, deeper-cut rule"
+    },
+    {
+      "def": "AA_Swarmling",
+      "disposition": "move:AB_MycoticJungle",
+      "reason": "ubiquity-25 TRIM (prep §9); the Rot keeps it as a donor-native home instead"
+    },
+    {
+      "def": "AA_FireWasp",
+      "disposition": "homeless-reserve",
+      "reason": "fire-themed fauna in a waterlogged delta — theme fail"
+    },
+    {
+      "def": "TYR_MousePoison",
+      "disposition": "homeless-reserve",
+      "reason": "Earth-nameable (mouse); Little Critters recognizability fail (prep §5.2)"
+    },
+    {
+      "def": "AA_Feralisk",
+      "disposition": "homeless-reserve",
+      "reason": "feralisk identity belongs to the Webwork's Wyyyschokk story; Alpha's name-collision kin stays out of wet rosters (MLIE/naming absorption decides its fate)"
+    },
+    {
+      "def": "BMT_Molebear",
+      "disposition": "homeless-reserve",
+      "reason": "Earth-mash name (mole+bear) fails on sight"
+    },
+    {
+      "def": "AG_OcularSlinger",
+      "disposition": "homeless-reserve",
+      "reason": "ocular clade is the Contagion's identity (AB_OcularForest) — candidate import for that batch, not a delta resident"
+    },
+    {
+      "def": "AA_RoughPlatedMonitor",
+      "disposition": "homeless-reserve",
+      "reason": "Earth-nameable (monitor lizard)"
+    },
+    {
+      "def": "VFEI2_BlackQueen",
+      "disposition": "homeless-reserve",
+      "reason": "hive-queen spawns ride the insectoid-incident axis, not wild rosters (sitting item: mech/hive events are a separate axis)"
+    },
+    {
+      "def": "AA_Cinderlisk",
+      "disposition": "homeless-reserve",
+      "reason": "cinder-themed in a delta — theme fail"
+    },
+    {
+      "def": "AA_Wildpawn",
+      "disposition": "move:AB_MycoticJungle",
+      "reason": "fungus/animal hybrid — the Rot's ban 2 makes it a Rot native, not a delta refugee"
+    },
+    {
+      "def": "AA_Wildpod",
+      "disposition": "move:AB_MycoticJungle",
+      "reason": "fungus hybrid — Rot native"
+    },
+    {
+      "def": "AA_Bumbledrone",
+      "disposition": "homeless-reserve",
+      "reason": "ubiquity-25 TRIM (prep §9)"
+    },
+    {
+      "def": "AA_Erin",
+      "disposition": "homeless-reserve",
+      "reason": "generic midsize predator, no delta read"
+    },
+    {
+      "def": "AA_PebbleMit",
+      "disposition": "homeless-reserve",
+      "reason": "ubiquity-25 TRIM to rock/cavern biomes (prep §9)"
+    },
+    {
+      "def": "AA_AnimusVox",
+      "disposition": "homeless-reserve",
+      "reason": "ubiquity-25 TRIM to one strange home (prep §9)"
+    },
+    {
+      "def": "Arthropleura",
+      "disposition": "homeless-reserve",
+      "reason": "Megafauna mod: 0% recognizability survival, retirement ruled (prep §10.4)"
+    },
+    {
+      "def": "Meganeura",
+      "disposition": "homeless-reserve",
+      "reason": "Megafauna mod retirement (prep §10.4)"
+    },
+    {
+      "def": "Dinornis",
+      "disposition": "homeless-reserve",
+      "reason": "Megafauna mod retirement"
+    },
+    {
+      "def": "Titanis",
+      "disposition": "homeless-reserve",
+      "reason": "Megafauna mod retirement"
+    },
+    {
+      "def": "AA_PedigreedRaptor",
+      "disposition": "homeless-reserve",
+      "reason": "ubiquity-25 EVICT planet-wide — reads dinosaur (prep §9)"
+    },
+    {
+      "def": "AA_BoulderMit",
+      "disposition": "move:ExtremeDesert",
+      "reason": "mineral dormant giant — dune-sea keep candidate (prep §1.2), wrong biome here"
+    },
+    {
+      "def": "AA_OvergrownColossus",
+      "disposition": "homeless-reserve",
+      "reason": "the giant lane here is owned by warden mothers (placed set-pieces, §4) — a random giant dilutes them"
+    },
+    {
+      "def": "AA_CrescendoAnole",
+      "disposition": "homeless-reserve",
+      "reason": "Earth-nameable (anole)"
+    },
+    {
+      "def": "AA_AcanthamoebaGiganteaSmall",
+      "disposition": "homeless-reserve",
+      "reason": "ubiquity-25 TRIM to wasteland/pans (prep §9)"
+    },
+    {
+      "def": "AA_TetraSlug",
+      "disposition": "homeless-reserve",
+      "reason": "barely-moving mineral giant — dune-sea/nightside lane (prep §1.2/§7.2)"
+    },
+    {
+      "def": "AA_BloodShrimp",
+      "disposition": "move:AB_OcularForest",
+      "reason": "owner review 2026-09 (round2 move mapping): ocular only"
+    },
+    {
+      "def": "AA_Plasmorph",
+      "disposition": "move:PoisonForest",
+      "reason": "owner review 2026-09 (round2 move mapping): The Poison Forest"
+    },
+    {
+      "def": "BMT_Gembug",
+      "disposition": "move:the_lantern_deeps",
+      "reason": "owner review 2026-09 (round2 move mapping): Crystal caverns"
+    },
+    {
+      "def": "Kreetle",
+      "disposition": "move:AridShrubland",
+      "reason": "owner review 2026-09 (round2 move mapping): arid type only | art redo ruled (sitting ruling 2026-09-10) — SW creature: no rename, gather reference images"
+    },
+    {
+      "def": "Yobshrimp",
+      "disposition": "move:RUT_TwilightSea",
+      "reason": "owner review 2026-09 (round2 move mapping): Twilight Sea"
+    }
   ],
-  "stat_adjustments": [],
-  "flora": [
-    {"def": "AB_MangroveTree", "commonality": 25, "law": "§3 the trees run the plumbing — donor mangal kept, donor weight kept"},
-    {"def": "AB_ParasiticMangrove", "commonality": 8, "law": "§3 mangal family, donor weight kept"},
-    {"def": "AB_MangrovePalm", "commonality": 6, "law": "§3 mangal family, donor weight kept"},
-    {"def": "BMT_Plant_TreeTanglerootMangrove", "commonality": 1.5, "law": "§3 the stilt-root maze — root-mat reinforcement from the Polluted Lands donor"},
-    {"def": "BMT_RainbowTongue", "commonality": 0.6, "law": "§6 ban 2 the rainbow flora never lies — donor 'rainbow' bloom as the first of the suite (verify benign, see confidence)"},
-    {"def": "BMT_Plant_SewerReed", "commonality": 0.8, "law": "§1 brackish channel fringe — muck flora"},
-    {"def": "BMT_Plant_Snaketails", "commonality": 0.5, "law": "channel-edge cover; alien label"}
-  ],
-  "flora_purged": [
-    {"def": "Plant_TallGrass", "reason": "vanilla Earth flora (ban 7)"},
-    {"def": "Plant_ShrubLow", "reason": "vanilla Earth flora"},
-    {"def": "Plant_Chokevine", "reason": "vanilla Earth flora"},
-    {"def": "Plant_Alocasia", "reason": "Earth-nameable (alocasia)"},
-    {"def": "Plant_Bush", "reason": "vanilla Earth flora"},
-    {"def": "Plant_Clivia", "reason": "Earth-nameable (clivia)"},
-    {"def": "Plant_Berry", "reason": "vanilla Earth flora"},
-    {"def": "Plant_Rafflesia", "reason": "Earth-nameable (rafflesia)"}
+  "fauna": [
+    {
+      "action": "keep",
+      "band": "vermin",
+      "commonality": 0.7,
+      "def": "VFEI2_Swarmling",
+      "law": "§2 the drain — everything ends up here; crowding is the read"
+    },
+    {
+      "action": "keep",
+      "band": "vermin",
+      "commonality": 0.5,
+      "def": "VFEI2_BlackSwarmling",
+      "law": "§2 the drain"
+    },
+    {
+      "action": "keep",
+      "band": "arthropod-floor",
+      "commonality": 0.4,
+      "def": "Shiro",
+      "law": "§4 armored scuttler; slow (spd 1.0 MEASURED)"
+    },
+    {
+      "action": "keep",
+      "band": "channel-predator",
+      "commonality": 0.4,
+      "def": "BMT_CrestedDragon",
+      "law": "§2 lifeboat crowding — no chase ban here; alien wet lizard"
+    },
+    {
+      "action": "adjust-keep",
+      "band": "muck-forager",
+      "commonality": 0.5,
+      "def": "Runyip",
+      "law": "§4 composter-adjacent forager; Naboo swamp icon; herd (MEASURED); comm 0.4→0.5"
+    },
+    {
+      "action": "keep",
+      "band": "flier",
+      "commonality": 0.3,
+      "def": "Whisperbird",
+      "law": "R17 fliers cross biomes; delta flocks"
+    },
+    {
+      "action": "keep",
+      "band": "scavenger",
+      "commonality": 0.3,
+      "def": "Anooba",
+      "law": "§2 the compost of a war feeds scavenger packs; SW icon"
+    },
+    {
+      "action": "keep",
+      "band": "strange",
+      "commonality": 0.3,
+      "def": "BMT_AaroxisDendoria",
+      "law": "§1 on the verge of something — slow alien oddity (spd 2.0 MEASURED)"
+    },
+    {
+      "action": "import",
+      "band": "channel-predator",
+      "commonality": 0.3,
+      "def": "Grank",
+      "law": "§2 refugee crowding; wet SW predator (evicted from the Fever Wood's stillness)"
+    },
+    {
+      "action": "keep",
+      "band": "channel-predator",
+      "commonality": 0.2,
+      "def": "AA_RaptorShrimp",
+      "law": "§4 the water crowds with life — crustacean predator"
+    },
+    {
+      "action": "keep",
+      "band": "root-ambush",
+      "commonality": 0.2,
+      "def": "AA_Mantrap",
+      "law": "§3 the stilt-root maze is the terrain — root-maze ambusher"
+    },
+    {
+      "action": "keep",
+      "band": "channel-predator",
+      "commonality": 0.2,
+      "def": "AA_Lockjaw",
+      "law": "§4 the shallows' jaws; slow (spd 3.0 MEASURED)"
+    },
+    {
+      "action": "keep",
+      "band": "strange",
+      "commonality": 0.15,
+      "def": "Vornskyr",
+      "law": "§1 verge-of-something register; SW icon, venomous (MEASURED)"
+    },
+    {
+      "action": "keep",
+      "band": "channel-predator",
+      "commonality": 0.1,
+      "def": "AA_Thermadon",
+      "law": "§2 hot delta (42.8 °C median MEASURED)"
+    },
+    {
+      "action": "keep",
+      "band": "strange",
+      "commonality": 0.1,
+      "def": "AA_Helixien",
+      "law": "§1 strange slow bulk (spd 0.6 MEASURED)"
+    },
+    {
+      "action": "keep",
+      "band": "composter",
+      "commonality": 0.1,
+      "def": "AA_DecayDrake",
+      "law": "§4 the composters — decay-feeding is the biome's engine"
+    },
+    {
+      "action": "adjust-keep",
+      "band": "composter",
+      "commonality": 0.1,
+      "def": "AA_Slurrypede",
+      "law": "§4 burrowing muck-worker digesting the sin-soup; comm 0.005→0.1 — composters are a named ring"
+    },
+    {
+      "action": "keep",
+      "band": "big-wanderer",
+      "commonality": 0.05,
+      "def": "Zakkeg",
+      "law": "§2 crowding brings big bodies to the fresh end; SW icon; trace"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.4,
+      "def": "RSW_MeeJuv",
+      "law": "R11 + §4 the nursery — the Grey Sea's roster breeds here; juveniles swarm the shallows"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.3,
+      "def": "RSW_FaaJuv",
+      "law": "R11 nursery ring"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.3,
+      "def": "RSW_LaaJuv",
+      "law": "R11 nursery ring"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.3,
+      "def": "RSW_YobshrimpJuv",
+      "law": "R11 nursery — the pale young of the brine line"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.25,
+      "def": "RSW_SiltLampreyJuv",
+      "law": "R11 nursery; silt-working juvenile"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.25,
+      "def": "RSW_RustNipperJuv",
+      "law": "R11 nursery"
+    },
+    {
+      "action": "import",
+      "band": "nursery-guard",
+      "commonality": 0.05,
+      "def": "RSW_OpeeSeaKillerJuv",
+      "law": "R11 — a sub-adult lingering at the crèche mouths; 'don't kill what's small here' (§4)"
+    },
+    {
+      "action": "import",
+      "band": "lunger",
+      "commonality": 0.15,
+      "def": "Dianoga",
+      "law": "owner review 2026-09 (round2 move mapping): 6 cells, would be awesome if we could add tentacle pulling capabilities like the lasso power or future sarlacc mod, put it in the maiasma"
+    },
+    {
+      "action": "import",
+      "band": "bottom-walker adult — the submerged herds",
+      "commonality": 0.03,
+      "def": "RSW_SandoAquaMonster",
+      "law": "owner review 2026-09 (round2 move mapping): Miasma"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "BMT_PodWorm",
+      "law": "owner review 2026-09 (round2 move mapping): Maisma"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "Blarth",
+      "law": "owner review 2026-09 (round2 move mapping): Miasma, domesticatable, Hutt pets, 1 cell | DUAL-LISTED: Miasma wild resident AND ninth-roster faction animal (Hutt-adjacent); wild ones read as escaped/feral stock (owner card ruling 2026-09-10)"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "Blixus",
+      "law": "owner review 2026-09 (round2 move mapping): The Grey Sea and the Maiasma"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "Bogwing",
+      "law": "owner review 2026-09 (round2 move mapping): miasma flyer"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "JRWBeelzebufo",
+      "law": "owner review 2026-09 (round2 move mapping): Maisma | RENAME + REDEFINE ruled (non-SW): keep the giant-ambush-frog body plan, new name + alienized art via the redo pipeline (owner card ruling 2026-09-10)"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "MarshHaunt",
+      "law": "owner review 2026-09 (round2 move mapping): Maisma | PLACED: the_miasma (homeless disposition sitting, frozen 2026-09-10)"
+    }
   ],
   "fish": {
-    "ruling": "Fish are the nursery itself: brackish channels and shallows carry the Grey Sea roster's juveniles (RSW scalefish/lamprey/nipper — SW analogs, no Earth names), thinning to nothing on the brine side as the surge pushes salt up-channel; the adults are the Grey Sea's (terminator_sea.md owns the open water). Rostered above under band 'nursery'.",
     "list": [
-      {"def": "RSW_MeeJuv", "note": "see fauna — nursery ring"},
-      {"def": "RSW_FaaJuv", "note": "see fauna"},
-      {"def": "RSW_LaaJuv", "note": "see fauna"},
-      {"def": "RSW_SiltLampreyJuv", "note": "see fauna"}
-    ]
+      {
+        "def": "RSW_MeeJuv",
+        "note": "see fauna — nursery ring"
+      },
+      {
+        "def": "RSW_FaaJuv",
+        "note": "see fauna"
+      },
+      {
+        "def": "RSW_LaaJuv",
+        "note": "see fauna"
+      },
+      {
+        "def": "RSW_SiltLampreyJuv",
+        "note": "see fauna"
+      }
+    ],
+    "ruling": "Fish are the nursery itself: brackish channels and shallows carry the Grey Sea roster's juveniles (RSW scalefish/lamprey/nipper — SW analogs, no Earth names), thinning to nothing on the brine side as the surge pushes salt up-channel; the adults are the Grey Sea's (terminator_sea.md owns the open water). Rostered above under band 'nursery'."
   },
-  "new_defs": [
-    {"name": "warden mother (brine-broken elder, crèche guard)", "kind": "creature", "mechanic_load": "C#: placed set-piece, never random spawn (§4); R11 lifecycle end-stage", "from_sheet": "the_miasma §4 / R11"},
-    {"name": "the stranded (transitional orphan forms, 2-3 species)", "kind": "creature", "mechanic_load": "C#: surge-stranding pools (MIASMA_MECHANICS_1)", "from_sheet": "the_miasma §4"},
-    {"name": "karr- fever-swarm (vector + pollinator, one swarm)", "kind": "creature", "mechanic_load": "C#: disease vector tied to the Working's 15-day clock", "from_sheet": "the_miasma §4"},
-    {"name": "delta-loam composter (castings producer)", "kind": "creature", "mechanic_load": "producer comp exists in donors (prep §4.4) — reskin lane", "from_sheet": "the_miasma §4/§7"},
-    {"name": "rainbow flora suite (3-4 genuinely benign blooms)", "kind": "plant", "mechanic_load": "none — ban 2: never a trap, never toxic", "from_sheet": "the_miasma §5/§6"}
+  "flora": [
+    {
+      "commonality": 25,
+      "def": "AB_MangroveTree",
+      "law": "§3 the trees run the plumbing — donor mangal kept, donor weight kept"
+    },
+    {
+      "commonality": 8,
+      "def": "AB_ParasiticMangrove",
+      "law": "§3 mangal family, donor weight kept"
+    },
+    {
+      "commonality": 6,
+      "def": "AB_MangrovePalm",
+      "law": "§3 mangal family, donor weight kept"
+    },
+    {
+      "commonality": 1.5,
+      "def": "BMT_Plant_TreeTanglerootMangrove",
+      "law": "§3 the stilt-root maze — root-mat reinforcement from the Polluted Lands donor"
+    },
+    {
+      "commonality": 0.6,
+      "def": "BMT_RainbowTongue",
+      "law": "§6 ban 2 the rainbow flora never lies — donor 'rainbow' bloom as the first of the suite (verify benign, see confidence)"
+    },
+    {
+      "commonality": 0.8,
+      "def": "BMT_Plant_SewerReed",
+      "law": "§1 brackish channel fringe — muck flora"
+    },
+    {
+      "commonality": 0.5,
+      "def": "BMT_Plant_Snaketails",
+      "law": "channel-edge cover; alien label"
+    }
   ],
-  "confidence": [
-    {"claim": "Owner card places GRimCobra/GRimMonitorLizard in AB_MiasmicMangrove", "status": "MEASURED-CONTRARY", "why": "register shows both resident only in unpainted GRim donor biomes; nothing to evict from this def — the global cut rides RETEXTURED_EARTH_FAUNA_BANNED_1 regardless (GRimStoneCrab, which IS resident here, is evicted above)"},
-    {"claim": "BMT_RainbowTongue is genuinely benign (ban 2 requires it)", "status": "UNMEASURED", "why": "pool CSV carries no harm fields; verify the def before generation — if it is a trap/mimic it violates ban 2 and must swap to the new_defs suite"},
-    {"claim": "RSW juveniles spawn on channel/shallow cells", "status": "UNMEASURED", "why": "water-spawn channel unproven (prep §6.5); verify at generation"},
-    {"claim": "warden lifecycle stages", "status": "UNMEASURED", "why": "register carries no life stages; the whole R11 arc is def-authoring, not stat-verified"},
-    {"claim": "GR_* prefix rows are 'Grindterra'", "status": "MEASURED-CONTRARY", "why": "register attributes GR_* rows to Vanilla Genetics Expanded (GRiNDTerra uses GRim*); the ruling's defName prefix applied as written — flagged for the owner's review sheet"}
-  ]
+  "flora_purged": [
+    {
+      "def": "Plant_TallGrass",
+      "reason": "vanilla Earth flora (ban 7)"
+    },
+    {
+      "def": "Plant_ShrubLow",
+      "reason": "vanilla Earth flora"
+    },
+    {
+      "def": "Plant_Chokevine",
+      "reason": "vanilla Earth flora"
+    },
+    {
+      "def": "Plant_Alocasia",
+      "reason": "Earth-nameable (alocasia)"
+    },
+    {
+      "def": "Plant_Bush",
+      "reason": "vanilla Earth flora"
+    },
+    {
+      "def": "Plant_Clivia",
+      "reason": "Earth-nameable (clivia)"
+    },
+    {
+      "def": "Plant_Berry",
+      "reason": "vanilla Earth flora"
+    },
+    {
+      "def": "Plant_Rafflesia",
+      "reason": "Earth-nameable (rafflesia)"
+    }
+  ],
+  "law_sources": [
+    "the_miasma.md §4/§6",
+    "_freeze_rulings_2026-09-07.md R11/R24a",
+    "_assignment_prep.md §9",
+    "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09",
+    "sea_beasts_roster.md (nursery pairing)"
+  ],
+  "new_defs": [
+    {
+      "from_sheet": "the_miasma §4 / R11",
+      "kind": "creature",
+      "mechanic_load": "C#: placed set-piece, never random spawn (§4); R11 lifecycle end-stage",
+      "name": "warden mother (brine-broken elder, crèche guard)"
+    },
+    {
+      "from_sheet": "the_miasma §4",
+      "kind": "creature",
+      "mechanic_load": "C#: surge-stranding pools (MIASMA_MECHANICS_1)",
+      "name": "the stranded (transitional orphan forms, 2-3 species)"
+    },
+    {
+      "from_sheet": "the_miasma §4",
+      "kind": "creature",
+      "mechanic_load": "C#: disease vector tied to the Working's 15-day clock",
+      "name": "karr- fever-swarm (vector + pollinator, one swarm)"
+    },
+    {
+      "from_sheet": "the_miasma §4/§7",
+      "kind": "creature",
+      "mechanic_load": "producer comp exists in donors (prep §4.4) — reskin lane",
+      "name": "delta-loam composter (castings producer)"
+    },
+    {
+      "from_sheet": "the_miasma §5/§6",
+      "kind": "plant",
+      "mechanic_load": "none — ban 2: never a trap, never toxic",
+      "name": "rainbow flora suite (3-4 genuinely benign blooms)"
+    }
+  ],
+  "notes": "Donor animalDensity 6.5 is doctrine — record density as refugee CROWDING, so this roster stays deliberately thick. Three rings staffed: nursery (Grey Sea juveniles, R11), warden mothers (placed set-pieces, NEVER wildAnimals rows — new_defs), the stranded (new_defs). R11 lifecycle: wardens breed and are born here, adults live in the Grey Sea, elders return as crèche-guarding mothers — the wild roster carries only the YOUNG side; the adult rides the Grey Sea/terminator sheets.",
+  "sheet": "the_miasma",
+  "stat_adjustments": [],
+  "tiles": 93
 }

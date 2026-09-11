@@ -1,45 +1,201 @@
 {
-  "sheet": "nightside_ice",
-  "defNames": ["RUT_NightsideIce"],
-  "tiles": 1506,
   "authored": "2026-09-09",
-  "law_sources": ["nightside_ice.md §4/§6 (frozen)", "_assignment_prep.md §7 (rebound: binds RUT_NightsideIce ONLY; AB_RockyCrags has its own sheet) + §9 (BINDING)", "_freeze_rulings_2026-09-07.md R27 (deposition not precipitation)", "owner cards 2026-09-09: ~87% eviction ACCEPTED, near-empty is correct"],
-  "fauna": [
-    {"def": "AA_SummitCrab", "commonality": 0.004, "action": "import", "band": "landform-giant", "law": "spd 1.0, bs 15 (MEASURED) — the one donor body at landform scale; 'a ridge is an organism' (§4)", "note": "no-eyes/no-glow art check owed"},
-    {"def": "AA_TetraSlug", "commonality": 0.002, "action": "import", "band": "giant", "law": "spd 0.6 (MEASURED) — barely moving; nearest thing to the one-move read the donor pool holds"},
-    {"def": "AA_BoulderMit", "commonality": 0.004, "action": "import", "band": "giant", "law": "spd 1.0 (MEASURED) — 'what you take for a boulder field has been eating the frost' (§1) in a body"},
-    {"def": "AA_Terramorph", "commonality": 0.003, "action": "import", "band": "medium", "law": "spd 1.8 (MEASURED) passes the <2.0 proxy; the name is the biome's whole art rule — indistinguishable from terrain"},
-    {"def": "AA_RedGoo", "commonality": 0.003, "action": "import", "band": "small", "law": "spd 1.5 (MEASURED); clonal, breeds alone (register special) — matches §4 fragment-reproduction; not green, not glowing"},
-    {"def": "AA_Slurrypede", "commonality": 0.002, "action": "import", "band": "medium", "law": "spd 1.9 (MEASURED) passes the proxy; slow crawler shelf (prep §7.2)"}
+  "confidence": [
+    {
+      "claim": "the 6 shelf keeps pass the no-eyes / no-glow / no-ordinary-silhouette art bans",
+      "status": "UNMEASURED",
+      "why": "eye tests — prep §7.2's own caveat; owner review sheet decides; near-empty remains correct if all six fail"
+    },
+    {
+      "claim": "shelf speed figures",
+      "status": "MEASURED",
+      "why": "creature_register_rows.json, spd <2.0 proxy per accepted §7 ruling"
+    },
+    {
+      "claim": "no keep is warm-blooded",
+      "status": "UNMEASURED",
+      "why": "no register field carries blood-temp; by-name reasoning only (§6 ban)"
+    }
+  ],
+  "defNames": [
+    "RUT_NightsideIce"
   ],
   "evictions": [
-    {"def": "AA_GreenGoo", "reason": "shelf candidate but GREEN — §6: nothing green or photosynthetic-looking; RedGoo takes the goo slot", "disposition": "homeless-reserve"},
-    {"def": "AA_CrystalMit", "reason": "§9 BINDING: crystal belongs to CrystalCaverns/PoisonForest only", "disposition": "move:PoisonForest"},
-    {"def": "GraniteSlug", "reason": "§9 BINDING: ExtremeDesert + PoisonForest only", "disposition": "move:PoisonForest"},
-    {"def": "AA_PebbleMit", "reason": "§9 BINDING trim: rock/cavern biomes, not the ice", "disposition": "homeless-reserve"},
-    {"def": "AA_LuciferBug", "reason": "owner card / §9 BINDING: banned from nightside — glow; Glowforest owns glow and §6 bans bioluminescent residents", "disposition": "homeless-reserve"},
-    {"def": "AA_NightMule", "reason": "representative of the accepted ~87% cluster eviction (prep §7.3): a pack mule at −60 °C — walks, flees, ordinary silhouette (§6)", "disposition": "homeless-reserve"},
-    {"def": "BMT_Megakrill", "reason": "prep §7.3: spd 5.0, comm 1.0 (MEASURED) — legs and a face; wholesale eviction accepted", "disposition": "homeless-reserve"},
-    {"def": "BMT_FreezerFrog", "reason": "prep §7.3: spd 6.0 (MEASURED); a frog is an ordinary silhouette (§6)", "disposition": "homeless-reserve"},
-    {"def": "VanillaIceSheetZoo", "reason": "NOT A DEF — records that vanilla IceSheet's arctic zoo (bears, muffalo, hares, penguins, fish) is never inherited: RUT_NightsideIce overrides every list (sheet §0, own-def ruling); Earth five appear nowhere (owner card)", "disposition": "cut:nightside_ice.md §0 + owner card 2026-09-09"}
+    {
+      "def": "AA_GreenGoo",
+      "disposition": "homeless-reserve",
+      "reason": "shelf candidate but GREEN — §6: nothing green or photosynthetic-looking; RedGoo takes the goo slot"
+    },
+    {
+      "def": "AA_CrystalMit",
+      "disposition": "move:PoisonForest",
+      "reason": "§9 BINDING: crystal belongs to CrystalCaverns/PoisonForest only"
+    },
+    {
+      "def": "GraniteSlug",
+      "disposition": "move:PoisonForest",
+      "reason": "§9 BINDING: ExtremeDesert + PoisonForest only"
+    },
+    {
+      "def": "AA_PebbleMit",
+      "disposition": "homeless-reserve",
+      "reason": "§9 BINDING trim: rock/cavern biomes, not the ice"
+    },
+    {
+      "def": "AA_LuciferBug",
+      "disposition": "homeless-reserve",
+      "reason": "owner card / §9 BINDING: banned from nightside — glow; Glowforest owns glow and §6 bans bioluminescent residents"
+    },
+    {
+      "def": "AA_NightMule",
+      "disposition": "homeless-reserve",
+      "reason": "representative of the accepted ~87% cluster eviction (prep §7.3): a pack mule at −60 °C — walks, flees, ordinary silhouette (§6)"
+    },
+    {
+      "def": "BMT_Megakrill",
+      "disposition": "homeless-reserve",
+      "reason": "prep §7.3: spd 5.0, comm 1.0 (MEASURED) — legs and a face; wholesale eviction accepted"
+    },
+    {
+      "def": "BMT_FreezerFrog",
+      "disposition": "homeless-reserve",
+      "reason": "prep §7.3: spd 6.0 (MEASURED); a frog is an ordinary silhouette (§6)"
+    },
+    {
+      "def": "VanillaIceSheetZoo",
+      "disposition": "cut:nightside_ice.md §0 + owner card 2026-09-09",
+      "reason": "NOT A DEF — records that vanilla IceSheet's arctic zoo (bears, muffalo, hares, penguins, fish) is never inherited: RUT_NightsideIce overrides every list (sheet §0, own-def ruling); Earth five appear nowhere (owner card)"
+    }
   ],
-  "stat_adjustments": [],
+  "fauna": [
+    {
+      "action": "import",
+      "band": "landform-giant",
+      "commonality": 0.004,
+      "def": "AA_SummitCrab",
+      "law": "spd 1.0, bs 15 (MEASURED) — the one donor body at landform scale; 'a ridge is an organism' (§4)",
+      "note": "no-eyes/no-glow art check owed"
+    },
+    {
+      "action": "import",
+      "band": "giant",
+      "commonality": 0.002,
+      "def": "AA_TetraSlug",
+      "law": "spd 0.6 (MEASURED) — barely moving; nearest thing to the one-move read the donor pool holds"
+    },
+    {
+      "action": "import",
+      "band": "giant",
+      "commonality": 0.004,
+      "def": "AA_BoulderMit",
+      "law": "spd 1.0 (MEASURED) — 'what you take for a boulder field has been eating the frost' (§1) in a body"
+    },
+    {
+      "action": "import",
+      "band": "medium",
+      "commonality": 0.003,
+      "def": "AA_Terramorph",
+      "law": "spd 1.8 (MEASURED) passes the <2.0 proxy; the name is the biome's whole art rule — indistinguishable from terrain"
+    },
+    {
+      "action": "import",
+      "band": "small",
+      "commonality": 0.003,
+      "def": "AA_RedGoo",
+      "law": "spd 1.5 (MEASURED); clonal, breeds alone (register special) — matches §4 fragment-reproduction; not green, not glowing"
+    },
+    {
+      "action": "import",
+      "band": "medium",
+      "commonality": 0.002,
+      "def": "AA_Slurrypede",
+      "law": "spd 1.9 (MEASURED) passes the proxy; slow crawler shelf (prep §7.2)"
+    },
+    {
+      "action": "import",
+      "band": "visitor",
+      "commonality": 0.03,
+      "def": "AA_ShockGoat",
+      "law": "owner review 2026-09 (round2 move mapping): Refashion into nightside biomes, your choice of extreme cold area, make pale blue aura around it | NATIVE: thermal-only sensing line owed in the refashion/rename (owner ruling 2026-09-10: nightside visitor law)"
+    },
+    {
+      "action": "import",
+      "band": "visitor",
+      "commonality": 0.03,
+      "def": "BMT_CaveLemming",
+      "law": "owner review 2026-09 (round2 move mapping): ice sheet, rename | NATIVE: thermal-only sensing line owed in the refashion/rename (owner ruling 2026-09-10: nightside visitor law)"
+    },
+    {
+      "action": "import",
+      "band": "visitor",
+      "commonality": 0.03,
+      "def": "Tauntaun",
+      "law": "owner review 2026-09 (round2 move mapping): white ice night biome | VISITOR-DYING, never native: margin herds straying in at LOW commonality, radiating heat they cannot afford; feeds the tunnelers (owner ruling 2026-09-10: nightside visitor law)"
+    },
+    {
+      "action": "import",
+      "band": "visitor",
+      "commonality": 0.03,
+      "def": "Wampa",
+      "law": "owner review 2026-09 (round2 move mapping): Ice plains | VISITOR-DYING, never native: follows the straying herds in, low commonality (owner ruling 2026-09-10: nightside visitor law)"
+    }
+  ],
+  "fish": {
+    "list": [],
+    "ruling": "no fish — §6: no liquid water anywhere, in any form, ever; zero water tiles MEASURED on V26 (sheet §0); dirty ice melts only through the player's filter"
+  },
   "flora": [],
   "flora_purged": [
-    {"def": "ALL", "reason": "flora list ships empty by law: §6 — no photosynthesis or photosynthetic tissue of any kind, no soil, no farming, nothing that reads as a plant; the wanted 'chemical frosts ambiguously alive' and landform catalysts are new defs, not pool plants"}
+    {
+      "def": "ALL",
+      "reason": "flora list ships empty by law: §6 — no photosynthesis or photosynthetic tissue of any kind, no soil, no farming, nothing that reads as a plant; the wanted 'chemical frosts ambiguously alive' and landform catalysts are new defs, not pool plants"
+    }
   ],
-  "fish": {"ruling": "no fish — §6: no liquid water anywhere, in any form, ever; zero water tiles MEASURED on V26 (sheet §0); dirty ice melts only through the player's filter", "list": []},
+  "law_sources": [
+    "nightside_ice.md §4/§6 (frozen)",
+    "_assignment_prep.md §7 (rebound: binds RUT_NightsideIce ONLY; AB_RockyCrags has its own sheet) + §9 (BINDING)",
+    "_freeze_rulings_2026-09-07.md R27 (deposition not precipitation)",
+    "owner cards 2026-09-09: ~87% eviction ACCEPTED, near-empty is correct"
+  ],
   "new_defs": [
-    {"name": "the one-move animal", "kind": "creature", "mechanic_load": "C#: century accumulation, single commit, inert-forever corpse state; borrow the 107-row dormancy comp for the trigger (prep §7.4)", "from_sheet": "nightside_ice §4"},
-    {"name": "thermal-sensing seam striker", "kind": "creature", "mechanic_load": "C#: thermal-sense targeting (heat as threat generator)", "from_sheet": "nightside_ice §4"},
-    {"name": "the tunnelers (within-ice, blind, thermal)", "kind": "creature", "mechanic_load": "C#: within-ice movement + thaw-pulse surfacing", "from_sheet": "nightside_ice §4 second pass / Owed"},
-    {"name": "icy insects of the inclusions", "kind": "creature", "mechanic_load": "dormant-until-thaw comp (donor mechanic exists)", "from_sheet": "nightside_ice §4 second pass"},
-    {"name": "hectare-scale sessile catalytic sheets / landform catalysts", "kind": "creature", "mechanic_load": "C# or building-def hybrid — landform-flat, no donor", "from_sheet": "nightside_ice §4"},
-    {"name": "chemical frosts ambiguously alive", "kind": "plant", "mechanic_load": "none", "from_sheet": "nightside_ice roster consequences"}
+    {
+      "from_sheet": "nightside_ice §4",
+      "kind": "creature",
+      "mechanic_load": "C#: century accumulation, single commit, inert-forever corpse state; borrow the 107-row dormancy comp for the trigger (prep §7.4)",
+      "name": "the one-move animal"
+    },
+    {
+      "from_sheet": "nightside_ice §4",
+      "kind": "creature",
+      "mechanic_load": "C#: thermal-sense targeting (heat as threat generator)",
+      "name": "thermal-sensing seam striker"
+    },
+    {
+      "from_sheet": "nightside_ice §4 second pass / Owed",
+      "kind": "creature",
+      "mechanic_load": "C#: within-ice movement + thaw-pulse surfacing",
+      "name": "the tunnelers (within-ice, blind, thermal)"
+    },
+    {
+      "from_sheet": "nightside_ice §4 second pass",
+      "kind": "creature",
+      "mechanic_load": "dormant-until-thaw comp (donor mechanic exists)",
+      "name": "icy insects of the inclusions"
+    },
+    {
+      "from_sheet": "nightside_ice §4",
+      "kind": "creature",
+      "mechanic_load": "C# or building-def hybrid — landform-flat, no donor",
+      "name": "hectare-scale sessile catalytic sheets / landform catalysts"
+    },
+    {
+      "from_sheet": "nightside_ice roster consequences",
+      "kind": "plant",
+      "mechanic_load": "none",
+      "name": "chemical frosts ambiguously alive"
+    }
   ],
-  "confidence": [
-    {"claim": "the 6 shelf keeps pass the no-eyes / no-glow / no-ordinary-silhouette art bans", "status": "UNMEASURED", "why": "eye tests — prep §7.2's own caveat; owner review sheet decides; near-empty remains correct if all six fail"},
-    {"claim": "shelf speed figures", "status": "MEASURED", "why": "creature_register_rows.json, spd <2.0 proxy per accepted §7 ruling"},
-    {"claim": "no keep is warm-blooded", "status": "UNMEASURED", "why": "no register field carries blood-temp; by-name reasoning only (§6 ban)"}
-  ]
+  "sheet": "nightside_ice",
+  "stat_adjustments": [],
+  "tiles": 1506
 }

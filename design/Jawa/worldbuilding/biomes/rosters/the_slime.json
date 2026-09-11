@@ -1,361 +1,5 @@
 {
-  "sheet": "the_slime",
-  "defNames": [
-    "AB_GelatinousSuperorganism"
-  ],
-  "tiles": 96,
   "authored": "2026-09-09",
-  "law_sources": [
-    "the_slime.md §3 (admission: resistant or being transformed), §4, §6",
-    "the_slime_gene_lists.md (aux; gene machine content, not wild roster)",
-    "_assignment_prep.md §9 (ubiquity-25 BINDING), §10",
-    "_freeze_rulings_2026-09-07.md R9 (living flowing genetic database), R25 (assailant authorship gated), R17",
-    "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09"
-  ],
-  "fauna": [
-    {
-      "def": "AA_GreenGoo",
-      "commonality": 2.0,
-      "action": "keep",
-      "band": "substrate",
-      "law": "§4: the substrate — donor lore closes the case (part of a greater gelatinous superorganism); donor commonality 2.0 restored",
-      "note": "the body itself; resistant by identity"
-    },
-    {
-      "def": "AA_AcanthamoebaGiganteaLarge",
-      "commonality": 0.15,
-      "action": "import",
-      "band": "resistant-native",
-      "law": "§4: the giant trash-eating acanthamoeba named as immune-system champion; distinct def from the ubiquity-trimmed Small variant",
-      "note": "imported from Scarlands (its only current home, comm 0.2 MEASURED)"
-    },
-    {
-      "def": "AA_Helixien",
-      "commonality": 0.075,
-      "action": "keep",
-      "band": "resistant-native",
-      "law": "§4: the corrosive Helixien slug — resistant character; corpse decayer special (MEASURED) fits the reabsorption economy; bs 4 / spd 0.6 (MEASURED)"
-    },
-    {
-      "def": "AA_Plasmorph",
-      "commonality": 0.1,
-      "action": "adjust-keep",
-      "band": "resistant-native",
-      "law": "§4: the iron-shelled plasmorph — resistant character; comm raised 0.005→0.1: a sheet-named native should be seen"
-    },
-    {
-      "def": "AA_Mime",
-      "commonality": 0.01,
-      "action": "keep",
-      "band": "trace-experiment",
-      "law": "§4: the trace tail (0.001–0.07) is the database running experiments — a mimic is a recombination walking around"
-    },
-    {
-      "def": "AA_DecayDrake",
-      "commonality": 0.02,
-      "action": "keep",
-      "band": "trace-experiment",
-      "law": "§4 trace tail; honours the frozen decay-drake substitution in the 29-row legacy cast (sheet Owed)"
-    },
-    {
-      "def": "AA_Thunderbeast",
-      "commonality": 0.005,
-      "action": "keep",
-      "band": "trace-experiment",
-      "law": "§4 trace tail — an electric chimera at experiment frequency"
-    },
-    {
-      "def": "GR_Chickenrabbit",
-      "commonality": 0.005,
-      "action": "import",
-      "band": "trace-tail",
-      "law": "§4 trace tail — a recombinator’s experiment: a VGE chimera IS the living genetic database’s own idiom (R9-style mechanism read: ‘living, flowing genetic database’); harmless body (bs 0.15, spd 2.1 MEASURED)",
-      "note": "restored by the GR_ correction pass — chimera, not a retexture; owner may trim the tail at review"
-    },
-    {
-      "def": "GR_Manbear",
-      "commonality": 0.002,
-      "action": "import",
-      "band": "trace-tail",
-      "law": "§4 trace tail — the uncanny experiment register: a humanlike genetic hybrid (MEASURED special) at experiment frequency; small (bs 0.35 MEASURED)",
-      "note": "restored by the GR_ correction pass; predator at trace frequency, review-flagged"
-    }
-  ],
-  "evictions": [
-    {
-      "def": "GRimPinkbird",
-      "reason": "retextured/reskinned Earth animal — fails on sight (owner card 2026-09-09; EARTH_FAUNA_EXCLUDED.txt known gap)",
-      "disposition": "cut:RETEXTURED_EARTH_FAUNA_BANNED_1"
-    },
-    {
-      "def": "Scuttlebug",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.2 / spd 5.7 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "GRimQuail",
-      "reason": "retextured/reskinned Earth animal — fails on sight (owner card 2026-09-09; EARTH_FAUNA_EXCLUDED.txt known gap)",
-      "disposition": "cut:RETEXTURED_EARTH_FAUNA_BANNED_1"
-    },
-    {
-      "def": "BMT_Mole",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.4 / spd 3 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "DA_IroncasketBeetle",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.5 / spd 2 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "Snoruuk",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.5 / spd 1 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "Gullipud",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.4 / spd 2 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "Worm",
-      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
-      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
-    },
-    {
-      "def": "JRWDilophosaurus",
-      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "JRWGeralinura",
-      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_CrescendoAnole",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.3 / spd 3 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_Drainer",
-      "reason": "sheet-named at the Contagion (§4 thieves); trimmed here for sparseness — ≤2 named homes doctrine",
-      "disposition": "move:AB_OcularForest"
-    },
-    {
-      "def": "BMT_CrystalBeetle",
-      "reason": "crystal belongs to CrystalCaverns/PoisonForest (prep §9 crystal doctrine); no resistance story",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "JRWPteranodon",
-      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_TarGuzzler",
-      "reason": "its diet special (eats what no normal animal eats — tar) is the Sump's economy; redundant here",
-      "disposition": "move:AB_TarPits",
-      "note": "kept at its named home, comm 0.5"
-    },
-    {
-      "def": "AA_ChameleonYak",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 2.5 / spd 4 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "Toraton",
-      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
-      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
-    },
-    {
-      "def": "JRWArthropleura",
-      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_AcanthamoebaGiganteaSmall",
-      "reason": "ubiquity-25 BINDING: TRIM to wasteland/pans — amoeba reads contamination (prep §9)",
-      "disposition": "move:Wasteland"
-    },
-    {
-      "def": "AA_Bumbledrone",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.79 / spd 5 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_Cinderlisk",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 2.5 / spd 5 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_Mantrap",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 2 / spd 3 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_Lockjaw",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 2.5 / spd 3 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "Harvester",
-      "reason": "bs 13.2 / spd 8.85 (MEASURED) pursuit monster — no resistance story, and a healthy-looking apex violates the reading-body identity",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "Meganeura",
-      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
-      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
-    },
-    {
-      "def": "Dinornis",
-      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
-      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
-    },
-    {
-      "def": "AA_Feralisk",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 1 / spd 5.5 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_RaptorShrimp",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 1.4 / spd 4.7 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "Pulmonoscorpius",
-      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
-      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
-    },
-    {
-      "def": "AA_Skiphound",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.79 / spd 4 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_OvergrownColossus",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 6 / spd 2 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_Razorjack",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 1 / spd 4 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_LuciferBug",
-      "reason": "ubiquity-25: TRIM (prep §9); no resistance story here",
-      "disposition": "trim: named homes ride _global.json"
-    },
-    {
-      "def": "AA_DrainerLarva",
-      "reason": "rides AA_Drainer's home",
-      "disposition": "move:AB_OcularForest"
-    },
-    {
-      "def": "AA_FissionMouse",
-      "reason": "ubiquity-25: RESKIN → Wasteland radiotroph (prep §9)",
-      "disposition": "move:Wasteland"
-    },
-    {
-      "def": "AA_PebbleMit",
-      "reason": "ubiquity-25: TRIM to rock/cavern biomes (prep §9)",
-      "disposition": "trim: named homes ride _global.json"
-    },
-    {
-      "def": "AA_Swarmling",
-      "reason": "ubiquity-25: TRIM to 2–3 biomes; its named home in this batch is the Contagion picker row (prep §9)",
-      "disposition": "move:AB_OcularForest"
-    },
-    {
-      "def": "AA_BoulderMit",
-      "reason": "no resistance/transformation story here; dune-sea giant menu names it (prep §1.2)",
-      "disposition": "homeless-reserve",
-      "note": "ExtremeDesert keep candidate — that batch rules it"
-    },
-    {
-      "def": "Titanis",
-      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
-      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
-    },
-    {
-      "def": "AA_AnimaColossus",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 6 / spd 2 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_WindBeast",
-      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 1.5 / spd 4.75 (MEASURED)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "Arthropleura",
-      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)",
-      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)"
-    },
-    {
-      "def": "AA_TetraSlug",
-      "reason": "no resistance story; nightside goo-shelf candidate (prep §7.2)",
-      "disposition": "homeless-reserve"
-    },
-    {
-      "def": "AA_Aerofleet",
-      "reason": "ubiquity-25 §9 trim: terminator-adjacent only",
-      "disposition": "homeless-reserve"
-    }
-  ],
-  "stat_adjustments": [],
-  "flora": [
-    {
-      "def": "AB_TallSlimyGrass",
-      "commonality": 1.0,
-      "law": "§0 donor suite kept: slime-grass f1.0 — fields of its own grass"
-    },
-    {
-      "def": "AB_SlimyTree",
-      "commonality": 0.5,
-      "law": "§0/§4 donor suite: groves of its own trees"
-    },
-    {
-      "def": "AB_LargeSlimyTree",
-      "commonality": 0.3,
-      "law": "donor suite kept"
-    },
-    {
-      "def": "AB_SlimyFern",
-      "commonality": 0.5,
-      "law": "donor suite kept"
-    },
-    {
-      "def": "AB_SlimyPholiota",
-      "commonality": 0.4,
-      "law": "donor suite kept"
-    },
-    {
-      "def": "AB_Slimecasia",
-      "commonality": 0.4,
-      "law": "donor suite kept"
-    }
-  ],
-  "flora_purged": [
-    {
-      "def": "(donor vanilla wildPlants, wholesale)",
-      "reason": "the roster is a wholesale replace — any Earth-nameable donor plant not listed above is out by construction (owner flora card 2026-09-09)"
-    }
-  ],
-  "fish": {
-    "ruling": "no fish — zero water and river tiles (MEASURED §0); the only liquid events are the organism irrigating itself (slime rain, §3), and nothing swims in a body that reads you; slime floodwater is potable/distillation feedstock, not habitat (FISH_BY_BIOME_1 data row)",
-    "list": []
-  },
-  "new_defs": [
-    {
-      "name": "filter-feeder line (scooping-mouthed slime-grazers)",
-      "kind": "creature",
-      "mechanic_load": "none blocking — graze mechanic is vanilla; art is the ask",
-      "from_sheet": "the_slime.md §4 + Owed (NEW-ART ledger)"
-    }
-  ],
   "confidence": [
     {
       "claim": "AA_Aerofleet is a flier",
@@ -377,5 +21,377 @@
       "status": "RESOLVED",
       "why": "GR_ prefix correction pass 2026-09-09: GRim*=Grindterra homeless; GR_*=VGE chimeras judged per sheet law (RETEXTURED_EARTH_FAUNA_BANNED_1: leave chimeras)"
     }
-  ]
+  ],
+  "defNames": [
+    "AB_GelatinousSuperorganism"
+  ],
+  "evictions": [
+    {
+      "def": "GRimPinkbird",
+      "disposition": "cut:RETEXTURED_EARTH_FAUNA_BANNED_1",
+      "reason": "retextured/reskinned Earth animal — fails on sight (owner card 2026-09-09; EARTH_FAUNA_EXCLUDED.txt known gap)"
+    },
+    {
+      "def": "Scuttlebug",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.2 / spd 5.7 (MEASURED)"
+    },
+    {
+      "def": "GRimQuail",
+      "disposition": "cut:RETEXTURED_EARTH_FAUNA_BANNED_1",
+      "reason": "retextured/reskinned Earth animal — fails on sight (owner card 2026-09-09; EARTH_FAUNA_EXCLUDED.txt known gap)"
+    },
+    {
+      "def": "BMT_Mole",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.4 / spd 3 (MEASURED)"
+    },
+    {
+      "def": "DA_IroncasketBeetle",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.5 / spd 2 (MEASURED)"
+    },
+    {
+      "def": "Snoruuk",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.5 / spd 1 (MEASURED)"
+    },
+    {
+      "def": "Gullipud",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.4 / spd 2 (MEASURED)"
+    },
+    {
+      "def": "Worm",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)"
+    },
+    {
+      "def": "JRWDilophosaurus",
+      "disposition": "homeless-reserve",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')"
+    },
+    {
+      "def": "JRWGeralinura",
+      "disposition": "homeless-reserve",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')"
+    },
+    {
+      "def": "AA_CrescendoAnole",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.3 / spd 3 (MEASURED)"
+    },
+    {
+      "def": "AA_Drainer",
+      "disposition": "move:AB_OcularForest",
+      "reason": "sheet-named at the Contagion (§4 thieves); trimmed here for sparseness — ≤2 named homes doctrine"
+    },
+    {
+      "def": "BMT_CrystalBeetle",
+      "disposition": "homeless-reserve",
+      "reason": "crystal belongs to CrystalCaverns/PoisonForest (prep §9 crystal doctrine); no resistance story"
+    },
+    {
+      "def": "JRWPteranodon",
+      "disposition": "homeless-reserve",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')"
+    },
+    {
+      "def": "AA_TarGuzzler",
+      "disposition": "move:AB_TarPits",
+      "note": "kept at its named home, comm 0.5",
+      "reason": "its diet special (eats what no normal animal eats — tar) is the Sump's economy; redundant here"
+    },
+    {
+      "def": "AA_ChameleonYak",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 2.5 / spd 4 (MEASURED)"
+    },
+    {
+      "def": "Toraton",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)"
+    },
+    {
+      "def": "JRWArthropleura",
+      "disposition": "homeless-reserve",
+      "reason": "reads dinosaur — deeper-cut rule (prep §9 AA_PedigreedRaptor precedent: 'reads dinosaur')"
+    },
+    {
+      "def": "AA_AcanthamoebaGiganteaSmall",
+      "disposition": "move:Scarlands",
+      "reason": "ubiquity-25 BINDING: TRIM to wasteland/pans — amoeba reads contamination (prep §9) (ROSTER_MOVE_APPLY_1 2026-09-11: the intermediate home's own copy has since moved on again per move_mapping_v2.md — disposition updated to the current final home, not re-superseded-in-place)"
+    },
+    {
+      "def": "AA_Bumbledrone",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.79 / spd 5 (MEASURED)"
+    },
+    {
+      "def": "AA_Cinderlisk",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 2.5 / spd 5 (MEASURED)"
+    },
+    {
+      "def": "AA_Mantrap",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 2 / spd 3 (MEASURED)"
+    },
+    {
+      "def": "AA_Lockjaw",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 2.5 / spd 3 (MEASURED)"
+    },
+    {
+      "def": "Harvester",
+      "disposition": "homeless-reserve",
+      "reason": "bs 13.2 / spd 8.85 (MEASURED) pursuit monster — no resistance story, and a healthy-looking apex violates the reading-body identity"
+    },
+    {
+      "def": "Meganeura",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)"
+    },
+    {
+      "def": "Dinornis",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)"
+    },
+    {
+      "def": "AA_Feralisk",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 1 / spd 5.5 (MEASURED)"
+    },
+    {
+      "def": "AA_RaptorShrimp",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 1.4 / spd 4.7 (MEASURED)"
+    },
+    {
+      "def": "Pulmonoscorpius",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)"
+    },
+    {
+      "def": "AA_Skiphound",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 0.79 / spd 4 (MEASURED)"
+    },
+    {
+      "def": "AA_OvergrownColossus",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 6 / spd 2 (MEASURED)"
+    },
+    {
+      "def": "AA_Razorjack",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 1 / spd 4 (MEASURED)"
+    },
+    {
+      "def": "AA_LuciferBug",
+      "disposition": "trim: named homes ride _global.json",
+      "reason": "ubiquity-25: TRIM (prep §9); no resistance story here"
+    },
+    {
+      "def": "AA_DrainerLarva",
+      "disposition": "move:AB_OcularForest",
+      "reason": "rides AA_Drainer's home"
+    },
+    {
+      "def": "AA_FissionMouse",
+      "disposition": "move:Wasteland",
+      "reason": "ubiquity-25: RESKIN → Wasteland radiotroph (prep §9)"
+    },
+    {
+      "def": "AA_PebbleMit",
+      "disposition": "trim: named homes ride _global.json",
+      "reason": "ubiquity-25: TRIM to rock/cavern biomes (prep §9)"
+    },
+    {
+      "def": "AA_Swarmling",
+      "disposition": "move:AB_OcularForest",
+      "reason": "ubiquity-25: TRIM to 2–3 biomes; its named home in this batch is the Contagion picker row (prep §9)"
+    },
+    {
+      "def": "AA_BoulderMit",
+      "disposition": "homeless-reserve",
+      "note": "ExtremeDesert keep candidate — that batch rules it",
+      "reason": "no resistance/transformation story here; dune-sea giant menu names it (prep §1.2)"
+    },
+    {
+      "def": "Titanis",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)"
+    },
+    {
+      "def": "AA_AnimaColossus",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 6 / spd 2 (MEASURED)"
+    },
+    {
+      "def": "AA_WindBeast",
+      "disposition": "homeless-reserve",
+      "reason": "fails §3 admission test — no resistance or transformation story ('everything living here is resistant or being transformed; that is the roster admission test, literally'); bs 1.5 / spd 4.75 (MEASURED)"
+    },
+    {
+      "def": "Arthropleura",
+      "disposition": "cut:RECOGNIZABILITY_RETIREMENT (creature_recognizability_rule.md)",
+      "reason": "mod retirement — creature_recognizability_rule.md 0% survival, retirement ruling recorded (prep §10.4)"
+    },
+    {
+      "def": "AA_TetraSlug",
+      "disposition": "homeless-reserve",
+      "reason": "no resistance story; nightside goo-shelf candidate (prep §7.2)"
+    },
+    {
+      "def": "AA_Aerofleet",
+      "disposition": "homeless-reserve",
+      "reason": "ubiquity-25 §9 trim: terminator-adjacent only"
+    },
+    {
+      "def": "AA_Thunderbeast",
+      "disposition": "move:RUT_BlueDesert",
+      "reason": "owner review 2026-09 (round2 move mapping): blue desert"
+    }
+  ],
+  "fauna": [
+    {
+      "action": "keep",
+      "band": "substrate",
+      "commonality": 2.0,
+      "def": "AA_GreenGoo",
+      "law": "§4: the substrate — donor lore closes the case (part of a greater gelatinous superorganism); donor commonality 2.0 restored",
+      "note": "the body itself; resistant by identity"
+    },
+    {
+      "action": "import",
+      "band": "resistant-native",
+      "commonality": 0.15,
+      "def": "AA_AcanthamoebaGiganteaLarge",
+      "law": "§4: the giant trash-eating acanthamoeba named as immune-system champion; distinct def from the ubiquity-trimmed Small variant",
+      "note": "imported from Scarlands (its only current home, comm 0.2 MEASURED)"
+    },
+    {
+      "action": "keep",
+      "band": "resistant-native",
+      "commonality": 0.075,
+      "def": "AA_Helixien",
+      "law": "§4: the corrosive Helixien slug — resistant character; corpse decayer special (MEASURED) fits the reabsorption economy; bs 4 / spd 0.6 (MEASURED)"
+    },
+    {
+      "action": "adjust-keep",
+      "band": "resistant-native",
+      "commonality": 0.1,
+      "def": "AA_Plasmorph",
+      "law": "§4: the iron-shelled plasmorph — resistant character; comm raised 0.005→0.1: a sheet-named native should be seen"
+    },
+    {
+      "action": "keep",
+      "band": "trace-experiment",
+      "commonality": 0.01,
+      "def": "AA_Mime",
+      "law": "§4: the trace tail (0.001–0.07) is the database running experiments — a mimic is a recombination walking around"
+    },
+    {
+      "action": "keep",
+      "band": "trace-experiment",
+      "commonality": 0.02,
+      "def": "AA_DecayDrake",
+      "law": "§4 trace tail; honours the frozen decay-drake substitution in the 29-row legacy cast (sheet Owed)"
+    },
+    {
+      "action": "import",
+      "band": "trace-tail",
+      "commonality": 0.005,
+      "def": "GR_Chickenrabbit",
+      "law": "§4 trace tail — a recombinator’s experiment: a VGE chimera IS the living genetic database’s own idiom (R9-style mechanism read: ‘living, flowing genetic database’); harmless body (bs 0.15, spd 2.1 MEASURED)",
+      "note": "restored by the GR_ correction pass — chimera, not a retexture; owner may trim the tail at review"
+    },
+    {
+      "action": "import",
+      "band": "trace-tail",
+      "commonality": 0.002,
+      "def": "GR_Manbear",
+      "law": "§4 trace tail — the uncanny experiment register: a humanlike genetic hybrid (MEASURED special) at experiment frequency; small (bs 0.35 MEASURED)",
+      "note": "restored by the GR_ correction pass; predator at trace frequency, review-flagged"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "AA_AcanthamoebaGiganteaHuge",
+      "law": "owner review 2026-09 (round2 move mapping): Slime"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "AA_OvergrownColossus",
+      "law": "owner review 2026-09 (round2 move mapping): The Slime (make the trees into slime trees)"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "AA_TeratogenicOriginator",
+      "law": "owner review 2026-09 (round2 move mapping): Slime, tint green | SIZE RULED: drawSize 3 ONLY (current def bodySize 5 — oversized); stays large bin (sitting ruling 2026-09-10)"
+    }
+  ],
+  "fish": {
+    "list": [],
+    "ruling": "no fish — zero water and river tiles (MEASURED §0); the only liquid events are the organism irrigating itself (slime rain, §3), and nothing swims in a body that reads you; slime floodwater is potable/distillation feedstock, not habitat (FISH_BY_BIOME_1 data row)"
+  },
+  "flora": [
+    {
+      "commonality": 1.0,
+      "def": "AB_TallSlimyGrass",
+      "law": "§0 donor suite kept: slime-grass f1.0 — fields of its own grass"
+    },
+    {
+      "commonality": 0.5,
+      "def": "AB_SlimyTree",
+      "law": "§0/§4 donor suite: groves of its own trees"
+    },
+    {
+      "commonality": 0.3,
+      "def": "AB_LargeSlimyTree",
+      "law": "donor suite kept"
+    },
+    {
+      "commonality": 0.5,
+      "def": "AB_SlimyFern",
+      "law": "donor suite kept"
+    },
+    {
+      "commonality": 0.4,
+      "def": "AB_SlimyPholiota",
+      "law": "donor suite kept"
+    },
+    {
+      "commonality": 0.4,
+      "def": "AB_Slimecasia",
+      "law": "donor suite kept"
+    }
+  ],
+  "flora_purged": [
+    {
+      "def": "(donor vanilla wildPlants, wholesale)",
+      "reason": "the roster is a wholesale replace — any Earth-nameable donor plant not listed above is out by construction (owner flora card 2026-09-09)"
+    }
+  ],
+  "law_sources": [
+    "the_slime.md §3 (admission: resistant or being transformed), §4, §6",
+    "the_slime_gene_lists.md (aux; gene machine content, not wild roster)",
+    "_assignment_prep.md §9 (ubiquity-25 BINDING), §10",
+    "_freeze_rulings_2026-09-07.md R9 (living flowing genetic database), R25 (assailant authorship gated), R17",
+    "BIOME_FAUNA_ASSIGNMENT_SITTING_1.md owner cards 2026-09-09"
+  ],
+  "new_defs": [
+    {
+      "from_sheet": "the_slime.md §4 + Owed (NEW-ART ledger)",
+      "kind": "creature",
+      "mechanic_load": "none blocking — graze mechanic is vanilla; art is the ask",
+      "name": "filter-feeder line (scooping-mouthed slime-grazers)"
+    }
+  ],
+  "sheet": "the_slime",
+  "stat_adjustments": [],
+  "tiles": 96
 }
