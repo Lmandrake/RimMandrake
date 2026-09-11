@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T06:36:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T06:38:11Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1018,3 +1018,13 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  All 7 juvenile ThingDefs in src/RimUtinni/UtinniPatches/Defs/ThingDefsRaces/RUTMiasmaNurseryJuveniles.xml
 prose:    infrastructure/state/items/MIASMA_JUVENILES_NULL_THINGCLASS_1.md
+
+## STAGED_LORE_BUILD_1 Build staged lore descriptions (owner GO 2026-09-11): scribed GameComponent lore stage + def-field description swap; reflection-clear ThingDef.descriptionDetailedCached AND HediffDef.descriptionCached; reset-to-baseline on every load (defs persist across savegames); first consumer Scarlands GM ladder; stage TEXTS come later at an authoring sitting - spec design/Jawa/worldbuilding/research/staged_lore_descriptions_feasibility_2026-09-09.md + items/STAGED_LORE_DESCRIPTIONS_1.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STAGED_LORE_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STAGED_LORE_BUILD_1.md
