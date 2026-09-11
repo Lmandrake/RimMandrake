@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T04:42:39Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-11T04:52:18Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## CREATURE_ART_REVIEW_SHEET_1 Full creature-art review sheet: every nonhuman at true in-game scale, biome-clustered, verdict+priority+notes - start of the art regeneration pipeline
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  Full creature-art review sheet, per design/Jawa/fauna/creatureartdecisions.json
-prose:    infrastructure/state/items/CREATURE_ART_REVIEW_SHEET_1.md
 
 ## ALPHA_FAMILY_SOURCE_REVIEW_1 Study the whole Alpha family from its public source (github.com/juanosarg/AlphaBiomes + AlphaAnimals): catalog the C# mechanics, replicate the ones worth owning as generic comps (active-defender plants, terrain attacks, sensor fog), broaden the concepts for Ash'karr
 state:    ready
@@ -40,15 +31,6 @@ target:   v1
 kind:     task
 summary:  STAGEDLOREDESCRIPTIONS1 — descriptions that change as the story is learned
 prose:    infrastructure/state/items/STAGED_LORE_DESCRIPTIONS_1.md
-
-## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  WORLDMAPFINALREVIEW1 — the studio review: is this THE map?
-prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
 
 ## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
 state:    ready
@@ -132,7 +114,7 @@ _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -140,9 +122,19 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is DOWN
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
+
+## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is DOWN
+summary:  WORLDMAPFINALREVIEW1 — the studio review: is this THE map?
+prose:    infrastructure/state/items/WORLDMAP_FINAL_REVIEW_1.md
 
 # NOT THIS TARGET
 
@@ -302,16 +294,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SUMP_MECHANICS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUMP_MECHANICS_1.md
 
-## PYRELANDS_MECHANICS_1 Pyrelands C# kit: migrating burn-line presence + burn intelligence, fire-hawk twig-carrying, furnace-beast thermal circuit (heat aura, bed-down ignition), flame-harvest + fire-raid events (unplanned-burn detection), ruled weather table - spec the_pyrelands.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PYRELANDS_MECHANICS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_MECHANICS_1.md
-
 ## FORGE_MECHANICS_1 Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tower dungeon shell, Contagion die-off ring, geothermal industry - spec the_forge.md
 state:    proposed
 row:      unassigned
@@ -441,33 +423,3 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CANON_STORAGE_ARCHITECTURE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CANON_STORAGE_ARCHITECTURE_1.md
-
-## FLORA_COMMISSION_TEMPLATE_1 Design the plant-commission template: per-biome ecosystem coherence rules + renderer guidance for the 118 commissioned plants
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FLORA_COMMISSION_TEMPLATE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FLORA_COMMISSION_TEMPLATE_1.md
-
-## PALETTE_ANCHOR_DRAFT_1 Draft per-biome palette hex anchors from sheet prose + existing art; deliver ONE color-board review sheet for the owner's eye (owner card ruling)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PALETTE_ANCHOR_DRAFT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PALETTE_ANCHOR_DRAFT_1.md
-
-## GELATINOUS_SLIME_MOD_1 The Gelatinous Slime Biome as a universal RimMandrake mod (mandrake.rm tier): biome + genetic archive + gene-extraction machine + slimification hediff; gather ALL in-game slime ecology, nothing more
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  Owner card rulings, 2026-09-10 (round 2)
-prose:    infrastructure/state/items/GELATINOUS_SLIME_MOD_1.md

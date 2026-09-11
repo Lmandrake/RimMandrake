@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T04:42:39Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-11T04:52:18Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -251,15 +251,6 @@ target:   v1
 kind:     task
 summary:  NINEFOLDFIREHOOKRATELIMITED1 — hook built, not yet proven live
 prose:    infrastructure/state/items/NINEFOLD_FIRE_HOOK_RATELIMITED_1.md
-
-## MULTIVIEW_FACING_PIPELINE_1 Productionize the multi-view-mesh facing pipeline: InstantMesh (4 sprites -> volumetric mesh) + meshfuse projection; local/free on the 5080; proven 2/3 facings, fix north/south pose-collision (per-view az bias) + UV-texture path for sharpness (needs nvcc)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  MULTIVIEWFACINGPIPELINE1 — pose-collision bug fixed; owner judged the OUTPUT unusable ("crushed tin cans")
-prose:    infrastructure/state/items/MULTIVIEW_FACING_PIPELINE_1.md
 
 ## NINEFOLD_DEBUG_GAME_READY_CRASH_1 start_debug_game_ready crashes RimWorldWin64 outright - observed live during BIOME_SPAWN_FLORA_AUDIT_1, correlates with Ninefold satiation hook firing on a burst of debug auto-research completions
 state:    doing
@@ -705,16 +696,6 @@ blocked:  Same stuck-agent recovery as RIVER_STEAM_ANIMATION_1 - owner's mod lis
 summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
 prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
 
-## MULTIVIEW_FACING_PIPELINE_1 Productionize the multi-view-mesh facing pipeline: InstantMesh (4 sprites -> volumetric mesh) + meshfuse projection; local/free on the 5080; proven 2/3 facings, fix north/south pose-collision (per-view az bias) + UV-texture path for sharpness (needs nvcc)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  ledger/prose mismatch found in doing-backlog audit: owner reviewed the fused-mesh renders 2026-09-05 and called them 'crushed tin cans, not useful' (commit 972c64ae); item's own text says explicitly 'Not closing or advancing this item further without that call' — ledger was stuck at start with no record of this. Awaiting owner decision on whether the InstantMesh direction continues at all.
-summary:  MULTIVIEWFACINGPIPELINE1 — pose-collision bug fixed; owner judged the OUTPUT unusable ("crushed tin cans")
-prose:    infrastructure/state/items/MULTIVIEW_FACING_PIPELINE_1.md
-
 ## SARLACC_NATIVE_HABITAT_1 Sarlacc: native deep-desert habitat, three life-cycle stages, dungeon module
 state:    proposed  (BLOCKED)
 row:      unassigned
@@ -915,4 +896,24 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## PYRELANDS_MECHANICS_1 Pyrelands C# kit: migrating burn-line presence + burn intelligence, fire-hawk twig-carrying, furnace-beast thermal circuit (heat aura, bed-down ignition), flame-harvest + fire-raid events (unplanned-burn detection), ruled weather table - spec the_pyrelands.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  The authoritative brief is design/Jawa/worldbuilding/creatures/RUTruledcommissionswave2.md
+prose:    infrastructure/state/items/PYRELANDS_MECHANICS_1.md
+
+## SLIME_MOD_BUILD_1 Build the Gelatinous Slime universal mod (mandrake.rm tier) from the ruled design: biome + genetic archive + gene-extraction machine + slimification hediff + RM_GeneSeeker — spec design/RimMandrake/RM_gelatinous_slime_mod.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SLIME_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SLIME_MOD_BUILD_1.md
