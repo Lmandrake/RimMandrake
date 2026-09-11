@@ -57,3 +57,64 @@ old donor look) confirmed by spawn + screenshot.
 All 7 creatures render the new art in-game and (for the 4 reimagined ones)
 show the new name/label, confirmed by looking, not inferred from a clean
 manifest.
+
+## Live verification result (2026-09-11)
+Deployed all 7 (`deploy_custom_mods.py --apply`, all VERIFIED in sync), then
+a temp-list restart: MINIMAL + `BiomesTeam.BiomesCore`,
+`m00nl1ght.GeologicalLandforms`, the 4 donors
+(`Mlie.StarWarsAnimalCollection`, `VanillaExpanded.VGeneticsE`,
+`BiomesTeam.BiomesPollutedLands`, `BiomesTeam.BiomesCaverns`) and the 7 new
+override mods (38 active total). Clean load, no `Config error in` lines, no
+log line mentioning any of the 7 defNames/mods at all (silent = correct, per
+"a patch that matches nothing logs nothing" — the positive proof is the
+screenshot, not the log).
+
+Quicktest map, `jawa/spawn_pawn` (faction `none`) x 7 spread along one row,
+`jawa/set_fog --action unfog` over the row (quicktest fog otherwise hid
+everything past the starting cluster), then
+`rimworld/screenshot_cell_rect` per creature:
+
+- **Ronto**: new wrinkled elephantine-hide art confirmed. CONFIRMED.
+- **Anooba**: new tawny hyena-like art confirmed. CONFIRMED.
+- **Dewback**: new art confirmed (dim scene, but silhouette matches the
+  generated front view, not the donor's old scaley look). CONFIRMED.
+- **Grithe** (GR_ParagonRat): new chitin-plated insectoid look confirmed,
+  AND `jawa/list_pawns` reports `name: "Grithe (Normal)"` — the label patch
+  is live. CONFIRMED.
+- **Grutt** (GR_Molebear): new plated-claw art confirmed, `list_pawns` name
+  `"Grutt (Normal)"`. CONFIRMED.
+- **Kroffa** (BMT_Maligoat): new six-legged horned grazer art confirmed,
+  `list_pawns` name `"Kroffa"`. CONFIRMED.
+- **Puffmite** (BMT_FleeceSpider): new pale/lilac tufted look confirmed at
+  its native tiny drawSize (0.2, faithful to the donor's own scale — hard to
+  make out fine detail at any zoom, noted but not a defect), `list_pawns`
+  name `"Puffmite"`. CONFIRMED.
+
+Live state made permanent, not just restored: `modlist_swap.py --restore
+--apply` put the owner's 583-mod list back, then the 7 new packageIds were
+inserted into BOTH the live `ModsConfig.xml` and the stored
+`ModsConfig.FULL.LATEST.xml` (kept byte-identical, `modlist_swap.py
+--status` reads `live currently matches: FULL`, 583 -> 590 active) right
+after their respective donor/cluster, matching wave 1/2's precedent of
+shipping the override mods as permanent additions rather than test-only.
+Bridge released.
+
+## Art-readability check (owner's task instruction #8)
+Glanced at every south-facing PNG before shipping. All 7 read cleanly with
+heavy black outlines at a glance; nothing looked like it would blob out at
+small size. One non-outline issue found and shipped anyway (flagging per
+instructions, not blocking): **`anooba_v1_south` and `anooba_v1_east` are
+near-identical side-profile poses** — the "south" facing was generated as a
+walking side view rather than a toward-camera front pose (unlike Ronto's and
+Dewback's south images, which are correctly front-facing). In-game this
+means Anooba will look the same from the south as from the east rather than
+facing the viewer when idle-facing south. Not regenerated without further
+direction, per the task's own instruction.
+
+## Rename decision recap
+Per the task's own default: none of the 4 reimagined creatures' defNames
+were renamed (GR_ParagonRat/BMT_Maligoat/GR_Molebear/BMT_FleeceSpider all
+stay as-is — donor mod defs, not ours; a real rename means absorbing the def
+wholesale, out of scope here). Each got a label+description
+`PatchOperationReplace` (with `<success>Always</success>` to avoid a red
+error if the donor mod is ever missing) instead, confirmed live above.
