@@ -54,3 +54,25 @@ confirms:
 
 `cherrypicker_swap.py --status` reports LIVE == SHIP (or a fresh,
 deliberate SHIP) with no UNRECOGNISED state.
+
+## 2026-09-10 — investigated, RULED (owner card)
+
+Diagnosis (commit e1b1d9ba, full evidence in
+`Transient/cherrypicker_drift_diagnosis_2026-09-10.md` + keys file): 139/178
+reversals GENUINE (106 ratified lore-backstory cuts + 37 ThingDef incl. vanilla
+Anomaly Metalhorror/Trispike/Ghoul/Shamblers and whitelist-violating turrets),
+36 self-pruned (tug.Minotaur inactive), 0 review-leftover. Reversal happened via
+the in-game UI between Sep 2 and Sep 9, no backup, author unknown.
+
+**Owner ruling: RESTORE ALL 139 AT NEXT GAME-DOWN.** Execution spec:
+1. Game must be DOWN (a live edit gets clobbered on settings save at exit).
+2. Reconstruct the live config = current LIVE (keeps the +617 Alpha Mechs cuts)
+   + re-add the 139 genuine-reversal keys (list: the GENUINE sections of
+   `Transient/cherrypicker_drift_keys_2026-09-10.md`) − nothing else. Do NOT
+   re-add the 36 self-pruned Minotaur keys.
+3. Back up the current config first (dated .bak), write, then start the game and
+   verify via `cherrypicker.py --source live` that the 139 are present.
+4. Then `cherrypicker_swap.py --capture-ship --apply` — the result IS the new
+   ratified SHIP baseline. `--status` must report LIVE == SHIP. Close this item.
+
+Rides the next shutdown window (batch with other game-down work per doctrine).
