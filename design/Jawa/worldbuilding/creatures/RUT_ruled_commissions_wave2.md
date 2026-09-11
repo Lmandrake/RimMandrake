@@ -45,8 +45,9 @@ the warning); sheet-coined English names kept verbatim under the bladderboil pre
 | 3 | aurora-current feeder | **ilverr** (`RUT_Ilverr`) | nightside_ice | near-sessile giant ribbon pawn, spd ≤0.6 | §4 |
 | 4 | mechanical cockroach | **deckroach** (`RUT_Deckroach`) | the_rust_cathedral | NEW mech-analog animal def (not a reskin, not a Mechanoid) | §5 |
 | 5 | gear-like dancing creatures | **living bolt** (`RUT_LivingBolt`) | the_rust_cathedral | the sheet's ruled living bolts made a def — ONE species, not two | §6 |
-| 6 | fire-hawk | `RUT_FireHawk` (BUILT) | the_pyrelands (flier roster) | mechanics brief: twig-carrying fire spread | §7 |
-| 7 | furnace-beast | `RUT_FurnaceBeast` (BUILT) | the_pyrelands | mechanics brief: heat aura, bed-down ignition, ban-5 audit | §8 |
+| 6 | fire-hawk | `RUT_FireHawk` (BUILT) | the_pyrelands (flier roster) | mechanics brief: twig-carrying fire spread (spread-only, RULED) | §7 |
+| 7 | furnace-beast | `RUT_FurnaceBeast` (BUILT) | the_pyrelands | mechanics brief: heat aura, bed-down ignition, tameable per amended ban 5 | §8 |
+| I | furnace-hide (item, owner-commissioned) | `RUT_FurnaceHide` | the_pyrelands | bespoke leather-class stuff replacing `Leather_Heavy` | §12 |
 | R1 | Razorjack recast | `AA_Razorjack` | the_pyrelands | fire-follower recast — biome lists + story, no def surgery | §9a |
 | R2 | Barbslinger routing | `AA_Barbslinger` | the_pyrelands | ash-grazer routing — one contradiction to verify | §9b |
 
@@ -218,7 +219,8 @@ usable from XML on the spawned pawns, wake-on-damage for free.
 
 | aspect | spec |
 |---|---|
-| the individual | vermin-class: bodySize ~0.1, tiny bite, spd ~3.5 while warm **[INVENTED — fast-while-warm is lawful: §6 bans fast SURFACE fauna as residents; the chittik's active state exists only inside the disaster window, the same carve-out the burst itself rides — flagged for the owner regardless]** |
+| the individual | vermin-class: bodySize ~0.1, tiny bite, spd ~3.5 while warm **[INVENTED numbers]** — fast-while-warm rides the ruled carve-out (next row): §6 bans fast SURFACE fauna as residents; the chittik's active state exists only inside the disaster window |
+| the carve-out | 🟢 **RULED (owner, 2026-09-10 final hand): fast-while-warm GRANTED** — "thaw pulses are not ambient"; the disaster-window reading above is now law, not a flag |
 | the swarm | spawns in packs of 10–20 **[INVENTED]**; harmless singly (per the sheet, verbatim), lethal in aggregate to the unarmored |
 | counterplay | fire and heat kill them fastest — and every heat source used is a beacon for the vhorr (§2): the biome's two threats chain, and the player chooses which to feed **[INVENTED interaction, anchored on both ruled mechanisms]** |
 | products | none; too small to butcher (vermin convention) |
@@ -258,7 +260,7 @@ the lake, expressed in the uplands' sessile register.
 | body plan | §4 taken literally: a **sheet-organism** — a flat braided ribbon, tens of meters in fiction, a multi-cell giant in engine terms (bodySize in the landform band beside AA_SummitCrab's 15 **[INVENTED: ~8]**; drawSize long and thin). Laminar, pressed into the boundary layer — the sheet's own body-plan sentence is the art order |
 | movement | spd 0.5 **[INVENTED — inside the roster's own imported precedent: TetraSlug 0.6, "barely moving"]** — it relocates along its current seam over days; it never pursues, flees, or reacts to anything but a warm body close enough to matter (retaliation-only melee, weak) |
 | energy | the ruled ground currents, farmed directly — the only native with a standing income, which is why it is the only native VISIBLE: it can afford to be. Everything else here lives on savings (§4); the ilverr lives on a salary **[INVENTED framing; both energy facts are ruled]** |
-| 🔴 the visibility reconciliation | §6 bans **bioluminescence** in surface residents — "a seam metabolism cannot afford photons." The ilverr's light is argued as lawful because it is **not metabolic light**: it is corona discharge — leakage of the aurora's own current across the ribbon's wet-frost surface, spent from the sky's budget, not the body's. The precedent is the owner's OWN ruling on the same sitting: AA_ShockGoat arrives as a native with a "pale blue aura" (decisions register, owner's words) — an electrical glow ruled INTO a biome whose residents may not glow chemically. Same physics, same register. ⚠️ **Flagged as an owner call regardless (§11 Q1): the ban is frozen, and this is a reading, not an amendment** |
+| 🟢 the visibility reconciliation — RULED | §6 bans **bioluminescence** in surface residents — "a seam metabolism cannot afford photons." The ilverr's light is lawful because it is **not metabolic light**: it is corona discharge — leakage of the aurora's own current across the ribbon's wet-frost surface, spent from the sky's budget, not the body's. Precedent: AA_ShockGoat's owner-ruled "pale blue aura" (same sitting) — an electrical glow ruled INTO a biome whose residents may not glow chemically. **The corona reading is ACCEPTED (owner ruling 2026-09-10, recorded via commit 4a6f6200)** — the frozen ban stands unamended; electrical corona is outside its scope |
 | aurora coupling | brightness follows the sky: dim under quiet stars, bright and rippling under a reconnection storm (§4b: "the electrojet tap over-produces" — so does the ilverr). v1 ships this painted/description-level; a real brightness tie is the same CompGlower-on-a-timer question the twinkle spike owns (TWINKLE_FLORA_SPIKE_1) — ride its verdict, never promised here |
 | role in play | landmark navigation (the uplands' palespire); a legible SAFE line in a biome whose every other light is a warning — and bait for nothing: it is the one thing on the plateau that will never come toward you |
 | products | none designed. Its charge-bearing tissue is deliberately NOT an item: the tap-crystal component slot is the aviir shard's (`RUT_hydrocarbon_ecology_commission.md` §14d) and a second electrical harvest would duplicate it — the same one-system discipline that folded the skerrik's chitin |
@@ -325,7 +327,7 @@ one, the Cathedral's own vermin.
 | behavior | timid vermin, flees everything, wildGroupSize small clusters; commonality low (the cast stays near-empty; §1 "almost nothing alive" is the read to protect) |
 | size | bodySize ~0.2, spd ~4 **[INVENTED]** |
 | products | killed: a little steel/scrap, no meat, no leather (mechanical-wildlife convention); not tameable, trainability None |
-| the crowding flag | with Mechachicken, Mecharat, deckroach and the bolts, the "mechanical vermin" shelf now holds four small strange things. ⚠️ Flagged for the owner (§11 Q3): he may trim — the deckroach's distinct claim is that it is the only one with a JOB |
+| the crowding — RULED | 🟢 owner trimmed at the sitting (ruling recorded, BIOME_FAUNA_ASSIGNMENT_SITTING_1 §mech-vermin): **GR_Mechachicken CUT; Mecharat, deckroach and the bolts STAND.** Three mechanicals, each with a distinct claim — the scavenger (Mecharat), the one with a job (deckroach), the ones with a dance (bolts) |
 | art | rust-film palette: dark metal body, ochre dust dulling, `#3fae8e` verdigris pinstripes at the joints as the one cool note — reads at distance as a moving bolt-head, which is exactly the biome's ambiguity register |
 
 **Description (player-facing, ban-1-audited):**
@@ -346,8 +348,8 @@ complex, strange, dance-like patterns for no reason, baffling everyone — and t
 little dances resonate with the mood of the greater mind"*). The roster already carries
 them as a `new_defs` row ("roster item owns the def shape"). **This commission is that
 def's brief, not a second dancing species** — inventing a sibling would spend a def to
-say less and violate the near-empty read. ⚠️ Flagged (§11 Q4) in case the owner meant a
-distinct second creature; nothing below breaks if he did — a variant reskins this spec.
+say less and violate the near-empty read. 🟢 **RULED (owner, 2026-09-10 final hand):
+ONE species confirmed — `RUT_LivingBolt` is the gear-dancer.**
 
 | field | value |
 |---|---|
@@ -385,7 +387,7 @@ The dance is the centerpiece and the engine has no "dance." The honest ladder:
 | aspect | spec |
 |---|---|
 | stats | tiny: bodySize ~0.15, spd ~2, wholly non-combat, flees nothing (it does not register threats; it is not sensing YOU — **[INVENTED, ban-1-safe: stated as observed behavior]**), untargetable-by-predators in practice (nothing here hunts) |
-| harm rule | killing one is sacrilege-adjacent: proposed to ride the ruled sacrilege economics' goodwill machinery at a small value rather than a new system **[INVENTED: the hookup; the economics are ruled]** — flagged §11 Q5 |
+| harm rule — RULED | 🟢 killing one rides the ruled sacrilege economics' goodwill machinery at a small value — **the hookup is RULED (owner, 2026-09-10 final hand): bolt-harm and shed-gear sales HOOK INTO the Cathedral sacrilege/hum system.** 🔴 **Explicit dependency: `RUST_CATHEDRAL_MECHANICS_1` gains this** — the hum-mood/sacrilege item now owes the bolt-harm penalty and the watched-sale wiring alongside the dance-state ladder (§6b.3); whoever files/claims that item inherits all three from this brief |
 | products | none by butchery (mechanical, not butcherable — roster shape); the sheet's ruled **bolt-shed curiosities** (§7: "salable, watched") arrive instead as rare ground drops where bolts dance long — item `RUT_BoltShed`, §10b |
 | art | a fat hex-headed bolt-body with too many small articulations, gear-flats catching light; family metals with verdigris accents; the sprite must read as a COMPONENT at rest — the player's first instinct ("pick it up and move it out of the way," owner verbatim) is the art acceptance test |
 
@@ -403,8 +405,12 @@ The dance is the centerpiece and the engine has no "dance." The honest ladder:
 # Part C — the Pyrelands igniter pair
 
 Shared law (`the_pyrelands.md`, FROZEN): §4 is the design, already ruled in prose —
-these briefs bind it to defs and name the mechanics honestly. §6 bans: no tame
-furnace-beast (ban 5); no fire-immune flora blanket; vanilla-Earth eviction. The ruled
+these briefs bind it to defs and name the mechanics honestly. §6 bans: no fire-immune
+flora blanket; vanilla-Earth eviction. 🟢 **Ban 5 is REVERSED in the sheet itself**
+(owner ruling 2026-09-10, amended at a sitting per the freeze rule): *"Furnace-beasts
+and fire-hawks are TAMEABLE… 'Make them both tameable... and that's insane. Fires all
+the time! I love it.' Keeping one is possible, hard, and a standing fire hazard — the
+insanity is the point."* The ruled
 fire chain: *"beast or bolt or bird ignites → hawks spread → burrowers dive → the burn
 passes → scorch-fruit cracks open → Tribes and ash-grazers harvest the black → the
 quickgrass sprints back → the storm re-arms."* Palette: grass-gold family
@@ -445,34 +451,41 @@ is this brief's first downstream action):
   short sortie and ignite one flammable cell N cells beyond the fire's edge
   (direction random in v1; downwind if the spike finds wind cheap to read
   **[INVENTED parameters]**), on a long cooldown.
-- 🔴 **Spread-only, never ex nihilo (proposed as the def's law):** the sheet makes the
-  hawk one of four igniters, but its ruled behavior is carrying burning twigs — it
-  needs a flame to steal from. Mechanically this is also the safety rail: a
-  no-precondition igniter plus the ruled always-a-burn biome is a map-wide fire timer
-  with feathers. Lightning and the furnace-beast start; the hawk SPREADS. ⚠️ Flagged
-  (§11 Q6) because "four igniters" could be read as four independent starters.
+- 🟢 **Spread-only, never ex nihilo — RATIFIED (owner ruling 2026-09-10, commit
+  4a6f6200):** the hawk's ruled behavior is carrying burning twigs — it needs a flame
+  to steal from. Mechanically this is also the safety rail: a no-precondition igniter
+  plus the ruled always-a-burn biome is a map-wide fire timer with feathers. Lightning
+  and the furnace-beast start; the hawk SPREADS. This is now the def's law.
 - the flush-prey benefit ships as story + ordinary predation in v1 (it hunts what the
   flame moves; no targeting code) — honest cut, revisit only if the burn-line
   mechanic (`PYRELANDS_MECHANICS_1`'s migrating-burn presence) wants a coupling.
 
-### 7d. One def-level finding for the mechanics pass
+### 7d. Tameability — RULED
 
-As built, the hawk carries `trainability Intermediate` and a tame-fail field — it is
-**tameable**. No ban forbids that (ban 5 is the furnace-beast's), and a tamed
-fire-spreader is a player story with teeth; but it should be a DECISION, not a
-default. ⚠️ Flagged §11 Q7: tameable fire-hawk — keep (fire-falconry, Tribes-flavored)
-or close (wildness high)? The brief recommends **keep**, priced by the fire it starts
-being nobody's friend **[recommendation, owner's call]**.
+🟢 As built, the hawk carries `trainability Intermediate` and a tame-fail field — it
+is tameable, and **the owner ruled it stays** (2026-09-10, part of the ban-5 reversal:
+BOTH igniters tameable). Fire-falconry is canon; the fire a tamed hawk spreads is
+still nobody's friend, which is the price built into the gift. No def change owed.
 
 ## 8. The furnace-beast — `RUT_FurnaceBeast` (built; mechanics owed)
 
 ### 8a. What stands
 
 Label "furnace-beast" (sheet coinage, kept); herd animal, non-predator, MoveSpeed 3.6,
-horn + feet melee, `Leather_Heavy`, trainability None, **VEF
-`CompProperties_Untameable`** (MayRequire VEF core), manhunterOnDamage 0.15,
+horn + feet melee, `Leather_Heavy`, trainability None, VEF
+`CompProperties_Untameable` (MayRequire VEF core), manhunterOnDamage 0.15,
 commonality 0.08, band "igniter-megafauna." Description already carries the thermal
 circuit, the following-for-warmth, and the smoldering bed-grounds.
+
+🔴 **Changes FOUNDRY owes the uncommitted build under the ban-5 reversal (§C
+preamble):** (1) **REMOVE the VEF `CompProperties_Untameable` comp** — the beast is
+now tameable by ruling; (2) raise `trainability` off None to whatever tier the
+mechanics pass judges (Intermediate matches the hawk **[proposal]**); (3) the
+description's closing line *"Nothing on this planet has ever kept one"* is now wrong —
+rewrite toward the amended sheet's register ("keeping one is possible, hard, and a
+standing fire hazard"); (4) `manhunterOnTameFailChance 0.9` stops being dead weight
+and becomes the taming gauntlet — keep it; (5) `Leather_Heavy` is replaced by
+`RUT_FurnaceHide` (§12).
 
 ### 8b. The heat aura — CompHeatPusher, cited and told the truth about
 
@@ -504,21 +517,25 @@ nothing, which is why the hawk doesn't need to (§7c). Smolder, not blaze: 1–2
 slow start **[INVENTED numbers]** — a herd's overnight ground lights the way a coal
 does, not the way a bomb does.
 
-### 8d. Ban 5 — "no tame furnace-beast," the mechanical truth
+### 8d. Tameability under the reversed ban 5 — what "hard and insane" means at def level
 
-As built it is enforced twice over: `trainability None` and VEF's untameable comp
-(which removes the taming interaction wholesale where VEF is present). The vanilla
-backstop, verified at source: `TameUtility.CanTame` hard-refuses any pawn whose
-Wildness stat ≥ 1.0 (`Source/RimWorld/TameUtility.cs` line 49) — **wildness 1.0 makes
-taming mechanically impossible in bare vanilla, gizmo never offered.** Recommendation:
-add wildness 1.0 at the mechanics pass so the ban holds even with VEF absent
-(`MayRequire` means the comp silently vanishes on a list without VEF — the exact
-silent-failure shape this repo documents). And the whole truth: dev mode and
-mind-control mechanics (psychic animal tamer et al.) bypass every route; no XML makes
-a ban absolute against tools that exist to break bans. The def can make taming
-impossible in play, and that is what "mechanically enforceable" honestly means. One
-housekeeping finding: the built def carries `manhunterOnTameFailChance 0.9` — dead
-weight on an untameable creature; harmless, removable at the pass.
+🟢 Ban 5 is reversed in the frozen sheet itself (§C preamble — the owner's amendment
+at a sitting, the lawful unfreeze path). The design brief for TAMEABLE, honestly:
+
+- **Hard:** wildness HIGH but strictly below 1.0 — verified at source,
+  `TameUtility.CanTame` hard-refuses Wildness ≥ 1.0 (`Source/RimWorld/TameUtility.cs`
+  line 49), so the def must stay under that line or the reversal is silently undone.
+  Thrumbo-class wildness is the register **[direction, not a number — build sets it]**;
+  `manhunterOnTameFailChance 0.9` (already built) makes every failed attempt a
+  furious stove.
+- **Insane:** no new mechanic needed — the ruled mechanics ARE the hazard. A tamed
+  furnace-beast still runs the heat aura (§8b) and still smolders its bed-grounds
+  (§8c) in your barn, your pasture, your base: "fires all the time" arrives free from
+  this brief's own two owed comps. The bed-down ignition must NOT carry a
+  tamed-exemption — the hazard is the point (owner, verbatim).
+- **The dividend:** a kept beast is a walking building — indoor heating
+  (CompHeatPusher, §8b) for a nightside-bound caravan or a cold-country hold, at the
+  price of a barn that periodically catches fire.
 
 ---
 
@@ -565,14 +582,8 @@ say so at the butcher table too.
 
 ### 10a. Furnace-hide — `RUT_FurnaceHide`
 
-The built def's `Leather_Heavy` is a placeholder wearing a generic name. The natural
-item: the mineral-banded, heat-banking hide as its own leather-class stuff —
-**best-in-campaign cold insulation**, modest armor, and the story writes the stat
-(you are wearing a stove's jacket). Obtained only by hunting the untameable (ban 5
-holds: the hide is the one way a furnace-beast serves anyone, and the herd remembers
-— manhunter numbers already lean that way). Must NOT duplicate: thrumbofur's
-prestige-insulation slot in the vanilla economy — the sweep prices one above the
-other, not both at the top **[flag for the sweep, not resolved here]**.
+🟢 Commissioned as a full item this wave (owner overrode wait-for-sweep, 2026-09-10
+final hand). The complete brief is **§12**.
 
 ### 10b. Bolt-shed — `RUT_BoltShed`
 
@@ -582,7 +593,8 @@ small strange components shed where the dancers dance long; salable curiosity, m
 value, zero crafting use in v1 (a §GM-adjacent material must not become an economy
 pillar while the concealment arc runs — **[INVENTED restraint]**). "Watched": selling
 them where droids can see costs droid goodwill — wired to the ruled sacrilege
-economics at the mechanics pass, flagged §11 Q5 with the kill-a-bolt question.
+economics at the mechanics pass — 🟢 RULED with the kill-a-bolt hookup (§6c):
+`RUST_CATHEDRAL_MECHANICS_1` carries both wires.
 
 ### 10c. Deckroach scrap
 
@@ -591,33 +603,80 @@ fourth micro-material earns nothing — the skerrik-chitin precedent, applied.
 
 ---
 
-## 11. Open questions — the owner's, not ours
+## 11. The eight questions — ALL RULED (owner, 2026-09-10; commits 4a6f6200 + the
+sitting item's final hand, `BIOME_FAUNA_ASSIGNMENT_SITTING_1` §15)
 
-1. **The ilverr's light (§4b):** corona-discharge reading of the frozen biolum ban —
-   confirm (ShockGoat's ruled aura is the precedent), or the ilverr goes dark and is
-   sensed only as the witch-fence silhouette against aurora-lit ice.
-2. **Chittik active-state speed (§3c):** fast-while-warm inside disaster windows only —
-   confirm the carve-out reading of §6's no-fast-fauna ban.
-3. **Cathedral vermin crowding (§5c):** Mechachicken, Mecharat, deckroach, bolts —
-   keep all four small mechanicals, or trim at review?
-4. **Gear-dancers = living bolts (§6a):** one species (recommended, sheet-derived) —
-   or did the sitting mean a second, distinct dancer?
-5. **Bolt harm and bolt-shed sales (§6c/§10b):** ride the ruled sacrilege-goodwill
-   economics at small values — confirm the hookup.
-6. **Fire-hawk ignition law (§7c):** spread-only (recommended) or a fourth
-   independent starter?
-7. **Tameable fire-hawk (§7d):** keep as built (fire-falconry) or close?
-8. **Furnace-hide (§10a):** commission the item now, or leave `Leather_Heavy` until
-   ECONOMY_TRADE_SWEEP_1?
+1. **Ilverr's light:** corona reading **ACCEPTED** — the ilverr glows; frozen biolum
+   ban stands unamended (§4b).
+2. **Chittik speed carve-out:** **GRANTED** — "thaw pulses are not ambient" (§3c).
+3. **Cathedral vermin crowding:** **GR_Mechachicken CUT**; Mecharat, deckroach, bolts
+   stand (§5c).
+4. **Gear-dancers:** **ONE species confirmed** — `RUT_LivingBolt` (§6a).
+5. **Bolt harm / shed sales:** **HOOKS INTO** the sacrilege/hum system —
+   `RUST_CATHEDRAL_MECHANICS_1` gains the dependency (§6c, §10b).
+6. **Fire-hawk ignition law:** **spread-only RATIFIED** (§7c).
+7. **Tameable fire-hawk:** **KEEP** — both igniters tameable; ban 5 reversed in the
+   sheet (§7d, §C preamble).
+8. **Furnace-hide:** **COMMISSION NOW** — owner overrode wait-for-sweep; §12 below.
 
 ---
 
-## 12. Sources read for this brief
+## 12. RUT_FurnaceHide — the heat-banking hide (owner-commissioned item brief)
+
+**What it is:** the furnace-beast's mineral-banded storage hide as its own
+leather-class stuff, replacing the built def's `Leather_Heavy` placeholder (§8a
+change 5). The story writes the stat: you are wearing a stove's jacket.
+
+**Stats direction — anchored on MEASURED vanilla, not guessed** (RimSage
+`get_def_details`, this pass; the offline def dump drops statBases, so these came
+from the full-XML read):
+
+| stat | Leather_Heavy (MEASURED) | thrumbofur (MEASURED) | RUT_FurnaceHide direction |
+|---|---|---|---|
+| StuffPower_Insulation_Cold | 30 | 34 (vanilla leather ceiling) | **~36 — the new campaign ceiling [INVENTED number, ruled direction: heat-banking is its whole identity]** |
+| StuffPower_Insulation_Heat | 14 | 22 | **~8 — deliberately BAD [INVENTED]**: a stove's jacket in the Pyrelands sun is a mistake; flavor-true and self-balancing (the biome that yields it punishes wearing it there) |
+| StuffPower_Armor_Sharp | 1.24 | 2.08 | between — mineral banding beats heavy fur, never rivals thrumbofur **[INVENTED]** |
+| Flammability | 1 | 1 | **low (~0.4) [INVENTED]** — hide off a beast that sleeps in embers; the one leather that shrugs at the standing burn |
+| MarketValue | 3.3 | 14 | mid-single-digits pending the sweep **[INVENTED; see reconciliation]** |
+
+**The honest insulation math:** stuff insulation is a flat °C offset scaled by the
+garment; +36 cold vs thrumbofur's 34 is a ~6% edge, not a new tier — the REAL
+differentiators are the heat-insulation penalty and the low flammability, which make
+it a cold-country/night-travel specialist rather than a strict thrumbofur upgrade.
+That is deliberate: thrumbofur keeps prestige; furnace-hide takes a niche.
+🔴 Build-seat verification owed: exact stat field names and the parade above verified
+against RimSage at build (Leather_Heavy/Leather_Thrumbo rows above are the
+calibration answers to check the instrument against).
+
+**The tameable-herd economy note (the reversal's consequence, said plainly):** under
+reversed ban 5 a tamed furnace-beast herd is a **breedable, renewable hide source** —
+scarcity collapses from hunt-priced to ranch-priced the day the first pair breeds.
+The counterweight is built into §8d, not into price: every ranched beast is a
+standing fire hazard with no tamed-exemption, so the ranch's operating cost IS the
+scarcity mechanism (barns burn; the insanity is the point, owner verbatim). MarketValue
+must therefore be set assuming ranch supply, NOT hunt scarcity — mid-single-digits,
+nearer heavy fur than thrumbofur.
+
+**ECONOMY_TRADE_SWEEP_1 reconciliation line:** every posture above is a proposal that
+sweep ratifies or reprices — specifically: (a) the furnace-hide/thrumbofur
+insulation-prestige boundary; (b) ranch-supply pricing once taming lands; (c) whether
+low-flammability leather needs a campaign-wide look (nothing else in the stuff economy
+carries it). Nothing here pre-empts the sweep.
+
+---
+
+## 13. Sources read for this brief
 
 - Biome sheets (all FROZEN): `biomes/nightside_ice.md` (§1–§9 whole, §4 verbatim law,
   visitor clause, thaw pulse, roster consequences); `biomes/the_rust_cathedral.md`
   (§1–§9, §GM, §7b concealment amendment, bans 1/7); `biomes/the_pyrelands.md`
-  (§3–§8 verbatim igniter prose, ban 5)
+  (§3–§8 verbatim igniter prose, ban 5 as amended 2026-09-10)
+- Rulings closing §11: commit `4a6f6200` (tameable igniters, spread-only, ilverr
+  corona, Mechachicken cut) and
+  `infrastructure/state/items/BIOME_FAUNA_ASSIGNMENT_SITTING_1.md` §15 (final hand:
+  chittik carve-out, one-species bolts, sacrilege hookup, bespoke furnace hide)
+- Item calibration: RimSage `get_def_details` on `Leather_Heavy` and
+  `Leather_Thrumbo` (full XML, statBases present)
 - Rulings: `review/round2/biome_findings.md` (the three sitting-ruled commission
   lines, visitor law, fire-web repopulation, mech-analog arrivals + rename findings);
   `review/round2/decisions_propagated.json` (Tauntaun/Wampa/Jakobeast/ShockGoat/
