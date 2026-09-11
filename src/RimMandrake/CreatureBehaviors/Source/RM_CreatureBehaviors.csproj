@@ -44,6 +44,10 @@
     <Compile Include="RM_CompVerminBreeder.cs" />
     <Compile Include="RM_SeekTargetExtension.cs" />
     <Compile Include="RM_JobGiver_SeekMarkedTerrain.cs" />
+    <Compile Include="RM_SeekShadeExtension.cs" />
+    <Compile Include="RM_JobGiver_SeekShade.cs" />
+    <Compile Include="RM_SilenceAuraExtension.cs" />
+    <Compile Include="RM_MapComponent_SilenceCue.cs" />
     <Compile Include="RM_GnawTargetExtension.cs" />
     <Compile Include="RM_JobDefOf.cs" />
     <Compile Include="RM_JobGiver_GnawTargets.cs" />

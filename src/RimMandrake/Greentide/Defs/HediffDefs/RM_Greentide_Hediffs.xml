@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_STANDALONE_MOD_1 (M8, mire half). Severity is driven entirely
+     by RM_MapComponent_TerrainMire (C#); stages are read-only presentation +
+     capMods, same shape as RM_PinnedInPit in src/RimMandrake/Pits. stuckThreshold
+     on RM_MireExtension (default 0.85) matches this hediff's own "mired" stage
+     floor — keep both in sync if either is retuned. -->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_Mired</defName>
+    <label>mired</label>
+    <description>Caught in churnmud, sinking a little more with every failed step. Below the "mired" stage a pawn can still struggle free alone; at or above it, someone else has to pull them out (RM_FreeMired).</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.45, 0.2)</defaultLabelColor>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <stages>
+      <li>
+        <label>sinking</label>
+        <painOffset>0.02</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.25</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.5</minSeverity>
+        <label>bogged down</label>
+        <painOffset>0.08</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.55</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.85</minSeverity>
+        <label>mired</label>
+        <painOffset>0.15</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.97</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

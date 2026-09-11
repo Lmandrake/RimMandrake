@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_STANDALONE_MOD_1 (M12 sealant half, owner ruling confirmed
+     2026-09-11: "crafted from sap/resin; the economic link is canon").
+     recipeMaker (not a separate RecipeDef) is the shorter vanilla route,
+     same as RM_SlimeAntidote's pattern in GelatinousSlime/SlimeItems.xml.
+     Both defs sit at TableMachining so no new bench is needed. -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SapResin</defName>
+    <label>sap resin</label>
+    <description>Thick, amber resin rendered out of green timber over slow heat. Sticky, mildly flammable, and the raw feedstock for anything that needs to be sealed against standing water or hungry ground.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Jade</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(168, 122, 42)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>1.1</MarketValue>
+      <Mass>0.2</Mass>
+      <Flammability>0.6</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+      <WorkToMake>200</WorkToMake>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <recipeMaker>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <displayPriority>400</displayPriority>
+      <productCount>2</productCount>
+    </recipeMaker>
+    <costList>
+      <WoodLog>10</WoodLog>
+    </costList>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_ToxinSealant</defName>
+    <label>toxin sealant</label>
+    <description>Sap resin cut and cooked with a caustic reagent until it sets into a paste no root, mire or living tissue can push through. Painted over hungry ground it is the difference between a floor and a swallowed floor.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Leather/Leather_Plain</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(96, 132, 90)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>2.4</MarketValue>
+      <Mass>0.25</Mass>
+      <Flammability>0.2</Flammability>
+      <DeteriorationRate>1.5</DeteriorationRate>
+      <WorkToMake>300</WorkToMake>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <techLevel>Industrial</techLevel>
+    <recipeMaker>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <skillRequirements>
+        <Crafting>3</Crafting>
+      </skillRequirements>
+      <displayPriority>410</displayPriority>
+      <productCount>2</productCount>
+    </recipeMaker>
+    <costList>
+      <RM_SapResin>4</RM_SapResin>
+      <Neutroamine>1</Neutroamine>
+    </costList>
+  </ThingDef>
+
+</Defs>

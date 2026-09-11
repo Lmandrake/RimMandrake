@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- GREENTIDE_STANDALONE_MOD_1. Generic sibling of a frozen campaign world's
+     own biome instance elsewhere in this repo — same fictional idea (a
+     furiously humid, ground-hugging river jungle), rebuilt with zero
+     campaign-specific content so it can generate on any player's own world.
+     mudTerrain points at RM_Churnmud
+     itself, so ordinary mapgen already lays the hazard wherever vanilla would
+     have laid plain Mud — the churnmud kit needs no separate map-gen step. -->
+<Defs>
+
+  <BiomeDef>
+    <defName>RM_Greentide</defName>
+    <label>the Greentide</label>
+    <description>A gallery jungle standing in permanent, ground-hugging steam. The rivers here run warmer than the air can comfortably hold, so a low fog never quite lifts, everything grows fast enough to watch, and the mud between the roots is deep enough to swallow a boot, a crate, or a careless step. There is no dry season and no truce — only the green, and what is patient enough to wait in the mud for you.</description>
+    <workerClass>RimMandrake.Greentide.RM_BiomeWorker_Greentide</workerClass>
+    <texture>World/Biomes/TropicalRainforest</texture>
+
+    <modExtensions>
+      <li Class="RimMandrake.Greentide.RM_GreentideBiomeRanges">
+        <temperature>28~60</temperature>
+        <rainfall>2200~6000</rainfall>
+        <elevation>0~1200</elevation>
+        <baseScore>30</baseScore>
+        <degreeWeight>1.4</degreeWeight>
+        <rainfallDivisor>220</rainfallDivisor>
+      </li>
+    </modExtensions>
+
+    <animalDensity>3.2</animalDensity>
+    <plantDensity>0.95</plantDensity>
+    <wildPlantRegrowDays>16</wildPlantRegrowDays>
+    <movementDifficulty>1.6</movementDifficulty>
+    <forageability>0.8</forageability>
+    <foragedFood>RawBerries</foragedFood>
+    <diseaseMtbDays>45</diseaseMtbDays>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+
+    <lakeBeachTerrain>Riverbank</lakeBeachTerrain>
+    <riverbankTerrain>Riverbank</riverbankTerrain>
+    <mudTerrain>RM_Churnmud</mudTerrain>
+
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>75</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>75</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>75</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>75</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>75</commonality>
+      </li>
+    </diseases>
+
+    <terrainsByFertility>
+      <li>
+        <terrain>Soil</terrain>
+        <min>-999</min>
+        <max>0.5</max>
+      </li>
+      <li>
+        <terrain>SoilRich</terrain>
+        <min>0.5</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+
+    <baseWeatherCommonalities>
+      <Clear>6</Clear>
+      <Fog>5</Fog>
+      <Rain>2</Rain>
+      <DryThunderstorm>0.3</DryThunderstorm>
+      <RainyThunderstorm>1.7</RainyThunderstorm>
+      <FoggyRain>1</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+    </baseWeatherCommonalities>
+
+    <soundsAmbient>
+      <li>Ambient_NightInsects_Standard</li>
+    </soundsAmbient>
+
+    <!-- Vanilla-core roster only — no third-party or franchise-specific
+         fauna, no MayRequire on a third-party bestiary. Follow-on roster
+         items may add RM-tier jungle creatures; this ships the biome
+         functional on Core + DLCs alone. -->
+    <wildAnimals>
+      <Warg>0.25</Warg>
+      <Muffalo>0.5</Muffalo>
+      <Elephant>0.2</Elephant>
+      <Boomalope>0.3</Boomalope>
+      <Cobra>0.4</Cobra>
+      <Megaspider>0.1</Megaspider>
+      <Rat>1.0</Rat>
+      <Hare>0.6</Hare>
+    </wildAnimals>
+    <wildPlants>
+      <Plant_TreeOak>2.0</Plant_TreeOak>
+      <Plant_TreePoplar>1.2</Plant_TreePoplar>
+      <Plant_Bush>1.5</Plant_Bush>
+      <Plant_Grass>2.0</Plant_Grass>
+      <Plant_TallGrass>1.0</Plant_TallGrass>
+      <Plant_Berry>0.6</Plant_Berry>
+    </wildPlants>
+  </BiomeDef>
+
+</Defs>
