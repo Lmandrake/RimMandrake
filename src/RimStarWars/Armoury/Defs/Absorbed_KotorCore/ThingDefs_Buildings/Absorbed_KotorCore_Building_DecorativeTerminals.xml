@@ -17,7 +17,7 @@
 <Defs>
 
   <ThingDef Name="guy762_DecorativeTerminalBase" ParentName="BuildingBase" Abstract="True">
-    <description>.</description>
+    <description>A powered display terminal wired to whatever holofeed is still broadcasting. Colonists will stop and watch it, though it holds their attention about as well as you would expect.</description>
     <altitudeLayer>Building</altitudeLayer>
     <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
     <rotatable>true</rotatable>

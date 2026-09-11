@@ -10,6 +10,7 @@
   <ThingDef ParentName="guy762_SWGravshipOverlayBASE">
     <defName>guy762_SWGravshipOverlay_DynamicFreighter</defName>
     <label>Dynamic-class freighter</label>
+    <description>Hull plating in the Dynamic-class pattern - a mid-bulk hauler flown on every run where the cargo is legal and the margins are not.</description>
     <graphicData>
       <texPath>Gravships/Dynamic/Dynamic</texPath>
       <graphicClass>Graphic_Single</graphicClass>

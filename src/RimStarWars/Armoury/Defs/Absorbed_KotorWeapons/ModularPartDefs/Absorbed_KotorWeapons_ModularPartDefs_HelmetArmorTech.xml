@@ -16,7 +16,7 @@
     <defName>guy762_KotORpartHelmetTech_verpine</defName>
     <label>Verpine ocular enhancer</label>
     <labelShort>Verpine ocular enhancer</labelShort>
-    <description>.</description>
+    <description>Verpine optics grafted into the helmet, ranging and correcting faster than the eye behind them. The wearer settles onto a target quickly and rarely misses it.</description>
     <attachedTo>guy762_KotORMount_helmettech</attachedTo>
     <effects>
       <statOffsets>
@@ -40,7 +40,7 @@
     <defName>guy762_KotORpartHelmetTech_neural</defName>
     <label>neural stabilizers</label>
     <labelShort>neural stabilizers</labelShort>
-    <description>.</description>
+    <description>Neural stabilizers clamped to the base of the skull, damping pain signals and the panic that follows them. The wearer stays standing, and stays sane, well past the point most would not.</description>
     <attachedTo>guy762_KotORMount_helmettech</attachedTo>
     <effects>
       <statOffsets>
@@ -64,7 +64,7 @@
     <defName>guy762_KotORpartHelmetTech_lightscan</defName>
     <label>light-scan visor</label>
     <labelShort>light-scan visor</labelShort>
-    <description>.</description>
+    <description>A visor that paints a low-power scanning grid across the ground ahead. Tripwires and pressure plates light up before a boot finds them.</description>
     <attachedTo>guy762_KotORMount_helmettech</attachedTo>
     <effects>
       <statOffsets>
@@ -87,7 +87,7 @@
     <defName>guy762_KotORpartHelmetTech_demovisor</defName>
     <label>demolitions visor</label>
     <labelShort>demolitions visor</labelShort>
-    <description>.</description>
+    <description>A demolitions visor with the full ordnance suite: trap detection, fuse reading and firing solutions. Sappers and mortar crews are markedly better at their work, and markedly more likely to survive it.</description>
     <attachedTo>guy762_KotORMount_helmettech</attachedTo>
     <effects>
       <statOffsets>
@@ -111,7 +111,7 @@
     <defName>guy762_KotORpartHelmetTech_medical</defName>
     <label>medical interface visor</label>
     <labelShort>medical interface visor</labelShort>
-    <description>.</description>
+    <description>A field surgeon's visor, overlaying anatomy, vitals and procedure onto whatever is bleeding in front of it. It turns a competent medic into a very good one.</description>
     <attachedTo>guy762_KotORMount_helmettech</attachedTo>
     <effects>
       <statOffsets>
@@ -136,7 +136,7 @@
     <defName>guy762_KotORpartHelmetTech_breathmask</defName>
     <label>enhanced filtration system</label>
     <labelShort>enhanced filtration system</labelShort>
-    <description>.</description>
+    <description>A sealed rebreather and scrubber stack fitted into the helmet. The wearer can work in fumes, spores and fallout and walk out unbothered.</description>
     <attachedTo>guy762_KotORMount_helmettech</attachedTo>
     <effects>
       <statOffsets>
@@ -159,7 +159,7 @@
     <defName>guy762_KotORpartHelmetTech_regal</defName>
     <label>regal adornments</label>
     <labelShort>regal adornments</labelShort>
-    <description>.</description>
+    <description>Inlay, filigree and a great deal of expensive trim added to an otherwise sensible helmet. It does nothing for the wearer's safety and a great deal for how seriously anyone takes them.</description>
     <attachedTo>guy762_KotORMount_helmettech</attachedTo>
     <effects>
       <statOffsets>
@@ -186,7 +186,7 @@
     <defName>guy762_KotORpartHelmetTech_interface</defName>
     <label>interface visor</label>
     <labelShort>interface visor</labelShort>
-    <description>.</description>
+    <description>A technician's interface visor, talking directly to whatever machine the wearer is standing in front of. Schematics, fault codes and access ports resolve themselves without a datapad.</description>
     <attachedTo>guy762_KotORMount_helmettech</attachedTo>
     <effects>
       <statOffsets>
@@ -251,7 +251,7 @@
     <defName>guy762_KotORpartArmorTech_bootspikes</defName>
     <label>boot spikes</label>
     <labelShort>boot spikes</labelShort>
-    <description>.</description>
+    <description>Retractable spikes set into the boot soles. They give the wearer something to fight with when both hands are already occupied.</description>
     <attachedTo>guy762_KotORMount_armortech</attachedTo>
     <effects>
       <statOffsets>
@@ -353,7 +353,7 @@
     <defName>guy762_KotORpartArmorTech_stabilizer</defName>
     <label>gyro-stabilizers</label>
     <labelShort>gyro-stabilizers</labelShort>
-    <description>.</description>
+    <description>Gyroscopic stabilizers built into the suit's frame, holding the wearer upright and on aim. Being hit no longer costs them the next few seconds.</description>
     <attachedTo>guy762_KotORMount_armortech</attachedTo>
     <effects>
       <statOffsets>
@@ -377,7 +377,7 @@
     <defName>guy762_KotORpartArmorTech_strength</defName>
     <label>strength amplifier</label>
     <labelShort>strength amplifier</labelShort>
-    <description>.</description>
+    <description>Powered amplifiers in the gauntlets and shoulders, adding to whatever the wearer can already do with their arms. Purely a melee upgrade.</description>
     <attachedTo>guy762_KotORMount_armortech</attachedTo>
     <effects>
       <statOffsets>
@@ -400,7 +400,7 @@
     <defName>guy762_KotORpartArmorTech_dex</defName>
     <label>enhanced exoskeleton</label>
     <labelShort>enhanced exoskeleton</labelShort>
-    <description>.</description>
+    <description>A full plasteel exoskeleton carrying the suit's weight so that the body inside does not. The wearer moves faster, dodges better and hauls more than should be possible in armour.</description>
     <attachedTo>guy762_KotORMount_armortech</attachedTo>
     <effects>
       <statOffsets>
@@ -427,7 +427,7 @@
     <defName>guy762_KotORpartArmorTech_EVA</defName>
     <label>EVA verniers</label>
     <labelShort>EVA verniers</labelShort>
-    <description>.</description>
+    <description>Cold-gas verniers mounted at the hips and shoulders for work outside a hull. In vacuum the wearer moves three times as fast; in atmosphere they are four kilograms of dead weight.</description>
     <attachedTo>guy762_KotORMount_armortech</attachedTo>
     <effects>
       <statOffsets>

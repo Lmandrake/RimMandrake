@@ -36,7 +36,7 @@
   <ThingDef ParentName="guy762_SecretFloorPanel_BASE">
     <defName>guy762_SecretFloorPanel_darkwhiteoutlines</defName>
     <label>floor panel</label>
-    <description>An inconspicuous floor panel.</description>
+    <description>An inconspicuous floor panel with a smuggler's void cut in beneath it. It swallows a startling amount of cargo and runs cold enough to keep it, and anyone crossing it sees nothing but deck. Finished in hangar plate, white-lined on dark grey.</description>
     <graphicData>
       <texPath>Buildings/Floors/SecretFloorPanels/ImpHangarTile</texPath>
       <drawSize>(3,3)</drawSize>
@@ -87,7 +87,7 @@
   <ThingDef ParentName="guy762_SecretFloorPanel_BASE">
     <defName>guy762_SecretFloorPanel_DoomgiverTile</defName>
     <label>floor panel</label>
-    <description>An inconspicuous floor panel.</description>
+    <description>An inconspicuous floor panel with a smuggler's void cut in beneath it. It swallows a startling amount of cargo and runs cold enough to keep it, and anyone crossing it sees nothing but deck. Finished in the heavy dark plate of a capital warship deck.</description>
     <graphicData>
       <texPath>Buildings/Floors/SecretFloorPanels/DoomgiverTile</texPath>
       <drawSize>(3,3)</drawSize>
@@ -138,7 +138,7 @@
   <ThingDef ParentName="guy762_SecretFloorPanel_BASE">
     <defName>guy762_SecretFloorPanel_DreadnaughtCabinTile_blue</defName>
     <label>floor panel</label>
-    <description>An inconspicuous floor panel.</description>
+    <description>An inconspicuous floor panel with a smuggler's void cut in beneath it. It swallows a startling amount of cargo and runs cold enough to keep it, and anyone crossing it sees nothing but deck. Finished in blue dreadnaught cabin tile.</description>
     <graphicData>
       <texPath>Buildings/Floors/SecretFloorPanels/DreadnaughtCabinTile_blue</texPath>
       <drawSize>(3,3)</drawSize>
@@ -189,7 +189,7 @@
   <ThingDef ParentName="guy762_SecretFloorPanel_BASE">
     <defName>guy762_SecretFloorPanel_DreadnaughtCabinTile_black</defName>
     <label>floor panel</label>
-    <description>An inconspicuous floor panel.</description>
+    <description>An inconspicuous floor panel with a smuggler's void cut in beneath it. It swallows a startling amount of cargo and runs cold enough to keep it, and anyone crossing it sees nothing but deck. Finished in black dreadnaught cabin tile.</description>
     <graphicData>
       <texPath>Buildings/Floors/SecretFloorPanels/DreadnaughtCabinTile_black</texPath>
       <drawSize>(3,3)</drawSize>

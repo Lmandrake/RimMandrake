@@ -186,7 +186,7 @@
     <defName>guy762_KotORpartCore_plastoid</defName>
     <label>Plastoid core</label>
     <labelShort>Plastoid core</labelShort>
-    <description>.</description>
+    <description>A hollow plastoid core, chosen when speed matters more than force. The weapon becomes very fast and very light, and lands like a training bar.</description>
     <attachedTo>guy762_KotORMount_core</attachedTo>
     <effects>
       <statOffsets>
@@ -205,7 +205,7 @@
     <defName>guy762_KotORpartCore_bronzium</defName>
     <label>Bronzium core</label>
     <labelShort>Bronzium core</labelShort>
-    <description>.</description>
+    <description>A bronzium core, balanced rather than heavy. It brings the weapon quickly back on line and sits well in the hand.</description>
     <attachedTo>guy762_KotORMount_core</attachedTo>
     <effects>
       <statOffsets>
@@ -225,7 +225,7 @@
     <defName>guy762_KotORpartCore_uranium</defName>
     <label>Uranium core</label>
     <labelShort>Uranium core</labelShort>
-    <description>.</description>
+    <description>A depleted uranium core. Dense enough to punch through armour, and slow enough that the wearer of that armour may see it coming.</description>
     <attachedTo>guy762_KotORMount_core</attachedTo>
     <effects>
       <statOffsets>
@@ -247,7 +247,7 @@
     <defName>guy762_KotORpartCore_durasteel</defName>
     <label>Durasteel core</label>
     <labelShort>Durasteel core</labelShort>
-    <description>.</description>
+    <description>A solid durasteel core. Nothing clever about it - the weapon is simply heavier, and lands harder for it.</description>
     <attachedTo>guy762_KotORMount_core</attachedTo>
     <effects>
       <statOffsets>
@@ -267,7 +267,7 @@
     <defName>guy762_KotORpartCore_plasteel</defName>
     <label>Plasteel core</label>
     <labelShort>Plasteel core</labelShort>
-    <description>.</description>
+    <description>A plasteel core: light, stiff and unwilling to bend. The weapon comes back on guard faster and lands where it was aimed.</description>
     <attachedTo>guy762_KotORMount_core</attachedTo>
     <effects>
       <statOffsets>
@@ -290,7 +290,7 @@
     <defName>guy762_KotORpartCore_beskar</defName>
     <label>Beskar core</label>
     <labelShort>Beskar core</labelShort>
-    <description>.</description>
+    <description>A beskar core, heavy as a bar of lead and just as forgiving to swing. What it loses in speed it repays by going through armour as though it were not there.</description>
     <attachedTo>guy762_KotORMount_core</attachedTo>
     <effects>
       <statOffsets>

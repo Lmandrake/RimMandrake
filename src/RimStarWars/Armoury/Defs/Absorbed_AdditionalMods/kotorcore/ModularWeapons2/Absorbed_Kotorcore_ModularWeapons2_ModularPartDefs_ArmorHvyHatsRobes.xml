@@ -26,7 +26,7 @@
     <defName>guy762_KotORpartUnderlay_forceweave_robe</defName>
     <label>Forceweave underlay</label>
     <labelShort>Forceweave underlay</labelShort>
-    <description>.</description>
+    <description>A robe lining woven from forceweave, a fibre that settles the mind of anyone attuned enough to notice. Psychic strain bleeds off faster while it is worn.</description>
     <attachedTo>guy762_KotORMount_underlay_robe</attachedTo>
     <effects>
       <statOffsets>
@@ -95,7 +95,7 @@
     <defName>guy762_KotORpartUnderlay_flex_hvy</defName>
     <label>flexible underlay</label>
     <labelShort>flex underlay</labelShort>
-    <description>.</description>
+    <description>An articulated flex liner that lets heavy plate move like something much lighter. The wearer strikes and recovers faster, and is considerably harder to pin down.</description>
     <attachedTo>guy762_KotORMount_underlay_hvy</attachedTo>
     <effects>
       <statOffsets>
@@ -143,7 +143,7 @@
     <defName>guy762_KotORpartOverlay_ablative_hvy</defName>
     <label>ablative plating</label>
     <labelShort>ablative plating</labelShort>
-    <description>.</description>
+    <description>Sacrificial ablative slabs bolted over heavy plate; every hit carries a little of the armour away with it. Heavy, slow, and very good at surviving blaster fire.</description>
     <attachedTo>guy762_KotORMount_overlay_hvy</attachedTo>
     <effects>
       <statOffsets>
@@ -166,7 +166,7 @@
     <defName>guy762_KotORpartOverlay_bonded_hvy</defName>
     <label>bonded plates</label>
     <labelShort>bonded plates</labelShort>
-    <description>.</description>
+    <description>Bonded composite plates layered over the suit's shell. They spread the shock of a hit across the whole assembly instead of one unlucky rib.</description>
     <attachedTo>guy762_KotORMount_overlay_hvy</attachedTo>
     <effects>
       <statOffsets>
@@ -188,7 +188,7 @@
     <defName>guy762_KotORpartOverlay_hvybonded_hvy</defName>
     <label>heavy bonded plates</label>
     <labelShort>heavy bonded plates</labelShort>
-    <description>.</description>
+    <description>The heaviest bonded plating a body can be made to carry. Very little gets through it, and the wearer will not be outrunning anything again.</description>
     <attachedTo>guy762_KotORMount_overlay_hvy</attachedTo>
     <effects>
       <statOffsets>
@@ -211,7 +211,7 @@
     <defName>guy762_KotORpartOverlay_beskar_hvy</defName>
     <label>Beskar plating</label>
     <labelShort>Beskar plating</labelShort>
-    <description>.</description>
+    <description>Plates of beskar, the Mandalorian iron that turns blaster bolts and holds against a lightsaber. Priceless, absurdly heavy, and worth every kilogram.</description>
     <attachedTo>guy762_KotORMount_overlay_hvy</attachedTo>
     <effects>
       <statOffsets>

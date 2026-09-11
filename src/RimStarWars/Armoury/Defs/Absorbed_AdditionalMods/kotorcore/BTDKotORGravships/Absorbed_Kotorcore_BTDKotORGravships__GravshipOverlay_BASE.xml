@@ -9,7 +9,7 @@
 
   <ThingDef ParentName="GravshipComponentBase" Abstract="True" Name="guy762_SWGravshipOverlayBASE">
     <thingClass>Building</thingClass>
-    <description>.</description>
+    <description>Starship hull plating laid over the deck as an outer shell. It carries no systems of its own; it is simply the part of the ship that takes the weather.</description>
     <graphicData>
       <damageData>
         <enabled>false</enabled>
@@ -48,6 +48,7 @@
     </building>
     <thingCategories />
     <minifiedDef>MinifiedThing</minifiedDef>
+    <comps />
     <tradeTags>
       <li>CEC_OrbitalTrader_Tag</li>
     </tradeTags>

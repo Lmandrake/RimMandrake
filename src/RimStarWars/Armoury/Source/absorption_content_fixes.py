@@ -27,6 +27,20 @@ content nobody has re-checked. `new_text=None` means remove the field
 instead of rewriting it (used for the one stray, non-applicable stat).
 """
 
+
+class _Missing(object):
+    """Sentinel for `expected_broken_text` meaning "the donor def has no such
+    field at all". The fix then CREATES the field (inserted after <label> when
+    there is one, else appended) instead of rewriting it, and is skipped -- as
+    every other fix is -- if the donor has since grown a field of its own that
+    nobody has re-checked."""
+
+    def __repr__(self):
+        return "MISSING"
+
+
+MISSING = _Missing()
+
 FIXES = {
     # Verbatim copy-paste: CrystalPart_heart's description was the sibling
     # CrystalPart_mantle's description under a different label/defName.
@@ -168,9 +182,16 @@ def apply_content_fixes(el, note=print):
     """Mutate `el` (a top-level def Element already parsed from donor
     source) in place per FIXES (text/field fixes) and MAYREQUIRE_FIXES
     (whole-def MayRequire gating), both keyed by its own <defName>. No-op
-    for either table the defName isn't in."""
+    for either table the defName isn't in.
+
+    FIXES additionally accepts an ABSTRACT def keyed by its Name= attribute, so
+    a placeholder inherited by a whole variant family can be corrected once on
+    the parent. MAYREQUIRE_FIXES stays defName-only -- gating an abstract would
+    gate every child, which is never what is wanted."""
     dn_el = el.find("defName")
     dn = dn_el.text.strip() if dn_el is not None and dn_el.text else None
+    # Abstract defs carry no <defName>; FIXES may key them by Name=.
+    fix_key = dn if (dn and dn in FIXES) else (el.get("Name") or dn)
 
     if dn and dn in MAYREQUIRE_FIXES:
         want = MAYREQUIRE_FIXES[dn]
@@ -199,10 +220,26 @@ def apply_content_fixes(el, note=print):
             elif cur != want:
                 note("DEFAULT_PARTS MAYREQUIRE FIX SKIPPED (already has different MayRequire=%r): %s / %s" % (cur, dn, key[1]))
 
-    if not dn or dn not in FIXES:
+    if not fix_key or fix_key not in FIXES:
         return
+    dn = fix_key
     for path, (expected_old, new) in FIXES[dn].items():
         field_el = el.find(path)
+        if expected_old is MISSING:
+            # The donor is expected to have no such field; create it.
+            if field_el is not None:
+                note("CONTENT FIX SKIPPED (donor now has a %s of its own): %s" % (path, dn))
+                continue
+            if "/" in path:
+                note("CONTENT FIX SKIPPED (MISSING only supports a top-level field): %s <%s>" % (dn, path))
+                continue
+            import xml.etree.ElementTree as _ET
+            new_el = _ET.Element(path)
+            new_el.text = new
+            label_el = el.find("label")
+            el.insert(list(el).index(label_el) + 1 if label_el is not None else len(el), new_el)
+            note("CONTENT FIX APPLIED (added): %s <%s>" % (dn, path))
+            continue
         if field_el is None:
             note("CONTENT FIX SKIPPED (no such field): %s <%s>" % (dn, path))
             continue
@@ -220,3 +257,240 @@ def apply_content_fixes(el, note=print):
         else:
             field_el.text = new
             note("CONTENT FIX APPLIED: %s <%s>" % (dn, path))
+
+
+# --------------------------------------------------------------------------
+# BESTIARY_ARMOURY_DESC_BACKFILL_1, wave 1 (2026-09-11): the donor placeholder
+# descriptions in the absorbed KotOR pools -- a literal "." on 42 defs (which
+# 69 concrete defs inherit) and "An inconspicuous floor panel." on the four
+# smuggling-compartment variants -- plus seven player-facing defs the donor
+# shipped with no <description> at all. Written against each def's OWN fields
+# (statOffsets, comps, race block), RSW tier register: nothing here names a
+# campaign, a world or a faction that would not exist in another Star Wars
+# scenario. Registered here rather than hand-edited into the generated XML so
+# the next absorption regen keeps them.
+DESCRIPTION_BACKFILL = {
+    'guy762_SWGravshipOverlayBASE': (
+        '.',
+        'Starship hull plating laid over the deck as an outer shell. It carries no systems of its own; it is simply the part of the ship that takes the weather.',
+    ),
+    'guy762_DecorativeTerminalBase': (
+        '.',
+        'A powered display terminal wired to whatever holofeed is still broadcasting. Colonists will stop and watch it, though it holds their attention about as well as you would expect.',
+    ),
+    'guy762_KotORpartUnderlay_regen': (
+        '.',
+        'A mesh of biorestorative filaments worn against the skin, flooding wounds with clotting agents and growth stimulants. Injuries close markedly faster while it is worn.',
+    ),
+    'guy762_KotORpartUnderlay_strength': (
+        '.',
+        "A powered myomer weave that takes some of the load off the wearer's own muscles. It hits harder, carries more, and shrugs off pain that would drop an unassisted body.",
+    ),
+    'guy762_KotORpartUnderlay_armorweave': (
+        '.',
+        'A fire-resistant armorweave liner worn beneath the plate. It does nothing against a blade, but it is the difference between a scorch and a burn.',
+    ),
+    'guy762_KotORpartUnderlay_durasteel': (
+        '.',
+        "A layer of durasteel scale sewn into the suit's lining. It turns blades and blunt force alike, at the cost of every bit of speed the wearer had.",
+    ),
+    'guy762_KotORpartUnderlay_environment': (
+        '.',
+        'A sealed environmental liner circulating conditioned air through the suit. The wearer stops noticing the weather entirely, which on most worlds is worth the bulk.',
+    ),
+    'guy762_KotORpartOverlay_pockets': (
+        '.',
+        'Armorweave pouches and load loops stitched over the plate. Unglamorous, and the single most useful thing you can bolt onto a suit.',
+    ),
+    'guy762_KotORpartOverlay_heat': (
+        '.',
+        'Ablative heat shielding laid over the shell. It blunts blaster scoring and keeps the wearer from cooking inside their own armour.',
+    ),
+    'guy762_KotORpartOverlay_energy': (
+        '.',
+        'A layered energy-dispersive overlay that scatters an incoming bolt across the whole plate rather than one hole in it. Excellent against blasters, useless against a knife.',
+    ),
+    'guy762_KotORpartOverlay_ballistic': (
+        '.',
+        'Ballistic composite panels bonded to the outside of the suit. Made for slugthrowers and shrapnel, which the galaxy has never quite stopped producing.',
+    ),
+    'guy762_KotORpartOverlay_armorply': (
+        '.',
+        "Light armorply panels, matted and contoured to break up the wearer's outline. It adds nothing to the suit's protection; what it buys is free movement and a silhouette that game and sentries both miss.",
+    ),
+    'guy762_KotORpartUnderlay_forceweave_robe': (
+        '.',
+        'A robe lining woven from forceweave, a fibre that settles the mind of anyone attuned enough to notice. Psychic strain bleeds off faster while it is worn.',
+    ),
+    'guy762_KotORpartUnderlay_flex_hvy': (
+        '.',
+        'An articulated flex liner that lets heavy plate move like something much lighter. The wearer strikes and recovers faster, and is considerably harder to pin down.',
+    ),
+    'guy762_KotORpartOverlay_ablative_hvy': (
+        '.',
+        'Sacrificial ablative slabs bolted over heavy plate; every hit carries a little of the armour away with it. Heavy, slow, and very good at surviving blaster fire.',
+    ),
+    'guy762_KotORpartOverlay_bonded_hvy': (
+        '.',
+        "Bonded composite plates layered over the suit's shell. They spread the shock of a hit across the whole assembly instead of one unlucky rib.",
+    ),
+    'guy762_KotORpartOverlay_hvybonded_hvy': (
+        '.',
+        'The heaviest bonded plating a body can be made to carry. Very little gets through it, and the wearer will not be outrunning anything again.',
+    ),
+    'guy762_KotORpartOverlay_beskar_hvy': (
+        '.',
+        'Plates of beskar, the Mandalorian iron that turns blaster bolts and holds against a lightsaber. Priceless, absurdly heavy, and worth every kilogram.',
+    ),
+    'guy762_KotORpartCore_plastoid': (
+        '.',
+        'A hollow plastoid core, chosen when speed matters more than force. The weapon becomes very fast and very light, and lands like a training bar.',
+    ),
+    'guy762_KotORpartCore_bronzium': (
+        '.',
+        'A bronzium core, balanced rather than heavy. It brings the weapon quickly back on line and sits well in the hand.',
+    ),
+    'guy762_KotORpartCore_uranium': (
+        '.',
+        'A depleted uranium core. Dense enough to punch through armour, and slow enough that the wearer of that armour may see it coming.',
+    ),
+    'guy762_KotORpartCore_durasteel': (
+        '.',
+        'A solid durasteel core. Nothing clever about it - the weapon is simply heavier, and lands harder for it.',
+    ),
+    'guy762_KotORpartCore_plasteel': (
+        '.',
+        'A plasteel core: light, stiff and unwilling to bend. The weapon comes back on guard faster and lands where it was aimed.',
+    ),
+    'guy762_KotORpartCore_beskar': (
+        '.',
+        'A beskar core, heavy as a bar of lead and just as forgiving to swing. What it loses in speed it repays by going through armour as though it were not there.',
+    ),
+    'guy762_KotORpartHelmetTech_verpine': (
+        '.',
+        'Verpine optics grafted into the helmet, ranging and correcting faster than the eye behind them. The wearer settles onto a target quickly and rarely misses it.',
+    ),
+    'guy762_KotORpartHelmetTech_neural': (
+        '.',
+        'Neural stabilizers clamped to the base of the skull, damping pain signals and the panic that follows them. The wearer stays standing, and stays sane, well past the point most would not.',
+    ),
+    'guy762_KotORpartHelmetTech_lightscan': (
+        '.',
+        'A visor that paints a low-power scanning grid across the ground ahead. Tripwires and pressure plates light up before a boot finds them.',
+    ),
+    'guy762_KotORpartHelmetTech_demovisor': (
+        '.',
+        'A demolitions visor with the full ordnance suite: trap detection, fuse reading and firing solutions. Sappers and mortar crews are markedly better at their work, and markedly more likely to survive it.',
+    ),
+    'guy762_KotORpartHelmetTech_medical': (
+        '.',
+        "A field surgeon's visor, overlaying anatomy, vitals and procedure onto whatever is bleeding in front of it. It turns a competent medic into a very good one.",
+    ),
+    'guy762_KotORpartHelmetTech_breathmask': (
+        '.',
+        'A sealed rebreather and scrubber stack fitted into the helmet. The wearer can work in fumes, spores and fallout and walk out unbothered.',
+    ),
+    'guy762_KotORpartHelmetTech_regal': (
+        '.',
+        "Inlay, filigree and a great deal of expensive trim added to an otherwise sensible helmet. It does nothing for the wearer's safety and a great deal for how seriously anyone takes them.",
+    ),
+    'guy762_KotORpartHelmetTech_interface': (
+        '.',
+        "A technician's interface visor, talking directly to whatever machine the wearer is standing in front of. Schematics, fault codes and access ports resolve themselves without a datapad.",
+    ),
+    'guy762_KotORpartArmorTech_bootspikes': (
+        '.',
+        'Retractable spikes set into the boot soles. They give the wearer something to fight with when both hands are already occupied.',
+    ),
+    'guy762_KotORpartArmorTech_stabilizer': (
+        '.',
+        "Gyroscopic stabilizers built into the suit's frame, holding the wearer upright and on aim. Being hit no longer costs them the next few seconds.",
+    ),
+    'guy762_KotORpartArmorTech_strength': (
+        '.',
+        'Powered amplifiers in the gauntlets and shoulders, adding to whatever the wearer can already do with their arms. Purely a melee upgrade.',
+    ),
+    'guy762_KotORpartArmorTech_dex': (
+        '.',
+        "A full plasteel exoskeleton carrying the suit's weight so that the body inside does not. The wearer moves faster, dodges better and hauls more than should be possible in armour.",
+    ),
+    'guy762_KotORpartArmorTech_EVA': (
+        '.',
+        'Cold-gas verniers mounted at the hips and shoulders for work outside a hull. In vacuum the wearer moves three times as fast; in atmosphere they are four kilograms of dead weight.',
+    ),
+    'SWPotF_RaceDef_ysalamir': (
+        '.',
+        'A slow, claw-footed tree lizard whose living body nullifies psychic sensitivity in everything near it. It eats almost nothing, lays eggs and takes training well; keeping one close is a dependable way to make a psychic problem stop being a problem.',
+    ),
+    'guy762_RebelPilot_suitbox': (
+        '.',
+        'The chest-mounted life-support pack of a starfighter flight suit. It seals the wearer against cold and vacuum and steadies their hands at the controls, but it will not stop so much as a thrown rock.',
+    ),
+    'guy762_ImpWorkerHelmet': (
+        '.',
+        "An Imperial labour helmet, sealed against fumes and dust and rigged to speed the cutting and smoothing of stone. It is armoured better than most soldiers' headgear, which says something about Imperial worksites.",
+    ),
+    'guy762_SithMask_marauder': (
+        '.',
+        "A Sith Marauder's neck guard, worked in polished dark alloy. It covers the throat and very little else - a Marauder is not expected to be struck anywhere a neck guard would help.",
+    ),
+    'guy762_SithMask_colormarauder': (
+        '.',
+        "A Sith Marauder's neck guard, left plain so it can be dyed to a master's colours. It covers the throat and very little else.",
+    ),
+    'guy762_SecretFloorPanel_darkwhiteoutlines': (
+        'An inconspicuous floor panel.',
+        "An inconspicuous floor panel with a smuggler's void cut in beneath it. It swallows a startling amount of cargo and runs cold enough to keep it, and anyone crossing it sees nothing but deck. Finished in hangar plate, white-lined on dark grey.",
+    ),
+    'guy762_SecretFloorPanel_DoomgiverTile': (
+        'An inconspicuous floor panel.',
+        "An inconspicuous floor panel with a smuggler's void cut in beneath it. It swallows a startling amount of cargo and runs cold enough to keep it, and anyone crossing it sees nothing but deck. Finished in the heavy dark plate of a capital warship deck.",
+    ),
+    'guy762_SecretFloorPanel_DreadnaughtCabinTile_blue': (
+        'An inconspicuous floor panel.',
+        "An inconspicuous floor panel with a smuggler's void cut in beneath it. It swallows a startling amount of cargo and runs cold enough to keep it, and anyone crossing it sees nothing but deck. Finished in blue dreadnaught cabin tile.",
+    ),
+    'guy762_SecretFloorPanel_DreadnaughtCabinTile_black': (
+        'An inconspicuous floor panel.',
+        "An inconspicuous floor panel with a smuggler's void cut in beneath it. It swallows a startling amount of cargo and runs cold enough to keep it, and anyone crossing it sees nothing but deck. Finished in black dreadnaught cabin tile.",
+    ),
+    'guy762_SWGravshipOverlay_DynamicFreighter': (
+        MISSING,
+        'Hull plating in the Dynamic-class pattern - a mid-bulk hauler flown on every run where the cargo is legal and the margins are not.',
+    ),
+    'guy762_SWGravshipOverlay_KT400Freighter': (
+        MISSING,
+        'Hull plating in the KT-400 pattern, a light freighter built in enormous numbers and flown long past the point of sense.',
+    ),
+    'GS_Banner_Cult': (
+        MISSING,
+        'A long hanging banner bearing the sigil of an Imperial cult. Hung in a corridor, it announces at some length whose corridor it is.',
+    ),
+    'GS_Banner_Forge': (
+        MISSING,
+        'A hanging banner marked with an Imperial forge sigil - the same stamp found on ordnance crates, worn here at three metres tall.',
+    ),
+    'GS_Banner_Star': (
+        MISSING,
+        'A hanging banner bearing the Imperial star. Standard issue for any wall the Empire intends to be seen owning.',
+    ),
+    'GS_ImperialLamp': (
+        MISSING,
+        'A tall Imperial standard lamp built for open ground. It throws a hard, even light across a wide arc, and draws power steadily to do it.',
+    ),
+    'KotOR_watertank': (
+        MISSING,
+        'A pressed-metal water tank of the sort bolted beside every moisture farm and dust-side outpost. This one is a prop: nothing can be drawn from it.',
+    ),
+    'SWCPTerrain_junkyardgarbage': (
+        MISSING,
+        "Ground so thoroughly buried in scrap and packaging that the soil beneath is a rumour. Walking it is slow, and nobody has ever called it pretty.",
+    ),
+    'SWCPTerrain_junkyardgarbage_soggy': (
+        MISSING,
+        "Trash that has been rained on long enough to rot down into sediment. It sucks at the boots and it stinks.",
+    ),
+}
+
+for _key, (_old, _new) in DESCRIPTION_BACKFILL.items():
+    FIXES.setdefault(_key, {})["description"] = (_old, _new)

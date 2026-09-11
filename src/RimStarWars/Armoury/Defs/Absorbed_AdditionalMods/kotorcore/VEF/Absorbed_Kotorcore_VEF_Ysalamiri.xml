@@ -66,7 +66,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>SWPotF_RaceDef_ysalamir</defName>
     <label>ysalamir</label>
-    <description>.</description>
+    <description>A slow, claw-footed tree lizard whose living body nullifies psychic sensitivity in everything near it. It eats almost nothing, lays eggs and takes training well; keeping one close is a dependable way to make a psychic problem stop being a problem.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <MarketValue>500</MarketValue>

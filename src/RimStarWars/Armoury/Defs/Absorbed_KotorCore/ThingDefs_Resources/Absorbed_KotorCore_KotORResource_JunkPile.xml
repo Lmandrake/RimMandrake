@@ -595,6 +595,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>SWCPTerrain_junkyardgarbage</defName>
     <label>trash-covered soil</label>
+    <description>Ground so thoroughly buried in scrap and packaging that the soil beneath is a rumour. Walking it is slow, and nobody has ever called it pretty.</description>
     <texturePath>BiomeTerrain/trash</texturePath>
     <!-- <pollutionOverlayTexturePath>BiomeTerrain/trash_polluted</pollutionOverlayTexturePath> -->
     <pollutionOverlayTexturePath>Terrain/Surfaces/RoughStonePollutionOverlay</pollutionOverlayTexturePath>
@@ -639,6 +640,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>SWCPTerrain_junkyardgarbage_soggy</defName>
     <label>trash sediment</label>
+    <description>Trash that has been rained on long enough to rot down into sediment. It sucks at the boots and it stinks.</description>
     <texturePath>BiomeTerrain/trash_polluted</texturePath>
     <!-- <pollutionOverlayTexturePath>BiomeTerrain/trash_polluted</pollutionOverlayTexturePath> -->
     <pollutionOverlayTexturePath>Terrain/Surfaces/RoughStonePollutionOverlay</pollutionOverlayTexturePath>

@@ -510,7 +510,7 @@
   <ThingDef ParentName="guy762_HeadbandBase">
     <defName>guy762_SithMask_marauder</defName>
     <label>Sith Marauder neck guard (polished)</label>
-    <description>.</description>
+    <description>A Sith Marauder's neck guard, worked in polished dark alloy. It covers the throat and very little else - a Marauder is not expected to be struck anywhere a neck guard would help.</description>
     <graphicData>
       <texPath>SWApparel/Sith/marauder/neck</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -650,7 +650,7 @@
   <ThingDef ParentName="guy762_HeadbandBase">
     <defName>guy762_SithMask_colormarauder</defName>
     <label>Sith Marauder neck guard</label>
-    <description>.</description>
+    <description>A Sith Marauder's neck guard, left plain so it can be dyed to a master's colours. It covers the throat and very little else.</description>
     <graphicData>
       <texPath>SWApparel/Sith/marauder/neck</texPath>
       <graphicClass>Graphic_Single</graphicClass>
