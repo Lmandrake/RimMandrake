@@ -276,6 +276,10 @@ inside an organism that is actively trying to heal you out of it.**
 
 ## Owed
 
+⭐ **C# kit spec DRAFTED 2026-09-11** (`GREENTIDE_MECHANICS_1`):
+`kits/greentide_kit_spec.md` — 12 mechanics engine-mapped, 4 ruled-comp reuses,
+9 new RM_ classes; 3 owner cards open (rides `KIT_SPECS_CARD_SITTING_1`).
+
 - **Roster** — rides the full plant-and-animal assignment pass: the sorts of §4
   against the standing cast; flora to §6's flammability ban; the fruit, and what
   the Greentide keeps of GRiNDTerra's plants (mod stays for the desert regardless).

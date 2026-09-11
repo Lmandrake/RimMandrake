@@ -257,6 +257,11 @@ changed. That is the Jawa testimony, and the mechanics make it true.
 
 ## Owed
 
+⭐ **C# kit spec DRAFTED 2026-09-11** (`SCARLANDS_MECHANICS_1`):
+`kits/scarlands_kit_spec.md` — 5 mechanics engine-mapped, 2 staged-lore
+couplings (`STAGED_LORE_BUILD_1`); 7 owner cards open (rides
+`KIT_SPECS_CARD_SITTING_1`).
+
 - `SCARLANDS_MECHANICS_1` — the C# kit: the mynock ship-infestation system
   (boarding, breeding, conduit/flooring/lighting consumption, hunt-out), the
   Scarlands mark hediff, scaria-onset behavior for the plated grazers,
