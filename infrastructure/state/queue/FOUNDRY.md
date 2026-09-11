@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T06:34:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T06:36:41Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -539,15 +539,6 @@ target:   v1
 kind:     design
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
-
-## STAT_NORMALIZATION_AUDIT_1 Census third-party mods that adjust animal/plant stats, rarity, appearance, size, growth before a self-owned-content normalization pass
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  This is a census + risk-ordered retirement PLAN. Do not retire anything in this
-prose:    infrastructure/state/items/STAT_NORMALIZATION_AUDIT_1.md
 
 ## MODLIST_RESTORE_AND_BATCH_DEPLOY_1 Restore the abandoned full campaign modlist, apply Wave 1 retirement, enable tonight's new own-built mods, redeploy updated DLLs, one clean restart
 state:    doing
