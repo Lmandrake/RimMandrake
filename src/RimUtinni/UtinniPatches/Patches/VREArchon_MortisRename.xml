@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  VREArchon_MortisRename.xml                 RimUtinni Patches - new file 2026-09-11
+  ============================================================================
+
+  DONOR_FACTION_PROPER_NOUN_RENAMES_1, owner ruling 2026-09-11 ("Yes, draft
+  them now"), item 5 of 6 from DONOR_PROPER_NOUN_SCAN_1's Category 7
+  (design/Jawa/donor_proper_noun_backlog.md). "Archons" are a
+  dimension-hopping sci-fantasy race with no proper-noun clash but an
+  off-register lore voice - the backlog flagged this as lower priority and
+  deferred whether it was worth a pass at all; the owner's "draft them now"
+  covers all 6 of the mappable rows, this one included.
+
+  Canon fit, and an honest note on its limits: the closest real anchor is the
+  Mortis arc (The Clone Wars) - the Ones (Father, Son, Daughter), a family of
+  Force-wielders on the pocket-dimension world Mortis, and the World Between
+  Worlds, the extra-dimensional nexus of doors linking every moment in time
+  and space, reached through a Mortis-gods mural. Unlike the other 5 renames,
+  the Ones are three NAMED individuals, not an army - a FactionDef that
+  generates many raiding pawns cannot literally BE them. This patch does not
+  claim it does: it reframes VRE_Archons as beings who slip between worlds
+  through the passage the Ones first opened, not as the Ones themselves. That
+  is a real interpretive stretch, flagged here rather than overstated, and
+  the weakest of the 6 fits by the backlog's own reckoning.
+
+  TEXT ONLY. defNames (VRE_Archons, VRE_Archon), mechanics (raid tuning, gene
+  effects, faction relations, psycasting) are UNCHANGED. This patches label/
+  description/leaderTitle/pawnSingular/pawnsPlural strings only.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Races Expanded - Archon</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="VRE_Archons"]/label</xpath>
+          <value><label>wanderers of the World Between Worlds</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="VRE_Archons"]/fixedName</xpath>
+          <value><fixedName>the Wanderers</fixedName></value>
+        </li>
+        <!-- leaderTitle has no literal XML node on the donor def (it falls
+             back to Verse.FactionDef's C# default, "leader") -
+             PatchOperationReplace cannot hit a node that was never written,
+             so this is Conditional Add-or-Replace instead of a plain Replace. -->
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/FactionDef[defName="VRE_Archons"]/leaderTitle</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/FactionDef[defName="VRE_Archons"]</xpath>
+            <value><leaderTitle>Warden of the Threshold</leaderTitle></value>
+          </nomatch>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/FactionDef[defName="VRE_Archons"]/leaderTitle</xpath>
+            <value><leaderTitle>Warden of the Threshold</leaderTitle></value>
+          </match>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="VRE_Archons"]/pawnSingular</xpath>
+          <value><pawnSingular>wanderer</pawnSingular></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="VRE_Archons"]/pawnsPlural</xpath>
+          <value><pawnsPlural>wanderers</pawnsPlural></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/XenotypeDef[defName="VRE_Archon"]/label</xpath>
+          <value><label>Mortis wanderer</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/XenotypeDef[defName="VRE_Archon"]/description</xpath>
+          <value>
+            <description>A complete mystery whose earliest recorded sightings trace back to Mortis, the hidden world where the Ones - Father, Son, and Daughter - are said to have kept the Force itself in balance. Wanderers are quasi-human beings capable of stepping through the World Between Worlds, the nexus of doors said to link every moment in time and space, appearing without warning and following no pattern any pursuer has ever mapped.
+
+Little concrete information has been gleaned from the few documented encounters. There are scattered accounts of wanderers taking people through the threshold and never returning them, and every attempt to kill one is cut short the instant it steps back through a door no one else can see. Their equipment answers to no catalogue anyone has traced, and worlds that report one sighting tend, before long, to report several more.</description>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

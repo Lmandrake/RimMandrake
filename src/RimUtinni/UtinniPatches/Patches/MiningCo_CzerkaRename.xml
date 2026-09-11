@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  MiningCo_CzerkaRename.xml                  RimUtinni Patches - new file 2026-09-11
+  ============================================================================
+
+  DONOR_FACTION_PROPER_NOUN_RENAMES_1, owner ruling 2026-09-11 ("Yes, draft
+  them now"), item 2 of 6 from DONOR_PROPER_NOUN_SCAN_1's Category 4
+  (design/Jawa/donor_proper_noun_backlog.md). "MiningCo." is an invented
+  sci-fi corporate brand with no place in a Star Wars register.
+
+  Canon fit RE-VERIFIED 2026-09-11 (the web-research draft flagged its own
+  Czerka citation as needing a second check - primary hits had come from
+  swgames.fandom.com/swtor-archive.fandom.com, not Wookieepedia itself). A
+  fresh search corroborates it from swtor-archive.fandom.com, jedipedia.net's
+  SWTOR codex and swtorstrategies.com: Czerka was **founded as "Czerka Mining
+  and Industrial"** before diversifying into weapons and consumer goods, ran
+  operations on Tatooine among many other worlds, and by the Cold War era
+  employed billions and sat in the Republic Senate - a galaxy-spanning mining
+  megacorp with a private security arm, exactly MiningCo.'s own donor
+  description ("the most famous deep-space mining company... its private army
+  is never far away"). The pick holds up; no need to fall back to the
+  Legends-only Offworld Mining Corporation.
+
+  TEXT ONLY. defNames (MiningCo, OrbitalRelay, Spaceship, SpaceshipCargo,
+  ResearchMobileMineralSonar), mechanics (research costs/prereqs, ship
+  stats/behavior, faction relations, comms/turret mechanics from the sibling
+  MiningCo. mods) are UNCHANGED. This patches label/description/leaderTitle
+  strings only, across every donor mod in the MiningCo. family that carries
+  the brand name.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>MiningCo. Spaceship (Continued)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="MiningCo"]/label</xpath>
+          <value><label>Czerka Corporation</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="MiningCo"]/fixedName</xpath>
+          <value><fixedName>Czerka Corporation</fixedName></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="MiningCo"]/description</xpath>
+          <value>
+            <description>Founded as Czerka Mining and Industrial, the Czerka Corporation has spent centuries growing into a galaxy-spanning megacorp with holdings on more worlds than most navies can chart. Though its charter still names mineral extraction as the core business, its private security contractors are never far behind - and never slow to move when local claim-jumpers or a rival firm threaten the ledger.</description>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="MiningCo"]/leaderTitle</xpath>
+          <value><leaderTitle>sector director</leaderTitle></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="OrbitalRelay"]/description</xpath>
+          <value>
+            <description>This giant communication array is able to reach nearest Czerka Corporation ships and comms satellites orbiting around the planet.</description>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="Spaceship"]/description</xpath>
+          <value>
+            <description>A spaceship used by the Czerka Corporation to maintain a link between ground operations and the orbital station orbiting around the planet.</description>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="SpaceshipCargo"]/description</xpath>
+          <value>
+            <description>A spaceship used by the Czerka Corporation to convey bulk resources and materials.</description>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- ResearchTabDef/MiningCo and ResearchMobileMineralSonar ship from the
+       sibling "MiningCo. MMS" mod, a separate packageId - gated separately so
+       this patch does not silently no-op if only the spaceship half loads. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>MiningCo. MMS (Continued)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ResearchTabDef[defName="MiningCo"]/label</xpath>
+          <value><label>Czerka Corporation</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ResearchProjectDef[defName="ResearchMobileMineralSonar"]/description</xpath>
+          <value>
+            <description>Study the famous Czerka MiSoTech* to develop a mineral sonar able to scan and detect ore pockets in the heart of mountains.
+
+* MiSoTech: Mineral Sonar Technology</description>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

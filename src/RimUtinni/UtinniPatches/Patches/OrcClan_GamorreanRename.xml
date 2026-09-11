@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  OrcClan_GamorreanRename.xml                RimUtinni Patches - new file 2026-09-11
+  ============================================================================
+
+  DONOR_FACTION_PROPER_NOUN_RENAMES_1, owner ruling 2026-09-11 ("Yes, draft
+  them now"), item 1 of 6 from DONOR_PROPER_NOUN_SCAN_1's Category 1
+  (design/Jawa/donor_proper_noun_backlog.md). "Orc Clan" (karew.orcclan) is a
+  full fantasy race+faction with no place in a Star Wars register. Canon fit
+  verified against Wookieepedia (starwars.fandom.com/wiki/Gamorrean, checked
+  2026-09-11, not just trusted from the web-research draft): Gamorreans are
+  green-skinned, tusked, pig-faced humanoid brutes organized into CLANS, each
+  led by a WARLORD and a Clan Matron - matches the donor's own clan structure
+  and "cnarlord" leader title almost exactly.
+
+  TEXT ONLY. defNames (KAR_OrcClan, KAR_Orc), mechanics (raid tuning, gene
+  effects on KAR_Tusks/KAR_OrcishEars/the metamorphosis genes, faction
+  relations) are UNCHANGED. This patches label/description/leaderTitle/
+  pawnSingular/pawnsPlural strings only.
+
+  🔴 NOT literally "Gamorrean" on the XENOTYPE, and this is deliberate, not an
+  oversight: this campaign already ships a fully mechanical native Gamorrean
+  race, RSW_RimMandrakeGamorrean (src/RimStarWars/StarWarsRaces/Defs/
+  XenotypeDefs/RimMandrakeXenotypes.xml), used as Hutt Cartel/Junkers hired
+  muscle (JawaHuttCartel.xml, JawaJunkers.xml) - different genes (RSW_Face_
+  jowls/tusks, RSW_BodySizeGene_big) than this donor's KAR_Orc (KAR_Tusks,
+  KAR_OrcishEars, its own metamorphosis genes). Labelling KAR_Orc plain
+  "Gamorrean" would put two different, mechanically distinct xenotypes on the
+  chargen list under the identical name - confusing, not a clean swap. KAR_Orc
+  is labelled "clan Gamorrean" instead: unambiguously the same species,
+  distinguishing this donor's own clan-bred lineage from the cartel's.
+  The FACTION itself is not ambiguous the same way (only one FactionDef can
+  hold a given label at once) and is renamed plain "Gamorrean Clan".
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Orc Clan + Xenotype</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="KAR_OrcClan"]/label</xpath>
+          <value><label>Gamorrean Clan</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="KAR_OrcClan"]/description</xpath>
+          <value>
+            <description>A clan of Gamorrean reclaimers and raiders, ruled by a warlord and his Clan Matron. While sometimes welcoming of outsiders, they tend to be distrustful of other groups. Their thick hides and tolerance for harsh climates let them make a living in remote places, squatting in ancient derelict settlements the rest of the galaxy has forgotten.
+
+Every clan holds to a strict code of work ethic and personal honor. Anyone who is not an asset to the group is quickly shunned. Many smaller clans try to make a name for themselves the old way - raiding and pillaging whatever crosses their territory.
+
+Gamorrean clans have wandered the Outer Rim for longer than most records reach; how this one's ancestors ended up scraping a living on this world has long since passed from memory into legend.</description>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="KAR_OrcClan"]/leaderTitle</xpath>
+          <value><leaderTitle>warlord</leaderTitle></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="KAR_OrcClan"]/pawnSingular</xpath>
+          <value><pawnSingular>gamorrean</pawnSingular></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/FactionDef[defName="KAR_OrcClan"]/pawnsPlural</xpath>
+          <value><pawnsPlural>gamorreans</pawnsPlural></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/XenotypeDef[defName="KAR_Orc"]/label</xpath>
+          <value><label>clan Gamorrean</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/XenotypeDef[defName="KAR_Orc"]/description</xpath>
+          <value>
+            <description>Tall, imposing Gamorreans with a mottled green-blue hide, born and bred into a clan that never sold its labor to the Hutts. Fierce warriors who favor hand-to-hand combat and stalking tactics, they are known for charging firing lines to land brutal melee blows even when outnumbered.
+
+Where a cartel-bred Gamorrean is drilled into hired muscle, a clan Gamorrean grows up wild - proud, quick to take offense, and shaped by generations of scraping a living out of hostile ground. Their robust, heavy-boned physiques come at the cost of a hungrier metabolism.</description>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
