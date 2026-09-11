@@ -2579,8 +2579,8 @@
     "fauna:the_rot:BMT_GlowBat": {
       "art": "keep",
       "artPrefill": "keep",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "CUT — all flying bats (owner; this is the \"violescent/bioluminescent bat\") (sitting ruling 2026-09-10)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7980,6 +7980,12 @@
       "prefill": "in",
       "art": "keep",
       "note": "CUT — all 'lisks retired (owner) (sitting ruling 2026-09-10); def had no register row, added for the record"
+    },
+    "homeless:BMT_BrownBat": {
+      "decision": "out",
+      "prefill": "in",
+      "art": "keep",
+      "note": "CUT — all flying bats (owner) (sitting ruling 2026-09-10); def had no register row, added for the record"
     }
   },
   "generatedBy": "gen_fauna_assignment_sheet.py (2026-09-09 rulings rebuild)",
