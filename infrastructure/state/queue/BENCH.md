@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T07:10:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T07:14:58Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -22,33 +22,6 @@ target:   v1
 kind:     task
 summary:  - Write the ruling INTO the docs that already speak of the planet's past (superseding
 prose:    infrastructure/state/items/TERRAMANUFACTURE_CANON_1.md
-
-## GREENTIDE_MECHANICS_1 The Greentide C# kit: wet-bulb condition+gear, dry-air blower, scald damage+steam devils, Roil/Breaklight weathers, churnmud+causeways, three-feller tree fall, Lunger ambush, grazing suppression, silence cue, Greatbole mineable-living-tree class — spec the_greentide.md
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/GREENTIDE_MECHANICS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GREENTIDE_MECHANICS_1.md
-
-## WEBWORK_MECHANICS_1 Webwork C# kit: web-sense felt-marks + pack convergence, concealed-burst ambush, Shokk-bound hediff, light-moat via existing UV-sensitivity mechanism (verify def), beetle anchor-chewing, margin creep, droid-priority targeting — spec the_webwork.md
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/WEBWORK_MECHANICS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WEBWORK_MECHANICS_1.md
-
-## SCARLANDS_MECHANICS_1 Scarlands C# kit: mynock ship-infestation (board/breed/eat conduit+flooring+lighting/hunt-out), Scarlands mark hediff, plated-grazer scaria onset, Sentinel defend-only AI bounds, pre-sprung danger dressing — spec the_scarlands.md
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/SCARLANDS_MECHANICS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SCARLANDS_MECHANICS_1.md
 
 ## WORLDMAP_FINAL_REVIEW_1 Studio-grade final worldmap review: measured audits (rivers/roads/mutators/landmarks/settlements/biomes/landforms) + full-planet screenshot STARE + text/plot-leak pass + comprehensive verdict report — is this THE map? (owner, 2026-09-08)
 state:    ready
@@ -408,8 +381,8 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     decision
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/KIT_SPECS_CARD_SITTING_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  KITSPECSCARDSITTING1 — one sitting, every open owner call
 prose:    infrastructure/state/items/KIT_SPECS_CARD_SITTING_1.md
 
 ## FAUNA_GRAPHS_SITTING_1 Owner LOOKS at the 4 canonical fauna graphs (Transient/fauna_graphs_2026-09-11/) and rules: Law-3 K band for the full roster, the 23 narrow temp tolerances to widen, outlier dispositions (JOE_Nautilant 830pw etc), products axis next step
@@ -418,6 +391,6 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     decision
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FAUNA_GRAPHS_SITTING_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  The four PNGs at Transient/faunagraphs2026-09-11/ (committed 06c0a1be; data:
 prose:    infrastructure/state/items/FAUNA_GRAPHS_SITTING_1.md
