@@ -1,0 +1,95 @@
+{
+  "items": [
+    {
+      "id": "whisperbird_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE7_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Whisperbird — a medium, silent-flying avian ambush predator native to dense alien forest. Broad soft-edged wings built for near-noiseless flight, a compact rounded body with mottled dusky grey-brown plumage for camouflage against foliage and shadow, a small sharp-hooked beak, large forward-facing pale eyes adapted for low light. Reads as an unsettling, hushed nighttime hunter that gives no warning before it strikes. Single creature, centered, mid-glide pose with wings spread, no ground shadow, no background scenery, no motion-blur effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "SW canon identity KEPT — checked directly against design/RimStarWars/star_wars_canon_names.md's master-bestiary list (Whisperbird, provenance [B]) — a genuine third-party SW creature-pack name, no individual Wookieepedia writeup exists yet so the general silent-flying-avian-predator kind is drawn from the name itself and the row's own size context (medium) rather than invented detail. Row appears under four biomes (arid_shrubland/the_fever_wood/the_greentide/the_miasma, all medium, no note); the_greentide picked as the representative biome for this job. Full regen, same mechanism as 'redo'. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "hawkbat_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE7_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Hawk-bat — a medium, aggressive cave-and-canopy-dwelling flying predator. Leathery membranous wings spanning a lean sinewy body, sharp taloned feet held tucked for a swooping strike, a narrow snouted head with glowing reddish eyes adapted to darkness, mottled dark brown-black hide with faint ridging along the wing bones. Reads as a shrieking, territorial ambush flyer that hunts by sound as much as sight. Single creature, centered, mid-swoop pose with wings angled forward, no ground shadow, no background scenery, no screech/sound-wave effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "SW canon identity KEPT — checked directly against design/RimStarWars/star_wars_canon_names.md's master-bestiary list ('Hawk-bat', provenance [B]) — a genuine SW species (screen-canon predator, e.g. Star Wars Rebels' Kashyyyk/Onderon appearances): leathery-winged, red-eyed, shrieking nocturnal ambush flyer. Converge on that established look rather than invent one. Medium sizeBin, the_greentide biome, no note. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "pekopeko_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE7_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Peko-peko — a large, flightless draft-and-mount bird. Sturdy thick-legged body with a long muscular neck and a broad-based beak, small vestigial wings held close to the body, coarse shaggy brown-and-cream plumage suited to hauling and riding. Reads as a hardy, ostrich-like beast of burden capable of both labor and being ridden. Single creature, centered, standing alert pose, no ground shadow, no background scenery, no saddle or harness. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "SW canon identity KEPT — checked directly against design/RimStarWars/star_wars_canon_names.md's master-bestiary list ('Peko-peko', provenance [B]) — a genuine SW species (screen-canon large flightless bird used as a draft/mount animal, seen in Star Wars Rebels). Converge on that established look. Large sizeBin, the_greentide biome, no note. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "mycolith_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE7_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien fungal titan (working name 'Mycolith') — a colossal, lumbering composite-fungus organism, the largest creature in its rot-choked biome. NOT a mundane Earth animal: an immense bloated trunk-like body built from fused fungal masses, thick rubbery grey-and-ochre skin studded with small weeping fruiting-body nodules, no visible eyes, a wide low gaping maw ringed with spore-dusted fleshy lobes, four massive stump-like legs sunk deep for bearing its own weight. Reads as an ancient, slow, unsettling fungal colossus that dwarfs everything around it. Single creature, centered, standing pose, no ground shadow, no background scenery, no spore-cloud effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (AA_MycoidColossus) REIMAGINED — checked against design/RimStarWars/star_wars_canon_names.md and not found anywhere in it (an Alpha Animals donor-mod name, not SW). General kind fixed per the row's own note ('Biggest. 10 squares.' — the largest creature in its biome), specific name/character invented: 'Mycolith'. Titan sizeBin, the_rot biome. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "fenshear_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE7_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien miasma-swamp predator (working name 'Fenshear') — a large, aggressive raptor-postured crustacean hybrid built for ambush in a toxic bog biome. NOT a mundane Earth shrimp or lizard: a lean forward-leaning body balanced on two powerful digitigrade rear legs, a segmented chitinous shell in mottled bruise-purple and sickly green, a pair of oversized serrated shearing claws held ready at the chest, a narrow eyeless armored head with sensory antennae. Reads as a fast, dangerous ambush predator adapted to poisonous wetlands. Single creature, centered, low predatory lunge-ready pose, no ground shadow, no background scenery, no mist/gas effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (AA_RaptorShrimp) REIMAGINED — checked against design/RimStarWars/star_wars_canon_names.md and not found anywhere in it (an Alpha Animals donor-mod name, not SW). General kind fixed (a large raptor-postured crustacean ambush predator, per the source name's own raptor+shrimp compound), specific name/character invented: 'Fenshear'. Large sizeBin, the_miasma biome, no note. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "grubhorn_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE7_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien rot-biome grazer (working name 'Grubhorn') — a large, placid armored grazing beast adapted to a fungus-choked toxic biome. NOT a mundane Earth cow or beetle: a heavy barrel-bodied quadruped with a segmented beetle-like carapace across its back in dull rust-brown plates, a low blunt head bearing a pair of thick curling ridged horns, short stout legs ending in broad digging hooves, small deep-set eyes. Reads as a slow, heavily armored herbivore built to survive a hostile rotting landscape. Single creature, centered, standing grazing-ready pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (BMT_BovineBeetle) REIMAGINED — checked against design/RimStarWars/star_wars_canon_names.md and not found anywhere in it (a BiomesTeam donor-mod name, not SW). General kind fixed (a large armored bovine-beetle-hybrid grazer, per the source name's own compound), specific name/character invented: 'Grubhorn'. Large sizeBin, the_rot biome, no note. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "emberscythe_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE7_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien pyrelands predator (working name 'Emberscythe') — a large, fire-adapted mantis-like ambush hunter native to a volcanic biome. NOT a mundane Earth insect: a tall, angular segmented body in blackened charcoal-grey chitin with glowing orange seams along the joints, two enormous serrated scythe-forelimbs held folded and ready to strike, a narrow triangular head with large faceted heat-sensing eyes, thin heat-warped wing cases along the back. Reads as a patient, lethal predator perfectly camouflaged against scorched volcanic rock. Single creature, centered, still ambush-stance pose with forelimbs raised, no ground shadow, no background scenery, no fire/ember particle effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (GR_Mantistanis) REIMAGINED — checked against design/RimStarWars/star_wars_canon_names.md and not found anywhere in it (a GR-prefixed donor-mod name, not SW). General kind fixed (a large fire-adapted mantis-like ambush predator, per the source name's own mantis root), specific name/character invented: 'Emberscythe'. Large sizeBin, the_pyrelands biome, no note. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    }
+  ]
+}

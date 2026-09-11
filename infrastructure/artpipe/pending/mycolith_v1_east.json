@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-11T22:57:00Z",
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "mycolith_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien fungal titan (working name 'Mycolith') \u2014 a colossal, lumbering composite-fungus organism, the largest creature in its rot-choked biome. NOT a mundane Earth animal: an immense bloated trunk-like body built from fused fungal masses, thick rubbery grey-and-ochre skin studded with small weeping fruiting-body nodules, no visible eyes, a wide low gaping maw ringed with spore-dusted fleshy lobes, four massive stump-like legs sunk deep for bearing its own weight. Reads as an ancient, slow, unsettling fungal colossus that dwarfs everything around it. Single creature, centered, standing pose, no ground shadow, no background scenery, no spore-cloud effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE7_QUEUE_1",
+  "style_notes": "Non-SW name (AA_MycoidColossus) REIMAGINED \u2014 checked against design/RimStarWars/star_wars_canon_names.md and not found anywhere in it (an Alpha Animals donor-mod name, not SW). General kind fixed per the row's own note ('Biggest. 10 squares.' \u2014 the largest creature in its biome), specific name/character invented: 'Mycolith'. Titan sizeBin, the_rot biome. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling."
+}
