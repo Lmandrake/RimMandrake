@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.creaturebehaviors</packageId>
+  <name>RimMandrake: Creature Behaviors</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>SHIP_VERMIN_MOD_1 (owner ruling, 2026-09-11, on the Scarlands and
+Webwork kit-placement cards): a small shared engine assembly for generic
+JobGiver/MapComponent creature-AI classes that more than one future mod needs,
+so nothing gets duplicated per-species or dumped into
+mandrake.rm.environmentalhazards (which stays hazards-only, no creature AI).
+
+RM tier: nothing here knows what species, biome or campaign uses it. Every
+class is driven entirely by DefModExtensions a content mod attaches to its own
+race/pawnKind via an ordinary XML patch — this mod ships zero content defs of
+its own beyond the plumbing (a JobDef and two insertable ThinkTreeDefs).
+
+First consumer: ShipVermin (mandrake.rm.shipvermin, the mynock and future
+ship-infesting critters). Reserved for later, per the owner's ruling on the
+Webwork kit-placement card: a future Greentide standalone mod and a future
+Shokk RimStarWars-tier mod (SHOKK_RSW_MOD_1) will also depend on this mod
+rather than re-implement the same primitives.
+
+Ships:
+  1. RM_MapComponent_VerminPopulation — per-map population tracker. Any race
+     carrying RM_VerminPressureExtension is counted by its populationGroupTag;
+     GetPressure() returns 0..1 scaled between the extension's soft and hard
+     population caps ("nuisance unless there are many" — owner-verbatim
+     ruling, 2026-09-11 — implemented as an actual scaling curve other comps
+     and JobGivers read, not a comment).
+  2. RM_CompVerminBreeder (+ RM_CompProperties_VerminBreeder) — a lord-free,
+     population-capped breeder comp: spawns an adjacent copy of the parent
+     pawn on an interval, refusing once RM_MapComponent_VerminPopulation
+     reports the race's hard cap reached on this map. Deliberately NOT
+     vanilla CompSpawnerPawn: that comp always builds a Lord for its spawns
+     (RimSage-verified against CompSpawnerPawn.TrySpawnPawn), which would
+     fight a vermin's own think-tree behavior.
+  3. RM_SeekTargetExtension + RM_JobGiver_SeekMarkedTerrain — generic
+     "walk to and linger on a data-tagged cell" behavior (gravship
+     substructure, by defName-listed terrain, or both). No-ops instantly for
+     any pawn whose race lacks the extension, so it is safe to insert
+     globally.
+  4. RM_GnawTargetExtension + RM_JobGiver_GnawTargets + RM_JobDriver_Gnaw
+     (JobDef RM_Gnaw) — generic "chew a data-listed building/comp/floor
+     terrain for nutrition" behavior. Bite damage and job-seek frequency both
+     scale with RM_MapComponent_VerminPopulation's pressure value — the
+     mechanical form of "nuisance unless there are many": lone vermin gnaw
+     rarely and lightly, a swarm gnaws often and hard.
+  5. RM_ThinkTree_VerminBehaviors — a ThinkTreeDef with
+     insertTag="Animal_PreMain", so the two JobGivers above are tried for
+     every animal in the game (vanilla's own extension point for this,
+     Verse.AI.ThinkNode_SubtreesByTag) but do nothing unless the pawn's race
+     carries the matching extension.
+  6. RM_Alert_VerminPopulationBase — abstract Alert base; a concrete mod
+     (ShipVermin's RM_Alert_ShipVermin) supplies the group tag and label.
+
+Live proof is OWED: this mod has not yet been loaded in a running game.</description>
+</ModMetaData>
