@@ -324,21 +324,21 @@ defect.
 
 ## 8. Open questions — the owner's, not ours
 
-1. **Palette anchors per biome** — §3 needs the §9 prose turned into hexes; proposed
-   as one conversation sitting, same loop as the sheets. Ratify or delegate?
-2. **Animated flora** — the owner's own note (AB_WildRadagast: *"Is it possible to
-   animate a bush like this so that its little lights twinkle slowly?"*). Vanilla
-   plants are static; twinkle needs a shader/comp lift (C#). Worth a spike item, or
-   ruled out?
+1. **Palette anchors per biome** — ✅ RULED (owner card, 2026-09-10): DRAFT + COLOR-BOARD
+   REVIEW. A design agent derives draft hexes from each sheet's own color prose and
+   existing art; the owner reviews one visual color-board and overrules by eye.
+2. **Animated flora** — ✅ RULED (owner card, 2026-09-10): TIMEBOXED SPIKE
+   (TWINKLE_FLORA_SPIKE_1): prove a slow glow-pulse on ONE plant, measure the
+   per-plant tick cost, report back before any wider use.
 3. **Films & mats slot** — ✅ RULED (owner card, 2026-09-10): the INTERACTION TEST.
    If a colonist ever interacts with ONE of it (harvest, cut, study) it is a Plant
    def; a condition of the ground is terrain; Filth only for transient residue.
    Each card declares which.
-4. **The accent-per-biome cap and the contrast law (§3)** are invented coherence
-   rules — ratify, amend, or strike.
-5. **Set-demands** (rainbow suite "3–4 blooms", the fractal-flora set, the twilight
-   kelp forest) — one card per species, so the 118-row census under-counts actual
-   art. Confirm the set sizes when each card is filled?
+4. **The accent-per-biome cap and the contrast law (§3)** — ✅ RATIFIED AS WRITTEN
+   (owner card, 2026-09-10). One palette family per biome, ladder slots separated by
+   value, at most one accent species.
+5. **Set-demands** — ✅ RULED (owner card, 2026-09-10): DEFAULT 3 SPECIES per set;
+   a card may argue a different size. The census under-count is bounded accordingly.
 
 ---
 

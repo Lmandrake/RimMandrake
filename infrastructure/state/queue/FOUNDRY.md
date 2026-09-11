@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T02:44:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T02:49:12Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -956,3 +956,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PYRELANDS_FIRE_WEB_COMMISSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_FIRE_WEB_COMMISSION_1.md
+
+## TWINKLE_FLORA_SPIKE_1 Timeboxed spike: slow glow-pulse animation on ONE plant (comp/shader), measure per-plant tick cost, report feasibility (owner card ruling)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TWINKLE_FLORA_SPIKE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TWINKLE_FLORA_SPIKE_1.md
