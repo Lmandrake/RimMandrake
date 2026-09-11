@@ -39,11 +39,16 @@ rather than filed as individual bugs.
 - `Absorbed_KotorCore/Absorbed_KotorCore_RulePacks_StormtrooperNameMaker.xml:26`
   — an internal (never player-visible) rule-keyword path contains donor-author
   venting in its literal string. Harmless, just worth a name cleanup someday.
-- `Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_lightsabernames.xml`
-  — `NamerWeaponLightsaber` RulePackDef randomly names lightsabers after
-  Final Fantasy VI characters (Terra, Locke, Kefka, Bahamut...). Thematically
-  odd for a Star Wars pack but functions fine; a design call whether to keep,
-  not a bug.
+No fix applied to the remaining items above. Any of these can be picked up
+standalone whenever flavor text is being passed over anyway; none blocks
+anything else.
 
-No fix applied. Any of these can be picked up standalone whenever flavor
-text is being passed over anyway; none blocks anything else.
+`Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_lightsabernames.xml`
+(`NamerWeaponLightsaber` naming lightsabers after Final Fantasy VI characters)
+was listed here as a design call for the owner, not a bug — **superseded
+2026-09-11**: `design/RimStarWars/star_wars_canon_names.md` Known-issue #1
+reclassified it as a live gameplay-text bug (a Star Wars pack generating
+Final Fantasy names for every player-crafted lightsaber) and it was fixed —
+the 42 Final Fantasy VI names replaced with 40 genuine Star Wars names via
+`RULEPACK_LIST_FIXES` in `absorption_content_fixes.py`, so the fix survives
+regeneration.

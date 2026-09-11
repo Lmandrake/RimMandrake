@@ -10,8 +10,14 @@ applied. Left OUT on purpose, not fixed here:
     a mismatched reference; not confident enough to do blind.
   - the Bullets_Special.xml donor TODO comment -- informational only, the
     fix would be real DamageWorker C#, not a text nit.
-  - lightsabernames.xml naming lightsabers after Final Fantasy characters --
-    the filer flagged this as a design call for the owner, not a bug.
+
+lightsabernames.xml naming lightsabers after Final Fantasy VI characters
+(Terra, Kefka, Bahamut...) WAS left as a design call for the owner
+(KOTORWEAPONS_ABSORPTION_CONTENT_NITS_1) -- superseded 2026-09-11:
+`design/RimStarWars/star_wars_canon_names.md` Known-issue #1 reclassified it
+as a live gameplay-text bug (a Star Wars pack generating Final Fantasy names
+for every player-crafted lightsaber), confirmed unclaimed via `rimflow next
+--seat FOUNDRY`, and fixed via RULEPACK_LIST_FIXES below.
 
     from absorption_content_fixes import apply_content_fixes
     apply_content_fixes(el)   # el is one top-level def Element, already
@@ -165,6 +171,47 @@ MAYREQUIRE_FIXES = {
     "guy762_MW2WeaponVerbAbility_wristgun_flamethrower": "guy762.KotORDroids",
 }
 
+# Whole-list content swap (not a single-field text fix, so it doesn't fit
+# FIXES' field-path/expected-old-text shape): NamerWeaponLightsaber's
+# rulesStrings donor content is Final Fantasy VI character/esper names, not
+# Star Wars, on a Star Wars pack's live lightsaber-crafting name generator --
+# star_wars_canon_names.md Known-issue #1. Replacement names drawn from that
+# doc's own "Lightsaber-hilt namesakes" table (Characters section, sourced to
+# `lee.theforce.lightsaber`, a mod that already uses these exact names for
+# lightsaber hilts) plus a handful of KOTOR-era Jedi/Sith, since this file
+# lives under the KOTOR-absorbed content specifically. Keyed by defName ->
+# (container path, expected old <li> text list, new <li> text list); applied
+# only if the donor's current list still matches expected_old exactly, same
+# no-silent-fix discipline as FIXES (a donor update invalidates the match and
+# is reported via `warn` rather than silently overwritten).
+RULEPACK_LIST_FIXES = {
+    "NamerWeaponLightsaber": (
+        "rulePack/rulesStrings",
+        [
+            "Terra", "Locke", "Edgar", "Sabin", "Shadow", "Cyan", "Gau", "Celes",
+            "Setzer", "Strago", "Relm", "Mog", "Gogo", "Umaro", "Gestahl", "Kefka",
+            "Maduin", "Siren", "Cait Sith", "Kirin", "Ramuh", "Ifrit", "Shiva",
+            "Carbuncle", "Bismarck", "Phantom", "Unicorn", "Catoblepas", "Golem",
+            "Zona Seeker", "Fenrir", "Lakshmi", "Quetzalli", "Phoenix", "Ragnarok",
+            "Valigarmanda", "Midgarsormr", "Alexander", "Odin", "Raiden",
+            "Bahamut", "Crusader",
+        ],
+        [
+            "Aayla Secura", "Anakin Skywalker", "Asajj Ventress", "Count Dooku",
+            "Even Piell", "Galen Marek", "Jaden Korr", "Jaro Tapal",
+            "Karness Muur", "Ki-Adi-Mundi", "Kirak Infila", "Kit Fisto",
+            "Kyle Katarn", "Kylo Ren", "Luke Skywalker", "Mace Windu",
+            "Mara Jade", "Obi-Wan Kenobi", "Oppo Rancisis", "Plo Koon",
+            "Pong Krell", "Qui-Gon Jinn", "Quinlan Vos", "Saesee Tiin",
+            "Satele Shan", "Shaak Ti", "Sharad Hett", "Tenel Ka Djo",
+            "Ven Zallow", "Vernestra Rwoh", "Yoda", "Desann", "Revan",
+            "Bastila Shan", "Darth Malak", "Kreia", "Jolee Bindo", "Juhani",
+            "Visas Marr", "Ulic Qel-Droma",
+        ],
+    ),
+}
+
+
 # A THIRD-generation consumer of the same gated parts: guy762_armband_wristgun
 # (Absorbed_KotorWeapons_GadgetApparel_KotORModularWristLauncher.xml) lists
 # guy762_KotORpartWristgun_microrocket as a CompProperties_ModularWeapon
@@ -231,6 +278,45 @@ def apply_content_fixes(el, note=print, warn=None):
                 note("DEFAULT_PARTS MAYREQUIRE FIX APPLIED: %s <defaultParts> %s -> MayRequire=%r" % (dn, key[1], want))
             elif cur != want:
                 note("DEFAULT_PARTS MAYREQUIRE FIX SKIPPED (already has different MayRequire=%r): %s / %s" % (cur, dn, key[1]))
+
+    if dn and dn in RULEPACK_LIST_FIXES:
+        path, expected_old, new_names = RULEPACK_LIST_FIXES[dn]
+        container = el.find(path)
+        if container is None:
+            warn("RULEPACK LIST FIX SKIPPED (no such container): %s <%s>" % (dn, path))
+        else:
+            lis = container.findall("li")
+            prefixes = set()
+            cur_names = []
+            ok = True
+            for li in lis:
+                text = li.text or ""
+                if "->" in text:
+                    prefix, _, name = text.partition("->")
+                    prefixes.add(prefix)
+                    cur_names.append(name)
+                else:
+                    ok = False
+                    break
+            if not ok or len(prefixes) != 1 or cur_names != expected_old:
+                warn("RULEPACK LIST FIX SKIPPED (donor list no longer matches expected): %s <%s>" % (dn, path))
+            else:
+                prefix = next(iter(prefixes))
+                for li, name in zip(lis, new_names):
+                    li.text = "%s->%s" % (prefix, name)
+                # counts differ (40 replacements for 42 originals): trim or
+                # extend <li> elements to match new_names exactly.
+                if len(new_names) < len(lis):
+                    for li in lis[len(new_names):]:
+                        container.remove(li)
+                elif len(new_names) > len(lis):
+                    import xml.etree.ElementTree as _ET2
+                    for name in new_names[len(lis):]:
+                        new_li = _ET2.Element("li")
+                        new_li.text = "%s->%s" % (prefix, name)
+                        container.append(new_li)
+                note("RULEPACK LIST FIX APPLIED: %s <%s> (%d entries, Final Fantasy VI -> Star Wars)"
+                     % (dn, path, len(new_names)))
 
     if not fix_key or fix_key not in FIXES:
         return
