@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T20:26:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T20:33:00Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -693,6 +693,24 @@ kind:     build
 summary:  infrastructure/artpipe/done/lockjawimprovear7.json and br7.json (plus
 prose:    infrastructure/state/items/LOCKJAW_ART_WIRE_IN_1.md
 
+## BESTIARY_ARMOURY_DESC_BACKFILL_1 Description backfill: ~1830 missing/placeholder descriptions in RSW Armoury + SWBestiary (incl 211 storage-panel clones, literal TBD), generated against frozen biome sheets + naming grammar, tier-generic discipline enforced - text_lore_load_report.md S6
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/BESTIARY_ARMOURY_DESC_BACKFILL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BESTIARY_ARMOURY_DESC_BACKFILL_1.md
+
+## DONOR_PROPER_NOUN_SCAN_1 Instrumented scan of donor-stack text for off-lore proper nouns (orc clans, trolls, MiningCo, unthemed xenotypes first; SW donors last) -> bounded rename-patch backlog; skip anything pending a CherryPicker cull - text_lore_load_report.md S4
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DONOR_PROPER_NOUN_SCAN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DONOR_PROPER_NOUN_SCAN_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -997,24 +1015,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## BESTIARY_ARMOURY_DESC_BACKFILL_1 Description backfill: ~1830 missing/placeholder descriptions in RSW Armoury + SWBestiary (incl 211 storage-panel clones, literal TBD), generated against frozen biome sheets + naming grammar, tier-generic discipline enforced - text_lore_load_report.md S6
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BESTIARY_ARMOURY_DESC_BACKFILL_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BESTIARY_ARMOURY_DESC_BACKFILL_1.md
-
-## DONOR_PROPER_NOUN_SCAN_1 Instrumented scan of donor-stack text for off-lore proper nouns (orc clans, trolls, MiningCo, unthemed xenotypes first; SW donors last) -> bounded rename-patch backlog; skip anything pending a CherryPicker cull - text_lore_load_report.md S4
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DONOR_PROPER_NOUN_SCAN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DONOR_PROPER_NOUN_SCAN_1.md
+_none._

@@ -7381,3 +7381,11 @@
 {"seat":"FOUNDRY","event":"start","id":"TIER_GRAMMAR_TEXT_FIXES_1","ts":"2026-09-11T20:23:20Z"}
 {"seat":"FOUNDRY","event":"file","id":"JAWA_PHRASING_RSW_TIER_CARD_1","title":"Card: is Jawa-clan phrasing allowed at RSW tier, or must it stay RUT-only?","kind":"decision","target":"v1","needs":"owner","spec":"TIER_GRAMMAR_TEXT_FIXES_1 fixed 3 confirmed tier-grammar violations (RM_OpenPit_Oubliette's stray 'droids', RM_WM_AutomatedSmelterRestoration's 'Jawa's own', RSW_GlassPearl's 'Ash'karr's'). Left open per that item: whether Jawa-CLAN phrasing in general (not the specific proper noun 'Ash'karr', which is definitely RUT-only, but generic 'Jawa' as a species/culture reference) is allowed inside RSW-tier text at all, since RSW is meant to work for ANY Star Wars scenario and Jawas are canon SW species usable outside Utinni specifically - or whether even that should be pushed to RUT to keep RSW strictly species-generic. text_lore_load_report.md S3 has the full context.","for":"OWNER","ts":"2026-09-11T20:25:26Z"}
 {"seat":"FOUNDRY","event":"close","id":"TIER_GRAMMAR_TEXT_FIXES_1","sha":"e35831086","ts":"2026-09-11T20:26:10Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BESTIARY_ARMOURY_DESC_BACKFILL_1","ts":"2026-09-11T20:27:48Z"}
+{"seat":"FOUNDRY","event":"start","id":"BESTIARY_ARMOURY_DESC_BACKFILL_1","ts":"2026-09-11T20:27:52Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DONOR_PROPER_NOUN_SCAN_1","ts":"2026-09-11T20:28:06Z"}
+{"seat":"FOUNDRY","event":"start","id":"DONOR_PROPER_NOUN_SCAN_1","ts":"2026-09-11T20:28:12Z"}
+{"seat":"FOUNDRY","event":"spawn","name":"ART_REGEN_WAVE5_QUEUE_1","kind":"build","needs":"offline","for":"FOUNDRY","from":"ART_REGEN_WAVE4_QUEUE_1","ts":"2026-09-11T20:30:30Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ART_REGEN_WAVE5_QUEUE_1","ts":"2026-09-11T20:30:37Z"}
+{"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE5_QUEUE_1","ts":"2026-09-11T20:30:38Z"}
+{"seat":"FOUNDRY","event":"close","id":"ART_REGEN_WAVE5_QUEUE_1","sha":"8bad11cae","ts":"2026-09-11T20:33:00Z"}
