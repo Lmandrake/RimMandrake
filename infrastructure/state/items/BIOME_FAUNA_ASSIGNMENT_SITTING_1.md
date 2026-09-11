@@ -325,3 +325,14 @@ where crap falls from orbit. Injection via Inhabited. And it DOES have a roster.
 never a wildAnimals cast; findings amended. SLIME: transformation system RULED —
 design pass fired (visitors get slimified states; art overlay + hediff; C# spike
 scoped in the brief). FrostboundBehemoth CUT from the game ("it makes no sense").
+
+**13. Slime card rulings (owner, 2026-09-10):** Colonists ride the FULL ladder to
+dissolution — and the whole system graduates to a RimMandrake-TIER UNIVERSAL MOD
+(GELATINOUS_SLIME_MOD_1, owner's words on the item): biome + genetic-archive lore +
+the gene-extraction machine (select gene → identify → extract slime → inject → coma →
+slime unless a friend administers the antidote in time) + the slimification hediff,
+with full credit to Alpha Biomes as inspiration; NOT Star Wars — RM_ prefixes, not
+RUT_. Gather everything slime-ecology in the game into it, nothing more.
+Never-hostile CONFIRMED as standing law. Caravan question superseded by a better
+owner idea: DRYING BIOMES (desert/arid, maybe the salt ocean) halt slimification —
+cure geography, to be designed in. Chickenrabbit renamed MURREL.
