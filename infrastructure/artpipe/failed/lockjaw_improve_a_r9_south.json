@@ -1,0 +1,19 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "gemini",
+  "created": "2026-09-11T17:38:26Z",
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "lockjaw_improve_a_r9_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, front-on view facing toward the viewer (a south-facing RimWorld camera angle, NOT a side profile) \u2014 match the reference image's exact pose and silhouette proportions, which are noticeably narrower and taller than a side view: painterly vanilla-RimWorld style, a huge whale-bodied ambush beast with alligator-like plated skin, sitting heavy and still, staring forward mid-ambush, jaw closed but coiled to SNAP. Muted swamp-grey palette. Single creature, no ground shadow, plain background.",
+  "reference": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw2_south.png",
+  "rimflow_item_id": "LOCKJAW_ART_WIRE_IN_1",
+  "style_notes": "owner direction: 'Make it like a huge whale with alligator-like skin sitting and staring... then SNAP.' Prior attempt (lockjaw_improve_a_r8_south) failed because the model drew a broadside profile instead of a front-on view \u2014 this prompt drops 'side view' entirely and states the front-on framing explicitly."
+}

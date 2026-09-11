@@ -1,0 +1,17 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "gemini",
+  "created": "2026-09-11T19:20:24Z",
+  "facing": null,
+  "facings": [],
+  "id": "lockjaw_improve_a_r13_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, front-on view facing toward the viewer (a south-facing RimWorld camera angle, NOT a side profile) \u2014 match the reference image's exact pose and silhouette proportions, which are noticeably narrower and taller than a side view: painterly vanilla-RimWorld style, a massive whale-like predator with cracked alligator hide and a wide underslung jaw, hunkered motionless like a boulder, eyes small and patient. A sibling variant of this exact same creature, same pose, same reference proportions, already rendered correctly at a narrow silhouette (subject width about 52% of canvas width, roughly 3:4 width-to-height) \u2014 reproduce that same narrow, compact width, not a wider or squatter one. Muted swamp-grey palette. Single creature, no ground shadow, plain background.",
+  "reference": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw2_south.png",
+  "rimflow_item_id": "LOCKJAW_ART_WIRE_IN_1",
+  "style_notes": "owner ruling 2026-09-11: seed the failing (grey) south facing with the successful outcome of the sibling (brown) south facing. r9-r12 already tried near-identical wording (including this exact successful structure with palette swapped) and failed all 4 times, always overshooting subject WIDTH (169/196/240/173px vs reference's 133px) - i.e. the model keeps drawing a wider/bulkier creature for this reference specifically. This r13 pass is word-anchored per the generating-rimworld-sprites skill's 'Anchor with WORDS instead' guidance: it explicitly states that a sibling variant already converged on the narrow silhouette and gives the numeric width fraction, rather than only describing shape qualitatively as r9-r12 did. Two-image anchoring (passing lockjaw_improve_b_r9_south.png as a second --ref) was considered per owner's literal 'seed with the successful outcome' instruction, but the job queue schema (fill_queue.py/artpiped.py) only supports one reference image per job; true two-image anchoring would require calling gemini_image.py directly, bypassing the daemon - held in reserve if this word-anchored attempt also fails."
+}

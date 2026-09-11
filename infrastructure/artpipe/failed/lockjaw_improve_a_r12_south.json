@@ -1,0 +1,19 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "gemini",
+  "created": "2026-09-11T17:43:13Z",
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "lockjaw_improve_a_r12_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, front-on view facing directly toward the viewer (a south-facing RimWorld camera angle). This is a COMPACT, SEATED, FRONT-FACING portrait, not a horizontally elongated side profile: the creature's bulk sits low and centered, limbs tucked close to the body, so the silhouette is clearly taller than it is wide (roughly 3 units wide to 4 units tall). Painterly vanilla-RimWorld style, a huge whale-bodied ambush beast with alligator-like plated skin, sitting heavy and still, staring forward mid-ambush, jaw closed but coiled to SNAP. Muted swamp-grey palette. Single creature, centered in the frame with generous empty margin left and right, no ground shadow, plain background.",
+  "reference": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw2_south.png",
+  "rimflow_item_id": "LOCKJAW_ART_WIRE_IN_1",
+  "style_notes": "owner direction: 'Make it like a huge whale with alligator-like skin sitting and staring... then SNAP.' Four prior attempts (r8-r11) oscillated between a too-wide broadside pose and a too-square pose against the reference's 0.739 (narrow) aspect; this pass adds an explicit margin/compactness instruction to force the width down."
+}
