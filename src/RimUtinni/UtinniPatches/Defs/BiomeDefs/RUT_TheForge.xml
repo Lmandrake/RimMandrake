@@ -41,6 +41,12 @@
     diseaseMtbDays kept at the Pyroclastic donor's own 65 (not disputed by the
     sheet).
 
+    WYYYSCHOKK_FERALISK_MERGE_1 (2026-09-10): AA_Cinderlisk and BMT_Maguana
+    removed from wildAnimals: owner sitting ruling retired Alpha Animals'
+    whole '-lisk' clade (Cherry Picker cut); both defNames stop resolving
+    once that cut takes effect, and an unresolved cross-ref in wildAnimals
+    is a known crash (BIOME_CAST_REFS_BREAK_MAPGEN_1).
+
     plantDensity/animalDensity kept close to the Pyroclastic donor's own values
     (0.4/1.2): ban 3 ("No furred, chilled, or lush-register fauna — heat-adapted and
     few") argues sparse, matching the donor read rather than the higher LavaField/
@@ -132,8 +138,6 @@
       <AA_Aerofleet MayRequire="sarg.alphaanimals">0.4</AA_Aerofleet>  <!-- aerofleet - sky, adjust-keep -->
       <LavaSnail MayRequire="sarg.alphabiomes">0.35</LavaSnail>  <!-- lava snail - ground-slow, import -->
       <LavaFlea MayRequire="mlie.starwarsanimalcollection">0.25</LavaFlea>  <!-- lava flea - ground-herd, import -->
-      <AA_Cinderlisk MayRequire="sarg.alphaanimals">0.2</AA_Cinderlisk>  <!-- cinderlisk - ground-predator, import -->
-      <BMT_Maguana MayRequire="biomesteam.biomescaverns">0.15</BMT_Maguana>  <!-- maguana - ground-slow, import -->
       <AA_Metallovore MayRequire="sarg.alphaanimals">0.15</AA_Metallovore>  <!-- metallovore - ground-slow, keep -->
       <Beldon MayRequire="mlie.starwarsanimalcollection">0.08</Beldon>  <!-- beldon - sky-herd, keep -->
     </wildAnimals>

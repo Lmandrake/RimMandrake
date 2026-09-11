@@ -508,7 +508,6 @@
       <value>
         <AA_Needleroll>0.3</AA_Needleroll> <!-- needleroll - grain-scale, adjust-keep -->
         <AA_Eyeling>0.15</AA_Eyeling> <!-- ikee - grain-scale, adjust-keep -->
-        <AA_Dunealisk>0.1</AA_Dunealisk> <!-- dunealisk - giant-subsurface, import -->
         <AA_BoulderMit>0.025</AA_BoulderMit> <!-- bouldermit - giant, keep -->
         <AA_TetraSlug>0.0005</AA_TetraSlug> <!-- tetra slug - giant, keep -->
       </value>
@@ -1144,15 +1143,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
-      <value>
-        <BMT_Maguana>0.15</BMT_Maguana> <!-- maguana - ground-slow, import -->
-      </value>
-    </match>
-  </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
     <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
@@ -1171,7 +1161,6 @@
       <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
       <value>
         <AA_Aerofleet>0.4</AA_Aerofleet> <!-- aerofleet - sky, adjust-keep -->
-        <AA_Cinderlisk>0.2</AA_Cinderlisk> <!-- cinderlisk - ground-predator, import -->
         <AA_Metallovore>0.15</AA_Metallovore> <!-- metallovore - ground-slow, keep -->
       </value>
     </match>
@@ -1189,15 +1178,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
-      <value>
-        <BMT_Maguana>0.15</BMT_Maguana> <!-- maguana - ground-slow, import -->
-      </value>
-    </match>
-  </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
     <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
@@ -1216,7 +1196,6 @@
       <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
       <value>
         <AA_Aerofleet>0.4</AA_Aerofleet> <!-- aerofleet - sky, adjust-keep -->
-        <AA_Cinderlisk>0.2</AA_Cinderlisk> <!-- cinderlisk - ground-predator, import -->
         <AA_Metallovore>0.15</AA_Metallovore> <!-- metallovore - ground-slow, keep -->
       </value>
     </match>
@@ -1234,15 +1213,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,biomesteam.biomescaverns">   <!-- donor: biomesteam.biomescaverns -->
-    <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
-      <value>
-        <BMT_Maguana>0.15</BMT_Maguana> <!-- maguana - ground-slow, import -->
-      </value>
-    </match>
-  </Operation>
 
   <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
     <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
@@ -1261,7 +1231,6 @@
       <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
       <value>
         <AA_Aerofleet>0.4</AA_Aerofleet> <!-- aerofleet - sky, adjust-keep -->
-        <AA_Cinderlisk>0.2</AA_Cinderlisk> <!-- cinderlisk - ground-predator, import -->
         <AA_Metallovore>0.15</AA_Metallovore> <!-- metallovore - ground-slow, keep -->
       </value>
     </match>

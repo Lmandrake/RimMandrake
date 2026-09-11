@@ -40,6 +40,12 @@
     filter-feeders and glass-nub light-pipe flora (both sheets' SS4/SS10, new-art
     owed); the wind-grain/yardang map-gen routine; any world repaint.
 
+    WYYYSCHOKK_FERALISK_MERGE_1 (2026-09-10): AA_Dunealisk removed from
+    wildAnimals: owner sitting ruling retired Alpha Animals' whole '-lisk'
+    clade (Cherry Picker cut); the defName stops resolving once that cut
+    takes effect, and an unresolved cross-ref in wildAnimals is a known
+    crash (BIOME_CAST_REFS_BREAK_MAPGEN_1).
+
   -->
 
   <BiomeDef>
@@ -133,7 +139,6 @@
       <Scurrier MayRequire="mlie.starwarsanimalcollection">0.1</Scurrier>  <!-- scurrier - grain-scale, adjust-keep -->
       <OuterRim_MSEDroid MayRequire="neronix17.outerrim.droiddepot">0.1</OuterRim_MSEDroid>  <!-- MSE Repair Droid - feral-droid, import -->
       <OuterRim_SalvageAssistDroid MayRequire="neronix17.outerrim.droiddepot">0.1</OuterRim_SalvageAssistDroid>  <!-- salvage assist droid - feral-droid, import -->
-      <AA_Dunealisk MayRequire="sarg.alphaanimals">0.1</AA_Dunealisk>  <!-- dunealisk - giant-subsurface, import -->
       <OuterRim_DUMDroid MayRequire="neronix17.outerrim.droiddepot">0.08</OuterRim_DUMDroid>  <!-- DUM Repair Droid - feral-droid, import -->
       <OuterRim_GNKDroid MayRequire="neronix17.outerrim.droiddepot">0.08</OuterRim_GNKDroid>  <!-- GNK Power Droid - feral-droid, import -->
       <OuterRim_FX7Droid MayRequire="neronix17.outerrim.droiddepot">0.05</OuterRim_FX7Droid>  <!-- fx-7 medical droid - feral-droid, import -->
