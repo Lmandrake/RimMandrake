@@ -36,6 +36,11 @@ compatible with both and proceeds either way; only the retirement half holds.)
 while the scenario file's own header forbids invented durations — cut the
 number or ratify it (Phase-3 finding, findings_text_lore.md).
 
+**Mechanoid origin cards (9)**: 5 contradiction + 4 name cards (incl. three live
+spellings of the Forgotten Sentries needing one ruling, and the flagged
+wipe/spike-immunity invention) — all in
+design/Jawa/worldbuilding/creatures/RUT_mechanoid_origin_canon.md §5.
+
 ## verify
 - [ ] Every card above carries a ruling recorded at its home doc/item, and
       this item closes citing them.
