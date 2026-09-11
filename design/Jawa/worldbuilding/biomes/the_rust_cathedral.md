@@ -185,6 +185,18 @@ know what it feels. So will you if you just listen."**
   greater purpose — **all of it gone before it was ever even half complete.**
   (The Propane Lakes' collapsing megastructures are this program's far end —
   `TERRAMANUFACTURE_CANON_1`.)
+- ⭐ **AMENDMENT 2026-09-11 (`TERRAMANUFACTURE_CANON_1`, propagating the
+  owner's 2026-09-06 ruling, `the_propane_lakes.md` §3 — adds detail, changes
+  no ruling): the "something bigger still" has a name.** The planet's fate was
+  to be **a tremendous factory — a mega-project among mega-projects. Not
+  terraforming: terramanufacture** — and the Cathedral is the **planet-scale
+  power dynamo's remnant**. The sub-solar point needed all the power they
+  could possibly channel into the planet, which is why the magnetic pole sits
+  there: the dynamo's intake, the plasma fountain its channel, and the
+  Cathedral the intake's surviving works. The whole program was one-tenth
+  built when the Assailants came, and has been grinding down, collapsing
+  inward on itself, ever since — the strategic decline ruled below is that
+  collapse continuing on a mind's timescale.
 
 ⭐ **AMENDMENT 2026-09-10 (`RUST_CATHEDRAL_SCALD_HISTORY_1`, owner-ratified):
 added history. Changes no ruling above or below.**

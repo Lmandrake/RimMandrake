@@ -21,6 +21,14 @@ word of it. They have all stopped trying, and all stopped eating with him.
 modification-as-identity; Vekk Silla is *finished and betrayed*, Ivory Nine is **a convert to
 the rule that cut him**. No fourth "duty continued after its object is gone."
 Traits verified. No `Pyromaniac`.
+⭐ **`TERRAMANUFACTURE_CANON_1`** (owner 2026-09-06,
+`worldbuilding/biomes/the_propane_lakes.md` §3) gives the whole compound its shadow: the
+ancients the Helix claims were not terraformers but **terramanufacturers** — a planet-factory
+one-tenth built, collapsing inward for millennia — so the Helix's attempt to control the old
+technology now has a purpose to fail at. A cult that curates bodies one improvement per season
+is trying to inherit a species that drafted PLANETS, and the gap is the doctrine's quiet
+engine. Uu-Kanat knows exactly what the machine under the world was for, and complains about
+the bedding instead.
 
 ---
 

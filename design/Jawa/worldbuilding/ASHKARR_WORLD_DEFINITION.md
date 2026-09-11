@@ -161,6 +161,31 @@ war) · **Scorch** (12.5–17, broken arcs) · Pyrelands · Nightspill ·
 Sunreach · The Ash Verge · The Long Dark · **Umbra** (>152) ·
 Ammonia Flats · Salt Gate (the deltas).
 
+## 3b. The ancient history under the map — TERRAMANUFACTURE, ruled
+
+🔴 **Owner, 2026-09-06 (`TERRAMANUFACTURE_CANON_1`; the authority text is
+`biomes/the_propane_lakes.md` §3 "The machine").** The planet's fate was to be
+**a tremendous factory — a mega-project among mega-projects. Not terraforming:
+terramanufacture.** The builders had only begun — the sub-surface structures,
+the self-assembling megastructures, the **planet-scale power dynamo** — when
+the Assailants came and everything became surviving them. Since then it is **a
+one-tenth-built dream slowly grinding down, collapsing inward on itself over
+the millennia.**
+
+- 🔑 **The sub-solar point needed all the power they could possibly channel
+  into the planet** — that is why the planet's magnetic pole sits there: the
+  dynamo's intake. **The Rust Cathedral is its remnant** (§3's region list;
+  the sheet: `biomes/the_rust_cathedral.md` §GM), and the collapsing
+  megastructures under Umbra are the program's far end
+  (`biomes/the_propane_lakes.md` §8).
+- **The war lab beneath the propane lake was never planned** — built to study
+  the weapon after it was already loose, by people who still felt strong and
+  had no time left; every interaction taught the Assailants to adapt —
+  **mutual learning, mutual destruction** (`biomes/assailant_weapon_remnants.md`).
+- ⚠️ **This is history, not tiles.** Nothing here changes a biome, a
+  temperature or a settlement, and none of it is a worldgen feature — the
+  machine is narrative ground under a map that stays frozen and hand-authored.
+
 ## 4. Hydrology — ruled, and it is the heart of the map
 
 1. **Rain condenses at ALTITUDE and on the terminator seam**, never on the nightside;
