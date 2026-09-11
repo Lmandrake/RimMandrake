@@ -208,3 +208,28 @@ eviction-stripped; flora chain rewritten + normalized (flammability, temps); ana
 portfolio migrated + extended; both review sheets built, click-tested, regenerated
 post-fixes. Deploy held for the next load round (see above). Successor for everything
 remaining: ASSIGNMENT_SHEETS_VERDICT_SITTING_1 (owner verdicts → applier → regen).
+
+---
+
+# 2026-09-10 round-2 live sitting — owner rulings (BENCH at the bench)
+
+**1. Insect ruling.** Owner, verbatim: *"I should NOT have allocated any of the base
+game's insects: they should remain the Insect faction, as should the Black Hive, as
+those are special 'factions' essentially for infestation events. So please de-select
+those for all biomes other than themselves."* Applied 2026-09-10: 8 VFEI2 resident
+rows → `out`, 4 VFEI2 homeless moves VOIDED (Acidspitter/RoyalSpelopede→Scarlands,
+Silverfish→Grey Deep, Macrofly→arid), 20 homeless insect rows marked FACTION-RESERVED
+(incl. Megaspider, Spelopede) in `round2/decisions_propagated.json`; `move_mapping_v2.md`
+amended (160 live moves); `biome_findings.md` casts corrected. Round-1 verdict file
+(`fauna_assignment_register.decisions.json`) left untouched — it is the owner's record.
+Open flags: Megascarab sits at `out` (= cut entirely) — confirm it should instead be
+faction-reserved; GiantAnt_Race greentide "raid events only" left standing (consistent
+with the ruling).
+
+**2. Art "redo" semantics** (owner, verbatim intent): redo = the art is particularly
+bad and must be FULLY REGENERATED, possibly the whole creature. Star Wars creatures
+are NEVER renamed — instead look up inspirational reference images online to converge
+on the right look. Non-SW creatures: redo may mean a whole rename+redefine based on
+the creature's function. **When in doubt, ask the owner — that is the default.**
+Review surfaces show creatures in SIDE PROFILE (east-facing) from now on; the
+south-facing headshot is illegible for many body plans.

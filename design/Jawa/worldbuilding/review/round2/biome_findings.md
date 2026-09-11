@@ -3,7 +3,7 @@
 Derived 2026-09-10 from `decisions_propagated.json` (828 rows) + `move_mapping_v2.md`
 (with the 2026-09-10 rulings: ninth faction-fauna roster, both-jungles trio, injectables,
 placement-rule creatures) + each biome sheet's own admission tests and hard bans.
-Standing rulings applied: boom family (15) CUT — including GR_Boomsnake's "Pyrelands" move;
+Standing rulings applied (insect ruling 2026-09-10: base-game/Black Hive insects are faction-only — infestation/raid events, never biome residents; VFEI2_* de-selected everywhere); boom family (15) CUT — including GR_Boomsnake's "Pyrelands" move;
 VQE_IceCrawler/VQE_Megamidge out; VQEA Splice x4 → dungeon-guardians; fliers extracted to
 their roster; injectables (Bulwark, Squall, Prowler, Megaphorid) not counted as residents.
 Duplicate arrival rows (a creature both staying and "arriving", or one move splitting into
@@ -12,9 +12,9 @@ Ordered by churn (arrivals+departures+cuts+flier extractions), highest first.
 
 ---
 
-## the_miasma — churn 20 (cast 30 → 25)
+## the_miasma — churn 22 (cast 30 → 23)
 Arrivals (7): Dianoga, RSW_SandoAquaMonster, BMT_PodWorm, Blarth, Blixus, JRWBeelzebufo, MarshHaunt. Flier→roster arriving: Bogwing.
-Departures (12 moves): entire aquatic cast to the seas (RSW_Faa/Laa/Mee/OpeeSeaKiller/SiltLamprey, Yobshrimp) + AA_BloodShrimp, AA_Helixien, AA_Plasmorph, AA_Slurrypede, BMT_Gembug, Kreetle.
+Departures (12 moves): entire aquatic cast to the seas (RSW_Faa/Laa/Mee/OpeeSeaKiller/SiltLamprey, Yobshrimp) + AA_BloodShrimp, AA_Helixien, AA_Plasmorph, AA_Slurrypede, BMT_Gembug, Kreetle. Insect ruling: VFEI2_Swarmling + VFEI2_BlackSwarmling out (faction-only).
 
 INCONSISTENCIES:
 1. JRWBeelzebufo reads as "giant frog" — collides with ban 7 (no vanilla-Earth fauna) and the recognizability rule; rename/reskin owed.
@@ -37,9 +37,9 @@ OPPORTUNITIES:
 1. Thrumbungus ("partially digesting itself") and Sporemole pass ban 2 cleanly — flagship arrivals; feature both in §4's cast table.
 2. AnimaColossus near the anima-analog (§7) makes a natural undefended-prize guardian (ban 8); wire them together.
 
-## the_greentide — churn 15 (cast 27 → 19)
+## the_greentide — churn 16 (cast 27 → 18)
 Arrivals (3): GiantAnt_Race (event-only, by ruling), Tach + Rikknit (both-jungles ruling). Flier→roster arriving: BMT_FacetMoth. Fliers extracted: Convor, Hawkbat.
-Departures (9 moves): AA_BloodShrimp, AA_Razorjack, Beldon, Dalgo, Dianoga, Falumpaset, Hssiss, Lylek, ShiroTrap.
+Departures (9 moves): AA_BloodShrimp, AA_Razorjack, Beldon, Dalgo, Dianoga, Falumpaset, Hssiss, Lylek, ShiroTrap. Insect ruling: VFEI2_Swarmling out (faction-only).
 
 INCONSISTENCIES:
 1. GiantAnt_Race is event-only ("only the raiding events") — belongs on the event roster, not wildAnimals; keep it off the sheet's resident cast.
@@ -49,8 +49,8 @@ OPPORTUNITIES:
 1. Rikknit's ovum-sac cuisine note is a whole §7 Uniquely-available entry (ji rikknit, egg delicacy) — write it.
 2. Tach the Greatbole-canopy thief pairs with §7b's living towers; a steal-from-camps mechanic fits the register.
 
-## the_scarlands — churn 12 (cast 9 → 16)
-Arrivals (8, deduped): AA_AcanthamoebaGiganteaSmall, BMT_CrystalFairyMole, BMT_MegaphoridLarva, BMT_Stoneback, RSW_ShaleGorger, SW_Electricfish, SW_Grenadierworm, VFEI2_Acidspitter, VFEI2_RoyalSpelopede (SW_Electrictick already resident — its wasteland row is consolidation, not arrival).
+## the_scarlands — churn 10 (cast 9 → 14)
+Arrivals (6, deduped): AA_AcanthamoebaGiganteaSmall, BMT_CrystalFairyMole, BMT_MegaphoridLarva, BMT_Stoneback, RSW_ShaleGorger, SW_Electricfish, SW_Grenadierworm (insect ruling: VFEI2_Acidspitter + VFEI2_RoyalSpelopede arrivals VOIDED — faction-only) (SW_Electrictick already resident — its wasteland row is consolidation, not arrival).
 Departures (2): AA_Helixien, AA_SpinedGow. Cut: VFEI2_Boomtick (boom family).
 
 INCONSISTENCIES:
@@ -61,12 +61,12 @@ OPPORTUNITIES:
 1. Electro-cluster (Electrictick, Electricfish, Electricgryllotalpa, Grenadierworm) is now a coherent "the ground still discharges" fauna story — name it in §4.
 2. MegaphoridLarva resident + Megaphorid adult as injectable hive = a life-cycle hook no other biome has.
 
-## terminator_sea + the_grey_deep — churn 12 (cast 2 → 11)
-Arrivals (10): RSW_SiltLamprey, RSW_ElderSando, BMT_Megakrill, BMT_MutatingTumorfish x3 (Adult/Fry/Spawn), BMT_Polluwog, Blixus, TetnissCrab, VFEI2_Silverfish. Flier: AA_ColossalAerofleet arriving→roster; AA_Aerofleet extracted.
+## terminator_sea + the_grey_deep — churn 11 (cast 2 → 10)
+Arrivals (9): RSW_SiltLamprey, RSW_ElderSando, BMT_Megakrill, BMT_MutatingTumorfish x3 (Adult/Fry/Spawn), BMT_Polluwog, Blixus, TetnissCrab (insect ruling: VFEI2_Silverfish arrival VOIDED — faction-only). Flier: AA_ColossalAerofleet arriving→roster; AA_Aerofleet extracted.
 
 INCONSISTENCIES:
 1. Sheet §4 is titled "What lives here — three, and no more"; ten arrivals break the biome's central claim. Biggest sheet-vs-verdict collision of the wave.
-2. Terminator base bans: no schools/swarms, roster "capped at a handful". Megakrill (krill = swarm by definition), Silverfish, tumorfish Fry/Spawn all read as multiples.
+2. Terminator base bans: no schools/swarms, roster "capped at a handful". Megakrill (krill = swarm by definition), tumorfish Fry/Spawn all read as multiples.
 3. Tumorfish x3 is one organism's life cycle — one admission; Megakrill is ruled a *fishing result*, not a spawn — keep it off wildAnimals.
 
 OPPORTUNITIES:
@@ -98,8 +98,8 @@ OPPORTUNITIES:
 1. "Rich and varied as the land, by ruling" — this cast finally delivers it; distribute across §4's three habitats (columns, banks, dark between) explicitly.
 2. StoneCrab (0.3) on the lamplit banks is the Compact's harvest animal — a tended-fishery hook for §8.
 
-## wasteland — churn 9 (cast 21 → 14)
-Arrivals (1): BMT_Stoneback. Departures (7 moves): AcanthamoebaSmall, Eyeling, pustule hornets x3, SW_Electrictick, Toxalope; (1 out): AA_FissionMouse.
+## wasteland — churn 11 (cast 21 → 12)
+Arrivals (1): BMT_Stoneback. Departures (7 moves): AcanthamoebaSmall, Eyeling, pustule hornets x3, SW_Electrictick, Toxalope; (1 out): AA_FissionMouse. Insect ruling: VFEI2_Swarmling + VFEI2_BlackSwarmling out (faction-only).
 
 INCONSISTENCIES:
 1. None structural — losses are all correct routings; ban 3 ("wildlife never the headline threat") is easier to honor at 14.
@@ -194,8 +194,8 @@ INCONSISTENCIES:
 OPPORTUNITIES:
 1. CrescendoAnole as the machine-watcher (basks on cooling flows near the lava-machines) ties fauna to the biome's central mystery without revealing it (ban 2).
 
-## fall_line — churn 3 (cast 13 → 16)
-Arrivals (3): BMT_BunkerBug, BMT_Megapleura, Squall (injectable — "injectable wreck creatures", not resident: 15 residents).
+## fall_line — churn 4 (cast 13 → 15)
+Arrivals (3): BMT_BunkerBug, BMT_Megapleura, Squall (injectable — "injectable wreck creatures", not resident). Insect ruling: VFEI2_Fuelmite out (faction-only).
 
 INCONSISTENCIES:
 1. Vanilla "Rat" survives in the cast — direct violation of ban 7 (no instantly-nameable terrestrial referent); cut or reskin (Scavrat already covers the niche).
@@ -203,7 +203,7 @@ INCONSISTENCIES:
 3. Rat + Scavrat + WompRat = three rats; one niche, keep two at most.
 
 OPPORTUNITIES:
-1. Eight OuterRim feral droids + Fuelmite + Megapleura is the planet's only machine-ecology; a fuel-parasite-vs-droid interaction would make it legible.
+1. Eight OuterRim feral droids + Megapleura is the planet's only machine-ecology (Fuelmite went faction-only with the insect ruling — the fuel-parasite niche is now vacant; commission or leave).
 
 ## the_lantern_deeps — churn 4 (cast 0 → 3)
 Arrivals (3): BMT_Gembug, BMT_CrystalCrab, BMT_Glowtail. Flier arriving→roster: BMT_FacetMothLarvae (larvae — likely NOT a flier; restore to cast if so).
@@ -215,13 +215,12 @@ INCONSISTENCIES:
 OPPORTUNITIES:
 1. Glowtail vs the no-free-light law (ban 6): make its glow a light-draw *cost* mechanic — the creature that eats your lamplight.
 
-## arid_shrubland — churn 5 (cast 42 → 44)
-Arrivals (3, deduped — Kreetle already resident): BMT_Stoneback, VAEWaste_Hydra ("venomvine patch predator"), VFEI2_Macrofly. Flier extracted: Convor.
+## arid_shrubland — churn 4 (cast 42 → 43)
+Arrivals (2, deduped — Kreetle already resident): BMT_Stoneback, VAEWaste_Hydra ("venomvine patch predator"). Insect ruling: VFEI2_Macrofly arrival VOIDED (faction-only). Flier extracted: Convor.
 
 INCONSISTENCIES:
 1. Ban 4: no resident LARGE-band creature (large only as juvenile of huge) — the register bins Wildpod, Bantha, Corinathoth, Mudhorn, Ronto, Skalder LARGE. Six standing violations; rebin as juveniles-of-huge or move.
-2. VFEI2_Macrofly is a fly — flier-roster candidate that slipped extraction; its hive/Inhabited mechanic could still live here as the hive object.
-3. 44 residents is the second-biggest cast — same dilution problem as desert.
+2. 43 residents is the second-biggest cast — same dilution problem as desert.
 
 OPPORTUNITIES:
 1. VAEWaste_Hydra inside venomvine patches is a perfect ban-6 synergy (the one dense flora gets a guardian) — flagship placement.
@@ -272,8 +271,8 @@ Arrivals (1): AA_Thunderbeast (electric — fits the detonation register).
 ## terminator_sea (standalone) — churn 0 (cast 0)
 By design: the solitary-handful law lives in the two Deep sheets; only ColossalAerofleet (roster) passes over. Nothing owed.
 
-## the_fever_wood — churn 4 (cast 11 → 13)
-Arrivals (2): Tach, Rikknit (both-jungles ruling). Flier arriving→roster: BMT_FacetMoth. Flier extracted: Convor.
+## the_fever_wood — churn 5 (cast 11 → 12)
+Arrivals (2): Tach, Rikknit (both-jungles ruling). Flier arriving→roster: BMT_FacetMoth. Flier extracted: Convor. Insect ruling: VFEI2_Megathrips out (faction-only).
 1. Ban 3 (no native chase predators) holds — Tach steals, doesn't chase; Rikknit nests in crowns. Clean.
 2. FacetMoth tension: the both-jungles ruling places it here, the flier extraction removes it — the flier roster needs a per-biome presence field to honor both.
 
