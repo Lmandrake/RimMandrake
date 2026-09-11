@@ -1,0 +1,95 @@
+{
+  "items": [
+    {
+      "id": "greaterkraytdragon_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE5_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Greater Krayt Dragon — the legendary, colossal apex predator of Tatooine-like deep deserts and dune seas. Immense sinuous armor-plated body low to the ground with four short powerful legs, a long thick tail, a massive bony-crested triangular head with a gaping tooth-lined maw, small deep-set eyes, layered overlapping rock-grey/sand-tan scute plating like natural armor down the spine and flanks. Reads as an ancient, terrifying, near-mythical desert titan. Single creature, centered, standing/menacing pose, no ground shadow, no background scenery, no dune or sand effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "SW canon identity KEPT per owner ruling 2026-09-11 ('improve' semantics): GreaterKraytDragon's name means the canonical Tatooine krayt dragon — converge on its known look (colossal armor-plated desert saurian, bony-crested head). Titan sizeBin, dune_sea + deep_desert biomes. Full regen, same mechanism as 'redo'. Explicit outline-thickness requirement per the same ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "vornskyr_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE5_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Vornskyr — a lean, vicious predatory lizard-hound native to Kessel-like hostile worlds. Sleek low-slung reptilian body built for a fast pounce, four clawed legs, a long low-held tail, a narrow wedge-shaped head with a mouth full of sharp needle teeth, a ridge of short bony spines running down the neck and spine, tough mottled hide in dark grey-green tones. Reads as a dangerous pack predator that hunts by scent. Single creature, centered, low stalking pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "SW canon identity KEPT per owner ruling 2026-09-11 ('improve' semantics): Vornskyr's name means the canonical vornskr predator (Kessel/Rebels) — converge on its known look (lean spiny-ridged lizard-hound, needle teeth). Large sizeBin, the_miasma biome. Full regen. Explicit outline-thickness requirement per the same ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "orray_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE5_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Orray — a large, aggressive multi-legged reptavian native to Geonosis-like arid worlds, sometimes used as a mount or arena beast. Long low horizontal body carried on six short stout legs, a long flexible neck ending in a narrow birdlike beaked head with small alert eyes, a short bristling frill or ridge of spines along the back of the neck, tough leathery hide in dusty ochre-brown tones. Reads as a fast, ill-tempered pack/mount beast. Single creature, centered, standing alert pose, no ground shadow, no background scenery, no saddle or riding gear. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "SW canon identity KEPT per owner ruling 2026-09-11 ('improve' semantics): Orray's name means the canonical Geonosis arena/mount beast — converge on its known look (six-legged, long-necked, birdlike-headed reptavian). Medium sizeBin, the_pyrelands biome. Full regen. Explicit outline-thickness requirement per the same ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "featherfeel_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE5_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien wetland creature (working name 'FeatherFeel') — a medium filter-feeding scavenger adapted to a toxic miasma swamp. NOT a mundane Earth shrimp: a low broad segmented body carried on several short paddling limbs, a fan of long delicate feather-like sensory fronds sweeping from its head and flanks that it uses to feel vibration and taste the air rather than see, a small blunt downturned mouth for filter-feeding in murky muck, faintly translucent mottled grey-violet hide. Reads as a strange, gentle-seeming alien wetland grazer. Single creature, centered, low wading pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (RSW_Yobshrimp) REIMAGINED per owner ruling 2026-09-11 ('improve' semantics) AND per the row's own note ('Rename to FeatherFeel') — owner-mandated rename, not a discretionary one. General kind fixed (a filter-feeding wetland scavenger), specific name/character invented: 'FeatherFeel', a feather-fronded sensory filter-feeder, not a literal shrimp. Medium sizeBin, the_miasma biome. Full regen. Explicit outline-thickness requirement per the same ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "duskram_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE5_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien desert grazer creature (working name 'Duskram') — a large, hardy beast of burden suited to open desert. NOT a mundane Earth camel: a broad-backed quadruped with two low fatty dorsal ridges instead of humps, a wide bony ceratopsian-like frill sweeping back from a blunt heavy-jawed head, small deep-set eyes shaded by heavy brow ridges, thick cracked hide in dusty tan-grey tones built to shrug off sandstorms. Reads as a slow, tough desert pack animal, distinct from any Earth ungulate. Single creature, centered, standing pose, no ground shadow, no background scenery, no saddle or cargo rigging. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (Jamel) REIMAGINED per owner ruling 2026-09-11 ('improve' semantics): general kind fixed (a large desert beast of burden), specific name/character invented — 'Duskram', a frilled ceratopsian-headed desert grazer, deliberately not a literal camel despite the source name's echo. Large sizeBin, desert biome. Full regen. Explicit outline-thickness requirement per the same ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "aa_terramorph_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE5_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien wasteland/scarlands creature (working name 'Terramorph', a dayside-lurking ambush burrower) — a medium creature that lies still against bare mineral ground and erupts to attack. NOT a mundane Earth animal: a flattened, irregularly-lumped body plated in matte, rock-textured grey-brown crust that mimics cracked earth and slag, stubby powerful digging/gripping limbs tucked close to the body, a wide low mouth ringed with small hooked teeth, tiny dark eyes nearly hidden in the crust pattern. Reads as a patient, terrain-camouflaged ambush predator. Single creature, centered, low ground-hugging ambush pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (AA_Terramorph) — name KEPT, not renamed: the 2026-09-10 sitting ruling already gave it an established lore identity ('dayside lurker', wasteland+scarlands range), so the current name already earns its place per the ruling's own carve-out. Only the art quality and outline are being fixed; the crust/camouflage visual leans into the already-ruled character without implementing the terrain-matching color-change mechanic (that idea is marked MAYBE, not ruled, per the sitting note — no mechanic added here). Medium sizeBin, wasteland + the_scarlands biomes. Full regen. Explicit outline-thickness requirement per the same ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "slagmaw_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE5_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien scarlands creature (working name 'Slagmaw') — a large, extremely slow, nearly helpless armored scrap-grazer. NOT a mundane Earth beetle: a heavy domed shell of overlapping rust-red and slag-black armor plates riding low over a wide flat body, six short stumpy legs that barely lift it off the ground, a blunt grinding mouth for scraping mineral scrap and slag, small heat-vent slits along the shell edge that glow faint dull orange, tiny recessed eyes. Reads as a lumbering, defenseless-looking armored grazer that survives purely through its shell. Single creature, centered, slow plodding pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW name (BMT_FoundryBeetle) REIMAGINED per owner ruling 2026-09-11 ('improve' semantics): general kind fixed (a heavily armored, very slow scrap-grazer per the row's 'very very slow mover, almost helpless' note), specific name/character invented — 'Slagmaw', a rust-and-slag-plated grinder with heat-vent shell slits, not a literal beetle. Large sizeBin, the_scarlands biome. Full regen. Explicit outline-thickness requirement per the same ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    }
+  ]
+}

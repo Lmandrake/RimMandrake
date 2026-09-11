@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-11T20:31:30Z",
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "greaterkraytdragon_v1_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Greater Krayt Dragon \u2014 the legendary, colossal apex predator of Tatooine-like deep deserts and dune seas. Immense sinuous armor-plated body low to the ground with four short powerful legs, a long thick tail, a massive bony-crested triangular head with a gaping tooth-lined maw, small deep-set eyes, layered overlapping rock-grey/sand-tan scute plating like natural armor down the spine and flanks. Reads as an ancient, terrifying, near-mythical desert titan. Single creature, centered, standing/menacing pose, no ground shadow, no background scenery, no dune or sand effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE5_QUEUE_1",
+  "style_notes": "SW canon identity KEPT per owner ruling 2026-09-11 ('improve' semantics): GreaterKraytDragon's name means the canonical Tatooine krayt dragon \u2014 converge on its known look (colossal armor-plated desert saurian, bony-crested head). Titan sizeBin, dune_sea + deep_desert biomes. Full regen, same mechanism as 'redo'. Explicit outline-thickness requirement per the same ruling."
+}
