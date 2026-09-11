@@ -612,10 +612,10 @@
     "sha": "a0e9f2d6"
   },
   "skills/rimworld-modding/scripts/validate_patch.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "8db016daa742310458fe7c8cebcb08eb940702af33b2c67885f7c84a313f67fb",
-    "sha": "6a7759f2"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "4705ec8fc338e080a97ad8ef3a125ce105ab474c0b6354f1a087619bd429cf41",
+    "sha": "8abbec7b"
   },
   "skills/rimworld-quests/scripts/validate_quest.py": {
     "cleanCount": 1,
@@ -2058,10 +2058,10 @@
     "sha": "90940c68"
   },
   "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "709a6adc6856ba61822c84a3521b145c81175dd88c38a2dc776ad3050aea1b00",
-    "sha": "90940c68"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "ae6f5cf7a1aec813a6bafde3e0f0c496e7fb1d453106ca18391146d73746486c",
+    "sha": "8abbec7b"
   },
   "src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshLadder.xml": {
     "cleanCount": 1,
@@ -3036,10 +3036,10 @@
     "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/artpipe/artpiped.py": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-10",
-    "hash": "784589382d10d12e0beede17eed2ba2d76b3f83010c8b56907c3067eeab38526",
-    "sha": "7dabaa86"
+    "hash": "f89286118d12f7add0c5fdb8b1a6fadd1146d4e22f68ca2f1cec9129c95fe9de",
+    "sha": "8abbec7b"
   },
   "src/RimMandrake/Utils/artpipe/common.py": {
     "cleanCount": 2,
@@ -4702,10 +4702,10 @@
     "sha": "8b25e71d"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchLandmarkNameTool.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "cb158338e5cfdf3659660f6d3cf9c46136473152fa96d112ea97e8cdf4cde437",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-10",
+    "hash": "25ed396d69d6687309f485dd9174b200408ba58c83a04b1a312ca13e860e91cc",
+    "sha": "8abbec7b"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchLoadStallProbe.cs": {
     "cleanCount": 1,
