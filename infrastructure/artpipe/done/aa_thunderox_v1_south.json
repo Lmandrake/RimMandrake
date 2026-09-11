@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-11T10:04:46Z",
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "aa_thunderox_v1_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: a large domesticable quadruped livestock animal (Alpha Animals' Thunderox) built like a shaggy musk-ox or yak, thick heavy fur coat in cold-weather colors, one short stumpy but sturdy horn (or a low blunt horn pair) on the head, broad heavy-set body suited to cold wastelands, calm farm-animal stance. Single creature, centered, standing pose, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CREATURE_ART_REVIEW_SHEET_1",
+  "style_notes": "Reads as a hardy cold-climate wool/milk/meat livestock beast -- shaggy, stumpy-horned, stocky -- not a predator, not the same silhouette as the Shadow Charger (blunt stumpy horn vs. Shadow Charger's long sweeping horns). Match painterly vanilla RimWorld muffalo/cow-tier animal art."
+}

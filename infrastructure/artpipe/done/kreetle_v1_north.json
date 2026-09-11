@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-11T10:11:19Z",
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "kreetle_v1_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: a tiny fast-breeding parasitic arthropod (Star Wars canon Kreetle, a Tatooine/urban pest insect) with a tough reddish-brown chitinous exoskeleton, five pairs of jointed legs (ten legs total), a segmented low-slung body, and prominent large mandibles at the head. Reads as a scavenging vermin-sized bug, not a fantasy monster. Single creature, centered, standing/scuttling pose, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CREATURE_ART_REVIEW_SHEET_1",
+  "style_notes": "Canonical Star Wars Kreetle \u2014 small, reddish-brown, ten-legged insect with big mandibles, garbage/burrow-dwelling pest. Match painterly vanilla RimWorld insectoid (megaspider-tier) art scale and rendering, not photorealistic. Very small creature on the 512x512 canvas \u2014 do not fill the frame with an oversized bug."
+}
