@@ -47,17 +47,29 @@
      Both frameworks already declare their droids as machines in every other
      respect: Damage_HitMechanoid effecter, mechanoid wound textures, and (for
      Synstructs) CorpsesMechanoid as the corpse category. Only isOrganic
-     disagrees with the rest of each def. Patching the two FleshTypeDefs fixes
-     every race that uses them, now and for any the mods add later, and leaves
-     each mod's own wound art and corpse handling untouched.
+     disagrees with the rest of each def. Patching a framework's FleshTypeDef
+     fixes every race that uses it, now and for any the mods add later, and
+     leaves each mod's own wound art and corpse handling untouched.
 
      Retargeting 41 race defs to vanilla Mechanoid would have thrown that art
      away and broken on the next mod update. One flag is the smaller claim.
 
+     🔴 DROID_RETIRE_ABF_SYNCORE_1 (2026-09-10): ABF/SynCore retired from
+     ModsConfig.xml (guy762.kotordroids retired first, clearing the
+     retirement_order.py order constraint), so this file's ABF_FleshType_
+     Synstruct_Base Operation was removed - only the Asimov_Automaton
+     Operation below remains. Everything above describing "the two
+     FleshTypeDefs"/KotOR is the ORIGINAL two-family problem this file once
+     fixed; do not re-add the ABF Operation from memory of this comment if
+     ABF/SynCore ever return - re-derive it fresh against whatever donor is
+     live then, the way this file itself documents doing the first time.
+
      WHAT TO WATCH after this lands (all intended, but verify in play):
-       * colonists can no longer TEND droid injuries; repair is the route
-       * EMP, ion and stun now land on Outer Rim and KotOR droids
-       * droids stop registering as organic for anything that checks IsFlesh
+       * colonists can no longer TEND Outer Rim droid injuries; repair is
+         the route
+       * EMP, ion and stun now land on Outer Rim droids
+       * Outer Rim droids stop registering as organic for anything that
+         checks IsFlesh
 
      Authorised by the project owner 2026-08-11: "I don't want to be able to
      medically TEND droids anyway. They should break like machines, and get
@@ -104,6 +116,5 @@
       </nomatch>
     </match>
   </Operation>
-
 
 </Patch>
