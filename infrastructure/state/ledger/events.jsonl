@@ -7205,3 +7205,4 @@
 {"seat":"FOUNDRY","event":"start","id":"SAND_STALKER_BADGER_SOUNDS_1","ts":"2026-09-11T07:48:21Z"}
 {"seat":"FOUNDRY","event":"claim","id":"QUICKTEST_MAPGEN_NRE_1","ts":"2026-09-11T07:48:21Z"}
 {"seat":"FOUNDRY","event":"start","id":"QUICKTEST_MAPGEN_NRE_1","ts":"2026-09-11T07:48:22Z"}
+{"seat":"FOUNDRY","event":"close","id":"SAND_STALKER_BADGER_SOUNDS_1","sha":"b143edf32298e1f2c3b6d100ac6203a9deb09940","ts":"2026-09-11T07:56:38Z"}
