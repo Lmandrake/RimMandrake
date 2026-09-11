@@ -77,12 +77,11 @@
   },
   "AB_Bryolux": {
    "file": "plant_art/AB_Bryolux.anchor.png",
-   "w": 142,
+   "w": 155,
    "h": 116,
    "shownPct": 100,
    "cells": 0.95,
-   "mesh": 4,
-   "patched": true
+   "mesh": 4
   },
   "AB_CrystalFlower": {
    "file": "plant_art/AB_CrystalFlower.anchor.png",
@@ -831,12 +830,11 @@
   },
   "Boomshroom": {
    "file": "plant_art/Boomshroom.anchor.png",
-   "w": 174,
+   "w": 187,
    "h": 116,
    "shownPct": 100,
    "cells": 1.5,
-   "mesh": 1,
-   "patched": true
+   "mesh": 1
   },
   "GRimMoss": {
    "file": "plant_art/GRimMoss.anchor.png",
@@ -889,12 +887,11 @@
   },
   "Plant_Brambles": {
    "file": "plant_art/Plant_Brambles.anchor.png",
-   "w": 170,
+   "w": 183,
    "h": 116,
    "shownPct": 100,
-   "cells": 1.4449999999999998,
-   "mesh": 4,
-   "patched": true
+   "cells": 1.445,
+   "mesh": 4
   },
   "Plant_Bubblespore_Wild": {
    "file": "plant_art/Plant_Bubblespore_Wild.anchor.png",
@@ -906,12 +903,11 @@
   },
   "Plant_Bush": {
    "file": "plant_art/Plant_Bush.anchor.png",
-   "w": 137,
+   "w": 150,
    "h": 116,
    "shownPct": 100,
-   "cells": 0.9199999999999999,
-   "mesh": 1,
-   "patched": true
+   "cells": 0.92,
+   "mesh": 1
   },
   "Plant_Chakroot_Wild": {
    "file": "plant_art/Plant_Chakroot_Wild.anchor.png",
@@ -931,12 +927,11 @@
   },
   "Plant_Fireweed": {
    "file": "plant_art/Plant_Fireweed.anchor.png",
-   "w": 142,
+   "w": 155,
    "h": 116,
    "shownPct": 100,
-   "cells": 0.6000000000000001,
-   "mesh": 4,
-   "patched": true
+   "cells": 0.6,
+   "mesh": 4
   },
   "Plant_GrayGrass": {
    "file": "plant_art/Plant_GrayGrass.anchor.png",
@@ -981,12 +976,11 @@
   },
   "Plant_MagmaCactus": {
    "file": "plant_art/Plant_MagmaCactus.anchor.png",
-   "w": 161,
+   "w": 174,
    "h": 116,
    "shownPct": 100,
    "cells": 1.3,
-   "mesh": 1,
-   "patched": true
+   "mesh": 1
   },
   "Plant_MujaFruit_Wild": {
    "file": "plant_art/Plant_MujaFruit_Wild.anchor.png",
@@ -1006,30 +1000,27 @@
   },
   "Plant_Reeds": {
    "file": "plant_art/Plant_Reeds.anchor.png",
-   "w": 142,
+   "w": 155,
    "h": 116,
    "shownPct": 100,
    "cells": 0.8,
-   "mesh": 4,
-   "patched": true
+   "mesh": 4
   },
   "Plant_Ripthorn": {
    "file": "plant_art/Plant_Ripthorn.anchor.png",
-   "w": 154,
+   "w": 167,
    "h": 116,
    "shownPct": 100,
    "cells": 1.19,
-   "mesh": 4,
-   "patched": true
+   "mesh": 4
   },
   "Plant_ShrubLow": {
    "file": "plant_art/Plant_ShrubLow.anchor.png",
-   "w": 145,
+   "w": 158,
    "h": 116,
    "shownPct": 100,
    "cells": 1.05,
-   "mesh": 4,
-   "patched": true
+   "mesh": 4
   },
   "Plant_TookeTrap_Wild": {
    "file": "plant_art/Plant_TookeTrap_Wild.anchor.png",
@@ -1041,102 +1032,91 @@
   },
   "Plant_Toxipotato": {
    "file": "plant_art/Plant_Toxipotato.anchor.png",
-   "w": 145,
+   "w": 158,
    "h": 116,
    "shownPct": 100,
    "cells": 1.05,
-   "mesh": 1,
-   "patched": true
+   "mesh": 1
   },
   "Plant_TreePolux": {
    "file": "plant_art/Plant_TreePolux.anchor.png",
-   "w": 212,
+   "w": 225,
    "h": 154,
    "shownPct": 100,
    "cells": 2.1,
-   "mesh": 1,
-   "patched": true
+   "mesh": 1
   },
   "Plant_YellowGrass": {
    "file": "plant_art/Plant_YellowGrass.anchor.png",
-   "w": 142,
+   "w": 155,
    "h": 116,
    "shownPct": 100,
    "cells": 0.6,
-   "mesh": 9,
-   "patched": true
+   "mesh": 9
   },
   "Plant_YellowTallGrass": {
    "file": "plant_art/Plant_YellowTallGrass.anchor.png",
-   "w": 142,
+   "w": 155,
    "h": 116,
    "shownPct": 100,
    "cells": 0.85,
-   "mesh": 9,
-   "patched": true
+   "mesh": 9
   },
   "PoisonPlantBush": {
    "file": "plant_art/PoisonPlantBush.anchor.png",
-   "w": 159,
+   "w": 172,
    "h": 116,
    "shownPct": 100,
    "cells": 1.265,
-   "mesh": 1,
-   "patched": true
+   "mesh": 1
   },
   "PoisonPlantTallGrass": {
    "file": "plant_art/PoisonPlantTallGrass.anchor.png",
-   "w": 142,
+   "w": 155,
    "h": 116,
    "shownPct": 100,
    "cells": 0.85,
-   "mesh": 9,
-   "patched": true
+   "mesh": 9
   },
   "PoisonShrub": {
    "file": "plant_art/PoisonShrub.anchor.png",
-   "w": 159,
+   "w": 172,
    "h": 116,
    "shownPct": 100,
    "cells": 1.265,
-   "mesh": 1,
-   "patched": true
+   "mesh": 1
   },
   "RG_Plant_AridGrass": {
    "file": "plant_art/RG_Plant_AridGrass.anchor.png",
-   "w": 142,
+   "w": 155,
    "h": 116,
    "shownPct": 100,
    "cells": 0.6,
-   "mesh": 9,
-   "patched": true
+   "mesh": 9
   },
   "RG_Plant_CreepStern": {
    "file": "plant_art/RG_Plant_CreepStern.anchor.png",
-   "w": 161,
+   "w": 174,
    "h": 116,
    "shownPct": 100,
    "cells": 1.3,
-   "mesh": 4,
-   "patched": true
+   "mesh": 4
   },
   "RG_Plant_CrimsonCushion": {
    "file": "plant_art/RG_Plant_CrimsonCushion.anchor.png",
-   "w": 142,
+   "w": 155,
    "h": 116,
    "shownPct": 100,
    "cells": 0.9,
-   "mesh": 9,
-   "patched": true
+   "mesh": 9
   },
   "RG_Plant_Dervish": {
    "file": "plant_art/RG_Plant_Dervish.anchor.png",
-   "w": 142,
+   "w": 155,
    "h": 116,
    "shownPct": 100,
    "cells": 0.5,
-   "mesh": 9,
-   "patched": true
+   "mesh": 9
   },
   "RG_Plant_TallToxiGrass": {
    "file": "plant_art/RG_Plant_TallToxiGrass.anchor.png",
@@ -1156,12 +1136,11 @@
   },
   "RG_Plant_TropicalChokevine": {
    "file": "plant_art/RG_Plant_TropicalChokevine.anchor.png",
-   "w": 205,
+   "w": 218,
    "h": 147,
    "shownPct": 100,
    "cells": 1.98,
-   "mesh": 4,
-   "patched": true
+   "mesh": 4
   },
   "VRE_PoluxBush": {
    "file": "plant_art/VRE_PoluxBush.anchor.png",

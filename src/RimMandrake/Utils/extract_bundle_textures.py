@@ -473,8 +473,17 @@ def main(argv=None):
     # A bundle that vanished (mod removed or updated to loose art) must not keep
     # feeding the index. Its PNGs are left on disk — harmless, and deleting is
     # the one operation here that can destroy something we did not create.
-    for gone in [p for p in man if p not in live]:
-        del man[gone]
+    #
+    # 🔴 --only NARROWS `sources`, so `live` only ever holds THIS run's bundles.
+    # Pruning against it on a filtered run silently deleted every other mod's
+    # manifest/index rows on the next `--only` invocation (measured: a
+    # starwarsanimalcollection extraction's 2,243 rows vanished from index.csv
+    # after a later `--only odyssey` run) — a bundle that is merely OUT OF
+    # SCOPE for this run is not evidence it vanished from disk. Only prune on
+    # an unfiltered run, which is the only one that actually saw everything.
+    if not a.only:
+        for gone in [p for p in man if p not in live]:
+            del man[gone]
 
     write_manifest(a.out, man)
     n_rows = write_index(a.out, man)

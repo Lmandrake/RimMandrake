@@ -313,7 +313,17 @@ def resolve_thing_texture(tex_path, graphic_class, tex_index, dir_index,
             return tex_index[base + "/" + files[0]], "<dir:%s>" % files[0]
         return None, None
 
-    if graphic_class in DIR_GRAPHIC_CLASSES:
+    # 🔴 The def dump's graphicClass is namespace-qualified ("Verse.Graphic_
+    # Random"), never the bare name DIR_GRAPHIC_CLASSES lists. An unstripped
+    # `graphic_class in DIR_GRAPHIC_CLASSES` check is False for every real def,
+    # silently skipping the directory-first path (and, worse, the dir_hint bundle
+    # guard below) for every single Graphic_Random/StackCount/Appearances/Indexed
+    # plant and item in the game — the loose case survived by accident because
+    # by_dir() is retried unconditionally a few lines down, but the bundle path
+    # has no such retry and fell straight into the flat-suffix collision this
+    # function exists to prevent.
+    is_dir_class = (graphic_class or "").rsplit(".", 1)[-1] in DIR_GRAPHIC_CLASSES
+    if is_dir_class:
         hit, how = by_dir()
         if hit:
             return hit, how
@@ -331,7 +341,15 @@ def resolve_thing_texture(tex_path, graphic_class, tex_index, dir_index,
     # 🔴 own_pkg is load-bearing for apparel: every piece in a set is
     # `.../<Set>/<Piece>/Apparel`, so 42 Outer Rim garments share one m_Name and
     # a name-only match handed them all the same sprite from another mod.
-    return resolve_texture(tex_path, {}, bundle_index, own_pkg=own_pkg)
+    #
+    # 🔴 dir_hint=True for Graphic_Random/StackCount/etc: texPath names a
+    # DIRECTORY, so the flat suffix forms ("", "_south", ...) must never be
+    # tried here — one already matched a harvested-item crate icon that shared
+    # a plant's bare directory name in the same mod (Plant_HubbaGourd_Wild ->
+    # swresource/plantfoodraw/hubbagourd.png instead of its own swplants/
+    # HubbaGourd/HubbaGourdA.png). Only the lettered-variant rungs may fire.
+    return resolve_texture(tex_path, {}, bundle_index, own_pkg=own_pkg,
+                           dir_hint=is_dir_class)
 
 
 # ------------------------------------------------------------------ planning
