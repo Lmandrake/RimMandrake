@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Absorbed verbatim from vanillaexpanded.vplantsesucculents, source file
+     1.6/Patches/BiomesPatch.xml. STAT_NORM_WAVE2_RETIRE_1. This is the
+     donor's entire base-game patch surface (24 ops on AridShrubland/Desert/
+     ExtremeDesert, our three core desert biomes, plus non-painted
+     TropicalRainforest/TropicalSwamp). Own gates unchanged (none needed;
+     these targets are base game). -->
+<Patch>
+
+	<!-- Temperate Biomes -->
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/BiomeDef[defName = "AridShrubland"]/wildPlants</xpath>
+		<value>
+			<VCE_Plant_AloeVera>0.01</VCE_Plant_AloeVera>
+			<VCE_Plant_BunnyEarsCactus>0.01</VCE_Plant_BunnyEarsCactus>
+			<VCE_Plant_Echeveria>0.01</VCE_Plant_Echeveria>
+			<VCE_Plant_FairyWashboard>0.01</VCE_Plant_FairyWashboard>
+			<VCE_Plant_JadePlant>0.01</VCE_Plant_JadePlant>
+			<VCE_Plant_PeyotePlant>0.01</VCE_Plant_PeyotePlant>
+			<VCE_Plant_PincushionPlant>0.01</VCE_Plant_PincushionPlant>
+			<VCE_Plant_SnakePlant>0.01</VCE_Plant_SnakePlant>
+
+		</value>
+	</Operation>
+
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/BiomeDef[defName = "Desert"]/wildPlants</xpath>
+		<value>
+			<VCE_Plant_AloeVera>0.01</VCE_Plant_AloeVera>
+			<VCE_Plant_BunnyEarsCactus>0.01</VCE_Plant_BunnyEarsCactus>
+			<VCE_Plant_Echeveria>0.01</VCE_Plant_Echeveria>
+			<VCE_Plant_FairyWashboard>0.01</VCE_Plant_FairyWashboard>
+			<VCE_Plant_JadePlant>0.01</VCE_Plant_JadePlant>
+			<VCE_Plant_PeyotePlant>0.01</VCE_Plant_PeyotePlant>
+			<VCE_Plant_PincushionPlant>0.01</VCE_Plant_PincushionPlant>
+			<VCE_Plant_SnakePlant>0.01</VCE_Plant_SnakePlant>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/BiomeDef[defName = "ExtremeDesert"]/wildPlants</xpath>
+		<value>
+			<VCE_Plant_AloeVera>0.01</VCE_Plant_AloeVera>
+			<VCE_Plant_BunnyEarsCactus>0.01</VCE_Plant_BunnyEarsCactus>
+			<VCE_Plant_Echeveria>0.01</VCE_Plant_Echeveria>
+			<VCE_Plant_FairyWashboard>0.01</VCE_Plant_FairyWashboard>
+			<VCE_Plant_JadePlant>0.01</VCE_Plant_JadePlant>
+			<VCE_Plant_PeyotePlant>0.01</VCE_Plant_PeyotePlant>
+			<VCE_Plant_PincushionPlant>0.01</VCE_Plant_PincushionPlant>
+			<VCE_Plant_SnakePlant>0.01</VCE_Plant_SnakePlant>
+		</value>
+	</Operation>
+
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/BiomeDef[defName = "TropicalRainforest"]/wildPlants</xpath>
+		<value>
+			<VCE_Plant_AloeVera>0.01</VCE_Plant_AloeVera>
+			<VCE_Plant_Echeveria>0.01</VCE_Plant_Echeveria>
+			<VCE_Plant_JadePlant>0.01</VCE_Plant_JadePlant>
+			<VCE_Plant_SnakePlant>0.01</VCE_Plant_SnakePlant>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/BiomeDef[defName = "TropicalSwamp"]/wildPlants</xpath>
+		<value>
+			<VCE_Plant_AloeVera>0.01</VCE_Plant_AloeVera>
+			<VCE_Plant_Echeveria>0.01</VCE_Plant_Echeveria>
+			<VCE_Plant_JadePlant>0.01</VCE_Plant_JadePlant>
+			<VCE_Plant_SnakePlant>0.01</VCE_Plant_SnakePlant>
+
+		</value>
+	</Operation>
+
+</Patch>

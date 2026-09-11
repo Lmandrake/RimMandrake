@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Absorbed verbatim from vanillaexpanded.vplantsesucculents ("Vanilla
+     Plants Expanded - Succulents", workshop 2198652536), source files
+     1.6/Defs/ThingDefs_Plants/Plants_Cultivated_Decorative.xml (10 plant
+     ThingDefs) and 1.6/Defs/ResearchProjectDefs/{ResearchProjects_1,
+     ResearchTabs}.xml (1 ResearchProjectDef + 1 ResearchTabDef). Total 12
+     own defs, matching the census. STAT_NORM_WAVE2_RETIRE_1 (owner-ruled
+     Wave 2 remainder, 2026-09-11).
+
+     The ResearchTabDef "VanillaExpanded" here duplicates the one shipped by
+     OskarPotocki.VanillaFactionsExpanded.Core (a required dependency of the
+     donor, and still active); carried over verbatim per the donor's own
+     defensive-standalone convention; a duplicate defName across mods is not
+     an error, RimWorld's def loader simply takes the later one, same as it
+     already does today with the donor active.
+
+     src/RimUtinni/ResearchRetag/Patches/{RUT_ResearchRetag,
+     RUT_ResearchTabAssign}.xml already carry PatchOperationConditional
+     blocks keyed on VCE_SucculentSowing (techLevel -> Industrial, tab ->
+     RUT_Tree_Scavenging); those are generated, guarded, and untouched by
+     this port; the def below ships with the donor's original Neolithic/
+     VanillaExpanded values exactly as upstream, and the retag patches apply
+     over it the same way they already do today.
+
+     Textures copied to this mod's own Textures/Things/Plant/<name>/. -->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>VCE_Plant_AloeVera</defName>
+    <label>aloe vera plant</label>
+    <description>A cultivated succulent with thick, greenish, fleshy leaves that fan out from the short stem. Whilst not as beautiful as flowers, this plant has a very long lifespan.</description>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Beauty>8</Beauty>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/AloeVera</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <altitudeLayer>Item</altitudeLayer>
+    <selectable>true</selectable>
+    <ingestible />
+    <plant>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <sowWork>750</sowWork>
+      <sowTags>
+        <li>Ground</li>
+        <li>Decorative</li>
+      </sowTags>
+      <growMinGlow>0.2</growMinGlow>
+      <topWindExposure>0.05</topWindExposure>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>12</lifespanDaysPerGrowDays>
+      <visualSizeRange>0.3~1.05</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <purpose>Beauty</purpose>
+      <sowResearchPrerequisites>
+        <li>VCE_SucculentSowing</li>
+      </sowResearchPrerequisites>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>VCE_Plant_BunnyEarsCactus</defName>
+    <label>bunny ears cactus</label>
+    <description>A cultivated succulent with pads resembling ears of a bunny, and spines resembling fuzzy fur. Whilst not as beautiful as flowers, this plant has a very long lifespan.</description>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Beauty>8</Beauty>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/BunnyEarsCactus</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <altitudeLayer>Item</altitudeLayer>
+    <selectable>true</selectable>
+    <ingestible />
+    <plant>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <sowWork>750</sowWork>
+      <sowTags>
+        <li>Ground</li>
+        <li>Decorative</li>
+      </sowTags>
+      <growMinGlow>0.2</growMinGlow>
+      <topWindExposure>0.05</topWindExposure>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>12</lifespanDaysPerGrowDays>
+      <visualSizeRange>0.3~1.05</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <purpose>Beauty</purpose>
+      <sowResearchPrerequisites>
+        <li>VCE_SucculentSowing</li>
+      </sowResearchPrerequisites>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>VCE_Plant_Echeveria</defName>
+    <label>echeveria plant</label>
+    <description>A cultivated succulent forming a rosette, native to arid shrublands. Whilst not as beautiful as flowers, this plant has a very long lifespan.</description>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Beauty>8</Beauty>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <altitudeLayer>Item</altitudeLayer>
+    <selectable>true</selectable>
+    <ingestible />
+    <plant>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <sowWork>750</sowWork>
+      <sowTags>
+        <li>Ground</li>
+        <li>Decorative</li>
+      </sowTags>
+      <growMinGlow>0.2</growMinGlow>
+      <topWindExposure>0.05</topWindExposure>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>12</lifespanDaysPerGrowDays>
+      <visualSizeRange>0.3~1.05</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <purpose>Beauty</purpose>
+      <sowResearchPrerequisites>
+        <li>VCE_SucculentSowing</li>
+      </sowResearchPrerequisites>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>VCE_Plant_FairyWashboard</defName>
+    <label>fairy washboard plant</label>
+    <description>A cultivated succulent with rosette forming long triangular leaves. Whilst not as beautiful as flowers, this plant has a very long lifespan.</description>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Beauty>8</Beauty>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/FairyWashboard</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <altitudeLayer>Item</altitudeLayer>
+    <selectable>true</selectable>
+    <ingestible />
+    <plant>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <sowWork>750</sowWork>
+      <sowTags>
+        <li>Ground</li>
+        <li>Decorative</li>
+      </sowTags>
+      <growMinGlow>0.2</growMinGlow>
+      <topWindExposure>0.05</topWindExposure>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>12</lifespanDaysPerGrowDays>
+      <visualSizeRange>0.3~1.05</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <purpose>Beauty</purpose>
+      <sowResearchPrerequisites>
+        <li>VCE_SucculentSowing</li>
+      </sowResearchPrerequisites>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>VCE_Plant_JadePlant</defName>
+    <label>jade plant</label>
+    <description>A cultivated succulent with thick, woody stems and oval-shaped leaves. Whilst not as beautiful as flowers, this plant has a very long lifespan.</description>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Beauty>8</Beauty>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/JadePlant</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <altitudeLayer>Item</altitudeLayer>
+    <selectable>true</selectable>
+    <ingestible />
+    <plant>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <sowWork>750</sowWork>
+      <sowTags>
+        <li>Ground</li>
+        <li>Decorative</li>
+      </sowTags>
+      <growMinGlow>0.2</growMinGlow>
+      <topWindExposure>0.05</topWindExposure>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>12</lifespanDaysPerGrowDays>
+      <visualSizeRange>0.3~1.05</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <purpose>Beauty</purpose>
+      <sowResearchPrerequisites>
+        <li>VCE_SucculentSowing</li>
+      </sowResearchPrerequisites>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>VCE_Plant_PeyotePlant</defName>
+    <label>peyote plant</label>
+    <description>A cultivated succulent resembling thick buttons. Whilst not as beautiful as flowers, this plant has a very long lifespan.</description>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Beauty>8</Beauty>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Peyote</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <altitudeLayer>Item</altitudeLayer>
+    <selectable>true</selectable>
+    <ingestible />
+    <plant>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <sowWork>750</sowWork>
+      <sowTags>
+        <li>Ground</li>
+        <li>Decorative</li>
+      </sowTags>
+      <growMinGlow>0.2</growMinGlow>
+      <topWindExposure>0.05</topWindExposure>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>12</lifespanDaysPerGrowDays>
+      <visualSizeRange>0.3~1.05</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <purpose>Beauty</purpose>
+      <sowResearchPrerequisites>
+        <li>VCE_SucculentSowing</li>
+      </sowResearchPrerequisites>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>VCE_Plant_PincushionPlant</defName>
+    <label>pincushion plant</label>
+    <description>A cultivated succulent of cactus variety, with pointy spikes covering its exterior. Whilst not as beautiful as flowers, this plant has a very long lifespan.</description>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Beauty>8</Beauty>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/PincushionPlant</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <altitudeLayer>Item</altitudeLayer>
+    <selectable>true</selectable>
+    <ingestible />
+    <plant>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <sowWork>750</sowWork>
+      <sowTags>
+        <li>Ground</li>
+        <li>Decorative</li>
+      </sowTags>
+      <growMinGlow>0.2</growMinGlow>
+      <topWindExposure>0.05</topWindExposure>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>12</lifespanDaysPerGrowDays>
+      <visualSizeRange>0.3~1.05</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <purpose>Beauty</purpose>
+      <sowResearchPrerequisites>
+        <li>VCE_SucculentSowing</li>
+      </sowResearchPrerequisites>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>VCE_Plant_Schlumbergera</defName>
+    <label>schlumbergera plant</label>
+    <description>A cultivated succulent with bell-shaped flowers. Whilst not as beautiful as flowers, this plant has a very long lifespan.</description>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Beauty>8</Beauty>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Schlumbergera</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <altitudeLayer>Item</altitudeLayer>
+    <selectable>true</selectable>
+    <ingestible />
+    <plant>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <sowWork>750</sowWork>
+      <sowTags>
+        <li>Ground</li>
+        <li>Decorative</li>
+      </sowTags>
+      <growMinGlow>0.2</growMinGlow>
+      <topWindExposure>0.05</topWindExposure>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>12</lifespanDaysPerGrowDays>
+      <visualSizeRange>0.3~1.05</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <purpose>Beauty</purpose>
+      <sowResearchPrerequisites>
+        <li>VCE_SucculentSowing</li>
+      </sowResearchPrerequisites>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>VCE_Plant_SnakePlant</defName>
+    <label>snake plant</label>
+    <description>A cultivated succulent with stiff, green banded leaves with a yellow border. Whilst not as beautiful as flowers, this plant has a very long lifespan.</description>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Beauty>8</Beauty>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <altitudeLayer>Item</altitudeLayer>
+    <selectable>true</selectable>
+    <ingestible />
+    <plant>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <sowWork>750</sowWork>
+      <sowTags>
+        <li>Ground</li>
+        <li>Decorative</li>
+      </sowTags>
+      <growMinGlow>0.2</growMinGlow>
+      <topWindExposure>0.05</topWindExposure>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>12</lifespanDaysPerGrowDays>
+      <visualSizeRange>0.3~1.55</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <purpose>Beauty</purpose>
+      <sowResearchPrerequisites>
+        <li>VCE_SucculentSowing</li>
+      </sowResearchPrerequisites>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>VCE_Plant_SweetheartPlant</defName>
+    <label>sweetheart plant</label>
+    <description>A cultivated succulent with heart-shaped leaves on a tall stem. Whilst not as beautiful as flowers, this plant has a very long lifespan.</description>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Beauty>8</Beauty>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SweetheartPlant</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <altitudeLayer>Item</altitudeLayer>
+    <selectable>true</selectable>
+    <ingestible />
+    <plant>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <sowWork>750</sowWork>
+      <sowTags>
+        <li>Ground</li>
+        <li>Decorative</li>
+      </sowTags>
+      <growMinGlow>0.2</growMinGlow>
+      <topWindExposure>0.05</topWindExposure>
+      <growDays>3</growDays>
+      <lifespanDaysPerGrowDays>12</lifespanDaysPerGrowDays>
+      <visualSizeRange>0.3~1.05</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <purpose>Beauty</purpose>
+      <sowResearchPrerequisites>
+        <li>VCE_SucculentSowing</li>
+      </sowResearchPrerequisites>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ResearchProjectDef>
+    <defName>VCE_SucculentSowing</defName>
+    <label>succulent sowing</label>
+    <description>Sow the beautiful, long lasting succulents.</description>
+    <baseCost>1000</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <researchViewX>0.00</researchViewX>
+    <researchViewY>2.05</researchViewY>
+    <tab>VanillaExpanded</tab>
+    <tags>
+      <li>TribalStart</li>
+    </tags>
+  </ResearchProjectDef>
+
+  <ResearchTabDef>
+    <defName>VanillaExpanded</defName>
+    <label>Vanilla Expanded</label>
+  </ResearchTabDef>
+
+</Defs>

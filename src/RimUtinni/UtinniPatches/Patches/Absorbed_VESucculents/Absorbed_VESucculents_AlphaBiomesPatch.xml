@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Absorbed verbatim from vanillaexpanded.vplantsesucculents, source file
+     1.6/Patches/AlphaBiomesPatch.xml. STAT_NORM_WAVE2_RETIRE_1. Own gate
+     (PatchOperationFindMod "Alpha Biomes") unchanged; sarg.alphabiomes is
+     a ruled-permanent resident (STAT_NORMALIZATION_AUDIT_1 Wave 4), so this
+     stays live exactly as it does today. -->
+<Patch>
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Alpha Biomes</li>
+		</mods>
+		<match Class="PatchOperationSequence">
+			<operations>
+				<li Class="PatchOperationAdd">
+					<xpath>/Defs/BiomeDef[defName = "AB_GallatrossGraveyard"]/wildPlants</xpath>
+					<value>
+						<VCE_Plant_AloeVera>0.01</VCE_Plant_AloeVera>
+						<VCE_Plant_BunnyEarsCactus>0.01</VCE_Plant_BunnyEarsCactus>
+						<VCE_Plant_Echeveria>0.01</VCE_Plant_Echeveria>
+						<VCE_Plant_FairyWashboard>0.01</VCE_Plant_FairyWashboard>
+						<VCE_Plant_JadePlant>0.01</VCE_Plant_JadePlant>
+						<VCE_Plant_PeyotePlant>0.01</VCE_Plant_PeyotePlant>
+						<VCE_Plant_PincushionPlant>0.01</VCE_Plant_PincushionPlant>
+						<VCE_Plant_SnakePlant>0.01</VCE_Plant_SnakePlant>
+					</value>
+				</li>
+			</operations>
+		</match>
+	</Operation>
+</Patch>

@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Absorbed from vanillaexpanded.vaewaste ("Vanilla Animals Expanded
+     Waste Animals", workshop 2962126499). STAT_NORM_WAVE2_RETIRE_1
+     (owner-ruled Wave 2 remainder, 2026-09-11): only VAEWaste_Megatardi is
+     actually cast (design/Jawa/fauna/cast_assignment.csv,
+     BiomeCast_Ashkarr.xml's Wasteland weight 0.18) of the donor's 55 own
+     defs, so only its own dependency chain is ported; NOT the other 10+
+     VAEWaste species, which the census confirms have zero cast/save
+     presence and are not part of this port.
+
+     Cherry-picked, defName-preserving, from:
+       1.6/Defs/ThingDefs_Races/{Races_Megatardi,Bases}.xml
+       1.6/Defs/ThingDefs_Items/{Items_Resource_Meats,Items_Resource_Stuff_Leather}.xml
+       1.6/Defs/ThoughtDefs/Thoughts_Memory_Eating.xml (2 of its defs)
+       1.6/Defs/Bodies/Bodies_Animal_Megatardi.xml (uses only vanilla Core
+         body parts: Shell/Elytra/Stomach/InsectHeart/Pronotum/InsectHead/
+         Brain/Antenna/InsectNostril/InsectMouth/InsectLeg, confirmed
+         against Data/Core/Defs/Bodies/BodyParts_Animal.xml; no VAEWaste
+         body-part defs needed)
+
+     Megatardi's deathAction (DeathActionWorker_ToxCloud) and its toxic
+     meat's ingestion outcome (VanillaAnimalsExpandedWaste.
+     IngestionOutcomeDoer_Toxic) are donor C# classes; the compiled
+     VanillaAnimalsExpandedWaste.dll is carried forward wholesale into this
+     mod's own Assemblies/ (same technique as the guy762_IonizationABF.dll
+     port under WEAPONS_DONOR_RETIREMENT_1's kotorcore absorption), so both
+     effects keep working once vanillaexpanded.vaewaste retires.
+
+     Textures copied to this mod's own Textures/Things/Pawn/Animal/
+     Megatardi/ and Textures/Things/Item/ToxicMeat/. -->
+<Defs>
+
+  <ThingDef Abstract="True" ParentName="AnimalThingBase" Name="VAEWaste_BaseInsect">
+    <statBases>
+      <ToxicResistance>1</ToxicResistance>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+    </statBases>
+    <race>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <meatColor>(160,168,139)</meatColor>
+      <meatMarketValue>0.5</meatMarketValue>
+      <foodType>OmnivoreAnimal, AnimalProduct</foodType>
+      <manhunterOnDamageChance>0.50</manhunterOnDamageChance>
+    </race>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">InsectMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+  </ThingDef>
+
+  <ThingDef ParentName="VAEWaste_BaseInsect">
+    <defName>VAEWaste_Megatardi</defName>
+    <label>megatardi</label>
+    <description>The Megatardi is a massive and curious creature, mutated from its tiny tardigrade origins to become a behemoth of the wasteland. Though slow and blind, it requires very little sustenance to survive and can consume even the most toxic wastepacks. With its six legs, the Megatardi is an impressive sight, and its gentle nature makes it a popular pack animal among those brave enough to venture into the polluted world. Though it is easily tamed, the Megatardi is not without its dangers. Upon its death, it releases a cloud of toxic gas, making it a potential hazard for anyone nearby. Despite this, the Megatardi remains a valuable asset for those willing to take on the challenges of the polluted wasteland.</description>
+    <statBases>
+      <MoveSpeed>3.5</MoveSpeed>
+      <ComfyTemperatureMin>-50</ComfyTemperatureMin>
+      <MarketValue>350</MarketValue>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+      <FilthRate>4</FilthRate>
+      <ToxicEnvironmentResistance>1</ToxicEnvironmentResistance>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <deathAction>
+        <workerClass>DeathActionWorker_ToxCloud</workerClass>
+      </deathAction>
+      <herdAnimal>false</herdAnimal>
+      <herdMigrationAllowed>false</herdMigrationAllowed>
+      <body>VAEWaste_Megatardi</body>
+      <baseHungerRate>0.01</baseHungerRate>
+      <baseBodySize>2</baseBodySize>
+      <baseHealthScale>2.5</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <roamMtbDays>6</roamMtbDays>
+      <packAnimal>true</packAnimal>
+      <lifeExpectancy>10</lifeExpectancy>
+      <trainability>None</trainability>
+      <manhunterOnTameFailChance>0.03</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <specificMeatDef>VAEWaste_ToxicMeat</specificMeatDef>
+      <leatherDef>VAEWaste_ToxicLeather</leatherDef>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3333</minAge>
+          <soundWounded>Pawn_Spelopede_Pain</soundWounded>
+          <soundDeath>Pawn_Spelopede_Death</soundDeath>
+          <soundCall>Pawn_Spelopede_Call</soundCall>
+          <soundAngry>Pawn_Spelopede_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>VAEWaste_Megatardi</defName>
+    <label>megatardi</label>
+    <race>VAEWaste_Megatardi</race>
+    <combatPower>100</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>
+      <min>1</min>
+      <max>3</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megatardi/Megatardi</texPath>
+          <drawSize>1.8</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megatardi/Megatardi_Dessicated</texPath>
+          <drawSize>1.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megatardi/Megatardi</texPath>
+          <drawSize>2.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megatardi/Megatardi_Dessicated</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megatardi/Megatardi</texPath>
+          <drawSize>3</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megatardi/Megatardi_Dessicated</texPath>
+          <drawSize>3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <BodyDef>
+    <defName>VAEWaste_Megatardi</defName>
+    <label>megatardi</label>
+    <corePart>
+      <def>Shell</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Elytra</def>
+          <coverage>0.05</coverage>
+          <customLabel>left elytra</customLabel>
+        </li>
+        <li>
+          <def>Elytra</def>
+          <coverage>0.05</coverage>
+          <customLabel>right elytra</customLabel>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>InsectHeart</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Pronotum</def>
+          <coverage>0.18</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>InsectHead</def>
+              <coverage>0.65</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>Brain</def>
+                  <coverage>0.2</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Antenna</def>
+                  <coverage>0.10</coverage>
+                  <customLabel>left antenna</customLabel>
+                </li>
+                <li>
+                  <def>Antenna</def>
+                  <coverage>0.10</coverage>
+                  <customLabel>right antenna</customLabel>
+                </li>
+                <li>
+                  <def>InsectNostril</def>
+                  <coverage>0.07</coverage>
+                </li>
+                <li>
+                  <def>InsectMouth</def>
+                  <coverage>0.10</coverage>
+                  <groups>
+                    <li>Mouth</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>front left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>front right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>middle left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>middle right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>rear left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>InsectLeg</def>
+          <customLabel>rear right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+
+  <ThingDef Name="VAEWaste_RawMeatBase" Abstract="True" ParentName="OrganicProductBase">
+    <label>Base meat properties</label>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>True</rotDestroys>
+      </li>
+    </comps>
+    <statBases>
+      <Nutrition>0.05</Nutrition>
+      <Flammability>0.5</Flammability>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <ingestible>
+      <foodType>Meat</foodType>
+      <preferability>DesperateOnly</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <ingestSound>RawMeat_Eat</ingestSound>
+    </ingestible>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li>VAEWaste_ToxicMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+    <thingCategories>
+      <li>MeatRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="VAEWaste_RawMeatBase">
+    <defName>VAEWaste_ToxicMeat</defName>
+    <label>toxic meat</label>
+    <description>Raw meat from a toxic animal.\n\nChewy, gelatinous and disgusting.</description>
+    <graphicData>
+      <texPath>Things/Item/ToxicMeat</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0.03</Mass>
+      <MarketValue>2</MarketValue>
+    </statBases>
+    <ingestible>
+      <specialThoughtDirect>VAEWaste_AteToxicMeatDirect</specialThoughtDirect>
+      <specialThoughtAsIngredient>VAEWaste_AteToxicMeatAsIngredient</specialThoughtAsIngredient>
+      <outcomeDoers>
+        <li Class="VanillaAnimalsExpandedWaste.IngestionOutcomeDoer_Toxic">
+          <severity>0.05</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+  </ThingDef>
+
+  <ThingDef ParentName="LeatherBase">
+    <defName>VAEWaste_ToxicLeather</defName>
+    <label>wasteleather</label>
+    <description>A poor, dark-greenish brown coloured leather that flakes quite easily. Very flammable.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Leather</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(87,70,14)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Mass>0.03</Mass>
+      <Flammability>2</Flammability>
+      <MarketValue>1.7</MarketValue>
+      <StuffPower_Armor_Sharp>0.7</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.15</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>0.8</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>14</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>14</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(87,70,14)</color>
+      <commonality>0</commonality>
+      <statFactors>
+        <MaxHitPoints>1.2</MaxHitPoints>
+        <Flammability>2</Flammability>
+        <Beauty>0.7</Beauty>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+
+  <ThoughtDef>
+    <defName>VAEWaste_AteToxicMeatDirect</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/Food</icon>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate toxic meat</label>
+        <description>I ate some toxic meat. It was, possibly, the most disgusting thing I've ever tasted.</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>VAEWaste_AteToxicMeatAsIngredient</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/Food</icon>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate cooked toxic meat</label>
+        <description>I ate a meal cooked from toxic meat. The seasoning partly covered the taste, but it still tasted quite poisonous.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>
