@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T20:36:44Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-11T21:07:06Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -114,7 +114,7 @@ _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -122,7 +122,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
@@ -383,16 +383,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  - Runs AFTER the full-roster size scaling (Law 3 at 12–15×bodySize) lands and
 prose:    infrastructure/state/items/FAUNA_LORE_DIVERSIFICATION_1.md
-
-## GOD_LINES_ORACLE_PACKS_1 Author the Ninefold god statement/reaction lines + Oracle persona prompt packs (voice law locked, zero lines exist); owner sittings, BENCH holds the pen - text_lore_load_report.md S5
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GOD_LINES_ORACLE_PACKS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GOD_LINES_ORACLE_PACKS_1.md
 
 ## DUNGEON_SETPIECE_TEXT_1 Dungeon set-piece prose held for the owner: Assailant reveal letters + 6 Forsaken vault hand-finish text per dungeons_arc_spec.md - text_lore_load_report.md S5
 state:    proposed
