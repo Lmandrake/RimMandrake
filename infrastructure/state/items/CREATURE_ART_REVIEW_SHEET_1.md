@@ -84,3 +84,16 @@ the planet at all; their redraw questions may be moot, shown in the ⚡ group fo
 owner's confirmation. Two rosterled defs have NO texture on disk (AA_ShadowCharger,
 AA_Thunderox — register texture not_found): art-pipeline candidates regardless of
 verdicts.
+
+## CLOSED 2026-09-11 (BENCH) — superseded by the 2026-09-10 fauna/flora sitting
+The full-register sitting never happened and is not needed: the owner's art
+verdicts landed per-row in the biome assignment sitting instead —
+`design/Jawa/worldbuilding/review/round2/decisions_propagated.json`, 828 rows
+with art verdicts (456 keep / 338 improve / 34 redo, MEASURED). The redo queue
+(Kreetle/Fambaa/Dragonsnake/Horax TOTAL + 162 improves + Beelzebufo) is derived
+and HELD on `CODEX_WORKER_SANDBOX_WRITE_1`. Of this item's 6 unexplained 08-23
+`replace` entries: 5 got fresh verdicts (SandPillar/Horax/BiliousVarog/
+ShatterjawBeetle redo, BlackScribe improve); GR_Catbear is off-roster with no
+disposition row and no roster reference — uncast, needs no art. The register
+sheet (`creature_art_register.html`) remains as a browsing artifact only; its
+decisions file was never reviewed and must not be consumed.
