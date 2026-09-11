@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T05:38:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T05:39:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -35,15 +35,6 @@ prose:    infrastructure/state/items/ASSIGNMENT_SHEETS_VERDICT_SITTING_1.md
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## GEONOSIAN_BRAINWORM_MORPH_1 Research Space Worms mod + Geonosian brain worm canon (Brain Invaders arc), author our own RSW_ brain worms — cold-vulnerable, host-puppeting
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  1. Research the donor: the Space Worms mod already in our orbit (the legacy cast
-prose:    infrastructure/state/items/GEONOSIAN_BRAINWORM_MORPH_1.md
 
 ## GIZKA_TRIBBLE_ADAPTATION_1 Examine the subscribed (not installed) Tribble module; design the Gizka ship-pest event — cute first, real problem after; check Absorbed_KotorCore for donor art
 state:    doing
