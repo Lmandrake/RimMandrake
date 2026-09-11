@@ -1,647 +1,673 @@
 {
- "sheetId": "homeless_disposition_register",
- "posture": "blacklist \u2014 whatever is not decided when this sheet freezes stays RESERVE (parked in the reserve pool), never cut. Only an explicit Cut removes a creature from the game at the next content pass.",
- "criterion": "Routed by tonight's rulings, not by worth: commission-first bars the showcase biomes; desert/arid are being thinned; wasteland asked for 2-3 wretched-many picks; pack/herd shapes go trader-beast; faction-flavored goes ninth-roster; Earth-recognizable goes cut; everything else defensible parks as reserve.",
- "generatedBy": "HOMELESS_DISPOSITION_SITTING_1 prefill generator (agent guesses until the sheet writes)",
- "generatedFrom": "design/Jawa/worldbuilding/review/round2/decisions_propagated.json (125 homeless in-rows)",
- "decidedCount": 125,
- "decisions": {
-  "homeless:AA_SmallButterfly": {
-   "decision": "place",
-   "prefill": "place",
-   "note": "",
-   "placeBiome": "arid_shrubland",
-   "placeBiomePrefill": "arid_shrubland"
-  },
-  "homeless:GR_ParagonThrumbo": {
-   "decision": "place",
-   "prefill": "place",
-   "note": "",
-   "placeBiome": "dune_sea_deep_desert",
-   "placeBiomePrefill": "dune_sea_deep_desert"
-  },
-  "homeless:MarshHaunt": {
-   "decision": "place",
-   "prefill": "place",
-   "note": "",
-   "placeBiome": "the_miasma",
-   "placeBiomePrefill": "the_miasma"
-  },
-  "homeless:AA_MegaLouse": {
-   "decision": "place",
-   "prefill": "place",
-   "note": "",
-   "placeBiome": "wasteland",
-   "placeBiomePrefill": "wasteland"
-  },
-  "homeless:AA_Skiphound": {
-   "decision": "place",
-   "prefill": "place",
-   "note": "",
-   "placeBiome": "wasteland",
-   "placeBiomePrefill": "wasteland"
-  },
-  "homeless:BMT_Sacapillar": {
-   "decision": "place",
-   "prefill": "place",
-   "note": "",
-   "placeBiome": "wasteland",
-   "placeBiomePrefill": "wasteland"
-  },
-  "homeless:AA_AnimusVox": {
-   "decision": "trader-beast",
-   "prefill": "trader-beast",
-   "note": ""
-  },
-  "homeless:Behemoth": {
-   "decision": "trader-beast",
-   "prefill": "trader-beast",
-   "note": ""
-  },
-  "homeless:Bordok": {
-   "decision": "trader-beast",
-   "prefill": "trader-beast",
-   "note": ""
-  },
-  "homeless:Gualaar": {
-   "decision": "trader-beast",
-   "prefill": "trader-beast",
-   "note": ""
-  },
-  "homeless:Kaadu": {
-   "decision": "trader-beast",
-   "prefill": "trader-beast",
-   "note": ""
-  },
-  "homeless:Mastmot": {
-   "decision": "trader-beast",
-   "prefill": "trader-beast",
-   "note": ""
-  },
-  "homeless:Reek": {
-   "decision": "trader-beast",
-   "prefill": "trader-beast",
-   "note": ""
-  },
-  "homeless:Thranta": {
-   "decision": "trader-beast",
-   "prefill": "trader-beast",
-   "note": ""
-  },
-  "homeless:Torton": {
-   "decision": "trader-beast",
-   "prefill": "trader-beast",
-   "note": ""
-  },
-  "homeless:ChrysalideRancor": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:Insectomorph": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:Rancor": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:Roggwart": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_BearBug": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_Bearhorse": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_Bearman": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_Bearscarab": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_Doedicoon": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_Elasmobearium": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_Hurseman": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_Lizardochs": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_Manscarab": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_Mechacat": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_Mechawolf": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_Moleman": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_Muffaloman": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_Paraceramuffalo": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_ParagonIguana": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_ParagonInsectoid": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_Wolfscarab": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:Bursa": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:CorellianHound": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:GR_AnimusHare": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:Grazer": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:Tooke": {
-   "decision": "ninth-roster",
-   "prefill": "ninth-roster",
-   "note": ""
-  },
-  "homeless:AA_EngorgedTentacularAberration": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:AA_UnblinkingEye": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BI_Queen": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:EnergySpider": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:GR_AberrantFleshbeast": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:GR_FleshFlies": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:GR_FleshGrowth": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:GR_FleshMonstrosity": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:GR_Mechathrumbo": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:HiveQueen": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Tukata": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:VQEA_Splicefiend": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:VQEA_Splicehulk": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:VQEA_Spliceling": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:VQEA_Splicetoot": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:AA_Locusts": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:MO_AbominationRace": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Maalraas": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Stintaril": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_AaroxisDendoriaLarvae": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_AaroxisDendoriaPupa": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_BloodropLarvae": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_BloodropPupa": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_BovineBeetleLarvae": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_BovineBeetlePupa": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_CrystalBeetleLarvae": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_CrystalBeetlePupa": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_FacetMothPupa": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_FoundryBeetleLarvae": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_FoundryBeetlePupa": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_JewelBeetleLarvae": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_JewelBeetlePupa": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_MossBeetleLarvae": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_MossBeetlePupa": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_RoyalRhinoLarvae": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_RoyalRhinoPupa": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_ShatterjawBeetleLarvae": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_ShatterjawBeetlePupa": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_SmogPupa": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:GR_Bearalope": {
-   "decision": "cut",
-   "prefill": "cut",
-   "note": ""
-  },
-  "homeless:GR_Boombeetle": {
-   "decision": "cut",
-   "prefill": "cut",
-   "note": ""
-  },
-  "homeless:GR_Boomcat": {
-   "decision": "cut",
-   "prefill": "cut",
-   "note": ""
-  },
-  "homeless:GR_Boomsquirrel": {
-   "decision": "cut",
-   "prefill": "cut",
-   "note": ""
-  },
-  "homeless:GR_Chickenlope": {
-   "decision": "cut",
-   "prefill": "cut",
-   "note": ""
-  },
-  "homeless:GR_Manalope": {
-   "decision": "cut",
-   "prefill": "cut",
-   "note": ""
-  },
-  "homeless:GR_ParagonBoomalope": {
-   "decision": "cut",
-   "prefill": "cut",
-   "note": ""
-  },
-  "homeless:GR_Squirralope": {
-   "decision": "cut",
-   "prefill": "cut",
-   "note": ""
-  },
-  "homeless:VQE_IceCrawler": {
-   "decision": "cut",
-   "prefill": "cut",
-   "note": ""
-  },
-  "homeless:VQE_Megamidge": {
-   "decision": "cut",
-   "prefill": "cut",
-   "note": ""
-  },
-  "homeless:BMT_GoetoToad": {
-   "decision": "cut",
-   "prefill": "cut",
-   "note": ""
-  },
-  "homeless:AA_BlackScarab": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:AA_BlackSpelopede": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:AA_BlackSpider": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:AA_Gallatross": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:AA_GallatrossMoribund": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:AA_IronhuskBeetle": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:AA_MeadowAve": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:AA_Ravager": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:AA_RoyalAve": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:AA_WindBeast": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Akk": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:BMT_Glowtail": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:DA_BlackScribe": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Devourers": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Drexl": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:HarvesterBeetle": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:IthorianReek": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Katarn": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:KwazelMaw": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:LothWolf": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Manka": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:MastiffPhalone": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Mawvorr": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Narglatch": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:PoisonButterfly": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Raxshir": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:SW_Emperorisopod": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Scuttlebug": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Silooth": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Taozin": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:TuskCat": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Vapaad": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Veermok": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  },
-  "homeless:Warbird": {
-   "decision": "reserve",
-   "prefill": "reserve",
-   "note": ""
-  }
- }
+  "criterion": "Routed by tonight's rulings, not by worth: commission-first bars the showcase biomes; desert/arid are being thinned; wasteland asked for 2-3 wretched-many picks; pack/herd shapes go trader-beast; faction-flavored goes ninth-roster; Earth-recognizable goes cut; everything else defensible parks as reserve.",
+  "decidedCount": 125,
+  "decisions": {
+    "homeless:AA_AnimusVox": {
+      "decision": "trader-beast",
+      "note": "",
+      "prefill": "trader-beast"
+    },
+    "homeless:AA_BlackScarab": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:AA_BlackSpelopede": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:AA_BlackSpider": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:AA_EngorgedTentacularAberration": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:AA_Gallatross": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:AA_GallatrossMoribund": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:AA_IronhuskBeetle": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:AA_Locusts": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:AA_MeadowAve": {
+      "at": "2026-09-11T04:17:42.788Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:AA_MegaLouse": {
+      "at": "2026-09-11T04:11:53.882Z",
+      "decision": "reserve",
+      "note": "Watch out. This is a bug. We should let the bug factions control bugs so we don't break infestations.",
+      "placeBiome": "wasteland",
+      "placeBiomePrefill": "wasteland",
+      "prefill": "place"
+    },
+    "homeless:AA_Ravager": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:AA_RoyalAve": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:AA_Skiphound": {
+      "at": "2026-09-11T04:12:05.563Z",
+      "decision": "cut",
+      "note": "",
+      "placeBiome": "wasteland",
+      "placeBiomePrefill": "wasteland",
+      "prefill": "place"
+    },
+    "homeless:AA_SmallButterfly": {
+      "at": "2026-09-11T04:10:48.376Z",
+      "decision": "place",
+      "note": "move to jungle",
+      "placeBiome": "arid_shrubland",
+      "placeBiomePrefill": "arid_shrubland",
+      "prefill": "place"
+    },
+    "homeless:AA_UnblinkingEye": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:AA_WindBeast": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Akk": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BI_Queen": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_AaroxisDendoriaLarvae": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_AaroxisDendoriaPupa": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_BloodropLarvae": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_BloodropPupa": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_BovineBeetleLarvae": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_BovineBeetlePupa": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_CrystalBeetleLarvae": {
+      "at": "2026-09-11T04:16:56.649Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_CrystalBeetlePupa": {
+      "at": "2026-09-11T04:16:58.050Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_FacetMothPupa": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_FoundryBeetleLarvae": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_FoundryBeetlePupa": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_Glowtail": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_GoetoToad": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "homeless:BMT_JewelBeetleLarvae": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_JewelBeetlePupa": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_MossBeetleLarvae": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_MossBeetlePupa": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_RoyalRhinoLarvae": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_RoyalRhinoPupa": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_Sacapillar": {
+      "decision": "place",
+      "note": "",
+      "placeBiome": "wasteland",
+      "placeBiomePrefill": "wasteland",
+      "prefill": "place"
+    },
+    "homeless:BMT_ShatterjawBeetleLarvae": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_ShatterjawBeetlePupa": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:BMT_SmogPupa": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Behemoth": {
+      "decision": "trader-beast",
+      "note": "",
+      "prefill": "trader-beast"
+    },
+    "homeless:Bordok": {
+      "decision": "trader-beast",
+      "note": "",
+      "prefill": "trader-beast"
+    },
+    "homeless:Bursa": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:ChrysalideRancor": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:CorellianHound": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:DA_BlackScribe": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Devourers": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Drexl": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:EnergySpider": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:GR_AberrantFleshbeast": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:GR_AnimusHare": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_BearBug": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_Bearalope": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "homeless:GR_Bearhorse": {
+      "at": "2026-09-11T04:13:40.793Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_Bearman": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_Bearscarab": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_Boombeetle": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "homeless:GR_Boomcat": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "homeless:GR_Boomsquirrel": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "homeless:GR_Chickenlope": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "homeless:GR_Doedicoon": {
+      "at": "2026-09-11T04:14:00.012Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_Elasmobearium": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_FleshFlies": {
+      "at": "2026-09-11T04:15:43.002Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:GR_FleshGrowth": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:GR_FleshMonstrosity": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:GR_Hurseman": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_Lizardochs": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_Manalope": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "homeless:GR_Manscarab": {
+      "at": "2026-09-11T04:14:21.230Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_Mechacat": {
+      "at": "2026-09-11T04:14:25.788Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_Mechathrumbo": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:GR_Mechawolf": {
+      "at": "2026-09-11T04:14:28.939Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_Moleman": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_Muffaloman": {
+      "at": "2026-09-11T04:14:36.427Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_Paraceramuffalo": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_ParagonBoomalope": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "homeless:GR_ParagonIguana": {
+      "at": "2026-09-11T04:14:52.763Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_ParagonInsectoid": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:GR_ParagonThrumbo": {
+      "decision": "place",
+      "note": "",
+      "placeBiome": "dune_sea_deep_desert",
+      "placeBiomePrefill": "dune_sea_deep_desert",
+      "prefill": "place"
+    },
+    "homeless:GR_Squirralope": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "homeless:GR_Wolfscarab": {
+      "at": "2026-09-11T04:15:02.436Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:Grazer": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:Gualaar": {
+      "decision": "trader-beast",
+      "note": "",
+      "prefill": "trader-beast"
+    },
+    "homeless:HarvesterBeetle": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:HiveQueen": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Insectomorph": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:IthorianReek": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Kaadu": {
+      "decision": "trader-beast",
+      "note": "",
+      "prefill": "trader-beast"
+    },
+    "homeless:Katarn": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:KwazelMaw": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:LothWolf": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:MO_AbominationRace": {
+      "at": "2026-09-11T04:16:22.009Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Maalraas": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Manka": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:MarshHaunt": {
+      "decision": "place",
+      "note": "",
+      "placeBiome": "the_miasma",
+      "placeBiomePrefill": "the_miasma",
+      "prefill": "place"
+    },
+    "homeless:MastiffPhalone": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Mastmot": {
+      "decision": "trader-beast",
+      "note": "",
+      "prefill": "trader-beast"
+    },
+    "homeless:Mawvorr": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Narglatch": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:PoisonButterfly": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Rancor": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:Raxshir": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Reek": {
+      "decision": "trader-beast",
+      "note": "",
+      "prefill": "trader-beast"
+    },
+    "homeless:Roggwart": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:SW_Emperorisopod": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Scuttlebug": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Silooth": {
+      "at": "2026-09-11T04:19:34.806Z",
+      "decision": "place",
+      "note": "Poison Forest",
+      "placeBiome": "poison_forest",
+      "placeBiomePrefill": "",
+      "prefill": "reserve"
+    },
+    "homeless:Stintaril": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Taozin": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Thranta": {
+      "decision": "trader-beast",
+      "note": "",
+      "prefill": "trader-beast"
+    },
+    "homeless:Tooke": {
+      "decision": "ninth-roster",
+      "note": "",
+      "prefill": "ninth-roster"
+    },
+    "homeless:Torton": {
+      "decision": "trader-beast",
+      "note": "",
+      "prefill": "trader-beast"
+    },
+    "homeless:Tukata": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:TuskCat": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:VQEA_Splicefiend": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:VQEA_Splicehulk": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:VQEA_Spliceling": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:VQEA_Splicetoot": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:VQE_IceCrawler": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "homeless:VQE_Megamidge": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "homeless:Vapaad": {
+      "at": "2026-09-11T04:22:01.028Z",
+      "decision": "place",
+      "note": "This goes in the blue desert... why couldn't I see that in the dropdown?",
+      "prefill": "reserve"
+    },
+    "homeless:Veermok": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    },
+    "homeless:Warbird": {
+      "decision": "reserve",
+      "note": "",
+      "prefill": "reserve"
+    }
+  },
+  "generatedBy": "HOMELESS_DISPOSITION_SITTING_1 prefill generator (agent guesses until the sheet writes)",
+  "generatedFrom": "design/Jawa/worldbuilding/review/round2/decisions_propagated.json (125 homeless in-rows)",
+  "posture": "blacklist — whatever is not decided when this sheet freezes stays RESERVE (parked in the reserve pool), never cut. Only an explicit Cut removes a creature from the game at the next content pass.",
+  "savedAt": "2026-09-10T21:22:01-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "homeless_disposition_register",
+  "writeCount": 24,
+  "frozen": true,
+  "frozenAt": "2026-09-10T21:28:00-0700",
+  "frozenMeaning": "Owner completed the disposition sitting 2026-09-10; posture: undecided stays RESERVE."
 }
