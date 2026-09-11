@@ -21,8 +21,11 @@ everything in that belongs here, but nothing more."*
 ladder to dissolution** (option 1); slimified creatures are **never hostile**
 (confirmed); GR_Chickenrabbit is renamed **MURREL** (campaign-side, §9); and the
 caravan question is answered by a new mechanic — **drying biomes**: desert/arid
-(maybe the salt ocean) **halt slimification**. Cure geography: the threat has a
-map-scale answer — walk it dry (§4).
+**halt slimification**. Cure geography: the threat has a map-scale answer — walk
+it dry (§4). **Round-2 card (same day, recorded on the ledger item):** the
+machine redesigned as a handheld three-state consumable (§5); salt ocean ruled
+drying; worldgen 1–3 rare patches + rarity slider; both flavor hooks ship as
+mod options.
 
 ## 0. Identity and naming (per `design/NAMING_SCHEME_PLAN.md`)
 
@@ -105,8 +108,13 @@ defs and art, inventory in §7):
 - **The universal antitoxin**: eating slime instantly cures poisons and most
   radiation-analog hediffs — and applies `RM_Slimification` at stage 1+ severity
   bump. The wondrous and the fatal are one mechanism.
-- **Worldgen**: the biome generates on new planets (temperate-wet band placement
-  **[INVENTED — build call]**), rare. *(Campaign note: Ash'karr worldgen is
+- **Worldgen (ruled, round 2)**: **1–3 rare patches per planet by default**, with
+  a **Mod Settings rarity slider** allowing any rarity down to zero or up to
+  common. Engine: the standard `Mod` + `ModSettings` classes — precedent already
+  verified in-repo: the decompiled GenepacksInjection mod's
+  `GenepacksInjectionMod.Settings.UseEndogenes` toggle
+  (`edible_genepack_native_mechanism.md`). Placement band temperate-wet
+  **[INVENTED — build call]**. *(Campaign note: Ash'karr worldgen is
   frozen/hand-authored — the RUT layer places the campaign instance; the mod's
   worldgen serves other players' planets.)*
 
@@ -143,16 +151,18 @@ instantly with the antidote (§6); stage 4 is final.
 
 ## 4. Cure geography — the drying biomes (owner's mechanic, replacing any caravan exemption)
 
-**The ruling:** desert and arid biomes (maybe the salt ocean) **halt
-slimification** — dry heat and desiccation kill the film. Severity in a drying
-biome doesn't just hold: it **decays** (full clear from stage 3 in ~4–5 days
-**[INVENTED rate]** — slower than it grew; the walk must be earned).
+**The ruling:** desert and arid biomes, **and the salt ocean (ruled YES, round
+2: brine leaches the film)**, **halt slimification** — desiccation or salt kills
+it. Severity in a drying biome doesn't just hold: it **decays** (full clear from
+stage 3 in ~4–5 days **[INVENTED rate]** — slower than it grew; the walk must be
+earned).
 
 - **Mechanism:** `RM_DryingBiome` ModExtension on BiomeDef. The mod tags vanilla
-  `Desert`, `ExtremeDesert`, `AridShrubland` **[+ owner's "maybe the salt ocean" —
-  no vanilla equivalent; left as the RUT layer's call for Ash'karr's salt
-  registers, §9]**. Any mod (or the campaign) tags its own biomes by adding the
-  extension — the cure geography is data, not code.
+  `Desert`, `ExtremeDesert`, `AridShrubland`, and the vanilla `Ocean` biome
+  (salt water — matters for coastal maps and any modded ocean travel; base-game
+  caravans don't cross ocean tiles, so the tag is mostly future-proofing there).
+  The campaign's salt registers are tagged in the RUT layer (§9). Any mod tags
+  its own biomes by adding the extension — the cure geography is data, not code.
 - **World-scale:** the check runs for CARAVAN pawns by world-tile biome, not just
   map pawns — a caravan that leaves the Slime through desert country dries out on
   the road. This is the answer to AI/caravan losses: trade caravans path away
@@ -168,41 +178,82 @@ biome doesn't just hold: it **decays** (full clear from stage 3 in ~4–5 days
 
 ---
 
-## 5. The machine — `RM_GeneArchiveConsole` (Biotech required)
+## 5. The machine — `RM_GeneSeeker`, a handheld consumable (Biotech required)
 
-The owner's flow, verbatim, specced step by step: **select a target gene →
-identify → extract some slime → inject it into their body → collapse into coma →
-turn into slime unless a friend administers the slime antidote in time.**
+🔴 **REDESIGNED by owner card (round 2, 2026-09-10), verbatim:** *"It is a machine
+you hold that tells you WHERE you must go to extract (a scanner). Then you place
+it upon the slime, and it expends itself sucking up just the right parts of the
+slime, becoming an injectible. Then it is used up once used to inject."* **NOT a
+building.** No console, no base machine exists. One handheld consumable per gene
+acquisition, three states — scanner → placed extractor → single-use injectable —
+then gone. The wider flow stands unchanged: select target gene → identify →
+extract → inject → coma → turn to slime unless a friend administers the antidote
+in time.
 
-### 5a. SELECT — the archive menu
+### 5a. The item and its three states
 
-A building (`RM_GeneArchiveConsole`, buildable only on/adjacent to slime terrain
-**[INVENTED constraint — the machine reads the body; flagged]**). Opening it lists
-the **archive**: the curated target-gene list. The universal mod ships a default
-list drawn from **vanilla Biotech GeneDefs** framed as "what has wandered in over
-the centuries" — robust ears, night vision, strong melee, fast runner, the
-slime-resistance gene, etc. **[Default list curated at build under the P-laws,
-§5d.]** The list is a def-list the campaign (or any mod) replaces — this is how
-the frozen SW gene lists become the CAMPAIGN's archive without touching the mod
-(§9).
+`RM_GeneSeeker` **[INVENTED name]**, a crafted handheld device. Engine honesty up
+front: "one item transforming" is fiction the engine doesn't do natively — the
+build is **two or three ThingDefs swapped by a comp/job** (blank/primed seeker →
+spent-seeker-as-injectable), the same item to the player, different defs
+underneath.
 
-### 5b. IDENTIFY + EXTRACT — the vulnerable walk
+| state | what it is | what ends it |
+|---|---|---|
+| **1 — SCANNER** | held, primed with a target gene (§5b); points to the extraction site (§5c) | placing it on the marked slime cell |
+| **2 — EXTRACTOR** | placed on the slime, expends itself over a work timer, sucking up just the right parts of the flow — the pawn stands exposed while it drinks (slimification ticking, ambient fauna wandering) | completion: the seeker IS now the injectable |
+| **3 — INJECTABLE** | the spent seeker, holding the target gene + hidden rider; perishable (~5 days unrefrigerated **[INVENTED]** — the archive circulates, it does not keep: no stockpiling a gene bank, the mod's no-shelf-stable-extraction law) | single-use injection (§5d), then destroyed |
+
+### 5b. Gene selection — at PRIMING, not at the workbench (recommendation)
+
+**Recommended: craft blank, prime on first use.** Crafting produces a blank
+seeker (one recipe, ordinary bench + research gate **[costs INVENTED at
+build]**); the first use-action anywhere opens the **archive dialog** — the
+curated target-gene list — and locks the pick into the device. Why not selection
+at crafting itself: vanilla recipes produce fixed products and take no
+parameters, so per-gene selection at the bench means either one RecipeDef per
+gene (list explosion, unmaintainable as the archive is replaced by other mods)
+or a custom crafting dialog (more C# to say the same thing). Priming is the same
+player moment — *choose the gene from the archive list before the trip* — one
+recipe, one dialog, and the archive list stays a swappable def-list. **Flagged
+per the card: if the owner prefers the pick literally at the bench, the per-gene
+recipe route exists and is priced worse.**
+
+The archive default list is unchanged from v2: vanilla Biotech GeneDefs framed
+as "what has wandered in over the centuries," curated under the P-laws (§5e),
+replaceable by the campaign/any mod (§9).
+
+### 5c. IDENTIFY — the scanner, and the honest targeting routes
 
 The archive is a circulating library (ruled): the gene you want is *somewhere on
-the tide*. The console computes **where the current carrying it will pass** — a
-map cell on the slime, marked with a countdown window **[INVENTED: window ~1–2
-days]**. A pawn walks there with an empty `RM_ExtractionCanister`, works the
-extraction job standing in the open on the body (a real job with a work timer —
-minutes of exposure, slimification ticking, ambient fauna wandering), and comes
-back with **`RM_GeneSlurry`** — extracted slime holding the target gene.
-Slurry is perishable (~5 days unrefrigerated **[INVENTED]**): the archive does
-not keep, it circulates — no stockpiling a gene bank (this is the mod's
-no-shelf-stable-extraction law, generalized from the sheet's ban 6).
+the tide*. The primed seeker points to **where the current carrying it will
+pass**, with a countdown window **[INVENTED: window ~1–2 days]**. Two engine
+routes, cited, layered:
 
-### 5c. INJECT → COMA → THE RACE
+- **World layer — the long-range mineral scanner precedent** (`CompLongRange
+  MineralScanner` + site spawn): when the colony is not on a slime map, the
+  primed seeker names a **world tile** on the slime, quest-marker style, and the
+  team caravans there. Proven vanilla shape for "a scanner that points somewhere
+  on the world."
+- **Map layer — an in-map cell beacon:** once on the slime map, the seeker marks
+  the extraction CELL. Closest vanilla shapes are the ground-penetrating
+  scanner's deep-resource overlay and quest map markers; neither is a held-item
+  arrow, so this is a small custom gizmo/overlay (highlighted cell + direction
+  arrow while the seeker is carried) — honest C#, priced in SPIKE E.
+- 🔴 Build-seat verification owed on both comp names and the site-spawn wiring
+  (never guess a field; RimSage before XML).
 
-Injection is a use-action on a pawn (self or doctor), anywhere — including home
-in bed, which is the point: *bring it back to your people.* On injection:
+Then EXTRACT: the carrying pawn walks to the cell and places the seeker — the
+state-2 job runs its timer in the open on the body, and the pawn walks home
+carrying the injectable it became. The vulnerable walk survives the redesign
+intact; what died is the canister, the slurry item, and the trip back to a
+console.
+
+### 5d. INJECT → COMA → THE RACE (flow unchanged by the redesign)
+
+Injection is the spent seeker's single use — a use-action on a pawn (self or
+doctor), anywhere, including home in bed, which is the point: *bring it back to
+your people.* The device is destroyed on use. On injection:
 
 1. **The genes land immediately** — target gene **plus one hidden rider gene**
    rolled from the archive's rider list (the "something fun but odd," ruled).
@@ -226,7 +277,7 @@ in bed, which is the point: *bring it back to your people.* On injection:
      self-administration while comatose, no timer pause. Solo-colony players get
      one warning dialog at injection **[INVENTED: the warning]**.
 
-### 5d. Why a player does this — the honest Biotech comparison
+### 5e. Why a player does this — the honest Biotech comparison
 
 What exists (cited): Biotech gene acquisition is **random-find genepacks**, the
 **gene extractor** (takes genes something already has, damages the donor), and
@@ -272,9 +323,10 @@ tint, drip — never eyes, never buds, never new limbs.**
 
 **The biome's own bill (new — standalone means authoring what the donor lent):**
 terrain suite ~6 textures; flora 3–4 defs × 2–3 variants ≈ 9; `RM_Gelatid` ~3;
-buildings (console, compressor, pit) ~3–5; slime rain effect + smear ~3; items
-(slurry, canister, antidote, raw slime) ~4. **Biome total ≈ 28–32 sprites/textures;
-grand total with overlays ≈ 52–56.** This is the real cost of "make it a mod" —
+buildings (compressor, pit — the console died in the round-2 redesign) ~2–4;
+slime rain effect + smear ~3; items (seeker in its scanner and spent/injectable
+states, antidote, raw slime) ~4. **Biome total ≈ 27–29 sprites/textures; grand
+total with overlays ≈ 51–53.** This is the real cost of "make it a mod" —
 inventoried, not hidden.
 
 ---
@@ -290,7 +342,7 @@ report.
 | **B — OVERLAY** | hediff render-node overlay on animal AND humanlike (over apparel) bodies, severity-staged, drawSize-scaled | S → **M** (humanlike/apparel added) |
 | **C — DYNAMIC VISITORS** | ambient density: spawn pulls from **neighboring world tiles' biomes' wildAnimals** (universal — works on any planet, any mod set), arriving pre-staged | S → **M** (neighbor-biome read is new; replaces v1's hand-curated visitor list) |
 | **D — DISSOLUTION** | stage-4 deathAction: no corpse, smear + raw slime, works in beds (the machine's failure case) | **S** (unchanged) |
-| **E — THE MACHINE** (new) | console UI (gene list → pick), current-locator target + timed extraction job, slurry item, inject use-action calling the verified AddGene+coma primitive, fast-clock slimification, antidote administration on a comatose pawn | **L** — the largest piece; the gene-grant core is proven free (IL-cited), the job/UI chain is the work |
+| **E — THE SEEKER** (redesigned) | the three-state handheld (§5): archive-pick dialog at priming, world-tile targeting on the mineral-scanner precedent, in-map cell beacon gizmo, place-and-extract job with def swap, single-use inject calling the verified AddGene+coma primitive, fast-clock + antidote administration | **L → M** — the building and console UI died with the redesign; what remains is an item with states, one dialog, and a scanner job. The gene-grant core stays proven free (IL-cited) |
 | **F — FIELD CONVERSION** (new) | cultivated soil on slime reverts over harvests | **S** |
 | dropped | v1's optional flow-drift wander | cut — density now comes from SPIKE C |
 
@@ -317,8 +369,8 @@ campaign's consumer of the universal mod:
 - Re-sources the antidote as Rot-derived; wires the mycoid-symbiote resistance
   route; keeps Assailant/Helix/Wildsteam/Throat lore and the Contagion
   distinction as campaign canon.
-- Tags the campaign's drying biomes (deserts; **the salt registers if the owner's
-  "maybe the salt ocean" firms up** — open, §10).
+- Tags the campaign's drying biomes: deserts AND the salt registers (**ruled
+  round 2: the salt ocean dries** — brine leaches the film).
 - Keeps the campaign cast (AA substrate + arrivals + trace-tail) as the instance's
   residents alongside the mod's dynamic visitors.
 
@@ -326,25 +378,21 @@ campaign's consumer of the universal mod:
 
 ## 10. Open questions — the owner's, not ours
 
-1. **The salt ocean as a drying biome** — his "maybe": does salt water dry the
-   film (salt kills it) or is it wet enough to sustain it? One-word ruling tags
-   or skips the salt registers.
-2. **Machine placement constraint** (§5a): console must sit on/adjacent to slime
-   terrain — keep (the machine reads the body) or allow anywhere with slurry
-   brought to it? [INVENTED either way]
-3. **Default archive size** for the universal list: ~12–20 vanilla/Biotech genes
+1. **Default archive size** for the universal list: ~12–20 vanilla/Biotech genes
    under the P-laws proposed [INVENTED] — curate at a sitting or delegate to
    build?
-4. **The library flavor hook** (v1): dissolved species named in console flavor
-   ("Entry recorded: …") — keep or cut? [INVENTED]
-5. **Injection scars** ("read-marks" — small permanent debuff after a stage-3
-   antidote): keep or cut? [INVENTED]
-6. **Worldgen commonality** of the biome on other players' planets: rare-exotic
-   (recommended) or common? [INVENTED]
+2. **Gene selection at priming vs at the bench** (§5b): priming-dialog
+   recommended; per-gene recipes exist and are priced worse — confirm.
+3. **Seeker crafting cost and research gate** — undesigned [INVENTED at build];
+   the gate is the machine's whole pacing knob, worth a one-line ruling.
 
-*(Resolved since v1: colonist full ladder — ruled option 1; manhunter — ruled
-never-hostile as law; Chickenrabbit — ruled MURREL; caravan exemption — replaced
-by drying biomes.)*
+**Ruled round 2 (2026-09-10), closed here:** the machine is a handheld
+three-state consumable, not a building (§5); salt ocean IS drying (§4); worldgen
+1–3 rare patches + Mod Settings rarity slider (§2); BOTH flavor hooks SHIP as
+mod-settings toggles — the "Entry recorded" registry flavor and the read-mark
+scars are options, on by default **[default state INVENTED]**.
+*(Ruled round 1: colonist full ladder; never-hostile as law; MURREL; drying
+biomes over caravan exemption.)*
 
 ---
 
