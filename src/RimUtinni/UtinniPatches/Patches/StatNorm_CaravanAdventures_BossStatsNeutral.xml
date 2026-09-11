@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- STAT_NORM_WAVE3_RETIRE_1 (owner ruled 2026-09-11, Wave 3): strip
+       iforgotmysocks.CaravanAdventures' stat edits back to neutral while its
+       quest layer (Storyline, Mechanoid Bounty, Sacrileg Hunters faction) stays
+       fully live - do NOT remove the mod, only neutralize the numbers below.
+
+       Every ArmorRating/baseBodySize/combatPower field this donor mod touches
+       was walked for its LIVE 1.6 content only (Story/Defs/, Expansions/RM/,
+       excluding the CEPatches folder gated on Combat Extended - not in our
+       modlist - and Expansions/RM/UnusedDefs, which its own folder name and
+       LoadFolders gate mark dead). The five "boss" mechanoids in
+       BossBodyAndRaceDefs/BossRaceDefs.xml are the only place these fields are
+       set: generateCommonality=0 on every one, so they never enter normal
+       PawnGroupMaker/raid point-based spawning - they exist only for the
+       mod's own hand-triggered story boss fights. The Sacrileg Hunters faction
+       (PawnKinds_SacrilegHunters.xml, combatPower 35-100) and the mech-chip
+       hediffs (Hediffs_MechChips.xml, +/-0.2..0.5 stat OFFSETS on an optional
+       installable augment) are ordinary quest-layer content, not the inflated
+       base numbers this ruling targets, and are left untouched.
+
+       Values reset to CA's own vanilla-body analog: CADevourer and
+       CAEndBossMech both set <body>MechanicalCentipede</body>, so their armor/
+       bodySize/combatPower are reset to vanilla Mech_CentipedeBlaster's own
+       (ArmorRating_Blunt 0.22, ArmorRating_Sharp 0.72, baseBodySize 3,
+       combatPower 400). CACrystalScythe/CAHarbinger/CAHavoc all set
+       <body>Scyther</body> and already carry vanilla Mech_Scyther's own
+       ArmorRating (0.22/0.72) and CABaseMechanoidWalker's baseBodySize (1.0)
+       already matches vanilla Mech_Scyther's baseBodySize (1) - nothing to
+       change there except their combatPower, reset to vanilla Mech_Scyther's
+       own (150). CADevourer's own armor (0.65 blunt / 1.1 sharp) is the one
+       outlier above even the Centipede baseline and is reset the same way.
+
+       Every operation below is PatchOperationConditional-wrapped on its own
+       target defName so this file is a true no-op (nothing logged) if
+       Caravan Adventures is ever retired later - CLAUDE.md: "a patch that
+       matches nothing logs nothing" only holds for Conditional/FindMod, never
+       for a bare Replace on an absent target. -->
+
+  <!-- CADevourer (ThingDef) - body=MechanicalCentipede -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="CADevourer"]/statBases/ArmorRating_Blunt</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="CADevourer"]/statBases/ArmorRating_Blunt</xpath>
+      <value><ArmorRating_Blunt>0.22</ArmorRating_Blunt></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="CADevourer"]/statBases/ArmorRating_Sharp</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="CADevourer"]/statBases/ArmorRating_Sharp</xpath>
+      <value><ArmorRating_Sharp>0.72</ArmorRating_Sharp></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="CADevourer"]/race/baseBodySize</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="CADevourer"]/race/baseBodySize</xpath>
+      <value><baseBodySize>3</baseBodySize></value>
+    </match>
+  </Operation>
+
+  <!-- CAEndBossMech (ThingDef) - body=MechanicalCentipede; its armor already
+       matches the vanilla Centipede baseline (0.22/0.72), only bodySize needs it -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="CAEndBossMech"]/race/baseBodySize</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="CAEndBossMech"]/race/baseBodySize</xpath>
+      <value><baseBodySize>3</baseBodySize></value>
+    </match>
+  </Operation>
+
+  <!-- combatPower (PawnKindDef) - every boss reset to its body's vanilla mech -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="CABossMechDevourer"]/combatPower</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="CABossMechDevourer"]/combatPower</xpath>
+      <value><combatPower>400</combatPower></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="CABossMechCrystalScythe"]/combatPower</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="CABossMechCrystalScythe"]/combatPower</xpath>
+      <value><combatPower>150</combatPower></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="CABossMechHarbinger"]/combatPower</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="CABossMechHarbinger"]/combatPower</xpath>
+      <value><combatPower>150</combatPower></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="CABossMechHavoc"]/combatPower</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="CABossMechHavoc"]/combatPower</xpath>
+      <value><combatPower>150</combatPower></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="CAEndBossMech"]/combatPower</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="CAEndBossMech"]/combatPower</xpath>
+      <value><combatPower>400</combatPower></value>
+    </match>
+  </Operation>
+</Patch>

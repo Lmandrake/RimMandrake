@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- STAT_NORM_WAVE3_RETIRE_1 (owner ruled 2026-09-11, Wave 4 scope add):
+       tidal.morevanilla.textures ("More Vanilla Textures") keeps its retextures
+       but its graphicData/drawSize replaces on the three big-bird eggs get
+       counter-patched back to vanilla neutral, so bodySize-from-visual (Law 1,
+       beast_normalization_spec.md) owns drawSize instead of a cosmetic mod.
+
+       Every ArmorRating/baseBodySize/combatPower field this donor mod touches
+       was walked for its LIVE 1.6 version only (the other version folders in
+       the workshop download are inert on this load and were not counted).
+       Its only real drawSize overrides in 1.6 are these six egg ThingDefs,
+       shrunk from vanilla 1.3/1.2 down to a flat 1.0 (Races_Animal_BigBirds.xml).
+       Its Gazelle female-graphic addition (Races_Animal_PigGroup.xml) already
+       matches vanilla's own male drawSize at the same life stage (1.3/1.65) -
+       already neutral, nothing to counter-patch there. -->
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="EggOstrichFertilized"]/graphicData/drawSize</xpath>
+    <value><drawSize>1.3</drawSize></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="EggOstrichUnfertilized"]/graphicData/drawSize</xpath>
+    <value><drawSize>1.3</drawSize></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="EggEmuFertilized"]/graphicData/drawSize</xpath>
+    <value><drawSize>1.2</drawSize></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="EggEmuUnfertilized"]/graphicData/drawSize</xpath>
+    <value><drawSize>1.2</drawSize></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="EggCassowaryFertilized"]/graphicData/drawSize</xpath>
+    <value><drawSize>1.2</drawSize></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="EggCassowaryUnfertilized"]/graphicData/drawSize</xpath>
+    <value><drawSize>1.2</drawSize></value>
+  </Operation>
+</Patch>
