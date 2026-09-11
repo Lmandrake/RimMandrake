@@ -27,9 +27,8 @@ namespace RimMandrake.Utinni.ScavengerEvents
         protected override bool CanFireNowSub(IncidentParms parms)
         {
             var map = (Map)parms.target;
-            Faction playerFaction = Find.FactionManager.FirstFactionOfDef(FactionDefOf.PlayerColony);
             Faction nonHostile = Find.FactionManager.RandomNonHostileFaction(true, true, true, TechLevel.Neolithic);
-            if (nonHostile == null || nonHostile.HostileTo(playerFaction))
+            if (nonHostile == null || nonHostile.HostileTo(Faction.OfPlayer))
                 return false;
 
             int colonistCount = map.mapPawns.FreeColonistsSpawnedCount;
