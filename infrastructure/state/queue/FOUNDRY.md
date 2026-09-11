@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T06:09:51Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-11T06:28:04Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -977,3 +977,23 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/LAW3_RETARGET_RSW_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/LAW3_RETARGET_RSW_1.md
+
+## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BMT_FAUNA_ABSORPTION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
+
+## STAT_NORM_WAVE2_RETIRE_1 Execute Wave 2 remainder (owner ruled 2026-09-11): port Cephaloids (10 defs) + VE Succulents (12 plants) + VAE Waste's 1-2 used animals into our tier then retire those three; verify-then-retire Megafauna/MythicAges/FFAnimals/LittleCritters/crossbreeding-pair (per-def roster+save re-check each, escalate any cast find); save cross-ref re-check before every cut
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STAT_NORM_WAVE2_RETIRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STAT_NORM_WAVE2_RETIRE_1.md
