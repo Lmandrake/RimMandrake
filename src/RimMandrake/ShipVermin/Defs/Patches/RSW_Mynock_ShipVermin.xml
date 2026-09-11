@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SHIP_VERMIN_MOD_1. Attaches the boarding/breeding/gnaw mechanics
+     (mandrake.rm.creaturebehaviors) onto mandrake.rsw.swbestiary's RSW_Mynock
+     species def. Kept as a patch rather than baked into that def so
+     SWBestiary (a pure species mod) never needs to know ShipVermin exists -
+     only ShipVermin depends on SWBestiary, never the reverse.
+
+     INVENTED tuning (owner tunes further at build/quicktest, per this kit's
+     own drafted-numbers convention): population soft cap 3 / hard cap 12 per
+     map (mynock's own "nuisance unless there are many" curve); breed
+     interval 1-2 days per mynock (spec's own drafted "~1.5 days"); gnaw bite
+     6-12 HP scaling with pressure, nutrition 0.04/bite (spec drafted
+     "8 HP / 0.2 nutrition" for a related but not identical breeder - kept in
+     the same order of magnitude, tuned down slightly since this bite ALSO
+     scales up to 2x under pressure rather than being flat). -->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Mynock"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Mynock"]/comps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Mynock"]</xpath>
+            <value>
+              <comps />
+            </value>
+          </nomatch>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="RSW_Mynock"]/comps</xpath>
+          <value>
+            <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder">
+              <pawnSpawnIntervalDays>1~2</pawnSpawnIntervalDays>
+              <pawnSpawnRadius>3</pawnSpawnRadius>
+            </li>
+          </value>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Mynock"]/modExtensions</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Mynock"]</xpath>
+            <value>
+              <modExtensions />
+            </value>
+          </nomatch>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="RSW_Mynock"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension">
+              <populationSoftCap>3</populationSoftCap>
+              <populationHardCap>12</populationHardCap>
+              <populationGroupTag>ShipVermin</populationGroupTag>
+            </li>
+            <li Class="RimMandrake.CreatureBehaviors.RM_SeekTargetExtension">
+              <seekSubstructure>true</seekSubstructure>
+              <searchRadius>40</searchRadius>
+              <seekChancePerCheck>0.05</seekChancePerCheck>
+            </li>
+            <li Class="RimMandrake.CreatureBehaviors.RM_GnawTargetExtension">
+              <gnawBuildingDefNames>
+                <li>PowerConduit</li>
+              </gnawBuildingDefNames>
+              <gnawCompTypeNames>
+                <li>CompGlower</li>
+              </gnawCompTypeNames>
+              <gnawFloorTerrainDefNames>
+                <!-- a laid floor over a gravship's Substructure foundation - stripping it
+                     exposes the foundation intact, matching the spec's "eats the flooring,
+                     not the hull" (TerrainGrid.RemoveTopLayer never touches FoundationAt). -->
+                <li>MetalTile</li>
+              </gnawFloorTerrainDefNames>
+              <searchRadius>30</searchRadius>
+              <biteDamage>6</biteDamage>
+              <meannessDamageMultiplier>2</meannessDamageMultiplier>
+              <nutritionPerBite>0.04</nutritionPerBite>
+              <ticksBetweenBites>240</ticksBetweenBites>
+              <seekChanceAtLowPressure>0.01</seekChanceAtLowPressure>
+              <seekChanceAtHighPressure>0.2</seekChanceAtHighPressure>
+            </li>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

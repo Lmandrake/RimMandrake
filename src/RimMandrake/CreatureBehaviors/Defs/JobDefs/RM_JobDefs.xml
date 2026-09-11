@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SHIP_VERMIN_MOD_1 - the one JobDef this shared assembly ships: driven by
+     RM_JobDriver_Gnaw, requested by RM_JobGiver_GnawTargets whenever a pawn's
+     race carries RM_GnawTargetExtension. -->
+<Defs>
+
+  <JobDef>
+    <defName>RM_Gnaw</defName>
+    <driverClass>RimMandrake.CreatureBehaviors.RM_JobDriver_Gnaw</driverClass>
+    <reportString>gnawing TargetA.</reportString>
+  </JobDef>
+
+</Defs>

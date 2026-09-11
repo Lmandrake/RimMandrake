@@ -1,0 +1,76 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SHIP_VERMIN_MOD_1. Same recipe as
+    src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj —
+    copy that header if this one goes stale.
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path). Build
+    RM_CreatureBehaviors.csproj FIRST — this project references its output DLL:
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\CreatureBehaviors\Source\RM_CreatureBehaviors.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\ShipVermin\Source\RM_ShipVermin.csproj -c Release
+
+    Output lands in ../Assemblies/, which is where RimWorld looks.
+
+    No Harmony: the one class here (RM_Alert_ShipVermin) is a plain Alert
+    subclass over mandrake.rm.creaturebehaviors' abstract base — that mod
+    must be present and loaded before this one (About.xml modDependencies +
+    loadAfter already assert it).
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrake.ShipVermin</AssemblyName>
+    <RootNamespace>RimMandrake.ShipVermin</RootNamespace>
+    <Version>1.0.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="RM_Alert_ShipVermin.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- The shared behaviors assembly — NOT copied local. Both mods' Assemblies
+         folders get deployed side by side under Mods/, and RimWorld loads every
+         active mod's Assemblies before resolving any def, so this resolves fine
+         at runtime as long as mandrake.rm.creaturebehaviors is active and
+         loadAfter (asserted in About.xml). -->
+    <Reference Include="RimMandrake.CreatureBehaviors">
+      <HintPath>..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

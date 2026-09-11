@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SHIP_VERMIN_MOD_1 - RSW_Mynock, our OWN species def (owner ruling,
+     2026-09-11: ship our own clone/reskin concept, never an in-place patch
+     on a donor mynock — see scarlands_kit_spec.md's owner-rulings section,
+     item 3). Species content lives here (RimStarWars tier, "species vs.
+     clan" rule in design/NAMING_SCHEME_PLAN.md - a mynock is Star-Wars-
+     generic, not Utinni-specific), the boarding/breeding/gnaw MECHANICS
+     ride on top via mandrake.rm.shipvermin's own patch
+     (ShipVermin/Defs/Patches/RSW_Mynock_ShipVermin.xml) so this def stays a
+     pure species definition and SWBestiary never depends on ShipVermin.
+
+     Vacuum-capable per the owner's own framing ("some can live outside in
+     vaccuum (the mynock for example)"): canBeVacuumBurnt=false and
+     VacuumResistance 1 (both RimSage-verified against
+     RaceProperties.canBeVacuumBurnt / Pawn.HarmedByVacuum /
+     Pawn.ConcernedByVacuum, both of which gate purely on VacuumResistance)
+     mean a mynock standing in hard vacuum takes no VacuumBurn damage and
+     never triggers VacuumExposure - no hull, no life support, ever required.
+     ComfyTemperature is set to the widest practical range for the same
+     reason (space has no comfortable band to speak of).
+
+     Body/stats: bat/leech-sized ship parasite - Bird body (RimSage: closest
+     vanilla small-flyer plan) at a fraction of Chicken's bodySize, cheap
+     individually (low MarketValue, low Mass) per the owner's "nuisance
+     unless there are many" ruling - the MEANNESS is entirely in ShipVermin's
+     comps/JobGivers reading population off this def's own instances, not in
+     any per-mynock stat inflation here. Wildness kept high (a swarm pest,
+     not a pet) but not maxed - "some are cute" leaves room for a future
+     tamer-friendly ship-vermin species to undercut this one without a
+     structural change.
+
+     Art: NOT YET GENERATED (item note: "you likely don't need to invent new
+     species art right now, just make sure the def structure supports it").
+     texPath points at RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock,
+     which does not exist on disk yet - this WILL render magenta in game
+     until an art pass runs (generating-rimworld-sprites skill) and ships a
+     PNG at that path. Deliberately NOT reusing
+     mandrake.rsw.mynockartoverride's texture bytes (swanimals/Mynock/*): per
+     this item's own framing that mod retextures a different, donor mynock
+     and is unrelated to this species def. -->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_Mynock</defName>
+    <label>mynock</label>
+    <description>A leathery, wet-winged ship-leech that drifts through vacuum toward any hull with power still running through it. Cheap and quiet alone - a nuisance you barely notice - but they breed fast once a few take hold, and a real infestation will gnaw a ship's conduits and lights dead compartment by compartment. They never need air, warmth, or a roof; they were never built for any of those.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <MarketValue>8</MarketValue>
+      <Mass>0.03</Mass>
+      <ComfyTemperatureMin>-150</ComfyTemperatureMin>
+      <ComfyTemperatureMax>150</ComfyTemperatureMax>
+      <FilthRate>1</FilthRate>
+      <Wildness>0.9</Wildness>
+      <VacuumResistance>1</VacuumResistance>
+    </statBases>
+    <uiIconScale>0.6</uiIconScale>
+    <race>
+      <thinkTreeMain>Animal</thinkTreeMain>
+      <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+      <trainability>None</trainability>
+      <body>Bird</body>
+      <herdAnimal>false</herdAnimal>
+      <canBeVacuumBurnt>false</canBeVacuumBurnt>
+      <canFlyInVacuum>true</canFlyInVacuum>
+      <baseBodySize>0.12</baseBodySize>
+      <baseHealthScale>0.25</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <meatLabel>mynock meat</meatLabel>
+      <roamMtbDays>2</roamMtbDays>
+      <lifeExpectancy>4</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>Pawn_Squirrel_Call</soundWounded>
+          <soundDeath>Pawn_Squirrel_Call</soundDeath>
+          <soundCall>Pawn_Squirrel_Call</soundCall>
+          <soundAngry>Pawn_Squirrel_Call</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tools>
+      <li>
+        <label>fanged mouth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <graphicData>
+      <!-- placeholder path, no art yet - see file header. -->
+      <texPath>RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.6</drawSize>
+    </graphicData>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.shipvermin</packageId>
+  <name>RimMandrake: Ship Vermin</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>SHIP_VERMIN_MOD_1 — owner ruling, 2026-09-11, verbatim: "gather
+all the 'ship infesting' critters together into a single mod 'ShipVermin' that
+allows the mechanics, creatures, and future cool ideas to emerge. Some are
+cute, some are hideous, some live inside, some can live outside in vaccuum
+(the mynock for example)." One home for every ship-infesting critter, so a
+future species lands here instead of spawning its own mod.
+
+RM tier: the mechanics engine (comps, JobGivers, the alert) knows nothing
+species-specific — every field is attached to a species by an ordinary XML
+patch, driven by the shared mandrake.rm.creaturebehaviors assembly. The
+mynock's own species def (RSW_Mynock — Star-Wars-specific content, per the
+naming scheme's "species vs. clan" rule) lives in mandrake.rsw.swbestiary,
+that mod's existing home for Star Wars creature species; this mod patches its
+mechanics onto that def rather than declaring an RSW_-prefixed def of its
+own (this mod's own defNames are RM_ per the folder's tier).
+
+Ships:
+  - Patches/RSW_Mynock_ShipVermin.xml — adds RM_CompVerminBreeder,
+    RM_VerminPressureExtension (soft cap 3 / hard cap 12 per map — the
+    "nuisance unless there are many" curve, owner-verbatim), RM_SeekTargetExtension
+    (seekSubstructure — the vacuum-drift-to-the-hull boarding behavior; vanilla
+    ThingDef.bringAlongOnGravship carries it home for free at launch, RimSage-
+    verified against Gravship.ShouldBringOnGravship) and RM_GnawTargetExtension
+    (chews CompGlower-bearing buildings and PowerConduit, strips laid floor
+    terrain back to substructure) to RSW_Mynock.
+  - RM_Alert_ShipVermin — concrete population alert (group tag "ShipVermin")
+    on top of mandrake.rm.creaturebehaviors' abstract base.
+
+Vacuum: RSW_Mynock's own race stats (in SWBestiary) set canBeVacuumBurnt=false
+and VacuumResistance=1 so it never needs a hull, per the owner's "some can
+live outside in vaccuum (the mynock for example)".
+
+Art: no bespoke mynock sprite ships yet (RSW_Mynock's graphicData points at a
+not-yet-populated texPath under this def's own mod — the def structure is
+complete, the art pass is future work per the item's own "future cool ideas"
+framing). This is NOT the same asset as mandrake.rsw.mynockartoverride, which
+retextures a DIFFERENT, donor (mlie.starwarsanimalcollection) mynock and is
+untouched by this item.
+
+Live proof is OWED: this mod has not yet been loaded in a running game.</description>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <name>RimMandrake: Creature Behaviors</name>
+    </li>
+    <li>
+      <packageId>mandrake.rsw.swbestiary</packageId>
+      <name>RimMandrake: SW — Bestiary</name>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rsw.swbestiary</li>
+  </loadAfter>
+</ModMetaData>

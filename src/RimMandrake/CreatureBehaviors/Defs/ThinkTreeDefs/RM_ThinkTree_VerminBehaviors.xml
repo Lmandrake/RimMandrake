@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SHIP_VERMIN_MOD_1. insertTag="Animal_PreMain" is vanilla's own extension
+     point (Verse.AI.ThinkNode_SubtreesByTag, RimSage-verified: every
+     ThinkTreeDef sharing an insertTag is tried, in insertPriority order, for
+     EVERY animal in the game whose think tree includes that tag - the
+     vanilla "Animal" tree does, unconditionally). Both JobGivers below
+     return no job instantly for any pawn whose race lacks their matching
+     DefModExtension (RM_SeekTargetExtension / RM_GnawTargetExtension), so
+     this is safe to insert globally: an un-tagged chicken or muffalo never
+     sees a behavior change. -->
+<Defs>
+
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_VerminBehaviors</defName>
+    <insertTag>Animal_PreMain</insertTag>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_GnawTargets" />
+        <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_SeekMarkedTerrain" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

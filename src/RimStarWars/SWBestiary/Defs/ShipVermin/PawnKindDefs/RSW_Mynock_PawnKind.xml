@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SHIP_VERMIN_MOD_1 - see ThingDefs_Races/RSW_Mynock.xml's header. Same
+     shape as PawnKindDefs_Onnik.xml (ParentName AnimalKindBase, Graphic_Single
+     per lifeStage). wildGroupSize kept low - individuals arrive in trickles,
+     the swarm forms from mandrake.rm.shipvermin's own breeder comp, not from
+     a big wild spawn group. -->
+<Defs>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Mynock</defName>
+    <label>mynock</label>
+    <labelPlural>mynocks</labelPlural>
+    <race>RSW_Mynock</race>
+    <combatPower>5</combatPower>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <wildGroupSize>1~2</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>mynock pup</label>
+        <labelPlural>mynock pups</labelPlural>
+        <bodyGraphicData>
+          <texPath>RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
