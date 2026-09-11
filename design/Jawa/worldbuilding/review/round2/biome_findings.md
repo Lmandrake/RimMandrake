@@ -231,7 +231,7 @@ OPPORTUNITIES:
 Arrivals (2): BMT_SandPillar, DA_RockTroll. Flier extracted: Convor.
 1. Clean wave. RockTroll/SandPillar fit the stone register; ban 4 (no flier nests) satisfied by Convor's extraction. Woolamander/Gornt icons protected.
 
-## the_sump — churn 2 (cast 3 → 5)
+## the_sump — churn 2 (cast 3 → 5) — Hssiss RULED resident (tar-sleeper, 2026-09-10)
 Arrivals (2): Hssiss, AA_BumbledroneQueen (rejoins its drones — good).
 
 INCONSISTENCIES:
@@ -256,7 +256,7 @@ Arrivals (2): AA_Behemoth (16 sq — distinct from trader-beast "Behemoth"), GR_
 1. Both fit the dark register (ban 6: no sun-dependent life). Watch the name collision AA_Behemoth vs homeless:Behemoth (trader pack animal) — two rosters, one word.
 2. OPPORTUNITY: 16-square Behemoth as the thing you hear in the gust-dark — the cryptid register (§8) made flesh without showing the Forsakens.
 
-## the_propane_lakes — churn 5 (cast 4 → 2) ⚠ NEAR-EMPTY
+## the_propane_lakes — churn 6 (cast 4 → 1 legacy + tonight's commissioned cast) — FrostboundBehemoth CUT (owner: makes no sense)
 Arrivals (1): AA_AuroraSylph ("perfect Propane Lake creature"). Flier→roster: AA_Skyeel. Departures (3): FrostboundBehemoth (OPEN — "needs to totally alien life"), Slurrypede, Terramorph.
 1. Two residents for the "most alien life in the cast" biome — the showcase is empty; FrostboundBehemoth's alien redesign is the only pipeline and it's OPEN.
 2. OPPORTUNITY: admission test is strict (solvent-tolerant, ignition-safe) — commission 2-3 natives around AuroraSylph's aurora register rather than importing.
@@ -278,7 +278,7 @@ Arrivals (2): Tach, Rikknit (both-jungles ruling). Flier arriving→roster: BMT_
 1. Ban 3 (no native chase predators) holds — Tach steals, doesn't chase; Rikknit nests in crowns. Clean.
 2. FacetMoth tension: the both-jungles ruling places it here, the flier extraction removes it — the flier roster needs a per-biome presence field to honor both.
 
-## Skipped (zero fauna rows, no arrivals): wreck_fields, and the non-biome sheets (assailant_weapon_remnants, rosters/, gene lists).
+## Non-biome layers: wreck_fields is NOT a biome (owner correction, 2026-09-10) — it is a REGION over other biomes where debris falls from orbit; its fauna arrives by INJECTION via the Inhabited system, and it has its own roster. Never give it a wildAnimals cast. Also skipped: the non-biome sheets (assailant_weapon_remnants, rosters/, gene lists).
 
 ---
 

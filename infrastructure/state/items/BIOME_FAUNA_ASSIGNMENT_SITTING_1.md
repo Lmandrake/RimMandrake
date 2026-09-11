@@ -317,3 +317,11 @@ may or may not include them). Klorslug (k'lor'slug) ruled a HORROR: INJECTABLE-R
 for nightside injection, out of the greentide. Helixien size defect: def adult
 drawSize is 3.2, deck rendered the harvest's 4.1 — resolution order flipped to
 def-first in the calibration pass; pustule/tumorfish families collapse to one card.
+
+**12. Card rulings (owner, 2026-09-10):** Hssiss STAYS in the Sump (tar-sleeper,
+partial-remains register — the Miasma reading rejected). WRECK FIELDS CORRECTION
+(owner, verbatim): "The Wreck fields is NOT a biome, it's a region over other biomes
+where crap falls from orbit. Injection via Inhabited. And it DOES have a roster." —
+never a wildAnimals cast; findings amended. SLIME: transformation system RULED —
+design pass fired (visitors get slimified states; art overlay + hediff; C# spike
+scoped in the brief). FrostboundBehemoth CUT from the game ("it makes no sense").
