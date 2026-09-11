@@ -124,7 +124,10 @@
   <ThingDef ParentName="KotORArmorModdable_soft">
     <defName>guy762_VisasRobes</defName>
     <label>Visas' robes</label>
-    <description>Plain robes worn by a wanderer who trusts her other senses more than her eyes.\n\nUPGRADE SLOTS:\n- Armor Underlay (robe)</description>
+    <description>Plain robes worn by a wanderer who trusts her other senses more than her eyes.
+
+UPGRADE SLOTS:
+- Armor Underlay (robe)</description>
     <graphicData>
       <texPath>SWApparel/CharacterOutfits/Visas/Apparel</texPath>
       <graphicClass>Graphic_Single</graphicClass>
