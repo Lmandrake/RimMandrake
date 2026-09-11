@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T06:59:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T07:01:16Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -620,15 +620,6 @@ target:   v1
 kind:     task
 summary:  (no items/SLIME_MOD_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SLIME_MOD_BUILD_1.md
-
-## ROSTER_MOVE_APPLY_1 Write the 114 ruled fauna moves into biomes/rosters/*.json from round2/move_mapping_v2.md (0 of 114 landed, MEASURED 2026-09-11) — extend apply_assignment_verdicts.py to consume the mapping as target source, then _validate --cross + regeneration commands
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  MEASURED 2026-09-11 (BENCH spot-verified): of the 169-row move table in
-prose:    infrastructure/state/items/ROSTER_MOVE_APPLY_1.md
 
 ## ALPHA_MECHANICS_KIT_1 Build the RM_-tier mechanics kit: ALL SIX generalized Alpha comps ruled in (owner 2026-09-11) — ActiveGasEmitter, PeriodicAreaAttack, BiomeGlowMultiplier, EnvironmentalWeather, ScaledDeathExplosion, TargetedHediffAffliction — spec design/Jawa/worldbuilding/alpha_family_source_review.md SS4
 state:    doing

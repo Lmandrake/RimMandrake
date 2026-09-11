@@ -7164,3 +7164,4 @@
 {"seat":"BENCH","event":"claim","id":"SCARLANDS_MECHANICS_1","ts":"2026-09-11T06:59:13Z"}
 {"seat":"BENCH","event":"claim","id":"TERRAMANUFACTURE_CANON_1","ts":"2026-09-11T06:59:14Z"}
 {"seat":"FOUNDRY","event":"block","id":"BMT_FAUNA_ABSORPTION_1","reason":"item's own donor/count don't cohere: queue names mlie.beastsoftherim (real donor, 19 species/64 defs, xml-verified) but the 71/41/30 figures trace to a DIFFERENT unrelated donor family (biomesteam.biomescaverns/biomescore/biomespollutedlands, BMT_-prefixed per decisions_propagated.json) with zero defName overlap. Needs owner/BENCH ruling: fix the donor name to biomesteam.*, or run a keep-or-port sitting on the real 19-species mlie.beastsoftherim first. See items/BMT_FAUNA_ABSORPTION_1.md","ts":"2026-09-11T06:59:20Z"}
+{"seat":"FOUNDRY","event":"close","id":"ROSTER_MOVE_APPLY_1","sha":"688bddbb27834541fca107add5f6f39b3baef03d","ts":"2026-09-11T07:01:16Z"}
