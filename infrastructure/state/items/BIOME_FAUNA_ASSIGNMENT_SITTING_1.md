@@ -308,3 +308,12 @@ palettes = draft + color-board review (PALETTE_ANCHOR_DRAFT_1, Fable agent runni
 twinkle = timeboxed spike (TWINKLE_FLORA_SPIKE_1, FOUNDRY); contrast law RATIFIED as
 written; set sizes default 3 with card override. Template §8 now fully ruled — the
 118-thing commission wave has no open design gates left except palette delivery.
+
+**11. More sitting cuts (owner, 2026-09-10):** ALL flying bats CUT — BMT_GlowBat (the
+"violescent"/bioluminescent bat, was a Rot resident), BMT_BrownBat (no register row,
+cut recorded), Batbird/Megabat/Woollybat already out. SW bats Hawkbat (greentide) and
+Shyrack (desert, webwork) NOT cut — flagged for the owner (icons; "all flying bats"
+may or may not include them). Klorslug (k'lor'slug) ruled a HORROR: INJECTABLE-RESERVED
+for nightside injection, out of the greentide. Helixien size defect: def adult
+drawSize is 3.2, deck rendered the harvest's 4.1 — resolution order flipped to
+def-first in the calibration pass; pustule/tumorfish families collapse to one card.
