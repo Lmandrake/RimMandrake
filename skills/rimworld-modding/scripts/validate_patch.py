@@ -615,8 +615,16 @@ def check_structure(root: ET.Element, f: Findings) -> list[tuple[ET.Element, str
             if op.find("attribute") is None:
                 f.error(f"{path} ({cls}): no <attribute> child")
 
-        # Guard check: a modifying op sitting at the top level is unguarded.
-        if cls in MODIFYING_OPS and " > " not in path:
+        # Guard check: a modifying op sitting at the top level, or nested only
+        # inside a PatchOperationSequence, is unguarded. A Sequence bundles
+        # operations but does not skip them when a target mod is absent or
+        # a target node is missing - only a Conditional/FindMod branch does
+        # that, and _descend() is the only place that appends " > match" or
+        # " > nomatch" to a path. Checking bare " > " here instead matched a
+        # Sequence's " > operations/li[N]" suffix too, so an unguarded modifying
+        # op wrapped only in a top-level Sequence silently passed this check.
+        if (cls in MODIFYING_OPS and " > match" not in path
+                and " > nomatch" not in path):
             f.warn(f"{path} ({cls}): not wrapped in PatchOperationConditional or "
                    f"PatchOperationFindMod. If the target mod is absent or fixes "
                    f"its def upstream, this logs a red error on every launch.")
