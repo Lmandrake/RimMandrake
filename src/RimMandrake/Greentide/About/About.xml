@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.greentide</packageId>
+  <name>RimMandrake: Greentide</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+      <steamWorkshopUrl />
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rm.creaturebehaviors</li>
+  </loadAfter>
+  <description>GREENTIDE_STANDALONE_MOD_1 (owner ruling, 2026-09-11, on the churnmud
+card, verbatim: "This is a really cool mechanic and suggests making the Biome
+Greentide its own RimMandrake level mod too."). A furiously humid, ground-hugging
+jungle biome and its own hazard kit, fully generalized: it names no other
+franchise or campaign and is playable standalone on any generated RimWorld
+planet. A separate frozen campaign world's own Greentide instance is
+unaffected and unrelated; this is a new sibling biome for everyone else's
+worlds, not a rename of that one.
+
+RM tier: nothing here knows what campaign or planet uses it.
+
+Ships the four v1 mechanics the owner ruled MUST ship together, not deferred
+(the source design kit's "Owner rulings" section):
+
+  1. Churnmud (M8, NO EXEMPTION ruling): RM_Churnmud is a natural high-pathCost
+     mire terrain. RM_MapComponent_TerrainMire escalates an RM_Mired hediff
+     (slowed, then stuck) on anyone standing on it; RM_MapComponent_MudSwallow
+     buries loose items left there long enough — a RM_DigOutBuried designation
+     and job get them back, nothing is destroyed. Deliberately never checks
+     stockpile/haul-destination status: mud under a player stockpile zone
+     swallows stored items too, exactly as ruled.
+  2. Toxin sealant, sourced from sap/resin (ruling confirmed): RM_SapResin is
+     rendered from wood at a machining table; RM_ToxinSealant is crafted from
+     sap/resin at the same bench; RM_ChurnmudSealed is a normal buildable floor
+     costed in sealant that replaces churnmud with safe ground — it carries no
+     RM_MireExtension, so sealing a cell IS the safety mechanism, no separate
+     registry needed.
+  3. Seek-shade AI (deferral REJECTED — ships in v1): RM_JobGiver_SeekShade,
+     added to the shared mandrake.rm.creaturebehaviors assembly (generic —
+     any race carrying RM_SeekShadeExtension seeks a roofed cell once ambient
+     temperature crosses its threshold). Wired here onto Muffalo as a live,
+     testable demonstration; Greentide's own fauna roster is a follow-on item.
+  4. The silence cue (deferral REJECTED — ships in v1): RM_MapComponent_SilenceCue,
+     also in the shared assembly — a predator carrying RM_SilenceAuraExtension
+     hunting near the player's home area ends and later restores the map's
+     biome ambience sustainers (Find.SoundRoot.sustainerManager /
+     AmbientSoundManager.Notify_SwitchedMap — the one route RimSage confirmed
+     for a live sustainer, since Sustainer/AmbientSoundManager expose no partial
+     volume-ramp API). Wired onto Warg for the same reason.
+
+NOT in this mod (scoped out by the calling item, not deferred sub rosa): the
+other eight GREENTIDE_MECHANICS_1 mechanics (wet-bulb, dry-air blower, scald/
+steam devils, Roil/Breaklight weather, tree-fall, Lunger, root causeways, the
+Greatbole) — those depend on ALPHA_MECHANICS_KIT_1 / EXPLOSIVE_PLANT_GROWTH_1
+and are a separate build.
+
+Live proof is OWED at publish time — see the item's own verify record.</description>
+</ModMetaData>

@@ -17,6 +17,7 @@
       <subNodes>
         <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_GnawTargets" />
         <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_SeekMarkedTerrain" />
+        <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_SeekShade" />
       </subNodes>
     </thinkRoot>
   </ThinkTreeDef>

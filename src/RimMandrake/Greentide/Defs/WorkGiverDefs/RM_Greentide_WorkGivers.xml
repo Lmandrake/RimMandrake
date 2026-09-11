@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RM_DigOutBuriedWorkGiver</defName>
+    <label>dig out buried items</label>
+    <giverClass>RimMandrake.Greentide.RM_WorkGiver_DigOutBuried</giverClass>
+    <workType>Mining</workType>
+    <verb>dig out</verb>
+    <gerund>digging out buried items</gerund>
+    <priorityInType>20</priorityInType>
+    <scanCells>true</scanCells>
+    <scanThings>false</scanThings>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>RM_FreeMiredWorkGiver</defName>
+    <label>pull free of mire</label>
+    <giverClass>RimMandrake.Greentide.RM_WorkGiver_FreeMired</giverClass>
+    <workType>Warden</workType>
+    <verb>free</verb>
+    <gerund>pulling free of the mire</gerund>
+    <priorityInType>85</priorityInType>
+    <scanCells>false</scanCells>
+    <scanThings>true</scanThings>
+    <requiredCapacities>
+      <li>Manipulation</li>
+      <li>Moving</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

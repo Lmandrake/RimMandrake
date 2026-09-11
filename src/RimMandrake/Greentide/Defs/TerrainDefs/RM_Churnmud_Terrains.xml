@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- GREENTIDE_STANDALONE_MOD_1 (M8). RM_Churnmud carries RM_MireExtension —
+     that single modExtension IS the whole mire+swallow hazard (read by
+     RM_MapComponent_TerrainMire / RM_MapComponent_MudSwallow). RM_ChurnmudSealed
+     is an ordinary buildable floor, costed in RM_ToxinSealant, that replaces it;
+     carrying NO RM_MireExtension is what makes a sealed cell safe — no separate
+     "is this cell sealed" bookkeeping anywhere. -->
+<Defs>
+
+  <TerrainDef Name="RM_ChurnmudBase" Abstract="true">
+    <renderPrecedence>320</renderPrecedence>
+    <fertility>0.0</fertility>
+    <edgeType>FadeRough</edgeType>
+    <color>(88,84,54)</color>
+    <statBases>
+      <Beauty>-2</Beauty>
+    </statBases>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RM_ChurnmudBase">
+    <defName>RM_Churnmud</defName>
+    <label>churnmud</label>
+    <description>Deep, torn mud, kept liquid by whatever churns beneath it. Brutally slow going, and it does not give back what it swallows on its own.</description>
+    <texturePath>Terrain/Surfaces/Mud</texturePath>
+    <pathCost>34</pathCost>
+    <affordances>
+      <li>Light</li>
+      <li>Diggable</li>
+    </affordances>
+    <modExtensions>
+      <li Class="RimMandrake.Greentide.RM_MireExtension">
+        <mireSeverityPerTick>0.008</mireSeverityPerTick>
+        <mireDecayPerTick>0.02</mireDecayPerTick>
+        <selfStruggleChancePerCheck>0.15</selfStruggleChancePerCheck>
+        <stuckThreshold>0.85</stuckThreshold>
+        <swallowTicks>2500</swallowTicks>
+      </li>
+    </modExtensions>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RM_ChurnmudBase">
+    <defName>RM_ChurnmudSealed</defName>
+    <label>sealed churnmud</label>
+    <description>Churnmud painted over with toxin sealant and packed down. The mire beneath is still there — it just cannot reach anything standing on top anymore.</description>
+    <texturePath>Terrain/Surfaces/PavedTile</texturePath>
+    <pathCost>14</pathCost>
+    <fertility>0</fertility>
+    <affordances>
+      <li>Light</li>
+      <li>Heavy</li>
+      <li>Diggable</li>
+    </affordances>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <layerable>true</layerable>
+    <designationCategory>Floors</designationCategory>
+    <constructEffect>ConstructMetal</constructEffect>
+    <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+    <costList>
+      <RM_ToxinSealant>5</RM_ToxinSealant>
+    </costList>
+    <statBases>
+      <WorkToBuild>400</WorkToBuild>
+    </statBases>
+  </TerrainDef>
+
+</Defs>

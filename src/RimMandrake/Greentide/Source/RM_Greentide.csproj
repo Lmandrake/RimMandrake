@@ -1,24 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    SHIP_VERMIN_MOD_1. Same recipe as
-    src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj —
+    GREENTIDE_STANDALONE_MOD_1. Same recipe as
+    src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviors.csproj —
     copy that header if this one goes stale.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\CreatureBehaviors\Source\RM_CreatureBehaviors.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Greentide\Source\RM_Greentide.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony: every class here is a plain engine extension point (ThingComp,
-    MapComponent, ThinkNode_JobGiver, JobDriver, Alert, DefModExtension).
+    No Harmony: every class here is a plain engine extension point (TerrainDef
+    modExtension, MapComponent, JobDriver, WorkGiver, BiomeWorker, DefOf).
   -->
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyName>RimMandrake.CreatureBehaviors</AssemblyName>
-    <RootNamespace>RimMandrake.CreatureBehaviors</RootNamespace>
+    <AssemblyName>RimMandrake.Greentide</AssemblyName>
+    <RootNamespace>RimMandrake.Greentide</RootNamespace>
     <Version>1.0.0</Version>
 
     <OutputPath>..\Assemblies\</OutputPath>
@@ -38,22 +38,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="RM_VerminPressureExtension.cs" />
-    <Compile Include="RM_MapComponent_VerminPopulation.cs" />
-    <Compile Include="RM_CompProperties_VerminBreeder.cs" />
-    <Compile Include="RM_CompVerminBreeder.cs" />
-    <Compile Include="RM_SeekTargetExtension.cs" />
-    <Compile Include="RM_JobGiver_SeekMarkedTerrain.cs" />
-    <Compile Include="RM_SeekShadeExtension.cs" />
-    <Compile Include="RM_JobGiver_SeekShade.cs" />
-    <Compile Include="RM_SilenceAuraExtension.cs" />
-    <Compile Include="RM_MapComponent_SilenceCue.cs" />
-    <Compile Include="RM_GnawTargetExtension.cs" />
-    <Compile Include="RM_JobDefOf.cs" />
-    <Compile Include="RM_JobGiver_GnawTargets.cs" />
-    <Compile Include="RM_JobDriver_Gnaw.cs" />
-    <Compile Include="RM_Alert_VerminPopulationBase.cs" />
-    <Compile Include="RM_Hediff_SunScald.cs" />
+    <Compile Include="RM_DefOf.cs" />
+    <Compile Include="RM_MireExtension.cs" />
+    <Compile Include="RM_BuriedCache.cs" />
+    <Compile Include="RM_MapComponent_TerrainMire.cs" />
+    <Compile Include="RM_MapComponent_MudSwallow.cs" />
+    <Compile Include="RM_JobDriver_DigOutBuried.cs" />
+    <Compile Include="RM_WorkGiver_DigOutBuried.cs" />
+    <Compile Include="RM_JobDriver_FreeMired.cs" />
+    <Compile Include="RM_WorkGiver_FreeMired.cs" />
+    <Compile Include="RM_BiomeWorker_Greentide.cs" />
   </ItemGroup>
 
   <ItemGroup>

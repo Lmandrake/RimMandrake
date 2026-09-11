@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_STANDALONE_MOD_1. Live demonstration that the shared
+     mandrake.rm.creaturebehaviors seek-shade/silence-cue mechanics actually
+     drive vanilla fauna, without inventing new creature art for this pass.
+     Greentide's own jungle roster (predators, herbivores) is a follow-on
+     roster item — this wiring is not a substitute for it. -->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/ThingDef[defName="Muffalo"]</xpath>
+    <value>
+      <modExtensions>
+        <li Class="RimMandrake.CreatureBehaviors.RM_SeekShadeExtension">
+          <tempThreshold>38</tempThreshold>
+          <searchRadius>30</searchRadius>
+          <seekChancePerCheck>0.3</seekChancePerCheck>
+        </li>
+      </modExtensions>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/ThingDef[defName="Warg"]</xpath>
+    <value>
+      <modExtensions>
+        <li Class="RimMandrake.CreatureBehaviors.RM_SilenceAuraExtension">
+          <triggerRadius>20</triggerRadius>
+          <hushDurationTicks>900</hushDurationTicks>
+        </li>
+      </modExtensions>
+    </value>
+  </Operation>
+
+</Patch>
