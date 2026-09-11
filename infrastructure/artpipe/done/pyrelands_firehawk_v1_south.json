@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-11T17:28:31Z",
+  "facing": "south",
+  "facings": [
+    "south",
+    "north"
+  ],
+  "id": "pyrelands_firehawk_v1_south",
+  "priority": 60,
+  "prompt": "RimWorld creature sprite, side view facing east, painterly vanilla-RimWorld animal art style: a lean raptor-analog bird of a burning savanna, dark ash-grey and ember-orange plumage, a hooked beak, alert hunting posture, one wing slightly raised as if about to take flight. Single creature, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "PYRELANDS_FACING_COMPLETE_1",
+  "style_notes": "Genuinely transparent alpha background, not a solid color. The bird reads as a fire-adapted hunting raptor, not an Earth species (no literal hawk/eagle branding) -- alien enough to be its own species, recognizable enough to read as 'bird of prey' at a glance. Match the existing east-facing sprite's colors, markings and proportions exactly (dark ash-grey and ember-orange plumage, same silhouette) -- this is the SAME individual creature seen from a different angle, not a new design."
+}

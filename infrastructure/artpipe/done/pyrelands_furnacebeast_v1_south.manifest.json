@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 100.3040610049793,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 100.3040610049793,
+  "height": 320,
+  "id": "pyrelands_furnacebeast_v1_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 10.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T10-34-42-01a09189-3066-7700-b265-7505b48d960d.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 39.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 2.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T10-28-33-01a09183-8e5f-75f2-98c6-53c1eb793393.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 38.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 320,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 320,
+    "id": "pyrelands_furnacebeast_v1_south",
+    "note": "Generated with built-in imagegen and resized to exactly 320x320. No existing east-facing reference PNG was available to match directly.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_furnacebeast_v1_south\\pyrelands_furnacebeast_v1_south.png",
+    "status": "ok",
+    "width": 320
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_furnacebeast_v1_south/pyrelands_furnacebeast_v1_south.png\n    320x320  rgba  101,413 bytes  (100s)\n"
+}
