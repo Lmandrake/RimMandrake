@@ -1,6 +1,6 @@
 {
- "generated": "2026-09-10 22:34",
- "head": "3644bbe9",
+ "generated": "2026-09-10 22:50",
+ "head": "b40cadf8",
  "systems": [
   {
    "system": "Aftermath",
@@ -4370,7 +4370,7 @@
    {
     "n": 1,
     "title": "THE PLANET",
-    "ticked": 0,
+    "ticked": 4,
     "total": 21,
     "items": [
      {
@@ -4380,12 +4380,12 @@
      },
      {
       "text": "\ud83d\udd12 planet coverage / tile count is final and named",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
       "text": "\ud83d\udd12 the shipping **savegame is identified by filename** and backed up",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
@@ -4435,12 +4435,12 @@
      },
      {
       "text": "tile **mutators** placed (or deliberately none)",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
       "text": "**landmarks** placed and named",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
@@ -4483,7 +4483,7 @@
    {
     "n": 2,
     "title": "FACTIONS",
-    "ticked": 0,
+    "ticked": 8,
     "total": 23,
     "items": [
      {
@@ -4493,17 +4493,17 @@
      },
      {
       "text": "\ud83d\udd12 every faction we want is present; every one we do not want is gone",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
       "text": "\ud83d\udd12 hidden / permanent-enemy factions (insects, mechanoids, empire-likes) decided",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
       "text": "\ud83d\udd12 settlement **count and placement** per faction on the map",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
@@ -4513,12 +4513,12 @@
      },
      {
       "text": "faction **names** are authored, not dice-rolled",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
       "text": "leader titles and leader names",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
@@ -4538,7 +4538,7 @@
      },
      {
       "text": "\ud83d\udd12 the **hostility matrix** \u2014 who starts hostile, neutral, allied, permanent",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
@@ -4558,12 +4558,12 @@
      },
      {
       "text": "pawn kinds per faction, per group (combat, trade, settlement, peaceful)",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
       "text": "**items allowed to each faction** \u2014 weapons, apparel, armour by tag",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
@@ -4606,17 +4606,17 @@
    {
     "n": 3,
     "title": "RELIGION \u2014 ideoligions",
-    "ticked": 0,
+    "ticked": 4,
     "total": 11,
     "items": [
      {
       "text": "\ud83d\udd12 every faction that should have its own faith **has** one (not a generated stand-in)",
-      "ticked": false,
+      "ticked": true,
       "depth": 0
      },
      {
       "text": "\ud83d\udd12 the **player's** ideoligion",
-      "ticked": false,
+      "ticked": true,
       "depth": 0
      },
      {
@@ -4626,7 +4626,7 @@
      },
      {
       "text": "memes \u2014 and no silent exclusion-tag collision",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
@@ -4636,7 +4636,7 @@
      },
      {
       "text": "deities / pantheon, with names",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
@@ -4669,7 +4669,7 @@
    {
     "n": 4,
     "title": "PAWNS \u2014 who walks around",
-    "ticked": 0,
+    "ticked": 2,
     "total": 21,
     "items": [
      {
@@ -4679,7 +4679,7 @@
      },
      {
       "text": "the roster of playable and NPC xenotypes",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
@@ -4694,7 +4694,7 @@
      },
      {
       "text": "xenotype chances per faction \u2014 who fields whom",
-      "ticked": false,
+      "ticked": true,
       "depth": 1
      },
      {
@@ -4953,12 +4953,12 @@
    {
     "n": 7,
     "title": "THE START",
-    "ticked": 0,
+    "ticked": 2,
     "total": 9,
     "items": [
      {
       "text": "\ud83d\udd12 **Scenario** \u2014 the ScenParts, in order",
-      "ticked": false,
+      "ticked": true,
       "depth": 0
      },
      {
@@ -4993,7 +4993,7 @@
      },
      {
       "text": "the opening moments are authored \u2014 what the player sees, reads and does first",
-      "ticked": false,
+      "ticked": true,
       "depth": 0
      },
      {
@@ -5123,23 +5123,25 @@
     ]
    }
   ],
-  "ticked": 0,
+  "ticked": 20,
   "total": 135
  },
  "codeReview": {
-  "total": 1908,
-  "clean": 1907,
-  "dirty": 1,
+  "total": 1914,
+  "clean": 1911,
+  "dirty": 3,
   "unknown": 0,
-  "recidivists": 1,
+  "recidivists": 3,
   "dirtyPaths": [
+   "src/RimMandrake/Ninefold/Source/Patch_GravshipLaunched.cs",
+   "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
    "src/RimMandrake/Utils/check_config_errors.py"
   ]
  },
  "ledger": {
-  "openItems": 130,
+  "openItems": 129,
   "openBugs": 7,
-  "needsOwner": 16
+  "needsOwner": 14
  },
  "movement": [
   {

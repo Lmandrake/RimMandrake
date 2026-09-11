@@ -26,8 +26,8 @@ evidence of a state.
 ## 1. 🔒 THE PLANET
 
 - [ ] **Geometry** — the tile grid, and it is the one we ship
-  - [ ] 🔒 planet coverage / tile count is final and named
-  - [ ] 🔒 the shipping **savegame is identified by filename** and backed up
+  - [x] 🔒 planet coverage / tile count is final and named
+  - [x] 🔒 the shipping **savegame is identified by filename** and backed up
   - [ ] ⚙️ the authored bundle and the shipping save agree tile-for-tile
 - [ ] **Surface**
   - [ ] ⚙️ elevation — every tile has one, and nothing floats or sinks wrongly
@@ -37,8 +37,8 @@ evidence of a state.
   - [ ] ⚙️ hilliness / terrain roughness
   - [ ] ⚙️ roads, and where they connect
 - [ ] **Dressing**
-  - [ ] tile **mutators** placed (or deliberately none)
-  - [ ] **landmarks** placed and named
+  - [x] tile **mutators** placed (or deliberately none)
+  - [x] **landmarks** placed and named
   - [ ] **named regions / gazetteer** — every place the fiction mentions exists on the map
   - [ ] 🎨 the map reads as a real planet at a glance
 - [ ] **Climate & sky**
@@ -52,21 +52,21 @@ evidence of a state.
 ## 2. 🔒 FACTIONS
 
 - [ ] **Roster** — exactly who exists in this world
-  - [ ] 🔒 every faction we want is present; every one we do not want is gone
-  - [ ] 🔒 hidden / permanent-enemy factions (insects, mechanoids, empire-likes) decided
-  - [ ] 🔒 settlement **count and placement** per faction on the map
+  - [x] 🔒 every faction we want is present; every one we do not want is gone
+  - [x] 🔒 hidden / permanent-enemy factions (insects, mechanoids, empire-likes) decided
+  - [x] 🔒 settlement **count and placement** per faction on the map
 - [ ] **Identity**
-  - [ ] faction **names** are authored, not dice-rolled
-  - [ ] leader titles and leader names
+  - [x] faction **names** are authored, not dice-rolled
+  - [x] leader titles and leader names
   - [ ] faction **colours, icons and banners** exist and are not placeholders
   - [ ] 🎨 description text a player will actually read
 - [ ] **Relationships**
-  - [ ] 🔒 the **hostility matrix** — who starts hostile, neutral, allied, permanent
+  - [x] 🔒 the **hostility matrix** — who starts hostile, neutral, allied, permanent
   - [ ] the player's starting standing with each
   - [ ] which relationships can move in play, and which must not
 - [ ] **What they field**
-  - [ ] pawn kinds per faction, per group (combat, trade, settlement, peaceful)
-  - [ ] **items allowed to each faction** — weapons, apparel, armour by tag
+  - [x] pawn kinds per faction, per group (combat, trade, settlement, peaceful)
+  - [x] **items allowed to each faction** — weapons, apparel, armour by tag
   - [ ] tech level, and that their gear matches it
   - [ ] ⚙️ nobody generates **bare-handed** or in the wrong century's kit
   - [ ] raid strategies and arrival modes available to each
@@ -79,12 +79,12 @@ evidence of a state.
 
 ## 3. 🔒 RELIGION — ideoligions
 
-- [ ] 🔒 every faction that should have its own faith **has** one (not a generated stand-in)
-- [ ] 🔒 the **player's** ideoligion
+- [x] 🔒 every faction that should have its own faith **has** one (not a generated stand-in)
+- [x] 🔒 the **player's** ideoligion
 - [ ] per faith:
-  - [ ] memes — and no silent exclusion-tag collision
+  - [x] memes — and no silent exclusion-tag collision
   - [ ] precepts that actually change play, not only a tooltip
-  - [ ] deities / pantheon, with names
+  - [x] deities / pantheon, with names
   - [ ] rituals
   - [ ] ideo **roles**
   - [ ] style — apparel, hair, art, naming
@@ -96,10 +96,10 @@ evidence of a state.
 ## 4. PAWNS — who walks around
 
 - [ ] **Races / xenotypes**
-  - [ ] the roster of playable and NPC xenotypes
+  - [x] the roster of playable and NPC xenotypes
   - [ ] genes per xenotype, and what they do
   - [ ] 🎨 each one has a **face** — head, body, hair, skin; nothing magenta
-  - [ ] xenotype chances per faction — who fields whom
+  - [x] xenotype chances per faction — who fields whom
 - [ ] **Pawn kinds** — the roles, not the individuals
   - [ ] the full kind roster exists and each is reachable in play
   - [ ] ⚙️ every kind **spawns holding something** appropriate
@@ -162,14 +162,14 @@ evidence of a state.
 
 ## 7. 🔒 THE START
 
-- [ ] 🔒 **Scenario** — the ScenParts, in order
+- [x] 🔒 **Scenario** — the ScenParts, in order
   - [ ] starting pawn count and how they are chosen
   - [ ] starting items, animals and structures
   - [ ] anything permanently disabled or forced
 - [ ] 🔒 the **gravship** / starting vessel — built, placed, and it flies
 - [ ] **Storyteller** and difficulty chosen (and known to be changeable later)
 - [ ] Anomaly / DLC playstyle settings decided
-- [ ] the opening moments are authored — what the player sees, reads and does first
+- [x] the opening moments are authored — what the player sees, reads and does first
 - [ ] 🎨 someone has actually played the first ten minutes
 
 ---
