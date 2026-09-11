@@ -47,7 +47,7 @@
   <ResearchProjectDef>
     <defName>RSW_DW_Research_Reboot</defName>
     <label>reboot</label>
-    <description>Bring a powered-down droid back online. Free — every Jawa clan already knows how to do this; it is not a discovery, it is a formality.</description>
+    <description>Bring a powered-down droid back online. Free — every scrapyard crew in the sector already knows how to do this; it is not a discovery, it is a formality.</description>
     <baseCost>0</baseCost>
     <techLevel>Industrial</techLevel>
     <tab>RUT_Tree_Unbolting</tab>
