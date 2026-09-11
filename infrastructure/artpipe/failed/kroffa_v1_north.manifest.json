@@ -1,0 +1,51 @@
+{
+  "attempt_elapsed_s": 92.85231728700455,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 92.85231728700455,
+  "height": 1254,
+  "id": "kroffa_v1_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 35.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T12-27-59-01a091f0-e88a-77b3-8a9e-d503ff0a7686.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 43.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 31.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T12-26-32-01a091ef-951e-7640-9877-ce6bb41b0aa5.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 42.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "returned 1254x1254, job asked for 512x512 \u2014 the image tool is known to ignore requested size; never a silent ok, reference or not",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "width": 1254,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": false,
+    "has_alpha": true,
+    "height": 1254,
+    "id": "kroffa_v1_north",
+    "note": "Generated sprite could not be normalized to 512\u00d7512 after the permitted retry; copied file is invalid (1254\u00d71254, one opaque corner).",
+    "out": null,
+    "status": "fail",
+    "width": 1254
+  },
+  "worker_status": "size_mismatch",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/kroffa_v1_north/kroffa_v1_north.png\n    1254x1254  rgba  965,296 bytes  (93s)\n"
+}

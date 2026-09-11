@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Grithe_LabelPatch.xml                         GritheArtOverride - new file
+
+  Renames GR_ParagonRat's label/description to the reimagined character
+  "Grithe" per the 2026-09-11 owner ruling on `art: "improve"` rows (general
+  kind fixed - a scavenging rodent-like pest - specific name/character free).
+  defName stays GR_ParagonRat (donor def, not ours - see About.xml). Both the
+  ThingDef and the PawnKindDef carry their own label; both are patched so
+  every in-game surface (animals tab, tooltips, trade, wildlife spawn text)
+  reads consistently.
+-->
+<Patch>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="GR_ParagonRat"]/label</xpath>
+    <value><label>grithe</label></value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="GR_ParagonRat"]/description</xpath>
+    <value><description>A chitin-plated insectoid-rodent scavenger, native to the wastes. Its oversized, grasping forepaws are built for one purpose: snatching whatever isn't nailed down. Fast-breeding and utterly indiscriminate about what it eats, a grithe infestation is as much a property crime as a pest problem.</description></value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="GR_ParagonRat"]/label</xpath>
+    <value><label>grithe</label></value>
+    <success>Always</success>
+  </Operation>
+</Patch>

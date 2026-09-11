@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rsw.rontoartoverride</packageId>
+  <name>Ronto Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces Mlie.StarWarsAnimalCollection's Ronto art (primary
+look, south/east/north facings only - the dessicated-corpse texture stays on
+donor art) with custom generated art per the 2026-09-11 owner ruling on
+`art: "improve"` rows: Star Wars-named creatures keep their canon identity
+(the classic elephantine Jawa pack beast), full regeneration, heavy black
+outline required. LABEL/ART ONLY - no defName touched, no Defs, no Patches,
+loose Textures/ only, same relative path (swanimals/Ronto/Ronto_&lt;facing&gt;)
+the donor uses for both the calf and adult life stages, so this mod's later
+load order wins the same-path resolution.</description>
+  <loadAfter>
+    <li>Mlie.StarWarsAnimalCollection</li>
+  </loadAfter>
+</ModMetaData>

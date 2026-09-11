@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 81.86980226999731,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 81.86980226999731,
+  "height": 512,
+  "id": "puffmite_v1_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 38.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T12-29-18-01a091f2-1cf7-7f01-a3ff-d87dc9f9b1e6.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 44.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 34.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T12-27-57-01a091f0-e109-7e53-8c14-7b8984275d93.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 43.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "puffmite_v1_east",
+    "note": "Generated via built-in imagegen, then resized to exactly 512\u00d7512 while preserving RGBA transparency.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\puffmite_v1_east\\puffmite_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/puffmite_v1_east/puffmite_v1_east.png\n    512x512  rgba  206,738 bytes  (82s)\n"
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 69.81973327099695,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 69.81973327099695,
+  "height": 512,
+  "id": "dewback_v1_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 20.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T12-23-48-01a091ed-125a-7553-8c8e-5969a375318a.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 41.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 16.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T12-22-07-01a091eb-87d8-7de0-a0a8-8deeaf4da9c1.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 40.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "dewback_v1_north",
+    "note": "Generated via built-in imagegen, copied into the workspace, resized to exactly 512x512, and verified as 32-bit ARGB with four transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\dewback_v1_north\\dewback_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/dewback_v1_north/dewback_v1_north.png\n    512x512  rgba  252,179 bytes  (70s)\n"
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 87.8853977789986,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 87.8853977789986,
+  "height": 512,
+  "id": "grutt_v1_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 30.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T12-26-29-01a091ef-88f7-78f0-97f8-c0f0fc5b5ee9.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 42.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 26.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T12-25-20-01a091ee-7a87-7312-a704-81ae941a982e.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 42.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "grutt_v1_east",
+    "note": "Built-in imagegen; normalized supplied prompt. Saved exact 512\u00d7512 east-facing Grutt sprite with transparent corners and 32-bit alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\grutt_v1_east\\grutt_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/grutt_v1_east/grutt_v1_east.png\n    512x512  rgba  236,675 bytes  (88s)\n"
+}

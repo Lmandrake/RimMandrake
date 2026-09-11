@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 69.0657720460149,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 69.0657720460149,
+  "height": 512,
+  "id": "grithe_v1_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 26.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T12-25-20-01a091ee-7a87-7312-a704-81ae941a982e.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 42.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 21.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T12-23-54-01a091ed-2973-7030-8ce0-97ea316a5987.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 41.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "grithe_v1_south",
+    "note": "Generated with built-in imagegen and resized to exactly 512\u00d7512 RGBA; transparent corners verified. First save attempt failed due to a PowerShell constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\grithe_v1_south\\grithe_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/grithe_v1_south/grithe_v1_south.png\n    512x512  rgba  199,921 bytes  (69s)\n"
+}

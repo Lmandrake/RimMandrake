@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 94.35899292299291,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 94.35899292299291,
+  "height": 512,
+  "id": "ronto_v1_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 44.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T12-30-40-01a091f3-5d89-7773-a923-9787d9b47d77.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 44.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 38.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T12-29-18-01a091f2-1cf7-7f01-a3ff-d87dc9f9b1e6.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 44.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "ronto_v1_east",
+    "note": "Generated via built-in imagegen and resized to exactly 512x512, preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\ronto_v1_east\\ronto_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/ronto_v1_east/ronto_v1_east.png\n    512x512  rgba  323,765 bytes  (94s)\n"
+}

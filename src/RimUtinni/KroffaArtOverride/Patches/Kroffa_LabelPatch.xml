@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Kroffa_LabelPatch.xml                          KroffaArtOverride - new file
+
+  Renames BMT_Maligoat's label/description to the reimagined character
+  "Kroffa" per the 2026-09-11 owner ruling on `art: "improve"` rows (general
+  kind fixed - a hardy desert grazing herbivore - specific name/character
+  free). defName stays BMT_Maligoat (donor def, not ours - see About.xml).
+  Both the ThingDef and the PawnKindDef carry their own label (plus
+  labelFemale on the PawnKindDef); all are patched.
+-->
+<Patch>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="BMT_Maligoat"]/label</xpath>
+    <value><label>kroffa</label></value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="BMT_Maligoat"]/description</xpath>
+    <value><description>A hardy, squat six-legged herbivore built for wasteland grazing. Its broad, low-slung barrel body rides on three pairs of short thick legs, hide overlapping in tough plates rather than fur, and its blunt insectile face works small mandible-like mouthparts around a pair of thick backward-curling horns. Docile enough to farm, and its milk is prized despite - or because of - how little the animal itself resembles anything back home.</description></value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="BMT_Maligoat"]/label</xpath>
+    <value><label>kroffa</label></value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="BMT_Maligoat"]/labelFemale</xpath>
+    <value><labelFemale>kroffa doe</labelFemale></value>
+    <success>Always</success>
+  </Operation>
+</Patch>

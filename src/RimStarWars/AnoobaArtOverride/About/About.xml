@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rsw.anoobaartoverride</packageId>
+  <name>Anooba Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces Mlie.StarWarsAnimalCollection's Anooba art with
+custom generated art per the 2026-09-11 owner ruling on `art: "improve"`
+rows: Star Wars-named creatures keep their canon identity (the lean,
+hyena-like Jawa hunting/guard beast), full regeneration, heavy black outline
+required.
+
+The donor splits EVERY life stage by gender (separate bodyGraphicData/
+femaleGraphicData texPaths, swanimals/Anooba/Anooba_m and Anooba_f) - only
+one look was generated for this wave, so the SAME new art is wired to BOTH
+Anooba_m_&lt;facing&gt; and Anooba_f_&lt;facing&gt; rather than leaving females
+on the old donor look (a spawn would otherwise show the new art only on a
+~50% roll - the same alternate-variant gotcha ART_REGEN_WAVE2_WIRE_IN_1 hit
+on AA_Frostmite). The dessicated-corpse texture (Anooba_Dessicated) stays on
+donor art. LABEL/ART ONLY - no defName touched, no Defs, no Patches, loose
+Textures/ only, same relative paths the donor uses, so this mod's later load
+order wins the same-path resolution.</description>
+  <loadAfter>
+    <li>Mlie.StarWarsAnimalCollection</li>
+  </loadAfter>
+</ModMetaData>

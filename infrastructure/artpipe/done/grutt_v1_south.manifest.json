@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 85.53936046300805,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 85.53936046300805,
+  "height": 512,
+  "id": "grutt_v1_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 31.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T12-26-47-01a091ef-ce90-7063-8499-1b05b8f068df.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 42.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 27.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T12-24-44-01a091ed-ef70-7280-a8b7-2d43dbd4ebf0.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 42.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "grutt_v1_south",
+    "note": "Generated with built-in imagegen and resized to exactly 512\u00d7512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\grutt_v1_south\\grutt_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/grutt_v1_south/grutt_v1_south.png\n    512x512  rgba  303,789 bytes  (85s)\n"
+}
