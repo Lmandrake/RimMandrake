@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-11T21:59:27Z",
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "cinderwing_v1_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: an invented alien pyrelands flying insect (working name 'Cinderwing') \u2014 a small, ember-bright flying stinging insect adapted to a volcanic/fire-scarred biome. NOT a mundane Earth wasp: a slender segmented thorax glowing faint orange-red at the seams like cooling embers, two pairs of thin heat-shimmer translucent wings edged in dark soot-black, a narrow tapered abdomen ending in a short venomous stinger, small glinting compound eyes. Reads as a striking, dangerous-looking small flying alien built for a scorched world. Single creature, centered, hovering/flight pose, no ground shadow, no background scenery, no fire or ember particle effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_WAVE6_QUEUE_1",
+  "style_notes": "Non-SW name (AA_FireWasp) REIMAGINED \u2014 checked against design/RimStarWars/star_wars_canon_names.md and not found anywhere in it (an Alpha Animals donor-mod name, not SW). General kind fixed per the row's own note ('I like this a lot' \u2014 a well-liked small ember-themed flying pyrelands insect), specific name/character invented: 'Cinderwing'. Small sizeBin, the_pyrelands biome. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling."
+}

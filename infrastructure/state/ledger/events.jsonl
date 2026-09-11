@@ -7408,3 +7408,18 @@
 {"seat":"FOUNDRY","event":"close","id":"ABSORPTION_FIX_NEWLINE_ESCAPES_1","sha":"d029308ef","ts":"2026-09-11T21:05:06Z"}
 {"seat":"BENCH","event":"claim","id":"GOD_LINES_ORACLE_PACKS_1","ts":"2026-09-11T21:07:05Z"}
 {"seat":"BENCH","event":"close","id":"GOD_LINES_ORACLE_PACKS_1","sha":"a0c0fafbac5270d04e79ced842ae3c565107f416","ts":"2026-09-11T21:07:06Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DONOR_FACTION_PROPER_NOUN_RENAMES_1","ts":"2026-09-11T21:20:54Z"}
+{"seat":"FOUNDRY","event":"start","id":"DONOR_FACTION_PROPER_NOUN_RENAMES_1","ts":"2026-09-11T21:20:55Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DONOR_FACTION_PROPER_NOUN_RENAMES_1 verification","ts":"2026-09-11T21:46:23Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-11T21:46:45Z"}
+{"seat":"FOUNDRY","event":"close","id":"DONOR_FACTION_PROPER_NOUN_RENAMES_1","sha":"8e1ea6c3d","ts":"2026-09-11T21:49:29Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"verify faction renames + Norse pack cut + (soon) lightsaber names live","ts":"2026-09-11T21:55:38Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-11T21:55:57Z"}
+{"seat":"FOUNDRY","event":"spawn","name":"ART_REGEN_WAVE6_QUEUE_1","kind":"build","needs":"offline","for":"FOUNDRY","from":"ART_REGEN_WAVE5_QUEUE_1","ts":"2026-09-11T21:58:25Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ART_REGEN_WAVE6_QUEUE_1","ts":"2026-09-11T21:58:36Z"}
+{"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE6_QUEUE_1","ts":"2026-09-11T21:58:37Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"combined live verification: faction renames + Norse cut + lightsaber names","ts":"2026-09-11T22:00:08Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T22:01:47Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-11T22:01:51Z"}
+{"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T22:02:02Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T22:02:03Z"}
