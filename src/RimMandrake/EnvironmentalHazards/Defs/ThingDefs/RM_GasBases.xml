@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    ALPHA_MECHANICS_KIT_1. Abstract parents only - this mod ships NO concrete
+    gas, creature, weather or ability. Content defs live in the RSW_/RUT_ tier
+    packs that want a given hazard; these bases exist so such a def is a dozen
+    lines of its own tuning instead of a re-derivation of which vanilla fields
+    a Gas needs.
+
+    Abstract defs spawn nothing and appear nowhere in game. A content def
+    inherits with ParentName and supplies its own defName, label, graphic,
+    colour, expiry and the RM modExtension carrying the behaviour.
+  -->
+
+  <ThingDef Name="RM_BaseGas" Abstract="True">
+    <thingClass>Gas</thingClass>
+    <label>gas</label>
+    <category>Gas</category>
+    <altitudeLayer>Gas</altitudeLayer>
+    <useHitPoints>false</useHitPoints>
+    <tickerType>Normal</tickerType>
+    <drawerType>MapMeshOnly</drawerType>
+    <selectable>false</selectable>
+    <gas>
+      <expireSeconds>25~35</expireSeconds>
+      <rotationSpeed>25</rotationSpeed>
+    </gas>
+    <graphicData>
+      <graphicClass>Graphic_Gas</graphicClass>
+      <shaderType>Transparent</shaderType>
+    </graphicData>
+  </ThingDef>
+
+  <!--
+    Damage gas. A child must supply graphicData.texPath and a
+    GasDamageExtension - see Source/GasEffectExtensions.cs for every field.
+  -->
+  <ThingDef Name="RM_BaseGasDamaging" ParentName="RM_BaseGas" Abstract="True">
+    <thingClass>RimMandrake.EnvironmentalHazards.Gas_Damaging</thingClass>
+  </ThingDef>
+
+  <!--
+    Transmuting gas. A child must supply graphicData.texPath and a
+    GasTransmuteExtension.
+  -->
+  <ThingDef Name="RM_BaseGasTransmuting" ParentName="RM_BaseGas" Abstract="True">
+    <thingClass>RimMandrake.EnvironmentalHazards.Gas_Transmuting</thingClass>
+  </ThingDef>
+
+</Defs>

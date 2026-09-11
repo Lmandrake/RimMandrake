@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.environmentalhazards</packageId>
+  <name>RimMandrake: Environmental Hazards Kit</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>ALPHA_MECHANICS_KIT_1. Six generalized, XML-configurable environmental
+mechanics the base game cannot do, each a reusable comp/worker/extension rather than a
+def-specific hardcode. Design borrowed by function from the Alpha-family source review
+(design/Jawa/worldbuilding/alpha_family_source_review.md, section 4, owner ruling
+2026-09-11) — no donor code or art ships here; every class below was written against
+vanilla's own API and vanilla's own equivalents.
+
+RM tier: nothing in this mod knows what campaign, planet or creature it is used by. A
+content def in any mod opts in through XML alone.
+
+  1. CompProperties_ActiveGasEmitter  — a ThingComp that periodically seeds a
+     configurable gas ThingDef into a radius, optionally power-gated.
+     Companions: Gas_Damaging (tick-and-scan damage/hediff/plant-damage gas, driven by
+     GasDamageExtension) and Gas_Transmuting (tick-and-scan flora rewrite, driven by
+     GasTransmuteExtension). Abstract XML parent RM_BaseGas ships in Defs/.
+  2. HediffCompProperties_PeriodicAreaAttack — a HediffComp (so it stacks onto ANY
+     existing HediffDef via XML) that deals falloff-by-distance, per-ThingCategory
+     scaled area damage around its carrier, with optional filth and sustainer.
+  3. BiomeGlowMultiplierExtension — a DefModExtension on any BiomeDef; one Harmony
+     postfix on GenCelestial.CurCelestialSunGlow makes that biome permanently darker
+     and vanilla's own darkness chain (accuracy, mood, plant growth) does the rest.
+     Optionally also forces ConditionalStatAffecter_InSunlight to read false there.
+  4. GameCondition_EnvironmentalWeather — a data-driven weather-lock condition
+     (EnvironmentalWeatherExtension on the GameConditionDef): forced weather, interval
+     damage to unroofed pawns with a species gate, item-rot acceleration, plant-kill
+     chance, animal/plant density factors, and flat or day/night temperature offsets.
+  5. DeathActionProperties_ScaledExplosion — one DeathActionWorker whose explosion
+     radius is indexed by the dying pawn's life stage, with configurable damage,
+     weapon-for-flash, sound and post-explosion filth. Paired with
+     GameCondition_ArmLatentHazard, which periodically arms every matching pawn on the
+     map with a configured HediffDef.
+  6. CompProperties_AbilityTargetedHediffAffliction — one ability effect comp that
+     either adds N of a HediffDef to random body parts, or destroys every body part
+     matching a BodyPartDef with a configured damage type.
+
+Live proof is OWED: this mod has not yet been loaded in a running game.</description>
+</ModMetaData>

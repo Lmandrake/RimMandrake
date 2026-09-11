@@ -1,0 +1,91 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    ALPHA_MECHANICS_KIT_1. Same recipe as
+    src/RimMandrake/Pyrelands/Source/FireEcologyHook.csproj (that one is the
+    Harmony-carrying variant; copy its header if this one goes stale).
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\EnvironmentalHazards\Source\RM_EnvironmentalHazards.csproj -c Release
+
+    Output lands in ../Assemblies/, which is where RimWorld looks.
+
+    Harmony IS referenced: item 3 of the kit (the biome glow multiplier) has
+    no XML or comp route - GenCelestial.CurCelestialSunGlow is a static method
+    with no def hook - and is the one patch in the kit. Everything else here
+    is a plain engine extension point (ThingComp, HediffComp, GameCondition,
+    DeathActionWorker, CompAbilityEffect).
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrake.EnvironmentalHazards</AssemblyName>
+    <RootNamespace>RimMandrake.EnvironmentalHazards</RootNamespace>
+    <Version>1.0.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="HazardTargeting.cs" />
+    <Compile Include="CompProperties_ActiveGasEmitter.cs" />
+    <Compile Include="CompActiveGasEmitter.cs" />
+    <Compile Include="GasEffectExtensions.cs" />
+    <Compile Include="Gas_Damaging.cs" />
+    <Compile Include="Gas_Transmuting.cs" />
+    <Compile Include="HediffCompProperties_PeriodicAreaAttack.cs" />
+    <Compile Include="HediffComp_PeriodicAreaAttack.cs" />
+    <Compile Include="BiomeGlowMultiplierExtension.cs" />
+    <Compile Include="BiomeGlowPatches.cs" />
+    <Compile Include="EnvironmentalWeatherExtension.cs" />
+    <Compile Include="GameCondition_EnvironmentalWeather.cs" />
+    <Compile Include="ArmLatentHazardExtension.cs" />
+    <Compile Include="GameCondition_ArmLatentHazard.cs" />
+    <Compile Include="DeathActionProperties_ScaledExplosion.cs" />
+    <Compile Include="DeathActionWorker_ScaledExplosion.cs" />
+    <Compile Include="CompProperties_AbilityTargetedHediffAffliction.cs" />
+    <Compile Include="CompAbilityEffect_TargetedHediffAffliction.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
