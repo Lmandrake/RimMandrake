@@ -128,7 +128,7 @@
     <wildAnimals>
       <Bantha MayRequire="mlie.starwarsanimalcollection">0.8</Bantha>  <!-- bantha - huge-herd, adjust-keep -->
       <Kreetle MayRequire="mlie.starwarsanimalcollection">0.8</Kreetle>  <!-- kreetle - ambush-small, keep -->
-      <BMT_Jellypot MayRequire="biomesteam.biomescaverns">0.7</BMT_Jellypot>  <!-- jellypot - ambush-small, keep -->
+      <RSW_Jellypot MayRequire="mandrake.rsw.swbestiary">0.7</RSW_Jellypot>  <!-- jellypot - ambush-small, keep -->
       <Scavrat MayRequire="mlie.starwarsanimalcollection">0.6</Scavrat>  <!-- Scavrats - ship-vermin, import -->
       <Shyrack MayRequire="mlie.starwarsanimalcollection">0.6</Shyrack>  <!-- shyrack - ambush-flier, keep -->
       <Gorg MayRequire="mlie.starwarsanimalcollection">0.4</Gorg>  <!-- gorg - ambush-small, keep -->

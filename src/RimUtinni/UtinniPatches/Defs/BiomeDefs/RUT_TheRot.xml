@@ -125,19 +125,19 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <BMT_ChemSnail MayRequire="biomesteam.biomescaverns">0.7</BMT_ChemSnail>  <!-- chem snail - ingest-strange, keep -->
-      <BMT_FungalWeevil MayRequire="biomesteam.biomescaverns">0.4</BMT_FungalWeevil>  <!-- fungal weevil - ingest-strange, import -->
+      <RSW_FungalWeevil MayRequire="mandrake.rsw.swbestiary">0.4</RSW_FungalWeevil>  <!-- fungal weevil - ingest-strange, import -->
       <BMT_GlowBat MayRequire="biomesteam.biomescaverns">0.4</BMT_GlowBat>  <!-- bioluminescent bat - ingest-strange, import -->
       <BMT_Pillbug MayRequire="biomesteam.biomescaverns">0.4</BMT_Pillbug>  <!-- pillbug - ingest-strange, import -->
       <BMT_GiantSlug MayRequire="biomesteam.biomescaverns">0.3</BMT_GiantSlug>  <!-- giant slug - ingest-strange, import -->
       <AA_Swarmling MayRequire="sarg.alphaanimals">0.3</AA_Swarmling>  <!-- swarmling - hybrid-vermin, adjust-keep -->
       <AA_Agaripod MayRequire="sarg.alphaanimals">0.25</AA_Agaripod>  <!-- agaripod - hybrid-native, keep -->
       <AA_MycoidColossus MayRequire="sarg.alphaanimals">0.25</AA_MycoidColossus>  <!-- mycoid colossus - hybrid-giant, keep -->
-      <BMT_BovineBeetle MayRequire="biomesteam.biomescaverns">0.2</BMT_BovineBeetle>  <!-- bovine beetle - ingest-producer, import -->
+      <RSW_BovineBeetle MayRequire="mandrake.rsw.swbestiary">0.2</RSW_BovineBeetle>  <!-- bovine beetle - ingest-producer, import -->
       <BMT_GiantSnail MayRequire="biomesteam.biomescaverns">0.2</BMT_GiantSnail>  <!-- giant snail - ingest-strange, import -->
       <AA_Agaripawn MayRequire="sarg.alphaanimals">0.2</AA_Agaripawn>  <!-- agaripawn - hybrid-native, keep -->
       <AA_Wildpawn MayRequire="sarg.alphaanimals">0.2</AA_Wildpawn>  <!-- wildpawn - hybrid-native, adjust-keep -->
       <AA_Wildpod MayRequire="sarg.alphaanimals">0.2</AA_Wildpod>  <!-- wildpod - hybrid-native, adjust-keep -->
-      <BMT_FungalMantis MayRequire="biomesteam.biomescaverns">0.15</BMT_FungalMantis>  <!-- fungal mimic mantis - guardian, import -->
+      <RSW_FungalMantis MayRequire="mandrake.rsw.swbestiary">0.15</RSW_FungalMantis>  <!-- fungal mimic mantis - guardian, import -->
       <BMT_CaveSpider MayRequire="biomesteam.biomescaverns">0.05</BMT_CaveSpider>  <!-- cave spider - guardian, import -->
     </wildAnimals>
     <coastalWildAnimals />

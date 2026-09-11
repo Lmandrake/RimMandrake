@@ -108,7 +108,7 @@
       <Overcast MayRequire="Ludeon.RimWorld.Odyssey">2</Overcast>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <BMT_GlowSlug MayRequire="biomesteam.biomescaverns">0.5</BMT_GlowSlug>  <!-- glowslug - sap-drinker, keep -->
+      <RSW_GlowSlug MayRequire="mandrake.rsw.swbestiary">0.5</RSW_GlowSlug>  <!-- glowslug - sap-drinker, keep -->
       <Urusai MayRequire="mlie.starwarsanimalcollection">0.5</Urusai>  <!-- urusai - crown-flier, keep -->
       <VFEI2_Megathrips MayRequire="oskarpotocki.vfe.insectoid2">0.5</VFEI2_Megathrips>  <!-- megathrips - wood-borer, keep -->
       <Gelagrub MayRequire="mlie.starwarsanimalcollection">0.4</Gelagrub>  <!-- gelagrub - crown-grazer, adjust-keep -->
@@ -116,8 +116,8 @@
       <Convor MayRequire="mlie.starwarsanimalcollection">0.3</Convor>  <!-- convor - crown-flier, import -->
       <LongtailGorg MayRequire="mlie.starwarsanimalcollection">0.3</LongtailGorg>  <!-- longtail gorg - wait-ambush, keep -->
       <Whisperbird MayRequire="mlie.starwarsanimalcollection">0.3</Whisperbird>  <!-- whisperbird - crown-flier, import -->
-      <BMT_JewelBeetle MayRequire="biomesteam.biomescaverns">0.2</BMT_JewelBeetle>  <!-- jewel beetle - crown-grazer, import -->
-      <BMT_AcidSlug MayRequire="biomesteam.biomescaverns">0.05</BMT_AcidSlug>  <!-- acid slug - ground-slow, keep -->
+      <RSW_JewelBeetle MayRequire="mandrake.rsw.swbestiary">0.2</RSW_JewelBeetle>  <!-- jewel beetle - crown-grazer, import -->
+      <RSW_AcidSlug MayRequire="mandrake.rsw.swbestiary">0.05</RSW_AcidSlug>  <!-- acid slug - ground-slow, keep -->
       <Fambaa MayRequire="mlie.starwarsanimalcollection">0.02</Fambaa>  <!-- fambaa - the-terribly-lost, import -->
     </wildAnimals>
     <coastalWildAnimals />

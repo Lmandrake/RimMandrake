@@ -131,7 +131,7 @@
       <Ronto MayRequire="mlie.starwarsanimalcollection">0.8</Ronto>  <!-- ronto - huge-grazer, keep -->
       <Scurrier MayRequire="mlie.starwarsanimalcollection">0.8</Scurrier>  <!-- scurrier - small-runway, keep -->
       <Sketto MayRequire="mlie.starwarsanimalcollection">0.8</Sketto>  <!-- sketto - small-runway, keep -->
-      <BMT_ImperialToad MayRequire="biomesteam.biomescaverns">0.7</BMT_ImperialToad>  <!-- imperial toad - small-runway, keep -->
+      <RSW_ImperialToad MayRequire="mandrake.rsw.swbestiary">0.7</RSW_ImperialToad>  <!-- imperial toad - small-runway, keep -->
       <Terrorworm MayRequire="mlie.horrors">0.7</Terrorworm>  <!-- terrorworm - medium-tunnel, keep -->
       <Igitz MayRequire="mlie.starwarsanimalcollection">0.7</Igitz>  <!-- igitz - small-runway, keep -->
       <Urusai MayRequire="mlie.starwarsanimalcollection">0.7</Urusai>  <!-- urusai - medium-interface, keep -->
@@ -146,7 +146,7 @@
       <Nuna MayRequire="mlie.starwarsanimalcollection">0.4</Nuna>  <!-- nuna - small-runway, keep -->
       <WompRat MayRequire="mlie.starwarsanimalcollection">0.4</WompRat>  <!-- womp rat - ship-vermin, import -->
       <Worrt MayRequire="mlie.starwarsanimalcollection">0.4</Worrt>  <!-- worrt - small-runway, keep -->
-      <BMT_MossBeetle MayRequire="biomesteam.biomescaverns">0.3</BMT_MossBeetle>  <!-- moss beetle - small-runway, keep -->
+      <RSW_MossBeetle MayRequire="mandrake.rsw.swbestiary">0.3</RSW_MossBeetle>  <!-- moss beetle - small-runway, keep -->
       <Mynock MayRequire="mlie.starwarsanimalcollection">0.3</Mynock>  <!-- mynock - ship-vermin, import -->
       <VFEI2_Fuelmite MayRequire="oskarpotocki.vfe.insectoid2">0.3</VFEI2_Fuelmite>  <!-- fuelmite - ship-vermin, import -->
       <AA_Cactipine MayRequire="sarg.alphaanimals">0.25</AA_Cactipine>  <!-- cactipine - small-venom, keep -->

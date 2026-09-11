@@ -142,7 +142,7 @@
     <wildAnimals>
       <Mynock MayRequire="mlie.starwarsanimalcollection">0.5</Mynock>  <!-- mynock - wiring-eater, import -->
       <SW_Electrictick MayRequire="who.vfee.isopodageneline">0.3</SW_Electrictick>  <!-- Electrictick - weapon-descendant, keep -->
-      <BMT_FoundryBeetle MayRequire="biomesteam.biomescaverns">0.18</BMT_FoundryBeetle>  <!-- foundry beetle - plated-grazer, keep -->
+      <RSW_FoundryBeetle MayRequire="mandrake.rsw.swbestiary">0.18</RSW_FoundryBeetle>  <!-- foundry beetle - plated-grazer, keep -->
       <AA_SpinedGow MayRequire="sarg.alphaanimals">0.15</AA_SpinedGow>  <!-- spined gow - plated-grazer, keep -->
       <SW_Electricgryllotalpa MayRequire="who.vfee.isopodageneline">0.15</SW_Electricgryllotalpa>  <!-- Electricgryllotalpa - weapon-descendant, keep -->
       <RG_Rimclaw MayRequire="regrowth.botr.core">0.1</RG_Rimclaw>  <!-- rimclaw - weapon-descendant, keep -->

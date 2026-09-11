@@ -118,7 +118,7 @@
       <Worrt MayRequire="mlie.starwarsanimalcollection">0.7</Worrt>  <!-- worrt - ambush, keep -->
       <Shiro MayRequire="mlie.starwarsanimalcollection">0.5</Shiro>  <!-- shiro - floor-ambush, keep -->
       <ShiroTrap MayRequire="mlie.starwarsanimalcollection">0.5</ShiroTrap>  <!-- shiro-trap - floor-ambush, keep -->
-      <BMT_Diggerpede MayRequire="biomesteam.biomescaverns">0.4</BMT_Diggerpede>  <!-- diggerpede - floor-predator, keep -->
+      <RSW_Diggerpede MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Diggerpede>  <!-- diggerpede - floor-predator, keep -->
       <Klorslug MayRequire="mlie.starwarsanimalcollection">0.4</Klorslug>  <!-- k'lor'slug - gnawer, keep -->
       <Mott MayRequire="mlie.starwarsanimalcollection">0.4</Mott>  <!-- mott - brake, import -->
       <Nuna MayRequire="mlie.starwarsanimalcollection">0.4</Nuna>  <!-- nuna - brake, import -->

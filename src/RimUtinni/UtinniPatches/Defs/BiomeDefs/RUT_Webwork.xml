@@ -113,7 +113,7 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <Wyyyschokk MayRequire="mlie.starwarsanimalcollection">0.4</Wyyyschokk>  <!-- wyyyschokk - owner, import -->
-      <BMT_JewelBeetle MayRequire="biomesteam.biomescaverns">0.3</BMT_JewelBeetle>  <!-- jewel beetle - anchor-beetle, import -->
+      <RSW_JewelBeetle MayRequire="mandrake.rsw.swbestiary">0.3</RSW_JewelBeetle>  <!-- jewel beetle - anchor-beetle, import -->
       <Kreetle MayRequire="mlie.starwarsanimalcollection">0.2</Kreetle>  <!-- kreetle - trace-prey, adjust-keep -->
       <Shyrack MayRequire="mlie.starwarsanimalcollection">0.2</Shyrack>  <!-- shyrack - trace-flier, keep -->
     </wildAnimals>

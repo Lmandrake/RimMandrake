@@ -34,7 +34,7 @@
     <relicChance>2</relicChance>
     <equippedAngleOffset>-65</equippedAngleOffset>
     <costList>
-      <BMT_FungalMantisClaw MayRequire="biomesteam.biomescaverns">1</BMT_FungalMantisClaw>
+      <RSW_FungalMantisClaw MayRequire="mandrake.rsw.swbestiary">1</RSW_FungalMantisClaw>
       <RUT_MushroomLog>15</RUT_MushroomLog>
     </costList>
     <tools>

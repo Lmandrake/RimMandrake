@@ -1,0 +1,1214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+BMT_FAUNA_ABSORPTION_1 - biomesteam.biomescaverns / biomesteam.biomescore /
+biomesteam.biomespollutedlands port. Owner ruling 2026-09-11 (question-card
+sitting): 38 clean "in" + 30 "move" = 68 unique defNames per
+design/Jawa/worldbuilding/review/round2/decisions_propagated.json, with
+BMT_ChemSnail's in/out conflict resolved OUT per biome_findings.md (the_rot
+departure). Renamed BMT_ -> RSW_ throughout (species, bodies, eggs, leather,
+sounds, hediffs, damage types, and every other def pulled in by reference
+closure so nothing dangles). Ported verbatim except: modExtensions/comps
+whose C# class lives in the retiring BiomesCore.dll / BMT_PollutedLands.dll,
+or in PathfindingFramework.*/VEF.AnimalBehaviours.* (neither mod active on
+this list), are dropped - the creature keeps its stats/body/art, not the
+donor-framework-only behaviour (pack defense hediff, lure-prey AI, filth
+trail, water-walker/floating, dig-periodically, custom thing-eater, animal
+spawner comps, hermaphroditic-mate job giver, corpse spawner). Two
+non-resident adult forms (RSW_RoyalRhino, RSW_ShatterjawBeetle) are ported
+as back-end evolveIntoPawnKindDef targets for their resident larva/pupa
+stages, decided "out" for biome residency but required for the vanilla
+evolve mechanism not to dangle - not added to any biome cast.
+Texture texPaths repathed to swanimals/BiomesTeam/<original path>, files
+copied verbatim from the donor mods' own Textures trees.
+
+-->
+<Defs>
+  <ThoughtDef>
+    <defName>RSW_AteRawGastropod</defName>
+    <thoughtClass>Thought_FoodEaten</thoughtClass>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/Food</icon>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate raw gastropod</label>
+        <description>I had to eat raw gastropod. We should be cooking that kind of food before eating it, or at least add some salt.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifyingGenes>
+      <li MayRequire="Ludeon.RimWorld.Biotech">RobustDigestion</li>
+    </nullifyingGenes>
+  </ThoughtDef>
+  <DamageDef ParentName="BluntBase" Name="RSW_BluntToxicAttackBase" Abstract="true">
+    <additionalHediffs>
+      <li>
+        <hediff>ToxicBuildup</hediff>
+        <severityPerDamageDealt>0.015</severityPerDamageDealt>
+        <victimSeverityScaling>ToxicResistance</victimSeverityScaling>
+        <inverseStatScaling>true</inverseStatScaling>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>false</applyAdditionalHediffsIfHuntingForFood>
+    <impactSoundType>Toxic</impactSoundType>
+    <damageEffecter>Impact_Toxic</damageEffecter>
+  </DamageDef>
+  <StatDef>
+    <defName>RSW_BC_StuffPower_FlammabilityOffset</defName>
+    <label>Flammability offset</label>
+    <labelForFullStatList>Flammability (material offset)</labelForFullStatList>
+    <description>Affects how easily an object catches fire and how quickly a fire will grow as it burns.</description>
+    <category>StuffStatFactors</category>
+    <defaultBaseValue>0</defaultBaseValue>
+    <minValue>-1</minValue>
+    <maxValue>1</maxValue>
+    <toStringStyle>PercentZero</toStringStyle>
+    <showIfUndefined>false</showIfUndefined>
+    <displayPriorityInCategory>4420</displayPriorityInCategory>
+  </StatDef>
+  <DamageDef ParentName="RSW_BluntToxicAttackBase">
+    <defName>RSW_ToxicHeadbutt</defName>
+    <label>toxic skin</label>
+    <additionalHediffs>
+      <li>
+        <severityPerDamageDealt>13</severityPerDamageDealt>
+      </li>
+    </additionalHediffs>
+  </DamageDef>
+  <LifeStageDef>
+    <defName>RSW_DiggerAdult</defName>
+    <label>adult</label>
+    <visible>false</visible>
+    <reproductive>true</reproductive>
+    <milkable>true</milkable>
+    <shearable>true</shearable>
+  </LifeStageDef>
+  <LifeStageDef>
+    <defName>RSW_EusocialInsectNymphFirst</defName>
+    <label>nymph</label>
+    <voxPitch>1.6</voxPitch>
+    <voxVolume>0.4</voxVolume>
+    <bodySizeFactor>0.2</bodySizeFactor>
+    <foodMaxFactor>2</foodMaxFactor>
+    <healthScaleFactor>0.25</healthScaleFactor>
+    <hungerRateFactor>0.4</hungerRateFactor>
+    <marketValueFactor>0.4</marketValueFactor>
+    <meleeDamageFactor>0.5</meleeDamageFactor>
+    <statFactors>
+      <MoveSpeed>0.5</MoveSpeed>
+    </statFactors>
+    <visible>false</visible>
+    <reproductive>false</reproductive>
+    <shearable>true</shearable>
+    <milkable>true</milkable>
+    <caravanRideable>true</caravanRideable>
+  </LifeStageDef>
+  <LifeStageDef>
+    <defName>RSW_InsectLarvalFirst</defName>
+    <label>larva</label>
+    <voxPitch>1.6</voxPitch>
+    <voxVolume>0.4</voxVolume>
+    <healthScaleFactor>0.25</healthScaleFactor>
+    <hungerRateFactor>0.4</hungerRateFactor>
+    <marketValueFactor>0.4</marketValueFactor>
+    <meleeDamageFactor>0.5</meleeDamageFactor>
+    <visible>false</visible>
+    <reproductive>false</reproductive>
+    <bodySizeFactor>0.1</bodySizeFactor>
+    <foodMaxFactor>0.3</foodMaxFactor>
+    <statFactors>
+      <MoveSpeed>0.1</MoveSpeed>
+    </statFactors>
+  </LifeStageDef>
+  <FleckDef ParentName="FleckBase_Thrown">
+    <defName>RSW_Fishing</defName>
+    <graphicData>
+      <texPath>swanimals/BiomesTeam/BiomesCore_Things/Effects/FishingEffect</texPath>
+    </graphicData>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.04</fadeInTime>
+    <solidTime>1</solidTime>
+    <fadeOutTime>0.1</fadeOutTime>
+    <speedPerTime>-40</speedPerTime>
+  </FleckDef>
+  <DamageDef ParentName="RSW_SharpToxicAttackBase">
+    <defName>RSW_ToxicBite</defName>
+    <label>toxic bite</label>
+    <additionalHediffs>
+      <li>
+        <severityPerDamageDealt>13</severityPerDamageDealt>
+      </li>
+    </additionalHediffs>
+  </DamageDef>
+  <ToolCapacityDef>
+    <defName>RSW_BloodSuck</defName>
+    <label>blood suck</label>
+  </ToolCapacityDef>
+  <DamageDef ParentName="Bite">
+    <defName>RSW_BloodSuck</defName>
+    <label>blood suck</label>
+    <additionalHediffs>
+      <li>
+        <hediff>BloodLoss</hediff>
+        <severityPerDamageDealt>0.1</severityPerDamageDealt>
+        <inverseStatScaling>true</inverseStatScaling>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>true</applyAdditionalHediffsIfHuntingForFood>
+  </DamageDef>
+  <DamageDef ParentName="RSW_SharpToxicAttackBase">
+    <defName>RSW_ToxicScratch</defName>
+    <label>toxic claws</label>
+    <additionalHediffs>
+      <li>
+        <severityPerDamageDealt>13</severityPerDamageDealt>
+      </li>
+    </additionalHediffs>
+  </DamageDef>
+  <StuffCategoryDef>
+    <defName>RSW_ChitinStuff</defName>
+    <label>chitinous</label>
+    <noun>chitin</noun>
+    <destroySoundSmall>BuildingDestroyed_Wood_Small</destroySoundSmall>
+    <destroySoundMedium>BuildingDestroyed_Wood_Medium</destroySoundMedium>
+    <destroySoundLarge>BuildingDestroyed_Wood_Big</destroySoundLarge>
+  </StuffCategoryDef>
+  <LifeStageDef>
+    <defName>RSW_InsectLarvalSecound</defName>
+    <label>larva</label>
+    <voxPitch>1.2</voxPitch>
+    <healthScaleFactor>0.6</healthScaleFactor>
+    <hungerRateFactor>0.75</hungerRateFactor>
+    <marketValueFactor>0.75</marketValueFactor>
+    <meleeDamageFactor>0.75</meleeDamageFactor>
+    <visible>false</visible>
+    <reproductive>false</reproductive>
+    <bodySizeFactor>0.5</bodySizeFactor>
+    <foodMaxFactor>0.5</foodMaxFactor>
+    <statFactors>
+      <MoveSpeed>0.5</MoveSpeed>
+    </statFactors>
+  </LifeStageDef>
+  <LifeStageDef>
+    <defName>RSW_DiggerBaby</defName>
+    <label>baby</label>
+    <voxPitch>1.6</voxPitch>
+    <voxVolume>0.8</voxVolume>
+    <bodySizeFactor>0.2</bodySizeFactor>
+    <foodMaxFactor>3</foodMaxFactor>
+    <healthScaleFactor>0.25</healthScaleFactor>
+    <hungerRateFactor>0.4</hungerRateFactor>
+    <marketValueFactor>0.4</marketValueFactor>
+    <meleeDamageFactor>0.5</meleeDamageFactor>
+    <statFactors>
+      <MoveSpeed>0.5</MoveSpeed>
+    </statFactors>
+  </LifeStageDef>
+  <LifeStageDef>
+    <defName>RSW_DiggerJuvenile</defName>
+    <label>juvenile</label>
+    <voxPitch>1.2</voxPitch>
+    <bodySizeFactor>0.5</bodySizeFactor>
+    <foodMaxFactor>1.5</foodMaxFactor>
+    <healthScaleFactor>0.6</healthScaleFactor>
+    <hungerRateFactor>0.75</hungerRateFactor>
+    <marketValueFactor>0.75</marketValueFactor>
+    <meleeDamageFactor>0.75</meleeDamageFactor>
+    <statFactors>
+      <MoveSpeed>0.9</MoveSpeed>
+    </statFactors>
+  </LifeStageDef>
+  <ThinkTreeDef>
+    <defName>RSW_PupaeThinkTree</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="ThinkNode_ConditionalMustKeepLyingDown">
+          <subNodes>
+            <li Class="JobGiver_KeepLyingDown" />
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Downed</treeDef>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>BurningResponse</treeDef>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>MentalStateCritical</treeDef>
+        </li>
+        <li Class="JobGiver_LayEgg" />
+        <li Class="ThinkNode_ConditionalOfPlayerFaction">
+          <subNodes>
+            <li Class="ThinkNode_Tagger" />
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_ChancePerHour_Nuzzle">
+          <subNodes>
+            <li Class="ThinkNode_Tagger">
+              <tagToGive>Misc</tagToGive>
+              <subNodes>
+                <li Class="JobGiver_Nuzzle" />
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_SubtreesByTag">
+          <insertTag>Animal_PreWander</insertTag>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+  <LifeStageDef>
+    <defName>RSW_Pupa</defName>
+    <label>pupa</label>
+    <visible>false</visible>
+    <reproductive>false</reproductive>
+    <hungerRateFactor>0.000001</hungerRateFactor>
+  </LifeStageDef>
+  <RulePackDef>
+    <defName>RSW_Biomes_NamerCrab</defName>
+    <include>
+      <li>NamerAnimalUtility</li>
+    </include>
+    <rulePack>
+      <rulesFiles>
+        <li>Biomes_NameCrab-&gt;Names/Biomes_Crabs</li>
+      </rulesFiles>
+      <rulesStrings>
+        <li>r_name(p=6)-&gt;[NameAnimalUnisex]</li>
+        <li>r_name(p=6)-&gt;[Biomes_NameCrab]</li>
+        <li>r_name-&gt;[exoticname]</li>
+        <li>exoticname(p=2)-&gt;[AdjectiveBadass]</li>
+        <li>exoticname(p=2)-&gt;[PersonBadass]</li>
+        <li>exoticname-&gt;[Enemy]</li>
+        <li>exoticname-&gt;[ConceptAny]</li>
+        <li>exoticname-&gt;[Color]</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+  <ThoughtDef>
+    <defName>RSW_AteRawFish</defName>
+    <thoughtClass>Thought_FoodEaten</thoughtClass>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/Food</icon>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate raw fish</label>
+        <description>I had to eat raw fish. We should be cooking that kind of food before eating it or at least add some rice.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <StuffAppearanceDef>
+    <defName>RSW_AppearanceCrystal</defName>
+  </StuffAppearanceDef>
+  <ThingSetMakerDef>
+    <defName>RSW_PustuleHornetRaidLootMaker</defName>
+    <root Class="ThingSetMaker_MarketValue">
+      <fixedParams>
+        <filter>
+          <thingDefs>
+            <li>RSW_PustuleHornetStinger</li>
+          </thingDefs>
+        </filter>
+      </fixedParams>
+    </root>
+  </ThingSetMakerDef>
+  <LifeStageDef>
+    <defName>RSW_InsectLarvalThird</defName>
+    <label>larva</label>
+    <visible>false</visible>
+    <reproductive>false</reproductive>
+  </LifeStageDef>
+  <ThoughtDef>
+    <defName>RSW_DrankRegalMilk</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>drank regal milk</label>
+        <description>That milk was amazing. It was like a fine meal unto itself.</description>
+        <baseMoodEffect>5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <DamageDef ParentName="Scratch">
+    <defName>RSW_ToxicSpores</defName>
+    <label>toxic spores</label>
+    <additionalHediffs>
+      <li>
+        <hediff>ToxicBuildup</hediff>
+        <severityPerDamageDealt>0.015</severityPerDamageDealt>
+        <victimSeverityScaling>ToxicResistance</victimSeverityScaling>
+        <inverseStatScaling>true</inverseStatScaling>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>false</applyAdditionalHediffsIfHuntingForFood>
+    <impactSoundType>Toxic</impactSoundType>
+    <damageEffecter>Impact_Toxic</damageEffecter>
+  </DamageDef>
+  <EffecterDef>
+    <defName>RSW_EatFish</defName>
+    <children>
+      <li>
+        <subEffecterClass>SubEffecter_SprayerContinuous</subEffecterClass>
+        <burstCount>2~4</burstCount>
+        <positionRadius>0.5</positionRadius>
+        <scale>1~1</scale>
+        <ticksBetweenMotes>500</ticksBetweenMotes>
+        <positionLerpFactor>1</positionLerpFactor>
+        <fleckDef>AirPuff</fleckDef>
+        <color>(127, 156, 202, 200)</color>
+      </li>
+      <li>
+        <subEffecterClass>SubEffecter_SprayerContinuous</subEffecterClass>
+        <spawnLocType>OnTarget</spawnLocType>
+        <positionRadius>1</positionRadius>
+        <scale>0.7</scale>
+        <fleckUsesAngleForVelocity>true</fleckUsesAngleForVelocity>
+        <ticksBetweenMotes>20</ticksBetweenMotes>
+        <positionLerpFactor>1</positionLerpFactor>
+        <fleckDef>RSW_Fishing</fleckDef>
+        <angle>0~360</angle>
+        <speed>5</speed>
+      </li>
+    </children>
+  </EffecterDef>
+  <LifeStageDef>
+    <defName>RSW_EusocialInsectNymphSecond</defName>
+    <label>immature</label>
+    <voxPitch>1.2</voxPitch>
+    <bodySizeFactor>0.5</bodySizeFactor>
+    <foodMaxFactor>1.5</foodMaxFactor>
+    <healthScaleFactor>0.6</healthScaleFactor>
+    <hungerRateFactor>0.75</hungerRateFactor>
+    <marketValueFactor>0.75</marketValueFactor>
+    <meleeDamageFactor>0.75</meleeDamageFactor>
+    <statFactors>
+      <MoveSpeed>0.9</MoveSpeed>
+    </statFactors>
+    <visible>false</visible>
+    <reproductive>false</reproductive>
+    <shearable>true</shearable>
+    <milkable>true</milkable>
+    <caravanRideable>true</caravanRideable>
+  </LifeStageDef>
+  <HediffDef ParentName="InfectionBase">
+    <defName>RSW_MegaphoridParasiticLarvae</defName>
+    <label>megaphorid infestation</label>
+    <labelNoun>an infestation of megaphorid larvae</labelNoun>
+    <description>An infection of parasitic larvae from the megaphorid. Without treatment, the larvae will grow over time, slowly devouring the infected, causing worsening symptoms and eventually killing the patient.
+\nA skilled doctor can excise the larvae. An unskilled doctor may be able to simply amputate the body part which contains the growing larvae. Unless it's the head or torso, in which case, good luck.
+\nOn exceptionally rare occasion, the body's immune system will manage to fight off the larvae by itself.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <initialSeverity>0.01</initialSeverity>
+    <chanceToCauseNoPain>0.3</chanceToCauseNoPain>
+    <tendable>true</tendable>
+    <removeOnQuestLodgers>true</removeOnQuestLodgers>
+    <lethalSeverity>1</lethalSeverity>
+    <stages>
+      <li>
+        <label>minor</label>
+        <partEfficiencyOffset>-0.1</partEfficiencyOffset>
+        <painOffset>0.1</painOffset>
+        <capMods>
+          <li>
+            <capacity>BloodFiltration</capacity>
+            <offset>-0.1</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.1</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.15</minSeverity>
+        <label>minor</label>
+        <partEfficiencyOffset>-0.25</partEfficiencyOffset>
+        <painOffset>0.2</painOffset>
+        <capMods>
+          <li>
+            <capacity>BloodFiltration</capacity>
+            <offset>-0.2</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.9</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.2</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.10</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.4</minSeverity>
+        <label>major</label>
+        <partEfficiencyOffset>-0.5</partEfficiencyOffset>
+        <painOffset>0.35</painOffset>
+        <capMods>
+          <li>
+            <capacity>BloodFiltration</capacity>
+            <offset>-0.2</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.8</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.2</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.10</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.6</minSeverity>
+        <label>major</label>
+        <partEfficiencyOffset>-0.8</partEfficiencyOffset>
+        <painOffset>0.5</painOffset>
+        <capMods>
+          <li>
+            <capacity>BloodFiltration</capacity>
+            <offset>-0.4</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.7</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.4</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.30</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.8</minSeverity>
+        <label>extreme</label>
+        <partEfficiencyOffset>-0.9</partEfficiencyOffset>
+        <painOffset>0.6</painOffset>
+        <capMods>
+          <li>
+            <capacity>BloodFiltration</capacity>
+            <offset>-0.6</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.6</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.6</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.50</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.90</minSeverity>
+        <lifeThreatening>true</lifeThreatening>
+        <vomitMtbDays>0.75</vomitMtbDays>
+        <label>extreme</label>
+        <partEfficiencyOffset>-1.0</partEfficiencyOffset>
+        <painOffset>0.8</painOffset>
+        <destroyPart>true</destroyPart>
+        <capMods>
+          <li>
+            <capacity>BloodFiltration</capacity>
+            <offset>-0.75</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.5</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.8</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.70</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_TendDuration">
+        <baseTendDurationHours>96</baseTendDurationHours>
+        <severityPerDayTended>-0.0027</severityPerDayTended>
+      </li>
+      <li Class="HediffCompProperties_GrowthMode">
+        <severityPerDayGrowing>0.1</severityPerDayGrowing>
+        <severityPerDayRemission>-0.002</severityPerDayRemission>
+        <severityPerDayGrowingRandomFactor>0.45~1.65</severityPerDayGrowingRandomFactor>
+        <severityPerDayRemissionRandomFactor>0.5~1.0</severityPerDayRemissionRandomFactor>
+      </li>
+    </comps>
+  </HediffDef>
+  <DamageDef ParentName="Scratch">
+    <defName>RSW_StunningSpores</defName>
+    <label>stunning spores</label>
+    <additionalHediffs>
+      <li>
+        <hediff>RSW_Paralysis</hediff>
+        <severityPerDamageDealt>0.05</severityPerDamageDealt>
+        <victimSeverityScaling>ToxicResistance</victimSeverityScaling>
+        <inverseStatScaling>true</inverseStatScaling>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>true</applyAdditionalHediffsIfHuntingForFood>
+    <impactSoundType>Toxic</impactSoundType>
+    <damageEffecter>Impact_Toxic</damageEffecter>
+  </DamageDef>
+  <DamageDef ParentName="Scratch">
+    <defName>RSW_Neurotoxin</defName>
+    <label>neurotoxin</label>
+    <additionalHediffs>
+      <li>
+        <hediff>RSW_Paralysis</hediff>
+        <severityPerDamageDealt>0.05</severityPerDamageDealt>
+        <victimSeverityScaling>ToxicResistance</victimSeverityScaling>
+        <inverseStatScaling>true</inverseStatScaling>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>false</applyAdditionalHediffsIfHuntingForFood>
+    <impactSoundType>Toxic</impactSoundType>
+    <damageEffecter>Impact_Toxic</damageEffecter>
+  </DamageDef>
+  <HediffDef>
+    <defName>RSW_GembugDefense</defName>
+    <label>rolled up</label>
+    <description>Rolled up for defense.</description>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0</postFactor>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <postFactor>0</postFactor>
+          </li>
+        </capMods>
+        <statFactors>
+          <IncomingDamageFactor>0.25</IncomingDamageFactor>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+  <LifeStageDef>
+    <defName>RSW_EusocialInsectAdult</defName>
+    <label>adult</label>
+    <visible>false</visible>
+    <shearable>true</shearable>
+    <milkable>true</milkable>
+    <caravanRideable>true</caravanRideable>
+  </LifeStageDef>
+  <ThinkTreeDef>
+    <defName>RSW_HermaphroditicAnimal</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="ThinkNode_ConditionalMustKeepLyingDown">
+          <subNodes>
+            <li Class="ThinkNode_QueuedJob">
+              <inBedOnly>true</inBedOnly>
+            </li>
+            <li Class="JobGiver_KeepLyingDown" />
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Downed</treeDef>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>BurningResponse</treeDef>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>MentalStateCritical</treeDef>
+        </li>
+        <li Class="JobGiver_ReactToCloseMeleeThreat" />
+        <li Class="ThinkNode_QueuedJob" />
+        <li Class="ThinkNode_ConditionalHasFaction">
+          <invert>true</invert>
+          <subNodes>
+            <li Class="ThinkNode_ConditionalStarving">
+              <subNodes>
+                <li Class="ThinkNode_ConditionalBodySize">
+                  <min>0.7</min>
+                  <subNodes>
+                    <li Class="ThinkNode_Subtree">
+                      <treeDef>DigOutIfCannotReachMapEdge</treeDef>
+                    </li>
+                  </subNodes>
+                </li>
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_ConditionalExitTimedOut">
+          <subNodes>
+            <li Class="ThinkNode_Tagger">
+              <tagToGive>Misc</tagToGive>
+              <subNodes>
+                <li Class="JobGiver_ExitMapRandom">
+                  <defaultLocomotion>Walk</defaultLocomotion>
+                </li>
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>MentalStateNonCritical</treeDef>
+        </li>
+        <li Class="ThinkNode_ConditionalForcedGoto">
+          <subNodes>
+            <li Class="ThinkNode_Tagger">
+              <tagToGive>Misc</tagToGive>
+              <subNodes>
+                <li Class="JobGiver_ForcedGoto" />
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>RopedPawn</treeDef>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>LordDuty</treeDef>
+        </li>
+        <li Class="ThinkNode_SubtreesByTag">
+          <insertTag>Animal_PreMain</insertTag>
+        </li>
+        <li Class="ThinkNode_ConditionalHasFaction">
+          <invert>true</invert>
+          <subNodes>
+            <li Class="ThinkNode_Subtree">
+              <treeDef>LeaveIfWrongSeason</treeDef>
+            </li>
+            <li Class="ThinkNode_Subtree">
+              <treeDef>LeaveIfStarving</treeDef>
+            </li>
+            <li Class="ThinkNode_ChancePerHour_Constant">
+              <mtbDays>60</mtbDays>
+              <subNodes>
+                <li Class="ThinkNode_Tagger">
+                  <tagToGive>Misc</tagToGive>
+                  <subNodes>
+                    <li Class="JobGiver_ExitMapRandom">
+                      <defaultLocomotion>Walk</defaultLocomotion>
+                    </li>
+                  </subNodes>
+                </li>
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+        <li Class="JobGiver_LayEgg" />
+        <li Class="ThinkNode_ConditionalOfPlayerFaction">
+          <subNodes>
+            <li Class="ThinkNode_Tagger">
+              <tagToGive>TrainedAnimalBehavior</tagToGive>
+              <subNodes>
+                <li Class="ThinkNode_ConditionalTrainableCompleted">
+                  <trainable>Obedience</trainable>
+                  <subNodes>
+                    <li Class="ThinkNode_ConditionalShouldFollowMaster">
+                      <subNodes>
+                        <li Class="JobGiver_AIDefendMaster">
+                          <attackMeleeThreatEvenIfNotHostile>true</attackMeleeThreatEvenIfNotHostile>
+                        </li>
+                        <li Class="JobGiver_AIFollowMaster" />
+                        <li Class="JobGiver_WanderNearMaster" />
+                      </subNodes>
+                    </li>
+                  </subNodes>
+                </li>
+                <li Class="ThinkNode_ConditionalTrainableCompleted">
+                  <trainable>Rescue</trainable>
+                  <subNodes>
+                    <li Class="JobGiver_RescueNearby">
+                      <radius>75</radius>
+                    </li>
+                  </subNodes>
+                </li>
+              </subNodes>
+            </li>
+            <li Class="ThinkNode_Tagger">
+              <tagToGive>RestingForMedicalReasons</tagToGive>
+              <subNodes>
+                <li Class="JobGiver_PatientGoToBed" />
+              </subNodes>
+            </li>
+            <li Class="JobGiver_SeekAllowedArea" />
+            <li Class="JobGiver_SeekSafeTemperature" />
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_ChancePerHour_Constant">
+          <mtbDays>60</mtbDays>
+          <subNodes>
+            <li Class="ThinkNode_Tagger">
+              <tagToGive>SatisfyingNeeds</tagToGive>
+              <subNodes>
+                <li Class="JobGiver_EatRandom" />
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>SatisfyBasicNeeds</treeDef>
+        </li>
+        <li Class="ThinkNode_ConditionalHasFaction">
+          <subNodes>
+            <li Class="ThinkNode_ChancePerHour_Mate">
+              <subNodes>
+                <li Class="ThinkNode_Tagger">
+                  <tagToGive>SatisfyingNeeds</tagToGive>
+                  <subNodes>
+										</subNodes>
+                </li>
+              </subNodes>
+            </li>
+            <li Class="ThinkNode_ChancePerHour_Nuzzle">
+              <subNodes>
+                <li Class="ThinkNode_Tagger">
+                  <tagToGive>Misc</tagToGive>
+                  <subNodes>
+                    <li Class="JobGiver_Nuzzle" />
+                  </subNodes>
+                </li>
+              </subNodes>
+            </li>
+            <li Class="ThinkNode_ChancePerDay_Roam">
+              <subNodes>
+                <li Class="ThinkNode_Tagger">
+                  <tagToGive>Misc</tagToGive>
+                  <subNodes>
+                    <li Class="JobGiver_StartRoaming" />
+                  </subNodes>
+                </li>
+              </subNodes>
+            </li>
+            <li Class="ThinkNode_ChancePerHour_Constant">
+              <mtbHours>1.5</mtbHours>
+              <subNodes>
+                <li Class="ThinkNode_ConditionalRequireCapacities">
+                  <requiredCapacities>
+                    <li>Manipulation</li>
+                  </requiredCapacities>
+                  <subNodes>
+                    <li Class="ThinkNode_ConditionalTrainableCompleted">
+                      <trainable>Haul</trainable>
+                      <subNodes>
+                        <li Class="ThinkNode_Tagger">
+                          <tagToGive>TrainedAnimalBehavior</tagToGive>
+                          <subNodes>
+                            <li Class="JobGiver_Haul" />
+                          </subNodes>
+                        </li>
+                      </subNodes>
+                    </li>
+                  </subNodes>
+                </li>
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_SubtreesByTag">
+          <insertTag>Animal_PreWander</insertTag>
+        </li>
+        <li Class="ThinkNode_ConditionalOfPlayerFaction">
+          <subNodes>
+            <li Class="ThinkNode_Tagger">
+              <tagToGive>Idle</tagToGive>
+              <subNodes>
+                <li Class="ThinkNode_ConditionalAnyEnemyInHostileMap">
+                  <subNodes>
+                    <li Class="JobGiver_WanderAnywhere">
+                      <maxDanger>None</maxDanger>
+                      <ticksBetweenWandersRange>120~240</ticksBetweenWandersRange>
+                    </li>
+                  </subNodes>
+                </li>
+                <li Class="ThinkNode_ConditionalRoamer">
+                  <subNodes>
+                    <li Class="JobGiver_WanderInRoofedCellsInPen">
+                      <maxDanger>None</maxDanger>
+                      <ticksBetweenWandersRange>120~240</ticksBetweenWandersRange>
+                      <expiryInterval>500</expiryInterval>
+                    </li>
+                    <li Class="ThinkNode_ConditionalRandom">
+                      <chance>0.1</chance>
+                      <subNodes>
+                        <li Class="JobGiver_WanderInPen">
+                          <maxDanger>None</maxDanger>
+                          <ticksBetweenWandersRange>120~240</ticksBetweenWandersRange>
+                          <expiryInterval>500</expiryInterval>
+                        </li>
+                      </subNodes>
+                    </li>
+                    <li Class="JobGiver_WanderAnywhere">
+                      <maxDanger>None</maxDanger>
+                      <ticksBetweenWandersRange>120~240</ticksBetweenWandersRange>
+                    </li>
+                  </subNodes>
+                </li>
+                <li Class="JobGiver_WanderColony">
+                  <maxDanger>None</maxDanger>
+                  <ticksBetweenWandersRange>120~240</ticksBetweenWandersRange>
+                </li>
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_ConditionalNonPlayerNonHostileFaction">
+          <subNodes>
+            <li Class="ThinkNode_Tagger">
+              <tagToGive>RestingForMedicalReasons</tagToGive>
+              <subNodes>
+                <li Class="JobGiver_PatientGoToBed" />
+              </subNodes>
+            </li>
+            <li Class="ThinkNode_Tagger">
+              <tagToGive>Misc</tagToGive>
+              <subNodes>
+                <li Class="JobGiver_ExitMapBest">
+                  <defaultLocomotion>Walk</defaultLocomotion>
+                </li>
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Idle</tagToGive>
+          <subNodes>
+            <li Class="ThinkNode_ConditionalHerdAnimal">
+              <subNodes>
+                <li Class="JobGiver_WanderHerd">
+                  <maxDanger>Deadly</maxDanger>
+                  <ticksBetweenWandersRange>120~240</ticksBetweenWandersRange>
+                </li>
+              </subNodes>
+            </li>
+            <li Class="JobGiver_WanderAnywhere">
+              <maxDanger>Deadly</maxDanger>
+              <ticksBetweenWandersRange>120~240</ticksBetweenWandersRange>
+            </li>
+          </subNodes>
+        </li>
+        <li Class="JobGiver_IdleError" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+  <HediffDef ParentName="DiseaseBase">
+    <defName>RSW_Paralysis</defName>
+    <label>paralysis</label>
+    <description>Paralysis-inducing chemicals in the bloodstream. It rapidly renders creatures immobile.</description>
+    <isBad>false</isBad>
+    <initialSeverity>0.10</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>15000~50000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.8</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>initial</label>
+        <becomeVisible>true</becomeVisible>
+      </li>
+      <li>
+        <label>initial</label>
+        <minSeverity>0.10</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.10</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>minor</label>
+        <minSeverity>0.25</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.25</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>moderate</label>
+        <minSeverity>0.50</minSeverity>
+        <vomitMtbDays>5</vomitMtbDays>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.50</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>serious</label>
+        <minSeverity>0.75</minSeverity>
+        <vomitMtbDays>1</vomitMtbDays>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.75</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>extreme</label>
+        <minSeverity>0.80</minSeverity>
+        <vomitMtbDays>0.5</vomitMtbDays>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0.05</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+  <HediffDef>
+    <defName>RSW_BileHigh</defName>
+    <label>bile high</label>
+    <labelNoun>a bile high</labelNoun>
+    <description>Recently ingested bufo bile. It's highly toxic but that high might be worth it.</description>
+    <hediffClass>Hediff_High</hediffClass>
+    <defaultLabelColor>(0,0.7,0.5)</defaultLabelColor>
+    <scenarioCanAdd>true</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.50</severityPerDay>
+        <showHoursToRecover>true</showHoursToRecover>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <socialFightChanceFactor>0.25</socialFightChanceFactor>
+        <statOffsets>
+          <WorkSpeedGlobal>0.25</WorkSpeedGlobal>
+          <RestFallRateFactor>-0.45</RestFallRateFactor>
+        </statOffsets>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>0.20</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+  <DamageDef ParentName="Scratch">
+    <defName>RSW_PhoridSting</defName>
+    <label>megaphorid sting</label>
+    <additionalHediffs>
+      <li>
+        <hediff>RSW_MegaphoridParasiticLarvae</hediff>
+        <severityPerDamageDealt>0.05</severityPerDamageDealt>
+        <victimSeverityScaling>ToxicResistance</victimSeverityScaling>
+        <inverseStatScaling>true</inverseStatScaling>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>false</applyAdditionalHediffsIfHuntingForFood>
+    <impactSoundType>Toxic</impactSoundType>
+    <damageEffecter>Impact_Toxic</damageEffecter>
+  </DamageDef>
+  <FactionDef ParentName="FactionBase">
+    <defName>RSW_PustuleHornets</defName>
+    <label>pustule hornets</label>
+    <description>These giant insect-like creatures live in hives and attack without hestitation should humanoids approach. Believed to originally be a species of hornet that survived a nuclear apocalypse or other environment-altering disaster, these creatures can survive in the most toxic of environments. Their hives conceal a queen that can produce more of their kind.</description>
+    <pawnSingular>pustule hornet</pawnSingular>
+    <pawnsPlural>pustule hornets</pawnsPlural>
+    <requiredCountAtGameStart>1</requiredCountAtGameStart>
+    <fixedName>Pustule Hornets</fixedName>
+    <factionIconPath>World/WorldObjects/Expanding/Insects</factionIconPath>
+    <canStageAttacks>false</canStageAttacks>
+    <colorSpectrum>
+      <li>(0.78, 0.79, 0.71)</li>
+    </colorSpectrum>
+    <raidCommonalityFromPointsCurve>
+      <points>
+        <li>(300,  0)</li>
+        <li>(700,  1)</li>
+        <li>(1400, 1.8)</li>
+        <li>(2800, 2.2)</li>
+        <li>(4000, 2.6)</li>
+      </points>
+    </raidCommonalityFromPointsCurve>
+    <raidLootMaker>RSW_PustuleHornetRaidLootMaker</raidLootMaker>
+    <raidLootValueFromPointsCurve>
+      <points>
+        <li>(35,     8)</li>
+        <li>(100,   60)</li>
+        <li>(1000, 250)</li>
+        <li>(2000, 400)</li>
+        <li>(4000, 500)</li>
+      </points>
+    </raidLootValueFromPointsCurve>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <commonality>100</commonality>
+        <options>
+          <RSW_PustuleHornet>10</RSW_PustuleHornet>
+        </options>
+      </li>
+    </pawnGroupMakers>
+    <humanlikeFaction>false</humanlikeFaction>
+    <hostileToFactionlessHumanlikes>true</hostileToFactionlessHumanlikes>
+    <maxPawnCostPerTotalPointsCurve>
+      <points>
+        <li>(400,200)</li>
+        <li>(900,300)</li>
+        <li>(100000,10000)</li>
+      </points>
+    </maxPawnCostPerTotalPointsCurve>
+    <raidsForbidden>true</raidsForbidden>
+    <hidden>true</hidden>
+    <autoFlee>false</autoFlee>
+    <canUseAvoidGrid>false</canUseAvoidGrid>
+    <techLevel>Animal</techLevel>
+    <permanentEnemy>true</permanentEnemy>
+    <settlementTexturePath>World/WorldObjects/DefaultSettlement</settlementTexturePath>
+    <allowedArrivalTemperatureRange>0~45</allowedArrivalTemperatureRange>
+    <maxConfigurableAtWorldCreation>1</maxConfigurableAtWorldCreation>
+    <configurationListOrderPriority>1000</configurationListOrderPriority>
+  </FactionDef>
+  <NeedDef>
+    <defName>RSW_ToxinDependence</defName>
+    <label>toxin dependence</label>
+    <description>TBD</description>
+    <listPriority>45</listPriority>
+    <fallPerDay>1</fallPerDay>
+    <developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter>
+    <onlyIfCausedByHediff>true</onlyIfCausedByHediff>
+    <showForCaravanMembers>true</showForCaravanMembers>
+  </NeedDef>
+  <HediffDef>
+    <defName>RSW_ToxinDependence</defName>
+    <label>toxin dependence</label>
+    <description>TBD</description>
+    <chemicalNeed>RSW_ToxinDependence</chemicalNeed>
+    <everCurableByItem>false</everCurableByItem>
+    <defaultLabelColor>(1,0,0.5)</defaultLabelColor>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>1.0</maxSeverity>
+    <stages>
+      <li>
+            </li>
+      <li>
+        <label>unmet</label>
+        <minSeverity>1</minSeverity>
+        <painOffset>0.4</painOffset>
+        <lifeThreatening>true</lifeThreatening>
+        <deathMtbDays>10</deathMtbDays>
+        <mtbDeathDestroysBrain>true</mtbDeathDestroysBrain>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.8</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+  <HediffDef ParentName="InfectionBase">
+    <defName>RSW_Mutapox</defName>
+    <label>mutapox</label>
+    <description>A novel virus found only in polluted areas. It can cause genetic mutations in those afflicted if they survive its negative effects.</description>
+    <makesSickThought>true</makesSickThought>
+    <lethalSeverity>1</lethalSeverity>
+    <tendable>true</tendable>
+    <comps>
+      <li Class="HediffCompProperties_TendDuration">
+        <baseTendDurationHours>12</baseTendDurationHours>
+        <severityPerDayTended>-0.53</severityPerDayTended>
+      </li>
+      <li Class="HediffCompProperties_Immunizable">
+        <severityPerDayNotImmune>0.84</severityPerDayNotImmune>
+        <immunityPerDaySick>0.6441</immunityPerDaySick>
+        <severityPerDayImmune>-0.70</severityPerDayImmune>
+        <immunityPerDayNotSick>-0.40</immunityPerDayNotSick>
+      </li>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>900000~1800000</disappearsAfterTicks>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>minor</label>
+      </li>
+      <li>
+        <minSeverity>0.333</minSeverity>
+        <label>major</label>
+        <vomitMtbDays>1.5</vomitMtbDays>
+        <painOffset>0.05</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.1</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.733</minSeverity>
+        <label>extreme</label>
+        <vomitMtbDays>0.75</vomitMtbDays>
+        <painOffset>0.10</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.15</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+  <DamageDef ParentName="Bite" Name="RSW_SharpToxicAttackBase" Abstract="true">
+    <additionalHediffs>
+      <li>
+        <hediff>ToxicBuildup</hediff>
+        <severityPerDamageDealt>0.015</severityPerDamageDealt>
+        <victimSeverityScaling>ToxicResistance</victimSeverityScaling>
+        <inverseStatScaling>true</inverseStatScaling>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>false</applyAdditionalHediffsIfHuntingForFood>
+    <impactSoundType>Toxic</impactSoundType>
+    <damageEffecter>Impact_Toxic</damageEffecter>
+  </DamageDef>
+</Defs>

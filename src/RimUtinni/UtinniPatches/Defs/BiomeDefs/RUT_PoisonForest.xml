@@ -115,7 +115,7 @@
       <AM_Dryad_Corruptor MayRequire="sarg.alphamemes">0.4</AM_Dryad_Corruptor>  <!-- corruptor dryad - small, keep -->
       <AM_Dryad_Ocular MayRequire="sarg.alphamemes">0.4</AM_Dryad_Ocular>  <!-- ocular dryad - small, keep -->
       <AM_Dryad_Tumorous MayRequire="sarg.alphamemes">0.4</AM_Dryad_Tumorous>  <!-- tumorous dryad - small, keep -->
-      <BMT_Screecher MayRequire="biomesteam.biomespollutedlands">0.35</BMT_Screecher>  <!-- screecher - medium-pred, keep -->
+      <RSW_Screecher MayRequire="mandrake.rsw.swbestiary">0.35</RSW_Screecher>  <!-- screecher - medium-pred, keep -->
       <Visceral MayRequire="mlie.horrors">0.35</Visceral>  <!-- visceral - medium-pred, keep -->
       <AA_BedBug MayRequire="sarg.alphaanimals">0.3</AA_BedBug>  <!-- bedbug - small-pred, keep -->
       <Mynock MayRequire="mlie.starwarsanimalcollection">0.2</Mynock>  <!-- mynock - small, import -->
