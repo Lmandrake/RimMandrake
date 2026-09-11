@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T05:28:07Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-11T05:38:55Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -835,16 +835,6 @@ kind:     design
 blocked:  design draft, item's own criterion 1: stays a draft until the owner rules forks F1-F10 (art register, glyph tone/mappings, anti-Imperial stencil scope)
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
-
-## CHERRYPICKER_SHIP_BASELINE_STALE_1 Cherry Picker SHIP baseline stale since 2026-09-02: live config has drifted 617 added / 178 removed vs tracked snapshot, bundles a near-total backstory un-cut that needs confirming before re-baselining
-state:    proposed  (BLOCKED)
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-blocked:  RULED (owner, 2026-09-10): restore all 139 genuine reversals at next game-down, then capture-ship --apply. Execution spec is in the item file. Waiting on a game-down window, not an owner decision.
-summary:  CHERRYPICKERSHIPBASELINESTALE1
-prose:    infrastructure/state/items/CHERRYPICKER_SHIP_BASELINE_STALE_1.md
 
 ## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
 state:    doing  (BLOCKED)
