@@ -49,6 +49,30 @@ prior restart (MODLIST_RESTORE_AND_BATCH_DEPLOY_1, 2026-09-09/10).
    tool-count mismatch (already re-run clean, 317/317) or a bridge tool-list
    discovery error naming `JawaBenchLandmarkNameTool`.
 
+## Second deploy pass, same session (game briefly cycled to write locked assemblies)
+
+7. **`RimMandrake.Utinni.ScavengerEvents.dll`** — Thanksgiving.cs fix (was
+   `FirstFactionOfDef(PlayerColony)`, now `Faction.OfPlayer`). Latent bug,
+   harmless on this campaign's actual player faction — no new failure
+   signature expected, this is a correctness fix not a behavior change here.
+8. **`RimMandrakeNinefold.dll`** — new `Patch_GravshipLaunched` Harmony
+   target retargeted to `WorldComponent_GravshipController.InitiateTakeoff`.
+   Fails as a `HarmonyException` naming `Ninefold`/`InitiateTakeoff`, or (if
+   the patch silently doesn't apply) no crash at all but Ta'Baa never
+   receives a gravship-launch delta — only provable via `jawa/gravship_launch`.
+9. **`RimMandrakeAftermath.dll`** (mod enabled for the first time tonight,
+   `mandrake.rm.aftermath`) — new `PollPrisoners`/`OnPrisonerHeldTooLong`
+   rule. Fails as errors naming `RimMandrake.Aftermath`/`AftermathRuleRunner`,
+   or a `ConfigError` naming `RM_AftermathRuleDefs` (`minHeldDays` field).
+10. **`StructureInjectionsSW`** — new `RSW_GenStep_RoadWarehouse`/
+    `RSW_RoadWarehouse` TileMutatorDef. Fails as errors naming
+    `RoadWarehouse`, or a `PatchOperation`/xpath miss if it collides with an
+    existing TileMutatorDef.
+11. **ModsConfig re-enables**: `mandrake.rut.droidrepairjobs` (577→ back in),
+    `mandrake.rsw.mynockartoverride` (Mynock art, done since 2026-09-09, never
+    loaded before), `mandrake.rm.aftermath` (new). All three already
+    confirmed deployed/in-sync before being re-added.
+
 ## Everything else already proven on the prior restart, not re-tested here
 Oracle, FluidCanals, MovingDunes, Wave-1 retirement (13 mods), JawaBench GM
 pair — all confirmed clean on the 2026-09-09/10 restart per
