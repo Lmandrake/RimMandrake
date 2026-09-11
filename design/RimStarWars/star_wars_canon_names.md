@@ -480,16 +480,17 @@ defs): *Utinni!*, *M'um m'aloo*, *Ibana*, *Nyeta*, *Taa baa*. [A]
 
 ## Known issues (real bugs/traps this raid surfaced — not just names)
 
-1. **The live lightsaber-name generator is NOT Star Wars.**
-   `Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/
+1. **FIXED 2026-09-11.** `Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/
    Absorbed_KotorWeapons_lightsabernames.xml` (RulePackDef
-   `NamerWeaponLightsaber`) has an entire name table of **Final Fantasy VI**
+   `NamerWeaponLightsaber`) had an entire name table of **Final Fantasy VI**
    character/esper names (Terra, Kefka, Shiva, Bahamut, Cait Sith, Ragnarok,
-   Bismarck, etc.) — a leftover donor template currently wired to generate
-   in-game lightsaber names for this campaign. This is a real live-gameplay-text
-   bug. **As of this writing (2026-09-11), `rimflow next --seat FOUNDRY` shows no
-   claimed or queued item against this file** — check again before fixing it, but
-   it is not currently known to be someone else's in-flight work.
+   Bismarck, etc.) — a leftover donor template wired to generate in-game
+   lightsaber names for this campaign. Replaced with 40 genuine Star Wars
+   names (drawn from this doc's own "Lightsaber-hilt namesakes" table plus a
+   handful of KOTOR-era Jedi/Sith) via `RULEPACK_LIST_FIXES` in
+   `src/RimStarWars/Armoury/Source/absorption_content_fixes.py`, so the fix
+   survives regeneration; confirmed unclaimed via `rimflow next --seat
+   FOUNDRY` before fixing.
 2. **`SWBestiary` (first-party mod) secretly carries non-SW content under an SW
    name**: absorbed "Jurassic Rimworld" dinosaurs (Diplocaulus, Segnosaurus,
    Platyhystrix, Protovermes, Protosolpuga, Baseopsis, Termitotron,

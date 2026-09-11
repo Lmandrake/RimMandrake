@@ -16,48 +16,46 @@
     <defName>NamerWeaponLightsaber</defName>
     <rulePack>
       <rulesStrings>
-        <li>r_weapon_name-&gt;Terra</li>
-        <li>r_weapon_name-&gt;Locke</li>
-        <li>r_weapon_name-&gt;Edgar</li>
-        <li>r_weapon_name-&gt;Sabin</li>
-        <li>r_weapon_name-&gt;Shadow</li>
-        <li>r_weapon_name-&gt;Cyan</li>
-        <li>r_weapon_name-&gt;Gau</li>
-        <li>r_weapon_name-&gt;Celes</li>
-        <li>r_weapon_name-&gt;Setzer</li>
-        <li>r_weapon_name-&gt;Strago</li>
-        <li>r_weapon_name-&gt;Relm</li>
-        <li>r_weapon_name-&gt;Mog</li>
-        <li>r_weapon_name-&gt;Gogo</li>
-        <li>r_weapon_name-&gt;Umaro</li>
-        <li>r_weapon_name-&gt;Gestahl</li>
-        <li>r_weapon_name-&gt;Kefka</li>
-        <li>r_weapon_name-&gt;Maduin</li>
-        <li>r_weapon_name-&gt;Siren</li>
-        <li>r_weapon_name-&gt;Cait Sith</li>
-        <li>r_weapon_name-&gt;Kirin</li>
-        <li>r_weapon_name-&gt;Ramuh</li>
-        <li>r_weapon_name-&gt;Ifrit</li>
-        <li>r_weapon_name-&gt;Shiva</li>
-        <li>r_weapon_name-&gt;Carbuncle</li>
-        <li>r_weapon_name-&gt;Bismarck</li>
-        <li>r_weapon_name-&gt;Phantom</li>
-        <li>r_weapon_name-&gt;Unicorn</li>
-        <li>r_weapon_name-&gt;Catoblepas</li>
-        <li>r_weapon_name-&gt;Golem</li>
-        <li>r_weapon_name-&gt;Zona Seeker</li>
-        <li>r_weapon_name-&gt;Fenrir</li>
-        <li>r_weapon_name-&gt;Lakshmi</li>
-        <li>r_weapon_name-&gt;Quetzalli</li>
-        <li>r_weapon_name-&gt;Phoenix</li>
-        <li>r_weapon_name-&gt;Ragnarok</li>
-        <li>r_weapon_name-&gt;Valigarmanda</li>
-        <li>r_weapon_name-&gt;Midgarsormr</li>
-        <li>r_weapon_name-&gt;Alexander</li>
-        <li>r_weapon_name-&gt;Odin</li>
-        <li>r_weapon_name-&gt;Raiden</li>
-        <li>r_weapon_name-&gt;Bahamut</li>
-        <li>r_weapon_name-&gt;Crusader</li>
+        <li>r_weapon_name-&gt;Aayla Secura</li>
+        <li>r_weapon_name-&gt;Anakin Skywalker</li>
+        <li>r_weapon_name-&gt;Asajj Ventress</li>
+        <li>r_weapon_name-&gt;Count Dooku</li>
+        <li>r_weapon_name-&gt;Even Piell</li>
+        <li>r_weapon_name-&gt;Galen Marek</li>
+        <li>r_weapon_name-&gt;Jaden Korr</li>
+        <li>r_weapon_name-&gt;Jaro Tapal</li>
+        <li>r_weapon_name-&gt;Karness Muur</li>
+        <li>r_weapon_name-&gt;Ki-Adi-Mundi</li>
+        <li>r_weapon_name-&gt;Kirak Infila</li>
+        <li>r_weapon_name-&gt;Kit Fisto</li>
+        <li>r_weapon_name-&gt;Kyle Katarn</li>
+        <li>r_weapon_name-&gt;Kylo Ren</li>
+        <li>r_weapon_name-&gt;Luke Skywalker</li>
+        <li>r_weapon_name-&gt;Mace Windu</li>
+        <li>r_weapon_name-&gt;Mara Jade</li>
+        <li>r_weapon_name-&gt;Obi-Wan Kenobi</li>
+        <li>r_weapon_name-&gt;Oppo Rancisis</li>
+        <li>r_weapon_name-&gt;Plo Koon</li>
+        <li>r_weapon_name-&gt;Pong Krell</li>
+        <li>r_weapon_name-&gt;Qui-Gon Jinn</li>
+        <li>r_weapon_name-&gt;Quinlan Vos</li>
+        <li>r_weapon_name-&gt;Saesee Tiin</li>
+        <li>r_weapon_name-&gt;Satele Shan</li>
+        <li>r_weapon_name-&gt;Shaak Ti</li>
+        <li>r_weapon_name-&gt;Sharad Hett</li>
+        <li>r_weapon_name-&gt;Tenel Ka Djo</li>
+        <li>r_weapon_name-&gt;Ven Zallow</li>
+        <li>r_weapon_name-&gt;Vernestra Rwoh</li>
+        <li>r_weapon_name-&gt;Yoda</li>
+        <li>r_weapon_name-&gt;Desann</li>
+        <li>r_weapon_name-&gt;Revan</li>
+        <li>r_weapon_name-&gt;Bastila Shan</li>
+        <li>r_weapon_name-&gt;Darth Malak</li>
+        <li>r_weapon_name-&gt;Kreia</li>
+        <li>r_weapon_name-&gt;Jolee Bindo</li>
+        <li>r_weapon_name-&gt;Juhani</li>
+        <li>r_weapon_name-&gt;Visas Marr</li>
+        <li>r_weapon_name-&gt;Ulic Qel-Droma</li>
       </rulesStrings>
     </rulePack>
   </RulePackDef>
