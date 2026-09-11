@@ -70,3 +70,12 @@ load + on stage-advance by rewriting `def.description` and clearing the one
 cache. No Harmony unless we later want per-viewer variation. Consumers: the
 Scarlands GM ladder first, then Contagion / war lab / Webwork as their gates
 land. Awaiting the owner's go/no-go.
+
+## CLOSED 2026-09-11 — owner GO
+The wonder is answered and ruled: **build it.** (His initial card response
+questioned the VoidMonolith mention — clarified as engine precedent only,
+base-game code staging a description by campaign level; no Anomaly content is
+involved.) Feasibility stands as verified 2026-09-09 (all five display
+surfaces, two reflection cache-clears, reset-on-load trap named). Build:
+`STAGED_LORE_BUILD_1` (FOUNDRY). Stage-text authoring sitting follows the
+mechanism; R25 unchanged — the top stage never names the Assailants.
