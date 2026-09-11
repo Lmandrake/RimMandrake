@@ -53,6 +53,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import common  # noqa: E402
+import artreg  # noqa: E402 — ART_REGEN_REGISTRY_1: sole writer of registry.jsonl
 
 REQUIRED_ROW_FIELDS = ("id", "rimflow_item_id", "prompt", "canvas_w", "canvas_h")
 
@@ -174,6 +175,27 @@ def write_job(job: dict, pending_dir: Path, active_dir: Path, done_dir: Path,
         except FileNotFoundError:
             pass
     print(f"filed {dest}")
+
+    # ART_REGEN_REGISTRY_1: this row is the moment a target enters scope —
+    # emit registered+queued through artreg. Best effort: a registry hiccup
+    # must never block filing the actual job, which is this function's real
+    # job. source = the rimflow item driving this row, same provenance this
+    # module already required of every row.
+    #
+    # Only against the REAL queue (default dirs) — selftest_artpipe.py (and
+    # any other caller pointed at a tempfile.TemporaryDirectory()) passes its
+    # own pending_dir, which is how this guard tells a live filing from a
+    # test fixture apart without either module knowing about the other.
+    # Without it, every test run of fill_queue's own selftests would
+    # permanently pollute the production registry.jsonl with fixture ids.
+    if pending_dir == common.DEFAULT_PENDING:
+        try:
+            target = artreg.derive_target(job["id"], job.get("facing"))
+            artreg.record_registered(target, source=job["rimflow_item_id"], by="fill_queue")
+            artreg.record_queued(target, job["id"], notes="", by="fill_queue")
+        except Exception as exc:
+            print(f"fill_queue: WARNING artreg event emit failed for {job['id']}: {exc}",
+                  file=sys.stderr)
 
 
 def main(argv=None) -> int:
