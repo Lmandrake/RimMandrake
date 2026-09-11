@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T05:38:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T05:39:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -927,3 +927,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ALPHA_MECHANICS_KIT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ALPHA_MECHANICS_KIT_1.md
+
+## BRAINWORM_MOD_BUILD_1 Build RSW_ Geonosian brain worms per the reviewed spec: worm + staged infection hediff + living-host puppeting ThinkTree C# + cold-place cure; vectors = ruin dungeons, salvaged cargo, weaponized-egg war retribution. NEVER corpse-walker (owner ruling). Spec design/RimStarWars/brain_worm_spec.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BRAINWORM_MOD_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BRAINWORM_MOD_BUILD_1.md
