@@ -779,6 +779,114 @@
     "hash": "72337e77d743df4d66bf2badeabab766d2e3c0a5a3ec26efa6da4473f9661d9f",
     "sha": "5ed4b469"
   },
+  "src/RimMandrake/CreatureBehaviors/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "890ee09e21662dc3cd089dd9b47a7a5f252bfd7dd5eaf091499810a1d216e8a7",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_Alert_VerminPopulationBase.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "618ca27195cc415ef7731e6e611f6b1261e44157bbcd759f924a4b4408f2b4bc",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_Alert_VerminPopulation_Inert.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "9d47ff4d41db73084f410be3652ca2249c58db13cf2aa84313f93b5ce0b59c13",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_VerminBreeder.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "d5c4672f24db1dd7ec730a74cbccd2a2938825ea4cf966ac5ac01236e3210f2a",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_CompVerminBreeder.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "75e01103618e979380f709a4a74b44a02a75aed1c152e8778d1fc98ffa811065",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_GnawTargetExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "f00769718018d6d0de7c77d2b1710b248475bade40c2b797f2a78bd75599c8d7",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_Hediff_SunScald.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "74b7d6df5472a3736470999286325566c8ec9ffe14ac8073787bf865878fe050",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_JobDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "6e0029551267e20a90435add4d940458ee6381ff374464916464e0fd39d2fffc",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_JobDriver_Gnaw.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "782a998d1ef4d34d08511676b4bbdb3bb328565bbd22fefd97e50b1e48a9c001",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_GnawTargets.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "88b4235ea72daae52dd8aa39a441f78f1265b028b0ca2ebc01e3d2a6511ea81c",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_SeekMarkedTerrain.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "cacb63d9ce5bb055f54c49f261a8ce7633e4c65ede00414e7ced08d5d064853c",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_SeekShade.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "002903f09990ad2545e14543dec53d680e2435b40a41aaff9ea96efdee9ef27f",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "862688677e2e25ff71f5c6c33ed70cd5493c87bd0516c23ff1b8dc52d3244063",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_VerminPopulation.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "220409cf1e6a72e6e9a7a7901ba5f18e8c8ad884a8ec3650662812f0bccc4aa6",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_SeekShadeExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "065d6757836816d4da698beba75436c45d277aec2624ae7ff20efde9eb04914f",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_SeekTargetExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "745e8cbbd6ee9a244abdaad4540888b2fd67cf37c321fe4ed8b3b7ce743167e0",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_SilenceAuraExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "f3a9cb81c9dbd7d5f8db41bd5b24a482bc6291c8430274c9a12a3c1b38d7f72f",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/CreatureBehaviors/Source/RM_VerminPressureExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "162749759da3662caaca2327aaeeb3a498c0c734c28f4b8abaa460fe86c79248",
+    "sha": "31e9db1cd"
+  },
   "src/RimMandrake/FluidCanals/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-06",
@@ -2758,6 +2866,18 @@
     "date": "2026-09-03",
     "hash": "a0ce5eb837deecde5c68c50e9223f06dab2fbf0bc3aa35b5ecd73868fa478732",
     "sha": "250be7a3"
+  },
+  "src/RimMandrake/ShipVermin/Patches/RSW_Mynock_ShipVermin.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "b7465ac5874fd10be6b914e308c1855178fb44b661fadab160031aee5bf97e41",
+    "sha": "31e9db1cd"
+  },
+  "src/RimMandrake/ShipVermin/Source/RM_Alert_ShipVermin.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "f726406953d3b54569672c1fcb3057100ba27b7c7dcd0012e2e4352b3ebdf1ee",
+    "sha": "31e9db1cd"
   },
   "src/RimMandrake/StrandedQuest/About/About.xml": {
     "cleanCount": 1,
