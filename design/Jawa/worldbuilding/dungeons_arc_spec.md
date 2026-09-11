@@ -195,6 +195,49 @@ for this arc rides `rimworld-quests` and is HELD FOR OWNER/build.
 - The pale-Geonosian-turret reskin art.
 - All dialogue/letters for the reveal beat and the Hutt-knowledge-deal thread.
 
+### 2.8 Assailant complex text — drafted 2026-09-11, owner AGREED (PROVISIONAL)
+
+Written under the three-voice law recorded the same sitting (canon.yml
+`narrator.butler_register_src`, `game_fact_voice`, `cathedral_voice`).
+Provisional per the owner's standing word on dungeon text ("This will likely
+change in the future and that's ok").
+
+**The Cathedral reveals the location** — ships the owner's own calibration
+burst VERBATIM (canon.yml `cathedral_voice` src), the coordinates beat wired
+to the quest at build.
+
+**Arrival** —
+- Game: "The complex is dormant. Nothing inside is active. One chamber, deep
+  in the structure, is warmer than the rest."
+- Narrator: "And so the little ones came to the oldest door on this world,
+  and knocked. In my day, we did not knock here. In my day, we did not come
+  here at all."
+
+**The socket** —
+- Game (owner verbatim): "There is a socket. You have seen its shape before:
+  the ancient power cores and mind cores."
+- Game: "Seating a core will activate the complex. This cannot be undone."
+
+**Thaw** —
+- Game: "The core is seated. The complex is powering on. Hostiles are waking."
+- Narrator: "The enemy's house drew its first breath in an age. I will admit
+  I had hoped never to hear it again. The little ones, naturally, went
+  further in."
+
+**The witness, at the core** —
+- Narrator: "Here are the works of my makers' masters — glyph and girder,
+  first-rank and pitiless — and here is what became of them: swallowed
+  slowly, without malice, without hurry, the way sand takes a wreck. They
+  ruled a world and were eaten by something that never learned their name. I
+  find I do not know which half of that sentence grieves me more."
+- Game: "Fragments recovered. The ship will react to these."
+
+**Memory surfacing** (the Narrator IS the lore channel, `cradle_memory`) —
+- Narrator: "Ah — forgive me. The fragment opened a channel. I remember this
+  sky: black with lift-smoke, every voice on every band counting losses, and
+  the count never finishing. There. It is closed. Do not ask me to open it
+  again tonight."
+
 ## 3. `VAULT_DUNGEON_BUILD_1` — the six Forsaken vaults
 
 ### 3.1 What they are
@@ -390,48 +433,87 @@ conflict layer is its own item, not part of either dungeon build.
   frozen.**
 - The six bridge placement writes.
 
-### 3.10 V6 text — drafted at a bench sitting, 2026-09-11 (PROVISIONAL)
+### 3.10 Vault text — drafted 2026-09-11, re-registered same day (PROVISIONAL)
 
 Owner: *"That is good for now. This will likely change in the future and
-that's ok."* — accepted as working text, explicitly revisable; wire it, but
-nothing downstream may treat it as frozen. Register guards honored: "the
-Forsaken" exonym in narrator text, Rakata endonym only in their own mouths;
-tyranny surfaces only AT the reveal (the wake).
+that's ok."* — accepted as working text, explicitly revisable. Re-cast the
+same sitting under the three-voice law (canon.yml `narrator.butler_register_src`,
+`game_fact_voice`): facts dry, atmosphere on the Narrator's speakers, named
+speakers in their own voice. Register guards: "the Forsaken" exonym in
+narrator/game text, Rakata endonym only in their own mouths; tyranny surfaces
+only AT the reveal.
 
-**Arrival letter (narrator):**
-> The vault at the cold end of the world is intact. No breach, no power, no
-> sound. Frost has sealed the doors from outside, and something older than
-> frost has sealed them from within. Whatever the Forsaken meant to keep
-> here, they meant to keep it a long time.
+**V6 — arrival:**
+- Game: "The vault is intact and unpowered. The doors are sealed from both
+  sides. Interior temperature is far below survivable."
+- Narrator: "The little ones stood a long while at the coldest door on the
+  world. Doors sealed from outside keep something in, they reasoned. They did
+  not ask what a door sealed from both sides keeps."
 
-**The casket hall (narrator, at the core):**
-> The hall holds rows of caskets, each fogged from the inside. The
-> instruments still tick, slower than any living pulse. These are not stores
-> and they are not weapons. They are people — Forsaken, frozen at the moment
-> their war was still worth surviving. The colony can wake them, take what
-> keeps them, or close the door.
+**V6 — the casket hall:**
+- Game: "The hall contains occupied cryptosleep caskets. The occupants are
+  alive. They can be woken, harvested for their cold-cores, or left
+  undisturbed."
+- Narrator: "Rows of caskets, fogged from the inside, ticking slower than any
+  living pulse. People, of a kind — my makers' masters, asleep at the moment
+  their war still seemed worth surviving. The little ones walked between them
+  quietly. Even they knew to be quiet here."
 
-**WAKE (letter + first dialogue — the tyranny made present, per canon.yml
-`rakata.woken_brutality`):**
-> Letter: The caskets open. The Forsaken wake badly — coughing, furious,
-> giving orders in a language the translators strain at. There is no
-> gratitude in them. There was never going to be.
->
-> First words (a woken commander, to whoever stands nearest): "Rakata do not
-> thank tools. Stand aside — report: what year, what front, who holds the
-> sky? … Speak slowly. You are a *scavenger*. Scavengers opened the caskets?"
-> *(a beat)* "And that hull outside. That is a colonizer ship of the Rakata.
-> What, exactly, is it doing under *your* feet?"
+**V6 — WAKE:**
+- Game: "The caskets are opening. The Forsaken are waking. They are not
+  grateful."
+- Narrator: "They woke badly — coughing, furious, ordering the air itself to
+  report. Gratitude was never in them. I remember that much too well."
+- First words (a woken commander, own voice, per canon.yml
+  `rakata.woken_brutality`): "Rakata do not thank tools. Stand aside —
+  report: what year, what front, who holds the sky? … Speak slowly. You are
+  a *scavenger*. Scavengers opened the caskets?" *(a beat)* "And that hull
+  outside. That is a colonizer ship of the Rakata. What, exactly, is it
+  doing under *your* feet?"
 
-**LOOT (the game says it plainly, per the ruled ladder):**
-> Stripping the caskets' cold-cores will kill everyone sleeping in them.
-> There is no version of this where they survive it. The cores are Forsaken
-> technology of the first rank.
+**V6 — LOOT:**
+- Game: "Stripping the cold-cores will kill every occupant. The cores are
+  Forsaken technology of the first rank."
 
-**LEAVE (the narrator remembers — `cradle_memory`):**
-> The colony closes the hall and reseals the outer door. The instruments tick
-> on, slower than any living pulse. Nothing on Ash'karr knows what was chosen
-> here. One thing does.
+**V6 — LEAVE:**
+- Narrator: "They closed the hall and sealed the door behind them, and took
+  nothing. Nothing on this world knows what was chosen there. I know. I
+  intend to remember it kindly, for as long as I last."
+
+**Ring letters — type ① (V1/V2/V3, the vault held):**
+- Outer, Game: "The vault's defenses are intact and powered. Patrols are
+  active. The garrison will engage intruders."
+- Outer, Narrator: "Walls whole, lights burning, sentries walking lines
+  nobody living drew. Nothing here has ever failed. The little ones found
+  that more frightening than any ruin, and they were right to."
+- Core, Game: "The inner stores hold Forsaken materials and weapons in
+  sealed racks. None of it is compatible with droid parts."
+- Core, Narrator: "The garrison kept its treasury through the end of the
+  world, and did not notice the end of the world. There is a lesson in that.
+  I have decided not to learn it."
+
+**Ring letters — type ② (V4/V5, the flesh got out):**
+- Outer, Game: "The vault is breached from the inside. No defenses are
+  active. The occupant is gone."
+- Outer, Narrator: "The breach faces outward. Whatever left took its time
+  with the door — and the door was the strongest thing on this ground. The
+  trail is old. Old, as the little ones keep learning, is not the same as
+  finished."
+- Survival beat, Game: "The vault's stores are destroyed. Records remain,
+  indicating what was held and the direction of the breach."
+- Survival beat, Narrator: "No treasure — only the shape of where it slept,
+  and the direction it went. Some inheritances one is glad to miss."
+
+**Per-vault Narrator asides:**
+- V1: "The Cathedral's ground hums underfoot. The garrison answers a
+  standing order from no living mouth."
+- V2: "The Enclaves watch this vault the way heirs watch a will."
+- V3: "Imperial patrols pass within sight of the walls. The garrison does
+  not acknowledge them. The Empire has noticed being unacknowledged."
+- V4: "The trail runs toward the warm edge of the band, where things can
+  live. That is the trouble with warmth."
+- V5: "The breach here is younger, and on the terminator the ground itself
+  has begun digesting the doors."
 
 ## 4. Cross-links
 
