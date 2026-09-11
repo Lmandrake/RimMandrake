@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T05:54:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T06:00:23Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -944,8 +944,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RESTORE_FALLOUT_TRIAGE_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  MEASURED off the live Player.log after the 2026-09-11 batch restart (the first
 prose:    infrastructure/state/items/RESTORE_FALLOUT_TRIAGE_1.md
 
 ## BAREHANDED_MELEE_FALLBACK_1 18 of 23 bare-handed pawn kinds have 100% ranged weapon pools with zero melee fallback (shooting-disabled pawns spawn bare) - re-run pool join vs today's post-restore cut list first, then add melee tags per faction voice; 5 kinds still undiagnosed
@@ -954,6 +954,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BAREHANDED_MELEE_FALLBACK_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  Diagnosis pass 2026-09-11 (BENCH lane, sourced from
 prose:    infrastructure/state/items/BAREHANDED_MELEE_FALLBACK_1.md
