@@ -202,6 +202,26 @@ text). Taxonomy: droid = mechanical body + mechanical mind; mechanoid =
 partless pseudo-organic construct **fused with a crystal mind**; Kindled =
 parts-based mechanical body + crystal operating the neural circuits — new life form.
 
+**Ruled detail (legends sitting, same day — `../mindstone_arc_legends.md`):**
+- **The Kindled have never been made** — no lore, no rumor anywhere in-world;
+  the first making is an in-play event.
+- **The Working Dead**: in the mindstone galleries, dead droid chassis stand
+  up and work of their own accord. Droids that leave exit effectively
+  mind-wiped, go rogue, and drift to the neutral factions — ongoing today.
+  Living droids act strangely or simply stop near mindstone and avoid the
+  Deeps at all costs. **Nobody mines the crystals today** except *"maybe a
+  very rare Junker with a death wish"* (owner) — consistent with §8's Junkers
+  line above.
+- **Trickle destination refined**: the facility's "very slow rate" restock
+  (frozen line above) feeds the SECRET CACHES and the Cathedral's store
+  vaults/supply lines — never the surface Sentinels, which self-repair and
+  slowly devolve (see the Cathedral sheet's §GM detail).
+- **Knowledge gate (hard)**: nobody in-world — Junkers included — knows the
+  Cathedral is alive or wants the crystals; late-game lore only. The ancient
+  miner's testimony survives as a tall-tower computer data entry in the forge
+  dungeon (site identifier: resolve at wiring, do not guess) and as a Junkers
+  goodwill unlock.
+
 ### 🔴 The kyber trade (owner — `KYBER_TRADE_PLOT_1`)
 Selling kyber is **extremely illegal to the Empire**: heat rises substantially per sale;
 **the Hutts' positive interest rises** alongside. It may also bring **"alleged" Jedi

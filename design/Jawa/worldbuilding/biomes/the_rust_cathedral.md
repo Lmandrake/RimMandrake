@@ -280,6 +280,17 @@ added history. Changes no ruling above or below.**
     Sentinels (and itself). Taxonomy detail: the Sentinels/mechanoids are
     partless pseudo-organic constructs **fused with crystal minds** — kin,
     which is why the wild cousins' fear is personal.
+    **Legends-sitting detail (same day, `../mindstone_arc_legends.md`)**: the
+    trickle feeds the HIDDEN reserve only — secret caches (ancient-danger-
+    like), the few store vaults and supply lines — never the surface. The
+    Sentinels standing in the open are units it has LOST control of and
+    cannot recall: sparse (the ruins are ubiquitous, the warriors uncommon),
+    not replenished but SELF-REPAIRING and slowly devolving — lost technology,
+    so from outside it looks like replenishment. Surface strays malfunction
+    and hide in plain sight; a night-wanderer reads as harmless old junk
+    while some are fully operational. Knowledge gate (hard): nobody in-world
+    — Junkers included — knows the Cathedral is alive or wants the crystals;
+    late-game lore only.
   - **The sealed guardians and the sleeping Rakata are RimWorld's standard
     "ancient danger" structures, reskinned** (VQE Ancients + AreRakata) —
     the ubiquitous mapgen mechanic spread across the ANCIENT-ALLOW biomes,

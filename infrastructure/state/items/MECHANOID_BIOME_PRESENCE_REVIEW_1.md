@@ -31,3 +31,8 @@ two UNDECIDED (AridShrubland ancients, FeverWood pools). Carries one doctrine
 proposal needing his word: random mech RAIDS deny planet-wide — mech violence is
 provoked/scripted only (consistent with both poles). Mechanism notes verified via
 source where possible; per-biome raid gating would need Harmony, planet-wide is XML.
+
+**Fed 2026-09-11 (legends sitting)**: surface Sentinels are SPARSE lost units
+— self-repairing, slowly devolving, never replenished; the factory trickle
+feeds secret caches + Cathedral vaults only. Density and encounter framing per
+`design/Jawa/worldbuilding/mindstone_arc_legends.md` §Canon corrections.

@@ -190,10 +190,19 @@ engine constraint.
 
 ## 4. Sentinel defend-only AI bounds (hard ban §6)
 
-**Player experience.** The Forgotten Sentinels hold their ground — patrol
-lines, grave-wards, repair alcoves. Attack them and they fight like mechanoids;
-retreat past their lines and they stop, turn, and walk back to their posts.
-They never raid, never pursue, never explain.
+**Player experience.** The Forgotten Sentinels hold their ground — old
+strongpoints, grave-wards, repair alcoves. Attack them and they fight like
+mechanoids; retreat past their lines and they stop, turn, and walk back to
+their posts. They never raid, never pursue, never explain.
+
+**Density (owner, legends sitting 2026-09-11)**: SPARSE. The battle-signs and
+battlement structures are the ubiquitous dressing; standing warriors are
+uncommon — most strongpoints are bones, the manned one is the exception. Lore
+alignment: the repair alcove reads as SELF-REPAIR — surface Sentinels are the
+Cathedral's lost, self-mending, slowly devolving units, not a garrison being
+restocked (`mindstone_arc_legends.md` §Canon corrections). The spawner comp
+below is the alcove rebuilding its own few wards at interval, never a
+production line — keep `spawnablePawnKinds` counts/points cap at ward scale.
 
 **Engine route.** The sheet's ban is stricter than any vanilla defend lord:
 
