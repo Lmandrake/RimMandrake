@@ -209,15 +209,14 @@ function build(ctx)
     end
   end
 
-  -- tool shed (R-WORK 3x4): bench on the back wall, tool cabinet, a shelf
-  -- with a pickaxe on it, dirt at the door - everything after the bench
+  -- tool shed (R-WORK 3x4): bench on the back wall, tool cabinet, a shelf,
+  -- dirt at the door - everything after the bench
   -- goes in under the walkability guard, this room is small
   do
     local si = shell(ctx, "Workshop", shed, { floor = industrial and "FLOOR_WORK" or "FLOOR_POOR", doors = { { fr.side("E") } } })
     along_wall(ctx, "WORKBENCH", si, fr.side("N"), 1, {})
     local sh = R(si.x - 1, si.z - 1, si.w + 2, si.h + 2)
-    local ok, tx, tz = try_near_walkable(ctx, "STORAGE", si.x, si.z, 0, 2, si, sh)
-    if ok then ctx:place("SurvivalTools_Pickaxe", tx, tz, 0, nil, "TOOL", true) end
+    try_near_walkable(ctx, "STORAGE", si.x, si.z, 0, 2, si, sh)
     try_near_walkable(ctx, "TOOL_CABINET", si.x2, si.z, 0, 2, si, sh)
     clutter(ctx, si, { { role = "CRATE", weight = 2 }, { role = "STOOL", weight = 2 } }, 2, sh)
     for _ = 1, rng.int(1, 2) do

@@ -221,7 +221,6 @@ THING	Wall	4	11	0	BlocksSandstone
 THING	Door	4	8	0	WoodLog
 THING	TableMachining	2	10	2	-
 THING	Shelf	1	7	0	WoodLog
-THING	SurvivalTools_Pickaxe	1	7	0	-
 THING	Stool	2	9	0	WoodLog
 THING	Stool	2	8	0	WoodLog
 THING	Filth_Dirt	3	10	0	-
