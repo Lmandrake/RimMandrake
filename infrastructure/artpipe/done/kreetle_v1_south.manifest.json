@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 73.6415628149989,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 73.6415628149989,
+  "height": 512,
+  "id": "kreetle_v1_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 38.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T03-25-31-01a09000-42e4-7060-b78f-21e455ceba73.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 33.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 30.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T03-17-41-01a08ff9-18d5-7910-957d-35d02f3cbc6e.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 32.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "kreetle_v1_south",
+    "note": "Generated with built-in imagegen, saved as an exact 512\u00d7512 RGBA PNG, and verified all four corners are transparent.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\kreetle_v1_south\\kreetle_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/kreetle_v1_south/kreetle_v1_south.png\n    512x512  rgba  49,193 bytes  (73s)\n"
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 164.20209283100849,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 164.20209283100849,
+  "height": 512,
+  "id": "fambaa_v1_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 28.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T03-15-06-01a08ff6-b85a-7251-865e-aadb2332a71a.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 32.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 21.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T03-13-29-01a08ff5-4022-7790-8f26-796321b7b898.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 31.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "fambaa_v1_south",
+    "note": "Generated with built-in imagegen and downscaled to exact 512\u00d7512 RGBA; no scenery, shadow, harness, equipment, or rider.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\fambaa_v1_south\\fambaa_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/fambaa_v1_south/fambaa_v1_south.png\n    512x512  rgba  299,665 bytes  (164s)\n"
+}

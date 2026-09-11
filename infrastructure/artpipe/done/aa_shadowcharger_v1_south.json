@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-11T10:04:46Z",
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "aa_shadowcharger_v1_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: a large domesticable quadruped livestock animal (Alpha Animals' Shadow Charger) with a stocky muscular cow-like body and a pair of mighty elongated curved horns sweeping back from the head, short sleek dark hide, calm sturdy stance suited to a farm animal bred for milk and meat but capable of charging and ramming when provoked. Single creature, centered, standing pose, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CREATURE_ART_REVIEW_SHEET_1",
+  "style_notes": "Reads as a large, sturdy dairy/meat livestock beast, not a predator -- an armored-looking ungulate with imposing horns as its only dramatic feature. Match painterly vanilla RimWorld muffalo/cow-tier animal art, not photorealistic."
+}

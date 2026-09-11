@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 123.35103473099298,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 123.35103473099298,
+  "height": 512,
+  "id": "aa_shadowcharger_v1_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 6.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T03-04-49-01a08fed-4f41-7fb2-a974-5ef5d6a628ab.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 29.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789105366,
+    "primary_used_percent": 16.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/10/rollout-2026-09-10T20-45-30-01a08e92-0a5f-73c1-8dfb-4c4d7bcec669.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 27.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "aa_shadowcharger_v1_south",
+    "note": "Built-in imagegen used with the normalized user prompt; saved as a 512\u00d7512 transparent south-facing RimWorld livestock sprite.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\aa_shadowcharger_v1_south\\aa_shadowcharger_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/aa_shadowcharger_v1_south/aa_shadowcharger_v1_south.png\n    512x512  rgba  198,308 bytes  (123s)\n"
+}

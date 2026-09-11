@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 119.42941328199231,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 119.42941328199231,
+  "height": 512,
+  "id": "horax_v1_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 30.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T03-17-41-01a08ff9-18d5-7910-957d-35d02f3cbc6e.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 32.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 28.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T03-15-20-01a08ff6-f0eb-7e32-a9aa-9af4e55274ea.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 32.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "horax_v1_south",
+    "note": "Built-in imagegen output, downscaled to exactly 512x512 while preserving transparent RGBA. Final prompt followed the supplied Horax/RimWorld sprite specification.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\horax_v1_south\\horax_v1_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/horax_v1_south/horax_v1_south.png\n    512x512  rgba  471,047 bytes  (119s)\n"
+}

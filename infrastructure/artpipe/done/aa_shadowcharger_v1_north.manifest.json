@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 119.67961419999483,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 119.67961419999483,
+  "height": 512,
+  "id": "aa_shadowcharger_v1_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 6.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T03-04-49-01a08fed-4f51-7ee0-bdef-97f8e9613f9e.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 29.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789105366,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/10/rollout-2026-09-10T20-45-30-01a08e92-0aa3-7e63-80e6-c015b2888459.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 27.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "aa_shadowcharger_v1_north",
+    "note": "Built-in imagegen; normalized prompt specified a north-facing, painterly dark livestock beast with swept horns. Saved and resized with alpha preserved.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\aa_shadowcharger_v1_north\\aa_shadowcharger_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/aa_shadowcharger_v1_north/aa_shadowcharger_v1_north.png\n    512x512  rgba  166,889 bytes  (120s)\n"
+}

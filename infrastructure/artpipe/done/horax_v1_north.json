@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-11T10:11:19Z",
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "horax_v1_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: a colossal, slow, powerfully-muscled quadruped reptile (Star Wars canon Horax) covered in thick knobby blue-gray skin. Its snout bears a pair of shovel-like horns used for uprooting trees, and its wide maw shows four enormous saber-like fangs among many smaller teeth. A spiked, club-like tail trails behind it. Reads as a huge, tanky megafauna beast. Single creature, centered, standing pose, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CREATURE_ART_REVIEW_SHEET_1",
+  "style_notes": "Canonical Star Wars Horax \u2014 colossal blue-gray reptile, shovel-horned snout, four saber fangs, spiked club-tail, thick knobby hide. Match painterly vanilla RimWorld large-megafauna art scale (thrumbo/elephant tier), not photorealistic."
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 99.55139654199593,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 99.55139654199593,
+  "height": 512,
+  "id": "aa_thunderox_v1_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 11.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T03-06-47-01a08fef-1d1b-7831-a615-b2366cd7657d.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 29.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 6.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T03-04-49-01a08fed-4f51-7ee0-bdef-97f8e9613f9e.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 29.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "aa_thunderox_v1_north",
+    "note": "Generated via built-in imagegen and resized to exactly 512\u00d7512 while preserving transparent alpha. One local resize command required correction.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\aa_thunderox_v1_north\\aa_thunderox_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/aa_thunderox_v1_north/aa_thunderox_v1_north.png\n    512x512  rgba  203,652 bytes  (99s)\n"
+}

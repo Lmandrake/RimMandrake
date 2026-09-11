@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 107.20910559099866,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 107.20910559099866,
+  "height": 512,
+  "id": "zakkeg_v1_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 40.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T03-26-45-01a09001-62cb-7dd1-8449-79b8348c9468.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 34.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 33.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/11/rollout-2026-09-11T03-19-41-01a08ffa-ec3a-7b80-be07-ae9b881c352a.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 33.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "zakkeg_v1_east",
+    "note": "Generated with built-in imagegen, then resized from 1254px to the required 512x512 while preserving RGBA transparency.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\zakkeg_v1_east\\zakkeg_v1_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/zakkeg_v1_east/zakkeg_v1_east.png\n    512x512  rgba  176,073 bytes  (107s)\n"
+}

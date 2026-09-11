@@ -1,0 +1,21 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-11T10:11:19Z",
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "fambaa_v1_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: a large lumbering quadruped amphibian with the scaly, leathery hide of a reptile (Star Wars canon Fambaa, the Gungan war beast). Broad heavy-set body built for hauling immense loads, thick stumpy legs, a wide placid herbivore head, mottled gray-green scaled skin. Reads as a calm domesticated draft/pack animal, not a predator. Single creature, centered, standing pose, no ground shadow, no background scenery, no mounted equipment or riders.",
+  "reference": null,
+  "rimflow_item_id": "CREATURE_ART_REVIEW_SHEET_1",
+  "style_notes": "Canonical Star Wars Fambaa \u2014 big gray-green scaly-hided amphibian beast of burden, heavy build, placid domesticated temperament. Match painterly vanilla RimWorld large-livestock art scale (elephant/muffalo tier), not photorealistic. Plain animal only \u2014 no shield-generator rig or harness in this pass."
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 235.24589168900275,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 235.24589168900275,
+  "height": 512,
+  "id": "kreetle_v1_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 36.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T03-21-35-01a08ffc-aadd-7030-91a9-ffdcb70709e3.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 33.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 28.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/11/rollout-2026-09-11T03-15-29-01a08ff7-1290-7e22-b3eb-230b1bac83cd.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 32.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "kreetle_v1_north",
+    "note": "Built-in imagegen; corrected anatomy to five leg pairs, extracted the baked checkerboard to transparent alpha, and resized to 512\u00d7512.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\kreetle_v1_north\\kreetle_v1_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/kreetle_v1_north/kreetle_v1_north.png\n    512x512  rgba  56,126 bytes  (235s)\n"
+}
