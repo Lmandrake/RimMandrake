@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T08:03:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T11:10:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -441,6 +441,15 @@ kind:     task
 summary:  Per CLAUDE.md's own note: the two laws (text/menu authority only; the game
 prose:    infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md
 
+## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - What it does: an in-game ignition event (thruster contact, a dropped reactor
+prose:    infrastructure/state/items/WAR_LAB_CRATER_HOOK_1.md
+
 ## GL_EMIT_FLOATRANGE_GENERIC_DROP_1 gl_emit.py silently drops any FloatRange field on a non-worldTileReq node type
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -476,6 +485,15 @@ target:   v1
 kind:     task
 summary:  Decouple Aftermath from Ninefold per design/CHRONICLEEVENTSPINE.md
 prose:    infrastructure/state/items/CHRONICLE_NINEFOLD_DECOUPLE_1.md
+
+## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Deploy RMFEPyrelands (built and closed by PYRELANDSSELFCONTAINEDBIOME1,
+prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
 
 ## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
 state:    doing  (BLOCKED)
@@ -783,16 +801,6 @@ blocked:  mechanics built and committed at 5c80b1797677af906691d2d0f5dd331eb17f3
 summary:  Packet B9 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
 
-## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  world-tile mutation needs a frozen propane-lake footprint before any tile set is written (on LIQUID_BIOMES_MAP_1)
-summary:  - What it does: an in-game ignition event (thruster contact, a dropped reactor
-prose:    infrastructure/state/items/WAR_LAB_CRATER_HOOK_1.md
-
 ## GL_EMIT_FLOATRANGE_GENERIC_DROP_1 gl_emit.py silently drops any FloatRange field on a non-worldTileReq node type
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -824,13 +832,13 @@ summary:  (no items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md yet — write one when you 
 prose:    infrastructure/state/items/KOTOR_CRYSTAL_GENSTEP_DRIFT_1.md
 
 ## PYRELANDS_WORLD_SWITCH_1 Switch Ashkarr's Pyrelands tiles from donor ZBiome_Grasslands to RM_FE_Pyrelands BEFORE the world freeze — rides the owed world re-import window; unblocks zylle donor retirement (owner ruled 2026-09-09); gated on the new biome proving out in a quicktest
-state:    ready  (BLOCKED)
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  static readiness already established (PYRELANDS_SELF_CONTAINED_BIOME_1 closed 2026-09-09, 0 validate_patch errors). Remaining gate is a LIVE quicktest to prove the biome out, which requires start_debug_game_ready - that discards the current map, and the owner has been actively driving the live campaign map all session (behemoths/fire/plants). Not safe to run unannounced
-summary:  (no items/PYRELANDS_WORLD_SWITCH_1.md yet — write one when you have something to say)
+blocked:  game just cycled DOWN->LOADING (owner broadcast) and bridge held by BENCH (WORLDMAP_FINAL_REVIEW_1, non-stale) -- wait for game UP + bridge free, do not deploy a new mod while the game is mid-load
+summary:  Deploy RMFEPyrelands (built and closed by PYRELANDSSELFCONTAINEDBIOME1,
 prose:    infrastructure/state/items/PYRELANDS_WORLD_SWITCH_1.md
 
 ## DESERT_WRAPS_ART_COMMISSION_1 Original desert-wrap apparel art (full body-type matrix) + devolved Tusken head shape, inspired-not-copied; placement: wraps to Armoury, headtype to StarWarsRaces, tribe wiring to UtinniPatches (owner, 2026-09-09)
@@ -933,4 +941,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## NURSERY_JUVENILES_CRASH_1 Nursery juveniles crash EVERY game start once inheritance works: AlphaGenes ImpliedGeneDefs sweeps PawnKindDefs and element.RaceProps (race.race getter) NREs on a juvenile kind whose race is null at sweep time - bisect-proven 2026-09-11 (pull file = clean load, RESET 0). File sits in DEPLOY_HOLD; RUT_Miasma wildAnimals refs 9 absent Juv kinds meanwhile. Diagnose WHY kind.race resolves null (ThingDef discarded? resolution order?) before re-shipping
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NURSERY_JUVENILES_CRASH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NURSERY_JUVENILES_CRASH_1.md
