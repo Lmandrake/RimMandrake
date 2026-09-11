@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_GeneSeeker — the centrepiece (spec §5). Redesigned by owner card,
+    round 2, verbatim: "It is a machine you hold that tells you WHERE you must
+    go to extract (a scanner). Then you place it upon the slime, and it
+    expends itself sucking up just the right parts of the slime, becoming an
+    injectible. Then it is used up once used to inject."
+
+    🔴 NOT A BUILDING. No console, no base machine, and none is coming back
+    without a new ruling. The building and its UI died in the redesign; what
+    remains is an item with states, one dialog, and a scanner job.
+
+    🔑 "ONE ITEM TRANSFORMING" IS FICTION THE ENGINE DOES NOT DO. The spec
+    says so up front and this is the honest build of it: TWO ThingDefs swapped
+    by a job — RM_GeneSeeker (states 1 and 2, the difference being whether
+    CompGeneSeeker holds a primed gene) and RM_GeneSeeker_Loaded (state 3).
+    The same item to the player, different defs underneath.
+
+    STATE 1 SCANNER  — crafted blank; first use opens the archive dialog and
+                       locks in a target gene; the primed seeker then names
+                       the nearest slime world tile and, on a slime map, marks
+                       the extraction cell.
+    STATE 2 EXTRACTOR — carried to the marked cell and placed; a work timer
+                       runs with the pawn standing exposed on the body.
+    STATE 3 INJECTABLE — what the seeker became. Perishable. Single use.
+
+    ⚠️ OPEN QUESTION 2 (spec §5b/§10): gene selection at PRIMING, not at the
+    bench, and the spec recommends it: "vanilla recipes produce fixed products
+    and take no parameters, so per-gene selection at the bench means either
+    one RecipeDef per gene (list explosion) or a custom crafting dialog." One
+    recipe, one dialog, and the archive stays a swappable def-list. The
+    per-gene-recipe route exists and is priced worse. Flagged for confirmation.
+
+    Biotech-gated throughout: no Biotech, no genes, no seeker, and everything
+    else in the mod works unchanged (About.xml's honest split).
+
+    ART: green-tinted vanilla item sheets, placeholder. §7 prices the real
+    bill at ~4 item textures.
+  -->
+
+  <!-- STATES 1 AND 2. -->
+  <ThingDef ParentName="ResourceBase" MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_GeneSeeker</defName>
+    <label>gene seeker</label>
+    <description>A hand-sized reader with a sampling throat and exactly one charge. Told what to look for, it listens to the currents and works out where the material carrying that entry is going to surface. Placed on that spot, it drinks until it is full and then it is not a reader any more — it is a dose.\n\nIt does not keep. The archive circulates; it does not store.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Special/SubpersonaCoreTechprof</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(140, 190, 120)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>430</MarketValue>
+      <Mass>0.6</Mass>
+      <Flammability>0.4</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+      <WorkToMake>7000</WorkToMake>
+    </statBases>
+    <stackLimit>1</stackLimit>
+    <alwaysHaulable>true</alwaysHaulable>
+    <techLevel>Spacer</techLevel>
+    <comps>
+      <li Class="RimMandrake.GelatinousSlime.CompProperties_GeneSeeker">
+        <!-- [INVENTED, spec §5c: "window ~1-2 days"] — how long a marked
+             extraction cell stays the right cell before the current moves on
+             and the seeker re-marks. -->
+        <markLifetimeTicks>90000</markLifetimeTicks>
+        <!-- [INVENTED] The vulnerable walk's price: how long the pawn stands
+             on the body while the seeker drinks. -->
+        <extractWorkTicks>4500</extractWorkTicks>
+      </li>
+    </comps>
+    <recipeMaker>
+      <researchPrerequisite>RM_GeneSeeking</researchPrerequisite>
+      <recipeUsers>
+        <li>FabricationBench</li>
+      </recipeUsers>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <skillRequirements>
+        <Crafting>8</Crafting>
+        <Intellectual>6</Intellectual>
+      </skillRequirements>
+      <displayPriority>2100</displayPriority>
+    </recipeMaker>
+    <costList>
+      <ComponentSpacer>1</ComponentSpacer>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <Plasteel>15</Plasteel>
+      <RM_RawSlime>30</RM_RawSlime>
+    </costList>
+  </ThingDef>
+
+  <!--
+    STATE 3. What the seeker became on the body, carried home in a pack.
+
+    🔴 PERISHABLE BY DESIGN, AND IT IS A LAW, NOT A BALANCE KNOB. Spec §5a:
+    "the archive circulates, it does not keep: no stockpiling a gene bank, the
+    mod's no-shelf-stable-extraction law." CompRottable with rotDestroys is
+    the mechanism; refrigeration slows it exactly as it slows food, which is
+    the right amount of mercy. Raising daysToRotStart past a week or clearing
+    rotDestroys deletes the law.
+
+    ⚠️ CompProperties_Rottable.ConfigErrors() requires tickerType Rare or
+    Normal, hence the tickerType below.
+  -->
+  <ThingDef ParentName="ResourceBase" MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_GeneSeeker_Loaded</defName>
+    <label>loaded gene seeker</label>
+    <description>A spent seeker with its throat full. Inside is the entry someone asked for and one more that came along with it, and no way to find out which until it is in somebody.\n\nIt is already going off. Whatever the body does to keep its archive in circulation, it does not do outside the body.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Special/SubpersonaCoreTechprof</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(96, 168, 76)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>620</MarketValue>
+      <Mass>0.6</Mass>
+      <Flammability>0.4</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <stackLimit>1</stackLimit>
+    <alwaysHaulable>true</alwaysHaulable>
+    <techLevel>Spacer</techLevel>
+    <tickerType>Rare</tickerType>
+    <tradeability>None</tradeability>
+    <comps>
+      <li Class="RimMandrake.GelatinousSlime.CompProperties_GeneSeeker">
+        <markLifetimeTicks>90000</markLifetimeTicks>
+        <extractWorkTicks>4500</extractWorkTicks>
+      </li>
+      <li Class="CompProperties_Rottable">
+        <!-- [INVENTED, spec §5a: "~5 days unrefrigerated"] -->
+        <daysToRotStart>5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Inject {0_label}</useLabel>
+        <useDuration>600</useDuration>
+        <showUseGizmo>true</showUseGizmo>
+      </li>
+      <li Class="CompProperties_Targetable">
+        <compClass>CompTargetable_SinglePawn</compClass>
+      </li>
+      <!-- Bare CompProperties + explicit compClass: vanilla has no generic
+           CompProperties_TargetEffect (see SlimeItems.xml's note on the
+           antidote). Destroys itself inside the effect, one destroy path. -->
+      <li Class="CompProperties">
+        <compClass>RimMandrake.GelatinousSlime.CompTargetEffect_InjectSlimeGenes</compClass>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

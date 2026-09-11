@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    THE BIOME'S FLORA (spec §2: "slime-grass + 2-3 pseudo-plants (rounded,
+    soft-bodied silhouette language ... genericized)").
+
+    🔴 ART LAW, carried from v1 and kept here: film, tint, drip — NEVER eyes,
+    never buds, never new limbs. That law was written for the transformation
+    overlay and it governs this flora too: these are soft-bodied growths of
+    the body, not creatures and not fungi with faces.
+
+    ART: green-tinted vanilla plant sheets, the Pyrelands placeholder strategy
+    (ember grass is Things/Plant/Grass with a <color>). §7's own flora bill
+    (3-4 defs x 2-3 variants ~= 9 textures) is OWED. Every texPath below is a
+    real vanilla path, not a guess.
+  -->
+
+  <!-- The carpet. Pairs with RM_Slime_Grass terrain: the fertile-looking
+       ground with the fertile-looking crop on it, and both are the lure. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Plant_SlimeGrass</defName>
+    <label>slime-grass</label>
+    <description>Not grass. A fine green nap the body puts up where it wants light, soft-stemmed and faintly warm, and it regrows almost as fast as anything can eat it. Livestock will graze it happily for about a week.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Nutrition>0.4</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Grass</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(104, 168, 82)</color>
+    </graphicData>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>1.6</growDays>
+      <!-- growDays * lifespanDaysPerGrowDays is the lifespan
+           (RimWorld/PlantProperties.cs LifespanDays); 13 keeps a fast plant
+           from churning dying-plant messages. -->
+      <lifespanDaysPerGrowDays>13</lifespanDaysPerGrowDays>
+      <leaflessGraphicPath>Things/Plant/Grass_Leafless</leaflessGraphicPath>
+      <harvestWork>30</harvestWork>
+      <maxMeshCount>9</maxMeshCount>
+      <visualSizeRange>0.4~0.8</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <minGrowthTemperature>2</minGrowthTemperature>
+      <minOptimalGrowthTemperature>10</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>38</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>50</maxGrowthTemperature>
+      <growMinGlow>0.31</growMinGlow>
+    </plant>
+  </ThingDef>
+
+  <!-- Pseudo-plant 1: the rounded one. Harvests to raw slime, which is the
+       biome's forage and its whole food economy. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Plant_Bellows</defName>
+    <label>bellows</label>
+    <description>A knee-high sac of the body, rounded and taut and slowly breathing. It is not a plant and has no roots; it is a pocket the flow has pushed up and forgotten to reabsorb. Cut one and it empties itself of clean, heavy slime without complaint.</description>
+    <statBases>
+      <MaxHitPoints>110</MaxHitPoints>
+      <Flammability>0.15</Flammability>
+      <Nutrition>0.6</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Bush</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(88, 150, 76)</color>
+    </graphicData>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.3</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>6</growDays>
+      <lifespanDaysPerGrowDays>12</lifespanDaysPerGrowDays>
+      <harvestedThingDef>RM_RawSlime</harvestedThingDef>
+      <harvestYield>10</harvestYield>
+      <harvestWork>120</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.7~1.1</visualSizeRange>
+      <topWindExposure>0.15</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>6</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <minGrowthTemperature>2</minGrowthTemperature>
+      <minOptimalGrowthTemperature>10</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>38</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>50</maxGrowthTemperature>
+      <growMinGlow>0.31</growMinGlow>
+    </plant>
+  </ThingDef>
+
+  <!-- Pseudo-plant 2: the tall one. Wood-analog, because there are no trees
+       and no rock and the colony still has to build something. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Plant_Thumbstalk</defName>
+    <label>thumbstalk</label>
+    <description>A blunt-ended column of set slime, waist to shoulder high, standing in loose ranks wherever the flow is deep enough to push one up. Dried and split it works almost like softwood, which on a world with neither trees nor stone is the difference between a roof and no roof.</description>
+    <statBases>
+      <MaxHitPoints>170</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+      <Nutrition>0.3</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Bush</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(126, 160, 96)</color>
+      <drawSize>1.4</drawSize>
+    </graphicData>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.25</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>14</lifespanDaysPerGrowDays>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestYield>14</harvestYield>
+      <harvestWork>180</harvestWork>
+      <harvestTag>Wood</harvestTag>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>1.0~1.5</visualSizeRange>
+      <topWindExposure>0.25</topWindExposure>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>8</wildClusterWeight>
+      <wildOrder>2.5</wildOrder>
+      <minGrowthTemperature>2</minGrowthTemperature>
+      <minOptimalGrowthTemperature>10</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>38</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>50</maxGrowthTemperature>
+      <growMinGlow>0.31</growMinGlow>
+    </plant>
+  </ThingDef>
+
+  <!-- Pseudo-plant 3: the rare one. Pure register — the biome telling you
+       what it is. Beautiful, useless, and a reminder. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Plant_Readerbloom</defName>
+    <label>readerbloom</label>
+    <description>A pale disc of slime held up on a soft stalk, turning slowly through the day toward nothing in particular. Where one stands, the flow beneath is dense with circulating material; prospectors of a certain kind learned to read them as a sign, which is a polite way of saying they learned where to stand and got read back.</description>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Beauty>6</Beauty>
+      <Flammability>0.2</Flammability>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Dandelion</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(176, 206, 150)</color>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.4</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <growDays>9</growDays>
+      <lifespanDaysPerGrowDays>14</lifespanDaysPerGrowDays>
+      <harvestWork>60</harvestWork>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.6~0.9</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>3</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <minGrowthTemperature>2</minGrowthTemperature>
+      <minOptimalGrowthTemperature>10</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>38</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>50</maxGrowthTemperature>
+      <growMinGlow>0.31</growMinGlow>
+    </plant>
+  </ThingDef>
+
+</Defs>

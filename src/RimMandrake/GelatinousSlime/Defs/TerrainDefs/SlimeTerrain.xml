@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    THE FIVE SLIME TERRAINS (design/RimMandrake/RM_gelatinous_slime_mod.md §2).
+    All five are this mod's OWN defs. The campaign's Slime borrowed Alpha
+    Biomes' terrains; nothing of that donor is shipped, referenced or required
+    here — §1's standalone rule. The donor's values were the calibration
+    reference, not the source.
+
+    🔑 EVERY ONE OF THESE FIVE CARRIES THE `RM_SlimeTerrain` TAG, AND THAT TAG
+    IS THE MECHANISM. MapComponent_SlimeExposure (Source/SlimeExposure.cs)
+    asks `terrain.HasTag("RM_SlimeTerrain")` — not a defName list — so any
+    mod, and the RUT campaign layer (§9), can make its own ground read as
+    slime by tagging it. Renaming a def here breaks nothing; dropping the tag
+    silently turns the ground inert.
+
+    ⚠️ `takeFootprints` IS SET AND IT IS NOT THE SHEET'S "footprints always".
+    RimSage, RimWorld/PawnFootprintMaker.cs:61 — the engine only draws a
+    footprint when `pawn.Map.snowGrid.GetDepth(pos) >= 0.4f`. On a warm wet
+    biome with no snow the field does nothing at all. It stays set because it
+    is correct and free, but the sheet's always-footprints law is NOT
+    delivered by XML and is owed a custom decal pass. Do not read this field
+    as the law being satisfied.
+
+    ART: green-tinted vanilla surfaces, the same placeholder strategy
+    Pyrelands already ships (its Terrain/Surfaces/Sand + <color> clones).
+    Every texturePath below was read out of Defs/Core/TerrainDefs/
+    Terrain_Natural.xml rather than guessed. §7's own terrain textures (~6)
+    are OWED; nothing else depends on them.
+  -->
+
+  <TerrainDef Name="RM_SlimeTerrainBase" Abstract="true">
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>310</renderPrecedence>
+    <natural>true</natural>
+    <takeFootprints>true</takeFootprints>
+    <tags>
+      <li>RM_SlimeTerrain</li>
+    </tags>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+  </TerrainDef>
+
+  <!-- The one you can build on. Dried, load-bearing, and still slow. -->
+  <TerrainDef ParentName="RM_SlimeTerrainBase">
+    <defName>RM_Slime_Hardened</defName>
+    <label>hardened slime</label>
+    <description>Slime that has set. Out at the body's dry margins the film thickens, skins over and goes hard as cold tallow, firm enough to stand a wall on and dull enough underfoot that you forget what it is. It is still the body. It is still reading you, just more slowly.</description>
+    <texturePath>Terrain/Surfaces/Soil</texturePath>
+    <color>(122, 150, 104)</color>
+    <fertility>0.12</fertility>
+    <passability>Standable</passability>
+    <pathCost>4</pathCost>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+    </affordances>
+  </TerrainDef>
+
+  <!-- The ordinary ground of the biome. -->
+  <TerrainDef ParentName="RM_SlimeTerrainBase">
+    <defName>RM_Slime_Rich</defName>
+    <label>rich slime</label>
+    <description>The body proper: a deep green mat, warm to the touch, giving half an inch under a boot and closing again behind it. Things move inside it that are not animals and are not weather. Walking here is being read.</description>
+    <texturePath>Terrain/Surfaces/Mossy</texturePath>
+    <color>(84, 132, 74)</color>
+    <fertility>0.85</fertility>
+    <passability>Standable</passability>
+    <pathCost>10</pathCost>
+    <affordances>
+      <li>Light</li>
+    </affordances>
+  </TerrainDef>
+
+  <!-- THE FARM LURE. Fertility 1.0 — better than rich soil, and it is bait:
+       MapComponent_SlimeFieldConversion (Source/SlimeFieldConversion.cs)
+       turns a growing zone laid on this back to RM_Slime_Rich over a few
+       harvests (§2, spike F). -->
+  <TerrainDef ParentName="RM_SlimeTerrainBase">
+    <defName>RM_Slime_Grass</defName>
+    <label>slime-grass</label>
+    <description>Where the body has decided to grow something, it grows this: a fine green nap over ground richer than any loam you have ever turned. Crops love it. It loves them back, and what it does to them it calls filing.</description>
+    <texturePath>Terrain/Surfaces/SoilRich</texturePath>
+    <color>(96, 148, 72)</color>
+    <fertility>1.0</fertility>
+    <passability>Standable</passability>
+    <pathCost>6</pathCost>
+    <affordances>
+      <li>Light</li>
+    </affordances>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RM_SlimeTerrainBase">
+    <defName>RM_Slime_Mud</defName>
+    <label>slimy mud</label>
+    <description>Where the flow has taken up the last of the dirt beneath it. Ankle-deep, sucking, and slower to cross than open water. It clings; every step carries a little more of the body away with you.</description>
+    <texturePath>Terrain/Surfaces/Mud</texturePath>
+    <color>(92, 112, 66)</color>
+    <fertility>0.45</fertility>
+    <passability>Standable</passability>
+    <pathCost>16</pathCost>
+    <avoidWander>true</avoidWander>
+    <generatedFilth>RM_Filth_SlimeSmear</generatedFilth>
+    <extinguishesFire>true</extinguishesFire>
+    <affordances>
+      <li>Light</li>
+    </affordances>
+  </TerrainDef>
+
+  <!-- The current. Slowest ground on the map, and the only terrain the gene
+       seeker will accept as an extraction site (CompGeneSeeker). -->
+  <TerrainDef ParentName="RM_SlimeTerrainBase">
+    <defName>RM_Slime_Liquid</defName>
+    <label>liquid slime</label>
+    <description>An open channel of the body, moving at its own pace in a direction that has nothing to do with the ground's slope. Wading it is like wading warm syrup. This is where the currents run, and where anything in circulation eventually passes.</description>
+    <texturePath>Terrain/Surfaces/MarshyTerrain</texturePath>
+    <color>(70, 126, 62)</color>
+    <fertility>0</fertility>
+    <passability>Standable</passability>
+    <pathCost>25</pathCost>
+    <avoidWander>true</avoidWander>
+    <generatedFilth>RM_Filth_SlimeSmear</generatedFilth>
+    <extinguishesFire>true</extinguishesFire>
+    <holdSnowOrSand>false</holdSnowOrSand>
+    <statBases>
+      <Beauty>-4</Beauty>
+      <Cleanliness>-6</Cleanliness>
+    </statBases>
+    <affordances>
+      <li>Light</li>
+    </affordances>
+  </TerrainDef>
+
+</Defs>

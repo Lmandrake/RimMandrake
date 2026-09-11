@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_Gelatid (spec §2, [INVENTED name]) — "slow goo-herd cells of the body
+    itself, the biome's always-visible native. Resistant by identity."
+
+    🔑 "RESISTANT BY IDENTITY" IS A MODEXTENSION, NOT A HARDCODED defName.
+    RM_SlimeResistant on the race ThingDef is what MapComponent_SlimeExposure
+    checks — so the campaign layer, or any other mod, makes its own creature
+    immune by adding the extension, and nothing in this mod's C# knows or
+    cares which defs those are. The same shape as §4's drying-biome tag: the
+    cure geography and the resistance roster are both DATA.
+
+    🔴 NEVER HOSTILE, and this def is where it is easiest to get wrong. The
+    gelatid has no attack tools at all and predator is unset. It is not a
+    docile predator; it has no mouth. Adding a tool here is reverting the
+    owner's standing ruling (spec §3 law 2).
+
+    ART: green-tinted vanilla tortoise sheets — PLACEHOLDER, and the least
+    convincing one in the mod. The register wanted is a rounded soft-bodied
+    blob; the tortoise's silhouette is the closest rounded low-slung vanilla
+    body available without shipping magenta. §7 prices the real bill at ~3
+    textures. Marked here so nobody mistakes it for a considered art choice.
+  -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gelatid</defName>
+    <label>gelatid</label>
+    <description>A knee-high lobe of the body that has taken to moving around on its own. Gelatids browse the slime-grass in loose herds, pool together at night, and split again by morning with no apparent sense of which half was which. They are not animals in any sense that survives examination — cut one and it does not bleed, it leaks, and what leaks is the same stuff you are standing on.\n\nThey are entirely harmless. They have no mouth to bite with and nothing that could be called a temper, and the slime cannot convert something already made of itself.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <MarketValue>90</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.4</Wildness>
+      <ArmorRating_Sharp>0.05</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.30</ArmorRating_Blunt>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.SlimeResistantExtension" />
+    </modExtensions>
+    <uiIconScale>1.2</uiIconScale>
+    <race>
+      <body>TurtleLike</body>
+      <baseBodySize>0.55</baseBodySize>
+      <baseHungerRate>0.18</baseHungerRate>
+      <baseHealthScale>0.7</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <!-- meatDef/leatherDef deliberately left to the generator. Pointing
+           meatDef at RM_RawSlime would read better (butcher a gelatid, get
+           the body back) but no vanilla animal sets meatDef to a
+           hand-authored def, so it is an unverified route and a tuning call,
+           not something to guess into a shipped def. -->
+      <lifeExpectancy>8</lifeExpectancy>
+      <!-- Spawning is declared ONCE, in the BiomeDef's wildAnimals. A
+           race-side `wildBiomes` entry here would be a second source for the
+           same number. -->
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1)</li>
+          <li>(3.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+          <soundCall>Pawn_Tortoise_Call</soundCall>
+          <soundAngry>Pawn_Tortoise_Call</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+      <trainability>None</trainability>
+      <wildGroupSize>3~7</wildGroupSize>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <herdAnimal>true</herdAnimal>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gelatid</defName>
+    <label>gelatid</label>
+    <race>RM_Gelatid</race>
+    <combatPower>25</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>0.7</drawSize>
+          <color>(112, 178, 92)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>0.7</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>1.0</drawSize>
+          <color>(112, 178, 92)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>1.3</drawSize>
+          <color>(112, 178, 92)</color>
+          <shadowData>
+            <volume>(0.40, 0.40, 0.40)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>1.3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The vulnerable walk (spec §5c). The pawn carries the primed seeker to
+       the marked cell and stands on the body while it drinks — slimification
+       ticking the whole time, because the exposure component does not care
+       that you are busy. -->
+  <JobDef>
+    <defName>RM_ExtractSlimeSample</defName>
+    <driverClass>RimMandrake.GelatinousSlime.JobDriver_ExtractSlimeSample</driverClass>
+    <reportString>extracting a gene sample.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+</Defs>

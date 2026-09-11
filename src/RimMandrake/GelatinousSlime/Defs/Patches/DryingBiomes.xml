@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    CURE GEOGRAPHY (spec §4). The owner's mechanic, replacing any caravan
+    exemption: "desert and arid biomes, AND the salt ocean (ruled YES, round
+    2: brine leaches the film), HALT slimification — desiccation or salt kills
+    it. Severity in a drying biome doesn't just hold: it DECAYS."
+
+    🔑 THE CURE GEOGRAPHY IS DATA, NOT CODE. This file adds one modExtension
+    to four vanilla BiomeDefs. Any other mod tags its own biome the same way
+    and the mechanic picks it up with no change here and no change in the C#:
+
+      <modExtensions>
+        <li Class="RimMandrake.GelatinousSlime.DryingBiomeExtension">
+          <decayPerDay>0.22</decayPerDay>
+        </li>
+      </modExtensions>
+
+    The RUT campaign layer (§9) tags Ash'karr's deserts and its salt registers
+    from its own side. Nothing here knows about them.
+
+    ⚠️ A PATCH THAT MATCHES NOTHING LOGS NOTHING (CLAUDE.md). Each operation
+    below is its own PatchOperationAdd against one named def, deliberately NOT
+    a single xpath union — so a renamed or absent biome fails loudly as one
+    unapplied operation instead of silently taking the other three with it.
+    Ocean is `success="Normal"` like the rest: it exists in every install.
+
+    ⚠️ THE DECAY RATE IS [INVENTED]. Spec §4: "full clear from stage 3 in
+    ~4-5 days — slower than it grew; the walk must be earned." 0.22/day
+    clears 0.9 severity in just over four days.
+
+    ⚠️ THE OCEAN TAG IS MOSTLY FUTURE-PROOFING AND THE SPEC SAYS SO:
+    "base-game caravans don't cross ocean tiles, so the tag is mostly
+    future-proofing there." It matters for coastal maps and for any modded
+    ocean travel. It is not dead weight, but do not expect to see it fire.
+  -->
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/BiomeDef[defName="Desert"]</xpath>
+    <value>
+      <modExtensions>
+        <li Class="RimMandrake.GelatinousSlime.DryingBiomeExtension">
+          <decayPerDay>0.22</decayPerDay>
+        </li>
+      </modExtensions>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]</xpath>
+    <value>
+      <modExtensions>
+        <li Class="RimMandrake.GelatinousSlime.DryingBiomeExtension">
+          <!-- Bone-dry: fastest cure on the planet. -->
+          <decayPerDay>0.30</decayPerDay>
+        </li>
+      </modExtensions>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/BiomeDef[defName="AridShrubland"]</xpath>
+    <value>
+      <modExtensions>
+        <li Class="RimMandrake.GelatinousSlime.DryingBiomeExtension">
+          <!-- Dry, but not desert: the slowest of the four. -->
+          <decayPerDay>0.14</decayPerDay>
+        </li>
+      </modExtensions>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/BiomeDef[defName="Ocean"]</xpath>
+    <value>
+      <modExtensions>
+        <li Class="RimMandrake.GelatinousSlime.DryingBiomeExtension">
+          <!-- Not desiccation — brine. Ruled round 2. -->
+          <decayPerDay>0.22</decayPerDay>
+        </li>
+      </modExtensions>
+    </value>
+  </Operation>
+
+</Patch>
