@@ -17,6 +17,15 @@ brine-battery, Twilight shoal) fully specified in §4. The `swfish_` donor table
 the Weeping Stones retire when their replacements land; nothing ratified this
 morning is reopened.
 
+**Evening reconciliation (same day, second Fable pass):** checked against the
+sea-beast family built tonight (`src/RimStarWars/SWBestiary/Defs/SeaBeasts/`, the
+Miasma nursery `4b1f5b71`) and the hydrocarbon commission — no duplicate species,
+one sibling entry folded in (§2E, the bladderboil catch), and 🔴 one engine finding
+that changes the Greentide table: the live `BiomeFishTypes_Greentide.xml` wires the
+scalefish **race** defs into `fishTypes`, and the engine makes catches with
+`ThingMaker.MakeThing` (§0) — three scalefish **catch items** are now owed (§2C,
+§6.7). Everything else stands as written this morning.
+
 ---
 
 ## 0. The rules every entry obeys
@@ -29,6 +38,18 @@ binding is `BiomeDef.fishTypes` — four buckets (`freshwater_Common/Uncommon`,
 `waterBodyType`**; there is no per-fish water field and no per-terrain species
 scoping inside a biome. So each water below is one table, and "lives in the seep
 mouth" / "hangs from the roof" is flavor and art, never a spawn rule.
+
+**Engine, read (RimSage, 2026-09-10 evening — `FishChance`, `WaterBody.SetFishTypes`,
+`FishingUtility.GetCatchesFor`, `ThingMaker.MakeThing`):** a bucket entry is
+`FishChance {fishDef: ThingDef, chance}`; each water body rolls one def per bucket
+at map start; the catch is `ThingMaker.MakeThing(def)` with `stackCount` set —
+**no guard anywhere on `category` or `thingCategories`.** A creature's *race*
+ThingDef in a bucket therefore yields a bare `Pawn` from `Activator.CreateInstance`
+with no kindDef and a stack count: not a creature, not a fish, and nothing logs it
+at load. 🔴 **Law for every table here: a `fishTypes` entry is an item def
+(`FishBase` lineage), never a race def.** A species that is both seen and netted
+(the scalefish, the bladderboil) is TWO defs — the pawn on `wildAnimals`, the
+catch item on `fishTypes` — and the engine never links them; the fiction does.
 
 **Anti-exponential (standing, `RSW_SandSwimmer_Items.xml` header):** Nutrition and
 MarketValue at or below vanilla `FishBase` (Nutrition 0.25, MarketValue 6.5, Mass
@@ -87,9 +108,9 @@ deltas from `FishBase` each register carries so the stockpile reads as varied):
 |---|---|---|---|---|---|---|---|---|---|---|
 | Weeping Stones (`ZBiome_DesertOasis` · fresh) | — | — | vobbal | ozhu | tarrik | ikkal | ullo | duul | **6** | swfish_ ×4 → retire |
 | Cracked Lands (`ZBiome_Badlands` · fresh) | — | vhessa | — | zhurr | — | tubbik | — | hurrok | **4** | RSW_DuneCrawler, BMT ×2 stay |
-| Greentide (`BiomeCypreJungle` · fresh) | (mee/faa/laa) | zeev | tuun | lozh | karrun | uvva | saava | dubbol | **7** | RSW_Mee/Faa/Laa stay |
+| Greentide (`BiomeCypreJungle` · fresh) | (mee/faa/laa **catch items**, owed — §2C) | zeev | tuun | lozh | karrun | uvva | saava | dubbol | **7** | RSW_Mee/Faa/Laa creatures stay on `wildAnimals`; +3 catch items |
 | Twilight Deep (`RUT_TwilightSea` · salt, HELD) | **niim** | kellu | oobo | murrol | tikkarr | pallu | hollu | nuudal | **8** | — |
-| The Scald (`RUT_TheScald` · UNMEASURED) | **eesh** | — | — | — | karrash | — | saal | muddal | **4** | — |
+| The Scald (`RUT_TheScald` · UNMEASURED) | **eesh** | — | — | — | karrash | (bladderboil catch — sibling doc, §2E) | saal | muddal | **4** | — |
 | Rust Cathedral (`AB_MechanoidIntrusion` · canals) | — | — | — | **veen** | — | — | — | — | **1** | — (ruling: the eels alone) |
 | Wasteland brine (`Wasteland` · salt) | — | — | — | — | tekk | — | — | **drazz** | **2** | — |
 | | | | | | | | | | **32** | |
@@ -264,17 +285,36 @@ at three options; the glass pearl stays the headline.
 The planet's one *lush* water: explosive growth, fruit that yearns to be eaten,
 churnmud that swallows things, root causeways, and the Lungers — huge submerged
 predators for whom crossing water is the scariest routine act in the biome
-(`the_greentide.md` §4, §8b). Ratified: `RSW_Mee` 0.4 common, `RSW_Faa`/`RSW_Laa`
-0.3 uncommon, `maxFishPopulation` 720 — the scalefish stay and the commission
-builds the rest of the river around them. This is the fresh water the owner's
-"plethora" most obviously wants.
+(`the_greentide.md` §4, §8b). Ratified: mee 0.4 common, faa/laa 0.3 uncommon,
+`maxFishPopulation` 720 — the scalefish stay and the commission builds the rest of
+the river around them. This is the fresh water the owner's "plethora" most
+obviously wants.
+
+🔴 **Finding (evening pass):** the ratified weights stand, but the live patch
+`src/RimUtinni/UtinniPatches/Patches/BiomeFishTypes_Greentide.xml` (closed under
+`FISH_TYPES_PATCH_BUILD_1`, `689195d3`) puts `RSW_Mee`/`RSW_Faa`/`RSW_Laa` in the
+buckets — and those defNames are the **race** defs
+(`SeaBeasts_Scalefish.xml`, `ParentName="AnimalThingBase"` with a `PawnKindDef` of
+the same name). The census (`_fish_candidates.json`) called RSW_Faa/RSW_Laa
+"migrations of swfish_Faa/swfish_Laa"; they are not — the race carries
+`specificMeatDef swfish_Faa`/`swfish_Laa` (Mlie's items, `MayRequire`), and RSW_Mee
+has no item at all. Per §0's engine read, a net in this river makes a bare `Pawn`
+with a stack count. Engine-read, not live-tested: the quicktest fishing pass (§5.4)
+proves or disproves it, but the patch names race defs either way and must not.
+So the table names three **catch items**, ⚑ `RSW_MeeCatch` / `RSW_FaaCatch` /
+`RSW_LaaCatch` (RSW_ because the scalefish are canon; the `-Catch` suffix is the
+bladderboil precedent, `RUT_BladderboilCatch`) — shoal register, vanilla `FishBase`
+stats, laa at MarketValue 9 as the prized one; art is the scalefish mockup at
+item scale. The alternative — Mlie's `swfish_Faa`/`swfish_Laa` under `MayRequire`,
+no mee — is §6.7's other option.
 
 | bucket | contents |
 |---|---|
-| `freshwater_Common` | RSW_Mee 0.4 · **RUT_Zeev 0.4** · **RUT_Uvva 0.3** · **RUT_Karrun 0.3** · **RUT_Dubbol 0.2** |
-| `freshwater_Uncommon` | RSW_Faa 0.3 · RSW_Laa 0.3 · **RUT_Lozh 0.3** · **RUT_Saava 0.25** · **RUT_Tuun 0.15** |
+| `freshwater_Common` | **RSW_MeeCatch 0.4** · **RUT_Zeev 0.4** · **RUT_Uvva 0.3** · **RUT_Karrun 0.3** · **RUT_Dubbol 0.2** |
+| `freshwater_Uncommon` | **RSW_FaaCatch 0.3** · **RSW_LaaCatch 0.3** · **RUT_Lozh 0.3** · **RUT_Saava 0.25** · **RUT_Tuun 0.15** |
 | `rareCatchesSetMaker` | **RUT_RareGreentideCatches** (§2C.rare) |
 | `maxFishPopulation` | 720 stands |
+| creatures, untouched | `RSW_Mee`/`RSW_Faa`/`RSW_Laa` stay on `wildAnimals` (`BiomeCast_Ashkarr.xml`, `RUT_Miasma.xml`) — the dual-placement ruling is honoured with the right def on each side |
 
 **zeev** — squid, common. *jet.*
 > A hand-long river squid, green-gold, that lives in the fast clean reaches and
@@ -347,7 +387,7 @@ three options): (weight 4) **RUT_LungerFry** ×1 — a fish item, not a creature
 eat it now, before it eats you next year" — shoal stats, MarketValue 12, the
 Greentide's one prize fish; (weight 2) **a karrun's find** — `ThingSetMaker_StackCount`
 on `ComponentIndustrial` ×1, the churnmud giving back what it swallowed; (weight 1)
-`RSW_Laa` ×3–4 — "fruit-fat, a whole family at once." No corpses; the Lungers
+`RSW_LaaCatch` ×3–4 — "fruit-fat, a whole family at once." No corpses; the Lungers
 themselves are creature defs owed to the Greentide roster, not this table.
 
 ### 2D. The Twilight Deep — under the roof (`RUT_TwilightSea` · saltwater · HELD)
@@ -460,9 +500,16 @@ margin is `SCALD_MECHANICS_1`'s, not this table's.
 | bucket (fresh or salt per the terrain read) | contents |
 |---|---|
 | `_Common` | **RUT_Eesh 1.5** · **RUT_Muddal 0.8** |
-| `_Uncommon` | **RUT_Karrash 1** · **RUT_Saal 0.5** |
+| `_Uncommon` | **RUT_Karrash 1** · **RUT_Saal 0.5** · `RUT_BladderboilCatch` 0.5 (sibling doc, below) |
 | `rareCatchesSetMaker` | **RUT_RareScaldCatches** (§2E.rare) |
 | `maxFishPopulation` | ⚑ low — a margin harvest, a third of the Cracked Lands' 90 in spirit |
+
+**Fifth line, from a sibling commission:** `RUT_BladderboilCatch` — the kettle-jelly
+of `creatures/RUT_hydrocarbon_ecology_commission.md` §10c, a floater-register catch
+item (nutrition 0.10, market 3, this doc's §0 envelope) paired with its own
+`wildAnimals` pawn, two defs by that doc's design. It is specified THERE and only
+*placed* here; this table does not re-describe it. ⚑ Bucket and weight are that
+doc's proposal (uncommon); §6.8 asks whether it rides this build or its own.
 
 **eesh** — shoal, common (1.5). *the silver.* — **Owed def; full spec §4.1.**
 
@@ -578,6 +625,19 @@ every dry biome. The Miasma stays a fauna register (nursery juveniles as
 precedent: `RUT_LungerFry` (§2C.rare) is a *fish item*, not a juvenile creature,
 and does not touch that register. The 16-biome strip (`689195d3`) stands, with the
 one deliberate re-fill in §2G.
+
+**The sea-beast family is not duplicated.** The 18 `RSW_` creatures of
+`sea_beasts_roster.md` (`SeaBeasts_Colo/Colossi/Opee/Sando/Scalefish/Swarm.xml`)
+and the Miasma nursery juveniles (`RUT_MiasmaNurseryJuveniles.xml`, `4b1f5b71`) are
+race defs on `wildAnimals` — the Grey Sea's fauna and the Miasma's nursery, both
+ruled no-`fishTypes` waters. Nothing in this doc shares a def, a name or a water
+with them: the swarm trio (pale yobshrimp, silt lamprey, rust nipper) are
+creature-scale carcass-strippers of the brine; this doc's crustaceans and eels are
+catch-scale and live in fresh or under-roof water. The kinship of register is
+deliberate. The only two contacts are the ones already written: the scalefish catch
+items (§2C) and the colo corpse in the Twilight rare table (§2D.rare — the vanilla
+`RareFishingCatches_Hot` predator-corpse pattern, already used by
+`RSW_RareSandCatches`).
 
 ---
 
@@ -713,9 +773,16 @@ apex body (corpse in the rare table). Lands as an item with no C#.
 
 ## 5. What the build item does (sketch for the ratifying pass)
 
+0. 🔴 **Repair before anything else**: `BiomeFishTypes_Greentide.xml` names race
+   defs (§2C). Whether the deployed copy matches the repo copy is UNMEASURED from
+   this seat; either way the fix is the three catch items (or §6.7's Mlie option)
+   and a rewrite of the patch's three entries. It is a defect in a *closed* item —
+   file it as its own item (⚑ `GREENTIDE_FISH_ITEMS_FIX_1`) so it can land before
+   the full bestiary does, and so a quicktest fishing pass proves the §0 read.
 1. **One new mod folder**, campaign tier: `src/RimUtinni/AshkarrWaters/`
    (packageId `mandrake.rut.ashkarrwaters`, display "RimUtinni: Ash'karr Waters"),
-   holding `Defs/ThingDefs_Items/` (32 fish + 4 prizes, one file per water),
+   holding `Defs/ThingDefs_Items/` (32 fish + 4 prizes, one file per water; the
+   3 scalefish catch items go in `SWBestiary` beside their creatures, RSW_ tier),
    `Defs/ThingSetMakerDefs/` (6 tables), `Textures/RimUtinni/AshkarrWaters/`.
    ⚑ Alternative: fold into `UtinniPatches/Defs/` — a question for the owner
    (§6.3); a separate mod keeps the art wave and the deploy tool's unique-folder
@@ -764,6 +831,15 @@ apex body (corpse in the rare table). Lands as an item with no C#.
 6. **`RUT_LungerFry`** puts a Lunger on the Greentide table before the Lunger
    creature exists in the roster. Keep the fry now, or hold it until the
    Greentide roster names its Lunger?
+7. **The scalefish catch items (§2C)** — (a) our own `RSW_MeeCatch`/`FaaCatch`/
+   `LaaCatch`, three new item defs with the mockup art at item scale (proposed:
+   the river's headline fish should not depend on a donor mod), or (b) Mlie's
+   `swfish_Faa`/`swfish_Laa` under `MayRequire` and no mee catch at all, or (c) both
+   — ours by default, Mlie's as the `MayRequire` fallback. And: does the repair
+   ride this build or its own item (§5.0)?
+8. **The bladderboil catch (§2E)** — accept the hydrocarbon commission's fifth
+   Scald line at uncommon 0.5 as written there, and does it build with this mod
+   or with that commission's own item?
 
 ---
 
@@ -788,5 +864,16 @@ apex body (corpse in the rare table). Lands as an item with no C#.
   string (`JawaVoice_prisoners.xml`) — pawn-name and vocable pools, a different
   register from creature labels. Nothing here reuses a name from the land
   bestiary; shared roots (`-rrik`, `karr-`, `vh-`) are deliberate kinship.
+- Evening reconciliation (second Fable pass, same day): read the six
+  `SeaBeasts_*.xml` race files, `sea_beasts_roster.md`,
+  `sea_beasts_family_review_grid_key.md`, `RUT_MiasmaNurseryJuveniles.xml` and
+  the Miasma/Greentide `wildAnimals` wiring (`BiomeCast_Ashkarr.xml`,
+  `RUT_Miasma.xml`); `creatures/RUT_hydrocarbon_ecology_commission.md` §10c (it
+  cites this doc's Scald table and adds the bladderboil line — folded in, §2E);
+  the four live `BiomeFishTypes_*`/`SandFishing_*` patches; the engine path
+  `FishChance` → `WaterBody.SetFishTypes` → `FishingUtility.GetCatchesFor` →
+  `ThingMaker.MakeThing` via RimSage (§0's second paragraph and §2C's finding).
+  The 32 names re-swept against everything built tonight: no new collision
+  (`vhessa`/`eesh` hits in the hydrocarbon doc are citations of this one).
 - ⚑ marks an invented rule or an unmeasured assumption throughout; nothing
   marked ⚑ is presented as ruled.
