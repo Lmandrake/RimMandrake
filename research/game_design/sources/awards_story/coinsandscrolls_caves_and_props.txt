@@ -1,0 +1,52 @@
+
+Caves are hard.
+Patrick Stuart
+wrote
+Veins of the Earth
+, a "pitch-black brick of why caves hate you". It's got a system for generating caves, and you can use it to make stuff like this.
+
+And that's fairly neat.
+
+The little squares are caves. The numbers inside are their size. The lines between them are the passages that connect them. The top left face of the cave is north, top right is east, bottom left is west, bottom right is south, flat line at the top is up, flat line at the bottom is down.
+
+But it's slow, and it's still a sheet of paper.
+Here's another way to build caves.
+
+Step 1: Real Caves
+
+NPmaps
+
+Real caves are messy. Go look at a few to get a sense of how complicated they really are.
+
+Step 2: Materials
+
+Get some
+oven-bake poylmer clay that looks like stone.
+Most craft stores sell it.
+Get some small
+rare earth magnets
+.
+
+Step 3: Sculpt
+
+Make a bunch of cave pieces. Divide them into two categories: Caves and Passages. Passages join Caves together. Get weird. Use black clay as supports if the pieces are too thin.
+
+Step 4: Assemble
+
+Bake, Drill in holes, glue magnets. All the Caves should have north-pole-sides out, all the Passages should have south-pole-sides out, so the order always goes Cave-Passage-Cave-Passage. Multiple connecting points are great. You can add dead ends as well.
+
+Step 5: Admire Your Handiwork
+
+Here's
+a few caves I tossed together using 10 pieces.. I tried to stick to "simple" pieces for
+this test. By then end, I should have 30-40 pieces of varying
+complexity, colour, and shape that I can use to build caves on the fly.
+
+I can now run a chase sequence in a cave without worrying about mapping. I can just throw on pieces as the PCs explore.
+You could paint on scale lines if you wanted to, or just eyeball it. You could add a few "city" pieces and say that the caves are enormous.
+
+EDIT 1: More caves
+
+The next batch of caves is done. I used the natural shearing properties of the stone-like clay to get "jagged" rock portions, as opposed to the smooth/water-carved caves.
+
+s

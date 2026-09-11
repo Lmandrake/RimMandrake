@@ -1,0 +1,645 @@
+
+Back in the day, variant monsters were classic GM dick moves.
+
+"Oh, you thought you were going to fight a
+red
+dragon, so you stocked up on potions of fire resistance. You were deceived! This is a
+pthumeriarian blue
+dragon, which appears identical to red dragon but breathes ice instead. Hah! Got you now! Looks like you should have read the Monster Manual VI and anticipated such a possibility!"
+
+Etc.
+
+Fred Augis
+
+These days, that kind of behavior isn't well respected, and for good reason. Instead, I've tried to make 1d100 Variant Skeletons that are compact
+OSR-type challenges
+. Each type should be:
+
+-interesting to fight
+
+-exploitable
+
+-memorable
+
+-potentially telegraphed
+
+They are low on detail but, hopefully, provide some interesting ideas for a room, a dungeon, a random encounter, or a summonable undead helper.
+If you want more skeletons and more stats, Paper Elemental has a PDF
+here
+.
+
+1d100
+
+Skeletons
+
+Description
+
+Undead
+
+1
+
+Regular Skeleton
+
+Grabby hands.
+
+2
+
+Armed Skeleton
+
+Sword and shield.
+
+3
+
+Armed Skeleton
+
+Big rusty axe. Swings overhand.
+
+4
+
+Armed Skeleton
+
+Spear and shield. Circles and stabs.
+
+5
+
+Armed Skeleton
+
+Bow and arrows. Shockingly accurate.
+
+6
+
+Armoured Skeleton
+
+Rusty horned helmet. Unusually tough.
+
+7
+
+Armoured Skeleton
+
+Scraps of leather and chain. Traps swords.
+
+8
+
+Armoured Skeleton
+
+Full plate, hinged visor, sword, shield. Clang. Clang. Clang.
+
+9
+
+Valuable Skeleton
+
+Gems in eye sockets.
+
+10
+
+Valuable Skeleton
+
+Coated in gold foil.
+
+11
+
+Royal Skeleton
+
+Wears a crown, carries a scepter, directs others.
+
+12
+
+Decorated Skeleton
+
+Covered in brightly coloured paint. Smears easily.
+
+13
+
+Knight Skeleton
+
+Skeleton with a sword on a skeleton horse.
+
+14
+
+Two-Headed Skeleton
+
+Slightly smarter than average.
+
+15
+
+Four-Armed Skeleton
+
+Additional attack. Lots of grappling.
+
+16
+
+Four-Armed Skeleton
+
+With four curved swords. Like a blender.
+
+17
+
+Long Arm Skeleton
+
+Attacks with whip-like many-jointed arms.
+
+18
+
+Ogre Skeleton
+
+Thick skull. Big and dumb and mean.
+
+19
+
+Giant Skeleton
+
+Crouched and bent. Way too fast for its size.
+
+20
+
+Gas Burst Skeleton
+
+Hollow bones filled with toxic green fumes.
+
+21
+
+Dust Skeleton
+
+Explodes into choking bone dust. Too easy to kill.
+
+22
+
+Floating Skelehead
+
+Flying skull dragging a flail body.
+
+23
+
+Skeleton Jelly
+
+Invulnerable skeleton coated in orange slime.
+
+24
+
+Vitrified Skeleton
+
+Blasted into cloudy glass and carbon chunks.
+
+25
+
+Ash Skeleton
+
+Coated in volcanic dust and stone.
+
+26
+
+Bloody Skeleton
+
+Coated in blood and scraps of flesh.
+
+27
+
+Tar Skeleton
+
+Coated in non-flammable sticky pitch.
+
+28
+
+Fire Skeleton
+
+On fire, somehow. Lobs fireballs and hops around.
+
+29
+
+Seductive Skeleton
+
+Poses against wall, waggles hips suggestively.
+
+30
+
+Beehive Skeleton
+
+Swarm of bees in the ribcage.
+
+31
+
+Hibernaculum Skeleton
+
+Tangle of snakes in the ribcage and skull.
+
+32
+
+Hibernaculum Skeleton
+
+Cluster of bats in the ribcage and skull.
+
+33
+
+Droning Skeleton
+
+Hive of stirges in the ribcage and skull.
+
+34
+
+Exo-Skeleton
+
+Giant crab shell. Attack its weak spot.
+
+35
+
+Exo-Skeleton
+
+Shed spider skin, coated in hair.
+
+36
+
+Dog Skeleton
+
+Bites and hunts.
+
+37
+
+Bird Skeleton
+
+Small. Tries to peck out your eyes.
+
+38
+
+Horse Skeleton
+
+Panics. Not smart, but very leggy.
+
+39
+
+Giant Fish Skeleton
+
+Maw full of sharp teeth.
+
+40
+
+Giant Snake Skeleton
+
+Skitters on ribcage legs.
+
+41
+
+Nesting Skeleton
+
+Skeleton with another smaller skeleton inside, etc.
+
+42
+
+Inverted Skeleton
+
+Walks on hands, kicks you in the face.
+
+43
+
+Ball Skeleton
+
+Fifty skeletons mashed together. Crawls and rolls.
+
+44
+
+Wheel Skeleton
+
+Rolls at a blistering pace, runs people over.
+
+45
+
+Skelecopter
+
+Spinning knife-edged arms let the skeleton fly.
+
+46
+
+Rocket Punch Skeleton
+
+Fires one arm like a missile.
+
+47
+
+Ribcage Maw Skeleton
+
+Tries to bite people to death with its chest.
+
+48
+
+Ghost Skeleton
+
+Poltergeist manipulating bones. Floaty and wobbly.
+
+49
+
+Dancing Skeleton
+
+Will try to dance with the living. May pull their arms off.
+
+50
+
+Fossil Dinosaur
+
+Stuck halfway into the walls.
+
+Not Undead
+
+51
+
+Painted Human
+
+Skinny person in black and white paint. Realistic.
+
+52
+
+Disguised Human
+
+Person in very deceptive black and white clothing.
+
+53
+
+Disguised Human
+
+Person in black clothing with a skeleton tied to it.
+
+54
+
+Disguised Human
+
+Person in skeleton armour.
+
+55
+
+Incredibly Old Human
+
+Nearly transparent skin, stringy hair, knobbly fingers.
+
+56
+
+Cursed Human
+
+Cursed by a witch to look like a skeleton. Can only say
+"Ack".
+
+57
+
+Wereskeleton
+
+Human by day, skeleton by the light of the moon.
+
+58
+
+Cloth Skeleton
+
+Animated by painted spells.
+
+59
+
+Paper Skeleton
+
+Folded from one sheet of enchanted paper.
+
+60
+
+Chalk Skeleton
+
+Carved and articulated golem. Squeaky and dusty.
+
+61
+
+Straw Skeleton
+
+Tightly wound straw limbed golem. Rustic.
+
+62
+
+Wood Skeleton
+
+Carved and articulated golem. Brass hinges.
+
+63
+
+Wired Skeleton
+
+Controlled by electrified wires and a golem brain.
+
+64
+
+Wall Skeleton
+
+2D cutout, slides along walls, takes over your shadow.
+
+65
+
+Ooze Skeleton
+
+Bones motivated by transparent jelly.
+
+66
+
+Plant Skeleton
+
+Bones motivated by parasitic vines.
+
+67
+
+Rat War-Engine
+
+Skeleton controlled by rats with pulleys and levers.
+
+68
+
+Mimic Skeleton
+
+Just another bizarre mimic disguise.
+
+69
+
+Puppet Skeleton
+
+Controlled from above by invisible wires.
+
+70
+
+Puppet Skeleton
+
+Controlled by a telekinetic wizard.
+
+71
+
+Illusory Skeleton
+
+Stop-motion, projected via a magic gem lantern.
+
+72
+
+Illusory Skeleton
+
+Realistic, but projected on a flat plane. Flickers between
+viewers.
+
+73
+
+Illusory Skeleton
+
+Magic projects an image of your skeleton. All actions are
+mirrored.
+
+74
+
+Worm Skeleton
+
+Bones motivated by flesh-eating red worms.
+
+75
+
+Delusion Skeleton
+
+Created by a spell. Only exists in your mind.
+
+76
+
+Delusion Skeleton
+
+Hallucinogenic dust from a rare plant makes you see skeletons.
+
+77
+
+Goblin Skeleton
+
+Too stupid to know it's undead, sneaky enough to get away with
+it.
+
+78
+
+Skeleton Bird
+
+Thin wading bird camouflaged as a hunched-over skeleton.
+
+79
+
+Skeleton Bird
+
+Feathers and legs make a convincing illusion
+
+80
+
+Infernal Skeleton
+
+Summoned from hell itself. Sulphurous, daemonic. Tiny horns.
+
+81
+
+Angelic Skeleton
+
+Halo, wings, ragged white robes.
+
+82
+
+Ivory Skeleton
+
+Incredibly valuable if captured undamaged.
+
+83
+
+Stone Skeleton
+
+Golem carved from white marble. Beautiful. Loves to pose.
+
+84
+
+Ice Skeleton
+
+Summoned from an arctic plane, forced into this shape.
+
+85
+
+Smoke Skeleton
+
+Enchanted grey fog, forced into this shape.
+
+86
+
+Insect Skeleton
+
+Stick-like catacomb insect camouflaged as a skeleton.
+
+87
+
+Rope Skeleton
+
+Made of enchanted white rope, carefully knotted and coiled.
+
+88
+
+Glassflesh Creature
+
+Clear living tissue surrounding a coincidentally humanoid
+skeleton.
+
+89
+
+Skeleton Lure
+
+Anglerfish creature with wobbly skeleton lure.
+
+90
+
+Skeleton Hermit Crab
+
+Skull-shaped crab manipulates other bones with spindly legs.
+
+91
+
+Skeleton Hermit Crab
+
+Each bone is home to one small crab. They work together.
+
+92
+
+Inflatable Skeleton
+
+Special bladder deployed by a small turtle. Scares away
+predators.
+
+93
+
+Bony Lizard
+
+Armour plated in white. Skull looks very odd in profile.
+
+94
+
+Disguised Dryad
+
+Hidden inside of bones so people leave it alone.
+
+95
+
+Lead Skeleton
+
+White lead golem. Dense but soft.
+
+96
+
+Wax Skeleton
+
+Candle golem with a macabre shape.
+
+97
+
+Paper Mache Skeleton
+
+Enchanted and full of delicious candy. Candy may be cursed.
+
+98
+
+Rogue Anatomy Model
+
+Clay organs inside an enchanted clay skeleton. Obeys commands.
+
+99
+
+Octopus Skeleton
+
+Controlled by thin terrestrial octopus. Skittish.
+
+100
+
+Glass Skeleton
+
+Enchanted artistry. Can use to deduce potion effects.

@@ -1,0 +1,776 @@
+
+
+Dungeon stocking is tricky. Over and over, people ask "How much treasure should I include per room / dungeon level / PC?"
+The answer varies enormously between games, 
+GMs
+, and systems.  
+At least one referee and from four to fifty players can be handled in any single campaign, but the referee to player ratio should be about 1:20 or thereabouts. 
+- Men and Magic
+OD&D, with its enormous groups (has no guidelines. AD&D and B/X, with smaller groups, have procedures for dungeon stocking, but not for group size calibration. 
+I didn't intend to include a stocking procedure when I started to write the 
+Treasure Overhaul
+, but testing showed that one was necessary, if I wanted room treasure values to make sense in context. If you'd like to get a preview of the compact 3-page dungeon generator, it's 
+available on my Patreon
+. 
+As previously discussed
+, calculating average treasure value is misleading. Any treasure that includes Gems and Jewellery will have a very skewed distribution.  
+AD&D Room Stocking Method
+
+
+
+
+
+
+
+
+1d20
+ 
+
+
+%
+
+
+Room Contents
+
+
+
+
+
+
+1-12
+
+
+60%
+
+
+Empty
+
+
+
+
+
+
+13-14
+
+
+10%
+
+
+Monster Only
+
+
+
+
+
+
+15-17
+
+
+15%
+
+
+Monster & Treasure
+
+
+
+
+
+
+18
+
+
+5%
+
+
+Special or Stairway
+
+
+
+
+
+
+19
+
+
+5%
+
+
+Trick/Trap
+
+
+
+
+
+
+20
+
+
+5%
+
+
+Treasure Only
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1d100
+
+
+%
+
+
+Treasure (Without Monster)
+
+
+
+
+
+
+1-25
+
+
+25%
+
+
+1,0000cp / level
+
+
+
+
+
+
+26-50
+
+
+25%
+
+
+1,0000sp / level
+
+
+
+
+
+
+51-65
+
+
+15%
+
+
+750ep / level
+
+
+
+
+
+
+66-80
+
+
+15%
+
+
+250gp / level
+
+
+
+
+
+
+81-90
+
+
+10%
+
+
+100 pp / level
+
+
+
+
+
+
+91-94
+
+
+4%
+
+
+1d4 gems / level
+
+
+
+
+
+
+95-97
+
+
+3%
+
+
+1 piece of jewelry / level
+
+
+
+
+
+
+98-00
+
+
+3%
+
+
+Magic (roll once on the Magic Items Table)
+
+
+
+
+With Monster: Roll twice on the Without Monster table and add 10% to the total of each roll. 
+B/X Room Stocking Method
+This is one of the rare cases where B/X method is more complicated than AD&D, for no real benefit.  
+
+
+
+
+
+
+
+
+
+
+1d6
+
+
+%
+
+
+Room Type
+
+
+
+
+
+
+1-2
+
+
+33.3%
+
+
+Monster
+
+
+
+
+
+
+3
+
+
+16.6%
+
+
+Trap
+
+
+
+
+
+
+4
+
+
+16.6%
+
+
+Special
+
+
+
+
+
+
+5-6
+
+
+33.3%
+
+
+Empty
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1d6
+
+
+%
+
+
+Is Treasure Present?
+
+
+
+
+
+
+1
+
+
+16.6%
+
+
+Monster: Y, Trap: Y, Empty: Y
+
+
+
+
+
+
+2
+
+
+16.6%
+
+
+Monster: Y, Trap: Y, Empty: N
+
+
+
+
+
+
+3
+
+
+16.6%
+
+
+Monster: Y, Trap: N, Empty: N
+
+
+
+
+
+
+4-6
+
+
+50.0%
+
+
+Monster: N, Trap: N, Empty: N
+
+
+
+
+Treasure:
+
+
+
+
+
+
+Dungeon Level
+
+
+SP
+
+
+GP
+
+
+Gems
+
+
+Jewelry
+
+
+Magic Items
+
+
+
+
+
+
+1
+
+
+1d6x100
+
+
+50%: 1d6x10
+
+
+5% 1d6
+
+
+2% 1d6
+
+
+2% any 1
+
+
+
+
+
+
+2-3
+
+
+1d12x100
+
+
+50%: 1d6x100
+
+
+10% 1d6
+
+
+5% 1d6
+
+
+8% any 1
+
+
+
+
+
+
+4-5
+
+
+1d6x1,000
+
+
+1d6x200
+
+
+30% 1d6
+
+
+10% 1d6
+
+
+10% any 1
+
+
+
+
+
+
+6-7
+
+
+1d6x2,000
+
+
+1d6x500
+
+
+30% 1d6
+
+
+15% 1d6
+
+
+15% any 1
+
+
+
+
+
+
+8-9
+
+
+1d6x5,000
+
+
+1d6x1,000
+
+
+40% 1d6
+
+
+20% 1d6
+
+
+20% any 1
+
+
+OSE simplifies the first table while keeping the chances the same.
+OSE Compressed Version:
+
+
+
+
+
+
+
+
+1d6
+
+
+%
+
+
+Room Type
+
+
+Chance of Treasure
+
+
+
+
+
+
+1-2
+
+
+33.30%
+
+
+Empty
+
+
+1-in-6
+
+
+
+
+
+
+3
+
+
+16.60%
+
+
+Monster
+
+
+3-in-6
+
+
+
+
+
+
+4
+
+
+16.60%
+
+
+Special
+
+
+None
+
+
+
+
+
+
+5-6
+
+
+33.30%
+
+
+Trap
+
+
+2-in-6
+
+
+Comparing Methods
+In AD&D, there's a 20% chance a room has treasure. In B/X and OSE, there is a 27.7% chance a room has treasure. 
+As previously discussed
+, average values are misleading. The "per level" for gems and jewellery for AD&D keeps the distribution the 
+same. B/X (and OSE) increase the percentage chance of gems, but not the 
+number (until level 8), allowing their always-present coins to dominate.
+On Bluesky, 
+Warren D. suggested
+ looking at the pre-generated treasure values from 
+Monsters and Treasure Assortment
+. I used the 1980 version. The results had a similar shape to AD&D, but different values, and more magic items than AD&D's method would normally generate.
+Maxime Desmettre
+Treasure Overhaul Method
+The simplest method is to use a d100 table.
+
+
+
+
+
+
+
+
+1d100
+
+
+Result
+
+
+
+
+
+
+1-10
+
+
+1,000x1d10cp
+
+
+
+
+
+
+11-50
+
+
+100x1d10sp
+
+
+
+
+
+
+51-90
+
+
+50x1d10gp
+
+
+
+
+
+
+91-93
+
+
+1 Gems
+
+
+
+
+
+
+94-95
+
+
+1 Piece of Jewelry
+
+
+
+
+
+
+96-100
+
+
+Magic Item
+
+
+
+
+However, this method is slow. Gems, Jewellery, and magic items are where the bulk of the treasure-that-feels-like-treasure comes from. Large numbers of low-value coins are useful as a tradeoff in hoards. Take them and risk filling your inventory with low-value loot, leave them and return, melt them down, use them as bribes, etc. But 
+small 
+numbers of low-value coins are just small numbers. They add to verisimilitude, but this is a dungeon. A GM can sprinkle pocket change around without a procedure.
+
+
+
+
+
+
+
+
+1d20
+
+
+Room Treasure
+
+
+
+
+
+
+1-17
+
+
+50x1d10gp per Dungeon Level
+
+
+
+
+
+
+18
+
+
+1 Gem per Dungeon Level
+
+
+
+
+
+
+19
+
+
+1 Piece of Jewellery per Dungeon Level
+
+
+
+
+
+
+20
+
+
+1 Magic Item
+ 
+
+
+
+
+5% gems and 5% jewellery is high. However, it's 1 gem instead of 1d4 in AD&D, which prevents some of the runaway values. It is still possible (though very unlikely) to get a 30,000gp piece of jewellery in a 1st-floor room, but not 6x 30,0000gp pieces of jewellery. 
+So, How Much Treasure?
+The method I'd suggest, if you'd like a procedure, is to put enough treasure to level up  [PCs / 2] -1. E.g the 1st level of a dungeon for a group of 4 PCs would contain [4/2]-1 = ~2,000gp. 
+With an average of 195gp per Room Treasure (call it 200gp), we get:
+2,000 gp required / [400gp*(2/10) + 200gp*(1/10)) = 2,000gp / [100gp] = 20 rooms required on a Level 1 dungeon for 4 PCs. 
+Remember the skewed treasure value distribution, monster XP, treasure types and hoards, traps that contain treasure, etc.  
+The formula isn't really designed for this sort of calculation though. It's a quick way to check results. Too much treasure is less of a problem than too little treasure, thanks to the XP cap. "A character should never be given enough XP in a single adventure to advance more than one level of experience." Since mundane gear is cheap, it only really affects hirelings and side projects. Too many magic items is a problem, but too many coins generally isn't.
+Daniel Collins, who is very experienced in this sort of thing
+, wanted "a first level of a dungeon to level-up a party of five fighters, i.e., give 2,000×5 = 10,000 XP" That is higher than the room-treasure-only method, but well within the bounds of the results this generator can produce.
+
+
+
