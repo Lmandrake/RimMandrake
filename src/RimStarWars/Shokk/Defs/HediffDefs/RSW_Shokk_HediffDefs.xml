@@ -25,7 +25,6 @@
       </li>
       <li Class="HediffCompProperties_TendDuration">
         <severityPerDayTended>-0.9</severityPerDayTended>
-        <tendAllowed>true</tendAllowed>
       </li>
     </comps>
     <stages>
