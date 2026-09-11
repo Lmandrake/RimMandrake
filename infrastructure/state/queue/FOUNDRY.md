@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T17:53:20Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-11T19:02:49Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -684,14 +684,23 @@ kind:     task
 summary:  Standing owner instruction: "there should always be at least one agent
 prose:    infrastructure/state/items/ART_REGEN_WAVE2_QUEUE_1.md
 
-## SHIP_VERMIN_MOD_1 ShipVermin mod: gather ALL ship-infesting critters (mynock first) - mechanics, creatures, future ideas; cute to hideous; inside and vacuum-capable - owner ruled 2026-09-11
+## GREENTIDE_STANDALONE_MOD_1 Greentide biome ships as its own RimMandrake-tier mod — owner ruled 2026-09-11 (churnmud card): repackage the greentide kit + biome content under its own packageId per NAMING_SCHEME_PLAN
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  - New RimMandrake-tier mod "ShipVermin" (packageId per
-prose:    infrastructure/state/items/SHIP_VERMIN_MOD_1.md
+summary:  - Package the Greentide biome + its kit (design/Jawa/worldbuilding/biomes/
+prose:    infrastructure/state/items/GREENTIDE_STANDALONE_MOD_1.md
+
+## SHOKK_RSW_MOD_1 The Wyyyschokk/Shokk as its own RSW-tier mod (species, ShokkBound, spit defs, sun-scald cripple, emergent-Shokk spawn) - webwork biome mechanics stay RUT - owner ruled 2026-09-11
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Extract the Shokk from the webwork kit into an RSW-tier mod (packageId
+prose:    infrastructure/state/items/SHOKK_RSW_MOD_1.md
 
 ## LOCKJAW_ART_WIRE_IN_1 LOCKJAW_ART_WIRE_IN_1
 state:    doing  (BLOCKED)
@@ -701,15 +710,6 @@ target:   v1
 kind:     build
 summary:  infrastructure/artpipe/done/lockjawimprovear7.json and br7.json (plus
 prose:    infrastructure/state/items/LOCKJAW_ART_WIRE_IN_1.md
-
-## ART_REGEN_WAVE2_WIRE_IN_1 ART_REGEN_WAVE2_WIRE_IN_1
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Second artpipe batch: 4 creatures, 3 facings each (south/east/north), sitting
-prose:    infrastructure/state/items/ART_REGEN_WAVE2_WIRE_IN_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1001,7 +1001,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-blocked:  art in done/ is east-facing-only for 2 of 3 alternateGraphics variants (AA_Lockjaw2, AA_Lockjaw3); def declares no visibleFacing so all 3 facings are real; wiring east-only ships visibly inconsistent per-rotation art. Needs south/north jobs queued or an explicit owner ruling that east-only is acceptable. See items/LOCKJAW_ART_WIRE_IN_1.md
+blocked:  AA_Lockjaw3 (brown) DONE: all 3 facings validated, wired into LockjawArtOverride, deployed, verified live. AA_Lockjaw2 (grey) south facing failed validation 5x (r8-r12) after the broadside-pose prompt bug was found and fixed - stopped retrying per budget; grey stays on donor art (unchanged, internally consistent) until south resolves or owner rules it can ship two-tier. See items/LOCKJAW_ART_WIRE_IN_1.md 2026-09-11 update.
 summary:  infrastructure/artpipe/done/lockjawimprovear7.json and br7.json (plus
 prose:    infrastructure/state/items/LOCKJAW_ART_WIRE_IN_1.md
 
@@ -1015,34 +1015,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## GREENTIDE_STANDALONE_MOD_1 Greentide biome ships as its own RimMandrake-tier mod — owner ruled 2026-09-11 (churnmud card): repackage the greentide kit + biome content under its own packageId per NAMING_SCHEME_PLAN
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  - Package the Greentide biome + its kit (design/Jawa/worldbuilding/biomes/
-prose:    infrastructure/state/items/GREENTIDE_STANDALONE_MOD_1.md
-
-## SHOKK_RSW_MOD_1 The Wyyyschokk/Shokk as its own RSW-tier mod (species, ShokkBound, spit defs, sun-scald cripple, emergent-Shokk spawn) - webwork biome mechanics stay RUT - owner ruled 2026-09-11
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  - Extract the Shokk from the webwork kit into an RSW-tier mod (packageId
-prose:    infrastructure/state/items/SHOKK_RSW_MOD_1.md
-
-## SCENARIO_DURATION_CUT_1 Cut 'ten thousand years' from Scenario_Utinni opening narration (header forbids invented durations) - owner ruled 2026-09-11; reword non-numeric, redeploy
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  - Repo prose pass over the census files: apply the register above. Keep each
-prose:    infrastructure/state/items/SCENARIO_DURATION_CUT_1.md
+_none._
