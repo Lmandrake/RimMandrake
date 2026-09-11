@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_Shokk_SpitWeapon                           mandrake.rsw.shokk
+
+  SHOKK_RSW_MOD_1. The Wyyyschokk's ranged "spit" (webwork_kit_spec.md §3
+  mouth-loom). No new C# combat code: RSW_Gun_ShokkSpit is an ordinary
+  ParentName="BaseWeaponTurret" weapon (the same base vanilla's mechanoid
+  turret-guns use, e.g. Gun_ChargeBlasterTurret,
+  Defs/Biotech/ThingDefs_Races/Races_Mechanoids_SuperHeavy.xml), attached to
+  the Wyyyschokk PAWN via RimWorld.CompTurretGun in the patch file
+  (RSW_Shokk_Wyyyschokk.xml) — CompTurretGun implements IAttackTargetSearcher
+  and slots straight into the vanilla combat AI for any pawn, mechanoid or
+  animal; nothing here is Shokk-specific except the numbers and the projectile.
+-->
+<Defs>
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>RSW_Bullet_ShokkSpit</defName>
+    <label>web-silk glob</label>
+    <graphicData>
+      <texPath>Things/Projectile/Bullet_Small</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(0.85, 0.82, 0.7)</color>
+    </graphicData>
+    <projectile>
+      <damageDef>RSW_Damage_ShokkSpit</damageDef>
+      <damageAmountBase>2</damageAmountBase>
+      <stoppingPower>0</stoppingPower>
+      <speed>45</speed>
+    </projectile>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseWeaponTurret">
+    <defName>RSW_Gun_ShokkSpit</defName>
+    <label>Shokk mouth-loom</label>
+    <description>Not a weapon in the ordinary sense — the ranged spinneret a Wyyyschokk uses to bind prey from a distance before closing in.</description>
+    <graphicData>
+      <texPath>Things/Item/Equipment/WeaponRanged/Autopistol</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0</Mass>
+      <AccuracyTouch>0.85</AccuracyTouch>
+      <AccuracyShort>0.75</AccuracyShort>
+      <AccuracyMedium>0.55</AccuracyMedium>
+      <AccuracyLong>0.30</AccuracyLong>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <defaultProjectile>RSW_Bullet_ShokkSpit</defaultProjectile>
+        <range>14.9</range>
+        <warmupTime>0.6</warmupTime>
+        <defaultCooldownTime>4</defaultCooldownTime>
+        <muzzleFlashScale>0</muzzleFlashScale>
+        <ai_AvoidFriendlyFireRadius>0</ai_AvoidFriendlyFireRadius>
+      </li>
+    </verbs>
+  </ThingDef>
+
+</Defs>

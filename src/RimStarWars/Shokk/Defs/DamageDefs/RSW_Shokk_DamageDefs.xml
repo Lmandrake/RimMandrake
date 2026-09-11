@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_Shokk_DamageDefs                           mandrake.rsw.shokk
+
+  SHOKK_RSW_MOD_1. Re-tokened RSW_ from webwork_kit_spec.md §3's provisional
+  RUT_Damage_ShokkSpit. Near-zero direct damage — the whole point of the spit
+  is the additionalHediffs -> RSW_ShokkBound, not the hit itself. Pattern
+  verified against vanilla's own DamageDef ParentName="Bullet" +
+  additionalHediffs precedent (Defs/Biotech/DamageDefs/Damages_RangedWeapon.xml,
+  BulletToxic).
+
+  Sole-source guard (webwork_kit_spec.md §3): this def yields nothing and
+  creates no Shokkweave/hyperweave; that boundary belongs to
+  SHOKKWEAVE_SOLE_SOURCE_1, unaffected by this mod.
+-->
+<Defs>
+
+  <DamageDef ParentName="Bullet">
+    <defName>RSW_Damage_ShokkSpit</defName>
+    <label>Shokk spit</label>
+    <workerClass>DamageWorker_AddInjury</workerClass>
+    <additionalHediffs>
+      <li>
+        <hediff>RSW_ShokkBound</hediff>
+        <severityPerDamageDealt>0.25</severityPerDamageDealt>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>false</applyAdditionalHediffsIfHuntingForFood>
+    <impactSoundType>Bullet</impactSoundType>
+  </DamageDef>
+
+</Defs>
