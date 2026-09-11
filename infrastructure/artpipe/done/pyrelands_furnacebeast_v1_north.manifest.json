@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 104.44108862098074,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 104.44108862098074,
+  "height": 320,
+  "id": "pyrelands_furnacebeast_v1_north",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789165723,
+    "primary_used_percent": 8.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T10-32-57-01a09187-9613-7680-bc3a-fcadc0f27aa5.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 39.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789139099,
+    "primary_used_percent": 63.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/11/rollout-2026-09-11T07-44-55-01a090ed-bfab-71e0-a883-4fbcab43c632.jsonl",
+    "secondary_resets_at": 1789448705,
+    "secondary_used_percent": 37.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 320,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 320,
+    "id": "pyrelands_furnacebeast_v1_north",
+    "note": "Generated via built-in imagegen and resized to exactly 320\u00d7320. No east-facing reference file was present, so the supplied design description guided consistency.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\pyrelands_furnacebeast_v1_north\\pyrelands_furnacebeast_v1_north.png",
+    "status": "ok",
+    "width": 320
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/pyrelands_furnacebeast_v1_north/pyrelands_furnacebeast_v1_north.png\n    320x320  rgba  72,787 bytes  (104s)\n"
+}
