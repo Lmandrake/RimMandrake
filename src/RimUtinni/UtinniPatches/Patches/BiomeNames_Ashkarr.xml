@@ -29,7 +29,19 @@
        collision rule is); confirm before treating as final.
 
        `SeaIce` (262 tiles) is claimed by no biome sheet - left untouched here,
-       per the item's own note to decide that before labelling. -->
+       per the item's own note to decide that before labelling.
+
+       BIOME_TEXT_PORT_1 (2026-09-11) added the three below: `Scarlands`,
+       `Wasteland` and `AridShrubland` were never touched by this file at all
+       (not an oversight of THIS list — they simply were not on the original
+       30-biome sheet-name census) and so still showed lowercase donor labels
+       ("scarlands", "wasteland", "arid shrubland") to the player. Their own
+       RUT_ BiomeDefs (RUT_Scarlands, RUT_Wasteland, RUT_AridShrubland) already
+       carry the correct campaign label; this only copies each onto the donor
+       defName the tiles actually use, same conditional convention as every
+       other row here. See BiomeDescriptions_Ashkarr.xml (same commit) for the
+       matching description/settleWarning port — that file is the one that
+       actually closes the 4 plot leaks; this one only fixes the label case. -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/label</xpath>
@@ -184,5 +196,31 @@
   </Operation>   <!-- was "extreme desert" - R22 shared def: dune_sea.md + deep_desert.md
                       both paint this, so it takes deep_desert.md's own higher-level
                       title rather than either sheet's regional name -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="Scarlands"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="Scarlands"]/label</xpath>
+      <value><label>the Scarlands</label></value>
+    </match>
+  </Operation>   <!-- was "scarlands" (vanilla Odyssey) - BIOME_TEXT_PORT_1 -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="Wasteland"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="Wasteland"]/label</xpath>
+      <value><label>the Wasteland</label></value>
+    </match>
+  </Operation>   <!-- was "wasteland" (BiomesPlus) - BIOME_TEXT_PORT_1 -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/label</xpath>
+      <value><label>the arid shrubland</label></value>
+    </match>
+  </Operation>   <!-- was "arid shrubland" (vanilla Core) - lowercase kept verbatim to
+                      match RUT_AridShrubland's own <label>, not re-cased here -
+                      BIOME_TEXT_PORT_1 -->
 
 </Patch>
