@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T17:30:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T17:33:05Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -684,6 +684,24 @@ kind:     task
 summary:  Standing owner instruction: "there should always be at least one agent
 prose:    infrastructure/state/items/ART_REGEN_WAVE2_QUEUE_1.md
 
+## ART_REGEN_REGISTRY_1 Art regen registry: artreg.py CLI + registry.jsonl event ledger (target/job identity, repurpose flow, retry cap 3, backfill) + burn-up status render per design/RimMandrake/art_regen_registry_design.md — done=committed, ruled 2026-09-11
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - src/RimMandrake/Utils/artpipe/artreg.py: sole writer of
+prose:    infrastructure/state/items/ART_REGEN_REGISTRY_1.md
+
+## SHIP_VERMIN_MOD_1 ShipVermin mod: gather ALL ship-infesting critters (mynock first) - mechanics, creatures, future ideas; cute to hideous; inside and vacuum-capable - owner ruled 2026-09-11
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - New RimMandrake-tier mod "ShipVermin" (packageId per
+prose:    infrastructure/state/items/SHIP_VERMIN_MOD_1.md
+
 ## PYRELANDS_FACING_COMPLETE_1 PYRELANDS_FACING_COMPLETE_1
 state:    doing
 row:      unassigned
@@ -701,15 +719,6 @@ target:   v1
 kind:     build
 summary:  infrastructure/artpipe/done/lockjawimprovear7.json and br7.json (plus
 prose:    infrastructure/state/items/LOCKJAW_ART_WIRE_IN_1.md
-
-## ART_REGEN_WAVE3_QUEUE_1 ART_REGEN_WAVE3_QUEUE_1
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Standing owner instruction: "always have at least one background sub agent
-prose:    infrastructure/state/items/ART_REGEN_WAVE3_QUEUE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1017,16 +1026,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## ART_REGEN_REGISTRY_1 Art regen registry: artreg.py CLI + registry.jsonl event ledger (target/job identity, repurpose flow, retry cap 3, backfill) + burn-up status render per design/RimMandrake/art_regen_registry_design.md — done=committed, ruled 2026-09-11
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  - src/RimMandrake/Utils/artpipe/artreg.py: sole writer of
-prose:    infrastructure/state/items/ART_REGEN_REGISTRY_1.md
-
 ## GREENTIDE_STANDALONE_MOD_1 Greentide biome ships as its own RimMandrake-tier mod — owner ruled 2026-09-11 (churnmud card): repackage the greentide kit + biome content under its own packageId per NAMING_SCHEME_PLAN
 state:    proposed
 row:      unassigned
@@ -1036,16 +1035,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  - Package the Greentide biome + its kit (design/Jawa/worldbuilding/biomes/
 prose:    infrastructure/state/items/GREENTIDE_STANDALONE_MOD_1.md
-
-## SHIP_VERMIN_MOD_1 ShipVermin mod: gather ALL ship-infesting critters (mynock first) - mechanics, creatures, future ideas; cute to hideous; inside and vacuum-capable - owner ruled 2026-09-11
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  - New RimMandrake-tier mod "ShipVermin" (packageId per
-prose:    infrastructure/state/items/SHIP_VERMIN_MOD_1.md
 
 ## SHOKK_RSW_MOD_1 The Wyyyschokk/Shokk as its own RSW-tier mod (species, ShokkBound, spit defs, sun-scald cripple, emergent-Shokk spawn) - webwork biome mechanics stay RUT - owner ruled 2026-09-11
 state:    proposed
