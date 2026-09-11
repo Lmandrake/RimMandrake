@@ -188,14 +188,14 @@
   },
   "AB_FirevineTree": {
     "file": "AB_FirevineTree.png",
-    "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_FirevineTree.png",
+    "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_FirevineTree/AB_FirevineTreeA.png",
     "origSize": [
       256,
       256
     ],
     "source": "loose",
     "texPath": "Things/Plants/AB_FirevineTree",
-    "variant": "<bare>"
+    "variant": "<engine:AB_FirevineTreeA>"
   },
   "AB_FrostLeaf": {
     "file": "AB_FrostLeaf.png",
@@ -595,25 +595,25 @@
   },
   "AB_SlimyFern": {
     "file": "AB_SlimyFern.png",
-    "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_SlimyFern.png",
+    "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_SlimyFern/AB_SlimyFernA.png",
     "origSize": [
-      128,
-      128
+      117,
+      101
     ],
     "source": "loose",
     "texPath": "Things/Plants/AB_SlimyFern",
-    "variant": "<bare>"
+    "variant": "<engine:AB_SlimyFernA>"
   },
   "AB_SlimyPholiota": {
     "file": "AB_SlimyPholiota.png",
-    "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_SlimyPholiota/AB_SlimyPholiotaA copy.png",
+    "from": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_SlimyPholiota/AB_SlimyPholiotaA.png",
     "origSize": [
-      256,
-      256
+      139,
+      235
     ],
     "source": "loose",
     "texPath": "Things/Plants/AB_SlimyPholiota",
-    "variant": "<dir:ab_slimypholiotaa copy.png>"
+    "variant": "<engine:AB_SlimyPholiotaA>"
   },
   "AB_SlimyTree": {
     "file": "AB_SlimyTree.png",
@@ -1508,7 +1508,7 @@
   },
   "Plant_Alocasia": {
     "file": "Plant_Alocasia.png",
-    "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_alocasia/alocasiaa.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_alocasia/alocasiaa.png",
     "origSize": [
       256,
       256
@@ -1519,14 +1519,14 @@
   },
   "Plant_Ambrosia": {
     "file": "Plant_Ambrosia.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.core/Ambrosia.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.core/Ambrosia_a.png",
     "origSize": [
-      60,
-      40
+      22,
+      20
     ],
     "source": "bundle",
     "texPath": "Things/Plant/Ambrosia",
-    "variant": "<bundle>"
+    "variant": "<bundle:_a>"
   },
   "Plant_Berry": {
     "file": "Plant_Berry.png",
@@ -1545,14 +1545,14 @@
   },
   "Plant_Bloddle": {
     "file": "Plant_Bloddle.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.starwarsanimalcollection/textures/swresource/plantfoodraw/bloddle.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.starwarsanimalcollection/textures/swplants/bloddle/bloddlea.png",
     "origSize": [
-      256,
-      189
+      146,
+      178
     ],
     "source": "bundle",
     "texPath": "swplants/Bloddle",
-    "variant": "<bundle>"
+    "variant": "<bundle:A>"
   },
   "Plant_Brambles": {
     "file": "Plant_Brambles.png",
@@ -1578,14 +1578,14 @@
   },
   "Plant_Bubblespore_Wild": {
     "file": "Plant_Bubblespore_Wild.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.starwarsanimalcollection/textures/swresource/plantfoodraw/bubblespore.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.starwarsanimalcollection/textures/swplants/bubblespore/bubblesporea.png",
     "origSize": [
-      256,
-      184
+      234,
+      149
     ],
     "source": "bundle",
     "texPath": "swplants/BubbleSpore",
-    "variant": "<bundle>"
+    "variant": "<bundle:A>"
   },
   "Plant_Bulrush": {
     "file": "Plant_Bulrush.png",
@@ -1600,7 +1600,7 @@
   },
   "Plant_Bush": {
     "file": "Plant_Bush.png",
-    "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_bush/busha.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_bush/busha.png",
     "origSize": [
       256,
       256
@@ -1622,18 +1622,18 @@
   },
   "Plant_Chakroot_Wild": {
     "file": "Plant_Chakroot_Wild.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.starwarsanimalcollection/textures/swresource/plantfoodraw/chakroot.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.starwarsanimalcollection/textures/swplants/chakroot/chakroota.png",
     "origSize": [
-      256,
-      197
+      122,
+      205
     ],
     "source": "bundle",
     "texPath": "swplants/Chakroot",
-    "variant": "<bundle>"
+    "variant": "<bundle:A>"
   },
   "Plant_Chokevine": {
     "file": "Plant_Chokevine.png",
-    "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_chokevine/chokevinea.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_chokevine/chokevinea.png",
     "origSize": [
       128,
       128
@@ -1644,7 +1644,7 @@
   },
   "Plant_Clivia": {
     "file": "Plant_Clivia.png",
-    "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_clivia/cliviaa.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_clivia/cliviaa.png",
     "origSize": [
       128,
       128
@@ -1655,7 +1655,7 @@
   },
   "Plant_Dandelion": {
     "file": "Plant_Dandelion.png",
-    "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_dandelion/dandeliona.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_dandelion/dandeliona.png",
     "origSize": [
       128,
       128
@@ -1677,14 +1677,14 @@
   },
   "Plant_FelucianGlowspore_Wild": {
     "file": "Plant_FelucianGlowspore_Wild.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.starwarsanimalcollection/textures/swresource/plantfoodraw/felucianglowspore.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.starwarsanimalcollection/textures/swplants/felucianglowspore/felucianglowsporea.png",
     "origSize": [
-      256,
-      256
+      176,
+      225
     ],
     "source": "bundle",
     "texPath": "swplants/FelucianGlowspore",
-    "variant": "<bundle>"
+    "variant": "<bundle:A>"
   },
   "Plant_Fireweed": {
     "file": "Plant_Fireweed.png",
@@ -1699,10 +1699,10 @@
   },
   "Plant_Grass": {
     "file": "Plant_Grass.png",
-    "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_grass/grassa.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_grass/grassa.png",
     "origSize": [
-      64,
-      64
+      56,
+      59
     ],
     "source": "bundle",
     "texPath": "Things/Plant/RG_Grass",
@@ -1732,14 +1732,14 @@
   },
   "Plant_HubbaGourd_Wild": {
     "file": "Plant_HubbaGourd_Wild.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.starwarsanimalcollection/textures/swresource/plantfoodraw/hubbagourd.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.starwarsanimalcollection/textures/swplants/hubbagourd/hubbagourda.png",
     "origSize": [
       256,
-      256
+      185
     ],
     "source": "bundle",
     "texPath": "swplants/HubbaGourd",
-    "variant": "<bundle>"
+    "variant": "<bundle:A>"
   },
   "Plant_HydenockTree_Wild": {
     "file": "Plant_HydenockTree_Wild.png",
@@ -1798,7 +1798,7 @@
   },
   "Plant_Moss": {
     "file": "Plant_Moss.png",
-    "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_moss/mossa.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_moss/mossa.png",
     "origSize": [
       128,
       128
@@ -1809,14 +1809,14 @@
   },
   "Plant_MujaFruit_Wild": {
     "file": "Plant_MujaFruit_Wild.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.starwarsanimalcollection/textures/swresource/plantfoodraw/mujafruit.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.starwarsanimalcollection/textures/swplants/mujafruit/mujafruita.png",
     "origSize": [
-      256,
-      256
+      239,
+      193
     ],
     "source": "bundle",
     "texPath": "swplants/MujaFruit",
-    "variant": "<bundle>"
+    "variant": "<bundle:A>"
   },
   "Plant_Nysyllin_Wild": {
     "file": "Plant_Nysyllin_Wild.png",
@@ -1908,7 +1908,7 @@
   },
   "Plant_ShrubLow": {
     "file": "Plant_ShrubLow.png",
-    "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_shrublow/shrublowa.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_shrublow/shrublowa.png",
     "origSize": [
       128,
       128
@@ -1919,10 +1919,10 @@
   },
   "Plant_TallGrass": {
     "file": "Plant_TallGrass.png",
-    "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_grass/grassa.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_grass/grassa.png",
     "origSize": [
-      64,
-      64
+      56,
+      59
     ],
     "source": "bundle",
     "texPath": "Things/Plant/RG_Grass",
@@ -1996,7 +1996,7 @@
   },
   "Plant_TreeOak": {
     "file": "Plant_TreeOak.png",
-    "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_treeoak/treeoaka.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_treeoak/treeoaka.png",
     "origSize": [
       256,
       256
@@ -2051,10 +2051,10 @@
   },
   "Plant_TreeSnagroot": {
     "file": "Plant_TreeSnagroot.png",
-    "from": "observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/plant/treesnagroot/snagroota.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/plant/treesnagroot/snagroota.png",
     "origSize": [
-      128,
-      128
+      92,
+      100
     ],
     "source": "bundle",
     "texPath": "Things/Plant/TreeSnagroot",
@@ -2062,7 +2062,7 @@
   },
   "Plant_TreeTeak": {
     "file": "Plant_TreeTeak.png",
-    "from": "observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_treeteak/treeteaka.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/regrowth.botr.core/textures/things/plant/rg_treeteak/treeteaka.png",
     "origSize": [
       256,
       256
@@ -2106,10 +2106,10 @@
   },
   "PoisonBrambles": {
     "file": "PoisonBrambles.png",
-    "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonbrambles/bramblesa.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonbrambles/bramblesa.png",
     "origSize": [
-      128,
-      128
+      100,
+      85
     ],
     "source": "bundle",
     "texPath": "Plant/PoisonBrambles",
@@ -2117,7 +2117,7 @@
   },
   "PoisonMushroom": {
     "file": "PoisonMushroom.png",
-    "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonmushroom/poisonmushroomplanta.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonmushroom/poisonmushroomplanta.png",
     "origSize": [
       128,
       128
@@ -2128,10 +2128,10 @@
   },
   "PoisonPlantBush": {
     "file": "PoisonPlantBush.png",
-    "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonbush/bush.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonbush/bush.png",
     "origSize": [
       64,
-      64
+      53
     ],
     "source": "bundle",
     "texPath": "Plant/PoisonBush",
@@ -2139,10 +2139,10 @@
   },
   "PoisonPlantDandelion": {
     "file": "PoisonPlantDandelion.png",
-    "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisondandelion/dandelion.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisondandelion/dandelion.png",
     "origSize": [
-      32,
-      32
+      23,
+      29
     ],
     "source": "bundle",
     "texPath": "Plant/PoisonDandelion",
@@ -2150,10 +2150,10 @@
   },
   "PoisonPlantRaspberry": {
     "file": "PoisonPlantRaspberry.png",
-    "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonraspberryplant/raspberrybusha.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonraspberryplant/raspberrybusha.png",
     "origSize": [
-      64,
-      64
+      56,
+      52
     ],
     "source": "bundle",
     "texPath": "Plant/PoisonRaspberryPlant",
@@ -2161,9 +2161,9 @@
   },
   "PoisonPlantTallGrass": {
     "file": "PoisonPlantTallGrass.png",
-    "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisongrass/poisongrass.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisongrass/poisongrass.png",
     "origSize": [
-      64,
+      57,
       64
     ],
     "source": "bundle",
@@ -2194,10 +2194,10 @@
   },
   "PoisonRafflesia": {
     "file": "PoisonRafflesia.png",
-    "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonrafflesia/rafflesiaa.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonrafflesia/rafflesiaa.png",
     "origSize": [
-      128,
-      128
+      110,
+      111
     ],
     "source": "bundle",
     "texPath": "Plant/PoisonRafflesia",
@@ -2205,10 +2205,10 @@
   },
   "PoisonShrub": {
     "file": "PoisonShrub.png",
-    "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonshrub/shrublowa.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisonshrub/shrublowa.png",
     "origSize": [
       64,
-      64
+      60
     ],
     "source": "bundle",
     "texPath": "Plant/PoisonShrub",
@@ -2216,10 +2216,10 @@
   },
   "PoisonTreeCypress": {
     "file": "PoisonTreeCypress.png",
-    "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisontreecypress/treecypressa.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisontreecypress/treecypressa.png",
     "origSize": [
-      128,
-      128
+      79,
+      122
     ],
     "source": "bundle",
     "texPath": "Plant/PoisonTreeCypress",
@@ -2227,10 +2227,10 @@
   },
   "PoisonTreePalm": {
     "file": "PoisonTreePalm.png",
-    "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisontreepalm/treepalma.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisontreepalm/treepalma.png",
     "origSize": [
       128,
-      128
+      124
     ],
     "source": "bundle",
     "texPath": "Plant/PoisonTreePalm",
@@ -2238,10 +2238,10 @@
   },
   "PoisonTreeWillow": {
     "file": "PoisonTreeWillow.png",
-    "from": "observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisontreewillow/treewillowa.png",
+    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/mlie.advancedbiomes/textures/plant/poisontreewillow/treewillowa.png",
     "origSize": [
-      128,
-      128
+      120,
+      125
     ],
     "source": "bundle",
     "texPath": "Plant/PoisonTreeWillow",

@@ -494,7 +494,7 @@ def trailing_score(want_dirs, have_dirs):
     return n
 
 
-def resolve_texture(tex_path, index, bundle_index=None, own_pkg=None):
+def resolve_texture(tex_path, index, bundle_index=None, own_pkg=None, dir_hint=False):
     """(absolute file, suffix used) for a def's texPath, or (None, None).
 
     The loose ladder first — a loose PNG is what the game itself prefers, and it
@@ -514,6 +514,20 @@ def resolve_texture(tex_path, index, bundle_index=None, own_pkg=None):
     that caused the bug and is refused. (Unless the cache predates the container
     column, in which case there is nothing to judge on and the old permissive
     behaviour stands.)
+
+    🔴 `dir_hint=True` — the caller KNOWS texPath names a directory (Graphic_Random
+    and friends). BUNDLE_SUFFIXES ("_south", "", "_east", "_north", "_side", "_m")
+    are single-FILE forms; they mean nothing for a directory, and the bare ""
+    member is actively dangerous there: `own_pkg` alone cannot break a tie between
+    the real flattened variant (`hubbagourda`) and an unrelated same-mod file that
+    merely happens to share the directory's bare name (`Plant_HubbaGourd_Wild`'s
+    texPath `swplants/HubbaGourd` collided with `swplants/plantfoodraw/hubbagourd
+    .png`, a HARVESTED-ITEM CRATE icon from the same mod — same is_own, same
+    trailing_score, and the bare-name candidate's earlier position in the suffix
+    list (`-i` tie-break) won outright). With dir_hint, only the lettered-variant
+    suffixes are tried here, so a directory texPath can only ever resolve to one
+    of its own flattened variants (or fall through to the alt_stems/by_dir rungs
+    below), never to an unrelated flat file that happens to share its stem.
     """
     if not tex_path:
         return None, None
@@ -572,8 +586,10 @@ def resolve_texture(tex_path, index, bundle_index=None, own_pkg=None):
         own = norm_pkg(own_pkg)
         blind = not getattr(bundle_index, "has_paths", False)
         best = None
-        for i, suf in enumerate(BUNDLE_SUFFIXES + BUNDLE_VARIANT_SUFFIXES
-                                + BUNDLE_CAPITAL_SUFFIXES):
+        suffix_ladder = ((BUNDLE_VARIANT_SUFFIXES + BUNDLE_CAPITAL_SUFFIXES) if dir_hint
+                         else (BUNDLE_SUFFIXES + BUNDLE_VARIANT_SUFFIXES
+                               + BUNDLE_CAPITAL_SUFFIXES))
+        for i, suf in enumerate(suffix_ladder):
             # ⚠️ `.lower()` is load-bearing here exactly as it is for the loose
             # capital-variant rung above: every bundle_index key is lowercased
             # by _container_segs, but BUNDLE_CAPITAL_SUFFIXES is the literal
