@@ -167,3 +167,108 @@ spec's own "smallest template in the roster." Three forms (`buried`,
 Staying `doing`. This is real, bounded progress (one more archetype,
 offline-verified, two real bugs caught before shipping) on a genuinely
 large multi-week item — not a stall, and not a false close.
+
+## Consolidation pass (2026-09-10/11, FOUNDRY, offline-only per dispatch)
+
+Picked up after a further four ledger notes (05:43Z–09:11Z, 2026-09-10)
+built 8.4/8.5/8.6/8.9/8.10/8.11/8.12/8.13 on top of the state above — **12
+of 14 §8 archetypes are now offline-built and lint/selftest-clean**: only
+8.7 (oil refinery) and 8.8 (gas-geyser station) remain, both still
+genuinely blocked, confirmed this pass:
+
+- `required_mods.md`'s Rimefeller/VHGE buildability-strip lines have
+  drifted to **:545 and :572** (the doc grew since §9/§8.7/§8.8 cited
+  `:517`/`:489` — those line numbers are now stale, worth a one-line fix
+  in `structure_procedural_spec.md` next time it's touched, not done
+  here to keep this pass's diff to what it actually built). Content
+  unchanged: "strip buildability from the pump/extractor" and "place
+  pre-built + strip buildability" are still written as **owed**, not
+  done — grepped `forbidden_mods.md` and every Cherry-Picker config for
+  "Rimefeller"/"VHGE": zero hits. The prerequisite genuinely has not
+  landed; 8.7/8.8 stay blocked, correctly, not this pass's to force.
+
+**Corrected the wiring picture criteria #2 got wrong.** The prior note
+above says "the promise-shaped ones... are not blocked on that, only on
+being built" — checked directly against `src/` rather than taken on that
+word, and two things were wrong with it:
+
+1. **Wiring status of the 7 EARLIEST archetypes was never actually
+   surveyed.** `homestead.lua` (8.1), all five `moisture_*.lua` files
+   (8.2) and `mining_site.lua` (8.3) were already wired to a live
+   responder (`RUT_Homestead`/`RUT_MoistureFarmRuined`/`RUT_MoistureHomestead`/
+   `RUT_MoistureVaporatorField`/`RUT_MoistureWalledCompound`/`RSW_MoistureFarm`/
+   `RSW_MiningSite` TileMutatorDefs, each naming its own `GenStepDef` that
+   replays a `Templates/*.txt` export via `GenStep_RimplacePlan`) — this
+   had simply never been checked against the actual `src/RimUtinni/` and
+   `src/RimStarWars/` mod folders before now, only assumed unwired by
+   extrapolation from the 5 *unrelated* `design/Jawa/templates/*.lua`
+   files (`boneyard`/`waste_camp`/`long_crossing`/`dwelling`/`nursery`)
+   that really are unwired. **9 archetypes were actually unwired**:
+   8.4/8.5/8.6/8.9/8.10/8.11/8.13 (built, no responder anywhere in `src/`)
+   plus 8.12 (a transform, not a standalone responder) and 8.14 `cache`
+   (whisper-shaped, correctly still blocked).
+2. **"Inhabited wiring" (`TileMutatorDef` naming `Inhabited_Cast` +
+   `RM_InhabitedStock`) is not an alternative route for placing a
+   structure at all.** Read `GenStep_InhabitedCast.cs`/`GenStep_InhabitedStock.cs`
+   and `TileMutatorDefs_Inhabited.xml` directly: those two GenSteps spawn
+   a faction's pawn roster and their stock/larder onto a bare tile — no
+   geometry, no plan file, nothing rimplace-shaped. The wiring these
+   archetypes actually need is the `GenStepDef`-replays-a-plan-file route
+   (the second option this item's own spec always listed), and the
+   working convention (confirmed in all 7 already-wired examples) is to
+   put **both** in the same `TileMutatorDef.extraGenSteps`: the
+   archetype's own `GenStepDef` first, then `Inhabited_Cast`/
+   `RM_InhabitedStock` under `MayRequire="mandrake.rm.inhabited"` — the
+   structure gets built, and if the tile also carries a
+   `WorldObject_Inhabited` place, its cast and goods land inside it.
+
+**Wired one of the 9**, following that exact precedent (byte-for-byte the
+same shape as `RSW_MiningSite`'s pair), to prove the corrected read
+rather than just assert it: **`road_warehouse.lua` (8.5)** — chosen because
+its own spec line names an explicit, non-whisper responder relationship
+("catalogue E2, `AncientWarehouse` landmark exists — this is its
+responder"), so wiring it needed no whisper-subsystem judgment call.
+
+- Swept 20 seed/road_dir combinations (seeds 0-9 × `road_dir` S/E) at the
+  production canvas: 0 ERRORs. (The original build pass already ran the
+  real due-diligence sweep — 1000+ combinations — this was a lighter
+  confirmation before wiring, not a re-author.)
+- `rimplace verify`: **UNMEASURED**, correctly — tonight's capture
+  (`2026-09-11T05-27-17Z`) and its 08:36Z JSON fallback both fail the
+  same readability check every other verify call hit tonight; this is
+  the established environment gap, not new. The template's own header
+  already carries manual RimSage `search_defs` confirmation for every
+  defName, same discipline as every prior archetype.
+- Exported the shipped bake (28×20, `techLevel=Industrial`, `road_dir=S`,
+  `state=lived`, seed 7) to
+  `src/RimStarWars/StructureInjectionsSW/Templates/road_warehouse.txt`.
+- New: `src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_RoadWarehouse.xml`
+  (`RSW_GenStep_RoadWarehouse`) and
+  `.../Defs/TileMutatorDefs_RoadWarehouse.xml` (`RSW_RoadWarehouse`,
+  `MayRequire="Ludeon.RimWorld.Odyssey"` matching every sibling
+  TileMutatorDef in this mod).
+- `validate_patch.py` on the whole `StructureInjectionsSW/Defs/` folder:
+  0 errors, 0 warnings, no defName collisions with the mod's existing 10
+  files. `run_selftests.py`: unchanged by this pass (XML + an exported
+  plan file only, no engine/Python touched).
+- **Not placed on any Ash'karr tile** — same deferral as every sibling
+  responder; that step is the bridge + a placement decision, out of
+  scope for this pass by its own dispatch.
+
+**Remaining wiring debt, now accurately stated**: 8.4 (trading_post), 8.6
+(garrison_tiny), 8.9 (crashed_ship), 8.10 (dead_caravan), 8.11
+(beast_lair), 8.13 (beast_pens) are built and offline-verified but still
+have no `GenStepDef`/`TileMutatorDef` pair anywhere in `src/` — each is a
+short, mechanical repeat of tonight's `road_warehouse` pattern (export +
+two small XML files), not blocked on anything but being done. 8.12
+(`battle_site`) is a transform applied to a host plan, not a standalone
+responder, and needs a decision on which archetype(s) it transforms
+live — likely a BENCH/owner call, not invented here. 8.14 (`cache`) stays
+blocked on the whisper-selector subsystem, unchanged.
+
+Criteria #1 stands at **12/14** (was 4/14 at this item's last full count).
+Criteria #2 stands at **8/14 wired** (was undercounted as ~3/14 by
+extrapolation; now counted directly against `src/`). Criteria #3 (live
+placement) unchanged: **0/anything**, correctly out of scope here.
+
+Staying `doing`.
