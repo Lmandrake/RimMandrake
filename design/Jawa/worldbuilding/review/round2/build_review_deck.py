@@ -245,7 +245,7 @@ def is_biome_target(tgt: str) -> bool:
     OUT or OPEN and must not spawn its own fake biome slide."""
     return bool(tgt) and tgt not in NON_BIOME_TARGETS and not tgt.startswith("GROUP")
 
-RESERVED_TAGS = ("FACTION-RESERVED", "INJECTABLE-RESERVED", "DUNGEON-RESERVED")
+RESERVED_TAGS = ("FACTION-RESERVED", "INJECTABLE-RESERVED", "DUNGEON-RESERVED", "MERGE-RESERVED")
 def is_reserved(note: str) -> bool:
     """A row can carry decision 'in'/'move' AND a *-RESERVED tag at the same
     time (sitting rulings sometimes leave the decision field stale while the
