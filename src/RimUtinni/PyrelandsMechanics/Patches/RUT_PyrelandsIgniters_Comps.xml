@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_PyrelandsIgniters_Comps.xml    PYRELANDS_MECHANICS_1 · 2026-09-11
+  ============================================================================
+  Attaches this mod's comps to the two igniter defs, which live in another mod
+  (mandrake.rut.patches,
+  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml).
+
+  🔑 WHY A PATCH AND NOT A NODE IN THE DEF ITSELF. A <li Class="..."> in a def
+  is resolved against the loaded assemblies at def-parse time; writing these
+  comps directly into RUT_PyrelandsFauna.xml would make that mod's defs depend
+  on THIS mod's DLL and would break the moment the two are loaded apart. A
+  patch from the later-loading mod has no such coupling: with this mod absent
+  the igniters are simply ordinary animals again, which is exactly what they
+  were before this item.
+
+  Both operations are wrapped in PatchOperationFindMod so the file is a silent
+  no-op rather than a wall of red if the igniter mod is not present.
+  ⚠️ Remember that PatchOperationFindMod returns TRUE on no match — that is the
+  point here (no-op, no error), but it means this file cannot report a missing
+  def. If the comps appear to do nothing in game, check that the defs exist
+  before suspecting the comps.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimUtinni Patches (Jawa campaign)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- ============================================================
+             THE FIRE-HAWK (§7c). One comp, and it is only a marker plus a
+             cooldown clock: the behaviour is the think-tree job-giver.
+             🔴 Spread-only, never ex nihilo — the hawk cannot start a fire,
+             only move one. That law lives in the job-giver's first gate;
+             scanRadius here is how far it may look for a fire to steal from,
+             NOT a chance to light one.
+        ============================================================ -->
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="RUT_FireHawk"]</xpath>
+          <value>
+            <comps>
+              <li Class="RimMandrake.Utinni.PyrelandsMechanics.CompProperties_FireHawkSpread">
+                <scanRadius>18</scanRadius>
+                <spreadDistance>6</spreadDistance>
+                <cooldownTicks>15000</cooldownTicks>
+                <startFireSize>0.1</startFireSize>
+              </li>
+            </comps>
+          </value>
+        </li>
+
+        <!-- ============================================================
+             THE FURNACE-BEAST (§8b, §8c). Three comps, two of them the
+             thermal circuit's two honest halves:
+
+             1. CompProperties_HeatPusher — VANILLA. This is the enclosed-space
+                half and it is free: a beast that wanders into a barn, a canyon
+                room or a walled waystation genuinely heats it, because the
+                vanilla temperature model spends pushed heat on the containing
+                room. Calibrated against Campfire (MEASURED: heatPerSecond 21,
+                heatPushMaxTemperature 28) — a little under a campfire, and it
+                stops pushing once the room is comfortable.
+
+             2. CompFurnaceWarmthAura — OURS. The open-field half, where a heat
+                pusher does nothing a player can feel because outdoors the
+                "room" is the whole map. A hediff aura instead: see
+                Defs/HediffDefs/RUT_PyrelandsHediffs.xml.
+
+             3. CompFurnaceBedIgnition — OURS. The bed-down smoulder.
+                🔴 NO TAMED EXEMPTION, by ruling. Do not add one.
+        ============================================================ -->
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="RUT_FurnaceBeast"]</xpath>
+          <value>
+            <comps>
+              <li Class="CompProperties_HeatPusher">
+                <heatPerSecond>18</heatPerSecond>
+                <heatPushMaxTemperature>24</heatPushMaxTemperature>
+              </li>
+              <li Class="RimMandrake.Utinni.PyrelandsMechanics.CompProperties_FurnaceWarmthAura">
+                <radius>4.9</radius>
+              </li>
+              <li Class="RimMandrake.Utinni.PyrelandsMechanics.CompProperties_FurnaceBedIgnition" />
+            </comps>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       PYRELANDS_MECHANICS_1, mechanism 4a — the walking hearth's actual effect.
+
+       Applied and re-stamped every 60 ticks by CompFurnaceWarmthAura to every
+       pawn within a few cells of a furnace-beast. HediffComp_Disappears does
+       the expiry: 180 ticks, re-set on each refresh, so leaving the herd loses
+       the warmth within about three seconds of game time and nothing has to
+       track who walked away.
+
+       TWO OFFSETS, BOTH RULED. the_pyrelands.md §5, verbatim: furnace-beasts
+       "are welcome company in the cold and terrible company in the dry". So:
+
+         ComfyTemperatureMin -14   you tolerate 14 degC more cold. This is the
+                                   "travelers follow the herds for warmth"
+                                   line (§4) made mechanical. Calibration: the
+                                   biggest comparable vanilla hediff offset is
+                                   Inhumanized at -16; a beast you are standing
+                                   next to should be worth a little less than
+                                   a permanent psychic transformation.
+         ComfyTemperatureMax  -6   and you tolerate 6 degC LESS heat. Standing
+                                   beside a stove on a 55 degC dayside map is
+                                   a mistake, and the sheet says so.
+
+       Hediff stat offsets are real: StatWorker.cs:508 reads every hediff's
+       CurStage.statOffsets into the pawn's stat value.
+
+       isBad true and a visible label: the player must be able to SEE why a
+       colonist who walked past the herd is suddenly sweating.
+  ======================================================================== -->
+  <HediffDef>
+    <defName>RUT_FurnaceWarmth</defName>
+    <label>furnace-warmed</label>
+    <description>Standing close enough to a furnace-beast to feel the heat coming off its hide. It is a considerable comfort in the cold and an active liability in the sun.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <maxSeverity>1</maxSeverity>
+    <initialSeverity>1</initialSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <stages>
+      <li>
+        <statOffsets>
+          <ComfyTemperatureMin>-14</ComfyTemperatureMin>
+          <ComfyTemperatureMax>-6</ComfyTemperatureMax>
+        </statOffsets>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>180</disappearsAfterTicks>
+        <showRemainingTime>false</showRemainingTime>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>

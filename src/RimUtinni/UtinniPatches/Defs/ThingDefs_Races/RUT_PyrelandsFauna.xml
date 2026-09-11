@@ -5,11 +5,28 @@
   (design/Jawa/worldbuilding/biomes/the_pyrelands.md SS4). Roster entry:
   design/Jawa/worldbuilding/biomes/rosters/the_pyrelands.json "new_defs".
 
-  Scope: the roster-level def (stats, art, wildAnimals placement) only. The
-  special mechanics named in the sheet: fire-hawk twig-carrying, furnace-beast
-  heat aura and bed-down ignition: are explicitly OWED as their own item
-  (PYRELANDS_MECHANICS_1, not yet filed) and are NOT implemented here; these
-  defs behave as ordinary wild animals until that mechanic work lands.
+  Scope: the roster-level def (stats, art, wildAnimals placement) only.
+
+  The special mechanics the sheet names - fire-hawk twig-carrying,
+  furnace-beast heat aura and bed-down ignition - are BUILT, in their own mod:
+  src/RimUtinni/PyrelandsMechanics (mandrake.rut.pyrelandsmechanics,
+  PYRELANDS_MECHANICS_1). That mod loads after this one and attaches its comps
+  to both defs by PatchOperation (Patches/RUT_PyrelandsIgniters_Comps.xml), so
+  no def in this file references a class from another assembly.
+
+  🟢 BAN 5 REVERSED (owner ruling, 2026-09-10; the_pyrelands.md §6 line 5):
+  both igniters are TAMEABLE - "Make them both tameable... and that's insane.
+  Fires all the time! I love it." The five def changes §8a of
+  design/Jawa/worldbuilding/creatures/RUT_ruled_commissions_wave2.md orders
+  are applied below on the furnace-beast: the VEF Untameable comp is GONE,
+  trainability is Intermediate (matching the hawk), the description's closing
+  line is rewritten, manhunterOnTameFailChance stays 0.9 as the taming
+  gauntlet, and leatherDef is RUT_FurnaceHide.
+
+  🔴 Wildness must stay strictly BELOW 1.0 or the reversal is silently undone:
+  TameUtility.CanTame hard-refuses Wildness >= 1.0 (verified at source,
+  RimWorld/TameUtility.cs:49). The furnace-beast sits at 0.97 - thrumbo-class
+  and deliberately just under the line.
 
   Art: generated for real via the live artpipe daemon (infrastructure/artpipe/),
   transparent background, one east-facing sprite each: see
@@ -150,7 +167,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RUT_FurnaceBeast</defName>
     <label>furnace-beast</label>
-    <description>A migratory megafauna whose banded mineral hide stores heat like a stove: weeks basking in the deep dayside, then walking out across the grass radiating warmth from glowing seams between its plates. Travelers follow the herds for warmth in the cold and give them a wide, respectful berth in the dry -- their bed-down grounds have been known to smolder alight on their own. Nothing on this planet has ever kept one.</description>
+    <description>A migratory megafauna whose banded mineral hide stores heat like a stove: weeks basking in the deep dayside, then walking out across the grass radiating warmth from glowing seams between its plates. Travelers follow the herds for warmth in the cold and give them a wide, respectful berth in the dry -- their bed-down grounds have been known to smolder alight on their own. Keeping one is possible. It is very hard, it goes badly more often than it goes well, and it never stops being a fire hazard: a kept beast heats your barn for nothing, and every so often it sets the floor of that barn alight.</description>
     <statBases>
       <MoveSpeed>3.6</MoveSpeed>
       <MarketValue>900</MarketValue>
@@ -198,25 +215,25 @@
         <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
       </li>
     </tools>
-    <comps>
-      <li Class="VEF.AnimalBehaviours.CompProperties_Untameable" MayRequire="oskarpotocki.vanillafactionsexpanded.core">
-        <message>Nothing on this planet has ever kept a furnace-beast.</message>
-        <sendMessage>true</sendMessage>
-        <goesManhunter>false</goesManhunter>
-      </li>
-    </comps>
     <race>
       <body>QuadrupedAnimalWithHoovesAndHorn</body>
       <herdAnimal>true</herdAnimal>
       <predator>false</predator>
-      <trainability>None</trainability>
+      <!-- §8a change 2: off None. Intermediate matches the fire-hawk, so the
+           two igniters train alike; the gauntlet is the taming, not the
+           training. -->
+      <trainability>Intermediate</trainability>
       <baseBodySize>3.2</baseBodySize>
       <baseHealthScale>2.8</baseHealthScale>
       <baseHungerRate>1.4</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
-      <leatherDef>Leather_Heavy</leatherDef>
+      <!-- §8a change 5 / §12: the bespoke hide, Defs/ThingDefs_Items/RUT_FurnaceHide.xml. -->
+      <leatherDef>RUT_FurnaceHide</leatherDef>
       <gestationPeriodDays>12</gestationPeriodDays>
       <manhunterOnDamageChance>0.15</manhunterOnDamageChance>
+      <!-- §8a change 4: KEEP. Dead weight while the beast was untameable; now
+           it is the taming gauntlet - every failed attempt is a furious stove.
+           Do not lower it to "make taming work". -->
       <manhunterOnTameFailChance>0.9</manhunterOnTameFailChance>
       <litterSizeCurve>
         <points>

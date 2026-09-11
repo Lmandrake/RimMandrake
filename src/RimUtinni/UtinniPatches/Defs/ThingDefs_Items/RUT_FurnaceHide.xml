@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_FurnaceHide.xml                    PYRELANDS_MECHANICS_1 · 2026-09-11
+  ============================================================================
+  The furnace-beast's own leather, commissioned in full by the owner
+  (RUT_ruled_commissions_wave2.md §11 q8: "COMMISSION NOW — owner overrode
+  wait-for-sweep"; complete brief in §12). Replaces the Leather_Heavy
+  placeholder on RUT_FurnaceBeast — §8a's fifth ruled def change.
+
+  Lives here, beside the beast that drops it
+  (Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml), so RUT_FurnaceBeast's
+  leatherDef is an in-mod reference and not a cross-mod one.
+
+  🔴 STATS ARE CALIBRATED AGAINST MEASURED VANILLA, NOT GUESSED. Read this
+  pass from Core/Defs/ThingDefs_Items/Items_Resource_Stuff_Leather.xml:
+
+      stat                          LeatherBase  Leather_Heavy  Leather_Thrumbo
+      MarketValue                   2.1          3.3            14
+      StuffPower_Armor_Sharp        0.81         1.24           2.08
+      StuffPower_Insulation_Cold    16           30             34
+      StuffPower_Insulation_Heat    16           14             22
+      Flammability                  1            1 (inherited)  1 (inherited)
+
+  And the §12 brief's direction, applied:
+
+    Insulation_Cold 36  ceiling of the campaign's leathers, just past
+                        thrumbofur's 34. Heat-banking is the hide's whole
+                        identity. A ~6% edge, deliberately NOT a new tier.
+    Insulation_Heat  8  deliberately BAD. A stove's jacket in the Pyrelands
+                        sun is a mistake, and the biome that yields it
+                        punishes wearing it there. This, not the cold number,
+                        is what stops it being a strict thrumbofur upgrade.
+    Armor_Sharp   1.66  mineral banding beats heavy fur (1.24), never rivals
+                        thrumbofur (2.08).
+    Flammability   0.4  the one leather that shrugs at the standing burn —
+                        hide off a beast that sleeps in embers. Overrides
+                        LeatherBase's 1.
+    MarketValue    5.5  mid-single digits, priced for RANCH supply rather
+                        than hunt scarcity: under the reversed ban 5 a tamed
+                        herd breeds (§12's own "tameable-herd economy note").
+                        The counterweight is the barn catching fire, not the
+                        price.
+
+  ⚠️ ECONOMY_TRADE_SWEEP_1 ratifies or reprices every number above; §12 lists
+  the three specific questions it owes (the furnace-hide/thrumbofur
+  insulation-prestige boundary, ranch-supply pricing, and whether
+  low-flammability leather needs a campaign-wide look). Nothing here
+  pre-empts that sweep.
+
+  Colour: the sheet's grass-gold family darkened toward ash and ember
+  (biome palette #2e2410 -> #e6cf7e; the fauna wears ash, ember and gold).
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="LeatherBase">
+    <defName>RUT_FurnaceHide</defName>
+    <label>furnace hide</label>
+    <description>The banded hide of a furnace-beast, mineral seams and all. It is what the animal used to store a week of deep-dayside sun in, and it has not entirely stopped: a coat of it is warm before you put it on, and stays warm in country that would kill you. In the heat it is exactly as good an idea as wearing a stove. It is also the one leather on this planet that does not particularly want to burn.</description>
+    <graphicData>
+      <color>(166,124,66)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>5.5</MarketValue>
+      <Flammability>0.4</Flammability>
+      <StuffPower_Armor_Sharp>1.66</StuffPower_Armor_Sharp>
+      <StuffPower_Insulation_Cold>36</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>8</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(166,124,66)</color>
+      <commonality>0.02</commonality>
+      <statFactors>
+        <MaxHitPoints>1.6</MaxHitPoints>
+        <Beauty>1.8</Beauty>
+      </statFactors>
+    </stuffProps>
+    <!-- No tradeTags: LeatherBase carries none and neither does any vanilla
+         leather (checked against Items_Resource_Stuff_Leather.xml this pass).
+         Leathers reach traders through the Leathers thingCategory, which is
+         inherited. -->
+  </ThingDef>
+
+</Defs>
