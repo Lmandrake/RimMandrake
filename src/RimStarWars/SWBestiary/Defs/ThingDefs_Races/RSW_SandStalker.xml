@@ -42,6 +42,14 @@
   an ambush stalker, and its PawnKindDef pattern (Graphic_Single, no dessicated
   variant) is copied exactly below. A proper sand-toned, sun-axis-asymmetric analog
   sprite for the sand stalker specifically is owed.
+
+  SOUND — fixed SAND_STALKER_BADGER_SOUNDS_1. The adultLifeStage sound fields
+  originally pointed at `Pawn_Badger_Wounded/Death/Call/Angry`, which do not
+  exist as SoundDefs and caused 4 cross-reference errors in Player.log. There is
+  no `Pawn_Badger_*` sound family in vanilla — vanilla's own `Badger` ThingDef
+  (same tools list and body: QuadrupedAnimalWithPaws) uses `Pawn_Rodent_*` for
+  exactly these four fields, so that's the real analog. Retargeted to
+  `Pawn_Rodent_Wounded/Death/Call/Angry`, which do resolve.
 -->
 <Defs>
 
@@ -124,10 +132,10 @@
         <li>
           <def>AnimalAdult</def>
           <minAge>0.4</minAge>
-          <soundWounded>Pawn_Badger_Wounded</soundWounded>
-          <soundDeath>Pawn_Badger_Death</soundDeath>
-          <soundCall>Pawn_Badger_Call</soundCall>
-          <soundAngry>Pawn_Badger_Angry</soundAngry>
+          <soundWounded>Pawn_Rodent_Wounded</soundWounded>
+          <soundDeath>Pawn_Rodent_Death</soundDeath>
+          <soundCall>Pawn_Rodent_Call</soundCall>
+          <soundAngry>Pawn_Rodent_Angry</soundAngry>
         </li>
       </lifeStageAges>
       <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
