@@ -100,32 +100,15 @@
           </value>
         </li>
 
-        <!-- Corpse_MO_AbominationRace is Core's generic corpse ThingDef
-             machinery (RaceProps.corpseDef auto-generation) - it has no
-             literal label/description node of its own in the donor's XML, so
-             both are Conditional Add-or-Replace rather than a plain Replace. -->
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThingDef[defName="Corpse_MO_AbominationRace"]/label</xpath>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>Defs/ThingDef[defName="Corpse_MO_AbominationRace"]</xpath>
-            <value><label>Yuuzhan Vong corpse</label></value>
-          </nomatch>
-          <match Class="PatchOperationReplace">
-            <xpath>Defs/ThingDef[defName="Corpse_MO_AbominationRace"]/label</xpath>
-            <value><label>Yuuzhan Vong corpse</label></value>
-          </match>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThingDef[defName="Corpse_MO_AbominationRace"]/description</xpath>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>Defs/ThingDef[defName="Corpse_MO_AbominationRace"]</xpath>
-            <value><description>Dead body of a Yuuzhan Vong warrior.</description></value>
-          </nomatch>
-          <match Class="PatchOperationReplace">
-            <xpath>Defs/ThingDef[defName="Corpse_MO_AbominationRace"]/description</xpath>
-            <value><description>Dead body of a Yuuzhan Vong warrior.</description></value>
-          </match>
-        </li>
+        <!-- Corpse_MO_AbominationRace does not exist as a static Defs/ThingDef
+             node at patch time at all - RimWorld builds it at runtime from
+             RaceProps.corpseDef auto-generation, well after XML patching
+             finishes. Neither PatchOperationAdd nor Replace can target a node
+             that isn't there yet (measured: PatchOperationAdd on the outer
+             ThingDef itself fails with "Failed to find a node with the given
+             xpath" - not just the label sub-field). Renaming the corpse
+             would need a Harmony postfix on the corpse-generation path, not
+             an XML patch; left as a known gap rather than a broken patch. -->
 
       </operations>
     </match>
