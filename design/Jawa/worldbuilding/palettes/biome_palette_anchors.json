@@ -1,0 +1,691 @@
+{
+ "_meta": {
+  "item": "PALETTE_ANCHOR_DRAFT_1",
+  "status": "DRAFT — owner reviews the color board by eye and overrules; nothing here is ratified",
+  "authored": "2026-09-10",
+  "law": "flora_commission_template.md §3 palette_family + §8.4 RATIFIED contrast law: ONE palette family per biome, ladder slots separated by VALUE not hue, at most ONE accent species (zero allowed)",
+  "family_order": "dark → light; adjacent flora-ladder slots take adjacent value steps",
+  "derivations": "family hexes are a judgment pass over the sheet's own §9 prose, calibrated against sampled existing plant art where the biome has any; 'INVENTED' marks an anchor with neither prose nor art behind it",
+  "art_sampling": "dominant colors sampled (PIL, backdrop-masked) from design/Jawa/worldbuilding/review/plant_art/*.detail.png per the biome rosters"
+ },
+ "biomes": {
+  "arid_shrubland": {
+   "family": [
+    "#1a201a",
+    "#2e3b28",
+    "#4b5636",
+    "#6f7a4e",
+    "#9aa578"
+   ],
+   "accent": "#c9a84c",
+   "accentLabel": "waxy gold (sunward flank)",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/arid_shrubland.md §9",
+   "derivedFrom": [
+    "§9: “silver-green fuzz banding to grey fog-country darkward and waxy gold sunward”",
+    "§9: “venomvine as near-black islands” (family dark end)"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/Plant_ShrubLow.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/RG_Plant_AridGrass.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/Plant_Bush.detail.png"
+   ],
+   "note": "Silver-green family; venomvine sits at the near-black end of the same ramp."
+  },
+  "desert": {
+   "family": [
+    "#3a2a18",
+    "#65461f",
+    "#93692c",
+    "#bf9448",
+    "#e3c684"
+   ],
+   "accent": "#a8b878",
+   "accentLabel": "pale green (ultracactus / dew-line)",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/desert.md §9",
+   "derivedFrom": [
+    "§9: “hot low sun on lit faces — amber, ochre, rust — against long cool blue shadows”",
+    "§9: “The only greens are the pale ultracactus flush with the ground and the dew-line halo”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/AB_HardyGrass.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/Plant_Chakroot_Wild.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_Aaklac.detail.png"
+   ],
+   "banned": [
+    "saturated green anywhere but the two named greens"
+   ],
+   "note": "Cool blue shadow is the light regime, not a flora hue."
+  },
+  "dune_sea": {
+   "family": [
+    "#2b2015",
+    "#6b5330",
+    "#a07d3d",
+    "#cca95e",
+    "#ecdaa4"
+   ],
+   "accent": "#2f9245",
+   "accentLabel": "the hard green line (river/coast edge)",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/dune_sea.md §9",
+   "derivedFrom": [
+    "§9: “ochre, bone, rust-tan and pale gold in the sand”",
+    "§9: “a hard green line arrives with no warning … the most saturated thing on the dayside”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/AB_GiantStikehr.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/Plant_Bloddle.detail.png"
+   ],
+   "banned": [
+    "blue sky tones (sky is bleached white)",
+    "penumbra/soft shadow color"
+   ],
+   "note": "Only strong contrast is shadow black; the green line lands like a shout."
+  },
+  "deep_desert": {
+   "family": [
+    "#4a4238",
+    "#7d7264",
+    "#a89d8c",
+    "#cfc6b4",
+    "#efe9da"
+   ],
+   "accent": null,
+   "accentLabel": "none — zero accents claimed (§8.4 allows zero)",
+   "sheet": "design/Jawa/worldbuilding/biomes/deep_desert.md §9",
+   "derivedFrom": [
+    "§9: “bleached bone, pale dust, wind-glazed dark stone, salt-white. No green anywhere in the open”",
+    "§9: “no black char, because nothing has ever burned here”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/AB_GiantStikehr.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/Plant_Bloddle.detail.png"
+   ],
+   "banned": [
+    "green in the open",
+    "black char",
+    "anything shiny/crystalline/mineral"
+   ],
+   "note": "Accent deliberately NONE (§8.4 allows zero); pale-and-powdery is the whole statement."
+  },
+  "fall_line": {
+   "family": [
+    "#141517",
+    "#35383b",
+    "#5d6165",
+    "#8f9599",
+    "#d6dad8"
+   ],
+   "accent": "#46e06a",
+   "accentLabel": "status-lamp green (live wreck)",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/fall_line.md §9",
+   "derivedFrom": [
+    "§9: “bleached bone-white hardpan … punctuated by hard black shade and the scorched, oxidised colour of fresh re-entry”",
+    "§9: “a status lamp still green in the black under a hull”"
+   ],
+   "sampledFrom": [],
+   "banned": [
+    "orange rust (rust “has not had time to go orange yet”)"
+   ],
+   "note": "Flora lives in wreck shade — the family is char/heat-blued greys, not the white flats."
+  },
+  "forsaken_crags": {
+   "family": [
+    "#101208",
+    "#2b2c16",
+    "#4d4a26",
+    "#75703c",
+    "#a49f5e"
+   ],
+   "accent": "#4f9fe8",
+   "accentLabel": "glow-blue darklight (gamma flora)",
+   "accentDerivation": "prose+art",
+   "sheet": "design/Jawa/worldbuilding/biomes/forsaken_crags.md §9",
+   "derivedFrom": [
+    "§9: “obsidian black, glow-blue, lamp-yellow, hydrocarbon-frost grey on the rime faces”",
+    "§9: “blue darklight gammas against yellow giant flora, a harbor-at-night palette”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/AB_GiantStikehr.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_GiantGamma.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_GlowingGrass.detail.png"
+   ],
+   "note": "Two-tone biolum forced through §8.4: lamp-yellow IS the family's light end, glow-blue is the one accent. Owner may prefer the inverse."
+  },
+  "nightside_ice": {
+   "family": [
+    "#10141f",
+    "#2a3345",
+    "#4d5a70",
+    "#8593a6",
+    "#ccd6de"
+   ],
+   "accent": "#4fd6a0",
+   "accentLabel": "aurora-green / pan chemistry color",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/nightside_ice.md §9",
+   "derivedFrom": [
+    "§9: “white dirty ice over blue-black rock … aurora green and violet as the ambient · starlight grey”",
+    "§9: “in the pans and nowhere else, the shockingly clean saturated chemistry colour”"
+   ],
+   "sampledFrom": [],
+   "banned": [
+    "warm light of any kind (“No warm light anywhere except what the player brings”)"
+   ]
+  },
+  "poison_forest": {
+   "family": [
+    "#17191b",
+    "#38393a",
+    "#5e5e5c",
+    "#93928a",
+    "#d2d0c4"
+   ],
+   "accent": "#d8c531",
+   "accentLabel": "sulfur-yellow crystal",
+   "accentDerivation": "prose+art",
+   "sheet": "design/Jawa/worldbuilding/biomes/poison_forest.md §9",
+   "derivedFrom": [
+    "§9: “wet black and slate ground · bone-pale trunks streaked with grey metal tears”",
+    "§9: “crystal in bruised blue and sulfur yellow; the dark red-purple films of the defeated phototrophs”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/AB_CrystalFlower.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/BMT_Plant_TreeMartyr.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_BloodBouquet.detail.png"
+   ],
+   "banned": [
+    "warm light (“no warm light anywhere”)"
+   ],
+   "note": "Three accent candidates in prose (sulfur yellow, bruised blue, red-purple film); sulfur drafted — needs the owner's eye."
+  },
+  "terminator_sea": {
+   "family": [
+    "#0e1410",
+    "#24362a",
+    "#486049",
+    "#8a9c8b",
+    "#dcded4"
+   ],
+   "accent": "#d08b3d",
+   "accentLabel": "grazing amber (starward rim)",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/terminator_sea.md §9",
+   "derivedFrom": [
+    "§9: “salt white and pale grey ground, dominant and everywhere · black-green and near-black in the few standing plants”",
+    "§9: “low warm amber on every starward face, because grazing light is reddened light”"
+   ],
+   "sampledFrom": [],
+   "banned": [
+    "blue water (“the water … is never blue”)",
+    "ragged shapes, crowding"
+   ],
+   "note": "Family runs black-green plant → salt-white ground; the “one saturated accent per animal” rule is fauna's, not flora's."
+  },
+  "the_blue_desert": {
+   "family": [
+    "#1c2430",
+    "#35455a",
+    "#5a7086",
+    "#8fa4b8",
+    "#d2dde6"
+   ],
+   "accent": "#55c0f0",
+   "accentLabel": "blue-fire halo (Burners)",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_blue_desert.md §9",
+   "derivedFrom": [
+    "§9: “scattering-blue at distance, glass-clear and grey underfoot; transparent flora refracting”",
+    "§9: “the Burners' halos of blue fire the only warm light for a hundred kilometers”"
+   ],
+   "sampledFrom": [],
+   "banned": [
+    "warm hues except rust/char on the fallen"
+   ],
+   "note": "Transparent flora: the family is what refraction TINTS, not body color — hard to anchor in flat hex; expect an overrule."
+  },
+  "the_contagion": {
+   "family": [
+    "#2c1214",
+    "#55211f",
+    "#8a3a32",
+    "#b86656",
+    "#dfa08e"
+   ],
+   "accent": "#6b8fd6",
+   "accentLabel": "aberration blue (pink-and-blue)",
+   "accentDerivation": "prose+art",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_contagion.md §9",
+   "derivedFrom": [
+    "§9: “red water, red fog, pink-and-blue aberrations, the grey-white of husks and sterilized matter at the burn line”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/AB_RedLeaves.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_RedPlantsTall.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_TentacularPlant.detail.png"
+   ]
+  },
+  "the_cracked_lands": {
+   "family": [
+    "#382e25",
+    "#685845",
+    "#97866e",
+    "#c2b298",
+    "#e8e0cb"
+   ],
+   "accent": "#5e7d3a",
+   "accentLabel": "slot-moss green (only in blue shade)",
+   "accentDerivation": "prose+art",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_cracked_lands.md §9",
+   "derivedFrom": [
+    "§9: “cracked clay grey-white, red-brown flood stain on the walls, moss green in the slots”",
+    "§9: “the green only ever in the blue shade”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/GRimMoss.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_GargantuanLithops.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/BMT_Plant_TreeTwistingThornwood.detail.png"
+   ]
+  },
+  "the_fever_wood": {
+   "family": [
+    "#1c180e",
+    "#38321a",
+    "#575428",
+    "#7c7c42",
+    "#a5a86b"
+   ],
+   "accent": "#e0a83c",
+   "accentLabel": "nectar amber / steam-lamp gold",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_fever_wood.md §9",
+   "derivedFrom": [
+    "§9: “living-wood browns and moss greens, nectar amber, oil-sheen rainbows on the seeps”",
+    "§9: “warm steam-lamp gold and green-filtered sun in the crown”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/Plant_HydenockTree_Wild.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/BMT_GiantLeaf.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_Iashiphus.detail.png"
+   ]
+  },
+  "the_forge": {
+   "family": [
+    "#0f0e0e",
+    "#2b2927",
+    "#4c4a46",
+    "#757370",
+    "#a5a3a0"
+   ],
+   "accent": "#7ce22a",
+   "accentLabel": "fireweed's defiant green",
+   "accentDerivation": "prose+art",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_forge.md §9",
+   "derivedFrom": [
+    "§9: “basalt black, obsidian gloss, seam-red, ash grey, fireweed's defiant green in the flash-zones, beldon amber”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/Plant_Fireweed.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/Plant_MagmaCactus.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/BMT_HeatsinkFungus.detail.png"
+   ],
+   "note": "Seam-red is ground/light, not flora; fireweed green sampled near #9dfb00 in existing art, tempered."
+  },
+  "the_greentide": {
+   "family": [
+    "#12200f",
+    "#23421c",
+    "#3c6b2b",
+    "#63944a",
+    "#9cc47e"
+   ],
+   "accent": null,
+   "accentLabel": "none — zero accents claimed (§8.4 allows zero)",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_greentide.md §9",
+   "derivedFrom": [
+    "§9: “every green at once, white steam, black mud, the river's gradient from glass-clear … to milk and salt-crust”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/AB_JungleTree.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/Plant_HydenockTree_Wild.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/Plant_MujaFruit_Wild.detail.png"
+   ],
+   "note": "Accent NONE drafted: “every green at once” is the spectacle; leaving the accent slot open for a future fruit/bloom commission."
+  },
+  "the_grey_deep": {
+   "family": [
+    "#171b19",
+    "#333937",
+    "#565d5a",
+    "#868c88",
+    "#c2c6c0"
+   ],
+   "accent": "#d81f6e",
+   "accentLabel": "the one impossible saturated color [INVENTED hue]",
+   "accentDerivation": "INVENTED",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_grey_deep.md §9",
+   "derivedFrom": [
+    "§9: “every grey, bone-pale pillar mineral, crystal white on the statuary, the murk's green cast”",
+    "§9: “and one impossible saturated color, moving, rare” (prose demands the accent but names no hue)"
+   ],
+   "sampledFrom": [],
+   "INVENTED": [
+    "accent hue — prose requires an impossible saturated color and deliberately leaves it unnamed; magenta drafted as maximally non-oceanic"
+   ]
+  },
+  "the_lantern_deeps": {
+   "family": [
+    "#0a0d16",
+    "#1c2438",
+    "#33415e",
+    "#566a8e",
+    "#8ba4c4"
+   ],
+   "accent": "#e8862e",
+   "accentLabel": "imported kyber orange",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_lantern_deeps.md §9",
+   "derivedFrom": [
+    "§9: “blue-on-black, fungal grey and green, the metal and ceramic of superb dead technology, the orange of the imported crystal”"
+   ],
+   "sampledFrom": [],
+   "banned": [
+    "free light (sheet §6.6)"
+   ]
+  },
+  "the_miasma": {
+   "family": [
+    "#241f12",
+    "#3e3a22",
+    "#606744",
+    "#86904f",
+    "#b8bd82"
+   ],
+   "accent": "#e0559a",
+   "accentLabel": "rainbow-bloom (representative hex of a multi-hue suite)",
+   "accentDerivation": "prose+art",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_miasma.md §9",
+   "derivedFrom": [
+    "§9: “muck-browns and mangal greens, salt-crust white on the sea side”",
+    "§9: “the rainbow flora burning through it: genuine, saturated, beautiful color that means exactly what it seems to mean”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/AB_MangroveTree.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/BMT_RainbowTongue.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/BMT_Plant_SewerReed.detail.png"
+   ],
+   "note": "The accent species is the rainbow suite itself (3–4 blooms); one hex stands for it on this board only."
+  },
+  "the_propane_lakes": {
+   "family": [
+    "#0b0d12",
+    "#232833",
+    "#454d5c",
+    "#7d8794",
+    "#ccd4dc"
+   ],
+   "accent": "#4fa8f0",
+   "accentLabel": "running-flame blue",
+   "accentDerivation": "prose+art",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_propane_lakes.md §9",
+   "derivedFrom": [
+    "§9: “black mirror, aurora green/violet, crystal-clear and frost-white, the blue of running flame”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/AB_CrystalHorn.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_CrystalFlower.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_FrostLeaf.detail.png"
+   ]
+  },
+  "the_pyrelands": {
+   "family": [
+    "#2e2410",
+    "#5d4a1e",
+    "#8f7530",
+    "#c0a34a",
+    "#e6cf7e"
+   ],
+   "accent": "#62c944",
+   "accentLabel": "regrowth's shocking week-old green",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_pyrelands.md §9",
+   "derivedFrom": [
+    "§9: “grass-gold, ash-black in migrating bands, regrowth's shocking week-old green, fulgurite white in the black”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/Plant_YellowGrass.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/Plant_YellowTallGrass.detail.png"
+   ]
+  },
+  "the_rot": {
+   "family": [
+    "#1b1622",
+    "#453a4e",
+    "#6e6275",
+    "#9b90a2",
+    "#d9d3da"
+   ],
+   "accent": "#5ac8e8",
+   "accentLabel": "glow-blue (glowstool constellations)",
+   "accentDerivation": "prose+art",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_rot.md §9",
+   "derivedFrom": [
+    "§9: “bone white, lilac, milk white, glow-blue and lantern-gold against wet black soil”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/AB_Glowstool.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_Agarilux.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_Bryolux.detail.png"
+   ],
+   "note": "Lantern-gold is the rival accent; glow-blue drafted because the fungal art already carries it. Owner's call."
+  },
+  "the_rust_cathedral": {
+   "family": [
+    "#241511",
+    "#4d2c1c",
+    "#7c4a2a",
+    "#a9713c",
+    "#cfa065"
+   ],
+   "accent": "#3fae8e",
+   "accentLabel": "verdigris at the coolant",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_rust_cathedral.md §9",
+   "derivedFrom": [
+    "§9: “rust film over dark metal, verdigris at the coolant, the dust's ochre drifts, hazard-sulfur at the pools — and no green anywhere”"
+   ],
+   "sampledFrom": [],
+   "banned": [
+    "green vegetation of any kind (“no green anywhere” — verdigris is mineral, not plant)"
+   ]
+  },
+  "the_scald": {
+   "family": [
+    "#0c2226",
+    "#14454c",
+    "#1f6f74",
+    "#45a3a4",
+    "#a8dcd6"
+   ],
+   "accent": "#e8763a",
+   "accentLabel": "thermophile-orange (representative of the mat-band rainbow)",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_scald.md §9",
+   "derivedFrom": [
+    "§9: “boiling white, scald cyan, thermophile rainbow, basalt rim black, the peaks' cloud-cap”",
+    "§9: “rainbow mat-bands where the shallows clear”"
+   ],
+   "sampledFrom": [],
+   "note": "Hot-spring mat bands run yellow→orange→rust by temperature; one hex stands for the band system."
+  },
+  "the_scarlands": {
+   "family": [
+    "#141210",
+    "#322d26",
+    "#55503f",
+    "#7d786a",
+    "#a8a496"
+   ],
+   "accent": "#86c81e",
+   "accentLabel": "acid-green pool (the rainbow pools' lead hue)",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_scarlands.md §9",
+   "derivedFrom": [
+    "§9: “crater-black glower crusts, rust and bone of the works, slag grey”",
+    "§9: “the rainbow pools as the only saturation on the map: acid greens, copper blues, sulfur yellows, all lying about what they are”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/BMT_Plant_ScorchedStars.detail.png"
+   ]
+  },
+  "the_slime": {
+   "family": [
+    "#2a2e14",
+    "#4c5426",
+    "#71773f",
+    "#969c58",
+    "#c2c488"
+   ],
+   "accent": "#d8879a",
+   "accentLabel": "membrane pink (rich ground)",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_slime.md §9",
+   "derivedFrom": [
+    "§9: “translucent greens and ambers, membrane pinks in the rich ground, the grey of drowned ruins”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/AB_TallSlimyGrass.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_SlimyTree.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_SlimyFern.detail.png"
+   ],
+   "note": "Family midpoints sampled straight off the existing slimy-flora art (#71773f–#828b5f)."
+  },
+  "the_sump": {
+   "family": [
+    "#101210",
+    "#24291f",
+    "#3d4433",
+    "#5f684c",
+    "#8a9270"
+   ],
+   "accent": "#e0a63c",
+   "accentLabel": "lamp gold (wick-gardens)",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_sump.md §9",
+   "derivedFrom": [
+    "§9: “every black (wet, glassy, matte), horizon amber, lamp gold, the waxy grey-greens of the edge-flora, rust of the derricks”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/AB_TarPuddle.detail.png"
+   ]
+  },
+  "the_twilight_deep": {
+   "family": [
+    "#142016",
+    "#2c4028",
+    "#52603a",
+    "#7f8455",
+    "#b0ab7d"
+   ],
+   "accent": "#e2b048",
+   "accentLabel": "well-light / lamp gold",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_twilight_deep.md §9",
+   "derivedFrom": [
+    "§9: “deep greens and kelp bronze, mat-pale ceiling, mud browns in the dry-looking rivers, silver shoal-flash, lamp gold”"
+   ],
+   "sampledFrom": []
+  },
+  "the_webwork": {
+   "family": [
+    "#101a0f",
+    "#22331d",
+    "#3a4f2e",
+    "#5e7347",
+    "#8c9c72"
+   ],
+   "accent": "#f2ead6",
+   "accentLabel": "bone-white bloom (pale-flowers, glowing)",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/the_webwork.md §9",
+   "derivedFrom": [
+    "§9: “every dark green, dead white silk, bone-white blooms, the red-brown of hide-woven nests”",
+    "§9: “the pale flowers glowing in the dark like route-lights”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/AB_JungleTree.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/RG_Plant_TropicalChokevine.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_TangleTea.detail.png"
+   ],
+   "note": "The accent is a VALUE spike (near-white), not a hue — deliberate: silk and blooms own brightness here."
+  },
+  "wasteland": {
+   "family": [
+    "#141713",
+    "#31352c",
+    "#55594b",
+    "#83867a",
+    "#c0c2b6"
+   ],
+   "accent": "#7c3f92",
+   "accentLabel": "sickly radiance violet (radiotroph glow)",
+   "accentDerivation": "prose+art",
+   "sheet": "design/Jawa/worldbuilding/biomes/wasteland.md §9",
+   "derivedFrom": [
+    "§9: “salt white, ash grey, vitrified black-green, brine-pool mineral color — and the sickly radiances against it”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/RG_Plant_ToxiGrass.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/PoisonShrub.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/Plant_GrayGrass.detail.png"
+   ],
+   "note": "Existing toxi-flora art samples violet (#6f267c, #4e2f56) — the “sickly radiance” drafted violet to match it rather than glow-green."
+  },
+  "weeping_stones": {
+   "family": [
+    "#16221a",
+    "#2c4229",
+    "#4a6236",
+    "#728a52",
+    "#a4b880"
+   ],
+   "accent": "#4aa88e",
+   "accentLabel": "verdigris (where metal meets moss)",
+   "accentDerivation": "prose+art",
+   "sheet": "design/Jawa/worldbuilding/biomes/weeping_stones.md §9",
+   "derivedFrom": [
+    "§9: “bone-white sunlit stone; wet black weep-streaks; green held in blue shade; verdigris where metal meets moss”"
+   ],
+   "sampledFrom": [
+    "design/Jawa/worldbuilding/review/plant_art/Plant_Reeds.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/BMT_Dewshrooms.detail.png",
+    "design/Jawa/worldbuilding/review/plant_art/AB_GreenRockFern.detail.png"
+   ]
+  },
+  "wreck_fields": {
+   "family": [
+    "#161a20",
+    "#333a44",
+    "#58616e",
+    "#8a929e",
+    "#c8cfd6"
+   ],
+   "accent": "#3fbf9a",
+   "accentLabel": "verdigris (one saturated hue per patch — rotating)",
+   "accentDerivation": "prose",
+   "sheet": "design/Jawa/worldbuilding/biomes/wreck_fields.md §9",
+   "derivedFrom": [
+    "§9: “cold grey-blue ground and sky · bright bare metal — silver, gunmetal”",
+    "§9: “one saturated hue per patch, and never the same hue twice in a shot: verdigris here, titanium white there, a bad yellow-green”"
+   ],
+   "sampledFrom": [],
+   "banned": [
+    "rust orange (“No rust orange anywhere” — hard sheet ban)"
+   ],
+   "note": "The accent ROTATES per patch by sheet law; verdigris drafted as the board's stand-in."
+  }
+ }
+}
