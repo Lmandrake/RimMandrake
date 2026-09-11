@@ -155,13 +155,11 @@ OPPORTUNITIES:
 1. Commission one native furnace-beast (the §4 heat-banking grazer) or route AA_Barbslinger ("wherever needed in hot biomes", OPEN) here as the fire-cycle animal.
 2. Razorjack as the burn-front follower (hunts fleeing animals ahead of fires) gives the arrival a fire-web role instead of a generic predator slot.
 
-## nightside_ice — churn 9 (cast 6 → 6) ⚠ NEEDS MORE — sitting 2026-09-10: TetraSlug (cathedral-only), Slurrypede (dungeons-only), RedGoo all OUT; owner: this biome needs more creatures — first pick of homeless/commissions
-Arrivals (4 residents): AA_ShockGoat (refashion ruled), BMT_CaveLemming (rename ruled), Tauntaun, Wampa. Injectable, not resident: Bulwark ("horror injectibles"). Sitting 2026-09-10: AA_Terramorph out (dayside won the either-or).
+## nightside_ice — churn 10 (cast 6 → 9: 6 native + 3 visitors) — VISITOR LAW RULED 2026-09-10
+Natives: AA_ShockGoat (refashion ruled) + BMT_CaveLemming (rename ruled) arrive as natives — all natives get the thermal-only sensing line. VISITORS-AND-DYING (never native, low commonality, riding the sheet's own "visitor, a machine, or dying" clause): Tauntaun (margin herds straying in), Wampa (follows the herds), Jakobeast (rerouted from desert). Visitors hunt by starlight/aurora (real, cold light), exempt from thermal-only; every straying herd is a walking thermal beacon that ends as a tunneler-warren event. NEEDS-MORE fills from the sheet's own unbuilt natives, COMMISSIONED: tunneler warren creature, inclusion-insect swarm, aurora-current feeder. Injectable, not resident: Bulwark. AA_Terramorph out (dayside won the either-or).
 
-INCONSISTENCIES:
-1. Wampa (pursuit predator) and Tauntaun (fast, warm, flocking) violate the surface ban on warm/fast/pursuing/flocking fauna — the icon carve-out protects NAMES, not physics; owner ruling needed (margins-only? tunneler rewrite?).
-2. Thermal-only sensing ban applies to all four arrivals; none is written that way yet.
-3. CaveLemming and ShockGoat renames/refashions are ruled but not yet done — they enter the cast only after.
+REMAINING:
+1. CaveLemming and ShockGoat renames/refashions are ruled but not yet done — they enter the cast only after (with the thermal-only sensing line).
 
 OPPORTUNITIES:
 1. ShockGoat's "pale blue aura" is the biome's first visible-from-distance creature cue — a legible hazard in a sensor-dead biome.
