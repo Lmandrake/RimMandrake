@@ -411,8 +411,10 @@ def target_spend(job_ids: list[str], throughput: dict[str, list[dict]]) -> dict:
             d, m = job_cost_usd(row)
             total += d
             fully_measured = fully_measured and m
-    status = "MEASURED" if any_row and fully_measured else (
-        "MEASURED" if any_row else "UNMEASURED")
+    # `status` only tracks whether any spend row was found at all — a target
+    # with a partially-measured row still reports "MEASURED" (the dollar
+    # figure just becomes a floor, not the true total; see `note` below).
+    status = "MEASURED" if any_row else "UNMEASURED"
     # any_row-but-not-fully_measured still reports the partial dollar figure,
     # tagged so the reader knows it may be a floor, not the true total.
     note = None if fully_measured or not any_row else \
