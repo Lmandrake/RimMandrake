@@ -46,3 +46,16 @@ spellings corrected.
 Still owed on this item: B3 inherits the ruled stats charge;
 `MECHANOID_BIOME_PRESENCE_REVIEW_1` fed per its spec (presence rows updated
 2026-09-11).
+
+## Closed 2026-09-11 — verified complete
+
+The design (`design/Jawa/worldbuilding/creatures/RUT_mechanoid_origin_canon.md`)
+was RULED at the 2026-09-11 card sitting: all five contradiction cards (C1–C5),
+all four name cards (N1 mindstone/`RUT_Mindstone`, N2 THE KINDLED/`RUT_Kindled`,
+N3 Forgotten Sentinels official, N4 the `RSW_DW_` head seam accepted), plus the
+ratified wipe/spike immunity and the same-day legends-sitting corrections
+(`mindstone_arc_legends.md`). Verified this close: presence review fed
+(`MECHANOID_BIOME_PRESENCE_REVIEW_1:18,38`), B3 item now carries the immunity
+charge, no doc-voice N3 residue (`the_lantern_deeps.md:184` is the ruling
+annotation itself). Owner legends entries tracked as
+`MINDSTONE_LEGENDS_ENTRIES_1`.
