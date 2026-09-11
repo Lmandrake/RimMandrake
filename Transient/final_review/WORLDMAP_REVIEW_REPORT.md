@@ -345,3 +345,24 @@ cheap owner rulings, and nothing found in any lane calls for re-authoring a sing
 the owner has already judged. Ship-blocking risk now lives only in what the audits
 cannot see: the closeup shape of rivers and roads, which is exactly what the owed
 in-game STARE exists to judge.
+
+---
+
+## Phase 2 addendum — the STARE landed (2026-09-11, after the draft above)
+
+Full judgment: `findings_stare.md` (all 30 shots SEEN). What it changes here:
+
+- **The PENDING river/road shape risk CLEARS POSITIVELY** — winding, braided,
+  acute angles, zero comb/ruler artifacts; sole waiver the straight Anvil pan
+  crossing. The provisional verdict's one demotion path is gone.
+- Punch row 4 (landmark collisions/name dupes) STRENGTHENS — the icon repeats
+  are visible in-frame (DNA ×~10 on nightside ice). Row 6's visual urgency is
+  demoted (Gelatinous streak clears at globe scale).
+- Two new S-cost polish rows: marquee label collisions (Scald/Scald Spine,
+  Scorch/Rust Cathedral); pale paper-cutout pan decals on Cinders/Notch.
+- Five marquee visual moments identified for leverage (key art / trailer /
+  store hero), led by the Scald crater-lake closeup.
+
+**Verdict after Phase 2: the provisional YES stands, and hardens.** Nothing
+seen needs re-authoring. Remaining before final: Phase 3 text/plot-leak pass
+and the owner's own read.
