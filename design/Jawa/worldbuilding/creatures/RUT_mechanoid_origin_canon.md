@@ -1,6 +1,5 @@
-<!-- status: DRAFT for owner review — MECHANOID_ORIGIN_CANON_1. Nothing here
-     propagates until ruled. Written 2026-09-11 against the frozen sheets;
-     every §5 card is an open question, not a resolution. -->
+<!-- status: RULED 2026-09-11 (card sitting, §5) + legends-sitting corrections
+     same day (mindstone_arc_legends.md). Propagated to both frozen sheets. -->
 
 # Mechanoid origin canon — the mindstone, the crystal-mind race, and the Cathedral's true children
 
@@ -129,6 +128,16 @@ the item names, for the record:
   platform slot the campaign fills (card N4 flags the seam).
 - **No Force route** (Deeps §6.4): the race's intelligence is stats and
   dialogue register, never sensitivity, powers or attunement.
+- **🔴 Knowledge scoping (owner, legends sitting 2026-09-11): THE KINDLED HAVE
+  NEVER BEEN MADE.** *"They are a totally new concept that has not yet been
+  made."* Everything above is DESIGN — the recipe the player can discover —
+  not in-world knowledge: no faction knows the route or the race, no rumor
+  circulates, and the legends deck (`worldbuilding/mindstone_arc_legends.md`)
+  deliberately contains no Kindled entry. The first making is an in-play
+  event. What IS observed in-world: droids act strangely or simply stop near
+  mindstone and avoid the Deeps at all costs; dead droid chassis work the
+  galleries of their own accord ("the Working Dead"); droids that leave exit
+  effectively mind-wiped, go rogue, and drift to the neutral factions.
 
 ## 3. The wild-cousins dialogue — Oracle/text authority only
 
@@ -168,8 +177,10 @@ no worldgen — reached through a Deep's mouth per the ruled map-chain.
   choice). The reconciling read of *"still working… at a very slow rate — or a
   slumbering one"* against *"not running under its hand today; the Cathedral
   would like it restarted"*: the factory **ticks over autonomously** — a
-  trickle of Sentinels on ancient standing orders, which is what has restocked
-  faction 13 for ages (and why the Arsenal never ran out) — but it is
+  trickle of Sentinels on ancient standing orders — feeding the SECRET CACHES
+  and the Cathedral's few store vaults and supply lines, which is why the
+  Arsenal never ran out (surface Sentinels are NOT replenished; see §5
+  legends-sitting refinement) — but it is
   **not under the Cathedral's command**, and its mind-seeding line (the part
   that grows crystal minds for the bodies) is dark. "Restore" means handing the
   Cathedral its factory back, seeding line and all.
@@ -258,6 +269,27 @@ no worldgen — reached through a Deep's mouth per the ruled map-chain.
 - **Wipe/spike immunity (§2b) — RATIFIED.** Wipes and spikes fail with text
   on a mindstone head; the mineral mind cannot be erased. The §2b invention
   is now ruled mechanics.
+
+**Legends-sitting refinements (owner, same day —
+`worldbuilding/mindstone_arc_legends.md` §Canon corrections):**
+
+- **C1+C4 surface reading corrected.** The trickle restocks the hidden
+  reserve — secret caches (ancient-danger-like), the Cathedral's few store
+  vaults and supply lines — NEVER the surface. Surface Sentinels are SPARSE
+  (battle-signs and battlements ubiquitous, standing warriors uncommon), are
+  units the Cathedral has LOST control of and cannot recall, and are NOT
+  replenished: they SELF-REPAIR and slowly devolve — that technology being
+  lost is why it looks like replenishment. Surface strays malfunction and
+  hide in plain sight; a night-wanderer reads as harmless old junk while
+  some are fully operational.
+- **The Kindled: never made** (see §2b knowledge scoping) — no lore, no
+  rumor; first making is an in-play event.
+- **Knowledge gate (hard).** Nobody in-world — the Junkers included — knows
+  the Cathedral is alive or wants the crystals; that is late-game lore only.
+  The Junkers hold fragments of the Deeps stories; the ancient miner's
+  testimony survives as a data entry in the tall tower's computer in the
+  forge dungeon (site identifier unresolved — resolve at wiring, do not
+  guess) and as a Junkers goodwill unlock. Two sources, owner-ruled.
 
 ## Owed on ruling — status after the 2026-09-11 propagation
 
