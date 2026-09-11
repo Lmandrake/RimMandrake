@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  TWINKLE_FLORA_SPIKE_1: timeboxed spike, NOT a shipped plant. Not placed in
+  any wildPlants list, any biome, or any commission. Exists only to be
+  hand-spawned (dev spawner or a bridge call) for observing/measuring the
+  glow-pulse prototype in TwinkleFloraSpike.cs. See
+  infrastructure/state/items/TWINKLE_FLORA_SPIKE_1.md for the report this
+  supports.
+
+  tickerType is Rare on purpose, not inherited from a donor parent: the
+  comp's pulse logic lives in CompTickRare (Verse.ThingComp), and a Thing's
+  comps tick on the SAME channel as the Thing's own tickerType: setting
+  this to Long or Normal would silently stop CompTickRare from ever firing.
+  graphicClass is Graphic_Single, not the more common Graphic_Random, because
+  RUT_PlantTwinkle's Graphic override calls Graphic_Single.GetColoredVersion
+  specifically (verified in Verse/Graphic_Single.cs before use).
+
+  Texture reused from vanilla (Things/Plant/Bush) rather than commissioning
+  new art: this spike is about the mechanism and its cost, not a new
+  species' look.
+-->
+<Defs>
+
+  <ThingDef>
+    <defName>RUT_TwinkleSpikeTestPlant</defName>
+    <label>twinkle spike test plant</label>
+    <description>A test article for TWINKLE_FLORA_SPIKE_1. Not a real species; do not place this in the campaign.</description>
+    <thingClass>RimMandrake.Utinni.UtinniPatches.RUT_PlantTwinkle</thingClass>
+    <category>Plant</category>
+    <altitudeLayer>LowPlant</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <fillPercent>0.2</fillPercent>
+    <pathCost>30</pathCost>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <tickerType>Rare</tickerType>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutPlant</shaderType>
+      <texPath>Things/Plant/Bush</texPath>
+      <drawSize>1.15</drawSize>
+    </graphicData>
+    <statBases>
+      <Flammability>1</Flammability>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Nutrition>0.1</Nutrition>
+    </statBases>
+    <plant>
+      <fertilityMin>0.0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <sowWork>170</sowWork>
+      <harvestWork>200</harvestWork>
+      <visualSizeRange>1~1</visualSizeRange>
+      <growDays>1</growDays>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>0</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.Utinni.UtinniPatches.CompProperties_GlowPulse">
+        <cyclePeriodTicks>15000</cyclePeriodTicks>
+        <pulseSteps>12</pulseSteps>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>Plants</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

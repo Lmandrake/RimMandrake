@@ -47,6 +47,10 @@
 
   <ItemGroup>
     <Compile Include="GeothermalDensityField.cs" />
+    <!-- TWINKLE_FLORA_SPIKE_1 (2026-09-10): timeboxed feasibility spike, not
+         a shipped feature: see the .cs file's own header and
+         infrastructure/state/items/TWINKLE_FLORA_SPIKE_1.md. -->
+    <Compile Include="TwinkleFloraSpike.cs" />
   </ItemGroup>
 
   <ItemGroup>
