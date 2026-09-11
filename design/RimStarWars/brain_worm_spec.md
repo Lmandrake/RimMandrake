@@ -40,19 +40,26 @@ PLACE.** Carrying an infected friend into the night is a journey, not a recipe.
   mental state + custom ThinkTree node (our C#; the one genuinely new piece).
   Cure: host's ambient temperature below the threshold for N hours → worm
   ejects and dies (severity collapses). Surgery remains as the risky fast path.
-- **Dead-host puppeting** — the arc's signature, and the expensive half.
-  Two build options for the owner to pick at review:
-  (a) v1: living hosts only (cheap, all mechanics above);
-  (b) the Geonosian-corpse shambler, our own C# corpse-walker (NO Anomaly
-  dependency unless `ANOMALY_EXCEPTION_ACCESS_1` is ruled open for it — per the
-  item, not assumed).
-- **Vector**: not weather. Candidates for the owner: Geonosian ruin dungeons
-  (eggs in the dark), salvaged cargo, a quest. Placement is his ruling later.
+- **Dead-host puppeting — 🔴 RULED OUT PERMANENTLY** (owner, 2026-09-11,
+  verbatim: *"Never corpse-walker. Too gross."*). Living hosts only, forever —
+  not deferred to v2, dead. No Anomaly-exception question exists for this mod.
+- **Vector — RULED** (owner, 2026-09-11), three build:
+  1. **Geonosian ruin dungeons** — eggs in the dark, exploration hazard.
+  2. **Salvaged cargo** — the Ahsoka route; the scavenger fantasy of dragging
+     home something that hatches.
+  3. **Weaponized eggs as war retribution** (owner, verbatim: *"As punishment
+     if they go to war against the Jawa: bring a catapult and hurl eggs at
+     their ship, then leave."*) — a player-side delivery of eggs against
+     factions that war on the colony; delivery mechanism (catapult/launcher
+     item vs caravan action) is the build's design question, the fantasy is
+     fixed.
+  A scripted quest vector was offered and NOT picked — build none.
 - **Tie-ins honored**: `RSW_RimMandrakeGeonosianVariants` xenotype already
   exists (the hive has a face); the icon carve-out protects brain worms as an
   in-universe reference; the war-legacy split does NOT claim them — Geonosian
   biology, never Assailant arsenal.
 
 ## verify state
-Donor examined without activation ✅; canon cited ✅; def plan NOT yet reviewed
-with the owner — the item stays open on his review.
+Donor examined without activation ✅; canon cited ✅; def plan REVIEWED with the
+owner 2026-09-11 ✅ (puppeting scope + vectors ruled above). Build:
+`BRAINWORM_MOD_BUILD_1` (FOUNDRY).
