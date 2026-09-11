@@ -34,6 +34,13 @@
       <Wildness>0.9</Wildness>
     </statBases>
     <tools>
+      <!-- body Bird (Defs/Core/Bodies/Bodies_Animal_Bird.xml) has no
+           FrontLeftLeg/FrontRightLeg groups; those exist only on
+           quadruped bodies (see FurnaceBeast below). Both feet share a
+           single "Feet" group, same as every vanilla bird's claw tool
+           (e.g. Defs/Odyssey/ThingDefs_Races/Races_Animal_Birds.xml):
+           the two talon tools below were dead (unreachable body part
+           group, never usable) before this fix. -->
       <li>
         <label>talons</label>
         <capacities>
@@ -41,7 +48,7 @@
         </capacities>
         <power>9</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
       </li>
       <li>
         <label>talons</label>
@@ -50,8 +57,12 @@
         </capacities>
         <power>9</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
       </li>
+      <!-- Bite belongs on the Beak body part group (present on Bird's
+           Head/Beak subpart), not HeadAttackTool: HeadAttackTool is the
+           whole-head fallback vanilla birds use for a separate, low-power
+           Blunt "head" tool, not for the primary bite. -->
       <li>
         <label>beak</label>
         <capacities>
@@ -59,9 +70,7 @@
         </capacities>
         <power>7</power>
         <cooldownTime>1.8</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
-        <chanceFactor>0.2</chanceFactor>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>
@@ -153,6 +162,12 @@
       <Wildness>0.97</Wildness>
     </statBases>
     <tools>
+      <!-- HornAttackTool, not HeadAttackTool: body
+           QuadrupedAnimalWithHoovesAndHorn carries a Horn subpart with its
+           own HornAttackTool group specifically so a horn attack is tied
+           to the horn organ (and stops working if it's lost), matching
+           every vanilla horned animal (e.g.
+           Defs/Core/ThingDefs_Races/Races_Animal_CowGroup.xml). -->
       <li>
         <label>horn</label>
         <capacities>
@@ -160,7 +175,7 @@
         </capacities>
         <power>18</power>
         <cooldownTime>2.4</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
       </li>
       <li>
         <label>left foot</label>

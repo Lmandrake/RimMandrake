@@ -56,10 +56,11 @@ namespace RimMandrake.Utinni.UtinniPatches
 	// ===========================================================================
 	// WHAT IT SUBSTITUTES, AND WHY THAT AND NOT "WEAKER MECHS"
 	// ===========================================================================
-	// The eight biomes below are the rows where the ratified table in
-	// design/Jawa/worldbuilding/mechanoid_biome_presence_draft.md has ANCIENT =
-	// ALLOW or RARE but AMBIENT = DENY. Read the argument column for those rows
-	// and every one of them says the same thing in different words:
+	// The eight biomes below are seven rows where the ratified table in
+	// design/Jawa/worldbuilding/mechanoid_biome_presence_draft.md has AMBIENT =
+	// DENY, plus Desert, whose AMBIENT is actually RARE (dormant, in shade) —
+	// checked against the table directly, not assumed from a paraphrase. Every
+	// row's argument column says the same thing in different words:
 	//
 	//   AB_TarPits          "nothing in the tar is active until dug"
 	//   ZBiome_DesertOasis  "guardian-light ... its machines are dead — no
@@ -70,6 +71,16 @@ namespace RimMandrake.Utinni.UtinniPatches
 	//   BiomeGRimond        "sealed ancient structures, nothing more"
 	//   PoisonForest        "no mech guardians inside" (sheet-explicit)
 	//   BiomeCypreJungle    "washed-down wreck deposits"
+	//
+	// ⚠️ FLAGGED FOR OWNER REVIEW, not resolved here: Wasteland has the same
+	// ANCIENT=ALLOW/AMBIENT=RARE(dormant) profile as Desert, and its own
+	// argument column is more explicit against a live guardian than Desert's
+	// ("a live roaming one breaks the law that danger here is environmental,
+	// never creature-shaped") — yet Wasteland is NOT in this set. Either
+	// Desert doesn't belong here either (strict AMBIENT=DENY reading) or
+	// Wasteland is missing (the "no live mechanoid guardian" reading). Not
+	// decided here because it changes shrine behavior on a real biome the
+	// owner hasn't ruled on for this specific item.
 	//
 	// ⚠️ None of those rows asks for a REPLACEMENT living guardian, and four of
 	// them explicitly forbid one. So this file does NOT invent a scavenger
