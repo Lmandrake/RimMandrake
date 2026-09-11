@@ -65,3 +65,5 @@ save without a backup."*
 | **RimTalk – Expand Actions** | Disable `recruit` and `surrender`. |
 | **RimAI Core** | Voice-only; actuator tools off. |
 
+| **Complex Jobs** | 🟢 RULED KEEP (owner, 2026-09-11, Wave 3): work ASSIGNMENT not numbers — declared resident; no future stat audit re-litigates it. |
+| **Caravan Adventures** | 🟢 RULED strip-stats-keep-quests (owner, 2026-09-11): quest layer stays, its 80 armour/bodySize/combatPower edits get counter-patched to neutral (`STAT_NORM_WAVE3_RETIRE_1`). |

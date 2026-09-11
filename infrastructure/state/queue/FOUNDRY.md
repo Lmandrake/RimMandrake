@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T06:28:04Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-11T06:33:48Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -997,3 +997,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/STAT_NORM_WAVE2_RETIRE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/STAT_NORM_WAVE2_RETIRE_1.md
+
+## STAT_NORM_WAVE3_RETIRE_1 Execute Wave 3 (owner ruled 2026-09-11): retire vsrexamined + survivaltools TOGETHER (save cleanup: 4 placed tools); counter-patch caravanadventures' stat edits to neutral (80 armour + bodySize/combatPower) keeping its quest layer live; research trio (steppingstones + gravtech x2) is NOT here - it folds into RESEARCH_TREE_NORMALIZATION_1; complexjobs is a RULED KEEP
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STAT_NORM_WAVE3_RETIRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STAT_NORM_WAVE3_RETIRE_1.md
+
+## RESEARCH_TRIO_RETIRE_1 Retire steppingstones + als.gravtech x2 and re-validate the research recost after the cut (owner ruled Wave 3 'fold into the research pass' 2026-09-11 - the pass itself is closed, so this item carries it: cut, rerun the recost validator, reconcile the 112 collision rows)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RESEARCH_TRIO_RETIRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RESEARCH_TRIO_RETIRE_1.md
