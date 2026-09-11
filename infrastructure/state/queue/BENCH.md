@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T17:33:05Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-11T17:53:20Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -114,7 +114,7 @@ _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -122,7 +122,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
@@ -364,16 +364,6 @@ thin:     spec, verify and criteria all present
 summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
 prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
 
-## FAUNA_GRAPHS_SITTING_1 Owner LOOKS at the 4 canonical fauna graphs (Transient/fauna_graphs_2026-09-11/) and rules: Law-3 K band for the full roster, the 23 narrow temp tolerances to widen, outlier dispositions (JOE_Nautilant 830pw etc), products axis next step
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     decision
-thin:     no ## criteria
-summary:  The four PNGs at Transient/faunagraphs2026-09-11/ (committed 06c0a1be; data:
-prose:    infrastructure/state/items/FAUNA_GRAPHS_SITTING_1.md
-
 ## DASHBOARD_HUB_ARTIFACT_1 Single multi-tab dashboard hub artifact: thin tab shell + one data file per tab (per-seat republish, no collisions), per-tab freshness lamps, sheets linked not embedded — owner ruled 2026-09-11, spec in art_regen_registry_design.md §4
 state:    proposed
 row:      unassigned
@@ -393,3 +383,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  - A sitting with the owner (BENCH holds the pen) producing his legends
 prose:    infrastructure/state/items/MINDSTONE_LEGENDS_ENTRIES_1.md
+
+## FAUNA_LORE_DIVERSIFICATION_1 Per-beast damage diversification round AFTER size scaling: judge each beast by its art + description (scary vs harmless), diverge individuals from the 12-15x band deliberately - owner ruled 2026-09-11, rides the beast graphics/lore pass
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  - Runs AFTER the full-roster size scaling (Law 3 at 12–15×bodySize) lands and
+prose:    infrastructure/state/items/FAUNA_LORE_DIVERSIFICATION_1.md

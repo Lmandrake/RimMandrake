@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T17:33:05Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-11T17:53:20Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -684,15 +684,6 @@ kind:     task
 summary:  Standing owner instruction: "there should always be at least one agent
 prose:    infrastructure/state/items/ART_REGEN_WAVE2_QUEUE_1.md
 
-## ART_REGEN_REGISTRY_1 Art regen registry: artreg.py CLI + registry.jsonl event ledger (target/job identity, repurpose flow, retry cap 3, backfill) + burn-up status render per design/RimMandrake/art_regen_registry_design.md — done=committed, ruled 2026-09-11
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - src/RimMandrake/Utils/artpipe/artreg.py: sole writer of
-prose:    infrastructure/state/items/ART_REGEN_REGISTRY_1.md
-
 ## SHIP_VERMIN_MOD_1 ShipVermin mod: gather ALL ship-infesting critters (mynock first) - mechanics, creatures, future ideas; cute to hideous; inside and vacuum-capable - owner ruled 2026-09-11
 state:    doing
 row:      unassigned
@@ -702,15 +693,6 @@ kind:     task
 summary:  - New RimMandrake-tier mod "ShipVermin" (packageId per
 prose:    infrastructure/state/items/SHIP_VERMIN_MOD_1.md
 
-## PYRELANDS_FACING_COMPLETE_1 PYRELANDS_FACING_COMPLETE_1
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  (no items/PYRELANDS_FACING_COMPLETE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PYRELANDS_FACING_COMPLETE_1.md
-
 ## LOCKJAW_ART_WIRE_IN_1 LOCKJAW_ART_WIRE_IN_1
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -719,6 +701,15 @@ target:   v1
 kind:     build
 summary:  infrastructure/artpipe/done/lockjawimprovear7.json and br7.json (plus
 prose:    infrastructure/state/items/LOCKJAW_ART_WIRE_IN_1.md
+
+## ART_REGEN_WAVE2_WIRE_IN_1 ART_REGEN_WAVE2_WIRE_IN_1
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Second artpipe batch: 4 creatures, 3 facings each (south/east/north), sitting
+prose:    infrastructure/state/items/ART_REGEN_WAVE2_WIRE_IN_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
