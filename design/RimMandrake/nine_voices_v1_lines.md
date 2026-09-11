@@ -100,6 +100,34 @@ trade (Mob'Unloo), launch/rooted (Ta'Baa), droid-online (Ohm):
 
 ---
 
+## Narrator silent-god readouts — DRAFT, not yet blessed
+
+Owner asked (2026-09-11) for narrator descriptions of each god pleased /
+displeased "as they look on the events dominated by others but do not
+speak." Drafted at the same sitting; the owner moved on to dungeon text
+before ruling — **these 18 lines await his tune-or-bless and are NOT part of
+the blessed corpus above.** Narrator register: impersonal, environmental, no
+pidgin (pidgin is the gods' register, never his).
+
+- **Ishko** pleased: "Lamps burn low and nothing watches back. Whatever keeps to the dark is keeping to it comfortably."
+- **Ishko** displeased: "Every light in camp feels slightly too bright. Something that prefers not to be seen is being made to watch."
+- **Ohm** pleased: "The machines run a shade smoother than maintenance explains. The current is satisfied."
+- **Ohm** displeased: "Relays stutter without cause and tools sit wrong in the hand. The current has noticed the neglect."
+- **Oomo** pleased: "The water tastes better than it should. Whatever counts the family has finished counting, and the count pleased it."
+- **Oomo** displeased: "The cisterns sound hollow even when full. Something keeps recounting the family and arriving at the gaps."
+- **Mob'Unloo** pleased: "Small windfalls keep arriving — a fair price, a found coin. Somewhere a ledger has balanced, and approves."
+- **Mob'Unloo** displeased: "Everything traded lately feels a fraction underpaid. Somewhere a ledger is open, and the colony is on the wrong page."
+- **Rekko** pleased: "Old things hold. Hinges that should complain don't. The past is being kept, and it keeps back."
+- **Rekko** displeased: "Dust settles faster than it used to. What is not mended is being mourned, and mourning has a weight."
+- **Ta'Baa** pleased: "The wind carries road-smell through camp. Everything packable feels lighter than yesterday."
+- **Ta'Baa** displeased: "The horizon looks farther than it is. Something that lives at thresholds finds every door here closed."
+- **Zizzik** pleased: "Static crackles off blankets and small things fail amusingly. The spark is fed, and playing."
+- **Zizzik** displeased: "Nothing has gone wrong in days. The quiet has a coiled quality. The spark is saving up."
+- **Sh'kaar** pleased: "The heat lies flat and patient, like a fed animal. The sun's attention is elsewhere. This is what its approval feels like."
+- **Sh'kaar** displeased: "Shade feels thinner. The glare finds gaps it didn't find last week. Something overhead is running its schedule a little faster."
+- **Ozzik** pleased: "The camp's one fine thing catches the light and holds it. Old grandeur, briefly remembered, stands a little straighter."
+- **Ozzik** displeased: "Everything looks smaller than it did — the tents, the walls, the plans. A shamed thing is comparing, and the camp loses."
+
 ## Wiring owed (not this doc's work)
 - Def-side delivery (letters/fragments) rides the satiation engine build;
   the four missing hooks are `NINEFOLD_MISSING_EVENT_HOOKS_1`.
