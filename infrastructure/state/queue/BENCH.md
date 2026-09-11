@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T23:54:02Z (the last event's own timestamp, not the render clock)
-game:  GOING_DOWN   bridge: FOUNDRY
+as-of: 2026-09-11T23:54:42Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## MECHANOID_ORIGIN_CANON_1 The mindstone droid-mind race; mechanoids + Rust Cathedral as a non-artificial AI and the Deeps' crystal minds as their wild cousins; the production facility and the Cathedral's true children
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  - Reconcile with existing canon: the Rust Cathedral (ABMechanoidIntrusion, the
-prose:    infrastructure/state/items/MECHANOID_ORIGIN_CANON_1.md
 
 ## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
 state:    ready
@@ -53,6 +44,15 @@ target:   v1
 kind:     task
 summary:  - Inventory, from the live def dump + mod XML (never guess a defName):
 prose:    infrastructure/state/items/MUTATION_MODIFIERS_SURVEY_1.md
+
+## MECHANOID_ORIGIN_CANON_1 The mindstone droid-mind race; mechanoids + Rust Cathedral as a non-artificial AI and the Deeps' crystal minds as their wild cousins; the production facility and the Cathedral's true children
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  - Reconcile with existing canon: the Rust Cathedral (ABMechanoidIntrusion, the
+prose:    infrastructure/state/items/MECHANOID_ORIGIN_CANON_1.md
 
 ## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
 state:    doing
@@ -114,7 +114,7 @@ _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is GOING_DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -122,7 +122,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is GOING_DOWN
+waiting:  needs `deploy`, game is DOWN
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
