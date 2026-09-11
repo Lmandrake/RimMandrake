@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: SW — Shokk</name>
+  <packageId>mandrake.rsw.shokk</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>SHOKK_RSW_MOD_1 (owner ruling, 2026-09-11, on the webwork
+kit-placement card, verbatim: "The Shokk feels like it's becoming its own
+MandrakeStarWars level mod, with the rest of the mechanics in this biome
+party of the Utinni scenario.") — the Wyyyschokk's own behavior, generalized
+so any Star Wars scenario can use it, extracted out of
+`design/Jawa/worldbuilding/biomes/kits/webwork_kit_spec.md`
+(WEBWORK_MECHANICS_1, never itself built — this mod is that spec's Shokk
+slice, built for the first time here).
+
+**Species ownership note**: the Wyyyschokk ThingDef/PawnKindDef itself is NOT
+ours to move — it is a live def inside the third-party Workshop mod
+`mlie.starwarsanimalcollection` (Star Wars Animal Collection), confirmed by
+direct search of this repo: every existing reference (BeastNorm_Law3.xml's
+Law-3 damage patch, MegafaunaYield.xml's yield-stat patch, RUT_Webwork.xml's
+wildAnimals entry) is a PatchOperation targeting `ThingDef[defName="Wyyyschokk"]`
+in that external mod, never a def declaration of our own. The item's premise
+("find its current def... and MOVE it") does not hold: there is no RUT_-owned
+Wyyyschokk def anywhere in this repo to relocate; it has never been absorbed
+the way Bantha/Jerba were. What ships here instead is everything that IS ours
+to own — new content authored fresh against the spec, applied to the external
+species by patch, exactly as BeastNorm/MegafaunaYield already do:
+
+  1. `RSW_ShokkBound` (HediffDef) — re-tokened RSW_ from the spec's
+     provisional RUT_ name. The mouth-loom's bind: near-immobilizes rather
+     than wounds (capMods, no direct damage), decays slowly untended,
+     resolves fast under a doctor's tend (HediffCompProperties_TendDuration).
+  2. `RSW_Damage_ShokkSpit` (DamageDef, ParentName="Bullet") — near-zero
+     direct damage; its whole purpose is `additionalHediffs` → RSW_ShokkBound.
+  3. `RSW_Bullet_ShokkSpit` + `RSW_Gun_ShokkSpit` — the projectile and the
+     turret-gun wrapper (RimWorld.CompTurretGun, the same mechanism vanilla's
+     heavy mechanoids use to give a PAWN a ranged attack) that the Wyyyschokk
+     patch attaches, giving the spider a genuine ranged "spit" without any
+     new C# combat code — `CompTurretGun` already implements
+     `IAttackTargetSearcher` and slots into the vanilla combat AI for any
+     pawn, mechanoid or animal.
+  4. `RSW_Webwork_SunScald` (HediffDef) — the light-moat, RULED 2026-09-11:
+     cripples (MoveSpeed postFactor down to ~0.3, "crawl for shade"), NEVER
+     downs — every stage uses postFactor, never a capacity floor, so Moving
+     can shrink but never hit zero. Its hediffClass,
+     `RimMandrake.CreatureBehaviors.RM_Hediff_SunScald`, is generic (any
+     species, any planet) and lives in the shared
+     `mandrake.rm.creaturebehaviors` assembly per the owner's ruling that the
+     RM_ mechanics kit's classes belong there, not in a per-biome DLL — this
+     mod supplies only the tuned XML HediffDef and the patch that attaches it
+     via PawnKindDef.startingHediffs. The class is keyed to
+     `RimWorld.SanguophageUtility.InSunlight` (unroofed + sky glow, the same
+     primitive the vanilla UV-sensitivity gene uses) — canon note, 2026-09-11:
+     there is no night on Ash'karr's dayside and no lamp ever substitutes for
+     the sun there, but on any OTHER planet the identical primitive already
+     turns this off at night on its own; nothing here special-cases Ash'karr.
+  5. `RSW_CompEmergentSpawnOnDestroy` — the emergent-Shokk spawn hook (RULED
+     2026-09-11, owner-verbatim on the sole-source boundary card: "it has a
+     small chance of SPAWNING an emergent Shokk to get you"). A small,
+     reusable ThingComp: attach it (via `RSW_CompProperties_EmergentSpawnOnDestroy`)
+     to any Thing whose destruction represents a harvest, and on a
+     `DestroyMode.Vanish` it rolls a configurable chance to spawn a hostile
+     Wyyyschokk (soft `DefDatabase&lt;PawnKindDef&gt;` lookup by name — inert,
+     never errors, if the species mod is absent) at the spot, manhunter-forced.
+     Not yet wired to any recipe: the creep-web harvest that will attach this
+     comp belongs to `SHOKKWEAVE_SOLE_SOURCE_1`, unbuilt as of this mod's
+     creation — this ships the mechanism the Utinni layer will consume.
+
+**What stayed RUT_/Utinni** (per the same ruling): the web-sense
+MapComponent's biome gating, creep-web terrain, the sole-source boundary, and
+every other webwork_kit_spec.md mechanic not named above. The Utinni layer
+(`UtinniPatches`) is a CONSUMER of this mod — it references RSW_ defs across
+the mod boundary — never the owner of Shokk-specific content.
+
+Live proof is OWED beyond this build's own quicktest verification: the full
+webwork biome kit (web-sense, ambush, margin creep) has never been built —
+only this mod's Shokk slice has, against a forced-biome quicktest map.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+    </li>
+    <li>
+      <packageId>mlie.starwarsanimalcollection</packageId>
+      <displayName>Star Wars Animal Collection (Continued)</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/3497316713</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.creaturebehaviors</li>
+    <li>mlie.starwarsanimalcollection</li>
+  </loadAfter>
+</ModMetaData>

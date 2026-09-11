@@ -1,24 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    SHIP_VERMIN_MOD_1. Same recipe as
-    src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj —
+    SHOKK_RSW_MOD_1. Same recipe as
+    src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviors.csproj —
     copy that header if this one goes stale.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\CreatureBehaviors\Source\RM_CreatureBehaviors.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimStarWars\Shokk\Source\RSW_Shokk.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony: every class here is a plain engine extension point (ThingComp,
-    MapComponent, ThinkNode_JobGiver, JobDriver, Alert, DefModExtension).
+    No Harmony: the only class here (RSW_CompEmergentSpawnOnDestroy) is a
+    plain ThingComp. The sun-scald hediff class lives in the shared
+    mandrake.rm.creaturebehaviors assembly, not here — this mod's XML
+    references it by fully-qualified hediffClass name only.
   -->
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyName>RimMandrake.CreatureBehaviors</AssemblyName>
-    <RootNamespace>RimMandrake.CreatureBehaviors</RootNamespace>
+    <AssemblyName>RimMandrake.StarWars.Shokk</AssemblyName>
+    <RootNamespace>RimMandrake.StarWars.Shokk</RootNamespace>
     <Version>1.0.0</Version>
 
     <OutputPath>..\Assemblies\</OutputPath>
@@ -38,18 +40,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="RM_VerminPressureExtension.cs" />
-    <Compile Include="RM_MapComponent_VerminPopulation.cs" />
-    <Compile Include="RM_CompProperties_VerminBreeder.cs" />
-    <Compile Include="RM_CompVerminBreeder.cs" />
-    <Compile Include="RM_SeekTargetExtension.cs" />
-    <Compile Include="RM_JobGiver_SeekMarkedTerrain.cs" />
-    <Compile Include="RM_GnawTargetExtension.cs" />
-    <Compile Include="RM_JobDefOf.cs" />
-    <Compile Include="RM_JobGiver_GnawTargets.cs" />
-    <Compile Include="RM_JobDriver_Gnaw.cs" />
-    <Compile Include="RM_Alert_VerminPopulationBase.cs" />
-    <Compile Include="RM_Hediff_SunScald.cs" />
+    <Compile Include="RSW_CompEmergentSpawnOnDestroy.cs" />
   </ItemGroup>
 
   <ItemGroup>

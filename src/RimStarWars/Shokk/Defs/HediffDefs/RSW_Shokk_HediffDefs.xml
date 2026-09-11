@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_Shokk_HediffDefs                           mandrake.rsw.shokk
+
+  SHOKK_RSW_MOD_1. Re-tokened RSW_ from webwork_kit_spec.md's provisional
+  RUT_ names (owner ruling 6, 2026-09-11: ShokkBound and the sun-scald
+  behavior are Shokk-specific and move to the new RSW-tier mod).
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RSW_ShokkBound</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>Shokk-bound</label>
+    <labelNoun>a Shokk-binding</labelNoun>
+    <description>Web-silk shot from a Wyyyschokk's mouth-loom has hardened around the joints. It does no damage on its own — it binds. Struggling only draws it tighter; a doctor's tend loosens it fast, but left alone it takes days to work free.</description>
+    <defaultLabelColor>(0.85, 0.75, 0.35)</defaultLabelColor>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <tendable>true</tendable>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.2</severityPerDay>
+        <showHoursToRecover>true</showHoursToRecover>
+      </li>
+      <li Class="HediffCompProperties_TendDuration">
+        <severityPerDayTended>-0.9</severityPerDayTended>
+        <tendAllowed>true</tendAllowed>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>grazed</label>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.5</postFactor>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>bound</label>
+        <minSeverity>0.5</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0.10</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <setMax>0.10</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_Webwork_SunScald</defName>
+    <hediffClass>RimMandrake.CreatureBehaviors.RM_Hediff_SunScald</hediffClass>
+    <label>sun-scald</label>
+    <labelNoun>sun-scald</labelNoun>
+    <description>Direct sunlight sears the Wyyyschokk's hide. In shade or under an overcast sky it fades; unroofed under a bright sky it climbs until moving at all is agony. RULED 2026-09-11: this cripples, it never downs — no light a player can build substitutes for the sun, but the creature always keeps enough Moving capacity to crawl for shade.</description>
+    <defaultLabelColor>(0.95, 0.55, 0.15)</defaultLabelColor>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <stages>
+      <li>
+        <label>scalding</label>
+        <minSeverity>0</minSeverity>
+      </li>
+      <li>
+        <label>burning</label>
+        <minSeverity>0.35</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.6</postFactor>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>crippled</label>
+        <minSeverity>0.7</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.3</postFactor>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

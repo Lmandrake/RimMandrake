@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_Shokk_Wyyyschokk                           mandrake.rsw.shokk
+
+  SHOKK_RSW_MOD_1. Attaches this mod's Shokk-specific behavior to the
+  Wyyyschokk ThingDef/PawnKindDef pair, which live in the third-party
+  `mlie.starwarsanimalcollection` mod (Star Wars Animal Collection) — not
+  something this repo owns or can move, so it is patched here exactly like
+  the existing BeastNorm_Law3.xml (RimStarWars/SWBestiary) and
+  MegafaunaYield.xml (RimUtinni/Doctrine) patches already target it.
+
+  A patch that matches nothing logs nothing (PatchOperationConditional
+  returns true on no match) — both operations below are conditional on the
+  wrapper list already existing and fall back to PatchOperationAdd on the
+  parent def when it does not, so this is safe whether or not
+  Wyyyschokk already carries a <comps> or <startingHediffs> block.
+-->
+<Patch>
+
+  <!-- Ranged "spit" attack: CompTurretGun + RSW_Gun_ShokkSpit (§3 mouth-loom). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Wyyyschokk"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Wyyyschokk"]/comps</xpath>
+      <value>
+        <li Class="CompProperties_TurretGun">
+          <turretDef>RSW_Gun_ShokkSpit</turretDef>
+          <autoAttack>true</autoAttack>
+        </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Wyyyschokk"]</xpath>
+      <value>
+        <comps>
+          <li Class="CompProperties_TurretGun">
+            <turretDef>RSW_Gun_ShokkSpit</turretDef>
+            <autoAttack>true</autoAttack>
+          </li>
+        </comps>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <!-- Light-moat: RSW_Webwork_SunScald from birth (§4). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="Wyyyschokk"]/startingHediffs</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="Wyyyschokk"]/startingHediffs</xpath>
+      <value>
+        <li>
+          <def>RSW_Webwork_SunScald</def>
+          <severity>0.01</severity>
+        </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="Wyyyschokk"]</xpath>
+      <value>
+        <startingHediffs>
+          <li>
+            <def>RSW_Webwork_SunScald</def>
+            <severity>0.01</severity>
+          </li>
+        </startingHediffs>
+      </value>
+    </nomatch>
+  </Operation>
+
+</Patch>
