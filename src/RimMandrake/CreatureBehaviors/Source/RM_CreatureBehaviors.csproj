@@ -53,6 +53,7 @@
     <Compile Include="RM_JobGiver_GnawTargets.cs" />
     <Compile Include="RM_JobDriver_Gnaw.cs" />
     <Compile Include="RM_Alert_VerminPopulationBase.cs" />
+    <Compile Include="RM_Alert_VerminPopulation_Inert.cs" />
     <Compile Include="RM_Hediff_SunScald.cs" />
   </ItemGroup>
 
