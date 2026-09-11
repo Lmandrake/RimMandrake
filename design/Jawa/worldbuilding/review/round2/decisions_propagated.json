@@ -590,7 +590,7 @@
       "art": "keep",
       "artPrefill": "keep",
       "decision": "out",
-      "note": "ice predator — misplaced in desert; routing owed (nightside_ice or reserve, owner to say) (sitting ruling 2026-09-10)",
+      "note": "ice predator — misplaced in desert; routing owed (nightside_ice or reserve, owner to say) (sitting ruling 2026-09-10) | ROUTED: nightside_ice as visitor-dying margin predator (owner ruling 2026-09-10: nightside visitor law)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -3722,7 +3722,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:24:56.014Z",
       "decision": "move",
-      "note": "Refashion into nightside biomes, your choice of extreme cold area, make pale blue aura around it",
+      "note": "Refashion into nightside biomes, your choice of extreme cold area, make pale blue aura around it | NATIVE: thermal-only sensing line owed in the refashion/rename (owner ruling 2026-09-10: nightside visitor law)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -4020,7 +4020,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T05:36:13.355Z",
       "decision": "move",
-      "note": "ice sheet, rename",
+      "note": "ice sheet, rename | NATIVE: thermal-only sensing line owed in the refashion/rename (owner ruling 2026-09-10: nightside visitor law)",
       "prefill": "in",
       "sizeBin": "small",
       "sizeBinPrefill": "large"
@@ -7397,7 +7397,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:47:18.808Z",
       "decision": "move",
-      "note": "white ice night biome",
+      "note": "white ice night biome | VISITOR-DYING, never native: margin herds straying in at LOW commonality, radiating heat they cannot afford; feeds the tunnelers (owner ruling 2026-09-10: nightside visitor law)",
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
@@ -7843,7 +7843,7 @@
       "artPrefill": "keep",
       "at": "2026-09-10T13:39:03.175Z",
       "decision": "move",
-      "note": "Ice plains",
+      "note": "Ice plains | VISITOR-DYING, never native: follows the straying herds in, low commonality (owner ruling 2026-09-10: nightside visitor law)",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
@@ -7967,6 +7967,13 @@
       "art": "keep",
       "sizeBin": "large",
       "note": "ARRIVAL (sitting ruling 2026-09-10): sole home; must be added to the sheet ban-7 organic shortlist"
+    },
+    "fauna:nightside_ice:Jakobeast": {
+      "decision": "in",
+      "prefill": "in",
+      "art": "keep",
+      "sizeBin": "large",
+      "note": "ARRIVAL (owner ruling 2026-09-10: nightside visitor law): visitor-dying margin predator, follows the straying herds, low commonality"
     }
   },
   "generatedBy": "gen_fauna_assignment_sheet.py (2026-09-09 rulings rebuild)",
