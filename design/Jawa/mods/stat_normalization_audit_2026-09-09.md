@@ -367,6 +367,17 @@ sequence with the owner, not standalone.
 
 ### Wave 4 — 🔴 needs an explicit owner call; several are NOT retirable *(the rest)*
 
+🟢 **RULED (owner, 2026-09-11, three cards) — every Wave-4 call made.** All
+recommended keeps CONFIRMED as ruled permanent residents (Alpha Biomes; the
+ideoligion trio; ReGrowth + GrimTerra ground cover; keep-and-suppress for More
+Vanilla Biomes / Alpha Animals / Biomes-team). Big and Small: **the scaling
+experiment STANDS** — reconfirmed against the widened ruling, no silent
+override. More Vanilla Textures: keep the retextures, **counter-patch its 15
+drawSize replaces to neutral** (rides `STAT_NORM_WAVE3_RETIRE_1`'s
+counter-patch bucket) so bodySize-from-visual owns drawSize. With this, all
+four waves are ruled; the audit item closes and execution lives in the wave
+items.
+
 - ⛔ **`sarg.alphabiomes`** — 23,819 placed instances, 10 of our 23 painted
   biomes. **Recommend: keep, permanently.** Its `wildBiomes` injections are
   suppressed by the eviction file we already ship; that is the correct answer

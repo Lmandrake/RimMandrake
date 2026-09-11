@@ -67,3 +67,6 @@ save without a backup."*
 
 | **Complex Jobs** | 🟢 RULED KEEP (owner, 2026-09-11, Wave 3): work ASSIGNMENT not numbers — declared resident; no future stat audit re-litigates it. |
 | **Caravan Adventures** | 🟢 RULED strip-stats-keep-quests (owner, 2026-09-11): quest layer stays, its 80 armour/bodySize/combatPower edits get counter-patched to neutral (`STAT_NORM_WAVE3_RETIRE_1`). |
+| **Big and Small ×6** | 🟢 RECONFIRMED (owner, 2026-09-11): the scaling experiment stands against the widened stat ruling — normalization treats its scaling as intended signal. |
+| **Wave-4 permanent residents** | 🟢 RULED (owner, 2026-09-11): Alpha Biomes, Alpha Memes, VE Memes, VFE Tribals, ReGrowth, GrimTerra, More Vanilla Biomes, Alpha Animals, Biomes-team family — keep (and suppress spawns where our eviction patches already do). |
+| **More Vanilla Textures** | 🟢 RULED (owner, 2026-09-11): keep textures, counter-patch its 15 drawSize replaces to neutral (STAT_NORM_WAVE3_RETIRE_1). |
