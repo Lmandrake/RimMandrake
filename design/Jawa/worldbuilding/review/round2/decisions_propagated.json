@@ -1931,8 +1931,8 @@
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-10T04:55:00.656Z",
-      "decision": "in",
-      "note": "",
+      "decision": "out",
+      "note": "INJECTABLE-RESERVED (owner 2026-09-10): k'lor'slug is a horror — reserved for nightside injection like all horrors, never a biome resident",
       "prefill": "in",
       "sizeBin": "large",
       "sizeBinPrefill": "large"
