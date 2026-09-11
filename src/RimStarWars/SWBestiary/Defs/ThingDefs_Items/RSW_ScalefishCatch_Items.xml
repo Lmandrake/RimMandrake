@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GREENTIDE_FISH_ITEMS_FIX_1 — the three catch items BiomeFishTypes_Greentide.xml
+  actually needs. `FISH_TYPES_PATCH_BUILD_1` wired the scalefish RACE ThingDefs
+  (RSW_Mee/Faa/Laa, ParentName="AnimalThingBase", SeaBeasts_Scalefish.xml) straight
+  into that biome's fishTypes; FishingUtility.GetCatchesFor -> ThingMaker.MakeThing
+  has no category guard, so a net cast there would make a bare Pawn, not an item
+  (finding recorded in FISH_BESTIARY_COMMISSION_1 and this item's own spec).
+
+  Checked on disk, not guessed: the donor `mlie.starwarsanimalcollection`
+  (workshop 3497316713, 1.6/Defs/ThingDefs_Items/Items_Resource_swfish.xml) does
+  ship `swfish_Faa`/`swfish_Laa` as real ParentName="FishBase" item ThingDefs —
+  but it does NOT ship a `swfish_Mee` (the file's 12 swfish_ defs are Burra,
+  Dactopus, Daggert, Doshianjelly, Faa, FleekEel, Laa, Nyork, PaddyFrog, Ray, See,
+  SinkCrab; no Mee). Falling back to the donor's items for Faa/Laa only would
+  leave freshwater_Common with no Mee catch at all, so this ships all three as
+  our own RSW_ tier catch items instead — the option this item's own spec named,
+  and the same `RSW_MeeCatch`/`RSW_FaaCatch`/`RSW_LaaCatch` naming and 0.4/0.3/0.3
+  weights already proposed (unruled, name/weights only) in
+  design/Jawa/worldbuilding/fish_bestiary_commission_2026-09-10.md §2C.
+
+  Vanilla FishBase stats (Odyssey's own Items_Resource_Fish.xml pattern) — no
+  override on Mee/Faa; Laa gets the one deliberate override (MarketValue 9,
+  the prized/hard-to-net one per its race description and the §2C proposal).
+
+  Art: no item-scale icon exists yet (the SeaBeasts art in art/SeaBeasts/final/
+  and the deployed Textures/Things/Pawn/Animal/SeaBeasts/ are the 4-directional
+  live-pawn body sprites, not a stack icon) — texPath reuses each species' own
+  south-facing body sprite as a placeholder single icon (Graphic_StackCount,
+  inherited from FishBase, renders one texture fine with no multi-frame set).
+  Dedicated item-scale art is follow-up work, not this mechanism fix.
+-->
+<Defs>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_MeeCatch</defName>
+    <label>mee scalefish</label>
+    <description>A silver-blue schooling scalefish with a single line of bioluminescent dots along the flank, netted whole. The bulk protein of every river that has them.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Animal/SeaBeasts/Mee/Mee_south</texPath>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_FaaCatch</defName>
+    <label>faa scalefish</label>
+    <description>The gold-olive scalefish — "faynaa" to the Gungans — netted whole. Fast, small-mouthed and predatory in the water; middling eating out of it.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Animal/SeaBeasts/Faa/Faa_south</texPath>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_LaaCatch</defName>
+    <label>laa scalefish</label>
+    <description>The big ornate scalefish, striped and streamer-finned, netted whole. Prized on every table that can get one; hard to net for the same reason it is hard to eat.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Animal/SeaBeasts/Laa/Laa_south</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>9</MarketValue>
+    </statBases>
+  </ThingDef>
+
+</Defs>
