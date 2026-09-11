@@ -62,26 +62,30 @@ Load last.</description>
           five belonged to were already deleted, this loadAfter list just
           wasn't trimmed to match. A loadAfter naming an absent packageId is
           a silent no-op (see the PatchOperationFindMod note above), so this
-          was never a live bug, only stale bookkeeping. -->
+          was never a live bug, only stale bookkeeping.
+        * ABF: Synstructs Core (killathon.artificialbeings.syncore), GravTide
+          (gravtide.mod) and Vanilla Quests Expanded - Cryptoforge
+          (vanillaquestsexpanded.cryptoforge) - REMOVED 2026-09-10
+          (DIRTY_CODE_REVIEW_STANDING_LOOP_1 full-file pass): confirmed by
+          reading all three current Doctrine patch files
+          (DroidsAreMachines.xml, MegafaunaYield.xml, NoDroidManufacture.xml)
+          that none names any of these three mods. SynCore's own
+          FleshTypeDef Operation was removed from DroidsAreMachines.xml
+          under DROID_RETIRE_ABF_SYNCORE_1 the same day (ABF/SynCore both
+          retired from ModsConfig.xml); GravTide and Cryptoforge match no
+          Operation gate anywhere in this file's tracked history - stale
+          bookkeeping the generator's own DOCTRINE_LOADAFTER_STALE_1 check
+          cannot catch (it only asserts every emitted mod IS declared, not
+          that every declared entry is still emitted). Never a live bug,
+          same silent-no-op class as the two entries above. -->
   <loadAfter>
     <li>BiomesTeam.BiomesCaverns</li>                     <!-- Biomes! Caverns -->
     <li>BiomesTeam.BiomesCore</li>                        <!-- Biomes! Core -->
     <li>BiomesTeam.BiomesPollutedLands</li>               <!-- Biomes! Polluted Lands -->
     <li>Erin.FFAnimals</li>                               <!-- Erin's Final Fantasy Animals -->
-    <li>gravtide.mod</li>                                 <!-- GravTide -->
     <li>grimterra.biomesmod</li>                          <!-- GRiNDTerra Biomes -->
     <li>IronScruff.PrimordialGeysers</li>                 <!-- Primordial Geysers -->
     <li>Joe.Cephaloids</li>                               <!-- Cephaloids -->
-    <li>killathon.artificialbeings.syncore</li>           <!-- ABF: Synstructs Core -->
-    <!-- Was Killathon.ArtificialBeings (DOCTRINE_LOADAFTER_STALE_1, 2026-09-06):
-         that packageId belongs to "ABF: Artificial Beings Framework", the
-         donor's FRAMEWORK mod, not "ABF: Synstructs Core" which is what
-         DroidsAreMachines.xml actually gates on (ABF_FleshType_Synstruct_Base).
-         Confirmed against the live def dump manifest - killathon.artificialbeings
-         is the framework's own id, killathon.artificialbeings.syncore is
-         Synstructs Core's. The wrong id happened to sit before its real target
-         in load order too, so this was a second silent no-op waiting to
-         trigger, not a live bug today. -->
     <li>LingLuo.Cockroach</li>                            <!-- Rim cockroach -->
     <li>mandrake.rsw.swbestiary</li>                       <!-- RimMandrake - SW Sea Beasts -->
     <li>Mlie.AdvancedBiomes</li>                          <!-- Advanced Biomes (Continued) -->
@@ -102,7 +106,6 @@ Load last.</description>
     <li>VanillaExpanded.VAEWaste</li>                     <!-- Vanilla Animals Expanded — Waste Animals -->
     <li>VanillaExpanded.VGeneticsE</li>                   <!-- Vanilla Genetics Expanded -->
     <li>vanillaquestsexpanded.ancients</li>               <!-- Vanilla Quests Expanded - Ancients -->
-    <li>vanillaquestsexpanded.cryptoforge</li>            <!-- Vanilla Quests Expanded - Cryptoforge -->
     <li>vanillaracesexpanded.phytokin</li>                <!-- Vanilla Races Expanded - Phytokin -->
     <li>Who.VFEE.IsopodaGeneline</li>                     <!-- Insectoids 2 - Isopoda geneline -->
     <li>zal.betterinfestations</li>                       <!-- Better Infestations (Continued) -->
