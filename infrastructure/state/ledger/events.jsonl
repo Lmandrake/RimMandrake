@@ -7357,3 +7357,7 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-11T19:30:31Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"GREENTIDE_STANDALONE_MOD_1 live verification","ts":"2026-09-11T19:31:01Z"}
 {"seat":"FOUNDRY","event":"close","id":"SHOKK_RSW_MOD_1","sha":"19fbedbfb","ts":"2026-09-11T19:31:32Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-11T19:31:52Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-11T19:33:49Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-11T19:48:32Z"}
+{"seat":"FOUNDRY","event":"close","id":"GREENTIDE_STANDALONE_MOD_1","sha":"c71fb0fbf","ts":"2026-09-11T19:48:41Z"}
