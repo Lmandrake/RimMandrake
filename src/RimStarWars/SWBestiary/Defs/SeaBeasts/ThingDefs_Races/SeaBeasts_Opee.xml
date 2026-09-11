@@ -96,7 +96,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_OpeeSeaKiller">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RSW_OpeeSeaKiller_Kind">
     <defName>RSW_OpeeSeaKiller</defName>
     <label>opee sea killer</label>
     <race>RSW_OpeeSeaKiller</race>
