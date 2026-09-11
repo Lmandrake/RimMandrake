@@ -7340,3 +7340,4 @@
 {"seat":"FOUNDRY","event":"close","id":"SCENARIO_DURATION_CUT_1","sha":"f490557ec","ts":"2026-09-11T18:39:46Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"SHOKK_RSW_MOD_1 live verification","ts":"2026-09-11T18:52:49Z"}
 {"seat":"BENCH","event":"close","id":"MINDSTONE_LEGENDS_ENTRIES_1","sha":"a1d9050a2637789823d36c7907dc83588cf612d4","ts":"2026-09-11T19:02:49Z"}
+{"seat":"BENCH","event":"file","id":"TEXT_LORE_LOAD_CENSUS_1","title":"Estimate the entire text lore load: complete inventory of every place text belongs (items, dungeons secrets, events, characters, biomes, scenario, gods, factions, conversations, Oracle prompt packs, tier-generic variants), stored as a report, then generation/design tickets filed with lockdown triage - owner spec'd 2026-09-11","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-11T19:04:12Z"}
