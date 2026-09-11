@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_ScarlandsLadder                        ScarlandsLadder - STAGED_LORE_BUILD_1
+    The first consumer of mandrake.rm.lorestages, and the proof that the
+    mechanism swaps a real def's real fields.
+
+    🔴 EVERY <text> BELOW IS PLACEHOLDER and says so in the string itself.
+    The owner ruled the mechanism and the prose apart: "stage TEXTS come later
+    at an authoring sitting." These strings exist to make the swap VISIBLE in
+    game (you cannot mistake stage 3 for stage 4) and to fix the schema the
+    authoring sitting will fill: which def, which field, which rung. Do not ship
+    them. Do not let them survive the authoring pass.
+
+    THE RUNGS are design/Jawa/worldbuilding/biomes/the_scarlands.md SSGM 1-5,
+    verbatim in structure:
+      1  the last stand      gate: earned lore via the neutral droids / the Cathedral
+      2  the Sentinels       gate: as above
+      3  the Cathedral       gate: talking to the Rust Cathedral itself
+      4  the Rakata          gate: late; the educated factions or the bastion record
+      5  the pilgrims        gate: found piecemeal at the pilgrim ends
+    Stage 0 is "nothing learned" and has NO entry: the engine snapshots
+    RUT_Scarlands' shipped description and settleWarning before its first write
+    and restores them, so the shipped text stays single-sourced in
+    src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml and is not
+    duplicated here to rot.
+
+    🔴 R25 (freeze ruling _freeze_rulings_2026-09-07.md:512-522): the player may
+    INFER it; the player is never TOLD it. Even rung 5 must never name the
+    Assailants, the Rakata, scaria's authorship or the Cathedral's nature in a
+    def description - the ladder's named truths are delivered by the pilgrim
+    ends and the bastion record as QUEST text, in the Ancients' own words. A def
+    description may advance only to geometry the player reads for themselves.
+    That constraint binds the real text; the placeholders below name the RUNG,
+    not the truth, precisely so nobody mistakes a fixture for authored prose.
+
+    NOT wired yet, and owed: the reveal GATES. Nothing calls
+    GameComponent_LoreStage.AdvanceStage("Scarlands") - the gates are quest and
+    dialogue surfaces that do not exist. Until they do, the ladder moves only
+    from the dev-mode "Lore stages" debug menu, which is also how the live proof
+    is taken.
+  -->
+
+  <RimMandrake.LoreStages.RM_LoreStageTableDef>
+    <defName>RUT_ScarlandsLadder</defName>
+    <!-- Stable forever once a save exists: renaming this silently resets the
+         ladder to stage 0 on the next load. -->
+    <ladderId>Scarlands</ladderId>
+    <maxStage>5</maxStage>
+
+    <targets>
+
+      <li>
+        <defType>BiomeDef</defType>
+        <defName>RUT_Scarlands</defName>
+        <field>description</field>
+        <stages>
+          <li>
+            <stage>1</stage>
+            <text>[[PLACEHOLDER stage 1 - the last stand]] Crater fields and slag hills on shattered megastructure floors. The emplacement rings all face one quarter of the sky, and the craters walk inward from it. Placeholder text; the authoring sitting owns the real words.</text>
+          </li>
+          <li>
+            <stage>2</stage>
+            <text>[[PLACEHOLDER stage 2 - the Sentinels]] Crater fields and slag hills on shattered megastructure floors. The machines that still patrol here cross the same ground in the same order, and none of their lines lead outward. Placeholder text; the authoring sitting owns the real words.</text>
+          </li>
+          <li>
+            <stage>3</stage>
+            <text>[[PLACEHOLDER stage 3 - the Cathedral]] Crater fields and slag hills on shattered megastructure floors. Every patrol line, every grave-ward and every dead projector ring is oriented on the same thing beyond the horizon. Placeholder text; the authoring sitting owns the real words.</text>
+          </li>
+          <li>
+            <stage>4</stage>
+            <text>[[PLACEHOLDER stage 4 - the deep record]] Crater fields and slag hills on shattered megastructure floors. The poisons here were not spilled; they were issued, in quantities and in a sequence, and the ground still holds the order. Placeholder text; the authoring sitting owns the real words.</text>
+          </li>
+          <li>
+            <stage>5</stage>
+            <text>[[PLACEHOLDER stage 5 - the pilgrims]] Crater fields and slag hills on shattered megastructure floors. The camps along the Ashfall Road all end facing the same direction, and nobody who made one walked back out. Placeholder text; the authoring sitting owns the real words.</text>
+          </li>
+        </stages>
+      </li>
+
+      <li>
+        <defType>BiomeDef</defType>
+        <defName>RUT_Scarlands</defName>
+        <field>settleWarning</field>
+        <stages>
+          <!-- Deliberately sparse: a rung with no entry means "this field does
+               not change here", and the previous rung's text persists. Proving
+               that two fields of ONE def advance on different rungs is half the
+               point of wiring a second target at all. -->
+          <li>
+            <stage>2</stage>
+            <text>[[PLACEHOLDER stage 2 warning]] Scarlands are inhabited by dangerous insects and rogue mechanoids. Water is toxic and scaria runs rampant among the animals. The Forgotten Sentinels defend the ground; they do not pursue past their lines, and they do not explain. You know now what they are guarding. Placeholder text; the authoring sitting owns the real words.</text>
+          </li>
+          <li>
+            <stage>4</stage>
+            <text>[[PLACEHOLDER stage 4 warning]] Scarlands are inhabited by dangerous insects and rogue mechanoids. Water is toxic and scaria runs rampant among the animals. The Forgotten Sentinels defend the ground; they do not pursue past their lines. Settling here means living on top of what was issued. Placeholder text; the authoring sitting owns the real words.</text>
+          </li>
+        </stages>
+      </li>
+
+    </targets>
+  </RimMandrake.LoreStages.RM_LoreStageTableDef>
+
+</Defs>

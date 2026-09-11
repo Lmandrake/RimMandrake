@@ -1,0 +1,72 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Offline, no-game selftest for mandrake.rm.lorestages (STAGED_LORE_BUILD_1).
+    Same shape as RimMandrakeAftermath.SelfTest.csproj: a plain console project
+    that compiles the REAL production .cs files in directly rather than
+    reimplementing them and drifting out of sync.
+
+    NOT the mod build (RM_LoreStages.csproj, one directory up: its own explicit
+    Compile list does not mention this folder).
+
+    Targets net472 against the real Assembly-CSharp.dll because the whole point
+    is to exercise the PRIVATE cache fields on the real ThingDef and HediffDef.
+    A mock would prove nothing: these tests fail correctly if Ludeon ever
+    renames descriptionDetailedCached or descriptionCached.
+
+    LoreStageDefDatabase.cs is deliberately NOT compiled here — it is the only
+    production file that needs GenTypes/DefDatabase, i.e. a loaded mod set.
+
+    Run (Windows path required; dotnet.exe cannot take /mnt/d):
+      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\RimMandrake\LoreStages\Source\SelfTest\RimMandrakeLoreStages.SelfTest.csproj -c Release
+      (written apart only because an XML comment cannot hold two adjacent hyphens)
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrakeLoreStages.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.LoreStages.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <DebugType>none</DebugType>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Private=true here (unlike a real mod .csproj) — this is a standalone
+       .exe, not a mod loaded into a running RimWorld process. -->
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\LoreStageText.cs" />
+    <Compile Include="..\LoreStageTarget.cs" />
+    <Compile Include="..\RM_LoreStageTableDef.cs" />
+    <Compile Include="..\LoreStageApplier.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>
