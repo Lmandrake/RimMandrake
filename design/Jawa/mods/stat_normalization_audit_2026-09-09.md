@@ -345,6 +345,13 @@ Each needs a keep-or-port call, not a delete.
 
 ### Wave 3 — widened-scope knob mods entangled with open work *(6 mods)*
 
+🟢 **RULED (owner, 2026-09-11, four cards).** Research trio → retire + re-validate
+the (already-closed) recost via `RESEARCH_TRIO_RETIRE_1`; vsrexamined +
+survivaltools → retire TOGETHER with the 4-placed-tools save cleanup
+(`STAT_NORM_WAVE3_RETIRE_1`); complexjobs → **KEEP, declared resident**
+(recorded in `mod_config_rulings.md`); caravanadventures → strip stats, keep
+quests (counter-patch, same Wave-3 item).
+
 Real conflicts, but each collides with an item or doctrine already in flight;
 sequence with the owner, not standalone.
 
