@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T07:47:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T07:48:22Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -639,6 +639,33 @@ kind:     task
 summary:  RESEARCHTRIORETIRE1 — retire steppingstones + als.gravtech x2, reconcile the recost
 prose:    infrastructure/state/items/RESEARCH_TRIO_RETIRE_1.md
 
+## FAUNA_STATS_BRIDGE_TOOL_1 New companion tool jawa/animal_stats for the normalization graphs: per ThingDef return race.baseBodySize, wildness, ComfortableTemperatureMin/Max + MeatAmount/LeatherAmount via GetStatValueAbstract, best melee tool power+cooldown - MEASURED 2026-09-11: jawa/get_defs cannot reach nested race fields or list contents; rimbridge-companion skill pattern, deploy at next game-down
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/FAUNA_STATS_BRIDGE_TOOL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FAUNA_STATS_BRIDGE_TOOL_1.md
+
+## SAND_STALKER_BADGER_SOUNDS_1 RSW_SandStalker references nonexistent Pawn_Badger_* SoundDefs (4 cross-ref errors, pre-existing, traced to 9f8bc41f)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/SAND_STALKER_BADGER_SOUNDS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SAND_STALKER_BADGER_SOUNDS_1.md
+
+## QUICKTEST_MAPGEN_NRE_1 Quicktest/new-game map generation crashes: NRE in ReadingPolicyDatabase.GenerateStartingPolicies via GenTypes.SameOrSubclassOf (null policy Type) - Player.log ~13268, hit on SetupForQuickTestPlay 2026-09-11; a def's reading-policy class resolves null on the post-restore set; quicktest debugging route is DOWN until fixed
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/QUICKTEST_MAPGEN_NRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/QUICKTEST_MAPGEN_NRE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -933,34 +960,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## FAUNA_STATS_BRIDGE_TOOL_1 New companion tool jawa/animal_stats for the normalization graphs: per ThingDef return race.baseBodySize, wildness, ComfortableTemperatureMin/Max + MeatAmount/LeatherAmount via GetStatValueAbstract, best melee tool power+cooldown - MEASURED 2026-09-11: jawa/get_defs cannot reach nested race fields or list contents; rimbridge-companion skill pattern, deploy at next game-down
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FAUNA_STATS_BRIDGE_TOOL_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FAUNA_STATS_BRIDGE_TOOL_1.md
-
-## SAND_STALKER_BADGER_SOUNDS_1 RSW_SandStalker references nonexistent Pawn_Badger_* SoundDefs (4 cross-ref errors, pre-existing, traced to 9f8bc41f)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SAND_STALKER_BADGER_SOUNDS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SAND_STALKER_BADGER_SOUNDS_1.md
-
-## QUICKTEST_MAPGEN_NRE_1 Quicktest/new-game map generation crashes: NRE in ReadingPolicyDatabase.GenerateStartingPolicies via GenTypes.SameOrSubclassOf (null policy Type) - Player.log ~13268, hit on SetupForQuickTestPlay 2026-09-11; a def's reading-policy class resolves null on the post-restore set; quicktest debugging route is DOWN until fixed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/QUICKTEST_MAPGEN_NRE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/QUICKTEST_MAPGEN_NRE_1.md
+_none._
