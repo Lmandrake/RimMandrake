@@ -7423,3 +7423,4 @@
 {"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-11T22:01:51Z"}
 {"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T22:02:02Z"}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-11T22:02:03Z"}
+{"seat":"FOUNDRY","event":"close","id":"ART_REGEN_WAVE6_QUEUE_1","sha":"8dd4378d5","ts":"2026-09-11T22:04:29Z"}
