@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T20:35:53Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T20:36:44Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -701,15 +701,6 @@ target:   v1
 kind:     task
 summary:  (no items/BESTIARY_ARMOURY_DESC_BACKFILL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BESTIARY_ARMOURY_DESC_BACKFILL_1.md
-
-## DONOR_PROPER_NOUN_SCAN_1 Instrumented scan of donor-stack text for off-lore proper nouns (orc clans, trolls, MiningCo, unthemed xenotypes first; SW donors last) -> bounded rename-patch backlog; skip anything pending a CherryPicker cull - text_lore_load_report.md S4
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/DONOR_PROPER_NOUN_SCAN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DONOR_PROPER_NOUN_SCAN_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
