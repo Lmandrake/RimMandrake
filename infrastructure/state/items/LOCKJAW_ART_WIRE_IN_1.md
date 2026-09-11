@@ -73,20 +73,86 @@ them east-only. North and south were never attempted, not even as a failure.
 Per the owner's own instruction on this task: *"If genuinely unclear, block
 the item rather than guessing."* This is that case.
 
-## What would unblock it
-Queue `lockjaw_improve_a`/`b` south and north facing jobs (anchored on the
-approved east treatment, per the skill's word-anchoring method) so each of
-the two touched variants ships a complete three-facing set, OR get an
-explicit owner ruling that an east-only "improve" is intentionally
-acceptable to ship as-is (and decide then whether the untouched bare
-`AA_Lockjaw` variant is left alone or also queued).
+## 2026-09-11 update — `AA_Lockjaw3` (brown) DONE and shipped; `AA_Lockjaw2` (grey) still blocked on one facing
+
+Queued the missing south+north facings (`lockjaw_improve_a_r9`..`_r12`,
+`lockjaw_improve_b_r9`..`_r10`) via `fill_queue.py`, channel `gemini` matching
+`_r7` (not `codex` — `codexcal_lockjaw_a`/`_b` had already failed 6 times on
+`codex` with `worker_error, image_present=False`, a reproducible failure for
+this asset, not the documented "hangs 1 in 4" transient; `gemini` is what
+`_r7` actually used and passed on).
+
+**Root cause of the south/north failures found and fixed**: the r8 batch
+(first attempt at the missing facings) copied `_r7`'s prompt text verbatim
+except for adding a `facing` field — but `_r7`'s prompt itself says *"side
+view facing east"*, and `artpiped.py:build_job_prompt` ALSO appends `Facing:
+south.`/`Facing: north.` from the job's `facing` field. That produced a
+prompt telling the model two contradictory things at once, and it obeyed the
+explicit "side view" text: all 4 r8 jobs failed with the same signature — a
+wide, ~1.7-1.9 aspect (broadside) subject against references that are ~0.73-0.74
+aspect (narrow, front/back-on). Fix: drop "side view" from the prompt
+entirely for south/north jobs and state the front-on/back-on framing
+explicitly instead (`r9` on).
+
+**Results after the fix** (retries per facing in parens):
+- `AA_Lockjaw2` (grey, "a") north — PASS on `r9` (2nd attempt).
+- `AA_Lockjaw3` (brown, "b") south — PASS on `r9` (2nd attempt).
+- `AA_Lockjaw3` (brown, "b") north — PASS on `r10` (3rd attempt; r9 missed by
+  only 5.9% of canvas on height).
+- `AA_Lockjaw2` (grey, "a") south — **FAILED all 5 attempts** (`r8`-`r12`).
+  Once the broadside-pose bug was fixed, this facing specifically kept
+  overshooting width/height against the reference's narrow aspect (0.739) —
+  aspect readings of 0.944, 0.985, 1.244, 0.901 across 4 fixed-prompt retries,
+  never converging inside tolerance, while the sibling brown variant's south
+  facing (near-identical prompt, different reference image) passed on its
+  2nd try. This reads as generation variance on this specific reference
+  image, not a reproducible prompt defect — stopped at 5 attempts per the
+  "don't loop forever" guidance rather than continuing indefinitely.
+
+**Shipped**: `src/RimStarWars/LockjawArtOverride/` (packageId
+`mandrake.rsw.lockjawartoverride`, `loadAfter sarg.alphaanimals`) ships
+`AA_Lockjaw3` (brown) COMPLETE — east (from `_r7`, already validated),
+south (`_r9`), north (`_r10`), all offline-`PASS`. Deployed
+(`deploy_custom_mods.py --apply`), added to the live `ModsConfig.xml` and
+`ModsConfig.FULL.LATEST.xml`, and verified live: 6 `AA_Lockjaw` pawns spawned
+on a quicktest map, screenshots (`Transient/lockjaw_closeup_*.png`,
+`Transient/lockjaw_verify_row1.png`) show the new alligator-plated
+whale-beast art rendering correctly on the brown-variant spawns (not a
+magenta/missing-texture placeholder, not the donor's smooth pale look).
+
+**Deliberately NOT shipped**: `AA_Lockjaw2` (grey, "a") — its `_east` and
+`_north` are validated and sitting in `infrastructure/artpipe/done/`
+(`lockjaw_improve_a_r7`, `lockjaw_improve_a_r9_north`) but `_south` is not,
+so wiring the other two would reproduce exactly the per-rotation
+inconsistency this item was originally blocked over (just for one facing on
+one variant instead of two facings on two variants). `AA_Lockjaw2` is left
+entirely on donor art — unchanged, still internally consistent — until
+`_south` resolves. The bare `AA_Lockjaw` variant remains out of scope, as
+before.
+
+## What would unblock it now
+Get `AA_Lockjaw2_south` past the validator (a `r13`+ attempt, or a different
+approach — e.g. a still-image contact-sheet-style visual QA pass before
+resubmitting rather than another blind text-prompt retry) and wire it
+alongside the already-validated `_east`/`_north` into `LockjawArtOverride`,
+OR get an explicit owner ruling that `AA_Lockjaw2` may ship on donor art
+indefinitely while `AA_Lockjaw3` ships improved (an intentional two-tier
+outcome, not a defect).
 
 ## verify
-N/A — blocked before any wiring, deploy, or live test was performed.
+Live, 2026-09-11: quicktest map, 6x `AA_Lockjaw` spawned (`jawa/list_pawns`
+confirmed `AA_Lockjaw40360`..`40365`), `rimworld/screenshot_cell_rect`
+close-ups on each — brown-plated new art visible on multiple spawns,
+donor pale/smooth look visible on the untouched bare variant, no magenta/
+missing-texture. `ModsConfig.xml` round-tripped through a real restart
+(rev590→rev591) with `mandrake.rsw.lockjawartoverride` active and no
+recovery-reset to 6 mods, i.e. the mod loads cleanly. Full canonical
+modlist restored afterward (`modlist_swap.py --restore --apply`,
+confirmed `mandrake.rsw.lockjawartoverride` present in the restored live
+config).
 
 ## criteria
-Either: (a) south+north facings exist and validate for both variants and get
-wired + verified live per the WAVE1 pattern, or (b) the owner explicitly
-rules east-only is acceptable to ship, in which case wire exactly that and
-verify live that the untouched facings/variant are not visually jarring
-enough to reject.
+`AA_Lockjaw3` criterion (a) is MET and closed out below. `AA_Lockjaw2`
+remains open on the same two options as before: (a) get its `_south` facing
+validated and wire the complete set, or (b) an explicit owner ruling that
+grey stays on donor art rather than an agent deciding that alone.
