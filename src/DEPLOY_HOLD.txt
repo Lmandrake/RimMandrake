@@ -170,3 +170,4 @@ SWBestiary/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the gam
 #   deploying: their donors are already gone, and the abstract parents they
 #   reach for come from the live kotorcore meanwhile.
 Armoury/Defs/Absorbed_KotorCore/*   # FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
+src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_NurseryJuveniles.xml  # pulled 2026-09-11 bisecting the AlphaGenes startup NRE — restore when cleared
