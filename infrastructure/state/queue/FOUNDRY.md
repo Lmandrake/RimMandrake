@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T16:00:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-11T17:30:07Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -684,6 +684,33 @@ kind:     task
 summary:  Standing owner instruction: "there should always be at least one agent
 prose:    infrastructure/state/items/ART_REGEN_WAVE2_QUEUE_1.md
 
+## PYRELANDS_FACING_COMPLETE_1 PYRELANDS_FACING_COMPLETE_1
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/PYRELANDS_FACING_COMPLETE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_FACING_COMPLETE_1.md
+
+## LOCKJAW_ART_WIRE_IN_1 LOCKJAW_ART_WIRE_IN_1
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  infrastructure/artpipe/done/lockjawimprovear7.json and br7.json (plus
+prose:    infrastructure/state/items/LOCKJAW_ART_WIRE_IN_1.md
+
+## ART_REGEN_WAVE3_QUEUE_1 ART_REGEN_WAVE3_QUEUE_1
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Standing owner instruction: "always have at least one background sub agent
+prose:    infrastructure/state/items/ART_REGEN_WAVE3_QUEUE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -968,6 +995,16 @@ blocked:  generator fix needs a Jawa_Patches-disabled dump recapture (a dedicate
 summary:  Found via harvestlog.py on game UP 2026-09-11 (570-mod session): "Outer Rim
 prose:    infrastructure/state/items/OUTERRIM_DROIDDEPOT_PATCH_GUARD_1.md
 
+## LOCKJAW_ART_WIRE_IN_1 LOCKJAW_ART_WIRE_IN_1
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  art in done/ is east-facing-only for 2 of 3 alternateGraphics variants (AA_Lockjaw2, AA_Lockjaw3); def declares no visibleFacing so all 3 facings are real; wiring east-only ships visibly inconsistent per-rotation art. Needs south/north jobs queued or an explicit owner ruling that east-only is acceptable. See items/LOCKJAW_ART_WIRE_IN_1.md
+summary:  infrastructure/artpipe/done/lockjawimprovear7.json and br7.json (plus
+prose:    infrastructure/state/items/LOCKJAW_ART_WIRE_IN_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -1027,5 +1064,5 @@ needs:    deploy
 target:   v1
 kind:     task
 thin:     spec, verify and criteria all present
-summary:  - Reword that one phrase to a non-numeric span in the scenario's register
+summary:  - Repo prose pass over the census files: apply the register above. Keep each
 prose:    infrastructure/state/items/SCENARIO_DURATION_CUT_1.md
