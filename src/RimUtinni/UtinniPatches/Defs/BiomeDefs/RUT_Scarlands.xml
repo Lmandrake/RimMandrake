@@ -28,6 +28,13 @@
     terrainsByFertility kept at the donor's own AncientMegastructure/Soil thresholds
     (first-party Odyssey terrain, "kept nearly whole" per SS0).
 
+    extraGenSteps FIX (2026-09-10): a fresh BiomeDef with no ParentName starts
+    BiomeDef.extraGenSteps empty (MapGenerator.cs reads it straight off the map's
+    Biome), so without this the craters/ruins/junk clusters this def's own
+    description promises ("shattered megastructure floors... ruined turret rings
+    and burnt shield emplacements") would never generate on any RUT_Scarlands
+    tile. Carried over verbatim from the donor Scarlands.xml's own list.
+
     wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
     BiomeFlora_Ashkarr.xml against rosters/the_scarlands.json.
 
@@ -56,6 +63,14 @@
     <forageability>0.25</forageability>
     <movementDifficulty>1</movementDifficulty>
     <texture>World/Biomes/Scarlands</texture>
+    <extraGenSteps>
+      <li>AncientRuins_Scarlands</li>
+      <li>CratersLarge</li>
+      <li>CratersMedium</li>
+      <li>CratersSmall</li>
+      <li>ScarlandsJunkClusters</li>
+      <li>ScarlandsJunkPrefabs</li>
+    </extraGenSteps>
     <diseaseMtbDays>50</diseaseMtbDays>
     <diseases>
       <li>
