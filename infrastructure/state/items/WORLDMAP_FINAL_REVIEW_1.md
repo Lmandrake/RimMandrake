@@ -82,3 +82,15 @@ authored and switching). A FINAL review measured now audits a moving target and 
 verdicts decay within hours; the STARE half needs the owner besides. Run it after
 the ownership switches settle — its Phase-0 fresh exports will then measure the map
 the owner is actually judging.
+
+## Evidence pack complete 2026-09-12 (night belt) — STARE + verdict remain
+`Transient/worldreview/WORLDMAP_FINAL_REVIEW_report_2026-09-12.md` + four lane
+files + fresh live dumps. Clean: features↔regions 0/71 mismatch; terminator
+rule 0 violations (fix confirmed live); rivers three-way reconciled; faction
+roster matches canon. Findings ranked in the report — top: 283/417 ancient
+vents violate ruin-only (VAPOR_PLACEMENT_CLEANUP_1 quantified); sarlacc
+landmark counts 6/7 vs expected 1/4 (SARLACC_WORLDMAP_RELOCATE_1 must
+reconcile); settlements block in canon is stale (96 live vs 120). Planet
+capture shots land in Transient/worldreview/shots/ when the current cold load
+finishes. Remaining for the sitting: the owner's STARE over the shots + the
+"is this THE map?" verdict, with BENCH.
