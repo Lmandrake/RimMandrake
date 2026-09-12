@@ -102,3 +102,14 @@ complex covers the centre, the ship lands INSIDE it. Author the structure inject
 17007 with a central clearing at least the current hull's footprint (v2 ring: 92×86)
 plus a 2-cell margin. The reveal fix only makes the picker visible; it does not move
 the complex.
+
+## THE START EXISTS — owner flight, 2026-09-12
+The owner flew The Utinni (v2 ring, booms cut) from the colony tile in three hops
+(1596 → 9926 → 17007) and landed at **17007** by hand; the landing picker was fully
+revealed by GRAVSHIP_LANDING_FOG_REVEAL_1. Owner: *"So I am at the official world
+location! ... This map is the first and (in some sense) most important map the players
+will experience."* Recorded as **`Saves\CANONICAL_ASHKARR_START_2026-09-12.rws`**
+(canon.yml `planet.start_savegame`), settlement renamed "Zeddo's Salvage Yard", the
+three ferry-hop abandoned-settlement markers removed. What this item still owes is
+unchanged: the junkyard structure injection (with the landing-footprint clearing) and the
+scenario's start pinned to the tile — build work against the START save, backed up first.
