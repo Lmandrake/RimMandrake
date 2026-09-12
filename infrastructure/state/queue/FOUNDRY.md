@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T01:11:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T01:15:44Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -997,7 +997,17 @@ prose:    infrastructure/state/items/OUTERRIM_DROIDDEPOT_PATCH_GUARD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
+state:    ready
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     bug
+waiting:  needs `deploy`, game is UP
+summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
+prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
 # NOT THIS TARGET
 
@@ -1006,6 +1016,16 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## COMPANION_SILENT_FAILURE_HARDENING_1 Harden the JawaBench companion against silent-failure modes (39-finding audit): success:true hardcoded across 7 world tools, playerForced missing on prioritized_work, factionName absent on list_things, etc. — the bug class that cost hours during the ship work
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  Companion silent-failure hardening
+prose:    infrastructure/state/items/COMPANION_SILENT_FAILURE_HARDENING_1.md
 
 ## NONDIV4_TEXTURE_FIX_1 Pad the 1578 non-%4 textures RimWorld refuses to compress (~2 GB; our mods first, 190 MB)
 state:    proposed
@@ -1016,3 +1036,13 @@ kind:     task
 thin:     no ## criteria
 summary:  - Start with OUR OWN mods: 190 MB of the waste is ours, 181 MB in
 prose:    infrastructure/state/items/NONDIV4_TEXTURE_FIX_1.md
+
+## HUB_TAB_PUBLISHER_MIGRATION_1 Repoint artpipe/health/maturity publishers to the hub URL; completes the two-seat no-clobber proof
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - artpipe: after artreg.py render, republish data/art.json (from
+prose:    infrastructure/state/items/HUB_TAB_PUBLISHER_MIGRATION_1.md

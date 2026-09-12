@@ -11553,6 +11553,30 @@
     "hash": "616e6386c463523fd0266737786296062bf0867f4997200a48923bdc8852e5ca",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/ShokkweaveEconomy/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "acf2f23394779ab20533c144bc4c7a298554fc125659b6903be1a7b08283c41f",
+    "sha": "5040448b5"
+  },
+  "src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveButcherYield.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "805bf674b49c81db104a543bc3b21cddca06f3ac346d5d40608f9bca652728f1",
+    "sha": "5040448b5"
+  },
+  "src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveRename.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "6bf8aea8da1a48780fd8cbf75c387ab44f499551803484b0a86454ede84e55e7",
+    "sha": "5040448b5"
+  },
+  "src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveTraderStrip.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "0aeff7f1b46bad081a40693cbd5214c5afa7fece1c3dcfe3b794127095de96cc",
+    "sha": "5040448b5"
+  },
   "src/RimUtinni/SpidercatArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",

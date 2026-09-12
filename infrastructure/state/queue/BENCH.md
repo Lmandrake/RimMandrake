@@ -7,84 +7,30 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T01:11:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T01:15:44Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
 
-## MIASMA_MECHANICS_1 Miasma C# kit: surge/salt-line system (fresh-brine map axis, storm-driven movement, stranding pools), fever-forged boon tables, miasma weather, warden-mother set-piece placement - spec the_miasma.md
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  MIASMAMECHANICS1 — the Miasma C kit
-prose:    infrastructure/state/items/MIASMA_MECHANICS_1.md
-
-## FEVER_WOOD_MECHANICS_1 Fever Wood C# kit: the Tenant as map-spanning aquifer entity (pool-strike logic, evidence events, never-resolved rule), marsh building-refusal terrain, pool-state intelligence, mirror-break events - spec the_fever_wood.md
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  The authoritative brief is the FROZEN lore sheet
-prose:    infrastructure/state/items/FEVER_WOOD_MECHANICS_1.md
-
-## SUMP_MECHANICS_1 Sump C# kit: poured tar moat + command ignition (smoke wall), dig-lottery tables with era booby traps weighted first, tar beast set-pieces (wake causes, station-eating, evacuate-not-fight), mouse-line telegraphy, wick-garden crop - spec the_sump.md
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Engine-map the Sump's mechanics per the frozen sheet
-prose:    infrastructure/state/items/SUMP_MECHANICS_1.md
-
-## FORGE_MECHANICS_1 Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tower dungeon shell, Contagion die-off ring, geothermal industry - spec the_forge.md
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Map the FROZEN design/Jawa/worldbuilding/biomes/theforge.md sheet's
-prose:    infrastructure/state/items/FORGE_MECHANICS_1.md
-
-## TIBANNA_EMBARGO_PLOT_1 Campaign clock: the Empire's tibanna monopoly at the Forge - metered blaster gas, dwindling resistance ammunition, and the resolution that must come; spec the_forge.md section 8
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  design/Jawa/tibannaembargoplotspec.md (drafted 2026-09-11). Shape: metered vs
-prose:    infrastructure/state/items/TIBANNA_EMBARGO_PLOT_1.md
-
-## SCALD_MECHANICS_1 Scald C# kit: steam-catch industry, margin fishing + bath recreation, bubble-sailor and bottom-walker set-pieces, geyser fields, boiling-lift integration (R-B spec ruled), burning-shallows wreck salvage - spec the_scald.md
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  SCALDMECHANICS1 — the Scald C kit
-prose:    infrastructure/state/items/SCALD_MECHANICS_1.md
-
-## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
+## CATHEDRAL_PLAYER_CONCEALMENT_ARC_1 Design the Rust Cathedral <-> player relationship arc: it hides from and dislikes the player at first because the player's Rakatan gravship agitating the Empire is the scrutiny it has spent millennia avoiding (salvage loop = its cover); how the wariness thaws, what the player can do to expose or protect it, the reveal of how massive/deep it truly is. Canon now in the_rust_cathedral.md §7b - this is the plot/mechanism build owed
 state:    ready
 row:      unassigned
 needs:    owner
 target:   v1
-kind:     task
-summary:  Serve with python3 /home/mandrake/.claude/skills/review-sheets/assets/servesheet.py
-prose:    infrastructure/state/items/ASSIGNMENT_SHEETS_VERDICT_SITTING_1.md
+kind:     design
+summary:  (no items/CATHEDRAL_PLAYER_CONCEALMENT_ARC_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CATHEDRAL_PLAYER_CONCEALMENT_ARC_1.md
 
-## DASHBOARD_HUB_ARTIFACT_1 Single multi-tab dashboard hub artifact: thin tab shell + one data file per tab (per-seat republish, no collisions), per-tab freshness lamps, sheets linked not embedded — owner ruled 2026-09-11, spec in art_regen_registry_design.md §4
+## FAUNA_TOLERANCE_NORMALIZATION_1 Return to canonical-graph fauna normalization, now biome-aware: wide temperature tolerances covering each animal's assigned domain (new law - spec has none), damage-vs-bodySize extended from the 161 SW beasts to the full rostered set, products axis; plots regenerated for the owner's sitting from a POST-restore harvest (dump has no statBases - mod XML/live harvest, fingerprint-checked)
 state:    ready
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  - One published artifact, stable URL, pinned for the owner. Thin tab shell
-prose:    infrastructure/state/items/DASHBOARD_HUB_ARTIFACT_1.md
+summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
+prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
 
 # IN PROGRESS
 
@@ -186,19 +132,139 @@ blocked:  Design brief drafted; blocked on MECHANICS_CARDS_SITTING_1 rulings, th
 summary:  LIQUIDTYPESMOD1 — one liquid system, many liquids
 prose:    infrastructure/state/items/LIQUID_TYPES_MOD_1.md
 
+## MIASMA_MECHANICS_1 Miasma C# kit: surge/salt-line system (fresh-brine map axis, storm-driven movement, stranding pools), fever-forged boon tables, miasma weather, warden-mother set-piece placement - spec the_miasma.md
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Kit/plot spec DRAFTED 2026-09-11; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY build.
+summary:  MIASMAMECHANICS1 — the Miasma C kit
+prose:    infrastructure/state/items/MIASMA_MECHANICS_1.md
+
+## FEVER_WOOD_MECHANICS_1 Fever Wood C# kit: the Tenant as map-spanning aquifer entity (pool-strike logic, evidence events, never-resolved rule), marsh building-refusal terrain, pool-state intelligence, mirror-break events - spec the_fever_wood.md
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Kit/plot spec DRAFTED 2026-09-11; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY build.
+summary:  The authoritative brief is the FROZEN lore sheet
+prose:    infrastructure/state/items/FEVER_WOOD_MECHANICS_1.md
+
+## SUMP_MECHANICS_1 Sump C# kit: poured tar moat + command ignition (smoke wall), dig-lottery tables with era booby traps weighted first, tar beast set-pieces (wake causes, station-eating, evacuate-not-fight), mouse-line telegraphy, wick-garden crop - spec the_sump.md
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Kit/plot spec DRAFTED 2026-09-11; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY build.
+summary:  Engine-map the Sump's mechanics per the frozen sheet
+prose:    infrastructure/state/items/SUMP_MECHANICS_1.md
+
+## FORGE_MECHANICS_1 Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tower dungeon shell, Contagion die-off ring, geothermal industry - spec the_forge.md
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Kit/plot spec DRAFTED 2026-09-11; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY build.
+summary:  Map the FROZEN design/Jawa/worldbuilding/biomes/theforge.md sheet's
+prose:    infrastructure/state/items/FORGE_MECHANICS_1.md
+
+## TIBANNA_EMBARGO_PLOT_1 Campaign clock: the Empire's tibanna monopoly at the Forge - metered blaster gas, dwindling resistance ammunition, and the resolution that must come; spec the_forge.md section 8
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Kit/plot spec DRAFTED 2026-09-11; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY build.
+summary:  design/Jawa/tibannaembargoplotspec.md (drafted 2026-09-11). Shape: metered vs
+prose:    infrastructure/state/items/TIBANNA_EMBARGO_PLOT_1.md
+
+## SCALD_MECHANICS_1 Scald C# kit: steam-catch industry, margin fishing + bath recreation, bubble-sailor and bottom-walker set-pieces, geyser fields, boiling-lift integration (R-B spec ruled), burning-shallows wreck salvage - spec the_scald.md
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Kit/plot spec DRAFTED 2026-09-11; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY build.
+summary:  SCALDMECHANICS1 — the Scald C kit
+prose:    infrastructure/state/items/SCALD_MECHANICS_1.md
+
+## MOD_HUMAN_EXPLORATION_PASS_1 Human-executable exploration pass: per mod, a scripted in-game walkthrough the owner runs to confirm it looks and feels right -- runs AFTER the art/normalization wave
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Runs AFTER the art/normalization wave (owner's framing); wave 8 live now. Item un-thinned with spec/verify/criteria 2026-09-12.
+summary:  the ask
+prose:    infrastructure/state/items/MOD_HUMAN_EXPLORATION_PASS_1.md
+
+## PLAYER_START_SITE_1 The formal player start site: Hutt junkyard of ruined ships + old megastructures — lore fixed by Scenario_Utinni + fall_line.md; candidates measured (Zeddo's Yard on the Fall Line vs Gorga's shadow by the Cathedral); owner picks, then build + pin scenario start (2026-09-08)
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+blocked:  Owner picks the site (Zeddo's Yard vs Gorga's shadow) — card for his return; build is bridge work after.
+summary:  The player's formal start site — the Hutt junkyard (owner, 2026-09-08)
+prose:    infrastructure/state/items/PLAYER_START_SITE_1.md
+
+## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+blocked:  Needs the owner in person (verdict pass over served sheets); he is AFK 2026-09-12.
+summary:  Serve with python3 /home/mandrake/.claude/skills/review-sheets/assets/servesheet.py
+prose:    infrastructure/state/items/ASSIGNMENT_SHEETS_VERDICT_SITTING_1.md
+
+## ECONOMY_TRADE_SWEEP_1 Full economic sweep of what is sold where and when, scheduled at the END of the world sweeps; includes Deeps-gated crystals (pyrinth/kyber/KOTOR/lanternstone) as expensive trader stock and loot
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+blocked:  Scheduled at the END of the world sweeps by its own spec; assignment verdicts + roster passes still pending.
+summary:  (no items/ECONOMY_TRADE_SWEEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ECONOMY_TRADE_SWEEP_1.md
+
+## CANON_STORAGE_ARCHITECTURE_1 Decide how to store the growing canon: options+tradeoffs report written (design/CANON_STORAGE_ARCHITECTURE_options.md) - recommends hybrid (prose canonical + derived claim/entity index + certainty tiers + self-healing checker); awaits owner review sitting
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+blocked:  Options report written; awaits the owner's review sitting.
+summary:  (no items/CANON_STORAGE_ARCHITECTURE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CANON_STORAGE_ARCHITECTURE_1.md
+
+## DASHBOARD_HUB_ARTIFACT_1 Single multi-tab dashboard hub artifact: thin tab shell + one data file per tab (per-seat republish, no collisions), per-tab freshness lamps, sheets linked not embedded — owner ruled 2026-09-11, spec in art_regen_registry_design.md §4
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Built+pinned+in use; remaining verify (two-seat proof, publisher migration) rides HUB_TAB_PUBLISHER_MIGRATION_1 (FOUNDRY).
+summary:  - One published artifact, stable URL, pinned for the owner. Thin tab shell
+prose:    infrastructure/state/items/DASHBOARD_HUB_ARTIFACT_1.md
+
+## FAUNA_LORE_DIVERSIFICATION_1 Per-beast damage diversification round AFTER size scaling: judge each beast by its art + description (scary vs harmless), diverge individuals from the 12-15x band deliberately - owner ruled 2026-09-11, rides the beast graphics/lore pass
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+blocked:  Owner-judged round that rides the beast graphics/lore pass — after the art wave and with him present.
+summary:  - Runs AFTER the full-roster size scaling (Law 3 at 12–15×bodySize) lands and
+prose:    infrastructure/state/items/FAUNA_LORE_DIVERSIFICATION_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
-state:    ready
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     bug
-waiting:  needs `deploy`, game is UP
-summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
-prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -207,66 +273,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## MOD_HUMAN_EXPLORATION_PASS_1 Human-executable exploration pass: per mod, a scripted in-game walkthrough the owner runs to confirm it looks and feels right -- runs AFTER the art/normalization wave
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  the ask
-prose:    infrastructure/state/items/MOD_HUMAN_EXPLORATION_PASS_1.md
-
-## BENCH_REBOOT_HANDOFF_202609082018 Reboot handoff: consolidation sitting complete, MODERN baseline recorded, next = worldmap sitting with the owner (bridge work)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  BENCH reboot handoff — 2026-09-08 evening
-prose:    infrastructure/state/items/BENCH_REBOOT_HANDOFF_202609082018.md
-
-## PLAYER_START_SITE_1 The formal player start site: Hutt junkyard of ruined ships + old megastructures — lore fixed by Scenario_Utinni + fall_line.md; candidates measured (Zeddo's Yard on the Fall Line vs Gorga's shadow by the Cathedral); owner picks, then build + pin scenario start (2026-09-08)
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec
-summary:  The player's formal start site — the Hutt junkyard (owner, 2026-09-08)
-prose:    infrastructure/state/items/PLAYER_START_SITE_1.md
-
-## COMPANION_SILENT_FAILURE_HARDENING_1 Harden the JawaBench companion against silent-failure modes (39-finding audit): success:true hardcoded across 7 world tools, playerForced missing on prioritized_work, factionName absent on list_things, etc. — the bug class that cost hours during the ship work
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  Companion silent-failure hardening
-prose:    infrastructure/state/items/COMPANION_SILENT_FAILURE_HARDENING_1.md
-
-## ECONOMY_TRADE_SWEEP_1 Full economic sweep of what is sold where and when, scheduled at the END of the world sweeps; includes Deeps-gated crystals (pyrinth/kyber/KOTOR/lanternstone) as expensive trader stock and loot
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ECONOMY_TRADE_SWEEP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ECONOMY_TRADE_SWEEP_1.md
-
-## CATHEDRAL_PLAYER_CONCEALMENT_ARC_1 Design the Rust Cathedral <-> player relationship arc: it hides from and dislikes the player at first because the player's Rakatan gravship agitating the Empire is the scrutiny it has spent millennia avoiding (salvage loop = its cover); how the wariness thaws, what the player can do to expose or protect it, the reveal of how massive/deep it truly is. Canon now in the_rust_cathedral.md §7b - this is the plot/mechanism build owed
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CATHEDRAL_PLAYER_CONCEALMENT_ARC_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CATHEDRAL_PLAYER_CONCEALMENT_ARC_1.md
 
 ## CANON_DRAIN_1 Total canon drain: reconcile every lore doc to ONE level of truth, grinding out all superseded/obsoleted statements - a fresh-context pass gated on the biome-cast wave settling (fauna sittings done + flora ruled), NOT on the FOUNDRY build backlog
 state:    proposed
@@ -277,36 +283,6 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the goal (owner, 2026-09-10)
 prose:    infrastructure/state/items/CANON_DRAIN_1.md
-
-## CANON_STORAGE_ARCHITECTURE_1 Decide how to store the growing canon: options+tradeoffs report written (design/CANON_STORAGE_ARCHITECTURE_options.md) - recommends hybrid (prose canonical + derived claim/entity index + certainty tiers + self-healing checker); awaits owner review sitting
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CANON_STORAGE_ARCHITECTURE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CANON_STORAGE_ARCHITECTURE_1.md
-
-## FAUNA_TOLERANCE_NORMALIZATION_1 Return to canonical-graph fauna normalization, now biome-aware: wide temperature tolerances covering each animal's assigned domain (new law - spec has none), damage-vs-bodySize extended from the 161 SW beasts to the full rostered set, products axis; plots regenerated for the owner's sitting from a POST-restore harvest (dump has no statBases - mod XML/live harvest, fingerprint-checked)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
-prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
-
-## FAUNA_LORE_DIVERSIFICATION_1 Per-beast damage diversification round AFTER size scaling: judge each beast by its art + description (scary vs harmless), diverge individuals from the 12-15x band deliberately - owner ruled 2026-09-11, rides the beast graphics/lore pass
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  - Runs AFTER the full-roster size scaling (Law 3 at 12–15×bodySize) lands and
-prose:    infrastructure/state/items/FAUNA_LORE_DIVERSIFICATION_1.md
 
 ## DUNGEON_SETPIECE_TEXT_1 Dungeon set-piece prose held for the owner: Assailant reveal letters + 6 Forsaken vault hand-finish text per dungeons_arc_spec.md - text_lore_load_report.md S5
 state:    proposed

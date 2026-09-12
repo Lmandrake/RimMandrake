@@ -46,3 +46,27 @@ abandon call actually gets made, with the thing on screen in front of him.
 Feeds `PROJECT_MATURITY_DASHBOARD_1`. A pass here is what moves a system to the
 top of the CONTENT axis — and, with the automated walk, to `checked-out` on
 FUNCTION. ⛔ Never a gate on ordinary work.
+
+## spec (written 2026-09-12, BENCH — un-thinning the item)
+Per surviving mod (post-consolidation list), author a short scripted in-game
+walkthrough the OWNER performs: what to spawn/build/look at, in what order,
+and the one question per step he answers (looks right / reads right / feels
+right). Group by domain (weapons, apparel, creatures, biomes, structures) so a
+sitting covers a domain, not a mod at a time. Template + first domain first;
+the owner corrects the register before the bulk pass.
+
+## verify
+The owner runs one domain's walkthrough in-game and reports it usable without
+this seat explaining anything; every walkthrough names its spawn commands and
+expected sights with real defNames (verified, never guessed).
+
+## criteria
+Every active non-library mod has either a walkthrough or a recorded exemption
+(pure-code, invisible, or covered by another mod's walk).
+
+## sequencing — why blocked
+Owner's own framing: runs AFTER the art/normalization wave. Wave 8 regen is
+generating right now; the fauna/flora verdict sitting and the commission build
+follow. Authoring walkthroughs against mods whose art is mid-replacement
+would need a full re-pass. Unblock when the art regen scope line goes quiet
+(art tab on the hub: awaiting_verdict ≈ 0 and no queued lanes).
