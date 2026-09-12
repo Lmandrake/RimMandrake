@@ -41,6 +41,7 @@
     <Compile Include="WarLab\WarLabCraterMutation.cs" />
     <Compile Include="WarLab\GameComponent_WarLabCrater.cs" />
     <Compile Include="WarLab\CompIgniteCraterOnDestroy.cs" />
+    <Compile Include="VaultDungeons\MapComponent_VaultSleepers.cs" />
     <Compile Include="StructureInjectionsRUTSettings.cs" />
   </ItemGroup>
 

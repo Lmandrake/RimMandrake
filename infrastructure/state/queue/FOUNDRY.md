@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T08:26:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T08:39:11Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## WEBWORK_KIT_BUILD_1 Build the Webwork biome's own mechanics kit code (RM_MapComponent_SenseWeb, RM_MapComponent_FrontCreep, RM_JobGiver_ChewAnchors, the roster's web/anchor/gutter ThingDefs) per design/Jawa/worldbuilding/biomes/kits/webwork_kit_spec.md - currently only the six generic ALPHA_MECHANICS_KIT_1 comps are built, this biome's own content kit has no build item yet; blocks SHOKKWEAVE_SOLE_SOURCE_1's border creep-web route
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/WEBWORK_KIT_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WEBWORK_KIT_BUILD_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -246,7 +237,7 @@ prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
 ## VAULT_THAW_QUEST_FAMILY_1 Six Forsaken vault layouts exist but nothing makes them play - no QuestScriptDef family for thaw/reversal/sleepers/ship-claim/Reclamation
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    deploy
 target:   v1
 kind:     task
 summary:  Full design + build record: design/Jawa/worldbuilding/vaultthawquestfamily.md.
@@ -1040,6 +1031,16 @@ kind:     bug
 waiting:  needs `deploy`, game is UP
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
+
+## WEBWORK_KIT_BUILD_1 Build the Webwork biome's own mechanics kit code (RM_MapComponent_SenseWeb, RM_MapComponent_FrontCreep, RM_JobGiver_ChewAnchors, the roster's web/anchor/gutter ThingDefs) per design/Jawa/worldbuilding/biomes/kits/webwork_kit_spec.md - currently only the six generic ALPHA_MECHANICS_KIT_1 comps are built, this biome's own content kit has no build item yet; blocks SHOKKWEAVE_SOLE_SOURCE_1's border creep-web route
+state:    ready
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+waiting:  needs `deploy`, game is UP
+summary:  WEBWORKKITBUILD1 — Webwork biome mechanics kit (SenseWeb, FrontCreep, ChewAnchors, roster structures)
+prose:    infrastructure/state/items/WEBWORK_KIT_BUILD_1.md
 
 # NOT THIS TARGET
 
