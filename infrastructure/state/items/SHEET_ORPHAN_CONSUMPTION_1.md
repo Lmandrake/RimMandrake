@@ -90,12 +90,18 @@ FOUNDRY judgment call**:
    rulings from this sheet. Flagging now so whoever builds that item reads
    this first.
 4. The 118-row "NEW-ART/DEF commission ledger" is not a clean commission
-   list — at least 7 of the 118 slugs (`RSW_Cindermare`, `RSW_Skarnix`,
-   `RUT_FireHawk`, `RUT_FurnaceBeast`, `RM_FE_Plant_Quickgrass`,
-   `RM_FE_Plant_ScorchFruit`, `RUT_LivingBolt`) are ALREADY BUILT live defs
-   — the sheet re-surfaced already-shipped concepts as if new. Only ~45/118
-   were keyword-screened this pass; more built duplicates are likely in the
-   other 73.
+   list — **at least 9 of the 118 slugs** are ALREADY BUILT live defs
+   (`RSW_Cindermare`, `RSW_Skarnix`, `RUT_FireHawk`, `RUT_FurnaceBeast`,
+   `RM_FE_Plant_Quickgrass`, `RM_FE_Plant_ScorchFruit`, `RUT_LivingBolt`,
+   `RUT_SweetlineTree`, `RSW_Reefback`; a 10th, a lanternwhale slug, matches
+   the same pattern) — the sheet re-surfaced already-shipped concepts as
+   new commissions. `RUT_SweetlineTree` (commit `0d42dd16a`) **predates the
+   register's own 2026-09-10 grading date**, meaning this isn't only "a
+   later ruling superseded an old row" — the register contains duplicate
+   entries that were already stale on the day it was graded. Only ~130
+   keyword hits across two passes were individually checked, not all 118;
+   the true error rate is likely higher. Full addendum in the Transient
+   audit file.
 5. A third instrument (`cast_assignment.csv`) still contradicts the 6 fauna
    `decision=out` cuts (carries all 5 BMT stragglers + AA_FissionMouse as
    `import`/`keep`), and the 2026-09-11 card ruling (`cf0632c39`) actually

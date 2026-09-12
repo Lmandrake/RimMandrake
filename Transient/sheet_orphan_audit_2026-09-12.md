@@ -436,6 +436,38 @@ listed above.
 
 ---
 
+## Addendum (backgrounded keyword sweep, finished after the main audit) — 9 confirmed already-built, not 5, and a new failure mode
+
+The 118-row ledger's keyword sweep kept running after the main report above
+and surfaced 4 MORE slugs that are references to already-built defs, on top
+of the ones already listed:
+
+- `ledger:arid_shrubland:sweetline-trees-huge-ancient-giant-wool-snag-harvest`
+  — `RUT_SweetlineTree` already shipped
+  (`src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_AshkarrFlora_Plants.xml`,
+  item `TREE_GRAPHICS_OWNERSHIP_1`, commit `0d42dd16a`, **2026-09-06** — this
+  PREDATES the register's own 2026-09-10 grading). Not wired into
+  `wildPlants` yet and its art is a placeholder — incomplete, not absent.
+- `ledger:terminator_sea + the_grey_deep:rename-ledger-rsw-reefback-...` —
+  `RSW_Reefback` is fully built with real art, already cast into
+  `RUT_GreySea.xml`. The slug's own text ("rename-ledger-...") shows this was
+  always a rename request on an existing def, not a new commission.
+- `ledger:terminator_sea + the_twilight_deep:rename-ledger-rsw-lanternwhale-...`
+  — same pattern, another live RSW sea-beast def.
+- `ledger:forsaken_crags:darkbeast-dark-halo-behaviour` — `AA_Darkbeast`
+  (Alpha Animals donor) is already cast into `RUT_ForsakenCrags.xml`. The
+  slug asks for a new "dark halo" *behavior* on it, not a new creature.
+
+**Net: at least 9 of 118 slugs (not 5) reference defs that already exist**,
+and at least one (`RUT_SweetlineTree`) predates the sheet's own grading date
+— meaning the register isn't just stale relative to LATER rulings, it
+contains duplicate/already-answered entries from BEFORE it was even graded.
+That's a second, distinct failure mode from the "later ruling superseded an
+old sheet row" trap this item's own header warns about, and it means the
+real error rate on this 118-row channel is probably higher than either
+pass's spot-check found — only ~130 of 118's underlying rows were
+keyword-screened across both passes, not all 118.
+
 ## Appendix — what was NOT done
 
 Per the task scope, only spec steps 1–2. **Not done:** step 3 (apply via
