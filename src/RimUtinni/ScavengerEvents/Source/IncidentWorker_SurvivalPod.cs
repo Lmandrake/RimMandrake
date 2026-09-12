@@ -15,7 +15,14 @@ namespace RimMandrake.Utinni.ScavengerEvents
     /// </summary>
     public class IncidentWorker_SurvivalPod : IncidentWorker
     {
-        private const int DropRadius = 110;
+        // NOT a radius -- DropPodUtility.DropThingsNear's 4th positional param is
+        // openDelay (ticks), not a scatter radius; there is no radius parameter on
+        // this overload at all (TryFindDropSpotNear searches a fixed internal
+        // radius around dropCenter). 110 is that overload's own default. Verified
+        // against the live DropPodUtility.cs signature via RimSage -- the comment
+        // below and the mechanism reference doc's "radius=110" note both predate
+        // that check and were themselves a guess.
+        private const int PodOpenDelayTicks = 110;
 
         private static ThingDef hyperweave;
         private static bool hyperweaveResolved;
@@ -57,10 +64,10 @@ namespace RimMandrake.Utinni.ScavengerEvents
             };
 
             IntVec3 dropSpot = DropCellFinder.RandomDropSpot(map);
-            // Positional, matching the decompiled call exactly (radius=110,
-            // then leaveSlag/canRoofPunch/forbid/allowFogged/? in the donor's
-            // own bool order) rather than guessing named-parameter semantics.
-            DropPodUtility.DropThingsNear(dropSpot, map, contents, DropRadius, false, false, true, true, true, null);
+            // Positional, matching the decompiled call's own bool order
+            // (canInstaDropDuringInit/leaveSlag/canRoofPunch/forbid/allowFogged)
+            // rather than guessing named-parameter semantics.
+            DropPodUtility.DropThingsNear(dropSpot, map, contents, PodOpenDelayTicks, false, false, true, true, true, null);
 
             Find.LetterStack.ReceiveLetter(
                 "RUT_SurvivalPod".Translate(),
