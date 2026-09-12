@@ -10618,22 +10618,22 @@
     "sha": "8be234dd"
   },
   "src/RimUtinni/FungalSoilTrade/Source/GenStep_ScatterFungalGround.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "e66ecaf75291660bbe428033fb40f0d090f913ab04782b508300728792ecab36",
-    "sha": "8be234dd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "8f27f5b3a73ad9e04f2ba013c67715e300d91b66ebaf3692a510420c4595e5df",
+    "sha": "5f3ba0678"
   },
   "src/RimUtinni/FungalSoilTrade/Source/MapComponent_RotFungalDistress.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "2c2e05c64d1aa0793318c8d99b2600af1b540e4fb80eaf1525906ca5d4a29bff",
-    "sha": "8be234dd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "063ab45311f9b249caeca52c6d4e2c753f3b8a40ae250309b630237326149cc2",
+    "sha": "5f3ba0678"
   },
   "src/RimUtinni/FungalSoilTrade/Source/RimMandrake.Utinni.FungalSoilTrade.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "1a6e4776aefc525e13667cfc224697f5936f417cb966f43def03cc1791ee3b84",
-    "sha": "8be234dd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "4c02754e1367e55bc38b73fa56c69ace311cc43e5cc182df4c0ac5c8a9abe8d2",
+    "sha": "5f3ba0678"
   },
   "src/RimUtinni/GritheArtOverride/About/About.xml": {
     "cleanCount": 1,
