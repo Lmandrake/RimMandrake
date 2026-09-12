@@ -144,10 +144,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/fauna/BiomeCast_Ashkarr.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-10",
-    "hash": "c6c53ddf851d0e62fd61564bb84288a78dfd34168200fe25a10921dfe70d1ddb",
-    "sha": "d3ffec03"
+    "cleanCount": 4,
+    "date": "2026-09-12",
+    "hash": "54a25a4dfb4dc0ac5048a9bdac0af2eba833106f74fc1e716adcea327fa892b6",
+    "sha": "f3754dac7"
   },
   "design/Jawa/fauna/CreatureNames_Ashkarr.xml": {
     "cleanCount": 1,
@@ -9640,10 +9640,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/ThoughtDefs/RSW_Bantha_Thoughts.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "ce49b8a96817193c56cd9f13806b280f0f2aeeed6b1c94f6013e7746c253f85d",
-    "sha": "bd07c0e6"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "e8c5f2305a4dc3098f25832ecd7565f3c556c1884d793266161bcba3e81d5e09",
+    "sha": "f3754dac7"
   },
   "src/RimStarWars/SWBestiary/LICENSE": {
     "cleanCount": 1,
@@ -12124,10 +12124,10 @@
     "sha": "e67f2cc0"
   },
   "src/RimUtinni/UtinniPatches/About/About.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-11",
-    "hash": "f818acb9a0b42a26c1332874a3866b66da2441fee19cc4d3136b812c5f3b7b5d",
-    "sha": "e2fec3c99"
+    "cleanCount": 5,
+    "date": "2026-09-12",
+    "hash": "83256f26d04751b89a80c35b25d15da7da6563b6167a8775ed46c37eb2b786be",
+    "sha": "f3754dac7"
   },
   "src/RimUtinni/UtinniPatches/Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml": {
     "cleanCount": 1,
@@ -12298,10 +12298,10 @@
     "sha": "e2fec3c99"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Webwork.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "5c72e7d53ccd571a81f55040aa3bb749ba75345c4f65646286f76c0fdaace0f1",
-    "sha": "e2fec3c99"
+    "cleanCount": 3,
+    "date": "2026-09-12",
+    "hash": "dceaf9c308c9825b36088ae823f0f728fe970f234e968ea89f73867fc25cebef",
+    "sha": "f3754dac7"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_WeepingStones.xml": {
     "cleanCount": 1,
@@ -12592,10 +12592,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml": {
-    "cleanCount": 5,
-    "date": "2026-09-10",
-    "hash": "9df74798a34914c06c8437d869a2450f2e29eae968e8aedb083edbe89302928b",
-    "sha": "d3ffec03"
+    "cleanCount": 6,
+    "date": "2026-09-12",
+    "hash": "90fc68629e824c182ea0f3520d058fde176961abfb20e8afd19fa6de174b3f0b",
+    "sha": "f3754dac7"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeDescriptions_Ashkarr.xml": {
     "cleanCount": 1,
@@ -12892,10 +12892,10 @@
     "sha": "7c80850cb"
   },
   "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "91c142ddfca497090c6985639901251d62feaf523581a068c4eaba4366fa269b",
-    "sha": "96156db67"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "0b8ef2098b2d01f3553b8321b4b029422faf760c1618751343fc931de9b1add4",
+    "sha": "f3754dac7"
   },
   "src/RimUtinni/UtinniPatches/Patches/XenotypeTolerances_Ashkarr.xml": {
     "cleanCount": 2,
