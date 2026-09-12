@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T22:09:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T22:29:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -710,15 +710,6 @@ target:   v1
 kind:     task
 summary:  Build src/RimMandrake/Utils/modcheck/: the modcheck library (owner re-ruling 2026-09-12:
 prose:    infrastructure/state/items/MOD_VALIDATION_RUNNER_1.md
-
-## RIMDRIVE_LIBRARY_BUILD_1 Build rimdrive L1+L2: hardened Session (reconnect+post-condition polling, verified pause, litter/teardown registry, runtime tool census, bridge-lock integration) + verified ops extracted from rimbench mutate(), with FakeSession offline selftests — modcheck and all future bridge drivers consume it
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  L1 rimdrive.session.Session: extraction of rimbench Session lifecycle plus
-prose:    infrastructure/state/items/RIMDRIVE_LIBRARY_BUILD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

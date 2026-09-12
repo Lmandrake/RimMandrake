@@ -7951,3 +7951,6 @@
 {"seat":"FOUNDRY","event":"start","id":"MOD_VALIDATION_RUNNER_1","ts":"2026-09-12T22:09:14Z"}
 {"seat":"FOUNDRY","event":"claim","id":"MOD_VALIDATION_PIT_PILOT_1","ts":"2026-09-12T22:09:16Z"}
 {"seat":"FOUNDRY","event":"start","id":"MOD_VALIDATION_PIT_PILOT_1","ts":"2026-09-12T22:09:18Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"RIMDRIVE_LIBRARY_BUILD_1 + MOD_VALIDATION_PIT_PILOT_1: live proof on a quicktest (owner-authorized 2026-09-12)","ts":"2026-09-12T22:20:51Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-12T22:28:05Z"}
+{"seat":"FOUNDRY","event":"close","id":"RIMDRIVE_LIBRARY_BUILD_1","sha":"5e7f3ced5c5e58e1e745d59a744c898769e7c836","ts":"2026-09-12T22:29:07Z"}
