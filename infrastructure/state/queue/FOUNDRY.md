@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T06:32:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T06:42:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## TIBANNA_SOURCE_CUT_1 Cut non-beldon tibanna sources per T1 ruling: CherryPicker-cut OuterRim_TibannaSiphon/ExtractorLight/Heavy lanes + LK mineable OuterRim_Tibanna route (item def stays); verify LIVE — LK patches can no-op silently; beldons-only hard ban stands
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  (no items/TIBANNA_SOURCE_CUT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TIBANNA_SOURCE_CUT_1.md
 
 # IN PROGRESS
 
@@ -777,16 +786,6 @@ blocked:  Same stuck-agent recovery as RIVER_STEAM_ANIMATION_1 - owner's mod lis
 summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
 prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
 
-## SARLACC_NATIVE_HABITAT_1 Sarlacc: native deep-desert habitat, three life-cycle stages, dungeon module
-state:    proposed  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  stale-drop-adjacent: draft already delivered 2026-09-06 (design/Jawa/worldbuilding/sarlacc_native_habitat_draft.md, three stages + dungeon module + ban-5 wording, nine forks in §7) and awaits owner review before further creative work; re-drafting without his read is wasted motion
-summary:  SARLACCNATIVEHABITAT1
-prose:    infrastructure/state/items/SARLACC_NATIVE_HABITAT_1.md
-
 ## TREE_GRAPHICS_OWNERSHIP_1 Own tree art at our scales: generate custom tree graphics (sweetline trees first — huge, ancient); remove tree-mod rescaling of our designs
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1024,7 +1023,7 @@ needs:    offline
 target:   v1
 kind:     task
 blocked:  built+compiled+validate_patch clean, deployed to Mods/ but NOT enabled in ModsConfig (avoiding a live mod-list change while another window drives the bridge); owed: enable + live quicktest (float menu on tagged cell, job completes, burn ticks apply, settings render)
-summary:  (no items/SCALD_DIVING_MOD_1.md yet — write one when you have something to say)
+summary:  SCALDDIVINGMOD1 — Deep Diving (RimMandrake tier)
 prose:    infrastructure/state/items/SCALD_DIVING_MOD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
@@ -1059,16 +1058,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VAPOR_PLACEMENT_CLEANUP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VAPOR_PLACEMENT_CLEANUP_1.md
 
-## TIBANNA_SOURCE_CUT_1 Cut non-beldon tibanna sources per T1 ruling: CherryPicker-cut OuterRim_TibannaSiphon/ExtractorLight/Heavy lanes + LK mineable OuterRim_Tibanna route (item def stays); verify LIVE — LK patches can no-op silently; beldons-only hard ban stands
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TIBANNA_SOURCE_CUT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TIBANNA_SOURCE_CUT_1.md
-
 ## ASHFALL_SPIRE_LANDMARK_1 Place The Spire landmark (Ashfall Research Base site): thin black needle, disc pad near top, intermittently visible through Scald turbulence — live placement + read-back per worldmap discipline; dungeon shell may follow, campaign function stays TBD (owner)
 state:    proposed
 row:      unassigned
@@ -1078,16 +1067,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ASHFALL_SPIRE_LANDMARK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ASHFALL_SPIRE_LANDMARK_1.md
-
-## CANON_CLAIM_TAGGING_1 Canon storage Phase 0 (owner adopted 2026-09-12): certainty tiers + entity tags on recorded facts; extend doc_claims.py to emit {entity, attribute, value, provenance, certainty, valid-time}
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CANON_CLAIM_TAGGING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CANON_CLAIM_TAGGING_1.md
 
 ## CANON_CONSISTENCY_CHECKER_1 Canon storage Phase 1 (owner adopted 2026-09-12): contradiction+gap checker over the claim index — same entity+attribute disagreeing across docs, thin-coverage entities, changed-ruling dependency worklists; drain becomes a standing signal
 state:    proposed
@@ -1099,12 +1078,12 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CANON_CONSISTENCY_CHECKER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CANON_CONSISTENCY_CHECKER_1.md
 
-## CHECK_CANON_WATER_RULE_1 check_canon [water] rule matches any '25%' (a gene's thirst stat and a row-count cap both flagged as water contradictions 2026-09-12) — needs context guard so only water-fraction statements match
+## SARLACC_HABITAT_BUILD_1 Build the accepted sarlacc design (sarlacc_native_habitat_draft.md, ACCEPTED + all forks RULED 2026-09-12): RSW-tier mod, Devourer-modeled swimmer, rooting-in-play, 2-4 deep-desert cisterns (relocate tile 2920 off the Weeping Stones oasis), breach-only kill, 7 changed-return hediffs, tribal stage labels for owner yes
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CHECK_CANON_WATER_RULE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CHECK_CANON_WATER_RULE_1.md
+summary:  (no items/SARLACC_HABITAT_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md
