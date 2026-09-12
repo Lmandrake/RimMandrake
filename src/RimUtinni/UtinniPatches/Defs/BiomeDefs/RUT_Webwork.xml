@@ -41,10 +41,29 @@
     Shokk-bound hediff, the light-moat, commandable adhesion, beetle/mite mechanics,
     margin creep); `SHOKKWEAVE_SOLE_SOURCE_1`; any world repaint.
 
+    WEBWORK_KIT_BUILD_1 amendment (this pass): modExtensions below adds
+    RM_FrontCreepExtension (webwork_kit_spec.md §6, "margin creep") — read by
+    RM_MapComponent_FrontCreep off THIS biome when it is a NEIGHBOR of some
+    other map, never off that map's own biome. World map is never repainted;
+    this only tells a bordering map what to scatter inward and how fast.
+    Numbers are ❓INVENTED (spec names none), a live-balance pass is owed.
+
   -->
 
   <BiomeDef>
     <defName>RUT_Webwork</defName>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_FrontCreepExtension">
+        <frontThingDefNames>
+          <li>RUT_Webwork_Anchor</li>
+          <li>RUT_Webwork_Web</li>
+          <li>RUT_Webwork_Gutter</li>
+        </frontThingDefNames>
+        <advanceIntervalTicks>60000</advanceIntervalTicks>
+        <maxBandDepth>10</maxBandDepth>
+        <spawnDensity>0.15</spawnDensity>
+      </li>
+    </modExtensions>
     <label>the Webwork</label>
     <description>The place where the plants grew so dense and thick that they drank their entire river -- soaked it up into a thicket of terrible, nightmare plants ever churning against itself. The map shows a jungle with no water because the water is inside. It is eerily silent -- most of the animals have been eaten, and few will enter. Those who do frequently discover a shadow, seconds before it lands upon them, and know nothing more.</description>
     <workerClass>AlphaBiomes.BiomeWorker_FeraliskInfestedJungle</workerClass>

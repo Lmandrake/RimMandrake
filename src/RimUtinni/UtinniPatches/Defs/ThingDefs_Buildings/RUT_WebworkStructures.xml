@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_WebworkStructures.xml            UtinniPatches - WEBWORK_KIT_BUILD_1
+  ============================================================================
+  The roster's own "web networks" (the_webwork.md §8): "anchor lines, sheet
+  webs, and the silk irrigation gutters, laid through the entire ecosystem."
+  Three decorative/sensory Things, each carrying
+  RimMandrake.CreatureBehaviors.RM_CompProperties_SenseWebNode so they
+  register with RM_MapComponent_SenseWeb on that map (webwork_kit_spec.md
+  §1). The anchor also carries RM_ChewableExtension — the one of the three
+  the anchor-beetles chew (§5; "chew through web anchors", not the sheet
+  webs or gutters themselves).
+
+  Placement is NOT this file's job: RM_MapComponent_FrontCreep spawns these
+  on border maps (mechanic 6); an ordinary interior-map scatter GenStep is
+  deferred (not asked by this item; ShokkweaveHarvestNodes.xml's own
+  dedicated resource nodes already cover interior-map harvest routes).
+
+  🔴 Sole-source guard: NONE of these three carry killedLeavings or a
+  resource-yield comp. Destroying/chewing a sense-web node drops nothing —
+  any Shokkweave yield off a creep-spawned node is SHOKKWEAVE_SOLE_SOURCE_1's
+  own patch to attach (owner card 4, 2026-09-11: border creep-web "yields,
+  with teeth"), not this def's job.
+
+  Cross-mod compClass/modExtension reference: mandrake.rm.creaturebehaviors
+  is a standing dependency of this campaign's Utinni-tier content (already
+  always active alongside mandrake.rut.patches); no MayRequire wrapper is
+  used, matching how other RM_-tier comps are referenced directly elsewhere
+  in this campaign's RUT_ content.
+
+  Art: placeholder (Hive's own natural-structure texture, an always-present
+  base/Anomaly asset) — bespoke web/anchor/gutter sprites are owed, flagged
+  here rather than left silent.
+
+  HP/fillPercent/pathCost are ❓INVENTED, expecting the same live-balance
+  pass every other number in this kit's build carries.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RUT_Webwork_Anchor</defName>
+    <label>web anchor line</label>
+    <description>A thick catenary of shokkweave, spun taut between two fixed points and hardened until it reads as architecture rather than silk. The whole network hangs off lines like this one; cut or chewed through, the web nearby goes slack and blind.</description>
+    <graphicData>
+      <texPath>Things/Building/Natural/Hive</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.0</drawSize>
+      <color>(224, 220, 205)</color>
+    </graphicData>
+    <uiIconScale>0.5</uiIconScale>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <fillPercent>0.05</fillPercent>
+    <passability>Standable</passability>
+    <pathCost>0</pathCost>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>1.4</Flammability>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_ChewableExtension" />
+    </modExtensions>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SenseWebNode" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RUT_Webwork_Web</defName>
+    <label>sheet web</label>
+    <description>A broad plane of silk strung between trunks, thick enough to blot out the canopy above it. Nothing touches it without the whole network knowing.</description>
+    <graphicData>
+      <texPath>Things/Building/Natural/Hive</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.2</drawSize>
+      <color>(235, 230, 218)</color>
+    </graphicData>
+    <uiIconScale>0.5</uiIconScale>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <fillPercent>0.05</fillPercent>
+    <passability>Standable</passability>
+    <pathCost>0</pathCost>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Flammability>1.6</Flammability>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SenseWebNode" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RUT_Webwork_Gutter</defName>
+    <label>silk irrigation gutter</label>
+    <description>A woven channel of dense silk, carrying the stolen river's water further than roots alone could reach. Plumbing, not habitat — but it is still web, and it still feels.</description>
+    <graphicData>
+      <texPath>Things/Building/Natural/Hive</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.0</drawSize>
+      <color>(210, 206, 190)</color>
+    </graphicData>
+    <uiIconScale>0.5</uiIconScale>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <fillPercent>0.05</fillPercent>
+    <passability>Standable</passability>
+    <pathCost>0</pathCost>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>1.2</Flammability>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SenseWebNode" />
+    </comps>
+  </ThingDef>
+
+</Defs>

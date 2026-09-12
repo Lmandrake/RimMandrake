@@ -6,8 +6,9 @@ namespace RimMandrake.Property
     // ════════════════════════════════════════════════════════════════════
     // MOD_OPTIONS_RETROFIT_1 — Mod Settings for RimProperty.
     //
-    // Four independently-gateable mechanics, found by reading every .cs
-    // file in this mod before writing this:
+    // Five independently-gateable mechanics, found by reading every .cs
+    // file in this mod before writing this (walkable commerce added by
+    // SETTLEMENT_VERBS_WAVE_1):
     //   1. Perception/propagation (PropertyEngine.RollPerceptionAndPropagate)
     //      — witnesses seeing a theft and telling their faction.
     //   2. Animal theft (AnimalTheftUtility.FindStealTarget, the single
@@ -17,6 +18,9 @@ namespace RimMandrake.Property
     //      right-click "steal and haul away this building" order.
     //   4. Salvage claim fees (FloatMenuOptionProvider_PaySalvageClaim /
     //      SalvageClaimFeeUtility) — the right-click "pay off a claim" order.
+    //   5. Walkable commerce (FloatMenuOptionProvider_BuyMerchandise /
+    //      BuyMerchandiseUtility) — the right-click "buy this from its
+    //      current owner" order.
     //
     // The claim engine itself (ClaimEngine/ClaimDecay/GameComponent_
     // PropertyLedger/PropertyEngine.Fire's WasAuthorized resolution) is left
@@ -57,6 +61,10 @@ namespace RimMandrake.Property
         public static bool salvageClaimFeeEnabled = true;
         public static float salvageClaimFeeMultiplier = 1f;
 
+        // --- Walkable commerce (SETTLEMENT_VERBS_WAVE_1) -----------------------
+        public static bool walkableCommerceEnabled = true;
+        public static float walkableCommerceMarkup = PropertyTuning.WalkableCommerceMarkup;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -72,6 +80,8 @@ namespace RimMandrake.Property
             Scribe_Values.Look(ref theftHaulerEnabled, "theftHaulerEnabled", true);
             Scribe_Values.Look(ref salvageClaimFeeEnabled, "salvageClaimFeeEnabled", true);
             Scribe_Values.Look(ref salvageClaimFeeMultiplier, "salvageClaimFeeMultiplier", 1f);
+            Scribe_Values.Look(ref walkableCommerceEnabled, "walkableCommerceEnabled", true);
+            Scribe_Values.Look(ref walkableCommerceMarkup, "walkableCommerceMarkup", PropertyTuning.WalkableCommerceMarkup);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -127,6 +137,17 @@ namespace RimMandrake.Property
             {
                 list.Label("  Fee amount: " + salvageClaimFeeMultiplier.ToString("0.00") + "x");
                 salvageClaimFeeMultiplier = list.Slider(salvageClaimFeeMultiplier, 0.25f, 3f);
+            }
+            list.GapLine();
+
+            list.CheckboxLabeled("Walkable commerce (buy merchandise on the spot)", ref walkableCommerceEnabled,
+                "Lets a pawn right-click something someone else already owns to buy it on the spot, "
+              + "priced off its market value. Records the purchase as a legal provenance record. "
+              + "Off: that order never appears.");
+            if (walkableCommerceEnabled)
+            {
+                list.Label("  Price markup: " + walkableCommerceMarkup.ToString("0.00") + "x market value");
+                walkableCommerceMarkup = list.Slider(walkableCommerceMarkup, 0.5f, 3f);
             }
 
             list.End();

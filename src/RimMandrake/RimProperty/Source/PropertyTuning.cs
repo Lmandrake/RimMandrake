@@ -73,5 +73,13 @@ namespace RimMandrake.Property
         // How far (in cells) the thief wanders off with its loot before
         // dropping it — JobDriver_RM_AnimalSteal's WanderOffWithLoot toil.
         public const int AnimalTheftWanderRadius = 6;
+
+        // WalkableCommerce (SETTLEMENT_VERBS_WAVE_1): flat markup over a
+        // merchandise item's own MarketValue stat for the walk-up Buy
+        // interaction. 1.0 would price it at bare market value; a modest
+        // markup reads as "someone else is selling this to you," not "you
+        // found it for free." Haggling (spec item 9) would move this per-
+        // transaction; not built this pass — flat and tunable only.
+        public const float WalkableCommerceMarkup = 1.15f;
     }
 }

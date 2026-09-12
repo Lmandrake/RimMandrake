@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T08:08:00Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-12T08:26:07Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## WEBWORK_KIT_BUILD_1 Build the Webwork biome's own mechanics kit code (RM_MapComponent_SenseWeb, RM_MapComponent_FrontCreep, RM_JobGiver_ChewAnchors, the roster's web/anchor/gutter ThingDefs) per design/Jawa/worldbuilding/biomes/kits/webwork_kit_spec.md - currently only the six generic ALPHA_MECHANICS_KIT_1 comps are built, this biome's own content kit has no build item yet; blocks SHOKKWEAVE_SOLE_SOURCE_1's border creep-web route
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/WEBWORK_KIT_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEBWORK_KIT_BUILD_1.md
 
 # IN PROGRESS
 
@@ -102,7 +111,7 @@ prose:    infrastructure/state/items/SETTLEMENT_VISIT_LOOP_1.md
 ## SETTLEMENT_VERBS_WAVE_1 v1 interaction verbs: crime suite, salvage-law gray zone, walkable commerce, social fabric
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    deploy
 target:   v1
 kind:     build
 summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31),
@@ -1079,13 +1088,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WORLD_NAME_FIXES_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WORLD_NAME_FIXES_1.md
-
-## WEBWORK_KIT_BUILD_1 Build the Webwork biome's own mechanics kit code (RM_MapComponent_SenseWeb, RM_MapComponent_FrontCreep, RM_JobGiver_ChewAnchors, the roster's web/anchor/gutter ThingDefs) per design/Jawa/worldbuilding/biomes/kits/webwork_kit_spec.md - currently only the six generic ALPHA_MECHANICS_KIT_1 comps are built, this biome's own content kit has no build item yet; blocks SHOKKWEAVE_SOLE_SOURCE_1's border creep-web route
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WEBWORK_KIT_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WEBWORK_KIT_BUILD_1.md

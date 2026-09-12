@@ -37,6 +37,16 @@ namespace RimMandrake.CreatureBehaviors
     //      place, never removed — a content mod's own stages decide what a
     //      frozen severity means). The dial scales both the climb and the
     //      decay rate together.
+    //   8. senseWebEnabled — RM_MapComponent_SenseWeb. Off: registered web
+    //      nodes still track (cheap bookkeeping), but the map stops scanning
+    //      for and marking intruding pawns.
+    //   9. chewAnchorsBehaviorEnabled — RM_JobGiver_ChewAnchors. Off: a
+    //      beetle-like race built to chew anchors never seeks one out.
+    //  10. frontCreepEnabled / frontCreepRateMultiplier —
+    //      RM_MapComponent_FrontCreep. Off: a border map's advancing front
+    //      freezes wherever it currently sits. The dial scales how much of
+    //      each band actually spawns (never the advance interval or depth
+    //      cap, which stay whatever the biome's own extension says).
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -49,6 +59,10 @@ namespace RimMandrake.CreatureBehaviors
         public static bool silenceCueEnabled = true;
         public static bool sunScaldEnabled = true;
         public static float sunScaldSeverityMultiplier = 1f;
+        public static bool senseWebEnabled = true;
+        public static bool chewAnchorsBehaviorEnabled = true;
+        public static bool frontCreepEnabled = true;
+        public static float frontCreepRateMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -62,6 +76,10 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref silenceCueEnabled, "silenceCueEnabled", true);
             Scribe_Values.Look(ref sunScaldEnabled, "sunScaldEnabled", true);
             Scribe_Values.Look(ref sunScaldSeverityMultiplier, "sunScaldSeverityMultiplier", 1f);
+            Scribe_Values.Look(ref senseWebEnabled, "senseWebEnabled", true);
+            Scribe_Values.Look(ref chewAnchorsBehaviorEnabled, "chewAnchorsBehaviorEnabled", true);
+            Scribe_Values.Look(ref frontCreepEnabled, "frontCreepEnabled", true);
+            Scribe_Values.Look(ref frontCreepRateMultiplier, "frontCreepRateMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -96,6 +114,17 @@ namespace RimMandrake.CreatureBehaviors
               + "(frozen wherever it currently sits).");
             list.Label("Sun-scald rate: " + sunScaldSeverityMultiplier.ToString("0.00") + "x");
             sunScaldSeverityMultiplier = list.Slider(sunScaldSeverityMultiplier, 0.25f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Web-sense network", ref senseWebEnabled,
+                "A registered web/anchor/gutter network stops sensing and marking intruders "
+              + "(nodes still track, but nothing gets felt).");
+            list.CheckboxLabeled("Anchor-chewing behavior", ref chewAnchorsBehaviorEnabled,
+                "A beetle-like animal stops seeking out web anchors to chew through.");
+            list.CheckboxLabeled("Border margin creep", ref frontCreepEnabled,
+                "A map bordering a creeping biome stops advancing that biome's web/anchor/gutter line inward.");
+            list.Label("Margin creep density: " + frontCreepRateMultiplier.ToString("0.00") + "x");
+            frontCreepRateMultiplier = list.Slider(frontCreepRateMultiplier, 0f, 3f);
 
             list.End();
         }
