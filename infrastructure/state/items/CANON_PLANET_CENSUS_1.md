@@ -47,3 +47,16 @@ COMIGO_GreaterSwamp_Tropical); rivers: the CSV's one river column
 reconcilable only by a live bridge read; water 1448 = 6.6203%, incl-ice
 (RUT_NightsideIce) 2954 = 13.5059%. Together with the replacement block, the
 owner sitting has everything it needs.
+
+## 🔴 Owner caution 2026-09-12 — two census rows are PENDING-SWAP donor names
+Owner: "Be careful with those new biomes. We were making our own versions of
+those biomes in our own mods." Confirmed: `BiomeCypreJungle` (235 tiles) and
+`COMIGO_GreaterSwamp_Tropical` (43 tiles) are NOT new biomes — they are donor
+defs whose owned successors are already authored (`RUT_Greentide`,
+`RUT_FeverWood`, each def header saying "Replaces the donor …") with 0 tiles
+painted yet; the repaint rides BIOME_OWNERSHIP_WAVE_1 (verify: zero donor
+defs remain painted; savegame shortHash + backup discipline per that item).
+The sitting must NOT land those two names as canonical rows — land the counts
+under the successor names marked pending-repaint, or hold the two rows until
+the wave repaints them. Same logic explains the 3 "dropped" legacy biomes
+(earlier ownership swaps), so the 29-count itself is sound.
