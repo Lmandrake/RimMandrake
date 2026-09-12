@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T06:42:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T06:51:44Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -22,6 +22,15 @@ target:   v1
 kind:     task
 summary:  (no items/TIBANNA_SOURCE_CUT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TIBANNA_SOURCE_CUT_1.md
+
+## SARLACC_HABITAT_BUILD_1 Build the accepted sarlacc design (sarlacc_native_habitat_draft.md, ACCEPTED + all forks RULED 2026-09-12): RSW-tier mod, Devourer-modeled swimmer, rooting-in-play, 2-4 deep-desert cisterns (relocate tile 2920 off the Weeping Stones oasis), breach-only kill, 7 changed-return hediffs, tribal stage labels for owner yes
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  SARLACCHABITATBUILD1 — build the accepted sarlacc design
+prose:    infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md
 
 # IN PROGRESS
 
@@ -1068,22 +1077,12 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ASHFALL_SPIRE_LANDMARK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ASHFALL_SPIRE_LANDMARK_1.md
 
-## CANON_CONSISTENCY_CHECKER_1 Canon storage Phase 1 (owner adopted 2026-09-12): contradiction+gap checker over the claim index — same entity+attribute disagreeing across docs, thin-coverage entities, changed-ruling dependency worklists; drain becomes a standing signal
+## SARLACC_WORLDMAP_RELOCATE_1 Update the canonical savegame worldmap for the accepted sarlacc design: remove sw_Sarlacc from tile 2920 (Weeping Stones oasis collision), place 2-4 cistern landmarks on ruled deep-desert regions (Glare/Long Sand/Dry Marches), full freeze discipline
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CANON_CONSISTENCY_CHECKER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CANON_CONSISTENCY_CHECKER_1.md
-
-## SARLACC_HABITAT_BUILD_1 Build the accepted sarlacc design (sarlacc_native_habitat_draft.md, ACCEPTED + all forks RULED 2026-09-12): RSW-tier mod, Devourer-modeled swimmer, rooting-in-play, 2-4 deep-desert cisterns (relocate tile 2920 off the Weeping Stones oasis), breach-only kill, 7 changed-return hediffs, tribal stage labels for owner yes
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SARLACC_HABITAT_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md
+thin:     spec, verify and criteria all present
+summary:  - Remove the live swSarlacc landmark from tile 2920 (a
+prose:    infrastructure/state/items/SARLACC_WORLDMAP_RELOCATE_1.md

@@ -130,3 +130,82 @@ directly instead of inferred from silence).
 Re-blocking rather than closing: the wiring is now measurably closer to
 correct (two real, previously-unknown, 100%-blocking defects fixed) but the
 item's own `## verify` — an actual observed spawn — is still not met.
+
+## closed 2026-09-12, FOUNDRY — debug hook added, natural spawn observed live
+
+Added the debug-report hook the previous pass asked for:
+`RM_CompVerminNest.TrySpawn()` refactored into a public `AttemptSpawn(bool
+verbose)` returning a human-readable reason string for every early-return
+branch (no map / population cap / no species / no reachable cell / null
+pawn / success), plus a new `RM_ShipVerminDebugActions.cs` (two `ToolMap`
+`[DebugAction]`s: force an attempt on a clicked wreck, report its
+`nextSpawnTick` state) — same pattern as `RM_FloodedCanyonDebugActions`.
+
+**First build of the hook had a real bug of its own**, caught immediately by
+using it: the two new methods each wrapped their body in a fresh
+`new DebugTool(...)` and reassigned `DebugTools.curTool`. But
+`LudeonTK.DebugActionNode.Enter()` already does exactly that —
+`DebugTools.curTool = new DebugTool(LabelNow, action)`, where `action` IS the
+attributed method — so the attributed method itself must BE the click
+handler (`UI.MouseCell()` already valid when it runs), never construct a
+second inner tool. The bug re-armed the tool on click #1 and deferred the
+real logic to a click #2 that never came, so the very first live test of the
+hook produced silence identical to what it was built to diagnose. Fixed by
+matching vanilla's own shape (`Verse.DebugToolsSpawning.MakeFilthx100` etc:
+no internal `DebugTool`, just direct logic using `UI.MouseCell()`).
+
+**Once fixed, the hook immediately answered the question the previous pass
+couldn't reach.** On a fresh 25-mod-minimal quicktest + `mandrake.rm.shipvermin`
++ `mandrake.rm.creaturebehaviors` + a session-only scratch mod carrying
+`WreckVerminNest_ShipChunk.xml` (never committed):
+
+1. **Forced attempt on a fresh `ShipChunk_Mech`** (bridge
+   `execute_debug_action` with `thingId`, no `click_cell` follow-up needed):
+   `AttemptSpawn` ran end-to-end and logged
+   `SPAWNED Rat (Rat43110) at (104, 0, 100), nest at (100, 0, 100)` — proving
+   population check, species pick, `CellFinder.TryFindRandomCellNear`
+   reachability, `PawnGenerator.GeneratePawn` and `GenSpawn.Spawn` are ALL
+   correct. The suspected third defect (reachability/cell-finding) does not
+   exist — the mechanism works when invoked directly.
+2. **Natural tick-driven spawn on a second, untouched `ShipChunk_Mech`**
+   (spawned fresh, never force-called): `Report nest state` read
+   `ticksUntilNextSpawn=150948` at `ticksGame=2792` (target tick ~153,740).
+   Advanced the game with `rimworld/step_game_ticks` looped to the target
+   (see trap below), then confirmed via `jawa/list_pawns`: a new pawn,
+   `Rat43928`, `spawned: true`, at (138,141) — 2 cells from the nest at
+   (140,140), well inside `nestSpawnRadius` 4 — that did not exist before the
+   stepping. `Report nest state` afterward showed `ticksUntilNextSpawn` had
+   rolled over to a fresh ~232,331-tick interval, confirming `CompTick` fired
+   `AttemptSpawn` (silently, `verbose:false`, production path) and then
+   `CalculateNextSpawnTick()` exactly as designed — an actual observed spawn
+   from the real tick-scheduled path, not a forced one.
+
+⇒ **No third defect existed.** The two bugs already fixed (the `<comps>`
+check-or-create dance, `tickerType` Normal) were the whole story once the
+comp could actually attach and tick.
+
+🔴 **New trap found, and it is the likely explanation for the earlier
+"263,701 ticks, zero spawns" reading**: `rimworld/step_game_ticks` silently
+times out around **~2,800 ticks per ~10 real seconds** and returns
+`success: false, status: "timedout"` in the PAYLOAD while the outer bridge
+operation envelope still reads `Status: 2, Success: true` — the exact
+envelope-vs-payload trap `silent-failures.md` already warns about, seen here
+for the first time on this tool. A single `step_game_ticks` call for a large
+tick count does NOT advance that many ticks; it must be looped, reading real
+`ticksGame` back each time, until the target is reached (confirmed here:
+looping to 153,800 took **~55 calls**). The previous pass's "advanced past
+263,701 ticks" claim (via `step_game_ticks` + `jawa/set_game_speed`) was
+never re-verified against a raw `ticksGame` read at that exact moment in
+THIS session, so whether the real engine clock ever actually reached that
+count is now doubtful — logged as a fact for the `rimbridge` skill's
+`silent-failures.md` rather than re-litigated here, since the mechanism
+itself is now proven correct regardless of what happened that night.
+
+Debug hook shipped permanently (cheap, harmless, same precedent as
+`RM_FloodedCanyonDebugActions`) — not stripped out.
+
+**Verify met**: an actual spawn was SEEN (`jawa/list_pawns`), attributable to
+a specific untouched wreck via the natural tick-scheduled path, with a
+second wreckless control area showing no such spawn. Mod list restored to
+the campaign's `FULL.LATEST` after this session's minimal-list testing (see
+commit). Closing.
