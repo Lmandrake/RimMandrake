@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  BiomeWildAnimalDuplicates_Generated.xml    GENERATED - do not hand-edit
+  ZZZ_BiomeWildAnimalDuplicates_Generated.xml    GENERATED - do not hand-edit
   ============================================================================
-  Regenerate with biome_wildanimals_inlist_dupes.py, flag `xml`, writing to this path:
+  Regenerate with biome_wildanimals_inlist_dupes.py, flag `xml`, writing to THIS
+  file's path (Patches/ZZZ_BiomeWildAnimalDuplicates_Generated.xml - the ZZZ_
+  prefix is load-bearing, see below, and must be kept on every regeneration):
       python3 src/RimMandrake/Utils/biome_wildanimals_inlist_dupes.py
   (⛔ the flags are spelled with two hyphens, which XML forbids inside a comment,
    so they are named rather than written out here. See the script's docstring.)
@@ -20,13 +22,26 @@
   mod's Patches/ folder in filesystem order (DirectXmlLoader.XmlAssetsInModFolder,
   confirmed via RimSage against ModContentPack.LoadPatches / DirectoryInfo.GetFiles)
   and applies that mod's patches strictly in that order - no independent sort pass.
-  Every pair here is created by OUR OWN BiomeCast_Ashkarr.xml (same mod) adding an
-  animal a donor mod's own patch already added, so the removal MUST run after
-  BiomeCast_Ashkarr.xml appends it. "BiomeWildAnimalDuplicates_Generated.xml" sorts
-  after "BiomeCast_Ashkarr.xml" (W > C); the previous home for these removals,
-  AnimalBiomeDuplicates_Fix.xml's Block 4, sorted BEFORE it (A < B) and silently
-  no-opped on every one of its 7 live pairs - confirmed 2026-09-12 against capture
-  2026-09-12T19-16-27Z. Do not rename this file to anything sorting at or before "BiomeCast_".
+  The removal for a given pair must run after EVERY file in this mod that could add
+  that pair a second time - which is not always the same file. First measured:
+  AnimalBiomeDuplicates_Fix.xml's Block 4 sorted BEFORE BiomeCast_Ashkarr.xml (A < B)
+  and silently no-opped on all 7 live pairs it targeted (confirmed 2026-09-12 against
+  capture 2026-09-12T19-16-27Z). Renamed once to "BiomeWildAnimalDuplicates_
+  Generated.xml" (sorts after BiomeCast_Ashkarr.xml) to fix that - but the VERY NEXT
+  restart still showed AA_Eyeling duplicated on Wasteland/ExtremeDesert/
+  ZBiome_DesertOasis, because `Ikee_Rename.xml` ALSO adds AA_Eyeling to those same
+  three biomes (renaming it to "ikee" requires re-registering it in each biome's
+  wildAnimals list under the new label) and "Ikee_Rename.xml" (I) sorts AFTER
+  "BiomeWildAnimalDuplicates_Generated.xml" (B) - the removal ran, found only the ONE
+  occurrence BiomeCast_Ashkarr.xml had added so far, no-opped on the missing second
+  index, and Ikee_Rename.xml then created the second occurrence anyway, untouched.
+  ⇒ Renamed AGAIN to "ZZZ_BiomeWildAnimalDuplicates_Generated.xml" (Z sorts after
+  every other current filename in this mod's Patches/ folder) so this sorts after
+  everything in the folder by construction, not "after the one or two files I have
+  in mind." Confirmed fixed 2026-09-12 against capture 2026-09-12T20-48-00Z. Do not rename this
+  file to anything that would not still sort last among this folder's filenames -
+  re-check the actual folder listing before ever renaming it again, this has already
+  broken twice from checking too narrow a set of "the one file that adds this."
 
   Each removal targets the SECOND (or later) occurrence by XPath index, e.g.
   wildAnimals/Foo[2] - the biome's own commonality (our cast) is always kept, the
@@ -36,8 +51,8 @@
 
   Every op is a PatchOperationConditional: an absent mod, or a def that no longer
   collides, turns it into a silent no-op instead of a red error.
-  Generated from capture 2026-09-12T19-16-27Z
-  7 pair(s) found this run; 0 triple(s) carried from the previous file
+  Generated from capture 2026-09-12T20-48-00Z
+  3 pair(s) found this run; 4 triple(s) carried from the previous file
   that this capture can no longer see (our own removals hide their own
   evidence once they take effect). 7 operation(s), the UNION of every
   triple ever found.
