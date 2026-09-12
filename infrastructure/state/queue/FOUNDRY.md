@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T08:58:31Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-12T09:01:56Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -246,7 +246,7 @@ prose:    infrastructure/state/items/VAULT_THAW_QUEST_FAMILY_1.md
 ## NINEFOLD_FIRE_HOOK_RATELIMITED_1 Fire as a Zizzik/Sh'kaar input needs an incident-level or rate-limited hook - per-fire (FireUtility.TryStartFireIn) would flood satiation in one forest fire
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    deploy
 target:   v1
 kind:     task
 summary:  NINEFOLDFIREHOOKRATELIMITED1 — hook built, not yet proven live
@@ -998,16 +998,6 @@ blocked:  46 mods retrofitted with real, compile-verified Mod Settings (Greentid
 summary:  - Inventory every shipped/in-progress mod under src/RimMandrake/,
 prose:    infrastructure/state/items/MOD_OPTIONS_RETROFIT_1.md
 
-## GIZKA_HOLD_HOOK_SPIKE_1 Spike: find the gravship-hold discovery hook for the gizka stowaway event (Odyssey source read + quicktest proof) — owner ruled the whole gizka feature HOLDS until this hook is confirmed
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  hook identified: RimWorld.Scenario.PostGravshipLanded(Map map), fired once per landing from WorldComponent_GravshipController.LandingEnded(); live confirmation owed — bridge held by another FOUNDRY window all session
-summary:  GIZKAHOLDHOOKSPIKE1 — gravship-landing hook, research phase
-prose:    infrastructure/state/items/GIZKA_HOLD_HOOK_SPIKE_1.md
-
 ## SCALD_DIVING_MOD_1 Diving mod, v1 (owner: 'make the diving mod v1 content now!!'): RimMandrake-tier diving mechanic — hunt/commune at the Scald's deep center, priced in burns; bottom-walkers become interactable; Mod Settings per doctrine
 state:    ready  (BLOCKED)
 row:      unassigned
@@ -1030,7 +1020,7 @@ prose:    infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -1038,7 +1028,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is DOWN
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
@@ -1048,7 +1038,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     task
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is DOWN
 summary:  WEBWORKKITBUILD1 — Webwork biome mechanics kit (SenseWeb, FrontCreep, ChewAnchors, roster structures)
 prose:    infrastructure/state/items/WEBWORK_KIT_BUILD_1.md
 

@@ -37,3 +37,19 @@ SimpleCurve flammabilityChanceCurve = null)` matches the patch's
       game copy yet either (companion-DLL-style deploy not needed here — this
       is a regular mod DLL, blocked only by the normal "game must be DOWN to
       overwrite the DLL" rule like any other mod).
+
+## Checked 2026-09-12 (FOUNDRY, owner AFK) — still blocked on deploy, not force-able
+
+`mandrake.rm.ninefold` is present in the live `ModsConfig.xml` (currently
+loaded), and the bridge is held by another window (`GIZKA hook live
+confirmation`, idle 0 min) — the game is up and driving. Per the normal
+"game must be DOWN to overwrite the DLL" rule, `deploy_custom_mods.py
+--apply` is unsafe right now: the Ninefold DLL is locked. No live
+fire-triggering quicktest attempted either, both because the bridge is
+already contended by another agent and because deploying first is a
+prerequisite for the live proof anyway (the offline-reverified source has
+never round-tripped through a real load).
+
+Set `needs=deploy` via rimflow. Nothing else to do on this item until the
+game comes down for a load — at that point: deploy, then take the bridge
+and run the fire repro described above before closing.
