@@ -98,7 +98,7 @@
         <Clodhopper>0.1</Clodhopper> <!-- clodhopper - ambush-small, keep -->
         <FeralGrazer>0.1</FeralGrazer> <!-- feral grazer - herd, import -->
         <Gizka>0.1</Gizka> <!-- gizka - ambush-small, keep -->
-        <Iriaz>0.1</Iriaz> <!-- iriaz - herd-small, keep -->
+        <RSW_Iriaz>0.1</RSW_Iriaz> <!-- iriaz - herd-small, keep -->
         <Krykna>0.1</Krykna> <!-- krykna - ambush-small, keep -->
         <Runyip>0.1</Runyip> <!-- runyip - herd, import -->
         <Voorpak>0.05</Voorpak> <!-- voorpak - ambush-small, keep -->
@@ -203,12 +203,12 @@
       <value>
         <FrilledGorg>1.0</FrilledGorg> <!-- frilled gorg - small-runway, keep -->
         <Gorg>1.0</Gorg> <!-- gorg - small-runway, keep -->
-        <Iriaz>1.0</Iriaz> <!-- iriaz - small-herd, keep -->
+        <RSW_Iriaz>1.0</RSW_Iriaz> <!-- iriaz - small-herd, keep -->
         <LongtailGorg>1.0</LongtailGorg> <!-- longtail gorg - medium-interface, keep -->
         <Eopie>0.8</Eopie> <!-- eopie - medium-pack, keep -->
         <Kreetle>0.8</Kreetle> <!-- kreetle - small-runway, keep -->
         <Lothcat>0.8</Lothcat> <!-- loth-cat - small-runway, keep -->
-        <Mudhorn>0.8</Mudhorn> <!-- mudhorn - huge-predator-exception, keep -->
+        <RSW_Mudhorn>0.8</RSW_Mudhorn> <!-- mudhorn - huge-predator-exception, keep -->
         <Ronto>0.8</Ronto> <!-- ronto - huge-grazer, keep -->
         <Scurrier>0.8</Scurrier> <!-- scurrier - small-runway, keep -->
         <Sketto>0.8</Sketto> <!-- sketto - small-runway, keep -->
@@ -1065,7 +1065,7 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals</xpath>
       <value>
         <Zeer>0.6</Zeer> <!-- zeer - large-herd, adjust-keep -->
-        <Iriaz>0.5</Iriaz> <!-- iriaz - small-herd, import -->
+        <RSW_Iriaz>0.5</RSW_Iriaz> <!-- iriaz - small-herd, import -->
         <Nuna>0.5</Nuna> <!-- nuna - small, adjust-keep -->
         <Anooba>0.35</Anooba> <!-- anooba - medium-predator, import -->
         <Gizka>0.3</Gizka> <!-- gizka - grain, adjust-keep -->

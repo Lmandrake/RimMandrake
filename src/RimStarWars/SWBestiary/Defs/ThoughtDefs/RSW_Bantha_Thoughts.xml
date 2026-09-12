@@ -3,6 +3,11 @@
   MLIE_FAUNA_ABSORPTION_1 — Wave A creature port.
   RSW_BlueMilk's tasteThought, ported verbatim from
   mlie.starwarsanimalcollection (Thoughts_Memory_SpecialCuisine.xml).
+
+  Wave C addition: RSW_AteMudhornEgg, the tasteThought RSW_Mudhorn's two eggs
+  (RSW_MlieWaveC_Resources.xml) point at — same donor file, same mechanism,
+  kept in this file rather than a new one since it is the same SpecialCuisine
+  thought family.
 -->
 <Defs>
   <ThoughtDef>
@@ -15,5 +20,19 @@
         <baseMoodEffect>3</baseMoodEffect>
       </li>
     </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RSW_AteMudhornEgg</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate mudhorn egg</label>
+        <description>Utini!</description>
+        <baseMoodEffect>12</baseMoodEffect>
+      </li>
+    </stages>
+    <replaceThoughts>
+      <li>AteRawFood</li>
+    </replaceThoughts>
   </ThoughtDef>
 </Defs>
