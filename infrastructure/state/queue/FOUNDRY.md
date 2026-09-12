@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T03:11:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T03:22:41Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -22,6 +22,33 @@ target:   v1
 kind:     task
 summary:  - Wire the heat mechanic (the Empire's pursuit/attention system — find the existing
 prose:    infrastructure/state/items/KYBER_TRADE_PLOT_1.md
+
+## MOD_OPTIONS_RETROFIT_1 Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStarWars/RimUtinni mod with Mod Settings toggles for its major behaviors; standing requirement on every future mod
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Inventory every shipped/in-progress mod under src/RimMandrake/,
+prose:    infrastructure/state/items/MOD_OPTIONS_RETROFIT_1.md
+
+## FLOOD_CANYON_BIOME_1 Standalone RimMandrake-tier biome mod: periodically flooded canyons — chime warning mechanic, flood events (wall of water + explosive growth), not Star Wars specific; the campaign's flood-witness plot beat consumes it as a dependency
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Biome mod per the tier grammar (design/NAMINGSCHEMEPLAN.md): packageId
+prose:    infrastructure/state/items/FLOOD_CANYON_BIOME_1.md
+
+## MUDSWALLOW_LIVE_LIST_FIX_1 Greentide MudSwallow Scan() iterates the LIVE ThingsInGroup list and Destroys mid-loop — skips the shifted haulable and wrongly resets its swallow timer (silent); also add MayRequire guards to RUT_Greentide.xml wildPlants (11 unguarded foreign defNames)
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  MUDSWALLOWLIVELISTFIX1 — MudSwallow mutates the live haulables list mid-loop
+prose:    infrastructure/state/items/MUDSWALLOW_LIVE_LIST_FIX_1.md
 
 # IN PROGRESS
 
@@ -1035,16 +1062,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## MOD_OPTIONS_RETROFIT_1 Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStarWars/RimUtinni mod with Mod Settings toggles for its major behaviors; standing requirement on every future mod
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  - Inventory every shipped/in-progress mod under src/RimMandrake/,
-prose:    infrastructure/state/items/MOD_OPTIONS_RETROFIT_1.md
-
 ## VAPOR_TERMINATOR_GEYSER_FIX_1 Remove/relocate the 21 SteamGeysers_Increased world tiles at/past the terminator (arc>=90) — direct violation of the ruled zero-before-the-terminator steam rule; evidence in design/Jawa/worldbuilding/vapor_emitter_review_2026-09-12.md
 state:    proposed
 row:      unassigned
@@ -1054,26 +1071,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VAPOR_TERMINATOR_GEYSER_FIX_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VAPOR_TERMINATOR_GEYSER_FIX_1.md
-
-## FLOOD_CANYON_BIOME_1 Standalone RimMandrake-tier biome mod: periodically flooded canyons — chime warning mechanic, flood events (wall of water + explosive growth), not Star Wars specific; the campaign's flood-witness plot beat consumes it as a dependency
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  - Biome mod per the tier grammar (design/NAMINGSCHEMEPLAN.md): packageId
-prose:    infrastructure/state/items/FLOOD_CANYON_BIOME_1.md
-
-## MUDSWALLOW_LIVE_LIST_FIX_1 Greentide MudSwallow Scan() iterates the LIVE ThingsInGroup list and Destroys mid-loop — skips the shifted haulable and wrongly resets its swallow timer (silent); also add MayRequire guards to RUT_Greentide.xml wildPlants (11 unguarded foreign defNames)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  MUDSWALLOWLIVELISTFIX1 — MudSwallow mutates the live haulables list mid-loop
-prose:    infrastructure/state/items/MUDSWALLOW_LIVE_LIST_FIX_1.md
 
 ## HUB_LAMP_TIME_FIX_1 Hub lamps mislabel local time as UTC (every age off by the UTC offset — the recorded 'health 7.0 h' was minutes-old data) + hub_check GREY doesn't fail the gate, missing source file reads as fine, naive timestamps crash the whole check
 state:    proposed
@@ -1091,6 +1088,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WRECKAGE_VERMIN_SPAWN_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  - A spawn mechanism anchored to wreckage things/structures (Fall Line hulks,
 prose:    infrastructure/state/items/WRECKAGE_VERMIN_SPAWN_1.md
+
+## VAPOR_PLACEMENT_CLEANUP_1 Vapor emitter part-4 cleanup per the 2026-09-12 ruled rules: magma-vent 5 out-of-lock tiles, ancient-vent ruin-only audit, swamp/ruin gas re-seat, PoisonForest toxic+green gas, helixien re-seat to junker sites in PoisonForest and the Rot (engine mechanism check first)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/VAPOR_PLACEMENT_CLEANUP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/VAPOR_PLACEMENT_CLEANUP_1.md
