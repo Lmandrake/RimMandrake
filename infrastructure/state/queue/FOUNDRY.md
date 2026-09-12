@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T12:43:14Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-12T13:35:26Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## QUICKTEST_POSTSETUP_CRASH_1 QUICKTEST_POSTSETUP_CRASH_1
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  Make startdebuggameready reach a playable quicktest map on the full
-prose:    infrastructure/state/items/QUICKTEST_POSTSETUP_CRASH_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
