@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T01:35:33Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T01:41:37Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -719,15 +719,6 @@ target:   v1
 kind:     task
 summary:  WORLDMAPAUDITLIVECHECKS1 — the four audit checks only the live game can answer
 prose:    infrastructure/state/items/WORLDMAP_AUDIT_LIVE_CHECKS_1.md
-
-## NONDIV4_TEXTURE_FIX_1 Pad the 1578 non-%4 textures RimWorld refuses to compress (~2 GB; our mods first, 190 MB)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - Start with OUR OWN mods: 190 MB of the waste is ours, 181 MB in
-prose:    infrastructure/state/items/NONDIV4_TEXTURE_FIX_1.md
 
 ## HUB_TAB_PUBLISHER_MIGRATION_1 Repoint artpipe/health/maturity publishers to the hub URL; completes the two-seat no-clobber proof
 state:    doing
