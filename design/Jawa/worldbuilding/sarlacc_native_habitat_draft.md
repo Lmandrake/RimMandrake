@@ -1,8 +1,6 @@
-<!-- status: DRAFT for owner review — SARLACC_NATIVE_HABITAT_1, Fable design pass 2026-09-06,
-     overnight, owner AFK. Nothing here is ruled. It answers the deep desert sheet's ticket
-     ("native to this biome, three life-cycle stages, a dungeon-like module") and the owner's
-     2026-09-02 ruling that there are MANY sarlaccs. It reconciles, and where it cannot, it
-     names the conflict for the sitting (§7). No defs, no code, no live game touched. -->
+<!-- status: ACCEPTED — owner, 2026-09-12 ("It looks really good... let's accept the design
+     and get to work"), after a modern-state consistency check and full §7 card sitting.
+     Every fork below is RULED (see §8). Build: SARLACC_HABITAT_BUILD_1 (FOUNDRY, RSW tier). -->
 # The Sarlacc — native habitat, three stages, and the well that is a mouth
 
 _The owner's framing, verbatim in intent: **"a massive deep reservoir of water permanently
@@ -467,3 +465,41 @@ quietly moving it.
   left here.
 - Placement: tiles for the cisterns and any anchored pits, by procedure at a bridge pass, after
   fork 2.
+
+## 8. RULED — the 2026-09-12 acceptance sitting (owner cards, complete)
+
+- **Accepted whole** with the Stage-I swimmer modeled on Anomaly's **Devourer**
+  (owner's direction): sub-sand approach, swallow-whole, the digestion state
+  re-themed as the press wringing its drink, cut-free counterplay retained.
+- **Tier: RimMandrake.StarWars** (owner verbatim: "this should clearly be a
+  RimMandrake.StarWars level mod") — packageId `mandrake.rsw.sarlacc` (or per
+  grammar at build), namespace `RimMandrake.StarWars.Sarlacc`, RSW_ prefixes.
+  Legacy `sw_` landmark defs migrate under NAMING_SCHEME_EXECUTION_1, not ahead.
+  Mod Settings per MOD_OPTIONS_RETROFIT_1 (feature toggles incl. rooting-in-play,
+  changed-return hediffs, breach consequences).
+- **Fork 1 — swimmers ROOT IN PLAY.** A swimmer that finds a seep or runs dry
+  anchors visibly on the map; II→III never happens in play.
+- **Fork 2 — move it deep; 2–4 cisterns.** The live landmark leaves tile 2920
+  (now a ZBiome_DesertOasis / Weeping Stones vent-fed tile — collision found at
+  acceptance) for true deep desert (Glare / Long Sand / Dry Marches); 2–4
+  cisterns total, every one campaign-scale. No near-water teacher cistern.
+- **Fork 3 — anchoring is one-way.** No uprooting, ever.
+- **Fork 4 — the clutch IS the biome's birth-trap eggs.** One mechanism, one
+  creature.
+- **Fork 5 — the breach is the only kill.** No poison route; the deed is done
+  in person on the shore.
+- **Fork 6 — resolved as fact:** DBH thirst is in the shipped full modlist, so
+  the breach flood is fillable at launch; amend `water_doctrine.md`'s no-water-
+  layer line at build (cite the list).
+- **Fork 7 — tile + tribe first, arc later.** v1: the cistern's map, landmark
+  conversion, one faction's goodwill/holding consequences; the arc-wide roster
+  fade is a follow-up item.
+- **Fork 8 — all seven changed-return hediffs ship, dealt by how the pawn was
+  taken** (pressed for the press, salt-eyed for the shore...); usually one,
+  sometimes two.
+- **Fork 9 — the tribes' words are the shipped stage labels.** The four tribal
+  names are written at build and land on the owner's yes; swimmer/anchored/
+  cistern/throat remain the doc register.
+- **Register boundary (same sitting's context):** the Fever Wood Tenant stays a
+  distinct never-resolved aquatic register; the sarlacc is fully present and
+  explicable. Neither borrows the other's rules.

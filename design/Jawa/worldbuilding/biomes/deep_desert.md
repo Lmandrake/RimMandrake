@@ -163,7 +163,21 @@ is the point: armour and structure that laughs at fire and folds to a hammer.
 4. 🔴 **No fast growth.** The planet's freakish-growth fact does NOT apply here — the same
    deliberate exception the terminator gets (R-H2b). A global growth multiplier must not
    flatten it.
-5. 🔴 **No green in the open**, and no standing surface water except brine seeps.
+5. 🔴 **No green in the open**, and no standing surface water except brine
+   seeps. *(Amended under the freeze, owner acceptance 2026-09-12,
+   SARLACC_HABITAT_BUILD_1 — the sarlacc carve-out, scoped by what the water
+   IS:)* A living cistern-stage sarlacc holds water that is **neither
+   standing nor surface**: inside a body, behind flesh, reachable only
+   through the mouth or by breaching the reservoir; never a terrain cell in
+   the open. It reaches the surface in exactly two permitted forms: the
+   **dew ring** (damp sand at the pit's lip — damp, never pooled, never
+   potable by walking) and the **breach flood** (transient, on this sheet's
+   own bloom clock — hours to wake, days to die — after which the ground is
+   dry desert and the sarlacc is a throat). A swimmer, an anchored sarlacc
+   and a throat hold no water this rule need name. Three tests, any one
+   failing disqualifies: contained in a living Stage III; never a terrain
+   cell in the open; not potable by walking (reaching it costs the mouth).
+   The green ban is untouched, and no fourth shade source is created.
 6. 🔴 **No abundant shade or structure.** Shade is rare by definition; a generator that
    scatters cover across these tiles has broken the biome.
 7. 🔴 **No large surface herds.** The water budget cannot carry them.
