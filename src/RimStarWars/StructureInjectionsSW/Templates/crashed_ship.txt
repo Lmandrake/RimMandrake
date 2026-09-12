@@ -1,0 +1,333 @@
+# rimplace flat plan v2
+# template  crashed_ship (sha e942b0c6351b9920)
+# min_rect  30x20   baked at 30x20
+FOOTPRINT	0	0	30	20
+CLEAR	-1	-1	32	22	soft
+CLEAR	0	0	30	20	all
+TERRAIN	0	8	Gravel
+TERRAIN	0	9	SoftSand
+TERRAIN	0	10	Gravel
+TERRAIN	0	11	SoftSand
+TERRAIN	1	8	Gravel
+TERRAIN	1	9	SoftSand
+TERRAIN	1	10	SoftSand
+TERRAIN	1	11	SoftSand
+TERRAIN	2	8	Gravel
+TERRAIN	2	9	Gravel
+TERRAIN	2	10	Gravel
+TERRAIN	2	11	SoftSand
+TERRAIN	3	8	SoftSand
+TERRAIN	3	9	SoftSand
+TERRAIN	3	10	SoftSand
+TERRAIN	3	11	SoftSand
+TERRAIN	4	8	Gravel
+TERRAIN	4	9	SoftSand
+TERRAIN	4	10	Gravel
+TERRAIN	4	11	SoftSand
+TERRAIN	5	8	SoftSand
+TERRAIN	5	9	SoftSand
+TERRAIN	5	10	Gravel
+TERRAIN	5	11	SoftSand
+TERRAIN	6	8	SoftSand
+TERRAIN	6	9	SoftSand
+TERRAIN	6	10	Gravel
+TERRAIN	6	11	SoftSand
+TERRAIN	8	8	Substructure
+TERRAIN	8	9	Substructure
+TERRAIN	8	10	Substructure
+TERRAIN	8	11	Substructure
+TERRAIN	9	8	Substructure
+TERRAIN	9	9	Substructure
+TERRAIN	9	10	Substructure
+TERRAIN	9	11	Substructure
+TERRAIN	10	8	Substructure
+TERRAIN	10	9	Substructure
+TERRAIN	10	10	Substructure
+TERRAIN	10	11	Substructure
+TERRAIN	11	8	Substructure
+TERRAIN	11	9	Substructure
+TERRAIN	11	10	Substructure
+TERRAIN	11	11	Substructure
+TERRAIN	12	8	Substructure
+TERRAIN	12	9	Substructure
+TERRAIN	12	10	Substructure
+TERRAIN	12	11	Substructure
+TERRAIN	13	8	Substructure
+TERRAIN	13	9	Substructure
+TERRAIN	13	10	Substructure
+TERRAIN	13	11	Substructure
+TERRAIN	14	8	Substructure
+TERRAIN	14	9	Substructure
+TERRAIN	14	10	Substructure
+TERRAIN	14	11	Substructure
+TERRAIN	15	8	Substructure
+TERRAIN	15	9	Substructure
+TERRAIN	15	10	Substructure
+TERRAIN	15	11	Substructure
+TERRAIN	16	8	Substructure
+TERRAIN	16	9	Substructure
+TERRAIN	16	10	Substructure
+TERRAIN	16	11	Substructure
+TERRAIN	17	8	Substructure
+TERRAIN	17	9	Substructure
+TERRAIN	17	10	Substructure
+TERRAIN	17	11	Substructure
+TERRAIN	18	8	Substructure
+TERRAIN	18	9	Substructure
+TERRAIN	18	10	Substructure
+TERRAIN	18	11	Substructure
+TERRAIN	19	8	Substructure
+TERRAIN	19	9	Substructure
+TERRAIN	19	10	Substructure
+TERRAIN	19	11	Substructure
+TERRAIN	20	8	Substructure
+TERRAIN	20	9	Substructure
+TERRAIN	20	10	Substructure
+TERRAIN	20	11	Substructure
+TERRAIN	21	8	Substructure
+TERRAIN	21	9	Substructure
+TERRAIN	21	10	Substructure
+TERRAIN	21	11	Substructure
+TERRAIN	22	8	Substructure
+TERRAIN	22	9	Substructure
+TERRAIN	22	10	Substructure
+TERRAIN	22	11	Substructure
+TERRAIN	23	8	Substructure
+TERRAIN	23	9	Substructure
+TERRAIN	23	10	Substructure
+TERRAIN	23	11	Substructure
+TERRAIN	24	8	Substructure
+TERRAIN	24	9	Substructure
+TERRAIN	24	10	Substructure
+TERRAIN	24	11	Substructure
+THING	Wall	7	7	0	Steel
+THING	Wall	8	7	0	Steel
+THING	Wall	9	7	0	Steel
+THING	Wall	10	7	0	Steel
+THING	Wall	11	7	0	Steel
+THING	Wall	12	7	0	Steel
+THING	Wall	13	7	0	Steel
+THING	Wall	14	7	0	Steel
+THING	Wall	15	7	0	Steel
+THING	Wall	16	7	0	Steel
+THING	Wall	17	7	0	Steel
+THING	Wall	18	7	0	Steel
+THING	Wall	19	7	0	Steel
+THING	Wall	20	7	0	Steel
+THING	Wall	21	7	0	Steel
+THING	Wall	22	7	0	Steel
+THING	Wall	24	7	0	Steel
+THING	Wall	25	7	0	Steel
+THING	Wall	7	8	0	Steel
+THING	Wall	25	8	0	Steel
+THING	Wall	7	9	0	Steel
+THING	Wall	25	9	0	Steel
+THING	Wall	7	10	0	Steel
+THING	Wall	25	10	0	Steel
+THING	Wall	7	11	0	Steel
+THING	Wall	25	11	0	Steel
+THING	Wall	7	12	0	Steel
+THING	Wall	8	12	0	Steel
+THING	Wall	9	12	0	Steel
+THING	Wall	10	12	0	Steel
+THING	Wall	11	12	0	Steel
+THING	Wall	12	12	0	Steel
+THING	Wall	13	12	0	Steel
+THING	Wall	14	12	0	Steel
+THING	Wall	15	12	0	Steel
+THING	Wall	16	12	0	Steel
+THING	Wall	17	12	0	Steel
+THING	Wall	18	12	0	Steel
+THING	Wall	19	12	0	Steel
+THING	Wall	20	12	0	Steel
+THING	Wall	21	12	0	Steel
+THING	Wall	22	12	0	Steel
+THING	Wall	23	12	0	Steel
+THING	Wall	24	12	0	Steel
+THING	Wall	25	12	0	Steel
+THING	Wall	12	9	0	Steel
+THING	Wall	12	10	0	Steel
+THING	Wall	12	11	0	Steel
+THING	AncientBlastDoor	18	8	0	WoodLog
+THING	Wall	18	9	0	Steel
+THING	Wall	18	10	0	Steel
+THING	Wall	18	11	0	Steel
+THING	AncientBlastDoor	23	7	0	WoodLog
+THING	ChunkSlagSteel	13	10	0	-
+THING	ChunkSlagSteel	13	11	0	-
+THING	Filth_RubbleBuilding	14	10	0	-
+THING	ChunkSlagSteel	16	10	0	-
+THING	Filth_BlastMark	3	11	0	-
+THING	Filth_BlastMark	1	8	0	-
+THING	Filth_BlastMark	6	9	0	-
+THING	Filth_BlastMark	2	8	0	-
+THING	Filth_BlastMark	1	11	0	-
+THING	ChunkSlagSteel	3	11	0	-
+THING	ChunkSlagSteel	4	10	0	-
+THING	ChunkSlagSteel	4	11	0	-
+THING	ChunkSlagSteel	5	8	0	-
+THING	ChunkSlagSteel	5	11	0	-
+THING	ChunkSlagSteel	6	9	0	-
+THING	Filth_Fuel	0	10	0	-
+THING	Filth_Fuel	1	10	0	-
+THING	Filth_Fuel	2	10	0	-
+THING	Filth_Fuel	3	10	0	-
+THING	Filth_Fuel	4	10	0	-
+THING	Filth_Fuel	5	10	0	-
+THING	Filth_Fuel	6	10	0	-
+THING	ShipChunk	0	8	0	-
+THING	Ship_ComputerCore	8	9	0	-
+THING	AncientArmchair	9	11	0	-
+THING	Filth_ScatteredDocuments	10	8	0	-
+THING	Filth_ScatteredDocuments	8	8	0	-
+THING	AncientSingleBed	14	9	1	-
+THING	AncientSingleBed	15	10	3	-
+THING	AncientLockers	11	11	0	-
+THING	AncientLockers	16	9	0	-
+THING	DiningChair	17	11	0	-
+THING	DiningChair	14	11	0	-
+THING	Ship_CryptosleepCasket	16	13	0	-
+THING	Ship_CryptosleepCasket	17	13	0	-
+THING	Filth_MoldyUniform	17	10	0	-
+THING	Filth_Dirt	13	9	0	-
+THING	Ship_Engine	22	10	1	-
+THING	AncientGenerator	19	9	0	-
+THING	PowerConduit	19	11	0	-
+THING	PowerConduit	20	11	0	-
+THING	Filth_OilSmear	24	10	0	-
+THING	Filth_OilSmear	21	8	0	-
+THING	Filth_OilSmear	23	9	0	-
+THING	Filth_OilSmear	21	9	0	-
+THING	Filth_MachineBits	23	10	0	-
+THING	Filth_MachineBits	24	11	0	-
+THING	Filth_MachineBits	19	8	0	-
+THING	Filth_MachineBits	23	8	0	-
+THING	Filth_Trash	20	9	0	-
+THING	Filth_Trash	19	10	0	-
+THING	Filth_Trash	19	11	0	-
+THING	AncientMetalCrate	22	8	0	-
+THING	Bedroll	19	13	0	-
+THING	AncientLamp	9	8	0	-
+THING	AncientLamp	17	9	0	-
+THING	LargeThruster	27	12	2	-
+THING	SmallThruster	29	8	0	-
+THING	ChunkSlagSteel	28	6	0	-
+THING	Filth_MachineBits	27	9	0	-
+THING	ChunkSlagSteel	28	7	0	-
+THING	Filth_MachineBits	29	7	0	-
+THING	ChunkSlagSteel	26	7	0	-
+THING	Filth_MachineBits	26	13	0	-
+THING	ShipChunk	28	11	0	-
+THING	ShipChunk	27	13	0	-
+THING	Filth_Ash	29	10	0	-
+THING	Filth_Ash	26	10	0	-
+THING	Filth_Ash	28	9	0	-
+ROOF	7	7	RoofConstructed
+ROOF	7	8	RoofConstructed
+ROOF	7	9	RoofConstructed
+ROOF	7	10	RoofConstructed
+ROOF	7	11	RoofConstructed
+ROOF	7	12	RoofConstructed
+ROOF	8	7	RoofConstructed
+ROOF	8	8	RoofConstructed
+ROOF	8	9	RoofConstructed
+ROOF	8	10	RoofConstructed
+ROOF	8	11	RoofConstructed
+ROOF	8	12	RoofConstructed
+ROOF	9	7	RoofConstructed
+ROOF	9	8	RoofConstructed
+ROOF	9	9	RoofConstructed
+ROOF	9	10	RoofConstructed
+ROOF	9	11	RoofConstructed
+ROOF	9	12	RoofConstructed
+ROOF	10	7	RoofConstructed
+ROOF	10	8	RoofConstructed
+ROOF	10	9	RoofConstructed
+ROOF	10	10	RoofConstructed
+ROOF	10	11	RoofConstructed
+ROOF	10	12	RoofConstructed
+ROOF	11	7	RoofConstructed
+ROOF	11	8	RoofConstructed
+ROOF	11	9	RoofConstructed
+ROOF	11	10	RoofConstructed
+ROOF	11	11	RoofConstructed
+ROOF	11	12	RoofConstructed
+ROOF	12	7	RoofConstructed
+ROOF	12	8	RoofConstructed
+ROOF	12	9	RoofConstructed
+ROOF	12	10	RoofConstructed
+ROOF	12	11	RoofConstructed
+ROOF	12	12	RoofConstructed
+ROOF	13	7	RoofConstructed
+ROOF	13	8	RoofConstructed
+ROOF	13	9	RoofConstructed
+ROOF	13	12	RoofConstructed
+ROOF	14	7	RoofConstructed
+ROOF	14	8	RoofConstructed
+ROOF	14	9	RoofConstructed
+ROOF	14	12	RoofConstructed
+ROOF	15	7	RoofConstructed
+ROOF	15	8	RoofConstructed
+ROOF	15	9	RoofConstructed
+ROOF	15	11	RoofConstructed
+ROOF	15	12	RoofConstructed
+ROOF	16	7	RoofConstructed
+ROOF	16	8	RoofConstructed
+ROOF	16	11	RoofConstructed
+ROOF	16	12	RoofConstructed
+ROOF	17	7	RoofConstructed
+ROOF	17	8	RoofConstructed
+ROOF	17	9	RoofConstructed
+ROOF	17	10	RoofConstructed
+ROOF	17	11	RoofConstructed
+ROOF	17	12	RoofConstructed
+ROOF	18	7	RoofConstructed
+ROOF	18	8	RoofConstructed
+ROOF	18	9	RoofConstructed
+ROOF	18	10	RoofConstructed
+ROOF	18	11	RoofConstructed
+ROOF	18	12	RoofConstructed
+ROOF	19	7	RoofConstructed
+ROOF	19	8	RoofConstructed
+ROOF	19	9	RoofConstructed
+ROOF	19	10	RoofConstructed
+ROOF	19	11	RoofConstructed
+ROOF	19	12	RoofConstructed
+ROOF	20	7	RoofConstructed
+ROOF	20	8	RoofConstructed
+ROOF	20	9	RoofConstructed
+ROOF	20	10	RoofConstructed
+ROOF	20	11	RoofConstructed
+ROOF	20	12	RoofConstructed
+ROOF	21	7	RoofConstructed
+ROOF	21	8	RoofConstructed
+ROOF	21	9	RoofConstructed
+ROOF	21	10	RoofConstructed
+ROOF	21	11	RoofConstructed
+ROOF	21	12	RoofConstructed
+ROOF	22	7	RoofConstructed
+ROOF	22	8	RoofConstructed
+ROOF	22	9	RoofConstructed
+ROOF	22	10	RoofConstructed
+ROOF	22	11	RoofConstructed
+ROOF	22	12	RoofConstructed
+ROOF	23	7	RoofConstructed
+ROOF	23	8	RoofConstructed
+ROOF	23	9	RoofConstructed
+ROOF	23	10	RoofConstructed
+ROOF	23	11	RoofConstructed
+ROOF	23	12	RoofConstructed
+ROOF	24	7	RoofConstructed
+ROOF	24	8	RoofConstructed
+ROOF	24	9	RoofConstructed
+ROOF	24	10	RoofConstructed
+ROOF	24	11	RoofConstructed
+ROOF	24	12	RoofConstructed
+ROOF	25	7	RoofConstructed
+ROOF	25	8	RoofConstructed
+ROOF	25	9	RoofConstructed
+ROOF	25	10	RoofConstructed
+ROOF	25	11	RoofConstructed
+ROOF	25	12	RoofConstructed
+PAWN	SpaceRefugee	9	10	wild	skeleton
+PAWN	SpaceRefugee	14	10	wild	skeleton

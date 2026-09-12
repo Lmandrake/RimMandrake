@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Giant-beast nest/lair - structure_procedural_spec.md section 8.11.
+       Same extraGenSteps responder shape as every prior batch: the two
+       Inhabited steps ride under MayRequire so a tile that also holds a
+       WorldObject_Inhabited place gets a keeper/scavenger cast and goods
+       dropped near the lair (both steps no-op on a tile without one) -
+       the beast itself (Thrumbo by default, alive) is a separate,
+       always-placed pawn baked into the plan, not the Inhabited cast.
+
+       No walls, no rooms, no roof - the template's own random-walk
+       clearing blob, not a rect - so this responder carries no interior
+       geometry beyond what the plan already bakes in.
+
+       NOT YET PLACED on any Ash'karr tile - same deferral as every prior
+       batch. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_BeastLair</defName>
+    <label>beast lair</label>
+    <description>A trampled nest scraped into the ground, hay and filth thick at its centre, an approach path worn in from outside. A bone midden sits off to one side - whatever sleeps here still eats.</description>
+    <extraGenSteps>
+      <li>RSW_GenStep_BeastLair</li>
+      <li MayRequire="mandrake.rm.inhabited">Inhabited_Cast</li>
+      <li MayRequire="mandrake.rm.inhabited">RM_InhabitedStock</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

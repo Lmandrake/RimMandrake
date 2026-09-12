@@ -348,3 +348,37 @@ placement decision (which tile gets which archetype), neither of which is
 this pass's to invent.
 
 Staying `doing`.
+
+## 2026-09-12 (FOUNDRY, offline subagent, belt mode) — 8.9/8.11 wired, 14/14 built and wired, 0/14 placed
+
+Lint-swept both large templates before wiring, per this item's own explicit
+ask: `crashed_ship.lua` (headings N/E/S/W x seeds {0,3,7,12} at 30x30, all 3
+variants x seeds {0,5,10}, exact 30x20 minimum x seeds 0-9) and
+`beast_lair.lua` (seeds 0-9 at 32x32, seeds 0-4 at the 24x24 minimum, all 4
+`rock_side` values, both `dressing` options, brood/pod=3/read=graveyard/
+beast_kind=AlphaThrumbo) — 0 ERRORs everywhere; one recurring, accepted WARN
+on `crashed_ship` (`room-unroofed`, 7-11 cells, the template's own
+intentional two-blob roof-tear geometry, not a bug). No code fix needed on
+either template.
+
+Wired both using the exact `f9f45c391`/`a1ff87b68` precedent (trading
+outpost/tiny garrison/dead caravan/beast pens): a `GenStepDef`
+(`GenStep_RimplacePlan` replaying the exported template, order 400) + a
+`TileMutatorDef` (`MayRequire="Ludeon.RimWorld.Odyssey"`) whose
+`extraGenSteps` lists that GenStepDef first, then
+`Inhabited_Cast`/`RM_InhabitedStock` under `MayRequire="mandrake.rm.inhabited"`.
+New files: `Defs/GenStepDefs_CrashedShip.xml`, `Defs/TileMutatorDefs_CrashedShip.xml`,
+`Defs/GenStepDefs_BeastLair.xml`, `Defs/TileMutatorDefs_BeastLair.xml`,
+`Templates/crashed_ship.txt`, `Templates/beast_lair.txt` (all under
+`src/RimStarWars/StructureInjectionsSW/`).
+
+Validated: `validate_patch.py` against the whole `Defs/` folder with all 3
+live roots (Steam `Mods/`, RimWorld `Data/`, Workshop `content/294100/`) —
+23 files, 0 errors, 0 warnings, no defName collisions
+(`RSW_CrashedShip`/`RSW_GenStep_CrashedShip`/`RSW_BeastLair`/
+`RSW_GenStep_BeastLair` confirmed unique repo-wide). `rimplace selftest`:
+62/62.
+
+**Tally: 14/14 built, 14/14 wired, 0/14 placed.** All remaining work on
+this item is placement: needs the bridge free and a placement decision
+(which tile gets which archetype) that isn't a solo call. `needs=bridge`.

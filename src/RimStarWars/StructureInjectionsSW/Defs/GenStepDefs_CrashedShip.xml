@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Crashed Ship - structure_procedural_spec.md section 8.9.
+       INHABITED_AUGMENTATION_BUILD_1, built under commit 3781dba40, wired
+       here (same GenStep_RimplacePlan replay shape as every sibling
+       responder). Replays Templates/crashed_ship.txt (rimplace export of
+       design/Jawa/templates/crashed_ship.lua: 30x20, default params
+       (heading=E, variant unrolled by the seed), seed 0 - the plan header
+       carries the exact bake) via mandrake.rm.injections' GenStep_RimplacePlan.
+       Full lint sweep before this export: 0 ERRORs across headings N/E/S/W
+       x seeds {0,3,7,12} at 30x30, all 3 variants x seeds {0,5,10} at
+       30x20, and the exact 30x20 minimum canvas seeds 0-9 - only WARN
+       room-unroofed (the template's own intentional roof-tear geometry,
+       same accepted-tradeoff shape as every other archetype's own
+       min-canvas edge case). -->
+  <GenStepDef>
+    <defName>RSW_GenStep_CrashedShip</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/crashed_ship.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>
