@@ -12808,16 +12808,16 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Source/AmbientShrineGuardians.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "64e1e491d31aae452d4cbabb69eaeb55e911970ceb05e498e7f31744c9205b67",
-    "sha": "0e94b4d2"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "354834811cac5f0cd3ba6dbf1ffc5ffc712cb2f5c5c7323681c22fdb00e6941d",
+    "sha": "4cd37218f"
   },
   "src/RimUtinni/UtinniPatches/Source/GeothermalDensityField.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "4ab2b32aa6358a0f5fc4ffe44d1b0e682c374342ac270e2cb01226c177ccfa9c",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "ef46ba6276e5bfef5c87f4afc8c81fa812e99954629c612d1a37161257ae6d8e",
+    "sha": "4cd37218f"
   },
   "src/RimUtinni/UtinniPatches/Source/TwinkleFloraSpike.cs": {
     "cleanCount": 1,
