@@ -1,5 +1,5 @@
 <!-- status: draft — BENCH synthesis of the three-arm beast fan-out, 2026-08-31. Owner's law: bodySize tracks visual size (spindly exception); mass matches scale; danger matches size — "a bull casually kills someone without intending to." Data: beast_census.csv (1,022 rows) · beast_roster.csv (581 kinds) · vanilla curves (arm 3, quoted here). -->
-# Beast Normalization — size, mass, and casual lethality
+# Beast Normalization — size, mass, casual lethality, temperature, products
 
 ## 1. What the fan-out established (MEASURED, frozen dump `1742630eb6253187`)
 
@@ -88,6 +88,59 @@ recommended:
 | **Pit covers** | Calibrated to ENGINE mass (60×bs) — already true (the 240 kg ceiling = bs 4.0). IF Law 2 ever flips to real masses, cover ratings rescale in the SAME manifest, same commit. |
 | **Ion stun counts** | Hits-to-stun/drop scales with the NEW bodySize (stun buildup ∝ bs): a normalized Krayt takes proportionally more ion hits; ties VEHICLE_ION_TIER_1 and the oubliette. The ion tier reads bodySize at run-time, so Law 1 corrections propagate free — but the per-hit stun magnitude is tuned once against the POST-normalization sizes, in this manifest. |
 | **Law 4 hides vs our armory** | The thick-hide register is the same register the hunting doctrine reads: blasters for raiders, slugs for beasts, ion for machines. |
+
+## 2d. Law 5 — temperature tolerance covers the domain (✅ RULED, owner phone-card sitting 2026-09-11)
+
+Owner: animals get **wide tolerances that let them survive easily in their
+domains of choice**. Ruled margin: **domain envelope +15 °C on BOTH sides.**
+
+Stated so a linter can check it — for every rostered animal `A`:
+
+1. **Domain** `B(A)` = the biome keys assigned by
+   `review/round2/decisions_propagated.json` (fauna rows `decision: in`) plus
+   `review/round2/move_mapping_v2.md` resolved targets (rosters lag until
+   ROSTER_MOVE_APPLY_1 lands).
+2. **Envelope**: per biome key, map to its painted BiomeDef(s) via
+   `biomes/_def_bindings_2026-09-09.md` (the painted CSV wins), then over that
+   def's tiles in `world/ASHKARR_WORLDMAP_tiles.csv`:
+   `envLo = min over B(A) of p05(temp_c)`, `envHi = max over B(A) of p95(temp_c)`.
+3. **The law**: `ComfyTemperatureMin(A) ≤ envLo − 15` **AND**
+   `ComfyTemperatureMax(A) ≥ envHi + 15`, on FINAL post-patch stat values
+   (XML key `ComfyTemperatureMin/Max` in `statBases`; StatDef defaults 0/40
+   apply when a race sets neither).
+4. **Widening only** — the law never narrows a range already wider than
+   required.
+5. Biome keys with no painted tiles (`fall_line`, `the_lantern_deeps`,
+   `wreck_fields` — injection layers) are **UNMEASURED**: the linter skips and
+   flags, never passes them.
+6. ⚠️ Tile `temp_c` is the map-gen mean; in-game seasonal/diurnal swing extends
+   beyond it. The +15 is the ruled cover for that, not a measured swing — the
+   live harvest confirms realized extremes.
+
+**Offline census 2026-09-11** (mod XML, inheritance-resolved, PRE-patch):
+**196 of 279 measurable rostered animals violate** (83 OK, 15 env-unmeasured,
+3 xml-unmeasured). Full rows and fingerprints:
+`design/Jawa/worldbuilding/fauna_tolerance_census_2026-09-11.csv`; summary:
+`fauna_tolerance_violations_2026-09-11.md`. (The sitting's "23 flagged narrows"
+was a pre-law flag count, not a census under the ruled law.)
+
+## 2e. Law 3 scope extension + Law 6 products (✅ RULED, same sitting 2026-09-11)
+
+- **Law 3 now covers the FULL rostered set** (~297 biome-assigned animals as of
+  the 2026-09-11 census), not just the 161 SW beasts `BeastNorm_Law3.xml`
+  shipped: one K = 12–15 × bodySize band, grazers rise too, AA_/BMT_/GR_/DA_/
+  vanilla kinds in play. Above-band outliers come INTO the band — no exemption
+  list now; per-beast diversification is a later art+lore round
+  (FAUNA_LORE_DIVERSIFICATION_1). bodySize itself does not change (ceiling-
+  fields lesson: each parameter its own law).
+- **Law 6 — products ∝ bodySize**: meat/leather amounts get bodySize-
+  proportional defaults NOW; re-checked against live engine values when
+  FAUNA_STATS_BRIDGE_TOOL_1 lands (owner accepted it may be redone on real
+  numbers). No target curve beyond proportionality is pre-agreed — the constant
+  is set at the plot sitting.
+- Both manifests ride the POST-restore live harvest (the 2026-09-11
+  CherryPicker restore changed the live def set); the offline census above is
+  the pre-patch baseline, not the execution input.
 
 ## 3. Execution shape
 

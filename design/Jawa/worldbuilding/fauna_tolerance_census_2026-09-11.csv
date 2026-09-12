@@ -1,0 +1,301 @@
+# FAUNA_TOLERANCE_NORMALIZATION_1 offline census - Law 5 (domain envelope [p05,p95] +/-15C).
+# Sources (sha256/16): decisions=e45830e93d80fe77 move_mapping=6ed495e291cbfab4 tiles=756d9ffc8a22c3d2 animals_csv=ccbe56df39c9a157 modsconfig=b2b45866508f3a7f
+# comfyTemp from mod XML via animal_inventory.py (base XML, pre-patch, inheritance-resolved); DEFAULTED = StatDef defaults 0/40 used.
+defName,mod,biomes,envLo,envHi,needLo,needHi,comfyMin,comfyMax,defaulted,coldGap,heatGap,status
+AA_Wildpawn,Alpha Animals,the_greentide+the_rot,-38.1,59.9,-53.1,74.9,-15.0,40.0,DEFAULTED,38.1,34.9,VIOLATION
+Vapaad,Star Wars Animal Collection (Continued),the_blue_desert,-56.6,-26.7,-71.6,-11.7,0.0,350.0,,71.6,0,VIOLATION
+AA_Swarmling,Alpha Animals,the_contagion+the_rot,-38.1,51.5,-53.1,66.5,-10.0,40.0,DEFAULTED,43.1,26.5,VIOLATION
+AA_Thunderbeast,Alpha Animals,the_blue_desert,-56.6,-26.7,-71.6,-11.7,-10.0,45.0,,61.6,0,VIOLATION
+AA_Wildpod,Alpha Animals,arid_shrubland+the_rot,-38.1,45.9,-53.1,60.9,-15.0,40.0,DEFAULTED,38.1,20.9,VIOLATION
+AA_ShockGoat,Alpha Animals,nightside_ice,-47.4,-20.6,-62.4,-5.6,-5.0,40.0,DEFAULTED,57.4,0,VIOLATION
+BMT_FungalMantis,Biomes! Caverns,the_rot,-38.1,16.4,-53.1,31.4,0.0,60.0,,53.1,0,VIOLATION
+BMT_FungalWeevil,Biomes! Caverns,the_rot,-38.1,16.4,-53.1,31.4,0.0,60.0,,53.1,0,VIOLATION
+ShiroTrap,Star Wars Animal Collection (Continued),the_rot,-38.1,16.4,-53.1,31.4,0.0,60.0,,53.1,0,VIOLATION
+Snoruuk,Star Wars Animal Collection (Continued),the_rot,-38.1,16.4,-53.1,31.4,-5.0,30.0,,48.1,1.4,VIOLATION
+BMT_Stoneback,Biomes! Caverns,arid_shrubland+desert+the_scarlands+wasteland,-13.1,65.9,-28.1,80.9,0.0,60.0,,28.1,20.9,VIOLATION
+AA_DecayDrake,Alpha Animals,poison_forest+the_miasma,-7.1,58.2,-22.1,73.2,-10.0,40.0,DEFAULTED,12.1,33.2,VIOLATION
+BMT_BovineBeetle,Biomes! Caverns,the_rot,-38.1,16.4,-53.1,31.4,-10.0,40.0,DEFAULTED,43.1,0,VIOLATION
+BMT_SmogMoth,Biomes! Polluted Lands,the_rot,-38.1,16.4,-53.1,31.4,-10.0,57.0,,43.1,0,VIOLATION
+BMT_MossBeetle,Biomes! Caverns,arid_shrubland,-7.1,45.9,-22.1,60.9,0.0,40.0,DEFAULTED,22.1,20.9,VIOLATION
+JOE_Cephalope,RimUtinni Patches (Jawa campaign),deep_desert+desert+dune_sea,9.5,61.6,-5.5,76.6,0.0,40.0,DEFAULTED,5.5,36.6,VIOLATION
+AA_Terramorph,Alpha Animals,the_scarlands+wasteland,-13.1,65.9,-28.1,80.9,-40.0,40.0,DEFAULTED,0,40.9,VIOLATION
+BMT_CrystalFairyMole,Biomes! Caverns,the_scarlands,58.1,65.9,43.1,80.9,-50.0,40.0,,0,40.9,VIOLATION
+Iriaz,Star Wars Animal Collection (Continued),arid_shrubland+desert+the_pyrelands,-7.1,63.8,-22.1,78.8,-10.0,50.0,,12.1,28.8,VIOLATION
+AA_Aerofleet,Alpha Animals,terminator_sea+the_forge+the_grey_deep+the_twilight_deep,-9.5,55.8,-24.5,70.8,-25.0,30.0,,0,40.8,VIOLATION
+AA_ColossalAerofleet,Alpha Animals,terminator_sea+the_forge+the_grey_deep+the_twilight_deep,-9.5,55.8,-24.5,70.8,-25.0,30.0,,0,40.8,VIOLATION
+AA_TetraSlug,Alpha Animals,the_rust_cathedral,58.7,65.2,43.7,80.2,-10.0,40.0,DEFAULTED,0,40.2,VIOLATION
+Gizka,Star Wars Animal Collection (Continued),arid_shrubland+deep_desert+desert+dune_sea+the_greentide,-7.1,61.6,-22.1,76.6,0.0,60.0,,22.1,16.6,VIOLATION
+AA_Helixien,Alpha Animals,poison_forest+the_contagion,-7.1,51.5,-22.1,66.5,-10.0,40.0,DEFAULTED,12.1,26.5,VIOLATION
+AA_Agaripawn,Alpha Animals,the_rot,-38.1,16.4,-53.1,31.4,-15.0,40.0,DEFAULTED,38.1,0,VIOLATION
+AA_Agaripod,Alpha Animals,the_rot,-38.1,16.4,-53.1,31.4,-15.0,40.0,DEFAULTED,38.1,0,VIOLATION
+Convor,Star Wars Animal Collection (Continued),arid_shrubland+the_cracked_lands+the_fever_wood+the_greentide,-7.1,59.9,-22.1,74.9,-20.0,40.0,,2.1,34.9,VIOLATION
+AA_BoulderMit,Alpha Animals,deep_desert+dune_sea+nightside_ice,-47.4,61.6,-62.4,76.6,-65.0,40.0,DEFAULTED,0,36.6,VIOLATION
+Igitz,Star Wars Animal Collection (Continued),arid_shrubland,-7.1,45.9,-22.1,60.9,-8.0,40.0,DEFAULTED,14.1,20.9,VIOLATION
+AA_SmallButterfly,Alpha Animals,the_fever_wood+the_greentide,37.9,59.9,22.9,74.9,-10.0,40.0,DEFAULTED,0,34.9,VIOLATION
+Fambaa,Star Wars Animal Collection (Continued),the_fever_wood+the_greentide,37.9,59.9,22.9,74.9,-10.0,40.0,,0,34.9,VIOLATION
+AA_Lockjaw,Alpha Animals,the_miasma,27.8,58.2,12.8,73.2,-10.0,40.0,DEFAULTED,0,33.2,VIOLATION
+AA_RaptorShrimp,Alpha Animals,the_miasma,27.8,58.2,12.8,73.2,10.0,40.0,DEFAULTED,0,33.2,VIOLATION
+Blarth,Star Wars Animal Collection (Continued),the_miasma,27.8,58.2,12.8,73.2,-8.0,40.0,DEFAULTED,0,33.2,VIOLATION
+Bogwing,Star Wars Animal Collection (Continued),the_miasma,27.8,58.2,12.8,73.2,-4.0,40.0,DEFAULTED,0,33.2,VIOLATION
+JRWBeelzebufo,Jurassic Rimworld - Dinosaurs Only (Continued),the_miasma,27.8,58.2,12.8,73.2,-10.0,40.0,DEFAULTED,0,33.2,VIOLATION
+AA_AngelMoth,Alpha Animals,the_rot,-38.1,16.4,-53.1,31.4,-20.0,40.0,DEFAULTED,33.1,0,VIOLATION
+Nuna,Star Wars Animal Collection (Continued),arid_shrubland+desert+the_fever_wood+the_greentide+the_pyrelands,-7.1,63.8,-22.1,78.8,-8.0,60.0,,14.1,18.8,VIOLATION
+BMT_CaveLemming,Biomes! Caverns,nightside_ice,-47.4,-20.6,-62.4,-5.6,-30.0,40.0,DEFAULTED,32.4,0,VIOLATION
+Whisperbird,Star Wars Animal Collection (Continued),arid_shrubland+the_fever_wood+the_greentide+the_miasma,-7.1,59.9,-22.1,74.9,-5.0,60.0,,17.1,14.9,VIOLATION
+CanCell,Star Wars Animal Collection (Continued),the_cracked_lands,6.4,55.1,-8.6,70.1,-7.0,40.0,DEFAULTED,1.6,30.1,VIOLATION
+BMT_TruffleMole,Biomes! Caverns,deep_desert+desert+dune_sea,9.5,61.6,-5.5,76.6,-25.0,45.0,,0,31.6,VIOLATION
+RSW_ShaleGorger,RimMandrake: SW — Bestiary,the_scarlands,58.1,65.9,43.1,80.9,-15.0,50.0,,0,30.9,VIOLATION
+AA_Murkling,Alpha Animals,forsaken_crags+the_cracked_lands,-19.7,55.1,-34.7,70.1,-35.0,40.0,DEFAULTED,0,30.1,VIOLATION
+Gornt,Star Wars Animal Collection (Continued),the_cracked_lands,6.4,55.1,-8.6,70.1,-13.0,40.0,DEFAULTED,0,30.1,VIOLATION
+Qormot,Star Wars Animal Collection (Continued),arid_shrubland,-7.1,45.9,-22.1,60.9,-13.0,40.0,DEFAULTED,9.1,20.9,VIOLATION
+RSW_CrimsonOpee,RimMandrake: SW — Bestiary,the_twilight_deep,-9.5,31.0,-24.5,46.0,5.0,60.0,,29.5,0,VIOLATION
+AA_Razorjack,Alpha Animals,the_contagion+the_pyrelands,24.9,63.8,9.9,78.8,-50.0,50.0,,0,28.8,VIOLATION
+BMT_Yooka,Biomes! Caverns,the_rot,-38.1,16.4,-53.1,31.4,-25.0,60.0,,28.1,0,VIOLATION
+KowakianMonkeyLizard,Star Wars Animal Collection (Continued),arid_shrubland,-7.1,45.9,-22.1,60.9,-5.0,50.0,,17.1,10.9,VIOLATION
+Porg,Star Wars Animal Collection (Continued),arid_shrubland,-7.1,45.9,-22.1,60.9,-15.0,40.0,DEFAULTED,7.1,20.9,VIOLATION
+Pufferpig,Star Wars Animal Collection (Continued),arid_shrubland,-7.1,45.9,-22.1,60.9,-15.0,40.0,,7.1,20.9,VIOLATION
+AA_Atispec,Alpha Animals,the_scald,38.8,52.0,23.8,67.0,-20.0,40.0,DEFAULTED,0,27.0,VIOLATION
+AA_LarvalAtispec,Alpha Animals,the_scald,38.8,52.0,23.8,67.0,-10.0,40.0,DEFAULTED,0,27.0,VIOLATION
+JOE_Nautilant,RimUtinni Patches (Jawa campaign),the_scald,38.8,52.0,23.8,67.0,0.0,40.0,DEFAULTED,0,27.0,VIOLATION
+AA_Drainer,Alpha Animals,the_contagion,24.9,51.5,9.9,66.5,-10.0,40.0,DEFAULTED,0,26.5,VIOLATION
+AA_DrainerLarva,Alpha Animals,the_contagion,24.9,51.5,9.9,66.5,-10.0,40.0,DEFAULTED,0,26.5,VIOLATION
+AA_OcularJelly,Alpha Animals,poison_forest+the_contagion,-7.1,51.5,-22.1,66.5,-35.0,40.0,,0,26.5,VIOLATION
+AA_OcularNightling,Alpha Animals,the_contagion,24.9,51.5,9.9,66.5,-35.0,40.0,DEFAULTED,0,26.5,VIOLATION
+GR_Fleshling,Vanilla Genetics Expanded,the_contagion,24.9,51.5,9.9,66.5,0.0,40.0,DEFAULTED,0,26.5,VIOLATION
+BMT_FleeceSpider,Biomes! Caverns,wasteland,-13.1,28.1,-28.1,43.1,-25.0,20.0,,3.1,23.1,VIOLATION
+Anooba,Star Wars Animal Collection (Continued),arid_shrubland+the_miasma+the_pyrelands,-7.1,63.8,-22.1,78.8,-15.0,60.0,,7.1,18.8,VIOLATION
+BMT_ChemSnail,Biomes! Caverns,the_cracked_lands,6.4,55.1,-8.6,70.1,-10.0,45.0,,0,25.1,VIOLATION
+Mott,Star Wars Animal Collection (Continued),the_greentide,37.9,59.9,22.9,74.9,-10.0,50.0,,0,24.9,VIOLATION
+AA_CrepuscularBeetle,Alpha Animals,forsaken_crags,-19.7,3.1,-34.7,18.1,-10.0,40.0,DEFAULTED,24.7,0,VIOLATION
+StoneCrab,Odyssey,the_twilight_deep,-9.5,31.0,-24.5,46.0,0.0,60.0,,24.5,0,VIOLATION
+Dactillion,Star Wars Animal Collection (Continued),weeping_stones,19.5,58.6,4.5,73.6,-14.0,50.0,,0,23.6,VIOLATION
+Ollopom,Star Wars Animal Collection (Continued),weeping_stones,19.5,58.6,4.5,73.6,-18.0,50.0,,0,23.6,VIOLATION
+RSW_SandoAquaMonster,RimMandrake: SW — Bestiary,the_miasma,27.8,58.2,12.8,73.2,-20.0,50.0,,0,23.2,VIOLATION
+AA_AnimaColossus,Alpha Animals,the_rot,-38.1,16.4,-53.1,31.4,-30.0,40.0,DEFAULTED,23.1,0,VIOLATION
+AA_MycoidColossus,Alpha Animals,the_rot,-38.1,16.4,-53.1,31.4,-30.0,40.0,DEFAULTED,23.1,0,VIOLATION
+BMT_ImperialToad,Biomes! Caverns,arid_shrubland,-7.1,45.9,-22.1,60.9,-10.0,50.0,,12.1,10.9,VIOLATION
+AA_Needlepost,Alpha Animals,arid_shrubland,-7.1,45.9,-22.1,60.9,0.0,70.0,,22.1,0,VIOLATION
+Pikobis,Star Wars Animal Collection (Continued),arid_shrubland,-7.1,45.9,-22.1,60.9,-12.0,50.0,,10.1,10.9,VIOLATION
+BMT_MegaphoridLarva,Biomes! Polluted Lands,the_scarlands,58.1,65.9,43.1,80.9,-25.0,60.0,,0,20.9,VIOLATION
+FeralNerf,Star Wars Animal Collection (Continued),arid_shrubland,-7.1,45.9,-22.1,60.9,-50.0,40.0,DEFAULTED,0,20.9,VIOLATION
+Lothcat,Star Wars Animal Collection (Continued),arid_shrubland,-7.1,45.9,-22.1,60.9,-25.0,40.0,DEFAULTED,0,20.9,VIOLATION
+BMT_GlowSlug,Biomes! Caverns,the_fever_wood,40.0,50.6,25.0,65.6,-10.0,45.0,,0,20.6,VIOLATION
+JOE_Landopus,RimUtinni Patches (Jawa campaign),desert,9.5,35.1,-5.5,50.1,5.0,40.0,DEFAULTED,10.5,10.1,VIOLATION
+BMT_MutagenicNorphea,Biomes! Polluted Lands,the_cracked_lands,6.4,55.1,-8.6,70.1,-25.0,50.0,,0,20.1,VIOLATION
+BMT_SandLeaper,Biomes! Caverns,the_cracked_lands,6.4,55.1,-8.6,70.1,-10.0,50.0,,0,20.1,VIOLATION
+RSW_Laa,RimMandrake: SW — Bestiary,the_twilight_deep,-9.5,31.0,-24.5,46.0,-5.0,50.0,,19.5,0,VIOLATION
+RSW_OpeeSeaKiller,RimMandrake: SW — Bestiary,the_twilight_deep,-9.5,31.0,-24.5,46.0,-5.0,55.0,,19.5,0,VIOLATION
+Dalgo,Star Wars Animal Collection (Continued),the_pyrelands,37.3,63.8,22.3,78.8,-10.0,60.0,,0,18.8,VIOLATION
+BMT_Creature_Mantrap,Biomes! Polluted Lands,the_cracked_lands,6.4,55.1,-8.6,70.1,10.0,70.0,,18.6,0.1,VIOLATION
+Dianoga,Star Wars Animal Collection (Continued),the_miasma,27.8,58.2,12.8,73.2,-55.0,55.0,,0,18.2,VIOLATION
+RSW_Yobshrimp,RimMandrake: SW — Bestiary,the_miasma,27.8,58.2,12.8,73.2,-5.0,55.0,,0,18.2,VIOLATION
+AA_Cactipine,Alpha Animals,arid_shrubland,-7.1,45.9,-22.1,60.9,-5.0,70.0,,17.1,0,VIOLATION
+FrilledGorg,Star Wars Animal Collection (Continued),arid_shrubland+desert,-7.1,45.9,-22.1,60.9,-5.0,80.0,,17.1,0,VIOLATION
+Gorg,Star Wars Animal Collection (Continued),arid_shrubland+desert,-7.1,45.9,-22.1,60.9,-5.0,80.0,,17.1,0,VIOLATION
+LongtailGorg,Star Wars Animal Collection (Continued),arid_shrubland+desert+the_fever_wood,-7.1,50.6,-22.1,65.6,-5.0,80.0,,17.1,0,VIOLATION
+Silooth,Star Wars Animal Collection (Continued),poison_forest,-7.1,22.5,-22.1,37.5,-5.0,80.0,,17.1,0,VIOLATION
+RSW_ColoClawFish,RimMandrake: SW — Bestiary,the_scald,38.8,52.0,23.8,67.0,-10.0,50.0,,0,17.0,VIOLATION
+RSW_Mee,RimMandrake: SW — Bestiary,the_scald,38.8,52.0,23.8,67.0,0.0,50.0,,0,17.0,VIOLATION
+AA_Eyeling,Alpha Animals,deep_desert+dune_sea+the_contagion+weeping_stones,19.5,61.6,4.5,76.6,0.0,60.0,,0,16.6,VIOLATION
+GR_ParagonThrumbo,Vanilla Genetics Expanded,deep_desert+dune_sea,31.9,61.6,16.9,76.6,-85.0,60.0,,0,16.6,VIOLATION
+AA_InfectedAerofleet,Alpha Animals,poison_forest+the_contagion,-7.1,51.5,-22.1,66.5,-50.0,50.0,,0,16.5,VIOLATION
+GR_Beetlefleet,Vanilla Genetics Expanded,poison_forest+wasteland,-13.1,28.1,-28.1,43.1,-25.0,30.0,,3.1,13.1,VIOLATION
+AA_AcanthamoebaGiganteaSmall,Alpha Animals,the_scarlands,58.1,65.9,43.1,80.9,-10.0,65.0,,0,15.9,VIOLATION
+GR_Chickenrabbit,Vanilla Genetics Expanded,the_slime,-0.6,20.1,-15.6,35.1,0.0,40.0,DEFAULTED,15.6,0,VIOLATION
+AA_SandLion,Alpha Animals,deep_desert+desert+dune_sea,9.5,61.6,-5.5,76.6,10.0,100.0,,15.5,0,VIOLATION
+Grank,Star Wars Animal Collection (Continued),arid_shrubland+the_miasma,-7.1,58.2,-22.1,73.2,-20.0,60.0,,2.1,13.2,VIOLATION
+Clodhopper,Star Wars Animal Collection (Continued),desert+the_greentide,9.5,59.9,-5.5,74.9,-10.0,60.0,,0,14.9,VIOLATION
+Gelagrub,Star Wars Animal Collection (Continued),the_fever_wood+the_greentide,37.9,59.9,22.9,74.9,-5.0,60.0,,0,14.9,VIOLATION
+GiantAnt_Race,They! (Giant Ants),the_greentide,37.9,59.9,22.9,74.9,-40.0,60.0,,0,14.9,VIOLATION
+Kinrath,Star Wars Animal Collection (Continued),the_greentide,37.9,59.9,22.9,74.9,-10.0,60.0,,0,14.9,VIOLATION
+Shiro,Star Wars Animal Collection (Continued),the_greentide+the_miasma,27.8,59.9,12.8,74.9,0.0,60.0,,0,14.9,VIOLATION
+BMT_MutatingTumorfishAdult,Biomes! Polluted Lands,the_twilight_deep,-9.5,31.0,-24.5,46.0,-10.0,60.0,,14.5,0,VIOLATION
+BMT_MutatingTumorfishFry,Biomes! Polluted Lands,the_twilight_deep,-9.5,31.0,-24.5,46.0,-10.0,60.0,,14.5,0,VIOLATION
+BMT_MutatingTumorfishSpawn,Biomes! Polluted Lands,the_twilight_deep,-9.5,31.0,-24.5,46.0,-10.0,60.0,,14.5,0,VIOLATION
+Yobshrimp,Star Wars Animal Collection (Continued),the_twilight_deep,-9.5,31.0,-24.5,46.0,-10.0,60.0,,14.5,0,VIOLATION
+AA_Feralisk,Alpha Animals,the_webwork,37.9,59.3,22.9,74.3,-12.0,60.0,,0,14.3,VIOLATION
+BMT_JewelBeetle,Biomes! Caverns,the_fever_wood+the_webwork,37.9,59.3,22.9,74.3,-10.0,60.0,,0,14.3,VIOLATION
+GR_Chickenspider,Vanilla Genetics Expanded,the_webwork,37.9,59.3,22.9,74.3,0.0,60.0,,0,14.3,VIOLATION
+Sketto,Star Wars Animal Collection (Continued),arid_shrubland+desert,-7.1,45.9,-22.1,60.9,-8.0,80.0,,14.1,0,VIOLATION
+Urusai,Star Wars Animal Collection (Continued),arid_shrubland+the_fever_wood,-7.1,50.6,-22.1,65.6,-8.0,100.0,,14.1,0,VIOLATION
+Boma,Star Wars Animal Collection (Continued),weeping_stones,19.5,58.6,4.5,73.6,-7.0,60.0,,0,13.6,VIOLATION
+AA_Thermadon,Alpha Animals,the_miasma,27.8,58.2,12.8,73.2,-40.0,60.0,,0,13.2,VIOLATION
+BMT_AaroxisDendoria,Biomes! Caverns,the_miasma,27.8,58.2,12.8,73.2,-25.0,60.0,,0,13.2,VIOLATION
+BMT_CrestedDragon,Biomes! Caverns,the_miasma,27.8,58.2,12.8,73.2,0.0,60.0,,0,13.2,VIOLATION
+Blixus,Star Wars Animal Collection (Continued),the_grey_deep+the_miasma,-5.0,58.2,-20.0,73.2,-100.0,60.0,,0,13.2,VIOLATION
+MarshHaunt,Star Wars Animal Collection (Continued),the_miasma,27.8,58.2,12.8,73.2,-20.0,60.0,,0,13.2,VIOLATION
+RSW_RustNipper,RimMandrake: SW — Bestiary,the_miasma,27.8,58.2,12.8,73.2,0.0,60.0,,0,13.2,VIOLATION
+Runyip,Star Wars Animal Collection (Continued),desert+the_miasma,9.5,58.2,-5.5,73.2,-15.0,60.0,,0,13.2,VIOLATION
+BMT_Screecher,Biomes! Polluted Lands,poison_forest+wasteland,-13.1,28.1,-28.1,43.1,-40.0,30.0,,0,13.1,VIOLATION
+Hssiss,Star Wars Animal Collection (Continued),the_sump,-5.0,15.4,-20.0,30.4,-7.0,60.0,,13.0,0,VIOLATION
+TetnissCrab,Star Wars Animal Collection (Continued),the_grey_deep,-5.0,28.0,-20.0,43.0,-10.0,40.0,,10.0,3.0,VIOLATION
+BMT_AcidSlug,Biomes! Caverns,the_fever_wood,40.0,50.6,25.0,65.6,37.7778,352.222,,12.8,0,VIOLATION
+Tauntaun,Star Wars Animal Collection (Continued),nightside_ice,-47.4,-20.6,-62.4,-5.6,-50.0,40.0,DEFAULTED,12.4,0,VIOLATION
+AA_Plasmorph,Alpha Animals,poison_forest,-7.1,22.5,-22.1,37.5,-10.0,50.0,,12.1,0,VIOLATION
+Scurrier,Star Wars Animal Collection (Continued),arid_shrubland+deep_desert+dune_sea,-7.1,61.6,-22.1,76.6,-10.0,80.0,,12.1,0,VIOLATION
+Worrt,Star Wars Animal Collection (Continued),arid_shrubland+desert+the_greentide,-7.1,59.9,-22.1,74.9,-10.0,80.0,,12.1,0,VIOLATION
+RSW_ThornbackColo,RimMandrake: SW — Bestiary,the_scald,38.8,52.0,23.8,67.0,0.0,55.0,,0,12.0,VIOLATION
+AA_DarkVandal,Alpha Animals,forsaken_crags,-19.7,3.1,-34.7,18.1,-23.0,40.0,DEFAULTED,11.7,0,VIOLATION
+AA_BloodShrimp,Alpha Animals,the_contagion,24.9,51.5,9.9,66.5,0.0,55.0,,0,11.5,VIOLATION
+AA_Frostmite,Alpha Animals,the_propane_lakes,-76.5,-45.3,-91.5,-30.3,-80.0,15.0,,11.5,0,VIOLATION
+BMT_Maligoat,Biomes! Polluted Lands,wasteland,-13.1,28.1,-28.1,43.1,-20.0,40.0,DEFAULTED,8.1,3.1,VIOLATION
+Kybuck,Star Wars Animal Collection (Continued),arid_shrubland,-7.1,45.9,-22.1,60.9,-30.0,50.0,,0,10.9,VIOLATION
+AA_CrescendoAnole,Alpha Animals,the_forge,41.9,55.8,26.9,70.8,0.0,60.0,,0,10.8,VIOLATION
+AA_GreatDevourer,Alpha Animals,desert,9.5,35.1,-5.5,50.1,-5.0,40.0,DEFAULTED,0.5,10.1,VIOLATION
+RSW_AbyssalColo,RimMandrake: SW — Bestiary,the_twilight_deep,-9.5,31.0,-24.5,46.0,-20.0,40.0,,4.5,6.0,VIOLATION
+RSW_StormSando,RimMandrake: SW — Bestiary,the_twilight_deep,-9.5,31.0,-24.5,46.0,-15.0,45.0,,9.5,1.0,VIOLATION
+AA_Groundrunner,Alpha Animals,desert,9.5,35.1,-5.5,50.1,-10.0,40.0,DEFAULTED,0,10.1,VIOLATION
+AA_MatureFleshbeast,Alpha Animals,desert,9.5,35.1,-5.5,50.1,-70.0,40.0,DEFAULTED,0,10.1,VIOLATION
+BMT_Jellypot,Biomes! Caverns,desert,9.5,35.1,-5.5,50.1,-25.0,40.0,,0,10.1,VIOLATION
+BMT_SandPillar,Biomes! Caverns,the_cracked_lands,6.4,55.1,-8.6,70.1,-25.0,60.0,,0,10.1,VIOLATION
+Nerf,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-15.0,40.0,DEFAULTED,0,10.1,VIOLATION
+Shaak,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-30.0,40.0,DEFAULTED,0,10.1,VIOLATION
+BMT_Polluwog,Biomes! Polluted Lands,the_grey_deep,-5.0,28.0,-20.0,43.0,-10.0,50.0,,10.0,0,VIOLATION
+Massiff,Star Wars Animal Collection (Continued),arid_shrubland,-7.1,45.9,-22.1,60.9,-13.0,60.0,,9.1,0.9,VIOLATION
+RSW_SiltLamprey,RimMandrake: SW — Bestiary,the_grey_deep,-5.0,28.0,-20.0,43.0,-10.0,50.0,,10.0,0,VIOLATION
+AA_NightAve,Alpha Animals,forsaken_crags,-19.7,3.1,-34.7,18.1,-25.0,35.0,,9.7,0,VIOLATION
+Zeer,Star Wars Animal Collection (Continued),desert+the_pyrelands,9.5,63.8,-5.5,78.8,-5.0,70.0,,0.5,8.8,VIOLATION
+Vornskyr,Star Wars Animal Collection (Continued),the_miasma,27.8,58.2,12.8,73.2,-15.0,65.0,,0,8.2,VIOLATION
+Corinathoth,Star Wars Animal Collection (Continued),arid_shrubland,-7.1,45.9,-22.1,60.9,-15.0,60.0,,7.1,0.9,VIOLATION
+Kreetle,Star Wars Animal Collection (Continued),arid_shrubland+deep_desert+desert+dune_sea+the_webwork,-7.1,61.6,-22.1,76.6,-15.0,80.0,,7.1,0,VIOLATION
+Skalder,Star Wars Animal Collection (Continued),poison_forest,-7.1,22.5,-22.1,37.5,-15.0,80.0,,7.1,0,VIOLATION
+AA_RayHound,Alpha Animals,the_scald,38.8,52.0,23.8,67.0,0.0,60.0,,0,7.0,VIOLATION
+RSW_Faa,RimMandrake: SW — Bestiary,the_scald,38.8,52.0,23.8,67.0,10.0,60.0,,0,7.0,VIOLATION
+AA_RoughPlatedMonitor,Alpha Animals,the_contagion,24.9,51.5,9.9,66.5,-10.0,60.0,,0,6.5,VIOLATION
+AG_OcularSlinger,Alpha Genes,the_contagion,24.9,51.5,9.9,66.5,-2.0,60.0,,0,6.5,VIOLATION
+BMT_Megakrill,Biomes! Polluted Lands,the_twilight_deep,-9.5,31.0,-24.5,46.0,-60.0,40.0,,0,6.0,VIOLATION
+RG_Rimclaw,ReGrowth 2,the_scarlands,58.1,65.9,43.1,80.9,-8.0,75.0,,0,5.9,VIOLATION
+Strill,Star Wars Animal Collection (Continued),arid_shrubland,-7.1,45.9,-22.1,60.9,-45.0,55.0,,0,5.9,VIOLATION
+Voorpak,Star Wars Animal Collection (Continued),arid_shrubland+desert,-7.1,45.9,-22.1,60.9,-25.0,55.0,,0,5.9,VIOLATION
+AA_AcanthamoebaGiganteaHuge,Alpha Animals,the_slime,-0.6,20.1,-15.6,35.1,-10.0,65.0,,5.6,0,VIOLATION
+AA_AcanthamoebaGiganteaLarge,Alpha Animals,the_slime,-0.6,20.1,-15.6,35.1,-10.0,65.0,,5.6,0,VIOLATION
+AA_DesertAve,Alpha Animals,desert,9.5,35.1,-5.5,50.1,0.0,75.0,,5.5,0,VIOLATION
+AA_Needleroll,Alpha Animals,deep_desert+desert+dune_sea,9.5,61.6,-5.5,76.6,0.0,100.0,,5.5,0,VIOLATION
+AA_SandProwler,Alpha Animals,desert,9.5,35.1,-5.5,50.1,0.0,70.0,,5.5,0,VIOLATION
+FeralGrazer,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-55.0,45.0,,0,5.1,VIOLATION
+PekoPeko,Star Wars Animal Collection (Continued),the_greentide,37.9,59.9,22.9,74.9,-7.0,70.0,,0,4.9,VIOLATION
+AA_DuskProwler,Alpha Animals,forsaken_crags,-19.7,3.1,-34.7,18.1,-30.0,30.0,,4.7,0,VIOLATION
+AA_DuskRat,Alpha Animals,forsaken_crags,-19.7,3.1,-34.7,18.1,-30.0,40.0,DEFAULTED,4.7,0,VIOLATION
+Wyyyschokk,Star Wars Animal Collection (Continued),the_webwork,37.9,59.3,22.9,74.3,-17.0,70.0,,0,4.3,VIOLATION
+GR_Boomsnake,Vanilla Genetics Expanded,the_pyrelands,37.3,63.8,22.3,78.8,-75.0,75.0,,0,3.8,VIOLATION
+AA_Mantrap,Alpha Animals,the_miasma,27.8,58.2,12.8,73.2,-10.0,70.0,,0,3.2,VIOLATION
+Zakkeg,Star Wars Animal Collection (Continued),the_miasma,27.8,58.2,12.8,73.2,-17.0,70.0,,0,3.2,VIOLATION
+BMT_BloodletterPetrel,Biomes! Polluted Lands,wasteland,-13.1,28.1,-28.1,43.1,-25.0,50.0,,3.1,0,VIOLATION
+BMT_Sacapillar,Biomes! Polluted Lands,wasteland,-13.1,28.1,-28.1,43.1,-25.0,60.0,,3.1,0,VIOLATION
+GR_Molebear,Vanilla Genetics Expanded,wasteland,-13.1,28.1,-28.1,43.1,-40.0,40.0,DEFAULTED,0,3.1,VIOLATION
+GR_ParagonRat,Vanilla Genetics Expanded,wasteland,-13.1,28.1,-28.1,43.1,-50.0,40.0,DEFAULTED,0,3.1,VIOLATION
+GR_Spidercat,Vanilla Genetics Expanded,wasteland,-13.1,28.1,-28.1,43.1,-25.0,60.0,,3.1,0,VIOLATION
+AA_GiantCrownedSilkie,Alpha Animals,poison_forest,-7.1,22.5,-22.1,37.5,-65.0,35.0,,0,2.5,VIOLATION
+AA_LuciferBug,Alpha Animals,poison_forest,-7.1,22.5,-22.1,37.5,-20.0,40.0,DEFAULTED,2.1,0,VIOLATION
+AA_RipperHound,Alpha Animals,poison_forest,-7.1,22.5,-22.1,37.5,-20.0,45.0,,2.1,0,VIOLATION
+Bantha,Star Wars Animal Collection (Continued),arid_shrubland+desert+weeping_stones,-7.1,58.6,-22.1,73.6,-20.0,80.0,,2.1,0,VIOLATION
+Ronto,Star Wars Animal Collection (Continued),arid_shrubland+desert,-7.1,45.9,-22.1,60.9,-20.0,80.0,,2.1,0,VIOLATION
+RSW_Lanternwhale,RimMandrake: SW — Bestiary,terminator_sea+the_twilight_deep,-9.5,31.0,-24.5,46.0,-35.0,45.0,,0,1.0,VIOLATION
+LavaSnail,Odyssey,the_forge,41.9,55.8,26.9,70.8,0.0,70.0,,0,0.8,VIOLATION
+Gutkurr,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-5.0,70.0,,0.5,0,VIOLATION
+IridonianReek,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-5.0,70.0,,0.5,0,VIOLATION
+Jamel,Star Wars Animal Collection (Continued),desert+weeping_stones,9.5,58.6,-5.5,73.6,-5.0,80.0,,0.5,0,VIOLATION
+Eopie,Star Wars Animal Collection (Continued),arid_shrubland+desert+the_cracked_lands+weeping_stones,-7.1,58.6,-22.1,73.6,-22.0,80.0,,0.1,0,VIOLATION
+Varactyl,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-14.0,50.0,,0,0.1,VIOLATION
+Woolamander,Star Wars Animal Collection (Continued),the_cracked_lands,6.4,55.1,-8.6,70.1,-15.0,70.0,,0,0.1,VIOLATION
+AA_AuroraSylph,Alpha Animals,the_propane_lakes,-76.5,-45.3,-91.5,-30.3,-300.0,50000.0,,0,0,OK
+AA_BedBug,Alpha Animals,poison_forest,-7.1,22.5,-22.1,37.5,-70.0,40.0,DEFAULTED,0,0,OK
+AA_Behemoth,Alpha Animals,forsaken_crags,-19.7,3.1,-34.7,18.1,-50.0,100.0,,0,0,OK
+AA_Bumbledrone,Alpha Animals,the_sump,-5.0,15.4,-20.0,30.4,-25.0,40.0,DEFAULTED,0,0,OK
+AA_BumbledroneHierophant,Alpha Animals,the_sump,-5.0,15.4,-20.0,30.4,-25.0,40.0,DEFAULTED,0,0,OK
+AA_BumbledroneQueen,Alpha Animals,the_sump,-5.0,15.4,-20.0,30.4,-25.0,40.0,DEFAULTED,0,0,OK
+AA_CrystalMit,Alpha Animals,poison_forest,-7.1,22.5,-22.1,37.5,-65.0,40.0,DEFAULTED,0,0,OK
+AA_Darkbeast,Alpha Animals,forsaken_crags,-19.7,3.1,-34.7,18.1,-80.0,35.0,,0,0,OK
+AA_FireWasp,Alpha Animals,the_pyrelands,37.3,63.8,22.3,78.8,10.0,175.0,,0,0,OK
+AA_FungalHusk,Alpha Animals,the_contagion,24.9,51.5,9.9,66.5,-100.0,100.0,,0,0,OK
+AA_GreenGoo,Alpha Animals,the_slime,-0.6,20.1,-15.6,35.1,-100.0,85.0,,0,0,OK
+AA_MammothWorm,Alpha Animals,desert,9.5,35.1,-5.5,50.1,-30.0,75.0,,0,0,OK
+AA_Metallovore,Alpha Animals,the_forge,41.9,55.8,26.9,70.8,-20.0,85.0,,0,0,OK
+AA_NightMule,Alpha Animals,forsaken_crags,-19.7,3.1,-34.7,18.1,-55.0,45.0,,0,0,OK
+AA_NightRam,Alpha Animals,forsaken_crags,-19.7,3.1,-34.7,18.1,-35.0,40.0,DEFAULTED,0,0,OK
+AA_Nightling,Alpha Animals,forsaken_crags,-19.7,3.1,-34.7,18.1,-35.0,40.0,DEFAULTED,0,0,OK
+AA_OvergrownColossus,Alpha Animals,the_slime,-0.6,20.1,-15.6,35.1,-30.0,40.0,DEFAULTED,0,0,OK
+AA_Radyak,Alpha Animals,poison_forest,-7.1,22.5,-22.1,37.5,-65.0,40.0,DEFAULTED,0,0,OK
+AA_RedGoo,Alpha Animals,the_contagion,24.9,51.5,9.9,66.5,-100.0,85.0,,0,0,OK
+AA_RedSpore,Alpha Animals,the_contagion,24.9,51.5,9.9,66.5,-100.0,100.0,,0,0,OK
+AA_SandSquid,Alpha Animals,desert+the_cracked_lands,6.4,55.1,-8.6,70.1,-10.0,100.0,,0,0,OK
+AA_ShadowCharger,Alpha Animals,forsaken_crags,-19.7,3.1,-34.7,18.1,-35.0,40.0,DEFAULTED,0,0,OK
+AA_Skyeel,Alpha Animals,the_propane_lakes,-76.5,-45.3,-91.5,-30.3,-100.0,60.0,,0,0,OK
+AA_Slurrypede,Alpha Animals,the_miasma+the_propane_lakes,-76.5,58.2,-91.5,73.2,-100.0,250.0,,0,0,OK
+AA_SpinedGow,Alpha Animals,deep_desert+dune_sea,31.9,61.6,16.9,76.6,5.0,120.0,,0,0,OK
+AA_SummitCrab,Alpha Animals,nightside_ice,-47.4,-20.6,-62.4,-5.6,-65.0,40.0,DEFAULTED,0,0,OK
+AA_TarGuzzler,Alpha Animals,the_sump,-5.0,15.4,-20.0,30.4,-20.0,40.0,DEFAULTED,0,0,OK
+AA_TeratogenicOriginator,Alpha Animals,the_slime,-0.6,20.1,-15.6,35.1,-80.0,40.0,DEFAULTED,0,0,OK
+AA_Thunderox,Alpha Animals,forsaken_crags,-19.7,3.1,-34.7,18.1,-35.0,40.0,,0,0,OK
+AM_Dryad_Corruptor,Alpha Memes,poison_forest,-7.1,22.5,-22.1,37.5,-50.0,50.0,,0,0,OK
+AM_Dryad_Ocular,Alpha Memes,poison_forest,-7.1,22.5,-22.1,37.5,-50.0,50.0,,0,0,OK
+AM_Dryad_Tumorous,Alpha Memes,poison_forest,-7.1,22.5,-22.1,37.5,-50.0,50.0,,0,0,OK
+BMT_BunkerBug,Biomes! Polluted Lands,fall_line,,,,,-55.0,75.0,,,,ENV_UNMEASURED
+BMT_ColonyPustuleHornet,Biomes! Polluted Lands,the_rot,-38.1,16.4,-53.1,31.4,-60.0,70.0,,0,0,OK
+BMT_ColonyPustuleHornetQueen,Biomes! Polluted Lands,the_rot,-38.1,16.4,-53.1,31.4,-60.0,70.0,,0,0,OK
+BMT_CrystalCrab,Biomes! Caverns,the_lantern_deeps,,,,,-55.0,45.0,,,,ENV_UNMEASURED
+BMT_FacetMothLarvae,Biomes! Caverns,the_lantern_deeps,,,,,-25.0,60.0,,,,ENV_UNMEASURED
+BMT_FoundryBeetle,Biomes! Caverns,the_scarlands,58.1,65.9,43.1,80.9,37.7778,352.222,,0,0,OK
+BMT_Gembug,Biomes! Caverns,the_lantern_deeps,,,,,-20.0,60.0,,,,ENV_UNMEASURED
+BMT_Megapleura,Biomes! Caverns,fall_line,,,,,-55.0,45.0,,,,ENV_UNMEASURED
+BMT_PodWorm,Biomes! Caverns,the_miasma,27.8,58.2,12.8,73.2,-10.0,300.0,,0,0,OK
+BMT_PustuleHornet,Biomes! Polluted Lands,the_rot,-38.1,16.4,-53.1,31.4,-60.0,70.0,,0,0,OK
+BMT_PustuleHornetQueen,Biomes! Polluted Lands,the_rot,-38.1,16.4,-53.1,31.4,-60.0,70.0,,0,0,OK
+BMT_PustuleHornetSpawned,Biomes! Polluted Lands,the_rot,-38.1,16.4,-53.1,31.4,-60.0,70.0,,0,0,OK
+BMT_Thrumbungus,Biomes! Caverns,the_rot,-38.1,16.4,-53.1,31.4,-65.0,352.222,,0,0,OK
+Beldon,Star Wars Animal Collection (Continued),the_forge,41.9,55.8,26.9,70.8,-100.0,100.0,,0,0,OK
+Bolotaur,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-10.0,60.0,,0,0,OK
+Borcatu,Star Wars Animal Collection (Continued),wasteland,-13.1,28.1,-28.1,43.1,-30.0,60.0,,0,0,OK
+DA_RockTroll,Dark Ages : Beasts and Monsters,the_cracked_lands,6.4,55.1,-8.6,70.1,-55.0,80.0,,0,0,OK
+Dewback,Star Wars Animal Collection (Continued),weeping_stones,19.5,58.6,4.5,73.6,-10.0,80.0,,0,0,OK
+Dragonsnake,Star Wars Animal Collection (Continued),the_greentide,37.9,59.9,22.9,74.9,-10.0,80.0,,0,0,OK
+Falumpaset,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-20.0,60.0,,0,0,OK
+Fanback,Star Wars Animal Collection (Continued),weeping_stones,19.5,58.6,4.5,73.6,-8.0,80.0,,0,0,OK
+GR_Mantistanis,NOT_IN_XML_SET,the_pyrelands,37.3,63.8,22.3,78.8,0.0,40.0,DEFAULTED,0,38.8,XML_UNMEASURED
+GR_Mecharat,Vanilla Genetics Expanded,the_rust_cathedral,58.7,65.2,43.7,80.2,-100.0,250.0,,0,0,OK
+GR_Nighthrumbo,Vanilla Genetics Expanded,forsaken_crags,-19.7,3.1,-34.7,18.1,-35.0,40.0,DEFAULTED,0,0,OK
+GraniteSlug,Star Wars Animal Collection (Continued),deep_desert+dune_sea+poison_forest,-7.1,61.6,-22.1,76.6,-270.0,100.0,,0,0,OK
+GreaterKraytDragon,Star Wars Animal Collection (Continued),deep_desert+dune_sea,31.9,61.6,16.9,76.6,-20.0,100.0,,0,0,OK
+Hawkbat,Star Wars Animal Collection (Continued),the_greentide,37.9,59.9,22.9,74.9,0.0,80.0,,0,0,OK
+Horax,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-17.0,70.0,,0,0,OK
+Hrumph,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-10.0,60.0,,0,0,OK
+Jakobeast,Star Wars Animal Collection (Continued),nightside_ice,-47.4,-20.6,-62.4,-5.6,-80.0,35.0,,0,0,OK
+Jimvu,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-10.0,60.0,,0,0,OK
+KraytDragon,Star Wars Animal Collection (Continued),deep_desert+dune_sea,31.9,61.6,16.9,76.6,-20.0,100.0,,0,0,OK
+Krykna,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-270.0,100.0,,0,0,OK
+LavaFlea,Star Wars Animal Collection (Continued),the_forge,41.9,55.8,26.9,70.8,0.0,999.0,,0,0,OK
+Ling_Cockroach,Rim cockroach,the_rust_cathedral,58.7,65.2,43.7,80.2,-60.0,100.0,,0,0,OK
+Lylek,Star Wars Animal Collection (Continued),poison_forest,-7.1,22.5,-22.1,37.5,-75.0,300.0,,0,0,OK
+MA_Sporemole,NOT_IN_XML_SET,the_rot,-38.1,16.4,-53.1,31.4,0.0,40.0,DEFAULTED,53.1,0,XML_UNMEASURED
+Mudhorn,Star Wars Animal Collection (Continued),arid_shrubland,-7.1,45.9,-22.1,60.9,-25.0,70.0,,0,0,OK
+Mynock,Star Wars Animal Collection (Continued),fall_line+poison_forest+the_scarlands,-7.1,65.9,-22.1,80.9,-270.0,100.0,,0,0,OK
+Neebray,Star Wars Animal Collection (Continued),poison_forest,-7.1,22.5,-22.1,37.5,-270.0,100.0,,0,0,OK
+Orray,Star Wars Animal Collection (Continued),the_pyrelands,37.3,63.8,22.3,78.8,-6.0,80.0,,0,0,OK
+OuterRim_AstromechDroid,NOT_IN_XML_SET,fall_line,,,,,0.0,40.0,DEFAULTED,,,ENV_UNMEASURED
+OuterRim_DUMDroid,NOT_IN_XML_SET,fall_line,,,,,0.0,40.0,DEFAULTED,,,ENV_UNMEASURED
+OuterRim_DestroyerDroid,NOT_IN_XML_SET,fall_line,,,,,0.0,40.0,DEFAULTED,,,ENV_UNMEASURED
+OuterRim_FX7Droid,NOT_IN_XML_SET,fall_line,,,,,0.0,40.0,DEFAULTED,,,ENV_UNMEASURED
+OuterRim_GNKDroid,NOT_IN_XML_SET,fall_line,,,,,0.0,40.0,DEFAULTED,,,ENV_UNMEASURED
+OuterRim_MSEDroid,NOT_IN_XML_SET,fall_line,,,,,0.0,40.0,DEFAULTED,,,ENV_UNMEASURED
+OuterRim_MuckrakerDroid,NOT_IN_XML_SET,fall_line,,,,,0.0,40.0,DEFAULTED,,,ENV_UNMEASURED
+OuterRim_SalvageAssistDroid,NOT_IN_XML_SET,fall_line,,,,,0.0,40.0,DEFAULTED,,,ENV_UNMEASURED
+RSW_ElderSando,RimMandrake: SW — Bestiary,the_grey_deep,-5.0,28.0,-20.0,43.0,-20.0,50.0,,0,0,OK
+RSW_Reefback,RimMandrake: SW — Bestiary,terminator_sea+the_grey_deep,-6.8,29.9,-21.8,44.9,-30.0,50.0,,0,0,OK
+RSW_Starmaw,RimMandrake: SW — Bestiary,the_twilight_deep,-9.5,31.0,-24.5,46.0,-30.0,50.0,,0,0,OK
+Rat,Core,fall_line,,,,,-30.0,40.0,DEFAULTED,,,ENV_UNMEASURED
+SW_Electricfish,Insectoids 2 - Isopoda geneline,the_scarlands,58.1,65.9,43.1,80.9,-25.0,120.0,,0,0,OK
+SW_Electricgryllotalpa,Insectoids 2 - Isopoda geneline,the_scarlands,58.1,65.9,43.1,80.9,-40.0,160.0,,0,0,OK
+SW_Electrictick,Insectoids 2 - Isopoda geneline,the_scarlands,58.1,65.9,43.1,80.9,-20.0,120.0,,0,0,OK
+SW_Grenadierworm,Insectoids 2 - Isopoda geneline,the_scarlands,58.1,65.9,43.1,80.9,-40.0,160.0,,0,0,OK
+SW_Juggernautbeetles,Insectoids 2 - Isopoda geneline,the_scarlands,58.1,65.9,43.1,80.9,-40.0,160.0,,0,0,OK
+Scavrat,Star Wars Animal Collection (Continued),fall_line,,,,,-30.0,50.0,,,,ENV_UNMEASURED
+Shyrack,Star Wars Animal Collection (Continued),desert+the_webwork,9.5,59.3,-5.5,74.3,-7.0,80.0,,0,0,OK
+TeeMuss,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-40.0,60.0,,0,0,OK
+Tibidee,Star Wars Animal Collection (Continued),the_forge,41.9,55.8,26.9,70.8,-270.0,100.0,,0,0,OK
+Uvak,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-14.0,60.0,,0,0,OK
+VAEWaste_Hydra,NOT_IN_XML_SET,arid_shrubland,-7.1,45.9,-22.1,60.9,0.0,40.0,DEFAULTED,22.1,20.9,XML_UNMEASURED
+VAEWaste_Megatardi,RimUtinni Patches (Jawa campaign),wasteland,-13.1,28.1,-28.1,43.1,-50.0,60.0,,0,0,OK
+Wampa,Star Wars Animal Collection (Continued),nightside_ice,-47.4,-20.6,-62.4,-5.6,-80.0,40.0,DEFAULTED,0,0,OK
+WarWyrm,Star Wars Animal Collection (Continued),deep_desert+dune_sea,31.9,61.6,16.9,76.6,-270.0,999.0,,0,0,OK
+WompRat,Star Wars Animal Collection (Continued),desert+fall_line,9.5,35.1,-5.5,50.1,-10.0,80.0,,0,0,OK
+Wraid,Star Wars Animal Collection (Continued),desert,9.5,35.1,-5.5,50.1,-10.0,80.0,,0,0,OK

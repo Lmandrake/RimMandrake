@@ -42,6 +42,11 @@ card section (KIT_SPECS_CARD_SITTING_1 is closed; this is its successor):
   A4 the misdirection quest beat; A5 when curiosity-selling counts as
   exposure).
 
+- `design/Jawa/worldbuilding/fauna_tolerance_violations_2026-09-11.md` — 1 card:
+  injection-layer residents (12 animals on fall_line/lantern_deeps/wreck_fields,
+  no painted tiles) — inherit the HOST biomes' envelope union, or hand-set
+  ranges? Law 5 flags but cannot decide.
+
 ## verify
 Every card ruled and propagated into its spec; contradictory phrasing deleted,
 not bannered (deciding-and-superseding).
