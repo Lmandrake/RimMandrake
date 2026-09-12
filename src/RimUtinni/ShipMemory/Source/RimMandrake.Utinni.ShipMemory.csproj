@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <Compile Include="GameComponent_ShipMemory.cs" />
+    <Compile Include="ShipMemorySettings.cs" />
   </ItemGroup>
 
   <ItemGroup>

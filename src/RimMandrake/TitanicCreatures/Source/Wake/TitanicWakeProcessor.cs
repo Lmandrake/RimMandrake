@@ -21,17 +21,17 @@ namespace RimMandrake.TitanicCreatures
         // Crush damage dealt to a curated-crushable Thing that ISN'T simply
         // destroyed outright (T3 buildings are - see ProcessCell). BENCH-draft
         // tuning, not owner-ruled: enough that a wall dies in a handful of
-        // passes at T1/T2, cheap to retune from one place.
+        // passes at T1/T2, cheap to retune from one place. Scaled by
+        // RM_TitanicCreaturesSettings.wakeCrushDamageMultiplier at the point
+        // of use (ProcessCrushables).
         private const float CrushDamageT1 = 20f;
         private const float CrushDamageT2 = 60f;
 
-        // Chance per occupied cell, per step, of leaving a filth-trail mark
-        // (tier table: "filth trail" is a T1+ wake behaviour). Not every cell,
-        // every step, or the trail would blanket the map on a single pass.
-        private const float FilthTrailChancePerCell = 0.35f;
-
         public static void ProcessFootprint(Pawn titan, TitanicTier tier)
         {
+            // MOD_OPTIONS_RETROFIT_1: master switch for the whole wake.
+            if (!RM_TitanicCreaturesSettings.wakeEnabled) return;
+
             Map map = titan.Map;
             CellRect rect = titan.OccupiedRect();
             foreach (IntVec3 c in rect)
@@ -49,7 +49,7 @@ namespace RimMandrake.TitanicCreatures
             ProcessRoof(c, map, tier);
             ProcessCrushables(c, map, tier, titan);
 
-            if (tier >= TitanicTier.T1 && Rand.Chance(FilthTrailChancePerCell))
+            if (tier >= TitanicTier.T1 && Rand.Chance(RM_TitanicCreaturesSettings.wakeFilthTrailChance))
             {
                 FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_RubbleRock);
             }
@@ -114,7 +114,8 @@ namespace RimMandrake.TitanicCreatures
                     continue;
                 }
 
-                float damage = tier == TitanicTier.T2 ? CrushDamageT2 : CrushDamageT1;
+                float damage = (tier == TitanicTier.T2 ? CrushDamageT2 : CrushDamageT1)
+                    * RM_TitanicCreaturesSettings.wakeCrushDamageMultiplier;
                 t.TakeDamage(new DamageInfo(DamageDefOf.Crush, damage, instigator: titan));
             }
         }

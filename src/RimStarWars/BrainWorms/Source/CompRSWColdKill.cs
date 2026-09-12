@@ -1,4 +1,5 @@
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.StarWars.BrainWorms
@@ -70,7 +71,9 @@ namespace RimMandrake.StarWars.BrainWorms
                 return;
             }
 
-            ticksCold += ScanIntervalTicks;
+            // MOD_OPTIONS_RETROFIT_1: rate multiplier only, floored above zero by the
+            // settings slider — this mechanism must never become impossible to trigger.
+            ticksCold += Mathf.Max(1, Mathf.RoundToInt(ScanIntervalTicks * RSW_BrainWormsSettings.coldKillRateMultiplier));
             if (ticksCold < Props.ticksBelowBeforeDeath)
             {
                 return;

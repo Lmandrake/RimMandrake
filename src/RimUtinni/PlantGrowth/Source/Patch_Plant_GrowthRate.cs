@@ -50,6 +50,8 @@ namespace RimMandrake.Utinni.PlantGrowth
         [HarmonyPostfix]
         public static void Postfix(Plant __instance, ref float __result)
         {
+            if (!PlantGrowthSettings.growthEnabled) return;
+
             // Dormant, frozen or out of its temperature band: vanilla already said
             // zero, and zero times anything is still zero.
             if (!PlantGrowthConfig.Ready || __result <= 0f) return;

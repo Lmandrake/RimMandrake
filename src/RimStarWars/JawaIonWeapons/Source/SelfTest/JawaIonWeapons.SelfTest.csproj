@@ -59,7 +59,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- The REAL production source file, compiled in directly. -->
+    <!-- The REAL production source files, compiled in directly.
+         RSW_JawaIonWeaponsSettings.cs is here only because
+         StatPart_InverseBodySize.cs now reads its static toggle/exponent
+         (MOD_OPTIONS_RETROFIT_1) and would not compile without it. Statics sit
+         at their field initializers offline - i.e. the shipped defaults - which
+         is exactly the state this harness's assertions were written against. -->
+    <Compile Include="..\RSW_JawaIonWeaponsSettings.cs" />
     <Compile Include="..\StatPart_InverseBodySize.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

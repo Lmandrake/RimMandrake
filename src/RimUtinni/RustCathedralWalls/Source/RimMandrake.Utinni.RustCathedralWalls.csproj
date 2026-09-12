@@ -46,6 +46,7 @@
     <Compile Include="GenStep_ScatterCathedralWallTiers.cs" />
     <Compile Include="GenStep_ScatterSacredWalls.cs" />
     <Compile Include="HarmonyPatch_GateLivePatternMetal.cs" />
+    <Compile Include="RustCathedralWallsSettings.cs" />
   </ItemGroup>
 
   <ItemGroup>

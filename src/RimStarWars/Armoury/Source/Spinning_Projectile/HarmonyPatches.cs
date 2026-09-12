@@ -1,4 +1,5 @@
 using HarmonyLib;
+using RimMandrake.StarWars.Armoury;
 using Verse;
 
 namespace Spinning_Projectile;
@@ -20,7 +21,7 @@ internal class HarmonyPatches
         [HarmonyPostfix]
         private static void HideLightsaberWhenThrown(ref bool __result, Pawn pawn)
         {
-            if (__result)
+            if (__result && RSW_ArmourySettings.returningWeaponEnabled)
             {
                 ThingComp_ReturningWeapon comp = pawn.equipment?.Primary?.TryGetComp<ThingComp_ReturningWeapon>();
                 if (comp != null && comp.IsThrowingWeapon)

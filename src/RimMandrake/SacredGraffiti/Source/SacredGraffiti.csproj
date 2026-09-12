@@ -43,6 +43,7 @@
 
   <ItemGroup>
     <Compile Include="SacredGraffiti.cs" />
+    <Compile Include="RM_SacredGraffitiMod.cs" />
   </ItemGroup>
 
   <ItemGroup>

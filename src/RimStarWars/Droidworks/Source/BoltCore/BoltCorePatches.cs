@@ -82,6 +82,14 @@ namespace RimMandrake.StarWars.Droidworks
         /// </summary>
         public static bool Prefix(Pawn pawn, ref bool __result)
         {
+            // MOD_OPTIONS_RETROFIT_1: off = return true immediately, i.e. let
+            // vanilla's own break-eligibility logic run completely unmodified.
+            // RSW_DroidworksSettings lives in the main Droidworks assembly, which
+            // this project now references (see DroidworksBoltCore.csproj); it is
+            // a static with a shipped default of true, so it reads correctly even
+            // before the Mod instance is constructed.
+            if (!RSW_DroidworksSettings.boltSuppressesMentalBreaks) return true;
+
             if (pawn?.health?.hediffSet == null) return true;
 
             HediffDef boltDef = BoltDef;

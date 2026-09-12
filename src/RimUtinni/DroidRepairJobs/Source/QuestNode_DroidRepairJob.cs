@@ -111,7 +111,10 @@ namespace RimMandrake.Utinni.DroidRepairJobs
             int fromXml = basePayment.GetValue(slate);
             if (fromXml <= 0) fromXml = 320;
 
-            float scaled = fromXml * WealthFactor(customer.GetValue(slate)) * ReputationFactor(customer.GetValue(slate));
+            Faction customerFaction = customer.GetValue(slate);
+            float wealthFactor = DroidRepairJobsSettings.wealthAndReputationScaling ? WealthFactor(customerFaction) : 1f;
+            float reputationFactor = DroidRepairJobsSettings.wealthAndReputationScaling ? ReputationFactor(customerFaction) : 1f;
+            float scaled = fromXml * wealthFactor * reputationFactor * DroidRepairJobsSettings.paymentMultiplier;
             honest = Mathf.Max(1, Mathf.RoundToInt(scaled));
             fine = Mathf.Max(1, Mathf.RoundToInt(scaled * FineMultiplier));
             shoddy = Mathf.Max(1, Mathf.RoundToInt(scaled * ShoddyMultiplier));

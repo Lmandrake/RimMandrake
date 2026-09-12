@@ -34,6 +34,8 @@ namespace RimMandrake.StarWars.JawaIkee
 
         protected override ThoughtState CurrentStateInternal(Pawn p)
         {
+            if (!RSW_JawaIkeeSettings.ikeeThoughtEnabled) return ThoughtState.Inactive;
+
             // Animals do not have opinions about other animals, and an unspawned or
             // dead pawn has no map to search.
             if (p == null || !p.Spawned || p.Map == null) return ThoughtState.Inactive;

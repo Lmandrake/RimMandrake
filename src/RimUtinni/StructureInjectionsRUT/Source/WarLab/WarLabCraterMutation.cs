@@ -32,6 +32,9 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
         /// </summary>
         public static bool Ignite()
         {
+            if (!StructureInjectionsRUTSettings.warLabCraterEnabled)
+                return false;
+
             if (Current.Game == null)
                 return false;
 

@@ -37,6 +37,10 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
         protected override Job TryGiveJob(Pawn pawn)
         {
+            if (!PyrelandsMechanicsSettings.fireHawkSpreadEnabled)
+            {
+                return null;
+            }
             if (pawn == null || !pawn.Spawned || pawn.Downed || !pawn.Awake())
             {
                 return null;

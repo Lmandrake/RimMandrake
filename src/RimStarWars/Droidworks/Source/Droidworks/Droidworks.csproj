@@ -107,6 +107,9 @@
     <Compile Include="Recipe_RebootDroid.cs" />
     <Compile Include="Recipe_RemoveRestrainingBolt.cs" />
     <Compile Include="Recipe_ShopRebuild.cs" />
+    <!-- MOD_OPTIONS_RETROFIT_1: the Mod Settings screen. Also read by the
+         sibling DroidworksBoltCore project via its ProjectReference here. -->
+    <Compile Include="RSW_DroidworksSettings.cs" />
     <!-- DROID_FACTION_LOADOUTS_1 (packet C1): the Trade Moot's droid market. -->
     <Compile Include="StockGenerator_DWDroids.cs" />
     <!-- DROID_HUTT_CAPTIVES_1 (packet C6): purchase half. -->

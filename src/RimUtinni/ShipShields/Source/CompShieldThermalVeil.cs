@@ -19,6 +19,11 @@ namespace RimMandrake.Utinni.ShipShields
 
         public override void CompTick()
         {
+            if (!ShipShieldsSettings.thermalVeilEnabled)
+            {
+                return;
+            }
+
             if (!parent.IsHashIntervalTick(Props.intervalTicks))
             {
                 return;

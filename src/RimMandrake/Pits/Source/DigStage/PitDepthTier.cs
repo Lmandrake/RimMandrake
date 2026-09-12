@@ -60,6 +60,11 @@ namespace RimMandrake.Pits
         // this today, but keep it consistent for when a modded def changes
         // that), Deep keeps the original calibrated value, Chasm is higher to
         // reflect its heavier, shoring-supported dig.
+        // Kept dependency-free (no PitsSettings/mod-option reference here): this
+        // file is compiled directly into RimMandrakePits.SelfTest.csproj, a
+        // plain net8.0 project with zero Verse/Unity/ModSettings references.
+        // The digWorkMultiplier mod option is applied at the one real caller,
+        // CompPitDigStage.ResetStageWork(), instead.
         public static float WorkPerAdditionalStage(this PitDepthTier tier)
         {
             switch (tier)

@@ -78,6 +78,8 @@ namespace RimMandrake.StarWars.Droidworks
         /// "frequently", not "always" - FOUNDRY's own number for that word, and
         /// deliberately under 1.0 so a wipe is a gamble rather than a counter.
         /// </summary>
+        /// The shipped default. The live value is
+        /// RSW_DroidworksSettings.wipeQuirkChance, which this seeds.
         public const float QuirkChance = 0.6f;
 
         /// Cached reflection handle on Pawn_RecordsTracker's private DefMap.
@@ -146,7 +148,10 @@ namespace RimMandrake.StarWars.Droidworks
 
             // B10: the permanent quirk. Accretes - a droid wiped three times can
             // carry three quirks, and no recipe in this mod ever takes one back.
-            if (Rand.Chance(QuirkChance))
+            // MOD_OPTIONS_RETROFIT_1: off = a wipe costs nothing permanent. Quirks
+            // a droid already carries are untouched (nothing in this mod removes
+            // one), so this only ever stops NEW quirks arriving.
+            if (RSW_DroidworksSettings.wipeQuirks && Rand.Chance(RSW_DroidworksSettings.wipeQuirkChance))
             {
                 DroidworksHardwareQuirks.TryGainRandomQuirk(pawn);
             }

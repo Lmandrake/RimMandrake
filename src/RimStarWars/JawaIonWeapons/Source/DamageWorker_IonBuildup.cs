@@ -56,6 +56,15 @@ namespace RimMandrake.StarWars.JawaIonWeapons
             ApplyMachineTier(dinfo, victim);
             ApplyShieldBreak(dinfo, victim);
 
+            // MOD_OPTIONS_RETROFIT_1: the flesh/droid buildup tier is one of the
+            // player's per-mechanic switches. Off = no hediff is ever deposited;
+            // base.Apply above has already run, so the bolt still lands and still
+            // makes its noise.
+            if (!RSW_JawaIonWeaponsSettings.fleshBuildupEnabled)
+            {
+                return result;
+            }
+
             Pawn pawn = victim as Pawn;
             if (pawn == null || pawn.Dead || pawn.health == null)
             {
@@ -116,6 +125,10 @@ namespace RimMandrake.StarWars.JawaIonWeapons
                     ? entry.severityFixed
                     : entry.severityPerDamageDealt * dinfo.Amount;
 
+                // MOD_OPTIONS_RETROFIT_1: player multiplier on top of the XML number.
+                // Default 1.0 -> identical to shipped behavior.
+                severity *= RSW_JawaIonWeaponsSettings.stunBuildupMultiplier;
+
                 // Owner ruling 2026-08-29 (ION_STUN_IGNORES_BODY_SIZE_1): the overload
                 // barrier scales with the SQUARE of the target's body size. A Human
                 // (BodySize 1) is the unscaled reference point -- the weapon's identity
@@ -123,11 +136,11 @@ namespace RimMandrake.StarWars.JawaIonWeapons
                 // A 32x-bodySize creature (AA_Behemoth) needs 1024x the severity --
                 // deliberately: "It should take a ship-weapon-scale ion gun to take
                 // this thing down, and that's good." No cap, no softening curve.
-                float bodySize = pawn.BodySize;
-                if (bodySize > 0f)
-                {
-                    severity /= bodySize * bodySize;
-                }
+                //
+                // The exponent is now the settings value bodySizeResistExponent, whose
+                // DEFAULT IS 2 -- i.e. the literal bodySize*bodySize this shipped with
+                // (BodySizeDivisor special-cases exactly 2, so no float drift).
+                severity /= RSW_JawaIonWeaponsSettings.BodySizeDivisor(pawn.BodySize);
 
                 if (severity <= 0f)
                 {
@@ -190,6 +203,12 @@ namespace RimMandrake.StarWars.JawaIonWeapons
         /// </summary>
         private void ApplyMachineTier(DamageInfo dinfo, Thing victim)
         {
+            // MOD_OPTIONS_RETROFIT_1: the machine/droid tier is its own switch.
+            if (!RSW_JawaIonWeaponsSettings.machineTierEnabled)
+            {
+                return;
+            }
+
             Pawn pawn = victim as Pawn;
             if (pawn == null || pawn.Dead || !pawn.Spawned || pawn.RaceProps == null)
             {
@@ -217,15 +236,19 @@ namespace RimMandrake.StarWars.JawaIonWeapons
                 return;
             }
 
+            // MOD_OPTIONS_RETROFIT_1: player multiplier, default 1.0 -> unchanged.
+            amount *= RSW_JawaIonWeaponsSettings.machineTierMultiplier;
+
             // Same body-size^2 ruling as the flesh tier (ION_STUN_IGNORES_BODY_SIZE_1,
             // owner 2026-08-29) applied here too: a superheavy mech is BodySize-huge
             // and should not drop as fast as a battle droid. StunHandler turns this
             // amount into ticks (amount * 30) before EMPResistance, so scaling the
             // amount itself scales the resulting stun duration the same way.
-            float bodySize = pawn.BodySize;
-            if (bodySize > 0f)
+            // Exponent from settings; default 2 is that ruled curve, unchanged.
+            amount /= RSW_JawaIonWeaponsSettings.BodySizeDivisor(pawn.BodySize);
+            if (amount <= 0f)
             {
-                amount /= bodySize * bodySize;
+                return;
             }
 
             DamageInfo emp = new DamageInfo(
@@ -282,6 +305,14 @@ namespace RimMandrake.StarWars.JawaIonWeapons
         /// </summary>
         private void ApplyShieldBreak(DamageInfo dinfo, Thing victim)
         {
+            // MOD_OPTIONS_RETROFIT_1: shield-popping is its own switch. Off = this
+            // extra dispatch never happens at all, so a shield belt absorbs ion fire
+            // like any other shot.
+            if (!RSW_JawaIonWeaponsSettings.shieldBreakEnabled)
+            {
+                return;
+            }
+
             Pawn pawn = victim as Pawn;
             if (pawn == null || pawn.Dead || !pawn.Spawned)
             {

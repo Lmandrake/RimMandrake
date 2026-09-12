@@ -12,6 +12,7 @@ namespace RimMandrake.Graffiti
     {
         public override Job TryGiveJob(Pawn pawn)
         {
+            if (!RM_GraffitiSettings.paintingEnabled) return null;
             if (pawn.Map == null) return null;
             if (!GraffitiJobUtility.TryFindWallMarkCell(pawn, out IntVec3 cell)) return null;
             return JobMaker.MakeJob(def.jobDef, cell);

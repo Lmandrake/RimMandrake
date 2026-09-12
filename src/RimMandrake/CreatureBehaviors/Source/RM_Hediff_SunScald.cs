@@ -1,4 +1,5 @@
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.CreatureBehaviors
@@ -35,12 +36,17 @@ namespace RimMandrake.CreatureBehaviors
 		public override void TickInterval(int delta)
 		{
 			base.TickInterval(delta);
+			if (!RM_CreatureBehaviorsSettings.sunScaldEnabled)
+			{
+				return; // mod option: sun-scald buildup disabled — severity frozen in place
+			}
 			if (!pawn.SpawnedOrAnyParentSpawned || pawn.Dead || !pawn.IsHashIntervalTick(60, delta))
 			{
 				return;
 			}
+			float mult = Mathf.Max(0f, RM_CreatureBehaviorsSettings.sunScaldSeverityMultiplier);
 			bool exposed = pawn.PositionHeld.InSunlight(pawn.MapHeld);
-			Severity += exposed ? SeverityPerSecond_Exposed : SeverityPerSecond_Shaded;
+			Severity += (exposed ? SeverityPerSecond_Exposed : SeverityPerSecond_Shaded) * mult;
 		}
 	}
 }

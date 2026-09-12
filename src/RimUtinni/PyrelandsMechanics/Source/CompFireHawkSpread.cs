@@ -47,7 +47,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         public CompProperties_FireHawkSpread Props => (CompProperties_FireHawkSpread)props;
 
         public bool CanSortieNow =>
-            Find.TickManager.TicksGame - lastSortieTick >= Props.cooldownTicks;
+            Find.TickManager.TicksGame - lastSortieTick >= PyrelandsMechanicsSettings.fireHawkCooldownTicks;
 
         /// <summary>Called by the job-giver the moment the job is handed out, so
         /// an aborted or failed sortie costs the same cooldown a successful one

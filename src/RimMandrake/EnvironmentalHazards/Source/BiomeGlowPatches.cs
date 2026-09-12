@@ -109,6 +109,10 @@ namespace RimMandrake.EnvironmentalHazards
         // assembly touches directly.
         public static void CurCelestialSunGlow_Postfix(Map map, ref float __result)
         {
+            if (!RM_EnvironmentalHazardsSettings.biomeGlowMultiplierEnabled)
+            {
+                return; // mod option: biome darkness multiplier disabled
+            }
             BiomeGlowMultiplierExtension ext = EnvironmentalHazardsMod.ExtensionFor(map);
             if (ext == null)
             {
@@ -124,6 +128,10 @@ namespace RimMandrake.EnvironmentalHazards
         // one where vanilla says there is no sun.
         public static void InSunlightApplies_Postfix(StatRequest req, ref bool __result)
         {
+            if (!RM_EnvironmentalHazardsSettings.biomeGlowMultiplierEnabled)
+            {
+                return; // mod option: biome darkness multiplier disabled
+            }
             if (!__result)
             {
                 return;

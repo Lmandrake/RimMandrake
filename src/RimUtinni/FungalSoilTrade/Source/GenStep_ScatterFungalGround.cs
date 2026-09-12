@@ -21,6 +21,10 @@ namespace RimMandrake.Utinni.FungalSoilTrade
 
 		public override void Generate(Map map, GenStepParams parms)
 		{
+			if (!FungalSoilTradeSettings.scatterEnabled)
+			{
+				return;
+			}
 			if (map.Biome == null || map.Biome.defName != RotBiomeDefName)
 			{
 				return;

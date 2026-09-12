@@ -27,6 +27,7 @@ namespace RimMandrake.Graffiti
 
         protected override ThoughtState CurrentStateInternal(Pawn p)
         {
+            if (!RM_GraffitiSettings.viewerReactionEnabled) return false;
             if (p.Map == null || !p.Spawned)
             {
                 return false;

@@ -33,6 +33,11 @@ namespace RimMandrake.Utinni.ScavengerEvents
             }
         }
 
+        protected override bool CanFireNowSub(IncidentParms parms)
+        {
+            return ScavengerEventsSettings.podCrashTribalEnabled && base.CanFireNowSub(parms);
+        }
+
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
             var map = (Map)parms.target;

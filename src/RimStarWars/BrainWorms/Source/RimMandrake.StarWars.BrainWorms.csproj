@@ -55,6 +55,7 @@
     <Compile Include="JobGiver_BrainWormPuppet.cs" />
     <Compile Include="MentalState_BrainWormPuppet.cs" />
     <Compile Include="Projectile_BrainWormEgg.cs" />
+    <Compile Include="RSW_BrainWormsSettings.cs" />
   </ItemGroup>
 
   <ItemGroup>

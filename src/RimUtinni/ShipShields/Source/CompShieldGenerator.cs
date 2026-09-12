@@ -1,4 +1,5 @@
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.Utinni.ShipShields
@@ -49,19 +50,25 @@ namespace RimMandrake.Utinni.ShipShields
 
         private void TriggerCollapseExplosion()
         {
+            if (!ShipShieldsSettings.collapseExplosionEnabled)
+            {
+                return;
+            }
+
             if (parent?.Map == null)
             {
                 return;
             }
 
             DamageDef damage = Props.collapseExplosionDamage ?? DamageDefOf.Bomb;
+            int damAmount = Mathf.Max(1, Mathf.RoundToInt(Props.collapseExplosionDamageAmount * ShipShieldsSettings.collapseExplosionDamageMultiplier));
             GenExplosion.DoExplosion(
                 center: parent.Position,
                 map: parent.Map,
                 radius: Props.collapseExplosionRadius,
                 damType: damage,
                 instigator: parent,
-                damAmount: Props.collapseExplosionDamageAmount,
+                damAmount: damAmount,
                 chanceToStartFire: Props.collapseExplosionChanceToStartFire);
         }
     }

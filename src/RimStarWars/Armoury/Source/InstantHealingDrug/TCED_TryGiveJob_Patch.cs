@@ -1,5 +1,6 @@
 using System.Linq;
 using HarmonyLib;
+using RimMandrake.StarWars.Armoury;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -12,7 +13,15 @@ public static class TCED_TryGiveJob_Patch
     [HarmonyPrefix]
     private static void Prefix(Pawn pawn, ref bool __state, ref bool ___onlyIfInDanger, ref Job __result)
     {
+        // MOD_OPTIONS_RETROFIT_1: __state must be captured even when the
+        // mechanic is off — the postfix restores ___onlyIfInDanger from it
+        // unconditionally, and a skipped capture would write a default
+        // false back onto the vanilla job giver's own field.
         __state = ___onlyIfInDanger;
+        if (!RSW_ArmourySettings.instantHealEnabled)
+        {
+            return;
+        }
         Thing drug = pawn.inventory.FindCombatEnhancingDrug();
         if (drug != null)
         {
@@ -28,11 +37,15 @@ public static class TCED_TryGiveJob_Patch
     private static void Postfix(Pawn pawn, ref bool __state, ref bool ___onlyIfInDanger, ref Job __result)
     {
         ___onlyIfInDanger = __state;
+        if (!RSW_ArmourySettings.instantHealEnabled)
+        {
+            return;
+        }
         if (__result != null || InstantHealingDrug.VerbSelfHediffType == null
             || InstantHealingDrug.VSH_inDangerField == null || pawn == null
             || pawn.equipment == null || pawn.apparel == null || pawn.VerbTracker?.AllVerbs == null
-            || Find.TickManager.TicksGame - pawn.mindState.lastHarmTick > 2500
-            || Find.TickManager.TicksGame - pawn.mindState.lastTakeCombatEnhancingDrugTick < 20000)
+            || Find.TickManager.TicksGame - pawn.mindState.lastHarmTick > RSW_ArmourySettings.InstantHealRecentHarmTicks
+            || Find.TickManager.TicksGame - pawn.mindState.lastTakeCombatEnhancingDrugTick < RSW_ArmourySettings.InstantHealReuseTicks)
         {
             return;
         }

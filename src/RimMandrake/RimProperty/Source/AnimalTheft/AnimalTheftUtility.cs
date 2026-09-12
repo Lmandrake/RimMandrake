@@ -19,9 +19,15 @@ namespace RimMandrake.AnimalTheft
     /// </summary>
     public static class AnimalTheftUtility
     {
+        // MOD_OPTIONS_RETROFIT_1: the one choke point both JobGiver_RM_TrainedSteal
+        // and JobGiver_RM_WildSteal call through, so the master switch and the
+        // frequency throttle live here rather than being duplicated in both.
         public static Thing FindStealTarget(Pawn pawn)
         {
+            if (!PropertySettings.animalTheftEnabled) return null;
             if (pawn?.Map == null) return null;
+            if (PropertySettings.animalTheftFrequencyMultiplier < 1f
+                && Rand.Value >= PropertySettings.animalTheftFrequencyMultiplier) return null;
 
             return GenClosest.ClosestThing_Global_Reachable(
                 pawn.Position,
@@ -29,14 +35,14 @@ namespace RimMandrake.AnimalTheft
                 pawn.Map.listerHaulables.ThingsPotentiallyNeedingHauling(),
                 PathEndMode.ClosestTouch,
                 TraverseParms.For(pawn),
-                PropertyTuning.AnimalTheftSearchRadius,
+                PropertySettings.animalTheftSearchRadius,
                 Validator);
 
             bool Validator(Thing t)
             {
                 if (t.def.category != ThingCategory.Item) return false;
                 if (t.IsForbidden(pawn)) return false;
-                if (t.GetStatValue(StatDefOf.Mass) > PropertyTuning.AnimalTheftMaxItemMassKg) return false;
+                if (t.GetStatValue(StatDefOf.Mass) > PropertySettings.animalTheftMaxItemMassKg) return false;
                 if (!pawn.CanReserveAndReach(t, PathEndMode.ClosestTouch, Danger.Some)) return false;
                 return true;
             }

@@ -46,7 +46,7 @@ namespace RimMandrake.Property
         // (spec's "Open tuning" closing line).
         public static float WitnessConfidence(Pawn witness, ClaimantRef actor)
         {
-            return PropertyTuning.DefaultWitnessConfidence;
+            return PropertySettings.witnessConfidence;
         }
     }
 }

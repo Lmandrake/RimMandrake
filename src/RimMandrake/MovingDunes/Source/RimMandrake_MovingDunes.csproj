@@ -49,6 +49,7 @@
     <Compile Include="DuneFieldExtension.cs" />
     <Compile Include="DuneFieldRegistry.cs" />
     <Compile Include="MovingDunesMod.cs" />
+    <Compile Include="MovingDunesSettings.cs" />
     <Compile Include="Patch_SandGrid.cs" />
     <Compile Include="SectionLayer_DuneSand.cs" />
     <Compile Include="MapComponent_DuneField.cs" />

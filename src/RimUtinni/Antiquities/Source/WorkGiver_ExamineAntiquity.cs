@@ -24,6 +24,11 @@ namespace RimMandrake.Utinni.Antiquities
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
+            // Mod Settings master toggle -- off means the job is never offered.
+            if (!AntiquitiesSettings.readingEnabled)
+            {
+                return true;
+            }
             // Nothing left to advance once VOICE is finished -- stop offering
             // the job rather than let pawns carry urns to a station for free.
             return AntiquityUtility.CurrentStage() == null;

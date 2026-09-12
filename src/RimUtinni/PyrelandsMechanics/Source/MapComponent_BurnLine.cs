@@ -202,6 +202,10 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
         private void KeepTheBurnAlive()
         {
+            if (!PyrelandsMechanicsSettings.standingBurnReseedEnabled)
+            {
+                return;
+            }
             if (fireCount > 0)
             {
                 ticksSinceAnyFire = 0;

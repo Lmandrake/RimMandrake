@@ -1,3 +1,4 @@
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -46,6 +47,10 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				return;
 			}
+			if (!RM_CreatureBehaviorsSettings.verminBreedingEnabled)
+			{
+				return; // mod option: vermin breeding disabled
+			}
 			if (Find.TickManager.TicksGame < nextSpawnTick)
 			{
 				return;
@@ -56,7 +61,9 @@ namespace RimMandrake.CreatureBehaviors
 
 		private void CalculateNextSpawnTick()
 		{
-			nextSpawnTick = Find.TickManager.TicksGame + (int)(Props.pawnSpawnIntervalDays.RandomInRange * 60000f);
+			float mult = Mathf.Max(0.01f, RM_CreatureBehaviorsSettings.breedRateMultiplier);
+			int intervalTicks = Mathf.Max(1, Mathf.RoundToInt(Props.pawnSpawnIntervalDays.RandomInRange * 60000f / mult));
+			nextSpawnTick = Find.TickManager.TicksGame + intervalTicks;
 		}
 
 		private void TrySpawn()

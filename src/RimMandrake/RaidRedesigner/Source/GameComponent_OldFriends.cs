@@ -36,6 +36,11 @@ namespace RimMandrake.RaidRedesigner
         public OldFriendEntry RecordEncounter(Pawn pawn, Faction factionAtEntry, RoleTag role,
             int tick, string summary, int grudgeDelta = 0, int notabilityDelta = 0, bool pin = false)
         {
+            // MOD_OPTIONS_RETROFIT_1: master switch. All eight capture hooks
+            // funnel through this one method, so gating here alone turns the
+            // whole mechanic into a no-op; every caller already null-checks
+            // the return value.
+            if (!RaidRedesignerSettings.rosterTrackingEnabled) return null;
             if (pawn == null) return null;
 
             OldFriendEntry entry = entries.Find(e => !e.Dead && e.Pawn == pawn);
@@ -51,8 +56,9 @@ namespace RimMandrake.RaidRedesigner
             }
 
             entry.AddEncounter(new Encounter(tick, role, summary));
-            entry.Grudge = Mathf_Clamp(entry.Grudge + grudgeDelta, -100, 100);
-            entry.Notability = Mathf_Clamp(entry.Notability + notabilityDelta, 0, 100);
+            float mult = RaidRedesignerSettings.grudgeNotabilityMultiplier;
+            entry.Grudge = Mathf_Clamp(entry.Grudge + (int)(grudgeDelta * mult), -100, 100);
+            entry.Notability = Mathf_Clamp(entry.Notability + (int)(notabilityDelta * mult), 0, 100);
 
             // Enforce the cap only after this call's own deltas are applied --
             // otherwise a brand-new entry is judged for pruning at Notability
@@ -61,17 +67,19 @@ namespace RimMandrake.RaidRedesigner
             // object) in the same call that created it.
             if (isNewEntry) EnforceCap();
 
-            if (pin) WorldPawnPinning.PinForever(pawn);
+            if (pin && RaidRedesignerSettings.pinEncounteredPawns) WorldPawnPinning.PinForever(pawn);
 
             return entry;
         }
 
-        // Cap 24 LIVING; prune lowest notability. The selection logic itself
-        // is pure (no Verse dependency) and lives in RosterPruning so it can
-        // be offline-selftested -- this method is just "ask, then remove."
+        // Cap is player-tunable (RaidRedesignerSettings.maxLivingEntries,
+        // default MaxLivingEntries=24); prune lowest notability. The
+        // selection logic itself is pure (no Verse dependency) and lives in
+        // RosterPruning so it can be offline-selftested -- this method is
+        // just "ask, then remove."
         private void EnforceCap()
         {
-            foreach (OldFriendEntry victim in RosterPruning.SelectPruneVictims(entries, MaxLivingEntries))
+            foreach (OldFriendEntry victim in RosterPruning.SelectPruneVictims(entries, RaidRedesignerSettings.maxLivingEntries))
             {
                 entries.Remove(victim);
             }

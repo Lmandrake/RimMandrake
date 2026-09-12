@@ -136,6 +136,7 @@ namespace RimMandrake.StarWars.JawaRules
     {
         public static void Postfix(Pawn pawn, ref bool __result)
         {
+            if (!RSW_JawaRulesSettings.sowBanEnabled) return;
             if (__result && JawaRulesMod.IsJawa(pawn))
                 __result = false;
         }
@@ -155,6 +156,7 @@ namespace RimMandrake.StarWars.JawaRules
     {
         public static void Postfix(Pawn pawn)
         {
+            if (!RSW_JawaRulesSettings.droidRelationsEnabled) return;
             try
             {
                 if (pawn != null
@@ -200,6 +202,7 @@ namespace RimMandrake.StarWars.JawaRules
     {
         public static void Postfix(Pawn __instance)
         {
+            if (!RSW_JawaRulesSettings.petNamesEnabled) return;
             try
             {
                 var p = __instance;
@@ -263,6 +266,13 @@ namespace RimMandrake.StarWars.JawaRules
         public const float VanillaAlpha = 0.3f;
         public const float WantedAlpha = 0.6f;
 
+        // MOD_OPTIONS_RETROFIT_1: the baked-in literal is replaced with a CALL to
+        // RSW_JawaRulesSettings.CurrentWorldLabelAlpha() instead of a second literal,
+        // so the settings slider (and its on/off toggle) is read live on every frame
+        // this method runs, with no re-patch and no restart needed to feel it move.
+        private static readonly System.Reflection.MethodInfo AlphaGetter =
+            AccessTools.Method(typeof(RSW_JawaRulesSettings), nameof(RSW_JawaRulesSettings.CurrentWorldLabelAlpha));
+
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> src)
         {
             int hits = 0;
@@ -274,8 +284,10 @@ namespace RimMandrake.StarWars.JawaRules
                 {
                     hits++;
                     // Carry the labels and exception blocks across, or a branch target
-                    // that pointed at this instruction lands nowhere.
-                    var rep = new CodeInstruction(OpCodes.Ldc_R4, WantedAlpha);
+                    // that pointed at this instruction lands nowhere. A parameterless
+                    // static Call has the same stack effect as the Ldc_R4 it replaces:
+                    // one float pushed.
+                    var rep = new CodeInstruction(OpCodes.Call, AlphaGetter);
                     rep.labels.AddRange(ins.labels);
                     rep.blocks.AddRange(ins.blocks);
                     yield return rep;
@@ -337,6 +349,11 @@ namespace RimMandrake.StarWars.JawaRules
         public const float WantedLift = 1.5f;
         private const int ExpectedHits = 4;
 
+        // MOD_OPTIONS_RETROFIT_1: same live-read-instead-of-literal swap as the alpha
+        // patch above — see its comment.
+        private static readonly System.Reflection.MethodInfo LiftGetter =
+            AccessTools.Method(typeof(RSW_JawaRulesSettings), nameof(RSW_JawaRulesSettings.CurrentWorldLabelLift));
+
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> src)
         {
             int hits = 0;
@@ -347,7 +364,7 @@ namespace RimMandrake.StarWars.JawaRules
                     && Mathf.Approximately(f, VanillaLift))
                 {
                     hits++;
-                    var rep = new CodeInstruction(OpCodes.Ldc_R4, WantedLift);
+                    var rep = new CodeInstruction(OpCodes.Call, LiftGetter);
                     rep.labels.AddRange(ins.labels);
                     rep.blocks.AddRange(ins.blocks);
                     yield return rep;

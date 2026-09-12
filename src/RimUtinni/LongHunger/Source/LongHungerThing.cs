@@ -15,6 +15,7 @@
 // Building/ThingWithComps lifecycle (Verse/Thing.cs, Verse/ThingWithComps.cs).
 using RimWorld;
 using System.Collections.Generic;
+using UnityEngine;
 using Verse;
 
 namespace LongHunger
@@ -52,7 +53,7 @@ namespace LongHunger
                     radius: EruptionRadius,
                     damType: DamageDefOf.Bomb,
                     instigator: this,
-                    damAmount: EruptionDamage,
+                    damAmount: Mathf.RoundToInt(EruptionDamage * LongHungerSettings.damageMultiplier),
                     chanceToStartFire: 0f,
                     doVisualEffects: true,
                     doSoundEffects: true
@@ -69,7 +70,12 @@ namespace LongHunger
             }
             ticksSinceSpawn++;
 
-            if (ticksSinceSpawn >= nextPulseAt && ticksSinceSpawn < SurfacedDurationTicks)
+            int effectivePulseInterval = Mathf.Max(1,
+                Mathf.RoundToInt(PulseIntervalTicks * LongHungerSettings.durationMultiplier));
+            int effectiveSurfacedDuration = Mathf.Max(1,
+                Mathf.RoundToInt(SurfacedDurationTicks * LongHungerSettings.durationMultiplier));
+
+            if (ticksSinceSpawn >= nextPulseAt && ticksSinceSpawn < effectiveSurfacedDuration)
             {
                 // A thrashing tremor, smaller than the initial eruption - gives
                 // pawns near it a real reason to move away, not just a one-shot hit.
@@ -79,15 +85,15 @@ namespace LongHunger
                     radius: PulseRadius,
                     damType: DamageDefOf.Bomb,
                     instigator: this,
-                    damAmount: PulseDamage,
+                    damAmount: Mathf.RoundToInt(PulseDamage * LongHungerSettings.damageMultiplier),
                     chanceToStartFire: 0f,
                     doVisualEffects: true,
                     doSoundEffects: true
                 );
-                nextPulseAt += PulseIntervalTicks;
+                nextPulseAt += effectivePulseInterval;
             }
 
-            if (ticksSinceSpawn >= SurfacedDurationTicks)
+            if (ticksSinceSpawn >= effectiveSurfacedDuration)
             {
                 Submerge();
             }
@@ -111,9 +117,10 @@ namespace LongHunger
             // Generate the loot BEFORE destroying self: if ThingSetMaker_Sum.Generate
             // throws for any reason, the entity would otherwise already be gone and
             // the salvage lost silently.
+            float lootMult = LongHungerSettings.lootValueMultiplier;
             List<Thing> loot = ThingSetMakerDefOf.Reward_ItemsStandard.root.Generate(new ThingSetMakerParams
             {
-                totalMarketValueRange = new FloatRange(600f, 1400f),
+                totalMarketValueRange = new FloatRange(600f * lootMult, 1400f * lootMult),
             });
             Destroy(DestroyMode.Vanish);
             foreach (Thing item in loot)

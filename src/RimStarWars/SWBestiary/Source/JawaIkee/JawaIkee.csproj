@@ -12,7 +12,14 @@
     <AssemblyName>JawaIkee</AssemblyName>
     <RootNamespace>JawaIkee</RootNamespace>
     <Version>1.0.0</Version>
-    <OutputPath>..\Assemblies\</OutputPath>
+    <!-- MOD_OPTIONS_RETROFIT_1 fix: this project sits at SWBestiary/Source/JawaIkee/,
+         two levels below the mod root's Assemblies/ (same shape as
+         RimMandrakeLivestockRSW.csproj next door). ..\Assemblies\ silently built
+         into a Source/Assemblies/ nobody deploys — found and fixed here; the
+         checked-in JawaIkee.dll beside RimMandrakeLivestockRSW.dll at
+         SWBestiary/Assemblies/ is the one RimWorld and deploy_custom_mods.py
+         actually read. -->
+    <OutputPath>..\..\Assemblies\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
     <DebugType>none</DebugType>

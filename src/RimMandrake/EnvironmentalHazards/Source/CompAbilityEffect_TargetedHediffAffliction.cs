@@ -18,6 +18,11 @@ namespace RimMandrake.EnvironmentalHazards
         {
             base.Apply(target, dest);
 
+            if (!RM_EnvironmentalHazardsSettings.targetedHediffAbilityEnabled)
+            {
+                return; // mod option: targeted affliction ability effect disabled
+            }
+
             Pawn pawn = target.Pawn;
             if (pawn == null || pawn.Dead || pawn.health == null)
             {

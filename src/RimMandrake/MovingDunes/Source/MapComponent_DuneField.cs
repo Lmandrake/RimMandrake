@@ -195,6 +195,10 @@ namespace RimMandrake.MovingDunes
             {
                 return;
             }
+            if (!MovingDunesSettings.duneEngineEnabled)
+            {
+                return; // mod option: dune drift disabled — the map sits still
+            }
             int now = Find.TickManager.TicksGame;
             if (now % BatchIntervalTicks != 0)
             {
@@ -208,6 +212,8 @@ namespace RimMandrake.MovingDunes
 
             float stormTransport, stormInflux;
             StormFactors(out stormTransport, out stormInflux);
+            stormTransport *= MovingDunesSettings.transportRateMultiplier;
+            stormInflux *= MovingDunesSettings.transportRateMultiplier;
 
             float lost = RunTransportBatch(stormTransport);
             RunInflux(lost, stormInflux);
@@ -507,6 +513,10 @@ namespace RimMandrake.MovingDunes
 
         private void TryBuryAt(IntVec3 cell)
         {
+            if (!MovingDunesSettings.burialEnabled)
+            {
+                return; // mod option: buried caches disabled
+            }
             if (DuneBurialUtility.CacheAt(cell, map) == null && CacheCount() >= material.maxCachesPerMap)
             {
                 return; // at the cap: no NEW cache cells, existing ones still merge
@@ -559,6 +569,10 @@ namespace RimMandrake.MovingDunes
         /// </summary>
         private void RunPlantChoke(float stormFactor)
         {
+            if (!MovingDunesSettings.plantChokeEnabled)
+            {
+                return; // mod option: sand-choke disabled
+            }
             if (material.plantChokeSampleFraction <= 0f)
             {
                 return;

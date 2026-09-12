@@ -1,3 +1,4 @@
+using RimMandrake.StarWars.Armoury;
 using RimWorld;
 using Verse;
 
@@ -16,14 +17,17 @@ public abstract class DamageWorker_RaceHediffBase : DamageWorker_AddInjury
     {
         HediffDef hediffToAdd = null;
         ModExtension_HediffGiver modExtension = dinfo.Def.GetModExtension<ModExtension_HediffGiver>();
-        if (modExtension != null)
+        // MOD_OPTIONS_RETROFIT_1: leaving hediffToAdd null skips the whole
+        // block below, OnAppliedTo (the mechanoid stun) included, so the hit
+        // still deals its ordinary injury and nothing more.
+        if (modExtension != null && RSW_ArmourySettings.ionDamageEnabled)
         {
             hediffToAdd = modExtension.hediffToAdd;
         }
         DamageResult result = base.Apply(dinfo, thing);
         if (thing is Pawn pawn && hediffToAdd != null && AppliesTo(pawn))
         {
-            float severity = modExtension.severityFixed;
+            float severity = modExtension.severityFixed * RSW_ArmourySettings.ionSeverity;
             if (modExtension.hediffResistanceStat != null)
             {
                 float statValue = pawn.GetStatValue(modExtension.hediffResistanceStat);

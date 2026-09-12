@@ -31,6 +31,13 @@ namespace RimMandrake.StarWars.BrainWorms
                 return;
             }
 
+            // MOD_OPTIONS_RETROFIT_1: off means the shell still exists and still lands,
+            // it just no-ops the worm payload.
+            if (!RSW_BrainWormsSettings.eggProjectileEnabled)
+            {
+                return;
+            }
+
             BrainWormUtility.SpawnWormBurst(map, cell, Rand.RangeInclusive(2, 4));
         }
     }

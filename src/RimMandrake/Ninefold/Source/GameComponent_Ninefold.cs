@@ -142,7 +142,15 @@ namespace RimMandrake.Ninefold
         // debug only -- it does not branch behavior.
         public void ApplyDelta(God god, float amount, string reason = null)
         {
+            // MOD_OPTIONS_RETROFIT_1: the master switch. Every one of the
+            // eighteen Patch_*.cs event hooks routes through this one
+            // method, so gating it here turns the whole engine's effect
+            // off in one place -- satiation simply stops moving, no NREs,
+            // no orphaned state.
+            if (!RM_NinefoldSettings.engineEnabled) return;
+
             int i = (int)god;
+            amount *= RM_NinefoldSettings.eventMagnitudeMultiplier;
             satiation[i] = Mathf.Clamp(satiation[i] + amount, -100f, 100f);
             if (reason != null && Prefs.DevMode)
                 Log.Message("[Ninefold] " + god + " satiation " +
@@ -154,6 +162,11 @@ namespace RimMandrake.Ninefold
         public override void GameComponentTick()
         {
             base.GameComponentTick();
+            // MOD_OPTIONS_RETROFIT_1: the master switch, coarse-gated at
+            // the top of the tick -- with the engine off, the Mood walk,
+            // Ta'Baa's rooted erosion and the first-contact queue never
+            // step at all.
+            if (!RM_NinefoldSettings.engineEnabled) return;
             int ticks = Find.TickManager.TicksGame;
             StepPendingFirstContact();
             if (ticks % MoodWalkIntervalTicks != 0) return;
@@ -168,7 +181,8 @@ namespace RimMandrake.Ninefold
             // itself is used only by Notify_Launched below to reset the clock --
             // this step doesn't need to re-derive elapsed hours from it.
             int i = (int)God.TaBaa;
-            satiation[i] = Mathf.Clamp(satiation[i] - RootedErosionPerHour, -100f, 100f);
+            float erosion = RootedErosionPerHour * RM_NinefoldSettings.eventMagnitudeMultiplier;
+            satiation[i] = Mathf.Clamp(satiation[i] - erosion, -100f, 100f);
 
             if (!unveiled[i] &&
                 Find.TickManager.TicksGame - lastLaunchTick >= TaBaaFirstContactRootedTicks)
@@ -186,6 +200,13 @@ namespace RimMandrake.Ninefold
         // with the pre-authored corpus text.
         public void TryFirstContact(God god)
         {
+            // MOD_OPTIONS_RETROFIT_1: engine off, or letters specifically
+            // turned off -- no-op entirely (no letter, no `unveiled` write)
+            // rather than half-tracking state a disabled option should not
+            // be touching.
+            if (!RM_NinefoldSettings.engineEnabled) return;
+            if (!RM_NinefoldSettings.firstContactLettersEnabled) return;
+
             int i = (int)god;
             if (unveiled[i]) return;
             if (pendingFirstContact.Contains(i)) return;
@@ -208,6 +229,7 @@ namespace RimMandrake.Ninefold
         // called from Patch_BattleResolved alongside its existing ApplyDelta.
         public void NotifyViolentDeath()
         {
+            if (!RM_NinefoldSettings.engineEnabled) return;
             if (unveiled[(int)God.Shkaar]) return;
             violentDeathCount++;
             if (violentDeathCount >= ShkaarFirstContactViolentDeaths)
@@ -251,7 +273,7 @@ namespace RimMandrake.Ninefold
                 // bounded random walk: small step scaled by amplitude, softly
                 // pulled back toward 0 so a god does not wander to a rail and
                 // stick there forever with no event ever moving it back.
-                float step = (Rand.Value - 0.5f) * 10f * amp;
+                float step = (Rand.Value - 0.5f) * 10f * amp * RM_NinefoldSettings.moodWalkMultiplier;
                 float pullback = -mood[i] * 0.02f;
                 mood[i] = Mathf.Clamp(mood[i] + step + pullback, -100f, 100f);
             }

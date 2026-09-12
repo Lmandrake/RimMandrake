@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using RimMandrake.StarWars.Armoury;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -20,6 +21,10 @@ internal class JobGiver_AIMeleeJumppack : ThinkNode_JobGiver
 
     protected override Job TryGiveJob(Pawn pawn)
     {
+        if (!RSW_ArmourySettings.jumppackEnabled)
+        {
+            return null;
+        }
         if (!pawn.RaceProps.Humanlike || pawn.IsColonist)
         {
             return null;
@@ -41,7 +46,7 @@ internal class JobGiver_AIMeleeJumppack : ThinkNode_JobGiver
             DebugPoint(pawn, "[jumppack]reached, not required");
             return null;
         }
-        if ((pawn.Position - enemyTarget.Position).LengthHorizontalSquared < minTargetDistance)
+        if ((pawn.Position - enemyTarget.Position).LengthHorizontalSquared < RSW_ArmourySettings.ScaleSquaredDistance(minTargetDistance))
         {
             DebugPoint(pawn, "[jumppack]too close (distance:" + (pawn.Position - enemyTarget.Position).LengthHorizontalSquared + ")");
             return null;

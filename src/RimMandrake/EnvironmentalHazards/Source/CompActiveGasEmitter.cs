@@ -57,6 +57,10 @@ namespace RimMandrake.EnvironmentalHazards
         // shape as CompProximityHatch.RunScan in this codebase.
         public void Burst()
         {
+            if (!RM_EnvironmentalHazardsSettings.gasEmittersEnabled)
+            {
+                return; // mod option: gas emitters disabled
+            }
             if (!parent.Spawned || Props.gasType == null)
             {
                 return;

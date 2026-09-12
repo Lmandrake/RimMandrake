@@ -13,6 +13,10 @@ namespace RimMandrake.CreatureBehaviors
 	{
 		protected override Job TryGiveJob(Pawn pawn)
 		{
+			if (!RM_CreatureBehaviorsSettings.seekShadeBehaviorEnabled)
+			{
+				return null; // mod option: seeking shade disabled
+			}
 			RM_SeekShadeExtension ext = pawn.def?.GetModExtension<RM_SeekShadeExtension>();
 			if (ext == null || pawn.Map == null)
 			{

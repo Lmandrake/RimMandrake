@@ -15,6 +15,10 @@ namespace RimMandrake.CreatureBehaviors
 	{
 		protected override Job TryGiveJob(Pawn pawn)
 		{
+			if (!RM_CreatureBehaviorsSettings.seekMarkedTerrainBehaviorEnabled)
+			{
+				return null; // mod option: seeking marked terrain disabled
+			}
 			RM_SeekTargetExtension ext = pawn.def?.GetModExtension<RM_SeekTargetExtension>();
 			if (ext == null || pawn.Map == null)
 			{

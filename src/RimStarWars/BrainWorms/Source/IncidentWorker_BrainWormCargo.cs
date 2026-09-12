@@ -17,6 +17,16 @@ namespace RimMandrake.StarWars.BrainWorms
     /// </summary>
     public class IncidentWorker_BrainWormCargo : IncidentWorker
     {
+        // MOD_OPTIONS_RETROFIT_1: master toggle for this infection vector.
+        protected override bool CanFireNowSub(IncidentParms parms)
+        {
+            if (!RSW_BrainWormsSettings.cargoIncidentEnabled)
+            {
+                return false;
+            }
+            return base.CanFireNowSub(parms);
+        }
+
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
             Map map = parms.target as Map;

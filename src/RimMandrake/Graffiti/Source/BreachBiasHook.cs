@@ -34,6 +34,10 @@ namespace RimMandrake.Graffiti
 
         public static void Postfix(BreachingGrid __instance, ref Thing __result)
         {
+            if (!RM_GraffitiSettings.breachBiasEnabled)
+            {
+                return;
+            }
             if (__result == null)
             {
                 // No breachable building found at all - nothing to bias.

@@ -49,7 +49,7 @@ namespace RimMandrake.SalvageClaim
             float claimStrength = Mathf.Clamp01(priorClaim?.EffectiveStrength ?? 0f);
             float strengthFactor = Mathf.Lerp(UnclaimedStrengthFloor, 1f, claimStrength);
             float riskFactor = recognizability * strengthFactor; // 0..1
-            float fee = Mathf.Lerp(MinFeeSilver, MaxFeeSilver, riskFactor);
+            float fee = Mathf.Lerp(MinFeeSilver, MaxFeeSilver, riskFactor) * PropertySettings.salvageClaimFeeMultiplier;
             return Mathf.Max(1, Mathf.RoundToInt(fee));
         }
 

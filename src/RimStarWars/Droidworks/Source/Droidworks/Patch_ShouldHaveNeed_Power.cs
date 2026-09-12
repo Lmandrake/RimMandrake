@@ -104,6 +104,18 @@ namespace RimMandrake.StarWars.Droidworks
         {
             if (!__result) return;
             if (nd != DroidworksDefOf.RSW_DW_Power) return;
+            // MOD_OPTIONS_RETROFIT_1: the whole "droids run on stored power"
+            // mechanic, switched here because this is the one place that decides
+            // whether a pawn carries the need at all. Off: the need is dropped on
+            // the next needs recalculation and every consumer downstream
+            // (Need_Power.NeedInterval, JobGiver_DWRecharge, CompDWCharger,
+            // CompDroidDetonation's charge read) sees a null need and no-ops -
+            // no NREs, no half-mechanic.
+            if (!RSW_DroidworksSettings.powerNeed)
+            {
+                __result = false;
+                return;
+            }
             if (___pawn?.RaceProps?.FleshType != DroidworksDefOf.RSW_DW_FleshType_Droid)
             {
                 __result = false;

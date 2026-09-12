@@ -114,7 +114,7 @@ namespace RimMandrake.LoreStages
 
             int applied = LoreStageApplier.ResetAndApply(
                 tables,
-                GetStage,
+                EffectiveStage,
                 LoreStageDefDatabase.Resolve,
                 Log.Warning);
 
@@ -122,6 +122,24 @@ namespace RimMandrake.LoreStages
             {
                 Log.Message($"[LoreStages] applied {applied} staged field(s) across {tables.Count} ladder(s).");
             }
+        }
+
+        // MOD_OPTIONS_RETROFIT_1: the master toggle. Off means every ladder
+        // reads as stage 0 (defs show their shipped baseline text) — the real
+        // per-ladder progress in `stages` is untouched and untracked calls
+        // (SetStage/AdvanceStage from a debug action or a consumer mod) keep
+        // recording it normally, so flipping the toggle back on resumes right
+        // where the colony's progress actually is. Never deletes or corrupts
+        // `stages`.
+        private int EffectiveStage(string ladderId)
+        {
+            return RM_LoreStagesSettings.stagedTextEnabled ? GetStage(ladderId) : 0;
+        }
+
+        /// <summary>Re-applies immediately — called live from the Mod Settings checkbox.</summary>
+        public void Reapply()
+        {
+            Apply();
         }
     }
 }

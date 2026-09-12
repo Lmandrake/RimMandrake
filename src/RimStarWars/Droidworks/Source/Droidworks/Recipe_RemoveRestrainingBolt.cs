@@ -24,6 +24,8 @@ namespace RimMandrake.StarWars.Droidworks
     /// </summary>
     public class Recipe_RemoveRestrainingBolt : Recipe_Surgery
     {
+        /// <summary>The shipped default. The live value is
+        /// RSW_DroidworksSettings.boltRebellionThreshold, which this seeds.</summary>
         public const float RebellionThreshold = 0.6f;
 
         public override IEnumerable<BodyPartRecord> GetPartsToApplyOn(Pawn pawn, RecipeDef recipe)
@@ -38,8 +40,13 @@ namespace RimMandrake.StarWars.Droidworks
             Hediff h = pawn.health.hediffSet.GetFirstHediffOfDef(recipe.removesHediff);
             if (h != null) pawn.health.RemoveHediff(h);
 
+            // MOD_OPTIONS_RETROFIT_1: off = removing a bolt is always safe. The
+            // resentment hediff still stands (nothing here ever cleared it), so
+            // turning the option back on restores the consequence unchanged.
+            if (!RSW_DroidworksSettings.boltRebellion) return;
+
             Hediff resentment = pawn.health.hediffSet.GetFirstHediffOfDef(DroidworksDefOf.RSW_DW_BoltResentment);
-            if (resentment != null && resentment.Severity >= RebellionThreshold
+            if (resentment != null && resentment.Severity >= RSW_DroidworksSettings.boltRebellionThreshold
                 && pawn.mindState?.mentalStateHandler != null
                 && !pawn.InMentalState)
             {

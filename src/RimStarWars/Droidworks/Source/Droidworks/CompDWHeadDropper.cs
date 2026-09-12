@@ -21,6 +21,9 @@ namespace RimMandrake.StarWars.Droidworks
         public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
         {
             if (prevMap == null) return;
+            // MOD_OPTIONS_RETROFIT_1: off = no head drops. Independent of the
+            // parts dropper and of detonation, exactly as the three already are.
+            if (!RSW_DroidworksSettings.headDrop) return;
             Pawn pawn = parent as Pawn;
             if (pawn == null) return;
             // Same LastOrDefault reasoning as CompDroidDetonation.Notify_Killed:

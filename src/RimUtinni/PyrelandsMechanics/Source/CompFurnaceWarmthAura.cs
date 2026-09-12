@@ -45,6 +45,10 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         {
             base.CompTickInterval(delta);
 
+            if (!PyrelandsMechanicsSettings.furnaceWarmthAuraEnabled)
+            {
+                return;
+            }
             if (!parent.IsHashIntervalTick(PyrelandsTuning.FurnaceAuraIntervalTicks, delta))
             {
                 return;
@@ -54,7 +58,8 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 return;
             }
 
-            float radiusSq = Props.radius * Props.radius;
+            float radius = PyrelandsMechanicsSettings.furnaceAuraRadius;
+            float radiusSq = radius * radius;
             IReadOnlyList<Pawn> pawns = beast.Map.mapPawns.AllPawnsSpawned;
             for (int i = 0; i < pawns.Count; i++)
             {

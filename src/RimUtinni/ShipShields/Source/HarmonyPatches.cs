@@ -49,11 +49,14 @@ namespace RimMandrake.Utinni.ShipShields
                 return false;
             }
 
-            float speed = projectile?.def?.projectile != null ? projectile.def.projectile.SpeedTilesPerTick : 0f;
-            if (speed < shield.Props.slowPassThroughSpeed)
+            if (ShipShieldsSettings.bubbleSlowPassThroughEnabled)
             {
-                __result = false;
-                return false;
+                float speed = projectile?.def?.projectile != null ? projectile.def.projectile.SpeedTilesPerTick : 0f;
+                if (speed < shield.Props.slowPassThroughSpeed)
+                {
+                    __result = false;
+                    return false;
+                }
             }
 
             return true;

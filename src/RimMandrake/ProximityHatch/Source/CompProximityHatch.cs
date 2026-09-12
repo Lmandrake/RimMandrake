@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -26,7 +27,7 @@ namespace RimMandrake.ProximityHatch
             if (hatchFired || !parent.Spawned) return;
 
             if (--ticksUntilScan > 0) return;
-            ticksUntilScan = Props.scanIntervalTicks;
+            ticksUntilScan = Mathf.Max(1, Mathf.RoundToInt(Props.scanIntervalTicks * RM_ProximityHatchSettings.scanIntervalMultiplier));
             RunScan();
         }
 
@@ -37,15 +38,24 @@ namespace RimMandrake.ProximityHatch
         {
             if (hatchFired || !parent.Spawned) return;
 
+            // Mod Settings master switch: off means proximity hatching never
+            // fires at all - the egg falls back to CompHatcher's own vanilla
+            // timer, same as an egg with no proximity comp. Coarse gate at
+            // the top of the one method that does any work, so an all-off
+            // toggle degrades cleanly with no orphaned state.
+            if (!RM_ProximityHatchSettings.enabled) return;
+
             CompHatcher hatcher = parent.GetComp<CompHatcher>();
             if (hatcher == null) return; // no vanilla hatch comp on this def - nothing to trigger, stay dormant
 
             Map map = parent.Map;
             if (map == null) return;
 
+            float radius = Mathf.Max(0.1f, Props.triggerRadius * RM_ProximityHatchSettings.radiusMultiplier);
+
             Pawn nearest = null;
             int nearestDistSq = int.MaxValue;
-            foreach (Thing t in GenRadial.RadialDistinctThingsAround(parent.Position, map, Props.triggerRadius, useCenter: true))
+            foreach (Thing t in GenRadial.RadialDistinctThingsAround(parent.Position, map, radius, useCenter: true))
             {
                 if (t is Pawn p && p.Spawned && !p.Dead && p.RaceProps.IsFlesh)
                 {
@@ -97,7 +107,13 @@ namespace RimMandrake.ProximityHatch
             {
                 if (t is Pawn hatchling && hatchling.kindDef == expectedKind && !preHatch.Contains(t))
                 {
-                    Aggro(hatchling, triggeringPawn);
+                    // Mod Settings: off means the hatchling still hatches
+                    // early (that's the master toggle above), but wakes up
+                    // neutral instead of forced into the ambush beat.
+                    if (RM_ProximityHatchSettings.aggroEnabled)
+                    {
+                        Aggro(hatchling, triggeringPawn);
+                    }
                 }
             }
         }

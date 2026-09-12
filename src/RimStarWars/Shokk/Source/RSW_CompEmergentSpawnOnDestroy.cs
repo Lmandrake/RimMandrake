@@ -46,11 +46,15 @@ namespace RimMandrake.StarWars.Shokk
 		public override void PostDestroy(DestroyMode mode, Map previousMap)
 		{
 			base.PostDestroy(mode, previousMap);
+			if (!RSW_ShokkSettings.emergentSpawnEnabled)
+			{
+				return;
+			}
 			if (previousMap == null || mode != DestroyMode.Vanish)
 			{
 				return;
 			}
-			if (!Rand.Chance(Props.spawnChance))
+			if (!Rand.Chance(Props.spawnChance * RSW_ShokkSettings.emergentSpawnChanceMultiplier))
 			{
 				return;
 			}

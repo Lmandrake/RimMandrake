@@ -33,6 +33,10 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
     {
         protected override bool CanFireNowSub(IncidentParms parms)
         {
+            if (!PyrelandsMechanicsSettings.flameHarvestEnabled)
+            {
+                return false;
+            }
             if (!base.CanFireNowSub(parms) || !(parms.target is Map map))
             {
                 return false;
@@ -43,7 +47,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             {
                 return false;
             }
-            if (!watch.AnyBurn || watch.FireCount < PyrelandsTuning.FlameHarvestMinFires)
+            if (!watch.AnyBurn || watch.FireCount < PyrelandsMechanicsSettings.flameHarvestMinFires)
             {
                 return false;
             }

@@ -38,6 +38,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="RM_CreatureBehaviorsMod.cs" />
     <Compile Include="RM_VerminPressureExtension.cs" />
     <Compile Include="RM_MapComponent_VerminPopulation.cs" />
     <Compile Include="RM_CompProperties_VerminBreeder.cs" />

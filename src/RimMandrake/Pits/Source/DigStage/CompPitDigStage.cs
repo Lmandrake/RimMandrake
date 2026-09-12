@@ -58,7 +58,9 @@ namespace RimMandrake.Pits
 
         private void ResetStageWork()
         {
-            workLeftThisStage = Props.depthTier.WorkPerAdditionalStage();
+            // Mod option: PitsSettings.digWorkMultiplier, default 1x reproduces
+            // the unmodified WorkPerAdditionalStage() value.
+            workLeftThisStage = Props.depthTier.WorkPerAdditionalStage() * PitsSettings.digWorkMultiplier;
         }
 
         // Called by JobDriver_DigPitDeeper as work is spent.

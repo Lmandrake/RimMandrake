@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="LongHungerThing.cs" />
     <Compile Include="IncidentWorker_LongHungerSurfaces.cs" />
+    <Compile Include="LongHungerMod.cs" />
   </ItemGroup>
 
   <ItemGroup>

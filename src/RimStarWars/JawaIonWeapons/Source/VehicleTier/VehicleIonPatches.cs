@@ -166,6 +166,14 @@ namespace RimMandrake.StarWars.JawaIonWeapons
         {
             if (!absorbed) return;
 
+            // MOD_OPTIONS_RETROFIT_1: master switch on the whole vehicle tier, on
+            // top of the AppDomain probe in JawaIonVehicleTierMod that already
+            // skips this assembly's Harmony patching when Vehicle Framework is
+            // absent. This is the coarsest safe gate - the postfix returns before
+            // touching any VF state, so the vehicle keeps exactly the component
+            // damage VF's own PreApplyDamage already applied and nothing else.
+            if (!RSW_JawaIonWeaponsSettings.vehicleTierEnabled) return;
+
             DamageDef def = dinfo.Def;
             if (def == null || def.defName != IonDamageDefName) return;
 
@@ -181,6 +189,11 @@ namespace RimMandrake.StarWars.JawaIonWeapons
             IntVec2 size = vehicleDef.Size;
             float footprintArea = Math.Max(1, size.x * size.z);
             float amount = empAmountDroid / footprintArea;
+
+            // MOD_OPTIONS_RETROFIT_1: player multiplier on the vehicle tier only.
+            // Default 1.0 -> the worked examples in this class's header stand
+            // exactly as documented.
+            amount *= RSW_JawaIonWeaponsSettings.vehicleTierMultiplier;
             if (amount <= 0f) return;
 
             int stunTicks = Mathf.RoundToInt(amount * 30f);

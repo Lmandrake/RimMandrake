@@ -24,6 +24,9 @@ namespace RimMandrake.TitanicCreatures
     {
         private static void Postfix(Corpse __instance, Map map, bool respawningAfterLoad)
         {
+            // MOD_OPTIONS_RETROFIT_1: master switch. Off: a T3 corpse is left
+            // as an ordinary Corpse and butchers normally.
+            if (!RM_TitanicCreaturesSettings.corpseSiteEnabled) return;
             if (respawningAfterLoad)
             {
                 return;

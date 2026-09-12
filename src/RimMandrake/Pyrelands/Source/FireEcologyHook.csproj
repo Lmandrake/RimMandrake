@@ -46,6 +46,7 @@
 
   <ItemGroup>
     <Compile Include="FireEcologyHook.cs" />
+    <Compile Include="RM_PyrelandsMod.cs" />
   </ItemGroup>
 
   <ItemGroup>

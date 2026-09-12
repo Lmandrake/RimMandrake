@@ -179,6 +179,12 @@ namespace RimMandrake.StarWars.Droidworks
         /// </summary>
         public static float CurrentAdvantage()
         {
+            // MOD_OPTIONS_RETROFIT_1: off = 0, and every caller above already
+            // early-returns on 0, so prices, the deal total and the tooltip are
+            // all exactly vanilla. Gated here rather than by skipping the Harmony
+            // patch at startup so the option takes effect without a restart.
+            if (!RSW_DroidworksSettings.protocolTrade) return 0f;
+
             // Order matters: TradeSession.TradeCurrency dereferences trader.
             if (!TradeSession.Active) return 0f;
             // A gift is not a trade. FactionGiftUtility.GetGoodwillChange calls
@@ -204,7 +210,7 @@ namespace RimMandrake.StarWars.Droidworks
             int net = cachedPlayerHas ? 1 : -1;
             if (cachedTraderKnown) net += cachedTraderHas ? -1 : 1;
 
-            cachedAdvantage = net * PerSideAdvantage;
+            cachedAdvantage = net * RSW_DroidworksSettings.protocolTradePerSide;
             cachedTrader = TradeSession.trader;
             cachedNegotiator = TradeSession.playerNegotiator;
             cachedTick = now;

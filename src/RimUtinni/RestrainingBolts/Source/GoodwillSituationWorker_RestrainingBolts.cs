@@ -50,6 +50,9 @@ namespace RimMandrake.Utinni.RestrainingBolts
             if (other?.def != FactionDefOf_RestrainingBolts.RUT_Jawa_FreeDroidEnclaves)
                 return 100;
 
+            if (!RestrainingBoltsSettings.enabled)
+                return 100;
+
             var hediff = BoltHediff;
             if (hediff == null)
                 return 100; // Droid Depot not active -- nothing to count, degrade quietly.
@@ -57,7 +60,9 @@ namespace RimMandrake.Utinni.RestrainingBolts
             int boltedCount = PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_OfPlayerFaction
                 .Count(p => p.health?.hediffSet?.HasHediff(hediff) ?? false);
 
-            return Mathf.Max(-70, 100 - Mathf.RoundToInt(2.5f * boltedCount));
+            return Mathf.Max(
+                Mathf.RoundToInt(RestrainingBoltsSettings.goodwillFloor),
+                100 - Mathf.RoundToInt(RestrainingBoltsSettings.penaltyPerBoltedDroid * boltedCount));
         }
     }
 }

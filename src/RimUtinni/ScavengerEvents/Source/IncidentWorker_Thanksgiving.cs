@@ -26,13 +26,17 @@ namespace RimMandrake.Utinni.ScavengerEvents
 
         protected override bool CanFireNowSub(IncidentParms parms)
         {
+            if (!ScavengerEventsSettings.thanksgivingEnabled)
+                return false;
+
             var map = (Map)parms.target;
             Faction nonHostile = Find.FactionManager.RandomNonHostileFaction(true, true, true, TechLevel.Neolithic);
             if (nonHostile == null || nonHostile.HostileTo(Faction.OfPlayer))
                 return false;
 
             int colonistCount = map.mapPawns.FreeColonistsSpawnedCount;
-            return map.resourceCounter.TotalHumanEdibleNutrition < NutritionThresholdPerColonist * colonistCount;
+            float threshold = NutritionThresholdPerColonist * ScavengerEventsSettings.thanksgivingThresholdMultiplier * colonistCount;
+            return map.resourceCounter.TotalHumanEdibleNutrition < threshold;
         }
 
         protected override bool TryExecuteWorker(IncidentParms parms)

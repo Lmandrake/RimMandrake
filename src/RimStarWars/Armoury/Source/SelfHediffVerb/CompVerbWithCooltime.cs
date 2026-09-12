@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimMandrake.StarWars.Armoury;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -38,7 +39,7 @@ public class CompVerbWithCooltime : ThingComp, IVerbOwner
 
     public void UsedOnce()
     {
-        remainCooltimeTicks = PropsVWC.ticksCooldown;
+        remainCooltimeTicks = Mathf.Max(0, Mathf.RoundToInt(PropsVWC.ticksCooldown * RSW_ArmourySettings.selfHediffCooldown));
     }
 
     public override IEnumerable<Gizmo> CompGetWornGizmosExtra()

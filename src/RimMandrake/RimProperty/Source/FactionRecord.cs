@@ -62,7 +62,7 @@ namespace RimMandrake.Property
 
                 float daysElapsed = (nowTick - e.TimestampTicks) / (float)GenDate.TicksPerDay;
                 float propagated = Mathf.Clamp01(daysElapsed * propagationRatePerDay);
-                float decay = Mathf.Clamp01(1f - daysElapsed / PropertyTuning.SuspicionHalfLifeDays);
+                float decay = Mathf.Clamp01(1f - daysElapsed / PropertySettings.suspicionHalfLifeDays);
                 total += e.Confidence * propagated * decay;
             }
             return Mathf.Clamp01(total);
@@ -94,7 +94,7 @@ namespace RimMandrake.Property
                 WitnessEntry e = entries[i];
                 float daysElapsed = (nowTick - e.TimestampTicks) / (float)GenDate.TicksPerDay;
                 float propagated = Mathf.Clamp01(daysElapsed * propagationRatePerDay);
-                float decay = Mathf.Clamp01(1f - daysElapsed / PropertyTuning.SuspicionHalfLifeDays);
+                float decay = Mathf.Clamp01(1f - daysElapsed / PropertySettings.suspicionHalfLifeDays);
                 if (e.Confidence * propagated * decay >= threshold) return true;
             }
             return false;

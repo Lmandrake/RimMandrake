@@ -49,11 +49,22 @@ namespace RimMandrake.StarWars.Droidworks
         // combat naturally stops (AI won't keep hitting a Downed target) and the
         // buildup can plateau and decay back out before ever reaching 0.9,
         // self-recovering exactly like the bug this comp exists to prevent.
-        private const float OverloadThreshold = 0.5f;
+        /// The shipped default. The live value is
+        /// RSW_DroidworksSettings.ionShutdownThreshold, which this seeds.
+        public const float OverloadThreshold = 0.5f;
 
         public override void CompPostTick(ref float severityAdjustment)
         {
-            if (parent.Severity < OverloadThreshold)
+            // MOD_OPTIONS_RETROFIT_1: off = this comp does nothing at all and
+            // RSW_JawaIon_Stun is left to its own self-decay, i.e. exactly the
+            // pre-Droidworks behaviour this comp exists to override - an ion
+            // overloaded droid wobbles back up on its own.
+            if (!RSW_DroidworksSettings.ionShutdown)
+            {
+                return;
+            }
+
+            if (parent.Severity < RSW_DroidworksSettings.ionShutdownThreshold)
             {
                 return;
             }

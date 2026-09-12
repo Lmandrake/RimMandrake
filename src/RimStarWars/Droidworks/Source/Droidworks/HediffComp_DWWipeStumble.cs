@@ -67,6 +67,12 @@ namespace RimMandrake.StarWars.Droidworks
 
         private void TryStumble(int delta)
         {
+            // MOD_OPTIONS_RETROFIT_1: off = the wipe hediff's capMods still ramp
+            // Moving/Manipulation back (that half is XML), but the droid never
+            // drops a job or blunders off. No job is ever left half-started here,
+            // so flipping this mid-game is safe.
+            if (!RSW_DroidworksSettings.wipeStumble) return;
+
             Pawn p = Pawn;
             if (p == null || !p.Spawned || p.Dead || p.Downed) return;
             if (!p.IsHashIntervalTick(Props.checkIntervalTicks, delta)) return;
@@ -79,7 +85,8 @@ namespace RimMandrake.StarWars.Droidworks
             if (p.Drafted || p.InMentalState || p.jobs == null) return;
             if (p.CurJobDef == JobDefOf.GotoWander) return;
 
-            if (!Rand.Chance(Props.stumbleChancePerCheck * parent.Severity)) return;
+            if (!Rand.Chance(Props.stumbleChancePerCheck
+                * RSW_DroidworksSettings.wipeStumbleChance * parent.Severity)) return;
 
             IntVec3 cell = CellFinder.RandomClosewalkCellNear(
                 p.Position, p.Map, Props.stumbleRadius);

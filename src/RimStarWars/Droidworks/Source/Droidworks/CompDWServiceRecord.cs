@@ -180,6 +180,12 @@ namespace RimMandrake.StarWars.Droidworks
         /// </summary>
         public Trait TryDrift(Pawn pawn)
         {
+            // MOD_OPTIONS_RETROFIT_1: off = no idiosyncrasies ever accrete and no
+            // droid is promoted to Sapient by age. The clock keeps running (it is
+            // an absolute tick, not an accumulator), so turning this back on
+            // credits the time already served rather than restarting it.
+            if (!RSW_DroidworksSettings.personalityDrift) return null;
+
             // Blank and Mindless droids have no programming to drift. Programmable
             // and Sapient do (B1's ladder, DroidFormatTier.cs).
             DroidFormatTier tier = DroidFormatTierUtility.EffectiveTierOf(pawn);
@@ -192,7 +198,8 @@ namespace RimMandrake.StarWars.Droidworks
             // the number the droid ALREADY carries rather than off a stored
             // "next due" tick, so the ladder is recomputed from the pawn's real
             // state every time and cannot desync from it.
-            long due = (long)Props.firstDriftTicks + (long)accreted * Props.driftIntervalTicks;
+            long due = (long)((Props.firstDriftTicks + (double)accreted * Props.driftIntervalTicks)
+                * RSW_DroidworksSettings.driftTime);
             if (TicksSinceReset < due) return null;
 
             Trait gained = DroidServiceRecordUtility.TryAccreteIdiosyncrasy(pawn);

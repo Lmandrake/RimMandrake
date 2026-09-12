@@ -93,6 +93,28 @@
     </Reference>
   </ItemGroup>
 
+  <!--
+    MOD_OPTIONS_RETROFIT_1. The one thing this sub-project now needs from the
+    main assembly: RSW_DroidworksSettings, so the "bolts stop a droid breaking
+    down" option in the Droidworks settings screen can switch the prefix below
+    off. Same shape JawaIonVehicleTier.csproj uses to reach JawaIonWeapons.
+
+    Private="false" so Droidworks.dll is NOT copied again by this build - both
+    projects already write into the same ..\..\Assemblies\ folder and a second
+    copy landing there would be at best redundant and at worst a stale
+    overwrite. MSBuild orders the two builds off this reference.
+
+    The class header's "does NOT reference Droidworks.dll ... load-order
+    independent" note no longer holds for the SETTINGS read, and that is fine:
+    the two DLLs still resolve RSW_DW_RestrainingBolt by defName (see
+    BoltCorePatches.BoltDef), so a missing def still degrades quietly. What a
+    compile-time reference does add is that both assemblies must ship together
+    - which they always have, being one mod folder.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\Droidworks\Droidworks.csproj" Private="false" />
+  </ItemGroup>
+
   <ItemGroup>
     <Compile Remove="..\**\*.cs" />
     <Compile Include="*.cs" />
