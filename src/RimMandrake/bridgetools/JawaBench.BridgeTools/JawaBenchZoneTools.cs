@@ -847,6 +847,15 @@ namespace JawaBench.BridgeTools
                 try { marketBefore = t.GetStatValue(StatDefOf.MarketValue); } catch { marketBefore = -1f; }
                 var ratio = maxHpBefore > 0 ? (float)hpBefore / maxHpBefore : 1f;
 
+                // REGRESSION FIX (review 2026-09-11, batch-4 sample): the finding #35 edit
+                // that follows dropped these two lines entirely - SetStuffDirect (the whole
+                // POINT of this tool) and its MaxHitPoints cache-clear were deleted along
+                // with the bare try/catch they used to sit beside, so the batch-4 build
+                // silently turned jawa/set_stuff into a no-op that always reported
+                // success:false. Restored, ahead of the cosmetic follow-ups.
+                t.SetStuffDirect(newStuff);
+                StatDefOf.MaxHitPoints.Worker.ClearCacheForThing(t);
+
                 // Finding #35 (COMPANION_HARDENING_AUDIT_2026-09-09): these two are
                 // purely cosmetic follow-ups (recolour, mesh redraw), so a throw here
                 // must not fail the stuff swap itself - but silently discarding it left
