@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T07:53:38Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-12T08:04:53Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## TIBANNA_SOURCE_CUT_1 Cut non-beldon tibanna sources per T1 ruling: CherryPicker-cut OuterRim_TibannaSiphon/ExtractorLight/Heavy lanes + LK mineable OuterRim_Tibanna route (item def stays); verify LIVE — LK patches can no-op silently; beldons-only hard ban stands
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  TIBANNASOURCECUT1 — cut the non-beldon tibanna sources
-prose:    infrastructure/state/items/TIBANNA_SOURCE_CUT_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -1078,3 +1069,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  - Remove the live swSarlacc landmark from tile 2920 (a
 prose:    infrastructure/state/items/SARLACC_WORLDMAP_RELOCATE_1.md
+
+## WORLD_NAME_FIXES_1 World name fixes (owner 2026-09-12): rename player settlement 'Colony' to 'Zeddo's Salvage Yard' (ruled, verbatim on event); Fall Line Barrens + Scald Spine near-dups and the four Ascendant Helix settlement renames land here once the owner picks from the proposal cards; one bridge pass, freeze discipline
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WORLD_NAME_FIXES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WORLD_NAME_FIXES_1.md
