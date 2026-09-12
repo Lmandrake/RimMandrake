@@ -109,7 +109,7 @@
       <SnowHard>0</SnowHard>
       <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">0</GrayPall>
       <Overcast MayRequire="Ludeon.RimWorld.Odyssey">0</Overcast>
-      <TorrentialRain>0</TorrentialRain>
+      <TorrentialRain MayRequire="Ludeon.RimWorld.Odyssey">0</TorrentialRain>
     </baseWeatherCommonalities>
     <wildAnimals>
       <Gizka MayRequire="mlie.starwarsanimalcollection">1.0</Gizka>  <!-- gizka - floor-vermin, keep -->
