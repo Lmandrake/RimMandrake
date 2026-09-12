@@ -7476,3 +7476,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"ART_REGEN_WAVE8_QUEUE_1","ts":"2026-09-12T00:11:36Z"}
 {"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE8_QUEUE_1","ts":"2026-09-12T00:11:37Z"}
 {"seat":"FOUNDRY","event":"close","id":"ART_REGEN_WAVE8_QUEUE_1","sha":"0221f34fb9d42bb6e6f736fa7386d307bc45e322","ts":"2026-09-12T00:11:42Z"}
+{"seat":"BENCH","event":"file","id":"POST_FREEZE_WORLDMAP_AUDIT_1","title":"Fresh adversarial audit of the FROZEN worldmap (V24 2026-09-09) — the 2026-08-26 audit predates the freeze; republish the audit artifact and the hub worldmap tab against it","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-12T00:14:29Z"}

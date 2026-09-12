@@ -83,6 +83,10 @@ def worldmap() -> None:
                    "sha256_12": None},
         "artifactUrl": "https://claude.ai/code/artifact/f8b14a7a-b8ed-4787-8104-b055ebf2f45c",
         "note": "Adversarial audit of the live Ash'karr worldmap; republished in place as rulings close.",
+        "worldFrozenAt": "2026-09-09T12:24:00Z",
+        "gap": "The newest audit PREDATES the freeze (V24, 2026-09-09) — the red lamp is "
+               "correct and stays red until POST_FREEZE_WORLDMAP_AUDIT_1 re-audits the "
+               "frozen world and republishes the audit page.",
     }, indent=1))
 
 
