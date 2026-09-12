@@ -23,10 +23,15 @@
   - Gives the donor Wyyyschokk (mlie.starwarsanimalcollection) a small butcher
     yield of shokkweave: the silk is in the spider, not its hide (race.leatherDef
     untouched).
+  - Web-cutting: RUT_Webwork_SilkKnot, a mineable silk vein scattered onto
+    RUT_Webwork maps only, yields shokkweave when cut.
+  - Nest raid: RUT_Webwork_Nest (MayRequire mlie.starwarsanimalcollection), a
+    dormant lair guarded by a Wyyyschokk that wakes on approach; breaking it
+    open drops a much larger shokkweave payout.
 
-  Out of scope here (see the item and spec): live trader-generation proof
-  (needs a quicktest map), and the web-cutting/nest-raid/border-creep-web
-  harvest routes (block on unbuilt roster ThingDefs).</description>
+  Out of scope here (see the item and spec): live trader-generation proof and
+  the quest-reward roll pass (both need a quicktest map), and the border
+  creep-web route (depends on RM_MapComponent_FrontCreep, unbuilt).</description>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>

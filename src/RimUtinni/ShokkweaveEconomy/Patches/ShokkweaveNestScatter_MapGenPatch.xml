@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SHOKKWEAVE_SOLE_SOURCE_1. Adds the nest scatter step globally, wrapped in
+  PatchOperationFindMod exactly like ShokkweaveButcherYield.xml: the nest's
+  guardian (Wyyyschokk PawnKindDef) only exists when the donor mod is active,
+  and RUT_Webwork_Nest itself already carries MayRequire so the GenStepDef
+  named here is the only thing that could otherwise dangle in the shared
+  genSteps list if the donor were absent - PatchOperationFindMod keeps the
+  <li> out entirely rather than leaving an unresolved cross-reference.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Star Wars Animal Collection (Continued)</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+      <value>
+        <li>RUT_WebworkNestScatter</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

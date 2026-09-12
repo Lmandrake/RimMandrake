@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SHOKKWEAVE_SOLE_SOURCE_1. Adds the silk-knot scatter step globally, same
+  shape as src/RimUtinni/FungalSoilTrade/Patches/RUT_FungalSoilScatter_MapGenPatch.xml:
+  GenStep_ScatterWebworkSilk self-gates to RUT_Webwork in its own Generate()
+  override, so adding it to the shared base generator is safe - it silently
+  no-ops on every other biome's maps. No MayRequire needed: RUT_Webwork_SilkKnot
+  and its mineableThing (Hyperweave) are both core/self-owned.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+    <value>
+      <li>RUT_WebworkSilkScatter</li>
+    </value>
+  </Operation>
+
+</Patch>

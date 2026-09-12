@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  ShokkweaveHarvestNodes.xml       ShokkweaveEconomy - new file, SHOKKWEAVE_SOLE_SOURCE_1
+  ============================================================================
+
+  Build-order steps 4a/4c from shokkweave_sole_source_spec.md section 3
+  ("web-cutting", "nest raid") - the two of the three named harvest routes
+  that were NOT yet buildable as of the 2026-09-11 session (butchery, step 3,
+  already shipped in ShokkweaveButcherYield.xml). Both routes were blocked on
+  "unbuilt roster ThingDefs" per that session's honest gap note; rather than
+  wait on the full WEBWORK_MECHANICS_1 kit (RM_MapComponent_SenseWeb, the
+  roster's own web/anchor/gutter aesthetic Things - both still unbuilt,
+  gated behind ALPHA_MECHANICS_KIT_1's follow-on biome-content wave), this
+  ships two SELF-CONTAINED harvest nodes that need nothing from that kit:
+  a mineable silk vein (web-cutting) and a guarded lair (nest raid). They do
+  NOT replace the kit's own web/anchor/gutter decorative Things when those
+  land later - this is the economy's harvest route, that is the biome's
+  sensory network; the two can coexist.
+
+  Border creep-web (the 4th, ruled-in route) is NOT built here: it depends on
+  RM_MapComponent_FrontCreep, which is unbuilt (WEBWORK_MECHANICS_1 mechanic
+  #6, itself gated on RM_Gas_Transmuting content wiring). Left as owed on the
+  item.
+
+  Sole-source guard, addressed head-on: the spec's "beetle-destroyed and
+  combat-destroyed web drops NOTHING" rule is about the kit's own web/anchor
+  network Things (the SenseWeb registry nodes an anchor-beetle chews) - it is
+  not a rule about these two dedicated resource nodes. A deliberately-placed
+  mineable vein or a raided lair yielding its contents on destruction is
+  exactly how vanilla resource nodes already work (MineableSteel yields Steel
+  on either mining OR combat destruction, RimSage-verified against
+  RimWorld/Mineable.cs `Destroy(DestroyMode.KillFinalize)`); no special-casing
+  is invented here that vanilla mineables/lairs do not already have.
+
+  All yields/HP are INVENTED, expecting a live-balance pass (quicktest map,
+  never a cold load), per the item's own "don't invent numbers as fact" rule -
+  flagged inline, not presented as ruled.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- ROUTE: web-cutting. A mineable vein, same shape as MineableSteel
+       (ParentName="RockBase", RimSage-verified raw def) but softer (silk, not
+       rock) and lower-yield, scattered onto RUT_Webwork maps only via
+       RUT_WebworkSilkScatter (Defs/MapGeneration/ShokkweaveHarvestScatter.xml).
+       mineableThing is core Hyperweave (post-rename "shokkweave", ShokkweaveRename.xml) -
+       no MayRequire needed on this def. -->
+  <ThingDef ParentName="RockBase">
+    <defName>RUT_Webwork_SilkKnot</defName>
+    <label>knotted silk vein</label>
+    <description>A snarl of shokkweave, spun thick and left to harden along an anchor line the Wyyyschokk never returned to. Cutting it free is quick work - the line was abandoned, not guarded.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(214,205,182)</color>
+      <colorTwo>(235,228,210)</colorTwo>
+    </graphicData>
+    <statBases>
+      <!-- INVENTED: 80 vs MineableSteel's 1500 - silk, not rock; meant to be a
+           quick cut, not a mining project. -->
+      <MaxHitPoints>80</MaxHitPoints>
+    </statBases>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>Hyperweave</mineableThing>
+      <!-- INVENTED: midpoint of the spec's own "~2-5 per line-segment" range. -->
+      <mineableYield>4</mineableYield>
+      <mineableScatterCommonality>0.6</mineableScatterCommonality>
+      <mineableScatterLumpSizeRange>4~8</mineableScatterLumpSizeRange>
+      <veinMineable>true</veinMineable>
+    </building>
+  </ThingDef>
+
+  <!-- ROUTE: nest raid. A guarded lair, same comp combination vanilla Hive
+       uses (CanBeDormant + WakeUpDormant + SpawnerPawn, all RimSage-verified)
+       minus Hive's own insect-specific comps (SpawnerHives, jelly/pod
+       spawners) - this is a one-shot raid target, not a growing insect
+       colony. Reuses Hive's own texture path (Things/Building/Natural/Hive,
+       a base-game/Anomaly asset, always present) as placeholder art, flagged;
+       real bespoke silk-lair art is owed.
+
+       MayRequire guards the WHOLE def: it references the donor mod's own
+       Wyyyschokk PawnKindDef as its guardian, so if
+       mlie.starwarsanimalcollection is absent this def (and its cross-refs)
+       must not exist at all, not merely fail to resolve one field. -->
+  <ThingDef ParentName="BuildingNaturalBase" MayRequire="mlie.starwarsanimalcollection">
+    <defName>RUT_Webwork_Nest</defName>
+    <label>shokkweave nest</label>
+    <description>The heart of a Wyyyschokk's territory: silk and old kills, packed and hardened into something like a wall. Breaking it open is a fight, and a fortune - the mother does not leave a nest undefended.</description>
+    <graphicData>
+      <texPath>Things/Building/Natural/Hive</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.6</drawSize>
+    </graphicData>
+    <uiIconScale>0.65</uiIconScale>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <fillPercent>0.5</fillPercent>
+    <statBases>
+      <!-- INVENTED. -->
+      <MaxHitPoints>260</MaxHitPoints>
+      <Flammability>1</Flammability>
+    </statBases>
+    <pathCost>42</pathCost>
+    <receivesSignals>true</receivesSignals>
+    <blockWind>true</blockWind>
+    <tickerType>Normal</tickerType>
+    <passability>PassThroughOnly</passability>
+    <!-- The jackpot yield, per the spec's own "~40-80" nest range -
+         INVENTED midpoint, expects the same live-balance pass every other
+         number in this item carries. Fires on Kill/Destroy exactly like any
+         vanilla killedLeavings (e.g. Hive's own InsectJelly 30) - deliberate
+         raid or otherwise, matching how vanilla lairs already behave. -->
+    <killedLeavings>
+      <Hyperweave>60</Hyperweave>
+    </killedLeavings>
+    <comps>
+      <li Class="CompProperties_CanBeDormant">
+        <startsDormant>true</startsDormant>
+        <canWakeUpFogged>false</canWakeUpFogged>
+      </li>
+      <li Class="CompProperties_WakeUpDormant">
+        <!-- INVENTED: kit spec's own ambusher precedent used ~7; a fixed
+             lair reads a little further out. -->
+        <wakeUpCheckRadius>10</wakeUpCheckRadius>
+      </li>
+      <li Class="CompProperties_SpawnerPawn">
+        <spawnablePawnKinds>
+          <li>Wyyyschokk</li>
+        </spawnablePawnKinds>
+        <!-- LordJob_DefendAndExpandHive (RimSage-verified constructor takes
+             SpawnedPawnParams) is used for its DEFEND half only - no
+             CompProperties_SpawnerHives is attached, so the "expand" half of
+             the job has nothing to expand into; it degrades to a defend
+             point that escalates to aggressive/assault when harmed, which is
+             exactly the "defensive creature response" this route needs. -->
+        <lordJob>LordJob_DefendAndExpandHive</lordJob>
+        <!-- Wyyyschokk PawnKindDef combatPower is 600 (vendor source,
+             mlie.starwarsanimalcollection) - initialPawnsPoints spawns one
+             guardian immediately; maxSpawnedPawnsPoints leaves room for a
+             second if the first falls. INVENTED point budget, not a
+             balance ruling. -->
+        <initialPawnsPoints>600</initialPawnsPoints>
+        <maxSpawnedPawnsPoints>1200</maxSpawnedPawnsPoints>
+        <lordJoinRadius>10</lordJoinRadius>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
