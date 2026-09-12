@@ -97,3 +97,44 @@ actually looking.
 and the full explosive-growth engine (`EXPLOSIVE_PLANT_GROWTH_1`) are
 explicitly out of scope per this item's own spec — both consume this mod
 as a dependency rather than living inside it.
+
+## verified live 2026-09-12, FOUNDRY — closing
+
+Mod was not enabled anywhere (not on the live campaign list, no bridge
+session had it active). Built a lightweight custom quicktest mod list
+(minimal 25-mod base + `mandrake.rm.floodedcanyon`, avoiding the full
+597-mod campaign list — a `start_debug_game_ready` on the full list
+crashed the game outright mid-worldgen, matching the already-filed
+`NINEFOLD_DEBUG_GAME_READY_CRASH_1` signature: a burst of debug
+auto-research completions feeding the Ninefold satiation hook).
+
+Pre-seeded `Config/Mod_FloodedCanyon_RM_FloodedCanyonMod.xml` with
+`featureInOtherBiomes=true` so the cycle runs on the quicktest map's
+ordinary (non-canyon) biome without needing to land worldgen on the rare
+canyon biome by luck — settings-file editing is the correct route since
+`ModSettings` are read once at boot, same as any other mod config.
+
+**ON pass** (`floodCycleEnabled=true`): `Actions\Arm chime + flood soon`
+debug action → within 10 ticks, `Report flood state` showed
+`phase=Flooding activeFloodCells=400`; screenshot
+(`flood_test_1.png`) showed the "Canyon flood" condition live in the
+sidebar and a visibly distinct wet-terrain patch on the map — SEEN, not
+just logged. Stepped to `floodEndTick` (15003): `phase=Dry
+activeFloodCells=0 soakedCells=400` — the wall receded to soil and the
+soak-growth window is running, confirming the full
+chime→flood→recede cycle.
+
+**OFF pass** (`floodCycleEnabled=false`, fresh quicktest map, same
+list): `Report flood state` read `active=False` from settings alone;
+armed the chime and stepped 50 ticks — `phase` stayed `Dry` even after
+`nowTick` passed the armed `nextFloodTick`, proving the master toggle
+actually gates the mechanism rather than merely hiding UI.
+
+Reverted the settings file to shipped defaults
+(`featureInOtherBiomes=false`, `floodCycleEnabled=true`) before the
+final restore to the owner's full campaign list — this mod stays
+disabled there (never added to `ModsConfig.FULL.LATEST.xml`) until a
+future item enables it for real play.
+
+**Criteria met**: chime, flood, recede and the master on/off setting all
+observed running, live, for the first time. Closing.
