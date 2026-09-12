@@ -14,6 +14,12 @@ the Utinni as it flies on the worldmap."*
   `World/WorldObjects/Expanding/GravshipLaunchSite` for the launch site marker —
   optional second sprite, same pass.
 
+## What it looks like today (owner, in flight, 2026-09-12)
+*"It's currently a little pale blue dome-shaped thing."* That is vanilla's
+`Expanding/Gravship` sprite under the player-faction tint — the dome is the vanilla
+grav engine glyph, the pale blue is the tint. The replacement must read as OUR ship
+at that size: a ring with a hub, dark hull, no dome.
+
 ## spec
 - Art: a top-down silhouette of THE ship as it is now — the ring hull without booms
   (`design/Jawa/worldbuilding/ship_build/exported/Gravship_v2_ring_2026-09-12.xml`
