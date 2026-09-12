@@ -1,34 +1,28 @@
 {
- "generatedAt": "2026-09-11T18:33:00Z",
+ "generatedAt": "2026-09-11T19:56:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 489768,
-  "sha256_12": "db8a05d6a520"
+  "bytes": 521991,
+  "sha256_12": "5699d779f327"
  },
- "head": "feec8c4fa",
+ "head": "d04712072",
  "counts": {
   "red": 22,
-  "blue": 326,
-  "green": 1694,
-  "grey": 145,
-  "unmeasured": 0,
-  "total": 2187
+  "blue": 328,
+  "green": 0,
+  "grey": 0,
+  "unmeasured": 1851,
+  "total": 2201
  },
  "loc": {
   "red": 11787,
-  "blue": 122313,
-  "green": 654222,
-  "grey": 58515,
-  "unmeasured": 0,
-  "total": 846837
+  "blue": 121971,
+  "green": 0,
+  "grey": 0,
+  "unmeasured": 714111,
+  "total": 847869
  },
  "reviewEntries": 2123,
- "recidivists": [
-  {
-   "path": "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml",
-   "loc": 160,
-   "cycles": 1
-  }
- ],
+ "recidivists": [],
  "standalone": "Transient/codebase_health_artifact.html"
 }
