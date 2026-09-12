@@ -654,28 +654,28 @@
     "sha": "f3a684e1"
   },
   "src/RimMandrake/Aftermath/Source/AftermathPayloadFactionMode.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "3227aeffebb19f0b3767829ecc5c9b6d007c5771b231ccc3d84d50097807253d",
-    "sha": "f3a684e1"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "b709e17854e3994a3fbbf52f00547a29ea36a727d88217d84f9a793943dd974f",
+    "sha": "92b9cb7b3"
   },
   "src/RimMandrake/Aftermath/Source/AftermathRuleEligibility.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "3e28cc679950d47a9a95e1f6e3bffdcd3e368caee3f1ecf90c0aa9187d491329",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "5e039846fd40e3a4e3118b5747945e82729cd909a068bce7cb1d0d2b0cce30d4",
+    "sha": "92b9cb7b3"
   },
   "src/RimMandrake/Aftermath/Source/AftermathRuleRunner.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "57491d4e14edcf355013917aeda0659d118950b24f62d74abc10a4b35ab2a5bf",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "59d393254477f82eeb64f8f846b7dd3aa9965c0ade1983fe8ce10907d6791752",
+    "sha": "92b9cb7b3"
   },
   "src/RimMandrake/Aftermath/Source/AftermathTriggerKind.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "b46031993d8f144849f6c50f5141943f7b883f197a42b2b1b6637cea7f6efc98",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "123fa35f5e091cbb001b42caa142a85cd29773061b8cd170406902fa68afa147",
+    "sha": "92b9cb7b3"
   },
   "src/RimMandrake/Aftermath/Source/BattleOutcome.cs": {
     "cleanCount": 1,
@@ -756,10 +756,10 @@
     "sha": "5ed4b469"
   },
   "src/RimMandrake/Aftermath/Source/RM_AftermathRuleDef.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "836730fdada771b853c0cc66e078e526957d9ceca798fb1cc462995327bb2a2d",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "1dd6a5cd46927521359aa507ce0b05e64985c177b41c7f0004eb8b79d74245e0",
+    "sha": "92b9cb7b3"
   },
   "src/RimMandrake/Aftermath/Source/RM_AlliancePairDef.cs": {
     "cleanCount": 1,
@@ -768,10 +768,10 @@
     "sha": "f3a684e1"
   },
   "src/RimMandrake/Aftermath/Source/SelfTest/Program.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "46c4f5d0b2d4aa03ade8f47a9572a9f5ab619360ebb7fdce353fb55b66578664",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "d1ad034926431bc5091dbcce2c1f40870e29e1b0b9fead8bbbe6b0fcb48e3981",
+    "sha": "92b9cb7b3"
   },
   "src/RimMandrake/Aftermath/Source/SelfTest/RimMandrakeAftermath.SelfTest.csproj": {
     "cleanCount": 1,
