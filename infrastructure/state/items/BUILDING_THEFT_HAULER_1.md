@@ -1,3 +1,77 @@
+## 2026-09-12 (FOUNDRY) — DLL deploy confirmed done; mechanism re-verified, nothing wrong found
+
+Reclaimed off the queue (staleness audit said only a DLL redeploy and the
+live quicktest remained). Game was mid-cold-load this whole pass — per this
+session's own instruction, **no bridge calls attempted**, offline-only.
+
+**Deploy status: already done, not by this pass.** `deploy_custom_mods.py
+--mod RimProperty` (plan-only) reports "in sync (10 files)" — the DLL that
+09-09's note left locked mid-load is now byte-identical between repo and the
+live Mods folder (`md5sum` checked directly, both sides
+`ae9875757783aab87348ecb61a7f6682`, live copy timestamped Sep 12 01:25 —
+after 09-09's session, before this one). No `--apply` needed; nothing to fix
+here. `needs=deploy` from the prior note is CLOSED.
+
+**Mechanism re-verified against the actual C#, not just "compiles + matches
+dump"** (this pass's own explicit instruction, since 0 config errors only
+proves the def loaded, not that the job does the right thing):
+
+- **Whole building vs partial deconstruction — correct.** Both the float
+  menu gate (`FloatMenuOptionProvider_TheftHaulUninstall.GetSingleOptionFor`)
+  and the debug harness require `building.def.category == Building &&
+  building.def.Minifiable` before offering the job. `Minifiable` is exactly
+  vanilla's own whole-object-survives-intact flag (`MinifyUtility.MakeMinified`
+  refuses and logs a warning otherwise) — this can never target a plain
+  deconstruct-to-rubble object, only something that comes off whole as a
+  `MinifiedThing`. Matches the item's own criteria ("using vanilla's own
+  uninstall mechanics"), not the broader `wrecked_machines_resurrection.md`
+  vision of also cracking *normally-unminifiable* buildings via a droid-only
+  gate bypass — that line is real (doc line 77-78) but is NOT in this item's
+  own scope/criteria text, so treating it as a v2 gap rather than a v1 defect.
+- **Carry weight math — the "no override" claim checks out.** Read
+  `JobDriver_RemoveBuilding.MakeNewToils` (vanilla, via RimSage): uninstall
+  work is time-gated by `uninstallWork`/`ConstructionSpeed`, not mass:
+  hauling the resulting `MinifiedThing` afterward runs through vanilla's own
+  `HaulToStorageJob`/carry-capacity math with no bypass needed for a heavy
+  chassis to be "strong enough" — nothing in vanilla's hauling path blocks a
+  pawn from picking up one heavy item regardless of body size. Confirmed
+  `design/Jawa/wrecked_machines_resurrection.md` line 78 ("carry weight
+  scales with chassis") is a real, already-written future-pass line, not an
+  invented deferral — legitimately out of this item's v1 criteria.
+- **Failure mode — sane, not stuck, not a crash.** `JobDriver_
+  TheftHaulUninstall` adds no toils of its own; it inherits vanilla
+  `JobDriver_RemoveBuilding`'s own `FailOnForbidden`, `FailOnDestroyedNullOrForbidden`,
+  `FailOnCannotTouch`, and the live-explosive-wick check — an
+  interrupted/destroyed/no-longer-reachable target fails the job cleanly via
+  the same machinery `JobDriver_Uninstall` already relies on, nothing bespoke
+  to get wrong. `MinifyUtility.Uninstall()` (RimSage-read) returns `null` on
+  an unspawned/non-Minifiable thing and the driver's own `if (minified !=
+  null)` guard means a failed uninstall just skips the haul-enqueue rather
+  than NREing or queueing garbage.
+- **Ownership gating — re-traced against `PropertyEngine.Fire`/`IsAuthorized`
+  directly** (not just trusted from the comment): `IsAuthorized` returns true
+  for the actor's own claim and for Commons-claims shared by the actor's own
+  faction, false otherwise; the `Stolen` `RecordTransfer` for `Take`/`Strip`
+  only fires when `!WasAuthorized`. So `Fire()` runs unconditionally (as
+  designed — single source of truth) but produces no record and no
+  perception roll for an own-building uninstall. Matches item criteria
+  exactly.
+
+**No bugs found, nothing fixed, no rebuild needed.** `validate_patch.py`
+re-run fresh this pass against the live 592-mod dump (Data + Mods + Workshop
+roots): both TheftHauler patch files, **0 errors, 0 warnings**, all 5 xpaths
+(Muckraker + 4 DroidLoaders) matched live.
+
+**Still owed, unchanged:** the live droid-theft quicktest itself (droid
+uninstalls an unowned building → Stolen `ClaimRecord`; same droid on its own
+faction's building → no record) — genuinely reachable now (Droidworks +
+RimProperty both active on the live 592-mod list per 09-09's note, DLL now
+actually deployed), but this pass's own instruction was no bridge calls
+while the game is mid-cold-load. Leaving `doing`. Next session with a
+confirmed-reachable bridge: run it directly against a real chassis (Muckraker
+or one of the 4 DroidLoaders adds), not just the chassis-bypassing debug
+action, then close per the item's own `verify` section.
+
 ## 2026-09-09 (FOUNDRY) — re-verified after the RimProperty merge; Droidworks is now LIVE
 
 Claimed off the queue mid-restart (game rebooting twice tonight, owner's
