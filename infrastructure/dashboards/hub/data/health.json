@@ -1,26 +1,26 @@
 {
- "generatedAt": "2026-09-12T06:16:00Z",
+ "generatedAt": "2026-09-12T06:55:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 508777,
-  "sha256_12": "62648667fcab"
+  "bytes": 515803,
+  "sha256_12": "0334c8debc46"
  },
- "head": "facc17f68",
+ "head": "cd320df9c",
  "counts": {
   "red": 22,
-  "blue": 381,
+  "blue": 383,
   "green": 1669,
-  "grey": 198,
+  "grey": 226,
   "unmeasured": 0,
-  "total": 2270
+  "total": 2300
  },
  "loc": {
   "red": 11809,
-  "blue": 127791,
-  "green": 652561,
-  "grey": 64015,
+  "blue": 132676,
+  "green": 652296,
+  "grey": 64587,
   "unmeasured": 0,
-  "total": 856176
+  "total": 861368
  },
  "reviewEntries": 2153,
  "recidivists": [
@@ -30,8 +30,33 @@
    "cycles": 4
   },
   {
+   "path": "src/RimMandrake/Utils/check_canon.py",
+   "loc": 362,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimMandrake/Utils/selftest_check_canon.py",
+   "loc": 242,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimMandrake/Utils/doc_claims.py",
+   "loc": 241,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimMandrake/ShipVermin/Source/RM_CompVerminNest.cs",
+   "loc": 155,
+   "cycles": 1
+  },
+  {
    "path": "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml",
    "loc": 113,
+   "cycles": 1
+  },
+  {
+   "path": "src/RimMandrake/ShipVermin/Source/RM_ShipVermin.csproj",
+   "loc": 82,
    "cycles": 1
   }
  ],
