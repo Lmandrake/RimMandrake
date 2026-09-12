@@ -9616,10 +9616,10 @@
     "sha": "52dee04f"
   },
   "src/RimUtinni/AftermathRites/Defs/RM_AftermathRuleDefs.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "420db19364be75984fcdaca8d490700c41dd03dd787dbfe61edaeab52dcf684b",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "8a2e939e84a1a998b61435693b1e1a9c42e8b998f49c62b1e9cb1bbbed4bacf7",
+    "sha": "4b2d5854a"
   },
   "src/RimUtinni/AftermathRites/Defs/RM_AlliancePairDefs.xml": {
     "cleanCount": 2,
@@ -10678,10 +10678,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Weapons/RUT_RotSporeKit_MantisScythe.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "da6a00dba15a5626de639f90f77b966faeeb55cb9776300c93452527568c8d3d",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "4fb67d73776f420bcf35fd54e2bfba4e8ae7d20103dc18f4f2f501bc6fdd9c00",
+    "sha": "4b2d5854a"
   },
   "src/RimUtinni/RotSporeKit/Defs/ThingDefs_Weapons/RUT_RotSporeKit_ThrumbungusShroom.xml": {
     "cleanCount": 1,
@@ -11182,10 +11182,10 @@
     "sha": "e67f2cc0"
   },
   "src/RimUtinni/UtinniPatches/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "652b88673ede2fdae3deec1759a9d79041735cdb2b7888c8c4f9ab623a471895",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "266496884f184d34e6ae2e70217d82481f2fc697917fcea0f1dd26e88fafec0e",
+    "sha": "4b2d5854a"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/Jawa_BackgroundWater.xml": {
     "cleanCount": 2,
@@ -11452,10 +11452,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaFactionRoster.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "f4380ee6d4033dfe4ec1bfe3dbf387a81f295e9c321b4de51ee928f59b123a21",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "047b9f0d7658ae37f13dc4209e705f1e65b5777d0948790dd9d92888851b4639",
+    "sha": "4b2d5854a"
   },
   "src/RimUtinni/UtinniPatches/Defs/PrefabDefs/JawaGroundHulk.xml": {
     "cleanCount": 2,
@@ -11482,10 +11482,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Defs/ScenarioDefs/Scenario_Utinni.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "66131dab49d451aba88c3294d34e850c5f919c4e3b6a80be9c9ddb0d8127da4b",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-11",
+    "hash": "b477b74917fbe2ff4c91afbf0d337deab8efd31b67f1290f70f514af093f3fa4",
+    "sha": "4b2d5854a"
   },
   "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/JawaSaltCrust.xml": {
     "cleanCount": 2,
