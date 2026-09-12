@@ -8650,10 +8650,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Droidworks.csproj": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "6f51b6adf6056661ed43b64e11b3de52a4817ff7f5ba29d326cd0b5c3f85a93b",
-    "sha": "d0c985e6a"
+    "cleanCount": 4,
+    "date": "2026-09-12",
+    "hash": "51bf97db351a9d9d7c0a7803247ce0a543ecdf7181278189cbe65ed5daedbeee",
+    "sha": "d9f505eae"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/DroidworksBoltUtility.cs": {
     "cleanCount": 4,
