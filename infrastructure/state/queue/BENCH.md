@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T01:35:33Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-12T02:26:30Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -314,13 +314,3 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  MECHANICSCARDSSITTING1 — card sitting for the 2026-09-11 fan-out wave
 prose:    infrastructure/state/items/MECHANICS_CARDS_SITTING_1.md
-
-## RECORD_HUB_HEALTH_PROOF_1 Record codebase-health two-seat no-clobber proof on DASHBOARD_HUB_ARTIFACT_1
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Append the following as a new dated section on
-prose:    infrastructure/state/items/RECORD_HUB_HEALTH_PROOF_1.md
