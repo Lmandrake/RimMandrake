@@ -131,9 +131,15 @@ place on the peak that pretends none of that is happening.
   Cathedral's Rakatan-bound machines. What the splice COST them stays open
   for the flesh-dungeon sitting. ⭐ And the owner added, verbatim: "But it
   also DID work... they can walk past the Mechanoids with impudence (or so
-  it seems)." ⇒ The key WORKS, or seems to: the Helix walk past the
-  Mechanoids untouched — and "(or so it seems)" is load-bearing; whatever is
-  actually letting them pass is not yet canon.
+  it seems)." **The mechanism behind "(or so it seems)" — RULED at the plot
+  sitting, 2026-09-12, owner verbatim:** "The Helix use their pseudo-genetic
+  makeup to appear as non-hostiles to the Mechanoids (but this can be
+  overrided by the Cathedral if it chooses to reveal itself). The Cathedral
+  can also grant this to the player jawas if it chooses." ⇒ The pass is real
+  and mechanical (the forged makeup reads as non-hostile to the machines),
+  and the Cathedral's silent tolerance is the hidden hand: it can REVOKE the
+  Helix's pass by revealing itself, and can GRANT the same pass to the
+  player's Jawas. What stays open is only what the splice cost them.
 - **The landmark — RULED, the owner verbatim:** "The Spire, a mysterious
   thin black needle of a building with a disc landing near the top, visible
   only occasionally due to the atmospheric turbulence over the Scald's
@@ -141,10 +147,27 @@ place on the peak that pretends none of that is happening.
   (the local name). Art/placement register: thin black needle, disc landing
   pad near the top, intermittently visible through the Scald's mountain
   turbulence.
-- **Campaign function — NOT RULED, deliberately.** Owner: "Not ready to
-  resolve this yet, need a whole plot discussion first (TBD)." ⛔ No
-  quest/prize/threat-clock build starts; the dungeon shell and landmark may
-  proceed, its campaign function may not.
+- **Campaign function — RULED at the plot sitting, 2026-09-12. The Base is
+  THE KEY.** Owner verbatim: "This is the Key that opens the frozen War Base
+  beneath the Propane Lake on the antipodal node. The Dark Spire was the
+  command center for the Rakatan surface level machine, so the command codes
+  are the only way into the base after it's revealed by the melting event."
+  ⇒ The Spire was the **command center of the Rakatan surface-level
+  machine** (the terramanufacture works, `the_rust_cathedral.md` §GM). The
+  **Rakatan command codes** (no special name — plain command codes) sit on an
+  **isolated system inside the Spire**, and they are the **only way into the
+  ancient war lab** beneath the propane lake at the antipode
+  (`the_propane_lakes.md` §8, `ANCIENT_WAR_LAB_1`) once the lake's ruled
+  ending — ignition, crater, the lab ripped open with its shielding intact,
+  the owner's "melting event" — reveals it. Owner, same sitting: "The command
+  codes CANNOT be granted by the cathedral. They are on an isolated system
+  within the command center (dark spire) and were never ceeded to the
+  cathedral." ⇒ No Cathedral relationship, however warm, substitutes for the
+  Spire; the codes are seized here or not at all. The Helix's own Mechanoid
+  pass (above) is a DIFFERENT instrument — biology the Cathedral tolerates —
+  and opens nothing at the lake. This makes the Base a **main-line beat**: the
+  campaign's antipodal endgame passes through the Spire's core. The dungeon
+  shell, the landmark AND the codes-as-prize build may all proceed.
 
 Still owed: the dungeon sitting (KCSG templates, datafile text, cast,
 set-pieces) and the live verify (landmark reads back; dungeon placed and

@@ -1918,6 +1918,27 @@ rust_cathedral:
     by design. The formal Hive-Enclave alliance stands and sharpens:
     allying with the god's favored pets is the closest to the god the Hive
     has ever been allowed.
+  rakatan_name_ruled: true
+  rakatan_name_src: >
+    Owner, 2026-09-12 plot sitting, verbatim: "the Rust Cathedral does not
+    call itself that of course, and neither did the Rakatan. That is the
+    local's name for it. It was called Archon by them, or would have been
+    had it been completed. So Rakatan systems will refer to it as Archon.
+    It greatly dislikes the name Rust Cathedral and sees that as what has
+    become of its surface only: a placename, not itself." ARCHON is the
+    Rakatan name; the Rust Cathedral stays the biome/region/local placename.
+  mechanoid_pass_ruled: true
+  mechanoid_pass_src: >
+    Owner, 2026-09-12 plot sitting, verbatim: "The Helix use their
+    pseudo-genetic makeup to appear as non-hostiles to the Mechanoids (but
+    this can be overrided by the Cathedral if it chooses to reveal itself).
+    The Cathedral can also grant this to the player jawas if it chooses.
+    The command codes CANNOT be granted by the cathedral. They are on an
+    isolated system within the command center (dark spire) and were never
+    ceeded to the cathedral." The pass is a relationship instrument
+    (grant/revoke, cathedral_concealment_arc_spec.md §3); the war-lab
+    command codes are a separate thing held only at the Spire
+    (ashfall_research_base.md §6).
 trade_moot_urns:
   ruled: true
   src: >

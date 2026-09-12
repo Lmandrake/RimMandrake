@@ -218,6 +218,25 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
   lake. Found by the review (the lint's one single-tile island); ruled a place, not an
   accident: the reading is the lab's access standing above the fuel. Landmark + name
   owed at build; nothing else on the lake breaks the mirror.
+- ⭐ **AMENDMENT 2026-09-12 (plot sitting, owner verbatim — adds detail, changes no
+  ruling): the lab's gate, and who fires the ending.**
+  - **The gate.** After the crater event the lab's intact shielding stays LOCKED.
+    The only way in is the **Rakatan command codes** held on an isolated system
+    inside the Spire — the Ashfall Research Base, which "was the command center
+    for the Rakatan surface level machine, so the command codes are the only way
+    into the base after it's revealed by the melting event." The codes "CANNOT be
+    granted by the cathedral... were never ceeded to the cathedral"
+    (`ashfall_research_base.md` §6). ⇒ The war lab is a two-key dungeon: the
+    lake's ending opens the ground; the Spire's codes open the door.
+  - **The trigger.** "There will be multiple ways for the player to cause it. And
+    if they fail to do so, there may be automated ways for it to occur too.
+    Either way, no one will miss it. We will effectively have a 'cut scene.'
+    It's big enough that everyone on the planet will notice in some way." ⇒
+    Several player-caused routes (ignition from spacecraft interaction or
+    anything extremely hot, per the ruling above), an automated fallback if the
+    player never fires one, and a planet-wide, unmissable presentation — the
+    ending is guaranteed to happen and guaranteed to be seen. Build: rides
+    `ANCIENT_WAR_LAB_1`.
 
 ## 9. Artistic theme
 

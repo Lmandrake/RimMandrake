@@ -73,9 +73,12 @@
   the Ashfall Range; its datafiles carry the Helix–Assailant reveal (the forged
   adoption into the Rakatan line to control the Cathedral's old technology, and
   the active attempt to make the Contagion more robust — at planet-scale risk).
-  The Helix call it the Overdrive. Design:
-  `worldbuilding/ashfall_research_base.md`; campaign function (quest / prize /
-  threat clock) held for the owner.
+  The Helix call it the Overdrive; the locals call the landmark The Spire.
+  Campaign function RULED 2026-09-12: the Spire was the command center of the
+  Rakatan surface-level machine, and its isolated command codes — never ceded
+  to the Cathedral, ungrantable by it — are the only way into the antipode war
+  lab once the propane lake's crater event reveals it. Design:
+  `worldbuilding/ashfall_research_base.md` §6.
 - **Vault dungeons with the owner** (`VAULT_DUNGEON_CONCEPT_1`) — open design
   item.
 - v2 gravity wells: **the Sarlacc** (Anomaly pit-gate rebrand — confirmed
