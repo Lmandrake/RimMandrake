@@ -15,9 +15,11 @@ import hashlib
 import json
 import pathlib
 import sys
+from datetime import datetime, timezone
 
-REPO = pathlib.Path(__file__).resolve().parents[3]
-OUT = pathlib.Path(__file__).resolve().parent / "data"
+HERE = pathlib.Path(__file__).resolve().parent
+REPO = HERE.parents[2]
+OUT = HERE / "data"
 
 
 def fp(path: pathlib.Path) -> dict:
@@ -27,9 +29,14 @@ def fp(path: pathlib.Path) -> dict:
 
 
 def iso(loose: str) -> str:
-    # sources write "2026-09-11 16:58"; the contract wants ISO UTC (local
-    # clock — the sources stamp local time, good enough for age lamps)
-    return loose.replace(" ", "T") + (":00Z" if loose.count(":") == 1 else "Z")
+    # sources write "2026-09-11 16:58" in the SYSTEM'S LOCAL wall-clock time
+    # (datetime.now(), naive). The contract wants real UTC — a naive
+    # datetime's .astimezone() treats it as local time and converts, so this
+    # is an actual UTC conversion, not a relabeling. strftime always emits
+    # seconds, so the result is always a valid ISO-8601 stamp (no bare "Z"
+    # with no time component from a loose "HH:MM"-only input).
+    local = datetime.strptime(loose, "%Y-%m-%d %H:%M")
+    return local.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def health() -> None:
@@ -74,13 +81,23 @@ def maturity() -> None:
 
 def worldmap() -> None:
     # Fed by the newest dated verification under world/_audit/ — the
-    # post-freeze check of the frozen CSV against the canonical save.
-    src = REPO / "world/_audit/post_freeze_2026-09-11.json"
+    # post-freeze check of the frozen CSV against the canonical save. Glob
+    # for the newest post_freeze_*.json instead of pinning one date, so a
+    # later audit is picked up automatically instead of the tab silently
+    # going stale forever once a new one is written.
+    audits = sorted((REPO / "world/_audit").glob("post_freeze_*.json"))
+    if not audits:
+        raise FileNotFoundError("no world/_audit/post_freeze_*.json found")
+    src = audits[-1]
     v = json.loads(src.read_text())
+    # artifactUrl is hand-maintained data, not a literal in this script —
+    # see worldmap_config.json alongside this file (updated whenever the
+    # audit report is republished).
+    cfg = json.loads((HERE / "worldmap_config.json").read_text())
     OUT.joinpath("worldmap.json").write_text(json.dumps({
         "generatedAt": v["generatedAt"],
         "source": fp(src),
-        "artifactUrl": "https://claude.ai/code/artifact/f8b14a7a-b8ed-4787-8104-b055ebf2f45c",
+        "artifactUrl": cfg["artifactUrl"],
         "note": "Post-freeze verification: the frozen CSV matches the canonical save "
                 "on every engine field, 0/21872 tiles differ. Live save: "
                 "CANONICAL_ASHKARR_2026-09-09.rws.",

@@ -1,0 +1,4 @@
+{
+ "_comment": "Hand-maintained. Update artifactUrl whenever the worldmap audit report under world/_audit/ is republished (see the ashkarr-audit-artifact memory note) — make_tab_data.py reads this file instead of hardcoding the URL in source.",
+ "artifactUrl": "https://claude.ai/code/artifact/f8b14a7a-b8ed-4787-8104-b055ebf2f45c"
+}
