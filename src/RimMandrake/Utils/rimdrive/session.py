@@ -225,7 +225,17 @@ class Session(object):
 
     # ------------------------------------------------------------ reading
     def cell(self, x, z):
-        return self.call("rimworld/get_cell_info", x=x, z=z)["cell"]
+        """MEASURED live 2026-09-12: an out-of-bounds cell (a quicktest map
+        is smaller than the caller assumed) returns `success: false` with
+        NO `cell` key at all -- blindly indexing `["cell"]"` turned that
+        into a bare `KeyError` with no coordinate in it, which reads exactly
+        like an unrelated bug. Raise something a caller can actually act
+        on instead."""
+        r = self.call("rimworld/get_cell_info", x=x, z=z)
+        if not r.get("success"):
+            raise SessionError("get_cell_info(%d, %d) failed: %s"
+                               % (x, z, r.get("message")))
+        return r["cell"]
 
     def things_at(self, x, z):
         return [t.get("defName") for t in (self.cell(x, z).get("things") or [])]
@@ -292,13 +302,26 @@ class Session(object):
 
         # jawa/destroy_batch NEVER destroys pawns, by design (a bad rect must
         # not be able to kill a colonist). The only route to remove a spawned
-        # TEST pawn is: kill it (lethal jawa/damage; litter is never a player
-        # colonist, so the allowColonists safety rail never needs overriding),
-        # which turns it into a Corpse -- an Item, not a pawn -- then
-        # destroy_batch that.
+        # TEST pawn is: kill it (lethal jawa/damage), which turns it into a
+        # Corpse -- an Item, not a pawn -- then destroy_batch that.
+        #
+        # MEASURED live 2026-09-12: `allowColonists` MUST be True here. A
+        # modcheck component that spawns its own player-faction test walker
+        # (`spawn_pawn(..., hostile=False)`) tracks a genuine PlayerColony
+        # pawn as litter -- the original comment here ("litter is never a
+        # player colonist") was simply wrong for that real, common case.
+        # Without the override, `jawa/damage`'s safety rail silently refused
+        # the kill, and a pawn a test had just proven CAPTURED (contained,
+        # off the map) walked back onto the map alive when its container
+        # (the "thing" litter) was destroyed and dropped its contents --
+        # the sweep reported success while leaving a live pawn behind. This
+        # call site tracks ONLY pawns this session itself spawned as test
+        # fixtures; it is never a real, pre-existing colonist the owner
+        # cares about, so the rail this override bypasses is not protecting
+        # anything here.
         for l in pawns:
             self.call("jawa/damage", thingId=l["id"], damageDef="Bomb",
-                      amount=99999.0)
+                      amount=99999.0, allowColonists=True)
             if l["x"] is not None:
                 self.call("jawa/destroy_batch",
                           rects="%d,%d,1,1" % (l["x"], l["z"]), categories="Item")

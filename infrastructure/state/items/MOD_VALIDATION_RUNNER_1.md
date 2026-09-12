@@ -86,16 +86,44 @@ status recording, unconditional FULL restore in a `finally`), `cli.py`
   `run_selftests.py` sweep: 46/50 (same 4 pre-existing, unrelated
   failures as `RIMDRIVE_LIBRARY_BUILD_1` found before this).
 
-⏳ **NOT done: an actual live `modcheck run`.** Same reason as
-`RIMDRIVE_LIBRARY_BUILD_1` — the owner's live campaign was up throughout;
-a modlist swap to MINIMAL+mod needs a restart, which this seat does not
-call unilaterally on someone else's live session. `MOD_VALIDATION_PIT_PILOT_1`
-carries the actual pilot script and the rest of this gap. Left `doing`.
+## live run, RAN (FOUNDRY, 2026-09-12) — owner: "Take control, change the list, and keep going!"
 
-⚠️ **`swap_to_test_list()` is a known simplification**, flagged in its own
-docstring: it calls the plain `--minimal` swap rather than composing
-MINIMAL + the target mod's packageId (spec §2's literal ask) — the fixed
-`ModsConfig.MINIMAL.xml` snapshot has no per-mod parameter.
-Composing-and-writing that combined list is owed before the first REAL
-live run (correct today only for a mod needing nothing beyond the minimal
-mechanism list).
+Ran for real against Pits (see `MOD_VALIDATION_PIT_PILOT_1` for that mod's
+own findings) — via `runner.load_validation()` + `run_suite()` called
+directly against a live `rimdrive.Session`, NOT via `cli.py run`/
+`runner.run()`'s modlist-swap orchestration, which turned out to be
+unusable as written:
+
+- **`swap_to_test_list()` cannot run at all as `python.exe`** (the only
+  interpreter that can drive the actual bridge socket): it shells out to
+  `modlist_swap.py`, which imports `atomic_copy.py`, which imports `fcntl`
+  — POSIX-only, absent on Windows. `runner.run()`'s own modlist-swap path
+  is therefore currently DEAD for a real live run and needs a fix (spawn
+  `modlist_swap.py` under a real `python3`, not `sys.executable`) before
+  anything but the direct `load_validation`+`run_suite` route works.
+  Filed nowhere yet as its own item — do that before the next mod's pilot.
+- Same `fcntl`-only assumption existed in `modcheck.status` itself and DID
+  get fixed this session: `_lock`/`_unlock` now try `fcntl` and fall back
+  to `msvcrt` (a 1-byte lock, not a huge byte range — the first attempt at
+  that range raised `PermissionError` live; portalocker's convention of a
+  1-byte mutex is what actually works on Windows).
+- `run_suite()` used a hardcoded `anchor=(500, 500)`; out of bounds on a
+  174x174 quicktest map, and `Session.cell()` turned that into a bare
+  `KeyError` with no coordinate in it. Both fixed: anchor now queries
+  `jawa/map_info` for the map centre by default, and `cell()` raises a
+  message naming the coordinate and the failure.
+- `run_suite()` skipped `session.sweep()` entirely when a chain raised
+  during its own setup (before any `with t.component()`) — now wrapped in
+  `try/finally` so build-up/tear-down stays absolute even when the chain
+  itself is broken, not only when a component is.
+- Built `t.set_setting()` (the spec's own verb vocabulary named
+  `set_setting`; this build had missed it) — works in general (offline
+  selftests prove the contract), but the FIRST live target
+  (`PitsSettings`) turned out to be unreachable by it at all, because that
+  class uses `public static` fields. See `MOD_VALIDATION_PIT_PILOT_1` for
+  the live evidence; `rimworld/update_mod_settings`'s reflection needs to
+  walk static fields too, or mods need to stop using this pattern, before
+  `set_setting` is broadly useful.
+
+20/20 offline assertions still pass after every fix above (re-run each
+time); full repo sweep unchanged (46/50, same 4 pre-existing failures).

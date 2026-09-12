@@ -190,6 +190,32 @@ def t_expect_log_contains():
          verdict == FAIL, verdict)
 
 
+def t_set_setting():
+    suite = Suite("t_mod")
+
+    @suite.chain("c1")
+    def c1(t):
+        with t.component("toggle_off", toggle="fooEnabled"):
+            t.set_setting("some.mod", {"fooEnabled": False})
+
+    session = _fake_session()
+    session.call = lambda tool, **p: (
+        {"settings": {"fooEnabled": False}}
+        if tool == "rimworld/get_mod_settings" else {"success": True})
+    result = runner.run_suite(suite, session)
+    check("set_setting: passes when the read-back matches",
+         result["all_green"] is True)
+
+    session2 = _fake_session()
+    session2.call = lambda tool, **p: (
+        {"settings": {"fooEnabled": True}}   # did not take
+        if tool == "rimworld/get_mod_settings" else {"success": True})
+    result2 = runner.run_suite(suite, session2)
+    verdict = result2["chains"][0]["components"][0]["verdict"]
+    check("set_setting: fails when the setting did not actually take",
+         verdict == FAIL, verdict)
+
+
 def t_precondition_from_outside_the_script_is_refused():
     # spec §1: "a component whose preconditions came from outside the script
     # is a lint error" -- modelled here as the chain itself raising
@@ -355,6 +381,7 @@ TESTS = [
     t_unverified_write_taints_pass_but_is_not_a_failure,
     t_expect_pawn_despawned,
     t_expect_log_contains,
+    t_set_setting,
     t_precondition_from_outside_the_script_is_refused,
     t_mod_hash_changes_with_content,
     t_mod_hash_ignores_validation_py,

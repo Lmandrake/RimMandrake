@@ -168,7 +168,7 @@ def t_sweep_things_destroys_and_verifies_empty():
     def fake_call(tool, **p):
         seen.append((tool, p))
         if tool == "rimworld/get_cell_info":
-            return {"cell": {"things": []}}      # empty after the destroy
+            return {"success": True, "cell": {"things": []}}   # empty after the destroy
         return {"success": True}
 
     s.call = fake_call
@@ -211,6 +211,30 @@ def t_sweep_pawn_gone_counts_swept():
           result == {"swept": 1, "left": []}, result)
 
 
+def t_sweep_pawn_kill_overrides_the_colonist_safety_rail():
+    """MEASURED live 2026-09-12: a modcheck component's own player-faction
+    test walker is genuine PlayerColony litter, and jawa/damage's safety
+    rail silently refused to kill it without allowColonists=True -- the
+    pawn walked back onto the map alive when its container was destroyed.
+    This asserts the fix stays fixed."""
+    s = _bare_session()
+    seen = []
+
+    def fake_call(tool, **p):
+        seen.append((tool, p))
+        if tool == "jawa/list_pawns":
+            return {"pawns": []}
+        return {"success": True}
+
+    s.call = fake_call
+    s.track("pawn", "Pawn_1", x=9, z=9)
+    s.sweep()
+    damage_calls = [p for t, p in seen if t == "jawa/damage"]
+    check("sweep: killing litter passes allowColonists=True",
+          len(damage_calls) == 1 and damage_calls[0].get("allowColonists") is True,
+          damage_calls)
+
+
 def t_sweep_empty_litter_makes_no_calls():
     s = _bare_session()
     called = []
@@ -245,6 +269,7 @@ TESTS = [
     t_sweep_things_destroys_and_verifies_empty,
     t_sweep_pawn_still_alive_is_reported_left,
     t_sweep_pawn_gone_counts_swept,
+    t_sweep_pawn_kill_overrides_the_colonist_safety_rail,
     t_sweep_empty_litter_makes_no_calls,
     t_one_session_per_process,
 ]

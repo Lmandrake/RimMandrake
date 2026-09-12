@@ -7,10 +7,21 @@ FULL. **FULL restore is unconditional** -- it runs from a `finally`, so a
 crash mid-run never leaves the owner's mod list on the test configuration.
 
 This module is real orchestration code, not a simulation: `run()` shells out
-to `modlist_swap.py`, drives a live `rimdrive.Session`, and writes to
-`rimflow`. It has NOT been exercised against a live game as of 2026-09-12 --
-see MOD_VALIDATION_RUNNER_1's item file for why (the owner's live campaign
-was up throughout this build; a quicktest swap would have discarded it).
+to `modlist_swap.py` and `rimflow`, and drives a live `rimdrive.Session`.
+
+`run_suite()` (the part that actually drives the game) RAN LIVE 2026-09-12
+against the Pits mod -- see MOD_VALIDATION_PIT_PILOT_1's item file for that
+run's own findings. `run()`'s modlist-swap path (`swap_to_test_list()` /
+`restore_full()`) and the `rimflow` calls (`emit_verify()`/
+`file_findings()`) were fixed after a live crash (subprocess targets that
+need plain `python3` were being launched via `sys.executable`, which is
+`python.exe` in the process that can actually drive the bridge) but have
+NOT been re-exercised live after that fix -- the successful Pits run
+called `load_validation()`/`run_suite()` directly, bypassing `run()`'s
+orchestration entirely, once the swap path was found broken. Whoever next
+runs `cli.py run <mod>` for real is the first live test of the fixed
+subprocess targets.
+
 Every function below that does not itself need a socket is written to be
 called and asserted on in isolation, which is what `selftest.py` does.
 """
@@ -75,7 +86,7 @@ def restore_full():
     failure here is loud (non-zero exit propagates to the caller) but never
     swallowed, because leaving the owner's mod list on MINIMAL silently is
     exactly the failure mode this function exists to prevent."""
-    r = subprocess.run([sys.executable, MODLIST_SWAP, "--restore", "--apply"],
+    r = subprocess.run(["python3", MODLIST_SWAP, "--restore", "--apply"],
                        cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError("modlist_swap.py --restore --apply FAILED: %s"
@@ -90,7 +101,7 @@ def swap_to_test_list():
     owed to a follow-up once a real live run is scheduled (see the item
     file). For now this calls the plain `--minimal` swap, which is correct
     for a mod with no extra dependency beyond the minimal mechanism list."""
-    r = subprocess.run([sys.executable, MODLIST_SWAP, "--minimal", "--apply"],
+    r = subprocess.run(["python3", MODLIST_SWAP, "--minimal", "--apply"],
                        cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError("modlist_swap.py --minimal --apply FAILED: %s"
@@ -98,7 +109,19 @@ def swap_to_test_list():
     return r
 
 
-def run_suite(suite, session, debug=False, anchor=(500, 500)):
+def _default_anchor(session):
+    """MEASURED live 2026-09-12: a fixed guess (originally (500, 500)) was
+    out of bounds on a 174x174 quicktest map and `get_cell_info` raising a
+    bare `KeyError` on that made it look like an unrelated bug. Map centre
+    is always in-bounds regardless of quicktest size; ask the map rather
+    than guess a constant."""
+    r = session.call("jawa/map_info")
+    if not r.get("success"):
+        return 100, 100   # last-resort fallback if map_info itself fails
+    return r.get("sizeX", 200) // 2, r.get("sizeZ", 200) // 2
+
+
+def run_suite(suite, session, debug=False, anchor=None):
     """Run every chain in `suite` against an open `session`. Returns
     `{"chains": [...], "all_green": bool}`. Never raises on a component
     failure -- that is exactly what `suite.py`'s `component()` already
@@ -106,15 +129,30 @@ def run_suite(suite, session, debug=False, anchor=(500, 500)):
     entering any `with t.component()` (a genuine script bug, not a game
     result), which the caller should treat as RED and stop, per spec's own
     silence on that case being anything but a bug.
+
+    `anchor`: (x, z) to build the test area around. Defaults to the current
+    map's centre (queried live) rather than a hardcoded guess -- see
+    `_default_anchor`.
     """
     from suite import TestContext  # noqa: E402  (modcheck package, same dir)
+    if anchor is None:
+        anchor = _default_anchor(session)
     findings = []
     chains_out = []
     for name, fn in suite.chains:
         t = TestContext(session, anchor=anchor, debug=debug,
                         on_finding=findings.append)
-        fn(t)
-        session.sweep()
+        try:
+            fn(t)
+        finally:
+            # MEASURED live 2026-09-12: a chain that raises during its own
+            # SETUP (before any `with t.component()`) used to skip this
+            # entirely -- the pit it had already spawned sat on the map
+            # forever, and the NEXT run's read-backs got confused by a
+            # stale pit/pawn from a run that technically failed. Build-up
+            # and tear-down are absolute (spec 1b) even when the chain
+            # itself is broken, not only when its components are.
+            session.sweep()
         chains_out.append({"name": name,
                            "components": [c.as_dict() for c in t.components]})
     all_green = all(c["verdict"] == "PASS" or
@@ -129,7 +167,7 @@ def emit_verify(item_id, mod, config, result_summary, sheet_path, dry_run=False)
                 and c["verdict"] != "UNMEASURED")
     n_total = sum(len(chain["components"]) for chain in result_summary["chains"])
     result = "pass" if result_summary["all_green"] else "fail"
-    cmd = [sys.executable, RIMFLOW_CLI, "verify", item_id,
+    cmd = ["python3", RIMFLOW_CLI, "verify", item_id,
           "--result", result, "--config", config, "--evidence", sheet_path]
     if dry_run:
         return {"cmd": cmd, "n_pass": n_pass, "n_total": n_total}
@@ -145,7 +183,7 @@ def file_findings(item_id, mod, findings, dry_run=False):
     filed = []
     for c in findings:
         name = "MODCHECK_%s_%s" % (mod.upper(), c.name.upper())[:60]
-        cmd = [sys.executable, RIMFLOW_CLI, "finding", "--from", item_id,
+        cmd = ["python3", RIMFLOW_CLI, "finding", "--from", item_id,
               "--name", name, "--type", "modcheck-failure",
               "--severity", "major"]
         if dry_run:

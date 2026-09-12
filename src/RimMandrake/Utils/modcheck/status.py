@@ -14,12 +14,53 @@ Gate law (spec §4): the playtest offer path checks GREEN. No green, no
 playtest. A hash mismatch with no `declare minor` is STALE, full stop.
 """
 import contextlib
-import fcntl
 import hashlib
 import json
 import os
 import subprocess
 import time
+
+# `runner.py` (this module's caller for a live `modcheck run`) executes
+# under WINDOWS `python.exe` -- everything touching the actual bridge
+# socket must, per the WSL-loopback limitation in rimbridge_client.py -- so
+# `fcntl` (POSIX-only) is not always importable here, unlike in
+# `code_review_status.py`'s WSL-only context this module's lock pattern was
+# borrowed from. Fall back to `msvcrt` file locking on Windows. MEASURED
+# 2026-09-12: the first live `modcheck run` crashed on exactly this before
+# a single component ran.
+try:
+    import fcntl
+
+    def _lock(fd):
+        fcntl.flock(fd, fcntl.LOCK_EX)
+
+    def _unlock(fd):
+        fcntl.flock(fd, fcntl.LOCK_UN)
+except ImportError:
+    import msvcrt
+
+    # MEASURED live 2026-09-12: locking a huge byte range (1 GiB) on the
+    # LOCK file -- which is separate from the tmp file `save()` actually
+    # writes into, and stays empty or near-empty forever -- raised
+    # `PermissionError` from msvcrt on Windows; locking beyond a file's
+    # actual extent is not reliable there the way POSIX `flock` is. The
+    # portable fix every cross-platform-lock library uses: the lock file
+    # holds exactly one byte (write it if missing) and only that byte is
+    # ever locked. This file is a pure mutex -- the real content always
+    # lives in `LOG_PATH` itself, written by `save()` below.
+    def _ensure_one_byte(fd):
+        if os.fstat(fd).st_size < 1:
+            os.write(fd, b"\0")
+            os.fsync(fd)
+
+    def _lock(fd):
+        _ensure_one_byte(fd)
+        os.lseek(fd, 0, os.SEEK_SET)
+        msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
+
+    def _unlock(fd):
+        os.lseek(fd, 0, os.SEEK_SET)
+        msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(_HERE))))
@@ -70,10 +111,10 @@ def _locked():
     os.makedirs(os.path.dirname(LOCK_PATH), exist_ok=True)
     fd = os.open(LOCK_PATH, os.O_WRONLY | os.O_CREAT, 0o644)
     try:
-        fcntl.flock(fd, fcntl.LOCK_EX)
+        _lock(fd)
         yield
     finally:
-        fcntl.flock(fd, fcntl.LOCK_UN)
+        _unlock(fd)
         os.close(fd)
 
 
@@ -95,13 +136,13 @@ def save(data):
     fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
     try:
         try:
-            fcntl.flock(fd, fcntl.LOCK_EX)
+            _lock(fd)
             try:
                 body = json.dumps(data, indent=2, sort_keys=True) + "\n"
                 os.write(fd, body.encode("utf-8"))
                 os.fsync(fd)
             finally:
-                fcntl.flock(fd, fcntl.LOCK_UN)
+                _unlock(fd)
         finally:
             os.close(fd)
         os.replace(tmp, LOG_PATH)

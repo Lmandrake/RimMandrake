@@ -208,6 +208,28 @@ class TestContext(object):
         self._record("wait_ticks(%d)" % n, r)
         return r
 
+    def set_setting(self, mod_id, values, persist=False):
+        """Flip a mod's Mod Settings field(s) for the duration of THIS live
+        session -- `rimworld/update_mod_settings`. `persist=False` (the
+        default) applies the change in-memory only (`write=False`): a
+        test toggling `trapTriggerEnabled` off must never leave that
+        written to the owner's actual `ModSettings.xml` on disk. Verified
+        via an independent read-back (`rimworld/get_mod_settings`), never
+        the setter's own echoed values."""
+        if not self._guard():
+            return None
+        self.session.call("rimworld/update_mod_settings", modId=mod_id,
+                          values=values, write=persist)
+        got = self.session.call("rimworld/get_mod_settings", modId=mod_id)
+        settings = (got or {}).get("settings") or {}
+        ok = all(settings.get(k) == v for k, v in values.items())
+        self._record("set_setting(%s, %s)" % (mod_id, values), ok)
+        if not ok:
+            raise ExpectationFailed(
+                "update_mod_settings(%s, %s) did not take -- read back %s"
+                % (mod_id, values, settings))
+        return ok
+
     def bridge_call(self, tool, **params):
         """The escape valve. A mutation through here still owes its own
         `expect_*` afterward -- this does not pay a read-back for you."""
