@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T07:23:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T07:24:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -22,6 +22,15 @@ target:   v1
 kind:     task
 summary:  TIBANNASOURCECUT1 — cut the non-beldon tibanna sources
 prose:    infrastructure/state/items/TIBANNA_SOURCE_CUT_1.md
+
+## LIQUID_TYPES_SPIKES_1 Liquid-types spikes A-E now unblocked (cards ruled 2026-09-12: Scald FRESH + rivers flow OUT, coolant Other bucket, films IN v1): run the five spikes per design/RimMandrake/RM_liquid_types_mod.md section 8 — generator, extension+corrosion, body ignition, cold, consumer proof
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/LIQUID_TYPES_SPIKES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LIQUID_TYPES_SPIKES_1.md
 
 # IN PROGRESS
 
@@ -469,7 +478,7 @@ summary:  Per CLAUDE.md's own note: the two laws (text/menu authority only; the 
 prose:    infrastructure/state/items/ORACLE_CLIENT_CLAUDE_CODE_REWRITE_1.md
 
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -837,6 +846,16 @@ blocked:  mechanics built and committed at 5c80b1797677af906691d2d0f5dd331eb17f3
 summary:  Packet B9 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
 prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
 
+## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  wired RUT_WarLabReactorCore (CompIgniteCraterOnDestroy) + deployed; live ignition/save-load/world_commit quicktest owed
+summary:  - What it does: an in-game ignition event (thruster contact, a dropped reactor
+prose:    infrastructure/state/items/WAR_LAB_CRATER_HOOK_1.md
+
 ## GL_EMIT_FLOATRANGE_GENERIC_DROP_1 gl_emit.py silently drops any FloatRange field on a non-worldTileReq node type
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1068,13 +1087,3 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  - Remove the live swSarlacc landmark from tile 2920 (a
 prose:    infrastructure/state/items/SARLACC_WORLDMAP_RELOCATE_1.md
-
-## LIQUID_TYPES_SPIKES_1 Liquid-types spikes A-E now unblocked (cards ruled 2026-09-12: Scald FRESH + rivers flow OUT, coolant Other bucket, films IN v1): run the five spikes per design/RimMandrake/RM_liquid_types_mod.md section 8 — generator, extension+corrosion, body ignition, cold, consumer proof
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LIQUID_TYPES_SPIKES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LIQUID_TYPES_SPIKES_1.md

@@ -61,3 +61,44 @@ see `## criteria` above. Building against a guessed footprint risked the exact
 "patch a curated artifact via reallocation" trap this
 project has hit before (`patch-a-curated-artifact-never-reallocate` memory) — re-doing
 the tile set later would churn work that should have waited.
+
+## XML wiring (FOUNDRY, 2026-09-12 — reclaimed from stale-queue audit)
+
+The C# (`CompIgniteCraterOnDestroy`/`GameComponent_WarLabCrater`/
+`WarLabCraterMutation`, commit `5e2f5084e`, marked CLEAN `f4c56cd19`) was built and
+reviewed 2026-09-11 but never attached to any def — the 2026-09-11 note is explicit:
+"not wired to any def yet, no such reactor-core thing exists." No candidate def
+existed anywhere in the war lab's authored XML (`RUT_WarLabArchive`,
+`RUT_WarLabContainmentCell` are inert narrative props, not ignition sources), so
+this pass authored the missing def rather than guess an existing one:
+
+- **New**: `src/RimUtinni/StructureInjectionsRUT/Defs/WarLab/ThingDefs_Buildings/RUT_WarLabReactorCore.xml`
+  — `RUT_WarLabReactorCore`, the "dropped reactor core" ignition source
+  `wasteland.md` §10 option 4 names by name. Modeled on vanilla `AncientGravReactor`
+  (art reuse, `CompProperties_Explosive` so damage/heat can detonate it), at the
+  narrative-anchor (1,1) footprint convention `RUT_WarLabArchive`/
+  `RUT_WarLabContainmentCell` already use. Carries
+  `RimMandrake.Utinni.StructureInjectionsRUT.CompProperties_IgniteCraterOnDestroy`,
+  so any destruction path (its own explosion included) fires
+  `WarLabCraterMutation.Ignite()` via `PostDestroy`.
+- **Validated**: `validate_patch.py --live` against the 2026-09-12T07:12:37Z live
+  dump (592 mods, 69709 defNames) plus a fuller pass with `--defs` over
+  RimWorld/Data + Workshop + Mods and `--mods-config`: 0 errors. Two expected,
+  non-actionable warnings: the vanilla `texPath` can't be confirmed loose-file-side
+  (Unity asset bundle, matches `AncientGravReactor`'s own def verbatim) and the
+  custom `Class=` can't be resolved by a static XML scan (it's this mod's own
+  compiled DLL — confirmed public via reading the C# source directly).
+- **Deployed**: `deploy_custom_mods.py --apply` — `+ Defs/WarLab/ThingDefs_Buildings/RUT_WarLabReactorCore.xml`,
+  verified in sync. Mod is currently not enabled in the live `ModsConfig.xml`
+  (minimal-list regime); deployment does not depend on that.
+
+**NOT DONE — honestly owed, needs a live bridge quicktest this pass did not have**:
+- The def is not yet placed via any GenStep/SymbolDef into the war lab's KCSG
+  layout, nor given a way to reach the player's hands (no recipe, no loot
+  placement, no quest reward) — that staging belongs to whoever finishes the war
+  lab's own local-map ending (`ANCIENT_WAR_LAB_1`), not this item's scope.
+- Every `## verify` box below is still unchecked: ignition-fires-mutation on a
+  quicktest map, save/load persistence, `world_commit`'s in-process cache-regen
+  confirmed by screenshot, and confirming no tile outside the propane lake's
+  footprint is touched. None of this can be honestly claimed from an offline pass —
+  filing `rimflow block` rather than `close` for exactly this reason.
