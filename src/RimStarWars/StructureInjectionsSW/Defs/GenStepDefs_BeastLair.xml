@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Giant-beast nest/lair - structure_procedural_spec.md section 8.11.
+       INHABITED_AUGMENTATION_BUILD_1, built under commit 4ee3a58e8, wired
+       here (same GenStep_RimplacePlan replay shape as every sibling
+       responder). Replays Templates/beast_lair.txt (rimplace export of
+       design/Jawa/templates/beast_lair.lua: 24x24, default params (read=nest,
+       rock_side unset -> open-desert nest, beast_kind=Thrumbo), seed 0 - the
+       plan header carries the exact bake) via mandrake.rm.injections'
+       GenStep_RimplacePlan. Full lint sweep before this export: 0 findings
+       (no WARN, no ERROR) across seeds 0-9 at the 32x32 production canvas,
+       seeds 0-4 at the exact 24x24 minimum, all 4 rock_side values, both
+       dressing options, brood, pod=3, read=graveyard and beast_kind=AlphaThrumbo. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_BeastLair</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/beast_lair.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>

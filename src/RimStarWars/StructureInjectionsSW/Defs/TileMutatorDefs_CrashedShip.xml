@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Crashed Ship - structure_procedural_spec.md section 8.9. Same
+       extraGenSteps responder shape as every prior batch: the two
+       Inhabited steps ride under MayRequire so a tile that also holds a
+       WorldObject_Inhabited place gets its cast and salvaged goods dropped
+       inside the hull (both steps no-op on a tile without one) - the
+       template's own crew/pilot remains (SpaceRefugee) are separate,
+       always-placed corpses baked into the plan itself, not the Inhabited
+       cast.
+
+       The template's own heading param defaults to "E" and the exported
+       bake was taken at that default, so this responder reads best on a
+       tile whose long axis runs east-west.
+
+       NOT YET PLACED on any Ash'karr tile - same deferral as every prior
+       batch. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_CrashedShip</defName>
+    <label>crashed ship</label>
+    <description>A one-deck starship broken open on the ground, bow furrow still scored into the sand. Cockpit, crew berth and hold, roof torn through in two places - whoever was aboard didn't all make it out.</description>
+    <extraGenSteps>
+      <li>RSW_GenStep_CrashedShip</li>
+      <li MayRequire="mandrake.rm.inhabited">Inhabited_Cast</li>
+      <li MayRequire="mandrake.rm.inhabited">RM_InhabitedStock</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

@@ -1,0 +1,429 @@
+# rimplace flat plan v2
+# template  beast_lair (sha 5c88182bab37cdae)
+# min_rect  24x24   baked at 24x24
+FOOTPRINT	0	0	24	24
+CLEAR	-1	-1	26	26	soft
+CLEAR	0	0	24	24	all
+CLEAR	12	12	1	1	all
+CLEAR	12	13	1	1	all
+CLEAR	11	12	1	1	all
+CLEAR	10	12	1	1	all
+CLEAR	10	11	1	1	all
+CLEAR	9	11	1	1	all
+CLEAR	9	10	1	1	all
+CLEAR	10	10	1	1	all
+CLEAR	11	10	1	1	all
+CLEAR	11	9	1	1	all
+CLEAR	12	9	1	1	all
+CLEAR	12	10	1	1	all
+CLEAR	13	9	1	1	all
+CLEAR	13	8	1	1	all
+CLEAR	13	10	1	1	all
+CLEAR	11	8	1	1	all
+CLEAR	12	8	1	1	all
+CLEAR	10	8	1	1	all
+CLEAR	10	7	1	1	all
+CLEAR	10	9	1	1	all
+CLEAR	8	11	1	1	all
+CLEAR	8	10	1	1	all
+CLEAR	9	9	1	1	all
+CLEAR	12	11	1	1	all
+CLEAR	11	11	1	1	all
+CLEAR	14	8	1	1	all
+CLEAR	14	9	1	1	all
+CLEAR	14	10	1	1	all
+CLEAR	15	10	1	1	all
+CLEAR	15	11	1	1	all
+CLEAR	15	12	1	1	all
+CLEAR	14	12	1	1	all
+CLEAR	14	11	1	1	all
+CLEAR	16	11	1	1	all
+CLEAR	15	9	1	1	all
+CLEAR	16	9	1	1	all
+CLEAR	16	8	1	1	all
+CLEAR	15	8	1	1	all
+CLEAR	16	10	1	1	all
+CLEAR	17	10	1	1	all
+CLEAR	17	11	1	1	all
+CLEAR	17	12	1	1	all
+CLEAR	17	13	1	1	all
+CLEAR	17	14	1	1	all
+CLEAR	18	14	1	1	all
+CLEAR	18	15	1	1	all
+CLEAR	17	15	1	1	all
+CLEAR	17	16	1	1	all
+CLEAR	17	17	1	1	all
+CLEAR	17	18	1	1	all
+CLEAR	18	18	1	1	all
+CLEAR	19	18	1	1	all
+CLEAR	19	19	1	1	all
+CLEAR	18	19	1	1	all
+CLEAR	19	20	1	1	all
+CLEAR	19	21	1	1	all
+CLEAR	18	21	1	1	all
+CLEAR	18	22	1	1	all
+CLEAR	19	22	1	1	all
+CLEAR	19	23	1	1	all
+CLEAR	18	23	1	1	all
+CLEAR	17	23	1	1	all
+CLEAR	17	21	1	1	all
+CLEAR	20	22	1	1	all
+CLEAR	21	22	1	1	all
+CLEAR	21	21	1	1	all
+CLEAR	21	20	1	1	all
+CLEAR	20	21	1	1	all
+CLEAR	18	20	1	1	all
+CLEAR	20	20	1	1	all
+CLEAR	19	17	1	1	all
+CLEAR	20	17	1	1	all
+CLEAR	20	16	1	1	all
+CLEAR	19	16	1	1	all
+CLEAR	18	16	1	1	all
+CLEAR	18	17	1	1	all
+CLEAR	21	17	1	1	all
+CLEAR	22	17	1	1	all
+CLEAR	17	19	1	1	all
+CLEAR	17	20	1	1	all
+CLEAR	16	19	1	1	all
+CLEAR	16	20	1	1	all
+CLEAR	16	21	1	1	all
+CLEAR	15	21	1	1	all
+CLEAR	15	20	1	1	all
+CLEAR	15	19	1	1	all
+CLEAR	14	19	1	1	all
+CLEAR	14	20	1	1	all
+CLEAR	13	20	1	1	all
+CLEAR	14	21	1	1	all
+CLEAR	15	22	1	1	all
+CLEAR	14	22	1	1	all
+CLEAR	13	22	1	1	all
+CLEAR	13	21	1	1	all
+CLEAR	14	23	1	1	all
+CLEAR	15	23	1	1	all
+CLEAR	16	23	1	1	all
+CLEAR	16	22	1	1	all
+CLEAR	17	22	1	1	all
+CLEAR	19	15	1	1	all
+CLEAR	19	14	1	1	all
+CLEAR	20	15	1	1	all
+CLEAR	19	13	1	1	all
+CLEAR	18	13	1	1	all
+CLEAR	16	15	1	1	all
+CLEAR	16	14	1	1	all
+CLEAR	16	13	1	1	all
+CLEAR	15	14	1	1	all
+CLEAR	15	15	1	1	all
+CLEAR	14	15	1	1	all
+CLEAR	13	15	1	1	all
+CLEAR	13	16	1	1	all
+CLEAR	13	14	1	1	all
+CLEAR	14	14	1	1	all
+CLEAR	14	16	1	1	all
+CLEAR	14	17	1	1	all
+CLEAR	15	17	1	1	all
+CLEAR	16	17	1	1	all
+CLEAR	16	18	1	1	all
+CLEAR	15	18	1	1	all
+CLEAR	13	19	1	1	all
+CLEAR	12	19	1	1	all
+CLEAR	12	20	1	1	all
+CLEAR	13	18	1	1	all
+CLEAR	14	18	1	1	all
+CLEAR	12	21	1	1	all
+CLEAR	12	22	1	1	all
+CLEAR	11	21	1	1	all
+CLEAR	10	21	1	1	all
+CLEAR	12	18	1	1	all
+CLEAR	13	23	1	1	all
+CLEAR	12	23	1	1	all
+CLEAR	11	22	1	1	all
+CLEAR	10	22	1	1	all
+CLEAR	11	23	1	1	all
+CLEAR	11	20	1	1	all
+CLEAR	11	19	1	1	all
+CLEAR	10	19	1	1	all
+CLEAR	9	19	1	1	all
+CLEAR	8	19	1	1	all
+CLEAR	8	20	1	1	all
+CLEAR	9	20	1	1	all
+CLEAR	10	20	1	1	all
+CLEAR	11	18	1	1	all
+CLEAR	9	21	1	1	all
+CLEAR	8	21	1	1	all
+CLEAR	7	21	1	1	all
+CLEAR	6	21	1	1	all
+CLEAR	6	22	1	1	all
+CLEAR	6	23	1	1	all
+CLEAR	5	23	1	1	all
+CLEAR	7	23	1	1	all
+CLEAR	7	22	1	1	all
+CLEAR	8	22	1	1	all
+CLEAR	5	22	1	1	all
+CLEAR	5	21	1	1	all
+CLEAR	4	23	1	1	all
+CLEAR	4	22	1	1	all
+CLEAR	4	21	1	1	all
+CLEAR	3	23	1	1	all
+CLEAR	3	22	1	1	all
+CLEAR	2	23	1	1	all
+CLEAR	1	23	1	1	all
+CLEAR	0	23	1	1	all
+CLEAR	0	22	1	1	all
+CLEAR	0	21	1	1	all
+CLEAR	1	21	1	1	all
+CLEAR	1	22	1	1	all
+CLEAR	2	22	1	1	all
+CLEAR	2	21	1	1	all
+CLEAR	7	20	1	1	all
+CLEAR	7	19	1	1	all
+CLEAR	7	18	1	1	all
+CLEAR	7	17	1	1	all
+CLEAR	8	17	1	1	all
+CLEAR	8	18	1	1	all
+CLEAR	9	18	1	1	all
+CLEAR	10	18	1	1	all
+CLEAR	11	17	1	1	all
+CLEAR	12	17	1	1	all
+CLEAR	13	17	1	1	all
+CLEAR	12	16	1	1	all
+CLEAR	10	17	1	1	all
+CLEAR	9	17	1	1	all
+CLEAR	9	16	1	1	all
+CLEAR	9	15	1	1	all
+CLEAR	8	15	1	1	all
+CLEAR	8	16	1	1	all
+CLEAR	7	16	1	1	all
+CLEAR	6	16	1	1	all
+CLEAR	6	17	1	1	all
+CLEAR	5	17	1	1	all
+CLEAR	5	16	1	1	all
+CLEAR	5	18	1	1	all
+CLEAR	5	19	1	1	all
+CLEAR	4	18	1	1	all
+CLEAR	3	18	1	1	all
+CLEAR	2	18	1	1	all
+CLEAR	2	19	1	1	all
+CLEAR	2	17	1	1	all
+CLEAR	2	16	1	1	all
+CLEAR	3	16	1	1	all
+CLEAR	3	17	1	1	all
+CLEAR	3	19	1	1	all
+CLEAR	4	17	1	1	all
+CLEAR	4	16	1	1	all
+CLEAR	4	15	1	1	all
+CLEAR	3	15	1	1	all
+CLEAR	3	14	1	1	all
+CLEAR	4	14	1	1	all
+CLEAR	5	14	1	1	all
+CLEAR	5	15	1	1	all
+CLEAR	2	14	1	1	all
+CLEAR	1	14	1	1	all
+CLEAR	0	14	1	1	all
+CLEAR	0	13	1	1	all
+CLEAR	1	13	1	1	all
+CLEAR	1	15	1	1	all
+CLEAR	0	15	1	1	all
+CLEAR	0	16	1	1	all
+CLEAR	0	17	1	1	all
+CLEAR	0	18	1	1	all
+CLEAR	0	19	1	1	all
+CLEAR	0	20	1	1	all
+CLEAR	1	18	1	1	all
+CLEAR	1	17	1	1	all
+CLEAR	1	16	1	1	all
+CLEAR	2	15	1	1	all
+CLEAR	6	15	1	1	all
+CLEAR	6	14	1	1	all
+CLEAR	6	13	1	1	all
+CLEAR	6	12	1	1	all
+CLEAR	5	12	1	1	all
+CLEAR	5	11	1	1	all
+CLEAR	4	11	1	1	all
+CLEAR	4	10	1	1	all
+CLEAR	5	10	1	1	all
+CLEAR	4	12	1	1	all
+CLEAR	3	12	1	1	all
+CLEAR	2	12	1	1	all
+CLEAR	2	13	1	1	all
+CLEAR	1	19	1	1	all
+CLEAR	5	13	1	1	all
+CLEAR	7	13	1	1	all
+CLEAR	7	14	1	1	all
+CLEAR	7	12	1	1	all
+CLEAR	8	13	1	1	all
+CLEAR	9	13	1	1	all
+CLEAR	9	14	1	1	all
+CLEAR	10	14	1	1	all
+CLEAR	11	14	1	1	all
+CLEAR	12	14	1	1	all
+CLEAR	13	13	1	1	all
+CLEAR	14	13	1	1	all
+CLEAR	11	13	1	1	all
+CLEAR	13	12	1	1	all
+CLEAR	13	11	1	1	all
+CLEAR	15	13	1	1	all
+CLEAR	16	12	1	1	all
+CLEAR	16	16	1	1	all
+CLEAR	10	13	1	1	all
+CLEAR	10	15	1	1	all
+CLEAR	15	7	1	1	all
+CLEAR	15	6	1	1	all
+CLEAR	14	6	1	1	all
+CLEAR	13	6	1	1	all
+CLEAR	12	6	1	1	all
+CLEAR	13	7	1	1	all
+CLEAR	14	7	1	1	all
+CLEAR	13	5	1	1	all
+CLEAR	13	4	1	1	all
+CLEAR	13	3	1	1	all
+CLEAR	14	3	1	1	all
+CLEAR	14	4	1	1	all
+CLEAR	15	4	1	1	all
+CLEAR	12	4	1	1	all
+CLEAR	15	3	1	1	all
+CLEAR	16	4	1	1	all
+CLEAR	16	3	1	1	all
+CLEAR	17	3	1	1	all
+CLEAR	15	5	1	1	all
+CLEAR	16	5	1	1	all
+CLEAR	17	5	1	1	all
+CLEAR	16	6	1	1	all
+CLEAR	14	5	1	1	all
+CLEAR	13	2	1	1	all
+CLEAR	12	3	1	1	all
+CLEAR	11	3	1	1	all
+CLEAR	10	3	1	1	all
+CLEAR	9	3	1	1	all
+CLEAR	9	4	1	1	all
+CLEAR	8	4	1	1	all
+CLEAR	8	3	1	1	all
+CLEAR	9	2	1	1	all
+CLEAR	9	1	1	1	all
+CLEAR	8	2	1	1	all
+CLEAR	7	2	1	1	all
+CLEAR	9	5	1	1	all
+CLEAR	8	5	1	1	all
+CLEAR	8	6	1	1	all
+CLEAR	7	5	1	1	all
+CLEAR	7	4	1	1	all
+CLEAR	10	4	1	1	all
+CLEAR	11	4	1	1	all
+CLEAR	10	5	1	1	all
+CLEAR	10	6	1	1	all
+CLEAR	9	6	1	1	all
+CLEAR	11	7	1	1	all
+CLEAR	11	6	1	1	all
+CLEAR	12	5	1	1	all
+CLEAR	12	2	1	1	all
+CLEAR	11	2	1	1	all
+CLEAR	11	5	1	1	all
+CLEAR	12	7	1	1	all
+CLEAR	9	8	1	1	all
+CLEAR	8	8	1	1	all
+CLEAR	7	8	1	1	all
+CLEAR	7	9	1	1	all
+CLEAR	7	10	1	1	all
+CLEAR	6	10	1	1	all
+CLEAR	6	9	1	1	all
+CLEAR	6	11	1	1	all
+CLEAR	8	12	1	1	all
+CLEAR	9	12	1	1	all
+CLEAR	15	16	1	1	all
+CLEAR	12	15	1	1	all
+CLEAR	11	15	1	1	all
+CLEAR	11	16	1	1	all
+CLEAR	6	18	1	1	all
+CLEAR	7	15	1	1	all
+CLEAR	8	14	1	1	all
+CLEAR	7	11	1	1	all
+CLEAR	9	7	1	1	all
+CLEAR	8	7	1	1	all
+CLEAR	7	7	1	1	all
+CLEAR	4	13	1	1	all
+CLEAR	4	9	1	1	all
+CLEAR	4	8	1	1	all
+CLEAR	3	8	1	1	all
+CLEAR	3	7	1	1	all
+CLEAR	2	8	1	1	all
+CLEAR	2	7	1	1	all
+CLEAR	1	8	1	1	all
+CLEAR	4	7	1	1	all
+CLEAR	4	6	1	1	all
+TERRAIN	1	10	PackedDirt
+TERRAIN	2	9	PackedDirt
+TERRAIN	2	10	PackedDirt
+TERRAIN	3	9	PackedDirt
+TERRAIN	3	10	PackedDirt
+TERRAIN	3	11	PackedDirt
+TERRAIN	4	10	PackedDirt
+TERRAIN	4	11	PackedDirt
+TERRAIN	5	10	PackedDirt
+TERRAIN	5	11	PackedDirt
+TERRAIN	6	10	PackedDirt
+TERRAIN	6	11	PackedDirt
+TERRAIN	7	11	PackedDirt
+TERRAIN	8	12	PackedDirt
+TERRAIN	9	11	PackedDirt
+TERRAIN	9	12	PackedDirt
+TERRAIN	10	10	SoftSand
+TERRAIN	10	11	PackedDirt
+TERRAIN	10	12	SoftSand
+TERRAIN	10	13	SoftSand
+TERRAIN	10	14	SoftSand
+TERRAIN	11	10	SoftSand
+TERRAIN	11	11	PackedDirt
+TERRAIN	11	12	PackedDirt
+TERRAIN	11	13	PackedDirt
+TERRAIN	11	14	SoftSand
+TERRAIN	12	10	SoftSand
+TERRAIN	12	11	PackedDirt
+TERRAIN	12	12	PackedDirt
+TERRAIN	12	13	PackedDirt
+TERRAIN	12	14	SoftSand
+TERRAIN	13	10	SoftSand
+TERRAIN	13	11	PackedDirt
+TERRAIN	13	12	PackedDirt
+TERRAIN	13	13	PackedDirt
+TERRAIN	13	14	SoftSand
+TERRAIN	14	10	SoftSand
+TERRAIN	14	11	SoftSand
+TERRAIN	14	12	SoftSand
+TERRAIN	14	13	SoftSand
+TERRAIN	14	14	SoftSand
+THING	Hay	13	12	0	-
+THING	Hay	12	12	0	-
+THING	Hay	13	13	0	-
+THING	Filth_AnimalFilth	11	11	0	-
+THING	Filth_AnimalFilth	12	11	0	-
+THING	Filth_AnimalFilth	13	11	0	-
+THING	Filth_AnimalFilth	11	12	0	-
+THING	Filth_AnimalFilth	12	12	0	-
+THING	Filth_AnimalFilth	13	12	0	-
+THING	Filth_AnimalFilth	11	13	0	-
+THING	Filth_AnimalFilth	12	13	0	-
+THING	ChunkSandstone	7	13	0	-
+THING	ChunkSandstone	7	12	0	-
+THING	ChunkSandstone	8	12	0	-
+THING	ChunkSandstone	8	10	0	-
+THING	ChunkSandstone	7	11	0	-
+THING	ChunkSandstone	7	10	0	-
+THING	ChunkSandstone	10	14	0	-
+THING	ChunkSandstone	7	14	0	-
+THING	ChunkGranite	10	11	0	-
+THING	ChunkGranite	11	13	0	-
+THING	ChunkGranite	8	11	0	-
+THING	ChunkGranite	8	13	0	-
+THING	ChunkGranite	10	13	0	-
+THING	Filth_RubbleRock	10	11	0	-
+THING	Filth_RubbleRock	10	10	0	-
+THING	Filth_RubbleRock	11	12	0	-
+THING	Skull	6	13	0	-
+THING	Skull	11	14	0	-
+THING	AncientWoodenCrate	9	12	0	-
+THING	Filth_Blood	3	10	0	-
+THING	Filth_Blood	2	10	0	-
+THING	Filth_Blood	6	11	0	-
+THING	ChunkSlagSteel	0	9	0	-
+THING	Bedroll	1	8	0	-
+THING	Filth_MoldyUniform	1	8	0	-
+PAWN	Thrumbo	12	12	wild	alive
