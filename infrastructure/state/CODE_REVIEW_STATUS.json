@@ -3360,10 +3360,10 @@
     "sha": "250be7a3"
   },
   "src/RimMandrake/ShipVermin/About/About.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "fbe4bab6ae1318563e3a65ccd6bbd3a4ca72fa39b2623b75719783bd722be77f",
-    "sha": "661843c1a"
+    "hash": "a255d1af2517256b40f621e73da9192b46af6fb845f0c492c259cf545208ea9c",
+    "sha": "96156db67"
   },
   "src/RimMandrake/ShipVermin/Patches/RSW_Mynock_ShipVermin.xml": {
     "cleanCount": 1,
@@ -3372,10 +3372,34 @@
     "sha": "31e9db1cd"
   },
   "src/RimMandrake/ShipVermin/Source/RM_Alert_ShipVermin.cs": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-11",
-    "hash": "f726406953d3b54569672c1fcb3057100ba27b7c7dcd0012e2e4352b3ebdf1ee",
-    "sha": "6b397e6dd"
+    "hash": "69118ff24bdde8d72cb0e8b1f926167ca715164c8916314b48e6295ffbb67a97",
+    "sha": "96156db67"
+  },
+  "src/RimMandrake/ShipVermin/Source/RM_CompProperties_VerminNest.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "048d1199f8816f3901c349849d37e1c8358cbdefcd61a6cfef0528017f5c71d3",
+    "sha": "96156db67"
+  },
+  "src/RimMandrake/ShipVermin/Source/RM_CompVerminNest.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "f54464fb64696ae8c43c063ad3917e295883578db61a1b02e6f0f31b927a7a16",
+    "sha": "96156db67"
+  },
+  "src/RimMandrake/ShipVermin/Source/RM_ShipVermin.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "edf96ea2d6cbda72659e1a746aff92598c0591d3be47e301021a5972bb22a7a3",
+    "sha": "96156db67"
+  },
+  "src/RimMandrake/ShipVermin/Source/RM_ShipVerminMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "fc4c0045a623bbbce5f8b6316d6f0f15603da406a9fb89ee3d153f1834d43e26",
+    "sha": "96156db67"
   },
   "src/RimMandrake/StrandedQuest/About/About.xml": {
     "cleanCount": 1,
@@ -12800,6 +12824,12 @@
     "date": "2026-09-11",
     "hash": "17ffac9b0839544489e42f580ea7cba299efaa831a1e36f6232f0d5e5d35d3e5",
     "sha": "7c80850cb"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "91c142ddfca497090c6985639901251d62feaf523581a068c4eaba4366fa269b",
+    "sha": "96156db67"
   },
   "src/RimUtinni/UtinniPatches/Patches/XenotypeTolerances_Ashkarr.xml": {
     "cleanCount": 2,
