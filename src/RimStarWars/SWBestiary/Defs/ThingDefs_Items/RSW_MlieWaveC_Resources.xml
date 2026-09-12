@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  MLIE_FAUNA_ABSORPTION_1 Wave C — resource ThingDefs Mudhorn needs: its two
-  eggs (CompProperties_EggLayer), its specific meat, its coarse wool
-  (CompProperties_Shearable), and its butcher-body-part skull trophy.
+  MLIE_FAUNA_ABSORPTION_1 Wave C — resource ThingDefs. Two sub-passes:
+
+  Pass 1 (Iriaz/Mudhorn, 2026-09-12): Mudhorn needs its two eggs
+  (CompProperties_EggLayer), its specific meat, its coarse wool
+  (CompProperties_Shearable), and its butcher-body-part skull trophy. Iriaz
+  needed no new resource — it repoints to the already-ported
+  RSW_Reptomammal_Meat (RSW_MlieWaveB_Resources.xml).
+
+  Pass 2 (Anooba/Beldon/Bolotaur, same day): Anooba needs a new leather
+  (RSW_Leather_ReptoFur, texPath swresource/Leather_Fur — same folder Wave
+  A's RSW_Leather_Bantha already extracted, reused unchanged, no new art).
+  Beldon needs a new meat (RSW_Silica_Meat, texPath swresource/Meat_Silica,
+  newly extracted this pass) and two new eggs (RSW_EggBeldonFertilized/
+  UnFertilized, texPath swresource/EggSpore, newly extracted this pass).
+  Bolotaur needs two new eggs (RSW_EggBolotaurFertilized/UnFertilized,
+  texPath swresource/EggSaurian — already extracted, Wave B, reused
+  unchanged); its leather/meat repoint to the already-ported
+  RSW_Leather_Saurian/RSW_Saurian_Meat (RSW_MlieWaveB_Resources.xml).
 
   Ported verbatim from mlie.starwarsanimalcollection's (workshop folder
   3497316713) ThingDefs_Items/Items_Resource_swanimal_Items.xml, each defName
-  flat-RSW_-prefixed. texPaths are UNCHANGED text — swresource/EggFurry and
-  swresource/Meat_Pachydermoid were extracted to the same relative
-  Textures/swresource/ path the donor used (same pattern as prior waves);
-  swresource/Leather_Wool/Leather_Wool.png already exists in this mod from an
-  earlier absorption pass, so RSW_WoolCoarse needed no new art.
-
-  Iriaz (this wave's other species) needed no new resource — it repoints to
-  the already-ported RSW_Reptomammal_Meat (RSW_MlieWaveB_Resources.xml).
+  flat-RSW_-prefixed. texPaths are UNCHANGED text.
 -->
 <Defs>
 <ThingDef ParentName="EggFertBase">
@@ -122,5 +130,114 @@
     <tradeTags>
       <li>Exotic</li>
     </tradeTags>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_ReptoFur</defName>
+    <label>reptomammal fur</label>
+    <description>Tanned, dried, reptomammal fur. Smells bad but at least it insulates against the cold.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Fur</texPath>
+      <color>(255,255,255)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.8</MarketValue>
+      <StuffPower_Armor_Sharp>0.75</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.25</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>40</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(255,255,255)</color>
+      <commonality>0.1</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Silica_Meat</defName>
+    <label>silica meat</label>
+    <description>A piece of meat from a silicon based life form.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Silica</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggBeldonFertilized</defName>
+    <label>beldon egg (fert.)</label>
+    <description>A fertilized beldon egg. If all goes well, it should hatch into a baby beldon. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSpore</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(250,100,250)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>40.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Beldon</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggBeldonUnFertilized</defName>
+    <label>beldon egg (unfert.)</label>
+    <description>An unfertilized beldon egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSpore</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(250,100,250)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>40.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggBolotaurFertilized</defName>
+    <label>bolotaur egg (fert.)</label>
+    <description>A fertilized bolotaur egg. If all goes well, it should hatch into a baby bolotaur. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSaurian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(100,150,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>20.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Bolotaur</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggBolotaurUnFertilized</defName>
+    <label>bolotaur egg (unfert.)</label>
+    <description>An unfertilized bolotaur egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSaurian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(100,150,0)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>20.0</MarketValue>
+    </statBases>
   </ThingDef>
 </Defs>

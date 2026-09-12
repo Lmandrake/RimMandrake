@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Beldon's PawnRenderTreeDef, needed because
+  Beldon's ThingDef points <race><renderTree MayRequire="Ludeon.RimWorld.Anomaly">
+  at it (RSW_Beldon.xml). Ported verbatim from
+  mlie.starwarsanimalcollection's PawnRenderTreeDefs/PawnRenderTreeDefs_SW.xml
+  (only the `Beldon` tree — `Lylek`'s tree in the same donor file belongs to
+  a different, not-yet-ported species and is left alone). defName renamed to
+  RSW_Beldon; linkedBodyPartsGroup references repointed to the already-ported
+  (Wave B) RSW_SW_FirstTentacleBeldon/RSW_SW_SecondTentacleBeldon/
+  RSW_SW_ThirdTentacleBeldon groups, matching RSW_MlieWaveC_Bodies.xml's
+  RSW_Beldon BodyDef. texPaths are unchanged text — extracted tentacle art
+  sits at Textures/swanimals/Beldon/Tentacles/. `nodeClass`
+  PawnRenderNode_AnimalPart, `workerClass` PawnRenderNodeWorker_OverlayWounds/
+  OverlayFirefoam/Carried and the `PawnRenderNodeProperties_BulbfreakTentacle`/
+  `_Parent`/`_Carried` node property classes are all vanilla RimWorld Anomaly
+  engine types (Mlie ships 0 C#) — nothing here still points at donor code.
+-->
+<Defs>
+<PawnRenderTreeDef>
+    <defName>RSW_Beldon</defName>
+    <root Class="PawnRenderNodeProperties_Parent">
+      <debugLabel>Root</debugLabel>
+      <tagDef>Root</tagDef>
+      <children>
+        <li>
+          <debugLabel>Body</debugLabel>
+          <tagDef>Body</tagDef>
+          <useRottenColor>true</useRottenColor>
+          <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+          <children>
+            <li Class="PawnRenderNodeProperties_BulbfreakTentacle">
+              <debugLabel>TentacleA</debugLabel>
+              <texPath>swanimals/Beldon/Tentacles/BeldonTentacleA</texPath>
+              <drawSize>1.5</drawSize>
+              <useRottenColor>true</useRottenColor>
+              <rotDrawMode>Fresh, Rotting</rotDrawMode>
+              <linkedBodyPartsGroup>RSW_SW_FirstTentacleBeldon</linkedBodyPartsGroup>
+              <drawData>
+                <defaultData>
+                  <pivot>(0.5, 0.95)</pivot>
+                  <layer>-10</layer>
+                </defaultData>
+                <dataNorth>
+                  <offset>(0, 0, 0)</offset>
+                  <rotationOffset>-180</rotationOffset>
+                </dataNorth>
+                <dataEast>
+                  <offset>(0, 0, -0.75)</offset>
+                  <rotationOffset>-270</rotationOffset>
+                </dataEast>
+                <dataSouth>
+                  <offset>(0, 0, 0)</offset>
+                </dataSouth>
+                <dataWest>
+                  <offset>(-0.75, 0, -0.75)</offset>
+                  <rotationOffset>270</rotationOffset>
+                </dataWest>
+              </drawData>
+            </li>
+            <li Class="PawnRenderNodeProperties_BulbfreakTentacle">
+              <debugLabel>TentacleB</debugLabel>
+              <texPath>swanimals/Beldon/Tentacles/BeldonTentacleB</texPath>
+              <drawSize>1.5</drawSize>
+              <useRottenColor>true</useRottenColor>
+              <rotDrawMode>Fresh, Rotting</rotDrawMode>
+              <linkedBodyPartsGroup>RSW_SW_SecondTentacleBeldon</linkedBodyPartsGroup>
+              <drawData>
+                <defaultData>
+                  <pivot>(0.5, 0.95)</pivot>
+                  <layer>-9</layer>
+                </defaultData>
+                <dataNorth>
+                  <offset>(0, 0, 0)</offset>
+                  <rotationOffset>-180</rotationOffset>
+                </dataNorth>
+                <dataEast>
+                  <offset>(0.5, 0, -0.75)</offset>
+                  <rotationOffset>-270</rotationOffset>
+                </dataEast>
+                <dataSouth>
+                  <offset>(0, 0, 0)</offset>
+                </dataSouth>
+                <dataWest>
+                  <offset>(-0.5, 0, -0.75)</offset>
+                  <rotationOffset>270</rotationOffset>
+                </dataWest>
+              </drawData>
+            </li>
+            <li Class="PawnRenderNodeProperties_BulbfreakTentacle">
+              <debugLabel>TentacleC</debugLabel>
+              <drawSize>1.5</drawSize>
+              <texPath>swanimals/Beldon/Tentacles/BeldonTentacleC</texPath>
+              <useRottenColor>true</useRottenColor>
+              <rotDrawMode>Fresh, Rotting</rotDrawMode>
+              <linkedBodyPartsGroup>RSW_SW_ThirdTentacleBeldon</linkedBodyPartsGroup>
+              <drawData>
+                <defaultData>
+                  <pivot>(0.5, 0.95)</pivot>
+                  <layer>-8</layer>
+                </defaultData>
+                <dataNorth>
+                  <offset>(0, 0, 0)</offset>
+                  <rotationOffset>-180</rotationOffset>
+                </dataNorth>
+                <dataEast>
+                  <offset>(0.25, 0, -0.75)</offset>
+                  <rotationOffset>-270</rotationOffset>
+                </dataEast>
+                <dataSouth>
+                  <offset>(0, 0, 0)</offset>
+                </dataSouth>
+                <dataWest>
+                  <offset>(-0.75, 0, -0.75)</offset>
+                  <rotationOffset>270</rotationOffset>
+                </dataWest>
+              </drawData>
+            </li>
+            <li>
+              <debugLabel>Wounds</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayWounds</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>10</baseLayer>
+            </li>
+            <li>
+              <debugLabel>Firefoam</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayFirefoam</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>20</baseLayer>
+            </li>
+          </children>
+        </li>
+        <li Class="PawnRenderNodeProperties_Carried">
+          <debugLabel>Carried thing</debugLabel>
+          <workerClass>PawnRenderNodeWorker_Carried</workerClass>
+        </li>
+      </children>
+    </root>
+  </PawnRenderTreeDef></Defs>

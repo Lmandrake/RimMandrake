@@ -1,0 +1,57 @@
+{
+  "_comment": "MLIE_FAUNA_ABSORPTION_1 Wave C. old Mlie defName -> new RSW_ defName. Sibling to mlie_creature_defname_map_wave_a.json (Bantha), mlie_creature_defname_map_wave_b.json (Dewback/Wampa/Acklay/Vulptex/Porg/Nuna), and mlie_sound_defname_map.json (589 SoundDefs). Wave C works off the measured 91-species worklist (infrastructure/state/facts/mlie_wave_c_worklist.json), ported a few species at a time. No wave_c mapping file existed before this entry - the 2026-09-12 Iriaz/Mudhorn pass documented its map only in prose (MLIE_FAUNA_ABSORPTION_1.md's 2026-09-12 section); recorded here retroactively for the same traceability the other waves get, alongside the Anooba/Beldon/Bolotaur pass that created this file.",
+  "creatures": {
+    "Iriaz": "RSW_Iriaz",
+    "Mudhorn": "RSW_Mudhorn",
+    "Anooba": "RSW_Anooba",
+    "Beldon": "RSW_Beldon",
+    "Bolotaur": "RSW_Bolotaur"
+  },
+  "bodydefs": {
+    "_comment": "Iriaz/Mudhorn/Bolotaur use vanilla bodies (QuadrupedAnimalWithHooves, QuadrupedAnimalWithHoovesAndHorn, QuadrupedAnimalWithClawsTailAndJowl) - no port needed. Anooba's own custom body needed only a defName rename (vanilla-part composition). Beldon's custom body needed a full port including its 3 tentacle parts, which reuse Wave B's already-ported RSW_SW_LeftTentacle/RSW_SW_RightTentacle/RSW_SW_DorsalTentacle BodyPartDefs and RSW_SWTentacleAttackTool/RSW_SW_FirstTentacleBeldon/RSW_SW_SecondTentacleBeldon/RSW_SW_ThirdTentacleBeldon BodyPartGroupDefs - no NEW body part needed this wave either.",
+    "Anooba": "RSW_Anooba",
+    "Beldon": "RSW_Beldon"
+  },
+  "rendertreedefs": {
+    "_comment": "Beldon needed a new PawnRenderTreeDef (Anomaly-gated) drawing its 3 tentacles via vanilla Anomaly's own PawnRenderNodeProperties_BulbfreakTentacle node class.",
+    "Beldon": "RSW_Beldon"
+  },
+  "abilities": {
+    "_comment": "SW_SootheSong (Beldon's Odyssey ability) had no prior-wave port; new AbilityDef/HediffDef/TrainableDef trio, RSW_MlieWaveC_Abilities.xml. Anooba/Bolotaur reuse already-ported Wave B abilities (RSW_SW_Spur for Bolotaur; Anooba needed none, its AttackTarget specialTrainable is vanilla Odyssey content).",
+    "SW_SootheSong": "RSW_SW_SootheSong"
+  },
+  "thoughts": {
+    "_comment": "SoothingSong (RecoveryThought on SW_SootheSong's HediffDef) is donor content from the same Thoughts_Memory_SpecialCuisine.xml as RSW_AteMudhornEgg - ported into the existing RSW_Bantha_Thoughts.xml.",
+    "SoothingSong": "RSW_SoothingSong"
+  },
+  "resources": {
+    "_comment": "Iriaz needed no new resource (repoints to already-ported RSW_Reptomammal_Meat, Wave B). Bolotaur repoints leather/meat to already-ported RSW_Leather_Saurian/RSW_Saurian_Meat (Wave B) and needed only its 2 eggs newly ported. Anooba repoints specificMeatDef to already-ported RSW_Tough_Meat (Wave B) and needed only its leather newly ported (donor's Leather_ReptoFur was never ported before this pass despite being referenced by other already-ported species' patches, e.g. Armour_Leather.xml). Beldon needed a new meat and 2 new eggs; Mudhorn (this file's earlier entry) needed 2 eggs, a meat, a wool, and a butcher-body-part skull trophy.",
+    "Leather_ReptoFur": "RSW_Leather_ReptoFur",
+    "Silica_Meat": "RSW_Silica_Meat",
+    "EggBeldonFertilized": "RSW_EggBeldonFertilized",
+    "EggBeldonUnFertilized": "RSW_EggBeldonUnFertilized",
+    "EggBolotaurFertilized": "RSW_EggBolotaurFertilized",
+    "EggBolotaurUnFertilized": "RSW_EggBolotaurUnFertilized",
+    "EggMudhornFertilized": "RSW_EggMudhornFertilized",
+    "EggMudhornUnFertilized": "RSW_EggMudhornUnFertilized",
+    "Pachydermoid_Meat": "RSW_Pachydermoid_Meat",
+    "WoolCoarse": "RSW_WoolCoarse",
+    "MudhornSkull": "RSW_MudhornSkull"
+  },
+  "not_ported_this_wave": {
+    "_comment": "89 species remain in the measured Wave C worklist after this pass (91 - Iriaz - Mudhorn - Anooba - Beldon - Bolotaur = 86 remaining). Fambaa (a known Tier B holdout outside the 91-count) is still untouched.",
+    "count_remaining": 86
+  },
+  "cast_wiring": {
+    "_comment": "Both BiomeCast_Ashkarr.xml copies (design/Jawa/fauna/ and deployed src/RimUtinni/UtinniPatches/Patches/) and cast_assignment.csv updated to repoint the bare donor defName wildAnimals entries to the new RSW_ names, same mechanism as every prior wave.",
+    "Anooba": ["AB_MiasmicMangrove", "AridShrubland", "ZBiome_Grasslands"],
+    "Beldon": ["AB_PyroclasticConflagration", "BiomeCypreJungle", "LavaField", "Volcano"],
+    "Bolotaur": ["Desert"]
+  },
+  "patch_file_fixes": {
+    "_comment": "Checked all 3 Mlie-touching patch files this item names. BehemothArtUpres_StarWarsAnimalCollection.xml and AnimalDessicatedTexPaths_Fix.xml: 0 references to Anooba/Beldon/Bolotaur, no change needed. AnimalBiomeDuplicates_Fix.xml: found 1 stale reference (Operation #38, 'Anooba x ZBiome_Grasslands (2nd record)') - a PatchOperationConditional/Remove pair deduplicating a donor-mod-added second wildAnimals/Anooba entry in ZBiome_Grasslands. Renaming our own BiomeCast_Ashkarr entry to RSW_Anooba means the two entries are no longer the same dictionary key, so the duplicate-crash risk this block guarded against is gone - the block was REMOVED outright (not just renamed) per this repo's 'inaccurate material is deleted, not superseded-in-place' rule, with a dated header note explaining why. See AnimalBiomeDuplicates_Fix.xml's 2026-09-12 header block.",
+    "AnimalBiomeDuplicates_Fix.xml": "removed stale Operation #38 (Anooba x ZBiome_Grasslands dedup, now moot)",
+    "BehemothArtUpres_StarWarsAnimalCollection.xml": "no reference to this wave's 3 species, unchanged",
+    "AnimalDessicatedTexPaths_Fix.xml": "no reference to this wave's 3 species, unchanged"
+  }
+}

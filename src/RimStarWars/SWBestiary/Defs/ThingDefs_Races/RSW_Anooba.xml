@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Anooba creature port.
+  Ported from mlie.starwarsanimalcollection's `Anooba` ThingDef/PawnKindDef pair
+  (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the RSW_
+  tier prefix. Geometry/stats/comps copied verbatim. Custom body: `Anooba`
+  (Bodies_Animal_StarWars.xml) is entirely vanilla-part composition (Tail,
+  Spine, Stomach, Heart, Lung x2, Kidney x2, Liver, Neck/Head/Skull/Brain/
+  Eye x2/Ear x2/Nose/AnimalJaw, 4x Leg/Paw) — no custom BodyPartDef/GroupDef
+  needed, so it needed only a defName rename, not a dependency port, ported
+  here as RSW_Anooba (RSW_MlieWaveC_Bodies.xml). `leatherDef` repoints to the
+  newly-ported RSW_Leather_ReptoFur (RSW_MlieWaveC_Resources.xml, same
+  swresource/Leather_Fur texPath the donor used); `specificMeatDef` repoints
+  to the already-ported RSW_Tough_Meat (RSW_MlieWaveB_Resources.xml). Sounds
+  repoint to the already-absorbed sound wave (RSW_Pawn_Anooba_*,
+  mlie_sound_defname_map.json). The `Mlie.XNDNocturnalAnimals` modExtension
+  is a MayRequire-gated OPTIONAL cross-mod hook, not Mlie content itself —
+  left unprefixed, unchanged, matching precedent for non-Mlie MayRequire
+  content (e.g. Odyssey specialTrainables elsewhere in this wave). texPaths
+  are unchanged text — extracted art sits at Textures/swanimals/Anooba/
+  (extract_bundle.py against the same AssetBundle every prior wave used).
+
+  Wired into the live cast this same pass: AridShrubland 0.16, Desert 0.08
+  (donor's own wildBiomes weights — full list preserved in wildBiomes below;
+  the other biome weights in the donor's list are not currently Ash'karr
+  biomes and are kept as inert data, matching every prior wave's practice of
+  copying wildBiomes verbatim rather than trimming it), repointed from the
+  bare "Anooba" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Anooba</defName>
+    <label>anooba</label>
+    <description>Anoobas were aggressive pack predators that lived throughout the Outer Rim Territories. Opportunistic hunters as well as scavengers, these wolflike canines would attack virtually anything smaller than themselves (such as scurriers).</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>400</MarketValue>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left paw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>10.9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>right paw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>10.9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.9</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <modExtensions>
+      <li MayRequire="Mlie.XNDNocturnalAnimals" Class="NocturnalAnimals.ExtendedRaceProperties">
+        <bodyClock>Nocturnal</bodyClock>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_Anooba</body>
+      <predator>true</predator>
+      <maxPreyBodySize>2.0</maxPreyBodySize>
+      <baseBodySize>0.95</baseBodySize>
+      <baseHungerRate>0.12</baseHungerRate>
+      <baseHealthScale>1.00</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_ReptoFur</leatherDef>
+      <specificMeatDef>RSW_Tough_Meat</specificMeatDef>
+      <trainability>Advanced</trainability>
+      <petness>0.60</petness>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <lifeExpectancy>30</lifeExpectancy>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <nuzzleMtbHours>120</nuzzleMtbHours>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(2.5, 0.7)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <AridShrubland>0.16</AridShrubland>
+        <TemperateForest>0.04</TemperateForest>
+        <TropicalRainforest>0.08</TropicalRainforest>
+        <BorealForest>0.08</BorealForest>
+        <Tundra>0.12</Tundra>
+        <Desert>0.08</Desert>
+        <ExtremeDesert>0.01</ExtremeDesert>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>RSW_Pawn_Anooba_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Anooba_Death</soundDeath>
+          <soundCall>RSW_Pawn_Anooba_Call</soundCall>
+          <soundAngry>RSW_Pawn_Anooba_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorSmall_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalPet</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Anooba</defName>
+    <label>anooba</label>
+    <race>RSW_Anooba</race>
+    <combatPower>80</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>3~6</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>anooba pup</label>
+        <labelPlural>anoobas pups</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Anooba/Anooba_m</texPath>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Anooba/Anooba_f</texPath>
+          <drawSize>1.5</drawSize>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Anooba/Anooba_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Anooba/Anooba_m</texPath>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Anooba/Anooba_f</texPath>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Anooba/Anooba_Dessicated</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Anooba/Anooba_m</texPath>
+          <drawSize>3</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.4, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Anooba/Anooba_f</texPath>
+          <drawSize>3</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.4, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Anooba/Anooba_Dessicated</texPath>
+          <drawSize>3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>

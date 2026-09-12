@@ -94,7 +94,7 @@
         <Shaak>0.2</Shaak> <!-- shaak - herd, import -->
         <TeeMuss>0.2</TeeMuss> <!-- tee muss - herd, import -->
         <Worrt>0.2</Worrt> <!-- worrt - ambush-small, keep -->
-        <Bolotaur>0.1</Bolotaur> <!-- bolotaur - herd, import -->
+        <RSW_Bolotaur>0.1</RSW_Bolotaur> <!-- bolotaur - herd, import -->
         <Clodhopper>0.1</Clodhopper> <!-- clodhopper - ambush-small, keep -->
         <FeralGrazer>0.1</FeralGrazer> <!-- feral grazer - herd, import -->
         <Gizka>0.1</Gizka> <!-- gizka - ambush-small, keep -->
@@ -218,7 +218,7 @@
         <Massiff>0.6</Massiff> <!-- massiff - medium-interface, keep -->
         <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
         <Pufferpig>0.5</Pufferpig> <!-- Pufferpig - small-runway, keep -->
-        <Anooba>0.4</Anooba> <!-- anooba - medium-interface, adjust-keep -->
+        <RSW_Anooba>0.4</RSW_Anooba> <!-- anooba - medium-interface, adjust-keep -->
         <Corinathoth>0.4</Corinathoth> <!-- corinathoth - huge-grazer, keep -->
         <Gizka>0.4</Gizka> <!-- gizka - small-runway, keep -->
         <Nuna>0.4</Nuna> <!-- nuna - small-runway, keep -->
@@ -311,7 +311,7 @@
         <Yobshrimp>0.8</Yobshrimp> <!-- yobshrimp - arthropod-floor, import -->
         <Runyip>0.5</Runyip> <!-- runyip - muck-forager, adjust-keep -->
         <Shiro>0.4</Shiro> <!-- shiro - arthropod-floor, keep -->
-        <Anooba>0.3</Anooba> <!-- anooba - scavenger, keep -->
+        <RSW_Anooba>0.3</RSW_Anooba> <!-- anooba - scavenger, keep -->
         <Grank>0.3</Grank> <!-- Grank - channel-predator, import -->
         <Whisperbird>0.3</Whisperbird> <!-- whisperbird - flier, keep -->
         <Vornskyr>0.15</Vornskyr> <!-- vornskyr - strange, keep -->
@@ -406,7 +406,7 @@
         <Dianoga>0.15</Dianoga> <!-- dianoga - lunger, adjust-keep -->
         <Dragonsnake>0.12</Dragonsnake> <!-- Dragonsnake - lunger, adjust-keep -->
         <Lylek>0.05</Lylek> <!-- lylek - apex, keep -->
-        <Beldon>0.008</Beldon> <!-- beldon - flier-giant, keep -->
+        <RSW_Beldon>0.008</RSW_Beldon> <!-- beldon - flier-giant, keep -->
       </value>
     </match>
   </Operation>
@@ -1066,7 +1066,7 @@
         <Zeer>0.6</Zeer> <!-- zeer - large-herd, adjust-keep -->
         <RSW_Iriaz>0.5</RSW_Iriaz> <!-- iriaz - small-herd, import -->
         <Nuna>0.5</Nuna> <!-- nuna - small, adjust-keep -->
-        <Anooba>0.35</Anooba> <!-- anooba - medium-predator, import -->
+        <RSW_Anooba>0.35</RSW_Anooba> <!-- anooba - medium-predator, import -->
         <Gizka>0.3</Gizka> <!-- gizka - grain, adjust-keep -->
         <Orray>0.25</Orray> <!-- orray - medium, import -->
       </value>
@@ -1163,7 +1163,7 @@
       <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/wildAnimals</xpath>
       <value>
         <LavaFlea>0.25</LavaFlea> <!-- lava flea - ground-herd, import -->
-        <Beldon>0.08</Beldon> <!-- beldon - sky-herd, keep -->
+        <RSW_Beldon>0.08</RSW_Beldon> <!-- beldon - sky-herd, keep -->
       </value>
     </match>
   </Operation>
@@ -1198,7 +1198,7 @@
       <xpath>/Defs/BiomeDef[defName="LavaField"]/wildAnimals</xpath>
       <value>
         <LavaFlea>0.25</LavaFlea> <!-- lava flea - ground-herd, import -->
-        <Beldon>0.08</Beldon> <!-- beldon - sky-herd, keep -->
+        <RSW_Beldon>0.08</RSW_Beldon> <!-- beldon - sky-herd, keep -->
       </value>
     </match>
   </Operation>
@@ -1233,7 +1233,7 @@
       <xpath>/Defs/BiomeDef[defName="Volcano"]/wildAnimals</xpath>
       <value>
         <LavaFlea>0.25</LavaFlea> <!-- lava flea - ground-herd, import -->
-        <Beldon>0.08</Beldon> <!-- beldon - sky-herd, keep -->
+        <RSW_Beldon>0.08</RSW_Beldon> <!-- beldon - sky-herd, keep -->
       </value>
     </match>
   </Operation>
