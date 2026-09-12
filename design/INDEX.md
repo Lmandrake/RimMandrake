@@ -37,6 +37,8 @@ This is an index, not doctrine — the tier rule and the promotion test live in
      source register |
 | `carbonite_trophy_mod.md` | Custom Carbonite Trophy Mod — PARKED DESIGN (author fresh for 1.6) | ☁ aspirational |
 | `cathedral_concealment_arc_spec.md` | The Cathedral and the player — concealment, thaw, and the reveal | ? spec — CATHEDRAL_PLAYER_CONCEALMENT_ARC_1, drafted 2026-09-11; cards A1–A5 await the owner |
+| `quests/cathedral_surveyor_misdirection_quest.md` | Surveyor misdirection quest — prose spec (A4 ruled IN) | ? spec — drafted 2026-09-12, build rides the arc |
+| `quests/flood_witness_invitation_quest.md` | Flood-witness invitation quest — prose spec (ruled design) | ? spec — drafted 2026-09-12, rides FLOOD_CANYON_BIOME_1 |
 | `concept.md` | concept.md — Portable Campaign Brief |  |
 | `covered_pit_traps_spec.md` | Covered Pits — the earth that swallows (first-class mod spec) | ? draft — bench proposal for owner ruling, 2026-08-30. item |
 | `desert_wraps_design_capture.md` | Desert Wraps + Devolved Head — design capture | — |
