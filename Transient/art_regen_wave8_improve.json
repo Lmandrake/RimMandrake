@@ -1,0 +1,55 @@
+{
+    "items": [
+        {
+            "id": "kinrath_v1",
+            "rimflow_item_id": "ART_REGEN_WAVE8_QUEUE_1",
+            "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Kinrath — a large, blind arachnoid predator native to dense alien jungle. Four thick chitinous legs supporting a bulbous segmented body, a long sensory feeler-appendage extending from the face where eyes would be (it hunts by heat and scent, not sight), light yellow-brown mottled carapace with darker banding. Reads as a lurking, unsettling cave-and-undergrowth ambush hunter. Single creature, centered, low crouched stalking pose, no ground shadow, no background scenery, no web effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+            "canvas_w": 512,
+            "canvas_h": 512,
+            "reference": "",
+            "facings": [
+                "south",
+                "east",
+                "north"
+            ],
+            "style_notes": "SW canon identity KEPT — checked directly against design/RimStarWars/star_wars_canon_names.md's master-bestiary list (Kinrath, listed) and confirmed via Wookieepedia: large blind non-sentient arachnoid, four legs, face feeler-appendage, senses heat/scent, light yellow-brown carapace (variants orange/green), found in caves/forests on Dantooine/Kashyyyk; canon 'viper kinrath' variant is venomous. Row: the_greentide biome, large sizeBin, no note. Full regen, same mechanism as 'redo'. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+            "background": "transparent",
+            "priority": 100,
+            "channel": "codex"
+        },
+        {
+            "id": "shiro_v1",
+            "rimflow_item_id": "ART_REGEN_WAVE8_QUEUE_1",
+            "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Shiro — a medium, hard-shelled, slow-moving swamp reptile. Broad domed spiny shell covering most of the body, a thick short neck and stubby legs it can retract fully into the shell for defense, mottled brown-green mud-caked hide, small blunt herbivorous head. Reads as a placid, armored bog-dweller built for defense over speed. Single creature, centered, standing pose with head and legs extended, no ground shadow, no background scenery, no mud-splatter effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+            "canvas_w": 512,
+            "canvas_h": 512,
+            "reference": "",
+            "facings": [
+                "south",
+                "east",
+                "north"
+            ],
+            "style_notes": "SW canon identity KEPT — checked directly against design/RimStarWars/star_wars_canon_names.md's master-bestiary list (Shiro, listed) and confirmed via Wookieepedia: hard-shelled, benign, slow-moving reptile native to the Gungan Swamps of Naboo, retracts head/legs/tail into a spiny shell, collects mud/seeds in shell ridges (the 'shiro-trap' symbiosis). Row appears under two biomes (the_greentide/the_miasma, both medium, no note); the_greentide picked as representative. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+            "background": "transparent",
+            "priority": 100,
+            "channel": "codex"
+        },
+        {
+            "id": "borcatu_v1",
+            "rimflow_item_id": "ART_REGEN_WAVE8_QUEUE_1",
+            "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Borcatu — a small, quadrupedal scavenger built for digging and cracking open shells. Compact wiry-muscled body low to the ground, short powerful clawed digging limbs, a wedge-shaped skull with strong crushing jaws, coarse dusty tan-grey fur or hide suited to a wasteland burrow-dweller. Reads as a hardy, opportunistic little scrounger that thrives anywhere. Single creature, centered, alert sniffing pose, no ground shadow, no background scenery, no burrow/dirt effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+            "canvas_w": 512,
+            "canvas_h": 512,
+            "reference": "",
+            "facings": [
+                "south",
+                "east",
+                "north"
+            ],
+            "style_notes": "SW canon identity KEPT — checked directly against design/RimStarWars/star_wars_canon_names.md's master-bestiary list (Borcatu, listed) and confirmed via Wookieepedia: small quadrupedal scavenger species that evolved on Escabar, adapted for digging burrows and cracking open shells, later spread across the galaxy as an opportunistic stowaway. Row: wasteland biome, small sizeBin, no note. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+            "background": "transparent",
+            "priority": 100,
+            "channel": "codex"
+        }
+    ]
+}
