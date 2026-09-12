@@ -17,12 +17,15 @@ technique this prototype used is likely not the right direction for
 production sprite art, independent of the pose-collision bug or the
 nvcc/UV-texture blocker below — a sharper UV texture would not fix "crushed
 tin cans" if the underlying mesh reconstruction and projection itself reads
-as mangled. `graphics_pipeline_recommendation.md`'s own stated winner is
-local Flux.1-dev + ComfyUI (2D generation, IP-Adapter + ControlNet), with
-InstantMesh multi-view framed as a supporting/secondary technique — this
-result is evidence AGAINST leaning on InstantMesh further, not for it.
-**Left for the owner to decide** whether this prototype direction continues
-at all, or whether effort redirects entirely to the 2D Flux/ComfyUI channel.
+as mangled. `graphics_pipeline_recommendation.md` had named
+local Flux.1-dev + ComfyUI (2D generation, IP-Adapter + ControlNet) its
+winner, with InstantMesh multi-view framed as a supporting/secondary
+technique — this result is evidence AGAINST leaning on InstantMesh further,
+not for it. ⚠️ That 2D alternative is no longer available either: local
+generation of every kind was PARKED by the owner 2026-09-05
+(`LOCAL_IMAGEGEN_TRACK_PARKED_1`). **Left for the owner to decide** whether
+this prototype direction continues at all — the fallback is a cloud channel,
+not the local one.
 Not closing or advancing this item further without that call.
 
 ---
@@ -99,8 +102,9 @@ attempted this pass per its own scoping.
 - [ ] Not yet "productionized" per the item's own word — this is still a
       one-object prototype (AutomatedSmelter only) living in `Transient/`,
       not a repeatable script other assets can run through.
-- [ ] **Owner call owed**: continue down the InstantMesh/mesh-fusion path,
-      or redirect to the 2D Flux.1-dev/ComfyUI channel
-      `graphics_pipeline_recommendation.md` already names as the stated
-      winner. Left `doing`, no further automated passes on this technique
-      until that's decided.
+- [ ] **Owner call owed**: continue down the InstantMesh/mesh-fusion path, or
+      redirect to a cloud generation channel. ⚠️ The 2D Flux.1-dev/ComfyUI
+      channel this line originally named as the redirect target is PARKED
+      (owner, 2026-09-05, `LOCAL_IMAGEGEN_TRACK_PARKED_1`) and is not an
+      option. No further automated passes on this technique — and none on
+      local GPU work of any kind — until that's decided.

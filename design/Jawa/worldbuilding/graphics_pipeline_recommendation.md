@@ -1,5 +1,9 @@
 # Graphics generation channel — review & recommendation
 
+🔴 **Local generation (ComfyUI / Flux / any on-box model) is PARKED — owner,
+2026-09-05. Do not start it.** Cloud channels (Codex CLI, Gemini CLI) continue.
+Record: `infrastructure/state/items/LOCAL_IMAGEGEN_TRACK_PARKED_1.md`.
+
 _Research spike, 2026-09-05, BENCH. Owner brief: the current channel is slow &
 clumsy; want native transparency, multi-facing consistency (one hero → RimWorld's
 facings; Wrecked Machines is the test case), and Remotion to animate background
@@ -113,19 +117,21 @@ commit the pipeline.
   ONLY via the separate pay-per-call Gemini API (billing). So "buy $20 Gemini to test" buys
   nothing programmatic — a trap for our use.
 
-**WINNER — local on the RTX 5080 (Flux.1-dev + ComfyUI + IP-Adapter/ControlNet + LayerDiffuse):**
-the only option that is simultaneously programmatic, native-alpha (LayerDiffuse), and gives
-EXPLICIT control over our two hard needs — IP-Adapter locks the Jawa reference across all
-gods; ControlNet drives facings — at $0/image at volume. Flux.1-dev fits 16GB at FP8
-(~32s/img; schnell ~7s). (Flux.2 is too big for 16GB — stay on Flux.1.) Reinforced by the
-InstantMesh multi-view win, already proven local/free.
+🔴 **LOCAL GENERATION IS PARKED — owner ruling, 2026-09-05.** Nobody stands up
+ComfyUI, downloads weights, or spawns a local-generation agent. The full parking
+record — what was decided, what was measured, and what must be true to revisit —
+is `infrastructure/state/items/LOCAL_IMAGEGEN_TRACK_PARKED_1.md`. The local
+Flux.1-dev/ComfyUI channel this spike had recommended (IP-Adapter reference-lock,
+ControlNet facings, LayerDiffuse alpha, $0/image on the RTX 5080) was never proven
+end-to-end — no test render was ever run — and it OOM-killed both agent windows.
+It is not a channel this document recommends until the owner lifts the park.
 
-**Secondary:** Nano Banana Pro via pay-per-call API (~$0.05-0.10/img) for a few hero god
-portraits where its consistency reputation is strongest — pay-per-call, NOT the $20 sub.
-**Keep:** Codex channel for one-offs. **Skip:** paid ChatGPT tiers as a volume engine.
-
-**Cheapest test this week ($0):** stand up ComfyUI + Flux.1-dev FP8 + LayerDiffuse +
-IP-Adapter, run 10 Jawa-reference sprites across 4 facings, judge identity-lock before any spend.
+**The live channels are cloud only**, explicitly NOT covered by the ruling:
+**Codex CLI `$imagegen`** (existing, ChatGPT-auth, the current workhorse) and the
+**Gemini CLI + nanobanana** option below. Nano Banana Pro via pay-per-call API
+(~$0.05-0.10/img) remains an option for a few hero god portraits where its
+consistency reputation is strongest — pay-per-call, NOT the $20 sub.
+**Skip:** paid ChatGPT tiers as a volume engine.
 
 ---
 
@@ -138,12 +144,11 @@ not pay-per-call**. First-party, sanctioned, fully scriptable — the Codex tric
 So the $20 Gemini sub IS worth it, via the CLI (NOT the app, NOT the metered API).
 ⚠️ Google AI *Plus* is NOT supported — needs *Pro* or *Ultra*.
 
-**Strategy: local backbone + three sanctioned unlimited-ish channels chained.**
-1. **Local 5080** (installing) — control: IP-Adapter reference-lock, ControlNet facings,
-   LayerDiffuse alpha. The consistency-critical workhorse.
-2. **Codex CLI image_gen** (existing) — ChatGPT unlimited-ish, sanctioned. Lean in:
+**Strategy: sanctioned cloud channels chained.** (The local-5080 backbone this
+strategy originally opened with is PARKED — owner, 2026-09-05; see above.)
+1. **Codex CLI image_gen** (existing) — ChatGPT unlimited-ish, sanctioned. Lean in:
    batch/parallelize overnight.
-3. **Gemini CLI + nanobanana on AI Pro** — NEW second channel, ~2,000 Nano Banana Pro/day,
+2. **Gemini CLI + nanobanana on AI Pro** — NEW second channel, ~2,000 Nano Banana Pro/day,
    best consistency model, sanctioned. Run parallel to Codex to ~double nightly throughput.
 4. **Pollinations.ai** — genuinely free keyless API (Flux, ~1 req/15s), sanctioned; bulk
    low-stakes filler.

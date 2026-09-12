@@ -285,6 +285,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `alpha_family_source_review.md` | Alpha-family source review — mechanics catalog and generalization proposals | — |
 | `aquatic_movement_routes.md` | Aquatic movement — the honest menu, post-Pathfinding-Framework | ? decision card — sw_sea_monsters_art_1, bench 2026-09-02. supersedes
      sea_beasts_def_spec.md §4 routes a–c (route b, pathfinding.framework, is dead |
+| `ashfall_research_base.md` | The Ashfall Research Base — the Contagion's dungeon | 🔶 design doc — `OCULAR_OVERDRIVE_SITE_1`; campaign function and reveal gating held for owner |
 | `beast_normalization_spec.md` | Beast Normalization — size, mass, and casual lethality | ? draft — bench synthesis of the three-arm beast fan-out, 2026-08-31. owner's law |
 | `biome_flora_rosters.md` | Ash'karr's flora — what grows where, and why | — |
 | `biome_review_comments.md` | biome_review_comments.md — DECIDE's read of the owner's biome cuts |  |

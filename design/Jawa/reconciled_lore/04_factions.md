@@ -142,7 +142,14 @@ words: *"If you will not share your wisdom and power, then I will learn from
 what destroyed you."* They buy every antiquity offered, paying MORE for
 unread pieces (a child would want the reading), brute-forcing a canon
 engineered to resist exactly that. Containment response is a standing pawn
-group. Escaped Assets are hunted alive.
+group. Escaped Assets are hunted alive. **The Overdrive** [owner 2026-09-06,
+`OCULAR_OVERDRIVE_SITE_1`]: their in-faction name for the Contagion and their
+program at the **Ashfall Research Base**
+(`worldbuilding/ashfall_research_base.md`) — actively modifying the weapon to
+make it more robust and productive, at the risk of unleashing it planet-wide;
+the base's datafiles are where the forged-adoption reveal lives, and the siding
+with the Assailants that earns the Rust Cathedral's hatred (canon.yml
+`rust_cathedral`).
 
 **10 · Blackstar Company.** One dangerous person with a name — **one outfit,
 never a genus** [ruled 2026-08-22]; the vanilla `Pirate` vessel keeps
