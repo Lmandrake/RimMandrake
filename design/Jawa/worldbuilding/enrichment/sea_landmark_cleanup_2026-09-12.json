@@ -1,0 +1,4217 @@
+{
+ "remove": [
+  {
+   "tile": 5307,
+   "def": "VEE_GravelBeach",
+   "name": "Camton Gravel Shore",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 268,
+   "def": "IceDunes",
+   "name": "Meuay Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 705,
+   "def": "IceDunes",
+   "name": "Petra's Retirement Frozen Hills",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 1248,
+   "def": "IceDunes",
+   "name": "Hyenacheek Frozen Hills",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 1291,
+   "def": "IceDunes",
+   "name": "Pigeonarm Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 2235,
+   "def": "IceDunes",
+   "name": "Asfenerainum Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 2426,
+   "def": "IceDunes",
+   "name": "Iswitteror Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 2429,
+   "def": "IceDunes",
+   "name": "Rebum Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 4028,
+   "def": "IceDunes",
+   "name": "Oulior Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 4029,
+   "def": "IceDunes",
+   "name": "Giraffeneck Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 5115,
+   "def": "IceDunes",
+   "name": "Billa Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6674,
+   "def": "IceDunes",
+   "name": "Sharpfoot Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6675,
+   "def": "IceDunes",
+   "name": "Red Okapi Frozen Hills",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6780,
+   "def": "IceDunes",
+   "name": "Breixo Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6896,
+   "def": "IceDunes",
+   "name": "Ler Frozen Hills",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 8889,
+   "def": "IceDunes",
+   "name": "Breixo Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 11512,
+   "def": "IceDunes",
+   "name": "Onhatous Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 11638,
+   "def": "IceDunes",
+   "name": "Trosne Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 11760,
+   "def": "IceDunes",
+   "name": "Canto Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 11788,
+   "def": "IceDunes",
+   "name": "C\u00f3maro's Delusion Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14746,
+   "def": "IceDunes",
+   "name": "Green Chough Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14756,
+   "def": "IceDunes",
+   "name": "Ineron Frozen Hills",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14766,
+   "def": "IceDunes",
+   "name": "Younaeria Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14774,
+   "def": "IceDunes",
+   "name": "Emilia's Ruse Frozen Hills",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14779,
+   "def": "IceDunes",
+   "name": "Orange Tarsier Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14998,
+   "def": "IceDunes",
+   "name": "Green Coyote Frozen Hills",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14999,
+   "def": "IceDunes",
+   "name": "Elephant Seal Foot Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 16918,
+   "def": "IceDunes",
+   "name": "Cod Chest Frozen Hills",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 20714,
+   "def": "IceDunes",
+   "name": "Ankoarera Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21728,
+   "def": "IceDunes",
+   "name": "Mallard Wrist Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21734,
+   "def": "IceDunes",
+   "name": "Rozocam Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21738,
+   "def": "IceDunes",
+   "name": "Erahehenberium Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21745,
+   "def": "IceDunes",
+   "name": "Yuzuki's Mistake Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21754,
+   "def": "IceDunes",
+   "name": "Ambbil Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21755,
+   "def": "IceDunes",
+   "name": "Mequahadbo Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21759,
+   "def": "IceDunes",
+   "name": "Freechin Frozen Hills",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21848,
+   "def": "IceDunes",
+   "name": "Bonbum Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21862,
+   "def": "IceDunes",
+   "name": "Omehenotus Frozen Hills",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 1329,
+   "def": "IceDunes",
+   "name": "Tedoum Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 1861,
+   "def": "IceDunes",
+   "name": "Freemuffalo Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 1878,
+   "def": "IceDunes",
+   "name": "Red Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 1882,
+   "def": "IceDunes",
+   "name": "Abancarioro Ice Dunes",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 2914,
+   "def": "IceDunes",
+   "name": "Tallcheek Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 3490,
+   "def": "IceDunes",
+   "name": "Black Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 3496,
+   "def": "IceDunes",
+   "name": "Bren Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 3503,
+   "def": "IceDunes",
+   "name": "Bramaisacam's Facade Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 4556,
+   "def": "IceDunes",
+   "name": "Curma Ice Dunes",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 4578,
+   "def": "IceDunes",
+   "name": "Hainum Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 4581,
+   "def": "IceDunes",
+   "name": "Oulus Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 4587,
+   "def": "IceDunes",
+   "name": "Goodfoot Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 6946,
+   "def": "IceDunes",
+   "name": "Isabrin Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 6963,
+   "def": "IceDunes",
+   "name": "Lonhisuay Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 6964,
+   "def": "IceDunes",
+   "name": "Ourseuay Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 6980,
+   "def": "IceDunes",
+   "name": "Banba Ice Dunes",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 7237,
+   "def": "IceDunes",
+   "name": "Astroi\u00f1oco Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 8309,
+   "def": "IceDunes",
+   "name": "L\u00e1ndoa Ice Dunes",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 9424,
+   "def": "IceDunes",
+   "name": "Croudue Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 9435,
+   "def": "IceDunes",
+   "name": "Teromebum Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 9443,
+   "def": "IceDunes",
+   "name": "Hiler Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 11826,
+   "def": "IceDunes",
+   "name": "Purple Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 11840,
+   "def": "IceDunes",
+   "name": "Caribou Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 12038,
+   "def": "IceDunes",
+   "name": "Rotroco Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 12095,
+   "def": "IceDunes",
+   "name": "Banastra Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 12098,
+   "def": "IceDunes",
+   "name": "Sequaussia Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 12661,
+   "def": "IceDunes",
+   "name": "Primearm Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 12666,
+   "def": "IceDunes",
+   "name": "Llotraguma Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 12668,
+   "def": "IceDunes",
+   "name": "White Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 12680,
+   "def": "IceDunes",
+   "name": "Rego Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 12689,
+   "def": "IceDunes",
+   "name": "Deer Ice Dunes",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 15252,
+   "def": "IceDunes",
+   "name": "Roistia Ice Dunes",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 15258,
+   "def": "IceDunes",
+   "name": "Red Ice Dunes",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 15332,
+   "def": "IceDunes",
+   "name": "Veranlor Ice Dunes",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 18259,
+   "def": "IceDunes",
+   "name": "Roughchin Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 18262,
+   "def": "IceDunes",
+   "name": "Notendo Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 18488,
+   "def": "IceDunes",
+   "name": "Magpie Ankle Ice Dunes",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 18493,
+   "def": "IceDunes",
+   "name": "Canto Frozen Hills",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 18533,
+   "def": "IceDunes",
+   "name": "Boacami Ice Dunes",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 18545,
+   "def": "IceDunes",
+   "name": "Tiunisni Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 18557,
+   "def": "IceDunes",
+   "name": "Wisemagpie Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 18573,
+   "def": "IceDunes",
+   "name": "Xebil Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 18600,
+   "def": "IceDunes",
+   "name": "Asarelor Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 18601,
+   "def": "IceDunes",
+   "name": "Veronika's Achievement Ice Dunes",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 18603,
+   "def": "IceDunes",
+   "name": "Purplepond Ice Mounds",
+   "biome": "RUT_TwilightSea",
+   "why": "ice on a 22C sea"
+  },
+  {
+   "tile": 2428,
+   "def": "Harbor",
+   "name": "Cagoraeron Harbor",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 2865,
+   "def": "Harbor",
+   "name": "Camisa Harbor",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 2868,
+   "def": "Harbor",
+   "name": "L\u00e9ban Harbor",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6920,
+   "def": "Harbor",
+   "name": "Free Iguana Port",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6921,
+   "def": "Harbor",
+   "name": "Atler Harbor",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6922,
+   "def": "Harbor",
+   "name": "Laxe Port",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 8893,
+   "def": "Harbor",
+   "name": "Port Artyom",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 8911,
+   "def": "Harbor",
+   "name": "Trado Port",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 11784,
+   "def": "Harbor",
+   "name": "Theinum Port",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 11785,
+   "def": "Harbor",
+   "name": "Beefang Port",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 11789,
+   "def": "Harbor",
+   "name": "Mandrill Harbor",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14749,
+   "def": "Harbor",
+   "name": "Mamen Harbor",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14762,
+   "def": "Harbor",
+   "name": "Wolverine Hand Harbor",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14764,
+   "def": "Harbor",
+   "name": "Wise Starling Port",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14778,
+   "def": "Harbor",
+   "name": "Ouwasherler's Facade Port",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 15000,
+   "def": "Harbor",
+   "name": "Verea Harbor",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 15021,
+   "def": "Harbor",
+   "name": "Camgua Port",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 15027,
+   "def": "Harbor",
+   "name": "Irabo Harbor",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 20712,
+   "def": "Harbor",
+   "name": "Tedium Port",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21746,
+   "def": "Harbor",
+   "name": "Purplevole Port",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21747,
+   "def": "Harbor",
+   "name": "Gubiaboa Port",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21866,
+   "def": "Harbor",
+   "name": "Oraslior Harbor",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 1830,
+   "def": "Harbor",
+   "name": "Blue Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 1877,
+   "def": "Harbor",
+   "name": "Port Taiki",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 1881,
+   "def": "Harbor",
+   "name": "Guanaco Port",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 2916,
+   "def": "Harbor",
+   "name": "Ordio Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 3499,
+   "def": "Harbor",
+   "name": "Grousecheek Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 6958,
+   "def": "Harbor",
+   "name": "Xesa Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 6959,
+   "def": "Harbor",
+   "name": "Colmea Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 9438,
+   "def": "Harbor",
+   "name": "Lanba Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 9442,
+   "def": "Harbor",
+   "name": "Far Lobster Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 10166,
+   "def": "Harbor",
+   "name": "Porcupine Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 10170,
+   "def": "Harbor",
+   "name": "Braga Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 11807,
+   "def": "Harbor",
+   "name": "Banbrago Port",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 11824,
+   "def": "Harbor",
+   "name": "Hadfinora Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12672,
+   "def": "Harbor",
+   "name": "Quasttedum Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12682,
+   "def": "Harbor",
+   "name": "Clam Port",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12691,
+   "def": "Harbor",
+   "name": "Evelior Port",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 15057,
+   "def": "Harbor",
+   "name": "Anus Port",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 15071,
+   "def": "Harbor",
+   "name": "Inneda Port",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 15321,
+   "def": "Harbor",
+   "name": "Blacktooth Port",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18494,
+   "def": "Harbor",
+   "name": "Grayswan Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18501,
+   "def": "Harbor",
+   "name": "Cerro Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18503,
+   "def": "Harbor",
+   "name": "Allmeunt Port",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18508,
+   "def": "Harbor",
+   "name": "Gray Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18510,
+   "def": "Harbor",
+   "name": "Port Shizuka",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18539,
+   "def": "Harbor",
+   "name": "Port Ida",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18541,
+   "def": "Harbor",
+   "name": "Port Nika",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18546,
+   "def": "Harbor",
+   "name": "Port Sofia",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18549,
+   "def": "Harbor",
+   "name": "Thiomelium Port",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18559,
+   "def": "Harbor",
+   "name": "Leunt Port",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18567,
+   "def": "Harbor",
+   "name": "Quaora Port",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18576,
+   "def": "Harbor",
+   "name": "Eanteaera Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18591,
+   "def": "Harbor",
+   "name": "Port Rowan",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18593,
+   "def": "Harbor",
+   "name": "Itba Port",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18606,
+   "def": "Harbor",
+   "name": "Enberon Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18608,
+   "def": "Harbor",
+   "name": "Port Arthur",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 704,
+   "def": "AncientSmokeVent",
+   "name": "Gobobrei Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 750,
+   "def": "AncientSmokeVent",
+   "name": "Forshobo Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 1244,
+   "def": "AncientSmokeVent",
+   "name": "Doga Chimneys",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 2238,
+   "def": "AncientSmokeVent",
+   "name": "Legua Fumaroles",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 2410,
+   "def": "AncientSmokeVent",
+   "name": "Entbo Fumaroles",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 2415,
+   "def": "AncientSmokeVent",
+   "name": "Teneeria Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 2420,
+   "def": "AncientSmokeVent",
+   "name": "Raba Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 2911,
+   "def": "AncientSmokeVent",
+   "name": "Eseraneussia Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 4049,
+   "def": "AncientSmokeVent",
+   "name": "Minus Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 5114,
+   "def": "AncientSmokeVent",
+   "name": "Albatross Eye Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 5119,
+   "def": "AncientSmokeVent",
+   "name": "Roundlip Chimneys",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 6650,
+   "def": "AncientSmokeVent",
+   "name": "Yutaka's Deception Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 6900,
+   "def": "AncientSmokeVent",
+   "name": "Purple Smokestacks",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 8910,
+   "def": "AncientSmokeVent",
+   "name": "Lavego Chimneys",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 9975,
+   "def": "AncientSmokeVent",
+   "name": "Tianomeda Fumaroles",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 11510,
+   "def": "AncientSmokeVent",
+   "name": "Bacambo Vents",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 11787,
+   "def": "AncientSmokeVent",
+   "name": "Dindo Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 13201,
+   "def": "AncientSmokeVent",
+   "name": "Lereerum Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 13214,
+   "def": "AncientSmokeVent",
+   "name": "Eabum Chimneys",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 13215,
+   "def": "AncientSmokeVent",
+   "name": "Verforlia Smokestacks",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 13218,
+   "def": "AncientSmokeVent",
+   "name": "Skunk Fumaroles",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 13226,
+   "def": "AncientSmokeVent",
+   "name": "Romitran Smokestacks",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 13231,
+   "def": "AncientSmokeVent",
+   "name": "Reito Chimneys",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 14757,
+   "def": "AncientSmokeVent",
+   "name": "Engo Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 14767,
+   "def": "AncientSmokeVent",
+   "name": "Mayouberon Chimneys",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 14768,
+   "def": "AncientSmokeVent",
+   "name": "Toxxegobo Vents",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 14772,
+   "def": "AncientSmokeVent",
+   "name": "Farfinger Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 14773,
+   "def": "AncientSmokeVent",
+   "name": "Itum Fumaroles",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 14996,
+   "def": "AncientSmokeVent",
+   "name": "Edistan Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 16921,
+   "def": "AncientSmokeVent",
+   "name": "Rena Smokestacks",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 20690,
+   "def": "AncientSmokeVent",
+   "name": "Crane Vents",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 20691,
+   "def": "AncientSmokeVent",
+   "name": "Tomenlior Smokestacks",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 20694,
+   "def": "AncientSmokeVent",
+   "name": "Craggyalligator Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 20710,
+   "def": "AncientSmokeVent",
+   "name": "Chebaaloga Vents",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 21692,
+   "def": "AncientSmokeVent",
+   "name": "Relior Vents",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 21693,
+   "def": "AncientSmokeVent",
+   "name": "Red Spider Chimneys",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 21774,
+   "def": "AncientSmokeVent",
+   "name": "Scorpion's Jackpot Fumaroles",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 21779,
+   "def": "AncientSmokeVent",
+   "name": "Bico Vents",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 21786,
+   "def": "AncientSmokeVent",
+   "name": "Hinitler Chimneys",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 21787,
+   "def": "AncientSmokeVent",
+   "name": "Binhisus Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 21836,
+   "def": "AncientSmokeVent",
+   "name": "Alboio Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 21847,
+   "def": "AncientSmokeVent",
+   "name": "Caiembra Chimneys",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 21849,
+   "def": "AncientSmokeVent",
+   "name": "Roundbody Exhaust Duct",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 21867,
+   "def": "AncientSmokeVent",
+   "name": "Saio Chimneys",
+   "biome": "RUT_GreySea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 82,
+   "def": "AncientSmokeVent",
+   "name": "Roughbluejay Smokestacks",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 480,
+   "def": "AncientSmokeVent",
+   "name": "Locer Chimneys",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 757,
+   "def": "AncientSmokeVent",
+   "name": "Bigzebra Chimneys",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 803,
+   "def": "AncientSmokeVent",
+   "name": "Netowitna Vents",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 1869,
+   "def": "AncientSmokeVent",
+   "name": "Bra\u00f1a Vents",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 1874,
+   "def": "AncientSmokeVent",
+   "name": "Alleaan Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 1876,
+   "def": "AncientSmokeVent",
+   "name": "Daor Chimneys",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 2915,
+   "def": "AncientSmokeVent",
+   "name": "Thehiscolium Vents",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 3498,
+   "def": "AncientSmokeVent",
+   "name": "Baigo's Destruction Vents",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 3505,
+   "def": "AncientSmokeVent",
+   "name": "Milo's Prize Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 4557,
+   "def": "AncientSmokeVent",
+   "name": "Fornotia Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 4563,
+   "def": "AncientSmokeVent",
+   "name": "Bluebeetle Vents",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 4572,
+   "def": "AncientSmokeVent",
+   "name": "Golior Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 4573,
+   "def": "AncientSmokeVent",
+   "name": "Stork Heel Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 4575,
+   "def": "AncientSmokeVent",
+   "name": "Jaen Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 4580,
+   "def": "AncientSmokeVent",
+   "name": "Echidnaelbow Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 5305,
+   "def": "AncientSmokeVent",
+   "name": "Vexosi Vents",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 5309,
+   "def": "AncientSmokeVent",
+   "name": "Trobo Chimneys",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 7183,
+   "def": "AncientSmokeVent",
+   "name": "Purple Fumaroles",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 7236,
+   "def": "AncientSmokeVent",
+   "name": "Comareiro Smokestacks",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 7243,
+   "def": "AncientSmokeVent",
+   "name": "Hiba Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 7378,
+   "def": "AncientSmokeVent",
+   "name": "Ant Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 7379,
+   "def": "AncientSmokeVent",
+   "name": "Neia Smokestacks",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 8355,
+   "def": "AncientSmokeVent",
+   "name": "Shark Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 8357,
+   "def": "AncientSmokeVent",
+   "name": "Erecoitba Smokestacks",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 8361,
+   "def": "AncientSmokeVent",
+   "name": "Xosxosca Vents",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 9420,
+   "def": "AncientSmokeVent",
+   "name": "Halior Vents",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 9433,
+   "def": "AncientSmokeVent",
+   "name": "Staroum Chimneys",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 9444,
+   "def": "AncientSmokeVent",
+   "name": "Dinium Chimneys",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 11816,
+   "def": "AncientSmokeVent",
+   "name": "Hadinni Fumaroles",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 11819,
+   "def": "AncientSmokeVent",
+   "name": "Babil Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 11820,
+   "def": "AncientSmokeVent",
+   "name": "Racamdue Smokestacks",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 12042,
+   "def": "AncientSmokeVent",
+   "name": "Beatriz's Blood Chimneys",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 12092,
+   "def": "AncientSmokeVent",
+   "name": "Carlotta's Honor Chimneys",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 12099,
+   "def": "AncientSmokeVent",
+   "name": "Harsheland Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 12658,
+   "def": "AncientSmokeVent",
+   "name": "Thiwitium Fumaroles",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 12685,
+   "def": "AncientSmokeVent",
+   "name": "Hatwitora Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 13407,
+   "def": "AncientSmokeVent",
+   "name": "Paistia Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 15052,
+   "def": "AncientSmokeVent",
+   "name": "Anhilior Fumaroles",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 15056,
+   "def": "AncientSmokeVent",
+   "name": "Caribou's Downfall Smokestacks",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 15063,
+   "def": "AncientSmokeVent",
+   "name": "Irbrabaxigo Chimneys",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 15253,
+   "def": "AncientSmokeVent",
+   "name": "Toinum Vents",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 15256,
+   "def": "AncientSmokeVent",
+   "name": "Primehand Vents",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 15322,
+   "def": "AncientSmokeVent",
+   "name": "Badpaw Vents",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 17212,
+   "def": "AncientSmokeVent",
+   "name": "Trogualacan Smokestacks",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18257,
+   "def": "AncientSmokeVent",
+   "name": "Laxe Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18258,
+   "def": "AncientSmokeVent",
+   "name": "Toxtro Chimneys",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18265,
+   "def": "AncientSmokeVent",
+   "name": "Manuel's Arrogance Chimneys",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18446,
+   "def": "AncientSmokeVent",
+   "name": "Cheda Chimneys",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18495,
+   "def": "AncientSmokeVent",
+   "name": "Orangeseed Vents",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18502,
+   "def": "AncientSmokeVent",
+   "name": "Inistan Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18504,
+   "def": "AncientSmokeVent",
+   "name": "Trogo Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18514,
+   "def": "AncientSmokeVent",
+   "name": "Orange Smokestacks",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18518,
+   "def": "AncientSmokeVent",
+   "name": "Hornet's Honor Chimneys",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18521,
+   "def": "AncientSmokeVent",
+   "name": "Obatra Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18535,
+   "def": "AncientSmokeVent",
+   "name": "Yuzuki's Lunacy Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18560,
+   "def": "AncientSmokeVent",
+   "name": "Far Mantis Chimneys",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18565,
+   "def": "AncientSmokeVent",
+   "name": "Dinuay Fumaroles",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18571,
+   "def": "AncientSmokeVent",
+   "name": "Wader Fumaroles",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18572,
+   "def": "AncientSmokeVent",
+   "name": "Barbrinmirro Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 18599,
+   "def": "AncientSmokeVent",
+   "name": "Esherni Exhaust Duct",
+   "biome": "RUT_TwilightSea",
+   "why": "smoke vent on a sea"
+  },
+  {
+   "tile": 986,
+   "def": "VEE_GravelBeach",
+   "name": "Tecaberon Pebble Strand",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 989,
+   "def": "VEE_GravelBeach",
+   "name": "Eagadio Shingle Coast",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 1606,
+   "def": "VEE_GravelBeach",
+   "name": "Shoesda Pebble Strand",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 2239,
+   "def": "VEE_GravelBeach",
+   "name": "Scuboa Shingle Coast",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 2251,
+   "def": "VEE_GravelBeach",
+   "name": "Baba Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 2409,
+   "def": "VEE_GravelBeach",
+   "name": "C\u00f3maro Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 2412,
+   "def": "VEE_GravelBeach",
+   "name": "Stum Shingle Coast",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 2869,
+   "def": "VEE_GravelBeach",
+   "name": "Bidueiro Shingle Coast",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 5116,
+   "def": "VEE_GravelBeach",
+   "name": "Allda Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6656,
+   "def": "VEE_GravelBeach",
+   "name": "Sergio's Bounty Shingle Coast",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6668,
+   "def": "VEE_GravelBeach",
+   "name": "Eveum Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6778,
+   "def": "VEE_GravelBeach",
+   "name": "Cabanaban Stone-Littered Beach",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6927,
+   "def": "VEE_GravelBeach",
+   "name": "Shovermenberon Shingle Coast",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 11529,
+   "def": "VEE_GravelBeach",
+   "name": "Areareora Gravel Shore",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 11781,
+   "def": "VEE_GravelBeach",
+   "name": "Blue Pebble Strand",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14744,
+   "def": "VEE_GravelBeach",
+   "name": "Hahaistan Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14750,
+   "def": "VEE_GravelBeach",
+   "name": "Ruslan's Loss Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14763,
+   "def": "VEE_GravelBeach",
+   "name": "Seabe Shingle Coast",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14765,
+   "def": "VEE_GravelBeach",
+   "name": "Warebutbium Pebble Strand",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 15023,
+   "def": "VEE_GravelBeach",
+   "name": "Dead Caribou Shingle Coast",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 15026,
+   "def": "VEE_GravelBeach",
+   "name": "Edherjaera Gravel Shore",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 16919,
+   "def": "VEE_GravelBeach",
+   "name": "Rejamabum Gravel Shore",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 20709,
+   "def": "VEE_GravelBeach",
+   "name": "\u00d1oga Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21735,
+   "def": "VEE_GravelBeach",
+   "name": "Black Gravel Shore",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21739,
+   "def": "VEE_GravelBeach",
+   "name": "Bogoreixos Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21740,
+   "def": "VEE_GravelBeach",
+   "name": "Bonreitda Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21751,
+   "def": "VEE_GravelBeach",
+   "name": "Enus Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21752,
+   "def": "VEE_GravelBeach",
+   "name": "Rebar Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21762,
+   "def": "VEE_GravelBeach",
+   "name": "Banzo Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21807,
+   "def": "VEE_GravelBeach",
+   "name": "Abedoaro Pebble Strand",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21840,
+   "def": "VEE_GravelBeach",
+   "name": "Andhilor Gravel Shore",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21841,
+   "def": "VEE_GravelBeach",
+   "name": "Delwawasuia Gravel Shore",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21868,
+   "def": "VEE_GravelBeach",
+   "name": "Br\u00edxosrara Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 178,
+   "def": "VEE_GravelBeach",
+   "name": "White Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 898,
+   "def": "VEE_GravelBeach",
+   "name": "Squid Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 1296,
+   "def": "VEE_GravelBeach",
+   "name": "Far Hyena Gravel Shore",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 1829,
+   "def": "VEE_GravelBeach",
+   "name": "Croixigo Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 1879,
+   "def": "VEE_GravelBeach",
+   "name": "Purpleechidna Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 2517,
+   "def": "VEE_GravelBeach",
+   "name": "Hatum Gravel Shore",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 2962,
+   "def": "VEE_GravelBeach",
+   "name": "Senllo Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 3491,
+   "def": "VEE_GravelBeach",
+   "name": "Breiolbrei Shingle Coast",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 4579,
+   "def": "VEE_GravelBeach",
+   "name": "\u00d1oibrei's Stand Pebble Strand",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 5304,
+   "def": "VEE_GravelBeach",
+   "name": "White Pebble Strand",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 6966,
+   "def": "VEE_GravelBeach",
+   "name": "Blackkomodo Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 7232,
+   "def": "VEE_GravelBeach",
+   "name": "Baisa Gravel Shore",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 8351,
+   "def": "VEE_GravelBeach",
+   "name": "Blue Gorilla Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 8365,
+   "def": "VEE_GravelBeach",
+   "name": "Whitestump Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 9434,
+   "def": "VEE_GravelBeach",
+   "name": "Gray Pebble Strand",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 9437,
+   "def": "VEE_GravelBeach",
+   "name": "Verea Shingle Coast",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 11806,
+   "def": "VEE_GravelBeach",
+   "name": "Elk Talon Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 11823,
+   "def": "VEE_GravelBeach",
+   "name": "Tiolondos Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12019,
+   "def": "VEE_GravelBeach",
+   "name": "Biameaalbobal Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12097,
+   "def": "VEE_GravelBeach",
+   "name": "Camba Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12659,
+   "def": "VEE_GravelBeach",
+   "name": "Goosewing Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12670,
+   "def": "VEE_GravelBeach",
+   "name": "Caragana Pebble Strand",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12671,
+   "def": "VEE_GravelBeach",
+   "name": "Greenmosquito Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12674,
+   "def": "VEE_GravelBeach",
+   "name": "Raxigo Gravel Shore",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 13403,
+   "def": "VEE_GravelBeach",
+   "name": "Harshtoe Pebble Strand",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 15061,
+   "def": "VEE_GravelBeach",
+   "name": "Becodor Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 15072,
+   "def": "VEE_GravelBeach",
+   "name": "Asinor Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 15073,
+   "def": "VEE_GravelBeach",
+   "name": "Vance's Fraud Gravel Shore",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 17213,
+   "def": "VEE_GravelBeach",
+   "name": "Bico Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18256,
+   "def": "VEE_GravelBeach",
+   "name": "Bannotussia Shingle Coast",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18496,
+   "def": "VEE_GravelBeach",
+   "name": "Lanuay Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18509,
+   "def": "VEE_GravelBeach",
+   "name": "Philip's Bounty Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18511,
+   "def": "VEE_GravelBeach",
+   "name": "Pigbody Shingle Coast",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18516,
+   "def": "VEE_GravelBeach",
+   "name": "Andlium Shingle Coast",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18531,
+   "def": "VEE_GravelBeach",
+   "name": "Oueaora Pebble Strand",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18536,
+   "def": "VEE_GravelBeach",
+   "name": "Camro Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18555,
+   "def": "VEE_GravelBeach",
+   "name": "Erhadentuay Shingle Coast",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18558,
+   "def": "VEE_GravelBeach",
+   "name": "Craggyshoulder Pebble Strand",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18570,
+   "def": "VEE_GravelBeach",
+   "name": "Br\u00edo Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18574,
+   "def": "VEE_GravelBeach",
+   "name": "C\u00f3maro Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18575,
+   "def": "VEE_GravelBeach",
+   "name": "Vermendo Gravel Shore",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 1249,
+   "def": "Crevasse",
+   "name": "Orangeshrub Fissure",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 1290,
+   "def": "Crevasse",
+   "name": "Hadrodo Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 2413,
+   "def": "Crevasse",
+   "name": "Comboa Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 2864,
+   "def": "Crevasse",
+   "name": "Rough Horse Break",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 4030,
+   "def": "Crevasse",
+   "name": "Itia Break",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 4051,
+   "def": "Crevasse",
+   "name": "Guaca Fissure",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 5117,
+   "def": "Crevasse",
+   "name": "Neshobium Break",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6646,
+   "def": "Crevasse",
+   "name": "Clam Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6670,
+   "def": "Crevasse",
+   "name": "Carbar Fissure",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6901,
+   "def": "Crevasse",
+   "name": "Entkothiistia Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6915,
+   "def": "Crevasse",
+   "name": "Anddelberon Fissure",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6926,
+   "def": "Crevasse",
+   "name": "Edanddos Break",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 6930,
+   "def": "Crevasse",
+   "name": "Sharp Bison Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 7724,
+   "def": "Crevasse",
+   "name": "Orandera Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 7726,
+   "def": "Crevasse",
+   "name": "Raccoon Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 7727,
+   "def": "Crevasse",
+   "name": "Banberon's Bluff Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 7728,
+   "def": "Crevasse",
+   "name": "Hiroki's End Break",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 8892,
+   "def": "Crevasse",
+   "name": "Vivian's Finale Break",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 9977,
+   "def": "Crevasse",
+   "name": "Andda Break",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 11506,
+   "def": "Crevasse",
+   "name": "Xoscarsai Break",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 11513,
+   "def": "Crevasse",
+   "name": "Ouen Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 11530,
+   "def": "Crevasse",
+   "name": "Inouthiussia Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 11531,
+   "def": "Crevasse",
+   "name": "Minkbody Break",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 11786,
+   "def": "Crevasse",
+   "name": "Chacur Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 13210,
+   "def": "Crevasse",
+   "name": "Ogacami Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14747,
+   "def": "Crevasse",
+   "name": "Purpleseed Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14751,
+   "def": "Crevasse",
+   "name": "Lertobai Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 14776,
+   "def": "Crevasse",
+   "name": "Coroxepe Fissure",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 15028,
+   "def": "Crevasse",
+   "name": "Obor Fissure",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 15030,
+   "def": "Crevasse",
+   "name": "Roundpanda Fissure",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 20703,
+   "def": "Crevasse",
+   "name": "Cattle Arm Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 20713,
+   "def": "Crevasse",
+   "name": "Bilquexoulo Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 20717,
+   "def": "Crevasse",
+   "name": "Abancarole Fissure",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21732,
+   "def": "Crevasse",
+   "name": "Icy Armadillo Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21756,
+   "def": "Crevasse",
+   "name": "Goodkoala Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21758,
+   "def": "Crevasse",
+   "name": "Caneistia Break",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21780,
+   "def": "Crevasse",
+   "name": "Reatbanla Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21784,
+   "def": "Crevasse",
+   "name": "Oulera Break",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21838,
+   "def": "Crevasse",
+   "name": "Prime Lark Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21853,
+   "def": "Crevasse",
+   "name": "Foxelbow Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 21855,
+   "def": "Crevasse",
+   "name": "Caga Fissure",
+   "biome": "RUT_GreySea",
+   "why": "open water"
+  },
+  {
+   "tile": 802,
+   "def": "Crevasse",
+   "name": "Round Eagle Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 1871,
+   "def": "Crevasse",
+   "name": "Grayshrub Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 2519,
+   "def": "Crevasse",
+   "name": "Hinbo Break",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 3449,
+   "def": "Crevasse",
+   "name": "White Mandrill Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 3492,
+   "def": "Crevasse",
+   "name": "Graywood Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 3495,
+   "def": "Crevasse",
+   "name": "Martobanque Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 4574,
+   "def": "Crevasse",
+   "name": "Hisder Break",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 5311,
+   "def": "Crevasse",
+   "name": "Leira Break",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 6947,
+   "def": "Crevasse",
+   "name": "Hadomeuay Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 7155,
+   "def": "Crevasse",
+   "name": "Redhorn Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 7182,
+   "def": "Crevasse",
+   "name": "White Fissure",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 7241,
+   "def": "Crevasse",
+   "name": "Traro Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 7774,
+   "def": "Crevasse",
+   "name": "Sharpstingray Fissure",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 10169,
+   "def": "Crevasse",
+   "name": "Orangeshell Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 11808,
+   "def": "Crevasse",
+   "name": "Ioqueo Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 11818,
+   "def": "Crevasse",
+   "name": "Ourpain Break",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 11821,
+   "def": "Crevasse",
+   "name": "Baicri Break",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 11827,
+   "def": "Crevasse",
+   "name": "Ro\u00f1o Fissure",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12015,
+   "def": "Crevasse",
+   "name": "Trosbrinbi Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12093,
+   "def": "Crevasse",
+   "name": "Lyrebird Arm Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12096,
+   "def": "Crevasse",
+   "name": "Nevasole Break",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12102,
+   "def": "Crevasse",
+   "name": "Arefarna Fissure",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12656,
+   "def": "Crevasse",
+   "name": "Ereoum Break",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 12669,
+   "def": "Crevasse",
+   "name": "Biltro Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 13404,
+   "def": "Crevasse",
+   "name": "Finlia Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 13406,
+   "def": "Crevasse",
+   "name": "Orange Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 15060,
+   "def": "Crevasse",
+   "name": "Bluefruit Break",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 15320,
+   "def": "Crevasse",
+   "name": "Crouca Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 15333,
+   "def": "Crevasse",
+   "name": "Eaoum Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18254,
+   "def": "Crevasse",
+   "name": "Worm Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18450,
+   "def": "Crevasse",
+   "name": "Banrola Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18497,
+   "def": "Crevasse",
+   "name": "Ourium Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18499,
+   "def": "Crevasse",
+   "name": "Erehinnebium Fissure",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18525,
+   "def": "Crevasse",
+   "name": "Harsh Crow Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18527,
+   "def": "Crevasse",
+   "name": "Finum Break",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18538,
+   "def": "Crevasse",
+   "name": "Trobo Break",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18542,
+   "def": "Crevasse",
+   "name": "Red Dinosaur Break",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18543,
+   "def": "Crevasse",
+   "name": "Launt Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18544,
+   "def": "Crevasse",
+   "name": "Bad Alligator Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18547,
+   "def": "Crevasse",
+   "name": "Retheithni Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18551,
+   "def": "Crevasse",
+   "name": "Funinum Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18552,
+   "def": "Crevasse",
+   "name": "Hiyouus Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18564,
+   "def": "Crevasse",
+   "name": "Canlebil Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 18598,
+   "def": "Crevasse",
+   "name": "Porcupine Break",
+   "biome": "RUT_TwilightSea",
+   "why": "open water"
+  },
+  {
+   "tile": 358,
+   "def": "Harbor",
+   "name": "Funum Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 901,
+   "def": "Harbor",
+   "name": "Onunt Port",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 2516,
+   "def": "Harbor",
+   "name": "Calerei Port",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 3489,
+   "def": "Harbor",
+   "name": "Port Xina",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 4560,
+   "def": "Harbor",
+   "name": "Telor Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 4590,
+   "def": "Harbor",
+   "name": "Bluetrunk Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 4591,
+   "def": "Harbor",
+   "name": "Farparrot Port",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 8353,
+   "def": "Harbor",
+   "name": "Wiseankle Port",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 9432,
+   "def": "Harbor",
+   "name": "Green Alligator Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 11832,
+   "def": "Harbor",
+   "name": "Jahium Port",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 11833,
+   "def": "Harbor",
+   "name": "Emu's End Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 11841,
+   "def": "Harbor",
+   "name": "Logo Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 12667,
+   "def": "Harbor",
+   "name": "Nightingale Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 13380,
+   "def": "Harbor",
+   "name": "Eaerisin Port",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 15055,
+   "def": "Harbor",
+   "name": "Hadlenistia Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 15066,
+   "def": "Harbor",
+   "name": "Blacklemur Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 17214,
+   "def": "Harbor",
+   "name": "Graypony Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 18451,
+   "def": "Harbor",
+   "name": "Croicamxigoga Port",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 18492,
+   "def": "Harbor",
+   "name": "Bancasea Port",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 18553,
+   "def": "Harbor",
+   "name": "Port Igor",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 18568,
+   "def": "Harbor",
+   "name": "Graypanda Harbor",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 18589,
+   "def": "Harbor",
+   "name": "Theistia Port",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 3450,
+   "def": "VEE_GravelBeach",
+   "name": "Biavetasra Gravel Shore",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 3509,
+   "def": "VEE_GravelBeach",
+   "name": "Heristan Shingle Coast",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 4588,
+   "def": "VEE_GravelBeach",
+   "name": "White Gravel Shore",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 6949,
+   "def": "VEE_GravelBeach",
+   "name": "Ogal Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 6956,
+   "def": "VEE_GravelBeach",
+   "name": "Comboa Pebble Strand",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 6982,
+   "def": "VEE_GravelBeach",
+   "name": "Inla Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 7776,
+   "def": "VEE_GravelBeach",
+   "name": "Xosbanbor Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 8364,
+   "def": "VEE_GravelBeach",
+   "name": "Redclaw Gravel Shore",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 9430,
+   "def": "VEE_GravelBeach",
+   "name": "Mi\u00f1oca Gravel Shore",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 11809,
+   "def": "VEE_GravelBeach",
+   "name": "Finchbody Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 12688,
+   "def": "VEE_GravelBeach",
+   "name": "Hieron Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 13410,
+   "def": "VEE_GravelBeach",
+   "name": "Wanotia Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 18252,
+   "def": "VEE_GravelBeach",
+   "name": "Mantis Stone-Littered Beach",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 18512,
+   "def": "VEE_GravelBeach",
+   "name": "Tasca Gravel Shore",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 18517,
+   "def": "VEE_GravelBeach",
+   "name": "Unwituay Rocky Shoreline",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 18562,
+   "def": "VEE_GravelBeach",
+   "name": "Unallia Gravel Shore",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 1886,
+   "def": "Crevasse",
+   "name": "Good Tarsier Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 2521,
+   "def": "Crevasse",
+   "name": "Deadwasp Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 3502,
+   "def": "Crevasse",
+   "name": "Dovenose Fissure",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 3508,
+   "def": "Crevasse",
+   "name": "Asatherora's Downfall Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 4564,
+   "def": "Crevasse",
+   "name": "Fenonbo Break",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 4576,
+   "def": "Crevasse",
+   "name": "Elephant's Stand Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 4584,
+   "def": "Crevasse",
+   "name": "Gaboa Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 4586,
+   "def": "Crevasse",
+   "name": "Caherleler Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 6972,
+   "def": "Crevasse",
+   "name": "Purpleant Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 6983,
+   "def": "Crevasse",
+   "name": "Mi\u00f1oca Fissure",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 8360,
+   "def": "Crevasse",
+   "name": "Whiteape Break",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 9416,
+   "def": "Crevasse",
+   "name": "C\u00f3gamaga Fissure",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 9431,
+   "def": "Crevasse",
+   "name": "Oulalitler Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 12100,
+   "def": "Crevasse",
+   "name": "Ambvexa Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 12676,
+   "def": "Crevasse",
+   "name": "Nthatforlium Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 12681,
+   "def": "Crevasse",
+   "name": "Naoki's Talon Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 12686,
+   "def": "Crevasse",
+   "name": "Ntistan Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 15053,
+   "def": "Crevasse",
+   "name": "Bicar Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 15080,
+   "def": "Crevasse",
+   "name": "Green Swan Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 15336,
+   "def": "Crevasse",
+   "name": "Betty's Downfall Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 18532,
+   "def": "Crevasse",
+   "name": "Anberium Crevasse",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 18605,
+   "def": "Crevasse",
+   "name": "Orangetrunk Fissure",
+   "biome": "RUT_TwilightSea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 4040,
+   "def": "Harbor",
+   "name": "Stunt Harbor",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 5100,
+   "def": "Harbor",
+   "name": "Green Port",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 5111,
+   "def": "Harbor",
+   "name": "Verhini Port",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 6663,
+   "def": "Harbor",
+   "name": "Fly Hand Harbor",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 6676,
+   "def": "Harbor",
+   "name": "Oldlemur Port",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 8897,
+   "def": "Harbor",
+   "name": "Feneveeria Port",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 13196,
+   "def": "Harbor",
+   "name": "Lantilor Harbor",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 13230,
+   "def": "Harbor",
+   "name": "\u00d1ozo Port",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 20791,
+   "def": "Harbor",
+   "name": "Entistan Harbor",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21748,
+   "def": "Harbor",
+   "name": "Port Carlos",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21775,
+   "def": "Harbor",
+   "name": "Mengo Harbor",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21778,
+   "def": "Harbor",
+   "name": "Smallfoot Port",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21782,
+   "def": "Harbor",
+   "name": "Vadim's Stand Harbor",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21804,
+   "def": "Harbor",
+   "name": "Big Manatee Harbor",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21817,
+   "def": "Harbor",
+   "name": "Eraler Port",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21851,
+   "def": "Harbor",
+   "name": "Ratshoulder Harbor",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 3857,
+   "def": "VEE_GravelBeach",
+   "name": "Alola Stone-Littered Beach",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 4048,
+   "def": "VEE_GravelBeach",
+   "name": "Eaerelor's Cataclysm Shingle Coast",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 5108,
+   "def": "VEE_GravelBeach",
+   "name": "Itheredouay's Downfall Stone-Littered Beach",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 5109,
+   "def": "VEE_GravelBeach",
+   "name": "Radorrela Gravel Shore",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 6643,
+   "def": "VEE_GravelBeach",
+   "name": "Trosma Stone-Littered Beach",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 11507,
+   "def": "VEE_GravelBeach",
+   "name": "Neistia Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 11516,
+   "def": "VEE_GravelBeach",
+   "name": "Asia Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 11536,
+   "def": "VEE_GravelBeach",
+   "name": "Primenose Stone-Littered Beach",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 13199,
+   "def": "VEE_GravelBeach",
+   "name": "Trebo Shingle Coast",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 13208,
+   "def": "VEE_GravelBeach",
+   "name": "Cerbartongua Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 13216,
+   "def": "VEE_GravelBeach",
+   "name": "Toxulo Shingle Coast",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 14760,
+   "def": "VEE_GravelBeach",
+   "name": "Shoistan Rocky Shoreline",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 16891,
+   "def": "VEE_GravelBeach",
+   "name": "Butenlium Pebble Strand",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 16917,
+   "def": "VEE_GravelBeach",
+   "name": "Areberon Pebble Strand",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 20696,
+   "def": "VEE_GravelBeach",
+   "name": "Gubalrro Pebble Strand",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21743,
+   "def": "VEE_GravelBeach",
+   "name": "Biler Stone-Littered Beach",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21773,
+   "def": "VEE_GravelBeach",
+   "name": "Callie's Prize Stone-Littered Beach",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21803,
+   "def": "VEE_GravelBeach",
+   "name": "Otoen Gravel Shore",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 2237,
+   "def": "Crevasse",
+   "name": "Lanthabutdio Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 3854,
+   "def": "Crevasse",
+   "name": "Hardy Jackal Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 4046,
+   "def": "Crevasse",
+   "name": "Canto Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 5113,
+   "def": "Crevasse",
+   "name": "L\u00e1nrol\u00e1n Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 6652,
+   "def": "Crevasse",
+   "name": "Hardygnu Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 6659,
+   "def": "Crevasse",
+   "name": "Orangehill Break",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 11514,
+   "def": "Crevasse",
+   "name": "Omewasuay Fissure",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 11774,
+   "def": "Crevasse",
+   "name": "Doare\u00f1otas Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 13212,
+   "def": "Crevasse",
+   "name": "Eseaistia Fissure",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 13228,
+   "def": "Crevasse",
+   "name": "Oulbium Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 14754,
+   "def": "Crevasse",
+   "name": "Ro\u00f1otresa Fissure",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 20689,
+   "def": "Crevasse",
+   "name": "Aserni Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 20708,
+   "def": "Crevasse",
+   "name": "Gadolium Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 20784,
+   "def": "Crevasse",
+   "name": "Evenoteria Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 20786,
+   "def": "Crevasse",
+   "name": "Gairotre Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 20787,
+   "def": "Crevasse",
+   "name": "Purplecave Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21741,
+   "def": "Crevasse",
+   "name": "Labraza Fissure",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21806,
+   "def": "Crevasse",
+   "name": "Oulmenium Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21852,
+   "def": "Crevasse",
+   "name": "Bibust Crevasse",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 3858,
+   "def": "IceDunes",
+   "name": "\u00d1arrora Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 3859,
+   "def": "IceDunes",
+   "name": "Eaedla Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 6653,
+   "def": "IceDunes",
+   "name": "Panther Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 6657,
+   "def": "IceDunes",
+   "name": "Albina's Ear Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 13209,
+   "def": "IceDunes",
+   "name": "Jaaredus Frozen Hills",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 13213,
+   "def": "IceDunes",
+   "name": "Poppy's Joy Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 15022,
+   "def": "IceDunes",
+   "name": "Bra\u00f1a Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 16893,
+   "def": "IceDunes",
+   "name": "Mabar Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 16897,
+   "def": "IceDunes",
+   "name": "Verinhinera Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 20697,
+   "def": "IceDunes",
+   "name": "Erreni Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 20702,
+   "def": "IceDunes",
+   "name": "Hador Frozen Hills",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 20711,
+   "def": "IceDunes",
+   "name": "Obobocroi Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 20783,
+   "def": "IceDunes",
+   "name": "Mallard Ice Dunes",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21729,
+   "def": "IceDunes",
+   "name": "Redstone Frozen Hills",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21731,
+   "def": "IceDunes",
+   "name": "Helor Ice Mounds",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  },
+  {
+   "tile": 21760,
+   "def": "IceDunes",
+   "name": "Oullor Frozen Hills",
+   "biome": "RUT_GreySea",
+   "why": "shoreline surplus (density cap)"
+  }
+ ],
+ "keep": [
+  {
+   "tile": 181,
+   "def": "Harbor",
+   "name": "Lavego Harbor",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 8308,
+   "def": "Harbor",
+   "name": "Port Riku",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 18456,
+   "def": "Harbor",
+   "name": "Wise Rabbit Port",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 6965,
+   "def": "Harbor",
+   "name": "Graytermite Harbor",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 7181,
+   "def": "Harbor",
+   "name": "Blackokapi Harbor",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 1342,
+   "def": "Harbor",
+   "name": "Orangeshrub Harbor",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 16,
+   "def": "VEE_GravelBeach",
+   "name": "Busttra Stone-Littered Beach",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 6953,
+   "def": "VEE_GravelBeach",
+   "name": "Bina Rocky Shoreline",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 11825,
+   "def": "VEE_GravelBeach",
+   "name": "Binistan Stone-Littered Beach",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 7496,
+   "def": "VEE_GravelBeach",
+   "name": "Lalarro Pebble Strand",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 3506,
+   "def": "VEE_GravelBeach",
+   "name": "Tistler Pebble Strand",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 3500,
+   "def": "VEE_GravelBeach",
+   "name": "Antpaw Rocky Shoreline",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 1875,
+   "def": "VEE_GravelBeach",
+   "name": "Okapi Rocky Shoreline",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 18522,
+   "def": "VEE_GravelBeach",
+   "name": "Eveberium Rocky Shoreline",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 10162,
+   "def": "VEE_GravelBeach",
+   "name": "Alllium Pebble Strand",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 18454,
+   "def": "VEE_GravelBeach",
+   "name": "Black Gull Gravel Shore",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 899,
+   "def": "Crevasse",
+   "name": "Wasoum Break",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 7220,
+   "def": "Crevasse",
+   "name": "Bibabo Break",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 18264,
+   "def": "Crevasse",
+   "name": "Coyote Crevasse",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 15068,
+   "def": "Crevasse",
+   "name": "Omeder Break",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 3501,
+   "def": "Crevasse",
+   "name": "Hainuia Fissure",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 10161,
+   "def": "Crevasse",
+   "name": "Colcar Fissure",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 8366,
+   "def": "Crevasse",
+   "name": "L\u00e9rebar Crevasse",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 11817,
+   "def": "Crevasse",
+   "name": "Erwitberium Crevasse",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 449,
+   "def": "Harbor",
+   "name": "Atereselior Port",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 3856,
+   "def": "Harbor",
+   "name": "Notinor Port",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 21723,
+   "def": "Harbor",
+   "name": "Craggynewt Harbor",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 20782,
+   "def": "Harbor",
+   "name": "Allora Port",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 21865,
+   "def": "Harbor",
+   "name": "Lercha Harbor",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 990,
+   "def": "VEE_GravelBeach",
+   "name": "Megascarab Gravel Shore",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 20707,
+   "def": "VEE_GravelBeach",
+   "name": "Omeberon Shingle Coast",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 15020,
+   "def": "VEE_GravelBeach",
+   "name": "Penguin Stone-Littered Beach",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 11534,
+   "def": "VEE_GravelBeach",
+   "name": "Red Pheasant Pebble Strand",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 13558,
+   "def": "VEE_GravelBeach",
+   "name": "Camcai Rocky Shoreline",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 21837,
+   "def": "VEE_GravelBeach",
+   "name": "Badchin Rocky Shoreline",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 14759,
+   "def": "VEE_GravelBeach",
+   "name": "Hennotaldo Rocky Shoreline",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 9979,
+   "def": "VEE_GravelBeach",
+   "name": "Hiveussia Pebble Strand",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 11504,
+   "def": "VEE_GravelBeach",
+   "name": "Shoralia Rocky Shoreline",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 6655,
+   "def": "VEE_GravelBeach",
+   "name": "Deadfinger Rocky Shoreline",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 1602,
+   "def": "Crevasse",
+   "name": "Enastela Fissure",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 21812,
+   "def": "Crevasse",
+   "name": "Gaarlium Fissure",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 7766,
+   "def": "Crevasse",
+   "name": "Aardvark Head Crevasse",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 21770,
+   "def": "Crevasse",
+   "name": "Trosma Break",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 20771,
+   "def": "Crevasse",
+   "name": "Redwood Break",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 21844,
+   "def": "Crevasse",
+   "name": "Erika's Destruction Fissure",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 20701,
+   "def": "Crevasse",
+   "name": "Borba Crevasse",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 11527,
+   "def": "Crevasse",
+   "name": "Smallporcupine Break",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 3855,
+   "def": "IceDunes",
+   "name": "Loucergotro Frozen Hills",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 21695,
+   "def": "IceDunes",
+   "name": "Unler Ice Dunes",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 7767,
+   "def": "IceDunes",
+   "name": "Bairocri Ice Dunes",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 11515,
+   "def": "IceDunes",
+   "name": "Roundtooth Frozen Hills",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 9973,
+   "def": "IceDunes",
+   "name": "Hevean Ice Mounds",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 21742,
+   "def": "IceDunes",
+   "name": "Bondio Frozen Hills",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 21802,
+   "def": "IceDunes",
+   "name": "Black Frozen Hills",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 13197,
+   "def": "IceDunes",
+   "name": "Green Frozen Hills",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 11775,
+   "def": "IceDunes",
+   "name": "Isvedo Frozen Hills",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 20767,
+   "def": "IceDunes",
+   "name": "Thauay Ice Dunes",
+   "biome": "RUT_GreySea"
+  },
+  {
+   "tile": 871,
+   "def": "VEE_Cenotes",
+   "name": "Tramala Karst Hollows",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 3320,
+   "def": "VEE_Cenotes",
+   "name": "Blackstump Cenote Field",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 4408,
+   "def": "VEE_Cenotes",
+   "name": "Anuia Cenote Lakes",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 9269,
+   "def": "VEE_Cenotes",
+   "name": "Minor Collapsed Limestone Pools",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 12012,
+   "def": "VEE_Cenotes",
+   "name": "Ouruay Water-Filled Cenotes",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 17483,
+   "def": "VEE_Cenotes",
+   "name": "Shigeru's Achievement Cenote Lakes",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 17490,
+   "def": "VEE_Cenotes",
+   "name": "Farus Cenote Lakes",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 4401,
+   "def": "Cavern",
+   "name": "Laila's Caves",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 4411,
+   "def": "Cavern",
+   "name": "Tina's Caves",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 9267,
+   "def": "Cavern",
+   "name": "Butba Cavern",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 9271,
+   "def": "Cavern",
+   "name": "Hiunt Cavern",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 12083,
+   "def": "Cavern",
+   "name": "Guao Cavern",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 17481,
+   "def": "Cavern",
+   "name": "Orange Pigeon Cave Network",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 17484,
+   "def": "Cavern",
+   "name": "Deadseal Caverns",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 17489,
+   "def": "Cavern",
+   "name": "Goma Cavern",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 12013,
+   "def": "Valley",
+   "name": "Gabo Valley",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 12510,
+   "def": "Valley",
+   "name": "Orange Eagle Valley",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 17493,
+   "def": "Valley",
+   "name": "Heoroum Ravine",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 17501,
+   "def": "Valley",
+   "name": "Ashininum Valley",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 1704,
+   "def": "DryLake",
+   "name": "Alboio Salt Flat",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 7223,
+   "def": "Valley",
+   "name": "Bilmeaca Gully",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 12080,
+   "def": "Valley",
+   "name": "Menba Canyon",
+   "biome": "RUT_TwilightSea"
+  },
+  {
+   "tile": 15019,
+   "def": "Valley",
+   "name": "Fortheandistan Divide",
+   "biome": "RUT_GreySea"
+  }
+ ]
+}

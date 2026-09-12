@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T15:26:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T15:35:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -678,7 +678,7 @@ prose:    infrastructure/state/items/WORLD_NAME_FIXES_1.md
 ## SHEET_ORPHAN_CONSUMPTION_1 Consume the 5 orphaned verdict channels of the 2026-09-10 assignment sheets (fauna out x6, flora move x15, flora out x4, 118-row NEW-ART/DEF ledger, flora art:improve x148) — each checked against post-09-10 rulings before landing; the sheet never overwrites a newer decision
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     task
 summary:  1. Resolve the sizeBin UNKNOWN (measure, don't infer).
@@ -1059,3 +1059,23 @@ kind:     task
 thin:     no ## criteria
 summary:  - Template: PYRELANDSWORLDSWITCH1 (batches, getter read-back, CSV re-export + LOSS
 prose:    infrastructure/state/items/BIOME_WORLD_SWITCH_WAVE_1.md
+
+## CATHEDRAL_ROACH_THINKTREE_GAP_1 RUT_CathedralRoach's EatCleanable think node likely never fires: BaseMechanoidWalker has no insertTag for the Animal_PreMain route mandrake.rm.creaturebehaviors uses. Live and ENABLED (mandrake.rut.rustcathedralroaches) - land-cleaning behavior may be dead in the shipped game right now. Needs a live get_thinktree/behavior-log check to confirm, then either an insertTag alternative or the roach's own think tree like RUT_LivingBolt got.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  Confirm whether RUTCathedralRoach pawns actually execute
+prose:    infrastructure/state/items/CATHEDRAL_ROACH_THINKTREE_GAP_1.md
+
+## SEA_LANDMARK_CLEANUP_REPLAY_1 Replay the 2026-09-12 sea-landmark cleanup onto the CANONICAL save at its next re-save: SEA_ENRICHMENT_LANDMARKS_1 put 613 landmarks on 1,079 sea tiles (57%); owner ruled shoreline-only + capped (~7%); applied live on the FLIGHT save only — CANONICAL_ASHKARR_2026-09-09.rws still carries all 613; run design/Jawa/worldbuilding/enrichment/sea_landmark_cleanup_apply.py after loading canonical, verify 80 remain, re-save with backup+stat discipline
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SEA_LANDMARK_CLEANUP_REPLAY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SEA_LANDMARK_CLEANUP_REPLAY_1.md
