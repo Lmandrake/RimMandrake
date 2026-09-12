@@ -10017,6 +10017,12 @@
     "hash": "a6967511944351015c05344e31d12c807301de9bbdbae625d33657ffa2a3a89f",
     "sha": "57ce5707"
   },
+  "src/RimUtinni/FrostmiteArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "e2d2d5b2edc2ea9476a30f137399295fcb2a338bfffa41e21f359515cbf5f6a6",
+    "sha": "8da0c5c8e"
+  },
   "src/RimUtinni/FungalSoilTrade/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -10077,6 +10083,30 @@
     "hash": "1a6e4776aefc525e13667cfc224697f5936f417cb966f43def03cc1791ee3b84",
     "sha": "8be234dd"
   },
+  "src/RimUtinni/GritheArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "0f7c4a1e2de6a1f450d86aa91f37aa4161d8ba6f77f2850ee718c7b5a4cb0225",
+    "sha": "8da0c5c8e"
+  },
+  "src/RimUtinni/GritheArtOverride/Patches/Grithe_LabelPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "0cbdc2f5bfe375ebf2bcdadf90653bf46c88f7508503463329d795f4e2604ee6",
+    "sha": "8da0c5c8e"
+  },
+  "src/RimUtinni/GruttArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "d05dcbc69e8ad057bd378e0df0c861d84627803236b6ba0def35667f480cc89f",
+    "sha": "8da0c5c8e"
+  },
+  "src/RimUtinni/GruttArtOverride/Patches/Grutt_LabelPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "082fa9f3f1ea2082e9bf520684da6bf69c0b511f52207f96e08022b64293b4cd",
+    "sha": "8da0c5c8e"
+  },
   "src/RimUtinni/IshkoDarkLandmarks/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -10094,6 +10124,18 @@
     "date": "2026-09-10",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "6e65d276"
+  },
+  "src/RimUtinni/KroffaArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "46e849421b8f2f8df47f3b4d063ad2ebbd3a753371c058cfa7adee3accdca653",
+    "sha": "8da0c5c8e"
+  },
+  "src/RimUtinni/KroffaArtOverride/Patches/Kroffa_LabelPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "1ed2c35c67eadd5489e649549112cd8158f766e5af2490bbc1403fbe982871a9",
+    "sha": "8da0c5c8e"
   },
   "src/RimUtinni/LanternDeeps/About/About.xml": {
     "cleanCount": 2,
@@ -10454,6 +10496,18 @@
     "date": "2026-09-05",
     "hash": "6ff0b6da33c4b8855ae09b629f4d2b9e27116828a3d1947b9b89b847bcab107d",
     "sha": "ff35f27f"
+  },
+  "src/RimUtinni/PuffmiteArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "169b737004a5453729b9286fa45b00e4faf1882f48a5e0f53354b7184da9c505",
+    "sha": "8da0c5c8e"
+  },
+  "src/RimUtinni/PuffmiteArtOverride/Patches/Puffmite_LabelPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "6df0d22ae155a603d1f1530614cca5ad6e7dedc4d4be1239508c97dc4c4d14e2",
+    "sha": "8da0c5c8e"
   },
   "src/RimUtinni/PyrelandsFireEcology/About/About.xml": {
     "cleanCount": 2,
@@ -10887,6 +10941,12 @@
     "hash": "616e6386c463523fd0266737786296062bf0867f4997200a48923bdc8852e5ca",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/SpidercatArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "b2a3ff35b513724727d32bcf0ef7b7b363175f09f2f812bab9495ed76ddcfae4",
+    "sha": "8da0c5c8e"
+  },
   "src/RimUtinni/StructureInjectionsRUT/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -11206,10 +11266,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Contagion.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "f142ba552d1c84ed4e1f1aafee178f094eba6840b2c93399bd6af49a6735ffdf",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "ffd9934e39227a17e4eb0f1ada964d00cc0a082845cbfad55ffb6097c8de7fc2",
+    "sha": "ea0108daa"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml": {
     "cleanCount": 2,
