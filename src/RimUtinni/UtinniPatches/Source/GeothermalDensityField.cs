@@ -38,8 +38,9 @@ namespace RimMandrake.Utinni.UtinniPatches
 		// falloff decays by 1/e. 20 degrees is a soft-touch first cut: on
 		// Ash'karr's ~2000-tile surface a "close to a dayside range" tile
 		// is a few tiles away, not a quarter of a hemisphere. Not owner-
-		// ruled; a tuning knob the falloff report exists to let him judge.
-		private const float MountainFalloffDeg = 20f;
+		// ruled; a tuning knob the falloff report exists to let him judge —
+		// now exposed as UtinniPatchesSettings.geothermalMountainFalloffDeg
+		// (MOD_OPTIONS_RETROFIT_1), default unchanged at 20f.
 
 		// "Full density on dayside mountainous/hilly tiles" per the item's
 		// own scope note: a tile's own terrain already buys most of the way
@@ -119,6 +120,8 @@ namespace RimMandrake.Utinni.UtinniPatches
 			return best;
 		}
 
+		private static float MountainFalloffDeg => UtinniPatchesSettings.geothermalMountainFalloffDeg;
+
 		// 0..1 per-tile geothermal density. Zero past the terminator
 		// (arc >= 90, the item's own hard cutoff); on the dayside, the max
 		// of "how mountainous is THIS tile" and "how close is the nearest
@@ -168,6 +171,10 @@ namespace RimMandrake.Utinni.UtinniPatches
 		{
 			int baseCount = base.CalculateFinalCount(map);
 			if (baseCount <= 0)
+			{
+				return baseCount;
+			}
+			if (!UtinniPatchesSettings.geothermalDensityFieldEnabled)
 			{
 				return baseCount;
 			}

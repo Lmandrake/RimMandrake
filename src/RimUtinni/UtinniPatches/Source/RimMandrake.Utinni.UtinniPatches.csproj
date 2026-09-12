@@ -56,6 +56,7 @@
          Patches/AmbientShrineGuardians.xml. Still no Harmony reference on this
          project — see that file's and the .cs header's own notes. -->
     <Compile Include="AmbientShrineGuardians.cs" />
+    <Compile Include="UtinniPatchesSettings.cs" />
   </ItemGroup>
 
   <ItemGroup>
