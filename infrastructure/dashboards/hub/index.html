@@ -182,17 +182,31 @@ async function grab(f){const r=await fetch(f);if(!r.ok)throw new Error(f+" → H
 
 grab("data/art.json").then(d=>{
   meta("art",{generatedAt:d.generatedAt,source:d.sourceFingerprint});
-  const sc=d.stateCounts||{},sp=d.spend||{},pr=d.projection||{};
+  const sc=d.stateCounts||{},sp=d.spend||{},pr=d.projection||{},pt=d.perTarget||{};
+  const lanes=Object.entries(pt);
+  const creatures=new Set(lanes.map(([k])=>k.split("/")[0])).size;
+  const renders=lanes.reduce((a,[,v])=>a+(v.iteration||0),0);
+  const rejected=lanes.reduce((a,[,v])=>a+(v.rejected_count||0),0);
   const states=Object.entries(sc).filter(([,v])=>v>0);
+  const ord=["queued","generated","awaiting_verdict","rejected_in_retry","parked_at_cap","registered","accepted","committed","deployed","repurposed","unregistered"];
+  lanes.sort((a,b)=>(ord.indexOf(a[1].state)-ord.indexOf(b[1].state))||a[0].localeCompare(b[0]));
   $("#body-art").innerHTML=
-    tiles([["targets",d.targetCount??"?",1],
+    tiles([["lanes (target×facing)",d.targetCount??"?",1],
+           ["creatures",creatures],
+           ["renders",renders],["rejections",rejected],
            ["awaiting verdict",sc.awaiting_verdict??0],
-           ["accepted",sc.accepted??0],
            ["spend (USD)",sp.totalUsd!=null?"$"+sp.totalUsd.toFixed(2):"?"],
            ["weekly window",sp.pctWeeklyWindow!=null?sp.pctWeeklyWindow+"%":"?"]])+
-    `<h3>Queue states</h3><div class="scroll"><table><tr><th>state</th><th class="num">targets</th></tr>`+
+    `<h3>Queue states</h3><div class="scroll"><table><tr><th>state</th><th class="num">lanes</th></tr>`+
     states.map(([k,v])=>`<tr><td>${esc(k)}</td><td class="num">${v}</td></tr>`).join("")+
     `</table></div>`+
+    `<h3>Per-target tracking (${lanes.length} lanes)</h3><div class="tableclip"><table>`+
+    `<tr><th>lane</th><th>state</th><th class="num">iterations</th><th class="num">rejected</th><th class="num">spend</th></tr>`+
+    lanes.map(([k,v])=>`<tr><td><code style="font-family:var(--mono);font-size:12px">${esc(k)}</code></td><td>${esc(v.state)}</td><td class="num">${v.iteration??0}</td><td class="num">${v.rejected_count??0}</td><td class="num">${v.spend&&v.spend.usd!=null?"$"+v.spend.usd.toFixed(2):"—"}</td></tr>`).join("")+
+    `</table></div>`+
+    `<p class="note">Scope = what the registry has been fed (regen waves so far). The
+    assignment-sheet scope registers as its waves are queued after the verdict sitting —
+    the lane count moves with a labeled step, never a silent renumber.</p>`+
     `<h3>Projection</h3><p class="note">${esc(pr.note||"")} — status ${esc(pr.status||"?")}, ${pr.remaining??"?"} of ${pr.totalTargets??"?"} remaining.</p>`;
 }).catch(e=>fail("art",e));
 
@@ -237,6 +251,9 @@ grab("data/worldmap.json").then(d=>{
   meta("worldmap",d);
   $("#body-worldmap").innerHTML=
     `<p class="note">${esc(d.note||"")}</p>`+
+    (d.worldFrozenAt?tiles([["audit date",String(d.generatedAt).slice(0,10)],
+                            ["world frozen",String(d.worldFrozenAt).slice(0,10),1]]):"")+
+    (d.gap?`<p class="note" style="color:var(--warn)">${esc(d.gap)}</p>`:"")+
     `<p><a href="${esc(d.artifactUrl)}">Open the audit page</a></p>`+
     `<p class="note">Freshness basis: ${esc(d.generatedAtBasis||"")}</p>`;
 }).catch(e=>fail("worldmap",e));

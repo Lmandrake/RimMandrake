@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T00:11:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T00:14:29Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -989,3 +989,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/REMBG_CONCURRENCY_CAP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/REMBG_CONCURRENCY_CAP_1.md
+
+## POST_FREEZE_WORLDMAP_AUDIT_1 Fresh adversarial audit of the FROZEN worldmap (V24 2026-09-09) — the 2026-08-26 audit predates the freeze; republish the audit artifact and the hub worldmap tab against it
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/POST_FREEZE_WORLDMAP_AUDIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/POST_FREEZE_WORLDMAP_AUDIT_1.md
