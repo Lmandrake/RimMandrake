@@ -54,3 +54,11 @@ local maps). Findings that matter:
   (SteamGeysers_Increased is engine-blacklisted there).
 Remaining: owner rules the PROPOSED per-type rules (cards can ride
 MECHANICS_CARDS_SITTING_1); then part 4 bridge fix-up per type (FOUNDRY).
+
+## Rules RULED 2026-09-12 (owner card sitting)
+All per-type rules ruled — recorded verbatim in the review doc's "Owner
+rulings" section (ancient vents ruin-only; magma crater-locked; swamp/ruin
+gases by biome family + PoisonForest toxic and green gas; helixien = junker
+related, Poison Forest and the Rot, proposal rejected). Part-4 live cleanup
+handed to FOUNDRY as VAPOR_PLACEMENT_CLEANUP_1 (+ the earlier
+VAPOR_TERMINATOR_GEYSER_FIX_1). This item is done when both land.

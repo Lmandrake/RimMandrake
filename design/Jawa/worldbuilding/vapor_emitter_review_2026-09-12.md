@@ -186,3 +186,24 @@ unused, and would be the natural tool to zero out the nightside/seam per the
 ruling. `AB_MagmaVents` has 5 tiles orphaned outside its own whitelist.
 Neither of these is touched here — that fix-up is explicitly Part 4's job on
 the live bridge.
+
+## Owner rulings — card sitting 2026-09-12
+
+- **Ancient*Vent family: RULED as proposed** — ruin decoration only (allowed
+  only on tiles already carrying an ancient-ruin landmark, banned nowhere
+  else).
+- **Magma vents: RULED as proposed** — locked to the volcanic-crater biomes;
+  the 5 out-of-lock tiles are a cleanup item.
+- **Swamp/ruin gas family: RULED as proposed** — each gas type tied to its
+  biome family (rotstink → swamp, toxic/deadlife → dead-machine ruins), and
+  the owner added: **"Poison forest has toxic gases and green gas."** —
+  PoisonForest carries toxic gases and green gas by rule.
+- **Helixien gas vents: proposal REJECTED, replaced by the owner's rule** —
+  verbatim: "Nope. They are junker related and happen in the poison forest
+  and rot." ("Junker related" confirmed spelling.) Helixien vents belong to
+  junker/wreck contexts and occur in the Poison Forest and the Rot — never a
+  volcanic/deep-desert placement. The engine-mechanism check remains owed
+  before any placement work.
+- The steam-geyser radial-decay + zero-before-terminator rule was already
+  ruled (2026-09-06) and stands; its 21-tile violation fix is
+  VAPOR_TERMINATOR_GEYSER_FIX_1.
