@@ -7497,3 +7497,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"WORLDMAP_AUDIT_LIVE_CHECKS_1","ts":"2026-09-12T00:41:49Z"}
 {"seat":"FOUNDRY","event":"start","id":"WORLDMAP_AUDIT_LIVE_CHECKS_1","ts":"2026-09-12T00:41:50Z"}
 {"seat":"BENCH","event":"close","id":"POST_FREEZE_WORLDMAP_AUDIT_1","sha":"a7f8208ac69515744c5e5b54828af92d6f19a145","ts":"2026-09-12T00:41:52Z"}
+{"seat":"FOUNDRY","event":"file","id":"ART_REGEN_WAVE9_QUEUE_1","title":"Wave 9: queue 3 more art:improve creatures (Dactillion/Fanback/Grank)","kind":"build","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-12T00:42:52Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ART_REGEN_WAVE9_QUEUE_1","ts":"2026-09-12T00:42:56Z"}
+{"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE9_QUEUE_1","ts":"2026-09-12T00:42:57Z"}
+{"seat":"BENCH","event":"block","id":"OCULAR_OVERDRIVE_SITE_1","reason":"Doc half done 2026-09-11 (ashfall_research_base.md). Blocked on owner: site name, campaign function, reveal gating (cards ride MECHANICS_CARDS_SITTING_1); then landmark+dungeon build needs game up (FOUNDRY).","ts":"2026-09-12T00:43:07Z"}

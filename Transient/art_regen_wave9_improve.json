@@ -1,0 +1,55 @@
+{
+    "items": [
+        {
+            "id": "dactillion_v1",
+            "rimflow_item_id": "ART_REGEN_WAVE9_QUEUE_1",
+            "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Dactillion — a large, winged reptavian mount adapted for sinkhole and canyon terrain. Broad leathery wings for catching thermal updrafts, sharp curved horns on the head, strong grasping clawed legs, rugged mottled grey-brown hide suited to a rocky highland habitat. Reads as a powerful aerial mount built to navigate steep rock terrain. Single creature, centered, wings partly spread in a landed/perched stance, no ground shadow, no background scenery, no wind/updraft effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+            "canvas_w": 512,
+            "canvas_h": 512,
+            "reference": "",
+            "facings": [
+                "south",
+                "east",
+                "north"
+            ],
+            "style_notes": "SW canon identity KEPT — checked directly against design/RimStarWars/star_wars_canon_names.md's master-bestiary list (Dactillion, listed [B]) and confirmed via Wookieepedia web research: large winged carnivorous reptavian native to Utapau, catches thermal updrafts in the planet's sinkholes, strong grasping claws and horns, tamed and used as a mount by the Utai/Utapaun Security Forces. Row: weeping_stones biome, large sizeBin, no note — rocky sinkhole/highland terrain fits the canon habitat closely. Full regen, same mechanism as 'redo'. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+            "background": "transparent",
+            "priority": 100,
+            "channel": "codex"
+        },
+        {
+            "id": "fanback_v1",
+            "rimflow_item_id": "ART_REGEN_WAVE9_QUEUE_1",
+            "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon Fanback — a large, cold-blooded amphibian predator with a tall sail-like dorsal spine fan running the length of its back, a long sensitive snout, a squat sprawling four-legged posture, mottled damp grey-green hide. Dimetrodon-like build. Reads as a slow, ambushing swamp/rock-pool carnivore. Single creature, centered, low sprawling stalking pose, no ground shadow, no background scenery, no water/mud effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+            "canvas_w": 512,
+            "canvas_h": 512,
+            "reference": "",
+            "facings": [
+                "south",
+                "east",
+                "north"
+            ],
+            "style_notes": "SW canon identity KEPT — checked directly against design/RimStarWars/star_wars_canon_names.md's master-bestiary list (Fanback, listed [B]) and confirmed via Wookieepedia web research: cold-blooded carnivorous amphibian native to Naboo, prominent dorsal sail spine, sensitive snout, explicitly compared to an extinct Earth Dimetrodon. Row: weeping_stones biome, large sizeBin, no note. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+            "background": "transparent",
+            "priority": 100,
+            "channel": "codex"
+        },
+        {
+            "id": "grank_v1",
+            "rimflow_item_id": "ART_REGEN_WAVE9_QUEUE_1",
+            "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Star Wars canon saw-toothed Grank — a medium, hairy scavenger-predator with a lean muscular body, coarse bristly fur that senses ground and air vibrations, a wide jaw lined with saw-like serrated teeth, low-slung alert stance. Reads as an opportunistic hunter-scavenger that thrives near carrion and refuse. Single creature, centered, alert crouching pose, no ground shadow, no background scenery, no debris effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+            "canvas_w": 512,
+            "canvas_h": 512,
+            "reference": "",
+            "facings": [
+                "south",
+                "east",
+                "north"
+            ],
+            "style_notes": "SW canon identity KEPT — checked directly against design/RimStarWars/star_wars_canon_names.md's master-bestiary list (Grank, listed [B]) and confirmed via Wookieepedia web research as the 'saw-toothed grank': medium carnivore/scavenger native to the Gungan Swamps of Naboo, sharp serrated teeth, powerful jaws, senses vibrations through body hair, known to scavenge refuse on Coruscant's lower levels. Row appears under two biomes (fauna:the_miasma:Grank is the source row, propagated to fauna:arid_shrubland:Grank), both medium, no note; arid_shrubland picked as representative. Full regen. Explicit outline-thickness requirement per the owner's 2026-09-11 'improve' ruling.",
+            "background": "transparent",
+            "priority": 100,
+            "channel": "codex"
+        }
+    ]
+}

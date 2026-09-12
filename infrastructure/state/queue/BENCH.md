@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T00:41:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T00:43:07Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
-prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
 
 ## KYBER_TRADE_PLOT_1 Selling kyber: Empire heat rises per sale, Hutt interest rises, alleged Jedi from the Moisture Farmers, the donate-and-smuggle plot (no helping the Rebellion here)
 state:    ready
@@ -164,7 +155,17 @@ prose:    infrastructure/state/items/DUNGEON_DESIGN_RESEARCH_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
-_none._
+⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
+
+## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+blocked:  Doc half done 2026-09-11 (ashfall_research_base.md). Blocked on owner: site name, campaign function, reveal gating (cards ride MECHANICS_CARDS_SITTING_1); then landmark+dungeon build needs game up (FOUNDRY).
+summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
+prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
