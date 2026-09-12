@@ -100,6 +100,19 @@ def row_to_jobs(row: dict, default_channel: str = "codex") -> list[dict]:
     facings = _split_facings(row.get("facings"))
     canvas = {"width": int(row["canvas_w"]), "height": int(row["canvas_h"])}
 
+    # Efficiency guard, from the frostmite resolution proof (2026-09-12): a
+    # ~1-cell creature downscaled to on-screen size is pixel-identical whether
+    # sourced from 512² or 256² (RMSE 5-7 at every play zoom), and 512² costs
+    # ~4x the atlas VRAM — a real OOM axis on the full mod list. The owner's own
+    # 2026-08-23 ruling is 128 px per cell of occupancy, so a drawSize-1 vermin
+    # wants 128-256, never 512. Default to 256; warn past it unless the row
+    # states why (a headliner or a large drawSize legitimately needs more).
+    if max(canvas["width"], canvas["height"]) > 256 and not (row.get("oversize_reason") or "").strip():
+        print(f"  ⚠️  {base_id}: canvas {canvas['width']}x{canvas['height']} exceeds the 256 "
+              f"default — 512² is pixel-identical on screen for a ~1-cell creature and costs "
+              f"~4x the atlas VRAM. Set canvas to 256 (drawSize×128), or add an 'oversize_reason' "
+              f"column naming the headliner/large drawSize that needs it.", file=sys.stderr)
+
     reference = row.get("reference") or None
     if reference:
         reference = str(reference).strip() or None

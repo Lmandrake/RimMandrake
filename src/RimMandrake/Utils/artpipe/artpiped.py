@@ -1022,6 +1022,28 @@ class RunCtx:
             return None
 
 
+# Downscale-legibility direction baked into EVERY in-game (transparent-bg)
+# sprite prompt, so a creature reads at play size without depending on each
+# job author to remember it. Earned from the frostmite zoom pilot, 2026-09-12
+# (src/RimMandrake/Utils/art_zoom_sim.py, Transient/art_zoom_review_2026-09-12/):
+# a thin/absent outline plus fine surface detail turns to grey mud by normal
+# play zoom (~32 on-screen px), while vanilla art survives on a thick keyline,
+# a few bold shapes, and body/ground value contrast. The frostmite's 32px
+# legibility went 30.8 -> 49.3 once these three were applied. Phrased as
+# positive states, never "no ..." (AGENTS.md rule 2) — negated tokens still
+# describe the picture to the model.
+_SPRITE_ART_DIRECTION = (
+    "Readability at small size (the game shrinks this sprite to a few dozen "
+    "on-screen pixels): trace the whole creature in a bold, clearly darker "
+    "keyline about 2-3% of the body width so its silhouette reads as one clean "
+    "shape when small; carry the creature's identity in a few large distinct "
+    "shapes, keeping surface detail broad, because anything finer than a few "
+    "percent of the body dissolves at play size; and hold the overall body "
+    "value clearly lighter or darker than a mid-tone ground so it stands out "
+    "against terrain."
+)
+
+
 def build_job_prompt(job: dict) -> str:
     """A REAL per-job scratch directory (_artsrc/<job_id>/) is what makes
     the "your working directory is per-job scratch space" claim in
@@ -1035,6 +1057,9 @@ def build_job_prompt(job: dict) -> str:
     if bg == "transparent":
         parts.append("Background: a genuinely transparent alpha channel — "
                       "no backdrop, floor, shadow or gradient.")
+        # In-game sprites are the ones that get downsampled onto the map;
+        # a black-backdrop reference shot does not, so it skips this.
+        parts.append(_SPRITE_ART_DIRECTION)
     else:
         parts.append(f"Background: one perfectly flat solid field of {bg}, "
                       f"used nowhere in the subject.")

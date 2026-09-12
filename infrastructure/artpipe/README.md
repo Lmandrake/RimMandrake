@@ -39,6 +39,25 @@ the proven wording — reference-less jobs skip the validator entirely, so
 that wording was tested empirically, not just written; see
 `BACKGROUND_TEMPLATE_LOG.md` for the raw results.
 
+## Sprite defaults — legibility and resolution (frostmite pilot, 2026-09-12)
+
+Two findings from `src/RimMandrake/Utils/art_zoom_sim.py` (the downscale gate)
+now shape every transparent-background sprite job:
+
+- **Resolution: default `canvas` 256×256 for a ~1-cell creature** (`drawSize×128`,
+  the owner's 2026-08-23 ruling). A 512² source is *pixel-identical on screen*
+  to 256² at every play zoom (RMSE 5-7) yet costs ~4× the atlas VRAM — a real
+  OOM axis on the full mod list. `fill_queue.py` warns past 256 unless the row
+  carries an `oversize_reason` (a headliner or a genuinely large `drawSize`).
+- **Legibility direction is now automatic.** `build_job_prompt` appends a
+  downscale-readability block to every transparent-bg prompt — thick dark
+  keyline, a few bold shapes over fine detail, body value contrasting the
+  ground — so a job author no longer has to remember it. It is skipped for
+  black-backdrop reference jobs, which are not downsampled onto the map.
+
+The gate itself: run any candidate through `art_zoom_sim.py` against a
+same-tier vanilla control before calling it validated.
+
 ## Who writes here
 
 - `fill_queue.py` writes `pending/` only, refusing a duplicate id.
