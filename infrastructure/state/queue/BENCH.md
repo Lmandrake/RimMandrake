@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T03:55:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T03:57:50Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -35,15 +35,6 @@ target:   v1
 kind:     task
 summary:  1. Examine the Tribble module (find its workshop folder by About.xml name scan; it is
 prose:    infrastructure/state/items/GIZKA_TRIBBLE_ADAPTATION_1.md
-
-## MUTATION_MODIFIERS_SURVEY_1 Survey every mutation-type system in the stack (Biotech genes, mutagen part-hediffs, SlurryHigh, transformation hediffs) to build Contagion-touched — never an upgrade
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  - Inventory, from the live def dump + mod XML (never guess a defName):
-prose:    infrastructure/state/items/MUTATION_MODIFIERS_SURVEY_1.md
 
 ## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
 state:    doing
