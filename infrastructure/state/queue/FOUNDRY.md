@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T14:11:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T14:20:38Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -215,6 +215,15 @@ target:   v1
 kind:     task
 summary:  Full design: design/Jawa/proposals/plotmechanismswave.md (333 lines, all
 prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
+
+## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     bug
+summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
+prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
 ## VAULT_THAW_QUEST_FAMILY_1 Six Forsaken vault layouts exist but nothing makes them play - no QuestScriptDef family for thaw/reversal/sleepers/ship-claim/Reclamation
 state:    doing
@@ -1021,17 +1030,7 @@ prose:    infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
-state:    ready
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     bug
-waiting:  needs `deploy`, game is UP
-summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
-prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
+_none._
 
 # NOT THIS TARGET
 
