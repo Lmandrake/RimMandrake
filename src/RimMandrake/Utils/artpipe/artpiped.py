@@ -122,7 +122,11 @@ MAX_CODEX_ATTEMPTS = 2
 # rather than silently treated as free.
 GEMINI_MODEL_COST_USD = {"gemini-3-pro-image": 0.134}
 DEFAULT_GEMINI_MODEL = "gemini-3-pro-image"
-DEFAULT_GEMINI_BUDGET_USD = 20.0
+# 🔴 Owner, 2026-09-11: "Do not use Gemini anymore, only Codex please."
+# The ruling is enforced here as the budget gate's baseline: $0 refuses every
+# gemini admission. Re-funding the channel takes an explicit
+# --gemini-budget-usd from a human, not an edit to this default.
+DEFAULT_GEMINI_BUDGET_USD = 0.0
 DEFAULT_GEMINI_TIMEOUT_S = 200  # gemini_image.py's own urllib call times out at 180s.
 # The conservative upper bound reserved at CLAIM time, before a job's
 # actual model (and therefore actual cost) is known — see GeminiBudget.
