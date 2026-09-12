@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T03:51:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T03:55:49Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -22,15 +22,6 @@ target:   v1
 kind:     task
 summary:  - Wire the heat mechanic (the Empire's pursuit/attention system — find the existing
 prose:    infrastructure/state/items/KYBER_TRADE_PLOT_1.md
-
-## MOD_OPTIONS_RETROFIT_1 Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStarWars/RimUtinni mod with Mod Settings toggles for its major behaviors; standing requirement on every future mod
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - Inventory every shipped/in-progress mod under src/RimMandrake/,
-prose:    infrastructure/state/items/MOD_OPTIONS_RETROFIT_1.md
 
 # IN PROGRESS
 
@@ -1021,6 +1012,16 @@ kind:     bug
 blocked:  generator fix needs a Jawa_Patches-disabled dump recapture (a dedicated live cycle) to regenerate safely without hitting the documented post-patch-dump shrink trap; low severity (8 harmless log lines), not worth forcing now -- also open: owner call on whether DroidDepot staying inactive is permanent policy
 summary:  Found via harvestlog.py on game UP 2026-09-11 (570-mod session): "Outer Rim
 prose:    infrastructure/state/items/OUTERRIM_DROIDDEPOT_PATCH_GUARD_1.md
+
+## MOD_OPTIONS_RETROFIT_1 Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStarWars/RimUtinni mod with Mod Settings toggles for its major behaviors; standing requirement on every future mod
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  46 mods retrofitted with real, compile-verified Mod Settings (Greentide's cross-biome opt-in included); live in-game verification (cold load / quicktest, confirm toggles work with no errors) not yet run — see item file's progress section
+summary:  - Inventory every shipped/in-progress mod under src/RimMandrake/,
+prose:    infrastructure/state/items/MOD_OPTIONS_RETROFIT_1.md
 
 ## FLOOD_CANYON_BIOME_1 Standalone RimMandrake-tier biome mod: periodically flooded canyons — chime warning mechanic, flood events (wall of water + explosive growth), not Star Wars specific; the campaign's flood-witness plot beat consumes it as a dependency
 state:    ready  (BLOCKED)
