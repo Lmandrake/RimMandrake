@@ -38,6 +38,53 @@ SimpleCurve flammabilityChanceCurve = null)` matches the patch's
       is a regular mod DLL, blocked only by the normal "game must be DOWN to
       overwrite the DLL" rule like any other mod).
 
+## 2026-09-12 (FOUNDRY, later same night) — CLOSED: live-proven, rate limiter confirmed
+
+DLL turned out already deployed (checked `deploy_custom_mods.py --mod
+Ninefold`: "in sync (3 files)") once the game came back down and up again
+for the RUT_Webwork thingClass crash fix (`257bbbc7f`) — the deploy half of
+this item's `needs=deploy` resolved itself as a side effect, not re-done
+here.
+
+**Live test, on the loaded canonical colony map** (bridge session also did
+`BUILDING_THEFT_HAULER_1`/the SARLACC-VAPOR-WORLDNAME batch; nothing here
+was saved to disk): the map's own biome (rocky/`AB_Obsidianstone`) had no
+natural forest, so planted a 5x5 `Plant_TreeOak` cluster
+(`rimworld/spawn_thing` x25) away from the colony, then used
+`Actions\Explosion...\Flame` at 6 different cells across the cluster
+(chained, since the first two attempts didn't catch — DevMode logging
+confirmed live throughout via the unrelated `Patch_ExplosionOccurred`
+Ninefold lines that fire on every explosion regardless). Fire caught at 2
+cells, then spread naturally to 4 over ~2000 stepped ticks
+(`rimworld/step_game_ticks`).
+
+**`MEASURE_ALLOW_SCAN=1 grep -n "the wrong spark catches\|the Searer's
+work"` on the live `Player.log`**: exactly **ONE** line each —
+
+```
+[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 100.0 [Exalted]
+[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 100.0 [Exalted]
+```
+
+— despite **6 separate ignition attempts** and the fire spreading to **4
+concurrent burning cells** over 2000+ ticks. This is exactly the criterion
+this item's own verify section asks for: Zizzik/Sh'kaar moved ONCE per
+incident window, not once per cell or per ignition attempt. Matches
+`Patch_FireStarted`'s own design (`RateLimitWindowTicks=600`, shared
+null-instigator bucket for debug-triggered/ambient ignitions).
+
+**Not separately re-checked**: whether a genuinely NEW credit fires once
+600 ticks roll over past the first credit (the code's own "a long-lived
+blaze can still credit again" case) — the single-credit-despite-many-cells
+result is the criterion that matters and is unambiguous; chasing the
+rollover case would need another timed window and adds nothing the code
+reading + this observation don't already establish.
+
+**Closing.** Both criteria (incident-aware, not per-cell; live-proven) are
+now checked.
+
+---
+
 ## Checked 2026-09-12 (FOUNDRY, owner AFK) — still blocked on deploy, not force-able
 
 `mandrake.rm.ninefold` is present in the live `ModsConfig.xml` (currently
