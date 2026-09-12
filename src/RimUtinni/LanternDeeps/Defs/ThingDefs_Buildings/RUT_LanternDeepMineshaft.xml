@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_LanternDeepMineshaft</defName>
+    <label>ruined mineshaft</label>
+    <description>A collapsed shaft bored straight into the rock, its head-frame long since fallen in. Whoever dug this was equipped for far more than a surface camp — the tool-marks are too regular, too deep, for hand labor. The shaft is still open below the cave-in, and it still leads down into the Lantern Deeps.</description>
+    <size>(5,5)</size>
+    <useHitPoints>false</useHitPoints>
+    <thingClass>MapPortal</thingClass>
+    <rotatable>false</rotatable>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <canOverlapZones>false</canOverlapZones>
+    <!-- PLACEHOLDER ART: reusing vanilla PitGate texture (a large ground-set hole
+         reads closer to "collapsed shaft" than the emergence's crystal-geode look);
+         real ruined-mineshaft art is owed, see LANTERN_DEEPS_INJECTION_1. -->
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/PitGate/PitGate</texPath>
+      <drawSize>(5,5)</drawSize>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <fillPercent>0</fillPercent>
+    <passability>Impassable</passability>
+    <holdsRoof>true</holdsRoof>
+    <destroyable>false</destroyable>
+    <building>
+      <isEdifice>true</isEdifice>
+      <deconstructible>false</deconstructible>
+      <isTargetable>false</isTargetable>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <portal>
+      <pocketMapGenerator>RUT_LanternDeepGenerator</pocketMapGenerator>
+      <exitDef>CaveExit</exitDef>
+      <pocketMapSize>66</pocketMapSize>
+    </portal>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <inspectorTabs>
+      <li>ITab_ContentsMapPortal</li>
+    </inspectorTabs>
+    <comps>
+      <li Class="CompProperties_Sealable">
+        <sealTexPath>UI/Commands/FillInCaveEntrance</sealTexPath>
+        <sealCommandLabel>Collapse mineshaft</sealCommandLabel>
+        <sealCommandDesc>Choose a colonist to bring down what's left of the shaft roof. Anything or anyone left below will be lost forever.</sealCommandDesc>
+        <cannotSealLabel>Cannot collapse</cannotSealLabel>
+        <confirmSealText>Collapsing the mineshaft is permanent. Anything or anyone left below will be lost forever.{0}\n\nAre you sure you want to continue?</confirmSealText>
+        <destroyPortal>true</destroyPortal>
+      </li>
+      <li Class="CompProperties_LeaveFilthOnDestroyed">
+        <filthDef>Filth_RubbleRock</filthDef>
+        <thickness>3</thickness>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
