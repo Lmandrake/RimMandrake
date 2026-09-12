@@ -56,3 +56,57 @@ and the item files named above per row before writing.
 ## criteria
 Zero verdict channels of the 2026-09-10 sheets without a recorded consumer, and
 zero later rulings overwritten by an older sheet row.
+
+## 2026-09-12 (FOUNDRY, offline subagent, belt mode) — audit table built, NO writes made, needs owner calls before any apply
+
+Read-only audit only (spec steps 1-2), deliberately stopped before any
+`--apply`/roster write per this pass's own brief — the trap this item warns
+about ("the sheet never overwrites a newer decision") is real enough that
+the actual apply step needs a human decision on several rows, not a blind
+run. Full per-row table: `Transient/sheet_orphan_audit_2026-09-12.md`.
+
+**sizeBin UNKNOWN resolved: genuine unconsumed orphan**, not covered by
+`FAUNA_TOLERANCE_NORMALIZATION_1` (its own RULED §4 says verbatim "Does NOT
+change: bodySize itself, per the ceiling-fields lesson"). 29 fauna + 3 flora
+rows, `size_rescale_worklist` sidecar has never once been written by
+`apply_assignment_verdicts.py` in this repo's history.
+
+**Channel counts** (APPLY / SUPERSEDED / ALREADY-DONE / UNRESOLVED):
+sizeBin 32/0/0/0 · fauna out 6/0/0/0 · flora move 14/0/1/0 · flora out
+4/0/0/0 · art/def ledger ~91/~20/7/0 (of 118) · flora improve 145/3/0/0.
+
+🔴 **Five findings need an owner or BENCH call before any apply runs, not a
+FOUNDRY judgment call**:
+1. `flora_move_mapping.md` rows 12-13 (AG_Gamma, AG_Septimum) claim a target
+   roster ("already in forsaken_crags") that is MEASURED FALSE — both plants
+   only exist in `the_forge.json`. Applying as written would misfile or
+   effectively delete them from the world. Needs a real target roster named.
+2. The two flora decision files disagree with each other (14/288 rows) —
+   `ART_REGEN_WAVE3_QUEUE_1` asserted they were byte-identical and was
+   wrong; commit `1caff3664` silently demoted `AB_SlimyPholiota` from `redo`
+   to `improve`, which is why WAVE3 only ever saw one redo row.
+3. If `DUMP_DRAWSIZE_CAPTURE_1` unblocks and a naive Law-1 rescale runs from
+   current drawSize, it will silently overwrite all 29 owner sizeBin
+   rulings from this sheet. Flagging now so whoever builds that item reads
+   this first.
+4. The 118-row "NEW-ART/DEF commission ledger" is not a clean commission
+   list — at least 7 of the 118 slugs (`RSW_Cindermare`, `RSW_Skarnix`,
+   `RUT_FireHawk`, `RUT_FurnaceBeast`, `RM_FE_Plant_Quickgrass`,
+   `RM_FE_Plant_ScorchFruit`, `RUT_LivingBolt`) are ALREADY BUILT live defs
+   — the sheet re-surfaced already-shipped concepts as if new. Only ~45/118
+   were keyword-screened this pass; more built duplicates are likely in the
+   other 73.
+5. A third instrument (`cast_assignment.csv`) still contradicts the 6 fauna
+   `decision=out` cuts (carries all 5 BMT stragglers + AA_FissionMouse as
+   `import`/`keep`), and the 2026-09-11 card ruling (`cf0632c39`) actually
+   WIDENS the cut list (adds `BMT_ChemSnail`@`the_cracked_lands`,
+   `BMT_GlowBat`) — but that ruling's home item (`BMT_FAUNA_ABSORPTION_1`)
+   is itself ledger-BLOCKED, so which list is authoritative right now is
+   not this pass's call.
+
+**Not attempted this pass, deliberately**: steps 3-5 of the spec (the
+actual `apply_assignment_verdicts.py --apply` run, the flora hand-edits,
+the 118-slug art-queue filing, freezing the decisions files). All of them
+are gated on the 5 calls above landing first — applying blind now risks
+exactly the kind of silent data loss this item exists to prevent.
+`needs=owner`.
