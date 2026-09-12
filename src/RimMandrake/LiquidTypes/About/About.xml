@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.liquidtypes</packageId>
+  <name>RimMandrake: Liquid Types</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>LIQUID_TYPES_MOD_1 (design/RimMandrake/RM_liquid_types_mod.md). Per-liquid
+TerrainDef suites cloned off vanilla water, plus one RM_LiquidProperties ModExtension the
+C# systems read for what native fields cannot say: pH/corrosion, damage-on-immersion vs
+contact, and (later) surface films.
+
+SPIKE STAGE (LIQUID_TYPES_SPIKES_1, 2026-09-12): this ships ONE liquid (acid, shallow +
+deep) to prove the generator (Tools/generate_liquid_suite.py), the extension, and the
+corrosion MapComponent build and load. It is not the full §6 roster and has not been
+loaded in a running game — see infrastructure/state/items/LIQUID_TYPES_SPIKES_1.md for
+exactly what is proven and what is still owed to a live/quicktest pass.
+
+RM tier: nothing here knows what campaign, planet or creature uses it. A liquid with an
+empty RM_LiquidProperties extension is still a complete, working TerrainDef — the mod
+degrades to "a generated water clone" with the C# absent.</description>
+</ModMetaData>
