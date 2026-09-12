@@ -9,6 +9,13 @@ Sources (sha256/16): `decisions=e45830e93d80fe77` · `move_mapping=6ed495e291cbf
 
 MEASURED from mod XML (inheritance-resolved, PRE-patch) vs the painted worldmap. The ruling's "23 flagged narrows" was a pre-law flag count from the graphs artifact — under the ruled law the true count is 196: most mod animals ship Earth-calibrated ranges and the assigned domains are extreme (deep_desert p95 61.6 °C, propane_lakes p05 −76.5 °C, rust_cathedral/scarlands ~+58–66 °C).
 
+## RULED — owner card sitting 2026-09-12: injection-layer envelopes
+The 15 ENV_UNMEASURED rows (fall_line / lantern_deeps / wreck_fields, no
+painted tiles): their domain envelope = the UNION of the host biomes each
+layer is injected over, computed from the frozen CSV — automatic, and it
+tracks placement changes. Law 5 applies against that union. No hand-set
+ranges.
+
 ## Violations by mod
 
 | mod | violations |

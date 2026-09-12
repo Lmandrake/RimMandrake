@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T06:11:58Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T06:12:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1095,3 +1095,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SCALD_DIVING_MOD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SCALD_DIVING_MOD_1.md
+
+## ASHFALL_SPIRE_LANDMARK_1 Place The Spire landmark (Ashfall Research Base site): thin black needle, disc pad near top, intermittently visible through Scald turbulence — live placement + read-back per worldmap discipline; dungeon shell may follow, campaign function stays TBD (owner)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ASHFALL_SPIRE_LANDMARK_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ASHFALL_SPIRE_LANDMARK_1.md

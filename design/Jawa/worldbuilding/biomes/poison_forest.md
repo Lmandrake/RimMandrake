@@ -150,6 +150,10 @@ ratification owed (carded)._
 | rain | 🔴 **never** (R-H1: greatest altitudes only; measured 0 mm median, §0). Water arrives as **dewfall** — the R-H2b condensation: fog and dew, frost only out on the night tail |
 | snow | does not lie (§5); the night tail may frost, never drift |
 
+**RULED — owner card sitting 2026-09-12: all four names and behaviors
+ratified as written** (scatter-dusk · vent bloom · vapour bank · dewfall).
+Def work beyond `PoisonForestSpores` is unblocked.
+
 - Every "precipitation" here deposits the airborne load — dew is how the forest
   gets poisoned (R-H2b); a wet surface is a dosed surface.
 - Vent weather hums: ground-sense fauna (§4) read a vent bloom coming before any
