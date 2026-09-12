@@ -331,10 +331,37 @@ deliberately NOT in this kit), `sea_beasts_roster.md` (nursery pairing).
 
 ## Owner cards — RULED, sitting 2026-09-12
 
-1. **Strange tier: rule 2–3 strange hediffs NOW** — the tier ships real, not
-   empty. ⇒ OWED: draft the 2–3 strange hediffs (design register, boons stay
-   hediffs per ban #1, nothing Slime-miracle-shaped) and put them to the owner
-   for ratification before def work.
+1. **Strange tier: RULED IN FULL (bench discussion, 2026-09-12) — five
+   strange hediffs, selected by the owner.** (Supersedes the sitting's
+   "2–3": he selected four of five candidates and delegated one
+   replacement.) The tier's roster — all HediffDefs (ban #1), none healing
+   (no Slime miracle), all wild-nature biology, never Force-register:
+   - **Swarm-marked** — the karr-clade fever-swarms stop reading the pawn
+     as prey: swarms don't attack them, swarm-contact disease exposure
+     drops to a trickle. Fiction stays biological (scent-kin, not
+     blessing).
+   - **Salt-blooded** — bleed rate halved, food-poisoning near-immune,
+     corpse barely rots; pain sensitivity up a notch. Preservation, not
+     healing.
+   - **Loam-lunged** — the pawn exhales a trace of the Working: slightly
+     faster plant growth immediately around their sleeping/working spots,
+     delta-loam fertility developing where they rest. PASSIVE AND TINY —
+     the line against the Greentide/explosive-growth soak territory is
+     that this never triggers, never surges, never scales.
+   - **Mother-dreamed** — rarely, a day-long harmless fever-dream ending
+     in a random vanilla Inspiration. Letter text is wild-nature, never
+     oracle/mystic register.
+   - **Fever-tempered** — the fever recalibrated the thermostat: the
+     pawn's comfortable temperature band permanently widens both
+     directions (magnitude tuned at build). Replacement for the cut
+     Tide-reader, picked by BENCH under the owner's delegation
+     ("Replace it with another similarly themed") — pays game-wide on a
+     planet whose geography is temperature.
+   - **CUT: Tide-reader** (owner: "the tide aware would be useless for
+     most of the game... strip that one") — deleted, not deferred.
+   Visibility on the pawn (sheen, glands, etc.) is the builder's per-hediff
+   call unless the owner rules it. Def work unblocked; weights stay inside
+   M5's 1% tier.
 2. **Surge vs player ground: unfloored crops in the band DIE.** Physics, not
    mercy — floors/bridges are the engineering answer, as churnmud in the
    Greentide.
