@@ -100,25 +100,23 @@ def git(args):
 
 # ------------------------------------------------------------ spine 1: SYSTEMS
 def load_capabilities():
-    """-> (world, raw_events). `world.capabilities` is rimflow's own projection —
-    read, never hand-derived twice. `raw_events` (only the `capability` verb,
-    in ledger order) is what the regression view walks."""
+    """-> (world, raw_events, ledger_ok, error). `world.capabilities` is rimflow's
+    own projection — read, never hand-derived twice. `raw_events` (only the
+    `capability` verb, in ledger order) is what the regression view walks.
+
+    `ledger_ok=False` on a read failure — the caller must say so on the page
+    (HEALTH_UNMEASURED_HEADLINE_1's own lesson: an empty registry from a failed
+    read must never render as "0 systems", the same silent-zero shape that bit
+    codebase_health.py before that fix)."""
     try:
         events = model.read(model.EVENTS)
     except model.LedgerError as e:
-        sys.stderr.write("FAIL: could not read the rimflow ledger: %s\n" % e)
-        return model.World(), []
+        err = "%s: %s" % (type(e).__name__, e)
+        sys.stderr.write("FAIL: could not read the rimflow ledger: %s\n" % err)
+        return model.World(), [], False, err
     world = model.replay(events)
     cap_events = [ev for ev in events if ev.get("event") == "capability"]
-    return world, cap_events
-
-
-def function_index(rung):
-    return FUNCTION_RUNGS.index(rung) if rung in FUNCTION_RUNGS else -1
-
-
-def content_index(rung):
-    return CONTENT_RUNGS.index(rung) if rung in CONTENT_RUNGS else -1
+    return world, cap_events, True, None
 
 
 TIER_DIRS = ("RimMandrake", "RimStarWars", "RimUtinni")
@@ -197,7 +195,7 @@ def system_flags(world, systems):
     flags = {name: {"blocked": [], "awaiting": []} for name in pats}
     counts = {"openItems": 0, "openBugs": 0, "needsOwner": 0}
     for item in world.items.values():
-        if item.state not in ("proposed", "ready", "doing", "blocked"):
+        if not item.open:
             continue
         counts["openItems"] += 1
         is_bug = (item.kind or "") in BUG_KINDS
@@ -672,6 +670,18 @@ function el(tag, attrs, kids){
 const total = DATA.systems.length;
 
 /* ---- header ---- */
+// same shape as codebase_health.py's HEALTH_UNMEASURED_HEADLINE_1: a failed
+// ledger read yields an EMPTY registry, which must never be mistaken for a
+// project that genuinely has 0 systems.
+if (DATA.ledgerOk === false) {
+  document.getElementById("app").insertAdjacentHTML("afterbegin",
+    '<div style="background:#5c1f1a;color:#ffd9d2;padding:9px 16px;'
+    + 'font-weight:700;font-size:13px;border-bottom:2px solid var(--red)">'
+    + '⚠ THE RUN COULD NOT MEASURE: the rimflow ledger could not be read ('
+    + (DATA.ledgerError || "unknown error")
+    + '). Every count on this page is 0/empty because nothing was read — '
+    + 'not a claim about the project. Rerun once the ledger is available.</div>');
+}
 document.getElementById("stamp").textContent =
   DATA.head + " · " + DATA.generated + " · " + total + " systems registered";
 (function(){
@@ -1095,7 +1105,7 @@ def main(argv=None):
     ap.add_argument("--json-only", action="store_true", help="skip the HTML page")
     args = ap.parse_args(argv)
 
-    world, cap_events = load_capabilities()
+    world, cap_events, ledger_ok, ledger_err = load_capabilities()
     systems = systems_payload(world)
     flags, ledger_counts = system_flags(world, systems)
     for s in systems:
@@ -1124,6 +1134,10 @@ def main(argv=None):
         "weighting": "equal-weight per capability (default; owner may retune once he "
                      "sees real numbers — PROJECT_MATURITY_DASHBOARD_1, 'open, and "
                      "deliberately not blocking')",
+        # a failed ledger read yields an EMPTY registry above, which must never
+        # render as "0 systems" without saying so — see load_capabilities().
+        "ledgerOk": ledger_ok,
+        "ledgerError": ledger_err,
     }
 
     os.makedirs(args.out_dir, exist_ok=True)
@@ -1131,6 +1145,13 @@ def main(argv=None):
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=1)
 
+    if not ledger_ok:
+        print("!" * 70)
+        print("THE RUN COULD NOT MEASURE: the rimflow ledger could not be read (%s) "
+              "— every count below is 0/empty because nothing was read, not because "
+              "the registry is empty. Do not read this run's numbers as a fact about "
+              "the project." % ledger_err)
+        print("!" * 70)
     print("systems registered : %d" % len(systems))
     print("function counts     : %s" % payload["functionCounts"])
     print("content counts      : %s" % payload["contentCounts"])
