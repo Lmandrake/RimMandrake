@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_WarLabReactorCore => WAR_LAB_CRATER_HOOK_1's XML wiring half.
+
+  wasteland.md SS10 option 4 / ANCIENT_WAR_LAB_1.md's "ending" spec name three
+  alternate ignition sources for the propane lake (thruster contact, a
+  dropped reactor core, a deliberate charge) => this def IS the "dropped
+  reactor core" source: an unstable ancient reactor, meant to be hauled to
+  and dropped/detonated at the war lab's propane lake, that ignites the lake
+  when it is destroyed. CompIgniteCraterOnDestroy (built 2026-09-11, commit
+  5e2f5084e, marked CLEAN f4c56cd19) was written generically => "attach to
+  whichever Thing ends up representing the ignition event" => and up to now
+  was not attached to any def. This is that Thing; no other candidate existed
+  in the war lab's authored XML (RUT_WarLabArchive/RUT_WarLabContainmentCell
+  are inert narrative props, not ignition sources).
+
+  Modeled on vanilla AncientGravReactor (Core, Buildings_Misc.xml): an old,
+  leaking reactor that "may explode if damaged" via CompProperties_Explosive,
+  reusing its art at a smaller (1,1) footprint/drawSize => same size-vs-
+  drawSize split RUT_WarLabArchive/RUT_WarLabContainmentCell already use so
+  it never collides in a dense KCSG grid cell. Not claimable, not
+  deconstructible, not repairable: a scavenged hazard the crew moves and
+  detonates on purpose, not a buildable structure.
+
+  CompIgniteCraterOnDestroy.PostDestroy fires WarLabCraterMutation.Ignite()
+  the instant this Thing is Destroyed by any means => the explosive comp's
+  own detonation (destroyThingOnExplosionSize) included. Local-map spectacle
+  (fire, terrain swap, roof breach at the lab itself) is the war lab
+  dungeon's own build, out of scope here per WAR_LAB_CRATER_HOOK_1's own
+  scope boundary.
+
+  NOT DONE HERE (documented owed, see WAR_LAB_CRATER_HOOK_1.md): this def is
+  not yet placed via any GenStep/SymbolDef into the war lab layout or given
+  a way to reach the player's hands (no recipe, no quest reward, no loot
+  placement) => that staging is design/build work for whoever finishes the
+  war lab's own local-map ending, not this item's worldmap-tile-mutation
+  scope. The live ignition-fires-mutation quicktest is also owed.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_WarLabReactorCore</defName>
+    <label>reactor core</label>
+    <description>An ancient reactor core, cracked and still faintly warm, scavenged out of something that stopped mattering long before anyone alive was born. It bleeds heat the way a wound bleeds. Dropped into something cold enough, or hit hard enough, it will not ask permission before it goes.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Ancient/GravReactor/AncientGravReactor</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1.5,1.5)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0.6</fillPercent>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>1.5</Flammability>
+      <Beauty>-10</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <repairable>false</repairable>
+    </building>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <explosiveRadius>6.9</explosiveRadius>
+        <explosiveDamageType>Flame</explosiveDamageType>
+        <destroyThingOnExplosionSize>0</destroyThingOnExplosionSize>
+        <startWickHitPointsPercent>0.5</startWickHitPointsPercent>
+        <wickTicks>150~200</wickTicks>
+      </li>
+      <li Class="RimMandrake.Utinni.StructureInjectionsRUT.CompProperties_IgniteCraterOnDestroy" />
+    </comps>
+  </ThingDef>
+</Defs>
