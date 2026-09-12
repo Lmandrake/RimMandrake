@@ -36,3 +36,14 @@ against the frozen CSV owed before the sitting), `rivers_tiles` has three
 disagreeing offline reads (326/217/298 vs recorded 254), biome arithmetic
 gives 30 vs the audit's 29 (one rename/retire unaccounted), water_pct not
 back-computed. Re-census spawned 2026-09-12.
+
+## Re-census done 2026-09-12 — gaps closed, sitting is fully prepped
+`Transient/CANON_CENSUS_RECOUNT_2026-09-12.md` (CSV sha256_12 756d9ffc8a22,
+21872 rows, MEASURED): complete per-biome table; biome count = 29 — the
+30-vs-29 gap was 3 legacy biomes off the map (BMT_CrystalCaverns,
+BMT_FungalForest, HorrorWastes) vs 2 new (BiomeCypreJungle,
+COMIGO_GreaterSwamp_Tropical); rivers: the CSV's one river column
+(river_flow) is nonzero on 298 tiles — 326/217/254 are other instruments,
+reconcilable only by a live bridge read; water 1448 = 6.6203%, incl-ice
+(RUT_NightsideIce) 2954 = 13.5059%. Together with the replacement block, the
+owner sitting has everything it needs.
