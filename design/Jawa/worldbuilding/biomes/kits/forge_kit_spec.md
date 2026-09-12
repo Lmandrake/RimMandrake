@@ -321,20 +321,13 @@ blocker), `TIBANNA_EMBARGO_PLOT_1` (consumes F2; owns station, clock, trade).
 
 ## Open owner cards (unruled — next card sitting)
 
-1. **Tower shape: many floors or one deep floor?** True floor-after-floor
-   needs portal-chaining inside pocket maps — unproven in the engine (❓
-   above). Trade: multi-floor is the sheet's image but risks build time on an
-   unproven seam; one large deep floor per tower ships sooner and plays
-   nearly the same. Drafted default: **one floor in v1**, chain later if the
-   quicktest proves clean.
-2. **How lethal is the boiling rain?** Caught in the open unarmored: dead
-   inside one burst (the mountain brooks no tourists) or badly hurt but
-   crawling out (cruel, survivable)? Drafted default: **survivable once** —
-   downed-and-scarred teaches the lesson; fireweed gear turns the biome on.
-3. **Penned beldons vs the embargo.** If players can tame and pen beldons,
-   home-grown tibanna quietly voids the Empire's monopoly and the campaign
-   clock. Options: taming banned (wild-harvest only, under the station's
-   nose), taming brutal-but-possible (endgame answer to the embargo), or
-   free taming and the Empire simply comes for your herd (the clock gets
-   teeth). Drafted default: **brutal-but-possible** — breaking the monopoly
-   should be a campaign act, not a pen.
+1. **RULED 2026-09-12 — one large deep floor per tower in v1.** As
+   drafted; portal-chained multi-floor lands later only if a quicktest
+   proves the seam clean.
+2. **RULED 2026-09-12 — boiling rain is survivable once.** Downed-and-
+   scarred teaches the lesson; fireweed gear turns the biome on. Never
+   instant death from one burst.
+3. **RULED 2026-09-12 — beldon taming is brutal-but-possible.** As drafted:
+   breaking the monopoly is a campaign act, not a pen. Ruled as one package
+   with the tibanna embargo (T1 cut + T2 two-ended clock — see
+   tibanna_embargo_plot_spec.md, same sitting).

@@ -314,9 +314,6 @@ NOT in this kit), `sarlacc_spec.md` (family type specimen).
 2. **RULED 2026-09-12 — era traps are disarmable: high skill gate, failure
    detonates.** As drafted; the click is a decision and a skill-priced
    §GM-tier find.
-3. **What ends a woken beast?** Re-submerges when sated (drafted default:
-   it always leaves, the biome resets, dread renews) vs. stays until the
-   player abandons the map (harsher, sheet-true "the trap remembers") vs.
-   can be lured/fed deliberately. Drafted default: **sated → re-submerge at
-   a new spot** — the map heals, the mouse-lines redraw, and no player is
-   ever taught to farm it.
+3. **RULED 2026-09-12 — sated → re-submerges at a new spot.** As drafted:
+   the map heals, the mouse-lines redraw, no player is ever taught to farm
+   it.

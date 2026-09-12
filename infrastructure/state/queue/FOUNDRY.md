@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T04:46:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T04:48:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1085,3 +1085,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GIZKA_HOLD_HOOK_SPIKE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GIZKA_HOLD_HOOK_SPIKE_1.md
+
+## TIBANNA_SOURCE_CUT_1 Cut non-beldon tibanna sources per T1 ruling: CherryPicker-cut OuterRim_TibannaSiphon/ExtractorLight/Heavy lanes + LK mineable OuterRim_Tibanna route (item def stays); verify LIVE — LK patches can no-op silently; beldons-only hard ban stands
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TIBANNA_SOURCE_CUT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TIBANNA_SOURCE_CUT_1.md
