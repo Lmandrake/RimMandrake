@@ -46,6 +46,17 @@ namespace LongHunger
             base.SpawnSetup(map, respawningAfterLoad);
             if (!respawningAfterLoad)
             {
+                // Bug fix: nextPulseAt's field initializer uses the raw constant
+                // (600), not the durationMultiplier-scaled value Tick() uses for
+                // every pulse after the first. Left as-is, the FIRST tremor always
+                // fired at the unscaled 600 ticks regardless of the settings
+                // slider, silently ignoring the multiplier for one full interval
+                // (e.g. durationMultiplier=3 should mean the first pulse waits
+                // 1800 ticks, not 600). Recompute it here, the same way Tick()
+                // computes effectivePulseInterval, before the creature ever ticks.
+                nextPulseAt = Mathf.Max(1,
+                    Mathf.RoundToInt(PulseIntervalTicks * LongHungerSettings.durationMultiplier));
+
                 // The eruption itself - the moment it breaks the surface.
                 GenExplosion.DoExplosion(
                     center: Position,
