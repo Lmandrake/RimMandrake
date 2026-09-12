@@ -887,6 +887,126 @@
     "hash": "162749759da3662caaca2327aaeeb3a498c0c734c28f4b8abaa460fe86c79248",
     "sha": "31e9db1cd"
   },
+  "src/RimMandrake/EnvironmentalHazards/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "ce3e508b178733d92d82c5ae2538fc32e011fdb158c8400425cfeffb4d2bcd40",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs/RM_GasBases.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "052f18793fbb98eed58afb6442532ee17435cbeb839668c0229d8bd8b9a88e00",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/ArmLatentHazardExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "8b041882bec6f93d35a5fdb2587d2e9868cae3bbce978ea51327b98bad798769",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/BiomeGlowMultiplierExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "6b83f9fddc90ee9e411e13440c027a97d78d56f47c54dd6c13272dc2c4a5717c",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/BiomeGlowPatches.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "cf68d290557c461bc0d66eabdb15d021dbbd5a44d94aab3c001ee5e709084d62",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/CompAbilityEffect_TargetedHediffAffliction.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "65f7b65b951850f86ca171b2219ebe6e2eb8fff7c540be2d8c604902f156bbc5",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/CompActiveGasEmitter.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "d5d50c14dd68e57ef21475cdcb4f33e10cef71c1ec613f6d762f842c467eb46b",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/CompProperties_AbilityTargetedHediffAffliction.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "cb3ede1af28b7dba3d6c16758e7f74448f37685939bfe6124269ef51170d03c8",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/CompProperties_ActiveGasEmitter.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "8316455675d7f68e0241627790bb5e2db8c5538d2584a5d6aeed2729accb7e5b",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/DeathActionProperties_ScaledExplosion.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "70e464347f41f90ed99250ad9a392b89bac35a6531e16747b4f8a0710e39bfa8",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/DeathActionWorker_ScaledExplosion.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "83b0a9be54ffbb150d0725d9103454009f648c798f470da8a553a3ec5e7ad6c9",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/EnvironmentalWeatherExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "b549545fc0c6c2f9d6cfbb8770f62d48ae45bc2df7c77a6249ce6da9e8e78cc3",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/GameCondition_ArmLatentHazard.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "ac1d09d1170927e35d3a700e3a89fa30d9fcb9940a7acea00554fffa5320c500",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/GameCondition_EnvironmentalWeather.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "bdd3383ce7bf30b08ea34da78be18929d47461e41b019c235a5e31038e92f8f3",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/GasEffectExtensions.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "0b9e3f9b716c8581fb552ea67341f51690e8e5b98944a5a8d48be08b591678db",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/Gas_Damaging.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "10da062fd640e72b93efb9c3e8aa935764ccbbf486434af3a951b4aafc84c334",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/Gas_Transmuting.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "ad8691615a1bdbe0e09d4f14d202f70be916a56e8c83489662863fc08de51987",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/HazardTargeting.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "c53d8053e0a5307e9720a6c54c988eb74dcd213b53cd90a7aafe2e8df2cc6b32",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/HediffCompProperties_PeriodicAreaAttack.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "48dcc64ce853b8415bfc1babdda000f403c8d0233866d8f52f20ff08d21beaaa",
+    "sha": "2eee1995f"
+  },
+  "src/RimMandrake/EnvironmentalHazards/Source/HediffComp_PeriodicAreaAttack.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "9130109e1b88d620ca8c5b26a786377a6d47410d32f4c43bef0b19dd4d913b86",
+    "sha": "2eee1995f"
+  },
   "src/RimMandrake/FluidCanals/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-06",
