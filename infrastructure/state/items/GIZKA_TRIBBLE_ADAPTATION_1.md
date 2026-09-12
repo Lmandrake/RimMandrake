@@ -39,3 +39,14 @@ ThingDef/PawnKindDef/BodyDef, art in a Unity AssetBundle (any "art absent"
 claim is stale — bundle, not loose PNG); RSW_ gizka sounds + a biome spawn
 patch already exist in SWBestiary. UNKNOWN: whether the bundle sprite renders
 live (quicktest check). Next: design draft (parts 3-6) → owner cards.
+
+## Design draft done 2026-09-12 (BENCH belt wave, Fable agent)
+`design/RimStarWars/gizka_ship_pest_draft.md` — discovery event (never a raid
+roll), 4 escalation stages each with a readable warning, 5 priced exits,
+anti-exponential arithmetic, Mod Settings per MOD_OPTIONS_RETROFIT_1, owner
+cards at the end. NOTE: a 2026-09-08 spec (`gizka_ship_pest_spec.md`) already
+existed unrecorded on this item — its factual base (creature/art absent) was
+wrong per the recon, so it was deleted (git holds it); its intent is carried
+in the draft. Open: quicktest whether the donor AssetBundle gizka sprite
+renders; SWBestiary's RSW_Pawn_Gizka_* sounds duplicate the donor's own set
+(fold into the build). Cards await the owner.

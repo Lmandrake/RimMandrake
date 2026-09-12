@@ -608,7 +608,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `brain_worm_spec.md` | Geonosian brain worms — research + def plan (design spec) | — |
-| `gizka_ship_pest_spec.md` | Gizka — the ship-pest event (design spec) | — |
+| `gizka_ship_pest_draft.md` | Gizka — the ship-pest event (design draft; reuses the active SW Animal Collection creature) | ? cards await the owner |
 | `star_wars_canon_names.md` | Star Wars canon name reference |  |
 
 ### `design/validation_walks/RimMandrake/`
