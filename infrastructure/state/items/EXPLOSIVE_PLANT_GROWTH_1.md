@@ -23,3 +23,12 @@ grow.
   (AB_MycoticJungle, BiomeCypreJungle sheets when they come), any biome with
   soaking events.
 - `FLOOD_WITNESS_EVENT_1` is the plot's guaranteed showcase of this mechanic.
+
+## Design draft done 2026-09-12 (BENCH belt wave, Fable agent)
+`design/Jawa/explosive_plant_growth_draft.md` — 4 terminal-moment options
+(Burst / Great Bloom / Deadfall / Overgrowth Surge, each with its trade) + 6
+owner cards (incl. per-biome split and action-set scope). Open holes named in
+the draft: no soak/wetness mechanism exists in the stack yet (comp-state
+definition is speculation), per-tick draw-size scaling feasibility UNMEASURED
+(build gate), all tuning numbers unset. Cards await the owner's sitting;
+no build before the ruling.
