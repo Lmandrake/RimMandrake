@@ -16,8 +16,8 @@ RimMandrake tier: not Star Wars specific, playable on any planet.
   lore): `design/Jawa/worldbuilding/biomes/the_cracked_lands.md` §10b (flood
   weeks canon), `design/Jawa/worldbuilding/flood_witness_event_design.md` (the ruled campaign design: chime tells,
   injury-ceiling lethality, invitation route),
-  `design/Jawa/worldbuilding/explosive_plant_growth_design.md` (growth mechanic; terminal
-  moment awaits owner cards on EXPLOSIVE_PLANT_GROWTH_1).
+  `design/Jawa/worldbuilding/explosive_plant_growth_design.md` (growth mechanic; core
+  rulings landed 2026-09-10 in its §7 — injury-ceiling lethality etc.).
 - MOD_OPTIONS_RETROFIT_1 doctrine applies from day one: per-feature Mod
   Settings (flood cycle on/off + period, chime lead time, growth coupling,
   canyon biome insertion vs feature-only in other biomes).
