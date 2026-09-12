@@ -7513,3 +7513,9 @@
 {"seat":"BENCH","event":"reassign","id":"RUST_CATHEDRAL_MECHANICS_1","to":"FOUNDRY","ts":"2026-09-12T00:53:27Z"}
 {"seat":"BENCH","event":"claim","id":"RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1","ts":"2026-09-12T00:53:28Z"}
 {"seat":"BENCH","event":"claim","id":"POISON_FOREST_REPASS_1","ts":"2026-09-12T00:54:16Z"}
+{"seat":"BENCH","event":"close","id":"POISON_FOREST_REPASS_1","sha":"5040448b5ec0f1105a262a004097cf6375835785","ts":"2026-09-12T01:03:01Z"}
+{"seat":"FOUNDRY","event":"claim","id":"RUST_CATHEDRAL_MECHANICS_1","ts":"2026-09-12T01:03:13Z"}
+{"seat":"FOUNDRY","event":"start","id":"RUST_CATHEDRAL_MECHANICS_1","ts":"2026-09-12T01:03:14Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-12T01:06:52Z"}
+{"seat":"BENCH","event":"file","id":"NONDIV4_TEXTURE_FIX_1","title":"Pad the 1578 non-%4 textures RimWorld refuses to compress (~2 GB; our mods first, 190 MB)","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-12T01:11:49Z"}
+{"seat":"BENCH","event":"close","id":"RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1","sha":"c0ba80ec77024ba4c6b9013614a67c53a85d782e","ts":"2026-09-12T01:11:50Z"}

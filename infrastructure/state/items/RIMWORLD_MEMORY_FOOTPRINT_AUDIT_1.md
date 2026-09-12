@@ -61,3 +61,12 @@ unilateral fix.
 - The 2.7× disk→RAM gap is expected: loose PNGs expand to RGBA+mips; PIXEL COUNT, not disk size, is the honest offender metric. One 8K clouds PNG ≈ 178 MB RAM.
 - Options for the owner, ranked: (A) texture compression at load — biggest lever, plausibly 5–10 GB, verify whether 1.6 has the toggle before reaching for a mod; (B) downscale the loose-PNG giants (Caverns/GRiNDTerra/Minerals), 1–3 GB est.; (C) the 8K clouds file alone ~170 MB; (D) RimThemes diet/drop ~0.5–1 GB est.; (E) keep absorbing/trimming defs; (F) add Windows-side commit capture to the mem-watch script (closes the biggest UNKNOWN, trivial).
 - Still owed live: cold-load vs after-play RSS + per-mod attribution, riding a load already being paid for.
+
+## Delivered 2026-09-12 — report at `Transient/rimworld_memory_audit_2026-09-12.md`
+RSS 18.82 GB MEASURED steady-state; texture RAM modelled 13.05 GB and reconciles;
+compression already ON (2026-09-08 synthesis row struck); the un-banked lever is
+1,578 textures with a non-%4 dimension (~2.0 GB, RimWorld refuses to compress
+them), 190 MB of it in OUR mods (181 MB RimStarWars Patches). Crash is NOT OOM —
+native ntdll 0xc0000005 well below peak. Fix work filed as
+NONDIV4_TEXTURE_FIX_1; the cold-load-vs-after-play RSS delta rides any future
+cold load (one tasklist read at each end, no dedicated restart).
