@@ -7583,3 +7583,7 @@
 {"seat":"FOUNDRY","event":"block","id":"WRECKAGE_VERMIN_SPAWN_1","reason":"built offline (comps + settings + Utinni wiring), compiles clean; no live game/bridge session this run to run the item's own quicktest verify","ts":"2026-09-12T03:51:41Z"}
 {"seat":"FOUNDRY","event":"block","id":"MOD_OPTIONS_RETROFIT_1","reason":"46 mods retrofitted with real, compile-verified Mod Settings (Greentide's cross-biome opt-in included); live in-game verification (cold load / quicktest, confirm toggles work with no errors) not yet run — see item file's progress section","ts":"2026-09-12T03:55:49Z"}
 {"seat":"BENCH","event":"close","id":"MUTATION_MODIFIERS_SURVEY_1","sha":"f4a40fd1d","ts":"2026-09-12T03:57:50Z"}
+{"seat":"FOUNDRY","event":"needs","id":"KYBER_TRADE_PLOT_1","to":"offline","reason":"Stale tag: both design cards (K1 mine history, K2 heat-unchanged) already RULED 2026-09-11 per kyber_trade_plot_spec.md's own Cards section; item file's 'awaits owner' note was never updated after the ruling landed. Buildable now.","ts":"2026-09-12T04:04:45Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"Deploy all you can, then restart","ts":"2026-09-12T04:06:02Z"}
+{"seat":"FOUNDRY","event":"claim","id":"KYBER_TRADE_PLOT_1","ts":"2026-09-12T04:07:26Z"}
+{"seat":"FOUNDRY","event":"block","id":"KYBER_TRADE_PLOT_1","reason":"quest content built (Homestead visit + donation/smuggle), Heat/Hutt-Interest GM blackboard (M4) unbuilt — cannot meet verify's sale-raises-heat clause without inventing parallel infra","ts":"2026-09-12T04:19:19Z"}
