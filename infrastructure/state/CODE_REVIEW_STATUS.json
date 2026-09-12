@@ -5068,10 +5068,10 @@
     "sha": "92e56d4f"
   },
   "src/RimMandrake/Visibility/Source/ColonyVisibilityRaidPatch.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-05",
-    "hash": "25d3d3189d3a60583fd70996ed32d18b79a3e9e95b7c3fe15465f40a266b3246",
-    "sha": "e7fa0af5"
+    "cleanCount": 4,
+    "date": "2026-09-11",
+    "hash": "1ff662fbcaf32d16f8f5f0917af513bd281c7d50f84fd51ad060fdfc8b224439",
+    "sha": "b4a195534"
   },
   "src/RimMandrake/Visibility/Source/DebugActions_Visibility.cs": {
     "cleanCount": 1,
@@ -5080,10 +5080,10 @@
     "sha": "572413c0"
   },
   "src/RimMandrake/Visibility/Source/GameComponent_ColonyVisibility.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "6d8dbe5e8a4d5da34d91471e291e283ec8eb7015a190f6cdbe6279dcdc0630b4",
-    "sha": "e7fa0af5"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "f8c3294903417119837d3625622a8805fa5dc5503eb7b46fa4e70f6d66853f4b",
+    "sha": "b4a195534"
   },
   "src/RimMandrake/Visibility/Source/SelfTest/Program.cs": {
     "cleanCount": 2,
@@ -5092,10 +5092,10 @@
     "sha": "e7fa0af5"
   },
   "src/RimMandrake/Visibility/Source/SelfTest/RimMandrakeVisibility.SelfTest.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "9e4cbd41af1548aebd2b36774b4026db622b1926b679235203800efb9303c470",
-    "sha": "e7fa0af5"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "6aa1fccc7901d54de5faa9b3f0aa181e6089c76caed82f071f8d0cf2ba7146b6",
+    "sha": "b4a195534"
   },
   "src/RimMandrake/Visibility/Source/Visibility.csproj": {
     "cleanCount": 2,
