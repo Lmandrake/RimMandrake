@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Absorbed verbatim from joe.cephaloids ("Cephaloids", workshop 3753477123),
      source file Defs/Joe_cephaloids.xml. STAT_NORM_WAVE2_RETIRE_1 (owner-ruled
-     Wave 2 remainder, 2026-09-11): the mod's entire content (10 defs: 2
-     BodyPartDefs, 2 BodyPartGroupDefs, 2 egg ThingDefs, 2 BodyDefs, 3 creature
+     Wave 2 remainder, 2026-09-11): the mod's entire content (13 defs: 1
+     BodyPartDef, 2 BodyPartGroupDefs, 2 egg ThingDefs, 2 BodyDefs, 3 creature
      ThingDefs + 3 PawnKindDefs) ported so joe.cephaloids can retire. defNames
      preserved verbatim, including the custom "Shell" BodyPartDef, which
      already overrides vanilla Core's own "Shell" whenever this content is
