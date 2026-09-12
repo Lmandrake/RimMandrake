@@ -11877,6 +11877,18 @@
     "hash": "f818acb9a0b42a26c1332874a3866b66da2441fee19cc4d3136b812c5f3b7b5d",
     "sha": "e2fec3c99"
   },
+  "src/RimUtinni/UtinniPatches/Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "3f35939986fbdfc99c005af41ce6324702a3c0965ecba824d4cf1ce08b5a6d48",
+    "sha": "a7f8208ac"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/Absorbed_VAEWasteMegatardi/Absorbed_VAEWasteMegatardi_Defs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "23f535f5928d6edc81481caf13804b26b72f15ae687bc1563f6b097a305e2c9b",
+    "sha": "a7f8208ac"
+  },
   "src/RimUtinni/UtinniPatches/Defs/Absorbed_VESucculents/Absorbed_VESucculents_Defs.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -12242,6 +12254,12 @@
     "date": "2026-09-04",
     "hash": "0b798e077e23af3339912e2370d62389f2abcceb58dea3345e9c16963954c2fd",
     "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/Absorbed_Cephaloids/Absorbed_Cephaloids_Patches.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "b0fb89015f35b7f726be6d246fdb96758ace3dd45df1aa43a544cb575e13156e",
+    "sha": "a7f8208ac"
   },
   "src/RimUtinni/UtinniPatches/Patches/Absorbed_VESucculents/Absorbed_VESucculents_AlphaBiomesPatch.xml": {
     "cleanCount": 1,
