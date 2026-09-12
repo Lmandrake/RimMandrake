@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <JobDef>
+    <defName>RM_Job_DiveHunt</defName>
+    <driverClass>RimMandrake.DivingInteraction.RM_JobDriver_DiveHunt</driverClass>
+    <reportString>diving to hunt the deep.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_Job_DiveCommune</defName>
+    <driverClass>RimMandrake.DivingInteraction.RM_JobDriver_DiveCommune</driverClass>
+    <reportString>diving to commune with the deep.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+</Defs>

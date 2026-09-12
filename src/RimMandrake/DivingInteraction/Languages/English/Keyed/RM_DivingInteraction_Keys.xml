@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <RM_FloatMenu_DiveHunt>Dive to hunt the deep (burns risked)</RM_FloatMenu_DiveHunt>
+  <RM_FloatMenu_DiveCommune>Dive to commune with the deep (burns risked)</RM_FloatMenu_DiveCommune>
+  <RM_DiveOnCooldown>the deep is still settled from the last dive ({0})</RM_DiveOnCooldown>
+
+  <RM_DiveHuntSuccess>{0} surfaces from the deep with {1} pieces of walker chitin.</RM_DiveHuntSuccess>
+  <RM_DiveHuntLashback>{0} found nothing below — and the water did not let them leave unmarked.</RM_DiveHuntLashback>
+  <RM_DiveHuntNothing>{0} surfaces empty-handed. The deep kept its own today.</RM_DiveHuntNothing>
+  <RM_DiveCommuneComplete>{0} sits with the deep a while, and comes back changed.</RM_DiveCommuneComplete>
+
+</LanguageData>

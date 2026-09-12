@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- SCALD_DIVING_MOD_1 — the hunt outcome's material reward. Deliberately
+       NOT meat/leather: no bottom-walker PawnKindDef exists (measure/RimSage
+       confirm zero live), so this mod invents no fauna carcass. A plated
+       chunk is defensible from "armored, slow" (the_scald.md §4) alone, and
+       the roster/bestiary pass can retire this in favour of real animal
+       products once a walker pawnkind ships — this def does not block that. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_ScaldWalkerChitin</defName>
+    <label>walker chitin</label>
+    <description>A curved plate torn from something that lives at the bottom of the Scald, where the boil gentles to mere heat. Cooled, it is nearly stone; warmed again, it still smells faintly of the mats it grazed. Traders pay for the novelty as much as the material.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Leather</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(93, 140, 138)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>12</MarketValue>
+      <Mass>0.6</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <stackLimit>50</stackLimit>
+    <techLevel>Neolithic</techLevel>
+  </ThingDef>
+
+</Defs>

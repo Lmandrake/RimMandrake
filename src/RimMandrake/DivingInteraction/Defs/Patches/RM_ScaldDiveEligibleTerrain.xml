@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    SCALD_DIVING_MOD_1's ONLY reference to the Scald by name — data wiring,
+    not lore (About.xml). Tags the three Standable RUT_ScaldWater* terrains
+    (WaterShallowBase/WaterChestDeepBase descendants — pathCost 30/42, no
+    passability override, so they default Standable) with the generic
+    RM_DiveEligible tag this mod's float menu and job drivers key on.
+
+    Deliberately EXCLUDES RUT_ScaldWaterDeep and RUT_ScaldWaterOceanDeep:
+    those are WaterDeepBase descendants (passability Impassable,
+    Core/Defs/TerrainDefs/Terrain_Water.xml line 78-79, verified this
+    session) — a walking pawn cannot path onto them regardless of any tag,
+    so the boiling SURFACE stays structurally no-swim (the_scald.md ban 4).
+    RM_DiveUtility.CellIsDiveSite's own Standable() check is the redundant
+    second gate if a future biome ever tags impassable terrain by mistake.
+
+    MayRequire guards every operation: absent mandrake.rut.patches (the
+    Scald was never built, or a player has no Utinni content at all), this
+    patch does nothing and this mod ships fully inert but intact — the
+    "medieval-tribe player installs this alone" test in About.xml.
+  -->
+
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rut.patches">
+    <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterShallow"]/tags</xpath>
+    <value>
+      <li>RM_DiveEligible</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rut.patches">
+    <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterMovingShallow"]/tags</xpath>
+    <value>
+      <li>RM_DiveEligible</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rut.patches">
+    <xpath>/Defs/TerrainDef[defName="RUT_ScaldWaterMovingChestDeep"]/tags</xpath>
+    <value>
+      <li>RM_DiveEligible</li>
+    </value>
+  </Operation>
+
+</Patch>

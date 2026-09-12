@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Deep Diving</name>
+  <packageId>mandrake.rm.divinginteraction</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>SCALD_DIVING_MOD_1 (owner ruling, 2026-09-12, on the Scald kit's
+open card 3, verbatim: "Diving interaction, and make the diving mod v1
+content now!!"). `scald_kit_spec.md` S5 ruled: "the bottom-walkers do not
+stay a visual: a diving mechanic (hunt/commune at the deep center, priced in
+burns) ships as v1 content, as its own RimMandrake-tier mod." Ban 4 in
+`the_scald.md` ("no macro-life in the boil itself") is superseded exactly
+this far: the DEEP interaction exists; the boiling SURFACE remains strictly
+no-swim — this mod never lets a pawn stand where the boil ban applies.
+
+**The generic mechanism (this mod's actual surface, RM-tier because it names
+no biome, no clan, no planet):** any TerrainDef tagged `RM_DiveEligible` and
+Standable becomes a place a colonist can be sent to dive. Right-click such a
+cell for "Dive to hunt" or "Dive to commune" — the pawn walks there and
+holds position for a tunable duration. No new damage system: the pawn pays
+in burns because RimWorld's own `HediffGiver_Terrain` already fires on any
+pawn standing on a `burnDamage`-carrying terrain (Core's
+`HediffGiverSets.xml`) — this mod's only job is getting a colonist to stand
+there on purpose and paying out an outcome afterward. A medieval-tribe
+player could tag a lava-adjacent tile and use this alone; it does not know
+the Scald exists.
+
+**Why a dive SITE, not a bottom-walker pawn:** `scald_kit_spec.md` S5 ships
+v1 walkers only as a non-resident surfacing set-piece
+(`RUT_WalkerSurfacing`/`RUT_IncidentWorker_WalkerSurfacing`, elsewhere) —
+`measure`/RimSage confirm ZERO bottom-walker PawnKindDef or ThingDef exists
+in the live def set. Simulating a full swimming, huntable pawn AI for a
+creature that has no def, no art, and an explicit "not a resident pawn"
+ruling would invent lore this mod is not chartered to invent. The dive-site
+interaction point delivers the ruled player experience (reach the deep
+center, risk the burn, come back with something or someone changed) without
+that invention; the roster/bestiary pass can attach a real pawnkind to the
+same cells later without touching this mod.
+
+**Wiring to the Scald (data only, this mod owns no Scald lore):** a single
+PatchOperationAdd, gated `MayRequire="mandrake.rut.patches"`, adds the
+`RM_DiveEligible` tag to `RUT_ScaldWaterMovingChestDeep` and
+`RUT_ScaldWaterShallow`/`RUT_ScaldWaterMovingShallow` (Standable boiling
+terrain at the crater's edge — `RUT_ScaldWaterDeep`/`OceanDeep` are
+Impassable to walking pawns and carry no tag, so the interaction can never
+place a colonist ON the boiling surface itself; ban 4 holds). Absent that
+mod, this mod ships inert but complete.
+
+**Mod Settings** (MOD_OPTIONS_RETROFIT_1 doctrine): master on/off, hunt/commune
+on/off independently, dive duration (the actual burn-exposure dial — it
+multiplies how many of the terrain's own burnIntervalTicks the pawn eats),
+per-cell cooldown, hunt success/lashback chances, hunt yield range, and the
+commune mood value. Every default matches this description's shipped
+numbers.</description>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rut.patches</li>
+  </loadAfter>
+</ModMetaData>
