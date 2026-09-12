@@ -11877,6 +11877,12 @@
     "hash": "f818acb9a0b42a26c1332874a3866b66da2441fee19cc4d3136b812c5f3b7b5d",
     "sha": "e2fec3c99"
   },
+  "src/RimUtinni/UtinniPatches/Defs/Absorbed_VESucculents/Absorbed_VESucculents_Defs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "e7c7f433def9a2eba110b9a783695e1756afe3a276ff332ab46e46e277b553c7",
+    "sha": "f4b18455a"
+  },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/Jawa_BackgroundWater.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -12195,6 +12201,12 @@
     "hash": "8061fd856d4a6f02ba3b276ec92178b4fcc930ec252367b6f3a4df24cef69748",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_FurnaceHide.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "2f500169cb05f97c9328fe249844a465854a689394b95167bd42d848da5cfba4",
+    "sha": "f4b18455a"
+  },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_TwinkleSpikeTestPlant.xml": {
     "cleanCount": 1,
     "date": "2026-09-10",
@@ -12230,6 +12242,18 @@
     "date": "2026-09-04",
     "hash": "0b798e077e23af3339912e2370d62389f2abcceb58dea3345e9c16963954c2fd",
     "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/Absorbed_VESucculents/Absorbed_VESucculents_AlphaBiomesPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "672273558e5b17aa450ba9b09bcc206cc665a71fd09f684a0b7516821a80f280",
+    "sha": "f4b18455a"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/Absorbed_VESucculents/Absorbed_VESucculents_BiomesPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "af2c18bd68a63b47647be423e1a40724af621963d653e3ade7de03e1b55e3578",
+    "sha": "f4b18455a"
   },
   "src/RimUtinni/UtinniPatches/Patches/AmbientShrineGuardians.xml": {
     "cleanCount": 1,
