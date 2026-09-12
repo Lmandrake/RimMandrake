@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T13:35:26Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-12T13:44:28Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -584,15 +584,6 @@ target:   v1
 kind:     design
 summary:  Owner-said: "Keep one big reskin boom creature for the assailant dungeon,
 prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
-
-## SHRINE_GUARDIAN_BIOME_GATE_1 Harmony postfix on SymbolResolver_AncientTemple.Resolve to gate shrine guardian/loot per-biome (ANCIENT-ALLOW/RARE x AMBIENT-DENY) — piece 4/4 of MECH_PRESENCE_ENFORCEMENT_1, spun off as C#, XML-only scope can't reach it
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-summary:  Piece 4/4 of MECHPRESENCEENFORCEMENT1 (curate shrine contents where
-prose:    infrastructure/state/items/SHRINE_GUARDIAN_BIOME_GATE_1.md
 
 ## BAREHANDED_MELEE_FALLBACK_1 18 of 23 bare-handed pawn kinds have 100% ranged weapon pools with zero melee fallback (shooting-disabled pawns spawn bare) - re-run pool join vs today's post-restore cut list first, then add melee tags per faction voice; 5 kinds still undiagnosed
 state:    doing
