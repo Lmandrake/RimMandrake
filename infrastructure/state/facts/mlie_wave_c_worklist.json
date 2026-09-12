@@ -15,29 +15,8 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 80,
+  "remaining_worklist_count": 77,
   "remaining_worklist": [
-    {
-      "donor_defName": "Corinathoth",
-      "biomes": [
-        "AridShrubland"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Dactillion",
-      "biomes": [
-        "ZBiome_DesertOasis"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Dalgo",
-      "biomes": [
-        "BiomeCypreJungle"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
     {
       "donor_defName": "Dianoga",
       "biomes": [
@@ -637,5 +616,10 @@
     "RSW_Cannok",
     "RSW_Clodhopper",
     "RSW_Convor"
+  ],
+  "ported_and_wired_this_pass_2026-09-12_batch4": [
+    "RSW_Corinathoth",
+    "RSW_Dactillion",
+    "RSW_Dalgo"
   ]
 }

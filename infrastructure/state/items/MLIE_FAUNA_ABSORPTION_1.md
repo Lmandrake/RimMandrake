@@ -636,3 +636,23 @@ Validated: `validate_patch.py`, 0 errors/1 known pre-existing warning on
 the 6 authored/touched files.
 
 **Remaining**: 80 of the Wave C worklist, plus Fambaa.
+
+## 2026-09-12 (FOUNDRY, offline subagent, belt mode) — 3 more species ported: Corinathoth, Dactillion, Dalgo (80 -> 77 remaining)
+
+Corinathoth and Dalgo reuse vanilla Core body plans untouched
+(`QuadrupedAnimalWithHoovesAndHorn`/`QuadrupedAnimalWithHooves`) plus
+already-ported Wave B/C leather/meat. Dactillion's donor body `Bogwing` is
+NOT vanilla — ported as new `RSW_Bogwing` BodyDef, repointing wings to
+already-ported `RSW_SW_LeftWing`/`RSW_SW_RightWing` (no new body part);
+new eggs (`RSW_EggDactillionFertilized`/`UnFertilized`, texPath
+`EggWiggly`). Noted for future clarity: `RSW_Bogwing` (the body) shares a
+name with a still-unported *species* also called Bogwing — only the body
+plan was ported here, flagged in both the def header and the mapping doc.
+
+Validated against the newest capture (2026-09-12T16-41-33Z, 593 mods,
+matching live `ModsConfig.xml`'s 593 active — this is the fresh capture
+taken after tonight's restart, confirming the `mandrake.rm.gravshiplanding`
+mod found earlier is now baked into the current baseline): 0 errors, 1
+known pre-existing warning.
+
+**Remaining**: 77 of the Wave C worklist, plus Fambaa.

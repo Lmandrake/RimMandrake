@@ -180,6 +180,7 @@
       <value>
         <RSW_Bantha>0.5</RSW_Bantha> <!-- bantha - huge-grazer, keep -->
         <RSW_Nuna>0.4</RSW_Nuna> <!-- nuna - small-runway, keep -->
+        <RSW_Corinathoth>0.4</RSW_Corinathoth> <!-- corinathoth - huge-grazer, keep -->
         <RSW_Cannok>0.16</RSW_Cannok> <!-- cannok - medium-interface, keep -->
         <RSW_Vulptex>0.08</RSW_Vulptex> <!-- vulptex - small-runway, keep -->
         <RSW_Convor>0.08</RSW_Convor> <!-- convor - flier-interface, keep -->
@@ -221,7 +222,6 @@
         <Scavrat>0.6</Scavrat> <!-- Scavrats - ship-vermin, import -->
         <Pufferpig>0.5</Pufferpig> <!-- Pufferpig - small-runway, keep -->
         <RSW_Anooba>0.4</RSW_Anooba> <!-- anooba - medium-interface, adjust-keep -->
-        <Corinathoth>0.4</Corinathoth> <!-- corinathoth - huge-grazer, keep -->
         <Gizka>0.4</Gizka> <!-- gizka - small-runway, keep -->
         <Nuna>0.4</Nuna> <!-- nuna - small-runway, keep -->
         <WompRat>0.4</WompRat> <!-- womp rat - ship-vermin, import -->
@@ -378,6 +378,7 @@
         <RSW_Clodhopper>0.7</RSW_Clodhopper> <!-- clodhopper - floor-vermin, keep -->
         <RSW_Nuna>0.4</RSW_Nuna> <!-- nuna - brake, import -->
         <RSW_Convor>0.3</RSW_Convor> <!-- convor - flier, import -->
+        <RSW_Dalgo>0.18</RSW_Dalgo> <!-- dalgo - brake, keep -->
       </value>
     </match>
   </Operation>
@@ -400,7 +401,6 @@
         <Kinrath>0.3</Kinrath> <!-- kinrath - canopy-ambush, adjust-keep -->
         <Fambaa>0.25</Fambaa> <!-- fambaa - shatterer, import -->
         <PekoPeko>0.2</PekoPeko> <!-- Peko-peko - flier, import -->
-        <Dalgo>0.18</Dalgo> <!-- dalgo - brake, keep -->
         <Hawkbat>0.18</Hawkbat> <!-- hawk-bat - flier-predator, keep -->
         <Hssiss>0.18</Hssiss> <!-- hssiss - lunger-junior, keep -->
         <Dianoga>0.15</Dianoga> <!-- dianoga - lunger, adjust-keep -->
@@ -1030,6 +1030,7 @@
         <RSW_Dewback>0.4</RSW_Dewback> <!-- dewback - large-resident, import -->
         <RSW_Bantha>0.1</RSW_Bantha> <!-- bantha - pilgrim, import -->
         <RSW_Boma>0.15</RSW_Boma> <!-- boma - large-margin, keep -->
+        <RSW_Dactillion>0.15</RSW_Dactillion> <!-- dactillion - flier-mount, keep -->
       </value>
     </match>
   </Operation>
@@ -1041,7 +1042,6 @@
       <value>
         <Ollopom>0.7</Ollopom> <!-- ollopom - small-resident, keep -->
         <Fanback>0.5</Fanback> <!-- fanback - large-resident, adjust-keep -->
-        <Dactillion>0.15</Dactillion> <!-- dactillion - flier-mount, keep -->
         <Eopie>0.1</Eopie> <!-- eopie - pilgrim, import -->
         <Jamel>0.1</Jamel> <!-- Jamel - pilgrim, import -->
       </value>
