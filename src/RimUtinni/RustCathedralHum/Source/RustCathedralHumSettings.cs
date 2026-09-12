@@ -38,6 +38,35 @@ namespace RimMandrake.Utinni.RustCathedralHum
 
 		public static bool BoltWatchedPricingActive => humMechanicEnabled && boltWatchedPricingEnabled;
 
+		// RUST_CATHEDRAL_MECHANICS_1 §4 (eel-fishing consequences) and §5 (the
+		// deep-drill response event). Same discipline as everything above:
+		// default = shipped behavior, off degrades rather than errors.
+		//
+		// ⚠️ NEITHER toggle removes CONTENT. The coolant eel def, the negative
+		// fishing outcome, and the biome's own fishTypes/maxFishPopulation are
+		// XML that Mod Settings cannot reach -- the canals stay fishable and
+		// the eel stays catchable and salable with fishing pricing off. What
+		// the toggle owns is whether the Cathedral MINDS, which is the
+		// mechanic. (maxFishPopulation is the one worldgen-adjacent field here:
+		// it is read when a map's water bodies are built, so changing it
+		// affects maps generated afterwards, not maps already made. That is why
+		// it is not a setting.)
+		public static bool fishingPricingEnabled = true;
+		public static bool drillResponseEnabled = true;
+
+		// §4's line-in tell and per-catch price are the hum reacting, so they
+		// ride the master hum toggle for the same reason the bolts do.
+		public static bool FishingPricingActive => humMechanicEnabled && fishingPricingEnabled;
+
+		// §5 does NOT ride the master toggle. The response is a storyteller
+		// incident and a mechanoid force, not a display of the attitude value:
+		// with the hum switched off it still makes sense for drilling the deep
+		// metal to be answered, and the escalation coupling into §1 simply
+		// lands on a component that is asleep. Turning THIS off also releases
+		// vanilla's own deep-drill infestation on Cathedral maps, so all-off is
+		// plain vanilla behavior rather than a map where nothing can happen.
+		public static bool DrillResponseActive => drillResponseEnabled;
+
 		public override void ExposeData()
 		{
 			base.ExposeData();
@@ -48,6 +77,8 @@ namespace RimMandrake.Utinni.RustCathedralHum
 			Scribe_Values.Look(ref boltDanceEnabled, "boltDanceEnabled", true);
 			Scribe_Values.Look(ref boltShedEnabled, "boltShedEnabled", true);
 			Scribe_Values.Look(ref boltWatchedPricingEnabled, "boltWatchedPricingEnabled", true);
+			Scribe_Values.Look(ref fishingPricingEnabled, "fishingPricingEnabled", true);
+			Scribe_Values.Look(ref drillResponseEnabled, "drillResponseEnabled", true);
 		}
 
 		public void DoWindowContents(Rect inRect)
@@ -73,6 +104,13 @@ namespace RimMandrake.Utinni.RustCathedralHum
 				"Off: living bolts stop leaving shed curiosities on the ground. Curiosities already dropped are unaffected.");
 			list.CheckboxLabeled("The Cathedral minds what you do to its bolts", ref boltWatchedPricingEnabled,
 				"Off: taking a shed curiosity or killing a living bolt stops feeding the Cathedral's mood. The hum still runs on everything else.");
+
+			list.GapLine();
+			list.Label("The canals and the deep");
+			list.CheckboxLabeled("The Cathedral minds what you take from its canals", ref fishingPricingEnabled,
+				"Off: fishing the coolant canals stops feeding the Cathedral's mood. The eels are still there, still catchable and still worth selling, and the occasional nasty catch still happens -- nothing about the water itself changes.");
+			list.CheckboxLabeled("Drilling the deep metal is answered", ref drillResponseEnabled,
+				"Off: a deep drill on the Rust Cathedral is treated like a deep drill anywhere else, and ordinary deep-drill infestations can occur there again instead.");
 
 			list.End();
 		}

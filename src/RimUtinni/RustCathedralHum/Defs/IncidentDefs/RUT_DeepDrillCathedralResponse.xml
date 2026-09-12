@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUST_CATHEDRAL_MECHANICS_1 §5 — the deep-drill response event.
+
+    ⛔ BAN 6, ABSOLUTE, and this def is where it bites hardest: "no text —
+    letter, def description, commentary line, art note — ever describes the
+    response beyond 'massive mechanoid movement'." The label and letter below
+    say what a Jawa at a drill head can SEE and HEAR, from where they are
+    standing, and stop. They do not say what is coming, why, what it wants,
+    what it will do, whether it can be fought, or whether it will leave. The
+    player experience the spec asks for is "dig deep enough and very bad
+    things happen. No one's quite sure what." — so nobody, including this file,
+    is allowed to be sure.
+
+    No <description> field at all: an IncidentDef description is player-visible
+    in the debug/incident menus, and every honest sentence that could go there
+    would breach ban 6.
+
+    FIRING: no storyteller entry of our own. category DeepDrillInfestation puts
+    this def in the pool vanilla's already-present
+    StorytellerComp_DeepDrillInfestation rolls (MTB 20 days per usable drill,
+    difficulty-scaled, on the storyteller base def). See the worker file for
+    why the spec's INVENTED "MTB 6 days per tapped drill" is NOT taken: a
+    second comp would raise ORDINARY infestation rates on every non-Cathedral
+    map in the game, and that is too high a price for one number.
+
+    targetTags mirror vanilla DeepDrillInfestation's exactly — the storyteller
+    comp filters on its own allowedTargetTags list, so a narrower set here
+    would just make the incident unreachable on some map types.
+
+    pointsScaleable true: the worker multiplies parms.points by 2-3x, which
+    only means anything if the storyteller has scaled them first.
+  -->
+
+  <IncidentDef>
+    <defName>RUT_DeepDrillCathedralResponse</defName>
+    <label>deep signal</label>
+    <workerClass>RimMandrake.Utinni.RustCathedralHum.RUT_IncidentWorker_CathedralResponse</workerClass>
+    <category>DeepDrillInfestation</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+      <li>Map_TempIncident</li>
+      <li>Map_Misc</li>
+      <li>Map_RaidBeacon</li>
+    </targetTags>
+    <letterLabel>Deep signal</letterLabel>
+    <letterText>The drill head went quiet, and then everything did. The hum is gone.\n\nOut past the wall line, something very large is moving, and it is moving this way.</letterText>
+    <letterDef>ThreatBig</letterDef>
+    <baseChance>1</baseChance>
+    <pointsScaleable>true</pointsScaleable>
+  </IncidentDef>
+
+</Defs>

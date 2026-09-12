@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUST_CATHEDRAL_MECHANICS_1 §4 — "the sharp end". One vanilla
+    NegativeFishingOutcomeDef keyed to RUT_CoolantEel.
+
+    VANILLA GATE, re-read from source at build (not trusted from the spec):
+    FishingUtility.GetNegativeFishingOutcomes rolls Rand.Chance(0.02f) — 2% per
+    completed fishing job — and then refuses if
+    GenTicks.TicksGame - map.waterBodyTracker.lastNegativeCatchTick <= 300000,
+    i.e. a 5-day map-wide cooldown. ⚠️ The class's own named constant
+    NegativeCatchCooldownTicks = 120000 (2 days) is DEAD: the executed code uses
+    the literal 300000, the same value RareCatchCooldownTicks carries. The
+    spec's cited "2% / 5-day" therefore matches what actually runs — via the
+    literal, not via the constant that appears to name it.
+
+    The outcome is only reachable at all when the eel is in the water body's
+    CommonFish or UncommonFish list, which is what the biome fishTypes patch
+    arranges. No extra gate of our own is needed or wanted.
+
+    ElectricalBurn, not Bite: a NegativeFishingOutcomeDef carries exactly one
+    damageDef, and the shock is the characteristic one. It is a vanilla
+    DamageDef (ParentName Flame, armorCategory Heat, workerClass
+    DamageWorker_AddInjury, its own ElectricalBurn hediff) so no addsHediff
+    entry is needed — the damage def brings its own.
+
+    Register law: ban 1. The letter says what the pawn felt and nothing about
+    what the water, the walls, or the hum are doing. It does not say the eel
+    did it on purpose, it does not say anything noticed, and it explains
+    nothing. INVENTED: damage range 8~14 (roughly the piranha-attack band,
+    6~15, for a comparable once-per-5-days event).
+  -->
+
+  <NegativeFishingOutcomeDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_NegativeFishingOutcome_CoolantEel</defName>
+    <fishType>RUT_CoolantEel</fishType>
+    <letterLabel>Something in the canal</letterLabel>
+    <letterText>{PAWN_nameDef} had a line in the canal when the water went hard and bright, all at once, from one end of the channel to the other.\n\nThe burns run up one arm. Nothing was landed, and the surface is flat again.</letterText>
+    <letterDef>NegativeEvent</letterDef>
+    <damageDef>ElectricalBurn</damageDef>
+    <damageAmountRange>8~14</damageAmountRange>
+  </NegativeFishingOutcomeDef>
+
+</Defs>
