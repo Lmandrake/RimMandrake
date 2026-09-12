@@ -164,3 +164,58 @@ expected), then `rimworld/start_debug_game_ready` 3x in a row to
 re-run the same DFS cycle check against the NEW dump first — this fix only
 removes the one cycle found tonight; a different cycle elsewhere would need
 the identical treatment.
+
+## FOUNDRY live verification, 2026-09-12 (third pass) — CLOSED
+
+**The XML-only fix (`RRElectricityBasicsSelfPrereq_Fix.xml`) did NOT take
+effect and does NOT close this item on its own.** Deployed it
+(`deploy_custom_mods.py --mod MandrakePatches --apply`), restarted the full
+592-mod list cold (confirmed `activeMods` count 592 both before and after),
+and BEFORE running any quicktest, read the live resolved def:
+`jawa/get_defs ResearchProjectDef/RR_ElectricityBasics` still showed
+`prerequisites: ["RR_ElectricityBasics"]` — the self-loop survived the
+patch pass. Ran `rimworld/start_debug_game_ready` once to confirm: it
+crashed identically (`RimWorldWin64.exe` gone from `tasklist.exe`,
+`jawa/list_pawns` failing with `WinError 10061` connection-refused, log
+ending mid-stream after a burst of `[Ninefold] ... research completed`
+lines — the exact recorded signature). **Not traced further** why the
+per-mod XML patch pass cannot out-order whatever RR's own custom
+`RR.PatchOperationResearchPrereg` operation does — not needed, given the
+fix below made it moot.
+
+**Real fix: a Harmony prefix on `ResearchManager.FinishProject` itself**,
+added to `src/RimMandrake/Ninefold/Source/Patch_ResearchManager_NoSelfPrereq.cs`
+(lives in the already-loaded Ninefold Harmony assembly for build-cost
+reasons only — it is NOT a Ninefold feature). On every call it strips any
+prerequisite entry equal to the project itself from `proj.prerequisites`
+*before* the unguarded recursive loop runs, regardless of which mod or
+mechanism put a self-reference there and regardless of patch load order.
+Logs a `Log.Warning` once per def it ever fires on (harmless no-op on every
+other def). Built with
+`"%USERPROFILE%\.dotnet\dotnet.exe" build ...\Ninefold\Source\Ninefold.csproj -c Release`,
+deployed with `deploy_custom_mods.py --mod Ninefold --apply` while the game
+was down (crashed from the confirmation run above), restarted cold on the
+same 592-mod list.
+
+**Verified 3x clean, per this item's own `verify` bar:**
+`rimworld/start_debug_game_ready` → polled `jawa/list_pawns` to success
+three times in a row, `RimWorldWin64.exe` staying alive throughout
+(`tasklist.exe` confirmed after run 3). Player.log shows the guard fired
+exactly once (`[RimMandrake.Ninefold] QUICKTEST_POSTSETUP_CRASH_1 guard:
+stripped 1 self-referencing prerequisite entry from RR_ElectricityBasics`)
+— expected, since it mutates the shared `ResearchProjectDef` object in
+place, so runs 2 and 3 simply never had anything left to strip. Re-read the
+live def afterward: `jawa/get_defs` now shows
+`RR_ElectricityBasics.prerequisites: []`, confirmed empty for the rest of
+this process's life.
+
+Left the XML patch (`RRElectricityBasicsSelfPrereq_Fix.xml`) in place as
+harmless defense-in-depth (still a no-op removal if RR ever ships the
+self-reference as a literal, non-runtime-injected `<li>` in a future
+version) — the Harmony prefix is the operative fix.
+
+**Resting state:** full 592-mod list still active (confirmed), game left
+on the quicktest map from verification run 3 (disposable debug map per
+`map-state-is-disposable-debug`, nothing to save). Bridge released.
+
+**CLOSED** — `rimflow close QUICKTEST_POSTSETUP_CRASH_1`.
