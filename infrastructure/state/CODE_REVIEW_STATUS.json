@@ -762,10 +762,10 @@
     "sha": "f3a684e1"
   },
   "src/RimMandrake/Aftermath/Source/RM_Aftermath.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "9bebac875e67e6c538d9d811324d0cd1ba1de97d1c5b37e4c29810e42b389bea",
-    "sha": "5ed4b469"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "52b756d66b290855e16d6c08dfe2e3b41fd7c7c0e4588c85bf1899329ec79104",
+    "sha": "ce01a5a8a"
   },
   "src/RimMandrake/Aftermath/Source/RM_AftermathRuleDef.cs": {
     "cleanCount": 3,
@@ -1152,10 +1152,10 @@
     "sha": "43f96b1b"
   },
   "src/RimMandrake/FluidCanals/Source/RimMandrake_FluidCanals.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "92040e4edef90ea2bd41c9339256f24f4d1e77a6ec4485d83f68d4486af6590c",
-    "sha": "a13a5975"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "aa13e510001552af3a335c19263002f4b74854cf1cfd13f2d5724026d75d30d6",
+    "sha": "ce01a5a8a"
   },
   "src/RimMandrake/FluidCanals/Source/WorkGiver_DigCanal.cs": {
     "cleanCount": 1,
@@ -2094,10 +2094,10 @@
     "sha": "5f12f476e"
   },
   "src/RimMandrake/ManyWaters/Source/RiverSteamHook.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "d14fd1b0f4eb5fce6998d54214d4f18afd377bcc43ee3d7067f9fbb5c00bb875",
-    "sha": "0c9c0cff"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "fc1e668e63d1610e1e132221dd17e8d7b9573616e6fa1a02d1cc56a0fd43992a",
+    "sha": "ce01a5a8a"
   },
   "src/RimMandrake/MovingDunes/About/About.xml": {
     "cleanCount": 1,
@@ -2178,10 +2178,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimMandrake/MovingDunes/Source/RimMandrake_MovingDunes.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "951114f61c647448e1e5796e796dbc9bcb62ca23c6ad260b0c0da4e412237a79",
-    "sha": "5c4a5137"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "a8e8837d959693928b410eb5752112101737e63ca6cfa1dfbcd77a3ef230aa04",
+    "sha": "ce01a5a8a"
   },
   "src/RimMandrake/MovingDunes/Source/SectionLayer_DuneSand.cs": {
     "cleanCount": 1,
@@ -2646,10 +2646,10 @@
     "sha": "5f12f476e"
   },
   "src/RimMandrake/ProximityHatch/Source/RimMandrake_ProximityHatch.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "bd001a15913a3193fff23f2f2a540c514efd6450f8cce00eafb2c33f2b4ee02f",
-    "sha": "8be234dd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "d230983bd367998488a22a19459c92e4cf523eead3f946aaf40ea4f0cfa16586",
+    "sha": "ce01a5a8a"
   },
   "src/RimMandrake/Pyrelands/About/About.xml": {
     "cleanCount": 1,
