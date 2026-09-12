@@ -444,8 +444,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `fever_wood_kit_spec.md` | FEVER_WOOD_MECHANICS_1 — C# mechanics kit spec (engine mapping) | — |
+| `forge_kit_spec.md` | FORGE_MECHANICS_1 — C# mechanics kit spec (engine mapping) | — |
+| `miasma_kit_spec.md` | MIASMA_MECHANICS_1 — C# mechanics kit spec (engine mapping) | — |
+| `rust_cathedral_kit_spec.md` | RUST_CATHEDRAL_MECHANICS_1 — C# mechanics kit spec (engine mapping) | — |
+| `shokkweave_sole_source_spec.md` | SHOKKWEAVE_SOLE_SOURCE_1 — economy spec (build-ready) | — |
 | `greentide_kit_spec.md` | GREENTIDE_MECHANICS_1 — C# mechanics kit spec (engine mapping) | — |
 | `scarlands_kit_spec.md` | SCARLANDS_MECHANICS_1 — C# mechanics kit spec (DRAFT) | — |
+| `sump_kit_spec.md` | SUMP_MECHANICS_1 — C# mechanics kit spec (engine mapping) | — |
 | `webwork_kit_spec.md` | WEBWORK_MECHANICS_1 — C# mechanics kit spec (DRAFT for owner review) | — |
 
 ### `design/Jawa/worldbuilding/biomes/rosters/`

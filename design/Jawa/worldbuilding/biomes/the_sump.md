@@ -188,6 +188,10 @@ one family of cold carbon (`the_blue_desert.md`, `the_propane_lakes.md`).
 
 ## Owed
 
+⭐ **C# kit spec DRAFTED 2026-09-11** (`SUMP_MECHANICS_1`):
+`kits/sump_kit_spec.md` — 6 mechanics engine-mapped, 2 ruled-comp reuses,
+5 new RM_ classes; 3 owner cards open (rides `KIT_SPECS_CARD_SITTING_1`).
+
 - `SUMP_MECHANICS_1` (to file) — the poured-moat buildable + command
   ignition, the dig-lottery tables (traps weighted first, per ruling), tar
   beast set-piece logic (wake causes, station-eating, evacuation frame),
