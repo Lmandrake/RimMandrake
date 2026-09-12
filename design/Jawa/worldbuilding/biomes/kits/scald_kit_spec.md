@@ -282,15 +282,16 @@ geysers, geothermal.
 is already open at `design/RimMandrake/RM_liquid_types_mod.md` §9 CARD-1**
 — this kit consumes its ruling.)*
 
-2. **Steam-catch output form** — the condenser yields: (a) item water
-   (simple, trade-able, no cross-mod dependency — drafted v1 default), (b) a
-   thirst-mod pipe/network source (the `dbh_water` ecosystem the terrains
-   already tag — stronger colony plumbing, adds a hard mod dependency), or
-   (c) both behind a toggle. Trade: (a) ships now; (b) is the one that makes
-   "the tap of the world" a base-layout decision.
-3. **Do the bottom-walkers ever surface as real pawns?** v1 ships the herds
-   as a surfacing visual only (ban 4 keeps them out of the boil; depth has
-   no map representation). Options: stay visual forever (rare and enormous,
-   never a target) vs. a later diving-interaction mechanic (hunt/commune at
-   the deep center, priced in burns). Trade: mystery vs. content; the sheet's
-   "pastoral, submerged" reads as protecting them from becoming loot.
+2. **RULED 2026-09-12 — (c) BOTH, behind a Mod Settings toggle.** Item
+   water is the default; the `dbh_water` pipe-network source enables in
+   settings when the thirst mod is present (MOD_OPTIONS_RETROFIT_1
+   doctrine).
+3. **RULED 2026-09-12 — diving interaction, AND IT IS V1.** Owner verbatim:
+   "Diving interaction, and make the diving mod v1 content now!!" ⇒ The
+   bottom-walkers do not stay a visual: a diving mechanic (hunt/commune at
+   the deep center, priced in burns) ships as v1 content, as its own
+   RimMandrake-tier mod — filed as SCALD_DIVING_MOD_1. Ban 4's "out of the
+   boil" reading is superseded exactly this far: the DEEP interaction
+   exists; the boil surface remains no-swim.
+   (Card 1, the basin's salinity, is ruled at RM_liquid_types_mod.md §9:
+   FRESHWATER — and the rivers flow OUT of the Scald.)
