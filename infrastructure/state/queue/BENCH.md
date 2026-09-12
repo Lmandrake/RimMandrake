@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T01:26:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T01:35:33Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -243,16 +243,6 @@ blocked:  Offline half DONE (Law 5 + MEASURED census, 196/297 violate). Blocked 
 summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
 prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
 
-## DASHBOARD_HUB_ARTIFACT_1 Single multi-tab dashboard hub artifact: thin tab shell + one data file per tab (per-seat republish, no collisions), per-tab freshness lamps, sheets linked not embedded — owner ruled 2026-09-11, spec in art_regen_registry_design.md §4
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Built+pinned+in use; remaining verify (two-seat proof, publisher migration) rides HUB_TAB_PUBLISHER_MIGRATION_1 (FOUNDRY).
-summary:  - One published artifact, stable URL, pinned for the owner. Thin tab shell
-prose:    infrastructure/state/items/DASHBOARD_HUB_ARTIFACT_1.md
-
 ## FAUNA_LORE_DIVERSIFICATION_1 Per-beast damage diversification round AFTER size scaling: judge each beast by its art + description (scary vs harmless), diverge individuals from the 12-15x band deliberately - owner ruled 2026-09-11, rides the beast graphics/lore pass
 state:    proposed  (BLOCKED)
 row:      unassigned
@@ -324,3 +314,13 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  MECHANICSCARDSSITTING1 — card sitting for the 2026-09-11 fan-out wave
 prose:    infrastructure/state/items/MECHANICS_CARDS_SITTING_1.md
+
+## RECORD_HUB_HEALTH_PROOF_1 Record codebase-health two-seat no-clobber proof on DASHBOARD_HUB_ARTIFACT_1
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Append the following as a new dated section on
+prose:    infrastructure/state/items/RECORD_HUB_HEALTH_PROOF_1.md
