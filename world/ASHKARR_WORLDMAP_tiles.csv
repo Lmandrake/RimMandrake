@@ -72,7 +72,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 70,47.3048,17.8452,49.80,74.21,1,43.7,0,ExtremeDesert,0,0,Glare,1,0.00
 71,23.5048,21.5067,31.44,49.87,111,55.8,0,ExtremeDesert,0,0,Dune Sea,1,0.00
 72,11.9905,41.2835,42.69,17.84,316,48.5,0,ExtremeDesert,0,0,Fall Line Barrens,3,0.00
-73,-19.6422,64.9429,66.49,338.5,101,31.4,0,Desert,0,0,Notch,2,0.00
+73,-19.6422,64.9429,66.49,338.5,101,31.4,0,Desert,0,0,The Abandoned Mines,2,0.00
 74,0.0000,78.9831,78.98,0.0,-350,22.8,0,RUT_GreySea,1,0,Grey Sea,1,0.00
 75,-11.9905,41.2835,42.69,342.16,376,46.1,0,ExtremeDesert,0,0,Fall Line Barrens,2,0.00
 76,19.6422,64.9429,66.49,21.5,426,31.6,0,ExtremeDesert,0,0,Ashfall Range,4,0.00
@@ -314,7 +314,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 312,-3.5617,53.3675,53.45,355.56,491,39.4,0,ExtremeDesert,0,0,Fall Line Barrens,3,0.00
 313,0.0000,64.3501,64.35,0.0,1923,23.6,395,AB_OcularForest,0,0,Ashfall Range,5,0.00
 314,5.7690,60.1639,60.33,6.64,568,34.3,0,ExtremeDesert,0,0,Fall Line,3,0.00
-315,-5.7690,60.1639,60.33,353.36,942,32.1,4,Desert,0,0,Ashfall Range,3,0.00
+315,-5.7690,60.1639,60.33,353.36,942,32.1,4,Desert,0,0,The Abandoned Mines,3,0.00
 316,3.5617,53.3675,53.45,4.44,541,39.7,0,ExtremeDesert,0,0,Fall Line,3,0.00
 317,0.0000,115.6499,115.65,0.0,260,-18.8,0,AB_RockyCrags,0,0,Gray Crags,3,0.00
 318,3.5617,126.6326,126.55,4.44,415,-31.8,0,RUT_BlueDesert,0,0,Cinderdark,1,0.00
@@ -1242,7 +1242,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 1240,-22.2379,68.5887,70.25,336.29,5,28.8,0,Desert,0,0,Cinders,1,0.00
 1241,-23.7971,63.8334,66.20,333.83,135,31.9,0,Desert,0,0,Notch,2,0.00
 1242,-17.8538,69.4313,70.46,341.02,1,27.6,0,AridShrubland,0,0,Cinders,1,0.00
-1243,-15.1987,65.8436,66.74,343.42,33,31.0,0,AridShrubland,0,0,Notch,2,0.00
+1243,-15.1987,65.8436,66.74,343.42,33,31.0,0,AridShrubland,0,0,The Abandoned Mines,2,0.00
 1244,-4.6043,78.7464,78.78,355.31,-350,23.0,0,RUT_GreySea,1,0,Grey Sea,1,0.00
 1245,-2.2773,75.0705,75.08,357.64,-350,25.9,0,RUT_GreySea,1,0,Grey Sea,1,0.00
 1246,-2.3226,82.5804,82.59,357.66,-350,19.9,0,RUT_GreySea,1,0,Grey Sea,1,0.00
@@ -1598,8 +1598,8 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 1596,-3.8900,45.1579,45.29,354.52,504,44.3,0,ExtremeDesert,0,0,Fall Line Barrens,1,0.00
 1597,-3.7457,49.3347,49.44,355.07,464,42.2,0,ExtremeDesert,0,0,Fall Line Barrens,3,0.00
 1598,-4.1506,64.0154,64.09,355.38,1213,27.8,403,AB_OcularForest,0,0,Ashfall Range,5,0.00
-1599,-8.2833,63.3355,63.64,350.75,648,30.8,76,AridShrubland,0,0,Ashfall Range,3,0.00
-1600,-10.8379,66.6780,67.12,348.22,1,30.5,0,AridShrubland,0,0,Ashfall Range,1,0.00
+1599,-8.2833,63.3355,63.64,350.75,648,30.8,76,AridShrubland,0,0,The Abandoned Mines,3,0.00
+1600,-10.8379,66.6780,67.12,348.22,1,30.5,0,AridShrubland,0,0,The Abandoned Mines,1,0.00
 1601,-8.9612,70.8193,71.06,350.52,-350,29.2,0,RUT_GreySea,1,0,Grey Sea,1,0.00
 1602,-4.4887,71.2176,71.28,355.26,-350,29.0,0,RUT_GreySea,1,0,Grey Sea,1,0.00
 1603,-2.1987,67.7266,67.74,357.62,527,28.6,310,AridShrubland,0,70.0,Ashfall Range,5,0.00
@@ -2861,8 +2861,8 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 2859,-21.4680,63.0004,65.01,336.18,259,32.0,0,Desert,0,0,Notch,2,0.00
 2860,-19.9420,67.6633,69.07,338.58,1,29.4,0,AridShrubland,0,0,Notch,1,0.00
 2861,-21.9252,65.7983,67.65,336.19,43,31.1,0,Desert,0,0,Notch,2,0.00
-2862,-17.5945,66.7488,67.90,340.96,1,29.8,0,AridShrubland,0,0,Notch,1,0.00
-2863,-17.1971,64.0547,65.29,341.01,75,32.5,0,Desert,0,0,Notch,3,0.00
+2862,-17.5945,66.7488,67.90,340.96,1,29.8,0,AridShrubland,0,0,The Abandoned Mines,1,0.00
+2863,-17.1971,64.0547,65.29,341.01,75,32.5,0,Desert,0,0,The Abandoned Mines,3,0.00
 2864,-2.3101,80.1254,80.13,357.66,-350,21.9,0,RUT_GreySea,1,0,Grey Sea,1,0.00
 2865,-2.2950,77.6211,77.63,357.65,-350,23.9,0,RUT_GreySea,1,0,Grey Sea,1,0.00
 2866,0.0000,81.4023,81.40,0.0,-350,20.9,0,RUT_GreySea,1,0,Grey Sea,1,0.00
@@ -4309,12 +4309,12 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 4307,7.9190,60.8732,61.18,9.05,746,32.9,0,ExtremeDesert,0,0,Fall Line,4,0.00
 4308,7.4075,58.4553,58.75,8.67,613,35.6,0,ExtremeDesert,0,0,Fall Line,4,0.00
 4309,5.2174,57.8387,57.99,6.16,564,36.1,0,ExtremeDesert,0,0,Fall Line,3,0.00
-4310,-5.2174,57.8387,57.99,353.84,477,36.2,5,ExtremeDesert,0,0,Ashfall Range,3,0.00
-4311,-3.6323,59.4645,59.53,355.78,656,34.2,6,ExtremeDesert,0,0,Ashfall Range,3,0.00
+4310,-5.2174,57.8387,57.99,353.84,477,36.2,5,ExtremeDesert,0,0,The Abandoned Mines,3,0.00
+4311,-3.6323,59.4645,59.53,355.78,656,34.2,6,ExtremeDesert,0,0,The Abandoned Mines,3,0.00
 4312,-3.9585,61.7130,61.79,355.51,1312,28.9,4,AB_OcularForest,0,0,Ashfall Range,5,0.00
-4313,-6.0883,62.5140,62.68,353.14,1011,29.8,23,AridShrubland,0,0,Ashfall Range,3,0.00
+4313,-6.0883,62.5140,62.68,353.14,1011,29.8,23,AridShrubland,0,0,The Abandoned Mines,3,0.00
 4314,-7.4075,58.4553,58.75,351.33,943,33.0,11,ExtremeDesert,0,0,Ashfall Range,5,0.00
-4315,-7.9190,60.8732,61.18,350.95,1043,30.8,0,AridShrubland,0,0,Ashfall Range,3,0.00
+4315,-7.9190,60.8732,61.18,350.95,1043,30.8,0,AridShrubland,0,0,The Abandoned Mines,3,0.00
 4316,4.4794,55.5681,55.69,5.43,506,38.2,0,ExtremeDesert,0,0,Fall Line,4,0.00
 4317,2.2440,55.1906,55.22,2.73,309,39.5,0,ExtremeDesert,0,0,Fall Line,3,0.00
 4318,1.1898,53.1825,53.19,1.49,412,40.5,0,ExtremeDesert,0,0,Fall Line,3,0.00
@@ -6639,7 +6639,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 6637,-18.0408,72.1221,73.03,341.11,1,25.7,0,Wasteland,0,0,Cinders,1,0.00
 6638,-15.7278,71.1317,71.86,343.43,1,26.3,0,Wasteland,0,0,Cinders,2,0.00
 6639,-15.5086,68.4865,69.31,343.39,1,28.5,0,AridShrubland,0,0,Notch,1,0.00
-6640,-13.1616,67.5671,68.19,345.8,1,29.6,0,AridShrubland,0,0,Notch,1,0.00
+6640,-13.1616,67.5671,68.19,345.8,1,29.6,0,AridShrubland,0,0,The Abandoned Mines,1,0.00
 6641,-11.0854,69.2290,69.63,348.17,1,28.0,0,AridShrubland,0,0,Notch,1,0.00
 6642,-13.5643,72.7678,73.26,345.82,-350,27.4,0,RUT_GreySea,1,0,Grey Sea,1,0.00
 6643,-11.2564,71.7838,72.15,348.17,-350,28.3,0,RUT_GreySea,1,0,Grey Sea,1,0.00
@@ -7719,10 +7719,10 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 7717,11.8915,42.8174,44.13,17.21,196,48.2,0,ExtremeDesert,0,0,Fall Line Barrens,3,0.00
 7718,-20.0903,63.3803,65.11,337.75,235,31.8,0,Desert,0,0,Notch,2,0.00
 7719,-21.0361,64.5882,66.39,336.94,158,31.3,0,Desert,0,0,Notch,2,0.00
-7720,-19.0833,66.4598,67.82,339.33,1,30.2,0,AridShrubland,0,0,Notch,1,0.00
+7720,-19.0833,66.4598,67.82,339.33,1,30.2,0,AridShrubland,0,0,The Abandoned Mines,1,0.00
 7721,-20.5271,66.1432,67.74,337.74,29,30.8,0,Desert,0,0,Notch,2,0.00
-7722,-18.1680,65.2566,66.57,340.13,20,31.1,0,AridShrubland,0,0,Notch,2,0.00
-7723,-18.6664,63.7315,65.21,339.36,174,32.0,0,Desert,0,0,Notch,3,0.00
+7722,-18.1680,65.2566,66.57,340.13,20,31.1,0,AridShrubland,0,0,The Abandoned Mines,2,0.00
+7723,-18.6664,63.7315,65.21,339.36,174,32.0,0,Desert,0,0,The Abandoned Mines,3,0.00
 7724,-0.7701,80.1917,80.19,359.22,-350,21.8,0,RUT_GreySea,1,0,Grey Sea,1,0.00
 7725,-1.5353,78.9313,78.94,358.44,-350,22.9,0,RUT_GreySea,1,0,Grey Sea,1,0.00
 7726,0.7701,80.1917,80.19,0.78,-350,21.8,0,RUT_GreySea,1,0,Grey Sea,1,0.00
@@ -9169,12 +9169,12 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 9167,7.0463,59.8351,60.09,8.14,665,34.2,0,ExtremeDesert,0,0,Fall Line,3,0.00
 9168,6.1455,58.8237,59.02,7.17,615,35.2,0,ExtremeDesert,0,0,Fall Line,3,0.00
 9169,4.8869,59.1600,59.28,5.69,506,35.4,0,ExtremeDesert,0,0,Fall Line,3,0.00
-9170,-6.1455,58.8237,59.02,352.83,781,33.9,6,ExtremeDesert,0,0,Ashfall Range,3,0.00
-9171,-4.8869,59.1600,59.28,354.31,718,34.0,5,ExtremeDesert,0,0,Ashfall Range,3,0.00
-9172,-4.4671,60.4516,60.55,354.87,1053,31.3,5,Desert,0,0,Ashfall Range,4,0.00
+9170,-6.1455,58.8237,59.02,352.83,781,33.9,6,ExtremeDesert,0,0,The Abandoned Mines,3,0.00
+9171,-4.8869,59.1600,59.28,354.31,718,34.0,5,ExtremeDesert,0,0,The Abandoned Mines,3,0.00
+9172,-4.4671,60.4516,60.55,354.87,1053,31.3,5,Desert,0,0,The Abandoned Mines,4,0.00
 9173,-5.2860,61.4681,61.60,353.99,1208,29.6,0,Desert,0,0,Ashfall Range,5,0.00
 9174,-7.0463,59.8351,60.09,351.86,1012,31.9,7,Desert,0,0,Ashfall Range,4,0.00
-9175,-6.6063,61.1883,61.40,352.47,982,31.0,0,Desert,0,0,Ashfall Range,3,0.00
+9175,-6.6063,61.1883,61.40,352.47,982,31.0,0,Desert,0,0,The Abandoned Mines,3,0.00
 9176,4.6511,54.2249,54.36,5.73,628,38.6,0,ExtremeDesert,0,0,Fall Line,4,0.00
 9177,3.4370,54.6973,54.77,4.21,465,39.0,0,ExtremeDesert,0,0,Fall Line,4,0.00
 9178,2.3403,53.9023,53.94,2.9,443,39.7,0,ExtremeDesert,0,0,Fall Line,3,0.00
@@ -12395,7 +12395,7 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 12393,-2.1343,56.4341,56.46,357.44,294,38.4,0,ExtremeDesert,0,0,Fall Line Barrens,1,0.00
 12394,-3.2902,56.0035,56.07,356.03,354,38.3,0,ExtremeDesert,0,0,Fall Line Barrens,2,0.00
 12395,-4.2762,56.8903,56.99,354.9,352,37.6,0,ExtremeDesert,0,0,Ashfall Range,4,0.00
-12396,-4.0005,58.1895,58.28,355.3,420,36.3,5,ExtremeDesert,0,0,Ashfall Range,3,0.00
+12396,-4.0005,58.1895,58.28,355.3,420,36.3,5,ExtremeDesert,0,0,The Abandoned Mines,3,0.00
 12397,-2.8128,58.5226,58.56,356.7,394,36.3,0,ExtremeDesert,0,0,Ashfall Range,4,0.00
 12398,1.2111,59.9501,59.96,1.4,332,35.4,0,ExtremeDesert,0,0,Ashfall Range,4,0.00
 12399,0.6408,61.0321,61.03,0.73,539,33.4,4,Desert,0,0,Ashfall Range,5,0.00
@@ -14737,12 +14737,12 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 14735,-17.2127,70.8963,71.78,341.85,1,26.3,0,Wasteland,0,0,Cinders,1,0.00
 14736,-16.3705,69.6852,70.54,342.61,1,27.3,0,Wasteland,0,0,Cinders,1,0.00
 14737,-16.9923,68.2239,69.22,341.79,1,28.6,0,AridShrubland,0,0,Notch,1,0.00
-14738,-16.1070,67.0280,67.98,342.59,1,29.8,0,AridShrubland,0,0,Notch,1,0.00
-14739,-16.6751,65.5524,66.64,341.79,1,31.1,0,AridShrubland,0,0,Notch,2,0.00
-14740,-15.7286,64.3669,65.39,342.65,119,32.2,0,AridShrubland,0,0,Ashfall Range,3,0.00
-14741,-14.2704,64.6714,65.51,344.28,184,31.5,0,AridShrubland,0,0,Ashfall Range,3,0.00
-14742,-14.6299,67.3009,68.08,344.2,1,29.8,0,AridShrubland,0,0,Notch,1,0.00
-14743,-13.7330,66.1277,66.85,345.04,1,31.0,0,AridShrubland,0,0,Notch,1,0.00
+14738,-16.1070,67.0280,67.98,342.59,1,29.8,0,AridShrubland,0,0,The Abandoned Mines,1,0.00
+14739,-16.6751,65.5524,66.64,341.79,1,31.1,0,AridShrubland,0,0,The Abandoned Mines,2,0.00
+14740,-15.7286,64.3669,65.39,342.65,119,32.2,0,AridShrubland,0,0,The Abandoned Mines,3,0.00
+14741,-14.2704,64.6714,65.51,344.28,184,31.5,0,AridShrubland,0,0,The Abandoned Mines,3,0.00
+14742,-14.6299,67.3009,68.08,344.2,1,29.8,0,AridShrubland,0,0,The Abandoned Mines,1,0.00
+14743,-13.7330,66.1277,66.85,345.04,1,31.0,0,AridShrubland,0,0,The Abandoned Mines,1,0.00
 14744,-3.0702,78.8402,78.86,356.87,-350,22.9,0,RUT_GreySea,1,0,Grey Sea,1,0.00
 14745,-3.8242,77.5346,77.56,356.08,-350,23.9,0,RUT_GreySea,1,0,Grey Sea,1,0.00
 14746,-5.3527,77.4379,77.49,354.52,-350,24.0,0,RUT_GreySea,1,0,Grey Sea,1,0.00
@@ -16874,15 +16874,15 @@ tile,lat,lon,arc,bearing,elev_m,temp_c,rain_mm,biome,water,river_flow,region,hil
 16872,-4.7369,62.7489,62.85,354.67,1288,28.1,19,AB_OcularForest,0,0,Ashfall Range,5,0.00
 16873,-5.5326,63.8250,63.96,353.84,1004,28.8,208,AridShrubland,0,0,Ashfall Range,5,0.00
 16874,-6.9111,63.5996,63.81,352.29,769,30.0,62,AridShrubland,0,0,Ashfall Range,4,0.00
-16875,-7.7463,64.7088,64.96,351.44,527,30.2,85,AridShrubland,0,0,Ashfall Range,3,0.00
-16876,-7.4381,62.2463,62.50,351.61,879,30.7,20,AridShrubland,0,0,Ashfall Range,3,0.00
+16875,-7.7463,64.7088,64.96,351.44,527,30.2,85,AridShrubland,0,0,The Abandoned Mines,3,0.00
+16876,-7.4381,62.2463,62.50,351.61,879,30.7,20,AridShrubland,0,0,The Abandoned Mines,3,0.00
 16877,-8.7834,61.9424,62.30,350.07,904,30.7,46,AridShrubland,0,0,Ashfall Range,4,0.00
-16878,-9.6487,63.0323,63.44,349.2,569,31.5,28,AridShrubland,0,0,Ashfall Range,3,0.00
-16879,-9.1318,64.4365,64.78,349.9,385,31.1,54,AridShrubland,0,0,Ashfall Range,3,0.00
-16880,-9.9829,65.5495,65.94,349.06,179,31.0,0,AridShrubland,0,0,Ashfall Range,3,0.00
-16881,-9.4139,66.9466,67.27,349.79,73,30.1,0,AridShrubland,0,0,Ashfall Range,3,0.00
-16882,-12.2785,66.4054,66.98,346.64,1,30.9,0,AridShrubland,0,145.0,Ashfall Range,1,0.00
-16883,-11.3960,65.2618,65.78,347.49,135,31.3,0,AridShrubland,0,120.0,Ashfall Range,3,0.00
+16878,-9.6487,63.0323,63.44,349.2,569,31.5,28,AridShrubland,0,0,The Abandoned Mines,3,0.00
+16879,-9.1318,64.4365,64.78,349.9,385,31.1,54,AridShrubland,0,0,The Abandoned Mines,3,0.00
+16880,-9.9829,65.5495,65.94,349.06,179,31.0,0,AridShrubland,0,0,The Abandoned Mines,3,0.00
+16881,-9.4139,66.9466,67.27,349.79,73,30.1,0,AridShrubland,0,0,The Abandoned Mines,3,0.00
+16882,-12.2785,66.4054,66.98,346.64,1,30.9,0,AridShrubland,0,145.0,The Abandoned Mines,1,0.00
+16883,-11.3960,65.2618,65.78,347.49,135,31.3,0,AridShrubland,0,120.0,The Abandoned Mines,3,0.00
 16884,-11.6983,67.8254,68.31,347.4,1,29.4,0,AridShrubland,0,0,Notch,1,0.00
 16885,-10.2471,68.0787,68.45,348.97,1,29.2,0,AridShrubland,0,0,Ashfall Range,1,0.00
 16886,-9.6220,69.4603,69.76,349.74,1,28.1,0,AridShrubland,0,0,Notch,1,0.00

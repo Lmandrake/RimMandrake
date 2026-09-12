@@ -40,3 +40,12 @@ untouched since. Candidate copied over `world/ASHKARR_WORLDMAP_tiles.csv`,
 34-tile Abandoned Mines split (needs its per-tile list from a live bridge
 read — game currently down). NOTE: census artifacts cite the pre-rename CSV
 sha 756d9ffc8a22; only the region column changed, so all census counts stand.
+
+## COMPLETE 2026-09-12 — Abandoned Mines landed, item done
+The per-tile authority arrived by live bridge read (game up, world loaded,
+`jawa/world_features_get` + 3-tile cross-check via a second route): feature
+"The Abandoned Mines" (uniqueID 92), 34 member tiles — exactly 22 ex-Ashfall
+Range + 12 ex-Notch as the audit predicted. CSV patched (34 rows, region
+column only), freeze re-stamped, stamp matches bytes. Independent check:
+post-patch Ashfall Range = 324 = the live save's own tileCount for that
+feature. All 809 region mismatches from the audit are now resolved.
