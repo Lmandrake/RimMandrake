@@ -1433,6 +1433,66 @@
     "hash": "326151f46d9d554bc1b8d56149013c909ce06d91cda005846bb963c57b2794dd",
     "sha": "5a1f89a6"
   },
+  "src/RimMandrake/Greentide/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "d465a8ca6172f0675810e45588036e60277646a6299ce740049d06dac5a9ffd6",
+    "sha": "6879314fc"
+  },
+  "src/RimMandrake/Greentide/Defs/BiomeDefs/RM_Greentide_Biome.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "fd908876188331de093fa76f601a90a38653fadeba26c499f7c3c9d4fef380c5",
+    "sha": "6879314fc"
+  },
+  "src/RimMandrake/Greentide/Defs/DesignationDefs/RM_Greentide_Designations.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "2385ce9ce1b881af127478daf9c0851f1592fe17487facdbf1c96971665bc86e",
+    "sha": "6879314fc"
+  },
+  "src/RimMandrake/Greentide/Defs/HediffDefs/RM_Greentide_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "e61c43ffa6405223ba54809f0a3fedd21116410c6c438d563be3e5d8b3da84a1",
+    "sha": "6879314fc"
+  },
+  "src/RimMandrake/Greentide/Defs/JobDefs/RM_Greentide_JobDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "a19d16e342015dcbe4e26bd42e942f005edc3ddf2ffc705e451c936257f7947f",
+    "sha": "6879314fc"
+  },
+  "src/RimMandrake/Greentide/Defs/TerrainDefs/RM_Churnmud_Terrains.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "d8840d0f9e8d845c59bdea27445d101fa279bb5bab6aea7fac39444506cf1368",
+    "sha": "6879314fc"
+  },
+  "src/RimMandrake/Greentide/Defs/ThingDefs/RM_Greentide_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "1a2541ed314428187b040989fb60271f678c9838117046c52b28be609aa07249",
+    "sha": "6879314fc"
+  },
+  "src/RimMandrake/Greentide/Defs/WorkGiverDefs/RM_Greentide_WorkGivers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "eadd2f62f5a00a5a0d254db284c0cdfff7079e1f0354bef946ff2871c5b8030b",
+    "sha": "6879314fc"
+  },
+  "src/RimMandrake/Greentide/Languages/English/Keyed/RM_Greentide_Keys.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "c83707560f9bb46e0bba30cb663715008abf152ba50a96dba7b21d44367410f9",
+    "sha": "6879314fc"
+  },
+  "src/RimMandrake/Greentide/Patches/RM_Greentide_FaunaHooks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "d87dfe518140525171350ade0a02ce52836530d78b65b20048b87c0a0574b25f",
+    "sha": "6879314fc"
+  },
   "src/RimMandrake/Greentide/Source/RM_BiomeWorker_Greentide.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -2597,6 +2657,12 @@
     "hash": "13135fafb6e93fd9fe8a82676d685f2a717482bb557c00cd9e48c7f1891a0546",
     "sha": "90940c68"
   },
+  "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/Quickgrass.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "dc2ae296cf1915dbeacc0db859a82105fbcd4ff25fc4ed65d7bceaebd5c0c77f",
+    "sha": "661843c1a"
+  },
   "src/RimMandrake/Pyrelands/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -3256,6 +3322,12 @@
     "date": "2026-09-03",
     "hash": "a0ce5eb837deecde5c68c50e9223f06dab2fbf0bc3aa35b5ecd73868fa478732",
     "sha": "250be7a3"
+  },
+  "src/RimMandrake/ShipVermin/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "fbe4bab6ae1318563e3a65ccd6bbd3a4ca72fa39b2623b75719783bd722be77f",
+    "sha": "661843c1a"
   },
   "src/RimMandrake/ShipVermin/Patches/RSW_Mynock_ShipVermin.xml": {
     "cleanCount": 1,
@@ -5091,6 +5163,12 @@
     "hash": "a86c3b44e361880ffe29bf956e793474c1862afb8cf2f83c87b5e9a088ed8378",
     "sha": "a94bc803"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchAnimalStatsTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "40ae114887d6e5925dd8513c99fb2347ce83097f0b209fe0afddfe21c4674339",
+    "sha": "661843c1a"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchArgGuard.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -5252,6 +5330,12 @@
     "date": "2026-09-03",
     "hash": "b7f37317d73a6a7085e78b5af5e1ffb67a4d01e376f16d78a175f99e2ec65634",
     "sha": "5b48ee1b"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchLoreStageTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "9f13a59bc5cc1e30acfd6052b97e0f2848698db03778545209d4cf6ee9c7b83b",
+    "sha": "661843c1a"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapInfoTools.cs": {
     "cleanCount": 1,
