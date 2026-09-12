@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T06:15:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T06:26:03Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -575,15 +575,6 @@ target:   v1
 kind:     task
 summary:  Companion silent-failure hardening
 prose:    infrastructure/state/items/COMPANION_SILENT_FAILURE_HARDENING_1.md
-
-## PLANETARY_BEAUTY_LOADSCREENS_1 Render realistic planetary beauty shots from space for load screens (graphics pipeline)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  PLANETARYBEAUTYLOADSCREENS1 — mechanism identified, two candidates offered
-prose:    infrastructure/state/items/PLANETARY_BEAUTY_LOADSCREENS_1.md
 
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
 state:    doing  (BLOCKED)
