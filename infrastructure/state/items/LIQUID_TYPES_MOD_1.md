@@ -30,3 +30,9 @@ per-liquid TerrainDefs cloned off vanilla water (so engine water logic holds)
 index built by a generator, not by hand. Check what Vanilla Expanded / Biomes!
 already do for custom waters (BMT/AB toxic waters exist — learn, don't
 duplicate). Worldmap layer ties `LIQUID_BIOMES_MAP_1`.
+
+## Progress 2026-09-11 — design brief drafted (BENCH fan-out)
+`design/RimMandrake/RM_liquid_types_mod.md`. 3 owner cards ride
+MECHANICS_CARDS_SITTING_1 (Scald salinity, coolant fishing bucket, films in
+v1); spikes D/E (heatPerTick sign, DBH dbh_water tag) are FOUNDRY build gates.
+Blocked on the card sitting; build follows rulings.
