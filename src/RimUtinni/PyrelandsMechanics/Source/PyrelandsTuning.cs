@@ -93,9 +93,6 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         /// visitor groups sit in this band. [INVENTED]</summary>
         internal const float FlameHarvestPoints = 180f;
 
-        /// <summary>A harvest party that cannot reach the burn still leaves.</summary>
-        internal const int FlameHarvestExitTicks = 40000;
-
         // ---------------------------------------------------------------
         // Fire-hawk (§7c). Spread-only: every one of these is downstream of an
         // existing fire being found first.
