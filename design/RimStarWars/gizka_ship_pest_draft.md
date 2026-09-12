@@ -225,5 +225,7 @@ exists).
   discovery hook.** The flagship found-in-your-hold moment ships WITH the
   feature or the feature does not ship — confirming the engine hook is the
   gating spike.
-- **Card 5 free-gift quest gag: deferred by default** (not ruled at the
-  sitting; the card's own note — cheap to put off, nothing depends on it).
+- **Card 5 free-gift quest gag: IN v1** (owner, follow-up card 2026-09-12,
+  reversing the deferred-by-default) — a gizka can arrive as a quest-reward
+  "free gift"; one quest-system touch, ships with the feature when the
+  hold-hook gate opens.
