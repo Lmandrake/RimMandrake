@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T00:10:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T00:11:05Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
+prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
 
 # IN PROGRESS
 
