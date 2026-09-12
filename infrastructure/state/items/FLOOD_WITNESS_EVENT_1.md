@@ -15,3 +15,12 @@ Design constraints: the player must survive witnessing it (refuge ledges exist f
 this), and it should sell both faces at once — disaster and fertilizer; death, then
 soil, then the bloom. Timing rides the plot, not weather RNG. Quest/plot machinery
 per `rimworld-quests` skill when it reaches authoring.
+
+## Design draft done 2026-09-12 (BENCH belt wave, Fable agent)
+`design/Jawa/flood_witness_event_draft.md` — 4 witness routes (Flood-News
+salvage strike / Road Catches You interception / Farmer's Gallery invitation /
+Layered offers-plus-backstop), phase-by-phase beat, plot integration, mechanism
+sketch parameterized over EXPLOSIVE_PLANT_GROWTH_1's four unruled terminal
+moments. Owner cards at the end (route choice + beats). Open engine questions
+named inside (does Odyssey floodwater harm pawns; does accelerated Flood read
+as a wall). Awaits the owner's cards; no build before the ruling.
