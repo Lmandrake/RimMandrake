@@ -644,3 +644,51 @@
 {"by": "artpiped", "event": "validated", "job_id": "boma_v1_east", "target": "boma/east", "ts": 1789170382.449198, "verdict": "pass"}
 {"by": "artpiped", "elapsed_s": 115.11106811399804, "event": "generated", "job_id": "boma_v1_east", "target": "boma/east", "ts": 1789170523.107173}
 {"by": "artpiped", "event": "validated", "job_id": "boma_v1_east", "target": "boma/east", "ts": 1789170523.113727, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE8_QUEUE_1", "target": "kinrath/south", "ts": 1789171782.6880765}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "kinrath_v1_south", "notes": "", "target": "kinrath/south", "ts": 1789171782.7038953}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE8_QUEUE_1", "target": "kinrath/east", "ts": 1789171782.7237887}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "kinrath_v1_east", "notes": "", "target": "kinrath/east", "ts": 1789171782.7353387}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE8_QUEUE_1", "target": "kinrath/north", "ts": 1789171782.7582297}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "kinrath_v1_north", "notes": "", "target": "kinrath/north", "ts": 1789171782.7688518}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE8_QUEUE_1", "target": "shiro/south", "ts": 1789171782.7846382}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "shiro_v1_south", "notes": "", "target": "shiro/south", "ts": 1789171782.7935503}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE8_QUEUE_1", "target": "shiro/east", "ts": 1789171782.8076394}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "shiro_v1_east", "notes": "", "target": "shiro/east", "ts": 1789171782.8179326}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE8_QUEUE_1", "target": "shiro/north", "ts": 1789171782.8425062}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "shiro_v1_north", "notes": "", "target": "shiro/north", "ts": 1789171782.860588}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE8_QUEUE_1", "target": "borcatu/south", "ts": 1789171782.8905582}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "borcatu_v1_south", "notes": "", "target": "borcatu/south", "ts": 1789171782.9065666}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE8_QUEUE_1", "target": "borcatu/east", "ts": 1789171782.9374294}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "borcatu_v1_east", "notes": "", "target": "borcatu/east", "ts": 1789171782.959838}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE8_QUEUE_1", "target": "borcatu/north", "ts": 1789171782.9861574}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "borcatu_v1_north", "notes": "", "target": "borcatu/north", "ts": 1789171783.0026236}
+{"by": "artpiped", "elapsed_s": 81.27581494499464, "event": "generated", "job_id": "borcatu_v1_east", "target": "borcatu/east", "ts": 1789171866.3439682}
+{"by": "artpiped", "event": "validated", "job_id": "borcatu_v1_east", "target": "borcatu/east", "ts": 1789171866.3607023, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 116.10393634199863, "event": "generated", "job_id": "borcatu_v1_north", "target": "borcatu/north", "ts": 1789171983.615681}
+{"by": "artpiped", "event": "validated", "job_id": "borcatu_v1_north", "target": "borcatu/north", "ts": 1789171983.67112, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 108.65022289101034, "event": "generated", "job_id": "borcatu_v1_south", "target": "borcatu/south", "ts": 1789172093.565714}
+{"by": "artpiped", "event": "validated", "job_id": "borcatu_v1_south", "target": "borcatu/south", "ts": 1789172093.6254978, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 122.6945959419827, "event": "generated", "job_id": "kinrath_v1_east", "target": "kinrath/east", "ts": 1789172217.536843}
+{"by": "artpiped", "event": "validated", "job_id": "kinrath_v1_east", "target": "kinrath/east", "ts": 1789172217.5780578, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 113.73460143699776, "event": "generated", "job_id": "kinrath_v1_north", "target": "kinrath/north", "ts": 1789172332.4598613}
+{"by": "artpiped", "event": "validated", "job_id": "kinrath_v1_north", "target": "kinrath/north", "ts": 1789172332.487732, "verdict": "pass"}
+{"by": "artpiped", "elapsed_s": 136.33481127000414, "event": "generated", "job_id": "kinrath_v1_south", "target": "kinrath/south", "ts": 1789172469.9180992}
+{"by": "artpiped", "event": "validated", "job_id": "kinrath_v1_south", "target": "kinrath/south", "ts": 1789172469.9818609, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE9_QUEUE_1", "target": "dactillion/south", "ts": 1789173622.648562}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "dactillion_v1_south", "notes": "", "target": "dactillion/south", "ts": 1789173622.6569004}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE9_QUEUE_1", "target": "dactillion/east", "ts": 1789173622.6671176}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "dactillion_v1_east", "notes": "", "target": "dactillion/east", "ts": 1789173622.675023}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE9_QUEUE_1", "target": "dactillion/north", "ts": 1789173622.692109}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "dactillion_v1_north", "notes": "", "target": "dactillion/north", "ts": 1789173622.699556}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE9_QUEUE_1", "target": "fanback/south", "ts": 1789173622.7094297}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "fanback_v1_south", "notes": "", "target": "fanback/south", "ts": 1789173622.7166002}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE9_QUEUE_1", "target": "fanback/east", "ts": 1789173622.7269251}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "fanback_v1_east", "notes": "", "target": "fanback/east", "ts": 1789173622.73525}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE9_QUEUE_1", "target": "fanback/north", "ts": 1789173622.7455678}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "fanback_v1_north", "notes": "", "target": "fanback/north", "ts": 1789173622.7530684}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE9_QUEUE_1", "target": "grank/south", "ts": 1789173622.7630286}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "grank_v1_south", "notes": "", "target": "grank/south", "ts": 1789173622.7706423}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE9_QUEUE_1", "target": "grank/east", "ts": 1789173622.7806013}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "grank_v1_east", "notes": "", "target": "grank/east", "ts": 1789173622.7890115}
+{"by": "fill_queue", "event": "registered", "source": "ART_REGEN_WAVE9_QUEUE_1", "target": "grank/north", "ts": 1789173622.799087}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "grank_v1_north", "notes": "", "target": "grank/north", "ts": 1789173622.8066823}
