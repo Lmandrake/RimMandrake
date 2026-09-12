@@ -27,14 +27,18 @@ tiles. No def exceeds 25% of a plan's row count. Selection is a fixed-seed rando
 sample across each biome's zero/empty tile pool — no arc/region clustering, since
 none of the five sheets call for zone-differentiated density.
 
-**One deliberate deviation, flagged not silently applied:** the seas' 65% touch
-target is unusually high for *landmarks* specifically (the world average landmark
-density is ~13%, and land biomes here sit at 2–4%). I kept it because nothing in
-`terminator_sea.md`'s hard bans caps landmark/structure count — only fauna
-population (schools, herds, high species count) — so a sea dotted with many named
-*terrain and ruin* features does not violate the "solitary" doctrine, which is
-about wildlife, not geography. If that reading is wrong, halving both sea targets
-is a one-line change (`TARGET_TOUCHED_FRAC_SEA` in the generator).
+**Sea landmark density — RULED by the owner, 2026-09-12, after seeing the result.**
+The seas were applied at a 65% touch target and the owner's verdict on the Twilight
+Sea was: *"FILLED with strange landmarks... that many ports randomly sitting in the
+middle of the ocean? Or smokestacks? Or beaches?"* Rule now in force for both seas:
+a sea landmark survives only on a **shoreline tile** (a land neighbour), **no smoke
+vents on a sea at all**, **no ice on the 22 °C Twilight Sea**, and shoreline
+survivors are thinned to a spaced cap (Harbor 5–6, GravelBeach 10, Crevasse 8,
+IceDunes 10 on the Grey Sea only) — about 7% of tiles, half the world average.
+Applied live 2026-09-12 (533 removed, 80 kept); plan and replay script:
+`sea_landmark_cleanup_2026-09-12.json` / `sea_landmark_cleanup_apply.py` beside
+this file. The pre-existing non-plan landmarks (Cavern, Cenotes, Valley, DryLake)
+were left as found.
 
 **Constraint gating:** each def's `gate` (from the roster CSV, or `coastSidesRange`/
 `maxHilliness` read off the live `TileMutatorDef` for the two sea/vanilla defs) is
