@@ -11308,10 +11308,10 @@
     "sha": "1cff9edb0"
   },
   "src/RimUtinni/RiverColors/Source/RimMandrake.Utinni.RiverColors.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "4930f8790918f4d7b9fe42eba32e7be4ae33d034e70b3799d6bd057593a6a5fb",
-    "sha": "dad4e548"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "e0f6ebf61717950811689f0c27950d88846b6b2a5fc83cf1451196a4b3292221",
+    "sha": "53cb421d2"
   },
   "src/RimUtinni/RotSporeKit/About/About.xml": {
     "cleanCount": 1,
@@ -11626,10 +11626,10 @@
     "sha": "1cff9edb0"
   },
   "src/RimUtinni/ShipMemory/Source/RimMandrake.Utinni.ShipMemory.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "09ae8ecfad05ea0fa0d3547d0ee516d4445888b5db1bba5f15bc53291e885aa6",
-    "sha": "46cdec42"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "2abfc6c31fa99a865cbf5b4a8ec5cbcdfa1f791b2284265547ddf124133183dc",
+    "sha": "53cb421d2"
   },
   "src/RimUtinni/ShipShields/About/About.xml": {
     "cleanCount": 1,
