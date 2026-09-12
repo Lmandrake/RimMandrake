@@ -1,64 +1,30 @@
 {
- "generatedAt": "2026-09-12T06:55:00Z",
+ "generatedAt": "2026-09-12T13:52:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 515803,
-  "sha256_12": "0334c8debc46"
+  "bytes": 529713,
+  "sha256_12": "fadd854abffe"
  },
- "head": "cd320df9c",
+ "head": "bb9438816",
  "counts": {
   "red": 22,
-  "blue": 383,
-  "green": 1669,
-  "grey": 226,
+  "blue": 407,
+  "green": 1671,
+  "grey": 263,
   "unmeasured": 0,
-  "total": 2300
+  "total": 2363
  },
  "loc": {
   "red": 11809,
-  "blue": 132676,
-  "green": 652296,
-  "grey": 64587,
+  "blue": 141526,
+  "green": 644611,
+  "grey": 70204,
   "unmeasured": 0,
-  "total": 861368
+  "total": 868150
  },
- "reviewEntries": 2153,
- "recidivists": [
-  {
-   "path": "src/RimUtinni/UtinniPatches/About/About.xml",
-   "loc": 121,
-   "cycles": 4
-  },
-  {
-   "path": "src/RimMandrake/Utils/check_canon.py",
-   "loc": 362,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimMandrake/Utils/selftest_check_canon.py",
-   "loc": 242,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimMandrake/Utils/doc_claims.py",
-   "loc": 241,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimMandrake/ShipVermin/Source/RM_CompVerminNest.cs",
-   "loc": 155,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml",
-   "loc": 113,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimMandrake/ShipVermin/Source/RM_ShipVermin.csproj",
-   "loc": 82,
-   "cycles": 1
-  }
- ],
- "standalone": "Transient/codebase_health_artifact.html"
+ "reviewEntries": 2155,
+ "recidivists": [],
+ "standalone": "Transient/codebase_health_artifact.html",
+ "measurementOk": true,
+ "headline": "OK: measured 2363 files (1671 clean, 263 dirty, 0 unmeasured)."
 }
