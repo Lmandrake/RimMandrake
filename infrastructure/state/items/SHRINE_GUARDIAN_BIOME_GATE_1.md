@@ -1,3 +1,36 @@
+## 2026-09-12 (FOUNDRY, later same night) — still blocked, but for a NEW reason: quicktest itself crashes
+
+Deploy confirmed already done tonight (`deploy_custom_mods.py --mod
+UtinniPatches` reports "in sync", carried over from earlier tonight's
+restart). The remaining gap is purely the quicktest-proof on a Desert
+biome — attempted, blocked on a DIFFERENT problem than last time.
+
+This session spent considerable effort getting `start_debug_game_ready`
+working at all on the full 592-mod list: found and fixed a load-blocking
+`thingClass` NRE (`257bbbc7f`, see `BUILDING_THEFT_HAULER_1`) and a stale
+`CreatureBehaviors.dll` missing an already-written crash fix
+(`3e05542a6`). After both fixes, quicktest gets much further (full colony
+scenario, auto-research completes) but then **reliably crashes the whole
+RimWorldWin64 process** at the exact same point in the log, twice in a
+row, with no managed exception logged (looks like a native crash — the
+kind `Exception was thrown while trying to handle exception` doesn't even
+catch). Filed as its own item: `QUICKTEST_POSTSETUP_CRASH_1`.
+
+**Why this item stays blocked rather than substituting the loaded real
+colony map** (as `BUILDING_THEFT_HAULER_1`/`NINEFOLD_FIRE_HOOK_RATELIMITED_1`
+did tonight): this item's verify needs a **Desert-biome** map specifically
+(to trigger `SymbolResolver_Interior_AncientTemple_AmbientDoctrine`'s
+biome gate against a DENY-side biome), and the loaded canonical colony's
+own tile is not Desert. `start_debug_game_ready` also has no
+biome-selection parameter to steer it even if it were stable, so this item
+was never going to close on the currently-loaded map regardless of the
+crash.
+
+`needs=bridge` stays accurate (once `QUICKTEST_POSTSETUP_CRASH_1` is fixed
+or worked around, e.g. via a minimal+target mod list swap, this item's own
+quicktest becomes reachable again) — re-filing under a different `needs`
+would misrepresent what's actually blocking it.
+
 ## Spec
 Piece 4/4 of `MECH_PRESENCE_ENFORCEMENT_1` (curate shrine contents where
 ANCIENT-ALLOW/RARE meets AMBIENT-DENY) turned out to need C#, not XML, and
