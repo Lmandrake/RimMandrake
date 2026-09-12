@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T19:14:57Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-12T20:04:49Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -264,7 +264,7 @@ prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
 ## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
 state:    doing
 row:      unassigned
-needs:    bridge
+needs:    owner
 target:   v1
 kind:     task
 summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
@@ -666,15 +666,6 @@ kind:     task
 summary:  WORLDMAPAUDITLIVECHECKS1 — the four audit checks only the live game can answer
 prose:    infrastructure/state/items/WORLDMAP_AUDIT_LIVE_CHECKS_1.md
 
-## ASHFALL_SPIRE_LANDMARK_1 Place The Spire landmark (Ashfall Research Base site): thin black needle, disc pad near top, intermittently visible through Scald turbulence — live placement + read-back per worldmap discipline; dungeon shell may follow, campaign function stays TBD (owner)
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  ASHFALLSPIRELANDMARK1 — The Spire landmark, Ashfall Research Base site
-prose:    infrastructure/state/items/ASHFALL_SPIRE_LANDMARK_1.md
-
 ## WORLD_NAME_FIXES_1 World name fixes (owner 2026-09-12): rename player settlement 'Colony' to 'Zeddo's Salvage Yard' (ruled, verbatim on event); Fall Line Barrens + Scald Spine near-dups and the four Ascendant Helix settlement renames land here once the owner picks from the proposal cards; one bridge pass, freeze discipline
 state:    doing
 row:      unassigned
@@ -693,6 +684,15 @@ kind:     task
 summary:  1. Resolve the sizeBin UNKNOWN (measure, don't infer).
 prose:    infrastructure/state/items/SHEET_ORPHAN_CONSUMPTION_1.md
 
+## UTINNI_WORLDMAP_FLIGHT_ICON_1 Replace the gravship's world-map flight icon with a Utinni-specific sprite: vanilla WorldObjectDef Gravship draws World/WorldObjects/Expanding/Gravship (expandingIcon) and World/WorldObjects/Caravan (texture); patch both to our art under the RUT_ tier, sized for expandingIconDrawSize 1.35
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  - Art: a top-down silhouette of THE ship as it is now — the ring hull without booms
+prose:    infrastructure/state/items/UTINNI_WORLDMAP_FLIGHT_ICON_1.md
+
 ## GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1 Giddy-Up's BuildAnimalBiomeCache throws 'same key already added: RSW_Iriaz' and skips its whole animal-biome cache. Root cause partially traced: RSW_Iriaz.xml keeps the donor's own <wildBiomes> block (AridShrubland 1.0, Desert 0.04) AND BiomeCast_Ashkarr.xml independently sets RSW_Iriaz's commonality on those SAME biomes (AridShrubland 1.0, Desert 0.1) - an overlap. BUT RSW_Anooba has the identical overlap pattern (wildBiomes AridShrubland/Desert + BiomeCast entries on the same biomes) and does NOT crash, so the overlap alone doesn't fully explain it - needs an actual read of RimWorld.BiomeDef.CommonalityOfAnimal/AllWildAnimals source (via RimSage) to find the real trigger before fixing blind. Pre-existing (byte-identical across the last two loads), not introduced by tonight's belt-mode work. Non-fatal - only Giddy-Up's own mountable-animal cache is affected, not core gameplay.
 state:    doing
 row:      unassigned
@@ -701,6 +701,33 @@ target:   v1
 kind:     bug
 summary:  (no items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md
+
+## MEGAFAUNAYIELD_DEAD_GR_TARGETS_1 Doctrine's MegafaunaYield.xml patches GR_Elasmobearium/GR_Mantistanis (Genetic Rim ThingDefs) gated behind FindMod(Vanilla Genetics Expanded), but those GR_* defs no longer exist in the live 593-mod stack (Genetic Rim itself is cut) - 2 patch-op failures + cascading cross-ref errors every load, pre-existing per Player.log triage 2026-09-12. Fix: add a PatchOperationTest on the target defName inside the FindMod gate, or drop the dead GR_* operations outright. A related pattern (RimUtinni Patches statBases Conditionals on absent GR_*/TYR_*/VAEWaste_* defs) accounts for ~20 more of the 36 total patch-op failures logged - worth sweeping together.
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/MEGAFAUNAYIELD_DEAD_GR_TARGETS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MEGAFAUNAYIELD_DEAD_GR_TARGETS_1.md
+
+## SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1 RUT_ScarRoach and RUT_CathedralRoach render magenta live right now - 'Failed to find any textures at Things/Pawn/Animal/RUT_ScarRoach/RUT_ScarRoach' (all 4 directions missing, confirmed via Player.log 2026-09-12, pre-existing not caused by tonight's work). Needs real sprite art generated/deployed (generating-rimworld-sprites skill) or the defs gated off until art exists - not a code fix.
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1.md
+
+## MLIE_ARTOVERRIDE_COLLISION_CHECK_1 6 species still in the MLIE Wave C worklist (Mynock, Kreetle, Horax, Fambaa, Zakkeg, Ronto) each have a dedicated mandrake.rsw.<name>artoverride mod shipping owner-approved custom art at the same texPath SWBestiary would extract donor art to. SWBestiary loads AFTER every override mod, so a naive port silently reverts verified-live custom art with no error - already happened once for Anooba (fixed 5a8fc8c1c) and caught before-commit for Dragonsnake (8dc279c64). Whoever ports these 6 must check the matching ArtOverride mod's About.xml for which facings it covers BEFORE extracting/shipping SWBestiary art for those paths. Also verify Insectomorph and Dewback (already ported earlier, outside tonight's passes, also have override mods) don't already have the same bug live.
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  MLIEARTOVERRIDECOLLISIONCHECK1 — pre-flight collision map for 6 queued species + Insectomorph/Dewback verdict
+prose:    infrastructure/state/items/MLIE_ARTOVERRIDE_COLLISION_CHECK_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1068,46 +1095,6 @@ thin:     no ## criteria
 summary:  - Template: PYRELANDSWORLDSWITCH1 (batches, getter read-back, CSV re-export + LOSS
 prose:    infrastructure/state/items/BIOME_WORLD_SWITCH_WAVE_1.md
 
-## CATHEDRAL_ROACH_THINKTREE_GAP_1 RUT_CathedralRoach's EatCleanable think node likely never fires: BaseMechanoidWalker has no insertTag for the Animal_PreMain route mandrake.rm.creaturebehaviors uses. Live and ENABLED (mandrake.rut.rustcathedralroaches) - land-cleaning behavior may be dead in the shipped game right now. Needs a live get_thinktree/behavior-log check to confirm, then either an insertTag alternative or the roach's own think tree like RUT_LivingBolt got.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  Confirm whether RUTCathedralRoach pawns actually execute
-prose:    infrastructure/state/items/CATHEDRAL_ROACH_THINKTREE_GAP_1.md
-
-## UTINNI_WORLDMAP_FLIGHT_ICON_1 Replace the gravship's world-map flight icon with a Utinni-specific sprite: vanilla WorldObjectDef Gravship draws World/WorldObjects/Expanding/Gravship (expandingIcon) and World/WorldObjects/Caravan (texture); patch both to our art under the RUT_ tier, sized for expandingIconDrawSize 1.35
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Art: a top-down silhouette of THE ship as it is now — the ring hull without booms
-prose:    infrastructure/state/items/UTINNI_WORLDMAP_FLIGHT_ICON_1.md
-
-## MEGAFAUNAYIELD_DEAD_GR_TARGETS_1 Doctrine's MegafaunaYield.xml patches GR_Elasmobearium/GR_Mantistanis (Genetic Rim ThingDefs) gated behind FindMod(Vanilla Genetics Expanded), but those GR_* defs no longer exist in the live 593-mod stack (Genetic Rim itself is cut) - 2 patch-op failures + cascading cross-ref errors every load, pre-existing per Player.log triage 2026-09-12. Fix: add a PatchOperationTest on the target defName inside the FindMod gate, or drop the dead GR_* operations outright. A related pattern (RimUtinni Patches statBases Conditionals on absent GR_*/TYR_*/VAEWaste_* defs) accounts for ~20 more of the 36 total patch-op failures logged - worth sweeping together.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MEGAFAUNAYIELD_DEAD_GR_TARGETS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MEGAFAUNAYIELD_DEAD_GR_TARGETS_1.md
-
-## SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1 RUT_ScarRoach and RUT_CathedralRoach render magenta live right now - 'Failed to find any textures at Things/Pawn/Animal/RUT_ScarRoach/RUT_ScarRoach' (all 4 directions missing, confirmed via Player.log 2026-09-12, pre-existing not caused by tonight's work). Needs real sprite art generated/deployed (generating-rimworld-sprites skill) or the defs gated off until art exists - not a code fix.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1.md
-
 ## FASCINATING_WORLD_JUNK_1 Reskin and re-text every map-scatter wreck (tanks, trucks, cars, ancient junk) into Star Wars scavenger wreckage: census what exists and what spawns it, mine the donor mods slated for removal (urban ruins etc.) for ideas, rule the spawning roster per region by cards, then re-graphic and re-text it — the world comes alive by being dead in the right flavor
 state:    proposed
 row:      unassigned
@@ -1118,22 +1105,32 @@ thin:     no ## spec, no ## criteria
 summary:  FASCINATINGWORLDJUNK1 — every wreck on the map is a flavour of ice cream to a Jawa
 prose:    infrastructure/state/items/FASCINATING_WORLD_JUNK_1.md
 
-## MLIE_ARTOVERRIDE_COLLISION_CHECK_1 6 species still in the MLIE Wave C worklist (Mynock, Kreetle, Horax, Fambaa, Zakkeg, Ronto) each have a dedicated mandrake.rsw.<name>artoverride mod shipping owner-approved custom art at the same texPath SWBestiary would extract donor art to. SWBestiary loads AFTER every override mod, so a naive port silently reverts verified-live custom art with no error - already happened once for Anooba (fixed 5a8fc8c1c) and caught before-commit for Dragonsnake (8dc279c64). Whoever ports these 6 must check the matching ArtOverride mod's About.xml for which facings it covers BEFORE extracting/shipping SWBestiary art for those paths. Also verify Insectomorph and Dewback (already ported earlier, outside tonight's passes, also have override mods) don't already have the same bug live.
+## MOD_VALIDATION_PIT_PILOT_1 modcheck pilot: write the pit mod's validation.steps.yaml (settings toggles as floor + beyond-toggle components: falls-in, climb-out vs not, full functionality once), run it green, owner ratifies the HTML sheet format
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
-kind:     bug
+kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MLIE_ARTOVERRIDE_COLLISION_CHECK_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MLIE_ARTOVERRIDE_COLLISION_CHECK_1.md
+summary:  (no items/MOD_VALIDATION_PIT_PILOT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MOD_VALIDATION_PIT_PILOT_1.md
 
-## RSW_ANOOBA_MISSING_TEXTURES_1 RSW_Anooba PawnKindDef texPaths have no backing art (m/f), renders pink placeholder -- found incidentally fixing GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1
+## MOD_VALIDATION_RUNNER_1 Build modcheck: the scripted mod-functionality validation runner (steps file + shared runner, minimal-list quicktest sessions, read-back+screenshot evidence, verify event + HTML sheet, status registry + playtest gate)
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     bug
+kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RSW_ANOOBA_MISSING_TEXTURES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RSW_ANOOBA_MISSING_TEXTURES_1.md
+summary:  (no items/MOD_VALIDATION_RUNNER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MOD_VALIDATION_RUNNER_1.md
+
+## MOD_VALIDATION_RETROFIT_1 modcheck full retrofit wave: every shipped mod gets a validation.steps.yaml and a green run (owner ruling 2026-09-12: full wave, not campaign-critical only) — starts only after MOD_VALIDATION_PIT_PILOT_1 ratifies the format
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MOD_VALIDATION_RETROFIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MOD_VALIDATION_RETROFIT_1.md
