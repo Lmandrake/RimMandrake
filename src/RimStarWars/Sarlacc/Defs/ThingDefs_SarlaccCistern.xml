@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RSW_SarlaccCistern — Stage III of the sarlacc (draft §2.3): the well that is
+    a mouth, "hundreds of tons held... a landmark, a dungeon" (§2's table).
+
+    v1 SCOPE CUT, stated plainly: this ships the SURFACE landmark and the
+    breach-only kill mechanic (Fork 5) at v1 fidelity — no hit-point bar,
+    unkillable except by the interact-to-breach action, running a simplified
+    version of §4.4's flood/ecosystem-death/conversion sequence
+    (CompSarlaccCisternBreach). It does NOT ship the three-level pocket-map
+    dungeon interior (press/gallery/reservoir, §4.1) — the draft's own §0
+    explicitly places the KCSG/pocket-map build ladder outside this doc's
+    scope ("stays in sarlacc_spec.md §2, §3, §7"), and that ladder is not yet
+    built by anything in this repo. See
+    infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md for what is owed.
+    Also owed: real DBH thirst-need wiring for the breach flood (Fork 6 ruled
+    it fillable at launch — this is a wiring task against DBH's API, not
+    invented here) and the actual world placement of 2-4 of these in true deep
+    desert once tile 2920 is relocated (Fork 2).
+
+    Placeholder art, reused not invented (owed: real art, draft's own §Owed).
+
+    Tribal stage labels (Fork 9, DRAFT pending the owner's yes): the cistern is
+    "the Collector"; its drained end-state is "the Paid."
+  -->
+
+  <ThingDef MayRequire="Ludeon.RimWorld.Anomaly" ParentName="BuildingNaturalBase">
+    <defName>RSW_SarlaccCistern</defName>
+    <label>sarlacc cistern</label>
+    <description>A reservoir the size of a building, grown into the bedrock, holding hundreds of tons of water behind flesh. The mouth at its centre is the only wet surface for twenty degrees of arc; a ring of damp sand marks where its breath condenses. It cannot be killed from the surface — fire routs, and a thing grown into bedrock cannot rout. The only way in is the mouth, and the only way to end it is to go down and cut the reservoir wall from inside.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1.0</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Beauty>-25</Beauty>
+    </statBases>
+    <size>(3,3)</size>
+    <graphicData>
+      <texPath>Things/Item/Resource/RevenantFleshChunk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>4.5</drawSize>
+      <color>(60, 40, 30)</color>
+    </graphicData>
+    <building>
+      <isEdifice>true</isEdifice>
+      <isInert>true</isInert>
+      <isTargetable>false</isTargetable>
+      <claimable>false</claimable>
+      <canBuildNonEdificesUnder>false</canBuildNonEdificesUnder>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li Class="CompProperties_Interactable">
+        <compClass>RimMandrake.StarWars.Sarlacc.CompSarlaccCisternBreach</compClass>
+        <ticksToActivate>1200</ticksToActivate>
+        <activateTexPath>UI/Commands/KillHeart</activateTexPath>
+        <activateLabelString>Breach the reservoir wall...</activateLabelString>
+        <activateDescString>Cut into the reservoir from inside and let the water go. This is the only way to kill a cistern — and it kills everything the cistern was keeping alive.</activateDescString>
+        <jobString>Breaching the sarlacc's reservoir</jobString>
+        <showMustBeActivatedByColonist>false</showMustBeActivatedByColonist>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+    </comps>
+    <holdsRoof>true</holdsRoof>
+    <preventSkyfallersLandingOn>true</preventSkyfallersLandingOn>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <tickerType>Normal</tickerType>
+  </ThingDef>
+
+  <!-- RSW_SarlaccThroat — the drained end-state (draft §2's "(end) — the throat"; §4.4 item 4:
+       "the player's dungeon becomes the player's monument"). Also what a swimmer that
+       rooted on dry ground becomes eventually per §2.1 ("these are the throats"), though
+       this build spawns RSW_SarlaccAnchored for that trigger (Stage II) rather than
+       jumping straight to a throat — Stage II dying anchored-and-dry is a later,
+       unbuilt transition (draft §2.2's "a throat again"), not this item's scope. -->
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RSW_SarlaccThroat</defName>
+    <label>sarlacc throat</label>
+    <description>A dead sarlacc: drained, dry, a pre-dug descending gullet. Nothing rots out here, so every stratum of what it wrung over centuries is still intact inside it, mummified. What a clan does with a throat is archaeology, not hunting.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0.9</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Beauty>-10</Beauty>
+    </statBases>
+    <size>(3,3)</size>
+    <graphicData>
+      <texPath>Things/Item/Resource/RevenantFleshChunk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>4.5</drawSize>
+      <color>(140, 120, 95)</color>
+    </graphicData>
+    <building>
+      <isEdifice>true</isEdifice>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <tickerType>Never</tickerType>
+  </ThingDef>
+
+</Defs>

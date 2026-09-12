@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RSW_SarlaccAnchored — Stage II of the sarlacc (draft §2.2). What a swimmer
+    becomes the moment CompSarlaccSwimmer roots it (Fork 1, rooting in play): a
+    small pit with a damp lip, semi-permanent, that strikes rarely and only to
+    tithe (CompSarlaccAnchoredMouth). Not breach-gated — the doc's breach-only
+    kill rule is scoped to Stage III (§4.4 sits under "the cistern"); Stage II
+    is an ordinary destructible building, matching its "semi-permanent, not
+    immovable" framing (§2.2) and Fork 3 (anchoring is one-way; it never walks
+    again either way).
+
+    Placeholder art: RevenantFleshChunk (Anomaly) tinted dark, a real shipped
+    flesh-textured item icon reused for a flesh-grown pit — not final art (owed).
+
+    Tribal stage label (Fork 9, DRAFT pending the owner's yes): "the Debtor."
+  -->
+
+  <ThingDef MayRequire="Ludeon.RimWorld.Anomaly" ParentName="BuildingNaturalBase">
+    <defName>RSW_SarlaccAnchored</defName>
+    <label>anchored sarlacc</label>
+    <description>A sarlacc that has stopped. It sank into a trace of moisture and spread into the ground around it; the mouth stays at the surface as a pit that never fills in, however the sandstorms rework the dunes around it. It is filling — everything that comes to the seep's trace of moisture meets the press — and it will hold this ground for a century or three before it either becomes the water table itself or dies here, dry, a throat. It strikes rarely, and only at what stands beside its mouth.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0.6</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <destroyable>true</destroyable>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>600</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Beauty>-15</Beauty>
+    </statBases>
+    <size>(1,1)</size>
+    <graphicData>
+      <texPath>Things/Item/Resource/RevenantFleshChunk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>2.2</drawSize>
+      <color>(80, 55, 40)</color>
+    </graphicData>
+    <building>
+      <isEdifice>true</isEdifice>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li Class="RimMandrake.StarWars.Sarlacc.CompProperties_SarlaccAnchoredMouth">
+        <mtbStrikeDays>20</mtbStrikeDays>
+        <strikeDamageMin>40</strikeDamageMin>
+        <strikeDamageMax>70</strikeDamageMax>
+      </li>
+    </comps>
+    <killedLeavingsRanges>
+      <Meat_Twisted>40~80</Meat_Twisted>
+    </killedLeavingsRanges>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <tickerType>Rare</tickerType>
+  </ThingDef>
+
+</Defs>

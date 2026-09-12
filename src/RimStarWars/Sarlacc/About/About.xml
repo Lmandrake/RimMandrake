@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Sarlacc — Native Habitat (local)</name>
+  <packageId>mandrake.rsw.sarlacc</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>SARLACC_HABITAT_BUILD_1 — the sarlacc's native-habitat build, off
+`design/Jawa/worldbuilding/sarlacc_native_habitat_draft.md` (ACCEPTED whole,
+all forks RULED, 2026-09-12 owner sitting, §8).
+
+THREE STAGES, ONE CREATURE:
+- Stage I — the swimmer (RSW_SarlaccSwimmer): a mobile sub-sand predator, modeled
+  on Anomaly's Devourer per the owner's explicit direction (§8) — sub-sand
+  approach, swallow-whole via the vanilla CompDevourer, its "digestion" re-themed
+  in every message as the press wringing a drink, not eating. Cut-free
+  counterplay retained (nothing new added that bypasses normal combat).
+- Stage II — the anchored (RSW_SarlaccAnchored): what a swimmer becomes when it
+  roots. Fork 1: swimmers ROOT IN PLAY — a swimmer that runs out of its birth-water
+  reserve, or finds a buried seep (RSW_DeepDesertSeep marker), anchors visibly on
+  the map and stops being a pawn. It strikes rarely, at its own mouth, at whatever
+  stands beside it (the doc's "tithe").
+- Stage III — the cistern (RSW_SarlaccCistern) and its drained end-state, the
+  throat (RSW_SarlaccThroat): a landmark-scale reservoir. Fork 5: the breach is
+  the ONLY kill — no hit-point bar, no poison route, the deed is done in person
+  by interacting with the reservoir wall. Breaching it runs the doc's §4.4
+  consequence order (flood messages, ecosystem-death messages, conversion to the
+  drained throat) at v1 fidelity — see the item file for what is simplified here
+  versus the full pocket-map dungeon interior, which is owed to `sarlacc_spec.md`'s
+  separate (also not-yet-built) KCSG ladder and explicitly out of this doc's own
+  stated scope (draft §0: "Does not touch... the KCSG/pocket-map build ladder").
+
+SEVEN CHANGED-RETURN HEDIFFS (Fork 8, all seven ship): the wrung, salt-eyed, the
+stillness, the tithe, the bloom, pressed, taken-and-returned (draft §4.5). A pawn
+that survives being swallowed and regurgitated by a swimmer or an anchored mouth
+is granted one, occasionally two, picked by this build (dealt by context is owed
+once the pocket-map interior exists to distinguish "taken in the press" from
+"taken on the shore" — see item file).
+
+TRIBAL STAGE LABELS (Fork 9): the tribes' own words for the four stages are
+DRAFT flavor text in this build — Seeker / Debtor / Collector / Paid, echoing the
+Sun-Debt's own theology ("the sun lends and the sand collects... we take back what
+was drawn") — and ship as description flavor only, pending the owner's yes per
+the ruling's own wording. The doc register (swimmer/anchored/cistern/throat)
+remains the defName/mechanism vocabulary regardless of the owner's call on the
+flavor names.
+
+OWED, NOT IN THIS BUILD (see infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md):
+world tile 2920 relocation off the Weeping Stones oasis; placing 2-4 cisterns in
+true deep desert; the full pocket-map dungeon interior (press/gallery/reservoir
+levels); DBH thirst-need integration for the breach flood (Fork 6: DBH thirst is
+confirmed live so this is a real wiring task, not a design question); real sprite
+art (every texPath here is a placeholder reuse of existing Anomaly/vanilla art,
+never magenta, always a real file); a RimUtinni-side patch making
+taken-and-returned sacred/unclean specifically to the Sun-Debt ideoligion (this
+mod only ships the generic RSW-tier hediff, per the naming-tier doctrine that
+faction-specific reactions are RimUtinni content, not RimStarWars).
+
+Requires the Anomaly DLC (Devourer's body/render-tree/comp are reused by
+reference) — every def here that touches it is MayRequire-gated.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Anomaly</packageId>
+      <displayName>RimWorld - Anomaly</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+</ModMetaData>
