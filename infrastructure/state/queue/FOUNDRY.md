@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T15:35:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T15:49:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1079,3 +1079,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SEA_LANDMARK_CLEANUP_REPLAY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SEA_LANDMARK_CLEANUP_REPLAY_1.md
+
+## UTINNI_WORLDMAP_FLIGHT_ICON_1 Replace the gravship's world-map flight icon with a Utinni-specific sprite: vanilla WorldObjectDef Gravship draws World/WorldObjects/Expanding/Gravship (expandingIcon) and World/WorldObjects/Caravan (texture); patch both to our art under the RUT_ tier, sized for expandingIconDrawSize 1.35
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Art: a top-down silhouette of THE ship as it is now — the ring hull without booms
+prose:    infrastructure/state/items/UTINNI_WORLDMAP_FLIGHT_ICON_1.md
