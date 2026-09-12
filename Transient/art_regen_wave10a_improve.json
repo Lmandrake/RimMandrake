@@ -1,0 +1,95 @@
+{
+  "items": [
+    {
+      "id": "oozemaw_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Oozemaw — a large amorphous ooze-predator native to the slime biome, a semi-translucent gelatinous mass with a faintly visible internal organ silhouette, thick pseudopod limbs it uses to drag itself and engulf prey, a mottled sickly green-grey coloring with darker sludge streaks. Reads as a slow, unnerving amorphous hunter, not a cute blob. Single creature, centered, mid-crawl stance with pseudopods braced against the ground, no ground shadow, no background scenery, no drip/splash effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW donor name (AA_AcanthamoebaGiganteaLarge, Alpha Animals prefix) — checked against design/RimStarWars/star_wars_canon_names.md, not found → reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_slime:AA_AcanthamoebaGiganteaLarge, large sizeBin, no note. General kind kept (giant amoeba/ooze predator), invented name/character: Oozemaw. Explicit outline-thickness requirement per the ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "bilespawn_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Bilespawn — a titan-sized viscous ooze mass native to the slime biome, a towering heap of corrosive green-yellow sludge with dripping tendril-limbs and faint bubbling pockmarks across its surface, radiating an unmistakable sense of scale and danger. Reads as an apex slime-biome titan, not a puddle. Single creature, centered, looming upright stance with tendrils partly extended, no ground shadow, no background scenery, no drip/splash effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW donor name (AA_GreenGoo, Alpha Animals prefix) — checked against design/RimStarWars/star_wars_canon_names.md, not found → reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_slime:AA_GreenGoo, titan sizeBin, no note. General kind kept (titan ooze mass), invented name/character: Bilespawn. Explicit outline-thickness requirement per the ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "sporehulk_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Sporehulk — a titan-sized lumbering fungal beast native to a rot/decay biome, a hulking quadruped body encrusted with bulbous mushroom-cap growths and pod-like spore sacs along its spine, dark loamy brown-purple coloring, a wide low-slung stance built for sheer mass. Reads as a colossal fungal titan, not a walking mushroom joke. Single creature, centered, standing four-legged stance, no ground shadow, no background scenery, no spore-cloud effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW donor name (AA_Agaripod, Alpha Animals prefix) — checked against design/RimStarWars/star_wars_canon_names.md, not found → reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_rot:AA_Agaripod, titan sizeBin, note '8 squares' (large body footprint). General kind kept (fungal/pod titan), invented name/character: Sporehulk. Explicit outline-thickness requirement per the ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "gorewalker_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Gorewalker — a large segmented crustacean-like predator native to a blighted/contagion biome, an armored exoskeleton in dull rust-red plating, multiple jointed legs, and a pair of prominent oversized red ocular stalks as its most distinctive feature. Reads as a large plague-adapted arthropod hunter. Single creature, centered, mid-stride stance, no ground shadow, no background scenery, no ooze/particle effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW donor name (AA_BloodShrimp, Alpha Animals prefix) — checked against design/RimStarWars/star_wars_canon_names.md, not found → reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_contagion:AA_BloodShrimp, large sizeBin, note 'ocular only' (prominent eye feature carried into the design as the oversized ocular stalks). General kind kept (segmented crustacean predator), invented name/character: Gorewalker. Explicit outline-thickness requirement per the ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "ashrunner_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Ashrunner — a large lean fire-following predator, scorched grey-black hide with faint ember-orange flecked markings along its flanks, a low rangy build built for speed along a burning tree line, keen forward-facing eyes for tracking fleeing prey. Reads as a wildfire-edge opportunist hunter, not a generic predator. Single creature, centered, low running/stalking stance, no ground shadow, no background scenery, no fire/smoke effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW donor name (AA_Razorjack, Alpha Animals prefix) — checked against design/RimStarWars/star_wars_canon_names.md, not found → reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_contagion:AA_Razorjack, large sizeBin, note 'Pyrelands | RECAST at arrival: the Pyrelands FIRE-FOLLOWER — hunts the flame edge and the flushed panic, not a generic predator (owner card ruling 2026-09-10)' — that recast note is load-bearing and is the basis for this design (fire-edge hunter, scorched hide, ember markings). General kind kept (fire-adapted ambush predator), invented name/character: Ashrunner. Explicit outline-thickness requirement per the ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "mireflit_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Mireflit — a medium buzzing insectoid drone native to a swamp/sump biome, a rounded segmented thorax, four translucent membranous wings, short barbed forelimbs, mottled brown-green chitin suited to bog camouflage. Reads as a swarming sump-dwelling drone insect. Single creature, centered, hovering/mid-flight stance with wings spread, no ground shadow, no background scenery, no motion-blur effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW donor name (AA_Bumbledrone, Alpha Animals prefix) — checked against design/RimStarWars/star_wars_canon_names.md, not found → reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_sump:AA_Bumbledrone, medium sizeBin, no note. General kind kept (swarming insectoid drone), invented name/character: Mireflit. Explicit outline-thickness requirement per the ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "mireflitwarden_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Mireflit Warden — a medium elite/queen variant of the swamp-dwelling Mireflit drone insect, a larger ornate thorax with darker banded chitin, longer wing membranes edged in a deeper amber, more pronounced barbed forelimbs signaling its dominant role in the swarm. Reads as the commanding variant of a sump-dwelling drone insect. Single creature, centered, hovering/mid-flight stance with wings spread, no ground shadow, no background scenery, no motion-blur effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW donor name (AA_BumbledroneHierophant, Alpha Animals prefix) — checked against design/RimStarWars/star_wars_canon_names.md, not found → reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_sump:AA_BumbledroneHierophant, medium sizeBin, no note. General kind kept (elite/queen variant of the swarming insectoid drone, paired with Mireflit in the same wave), invented name/character: Mireflit Warden. Explicit outline-thickness requirement per the ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    }
+  ]
+}

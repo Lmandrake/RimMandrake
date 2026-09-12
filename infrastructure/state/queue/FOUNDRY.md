@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T21:14:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T21:51:16Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -692,6 +692,15 @@ target:   v1
 kind:     bug
 summary:  GIDDYUPWILDBIOMESDUPLICATEKEY1 — Giddy-Up's BuildAnimalBiomeCache still throws
 prose:    infrastructure/state/items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md
+
+## ART_REGEN_WAVE10_QUEUE_1 Wave 10: queue 14 more art:improve creatures (ashrunner/bilespawn/corronip/direwail/fumeback/gorewalker/huskrunner/mireflit/mireflitwarden/miremoth/oozemaw/rotscythe/sporehulk/wastewing)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Standing owner instruction, reaffirmed 2026-09-11: "Fan out and continue full
+prose:    infrastructure/state/items/ART_REGEN_WAVE10_QUEUE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

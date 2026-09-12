@@ -1,0 +1,95 @@
+{
+  "items": [
+    {
+      "id": "fumeback_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Fumeback — a large reptilian creature native to a toxic miasma-gas biome, thick armored dorsal ridges that visibly vent faint heat-shimmer, a low broad-bodied stance, mottled sickly yellow-green scaled hide suited to a gas-choked habitat. Reads as a large heat-venting reptile adapted to a hazardous atmosphere. Single creature, centered, standing four-legged stance, no ground shadow, no background scenery, no gas/vapor effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW donor name (AA_Thermadon, Alpha Animals prefix) — checked against design/RimStarWars/star_wars_canon_names.md, not found → reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_miasma:AA_Thermadon, large sizeBin, no note. General kind kept (heat-venting reptile), invented name/character: Fumeback. Explicit outline-thickness requirement per the ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "huskrunner_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Huskrunner — a large husk-podded quadruped grazer native to arid shrubland, a body plated in overlapping dried seed-pod armor segments in tan and dusty brown, sturdy legs built for covering ground between sparse vegetation. Reads as a large armored desert grazer. Single creature, centered, standing four-legged stance, no ground shadow, no background scenery, no dust/wind effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW donor name (AA_Wildpod, Alpha Animals prefix) — checked against design/RimStarWars/star_wars_canon_names.md, not found → reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:arid_shrubland:AA_Wildpod (the currently-live 'in' placement; the poison_forest copy of this row is decision:'out', removed per the 2026-09-10 sitting ruling), large sizeBin, note '8 squares' (large body footprint). General kind kept (pod-armored grazer), invented name/character: Huskrunner. Explicit outline-thickness requirement per the ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "miremoth_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Miremoth — a medium venomous moth-like flyer native to a toxic miasma-gas biome, broad dusty-purple wings with faint warning-pattern eyespots, a thick fuzzed thorax, long thin proboscis. Reads as a hazard-adapted swamp-gas flying insect. Single creature, centered, mid-flight stance with wings spread, no ground shadow, no background scenery, no gas/vapor effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW donor name (BMT_AaroxisDendoria, BiomesTeam prefix) — checked against design/RimStarWars/star_wars_canon_names.md, not found → reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_miasma:BMT_AaroxisDendoria, medium sizeBin, no note. General kind kept (venomous moth/flyer of a toxic-gas biome), invented name/character: Miremoth. Explicit outline-thickness requirement per the ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "wastewing_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Wastewing — a small scavenger bird native to a wasteland biome, dusty grey-brown plumage, a sharp hooked beak, narrow gliding wings built for riding thermals over open waste. Reads as an opportunistic carrion-feeding wasteland bird. Single creature, centered, gliding stance with wings spread, no ground shadow, no background scenery, no wind effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW donor name (BMT_BloodletterPetrel, BiomesTeam prefix) — checked against design/RimStarWars/star_wars_canon_names.md, not found → reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:wasteland:BMT_BloodletterPetrel, small sizeBin, no note. General kind kept (small scavenger bird), invented name/character: Wastewing. Explicit outline-thickness requirement per the ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "rotscythe_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Rotscythe — a large fungus-camouflaged mantis-like ambush predator native to a rot/decay biome, mottled brown-purple chitin crusted with lichen-like spore growths, oversized serrated scythe-forelimbs, a triangular head with large compound eyes. Reads as a decay-biome ambush predator. Single creature, centered, raised-forelimb ambush stance, no ground shadow, no background scenery, no spore-cloud effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW donor name (BMT_FungalMantis, BiomesTeam prefix) — checked against design/RimStarWars/star_wars_canon_names.md, not found → reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_rot:BMT_FungalMantis, large sizeBin, no note. General kind kept (fungal mantis ambush predator), invented name/character: Rotscythe. Explicit outline-thickness requirement per the ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "direwail_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Direwail — a medium nocturnal shrieking predator found at the margins of poison forest and open wasteland, dark mottled grey-green hide, an oversized throat sac used for its signature shriek, wide alert eyes suited to night hunting, lean muscular legs. Reads as a menacing nocturnal ambush hunter. Single creature, centered, alert mid-stalk stance with head raised, no ground shadow, no background scenery, no sound-wave effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW donor name (BMT_Screecher, BiomesTeam prefix) — checked against design/RimStarWars/star_wars_canon_names.md, not found → reimagined per the owner's 2026-09-11 'improve' ruling. Row: appears twice, fauna:poison_forest:BMT_Screecher and fauna:wasteland:BMT_Screecher, both decision:'in', medium sizeBin, no note — a genuine two-biome creature, not a propagated duplicate; prompt written biome-neutral to cover both placements. General kind kept (nocturnal shrieking predator), invented name/character: Direwail. Explicit outline-thickness requirement per the ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    },
+    {
+      "id": "corronip_v1",
+      "rimflow_item_id": "ART_REGEN_WAVE10_QUEUE_1",
+      "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the Corronip — a medium armored crustacean-like scavenger native to a toxic miasma-gas biome, a corroded rust-orange carapace with pitted, flaking plates, a single pair of heavy asymmetric pincers, multiple short jointed legs. Reads as a corrosion-adapted scavenging arthropod. Single creature, centered, mid-stride stance with one pincer raised, no ground shadow, no background scenery, no gas/vapor effects. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+      "canvas_w": 512,
+      "canvas_h": 512,
+      "reference": "",
+      "facings": ["south", "east", "north"],
+      "style_notes": "Non-SW donor name (RSW_RustNipper, RimStarWars-tier donor prefix) — checked against design/RimStarWars/star_wars_canon_names.md, not found → reimagined per the owner's 2026-09-11 'improve' ruling. Row: fauna:the_miasma:RSW_RustNipper, medium sizeBin, no note. General kind kept (armored corroded-carapace pincer scavenger — the 'rust' flavor of the donor name carried into the redesign), invented name/character: Corronip. Explicit outline-thickness requirement per the ruling.",
+      "background": "transparent",
+      "priority": 100,
+      "channel": "codex"
+    }
+  ]
+}
