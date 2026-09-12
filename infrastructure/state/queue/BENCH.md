@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T00:54:16Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-12T01:11:50Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -67,24 +67,6 @@ target:   v1
 kind:     task
 summary:  SCALDMECHANICS1 — the Scald C kit
 prose:    infrastructure/state/items/SCALD_MECHANICS_1.md
-
-## POISON_FOREST_REPASS_1 poison_forest.md second pass: MEASURED block, weather table, R13's chemical venting, struck phrasing removed
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/POISON_FOREST_REPASS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/POISON_FOREST_REPASS_1.md
-
-## RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1 Deep-dive: RimWorld 18GB+ memory footprint, crash correlation, worst-offender mods, reduction options
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - Measure first: current live memory footprint (RSS of the RimWorld process) at a
-prose:    infrastructure/state/items/RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1.md
 
 ## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
 state:    ready
@@ -206,7 +188,7 @@ prose:    infrastructure/state/items/LIQUID_TYPES_MOD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -214,7 +196,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 

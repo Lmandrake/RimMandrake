@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T00:54:16Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-12T01:11:50Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -22,15 +22,6 @@ target:   v1
 kind:     task
 summary:  - Wire the heat mechanic (the Empire's pursuit/attention system — find the existing
 prose:    infrastructure/state/items/KYBER_TRADE_PLOT_1.md
-
-## RUST_CATHEDRAL_MECHANICS_1 Rust Cathedral C# kit: hum-mood system (attitude value, layered tones, bolt-dance display, droid commentary, hysteresis wiring), deep-drill response event (never described), wall-tier mining defs, living bolts as mechanical wildlife, eel-fishing consequences - spec the_rust_cathedral.md
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  spec — the C kit
-prose:    infrastructure/state/items/RUST_CATHEDRAL_MECHANICS_1.md
 
 # IN PROGRESS
 
@@ -449,6 +440,15 @@ target:   v1
 kind:     task
 summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
 prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
+
+## RUST_CATHEDRAL_MECHANICS_1 Rust Cathedral C# kit: hum-mood system (attitude value, layered tones, bolt-dance display, droid commentary, hysteresis wiring), deep-drill response event (never described), wall-tier mining defs, living bolts as mechanical wildlife, eel-fishing consequences - spec the_rust_cathedral.md
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  spec — the C kit
+prose:    infrastructure/state/items/RUST_CATHEDRAL_MECHANICS_1.md
 
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing
@@ -1005,4 +1005,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## NONDIV4_TEXTURE_FIX_1 Pad the 1578 non-%4 textures RimWorld refuses to compress (~2 GB; our mods first, 190 MB)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Start with OUR OWN mods: 190 MB of the waste is ours, 181 MB in
+prose:    infrastructure/state/items/NONDIV4_TEXTURE_FIX_1.md
