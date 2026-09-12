@@ -12,7 +12,7 @@ never guessed.
     python3 apply_assignment_verdicts.py                 # report only, both sheets
     python3 apply_assignment_verdicts.py --apply          # write rosters + worklists
     python3 apply_assignment_verdicts.py fauna_assignment_register.decisions.json --apply
-    python3 apply_assignment_verdicts.py --selftest       # delegates to the selftest file
+    python3 selftest_apply_assignment_verdicts.py         # the selftest file, run directly
 
 🔴 THE GUARD THAT MATTERS (review-sheets skill §8). A pre-fill and a reviewed
 file look byte-similar. Only the sidecar can stamp savedBy/writeCount — a
