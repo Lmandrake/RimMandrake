@@ -31,28 +31,64 @@ not exhaustive and it is not the playtest.
 `validation.steps.yaml`, in the mod's source folder in the repo. Never deployed —
 `deploy_custom_mods.py` must skip it by name.
 
+**A script captures the ENTIRE setup** (owner, 2026-09-12): it starts from a
+cleared test area and spawns everything it needs — never "show someone can fall
+in the pit" against whatever the map happens to hold, but "clear all map
+contents; spawn a person; cause them to walk over the pit; demonstrate they
+fall in". A component whose preconditions came from outside the script is a
+lint error.
+
+**Components may CHAIN** (owner, 2026-09-12): the bridge is slow, so components
+grouped in a chain share one setup and run sequentially, each continuing from
+the previous component's end state — no per-component stand-up/tear-down. The
+pit mod as one chain: clear area → spawn pits + pawn → walk over → falls in →
+cannot leave → health decreases under overhead sun → decrease stops when
+tended; a second chain: oversize pawn pauses at the pit but is not captured;
+a third: climbing and flying animals escape by the same process. When a
+component in a chain fails, its finding is filed and the run continues — but
+downstream components of that chain whose state is now meaningless record
+**UNMEASURED (upstream failed)**, never pass or fail, and the runner moves to
+the next chain.
+
 ```yaml
 mod: RM_PitTraps            # folder name as deploy knows it
-components:
-  - name: falls_in
-    toggle: pitsEnabled      # settings field this covers, or beyond-toggle: true
-    steps:
+chains:
+  - name: pit_capture
+    setup:
+      - clear_area: {size: 40}
       - spawn_thing: {def: RM_Pit, count: 3, at: line}
-      - spawn_pawn: {kind: raider, hostile: true, beyond: pits}
-      - move_pawn_to: {pawn: last, across: pits}
-      - wait_ticks: 600
-    expect:
-      - pawn_in_cell_of: {pawn: last, def: RM_Pit}
-    screenshot: after-expect
+    components:
+      - name: falls_in
+        toggle: pitsEnabled
+        steps:
+          - spawn_pawn: {kind: raider, hostile: true, beyond: pits}
+          - move_pawn_to: {pawn: last, across: pits}
+          - wait_ticks: 600
+        expect: [pawn_in_cell_of: {pawn: last, def: RM_Pit}]
+        screenshot: after-expect
+      - name: cannot_leave      # continues from falls_in's end state
+        toggle: pitsEnabled
+        steps: [move_pawn_to: {pawn: last, to: map-edge}, wait_ticks: 1200]
+        expect: [pawn_in_cell_of: {pawn: last, def: RM_Pit}]
+        screenshot: after-expect
+      # ... sun damage, tended-stops, in the same chain
+  - name: oversize_pass        # fresh setup, new chain
+    setup: [clear_area: {size: 40}, spawn_thing: {def: RM_Pit, count: 3, at: line}]
+    components:
+      - name: pauses_not_captured
+        beyond-toggle: true
+        steps: [spawn_pawn: {kind: RM_OversizeBeast, beyond: pits}, move_pawn_to: {pawn: last, across: pits}, wait_ticks: 900]
+        expect: [pawn_not_in_cell_of: {pawn: last, def: RM_Pit}, pawn_reached: {pawn: last, past: pits}]
+        screenshot: after-expect
 ```
 
 - `toggle:` names a Mod Settings field; `beyond-toggle: true` marks a component
   covering behavior no toggle owns. The runner cross-checks the mod's settings
   def and REFUSES the mod if any toggle has zero components (floor enforcement).
 - Step vocabulary starts small and grows in the runner, never in per-mod code:
-  `spawn_thing`, `spawn_pawn`, `move_pawn_to`, `wait_ticks`, `set_weather`,
-  `set_setting`, `bridge_call` (generic escape valve: named tool + args),
-  `assert` / `expect` read-backs, `screenshot`.
+  `clear_area`, `spawn_thing`, `spawn_pawn`, `move_pawn_to`, `wait_ticks`,
+  `set_weather`, `set_setting`, `bridge_call` (generic escape valve: named
+  tool + args), `assert` / `expect` read-backs, `screenshot`.
 - Every `expect` is a bridge READ compared against a stated value. A write step
   with no subsequent read anywhere in the component is a lint error — the ~40
   silent-success bridge calls are the reason this system exists.
