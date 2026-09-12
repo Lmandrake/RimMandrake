@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUST_CATHEDRAL_MECHANICS_1 §3 — the living bolt's own main think tree.
+
+  WHY A WHOLE TREE AND NOT AN insertTag SUBTREE: RUT_LivingBolt is
+  mechanoid-fleshed, so its inherited tree is vanilla "Mechanoid"
+  (Defs/Core/ThinkTreeDefs/Mechanoid.xml, read whole this pass). That tree
+  contains NO insertTag of any kind - the Animal_PreMain hook that
+  mandrake.rm.creaturebehaviors rides for the roaches simply does not exist
+  on it. It is also built entirely around lord duties, overseers and
+  JobGiver_AIFightEnemies, none of which a factionless, non-combat wild bolt
+  has any use for. A dedicated tree is the honest route, and it is scoped to
+  exactly one race: nothing else in the game names it.
+
+  ORDER IS THE MECHANISM. Top to bottom:
+
+    1-2. Despawned / Downed        - vanilla subtrees, same as every tree.
+    3.   THE FREEZE                - RM_ThinkNode_ConditionalAttitudeBand
+         sits ABOVE the queued-job node on purpose, so when it fires it
+         pre-empts whatever figure the bolt was part-way through. This is
+         the spec's "higher-priority conditional freezes the pawn (stand
+         job, no wander)", structured the way vanilla structures every
+         conditional freeze it has: a ThinkNode_Conditional subclass
+         wrapping a plain JobGiver, not a priority branch buried inside the
+         behaviour giver. The job itself is vanilla JobGiver_Idle
+         (Verse/AI/JobGiver_Idle.cs - JobDefOf.Wait with an expiry), so no
+         new job or driver is introduced for standing still.
+
+    4.   ThinkNode_QueuedJob       - runs out the rest of a figure the dance
+         giver queued. Below the freeze, above the dance, exactly so a
+         part-danced figure yields to a freeze but not to a new figure.
+    5.   THE DANCE                 - RM_JobGiver_ResonantDance.
+    6.   Idle wander               - vanilla JobGiver_WanderAnywhere. This
+         is the graceful-degradation floor: with the mod option off, or off
+         a Rust Cathedral map, nodes 3 and 5 both return nothing and the
+         bolt is an ordinary wandering mechanoid critter.
+    7.   JobGiver_IdleError        - vanilla backstop, same as every tree.
+
+  🔴 BAND DIRECTION - the one place this build departs from the kit spec's
+  LITERAL words, and does so to keep its MEANING.
+
+  The kit spec §3 says "a higher-priority conditional freezes the pawn at
+  band 0". That sentence predates §1's build. §1 shipped (and documented in
+  RUT_RustCathedralAttitude.xml and RM_BiomeAttitudeDef.cs) the opposite
+  direction: band 0 is the CALMEST state - one warm drone layer - and band 4
+  is the WORST, where the hum goes completely silent. Freezing the bolts at
+  band 0 under those semantics would make them freeze when everything is
+  fine, and dance hardest at the moment the hum dies.
+
+  The frozen sheet's rule is not ambiguous: "when the hum drops, stop moving
+  - the bolts freeze first." So the FREEZE follows the silence, not the
+  number: freezeAtBandAtLeast is 4, the band where §1 kills every sustainer,
+  and dance energy falls as the band climbs (full at 0, nothing at 4) so the
+  dances visibly "go stiff, then stop" on the way up, exactly as §1's own
+  player-experience paragraph describes. Both numbers are plain XML fields
+  here - if the owner ever re-rules the band direction, this is a two-number
+  edit and no C# change.
+-->
+<Defs>
+
+  <ThinkTreeDef>
+    <defName>RUT_ThinkTree_LivingBolt</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Despawned</treeDef>
+        </li>
+
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Downed</treeDef>
+        </li>
+
+        <!-- The freeze. See the band-direction note in the file header. -->
+        <li Class="RimMandrake.Utinni.RustCathedralHum.RM_ThinkNode_ConditionalAttitudeBand">
+          <freezeAtBandAtLeast>4</freezeAtBandAtLeast>
+          <subNodes>
+            <li Class="JobGiver_Idle">
+              <ticks>250</ticks>
+            </li>
+          </subNodes>
+        </li>
+
+        <li Class="ThinkNode_QueuedJob" />
+
+        <li Class="RimMandrake.Utinni.RustCathedralHum.RM_JobGiver_ResonantDance">
+          <worstBand>4</worstBand>
+        </li>
+
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Idle</tagToGive>
+          <subNodes>
+            <li Class="JobGiver_WanderAnywhere">
+              <maxDanger>Deadly</maxDanger>
+            </li>
+          </subNodes>
+        </li>
+
+        <li Class="JobGiver_IdleError" />
+
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

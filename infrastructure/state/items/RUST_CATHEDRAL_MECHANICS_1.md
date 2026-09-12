@@ -273,3 +273,62 @@ done here per this pass's offline-authoring brief.
 **Rest of the kit is still untouched**: §3 living bolts, §4 eel-fishing, §5
 deep-drill response event. §3 in particular cannot fully land until
 something reads `GetBand()` for its dance/freeze display.
+
+## 2026-09-12 (FOUNDRY, offline subagent, belt mode) — §3 living bolts built (3/6 sections now)
+
+`RUT_LivingBolt` (mechanoid-flesh ThingDef/PawnKindDef, own BodyDef
+`RUT_BoltFrame`, its own `ThinkTreeDefs/RUT_ThinkTree_LivingBolt.xml`),
+`RUT_BoltShedCuriosity`, `RM_JobGiver_ResonantDance` (`ThinkNode_JobGiver`,
+same base as this repo's `RM_JobGiver_SeekShade`; queues the dance figure
+via `pawn.jobs.jobQueue`, verified `StartJob` never clears it), and
+`RM_ThinkNode_ConditionalAttitudeBand` (freezes at the highest band, wraps
+vanilla `JobGiver_Idle`, above `ThinkNode_QueuedJob` — the shape vanilla's
+own `ConditionalLowEnergy`/`ConditionalDeactivated` use). Watched pricing
+via Harmony (matching §2's precedent, not a new comp): `+3` postfix on both
+`Pawn_CarryTracker.TryStartCarry` overloads (pickup), `+15` prefix on
+`Pawn.Kill` (has to be a prefix — the Map is gone by postfix), and a prefix
+on `CompSpawner.TryDoSpawn` scoped to `RUT_LivingBolt` for a mod-settings
+shed toggle without replacing the vanilla comp.
+
+**Band direction resolved against the spec's own numbers, not its prose**:
+the kit spec's prose says "freeze at band 0," but §1 *shipped* band 0 =
+calmest and band 4 = silent — freezing at 0 would invert the intent, so the
+freeze fires at band >=4 and dance energy falls as band rises. Both are
+plain XML fields, a two-number edit reverses it if this reading is wrong.
+
+**Spec's own ❓ resolved, not achievable as asked**: "hunt allowed but
+priced" cannot be built — `RaceProperties.Animal` requires
+`!ToolUser && IsFlesh`, and mechanoid flesh fails `IsFlesh`, so the Hunt
+designator is unavailable to a mechanoid-fleshed race entirely (not a bug,
+an engine rule). Killing by draft still works and is what the +15 prices.
+Switching to organic flesh to regain Hunt would break "not meat," which the
+spec mandates — flagged rather than silently dropping either requirement.
+
+🔴 **Real pre-existing bug found, NOT introduced by this pass, affecting
+already-live §6 content**: `RUT_LivingBolt` needed its own main think tree
+because `BaseMechanoidWalker` (vanilla `Mechanoid`'s think-tree base) has
+NO `insertTag` at all — the `Animal_PreMain` insertion route
+`mandrake.rm.creaturebehaviors` uses to add custom animal nodes cannot
+reach a mechanoid-tree pawn. **§6's `RUT_CathedralRoach` (already deployed
+and ENABLED in the live 593-mod `ModsConfig.xml` as
+`mandrake.rut.rustcathedralroaches`) almost certainly never runs its own
+`RM_ThinkNode_EatCleanable` node for the same reason** — the roaches ship
+live but their land-cleaning behavior may never actually fire. Filed as
+its own item: `CATHEDRAL_ROACH_THINKTREE_GAP_1`. Not fixed here — out of
+this pass's scope and needs its own live-verify.
+
+Built clean (`dotnet.exe`, 0 errors/0 warnings). `validate_patch.py` against
+the 2026-09-12T13-25-42Z live capture (confirmed 592 mods == live
+`ModsConfig.xml`'s 592 active): 5 files, 0 errors, 3 warnings (known
+placeholder-art texPath kind, same as §1/§2). No defName collisions. Left
+DISABLED in `ModsConfig.xml`, matching §1/§2/§6 — not live-verified (dance
+figures actually reading as dancing, freeze visibly landing, CompSpawner
+firing in practice all need a quicktest once enabled).
+
+**Known gap, not persisted**: the pickup-charge debounce is a session-local
+`HashSet<int>` of thingIDNumbers — after a save/load, an already-charged
+curiosity can charge irritation again on repickup. Fixing it needs an
+ExposeData field on §1's MapComponent (no new comp on the item, per ban 1).
+
+**Kit tally: 3/6 sections now** (walls, roaches, hum-mood, living bolts).
+§4 eel-fishing and §5 deep-drill response remain untouched.

@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUST_CATHEDRAL_MECHANICS_1 §3 — "living bolts as mechanical wildlife".
+  v1 scope per the kit spec's own line: def + dance/freeze + shed + watched
+  pricing. Deferred there and NOT built here: dance choreography variety
+  passes, synchronized multi-bolt figures, fleck/sound garnish per dance.
+
+  DEF SHAPE — donor precedent is §6's RUT_CathedralRoach (this repo,
+  src/RimUtinni/RustCathedralRoaches/Defs/ThingDefs_Races/, live-verified
+  spawning 2026-09-11 via jawa/spawn_pawn): ParentName="BaseMechanoidWalker"
+  gives mechanoid flesh, and BaseMechanoid's own race block sets
+  fleshType Mechanoid / foodType None / needsRest false.
+
+  WHY MECHANOID FLESH SETTLES THREE OF THE SPEC'S REQUIREMENTS AT ONCE
+  (all three read out of Verse/RaceProperties.cs this pass, not assumed):
+    - "not butcherable into meat": RaceProperties.IsFlesh is
+      FleshType.isOrganic, false here, and MeatAmount is 0 from
+      BaseMechanoid. butcherProducts below is the ONLY yield.
+    - "no trainability": RaceProperties.Animal is `!ToolUser && IsFlesh`
+      (RaceProperties.cs:265) — a mechanoid-fleshed race is never Animal, so
+      the "animal has trainability = null" config error (RaceProperties.cs:533)
+      cannot fire and no taming route exists. <trainability> is deliberately
+      absent, not set to a "None" def.
+    - butcherProducts must be non-empty for any mechanoid
+      (RaceProperties.cs:541) or the def logs a config error — hence Steel 2.
+
+  ❓ RESOLVED, and it costs something: the spec's "verify at build the
+  designator paths (hunt allowed but priced)". It is NOT available.
+  RimWorld's Hunt designator only offers animals, and mechanoid flesh
+  excludes Animal by the getter above — so a bolt cannot be hunted via the
+  work tab. Killing one is still entirely possible (draft and attack), and
+  THAT is what the watched pricing below charges for. The sheet's rule
+  "prices sacrilege, does not un-button the gun" therefore holds; only the
+  convenience of the hunt job is gone. Choosing organic flesh to regain it
+  would break "not meat", which the sheet names explicitly — so mechanoid
+  flesh wins and the hunt designator is the price.
+
+  WILD SPAWN: no <wildBiomes> entry here, deliberately, exactly as
+  RUT_CathedralRoach. The kit spec: "roster JSON already owns the cast; this
+  kit owns the def shape." Nothing in this file wires the bolt into any
+  biome's wildAnimals roster, and this pass did not touch a roster file.
+
+  THINK TREE: race.thinkTreeMain points at RUT_ThinkTree_LivingBolt
+  (ThinkTreeDefs/RUT_ThinkTree_LivingBolt.xml) rather than inheriting
+  BaseMechanoidWalker's "Mechanoid" tree. 🔴 That tree is a combat/overseer
+  tree with NO insertTag anywhere in it (read whole this pass:
+  Defs/Core/ThinkTreeDefs/Mechanoid.xml) — the global Animal_PreMain
+  insertion route that mandrake.rm.creaturebehaviors uses cannot reach a
+  mechanoid-tree pawn at all. A dedicated tree is the only way a
+  mechanoid-fleshed race gets custom idle behaviour.
+
+  SHED: vanilla CompSpawner (RimWorld/CompSpawner.cs), reused directly, no
+  new comp — verified this pass that it ticks on a Pawn (ThingWithComps.Tick
+  runs comps[i].CompTick and Pawn.Tick calls base.Tick) and that its
+  CompCanBeDormant gate passes, because CompProperties_CanBeDormant defaults
+  startsDormant=false and PostPostMake calls WakeUp().
+
+  INVENTED parameters, all from the kit spec's own "INVENTED parameters"
+  line for §3: shed interval 4-8 days (240000-480000 ticks), curiosity value
+  ~40 (on the item def). The spec's "6-10 bolts per map" is a spawn-density
+  number and belongs to whoever wires the roster — it is not expressible on
+  a ThingDef and is not attempted here.
+
+  REGISTER: the <description> is the ban-1-audited prose already ruled in
+  design/Jawa/worldbuilding/creatures/RUT_ruled_commissions_wave2.md §6c,
+  used verbatim. It describes and never explains: no mention of the hum, of
+  a band, of irritation, of goodwill, of what the dance is FOR, or that
+  killing one costs anything.
+
+  ART: placeholder texPaths only (not yet populated) — the sprite brief
+  ("a fat hex-headed bolt-body with too many small articulations, gear-flats
+  catching light... must read as a COMPONENT at rest") is in the commission
+  doc and belongs to the art pipe. Expect magenta in-game until then.
+-->
+<Defs>
+
+  <!--
+    Own BodyDef rather than a donor's: RUT_CathedralRoach took the same route
+    (its header: "cloning the shape independently keeps this def from
+    silently breaking if the donor mod is ever removed"). Every part def
+    below is one the roach's own live-verified RUT_RoachHex already uses.
+    Six short legs give the commission's "too many small articulations"
+    silhouette; no hearing or smell sensors, matching the ruled read that it
+    is not sensing YOU.
+  -->
+  <BodyDef>
+    <defName>RUT_BoltFrame</defName>
+    <label>bolt frame</label>
+    <corePart>
+      <def>MechanicalThoraxCanManipulate</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>MechanicalNeck</def>
+          <coverage>0.08</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>MechanicalHead</def>
+              <coverage>0.80</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>ArtificialBrain</def>
+                  <coverage>0.10</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>SightSensor</def>
+                  <customLabel>left visual sensor</customLabel>
+                  <coverage>0.2</coverage>
+                </li>
+                <li>
+                  <def>SightSensor</def>
+                  <customLabel>right visual sensor</customLabel>
+                  <coverage>0.2</coverage>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>MechanicalLeg</def>
+          <customLabel>front left articulation</customLabel>
+          <coverage>0.10</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>MechanicalFoot</def>
+              <customLabel>front left tip</customLabel>
+              <coverage>0.5</coverage>
+              <groups>
+                <li>FrontLeftLeg</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>MechanicalLeg</def>
+          <customLabel>front right articulation</customLabel>
+          <coverage>0.10</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>MechanicalFoot</def>
+              <customLabel>front right tip</customLabel>
+              <coverage>0.5</coverage>
+              <groups>
+                <li>FrontRightLeg</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>MechanicalLeg</def>
+          <customLabel>middle left articulation</customLabel>
+          <coverage>0.10</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>MechanicalFoot</def>
+              <customLabel>middle left tip</customLabel>
+              <coverage>0.5</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>MechanicalLeg</def>
+          <customLabel>middle right articulation</customLabel>
+          <coverage>0.10</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>MechanicalFoot</def>
+              <customLabel>middle right tip</customLabel>
+              <coverage>0.5</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>MechanicalLeg</def>
+          <customLabel>rear left articulation</customLabel>
+          <coverage>0.10</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>MechanicalFoot</def>
+              <customLabel>rear left tip</customLabel>
+              <coverage>0.5</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>MechanicalLeg</def>
+          <customLabel>rear right articulation</customLabel>
+          <coverage>0.10</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>MechanicalFoot</def>
+              <customLabel>rear right tip</customLabel>
+              <coverage>0.5</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Reactor</def>
+          <coverage>0.06</coverage>
+          <depth>Inside</depth>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+
+  <ThingDef ParentName="BaseMechanoidWalker">
+    <defName>RUT_LivingBolt</defName>
+    <label>living bolt</label>
+    <description>A bolt with legs, or a gear with opinions - the salvage guides genuinely disagree about which. They gather in the open and move: slow figures, repeated, precise, and to no purpose anyone has ever demonstrated. They do not eat, flee, or die of anything obvious. The droids call them the dancers and will stand a long time watching, and if you ask what the dance is for, the polite ones change the subject. One thing every hand learns fast: when the dancers stop, stop.</description>
+    <statBases>
+      <!-- Negligible combat, per the commission's "wholly non-combat" line:
+           armour below a bare human's, a fraction of the roach's health
+           scale, and a slow walk (the commission's "spd ~2"). MarketValue
+           overrides BaseMechanoid's 1200 - a bolt is not a war machine. -->
+      <ArmorRating_Blunt>0.05</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.05</ArmorRating_Sharp>
+      <StaggerDurationFactor>0</StaggerDurationFactor>
+      <MoveSpeed>2.0</MoveSpeed>
+      <BandwidthCost>1</BandwidthCost>
+      <MarketValue>60</MarketValue>
+    </statBases>
+    <uiIconScale>0.45</uiIconScale>
+    <tools>
+      <!-- One trivial tool so the pawn is not tool-less; power 1 is under a
+           human fist. It does not hunt and nothing here hunts it. -->
+      <li>
+        <label>grip</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <race>
+      <body>RUT_BoltFrame</body>
+      <baseBodySize>0.15</baseBodySize>
+      <baseHealthScale>0.30</baseHealthScale>
+      <!-- See the file header: the vanilla Mechanoid tree has no insertTag
+           and is built for lords and overseers, neither of which a wild
+           bolt has. -->
+      <thinkTreeMain>RUT_ThinkTree_LivingBolt</thinkTreeMain>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>MechanoidFullyFormed</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Mech_Scyther_Wounded</soundWounded>
+          <soundDeath>Pawn_Mech_Scyther_Death</soundDeath>
+          <soundCall>Pawn_Mech_Scyther_Call</soundCall>
+        </li>
+      </lifeStageAges>
+      <mechWeightClass>Light</mechWeightClass>
+    </race>
+    <butcherProducts>
+      <!-- Required non-empty for any mechanoid (RaceProperties.cs:541). Not
+           meat, by construction - there is no meat on a mechanoid. -->
+      <Steel>2</Steel>
+    </butcherProducts>
+    <comps>
+      <!-- Vanilla CompSpawner, reused verbatim per the kit spec ("Reuse:
+           vanilla CompSpawner; no RC comp"). 240000-480000 ticks = 4-8
+           in-game days, the spec's own invented interval. spawnMaxAdjacent
+           stops a long-undisturbed bolt from carpeting its own cell. -->
+      <li Class="CompProperties_Spawner">
+        <thingToSpawn>RUT_BoltShedCuriosity</thingToSpawn>
+        <spawnCount>1</spawnCount>
+        <spawnIntervalRange>240000~480000</spawnIntervalRange>
+        <spawnMaxAdjacent>3</spawnMaxAdjacent>
+        <spawnForbidden>false</spawnForbidden>
+        <writeTimeLeftToSpawn>false</writeTimeLeftToSpawn>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="BaseMechanoidKind">
+    <defName>RUT_LivingBolt</defName>
+    <label>living bolt</label>
+    <labelPlural>living bolts</labelPlural>
+    <race>RUT_LivingBolt</race>
+    <combatPower>10</combatPower>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- placeholder: not yet generated, see file header -->
+          <texPath>Things/Pawn/Animal/RUT_LivingBolt/RUT_LivingBolt</texPath>
+          <shaderType>CutoutWithOverlay</shaderType>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+        <corpseGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_LivingBolt/RUT_LivingBoltCorpse</texPath>
+          <shaderType>CutoutWithOverlay</shaderType>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.45</drawSize>
+        </corpseGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

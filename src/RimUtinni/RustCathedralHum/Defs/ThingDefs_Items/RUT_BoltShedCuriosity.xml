@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUST_CATHEDRAL_MECHANICS_1 §3 — the bolt-shed curiosity. Dropped by
+  RUT_LivingBolt's vanilla CompSpawner every 4-8 days (see that def).
+
+  ParentName="ResourceBase" follows the same precedent RUT_CathedralRoachShell
+  and RUT_FungalSoil use in this repo.
+
+  INVENTED parameter (kit spec §3's own line): curiosity value ~40, set as
+  MarketValue below. Salable is the point - the sheet's "bolt-shed curiosities
+  and eel-catch - both salable, both watched."
+
+  WATCHED: picking one up costs the Cathedral's patience. That wiring is
+  entirely in C# (Source/HarmonyPatch_WatchedBolts.cs) and deliberately does
+  NOT appear in this file: a comp or a tag here would show in the info card,
+  and the sheet's ban 1 forbids the def telling the player it is watched.
+
+  REGISTER: §P only. The description says what the thing IS and what a
+  trader thinks of it. It does not say where it comes from beyond the
+  observable, does not name the hum, and does not hint that carrying it is
+  noticed.
+
+  ART: placeholder - reuses vanilla ComponentIndustrial's icon path as a
+  stand-in until the art pipe gives this its own sprite. Same convention
+  RUT_CathedralRoachShell used.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_BoltShedCuriosity</defName>
+    <label>shed curiosity</label>
+    <description>A small bright object left behind on ground where the bolts have been dancing. It is machined - too well machined - and it is not a part of anything anyone can name. Turn it over and the facets do not quite line up the way facets should. Off-world buyers pay well for one and ask no questions, which is its own kind of answer.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/ComponentIndustrial</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MarketValue>40</MarketValue>
+      <Mass>0.1</Mass>
+      <Beauty>2</Beauty>
+      <Flammability>0</Flammability>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

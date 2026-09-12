@@ -3,8 +3,9 @@
   <!--
     RimWorld 1.6 runs Unity/Mono against a .NET Framework 4.7.2 profile, so
     the mod DLL must target net472. Same shape as
-    src/RimUtinni/RustCathedralWalls/Source/RimMandrake.Utinni.RustCathedralWalls.csproj
-    minus Harmony: this mod is pure Def + MapComponent, no patching.
+    src/RimUtinni/RustCathedralWalls/Source/RimMandrake.Utinni.RustCathedralWalls.csproj:
+    Def types, a MapComponent, two think-tree nodes, and (since §3, the
+    living bolts) one small Harmony patch file for watched pricing.
 
     Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
       "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimUtinni\RustCathedralHum\Source\RimMandrake.Utinni.RustCathedralHum.csproj -c Release
@@ -35,9 +36,20 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
+  <!-- §3 (living bolts) added one small Harmony patch file for watched
+       pricing and the shed's mod-option gate, so this mod now needs 0Harmony
+       too. Same HintPath convention as
+       src/RimUtinni/RustCathedralWalls/Source/RimMandrake.Utinni.RustCathedralWalls.csproj. -->
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="RM_BiomeAttitudeDef.cs" />
     <Compile Include="RM_MapComponent_BiomeAttitude.cs" />
+    <Compile Include="RM_JobGiver_ResonantDance.cs" />
+    <Compile Include="RM_ThinkNode_ConditionalAttitudeBand.cs" />
+    <Compile Include="HarmonyPatch_WatchedBolts.cs" />
     <Compile Include="RustCathedralHumSettings.cs" />
   </ItemGroup>
 
@@ -60,6 +72,10 @@
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.AudioModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
