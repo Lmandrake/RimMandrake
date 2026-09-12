@@ -2285,6 +2285,15 @@
 			<li>GeneDef/Outland_XenotypeAscension_BS_Ymir</li>
 			<li>AbilityDef/Outland_XenotypeImplanter_BS_Ymir</li>
 			<li>GeneDef/Outland_XenotypeImplanter_BS_Ymir</li>
+			<!-- TIBANNA_SOURCE_CUT_1 (CARD T1, 2026-09-12): the_forge.md §6 ban 5
+			     (no tibanna source but the beldons) — cut the OuterRim extractor
+			     lanes. OuterRim_Tibanna (the item) stays; only the lanes that
+			     harvest it from the world go. The LK mineable-route modExtension
+			     is a separate patch removal (WreckVerminNest-style), not a
+			     CherryPicker cut — see TibannaEmbargo_CutMineableRoute.xml. -->
+			<li>ThingDef/OuterRim_TibannaSiphon</li>
+			<li>ThingDef/OuterRim_TibannaExtractorLight</li>
+			<li>ThingDef/OuterRim_TibannaExtractorHeavy</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>
