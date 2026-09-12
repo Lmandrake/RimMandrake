@@ -119,17 +119,33 @@ place on the peak that pretends none of that is happening.
    player — the genetic lottery pays in trade goods (`the_contagion.md` §7), never
    in boons.
 
-## 6. HELD FOR OWNER / owed
+## 6. Owner rulings — card sitting 2026-09-12 (and what stays owed)
 
-- **What the Overdrive is FOR in the campaign** — a quest line, a prize, a threat
-  clock — explicitly design work with the owner (original filing). Unruled.
-- **Reveal gating** — `helix_lineage` sequences the Helix's true-heart scene AFTER
-  the Reclamation, and the flesh dungeon owns the tyranny reveal; a raidable
-  archive could front-run both. How the datafiles are gated (encryption via the
-  antiquities literacy ladder? droid compute? staged finds?) is the owner's call.
-- **The world landmark**: name-as-displayed (the base's name? a Helix euphemism?
-  a Jawa name for the mountain?) and the live placement + read-back.
-- **The dungeon sitting**: exact KCSG templates, datafile text, cast (whether any
-  `INHABITED_CAST_HELIX.md` names staff this compound), hand-finish set-pieces.
-- **Live verify** (this item's bar): landmark reads back from the live world;
-  dungeon placed and screenshotted.
+- **Reveal gating — RULED: encrypted, the antiquities literacy ladder
+  unlocks.** The archive can be seized any time; READING it takes the ladder,
+  so the truth lands in ladder order and can never front-run the Reclamation
+  or the flesh dungeon. The gate must read as legible in-fiction, not
+  arbitrary.
+- **helix_lineage amendment — RULED in part.** The MOTIVE lands: the splice
+  was a key — Rakatan descent claimed as command authority over the
+  Cathedral's Rakatan-bound machines. What the splice COST them stays open
+  for the flesh-dungeon sitting. ⭐ And the owner added, verbatim: "But it
+  also DID work... they can walk past the Mechanoids with impudence (or so
+  it seems)." ⇒ The key WORKS, or seems to: the Helix walk past the
+  Mechanoids untouched — and "(or so it seems)" is load-bearing; whatever is
+  actually letting them pass is not yet canon.
+- **The landmark — RULED, the owner verbatim:** "The Spire, a mysterious
+  thin black needle of a building with a disc landing near the top, visible
+  only occasionally due to the atmospheric turbulence over the Scald's
+  mountains. That's the local name for it." ⇒ Display name: **The Spire**
+  (the local name). Art/placement register: thin black needle, disc landing
+  pad near the top, intermittently visible through the Scald's mountain
+  turbulence.
+- **Campaign function — NOT RULED, deliberately.** Owner: "Not ready to
+  resolve this yet, need a whole plot discussion first (TBD)." ⛔ No
+  quest/prize/threat-clock build starts; the dungeon shell and landmark may
+  proceed, its campaign function may not.
+
+Still owed: the dungeon sitting (KCSG templates, datafile text, cast,
+set-pieces) and the live verify (landmark reads back; dungeon placed and
+screenshotted).

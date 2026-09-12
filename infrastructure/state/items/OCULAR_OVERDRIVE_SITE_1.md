@@ -43,3 +43,13 @@ vs helix_lineage/flesh-dungeon sequencing), canon.yml `helix_lineage`
 amendment (splice motive + outcome), the landmark's display name, and the
 campaign function (quest/prize/threat clock). Live half (landmark placement,
 dungeon build) is FOUNDRY work after those rulings.
+
+## Cards ruled 2026-09-12 (owner sitting)
+Datafiles: encrypted, literacy-ladder unlock (never front-runs). Helix
+motive lands in canon (splice = command key over the Cathedral's machines);
+cost stays open for the flesh dungeon; NEW canon note: the key seems to WORK
+— they walk past Mechanoids untouched, "(or so it seems)". Landmark = "The
+Spire" (local name; thin black needle, disc pad near top, intermittently
+visible through the Scald turbulence). Campaign function: NOT ruled — owner
+wants a whole plot discussion first (TBD); dungeon shell + landmark may
+proceed, function may not. Recorded in ashfall_research_base.md §6.
