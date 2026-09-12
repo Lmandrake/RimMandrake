@@ -7510,16 +7510,16 @@
     "sha": "da780c23"
   },
   "src/RimStarWars/Armoury/Source/CompExtraSounds/HarmonyCompExtraSounds.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "d152d47387b396d74bef722eb6a3efa82e1504a52d2b6342ea62909728401443",
-    "sha": "da780c23"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "fe68ef43b246dbcc5dd16a10ad458f777aef4cd627e96a0a238a89300e60a733",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/CrystalFormations/GenStep_ScatterLightsaberCrystals.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "d1e2c4d967bddb615f64d51d9816a851d2a8ffe5fde906655d73b7204c7132ce",
-    "sha": "246700a6"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "a46b0edb3c134984017ed4742c4fafda926af7f7263ad2bb95b39279522e3a69",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/InstantHealingDrug/CompProperties_DrugInstantHeal.cs": {
     "cleanCount": 1,
@@ -7534,16 +7534,16 @@
     "sha": "246700a6"
   },
   "src/RimStarWars/Armoury/Source/InstantHealingDrug/TCED_TryGiveJob_Patch.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "aafa3d66664d88383c2f3f99b41f96244a5f16be7ef65b47f661eb0a30c6569c",
-    "sha": "6a4499e0"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "a0f5584468b5a93ca8e4d2b167ac4be8c82a684bb732b7a3088044dbcd565aac",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/JawaArmoury.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "7378a644d21e190f8d205a6cd28d193e72c7bb42447f501907d5a8b44defac55",
-    "sha": "feaff12b"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "7545f87886f37fe2e5186f3f0a677d38e67041358655a83e6b7eda1a797e0214",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/JumppackForMeleeAI/JobDriver_CastJumpOnce.cs": {
     "cleanCount": 1,
@@ -7552,10 +7552,10 @@
     "sha": "e056475f"
   },
   "src/RimStarWars/Armoury/Source/JumppackForMeleeAI/JobGiver_AIMeleeJumppack.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "c8a6f36603c36de497cbbb6de700bffa8a01d8728cc96226f2d8493cafb71da9",
-    "sha": "12ad4c44"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "5ab69cc866bf53ea997aa469f8c60b3a92c551a36508af38bf15c72ae4faf76e",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/JumppackForMeleeAI/JumpJobDefOf.cs": {
     "cleanCount": 1,
@@ -7570,16 +7570,16 @@
     "sha": "e056475f"
   },
   "src/RimStarWars/Armoury/Source/JumppackForMeleeAI/Patch_JobGiver_AIFightEnemy.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "d9edebb482eeeb338e53ff7697bc62974776b84bd1f7230abbe912fda294acbe",
-    "sha": "a6c78782"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "deeffbcd1b6551676071557da81e7d6cca1a86022c55b150615655cfb36d7939",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/KoltoTank/Building_KoltoTank.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "efa7caea95be3b5c6034a79e5de7d9a6a7df58df6b4d195038b49f7466eb6b35",
-    "sha": "6a4499e0"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "4a797a7e6cac6bed8dd12bf5b6865132c41f40a7dd7ab108f3275ce3ea751f74",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/KoltoTank/CompKoltoTank.cs": {
     "cleanCount": 2,
@@ -7648,10 +7648,10 @@
     "sha": "c131ce7b"
   },
   "src/RimStarWars/Armoury/Source/MentalBreakBlocker/MentalBreakBlocker.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "461789cbb016bf6230ec52fd1005c7ab4c955021b342f46135108b25b9fb69a1",
-    "sha": "e056475f"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "bce3fcd4ddb165a037cc6b0f2ba3ab77e8a17b1b80394297eb059f0c4cc99bb0",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/MentalBreakBlocker/ModExtension_MentalBreakBlocker.cs": {
     "cleanCount": 1,
@@ -7672,10 +7672,10 @@
     "sha": "e57a41a5"
   },
   "src/RimStarWars/Armoury/Source/MinePocket/MinePocketJob.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "2ec7aaa06fade87ead663aadcfc0c6536097f672d74026c280ac9e03d444dbe4",
-    "sha": "70cd2206"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "7ebfe56f04ad135611cc8d905f319c240a0b1e6f82edb587913ec15600814486",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/SecondaryMineableYield/ModExtension_SecondaryMineableYield.cs": {
     "cleanCount": 1,
@@ -7684,10 +7684,10 @@
     "sha": "c131ce7b"
   },
   "src/RimStarWars/Armoury/Source/SecondaryMineableYield/SecondaryMineableYield.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "908c063a0f61fb0bad8aa8cdf8bc4f3c1123d01dd96238e15aeb61bdf77b8446",
-    "sha": "c131ce7b"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "7d411c04112395b32edc607d10ba46a9f492130dad4d40b67182fb46776dd0d2",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/SecondaryMineableYield/SecondaryYieldEntry.cs": {
     "cleanCount": 1,
@@ -7702,10 +7702,10 @@
     "sha": "da780c23"
   },
   "src/RimStarWars/Armoury/Source/SelfHediffVerb/CompVerbWithCooltime.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "fc5309b31f1eb6ace68a6afa40a7f5174cace778244b190124f21cf832252e28",
-    "sha": "da780c23"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "9885fa004d1325bcb44e5925c1061f3273ca6d864c6bf1a07320e763f44b051d",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/SelfHediffVerb/Patch_VerbEquipmentSource.cs": {
     "cleanCount": 1,
@@ -7726,28 +7726,28 @@
     "sha": "da780c23"
   },
   "src/RimStarWars/Armoury/Source/SelfHediffVerb/Verb_SelfHediff.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "9f19201f7c8cf7cc9bf38f96f3faa2aa2b3bcc2a866ad1f879680417630de0ff",
-    "sha": "da780c23"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "963545ec4efef207396e3728ae5c05858df9716a97338324bfff62ed133eba91",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/Spinning_Projectile/HarmonyPatches.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "cfa2260be596f8675f866581b6b0c8f7d14173779feb2ea0a585d560a0b3c0fe",
-    "sha": "4e362542"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "a311454a41c9f0b354fe797b47f86aea66eb6414132875ed6213ce58e6bfb734",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/Spinning_Projectile/MoteWeaponReturn.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "8b62a10e7cc15b96d0313d8231589cdda3ef53adf1719345dc5ca9e90b6eead6",
-    "sha": "6a4499e0"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "2015c110d8f9992e46d7469ed9e0b4e324d45a21e8b5add1db19c04167212257",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/Spinning_Projectile/SpinningWeaponProjectile.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "f035348116d3c3cda209bdb6993d1f1a932b896ebef21c7a6bdb5c826267d630",
-    "sha": "6a4499e0"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "e461f742ec77222673c596b661c61941cd30a501d9dc3d123b9e2f966cab0ca0",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/Spinning_Projectile/ThingCompProperties_ReturningWeapon.cs": {
     "cleanCount": 1,
@@ -7846,22 +7846,22 @@
     "sha": "da780c23"
   },
   "src/RimStarWars/Armoury/Source/guy762_Ionization/DamageWorker_KotORPlasmaGrenade.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "e79319c9b55b437545ade25b1e57dd39d653c51f0d8aa53facdcba84f8d740d8",
-    "sha": "da780c23"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "9e1548fc094661fbd4cde59330e080efdbd7d2aa4ab39bd1029413063f4943a0",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/guy762_Ionization/DamageWorker_OrganicStun.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "55dbba8261b0cb899654fc73c082f43829ced5a7c503e5e256856f4ef5205fb6",
-    "sha": "da780c23"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "3b20ec5ba775a71ddb24cc7f03cac7a7721e7417c432c05b65c8c618c562d163",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/guy762_Ionization/DamageWorker_RaceHediffBase.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "1b7015daeeeefd8bfca6eb23cd9c1d473c8594fa5c9309bda2f5c5d30fd0c57d",
-    "sha": "da780c23"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "5f008f99c36d3e09972506f5d9d790b73740293bef229a616552e86d397cb821",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/guy762_Ionization/ModExtension_HediffGiver.cs": {
     "cleanCount": 1,
@@ -7870,10 +7870,10 @@
     "sha": "da780c23"
   },
   "src/RimStarWars/Armoury/Source/guy762_IonizationABF/DamageWorker_Ionize.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "7fcc09c6782be8df205f6dc8999438cef269eff634535680ad5fe7224c126f83",
-    "sha": "da780c23"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "951f9e2bff41e7c90ebacabf50658dc02991aad1fd91d59f01a71ee06448cf72",
+    "sha": "831201d4c"
   },
   "src/RimStarWars/Armoury/Source/selftest_absorption_generators.py": {
     "cleanCount": 1,
