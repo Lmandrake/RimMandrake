@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T22:29:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T23:20:29Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -692,24 +692,6 @@ target:   v1
 kind:     bug
 summary:  GIDDYUPWILDBIOMESDUPLICATEKEY1 — Giddy-Up's BuildAnimalBiomeCache still throws
 prose:    infrastructure/state/items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md
-
-## MOD_VALIDATION_PIT_PILOT_1 modcheck pilot: write the pit mod's validation.steps.yaml (settings toggles as floor + beyond-toggle components: falls-in, climb-out vs not, full functionality once), run it green, owner ratifies the HTML sheet format
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  Write the pit mod's validation.py (Python on the modcheck library): one component per settings toggle
-prose:    infrastructure/state/items/MOD_VALIDATION_PIT_PILOT_1.md
-
-## MOD_VALIDATION_RUNNER_1 Build modcheck: the scripted mod-functionality validation runner (steps file + shared runner, minimal-list quicktest sessions, read-back+screenshot evidence, verify event + HTML sheet, status registry + playtest gate)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Build src/RimMandrake/Utils/modcheck/: the modcheck library (owner re-ruling 2026-09-12:
-prose:    infrastructure/state/items/MOD_VALIDATION_RUNNER_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
