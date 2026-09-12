@@ -359,14 +359,10 @@ emergence event — files there, never here).
    written).** Two hidden FactionDefs, vanilla-insectoid pattern, never
    player-facing; §6.2's "no faction allegiance" is a lore rule. The §4 war,
    its lords and the theft quest all stand.
-2. **CARD — What the Tenant does to YOUR pawns.** Wild animals at the pools
-   are subtracted outright (no corpse). For colonists/tamed: **A:** same —
-   gone, one splash (maximum dread, savescum bait). **B:** dragged under —
-   downed + drowning clock in the shallows, adjacent pawns can pull them out
-   (a rescue window, one story per victim). Trade: A is the lore verbatim;
-   B is survivable horror and shows more of the mechanic.
-3. **CARD — How far does fear travel.** Thornbug calm crashes on threats
-   within a radius (draft: 40 cells). **A:** radius as drafted — a far-side
-   raid doesn't dry a sheltered herd. **B:** any raid on the map dries every
-   herd ("every raid costs nectar", sheet verbatim, harsher). Trade: A rewards
-   herd placement; B makes the sentence literally true everywhere.
+2. **CARD — RULED 2026-09-12: dragged under, rescue window (B).**
+   Colonists/tamed at the pools go down with a drowning clock in the
+   shallows; adjacent pawns can pull them out. One story per victim. Wild
+   animals stay subtracted outright — the clean splash remains the wild
+   rule.
+3. **CARD — RULED 2026-09-12: fear radius as drafted (A, ~40 cells).** A
+   far-side raid does not dry a sheltered herd; herd placement matters.
