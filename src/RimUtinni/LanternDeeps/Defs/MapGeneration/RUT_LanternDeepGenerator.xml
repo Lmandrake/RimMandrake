@@ -12,6 +12,12 @@
       <biome>BMT_CrystalCaverns</biome>
       <temperature>17</temperature>
     </pocketMapProperties>
+    <!-- LANTERN_DEEPS_INJECTION_1 spec item 6, the darkness mechanic: only Lantern
+         Deep pocket maps get this component (CustomMapComponent subclasses are
+         never auto-added, see the .cs header). -->
+    <customMapComponents>
+      <li>RimMandrake.Utinni.LanternDeeps.MapComponent_LanternDeepDarkness</li>
+    </customMapComponents>
     <genSteps>
       <li>ElevationFertility</li>
       <li>MutatorPostElevationFertility</li>

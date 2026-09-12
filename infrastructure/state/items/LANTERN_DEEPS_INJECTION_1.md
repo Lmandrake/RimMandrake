@@ -119,6 +119,88 @@ biome; it is an injected cave-map layer beneath any nightside map with biome tem
      ruling, which is a real gameplay system (not just cave-map ambient dark, which
      `isCavern`/enclosed roofing already gives for free) and needs its own C#/design
      pass, not something to invent here without re-reading that spec in full.
+
+⭐ **BUILT 2026-09-12** (offline pass, bridge held by another FOUNDRY window for an
+unrelated GIZKA hook test — not stale, not taken; built and deployed to completion
+without a live quicktest, per this pass's own instruction to document what's owed
+rather than force the bridge):
+
+- **Spec item 2b, the ruined-mineshaft entrance — BUILT.** `RUT_LanternDeepMineshaft`
+  (new ThingDef, `thingClass MapPortal`, same shape as `RUT_LanternDeepEmergence`:
+  `CompProperties_Sealable` + `CompProperties_LeaveFilthOnDestroyed`, portal wired to
+  the same `RUT_LanternDeepGenerator`). PLACEHOLDER ART reuses vanilla `PitGate`'s
+  texture (a large ground-set hole reads as "collapsed shaft," distinct from the
+  emergence's crystal-geode look) — real art still owed, same as the emergence.
+  New `GenStep_ScatterMineshaftPortal.cs` (self-gated to the same three host biomes
+  as the emergence, its own 4%-per-map placeholder rate and its own Mod Settings
+  toggle) scatters it and then dresses the site per the spec's "well-provisioned
+  high-tech ruin... corpses in excellent gear": one `AncientSoldier` pawn generated
+  and killed in place (the same `PawnGenerator.GeneratePawn` + `GenSpawn.Spawn`
+  pattern vanilla's own `UndercaveMapComponent` uses for its fleshbeast corpses —
+  deliberately NOT the KCSG-symbol pawn path that crashed the sibling
+  `StructureInjectionsRUT` mod's mechanoid symbol, a different code path this never
+  touches) plus a handful of `Filth_RubbleRock` patches. `RUT_LanternDeepMineshaft_
+  MapGenPatch.xml` adds the new GenStep to `MapCommonBase`, same mechanism as the
+  emergence's own patch.
+  ⚠️ **ASSUMPTION recorded, not guessed silently**: the task brief's "near existing
+  mine/ruin sites rather than random biome scatter" is NOT implemented — ruin/mine
+  placement is a world-layer (WorldObjects/Sites) concept with no clean hook from a
+  GenStepDef at map-gen time, and building one is a larger world-authoring feature
+  than this pass's budget. Left as ordinary qualifying-biome scatter at a lower rate
+  than the emergence; a real site-linked placement rule is owed at the caverns
+  sitting, same as the emergence's own density number.
+
+- **Spec item 6, the darkness mechanic — BUILT** (the shared "ambient light level"
+  signal `underground_caverns_deep_design.md` §8 calls for, ruled v1 by the owner's
+  2026-09-02 sitting). New `MapComponent_LanternDeepDarkness.cs`, registered via
+  `RUT_LanternDeepGenerator.xml`'s `customMapComponents` (confirmed via
+  `Verse.Map.FillComponents`: a `CustomMapComponent` subclass is added ONLY to a map
+  whose `MapGeneratorDef` lists it — never auto-added to every map, unlike a plain
+  `MapComponent`). Every 250 ticks it samples `GlowGrid.GroundGlowAt` at each
+  colonist's position on the Deep map; sustained bright light accumulates an
+  "exposure" value (darkness lets it decay), and once exposure crosses a threshold
+  (its own Mod Settings multiplier) a `BMT_CaveSpider` — an already-resident
+  non-crystal predator, NOT a new creature; the crystal-studded roster stays evicted
+  per HARD BAN #3 and the rest of the cast is still "the sitting"'s call — is
+  generated near the brightest colonist and set to `Manhunter`. This is scoped
+  deliberately narrow: the doc's much larger map-chain/vault-layer infrastructure is
+  explicitly OUT of this item's reach; only the light-draws-things signal itself,
+  applied to the one pocket map Lantern Deeps already has.
+  Both new `.cs` files added to the csproj's explicit `Compile` list
+  (`EnableDefaultCompileItems` is `false` in this project); `dotnet build -c
+  Release` succeeded, 0 warnings/0 errors. Both new toggles (mineshaft entrance,
+  darkness mechanic) plus their tuning sliders added to `LanternDeepsSettings`
+  alongside the existing emergence toggle (MOD_OPTIONS_RETROFIT_1 convention).
+
+- **Validated, not just built**: `validate_patch.py` against the frozen
+  `OFFICIAL-2026-08-29` dump over the whole `LanternDeeps/` tree — 15 files, 0
+  errors, 6 warnings, every one of which has an exact twin already shipping on the
+  emergence entrance (texPath-in-AssetBundle false positives on both portals'
+  placeholder art, the "class not resolvable from static Defs scan" info-line on
+  both new C# GenStep classes — the actual build already proved these classes
+  compile and link against `Assembly-CSharp.dll`, and the unwrapped
+  `PatchOperationAdd` against Core's `MapCommonBase`, same as the existing pattern).
+  Deployed via `deploy_custom_mods.py --mod LanternDeeps --apply` (mod was not in
+  the currently-active `ModsConfig.xml`, so no OS-lock risk to the assembly write;
+  `VERIFIED in sync` afterward).
+
+⚠️ **Still owed, NOT provable this pass**:
+  - **No live quicktest of either entrance or the darkness mechanic.** The bridge
+    was held by a concurrent FOUNDRY window for an unrelated test and was not stale
+    (idle ~5 min, well under the 45-min staleness bar) — not taken, per doctrine.
+    Everything above is offline-built and statically validated only. Next bridge
+    session: add this mod (already deployed) to a qualifying-biome minimal list,
+    reach a host map, confirm both portals CAN appear, walk into each, confirm the
+    Deep generates, and hold a light source near colonists long enough to trigger
+    the darkness ambush without a crash.
+  - **Spec item 1's own live quicktest** (recorded owed since 2026-09-07) is still
+    not run, unrelated to this pass's additions.
+  - **Mineshaft placement is not tied to actual ruin/mine world sites** — see the
+    ASSUMPTION note above.
+  - **Real art** for both entrances, and for the darkness predator's warning/
+    feedback (the "visibly rewarded for playing dark" half of the ruling is
+    mechanically true — no ambush without exposure — but has no distinct UI/FX
+    signal yet, only silence).
 2. **Entrances as map-transition features** (caverns sitting: same category as
    DeepRim/Z-Levels shafts): (a) **natural emergence** — lanternstone breaking the
    surface, lit from below; (b) **old mineshaft inside a ruined mining facility** —

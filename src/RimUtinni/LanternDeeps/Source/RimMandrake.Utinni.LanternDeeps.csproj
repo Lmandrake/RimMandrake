@@ -40,6 +40,8 @@
 
   <ItemGroup>
     <Compile Include="GenStep_ScatterCavePortal.cs" />
+    <Compile Include="GenStep_ScatterMineshaftPortal.cs" />
+    <Compile Include="MapComponent_LanternDeepDarkness.cs" />
     <Compile Include="LanternDeepsMod.cs" />
   </ItemGroup>
 

@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T08:39:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T08:47:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## RUST_CATHEDRAL_MECHANICS_1 Rust Cathedral C# kit: hum-mood system (attitude value, layered tones, bolt-dance display, droid commentary, hysteresis wiring), deep-drill response event (never described), wall-tier mining defs, living bolts as mechanical wildlife, eel-fishing consequences - spec the_rust_cathedral.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  spec — the C kit
+prose:    infrastructure/state/items/RUST_CATHEDRAL_MECHANICS_1.md
 
 # IN PROGRESS
 
@@ -343,7 +352,7 @@ summary:  - What it is: the Rakatan-era war lab where the Assailants were first 
 prose:    infrastructure/state/items/ANCIENT_WAR_LAB_1.md
 
 ## LANTERN_DEEPS_INJECTION_1 The crystal caverns as an injected underground layer beneath ≤ −40 °C nightside maps — quicktest the cave-map generation, two entrance features (emergence, ruined mineshaft), persistent Deeps, kyber formations
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -431,15 +440,6 @@ target:   v1
 kind:     task
 summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
 prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
-
-## RUST_CATHEDRAL_MECHANICS_1 Rust Cathedral C# kit: hum-mood system (attitude value, layered tones, bolt-dance display, droid commentary, hysteresis wiring), deep-drill response event (never described), wall-tier mining defs, living bolts as mechanical wildlife, eel-fishing consequences - spec the_rust_cathedral.md
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  spec — the C kit
-prose:    infrastructure/state/items/RUST_CATHEDRAL_MECHANICS_1.md
 
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing
@@ -797,6 +797,16 @@ kind:     bug
 blocked:  ledger/prose mismatch: item's own text ends 'Left doing, blocked. Recommend the owner rule on scope' — TryLaunch's gizmo path is disabled whenever CanLaunch() is false, so the item's own live-verify plan targets a gravship code path that doesn't exist in the shipped game; source-side fix (572413c0) still stands for pods/shuttles. Needs an owner scope ruling: rescope to pods/shuttles + file a new gravship-specific item, or move the patch target to Building_GravEngine.InitiateTakeoff.
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
+
+## LANTERN_DEEPS_INJECTION_1 The crystal caverns as an injected underground layer beneath ≤ −40 °C nightside maps — quicktest the cave-map generation, two entrance features (emergence, ruined mineshaft), persistent Deeps, kyber formations
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  built+validated+deployed offline; needs a live quicktest to prove both new entrances and the darkness ambush before closing
+summary:  1. Quicktest first (rimworld-debug-testing): confirm what BMTCrystalCaverns
+prose:    infrastructure/state/items/LANTERN_DEEPS_INJECTION_1.md
 
 ## KYBER_TRADE_PLOT_1 Selling kyber: Empire heat rises per sale, Hutt interest rises, alleged Jedi from the Moisture Farmers, the donate-and-smuggle plot (no helping the Rebellion here)
 state:    ready  (BLOCKED)
