@@ -10810,22 +10810,22 @@
     "sha": "6e65d276"
   },
   "src/RimUtinni/LongHunger/Source/IncidentWorker_LongHungerSurfaces.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "d8437ef77affcabce80468180bf13e9bc142a89a83ca335f0a90ec983ad5da61",
-    "sha": "3e9a9f20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "7baeeeaa4f03421a8db7024860c6a485936ab6e7aaa679e3ef9922a86c43ad17",
+    "sha": "e2333e565"
   },
   "src/RimUtinni/LongHunger/Source/LongHunger.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "eaeed2c4a98737d8134fa127b4e9da3a32a27e6342a7d090acead2f285a03172",
-    "sha": "3e9a9f20"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "806e2636cd92bfda02679877aac86b27584e3ff337de6438a636d59768cbc917",
+    "sha": "e2333e565"
   },
   "src/RimUtinni/LongHunger/Source/LongHungerThing.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "a7bfacac811ef61c5e048834af551c8a9ab5a94ef65d467fbaa9ea6308c32567",
-    "sha": "3e9a9f20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "a335596ece9d1c8aab32a54aeab3f1cef09b91a52a86b61375c7469348a31d26",
+    "sha": "e2333e565"
   },
   "src/RimUtinni/MenuShell/About/About.xml": {
     "cleanCount": 2,
