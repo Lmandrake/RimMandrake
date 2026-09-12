@@ -71,13 +71,19 @@ namespace RimMandrake.Property
         // Drops entries whose decayed contribution has reached ~0 for every
         // suspect, regardless of the propagation rate used to read them —
         // decay is monotonic in elapsed time alone, so once an entry passes
-        // SuspicionHalfLifeDays it contributes nothing to any future read.
+        // the configured half-life it contributes nothing to any future
+        // read. Must read PropertySettings.suspicionHalfLifeDays (the
+        // player-tunable value GetSuspicion's own decay uses), not the
+        // PropertyTuning constant it defaults from — otherwise a player who
+        // raises the slider above the 45-day default gets entries pruned
+        // (and suspicion silently zeroed) before their own configured
+        // half-life is reached.
         private void PruneFullyDecayedEntries(int nowTick)
         {
             for (int i = entries.Count - 1; i >= 0; i--)
             {
                 float daysElapsed = (nowTick - entries[i].TimestampTicks) / (float)GenDate.TicksPerDay;
-                if (daysElapsed >= PropertyTuning.SuspicionHalfLifeDays)
+                if (daysElapsed >= PropertySettings.suspicionHalfLifeDays)
                 {
                     entries.RemoveAt(i);
                 }
