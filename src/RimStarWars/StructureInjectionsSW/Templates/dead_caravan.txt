@@ -1,0 +1,37 @@
+# rimplace flat plan v2
+# template  dead_caravan (sha 3555afd7c49b2b65)
+# min_rect  16x12   baked at 16x12
+FOOTPRINT	0	0	16	12
+CLEAR	-1	-1	18	14	soft
+CLEAR	0	0	16	12	all
+THING	AncientIndustrialTruck	4	6	1	-
+THING	AncientSmallCrate	5	7	0	-
+THING	Filth_Sand	5	7	0	-
+THING	AncientBarrel	8	5	0	-
+THING	Filth_Sand	8	5	0	-
+THING	AncientLargeCrate	10	3	0	-
+THING	Filth_Sand	10	3	0	-
+THING	Filth_Trash	5	6	0	-
+THING	Filth_Trash	4	6	0	-
+THING	Filth_Trash	5	5	0	-
+THING	Silver	5	8	0	-
+THING	Campfire	12	3	0	-
+THING	Filth_Ash	13	3	0	-
+THING	Filth_Ash	11	3	0	-
+THING	Filth_Ash	12	4	0	-
+THING	Filth_Ash	12	2	0	-
+THING	Bedroll	14	1	3	-
+THING	Bedroll	14	3	1	-
+THING	Bedroll	11	1	2	-
+THING	ChunkSandstone	11	2	0	-
+THING	WaterTrough	14	4	0	-
+THING	Hay	9	3	0	-
+THING	Grave	9	4	0	-
+THING	Filth_Blood	1	7	0	-
+THING	Filth_Blood	1	5	0	-
+THING	Barricade	4	4	0	BlocksSandstone
+THING	Barricade	2	4	1	BlocksSandstone
+THING	Filth_BlastMark	1	6	0	-
+THING	Filth_BlastMark	1	7	0	-
+THING	SandbagRubble	2	5	0	-
+PAWN	Dromedary	5	5	wild	dessicated

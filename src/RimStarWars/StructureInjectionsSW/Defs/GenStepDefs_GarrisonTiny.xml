@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Tiny Garrison - structure_procedural_spec.md section 8.6.
+       INHABITED_AUGMENTATION_BUILD_1, built under commit 87f6db625, wired
+       here (same GenStep_RimplacePlan replay shape as every sibling
+       responder). Replays Templates/garrison_tiny.txt (rimplace export of
+       design/Jawa/templates/garrison_tiny.lua: 22x18, default params,
+       seed 0 - the plan header carries the exact bake) via
+       mandrake.rm.injections' GenStep_RimplacePlan. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_GarrisonTiny</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/garrison_tiny.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>

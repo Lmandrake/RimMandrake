@@ -1,0 +1,429 @@
+# rimplace flat plan v2
+# template  garrison_tiny (sha bad5d9c35a0d1ca8)
+# min_rect  22x18   baked at 22x18
+FOOTPRINT	0	0	22	18
+CLEAR	-1	-1	24	20	soft
+CLEAR	0	0	22	18	all
+TERRAIN	3	3	Concrete
+TERRAIN	3	4	Concrete
+TERRAIN	3	5	Concrete
+TERRAIN	3	6	Concrete
+TERRAIN	3	7	Concrete
+TERRAIN	3	8	Concrete
+TERRAIN	3	12	Concrete
+TERRAIN	3	13	Concrete
+TERRAIN	4	1	Concrete
+TERRAIN	4	3	Concrete
+TERRAIN	4	4	Concrete
+TERRAIN	4	5	Concrete
+TERRAIN	4	6	Concrete
+TERRAIN	4	7	Concrete
+TERRAIN	4	8	Concrete
+TERRAIN	4	12	Concrete
+TERRAIN	4	13	Concrete
+TERRAIN	5	3	Concrete
+TERRAIN	5	4	Concrete
+TERRAIN	5	5	Concrete
+TERRAIN	5	6	Concrete
+TERRAIN	5	7	Concrete
+TERRAIN	5	8	Concrete
+TERRAIN	6	3	Concrete
+TERRAIN	6	4	Concrete
+TERRAIN	6	5	Concrete
+TERRAIN	6	6	Concrete
+TERRAIN	6	7	Concrete
+TERRAIN	6	8	Concrete
+TERRAIN	10	4	Concrete
+TERRAIN	12	3	Concrete
+TERRAIN	12	4	Concrete
+TERRAIN	12	5	Concrete
+TERRAIN	12	6	Concrete
+TERRAIN	12	7	Concrete
+TERRAIN	12	8	Concrete
+TERRAIN	12	9	Concrete
+TERRAIN	13	3	Concrete
+TERRAIN	13	4	Concrete
+TERRAIN	13	5	Concrete
+TERRAIN	13	6	Concrete
+TERRAIN	13	7	Concrete
+TERRAIN	13	8	Concrete
+TERRAIN	13	9	Concrete
+TERRAIN	14	3	Concrete
+TERRAIN	14	4	Concrete
+TERRAIN	14	5	Concrete
+TERRAIN	14	6	Concrete
+TERRAIN	14	7	Concrete
+TERRAIN	14	8	Concrete
+TERRAIN	14	9	Concrete
+TERRAIN	15	3	Concrete
+TERRAIN	15	4	Concrete
+TERRAIN	15	5	Concrete
+TERRAIN	15	6	Concrete
+TERRAIN	15	7	Concrete
+TERRAIN	15	8	Concrete
+TERRAIN	15	9	Concrete
+TERRAIN	16	3	Concrete
+TERRAIN	16	4	Concrete
+TERRAIN	16	5	Concrete
+TERRAIN	16	6	Concrete
+TERRAIN	16	7	Concrete
+TERRAIN	16	8	Concrete
+TERRAIN	16	9	Concrete
+TERRAIN	17	3	Concrete
+TERRAIN	17	4	Concrete
+TERRAIN	17	5	Concrete
+TERRAIN	17	6	Concrete
+TERRAIN	17	7	Concrete
+TERRAIN	17	8	Concrete
+TERRAIN	17	9	Concrete
+TERRAIN	18	3	Concrete
+TERRAIN	18	4	Concrete
+TERRAIN	18	5	Concrete
+TERRAIN	18	6	Concrete
+TERRAIN	18	7	Concrete
+TERRAIN	18	8	Concrete
+TERRAIN	18	9	Concrete
+THING	Sandbags	0	0	0	-
+THING	Sandbags	0	17	0	-
+THING	Sandbags	1	0	0	-
+THING	Sandbags	1	17	0	-
+THING	Sandbags	2	0	0	-
+THING	Sandbags	2	17	0	-
+THING	Sandbags	3	0	0	-
+THING	Sandbags	3	17	0	-
+THING	Sandbags	4	0	0	-
+THING	Sandbags	4	17	0	-
+THING	Sandbags	5	0	0	-
+THING	Sandbags	5	17	0	-
+THING	Sandbags	6	0	0	-
+THING	Sandbags	6	17	0	-
+THING	Sandbags	7	0	0	-
+THING	Sandbags	7	17	0	-
+THING	Sandbags	8	0	0	-
+THING	Sandbags	8	17	0	-
+THING	FenceGate	9	0	0	WoodLog
+THING	Sandbags	9	17	0	-
+THING	FenceGate	10	0	0	WoodLog
+THING	Sandbags	10	17	0	-
+THING	Sandbags	11	0	0	-
+THING	Sandbags	11	17	0	-
+THING	Sandbags	12	0	0	-
+THING	Sandbags	12	17	0	-
+THING	Barricade	13	0	0	BlocksSandstone
+THING	Sandbags	13	17	0	-
+THING	Sandbags	14	0	0	-
+THING	Sandbags	14	17	0	-
+THING	Sandbags	15	0	0	-
+THING	Sandbags	15	17	0	-
+THING	Sandbags	16	0	0	-
+THING	Sandbags	16	17	0	-
+THING	Sandbags	17	0	0	-
+THING	Sandbags	17	17	0	-
+THING	Barricade	18	0	0	BlocksSandstone
+THING	Sandbags	18	17	0	-
+THING	Sandbags	19	0	0	-
+THING	Sandbags	19	17	0	-
+THING	Sandbags	20	0	0	-
+THING	Barricade	20	17	0	BlocksSandstone
+THING	Sandbags	21	0	0	-
+THING	Sandbags	21	17	0	-
+THING	Sandbags	0	1	0	-
+THING	Sandbags	21	1	0	-
+THING	Sandbags	0	2	0	-
+THING	Sandbags	21	2	0	-
+THING	Sandbags	0	3	0	-
+THING	Sandbags	21	3	0	-
+THING	Sandbags	0	4	0	-
+THING	Sandbags	21	4	0	-
+THING	Sandbags	0	5	0	-
+THING	Barricade	21	5	0	BlocksSandstone
+THING	Sandbags	0	6	0	-
+THING	Sandbags	21	6	0	-
+THING	Sandbags	0	7	0	-
+THING	Barricade	21	7	0	BlocksSandstone
+THING	Sandbags	0	8	0	-
+THING	Sandbags	21	8	0	-
+THING	Sandbags	0	9	0	-
+THING	Sandbags	21	9	0	-
+THING	Sandbags	0	10	0	-
+THING	Sandbags	21	10	0	-
+THING	Sandbags	0	11	0	-
+THING	Sandbags	21	11	0	-
+THING	Sandbags	0	12	0	-
+THING	Sandbags	21	12	0	-
+THING	Sandbags	0	13	0	-
+THING	Sandbags	21	13	0	-
+THING	Sandbags	0	14	0	-
+THING	Sandbags	21	14	0	-
+THING	Sandbags	0	15	0	-
+THING	Sandbags	21	15	0	-
+THING	Sandbags	0	16	0	-
+THING	Sandbags	21	16	0	-
+THING	Wall	2	2	0	BlocksSandstone
+THING	Wall	3	2	0	BlocksSandstone
+THING	Wall	5	2	0	BlocksSandstone
+THING	Wall	6	2	0	BlocksSandstone
+THING	Wall	7	2	0	BlocksSandstone
+THING	Wall	2	3	0	BlocksSandstone
+THING	Wall	7	3	0	BlocksSandstone
+THING	Wall	2	4	0	BlocksSandstone
+THING	Wall	7	4	0	BlocksSandstone
+THING	Wall	2	5	0	BlocksSandstone
+THING	Wall	7	5	0	BlocksSandstone
+THING	Wall	2	6	0	BlocksSandstone
+THING	Wall	7	6	0	BlocksSandstone
+THING	Wall	2	7	0	BlocksSandstone
+THING	Wall	7	7	0	BlocksSandstone
+THING	Wall	2	8	0	BlocksSandstone
+THING	Wall	7	8	0	BlocksSandstone
+THING	Wall	2	9	0	BlocksSandstone
+THING	Wall	3	9	0	BlocksSandstone
+THING	Wall	4	9	0	BlocksSandstone
+THING	Wall	5	9	0	BlocksSandstone
+THING	Wall	6	9	0	BlocksSandstone
+THING	Wall	7	9	0	BlocksSandstone
+THING	Door	4	2	0	WoodLog
+THING	Bedroll	6	7	0	WoodLog
+THING	Bedroll	5	7	0	WoodLog
+THING	Bedroll	3	7	0	WoodLog
+THING	DizzyCandle	4	6	0	-
+THING	AncientLockers	5	3	0	-
+THING	AncientLockers	4	5	0	-
+THING	Filth_MoldyUniform	4	5	0	-
+THING	AncientBarrel	3	3	0	-
+THING	Wall	11	2	0	BlocksSandstone
+THING	Wall	12	2	0	BlocksSandstone
+THING	Wall	13	2	0	BlocksSandstone
+THING	Wall	14	2	0	BlocksSandstone
+THING	Wall	15	2	0	BlocksSandstone
+THING	Wall	16	2	0	BlocksSandstone
+THING	Wall	17	2	0	BlocksSandstone
+THING	Wall	18	2	0	BlocksSandstone
+THING	Wall	19	2	0	BlocksSandstone
+THING	Wall	11	3	0	BlocksSandstone
+THING	Wall	19	3	0	BlocksSandstone
+THING	Wall	19	4	0	BlocksSandstone
+THING	Wall	11	5	0	BlocksSandstone
+THING	Wall	19	5	0	BlocksSandstone
+THING	Wall	11	6	0	BlocksSandstone
+THING	Wall	19	6	0	BlocksSandstone
+THING	Wall	11	7	0	BlocksSandstone
+THING	Wall	19	7	0	BlocksSandstone
+THING	Wall	11	8	0	BlocksSandstone
+THING	Wall	19	8	0	BlocksSandstone
+THING	Wall	11	9	0	BlocksSandstone
+THING	Wall	19	9	0	BlocksSandstone
+THING	Wall	11	10	0	BlocksSandstone
+THING	Wall	12	10	0	BlocksSandstone
+THING	Wall	13	10	0	BlocksSandstone
+THING	Wall	14	10	0	BlocksSandstone
+THING	Wall	15	10	0	BlocksSandstone
+THING	Wall	16	10	0	BlocksSandstone
+THING	Wall	17	10	0	BlocksSandstone
+THING	Wall	18	10	0	BlocksSandstone
+THING	Wall	19	10	0	BlocksSandstone
+THING	Door	11	4	0	WoodLog
+THING	ElectricStove	17	9	2	-
+THING	Table1x2c	16	5	1	WoodLog
+THING	DiningChair	15	6	1	WoodLog
+THING	Table1x2c	18	8	3	WoodLog
+THING	Stool	17	7	0	WoodLog
+THING	AncientLockers	18	7	0	-
+THING	AncientCrate	16	6	0	-
+THING	QE_Sign	13	3	0	WoodLog
+THING	AncientBarrel	17	6	0	-
+THING	PlantPot	18	6	0	WoodLog
+THING	AncientBarrel	17	3	0	-
+THING	PlantPot	14	4	0	WoodLog
+THING	AncientBarrel	16	8	0	-
+THING	Wall	2	11	0	BlocksSandstone
+THING	Wall	3	11	0	BlocksSandstone
+THING	Wall	5	11	0	BlocksSandstone
+THING	Wall	2	12	0	BlocksSandstone
+THING	Wall	5	12	0	BlocksSandstone
+THING	Wall	2	13	0	BlocksSandstone
+THING	Wall	5	13	0	BlocksSandstone
+THING	Wall	2	14	0	BlocksSandstone
+THING	Wall	3	14	0	BlocksSandstone
+THING	Wall	4	14	0	BlocksSandstone
+THING	Wall	5	14	0	BlocksSandstone
+THING	Door	4	11	0	WoodLog
+THING	AncientLockers	4	13	0	-
+THING	ChemfuelPoweredGenerator	7	12	0	-
+THING	Battery	10	12	0	-
+THING	PowerConduit	9	12	0	-
+THING	Filth_MachineBits	7	12	0	-
+THING	Turret_MiniTurret	9	2	0	-
+THING	Column	11	1	0	BlocksSandstone
+THING	TorchLamp	12	1	0	-
+THING	Sandbags	1	1	0	-
+THING	Sandbags	2	1	0	-
+THING	Sandbags	3	1	0	-
+THING	Sandbags	4	1	0	-
+THING	Sandbags	5	1	0	-
+THING	Sandbags	7	1	0	-
+THING	Sandbags	8	1	0	-
+THING	Sandbags	13	1	0	-
+THING	Sandbags	14	1	0	-
+THING	Sandbags	15	1	0	-
+THING	Sandbags	16	1	0	-
+THING	Sandbags	17	1	0	-
+THING	Sandbags	18	1	0	-
+THING	Sandbags	19	1	0	-
+THING	Sandbags	20	1	0	-
+THING	ElectricStove	10	14	0	-
+THING	DiningChair	10	16	2	WoodLog
+THING	DiningChair	9	15	1	WoodLog
+THING	AncientCrate	10	9	0	-
+THING	AncientCrate	10	8	0	-
+THING	AncientBarrel	8	8	0	-
+THING	Grave	14	3	1	-
+THING	Grave	13	5	0	-
+ROOF	2	2	RoofConstructed
+ROOF	2	3	RoofConstructed
+ROOF	2	4	RoofConstructed
+ROOF	2	5	RoofConstructed
+ROOF	2	6	RoofConstructed
+ROOF	2	7	RoofConstructed
+ROOF	2	8	RoofConstructed
+ROOF	2	9	RoofConstructed
+ROOF	2	11	RoofConstructed
+ROOF	2	12	RoofConstructed
+ROOF	2	13	RoofConstructed
+ROOF	2	14	RoofConstructed
+ROOF	3	2	RoofConstructed
+ROOF	3	3	RoofConstructed
+ROOF	3	4	RoofConstructed
+ROOF	3	5	RoofConstructed
+ROOF	3	6	RoofConstructed
+ROOF	3	7	RoofConstructed
+ROOF	3	8	RoofConstructed
+ROOF	3	9	RoofConstructed
+ROOF	3	11	RoofConstructed
+ROOF	3	12	RoofConstructed
+ROOF	3	13	RoofConstructed
+ROOF	3	14	RoofConstructed
+ROOF	4	2	RoofConstructed
+ROOF	4	3	RoofConstructed
+ROOF	4	4	RoofConstructed
+ROOF	4	5	RoofConstructed
+ROOF	4	6	RoofConstructed
+ROOF	4	7	RoofConstructed
+ROOF	4	8	RoofConstructed
+ROOF	4	9	RoofConstructed
+ROOF	4	11	RoofConstructed
+ROOF	4	12	RoofConstructed
+ROOF	4	13	RoofConstructed
+ROOF	4	14	RoofConstructed
+ROOF	5	2	RoofConstructed
+ROOF	5	3	RoofConstructed
+ROOF	5	4	RoofConstructed
+ROOF	5	5	RoofConstructed
+ROOF	5	6	RoofConstructed
+ROOF	5	7	RoofConstructed
+ROOF	5	8	RoofConstructed
+ROOF	5	9	RoofConstructed
+ROOF	5	11	RoofConstructed
+ROOF	5	12	RoofConstructed
+ROOF	5	13	RoofConstructed
+ROOF	5	14	RoofConstructed
+ROOF	6	2	RoofConstructed
+ROOF	6	3	RoofConstructed
+ROOF	6	4	RoofConstructed
+ROOF	6	5	RoofConstructed
+ROOF	6	6	RoofConstructed
+ROOF	6	7	RoofConstructed
+ROOF	6	8	RoofConstructed
+ROOF	6	9	RoofConstructed
+ROOF	7	2	RoofConstructed
+ROOF	7	3	RoofConstructed
+ROOF	7	4	RoofConstructed
+ROOF	7	5	RoofConstructed
+ROOF	7	6	RoofConstructed
+ROOF	7	7	RoofConstructed
+ROOF	7	8	RoofConstructed
+ROOF	7	9	RoofConstructed
+ROOF	11	2	RoofConstructed
+ROOF	11	3	RoofConstructed
+ROOF	11	4	RoofConstructed
+ROOF	11	5	RoofConstructed
+ROOF	11	6	RoofConstructed
+ROOF	11	7	RoofConstructed
+ROOF	11	8	RoofConstructed
+ROOF	11	9	RoofConstructed
+ROOF	11	10	RoofConstructed
+ROOF	12	2	RoofConstructed
+ROOF	12	3	RoofConstructed
+ROOF	12	4	RoofConstructed
+ROOF	12	5	RoofConstructed
+ROOF	12	6	RoofConstructed
+ROOF	12	7	RoofConstructed
+ROOF	12	8	RoofConstructed
+ROOF	12	9	RoofConstructed
+ROOF	12	10	RoofConstructed
+ROOF	13	2	RoofConstructed
+ROOF	13	3	RoofConstructed
+ROOF	13	4	RoofConstructed
+ROOF	13	5	RoofConstructed
+ROOF	13	6	RoofConstructed
+ROOF	13	7	RoofConstructed
+ROOF	13	8	RoofConstructed
+ROOF	13	9	RoofConstructed
+ROOF	13	10	RoofConstructed
+ROOF	14	2	RoofConstructed
+ROOF	14	3	RoofConstructed
+ROOF	14	4	RoofConstructed
+ROOF	14	5	RoofConstructed
+ROOF	14	6	RoofConstructed
+ROOF	14	7	RoofConstructed
+ROOF	14	8	RoofConstructed
+ROOF	14	9	RoofConstructed
+ROOF	14	10	RoofConstructed
+ROOF	15	2	RoofConstructed
+ROOF	15	3	RoofConstructed
+ROOF	15	4	RoofConstructed
+ROOF	15	5	RoofConstructed
+ROOF	15	6	RoofConstructed
+ROOF	15	7	RoofConstructed
+ROOF	15	8	RoofConstructed
+ROOF	15	9	RoofConstructed
+ROOF	15	10	RoofConstructed
+ROOF	16	2	RoofConstructed
+ROOF	16	3	RoofConstructed
+ROOF	16	4	RoofConstructed
+ROOF	16	5	RoofConstructed
+ROOF	16	6	RoofConstructed
+ROOF	16	7	RoofConstructed
+ROOF	16	8	RoofConstructed
+ROOF	16	9	RoofConstructed
+ROOF	16	10	RoofConstructed
+ROOF	17	2	RoofConstructed
+ROOF	17	3	RoofConstructed
+ROOF	17	4	RoofConstructed
+ROOF	17	5	RoofConstructed
+ROOF	17	6	RoofConstructed
+ROOF	17	7	RoofConstructed
+ROOF	17	8	RoofConstructed
+ROOF	17	9	RoofConstructed
+ROOF	17	10	RoofConstructed
+ROOF	18	2	RoofConstructed
+ROOF	18	3	RoofConstructed
+ROOF	18	4	RoofConstructed
+ROOF	18	5	RoofConstructed
+ROOF	18	6	RoofConstructed
+ROOF	18	7	RoofConstructed
+ROOF	18	8	RoofConstructed
+ROOF	18	9	RoofConstructed
+ROOF	18	10	RoofConstructed
+ROOF	19	2	RoofConstructed
+ROOF	19	3	RoofConstructed
+ROOF	19	4	RoofConstructed
+ROOF	19	5	RoofConstructed
+ROOF	19	6	RoofConstructed
+ROOF	19	7	RoofConstructed
+ROOF	19	8	RoofConstructed
+ROOF	19	9	RoofConstructed
+ROOF	19	10	RoofConstructed
+PAWN	Tribal_Warrior	7	3	wild	alive
+PAWN	Tribal_Warrior	11	3	wild	alive
+PAWN	Tribal_Warrior	9	3	wild	alive
