@@ -4,9 +4,12 @@ The spec is the authority: `design/RimMandrake/mod_validation_runner_spec.md`
 (owner-designed sitting 2026-09-12; every ruling in it is his, dated).
 
 ## spec
-Build `src/RimMandrake/Utils/modcheck/`: steps-file schema + parser, step
-vocabulary v1 (spawn_thing, spawn_pawn, move_pawn_to, wait_ticks, set_weather,
-set_setting, bridge_call, expect read-backs, screenshot), settings-toggle floor
+Build `src/RimMandrake/Utils/modcheck/`: the modcheck library (owner re-ruling 2026-09-12:
+per-mod PYTHON scripts on a shared library, steps-YAML dropped) — extract
+Session.mutate() from rimbench/core.py, add reconnect+post-condition polling,
+spawn-tracking teardown with pause verification (spec §1b), verb vocabulary v1
+(clear_area, spawn, spawn_pawn, walk_over, wait_ticks, set_weather,
+set_setting, bridge_call, expect_* read-backs, screenshot), settings-toggle floor
 enforcement (refuse a mod whose toggle has zero components), the run session
 (modlist_swap to MINIMAL+mod, quicktest, bridge lock, restore FULL after),
 `rimflow verify` emission, HTML sheet to `Transient/modcheck/`, auto-filed
@@ -14,7 +17,8 @@ findings on failure with run continuing, `modcheck_status.json` registry +
 `declare minor` staleness flow (minor is ONLY a trivial change without gameplay
 effect — text or a very slight parameter adjustment; the declare command records
 the diff --stat alongside the why so the claim is checkable), and the
-deploy-tool skip rule for `validation.steps.yaml`.
+deploy-tool skip rule for `validation.py`. The LLM never drives: deterministic
+run, evidence bundle, one judging pass at the end; --halt-on-fail for authoring.
 
 ## verify
 - Lint rule proven: a write step with no read-back anywhere in its component is
