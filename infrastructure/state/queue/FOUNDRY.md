@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T09:37:08Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-12T11:57:21Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -107,15 +107,6 @@ target:   v1
 kind:     build
 summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31),
 prose:    infrastructure/state/items/SETTLEMENT_VERBS_WAVE_1.md
-
-## BUILDING_THEFT_HAULER_1 Building-theft hauler droid: Droidworks heavy chassis that uninstalls and carries whole buildings off hostile maps
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-summary:  Full ruling: design/Jawa/wreckedmachinesresurrection.md (owner, 2026-08-31,
-prose:    infrastructure/state/items/BUILDING_THEFT_HAULER_1.md
 
 ## LIVESTOCK_STARTER_TRIO_1 Livestock v1: onnik kiln-belly + karrask molt-plate + moornak grief-eater, shared-art batch
 state:    doing
@@ -242,15 +233,6 @@ target:   v1
 kind:     task
 summary:  Full design + build record: design/Jawa/worldbuilding/vaultthawquestfamily.md.
 prose:    infrastructure/state/items/VAULT_THAW_QUEST_FAMILY_1.md
-
-## NINEFOLD_FIRE_HOOK_RATELIMITED_1 Fire as a Zizzik/Sh'kaar input needs an incident-level or rate-limited hook - per-fire (FireUtility.TryStartFireIn) would flood satiation in one forest fire
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-summary:  NINEFOLDFIREHOOKRATELIMITED1 — hook built, not yet proven live
-prose:    infrastructure/state/items/NINEFOLD_FIRE_HOOK_RATELIMITED_1.md
 
 ## NINEFOLD_DEBUG_GAME_READY_CRASH_1 start_debug_game_ready crashes RimWorldWin64 outright - observed live during BIOME_SPAWN_FLORA_AUDIT_1, correlates with Ninefold satiation hook firing on a burst of debug auto-research completions
 state:    doing
@@ -684,6 +666,42 @@ kind:     task
 summary:  WORLDMAPAUDITLIVECHECKS1 — the four audit checks only the live game can answer
 prose:    infrastructure/state/items/WORLDMAP_AUDIT_LIVE_CHECKS_1.md
 
+## VAPOR_PLACEMENT_CLEANUP_1 Vapor emitter part-4 cleanup per the 2026-09-12 ruled rules: magma-vent 5 out-of-lock tiles, ancient-vent ruin-only audit, swamp/ruin gas re-seat, PoisonForest toxic+green gas, helixien re-seat to junker sites in PoisonForest and the Rot (engine mechanism check first)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Part 4 fix-up from the review: magma-vent out-of-lock tiles, ancient-vent
+prose:    infrastructure/state/items/VAPOR_PLACEMENT_CLEANUP_1.md
+
+## ASHFALL_SPIRE_LANDMARK_1 Place The Spire landmark (Ashfall Research Base site): thin black needle, disc pad near top, intermittently visible through Scald turbulence — live placement + read-back per worldmap discipline; dungeon shell may follow, campaign function stays TBD (owner)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  ASHFALLSPIRELANDMARK1 — The Spire landmark, Ashfall Research Base site
+prose:    infrastructure/state/items/ASHFALL_SPIRE_LANDMARK_1.md
+
+## WORLD_NAME_FIXES_1 World name fixes (owner 2026-09-12): rename player settlement 'Colony' to 'Zeddo's Salvage Yard' (ruled, verbatim on event); Fall Line Barrens + Scald Spine near-dups and the four Ascendant Helix settlement renames land here once the owner picks from the proposal cards; one bridge pass, freeze discipline
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  Rename player settlement 'Colony' to "Zeddo's Salvage Yard" (owner-ruled,
+prose:    infrastructure/state/items/WORLD_NAME_FIXES_1.md
+
+## WEBWORK_KIT_BUILD_1 Build the Webwork biome's own mechanics kit code (RM_MapComponent_SenseWeb, RM_MapComponent_FrontCreep, RM_JobGiver_ChewAnchors, the roster's web/anchor/gutter ThingDefs) per design/Jawa/worldbuilding/biomes/kits/webwork_kit_spec.md - currently only the six generic ALPHA_MECHANICS_KIT_1 comps are built, this biome's own content kit has no build item yet; blocks SHOKKWEAVE_SOLE_SOURCE_1's border creep-web route
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  WEBWORKKITBUILD1 — Webwork biome mechanics kit (SenseWeb, FrontCreep, ChewAnchors, roster structures)
+prose:    infrastructure/state/items/WEBWORK_KIT_BUILD_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1032,16 +1050,6 @@ waiting:  needs `deploy`, game is UP
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
-## WEBWORK_KIT_BUILD_1 Build the Webwork biome's own mechanics kit code (RM_MapComponent_SenseWeb, RM_MapComponent_FrontCreep, RM_JobGiver_ChewAnchors, the roster's web/anchor/gutter ThingDefs) per design/Jawa/worldbuilding/biomes/kits/webwork_kit_spec.md - currently only the six generic ALPHA_MECHANICS_KIT_1 comps are built, this biome's own content kit has no build item yet; blocks SHOKKWEAVE_SOLE_SOURCE_1's border creep-web route
-state:    ready
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-waiting:  needs `deploy`, game is UP
-summary:  WEBWORKKITBUILD1 — Webwork biome mechanics kit (SenseWeb, FrontCreep, ChewAnchors, roster structures)
-prose:    infrastructure/state/items/WEBWORK_KIT_BUILD_1.md
-
 # NOT THIS TARGET
 
 _none._
@@ -1050,42 +1058,12 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## VAPOR_PLACEMENT_CLEANUP_1 Vapor emitter part-4 cleanup per the 2026-09-12 ruled rules: magma-vent 5 out-of-lock tiles, ancient-vent ruin-only audit, swamp/ruin gas re-seat, PoisonForest toxic+green gas, helixien re-seat to junker sites in PoisonForest and the Rot (engine mechanism check first)
+## QUICKTEST_POSTSETUP_CRASH_1 QUICKTEST_POSTSETUP_CRASH_1
 state:    proposed
 row:      unassigned
-needs:    bridge
+needs:    offline
 target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/VAPOR_PLACEMENT_CLEANUP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/VAPOR_PLACEMENT_CLEANUP_1.md
-
-## ASHFALL_SPIRE_LANDMARK_1 Place The Spire landmark (Ashfall Research Base site): thin black needle, disc pad near top, intermittently visible through Scald turbulence — live placement + read-back per worldmap discipline; dungeon shell may follow, campaign function stays TBD (owner)
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ASHFALL_SPIRE_LANDMARK_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ASHFALL_SPIRE_LANDMARK_1.md
-
-## SARLACC_WORLDMAP_RELOCATE_1 Update the canonical savegame worldmap for the accepted sarlacc design: remove sw_Sarlacc from tile 2920 (Weeping Stones oasis collision), place 2-4 cistern landmarks on ruled deep-desert regions (Glare/Long Sand/Dry Marches), full freeze discipline
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
+kind:     bug
 thin:     spec, verify and criteria all present
-summary:  - Remove the live swSarlacc landmark from tile 2920 (a
-prose:    infrastructure/state/items/SARLACC_WORLDMAP_RELOCATE_1.md
-
-## WORLD_NAME_FIXES_1 World name fixes (owner 2026-09-12): rename player settlement 'Colony' to 'Zeddo's Salvage Yard' (ruled, verbatim on event); Fall Line Barrens + Scald Spine near-dups and the four Ascendant Helix settlement renames land here once the owner picks from the proposal cards; one bridge pass, freeze discipline
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WORLD_NAME_FIXES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WORLD_NAME_FIXES_1.md
+summary:  Make startdebuggameready reach a playable quicktest map on the full
+prose:    infrastructure/state/items/QUICKTEST_POSTSETUP_CRASH_1.md
