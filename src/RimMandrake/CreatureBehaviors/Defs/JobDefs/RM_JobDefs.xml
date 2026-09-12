@@ -10,4 +10,13 @@
     <reportString>gnawing TargetA.</reportString>
   </JobDef>
 
+  <!-- RUST_CATHEDRAL_MECHANICS_1 §6 - driven by RM_JobDriver_EatCleanable,
+       requested by RM_ThinkNode_EatCleanable whenever a pawn's race carries
+       RM_EatCleanableExtension. -->
+  <JobDef>
+    <defName>RM_EatCleanable</defName>
+    <driverClass>RimMandrake.CreatureBehaviors.RM_JobDriver_EatCleanable</driverClass>
+    <reportString>cleaning up TargetA.</reportString>
+  </JobDef>
+
 </Defs>

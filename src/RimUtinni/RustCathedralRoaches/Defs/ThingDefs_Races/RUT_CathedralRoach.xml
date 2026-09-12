@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUST_CATHEDRAL_MECHANICS_1 §6 (the roaches — the land cleaners), owner
+  addendum 2026-09-07 verbatim: "...the synthetic ones strangely tough and
+  powerful. Cleaners of the area on land like the eels that live in the
+  coolant rivers."
+
+  Donor: LingLuo.Cockroach's Ling_Cockroach_Mechanoid, MEASURED 2026-09-11
+  (dnfile metadata enumeration of Ling_Cockroach.dll — confirmed
+  independently: exactly 5 TypeDefs in the whole assembly, no HarmonyLib
+  TypeRef, no game-wide hook; a direct read of the donor's own
+  1.6/Defs/Normal.xml and Patches/Core.xml, which does exactly one thing —
+  PatchOperationAdd of Corpse_Ling_Cockroach_Mechanoid into
+  ResurrectMediumMech's ingredient filter, donor-scoped, irrelevant here).
+  Donor stats: bodySize 2, healthScale 3, armor 0.8/0.8, CompProperties_TurretGun
+  -> Gun_JumpToFace (a jump-to-face melee-execution verb), custom BodyDef
+  Scorcher_SixLeg.
+
+  This is a CLONE, never a patch-in-place: the turret/jump verb, the
+  ToxInBody death-bomb hediff and the RecipeDef (player-craftable mech
+  gestation) are ALL dropped — nothing below references
+  Ling_Cockroach.Verb_JumpToFace, Ling_Cockroach.Hediff_DeadBombToQiaoKeli,
+  or Gun_JumpToFace. This is wild fauna, not a player-buildable combat mech;
+  no MediumMechanoidRecipe is declared. The body is our OWN RUT_RoachHex
+  BodyDef (below), NOT the donor's Scorcher_SixLeg — cloning the shape
+  independently keeps this def from silently breaking if the donor mod is
+  ever removed, matching "donor DLL retired from our path entirely."
+
+  bodySize does NOT scale melee damage or armor (ceiling-fields lesson):
+  shrunk to 0.22 (smaller than the organic RUT_ScarRoach's 0.25, per the
+  kit spec's 0.25/0.22 split) while armor stays donor-comparable
+  (0.75/0.75) and healthScale sits at a fraction that reads "strangely
+  tough and powerful" for its size (1.6 — INVENTED parameter, kit spec)
+  rather than being derived from the bodySize cut.
+
+  NOT wired to RM_MapComponent_BiomeAttitude (owner ruling 2026-09-07: "leave
+  the roaches out of the hum mechanics for now") — no attitude input, no
+  freeze/scatter tell, enforced structurally: nothing here references that
+  class, which does not exist yet regardless (a different, unbuilt section
+  of this item).
+
+  Wild-spawn wiring: mechanoid fauna presence in this campaign rides a
+  SEPARATE axis from the organic wildBiomes dict — the_rust_cathedral.json
+  roster's own "confidence" entry states mechanoid/Sentinel presence is
+  "EXCLUDED BY DESIGN... never encoded in wild rosters" (MECHANOID_BIOME_
+  PRESENCE_REVIEW_1). This def therefore carries NO <wildBiomes> entry.
+  ❓ UNVERIFIED: whatever GenStep/incident already spawns the roster's
+  existing mech-vermin entries (GR_Mecharat, kept in that same fauna list)
+  is presumed to be the route this def rides too, but that wiring is not
+  built or touched here — needs a live quicktest to confirm the roach
+  actually appears on a Cathedral map, which this pass was told not to run.
+
+  Salability: butcherProducts below yield RUT_CathedralRoachShell (a small
+  tradeable resource) alongside steel on death/disassembly — salable but
+  deliberately NOT "watched" by any hum/goodwill mechanic (owner ruling,
+  rationale in the item file and kit spec §6): no comp counts or reports
+  harvesting these.
+
+  Art: placeholder texPath only (Things/Pawn/Animal/RUT_CathedralRoach/...,
+  not yet populated) — deferred to the art pipe, not built this pass.
+-->
+<Defs>
+
+  <BodyDef>
+    <defName>RUT_RoachHex</defName>
+    <label>roach hex-frame</label>
+    <corePart>
+      <def>MechanicalThoraxCanManipulate</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>MechanicalNeck</def>
+          <coverage>0.10</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>MechanicalHead</def>
+              <coverage>0.80</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>ArtificialBrain</def>
+                  <coverage>0.10</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>SightSensor</def>
+                  <customLabel>left visual sensor</customLabel>
+                  <coverage>0.2</coverage>
+                </li>
+                <li>
+                  <def>SightSensor</def>
+                  <customLabel>right visual sensor</customLabel>
+                  <coverage>0.2</coverage>
+                </li>
+                <li>
+                  <def>HearingSensor</def>
+                  <customLabel>left auditory sensor</customLabel>
+                  <coverage>0.05</coverage>
+                </li>
+                <li>
+                  <def>HearingSensor</def>
+                  <customLabel>right auditory sensor</customLabel>
+                  <coverage>0.05</coverage>
+                </li>
+                <li>
+                  <def>SmellSensor</def>
+                  <coverage>0.06</coverage>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>MechanicalLeg</def>
+          <customLabel>front left leg</customLabel>
+          <coverage>0.12</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>MechanicalFoot</def>
+              <customLabel>front left foot</customLabel>
+              <coverage>0.5</coverage>
+              <groups>
+                <li>FrontLeftLeg</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>MechanicalLeg</def>
+          <customLabel>front right leg</customLabel>
+          <coverage>0.12</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>MechanicalFoot</def>
+              <customLabel>front right foot</customLabel>
+              <coverage>0.5</coverage>
+              <groups>
+                <li>FrontRightLeg</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>MechanicalLeg</def>
+          <customLabel>middle left leg</customLabel>
+          <coverage>0.12</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>MechanicalFoot</def>
+              <customLabel>middle left foot</customLabel>
+              <coverage>0.5</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>MechanicalLeg</def>
+          <customLabel>middle right leg</customLabel>
+          <coverage>0.12</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>MechanicalFoot</def>
+              <customLabel>middle right foot</customLabel>
+              <coverage>0.5</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>MechanicalLeg</def>
+          <customLabel>rear left leg</customLabel>
+          <coverage>0.12</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>MechanicalFoot</def>
+              <customLabel>rear left foot</customLabel>
+              <coverage>0.5</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>MechanicalLeg</def>
+          <customLabel>rear right leg</customLabel>
+          <coverage>0.18</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>MechanicalFoot</def>
+              <customLabel>rear right foot</customLabel>
+              <coverage>0.5</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Reactor</def>
+          <coverage>0.06</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>FluidReprocessor</def>
+          <coverage>0.04</coverage>
+          <depth>Inside</depth>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+
+  <ThingDef ParentName="BaseMechanoidWalker">
+    <defName>RUT_CathedralRoach</defName>
+    <label>cathedral roach</label>
+    <description>A small mechanoid, roach-shaped down to the twitch of its antennae, that patrols the deck plate in and near the Rust Cathedral clearing filth and scrap-waste from the ground nothing else tends. It looks fragile. It is not: strip its plating and it keeps walking, keeps cleaning, patient past any reasonable point — small, quiet, and far harder to put down than its size suggests.</description>
+    <statBases>
+      <ArmorRating_Blunt>0.75</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.75</ArmorRating_Sharp>
+      <StaggerDurationFactor>0</StaggerDurationFactor>
+      <MoveSpeed>4.2</MoveSpeed>
+      <BandwidthCost>3</BandwidthCost>
+      <MarketValue>90</MarketValue>
+    </statBases>
+    <uiIconScale>0.55</uiIconScale>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <race>
+      <body>RUT_RoachHex</body>
+      <baseBodySize>0.22</baseBodySize>
+      <baseHealthScale>1.6</baseHealthScale>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>MechanoidFullyFormed</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Mech_Scorcher_Wounded</soundWounded>
+          <soundDeath>Pawn_Mech_Scorcher_Death</soundDeath>
+          <soundCall>Pawn_Mech_Scorcher_Call</soundCall>
+        </li>
+      </lifeStageAges>
+      <mechWeightClass>Light</mechWeightClass>
+    </race>
+    <butcherProducts>
+      <Steel>4</Steel>
+      <RUT_CathedralRoachShell>1</RUT_CathedralRoachShell>
+    </butcherProducts>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_EatCleanableExtension">
+        <cleanableThingDefNames>
+          <li>Wastepack</li>
+        </cleanableThingDefNames>
+        <eatsFilth>true</eatsFilth>
+        <searchRadius>25</searchRadius>
+        <nutritionPerMeal>0</nutritionPerMeal>
+        <eatDurationTicks>5000</eatDurationTicks>
+        <seekChance>0.03</seekChance>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="BaseMechanoidKind">
+    <defName>RUT_CathedralRoach</defName>
+    <label>cathedral roach</label>
+    <labelPlural>cathedral roaches</labelPlural>
+    <race>RUT_CathedralRoach</race>
+    <combatPower>60</combatPower>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- placeholder: not yet generated, see file header -->
+          <texPath>Things/Pawn/Animal/RUT_CathedralRoach/RUT_CathedralRoach</texPath>
+          <shaderType>CutoutWithOverlay</shaderType>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+        <corpseGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_CathedralRoach/RUT_CathedralRoachCorpse</texPath>
+          <shaderType>CutoutWithOverlay</shaderType>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </corpseGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

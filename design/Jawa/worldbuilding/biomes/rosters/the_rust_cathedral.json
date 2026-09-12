@@ -12,9 +12,9 @@
       "why": "frozen sheet §4 explicitly rosters mynock flocks; R17 rules fliers cross biomes so a third appearance is not a conflict; the owner's review sheet can overrule"
     },
     {
-      "claim": "Ling_Cockroach recognizability (a cockroach is nameable)",
-      "status": "OWNER-FLAGGED",
-      "why": "sheet §4 carries the owner's own 'might work here after all' — graded keep-at-trace under that flag, eye test at review"
+      "claim": "cockroach recognizability (a cockroach is nameable)",
+      "status": "OWNER-FLAGGED, then BUILT",
+      "why": "sheet §4 carried the owner's own 'might work here after all'; the 2026-09-07 addendum built it as two clones (RUST_CATHEDRAL_MECHANICS_1 §6) rather than importing the donor directly — RUT_CathedralRoach (synthetic) rosters here, RUT_ScarRoach (organic) rosters in the_scarlands.json. Eye test at review still owed for the (placeholder) art."
     },
     {
       "claim": "scaria-mad strays",
@@ -230,11 +230,11 @@
   "fauna": [
     {
       "action": "import",
-      "band": "medium",
-      "commonality": 0.05,
-      "def": "Ling_Cockroach",
-      "law": "sheet §4 owner flag: 'the cockroaches from the cockroach mod might work here after all' — VERIFIED: mod 'Rim cockroach' live in register, bs 2.0 spd 4.5 (MEASURED); graded KEEP at trace — the lone-organic-survivor read fits 'almost nothing alive'",
-      "note": "Ling_Cockroach_Mechanoid explicitly excluded — mechanoid kind, separate axis"
+      "band": "cleaner",
+      "commonality": 0.12,
+      "def": "RUT_CathedralRoach",
+      "law": "RUST_CATHEDRAL_MECHANICS_1 §6, owner addendum 2026-09-07 ('...the synthetic ones strangely tough and powerful. Cleaners of the area on land like the eels...') SUPERSEDES the earlier sheet §4 owner-flag reading recorded here (which kept the donor's organic Ling_Cockroach in this biome as 'the lone-organic-survivor'): the addendum splits the pair by biome — organic goes to the_scarlands.json as RUT_ScarRoach, the SYNTHETIC clone belongs here. RUT_CathedralRoach is a from-scratch clone (own BodyDef RUT_RoachHex, own ThingDef/PawnKindDef) built in mandrake.rut.rustcathedralroaches — the donor's own Ling_Cockroach/Ling_Cockroach_Mechanoid are no longer referenced by this roster row at all.",
+      "note": "mechanoid kind — mechanoid/Sentinel presence is a separate axis per this file's own confidence entry above and is not itself re-litigated by this row; this row only records the roster-level import decision. Wild-spawn wiring (whatever GenStep/incident already spawns GR_Mecharat below) is UNVERIFIED for this def — needs a live quicktest, not run this pass."
     },
     {
       "action": "import",

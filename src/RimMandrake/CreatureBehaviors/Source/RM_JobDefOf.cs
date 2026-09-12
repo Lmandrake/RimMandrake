@@ -8,6 +8,8 @@ namespace RimMandrake.CreatureBehaviors
 	{
 		public static JobDef RM_Gnaw;
 
+		public static JobDef RM_EatCleanable;
+
 		static RM_JobDefOf()
 		{
 			DefOfHelper.EnsureInitializedInCtor(typeof(RM_JobDefOf));
