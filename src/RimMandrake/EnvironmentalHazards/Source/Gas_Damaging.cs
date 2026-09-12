@@ -124,7 +124,11 @@ namespace RimMandrake.EnvironmentalHazards
                     && HazardTargeting.PlantAffected(t, ext.immuneThingDefs))
                 {
                     DamageDef plantDamage = ext.plantDamageDef ?? DamageDefOf.Deterioration;
-                    t.TakeDamage(new DamageInfo(plantDamage, ext.plantDamageAmount, 0f, -1f, this));
+                    // Same hazardDamageMultiplier AffectPawn already applies to
+                    // pawn damage below — plant damage in this same burst was
+                    // left unscaled.
+                    float mult = Mathf.Max(0f, RM_EnvironmentalHazardsSettings.hazardDamageMultiplier);
+                    t.TakeDamage(new DamageInfo(plantDamage, ext.plantDamageAmount * mult, 0f, -1f, this));
                 }
             }
         }

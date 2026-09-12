@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.EnvironmentalHazards
@@ -132,7 +133,10 @@ namespace RimMandrake.EnvironmentalHazards
             Hediff hediff = pawn.health.AddHediff(p.hediffDef, part);
             if (hediff != null && p.severity > 0f)
             {
-                hediff.Severity = p.severity;
+                // hazardDamageMultiplier is documented (RM_EnvironmentalHazardsMod)
+                // as scaling every damage/severity number this kit deals — this
+                // is the one the settings retrofit missed.
+                hediff.Severity = p.severity * Mathf.Max(0f, RM_EnvironmentalHazardsSettings.hazardDamageMultiplier);
             }
         }
 
@@ -153,6 +157,10 @@ namespace RimMandrake.EnvironmentalHazards
                 }
             }
 
+            // hazardDamageMultiplier is documented as scaling every damage/
+            // severity number this kit deals — this call was missing it.
+            float mult = Mathf.Max(0f, RM_EnvironmentalHazardsSettings.hazardDamageMultiplier);
+
             for (int i = 0; i < targets.Count; i++)
             {
                 if (pawn.Dead)
@@ -167,7 +175,7 @@ namespace RimMandrake.EnvironmentalHazards
                     continue;
                 }
 
-                DamageInfo dinfo = new DamageInfo(p.damageDef, p.damageAmount, p.armorPenetration, -1f, null, targets[i]);
+                DamageInfo dinfo = new DamageInfo(p.damageDef, p.damageAmount * mult, p.armorPenetration, -1f, null, targets[i]);
                 if (!p.allowDamagePropagation)
                 {
                     dinfo.SetAllowDamagePropagation(val: false);

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.EnvironmentalHazards
@@ -90,6 +91,11 @@ namespace RimMandrake.EnvironmentalHazards
 
             List<Pawn> pawns = new List<Pawn>(map.mapPawns.AllPawnsSpawned);
 
+            // hazardDamageMultiplier is documented (RM_EnvironmentalHazardsMod)
+            // as scaling every damage/severity number this kit deals — the
+            // arming severity here was missing it.
+            float mult = Mathf.Max(0f, RM_EnvironmentalHazardsSettings.hazardDamageMultiplier);
+
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn pawn = pawns[i];
@@ -114,7 +120,7 @@ namespace RimMandrake.EnvironmentalHazards
                 Hediff hediff = pawn.health.AddHediff(ext.hediffToApply);
                 if (hediff != null && ext.initialSeverity > 0f)
                 {
-                    hediff.Severity = ext.initialSeverity;
+                    hediff.Severity = ext.initialSeverity * mult;
                 }
             }
         }
