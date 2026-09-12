@@ -52,6 +52,7 @@
     <Compile Include="CompShieldThermalVeil.cs" />
     <Compile Include="CompProperties_ShieldParticulateScreen.cs" />
     <Compile Include="CompShieldParticulateScreen.cs" />
+    <Compile Include="ShieldLandingAdvisory.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="ShipShieldsSettings.cs" />
   </ItemGroup>

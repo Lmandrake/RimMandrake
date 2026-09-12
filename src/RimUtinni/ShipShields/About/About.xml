@@ -29,10 +29,13 @@ buildings:
     `PushHeat` (the same primitives vanilla heaters/coolers use), power-only,
     never a full cancellation — the room still climbs toward extremes, just
     far more slowly.
-  - Particulate screen (shd:particulate-screen, module-gated): v1 slice only
-    clears weather-deposited filth in radius each interval. Small-animal
-    repulsion and direct weather-damage negation are NOT yet implemented —
-    see the item file's remaining-gap note.
+  - Particulate screen (shd:particulate-screen, module-gated): clears
+    weather-deposited filth in radius each interval, repels small wild
+    animals out of radius (a real vanilla flee job), and negates the one
+    concrete vanilla mechanism matching "vapor, bio contamination... damage
+    completely" — airborne Toxic Fallout exposure for pawns and crops in
+    radius. Vanilla has no other direct-HP-damage weather effect to negate
+    (sandstorms/rain only touch accuracy, move speed and mood).
 
 Canon-wide "slow-moving things pass through every shield" (shd:shield-
 collapse-evacuate) is implemented as a Harmony prefix on
@@ -41,9 +44,16 @@ collapse-evacuate) is implemented as a Harmony prefix on
 untouched pending a separate, larger call on whether to extend it further.
 
 Predictive shield-failure alerts (shd:shield-collapse-evacuate's evacuation
-warning) and the landing-hazard advisory (shd:no-hard-landing-gate) are
-explicitly OUT of this build — they are separate mechanisms, not part of the
-shield generator's own comp, and remain open work.
+warning): the bubble generator now watches its own hit-point decline and
+sends one warning letter when collapse is projected within about an
+in-game hour, clearing once it recovers.
+
+Landing-hazard advisory (shd:no-hard-landing-gate): a Harmony postfix on the
+confirmed-live `Scenario.PostGravshipLanded` hook sends a single non-blocking
+letter if the landing map has an extreme-heat or airborne-particulate hazard
+with no matching shield configured and powered. The design doc's other half
+(escalating damage ticks for staying unshielded) is a separate, larger
+mechanism and remains open work — see the item file.
 
 Full spec: design/Jawa/proposals/ship_shields_deep_design.md. Survey and
 scoping history: infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md,

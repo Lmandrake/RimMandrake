@@ -1,4 +1,105 @@
-# SHIELD_MODS_LEVERAGE_1 — v1 build slice in place, offline-verified only (FOUNDRY, 2026-09-09)
+# SHIELD_MODS_LEVERAGE_1 — particulate screen finished, predictive-failure and landing-advisory built, offline-verified only (FOUNDRY, 2026-09-12)
+
+## Build (FOUNDRY, 2026-09-12) — resumes the 2026-09-09 slice
+
+Game was mid-cold-load all session (RimWorldWin64.exe running, ShipShields
+already deployed to the live Mods folder but **not enabled in ModsConfig**)
+— bridge and world state untouched throughout, per this session's scope.
+All work below is `dotnet build` compile-clean (0 warnings, 0 errors)
+against the real `Assembly-CSharp.dll`/`0Harmony.dll`, plus every C#
+symbol used (ToxicUtility, GameConditionDefOf, LetterDefOf, FleeUtility,
+Map.Center, Pawn.BodySize, DefDatabase.GetNamedSilentFail,
+Scenario.PostGravshipLanded) confirmed via RimSage source reads before
+being called — nothing guessed.
+
+1. **Particulate screen (shd:particulate-screen) — now built in full.**
+   The 2026-09-09 slice only swept filth. This session added the two
+   pieces the item file flagged as missing:
+   - **Small-animal repulsion**: `CompShieldParticulateScreen` now scans
+     wild animals (`Faction != OfPlayer`) at or below `smallAnimalMaxBodySize`
+     (0.35, tunable) in radius and starts a real vanilla `FleeUtility.FleeJob`
+     aimed away from the generator — the same mechanism wildlife already uses
+     to flee fire or a predator, not a teleport or an invented push.
+   - **Direct weather-damage negation**: read every vanilla weather/hazard
+     source before building this (WeatherDef, GameCondition_ToxicFallout,
+     ToxicUtility) — **vanilla has no direct-HP-damage effect for wind, ash,
+     sand, smoke or rain at all** (Sandstorm only sets `accuracyMultiplier`/
+     `moveSpeedMultiplier`/mood; confirmed by reading the live WeatherDef and
+     every GameCondition source, not assumed). The one real, concrete match
+     for "vapor, bio contamination... damage completely" is **airborne Toxic
+     Fallout** (`ToxicUtility.DoAirbornePawnToxicDamage`, the `ToxicBuildup`
+     hediff, plus `GameCondition_ToxicFallout.DoCellSteadyEffects`'s
+     plant-kill/item-rot). Two new Harmony prefixes skip both effects for any
+     pawn/cell inside an active, powered, particulate-mode screen's radius.
+     Ground-pollution toxicity (`ToxicUtility.PawnToxicTickInterval`) is
+     deliberately left untouched — a different, non-airborne hazard a
+     particulate *screen* has no business filtering.
+   - Both gated by their own Mod Settings toggles
+     (`particulateAnimalRepulsionEnabled`, `particulateWeatherDamageNegationEnabled`),
+     independent of the base filth-sweep toggle.
+   - **Honest residual gap**: the design doc's "wind, ash, sand, smoke, rain"
+     language reads as more than Toxic Fallout alone, but there is no other
+     vanilla mechanism it could plausibly mean (checked, not guessed) —
+     closing that gap further would mean inventing a new damage source for
+     weather that currently has none, which is a design call for the owner,
+     not a build gap in this comp.
+
+2. **Predictive shield-failure alert (shd:shield-collapse-evacuate's
+   evacuation-warning half) — built.** `CompShieldGenerator` now samples its
+   own `currentHitPoints` every 250 ticks, projects a linear time-to-failure
+   from the decline rate, and sends one `LetterDefOf.ThreatSmall` warning
+   ("recommend the crew return to the hull") the first time projected
+   collapse falls inside roughly an in-game hour — clearing once hit points
+   recover past 60% of max so it can warn again on a second decline. Reuses
+   the same `currentHitPoints` field the base `CompProjectileInterceptor`
+   already drains from combat/EMP/forced collapse; no new stressor-tracking
+   invented. Persisted across saves (`PostExposeData`).
+
+3. **Landing-hazard advisory (shd:no-hard-landing-gate) — v1 slice built.**
+   New `ShieldLandingAdvisory.Evaluate(Map map)`, fired from a Harmony
+   postfix on `RimWorld.Scenario.PostGravshipLanded` — the hook
+   `GIZKA_HOLD_HOOK_SPIKE_1` confirmed live-firing this session for every
+   gravship landing. On landing, checks the map for an extreme-heat hazard
+   (`OutdoorTemp >= 58`, or `HeatWave`/Odyssey's `LavaFlow` game conditions)
+   and an airborne-particulate hazard (`ToxicFallout` active, or the live
+   weather's `sandRate > 0` — a field check, not a guessed modded defName,
+   so it also catches a modded dust-storm weather without naming it). For
+   each hazard present, checks whether any `RUT_ShieldGenerator` on the map
+   has the matching module unlocked, selected as current mode, and powered;
+   if not, sends one non-blocking `LetterDefOf.NeutralEvent` letter naming
+   what's missing. No hard block, ever — matches the ruling's "advise...
+   but no more than that."
+   - **Not built**: the design doc's other landing-gate half — escalating
+     damage ticks for staying unshielded, and the "lava landing causes
+     immediate severe damage" case. That needs a genuine per-tick
+     hazard-application system hooked to hazard type and shield state,
+     which is a materially larger build (own comp/GameComponent, its own
+     tuning, its own live-test pass) — correctly out of scope for this
+     session's remaining time, not attempted rather than half-built.
+
+**Deploy status**: `deploy_custom_mods.py --mod ShipShields` shows drift
+(the rebuilt DLL) and confirms ShipShields is **not currently enabled in
+ModsConfig.xml** on this machine's live list. `RimWorldWin64.exe` was
+running the entire session (mid-cold-load per this session's brief) — the
+live DLL is very likely OS-locked by the running process, so no deploy was
+attempted (`rimworld-deploy`'s "a companion DLL cannot be written while the
+game runs"). Left `needs=deploy` for the next game-down window; enabling the
+mod in ModsConfig is a separate, ceremony-gated step (`ModsConfig.xml
+writes` on CHARTER's expensive list) not done here.
+
+**Verification performed this session**: compile-only + RimSage source
+verification of every new API call, as above. **Still zero live/bridge
+verification of anything in this mod** — nothing has ever been spawned,
+shot at, landed on, or module-installed in a running game. First live pass
+(unchanged from 2026-09-09's list, plus the new mechanisms): spawn
+`RUT_ShieldGenerator`, fire a fast and slow projectile at it in Bubble mode,
+install both modules and confirm mode-cycling, force-drain hit points to
+confirm the collapse explosion and check the predictive-failure letter
+fires before it does, land a gravship on a hot/dusty map with no shield
+configured to confirm the advisory letter, and verify the particulate
+screen actually repels a wild animal and blocks a Toxic Fallout tick.
+
+## Build (FOUNDRY, 2026-09-09)
 
 ## Build (FOUNDRY, 2026-09-09)
 
