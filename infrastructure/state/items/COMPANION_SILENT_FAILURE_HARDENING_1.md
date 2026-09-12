@@ -100,3 +100,21 @@ verified present, no tool-surface removal). Confirm on next restart: a known no-
 still returns `success:false` (batches 1-3, previously verified) and spot-check a couple
 of batch 4's read-backs (e.g. royal_title's success now requires the title/favor
 read-back to match, room_get's outdoorsCheckErrors on a thrown PsychologicallyOutdoors).
+
+## 2026-09-11 update — no-op check CONFIRMED live
+
+`jawa/world_tile_set` called with no `tiles`/`range` (the tool's own true
+no-op shape) on the 592-mod full list, canonical save: `success: false`,
+`"message": "Give 'tiles' and/or 'range'."` — the fix holds. Batch 4's
+royal_title/room_get read-backs not separately spot-checked this pass (ran
+out of session time); the core verify criterion (a known no-op returns
+`success:false`) is met. #9 and the `get_cell_info` item remain DEFERRED as
+already recorded.
+
+Side finding while testing (not a hardening-audit item, filing here for the
+next pass): `jawa/spawn_batch` throws an unhandled `NullReferenceException`
+rather than a clean refusal when given a pawn-race `ThingDef` (its
+GenSpawn-only path doesn't expect one) — `jawa/spawn_pawn` is the correct
+tool for pawns and works fine. Low severity (wrong-tool-for-job, not a
+silent wrong-answer), but an unhandled NRE is still the exact class this
+item exists to close.
