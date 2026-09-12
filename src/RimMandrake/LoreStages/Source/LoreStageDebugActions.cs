@@ -73,6 +73,8 @@ namespace RimMandrake.LoreStages
                 Log.Message($"[LoreStages] ladder {table.LadderId} at stage {comp.GetStage(table.LadderId)}");
                 foreach (LoreStageTarget target in table.targets)
                 {
+                    if (target == null) continue;
+
                     Def def = LoreStageDefDatabase.Resolve(target.defType, target.defName);
                     if (def == null)
                     {

@@ -43,6 +43,15 @@ namespace RimMandrake.LoreStages
             for (int i = 0; i < targets.Count; i++)
             {
                 LoreStageTarget t = targets[i];
+                if (t == null)
+                {
+                    // <li IsNull="True"/> is legal RimWorld XML and produces a
+                    // null list entry — without this guard every field access
+                    // below throws an NRE out of ConfigErrors.
+                    yield return $"target {i}: null entry";
+                    continue;
+                }
+
                 if (t.defType.NullOrEmpty())
                 {
                     yield return $"target {i}: no defType";
@@ -67,6 +76,12 @@ namespace RimMandrake.LoreStages
                 var seen = new HashSet<int>();
                 foreach (LoreStageText s in t.stages)
                 {
+                    if (s == null)
+                    {
+                        yield return $"target {i} ({t.defName}.{t.field}): null stage entry";
+                        continue;
+                    }
+
                     if (!seen.Add(s.stage))
                     {
                         yield return $"target {i} ({t.defName}.{t.field}): duplicate stage {s.stage} — which one wins is load order, i.e. undefined";
