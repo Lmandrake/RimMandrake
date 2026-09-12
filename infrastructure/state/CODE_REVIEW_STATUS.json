@@ -9652,22 +9652,22 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Source/JawaIkee/ThoughtWorker_IkeeNearby.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "ce9df77d3eb6ce0edc1896e76e4cc17828b79dddaac3a4042e8c0ba74b1e1aae",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "0dbe8a273f7444aba8d37067bac766d57dc5752e0aa21c9c1315f2af5b55d180",
+    "sha": "4b5c50715"
   },
   "src/RimStarWars/SWBestiary/Source/Livestock/CompKilnBelly.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "9924c5231c58f986629ff953f829901ac0c4f6d53f9102c8fc0cb52eadf129fa",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "793c7938a1498f94554e8a636d2be98f8521dc464db397607d45df73e24c98a5",
+    "sha": "4b5c50715"
   },
   "src/RimStarWars/SWBestiary/Source/Livestock/CompLightAversion.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "c2ef14ba9eae77d21a0c51aa32332cfc394cef9c220d294c9c42257d6a7991b9",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "2b5ad91e09dbe0d90ff8a4c71dcd68e63b999047606881c2171d9756c1e45b0f",
+    "sha": "4b5c50715"
   },
   "src/RimStarWars/SWBestiary/art/Livestock/gen_livestock_mockups.py": {
     "cleanCount": 1,
