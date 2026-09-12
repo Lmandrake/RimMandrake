@@ -7617,6 +7617,72 @@
     "hash": "76b5f9e2ed7e11312636984ac4e769b82284b5af24fbe7ec18d7f5b52b44dd6b",
     "sha": "6784196e"
   },
+  "src/RimStarWars/BrainWorms/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "b93e2f65b589b5806086e5ef22a1f0b9295ef77803351644055a4a080f8f5457",
+    "sha": "8da0c5c8e"
+  },
+  "src/RimStarWars/BrainWorms/Defs/HediffDefs/HediffDefs_BrainWorm.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "8a47ea37404d87a7fe3d71f9c63401c5e44d8897d04aeb0724c24879e6b9b59b",
+    "sha": "8da0c5c8e"
+  },
+  "src/RimStarWars/BrainWorms/Defs/IncidentDefs/Incidents_BrainWormCargo.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "4407d83205c15285d1c982493b45affc2175e7eaffe75f8751299d444961edb1",
+    "sha": "8da0c5c8e"
+  },
+  "src/RimStarWars/BrainWorms/Defs/MentalStateDefs/MentalStateDefs_BrainWorm.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "21c9ef0c739be5fb8b847cde96c417ff77319f99fdee419a5a5d88dfbde5b5db",
+    "sha": "8da0c5c8e"
+  },
+  "src/RimStarWars/BrainWorms/Defs/RecipeDefs/Recipes_BrainWormSurgery.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "b3f23ccc5d2159581eb8e1f87eb996fdabe1bacbb3d5db01ede7f30d67252436",
+    "sha": "8da0c5c8e"
+  },
+  "src/RimStarWars/BrainWorms/Defs/ThingDefs_Items/Items_BrainWormEggs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "f03752cb6c6f1b9a6d01517368a3009f1a5b5d2dab98bdf87c5dc76950337124",
+    "sha": "8da0c5c8e"
+  },
+  "src/RimStarWars/BrainWorms/Defs/ThingDefs_Races/Races_BrainWorm.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "0b43b67ecbbc825ca05a258bd51a698d65229c8a7fb9dec3a76ca402da7fa275",
+    "sha": "3621ca51c"
+  },
+  "src/RimStarWars/BrainWorms/Defs/ThinkTreeDefs/ThinkTreeDefs_BrainWorm.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "2fd7b4722c96d0fc88a7acdbc0dc57f7c512fc12bdd5154dc421c7b24dec9597",
+    "sha": "3621ca51c"
+  },
+  "src/RimStarWars/BrainWorms/Patches/BrainWormEggs_RuinLoot.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "8ab0b9a2ba510a93daeb0ee2e7b5c077ff0d169ef0b691fd99c67cc8a42561c5",
+    "sha": "3621ca51c"
+  },
+  "src/RimStarWars/BrainWorms/Patches/BrainWormSurgery_RecipeUsers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "0ea60ec619f3678bd33d242be8adaaa5ac163ae94644fa7766c68343c3c408c6",
+    "sha": "3621ca51c"
+  },
+  "src/RimStarWars/BrainWorms/Source/BrainWormUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "ee0879b076604e7047e0fa762b9dcb5b40ec8c20c56df7a1f36dc796e9d72e00",
+    "sha": "3621ca51c"
+  },
   "src/RimStarWars/BrainWorms/Source/HediffComp_BrainWormProgress.cs": {
     "cleanCount": 1,
     "date": "2026-09-11",
