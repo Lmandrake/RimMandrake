@@ -240,3 +240,17 @@ the_greentide (the river), the_miasma, the_rot and the_fever_wood (the
 jungles). This is atmosphere on top of the soak mechanic, and for the Fever
 Wood it sits alongside — and by the owner's later word tempers — the frozen
 sheet's "giant stillness" register: the stillness now groans and shifts.
+
+## Addendum 2026-09-12 — four small proposals salvaged from a superseded duplicate draft
+
+Deleted draft (git holds it); these are PROPOSED, nothing here is ruled:
+- Ranged soak delivery: a mortar-style water-charge shell and a thrown
+  seed-bomb that starts a surge on impact (WEAPONIZE currently covers only
+  hand-splashing).
+- A named punishment for missing the bloom harvest window (toxic spore cloud
+  or a vermin/Spender swarm) — the boom-bust economy currently prices the
+  miss at zero.
+- A first-encounter Alert/letter the first time a colony-owned plant reaches
+  the tell (the SURVIVE verb names the tells but no notification mechanism).
+- Buildables for the trigger verbs: irrigation-channel/sprinkler for SOAK, a
+  cistern-breach building for FLOOD.

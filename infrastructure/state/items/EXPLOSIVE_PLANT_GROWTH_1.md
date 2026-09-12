@@ -24,11 +24,12 @@ grow.
   soaking events.
 - `FLOOD_WITNESS_EVENT_1` is the plot's guaranteed showcase of this mechanic.
 
-## Design draft done 2026-09-12 (BENCH belt wave, Fable agent)
-`design/Jawa/explosive_plant_growth_draft.md` — 4 terminal-moment options
-(Burst / Great Bloom / Deadfall / Overgrowth Surge, each with its trade) + 6
-owner cards (incl. per-biome split and action-set scope). Open holes named in
-the draft: no soak/wetness mechanism exists in the stack yet (comp-state
-definition is speculation), per-tick draw-size scaling feasibility UNMEASURED
-(build gate), all tuning numbers unset. Cards await the owner's sitting;
-no build before the ruling.
+## Design state 2026-09-12 (corrected)
+The design already existed:
+`design/Jawa/worldbuilding/explosive_plant_growth_design.md` (2026-09-10,
+soak/charge/burst + per-biome terminal moments, provenance-traced to ruled
+sheets; its Burst default and variant table are marked INVENTED, awaiting the
+owner). A duplicate draft made 2026-09-12 in ignorance of it was deleted after
+a salvage pass; four small proposals from it were carried into the canonical
+file's 2026-09-12 addendum. Terminal-moment ruling still awaits the owner's
+cards, drawn from the CANONICAL file.
