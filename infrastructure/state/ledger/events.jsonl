@@ -7472,3 +7472,7 @@
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-12T00:00:18Z"}
 {"seat":"BENCH","event":"file","id":"REMBG_CONCURRENCY_CAP_1","title":"flock-style single-run guard in rembg_cut.py per the 2026-09-11 exemption ruling","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-12T00:10:35Z"}
 {"seat":"BENCH","event":"reassign","id":"SHOKKWEAVE_SOLE_SOURCE_1","to":"FOUNDRY","ts":"2026-09-12T00:11:05Z"}
+{"seat":"FOUNDRY","event":"file","id":"ART_REGEN_WAVE8_QUEUE_1","title":"Wave 8 art regen: 3 more art:improve creatures (Kinrath, Shiro, Borcatu), canon-checked","kind":"build","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-12T00:11:35Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ART_REGEN_WAVE8_QUEUE_1","ts":"2026-09-12T00:11:36Z"}
+{"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE8_QUEUE_1","ts":"2026-09-12T00:11:37Z"}
+{"seat":"FOUNDRY","event":"close","id":"ART_REGEN_WAVE8_QUEUE_1","sha":"0221f34fb9d42bb6e6f736fa7386d307bc45e322","ts":"2026-09-12T00:11:42Z"}
