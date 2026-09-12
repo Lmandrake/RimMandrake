@@ -17,3 +17,12 @@ deprecated rows outright (git is provenance).
 ## verify
 Every MEASURED number in the planet block carries a post-freeze `_src`; no row
 cites the painted lineage.
+
+## Addendum 2026-09-12 — per-biome counts have THREE disagreeing instruments
+POISON_FOREST_REPASS_1 surfaced it concretely: PoisonForest is 546 (frozen CSV,
+2026-09-11) vs 557 (V26 live census, owner-accepted 2026-09-08) vs 604
+(canon.yml, painted lineage). The post-freeze verification (0/21872 tiles
+differ, CSV vs CANONICAL save) makes the CSV the current instrument; the other
+two are superseded lineages. When this item lands, declare the frozen CSV the
+sole census source and delete the older counts — one ruling closes the
+three-way disagreement everywhere.

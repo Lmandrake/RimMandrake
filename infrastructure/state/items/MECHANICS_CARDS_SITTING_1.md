@@ -32,6 +32,11 @@ card section (KIT_SPECS_CARD_SITTING_1 is closed; this is its successor):
   ban 5 (beldons sole source). Cut / research-gate / relax — the spec assumes
   the cut. T2: the embargo's resolution shape (break / bleed / Empire wins).
 
+- `design/Jawa/worldbuilding/biomes/poison_forest.md` §4b — 1 card: the four
+  drafted weather names (scatter-dusk, vent bloom, vapour bank, dewfall) need
+  ratification like the sibling tables; def work beyond `PoisonForestSpores`
+  rides the ruling.
+
 ## verify
 Every card ruled and propagated into its spec; contradictory phrasing deleted,
 not bannered (deciding-and-superseding).
