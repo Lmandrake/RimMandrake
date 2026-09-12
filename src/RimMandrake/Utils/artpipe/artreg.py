@@ -58,7 +58,6 @@ ART_STATUS_JSON = common.QUEUE_ROOT / "art_status.json"
 ART_STATUS_HTML = common.QUEUE_ROOT / "art_status.html"
 
 WEEKLY_WINDOW_MINUTES = 10080  # the "secondary" codex meter window == 7 days
-WEEKLY_BUDGET_USD = 20.0       # owner-ruled plan rate: 5% of the weekly window ≈ $1
 PARK_AFTER_REJECTIONS = 4      # see module docstring — resolves design-vs-item wording
 
 EVENT_TYPES = ("registered", "queued", "generated", "validated", "sheeted",
@@ -382,48 +381,46 @@ def load_throughput(path: Path = common.DEFAULT_THROUGHPUT_LOG) -> dict[str, lis
     return by_id
 
 
-def job_cost_usd(row: dict) -> tuple[float, bool]:
-    """(dollars, fully_measured). `fully_measured` is False when a codex row
-    has no usable meter pair — the dollar figure then only reflects
-    `cost_usd` (usually 0 for codex) and must be reported UNMEASURED, not a
-    silent undercount presented as a clean number."""
-    dollars = 0.0
+def job_spend(row: dict) -> tuple[float, float, bool]:
+    """(codex_window_pct, real_usd, fully_measured).
+
+    🔴 Owner, 2026-09-11: "Don't estimate dollar amounts for Codex... it
+    doesn't make sense." Codex rides the ChatGPT subscription — its honest
+    unit is PERCENT OF THE WEEKLY WINDOW (the meter's own
+    secondary_used_percent delta), never a synthesized dollar figure.
+    Real dollars exist only where the provider reports them (`cost_usd`,
+    i.e. gemini history — that channel is OFF as of the same ruling).
+    `fully_measured` is False when a codex row has no usable meter pair."""
+    pct = 0.0
     measured = True
     mb, ma = row.get("meter_before"), row.get("meter_after")
     if row.get("channel") == "codex":
         pb = mb.get("secondary_used_percent") if isinstance(mb, dict) else None
         pa = ma.get("secondary_used_percent") if isinstance(ma, dict) else None
         if pb is not None and pa is not None:
-            delta = max(0.0, pa - pb)  # clamp a window-reset wraparound to 0, not negative
-            dollars += delta / 100.0 * WEEKLY_BUDGET_USD
+            pct = max(0.0, pa - pb)  # clamp a window-reset wraparound to 0, not negative
         else:
             measured = False
-    cost_usd = row.get("cost_usd")
-    if cost_usd:  # Gemini's own reported cost — additive on top, never instead-of
-        dollars += float(cost_usd)
-    return dollars, measured
+    usd = float(row.get("cost_usd") or 0.0)
+    return pct, usd, measured
 
 
 def target_spend(job_ids: list[str], throughput: dict[str, list[dict]]) -> dict:
-    total = 0.0
+    pct_total, usd_total = 0.0, 0.0
     any_row = False
     fully_measured = True
     for jid in job_ids:
         for row in throughput.get(jid, []):
             any_row = True
-            d, m = job_cost_usd(row)
-            total += d
+            pct, usd, m = job_spend(row)
+            pct_total += pct
+            usd_total += usd
             fully_measured = fully_measured and m
-    # `status` only tracks whether any spend row was found at all — a target
-    # with a partially-measured row still reports "MEASURED" (the dollar
-    # figure just becomes a floor, not the true total; see `note` below).
     status = "MEASURED" if any_row else "UNMEASURED"
-    # any_row-but-not-fully_measured still reports the partial dollar figure,
-    # tagged so the reader knows it may be a floor, not the true total.
     note = None if fully_measured or not any_row else \
         "partial: one or more codex rows had no usable meter pair"
-    return {"usd": round(total, 4), "status": status, "note": note,
-            "pct_weekly_window": round(total / WEEKLY_BUDGET_USD * 100, 2)}
+    return {"codexPctWindow": round(pct_total, 2), "usd": round(usd_total, 4),
+            "status": status, "note": note}
 
 
 # --------------------------------------------------------------------------
@@ -595,29 +592,28 @@ def build_status(target_filter: str | None = None) -> dict:
             hist[v["renders"]] = hist.get(v["renders"], 0) + 1
 
     per_target = {}
-    total_usd, total_measured_any = 0.0, False
+    total_usd, total_pct, total_measured_any = 0.0, 0.0, False
     accepted_or_committed = 0
     for t, v in states.items():
         spend = target_spend(v["job_ids"], throughput)
         per_target[t] = {**v, "spend": spend}
         if spend["status"] == "MEASURED":
             total_usd += spend["usd"]
+            total_pct += spend["codexPctWindow"]
             total_measured_any = True
         if v["state"] in ("accepted", "committed", "deployed"):
             accepted_or_committed += 1
 
-    cost_per_accepted = None
-    if accepted_or_committed:
-        cost_per_accepted = round(total_usd / accepted_or_committed, 4)
-
-    # the weekly window is the LAST 7 DAYS of throughput, not all-time spend
-    # (owner caught 135%: all-time dollars divided by a weekly budget)
+    # the weekly window is the LAST 7 DAYS of codex meter deltas — never a
+    # dollar estimate (owner rulings 2026-09-11: true window; no codex dollars)
     cutoff = time.time() - 7 * 86400
-    week_usd = 0.0
+    week_pct, week_usd = 0.0, 0.0
     for rows in throughput.values():
         for row in rows:
             if row.get("ts", 0) >= cutoff:
-                week_usd += job_cost_usd(row)[0]
+                pct, usd, _ = job_spend(row)
+                week_pct += pct
+                week_usd += usd
 
     return {
         "generatedAt": _now_iso(),
@@ -628,11 +624,11 @@ def build_status(target_filter: str | None = None) -> dict:
         "iterationsHistogram": hist,
         "parked": parked,
         "spend": {
-            "totalUsd": round(total_usd, 4),
-            "weekUsd": round(week_usd, 4),
+            "codexPctAllTime": round(total_pct, 2),
+            "pctWeeklyWindow": round(week_pct, 2),
+            "geminiUsdTotal": round(total_usd, 4),
+            "geminiUsdWeek": round(week_usd, 4),
             "status": "MEASURED" if total_measured_any else "UNMEASURED",
-            "pctWeeklyWindow": round(week_usd / WEEKLY_BUDGET_USD * 100, 2),
-            "costPerAcceptedUsd": cost_per_accepted,
             "acceptedOrCommittedCount": accepted_or_committed,
         },
         "perTarget": per_target,
@@ -647,14 +643,10 @@ def print_status(st: dict, verbose: bool = False) -> None:
         hist = ", ".join(f"{k}:{v}" for k, v in sorted(st["iterationsHistogram"].items()))
         print(f"iterations histogram: {hist}")
     sp = st["spend"]
-    note = "" if sp["status"] == "MEASURED" or sp["totalUsd"] == 0 else " (UNMEASURED)"
-    print(f"spend: ${sp['totalUsd']:.4f}{note} = {sp['pctWeeklyWindow']}% of "
-          f"${WEEKLY_BUDGET_USD:.0f} weekly window [{sp['status']}]")
-    if sp["costPerAcceptedUsd"] is not None:
-        print(f"cost per accepted image: ${sp['costPerAcceptedUsd']:.4f} "
-              f"({sp['acceptedOrCommittedCount']} accepted/committed) [MEASURED]")
-    else:
-        print("cost per accepted image: UNMEASURED (no accepted/committed targets yet)")
+    note = "" if sp["status"] == "MEASURED" else " (UNMEASURED)"
+    print(f"codex window: {sp['pctWeeklyWindow']}% (7d){note}, "
+          f"{sp['codexPctAllTime']}% all-time; "
+          f"gemini history ${sp['geminiUsdTotal']:.2f}")
     if st["parked"]:
         print(f"PARKED / escalation list ({len(st['parked'])}):")
         for p in st["parked"]:
@@ -845,9 +837,8 @@ td,th{{border:1px solid #4a3a2a;padding:4px 8px;text-align:left;font-size:13px}}
 <div class="row">
 <div><h2>Iterations histogram</h2>{_svg_hist(st['iterationsHistogram'])}</div>
 <div><h2>Spend</h2>
-<p>${st['spend']['totalUsd']:.4f} [{st['spend']['status']}] =
- {st['spend']['pctWeeklyWindow']}% of ${WEEKLY_BUDGET_USD:.0f} weekly window</p>
-<p>cost / accepted image: {"$%.4f" % st['spend']['costPerAcceptedUsd'] if st['spend']['costPerAcceptedUsd'] is not None else "UNMEASURED"}</p>
+<p>codex window: {st['spend']['pctWeeklyWindow']}% (7d) [{st['spend']['status']}],
+ {st['spend']['codexPctAllTime']}% all-time; gemini history ${st['spend']['geminiUsdTotal']:.2f}</p>
 </div>
 </div>
 
