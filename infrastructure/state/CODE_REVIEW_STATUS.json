@@ -7960,10 +7960,10 @@
     "sha": "3621ca51c"
   },
   "src/RimStarWars/BrainWorms/Source/BrainWormUtility.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "ee0879b076604e7047e0fa762b9dcb5b40ec8c20c56df7a1f36dc796e9d72e00",
-    "sha": "3621ca51c"
+    "hash": "b1ed93ecccd9d6ab4b53c99cdae3c75144b683b6d087cf651c037cad1945f628",
+    "sha": "6e94c55d0"
   },
   "src/RimStarWars/BrainWorms/Source/BrainWormsDefOf.cs": {
     "cleanCount": 1,
@@ -7972,10 +7972,10 @@
     "sha": "3621ca51c"
   },
   "src/RimStarWars/BrainWorms/Source/CompRSWColdKill.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "a36cd6b334029b5bede6d0e62ece1057230fc24369b911f47d37d6df9bed0d91",
-    "sha": "3621ca51c"
+    "hash": "28e69c6fccdaba11cc1c35e76ed22cac57de2fed293c094136f9e727d7efc13a",
+    "sha": "6e94c55d0"
   },
   "src/RimStarWars/BrainWorms/Source/CompRSWWormBurrow.cs": {
     "cleanCount": 1,
@@ -7984,10 +7984,10 @@
     "sha": "3621ca51c"
   },
   "src/RimStarWars/BrainWorms/Source/HediffComp_BrainWormProgress.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "3d6b117f5608e4fceeb288639c965b904f07e384f666071877cb9bb3a912128f",
-    "sha": "f490557ec"
+    "hash": "86c1cf2b77b1601a021828a1c7be3cd41be925f26493a1fba52b55bfe2f8f963",
+    "sha": "6e94c55d0"
   },
   "src/RimStarWars/BrainWorms/Source/HediffComp_BrainWormPuppeteer.cs": {
     "cleanCount": 1,
@@ -8002,10 +8002,10 @@
     "sha": "3621ca51c"
   },
   "src/RimStarWars/BrainWorms/Source/IncidentWorker_BrainWormCargo.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "72b5072946e7e9d8638acb1e74b98ffd85e50e51cfdac47c3d4749be65dc7af6",
-    "sha": "3621ca51c"
+    "hash": "aa5e802841ccc8c1ec65729455e03e91cf33935dc2bef6a86f0f726929f83b60",
+    "sha": "6e94c55d0"
   },
   "src/RimStarWars/BrainWorms/Source/JobGiver_BrainWormPuppet.cs": {
     "cleanCount": 1,
@@ -8020,10 +8020,10 @@
     "sha": "3621ca51c"
   },
   "src/RimStarWars/BrainWorms/Source/Projectile_BrainWormEgg.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "4014dbe290f31825ca8a1893a9be35d2a7938408670cc95760afac50ec2e3c7d",
-    "sha": "3621ca51c"
+    "hash": "f0e8f2eafdaa08b8b0367905ea5703077f788c004345492e9ca0d6a14aae4826",
+    "sha": "6e94c55d0"
   },
   "src/RimStarWars/Cuisine/About/About.xml": {
     "cleanCount": 1,
