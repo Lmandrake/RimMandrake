@@ -94,3 +94,11 @@ warned ("landing chain can wedge forever under bridge automation"). The durable 
 pre-fuel. The owner (or a future in-person sitting) fuels the two ChemfuelTanks with
 chemfuel, lets a Founder top the console, and clicks the gravship launch gizmo → target
 tile 17007. Everything up to the wheel is done.
+
+## Constraint from GRAVSHIP_LANDING_FOG_REVEAL_1 (owner ruling 2026-09-12)
+The arrival map reserves the landing area near the map centre by overlap-cost
+minimisation (`GenStep_ReserveGravshipArea.SetStartSpot`); when the injected junkyard
+complex covers the centre, the ship lands INSIDE it. Author the structure injection at
+17007 with a central clearing at least the current hull's footprint (v2 ring: 92×86)
+plus a 2-cell margin. The reveal fix only makes the picker visible; it does not move
+the complex.
