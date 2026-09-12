@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Mudhorn creature port.
+  Ported from mlie.starwarsanimalcollection's `Mudhorn` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim; body stays the
+  vanilla `QuadrupedAnimalWithHoovesAndHorn` (no custom body needed). Its
+  Odyssey ability (SW_Rampage) was already ported for Acklay under
+  RSW_SW_Rampage (RSW_MlieWaveB_Abilities.xml) — reused here, not re-ported.
+  Its two eggs, specific meat, coarse wool and skull trophy are newly ported
+  this wave (RSW_MlieWaveC_Resources.xml); its egg tasteThought is
+  RSW_AteMudhornEgg (RSW_Bantha_Thoughts.xml). Sounds repoint to the
+  already-absorbed sound wave (RSW_Pawn_Mudhorn_*); the baby lifeStage's
+  sounds are the donor's own choice of vanilla Core's Pawn_Rhinoceros_* set,
+  left unchanged (not Mlie content, needs no RSW_ prefix). texPaths are
+  unchanged text — extracted art sits at Textures/swanimals/Mudhorn/.
+
+  Wired into the live cast this same pass: AridShrubland at 0.8, Desert at 0.4
+  (donor's own wildBiomes weights), repointed from the bare "Mudhorn" entry in
+  cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Mudhorn</defName>
+    <label>mudhorn</label>
+    <description>Mudhorns were large horned creatures that originated from the planet Arvala-7. The eggs of mudhorns were considered a delicacy by Jawas. It was this reason that populations of these creatures were established on other worlds as a result of unscrupulous bartering deals.</description>
+    <statBases>
+      <MoveSpeed>4.0</MoveSpeed>
+      <ComfyTemperatureMin>-25</ComfyTemperatureMin>
+      <ComfyTemperatureMax>70</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.24</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.24</ArmorRating_Sharp>
+      <CaravanRidingSpeedFactor>1.6</CaravanRidingSpeedFactor>
+      <MarketValue>2000</MarketValue>
+      <Wildness>0.90</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>horn</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Blunt</li>
+        </capacities>
+        <power>26</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>19</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>26</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggMudhornUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggMudhornFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1</eggCountRange>
+      </li>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RSW_WoolCoarse</woolDef>
+        <shearIntervalDays>15</shearIntervalDays>
+        <woolAmount>120</woolAmount>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHorn</body>
+      <predator>true</predator>
+      <maxPreyBodySize>2.5</maxPreyBodySize>
+      <baseHungerRate>1.5</baseHungerRate>
+      <baseBodySize>4.0</baseBodySize>
+      <baseHealthScale>4.5</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal, AnimalProduct</foodType>
+      <manhunterOnTameFailChance>0.60</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>50</lifeExpectancy>
+      <trainability>Advanced</trainability>
+      <packAnimal>true</packAnimal>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <specificMeatDef>RSW_Pachydermoid_Meat</specificMeatDef>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Rampage</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.8</AridShrubland>
+        <Desert>0.4</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.0</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.0</TemperateForest>
+        <BorealForest>0.1</BorealForest>
+        <Tundra>0.08</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+          <soundCall>Pawn_Rhinoceros_Call</soundCall>
+          <soundAngry>Pawn_Rhinoceros_Angry</soundAngry>
+          <soundWounded>Pawn_Rhinoceros_Wounded</soundWounded>
+          <soundDeath>Pawn_Rhinoceros_Death</soundDeath>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundCall>RSW_Pawn_Mudhorn_Call</soundCall>
+          <soundAngry>RSW_Pawn_Mudhorn_Angry</soundAngry>
+          <soundWounded>RSW_Pawn_Mudhorn_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Mudhorn_Death</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>BadassAnimal</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Mudhorn</defName>
+    <label>mudhorn</label>
+    <race>RSW_Mudhorn</race>
+    <combatPower>475</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Rampage</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>mudpup</label>
+        <labelPlural>mudpups</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Mudhorn/Mudhorn_j</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Mudhorn/Mudhorn_j_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Mudhorn/Mudhorn</texPath>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Mudhorn/Mudhorn_Dessicated</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Mudhorn/Mudhorn</texPath>
+          <drawSize>4.5</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Mudhorn/Mudhorn_Dessicated</texPath>
+          <drawSize>4.5</drawSize>
+        </dessicatedBodyGraphicData>
+        <butcherBodyPart>
+          <bodyPartGroup>HeadAttackTool</bodyPartGroup>
+          <thing>RSW_MudhornSkull</thing>
+          <allowFemale>true</allowFemale>
+        </butcherBodyPart>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>

@@ -131,11 +131,12 @@ item's own criteria.
       csv` this pass (not the stale 2026-09-02 census) and found ABSENT from
       both — dropped in a later biome-authoring session, no longer a measured
       dependency. See "2026-09-09 (FOUNDRY)" below for the full account.
-- [ ] A full non-scan-grade defName sweep run before Wave C is scoped —
-      MORE urgent now: this pass found the 2026-09-02 census already stale
-      (3 species silently dropped from the live cast since), so the ~135
-      "depended-on" baseline itself needs re-measuring, not just extending.
-- [ ] Wave C (remainder) absorbed.
+- [x] A full non-scan-grade defName sweep run before Wave C is scoped — DONE
+      2026-09-12: superseded the stale ~135 scan-grade guess with a measured
+      count. See "2026-09-12 (FOUNDRY)" below.
+- [~] Wave C (remainder): 2 of 91 measured-live species absorbed this pass
+      (Iriaz, Mudhorn). 89 remain — full worklist in
+      `infrastructure/state/facts/mlie_wave_c_worklist.json`.
 - [ ] Our own 3 Mlie-touching patch files repointed and confirmed resolving.
 - [ ] A full-list cold load with Mlie disabled proves clean (separate,
       later item — this item's own bar is "the replacement exists and
@@ -415,3 +416,120 @@ checked this pass; still owed regardless of wave progress.
 Nuna), plus Fambaa, plus whatever the overdue full sweep reveals once run —
 the true remaining count is UNMEASURED until that sweep happens, not 130
 exactly. Item stays `doing`.
+
+## 2026-09-12 (FOUNDRY) — the overdue defName-drift sweep, 2 species ported
+
+**The sweep, done properly this time.** Built the worklist from the LIVE
+design artifact, not a sample: every row in `design/Jawa/fauna/cast_assignment.csv`
+whose `mod` column still reads `Star Wars Animal Collection (Continued)` (i.e.
+still on the donor, not yet repointed to an `RSW_` port) — **91 distinct
+defNames**, each attributed to the real biome(s) it is cast into today. Cross-
+checked all 91 against the donor's own currently-installed
+`Races_Animal_SW.xml` (workshop folder `3497316713`, `Mlie.StarWarsAnimalCollection`,
+read directly off disk — 160 `<ThingDef>` entries total under
+`ThingDefs_Races`).
+
+**Result: 0 drift.** All 91 cast-referenced species are still present, byte-
+identical defName, in the donor's live content. Nothing in the currently
+load-bearing set has been renamed or removed upstream — the earlier
+"stale baseline" problem was entirely about `cast_assignment.csv`/
+`BiomeCast_Ashkarr.xml` itself drifting out of sync with the item's own
+notes (Reek/Tauntaun/Nexu quietly dropped, already caught 2026-09-09), not
+about the donor mod changing under us. **This measured 91-species figure
+supersedes the old "~135 Tier A/B" scan-grade guess** as the corrected,
+current Wave C worklist — full detail (donor defName, biomes,
+confirmed-in-donor flag) written to
+`infrastructure/state/facts/mlie_wave_c_worklist.json` for whoever continues.
+
+🪤 **RimSage was tried first and found blind to this entire mod** — `search_defs`
+returns "No results found" for `Bantha`, `Nuna`, `Krayt`, `Wraid`, `Anooba`
+(all confirmed live donor content) while vanilla `Muffalo`, `Thrumbo`,
+`Leather_*` and `Pawn_Rhinoceros_*` resolve fine through the same tool. Per
+CHARTER's own instrument order, fell back to the donor's raw XML on disk —
+the correct fallback, not a shortcut, and the result (0 drift) was
+subsequently confirmed by the successful `validate_patch.py` run below. Worth
+flagging: RimSage's index appears to exclude `mlie.starwarsanimalcollection`
+specifically, not modded content in general.
+
+**Ported this pass: Iriaz and Mudhorn** (2 of the 91), chosen because both
+use **vanilla** RimWorld bodies (`QuadrupedAnimalWithHooves`,
+`QuadrupedAnimalWithHoovesAndHorn` — no custom `BodyDef` needed) and their
+sounds were already absorbed in the 2026-09-02 sound wave
+(`RSW_Pawn_Iriaz_*`, `RSW_Pawn_Mudhorn_*`). Full dependency graph checked
+per-creature, not assumed:
+- `RSW_Iriaz` needed **no new resource** — repoints `specificMeatDef` to the
+  already-ported `RSW_Reptomammal_Meat` (Wave B); leather stays vanilla
+  `Leather_Lizard`.
+- `RSW_Mudhorn` needed 5 new resource ports (all in
+  `RSW_MlieWaveC_Resources.xml`): `RSW_EggMudhornFertilized`/
+  `UnFertilized`, `RSW_Pachydermoid_Meat`, `RSW_WoolCoarse`,
+  `RSW_MudhornSkull` (its butcher-body-part trophy) — plus one `ThoughtDef`,
+  `RSW_AteMudhornEgg` (its egg's `tasteThought`), added to the existing
+  `RSW_Bantha_Thoughts.xml`. Its Odyssey ability (`SW_Rampage`) needed no new
+  port — already exists as `RSW_SW_Rampage` from the Acklay port (Wave B),
+  reused as-is.
+
+**Art**: extracted via `extract_bundle.py` from the same AssetBundle every
+prior wave used (`python.exe`, native `C:\...` paths — `/mnt/c/...` paths
+are silently misread by this environment's `python.exe`, confirmed again
+this pass). 19 PNGs extracted and placed at the donor's own texPath casing
+(`Textures/swanimals/Iriaz/`, `Textures/swanimals/Mudhorn/`,
+`Textures/swresource/Meat_Pachydermoid/`, `Textures/swresource/EggFurry/`,
+`Textures/swresource/Trophies/MudhornSkull.png`); `Leather_Wool` art already
+existed in this mod from an earlier pass, reused unchanged.
+
+**Wired into the live cast, both files**: `design/Jawa/fauna/BiomeCast_Ashkarr.xml`
+(the design source) and its deployed copy
+`src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml` — renamed the
+`<Iriaz>`/`<Mudhorn>` `wildAnimals` value tags to `<RSW_Iriaz>`/`<RSW_Mudhorn>`
+in place (3 Iriaz rows: AridShrubland 1.0, Desert 0.1, ZBiome_Grasslands 0.5;
+1 Mudhorn row: AridShrubland 0.8), left the enclosing
+`MayRequire="mlie.starwarsanimalcollection"` gating untouched — same pattern
+as every prior wave's rename. `cast_assignment.csv` updated to match (mod
+column repointed to `RimMandrake: SW — Bestiary`, reason field annotated).
+
+⚠️ **Left alone, deliberately**: `design/Jawa/fauna/BiomeCast_Ashkarr.xml`
+carries a much larger generated section (938 `PatchOperationConditional` +
+`PatchOperationRemove` blocks stripping every animal ThingDef's own native
+`race/wildBiomes/<VanillaBiome>` entry, one block per species per biome —
+clearly `gen_cast_patch.py` output) that the deployed copy does **not**
+contain at all (1353 lines vs. 7032). This looks like a real divergence
+between the design source and what's shipped, and it already has bare-name
+placeholder blocks for `Iriaz`/`Mudhorn` (harmless no-ops now) but no
+`RSW_Iriaz`/`RSW_Mudhorn` companion the way `RSW_Bantha` has one. Did **not**
+hand-add companions here — that section reads as generator output, and
+hand-editing a generated block risks exactly the "patch a curated artifact,
+never re-allocate" trap. Flagging for whoever next runs `gen_cast_patch.py`
+against a fresh capture; not a blocker for this item's own bar (the
+replacement exists and resolves).
+
+**Validated**: `validate_patch.py` against all 5 touched/new files (2 new
+ThingDef/PawnKindDef files, 1 new resource file, 1 touched thought file, the
+patched `BiomeCast_Ashkarr.xml`) — **0 errors, 1 warning** (the same
+pre-existing Comigo's Greater Swamps xpath ambiguity the 2026-09-09 pass
+already noted, unrelated to this change). All new defNames confirmed unique
+in-repo (`grep`, no collisions). All texPaths confirmed present on disk at
+the exact case the defs reference.
+
+**Deployed**: `deploy_custom_mods.py --mod SWBestiary --apply` (22 files
+written clean) and `--mod UtinniPatches --apply` (the patch file written
+clean). Both runs hit the same one pre-existing, expected failure — a
+companion DLL locked by the running game (`RimMandrakeLivestockRSW.dll`,
+`RimMandrake.Utinni.UtinniPatches.dll`) — unrelated to this pass's XML/PNG
+changes, which deploy regardless of the game being up. **No live cold-load
+proof yet** — owed to the next natural restart, matching every prior wave's
+established pattern.
+
+**Not done, explicitly**: the other 89 species in the corrected worklist
+(`mlie_wave_c_worklist.json`). Fambaa still rides the donor (carried over,
+untouched again this pass). The 3 Mlie-touching patch files
+(`BehemothArtUpres_StarWarsAnimalCollection.xml`,
+`AnimalDessicatedTexPaths_Fix.xml`, `AnimalBiomeDuplicates_Fix.xml`) — still
+not checked, still owed. The `gen_cast_patch.py` design/deployed divergence
+noted above.
+
+**Remaining, precisely**: 89 of the measured 91-species Wave C worklist
+(91 − 2 ported this pass), plus Fambaa (10th already-known Tier B holdout,
+outside the 91 count since it wasn't re-verified this pass — carried
+forward unchanged). This is now a MEASURED count, not a floor. Item stays
+`doing`.

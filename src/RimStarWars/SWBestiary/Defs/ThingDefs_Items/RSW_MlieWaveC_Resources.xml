@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — resource ThingDefs Mudhorn needs: its two
+  eggs (CompProperties_EggLayer), its specific meat, its coarse wool
+  (CompProperties_Shearable), and its butcher-body-part skull trophy.
+
+  Ported verbatim from mlie.starwarsanimalcollection's (workshop folder
+  3497316713) ThingDefs_Items/Items_Resource_swanimal_Items.xml, each defName
+  flat-RSW_-prefixed. texPaths are UNCHANGED text — swresource/EggFurry and
+  swresource/Meat_Pachydermoid were extracted to the same relative
+  Textures/swresource/ path the donor used (same pattern as prior waves);
+  swresource/Leather_Wool/Leather_Wool.png already exists in this mod from an
+  earlier absorption pass, so RSW_WoolCoarse needed no new art.
+
+  Iriaz (this wave's other species) needed no new resource — it repoints to
+  the already-ported RSW_Reptomammal_Meat (RSW_MlieWaveB_Resources.xml).
+-->
+<Defs>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggMudhornFertilized</defName>
+    <label>mudhorn egg (fert.)</label>
+    <description>A fertilized mudhorn egg. If all goes well, it should hatch into a baby mudhorn. It can be eaten raw or cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggFurry</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>1.0</drawSize>
+      <color>(100,50,0)</color>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>100.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Mudhorn</hatcherPawn>
+      </li>
+    </comps>
+    <ingestible>
+      <joy>0.12</joy>
+      <joyKind>Gluttonous</joyKind>
+      <tasteThought>RSW_AteMudhornEgg</tasteThought>
+      <specialThoughtAsIngredient>RSW_AteMudhornEgg</specialThoughtAsIngredient>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggMudhornUnFertilized</defName>
+    <label>mudhorn egg (unfert.)</label>
+    <description>An unfertilized mudhorn egg. It can be eaten raw or cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggFurry</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>1.0</drawSize>
+      <color>(100,50,0)</color>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>100.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <joy>0.12</joy>
+      <joyKind>Gluttonous</joyKind>
+      <tasteThought>RSW_AteMudhornEgg</tasteThought>
+      <specialThoughtAsIngredient>RSW_AteMudhornEgg</specialThoughtAsIngredient>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Pachydermoid_Meat</defName>
+    <label>pachydermoid meat</label>
+    <description>A piece of meat from a pachydermoid.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Pachydermoid</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="WoolBase">
+    <defName>RSW_WoolCoarse</defName>
+    <label>coarse wool</label>
+    <description>While somewhat coarse, this wool offers some insulation.</description>
+    <statBases>
+      <StuffPower_Insulation_Cold>24</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>8</StuffPower_Insulation_Heat>
+    </statBases>
+    <graphicData>
+      <texPath>swresource/Leather_Wool/Leather_Wool</texPath>
+      <color>(100,50,0)</color>
+    </graphicData>
+    <stuffProps>
+      <color>(100,50,0)</color>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="ResourceBase">
+    <defName>RSW_MudhornSkull</defName>
+    <label>mudhorn skull</label>
+    <description>A mudhorn skull. These fearsome trophies were often displayed to show-off hunting prowess.</description>
+    <graphicData>
+      <texPath>swresource/Trophies/MudhornSkull</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>500</MarketValue>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>4.0</Mass>
+      <Flammability>0.1</Flammability>
+      <DeteriorationRate>0.3</DeteriorationRate>
+    </statBases>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <stackLimit>10</stackLimit>
+    <relicChance MayRequire="Ludeon.RimWorld.Odyssey">2</relicChance>
+    <comps>
+      <li Class="CompProperties_Styleable">
+      </li>
+    </comps>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>Exotic</li>
+    </tradeTags>
+  </ThingDef>
+</Defs>

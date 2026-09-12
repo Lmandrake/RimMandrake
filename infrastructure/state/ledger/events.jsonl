@@ -7682,3 +7682,7 @@
 {"seat":"BENCH","event":"close","id":"CSV_REGION_SYNC_1","sha":"0b3c6d937","ts":"2026-09-12T07:40:31Z"}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"WORLDMAP_FINAL_REVIEW_1 planet screenshot captures (BENCH night agent #2)","ts":"2026-09-12T07:41:06Z"}
 {"seat":"FOUNDRY","event":"close","id":"LIQUID_TYPES_SPIKES_1","sha":"4457f42c18f343e45d8d1f05fe850bd515a230a9","ts":"2026-09-12T07:50:31Z"}
+{"seat":"FOUNDRY","event":"reclaim","id":"SHOKKWEAVE_SOLE_SOURCE_1","reason":"Stale-queue audit 2026-09-12: STILL LIVE, 3 of 4 Webwork harvest routes unbuilt; owner AFK, reclaiming to keep BELT floor busy","ts":"2026-09-12T07:51:49Z"}
+{"seat":"FOUNDRY","event":"reclaim","id":"SHOKKWEAVE_SOLE_SOURCE_1","ts":"2026-09-12T07:52:27Z"}
+{"seat":"FOUNDRY","event":"start","id":"SHOKKWEAVE_SOLE_SOURCE_1","ts":"2026-09-12T07:52:27Z"}
+{"seat":"FOUNDRY","event":"note","id":"MLIE_FAUNA_ABSORPTION_1","text":"defName-drift sweep done: 0 drift, corrected worklist is 91 measured species (cast_assignment.csv vs donor's live Races_Animal_SW.xml), superseding the stale ~135 guess. Ported+wired Iriaz+Mudhorn this pass (89 remain, see mlie_wave_c_worklist.json). Stays doing.","ts":"2026-09-12T07:53:38Z"}

@@ -1,0 +1,703 @@
+{
+  "generated": "2026-09-12, FOUNDRY, MLIE_FAUNA_ABSORPTION_1 defName-drift sweep",
+  "method": "cast_assignment.csv rows where mod == 'Star Wars Animal Collection (Continued)' (i.e. still on the donor, not yet ported), cross-checked against every <defName> in the donor's OWN currently-installed Races_Animal_SW.xml (workshop folder 3497316713, packageId Mlie.StarWarsAnimalCollection, 160 ThingDefs) read directly off disk. RimSage's def index was tried first and found blind to this mod entirely (does not resolve Bantha/Nuna/Krayt/Wraid/Muffalo-adjacent SW content at all, while vanilla Muffalo/Thrumbo/Leather_* resolve fine) -- fell back to the donor's raw XML per CHARTER's own fallback order.",
+  "result": "0 drift: all 91 species below are confirmed present, unchanged, in the donor's currently-installed defs. This supersedes the item's old ~135 'Tier A/B depended-on' scan-grade guess with a measured, exact, currently-load-bearing worklist.",
+  "already_ported_and_wired_before_this_pass": [
+    "RSW_Bantha",
+    "RSW_Dewback",
+    "RSW_Vulptex",
+    "RSW_Porg",
+    "RSW_Nuna",
+    "RSW_Wampa",
+    "RSW_Acklay"
+  ],
+  "ported_and_wired_this_pass_2026-09-12": [
+    "RSW_Iriaz",
+    "RSW_Mudhorn"
+  ],
+  "remaining_worklist_count": 89,
+  "remaining_worklist": [
+    {
+      "donor_defName": "Anooba",
+      "biomes": [
+        "AB_MiasmicMangrove",
+        "AridShrubland",
+        "ZBiome_Grasslands"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Beldon",
+      "biomes": [
+        "AB_PyroclasticConflagration",
+        "BiomeCypreJungle",
+        "LavaField",
+        "Volcano"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Bolotaur",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Boma",
+      "biomes": [
+        "ZBiome_DesertOasis"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Borcatu",
+      "biomes": [
+        "Wasteland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "CanCell",
+      "biomes": [
+        "ZBiome_Badlands"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Cannok",
+      "biomes": [
+        "AridShrubland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Clodhopper",
+      "biomes": [
+        "BiomeCypreJungle",
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Convor",
+      "biomes": [
+        "AridShrubland",
+        "BiomeCypreJungle",
+        "COMIGO_GreaterSwamp_Tropical",
+        "ZBiome_Badlands"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Corinathoth",
+      "biomes": [
+        "AridShrubland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Dactillion",
+      "biomes": [
+        "ZBiome_DesertOasis"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Dalgo",
+      "biomes": [
+        "BiomeCypreJungle"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Dianoga",
+      "biomes": [
+        "BiomeCypreJungle"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Dragonsnake",
+      "biomes": [
+        "BiomeCypreJungle"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Eopie",
+      "biomes": [
+        "AridShrubland",
+        "Desert",
+        "ZBiome_Badlands",
+        "ZBiome_DesertOasis"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Falumpaset",
+      "biomes": [
+        "BiomeCypreJungle",
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Fambaa",
+      "biomes": [
+        "BiomeCypreJungle",
+        "COMIGO_GreaterSwamp_Tropical"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Fanback",
+      "biomes": [
+        "ZBiome_DesertOasis"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "FeralGrazer",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "FeralNerf",
+      "biomes": [
+        "AridShrubland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "FrilledGorg",
+      "biomes": [
+        "AridShrubland",
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Gelagrub",
+      "biomes": [
+        "BiomeCypreJungle",
+        "COMIGO_GreaterSwamp_Tropical"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Gizka",
+      "biomes": [
+        "AridShrubland",
+        "BiomeCypreJungle",
+        "Desert",
+        "ExtremeDesert",
+        "ZBiome_Grasslands"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Gorg",
+      "biomes": [
+        "AridShrubland",
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Gornt",
+      "biomes": [
+        "ZBiome_Badlands"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "GraniteSlug",
+      "biomes": [
+        "ExtremeDesert",
+        "PoisonForest"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Grank",
+      "biomes": [
+        "AB_MiasmicMangrove",
+        "AridShrubland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "GreaterKraytDragon",
+      "biomes": [
+        "ExtremeDesert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Gutkurr",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Hawkbat",
+      "biomes": [
+        "BiomeCypreJungle"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Horax",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Hrumph",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Hssiss",
+      "biomes": [
+        "BiomeCypreJungle"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Igitz",
+      "biomes": [
+        "AridShrubland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "IridonianReek",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Jakobeast",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Jamel",
+      "biomes": [
+        "Desert",
+        "ZBiome_DesertOasis"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Jimvu",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Kinrath",
+      "biomes": [
+        "BiomeCypreJungle"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Klorslug",
+      "biomes": [
+        "BiomeCypreJungle"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "KowakianMonkeyLizard",
+      "biomes": [
+        "AridShrubland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "KraytDragon",
+      "biomes": [
+        "ExtremeDesert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Kreetle",
+      "biomes": [
+        "AB_FeraliskInfestedJungle",
+        "AB_MiasmicMangrove",
+        "AridShrubland",
+        "Desert",
+        "ExtremeDesert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Krykna",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Kwi",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Kybuck",
+      "biomes": [
+        "AridShrubland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "LavaFlea",
+      "biomes": [
+        "AB_PyroclasticConflagration",
+        "LavaField",
+        "Volcano"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "LongtailGorg",
+      "biomes": [
+        "AridShrubland",
+        "COMIGO_GreaterSwamp_Tropical",
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Lothcat",
+      "biomes": [
+        "AridShrubland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Lylek",
+      "biomes": [
+        "BiomeCypreJungle"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Massiff",
+      "biomes": [
+        "AridShrubland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Mott",
+      "biomes": [
+        "BiomeCypreJungle"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Mynock",
+      "biomes": [
+        "AridShrubland",
+        "Desert",
+        "ExtremeDesert",
+        "PoisonForest",
+        "Scarlands"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Neebray",
+      "biomes": [
+        "PoisonForest"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Nerf",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Nuna",
+      "biomes": [
+        "AridShrubland",
+        "BiomeCypreJungle",
+        "COMIGO_GreaterSwamp_Tropical",
+        "Desert",
+        "ZBiome_Grasslands"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Ollopom",
+      "biomes": [
+        "ZBiome_DesertOasis"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Orray",
+      "biomes": [
+        "ZBiome_Grasslands"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "PekoPeko",
+      "biomes": [
+        "BiomeCypreJungle"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Pikobis",
+      "biomes": [
+        "AridShrubland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Pufferpig",
+      "biomes": [
+        "AridShrubland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Qormot",
+      "biomes": [
+        "AridShrubland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Ronto",
+      "biomes": [
+        "AridShrubland",
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Runyip",
+      "biomes": [
+        "AB_MiasmicMangrove",
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Scavrat",
+      "biomes": [
+        "AridShrubland",
+        "Desert",
+        "ExtremeDesert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Scurrier",
+      "biomes": [
+        "AridShrubland",
+        "ExtremeDesert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Shaak",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Shiro",
+      "biomes": [
+        "AB_MiasmicMangrove",
+        "BiomeCypreJungle"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "ShiroTrap",
+      "biomes": [
+        "BiomeCypreJungle"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Shyrack",
+      "biomes": [
+        "AB_FeraliskInfestedJungle",
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Skalder",
+      "biomes": [
+        "AridShrubland",
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Sketto",
+      "biomes": [
+        "AridShrubland",
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Strill",
+      "biomes": [
+        "AridShrubland"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "TeeMuss",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Urusai",
+      "biomes": [
+        "AridShrubland",
+        "COMIGO_GreaterSwamp_Tropical"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Uvak",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Varactyl",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Voorpak",
+      "biomes": [
+        "AridShrubland",
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Vornskyr",
+      "biomes": [
+        "AB_MiasmicMangrove"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "WarWyrm",
+      "biomes": [
+        "ExtremeDesert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Whisperbird",
+      "biomes": [
+        "AB_MiasmicMangrove",
+        "AridShrubland",
+        "BiomeCypreJungle",
+        "COMIGO_GreaterSwamp_Tropical"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "WompRat",
+      "biomes": [
+        "AridShrubland",
+        "Desert",
+        "ExtremeDesert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Woolamander",
+      "biomes": [
+        "ZBiome_Badlands"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Worrt",
+      "biomes": [
+        "AridShrubland",
+        "BiomeCypreJungle",
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Wraid",
+      "biomes": [
+        "Desert"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Wyyyschokk",
+      "biomes": [
+        "AB_FeraliskInfestedJungle"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Yobshrimp",
+      "biomes": [
+        "AB_MiasmicMangrove"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Zakkeg",
+      "biomes": [
+        "AB_MiasmicMangrove"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    },
+    {
+      "donor_defName": "Zeer",
+      "biomes": [
+        "Desert",
+        "ZBiome_Grasslands"
+      ],
+      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
+    }
+  ]
+}
