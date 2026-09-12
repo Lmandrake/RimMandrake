@@ -19,7 +19,11 @@ namespace RimMandrake.Utinni.ScavengerEvents
     /// </summary>
     public class IncidentWorker_Thanksgiving : IncidentWorker
     {
-        private const int DropRadius = 110;
+        // NOT a radius -- see IncidentWorker_SurvivalPod's PodOpenDelayTicks
+        // comment: DropPodUtility.DropThingsNear's 4th positional param is
+        // openDelay (ticks), verified via RimSage against the live signature;
+        // there is no radius parameter on this overload.
+        private const int PodOpenDelayTicks = 110;
         private const float NutritionThresholdPerColonist = 4f;
         private const int MinStack = 20;
         private const int MaxStack = 40;
@@ -50,7 +54,7 @@ namespace RimMandrake.Utinni.ScavengerEvents
             AddStackedMeal(contents, "MealFine");
 
             IntVec3 dropSpot = DropCellFinder.RandomDropSpot(map);
-            DropPodUtility.DropThingsNear(dropSpot, map, contents, DropRadius, false, false, true, true, true, null);
+            DropPodUtility.DropThingsNear(dropSpot, map, contents, PodOpenDelayTicks, false, false, true, true, true, null);
 
             Find.LetterStack.ReceiveLetter(
                 "RUT_Thanksgiving".Translate(),

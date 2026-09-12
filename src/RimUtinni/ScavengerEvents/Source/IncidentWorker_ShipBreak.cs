@@ -20,7 +20,14 @@ namespace RimMandrake.Utinni.ScavengerEvents
     /// </summary>
     public class IncidentWorker_ShipBreak : IncidentWorker
     {
-        private const int DropRadius = 110;
+        // NOT a radius -- DropPodUtility.DropThingsNear(dropCenter, map, things,
+        // openDelay=110, ...) has no radius parameter at all (TryFindDropSpotNear
+        // searches a fixed internal radius around dropCenter); this 4th positional
+        // arg is openDelay in ticks. 110 is that overload's own default, kept as-is
+        // here rather than guessed-changed to match the refugee/corpse pods' 180
+        // (verified against the live DropPodUtility.cs signature via RimSage --
+        // the mechanism reference doc's "radius 110" note was itself a guess).
+        private const int LootPodOpenDelayTicks = 110;
         private const int OpenDelayTicks = 180;
         private const float MinBudget = 150f;
         private const float MaxBudget = 900f;
@@ -59,6 +66,23 @@ namespace RimMandrake.Utinni.ScavengerEvents
             Pawn victim = PawnGenerator.GeneratePawn(victimRequest);
 
             HealthUtility.DamageUntilDowned(survivor);
+
+            // Bug fix: victim is freshly generated (PawnGenerator.GeneratePawn),
+            // so it is neither Spawned nor a world pawn yet. Verified against
+            // Verse/Pawn.cs Kill() via RimSage: with holdingOwner==null and
+            // IsWorldPawn()==false, Kill()'s own corpse branch is the *else*
+            // ("corpse = MakeCorpse(...)"), which manufactures its OWN Corpse
+            // holding victim and sets victim.holdingOwner to that hidden
+            // corpse's container. The manual "corpse.InnerPawn = victim" below
+            // would then hit ThingOwner.TryAdd's "already in another container"
+            // guard, log a Warning, and silently leave OUR corpse empty (Bugged)
+            // every single time this incident fires. Passing victim to
+            // Find.WorldPawns first makes IsWorldPawn() true, so Kill() instead
+            // takes the holdingOwner-untouched Corpse.PostCorpseDestroy branch
+            // (no corpse of its own), leaving victim.holdingOwner null for our
+            // corpse to actually claim it. Same pattern already established in
+            // this repo: RimMandrake/RaidRedesigner/Source/WorldPawnPinning.cs.
+            Find.WorldPawns.PassToWorld(victim);
             HealthUtility.DamageUntilDead(victim);
             Corpse corpse = (Corpse)ThingMaker.MakeThing(victim.RaceProps.corpseDef);
             corpse.InnerPawn = victim;
@@ -75,7 +99,7 @@ namespace RimMandrake.Utinni.ScavengerEvents
                 openDelay = OpenDelayTicks,
                 leaveSlag = true,
             });
-            DropPodUtility.DropThingsNear(lootDropSpot, map, loot, DropRadius, false, false, true, true, true, null);
+            DropPodUtility.DropThingsNear(lootDropSpot, map, loot, LootPodOpenDelayTicks, false, false, true, true, true, null);
 
             Find.LetterStack.ReceiveLetter(
                 "RUT_CargoRain".Translate(),
