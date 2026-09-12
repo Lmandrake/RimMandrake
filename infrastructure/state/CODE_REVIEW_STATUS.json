@@ -11776,10 +11776,10 @@
     "sha": "291b653cf"
   },
   "src/RimUtinni/ShokkweaveEconomy/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "acf2f23394779ab20533c144bc4c7a298554fc125659b6903be1a7b08283c41f",
-    "sha": "5040448b5"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "38cda478f582f6d1374bd79203c1aa93ce5b701ae12c18d753e953b370c064ac",
+    "sha": "b0d3ba6fc"
   },
   "src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveButcherYield.xml": {
     "cleanCount": 1,
