@@ -89,6 +89,20 @@
     <defName>RUT_Webwork_Nest</defName>
     <label>shokkweave nest</label>
     <description>The heart of a Wyyyschokk's territory: silk and old kills, packed and hardened into something like a wall. Breaking it open is a fight, and a fortune - the mother does not leave a nest undefended.</description>
+    <!-- BuildingNaturalBase sets no thingClass of its own (Hive, the def
+         this was modeled on, sets thingClass=Hive explicitly): without one
+         this resolves null and
+         ReadingPolicyDatabase.GenerateStartingPolicies() NREs on
+         item.thingClass.SameOrSubclassOf, for EVERY Game construction on
+         the whole mod list, not just this def. Found live 2026-09-12
+         (FOUNDRY), alongside the same bug on 3 RUT_Webwork_* defs in
+         UtinniPatches. Plain Building (not the Hive class) is correct here
+         per this def's own comment below: it deliberately wants Hive's
+         generic dormancy/spawner COMPS minus Hive's insect-specific class
+         overrides (auto-wake-when-unfogged, hive-count quest signaling);
+         CompCanBeDormant/CompSpawnerPawn work on any ThingWithComps, which
+         plain Building already is. -->
+    <thingClass>Building</thingClass>
     <graphicData>
       <texPath>Things/Building/Natural/Hive</texPath>
       <graphicClass>Graphic_Random</graphicClass>
