@@ -1,5 +1,32 @@
 # WEBWORK_KIT_BUILD_1 — Webwork biome mechanics kit (SenseWeb, FrontCreep, ChewAnchors, roster structures)
 
+## 2026-09-12 (FOUNDRY, later same night) — deploy confirmed done; live verify blocked on QUICKTEST_POSTSETUP_CRASH_1
+
+`deploy_custom_mods.py --mod CreatureBehaviors` and `--mod UtinniPatches`
+both report "in sync" — the prior session's `needs=deploy` gate is
+cleared (the CreatureBehaviors DLL was in fact rebuilt THIS session, for
+an unrelated reason: `3e05542a6` fixed a stale-DLL crash in
+`RM_Alert_VerminPopulationBase`, and the rebuild picked up this item's own
+`RM_MapComponent_SenseWeb`/`RM_JobGiver_ChewAnchors`/`RM_MapComponent_FrontCreep`
+source in the same pass — confirmed via `git status`, only one DLL diff
+existed and it now carries both fixes).
+
+The quicktest-map live proof this item's own note calls for (spawn
+`RUT_Webwork_Anchor`, confirm SenseWeb registration; `FrontCreep` on a
+bordering-biome test map) is blocked the same way as
+`SHOKKWEAVE_SOLE_SOURCE_1`'s sibling routes: needs a fresh
+`RUT_Webwork`-biome map, and `start_debug_game_ready` crashes the process
+reliably on this mod list (see `QUICKTEST_POSTSETUP_CRASH_1`, found and
+partially chased this session — two OTHER load-blocking bugs fixed first,
+`257bbbc7f` and `3e05542a6`, before hitting this third one). The loaded
+real colony map (used for `BUILDING_THEFT_HAULER_1`/`NINEFOLD_FIRE_HOOK`
+tonight) is not `RUT_Webwork` biome, so substituting it would not exercise
+`FrontCreep`'s own biome-boundary check at all.
+
+`needs=bridge` unchanged; unblocks once `QUICKTEST_POSTSETUP_CRASH_1` is
+fixed or a minimal+target mod list swap reaches a `RUT_Webwork` quicktest
+map without it.
+
 Queue line: build `RM_MapComponent_SenseWeb`, `RM_MapComponent_FrontCreep`,
 `RM_JobGiver_ChewAnchors`, and the roster's web/anchor/gutter ThingDefs per
 `design/Jawa/worldbuilding/biomes/kits/webwork_kit_spec.md` — the biome's own

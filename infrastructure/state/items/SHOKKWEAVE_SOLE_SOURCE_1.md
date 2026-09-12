@@ -1,5 +1,30 @@
 # SHOKKWEAVE_SOLE_SOURCE_1 — Shokkweave economy (rename, trader strip, harvest routes)
 
+## 2026-09-12 (FOUNDRY, later same night) — deploy confirmed; live web-cutting/nest-raid verify blocked on QUICKTEST_POSTSETUP_CRASH_1
+
+`deploy_custom_mods.py --mod ShokkweaveEconomy` reports "in sync" — the
+2026-09-12 build note's `needs=deploy` is resolved (carried over from
+tonight's restart). The two remaining live proofs this item owes
+(web-cutting scatter + mining yield; nest raid scatter + wake + guardian +
+drop) both need a `RUT_Webwork`-biome map, which the currently-loaded
+canonical colony map is not, and `start_debug_game_ready` (the only route
+to a fresh biome-of-choice map) crashes the process reliably after this
+session fixed two OTHER load-blocking bugs first — see
+`QUICKTEST_POSTSETUP_CRASH_1` and `SHRINE_GUARDIAN_BIOME_GATE_1`'s sibling
+note for the full chase. Not substituting the loaded real map (as
+`BUILDING_THEFT_HAULER_1` did) because these two routes are gated on the
+map's OWN biome (`GenStep_ScatterWebworkSilk`'s `map.Biome.defName ==
+"RUT_Webwork"` check), not just "any map with a building."
+
+The 11-trader-kind zero-stock proof and the quest-reward roll pass remain
+unattempted for the same reason noted in the 2026-09-11 update (no bridge
+tool forces a specific `TraderKindDef`'s stock generation yet) — unchanged
+tonight.
+
+`needs=bridge` stays accurate; unblocks once `QUICKTEST_POSTSETUP_CRASH_1`
+is fixed or a minimal+target mod list swap gets a `RUT_Webwork` quicktest
+map without it.
+
 Queue line: rename hyperweave game-wide, strip it from EVERY trader stock
 table (prove against live trader generation), add the three Webwork harvest
 routes (web-cutting, butchery, nest raid).
