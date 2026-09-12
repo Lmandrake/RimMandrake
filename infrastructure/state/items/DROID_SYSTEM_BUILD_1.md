@@ -25,8 +25,25 @@ storyteller targeting, no-food-need, drafted at 0 power).
       `canon.yml` `droid_system`. **Build greenlit, no longer parked.**
 - [x] Phase 0 skeleton + pilot proven live (see 2026-09-01 note below — the
       checkbox was stale, work already landed before this note was written)
-- [ ] Port manifest MEASURED (census sweep) and waves 1-3 executed at save boundaries
-- [ ] Packs' redundant systems in Cherry Picker; DroidsAreMachines retired per-wave
+- [x] Port manifest MEASURED (census sweep 2026-08-29, `design/Jawa/
+      droid_system_build_spec.md` §7) and waves 1-3 executed at save
+      boundaries — CONFIRMED 2026-09-12: none of the four donor packageIds
+      (`guy762.kotordroids`, `killathon.artificialbeings.syncore`,
+      `neronix17.outerrim.droiddepot`, `neronix17.asimov`) are present in the
+      live `ModsConfig.xml` (592 active) any more; only `mandrake.rsw.
+      droidworks` remains as the droid content provider. Matching sub-items
+      `DROID_RETIRE_KOTORDROIDS_1`, `DROID_RETIRE_ABF_SYNCORE_1`,
+      `DROID_RETIRE_DEPOT_ASIMOV_1`, `DROID_RETIREMENT_ORDER_ASSERT_1` are all
+      CLOSED in the ledger.
+- [x] Packs' redundant systems in Cherry Picker; DroidsAreMachines retired
+      per-wave — CONFIRMED 2026-09-12: `DroidsAreMachines.xml` history shows
+      its ABF-gated Operation already removed per-wave (commit `0c2898020`,
+      `DROID_RETIRE_ABF_SYNCORE_1`). Grepped `CherryPicker.SHIP.xml` for the
+      four donor packageId substrings — zero hits, which is CORRECT and not a
+      gap: Cherry Picker entries exist for trimming redundant content inside
+      an *active* mod, and all four donors are fully retired (removed from
+      `ModsConfig.xml` entirely), so there is nothing left for Cherry Picker
+      to trim.
 
 ## 2026-09-01 (BENCH) — dispatched to build the Phase-0 foundation, found it already built and shipped
 
@@ -113,3 +130,68 @@ bigger decision (57-80 new races/kinds interacting with 587 other mods) than
 right-sized tool for it, not another full-list restart. Left as the next
 concrete step: bring up a minimal quicktest list with Droidworks active,
 spawn a `DW_Race_*` pawn, confirm `pawn.relations` is non-null and no NRE.
+
+## 2026-09-12 (FOUNDRY) — reclaim premise was STALE; fresh minimal-list proof done; CLOSING
+
+Reclaimed on the premise "mod not in live ModsConfig, minimal-list quicktest
+owed" (2026-09-12 audit). **Both halves of that premise were stale**, found by
+direct check before spending a load on them:
+
+- `mandrake.rsw.droidworks` IS already active in the live 592-mod
+  `ModsConfig.xml` (confirmed identical to `ModsConfig.FULL.LATEST.xml`) —
+  landed by `DROIDWORKS_FULL_LIST_COEXIST_1` on 2026-09-08, which also fixed
+  3 real bugs (bad `<li>` skillRequirements shape, `everVisible` non-field,
+  missing `initialResistanceRange`/`initialWillRange` on 80 kinds) and closed
+  with a confirmed clean full-list restart.
+- `DROIDWORKS_LIVE_LOOP_PROOF_1` (closed 2026-09-06/08) already ran an
+  extensive minimal-list spawn/state-machine proof (12 pawns, 6/8 checkboxes
+  fully closed live: PoweredDown persistence, reboot, spawn-with-no-NRE,
+  bolt+resentment, kill→corpse, GNK detonation-scales-with-charge A/B).
+
+Given that, did **not** repeat the full 8-checkbox proof (doctrine: don't
+re-spend a load proving what's already proven). Instead ran a fresh, narrower
+minimal-list (25-mod) verification targeting what those two prior passes did
+NOT cover: the newer/less-tested categories (Primitive tier, JDS in
+isolation) and whether the 09-08 field fixes hold up live.
+
+**Bridge session, minimal list (`ModsConfig.MINIMAL.xml`, 25 mods, Droidworks
+already included):**
+- Fresh `start_debug_game_ready` quicktest map.
+- Spawned **21 pawns across all 7 distinct format/source categories**: JDS
+  (`RSW_DW_JDSCIS_B1_Battle_Droid` ×3), OuterRim GNK (×3), OuterRim battle
+  (`RSW_DW_OuterRim_BattleDroid` ×3), KotOR colonist (`..._T3UD` ×3), KotOR
+  bad (`..._KM1MD` ×3), Primitive G2 (×3), Primitive Junker (×3). All 21
+  `execute_debug_action` spawn calls returned `success: true`;
+  `jawa/list_pawns` count went 29→50 exactly (+21, no silent drops).
+  `jawa/pawn_get` returned well-formed snapshots (traits/skills/needs) for
+  the sampled ones, each on its own `RSW_DW_Race_*` def — no fallback race.
+- Screenshots (`droidworks_minimal_quicktest_wave1.png`,
+  `_zoom_a`/`_zoom_b`, session-scratch in the Screenshots folder) confirm
+  every spawned droid renders with distinct, plausible art — no magenta/
+  checkerboard fallback on any of the 7 kinds.
+- Re-exercised two state-machine points post-09-08-fix: `RSW_DW_PoweredDown`
+  add/remove on a KotOR colonist — clean add + clean remove, matching the
+  pre-fix proof exactly (the 09-08 pass removed `everVisible` from this
+  exact def; confirms the removal didn't break the hediff itself). Set a
+  GNK's `RSW_DW_Power` need to 1.0 then killed it with two `Bomb` hits — died,
+  vanished from `list_pawns`, **no droid corpse appeared** (only pre-existing
+  unrelated Human corpses) — consistent with `CompDroidDetonation` consuming
+  the corpse at high charge, matching `DROIDWORKS_LIVE_LOOP_PROOF_1`'s own
+  isolated A/B finding.
+- `Player.log` for the whole session (183 lines, 25-mod list): **zero**
+  `Config error in` lines, **zero** Droidworks-related exceptions. The one
+  exception present (`OuterRimCore.OuterRimCoreMod` NRE at mod-init) is the
+  same pre-existing, unrelated third-party bug `DROIDWORKS_LIVE_LOOP_PROOF_1`
+  already flagged. Seven `Could not resolve cross-reference: ... RUT_Tree_
+  Unbolting ...` lines are an **expected minimal-list gap**, not a bug: that
+  ResearchTabDef is owned by `mandrake.rut.researchretag` (RimUtinni-tier,
+  campaign-only), present on the full list, absent from the 25-mod minimal
+  list by design.
+
+**Port waves and Cherry Picker checkboxes** (see Criteria above): verified
+directly against the live `ModsConfig.xml` that all four donor packages are
+retired, so both remaining checkboxes are now checked with evidence.
+
+**Verdict: mechanism clean, both remaining criteria satisfied. Closing.**
+Restored the mod list to `ModsConfig.FULL.LATEST.xml` before closing (592
+active, verified) — the game must not be left on the minimal list.
