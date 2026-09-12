@@ -6,10 +6,12 @@ namespace RimMandrake.Utinni.ShipShields
 {
     // Thermal-rejection field (shd:thermal-veil). Only active while
     // CompShieldModuleSwitch.CurrentMode == Thermal (or standalone, if no
-    // switch comp is present). Reuses the same two vanilla primitives
-    // Building_Heater/Building_Cooler are built on
-    // (GenTemperature.ControlTemperatureTempChange + PushHeat) rather than
-    // re-deriving room thermal math from scratch.
+    // switch comp is present). Reuses the same vanilla primitive
+    // Building_Heater/Building_Cooler/Building_LifeSupportUnit are built on
+    // (GenTemperature.ControlTemperatureTempChange, applied straight to
+    // Room.Temperature -- not PushHeat, which is a raw-energy input for
+    // fires/explosions/vents and would double-divide by room size) rather
+    // than re-deriving room thermal math from scratch.
     public class CompShieldThermalVeil : ThingComp
     {
         public CompProperties_ShieldThermalVeil Props => (CompProperties_ShieldThermalVeil)props;
@@ -66,7 +68,14 @@ namespace RimMandrake.Utinni.ShipShields
                 return;
             }
 
-            GenTemperature.PushHeat(parent.Position, map, idealChange * Props.rejectionFactor);
+            // ControlTemperatureTempChange's return is already a room-scale
+            // temperature delta, not a raw energy quantity -- vanilla's own
+            // Building_Heater/Building_Cooler/Building_LifeSupportUnit all
+            // add it straight to Room.Temperature. Routing it through
+            // PushHeat (which divides by CellCount again, for a genuine
+            // energy input like an explosion or a fire) silently shrank the
+            // effect by an extra, unintended factor of room size.
+            room.Temperature += idealChange * Props.rejectionFactor;
         }
     }
 }
