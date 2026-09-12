@@ -43,6 +43,15 @@
     <defName>RUT_Webwork_Anchor</defName>
     <label>web anchor line</label>
     <description>A thick catenary of shokkweave, spun taut between two fixed points and hardened until it reads as architecture rather than silk. The whole network hangs off lines like this one; cut or chewed through, the web nearby goes slack and blind.</description>
+    <!-- BuildingNaturalBase sets no thingClass of its own (unlike RockBase,
+         which sets Mineable): every concrete ThingDef using it directly
+         (Hive included) must set its own or thingClass resolves null and
+         ReadingPolicyDatabase.GenerateStartingPolicies() NREs on
+         item.thingClass.SameOrSubclassOf, for EVERY Game construction, not
+         just this one. Found live 2026-09-12 (FOUNDRY): missing here on
+         all 3 defs in this file plus RUT_Webwork_Nest, blocking every
+         quicktest and every save load on the whole mod list. -->
+    <thingClass>Building</thingClass>
     <graphicData>
       <texPath>Things/Building/Natural/Hive</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -72,6 +81,8 @@
     <defName>RUT_Webwork_Web</defName>
     <label>sheet web</label>
     <description>A broad plane of silk strung between trunks, thick enough to blot out the canopy above it. Nothing touches it without the whole network knowing.</description>
+    <!-- see RUT_Webwork_Anchor's comment above: BuildingNaturalBase sets no thingClass -->
+    <thingClass>Building</thingClass>
     <graphicData>
       <texPath>Things/Building/Natural/Hive</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -98,6 +109,8 @@
     <defName>RUT_Webwork_Gutter</defName>
     <label>silk irrigation gutter</label>
     <description>A woven channel of dense silk, carrying the stolen river's water further than roots alone could reach. Plumbing, not habitat — but it is still web, and it still feels.</description>
+    <!-- see RUT_Webwork_Anchor's comment above: BuildingNaturalBase sets no thingClass -->
+    <thingClass>Building</thingClass>
     <graphicData>
       <texPath>Things/Building/Natural/Hive</texPath>
       <graphicClass>Graphic_Random</graphicClass>
