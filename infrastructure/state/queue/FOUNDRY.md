@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T21:52:13Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T21:53:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -693,6 +693,15 @@ kind:     bug
 summary:  GIDDYUPWILDBIOMESDUPLICATEKEY1 — Giddy-Up's BuildAnimalBiomeCache still throws
 prose:    infrastructure/state/items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md
 
+## RIMDRIVE_LIBRARY_BUILD_1 Build rimdrive L1+L2: hardened Session (reconnect+post-condition polling, verified pause, litter/teardown registry, runtime tool census, bridge-lock integration) + verified ops extracted from rimbench mutate(), with FakeSession offline selftests — modcheck and all future bridge drivers consume it
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  L1 rimdrive.session.Session: extraction of rimbench Session lifecycle plus
+prose:    infrastructure/state/items/RIMDRIVE_LIBRARY_BUILD_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1108,13 +1117,3 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GIDDYUP_NULLKEY_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GIDDYUP_NULLKEY_CRASH_1.md
-
-## RIMDRIVE_LIBRARY_BUILD_1 Build rimdrive L1+L2: hardened Session (reconnect+post-condition polling, verified pause, litter/teardown registry, runtime tool census, bridge-lock integration) + verified ops extracted from rimbench mutate(), with FakeSession offline selftests — modcheck and all future bridge drivers consume it
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  L1 rimdrive.session.Session: extraction of rimbench Session lifecycle plus
-prose:    infrastructure/state/items/RIMDRIVE_LIBRARY_BUILD_1.md

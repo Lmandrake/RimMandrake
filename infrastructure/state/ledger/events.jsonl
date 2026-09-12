@@ -7945,3 +7945,5 @@
 {"seat":"FOUNDRY","event":"claim","id":"ART_REGEN_WAVE10_QUEUE_1","ts":"2026-09-12T21:51:15Z"}
 {"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE10_QUEUE_1","ts":"2026-09-12T21:51:16Z"}
 {"seat":"FOUNDRY","event":"close","id":"ART_REGEN_WAVE10_QUEUE_1","sha":"a4bb92cddd581261c409f40ef6e936fe6b11ff01","ts":"2026-09-12T21:52:13Z"}
+{"seat":"FOUNDRY","event":"claim","id":"RIMDRIVE_LIBRARY_BUILD_1","ts":"2026-09-12T21:53:06Z"}
+{"seat":"FOUNDRY","event":"start","id":"RIMDRIVE_LIBRARY_BUILD_1","ts":"2026-09-12T21:53:07Z"}

@@ -27,25 +27,31 @@ USAGE
 Every helper here is mod-list independent. Nothing references a Star Wars def, a
 xenotype, or anything outside vanilla Core, so the same code drives a 3-mod
 bench and a 568-mod campaign.
+
+EXTRACTION NOTE (2026-09-12, RIMDRIVE_LIBRARY_BUILD_1): the connection
+lifecycle, `mutate()`, reconnect-with-post-condition-polling, verified pause
+and litter tracking used to live here and now live in `rimdrive` (L1/L2 --
+design/RimMandrake/bridge_library_design.md). `Session` here is `rimdrive`'s,
+subclassed only to add the rimbench-specific convenience verbs below
+(`spawn`, `set_stuff`, `wear`, `look`, ...) -- these are pre-L3 domain verbs
+that predate the design's `things`/`pawns`/`camera` families and have not
+been migrated into them yet (design doc §5: migration is by attrition).
+`Unchanged` is re-exported here so existing `except core.Unchanged` callers
+keep working unchanged.
 """
 import os
 import sys
-import time
 
 _UTILS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _UTILS not in sys.path:
     sys.path.insert(0, _UTILS)
-from rimbridge_client import RimBridge, resolve_endpoint
+from rimdrive import Session as _RimdriveSession, Unchanged  # noqa: E402,F401
 
 BS = chr(92)          # debug action paths are backslash-separated; see traps.md
 
 
-class Unchanged(Exception):
-    """A mutation reported success and the world did not move."""
-
-
-class Session(object):
-    """A connected bridge session with verification built in.
+class Session(_RimdriveSession):
+    """`rimdrive.Session` plus rimbench's own pre-L3 convenience verbs.
 
     `strict` (default True) raises Unchanged when a verifier says nothing
     happened. Set it False for exploration, where a no-op is information rather
@@ -53,67 +59,9 @@ class Session(object):
     """
 
     def __init__(self, strict=True, quiet=False):
-        host, port, token = resolve_endpoint()
-        if not token:
-            raise RuntimeError(
-                "No bridge token in Player.log. Is RimWorld running with "
-                "RimBridgeServer active?")
-        self._rb = RimBridge(host, port, token)
-        self.strict = strict
-        self.quiet = quiet
-        self.calls = 0
-        self.mutations = 0
-        self.no_ops = []
-        self._shots = 0
-
-    def __enter__(self):
-        self._rb.__enter__()
-        return self
-
-    def __exit__(self, *a):
-        return self._rb.__exit__(*a)
-
-    # ---------------------------------------------------------------- raw
-    def call(self, tool, **params):
-        self.calls += 1
-        return self._rb.call(tool, params)
-
-    def action(self, path, **params):
-        """Run a debug action. `path` uses real backslashes."""
-        return self.call("rimworld/execute_debug_action", path=path, **params)
-
-    def log(self, msg):
-        if not self.quiet:
-            print("   " + msg)
-
-    # ------------------------------------------------------------ verified
-    def mutate(self, what, do, verify):
-        """Run `do`, then require `verify()` to return truthy.
-
-        `verify` should read the world back through an INDEPENDENT channel --
-        get_cell_info, list_colonists, a parsed save -- never the response of
-        the mutating call itself. That independence is the whole point.
-        """
-        do()
-        self.mutations += 1
-        got = verify()
-        if got:
-            return got
-        self.no_ops.append(what)
-        if self.strict:
-            raise Unchanged(
-                "%s reported success but the world did not change. "
-                "See skills/rimbridge/references/traps.md." % what)
-        self.log("NO-OP: %s" % what)
-        return None
+        super(Session, self).__init__(strict=strict, quiet=quiet)
 
     # ------------------------------------------------------------- reading
-    def cell(self, x, z):
-        return self.call("rimworld/get_cell_info", x=x, z=z)["cell"]
-
-    def things_at(self, x, z):
-        return [t.get("defName") for t in (self.cell(x, z).get("things") or [])]
-
     def terrain_at(self, x, z):
         return self.cell(x, z).get("terrainDefName")
 

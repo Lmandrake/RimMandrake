@@ -125,6 +125,17 @@ def restore_focus(prev_handle):
         pass
 
 
+def preflight():
+    """The runInBackground trap, named for `rimdrive.session.Session`'s use of it.
+
+    Identical to `focus_game()` -- a separate name because "bring the game
+    forward before doing unattended bridge work" is a session-lifecycle
+    concept to rimdrive, not a one-off action. Returns the previous foreground
+    handle; pass it to `restore_focus()` when the session ends.
+    """
+    return focus_game()
+
+
 if __name__ == "__main__":
     print("foreground before:", foreground_title())
     prev = focus_game()
