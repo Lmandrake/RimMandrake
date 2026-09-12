@@ -130,7 +130,8 @@ namespace JawaBench.BridgeTools
                 "mapBiomeLabel, " +
                 "outdoorTempNow (the seasonal reading a pawn actually feels), latitude, " +
                 "longitude, season, mapParent {defName, label, faction} or null, " +
-                "playerSettlementsOnThisTile (a COUNT - a quicktest can have two), " +
+                "playerSettlementsOnThisTile (a COUNT - a quicktest can have two; -1 means the " +
+                "count itself THREW and is NOT a measurement of zero), " +
                 "and ticksGame.")]
         public static async Task<object> MapInfo(
             IRimBridgeContext ctx,
@@ -164,18 +165,35 @@ namespace JawaBench.BridgeTools
                             // a world_tile_set they report the OLD value for the rest of the
                             // session. Reporting them here would let a caller confirm a write
                             // that never landed. Same rule as JawaBenchWorldTools.TileRaw.
+                            //
+                            // Finding #33 (COMPANION_HARDENING_AUDIT_2026-09-09): each field
+                            // used to be read inside this ONE outer try, so a single throwing
+                            // accessor (e.g. PrimaryBiome on an exotic tile) blanked the whole
+                            // block into "unreadable" and lost every OTHER field that read
+                            // fine. Guard each field independently instead.
+                            var fieldErrors = new List<object>();
+                            Func<Func<object>, string, object> readField = (getter, name) =>
+                            {
+                                try { return getter(); }
+                                catch (Exception fe)
+                                {
+                                    fieldErrors.Add(new { field = name, reason = fe.GetType().Name, message = fe.Message });
+                                    return null;
+                                }
+                            };
                             tileBlock = new
                             {
-                                biome = st != null && st.PrimaryBiome != null ? st.PrimaryBiome.defName : null,
-                                hilliness = t.hilliness.ToString(),
-                                hillinessInt = (int)t.hilliness,
-                                elevation = t.elevation,
-                                rainfall = t.rainfall,
-                                swampiness = t.swampiness,
-                                temperature = t.temperature,
-                                pollution = t.pollution,
-                                waterCovered = st != null && st.WaterCovered,
-                                isSurfaceTile = st != null,
+                                biome = readField(() => st != null && st.PrimaryBiome != null ? st.PrimaryBiome.defName : null, "biome"),
+                                hilliness = readField(() => t.hilliness.ToString(), "hilliness"),
+                                hillinessInt = readField(() => (int)t.hilliness, "hillinessInt"),
+                                elevation = readField(() => t.elevation, "elevation"),
+                                rainfall = readField(() => t.rainfall, "rainfall"),
+                                swampiness = readField(() => t.swampiness, "swampiness"),
+                                temperature = readField(() => t.temperature, "temperature"),
+                                pollution = readField(() => t.pollution, "pollution"),
+                                waterCovered = readField(() => st != null && st.WaterCovered, "waterCovered"),
+                                isSurfaceTile = readField(() => st != null, "isSurfaceTile"),
+                                fieldErrors = fieldErrors.Count > 0 ? fieldErrors : null,
                             };
                         }
                     }

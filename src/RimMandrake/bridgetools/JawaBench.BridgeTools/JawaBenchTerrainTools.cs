@@ -1122,6 +1122,10 @@ namespace JawaBench.BridgeTools
                                 partLabel = h.Part?.Label
                             });
                         var caps = new Dictionary<string, float>();
+                        // Finding #30 (COMPANION_HARDENING_AUDIT_2026-09-09): a bare
+                        // try/catch{skip} here was indistinguishable from a capacity the
+                        // pawn genuinely lacks (CapableOf false). Collect what threw.
+                        var capacityErrors = new List<object>();
                         foreach (var cap in DefDatabase<PawnCapacityDef>.AllDefsListForReading)
                         {
                             try
@@ -1129,12 +1133,16 @@ namespace JawaBench.BridgeTools
                                 if (pawn.health.capacities.CapableOf(cap))
                                     caps[cap.defName] = pawn.health.capacities.GetLevel(cap);
                             }
-                            catch { /* some caps throw on some races; skip rather than fail the call */ }
+                            catch (Exception ex)
+                            {
+                                capacityErrors.Add(new { cap = cap.defName, reason = ex.GetType().Name });
+                            }
                         }
                         health = new
                         {
                             hediffs,
                             capacities = caps,
+                            capacityErrors,
                             painTotal = pawn.health.hediffSet.PainTotal,
                             bleedRate = pawn.health.hediffSet.BleedRateTotal
                         };
@@ -4971,7 +4979,11 @@ namespace JawaBench.BridgeTools
             {
                 if (want != null && want.Count > 0 && !want.Contains(f.Name)) continue;
                 object v;
-                try { v = f.GetValue(o); } catch { continue; }
+                // Finding #31 (COMPANION_HARDENING_AUDIT_2026-09-09): a bare
+                // catch{continue} here reported a field that THREW identically to
+                // "no such field" / null. Say so instead.
+                try { v = f.GetValue(o); }
+                catch (Exception fex) { outp[f.Name] = "(threw: " + fex.GetType().Name + ")"; continue; }
                 if (v == null) { outp[f.Name] = null; continue; }
                 if (v is Def d) { outp[f.Name] = d.defName; continue; }
                 var t = v.GetType();
@@ -5030,7 +5042,8 @@ namespace JawaBench.BridgeTools
                         var pf = ty.GetField(w, npFlags);
                         if (pf == null) continue;
                         object pv;
-                        try { pv = pf.GetValue(o); } catch { break; }
+                        try { pv = pf.GetValue(o); }
+                        catch (Exception pex) { outp[w] = "(threw: " + pex.GetType().Name + ")"; break; }
                         if (pv == null) { outp[w] = null; break; }
                         if (pv is Def pd) { outp[w] = pd.defName; break; }
                         var pt = pv.GetType();

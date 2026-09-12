@@ -572,7 +572,8 @@ namespace JawaBench.BridgeTools
             ResultDescription =
                 "success, category, amount, projectBefore/projectAfter (ResearchProjectDef defName or " +
                 "null), knowledgeBefore/knowledgeAfter (on that project), projectFinishedByThisCall, " +
-                "overflowCategory (named if this category has one knowledge could spill into).")]
+                "overflowCategory (named if this category has one knowledge could spill into), " +
+                "overflowProject/overflowKnowledgeBefore/overflowKnowledgeAfter (read back independently).")]
         public static async Task<object> AnomalyKnowledge(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -606,12 +607,22 @@ namespace JawaBench.BridgeTools
                 // poke at a project this call did not finish.
                 var finishedBefore = projectBefore != null && projectBefore.IsFinished;
 
+                // Finding #24 (COMPANION_HARDENING_AUDIT_2026-09-09): overflow receipt was
+                // never independently read back - ApplyKnowledge spills into
+                // overflowCategory's own active project when this category's is null or
+                // finished, and that never showed up anywhere in the result.
+                var overflowProjectBefore = kd.overflowCategory != null ? rm.GetProject(kd.overflowCategory) : null;
+                var overflowKnowledgeBefore = overflowProjectBefore != null ? rm.GetKnowledge(overflowProjectBefore) : 0f;
+
                 rm.ApplyKnowledge(kd, amount);
 
                 var projectAfter = rm.GetProject(kd);
                 var knowledgeAfter = projectAfter != null ? rm.GetKnowledge(projectAfter)
                     : (projectBefore != null ? rm.GetKnowledge(projectBefore) : 0f);
                 var finished = !finishedBefore && projectBefore != null && projectBefore.IsFinished;
+
+                var overflowProjectAfter = kd.overflowCategory != null ? rm.GetProject(kd.overflowCategory) : null;
+                var overflowKnowledgeAfter = overflowProjectAfter != null ? rm.GetKnowledge(overflowProjectAfter) : 0f;
 
                 return new
                 {
@@ -628,6 +639,9 @@ namespace JawaBench.BridgeTools
                     knowledgeAfter,
                     projectFinishedByThisCall = finished,
                     overflowCategory = kd.overflowCategory != null ? kd.overflowCategory.defName : null,
+                    overflowProject = overflowProjectAfter != null ? overflowProjectAfter.defName : null,
+                    overflowKnowledgeBefore,
+                    overflowKnowledgeAfter,
                     ticksGame = TicksGameSafe()
                 };
             }).ConfigureAwait(false);
@@ -729,6 +743,33 @@ namespace JawaBench.BridgeTools
                 var titleAfter = p.royalty.GetCurrentTitle(fac);
                 var favorAfter = p.royalty.GetFavor(fac);
 
+                // Finding #23 (COMPANION_HARDENING_AUDIT_2026-09-09): success was
+                // unconditional with no read-back of titleAfter/favorAfter against the
+                // request. Require the outcome to match what was asked for.
+                bool readBackOk;
+                switch (act)
+                {
+                    case "settitle":
+                        readBackOk = titleAfter != null && titleAfter.defName == title.Trim();
+                        break;
+                    case "removetitle":
+                        readBackOk = titleAfter == null;
+                        break;
+                    case "setfavor":
+                        readBackOk = favorAfter == favor.Value;
+                        break;
+                    case "gainfavor":
+                        readBackOk = favorAfter == favorBefore + favor.Value;
+                        break;
+                    default:
+                        readBackOk = true;
+                        break;
+                }
+                if (!readBackOk)
+                    return Fail($"'{action}' did not read back as requested - title {(titleAfter != null ? titleAfter.defName : "(none)")}, favor {favorAfter} " +
+                                "(GetCurrentTitle/GetFavor after the call).",
+                                new { titleBefore = titleBefore?.defName, titleAfter = titleAfter?.defName, favorBefore, favorAfter });
+
                 return new
                 {
                     success = true,
@@ -806,10 +847,18 @@ namespace JawaBench.BridgeTools
                 try { marketBefore = t.GetStatValue(StatDefOf.MarketValue); } catch { marketBefore = -1f; }
                 var ratio = maxHpBefore > 0 ? (float)hpBefore / maxHpBefore : 1f;
 
-                t.SetStuffDirect(newStuff);
-                StatDefOf.MaxHitPoints.Worker.ClearCacheForThing(t);
-                try { t.Notify_ColorChanged(); } catch { }
-                if (t.Spawned && t.Map != null) { try { t.DirtyMapMesh(t.Map); } catch { } }
+                // Finding #35 (COMPANION_HARDENING_AUDIT_2026-09-09): these two are
+                // purely cosmetic follow-ups (recolour, mesh redraw), so a throw here
+                // must not fail the stuff swap itself - but silently discarding it left
+                // no trace at all. Collect into notes instead.
+                var notes = new List<string>();
+                try { t.Notify_ColorChanged(); }
+                catch (Exception ex) { notes.Add("Notify_ColorChanged threw: " + ex.GetType().Name + ": " + ex.Message); }
+                if (t.Spawned && t.Map != null)
+                {
+                    try { t.DirtyMapMesh(t.Map); }
+                    catch (Exception ex) { notes.Add("DirtyMapMesh threw: " + ex.GetType().Name + ": " + ex.Message); }
+                }
 
                 var maxHpAfter = t.MaxHitPoints;
                 var newHp = Mathf.CeilToInt(maxHpAfter * ratio);
@@ -834,6 +883,7 @@ namespace JawaBench.BridgeTools
                     hpRatioAfter = maxHpAfter > 0 ? (float)t.HitPoints / maxHpAfter : 1f,
                     marketValueBefore = marketBefore,
                     marketValueAfter = marketAfter,
+                    notes,
                     ticksGame = TicksGameSafe()
                 };
             }).ConfigureAwait(false);

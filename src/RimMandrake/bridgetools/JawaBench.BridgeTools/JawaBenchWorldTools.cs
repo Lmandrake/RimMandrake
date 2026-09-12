@@ -564,13 +564,19 @@ namespace JawaBench.BridgeTools
                     try { cam.RotateSoNorthIsUp(false); } catch { }
                 }
 
+                // Finding #6 (COMPANION_HARDENING_AUDIT_2026-09-09): success was hardcoded
+                // true regardless of `acted` - a camera jump that no-oped (already in the
+                // requested mode counts as "acted" too, since CameraJumper reports that;
+                // what actually matters to a caller is whether the VIEW ended up where
+                // they asked) still reported success. Derive it from the read-back state.
+                bool worldSelectedAfter = WorldRendererUtility.WorldSelected;
                 return (object)new
                 {
-                    success = true,
+                    success = worldSelectedAfter == show,
                     requested = show ? "planet" : "map",
                     acted,
                     worldSelectedBefore = before,
-                    worldSelectedAfter = WorldRendererUtility.WorldSelected,
+                    worldSelectedAfter,
                     wantedMode = Find.World.renderer != null ? Find.World.renderer.wantedMode.ToString() : null,
                     centeredOn = centered,
                     altitude = altAfter,
@@ -866,7 +872,10 @@ namespace JawaBench.BridgeTools
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "Absolute path to the CSV.")] string path = null,
-            [ToolParameter(Description = "Tolerance for float compares. Default 0.5.")] float tolerance = 0.5f,
+            [ToolParameter(Description = "Tolerance for float compares (elevation/temperature/rainfall). Default 0.5. " +
+                "⚠️ Does NOT apply to swampiness/pollution - those are 0-1 scale fields and use a fixed " +
+                "0.02 tolerance regardless of this parameter (finding #38, COMPANION_HARDENING_AUDIT_2026-09-09).")]
+            float tolerance = 0.5f,
             [ToolParameter(Description = "Max diff rows to return. Default 25.")] int limit = 25,
             [ToolParameter(Description = "Stop after this many rows. 0 = all.")] int maxRows = 0)
         {
@@ -3132,6 +3141,15 @@ namespace JawaBench.BridgeTools
                 var already = Find.WorldObjects.ObjectsAt(tile).ToList();
                 if (already.Any(o => o.def == wd))
                     return Fail("A '" + wd.defName + "' already exists on tile " + tile + ". Use jawa/world_objects_set to move or re-faction it.");
+                // Finding #37 (COMPANION_HARDENING_AUDIT_2026-09-09): the check above only
+                // tested `o.def == wd`, so a SECOND map-capable object (a different
+                // WorldObjectDef, e.g. Settlement vs. a custom map-capable site) could
+                // stack on a tile already holding one - the exact collision
+                // jawa/world_settlements_import guards via canHaveMap. Reuse that check.
+                if (wd.canHaveMap && already.Any(o => o.def.canHaveMap))
+                    return Fail("A map-capable world object (" + already.First(o => o.def.canHaveMap).def.defName +
+                                ") already occupies tile " + tile + " - stacking two map-capable objects on one tile is the collision " +
+                                "jawa/world_settlements_import guards against. Use jawa/world_objects_set or remove the existing one first.");
 
                 WorldObject wo;
                 try

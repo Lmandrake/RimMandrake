@@ -416,7 +416,18 @@ namespace JawaBench.BridgeTools
                     {
                         switch (L)
                         {
-                            case "under": tg.SetUnderTerrain(c, td); changed++; break;
+                            case "under":
+                                // Finding #25 (COMPANION_HARDENING_AUDIT_2026-09-09):
+                                // changed++ ran unconditionally with no before/after diff,
+                                // unlike every sibling grid-writer in this file.
+                                {
+                                    var underBefore = tg.UnderTerrainAt(c);
+                                    tg.SetUnderTerrain(c, td);
+                                    if (tg.UnderTerrainAt(c) == td) changed++;
+                                    else addRefused(c.x, c.z, "SetUnderTerrain did not take (was " +
+                                        (underBefore != null ? underBefore.defName : "null") + ")");
+                                }
+                                break;
                             case "temp":
                                 tg.SetTempTerrain(c, td); changed++;
                                 // 🔴 SET_TERRAIN_LAYER_EXPIRY_SILENTLY_DROPPED_1. When
@@ -435,7 +446,11 @@ namespace JawaBench.BridgeTools
                                     map.tempTerrain.QueueRemoveTerrain(c,
                                         Find.TickManager.TicksGame + Math.Min(expireInTicks, 36000000));
                                 break;
-                            case "color": tg.SetTerrainColor(c, cd); changed++; break;
+                            case "color":
+                                tg.SetTerrainColor(c, cd);
+                                if (tg.ColorAt(c) == cd) changed++;
+                                else addRefused(c.x, c.z, "SetTerrainColor did not take");
+                                break;
                             case "removetop":
                                 if (!tg.CanRemoveTopLayerAt(c))
                                 { addRefused(c.x, c.z, "CanRemoveTopLayerAt false"); break; }
@@ -1298,7 +1313,7 @@ namespace JawaBench.BridgeTools
                 CellRect r;
                 if (!TryRect(rect, map, out r, out err)) return Fail(err);
 
-                int added = 0, removed = 0, already = 0;
+                int added = 0, removed = 0, already = 0, alreadyAbsent = 0;
                 // 🔴 DESIGNATE_BATCH_PROBLEMS_CAPPED_1. `problems` is capped at 15 entries so
                 // the body stays small, and there was NO total beside it - the same capped-list
                 // lie already fixed in set_substructure_batch, set_terrain_layer and
@@ -1336,7 +1351,7 @@ namespace JawaBench.BridgeTools
                                     if (dm.DesignationOn(t, dd) != null) { already++; continue; }
                                     dm.AddDesignation(new Designation(t, dd)); added++;
                                 }
-                                else { var ex = dm.DesignationOn(t, dd); if (ex != null) { dm.RemoveDesignation(ex); removed++; } }
+                                else { var ex = dm.DesignationOn(t, dd); if (ex != null) { dm.RemoveDesignation(ex); removed++; } else alreadyAbsent++; }
                             }
                         }
                         else
@@ -1347,6 +1362,7 @@ namespace JawaBench.BridgeTools
                                 dm.AddDesignation(new Designation(c, dd)); added++;
                             }
                             else if (dm.DesignationAt(c, dd) != null) { dm.TryRemoveDesignation(c, dd); removed++; }
+                            else if (A == "remove") alreadyAbsent++;
                         }
                     }
                     catch (Exception e)
@@ -1359,7 +1375,7 @@ namespace JawaBench.BridgeTools
                 return (object)new
                 {
                     success = true, action = A, designation = dd.defName,
-                    added, removed, alreadyPresent = already,
+                    added, removed, alreadyPresent = already, alreadyAbsent,
                     targetType = dd.targetType.ToString(), targetedThings = wantThings,
                     note = targetNote,
                     onThings,
@@ -1388,7 +1404,11 @@ namespace JawaBench.BridgeTools
         private static readonly Dictionary<string, PrefabDef> JawaPrefabs =
             new Dictionary<string, PrefabDef>(StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>PrefabDef.things is internal; GetThings() is the public route.</summary>
+        /// <summary>PrefabDef.things is internal; GetThings() is the public route.
+        /// Finding #32 (COMPANION_HARDENING_AUDIT_2026-09-09): -1 means GetThings()
+        /// THREW, not that the prefab genuinely holds zero things - documented here
+        /// and in jawa/prefab_list's ResultDescription rather than left as an
+        /// unexplained sentinel a caller could mistake for a real count.</summary>
         private static int CountPrefabThings(PrefabDef pf)
         {
             if (pf == null) return 0;
@@ -1597,7 +1617,8 @@ namespace JawaBench.BridgeTools
             Description =
                 "List the prefabs available to jawa/prefab_place: this session's captures " +
                 "plus every shipped PrefabDef. Read-only.",
-            ResultDescription = "success, captures[], shipped[].")]
+            ResultDescription = "success, captures[], shipped[]. thingCount is -1 when GetThings() " +
+                "THREW for that prefab, never a genuine zero.")]
         public static async Task<object> PrefabList(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1907,7 +1928,16 @@ namespace JawaBench.BridgeTools
                         return Fail("NOTHING was zoned - every cell in " + rect + " was refused, so the zone was not created.",
                                     new { cellsRequested = r.Area, refusedCells });
                     }
-                    try { z.CheckContiguous(); notes.Add("CheckContiguous run after bulk AddCell"); } catch { }
+                    string checkContiguousError1 = null;
+                    try { z.CheckContiguous(); notes.Add("CheckContiguous run after bulk AddCell"); }
+                    catch (Exception ex)
+                    {
+                        // Finding #27 (COMPANION_HARDENING_AUDIT_2026-09-09): a bare catch
+                        // here hid a real exception behind a note that falsely claimed the
+                        // check ran.
+                        checkContiguousError1 = ex.GetType().Name + ": " + ex.Message;
+                        notes.Add("CheckContiguous THREW: " + checkContiguousError1);
+                    }
                     int wanted1 = r.Area;
                     if (z.Cells.Count < wanted1)
                         notes.Add("ONLY " + z.Cells.Count + " of " + wanted1 + " cells were accepted - see refusedCells");
@@ -2015,7 +2045,14 @@ namespace JawaBench.BridgeTools
                         else if (wantedChange)
                             addRefused2(c.x, c.z, "Zone." + (value ? "AddCell" : "RemoveCell") + " refused (see the log)");
                     }
-                    try { z.CheckContiguous(); } catch { }
+                    string checkContiguousError2 = null;
+                    try { z.CheckContiguous(); }
+                    catch (Exception ex)
+                    {
+                        // Finding #27 (COMPANION_HARDENING_AUDIT_2026-09-09): surface the
+                        // exception instead of a bare swallow.
+                        checkContiguousError2 = ex.GetType().Name + ": " + ex.Message;
+                    }
                     return (object)new
                     {
                         success = true, action = A, zone = z.label,
@@ -2027,6 +2064,7 @@ namespace JawaBench.BridgeTools
                         note = z.Cells.Count == before2 && r.Area > 0
                             ? "NOTHING CHANGED - every cell was refused. Stockpile zones reject impassable terrain, cells already zoned, and blocking edifices."
                             : null,
+                        checkContiguousError = checkContiguousError2,
                         zones = zoneList(), ticksGame = TicksGameSafe()
                     };
                 }
@@ -2183,22 +2221,33 @@ namespace JawaBench.BridgeTools
                 // WRONG and unhelpful - PowerConduit needs the `Light` terrain affordance,
                 // which marsh and shallow water lack. They ARE Bridgeable, so mode='bridge'
                 // fixes them; deep water is the only genuinely hopeless case.
+                // Finding #13 (COMPANION_HARDENING_AUDIT_2026-09-09): GetAffordances can
+                // throw, and folding that into "false" reported a genuinely-bridgeable
+                // cell as flatly IMPOSSIBLE - a confidently WRONG answer, not merely an
+                // absent one. bridgeCheckError carries the exception text out to the
+                // endpoint refusal below; the other (bool-only) call sites are unaffected.
+                string bridgeCheckError = null;
                 Func<IntVec3, bool> isBridgeable = c =>
-                { try { return c.GetAffordances(map).Any(a => a.defName == "Bridgeable"); } catch { return false; } };
+                {
+                    try { return c.GetAffordances(map).Any(a => a.defName == "Bridgeable"); }
+                    catch (Exception ex) { bridgeCheckError = ex.GetType().Name + ": " + ex.Message; return false; }
+                };
 
                 foreach (var pair in new[] { new { c = A, which = "from" }, new { c = B, which = "to" } })
                 {
                     if (GenConstruct.CanBuildOnTerrain(td, pair.c, map, Rot4.North)) continue;
                     var terr = pair.c.GetTerrain(map);
+                    bridgeCheckError = null;
                     bool br = isBridgeable(pair.c);
                     return Fail("The " + pair.which.ToUpperInvariant() + " cell itself cannot hold '" + td.defName +
                         "'. Terrain there is '" + (terr != null ? terr.defName : "?") + "'" +
                         (td.terrainAffordanceNeeded != null ? ", which does not provide the '" + td.terrainAffordanceNeeded.defName + "' affordance it needs" : "") +
-                        (br ? ". That terrain IS Bridgeable - re-run with mode='bridge'." :
+                        (bridgeCheckError != null ? ". The Bridgeable check THREW (" + bridgeCheckError + ") - this may be bridgeable, unverified." :
+                         br ? ". That terrain IS Bridgeable - re-run with mode='bridge'." :
                               ". That terrain is NOT bridgeable, so no mode can fix it."),
                         new { cell = new { pair.c.x, pair.c.z }, terrain = terr != null ? terr.defName : null,
                               affordanceNeeded = td.terrainAffordanceNeeded != null ? td.terrainAffordanceNeeded.defName : null,
-                              bridgeable = br });
+                              bridgeable = br, bridgeCheckError });
                 }
 
                 // passCheck is a Predicate<IntVec3>, NOT a Func<IntVec3,bool> - the
