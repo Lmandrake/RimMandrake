@@ -8914,10 +8914,10 @@
     "sha": "e4070c91"
   },
   "src/RimStarWars/JawaIonWeapons/Source/DamageWorker_IonBuildup.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "0fe6911333f839a34179d7ad5bfd524d76d5c549702216689b880a5313224207",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-11",
+    "hash": "563f38da410ec12fb0e7b1b927bffcf01851ed4d736efdcbec948329a3fd0257",
+    "sha": "635efab7f"
   },
   "src/RimStarWars/JawaIonWeapons/Source/IonDamageDef.cs": {
     "cleanCount": 2,
@@ -8926,16 +8926,16 @@
     "sha": "e4070c91"
   },
   "src/RimStarWars/JawaIonWeapons/Source/JawaIonWeapons.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "843603e44ac8deed5d043451bddd8326b4d61c6810f87846881bbfb8bce2dcaa",
-    "sha": "e4070c91"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "ed6518b6fe2b9fea7054975a753400fd851ca0a08fb581d51d64e537c67d744c",
+    "sha": "635efab7f"
   },
   "src/RimStarWars/JawaIonWeapons/Source/SelfTest/JawaIonWeapons.SelfTest.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "b723e36eb19c9667356b47ecc1375c57791a576a2d13c6da7eba15f0bf9a2041",
-    "sha": "e4070c91"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "a7acdf977936d180d6a37885ca11cd8682adef33ba2e9a12f0cb2600e9605870",
+    "sha": "635efab7f"
   },
   "src/RimStarWars/JawaIonWeapons/Source/SelfTest/Program.cs": {
     "cleanCount": 2,
@@ -8944,22 +8944,22 @@
     "sha": "e4070c91"
   },
   "src/RimStarWars/JawaIonWeapons/Source/StatPart_InverseBodySize.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "0dadc99fecd26beaee1866a6ccebeb2be27bc4793b7ccde23a637d81983876d1",
-    "sha": "e4070c91"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "429ba054242684826f4ed199bd1b85f76ba282f1bed2c25178b4738d1a4e5a9a",
+    "sha": "635efab7f"
   },
   "src/RimStarWars/JawaIonWeapons/Source/VehicleTier/JawaIonVehicleTier.csproj": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "4490c16798b6cc1777f203b0cea4d1021ce1b6167ab334fb39579a1e3e44d89b",
-    "sha": "fbe5976c"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "920a896af28e6bfb7099ab42b81e007b086fa8fa4b0f2f63f9a097a2588ab323",
+    "sha": "635efab7f"
   },
   "src/RimStarWars/JawaIonWeapons/Source/VehicleTier/VehicleIonPatches.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "f35a4dbea51a961b83ab1321cff0e6d8a99d268c17e6a84d33f29d8313a429a4",
-    "sha": "e4070c91"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "f37689e8183ce50eed4a64f9172291557cc164317e612075a4effe016fbb42af",
+    "sha": "635efab7f"
   },
   "src/RimStarWars/JawaRules/About/About.xml": {
     "cleanCount": 1,
