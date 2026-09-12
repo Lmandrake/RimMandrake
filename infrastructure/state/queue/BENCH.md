@@ -7,12 +7,48 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T23:56:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T00:10:35Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## LOCAL_IMAGEGEN_TRACK_PARKED_1 PARKED by owner 2026-09-05: local ComfyUI/Flux image-generation track halted - it caused the seat OOM window kills; do NOT relaunch local generation until the owner says otherwise
+state:    ready
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  LOCALIMAGEGENTRACKPARKED1 — local image generation is PARKED
+prose:    infrastructure/state/items/LOCAL_IMAGEGEN_TRACK_PARKED_1.md
+
+## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
+state:    ready
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
+prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
+
+## KYBER_TRADE_PLOT_1 Selling kyber: Empire heat rises per sale, Hutt interest rises, alleged Jedi from the Moisture Farmers, the donate-and-smuggle plot (no helping the Rebellion here)
+state:    ready
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  - Wire the heat mechanic (the Empire's pursuit/attention system — find the existing
+prose:    infrastructure/state/items/KYBER_TRADE_PLOT_1.md
+
+## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
+prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
 
 ## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
 state:    ready
@@ -22,6 +58,15 @@ target:   v1
 kind:     task
 summary:  Serve with python3 /home/mandrake/.claude/skills/review-sheets/assets/servesheet.py
 prose:    infrastructure/state/items/ASSIGNMENT_SHEETS_VERDICT_SITTING_1.md
+
+## DASHBOARD_HUB_ARTIFACT_1 Single multi-tab dashboard hub artifact: thin tab shell + one data file per tab (per-seat republish, no collisions), per-tab freshness lamps, sheets linked not embedded — owner ruled 2026-09-11, spec in art_regen_registry_design.md §4
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - One published artifact, stable URL, pinned for the owner. Thin tab shell
+prose:    infrastructure/state/items/DASHBOARD_HUB_ARTIFACT_1.md
 
 # IN PROGRESS
 
@@ -124,46 +169,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## LOCAL_IMAGEGEN_TRACK_PARKED_1 PARKED by owner 2026-09-05: local ComfyUI/Flux image-generation track halted - it caused the seat OOM window kills; do NOT relaunch local generation until the owner says otherwise
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LOCAL_IMAGEGEN_TRACK_PARKED_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LOCAL_IMAGEGEN_TRACK_PARKED_1.md
-
-## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
-prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
-
-## KYBER_TRADE_PLOT_1 Selling kyber: Empire heat rises per sale, Hutt interest rises, alleged Jedi from the Moisture Farmers, the donate-and-smuggle plot (no helping the Rebellion here)
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Wire the heat mechanic (the Empire's pursuit/attention system — find the existing
-prose:    infrastructure/state/items/KYBER_TRADE_PLOT_1.md
-
-## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
-prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
 
 ## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
 state:    proposed
@@ -354,16 +359,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
 prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
-
-## DASHBOARD_HUB_ARTIFACT_1 Single multi-tab dashboard hub artifact: thin tab shell + one data file per tab (per-seat republish, no collisions), per-tab freshness lamps, sheets linked not embedded — owner ruled 2026-09-11, spec in art_regen_registry_design.md §4
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  - One published artifact, stable URL, pinned for the owner. Thin tab shell
-prose:    infrastructure/state/items/DASHBOARD_HUB_ARTIFACT_1.md
 
 ## FAUNA_LORE_DIVERSIFICATION_1 Per-beast damage diversification round AFTER size scaling: judge each beast by its art + description (scary vs harmless), diverge individuals from the 12-15x band deliberately - owner ruled 2026-09-11, rides the beast graphics/lore pass
 state:    proposed

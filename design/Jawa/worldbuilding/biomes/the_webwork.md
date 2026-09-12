@@ -272,7 +272,8 @@ hediff carrier); 7 owner cards open (rides `KIT_SPECS_CARD_SITTING_1`).
   — leak census MEASURED against the frozen dump (11 trader kinds, the
   quest-reward tag, no producing recipe); the ruled fourth route (border
   creep-web yields + emergent-Shokk spawn) wired to the built
-  `RSW_CompEmergentSpawnOnDestroy`; 1 owner card open (stuff-rolled gear).
+  `RSW_CompEmergentSpawnOnDestroy`; stuff-rolled gear RULED 2026-09-11
+  (commonality → 0.05) — no cards open, build-ready for FOUNDRY.
 - **Roster** — rides the full assignment pass: the Wyyyschokk kinds (bestiary FJ
   clade names `nettik`/`chirrik`/`rothrik` available for the guilds), beetles,
   mites, the churning flora, the pale flowers; donor density correction.

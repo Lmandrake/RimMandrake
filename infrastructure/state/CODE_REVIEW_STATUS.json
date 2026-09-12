@@ -336,10 +336,10 @@
     "sha": "bb73b6bd"
   },
   "design/Jawa/worldbuilding/review/apply_assignment_verdicts.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "03f1dc2e53f9ff17a55812c6f1c74af1bbaa9bb88688094bb0e380768d9920e2",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "7422c3c3fafb6de3a3ae2c9a915a6e80f538f8be9804904881477f23f692854f",
+    "sha": "3505dc594"
   },
   "design/Jawa/worldbuilding/review/deck/build_creature_deck.py": {
     "cleanCount": 1,
@@ -1120,6 +1120,138 @@
     "date": "2026-09-04",
     "hash": "5fc9bade1bf699bba7c0b05c4936d5052c4f62029d03b50f3d0cf65b26df04cb",
     "sha": "43f96b1b"
+  },
+  "src/RimMandrake/GelatinousSlime/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "00a03e7c06b23abb747fa599aa5f0abe90f168d3ae99d530641708fd6d5f8e5e",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/BiomeDefs/GelatinousSlime.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "a4e1678e3ea9b7ed66f1707cb7ebf497890098467177e43d90b6345f33a75daa",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/GeneArchiveDefs/DefaultArchive.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "e1c35d5d9da72d0b9bcaf8776852cf9a3873d3388ab069aca41e4aca6e7cd54b",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/GeneDefs/SlimeGenes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "1828e13f7acc7ec2293dc30b282f4f29bc4d7610daa23a8ddc4f46e71974a83c",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/HediffDefs/Slimification.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "0ec8b8d0aad2590412161546d2130ba108c2e89734e3a403d803c547574d42a1",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/JobDefs/SlimeJobs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "00a7dbdb08280db9538eb87981576527a83ca27f94ba1752303e1d31d895a290",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/Patches/DryingBiomes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "a8e603bd337f14a302fd6a55e291d9cad65068cd5b0dd97f77a80baf0cb5e1b5",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/ResearchProjectDefs/SlimeResearch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "1ae0f12d5d7ec00424581ce71267dc8694b1d3e57d3875bd1117b4207c9145f0",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/TerrainDefs/SlimeTerrain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "5f91b50aac7238997eddd0f82fb7defb2fc9747756a959cb4b8b7f45209bd7ac",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Buildings/SlimeWorks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "9527e3f72609a097edc5493116f20d61324a15a334e1bdab3425b87824bcb4c8",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/GeneSeeker.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "cb74b4eb09c98e51acf07e9334a5c0bba17cc8fcd56f94662b7fc3b11ece32fb",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/SlimeItems.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "ee9bb52d570be0023f2e4ca25cff7fa4c635cece4b52518fecd883b5bd1d23c6",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Plants/SlimeFlora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "fa01783a0cc5c0a1f7c57791a8b93df7a72afb0e482d5ea0524a0573573b913c",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Gelatid.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "8c3b3b5cfed52fd95a8ae7601104481c27b5515625ced32f00ba36afbbce0f06",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/ThoughtDefs/SlimeThoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "e9c8eeae79e80860f59f113d6eb30b4f4e6b47546e91a6f69c3405972019ece4",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Defs/WeatherDefs/SlimeRain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "8b0d43f9a0724b906b4c0120ea4e29257ad34158f6d2f6db4a39d11811532980",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Source/GeneArchive.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "b867ea889298e9aef3f4983b26d0f60fae884b733c0a04d30c8a8d8d5af56d8e",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "7bae3ddcd91d75a43991e457f3dbd96b465cbb1f2e8f6ae7a77d553344c08a6c",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Source/SlimeAlerts.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "991a8bf9d2fac8f43f53cf73681163e008a75e8409c5cf2d6db20769803ffddd",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Source/SlimeBiome.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "09d4df9ef71b70e41d2ea7ef5031aba204575cb5fd95b3a28f20b5d9145b283b",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Source/SlimeExposure.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "ef3dc283c243add36283338f3afecf3f48cc1c6cea7ccc4438049ef0972cd8ad",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Source/SlimeIngestion.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "81f607b06d25527e18cb48c31f14e439836e5501a7171bf854d7f35959861ae3",
+    "sha": "3505dc594"
   },
   "src/RimMandrake/Graffiti/About/About.xml": {
     "cleanCount": 3,
@@ -3276,10 +3408,10 @@
     "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/artpipe/artpiped.py": {
-    "cleanCount": 3,
-    "date": "2026-09-10",
-    "hash": "f89286118d12f7add0c5fdb8b1a6fadd1146d4e22f68ca2f1cec9129c95fe9de",
-    "sha": "8abbec7b"
+    "cleanCount": 4,
+    "date": "2026-09-11",
+    "hash": "07876f54dec38aa2f987e47cef92f7e76d7d7eb26909405d5eb378e380395d29",
+    "sha": "3505dc594"
   },
   "src/RimMandrake/Utils/artpipe/artreg.py": {
     "cleanCount": 1,
@@ -3294,10 +3426,10 @@
     "sha": "7dabaa86"
   },
   "src/RimMandrake/Utils/artpipe/fill_queue.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "fa059aa4e129f2c1909cc6418dbf7b32141059ad136fa4148a4b60ed3dabf5c0",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "434f0feadd2c22c3e0ba76ed76837fae30d6d6b4e14fe158b417cba5246b7321",
+    "sha": "3505dc594"
   },
   "src/RimMandrake/Utils/artpipe/mock_codex_worker.py": {
     "cleanCount": 1,
@@ -3570,10 +3702,10 @@
     "sha": "46ac7699"
   },
   "src/RimMandrake/Utils/cherrypick_build.py": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "e20672c2b1a187e6de1471ad0d96f4ad9b19a6a8e447cea0babd427422b8f642",
-    "sha": "afcfa347"
+    "cleanCount": 4,
+    "date": "2026-09-11",
+    "hash": "ec81556ceb75d5adb314e4acd729ec6fd9030ba3667d41e6c4a6ae5219d23e90",
+    "sha": "3505dc594"
   },
   "src/RimMandrake/Utils/cherrypick_review.py": {
     "cleanCount": 1,
@@ -3743,10 +3875,10 @@
     "sha": "4de5c0cf"
   },
   "src/RimMandrake/Utils/gen_pawnkind_roster.py": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "c83508f5ed6221a9c80daa76702c4907651a4e17a429bac6679158d597cd28da",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-11",
+    "hash": "aebb58b202069bdf987047c31e9af3026e1fcfcf5c648162a4ded2fc8cd01e14",
+    "sha": "3505dc594"
   },
   "src/RimMandrake/Utils/gen_plant_register.py": {
     "cleanCount": 1,
@@ -11359,12 +11491,6 @@
     "cleanCount": 1,
     "date": "2026-09-10",
     "hash": "e943b5a5158ae0c6fc8e1c88731c07352a466830509a8bdc48f9081ec02032b5",
-    "sha": "0e94b4d2"
-  },
-  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_MiasmaNurseryJuveniles.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "6e1074f74c64aec74d63e2b1022292b43a20d13949ba00c4aaca51f93cfe7555",
     "sha": "0e94b4d2"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml": {

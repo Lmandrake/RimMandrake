@@ -7469,3 +7469,5 @@
 {"seat":"BENCH","event":"claim","id":"OCULAR_OVERDRIVE_SITE_1","ts":"2026-09-11T23:57:38Z"}
 {"seat":"BENCH","event":"claim","id":"KYBER_TRADE_PLOT_1","ts":"2026-09-11T23:57:40Z"}
 {"seat":"BENCH","event":"claim","id":"SHOKKWEAVE_SOLE_SOURCE_1","ts":"2026-09-11T23:57:42Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-12T00:00:18Z"}
+{"seat":"BENCH","event":"file","id":"REMBG_CONCURRENCY_CAP_1","title":"flock-style single-run guard in rembg_cut.py per the 2026-09-11 exemption ruling","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-12T00:10:35Z"}
