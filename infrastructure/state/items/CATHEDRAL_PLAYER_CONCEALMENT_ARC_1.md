@@ -69,3 +69,11 @@ defNames coined; every cited token binds at the kit's or origin canon's build.
 - **A5** — Where does selling the anomaly start counting as exposure:
   Imperial-aligned buyers only, or any sale during high Heat? One sentence
   rules it.
+
+## All five cards RULED — owner sitting 2026-09-12
+A1 she KNOWS (receives the Rakatan transponder on dead frequencies — new lore
+mechanism, propagate at build); A2 reveal = aliveness + scale only; A3
+exposure CAN complete — real losable outcome (spec §6.1 amended, asymptotic
+assumption superseded); A4 surveyor-misdirection quest IN; A5 sale exposure =
+volume, not identity. Recorded verbatim in the spec's Cards section. Build
+unblocked — rides RUST_CATHEDRAL_MECHANICS_1 (FOUNDRY) + quest authoring.
