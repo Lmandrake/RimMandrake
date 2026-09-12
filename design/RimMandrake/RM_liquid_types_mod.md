@@ -257,17 +257,17 @@ shallow+deep only; ocean/moving variants exist where a consumer does
 
 ## 9. Open questions → CARD lines (frozen sheets: detail added above, no ruling touched)
 
-1. **CARD — the Scald basin's salinity.** `RUT_ScaldWater` ships the lake
-   variants Freshwater because no doc rules the basin saline (its own flagged
-   open question, inherited here). Boiling terminal pan with eight inflows and
-   no outlet argues brine; fresh keeps the DBH water economy live on the
-   hottest coast. One word decides the fishing bucket and the thirst economy.
-2. **CARD — coolant's fishing bucket.** `fish_bestiary_commission_2026-09-10.md`
-   §canals: "fresh until LIQUID_TYPES_MOD_1 says otherwise." Options: fresh
-   (eels stay ordinary fishing), Other (own bucket, own bestiary row). The
-   coolant eels ruling reads better with Other; fresh is zero extra work.
-3. **CARD — films in v1 or v2.** Sediment/fine-sand/oil is the owner's list;
-   §4c prices it as the big system. Ship v1 without films, or hold v1 for them?
+1. **CARD — RULED 2026-09-12: FRESHWATER.** And the owner corrected this
+   card's premise, verbatim: "Freshwater, and for the love of god, the
+   rivers flow OUT of the Scald... and you know this!" — the "terminal pan
+   with eight inflows and no outlet" framing was WRONG and is deleted: the
+   Scald is a SOURCE basin, rivers flow outward from it, and freshwater is
+   the physically honest answer. The DBH water economy stays live on the
+   hottest coast; the fishing bucket is Freshwater.
+2. **CARD — RULED 2026-09-12: coolant is `waterBodyType Other`.** Own
+   bucket, own bestiary row; the coolant-eels ruling reads as intended.
+3. **CARD — RULED 2026-09-12: films ship IN v1.** Sediment/fine-sand/oil is
+   v1 scope; the mod holds for it (§4c's pricing accepted).
 
 ## 10. Sources read
 

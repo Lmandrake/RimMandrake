@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T05:59:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T06:10:01Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1085,3 +1085,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TIBANNA_SOURCE_CUT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TIBANNA_SOURCE_CUT_1.md
+
+## SCALD_DIVING_MOD_1 Diving mod, v1 (owner: 'make the diving mod v1 content now!!'): RimMandrake-tier diving mechanic — hunt/commune at the Scald's deep center, priced in burns; bottom-walkers become interactable; Mod Settings per doctrine
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SCALD_DIVING_MOD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCALD_DIVING_MOD_1.md
