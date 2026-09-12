@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T13:44:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T13:56:22Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -37,7 +37,7 @@ summary:  1. Examine the Tribble module (find its workshop folder by About.xml n
 prose:    infrastructure/state/items/GIZKA_TRIBBLE_ADAPTATION_1.md
 
 ## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -55,7 +55,7 @@ summary:  EXPLOSIVEPLANTGROWTH1 — visible plant growth as a world mechanic
 prose:    infrastructure/state/items/EXPLOSIVE_PLANT_GROWTH_1.md
 
 ## FLOOD_WITNESS_EVENT_1 Plot event: the player witnesses a Cracked Lands flood (chimes, wall of water, explosive growth) at least once — organized as part of the plot, since natural timing won't show it
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -94,6 +94,26 @@ kind:     task
 blocked:  Doc half done 2026-09-11 (ashfall_research_base.md). Blocked on owner: site name, campaign function, reveal gating (cards ride MECHANICS_CARDS_SITTING_1); then landmark+dungeon build needs game up (FOUNDRY).
 summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
 prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
+
+## VAPOR_EMITTER_PLACEMENT_1 Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  All per-type rules RULED (owner sitting 2026-09-12, recorded in the review doc); done when the two FOUNDRY fix items land (on VAPOR_PLACEMENT_CLEANUP_1)
+summary:  VAPOREMITTERPLACEMENT1 — worldmap review of every vapor/smoke/gas emitter
+prose:    infrastructure/state/items/VAPOR_EMITTER_PLACEMENT_1.md
+
+## FLOOD_WITNESS_EVENT_1 Plot event: the player witnesses a Cracked Lands flood (chimes, wall of water, explosive growth) at least once — organized as part of the plot, since natural timing won't show it
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Design + quest spec done (invitation quest authored, alert-unlock flagged unruled); waits on FLOOD_CANYON_BIOME_1 (the mechanism mod, FOUNDRY) and its one production arm-the-flood verb, then quest def build (on FLOOD_CANYON_BIOME_1)
+summary:  FLOODWITNESSEVENT1 — the player sees the flood, once, on purpose
+prose:    infrastructure/state/items/FLOOD_WITNESS_EVENT_1.md
 
 ## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
 state:    ready  (BLOCKED)
