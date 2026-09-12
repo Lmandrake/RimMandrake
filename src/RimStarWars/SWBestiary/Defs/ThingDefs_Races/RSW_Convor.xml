@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Convor creature port.
+  Ported from mlie.starwarsanimalcollection's `Convor` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. No custom body:
+  `body` stays the vanilla Core `FlyingAvian` — no BodyDef port needed.
+  `leatherDef`/`specificMeatDef` repoint to the already-ported
+  RSW_Leather_Mammavian/RSW_Mammavian_Meat (RSW_MlieWaveB_Resources.xml).
+  Its `CompProperties_EggLayer` needed 2 new eggs,
+  RSW_EggConvorFertilized/UnFertilized (RSW_MlieWaveC_Resources.xml,
+  texPath swresource/EggSwirl, newly extracted this pass). Its Odyssey
+  specialTrainable (Comfort) is vanilla content, left unprefixed. Baby
+  lifeStage sounds stay the vanilla Core `Pawn_Chick_Call` (shared with
+  Clodhopper above), not Mlie content. Adult sounds repoint to the
+  already-absorbed sound wave (RSW_Pawn_Convor_*, 2026-09-02). texPaths are
+  unchanged text — extracted art (31 PNGs: base body/dessicated/female for
+  3 directions, plus the full 4-frame male+female flying animation set for
+  3 directions) sits at Textures/swanimals/Convor/ (extract_bundle.py
+  against the same AssetBundle every prior wave used).
+
+  Wired into the live cast this same pass: AridShrubland,
+  BiomeCypreJungle, COMIGO_GreaterSwamp_Tropical, and ZBiome_Badlands (per
+  cast_assignment.csv's current rows for this species), repointed from the
+  bare "Convor" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Convor</defName>
+    <label>convor</label>
+    <description>Convor (also known as "Trandoshan birds"), were a species of beautiful mammavian from the Wasskah moon of Hsskhor. Although Convor had short, plump bodies, they were excellent fliers. Their popularity as a pet meant they often established colonies on other worlds.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>60</MarketValue>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+      <PsychicSensitivityOffset>2.0</PsychicSensitivityOffset>
+      <Wildness>0.3</Wildness>
+      <MaxFlightTime>30</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>7</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>7</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggConvorUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggConvorFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>8</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>FlyingAvian</body>
+      <predator>true</predator>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>0.4</baseBodySize>
+      <maxPreyBodySize>0.4</maxPreyBodySize>
+      <baseHungerRate>0.3</baseHungerRate>
+      <baseHealthScale>0.85</baseHealthScale>
+      <foodType>CarnivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Mammavian</leatherDef>
+      <specificMeatDef>RSW_Mammavian_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>12</lifeExpectancy>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <nuzzleMtbHours>24</nuzzleMtbHours>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.8</leaveMapOnFleeChance>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Comfort</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.04</AridShrubland>
+        <Desert>0.01</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.4</TropicalSwamp>
+        <TemperateSwamp>0.8</TemperateSwamp>
+        <TemperateForest>0.6</TemperateForest>
+        <BorealForest>0.4</BorealForest>
+        <Tundra>0.04</Tundra>
+        <ColdBog>0.01</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Chick_Call</soundWounded>
+          <soundDeath>Pawn_Chick_Call</soundDeath>
+          <soundCall>Pawn_Chick_Call</soundCall>
+          <soundAngry>Pawn_Chick_Call</soundAngry>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.12</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>RSW_Pawn_Convor_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Convor_Death</soundDeath>
+          <soundCall>RSW_Pawn_Convor_Call</soundCall>
+          <soundAngry>RSW_Pawn_Convor_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Convor</defName>
+    <label>convor</label>
+    <labelPlural>convorees</labelPlural>
+    <race>RSW_Convor</race>
+    <combatPower>35</combatPower>
+    <ecoSystemWeight>0.50</ecoSystemWeight>
+    <wildGroupSize>2~4</wildGroupSize>
+    <flyingAnimationFramePathPrefix>swanimals/Convor/Convor_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFramePathPrefixFemale>swanimals/Convor/Convor_f_Flying_</flyingAnimationFramePathPrefixFemale>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>4</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <labelMale>convor coco</labelMale>
+    <labelFemale>convor hen</labelFemale>
+    <lifeStages>
+      <li>
+        <label>convor chick</label>
+        <labelPlural>convor chicks</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Convor/Convor</texPath>
+          <drawSize>0.50</drawSize>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Convor/Convor_f</texPath>
+          <drawSize>0.5</drawSize>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Convor/Convor_Dessicated</texPath>
+          <drawSize>0.50</drawSize>
+        </dessicatedBodyGraphicData>
+        <femaleDessicatedBodyGraphicData>
+          <texPath>swanimals/Convor/Convor_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </femaleDessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Convor/Convor</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.2, 0.2, 0.2)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Convor/Convor_f</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.2, 0.2, 0.2)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Convor/Convor_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+        <femaleDessicatedBodyGraphicData>
+          <texPath>swanimals/Convor/Convor_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </femaleDessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Convor/Convor</texPath>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Convor/Convor_f</texPath>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Convor/Convor_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+        <femaleDessicatedBodyGraphicData>
+          <texPath>swanimals/Convor/Convor_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </femaleDessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>

@@ -56,6 +56,7 @@
       <value>
         <RSW_Bantha>0.8</RSW_Bantha> <!-- bantha - huge-herd, adjust-keep -->
         <RSW_Nuna>0.2</RSW_Nuna> <!-- nuna - herd-small, keep -->
+        <RSW_Clodhopper>0.1</RSW_Clodhopper> <!-- clodhopper - ambush-small, keep -->
       </value>
     </match>
   </Operation>
@@ -95,7 +96,6 @@
         <TeeMuss>0.2</TeeMuss> <!-- tee muss - herd, import -->
         <Worrt>0.2</Worrt> <!-- worrt - ambush-small, keep -->
         <RSW_Bolotaur>0.1</RSW_Bolotaur> <!-- bolotaur - herd, import -->
-        <Clodhopper>0.1</Clodhopper> <!-- clodhopper - ambush-small, keep -->
         <FeralGrazer>0.1</FeralGrazer> <!-- feral grazer - herd, import -->
         <Gizka>0.1</Gizka> <!-- gizka - ambush-small, keep -->
         <RSW_Iriaz>0.1</RSW_Iriaz> <!-- iriaz - herd-small, keep -->
@@ -180,7 +180,9 @@
       <value>
         <RSW_Bantha>0.5</RSW_Bantha> <!-- bantha - huge-grazer, keep -->
         <RSW_Nuna>0.4</RSW_Nuna> <!-- nuna - small-runway, keep -->
+        <RSW_Cannok>0.16</RSW_Cannok> <!-- cannok - medium-interface, keep -->
         <RSW_Vulptex>0.08</RSW_Vulptex> <!-- vulptex - small-runway, keep -->
+        <RSW_Convor>0.08</RSW_Convor> <!-- convor - flier-interface, keep -->
         <RSW_Porg>0.04</RSW_Porg> <!-- porg - small-runway, keep -->
       </value>
     </match>
@@ -228,10 +230,8 @@
         <Grank>0.2</Grank> <!-- Grank - medium-interface, keep -->
         <Qormot>0.2</Qormot> <!-- qormot - medium-interface, keep -->
         <Strill>0.2</Strill> <!-- strill - medium-interface, keep -->
-        <Cannok>0.16</Cannok> <!-- cannok - medium-interface, keep -->
         <Whisperbird>0.15</Whisperbird> <!-- whisperbird - flier-interface, keep -->
         <Pikobis>0.1</Pikobis> <!-- pikobis - medium-runner, keep -->
-        <Convor>0.08</Convor> <!-- convor - flier-interface, keep -->
         <Skalder>0.08</Skalder> <!-- skalder - huge-grazer, keep -->
         <FeralNerf>0.04</FeralNerf> <!-- feral nerf - medium-runner, keep -->
         <Voorpak>0.02</Voorpak> <!-- voorpak - small-runway, keep -->
@@ -375,7 +375,9 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
       <value>
+        <RSW_Clodhopper>0.7</RSW_Clodhopper> <!-- clodhopper - floor-vermin, keep -->
         <RSW_Nuna>0.4</RSW_Nuna> <!-- nuna - brake, import -->
+        <RSW_Convor>0.3</RSW_Convor> <!-- convor - flier, import -->
       </value>
     </match>
   </Operation>
@@ -386,7 +388,6 @@
       <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/wildAnimals</xpath>
       <value>
         <Gizka>1.0</Gizka> <!-- gizka - floor-vermin, keep -->
-        <Clodhopper>0.7</Clodhopper> <!-- clodhopper - floor-vermin, keep -->
         <Whisperbird>0.7</Whisperbird> <!-- whisperbird - flier, keep -->
         <Worrt>0.7</Worrt> <!-- worrt - ambush, keep -->
         <Shiro>0.5</Shiro> <!-- shiro - floor-ambush, keep -->
@@ -394,7 +395,6 @@
         <Klorslug>0.4</Klorslug> <!-- k'lor'slug - gnawer, keep -->
         <Mott>0.4</Mott> <!-- mott - brake, import -->
         <Nuna>0.4</Nuna> <!-- nuna - brake, import -->
-        <Convor>0.3</Convor> <!-- convor - flier, import -->
         <Falumpaset>0.3</Falumpaset> <!-- falumpaset - brake, import -->
         <Gelagrub>0.3</Gelagrub> <!-- gelagrub - gnawer, import -->
         <Kinrath>0.3</Kinrath> <!-- kinrath - canopy-ambush, adjust-keep -->
@@ -808,6 +808,7 @@
       <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/wildAnimals</xpath>
       <value>
         <RSW_Nuna>0.4</RSW_Nuna> <!-- nuna - grazer, keep -->
+        <RSW_Convor>0.3</RSW_Convor> <!-- convor - crown-flier, import -->
       </value>
     </match>
   </Operation>
@@ -820,7 +821,6 @@
         <Urusai>0.5</Urusai> <!-- urusai - crown-flier, keep -->
         <Gelagrub>0.4</Gelagrub> <!-- gelagrub - crown-grazer, adjust-keep -->
         <Nuna>0.4</Nuna> <!-- nuna - grazer, keep -->
-        <Convor>0.3</Convor> <!-- convor - crown-flier, import -->
         <LongtailGorg>0.3</LongtailGorg> <!-- longtail gorg - wait-ambush, keep -->
         <Whisperbird>0.3</Whisperbird> <!-- whisperbird - crown-flier, import -->
         <Fambaa>0.02</Fambaa> <!-- fambaa - the-terribly-lost, import -->
@@ -908,6 +908,7 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
       <value>
         <RSW_CanCell>0.2</RSW_CanCell> <!-- can-cell - flier-commuter, keep -->
+        <RSW_Convor>0.2</RSW_Convor> <!-- convor - flier-commuter, import -->
       </value>
     </match>
   </Operation>
@@ -919,7 +920,6 @@
       <value>
         <Gornt>0.3</Gornt> <!-- gornt - the-Patient, keep -->
         <Eopie>0.25</Eopie> <!-- eopie - the-Patient, keep -->
-        <Convor>0.2</Convor> <!-- convor - flier-commuter, import -->
         <Woolamander>0.15</Woolamander> <!-- woolamander - flier-commuter, import -->
       </value>
     </match>

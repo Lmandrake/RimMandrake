@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Clodhopper creature port.
+  Ported from mlie.starwarsanimalcollection's `Clodhopper` ThingDef/
+  PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
+  renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
+  Custom body: `Clodhopper` (Bodies_Animal_StarWars.xml) needed only a
+  defName rename — its part composition is entirely vanilla Core parts
+  (Tail, Spine, Stomach, Heart, Lung x2, Kidney x2, Liver, Hump, Neck/Head/
+  Skull/Brain/Eye x2/Ear x2/Nose/Beak, 4x Leg/Paw) — ported as
+  RSW_Clodhopper (RSW_MlieWaveC_Bodies.xml). `leatherDef` stays vanilla
+  Core `Leather_Bird` (confirmed present in Core's own
+  Items_Resource_Stuff_Leather.xml, not a Mlie resource — no port needed).
+  `specificMeatDef` repoints to the already-ported RSW_Reptavian_Meat
+  (RSW_MlieWaveB_Resources.xml). Its `CompProperties_EggLayer` needed 2 new
+  eggs, RSW_EggClodhopperFertilized/UnFertilized
+  (RSW_MlieWaveC_Resources.xml, texPath swresource/EggSpeckled, newly
+  extracted this pass). Its Odyssey specialTrainable (Forage) is vanilla
+  content, left unprefixed. Baby lifeStage sounds stay the vanilla Core
+  `Pawn_Chick_Call` (shared with Convor below), not Mlie content. Adult
+  sounds repoint to the already-absorbed sound wave (RSW_Pawn_Clodhopper_*,
+  2026-09-02). texPaths are unchanged text — extracted art sits at
+  Textures/swanimals/Clodhopper/ (extract_bundle.py against the same
+  AssetBundle every prior wave used).
+
+  Wired into the live cast this same pass: BiomeCypreJungle + Desert (per
+  cast_assignment.csv's current row for this species), repointed from the
+  bare "Clodhopper" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Clodhopper</defName>
+    <label>clodhopper</label>
+    <description>Clodhoppers were omnivorous and dim-witted flightless avians from the planet Naboo but could be found as castaway populations on numerous worlds due to illegal egg exports. Clodhopper weren't large creatures, but they fed in swarms becoming a real menace to agriculture. They were protected by tough, durable skin. Fast-breeding, dimwitted, voracious grazers, clodhoppers would use their powerful forelegs to forage.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>100</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.03</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.03</ArmorRating_Blunt>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0.45</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggClodhopperUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggClodhopperFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>1</eggLayIntervalDays>
+        <eggCountRange>2</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Clodhopper</body>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>Leather_Bird</leatherDef>
+      <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
+      <herdAnimal>true</herdAnimal>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <petness>0.05</petness>
+      <roamMtbDays>2</roamMtbDays>
+      <lifeExpectancy>8</lifeExpectancy>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Forage</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.4</AridShrubland>
+        <Desert>0.04</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.04</TropicalSwamp>
+        <TemperateSwamp>0.04</TemperateSwamp>
+        <TemperateForest>0.8</TemperateForest>
+        <BorealForest>0.04</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Chick_Call</soundWounded>
+          <soundDeath>Pawn_Chick_Call</soundDeath>
+          <soundCall>Pawn_Chick_Call</soundCall>
+          <soundAngry>Pawn_Chick_Call</soundAngry>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.1</minAge>
+          <soundWounded>RSW_Pawn_Clodhopper_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Clodhopper_Death</soundDeath>
+          <soundCall>RSW_Pawn_Clodhopper_Call</soundCall>
+          <soundAngry>RSW_Pawn_Clodhopper_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>StandardAnimal</li>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Clodhopper</defName>
+    <label>clodhopper</label>
+    <labelPlural>clodhoppers</labelPlural>
+    <race>RSW_Clodhopper</race>
+    <combatPower>50</combatPower>
+    <ecoSystemWeight>1.30</ecoSystemWeight>
+    <wildGroupSize>4~8</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>clodhopper chick</label>
+        <bodyGraphicData>
+          <texPath>swanimals/Clodhopper/Clodhopper</texPath>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Clodhopper/Clodhopper_Dessicated</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+        <corpseGraphicData>
+          <texPath>swanimals/Clodhopper/Clodhopper_d</texPath>
+          <drawSize>0.5</drawSize>
+        </corpseGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Clodhopper/Clodhopper</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Clodhopper/Clodhopper_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+        <corpseGraphicData>
+          <texPath>swanimals/Clodhopper/Clodhopper_d</texPath>
+          <drawSize>1.0</drawSize>
+        </corpseGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Clodhopper/Clodhopper</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Clodhopper/Clodhopper_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+        <corpseGraphicData>
+          <texPath>swanimals/Clodhopper/Clodhopper_d</texPath>
+          <drawSize>1.5</drawSize>
+        </corpseGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>
