@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RSW_DeepDesertSeep — an invisible map marker a swimmer's rooting comp scans
+    for (CompSarlaccSwimmer, "it finds a seep" trigger, draft §2.1). Nothing
+    places these on a live map yet — that is deep-desert mapgen-scatter work,
+    owed alongside the world-tile placement in
+    infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md. Spawnable today via
+    dev mode / the bridge for testing the rooting mechanism itself.
+  -->
+
+  <ThingDef>
+    <defName>RSW_DeepDesertSeep</defName>
+    <label>buried seep</label>
+    <description>A trace of moisture under the sand — a brine seep, a fossil lens, a buried root. Invisible to the eye; a sarlacc swimmer can find one and root here.</description>
+    <thingClass>Thing</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Item</altitudeLayer>
+    <passability>Standable</passability>
+    <selectable>false</selectable>
+    <destroyable>true</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <drawerType>None</drawerType>
+    <size>(1,1)</size>
+    <tickerType>Never</tickerType>
+    <staticSunShadowHeight>0</staticSunShadowHeight>
+  </ThingDef>
+
+</Defs>

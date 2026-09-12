@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RSW_SarlaccSwimmer — Stage I of the sarlacc (SARLACC_HABITAT_BUILD_1).
+    Modeled on Anomaly's Devourer per the owner's explicit ruling
+    (sarlacc_native_habitat_draft.md §8): reuses Devourer's own BodyDef,
+    PawnRenderTreeDef and ThinkTreeDef BY REFERENCE (not copied), and its
+    CompProperties_Devourer for the swallow-whole mechanic. Everything a player
+    reads (label, description, messages) is re-themed as a PRESS wringing a
+    drink, never digestion/eating — draft §1's "it does not digest, it wrings."
+
+    Placeholder art: every texPath below is Devourer's own real, already-shipped
+    art (reused, not duplicated) so nothing renders magenta. Real sprite art is
+    the draft's own §Owed line ("the swimmer's silhouette... still owed") and is
+    NOT invented here.
+
+    Tribal stage label (Fork 9, DRAFT pending the owner's yes): the Sun-Debt
+    tribes call this stage "the Seeker."
+  -->
+
+  <PawnKindDef MayRequire="Ludeon.RimWorld.Anomaly">
+    <defName>RSW_SarlaccSwimmer</defName>
+    <label>sarlacc swimmer</label>
+    <race>RSW_SarlaccSwimmer</race>
+    <combatPower>200</combatPower>
+    <abilities>
+      <li>ConsumeLeap_Devourer</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Devourer/Devourer</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.6</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Devourer/Swimming_Devourer</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.6</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Devourer/Dessicated_Devourer</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.6</drawSize>
+          <attachPoints>
+            <li>
+              <offset>(-.4, 0, .85)</offset>
+              <type>PlatformRestraint0</type>
+            </li>
+            <li>
+              <offset>(.45, 0, .85)</offset>
+              <type>PlatformRestraint1</type>
+            </li>
+            <li>
+              <offset>(.5, 0, -.85)</offset>
+              <type>PlatformRestraint2</type>
+            </li>
+            <li>
+              <offset>(-.5, 0, -.85)</offset>
+              <type>PlatformRestraint3</type>
+            </li>
+          </attachPoints>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+    <overrideDebugActionCategory>Entity</overrideDebugActionCategory>
+  </PawnKindDef>
+
+  <ThingDef MayRequire="Ludeon.RimWorld.Anomaly" ParentName="BasePawn">
+    <defName>RSW_SarlaccSwimmer</defName>
+    <label>sarlacc swimmer</label>
+    <description>A large sub-sand predator, a mouth with a body behind it. It carries a fixed reserve of water from birth and spends it hunting, swimming and — eventually — rooting; every strike, every surfacing, every metre of sand crossed spends the reserve, and a kill is the only way to refill it. It does not chase, and it does not strike anything that carries no water — droids pass over it unnoticed. Sooner or later every swimmer stops moving for good: this is Stage I of the sarlacc, before it finds a seep or simply runs dry and roots where it stands.</description>
+    <altitudeLayer>Pawn</altitudeLayer>
+    <category>Pawn</category>
+    <comps>
+      <li>
+        <compClass>CompAttachBase</compClass>
+      </li>
+      <li Class="CompProperties_Devourer">
+        <messageDigested>A sarlacc swallowed {PAWN_nameDef} whole and has begun wringing it dry! Kill the sarlacc before the press finishes.</messageDigested>
+        <messageEmerged>{PAWN_nameDef} was spat free of the sarlacc's press, changed.</messageEmerged>
+        <messageEmergedCorpse>{PAWN_nameDef}'s corpse was voided from the sarlacc, wrung dry.</messageEmergedCorpse>
+        <messageDigestionCompleted>The sarlacc has finished wringing {PAWN_nameDef} and voided the husk.</messageDigestionCompleted>
+        <digestingInspector>Being wrung: {PAWN_nameDef} ({SECONDS} seconds left)</digestingInspector>
+        <completeDigestionDamage>170</completeDigestionDamage>
+        <bodySizeDigestTimeCurve>
+          <points>
+            <li>(0.2, 10)</li>
+            <li>(1, 30)</li>
+            <li>(3.5, 60)</li>
+          </points>
+        </bodySizeDigestTimeCurve>
+        <timeDamageCurve>
+          <points>
+            <li>(0, 10)</li>
+            <li>(60, 40)</li>
+          </points>
+        </timeDamageCurve>
+      </li>
+      <li Class="RimMandrake.StarWars.Sarlacc.CompProperties_SarlaccSwimmer">
+        <startingReserveRange>300~900</startingReserveRange>
+        <reserveDrainPerDay>1</reserveDrainPerDay>
+        <reserveGainOnKill>150</reserveGainOnKill>
+        <seepDetectRadius>4</seepDetectRadius>
+        <seepDetectChancePerCheck>0.15</seepDetectChancePerCheck>
+        <anchoredDef>RSW_SarlaccAnchored</anchoredDef>
+        <seepMarkerDef>RSW_DeepDesertSeep</seepMarkerDef>
+      </li>
+    </comps>
+    <containedItemsSelectable>true</containedItemsSelectable>
+    <containedPawnsSelectable>true</containedPawnsSelectable>
+    <defaultPlacingRot>South</defaultPlacingRot>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <drawHighlight>true</drawHighlight>
+    <hasTooltip>true</hasTooltip>
+    <inspectorTabs>
+      <li>ITab_Pawn_Health</li>
+      <li>ITab_Pawn_Log</li>
+    </inspectorTabs>
+    <race>
+      <renderTree>Devourer</renderTree>
+      <body>Devourer</body>
+      <thinkTreeMain>Devourer</thinkTreeMain>
+      <thinkTreeConstant>DevourerConstant</thinkTreeConstant>
+      <alwaysViolent>true</alwaysViolent>
+      <baseBodySize>3</baseBodySize>
+      <baseHealthScale>4.5</baseHealthScale>
+      <intelligence>ToolUser</intelligence>
+      <needsRest>false</needsRest>
+      <bloodDef>Filth_DarkBlood</bloodDef>
+      <bleedRateFactor>0.4</bleedRateFactor>
+      <fleshType>EntityFlesh</fleshType>
+      <isImmuneToInfections>true</isImmuneToInfections>
+      <specificMeatDef>Meat_Twisted</specificMeatDef>
+      <leatherDef>Leather_Dread</leatherDef>
+      <hasGenders>false</hasGenders>
+      <foodType>None</foodType>
+      <lifeExpectancy>60</lifeExpectancy>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundMeleeDodge>Pawn_MeleeDodge</soundMeleeDodge>
+      <disableIgniteVerb>true</disableIgniteVerb>
+      <trainability>None</trainability>
+      <canBecomeShambler>false</canBecomeShambler>
+      <waterCellCost>1</waterCellCost>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <soundCall>Pawn_Devourer_Call</soundCall>
+          <soundWounded>Pawn_Devourer_Wounded</soundWounded>
+          <soundAttack>Pawn_Devourer_Attack</soundAttack>
+        </li>
+      </lifeStageAges>
+      <corpseHiddenWhileUndiscovered>false</corpseHiddenWhileUndiscovered>
+    </race>
+    <selectable>true</selectable>
+    <soundImpactDefault>BulletImpact_Flesh</soundImpactDefault>
+    <statBases>
+      <Mass>45</Mass>
+      <Flammability>0.7</Flammability>
+      <MoveSpeed>3.8</MoveSpeed>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>90</ComfyTemperatureMax>
+      <PsychicSensitivity>2</PsychicSensitivity>
+      <LeatherAmount>14</LeatherAmount>
+      <MeatAmount>30</MeatAmount>
+      <ArmorRating_Sharp>0.4</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.3</ArmorRating_Heat>
+      <ToxicResistance>0.6</ToxicResistance>
+    </statBases>
+    <thingClass>Pawn</thingClass>
+    <tickerType>Normal</tickerType>
+    <tools>
+      <li>
+        <label>left fin</label>
+        <labelNoLocation>fin</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>LeftFin</linkedBodyPartsGroup>
+        <alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+      </li>
+      <li>
+        <label>right fin</label>
+        <labelNoLocation>fin</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RightFin</linkedBodyPartsGroup>
+        <alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+      </li>
+      <li>
+        <label>teeth</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>13</power>
+        <armorPenetration>0.15</armorPenetration>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <tradeability>None</tradeability>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+</Defs>

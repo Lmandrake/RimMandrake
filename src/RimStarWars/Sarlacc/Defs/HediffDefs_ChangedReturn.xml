@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    The seven changed-return hediffs (draft §4.5, Fork 8 — ALL SEVEN SHIP).
+    Granted by CompSarlaccSwimmer when a pawn survives being swallowed and
+    regurgitated (see Source/CompSarlaccSwimmer.cs); usually one, occasionally
+    two. "Dealt by how the pawn was taken" (pressed for the press, salt-eyed for
+    the shore) needs the pocket-map interior to distinguish where a pawn was —
+    that context does not exist yet (owed alongside the dungeon interior), so
+    this build grants a weighted-random pick instead. Permanent, non-lethal,
+    never removed by ordinary healing (chronic) — "leaves you permanently
+    changed" is the whole point.
+
+    taken-and-returned's Sun-Debt-specific "sacred, or unclean" social reaction
+    is NOT wired here: that is RimUtinni content (a specific ideoligion's
+    reaction to a generic RSW-tier hediff), owed as a small follow-up patch in
+    RimUtinni tier, per the naming-scheme doctrine that faction-specific
+    reactions are campaign content, not Star-Wars-generalizable content.
+  -->
+
+  <HediffDef>
+    <defName>RSW_TheWrung</defName>
+    <label>the wrung</label>
+    <description>The press took water this body will never hold again. Thirst runs slower than it used to — the body learned to hold what little it has — but there is less blood to spare, healing comes slower, and a gauntness has settled in that will never leave. (The thirst-need benefit is flavor-true but not yet mechanically wired to any specific water/thirst mod — see the item file.)</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75, 0.7, 0.55)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <stages>
+      <li>
+        <statFactors>
+          <InjuryHealingFactor>0.7</InjuryHealingFactor>
+        </statFactors>
+        <capMods>
+          <li>
+            <capacity>BloodPumping</capacity>
+            <offset>-0.15</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_SaltEyed</defName>
+    <label>salt-eyed</label>
+    <description>Weeks of the reservoir's brine in the eyes. The glare of the open desert does not touch them any more — but sight is permanently clouded.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.8, 0.8, 0.9)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Sight</capacity>
+            <offset>-0.4</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_TheStillness</defName>
+    <label>the stillness</label>
+    <description>Learned the predator's arithmetic, waiting on the shore: everything comes back to the mouth eventually, so there is nothing left to panic about. Never breaks from fear or a bad mood the way others do — but cannot run, ever again.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.6, 0.6, 0.65)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <stages>
+      <li>
+        <statFactors>
+          <MentalBreakThreshold>0.4</MentalBreakThreshold>
+          <MoveSpeed>0.7</MoveSpeed>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_TheTithe</defName>
+    <label>the tithe</label>
+    <description>The body carries the dew ring's scent now, faint but permanent. Every appraising predator in the deep desert reads this pawn as full, and strikes it first. A cistern's roots are said to surface nearer to one who carries this — it wants them back.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.45, 0.3)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <stages>
+      <li />
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_TheBloom</defName>
+    <label>the bloom</label>
+    <description>Anhydrobiotic spores lodged in the skin during the wringing. Harmless — but whenever this pawn gets wet, something briefly grows on them. Nobody who sees it forgets it.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.5, 0.6, 0.35)</defaultLabelColor>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <stages>
+      <li />
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_Pressed</defName>
+    <label>pressed</label>
+    <description>A limb, or a ribcage, that the press flattened and released. Whatever could hurt there is gone for good, along with some of what that part could still do.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.65, 0.5, 0.5)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <stages>
+      <li>
+        <statFactors>
+          <PainShockThreshold>1.5</PainShockThreshold>
+        </statFactors>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.15</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.15</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RSW_TakenAndReturned</defName>
+    <label>taken-and-returned</label>
+    <description>The tribes' word for one who came back from that place. What it means to them — sacred, or unclean, or both by holding — is theirs to decide, not this pawn's body. Mechanically this marks who they were taken by and nothing more.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.7, 0.6, 0.4)</defaultLabelColor>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <stages>
+      <li />
+    </stages>
+  </HediffDef>
+
+</Defs>
