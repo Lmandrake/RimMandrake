@@ -3522,22 +3522,22 @@
     "sha": "bb73b6bd"
   },
   "src/RimMandrake/TitanicCreatures/Source/CorpseSite/Building_TitanicCorpseSite.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "b6c494150fe81780e1c15562440f4d7ef53bdebbf0cd2d4d2eb4a0dde9d44e42",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "38c54b5a9d734b10e79095ebb5ba61738fa00319e0bbe68c805555bdd7730277",
+    "sha": "7c9b0e9ef"
   },
   "src/RimMandrake/TitanicCreatures/Source/CorpseSite/JobDriver_HarvestTitanicCorpse.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "9a1de181ef5b5b6b1323fdd0c53fbe03272aedf12ff00cb8418d818840e2d94f",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "903e7679bc7a968c70b031ab6179905f37f1f77c1bc5085ce7b115dad4d9ac94",
+    "sha": "7c9b0e9ef"
   },
   "src/RimMandrake/TitanicCreatures/Source/CorpseSite/Patch_CorpseSiteConversion.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "e9ca16be6662cda1ff5d20dec6af8bf7208899d7f23bbb4d37ee093a859473a0",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "83a01b7a7ed78e752492a949f6b993b4e4db4f4146cae1e7f9915fc1cfe42548",
+    "sha": "7c9b0e9ef"
   },
   "src/RimMandrake/TitanicCreatures/Source/CorpseSite/TitanicCorpseSiteUtility.cs": {
     "cleanCount": 1,
@@ -3558,10 +3558,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimMandrake/TitanicCreatures/Source/Footprint/Patch_ThickRoofAvoidance.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "e817b6d915253bd84e101875f24b152a5e322450c15af37393bcf55f66f80c81",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "1fe1c2e93acdd1b7aac3887956da0e963d3a6f9b755999230993b65cd7429ce5",
+    "sha": "7c9b0e9ef"
   },
   "src/RimMandrake/TitanicCreatures/Source/RM_TitanicCreaturesDefOf.cs": {
     "cleanCount": 1,
@@ -3618,10 +3618,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimMandrake/TitanicCreatures/Source/Wake/Patch_ButcherYieldCurve.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "c95226da1f1557771006c7da559c43d97a612a67fd0f85a5389301e9a98564f7",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "9ba318e6a7f6559295b79e3426a636ec55951a05d1478b9b9c1c0c12f7c38c80",
+    "sha": "7c9b0e9ef"
   },
   "src/RimMandrake/TitanicCreatures/Source/Wake/Patch_Thing_Position_Wake.cs": {
     "cleanCount": 1,
@@ -3636,16 +3636,16 @@
     "sha": "bb73b6bd"
   },
   "src/RimMandrake/TitanicCreatures/Source/Wake/TitanicWakeProcessor.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "6055332361b3230511611125cc6d98b4531ca28a9696e8f5aeffb7e30df8206c",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "b95b16c27d029f7ebc4b68b2246b5c4ea8ce202bd30f938965d59ebd5c15667b",
+    "sha": "7c9b0e9ef"
   },
   "src/RimMandrake/TitanicCreatures/Source/Wake/YieldCurveUtility.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "12c8299bfea966f9bf659c9cb25f617d5c79741cca4d25f7c13e33a3140e494d",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "c1cca2da7bdfaa505c5d8be08e5d09f4b6c20312f3eabf6853f7aaee41c56ad4",
+    "sha": "7c9b0e9ef"
   },
   "src/RimMandrake/Utils/animal_contact_sheet.py": {
     "cleanCount": 2,
