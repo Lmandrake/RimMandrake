@@ -34,3 +34,23 @@ same treatment: an inventory, then a placement rule per type.
 - `hydrology_and_fire_ecology.md`, `the_propane_lakes.md` (nightside gas is a
   different phenomenon — cold volatiles, not vents; the ban "zero before the
   terminator" applies to STEAM sources, rule the cold-gas types separately).
+
+## Parts 1-3 done 2026-09-12 (BENCH belt wave) — inventory + proposals + audit
+`design/Jawa/worldbuilding/vapor_emitter_review_2026-09-12.md` — 17 emitter
+families MEASURED against the frozen OFFICIAL-2026-08-29 dump (sha 1742630eb...,
+fingerprint stated inside); world-tile audit MEASURED (28,126 mutator instances,
+0 unresolved shortHashes); colony-map-level census UNMEASURED (save holds no
+local maps). Findings that matter:
+- RULED-RULE VIOLATION: 21/54 SteamGeysers_Increased tiles sit AT/PAST the
+  terminator (arc >=90, up to 127.1) — breaks the owner's "zero before the
+  terminator" directly. Fix filed: VAPOR_TERMINATOR_GEYSER_FIX_1 (FOUNDRY).
+- No decay implementation exists: all 10 Ash'karr biomes carry default
+  geyserCountFactor=1; VEE_SteamGeysers_Decreased used on 0 tiles.
+- GeothermalVent (Odyssey) ignores biome/mutator gates entirely per source —
+  needs a new gate to obey any rule.
+- AB_MagmaVents: 5/10 instances on biomes outside its engine whitelist —
+  likely orphaned by a biome repaint.
+- Weeping Stones vent-feed PROPOSED via ZBiome_DesertOasis geyserCountFactor
+  (SteamGeysers_Increased is engine-blacklisted there).
+Remaining: owner rules the PROPOSED per-type rules (cards can ride
+MECHANICS_CARDS_SITTING_1); then part 4 bridge fix-up per type (FOUNDRY).
