@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- TibannaEmbargo_CutMineableRoute.xml     RimUtinni · authored 2026-09-12
+
+     TIBANNA_SOURCE_CUT_1 (CARD T1, RULED 2026-09-12: cut the violators).
+     the_forge.md §6 hard ban 5: no tibanna source but the beldons — no
+     mineral or synthetic route, ever. `tibanna_embargo_plot_spec.md`'s own
+     survey found the live mod stack violating this in TWO ways: OuterRim
+     core ships three extractor buildings (cut via Cherry Picker,
+     infrastructure/state/cherrypicker/CherryPicker.SHIP.xml — see the
+     comment there) and separately, `leutiankane.mines2patchouterrim`'s own
+     Patch_Mines2.0OuterRim.xml adds a MinesAutomatedExtension.MineableSettings
+     mod extension directly onto OuterRim_Tibanna (the ITEM def), making the
+     raw item minable via the "Mines and Automated Mining" framework
+     (researchPrerequisites OuterRim_HypertechFabrication, workOffset 200,
+     mineableYield 10) — confirmed by reading that mod's patch file directly.
+
+     This second route is NOT a standalone def — it is one <li> appended to
+     an ALREADY-EXISTING <modExtensions> list on OuterRim_Tibanna's own base
+     def (which also carries a VEF.Things.ThingDefExtension for deepColor,
+     unrelated and left alone). Cherry Picker cuts whole (DefType, defName)
+     pairs and cannot reach a single list entry inside a def the ruling says
+     must STAY (the item itself is the one thing this spec keeps) — so this
+     route is removed the same way WreckVerminNest_ShipChunk.xml fixes a
+     defect inside a kept def: a scoped ordinary patch, not a Cherry Picker
+     entry.
+
+     Gate: OUTER MayRequire tests both ingredients — Ludeon.RimWorld.Odyssey
+     is NOT required here (OuterRim_Tibanna is neronix17.outerrim.core's own
+     item, not Odyssey's) — the real gate is that BOTH
+     neronix17.outerrim.core (owns OuterRim_Tibanna) and
+     leutiankane.mines2patchouterrim (the mod that actually adds the
+     offending extension) are active; if either is absent this Operation is
+     dropped at load and nothing dangles. INNER PatchOperationConditional
+     confirms the specific <li> is still there before removing it — same
+     discipline as every other patch in this folder, and load-bearing here
+     because the owner's own ruling explicitly warns "LK's patches can no-op
+     silently": if `mines2patchouterrim`'s own AddModExtension already failed
+     for any reason, this patch's inner Conditional reports nomatch rather
+     than silently claiming a removal that never had anything to remove.
+
+     Load order: mandrake.rut.patches loads LATE in the campaign's full mod
+     list (after neronix17.outerrim.core, leutiankane.mineablesor and
+     leutiankane.mines2patchouterrim, all of which sit in the OuterRim/LK
+     block well before the mandrake.rut.* tail) — confirmed against the live
+     ModsConfig.xml, 2026-09-12 — so LK's AddModExtension has already run by
+     the time this patch's PatchOperationRemove executes. Verify LIVE after
+     any mod-list reorder: a patch that runs BEFORE the one it undoes
+     produces the same "ran, matched nothing, changed nothing" silence this
+     comment is warning about in the first place.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="neronix17.outerrim.core,leutiankane.mines2patchouterrim">
+    <xpath>/Defs/ThingDef[defName="OuterRim_Tibanna"]/modExtensions</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="OuterRim_Tibanna"]/modExtensions/li[@Class="MinesAutomatedExtension.MineableSettings"]</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/ThingDef[defName="OuterRim_Tibanna"]/modExtensions/li[@Class="MinesAutomatedExtension.MineableSettings"]</xpath>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>
