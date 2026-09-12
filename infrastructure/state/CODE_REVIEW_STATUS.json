@@ -1974,10 +1974,10 @@
     "sha": "972818c70"
   },
   "src/RimMandrake/MandrakePatches/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "9c99d24e4f23d158b33b9b79290c8b77294f6381b622480bc428cc852057f21d",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-12",
+    "hash": "1f90de5f1dfa1ea0ca3cc45f7ec81742608acd402824bbb2ff5f6f27bfc0783a",
+    "sha": "bd35a33b5"
   },
   "src/RimMandrake/MandrakePatches/LICENSE": {
     "cleanCount": 1,
