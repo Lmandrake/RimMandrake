@@ -1,0 +1,194 @@
+<h1>Ash&rsquo;karr worldmap audit &mdash; report body</h1>
+
+<p>Sections are appended, never rewritten. Each one is dated and names the instrument
+behind every number. The earlier adversarial audit and six-pass edit lives separately at
+<code>world/audit_2026-08-26/README.md</code> and is not restated here.</p>
+
+<h2>Post-freeze verification &mdash; 2026-09-11</h2>
+
+<p><strong>Question:</strong> does the frozen authored artifact
+<code>world/ASHKARR_WORLDMAP_tiles.csv</code> still describe the planet that ships inside the
+savegame? Offline only &mdash; no bridge, no game. Everything below was read straight out of
+the <code>.rws</code> with <code>xml.etree</code> plus
+<code>zlib.decompress(data, -15)</code> over the <code>PlanetLayer</code> grids, and biome
+shortHashes were resolved through the DefDump <code>defs.sqlite</code> capture of
+2026-09-10.</p>
+
+<h3>Which save this is a verification of</h3>
+
+<p>The item named <code>WORLDMAP_V24_consolidated_names_2026-09-09.rws</code>. That file is
+<strong>not in <code>Saves/</code></strong>; it sits in
+<code>Saves_archive_2026-09-09/</code>. It was measured, and it is <strong>not</strong> the
+planet the frozen CSV records &mdash; 2,834 tiles disagree on biome. The live canonical save
+<code>Saves/CANONICAL_ASHKARR_2026-09-09.rws</code> disagrees on <strong>zero</strong>. V24
+predates three passes the CSV already carries (the Blue Desert rename, the desert-band
+repaint, and WORLD_BOUNDARY_LAND_AT_SEA_ELEVATION_1). <strong>The CSV is a record of
+CANONICAL, not of V24</strong>, and the rest of this section verifies against CANONICAL and
+says so on every line.</p>
+
+<h3>Fingerprint</h3>
+
+<p><strong>MEASURED &mdash; match.</strong> <code>frozen.json</code> records
+<code>sha256 756d9ffc8a22c3d220ada5988df7d89527685766344d63cc667664cf28ee6bb7</code>,
+<code>rows 21872</code>, <code>bytes 1810387</code>. The file on disk today hashes to the
+same 64 hex digits. The freeze stamp &mdash; found stale three separate times in its own
+recorded history &mdash; is <em>current</em>. Nothing has slipped past it since 2026-09-09.</p>
+
+<h3>What agrees &mdash; MEASURED, CSV vs CANONICAL, per tile</h3>
+
+<p>Not a census comparison. Every row below is a tile-by-tile equality test across all
+21,872 tiles; the count is the number that differ.</p>
+
+<table>
+  <tr><th>field</th><th>instrument</th><th>tiles differing</th></tr>
+  <tr><td>tile count</td><td><code>tileBiomeDeflate</code> 43,744 B &divide; 2</td><td>21,872 in the save, 21,872 CSV rows, 21,872 in <code>canon.yml</code> &mdash; three-way <strong>agree</strong></td></tr>
+  <tr><td>biome</td><td><code>tileBiomeDeflate</code> &rarr; BiomeDef shortHash, 0 unresolved of 29 distinct</td><td><strong>0</strong></td></tr>
+  <tr><td>elevation (m)</td><td><code>tileElevationDeflate</code>, ushort &minus; 8192</td><td><strong>0</strong></td></tr>
+  <tr><td>hilliness</td><td><code>tileHillinessDeflate</code>, 1 B/tile</td><td><strong>0</strong> (Flat 9,360 &middot; SmallHills 6,035 &middot; LargeHills 3,698 &middot; Mountainous 2,424 &middot; Impassable 355)</td></tr>
+  <tr><td>temperature (&deg;C)</td><td><code>tileTemperatureDeflate</code>, (ushort &minus; 3000) / 10</td><td><strong>0</strong></td></tr>
+  <tr><td>rainfall (mm)</td><td><code>tileRainfallDeflate</code>, ushort</td><td><strong>0</strong></td></tr>
+  <tr><td>swampiness</td><td><code>tileSwampinessDeflate</code>, byte / 255</td><td><strong>0</strong></td></tr>
+</table>
+
+<p>The three ushort encodings above were calibrated against the CSV's own values before use,
+not assumed: elevation, temperature and swampiness each resolve to an exact offset/scale that
+reproduces every one of 21,872 rows. An encoding that reproduced <em>most</em> rows would have
+been the interesting result; none did.</p>
+
+<p><strong>Water &mdash; MEASURED, agrees.</strong> 1,448 tiles at <code>elev_m &lt;= 0</code>
+in the save; 1,448 in the CSV, by the same engine test; and independently 1,448 tiles carrying
+one of the seven water BiomeDefs. Three ways of asking, one answer. <strong>The three seas are
+present and named</strong>: <code>RUT_TheScald</code> 312 &middot; <code>RUT_TwilightSea</code>
+607 &middot; <code>RUT_GreySea</code> 472, plus <code>RUT_PropaneLake</code> 57. Vanilla
+<code>Ocean</code>, <code>Lake</code>, <code>SeaIce</code> and <code>IceSheet</code> are gone
+from the planet &mdash; zero tiles each, as the 2026-09-07 rulings intended.</p>
+
+<p><strong>Named regions &mdash; MEASURED, 71 present, count agrees.</strong> The save carries
+71 <code>WorldFeature</code> elements and the CSV's <code>region</code> column carries 71
+distinct names. Every tile is attributed; none is orphaned.</p>
+
+<p><strong>Settlements &mdash; MEASURED, 96, all named.</strong> 96
+<code>Settlement</code> world objects, every one carrying a non-empty <code>nameInt</code>
+&mdash; no unnamed stragglers. Alongside them: 20 <code>Site</code>, 37
+<code>BasicAsteroidMapParent</code>, 40 <code>DeepOrbit.BigAsteroidMapParent</code>, 3
+<code>IceAsteroidMapParent</code>. The CSV has no settlement column, so this is a save-side
+measurement with nothing to contradict it.</p>
+
+<p><strong>Landmarks &mdash; MEASURED, 3,414</strong> across 65 distinct
+<code>LandmarkDef</code>s. (V24 held 2,880; the 534 added since are the gravship and
+sea-enrichment passes.) No CSV counterpart.</p>
+
+<p><strong>Roads &mdash; MEASURED, 1,235 edges</strong> over 762 distinct origin tiles:
+<code>DirtRoad</code> 527 &middot; <code>DirtPath</code> 314 &middot; <code>StoneRoad</code>
+287 &middot; <code>AncientAsphaltHighway</code> 107. The current tiles CSV has no road column
+&mdash; roads live only in the save and in the separate links CSV &mdash; so this number
+stands alone and is not a cross-check of anything.</p>
+
+<h3>What mismatches</h3>
+
+<p><strong>1. The CSV's <code>region</code> column is stale &mdash; MISMATCH, 809 tiles.</strong>
+Instrument: <code>tileFeatureDeflate</code> resolved through the save's
+<code>features/features</code> <code>uniqueID</code> map, against the CSV
+<code>region</code> column. Thirteen names differ in count. Five are clean one-to-one
+<strong>renames</strong> the CSV never received &mdash; and note that the save the item named
+is literally called <em>consolidated_names</em>:</p>
+
+<table>
+  <tr><th>CSV says</th><th>save says</th><th>tiles</th></tr>
+  <tr><td>South Crags</td><td>Sootreach</td><td>433</td></tr>
+  <tr><td>Level</td><td>Knuckles</td><td>141</td></tr>
+  <tr><td>Venom Wood</td><td>Fuelmere</td><td>72</td></tr>
+  <tr><td>Coldshelf</td><td>Sunshelf</td><td>68</td></tr>
+  <tr><td>Thornend</td><td>Frostvein</td><td>61</td></tr>
+  <tr><td>Ashfall Range</td><td>The Abandoned Mines</td><td>22</td></tr>
+  <tr><td>Notch</td><td>The Abandoned Mines</td><td>12</td></tr>
+</table>
+
+<p>775 of the 809 are pure renames; the remaining 34 are a genuine boundary change, a new
+region <em>The Abandoned Mines</em> carved out of Ashfall Range (22) and Notch (12). This is
+the same pair <code>frozen.json</code> already flags as the only two regions that did not
+match tile-for-tile at the rebase, and the drift is now explained rather than merely noted.
+<strong>Low severity by construction:</strong> <code>region</code> is our bookkeeping, not an
+engine field &mdash; <code>frozen.json</code>'s own <code>engineFieldsOnly</code> note says
+the engine never reads it. Nothing in the shipped planet is wrong. The <em>record</em> is
+wrong, and any doc or sheet that reasoned off <code>region</code> since the consolidation used
+five dead names.</p>
+
+<p><strong>2. <code>canon.yml</code>'s planet block still describes the DEPRECATED painted
+lineage &mdash; MISMATCH.</strong> Instrument: the same per-tile reads above, against
+<code>infrastructure/state/canon.yml</code> &sect;planet. Its <code>biome_tile_counts</code>
+block is stamped &ldquo;re-derived 2026-08-23&rdquo; &mdash; four days before the 2026-09-07
+rebase that replaced the whole lineage.</p>
+
+<table>
+  <tr><th>canon.yml says</th><th>measured (CSV and save, agreeing)</th></tr>
+  <tr><td><code>water_tiles</code> 1135, <code>water_ice_tiles</code> 277 (1,412 total)</td><td><strong>1,448</strong></td></tr>
+  <tr><td><code>biomes_on_map</code> 28</td><td><strong>29</strong></td></tr>
+  <tr><td><code>Desert</code> 4648 &middot; <code>ExtremeDesert</code> 3214 &middot; <code>Wasteland</code> 1721</td><td>2,390 &middot; 3,969 &middot; 1,853</td></tr>
+  <tr><td><code>Ocean</code> 823 &middot; <code>Lake</code> 312 &middot; <code>SeaIce</code> 277 &middot; <code>IceSheet</code> 80</td><td>0 &middot; 0 &middot; 0 &middot; 0 &mdash; all four retired into the named seas</td></tr>
+  <tr><td>no row for <code>RUT_TheScald</code> / <code>RUT_TwilightSea</code> / <code>RUT_GreySea</code> / <code>RUT_BlueDesert</code> / <code>RUT_NightsideIce</code> / <code>RUT_PropaneLake</code></td><td>312 &middot; 607 &middot; 472 &middot; 1,029 &middot; 1,506 &middot; 57</td></tr>
+  <tr><td><code>rain_mm.max</code> 1668</td><td><strong>1,529</strong></td></tr>
+  <tr><td><code>seas</code> 3, sourced to <code>meta.json</code> &ldquo;312, 851 and 617 tiles&rdquo;</td><td>3 seas &mdash; the <em>count</em> holds; the tile sizes do not (312 &middot; 607 &middot; 472)</td></tr>
+</table>
+
+<p>The ruled values in that block &mdash; <code>habitable_ring_arc [40, 57]</code>,
+<code>name</code>, <code>substellar</code>, <code>lapse_c_per_km</code> &mdash; are owner
+rulings and are <strong>not</strong> in question here. What is stale is the derived census
+sitting beside them, and it is stale in a way that reads as authoritative.</p>
+
+<p><strong>3. <code>canon.yml</code> <code>named_regions</code> 24 vs 71 WorldFeatures &mdash;
+NOT a mismatch.</strong> Recorded here because it looks like one. The 24 is sourced to
+<code>meta.json regions[]</code>, a design-tier list; the 71 is the engine's
+<code>WorldFeature</code> roster. Two different questions, both right.</p>
+
+<h3>UNMEASURED offline &mdash; needs the live game</h3>
+
+<ul>
+  <li><strong>River tiles.</strong> <code>canon.yml</code> asserts
+  <code>rivers_tiles 254</code> and carries <strong>no <code>_src</code></strong> for it &mdash;
+  the only planet figure in the block with no provenance at all. Offline the save yields
+  <strong>326 river edges</strong> over <strong>217 distinct origin tiles</strong>
+  (<code>Creek</code> 170 &middot; <code>River</code> 62 &middot; <code>HugeRiver</code> 51
+  &middot; <code>LargeRiver</code> 43), and the CSV's <code>river_flow</code> column is
+  non-zero on <strong>298</strong> tiles. None of the three is 254. The engine's own
+  &ldquo;tiles with a river&rdquo; is origins &cup; adjacency, and
+  <code>tileRiverAdjacencyDeflate</code> stores a <em>neighbour index</em>, not a tile ID
+  &mdash; resolving it needs the icosphere topology the engine builds at runtime. <strong>Not
+  guessed here.</strong> One <code>jawa/world_*</code> read settles it and should also give
+  <code>rivers_tiles</code> the citation it has never had.</li>
+
+  <li><strong>Whether the shortHash table is truly the save's own.</strong> Calibration is
+  good but not conclusive. The DefDump capture is <strong>577 mods</strong>
+  (<code>6fdca6f582164e2a</code>, 2026-09-10); CANONICAL's <code>meta</code> declares
+  <strong>573</strong>, V24 declares <strong>589</strong>. Not the same mod set, and the skill
+  is explicit that the table must come from one that is. In favour of the reading: all 29
+  distinct biome hashes resolved, 0 unknown, and the resulting names matched the CSV on
+  21,872 of 21,872 tiles &mdash; an outcome a drifted table cannot plausibly produce, since
+  drift moves a whole biome wholesale. Against it: agreement is not proof when the failure
+  mode could be shared. The biome reading is <strong>MEASURED</strong>; the <em>guarantee</em>
+  is not. A dump captured against the canonical mod list would close it.</li>
+
+  <li><strong>Whether the planet loads clean.</strong> Nothing offline can see
+  <code>Could not load reference to</code> Scribe errors, mutator legality, or landmark
+  validity. Untouched by this pass.</li>
+
+  <li><strong>Mutators.</strong> 27,870 (tile, def) pairs are present in
+  <code>tileMutatorTilesDeflate</code> / <code>tileMutatorDefsDeflate</code> and were
+  <em>not</em> decoded &mdash; the CSV has no mutator column, so there is nothing offline to
+  verify them against. <code>world/ASHKARR_WORLDMAP_mutators.csv</code> is a separate
+  artifact with its own currency question.</li>
+</ul>
+
+<h3>Verdict</h3>
+
+<p><strong>The shipped planet and the frozen record are the same planet.</strong> Every field
+the engine actually reads &mdash; biome, elevation, hilliness, temperature, rainfall,
+swampiness &mdash; agrees on all 21,872 tiles against
+<code>CANONICAL_ASHKARR_2026-09-09.rws</code>, and the freeze hash is current. The two
+mismatches are both in <em>bookkeeping</em>: the CSV's <code>region</code> column missed a
+rename pass, and <code>canon.yml</code>'s planet census still describes a lineage that was
+deprecated on 2026-09-07. Neither changes a tile of the world. The 2026-08-26 audit is
+superseded by this section.</p>
+
+<p class="meta">Machine-readable verdicts and source hashes:
+<code>world/_audit/post_freeze_2026-09-11.json</code>.</p>
