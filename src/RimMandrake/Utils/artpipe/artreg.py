@@ -302,6 +302,7 @@ def compute_target_states(events: list[dict]) -> dict[str, dict]:
         evs = sorted(evs, key=lambda e: e.get("ts", 0))
         state = "unregistered"
         iteration = 0
+        renders = 0
         rejected_count = 0
         job_ids: list[str] = []
         sources: list[str] = []
@@ -321,6 +322,7 @@ def compute_target_states(events: list[dict]) -> dict[str, dict]:
                     job_ids.append(ev["job_id"])
             elif kind == "generated":
                 state = "generated"
+                renders += 1
             elif kind == "validated":
                 # a daemon-internal fail just means "still needs another
                 # attempt" — the next `queued` event (a fresh job_id, the
@@ -345,7 +347,8 @@ def compute_target_states(events: list[dict]) -> dict[str, dict]:
             elif kind == "deployed":
                 state = "deployed"
         out[target] = {
-            "state": state, "iteration": iteration, "rejected_count": rejected_count,
+            "state": state, "iteration": iteration, "renders": renders,
+            "rejected_count": rejected_count,
             "job_ids": job_ids, "sources": sources, "last_ts": last_ts,
             "last_notes": last_notes,
         }
@@ -584,10 +587,12 @@ def build_status(target_filter: str | None = None) -> dict:
                "last_notes": v["last_notes"]}
               for t, v in states.items() if v["state"] == "parked_at_cap"]
 
+    # histogram of COMPLETED renders per lane — a queued-only lane counts 0
+    # and stays out (owner, 2026-09-11: "a queued item should show 0 iterations")
     hist: dict[int, int] = {}
     for v in states.values():
-        if v["iteration"]:
-            hist[v["iteration"]] = hist.get(v["iteration"], 0) + 1
+        if v["renders"]:
+            hist[v["renders"]] = hist.get(v["renders"], 0) + 1
 
     per_target = {}
     total_usd, total_measured_any = 0.0, False
@@ -605,6 +610,15 @@ def build_status(target_filter: str | None = None) -> dict:
     if accepted_or_committed:
         cost_per_accepted = round(total_usd / accepted_or_committed, 4)
 
+    # the weekly window is the LAST 7 DAYS of throughput, not all-time spend
+    # (owner caught 135%: all-time dollars divided by a weekly budget)
+    cutoff = time.time() - 7 * 86400
+    week_usd = 0.0
+    for rows in throughput.values():
+        for row in rows:
+            if row.get("ts", 0) >= cutoff:
+                week_usd += job_cost_usd(row)[0]
+
     return {
         "generatedAt": _now_iso(),
         "sourceFingerprint": fingerprint_file(REGISTRY_PATH),
@@ -615,8 +629,9 @@ def build_status(target_filter: str | None = None) -> dict:
         "parked": parked,
         "spend": {
             "totalUsd": round(total_usd, 4),
+            "weekUsd": round(week_usd, 4),
             "status": "MEASURED" if total_measured_any else "UNMEASURED",
-            "pctWeeklyWindow": round(total_usd / WEEKLY_BUDGET_USD * 100, 2),
+            "pctWeeklyWindow": round(week_usd / WEEKLY_BUDGET_USD * 100, 2),
             "costPerAcceptedUsd": cost_per_accepted,
             "acceptedOrCommittedCount": accepted_or_committed,
         },
