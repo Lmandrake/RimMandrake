@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T06:51:44Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-12T07:02:21Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -20,17 +20,17 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-summary:  (no items/TIBANNA_SOURCE_CUT_1.md yet — write one when you have something to say)
+summary:  TIBANNASOURCECUT1 — cut the non-beldon tibanna sources
 prose:    infrastructure/state/items/TIBANNA_SOURCE_CUT_1.md
 
-## SARLACC_HABITAT_BUILD_1 Build the accepted sarlacc design (sarlacc_native_habitat_draft.md, ACCEPTED + all forks RULED 2026-09-12): RSW-tier mod, Devourer-modeled swimmer, rooting-in-play, 2-4 deep-desert cisterns (relocate tile 2920 off the Weeping Stones oasis), breach-only kill, 7 changed-return hediffs, tribal stage labels for owner yes
+## HEALTH_UNMEASURED_HEADLINE_1 codebase_health headline lies on an all-unmeasured run: when git status fails during a build, every file drops to unmeasured and the callout reads '0 clean' as fact — detect the unmeasured-dominant case and say THE RUN COULD NOT MEASURE, plus consider auto-retry when index.lock caused it
 state:    ready
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  SARLACCHABITATBUILD1 — build the accepted sarlacc design
-prose:    infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md
+summary:  (no items/HEALTH_UNMEASURED_HEADLINE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/HEALTH_UNMEASURED_HEADLINE_1.md
 
 # IN PROGRESS
 
@@ -1005,16 +1005,6 @@ blocked:  46 mods retrofitted with real, compile-verified Mod Settings (Greentid
 summary:  - Inventory every shipped/in-progress mod under src/RimMandrake/,
 prose:    infrastructure/state/items/MOD_OPTIONS_RETROFIT_1.md
 
-## WRECKAGE_VERMIN_SPAWN_1 Ship vermin spawn FROM wreckage: wreck-anchored nest/spawn mechanism for the ship-vermin band (Fall Line hulks and wreck sites), on top of the biome-cast wildlife already deployed
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Two real defects found+fixed live (comp-attach patch never matched; tickerType=Never blocked all ticking) but a third remains: 0 spawns after 263,701 ticks (past the 240,000-tick worst case). Needs a debug-report hook on RM_CompVerminNest to see which TrySpawn branch fails, then re-verify.
-summary:  - A spawn mechanism anchored to wreckage things/structures (Fall Line hulks,
-prose:    infrastructure/state/items/WRECKAGE_VERMIN_SPAWN_1.md
-
 ## GIZKA_HOLD_HOOK_SPIKE_1 Spike: find the gravship-hold discovery hook for the gizka stowaway event (Odyssey source read + quicktest proof) — owner ruled the whole gizka feature HOLDS until this hook is confirmed
 state:    ready  (BLOCKED)
 row:      unassigned
@@ -1034,6 +1024,16 @@ kind:     task
 blocked:  built+compiled+validate_patch clean, deployed to Mods/ but NOT enabled in ModsConfig (avoiding a live mod-list change while another window drives the bridge); owed: enable + live quicktest (float menu on tagged cell, job completes, burn ticks apply, settings render)
 summary:  SCALDDIVINGMOD1 — Deep Diving (RimMandrake tier)
 prose:    infrastructure/state/items/SCALD_DIVING_MOD_1.md
+
+## SARLACC_HABITAT_BUILD_1 Build the accepted sarlacc design (sarlacc_native_habitat_draft.md, ACCEPTED + all forks RULED 2026-09-12): RSW-tier mod, Devourer-modeled swimmer, rooting-in-play, 2-4 deep-desert cisterns (relocate tile 2920 off the Weeping Stones oasis), breach-only kill, 7 changed-return hediffs, tribal stage labels for owner yes
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  creature/mechanics built + pushed (swimmer/rooting/anchored/7 hediffs/settings/v1 breach); owed: live verify, pocket-map dungeon interior (not built anywhere), DBH water wiring, real art, RUT Sun-Debt patch — world placement correctly left to SARLACC_WORLDMAP_RELOCATE_1
+summary:  SARLACCHABITATBUILD1 — build the accepted sarlacc design
+prose:    infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
