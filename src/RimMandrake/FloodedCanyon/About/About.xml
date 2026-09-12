@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.floodedcanyon</packageId>
+  <name>RimMandrake: Flooded Canyon</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+  <description>FLOOD_CANYON_BIOME_1 (owner ruling, 2026-09-12, verbatim on the filing
+event: the flood-witness work restructures into its own standalone biome mod —
+canyons that get periodically flooded, flooding as one of its events, the
+chime warning mechanic included). A dry canyon biome and its own hazard kit,
+fully generalized: it names no other franchise or campaign and is playable
+standalone on any generated RimWorld planet. It generalizes the mechanic
+sketched for a frozen campaign world's own canyon biome elsewhere in this
+repo (design/Jawa/worldbuilding/biomes/the_cracked_lands.md) with zero
+campaign-specific content — no named factions, no lore proper nouns, nothing
+that names the source campaign.
+
+RM tier: nothing here knows what campaign or planet uses it.
+
+Ships three mechanics, every one togglable in Mod Settings (defaults =
+shipped behavior, MOD_OPTIONS_RETROFIT_1 doctrine):
+
+  1. The Flooded Canyon biome: a rare, hot, high-relief canyon country that
+     inserts into worldgen via a rarity slider (0 = never generates, same
+     "1-3 rare patches by default" pattern as the sibling Gelatinous Slime
+     mod's own worker).
+  2. The flood cycle: each canyon-biome map (or, opted in, ANY map) carries
+     its own clock to the next flood. A chime warning rings ahead of the
+     water (the source sheet's "water chimes ring... tones rolling up
+     through the stone ahead of any sound of water", generalized to a
+     reused vanilla notification cue — no new audio commissioned for v1).
+     Then the wall arrives: a footprint of the canyon floor floods for a
+     set duration, at light and non-fatal hazard to anyone caught standing
+     in it, and drains to real fertile soil once it recedes — "death, then
+     soil" as an engine, not a set piece.
+  3. Soak-driven growth: ground the flood just soaked carries a temporary
+     plant-growth-rate multiplier that decays over a few days, so the newly
+     wet floor visibly rushes to green before drying out — a light,
+     toggleable coupling to the flood, not the full elaborate visual/burst
+     mechanic drafted for EXPLOSIVE_PLANT_GROWTH_1 (a separate, larger,
+     unbuilt item this mod does not attempt).
+
+NOT in this mod (owned elsewhere, per the calling item's own boundary): the
+Utinni campaign's guaranteed first-witnessing quest beat
+(FLOOD_WITNESS_EVENT_1) and the full mesh-rebuild/burst plant-growth engine
+(EXPLOSIVE_PLANT_GROWTH_1) — both consume this mod as a dependency rather
+than living inside it.
+  </description>
+</ModMetaData>
