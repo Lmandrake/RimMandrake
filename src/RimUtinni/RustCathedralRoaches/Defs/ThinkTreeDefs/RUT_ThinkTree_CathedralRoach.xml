@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CATHEDRAL_ROACH_THINKTREE_GAP_1 — the cathedral roach's own main think tree.
+
+  WHY A WHOLE TREE AND NOT AN insertTag SUBTREE: RUT_CathedralRoach is
+  ParentName="BaseMechanoidWalker", so its inherited tree is vanilla
+  "Mechanoid" (Defs/Core/ThinkTreeDefs/Mechanoid.xml). That tree carries NO
+  insertTag of any kind - the Animal_PreMain hook RM_ThinkTree_VerminBehaviors
+  rides (mandrake.rm.creaturebehaviors) has nothing to attach to, so
+  RM_ThinkNode_EatCleanable (wired via the ThingDef's own
+  RM_EatCleanableExtension modExtension) was never reachable: the roach
+  spawned, wandered, and never cleaned anything. Same root cause, same fix
+  shape as RUT_LivingBolt (RustCathedralHum/Defs/ThinkTreeDefs/
+  RUT_ThinkTree_LivingBolt.xml) - a dedicated tree scoped to exactly one race,
+  built for what this creature actually needs rather than a lord/overseer
+  combat tree it has no use for.
+
+  RUT_ScarRoach, the organic Scarlands sibling, does NOT have this bug:
+  ParentName="AnimalThingBase" inherits vanilla "Animal", which DOES carry
+  Animal_PreMain, so its EatCleanable node already reaches its think tree
+  through the normal route. This file exists only for the mechanoid side.
+
+  NO HUM WIRING (kit spec, rust_cathedral_kit_spec.md §6, owner ruling
+  2026-09-07, verbatim on the item): "no attitude input, no freeze/scatter
+  tell... roach think trees never reference RM_MapComponent_BiomeAttitude."
+  Unlike RUT_ThinkTree_LivingBolt, this tree has no
+  RM_ThinkNode_ConditionalAttitudeBand freeze and no RM_JobGiver_ResonantDance
+  - the roaches are fauna, not instrumentation.
+
+  ORDER: Despawned/Downed (vanilla, every tree) - QueuedJob (finish whatever
+  is in progress) - EatCleanable (the point of the creature) - tagged Idle
+  wander (vanilla JobGiver_WanderAnywhere, the graceful-degradation floor:
+  RM_ThinkNode_EatCleanable returns no job for any race lacking its
+  extension or when nothing cleanable is in range, and the roach is then an
+  ordinary wandering mechanoid critter) - IdleError (vanilla backstop).
+-->
+<Defs>
+
+  <ThinkTreeDef>
+    <defName>RUT_ThinkTree_CathedralRoach</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Despawned</treeDef>
+        </li>
+
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Downed</treeDef>
+        </li>
+
+        <li Class="ThinkNode_QueuedJob" />
+
+        <li Class="RimMandrake.CreatureBehaviors.RM_ThinkNode_EatCleanable" />
+
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Idle</tagToGive>
+          <subNodes>
+            <li Class="JobGiver_WanderAnywhere">
+              <maxDanger>Deadly</maxDanger>
+            </li>
+          </subNodes>
+        </li>
+
+        <li Class="JobGiver_IdleError" />
+
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>
