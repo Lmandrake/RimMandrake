@@ -7,13 +7,47 @@
 
 
 _Second pass, 2026-09-05, weaving the owner's refinements: terminator not deep
-nightside · scattered twilight · cold gas vents, **no volcanism or geysers** ·
-photosynthesis possible but dominated · water non-potable · meat toxic but prized._
+nightside · scattered twilight · chemical vents, **no volcanism or geysers, no heat
+source at all** (R13) · photosynthesis possible but dominated · water non-potable ·
+meat toxic but prized. Repass 2026-09-11 (`POISON_FOREST_REPASS_1`): §0 measurements,
+§4b weather, R13's chemical venting written through._
 
 **The original diagnosis stands:** it had no driving force. "Poison" was a label,
 not a mechanism, so its trees defaulted to tree-shaped. Now it has three axes —
-a twilight energy budget, a cold temperature ceiling, and a chemical anomaly — and
+a twilight energy budget, a dead-stable temperature, and a chemical anomaly — and
 everything else is forced.
+
+## 0. The measurements everything rests on
+
+Instruments named per line; MEASURED means read from the named instrument, this pass
+(2026-09-11) unless dated.
+
+- **Tiles: 546** (`world/ASHKARR_WORLDMAP_tiles.csv`, `biome == PoisonForest`).
+  ⚠️ Instruments disagree: the live V26 census read **557** (owner accepted
+  2026-09-08); `infrastructure/state/canon.yml` `biome_tile_counts` still carries
+  **604** (2026-08 census). Carded; the CSV figure is quoted below because it is the
+  instrument this block was measured from.
+- **Arc envelope 56–114**, core p10/p90 **82–106**, median **91.3** (CSV). The tails
+  stand ruled in-character (owner, 2026-09-08): ~15 tiles dayside of 75, ~75 tiles
+  out past 105 toward 114.
+- **Temperature: median +11.4 °C**, p10/p90 **−4.8 / +19.1 °C**, extremes −10.0 and
+  +41.3 °C (CSV `temp_c`). Canon: the ruled curve puts **+14 °C at θ90**, realised
+  median +13.0 °C after the altitude lapse (`canon.yml` `temp_curve_c`). The biome
+  reads a shade colder than θ90 because its median tile sits nightside of the line.
+- **Elevation: median 58 m**, p90 685 m, max 963 m (CSV) — low ground; the seam's
+  condensation belt, not its peaks.
+- **Rain: median 0 mm, max 16 mm** (CSV `rain_mm`) — R-H1/R-H2b realised: water
+  arrives as condensation, never as rain.
+- **Water tiles 0, river tiles 0** (CSV) — the non-potable rule has nothing to fight.
+- **Hilliness:** flat 311 · small hills 190 · large 33 · mountainous 12 (CSV).
+- **Spread:** 11 of 12 bearing sectors; largest region shares Dew Belt 69,
+  Grinding Floor 67, Twilight Sea 56, Slough 55, Sunreach 49 (CSV `region`).
+- **Def: `PoisonForest`** (Advanced Biomes (Continued), `mlie.advancedbiomes`) — cast
+  onto our tiles via `BiomeCast_Ashkarr.xml`; no own def
+  (`_def_bindings_2026-09-09.md`). Its one explicit weather record is
+  `PoisonForestSpores` × 18 (`defs.sqlite`, DefDump capture 2026-09-11) — see §4b.
+- **UNMEASURED:** vent placement/density on-map (a map-time question, no instrument
+  yet); growing-season behaviour under the stunting exemption (R-H2b).
 
 ## 1. What it is
 
@@ -36,33 +70,37 @@ nothing here is fast, and almost nothing here makes noise on purpose.
 
 ## 2. Planetary position
 
-**Terminator band (θ ≈ 75-105°), cold but not frozen.** *(MEASURED live on V26, owner
-accepted 2026-09-08: 557 tiles, arc envelope 56–115, core p10/p90 82–107, median 91.3 —
-the ≈ window holds at the core, and the tails (15 tiles dayside of 75; 75 tiles out to
-115 at −10..−3 °C) stay, ruled in-character for a band that straddles the terminator.)*
+**Terminator band (θ ≈ 75-105°), temperate and dead-stable** — measurements in §0;
+the tails past the ≈ window stand, ruled in-character (owner, 2026-09-08) for a band
+that straddles the terminator.
 - **Energy regime:** permanent scattered twilight. A real photosynthetic budget
   exists — it is simply a *terrible* one.
-- **Temperature:** cold and remarkably STABLE. No day-night swing exists to drive
-  one, and the vents keep the ground just above freezing. This is the axis that
-  makes the chemistry slow and the life patient.
-- **Anomaly:** **cold gas venting.**
+- **Temperature:** the canon terminator **+14 °C at θ90** (realised +13.0;
+  this biome's tiles measure +11.4 median, §0), and remarkably STABLE — no day-night
+  swing exists to drive one, and no season ever arrives. Stability, not cold, is the
+  axis: nothing here ever gets a reason to hurry (R13).
+- **Anomaly:** **chemical venting** (R13).
 
-### Why the vents are cold — the mechanism that replaces volcanism 🔴
-There is **no volcanism and no steam** at the terminator (owner's ruling). The
-vents are not driven by heat from below; they are driven by the **thermal boundary
-itself**. The terminator is where the dayside's sun-heated rock meets the
-nightside's permafrost — a standing phase boundary in the crust. Gases held deep
-(sulfides, metal-carbonyls, clathrate volatiles) migrate along that boundary and
-**seep out cold**, because the pressure differential across the day-night contrast
-is the pump, not magma.
+### Why the vents are chemical — the mechanism that replaces volcanism 🔴
+There is **no volcanism, no steam, and no heat source at all** (owner's rulings; R13:
+*"It's all about the chemistry at the local site, not anything heat-based."*). The
+vents are not driven by heat from below in any form; they are driven by **the
+chemistry itself**. The terminator is where two crustal chemistries meet — the
+dayside's scorched, oxidised regolith against the nightside's reduced,
+volatile-hoarding ground — and where they touch, in the shallow crust, they react:
+flowing complex chemistry, vapour formation, powerful reactions. The gas the ground
+exhales (sulfides, metal-carbonyls, liberated volatiles) is **reaction product**,
+pushed out by the pressure the reactions themselves generate — not exhaust from any
+heat engine, and nothing seismic.
 
-⇒ The vents *exist because the terminator exists*. This biome cannot occur
-anywhere else on the planet, which is exactly what a good anomaly should buy.
+⇒ The vents *exist because the terminator exists* — only at the seam do the two
+chemistries meet. This biome cannot occur anywhere else on the planet, which is
+exactly what a good anomaly should buy.
 
 ## 3. Driving forces
 
-**Weak scattered light, a cold stable ceiling, and a ground that exhales metal-rich
-gas.** Chemistry is the abundant energy source; sunlight is the scarce one.
+**Weak scattered light, a dead-stable temperate ceiling, and a ground that exhales
+metal-rich gas.** Chemistry is the abundant energy source; sunlight is the scarce one.
 
 ## 4. How the biology adapted
 
@@ -98,10 +136,30 @@ and heavy — this is a forest of ambushers and grazers-on-mineral, not of chase
 **No grazers in the ordinary sense.** There is no grass and no fodder. Herbivory
 here means rasping crust off stone or drinking sap that would kill anything else.
 
+## 4b. Weather
+
+The def's one explicit weather record is `PoisonForestSpores` × 18 (§0); everything
+else here is design register, def work owed. _Names drafted this pass — owner
+ratification owed (carded)._
+
+| what falls out of the sky | here |
+|---|---|
+| clear | **scatter-dusk** — the standing state: even, sourceless twilight; no weather ever brings direct sun, beams or shadows (§6) |
+| donor `PoisonForestSpores` | ⭐ **vent bloom** — a venting surge: the ground exhales hard, the fronds shed, toxic buildup outdoors; the biome's signature hazard weather |
+| fog | **vapour bank** — R13's vapour formation as weather: chemical fog off the vents, sightlines close, condensate beads on everything |
+| rain | 🔴 **never** (R-H1: greatest altitudes only; measured 0 mm median, §0). Water arrives as **dewfall** — the R-H2b condensation: fog and dew, frost only out on the night tail |
+| snow | does not lie (§5); the night tail may frost, never drift |
+
+- Every "precipitation" here deposits the airborne load — dew is how the forest
+  gets poisoned (R-H2b); a wet surface is a dosed surface.
+- Vent weather hums: ground-sense fauna (§4) read a vent bloom coming before any
+  colonist sees it.
+
 ## 5. Always true
 
 - The light is **even, dim, sourceless and unchanging**; nothing casts a real shadow.
-- The ground is **just above freezing and humming**; snow does not lie here.
+- The ground is **temperate, dead-stable and humming** — the hum is the vents'
+  chemistry, not any heat (R13); snow does not lie here.
 - Every plant surface is **wet or crystalline** — nothing is dry and matte.
 - **Standing water is never potable.** It carries the metal load. Condensate,
   puddles, sap: all of it poisons.
@@ -111,7 +169,8 @@ here means rasping crust off stone or drinking sap that would kill anything else
 
 ## 6. Never true 🔴 (hard bans — checkable)
 
-- ⛔ **No volcanism, lava, magma, steam or geysers.** The vents are COLD.
+- ⛔ **No volcanism, lava, magma, steam or geysers.** The vents are CHEMICAL — no
+  heat source of any kind, nothing seismic (R13).
 - ⛔ **No green foliage.** Low-light phototrophs are black/purple/red; green here is
   a rendering error.
 - ⛔ **No leaves, needles or broadleaf canopies** — nothing reading as a
