@@ -1,3 +1,11 @@
+<!-- 🔴 STRUCK IN PART — owner acceptance sitting 2026-09-12 (sarlacc_native_habitat_draft.md
+     §8 is the ruled layer; its §6 named these strikes and the sitting landed them):
+     ONE-sarlacc premise → MANY (2-4 cisterns, deep desert, tile 2920 vacated); the pearl is
+     per-cistern, never "ONE ever"; digested-memories personality → CUT (no voice, no memory —
+     the trapped living speak instead); RSW_SarlaccHeart "digestive core" → the kill is the
+     RESERVOIR WALL breach and the theming is the press/wringing; the collapse timer keeps its
+     shape but the medium is WATER RISING. Engine measurements (tentacle pawns, pocket-map
+     nesting, portals) remain this doc's authority. -->
 <!-- status: spec — SARLACC_SPEC_SESSION_1, BENCH 2026-08-31, green-lit by the owner with scope
      widened verbatim: "Also include deep sarlacc dungeon experience with wildly animated sarlacc
      emergence and attack tentacles." Supersedes nothing: V2_DREAMS' sarlacc entry stays as register
