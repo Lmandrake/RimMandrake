@@ -10258,16 +10258,16 @@
     "sha": "2e3336f4"
   },
   "src/RimUtinni/Antiquities/Source/JobDriver_ExamineAntiquity.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "511eb41e94b0405dd77900a14e4baa3d1cbf6c93f672ac1fb36228aedb1ba3b9",
-    "sha": "2e3336f4"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "e7d60a6bdee778c1fc54c48156c2772bae8a8e1e65f3d062ceb5a3413f5ace7b",
+    "sha": "e758283f4"
   },
   "src/RimUtinni/Antiquities/Source/WorkGiver_ExamineAntiquity.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "062a238642c0231499a10eacbdbf6bd3aea89d3a301dab8e3aa759b40add408f",
-    "sha": "f1a99184"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "d163bf66e9046f3dfa5b4069a2ae93d1cd2846972b1050194767618659a2d938",
+    "sha": "e758283f4"
   },
   "src/RimUtinni/AshkarrFlora/About/About.xml": {
     "cleanCount": 1,
@@ -10492,10 +10492,10 @@
     "sha": "9445450d"
   },
   "src/RimUtinni/DroidRepairJobs/Source/QuestNode_DroidRepairJob.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "43dff937cca0901c35138176a99f5bcf662b8b97bfd085b463fefd96b74076b4",
-    "sha": "9445450d"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "7c9a644bb401f6b9abe07f070cb32931b3ef92f4c9f954e39e57e3995d547834",
+    "sha": "e758283f4"
   },
   "src/RimUtinni/DroidRepairJobs/Source/QuestPart_DroidRepairJobOutcome.cs": {
     "cleanCount": 1,
@@ -10504,10 +10504,10 @@
     "sha": "9445450d"
   },
   "src/RimUtinni/DroidRepairJobs/Source/RimMandrake.Utinni.DroidRepairJobs.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "c3ab61f3149e46f16714bf0f33e97edc6dc9bdf359426272f62b87fde9e62c0b",
-    "sha": "9445450d"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "297ec0335270c50892ead879064d3705c6c1a807c954ccbb1cc7c597c52508b8",
+    "sha": "e758283f4"
   },
   "src/RimUtinni/EmpirePursuit/About/About.xml": {
     "cleanCount": 1,
