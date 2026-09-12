@@ -65,6 +65,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `god_intercession_spec.md` | Intercession — managing the gods against each other | ? draft — bench proposal for owner ruling, 2026-08-30. item |
 | `graffiti_spec.md` | Graffiti — the clan that writes on the world | ? draft — bench full design for owner ruling, 2026-08-31. item |
 | `ideoligion_precept_removals.md` | Removing ThroneSpeech, AnimaTreeLinking, TreeConnection from The Salvation | — |
+| `kyber_trade_plot_spec.md` | The kyber trade — heat, Hutts, the alleged Jedi, and the smuggle | ? spec — KYBER_TRADE_PLOT_1, drafted 2026-09-11; cards K1/K2 RULED same day |
 | `ownership_settlement_spec.md` | Ownership, theft and settlement interaction — the ruled design | ? ruled design spec — owner brainstorming sitting 2026-08-31 ("superb! ...
      this is amazing! (two mods)"). research input |
 | `parked_mod_concepts.md` | parked_mod_concepts.md — mod ideas worth building later | ☁ aspirational |
@@ -80,6 +81,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `salvation_engine_review.md` | The Nine, Reviewed — BENCH critical assessment of the pantheon + matrix |  |
 | `sw_ownership_survey.md` | Star Wars mod ownership survey — measured facts only | — |
 | `text_lore_load_report.md` | The Text Lore Load — complete inventory and estimate (2026-09-11) | — |
+| `tibanna_embargo_plot_spec.md` | The tibanna embargo — the Empire's quietest weapon, and the clock it winds | ? spec — TIBANNA_EMBARGO_PLOT_1, drafted 2026-09-11; cards T1 (extractor-route ban conflict) and T2 (resolution shape) await the owner |
 | `trap_renaissance_spec.md` | The Trap Renaissance — Jawa trapcraft made FUN | ? live — shape ratified by the owner 2026-08-30 ("yes to all you propose") |
 | `waking_mind_ai_deep_dive.md` | The Waking Mind — what "AI" is on this planet, and where it should live | ? analysis for owner review (bench/fable fork, 2026-09-04), ordered
      by the owner during the canon-reintegration g6 ruling |

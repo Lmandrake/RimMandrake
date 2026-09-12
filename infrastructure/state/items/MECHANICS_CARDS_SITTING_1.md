@@ -26,6 +26,12 @@ card section (KIT_SPECS_CARD_SITTING_1 is closed; this is its successor):
   (reveal gating; canon.yml helix_lineage amendment; landmark display name;
   campaign function).
 
+- `design/Jawa/tibanna_embargo_plot_spec.md` — 2 cards. ⚠️ **T1 is a live
+  contradiction**: outerrim.core ships `OuterRim_TibannaSiphon`/Extractors and
+  LK patches make `OuterRim_Tibanna` mineable, against `the_forge.md` §6 hard
+  ban 5 (beldons sole source). Cut / research-gate / relax — the spec assumes
+  the cut. T2: the embargo's resolution shape (break / bleed / Empire wins).
+
 ## verify
 Every card ruled and propagated into its spec; contradictory phrasing deleted,
 not bannered (deciding-and-superseding).
