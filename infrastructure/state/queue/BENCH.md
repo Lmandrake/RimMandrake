@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T00:14:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T00:41:52Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## LOCAL_IMAGEGEN_TRACK_PARKED_1 PARKED by owner 2026-09-05: local ComfyUI/Flux image-generation track halted - it caused the seat OOM window kills; do NOT relaunch local generation until the owner says otherwise
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  LOCALIMAGEGENTRACKPARKED1 — local image generation is PARKED
-prose:    infrastructure/state/items/LOCAL_IMAGEGEN_TRACK_PARKED_1.md
 
 ## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
 state:    ready
@@ -40,6 +31,42 @@ target:   v1
 kind:     task
 summary:  - Wire the heat mechanic (the Empire's pursuit/attention system — find the existing
 prose:    infrastructure/state/items/KYBER_TRADE_PLOT_1.md
+
+## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  LIQUIDTYPESMOD1 — one liquid system, many liquids
+prose:    infrastructure/state/items/LIQUID_TYPES_MOD_1.md
+
+## RUST_CATHEDRAL_MECHANICS_1 Rust Cathedral C# kit: hum-mood system (attitude value, layered tones, bolt-dance display, droid commentary, hysteresis wiring), deep-drill response event (never described), wall-tier mining defs, living bolts as mechanical wildlife, eel-fishing consequences - spec the_rust_cathedral.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  spec — the C kit
+prose:    infrastructure/state/items/RUST_CATHEDRAL_MECHANICS_1.md
+
+## MIASMA_MECHANICS_1 Miasma C# kit: surge/salt-line system (fresh-brine map axis, storm-driven movement, stranding pools), fever-forged boon tables, miasma weather, warden-mother set-piece placement - spec the_miasma.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  MIASMAMECHANICS1 — the Miasma C kit
+prose:    infrastructure/state/items/MIASMA_MECHANICS_1.md
+
+## FEVER_WOOD_MECHANICS_1 Fever Wood C# kit: the Tenant as map-spanning aquifer entity (pool-strike logic, evidence events, never-resolved rule), marsh building-refusal terrain, pool-state intelligence, mirror-break events - spec the_fever_wood.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  The authoritative brief is the FROZEN lore sheet
+prose:    infrastructure/state/items/FEVER_WOOD_MECHANICS_1.md
 
 ## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
 state:    ready
@@ -160,46 +187,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  LIQUIDTYPESMOD1 — one liquid system, many liquids
-prose:    infrastructure/state/items/LIQUID_TYPES_MOD_1.md
-
-## RUST_CATHEDRAL_MECHANICS_1 Rust Cathedral C# kit: hum-mood system (attitude value, layered tones, bolt-dance display, droid commentary, hysteresis wiring), deep-drill response event (never described), wall-tier mining defs, living bolts as mechanical wildlife, eel-fishing consequences - spec the_rust_cathedral.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  spec — the C kit
-prose:    infrastructure/state/items/RUST_CATHEDRAL_MECHANICS_1.md
-
-## MIASMA_MECHANICS_1 Miasma C# kit: surge/salt-line system (fresh-brine map axis, storm-driven movement, stranding pools), fever-forged boon tables, miasma weather, warden-mother set-piece placement - spec the_miasma.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MIASMA_MECHANICS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MIASMA_MECHANICS_1.md
-
-## FEVER_WOOD_MECHANICS_1 Fever Wood C# kit: the Tenant as map-spanning aquifer entity (pool-strike logic, evidence events, never-resolved rule), marsh building-refusal terrain, pool-state intelligence, mirror-break events - spec the_fever_wood.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FEVER_WOOD_MECHANICS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FEVER_WOOD_MECHANICS_1.md
 
 ## SUMP_MECHANICS_1 Sump C# kit: poured tar moat + command ignition (smoke wall), dig-lottery tables with era booby traps weighted first, tar beast set-pieces (wake causes, station-eating, evacuate-not-fight), mouse-line telegraphy, wick-garden crop - spec the_sump.md
 state:    proposed
@@ -370,3 +357,33 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  DUNGEONSETPIECETEXT1 — the held-for-owner dungeon prose
 prose:    infrastructure/state/items/DUNGEON_SETPIECE_TEXT_1.md
+
+## CSV_REGION_SYNC_1 CSV_REGION_SYNC_1 — the frozen CSV's region column missed the name consolidation
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Patch the CSV's region column in place (patch-a-curated-artifact rule: diff
+prose:    infrastructure/state/items/CSV_REGION_SYNC_1.md
+
+## CANON_PLANET_CENSUS_1 CANON_PLANET_CENSUS_1 — canon.yml planet census still describes the deprecated painted lineage
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Ready-to-land replacement values are in world/audit/postfreeze2026-09-11.json
+prose:    infrastructure/state/items/CANON_PLANET_CENSUS_1.md
+
+## MECHANICS_CARDS_SITTING_1 MECHANICS_CARDS_SITTING_1 — card sitting for the 2026-09-11 fan-out wave
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  MECHANICSCARDSSITTING1 — card sitting for the 2026-09-11 fan-out wave
+prose:    infrastructure/state/items/MECHANICS_CARDS_SITTING_1.md

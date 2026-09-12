@@ -73,20 +73,22 @@ def maturity() -> None:
 
 
 def worldmap() -> None:
-    # The audit is an owner-facing HTML page with its own artifact URL; its
-    # committed inputs date it. No fresher stamp exists — the lamp shows age
-    # honestly rather than inventing one.
+    # Fed by the newest dated verification under world/_audit/ — the
+    # post-freeze check of the frozen CSV against the canonical save.
+    src = REPO / "world/_audit/post_freeze_2026-09-11.json"
+    v = json.loads(src.read_text())
     OUT.joinpath("worldmap.json").write_text(json.dumps({
-        "generatedAt": "2026-08-26T00:00:00Z",
-        "generatedAtBasis": "world/audit_2026-08-26/ committed inputs — the page has no machine stamp",
-        "source": {"path": "TRANSIENT_ashkarr_audit.html (untracked by ruling)",
-                   "sha256_12": None},
+        "generatedAt": v["generatedAt"],
+        "source": fp(src),
         "artifactUrl": "https://claude.ai/code/artifact/f8b14a7a-b8ed-4787-8104-b055ebf2f45c",
-        "note": "Adversarial audit of the live Ash'karr worldmap; republished in place as rulings close.",
+        "note": "Post-freeze verification: the frozen CSV matches the canonical save "
+                "on every engine field, 0/21872 tiles differ. Live save: "
+                "CANONICAL_ASHKARR_2026-09-09.rws.",
         "worldFrozenAt": "2026-09-09T12:24:00Z",
-        "gap": "The newest audit PREDATES the freeze (V24, 2026-09-09) — the red lamp is "
-               "correct and stays red until POST_FREEZE_WORLDMAP_AUDIT_1 re-audits the "
-               "frozen world and republishes the audit page.",
+        "openOffline": "Bookkeeping owed: canon.yml planet census (deprecated lineage) and "
+                       "the CSV region column (5 ruled renames + The Abandoned Mines). "
+                       "Live-game checks (rivers count, dump provenance, loads-clean, "
+                       "mutators) ride WORLDMAP_AUDIT_LIVE_CHECKS_1.",
     }, indent=1))
 
 

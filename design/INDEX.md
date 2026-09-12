@@ -443,6 +443,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
+| `fever_wood_kit_spec.md` | FEVER_WOOD_MECHANICS_1 — C# mechanics kit spec (engine mapping) | — |
 | `greentide_kit_spec.md` | GREENTIDE_MECHANICS_1 — C# mechanics kit spec (engine mapping) | — |
 | `scarlands_kit_spec.md` | SCARLANDS_MECHANICS_1 — C# mechanics kit spec (DRAFT) | — |
 | `webwork_kit_spec.md` | WEBWORK_MECHANICS_1 — C# mechanics kit spec (DRAFT for owner review) | — |

@@ -308,6 +308,7 @@ grab("data/worldmap.json").then(d=>{
     (d.worldFrozenAt?tiles([["audit date",String(d.generatedAt).slice(0,10)],
                             ["world frozen",String(d.worldFrozenAt).slice(0,10),1]]):"")+
     (d.gap?`<p class="note" style="color:var(--warn)">${esc(d.gap)}</p>`:"")+
+    (d.openOffline?`<p class="note">${esc(d.openOffline)}</p>`:"")+
     `<p><a href="${esc(d.artifactUrl)}">Open the audit page</a></p>`+
     `<p class="note">Freshness basis: ${esc(d.generatedAtBasis||"")}</p>`;
 }).catch(e=>fail("worldmap",e));

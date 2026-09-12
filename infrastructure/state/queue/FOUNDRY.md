@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T00:41:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T00:41:52Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -683,6 +683,15 @@ target:   v1
 kind:     bug
 summary:  Found via harvestlog.py on game UP 2026-09-11 (570-mod session): "Outer Rim
 prose:    infrastructure/state/items/OUTERRIM_DROIDDEPOT_PATCH_GUARD_1.md
+
+## WORLDMAP_AUDIT_LIVE_CHECKS_1 Four worldmap audit checks needing the live game — batch into next game-up window
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  WORLDMAPAUDITLIVECHECKS1 — the four audit checks only the live game can answer
+prose:    infrastructure/state/items/WORLDMAP_AUDIT_LIVE_CHECKS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
