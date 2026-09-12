@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-12T00:13:48Z",
+  "generatedAt": "2026-09-12T00:19:23Z",
   "iterationsHistogram": {
-    "1": 133,
-    "2": 5,
-    "3": 4,
+    "1": 128,
+    "2": 4,
+    "3": 6,
     "4": 3,
     "8": 1
   },
@@ -17,6 +17,7 @@
       "last_notes": null,
       "last_ts": 1789136817.549115,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -36,6 +37,7 @@
       "last_notes": null,
       "last_ts": 1789136868.9183846,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -55,6 +57,7 @@
       "last_notes": null,
       "last_ts": 1789136821.3545995,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -74,6 +77,7 @@
       "last_notes": null,
       "last_ts": 1789121202.2620587,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -93,6 +97,7 @@
       "last_notes": null,
       "last_ts": 1789121206.6796143,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -112,6 +117,7 @@
       "last_notes": null,
       "last_ts": 1789121210.3510346,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -131,6 +137,7 @@
       "last_notes": null,
       "last_ts": 1789158809.4955034,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -150,6 +157,7 @@
       "last_notes": null,
       "last_ts": 1789158824.1538925,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -169,6 +177,7 @@
       "last_notes": null,
       "last_ts": 1789158793.7283173,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -188,6 +197,7 @@
       "last_notes": null,
       "last_ts": 1789121174.2373936,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -207,6 +217,7 @@
       "last_notes": null,
       "last_ts": 1789121186.5513966,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -226,6 +237,7 @@
       "last_notes": null,
       "last_ts": 1789121199.031155,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -245,6 +257,7 @@
       "last_notes": null,
       "last_ts": 1789154627.7069294,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -264,6 +277,7 @@
       "last_notes": null,
       "last_ts": 1789154633.6137094,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -283,6 +297,7 @@
       "last_notes": null,
       "last_ts": 1789154609.7881198,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -302,6 +317,7 @@
       "last_notes": null,
       "last_ts": 1789096357.6765563,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -322,6 +338,7 @@
       "last_notes": null,
       "last_ts": 1789096501.6253936,
       "rejected_count": 0,
+      "renders": 2,
       "sources": [
         "backfill"
       ],
@@ -341,6 +358,7 @@
       "last_notes": null,
       "last_ts": 1789170523.113727,
       "rejected_count": 0,
+      "renders": 3,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -360,6 +378,7 @@
       "last_notes": null,
       "last_ts": 1789165812.597544,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -379,6 +398,7 @@
       "last_notes": null,
       "last_ts": 1789165799.0166614,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -398,6 +418,7 @@
       "last_notes": null,
       "last_ts": 1789171866.3607023,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE8_QUEUE_1"
       ],
@@ -417,6 +438,7 @@
       "last_notes": null,
       "last_ts": 1789171983.67112,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE8_QUEUE_1"
       ],
@@ -434,18 +456,19 @@
         "borcatu_v1_south"
       ],
       "last_notes": null,
-      "last_ts": 1789171782.9065666,
+      "last_ts": 1789172093.6254978,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE8_QUEUE_1"
       ],
       "spend": {
         "note": null,
-        "pct_weekly_window": 0.0,
-        "status": "UNMEASURED",
-        "usd": 0.0
+        "pct_weekly_window": 1.0,
+        "status": "MEASURED",
+        "usd": 0.2
       },
-      "state": "queued"
+      "state": "awaiting_verdict"
     },
     "cinderwing/east": {
       "iteration": 1,
@@ -455,6 +478,7 @@
       "last_notes": null,
       "last_ts": 1789165877.8917687,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -474,6 +498,7 @@
       "last_notes": null,
       "last_ts": 1789165923.4754379,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -493,6 +518,7 @@
       "last_notes": null,
       "last_ts": 1789165961.2206786,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -514,6 +540,7 @@
       "last_notes": null,
       "last_ts": 1789052363.7623343,
       "rejected_count": 0,
+      "renders": 3,
       "sources": [
         "backfill"
       ],
@@ -535,6 +562,7 @@
       "last_notes": null,
       "last_ts": 1789052858.5525305,
       "rejected_count": 0,
+      "renders": 3,
       "sources": [
         "backfill"
       ],
@@ -556,6 +584,7 @@
       "last_notes": null,
       "last_ts": 1789053354.631839,
       "rejected_count": 0,
+      "renders": 3,
       "sources": [
         "backfill"
       ],
@@ -575,6 +604,7 @@
       "last_notes": null,
       "last_ts": 1789154683.7270103,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -594,6 +624,7 @@
       "last_notes": null,
       "last_ts": 1789154697.7350802,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -613,6 +644,7 @@
       "last_notes": null,
       "last_ts": 1789154719.8617294,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -632,6 +664,7 @@
       "last_notes": null,
       "last_ts": 1789121607.6959383,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -651,6 +684,7 @@
       "last_notes": null,
       "last_ts": 1789121581.7116823,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -670,6 +704,7 @@
       "last_notes": null,
       "last_ts": 1789121718.2864196,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -689,6 +724,7 @@
       "last_notes": null,
       "last_ts": 1789158897.6967227,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -708,6 +744,7 @@
       "last_notes": null,
       "last_ts": 1789158923.3010783,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -727,6 +764,7 @@
       "last_notes": null,
       "last_ts": 1789158918.3727489,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -746,6 +784,7 @@
       "last_notes": null,
       "last_ts": 1789167532.872816,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -765,6 +804,7 @@
       "last_notes": null,
       "last_ts": 1789167525.1741245,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -784,6 +824,7 @@
       "last_notes": null,
       "last_ts": 1789167518.260515,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -803,6 +844,7 @@
       "last_notes": null,
       "last_ts": 1789121625.0947757,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -822,6 +864,7 @@
       "last_notes": null,
       "last_ts": 1789121576.1495466,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -841,6 +884,7 @@
       "last_notes": null,
       "last_ts": 1789121644.202093,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -860,6 +904,7 @@
       "last_notes": null,
       "last_ts": 1789158997.5528173,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -879,6 +924,7 @@
       "last_notes": null,
       "last_ts": 1789159028.5860713,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -898,6 +944,7 @@
       "last_notes": null,
       "last_ts": 1789159040.0342717,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -917,6 +964,7 @@
       "last_notes": null,
       "last_ts": 1789167604.1526575,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -936,6 +984,7 @@
       "last_notes": null,
       "last_ts": 1789167673.0100002,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -955,6 +1004,7 @@
       "last_notes": null,
       "last_ts": 1789167622.8526416,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -974,6 +1024,7 @@
       "last_notes": null,
       "last_ts": 1789136815.1765313,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -993,6 +1044,7 @@
       "last_notes": null,
       "last_ts": 1789136819.4140234,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -1012,6 +1064,7 @@
       "last_notes": null,
       "last_ts": 1789136800.0219846,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -1031,6 +1084,7 @@
       "last_notes": null,
       "last_ts": 1789159127.8486443,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -1050,6 +1104,7 @@
       "last_notes": null,
       "last_ts": 1789159130.765486,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -1069,6 +1124,7 @@
       "last_notes": null,
       "last_ts": 1789159180.0175943,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -1088,6 +1144,7 @@
       "last_notes": null,
       "last_ts": 1789154806.9600685,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -1107,6 +1164,7 @@
       "last_notes": null,
       "last_ts": 1789154792.3146217,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -1126,6 +1184,7 @@
       "last_notes": null,
       "last_ts": 1789154789.1249077,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -1145,6 +1204,7 @@
       "last_notes": null,
       "last_ts": 1789167685.9919133,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -1164,6 +1224,7 @@
       "last_notes": null,
       "last_ts": 1789167703.672415,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -1183,6 +1244,7 @@
       "last_notes": null,
       "last_ts": 1789167767.2712748,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -1202,6 +1264,7 @@
       "last_notes": null,
       "last_ts": 1789154877.1939518,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -1221,6 +1284,7 @@
       "last_notes": null,
       "last_ts": 1789154879.1741235,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -1240,6 +1304,7 @@
       "last_notes": null,
       "last_ts": 1789154892.6838453,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -1259,6 +1324,7 @@
       "last_notes": null,
       "last_ts": 1789167783.0001915,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -1278,6 +1344,7 @@
       "last_notes": null,
       "last_ts": 1789167798.8613484,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -1297,6 +1364,7 @@
       "last_notes": null,
       "last_ts": 1789167849.744811,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -1316,6 +1384,7 @@
       "last_notes": null,
       "last_ts": 1789121621.1809936,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -1335,6 +1404,7 @@
       "last_notes": null,
       "last_ts": 1789121627.734157,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -1354,6 +1424,7 @@
       "last_notes": null,
       "last_ts": 1789121599.4294133,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -1373,6 +1444,7 @@
       "last_notes": null,
       "last_ts": 1789136806.6058412,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -1392,6 +1464,7 @@
       "last_notes": null,
       "last_ts": 1789136809.7807472,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -1411,6 +1484,7 @@
       "last_notes": null,
       "last_ts": 1789136800.6545663,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -1428,18 +1502,19 @@
         "kinrath_v1_east"
       ],
       "last_notes": null,
-      "last_ts": 1789171782.7353387,
+      "last_ts": 1789172217.5780578,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE8_QUEUE_1"
       ],
       "spend": {
         "note": null,
-        "pct_weekly_window": 0.0,
-        "status": "UNMEASURED",
-        "usd": 0.0
+        "pct_weekly_window": 1.0,
+        "status": "MEASURED",
+        "usd": 0.2
       },
-      "state": "queued"
+      "state": "awaiting_verdict"
     },
     "kinrath/north": {
       "iteration": 1,
@@ -1447,18 +1522,19 @@
         "kinrath_v1_north"
       ],
       "last_notes": null,
-      "last_ts": 1789171782.7688518,
+      "last_ts": 1789172332.487732,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE8_QUEUE_1"
       ],
       "spend": {
         "note": null,
         "pct_weekly_window": 0.0,
-        "status": "UNMEASURED",
+        "status": "MEASURED",
         "usd": 0.0
       },
-      "state": "queued"
+      "state": "awaiting_verdict"
     },
     "kinrath/south": {
       "iteration": 1,
@@ -1468,6 +1544,7 @@
       "last_notes": null,
       "last_ts": 1789171782.7038953,
       "rejected_count": 0,
+      "renders": 0,
       "sources": [
         "ART_REGEN_WAVE8_QUEUE_1"
       ],
@@ -1487,6 +1564,7 @@
       "last_notes": null,
       "last_ts": 1789121593.9076576,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -1506,6 +1584,7 @@
       "last_notes": null,
       "last_ts": 1789121715.2458916,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -1525,6 +1604,7 @@
       "last_notes": null,
       "last_ts": 1789121553.6415627,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -1544,6 +1624,7 @@
       "last_notes": null,
       "last_ts": 1789154958.112809,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -1564,6 +1645,7 @@
       "last_notes": null,
       "last_ts": 1789159095.8817885,
       "rejected_count": 0,
+      "renders": 2,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1",
         "ART_REGEN_WAVE4_QUEUE_1"
@@ -1584,6 +1666,7 @@
       "last_notes": null,
       "last_ts": 1789154981.2677352,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -1606,6 +1689,7 @@
       "last_notes": null,
       "last_ts": 1789022036.935502,
       "rejected_count": 0,
+      "renders": 4,
       "sources": [
         "backfill"
       ],
@@ -1626,6 +1710,7 @@
       "last_notes": null,
       "last_ts": 1789148351.677242,
       "rejected_count": 0,
+      "renders": 2,
       "sources": [
         "backfill"
       ],
@@ -1649,6 +1734,7 @@
       "last_notes": null,
       "last_ts": 1789148593.8066032,
       "rejected_count": 0,
+      "renders": 3,
       "sources": [
         "LOCKJAW_ART_WIRE_IN_1",
         "LOCKJAW_ART_WIRE_IN_1"
@@ -1669,6 +1755,7 @@
       "last_notes": null,
       "last_ts": 1789154453.6593568,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "LOCKJAW_ART_WIRE_IN_1"
       ],
@@ -1691,6 +1778,7 @@
       "last_notes": null,
       "last_ts": 1789022000.1664836,
       "rejected_count": 0,
+      "renders": 4,
       "sources": [
         "backfill"
       ],
@@ -1712,6 +1800,7 @@
       "last_notes": null,
       "last_ts": 1789148454.6138878,
       "rejected_count": 0,
+      "renders": 3,
       "sources": [
         "backfill"
       ],
@@ -1732,6 +1821,7 @@
       "last_notes": null,
       "last_ts": 1789148357.7145462,
       "rejected_count": 0,
+      "renders": 2,
       "sources": [
         "backfill"
       ],
@@ -1754,6 +1844,7 @@
       "last_notes": null,
       "last_ts": 1789022018.5839782,
       "rejected_count": 0,
+      "renders": 4,
       "sources": [
         "backfill"
       ],
@@ -1780,6 +1871,7 @@
       "last_notes": null,
       "last_ts": 1789021982.1733456,
       "rejected_count": 0,
+      "renders": 8,
       "sources": [
         "backfill"
       ],
@@ -1799,6 +1891,7 @@
       "last_notes": null,
       "last_ts": 1789167863.2737188,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -1818,6 +1911,7 @@
       "last_notes": null,
       "last_ts": 1789167909.21277,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -1837,6 +1931,7 @@
       "last_notes": null,
       "last_ts": 1789167968.6366787,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -1856,6 +1951,7 @@
       "last_notes": null,
       "last_ts": 1789165945.8226438,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -1875,6 +1971,7 @@
       "last_notes": null,
       "last_ts": 1789166014.000484,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -1894,6 +1991,7 @@
       "last_notes": null,
       "last_ts": 1789166026.5690596,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -1913,6 +2011,7 @@
       "last_notes": null,
       "last_ts": 1789159258.2419665,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -1932,6 +2031,7 @@
       "last_notes": null,
       "last_ts": 1789159399.9161012,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -1951,6 +2051,7 @@
       "last_notes": null,
       "last_ts": 1789159508.3058574,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -1970,6 +2071,7 @@
       "last_notes": null,
       "last_ts": 1789167969.9175112,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -1989,6 +2091,7 @@
       "last_notes": null,
       "last_ts": 1789167990.7676399,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -2008,6 +2111,7 @@
       "last_notes": null,
       "last_ts": 1789168060.4902494,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -2027,6 +2131,7 @@
       "last_notes": null,
       "last_ts": 1789155040.159462,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -2046,6 +2151,7 @@
       "last_notes": null,
       "last_ts": 1789155073.3595285,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -2065,6 +2171,7 @@
       "last_notes": null,
       "last_ts": 1789155089.2138398,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -2084,6 +2191,7 @@
       "last_notes": null,
       "last_ts": 1789098437.3242204,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -2103,6 +2211,7 @@
       "last_notes": null,
       "last_ts": 1789147813.4403732,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -2122,6 +2231,7 @@
       "last_notes": null,
       "last_ts": 1789147874.229526,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -2141,6 +2251,7 @@
       "last_notes": null,
       "last_ts": 1789098461.5071468,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -2160,6 +2271,7 @@
       "last_notes": null,
       "last_ts": 1789147816.4410887,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -2179,6 +2291,7 @@
       "last_notes": null,
       "last_ts": 1789147812.304061,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -2198,6 +2311,7 @@
       "last_notes": null,
       "last_ts": 1789155134.709007,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -2217,6 +2331,7 @@
       "last_notes": null,
       "last_ts": 1789155159.845015,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -2236,6 +2351,7 @@
       "last_notes": null,
       "last_ts": 1789155161.350559,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE4_QUEUE_1"
       ],
@@ -2255,6 +2371,7 @@
       "last_notes": null,
       "last_ts": 1789166053.2557504,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -2274,6 +2391,7 @@
       "last_notes": null,
       "last_ts": 1789166091.115141,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -2293,6 +2411,7 @@
       "last_notes": null,
       "last_ts": 1789166103.511166,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -2312,6 +2431,7 @@
       "last_notes": null,
       "last_ts": 1789171782.8179326,
       "rejected_count": 0,
+      "renders": 0,
       "sources": [
         "ART_REGEN_WAVE8_QUEUE_1"
       ],
@@ -2331,6 +2451,7 @@
       "last_notes": null,
       "last_ts": 1789171782.860588,
       "rejected_count": 0,
+      "renders": 0,
       "sources": [
         "ART_REGEN_WAVE8_QUEUE_1"
       ],
@@ -2350,6 +2471,7 @@
       "last_notes": null,
       "last_ts": 1789171782.7935503,
       "rejected_count": 0,
+      "renders": 0,
       "sources": [
         "ART_REGEN_WAVE8_QUEUE_1"
       ],
@@ -2369,6 +2491,7 @@
       "last_notes": null,
       "last_ts": 1789159614.1078732,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -2388,6 +2511,7 @@
       "last_notes": null,
       "last_ts": 1789159703.6138532,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -2407,6 +2531,7 @@
       "last_notes": null,
       "last_ts": 1789159792.4129083,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -2426,6 +2551,7 @@
       "last_notes": null,
       "last_ts": 1789166147.0973558,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -2445,6 +2571,7 @@
       "last_notes": null,
       "last_ts": 1789166206.348199,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -2464,6 +2591,7 @@
       "last_notes": null,
       "last_ts": 1789166190.5733168,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -2483,6 +2611,7 @@
       "last_notes": null,
       "last_ts": 1789136831.1581655,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -2502,6 +2631,7 @@
       "last_notes": null,
       "last_ts": 1789136830.07266,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -2521,6 +2651,7 @@
       "last_notes": null,
       "last_ts": 1789136831.3834062,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -2540,6 +2671,7 @@
       "last_notes": null,
       "last_ts": 1789166232.3350034,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -2559,6 +2691,7 @@
       "last_notes": null,
       "last_ts": 1789166287.562058,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -2578,6 +2711,7 @@
       "last_notes": null,
       "last_ts": 1789166284.482568,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -2597,6 +2731,7 @@
       "last_notes": null,
       "last_ts": 1789159905.3824847,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -2616,6 +2751,7 @@
       "last_notes": null,
       "last_ts": 1789160001.32314,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -2635,6 +2771,7 @@
       "last_notes": null,
       "last_ts": 1789160107.644382,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE5_QUEUE_1"
       ],
@@ -2654,6 +2791,7 @@
       "last_notes": null,
       "last_ts": 1789168099.8888903,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -2673,6 +2811,7 @@
       "last_notes": null,
       "last_ts": 1789168175.240302,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -2692,6 +2831,7 @@
       "last_notes": null,
       "last_ts": 1789168274.0145411,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE7_QUEUE_1"
       ],
@@ -2711,6 +2851,7 @@
       "last_notes": null,
       "last_ts": 1789166316.0809526,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -2730,6 +2871,7 @@
       "last_notes": null,
       "last_ts": 1789166365.746612,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -2749,6 +2891,7 @@
       "last_notes": null,
       "last_ts": 1789166390.975969,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "ART_REGEN_WAVE6_QUEUE_1"
       ],
@@ -2768,6 +2911,7 @@
       "last_notes": null,
       "last_ts": 1789121587.2091055,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -2787,6 +2931,7 @@
       "last_notes": null,
       "last_ts": 1789121576.2580812,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -2806,6 +2951,7 @@
       "last_notes": null,
       "last_ts": 1789121581.4805722,
       "rejected_count": 0,
+      "renders": 1,
       "sources": [
         "backfill"
       ],
@@ -2825,27 +2971,28 @@
     "totalTargets": 146
   },
   "sourceFingerprint": {
-    "bytes": 98613,
+    "bytes": 99505,
     "exists": true,
-    "lines": 668,
+    "lines": 674,
     "path": "infrastructure/artpipe/registry.jsonl",
-    "sha256_12": "23956dc13518"
+    "sha256_12": "448558425ad8"
   },
   "spend": {
     "acceptedOrCommittedCount": 0,
     "costPerAcceptedUsd": null,
-    "pctWeeklyWindow": 135.1,
+    "pctWeeklyWindow": 140.1,
     "status": "MEASURED",
-    "totalUsd": 27.02
+    "totalUsd": 27.42,
+    "weekUsd": 28.02
   },
   "stateCounts": {
     "accepted": 0,
-    "awaiting_verdict": 131,
+    "awaiting_verdict": 134,
     "committed": 0,
     "deployed": 0,
     "generated": 7,
     "parked_at_cap": 0,
-    "queued": 8,
+    "queued": 5,
     "registered": 0,
     "rejected_in_retry": 0,
     "repurposed": 0,
@@ -2853,10 +3000,10 @@
   },
   "targetCount": 146,
   "throughputFingerprint": {
-    "bytes": 156660,
+    "bytes": 159697,
     "exists": true,
-    "lines": 212,
+    "lines": 215,
     "path": "infrastructure/artpipe/throughput.jsonl",
-    "sha256_12": "96f3ce68e3e1"
+    "sha256_12": "b92a8c3cc320"
   }
 }
