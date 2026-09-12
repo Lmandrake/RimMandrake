@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T05:59:48Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-12T06:13:20Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -276,13 +276,3 @@ kind:     task
 thin:     no ## criteria
 summary:  - Patch the CSV's region column in place (patch-a-curated-artifact rule: diff
 prose:    infrastructure/state/items/CSV_REGION_SYNC_1.md
-
-## MECHANICS_CARDS_SITTING_1 MECHANICS_CARDS_SITTING_1 — card sitting for the 2026-09-11 fan-out wave
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  MECHANICSCARDSSITTING1 — card sitting for the 2026-09-11 fan-out wave
-prose:    infrastructure/state/items/MECHANICS_CARDS_SITTING_1.md
