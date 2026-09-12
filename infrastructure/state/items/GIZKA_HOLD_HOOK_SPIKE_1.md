@@ -96,7 +96,7 @@ The manager itself (GameComponent, per the draft) does not need to subscribe
 to anything else at load — Harmony patches the static method table once at
 mod init, independent of save state.
 
-## Status: hook IDENTIFIED, live confirmation OWED
+## Status: hook IDENTIFIED and LIVE-CONFIRMED — Card 4's gate is closed
 
 Research/read half is complete and the hook is concrete (real method,
 signature, call site, and firing guarantee all read directly from decompiled
@@ -117,6 +117,53 @@ that logs/letters when hit, deploy it, quicktest-land a gravship (or trigger
 and confirm the postfix fires with a valid `Map`. Only then does Card 4's
 gate close — per the owner's ruling this item wants **confirmation**, not a
 candidate, so it is left BLOCKED rather than closed.
+
+## Live confirmation (2026-09-12, FOUNDRY)
+
+**Confirmed.** Built a throwaway Harmony postfix on
+`RimWorld.Scenario.PostGravshipLanded` (session-only scratch mod,
+`mandrake.spike.gizkahookspike`, never committed — deployed directly into
+the game's `Mods/` folder and removed afterward), deployed it alongside the
+full 592-mod campaign list, then drove a REAL gravship landing on the
+canonical `CANONICAL_ASHKARR_2026-09-09` campaign save (the actual player
+gravship "The Utinni", fully fueled) via `jawa/gravship_launch` (1-tile hop,
+tile 16869 → 16900) and `jawa/gravship_land`. Confirmed in `Player.log`:
+
+```
+[GIZKA_SPIKE] PostGravshipLanded FIRED. map=Map-1-PlayerHome mapId=1 ticksGame=114996
+```
+
+A real, valid `Map` object — exactly the hook's own signature, firing at the
+exact point the item's source read predicted.
+
+**Two traps hit and worth recording** (both already partially documented in
+`rimbridge` skill's known automation hazards, now confirmed against THIS
+specific mechanism):
+
+1. **The launch cutscene wedges under automation when `Prefs.GravshipCutscenes`
+   is `True`** — the first attempt left the game with `longEventPending: true`
+   and the main thread starved indefinitely; per `jawa/gravship_land`'s own
+   docstring, "only a save reload recovers." Fixed by closing the game,
+   editing `Prefs.xml` directly (`<gravshipCutscenes>False</gravshipCutscenes>`,
+   backed up and restored afterward — Prefs.xml is rewritten from memory on
+   exit, so this must be done with the game CLOSED), and relaunching.
+2. **World travel does not advance under `rimworld/step_game_ticks` or
+   `jawa/set_game_speed`** while the origin map is destroyed and no map has
+   colonists on it — both reported `ticksGame` frozen and
+   `step_game_ticks` timed out ("Timed out waiting for main-thread work").
+   This was NOT a real stall: the destination map was generating in the
+   background the whole time, and polling `jawa/gravship_status` again
+   (rather than retrying the stepping call) showed `landingConfirmationPending:
+   true` moments later. Don't retry `step_game_ticks` against a travelling
+   gravship with no local map — just poll status.
+
+**Canonical save integrity**: the campaign save was never written back to —
+confirmed by `md5sum`/mtime unchanged from before this session
+(`2026-09-11 21:38:26`, predating all of tonight's testing). The game was
+closed without saving after the confirmation; Prefs.xml and the mod list
+were both restored to their pre-test state (`gravshipCutscenes` back to
+`True`; `ModsConfig.xml` back to plain `FULL.LATEST`, 592 mods, spike mod
+folder deleted from `Mods/`).
 
 ## Not in scope here (future work, gated on this spike closing)
 
