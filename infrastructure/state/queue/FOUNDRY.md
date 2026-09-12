@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T12:09:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T12:43:14Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -26,15 +26,6 @@ prose:    infrastructure/state/items/QUICKTEST_POSTSETUP_CRASH_1.md
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## DROID_SYSTEM_BUILD_1 Build the unifying droid mod per droid_system_spec.md (parked until the owner reopens)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR substrate,
-prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
 
 ## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
 state:    doing  (BLOCKED)
