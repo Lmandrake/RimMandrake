@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T02:51:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T02:54:34Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1044,3 +1044,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  - Inventory every shipped/in-progress mod under src/RimMandrake/,
 prose:    infrastructure/state/items/MOD_OPTIONS_RETROFIT_1.md
+
+## VAPOR_TERMINATOR_GEYSER_FIX_1 Remove/relocate the 21 SteamGeysers_Increased world tiles at/past the terminator (arc>=90) — direct violation of the ruled zero-before-the-terminator steam rule; evidence in design/Jawa/worldbuilding/vapor_emitter_review_2026-09-12.md
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/VAPOR_TERMINATOR_GEYSER_FIX_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/VAPOR_TERMINATOR_GEYSER_FIX_1.md
