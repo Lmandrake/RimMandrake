@@ -1,0 +1,745 @@
+{
+  "posture": "whitelist",
+  "decisions": {
+    "bgtest_a_v1": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "bgtest_b_v1": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "bgtest_b_v2": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "lockjaw_improve_a_r7": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "lockjaw_improve_b_r7": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "aa_frostmite_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "aa_frostmite_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "aa_frostmite_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "gr_spidercat_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "gr_spidercat_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "gr_spidercat_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "insectomorph_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "insectomorph_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "insectomorph_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "vaewaste_megatardi_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "vaewaste_megatardi_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "vaewaste_megatardi_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "anooba_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "anooba_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "anooba_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "dewback_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "dewback_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "dewback_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "grithe_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "grithe_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "grithe_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "grutt_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "grutt_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "grutt_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "kroffa_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "kroffa_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "kroffa_v2_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "puffmite_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "puffmite_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "puffmite_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "ronto_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "ronto_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "ronto_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "aa_terramorph_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "aa_terramorph_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "duskram_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "duskram_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "duskram_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "featherfeel_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "featherfeel_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "featherfeel_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "greaterkraytdragon_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "greaterkraytdragon_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "greaterkraytdragon_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "orray_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "orray_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "orray_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "slagmaw_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "slagmaw_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "slagmaw_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "vornskyr_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "vornskyr_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "vornskyr_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "boma_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "boma_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "boma_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "cinderwing_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "cinderwing_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "cinderwing_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "ollopom_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "ollopom_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "ollopom_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "scarrend_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "scarrend_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "scarrend_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "sludrin_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "sludrin_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "sludrin_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "verdaunt_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "verdaunt_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "verdaunt_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "wyyyschokk_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "wyyyschokk_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "wyyyschokk_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "emberscythe_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "emberscythe_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "emberscythe_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "fenshear_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "fenshear_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "grubhorn_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "grubhorn_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "grubhorn_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "hawkbat_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "hawkbat_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "hawkbat_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "mycolith_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "mycolith_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "mycolith_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "pekopeko_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "pekopeko_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "pekopeko_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "whisperbird_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "whisperbird_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "whisperbird_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "borcatu_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "borcatu_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "borcatu_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "kinrath_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "kinrath_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "kinrath_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "shiro_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "shiro_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "shiro_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "dactillion_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "dactillion_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "dactillion_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "fanback_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "fanback_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "fanback_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "grank_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "grank_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "grank_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "aa_shadowcharger_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "aa_shadowcharger_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "aa_shadowcharger_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "aa_thunderox_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "aa_thunderox_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "aa_thunderox_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "dragonsnake_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "dragonsnake_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "dragonsnake_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "fambaa_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "fambaa_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "fambaa_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "horax_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "horax_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "horax_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "kreetle_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "kreetle_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "kreetle_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "zakkeg_v1_east": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "zakkeg_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "zakkeg_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "lockjaw_improve_a_r13_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "lockjaw_improve_a_r9_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "lockjaw_improve_b_r10_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "lockjaw_improve_b_r9_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "pyrelands_firehawk_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "pyrelands_firehawk_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "pyrelands_furnacebeast_v1_north": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "pyrelands_furnacebeast_v1_south": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "pyrelands_firehawk_v1": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "pyrelands_furnacebeast_v1": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    }
+  }
+}
