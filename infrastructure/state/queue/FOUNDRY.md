@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T17:21:58Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T17:36:35Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1118,3 +1118,13 @@ kind:     design
 thin:     no ## spec, no ## criteria
 summary:  FASCINATINGWORLDJUNK1 — every wreck on the map is a flavour of ice cream to a Jawa
 prose:    infrastructure/state/items/FASCINATING_WORLD_JUNK_1.md
+
+## MLIE_ARTOVERRIDE_COLLISION_CHECK_1 6 species still in the MLIE Wave C worklist (Mynock, Kreetle, Horax, Fambaa, Zakkeg, Ronto) each have a dedicated mandrake.rsw.<name>artoverride mod shipping owner-approved custom art at the same texPath SWBestiary would extract donor art to. SWBestiary loads AFTER every override mod, so a naive port silently reverts verified-live custom art with no error - already happened once for Anooba (fixed 5a8fc8c1c) and caught before-commit for Dragonsnake (8dc279c64). Whoever ports these 6 must check the matching ArtOverride mod's About.xml for which facings it covers BEFORE extracting/shipping SWBestiary art for those paths. Also verify Insectomorph and Dewback (already ported earlier, outside tonight's passes, also have override mods) don't already have the same bug live.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MLIE_ARTOVERRIDE_COLLISION_CHECK_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MLIE_ARTOVERRIDE_COLLISION_CHECK_1.md
