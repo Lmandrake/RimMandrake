@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T07:24:45Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-12T07:40:31Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -266,13 +266,3 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  DUNGEONSETPIECETEXT1 — the held-for-owner dungeon prose
 prose:    infrastructure/state/items/DUNGEON_SETPIECE_TEXT_1.md
-
-## CSV_REGION_SYNC_1 CSV_REGION_SYNC_1 — the frozen CSV's region column missed the name consolidation
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Patch the CSV's region column in place (patch-a-curated-artifact rule: diff
-prose:    infrastructure/state/items/CSV_REGION_SYNC_1.md
