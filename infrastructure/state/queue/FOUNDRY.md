@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T02:54:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T02:55:52Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1054,3 +1054,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VAPOR_TERMINATOR_GEYSER_FIX_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VAPOR_TERMINATOR_GEYSER_FIX_1.md
+
+## FLOOD_CANYON_BIOME_1 Standalone RimMandrake-tier biome mod: periodically flooded canyons — chime warning mechanic, flood events (wall of water + explosive growth), not Star Wars specific; the campaign's flood-witness plot beat consumes it as a dependency
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLOOD_CANYON_BIOME_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLOOD_CANYON_BIOME_1.md
