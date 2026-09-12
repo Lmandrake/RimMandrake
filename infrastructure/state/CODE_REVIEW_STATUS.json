@@ -10947,6 +10947,114 @@
     "hash": "22a895836c2f357c94bcbf5a43dedfa6dc08393ad9ec698fb4c079368593ee3e",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/PyrelandsMechanics/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "09e5aa4ef394203ab8229faea22bf93b94888a0392e21f3c6dbdf2f77668cfa7",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Defs/HediffDefs/RUT_PyrelandsHediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "306eda279c87dd61eab12f97e9f1e12a75d4534405698a7a1b58f41998092e52",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Defs/IncidentDefs/RUT_PyrelandsIncidents.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "9e7d89bb04f5d0ad1ca7d55fd2348df40cdca02df0d5e86a9761abdec5f6cfcd",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Defs/JobDefs/RUT_PyrelandsJobs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "2ff45c5d258bbf524df71b37df366a03de4ab182cab508c6b947968ab7281173",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Defs/ThinkTreeDefs/RUT_FireHawkThinkTree.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "3d380cdef225a05d5fe34154b41134db5af686d52d5d853996f7dfd856c6126e",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Languages/English/Keyed/PyrelandsMechanics.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "2c682adc302679d4647f54af22604f620a80802246532e543e5601dad91cfbb4",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Patches/RUT_PyrelandsIgniters_Comps.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "069825091b88f565cbc718831dbeb923d97d5571a15c2aef1dda254b425d9199",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/CompFireHawkSpread.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "f5284db838005f442a21cc769b248a40864581507b8255a9e77e4a7d86d2fe47",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/CompFurnaceBedIgnition.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "e4cafd536d31d4fd8448bad170c5fbe4e64bb42a31f92834b5edf0c279162970",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/CompFurnaceWarmthAura.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "7c7c14a00579aa77a1318e13ef92c8d6e3f23c7d965d074dd070b92cdc7f96da",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FireRaid.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "cd2e546254d131e3ae72ee2fcc27b625a74cb79eaf437654ffab8b3baa99bc1d",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FlameHarvest.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "bf13b464fcfa43ca13df2acee95e8ef9b10c33250a696128f8d8665cc17686ad",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/JobDriver_RUT_FireHawkCarryEmber.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "ac7ed16ce24271f2785474c7c7e5056291fe69f1ad83b4a9038f76bb85d5fdd6",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/JobGiver_RUT_FireHawkCarryEmber.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "3716d610f5eda6be08d519652dd2fd9efbf43b8e257fdd8c95e0298710419c51",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/MapComponent_BurnLine.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "247bc16176d24088e531c5db62ce9653654578f7d88bd0733258d615984a98e7",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFactions.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "a7ff2d0b0c9df6a9b68c00dc2ba1e3383a7aabeed8be28cc19942946d8967e92",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsMechanicsDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "37f153945276bf89ea0dc4b7f6beece17619e8103b1df8a2fe6398d18f1c7324",
+    "sha": "187bf0389"
+  },
+  "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsTuning.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "b75bc74e7fae8b05eedde87ab17cf6143e684696f6f33b7c3ee830594b7fd3fd",
+    "sha": "187bf0389"
+  },
   "src/RimUtinni/ResearchRetag/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-04",
