@@ -1017,10 +1017,15 @@ namespace JawaBench.BridgeTools
                 }
                 catch (Exception e) { return Fail("SpawnSkyfaller threw: " + e.GetType().Name + ": " + e.Message); }
 
+                // Finding #22 (COMPANION_HARDENING_AUDIT_2026-09-09): success ignored
+                // whether an EXPLICITLY requested innerThing actually landed - a caller
+                // who asked for a specific payload got success:true even when RimWorld
+                // destroyed it and the skyfaller fell empty.
+                bool requestedInner = !string.IsNullOrEmpty(innerThing);
                 return (object)new
                 {
                     // success is the READ-BACK, not the fact that SpawnSkyfaller returned.
-                    success = spawned,
+                    success = spawned && (!requestedInner || carried),
                     skyfallerSpawned = spawned,
                     skyfaller = sd.defName,
                     at = new { x, z }, innerThing, count,

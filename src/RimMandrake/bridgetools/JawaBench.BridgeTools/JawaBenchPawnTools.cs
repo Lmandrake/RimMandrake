@@ -207,10 +207,16 @@ namespace JawaBench.BridgeTools
                 if (string.IsNullOrEmpty(pawn))
                 {
                     var rows = new List<object>();
+                    // Finding #20 (COMPANION_HARDENING_AUDIT_2026-09-09): the row list was
+                    // capped by `limit` with no `totalSpawned` field, so a caller could not
+                    // tell "exactly N pawns" from "truncated." Count every pawn, cap only
+                    // the rows shown.
+                    int totalSpawned = 0;
                     foreach (var m in Find.Maps)
                         foreach (var p in m.mapPawns.AllPawnsSpawned)
                         {
-                            if (rows.Count >= Math.Max(1, limit)) break;
+                            totalSpawned++;
+                            if (rows.Count >= Math.Max(1, limit)) continue;
                             rows.Add(new
                             {
                                 thingId = p.ThingID, thingIdNumber = p.thingIDNumber,
@@ -219,7 +225,12 @@ namespace JawaBench.BridgeTools
                                 x = p.Position.x, z = p.Position.z,
                             });
                         }
-                    return (object)new { success = true, listing = true, count = rows.Count, pawns = rows, ticksGame = TicksGameSafe() };
+                    return (object)new
+                    {
+                        success = true, listing = true, count = rows.Count,
+                        totalSpawned, truncated = totalSpawned > rows.Count,
+                        pawns = rows, ticksGame = TicksGameSafe()
+                    };
                 }
 
                 string err; var pw = FindPawn(pawn, out err);
@@ -359,7 +370,15 @@ namespace JawaBench.BridgeTools
                 try { MeditationFocusTypeAvailabilityCache.ClearFor(p); refreshed.Add("MeditationFocusTypeAvailabilityCache.ClearFor"); } catch (Exception e) { refreshed.Add("MeditationCache FAILED: " + e.Message); }
 
                 var disabled = new List<string>();
-                try { foreach (var w in p.GetDisabledWorkTypes(true)) disabled.Add(w.defName); } catch { }
+                string disabledWorkTypesError = null;
+                try { foreach (var w in p.GetDisabledWorkTypes(true)) disabled.Add(w.defName); }
+                catch (Exception e)
+                {
+                    // Finding #39 (COMPANION_HARDENING_AUDIT_2026-09-09): note the exception
+                    // instead of silently reporting an empty (and indistinguishable from
+                    // "nothing disabled") list.
+                    disabledWorkTypesError = e.GetType().Name + ": " + e.Message;
+                }
 
                 return (object)new
                 {
@@ -372,6 +391,7 @@ namespace JawaBench.BridgeTools
                     },
                     refreshed,
                     disabledWorkTypes = disabled,
+                    disabledWorkTypesError,
                     ticksGame = TicksGameSafe(),
                 };
             });
@@ -405,6 +425,7 @@ namespace JawaBench.BridgeTools
                 var ts = p.story.traits;
                 string A = (action ?? "list").Trim().ToLowerInvariant();
                 var refused = new List<object>();
+                var warnings = new List<string>();
                 int added = 0, removed = 0;
 
                 if (A != "list")
@@ -429,7 +450,12 @@ namespace JawaBench.BridgeTools
                                 bsDisallows = (p.story.Childhood != null && p.story.Childhood.DisallowsTrait(td, degree))
                                            || (p.story.Adulthood != null && p.story.Adulthood.DisallowsTrait(td, degree));
                             }
-                            catch { }
+                            catch (Exception ex)
+                            {
+                                // Finding #39 (COMPANION_HARDENING_AUDIT_2026-09-09): note the
+                                // exception instead of silently falling back to "not disallowed".
+                                warnings.Add("DisallowsTrait check threw (" + ex.GetType().Name + ": " + ex.Message + "); treated as not-disallowed.");
+                            }
 
                             if ((conflicts.Count > 0 || bsDisallows) && !force)
                                 refused.Add(new { trait = td.defName, why = "conflicts", conflictsWith = conflicts, backstoryDisallows = bsDisallows, hint = "pass force=true to add anyway" });
@@ -452,7 +478,7 @@ namespace JawaBench.BridgeTools
                 var now = ts.allTraits.Select(t => new { def = t.def.defName, degree = t.Degree, label = t.LabelCap }).ToList();
                 return (object)new
                 {
-                    success = true, action = A, added, removed, refused,
+                    success = true, action = A, added, removed, refused, warnings,
                     traitCount = now.Count,
                     note = "There is no trait cap in TraitSet and GainTrait checks nothing - the refusal above is ours.",
                     traits = now, ticksGame = TicksGameSafe(),
@@ -787,12 +813,33 @@ namespace JawaBench.BridgeTools
                         // was specified, so its material/quality choices still apply.
                         Apparel ap = null;
                         bool stuffExplicit = !string.IsNullOrEmpty(stuff) && sd != null;
-                        if (!stuffExplicit) { try { ap = PawnApparelGenerator.GenerateApparelOfDefFor(p, td); } catch { } }
+                        if (!stuffExplicit)
+                        {
+                            try { ap = PawnApparelGenerator.GenerateApparelOfDefFor(p, td); }
+                            catch (Exception ex)
+                            {
+                                // Finding #39 (COMPANION_HARDENING_AUDIT_2026-09-09): don't
+                                // silently fall back to ThingMaker without saying why the
+                                // generator was skipped.
+                                notes.Add("GenerateApparelOfDefFor threw (" + ex.GetType().Name + ": " + ex.Message + "), falling back to ThingMaker.MakeThing");
+                            }
+                        }
                         if (ap == null) ap = (Apparel)ThingMaker.MakeThing(td, sd);
                         if (setQ) { var cq = ap.TryGetComp<CompQuality>(); if (cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider); }
+                        // Finding #16 (COMPANION_HARDENING_AUDIT_2026-09-09): Wear() drops
+                        // conflicting worn garments via CanWearTogether, but only equip's
+                        // primary-slot displacement was reported in displaced[] - wear's own
+                        // drops were invisible. Diff WornApparel before/after.
+                        var wornBefore = p.apparel.WornApparel.ToList();
                         p.apparel.Wear(ap, true, false);
                         if (!p.apparel.WornApparel.Contains(ap))
                             return Fail("'" + td.defName + "' is not in the pawn's WornApparel after Wear() (see the game log for a dropped-conflict or drop failure) - wear failed.");
+                        foreach (var was in wornBefore)
+                            if (!p.apparel.WornApparel.Contains(was))
+                            {
+                                displaced.Add(new { def = was.def.defName, stuff = was.Stuff != null ? was.Stuff.defName : null });
+                                notes.Add("Wear() dropped conflicting worn apparel " + was.def.defName);
+                            }
                     }
                     else if (A == "inventory")
                     {
@@ -873,7 +920,14 @@ namespace JawaBench.BridgeTools
                     if (A == "add")
                     {
                         var h = p.health.AddHediff(hd, part);
-                        if (h != null && severity >= 0f) h.Severity = severity;
+                        // Finding #17 (COMPANION_HARDENING_AUDIT_2026-09-09): AddHediff's
+                        // return was never checked against hediffSet afterward, unlike this
+                        // file's own equip/restore verification pattern - a hediff that
+                        // AddHediff silently declined to attach still reported success.
+                        if (h == null || !p.health.hediffSet.hediffs.Contains(h))
+                            return Fail("AddHediff('" + hd.defName + "') did not attach to the pawn's hediffSet"
+                                + (part != null ? " on " + part.def.defName : "") + " - add failed.");
+                        if (severity >= 0f) h.Severity = severity;
                         didWhat = "added " + hd.defName + (part != null ? " to " + part.def.defName : " (whole body)");
                     }
                     else if (A == "remove")
@@ -1123,7 +1177,13 @@ namespace JawaBench.BridgeTools
                                                        || string.Equals(z.def.defName, role.Trim(), StringComparison.OrdinalIgnoreCase));
                         if (r == null) return Fail("No role '" + role + "' in ideoligion '" + p.Ideo.name + "'. Roles: " +
                             string.Join(", ", roles.Select(z => (string)z.LabelCap).ToArray()));
-                        r.Assign(p, true); notes.Add("assigned " + r.LabelCap + " (a single-occupant role replaces the previous holder and letters)");
+                        r.Assign(p, true);
+                        // Finding #18 (COMPANION_HARDENING_AUDIT_2026-09-09): Assign's result
+                        // was never verified via IsAssigned, unlike the sibling action=set
+                        // path in this same tool which checks p.Ideo != target after SetIdeo.
+                        if (!r.IsAssigned(p))
+                            return Fail("Precept_Role.Assign did not take - " + p.LabelShortCap + " is not IsAssigned('" + r.LabelCap + "') afterward.");
+                        notes.Add("assigned " + r.LabelCap + " (a single-occupant role replaces the previous holder and letters)");
                     }
                 }
                 else if (A != "list") return Fail("action must be set|certainty|role|list.");
@@ -1544,16 +1604,24 @@ namespace JawaBench.BridgeTools
                 {
                     var pe = p.psychicEntropy;
                     if (pe == null) return Fail("Pawn has no psychic entropy tracker.");
+                    int requested = 0, failed = 0;
                     if (psyfocus >= 0f)
                     {
+                        requested++;
                         try { pe.OffsetPsyfocusDirectly(Mathf.Clamp01(psyfocus) - pe.CurrentPsyfocus); notes.Add("psyfocus set"); }
-                        catch (Exception e) { notes.Add("OffsetPsyfocusDirectly failed: " + e.Message); }
+                        catch (Exception e) { failed++; notes.Add("OffsetPsyfocusDirectly failed: " + e.Message); }
                     }
                     if (clearEntropy)
                     {
+                        requested++;
                         try { pe.RemoveAllEntropy(); notes.Add("entropy cleared"); }
-                        catch (Exception e) { notes.Add("RemoveAllEntropy failed: " + e.Message); }
+                        catch (Exception e) { failed++; notes.Add("RemoveAllEntropy failed: " + e.Message); }
                     }
+                    // Finding #19 (COMPANION_HARDENING_AUDIT_2026-09-09): both sub-ops could
+                    // fail into notes[] while success:true still returned. Refuse when every
+                    // requested sub-action failed.
+                    if (requested > 0 && failed == requested)
+                        return Fail("psyfocus action requested " + requested + " sub-action(s) and all " + failed + " failed - see notes.", new { notes });
                 }
                 else if (A != "get") return Fail("action must be get|psylink|grant|remove|psyfocus.");
 

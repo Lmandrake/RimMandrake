@@ -106,13 +106,21 @@ namespace JawaBench.BridgeTools
 
                 var rows = new List<object>();
                 var refused = new List<object>();
+                var shownErrors = new List<object>();
                 var req = StatRequest.For(p);
 
                 Func<StatDef, bool> shown = sd =>
                 {
                     if (sd.alwaysHide) return false;
                     try { return sd.Worker != null && sd.Worker.ShouldShowFor(req); }
-                    catch { return false; }
+                    catch (Exception ex)
+                    {
+                        // Finding #11 (COMPANION_HARDENING_AUDIT_2026-09-09): a stat that
+                        // THROWS while being classified must not read identically to a stat
+                        // the game genuinely hides - report it instead of swallowing it.
+                        shownErrors.Add(new { stat = sd.defName, reason = ex.GetType().Name, message = ex.Message });
+                        return false;
+                    }
                 };
 
                 Action<StatDef> add = sd =>
@@ -196,6 +204,7 @@ namespace JawaBench.BridgeTools
                     count = rows.Count,
                     stats = rows,
                     refused,
+                    shownErrors,
                     readTheInstance = true,
                     ticksGame = TicksGameSafe()
                 };
@@ -281,6 +290,7 @@ namespace JawaBench.BridgeTools
                 var seen = new HashSet<int>();
                 var rows = new List<object>();
                 int outdoorsSkipped = 0;
+                int outdoorsCheckErrors = 0;
 
                 foreach (var cell in cells)
                 {
@@ -291,7 +301,16 @@ namespace JawaBench.BridgeTools
                     if (!seen.Add(room.ID)) continue;
 
                     bool outdoors;
-                    try { outdoors = room.PsychologicallyOutdoors; } catch { outdoors = false; }
+                    try { outdoors = room.PsychologicallyOutdoors; }
+                    catch
+                    {
+                        // Finding #34 (COMPANION_HARDENING_AUDIT_2026-09-09): defaulting to
+                        // false here let a genuinely-outdoor room that throws leak past the
+                        // includeOutdoors=false filter and be reported as indoor. Fail-safe
+                        // toward the documented default instead: exclude it.
+                        outdoorsCheckErrors++;
+                        continue;
+                    }
                     if (outdoors && !includeOutdoors) { outdoorsSkipped++; continue; }
 
                     Func<RoomStatDef, float?> stat = sd =>
@@ -336,6 +355,7 @@ namespace JawaBench.BridgeTools
                     cellsProbed = cells.Count,
                     roomsFound = rows.Count,
                     outdoorsSkipped,
+                    outdoorsCheckErrors,
                     rooms = rows,
                     recomputedNotCached = true,
                     ticksGame = TicksGameSafe()
@@ -416,6 +436,7 @@ namespace JawaBench.BridgeTools
 
                 var targets = new List<Thing>();
                 var refused = new List<object>();
+                var shownErrors = new List<object>();
 
                 // ---- resolve the things -------------------------------------
                 if (!string.IsNullOrWhiteSpace(pawn))
@@ -514,7 +535,14 @@ namespace JawaBench.BridgeTools
                     {
                         if (sd.alwaysHide) return false;
                         try { return sd.Worker != null && sd.Worker.ShouldShowFor(req); }
-                        catch { return false; }
+                        catch (Exception ex)
+                        {
+                            // Finding #11 (COMPANION_HARDENING_AUDIT_2026-09-09): report a
+                            // stat classification exception instead of folding it into
+                            // "not shown", which reads identically to a genuine hide.
+                            shownErrors.Add(new { thing = t.ThingID, stat = sd.defName, reason = ex.GetType().Name, message = ex.Message });
+                            return false;
+                        }
                     };
 
                     Action<StatDef> add = sd =>
@@ -651,6 +679,7 @@ namespace JawaBench.BridgeTools
                     count = rows.Count,
                     things = rows,
                     refused,
+                    shownErrors,
                     readTheInstance = true,
                     ticksGame = TicksGameSafe()
                 };
