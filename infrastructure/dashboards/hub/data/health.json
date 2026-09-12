@@ -1,28 +1,39 @@
 {
- "generatedAt": "2026-09-12T05:45:00Z",
+ "generatedAt": "2026-09-12T06:16:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 537442,
-  "sha256_12": "db86a32cd0a2"
+  "bytes": 508777,
+  "sha256_12": "62648667fcab"
  },
- "head": "1cff9edb0",
+ "head": "facc17f68",
  "counts": {
   "red": 22,
-  "blue": 377,
-  "green": 0,
-  "grey": 0,
-  "unmeasured": 1871,
+  "blue": 381,
+  "green": 1669,
+  "grey": 198,
+  "unmeasured": 0,
   "total": 2270
  },
  "loc": {
   "red": 11809,
-  "blue": 127326,
-  "green": 0,
-  "grey": 0,
-  "unmeasured": 717025,
-  "total": 856160
+  "blue": 127791,
+  "green": 652561,
+  "grey": 64015,
+  "unmeasured": 0,
+  "total": 856176
  },
- "reviewEntries": 2145,
- "recidivists": [],
+ "reviewEntries": 2153,
+ "recidivists": [
+  {
+   "path": "src/RimUtinni/UtinniPatches/About/About.xml",
+   "loc": 121,
+   "cycles": 4
+  },
+  {
+   "path": "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml",
+   "loc": 113,
+   "cycles": 1
+  }
+ ],
  "standalone": "Transient/codebase_health_artifact.html"
 }

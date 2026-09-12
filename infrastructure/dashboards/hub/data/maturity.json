@@ -1,11 +1,11 @@
 {
- "generatedAt": "2026-09-11T05:50:00Z",
+ "generatedAt": "2026-09-12T06:27:00Z",
  "source": {
   "path": "Transient/project_maturity_dashboard.json",
-  "bytes": 131672,
-  "sha256_12": "c39c0f5e5b74"
+  "bytes": 131786,
+  "sha256_12": "f8a504876fae"
  },
- "head": "b40cadf8",
+ "head": "e93f9b9fd",
  "functionCounts": {
   "planned": 0,
   "designed": 4,
@@ -23,21 +23,22 @@
   "__unset__": 0
  },
  "codeReview": {
-  "total": 1914,
-  "clean": 1911,
-  "dirty": 3,
+  "total": 2153,
+  "clean": 2149,
+  "dirty": 4,
   "unknown": 0,
-  "recidivists": 3,
+  "recidivists": 4,
   "dirtyPaths": [
-   "src/RimMandrake/Ninefold/Source/Patch_GravshipLaunched.cs",
-   "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
-   "src/RimMandrake/Utils/check_config_errors.py"
+   "src/RimMandrake/ShipVermin/Source/RM_CompVerminNest.cs",
+   "src/RimMandrake/ShipVermin/Source/RM_ShipVermin.csproj",
+   "src/RimUtinni/UtinniPatches/About/About.xml",
+   "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml"
   ]
  },
  "ledger": {
   "openItems": 129,
-  "openBugs": 7,
-  "needsOwner": 14
+  "openBugs": 11,
+  "needsOwner": 10
  },
  "goal": {
   "ticked": 20,
