@@ -50,6 +50,33 @@ the first time — tolerance normalization can finally be judged per-biome.
    FAUNA_LORE_DIVERSIFICATION_1. Does NOT change: bodySize itself, per the
    ceiling-fields lesson (each parameter its own law).
 
+## OFFLINE PASS DONE (BENCH subagent, 2026-09-11)
+
+- **Law 5 drafted linter-checkable** into `beast_normalization_spec.md` §2d
+  (envelope = [p05,p95] of tile `temp_c` over the assigned biomes' painted
+  defs, comfy range must reach envelope ±15 °C, widening-only, post-patch
+  stats). §2e records the Law 3 full-roster extension and Law 6 products
+  ruling in the same spec — no fork.
+- **Violations census, MEASURED from mod XML** (`animal_inventory.py`,
+  inheritance-resolved, LoadFolders-aware, PRE-patch):
+  **196 of 279 measurable rostered animals VIOLATE** · 83 OK ·
+  15 ENV_UNMEASURED (fall_line/the_lantern_deeps/wreck_fields have no painted
+  tiles) · 3 XML_UNMEASURED (GR_Mantistanis, MA_Sporemole, VAEWaste_Hydra).
+  Files: `design/Jawa/worldbuilding/fauna_tolerance_census_2026-09-11.csv`
+  (297 rows, fingerprints in header) and
+  `.../fauna_tolerance_violations_2026-09-11.md`. Roster derived live:
+  decisions_propagated.json `in` rows + move_mapping_v2.md targets
+  (+ GR_ParagonThrumbo's PLACED note) = 297 biome-assigned defNames — the
+  ruling's "326" and "23 narrows" were graphs-artifact-era counts, superseded
+  by this census.
+- **Live harvest must confirm**: post-patch stat values (PatchOperations,
+  gene/comp offsets, CherryPicker state — all invisible to base XML), the 3
+  XML_UNMEASURED defs and the OuterRim droids, and realized seasonal extremes
+  (tile temp_c is the map-gen mean). Harvest AFTER the restore, fingerprint-
+  matched.
+- **Plots for the owner's sitting ride the POST-restore harvest — out of
+  scope for this offline pass.**
+
 ## traps
 - 🔴 The offline def dump has NO statBases and drops fields — the census must
   come from mod XML or a live harvest, fingerprint-matched to the CURRENT mod
