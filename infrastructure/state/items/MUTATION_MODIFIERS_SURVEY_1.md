@@ -32,3 +32,10 @@ Deliverable written: `research/mutation_systems_survey_2026-09-11.md` — 7 syst
 ~55 defNames MEASURED (per-section counts + UNMEASURED stat blocks flagged inside),
 classification table + "DRAFT — owner rules the deck" section. Remaining on this
 item: the owner rules the deck (can ride MECHANICS_CARDS_SITTING_1).
+
+## Deck RULED 2026-09-12 (owner cards) — item complete
+Custom Utinni instability gene; removal risk copies the existing
+hostile-spawn mechanism; roll shape is the owner's 50% all-negative / 50%
+positive+negative large-variance rule ("The Contagion isn't nice"), deleting
+the drafted 90/10. Recorded verbatim in the survey's "THE DECK IS RULED"
+section. Build rides the Contagion/Unfinished items.

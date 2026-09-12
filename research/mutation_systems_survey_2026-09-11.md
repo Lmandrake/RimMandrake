@@ -219,3 +219,20 @@ No pool entry may be added that is `isBad: false` with zero cost hooks — that 
   explicitly; inherited from `AddedBodyPartBase`, not traced to its root value here).
 - The Unfinished's random-limb spawner mechanism itself was not read this pass — noted
   only as a stated consumer sharing the `Hediff_AddedPart`/`HediffGiver_Random` pattern.
+
+## THE DECK IS RULED — owner card sitting 2026-09-12
+
+Supersedes the draft deck's open questions above; build to THIS:
+
+1. **Unstable genes: CUSTOM Utinni-flavored gene** — do not reuse vanilla
+   instability genes as the deck's gene; design our own (campaign flavor).
+2. **Part removal: copy the existing risk exactly** — failed surgical removal
+   of a Contagion-added part spawns a hostile creature, same as the game's
+   mutated-flesh parts. No new mechanism.
+3. **Roll variance — the owner's own shape, replacing the drafted ~10%
+   pure-downside:** verbatim: "It should be a large variance experience
+   that's 50% all negative and 50% positive + negative. The Contagion isn't
+   nice." ⇒ half of all rolls are ALL negative; the other half are positive
+   PLUS negative (never positive alone); magnitudes swing wide. The draft's
+   never-just-upgrades law survives by construction; the drafted 90/10 split
+   is DELETED.
