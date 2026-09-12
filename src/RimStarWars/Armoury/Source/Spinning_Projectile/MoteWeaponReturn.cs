@@ -1,3 +1,4 @@
+using RimMandrake.StarWars.Armoury;
 using UnityEngine;
 using Verse;
 
@@ -58,7 +59,7 @@ public class MoteWeaponReturn : MoteThrown
         }
         Vector3 toLauncher = originalLauncher.Position.ToVector3Shifted() - exactPosition;
         Vector3 normalized = toLauncher.normalized;
-        float speed = ticksPerFrame * 1.1f;
+        float speed = ticksPerFrame * 1.1f * Mathf.Max(0.01f, RSW_ArmourySettings.returningWeaponSpeed);
         // Vector3.AngleFlat() already returns a heading in DEGREES, which is
         // exactly what SetVelocity(float angle, float speed) wants - the old
         // `speed * normalized.AngleFlat()` scaled that heading by ~8.8x,

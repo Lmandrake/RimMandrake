@@ -29,6 +29,10 @@ namespace RimMandrake.StarWars.Droidworks
         public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
         {
             if (prevMap == null) return;
+            // MOD_OPTIONS_RETROFIT_1: off = droids never explode. Nothing else
+            // hangs off this hook (heads and parts drop from their own comps), so
+            // the coarse early return is the whole gate.
+            if (!RSW_DroidworksSettings.detonation) return;
             Pawn pawn = parent as Pawn;
             if (pawn == null) return;
             // NOT pawn.def.GetModExtension<T>() (FirstOrDefault): RimWorld's XML
@@ -53,7 +57,7 @@ namespace RimMandrake.StarWars.Droidworks
             if (density <= 0f) return;
             float charge = pawn.needs?.TryGetNeed<Need_Power>()?.CurLevel ?? 0f;
             if (charge <= 0.05f) return;          // a wreck has no power
-            float scale = charge * density;
+            float scale = charge * density * RSW_DroidworksSettings.detonationSize;
             float radius = Props.baseRadius * Mathf.Sqrt(scale);
             int damage = Mathf.RoundToInt(50f * scale);
             GenExplosion.DoExplosion(

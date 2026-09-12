@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
+using RimMandrake.StarWars.Armoury;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -86,6 +87,13 @@ public static class Patch_JobGiver_AIFightEnemy
 
     public static Job GetJunpPackMelee(Pawn pawn)
     {
+        // MOD_OPTIONS_RETROFIT_1: gated at the injected call, not at the
+        // transpiler — the IL stays exactly as shipped and simply always
+        // takes the "no jump job" branch when the mechanic is off.
+        if (!RSW_ArmourySettings.jumppackEnabled)
+        {
+            return null;
+        }
         if (!pawn.RaceProps.Humanlike || pawn.IsColonist)
         {
             return null;
@@ -95,7 +103,7 @@ public static class Patch_JobGiver_AIFightEnemy
         {
             return null;
         }
-        if ((pawn.Position - enemyTarget.Position).LengthHorizontalSquared < 16f)
+        if ((pawn.Position - enemyTarget.Position).LengthHorizontalSquared < RSW_ArmourySettings.ScaleSquaredDistance(16f))
         {
             return null;
         }
@@ -111,6 +119,10 @@ public static class Patch_JobGiver_AIFightEnemy
 
     public static Job GetJunpPackRanged(Pawn pawn)
     {
+        if (!RSW_ArmourySettings.jumppackEnabled || !RSW_ArmourySettings.jumppackFlankRanged)
+        {
+            return null;
+        }
         if (!pawn.RaceProps.Humanlike || pawn.IsColonist)
         {
             return null;

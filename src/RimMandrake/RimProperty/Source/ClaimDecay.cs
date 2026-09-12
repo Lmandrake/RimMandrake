@@ -19,6 +19,7 @@ namespace RimMandrake.Property
                 PropertyTuning.MinClaimLifetimeDays,
                 PropertyTuning.MaxClaimLifetimeDays,
                 recognizability);
+            days *= PropertySettings.claimLifetimeMultiplier;
             return days * GenDate.TicksPerDay;
         }
 

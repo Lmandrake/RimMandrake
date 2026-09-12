@@ -48,6 +48,7 @@
     <Compile Include="LoreStageDefDatabase.cs" />
     <Compile Include="GameComponent_LoreStage.cs" />
     <Compile Include="LoreStageDebugActions.cs" />
+    <Compile Include="RM_LoreStagesMod.cs" />
   </ItemGroup>
 
   <ItemGroup>

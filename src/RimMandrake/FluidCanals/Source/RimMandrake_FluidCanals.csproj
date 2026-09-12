@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <Compile Include="RimMandrakeFluidCanals_DefOf.cs" />
+    <Compile Include="RimMandrakeFluidCanalsMod.cs" />
     <Compile Include="FluidDef.cs" />
     <Compile Include="Designator_DigCanal.cs" />
     <Compile Include="WorkGiver_DigCanal.cs" />

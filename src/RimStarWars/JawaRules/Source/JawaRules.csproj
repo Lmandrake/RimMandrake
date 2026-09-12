@@ -47,6 +47,7 @@
 
   <ItemGroup>
     <Compile Include="JawaRules.cs" />
+    <Compile Include="RSW_JawaRulesSettings.cs" />
   </ItemGroup>
 
   <ItemGroup>

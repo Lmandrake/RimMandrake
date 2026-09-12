@@ -33,6 +33,10 @@ namespace RimMandrake.Utinni.RustCathedralWalls
 
 		public static void Postfix(CompDeepScanner __instance, ref ThingDef __result)
 		{
+			if (!RustCathedralWallsSettings.livePatternMetalGateEnabled)
+			{
+				return;
+			}
 			if (__result == null || __result.defName != LivePatternMetalDefName)
 			{
 				return;

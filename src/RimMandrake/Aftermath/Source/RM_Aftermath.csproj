@@ -66,6 +66,7 @@
     <Compile Include="QueuedAftermathMarker.cs" />
     <Compile Include="AftermathRuleRunner.cs" />
     <Compile Include="AftermathMod.cs" />
+    <Compile Include="RM_AftermathMod.cs" />
   </ItemGroup>
 
   <ItemGroup>

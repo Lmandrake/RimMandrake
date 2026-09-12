@@ -1,6 +1,7 @@
 using RimWorld;
 using Verse;
 using Verse.AI;
+using RimMandrake.Property;
 
 namespace RimMandrake.TheftHauler
 {
@@ -38,7 +39,7 @@ namespace RimMandrake.TheftHauler
 
         protected override bool AppliesInt(FloatMenuContext context)
         {
-            return HasTheftHaulerMarker(context.FirstSelectedPawn);
+            return PropertySettings.theftHaulerEnabled && HasTheftHaulerMarker(context.FirstSelectedPawn);
         }
 
         protected override FloatMenuOption GetSingleOptionFor(Thing clickedThing, FloatMenuContext context)

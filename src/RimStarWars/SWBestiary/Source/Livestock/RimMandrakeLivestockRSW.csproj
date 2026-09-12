@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="CompLightAversion.cs" />
     <Compile Include="CompKilnBelly.cs" />
+    <Compile Include="RSW_LivestockSettings.cs" />
   </ItemGroup>
 
   <ItemGroup>

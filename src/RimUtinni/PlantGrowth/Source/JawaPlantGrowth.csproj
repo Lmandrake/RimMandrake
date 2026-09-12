@@ -47,6 +47,7 @@
     <Compile Include="PlantGrowthConfig.cs" />
     <Compile Include="PlantGrowthSettingsDef.cs" />
     <Compile Include="Patch_Plant_GrowthRate.cs" />
+    <Compile Include="PlantGrowthMod.cs" />
   </ItemGroup>
 
   <ItemGroup>

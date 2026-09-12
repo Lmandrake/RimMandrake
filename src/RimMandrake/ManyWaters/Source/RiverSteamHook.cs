@@ -94,6 +94,10 @@ namespace RiverSteamHook
 
         public override void MapComponentTick()
         {
+            if (!RiverSteamSettings.riverSteamEnabled)
+            {
+                return; // mod option: river steam disabled
+            }
             if (steamFleck == null || riverCells == null || riverCells.Count == 0)
             {
                 return;
@@ -123,7 +127,9 @@ namespace RiverSteamHook
 
         private void ScheduleNext()
         {
-            nextPuffTick = Find.TickManager.TicksGame + settings.ticksBetweenPuffs.RandomInRange;
+            float mult = Mathf.Max(0.01f, RiverSteamSettings.puffRateMultiplier);
+            int interval = Mathf.Max(1, Mathf.RoundToInt(settings.ticksBetweenPuffs.RandomInRange / mult));
+            nextPuffTick = Find.TickManager.TicksGame + interval;
         }
     }
 }

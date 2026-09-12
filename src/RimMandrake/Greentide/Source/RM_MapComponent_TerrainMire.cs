@@ -22,6 +22,10 @@ namespace RimMandrake.Greentide
 		public override void MapComponentTick()
 		{
 			base.MapComponentTick();
+			if (!RM_GreentideSettings.mireEnabled)
+			{
+				return; // MOD_OPTIONS_RETROFIT_1: master toggle, all-off degrades to a no-op
+			}
 			if (Find.TickManager.TicksGame % CheckIntervalTicks != 0)
 			{
 				return;
@@ -50,20 +54,24 @@ namespace RimMandrake.Greentide
 					existing = HediffMaker.MakeHediff(RM_DefOf.RM_Mired, pawn);
 					pawn.health.AddHediff(existing);
 				}
+				// MOD_OPTIONS_RETROFIT_1: mireSeverityMultiplier scales the whole XML-authored
+				// per-terrain rate uniformly (never the terrain's own field) so the ruled
+				// v1 default (1.0x, i.e. exactly the shipped numbers above) is unchanged.
+				float severityRate = ext.mireSeverityPerTick * RM_GreentideSettings.mireSeverityMultiplier;
 				bool stuck = existing.Severity >= ext.stuckThreshold;
 				if (stuck && Rand.Chance(ext.selfStruggleChancePerCheck * 0.1f))
 				{
 					// Even stuck pawns make token, glacial progress alone —
 					// RM_WorkGiver_FreeMired is the real way out, not the only way.
-					existing.Severity = System.Math.Max(0f, existing.Severity - ext.mireSeverityPerTick);
+					existing.Severity = System.Math.Max(0f, existing.Severity - severityRate);
 				}
 				else if (!stuck && Rand.Chance(ext.selfStruggleChancePerCheck))
 				{
-					existing.Severity = System.Math.Max(0f, existing.Severity - ext.mireSeverityPerTick * 0.5f);
+					existing.Severity = System.Math.Max(0f, existing.Severity - severityRate * 0.5f);
 				}
 				else
 				{
-					existing.Severity = System.Math.Min(1f, existing.Severity + ext.mireSeverityPerTick);
+					existing.Severity = System.Math.Min(1f, existing.Severity + severityRate);
 				}
 			}
 			else if (existing != null)

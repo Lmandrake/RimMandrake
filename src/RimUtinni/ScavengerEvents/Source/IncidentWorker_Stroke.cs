@@ -20,6 +20,8 @@ namespace RimMandrake.Utinni.ScavengerEvents
 
         protected override bool CanFireNowSub(IncidentParms parms)
         {
+            if (!ScavengerEventsSettings.strokeEnabled)
+                return false;
             var map = (Map)parms.target;
             return map.mapPawns.FreeColonists.Count > 0;
         }

@@ -34,6 +34,9 @@ namespace RimMandrake.StarWars.FireEcology
             "RM_FE_Ground_Sand", "Sand",
         };
 
+        // Shipped defaults for the numbers below now live as tunable fields on
+        // RM_PyrelandsSettings (MOD_OPTIONS_RETROFIT_1) — read those at the
+        // call sites, not these. Kept only as the historical/default record.
         internal const float FulguriteChancePerStrike = 0.35f;
         internal const float AshDustingChancePerFireTick = 0.02f;
         internal const float ScorchFruitChancePerFireTick = 0.0025f;
@@ -108,10 +111,11 @@ namespace RimMandrake.StarWars.FireEcology
         {
             try
             {
+                if (!RM_PyrelandsSettings.fulguriteEnabled) return;
                 if (map == null || !strikeLoc.IsValid || !strikeLoc.InBounds(map)) return;
                 TerrainDef terrain = strikeLoc.GetTerrain(map);
                 if (!FireEcologyHookMod.IsSandFamily(terrain)) return;
-                if (!Rand.Chance(FireEcologyHookMod.FulguriteChancePerStrike)) return;
+                if (!Rand.Chance(RM_PyrelandsSettings.fulguriteChance)) return;
 
                 ThingDef fulguriteDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Fulgurite");
                 if (fulguriteDef == null) return; // mod not loaded / def missing — no-op, not a crash
@@ -136,12 +140,11 @@ namespace RimMandrake.StarWars.FireEcology
     // to 15x more often.
     public static class Patch_FireTick_AshAndScorchFruit
     {
-        private const int ScorchFruitMapCap = 40;
-
         public static void Postfix(Fire __instance, int delta)
         {
             try
             {
+                if (!RM_PyrelandsSettings.ashDustingEnabled && !RM_PyrelandsSettings.scorchFruitEnabled) return;
                 if (__instance == null || !__instance.Spawned) return;
                 // Pawn/animal-attached fires (a burning colonist, a boomrat that
                 // caught) are not ground fires - skip them entirely, or a lit
@@ -159,23 +162,27 @@ namespace RimMandrake.StarWars.FireEcology
                 // Loose ash dusting — rides alongside vanilla's own
                 // unconditional Filth_Ash spawn (DamageWorker_Flame), does
                 // not replace it.
-                ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
-                if (ashFilth != null && Rand.Chance(FireEcologyHookMod.AshDustingChancePerFireTick * delta))
+                if (RM_PyrelandsSettings.ashDustingEnabled)
                 {
-                    FilthMaker.TryMakeFilth(pos, map, ashFilth);
+                    ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
+                    if (ashFilth != null && Rand.Chance(RM_PyrelandsSettings.ashDustingChance * delta))
+                    {
+                        FilthMaker.TryMakeFilth(pos, map, ashFilth);
+                    }
                 }
 
                 // Scorch-fruit — rare, and only ever appears this way (never
                 // in a biome's ordinary wildPlants list). Plain 3x3 scan
                 // instead of a GenAdj/LINQ combinator: fewer ways to get the
                 // overload wrong, and this runs at most a few times a fire.
-                if (Rand.Chance(FireEcologyHookMod.ScorchFruitChancePerFireTick * delta))
+                if (RM_PyrelandsSettings.scorchFruitEnabled
+                    && Rand.Chance(RM_PyrelandsSettings.scorchFruitChance * delta))
                 {
                     ThingDef fruitDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Plant_ScorchFruit");
                     // A map-wide burn runs hundreds of concurrent Fire things;
                     // uncapped this seeds an orchard, not a harvest. BENCH
                     // review finding, 2026-09-01.
-                    if (fruitDef != null && map.listerThings.ThingsOfDef(fruitDef).Count >= ScorchFruitMapCap)
+                    if (fruitDef != null && map.listerThings.ThingsOfDef(fruitDef).Count >= RM_PyrelandsSettings.scorchFruitMapCap)
                     {
                         fruitDef = null;
                     }
@@ -253,6 +260,13 @@ namespace RimMandrake.StarWars.FireEcology
 
         public override float GetScore(BiomeDef biome, Tile tile, PlanetTile planetTile)
         {
+            // WORLDGEN-AFFECTING toggle: off means this biome never wins tile
+            // placement on a newly generated world. An already-generated
+            // planet is untouched — this only ever runs during generation.
+            if (!RM_PyrelandsSettings.biomeGenerationEnabled)
+            {
+                return -100f;
+            }
             if (tile == null || tile.WaterCovered)
             {
                 return -100f;
@@ -343,6 +357,10 @@ namespace RimMandrake.StarWars.FireEcology
 
         public override void MapComponentTick()
         {
+            if (!RM_PyrelandsSettings.ashfallAccumulationEnabled)
+            {
+                return;
+            }
             if (Find.TickManager.TicksGame % CheckIntervalTicks != 0)
             {
                 return;
@@ -377,6 +395,7 @@ namespace RimMandrake.StarWars.FireEcology
                 return;
             }
 
+            rate *= RM_PyrelandsSettings.ashfallRateMultiplier;
             int attempts = (int)((float)map.Area / CellsPerDepositAttempt * rate);
             if (attempts < 1)
             {

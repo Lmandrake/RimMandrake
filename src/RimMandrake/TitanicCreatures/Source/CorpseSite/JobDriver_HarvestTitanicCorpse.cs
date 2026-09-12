@@ -15,7 +15,10 @@ namespace RimMandrake.TitanicCreatures
     public class JobDriver_HarvestTitanicCorpse : JobDriver
     {
         private float workLeft;
-        private const float WorkPerSession = 2500f;
+
+        // GenDate.TicksPerHour (2500) * the player-tunable hour count.
+        private static float WorkPerSession =>
+            GenDate.TicksPerHour * RM_TitanicCreaturesSettings.corpseSiteWorkHoursPerSession;
 
         private Building_TitanicCorpseSite Site => job.targetA.Thing as Building_TitanicCorpseSite;
 

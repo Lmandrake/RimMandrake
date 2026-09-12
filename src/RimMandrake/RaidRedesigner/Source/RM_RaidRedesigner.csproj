@@ -53,6 +53,7 @@
     <Compile Include="WorldPawnPinning.cs" />
     <Compile Include="GameComponent_OldFriends.cs" />
     <Compile Include="RaidRedesignerMod.cs" />
+    <Compile Include="RaidRedesignerSettings.cs" />
     <Compile Include="Patch_FledRaiderAndCaptain.cs" />
     <Compile Include="Patch_PrisonerEscaped.cs" />
     <Compile Include="Patch_PrisonerReleasedOrNamedHunter.cs" />

@@ -32,6 +32,10 @@ namespace RimMandrake.Utinni.RustCathedralWalls
 
 		public override void Generate(Map map, GenStepParams parms)
 		{
+			if (!RustCathedralWallsSettings.sacredWallsEnabled)
+			{
+				return;
+			}
 			if (map.Biome == null || map.Biome.defName != CathedralBiomeDefName)
 			{
 				return;
@@ -41,7 +45,8 @@ namespace RimMandrake.Utinni.RustCathedralWalls
 				Log.Error("[RustCathedralWalls] GenStep_ScatterSacredWalls has no thingDef configured.");
 				return;
 			}
-			if (!Rand.Chance(chancePerMap))
+			float effectiveChance = UnityEngine.Mathf.Clamp01(chancePerMap * RustCathedralWallsSettings.sacredWallChanceMultiplier);
+			if (!Rand.Chance(effectiveChance))
 			{
 				return;
 			}

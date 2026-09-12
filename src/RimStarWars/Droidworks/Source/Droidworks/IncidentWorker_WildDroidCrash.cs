@@ -77,6 +77,12 @@ namespace RimMandrake.StarWars.Droidworks
 
         protected override bool CanFireNowSub(IncidentParms parms)
         {
+            // MOD_OPTIONS_RETROFIT_1: off = the storyteller simply never picks
+            // this incident. Refusing here (rather than in TryExecuteWorker) is
+            // the graceful half: a refused CanFireNowSub makes the storyteller
+            // roll something else, where a refused TryExecuteWorker would burn
+            // the slot on nothing happening.
+            if (!RSW_DroidworksSettings.wildDroidCrash) return false;
             if (!base.CanFireNowSub(parms)) return false;
             if (!(parms.target is Map map)) return false;
             if (PickKind() == null) return false;
@@ -85,6 +91,8 @@ namespace RimMandrake.StarWars.Droidworks
 
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
+            // Belt and braces: a debug "force incident" bypasses CanFireNowSub.
+            if (!RSW_DroidworksSettings.wildDroidCrash) return false;
             if (!(parms.target is Map map)) return false;
 
             PawnKindDef kind = PickKind();

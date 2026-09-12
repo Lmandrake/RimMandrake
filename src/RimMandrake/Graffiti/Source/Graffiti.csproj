@@ -54,6 +54,7 @@
     <Compile Include="JobGiver_GraffitiPaintingSpree.cs" />
     <Compile Include="ThoughtWorker_ViewedGraffitiMark.cs" />
     <Compile Include="BreachBiasHook.cs" />
+    <Compile Include="RM_GraffitiMod.cs" />
   </ItemGroup>
 
   <ItemGroup>

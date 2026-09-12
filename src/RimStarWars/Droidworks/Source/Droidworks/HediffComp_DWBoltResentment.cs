@@ -49,13 +49,20 @@ namespace RimMandrake.StarWars.Droidworks
         {
             severityAdjustment = 0f; // never decay, never rise on its own - only this method moves it
 
+            // MOD_OPTIONS_RETROFIT_1: off = the accumulator simply stops. Whatever
+            // severity a droid already earned is left exactly where it is (this
+            // hediff never decays by design), so turning the option back on
+            // resumes rather than restarts.
+            if (!RSW_DroidworksSettings.boltResentment) return;
+
             Pawn p = Pawn;
             if (p == null || p.Dead) return;
             if (!p.IsHashIntervalTick(ScanIntervalTicks)) return;
             if (p.RaceProps == null || p.RaceProps.intelligence != Intelligence.Humanlike) return;
             if (!p.health.hediffSet.HasHediff(DroidworksDefOf.RSW_DW_RestrainingBolt)) return;
 
-            float gainPerInterval = Props.severityPerDayWhileBolted / GenDate.TicksPerDay * ScanIntervalTicks;
+            float gainPerInterval = Props.severityPerDayWhileBolted * RSW_DroidworksSettings.boltResentmentRate
+                / GenDate.TicksPerDay * ScanIntervalTicks;
             parent.Severity = Mathf.Min(parent.def.maxSeverity, parent.Severity + gainPerInterval);
         }
     }

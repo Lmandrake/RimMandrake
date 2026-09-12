@@ -46,6 +46,7 @@
 
   <ItemGroup>
     <Compile Include="HazardTargeting.cs" />
+    <Compile Include="RM_EnvironmentalHazardsMod.cs" />
     <Compile Include="CompProperties_ActiveGasEmitter.cs" />
     <Compile Include="CompActiveGasEmitter.cs" />
     <Compile Include="GasEffectExtensions.cs" />

@@ -16,6 +16,10 @@ namespace RimMandrake.CreatureBehaviors
 	{
 		protected override Job TryGiveJob(Pawn pawn)
 		{
+			if (!RM_CreatureBehaviorsSettings.gnawBehaviorEnabled)
+			{
+				return null; // mod option: gnawing behavior disabled
+			}
 			RM_GnawTargetExtension ext = pawn.def?.GetModExtension<RM_GnawTargetExtension>();
 			if (ext == null || pawn.Map == null)
 			{

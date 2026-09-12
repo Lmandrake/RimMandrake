@@ -36,6 +36,10 @@ namespace RimMandrake.Inhabited
 
         public override void MapComponentTick()
         {
+            if (!RM_InhabitedSettings.fateEnabled)
+            {
+                return;
+            }
             if (Find.TickManager.TicksGame % IntervalTicks != 0)
             {
                 return;

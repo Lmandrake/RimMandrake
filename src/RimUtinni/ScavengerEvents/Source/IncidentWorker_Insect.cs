@@ -31,6 +31,11 @@ namespace RimMandrake.Utinni.ScavengerEvents
 
         private static Faction OfInsectoid => Find.FactionManager.FirstFactionOfDef(FactionDefOf.Insect);
 
+        protected override bool CanFireNowSub(IncidentParms parms)
+        {
+            return ScavengerEventsSettings.insectEnabled && base.CanFireNowSub(parms);
+        }
+
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
             var map = (Map)parms.target;
@@ -50,6 +55,7 @@ namespace RimMandrake.Utinni.ScavengerEvents
 
             int colonistCount = map.mapPawns.AllPawns.FindAll(p => p.IsColonist).Count;
             int countPerKind = Mathf.Max(MinCountPerKind, Mathf.RoundToInt(colonistCount / ColonistDivisor));
+            countPerKind = Mathf.Max(MinCountPerKind, Mathf.RoundToInt(countPerKind * ScavengerEventsSettings.insectSwarmSizeMultiplier));
 
             Faction faction = OfInsectoid;
             bool spawnedAny = false;

@@ -75,11 +75,28 @@ namespace RimMandrake.FluidCanals
 			}
 		}
 
+		/// <summary>Interval scaled by the mod-settings flow-rate multiplier — higher
+		/// multiplier means a SHORTER interval (faster cadence).</summary>
+		private static int ScaledInterval(int baseInterval)
+		{
+			float mult = Mathf.Max(0.01f, RimMandrakeFluidCanalsSettings.flowRateMultiplier);
+			return Mathf.Max(1, Mathf.RoundToInt(baseInterval / mult));
+		}
+
+		private static float ScaledVolume(float baseVolume)
+		{
+			return baseVolume * Mathf.Max(0f, RimMandrakeFluidCanalsSettings.floodVolumeMultiplier);
+		}
+
 		private void Prime(IntVec3 cell)
 		{
 			if (primed)
 			{
 				return;
+			}
+			if (!RimMandrakeFluidCanalsSettings.canalFlowEnabled)
+			{
+				return; // mod option: canal flow disabled — a dug canal stays dry
 			}
 			if (!ValidateFluidDef())
 			{
@@ -88,13 +105,13 @@ namespace RimMandrake.FluidCanals
 			primed = true;
 			seedCell = cell;
 			int ticksNow = Find.TickManager.TicksGame;
-			nextDripTick = ticksNow + Mathf.Max(1, Props.dripIntervalTicks);
-			nextReFloodTick = ticksNow + Mathf.Max(1, Props.reFloodIntervalTicks);
+			nextDripTick = ticksNow + ScaledInterval(Props.dripIntervalTicks);
+			nextReFloodTick = ticksNow + ScaledInterval(Props.reFloodIntervalTicks);
 			// The moment of opening a canal still pays off at once -- fire the
 			// first re-flood immediately (the engine's original one-shot
 			// behavior), rather than making the player wait a full cadence for
 			// the first drop of water.
-			SpawnFlood(Props.reFloodVolume);
+			SpawnFlood(ScaledVolume(Props.reFloodVolume));
 		}
 
 		public override void CompTickRare()
@@ -104,16 +121,20 @@ namespace RimMandrake.FluidCanals
 			{
 				return;
 			}
+			if (!RimMandrakeFluidCanalsSettings.canalFlowEnabled)
+			{
+				return; // mod option: canal flow disabled — a primed reservoir goes quiet
+			}
 			int ticksNow = Find.TickManager.TicksGame;
 			if (ticksNow >= nextDripTick)
 			{
-				SpawnFlood(Props.dripVolume);
-				nextDripTick = ticksNow + Mathf.Max(1, Props.dripIntervalTicks);
+				SpawnFlood(ScaledVolume(Props.dripVolume));
+				nextDripTick = ticksNow + ScaledInterval(Props.dripIntervalTicks);
 			}
 			if (ticksNow >= nextReFloodTick)
 			{
-				SpawnFlood(Props.reFloodVolume);
-				nextReFloodTick = ticksNow + Mathf.Max(1, Props.reFloodIntervalTicks);
+				SpawnFlood(ScaledVolume(Props.reFloodVolume));
+				nextReFloodTick = ticksNow + ScaledInterval(Props.reFloodIntervalTicks);
 			}
 		}
 

@@ -1,5 +1,6 @@
 using System.Reflection;
 using HarmonyLib;
+using RimMandrake.StarWars.Armoury;
 using RimWorld;
 using Verse;
 
@@ -18,6 +19,10 @@ internal static class HarmonyCompExtraSounds
 
     public static void SoundHitPawnPostfix(ref SoundDef __result, Verb_MeleeAttack __instance)
     {
+        if (!RSW_ArmourySettings.extraSoundsEnabled)
+        {
+            return;
+        }
         if (__instance.caster is Pawn pawn)
         {
             SoundDef fromKind = pawn.kindDef?.GetModExtensionExtraSounds()?.soundHitPawn;
@@ -35,6 +40,10 @@ internal static class HarmonyCompExtraSounds
 
     public static void SoundMissPostfix(ref SoundDef __result, Verb_MeleeAttack __instance)
     {
+        if (!RSW_ArmourySettings.extraSoundsEnabled)
+        {
+            return;
+        }
         if (__instance.caster is Pawn pawn)
         {
             SoundDef fromWeapon = pawn.equipment?.Primary?.GetCompExtraSounds()?.Props.soundMiss;
@@ -47,6 +56,10 @@ internal static class HarmonyCompExtraSounds
 
     public static void SoundHitBuildingPostfix(ref SoundDef __result, Verb_MeleeAttack __instance)
     {
+        if (!RSW_ArmourySettings.extraSoundsEnabled)
+        {
+            return;
+        }
         if (__instance.caster is Pawn pawn)
         {
             SoundDef fromWeapon = pawn.equipment?.Primary?.GetCompExtraSounds()?.Props.soundHitBuilding;

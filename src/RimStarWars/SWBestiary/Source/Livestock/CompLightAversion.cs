@@ -1,5 +1,6 @@
 using System.Linq;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -54,6 +55,8 @@ namespace RimMandrake.StarWars.Livestock
 
         public override void CompTickRare()
         {
+            if (!RSW_LivestockSettings.lightAversionEnabled) return;
+
             Pawn pawn = parent as Pawn;
             if (pawn == null || !pawn.Spawned || pawn.Downed || !pawn.Awake())
             {
@@ -91,7 +94,8 @@ namespace RimMandrake.StarWars.Livestock
                 return;
             }
 
-            IntVec3 dest = GenRadial.RadialCellsAround(pawn.Position, Props.fleeSearchRadius, useCenter: false)
+            int radius = Mathf.Max(1, Mathf.RoundToInt(Props.fleeSearchRadius * RSW_LivestockSettings.fleeRadiusMultiplier));
+            IntVec3 dest = GenRadial.RadialCellsAround(pawn.Position, radius, useCenter: false)
                 .Where(c => c.InBounds(map)
                     && c.Standable(map)
                     && map.glowGrid.PsychGlowAt(c) == PsychGlow.Dark

@@ -28,8 +28,15 @@ namespace RimMandrake.StarWars.Droidworks
         public override void NeedInterval()
         {
             if (IsFrozen) return;
-            float fall = (Ext?.powerFallPerDay ?? 0.33f) / 400f; // NeedInterval = 150 ticks; 60000/150 = 400
+            // MOD_OPTIONS_RETROFIT_1: the need itself is switched off upstream, in
+            // Patch_ShouldHaveNeed_Power - a droid with the option off never has
+            // this need at all, so nothing here runs for it. The two knobs below
+            // are the drain rate and whether an empty bar actually shuts a droid
+            // down (off: the bar can sit at zero and the droid keeps working).
+            float fall = (Ext?.powerFallPerDay ?? 0.33f) * RSW_DroidworksSettings.powerDrainRate
+                / 400f; // NeedInterval = 150 ticks; 60000/150 = 400
             CurLevel = Mathf.Max(0f, CurLevel - fall);
+            if (!RSW_DroidworksSettings.powerDownWhenEmpty) return;
             if (CurLevel <= PoweredDownAt && !pawn.health.hediffSet.HasHediff(DroidworksDefOf.RSW_DW_PoweredDown))
             {
                 pawn.health.AddHediff(DroidworksDefOf.RSW_DW_PoweredDown);

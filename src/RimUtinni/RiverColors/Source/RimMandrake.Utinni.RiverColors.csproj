@@ -43,6 +43,7 @@
 
   <ItemGroup>
     <Compile Include="HarmonyPatch_RiverColors.cs" />
+    <Compile Include="RiverColorsMod.cs" />
   </ItemGroup>
 
   <ItemGroup>

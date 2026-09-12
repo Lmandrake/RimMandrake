@@ -98,6 +98,7 @@
     <Compile Include="..\ClaimResolution.cs" />
     <Compile Include="..\ClaimDecay.cs" />
     <Compile Include="..\PropertyTuning.cs" />
+    <Compile Include="..\PropertySettings.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

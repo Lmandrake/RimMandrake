@@ -40,6 +40,10 @@ namespace RimMandrake.Pits
         public void RunScan()
         {
             if (!Pit.Covered || Pit.Sprung) return;
+            // Mod option: coarse gate, PitsSettings.trapTriggerEnabled. Off means
+            // an armed cover simply never sums mass or springs - no NRE, arming/
+            // disarming still work, the pit just never fires on its own.
+            if (!PitsSettings.trapTriggerEnabled) return;
 
             float summedMass = 0f;
             List<Pawn> onCover = new List<Pawn>();
@@ -67,7 +71,8 @@ namespace RimMandrake.Pits
                 }
             }
 
-            if (onCover.Count > 0 && summedMass >= Pit.CoverTier.TriggerMassKg())
+            float threshold = Pit.CoverTier.TriggerMassKg() * PitsSettings.trapSensitivityMultiplier;
+            if (onCover.Count > 0 && summedMass >= threshold)
             {
                 Pit.Spring(onCover);
             }

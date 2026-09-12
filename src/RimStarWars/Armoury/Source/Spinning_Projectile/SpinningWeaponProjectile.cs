@@ -1,4 +1,5 @@
 using System.Text;
+using RimMandrake.StarWars.Armoury;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -49,7 +50,10 @@ public class SpinningWeaponProjectile : Projectile
         {
             hitThing.TakeDamage(new DamageInfo(def.projectile.damageDef, def.projectile.GetDamageAmount(hitThing, (StringBuilder)null), 0f, -1f, launcher));
         }
-        if (launcher is Pawn pawn && pawn.equipment?.Primary != null)
+        // MOD_OPTIONS_RETROFIT_1: the hit above always lands; only the
+        // return flight is optional. With it off no mote is made, so the
+        // missing Mote_LightSaberReturn def is never looked up either.
+        if (RSW_ArmourySettings.returningWeaponEnabled && launcher is Pawn pawn && pawn.equipment?.Primary != null)
         {
             IntVec3 position = hitThing != null ? hitThing.Position : Position;
             MoteWeaponReturn mote = (MoteWeaponReturn)ThingMaker.MakeThing(ThingDef.Named("Mote_LightSaberReturn"));

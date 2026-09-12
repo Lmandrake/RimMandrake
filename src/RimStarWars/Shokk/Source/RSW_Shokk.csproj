@@ -41,6 +41,7 @@
 
   <ItemGroup>
     <Compile Include="RSW_CompEmergentSpawnOnDestroy.cs" />
+    <Compile Include="RSW_ShokkSettings.cs" />
   </ItemGroup>
 
   <ItemGroup>

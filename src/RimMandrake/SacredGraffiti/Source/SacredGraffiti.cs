@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.SacredGraffiti
@@ -54,6 +55,8 @@ namespace RimMandrake.SacredGraffiti
         {
             extraOutcomeDesc = null;
 
+            if (!RM_SacredGraffitiSettings.sacredMarkEnabled) return;
+
             // A curse doesn't leave a mark - only a favorable outcome does.
             // Pillar bar (§19.5): this never grants a material reward, only a
             // devotional wall-mark (the mark's own statBases carry its
@@ -78,7 +81,8 @@ namespace RimMandrake.SacredGraffiti
                 map = fallback.Map;
             }
 
-            int count = System.Math.Max(1, def.filthCountToSpawn.RandomInRange);
+            int count = System.Math.Max(1,
+                Mathf.RoundToInt(def.filthCountToSpawn.RandomInRange * RM_SacredGraffitiSettings.markCountMultiplier));
             if (FilthMaker.TryMakeFilth(cell, map, def.filthDefToSpawn, count))
             {
                 extraOutcomeDesc = def.filthDefToSpawn.LabelCap + " is left behind, painted by unseen hands.";

@@ -58,6 +58,10 @@ namespace RimMandrake.Inhabited
         [HarmonyPrefix]
         public static bool SubstituteDisplacedBeggar(PawnGenerationRequest request, ref Pawn __result)
         {
+            if (!RM_InhabitedSettings.beggarsFromPoolEnabled)
+            {
+                return true;
+            }
             if (request.KindDef != PawnKindDefOf.Beggar)
             {
                 return true;

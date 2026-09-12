@@ -34,6 +34,10 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
     {
         protected override bool CanFireNowSub(IncidentParms parms)
         {
+            if (!PyrelandsMechanicsSettings.arsonJusticeEnabled)
+            {
+                return false;
+            }
             if (!base.CanFireNowSub(parms) || !(parms.target is Map map))
             {
                 return false;
@@ -44,7 +48,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             {
                 return false;
             }
-            if (watch.ArsonDebt < PyrelandsTuning.ArsonDebtRaidThreshold)
+            if (watch.ArsonDebt < PyrelandsMechanicsSettings.arsonDebtRaidThreshold)
             {
                 return false;
             }

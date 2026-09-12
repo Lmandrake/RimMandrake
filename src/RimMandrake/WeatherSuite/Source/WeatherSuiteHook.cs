@@ -181,6 +181,9 @@ namespace RimMandrake.StarWars.WeatherSuite
             base.FinalizeInit();
             try
             {
+                // MOD_OPTIONS_RETROFIT_1: worldgen-affecting master switch —
+                // only ever checked here, at map init.
+                if (!WeatherSuiteSettings.terminatorFrontEnabled) return;
                 if (!WeatherGeometryUtility.MapInTerminatorBand(map)) return;
 
                 GameConditionDef frontDef = DefDatabase<GameConditionDef>.GetNamedSilentFail("RM_WS_TerminatorFront");
@@ -267,18 +270,19 @@ namespace RimMandrake.StarWars.WeatherSuite
     // const), not at `MaxSunGlow` (0.5) — see AuroraGlowFloor below.
     public class GameCondition_DarkAuroraMax : GameCondition_Aurora
     {
-        private const float SkySaturationLerp = 0.35f;     // vanilla sky: 0.075f
-        private const float OverlaySaturationLerp = 0.05f; // vanilla overlay: 0.025f
-        private const float SkyBrightness = 1.15f;         // fixed; vanilla's Brightness() ranges 0.73-1.0
         private const float AuroraGlowFloor = 0.25f;        // vanilla's private `Glow` const — NOT MaxSunGlow
 
         public override SkyTarget? SkyTarget(Map map)
         {
+            // MOD_OPTIONS_RETROFIT_1: off falls back to vanilla's own aurora
+            // look entirely.
+            if (!WeatherSuiteSettings.auroraMaxBrightnessEnabled) return base.SkyTarget(map);
+
             if (map.GameConditionManager.IsAlwaysDarkOutside) return null;
 
             Color currentColor = CurrentColor;
-            Color sky = ClampToOne(Color.Lerp(Color.white, currentColor, SkySaturationLerp) * SkyBrightness);
-            Color overlay = ClampToOne(Color.Lerp(Color.white, currentColor, OverlaySaturationLerp) * SkyBrightness);
+            Color sky = ClampToOne(Color.Lerp(Color.white, currentColor, WeatherSuiteSettings.auroraSkySaturation) * WeatherSuiteSettings.auroraSkyBrightness);
+            Color overlay = ClampToOne(Color.Lerp(Color.white, currentColor, WeatherSuiteSettings.auroraOverlaySaturation) * WeatherSuiteSettings.auroraSkyBrightness);
             float glow = Mathf.Max(GenCelestial.CurCelestialSunGlow(map), AuroraGlowFloor);
             return new SkyTarget(
                 colorSet: new SkyColorSet(
@@ -305,6 +309,7 @@ namespace RimMandrake.StarWars.WeatherSuite
     {
         protected override bool CanFireNowSub(IncidentParms parms)
         {
+            if (!WeatherSuiteSettings.nightsideAuroraEnabled) return false;
             if (!base.CanFireNowSub(parms)) return false;
             foreach (Map m in Find.Maps)
             {

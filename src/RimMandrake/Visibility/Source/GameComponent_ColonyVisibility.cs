@@ -111,7 +111,7 @@ namespace RimMandrake.Visibility
         public void ResetOnLaunch()
         {
             float before = shipVisibility;
-            shipVisibility = Mathf.Clamp(shipVisibility * 0.15f, 5f, 15f);
+            shipVisibility = Mathf.Clamp(shipVisibility * RM_VisibilitySettings.launchResetMultiplier, 5f, 15f);
             if (Prefs.DevMode)
             {
                 Log.Message($"[ColonyVisibility] launch reset: {before:F1} -> {shipVisibility:F1}");

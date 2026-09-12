@@ -54,10 +54,13 @@ namespace RimMandrake.Utinni.RiverColors
     // (src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml currently points
     // it at World/Biomes/Jawa_SickWater). Retinting the lake is a texture-art task on
     // that field, not a C# patch, and is left undone here.
+    // Renamed from RiverColorsMod (MOD_OPTIONS_RETROFIT_1): that name now belongs
+    // to the RimWorld `Mod` subclass in RiverColorsMod.cs, which owns Mod Settings.
+    // This class is the Harmony bootstrap only — unrelated responsibility.
     [StaticConstructorOnStartup]
-    public static class RiverColorsMod
+    public static class RiverColorsHarmonyLoader
     {
-        static RiverColorsMod()
+        static RiverColorsHarmonyLoader()
         {
             Harmony h = new Harmony("mandrake.rut.rivercolors");
             h.PatchAll(Assembly.GetExecutingAssembly());
@@ -71,9 +74,10 @@ namespace RimMandrake.Utinni.RiverColors
         // The owner's palette (item spec + the 2026-09-06 gradient amendment):
         // red headwater -> brackish green/brown jungle -> toxic brown/blue terminus,
         // interpolated continuously rather than three hard bands.
-        private static readonly Color32 HeadwaterColor = new Color32(0xE0, 0x31, 0x1C, 0xFF);
-        private static readonly Color32 JungleColor    = new Color32(0x7A, 0x7A, 0x2E, 0xFF);
-        private static readonly Color32 TerminusColor  = new Color32(0x3D, 0x4A, 0x52, 0xFF);
+        //
+        // MOD_OPTIONS_RETROFIT_1: the three anchor colours are now owned by
+        // RiverColorsSettings (in-game Mod Settings, RGB sliders + swatch); these
+        // are read live in ColorFor below, not cached here.
 
         // Grounded biome anchors (design/Jawa/worldbuilding/biomes/*.md; real defNames,
         // measured live via `measure csv` against world/ASHKARR_WORLDMAP_tiles.csv --
@@ -96,7 +100,11 @@ namespace RimMandrake.Utinni.RiverColors
             float t = 0.5f;
             if (tilePosition != null)
                 tilePosition.TryGetValue(tile.tileId, out t);
-            return Lerp3(HeadwaterColor, JungleColor, TerminusColor, t);
+            return Lerp3(
+                RiverColorsSettings.headwaterColor,
+                RiverColorsSettings.jungleColor,
+                RiverColorsSettings.terminusColor,
+                t);
         }
 
         private static void EnsureBuilt()
@@ -208,7 +216,7 @@ namespace RimMandrake.Utinni.RiverColors
         [HarmonyPrefix]
         public static void Prefix(WorldDrawLayer_Paths __instance, PlanetTile tile, ref Color32 color)
         {
-            if (__instance is WorldDrawLayer_Rivers)
+            if (RiverColorsSettings.enabled && __instance is WorldDrawLayer_Rivers)
                 color = RiverGradient.ColorFor(tile);
         }
     }

@@ -16,6 +16,10 @@ namespace RimMandrake.CreatureBehaviors
 	{
 		protected override Job TryGiveJob(Pawn pawn)
 		{
+			if (!RM_CreatureBehaviorsSettings.eatCleanableBehaviorEnabled)
+			{
+				return null; // mod option: foraging/eating cleanable items disabled
+			}
 			RM_EatCleanableExtension ext = pawn.def?.GetModExtension<RM_EatCleanableExtension>();
 			if (ext == null || pawn.Map == null)
 			{

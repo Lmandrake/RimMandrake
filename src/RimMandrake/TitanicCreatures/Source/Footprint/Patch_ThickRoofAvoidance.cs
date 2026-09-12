@@ -32,6 +32,7 @@ namespace RimMandrake.TitanicCreatures
 
         private static void Postfix(Pawn pawn, IntVec3 c, ref float __result)
         {
+            if (!RM_TitanicCreaturesSettings.roofAvoidanceEnabled) return;
             if (pawn?.Map == null || TitanicTierUtility.GetTier(pawn) == TitanicTier.None)
             {
                 return;

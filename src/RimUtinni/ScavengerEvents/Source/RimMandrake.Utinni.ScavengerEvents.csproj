@@ -43,6 +43,7 @@
     <Compile Include="IncidentWorker_Insect.cs" />
     <Compile Include="IncidentWorker_Stroke.cs" />
     <Compile Include="IncidentWorker_ShipBreak.cs" />
+    <Compile Include="ScavengerEventsSettings.cs" />
   </ItemGroup>
 
   <ItemGroup>

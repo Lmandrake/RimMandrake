@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="CompProperties_ProximityHatch.cs" />
     <Compile Include="CompProximityHatch.cs" />
+    <Compile Include="RM_ProximityHatchMod.cs" />
   </ItemGroup>
 
   <ItemGroup>

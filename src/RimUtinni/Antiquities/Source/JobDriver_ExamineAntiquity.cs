@@ -55,7 +55,8 @@ namespace RimMandrake.Utinni.Antiquities
             // skill 0 -> 1.5x duration, skill 20 -> 0.5x, linear between.
             float skillAvg = pawn.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf_Antiquities.RUT_ExamineAntiquities) ?? 0f;
             float skillFactor = Mathf.Lerp(1.5f, 0.5f, Mathf.Clamp01(skillAvg / 20f));
-            int duration = Mathf.RoundToInt((AntiquityUtility.LanguageDone ? HalfDayTicks : FullDayTicks) * skillFactor);
+            int duration = Mathf.RoundToInt((AntiquityUtility.LanguageDone ? HalfDayTicks : FullDayTicks)
+                * skillFactor * AntiquitiesSettings.durationMultiplier);
             Toil examine = Toils_General.Wait(duration, TargetIndex.B)
                 .FailOnDespawnedOrNull(TargetIndex.B)
                 .WithProgressBarToilDelay(TargetIndex.B);
@@ -108,9 +109,10 @@ namespace RimMandrake.Utinni.Antiquities
             float perRead = stage.baseCost / required;
 
             bool keyText = false;
-            if (AntiquityUtility.LanguageDone)
+            if (AntiquitiesSettings.keyTextBonusEnabled && AntiquityUtility.LanguageDone)
             {
                 float chance = Mathf.Min(0.15f + 0.05f * AntiquityUtility.StagesCompletedBeyondLanguage(), 0.5f);
+                chance = Mathf.Clamp01(chance * AntiquitiesSettings.keyTextChanceScale);
                 keyText = Rand.Chance(chance);
             }
             float amount = keyText ? perRead * 2f : perRead;

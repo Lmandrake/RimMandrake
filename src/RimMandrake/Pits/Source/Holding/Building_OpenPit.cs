@@ -235,9 +235,15 @@ namespace RimMandrake.Pits
             {
                 if (p == null || p.Dead || p.Destroyed) continue;
 
-                float fallDamage = Mathf.Max(1f, p.GetStatValue(StatDefOf.Mass) * FallDamagePerMassKg);
-                p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, fallDamage));
-                if (p.Dead || p.Destroyed) continue;
+                // Mod option: PitsSettings.fallDamageEnabled. Off, a capture still
+                // pins/holds the pawn, it just isn't hurt by the fall itself.
+                if (PitsSettings.fallDamageEnabled)
+                {
+                    float fallDamage = Mathf.Max(1f, p.GetStatValue(StatDefOf.Mass)
+                        * FallDamagePerMassKg * PitsSettings.fallDamageMultiplier);
+                    p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, fallDamage));
+                    if (p.Dead || p.Destroyed) continue;
+                }
 
                 HealthUtility.AdjustSeverity(p, RMPits_HediffDefOf.RM_PinnedInPit, 0.1f);
 
@@ -259,7 +265,7 @@ namespace RimMandrake.Pits
             // needs/hediffs/health never advance: exposure never reaches
             // heatstroke, hunger never drops, bleeding never progresses.
             innerContainer.DoTick();
-            if (Sprung && this.IsHashIntervalTick(PitEscapeUtility.StruggleIntervalTicks))
+            if (Sprung && this.IsHashIntervalTick(PitEscapeUtility.StruggleIntervalTicks()))
             {
                 RunStruggleInterval();
             }
@@ -304,6 +310,9 @@ namespace RimMandrake.Pits
 
                 fitting?.OnStruggleInterval(p);
                 if (fitting != null && fitting.BlocksEscape) continue;
+                // Mod option: PitsSettings.escapeEnabled. Off, occupants stay
+                // pinned until manually released; fitting effects above still ran.
+                if (!PitsSettings.escapeEnabled) continue;
 
                 float chance = PitEscapeUtility.EscapeChance(p, DepthTier);
                 if (Rand.Chance(chance))

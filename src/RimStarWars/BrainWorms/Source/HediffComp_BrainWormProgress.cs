@@ -63,7 +63,10 @@ namespace RimMandrake.StarWars.BrainWorms
 
         public override float SeverityChangePerDay()
         {
-            return cold ? Props.severityPerDayWhenCold : Props.severityPerDay;
+            // MOD_OPTIONS_RETROFIT_1: only the warm-side growth rate is tunable; the
+            // cold cure rate (severityPerDayWhenCold) is untouched by any setting.
+            return cold ? Props.severityPerDayWhenCold
+                        : Props.severityPerDay * RSW_BrainWormsSettings.progressionSpeedMultiplier;
         }
 
         public override string CompTipStringExtra =>

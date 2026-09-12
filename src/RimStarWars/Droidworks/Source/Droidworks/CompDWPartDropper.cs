@@ -27,11 +27,15 @@ namespace RimMandrake.StarWars.Droidworks
     /// </summary>
     public class CompDWPartDropper : ThingComp
     {
-        private const float DropChance = 0.6f;
+        /// The shipped default. The live value is
+        /// RSW_DroidworksSettings.partDropChance, which this seeds.
+        public const float DropChance = 0.6f;
 
         public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
         {
             if (prevMap == null) return;
+            // MOD_OPTIONS_RETROFIT_1: off = no salvage parts drop.
+            if (!RSW_DroidworksSettings.partDrop) return;
             Pawn pawn = parent as Pawn;
             if (pawn == null) return;
             DroidworksExtension ext = pawn.def.modExtensions?.OfType<DroidworksExtension>().LastOrDefault();
@@ -40,7 +44,7 @@ namespace RimMandrake.StarWars.Droidworks
             foreach (ThingDef partDef in legalSet)
             {
                 if (partDef == null) continue;
-                if (!Rand.Chance(DropChance)) continue;
+                if (!Rand.Chance(RSW_DroidworksSettings.partDropChance)) continue;
 
                 Thing part = ThingMaker.MakeThing(partDef);
                 CompQuality cq = part.TryGetComp<CompQuality>();

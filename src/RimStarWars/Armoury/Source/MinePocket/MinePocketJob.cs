@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using RimMandrake.StarWars.Armoury;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -19,12 +21,20 @@ public class MinePocketJob : JobDriver
 
     public override bool TryMakePreToilReservations(bool errorOnFailed)
     {
+        // MOD_OPTIONS_RETROFIT_1: refusing the reservation ends the job
+        // before any toil runs — no reservation held, nothing to unwind,
+        // nothing logged. The mine and its def are untouched.
+        if (!RSW_ArmourySettings.minePocketEnabled)
+        {
+            return false;
+        }
         return pawn.Reserve(job.targetA, job, 1, -1, null, errorOnFailed);
     }
 
     protected Toil PrepareToUse()
     {
-        Toil toil = Toils_General.Wait(useDuration, TargetIndex.A)
+        int scaledDuration = Mathf.Max(1, Mathf.RoundToInt(useDuration * RSW_ArmourySettings.minePocketDefuseTime));
+        Toil toil = Toils_General.Wait(scaledDuration, TargetIndex.A)
             .WithProgressBarToilDelay(TargetIndex.A)
             .FailOnDespawnedNullOrForbidden(TargetIndex.A)
             .FailOnCannotTouch(TargetIndex.A, TargetThingA.def.hasInteractionCell ? PathEndMode.InteractionCell : PathEndMode.Touch);

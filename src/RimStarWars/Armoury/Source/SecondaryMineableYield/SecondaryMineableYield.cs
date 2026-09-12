@@ -1,5 +1,6 @@
 using System;
 using HarmonyLib;
+using RimMandrake.StarWars.Armoury;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -24,8 +25,12 @@ public class SecondaryMineableYield
 
     public static void Patch_TrySpawnYield(Mineable __instance, float ___yieldPct, Map map, Pawn pawn)
     {
+        if (!RSW_ArmourySettings.secondaryYieldEnabled)
+        {
+            return;
+        }
         ModExtension_SecondaryMineableYield modExtension = __instance.def.GetModExtension<ModExtension_SecondaryMineableYield>();
-        if (modExtension == null || Rand.Value > modExtension.mineableDropChance)
+        if (modExtension == null || Rand.Value > modExtension.mineableDropChance * RSW_ArmourySettings.secondaryYieldChance)
         {
             return;
         }
@@ -45,7 +50,7 @@ public class SecondaryMineableYield
         {
             return;
         }
-        int count = Mathf.Max(1, chosen.EffectiveMineableYield);
+        int count = Mathf.Max(1, Mathf.RoundToInt(chosen.EffectiveMineableYield * RSW_ArmourySettings.secondaryYieldAmount));
         if (chosen.mineableYieldWasteable)
         {
             count = Mathf.Max(1, GenMath.RoundRandom(count * ___yieldPct));
@@ -63,6 +68,10 @@ public class SecondaryMineableYield
 
     public static void Patch_PreApplyDamage(Mineable __instance, DamageInfo dinfo, bool absorbed)
     {
+        if (!RSW_ArmourySettings.secondaryYieldEnabled)
+        {
+            return;
+        }
         if (!absorbed && __instance.def.building.mineableThing == null && dinfo.Def == DamageDefOf.Mining && dinfo.Instigator != null && dinfo.Instigator is Pawn instigator)
         {
             ModExtension_SecondaryMineableYield modExtension = __instance.def.GetModExtension<ModExtension_SecondaryMineableYield>();

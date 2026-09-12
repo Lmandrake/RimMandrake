@@ -79,6 +79,10 @@ namespace RimMandrake.EnvironmentalHazards
         // Public so a quicktest can force one deterministic sweep.
         public void Sweep(Map map, ArmLatentHazardExtension ext)
         {
+            if (!RM_EnvironmentalHazardsSettings.latentHazardArmingEnabled)
+            {
+                return; // mod option: latent hazard arming disabled
+            }
             if (map == null || ext == null || ext.hediffToApply == null)
             {
                 return;

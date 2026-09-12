@@ -30,7 +30,10 @@ namespace RimMandrake.StarWars.Droidworks
         public override void Notify_PawnPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
         {
             if (totalDamageDealt <= 0f) return;
-            float shearChance = 1f - Mathf.Pow(1f - Props.shearChancePerDamage, totalDamageDealt);
+            // MOD_OPTIONS_RETROFIT_1: off = a bolt only ever comes off deliberately.
+            if (!RSW_DroidworksSettings.boltShear) return;
+            float perDamage = Mathf.Clamp01(Props.shearChancePerDamage * RSW_DroidworksSettings.boltShearChance);
+            float shearChance = 1f - Mathf.Pow(1f - perDamage, totalDamageDealt);
             if (!Rand.Chance(shearChance)) return;
 
             Pawn p = Pawn;

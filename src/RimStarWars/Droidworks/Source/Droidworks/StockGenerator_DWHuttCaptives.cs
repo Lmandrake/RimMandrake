@@ -34,7 +34,10 @@ namespace RimMandrake.StarWars.Droidworks
         {
             foreach (Thing t in base.GenerateThings(forTile, faction))
             {
-                if (t is Pawn pawn)
+                // MOD_OPTIONS_RETROFIT_1: off = the Hutt trader still stocks
+                // droids (that is StockGenerator_DWDroids's inherited half), they
+                // just arrive unbolted and resentment-free, like ordinary stock.
+                if (t is Pawn pawn && RSW_DroidworksSettings.huttCaptivesBolted)
                 {
                     DroidworksBoltUtility.ApplyCaptiveBolt(pawn, resentmentSeverityRange);
                 }

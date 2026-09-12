@@ -44,6 +44,7 @@
     <Compile Include="AntiquityUtility.cs" />
     <Compile Include="WorkGiver_ExamineAntiquity.cs" />
     <Compile Include="JobDriver_ExamineAntiquity.cs" />
+    <Compile Include="AntiquitiesMod.cs" />
   </ItemGroup>
 
   <ItemGroup>

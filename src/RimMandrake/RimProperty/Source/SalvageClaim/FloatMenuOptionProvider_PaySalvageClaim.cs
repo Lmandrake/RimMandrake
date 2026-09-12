@@ -38,6 +38,8 @@ namespace RimMandrake.SalvageClaim
 
         protected override FloatMenuOption GetSingleOptionFor(Thing clickedThing, FloatMenuContext context)
         {
+            if (!PropertySettings.salvageClaimFeeEnabled) return null;
+
             Pawn actor = context.FirstSelectedPawn;
             if (clickedThing == null || clickedThing == actor) return null;
             if (!clickedThing.Spawned) return null;

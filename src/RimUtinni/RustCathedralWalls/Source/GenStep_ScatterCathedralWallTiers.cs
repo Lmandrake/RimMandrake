@@ -18,6 +18,10 @@ namespace RimMandrake.Utinni.RustCathedralWalls
 
 		public override void Generate(Map map, GenStepParams parms)
 		{
+			if (!RustCathedralWallsSettings.wallTiersEnabled)
+			{
+				return;
+			}
 			if (map.Biome == null || map.Biome.defName != CathedralBiomeDefName)
 			{
 				return;

@@ -34,10 +34,20 @@
 
     Every reference is Private=false. Nothing but our own DLL may land next to
     the mod: shipping a copy of Vehicles.dll or 0Harmony.dll would give the game
-    two of each and Harmony in particular must come from brrainz.harmony. This
-    project does NOT reference JawaIonWeapons.dll (the sibling net472 output) -
-    VehicleIonPatches.cs reads IonDamageDef's empAmountDroid field by reflection
-    instead, deliberately, so the two assemblies build in either order.
+    two of each and Harmony in particular must come from brrainz.harmony.
+
+    MOD_OPTIONS_RETROFIT_1 (2026-09-11): this project now ProjectReferences the
+    sibling net472 JawaIonWeapons.csproj so VehicleIonPatches.cs can read the one
+    shared RSW_JawaIonWeaponsSettings (its own master toggle and strength
+    multiplier) rather than keep a second, divergent copy of those fields.
+    ⚠️ Private=false on that ProjectReference is load-bearing: without it MSBuild
+    copies JawaIonWeapons.dll into ../../VehicleTier/Assemblies/ and the mod ships
+    TWO copies of the same assembly in two folders the game loads. It is
+    compile-time only; the DLL RimWorld loads is the single one in
+    ../../Assemblies/, which LoadFolders.xml lists unconditionally and therefore
+    always before the VF-gated VehicleTier folder.
+    IonDamageDef's own empAmountDroid is STILL read by reflection in
+    VehicleIonPatches.cs - that is a per-DamageDef-instance read and unchanged.
   -->
 
   <PropertyGroup>
@@ -105,6 +115,14 @@
   <ItemGroup>
     <Compile Remove="..\**\*.cs" />
     <Compile Include="*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Compile-time only; see the header. Never copied next to the mod. -->
+    <ProjectReference Include="..\JawaIonWeapons.csproj">
+      <Private>false</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>

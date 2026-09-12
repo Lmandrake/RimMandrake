@@ -87,8 +87,15 @@ namespace RimMandrake.Property
 
         private static void RollPerceptionAndPropagate(TakingEvent evt)
         {
+            // MOD_OPTIONS_RETROFIT_1: master switch for the "getting caught"
+            // half of the fabric. Claim resolution above still runs (other
+            // mods, e.g. RaidRedesigner's Patch_CaravanRobbed, postfix Fire()
+            // and read its resolved TakingEvent) — this only gates whether
+            // anyone ever witnesses or reports it.
+            if (!PropertySettings.perceptionEnabled) return;
+
             Pawn actorPawn = evt.Actor.Kind == ClaimantKind.Pawn ? evt.Actor.Pawn : null;
-            List<Pawn> witnesses = PerceptionUtility.RollWitnesses(evt.Thing, actorPawn);
+            List<Pawn> witnesses = PerceptionUtility.RollWitnesses(evt.Thing, actorPawn, PropertySettings.witnessRadius);
             evt.Witnesses = witnesses;
             if (witnesses.Count == 0) return; // nobody saw it - costs nothing, spec item 6
 

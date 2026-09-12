@@ -80,6 +80,11 @@
   <ItemGroup>
     <!-- The REAL production source file, compiled in directly. -->
     <Compile Include="..\GameComponent_ColonyVisibility.cs" />
+    <!-- MOD_OPTIONS_RETROFIT_1: GameComponent_ColonyVisibility now reads
+         RM_VisibilitySettings (the raid-scaling gate) via RM_VisibilityMod.cs,
+         one directory up — must be compiled in here too or this offline
+         harness fails CS0103 on that type. -->
+    <Compile Include="..\RM_VisibilityMod.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

@@ -40,6 +40,7 @@
 
   <ItemGroup>
     <Compile Include="WeatherSuiteHook.cs" />
+    <Compile Include="WeatherSuiteSettings.cs" />
   </ItemGroup>
 
   <ItemGroup>

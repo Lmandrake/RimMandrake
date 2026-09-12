@@ -16,13 +16,15 @@ namespace RimMandrake.Aftermath
         // §2.2: "No stacking beyond one queued aftermath per faction and two
         // total. A battle that would queue a third is simply remembered by
         // the roster instead [not this mod's concern - it just declines]."
-        private const int MaxPerFaction = 1;
-        private const int MaxTotal = 2;
+        // MOD_OPTIONS_RETROFIT_1: player-tunable via RM_AftermathSettings,
+        // defaults below match the original shipped consts (1, 2).
+        private static int MaxPerFaction => RM_AftermathSettings.maxQueuedPerFaction;
+        private static int MaxTotal => RM_AftermathSettings.maxQueuedTotal;
 
         // Rule 6's own window ("a mental break WITHIN 2 DAYS after a
-        // battle"). GenDate.TicksPerDay, same constant TryQueue already uses
-        // for delayDays -> delayTicks below.
-        private const int MentalBreakNearBattleWindowTicks = 2 * GenDate.TicksPerDay;
+        // battle"). MOD_OPTIONS_RETROFIT_1: tunable, default 2 days.
+        private static int MentalBreakNearBattleWindowTicks =>
+            (int)(RM_AftermathSettings.mentalBreakWindowDays * GenDate.TicksPerDay);
 
         // Rule 4's own poll cadence - same 5000-tick (~2 in-game hour)
         // interval GameComponentTick already housekeeps `queued` on, so one
@@ -111,6 +113,7 @@ namespace RimMandrake.Aftermath
         // (raidsForbidden)").
         public bool OnPrisonerHeldTooLong(Pawn prisoner, float heldDays)
         {
+            if (!RM_AftermathSettings.aftermathEnabled) return false;
             Faction home = prisoner?.HomeFaction;
             if (home == null) return false;
             if (!home.HostileTo(Faction.OfPlayer)) return false;
@@ -132,7 +135,11 @@ namespace RimMandrake.Aftermath
 
         public void OnBattleClosed(BattleRecord record)
         {
+            // lastClosedByMap is kept even when the master switch is off —
+            // rule 6 (mental break near battle) reads it, and turning the
+            // switch back on mid-save should not require a fresh battle.
             if (record?.Map != null) lastClosedByMap[record.Map] = record;
+            if (!RM_AftermathSettings.aftermathEnabled) return;
             if (record?.RaidFaction == null) return;
 
             int survivors = record.CountSurvivedAndExited();
@@ -156,6 +163,7 @@ namespace RimMandrake.Aftermath
         // most recently, rather than duplicating that logic.
         public void OnMentalBreakNearBattle(Pawn pawn)
         {
+            if (!RM_AftermathSettings.aftermathEnabled) return;
             Map map = pawn?.Map;
             if (map == null) return;
             if (!lastClosedByMap.TryGetValue(map, out BattleRecord record) || record == null) return;

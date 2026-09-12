@@ -62,6 +62,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="RSW_ArmourySettings.cs" />
     <Compile Include="CompExtraSounds\CompExtraSounds.cs" />
     <Compile Include="CompExtraSounds\CompProperties_ExtraSounds.cs" />
     <Compile Include="CompExtraSounds\DefModExtension_ExtraSounds.cs" />

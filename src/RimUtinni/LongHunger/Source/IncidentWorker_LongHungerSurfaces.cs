@@ -13,6 +13,10 @@ namespace LongHunger
     {
         protected override bool CanFireNowSub(IncidentParms parms)
         {
+            if (!LongHungerSettings.encounterEnabled)
+            {
+                return false;
+            }
             Map map = (Map)parms.target;
             return map != null
                 && RCellFinder.TryFindRandomCellNearTheCenterOfTheMapWith(
@@ -23,6 +27,10 @@ namespace LongHunger
 
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
+            if (!LongHungerSettings.encounterEnabled)
+            {
+                return false;
+            }
             Map map = (Map)parms.target;
             if (map == null)
             {

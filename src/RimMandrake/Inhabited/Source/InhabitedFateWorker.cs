@@ -28,8 +28,10 @@ namespace RimMandrake.Inhabited
     public static class InhabitedFateWorker
     {
         /// <summary>Fewer than this fraction of the dropped stock still lying
-        /// about reads as theft rather than a resident eating lunch.</summary>
-        private const float RobbedFraction = 0.5f;
+        /// about reads as theft rather than a resident eating lunch.
+        /// MOD_OPTIONS_RETROFIT_1: player-tunable via RM_InhabitedSettings,
+        /// default matches the original shipped const (0.5).</summary>
+        private static float RobbedFraction => RM_InhabitedSettings.robbedFraction;
 
         /// <summary>
         /// Has a cause fired? Returns the translation key naming it, or null.
@@ -37,6 +39,8 @@ namespace RimMandrake.Inhabited
         /// </summary>
         public static string DetectCause(WorldObject_Inhabited place, Map map)
         {
+            // Master fate-detection toggle is gated at the caller
+            // (MapComponent_InhabitedWatch), which is the only caller.
             if (place?.placeDef == null || map == null)
             {
                 return null;

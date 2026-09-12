@@ -55,6 +55,10 @@ namespace RimMandrake.EnvironmentalHazards
 
         private bool Active()
         {
+            if (!RM_EnvironmentalHazardsSettings.areaAttacksEnabled)
+            {
+                return false; // mod option: periodic area attacks disabled
+            }
             Pawn pawn = Pawn;
             if (pawn == null || !pawn.Spawned || pawn.Dead || pawn.Map == null)
             {
@@ -154,7 +158,8 @@ namespace RimMandrake.EnvironmentalHazards
                     continue;
                 }
 
-                float amount = Props.damageAmount * falloff * multiplier;
+                float amount = Props.damageAmount * falloff * multiplier
+                    * Mathf.Max(0f, RM_EnvironmentalHazardsSettings.hazardDamageMultiplier);
                 if (amount <= 0f)
                 {
                     continue;

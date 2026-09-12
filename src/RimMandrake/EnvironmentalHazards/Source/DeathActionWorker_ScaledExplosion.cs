@@ -19,6 +19,10 @@ namespace RimMandrake.EnvironmentalHazards
 
         public override void PawnDied(Corpse corpse, Lord prevLord)
         {
+            if (!RM_EnvironmentalHazardsSettings.scaledExplosionsEnabled)
+            {
+                return; // mod option: scaled death explosions disabled — the pawn just dies
+            }
             DeathActionProperties_ScaledExplosion p = Props;
             if (p == null || p.damageDef == null)
             {
@@ -40,13 +44,19 @@ namespace RimMandrake.EnvironmentalHazards
             IntVec3 center = corpse.Position;
             Map map = corpse.Map;
 
+            // -1 is DoExplosion's own sentinel for "use damageDef.defaultDamage" —
+            // only a real configured amount is scaled by the mod option.
+            int damageAmount = p.damageAmount >= 0
+                ? Mathf.RoundToInt(p.damageAmount * Mathf.Max(0f, RM_EnvironmentalHazardsSettings.hazardDamageMultiplier))
+                : p.damageAmount;
+
             GenExplosion.DoExplosion(
                 center,
                 map,
                 radius,
                 p.damageDef,
                 pawn,
-                p.damageAmount,
+                damageAmount,
                 p.armorPenetration,
                 p.explosionSound,
                 p.weaponForFlash,

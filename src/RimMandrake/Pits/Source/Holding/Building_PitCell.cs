@@ -59,6 +59,11 @@ namespace RimMandrake.Pits
 
         private void ApplyExposure()
         {
+            // Mod option: PitsSettings.pitCellExposureEnabled. Off, a captive's
+            // condition never drifts from gate state at all - no NRE, assignment/
+            // feeding/gate-toggle gizmos all keep working.
+            if (!PitsSettings.pitCellExposureEnabled) return;
+
             // RM_PitCell_Double holds up to 2 (MaxOccupants) - HeldPawn only
             // ever returns innerContainer[0], which left a second occupant
             // exempt from exposure entirely while the gate was open.
@@ -72,12 +77,14 @@ namespace RimMandrake.Pits
                     // down. Placeholder severity rate - the spec names the
                     // direction and the theology feed (campaign layer), not a
                     // tuned number.
-                    HealthUtility.AdjustSeverity(held, RMPits_HediffDefOf.RM_PitExposure, 0.01f);
+                    HealthUtility.AdjustSeverity(held, RMPits_HediffDefOf.RM_PitExposure,
+                        0.01f * PitsSettings.pitCellExposureMultiplier);
                 }
                 else
                 {
                     // The cover is the mercy: exposure recedes while closed.
-                    HealthUtility.AdjustSeverity(held, RMPits_HediffDefOf.RM_PitExposure, -0.02f);
+                    HealthUtility.AdjustSeverity(held, RMPits_HediffDefOf.RM_PitExposure,
+                        -0.02f * PitsSettings.pitCellExposureMultiplier);
                 }
             }
         }

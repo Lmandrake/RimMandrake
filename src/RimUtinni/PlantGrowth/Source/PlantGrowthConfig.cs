@@ -92,13 +92,18 @@ namespace RimMandrake.Utinni.PlantGrowth
             PlantGrowthSettingsDef settings = PlantGrowthSettingsDef.Current;
             if (settings != null)
             {
-                DefaultMultiplier = settings.defaultMultiplier;
-                TreeMultiplier = settings.treeMultiplier;
-                TerminatorMultiplier = settings.terminatorMultiplier;
-                MinGrowDaysToBoost = settings.minGrowDaysToBoost;
                 if (settings.terminatorBiomes != null) terminatorNames = settings.terminatorBiomes;
                 if (settings.exemptPlants != null) exemptNames = settings.exemptPlants;
             }
+
+            // MOD_OPTIONS_RETROFIT_1: the four numeric bands are owned by the
+            // in-game Mod Settings screen (PlantGrowthSettings), not the XML def
+            // above — see PlantGrowthMod.cs for why. Defaults match the shipped
+            // def's numbers exactly.
+            DefaultMultiplier = PlantGrowthSettings.defaultMultiplier;
+            TreeMultiplier = PlantGrowthSettings.treeMultiplier;
+            TerminatorMultiplier = PlantGrowthSettings.terminatorMultiplier;
+            MinGrowDaysToBoost = PlantGrowthSettings.minGrowDaysToBoost;
 
             var exempt = new HashSet<ThingDef>();
             var multipliers = new Dictionary<ThingDef, float>();

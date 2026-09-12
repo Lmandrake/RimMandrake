@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <Compile Include="RustChromeColors.cs" />
+    <Compile Include="RustChromeMod.cs" />
   </ItemGroup>
 
   <ItemGroup>

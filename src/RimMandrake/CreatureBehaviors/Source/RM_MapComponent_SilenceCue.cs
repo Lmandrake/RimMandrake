@@ -53,6 +53,10 @@ namespace RimMandrake.CreatureBehaviors
 
 		private void ScanForTrigger()
 		{
+			if (!RM_CreatureBehaviorsSettings.silenceCueEnabled)
+			{
+				return; // mod option: predator-hunt silence cue disabled
+			}
 			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
 			for (int i = 0; i < pawns.Count; i++)
 			{

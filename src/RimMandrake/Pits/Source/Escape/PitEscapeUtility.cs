@@ -21,7 +21,13 @@ namespace RimMandrake.Pits
     // pit is yours").
     public static class PitEscapeUtility
     {
-        public const int StruggleIntervalTicks = 2500; // one in-game hour
+        // Was a flat const 2500 (one in-game hour). Now the mod-settings slider
+        // PitsSettings.struggleIntervalHours, default 1f, reproduces the same
+        // 2500-tick cadence.
+        public static int StruggleIntervalTicks()
+        {
+            return Mathf.Max(1, Mathf.RoundToInt(PitsSettings.struggleIntervalHours * GenDate.TicksPerHour));
+        }
 
         public static float EscapeChance(Pawn pawn, PitDepthTier depthTier)
         {
@@ -36,6 +42,7 @@ namespace RimMandrake.Pits
                 : 1f;
 
             float chance = 0.05f + 0.55f * bodyFactor + 0.25f * healthPct + 0.15f * manipulation;
+            chance *= PitsSettings.escapeChanceMultiplier; // mod option, default 1x
             return Mathf.Clamp(chance, 0.02f, 0.95f);
         }
 

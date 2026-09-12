@@ -147,7 +147,7 @@ namespace RimMandrake.Utinni.FungalSoilTrade
 			}
 			if (map.IsHashIntervalTick(DecayIntervalTicks))
 			{
-				distress -= DistressDecayPerInterval;
+				distress -= DistressDecayPerInterval * FungalSoilTradeSettings.distressDecayRateMultiplier;
 				if (distress < 0f)
 				{
 					distress = 0f;
@@ -163,11 +163,15 @@ namespace RimMandrake.Utinni.FungalSoilTrade
 
 		public void Notify_SoilDug(IntVec3 cell, Pawn digger)
 		{
+			if (!FungalSoilTradeSettings.distressEnabled)
+			{
+				return;
+			}
 			if (map?.Biome == null || map.Biome.defName != FungalSoilDefOf.RotBiomeDefName)
 			{
 				return;
 			}
-			distress += DistressPerDig;
+			distress += DistressPerDig * FungalSoilTradeSettings.distressBuildRateMultiplier;
 			if (distress < FirstResponseThreshold)
 			{
 				return;

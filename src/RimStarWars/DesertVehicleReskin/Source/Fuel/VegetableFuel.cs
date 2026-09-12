@@ -48,6 +48,11 @@ namespace RimMandrake.DesertVehicleReskin
         /// carry Plant, so the vegetable rule rejects it - and Kibble is what
         /// DogSled declares. Accepting the declared type unconditionally is what
         /// guarantees nothing that fuels a vehicle today stops fuelling it.
+        ///
+        /// MOD_OPTIONS_RETROFIT_1: the widened half is gated on
+        /// RSW_DesertVehicleReskinSettings.allowAnyVegetableFuel. Off, this
+        /// collapses to declaredFuelType-only - the donor's original
+        /// single-ThingDef fuel acceptance, restored exactly.
         /// </summary>
         public static bool Accepts(ThingDef declaredFuelType, ThingDef candidate)
         {
@@ -58,6 +63,10 @@ namespace RimMandrake.DesertVehicleReskin
             if (declaredFuelType != null && candidate == declaredFuelType)
             {
                 return true;
+            }
+            if (!RSW_DesertVehicleReskinSettings.allowAnyVegetableFuel)
+            {
+                return false;
             }
             return IsVegetableFood(candidate);
         }

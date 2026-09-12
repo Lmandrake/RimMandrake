@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.StarWars.Livestock
@@ -80,6 +81,8 @@ namespace RimMandrake.StarWars.Livestock
         // hook on Pawn itself - only on the eaten Thing's own comps.
         public void RegisterDose()
         {
+            if (!RSW_LivestockSettings.kilnBellyEnabled) return;
+
             int now = Find.TickManager.TicksGame;
 
             // Kiln is between batches (post-fire cooldown/reheat) - this
@@ -108,6 +111,8 @@ namespace RimMandrake.StarWars.Livestock
 
         public override void CompTickRare()
         {
+            if (!RSW_LivestockSettings.kilnBellyEnabled) return;
+
             // "The kiln cools if underfed for more than a day and must be
             // reheated from scratch" - partial progress with no dose in
             // over a day is lost silently (no product, no message; the
@@ -134,7 +139,8 @@ namespace RimMandrake.StarWars.Livestock
             }
 
             doseTicks.Clear();
-            nextFireReadyTick = now + Props.fireCooldownTicks;
+            int cooldown = Mathf.RoundToInt(Props.fireCooldownTicks * RSW_LivestockSettings.kilnCooldownMultiplier);
+            nextFireReadyTick = now + cooldown;
         }
     }
 

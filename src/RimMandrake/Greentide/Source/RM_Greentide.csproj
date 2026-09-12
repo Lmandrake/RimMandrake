@@ -48,6 +48,8 @@
     <Compile Include="RM_JobDriver_FreeMired.cs" />
     <Compile Include="RM_WorkGiver_FreeMired.cs" />
     <Compile Include="RM_BiomeWorker_Greentide.cs" />
+    <Compile Include="RM_GreentideMod.cs" />
+    <Compile Include="RM_MapComponent_CrossBiomeChurnmud.cs" />
   </ItemGroup>
 
   <ItemGroup>

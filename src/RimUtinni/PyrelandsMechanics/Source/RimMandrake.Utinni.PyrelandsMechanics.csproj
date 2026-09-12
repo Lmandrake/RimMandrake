@@ -51,6 +51,7 @@
     <Compile Include="CompFurnaceBedIgnition.cs" />
     <Compile Include="IncidentWorker_FlameHarvest.cs" />
     <Compile Include="IncidentWorker_FireRaid.cs" />
+    <Compile Include="PyrelandsMechanicsMod.cs" />
   </ItemGroup>
 
   <ItemGroup>

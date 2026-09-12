@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.Utinni.LanternDeeps
@@ -27,11 +28,15 @@ namespace RimMandrake.Utinni.LanternDeeps
 
 		public override void Generate(Map map, GenStepParams parms)
 		{
+			if (!LanternDeepsSettings.emergenceEnabled)
+			{
+				return;
+			}
 			if (map.Biome == null || !AllowedBiomeDefNames.Contains(map.Biome.defName))
 			{
 				return;
 			}
-			if (!Rand.Chance(chancePerMap))
+			if (!Rand.Chance(Mathf.Clamp01(chancePerMap * LanternDeepsSettings.emergenceChanceMultiplier)))
 			{
 				return;
 			}

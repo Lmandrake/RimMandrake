@@ -27,6 +27,8 @@ namespace RimMandrake.Utinni.ScavengerEvents
 
         protected override bool CanFireNowSub(IncidentParms parms)
         {
+            if (!ScavengerEventsSettings.migrationEnabled)
+                return false;
             var map = (Map)parms.target;
             return map.Biome.AllWildAnimals.Any();
         }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using RimMandrake.StarWars.Armoury;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -303,7 +304,14 @@ public class Building_KoltoTank : Building_Casket, ISuspendableThingHolder, IThi
                 }
                 break;
             case KoltoTankState.Full:
-                if (Find.TickManager.TicksGame % ticksBetweenHealing == 0 && InnerPawn != null)
+                // MOD_OPTIONS_RETROFIT_1: only the HEALING is gated. The tank
+                // still accepts, holds, draws and ejects its occupant with the
+                // mechanic off, so no def and no in-progress job is orphaned.
+                // The interval is recomputed here rather than in SpawnSetup so
+                // a slider change takes effect without a rebuild or reload.
+                if (RSW_ArmourySettings.koltoHealEnabled
+                    && Find.TickManager.TicksGame % RSW_ArmourySettings.KoltoHealInterval(ticksBetweenHealing) == 0
+                    && InnerPawn != null)
                 {
                     KoltoTankComp.HealPawnInjuries(InnerPawn);
                 }

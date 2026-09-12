@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.EnvironmentalHazards
@@ -81,6 +82,10 @@ namespace RimMandrake.EnvironmentalHazards
         // without stepping ticks — the RunScan precedent in this codebase.
         public void ApplyEffects(GasDamageExtension ext)
         {
+            if (!RM_EnvironmentalHazardsSettings.gasEffectsEnabled)
+            {
+                return; // mod option: gas effects disabled
+            }
             Map map = Map;
             if (map == null || ext == null)
             {
@@ -126,9 +131,11 @@ namespace RimMandrake.EnvironmentalHazards
 
         private void AffectPawn(Pawn pawn, GasDamageExtension ext)
         {
+            float mult = Mathf.Max(0f, RM_EnvironmentalHazardsSettings.hazardDamageMultiplier);
+
             if (ext.damageDef != null && ext.damageAmount > 0f)
             {
-                pawn.TakeDamage(new DamageInfo(ext.damageDef, ext.damageAmount, ext.armorPenetration, -1f, this));
+                pawn.TakeDamage(new DamageInfo(ext.damageDef, ext.damageAmount * mult, ext.armorPenetration, -1f, this));
             }
 
             if (ext.hediffToApply != null && ext.hediffSeverityPerTick != 0f && !pawn.Dead)
@@ -138,7 +145,7 @@ namespace RimMandrake.EnvironmentalHazards
                 // own max severity. Immunity to the hediff (a gas mask's
                 // ToxicResistance, a gene, an immunity hediff) is therefore
                 // handled by the hediff's own def, not re-derived here.
-                HealthUtility.AdjustSeverity(pawn, ext.hediffToApply, ext.hediffSeverityPerTick);
+                HealthUtility.AdjustSeverity(pawn, ext.hediffToApply, ext.hediffSeverityPerTick * mult);
             }
         }
 

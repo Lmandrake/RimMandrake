@@ -42,8 +42,6 @@ namespace RimMandrake.Graffiti
         //    per-tick goto+paint+pathfind churn for the whole 25000-45000 tick
         //    spree. fullJoyAction=None lets the toil run its full
         //    defaultDuration instead, painting periodically the whole time.
-        private const int PaintIntervalTicks = 250;
-
         protected override System.Collections.Generic.IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedOrNull(MarkCellInd);
@@ -62,7 +60,7 @@ namespace RimMandrake.Graffiti
             {
                 pawn.rotationTracker.FaceCell(job.GetTarget(MarkCellInd).Cell);
                 JoyUtility.JoyTickCheckEnd(pawn, delta, JoyTickFullJoyAction.None);
-                if (pawn.IsHashIntervalTick(PaintIntervalTicks, delta))
+                if (pawn.IsHashIntervalTick(RM_GraffitiSettings.paintIntervalTicks, delta))
                 {
                     IntVec3 cell = job.GetTarget(MarkCellInd).Cell;
                     if (cell.IsValid && Map != null)

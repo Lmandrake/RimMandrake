@@ -66,6 +66,10 @@ namespace RimMandrake.EnvironmentalHazards
 
         public void ApplyEffects(GasTransmuteExtension ext)
         {
+            if (!RM_EnvironmentalHazardsSettings.gasEffectsEnabled)
+            {
+                return; // mod option: gas effects disabled
+            }
             Map map = Map;
             if (map == null || ext == null)
             {

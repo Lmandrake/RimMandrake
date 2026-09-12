@@ -47,6 +47,10 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         {
             base.CompTickInterval(delta);
 
+            if (!PyrelandsMechanicsSettings.furnaceBedIgnitionEnabled)
+            {
+                return;
+            }
             if (!(parent is Pawn beast) || !beast.Spawned || beast.Dead)
             {
                 return;
@@ -70,7 +74,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             {
                 return;
             }
-            if (!Rand.Chance(PyrelandsTuning.FurnaceBedIgnitionChance))
+            if (!Rand.Chance(PyrelandsMechanicsSettings.furnaceBedIgnitionChance))
             {
                 return;
             }

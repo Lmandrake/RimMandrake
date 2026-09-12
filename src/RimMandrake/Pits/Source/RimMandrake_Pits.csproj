@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <Compile Include="RimMandrakePits_DefOf.cs" />
+    <Compile Include="PitsMod.cs" />
     <Compile Include="TerrainMimic\Building_TerrainMimicCover.cs" />
     <Compile Include="Trigger\CompProperties_PitCoverTrigger.cs" />
     <Compile Include="Trigger\CompPitCoverTrigger.cs" />

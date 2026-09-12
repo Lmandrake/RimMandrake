@@ -30,6 +30,11 @@ namespace RimMandrake.Utinni.ScavengerEvents
         private const float MinLootValue = 20f;
         private const float MaxLootValue = 200f;
 
+        protected override bool CanFireNowSub(IncidentParms parms)
+        {
+            return ScavengerEventsSettings.shipBreakEnabled && base.CanFireNowSub(parms);
+        }
+
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
             var map = (Map)parms.target;
@@ -84,7 +89,7 @@ namespace RimMandrake.Utinni.ScavengerEvents
         private static List<Thing> BuildLoot(ThingDef lootDef)
         {
             var loot = new List<Thing>();
-            float budget = Rand.Range(MinBudget, MaxBudget);
+            float budget = Rand.Range(MinBudget, MaxBudget) * ScavengerEventsSettings.shipBreakLootMultiplier;
             float unitValue = lootDef.BaseMarketValue;
 
             while (loot.Count < MaxLootStacks && budget > unitValue)

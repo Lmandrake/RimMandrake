@@ -64,7 +64,8 @@ namespace RimMandrake.StarWars.Droidworks
                 // consumed as a raw fraction-of-bar-per-hour - a "rate" of 25 refilled
                 // an empty droid in ~100 ticks. See CompProperties_DWCharger's own
                 // header for the full writeup.
-                need.CurLevel += comp.Props.chargePercentPerHour / 100f / GenDate.TicksPerHour;
+                need.CurLevel += comp.Props.chargePercentPerHour * RSW_DroidworksSettings.chargeRate
+                    / 100f / GenDate.TicksPerHour;
                 if (need.CurLevel >= 1f) ReadyForNextToil();
             };
             yield return charge;

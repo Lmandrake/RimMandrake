@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="GenStep_ScatterFungalGround.cs" />
     <Compile Include="MapComponent_RotFungalDistress.cs" />
+    <Compile Include="FungalSoilTradeOptions.cs" />
   </ItemGroup>
 
   <ItemGroup>

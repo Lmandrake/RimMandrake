@@ -84,6 +84,10 @@ namespace RimMandrake.EnvironmentalHazards
         // without waiting out damageIntervalTicks.
         public void DoPawnEffects(Map map, EnvironmentalWeatherExtension ext)
         {
+            if (!RM_EnvironmentalHazardsSettings.environmentalDamageEnabled)
+            {
+                return; // mod option: environmental weather damage disabled
+            }
             if (map == null || ext == null)
             {
                 return;
@@ -106,14 +110,16 @@ namespace RimMandrake.EnvironmentalHazards
                     continue;
                 }
 
+                float mult = Mathf.Max(0f, RM_EnvironmentalHazardsSettings.hazardDamageMultiplier);
+
                 if (ext.damageDef != null && ext.damageAmount > 0f)
                 {
-                    pawn.TakeDamage(new DamageInfo(ext.damageDef, ext.damageAmount, ext.armorPenetration, -1f));
+                    pawn.TakeDamage(new DamageInfo(ext.damageDef, ext.damageAmount * mult, ext.armorPenetration, -1f));
                 }
 
                 if (ext.hediffToApply != null && ext.hediffSeverityPerInterval != 0f && !pawn.Dead)
                 {
-                    HealthUtility.AdjustSeverity(pawn, ext.hediffToApply, ext.hediffSeverityPerInterval);
+                    HealthUtility.AdjustSeverity(pawn, ext.hediffToApply, ext.hediffSeverityPerInterval * mult);
                 }
             }
         }
@@ -121,6 +127,11 @@ namespace RimMandrake.EnvironmentalHazards
         public override void DoCellSteadyEffects(IntVec3 c, Map map)
         {
             base.DoCellSteadyEffects(c, map);
+
+            if (!RM_EnvironmentalHazardsSettings.environmentalDamageEnabled)
+            {
+                return; // mod option: environmental weather damage disabled
+            }
 
             EnvironmentalWeatherExtension ext = ExtensionInt;
             if (ext == null)

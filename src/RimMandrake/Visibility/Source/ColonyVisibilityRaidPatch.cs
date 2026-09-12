@@ -239,6 +239,11 @@ namespace RimMandrake.Visibility
         /// </summary>
         public static void Prefix_ScaleHostilePoints(IncidentWorker __instance, IncidentParms parms)
         {
+            // MOD_OPTIONS_RETROFIT_1: master off switch. The dial itself
+            // (GameComponent_ColonyVisibility) keeps tracking either way -
+            // only the raid-point EFFECT is gated here, so turning this off
+            // mid-save cannot orphan any state.
+            if (!RM_VisibilitySettings.enableRaidScaling) return;
             if (parms == null || parms.points <= 0f) return;
             if (!(__instance is IncidentWorker_RaidEnemy
                   || __instance is IncidentWorker_Infestation
@@ -252,7 +257,7 @@ namespace RimMandrake.Visibility
             float visibility = component?.shipVisibility ?? 10f;
             float shkaarMultiplier = component?.ShkaarEscalationMultiplier ?? 1f;
 
-            float factor = GameComponent_ColonyVisibility.ThreatFactor(visibility) * shkaarMultiplier;
+            float factor = RM_VisibilitySettings.ScaledThreatFactor(visibility) * shkaarMultiplier;
             float before = parms.points;
             parms.points = Mathf.Clamp(parms.points * factor, StorytellerUtility.GlobalPointsMin(), 10000f);
 

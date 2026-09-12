@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.Utinni.ShipMemory
@@ -49,6 +50,7 @@ namespace RimMandrake.Utinni.ShipMemory
 
         public override void GameComponentTick()
         {
+            if (!ShipMemorySettings.shipMemoryEnabled) return;
             if (!ModsConfig.AnomalyActive) return;
             if (Find.TickManager.TicksGame % CheckIntervalTicks != 0) return;
             if (!Find.HiddenItemsManager.Hidden(Gate)) return;
@@ -66,7 +68,7 @@ namespace RimMandrake.Utinni.ShipMemory
                     return;
                 }
 
-                if (map.resourceCounter.GetCount(ThingDefOf.Bioferrite) >= BioferriteThreshold)
+                if (map.resourceCounter.GetCount(ThingDefOf.Bioferrite) >= Mathf.RoundToInt(ShipMemorySettings.bioferriteThreshold))
                 {
                     Thing stack = map.listerThings.ThingsOfDef(ThingDefOf.Bioferrite).FirstOrDefault();
                     Reveal(stack, assailant: false);
@@ -80,6 +82,7 @@ namespace RimMandrake.Utinni.ShipMemory
         // equality, per spec §3).
         public void Notify_SignalReceived(Signal signal)
         {
+            if (!ShipMemorySettings.shipMemoryEnabled) return;
             if (!ModsConfig.AnomalyActive) return;
             if (!Find.HiddenItemsManager.Hidden(Gate)) return;
             if (signal.tag != null && signal.tag.EndsWith("RUT_ShipMemory_Containment"))

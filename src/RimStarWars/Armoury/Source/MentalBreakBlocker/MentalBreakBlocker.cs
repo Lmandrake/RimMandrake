@@ -1,4 +1,5 @@
 using HarmonyLib;
+using RimMandrake.StarWars.Armoury;
 using Verse;
 using Verse.AI;
 
@@ -18,7 +19,9 @@ public class MentalBreakBlocker
 
     public static bool Patch_TryStartMentalState(ref bool __result, Pawn ___pawn, MentalStateDef stateDef, bool causedByMood, bool causedByDamage, bool causedByPsycast)
     {
-        if (___pawn == null)
+        // MOD_OPTIONS_RETROFIT_1: returning true runs the vanilla method
+        // untouched — the exact no-op this prefix needs when it is off.
+        if (!RSW_ArmourySettings.mentalBreakBlockerEnabled || ___pawn == null)
         {
             return true;
         }

@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="QuestNode_DroidRepairJob.cs" />
     <Compile Include="QuestPart_DroidRepairJobOutcome.cs" />
+    <Compile Include="DroidRepairJobsMod.cs" />
   </ItemGroup>
 
   <ItemGroup>

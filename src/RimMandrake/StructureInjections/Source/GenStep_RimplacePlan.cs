@@ -42,6 +42,11 @@ namespace RimMandrake.StructureInjections
 
         public override void Generate(Map map, GenStepParams parms)
         {
+            // MOD_OPTIONS_RETROFIT_1: master off switch (worldgen-affecting
+            // only - a map that already generated with a plan applied is
+            // never touched by this).
+            if (!RM_StructureInjectionsSettings.enabled) return;
+
             if (string.IsNullOrEmpty(planFile))
             {
                 Log.Error("[RimMandrake.StructureInjections] GenStep_RimplacePlan on " +

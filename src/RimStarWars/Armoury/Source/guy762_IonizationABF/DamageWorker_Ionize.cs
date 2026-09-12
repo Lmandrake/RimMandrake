@@ -1,5 +1,6 @@
 using ArtificialBeings;
 using guy762_Ionization;
+using RimMandrake.StarWars.Armoury;
 using RimWorld;
 using Verse;
 
@@ -26,7 +27,9 @@ public class DamageWorker_Ionize : DamageWorker_AddInjury
     {
         HediffDef hediffToAdd = null;
         ModExtension_HediffGiver modExtension = dinfo.Def.GetModExtension<ModExtension_HediffGiver>();
-        if (modExtension != null)
+        // MOD_OPTIONS_RETROFIT_1: leaving hediffToAdd null skips the hediff
+        // and the stun below; the ordinary injury still applies.
+        if (modExtension != null && RSW_ArmourySettings.ionDamageEnabled)
         {
             hediffToAdd = modExtension.hediffToAdd;
         }
@@ -36,7 +39,7 @@ public class DamageWorker_Ionize : DamageWorker_AddInjury
         if (thing is Pawn pawn && hediffToAdd != null &&
             (pawn.RaceProps.IsMechanoid || ABF_Utils.IsArtificial(pawn)))
         {
-            float severity = modExtension.severityFixed;
+            float severity = modExtension.severityFixed * RSW_ArmourySettings.ionSeverity;
             if (modExtension.hediffResistanceStat != null)
             {
                 float statValue = pawn.GetStatValue(modExtension.hediffResistanceStat);
@@ -89,7 +92,9 @@ public class DamageWorker_AllDroids : DamageWorker_AddInjury
     {
         HediffDef hediffToAdd = null;
         ModExtension_HediffGiver modExtension = dinfo.Def.GetModExtension<ModExtension_HediffGiver>();
-        if (modExtension != null)
+        // MOD_OPTIONS_RETROFIT_1: leaving hediffToAdd null skips the hediff
+        // and the stun below; the ordinary injury still applies.
+        if (modExtension != null && RSW_ArmourySettings.ionDamageEnabled)
         {
             hediffToAdd = modExtension.hediffToAdd;
         }
@@ -99,7 +104,7 @@ public class DamageWorker_AllDroids : DamageWorker_AddInjury
         if (thing is Pawn pawn && hediffToAdd != null &&
             (pawn.RaceProps.IsMechanoid || ABF_Utils.IsArtificial(pawn)))
         {
-            float severity = modExtension.severityFixed;
+            float severity = modExtension.severityFixed * RSW_ArmourySettings.ionSeverity;
             if (modExtension.hediffResistanceStat != null)
             {
                 float statValue = pawn.GetStatValue(modExtension.hediffResistanceStat);

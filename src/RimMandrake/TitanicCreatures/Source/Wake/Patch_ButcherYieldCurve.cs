@@ -16,6 +16,7 @@ namespace RimMandrake.TitanicCreatures
     {
         private static void Prefix(Pawn __instance, ref float efficiency)
         {
+            if (!RM_TitanicCreaturesSettings.yieldCurveEnabled) return;
             TitanicTier tier = TitanicTierUtility.GetTier(__instance);
             if (tier != TitanicTier.T1 && tier != TitanicTier.T2)
             {
