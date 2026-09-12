@@ -180,8 +180,8 @@ shadow-mode first like every blackboard number.
 ## 6. The failure directions
 
 **6.1 Exposure — the Empire learns.** The player (or the player's Heat) drags
-Imperial attention onto the anomaly. Graduated, and asymptotic in v1 (CARD A3
-owns whether it can ever complete):
+Imperial attention onto the anomaly. Graduated, and — RULED (A3, 2026-09-12) —
+it CAN complete: full discovery is a real, losable v1 outcome:
 - Rising exposure pressure = the Cathedral goes *dark*: stage demotion to WARY
   posture regardless of history, boons suspended, hum flattened to the dull
   drone it shows strangers, missions stop. The relationship does not break; it
@@ -240,18 +240,21 @@ origin canon's, and binds at their builds.
   usher. New lore mechanism this creates: the Utinni is a receiver on
   dead Rakatan frequencies (bears on her bond with the player's Rakatan
   gravship; propagate when the arc builds).
-- **A2 — Reveal scope.** §5 discloses aliveness + scale only. Does the owner
-  want more of §GM in the spoken reveal (the Assailants? the decline? the
-  reserves?), or is purpose held back for a later sitting's content?
-- **A3 — Can exposure complete?** Is full Imperial discovery a losable v1 thread
-  (a real catastrophe chain), or asymptotic pressure whose endpoint is narrated
-  never played? Spec assumes asymptotic for v1.
-- **A4 — The survey misdirection beat** (§4): in or out? It is the one place the
-  player actively *does* concealment rather than abstaining; it also adds a
-  quest surface.
-- **A5 — Where does selling the anomaly start?** Curiosities/eel-catch to grey
-  traders = cover; to whom does a sale become exposure — Imperial-aligned
-  traders only, or any high-Heat-period sale? One sentence rules it.
+- **A2 — RULED (2026-09-12): aliveness + scale only.** §5 stands as written;
+  purpose (the Assailants, the decline, the reserves) is held back for a later
+  sitting's content.
+- **A3 — RULED (2026-09-12): exposure CAN complete — a real, losable v1
+  outcome.** Full Imperial discovery is buildable and ends the relationship in
+  the §GM catastrophe register ("a losing battle"). ⇒ SUPERSEDES this spec's
+  own asymptotic-v1 assumption everywhere it appears (§6.1 amended in the same
+  change); the discovery event and its aftermath must be authored as part of
+  the arc's build.
+- **A4 — RULED (2026-09-12): IN.** The survey-misdirection quest beat is built —
+  the one place the player actively practices concealment.
+- **A5 — RULED (2026-09-12): volume, not identity.** Occasional curiosities are
+  safe with any buyer; selling IN BULK is what draws eyes, whoever buys.
+  Exposure pricing keys off a running sales-volume counter, not the buyer's
+  faction.
 
 ---
 
