@@ -7680,3 +7680,5 @@
 {"seat":"FOUNDRY","event":"start","id":"MLIE_FAUNA_ABSORPTION_1","ts":"2026-09-12T07:34:17Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-12T07:39:03Z"}
 {"seat":"BENCH","event":"close","id":"CSV_REGION_SYNC_1","sha":"0b3c6d937","ts":"2026-09-12T07:40:31Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"WORLDMAP_FINAL_REVIEW_1 planet screenshot captures (BENCH night agent #2)","ts":"2026-09-12T07:41:06Z"}
+{"seat":"FOUNDRY","event":"close","id":"LIQUID_TYPES_SPIKES_1","sha":"4457f42c18f343e45d8d1f05fe850bd515a230a9","ts":"2026-09-12T07:50:31Z"}

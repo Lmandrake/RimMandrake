@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T07:24:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T07:50:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -22,15 +22,6 @@ target:   v1
 kind:     task
 summary:  TIBANNASOURCECUT1 — cut the non-beldon tibanna sources
 prose:    infrastructure/state/items/TIBANNA_SOURCE_CUT_1.md
-
-## LIQUID_TYPES_SPIKES_1 Liquid-types spikes A-E now unblocked (cards ruled 2026-09-12: Scald FRESH + rivers flow OUT, coolant Other bucket, films IN v1): run the five spikes per design/RimMandrake/RM_liquid_types_mod.md section 8 — generator, extension+corrosion, body ignition, cold, consumer proof
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/LIQUID_TYPES_SPIKES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LIQUID_TYPES_SPIKES_1.md
 
 # IN PROGRESS
 
@@ -633,7 +624,7 @@ prose:    infrastructure/state/items/GOO_BOOM_COMMISSION_1.md
 ## SHRINE_GUARDIAN_BIOME_GATE_1 Harmony postfix on SymbolResolver_AncientTemple.Resolve to gate shrine guardian/loot per-biome (ANCIENT-ALLOW/RARE x AMBIENT-DENY) — piece 4/4 of MECH_PRESENCE_ENFORCEMENT_1, spun off as C#, XML-only scope can't reach it
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    deploy
 target:   v1
 kind:     build
 summary:  Piece 4/4 of MECHPRESENCEENFORCEMENT1 (curate shrine contents where
