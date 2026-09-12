@@ -77,3 +77,11 @@ distinguishes `improve` from `redo` is naming discipline, not effort:
 
 Same "when in doubt, ask the owner" rule as `redo` applies to any specific creature
 where canon-vs-invented naming isn't obvious.
+
+## Channel ruling — owner, 2026-09-11
+
+**Codex only. Gemini is OFF** ("Do not use Gemini anymore, only Codex please.")
+— enforced by `artpiped.py`'s default gemini budget of $0 (the admission gate
+refuses the channel). Queue no `"channel": "gemini"` jobs; a job that carries
+it will sit refused. Re-funding requires the owner's word and an explicit
+`--gemini-budget-usd`.
