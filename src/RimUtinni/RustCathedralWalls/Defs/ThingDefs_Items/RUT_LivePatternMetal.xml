@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RUST_CATHEDRAL_MECHANICS_1 §2, Tier 4 — the deep live-pattern metal.
+       ParentName="ResourceBase" carrying deepCommonality/deepCountPerPortion/
+       deepLumpSizeRange, the exact vanilla shape confirmed on Steel itself
+       (mcp__rimsage__get_def_details Steel: deepCommonality 4,
+       deepCountPerPortion 45, deepLumpSizeRange 20~30) and on
+       ThingDef.cs:1856-1862 (the engine enforces the pair being set
+       together). Drilling it is what arms §5 (the deep-drill response
+       event) — the incident worker itself lives in §5's own build, not
+       here.
+
+       "Cathedral map gen only" (kit spec): unlike Tiers 1-3, vanilla's deep
+       resource pick has NO biome axis at all to restrict against —
+       measured via rimsage source read of RimWorld/CompDeepScanner.cs:
+       `ChooseLumpThingDef()` returns
+       `DefDatabase<ThingDef>.AllDefs.RandomElementByWeight(d => d.deepCommonality)`,
+       a flat GLOBAL weighted pool over every ThingDef with deepCommonality
+       set, read fresh on every scan with no per-map or per-biome filter
+       anywhere in the call chain (Verse/DeepResourceGrid.cs has no
+       generation-time population step either — the grid is populated
+       lazily, only by a scan or a drill, never by a GenStep at map
+       creation). This repo's two existing biome-exclusive deep resources
+       (Kyber, Pyrinth — LanternDeeps/Patches/RUT_LanternDeepGateKyber.xml,
+       RUT_LanternDeepGatePyrinth.xml) solve the equivalent "universal
+       leak" by zeroing the field and re-adding it only via a GenStepDef
+       that is referenced solely from Lantern Deeps' own dedicated
+       MapGeneratorDef — a trick that only works because pocket maps get
+       their own generator. The Rust Cathedral is an ordinary overworld
+       biome sharing the game's shared player map generator with every
+       other biome, so that trick has no equivalent here.
+
+       RESOLUTION: deepCommonality is left set (this def participates in
+       the normal weighted pool like any deep resource), and
+       Source/HarmonyPatch_GateLivePatternMetal.cs — a ~15-line postfix on
+       CompDeepScanner.ChooseLumpThingDef — substitutes vanilla Steel
+       whenever the result is this def and the scanning map's biome is not
+       RUT_RustCathedral. This is the one place in this §2 slice that could
+       not stay at the kit spec's own "zero new C#" hope; it is the same
+       category of small, necessary, self-gated deviation the biome-gated
+       GenStep subclasses below already needed for Tiers 1-3, just aimed at
+       a different vanilla entry point because deep resources have no
+       GenStepDef of their own to gate.
+
+       INVENTED (kit spec): deepCountPerPortion 35. deepCommonality 4 and
+       deepLumpSizeRange 10~20 are this build's own picks — no target given
+       — set to feel notably rarer per lump than Steel's 20~30 while
+       staying commonality-comparable so it is not vanishingly unlikely to
+       actually appear once a Cathedral scan/drill occurs. -->
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_LivePatternMetal</defName>
+    <label>live pattern metal</label>
+    <description>Deep under the deck plate, past everything already dug, this metal is not dead. Nothing about the readout explains what it is doing, only that it is still doing it. Whoever pulls it out should be ready for what pulling it out means.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Steel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(196,168,74)</color>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <deepCommonality>4</deepCommonality>
+    <deepCountPerPortion>35</deepCountPerPortion>
+    <deepLumpSizeRange>10~20</deepLumpSizeRange>
+    <statBases>
+      <MarketValue>14</MarketValue>
+      <Mass>0.5</Mass>
+      <Beauty>-2</Beauty>
+      <Flammability>0</Flammability>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

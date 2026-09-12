@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RUST_CATHEDRAL_MECHANICS_1 §2, Tier 3 — the sacred tier. NOT a
+       mineable (no <mineable>, no building.isResourceRock/mineableThing):
+       this is a plain faction-owned BUILDING, ParentName="BuildingBase"
+       (vanilla Wall's own parent, read via mcp__rimsage__get_def_details),
+       not RockBase — the spec is explicit these are buildings, not rock.
+
+       Faction ownership is NOT a ThingDef field (RimWorld sets faction on
+       the spawned Thing instance, not the def) — it is applied by
+       Source/GenStep_ScatterSacredWalls.cs at placement time, calling
+       `.SetFaction(Faction.OfMechanoids)`. Faction defName confirmed
+       against the live/vendor def: vanilla `Mechanoid` (hidden,
+       permanentEnemy) is the faction the_rust_cathedral.md's "faction 13"
+       already reskins to "the Forgotten Arsenal" / "the Forsaken Arsenal"
+       (src/RimUtinni/UtinniPatches/Patches/ForgottenArsenal.xml, label +
+       description only, no new FactionDef) — this def and its genstep
+       reuse that SAME faction rather than inventing a second one.
+
+       Destroying or claiming a faction-owned building fires vanilla's own
+       AttackedBuilding goodwill hook automatically — engine-default on any
+       faction-owned Thing, confirmed by the item brief, no new code needed
+       for that half. The −15 magnitude and the hum-irritation bump both
+       ride §1 (the hum-mood system, NOT YET BUILT) — noted here, not
+       stubbed: no numeric hook, no MapComponent reference, nothing this
+       file can silently get wrong before §1 exists.
+
+       v1 SCOPE (kit spec, "one sacred wall variant"): this is the one
+       variant. "Rarer, stranger wall types" are explicitly deferred to a
+       content pass, same as the ~10-building sacred-tier roster overall.
+
+       Not deconstructible/mineable and not player-buildable
+       (designationCategory omitted) — this exists only where
+       GenStep_ScatterSacredWalls places it; a player cannot construct a
+       second one.
+
+       PLACEHOLDER ART: RockFlecked_Atlas again (Graphic_Single — safe for
+       an isolated, non-linked placement, same choice MineableSteel itself
+       makes), tinted toward verdigris/gold to read as ornamented rather
+       than raw wall. Real bespoke sacred-wall art is owed (art pipe). -->
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_SacredWall_Conduit</defName>
+    <thingClass>Building</thingClass>
+    <label>sacred conduit wall</label>
+    <description>A run of wall unlike the plate around it — patterned, deliberate, untouched by the drift that banks against everything else here. Nothing about it explains itself. Only that it is watched, and that touching it is a choice.</description>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <coversFloor>true</coversFloor>
+    <blockLight>true</blockLight>
+    <blockWind>true</blockWind>
+    <holdsRoof>true</holdsRoof>
+    <neverMultiSelect>true</neverMultiSelect>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <mineable>false</mineable>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <tickerType>Never</tickerType>
+    <staticSunShadowHeight>1</staticSunShadowHeight>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(196,168,74)</color>
+      <colorTwo>(64,92,80)</colorTwo>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>2200</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>2</Beauty>
+    </statBases>
+    <building>
+      <isInert>true</isInert>
+      <deconstructible>false</deconstructible>
+    </building>
+  </ThingDef>
+
+</Defs>

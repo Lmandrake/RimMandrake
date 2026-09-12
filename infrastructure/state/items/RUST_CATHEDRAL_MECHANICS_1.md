@@ -108,3 +108,74 @@ step 6 normally, but §6 was picked first here because it's explicitly
 slice small enough to hand to one subagent in one clean pass tonight. Item
 stays `doing` — the big hum-mood C# system deserves its own focused session,
 not a rushed tack-on.
+
+## 2026-09-11 update — §2 (wall-tier mining defs) BUILT, §1/3/4/5 still not started
+
+New dedicated mod `mandrake.rut.rustcathedralwalls`
+(`src/RimUtinni/RustCathedralWalls/`), per the kit spec's own build-order note
+that §2 is the first recommended buildable step. All four tiers:
+
+- **Tier 1** `RUT_CathedralDeckPlate` — mineable wall, `ParentName="RockBase"`
+  (MineableSteel's own shape), yields vanilla `Steel` at 35/cell, unowned.
+- **Tier 2** `RUT_MineableDeadSmartsteel` → `RUT_DeadSmartsteel` — same shape,
+  yields a new resource (MarketValue 8, yield 25/cell). ❓ **DECIDED**: trade
+  commodity only, NOT stuff-capable this pass — a stuff-capable alloy needs
+  armor/insulation balance numbers the spec named no target for, and
+  "distinctly valuable" is already satisfied without it (see the def's own
+  header for the full reasoning). Reversible later without touching the def's
+  identity.
+- **Tier 3** `RUT_SacredWall_Conduit` — one sacred wall variant (v1 scope;
+  more explicitly deferred), a plain faction-owned building (`ParentName=
+  "BuildingBase"`, not RockBase — not mineable), spawned owned by vanilla
+  `Mechanoid` (faction 13, already reskinned "the Forgotten/Forsaken Arsenal"
+  in `mandrake.rut.patches`' `ForgottenArsenal.xml` — reused, not
+  re-invented). Destroying/claiming rides vanilla's own `AttackedBuilding`
+  goodwill hook automatically. **Deferred, pending §1**: the −15 magnitude
+  check and the hum-irritation bump — no numeric hook or MapComponent
+  reference exists anywhere in this build, by design, since §1 doesn't exist
+  yet.
+- **Tier 4** `RUT_LivePatternMetal` — deep-drill-only resource
+  (`deepCommonality`/`deepCountPerPortion` 35/`deepLumpSizeRange`, Steel's own
+  vanilla shape). Arms §5 (not built).
+
+**Placement mechanism** (task's own instruction: reuse an existing pattern,
+not invent one) — two, layered: (1) `RUT_RustCathedral`'s BiomeDef gains
+`forceRockTypes` (a genuine vanilla BiomeDef field, confirmed via rimsage
+source read of `BiomeDef.cs`/`World.cs`/`GenStep_RockChunks.cs` — and the
+exact field the donor Alpha Biomes def used for its own now-absent
+`GU_AncientMetals`) pointed at Tiers 1-2; (2) a dedicated, self-gating
+`GenStep_ScatterGroup` subclass (same convention as FungalSoilTrade's
+`GenStep_ScatterFungalGround` / LanternDeeps' `GenStep_ScatterCavePortal` —
+"GenStepDef has no biome field and vanilla ships no
+ScattererValidator_Biome") guarantees baseline coverage regardless of the
+biome's near-total flatness (211/236 tiles), and a second custom `GenStep`
+places the one Tier 3 variant with `.SetFaction(Faction.OfMechanoids)`. Both
+self-gate on `map.Biome.defName == "RUT_RustCathedral"` and are added to the
+shared `MapCommonBase` genSteps list, no-opping on every other biome.
+
+**Where "zero new C#" didn't hold**: the biome-gated GenStep subclasses
+(established local convention, ~2 small files) and one Harmony postfix on
+`CompDeepScanner.ChooseLumpThingDef` — vanilla's deep-resource pick is a flat
+GLOBAL weighted pool with no biome axis at all, and this repo's existing
+biome-exclusive deep resources (Kyber, Pyrinth) solve the equivalent leak by
+riding a dedicated pocket-map generator that an ordinary overworld biome
+doesn't have. The postfix substitutes vanilla Steel for `RUT_LivePatternMetal`
+whenever the scanning map isn't the Cathedral. All three are small, self-
+gated, and documented in-file; none is a guess.
+
+C# compiled clean (`dotnet.exe`, 0 errors, 0 warnings). All 10 XML files
+well-formed and `validate_patch.py` clean (0 errors; warnings are the
+expected "vanilla texPath/ParentName not in this mod's own files" kind,
+same as every prior RUT_ mod's own validation runs).
+
+❓ **Not live-verified** (this was pure offline authoring — no bridge/game
+touch per this session's brief): whether the wall-tier density actually
+reads as "the map is made of it" on a real Cathedral quicktest map, whether
+`GenStep_ScatterSacredWalls`'s faction-owned wall actually triggers
+`AttackedBuilding` goodwill on attack, and whether the Harmony gate actually
+fires (all three need a quicktest once the mod is deployed and enabled —
+deliberately left to the parent session, not done here). Not enabled in
+`ModsConfig.xml` by this pass.
+
+**Rest of the kit is still untouched**: §1 hum-mood system, §3 living bolts,
+§4 eel-fishing, §5 deep-drill response event.

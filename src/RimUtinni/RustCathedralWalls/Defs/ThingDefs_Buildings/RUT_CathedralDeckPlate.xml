@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RUST_CATHEDRAL_MECHANICS_1 §2, Tier 1 — "mine the bulk freely" made
+       literal. ParentName="RockBase", exact shape of vanilla MineableSteel
+       (isResourceRock/mineableThing/mineableYield/veinMineable/
+       mineableScatterCommonality, read via mcp__rimsage__get_def_details,
+       merged inheritance) with one deliberate change: veinMineable=false
+       and mineableScatterCommonality=0, same reasoning as
+       RUT_MineableFungalGround (FungalSoilTrade) — vanilla's own vein
+       scatter (GenStep_RocksFromGrid, order 200) reads mineableScatterCommonality
+       GLOBALLY on every rocky player map regardless of biome (see
+       LanternDeeps/Patches/RUT_LanternDeepGateKyber.xml's header for the
+       measured proof of that leak), so a def meant to be one biome's
+       signature wall must opt out of it and rely on a dedicated,
+       biome-gated placement step instead:
+       Defs/MapGeneration/RUT_CathedralWallScatter.xml +
+       Source/GenStep_ScatterCathedralWallTiers.cs.
+
+       isNaturalRock stays true and this def is also added to
+       RUT_RustCathedral's forceRockTypes (Patches/
+       RUT_RustCathedral_ForceRockTypes.xml) so any OTHER vanilla system
+       that asks "what is this map's natural rock" (mountain generation,
+       DeepDrillUtility's exhausted-drill fallback, ancient-danger vault
+       walls) answers with Cathedral's own walls instead of default
+       granite — belt and suspenders, not a substitute for the scatter step.
+
+       INVENTED (kit spec, "deck plate yield 35 Steel/lump-cell"):
+       mineableYield 35. Unowned (no faction set anywhere this def is
+       placed) = zero goodwill, zero hum input, per §2/§5's "mine the bulk
+       freely."
+
+       PLACEHOLDER ART: vanilla's own RockFlecked_Atlas (MineableSteel's own
+       texture), tinted toward the biome's own metal-floor grey
+       (RUT_RustCathedral.xml's GU_MetalFloor1/AB_SoilOnCrackedMetal
+       palette) rather than MineableSteel's brown. Real bespoke wall art is
+       owed (rides the art pipe, per §2's own "deferred: wall-linked art
+       atlases"). -->
+
+  <ThingDef ParentName="RockBase">
+    <defName>RUT_CathedralDeckPlate</defName>
+    <label>cathedral deck plate</label>
+    <description>A slab of the plateau's own understructure, cut loose from the maze around it. The plate goes on for as far as anyone has ever dug — there is always more of it, and nothing here minds you taking it.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(150,150,158)</color>
+      <colorTwo>(96,98,104)</colorTwo>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>1500</MaxHitPoints>
+    </statBases>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>Steel</mineableThing>
+      <mineableYield>35</mineableYield>
+      <mineableDropChance>1</mineableDropChance>
+      <veinMineable>false</veinMineable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+    </building>
+  </ThingDef>
+
+</Defs>

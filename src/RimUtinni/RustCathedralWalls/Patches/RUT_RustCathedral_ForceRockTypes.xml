@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUST_CATHEDRAL_MECHANICS_1 §2. `forceRockTypes` is a genuine vanilla
+  BiomeDef field (RimWorld/BiomeDef.cs:139, `public List<ThingDef>
+  forceRockTypes`) read by World.NaturalRockTypesIn (RimWorld/Planet/
+  World.cs:395-398, `tile.Tile.PrimaryBiome.forceRockTypes`) and by
+  GenStep_RockChunks (RimWorld/GenStep_RockChunks.cs:48-49) — both
+  confirmed via rimsage source read, not guessed. It is exactly the field
+  the donor Alpha Biomes def used for AB_MechanoidIntrusion
+  (vendor/mod_sources/AlphaBiomes_src/1.6/Defs/BiomeDefs/
+  Biomes_MechanoidIntrusion.xml:97, `<forceRockTypes><li>GU_AncientMetals</li>
+  </forceRockTypes>`) before RUT_RustCathedral.xml replaced that biome def
+  wholesale and dropped the field along with the (inactive-dependency)
+  donor rock type.
+
+  Restoring it here, pointed at this mod's own two wall tiers, so any
+  vanilla system that asks "what is this map's natural rock" on a Cathedral
+  map answers with Cathedral walls instead of default granite/sandstone —
+  belt-and-suspenders alongside the dedicated, denser scatter step in
+  RUT_CathedralWallScatter.xml, which is the mod's actual guarantee of wall
+  coverage on this 211/236-flat-tile biome (forceRockTypes' own placement
+  density on a mostly non-hilly biome is not proven independently sufficient
+  by itself, hence not relied on alone).
+
+  Patches UtinniPatches' own RUT_RustCathedral (mandrake.rut.patches) — a
+  cross-mod patch rather than editing that file directly, so this mod stays
+  self-contained and removable; loadAfter mandrake.rut.patches in About.xml
+  guarantees the def already exists when this runs.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RUT_RustCathedral"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RUT_RustCathedral"]</xpath>
+      <value>
+        <forceRockTypes>
+          <li>RUT_CathedralDeckPlate</li>
+          <li>RUT_MineableDeadSmartsteel</li>
+        </forceRockTypes>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
