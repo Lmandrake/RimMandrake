@@ -57,6 +57,11 @@
          project — see that file's and the .cs header's own notes. -->
     <Compile Include="AmbientShrineGuardians.cs" />
     <Compile Include="UtinniPatchesSettings.cs" />
+    <!-- UTINNI_WORLDMAP_FLIGHT_ICON_1 (2026-09-12): the PatchOperation subclass
+         that lets Patches/UtinniWorldIcon.xml respect a Mod Settings toggle.
+         Named by Class= in that XML, so it has no C# caller — do not read the
+         absence of one as dead code. -->
+    <Compile Include="PatchOperationSettingGate.cs" />
   </ItemGroup>
 
   <ItemGroup>

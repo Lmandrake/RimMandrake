@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!-- UTINNI_WORLDMAP_FLIGHT_ICON_1 — the Utinni's own silhouette on the planet map.
+
+       Vanilla (Odyssey, WorldObjectDefs/WorldObjects.xml) gives WorldObjectDef
+       Gravship two textures and BOTH are on screen during a flight:
+         <expandingIconTexture>World/WorldObjects/Expanding/Gravship</...>  zoomed out
+         <texture>World/WorldObjects/Caravan</texture>                       zoomed in
+       Patching only one leaves the ship changing shape as the player zooms, so both go.
+
+       Texture binding is by texPath STRING, not by defName. The two paths below are the
+       two PNGs in this mod's Textures/ tree and nothing else resolves them:
+         Textures/World/WorldObjects/Expanding/RUT_Utinni.png
+         Textures/World/WorldObjects/RUT_UtinniCaravan.png
+       Both are 64x64, matching vanilla's own measured canvases for these two fields.
+
+       Wrapped twice, and each wrapper earns its place:
+       - PatchOperationConditional on the def, because Gravship is an Odyssey def and
+         a bare Replace against an absent def logs a red error every load.
+       - PatchOperationSettingGate (Source/PatchOperationSettingGate.cs) for the
+         MOD_OPTIONS_RETROFIT_1 toggle "Utinni world-map icon". Off, no operation runs
+         and the vanilla sprite is drawn — that is the graceful degradation.
+
+       ⚠️ Gravship.ExpandingIconColor is a C# override returning the player faction's
+       colour (RimWorld/Planet/Gravship.cs:146), so the sprite is MULTIPLIED by it and
+       the XML expandingIconColor field is ignored. The art is authored near-neutral and
+       value-led for that reason; do not "fix" the tint here, it cannot be fixed here. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/WorldObjectDef[defName="Gravship"]</xpath>
+    <match Class="RimMandrake.Utinni.UtinniPatches.PatchOperationSettingGate">
+      <setting>utinniWorldIconEnabled</setting>
+      <match Class="PatchOperationSequence">
+        <operations>
+
+          <li Class="PatchOperationReplace">
+            <xpath>/Defs/WorldObjectDef[defName="Gravship"]/expandingIconTexture</xpath>
+            <value>
+              <expandingIconTexture>World/WorldObjects/Expanding/RUT_Utinni</expandingIconTexture>
+            </value>
+          </li>
+
+          <li Class="PatchOperationReplace">
+            <xpath>/Defs/WorldObjectDef[defName="Gravship"]/texture</xpath>
+            <value>
+              <texture>World/WorldObjects/RUT_UtinniCaravan</texture>
+            </value>
+          </li>
+
+        </operations>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>
