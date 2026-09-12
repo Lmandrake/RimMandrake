@@ -32,6 +32,19 @@
   extracted) plus its 2 eggs (RSW_EggCanCellFertilized/UnFertilized, texPath
   swresource/EggInsectile, newly extracted).
 
+  Pass 4 (Cannok/Clodhopper/Convor, same day): Cannok needs no new
+  resource — repoints leatherDef/specificMeatDef to the already-ported
+  RSW_Leather_Insectile/RSW_Insectile_Meat (Pass 3, same resources
+  CanCell uses) and has no egg comp. Clodhopper's leatherDef stays vanilla
+  Core `Leather_Bird` (not a Mlie resource, no port needed); its
+  specificMeatDef repoints to the already-ported RSW_Reptavian_Meat (Wave
+  B); only its 2 eggs are newly ported (RSW_EggClodhopperFertilized/
+  UnFertilized, texPath swresource/EggSpeckled, newly extracted this
+  pass). Convor's leatherDef/specificMeatDef repoint to the already-ported
+  RSW_Leather_Mammavian/RSW_Mammavian_Meat (Wave B); only its 2 eggs are
+  newly ported (RSW_EggConvorFertilized/UnFertilized, texPath
+  swresource/EggSwirl, newly extracted this pass).
+
   Ported verbatim from mlie.starwarsanimalcollection's (workshop folder
   3497316713) ThingDefs_Items/Items_Resource_swanimal_Items.xml, each defName
   flat-RSW_-prefixed. texPaths are UNCHANGED text.
@@ -382,6 +395,71 @@
     <statBases>
       <Nutrition>0.5</Nutrition>
       <MarketValue>15.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggClodhopperFertilized</defName>
+    <label>clodhopper egg (fert.)</label>
+    <description>Fertilized clodhopper egg.</description>
+    <graphicData>
+      <texPath>swresource/EggSpeckled</texPath>
+      <color>(204,102,0)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>4</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>2</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Clodhopper</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggClodhopperUnFertilized</defName>
+    <label>clodhopper egg (unfert.)</label>
+    <description>An unfertilized clodhopper egg. It can be eaten raw, but it's much better cooked</description>
+    <graphicData>
+      <texPath>swresource/EggSpeckled</texPath>
+      <color>(204,102,0)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>4</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggConvorFertilized</defName>
+    <label>convor egg (fert.)</label>
+    <description>A fertilized convor egg. If all goes well, it should hatch into a baby convor. It can be eaten raw, but it's much better cooked..</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSwirl</texPath>
+      <color>(225,255,255)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>10</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>4</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Convor</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggConvorUnFertilized</defName>
+    <label>convor egg (unfert.)</label>
+    <description>An unfertilized convor egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSwirl</texPath>
+      <color>(225,255,255)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>10</MarketValue>
     </statBases>
   </ThingDef>
 </Defs>

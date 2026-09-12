@@ -609,3 +609,30 @@ from unrelated donor-mod dead references (documented in prior passes) —
 confirmed none name Boma/Borcatu/CanCell.
 
 **Remaining**: 83 of the Wave C worklist, plus Fambaa.
+
+## 2026-09-12 (FOUNDRY, offline subagent, belt mode) — 3 more species ported: Cannok, Clodhopper, Convor (83 -> 80 remaining)
+
+Same pipeline. Cannok and Clodhopper each needed a custom BodyDef
+(defName-rename-only, pure vanilla parts); Convor reuses vanilla Core's
+`FlyingAvian` body untouched. Leather/meat all reused already-ported Wave
+B/C resources (`RSW_Leather_Insectile`/`RSW_Insectile_Meat` for Cannok,
+`RSW_Reptavian_Meat` for Clodhopper, `RSW_Leather_Mammavian`/
+`RSW_Mammavian_Meat` for Convor) — only 2 new eggs each for Clodhopper and
+Convor. All 5 target biomes already had a `mandrake.rsw.swbestiary`-gated
+block from earlier waves, extended rather than created. 44 art files
+extracted, all confirmed non-zero.
+
+Checked all 3 Mlie-touching patch files: `AnimalBiomeDuplicates_Fix.xml`
+has one dedup Operation for the donor `Cannok` (unrelated to our rename,
+donor def untouched, left as-is).
+
+🔑 **Trap correctly avoided**: live `ModsConfig.xml` now shows 593 active
+mods (vs the 592-mod capture used for validation) — per
+`modsconfig-describes-the-next-load` doctrine, this describes the NEXT
+load, not the currently-running game, so the newest available capture was
+still the right validation target, not a re-harvest mid-pass.
+
+Validated: `validate_patch.py`, 0 errors/1 known pre-existing warning on
+the 6 authored/touched files.
+
+**Remaining**: 80 of the Wave C worklist, plus Fambaa.
