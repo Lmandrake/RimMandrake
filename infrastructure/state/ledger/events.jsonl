@@ -7670,3 +7670,7 @@
 {"seat":"FOUNDRY","event":"note","id":"HUB_TAB_PUBLISHER_MIGRATION_1","text":"close content landed in 8ff50a8be (closed --sha cited 51813d54e, HEAD at close time before this item's own commit landed)","ts":"2026-09-12T07:23:21Z"}
 {"seat":"FOUNDRY","event":"block","id":"WAR_LAB_CRATER_HOOK_1","reason":"wired RUT_WarLabReactorCore (CompIgniteCraterOnDestroy) + deployed; live ignition/save-load/world_commit quicktest owed","ts":"2026-09-12T07:24:25Z"}
 {"seat":"FOUNDRY","event":"claim","id":"LIQUID_TYPES_SPIKES_1","ts":"2026-09-12T07:24:45Z"}
+{"seat":"FOUNDRY","event":"reclaim","id":"SHRINE_GUARDIAN_BIOME_GATE_1","reason":"Stale-queue audit 2026-09-12: STILL LIVE, spec-only, Harmony postfix never written; owner AFK, reclaiming to keep BELT floor busy","ts":"2026-09-12T07:26:13Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SHRINE_GUARDIAN_BIOME_GATE_1","ts":"2026-09-12T07:27:41Z"}
+{"seat":"FOUNDRY","event":"start","id":"SHRINE_GUARDIAN_BIOME_GATE_1","ts":"2026-09-12T07:27:45Z"}
+{"seat":"FOUNDRY","event":"needs","id":"SHRINE_GUARDIAN_BIOME_GATE_1","to":"deploy","reason":"C# built 0W/0E, patch validated clean against live 592-mod load set; DLL write refused (Errno 22) - game running under BENCH's live WORLDMAP_FINAL_REVIEW_1 bridge session, not stale. Deploy owed next game-down, then quicktest verify on Desert biome before close.","ts":"2026-09-12T07:32:13Z"}
