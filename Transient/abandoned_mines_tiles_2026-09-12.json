@@ -1,0 +1,237 @@
+{
+  "found": true,
+  "featureNameAsSpelled": "The Abandoned Mines",
+  "uniqueID": 92,
+  "def": "WB_MapLabelFeature",
+  "reportedTileCount": 34,
+  "memberTileIdsReturned": 34,
+  "memberTileIds": [
+    73,
+    315,
+    1243,
+    1599,
+    1600,
+    2862,
+    2863,
+    4310,
+    4311,
+    4313,
+    4315,
+    6640,
+    7720,
+    7722,
+    7723,
+    9170,
+    9171,
+    9172,
+    9175,
+    12396,
+    14738,
+    14739,
+    14740,
+    14741,
+    14742,
+    14743,
+    16875,
+    16876,
+    16878,
+    16879,
+    16880,
+    16881,
+    16882,
+    16883
+  ],
+  "sampleTilesCapWasHit": false,
+  "crossCheckSample": [
+    {
+      "tile": 73,
+      "featureName_via_world_tile_get": "The Abandoned Mines",
+      "featureId_via_world_tile_get": 92,
+      "matchesFeatureId": true
+    },
+    {
+      "tile": 315,
+      "featureName_via_world_tile_get": "The Abandoned Mines",
+      "featureId_via_world_tile_get": 92,
+      "matchesFeatureId": true
+    },
+    {
+      "tile": 1243,
+      "featureName_via_world_tile_get": "The Abandoned Mines",
+      "featureId_via_world_tile_get": 92,
+      "matchesFeatureId": true
+    }
+  ],
+  "perTileMembership": [
+    {
+      "tile": 73,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 315,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 1243,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 1599,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 1600,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 2862,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 2863,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 4310,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 4311,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 4313,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 4315,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 6640,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 7720,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 7722,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 7723,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 9170,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 9171,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 9172,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 9175,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 12396,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 14738,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 14739,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 14740,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 14741,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 14742,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 14743,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 16875,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 16876,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 16878,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 16879,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 16880,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 16881,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 16882,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    },
+    {
+      "tile": 16883,
+      "feature": "The Abandoned Mines",
+      "featureId": 92
+    }
+  ]
+}
