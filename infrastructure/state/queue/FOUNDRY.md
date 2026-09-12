@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T11:57:21Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-12T12:09:39Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## QUICKTEST_POSTSETUP_CRASH_1 QUICKTEST_POSTSETUP_CRASH_1
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  Make startdebuggameready reach a playable quicktest map on the full
+prose:    infrastructure/state/items/QUICKTEST_POSTSETUP_CRASH_1.md
 
 # IN PROGRESS
 
@@ -118,7 +127,7 @@ summary:  Per the doc's rosters and §7.2 shared-art batching:
 prose:    infrastructure/state/items/LIVESTOCK_STARTER_TRIO_1.md
 
 ## HELIX_TELLUROX_BUILD_1 Build Tellurox, Ascendant Helix labour-line livestock
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -766,6 +775,16 @@ blocked:  validate_patch.py --defs (Data+Mods+Workshop+Armoury) re-run clean: 13
 summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
 prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
+## HELIX_TELLUROX_BUILD_1 Build Tellurox, Ascendant Helix labour-line livestock
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  live spawn+corpse-gen proof done clean on canonical save (screenshot+get_cell_info confirmed); HorrorWastes wild-spawn wiring confirmed NOT done - 0 rows in cast_assignment.csv for that biome, populating it is an ecosystem content decision (owner brief: small/medium/large/super-huge pyramid), not a mechanical gap FOUNDRY should improvise solo overnight
+summary:  Tellurox (karraskopt3.png) — Ascendant Helix labour-line livestock,
+prose:    infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md
+
 ## RIVER_STEAM_ANIMATION_1 Animated steam rising from the rivers (Pyrelands weather visual)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1056,14 +1075,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## QUICKTEST_POSTSETUP_CRASH_1 QUICKTEST_POSTSETUP_CRASH_1
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  Make startdebuggameready reach a playable quicktest map on the full
-prose:    infrastructure/state/items/QUICKTEST_POSTSETUP_CRASH_1.md
+_none._
