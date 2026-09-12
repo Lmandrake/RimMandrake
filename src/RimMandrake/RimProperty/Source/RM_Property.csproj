@@ -9,7 +9,7 @@
     into (SETTLEMENT_VERBS_WAVE_1 and later).
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Property\Source\RM_Property.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\RimProperty\Source\RM_Property.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->
