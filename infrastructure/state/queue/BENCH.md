@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T02:54:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T03:25:27Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -285,16 +285,6 @@ kind:     task
 thin:     no ## criteria
 summary:  - Patch the CSV's region column in place (patch-a-curated-artifact rule: diff
 prose:    infrastructure/state/items/CSV_REGION_SYNC_1.md
-
-## CANON_PLANET_CENSUS_1 CANON_PLANET_CENSUS_1 — canon.yml planet census still describes the deprecated painted lineage
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Ready-to-land replacement values are in world/audit/postfreeze2026-09-11.json
-prose:    infrastructure/state/items/CANON_PLANET_CENSUS_1.md
 
 ## MECHANICS_CARDS_SITTING_1 MECHANICS_CARDS_SITTING_1 — card sitting for the 2026-09-11 fan-out wave
 state:    proposed
