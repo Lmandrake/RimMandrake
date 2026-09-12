@@ -72,6 +72,7 @@
     <li>ReGrowth.BOTR.Core</li>                             <!-- BiomeCast_Ashkarr.xml -->
     <li>Sarg.AlphaMemes</li>                                <!-- BiomeCast_Ashkarr.xml, HomesteadDefenseLeague.xml -->
     <li>VanillaExpanded.VMemesE</li>                        <!-- BlackstarCompany.xml, GalacticEmpire.xml -->
+    <li>vanillaexpanded.vaewaste</li>                       <!-- BiomeCast_Ashkarr.xml: VAEWaste_Megatardi -->
     <li>vanillaquestsexpanded.ancients</li>                 <!-- BiomeCast_Ashkarr.xml, VQEPatients_AreRakata.xml -->
     <li>vanillaquestsexpanded.cryptoforge</li>              <!-- BiomeCast_Ashkarr.xml -->
     <li>vanillaquestsexpanded.generator</li>                <!-- DeepDesertTribes.xml -->
