@@ -53,6 +53,11 @@ def health() -> None:
         "reviewEntries": h.get("reviewEntries"),
         "recidivists": top,
         "standalone": "Transient/codebase_health_artifact.html",
+        # HEALTH_UNMEASURED_HEADLINE_1: pass through the generator's own verdict
+        # on whether this run could measure anything — the shell reads this to
+        # show the honest claim instead of treating `counts` as a health picture.
+        "measurementOk": h.get("measurementOk", True),
+        "headline": h.get("headline", ""),
     }, indent=1))
 
 

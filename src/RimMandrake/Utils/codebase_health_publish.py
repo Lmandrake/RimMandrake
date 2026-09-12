@@ -201,7 +201,13 @@ def build():
     payload = json.dumps({"head": src["head"], "generated": src["generated"],
                           "counts": src["counts"], "reviewEntries": src["reviewEntries"],
                           "loc": src["loc"], "rows": rows,
-                          "recidivists": src.get("recidivists", [])},
+                          "recidivists": src.get("recidivists", []),
+                          # HEALTH_UNMEASURED_HEADLINE_1: carry the generator's own
+                          # verdict on whether this run could measure anything at
+                          # all — the hub tab and any commit message built from
+                          # this payload must say so, not just show a bare `green: 0`.
+                          "measurementOk": src.get("measurementOk", True),
+                          "headline": src.get("headline", "")},
                          separators=(",", ":"))
     # ⚠️ The data rides inside <script type="application/json">, so a literal
     # "</script>" anywhere in a path or a reason would end the block early and
@@ -216,7 +222,7 @@ def build():
     os.makedirs(os.path.dirname(PAGE_OUT), exist_ok=True)
     write_atomic(PAGE_OUT, page.replace("__DATA__", payload))
     refresh_hub_tab()
-    return src["counts"], len(rows)
+    return src["counts"], len(rows), src.get("measurementOk", True), src.get("headline", "")
 
 
 def refresh_hub_tab():
@@ -276,14 +282,22 @@ def main():
         if not got_lock:
             print("SKIP: another rebuild is already in flight.")
             return 3
-        counts, n = build()
+        counts, n, measurement_ok, headline = build()
         os.makedirs(os.path.dirname(STATE), exist_ok=True)
         write_atomic(STATE, json.dumps(
-            {"ts": now, "fingerprint": fp, "counts": counts,
+            {"ts": now, "fingerprint": fp, "counts": counts, "measurementOk": measurement_ok,
              "iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))}, indent=1) + "\n")
-    print("REBUILT %d files — red %d, blue %d, green %d, grey %d, unmeasured %d"
-          % (n, counts.get("red", 0), counts.get("blue", 0), counts.get("green", 0),
-             counts.get("grey", 0), counts.get("unmeasured", 0)))
+    if not measurement_ok:
+        # HEALTH_UNMEASURED_HEADLINE_1: this is the exact line a caller has been
+        # known to paste straight into a commit message ("1669 green, 0
+        # unmeasured") — on a run that could not measure, print the honest
+        # claim instead of a per-colour breakdown that reads as a confident
+        # health picture it is not.
+        print("REBUILT %d files — %s" % (n, headline))
+    else:
+        print("REBUILT %d files — red %d, blue %d, green %d, grey %d, unmeasured %d"
+              % (n, counts.get("red", 0), counts.get("blue", 0), counts.get("green", 0),
+                 counts.get("grey", 0), counts.get("unmeasured", 0)))
     print("  page -> %s" % PAGE_OUT)
     return 0
 
