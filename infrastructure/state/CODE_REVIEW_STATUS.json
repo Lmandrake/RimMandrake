@@ -3480,10 +3480,10 @@
     "sha": "555430a2"
   },
   "src/RimMandrake/StructureInjections/Source/StructureInjections.csproj": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "4b9e58fe43b82ffc205d4cbff0fadf5388c138395a1ddaea442f0e4c1a3295b6",
-    "sha": "2467e0a2d"
+    "cleanCount": 3,
+    "date": "2026-09-12",
+    "hash": "74b92cfd2185d2171aa7741a9624b8b697e2889cb5712c461f524d7656448a06",
+    "sha": "c89c85687"
   },
   "src/RimMandrake/StructureInjections/Source/StructureInjectionsDebugActions.cs": {
     "cleanCount": 1,
