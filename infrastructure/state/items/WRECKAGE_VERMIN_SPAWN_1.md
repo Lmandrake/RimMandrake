@@ -32,3 +32,40 @@ requirement, not just flavor.
 On a quicktest map with a wreck structure placed: vermin appear attributable
 to the wreck (not biome wander) at the configured rate; toggling the setting
 off stops it; no spawns on wreckless maps from this mechanism.
+
+## built 2026-09-12, FOUNDRY — offline complete, live verify OWED
+
+Mechanism: `RM_CompProperties_VerminNest` / `RM_CompVerminNest`
+(`src/RimMandrake/ShipVermin/Source/`) — a generic ThingComp, attached via a
+comps-list patch to any wreckage ThingDef, that periodically spawns one wild
+pawn of a settings-enabled species nearby. Reuses
+`RM_MapComponent_VerminPopulation`'s existing group-tag pressure pool
+(default tag `ShipVermin`, hard cap 12 — the SAME pool RSW_Mynock's breeder
+already presses against), so a nest and a breeding population share one
+ceiling. Home is the ShipVermin mod per the spec; the mechanism decides
+nothing about which ThingDef is "wreckage".
+
+Wiring (campaign-specific, RimUtinni layer):
+`src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml` attaches
+the comp to `ShipChunk_Mech` (Odyssey's "mechanoid ship chunk" — the exact
+prop scattered six-per-hulk in `RUT_Jawa_GroundHulk`, and the only real
+Thing the ground-hulk PrefabDef actually places that is debris rather than
+a generic Ancient-Danger casket). Verified via `validate_patch.py --live
+--defs` (592-mod live load set): 0 errors, ShipChunk_Mech resolves, the
+outer conditional matches.
+
+Mod Settings added to ShipVermin's own `ShipVerminSettings`
+(`RM_ShipVerminMod.cs`): wreck-spawning on/off, a 0.25x-3x rate multiplier,
+and a per-species checkbox roster (Mynock, Scavrat, Womp rat, VFEI2_Fuelmite
+gated by GetNamedSilentFail, Rat).
+
+Both `RM_CreatureBehaviors.csproj` and `RM_ShipVermin.csproj` build clean
+(0 warnings, 0 errors) via the Windows-native dotnet toolchain.
+
+**Not done — no bridge/game session this run** (`./game` reported DOWN,
+bridge FREE, no live RimWorld process): the item's own `## verify` — vermin
+appearing attributable to a placed wreck at the configured rate, the
+setting stopping it, no spawns on a wreckless map — has NOT been run live.
+Blocked rather than closed; the next session with the game up should drive
+a quicktest with a `ShipChunk_Mech` placed (or a real ground-hulk map) and
+run that verify before closing.

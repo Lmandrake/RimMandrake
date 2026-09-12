@@ -46,7 +46,30 @@ retextures a DIFFERENT, donor (mlie.starwarsanimalcollection) mynock and is
 untouched by this item.
 
 Live-verified 2026-09-11: mynock boards, breeds under the population cap, and
-gnaws power/lighting to rubble on a live bridge quicktest.</description>
+gnaws power/lighting to rubble on a live bridge quicktest.
+
+WRECKAGE_VERMIN_SPAWN_1 (2026-09-12), owner ruling verbatim: "Yes vermin
+should be able to spawn from wreckage." Adds a second, independent
+mechanism: RM_CompProperties_VerminNest / RM_CompVerminNest, a generic
+"nest under the wreckage" comp — attach it via a comps-list patch to any
+wreckage ThingDef and it periodically spawns one wild pawn of a
+settings-enabled species nearby (Mynock, Scavrat, Womp rat, VFEI2_Fuelmite,
+Rat — the same ship-vermin band already in wildAnimals), gated by the same
+RM_MapComponent_VerminPopulation group-tag pressure pool the mynock breeder
+already respects (default tag "ShipVermin", hard cap 12), so a nest and a
+breeding population press against ONE shared ceiling. This mod stays the
+generic engine only: it does NOT decide which ThingDef counts as
+"wreckage" — a campaign's own patch layer wires the comp onto its own
+wreck/hulk/ruin defs (Utinni layer: Patches/WreckVerminNest_ShipChunk.xml
+in mandrake.rut.patches, wiring it onto vanilla/Odyssey ShipChunk_Mech).
+Mod Settings gained a wreck-nest on/off, a rate multiplier, and a
+per-species checkbox roster.
+
+Live-verify owed: this item was built and compiled offline (no bridge
+session available at build time); the quicktest verify (vermin
+attributable to a placed wreck, toggle-off stops it, no spawn on a
+wreckless map) has not yet been run live. See the item file for the
+block reason if this ships unclosed.</description>
   <modDependencies>
     <li>
       <packageId>mandrake.rm.creaturebehaviors</packageId>

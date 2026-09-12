@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- WreckVerminNest_ShipChunk.xml         RimUtinni · authored 2026-09-12
+
+     WRECKAGE_VERMIN_SPAWN_1. The wreck-def wiring half of the mechanism —
+     mandrake.rm.shipvermin (src/RimMandrake/ShipVermin) ships the generic
+     "nest under the wreckage" engine (RM_CompProperties_VerminNest) and
+     deliberately does not decide which ThingDef counts as wreckage. This
+     campaign's own call: ShipChunk_Mech, the "mechanoid ship chunk"
+     (Odyssey DLC, ParentName ShipChunkBase, RimSage-verified) — the exact
+     prop scattered six-per-hulk in Defs/PrefabDefs/JawaGroundHulk.xml
+     ("Torn hull plate, scattered through the banks") and the same def any
+     other Gravship crash/wreck event on this campaign's maps places. This
+     is "ship vermin nests under the larger hulls, living on what falls"
+     (design/Jawa/worldbuilding/biomes/fall_line.md:144) made literal:
+     wherever a hull chunk lands, a nest can start under it.
+
+     NOT AncientCryptosleepCasket, the hulk's OTHER prop: that def is a
+     generic Core Ancient-Danger casket that spawns in ancient shrines and
+     tombs across the whole game, unrelated to wreckage — patching a vermin
+     nest onto every casket in every biome would not be "wreck-anchored",
+     it would be everywhere.
+
+     Gate, matching this file's siblings (JawaGroundHulk_Register.xml):
+       OUTER MayRequire tests the wiring's own two ingredients are both
+       active — mandrake.rm.shipvermin (owns RM_CompProperties_VerminNest)
+       and Ludeon.RimWorld.Odyssey (owns ShipChunk_Mech). If either is
+       absent this whole Operation is dropped at load and nothing dangles.
+       INNER PatchOperationConditional tests the def itself exists before
+       touching its <comps>, same discipline as every other patch in this
+       folder — defensive against Odyssey ever renaming or dropping it.
+
+     ShipChunk_Mech already ships its own <comps> (CompProperties_InspectString,
+     RimSage-verified get_def_details), so no check-or-create dance is
+     needed before the Add — unlike RSW_Mynock_ShipVermin.xml, which had to
+     create an empty <comps/> first.
+
+     Tuning: left at RM_CompProperties_VerminNest's own defaults (2-4 day
+     interval, radius 4, group tag "ShipVermin", hard cap 12) — the SAME
+     pool RSW_Mynock's breeder already presses against
+     (Patches/RSW_Mynock_ShipVermin.xml in mandrake.rm.shipvermin), so a
+     nest and a breeding population share one ceiling rather than stacking
+     two. Retune here if a wreck nest alone should behave differently from
+     that default; the field names and this file are where that lives, not
+     the RimMandrake engine.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.shipvermin,Ludeon.RimWorld.Odyssey">
+    <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="ShipChunk_Mech"]/comps</xpath>
+      <value>
+        <li Class="RimMandrake.ShipVermin.RM_CompProperties_VerminNest">
+          <nestSpawnIntervalDays>2~4</nestSpawnIntervalDays>
+          <nestSpawnRadius>4</nestSpawnRadius>
+          <populationGroupTag>ShipVermin</populationGroupTag>
+          <populationHardCap>12</populationHardCap>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
