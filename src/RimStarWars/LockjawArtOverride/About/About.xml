@@ -6,29 +6,28 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>Replaces sarg.alphaanimals's `AA_Lockjaw` art (mud-brown
-`AA_Lockjaw3` alternate texture set only — see scope note below) with custom
-generated art per the owner ruling in
+  <description>Replaces sarg.alphaanimals's `AA_Lockjaw` art (grey `AA_Lockjaw2`
+and mud-brown `AA_Lockjaw3` alternate texture sets — see scope note below)
+with custom generated art per the owner ruling in
 design/Jawa/worldbuilding/review/round2/decisions_propagated.json
 (`fauna:the_miasma:AA_Lockjaw`, `"art": "improve"` — *"Make it like a huge
 whale with alligator-like skin sitting and staring... then SNAP."*). LABEL/ART
 ONLY - no defName touched, no Defs, no Patches, loose Textures/ only, same
-relative path (Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw3_&lt;facing&gt;) the
-donor uses so this mod's later load order wins the same-path resolution.
+relative paths (Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw2_&lt;facing&gt; and
+AA_Lockjaw3_&lt;facing&gt;) the donor uses so this mod's later load order wins
+the same-path resolution.
 
-SCOPE, 2026-09-11 (LOCKJAW_ART_WIRE_IN_1): `AA_Lockjaw`'s PawnKindDef rolls
-one of THREE alternate texture sets per spawn (`AA_Lockjaw` bare,
-`AA_Lockjaw2` grey, `AA_Lockjaw3` brown), each a full south/east/north set.
-This mod ships `AA_Lockjaw3` (brown) complete and consistent across all three
-facings — east validated 2026-09-10, south+north validated 2026-09-11.
-`AA_Lockjaw2` (grey) is DEFERRED and deliberately left entirely on donor art:
-its east and north facings are already generated and validated, but its
-south facing failed the offline validator 5 times running (consistently
-~20-90% too wide against the reference's narrow front-on silhouette, even
-after the prompt was rewritten to state the target aspect explicitly) and
-was not force-shipped rather than leave that one variant visibly
-inconsistent between rotations. The bare `AA_Lockjaw` variant was never in
-scope for this item and is untouched.</description>
+SCOPE, 2026-09-11 (LOCKJAW_ART_WIRE_IN_1, completed same day): `AA_Lockjaw`'s
+PawnKindDef rolls one of THREE alternate texture sets per spawn (`AA_Lockjaw`
+bare, `AA_Lockjaw2` grey, `AA_Lockjaw3` brown), each a full south/east/north
+set. This mod ships both `AA_Lockjaw3` (brown) and `AA_Lockjaw2` (grey)
+complete and consistent across all three facings. `AA_Lockjaw2`'s south
+facing initially failed the offline validator 5 times running (consistently
+~20-90% too wide against the reference's narrow front-on silhouette) before
+being seeded from the brown sibling's successful prompt and passing on the
+first retry (owner ruling 2026-09-11) - live verification of the grey art was
+deferred at deploy time (bridge held by FOUNDRY). The bare `AA_Lockjaw`
+variant was never in scope for this item and is untouched.</description>
   <loadAfter>
     <li>sarg.alphaanimals</li>
   </loadAfter>
