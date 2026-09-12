@@ -7299,6 +7299,12 @@
     "hash": "ee4f3a2962011fec75b60df1f9acf767371483bb555acaddcbbe45356e16e29a",
     "sha": "d27125d2"
   },
+  "src/RimStarWars/Armoury/Patches/HediffDesc_ElectrostaffStun.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "501b1441fbf3e8998b630b8dfb0099aca6041de9fc762525a850ece5d58e518b",
+    "sha": "2f8d4a99a"
+  },
   "src/RimStarWars/Armoury/Patches/Turrets_DamageDoctrine.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -9099,6 +9105,24 @@
     "hash": "e293c7bb81b8718811c481713bbfd110a7046f54bebd22f508966414aee39d9a",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/Bodies/RSW_BiomesTeamPort_Bodies.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "3c745b7e615a2d47a2329299b41ab17b2747624f24dbd8fd87432ecc89ce526e",
+    "sha": "2f8d4a99a"
+  },
+  "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/SoundDefs/RSW_BiomesTeamPort_Sounds.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "311994443986ed8e2dc1fb588bfbbd924069f87368897273ae8c2e5ec6c9c387",
+    "sha": "2f8d4a99a"
+  },
+  "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/Support/RSW_BiomesTeamPort_Support.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "c10d0327e6e9496c57bd8e0b3759e020dddc86d284e3c4dd93aeb69cd2ef7f04",
+    "sha": "2f8d4a99a"
+  },
   "src/RimStarWars/SWBestiary/Defs/Bodies/RSW_MlieWaveB_Bodies.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -9452,6 +9476,36 @@
     "date": "2026-09-09",
     "hash": "caf9223ff4470f0db0798cf1c4261fa7170ff9e0f125912640379650e6adc455",
     "sha": "bb73b6bd"
+  },
+  "src/RimStarWars/Shokk/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "c169085b27507fc59d1ba7d330a2c04104ad344438eb706f24f3777369389e4e",
+    "sha": "2f8d4a99a"
+  },
+  "src/RimStarWars/Shokk/Defs/DamageDefs/RSW_Shokk_DamageDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "d55d0f83b274dded344ae581f8192de0218c9e5616787559b821669b410ac9ef",
+    "sha": "2f8d4a99a"
+  },
+  "src/RimStarWars/Shokk/Defs/HediffDefs/RSW_Shokk_HediffDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "71f012b137932ccd745db6fa6d193e2c443aab1abc5be2e5235a2b0291217306",
+    "sha": "2f8d4a99a"
+  },
+  "src/RimStarWars/Shokk/Defs/ThingDefs/RSW_Shokk_SpitWeapon.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "0729045052e34b6c1fe1b0fb8a481065740db47682dccada534b910b4a1b5302",
+    "sha": "2f8d4a99a"
+  },
+  "src/RimStarWars/Shokk/Patches/RSW_Shokk_Wyyyschokk.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "1e433a4f4a59827edc4be1f53c3301382802343fc74bf891db833023b530f511",
+    "sha": "2f8d4a99a"
   },
   "src/RimStarWars/Shokk/Source/RSW_CompEmergentSpawnOnDestroy.cs": {
     "cleanCount": 1,
@@ -9819,6 +9873,12 @@
     "hash": "ef511fd76d49feb4d1d42343ce379382eda970c6d949f9dbf41a5600ce93a60b",
     "sha": "71cceeb1"
   },
+  "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_RoadWarehouse.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "7f57ae8bb904af49bf9d1cfbe1e5acd2f7ec3157bfb8bbbbd4fd896456b16f62",
+    "sha": "2f8d4a99a"
+  },
   "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_Batch2.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -9842,6 +9902,12 @@
     "date": "2026-09-05",
     "hash": "c83ac2986231f93d742a23d4709fa89b898b0c4183c8036e96d4afaaefa974e3",
     "sha": "629956d2"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_RoadWarehouse.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "d5d01f244acd8effc9e70d3a970397f10bc32da2db93641cdb141058129ff20b",
+    "sha": "2f8d4a99a"
   },
   "src/RimStarWars/StructureInjectionsSW/LICENSE": {
     "cleanCount": 1,
