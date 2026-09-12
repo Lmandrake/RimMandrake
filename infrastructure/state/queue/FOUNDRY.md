@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T14:47:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T15:26:39Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -201,7 +201,7 @@ prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
 ## INHABITED_AUGMENTATION_BUILD_1 Build the tile-augmentation content: rimplace templates + Inhabited wiring for the biome/faction/latitude augmentation dream
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     task
 summary:  INHABITEDAUGMENTATIONBUILD1
@@ -675,6 +675,15 @@ kind:     task
 summary:  - One bridge pass, freeze discipline: Saves backup + stat-after, renames via
 prose:    infrastructure/state/items/WORLD_NAME_FIXES_1.md
 
+## SHEET_ORPHAN_CONSUMPTION_1 Consume the 5 orphaned verdict channels of the 2026-09-10 assignment sheets (fauna out x6, flora move x15, flora out x4, 118-row NEW-ART/DEF ledger, flora art:improve x148) — each checked against post-09-10 rulings before landing; the sheet never overwrites a newer decision
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Resolve the sizeBin UNKNOWN (measure, don't infer).
+prose:    infrastructure/state/items/SHEET_ORPHAN_CONSUMPTION_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1041,12 +1050,12 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## SHEET_ORPHAN_CONSUMPTION_1 Consume the 5 orphaned verdict channels of the 2026-09-10 assignment sheets (fauna out x6, flora move x15, flora out x4, 118-row NEW-ART/DEF ledger, flora art:improve x148) — each checked against post-09-10 rulings before landing; the sheet never overwrites a newer decision
+## BIOME_WORLD_SWITCH_WAVE_1 World-switch every donor/vanilla-painted tile to its owned RUT_ successor: MEASURED 2026-09-12 live export, 17,889 of 21,872 tiles (82%) still on 23 donor/vanilla defs (ExtremeDesert 3969, AB_PropaneLakes 2531, Desert 2390, AB_MycoticJungle 2204, Wasteland 1853 ...) — BIOME_OWNERSHIP_WAVE_1 closed on def authoring only, the tile switch was never filed
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. Resolve the sizeBin UNKNOWN (measure, don't infer).
-prose:    infrastructure/state/items/SHEET_ORPHAN_CONSUMPTION_1.md
+thin:     no ## criteria
+summary:  - Template: PYRELANDSWORLDSWITCH1 (batches, getter read-back, CSV re-export + LOSS
+prose:    infrastructure/state/items/BIOME_WORLD_SWITCH_WAVE_1.md
