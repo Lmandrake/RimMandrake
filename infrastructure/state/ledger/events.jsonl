@@ -7581,3 +7581,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"WRECKAGE_VERMIN_SPAWN_1","ts":"2026-09-12T03:39:34Z"}
 {"seat":"FOUNDRY","event":"close","id":"HUB_LAMP_TIME_FIX_1","sha":"a49c5ea7774d623903f5e91013b5f6255339f318","ts":"2026-09-12T03:44:10Z"}
 {"seat":"FOUNDRY","event":"block","id":"WRECKAGE_VERMIN_SPAWN_1","reason":"built offline (comps + settings + Utinni wiring), compiles clean; no live game/bridge session this run to run the item's own quicktest verify","ts":"2026-09-12T03:51:41Z"}
+{"seat":"FOUNDRY","event":"block","id":"MOD_OPTIONS_RETROFIT_1","reason":"46 mods retrofitted with real, compile-verified Mod Settings (Greentide's cross-biome opt-in included); live in-game verification (cold load / quicktest, confirm toggles work with no errors) not yet run — see item file's progress section","ts":"2026-09-12T03:55:49Z"}
