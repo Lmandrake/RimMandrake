@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T15:49:43Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T16:08:03Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -417,7 +417,7 @@ prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
 ## RUST_CATHEDRAL_MECHANICS_1 Rust Cathedral C# kit: hum-mood system (attitude value, layered tones, bolt-dance display, droid commentary, hysteresis wiring), deep-drill response event (never described), wall-tier mining defs, living bolts as mechanical wildlife, eel-fishing consequences - spec the_rust_cathedral.md
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     task
 summary:  spec — the C kit
@@ -1089,3 +1089,23 @@ kind:     task
 thin:     no ## criteria
 summary:  - Art: a top-down silhouette of THE ship as it is now — the ring hull without booms
 prose:    infrastructure/state/items/UTINNI_WORLDMAP_FLIGHT_ICON_1.md
+
+## PATCH_MAYREQUIRE_OPERATION_SWEEP_1 MayRequire on a patch <Operation> element is INERT - ModContentPack.LoadPatches ignores it entirely (confirmed reading RUT_RustCathedral_Fishing.xml's own build this session, which had to xpath-test for FishBase instead of relying on it). Every other patch file in this repo that puts MayRequire on an Operation (not on the patch file's own top-level tag) may be silently unguarded against a missing mod, patching things that don't exist or erroring when the mod is absent. Needs a repo-wide grep + fix sweep.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PATCH_MAYREQUIRE_OPERATION_SWEEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PATCH_MAYREQUIRE_OPERATION_SWEEP_1.md
+
+## GRAVSHIP_LANDING_FOG_REVEAL_1 Gravship landing picker shows a fogged map: vanilla GenStep_Fog unfogs only the flood from PlayerStartSpot (reserved near map centre), so a start spot inside a ruin/injected complex reveals ONE ROOM; NWN Real FoW shades the rest because the target map is not a colony yet. Reveal the outdoors on gravship-arrival maps before the landing picker, and keep the reserved landing area clear of injected complexes at the start site
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Harmony postfix on GenStepFog.Generate (or a dedicated GenStep appended via the
+prose:    infrastructure/state/items/GRAVSHIP_LANDING_FOG_REVEAL_1.md
