@@ -81,7 +81,6 @@
       <nuzzleMtbHours>24</nuzzleMtbHours>
       <gestationPeriodDays>24</gestationPeriodDays>
       <wildBiomes>
-        <AridShrubland>0.08</AridShrubland>
         <Desert>0.08</Desert>
         <ExtremeDesert>0.08</ExtremeDesert>
         <TropicalRainforest>0.01</TropicalRainforest>

@@ -121,7 +121,6 @@
         <li MayRequire="Ludeon.RimWorld.Odyssey">Comfort</li>
       </specialTrainables>
       <wildBiomes>
-        <AridShrubland>0.04</AridShrubland>
         <Desert>0.01</Desert>
         <ExtremeDesert>0.0</ExtremeDesert>
         <TropicalRainforest>0.4</TropicalRainforest>

@@ -95,7 +95,6 @@
       <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
       <gestationPeriodDays>5</gestationPeriodDays>
       <wildBiomes>
-        <AridShrubland>0.16</AridShrubland>
         <Desert>0.04</Desert>
         <ExtremeDesert>0.0</ExtremeDesert>
         <TropicalRainforest>0.8</TropicalRainforest>
