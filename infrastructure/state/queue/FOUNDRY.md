@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T17:05:13Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T17:12:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1119,3 +1119,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1.md
+
+## FASCINATING_WORLD_JUNK_1 Reskin and re-text every map-scatter wreck (tanks, trucks, cars, ancient junk) into Star Wars scavenger wreckage: census what exists and what spawns it, mine the donor mods slated for removal (urban ruins etc.) for ideas, rule the spawning roster per region by cards, then re-graphic and re-text it — the world comes alive by being dead in the right flavor
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## criteria
+summary:  FASCINATINGWORLDJUNK1 — every wreck on the map is a flavour of ice cream to a Jawa
+prose:    infrastructure/state/items/FASCINATING_WORLD_JUNK_1.md
