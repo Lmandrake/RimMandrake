@@ -83,6 +83,38 @@ and `WORLD_NAME_FIXES_1`, same session, same loaded save — one Saves backup,
 one re-save, covering all three (see `SARLACC_WORLDMAP_RELOCATE_1`'s own
 note for the freeze-discipline write-up).
 
+## 2026-09-12 (FOUNDRY, offline subagent) — helixien mechanism now measured, no re-seat needed
+
+Read-only investigation off disk (RimSage has no index for this mod). Found
+`VHGE_GasGeyser`'s scatter mechanism: `VHelixienGasE.dll` uses Harmony to
+patch vanilla `GenStep_ScatterGeysers.CanScatterAt` (method name confirmed
+by string table; exact patch body not decompilable — no `ilspycmd`/
+`monodis`/`dotnet-decompile` available in this environment, so this is
+strong metadata inference, not a line-by-line read). It piggybacks on
+vanilla's own `SteamGeysers` `GenStepDef`
+(`Data/Core/Defs/MapGeneration/CommonMapGenerator.xml:136-149`:
+`allowInWaterBiome=false`, `minSpacing=25`, no biome allow-list) — no
+standalone `GenStepDef`, `TileMutatorExtension`, or biome list of its own
+exists anywhere in the mod's `Defs/` tree. **Scope: unrestricted except
+"not water biomes," inherited from vanilla, same as ordinary steam
+geysers.**
+
+Since it is not biome-locked, there is no "orphan tile" concept to clean up
+— nothing to re-seat. This closes the one open gap Part 1-3 of the review
+left. `VHGE_EnableGeysers`/`VHGE_GeysersCount`/`gasGeyserAmount` mod-settings
+exist (control density, not placement rules) but their live values were not
+read this pass — not needed for the ruled cleanup criteria.
+
+## Verdict: criteria met, closing
+
+Both RULED Part 4 fix-ups (magma-vent orphans, ancient-vent ruin-scoping)
+are live and read back clean per the `2026-09-12 (FOUNDRY)` note above.
+Swamp/ruin gas re-seat was already satisfied. PoisonForest toxic gas is
+satisfied; "green gas" has no matching defName and is correctly left
+unfabricated (a content-authoring question for the owner, not a placement
+bug). Helixien is now measured (unrestricted scatter, no orphan concept) —
+nothing left to build. Closing.
+
 ## spec
 Part 4 fix-up from the review: magma-vent out-of-lock tiles, ancient-vent
 ruin-only audit, swamp/ruin gas re-seat, PoisonForest toxic+green gas,
