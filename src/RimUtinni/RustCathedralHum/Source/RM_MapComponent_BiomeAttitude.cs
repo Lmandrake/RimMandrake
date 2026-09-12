@@ -105,6 +105,13 @@ namespace RimMandrake.Utinni.RustCathedralHum
 
 			SyncSustainers(def, band);
 
+			// §4's line-in tell. The kit spec's own preferred, zero-Harmony
+			// route: read the FISHING STATE off this map's pawns on the same
+			// interval this component already runs. Self-gated inside, and
+			// reached only on a map that HAS an attitude def (def != null
+			// above), so every other map pays nothing.
+			RM_CathedralFishing.ScanForFishing(map);
+
 			if (bandChanged)
 			{
 				MaybeFireCommentary(def, band);

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUST_CATHEDRAL_MECHANICS_1 §4 — the coolant eel.
+
+    Odyssey-only by construction: ParentName="FishBase" is an Odyssey abstract,
+    and the whole fishing stack (WaterBodyTracker, Zone_Fishing, JobDriver_Fish,
+    NegativeFishingOutcomeDef) ships with Odyssey. MayRequire keeps the def out
+    of the load entirely on an Odyssey-less install rather than erroring on a
+    missing parent.
+
+    Register law (sheet §6): §P only. Ban 1 — nothing here may say the catch is
+    noticed, priced, or watched; the description is what a Jawa with the fish in
+    hand can see, and stops there. Ban 2 — no explanation of why it lives where
+    it lives. The eel being SALABLE is the sheet's own line ("eel-catch —
+    salable, watched"); the "watched" half is mechanism and stays out of text.
+
+    MarketValue 18 is the kit spec's own INVENTED figure for §4 ("eel market
+    value ~18"). FishBase's own 6.5 is the plain-food baseline; piranha at 40 is
+    the trophy end. 18 reads as "worth the trip, not a fortune".
+
+    Placeholder art: texPath points at vanilla's dogfish sprite, the same
+    "reuse a vanilla asset until the art pipe runs" convention §1/§2/§3 used.
+    A real eel sprite is a one-line swap.
+  -->
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_CoolantEel</defName>
+    <label>coolant eel</label>
+    <description>A pale, eyeless eel as long as a forearm, cold to the touch long after it leaves the water. Its skin is smooth and faintly metallic, and it goes on twitching for a while after it stops living. Buyers off-plateau pay well for one.</description>
+    <graphicData>
+      <texPath>Things/Item/Fish/Dogfish</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>18</MarketValue>
+    </statBases>
+  </ThingDef>
+
+</Defs>

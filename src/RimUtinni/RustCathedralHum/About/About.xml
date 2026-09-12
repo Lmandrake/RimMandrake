@@ -34,8 +34,7 @@ drops to silence — the survival cue to stop moving.
 Public API for the rest of the kit to plug into:
   RM_MapComponent_BiomeAttitude.GetBand(Map)
   RM_MapComponent_BiomeAttitude.AddIrritation(Map, float)
-§3 (below) is the first consumer. §4 eel-fishing and §5 deep-drill remain
-unbuilt and call neither.
+§3, §4 and §5 (below) are all consumers.
 
 ALSO HERE: §3 (living bolts as mechanical wildlife) — the hum's display
 organ, built into this mod rather than a sibling because it is the only
@@ -69,6 +68,46 @@ bolt-dance display as part of the hum system.
   (both overloads) and a prefix on Pawn.Kill add +3 / +15 irritation, but
   only when a player-faction pawn did it. Nothing player-readable says so —
   the sheet's ban 1 forbids the def admitting it is watched.
+
+ALSO HERE: §4 (eel-fishing consequences) — Odyssey's fishing stack, priced.
+- RUT_CoolantEel: the SOLE entry in the Cathedral's freshwater fishTypes, so
+  every canal catch is an eel. Salable (MarketValue 18), as the sheet says.
+  Saltwater stays empty and no rare-catch table is set, so "canal only" is
+  structural rather than a rule someone has to remember.
+- A biome patch supplies maxFishPopulation (150) as well as fishTypes. That
+  is not decoration: the Cathedral biome shipped with it at 0, and at 0
+  WaterBodyTracker skips its population tick and Zone_Fishing refuses to
+  exist. Without it §4 is dead content. (Canals below ~75 cells still hold
+  no fish at all — vanilla's body-size curve, not ours.)
+- The line-in tell is the kit spec's own preferred zero-Harmony route: §1's
+  MapComponent reads the fishing STATE off the map's own pawns on its
+  existing 250-tick interval, +5 irritation once per fishing job, colony
+  pawns only. The Harmony fallback the spec offers was not needed.
+- The per-catch price is a Harmony postfix on WaterBodyTracker.Notify_Fished
+  (+2 irritation per fish, -1 faction-13 goodwill per 3 fish in a day). A
+  catch is an INSTANT, not a state — an interval scan structurally cannot
+  see it.
+- RUT_NegativeFishingOutcome_CoolantEel: one vanilla NegativeFishingOutcome,
+  ElectricalBurn 8~14 and an undescribing letter, behind vanilla's own 2%
+  roll and 5-day map cooldown (re-read from FishingUtility at build — note
+  the class's NegativeCatchCooldownTicks constant is dead; the executed code
+  uses a 300000-tick literal).
+
+ALSO HERE: §5 (the deep-drill response event) — ban 6 territory, so nothing
+player-readable describes it.
+- RUT_DeepDrillCathedralResponse + RUT_IncidentWorker_CathedralResponse:
+  fires only on a Rust Cathedral map with a usable player deep drill sitting
+  over RUT_LivePatternMetal (§2's tier 4, resolved by defName — no
+  cross-mod reference). A faction-13 force at 2-3x scaled points converges
+  on that drill under vanilla LordJob_AssaultThings, destroys it, and
+  withdraws; it never takes an assault-colony lord, so "movement against the
+  violation, not an assault on the colony" is structural. Firing also floors
+  the §1 band and takes -25 goodwill.
+- No storyteller plumbing of our own: vanilla's
+  StorytellerComp_DeepDrillInfestation already rolls this category. Its pick
+  is an UNWEIGHTED TryRandomElement, so the spec's ❓ is answered "no, it
+  would be a coin flip" — and the spec's own named fallback is taken: a
+  Harmony postfix refuses vanilla's bug infestation on Cathedral maps only.
 
 Deferred (kit spec's own scope lines): the -15-per-sacred-building magnitude
 check on vanilla's AttackedBuilding goodwill hook (rides whichever mod ends

@@ -330,5 +330,54 @@ firing in practice all need a quicktest once enabled).
 curiosity can charge irritation again on repickup. Fixing it needs an
 ExposeData field on §1's MapComponent (no new comp on the item, per ban 1).
 
-**Kit tally: 3/6 sections now** (walls, roaches, hum-mood, living bolts).
+**Kit tally: 4/6 sections now** (walls, roaches, hum-mood, living bolts).
 §4 eel-fishing and §5 deep-drill response remain untouched.
+
+## 2026-09-12 (FOUNDRY, offline subagent, belt mode) — §4 eel-fishing + §5 deep-drill response built: 6/6 sections offline-complete
+
+**§4**: `RUT_CoolantEel` fish ThingDef, sole `fishTypes` entry on Cathedral
+canal water; line-in tell via the spec's preferred interval-scan route (no
+Harmony needed there — §1's existing 250-tick scan check vs a ~7500-tick
+fishing job, nothing structurally awkward); per-catch pricing DOES need a
+Harmony postfix on `WaterBodyTracker.Notify_Fished` (a catch is invisible
+to any scan, it fires inside one toil's initAction); one
+`RUT_NegativeFishingOutcome_CoolantEel` (vanilla def type), vanilla gate
+re-confirmed live in `FishingUtility.cs` (2%, 300000-tick/5-day cooldown —
+the class's own `NegativeCatchCooldownTicks` constant is dead code, not
+what actually executes).
+
+🔴 **Real bug found and fixed, not a §4 build choice**: the Cathedral biome
+shipped `maxFishPopulation = 0`, which makes `Zone_Fishing` refuse to exist
+at all — §4 would have been dead content without this patch, same failure
+class as the `RUT_LivingBolt`/roach think-tree gap found in §3.
+
+**§5**: built to the spec's own v1 line, quoted verbatim — "incident +
+worker + lord reuse + undescribing letter" (pre-event tells and partial
+responses explicitly deferred, per spec). A faction-13 force converges on
+a drill sitting over `RUT_LivePatternMetal` via vanilla
+`LordJob_AssaultThings`, destroys it, withdraws. The spec's own ❓
+(unweighted incident-category roll) resolved via its own stated fallback:
+a Harmony postfix disabling vanilla bug-infestation on Cathedral maps only.
+**Spec's premise corrected**: `RM_LordJob_DefendPerimeter` (named in the
+kit doc) does not exist in this repo (`ScarlandsLadder` ships no Source) —
+used vanilla `LordJob_AssaultThings` instead, so "withdraw 1 day after
+drill death" becomes immediate-on-death rather than a timed retreat.
+
+🔴 **Repo-wide finding, flagging rather than sweeping solo**: `MayRequire`
+on a patch `<Operation>` element is **inert** —
+`ModContentPack.LoadPatches` ignores it entirely. This mod's own Odyssey
+gate was built by xpath-testing for `FishBase` instead. Every OTHER patch
+file in this repo relying on a per-Operation `MayRequire` may be silently
+unguarded — worth a dedicated sweep item, not assumed fixed here.
+
+Built clean (0 errors/0 warnings). `validate_patch.py` against the
+2026-09-12T13-25-42Z live capture (fingerprint-confirmed 592==592): 0
+errors on the whole mod's `Defs/`+`Patches/`. No defName collisions
+against the 68,881-name live dump. Left DISABLED in `ModsConfig.xml`, same
+as every other section. Not live-verified (offline brief) — Harmony
+binding, the interval scan catching a real fishing job, and the response
+force spawning all need a quicktest.
+
+**Kit tally: 6/6 sections now offline-complete** (walls, roaches, hum-mood,
+living bolts, eel-fishing, deep-drill response). Nothing in the kit is
+enabled live. `needs=bridge` for the whole-kit enable + quicktest pass.

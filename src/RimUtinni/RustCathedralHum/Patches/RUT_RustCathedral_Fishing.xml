@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    RUST_CATHEDRAL_MECHANICS_1 §4 — makes the Cathedral's canals fishable, with
+    exactly one fish in them.
+
+    RUT_RustCathedral is owned by mandrake.rut.patches (Defs/BiomeDefs/
+    RUT_RustCathedral.xml) and ships with NEITHER maxFishPopulation NOR
+    fishTypes. This mod already declares loadAfter mandrake.rut.patches, so a
+    PatchOperationAdd lands after the biome exists.
+
+    🔴 maxFishPopulation is NOT cosmetic and NOT optional — the kit spec flagged
+    it as a ❓ and the answer is that it is currently ZERO (BiomeDef.cs:141
+    defaults it to 0 and the Cathedral def never sets it). At zero:
+      - WaterBodyTracker.cs:90 skips its whole population tick, so eels never
+        regrow, and
+      - Zone_Fishing.cs:82 refuses to be a fishing zone at all.
+    Without this line §4 is dead content. INVENTED: 150. Vanilla's lowest
+    non-zero is ExtremeDesert at 240 and Scarlands/Space are flat 0; 150 puts
+    the canals below every real biome without switching fishing off.
+
+    ⚠️ Even with this set, a canal must be physically large for fish to appear:
+    WaterBody.SetFishTypes rolls
+    FishingUtility.ChanceForCommonFishFromWaterBodySizeCurve, which is 0 below
+    75 cells and does not reach 1.0 until 200. A narrow authored canal may hold
+    no fish at all. That is map geometry, not a def bug — flagged, not patched.
+
+    🔑 fishTypes uses a LoadDataFromXmlCustom list (FishChance.cs): the entry
+    form is <DefName>weight</DefName>, NEVER <li>. An <li> here silently
+    discards the WHOLE BiomeDef.
+
+    THE ODYSSEY GATE IS AN XPATH TEST, not MayRequire and not
+    PatchOperationFindMod, and the reason is specific:
+      - MayRequire on an <Operation> node is INERT. LoadedModManager.cs:395
+        honours it for DEF nodes only; ModContentPack.LoadPatches (:357-385)
+        loads every <Operation> child unconditionally and never looks at
+        attributes. Checked in source, not assumed.
+      - PatchOperationFindMod matches on ModLister.HasActiveModWithName, i.e.
+        About.xml's <name> — and Odyssey's About.xml has NO <name> element at
+        all (only packageId Ludeon.RimWorld.Odyssey), so that route depends on
+        a fallback display name rather than an identifier.
+    Testing for FishBase — the Odyssey abstract this mod's eel inherits from,
+    in the very document being patched — is exact and needs no name at all.
+    Without Odyssey, RUT_CoolantEel's own def node is MayRequire'd away (which
+    IS honoured), so skipping this patch leaves nothing dangling. Both BiomeDef
+    fields are core, so the cost of skipping is zero.
+
+    freshwater_Common only, by design:
+      - the eel is the SOLE entry, so every canal catch is an eel (spec: "sole
+        entry in the Cathedral biome's fishTypes"),
+      - saltwater_* stay absent, so any salt body on a Cathedral map has no
+        fish whatsoever — "canal water bodies only",
+      - freshwater_Uncommon stays absent so the 5% uncommon roll finds nothing
+        and falls through to the eel,
+      - rareCatchesSetMaker stays absent: the spec defers the canal rare-catch
+        table to a later content pass, and leaving it null makes vanilla's 1%
+        rare branch unreachable rather than rolling some other biome's table.
+  -->
+
+  <Operation Class="PatchOperationConditional">
+    <!-- Gate 1: Odyssey is in the load set (see the note above). -->
+    <xpath>/Defs/ThingDef[@Name="FishBase"]</xpath>
+    <match Class="PatchOperationConditional">
+      <!-- Gate 2: degrade to a silent no-op rather than a red error every
+           launch if mandrake.rut.patches (which owns RUT_RustCathedral) is
+           inactive, or if it ever ships these two fields itself. -->
+      <xpath>/Defs/BiomeDef[defName="RUT_RustCathedral" and not(fishTypes)]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RUT_RustCathedral"]</xpath>
+        <value>
+          <maxFishPopulation>150</maxFishPopulation>
+          <fishTypes>
+            <freshwater_Common>
+              <RUT_CoolantEel>1</RUT_CoolantEel>
+            </freshwater_Common>
+          </fishTypes>
+        </value>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>

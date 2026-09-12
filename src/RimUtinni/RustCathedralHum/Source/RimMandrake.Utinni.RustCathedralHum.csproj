@@ -50,6 +50,8 @@
     <Compile Include="RM_JobGiver_ResonantDance.cs" />
     <Compile Include="RM_ThinkNode_ConditionalAttitudeBand.cs" />
     <Compile Include="HarmonyPatch_WatchedBolts.cs" />
+    <Compile Include="RM_CathedralFishing.cs" />
+    <Compile Include="RUT_IncidentWorker_CathedralResponse.cs" />
     <Compile Include="RustCathedralHumSettings.cs" />
   </ItemGroup>
 
