@@ -197,14 +197,14 @@ grab("data/art.json").then(d=>{
            ["creatures",creatures],
            ["renders",renders],["rejections",rejected],
            ["awaiting verdict",sc.awaiting_verdict??0],
-           ["spend all-time",sp.totalUsd!=null?"$"+sp.totalUsd.toFixed(2):"?"],
-           ["this week",sp.weekUsd!=null?"$"+sp.weekUsd.toFixed(2):"?"],
-           ["weekly window",sp.pctWeeklyWindow!=null?sp.pctWeeklyWindow+"%":"?"]])+
+           ["codex window, 7d",sp.pctWeeklyWindow!=null?sp.pctWeeklyWindow+"%":"?"],
+           ["codex all-time",sp.codexPctAllTime!=null?sp.codexPctAllTime+"%":"?"],
+           ["gemini spend (hist)",sp.geminiUsdTotal!=null?"$"+sp.geminiUsdTotal.toFixed(2):"?"]])+
     `<h3>Queue states</h3><div class="scroll"><table><tr><th>state</th><th class="num">lanes</th></tr>`+
     states.map(([k,v])=>`<tr><td>${esc(k)}</td><td class="num">${v}</td></tr>`).join("")+
     `</table></div>`+
     `<h3>Per-target tracking (${new Set(lanes.map(([k])=>k.split("/")[0])).size} targets, ${lanes.length} lanes)</h3><div class="tableclip"><table id="arttab">`+
-    `<tr><th>target</th><th>state</th><th class="num">iterations</th><th class="num">rejected</th><th class="num">spend</th></tr>`+
+    `<tr><th>target</th><th>state</th><th class="num">iterations</th><th class="num">rejected</th><th class="num">window / $</th></tr>`+
     artRows(lanes,ord)+
     `</table></div>`+
     `<p class="note">Scope = what the registry has been fed (regen waves so far). The
@@ -230,12 +230,19 @@ function artRows(lanes,ord){
   const gs=[...groups.entries()];
   const rank=ls=>Math.min(...ls.map(([,v])=>ord.indexOf(v.state)));
   gs.sort((a,b)=>(rank(a[1])-rank(b[1]))||a[0].localeCompare(b[0]));
-  const money=v=>v.spend&&v.spend.usd!=null?v.spend.usd:null;
+  const fmtSpend=(pct,usd)=>{
+    const parts=[];
+    if(pct)parts.push(pct.toFixed(1)+"%");
+    if(usd)parts.push("$"+usd.toFixed(2));
+    return parts.length?parts.join(" + "):"\u2014";
+  };
+  const lanePct=v=>v.spend?(v.spend.codexPctWindow||0):0;
+  const laneUsd=v=>v.spend?(v.spend.usd||0):0;
   let out="";
   for(const [g,ls] of gs){
     const it=ls.reduce((a,[,v])=>a+(v.renders??v.iteration??0),0);
     const rj=ls.reduce((a,[,v])=>a+(v.rejected_count||0),0);
-    const usd=ls.some(([,v])=>money(v)!=null)?ls.reduce((a,[,v])=>a+(money(v)||0),0):null;
+    const gp=ls.reduce((a,[,v])=>a+lanePct(v),0),gu=ls.reduce((a,[,v])=>a+laneUsd(v),0);
     const st=new Set(ls.map(([,v])=>v.state));
     const state=st.size===1?[...st][0]:"mixed";
     const single=ls.length===1;
@@ -244,14 +251,14 @@ function artRows(lanes,ord){
       `<code style="font-family:var(--mono);font-size:12px">${esc(g)}</code>`+
       (single?"":` <span style="color:var(--muted);font-size:12px">\u00D7${ls.length}</span>`)+
       `</td><td>${esc(state)}</td><td class="num">${it}</td><td class="num">${rj}</td>`+
-      `<td class="num">${usd!=null?"$"+usd.toFixed(2):"\u2014"}</td></tr>`;
+      `<td class="num">${fmtSpend(gp,gu)}</td></tr>`;
     if(!single)for(const [k,v] of ls){
       const f=k.slice(g.length+1)||k;
       out+=`<tr class="sub" data-g="${esc(g)}" hidden><td style="padding-left:30px">`+
         `<code style="font-family:var(--mono);font-size:12px;color:var(--muted)">${esc(f)}</code></td>`+
         `<td>${esc(v.state)}</td><td class="num">${v.renders??v.iteration??0}</td>`+
         `<td class="num">${v.rejected_count??0}</td>`+
-        `<td class="num">${money(v)!=null?"$"+money(v).toFixed(2):"\u2014"}</td></tr>`;
+        `<td class="num">${fmtSpend(lanePct(v),laneUsd(v))}</td></tr>`;
     }
   }
   return out;
