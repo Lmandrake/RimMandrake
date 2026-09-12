@@ -1,4 +1,4 @@
-<!-- status: built-offline, owner review owed -->
+<!-- status: built-offline + WAKE/LOOT sender built 2026-09-12, live quicktest still owed -->
 # The vault thaw quest family — what makes the six Forsaken vaults play
 
 > **Scope.** `VAULT_THAW_QUEST_FAMILY_1`. The six vault layouts exist
@@ -22,7 +22,7 @@
 |---|---|
 | **RULED, restated** | six sites and tiles; three types; concentric grammar; wake/loot/leave ladder and its verbatim line; the Reclamation (owner 2026-09-04, card G4) and the two scenes after it; the Helix flip; thaw = "bring an old power core", power core = vanilla `AIPersonaCore`; QuestNode + map signal, no custom C# unless a node is genuinely missing; 325×325; `RUT_` tier; CARTOGRAPHY reveals vault sites, V6 requires VOICE |
 | **BUILT this pass (XML, validated offline)** | six vault quests on FIXED tiles; site content through `SitePartDef` → `GenStepDef` → KCSG; the V6 thaw as a real vanilla mechanism (a dead power plant fed one `AIPersonaCore`); V6's three branches wired to named signals; the Claim-Conflict quest; the Reclamation quest with the Helix flip and both scenes; eight `HistoryEventDef`s as the memory substrate; a GiveQuest incident per quest for deterministic firing |
-| **PROPOSED by this pass — not canon, flagged for the owner** | §2.2 "the woken who woke others" reading of who walks in the Claim-Conflict; §4 what "dominated-neutral" can and cannot mean without C#; §5 the two C# signal senders and the roster, as the smallest honest gap list; the Reclamation's late-ness expressed as a 45-day chain delay rather than a VOICE gate |
+| **PROPOSED by this pass — not canon, flagged for the owner** | §2.2 "the woken who woke others" reading of who walks in the Claim-Conflict; §4 what "dominated-neutral" can and cannot mean without C#; §5 finding #1 (the casket signal sender) **built 2026-09-12** — findings #2-4 remain proposed only; the Reclamation's late-ness expressed as a 45-day chain delay rather than a VOICE gate |
 
 ## 1. Shape — one family, three tiers
 
@@ -150,13 +150,17 @@ gesture with the same item:
 | **LOOT** | `site.RUT_SleepersLooted` — a casket broken with sleepers in it | "kills them, plainly": a `NegativeEvent` letter that says so; `RUT_VaultSleepersKilled`; the quest ends |
 | **LEAVE** | `site.MapRemoved` with neither touch (disarmed by either) | "the Narrator remembers": the letter says the ship will remember you did not decide for them; `RUT_VaultLeftSleeping`; Success |
 
-**The C# gap, stated plainly.** No vanilla `QuestPart` sends a signal when a
-casket is opened or broken, and `Site.AllEnemiesDefeated` fires once per map
+**The C# gap, closed 2026-09-12.** No vanilla `QuestPart` sends a signal when
+a casket is opened or broken, and `Site.AllEnemiesDefeated` fires once per map
 the moment no hostile active threat remains — on a type-③ vault that is the
-moment of arrival, so it cannot stand in. The wake and loot branches are
-fully wired and inert; **only LEAVE can fire today.** This is exactly the
-"if a node is genuinely missing, that is a finding to file" case from the
-2026-09-01 ruling; the finding is §5.
+moment of arrival, so it cannot stand in. `MapComponent_VaultSleepers`
+(`src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/`) now sends both
+signals: it watches the vault's caskets and fires `RUT_SleepersWoken` the
+instant one is ejected while surviving (`Open` job or combat eject — either
+way vanilla's own `EjectContents` raises the assault lord, so this reading
+tracks the actual mechanic) and `RUT_SleepersLooted` the instant one is
+destroyed before ever ejecting. Compiled and validate-clean offline; **not
+yet proven in a running game** — a quicktest owns that (§7).
 
 Who walks in the Claim-Conflict if the crew killed every sleeper they woke?
 **Proposal, mine:** canon says every garrison's children slept and "each
@@ -235,7 +239,7 @@ discovery.
 
 | # | what | why vanilla can't | smallest shape |
 |---|---|---|---|
-| 1 | **Casket signal sender** | no `QuestPart` observes `Building_AncientCryptosleepCasket` open/destroy; `Site.AllEnemiesDefeated` is spent on arrival | a `MapComponent` or Harmony postfix on `EjectContents`/`Destroy` that calls `QuestUtility.SendQuestTargetSignals(map.Parent.questTags, "RUT_SleepersWoken" / "RUT_SleepersLooted")` — the quest already listens for exactly those; loot-kills-them is the same patch (destroy contents on a damage-eject instead of waking them) |
+| 1 | **Casket signal sender — BUILT 2026-09-12** | no `QuestPart` observes `Building_AncientCryptosleepCasket` open/destroy; `Site.AllEnemiesDefeated` is spent on arrival | `MapComponent_VaultSleepers`, no Harmony needed — `contentsKnown` is `protected` but `HasAnyContents`+`Destroyed` (both public) distinguish the same two states by polling every 60 ticks, gated to `RUT_VaultSite_Type3` maps only. Sends `QuestUtility.SendQuestTargetSignals(map.Parent.questTags, "RUT_SleepersWoken" / "RUT_SleepersLooted")` exactly as this row proposed. Compiled and offline-validated; live quicktest still owed (§7). |
 | 2 | **"Everyone you ever woke"** | no engine memory of pawns across maps; a site's pawns die with its map | `GameComponent_OldFriends` from `plot_mechanisms_wave.md` Part 1 with the `WOKEN_ANCIENT` role; until it exists the Reclamation's first wave is a fresh `AncientSoldier` group, which the letters are written to survive |
 | 3 | **Dominated-neutral after the Reclamation** | `AncientsHostile` is `permanentEnemy`; casket contents' faction is vanilla's | §4 option (a), one flag read by #1 |
 | 4 | **Once-ever offer** | `QuestGen.Root` is null in `TestRun` | #1 refuses a second V6 offer once any touch is recorded; ①/② re-offers are canon-consistent as-is |
