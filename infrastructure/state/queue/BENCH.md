@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T02:26:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T02:35:23Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -89,15 +89,6 @@ target:   v1
 kind:     task
 summary:  Division of labor (the design decision, incl. the ruled pushback):
 prose:    infrastructure/state/items/ART_PIPELINE_DAEMON_1.md
-
-## DUNGEON_DESIGN_RESEARCH_1 Deep research: dungeon game design corpus + metrics -> research/game_design/ (renders to candidate skills, canon puzzles/events, map templates)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     research
-summary:  (no items/DUNGEON_DESIGN_RESEARCH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DUNGEON_DESIGN_RESEARCH_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
