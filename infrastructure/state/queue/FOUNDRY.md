@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T14:43:13Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T14:47:56Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -657,19 +657,10 @@ kind:     task
 summary:  WORLDMAPAUDITLIVECHECKS1 — the four audit checks only the live game can answer
 prose:    infrastructure/state/items/WORLDMAP_AUDIT_LIVE_CHECKS_1.md
 
-## VAPOR_PLACEMENT_CLEANUP_1 Vapor emitter part-4 cleanup per the 2026-09-12 ruled rules: magma-vent 5 out-of-lock tiles, ancient-vent ruin-only audit, swamp/ruin gas re-seat, PoisonForest toxic+green gas, helixien re-seat to junker sites in PoisonForest and the Rot (engine mechanism check first)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Part 4 fix-up from the review: magma-vent out-of-lock tiles, ancient-vent
-prose:    infrastructure/state/items/VAPOR_PLACEMENT_CLEANUP_1.md
-
 ## ASHFALL_SPIRE_LANDMARK_1 Place The Spire landmark (Ashfall Research Base site): thin black needle, disc pad near top, intermittently visible through Scald turbulence — live placement + read-back per worldmap discipline; dungeon shell may follow, campaign function stays TBD (owner)
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     task
 summary:  ASHFALLSPIRELANDMARK1 — The Spire landmark, Ashfall Research Base site
