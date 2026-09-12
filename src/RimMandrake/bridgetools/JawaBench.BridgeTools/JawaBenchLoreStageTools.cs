@@ -64,7 +64,12 @@ namespace JawaBench.BridgeTools
                     return (object)new { success = true, present = false, ladderId, reason = "no Game loaded", ticksGame = TicksGameSafe() };
                 }
 
-                int stage = (int)compType.GetMethod("GetStage").Invoke(current, new object[] { ladderId });
+                var getStageMethod = compType.GetMethod("GetStage");
+                if (getStageMethod == null)
+                {
+                    return (object)Fail("GameComponent_LoreStage.GetStage not found by reflection (method renamed or removed).");
+                }
+                int stage = (int)getStageMethod.Invoke(current, new object[] { ladderId });
                 return (object)new { success = true, present = true, ladderId, stage, ticksGame = TicksGameSafe() };
             });
         }
@@ -99,8 +104,14 @@ namespace JawaBench.BridgeTools
                     return Fail("No current Game - start or load one first.");
                 }
 
-                bool changed = (bool)compType.GetMethod("SetStage").Invoke(current, new object[] { ladderId, stage });
-                int readBack = (int)compType.GetMethod("GetStage").Invoke(current, new object[] { ladderId });
+                var setStageMethod = compType.GetMethod("SetStage");
+                var getStageMethod = compType.GetMethod("GetStage");
+                if (setStageMethod == null || getStageMethod == null)
+                {
+                    return Fail("GameComponent_LoreStage.SetStage/GetStage not found by reflection (method renamed or removed).");
+                }
+                bool changed = (bool)setStageMethod.Invoke(current, new object[] { ladderId, stage });
+                int readBack = (int)getStageMethod.Invoke(current, new object[] { ladderId });
                 return (object)new { success = true, present = true, ladderId, stage = readBack, changed, ticksGame = TicksGameSafe() };
             });
         }
