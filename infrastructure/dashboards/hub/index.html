@@ -89,17 +89,24 @@
   <h2>Art regeneration pipeline</h2>
   <div class="meta" id="meta-art"></div>
   <div id="body-art"></div>
+  <div id="body-art-sheets"></div>
 </section>
 
 <section id="health" hidden>
   <h2>Codebase health</h2>
   <div class="meta" id="meta-health"></div>
+  <iframe src="tabs/health.html" title="Codebase health — full report"
+          style="width:100%;border:0;min-height:78vh;background:#fff" loading="lazy"></iframe>
+  <p class="note">open full page: <a href="tabs/health.html">tabs/health.html</a></p>
   <div id="body-health"></div>
 </section>
 
 <section id="maturity" hidden>
   <h2>Project maturity</h2>
   <div class="meta" id="meta-maturity"></div>
+  <iframe src="tabs/maturity.html" title="Project maturity — full report"
+          style="width:100%;border:0;min-height:78vh;background:#fff" loading="lazy"></iframe>
+  <p class="note">open full page: <a href="tabs/maturity.html">tabs/maturity.html</a></p>
   <div id="body-maturity"></div>
 </section>
 
@@ -220,6 +227,24 @@ grab("data/art.json").then(d=>{
   });
 }).catch(e=>fail("art",e));
 
+grab("data/artsheets.json").then(d=>{
+  const rows=d.rows||[];
+  $("#body-art-sheets").innerHTML=
+    `<h3>Unresolved review sheets (${rows.length})</h3>`+
+    (rows.length?`<div class="scroll"><table><tr><th>sheet</th><th class="num">undecided</th><th>path</th></tr>`+
+      rows.map(r=>{
+        const winPath="D:\\Luke\\dev\\Rimworld\\"+r.file.replace(/\//g,"\\");
+        const u=(r.undecided==null)?"UNMEASURED":`${r.undecided} / ${r.total??"?"}`;
+        return `<tr><td><a href="${esc(r.published)}">${esc(r.title)}</a></td>`+
+          `<td class="num">undecided ${esc(u)}</td>`+
+          `<td><code>${esc(winPath)}</code></td></tr>`;
+      }).join("")+
+      `</table></div>`
+    :`<p class="note">no unresolved review sheets.</p>`);
+}).catch(()=>{
+  $("#body-art-sheets").innerHTML=`<h3>Unresolved review sheets</h3><p class="note">no artsheets.json published yet</p>`;
+});
+
 function artRows(lanes,ord){
   const groups=new Map();
   for(const [k,v] of lanes){
@@ -264,42 +289,9 @@ function artRows(lanes,ord){
   return out;
 }
 
-grab("data/health.json").then(d=>{
-  meta("health",d);
-  const c=d.counts||{},l=d.loc||{};
-  const hue={red:"var(--bad)",blue:"var(--info)",green:"var(--good)",grey:"var(--grey)"};
-  $("#body-health").innerHTML=
-    tiles([["files",c.total??"?",1],["review entries",d.reviewEntries??"?"],
-           ["LOC total",(l.total??0).toLocaleString("en-US")]])+
-    `<h3>Review status</h3><div class="scroll"><table><tr><th>status</th><th class="num">files</th><th class="num">LOC</th></tr>`+
-    ["red","blue","green","grey"].map(k=>
-      `<tr><td><span class="dot" style="background:${hue[k]}"></span>${k}</td><td class="num">${c[k]??0}</td><td class="num">${(l[k]??0).toLocaleString("en-US")}</td></tr>`).join("")+
-    `</table></div>`+
-    `<h3>Recidivists — most re-dirtied files</h3><div class="scroll"><table><tr><th>path</th><th class="num">cycles</th><th class="num">LOC</th></tr>`+
-    (d.recidivists||[]).map(r=>`<tr><td><code style="font-family:var(--mono);font-size:12px">${esc(r.path)}</code></td><td class="num">${r.cycles}</td><td class="num">${r.loc}</td></tr>`).join("")+
-    `</table></div>`;
-}).catch(e=>fail("health",e));
+grab("data/health.json").then(d=>meta("health",d)).catch(e=>fail("health",e));
 
-grab("data/maturity.json").then(d=>{
-  meta("maturity",d);
-  const fc=d.functionCounts||{},cr=d.codeReview||{},lg=d.ledger||{},g=d.goal||{};
-  const rungs=["planned","designed","implemented","runnable","validated","played"];
-  const mx=Math.max(...rungs.map(r=>fc[r]||0),1);
-  $("#body-maturity").innerHTML=
-    tiles([["systems",(d.systems||[]).length,1],
-           ["goal ticks",`${g.ticked??"?"} / ${g.total??"?"}`],
-           ["open items",lg.openItems??"?"],["needs owner",lg.needsOwner??"?"],
-           ["dirty files",cr.dirty??"?"]])+
-    `<h3>Function rungs</h3><div class="scroll"><table>`+
-    rungs.map(r=>`<tr><td style="width:110px">${r}</td><td class="num" style="width:44px">${fc[r]??0}</td><td><div class="bar"><i style="width:${(fc[r]||0)/mx*100}%"></i></div></td></tr>`).join("")+
-    `</table></div>`+
-    `<h3>Goal sheet — ${esc(String(g.ticked))} of ${esc(String(g.total))} ticked</h3><div class="scroll"><table><tr><th>#</th><th>section</th><th class="num">ticked</th><th style="width:35%"></th></tr>`+
-    (g.sections||[]).map(s=>`<tr><td>${s.n}</td><td>${esc(s.title)}</td><td class="num">${s.ticked} / ${s.total}</td><td><div class="bar"><i style="width:${s.total?s.ticked/s.total*100:0}%"></i></div></td></tr>`).join("")+
-    `</table></div>`+
-    `<h3>Systems (${(d.systems||[]).length})</h3><div class="tableclip"><table><tr><th>system</th><th>tier</th><th>function</th><th>content</th><th>date</th></tr>`+
-    (d.systems||[]).map(s=>`<tr><td>${esc(s.system)}</td><td>${esc(s.tier||"")}</td><td>${esc(s.functionRung||"")}</td><td>${esc(s.contentRung||"")}</td><td>${esc(s.date||"")}</td></tr>`).join("")+
-    `</table></div>`;
-}).catch(e=>fail("maturity",e));
+grab("data/maturity.json").then(d=>meta("maturity",d)).catch(e=>fail("maturity",e));
 
 grab("data/worldmap.json").then(d=>{
   meta("worldmap",d);
