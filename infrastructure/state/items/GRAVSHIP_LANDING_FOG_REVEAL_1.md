@@ -45,3 +45,22 @@ for one tiny room in a large complex... so I was forced to land blind and crashe
   Player.log anyway before assuming.
 - `FloodUnfog` respects `MakeFog` edifices; doors do not pass. Two flood roots are
   cheap; do not unfog cell-by-cell (62,500 SetFog calls wedged the game once).
+
+## CLOSED 2026-09-12 — built, deployed, proven on the owner's own arrival
+- Mod: `src/RimMandrake/GravshipLanding` (`mandrake.rm.gravshiplanding`), commit
+  `6e92224b4`. Enabled in the live list (593 active). Restart 09:24, ready line in
+  Player.log, no new Config errors (88 → 88).
+- Owner rulings on the ticket cards: reveal EVERYTHING OUTDOORS (roofed interiors stay
+  fogged); NWN measured first, patched only if it applied; new standalone RimMandrake
+  mod; start-site clearing recorded on PLAYER_START_SITE_1, not built here.
+- MEASURED on the real arrival at 17007 (Player.log line 16644):
+  `arrival map 17007,0: revealed the outdoors from 9 roots, fogged cells 62500 -> 5465`.
+  The 5,465 left are roofed cells. Owner, verbatim: *"The defogging worked even with
+  buildings on the map! And the map looks already pretty good."*
+- The first hop (tile 1596) logged `0 roots, 0 -> 0` — that map already existed
+  (ArriveExistingMap path, no GenStep_Fog), so the postfix correctly did nothing.
+- NWN Real Fog of War did NOT obscure the picker (owner saw the whole outdoors), so no
+  NWN patch was written. ⚠️ Post-landing, the colony map still shows NWN's dark
+  field-of-view shading beyond the crew's sight radius ("Undiscovered" readout) even
+  though vanilla fog reads 5,465/62,500 — that is NWN on a player-home map and
+  `onlyOutsideColony=True` did not switch it off here; separate from this ticket.
