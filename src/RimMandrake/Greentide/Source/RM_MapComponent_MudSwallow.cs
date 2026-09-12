@@ -43,6 +43,10 @@ namespace RimMandrake.Greentide
 		public override void MapComponentTick()
 		{
 			base.MapComponentTick();
+			if (!RM_GreentideSettings.buriedCacheEnabled)
+			{
+				return; // MOD_OPTIONS_RETROFIT_1: master toggle, all-off degrades to a no-op
+			}
 			if (Find.TickManager.TicksGame % CheckIntervalTicks != 0)
 			{
 				return;
@@ -52,8 +56,17 @@ namespace RimMandrake.Greentide
 
 		private void Scan()
 		{
-			List<Thing> haulables = map.listerThings.ThingsInGroup(ThingRequestGroup.HaulableEver);
+			// ThingsInGroup returns the engine's LIVE internal list. Bury()
+			// below calls Thing.Destroy(), which synchronously removes the
+			// thing from that same list — mutating it mid-iteration would
+			// shift the next element into the slot we just consumed, so it
+			// gets skipped this pass and its firstSeenTick entry is wrongly
+			// purged below as "moved off hazardous ground" (full dwell-timer
+			// reset, no exception, no log). Snapshot to a copy before Bury()
+			// can touch the live list.
+			List<Thing> haulables = new List<Thing>(map.listerThings.ThingsInGroup(ThingRequestGroup.HaulableEver));
 			var stillPresent = new HashSet<Thing>();
+			var toBury = new List<Thing>();
 			for (int i = 0; i < haulables.Count; i++)
 			{
 				Thing thing = haulables[i];
@@ -75,9 +88,13 @@ namespace RimMandrake.Greentide
 				}
 				if (Find.TickManager.TicksGame - firstTick >= ext.swallowTicks)
 				{
-					Bury(thing);
+					toBury.Add(thing);
 					firstSeenTick.Remove(thing);
 				}
+			}
+			for (int i = 0; i < toBury.Count; i++)
+			{
+				Bury(toBury[i]);
 			}
 			// Drop tracking for anything that moved off hazardous ground or despawned.
 			if (firstSeenTick.Count > 0)

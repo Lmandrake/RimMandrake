@@ -142,17 +142,17 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_JungleTree>3.0</AB_JungleTree>  <!-- deep jungle tree - tree -->
-      <Plant_HydenockTree_Wild>1.5</Plant_HydenockTree_Wild>  <!-- wild hydenock tree - tree -->
-      <Plant_JoganTree_Wild>1.2</Plant_JoganTree_Wild>  <!-- wild jogan tree - tree -->
-      <BMT_GiantLeaf>1.0</BMT_GiantLeaf>  <!-- giant leaf -->
-      <Plant_MujaFruit_Wild>1.0</Plant_MujaFruit_Wild>  <!-- wild muja fruit bush -->
-      <Plant_HubbaGourd_Wild>0.8</Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
-      <AB_SugarFamewort>0.6</AB_SugarFamewort>  <!-- sugar famewort -->
-      <Plant_FelucianGlowspore_Wild>0.6</Plant_FelucianGlowspore_Wild>  <!-- wild felucian glowspore - tree -->
-      <Plant_Bubblespore_Wild>0.5</Plant_Bubblespore_Wild>  <!-- wild bubble spore plant -->
-      <Plant_Chakroot_Wild>0.5</Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
-      <Plant_TookeTrap_Wild>0.5</Plant_TookeTrap_Wild>  <!-- wild tooke-trap plant -->
+      <AB_JungleTree MayRequire="sarg.alphabiomes">3.0</AB_JungleTree>  <!-- deep jungle tree - tree -->
+      <Plant_HydenockTree_Wild MayRequire="mlie.starwarsanimalcollection">1.5</Plant_HydenockTree_Wild>  <!-- wild hydenock tree - tree -->
+      <Plant_JoganTree_Wild MayRequire="mlie.starwarsanimalcollection">1.2</Plant_JoganTree_Wild>  <!-- wild jogan tree - tree -->
+      <BMT_GiantLeaf MayRequire="biomesteam.biomescaverns">1.0</BMT_GiantLeaf>  <!-- giant leaf -->
+      <Plant_MujaFruit_Wild MayRequire="mlie.starwarsanimalcollection">1.0</Plant_MujaFruit_Wild>  <!-- wild muja fruit bush -->
+      <Plant_HubbaGourd_Wild MayRequire="mlie.starwarsanimalcollection">0.8</Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
+      <AB_SugarFamewort MayRequire="sarg.alphabiomes">0.6</AB_SugarFamewort>  <!-- sugar famewort -->
+      <Plant_FelucianGlowspore_Wild MayRequire="mlie.starwarsanimalcollection">0.6</Plant_FelucianGlowspore_Wild>  <!-- wild felucian glowspore - tree -->
+      <Plant_Bubblespore_Wild MayRequire="mlie.starwarsanimalcollection">0.5</Plant_Bubblespore_Wild>  <!-- wild bubble spore plant -->
+      <Plant_Chakroot_Wild MayRequire="mlie.starwarsanimalcollection">0.5</Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
+      <Plant_TookeTrap_Wild MayRequire="mlie.starwarsanimalcollection">0.5</Plant_TookeTrap_Wild>  <!-- wild tooke-trap plant -->
     </wildPlants>
     <wildPlantRegrowDays>18</wildPlantRegrowDays>
   </BiomeDef>
