@@ -79,6 +79,12 @@ def claims(text: str):
             append(line, lineno); in_table = True; continue
         if not line.strip():
             flush(end_line=lineno - 1); continue
+        if in_table:
+            # A table with no blank line before the next paragraph must not
+            # absorb that paragraph into the table's single block — found live
+            # 2026-09-12: prose glued straight onto a table lost its sentence
+            # split and its own line range.
+            flush(end_line=lineno - 1)
         append(line, lineno)
     flush(end_line=len(lines))
 
