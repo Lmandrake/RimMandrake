@@ -28,10 +28,12 @@
   input, no freeze/scatter tell, enforced structurally by simply never
   referencing it anywhere in this file.
 
-  Art: placeholder texPath only (Things/Pawn/Animal/RUT_ScarRoach/...,
-  not yet populated) — deferred to the art pipe per the task scope, not
-  built this pass. Magenta/missing until then; do not treat texPath
-  presence here as art having shipped.
+  Art: original, generated 2026-09-12 under
+  SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1 —
+  Textures/Things/Pawn/Animal/RUT_ScarRoach/RUT_ScarRoach_{south,north,east}.png,
+  512x512 RGBA, matching this repo's animal-sprite convention. Graphic_Multi
+  mirrors east for west, so three files serve four facings. No donor art is
+  used: the donor mod's textures are donor-licensed.
 -->
 <Defs>
 
@@ -150,7 +152,6 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <!-- placeholder: not yet generated, see file header -->
           <texPath>Things/Pawn/Animal/RUT_ScarRoach/RUT_ScarRoach</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.5</drawSize>
