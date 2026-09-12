@@ -26,3 +26,9 @@ the deck (genetic instability and kin). **It never just upgrades you.**
 
 ## verify
 A written table with defNames and sources; the owner rules the deck.
+
+## Survey done 2026-09-12 (BENCH belt wave)
+Deliverable written: `research/mutation_systems_survey_2026-09-11.md` — 7 systems,
+~55 defNames MEASURED (per-section counts + UNMEASURED stat blocks flagged inside),
+classification table + "DRAFT — owner rules the deck" section. Remaining on this
+item: the owner rules the deck (can ride MECHANICS_CARDS_SITTING_1).
