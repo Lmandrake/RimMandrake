@@ -10732,10 +10732,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepGenerator.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-10",
-    "hash": "0bae636d91edba5970720563a91817898503efddf5c955568ff1b05183a0632c",
-    "sha": "1dc7382d"
+    "cleanCount": 3,
+    "date": "2026-09-12",
+    "hash": "ea149ad52d3364079ad64fc7a45920c8f3f9faf11c070616031366b571fedd4d",
+    "sha": "cd536a36a"
   },
   "src/RimUtinni/LanternDeeps/Defs/MapGeneration/RUT_LanternDeepKyberScatter.xml": {
     "cleanCount": 1,
@@ -10804,10 +10804,10 @@
     "sha": "fd3bafa39"
   },
   "src/RimUtinni/LanternDeeps/Source/RimMandrake.Utinni.LanternDeeps.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "432280564d2084bc8d6a1c130ed3dcd844853b9e36bdcdb782bc672516354458",
-    "sha": "fd3bafa39"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "a002ae1ef580a3b3e476c43956c27084edea03f5b3734e921805d1ab02b994c6",
+    "sha": "cd536a36a"
   },
   "src/RimUtinni/LongHunger/About/About.xml": {
     "cleanCount": 1,
