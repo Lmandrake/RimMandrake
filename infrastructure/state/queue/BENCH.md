@@ -7,30 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T00:43:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T00:43:41Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## KYBER_TRADE_PLOT_1 Selling kyber: Empire heat rises per sale, Hutt interest rises, alleged Jedi from the Moisture Farmers, the donate-and-smuggle plot (no helping the Rebellion here)
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  - Wire the heat mechanic (the Empire's pursuit/attention system — find the existing
-prose:    infrastructure/state/items/KYBER_TRADE_PLOT_1.md
-
-## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  LIQUIDTYPESMOD1 — one liquid system, many liquids
-prose:    infrastructure/state/items/LIQUID_TYPES_MOD_1.md
 
 ## RUST_CATHEDRAL_MECHANICS_1 Rust Cathedral C# kit: hum-mood system (attitude value, layered tones, bolt-dance display, droid commentary, hysteresis wiring), deep-drill response event (never described), wall-tier mining defs, living bolts as mechanical wildlife, eel-fishing consequences - spec the_rust_cathedral.md
 state:    ready
@@ -58,6 +40,42 @@ target:   v1
 kind:     task
 summary:  The authoritative brief is the FROZEN lore sheet
 prose:    infrastructure/state/items/FEVER_WOOD_MECHANICS_1.md
+
+## SUMP_MECHANICS_1 Sump C# kit: poured tar moat + command ignition (smoke wall), dig-lottery tables with era booby traps weighted first, tar beast set-pieces (wake causes, station-eating, evacuate-not-fight), mouse-line telegraphy, wick-garden crop - spec the_sump.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/SUMP_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUMP_MECHANICS_1.md
+
+## FORGE_MECHANICS_1 Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tower dungeon shell, Contagion die-off ring, geothermal industry - spec the_forge.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/FORGE_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FORGE_MECHANICS_1.md
+
+## TIBANNA_EMBARGO_PLOT_1 Campaign clock: the Empire's tibanna monopoly at the Forge - metered blaster gas, dwindling resistance ammunition, and the resolution that must come; spec the_forge.md section 8
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/TIBANNA_EMBARGO_PLOT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TIBANNA_EMBARGO_PLOT_1.md
+
+## SCALD_MECHANICS_1 Scald C# kit: steam-catch industry, margin fishing + bath recreation, bubble-sailor and bottom-walker set-pieces, geyser fields, boiling-lift integration (R-B spec ruled), burning-shallows wreck salvage - spec the_scald.md
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/SCALD_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCALD_MECHANICS_1.md
 
 ## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
 state:    ready
@@ -167,6 +185,16 @@ blocked:  Doc half done 2026-09-11 (ashfall_research_base.md). Blocked on owner:
 summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
 prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
 
+## LIQUID_TYPES_MOD_1 Author a liquid-types mod: boiling/frigid/normal water, propane, slime, ooze, tar, acid, poison, mineralized, coolant + more - per-liquid viscosity, damage type, pH, color, opacity, sediment; tilemap AND worldmap; the hard part is indexing into every other mod
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Design brief drafted; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY spikes+build.
+summary:  LIQUIDTYPESMOD1 — one liquid system, many liquids
+prose:    infrastructure/state/items/LIQUID_TYPES_MOD_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
@@ -188,46 +216,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## SUMP_MECHANICS_1 Sump C# kit: poured tar moat + command ignition (smoke wall), dig-lottery tables with era booby traps weighted first, tar beast set-pieces (wake causes, station-eating, evacuate-not-fight), mouse-line telegraphy, wick-garden crop - spec the_sump.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SUMP_MECHANICS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SUMP_MECHANICS_1.md
-
-## FORGE_MECHANICS_1 Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tower dungeon shell, Contagion die-off ring, geothermal industry - spec the_forge.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FORGE_MECHANICS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FORGE_MECHANICS_1.md
-
-## TIBANNA_EMBARGO_PLOT_1 Campaign clock: the Empire's tibanna monopoly at the Forge - metered blaster gas, dwindling resistance ammunition, and the resolution that must come; spec the_forge.md section 8
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TIBANNA_EMBARGO_PLOT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TIBANNA_EMBARGO_PLOT_1.md
-
-## SCALD_MECHANICS_1 Scald C# kit: steam-catch industry, margin fishing + bath recreation, bubble-sailor and bottom-walker set-pieces, geyser fields, boiling-lift integration (R-B spec ruled), burning-shallows wreck salvage - spec the_scald.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SCALD_MECHANICS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SCALD_MECHANICS_1.md
 
 ## POISON_FOREST_REPASS_1 poison_forest.md second pass: MEASURED block, weather table, R13's chemical venting, struck phrasing removed
 state:    proposed

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  ShokkweaveButcherYield.xml      ShokkweaveEconomy - new file, SHOKKWEAVE_SOLE_SOURCE_1
+  ============================================================================
+
+  Build-order step 3 from the spec (section 3.2): "needs only the donor mod,
+  live now." A small butchery yield, no dependency on the unbuilt roster
+  ThingDefs (web/anchor/gutter, nest).
+
+  MEASURED this build against the frozen official dump (OFFICIAL-2026-08-29,
+  capture 2026-08-29T13-30-02Z, Defs/ThingDef.json), donor
+  `mlie.starwarsanimalcollection` ("Star Wars Animal Collection (Continued)"),
+  ThingDef `Wyyyschokk`:
+    - butcherProducts: ABSENT (null) - confirmed, matches the spec exactly.
+    - race.leatherDef: Leather_Insectile - left UNTOUCHED, per the spec: the
+      silk is in the spider, not its hide.
+
+  Yield: 15 Hyperweave (shokkweave, post-rename) per butchered Wyyyschokk -
+  the spec's own ❓~10-20 range, picked at the midpoint pending a live-balance
+  pass. ❓INVENTED, expects rebalancing once playtested.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Star Wars Animal Collection (Continued)</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="Wyyyschokk"]</xpath>
+      <value>
+        <butcherProducts>
+          <Hyperweave>15</Hyperweave>
+        </butcherProducts>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

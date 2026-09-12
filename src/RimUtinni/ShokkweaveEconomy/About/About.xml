@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.shokkweaveeconomy</packageId>
+  <name>RimUtinni: Shokkweave Economy</name>
+  <author>mandrake</author>
+  <description>Campaign law for the sole-source ruling in design/Jawa/worldbuilding/biomes/the_webwork.md
+  section 6 ban 4: hyperweave IS shokkweave, renamed, and the Webwork is the only
+  way to obtain it. Built for SHOKKWEAVE_SOLE_SOURCE_1, build-order step 1 (see
+  design/Jawa/worldbuilding/biomes/kits/shokkweave_sole_source_spec.md):
+
+  - Renames Hyperweave (defName UNCHANGED, Core shortHash 26103) to "shokkweave"
+    with new flavor text. 617 RecipeDefs and every savegame reference keep working
+    because the defName never moves.
+  - Strips trader stocking via tradeability All -> Sellable: colonists can still
+    sell it, but no trader (SingleDef, Tag, or Category route) ever generates or
+    stocks it. TraderCanSell() gates Verse.RimWorld.StockGeneratorUtility.TryMakeForStockSingle
+    directly, so this closes the KotOR guy762 SingleDef traders (Czerka,
+    HuttGalleon) without touching their XML.
+  - Strips it from the standard quest-reward pool (thingSetMakerTags: RewardStandardCore).
+  - Belt-and-braces: also removes the ExoticMisc trade tag it is reached through.
+  - Halves its stuff-commonality (0.1 -> 0.05) so rare offworld shokkweave gear
+    survives as flavor at half the vanilla roll rate.
+  - Gives the donor Wyyyschokk (mlie.starwarsanimalcollection) a small butcher
+    yield of shokkweave: the silk is in the spider, not its hide (race.leatherDef
+    untouched).
+
+  Out of scope here (see the item and spec): live trader-generation proof
+  (needs a quicktest map), and the web-cutting/nest-raid/border-creep-web
+  harvest routes (block on unbuilt roster ThingDefs).</description>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Mlie.StarWarsAnimalCollection</li>
+  </loadAfter>
+</ModMetaData>

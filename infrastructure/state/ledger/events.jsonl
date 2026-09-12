@@ -7501,3 +7501,10 @@
 {"seat":"FOUNDRY","event":"claim","id":"ART_REGEN_WAVE9_QUEUE_1","ts":"2026-09-12T00:42:56Z"}
 {"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE9_QUEUE_1","ts":"2026-09-12T00:42:57Z"}
 {"seat":"BENCH","event":"block","id":"OCULAR_OVERDRIVE_SITE_1","reason":"Doc half done 2026-09-11 (ashfall_research_base.md). Blocked on owner: site name, campaign function, reveal gating (cards ride MECHANICS_CARDS_SITTING_1); then landmark+dungeon build needs game up (FOUNDRY).","ts":"2026-09-12T00:43:07Z"}
+{"seat":"BENCH","event":"reassign","id":"KYBER_TRADE_PLOT_1","to":"FOUNDRY","ts":"2026-09-12T00:43:23Z"}
+{"seat":"BENCH","event":"block","id":"LIQUID_TYPES_MOD_1","reason":"Design brief drafted; blocked on MECHANICS_CARDS_SITTING_1 rulings, then FOUNDRY spikes+build.","ts":"2026-09-12T00:43:38Z"}
+{"seat":"BENCH","event":"claim","id":"SUMP_MECHANICS_1","ts":"2026-09-12T00:43:39Z"}
+{"seat":"FOUNDRY","event":"close","id":"ART_REGEN_WAVE9_QUEUE_1","sha":"daff602314e50ec965cb9a7b57651c656c7274fe","ts":"2026-09-12T00:43:39Z"}
+{"seat":"BENCH","event":"claim","id":"FORGE_MECHANICS_1","ts":"2026-09-12T00:43:39Z"}
+{"seat":"BENCH","event":"claim","id":"SCALD_MECHANICS_1","ts":"2026-09-12T00:43:40Z"}
+{"seat":"BENCH","event":"claim","id":"TIBANNA_EMBARGO_PLOT_1","ts":"2026-09-12T00:43:41Z"}

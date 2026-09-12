@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  ShokkweaveRename.xml            ShokkweaveEconomy - new file, SHOKKWEAVE_SOLE_SOURCE_1
+  ============================================================================
+
+  The rename half of the sole-source ruling (spec section 1). Hyperweave KEEPS
+  its defName (Core, shortHash 26103): 617 RecipeDefs touch it as an
+  ingredient/filter entry, plus savegame Things and stuff-refs. Only label and
+  description move. stuffAdjective is null on the base def, so "shokkweave
+  duster" etc. derive from the new label automatically - no second patch point.
+
+  Hyperweave is Core, always present, so no PatchOperationFindMod guard is
+  needed on this file.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/ThingDef[defName="Hyperweave"]/label</xpath>
+    <value>
+      <label>shokkweave</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/ThingDef[defName="Hyperweave"]/description</xpath>
+    <value>
+      <description>Wyyyschokk silk, cut whole from the Webwork's living loom and never rewoven by any hand. The great spiders spin it under their own strength, layer over layer, until it holds an edge and a flame the way no vat-grown fiber ever has. No mechanite line replicates it, no glitterworld lab has ever cultured it, and no world but this one has a Webwork to cut it from - a caravan that wants shokkweave has to come here for it.</description>
+    </value>
+  </Operation>
+
+</Patch>
