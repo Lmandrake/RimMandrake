@@ -78,7 +78,8 @@ was corrected:
 - [x] Ruling recorded with what was decided, what was measured, and the
       conditions for revisiting.
 - [x] Live directives to run local generation neutralized.
-- [ ] Open for the owner: whether `rembg_cut.py`'s local ONNX alpha cutout — a
+- [x] RULED 2026-09-11 (see below): `rembg_cut.py` is EXEMPT, capped to one
+      concurrent run (`REMBG_CONCURRENCY_CAP_1`). Was: whether the cutout — a
       local-hardware step inside the *shipping* sprite pipeline, and a confirmed
       contributor to the OOM kills — is covered by this park or exempt as
       routine tooling. Not decided here; the tool is untouched.
