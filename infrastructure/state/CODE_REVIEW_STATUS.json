@@ -144,10 +144,10 @@
     "sha": "43f96b1b"
   },
   "design/Jawa/fauna/BiomeCast_Ashkarr.xml": {
-    "cleanCount": 4,
+    "cleanCount": 5,
     "date": "2026-09-12",
-    "hash": "54a25a4dfb4dc0ac5048a9bdac0af2eba833106f74fc1e716adcea327fa892b6",
-    "sha": "f3754dac7"
+    "hash": "730b5cc8a6dc46c10101c0874e89a92c476bc8d96fdbb09a00bb5eba817b61ef",
+    "sha": "1c0a5dcdb"
   },
   "design/Jawa/fauna/CreatureNames_Ashkarr.xml": {
     "cleanCount": 1,
@@ -9640,10 +9640,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimStarWars/SWBestiary/Defs/ThoughtDefs/RSW_Bantha_Thoughts.xml": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-12",
-    "hash": "e8c5f2305a4dc3098f25832ecd7565f3c556c1884d793266161bcba3e81d5e09",
-    "sha": "f3754dac7"
+    "hash": "963cdfb76eabab5a4b38639c7a2d4b58fe8a95e2ce246cd27ac251f10fd65ed7",
+    "sha": "1c0a5dcdb"
   },
   "src/RimStarWars/SWBestiary/LICENSE": {
     "cleanCount": 1,
@@ -12550,10 +12550,10 @@
     "sha": "d92f5459"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "c76cd92e47455fd7fa3ce6cced0e8f9177c9b2d39ffdda38bbe0d0f611a32ace",
-    "sha": "774ed90f1"
+    "cleanCount": 4,
+    "date": "2026-09-12",
+    "hash": "952f31d325b7e5c8dd08ac28e9d4eb6748cbf5ec973f0e2574ee578f4672c3a2",
+    "sha": "1c0a5dcdb"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml": {
     "cleanCount": 3,
@@ -12592,10 +12592,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml": {
-    "cleanCount": 6,
+    "cleanCount": 7,
     "date": "2026-09-12",
-    "hash": "90fc68629e824c182ea0f3520d058fde176961abfb20e8afd19fa6de174b3f0b",
-    "sha": "f3754dac7"
+    "hash": "ac065bb67c2d26a3bbb920bbf9b6f5e90a7a89d0cc3ca336021fbdbc1594c355",
+    "sha": "1c0a5dcdb"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeDescriptions_Ashkarr.xml": {
     "cleanCount": 1,
