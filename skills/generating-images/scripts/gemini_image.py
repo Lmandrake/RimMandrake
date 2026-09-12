@@ -95,25 +95,20 @@ def generate(args):
         # pairing is a rembg cutout, run at NATIVE resolution before any
         # downscale so the alpha edge survives the LANCZOS. Refuse rather
         # than deliver an opaque image every downstream validator rejects.
-        import fcntl, subprocess, tempfile
+        # rembg_cut.py owns the ONNX-concurrency flock (REMBG_CONCURRENCY_CAP_1)
+        # so every caller serializes on the same lock instead of each
+        # reimplementing it — shell out to it rather than duplicate the call.
+        import subprocess, tempfile
         rembg_py = os.path.expanduser("~/.venvs/rwgfx/bin/python")
         if not os.path.isfile(rembg_py):
             sys.exit("--cutout: no rembg venv at " + rembg_py)
-        # Serialize cutouts machine-wide: N concurrent rembg loads are N
-        # ONNX models in RAM at once — measured 2026-09-09, three at once
-        # died in multiprocessing's resource_tracker under a bounded cgroup.
-        lock_path = os.path.expanduser("~/.cache/rwgfx_rembg.lock")
-        os.makedirs(os.path.dirname(lock_path), exist_ok=True)
-        lock_fh = open(lock_path, "w")
-        fcntl.flock(lock_fh, fcntl.LOCK_EX)
+        rembg_cut_py = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rembg_cut.py")
         with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tf:
             opaque = tf.name
         cut = opaque + ".cut.png"
         im.save(opaque, "PNG")
-        r = subprocess.run([rembg_py, "-c", (
-            "import sys; from rembg import remove; from PIL import Image; "
-            "im=Image.open(sys.argv[1]); out=remove(im); out.save(sys.argv[2],'PNG')"),
-            opaque, cut], capture_output=True, text=True, timeout=300)
+        r = subprocess.run([rembg_py, rembg_cut_py, "--input", opaque, "--out", cut],
+                            capture_output=True, text=True, timeout=300)
         os.unlink(opaque)
         if r.returncode != 0:
             sys.exit("--cutout: rembg failed: " + (r.stderr or r.stdout)[-300:])
