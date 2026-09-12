@@ -153,8 +153,21 @@ and automatic evidence capture.
 MEASURED at 593 mods, `bridge_latency_bench.py`, 2026-09-12); it captures an
 evidence bundle — raw read-backs + screenshots per component — and one model
 pass at the end judges outcomes against each component's stated expectation.
-For AUTHORING a new script there is a `--halt-on-fail` mode: stop at the first
-red component, dump state + screenshot, and let whoever is iterating look.
+
+**Two run modes** (owner addendum, 2026-09-12):
+
+- **Smoke mode** (the default): a full checkout of a mod simply to re-smoke-test
+  it after a change. Checkpoints are NO-OPS; the run is as fast as the bridge
+  allows; evidence is per-component only.
+- **Debug mode** (`--debug`): for INITIAL checkout of a mod, or when a bug is
+  known. A script may declare `t.checkpoint("name")` at sensing points inside a
+  complex chain — in debug mode each one dumps the full local state (things and
+  pawns in the test area, positions, relevant hediffs/fields, ticksGame) plus a
+  screenshot into the evidence bundle, so a failure can be localised between
+  two checkpoints instead of autopsied from the end state. `--debug` also
+  implies `--halt-on-fail`: stop at the first red component with the area left
+  intact for live inspection. Checkpoints are free to sprinkle — they cost
+  nothing outside debug mode.
 
 Per session: capture current ModsConfig (the existing `modlist_swap.py`
 discipline), swap to MINIMAL + the mods under test, restart to a quicktest map
