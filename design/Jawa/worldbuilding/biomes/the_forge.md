@@ -195,7 +195,8 @@ geology; its life is overhead or between raindrops.
 
 ## Owed
 
-- `FORGE_MECHANICS_1` (to file) — the boiling-rain weather (scald, flash
+- `FORGE_MECHANICS_1` (filed; kit spec DRAFTED 2026-09-11 →
+  `kits/forge_kit_spec.md`) — the boiling-rain weather (scald, flash
   cycle, flash-interval growth), beldon herd + tibanna harvest system,
   vapor-column flight layer for the sky fauna, tower dungeon shell, the
   Contagion die-off ring, geothermal industry hooks.

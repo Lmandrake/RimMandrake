@@ -10,6 +10,9 @@ card section (KIT_SPECS_CARD_SITTING_1 is closed; this is its successor):
   fear scope).
 - `design/Jawa/worldbuilding/biomes/kits/sump_kit_spec.md` — 3 cards (moat-only
   command ignition; era traps disarmable; what ends a woken beast).
+- `design/Jawa/worldbuilding/biomes/kits/forge_kit_spec.md` — 3 cards (tower
+  depth v1; boiling-rain lethality; penned beldons vs the tibanna embargo —
+  note the third interacts with TIBANNA_EMBARGO_PLOT_1, rule them together).
 - `design/RimMandrake/RM_liquid_types_mod.md` — 3 cards (Scald basin salinity;
   coolant fishing bucket; sediment/film system in v1 or not).
 - `design/Jawa/worldbuilding/biomes/kits/rust_cathedral_kit_spec.md` — 0 cards;
