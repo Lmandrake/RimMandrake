@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- SCALD_DIVING_MOD_1 commune outcome. thoughtClass overrides MoodOffset()
+       to read RM_DivingSettings.communeMoodOffset live (Source/
+       RM_Thought_CommunedWithDeep.cs) so the settings slider is a real
+       tunable, not a placebo next to this stage's baseMoodEffect (which is
+       shown for the tooltip preview only and kept equal to the shipped
+       default). -->
+  <ThoughtDef>
+    <defName>RM_Thought_CommunedWithDeep</defName>
+    <thoughtClass>RimMandrake.DivingInteraction.RM_Thought_CommunedWithDeep</thoughtClass>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>communed with the deep</label>
+        <description>Something huge and slow moves under the boil, mowing what grows there, wanting nothing from me. I sat with it a while. It did not need to be worth anything to be worth the burn.</description>
+        <baseMoodEffect>6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>
