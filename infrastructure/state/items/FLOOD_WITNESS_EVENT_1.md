@@ -33,3 +33,11 @@ canyons, chime mechanic included, not Star Wars specific. Filed as
 FLOOD_CANYON_BIOME_1 (FOUNDRY). THIS item keeps the campaign plot beat per
 the canonical design above (ruled invitation route, ruled lethality ceiling),
 consuming that mod as a dependency.
+
+## Quest spec authored 2026-09-12 (night belt, Fable agent)
+`design/Jawa/quests/flood_witness_invitation_quest.md` — invitation offer with
+re-offer scheduler per the ruled design; phases arrival/chimes/wall/growth/
+aftermath; diegetic rewards only + RUT_FloodWitnessed history event; the
+alert-unlock stays FLAGGED UNRULED. Dependency contract named: the flood mod
+must expose one production arm-the-flood verb (today it has only a debug
+action). Build rides FLOOD_CANYON_BIOME_1 + quest authoring.
