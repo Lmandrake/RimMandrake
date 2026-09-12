@@ -232,13 +232,14 @@ origin canon's, and binds at their builds.
 
 ## Cards for the owner
 
-- **A1 — Does the Utinni know it is alive?** Her vouching (`03_deep_history.md`)
-  reads as a standing conversation; the knowledge gate says *nobody in-world
-  knows*. Rule one: (a) she knows and is the gate's sole exception (making her
-  the natural reveal usher), or (b) she vouches into what she believes is dead
-  protocol — old-empire rites answered by machinery — and learns at the reveal
-  beside the player. The spec is written to survive either; (b) is the stronger
-  scene.
+- **A1 — RULED (owner card, 2026-09-12): she KNOWS — the gate's sole
+  exception.** Verbatim: "She knows, because she can 'feel' (receive) the
+  Ratakan transponder working on frequencies no longer used." ⇒ The Utinni
+  RECEIVES the Rakatan transponder band nobody else listens on — that is HOW
+  she knows the Cathedral is alive, and it makes her the natural reveal
+  usher. New lore mechanism this creates: the Utinni is a receiver on
+  dead Rakatan frequencies (bears on her bond with the player's Rakatan
+  gravship; propagate when the arc builds).
 - **A2 — Reveal scope.** §5 discloses aliveness + scale only. Does the owner
   want more of §GM in the spoken reveal (the Assailants? the decline? the
   reserves?), or is purpose held back for a later sitting's content?
