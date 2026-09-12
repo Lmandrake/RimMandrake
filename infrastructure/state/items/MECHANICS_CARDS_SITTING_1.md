@@ -37,6 +37,11 @@ card section (KIT_SPECS_CARD_SITTING_1 is closed; this is its successor):
   ratification like the sibling tables; def work beyond `PoisonForestSpores`
   rides the ruling.
 
+- `design/Jawa/cathedral_concealment_arc_spec.md` — 5 cards (A1 does the
+  Utinni know it's alive; A2 reveal scope; A3 can exposure complete in v1;
+  A4 the misdirection quest beat; A5 when curiosity-selling counts as
+  exposure).
+
 ## verify
 Every card ruled and propagated into its spec; contradictory phrasing deleted,
 not bannered (deciding-and-superseding).

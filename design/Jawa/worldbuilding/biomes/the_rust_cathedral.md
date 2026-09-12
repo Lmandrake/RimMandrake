@@ -347,6 +347,9 @@ wants it that way. **The Empire's modern presence is the top threat**
 Empire is exactly the danger it fears — so it dislikes the player at first and
 hides from them for a long while.** The manners above are how the player earns
 their way out of that; nothing in §P says any of this (§6.1).
+➡ Arc spec DRAFTED 2026-09-11 (`CATHEDRAL_PLAYER_CONCEALMENT_ARC_1`):
+`design/Jawa/cathedral_concealment_arc_spec.md` — mechanism only; changes no
+ruling here.
 
 ## 8. Inhabited objects
 
