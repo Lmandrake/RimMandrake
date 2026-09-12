@@ -17,9 +17,21 @@ Options:
   --tight   crop to the subject's alpha bounding box (default: keep canvas)
   --min-opaque N   fail if <N%% of pixels end up opaque (default 3) — guards a
                    silent all-transparent cutout, the way chroma_key validated.
+
+Concurrency: N simultaneous rembg calls load N ONNX models into RAM at once —
+measured 2026-09-09, three at once died in multiprocessing's resource_tracker
+under a bounded cgroup (`gemini_image.py`'s `--cutout` path hit this first).
+Per the owner's 2026-09-11 card-sitting ruling ("rembg exempt+capped"), every
+caller of this cutout serializes machine-wide on the SAME flock
+(`~/.cache/rwgfx_rembg.lock`) rather than each entry point inventing its own —
+this is that shared guard, held only for the `remove()` call itself.
 """
 import argparse
+import fcntl
+import os
 import sys
+
+LOCK_PATH = os.path.expanduser("~/.cache/rwgfx_rembg.lock")
 
 
 def main():
@@ -38,7 +50,11 @@ def main():
         sys.exit("missing dep (%s) — run with ~/.venvs/rwgfx/bin/python" % e)
 
     inp = Image.open(a.input).convert("RGBA")
-    out = remove(inp)  # returns RGBA with a soft alpha matte
+    os.makedirs(os.path.dirname(LOCK_PATH), exist_ok=True)
+    with open(LOCK_PATH, "w") as lock_fh:
+        fcntl.flock(lock_fh, fcntl.LOCK_EX)
+        out = remove(inp)  # returns RGBA with a soft alpha matte
+        fcntl.flock(lock_fh, fcntl.LOCK_UN)
 
     alpha = np.array(out)[:, :, 3]
     opaque_pct = 100.0 * (alpha > 0).mean()
