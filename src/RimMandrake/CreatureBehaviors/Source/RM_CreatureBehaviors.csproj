@@ -59,6 +59,12 @@
     <Compile Include="RM_Alert_VerminPopulationBase.cs" />
     <Compile Include="RM_Alert_VerminPopulation_Inert.cs" />
     <Compile Include="RM_Hediff_SunScald.cs" />
+    <Compile Include="RM_ChewableExtension.cs" />
+    <Compile Include="RM_JobGiver_ChewAnchors.cs" />
+    <Compile Include="RM_CompSenseWebNode.cs" />
+    <Compile Include="RM_MapComponent_SenseWeb.cs" />
+    <Compile Include="RM_FrontCreepExtension.cs" />
+    <Compile Include="RM_MapComponent_FrontCreep.cs" />
   </ItemGroup>
 
   <ItemGroup>
