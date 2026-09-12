@@ -7587,3 +7587,6 @@
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"Deploy all you can, then restart","ts":"2026-09-12T04:06:02Z"}
 {"seat":"FOUNDRY","event":"claim","id":"KYBER_TRADE_PLOT_1","ts":"2026-09-12T04:07:26Z"}
 {"seat":"FOUNDRY","event":"block","id":"KYBER_TRADE_PLOT_1","reason":"quest content built (Homestead visit + donation/smuggle), Heat/Hutt-Interest GM blackboard (M4) unbuilt — cannot meet verify's sale-raises-heat clause without inventing parallel infra","ts":"2026-09-12T04:19:19Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"live verify wave: FLOOD_CANYON_BIOME_1, WRECKAGE_VERMIN_SPAWN_1, VAPOR_TERMINATOR_GEYSER_FIX_1","ts":"2026-09-12T04:27:16Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up","ts":"2026-09-12T04:27:45Z"}
+{"seat":"FOUNDRY","event":"note","id":"DIRTY_CODE_REVIEW_STANDING_LOOP_1","text":"Droidworks module (BoltCore + main, 21 files): full-file review pass. One genuine bug fixed - garbled duplicated-namespace log tag in BoltCorePatches.cs error messages (d0c985e6a). All 21 files mark-clean'd (720f2f8a9).","ts":"2026-09-12T04:29:38Z"}
