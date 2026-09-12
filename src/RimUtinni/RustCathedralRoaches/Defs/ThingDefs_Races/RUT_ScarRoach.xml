@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUST_CATHEDRAL_MECHANICS_1 §6 (the roaches — the land cleaners), owner
+  addendum 2026-09-07 verbatim: "reskin the cockroaches mod to pertain to the
+  Scarlands around the Rust Cathedral and the Rust Cathedral itself. Both
+  organic and artificial versions. Make them much smaller... Cleaners of the
+  area on land like the eels that live in the coolant rivers."
+
+  Donor: LingLuo.Cockroach (workshop 3196253802), Ling_Cockroach, MEASURED
+  2026-09-11 (dnfile metadata enumeration + a direct read of the donor's own
+  1.6/Defs/Normal.xml and Patches/Core.xml — confirmed independently, not
+  copied from the kit spec blind): bodySize 2, healthScale 3, armor
+  0.75/0.65, bite power 35, CompProperties_Milkable -> Chocolate, think tree
+  gated ThinkNode_ConditionalOfPlayerFaction (tamed-only wastepack eating).
+  This is a CLONE, never a patch: no donor class or comp is referenced below
+  (no milking, no ToxInBody death-bomb — that lives only on the donor's own
+  Ling_Cockroach_Mechanoid, not this organic def anyway). bodySize does NOT
+  scale melee damage or armor (ceiling-fields lesson) — every stat below is
+  set deliberately, not derived from the size cut.
+
+  The cleaner behavior (wild pawns + filth, not just tamed + wastepacks) is
+  RM_EatCleanableExtension / RM_ThinkNode_EatCleanable
+  (src/RimMandrake/CreatureBehaviors), declared inline below as a
+  modExtension — no cross-mod patch needed since this is our own new def.
+
+  NOT wired to RM_MapComponent_BiomeAttitude (that class doesn't exist yet;
+  hum-mood is a different, unbuilt section of this item) — no attitude
+  input, no freeze/scatter tell, enforced structurally by simply never
+  referencing it anywhere in this file.
+
+  Art: placeholder texPath only (Things/Pawn/Animal/RUT_ScarRoach/...,
+  not yet populated) — deferred to the art pipe per the task scope, not
+  built this pass. Magenta/missing until then; do not treat texPath
+  presence here as art having shipped.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_ScarRoach</defName>
+    <label>scar-roach</label>
+    <description>A small, quick-scuttling insect that works the Scarlands' scar-dust in loose colonies, foraging filth and stray waste from the ground the way its distant cousin in the Cathedral's shadow works the deck plate. Not aggressive and not much of a fighter — it flees before it fights — but it never stops moving, and it never runs out of ground to clean.</description>
+    <statBases>
+      <Wildness>0.9</Wildness>
+      <MoveSpeed>3.8</MoveSpeed>
+      <ArmorRating_Blunt>0.2</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>90</ComfyTemperatureMax>
+      <MarketValue>28</MarketValue>
+      <LeatherAmount>0</LeatherAmount>
+      <ToxicResistance>0.6</ToxicResistance>
+    </statBases>
+    <uiIconScale>0.6</uiIconScale>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2.5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <baseBodySize>0.25</baseBodySize>
+      <baseHungerRate>0.22</baseHungerRate>
+      <baseHealthScale>0.4</baseHealthScale>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <lifeExpectancy>4</lifeExpectancy>
+      <trainability>None</trainability>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <meatColor>(160,168,139)</meatColor>
+      <meatMarketValue>0.4</meatMarketValue>
+      <foodType>OmnivoreAnimal, AnimalProduct</foodType>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+      <soundEating>Insectoid_Eat</soundEating>
+      <wildBiomes>
+        <RUT_Scarlands>0.08</RUT_Scarlands>
+      </wildBiomes>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(3, 1)</li>
+          <li>(3.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.08</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+          <soundCall>Pawn_Megascarab_Call</soundCall>
+          <soundAngry>Pawn_Megascarab_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_EatCleanableExtension">
+        <cleanableThingDefNames>
+          <li>Wastepack</li>
+        </cleanableThingDefNames>
+        <eatsFilth>true</eatsFilth>
+        <searchRadius>22</searchRadius>
+        <nutritionPerMeal>0.15</nutritionPerMeal>
+        <eatDurationTicks>5000</eatDurationTicks>
+        <seekChance>0.03</seekChance>
+      </li>
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_ScarRoach</defName>
+    <label>scar-roach</label>
+    <race>RUT_ScarRoach</race>
+    <combatPower>12</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1~3</wildGroupSize>
+    <ecoSystemWeight>0.08</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- placeholder: not yet generated, see file header -->
+          <texPath>Things/Pawn/Animal/RUT_ScarRoach/RUT_ScarRoach</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_ScarRoach/RUT_ScarRoach</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.65</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RUT_ScarRoach/RUT_ScarRoach</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

@@ -431,6 +431,14 @@
       "commonality": 0.5,
       "def": "SW_Grenadierworm",
       "law": "owner review 2026-09 (round2 move mapping): scarlands"
+    },
+    {
+      "action": "import",
+      "band": "cleaner",
+      "commonality": 0.08,
+      "def": "RUT_ScarRoach",
+      "law": "RUST_CATHEDRAL_MECHANICS_1 §6, owner addendum 2026-09-07 verbatim: 'reskin the cockroaches mod to pertain to the Scarlands around the Rust Cathedral and the Rust Cathedral itself... Cleaners of the area on land like the eels that live in the coolant rivers.' The organic half of the pair (donor LingLuo.Cockroach's Ling_Cockroach, bs 2 MEASURED) landed as a from-scratch clone, RUT_ScarRoach (mandrake.rut.rustcathedralroaches), bodySize shrunk to 0.25 with armor/health/melee tuned separately — not the donor def, and not a straight import of it.",
+      "note": "the synthetic half, RUT_CathedralRoach, rosters in the_rust_cathedral.json instead — the addendum splits the pair by biome. Land-counterpart to the coolant eels; NOT wired to any hum-mood/attitude system (owner ruling, same addendum)."
     }
   ],
   "fish": {

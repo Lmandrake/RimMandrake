@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.rustcathedralroaches</packageId>
+  <name>RimMandrake: Utinni — Rust Cathedral Roaches</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>RUST_CATHEDRAL_MECHANICS_1 §6 (the roaches — the land
+cleaners), owner addendum 2026-09-07, verbatim: "reskin the cockroaches mod
+to pertain to the Scarlands around the Rust Cathedral and the Rust Cathedral
+itself. Both organic and artificial versions. Make them much smaller and the
+synthetic ones strangely tough and powerful. Cleaners of the area on land
+like the eels that live in the coolant rivers."
+
+Donor: LingLuo.Cockroach (workshop 3196253802, "Rim cockroach"), already
+active in the mod list. MEASURED independently this pass (dnfile metadata
+enumeration of Ling_Cockroach.dll plus a direct read of the donor's own
+1.6/Defs/Normal.xml and Patches/Core.xml — not copied from the kit spec
+blind): exactly 5 TypeDefs in the whole assembly (ThinkNode_EatWastepack,
+JobDriver_EatWastepack, Toils_FenXi, Hediff_DeadBombToQiaoKeli,
+Verb_JumpToFace), no HarmonyLib reference, no game-wide hook — every class
+binds only where a def references it. The donor's one patch
+(Patches/Core.xml) does exactly one PatchOperationAdd, donor-scoped
+(ResurrectMediumMech's ingredient filter), irrelevant here. An XML-clone
+reskin is therefore safe and this mod is exactly that: CLONE, never
+patch-in-place. The donor mod itself is untouched and stays active for its
+own two creatures; nothing below references any of its classes, comps or
+recipes.
+
+Two new races, both bodySize-shrunk from the donor's 2 down to "small
+scuttling thing" scale — deliberately, per stat, never by a flat "scale all
+attributes" (bodySize does not scale melee damage or armor):
+
+  - RUT_ScarRoach (organic, AnimalThingBase, bodySize 0.25) — roams the
+    Scarlands' scar-dust in loose colonies (wildBiomes: RUT_Scarlands).
+    Light armor (0.2/0.15), modest bite (4), high Wildness (0.9), no taming
+    hook this pass.
+  - RUT_CathedralRoach (synthetic, BaseMechanoidWalker, bodySize 0.22, own
+    BodyDef RUT_RoachHex rather than the donor's Scorcher_SixLeg so this def
+    never depends on the donor mod's presence) — donor-comparable armor
+    (0.75/0.75) at a healthScale (1.6) that reads "strangely tough and
+    powerful" for its size, exactly as the owner asked. Wild fauna, not a
+    player-craftable mech: no RecipeDef, no turret verb, no death-bomb
+    hediff. Wild-spawn wiring for mechanoid presence is a SEPARATE axis in
+    this campaign (the_rust_cathedral.json roster's own "confidence" entry:
+    mechanoid/Sentinel presence is "EXCLUDED BY DESIGN... never encoded in
+    wild rosters") — this def carries no &lt;wildBiomes&gt; entry; it rides
+    whatever already spawns the roster's other mech-vermin (GR_Mecharat).
+    ❓ UNVERIFIED without a live quicktest, which this pass did not run.
+
+Both are "cleaners, not vermin" — the land counterpart to the coolant eels —
+via RM_EatCleanableExtension / RM_ThinkNode_EatCleanable
+(mandrake.rm.creaturebehaviors, this item's one new C# class): a generic,
+data-driven "forage a named item and/or filth, then consume it" mechanism
+that generalizes the donor's measured ThinkNode_EatWastepack in the two ways
+the task specified — no player-faction gate (fires for wild pawns too, via
+the shared engine's Animal_PreMain insertTag) and filth is a first-class
+target alongside named items (Wastepack), not just wastepacks.
+
+NOT wired to any hum-mood/attitude system (owner ruling, 2026-09-07: "leave
+the roaches out of the hum mechanics for now") — RM_MapComponent_BiomeAttitude
+does not exist yet regardless (a different, unbuilt section of this item),
+and nothing here references it. No freeze/scatter tell.
+
+Salability — DECIDED (kit spec §6): both roaches join the salable list. The
+organic butchers normally (useMeatFrom Megaspider, like the donor). The
+synthetic's butcherProducts include RUT_CathedralRoachShell, a small new
+tradeable resource (ThingDefs_Items/RUT_CathedralRoachShell.xml), alongside
+steel. Neither is "watched" by any hum/goodwill mechanic — no comp here
+counts or reports a harvest; this is deliberate (rationale: leaving the
+roaches out of hum inputs as well as hum displays), reversible on the
+owner's word like the ruling it follows.
+
+Deferred, NOT built this pass (all noted, none silently dropped): a
+taming/pet register, a synthetic-roach death sting, and bespoke art — every
+texPath below is a placeholder (magenta/missing in-game until the art pipe
+runs); do not read a texPath's presence as art having shipped.
+
+Roster wiring: design/Jawa/worldbuilding/biomes/rosters/the_rust_cathedral.json
+and the_scarlands.json fauna arrays updated to point at these new defNames
+in place of the donor's Ling_Cockroach entry, which the roster had placed in
+the Cathedral itself (an earlier reading, predating this addendum's
+organic/synthetic biome split).</description>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rut.patches</li>
+  </loadAfter>
+</ModMetaData>

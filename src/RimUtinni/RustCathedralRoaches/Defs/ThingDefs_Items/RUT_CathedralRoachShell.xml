@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUST_CATHEDRAL_MECHANICS_1 §6. The synthetic roach's salable byproduct —
+  "breaks down to a small trade-good resource on death/deconstruct" per the
+  kit spec. ParentName="ResourceBase" (the same parent Steel and
+  RUT_FungalSoil use — confirmed via mcp__rimsage__get_def_details, same
+  precedent as src/RimUtinni/FungalSoilTrade/Defs/ThingDefs_Items/
+  RUT_FungalSoil.xml). Deliberately NOT watched by any hum/goodwill
+  mechanic — no comp here counts or reports harvesting it (owner ruling,
+  kit spec §6 rationale).
+
+  Art: placeholder — reuses vanilla ComponentIndustrial's icon path as a
+  stand-in salvage-plate look until the art pipe gives this its own sprite.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_CathedralRoachShell</defName>
+    <label>roach shell plating</label>
+    <description>A curved plate of mechanoid chitin-analogue, stripped from a dead cathedral roach. Its alloy is a minor curiosity to a trader, more interesting for what its patient, tireless owner used to do than for the metal itself.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/ComponentIndustrial</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MarketValue>12</MarketValue>
+      <Mass>0.3</Mass>
+      <Beauty>0</Beauty>
+      <Flammability>0</Flammability>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

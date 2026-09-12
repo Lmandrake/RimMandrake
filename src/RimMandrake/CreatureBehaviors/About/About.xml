@@ -55,6 +55,15 @@ Ships:
      carries the matching extension.
   6. RM_Alert_VerminPopulationBase — abstract Alert base; a concrete mod
      (ShipVermin's RM_Alert_ShipVermin) supplies the group tag and label.
+  7. RM_EatCleanableExtension + RM_ThinkNode_EatCleanable + RM_JobDriver_EatCleanable
+     (JobDef RM_EatCleanable) — RUST_CATHEDRAL_MECHANICS_1 §6 (the roaches).
+     Generic "forage a data-listed item and/or filth, then consume it"
+     behavior, generalizing the donor mod LingLuo.Cockroach's measured
+     ThinkNode_EatWastepack in two ways: no player-faction gate (fires for
+     any pawn via the shared Animal_PreMain insertTag, wild included) and
+     filth is a first-class target alongside named items. First consumer:
+     mandrake.rut.rustcathedralroaches (RUT_ScarRoach, RUT_CathedralRoach) —
+     see that mod's own About for the full roach build.
 
 Live-loaded 2026-09-11: standalone (no consumer active) tripped a crash in
 RimWorld.AlertsReadout's ctor because the abstract RM_Alert_VerminPopulationBase
