@@ -3971,10 +3971,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimMandrake/Utils/codebase_health_publish.py": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "69b958af85200e00260ece3075501872c1ab7e118309457fe21aa55af4facad3",
-    "sha": "3287ca65"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "2e0f5e1077964ddc04ce5a0d962793f201a5dc7c0fd85d85f964f88200c12564",
+    "sha": "ef1525da6"
   },
   "src/RimMandrake/Utils/def_diff.py": {
     "cleanCount": 1,
@@ -5236,10 +5236,10 @@
     "sha": "4311a368"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchEventTools.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "ec9335f75d6298002c51179be04a429ee1688a37e8de130d603e36e92a958b00",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "741520c226d86253a5575f5e8a5b66e862757ef1136f5285077c0c290ac9a1ac",
+    "sha": "ef1525da6"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchExportTools.cs": {
     "cleanCount": 1,
@@ -5356,10 +5356,10 @@
     "sha": "661843c1a"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapInfoTools.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "917218bc26ff78f7102c940b4588ae5084e941fcb889342668d15359211e933d",
-    "sha": "af2d8daa"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "ee460a18da582ea540f73cb00a088b6d782537c222c36759b390278173b5498f",
+    "sha": "ef1525da6"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapModeTools.cs": {
     "cleanCount": 1,
@@ -5368,10 +5368,10 @@
     "sha": "af2d8daa"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapTools.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "27427913a664eae0c9d7ac4d9232a69bf10cde0515ed895291d6d8d8143fc7a7",
-    "sha": "d6ae0f49"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "d15c05ca0c0af5f4e6b4a3df11f92e2ca85d87fd2327bc47107602b6bd1a5b43",
+    "sha": "ef1525da6"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMiscTools2.cs": {
     "cleanCount": 1,
@@ -5404,10 +5404,10 @@
     "sha": "b9435727"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchPawnTools.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "ec7547796d986b8f3ad39d017a1aa1cfe9c5aadf1dbe9cf2194b43281b399579",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "492dd7d059cedaf073a8b5e1eca213c230b17f17f3d99e5871a0971ddc8744be",
+    "sha": "ef1525da6"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchPipeTools.cs": {
     "cleanCount": 1,
@@ -5446,10 +5446,10 @@
     "sha": "2691a1e3"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchStatTools.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "0969ae4ee8a3110c653a4851af36cd1e194a1ec7d4e6b3e699b31c3d5c3c9843",
-    "sha": "0706a2c8"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "de3402dffd6e87375b980a5ee339dba8af1718c831109415a2b41b10aa6e8874",
+    "sha": "ef1525da6"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchStoryTools.cs": {
     "cleanCount": 1,
@@ -5476,10 +5476,10 @@
     "sha": "af2d8daa"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-09",
-    "hash": "5452e62f2846ab743b8b65238766b637d33401cd5d6b6dc12a98a720e0253843",
-    "sha": "3ea1ca20"
+    "cleanCount": 4,
+    "date": "2026-09-11",
+    "hash": "ed0015c0887dc8b1776d94e90336caa3bf049f390c30c299dd1fc0b95e473d3b",
+    "sha": "ef1525da6"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTradeProbeTools.cs": {
     "cleanCount": 1,
@@ -5524,16 +5524,16 @@
     "sha": "3ea1ca20"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWorldTools.cs": {
-    "cleanCount": 4,
-    "date": "2026-09-09",
-    "hash": "6ad829e034ddf366de27e718353fedd8486061eb7081f0d2fd7fde5dd33eaad2",
-    "sha": "3ea1ca20"
+    "cleanCount": 5,
+    "date": "2026-09-11",
+    "hash": "70eea3ec0d8b41bdfbe67c2dc034c2617578655a61c517d5745a809b5c1e3d45",
+    "sha": "ef1525da6"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchZoneTools.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "737c1cc310ff47238966641e2493ef97c15db27e89347bc2b72c3d2a702e145d",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "3a9a5092d5c48d305bb8495c932f7e47a6b942a91b826d42a4771a40c6bb9357",
+    "sha": "ef1525da6"
   },
   "src/RimMandrake/bridgetools/build.py": {
     "cleanCount": 3,
