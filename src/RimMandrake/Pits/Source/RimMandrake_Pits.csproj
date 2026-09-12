@@ -7,7 +7,7 @@
     subclass through vanilla extension points, not a patch.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\RimMandrake_Pits\Source\RimMandrake_Pits.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Pits\Source\RimMandrake_Pits.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->
