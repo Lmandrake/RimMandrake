@@ -77,6 +77,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
@@ -125,13 +126,30 @@ STATUSES = ("red", "blue", "green", "grey", "unmeasured")
 # This file's git()/git_z() had no timeout and were exposed to the same hang.
 GIT_TIMEOUT = 8  # seconds
 
+# HEALTH_UNMEASURED_HEADLINE_1: an `index.lock` collision is the ONLY git failure
+# this retries. It is transient and self-clears — another concurrent agent
+# holding the lock for a moment, not a broken repo — so a few short retries
+# convert "the run measured nothing" into "the run was briefly slower" without
+# masking a git failure that will not go away on its own (anything else still
+# fails immediately, exactly as before).
+GIT_LOCK_RETRIES = 3
+GIT_LOCK_BACKOFF = 0.6  # seconds; grows per attempt, bounded total < 4s
+
 
 def git(args):
-    try:
-        return subprocess.run(["git"] + args, cwd=ROOT, capture_output=True,
-                               text=True, timeout=GIT_TIMEOUT)
-    except subprocess.TimeoutExpired:
-        return subprocess.CompletedProcess(args, -1, "", "git timed out after %ss" % GIT_TIMEOUT)
+    attempt = 0
+    while True:
+        try:
+            r = subprocess.run(["git"] + args, cwd=ROOT, capture_output=True,
+                                text=True, timeout=GIT_TIMEOUT)
+        except subprocess.TimeoutExpired:
+            return subprocess.CompletedProcess(args, -1, "", "git timed out after %ss" % GIT_TIMEOUT)
+        if r.returncode == 0 or "index.lock" not in (r.stderr or ""):
+            return r
+        if attempt >= GIT_LOCK_RETRIES:
+            return r
+        attempt += 1
+        time.sleep(GIT_LOCK_BACKOFF * attempt)
 
 
 def git_z(args):
@@ -438,6 +456,40 @@ def classify(path, loc_measured, uncommitted, doing_files, bug_files, verdict,
     return "grey", ["no review entry has ever been recorded for this path"]
 
 
+# -------------------------------------------------------- run-level headline
+
+def run_headline(wt_known, ledger_known, counts, total_files, istats):
+    """HEALTH_UNMEASURED_HEADLINE_1: a run where git status or the ledger
+    could not be read is not "a codebase we measured and found all-dirty" —
+    it is "a run that measured nothing". classify() already answers
+    `unmeasured` for every file in that case (never a false `green`/`grey`),
+    but nothing upstream of the per-file colours said so ALOUD: a headline
+    built from `counts["green"]` alone reads "0 clean" as a fact about the
+    repo, when it is really a fact about this run's git access. These two
+    root-cause flags are exactly what the per-file classify() already keys
+    off of, so the run-level headline uses the same signal rather than
+    guessing a count threshold.
+
+    Returns (measurement_ok, reasons, headline_text).
+    """
+    reasons = []
+    if not wt_known:
+        reasons.append("`git status` could not be read")
+    if not ledger_known:
+        reasons.append("the rimflow ledger could not be replayed (%s)"
+                       % istats.get("error", "unknown error"))
+    ok = not reasons
+    if ok:
+        text = ("OK: measured %d files (%d clean, %d dirty, %d unmeasured)."
+                % (total_files, counts["green"], counts["grey"], counts["unmeasured"]))
+    else:
+        text = ("THE RUN COULD NOT MEASURE: " + "; ".join(reasons) +
+                " — every file's review/dev state reads UNMEASURED this run. Do not "
+                "read `counts` (including green=0) as a health picture; rerun once "
+                "git is available.")
+    return ok, reasons, text
+
+
 # ----------------------------------------------------------------- tree build
 
 def build_tree(leaves):
@@ -646,6 +698,17 @@ function renderStamp(){
     ' <span class="stampRel' + (mins >= 30 ? " stale" : "") + '">(' + relTime() + ")</span>" +
     " · " + DATA.counts.total.toLocaleString() + " files · " +
     DATA.loc.total.toLocaleString() + " lines");
+}
+// HEALTH_UNMEASURED_HEADLINE_1: when git/the ledger could not be read this run,
+// classify() already scores every file UNMEASURED (never a false green/grey) —
+// but a viewer skimming the chip counts alone would still read "0 clean" as a
+// real fact about the repo. Say the true claim once, loudly, above everything.
+if (DATA.measurementOk === false) {
+  d3.select("#app").insert("div", "header").attr("id", "measureWarn")
+    .style("background", "#5c1f1a").style("color", "#ffd9d2")
+    .style("padding", "9px 16px").style("font-weight", "700")
+    .style("font-size", "13px").style("border-bottom", "2px solid var(--red)")
+    .text("⚠ " + DATA.headline);
 }
 renderStamp();
 setInterval(renderStamp, 30000);
@@ -1038,6 +1101,10 @@ def main(argv=None):
     recidivists.sort(key=lambda r: (-r["cycles"], -r["loc"]))
 
     head = git(["rev-parse", "--short", "HEAD"]).stdout.strip() or "unknown"
+
+    measurement_ok, measurement_reasons, headline = run_headline(
+        wt_known, ledger_known, counts, len(paths), istats)
+
     payload = {
         "generated": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
         "head": head,
@@ -1051,6 +1118,9 @@ def main(argv=None):
         "items": istats,
         "workingTreeKnown": wt_known,
         "ledgerKnown": ledger_known,
+        "measurementOk": measurement_ok,
+        "measurementReasons": measurement_reasons,
+        "headline": headline,
         "tree": build_tree(leaves),
     }
 
@@ -1060,6 +1130,10 @@ def main(argv=None):
         json.dump(payload, f, separators=(",", ":"))
 
     print("HEAD %s   %d files   %d lines" % (head, len(paths), total_loc))
+    if not measurement_ok:
+        print("!" * 70)
+        print(headline)
+        print("!" * 70)
     for s in STATUSES:
         print("  %-11s %6d files  %9d lines  %s"
               % (s.upper(), counts[s], loc_by[s],

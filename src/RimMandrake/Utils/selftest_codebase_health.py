@@ -127,6 +127,28 @@ eq(all(os.path.isfile(os.path.join(ch.VENDOR, n)) for n in
         "d3-voronoi-map.min.js", "d3-voronoi-treemap.min.js")), True,
    "all four vendored browser libraries are present to inline")
 
+# ---- 5. HEALTH_UNMEASURED_HEADLINE_1: run-level headline never hides an
+#         all-unmeasured run behind a confident "0 clean" ------------------
+COUNTS_OK = {"red": 1, "blue": 2, "green": 10, "grey": 3, "unmeasured": 0}
+ok, reasons, headline = ch.run_headline(True, True, COUNTS_OK, 16, {})
+eq(ok, True, "wt_known+ledger_known -> measurement ok")
+eq(reasons, [], "no reasons when everything was readable")
+eq(headline.startswith("OK:"), True, "a healthy run's headline starts OK:")
+
+COUNTS_BAD = {"red": 1, "blue": 2, "green": 0, "grey": 0, "unmeasured": 13}
+ok, reasons, headline = ch.run_headline(False, True, COUNTS_BAD, 16, {})
+eq(ok, False, "git status unreadable -> measurement NOT ok, even with green=0")
+eq("COULD NOT MEASURE" in headline, True,
+   "the headline says the run failed, not that the repo is all-dirty")
+eq("green=0" in headline, True,
+   "the headline explicitly warns against reading green=0 as a fact")
+
+ok, reasons, headline = ch.run_headline(True, False, COUNTS_BAD, 16,
+                                        {"error": "boom"})
+eq(ok, False, "ledger unreplayable alone is also NOT ok")
+eq("ledger could not be replayed" in headline, True,
+   "the ledger failure reason is named")
+
 if FAILS:
     print("FAIL selftest_codebase_health.py")
     for f in FAILS:
