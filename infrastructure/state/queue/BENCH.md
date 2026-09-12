@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T06:13:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T06:32:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -212,7 +212,7 @@ needs:    owner
 target:   v1
 kind:     design
 blocked:  Options report written; awaits the owner's review sitting.
-summary:  (no items/CANON_STORAGE_ARCHITECTURE_1.md yet — write one when you have something to say)
+summary:  ADOPTED 2026-09-12 (owner card): Phase 0 + Phase 1
 prose:    infrastructure/state/items/CANON_STORAGE_ARCHITECTURE_1.md
 
 ## FAUNA_TOLERANCE_NORMALIZATION_1 Return to canonical-graph fauna normalization, now biome-aware: wide temperature tolerances covering each animal's assigned domain (new law - spec has none), damage-vs-bodySize extended from the 161 SW beasts to the full rostered set, products axis; plots regenerated for the owner's sitting from a POST-restore harvest (dump has no statBases - mod XML/live harvest, fingerprint-checked)

@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T06:28:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T06:32:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## SCALD_DIVING_MOD_1 Diving mod, v1 (owner: 'make the diving mod v1 content now!!'): RimMandrake-tier diving mechanic — hunt/commune at the Scald's deep center, priced in burns; bottom-walkers become interactable; Mod Settings per doctrine
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/SCALD_DIVING_MOD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SCALD_DIVING_MOD_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -1025,6 +1016,16 @@ kind:     task
 blocked:  hook identified: RimWorld.Scenario.PostGravshipLanded(Map map), fired once per landing from WorldComponent_GravshipController.LandingEnded(); live confirmation owed — bridge held by another FOUNDRY window all session
 summary:  GIZKAHOLDHOOKSPIKE1 — gravship-landing hook, research phase
 prose:    infrastructure/state/items/GIZKA_HOLD_HOOK_SPIKE_1.md
+
+## SCALD_DIVING_MOD_1 Diving mod, v1 (owner: 'make the diving mod v1 content now!!'): RimMandrake-tier diving mechanic — hunt/commune at the Scald's deep center, priced in burns; bottom-walkers become interactable; Mod Settings per doctrine
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  built+compiled+validate_patch clean, deployed to Mods/ but NOT enabled in ModsConfig (avoiding a live mod-list change while another window drives the bridge); owed: enable + live quicktest (float menu on tagged cell, job completes, burn ticks apply, settings render)
+summary:  (no items/SCALD_DIVING_MOD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCALD_DIVING_MOD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
