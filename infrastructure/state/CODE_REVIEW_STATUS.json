@@ -461,6 +461,18 @@
     "hash": "559b80c27179e31601bbb03bc2cd8f322a0ba81868d206ef5537a04b2dd6dbc2",
     "sha": "bb73b6bd"
   },
+  "infrastructure/dashboards/hub/hub_check.py": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "867d4d3da088192e240ff22f5a0e8a6cc74472fe7c56e3df61fa3e2db23fec3e",
+    "sha": "a49c5ea77"
+  },
+  "infrastructure/dashboards/hub/make_tab_data.py": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "743677b37901e1f737c45f387ae350d4834aaa859055117919e3d404ef567567",
+    "sha": "a49c5ea77"
+  },
   "infrastructure/output/pawn_flavor_phase2_census_gen.py": {
     "cleanCount": 1,
     "date": "2026-09-09",
