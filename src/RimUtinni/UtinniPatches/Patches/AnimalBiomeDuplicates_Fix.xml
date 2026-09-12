@@ -27,6 +27,24 @@
   # see. Re-run the new script after any mod update - and it needs a CAPTURE,
   # so take one on the next load.
   ############################################################################
+  # 2026-09-12 - MLIE_FAUNA_ABSORPTION_1 Wave C: Anooba block (#38, below)
+  # REMOVED, not just renamed. BiomeCast_Ashkarr.xml's own ZBiome_Grasslands
+  # wildAnimals entry was renamed <Anooba> -> <RSW_Anooba> this pass (the
+  # species is now our own RSW_Anooba port, cast_assignment.csv updated to
+  # match). That means the pair this block existed to deduplicate no longer
+  # collides: the donor's own remaining "Anooba" entry (its own duplicate
+  # patch, unrelated to us) and our "RSW_Anooba" entry are now two DIFFERENT
+  # PawnKindDef keys in BiomeDef.CommonalityOfAnimal()'s dictionary, not one
+  # key inserted twice - no crash risk either way. Leaving the block's old
+  # `wildAnimals/Anooba[2]` xpath in place would not break anything (a
+  # PatchOperationConditional matching nothing is a silent no-op, not an
+  # error), but it would misdescribe a fix that no longer fixes anything -
+  # deleted per this repo's "inaccurate material is deleted, not superseded-
+  # in-place" rule. The donor's own leftover "Anooba" entry in
+  # ZBiome_Grasslands is unaffected either way and is not this item's concern
+  # while mlie.starwarsanimalcollection stays active. 8 pairs remain below
+  # (was 9); Gizka/Iriaz/Nuna/Orray/Zeer are untouched by this pass.
+  ############################################################################
 -->
 <!--
   ============================================================================
@@ -387,7 +405,9 @@
            Wasteland/AA_Eyeling            0.6  (ours, #11) then 1.2  (#22)
            ExtremeDesert/AA_Eyeling        0.15 (ours, #23) then 0.5  (#26)
            ZBiome_DesertOasis/AA_Eyeling   0.1  (ours, #10) then 0.8  (#11)
-           ZBiome_Grasslands/Anooba        0.04 (ours, #42) then 0.35 (#203)
+           ZBiome_Grasslands/Anooba        [REMOVED 2026-09-12: our entry is
+                                            now RSW_Anooba, a different key -
+                                            no longer a duplicate, see header]
            ZBiome_Grasslands/Gizka         0.08 (ours, #81) then 0.3  (#204)
            ZBiome_Grasslands/Iriaz         0.08 (ours, #99) then 0.5  (#201)
            ZBiome_Grasslands/Nuna          0.06 (ours, #138) then 0.5 (#202)
@@ -422,12 +442,11 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals/AA_Eyeling[2]</xpath>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- 38. Anooba x ZBiome_Grasslands (2nd record) -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Anooba[2]</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Anooba[2]</xpath>
-    </match>
-  </Operation>
+  <!-- 38. REMOVED 2026-09-12 (MLIE_FAUNA_ABSORPTION_1 Wave C): was
+       "Anooba x ZBiome_Grasslands (2nd record)". Our own wildAnimals entry
+       is now RSW_Anooba, a different defName - no longer a duplicate key
+       with the donor's own remaining "Anooba" entry, so this removal no
+       longer fixes anything real. See the file header's 2026-09-12 note. -->
   <Operation Class="PatchOperationConditional">   <!-- 39. Gizka x ZBiome_Grasslands (2nd record) -->
     <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Gizka[2]</xpath>
     <match Class="PatchOperationRemove">

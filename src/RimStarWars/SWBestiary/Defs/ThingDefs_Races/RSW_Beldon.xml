@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Beldon creature port.
+  Ported from mlie.starwarsanimalcollection's `Beldon` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. The most
+  dependency-heavy species this wave: a flying, tentacled gasbag needing 4
+  things no prior Wave C species needed:
+    1. A custom BodyDef (`Beldon` -> RSW_Beldon, RSW_MlieWaveC_Bodies.xml)
+       whose 3 tentacle parts reuse Wave B's already-ported body-part-groups
+       (RSW_SW_FirstTentacleBeldon/SecondTentacleBeldon/ThirdTentacleBeldon,
+       RSW_SWTentacleAttackTool) and BodyPartDefs (RSW_SW_LeftTentacle/
+       RSW_SW_RightTentacle/RSW_SW_DorsalTentacle) — no new body part needed.
+    2. A custom PawnRenderTreeDef (`Beldon` -> RSW_Beldon,
+       RSW_MlieWaveC_RenderTree.xml, MayRequire="Ludeon.RimWorld.Anomaly")
+       drawing the 3 tentacles via vanilla Anomaly's own
+       `PawnRenderNodeProperties_BulbfreakTentacle` node class (Mlie ships
+       0 C#, so this is a vanilla Anomaly render-node type, not donor code) —
+       texPaths point at the same extracted Textures/swanimals/Beldon/Tentacles/
+       files the BodyDef's groups attach to.
+    3. Its Odyssey ability (SW_SootheSong) had no prior-wave port — new
+       AbilityDef/HediffDef/TrainableDef trio, RSW_SW_SootheSong
+       (RSW_MlieWaveC_Abilities.xml). Its soundCast repoints to the
+       already-absorbed RSW_Ability_SootheSong (2026-09-02 sound wave). Its
+       HediffDef's RecoveryThought (`SoothingSong`) is donor content too —
+       ported as RSW_SoothingSong (RSW_Bantha_Thoughts.xml, alongside
+       RSW_AteMudhornEgg).
+    4. Two new eggs (RSW_MlieWaveC_Resources.xml): RSW_EggBeldonFertilized/
+       UnFertilized, texPath swresource/EggSpore (newly extracted this pass,
+       not reused from an earlier wave).
+  `specificMeatDef` repoints to newly-ported RSW_Silica_Meat
+  (RSW_MlieWaveC_Resources.xml, texPath swresource/Meat_Silica, newly
+  extracted). `bloodDef` (Filth_Slime) and `milkDef` (Chemfuel, via
+  CompProperties_Milkable) are vanilla Core — left unprefixed, unchanged.
+  `deathAction` (DeathActionWorker_BigExplosion) is a vanilla RimWorld
+  worker class. Art: extracted via extract_bundle.py from the same
+  AssetBundle every prior wave used — of the donor's 64 Beldon-matching
+  textures, only the 28 this ThingDef/PawnKindDef/RenderTreeDef trio
+  actually reference were kept (base Beldon/BeldonC east/north/south,
+  Beldon_Dessicated, the 3x3 Beldon_Flying_*/BeldonC_Flying_* animation
+  frames, 3 tentacle textures); the BeldonA/BeldonB/BeldonW color-variant
+  textures are unreferenced by any def here and were left unextracted, same
+  as the Wave B AcklayW/DewbackPack unused-variant call.
+
+  Wired into the live cast this same pass: AridShrubland/Desert/ExtremeDesert
+  all at 0.01 (donor's own wildBiomes weight — Beldon is a rare exotic
+  everywhere in the donor's own design, not just here), repointed from the
+  bare "Beldon" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Beldon</defName>
+    <label>beldon</label>
+    <description>Beldons were a large cnidaria species native to the gas giant Bespin. They lived in the planet's lower atmosphere and could be found in large herds. They used the long tendrils on their bodies to gather atmospheric plankton and chemicals and so require very little direct nutrition. This variety appears to have been engineered to not only survive away from Bespin, but create useful Chemfuel and are thus very combustible.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>1000</MarketValue>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <LeatherAmount>0</LeatherAmount>
+      <CaravanRidingSpeedFactor>1.6</CaravanRidingSpeedFactor>
+      <Wildness>0.6</Wildness>
+      <MaxFlightTime>120</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>left lappet</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>ScratchToxic</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTentacleAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right lappet</label>
+        <capacities>
+          <li>Poke</li>
+          <li>ScratchToxic</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTentacleAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggBeldonUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggBeldonFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+      <li Class="CompProperties_Milkable">
+        <milkDef>Chemfuel</milkDef>
+        <milkIntervalDays>2</milkIntervalDays>
+        <milkAmount>30</milkAmount>
+        <milkFemaleOnly>false</milkFemaleOnly>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Beldon</body>
+      <deathAction>
+        <workerClass>DeathActionWorker_BigExplosion</workerClass>
+      </deathAction>
+      <executionRange>6</executionRange>
+      <baseBodySize>6.0</baseBodySize>
+      <baseHungerRate>0.1</baseHungerRate>
+      <baseHealthScale>6.0</baseHealthScale>
+      <foodType>VegetarianRoughAnimal, OmnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <specificMeatDef>RSW_Silica_Meat</specificMeatDef>
+      <bloodDef>Filth_Slime</bloodDef>
+      <roamMtbDays>2</roamMtbDays>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <trainability>None</trainability>
+      <lifeExpectancy>999</lifeExpectancy>
+      <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.01</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <herdAnimal>true</herdAnimal>
+      <renderTree MayRequire="Ludeon.RimWorld.Anomaly">RSW_Beldon</renderTree>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.2</leaveMapOnFleeChance>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_SootheSong</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.01</AridShrubland>
+        <Desert>0.01</Desert>
+        <ExtremeDesert>0.01</ExtremeDesert>
+        <TropicalRainforest>0.0</TropicalRainforest>
+        <TropicalSwamp>0.01</TropicalSwamp>
+        <TemperateSwamp>0.01</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.01</BorealForest>
+        <Tundra>0.01</Tundra>
+        <ColdBog>0.01</ColdBog>
+        <IceSheet>0.01</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+          <soundWounded>RSW_Pawn_Beldon_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Beldon_Death</soundDeath>
+          <soundCall>RSW_Pawn_Beldon_Call</soundCall>
+          <soundAngry>RSW_Pawn_Beldon_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFarm</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Beldon</defName>
+    <label>beldon</label>
+    <race>RSW_Beldon</race>
+    <combatPower>280</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>4~8</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_SootheSong</li>
+    </abilities>
+    <flyingAnimationFramePathPrefix>swanimals/Beldon/Beldon_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFramePathPrefixFemale>swanimals/Beldon/BeldonC_Flying_</flyingAnimationFramePathPrefixFemale>
+    <flyingAnimationFrameCount>3</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>20</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <lifeStages>
+      <li>
+        <label>beldon polyp</label>
+        <labelPlural>beldon polyps</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Beldon/Beldon</texPath>
+          <drawSize>1</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Beldon/BeldonC</texPath>
+          <drawSize>1</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Beldon/Beldon_Dessicated</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+        <femaleDessicatedBodyGraphicData>
+          <texPath>swanimals/Beldon/Beldon_Dessicated</texPath>
+          <drawSize>1</drawSize>
+        </femaleDessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Beldon/Beldon</texPath>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Beldon/BeldonC</texPath>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Beldon/Beldon_Dessicated</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+        <femaleDessicatedBodyGraphicData>
+          <texPath>swanimals/Beldon/Beldon_Dessicated</texPath>
+          <drawSize>2</drawSize>
+        </femaleDessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Beldon/Beldon</texPath>
+          <drawSize>4</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Beldon/BeldonC</texPath>
+          <drawSize>4</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Beldon/Beldon_Dessicated</texPath>
+          <drawSize>4</drawSize>
+        </dessicatedBodyGraphicData>
+        <femaleDessicatedBodyGraphicData>
+          <texPath>swanimals/Beldon/Beldon_Dessicated</texPath>
+          <drawSize>4</drawSize>
+        </femaleDessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>

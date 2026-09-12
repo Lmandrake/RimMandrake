@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Bolotaur creature port.
+  Ported from mlie.starwarsanimalcollection's `Bolotaur` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. `body` stays the
+  vanilla Core `QuadrupedAnimalWithClawsTailAndJowl` (Bodies_Animal_Quadruped.xml)
+  — no custom body needed. `leatherDef`/`specificMeatDef` repoint to the
+  already-ported RSW_Leather_Saurian / RSW_Saurian_Meat (RSW_MlieWaveB_Resources.xml).
+  Its Odyssey ability (SW_Spur) was already ported for Dewback under
+  RSW_SW_Spur (RSW_MlieWaveB_Abilities.xml) — reused here, not re-ported. Its
+  two eggs are newly ported this wave (RSW_MlieWaveC_Resources.xml), texPath
+  swresource/EggSaurian (already extracted, Wave B). Sounds repoint to the
+  already-absorbed sound wave (RSW_Pawn_Bolotaur_*). texPaths are unchanged
+  text — extracted art sits at Textures/swanimals/Bolotaur/. The donor's
+  `BolotaurPack_*` textures (a saddle/pack cosmetic variant) exist in the
+  bundle but are not referenced by this ThingDef/PawnKindDef pair — left
+  unextracted, same as the Wave B AcklayW/DewbackPack unused-variant call.
+
+  Wired into the live cast this same pass: AridShrubland at 0.4 (donor's own
+  wildBiomes weight), repointed from the bare "Bolotaur" entry in
+  cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Bolotaur</defName>
+    <label>bolotaur</label>
+    <description>The Bolotaur are a large, long-necked herbivorous reptilian creatures native to the planet Kashyyyk. They were short-lived but reproduced quickly and were a favoured mount by the Trandoshan species, which resulted in their spread to many worlds as beasts of burden and livestock.</description>
+    <statBases>
+      <MoveSpeed>5.5</MoveSpeed>
+      <MarketValue>500</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <CaravanRidingSpeedFactor>1.6</CaravanRidingSpeedFactor>
+      <Wildness>0.40</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggBolotaurUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggBolotaurFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>10</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>4~8</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithClawsTailAndJowl</body>
+      <baseBodySize>3.0</baseBodySize>
+      <baseHungerRate>1.25</baseHungerRate>
+      <baseHealthScale>2.0</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>RSW_Leather_Saurian</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <petness>0.80</petness>
+      <trainability>Intermediate</trainability>
+      <herdAnimal>true</herdAnimal>
+      <packAnimal>true</packAnimal>
+      <manhunterOnTameFailChance>0.10</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.25</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>15</lifeExpectancy>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.4</AridShrubland>
+        <Desert>0.01</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.8</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>RSW_Pawn_Bolotaur_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Bolotaur_Death</soundDeath>
+          <soundCall>RSW_Pawn_Bolotaur_Call</soundCall>
+          <soundAngry>RSW_Pawn_Bolotaur_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Bolotaur</defName>
+    <label>bolotaur</label>
+    <race>RSW_Bolotaur</race>
+    <combatPower>275</combatPower>
+    <ecoSystemWeight>1.00</ecoSystemWeight>
+    <wildGroupSize>2~4</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <label>bolotaur hatchling</label>
+        <labelPlural>bolotaur hatchlings</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Bolotaur/Bolotaur</texPath>
+          <drawSize>1</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Bolotaur/Bolotaur_Dessicated</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Bolotaur/Bolotaur</texPath>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Bolotaur/Bolotaur_Dessicated</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Bolotaur/Bolotaur</texPath>
+          <drawSize>4</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Bolotaur/Bolotaur_Dessicated</texPath>
+          <drawSize>4</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>

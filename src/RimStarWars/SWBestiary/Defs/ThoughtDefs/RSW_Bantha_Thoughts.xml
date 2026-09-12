@@ -8,6 +8,10 @@
   (RSW_MlieWaveC_Resources.xml) point at — same donor file, same mechanism,
   kept in this file rather than a new one since it is the same SpecialCuisine
   thought family.
+
+  Wave C addition #2: RSW_SoothingSong, the RecoveryThought RSW_SW_SootheSong's
+  HediffDef (RSW_MlieWaveC_Abilities.xml, Beldon's ability) points at — same
+  donor file (Thoughts_Memory_SpecialCuisine.xml), same mechanism.
 -->
 <Defs>
   <ThoughtDef>
@@ -34,5 +38,16 @@
     <replaceThoughts>
       <li>AteRawFood</li>
     </replaceThoughts>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RSW_SoothingSong</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>soothing song</label>
+        <description>That creature made such a calm and soothing sound, it almost felt like I was dreaming it.</description>
+        <baseMoodEffect>12</baseMoodEffect>
+      </li>
+    </stages>
   </ThoughtDef>
 </Defs>

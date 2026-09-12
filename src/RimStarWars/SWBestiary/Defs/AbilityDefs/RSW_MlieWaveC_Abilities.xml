@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Beldon's special-trainable ability
+  (soothing song). An Odyssey-DLC animal-command ability (MayRequire
+  preserved from the donor); the game is whole without Odyssey, Beldon just
+  loses the special-trainable gizmo, same as every other Odyssey-gated
+  animal ability in this mod.
+
+  Ported verbatim from mlie.starwarsanimalcollection's
+  AbilityDefs/SW_Abilities.xml (`SW_SootheSong`, an AbilityDef + HediffDef +
+  TrainableDef trio sharing one defName in the donor, same pattern as
+  RSW_SW_Rampage/RSW_SW_Spur in RSW_MlieWaveB_Abilities.xml) — renamed
+  RSW_SW_SootheSong throughout. soundCast repoints to RSW_Ability_SootheSong
+  (already absorbed in the 589-sound wave, 2026-09-02). The HediffDef's
+  RecoveryThought (`SoothingSong`) is donor content too, ported this same
+  pass as RSW_SoothingSong (RSW_Bantha_Thoughts.xml). effecterDef
+  (WarTrumpet), fleckDef (PsycastPsychicEffect), and the
+  CompProperties_AbilityAnimalRoar/_AbilityEffecterOnCaster/
+  _AbilityFleckOnTarget/_AbilityGiveHediff/_AbilityRequiresTrainable comp
+  classes are Core/Odyssey vanilla — nothing here still points at the donor.
+-->
+<Defs>
+<AbilityDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_SootheSong</defName>
+    <label>soothing song</label>
+    <description>Release a calming song which can boost the mood nearby humans.</description>
+    <iconPath>UI/Abilities/Ability_AnimalSootheSong</iconPath>
+    <cooldownTicksRange>60000</cooldownTicksRange>
+    <!-- 24 hours -->
+    <stunTargetWhileCasting>True</stunTargetWhileCasting>
+    <targetRequired>false</targetRequired>
+    <displayOrder>300</displayOrder>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <statBases>
+      <Ability_EffectRadius>23.9</Ability_EffectRadius>
+    </statBases>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <range>8.9</range>
+      <warmupTime>0.5</warmupTime>
+      <requireLineOfSight>false</requireLineOfSight>
+      <soundCast>RSW_Ability_SootheSong</soundCast>
+      <targetParams>
+        <canTargetSelf>true</canTargetSelf>
+        <canTargetHumans>true</canTargetHumans>
+        <canTargetLocations>false</canTargetLocations>
+        <canTargetAnimals>false</canTargetAnimals>
+        <canTargetBuildings>false</canTargetBuildings>
+        <canTargetEntities>False</canTargetEntities>
+        <canTargetSubhumans>False</canTargetSubhumans>
+        <canTargetMechs>false</canTargetMechs>
+        <neverTargetHostileFaction>True</neverTargetHostileFaction>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilityAnimalRoar">
+        <chanceFromHearingCurve>
+          <points>
+            <li>(0.0, 0.0)</li>
+            <li>(0.8, 1.0)</li>
+          </points>
+        </chanceFromHearingCurve>
+      </li>
+      <li Class="CompProperties_AbilityEffecterOnCaster">
+        <effecterDef>WarTrumpet</effecterDef>
+        <maintainTicks>20</maintainTicks>
+        <!-- Long enough for the "2nd wave" to spawn -->
+      </li>
+      <li Class="CompProperties_AbilityFleckOnTarget">
+        <fleckDef>PsycastPsychicEffect</fleckDef>
+      </li>
+      <li Class="CompProperties_AbilityGiveHediff">
+        <compClass>CompAbilityEffect_GiveHediff</compClass>
+        <hediffDef>RSW_SW_SootheSong</hediffDef>
+        <replaceExisting>true</replaceExisting>
+      </li>
+      <li Class="CompProperties_AbilityRequiresTrainable">
+        <trainableDef>RSW_SW_SootheSong</trainableDef>
+        <aiCanCastWithoutTrainable>true</aiCanCastWithoutTrainable>
+      </li>
+    </comps>
+  </AbilityDef>
+<HediffDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_SootheSong</defName>
+    <label>soothing song</label>
+    <description>This person has been heard the beautiful call of a majestic creature.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>30000~60000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+      <li Class="HediffCompProperties_RecoveryThought">
+        <thought>RSW_SoothingSong</thought>
+      </li>
+    </comps>
+  </HediffDef>
+<TrainableDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_SootheSong</defName>
+    <label>soothe song</label>
+    <description>Command the creature to emit a soothing song to calm nearby colonists.</description>
+    <listPriority>0</listPriority>
+    <difficulty>200</difficulty>
+    <steps>2</steps>
+    <specialTrainable>true</specialTrainable>
+    <enablesAbility>RSW_SW_SootheSong</enablesAbility>
+  </TrainableDef></Defs>

@@ -15,34 +15,8 @@
     "RSW_Iriaz",
     "RSW_Mudhorn"
   ],
-  "remaining_worklist_count": 89,
+  "remaining_worklist_count": 86,
   "remaining_worklist": [
-    {
-      "donor_defName": "Anooba",
-      "biomes": [
-        "AB_MiasmicMangrove",
-        "AridShrubland",
-        "ZBiome_Grasslands"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Beldon",
-      "biomes": [
-        "AB_PyroclasticConflagration",
-        "BiomeCypreJungle",
-        "LavaField",
-        "Volcano"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
-    {
-      "donor_defName": "Bolotaur",
-      "biomes": [
-        "Desert"
-      ],
-      "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
-    },
     {
       "donor_defName": "Boma",
       "biomes": [
@@ -699,5 +673,10 @@
       ],
       "confirmed_in_donor_ThingDefs_Races_2026-09-12": true
     }
+  ],
+  "ported_and_wired_this_pass_2026-09-12_batch2": [
+    "RSW_Anooba",
+    "RSW_Beldon",
+    "RSW_Bolotaur"
   ]
 }

@@ -533,3 +533,49 @@ noted above.
 outside the 91 count since it wasn't re-verified this pass — carried
 forward unchanged). This is now a MEASURED count, not a floor. Item stays
 `doing`.
+
+## 2026-09-12 (FOUNDRY, offline subagent, belt mode) — 3 more species ported: Anooba, Beldon, Bolotaur (89 -> 86 remaining)
+
+Continued the same pipeline, next 3 species off the front of
+`mlie_wave_c_worklist.json`'s `remaining_worklist`:
+- **Anooba** → `RSW_Anooba` — straightforward port.
+- **Bolotaur** → `RSW_Bolotaur` — straightforward port, new fertilized/
+  unfertilized egg resource pair.
+- **Beldon** → `RSW_Beldon` — needed real per-creature dependencies beyond
+  the Iriaz/Mudhorn precedent, checked against the donor's own XML rather
+  than assumed: a custom `BodyDef` (tentacled body plan, not a shared
+  vanilla one), a new `PawnRenderTreeDef` for the tentacles, and a
+  `RSW_SW_SootheSong` ability trio + a new `RSW_SoothingSong` ThoughtDef.
+
+Art extracted via `extract_bundle.py` (45 files total, all confirmed
+non-zero size) — same bundle every prior wave used. Cast wiring repointed
+in `design/Jawa/fauna/BiomeCast_Ashkarr.xml` +
+`src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml` (8
+`wildAnimals` tags) and `cast_assignment.csv` (8 rows). Checked all 3
+Mlie-touching patch files named in this item's own spec:
+`AnimalBiomeDuplicates_Fix.xml` referenced the old bare `Anooba` name in a
+donor-duplicate dedup guard (Operation #38) — removed as moot now that our
+entry is the distinct key `RSW_Anooba`, dated header note left explaining
+why. `BehemothArtUpres_StarWarsAnimalCollection.xml` and
+`AnimalDessicatedTexPaths_Fix.xml` had zero references to these 3 species,
+unchanged. Old→new name map extended at
+`infrastructure/state/facts/mlie_creature_defname_map_wave_c.json` (created
+fresh — no prior wave_c sibling existed; back-filled Iriaz/Mudhorn's
+prose-only map into it for consistency).
+
+**Validated**: `validate_patch.py` against all 11 touched/new files, `--live`
+against today's fresh capture (`2026-09-12T13-25-42Z`, 592 mods — checked
+against the live `ModsConfig.xml`'s 592 active mods before trusting it).
+Caught one real defect this way — Beldon's ability icon PNG had never been
+extracted — fixed before finishing. Final: the 8 files authored/touched
+directly are 0 errors/0 warnings. The other 2 (`BiomeCast_Ashkarr.xml`
+copies, `AnimalBiomeDuplicates_Fix.xml`) carry pre-existing errors from
+unrelated donor mods (Alpha Animals Expanded, `Titan`, `TYR_KangarooRat`),
+already documented as known generator/deployment divergence — confirmed
+none reference Anooba/Beldon/Bolotaur.
+
+**Not done, deliberately**: no deploy this pass (offline authoring only,
+scoped to 3 species to keep the batch reviewable) — deploy + cold-load
+proof owed to the next natural restart, same as every prior wave.
+
+**Remaining**: 86 of the Wave C worklist, plus Fambaa (unchanged holdout).
