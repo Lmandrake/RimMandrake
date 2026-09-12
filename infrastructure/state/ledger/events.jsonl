@@ -7806,3 +7806,10 @@
 {"seat":"FOUNDRY","event":"start","id":"SHRINE_GUARDIAN_BIOME_GATE_1","ts":"2026-09-12T13:37:58Z"}
 {"seat":"FOUNDRY","event":"verify","id":"SHRINE_GUARDIAN_BIOME_GATE_1","result":"pass","config":"full-597","evidence":"jawa/list_things on Desert-regenerated tile 51056: 0 mech/fleshbeast/hive, ancient-hostile caskets + scavenged loot present","sha":"4d73c5a80","ts":"2026-09-12T13:44:28Z"}
 {"seat":"FOUNDRY","event":"close","id":"SHRINE_GUARDIAN_BIOME_GATE_1","sha":"4d73c5a804e822a7390ab01ad32f98fd48417a71","ts":"2026-09-12T13:44:28Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SHOKKWEAVE_SOLE_SOURCE_1","ts":"2026-09-12T13:45:07Z"}
+{"seat":"FOUNDRY","event":"start","id":"SHOKKWEAVE_SOLE_SOURCE_1","ts":"2026-09-12T13:45:08Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up","ts":"2026-09-12T13:51:56Z"}
+{"seat":"FOUNDRY","event":"claim","id":"WEBWORK_KIT_BUILD_1","ts":"2026-09-12T13:55:09Z"}
+{"seat":"FOUNDRY","event":"start","id":"WEBWORK_KIT_BUILD_1","ts":"2026-09-12T13:55:10Z"}
+{"seat":"BENCH","event":"block","id":"FLOOD_WITNESS_EVENT_1","reason":"Design + quest spec done (invitation quest authored, alert-unlock flagged unruled); waits on FLOOD_CANYON_BIOME_1 (the mechanism mod, FOUNDRY) and its one production arm-the-flood verb, then quest def build","on":"FLOOD_CANYON_BIOME_1","ts":"2026-09-12T13:56:21Z"}
+{"seat":"BENCH","event":"block","id":"VAPOR_EMITTER_PLACEMENT_1","reason":"All per-type rules RULED (owner sitting 2026-09-12, recorded in the review doc); done when the two FOUNDRY fix items land","on":"VAPOR_PLACEMENT_CLEANUP_1","ts":"2026-09-12T13:56:22Z"}
