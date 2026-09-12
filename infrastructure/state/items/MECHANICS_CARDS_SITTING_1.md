@@ -13,6 +13,10 @@ card section (KIT_SPECS_CARD_SITTING_1 is closed; this is its successor):
 - `design/Jawa/worldbuilding/biomes/kits/forge_kit_spec.md` — 3 cards (tower
   depth v1; boiling-rain lethality; penned beldons vs the tibanna embargo —
   note the third interacts with TIBANNA_EMBARGO_PLOT_1, rule them together).
+- `design/Jawa/worldbuilding/biomes/kits/scald_kit_spec.md` — 2 cards
+  (steam-catch output: item water vs dbh_water pipe vs both; bottom-walkers:
+  visual forever vs eventual depth-pawn interaction). Its salinity question is
+  the liquid mod's CARD-1 — one ruling covers both.
 - `design/RimMandrake/RM_liquid_types_mod.md` — 3 cards (Scald basin salinity;
   coolant fishing bucket; sediment/film system in v1 or not).
 - `design/Jawa/worldbuilding/biomes/kits/rust_cathedral_kit_spec.md` — 0 cards;

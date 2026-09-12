@@ -202,7 +202,8 @@ the dung-and-mat economy.**
 
 ## Owed
 
-- `SCALD_MECHANICS_1` (to file) — steam-catch industry, margin fishing +
+- `SCALD_MECHANICS_1` (filed 2026-09-11; **engine mapping DRAFTED** —
+  `kits/scald_kit_spec.md`) — steam-catch industry, margin fishing +
   bath recreation, bubble-sailor and walker set-pieces, geyser fields, the
   boiling-lift integration (spec already ruled), wreck-salvage in burning
   shallows.
