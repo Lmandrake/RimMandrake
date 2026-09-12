@@ -88,6 +88,19 @@ CASES = [
     ("a denial does not cover a claim earlier in the cell",
      "Water is 25% of tiles, and the axis is not latitude.", HIT, "water"),
 
+    # ---- CHECK_CANON_WATER_RULE_1: `tiles` was context vocab, and it is not
+    # water-specific — both real corpus hits it produced on 2026-09-12 had "tiles"
+    # sitting right next to an unrelated 25%, with no "water"/"ocean"/"sea" anywhere
+    # in the cell. Removing `tiles` from context (canon says the noun test is what
+    # separates a real claim from a coincidence) fixed both without narrowing the
+    # true-positive cases above, which all pair their percentage with "water" itself.
+    ("gene thirst stat is not a water claim (the_slime_gene_lists.md:45)",
+     "| skin must stay moist: on desert tiles thirst +25%, -3 mood in dry air |",
+     CLEAN, None),
+    ("row-count cap is not a water claim (enrichment/REVIEW.md:26)",
+     "tiles. No def exceeds 25% of a plan's row count. Selection is a fixed-seed random",
+     CLEAN, None),
+
     # ---- advisory never fails the build -----------------------------------------
     ("undated mod count is advisory only", "The stack is 562 mods.", CLEAN, None),
 
