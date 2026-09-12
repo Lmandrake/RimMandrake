@@ -283,7 +283,7 @@ namespace RimMandrake.Aftermath
                     return record.RaidFaction;
 
                 case AftermathPayloadFactionMode.AllyOfTrigger:
-                    string defeatedDefName = record.RaidFaction.def?.defName;
+                    string defeatedDefName = record.RaidFaction?.def?.defName;
                     if (defeatedDefName == null) return null;
                     RM_AlliancePairDef pair = DefDatabase<RM_AlliancePairDef>.AllDefsListForReading
                         .FirstOrDefault(p => p.a == defeatedDefName);
