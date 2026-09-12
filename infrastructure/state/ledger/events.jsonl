@@ -7490,3 +7490,10 @@
 {"seat":"BENCH","event":"claim","id":"LIQUID_TYPES_MOD_1","ts":"2026-09-12T00:32:25Z"}
 {"seat":"FOUNDRY","event":"claim","id":"SHOKKWEAVE_SOLE_SOURCE_1","ts":"2026-09-12T00:41:06Z"}
 {"seat":"FOUNDRY","event":"start","id":"SHOKKWEAVE_SOLE_SOURCE_1","ts":"2026-09-12T00:41:06Z"}
+{"seat":"BENCH","event":"file","id":"CSV_REGION_SYNC_1","title":"CSV_REGION_SYNC_1 — the frozen CSV's region column missed the name consolidation","kind":"task","target":"v1","for":"BENCH","ts":"2026-09-12T00:41:15Z"}
+{"seat":"BENCH","event":"file","id":"CANON_PLANET_CENSUS_1","title":"CANON_PLANET_CENSUS_1 — canon.yml planet census still describes the deprecated painted lineage","kind":"task","target":"v1","for":"BENCH","ts":"2026-09-12T00:41:17Z"}
+{"seat":"BENCH","event":"file","id":"MECHANICS_CARDS_SITTING_1","title":"MECHANICS_CARDS_SITTING_1 — card sitting for the 2026-09-11 fan-out wave","kind":"task","target":"v1","for":"BENCH","ts":"2026-09-12T00:41:18Z"}
+{"seat":"BENCH","event":"file","id":"WORLDMAP_AUDIT_LIVE_CHECKS_1","title":"Four worldmap audit checks needing the live game — batch into next game-up window","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-12T00:41:18Z"}
+{"seat":"FOUNDRY","event":"claim","id":"WORLDMAP_AUDIT_LIVE_CHECKS_1","ts":"2026-09-12T00:41:49Z"}
+{"seat":"FOUNDRY","event":"start","id":"WORLDMAP_AUDIT_LIVE_CHECKS_1","ts":"2026-09-12T00:41:50Z"}
+{"seat":"BENCH","event":"close","id":"POST_FREEZE_WORLDMAP_AUDIT_1","sha":"a7f8208ac69515744c5e5b54828af92d6f19a145","ts":"2026-09-12T00:41:52Z"}

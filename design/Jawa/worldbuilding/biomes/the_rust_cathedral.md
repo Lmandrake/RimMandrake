@@ -383,7 +383,10 @@ their way out of that; nothing in §P says any of this (§6.1).
 
 ## Owed
 
-- `RUST_CATHEDRAL_MECHANICS_1` (to file) — the hum-mood system (attitude
+- `RUST_CATHEDRAL_MECHANICS_1` — ⭐ **C# kit spec DRAFTED 2026-09-11**:
+  `kits/rust_cathedral_kit_spec.md` — six mechanics engine-mapped, donor roach
+  DLL measured clone-safe, sacrilege hysteresis is exact vanilla behavior
+  (zero C#); no cards open, 2 in-authority reads flagged in the spec — the hum-mood system (attitude
   value, layered tones, bolt-dance display, droid commentary, hysteresis
   wiring), the deep-drill response event (undescribed), wall-tier defs, the
   living bolts as mechanical wildlife, eel-fishing consequences.

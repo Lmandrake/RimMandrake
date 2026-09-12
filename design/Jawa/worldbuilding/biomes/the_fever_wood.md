@@ -211,6 +211,11 @@ pools explain it themselves: **nothing goes in the water here.**
 
 ## Owed
 
+⭐ **C# kit spec DRAFTED 2026-09-11** (`FEVER_WOOD_MECHANICS_1`):
+`kits/fever_wood_kit_spec.md` — 9 mechanics engine-mapped, 3 sibling-kit
+reuses (Greentide causeway GenStep, Greatbole class, silence cue), 7 new
+RM_/RUT_ classes; 3 owner cards open (await the next card sitting).
+
 - `FEVER_WOOD_MECHANICS_1` — scope per this revision: boughway network
   (elevated lanes, slow variation via the encroachment engine), the
   nectar-for-safety herd economy (fear drying yields), the two-front war
