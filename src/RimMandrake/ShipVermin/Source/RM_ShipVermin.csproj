@@ -12,10 +12,12 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony: the one class here (RM_Alert_ShipVermin) is a plain Alert
-    subclass over mandrake.rm.creaturebehaviors' abstract base — that mod
-    must be present and loaded before this one (About.xml modDependencies +
-    loadAfter already assert it).
+    No Harmony. RM_Alert_ShipVermin is a plain Alert subclass over
+    mandrake.rm.creaturebehaviors' abstract base — that mod must be present
+    and loaded before this one (About.xml modDependencies + loadAfter already
+    assert it). WRECKAGE_VERMIN_SPAWN_1 (2026-09-12) added
+    RM_CompVerminNest/RM_CompProperties_VerminNest, a plain ThingComp with no
+    tick-independent state beyond one saved int — same no-Harmony recipe.
   -->
 
   <PropertyGroup>
@@ -43,6 +45,9 @@
 
   <ItemGroup>
     <Compile Include="RM_Alert_ShipVermin.cs" />
+    <Compile Include="RM_ShipVerminMod.cs" />
+    <Compile Include="RM_CompProperties_VerminNest.cs" />
+    <Compile Include="RM_CompVerminNest.cs" />
   </ItemGroup>
 
   <ItemGroup>

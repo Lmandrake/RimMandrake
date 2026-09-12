@@ -51,6 +51,8 @@
     <li>7f.alienworlds</li>                                 <!-- the framework that def's fields belong to -->
       <li>mandrake.rm.patches</li>
     <li>mandrake.rsw.patches</li>
+    <li>mandrake.rm.shipvermin</li>                          <!-- WreckVerminNest_ShipChunk.xml: RM_CompProperties_VerminNest -->
+
 
     <!-- Added PATCHMODS_LOADAFTER_SWEEP_1 (2026-09-08): real MayRequire/FindMod
          targets in Patches/ with no loadAfter declaration, found the same way
