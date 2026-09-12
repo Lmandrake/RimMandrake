@@ -1,5 +1,12 @@
 # ASSIGNMENT_SHEETS_VERDICT_SITTING_1 — the owner's override pass on the landed assignment
 
+🔴 **THE SITTING IS DONE. Do NOT serve the sheets to the owner again** — the review
+was held 2026-09-10 (see REVIEW HELD below); the owner re-confirmed on 2026-09-12
+that no re-serve is wanted. Remaining work: `SHEET_ORPHAN_CONSUMPTION_1` (FOUNDRY)
+consumes the five orphaned verdict channels, then BOTH decisions files are frozen
+and this item closes. The sheet is a superseded snapshot — later sittings overrode
+rows; it never overwrites a newer decision, so there is no revert risk.
+
 The "review after" half of BIOME_FAUNA_ASSIGNMENT_SITTING_1's land-now-review-after
 ruling. The two sheets are built, prefilled with every landed call, committed at
 `1bae4258`:
