@@ -423,58 +423,29 @@
        tool is the Titan precedent above (#3): an index predicate on the
        SAME element name, removing only the second occurrence. Each pair here
        has exactly two occurrences (verified against the capture), so [2]
-       is unambiguous. -->
-  <Operation Class="PatchOperationConditional">   <!-- 35. AA_Eyeling x Wasteland (2nd record) -->
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals/AA_Eyeling[2]</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals/AA_Eyeling[2]</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- 36. AA_Eyeling x ExtremeDesert (2nd record) -->
-    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals/AA_Eyeling[2]</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals/AA_Eyeling[2]</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- 37. AA_Eyeling x ZBiome_DesertOasis (2nd record) -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals/AA_Eyeling[2]</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals/AA_Eyeling[2]</xpath>
-    </match>
-  </Operation>
-  <!-- 38. REMOVED 2026-09-12 (MLIE_FAUNA_ABSORPTION_1 Wave C): was
-       "Anooba x ZBiome_Grasslands (2nd record)". Our own wildAnimals entry
-       is now RSW_Anooba, a different defName - no longer a duplicate key
-       with the donor's own remaining "Anooba" entry, so this removal no
-       longer fixes anything real. See the file header's 2026-09-12 note. -->
-  <Operation Class="PatchOperationConditional">   <!-- 39. Gizka x ZBiome_Grasslands (2nd record) -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Gizka[2]</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Gizka[2]</xpath>
-    </match>
-  </Operation>
+       is unambiguous.
+
+       2026-09-12 - MOVED, not fixed here: AA_Eyeling x Wasteland/ExtremeDesert/
+       ZBiome_DesertOasis and Gizka/Nuna/Orray/Zeer x ZBiome_Grasslands (the
+       7 ops that were #35-37 and #39/#41-43 below) were STILL live-duplicated
+       despite these removals existing, confirmed against capture
+       2026-09-12T19-16-27Z. Root cause: RimWorld applies a single mod's
+       Patches/*.xml strictly in filesystem order (DirectXmlLoader.
+       XmlAssetsInModFolder, confirmed via RimSage against ModContentPack.
+       LoadPatches), and this file ("AnimalBiomeDuplicates_Fix.xml") sorts
+       BEFORE "BiomeCast_Ashkarr.xml" (A < B) - so these removals ran before
+       BiomeCast_Ashkarr.xml had appended its own second copy, found only one
+       record, and silently no-opped. They now live in
+       BiomeWildAnimalDuplicates_Generated.xml, a GENERATED file
+       (biome_wildanimals_inlist_dupes.py) whose name sorts AFTER
+       BiomeCast_Ashkarr.xml on purpose. Iriaz x ZBiome_Grasslands (#40, still
+       below) is UNCHANGED and untouched by this move - the 2026-09-12T19-16-27Z
+       capture shows it is no longer duplicated (a single record), so its
+       removal below is a harmless no-op; it is not this pass's concern. -->
   <Operation Class="PatchOperationConditional">   <!-- 40. Iriaz x ZBiome_Grasslands (2nd record) -->
     <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Iriaz[2]</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Iriaz[2]</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- 41. Nuna x ZBiome_Grasslands (2nd record) -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Nuna[2]</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Nuna[2]</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- 42. Orray x ZBiome_Grasslands (2nd record) -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Orray[2]</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Orray[2]</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- 43. Zeer x ZBiome_Grasslands (2nd record) -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Zeer[2]</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Zeer[2]</xpath>
     </match>
   </Operation>
 

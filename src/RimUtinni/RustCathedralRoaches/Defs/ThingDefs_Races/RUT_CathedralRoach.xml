@@ -241,6 +241,10 @@
       <body>RUT_RoachHex</body>
       <baseBodySize>0.22</baseBodySize>
       <baseHealthScale>1.6</baseHealthScale>
+      <!-- CATHEDRAL_ROACH_THINKTREE_GAP_1: BaseMechanoidWalker's inherited
+           "Mechanoid" tree has no insertTag, so the Animal_PreMain hook
+           RM_ThinkNode_EatCleanable rides never fires without this. -->
+      <thinkTreeMain>RUT_ThinkTree_CathedralRoach</thinkTreeMain>
       <lifeStageAges Inherit="False">
         <li>
           <def>MechanoidFullyFormed</def>

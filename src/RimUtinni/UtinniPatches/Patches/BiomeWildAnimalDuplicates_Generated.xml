@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  BiomeWildAnimalDuplicates_Generated.xml    GENERATED - do not hand-edit
+  ============================================================================
+  Regenerate with biome_wildanimals_inlist_dupes.py, flag `xml`, writing to this path:
+      python3 src/RimMandrake/Utils/biome_wildanimals_inlist_dupes.py
+  (⛔ the flags are spelled with two hyphens, which XML forbids inside a comment,
+   so they are named rather than written out here. See the script's docstring.)
+
+  Companion to AnimalBiomeDuplicates_Generated.xml (cross-registration: biome
+  wildAnimals x animal race.wildBiomes) and AnimalBiomeDuplicates_Fix.xml's Blocks
+  1-3 (same class, hand-verified). This file is the THIRD, DIFFERENT class: one
+  BiomeDef's own <wildAnimals> list holding the SAME PawnKindDef twice - RimWorld's
+  own BiomeDef.ConfigErrors() calls this out directly ("Duplicate animal record: X"),
+  and it hits BiomeDef.CommonalityOfAnimal()'s Dictionary.Add() throw in the FIRST
+  loop, before the cross-registration check even runs.
+
+  🔴 THIS FILE'S NAME IS LOAD-BEARING, not cosmetic. RimWorld enumerates a single
+  mod's Patches/ folder in filesystem order (DirectXmlLoader.XmlAssetsInModFolder,
+  confirmed via RimSage against ModContentPack.LoadPatches / DirectoryInfo.GetFiles)
+  and applies that mod's patches strictly in that order - no independent sort pass.
+  Every pair here is created by OUR OWN BiomeCast_Ashkarr.xml (same mod) adding an
+  animal a donor mod's own patch already added, so the removal MUST run after
+  BiomeCast_Ashkarr.xml appends it. "BiomeWildAnimalDuplicates_Generated.xml" sorts
+  after "BiomeCast_Ashkarr.xml" (W > C); the previous home for these removals,
+  AnimalBiomeDuplicates_Fix.xml's Block 4, sorted BEFORE it (A < B) and silently
+  no-opped on every one of its 7 live pairs - confirmed 2026-09-12 against capture
+  2026-09-12T19-16-27Z. Do not rename this file to anything sorting at or before "BiomeCast_".
+
+  Each removal targets the SECOND (or later) occurrence by XPath index, e.g.
+  wildAnimals/Foo[2] - the biome's own commonality (our cast) is always kept, the
+  donor's duplicate record is what goes. Multiple duplicates of the same pair remove
+  from the HIGHEST index down, so an earlier removal never shifts a later target's
+  index out from under it.
+
+  Every op is a PatchOperationConditional: an absent mod, or a def that no longer
+  collides, turns it into a silent no-op instead of a red error.
+  Generated from capture 2026-09-12T19-16-27Z
+  7 pair(s) found this run; 0 triple(s) carried from the previous file
+  that this capture can no longer see (our own removals hide their own
+  evidence once they take effect). 7 operation(s), the UNION of every
+  triple ever found.
+-->
+<Patch>
+
+  <!-- 1. AA_Eyeling x ExtremeDesert (record 2 of 2) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals/AA_Eyeling[2]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals/AA_Eyeling[2]</xpath>
+    </match>
+  </Operation>
+
+  <!-- 2. AA_Eyeling x Wasteland (record 2 of 2) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals/AA_Eyeling[2]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals/AA_Eyeling[2]</xpath>
+    </match>
+  </Operation>
+
+  <!-- 3. AA_Eyeling x ZBiome_DesertOasis (record 2 of 2) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals/AA_Eyeling[2]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals/AA_Eyeling[2]</xpath>
+    </match>
+  </Operation>
+
+  <!-- 4. Gizka x ZBiome_Grasslands (record 2 of 2) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Gizka[2]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Gizka[2]</xpath>
+    </match>
+  </Operation>
+
+  <!-- 5. Nuna x ZBiome_Grasslands (record 2 of 2) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Nuna[2]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Nuna[2]</xpath>
+    </match>
+  </Operation>
+
+  <!-- 6. Orray x ZBiome_Grasslands (record 2 of 2) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Orray[2]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Orray[2]</xpath>
+    </match>
+  </Operation>
+
+  <!-- 7. Zeer x ZBiome_Grasslands (record 2 of 2) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Zeer[2]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Zeer[2]</xpath>
+    </match>
+  </Operation>
+</Patch>
