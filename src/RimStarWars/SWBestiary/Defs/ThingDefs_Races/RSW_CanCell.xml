@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — CanCell creature port.
+  Ported from mlie.starwarsanimalcollection's `CanCell` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Custom body:
+  `CanCell` (Bodies_Animal_StarWars.xml) needed a defName rename plus
+  repointing its 2 wing parts to the ALREADY-PORTED Wave B BodyPartDefs
+  (RSW_SW_LeftWing/RSW_SW_RightWing, RSW_MlieWaveB_BodyParts.xml) — no new
+  body part needed, ported here as RSW_CanCell (RSW_MlieWaveC_Bodies.xml).
+  Every other part (Shell corePart, Tail, Stomach, Heart, Pronotum,
+  InsectHead, Brain, Eye, Antenna, InsectNostril, InsectMouth, InsectLeg) is
+  vanilla Core, confirmed against Core's own BodyParts_Animal.xml, left
+  bare. `leatherDef`/`specificMeatDef` repoint to the newly-ported
+  RSW_Leather_Insectile/RSW_Insectile_Meat (RSW_MlieWaveC_Resources.xml,
+  same swresource/Leather_Insectile, swresource/Meat_Insectile texPaths the
+  donor used); its 2 eggs are newly ported this pass too
+  (RSW_EggCanCellFertilized/UnFertilized, texPath swresource/EggInsectile).
+  Sounds repoint to the already-absorbed sound wave (RSW_Pawn_CanCell_*,
+  2026-09-02). texPaths are unchanged text — extracted art (base + 4-frame
+  flying animation, east/north/south) sits at Textures/swanimals/CanCell/
+  (extract_bundle.py against the same AssetBundle every prior wave used).
+
+  Wired into the live cast this same pass: ZBiome_Badlands (per
+  cast_assignment.csv's current row for this species — the donor's own
+  wildBiomes weight list is preserved verbatim below, most entries inert
+  data for non-Ash'karr biomes, matching every prior wave's practice),
+  repointed from the bare "CanCell" entry in cast_assignment.csv /
+  BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_CanCell</defName>
+    <label>can-cell</label>
+    <description>Can-cells were a species of scavenging flying insectoids found on a number of planets across the galaxy (although it is believed they originated on Kashyyk). Can-Cells evolved many of their strange physical characteristics to maximise their survival in the dangerous forests and jungles they inhabit.</description>
+    <statBases>
+      <MoveSpeed>5</MoveSpeed>
+      <ComfyTemperatureMin>-7</ComfyTemperatureMin>
+      <MarketValue>200</MarketValue>
+      <ArmorRating_Blunt>0.09</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.09</ArmorRating_Sharp>
+      <Wildness>0.30</Wildness>
+      <MaxFlightTime>60</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggCanCellUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggCanCellFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>4</eggLayIntervalDays>
+        <eggCountRange>2~4</eggCountRange>
+      </li>
+    </comps>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>RSW_CanCell</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>1.45</baseBodySize>
+      <baseHealthScale>1.45</baseHealthScale>
+      <baseHungerRate>0.30</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Insectile</leatherDef>
+      <specificMeatDef>RSW_Insectile_Meat</specificMeatDef>
+      <lifeExpectancy>6</lifeExpectancy>
+      <petness>0.30</petness>
+      <trainability>Intermediate</trainability>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.8</leaveMapOnFleeChance>
+      <wildBiomes>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateForest>0.4</TemperateForest>
+        <TropicalRainforest>0.8</TropicalRainforest>
+        <TemperateSwamp>0.4</TemperateSwamp>
+        <ColdBog>0.01</ColdBog>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>RSW_Pawn_CanCell_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_CanCell_Death</soundDeath>
+          <soundCall>RSW_Pawn_CanCell_Call</soundCall>
+          <soundAngry>RSW_Pawn_CanCell_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_CanCell</defName>
+    <label>can-cell</label>
+    <race>RSW_CanCell</race>
+    <combatPower>40</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <wildGroupSize>1~3</wildGroupSize>
+    <flyingAnimationFramePathPrefix>swanimals/CanCell/CanCell_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/CanCell/CanCell</texPath>
+          <drawSize>1.25</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/CanCell/CanCell_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/CanCell/CanCell</texPath>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/CanCell/CanCell_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/CanCell/CanCell</texPath>
+          <drawSize>1.9</drawSize>
+          <shadowData>
+            <volume>(0.2, 0.3, 0.2)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/CanCell/CanCell_Dessicated</texPath>
+          <drawSize>1.9</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>

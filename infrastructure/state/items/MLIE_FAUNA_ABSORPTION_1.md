@@ -579,3 +579,33 @@ scoped to 3 species to keep the batch reviewable) — deploy + cold-load
 proof owed to the next natural restart, same as every prior wave.
 
 **Remaining**: 86 of the Wave C worklist, plus Fambaa (unchanged holdout).
+
+## 2026-09-12 (FOUNDRY, offline subagent, belt mode) — 3 more species ported: Boma, Borcatu, CanCell (86 -> 83 remaining)
+
+Same pipeline. Boma and CanCell each needed a custom BodyDef (beyond the
+simple Anooba/Bolotaur pattern) but reused Wave B's already-ported body
+parts (`RSW_SW_Left/RightHorn`+tail tools for Boma, `RSW_SW_Left/RightWing`
+for CanCell) — no new BodyPartDefs invented. Borcatu is pure vanilla-part
+composition. New resources: `RSW_Leather_Tough` (Borcatu), a new leather +
+meat pair for CanCell (`RSW_Leather_Insectile`/`RSW_Insectile_Meat`), 2 new
+eggs for Boma (leather/meat repoint to Wave B's `RSW_Leather_Saurian`/
+`RSW_Saurian_Meat`). Art extracted: 33 files, all non-zero.
+
+Cast wiring: Boma's biome (`ZBiome_DesertOasis`) already had an
+`mandrake.rsw.swbestiary`-gated block to extend; Borcatu (`Wasteland`) and
+CanCell (`ZBiome_Badlands`) had none, so new gated
+`PatchOperationConditional` blocks were added, matching the Wampa/Acklay
+2026-09-09 precedent. Removing Borcatu left the Wasteland donor block
+hollow — deleted outright per this repo's "inaccurate material is deleted,
+not superseded-in-place" rule. Checked all 3 Mlie-touching patch files
+named in the item's own spec: 0 references to these 3 species.
+
+Validated: `validate_patch.py`, `--live` against today's fresh
+2026-09-12T13-25-42Z capture (592==592 confirmed against live
+`ModsConfig.xml`). The 5 directly-authored files: 0 errors/0 warnings.
+Deployed `BiomeCast_Ashkarr.xml`: 0 errors, 1 known pre-existing unrelated
+warning. Design `BiomeCast_Ashkarr.xml` carries 388 pre-existing errors
+from unrelated donor-mod dead references (documented in prior passes) —
+confirmed none name Boma/Borcatu/CanCell.
+
+**Remaining**: 83 of the Wave C worklist, plus Fambaa.

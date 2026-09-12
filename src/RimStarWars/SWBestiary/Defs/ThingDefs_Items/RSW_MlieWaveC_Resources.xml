@@ -19,6 +19,19 @@
   unchanged); its leather/meat repoint to the already-ported
   RSW_Leather_Saurian/RSW_Saurian_Meat (RSW_MlieWaveB_Resources.xml).
 
+  Pass 3 (Boma/Borcatu/CanCell, same day): Boma needs no new leather/meat —
+  repoints to the already-ported RSW_Leather_Saurian/RSW_Saurian_Meat (Wave
+  B) — only its 2 eggs are newly ported (RSW_EggBomaFertilized/
+  UnFertilized, texPath swresource/EggDapple, newly extracted this pass).
+  Borcatu needs a new leather (RSW_Leather_Tough, texPath
+  swresource/Leather_Tough, newly extracted) — its specificMeatDef repoints
+  to the already-ported RSW_Tough_Meat (Wave B, same donor Tough_Meat used
+  by Anooba's meat). CanCell needs a new leather and a new meat
+  (RSW_Leather_Insectile / RSW_Insectile_Meat, texPaths
+  swresource/Leather_Insectile / swresource/Meat_Insectile, both newly
+  extracted) plus its 2 eggs (RSW_EggCanCellFertilized/UnFertilized, texPath
+  swresource/EggInsectile, newly extracted).
+
   Ported verbatim from mlie.starwarsanimalcollection's (workshop folder
   3497316713) ThingDefs_Items/Items_Resource_swanimal_Items.xml, each defName
   flat-RSW_-prefixed. texPaths are UNCHANGED text.
@@ -238,6 +251,137 @@
     <statBases>
       <Nutrition>0.5</Nutrition>
       <MarketValue>20.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggBomaFertilized</defName>
+    <label>boma egg (fert.)</label>
+    <description>A fertilized boma egg. If all goes well, it should hatch into a baby boma. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggDapple</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(250,250,200)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>40.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Boma</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggBomaUnFertilized</defName>
+    <label>boma egg (unfert.)</label>
+    <description>An unfertilized boma egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggDapple</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(250,250,200)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>40.0</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Tough</defName>
+    <label>heavy hide</label>
+    <description>Tanned, dried, skin. It won't keep you warm but it is reasonably durable.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Tough</texPath>
+      <color>(179,81,44)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>4.0</MarketValue>
+      <StuffPower_Armor_Sharp>1.2</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.1</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Heat>30</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(179,81,44)</color>
+      <commonality>0.1</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Insectile</defName>
+    <label>insectile hide</label>
+    <description>Tanned, dried, insectile skin. It is suprisingly tough but insulates poorly.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Insectile</texPath>
+      <color>(134,130,69)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.8</MarketValue>
+      <StuffPower_Armor_Sharp>1.3</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.8</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>5</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>5</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(134,130,69)</color>
+      <commonality>0.1</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+<ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Insectile_Meat</defName>
+    <label>insectile meat</label>
+    <description>A piece of meat from an insectile.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Insectile</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.5</MarketValue>
+    </statBases>
+  </ThingDef>
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggCanCellFertilized</defName>
+    <label>can-cell egg (fert.)</label>
+    <description>A fertilized can-cell egg. If all goes well, it should hatch into a baby can-cell. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggInsectile</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(0,255,175)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>15.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RSW_CanCell</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggCanCellUnFertilized</defName>
+    <label>can-cell egg (unfert.)</label>
+    <description>An unfertilized can-cell egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggInsectile</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(0,255,175)</color>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>15.0</MarketValue>
     </statBases>
   </ThingDef>
 </Defs>

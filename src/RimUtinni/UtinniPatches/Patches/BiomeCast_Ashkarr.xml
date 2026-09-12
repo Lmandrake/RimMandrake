@@ -551,15 +551,16 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
+  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
     <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
       <value>
-        <Borcatu>0.7</Borcatu> <!-- Borcatu - wretched-small, keep -->
+        <RSW_Borcatu>0.7</RSW_Borcatu> <!-- Borcatu - wretched-small, keep -->
       </value>
     </match>
   </Operation>
+
 
   <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,oskarpotocki.vfe.insectoid2">   <!-- donor: oskarpotocki.vfe.insectoid2 -->
     <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
@@ -901,6 +902,16 @@
     </match>
   </Operation>
 
+  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mandrake.rsw.swbestiary">   <!-- donor: mandrake.rsw.swbestiary -->
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
+      <value>
+        <RSW_CanCell>0.2</RSW_CanCell> <!-- can-cell - flier-commuter, keep -->
+      </value>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
     <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -908,7 +919,6 @@
       <value>
         <Gornt>0.3</Gornt> <!-- gornt - the-Patient, keep -->
         <Eopie>0.25</Eopie> <!-- eopie - the-Patient, keep -->
-        <CanCell>0.2</CanCell> <!-- can-cell - flier-commuter, keep -->
         <Convor>0.2</Convor> <!-- convor - flier-commuter, import -->
         <Woolamander>0.15</Woolamander> <!-- woolamander - flier-commuter, import -->
       </value>
@@ -1019,6 +1029,7 @@
       <value>
         <RSW_Dewback>0.4</RSW_Dewback> <!-- dewback - large-resident, import -->
         <RSW_Bantha>0.1</RSW_Bantha> <!-- bantha - pilgrim, import -->
+        <RSW_Boma>0.15</RSW_Boma> <!-- boma - large-margin, keep -->
       </value>
     </match>
   </Operation>
@@ -1030,7 +1041,6 @@
       <value>
         <Ollopom>0.7</Ollopom> <!-- ollopom - small-resident, keep -->
         <Fanback>0.5</Fanback> <!-- fanback - large-resident, adjust-keep -->
-        <Boma>0.15</Boma> <!-- boma - large-margin, keep -->
         <Dactillion>0.15</Dactillion> <!-- dactillion - flier-mount, keep -->
         <Eopie>0.1</Eopie> <!-- eopie - pilgrim, import -->
         <Jamel>0.1</Jamel> <!-- Jamel - pilgrim, import -->
