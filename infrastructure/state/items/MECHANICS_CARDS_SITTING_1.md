@@ -50,3 +50,15 @@ card section (KIT_SPECS_CARD_SITTING_1 is closed; this is its successor):
 ## verify
 Every card ruled and propagated into its spec; contradictory phrasing deleted,
 not bannered (deciding-and-superseding).
+
+## SITTING HELD 2026-09-12 — every card ruled and propagated
+All cards ruled in the 2026-09-12 sitting and recorded in their specs
+(contradictory phrasing deleted in place): miasma 3 (strange tier REAL —
+2-3 hediffs to draft for ratification), fever wood 3, sump 3 (moat fire
+CASCADES — drafted default overridden), forge 3, scald 2 (diving is V1 —
+SCALD_DIVING_MOD_1), liquid mod 3 (Scald FRESH, rivers flow OUT — wrong
+premise deleted; films v1; coolant Other), tibanna T1+T2
+(TIBANNA_SOURCE_CUT_1 filed; two-ended clock), poison forest weather 4
+names ratified, fauna injection-layers = host envelope union, cathedral
+A1-A5, ashfall 3 of 4 (function TBD — plot discussion owed), gizka 4+1
+deferred (GIZKA_HOLD_HOOK_SPIKE_1 gates), census landed, CSV re-stamped.
