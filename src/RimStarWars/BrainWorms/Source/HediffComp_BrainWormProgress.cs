@@ -39,8 +39,10 @@ namespace RimMandrake.StarWars.BrainWorms
     ///
     /// Hediff.ShouldRemove is severity <= 0, so nothing here has to remove anything:
     /// the negative rate walks severity to zero and the engine drops the hediff. The
-    /// expulsion then happens in CompPostPostRemoved, gated on the cold flag so that
-    /// a surgical removal does NOT drop a live worm on the operating table.
+    /// expulsion then happens in CompPostPostRemoved, gated on a LIVE ambient-
+    /// temperature check (not the cached `cold` field, which only refreshes every
+    /// 200 ticks) so that a surgical removal does NOT drop a live worm on the
+    /// operating table.
     /// </summary>
     public class HediffComp_BrainWormProgress : HediffComp_SeverityModifierBase
     {
@@ -76,18 +78,31 @@ namespace RimMandrake.StarWars.BrainWorms
         {
             base.CompPostPostRemoved();
 
-            if (!cold || Props.expelledWorm == null)
+            if (Props.expelledWorm == null)
             {
                 return;
             }
 
             Pawn p = Pawn;
-            if (p == null || !p.Spawned || p.Map == null)
+            if (p == null || p.Dead || !p.Spawned || p.Map == null)
             {
                 return;
             }
 
-            BrainWormUtility.SpawnWormBurst(p.Map, p.Position, 1);
+            // Recompute live rather than trust the cached `cold` field: that flag is
+            // only refreshed on the 200-tick CompPostTickInterval cadence, so it can
+            // still read true for up to ~3 seconds of game time after the pawn was
+            // moved somewhere warm. A surgical removal (Recipe_RemoveHediff calls
+            // health.RemoveHediff directly, with no severity-tick in between) can
+            // land inside that stale window - exactly the "live worm on the operating
+            // table" the header doc rules out. Ambient temperature answers now, not
+            // as of the last sample.
+            if (p.AmbientTemperature > Props.coldThreshold)
+            {
+                return;
+            }
+
+            BrainWormUtility.SpawnWormBurst(p.Map, p.Position, 1, Props.expelledWorm);
             Messages.Message(
                 "A brain worm crawls out of " + p.LabelShort + " into the cold.",
                 p,

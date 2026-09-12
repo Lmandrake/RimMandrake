@@ -38,7 +38,7 @@ namespace RimMandrake.StarWars.BrainWorms
                 return;
             }
 
-            BrainWormUtility.SpawnWormBurst(map, cell, Rand.RangeInclusive(2, 4));
+            BrainWormUtility.SpawnWormBurst(map, cell, Rand.RangeInclusive(2, 4), BrainWormsDefOf.RSW_BrainWormKind);
         }
     }
 }
