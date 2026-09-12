@@ -1433,6 +1433,60 @@
     "hash": "326151f46d9d554bc1b8d56149013c909ce06d91cda005846bb963c57b2794dd",
     "sha": "5a1f89a6"
   },
+  "src/RimMandrake/Greentide/Source/RM_BiomeWorker_Greentide.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "54b6e9f172e1fabfafc6d61f822f2d34fc98cf57c69825efdae5721ed26570d7",
+    "sha": "2c8762586"
+  },
+  "src/RimMandrake/Greentide/Source/RM_BuriedCache.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "cfc9e423e52eac0478334b04840896009794c66c8c0f4c8829599a95fcc6a88e",
+    "sha": "2c8762586"
+  },
+  "src/RimMandrake/Greentide/Source/RM_DefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "cef43af5e446ef2191b76e66e14af8360061bc16e53002bddf20075ecf40f401",
+    "sha": "2c8762586"
+  },
+  "src/RimMandrake/Greentide/Source/RM_JobDriver_DigOutBuried.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "8e43572425dad18546b73a1355a5a106bbf0bea1c076606ed27fafed014a09dc",
+    "sha": "2c8762586"
+  },
+  "src/RimMandrake/Greentide/Source/RM_JobDriver_FreeMired.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "72ed6076ed2dabacd77e7ade22f63fef21f2fb5149bf156a41c8683f8408a9aa",
+    "sha": "2c8762586"
+  },
+  "src/RimMandrake/Greentide/Source/RM_MapComponent_TerrainMire.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "5bbe79a8c77d461014e1d8533078dfa65a80284520f78940e79734c564b827a7",
+    "sha": "2c8762586"
+  },
+  "src/RimMandrake/Greentide/Source/RM_MireExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "9a2e1146eaf998af470a9ea699fcdd77f861edfee246b4fbceeffb3645eb8cbc",
+    "sha": "2c8762586"
+  },
+  "src/RimMandrake/Greentide/Source/RM_WorkGiver_DigOutBuried.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "412721318e926fe214d4e1bd3d53bb36bc1a840ca81ce42286ebfe6fca0a5b0f",
+    "sha": "2c8762586"
+  },
+  "src/RimMandrake/Greentide/Source/RM_WorkGiver_FreeMired.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "bfc1bd0373ff351c37b0e6166ad5b9af9773aae863847771e1c8e1292b72e467",
+    "sha": "2c8762586"
+  },
   "src/RimMandrake/Inhabited/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -1756,6 +1810,12 @@
     "date": "2026-09-03",
     "hash": "35854ba1edd4eb2059dac51033c0cefda15be584ad4e7d977cb9727ff33e2af1",
     "sha": "c6ede2aa"
+  },
+  "src/RimMandrake/LoreStages/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "ad91e72725bda743733d6b3cdebd3413c14749448f26d2a1b46ae471fa008195",
+    "sha": "972818c70"
   },
   "src/RimMandrake/MandrakePatches/About/About.xml": {
     "cleanCount": 2,
@@ -9256,10 +9316,10 @@
     "sha": "92e56d4f"
   },
   "src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "799c648b2156685e14cd804f65420f97fdf3a68878dc2f0bfefd08522f66a290",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "6e89e81a97b15ffd350c975a59c0b8ad06843d4307f7b3e7879610338d7c09db",
+    "sha": "ab37da311"
   },
   "src/RimStarWars/SWBestiary/Patches/Livestock/ForsakenCrags_WildSpawns.xml": {
     "cleanCount": 1,
@@ -10665,6 +10725,12 @@
     "hash": "53a34ae60531455e794ae1317a51aea469f3e792e673b3f4096bdfa08de08de7",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/PyrelandsFireEcology/Patches/PyrelandsWeather_RuledTable.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "a7486b97c74a8c4658c79bb0ec9dcc2b91cd266aa2301d240674fa72af58259a",
+    "sha": "2c8762586"
+  },
   "src/RimUtinni/PyrelandsFireEcology/Patches/PyrelandsWeather_Stage0.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -10874,6 +10940,18 @@
     "date": "2026-09-09",
     "hash": "53da16716f9695cba3d9436482d70071f9b7222a33d3ae19958e53f818c6c034",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ScarlandsLadder/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "3583c333365594e87ba7ab1d2f04ccc87db996073b0806ca801e57b2a5e04ecf",
+    "sha": "2c8762586"
+  },
+  "src/RimUtinni/ScarlandsLadder/Defs/LoreStageTableDefs/RUT_ScarlandsLadder.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "fac16f98bcd5b6ca5ac067ec5f01194c63c49f074c850ed1cb3a691c1c517f83",
+    "sha": "2c8762586"
   },
   "src/RimUtinni/ScavengerEvents/About/About.xml": {
     "cleanCount": 1,
@@ -11306,6 +11384,24 @@
     "date": "2026-09-09",
     "hash": "6e5f7dda0c60540d36999c64114059f18f6a84ae1257ef1ab4dffcb85821dcba",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/WarLab/CompIgniteCraterOnDestroy.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "a642f8ed4efca95485ae1a2f3a4304469734548280c8d24b048750a41105e812",
+    "sha": "2c8762586"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/WarLab/GameComponent_WarLabCrater.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "4cddeb5bcd916cf386441d94726dceeac065ddd39252bde1dd884cf57b9a316c",
+    "sha": "2c8762586"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Source/WarLab/WarLabCraterMutation.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "eff36c1d8251e0e62cdfefe977d5f4b6e9a9a466e66e0b79cdd90f7ee20026c4",
+    "sha": "2c8762586"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/WarLab/gen_war_lab_layout.py": {
     "cleanCount": 1,
