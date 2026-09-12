@@ -355,14 +355,10 @@ emergence event — files there, never here).
 ## Owner cards (open — this spec post-dates the closed
 `KIT_SPECS_CARD_SITTING_1`; BENCH routes these three to the next card sitting)
 
-1. **CARD — Hidden plumbing factions vs ban §6.2.** Raids and lords need a
-   Faction object; the spec uses two new HIDDEN FactionDefs (vanilla insectoid
-   pattern — no settlements, no comms, never player-facing) and reads §6.2's
-   "no faction allegiance" as a lore rule, not an engine rule. **A:** hidden
-   plumbing factions are fine (spec as written). **B:** even hidden FactionDefs
-   violate the ban — build factionless (loses raids/lords; ants become
-   manhunter-style packs, no theft quest in v1). Trade: A keeps the whole §4
-   war; B is purer and much poorer.
+1. **CARD — RULED 2026-09-12: hidden plumbing factions are FINE (A, spec as
+   written).** Two hidden FactionDefs, vanilla-insectoid pattern, never
+   player-facing; §6.2's "no faction allegiance" is a lore rule. The §4 war,
+   its lords and the theft quest all stand.
 2. **CARD — What the Tenant does to YOUR pawns.** Wild animals at the pools
    are subtracted outright (no corpse). For colonists/tamed: **A:** same —
    gone, one splash (maximum dread, savescum bait). **B:** dragged under —
