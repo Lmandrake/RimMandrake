@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T03:22:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T03:31:50Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -40,15 +40,6 @@ target:   v1
 kind:     task
 summary:  - Biome mod per the tier grammar (design/NAMINGSCHEMEPLAN.md): packageId
 prose:    infrastructure/state/items/FLOOD_CANYON_BIOME_1.md
-
-## MUDSWALLOW_LIVE_LIST_FIX_1 Greentide MudSwallow Scan() iterates the LIVE ThingsInGroup list and Destroys mid-loop — skips the shifted haulable and wrongly resets its swallow timer (silent); also add MayRequire guards to RUT_Greentide.xml wildPlants (11 unguarded foreign defNames)
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  MUDSWALLOWLIVELISTFIX1 — MudSwallow mutates the live haulables list mid-loop
-prose:    infrastructure/state/items/MUDSWALLOW_LIVE_LIST_FIX_1.md
 
 # IN PROGRESS
 
