@@ -19,3 +19,15 @@ Spec source: `design/Jawa/worldbuilding/biomes/forsaken_crags.md` §3 (owner-rat
 
 Read the landmark back from the live world after commit (world read tools, not the write's
 return value); confirm name and tile anchor.
+
+## done (FOUNDRY, 2026-09-12)
+
+Tile 9023 already carried a `Chasm`-def landmark, auto-named "Clam Chasm" — the feature
+itself needed no authoring, only the name. `jawa/world_landmark_rename` (tile 9023 →
+"Lightfall"), then independently re-read via `jawa/world_mutators_get` (not the rename's
+own return value): `landmark: "Chasm", landmarkName: "Lightfall"`. No `world_commit`
+needed — landmark names redraw per frame, unlike a landmark add.
+
+Correction to the item's own MEASURED line: live `world_tile_get` on 9023 reads
+`hillinessInt: 4` (Mountainous), not 5 (Impassable) as filed — still clears
+`TileMutatorDef Chasm`'s `minHilliness: Mountainous` gate either way.
