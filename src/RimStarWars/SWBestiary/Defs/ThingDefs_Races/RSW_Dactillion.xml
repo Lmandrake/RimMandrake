@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 Wave C — Dactillion creature port.
+  Ported from mlie.starwarsanimalcollection's `Dactillion` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml, workshop folder 3497316713), renamed under the
+  RSW_ tier prefix. Geometry/stats/comps copied verbatim. Custom body: the
+  donor's `Bogwing` BodyDef (Bodies_Animal_StarWars.xml) is NOT vanilla Core
+  (confirmed absent from Core's Bodies_Animal_Quadruped.xml/Bodies_Animal_Bird.xml
+  — checked directly, RimSage is blind to this donor per the 2026-09-12
+  sweep note) — ported here as RSW_Bogwing, defName rename plus repointing
+  its 2 wing parts to the ALREADY-PORTED Wave B RSW_SW_LeftWing/
+  RSW_SW_RightWing (same repoint the CanCell port already made) — no new
+  body part needed. Every other part (Tail, Spine, Stomach, Heart, Lung x2,
+  Kidney x2, Liver, Neck/Head/Skull/Brain/Eye x2/Ear x2/Nose/Beak, 4x
+  Leg/Paw) is vanilla Core, confirmed against the same donor file read
+  directly. NOTE: the donor's `Bogwing` BodyDef is unrelated to the
+  still-unported `Bogwing` species (own bare defName, out of this item's
+  current worklist) — they merely share a name; only the BODY is ported
+  this pass.
+
+  `leatherDef`/`specificMeatDef` repoint to the already-ported
+  RSW_Leather_Reptavian/RSW_Reptavian_Meat (Wave B). Its
+  `CompProperties_EggLayer` needed 2 new eggs, RSW_EggDactillionFertilized/
+  UnFertilized (RSW_MlieWaveC_Resources.xml, texPath swresource/EggWiggly,
+  newly extracted this pass). Its Odyssey specialTrainable (AttackTarget)
+  is vanilla content, left unprefixed. Sounds repoint to the
+  already-absorbed sound wave (RSW_Pawn_Dactillion_*, 2026-09-02). texPaths
+  are unchanged text — extracted art (16 PNGs: base body/dessicated for 3
+  directions plus the full 4-frame flying animation set for 3 directions)
+  sits at Textures/swanimals/Dactillion/ (extract_bundle.py against the
+  same AssetBundle every prior wave used; 3 extra "DactillionPack" textures
+  in the bundle are unreferenced by any donor def, left unextracted).
+
+  Wired into the live cast this same pass: ZBiome_DesertOasis (per
+  cast_assignment.csv's current row for this species), repointed from the
+  bare "Dactillion" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+-->
+<Defs>
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Dactillion</defName>
+    <label>dactillion</label>
+    <description>The dactillions were a reptavian native to the sinkhole world of Utapau. Dactillions shared both avian and lizard traits, with long, thin wings and thick, scaled hides. A dactillion's pair of wings allowed it to ride the thermal updrafts in a Utapau sinkhole, and its prominent limbs allowed it to scale the rocky side. An avian cousin of the speedy varactyl, the dactillion served as a mounts.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>750</MarketValue>
+      <ComfyTemperatureMin>-14</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <CaravanRidingSpeedFactor>2.0</CaravanRidingSpeedFactor>
+      <Wildness>0.60</Wildness>
+      <MaxFlightTime>60</MaxFlightTime>
+      <FlightCooldown>30</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>horns</label>
+        <capacities>
+          <li>Cut</li>
+          <li>Stab</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggDactillionUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggDactillionFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Bogwing</body>
+      <predator>true</predator>
+      <maxPreyBodySize>2.5</maxPreyBodySize>
+      <baseBodySize>3.0</baseBodySize>
+      <baseHungerRate>1.0</baseHungerRate>
+      <baseHealthScale>2.5</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Reptavian</leatherDef>
+      <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
+      <petness>0.60</petness>
+      <trainability>Advanced</trainability>
+      <packAnimal>true</packAnimal>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>30</lifeExpectancy>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.4</leaveMapOnFleeChance>
+      <canFishForFood>true</canFishForFood>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.8</AridShrubland>
+        <Desert>0.08</Desert>
+        <ExtremeDesert>0.02</ExtremeDesert>
+        <TropicalRainforest>0.4</TropicalRainforest>
+        <TropicalSwamp>0.0</TropicalSwamp>
+        <TemperateSwamp>0.0</TemperateSwamp>
+        <TemperateForest>0.08</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.0</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+          <soundWounded>RSW_Pawn_Dactillion_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Dactillion_Death</soundDeath>
+          <soundCall>RSW_Pawn_Dactillion_Call</soundCall>
+          <soundAngry>RSW_Pawn_Dactillion_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Dactillion</defName>
+    <label>dactillion</label>
+    <labelPlural>dactillions</labelPlural>
+    <race>RSW_Dactillion</race>
+    <combatPower>325</combatPower>
+    <ecoSystemWeight>0.30</ecoSystemWeight>
+    <flyingAnimationFramePathPrefix>swanimals/Dactillion/Dactillion_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <lifeStages>
+      <li>
+        <label>dactillion chick</label>
+        <labelPlural>dactillion chicks</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Dactillion/Dactillion</texPath>
+          <drawSize>1.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dactillion/Dactillion_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Dactillion/Dactillion</texPath>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dactillion/Dactillion_Dessicated</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Dactillion/Dactillion</texPath>
+          <drawSize>3.5</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dactillion/Dactillion_Dessicated</texPath>
+          <drawSize>3.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef></Defs>
