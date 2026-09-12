@@ -27,8 +27,10 @@
        Hediff stat offsets are real: StatWorker.cs:508 reads every hediff's
        CurStage.statOffsets into the pawn's stat value.
 
-       isBad true and a visible label: the player must be able to SEE why a
-       colonist who walked past the herd is suddenly sweating.
+       isBad false (mixed effect, not purely bad — it helps in the cold as
+       much as it hurts in the heat) but still a visible label: the player
+       must be able to SEE why a colonist who walked past the herd is
+       suddenly sweating.
   ======================================================================== -->
   <HediffDef>
     <defName>RUT_FurnaceWarmth</defName>
