@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T02:58:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T03:01:01Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1071,6 +1071,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MUDSWALLOW_LIVE_LIST_FIX_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  MUDSWALLOWLIVELISTFIX1 — MudSwallow mutates the live haulables list mid-loop
 prose:    infrastructure/state/items/MUDSWALLOW_LIVE_LIST_FIX_1.md
+
+## HUB_LAMP_TIME_FIX_1 Hub lamps mislabel local time as UTC (every age off by the UTC offset — the recorded 'health 7.0 h' was minutes-old data) + hub_check GREY doesn't fail the gate, missing source file reads as fine, naive timestamps crash the whole check
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/HUB_LAMP_TIME_FIX_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/HUB_LAMP_TIME_FIX_1.md
