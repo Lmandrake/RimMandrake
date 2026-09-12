@@ -31,20 +31,54 @@ drops to silence — the survival cue to stop moving.
 - RUT_RustCathedralAttitude: the one content instance, targeting
   RUT_RustCathedral.
 
-Public API for the rest of the kit to plug into (§3 living bolts read the
-band for their dance/freeze display; §4 eel-fishing and §5 deep-drill each
-call AddIrritation for their own inputs) — none of those call it yet, they
-remain unbuilt:
+Public API for the rest of the kit to plug into:
   RM_MapComponent_BiomeAttitude.GetBand(Map)
   RM_MapComponent_BiomeAttitude.AddIrritation(Map, float)
+§3 (below) is the first consumer. §4 eel-fishing and §5 deep-drill remain
+unbuilt and call neither.
+
+ALSO HERE: §3 (living bolts as mechanical wildlife) — the hum's display
+organ, built into this mod rather than a sibling because it is the only
+thing that reads the band, and §1's own spec section describes the
+bolt-dance display as part of the hum system.
+- RUT_LivingBolt (ThingDef + PawnKindDef + its own RUT_BoltFrame BodyDef):
+  a tiny mechanoid-fleshed wild critter on §6's live-verified
+  BaseMechanoidWalker shape. Mechanoid flesh settles three requirements at
+  once — not butcherable into meat, no taming route (RaceProperties.Animal
+  is false for any mechanoid, so trainability may stay null with no config
+  error), and butcherProducts must be non-empty, which Steel 2 supplies. It
+  costs the Hunt designator, which only offers animals; killing a bolt is
+  still possible by draft, and that is what the watched pricing charges for.
+  NO wildBiomes entry — the roster JSON owns the cast, this owns the shape.
+- RUT_ThinkTree_LivingBolt: its own main think tree, because the inherited
+  vanilla Mechanoid tree has no insertTag anywhere and is built for lords
+  and overseers. Order is the mechanism: the freeze conditional outranks
+  the queued figure, which outranks the dance, which outranks vanilla
+  wander (the all-off floor).
+- RM_ThinkNode_ConditionalAttitudeBand + RM_JobGiver_ResonantDance: the
+  freeze and the dance. Figures are short chains of vanilla Goto jobs on
+  generated loops/lobed figures/alignments; pattern energy is full at band
+  0 and nothing at band 4, and the freeze fires at band 4 — where §1 kills
+  every sustainer. NOTE the kit spec's pre-§1 wording says "freeze at band
+  0"; §1 shipped band 0 = calmest, so this follows the sheet's MEANING
+  ("when the hum drops, stop moving") and keeps both numbers in the think
+  tree XML.
+- RUT_BoltShedCuriosity: a salable trade good dropped every 4-8 days by
+  vanilla CompSpawner on the race — no new comp.
+- Watched pricing: Harmony postfixes on Pawn_CarryTracker.TryStartCarry
+  (both overloads) and a prefix on Pawn.Kill add +3 / +15 irritation, but
+  only when a player-faction pawn did it. Nothing player-readable says so —
+  the sheet's ban 1 forbids the def admitting it is watched.
 
 Deferred (kit spec's own scope lines): the -15-per-sacred-building magnitude
 check on vanilla's AttackedBuilding goodwill hook (rides whichever mod ends
 up owning Tier 3 enforcement — noted, not stubbed, here); hum-literacy as a
 learnable/tradeable knowledge item; per-colonist mood thought; the
 line-cycle ambient dressing event; real authored hum audio (placeholder
-clips only). §2 (wall tiers) and §6 (roaches) are built in sibling mods;
-§3/§4/§5 of the kit are untouched by this mod.</description>
+clips only); and for §3, dance choreography variety, synchronized
+multi-bolt figures, fleck/sound garnish, and real bolt art (placeholder
+texPaths only — expect magenta until the art pipe runs). §2 (wall tiers)
+and §6 (roaches) are built in sibling mods; §4/§5 of the kit are untouched.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>
