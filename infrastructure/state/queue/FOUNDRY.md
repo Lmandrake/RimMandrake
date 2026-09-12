@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T00:32:25Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T00:41:06Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
-prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -431,6 +422,15 @@ target:   v1
 kind:     task
 summary:  OASISLANDMARKPLACEMENT1 — place and name the pools
 prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
+
+## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
+prose:    infrastructure/state/items/SHOKKWEAVE_SOLE_SOURCE_1.md
 
 ## IKEE_MYNOCK_ART_REGEN_1 Regenerate Ikee (AA_Eyeling) and Mynock art via the improved Codex/native-transparency pipeline
 state:    doing
