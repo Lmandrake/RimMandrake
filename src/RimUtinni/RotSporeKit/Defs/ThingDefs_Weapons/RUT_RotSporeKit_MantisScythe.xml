@@ -3,11 +3,11 @@
   <!--
     Ported from BiomesCaverns_src 1.6/Defs/Items/BMT_MantisScythes.xml (fungal variant
     only — the crystal-claw variant belongs to BMT_CrystalCaverns, a different donor
-    biome, out of scope). costList's claw ingredient still names the donor's own
-    BMT_FungalMantisClaw (harvested from BMT_FungalMantis, RUT_TheRot.xml's own
-    wildAnimals list, MayRequire biomesteam.biomescaverns): fauna admission for that
-    animal rides BIOME_FAUNA_ASSIGNMENT_SITTING_1, out of this item's scope. Remap this
-    costList once that sitting resolves the mantis's fate.
+    biome, out of scope). costList's claw ingredient was repointed by
+    BMT_FAUNA_ABSORPTION_1 (2026-09-11) from the donor's BMT_FungalMantisClaw onto our
+    own RSW_FungalMantisClaw (MayRequire mandrake.rsw.swbestiary, harvested from
+    RSW_BiomesTeamPort_Races.xml's mantis): fauna admission for the mantis creature
+    itself still rides BIOME_FAUNA_ASSIGNMENT_SITTING_1, out of this item's scope.
   -->
 
   <ThingDef ParentName="BaseMeleeWeapon_Sharp_Quality">
