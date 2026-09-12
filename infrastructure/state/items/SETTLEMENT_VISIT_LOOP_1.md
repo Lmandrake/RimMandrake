@@ -211,3 +211,60 @@ should only be written while the game is down), and the actual
 arrival→compose→cast→departure→gate-search→teardown→casing run on the Junkers
 pilot manifest, observed rather than inferred from source. Left `doing` — this
 is offline-complete, not done.
+
+## FOUNDRY, 2026-09-12: deploy staleness already resolved elsewhere; deep re-read against RimSage, no bugs found; live bar still owed
+
+Reclaimed and started per this pass's brief (a staleness audit flagged the
+deployed copy stale vs. HEAD). Re-checked rather than trusting that claim:
+
+**Not stale anymore.** `deploy_custom_mods.py --mod Inhabited` and
+`--mod AshkarrInhabited` both now report "in sync" — a `filecmp.cmp` byte
+comparison, not a timestamp guess (read the tool's own `compare()` to confirm).
+Both mods' folders match repo HEAD exactly (40 and 8 files respectively). The
+2026-09-09 note's staleness was real at the time and has since been closed by
+an intervening deploy (most likely `MOD_OPTIONS_RETROFIT_1`'s 46-mod pass,
+which touched `RM_InhabitedMod.cs`/`RM_InhabitedSettings` — new this session,
+not mentioned in any prior note on this item). No deploy action was needed or
+taken this pass.
+
+**Game was mid-cold-load all session; this pass's own brief said stay off the
+bridge entirely** — no live attempt made, deploy or otherwise.
+
+**Full re-read of the arrival→compose→cast→stock→fate-detection→departure→
+gate-search→teardown→casing chain, cross-checked against RimSage rather than
+trusting the 2026-09-09 clean bill:** `WorldObject_Inhabited`/
+`WorldObject_InhabitedSettlement`, `GenStep_ComposeSettlementDistrict`,
+`GenStep_InhabitedCast`, `GenStep_InhabitedStock`, `InhabitedFateWorker`,
+`MapComponent_InhabitedWatch`, `GateSearchHook`, `Patch_SettlementDeparture`,
+`Patch_Game_DeinitAndRemoveMap` (Patch_MapRemoval.cs), `InhabitedStock`,
+`SettlementCasing`, `DisplacedPool`, `Patch_BeggarsFromPool`,
+`StructureInjectionsBridge`, `SettlementManifestDef`, `InhabitedCastDef`,
+`LordJob_Inhabited`/`LordToil_InhabitedRoutine`, `CharacterApplier`,
+`RM_InhabitedMod`/`RM_InhabitedSettings` (today's Mod Settings addition,
+previously unreviewed on this item). Verified against the actual 1.6 source
+via RimSage, not assumed: `Game.DeinitAndRemoveMap(Map, bool)` signature,
+`GravshipUtility.PlayerHasGravEngine(Map)`, `ThingOwner.TryAddOrTransfer`,
+`LordJob.ShouldRemovePawn` default-true, `Thing.DeSpawnOrDeselect` (exists on
+`Thing`, not `Pawn` — confirmed against `MapDeiniter.cs`'s own identical
+call), `QuestGen_Pawns.GeneratePawn(Quest, PawnGenerationRequest, bool)`,
+`PawnKindDefOf.Beggar`, `PawnGenerationRequest.KindDef`, the
+`StructureInjectionsBridge` reflection targets (`RimplacePlan.Parse`,
+`GenStep_RimplacePlan.ApplyPlan`, and all five `Footprint*`/`HasFootprint`
+fields — confirmed as public fields, not properties, matching
+`AccessTools.Field`), and `Lord.lastPawnHarmTick`. Also confirmed GenStep
+order values in XML (850/900/910) match every code comment's claimed
+ordering, and the Junkers pilot manifest (`SettlementManifestDefs_TheClaimJump.xml`)
+matches spec exactly: settlementName "The Claim Jump", low-security
+(`searchesLeavers=false`), a real `RM_InhabitedPlace_Scrapyard` place ref, and
+the `FleeIfThreatened` fate. **Found no new bugs** — every prior fix
+("opus code review" comments throughout, several dated) checked out, and
+nothing this pass's more careful RimSage cross-check contradicted. Re-ran
+`validate_patch.py` on both mods: 29 files, 0 errors, 0 warnings, matching
+2026-09-09.
+
+**Net: this item is unchanged in substance — offline-complete, mechanically
+verified twice now — and the live bar is still the only thing between it and
+close.** Nothing was deployed because nothing needed to be, and the bridge
+was correctly left alone this pass. Left `doing`; `needs=deploy` is NOT set
+(already in sync) — the actual blocker is a live quicktest with bridge
+access, not a deploy.
