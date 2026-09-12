@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T03:32:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T03:51:41Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1032,6 +1032,16 @@ blocked:  mod built, compiled, deployed and offline-validated; live quicktest pr
 summary:  - Biome mod per the tier grammar (design/NAMINGSCHEMEPLAN.md): packageId
 prose:    infrastructure/state/items/FLOOD_CANYON_BIOME_1.md
 
+## WRECKAGE_VERMIN_SPAWN_1 Ship vermin spawn FROM wreckage: wreck-anchored nest/spawn mechanism for the ship-vermin band (Fall Line hulks and wreck sites), on top of the biome-cast wildlife already deployed
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  built offline (comps + settings + Utinni wiring), compiles clean; no live game/bridge session this run to run the item's own quicktest verify
+summary:  - A spawn mechanism anchored to wreckage things/structures (Fall Line hulks,
+prose:    infrastructure/state/items/WRECKAGE_VERMIN_SPAWN_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
@@ -1063,26 +1073,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VAPOR_TERMINATOR_GEYSER_FIX_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VAPOR_TERMINATOR_GEYSER_FIX_1.md
-
-## HUB_LAMP_TIME_FIX_1 Hub lamps mislabel local time as UTC (every age off by the UTC offset — the recorded 'health 7.0 h' was minutes-old data) + hub_check GREY doesn't fail the gate, missing source file reads as fine, naive timestamps crash the whole check
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  HUBLAMPTIMEFIX1 — hub freshness lamps compute age against mislabeled time
-prose:    infrastructure/state/items/HUB_LAMP_TIME_FIX_1.md
-
-## WRECKAGE_VERMIN_SPAWN_1 Ship vermin spawn FROM wreckage: wreck-anchored nest/spawn mechanism for the ship-vermin band (Fall Line hulks and wreck sites), on top of the biome-cast wildlife already deployed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - A spawn mechanism anchored to wreckage things/structures (Fall Line hulks,
-prose:    infrastructure/state/items/WRECKAGE_VERMIN_SPAWN_1.md
 
 ## VAPOR_PLACEMENT_CLEANUP_1 Vapor emitter part-4 cleanup per the 2026-09-12 ruled rules: magma-vent 5 out-of-lock tiles, ancient-vent ruin-only audit, swamp/ruin gas re-seat, PoisonForest toxic+green gas, helixien re-seat to junker sites in PoisonForest and the Rot (engine mechanism check first)
 state:    proposed
