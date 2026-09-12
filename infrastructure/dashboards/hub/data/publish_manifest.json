@@ -1,5 +1,5 @@
 {
- "tabs/health.html": "Transient/codebase_health_artifact.html",
+ "tabs/health.html": "infrastructure/dashboards/hub/tabs/health.html",
  "tabs/maturity.html": "Transient/project_maturity_dashboard.html",
  "tabs/sheets/creature_register.html": "design/Jawa/worldbuilding/review/creature_register.html",
  "tabs/sheets/furniture_register.html": "design/Jawa/worldbuilding/review/furniture_register.html",

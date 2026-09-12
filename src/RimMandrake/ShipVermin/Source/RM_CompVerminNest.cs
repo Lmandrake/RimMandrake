@@ -59,7 +59,7 @@ namespace RimMandrake.ShipVermin
 			{
 				return;
 			}
-			TrySpawn();
+			AttemptSpawn(verbose: false);
 			CalculateNextSpawnTick();
 		}
 
@@ -70,36 +70,80 @@ namespace RimMandrake.ShipVermin
 			nextSpawnTick = Find.TickManager.TicksGame + intervalTicks;
 		}
 
-		private void TrySpawn()
+		/// <summary>
+		/// WRECKAGE_VERMIN_SPAWN_1 re-block debug hook. The ordinary CompTick
+		/// path called this and observed zero spawns after 263,701+ ticks with
+		/// every precondition looking clear by code inspection, with no log
+		/// line distinguishing which branch actually refused. This method is
+		/// the single source of truth for every early-return in the spawn
+		/// attempt, returns a human-readable reason string for each one, and
+		/// is called both from CompTick (silently, verbose:false — production
+		/// behaviour is unchanged) and from RM_ShipVerminDebugActions (verbose:true,
+		/// logged) so the failing branch can be read directly instead of
+		/// inferred from silence.
+		/// </summary>
+		public string AttemptSpawn(bool verbose)
 		{
 			Map map = parent.Map;
 			if (map == null)
 			{
-				return;
+				return Report(verbose, "no Map (parent not on a map)");
 			}
 
 			RM_MapComponent_VerminPopulation population = map.GetComponent<RM_MapComponent_VerminPopulation>();
-			if (population != null && population.GetPopulation(Props.populationGroupTag) >= Props.populationHardCap)
+			int currentPop = population?.GetPopulation(Props.populationGroupTag) ?? 0;
+			if (population != null && currentPop >= Props.populationHardCap)
 			{
-				return; // at the shared "nuisance unless there are many" hard cap — same gate RM_CompVerminBreeder respects
+				// at the shared "nuisance unless there are many" hard cap — same gate RM_CompVerminBreeder respects
+				return Report(verbose, $"population cap reached ({currentPop}/{Props.populationHardCap}, tag '{Props.populationGroupTag}')");
 			}
 
 			PawnKindDef kind = ShipVerminSettings.PickEnabledNestSpecies();
 			if (kind == null)
 			{
-				return; // nothing enabled, or nothing enabled is actually installed
+				// nothing enabled, or nothing enabled is actually installed
+				return Report(verbose, "PickEnabledNestSpecies() returned null (nothing enabled+installed)");
 			}
 
-			if (!CellFinder.TryFindRandomCellNear(parent.Position, map, Props.nestSpawnRadius,
+			bool foundCell = CellFinder.TryFindRandomCellNear(parent.Position, map, Props.nestSpawnRadius,
 				(IntVec3 c) => c.Standable(map) && map.reachability.CanReach(parent.Position, c, PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors)),
-				out IntVec3 spawnCell))
+				out IntVec3 spawnCell);
+			if (!foundCell)
 			{
-				return;
+				return Report(verbose, $"TryFindRandomCellNear found no cell within radius {Props.nestSpawnRadius} of {parent.Position} " +
+					$"passing (Standable && CanReach) — species would have been {kind.defName}");
 			}
 
 			PawnGenerationRequest request = new PawnGenerationRequest(kind, null, fixedBiologicalAge: 0.6f, fixedChronologicalAge: 0.6f);
 			Pawn pawn = PawnGenerator.GeneratePawn(request);
+			if (pawn == null)
+			{
+				return Report(verbose, $"PawnGenerator.GeneratePawn returned null for {kind.defName}");
+			}
 			GenSpawn.Spawn(pawn, spawnCell, map);
+			return Report(verbose, $"SPAWNED {kind.defName} ({pawn.ThingID}) at {spawnCell}, nest at {parent.Position}", success: true);
+		}
+
+		private string Report(bool verbose, string reason, bool success = false)
+		{
+			if (verbose)
+			{
+				if (success)
+				{
+					Log.Message("[RM_CompVerminNest] " + reason);
+				}
+				else
+				{
+					Log.Message("[RM_CompVerminNest] spawn attempt refused: " + reason);
+				}
+			}
+			return reason;
+		}
+
+		/// <summary>Debug-hook accessor — ticks remaining until the next scheduled attempt.</summary>
+		public int DebugTicksUntilNextSpawn()
+		{
+			return nextSpawnTick - Find.TickManager.TicksGame;
 		}
 
 		public override void PostExposeData()

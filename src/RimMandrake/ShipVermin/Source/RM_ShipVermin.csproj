@@ -48,6 +48,7 @@
     <Compile Include="RM_ShipVerminMod.cs" />
     <Compile Include="RM_CompProperties_VerminNest.cs" />
     <Compile Include="RM_CompVerminNest.cs" />
+    <Compile Include="Debug\RM_ShipVerminDebugActions.cs" />
   </ItemGroup>
 
   <ItemGroup>
