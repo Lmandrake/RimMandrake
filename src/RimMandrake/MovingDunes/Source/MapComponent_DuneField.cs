@@ -212,11 +212,11 @@ namespace RimMandrake.MovingDunes
 
             float stormTransport, stormInflux;
             StormFactors(out stormTransport, out stormInflux);
-            stormTransport *= MovingDunesSettings.transportRateMultiplier;
-            stormInflux *= MovingDunesSettings.transportRateMultiplier;
+            float driftMult = MovingDunesSettings.transportRateMultiplier;
+            stormTransport *= driftMult;
 
             float lost = RunTransportBatch(stormTransport);
-            RunInflux(lost, stormInflux);
+            RunInflux(lost, stormInflux, driftMult);
             RunPlantChoke(stormTransport);
         }
 
@@ -431,8 +431,21 @@ namespace RimMandrake.MovingDunes
         /// could otherwise never be given any. Both are multiplied by the weather's influx
         /// factor. The mass cap is binding (design §7.3 is UNRULED; cap-binding is the
         /// stated default until the owner rules).
+        ///
+        /// Fixed 2026-09-11 (DIRTY_CODE_REVIEW_STANDING_LOOP_1): <paramref name="lostDepth"/>
+        /// already carries the player's drift-speed slider (MapComponentTick scales
+        /// <c>stormTransport</c> by it before RunTransportBatch ever runs, and the attempt
+        /// count -- hence how much left the map -- scales with that). Re-applying
+        /// <c>driftMult</c> to the loss-derived term here on top of that (the old code
+        /// folded it into <c>stormFactor</c> and multiplied the whole sum by it) squared the
+        /// slider's effect on that one term, so cranking "Drift speed" made a map bury
+        /// itself far faster than transport alone would explain -- exactly the ratio drift
+        /// the mod-settings doc for this multiplier promises never happens. The weather-only
+        /// factor still scales both terms (a storm's own influx boost is a separate, real
+        /// knob); <paramref name="driftMult"/> now applies exactly once more, on the flat
+        /// per-day baseline only, which has no other route to the slider.
         /// </summary>
-        private void RunInflux(float lostDepth, float stormFactor)
+        private void RunInflux(float lostDepth, float stormFactor, float driftMult)
         {
             int cells = map.cellIndices.NumGridCells;
             float cap = material.maxTotalMassFraction * cells * SandGrid.MaxDepth;
@@ -443,8 +456,9 @@ namespace RimMandrake.MovingDunes
                 return;
             }
 
-            influxDebt += (lostDepth * material.influxLossRatio
-                           + material.influxPerDay / BatchesPerDay) * Mathf.Max(0f, stormFactor);
+            float weather = Mathf.Max(0f, stormFactor);
+            influxDebt += lostDepth * material.influxLossRatio * weather
+                        + material.influxPerDay / BatchesPerDay * weather * driftMult;
             if (influxDebt <= 0f)
             {
                 return;
@@ -635,10 +649,12 @@ namespace RimMandrake.MovingDunes
             }
             float stormTransport, stormInflux;
             StormFactors(out stormTransport, out stormInflux);
+            float driftMult = MovingDunesSettings.transportRateMultiplier;
+            stormTransport *= driftMult;
             for (int i = 0; i < count; i++)
             {
                 float lost = RunTransportBatch(stormTransport);
-                RunInflux(lost, stormInflux);
+                RunInflux(lost, stormInflux, driftMult);
             }
         }
 
