@@ -63,12 +63,13 @@ namespace RimMandrake.Property
         public const float AnimalTheftSearchRadius = 24f;
 
         // Mean-time-between for the two ThinkTreeDefs_AnimalSteal.xml
-        // ChancePerHour nodes. Trained pets check more often than wild
-        // animals (a taught trick is intentional and frequent; a wild
-        // animal's opportunistic grab is rarer) — both numbers are flat
-        // engine defaults per this file's own header, not RimUtinni tuning.
-        public const float AnimalTheftTrainedMtbHours = 4f;
-        public const float AnimalTheftWildMtbHours = 10f;
+        // ChancePerHour nodes lives ONLY in that XML (<mtbHours>4</mtbHours>
+        // trained, <mtbHours>10</mtbHours> wild) — a vanilla
+        // ThinkNode_ChancePerHour_Constant field has no route back to a C#
+        // constant, so a pair of same-named consts here would be dead:
+        // nothing reads them, and changing one silently does nothing.
+        // Removed 2026-09-12 (code-review pass) rather than left to mislead
+        // the next person who edits the number expecting an effect.
 
         // How far (in cells) the thief wanders off with its loot before
         // dropping it — JobDriver_RM_AnimalSteal's WanderOffWithLoot toil.
