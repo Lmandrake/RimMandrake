@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T20:04:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T21:14:20Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -251,15 +251,6 @@ target:   v1
 kind:     build
 summary:  Owner, verbatim (filed on the item): "Rather than use the whole Comingo tree
 prose:    infrastructure/state/items/TREE_GRAPHICS_OWNERSHIP_1.md
-
-## LIGHTFALL_CHASM_AUTHORING_1 Author the Lightfall chasm landmark on the Damp chain (terminator suture, deepest at tile 9023) — site+name owner-ratified 2026-09-06, spec in forsaken_crags.md §3
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
-prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
 
 ## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
 state:    doing
@@ -699,35 +690,8 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-summary:  (no items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md yet — write one when you have something to say)
+summary:  GIDDYUPWILDBIOMESDUPLICATEKEY1 — Giddy-Up's BuildAnimalBiomeCache still throws
 prose:    infrastructure/state/items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md
-
-## MEGAFAUNAYIELD_DEAD_GR_TARGETS_1 Doctrine's MegafaunaYield.xml patches GR_Elasmobearium/GR_Mantistanis (Genetic Rim ThingDefs) gated behind FindMod(Vanilla Genetics Expanded), but those GR_* defs no longer exist in the live 593-mod stack (Genetic Rim itself is cut) - 2 patch-op failures + cascading cross-ref errors every load, pre-existing per Player.log triage 2026-09-12. Fix: add a PatchOperationTest on the target defName inside the FindMod gate, or drop the dead GR_* operations outright. A related pattern (RimUtinni Patches statBases Conditionals on absent GR_*/TYR_*/VAEWaste_* defs) accounts for ~20 more of the 36 total patch-op failures logged - worth sweeping together.
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/MEGAFAUNAYIELD_DEAD_GR_TARGETS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MEGAFAUNAYIELD_DEAD_GR_TARGETS_1.md
-
-## SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1 RUT_ScarRoach and RUT_CathedralRoach render magenta live right now - 'Failed to find any textures at Things/Pawn/Animal/RUT_ScarRoach/RUT_ScarRoach' (all 4 directions missing, confirmed via Player.log 2026-09-12, pre-existing not caused by tonight's work). Needs real sprite art generated/deployed (generating-rimworld-sprites skill) or the defs gated off until art exists - not a code fix.
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1.md
-
-## MLIE_ARTOVERRIDE_COLLISION_CHECK_1 6 species still in the MLIE Wave C worklist (Mynock, Kreetle, Horax, Fambaa, Zakkeg, Ronto) each have a dedicated mandrake.rsw.<name>artoverride mod shipping owner-approved custom art at the same texPath SWBestiary would extract donor art to. SWBestiary loads AFTER every override mod, so a naive port silently reverts verified-live custom art with no error - already happened once for Anooba (fixed 5a8fc8c1c) and caught before-commit for Dragonsnake (8dc279c64). Whoever ports these 6 must check the matching ArtOverride mod's About.xml for which facings it covers BEFORE extracting/shipping SWBestiary art for those paths. Also verify Insectomorph and Dewback (already ported earlier, outside tonight's passes, also have override mods) don't already have the same bug live.
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  MLIEARTOVERRIDECOLLISIONCHECK1 — pre-flight collision map for 6 queued species + Insectomorph/Dewback verdict
-prose:    infrastructure/state/items/MLIE_ARTOVERRIDE_COLLISION_CHECK_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1111,8 +1075,8 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MOD_VALIDATION_PIT_PILOT_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  Write the pit mod's validation.py (Python on the modcheck library): one component per settings toggle
 prose:    infrastructure/state/items/MOD_VALIDATION_PIT_PILOT_1.md
 
 ## MOD_VALIDATION_RUNNER_1 Build modcheck: the scripted mod-functionality validation runner (steps file + shared runner, minimal-list quicktest sessions, read-back+screenshot evidence, verify event + HTML sheet, status registry + playtest gate)
@@ -1121,8 +1085,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MOD_VALIDATION_RUNNER_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  Build src/RimMandrake/Utils/modcheck/: the modcheck library (owner re-ruling 2026-09-12:
 prose:    infrastructure/state/items/MOD_VALIDATION_RUNNER_1.md
 
 ## MOD_VALIDATION_RETROFIT_1 modcheck full retrofit wave: every shipped mod gets a validation.steps.yaml and a green run (owner ruling 2026-09-12: full wave, not campaign-critical only) — starts only after MOD_VALIDATION_PIT_PILOT_1 ratifies the format
@@ -1131,6 +1095,26 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MOD_VALIDATION_RETROFIT_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  For every shipped RM/RSW/RUT mod: write its validation.py (settings toggles as
 prose:    infrastructure/state/items/MOD_VALIDATION_RETROFIT_1.md
+
+## GIDDYUP_NULLKEY_CRASH_1 Giddy-Up BuildAnimalBiomeCache also throws ArgumentNullException (key) at BiomeDef.CommonalityOfAnimal -- a NULL PawnKindDef reference, not a duplicate key. Found in Player.log alongside GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1's crashes but a different mechanism: some biome's wildAnimals list or some PawnKindDef's race.wildBiomes holds a null/unresolved animal reference. Needs identifying which biome/record via the def dump before a fix is possible.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GIDDYUP_NULLKEY_CRASH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GIDDYUP_NULLKEY_CRASH_1.md
+
+## RIMDRIVE_LIBRARY_BUILD_1 Build rimdrive L1+L2: hardened Session (reconnect+post-condition polling, verified pause, litter/teardown registry, runtime tool census, bridge-lock integration) + verified ops extracted from rimbench mutate(), with FakeSession offline selftests — modcheck and all future bridge drivers consume it
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  L1 rimdrive.session.Session: extraction of rimbench Session lifecycle plus
+prose:    infrastructure/state/items/RIMDRIVE_LIBRARY_BUILD_1.md

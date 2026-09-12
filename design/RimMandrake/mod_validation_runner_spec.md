@@ -110,9 +110,12 @@ def oversize_pass(t):
 - The verb vocabulary lives in the LIBRARY and grows there, never in per-mod
   code; `t.bridge_call(tool, args)` is the escape valve, and every mutation
   through it still pays the read-back.
-- Every `expect_*` is a bridge READ compared against a stated value. The
-  library refuses, at runtime, any write it cannot pair with a read-back — the
-  ~40 silent-success bridge calls are the reason this system exists.
+- Every `expect_*` is a bridge READ compared against a stated value. Every
+  write that HAS an independent read-back channel pays it, enforced at runtime
+  — the ~40 silent-success bridge calls are the reason this system exists. A
+  write with NO such channel is not refused but lands in evidence marked
+  **UNVERIFIED** (owner ruling 2026-09-12): a component containing one can
+  only report **PASS(UNVERIFIED n)**, never a clean PASS.
 
 ## 1b. Build-up and tear-down are the test (owner, 2026-09-12)
 

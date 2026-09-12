@@ -217,19 +217,16 @@ The fresh-process pattern is not the problem (78 ms MEASURED); the ad-hoc raw
 - `load_session.py` keeps its job (the cold-load run-sheet) but its `Session`,
   census, settle and litter internals become rimdrive imports.
 
-## 6. Risks and open questions (each with a recommendation)
+## 6. Risks and open questions
 
-1. **Name and location.** Recommend `src/RimMandrake/Utils/rimdrive/` (dev
-   tooling — tier-naming exempt), with `modcheck` as a separate consumer
-   package per its spec. Alternative — grow `rimbench/` in place — rejected:
-   rimbench mixes the general Session with bench-specific map-authoring
-   experiments, and its name says bench. rimbench becomes rimdrive's first
-   consumer; its `core.py` empties by extraction. (Owner may prefer another
-   name; nothing below depends on it.)
-2. **Do the world-authoring tools move in?** Recommend: the world FAMILY of
-   verbs (commit-paired writes, paginated reads) yes — it is generic
-   discipline; the Ash'karr authoring scripts themselves stay siblings, they
-   are campaign artifacts that CONSUME the library.
+1. **Name and location — RULED (owner, 2026-09-12):**
+   `src/RimMandrake/Utils/rimdrive/` (dev tooling — tier-naming exempt), with
+   `modcheck` as a separate consumer package per its spec. rimbench becomes
+   rimdrive's first consumer; its `core.py` empties by extraction.
+2. **World-authoring tools — RULED with the rollout (owner, 2026-09-12):**
+   the world FAMILY of verbs (commit-paired writes, paginated reads) moves in
+   — it is generic discipline; the Ash'karr authoring scripts stay siblings,
+   campaign artifacts that CONSUME the library.
 3. **Tool-surface rot.** The jawa/ census rots by design (91 tools 2026-08-19,
    "count it, never quote it"). Recommend runtime assertion over documentation:
    at connect, the session reads `tools/list` (already fetched for the param
@@ -242,9 +239,10 @@ The fresh-process pattern is not the problem (78 ms MEASURED); the ad-hoc raw
    already asserts batching budgets — keep that discipline); a live selftest
    chain on the minimal-list quicktest (spawn → verify → sweep → pause-verify,
    ~a minute end to end); and the modcheck pit pilot as the integration proof.
-5. **Unverifiable writes.** Recommend the §L2 rule (explicit `UNVERIFIED` in
-   evidence, no silent True) — it changes rimbench behaviour and a reviewer
-   should sign off on that deliberately.
+5. **Unverifiable writes — RULED (owner, 2026-09-12):** the §L2 rule stands —
+   explicit `UNVERIFIED` in evidence, no silent True; a component containing
+   one reports PASS(UNVERIFIED n), never clean PASS. The modcheck spec's
+   read-back bullet was amended to match the same day.
 6. **Concurrency.** One session per process, one bridge driver per project
    (rimflow lock); the library refuses a second concurrent Session in-process.
    Parallel subagents queue on the lock — the 2026-08-15 two-driver stall is
@@ -252,7 +250,7 @@ The fresh-process pattern is not the problem (78 ms MEASURED); the ad-hoc raw
 
 ## 7. Rollout
 
-Item shape (for BENCH to file on the owner's yes): RIMDRIVE_LIBRARY_BUILD_1 —
+Approved and filed by the owner 2026-09-12: RIMDRIVE_LIBRARY_BUILD_1 —
 L1/L2 extraction + hardening with selftests; then MOD_VALIDATION_RUNNER_1
 consumes it (its item already describes the extraction); L3 families land
 verb-by-verb as consumers need them, each with its FakeSession test; L4b kits
