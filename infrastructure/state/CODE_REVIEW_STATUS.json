@@ -1782,10 +1782,10 @@
     "sha": "7b9f17a9"
   },
   "src/RimMandrake/Inhabited/Source/InhabitedFateWorker.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "8adb98ca8c58b00d43dac2199fd9733829e423617971ff3e7cda5a4d7e717208",
-    "sha": "7b9f17a9"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "eae222cca3ef6e9089021a7e79bdde6f5093ab9a76fc520a6a818de6041703e2",
+    "sha": "6cbc02a1e"
   },
   "src/RimMandrake/Inhabited/Source/InhabitedMod.cs": {
     "cleanCount": 1,
@@ -1830,16 +1830,16 @@
     "sha": "7b9f17a9"
   },
   "src/RimMandrake/Inhabited/Source/MapComponent_InhabitedWatch.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "bf0d917cbdba016e192662c2e49990658c77a06b5612f0b6ad769c09e1ce21ac",
-    "sha": "7b9f17a9"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "05011ce24cbaa10f7927c662af8772d02a050889badd69f9b9048cd7143032e4",
+    "sha": "6cbc02a1e"
   },
   "src/RimMandrake/Inhabited/Source/Patch_BeggarsFromPool.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "a59330501d1392494d2d784b65012e278c10f03820a1739d273d049eccd526f2",
-    "sha": "7b9f17a9"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "38b391b4496032795c2489d0f368d5c751079b3ac5afd539ddaf31d49126f428",
+    "sha": "6cbc02a1e"
   },
   "src/RimMandrake/Inhabited/Source/Patch_MapRemoval.cs": {
     "cleanCount": 1,
