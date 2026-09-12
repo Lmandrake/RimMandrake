@@ -76,3 +76,23 @@ safe quicktest window next: run
 expect the two uncovered-toggle chains to need adding first (or accept a
 `floor.uncovered()` warning), fix whatever the first real run gets wrong
 about the assumptions flagged above, THEN take the sheet to the owner.
+
+## found live (FOUNDRY, 2026-09-12) — Pits isn't even in the active mod list
+
+While proving `RIMDRIVE_LIBRARY_BUILD_1` live (owner-authorized quicktest,
+same session), checked whether this pilot could ALSO be run live on that
+quicktest: `mandrake.rm.pits` is **deployed to disk**
+(`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Pits` exists)
+but is **absent from the live `ModsConfig.xml`** — `jawa/get_def` on
+`RM_OpenPit_Bare` returned "No ThingDef named" on the quicktest, and a
+direct grep of `ModsConfig.xml` for "pits" found nothing.
+
+This is a NEW blocker beyond the two already listed above, and it changes
+what "a safe quicktest window" can even prove: a quicktest reuses whatever
+mod set the RimWorld PROCESS already loaded at its last full start — going
+to the main menu and back does NOT reload `ModsConfig.xml`, so enabling
+Pits there would do nothing until an actual process restart. Proving this
+pilot live therefore needs the owner's NEXT full-list restart to have
+`mandrake.rm.pits` enabled first (a one-line `ModsConfig.xml` addition,
+zero risk, but still his mod list to change) — not just "a spare
+quicktest moment" the way `RIMDRIVE_LIBRARY_BUILD_1`'s proof was.
