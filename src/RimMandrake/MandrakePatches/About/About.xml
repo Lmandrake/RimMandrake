@@ -33,6 +33,7 @@
     <li>vanillaracesexpanded.phytokin</li>                  <!-- Patches/PhytokinBarkHeadFix textures - fix target -->
     <li>PeteTimesSix.ResearchReinvented</li>                <!-- Patches/ResearchKitEastFix textures - fix target -->
     <li>aw.researchreinvented.retextured</li>               <!-- Patches/ResearchKitEastFix textures - fix target's own retexture add-on -->
+    <li>petetimessix.researchreinvented.steppingstones</li> <!-- RRElectricityBasicsSelfPrereq_Fix.xml - fix target, must load after its own patches create the self-loop -->
     <li>vanillaracesexpanded.saurid</li>                    <!-- Patches/SauridFrillFix textures - fix target -->
     <li>VanillaExpanded.VAEAccessories</li>                 <!-- Patches/ToolBeltFix textures - fix target -->
     </loadAfter>

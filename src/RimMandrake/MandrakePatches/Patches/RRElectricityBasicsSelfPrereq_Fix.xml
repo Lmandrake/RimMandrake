@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- QUICKTEST_POSTSETUP_CRASH_1 -> src fix. authored 2026-09-12 (FOUNDRY).
+
+     THE BUG, MEASURED not guessed:
+     the live 592-mod def dump (DefDump/captures/2026-09-12T11-53-17Z,
+     fingerprint-matched to the exact mod set that reproduced the crash twice)
+     shows ResearchProjectDef RR_ElectricityBasics ("Research Reinvented:
+     Stepping Stones", petetimessix.researchreinvented.steppingstones) with
+     prerequisites containing ITSELF:
+
+         "prerequisites": ["RR_ElectricityBasics"]
+
+     A DFS cycle check over every ResearchProjectDef's prerequisites in that
+     dump found exactly one cycle in the whole 397-project graph, and this is
+     it (self loop, length 1).
+
+     On disk (workshop 2868389782, v1.6/Defs/ResearchProjectDefs_Electricity.xml)
+     RR_ElectricityBasics's OWN prerequisites list reads plain li Smithing li,
+     not itself: the self-reference is injected by a PATCH, not authored
+     directly. That same mod's Patches_ResearchProjectDefs.xml uses a custom
+     operation class (RR.PatchOperationResearchPrereg) to re-point every
+     project that used to require vanilla "Electricity" onto
+     RR_ElectricityBasics instead (its "stepping stones" mechanism); the exact
+     step by which that walk also lands on RR_ElectricityBasics itself lives
+     inside that closed custom PatchOperation class and was not traced
+     further. The OBSERVED RESULT is what this fix acts on, confirmed against
+     the live dump above, independent of which upstream step causes it.
+
+     WHY THIS CRASHES THE ENGINE, VERIFIED against 1.6 decompiled source
+     (RimSage, RimWorld/ResearchManager.cs:403-410):
+
+         public void FinishProject(ResearchProjectDef proj, ...)
+         {
+             if (proj.prerequisites != null)
+                 for (int i = 0; i < proj.prerequisites.Count; i++)
+                     if (!proj.prerequisites[i].IsFinished)
+                         FinishProject(proj.prerequisites[i], ...);   // recurse
+             ...
+             progress[proj] = proj.baseCost;   // proj marked finished ONLY here, after the loop
+         }
+
+     No cycle or visited-set guard anywhere in this method. For a
+     self-referencing prerequisite, proj.prerequisites[0] IS proj, and proj is
+     not yet IsFinished (that only happens after the loop returns), so the
+     very first prerequisite check recurses into FinishProject(proj) again,
+     with the identical unfinished state, forever. This is unbounded
+     recursion with no termination condition: a StackOverflowException, which
+     .NET cannot catch or log (not even a top-level try/catch), terminating
+     the whole process immediately and silently.
+
+     This matches every symptom QUICKTEST_POSTSETUP_CRASH_1 recorded: no
+     managed exception in Player.log, no crash-handler line, RimWorldWin64
+     confirmed gone within seconds, right after a burst of real research
+     completions (the leaf and earlier prerequisites in whatever chain
+     eventually reaches this node finish and log normally on the way down and
+     back up the recursion; the self-loop node itself never returns, so it
+     logs nothing further before the crash, exactly "six research completed
+     lines in a row, then the log ends abruptly").
+
+     RR_ElectricityBasics is tagged ClassicStart, i.e. a project vanilla or
+     scenario auto-setup pre-completes for a non-tribal quickstart, squarely
+     in the path rimworld/start_debug_game_ready's own auto-research walks,
+     and squarely NOT in the path of loading the real CANONICAL_ASHKARR save
+     (whose research was already resolved turn by turn, never re-walking
+     FinishProject's prerequisite recursion on a fresh cold graph). That is
+     exactly the asymmetry the item recorded: quicktest crashes, the real
+     save does not.
+
+     THE FIX
+     =======
+     Remove ONLY the self-referencing li from RR_ElectricityBasics's own
+     prerequisites list. Every other prerequisite (Smithing, on disk) and
+     every consumer that requires RR_ElectricityBasics is untouched; this
+     costs no content, it removes a cycle that could never have been a real
+     research requirement in the first place (a project cannot legitimately
+     require itself).
+
+     MayRequire petetimessix.researchreinvented.steppingstones: a no-op, not
+     an error, if that mod is inactive. Load order: this mod
+     (mandrake.rm.patches) loads last, after every research-reinvented patch
+     that could plausibly (re)create this node, so this is the final word on
+     the def.
+
+     VERIFY AFTER THE NEXT LOAD
+     ===========================
+     Re-run the DFS cycle check in this commit's investigation against a
+     fresh def dump: 0 cycles over ResearchProjectDef.prerequisites. Then
+     rimworld/start_debug_game_ready should reach programState Playing
+     without RimWorldWin64 disappearing; verify 3x in a row per the item's
+     own criteria before closing QUICKTEST_POSTSETUP_CRASH_1.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="petetimessix.researchreinvented.steppingstones">
+    <xpath>Defs/ResearchProjectDef[defName="RR_ElectricityBasics"]/prerequisites/li[text()="RR_ElectricityBasics"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/ResearchProjectDef[defName="RR_ElectricityBasics"]/prerequisites/li[text()="RR_ElectricityBasics"]</xpath>
+    </match>
+  </Operation>
+
+</Patch>
