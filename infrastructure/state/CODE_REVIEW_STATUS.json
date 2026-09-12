@@ -468,10 +468,10 @@
     "sha": "a49c5ea77"
   },
   "infrastructure/dashboards/hub/make_tab_data.py": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "743677b37901e1f737c45f387ae350d4834aaa859055117919e3d404ef567567",
-    "sha": "a49c5ea77"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "3cd38a326a1c215ac75d5ca2675c9ed9257e8b8c7c967467757ea4d90f6681d5",
+    "sha": "9e5089f22"
   },
   "infrastructure/output/pawn_flavor_phase2_census_gen.py": {
     "cleanCount": 1,
@@ -3714,10 +3714,10 @@
     "sha": "15645eb3c"
   },
   "src/RimMandrake/Utils/artpipe/artreg.py": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "c8a59dcd321c160bdbced8297ad5f94adc095d4a9cd28186cc85ee9dd3d39d58",
-    "sha": "15645eb3c"
+    "cleanCount": 3,
+    "date": "2026-09-12",
+    "hash": "421e2aef9f7b81c4cb8d9b9c3a775dc3d1afca5105109f27d854a469588d9bee",
+    "sha": "9e5089f22"
   },
   "src/RimMandrake/Utils/artpipe/common.py": {
     "cleanCount": 2,
@@ -4037,16 +4037,16 @@
     "sha": "a3b2ffc2"
   },
   "src/RimMandrake/Utils/codebase_health.py": {
-    "cleanCount": 5,
-    "date": "2026-09-09",
-    "hash": "d0e96cd33c9772e20fbf37fd66c25b369da355c5331bd151439549c4a677559e",
-    "sha": "3ea1ca20"
+    "cleanCount": 6,
+    "date": "2026-09-12",
+    "hash": "f5667b2976f1739ce69caccdaaf2423e25b63df77285e898a5cc461940a2b834",
+    "sha": "9e5089f22"
   },
   "src/RimMandrake/Utils/codebase_health_publish.py": {
-    "cleanCount": 3,
-    "date": "2026-09-11",
-    "hash": "2e0f5e1077964ddc04ce5a0d962793f201a5dc7c0fd85d85f964f88200c12564",
-    "sha": "ef1525da6"
+    "cleanCount": 4,
+    "date": "2026-09-12",
+    "hash": "a18f2aee954434b604f4e7c3af3e3dc12edfe803399231e2dade541cc004a16f",
+    "sha": "9e5089f22"
   },
   "src/RimMandrake/Utils/def_diff.py": {
     "cleanCount": 1,
@@ -4468,10 +4468,10 @@
     "sha": "d8cd2139"
   },
   "src/RimMandrake/Utils/project_maturity_dashboard.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "a28ad82c61c0dfc53d1450f75ad5a64b23c420dcd6360997665d10624d818c0e",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "9da2aa6bf277d32c2af17968aa22468242759fafc4d1ea7d8548199b7801346c",
+    "sha": "9e5089f22"
   },
   "src/RimMandrake/Utils/queue_staleness_review.py": {
     "cleanCount": 2,
@@ -4774,10 +4774,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimMandrake/Utils/selftest_codebase_health.py": {
-    "cleanCount": 2,
-    "date": "2026-09-07",
-    "hash": "d2e2001802292e74522b5cf30c2e2fde2798cbcbc1353555853a6eb461c7baba",
-    "sha": "5f75d12d"
+    "cleanCount": 3,
+    "date": "2026-09-12",
+    "hash": "79d4b9a27dcb9d1e19a75f263dc696c51a70f82b47faf1c6d492ff0f4fc4d2d1",
+    "sha": "9e5089f22"
   },
   "src/RimMandrake/Utils/selftest_colony_visibility.py": {
     "cleanCount": 1,
@@ -4912,10 +4912,10 @@
     "sha": "c057fb96"
   },
   "src/RimMandrake/Utils/structure_roster_lint.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "287292817ac0f223c9c022c71f9ca1aa11256f0eb56d1d272fcaca04539894cb",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "96ec7350dad6857892a73a89658e4c124056593be7a92c2a6159d81f2b73defa",
+    "sha": "9e5089f22"
   },
   "src/RimMandrake/Utils/system_click.py": {
     "cleanCount": 1,
