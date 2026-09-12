@@ -11674,10 +11674,10 @@
     "sha": "53cb421d2"
   },
   "src/RimUtinni/ShipShields/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "4ad7afc0c103aebeb12640154fc5411ac71ffabca00e1ee825a82f40bfb2b174",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "a6190ccf60810d9e3a7e354f2f120614fc2da57dd83cc0dc60fba2cc71b4a8c6",
+    "sha": "291b653cf"
   },
   "src/RimUtinni/ShipShields/Defs/ResearchProjectDefs/RUT_ShieldGenerator_Research.xml": {
     "cleanCount": 1,
@@ -11710,10 +11710,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/ShipShields/Source/CompProperties_ShieldParticulateScreen.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "14cea0d418d358714740a3de3f3c26ed78039e67adbccf0c4a8ff3d7d704a6b0",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "4cac27761b006872a97e997d864e08d293ba8766833201050cdb374109e095e1",
+    "sha": "291b653cf"
   },
   "src/RimUtinni/ShipShields/Source/CompProperties_ShieldThermalVeil.cs": {
     "cleanCount": 1,
@@ -11722,10 +11722,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/ShipShields/Source/CompShieldGenerator.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "0eaac790a494fc04d865a405a08cad2101911e43801788266f563de20459d86a",
-    "sha": "fdbba895e"
+    "cleanCount": 3,
+    "date": "2026-09-12",
+    "hash": "b5af133d97feff8275e6fb135a4c7bc24ca3ad98df7d09814d75112bca231f5e",
+    "sha": "291b653cf"
   },
   "src/RimUtinni/ShipShields/Source/CompShieldModuleSwitch.cs": {
     "cleanCount": 1,
@@ -11734,10 +11734,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/ShipShields/Source/CompShieldParticulateScreen.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "dd3a32e26f36db2ee120c9532c87edf12a8de2b38b8628d22afda7d4326daf4f",
-    "sha": "fdbba895e"
+    "cleanCount": 3,
+    "date": "2026-09-12",
+    "hash": "0459ad94359e518f1971a88fe966fac869656d6a4952546fdf312ae867d7d7af",
+    "sha": "291b653cf"
   },
   "src/RimUtinni/ShipShields/Source/CompShieldThermalVeil.cs": {
     "cleanCount": 2,
@@ -11746,10 +11746,10 @@
     "sha": "fdbba895e"
   },
   "src/RimUtinni/ShipShields/Source/HarmonyPatches.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "53f6e186310deee44254926aca0085dbac04d8ea2bc8050c69f983cd5324ecfd",
-    "sha": "fdbba895e"
+    "cleanCount": 3,
+    "date": "2026-09-12",
+    "hash": "e09947e03c11e5c37e081c5436847d700c494eeb1c60322132ee9f27c275ea6b",
+    "sha": "291b653cf"
   },
   "src/RimUtinni/ShipShields/Source/ShieldFieldMode.cs": {
     "cleanCount": 1,
@@ -11757,11 +11757,23 @@
     "hash": "566dbc12c2df1e1b7b4827d5f1790e91be6545ba2ee2e259f8b5a250a747dc4f",
     "sha": "bb73b6bd"
   },
+  "src/RimUtinni/ShipShields/Source/ShieldLandingAdvisory.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "fc75e456dd9eaa530df9a34a3c851e3eddb57bae95f761265bcb706742de73e9",
+    "sha": "291b653cf"
+  },
   "src/RimUtinni/ShipShields/Source/ShieldModuleMapping.cs": {
     "cleanCount": 1,
     "date": "2026-09-09",
     "hash": "616e6386c463523fd0266737786296062bf0867f4997200a48923bdc8852e5ca",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/ShipShields/Source/ShipShieldsSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-12",
+    "hash": "869441ebaa5f651a8f7c863501528f1d1f00e660fcce7b62dff8bec817ac41fb",
+    "sha": "291b653cf"
   },
   "src/RimUtinni/ShokkweaveEconomy/About/About.xml": {
     "cleanCount": 1,
