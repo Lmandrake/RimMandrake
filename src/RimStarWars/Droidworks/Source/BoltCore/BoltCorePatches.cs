@@ -27,7 +27,7 @@ namespace RimMandrake.StarWars.Droidworks
             }
             catch (Exception ex)
             {
-                Log.Error("[RimMandrake.StarWars.RimMandrake.StarWars.Droidworks] Failed to apply restraining-bolt patches: " + ex);
+                Log.Error("[RimMandrake.StarWars.Droidworks] Failed to apply restraining-bolt patches: " + ex);
             }
         }
     }
@@ -64,7 +64,7 @@ namespace RimMandrake.StarWars.Droidworks
                 nameof(MentalBreakWorker.BreakCanOccur));
             if (breakCanOccur == null)
             {
-                Log.Error("[RimMandrake.StarWars.RimMandrake.StarWars.Droidworks] MentalBreakWorker.BreakCanOccur not found by "
+                Log.Error("[RimMandrake.StarWars.Droidworks] MentalBreakWorker.BreakCanOccur not found by "
                     + "reflection - vanilla API has moved. Restraining-bolt break suppression not applied.");
                 return;
             }
