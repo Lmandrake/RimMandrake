@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T01:26:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T01:30:19Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -567,6 +567,15 @@ kind:     design
 summary:  spec (design proposal, Fable subagent, 2026-09-09 — awaiting owner ruling)
 prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
 
+## COMPANION_SILENT_FAILURE_HARDENING_1 Harden the JawaBench companion against silent-failure modes (39-finding audit): success:true hardcoded across 7 world tools, playerForced missing on prioritized_work, factionName absent on list_things, etc. — the bug class that cost hours during the ship work
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Companion silent-failure hardening
+prose:    infrastructure/state/items/COMPANION_SILENT_FAILURE_HARDENING_1.md
+
 ## PLANETARY_BEAUTY_LOADSCREENS_1 Render realistic planetary beauty shots from space for load screens (graphics pipeline)
 state:    doing
 row:      unassigned
@@ -710,6 +719,24 @@ target:   v1
 kind:     task
 summary:  WORLDMAPAUDITLIVECHECKS1 — the four audit checks only the live game can answer
 prose:    infrastructure/state/items/WORLDMAP_AUDIT_LIVE_CHECKS_1.md
+
+## NONDIV4_TEXTURE_FIX_1 Pad the 1578 non-%4 textures RimWorld refuses to compress (~2 GB; our mods first, 190 MB)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Start with OUR OWN mods: 190 MB of the waste is ours, 181 MB in
+prose:    infrastructure/state/items/NONDIV4_TEXTURE_FIX_1.md
+
+## HUB_TAB_PUBLISHER_MIGRATION_1 Repoint artpipe/health/maturity publishers to the hub URL; completes the two-seat no-clobber proof
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - artpipe: after artreg.py render, republish data/art.json (from
+prose:    infrastructure/state/items/HUB_TAB_PUBLISHER_MIGRATION_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1015,34 +1042,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## COMPANION_SILENT_FAILURE_HARDENING_1 Harden the JawaBench companion against silent-failure modes (39-finding audit): success:true hardcoded across 7 world tools, playerForced missing on prioritized_work, factionName absent on list_things, etc. — the bug class that cost hours during the ship work
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  Companion silent-failure hardening
-prose:    infrastructure/state/items/COMPANION_SILENT_FAILURE_HARDENING_1.md
-
-## NONDIV4_TEXTURE_FIX_1 Pad the 1578 non-%4 textures RimWorld refuses to compress (~2 GB; our mods first, 190 MB)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Start with OUR OWN mods: 190 MB of the waste is ours, 181 MB in
-prose:    infrastructure/state/items/NONDIV4_TEXTURE_FIX_1.md
-
-## HUB_TAB_PUBLISHER_MIGRATION_1 Repoint artpipe/health/maturity publishers to the hub URL; completes the two-seat no-clobber proof
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - artpipe: after artreg.py render, republish data/art.json (from
-prose:    infrastructure/state/items/HUB_TAB_PUBLISHER_MIGRATION_1.md
+_none._

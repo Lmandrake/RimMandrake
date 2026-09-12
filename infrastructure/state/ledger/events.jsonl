@@ -7541,3 +7541,9 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-12T01:17:59Z"}
 {"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-12T01:18:06Z"}
 {"seat":"BENCH","event":"block","id":"FAUNA_TOLERANCE_NORMALIZATION_1","reason":"Offline half DONE (Law 5 + MEASURED census, 196/297 violate). Blocked on the post-restore live harvest for confirmation + plots, and the injection-layer card.","ts":"2026-09-12T01:26:39Z"}
+{"seat":"FOUNDRY","event":"claim","id":"COMPANION_SILENT_FAILURE_HARDENING_1","ts":"2026-09-12T01:30:15Z"}
+{"seat":"FOUNDRY","event":"start","id":"COMPANION_SILENT_FAILURE_HARDENING_1","ts":"2026-09-12T01:30:16Z"}
+{"seat":"FOUNDRY","event":"claim","id":"NONDIV4_TEXTURE_FIX_1","ts":"2026-09-12T01:30:17Z"}
+{"seat":"FOUNDRY","event":"start","id":"NONDIV4_TEXTURE_FIX_1","ts":"2026-09-12T01:30:17Z"}
+{"seat":"FOUNDRY","event":"claim","id":"HUB_TAB_PUBLISHER_MIGRATION_1","ts":"2026-09-12T01:30:18Z"}
+{"seat":"FOUNDRY","event":"start","id":"HUB_TAB_PUBLISHER_MIGRATION_1","ts":"2026-09-12T01:30:19Z"}
