@@ -237,8 +237,23 @@ class Session(object):
         return (r or {}).get("pawns") or []
 
     def _ticks(self):
-        st = (self.call("rimbridge/get_bridge_status") or {}).get("state") or {}
-        return st.get("ticksGame")
+        """MEASURED live 2026-09-12, on a quicktest map: `ticksGame` is a
+        TOP-LEVEL field of `rimworld/get_game_info`, not part of
+        `rimbridge/get_bridge_status`'s `state` object -- that object has no
+        tick counter at all (confirmed by reading its actual keys; `paused`/
+        `timeSpeed` live there, ticks do not). The original guess (this
+        session's own, corrected the same day it was written) would have
+        made `paused()` always raise, since two `None` reads always compare
+        equal, silently passing the "did it move" check instead of failing
+        it -- caught only because this was run live before being trusted.
+
+        ⚠️ `rimworld/get_game_info` THROWS at the world screen
+        (`Page_SelectStartingSite` -- see the rimworld-world-editing skill,
+        `Find.MapUI` is null there). `paused()` is therefore a map-screen
+        tool only, same as the rest of this class's read-backs.
+        """
+        r = self.call("rimworld/get_game_info") or {}
+        return r.get("ticksGame")
 
     # ------------------------------------------------------- pause discipline
     def paused(self):

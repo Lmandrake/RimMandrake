@@ -65,17 +65,29 @@ already called it — `focus_game()` underneath, unchanged).
   `UNVERIFIED` sentinel lands in `session.unverified`, never in `no_ops`,
   and is never mistaken for a truthy pass. (Unit-proven, deterministically
   repeatable; not additionally demonstrated live — see below.)
-- ⏳ **NOT done: the live selftest chain on a minimal-list quicktest**
-  (spawn → verify → sweep → pause-verify). The owner's live campaign colony
-  was up and Playing throughout this work, not a quicktest — and
-  `rimworld/start_debug_game_ready` needs `go_to_main_menu` first and
-  **discards the current map without further warning**
-  (rimworld-debug-testing skill). Running the live chain right now would
-  have meant discarding the owner's live game to get a throwaway world,
-  which is exactly the kind of call this seat does not make unilaterally on
-  someone else's live session. Left `doing`, not closed, for exactly this
-  reason. Whoever next has a genuine quicktest window (or the owner is
-  between sessions) should run it — `Session(strict=True)` as a context
-  manager: `s.call("rimworld/spawn_thing", ...)` + `s.track("thing", tid,
-  x=X, z=Z)`, read it back, `with s.paused(): ...`, then let `__exit__`
-  sweep it and confirm `{"swept": 1, "left": []}`.
+- ✅ **Live selftest chain, RUN (FOUNDRY, 2026-09-12, owner-authorized after
+  a scope-check)**: saved the owner's live game first
+  (`rimbridge_save_20260912_152120.rws`, confirmed on disk before
+  proceeding), `go_to_main_menu` + `start_debug_game_ready` (the documented
+  >30s-timeout-then-succeeds behaviour, polled via `jawa/list_pawns` rather
+  than retried), then two live chains against the quicktest:
+  - **thing litter**: spawned Steel, verified via `things_at`, `paused()`
+    entered/exited cleanly, `sweep()` → `{"swept": 1, "left": []}`,
+    independently confirmed empty via a fresh `things_at` read.
+  - **pawn litter**: spawned a hostile Pirate, verified via `list_pawns`
+    count, `sweep()` killed it and destroyed the corpse, independently
+    confirmed absent from a fresh `list_pawns` read afterward.
+
+  🔴 **This caught a real bug before it shipped further**: `_ticks()` read
+  `ticksGame` from `rimbridge/get_bridge_status`'s `state` object, which
+  has NO such field at all (measured live: that object carries `paused`/
+  `timeSpeed`, not a tick counter) — every call returned `None`, and
+  `paused()`'s "read twice, must be equal" check would have PASSED on two
+  `None`s, silently defeating the verification it exists to provide. Fixed
+  to read `ticksGame` from `rimworld/get_game_info` (confirmed live: a
+  top-level field there). Re-ran the offline selftest (still 12/12 — it never
+  exercised a real `_ticks()` call, which is exactly why this bug survived
+  the offline pass) before repeating the live chain, which then passed
+  clean. Restored the owner's game from the save afterward (`load_game_ready`,
+  `compatibility: compatible`, 593/593 mods, colonist roster and
+  `ticksGame` confirmed matching the save) and released the bridge.
