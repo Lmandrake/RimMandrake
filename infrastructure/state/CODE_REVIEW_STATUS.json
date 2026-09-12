@@ -11194,10 +11194,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_AridShrubland.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "aee61a52409909e061faaf4eb501132265b479490522734473f045e23c1eca65",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "806980c54277d2727a65dd4273e024811adcf4e5e2605edb0688e778cc96638f",
+    "sha": "607d64946"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_BlueDesert.xml": {
     "cleanCount": 1,
@@ -11212,16 +11212,16 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "f599d643733ef55d927c0d38b432a2ba6362c7165f627fde752e53650d4df938",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "bf9ecdea5e28455cafac8975b696715e5eb44692898c9f4c126d94c437ad6581",
+    "sha": "607d64946"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "8f1a07a9c17710858994e7a2d5ab2c72772551d4d688ab793d467bfb53614e26",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "b220388adf8520e9d6a87eebef8a2903ee499f2f798b44fa1b8254bee35b1c96",
+    "sha": "607d64946"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ExtremeDesert.xml": {
     "cleanCount": 2,
@@ -11230,10 +11230,10 @@
     "sha": "d3ffec03"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "485e83a1e3e062c2e6db88a919895bcdd9cdb4dab7f8abda6cf9a2c446ada688",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "7c5ef8658b3fa1360dff621da98fcb8e120d25da7645afbe7eb77f9c7c86f4c5",
+    "sha": "0221f34fb"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ForsakenCrags.xml": {
     "cleanCount": 1,
