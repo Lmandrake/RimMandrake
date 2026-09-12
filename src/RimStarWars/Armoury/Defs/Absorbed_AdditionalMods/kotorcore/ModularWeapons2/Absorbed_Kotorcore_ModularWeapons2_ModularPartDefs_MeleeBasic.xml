@@ -279,7 +279,7 @@
       </equippedStatOffsets>
     </effects>
     <costList>
-      <KOTOR_AlloyDurasteel>15</KOTOR_AlloyDurasteel>
+      <Plasteel>15</Plasteel>
     </costList>
     <researchPrerequisites>
       <li>guy762_ResearchKotOR_advupgrade</li>
