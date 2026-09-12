@@ -329,19 +329,14 @@ Cross-item dependencies restated: `ALPHA_MECHANICS_KIT_1` (M4),
 M6's warden/juvenile kinds, M5's table tuning), items pass (§7 economy —
 deliberately NOT in this kit), `sea_beasts_roster.md` (nursery pairing).
 
-## Open owner cards (unruled — next card sitting)
+## Owner cards — RULED, sitting 2026-09-12
 
-1. **The 1% "genuinely strange" fever-forged tier** — what may it contain?
-   Boons are hediffs by ban #1; the strange tier wants to be memorable without
-   becoming the Slime's miracle by the back door. Trade: ship v1 with the tier
-   empty (rarity does the storytelling later) vs. rule 2–3 strange hediffs now.
-2. **Surge vs. the player's ground** — when the brine front crosses player
-   territory: unfloored crops in the band die (physics) or are spared
-   (mercy)? Drafted default: **they die** — the sheet's "no map state is
-   permanent" reads as pressure on the player too; floors/bridges are the
-   engineering answer, as churnmud was ruled in the Greentide.
-3. **Crèche despoiling scope** — is hunting wild-spawned juveniles in open
-   water also "remembered" (aggression factor), or only violence at the marked
-   crèche sites? Drafted default: **marked sites only** — the arithmetic
-   ("don't kill what's small here") stays a player-learned fear, not a
-   mechanical fence around every juvenile.
+1. **Strange tier: rule 2–3 strange hediffs NOW** — the tier ships real, not
+   empty. ⇒ OWED: draft the 2–3 strange hediffs (design register, boons stay
+   hediffs per ban #1, nothing Slime-miracle-shaped) and put them to the owner
+   for ratification before def work.
+2. **Surge vs player ground: unfloored crops in the band DIE.** Physics, not
+   mercy — floors/bridges are the engineering answer, as churnmud in the
+   Greentide.
+3. **Crèche despoiling: marked sites only.** Open-water juvenile hunting is
+   not remembered; the fear stays player-learned, not a mechanical fence.
