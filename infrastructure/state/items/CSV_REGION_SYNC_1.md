@@ -29,3 +29,14 @@ re-derivation was tried, disagreed wildly, and was correctly NOT used. Needs the
 audit's per-tile working data or one `jawa/world_features_get` when the bridge
 frees. Landing (frozen CSV edit + freeze re-stamp) still waits on the owner's
 word either way.
+
+## Landed 2026-09-12 — five renames + freeze re-stamp (owner's yes on card)
+Owner's word (card sitting 2026-09-12): "As long as it came from the most
+recent save game" — provenance verified before landing: save last written
+Sep 10 23:57, CSV↔save comparison ran after it (0/21872 differ), save
+untouched since. Candidate copied over `world/ASHKARR_WORLDMAP_tiles.csv`,
+`verify_frozen.py --restamp` run, stamped sha 274aecc5ff76… matches bytes
+(MEASURED); all five dead names now 0, Sootreach 433 exact. REMAINING: the
+34-tile Abandoned Mines split (needs its per-tile list from a live bridge
+read — game currently down). NOTE: census artifacts cite the pre-rename CSV
+sha 756d9ffc8a22; only the region column changed, so all census counts stand.
