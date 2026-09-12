@@ -540,10 +540,10 @@
     "sha": "6a7759f2"
   },
   "skills/generating-images/scripts/gemini_image.py": {
-    "cleanCount": 2,
-    "date": "2026-09-10",
-    "hash": "25ec8e518d94a5376bbcd67de31206bdd317d214959d0de8e87e2701457d8197",
-    "sha": "7dabaa86"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "86a5740cfcb94e5e726fb2202ef706e2061a8962d1241704b6c4e41f3798ec87",
+    "sha": "15645eb3c"
   },
   "skills/generating-images/scripts/make_sprite.py": {
     "cleanCount": 1,
@@ -564,10 +564,10 @@
     "sha": "43f96b1b"
   },
   "skills/generating-images/scripts/rembg_cut.py": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "d01f188d9f50468762199c786bbee4c4100592d76c1d684bd924bef788b8e5a5",
-    "sha": "6a7759f2"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "2059987f9753231a02a9f25974a72b0bf7002909636d57110941886dbd26497f",
+    "sha": "15645eb3c"
   },
   "skills/generating-images/scripts/selftest_codex_grumpiness.py": {
     "cleanCount": 1,
@@ -3618,16 +3618,16 @@
     "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/artpipe/artpiped.py": {
-    "cleanCount": 4,
+    "cleanCount": 5,
     "date": "2026-09-11",
-    "hash": "07876f54dec38aa2f987e47cef92f7e76d7d7eb26909405d5eb378e380395d29",
-    "sha": "3505dc594"
+    "hash": "28ec6a5b094926fd9418f0fe9ab118a9f6ef9ca748c95a27aba1cd4bc2d7236c",
+    "sha": "15645eb3c"
   },
   "src/RimMandrake/Utils/artpipe/artreg.py": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "6160386577afc04d9b2d5a693e41775cf0a89c2a6578d94b3c6bb428e4b8a02e",
-    "sha": "6b397e6dd"
+    "hash": "c8a59dcd321c160bdbced8297ad5f94adc095d4a9cd28186cc85ee9dd3d39d58",
+    "sha": "15645eb3c"
   },
   "src/RimMandrake/Utils/artpipe/common.py": {
     "cleanCount": 2,
