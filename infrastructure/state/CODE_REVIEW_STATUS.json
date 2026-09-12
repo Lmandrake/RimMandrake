@@ -5691,6 +5691,12 @@
     "hash": "6af99cef808417fa65c70e17d69cc7ce2eff0c1c6f6ca52002eccb0760efdef5",
     "sha": "359b0b2c"
   },
+  "src/RimStarWars/AnoobaArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "9ecc5d4e2c2260809f30623951e2192da04e859316aa63851f9b790c1906ee46",
+    "sha": "abd4e611d"
+  },
   "src/RimStarWars/Armoury/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -8073,6 +8079,18 @@
     "hash": "59b40f3dbb5e66a279e89a69211ca9114d42ab61fd22e2b6a9262113e1a46230",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/DewbackArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "1fdb56c93822adee5607f6ea3bce7204f4a830791f4be3154e64832970fcccbd",
+    "sha": "abd4e611d"
+  },
+  "src/RimStarWars/DragonsnakeArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "b6d62f80219e0de76d7574c822fdb7f7b6f4741c4a758b189a3a25067f536577",
+    "sha": "abd4e611d"
+  },
   "src/RimStarWars/Droidworks/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -8673,6 +8691,24 @@
     "hash": "447501ff1aa49949cbae4d3add3b7f1674eb165d7af35de2cc3c68b644a3ebdc",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/FambaaArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "68948f392612a9ba0cc2dea9d83e4694ef8ce360b53346b2bf9f5544f9b5096a",
+    "sha": "abd4e611d"
+  },
+  "src/RimStarWars/HoraxArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "3969afd8d4cb3b93d0c6abb01c39dbd0c782c49188ec9913907ccac13c8a00e0",
+    "sha": "abd4e611d"
+  },
+  "src/RimStarWars/InsectomorphArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "4ae34ed9254ef0569f364e2f5b5c6aacfc401fa97340e0b59c214372a2059afc",
+    "sha": "abd4e611d"
+  },
   "src/RimStarWars/JawaIonWeapons/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -9039,6 +9075,18 @@
     "hash": "f9d9a87ee1ef724b1e63cc65773d619413b9598515657a66f63281f6e3ccf689",
     "sha": "5a68d1a6"
   },
+  "src/RimStarWars/KreetleArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "d11519f1949580393425c0b8ae861f6ac6c357cee20ed1304e3f11fd497886f6",
+    "sha": "abd4e611d"
+  },
+  "src/RimStarWars/LockjawArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "da56d9acf49eae2bf6a6011a017b91d08ab2537db783bb3fa15e9ad3f9ebc761",
+    "sha": "abd4e611d"
+  },
   "src/RimStarWars/MSEDroidFix/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-05",
@@ -9093,6 +9141,12 @@
     "hash": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5",
     "sha": "ea334c83"
   },
+  "src/RimStarWars/RontoArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "6312e576b1cbadde3eca56280c32c1b8d00f68de89a46d5c8a6eef5aae51326d",
+    "sha": "abd4e611d"
+  },
   "src/RimStarWars/SWBestiary/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
@@ -9121,6 +9175,18 @@
     "cleanCount": 1,
     "date": "2026-09-11",
     "hash": "c10d0327e6e9496c57bd8e0b3759e020dddc86d284e3c4dd93aeb69cd2ef7f04",
+    "sha": "2f8d4a99a"
+  },
+  "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Items/RSW_BiomesTeamPort_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "dd06f075193247bb2f486c3ee959f0da40f2fac41676a3cd0ceaf1e60e1e4faf",
+    "sha": "2f8d4a99a"
+  },
+  "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "8371cea5a2b9e1d3efec0c8e9aacc3eb7d9d103ad3470b06d48f5f8846576cdf",
     "sha": "2f8d4a99a"
   },
   "src/RimStarWars/SWBestiary/Defs/Bodies/RSW_MlieWaveB_Bodies.xml": {
@@ -9213,6 +9279,12 @@
     "hash": "c9ef97feb730e540098c95ff04c803aefc2fc35a747ca76f21d52bd127e90fd4",
     "sha": "bb73b6bd"
   },
+  "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_NurseryJuveniles.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "03b3b2731a5111ff0d1389b912df37985ec4b10ae8ede0a7618f64ab1a330be2",
+    "sha": "2f8d4a99a"
+  },
   "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Opee.xml": {
     "cleanCount": 3,
     "date": "2026-09-11",
@@ -9236,6 +9308,18 @@
     "date": "2026-09-11",
     "hash": "be748f8b03d280a770d30440cf2fe063c16b65115caf3294c0bd6adf3ed87e55",
     "sha": "ab37da311"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ShipVermin/PawnKindDefs/RSW_Mynock_PawnKind.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "80b2a76a16ab1af6953c83a8f40e2378651cbe6e4e2bc55ed4d9994d31f05cae",
+    "sha": "2f8d4a99a"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ShipVermin/ThingDefs_Races/RSW_Mynock.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "a87933d3f47abd3d83b95a77318d480e93b991008d07b2768279d369c5c2ff8b",
+    "sha": "2f8d4a99a"
   },
   "src/RimStarWars/SWBestiary/Defs/SoundDefs/SoundDefs_SWBestiary.xml": {
     "cleanCount": 1,
@@ -9266,6 +9350,12 @@
     "date": "2026-09-11",
     "hash": "bdf5fbdf154795c0ab58fd1f7989a467bcb511abb79bda9436a076e55a9a9201",
     "sha": "ab37da311"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_ScalefishCatch_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "5892f8651b1517b5c210670a10237639b91cda97685b63b34d2231be92d3a602",
+    "sha": "2f8d4a99a"
   },
   "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Baseopsis.xml": {
     "cleanCount": 1,
@@ -9914,6 +10004,12 @@
     "date": "2026-09-10",
     "hash": "6245d54f6000482cc83ccdff85d5a24f474bf64e183f9e3c07a0e6e8d17b881c",
     "sha": "92e56d4f"
+  },
+  "src/RimStarWars/ZakkegArtOverride/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "b90d3cdf081a02ee80f01f4d7c2378b2ddbc5a7dd13ff5a51cc0eeb1cec5023e",
+    "sha": "abd4e611d"
   },
   "src/RimUtinni/AftermathRites/About/About.xml": {
     "cleanCount": 1,

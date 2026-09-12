@@ -7477,3 +7477,14 @@
 {"seat":"FOUNDRY","event":"start","id":"ART_REGEN_WAVE8_QUEUE_1","ts":"2026-09-12T00:11:37Z"}
 {"seat":"FOUNDRY","event":"close","id":"ART_REGEN_WAVE8_QUEUE_1","sha":"0221f34fb9d42bb6e6f736fa7386d307bc45e322","ts":"2026-09-12T00:11:42Z"}
 {"seat":"BENCH","event":"file","id":"POST_FREEZE_WORLDMAP_AUDIT_1","title":"Fresh adversarial audit of the FROZEN worldmap (V24 2026-09-09) — the 2026-08-26 audit predates the freeze; republish the audit artifact and the hub worldmap tab against it","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-12T00:14:29Z"}
+{"seat":"BENCH","event":"reassign","id":"POST_FREEZE_WORLDMAP_AUDIT_1","to":"BENCH","ts":"2026-09-12T00:26:18Z"}
+{"seat":"BENCH","event":"start","id":"POST_FREEZE_WORLDMAP_AUDIT_1","ts":"2026-09-12T00:26:20Z"}
+{"seat":"FOUNDRY","event":"claim","id":"REMBG_CONCURRENCY_CAP_1","ts":"2026-09-12T00:29:43Z"}
+{"seat":"FOUNDRY","event":"start","id":"REMBG_CONCURRENCY_CAP_1","ts":"2026-09-12T00:29:46Z"}
+{"seat":"BENCH","event":"start","id":"LOCAL_IMAGEGEN_TRACK_PARKED_1","ts":"2026-09-12T00:31:21Z"}
+{"seat":"BENCH","event":"close","id":"LOCAL_IMAGEGEN_TRACK_PARKED_1","sha":"472e00004e5753eccb4a47505cfb8fff8b02346e","ts":"2026-09-12T00:31:40Z"}
+{"seat":"BENCH","event":"claim","id":"RUST_CATHEDRAL_MECHANICS_1","ts":"2026-09-12T00:31:44Z"}
+{"seat":"BENCH","event":"claim","id":"MIASMA_MECHANICS_1","ts":"2026-09-12T00:31:48Z"}
+{"seat":"BENCH","event":"claim","id":"FEVER_WOOD_MECHANICS_1","ts":"2026-09-12T00:31:50Z"}
+{"seat":"FOUNDRY","event":"close","id":"REMBG_CONCURRENCY_CAP_1","sha":"2f8d4a99afe03553cee5dd2fbefb9fb4cd3cbd46","ts":"2026-09-12T00:32:15Z"}
+{"seat":"BENCH","event":"claim","id":"LIQUID_TYPES_MOD_1","ts":"2026-09-12T00:32:25Z"}
