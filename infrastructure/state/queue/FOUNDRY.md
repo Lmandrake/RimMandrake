@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T16:16:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T17:05:13Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1089,3 +1089,33 @@ kind:     task
 thin:     no ## criteria
 summary:  - Art: a top-down silhouette of THE ship as it is now — the ring hull without booms
 prose:    infrastructure/state/items/UTINNI_WORLDMAP_FLIGHT_ICON_1.md
+
+## GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1 Giddy-Up's BuildAnimalBiomeCache throws 'same key already added: RSW_Iriaz' and skips its whole animal-biome cache. Root cause partially traced: RSW_Iriaz.xml keeps the donor's own <wildBiomes> block (AridShrubland 1.0, Desert 0.04) AND BiomeCast_Ashkarr.xml independently sets RSW_Iriaz's commonality on those SAME biomes (AridShrubland 1.0, Desert 0.1) - an overlap. BUT RSW_Anooba has the identical overlap pattern (wildBiomes AridShrubland/Desert + BiomeCast entries on the same biomes) and does NOT crash, so the overlap alone doesn't fully explain it - needs an actual read of RimWorld.BiomeDef.CommonalityOfAnimal/AllWildAnimals source (via RimSage) to find the real trigger before fixing blind. Pre-existing (byte-identical across the last two loads), not introduced by tonight's belt-mode work. Non-fatal - only Giddy-Up's own mountable-animal cache is affected, not core gameplay.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md
+
+## MEGAFAUNAYIELD_DEAD_GR_TARGETS_1 Doctrine's MegafaunaYield.xml patches GR_Elasmobearium/GR_Mantistanis (Genetic Rim ThingDefs) gated behind FindMod(Vanilla Genetics Expanded), but those GR_* defs no longer exist in the live 593-mod stack (Genetic Rim itself is cut) - 2 patch-op failures + cascading cross-ref errors every load, pre-existing per Player.log triage 2026-09-12. Fix: add a PatchOperationTest on the target defName inside the FindMod gate, or drop the dead GR_* operations outright. A related pattern (RimUtinni Patches statBases Conditionals on absent GR_*/TYR_*/VAEWaste_* defs) accounts for ~20 more of the 36 total patch-op failures logged - worth sweeping together.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MEGAFAUNAYIELD_DEAD_GR_TARGETS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MEGAFAUNAYIELD_DEAD_GR_TARGETS_1.md
+
+## SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1 RUT_ScarRoach and RUT_CathedralRoach render magenta live right now - 'Failed to find any textures at Things/Pawn/Animal/RUT_ScarRoach/RUT_ScarRoach' (all 4 directions missing, confirmed via Player.log 2026-09-12, pre-existing not caused by tonight's work). Needs real sprite art generated/deployed (generating-rimworld-sprites skill) or the defs gated off until art exists - not a code fix.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCARROACH_CATHEDRALROACH_TEXTURES_MISSING_1.md
