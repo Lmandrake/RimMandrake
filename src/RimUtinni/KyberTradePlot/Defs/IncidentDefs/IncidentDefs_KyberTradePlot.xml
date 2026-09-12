@@ -7,12 +7,21 @@
        - for a quest whose REAL trigger (a kyber-sale-count threshold on the Imperial
        Heat GM blackboard) lives on infrastructure that does not exist yet
        (build_plan.md SSM4 is unstarted). Whoever builds that layer fires these two
-       incidents; nothing here invents a parallel counter. -->
+       incidents; nothing here invents a parallel counter.
+
+       <workerClass> points at this mod's own IncidentWorker_GiveQuest_
+       KyberTradePlot (Source/KyberTradePlotIncidentWorker.cs) rather than
+       inheriting GiveQuestBase's plain IncidentWorker_GiveQuest: the subclass's
+       only job is reading the Mod Settings kill switch
+       (KyberTradePlotSettings.kyberTradePlotEnabled) before falling through to
+       the base implementation - same no-Harmony plain-subclass-in-workerClass
+       idiom UtinniPatches already uses for its own SymbolResolver override. -->
 
   <IncidentDef ParentName="GiveQuestBase">
     <defName>RUT_GiveQuest_KyberHomesteadVisit</defName>
     <label>kyber homestead visit</label>
     <letterLabel>Quest available</letterLabel>
+    <workerClass>RimMandrake.Utinni.KyberTradePlot.IncidentWorker_GiveQuest_KyberTradePlot</workerClass>
     <questScriptDef>RUT_KyberHomesteadVisit</questScriptDef>
     <baseChance>0</baseChance>
   </IncidentDef>
@@ -21,6 +30,7 @@
     <defName>RUT_GiveQuest_KyberDonationSmuggle</defName>
     <label>kyber donation smuggle</label>
     <letterLabel>Quest available</letterLabel>
+    <workerClass>RimMandrake.Utinni.KyberTradePlot.IncidentWorker_GiveQuest_KyberTradePlot</workerClass>
     <questScriptDef>RUT_KyberDonationSmuggle</questScriptDef>
     <baseChance>0</baseChance>
   </IncidentDef>

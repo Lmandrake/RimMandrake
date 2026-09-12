@@ -83,3 +83,17 @@ were done already. The in-game Hutt goodwill bump on ordinary Cartel kyber
 sales (spec §4 "in-game half") is equally blocked: the spec ties its trigger to
 the same GM-layer sale detection, not a standalone Harmony hook, so it rides
 the same missing infra rather than being separately buildable.
+
+## Progress 2026-09-11 — Mod Settings retrofit (FOUNDRY, second pass)
+
+The mod as first built shipped no `Source/` and no settings screen, against
+CLAUDE.md's standing "every mod ships superb Mod Settings" rule. Added
+`Source/KyberTradePlotSettings.cs` (one checkbox, `kyberTradePlotEnabled`,
+default on) and `Source/KyberTradePlotIncidentWorker.cs` — a plain
+`IncidentWorker_GiveQuest` subclass (no Harmony) that reads the toggle before
+falling through to the base worker, named directly in both IncidentDefs'
+`<workerClass>`. Built clean (`dotnet build … -c Release`, 0 errors); both
+QuestScriptDefs re-validated after the edit (`validate_quest.py --dir
+src/RimUtinni/KyberTradePlot/Defs/QuestScriptDefs` — 0 errors, 0 warnings).
+No change to the BLOCKED status or to anything above — this only closes the
+Mod Settings gap.

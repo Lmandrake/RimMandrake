@@ -23,5 +23,11 @@
   not exist yet (M4 unstarted per build_plan.md) — see the item file for exactly
   what that leaves undone. Requires RUT_Jawa_HuttCartel and the HomesteadDefenseLeague
   patch (both UtinniPatches) to be loaded for their flavor text to make sense, but
-  has no hard load-order dependency on them (no defName from either is referenced).</description>
+  has no hard load-order dependency on them (no defName from either is referenced).
+
+  Ships one small C# assembly (Source/) per the standing Mod Settings rule: a
+  single kill switch (both quests off entirely), read by a plain
+  IncidentWorker_GiveQuest subclass named directly in this mod's own
+  IncidentDefs — no Harmony, same idiom as UtinniPatches' own settings-gated
+  subclasses.</description>
 </ModMetaData>
