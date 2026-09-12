@@ -1,3 +1,4 @@
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.StarWars.BrainWorms
@@ -32,13 +33,16 @@ namespace RimMandrake.StarWars.BrainWorms
         }
 
         /// <summary>
-        /// Spawn <paramref name="count"/> loose worms around a cell - used by the
-        /// egg shell's projectile on impact and by the cold cure's expulsion.
-        /// Factionless: the worms are not a raid, they are a hazard that crawls.
+        /// Spawn <paramref name="count"/> loose worms of <paramref name="kind"/> around
+        /// a cell - used by the egg shell's projectile on impact and by the cold
+        /// cure's expulsion. Factionless: the worms are not a raid, they are a hazard
+        /// that crawls. <paramref name="kind"/> is caller-supplied rather than hardcoded
+        /// here so a HediffCompProperties_BrainWormProgress.expelledWorm configured to
+        /// something other than the default actually takes effect; null spawns nothing.
         /// </summary>
-        public static void SpawnWormBurst(Map map, IntVec3 center, int count)
+        public static void SpawnWormBurst(Map map, IntVec3 center, int count, PawnKindDef kind)
         {
-            if (map == null || !center.InBounds(map))
+            if (map == null || !center.InBounds(map) || kind == null)
             {
                 return;
             }
@@ -46,7 +50,7 @@ namespace RimMandrake.StarWars.BrainWorms
             for (int i = 0; i < count; i++)
             {
                 IntVec3 cell = CellFinder.RandomClosewalkCellNear(center, map, 3);
-                Pawn worm = PawnGenerator.GeneratePawn(BrainWormsDefOf.RSW_BrainWormKind, null);
+                Pawn worm = PawnGenerator.GeneratePawn(kind, null);
                 GenSpawn.Spawn(worm, cell, map);
             }
         }

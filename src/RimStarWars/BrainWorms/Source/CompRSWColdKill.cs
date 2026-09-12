@@ -117,8 +117,14 @@ namespace RimMandrake.StarWars.BrainWorms
             {
                 return null;
             }
-            int left = Props.ticksBelowBeforeDeath - ticksCold;
-            return "Dying of cold: " + (left < 0 ? 0 : left).ToStringTicksToPeriod();
+            // ticksCold is accumulated at ScanIntervalTicks * coldKillRateMultiplier
+            // per real ScanIntervalTicks elapsed (MOD_OPTIONS_RETROFIT_1), so the raw
+            // "ticksBelowBeforeDeath - ticksCold" gap is in scaled units, not real game
+            // ticks. Divide by the same multiplier before formatting it as a period, or
+            // the displayed ETA is wrong whenever the slider isn't at its 1.0x default.
+            int scaledLeft = Props.ticksBelowBeforeDeath - ticksCold;
+            int left = Mathf.RoundToInt(Mathf.Max(0, scaledLeft) / Mathf.Max(0.01f, RSW_BrainWormsSettings.coldKillRateMultiplier));
+            return "Dying of cold: " + left.ToStringTicksToPeriod();
         }
     }
 }
