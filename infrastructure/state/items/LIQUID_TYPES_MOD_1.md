@@ -36,3 +36,9 @@ duplicate). Worldmap layer ties `LIQUID_BIOMES_MAP_1`.
 MECHANICS_CARDS_SITTING_1 (Scald salinity, coolant fishing bucket, films in
 v1); spikes D/E (heatPerTick sign, DBH dbh_water tag) are FOUNDRY build gates.
 Blocked on the card sitting; build follows rulings.
+
+## Unblocked 2026-09-12 — cards ruled, spikes filed
+MECHANICS_CARDS_SITTING_1 landed the three liquid cards (Scald FRESHWATER +
+rivers flow OUT of it; coolant = Other bucket; films IN v1). The blocker is
+gone; the five spikes are filed as LIQUID_TYPES_SPIKES_1 (FOUNDRY), then
+build per the spec.
