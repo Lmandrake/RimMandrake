@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T05:35:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T05:46:41Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1024,23 +1024,13 @@ blocked:  46 mods retrofitted with real, compile-verified Mod Settings (Greentid
 summary:  - Inventory every shipped/in-progress mod under src/RimMandrake/,
 prose:    infrastructure/state/items/MOD_OPTIONS_RETROFIT_1.md
 
-## FLOOD_CANYON_BIOME_1 Standalone RimMandrake-tier biome mod: periodically flooded canyons — chime warning mechanic, flood events (wall of water + explosive growth), not Star Wars specific; the campaign's flood-witness plot beat consumes it as a dependency
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  mod built, compiled, deployed and offline-validated; live quicktest proof of chime/flood/soil/settings owed once a bridge-capable session is available (no bridge tool this session, game DOWN)
-summary:  - Biome mod per the tier grammar (design/NAMINGSCHEMEPLAN.md): packageId
-prose:    infrastructure/state/items/FLOOD_CANYON_BIOME_1.md
-
 ## WRECKAGE_VERMIN_SPAWN_1 Ship vermin spawn FROM wreckage: wreck-anchored nest/spawn mechanism for the ship-vermin band (Fall Line hulks and wreck sites), on top of the biome-cast wildlife already deployed
 state:    ready  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  built offline (comps + settings + Utinni wiring), compiles clean; no live game/bridge session this run to run the item's own quicktest verify
+blocked:  Two real defects found+fixed live (comp-attach patch never matched; tickerType=Never blocked all ticking) but a third remains: 0 spawns after 263,701 ticks (past the 240,000-tick worst case). Needs a debug-report hook on RM_CompVerminNest to see which TrySpawn branch fails, then re-verify.
 summary:  - A spawn mechanism anchored to wreckage things/structures (Fall Line hulks,
 prose:    infrastructure/state/items/WRECKAGE_VERMIN_SPAWN_1.md
 
