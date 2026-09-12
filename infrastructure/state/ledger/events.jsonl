@@ -7508,3 +7508,8 @@
 {"seat":"BENCH","event":"claim","id":"FORGE_MECHANICS_1","ts":"2026-09-12T00:43:39Z"}
 {"seat":"BENCH","event":"claim","id":"SCALD_MECHANICS_1","ts":"2026-09-12T00:43:40Z"}
 {"seat":"BENCH","event":"claim","id":"TIBANNA_EMBARGO_PLOT_1","ts":"2026-09-12T00:43:41Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"SHOKKWEAVE live trader-gen proof + worldmap audit live checks, batched game-up","ts":"2026-09-12T00:45:28Z"}
+{"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-09-12T00:50:18Z"}
+{"seat":"BENCH","event":"reassign","id":"RUST_CATHEDRAL_MECHANICS_1","to":"FOUNDRY","ts":"2026-09-12T00:53:27Z"}
+{"seat":"BENCH","event":"claim","id":"RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1","ts":"2026-09-12T00:53:28Z"}
+{"seat":"BENCH","event":"claim","id":"POISON_FOREST_REPASS_1","ts":"2026-09-12T00:54:16Z"}

@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T00:43:41Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-12T00:54:16Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## RUST_CATHEDRAL_MECHANICS_1 Rust Cathedral C# kit: hum-mood system (attitude value, layered tones, bolt-dance display, droid commentary, hysteresis wiring), deep-drill response event (never described), wall-tier mining defs, living bolts as mechanical wildlife, eel-fishing consequences - spec the_rust_cathedral.md
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  spec — the C kit
-prose:    infrastructure/state/items/RUST_CATHEDRAL_MECHANICS_1.md
 
 ## MIASMA_MECHANICS_1 Miasma C# kit: surge/salt-line system (fresh-brine map axis, storm-driven movement, stranding pools), fever-forged boon tables, miasma weather, warden-mother set-piece placement - spec the_miasma.md
 state:    ready
@@ -47,7 +38,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/SUMP_MECHANICS_1.md yet — write one when you have something to say)
+summary:  Engine-map the Sump's mechanics per the frozen sheet
 prose:    infrastructure/state/items/SUMP_MECHANICS_1.md
 
 ## FORGE_MECHANICS_1 Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tower dungeon shell, Contagion die-off ring, geothermal industry - spec the_forge.md
@@ -56,7 +47,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/FORGE_MECHANICS_1.md yet — write one when you have something to say)
+summary:  Map the FROZEN design/Jawa/worldbuilding/biomes/theforge.md sheet's
 prose:    infrastructure/state/items/FORGE_MECHANICS_1.md
 
 ## TIBANNA_EMBARGO_PLOT_1 Campaign clock: the Empire's tibanna monopoly at the Forge - metered blaster gas, dwindling resistance ammunition, and the resolution that must come; spec the_forge.md section 8
@@ -65,7 +56,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/TIBANNA_EMBARGO_PLOT_1.md yet — write one when you have something to say)
+summary:  design/Jawa/tibannaembargoplotspec.md (drafted 2026-09-11). Shape: metered vs
 prose:    infrastructure/state/items/TIBANNA_EMBARGO_PLOT_1.md
 
 ## SCALD_MECHANICS_1 Scald C# kit: steam-catch industry, margin fishing + bath recreation, bubble-sailor and bottom-walker set-pieces, geyser fields, boiling-lift integration (R-B spec ruled), burning-shallows wreck salvage - spec the_scald.md
@@ -74,8 +65,26 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/SCALD_MECHANICS_1.md yet — write one when you have something to say)
+summary:  SCALDMECHANICS1 — the Scald C kit
 prose:    infrastructure/state/items/SCALD_MECHANICS_1.md
+
+## POISON_FOREST_REPASS_1 poison_forest.md second pass: MEASURED block, weather table, R13's chemical venting, struck phrasing removed
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/POISON_FOREST_REPASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/POISON_FOREST_REPASS_1.md
+
+## RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1 Deep-dive: RimWorld 18GB+ memory footprint, crash correlation, worst-offender mods, reduction options
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Measure first: current live memory footprint (RSS of the RimWorld process) at a
+prose:    infrastructure/state/items/RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1.md
 
 ## ASSIGNMENT_SHEETS_VERDICT_SITTING_1 Owner verdict pass over the two assignment review sheets (fauna 372 rows / flora 313 incl. NEW-ART ledger) — overrides amend rosters/*.json and regenerate the patches; serve via serve_sheet.py, prove touchedBySheet before consuming
 state:    ready
@@ -197,7 +206,7 @@ prose:    infrastructure/state/items/LIQUID_TYPES_MOD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -205,7 +214,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is LOADING
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
@@ -217,16 +226,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## POISON_FOREST_REPASS_1 poison_forest.md second pass: MEASURED block, weather table, R13's chemical venting, struck phrasing removed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/POISON_FOREST_REPASS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/POISON_FOREST_REPASS_1.md
-
 ## MOD_HUMAN_EXPLORATION_PASS_1 Human-executable exploration pass: per mod, a scripted in-game walkthrough the owner runs to confirm it looks and feels right -- runs AFTER the art/normalization wave
 state:    proposed
 row:      unassigned
@@ -236,16 +235,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the ask
 prose:    infrastructure/state/items/MOD_HUMAN_EXPLORATION_PASS_1.md
-
-## RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1 Deep-dive: RimWorld 18GB+ memory footprint, crash correlation, worst-offender mods, reduction options
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Measure first: current live memory footprint (RSS of the RimWorld process) at a
-prose:    infrastructure/state/items/RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1.md
 
 ## BENCH_REBOOT_HANDOFF_202609082018 Reboot handoff: consolidation sitting complete, MODERN baseline recorded, next = worldmap sitting with the owner (bridge work)
 state:    proposed
