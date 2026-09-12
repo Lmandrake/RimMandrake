@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="RimplacePlan.cs" />
     <Compile Include="GenStep_RimplacePlan.cs" />
+    <Compile Include="GenStep_Whisper_NoOp.cs" />
     <Compile Include="StructureInjectionsDebugActions.cs" />
     <Compile Include="RM_StructureInjectionsMod.cs" />
   </ItemGroup>

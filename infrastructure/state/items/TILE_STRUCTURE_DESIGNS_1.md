@@ -506,3 +506,118 @@ not by re-reading batch notes by hand). Left `doing` — not close-eligible:
 6 promise gaps need an owner ruling or a design pass, the whisper engine
 doesn't exist, and the live ordering proof is still owed.
 
+## 2026-09-12 (FOUNDRY, AFK full-belt) — whisper batch 1: engine built, 3/22 rows wired
+
+Owner AFK for the night ("go as far as you can, keep subagents going").
+Picked up exactly where the 2026-09-09 pass left off: the whisper
+subsystem was 0/22, correctly flagged as "a missing SUBSYSTEM, not 22
+small gaps... belongs as its own scoped pass." This pass IS that scoped
+pass, kept deliberately small per the same "batch of 3-5, smaller
+complete beats large broken" discipline every promise batch used.
+
+**What "whisper" turned out to require, precisely** — re-read
+`structure_injection_roster.md` §0b/§3/§4 and `sacred_sites_pass_1.md`
+§1a/§1b in full before writing anything:
+
+- The roster's own §0b names the mechanism: vanilla `Verse.
+  GenStep_RandomSelector` (RimSage-confirmed field shape:
+  `List<RandomGenStepSelectorOption>`, `RandomElementByWeight`, runs the
+  winner's own `genStep`). **No new C# is needed for the roll itself** —
+  this is different from what the promise half needed
+  (`GenStep_RimplacePlan` was the one new class promises required).
+- The structural difference from a promise: a promise gets a BRAND-NEW
+  `TileMutatorDef` for the owner to hand-place on one tile. A whisper
+  rolls from "the territory table... god-country × biome" — it must ride
+  an EXISTING TileMutatorDef that is already the tile's territory, patched
+  (`PatchOperationAdd` onto `extraGenSteps`) rather than authored fresh.
+  This is why the mechanism sat unbuilt: most whisper conditions in §3 are
+  BIOME-level or ARC-band conditions ("nightside," "any wild band," arc
+  ranges), and `TileMutatorDef.extraGenSteps` (`TileMutatorDef.cs:26-28`,
+  `MapGenerator.cs:155-175`) is the ONLY hook this architecture has — there
+  is no equivalent field on `BiomeDef`. A whisper only has somewhere to
+  attach when its own roster line names an actual mutator.
+- The one legal exception needing new C#: WHISPER #12 "Never Was" ("Ishko's
+  authored-nothing... genuinely nothing injected") needs an option that
+  does nothing, which vanilla's selector cannot express on its own —
+  `GenStep_Whisper_NoOp.cs` (15 lines, `mandrake.rm.injections`, builds
+  clean, 0 warnings) is that one option.
+- The roster's own "trust law" (whisper announces itself in the landing
+  letter) is explicitly OUT of this item's scope —
+  `sacred_sites_pass_1.md` §5 itself names that engine hook as separate,
+  unbuilt, future work ("files as its own item when the owner calls it").
+  Not attempted here; `GenStep_Whisper_NoOp` logs its pick so that future
+  hook has something to read without touching this class.
+
+**3 of 22 whisper rows wired this pass**, each verified via a live
+`validate_patch.py` probe against the real, active 593-mod set (`--defs`
+Data+Mods+Workshop) — chosen specifically because each has a
+RimSage/probe-CONFIRMED real mutator to anchor on, not because they were
+easy to invent:
+
+- **#12 Never Was** (Ishko) → patched onto vanilla `Cavern`
+  (`sacred_sites_pass_1.md` §1b: "any Cavern-class mutator underground" is
+  named as HIS territory explicitly). `validate_patch.py`: 1 match in
+  Odyssey `TileMutators_Natural.xml`. No template — the no-op class is the
+  whole responder. **Declared limitation, not hidden**: with only one
+  option wired in this selector so far, it fires every time Cavern
+  generates, not "RARE" as the roster frames it — a future batch adding
+  more Ishko/Cavern whisper options at a higher relative weight is what
+  actually makes it rare.
+- **#20 The Rootstock** (roster tags it Oomo; `sacred_sites_pass_1.md`
+  §1b's own biome-class table reads `DryLake` as ZIZZIK's instead — a real
+  conflict between the two design docs, declared, not silently resolved
+  one way) → patched onto vanilla `DryLake`. `validate_patch.py`: 1 match,
+  same Odyssey file. `design/Jawa/templates/rootstock.lua`: a cracked-
+  lakebed floor (`DryLakeBed`) with a density-graded `Plant_ShrubLow`
+  scatter standing in for "dormant seedbank" (no dedicated ThingDef
+  exists). **Scope declared**: static content only — the roster's own
+  "blooms after any rain/water event" trigger is a comp/event this pass
+  does not build, same discipline Dead Beacon's unwired lamp and the
+  Cistern's flavor-only stair already used.
+- **#18 The Choir Wind** (Ozzik, "monument reads") → patched onto OUR OWN
+  `RUT_Monument` (PROMISE #8's mutator, `TileMutatorDefs_Batch5.xml`) —
+  this whisper only rolls where that promise has already been placed on a
+  tile by the owner's pen, same live-placement debt every `RUT_Monument`
+  content already carries. `design/Jawa/templates/choir_wind.lua`: 4
+  `SculptureSmall` resonant markers ringing the plaza edge, reusing the
+  same substitute-prop discipline `oasis_shrine.lua`/`rakatan_trace.lua`
+  established (no "wind chime" ThingDef exists). **Scope declared**: static
+  markers only — the mood/grief-pressure mechanic is not built.
+
+**19 of 22 whisper rows remain `MISSING-MECHANISM`, honestly** — most have
+no nameable TileMutatorDef to attach to (nightside biome bands, arc
+ranges, "any wild band"), and most of their CONTENT is its own
+incident/quest/hediff/timer design (a strongbox+debt event, a hostile-pair
+spawn, rhythmic knocking on a timer, a claim-map chain hook) — not a
+template fill, matching exactly the standard the promise batches already
+applied to Kiln/Junkers'/Dead Crawler/Signal Mast/Ashfall Battery. Nothing
+invented to pad the count.
+
+**`structure_roster_lint.py` extended** (not rewritten) to check the
+whisper half mechanically instead of hardcoding "0/22, no mechanism": a
+whisper row now checks template (if content-bearing) + a `GenStepDef`
+wrapping `GenStep_RandomSelector` referencing it (or `GenStep_Whisper_
+NoOp` for a no-op row) + a `Patches/*.xml` operation naming both the
+anchor mutator and that GenStepDef. Run 2026-09-12: **PROMISES 16/22
+covered, WHISPERS 3/22 covered (19 MISSING-MECHANISM, 0 lint failures
+among rows claiming done)**, exit 0.
+
+**Build**: `GenStep_Whisper_NoOp.cs` added to `StructureInjections.csproj`,
+built via the Windows-native `dotnet.exe` per the csproj's own comment —
+`Build succeeded, 0 Warning(s), 0 Error(s)`. `rimplace selftest`: 62/62
+(unaffected — this pass touched no engine logic, only new content).
+
+**NOT deployed, NOT added to ModsConfig** — same discipline as every
+promise batch; `mandrake.rut.injections` remains absent from the live
+`ModsConfig.xml` exactly as the 2026-09-09 pass found it, unrelated to and
+unchanged by this pass (not this dispatch's job to fix, no restart
+touched). Deploy + enable + live-fire proof of all 3 whisper rows (does
+`Cavern`/`DryLake` actually roll the selector; does the no-op genuinely
+inject nothing) rides the next restart, alongside every promise batch's
+same still-open live-proof debt.
+
+**Running tally**: 16/22 promises, 3/22 whispers, engine mechanism for
+whispers now exists and is proven wired (not just designed). Left
+`doing` — nowhere near "genuinely all 22 whispers," which was never a
+realistic bar for one pass per this item's own dispatch instructions.
+
