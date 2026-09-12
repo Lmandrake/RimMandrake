@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T07:17:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T07:22:12Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -692,15 +692,6 @@ target:   v1
 kind:     task
 summary:  WORLDMAPAUDITLIVECHECKS1 — the four audit checks only the live game can answer
 prose:    infrastructure/state/items/WORLDMAP_AUDIT_LIVE_CHECKS_1.md
-
-## HUB_TAB_PUBLISHER_MIGRATION_1 Repoint artpipe/health/maturity publishers to the hub URL; completes the two-seat no-clobber proof
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  - artpipe: after artreg.py render, republish data/art.json (from
-prose:    infrastructure/state/items/HUB_TAB_PUBLISHER_MIGRATION_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

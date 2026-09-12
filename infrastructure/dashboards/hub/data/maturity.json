@@ -1,11 +1,11 @@
 {
- "generatedAt": "2026-09-12T06:27:00Z",
+ "generatedAt": "2026-09-12T07:19:00Z",
  "source": {
   "path": "Transient/project_maturity_dashboard.json",
-  "bytes": 131786,
-  "sha256_12": "f8a504876fae"
+  "bytes": 131979,
+  "sha256_12": "3cdf9090dbe5"
  },
- "head": "e93f9b9fd",
+ "head": "942e51465",
  "functionCounts": {
   "planned": 0,
   "designed": 4,
@@ -24,19 +24,23 @@
  },
  "codeReview": {
   "total": 2153,
-  "clean": 2149,
-  "dirty": 4,
+  "clean": 2145,
+  "dirty": 8,
   "unknown": 0,
-  "recidivists": 4,
+  "recidivists": 8,
   "dirtyPaths": [
-   "src/RimMandrake/ShipVermin/Source/RM_CompVerminNest.cs",
-   "src/RimMandrake/ShipVermin/Source/RM_ShipVermin.csproj",
+   "infrastructure/dashboards/hub/make_tab_data.py",
+   "src/RimMandrake/Utils/artpipe/artreg.py",
+   "src/RimMandrake/Utils/codebase_health.py",
+   "src/RimMandrake/Utils/codebase_health_publish.py",
+   "src/RimMandrake/Utils/project_maturity_dashboard.py",
+   "src/RimMandrake/Utils/selftest_codebase_health.py",
    "src/RimUtinni/UtinniPatches/About/About.xml",
    "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml"
   ]
  },
  "ledger": {
-  "openItems": 129,
+  "openItems": 128,
   "openBugs": 11,
   "needsOwner": 10
  },

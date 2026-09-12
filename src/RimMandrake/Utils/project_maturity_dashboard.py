@@ -58,6 +58,35 @@ GOAL_SHEET = os.path.join(ROOT, "infrastructure", "state", "GOAL_SHEET.md")
 FUNCTION_RUNGS = model.FUNCTION_RUNGS
 CONTENT_RUNGS = model.CONTENT_RUNGS
 
+# HUB_TAB_PUBLISHER_MIGRATION_1: same pattern as codebase_health_publish.py's
+# refresh_hub_tab() — regenerate the hub's maturity.json from the JSON this
+# run just wrote. make_tab_data.py reads a HARDCODED source path
+# (Transient/project_maturity_dashboard.json), so this only fires when this
+# run actually wrote there (the default --out-dir); a custom --out-dir would
+# regenerate a maturity.json from a DIFFERENT run's stale source, which is
+# worse than skipping.
+HUB_MAKE_TAB_DATA = os.path.join(
+    ROOT, "infrastructure", "dashboards", "hub", "make_tab_data.py")
+HUB_MATURITY_JSON = os.path.join(
+    ROOT, "infrastructure", "dashboards", "hub", "data", "maturity.json")
+DEFAULT_OUT_DIR = os.path.join(ROOT, "Transient")
+
+
+def refresh_hub_tab():
+    """Best-effort: a failure here must not fail the standalone build above."""
+    r = subprocess.run([sys.executable, HUB_MAKE_TAB_DATA, "maturity"],
+                       cwd=ROOT, capture_output=True, text=True)
+    if r.returncode != 0:
+        print("WARN: hub tab data regen failed (%s); %s still holds a stale "
+              "fingerprint — hub_check.py will flag it STALE."
+              % (os.path.basename(HUB_MAKE_TAB_DATA), HUB_MATURITY_JSON),
+              file=sys.stderr)
+        if r.stderr.strip():
+            print(r.stderr.strip(), file=sys.stderr)
+        return
+    print("  hub tab -> %s (a session still owes a republish against the hub "
+          "Artifact URL: HUB_TAB_PUBLISHER_MIGRATION_1)" % HUB_MATURITY_JSON)
+
 
 # ---------------------------------------------------------------- git helper
 def git(args):
@@ -1109,6 +1138,9 @@ def main(argv=None):
           % (payload["goalSheet"]["ticked"], payload["goalSheet"]["total"]))
     print("code review         : %s" % payload["codeReview"])
     print("json -> %s" % json_path)
+
+    if os.path.abspath(args.out_dir) == os.path.abspath(DEFAULT_OUT_DIR):
+        refresh_hub_tab()
 
     if not args.json_only:
         html_path = os.path.join(args.out_dir, "project_maturity_dashboard.html")

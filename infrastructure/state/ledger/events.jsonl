@@ -7665,3 +7665,5 @@
 {"seat":"FOUNDRY","event":"start","id":"HUB_TAB_PUBLISHER_MIGRATION_1","ts":"2026-09-12T07:16:55Z"}
 {"seat":"FOUNDRY","event":"claim","id":"WAR_LAB_CRATER_HOOK_1","ts":"2026-09-12T07:17:06Z"}
 {"seat":"FOUNDRY","event":"start","id":"WAR_LAB_CRATER_HOOK_1","ts":"2026-09-12T07:17:15Z"}
+{"seat":"FOUNDRY","event":"note","id":"DASHBOARD_HUB_ARTIFACT_1","text":"HUB_TAB_PUBLISHER_MIGRATION_1: 2-seat no-clobber proof recorded. Session A (2026-09-11) republished ONLY data/health.json -> v6. Session B (this FOUNDRY session, 2026-09-12) republished ONLY data/art.json (sha256 17b85884a4ab35c4) + data/maturity.json (sha256 fresh) -> v11; re-read data/health.json (sha 49d59b38c9a2..997a, 1219B) and data/worldmap.json (sha 7dc27b3b6fda..e922, 716B) post-publish and both are byte-identical to their pre-publish content. Verify checklist item 1 (two seats, no clobber, by fingerprint) is satisfied.","ts":"2026-09-12T07:21:44Z"}
+{"seat":"FOUNDRY","event":"close","id":"HUB_TAB_PUBLISHER_MIGRATION_1","sha":"51813d54edd500203c73ef7933d0fbe1abf86e90","ts":"2026-09-12T07:22:12Z"}
