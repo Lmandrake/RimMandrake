@@ -7577,3 +7577,7 @@
 {"seat":"BENCH","event":"close","id":"CANON_PLANET_CENSUS_1","sha":"d49aa5f03","ts":"2026-09-12T03:25:27Z"}
 {"seat":"FOUNDRY","event":"close","id":"MUDSWALLOW_LIVE_LIST_FIX_1","sha":"eb5826bf0b23f267769f29dfc95f1f156d536c19","ts":"2026-09-12T03:31:50Z"}
 {"seat":"FOUNDRY","event":"block","id":"FLOOD_CANYON_BIOME_1","reason":"mod built, compiled, deployed and offline-validated; live quicktest proof of chime/flood/soil/settings owed once a bridge-capable session is available (no bridge tool this session, game DOWN)","ts":"2026-09-12T03:32:31Z"}
+{"seat":"FOUNDRY","event":"claim","id":"HUB_LAMP_TIME_FIX_1","ts":"2026-09-12T03:39:21Z"}
+{"seat":"FOUNDRY","event":"claim","id":"WRECKAGE_VERMIN_SPAWN_1","ts":"2026-09-12T03:39:34Z"}
+{"seat":"FOUNDRY","event":"close","id":"HUB_LAMP_TIME_FIX_1","sha":"a49c5ea7774d623903f5e91013b5f6255339f318","ts":"2026-09-12T03:44:10Z"}
+{"seat":"FOUNDRY","event":"block","id":"WRECKAGE_VERMIN_SPAWN_1","reason":"built offline (comps + settings + Utinni wiring), compiles clean; no live game/bridge session this run to run the item's own quicktest verify","ts":"2026-09-12T03:51:41Z"}
