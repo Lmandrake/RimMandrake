@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T17:13:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T17:16:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -275,3 +275,13 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  DUNGEONSETPIECETEXT1 — the held-for-owner dungeon prose
 prose:    infrastructure/state/items/DUNGEON_SETPIECE_TEXT_1.md
+
+## CAMPAIGN_STORY_SITTING_1 The formal campaign-story pass: gather EVERY campaign-arc fragment from the earliest notes to today (dungeons and their purposes, the floating station(s), the asteroid belt, the reveal moments and their gaps, tone/experience of each transition), stitch them into one arc document for an owner sitting — the wander-through scenario stays primary; the campaign is what's there if the player digs — then design the human interaction that makes the owner generate the knitting content without spawning a whole new game
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     no ## spec, no ## criteria
+summary:  CAMPAIGNSTORYSITTING1 — the formal campaign-story pass
+prose:    infrastructure/state/items/CAMPAIGN_STORY_SITTING_1.md
