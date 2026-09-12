@@ -11140,34 +11140,34 @@
     "sha": "187bf0389"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/CompFireHawkSpread.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "f5284db838005f442a21cc769b248a40864581507b8255a9e77e4a7d86d2fe47",
-    "sha": "187bf0389"
+    "hash": "e02dad736f479a12ebddc99f931ab5ed58fd520b2f0356e31cc022e29a618aa0",
+    "sha": "2679d79d8"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/CompFurnaceBedIgnition.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "e4cafd536d31d4fd8448bad170c5fbe4e64bb42a31f92834b5edf0c279162970",
-    "sha": "187bf0389"
+    "hash": "5833b3246d4ed74db7e1f9176df895ab5f5c8df1ab536d5f1f848bf3d36f7164",
+    "sha": "2679d79d8"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/CompFurnaceWarmthAura.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "7c7c14a00579aa77a1318e13ef92c8d6e3f23c7d965d074dd070b92cdc7f96da",
-    "sha": "187bf0389"
+    "hash": "be28ecc0fdd952dbbb20c3361e26b49eafa738c0a067a2a8804d2ed7ab989e54",
+    "sha": "2679d79d8"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FireRaid.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "cd2e546254d131e3ae72ee2fcc27b625a74cb79eaf437654ffab8b3baa99bc1d",
-    "sha": "187bf0389"
+    "hash": "614de6205cdad708cb709a5a912aa09c86901a2c27fc942bf11f6d87215bbd4a",
+    "sha": "2679d79d8"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FlameHarvest.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "bf13b464fcfa43ca13df2acee95e8ef9b10c33250a696128f8d8665cc17686ad",
-    "sha": "187bf0389"
+    "hash": "3dfb67b4374cdf22daaf08ac4c9c1e1c51aa3ee207b42a7351cb3db07c581848",
+    "sha": "2679d79d8"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/JobDriver_RUT_FireHawkCarryEmber.cs": {
     "cleanCount": 1,
@@ -11176,16 +11176,16 @@
     "sha": "187bf0389"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/JobGiver_RUT_FireHawkCarryEmber.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "3716d610f5eda6be08d519652dd2fd9efbf43b8e257fdd8c95e0298710419c51",
-    "sha": "187bf0389"
+    "hash": "41c72a8116e26e6cc322ea9d59bc3c7cebebffca89c3ed6aeaaef049a597e4ed",
+    "sha": "2679d79d8"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/MapComponent_BurnLine.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-11",
-    "hash": "247bc16176d24088e531c5db62ce9653654578f7d88bd0733258d615984a98e7",
-    "sha": "187bf0389"
+    "hash": "7a61557436901bba86b2bf3b789d35a251ab5480cb3f37b9e321713c1ead1d6e",
+    "sha": "2679d79d8"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFactions.cs": {
     "cleanCount": 1,
