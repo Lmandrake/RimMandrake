@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RUT_AshfallSpire — "The Spire", the Ashfall Research Base site in the
+       Ashfall Range (ASHFALL_SPIRE_LANDMARK_1, design/Jawa/worldbuilding/
+       ashfall_research_base.md SS3/SS6). Owner's display register, verbatim:
+       "a mysterious thin black needle of a building with a disc landing near
+       the top, visible only occasionally due to the atmospheric turbulence
+       over the Scald's mountains." That register is what this def draws and
+       describes — the dungeon shell, the KCSG interior and the campaign
+       function are explicitly NOT in scope (owner: "Not ready to resolve this
+       yet"), so nothing here invents what is inside it or who put it there.
+
+       A distinct LandmarkDef rather than a reskin of AncientLaunchSite or
+       AncientWarehouse because the silhouette IS the content: every existing
+       structure landmark on this planet reads as masonry or wreckage, and this
+       one has to read as a single intact needle with a dish on it, seen
+       through blowing ash.
+
+       commonality 0 ON PURPOSE — this world is frozen and hand-authored (owner,
+       2026-08-15: players receive a savegame holding the fixed world; worldgen
+       never rolls anything). A nonzero commonality would let the generator
+       scatter second and third Spires across the planet. It exists only to be
+       force-placed ONCE, on a live-checked Ashfall Range tile, by the
+       world-edit step this item still owes — not by this authoring pass.
+
+       mutatorChances: AncientUplink, Required="True". LandmarkDef.ConfigErrors()
+       rejects any landmark with no mutator at chance >= 1, so an entry is
+       mandatory, not cosmetic — the RUT_GapingDoom fix on 2026-09-10 was
+       exactly this error ("has no mutators with a chance of 1 or higher").
+       AncientUplink is chosen over the other man-made mutators because it is
+       the only vanilla one whose content IS a standing comms structure with a
+       dish — "an uplink used for communication with a low orbit satellite"
+       (TileMutators_ManMade.xml) — which is what the owner's needle-plus-disc
+       register describes, and because it is one prefab rather than a ruin
+       layout: AncientGarrison, AncientRuins and the AbandonedColony pair all
+       repaint the whole tile with rubble and would fight the already-ruled
+       Contagion/AB_OcularForest painting on the target tiles
+       (CONTAGION_BIOME_PLACEMENT_1). It also carries NO biomeBlacklist at all,
+       so it is legal on AB_OcularForest — unlike Harbor, Stockpile and most
+       natural mutators, which blacklist biomes. No MayRequire on the mutator
+       entry: it is Odyssey content and the whole def is already Odyssey-gated.
+
+       Icon: procedural (make_ashfall_spire_icon.py, the sibling
+       AshkarrLandmarkArt mod's folder), NOT generated — local image generation
+       is PARKED (owner, 2026-09-05) and unattended FOUNDRY work must not risk
+       the Codex $imagegen UAC prompt. Same 1024x1024 RGBA / 2x2 grid of four
+       512px variants convention as every other sheet in
+       Textures/World/Landmarks/Ashkarr/. -->
+
+  <LandmarkDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_AshfallSpire</defName>
+    <label>the Spire</label>
+    <description>A black needle standing off the high ridge, too thin and too straight to be rock. A pale disc sits near the top of it, canted a few degrees off level and pointed at nothing anyone on the ground can name. The ash coming off the Scald hides it for days at a stretch; then the wind turns and it is there again, unweathered, in the one place on this range nothing else stands upright.</description>
+    <iconTexturePath>World/Landmarks/Ashkarr/RUT_AshfallSpire</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0</commonality>
+    <category>structure</category>
+    <nameMaker>RUT_NamerLandmark_AshfallSpire</nameMaker>
+    <mutatorChances>
+      <AncientUplink Required="True" />
+    </mutatorChances>
+  </LandmarkDef>
+
+</Defs>

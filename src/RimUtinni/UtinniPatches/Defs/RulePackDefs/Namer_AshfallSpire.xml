@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  Namer_AshfallSpire.xml                    UtinniPatches — new file 2026-09-12
+  ============================================================================
+
+  ASHFALL_SPIRE_LANDMARK_1. The Spire's display name must be the FIXED string
+  "The Spire" (owner's register, ashfall_research_base.md §3/§6) — not one of
+  the randomized outputs a vanilla landmark namer produces. The sw_Sarlacc
+  placements are the counter-example this exists to avoid: the same LandmarkDef
+  came back as "Hehieran Sarlacc", "Sarlacc Pit" and "The Sarlacc" on three
+  different tiles, because NamerLandmark_* packs roll.
+
+  🔑 THERE IS NO fixedName FIELD ON A LANDMARK. `LandmarkDef.nameMaker` is a
+  RulePackDef and the only naming route the engine offers, so a fixed name has
+  to be expressed as a rule pack that can only produce one string. Same shape
+  as Namer_BlackstarCompany.xml in this folder: one rule, no alternatives, no
+  weights — "a one-rule pack always produces the same string, so this is a
+  fixed name in everything but mechanism."
+
+  🔑 ROOT KEYWORD IS `r_name`, READ FROM THE ENGINE, not guessed:
+  RimWorld/Planet/WorldLandmarks.cs:45 —
+      landmark.name = NameGenerator.GenerateName(
+          landmarkDef.nameMaker, null, appendNumberIfNameUsed: false, "r_name", null, null);
+  so the single rule must be rooted at r_name or the landmark gets no name.
+
+  ⛔ NO <include> ON PURPOSE. Every vanilla NamerLandmark_* pack pulls in
+  WorldFeatureNamerCommon, which is what supplies [narrative_name],
+  [NamePerson]'s ... and the terrain_word machinery that makes them vary.
+  Including it here would hand the generator alternative r_name rules to roll
+  against and reintroduce exactly the randomization this def exists to remove.
+  ============================================================================
+-->
+<Defs>
+
+  <RulePackDef>
+    <defName>RUT_NamerLandmark_AshfallSpire</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name->The Spire</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+</Defs>

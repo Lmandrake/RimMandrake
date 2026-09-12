@@ -1,6 +1,36 @@
 # ASHFALL_SPIRE_LANDMARK_1 — The Spire landmark, Ashfall Research Base site
 
-## 2026-09-12 (FOUNDRY) — mechanism-checked live; blocked, needs real content authoring, not a bare bridge placement
+## 2026-09-12 (FOUNDRY, offline subagent, belt mode) — LandmarkDef authored, config-clean, ready to place
+
+The offline authoring this item's `needs=offline` was waiting on is done:
+- `src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_AshfallSpire.xml` — the
+  LandmarkDef itself (`RUT_AshfallSpire`, label "the Spire", Odyssey-gated,
+  `commonality 0`, `mutatorChances: AncientUplink Required="True"` — the
+  only vanilla man-made mutator that's a single comms-dish prefab with no
+  biome blacklist, chosen over the ruin-layout mutators specifically so it
+  won't repaint the already-ruled Contagion/`AB_OcularForest` tiles).
+- `src/RimUtinni/UtinniPatches/Defs/RulePackDefs/Namer_AshfallSpire.xml` —
+  a one-rule `RUT_NamerLandmark_AshfallSpire` RulePackDef (root `r_name`,
+  read from `WorldLandmarks.cs:45`, no `WorldFeatureNamerCommon` include)
+  producing the FIXED string "The Spire" — never a randomized name like the
+  sw_Sarlacc placements got.
+- `src/RimUtinni/AshkarrLandmarkArt/make_ashfall_spire_icon.py` +
+  `Textures/World/Landmarks/Ashkarr/RUT_AshfallSpire.png` — procedural PIL
+  icon (needle + canted disc, ash bands), matching this folder's 1024x1024
+  RGBA/2x2-variant convention. No image-generation tool was invoked — local
+  imagegen is PARKED and unattended work must not risk the Codex UAC prompt.
+
+Validated against the frozen `official` def dump (`validate_patch.py --live`,
+2 files, 0 errors/0 warnings) and against engine source directly:
+`LandmarkDef.ConfigErrors()` requires `chance >= 1`, which the self-closing
+`<AncientUplink Required="True" />` satisfies (`MutatorChance.
+LoadDataFromXmlCustom` sets `chance=1` when the node has no children).
+
+**Still open, unchanged from the prior pass**: `LandmarkDef.IsValidTile`
+still refuses `Hilliness.Impassable` unconditionally — tile 4299 (and
+9158/9159) will need `world_landmarks_set` to force the landmark past a rule
+the engine says no to. That is a live bridge action, correctly not attempted
+offline. Re-routing `needs` from `offline` (done) to `bridge`.
 
 Read `design/Jawa/worldbuilding/ashfall_research_base.md` first (no item file
 existed before this note). Candidate site: the 3 donor tiles the doc itself
