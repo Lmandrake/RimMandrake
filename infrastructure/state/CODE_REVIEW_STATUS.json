@@ -12345,6 +12345,12 @@
     "hash": "9df74798a34914c06c8437d869a2450f2e29eae968e8aedb083edbe89302928b",
     "sha": "d3ffec03"
   },
+  "src/RimUtinni/UtinniPatches/Patches/BiomeDescriptions_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "2a305b7d62cfd6ac4b8bb422d57dbcd917c740413958baeb67687da2ca234e8f",
+    "sha": "7c80850cb"
+  },
   "src/RimUtinni/UtinniPatches/Patches/BiomeFaunaStatAdjustments_Generated.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
@@ -12459,6 +12465,12 @@
     "hash": "5ed93da6441171e5d4012f74b5f1c6ffc9fa550ac7fad20e68c3ab191dcfdc78",
     "sha": "3ea1ca20"
   },
+  "src/RimUtinni/UtinniPatches/Patches/Horrors_NihilRename.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "b42c90c27b262e67a2974c75c57486d868103a29f642eef07756eb4b05e51e58",
+    "sha": "7c80850cb"
+  },
   "src/RimUtinni/UtinniPatches/Patches/HumanTemperatureBand_Ashkarr.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -12543,11 +12555,29 @@
     "hash": "912e872b958b7e2af69600dc66b5398b234e02d1951a7fa5086c5e4111887267",
     "sha": "50af6a2b"
   },
+  "src/RimUtinni/UtinniPatches/Patches/MiningCo_CzerkaRename.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "d14ebc3c9645fdf1bb4da1719a28027860123ebe8e63e32f577cc962784ba864",
+    "sha": "7c80850cb"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/MoEventsAbomination_YuuzhanVongRename.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "10a082a8bf4ecee8a18842f05d490e80f2d98c59b4a1d18128db993a83adf527",
+    "sha": "7c80850cb"
+  },
   "src/RimUtinni/UtinniPatches/Patches/OasisMutator_DesertOasis.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
     "hash": "0a98800c0e5c10e72a62ed54a9d538f8551912f239e81b44540aba02b3cbfbf7",
     "sha": "bb73b6bd"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/OrcClan_GamorreanRename.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "e7baea8f34408dadeaac8e3e908d725da49b9df660fd85d2d80ca885dc8b7e00",
+    "sha": "7c80850cb"
   },
   "src/RimUtinni/UtinniPatches/Patches/PirateWaster_Yield.xml": {
     "cleanCount": 1,
@@ -12585,11 +12615,29 @@
     "hash": "8752876f2cdd692cd6e82f951ffb631c3897e35a950f091406c7b1870eb8251d",
     "sha": "429d1760"
   },
+  "src/RimUtinni/UtinniPatches/Patches/StatNorm_CaravanAdventures_BossStatsNeutral.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "0b4b70adc722e934ec4c73b8a7c00153d607cf1e426d5d09e0cba551788bf8bd",
+    "sha": "7c80850cb"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/StatNorm_MoreVanillaTextures_DrawSizeNeutral.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "b62c41c681968a8acbee9890412a66dabf3087f083276e206c29b4cfa410ecaa",
+    "sha": "7c80850cb"
+  },
   "src/RimUtinni/UtinniPatches/Patches/VQEPatients_AreRakata.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
     "hash": "787c735663321d413aa846416dbf37cac6c5900612756fad2eb99b243b2aaac8",
     "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/VREArchon_MortisRename.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "17ffac9b0839544489e42f580ea7cba299efaa831a1e36f6232f0d5e5d35d3e5",
+    "sha": "7c80850cb"
   },
   "src/RimUtinni/UtinniPatches/Patches/XenotypeTolerances_Ashkarr.xml": {
     "cleanCount": 2,
