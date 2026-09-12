@@ -50,3 +50,10 @@ wrong per the recon, so it was deleted (git holds it); its intent is carried
 in the draft. Open: quicktest whether the donor AssetBundle gizka sprite
 renders; SWBestiary's RSW_Pawn_Gizka_* sounds duplicate the donor's own set
 (fold into the build). Cards await the owner.
+
+## Cards ruled 2026-09-12 (owner sitting) — build gated on the hold hook
+Tunable escalation with slow default; ~15 silver price patch; watched-cull
+guilt IN; free-gift gag deferred by default. 🔴 Launch scope: HOLD the whole
+feature until the gravship-hold discovery hook is confirmed —
+GIZKA_HOLD_HOOK_SPIKE_1 (FOUNDRY) is the gate. Rulings recorded in the
+draft's Owner cards section.

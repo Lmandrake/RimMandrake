@@ -213,47 +213,17 @@ under the tier grammar — nothing coined here):**
 absent the whole feature no-ops cleanly (the stowaway manager checks the def
 exists).
 
-## Owner cards
+## Owner cards — RULED, sitting 2026-09-12
 
-**Card 1 — how mean is the escalation curve?**
-The bands in §2 (3–6 / 7–15 / cap ~20–25) and the days-to-double are
-placeholders. Pick the temperament:
-- **(a) Slow burn** — a season from cute to Infestation. Trade: more warning,
-  more attachment (culling hurts more); some players never see the problem.
-- **(b) One-bad-decision fast** — about a week of ignoring it to reach
-  chewing. Trade: the joke lands reliably; less time to fall in love first.
-- **(c) Tunable-first** — ship (a) as default and let the slider carry (b).
-  Trade: doctrine-friendly; the "canonical" experience is whichever default
-  you bless.
-
-**Card 2 — what does a gizka sell for?**
-Donor value is 100 silver — with a breeding swarm that is a money printer,
-so we patch it down. Pick the flatten:
-- **(a) ~15 silver** (muffalo-calf territory). Trade: selling still feels
-  like the scam WORKING; a big cull-by-sale nets real pocket change.
-- **(b) ~5 silver** (chicken territory). Trade: purest anti-exponential;
-  selling is mood-management, not income — the scam is barely worth the
-  caravan trip, which is its own joke.
-- **(c) Leave 100, cap harder instead**. Trade: no patch on the donor def,
-  but even a capped swarm of 20 is 2000 silver on legs — the ladder exists.
-  (Drafter's view: weakest option against the item's own law.)
-
-**Card 3 — does culling need an extra mood sting?**
-- **(a) Vanilla only** — bonded/named deaths already hurt; unbonded swarm
-  culls are cheap. Trade: no new defs; the swarm phase culls nearly free.
-- **(b) Add a small "culled the gizka" thought** for witnesses even on
-  unbonded ones — they are CUTE. Trade: one new ThoughtDef; every cull costs
-  something, making sell/bait/cold genuinely competitive.
-
-**Card 4 — the gravship trigger.**
-Discovery-in-the-hold is the flagship beat, but the exact Odyssey hook is
-unverified. If build finds no clean hook: ship with salvage + cargo triggers
-and add the gravship one later — or hold the whole feature for the hook?
-- **(a) Ship without it, add later.** Trade: the beat named in your sentence
-  arrives late.
-- **(b) Hold for the hook.** Trade: the whole feature waits on one
-  integration point.
-
-**Card 5 — quest-flavor trigger in v1?**
-The "free gift" gizka in a quest reward is pure KotOR. Trade: touches the
-quest system (its own validation burden) for one gag; cheap to defer.
+- **Card 1 escalation: tunable, slow default.** Season-long slow burn ships
+  as the default; every rate in Mod Settings (MOD_OPTIONS_RETROFIT_1).
+- **Card 2 price: ~15 silver.** The donor's 100 is patched down; the scam
+  stays funny, never income.
+- **Card 3 cull guilt: IN.** Small "watched the gizka cull" mood penalty on
+  top of vanilla — the humane exits stay competitive with the knife.
+- **Card 4 launch scope: HOLD the whole feature for the gravship-hold
+  discovery hook.** The flagship found-in-your-hold moment ships WITH the
+  feature or the feature does not ship — confirming the engine hook is the
+  gating spike.
+- **Card 5 free-gift quest gag: deferred by default** (not ruled at the
+  sitting; the card's own note — cheap to put off, nothing depends on it).
