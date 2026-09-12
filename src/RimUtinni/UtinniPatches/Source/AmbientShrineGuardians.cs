@@ -182,6 +182,12 @@ namespace RimMandrake.Utinni.UtinniPatches
 
 		public override void Resolve(ResolveParams rp)
 		{
+			if (!UtinniPatchesSettings.ambientShrineDoctrineEnabled)
+			{
+				base.Resolve(rp);
+				return;
+			}
+
 			Map map = BG.globalSettings.map;
 			// Anything that is not one of the eight rows gets the stock resolver,
 			// unmodified — including every other planet this mod might be loaded
