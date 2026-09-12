@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T04:31:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T04:46:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1065,16 +1065,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## VAPOR_TERMINATOR_GEYSER_FIX_1 Remove/relocate the 21 SteamGeysers_Increased world tiles at/past the terminator (arc>=90) — direct violation of the ruled zero-before-the-terminator steam rule; evidence in design/Jawa/worldbuilding/vapor_emitter_review_2026-09-12.md
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/VAPOR_TERMINATOR_GEYSER_FIX_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/VAPOR_TERMINATOR_GEYSER_FIX_1.md
 
 ## VAPOR_PLACEMENT_CLEANUP_1 Vapor emitter part-4 cleanup per the 2026-09-12 ruled rules: magma-vent 5 out-of-lock tiles, ancient-vent ruin-only audit, swamp/ruin gas re-seat, PoisonForest toxic+green gas, helixien re-seat to junker sites in PoisonForest and the Rot (engine mechanism check first)
 state:    proposed
