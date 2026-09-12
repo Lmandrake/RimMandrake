@@ -24,3 +24,12 @@ sketch parameterized over EXPLOSIVE_PLANT_GROWTH_1's four unruled terminal
 moments. Owner cards at the end (route choice + beats). Open engine questions
 named inside (does Odyssey floodwater harm pawns; does accelerated Flood read
 as a wall). Awaits the owner's cards; no build before the ruling.
+
+## Restructured 2026-09-12 (owner): mechanism moves to a standalone mod
+Owner's word (verbatim on FLOOD_CANYON_BIOME_1's filing event): the flood
+mechanism becomes its own RimMandrake-tier biome mod — periodically flooded
+canyons, chime mechanic included, not Star Wars specific. Filed as
+FLOOD_CANYON_BIOME_1 (FOUNDRY). THIS item narrows to the campaign plot beat:
+the guaranteed first witnessing (routes/cards in
+design/Jawa/flood_witness_event_draft.md), consuming that mod as a dependency.
+Route cards still await the owner's sitting.
