@@ -322,3 +322,70 @@ the bridge/mod-list being actively in use by a sibling FOUNDRY item tonight.
 No file in this item's own scope required a creative decision not yet ruled;
 nothing invented beyond the owner's own "organic... distinct from V4" brief
 and this repo's existing landmark-authoring pattern.
+
+## 2026-09-12 (FOUNDRY) — reclaimed from stale-queue audit; tally only, no new creative content
+
+Reclaimed per a stale-queue sweep (still `doing`, not touched since 2026-09-09).
+Re-verified this item's own template files rather than assuming: re-ran
+`Source/gen_vault_layouts.py` — byte-identical output, no drift — and
+`validate_patch.py` against the current live 593-mod set on
+`StructureInjectionsRUT/Defs/VaultDungeons/`: 0 errors, 1 pre-existing advisory
+warning (`RUT_VaultHeart` texPath, vanilla asset-bundle false positive, already
+known). Template geometry is unchanged and still clean.
+
+**Did not write new dialogue/letters this pass — checked first and it would
+have duplicated live work.** `VAULT_THAW_QUEST_FAMILY_1` (sibling item, same
+night) already ships full letter/dialogue text for all six vaults in
+`Source/gen_vault_quests.py`: per-vault accept/arrival/cleared/left letters
+for V1-V5, V6's arrival/casket-hall/WAKE/LOOT/LEAVE letters (the verbatim
+`rakata.woken_brutality` line included), the Claim-Conflict demand/refusal
+letters and the Reclamation's three letters. That already satisfies this
+item's own verify bullet ("Wake/loot/leave dialogue and letters authored for
+V6; the ship-claim thread... authored") for the AUTHORED half; "fires
+correctly" is still unproven live (their own item's gap, `MapComponent_
+VaultSleepers` built 2026-09-12, not yet deployed/quicktested).
+
+**🔶 Flagging, not fixing (not this item's file):** `dungeons_arc_spec.md`
+§3.10 ("Vault text — drafted 2026-09-11, re-registered same day") records
+specific OWNER-ACCEPTED letter text for V6 (arrival/casket-hall/WAKE/LOOT/
+LEAVE), the type-①/② ring letters, and per-vault Narrator asides for V1-V5 —
+dated AFTER `gen_vault_quests.py`'s own text was written (2026-09-05 design,
+built 2026-09-12). Compared directly: the shipped XML's letter text and
+§3.10's owner-accepted text are DIFFERENT wording throughout, not the same
+lines re-cast. Whoever next touches `gen_vault_quests.py`/`RUT_VaultThaw.xml`
+should reconcile against §3.10 as the more recent owner-blessed source rather
+than treat the shipped text as final — left alone here since that file is
+`VAULT_THAW_QUEST_FAMILY_1`'s own and was mid-edit tonight.
+
+**Bridge checked twice, not used for a placement.** First check: held
+(FOUNDRY, "GIZKA hook live confirmation", idle 0 min — live, not stale).
+Second check ~10 min later: FREE, but the game itself was DOWN at that
+moment (measured, `tasklist.exe` — a sibling's NINEFOLD pass had just taken
+it down). V5's landmark (`RUT_Slough_GelatinousBreach`, authored, tile 37)
+is the one placement write actually still needed for vault CONTENT (the
+`vault_thaw_quest_family.md` §1.2 divergence means the six vaults themselves
+now arrive as quest Sites, not bridge-placed structures — the six
+`world_commit` writes in this item's own §3.9 are largely superseded by
+that; only V5's landmark and any per-site hand-finish still need one).
+Elected not to solo-trigger a restart from DOWN for one landmark placement
+— "batch game-up work before restarting" against several other FOUNDRY
+passes visibly active tonight (NINEFOLD, INHABITED_AUGMENTATION, RUST_
+CATHEDRAL) who may have their own pending game-up work. Left owed.
+
+**Honest tally across all six vaults, this item's own scope:**
+- Template geometry (①/②/③): DONE, quicktest-proven 2026-09-06, re-verified
+  clean tonight. Type-2's third-party symbols (AA_BlackJellyWall/GreenGoo,
+  GR_Boomsnake removed from the current generator at some point after
+  2026-09-06 — not re-added, not chased this pass) remain live-unverified;
+  their source mods are still absent from `ModsConfig.MINIMAL.xml`.
+- V5's landmark: authored (2026-09-09), not placed (tile 37) — bridge/restart
+  owed.
+- Dialogue/letters: authored for all six (via the sibling item), not
+  reconciled against the owner-accepted §3.10 text, not proven firing live.
+- Six real-site hand-finish passes: not started — per this item's own
+  "Watch out," these are explicitly "with the owner," not solo FOUNDRY work.
+- World_commit placements: superseded for vault content by the Sites
+  approach; V5's landmark placement is the one still outstanding.
+
+Staying `doing`. Nothing in this pass required or made a creative call the
+owner hasn't already ruled or blessed.
