@@ -12016,10 +12016,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "2279abbd5439981f8ba278853541e033a6037a338dfa50c11ab2030c9079a8e0",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "1c20bf0e9d97efc341adc5d6918cf4b446d80c42ae7c9f37786d5e85841cb5f0",
+    "sha": "02bca50d1"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml": {
     "cleanCount": 2,
