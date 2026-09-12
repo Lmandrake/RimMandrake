@@ -137,8 +137,25 @@
       </li>
       <li Class="CompProperties_WakeUpDormant">
         <!-- INVENTED: kit spec's own ambusher precedent used ~7; a fixed
-             lair reads a little further out. -->
+             lair reads a little further out.
+             BUG FOUND AND FIXED 2026-09-12 (FOUNDRY, live quicktest):
+             wakeUpIfAnyTargetClose defaults FALSE on this comp
+             (RimWorld/CompProperties_WakeUpDormant.cs), and this def uses
+             plain thingClass=Building (deliberately, see the comment
+             above), not Hive's own C# class - which is where vanilla's
+             "wakes when a colonist gets close" behavior actually lives
+             (Hive.cs's own unfogged-approach check), NOT the comp. Without
+             this field the nest's only wake triggers were wakeUpOnDamage
+             and wakeUpOnThingConstructedRadius (both CompProperties_Wake-
+             UpDormant defaults) - "wakes ... on approach" never fired.
+             Measured: a colonist held 2 cells away for 2640+ ticks (10+
+             250-tick check intervals) woke nothing; the SAME nest woke and
+             spawned its guardian within 300 ticks of taking damage. Default
+             wakeUpTargetingParams (TargetingParameters.ForColonist()) is
+             exactly the "a colonist approaches" case the item's own verify
+             line names, so no further field is needed. -->
         <wakeUpCheckRadius>10</wakeUpCheckRadius>
+        <wakeUpIfAnyTargetClose>true</wakeUpIfAnyTargetClose>
       </li>
       <li Class="CompProperties_SpawnerPawn">
         <spawnablePawnKinds>

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T13:44:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T14:11:19Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -399,7 +399,7 @@ prose:    infrastructure/state/items/OASIS_LANDMARK_PLACEMENT_1.md
 ## SHOKKWEAVE_SOLE_SOURCE_1 Shokkweave economy: rename hyperweave game-wide, strip it from EVERY trader stock table (prove against live trader generation), add the three Webwork harvest routes (web-cutting, butchery, nest raid)
 state:    doing
 row:      unassigned
-needs:    deploy
+needs:    owner
 target:   v1
 kind:     task
 summary:  (unchanged from the queue line; see webworkkitspec.md "Owner rulings"
@@ -672,17 +672,8 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-summary:  Rename player settlement 'Colony' to "Zeddo's Salvage Yard" (owner-ruled,
+summary:  - One bridge pass, freeze discipline: Saves backup + stat-after, renames via
 prose:    infrastructure/state/items/WORLD_NAME_FIXES_1.md
-
-## WEBWORK_KIT_BUILD_1 Build the Webwork biome's own mechanics kit code (RM_MapComponent_SenseWeb, RM_MapComponent_FrontCreep, RM_JobGiver_ChewAnchors, the roster's web/anchor/gutter ThingDefs) per design/Jawa/worldbuilding/biomes/kits/webwork_kit_spec.md - currently only the six generic ALPHA_MECHANICS_KIT_1 comps are built, this biome's own content kit has no build item yet; blocks SHOKKWEAVE_SOLE_SOURCE_1's border creep-web route
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-summary:  WEBWORKKITBUILD1 — Webwork biome mechanics kit (SenseWeb, FrontCreep, ChewAnchors, roster structures)
-prose:    infrastructure/state/items/WEBWORK_KIT_BUILD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

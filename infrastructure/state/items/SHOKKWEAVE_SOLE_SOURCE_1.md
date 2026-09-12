@@ -1,5 +1,82 @@
 # SHOKKWEAVE_SOLE_SOURCE_1 — Shokkweave economy (rename, trader strip, harvest routes)
 
+## 2026-09-12 (FOUNDRY, fourth pass) — web-cutting + nest raid LIVE-VERIFIED; one real bug found and fixed; item stays OPEN on two unrelated pre-existing gaps
+
+`QUICKTEST_POSTSETUP_CRASH_1`'s fix made the whole session's map-crash problem
+moot. Rather than fight `start_debug_game_ready` for a `RUT_Webwork` tile,
+repainted the already-loaded quicktest map's own tile to `RUT_Webwork` (same
+technique as `SHRINE_GUARDIAN_BIOME_GATE_1`) and regenerated it in place.
+`jawa/map_info` confirmed `mapBiome: "RUT_Webwork"`.
+
+**Web-cutting — FULLY LIVE-VERIFIED.** `jawa/list_things` found 21
+`RUT_Webwork_SilkKnot` scattered on the fresh map. Destroyed one with
+`jawa/damage` (Bomb, to 0 HP): the cell now holds `Hyperweave` (label
+"Shokkweave", the rename confirmed live, not just on disk) at the exact
+knot's position. Matches `Mineable.TrySpawnYield` firing on
+`DestroyMode.KillFinalize`, per this item's own build note.
+
+**Nest raid — scatter genstep confirmed structurally sound, comp chain
+LIVE-VERIFIED via manual spawn, one real bug found and fixed.**
+`RUT_WebworkNestScatter` (`jawa/get_defs`) loaded correctly (the
+`MayRequire="mlie.starwarsanimalcollection"` gate passed — that donor mod is
+active). It did not happen to scatter on this one map (density is
+deliberately near-zero per this item's own build note: `coveredCellsPer10Cells
+0~0.002` on a 62,500-cell map — expected ~0-12 covered cells, genuinely a
+coin flip), which is not evidence against it: it shares the exact same
+`GenStep_ScatterWebworkSilk` class that DID scatter 21 SilkKnots above.
+
+So the comp chain was proven directly instead (rimbridge skill's own
+"prefer testing the mechanism synthetically" guidance): spawned a
+`RUT_Webwork_Nest` via `rimworld/spawn_thing`, spawned a colonist 2 cells
+away, and stepped **2,640+ ticks** (10+ of the comp's own 250-tick check
+intervals) — **no Wyyyschokk spawned.** Read
+`RimWorld/CompProperties_WakeUpDormant.cs`: `wakeUpIfAnyTargetClose` defaults
+**false**, and this def deliberately uses plain `thingClass=Building` (not
+`Hive`'s own class, which is where vanilla's actual "wakes when unfogged/
+approached" behavior lives) — so with the field unset, `TickRareWorker`'s
+whole proximity-check branch was dead code. **This is why "wakes ... on
+approach" (this item's own verify text) could never have fired.**
+
+Confirmed empirically both ends: (a) 2,640 ticks of a colonist standing
+2 cells away, dormant, no guardian; (b) damaging the SAME nest instead
+(`wakeUpOnDamage` defaults true) woke it within 300 ticks — a Wyyyschokk
+guardian spawned (`LordJob_DefendAndExpandHive`, confirmed via
+`jawa/list_pawns`). Then killed the nest outright: exactly **60 Shokkweave**
+dropped (`killedLeavings`), matching the def precisely.
+
+**Fixed**: added `<wakeUpIfAnyTargetClose>true</wakeUpIfAnyTargetClose>` to
+`RUT_Webwork_Nest`'s `CompProperties_WakeUpDormant` block in
+`src/RimUtinni/ShokkweaveEconomy/Defs/ThingDefs_Buildings/ShokkweaveHarvestNodes.xml`
+(full reasoning + evidence recorded inline in that file's comment). Default
+`wakeUpTargetingParams` (`TargetingParameters.ForColonist()`) is exactly "a
+colonist approaches" — no further field needed. Deployed
+(`deploy_custom_mods.py --mod ShokkweaveEconomy --apply`, verified in sync).
+**This ONE fix is unverified live** — defs are parsed once at process
+startup, so the already-running game still has the old (broken) value in
+memory; re-confirming it needs the next full restart. Everything else about
+the nest mechanism (dormancy, wake-on-damage, guardian spawn, kill yield) IS
+live-confirmed on the CURRENT process, and that logic path is unchanged by
+this fix.
+
+**Item stays OPEN — two gaps are genuinely unrelated to tonight's crash fix
+and unchanged from the 2026-09-11/12 notes below:**
+1. The 11-trader-kind zero-hyperweave-stock proof: still no bridge tool
+   forces a specific `TraderKindDef`'s stock generation. Confirmed again
+   this pass this is still true — building one is its own
+   `rimbridge-companion` cycle, not attempted tonight (out of scope: the
+   coordinator's ask was the two harvest routes, conditional on "if bridge
+   tools allow" for the trader proof — they don't).
+2. Border creep-web (4th route, owner-ruled-in 2026-09-11): still blocks on
+   `RM_MapComponent_FrontCreep` needing Webwork-specific yield/spawn wiring
+   from this item's own patch, which in turn needs `SHOKK_RSW_MOD_1`'s
+   emergent-Shokk spawn hook. `FrontCreep` itself IS now live-verified
+   (see `WEBWORK_KIT_BUILD_1`'s note this pass) — only the yield/Shokk-spawn
+   attachment is missing, unchanged from before.
+
+`needs owner` (whether to prioritize the trader-stock companion tool build,
+and whether border creep-web waits on `SHOKK_RSW_MOD_1`) rather than `bridge`
+— the bridge itself is no longer what's blocking this item.
+
 ## 2026-09-12 (FOUNDRY, later same night) — deploy confirmed; live web-cutting/nest-raid verify blocked on QUICKTEST_POSTSETUP_CRASH_1
 
 `deploy_custom_mods.py --mod ShokkweaveEconomy` reports "in sync" — the
