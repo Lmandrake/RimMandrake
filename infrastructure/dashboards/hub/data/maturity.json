@@ -1,0 +1,517 @@
+{
+ "generatedAt": "2026-09-10T22:50:00Z",
+ "source": {
+  "path": "Transient/project_maturity_dashboard.json",
+  "bytes": 131672,
+  "sha256_12": "c39c0f5e5b74"
+ },
+ "head": "b40cadf8",
+ "functionCounts": {
+  "planned": 0,
+  "designed": 4,
+  "implemented": 8,
+  "runnable": 25,
+  "validated": 21,
+  "played": 0,
+  "__unset__": 0
+ },
+ "contentCounts": {
+  "none": 40,
+  "placeholder": 4,
+  "authored": 14,
+  "final": 0,
+  "__unset__": 0
+ },
+ "codeReview": {
+  "total": 1914,
+  "clean": 1911,
+  "dirty": 3,
+  "unknown": 0,
+  "recidivists": 3,
+  "dirtyPaths": [
+   "src/RimMandrake/Ninefold/Source/Patch_GravshipLaunched.cs",
+   "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+   "src/RimMandrake/Utils/check_config_errors.py"
+  ]
+ },
+ "ledger": {
+  "openItems": 129,
+  "openBugs": 7,
+  "needsOwner": 14
+ },
+ "goal": {
+  "ticked": 20,
+  "total": 135,
+  "sections": [
+   {
+    "n": 1,
+    "title": "THE PLANET",
+    "ticked": 4,
+    "total": 21
+   },
+   {
+    "n": 2,
+    "title": "FACTIONS",
+    "ticked": 8,
+    "total": 23
+   },
+   {
+    "n": 3,
+    "title": "RELIGION \u2014 ideoligions",
+    "ticked": 4,
+    "total": 11
+   },
+   {
+    "n": 4,
+    "title": "PAWNS \u2014 who walks around",
+    "ticked": 2,
+    "total": 21
+   },
+   {
+    "n": 5,
+    "title": "ITEMS \u2014 what exists to be held, worn and built",
+    "ticked": 0,
+    "total": 24
+   },
+   {
+    "n": 6,
+    "title": "CREATURES \u2014 what else is alive",
+    "ticked": 0,
+    "total": 7
+   },
+   {
+    "n": 7,
+    "title": "THE START",
+    "ticked": 2,
+    "total": 9
+   },
+   {
+    "n": 8,
+    "title": "EVENTS \u2014 what happens to the player over time",
+    "ticked": 0,
+    "total": 6
+   },
+   {
+    "n": 9,
+    "title": "PRESENTATION",
+    "ticked": 0,
+    "total": 5
+   },
+   {
+    "n": 10,
+    "title": "THE LAST MILE \u2014 it has to actually run",
+    "ticked": 0,
+    "total": 8
+   }
+  ]
+ },
+ "systems": [
+  {
+   "system": "Aftermath",
+   "tier": "RimMandrake",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "AftermathRites",
+   "tier": "RimUtinni",
+   "functionRung": "designed",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "Antiquities",
+   "tier": "RimUtinni",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": "2026-09-04"
+  },
+  {
+   "system": "Armoury",
+   "tier": "RimStarWars",
+   "functionRung": "validated",
+   "contentRung": "authored",
+   "date": "2026-09-03"
+  },
+  {
+   "system": "AshkarrFlora",
+   "tier": "RimUtinni",
+   "functionRung": "designed",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "AshkarrInhabited",
+   "tier": "RimUtinni",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-01"
+  },
+  {
+   "system": "AshkarrLandmarkArt",
+   "tier": "RimUtinni",
+   "functionRung": "runnable",
+   "contentRung": "authored",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "AshkarrWeatherSuite",
+   "tier": "RimUtinni",
+   "functionRung": "designed",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "BirthHatchDemo",
+   "tier": "RimUtinni",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": "2026-09-02"
+  },
+  {
+   "system": "Cuisine",
+   "tier": "RimStarWars",
+   "functionRung": "runnable",
+   "contentRung": "authored",
+   "date": "2026-09-07"
+  },
+  {
+   "system": "DesertVehicleReskin",
+   "tier": "RimStarWars",
+   "functionRung": "runnable",
+   "contentRung": "authored",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "Doctrine",
+   "tier": "RimUtinni",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "Droidworks",
+   "tier": "RimStarWars",
+   "functionRung": "validated",
+   "contentRung": "authored",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "EmpirePursuit",
+   "tier": "RimUtinni",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-08-30"
+  },
+  {
+   "system": "FireEcology",
+   "tier": "",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": "2026-09-01"
+  },
+  {
+   "system": "FluidCanals",
+   "tier": "RimMandrake",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": "2026-09-04"
+  },
+  {
+   "system": "Graffiti",
+   "tier": "RimMandrake",
+   "functionRung": "validated",
+   "contentRung": "placeholder",
+   "date": "2026-09-06"
+  },
+  {
+   "system": "Inhabited",
+   "tier": "RimMandrake",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": "2026-09-04"
+  },
+  {
+   "system": "IshkoDarkLandmarks",
+   "tier": "RimUtinni",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "JawaIonWeapons",
+   "tier": "RimStarWars",
+   "functionRung": "validated",
+   "contentRung": "placeholder",
+   "date": "2026-08-30"
+  },
+  {
+   "system": "JawaRules",
+   "tier": "RimStarWars",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "JawaVoice",
+   "tier": "RimStarWars",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "KotORBandolierNorthFix",
+   "tier": "RimStarWars",
+   "functionRung": "designed",
+   "contentRung": "authored",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "LanternDeeps",
+   "tier": "RimUtinni",
+   "functionRung": "implemented",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "LoadTracer",
+   "tier": "RimMandrake",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": "2026-09-02"
+  },
+  {
+   "system": "LongHunger",
+   "tier": "RimUtinni",
+   "functionRung": "implemented",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "MSEDroidFix",
+   "tier": "RimStarWars",
+   "functionRung": "runnable",
+   "contentRung": "placeholder",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "MandrakePatches",
+   "tier": "RimMandrake",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "ManyWaters",
+   "tier": "RimMandrake",
+   "functionRung": "implemented",
+   "contentRung": "none",
+   "date": null
+  },
+  {
+   "system": "MenuShell",
+   "tier": "RimUtinni",
+   "functionRung": "runnable",
+   "contentRung": "authored",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "Ninefold",
+   "tier": "RimMandrake",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": "2026-09-05"
+  },
+  {
+   "system": "Oracle",
+   "tier": "RimMandrake",
+   "functionRung": "implemented",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "PawnFlavor",
+   "tier": "RimUtinni",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": "2026-09-02"
+  },
+  {
+   "system": "Pits",
+   "tier": "RimMandrake",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": "2026-09-06"
+  },
+  {
+   "system": "PlanetPresetPrime",
+   "tier": "RimMandrake",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "PlantGrowth",
+   "tier": "RimUtinni",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "Pyrelands",
+   "tier": "RimMandrake",
+   "functionRung": "implemented",
+   "contentRung": "authored",
+   "date": null
+  },
+  {
+   "system": "PyrelandsFireEcology",
+   "tier": "RimUtinni",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "RaidRedesigner",
+   "tier": "RimMandrake",
+   "functionRung": "implemented",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "ResearchRetag",
+   "tier": "RimUtinni",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": "2026-09-04"
+  },
+  {
+   "system": "RestrainingBolts",
+   "tier": "RimUtinni",
+   "functionRung": "implemented",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "RimDefDump",
+   "tier": "RimMandrake",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": "2026-09-03"
+  },
+  {
+   "system": "RimProperty",
+   "tier": "RimMandrake",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": null
+  },
+  {
+   "system": "Rites",
+   "tier": "RimUtinni",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "RustChrome",
+   "tier": "RimMandrake",
+   "functionRung": "implemented",
+   "contentRung": "authored",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "SWBestiary",
+   "tier": "RimStarWars",
+   "functionRung": "runnable",
+   "contentRung": "authored",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "SacredGraffiti",
+   "tier": "RimMandrake",
+   "functionRung": "runnable",
+   "contentRung": "placeholder",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "ShipMemory",
+   "tier": "RimUtinni",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": "2026-09-04"
+  },
+  {
+   "system": "StarWarsPatches",
+   "tier": "RimStarWars",
+   "functionRung": "runnable",
+   "contentRung": "authored",
+   "date": "2026-09-04"
+  },
+  {
+   "system": "StarWarsRaces",
+   "tier": "RimStarWars",
+   "functionRung": "validated",
+   "contentRung": "authored",
+   "date": "2026-09-03"
+  },
+  {
+   "system": "StrandedQuest",
+   "tier": "RimMandrake",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "StructureInjections",
+   "tier": "RimMandrake",
+   "functionRung": "validated",
+   "contentRung": "none",
+   "date": "2026-09-02"
+  },
+  {
+   "system": "StructureInjectionsRUT",
+   "tier": "RimUtinni",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "StructureInjectionsSW",
+   "tier": "RimStarWars",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "UtinniPatches",
+   "tier": "RimUtinni",
+   "functionRung": "runnable",
+   "contentRung": "authored",
+   "date": "2026-09-04"
+  },
+  {
+   "system": "Visibility",
+   "tier": "RimMandrake",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "WeatherSuite",
+   "tier": "RimMandrake",
+   "functionRung": "runnable",
+   "contentRung": "none",
+   "date": "2026-09-08"
+  },
+  {
+   "system": "WreckedMachines",
+   "tier": "RimMandrake",
+   "functionRung": "validated",
+   "contentRung": "authored",
+   "date": "2026-09-01"
+  }
+ ],
+ "standalone": "Transient/project_maturity_dashboard.html"
+}
