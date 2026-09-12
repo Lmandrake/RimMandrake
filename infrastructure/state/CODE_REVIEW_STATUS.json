@@ -12022,10 +12022,10 @@
     "sha": "bb73b6bd"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/RimMandrake.Utinni.StructureInjectionsRUT.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "a624a96c86f918d93949841b67e70e907f898f0a31dbf2a24233e72ce2d834d9",
-    "sha": "fd3bafa39"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "3ba8f3e7f3d9bbac4f93428350fb9bfad12dae29a6c1a6ceb1343dcdca146490",
+    "sha": "02648abb2"
   },
   "src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/gen_vault_layouts.py": {
     "cleanCount": 2,
