@@ -60,7 +60,37 @@ called clean). Went back to the main menu WITHOUT saving; the canonical
 confirmed untouched.
 
 **Checks 1 (river tiles), 2 (shortHash provenance regen), 4 (mutators)**:
-not attempted this session — ran out of time/budget after check 3 surfaced
-something significant enough to need reporting rather than rushing past.
-Item stays `doing`; whoever picks this back up should read this section
-first rather than re-discover the mod mismatch from scratch.
+not attempted in that first pass — ran out of time/budget after check 3
+surfaced something significant enough to need reporting rather than
+rushing past.
+
+## 2026-09-11 update — check 1 done (river tiles, real number + instrument named)
+
+Same `CANONICAL_ASHKARR_2026-09-09` load (second session, 592-mod list,
+`ignoreModCompatibility`). `jawa/world_links_get` over the full
+`range:"0-21871"`, `onlyLinked:true`, `limit:21872` (forcing a true
+full-world scan, not the tool's 100-row default):
+
+- **335** tiles carry a `potentialRivers` entry (the raw WorldGrid link,
+  before biome filtering).
+- **320** tiles show a `visibleRivers` entry (the biome-filtered view —
+  what `allowRivers=false` biomes would hide; `hiddenByBiomeCount: 0` this
+  run, so nothing is currently hidden).
+
+Neither number matches any of the four old candidates (217/254/298/326)
+exactly — closest is 326 (the CSV's own `river_flow`-derived figure) to
+320/335. Rather than force a match to a prior guess, this stands as the
+new authoritative measurement: **`rivers_tiles` = 320 (visible) / 335
+(potential), `_src: jawa/world_links_get, full-range scan, 2026-09-11`.**
+Whoever owns the frozen CSV/audit artifact should adopt this figure and
+retire the four-way ambiguity rather than add a fifth number to the pile.
+
+**Checks 2 (shortHash provenance regen) and 4 (mutators, full decode)**:
+still not done. Check 2 specifically needs the live list swapped to the
+EXACT historical 573-mod set (not today's 592) to produce a dump whose
+shortHashes are provably comparable to the canonical save — that's a
+separate, deliberate modlist reconstruction, not a rider on this session's
+592-mod load, and wasn't attempted. Check 4 has a partial signal
+(`jawa/world_lint` found 104 `staleMarineMutators` among 128 total
+findings across all 21872 tiles this run) but that's a lint pass, not the
+full tile→mutator decode the check asks for. Item stays `doing`.

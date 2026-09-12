@@ -95,10 +95,16 @@ Rostered into both `the_rust_cathedral.json` and `the_scarlands.json`
 (split from a stale pre-2026-09-07 single organic-only entry). No hum
 wiring, per the owner's ruling — structurally enforced by omission.
 
-❓ **Not live-verified**: whether `RUT_CathedralRoach` actually spawns —
-mechanoid-fauna presence rides a separate spawn axis from `wildBiomes`
-(per the roster JSON's own note) and that wiring wasn't touched. Needs a
-quicktest once the game is next up.
+✅ **Live-verified 2026-09-11** (canonical Ash'karr save, 592-mod full list):
+both `RUT_ScarRoach` and `RUT_CathedralRoach` spawn successfully via
+`jawa/spawn_pawn` (by PawnKindDef — `jawa/spawn_batch`'s ThingDef+GenSpawn
+route throws an NRE on any pawn-race ThingDef, a pre-existing tool
+limitation unrelated to these defs, worth a future
+`COMPANION_SILENT_FAILURE_HARDENING_1` line: it should refuse pawn ThingDefs
+by name rather than NRE). Confirmed alive and listed
+(`RUT_ScarRoach609259`/`609260`, `RUT_CathedralRoach609261`) via
+`jawa/list_pawns`. Texture-missing warnings fired as expected (placeholder
+art, deferred per scope) — no other errors.
 
 **Rest of the kit is untouched**: §1 hum-mood system (new C# MapComponent +
 Def type), §2 wall-tier mining defs, §3 living bolts, §4 eel-fishing, §5
