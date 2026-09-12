@@ -144,8 +144,8 @@ The small plot, owner-shaped end to end:
    local uprising, no ally arrives, ever — in this campaign or any later act. What
    the player gets: a letter of thanks from a cause that will spend the crystals
    somewhere the war is still alive; a modest Homestead goodwill bump (the
-   sympathizers know); **zero Heat change** (proposal — the donation is quiet, but
-   scrubbing heat would make donation a laundering exploit; see card K2); and the
+   sympathizers know); **zero Heat change** (RULED 2026-09-11 — the donation is quiet, but
+   scrubbing heat would make donation a laundering exploit); and the
    knowledge, priced exactly at the donated kyber, that the player chose a side no
    one here will ever reward. The reward *is* the register.
 5. **Refusing or failing** closes this plot for good (one Rebellion cell, one
@@ -175,10 +175,17 @@ arc already assumes.
 - The smuggle quest completes with the ruled non-outcome: no Rebellion presence
   exists on the world after completion, and the reward matches §6.4.
 
-## Open cards
+## Cards — RULED 2026-09-11
 
-- **K1 (inherited from the Deeps sheet, parked at this item):** who were the *later*
-  high-technology parties in the old kyber mines — the Helix, an Imperial survey, or
-  both? Owner's call; §5/§6 do not depend on it.
-- **K2:** should completing the smuggle scrub any Heat (the smugglers cover the
-  trail), or is zero Heat change correct (this spec's proposal, anti-laundering)?
+- **K1 RULED.** Owner, verbatim: *"It was supposed to be quite a long time ago,
+  empires rising and falling. But a Helix expedition vessel could easily have
+  explored it, and certainly the Empire is aware of it and could have mined
+  some on an expedition. A rare Junker expedition might actually survive
+  too."* So the mines are DEEP-TIME — worked and abandoned across rising and
+  falling empires, no single later party — and the evidence layers a delver
+  can find include a Helix expedition's traces, an Imperial expedition's
+  mining scars (which is also how the Empire knows kyber is here), and, rarely,
+  a Junker expedition that actually made it back. Feeds the Deeps' gallery
+  dressing and the Junkers' fragments of the Deeps stories.
+- **K2 RULED: Heat unchanged.** The smuggle scrubs nothing — donation is pure
+  cost, never laundering. §6.4's zero-Heat proposal is now the rule.

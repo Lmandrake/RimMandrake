@@ -73,11 +73,11 @@ but the Webwork"; a trader is only the named example):
 - **Cargo/resource pods** ❓ — verify at build whether `tradeability: Sellable`
   already excludes it from pod contents; if not, the pod-contents route needs
   its own exclusion. Rides the live-proof pass.
-- **Stuff-rolled gear** — `stuffProps.commonality` 0.1 (MEASURED): traders,
-  raiders and reward generators can roll apparel MADE OF shokkweave. The
-  resource never comes back out of tailored apparel, so the resource
-  sole-source holds either way — but the armor material itself walks in on a
-  raider's back. **CARDED** (card 1); until ruled, commonality stays.
+- **Stuff-rolled gear** — 🟢 RULED (owner, 2026-09-11): patch
+  `stuffProps.commonality` 0.1 → **0.05**. Rare offworld shokkweave gear
+  survives as flavor at half the vanilla roll rate; only the raw fabric is
+  sole-source. The resource never comes back out of tailored apparel, so the
+  resource sole-source holds regardless.
 
 No recipe produces it (MEASURED: 0 of 617), no WorldObjectRecipeDef touches it.
 
@@ -132,13 +132,8 @@ generated kinds; a quest-reward roll pass shows none; butchering a Wyyyschokk
 yields it; border creep-web cut yields it and can spawn the emergent Shokk
 (comp already proven in `SHOKK_RSW_MOD_1`).
 
-## Cards (open)
+## Cards
 
-1. **Stuff-rolled shokkweave gear** — `stuffProps.commonality` 0.1 lets
-   traders/raiders/rewards generate apparel MADE OF shokkweave (the fabric
-   never recoverable). (a) Zero it: nothing anywhere is generated of
-   shokkweave; player crafting and biome routes untouched — "the ONLY way to
-   obtain it" reads absolute, recommended. (b) Keep it: shokkweave gear
-   exists offworld as flavor; only the raw fabric is sole-source. Trade: (a)
-   also strips it from raider drops — slightly fewer exotic lootables; (b)
-   lets a rich player buy the armor benefit without ever touching the Webwork.
+None open. Stuff-rolled gear RULED 2026-09-11: commonality → **0.05** (the
+owner's own number — neither absolute zero nor vanilla 0.1); the patch joins
+the build list above.

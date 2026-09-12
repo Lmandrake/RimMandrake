@@ -82,3 +82,12 @@ was corrected:
       local-hardware step inside the *shipping* sprite pipeline, and a confirmed
       contributor to the OOM kills — is covered by this park or exempt as
       routine tooling. Not decided here; the tool is untouched.
+
+## Ruling 2026-09-11 — rembg_cut.py is EXEMPT, capped
+
+Owner: the ONNX alpha-cutout (`skills/generating-images/scripts/rembg_cut.py`)
+is routine shipping tooling, NOT covered by the park — the Codex cloud channel
+keeps its alpha path — but capped to **ONE concurrent run** so it can never
+stack to an OOM again (it hit 7+ GB RSS × 3 concurrent in the 2026-09-05
+kills). Cap enforcement is code, not prose: filed as
+`REMBG_CONCURRENCY_CAP_1` (a flock-style guard in the script itself).

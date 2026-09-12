@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-11T23:56:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T00:10:35Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -969,4 +969,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## REMBG_CONCURRENCY_CAP_1 flock-style single-run guard in rembg_cut.py per the 2026-09-11 exemption ruling
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/REMBG_CONCURRENCY_CAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/REMBG_CONCURRENCY_CAP_1.md
