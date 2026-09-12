@@ -45,7 +45,7 @@
 
   -->
 
-  <BiomeDef>
+  <BiomeDef MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_Scarlands</defName>
     <label>the Scarlands</label>
     <description>Crater fields and slag hills on shattered megastructure floors; bunkers, embankments, ruined turret rings and burnt shield emplacements that all tell the same story, still perfectly legible -- a defense, layered and desperate, facing outward. The ground is poisoned in a way that does not fade and never will, the wildlife is mad, machines defend the place for reasons they do not give, and it is, by every Jawa's flat testimony, cursed.</description>
