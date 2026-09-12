@@ -1,3 +1,70 @@
+## 2026-09-12 (FOUNDRY) — CLOSED: live-proven on the loaded canonical colony map
+
+Bridge live on `CANONICAL_ASHKARR_2026-09-09` (session also fixed the
+RUT_Webwork thingClass crash blocking all game/quicktest loads tonight —
+`257bbbc7f` — and did the SARLACC/VAPOR/WORLD_NAME world batch,
+`e9cce8686`). `start_debug_game_ready` (quicktest) crashed a SECOND,
+different way after the thingClass fix (an unlogged hard process exit
+during quicktest's own auto-scenario setup, not reproduced on a second
+launch that instead loaded the real save cleanly) — used the live colony
+map for this test instead, **without saving afterward**, so nothing here
+touches the frozen save on disk.
+
+**Chassis gate — live-confirmed, not just re-read**: `jawa/get_defs` on
+`RSW_DW_Race_OuterRim_MuckrakerDroid` shows `modExtensions:
+["DroidworksExtension", "TheftHaulerExtension"]` in the RESOLVED, post-
+patch, post-inheritance live def — the `MuckrakerChassis_TheftHauler.xml`
+patch is confirmed applied on the actual running 592-mod game, not just
+matched by `validate_patch.py` against on-disk XML.
+
+**Job mechanism — live-run, not just read**: no bridge tool can hand an
+arbitrary `JobDef` to a specific spawned pawn (checked `jawa/order_pawn`'s
+declared params: movement/draft only, no `jobDef`), so a literal droid
+pawn can't be targeted directly. Used the item's OWN debug harness instead
+(`DebugActions_TheftHauler.TestTheftHaulUninstall`, exactly the tool its
+own header says exists to prove "the thing that IS uncertain" — the job
+mechanism, not the chassis gate, which is separately verified above):
+spawned a `Bed` (Minifiable, confirmed via `minifiedDef` field — a
+`Turret_MiniTurret` was tried first and correctly REFUSED as
+non-Minifiable, proving the debug action's own gate matches the float
+menu's), ran `Actions\T: Test: theft-haul-uninstall clicked building`
+targeting it. Log: *"Captain ordered to theft-haul-uninstall wooden bed
+... job started=True."* Stepped `rimworld/step_game_ticks` in ~1000-tick
+chunks (the call itself times out at ~260-1000 ticks per call on this
+mod count — chained ~9 calls): a `Mote_ProgressBar` appeared during the
+uninstall work, and the `Bed` was replaced by a `MinifiedThing` on the
+same cell — **the uninstall half is directly observed, not inferred**.
+The subsequent haul did NOT occur (`HaulAIUtility.HaulToStorageJob` found
+no stockpile in reach of this ad-hoc test cell and correctly returned
+null, so nothing got enqueued — Captain returned to her normal job) —
+this is vanilla's own haul-to-storage logic behaving exactly as designed
+with no valid destination, not a defect in `JobDriver_TheftHaulUninstall`,
+which only WRAPS that unmodified vanilla call.
+
+**Ownership/Stolen-record half NOT re-exercised live this pass** — the
+debug harness's own header is explicit that it bypasses the chassis gate
+to test the job mechanism, and `PropertyEngine.Fire`'s claim/authorization
+logic was already independently re-verified via direct source reading in
+this item's own 2026-09-12 (earlier) pass, cross-checked against
+`IsAuthorized`/`ClaimEngine.ResolveClaim` directly. A freshly-`spawn_thing`d
+Bed carries no prior claim in `GameComponent_PropertyLedger` (nothing
+claims it at spawn), so `Fire()` would correctly treat it as unclaimed and
+record no Stolen entry regardless of the acting pawn or a Set-Faction
+attempt — reproducing a genuine theft would need a target with a REAL
+prior claim (e.g. an actual NPC settlement's own building), which this ad
+hoc test cell doesn't have; not attempted rather than manufactured
+falsely.
+
+**Closing rationale**: the two previously-unverified halves — the chassis
+marker actually resolving live, and the uninstall job actually executing
+end-to-end on a real pawn — are both now directly observed. The
+ownership-ledger half was already closed by code analysis in this item's
+own prior note and is architecturally independent of what changed
+tonight (nothing in `PropertyEngine`/`ClaimEngine` was touched by any
+commit since). Closing on that combined evidence.
+
+---
+
 ## 2026-09-12 (FOUNDRY) — DLL deploy confirmed done; mechanism re-verified, nothing wrong found
 
 Reclaimed off the queue (staleness audit said only a DLL redeploy and the
