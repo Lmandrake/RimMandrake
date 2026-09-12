@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Tiny Garrison - structure_procedural_spec.md section 8.6.
+       Same extraGenSteps responder shape as every prior batch: the two
+       Inhabited steps ride under MayRequire so a tile that also holds a
+       WorldObject_Inhabited place gets its cast (defenders) and goods
+       dropped inside the barracks/mess (both steps no-op on a tile
+       without one).
+
+       The template's own approach_dir param defaults to "S" and the
+       exported bake was taken at that default, so this responder reads
+       best on a tile whose approach corridor faces south.
+
+       NOT YET PLACED on any Ash'karr tile - same deferral as every prior
+       batch. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_GarrisonTiny</defName>
+    <label>tiny garrison</label>
+    <description>A perimeter ring around a barracks and a mess/command room, an armoury nook tucked behind, a gun position and watch post just inside the gate. Somebody still holds this line, or held it once.</description>
+    <extraGenSteps>
+      <li>RSW_GenStep_GarrisonTiny</li>
+      <li MayRequire="mandrake.rm.inhabited">Inhabited_Cast</li>
+      <li MayRequire="mandrake.rm.inhabited">RM_InhabitedStock</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

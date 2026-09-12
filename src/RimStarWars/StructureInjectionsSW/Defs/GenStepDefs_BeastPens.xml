@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Pet / Beast Breeding Facility - structure_procedural_spec.md
+       section 8.13. INHABITED_AUGMENTATION_BUILD_1, built under commit
+       ef6ce8e41, wired here (same GenStep_RimplacePlan replay shape as
+       every sibling responder). Replays Templates/beast_pens.txt
+       (rimplace export of design/Jawa/templates/beast_pens.lua: 30x18,
+       default params, seed 2 - the plan header carries the exact bake;
+       seed 2 chosen because it is the first of a 0-2 lint sweep with 0
+       findings, seeds 0/1 each carried one WARN) via mandrake.rm.injections'
+       GenStep_RimplacePlan. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_BeastPens</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/beast_pens.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>

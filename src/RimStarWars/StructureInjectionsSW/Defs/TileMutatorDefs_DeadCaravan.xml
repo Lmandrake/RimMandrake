@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Broken Wagon / Dead Caravan - structure_procedural_spec.md
+       section 8.10. Same extraGenSteps responder shape as every prior
+       batch: the two Inhabited steps ride under MayRequire so a tile that
+       also holds a WorldObject_Inhabited place gets its cast and goods
+       dropped at the wreck (both steps no-op on a tile without one) -
+       this archetype has no walls or rooms (an open-ground debris field),
+       so the cast/stock simply land in the open near the wreck, same as
+       any wilderness Inhabited placement without a structure.
+
+       The template's own road_dir param defaults to "E" and the exported
+       bake was taken at that default, so this responder reads best on a
+       tile whose road runs east-west.
+
+       NOT YET PLACED on any Ash'karr tile - same deferral as every prior
+       batch. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_DeadCaravan</defName>
+    <label>dead caravan</label>
+    <description>A wagon slewed sideways across the road, a spill cone of scattered goods, a camp off to one side. Something ended this trip badly - a grave row, or the bodies still lying where they fell.</description>
+    <extraGenSteps>
+      <li>RSW_GenStep_DeadCaravan</li>
+      <li MayRequire="mandrake.rm.inhabited">Inhabited_Cast</li>
+      <li MayRequire="mandrake.rm.inhabited">RM_InhabitedStock</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

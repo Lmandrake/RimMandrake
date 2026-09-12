@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Pet / Beast Breeding Facility - structure_procedural_spec.md
+       section 8.13. Same extraGenSteps responder shape as every prior
+       batch: the two Inhabited steps ride under MayRequire so a tile that
+       also holds a WorldObject_Inhabited place gets its keeper cast and
+       goods dropped inside the keeper's house (both steps no-op on a tile
+       without one).
+
+       NOT YET PLACED on any Ash'karr tile - same deferral as every prior
+       batch. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_BeastPens</defName>
+    <label>beast pens</label>
+    <description>A keeper's house looking over a row of pens - one a nursery - a feed store and a tack shed beside them. Somebody still tends this stock, or did.</description>
+    <extraGenSteps>
+      <li>RSW_GenStep_BeastPens</li>
+      <li MayRequire="mandrake.rm.inhabited">Inhabited_Cast</li>
+      <li MayRequire="mandrake.rm.inhabited">RM_InhabitedStock</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

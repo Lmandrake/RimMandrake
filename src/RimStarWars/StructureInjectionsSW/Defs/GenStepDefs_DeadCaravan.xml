@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Broken Wagon / Dead Caravan - structure_procedural_spec.md
+       section 8.10. INHABITED_AUGMENTATION_BUILD_1, built under commit
+       178f5d0b7, wired here (same GenStep_RimplacePlan replay shape as
+       every sibling responder). Replays Templates/dead_caravan.txt
+       (rimplace export of design/Jawa/templates/dead_caravan.lua: 16x12,
+       default params, seed 0 - the plan header carries the exact bake)
+       via mandrake.rm.injections' GenStep_RimplacePlan. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_DeadCaravan</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/dead_caravan.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>
