@@ -79,9 +79,20 @@ namespace RimMandrake.StarWars.Livestock
         // just ate. Kept as a public entry point rather than a Notify_*
         // override because there is no vanilla "this pawn ate this def"
         // hook on Pawn itself - only on the eaten Thing's own comps.
-        public void RegisterDose()
+        public void RegisterDose(ThingDef eatenDef)
         {
             if (!RSW_LivestockSettings.kilnBellyEnabled) return;
+
+            // Props.doseFeedDef is the def this belly counts doses of (e.g.
+            // RSW_KilnClay). Bug fixed 2026-09-12: this field was set in XML
+            // and documented ("only eating THIS specific def registers a
+            // dose") but never actually checked here - any item carrying
+            // CompKilnFeed counted as a dose regardless of def, which was
+            // silently correct only while CompKilnFeed happened to be
+            // attached to nothing else. A future second feed item (the doc's
+            // own "or any future kiln-belly feed item") would have let a
+            // pawn dose the kiln on the wrong food with no error at all.
+            if (Props.doseFeedDef != null && eatenDef != Props.doseFeedDef) return;
 
             int now = Find.TickManager.TicksGame;
 
@@ -158,7 +169,7 @@ namespace RimMandrake.StarWars.Livestock
         public override void PostIngested(Pawn ingester)
         {
             base.PostIngested(ingester);
-            ingester?.TryGetComp<CompKilnBelly>()?.RegisterDose();
+            ingester?.TryGetComp<CompKilnBelly>()?.RegisterDose(parent.def);
         }
     }
 }
