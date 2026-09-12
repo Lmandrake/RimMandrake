@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T06:12:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T06:15:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## SCALD_DIVING_MOD_1 Diving mod, v1 (owner: 'make the diving mod v1 content now!!'): RimMandrake-tier diving mechanic — hunt/commune at the Scald's deep center, priced in burns; bottom-walkers become interactable; Mod Settings per doctrine
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/SCALD_DIVING_MOD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCALD_DIVING_MOD_1.md
 
 # IN PROGRESS
 
@@ -1034,6 +1043,16 @@ blocked:  Two real defects found+fixed live (comp-attach patch never matched; ti
 summary:  - A spawn mechanism anchored to wreckage things/structures (Fall Line hulks,
 prose:    infrastructure/state/items/WRECKAGE_VERMIN_SPAWN_1.md
 
+## GIZKA_HOLD_HOOK_SPIKE_1 Spike: find the gravship-hold discovery hook for the gizka stowaway event (Odyssey source read + quicktest proof) — owner ruled the whole gizka feature HOLDS until this hook is confirmed
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  hook identified: RimWorld.Scenario.PostGravshipLanded(Map map), fired once per landing from WorldComponent_GravshipController.LandingEnded(); live confirmation owed — bridge held by another FOUNDRY window all session
+summary:  GIZKAHOLDHOOKSPIKE1 — gravship-landing hook, research phase
+prose:    infrastructure/state/items/GIZKA_HOLD_HOOK_SPIKE_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
@@ -1066,16 +1085,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VAPOR_PLACEMENT_CLEANUP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VAPOR_PLACEMENT_CLEANUP_1.md
 
-## GIZKA_HOLD_HOOK_SPIKE_1 Spike: find the gravship-hold discovery hook for the gizka stowaway event (Odyssey source read + quicktest proof) — owner ruled the whole gizka feature HOLDS until this hook is confirmed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GIZKA_HOLD_HOOK_SPIKE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GIZKA_HOLD_HOOK_SPIKE_1.md
-
 ## TIBANNA_SOURCE_CUT_1 Cut non-beldon tibanna sources per T1 ruling: CherryPicker-cut OuterRim_TibannaSiphon/ExtractorLight/Heavy lanes + LK mineable OuterRim_Tibanna route (item def stays); verify LIVE — LK patches can no-op silently; beldons-only hard ban stands
 state:    proposed
 row:      unassigned
@@ -1085,16 +1094,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TIBANNA_SOURCE_CUT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TIBANNA_SOURCE_CUT_1.md
-
-## SCALD_DIVING_MOD_1 Diving mod, v1 (owner: 'make the diving mod v1 content now!!'): RimMandrake-tier diving mechanic — hunt/commune at the Scald's deep center, priced in burns; bottom-walkers become interactable; Mod Settings per doctrine
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SCALD_DIVING_MOD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SCALD_DIVING_MOD_1.md
 
 ## ASHFALL_SPIRE_LANDMARK_1 Place The Spire landmark (Ashfall Research Base site): thin black needle, disc pad near top, intermittently visible through Scald turbulence — live placement + read-back per worldmap discipline; dungeon shell may follow, campaign function stays TBD (owner)
 state:    proposed
