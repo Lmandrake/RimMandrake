@@ -11,8 +11,10 @@ enforcement (refuse a mod whose toggle has zero components), the run session
 (modlist_swap to MINIMAL+mod, quicktest, bridge lock, restore FULL after),
 `rimflow verify` emission, HTML sheet to `Transient/modcheck/`, auto-filed
 findings on failure with run continuing, `modcheck_status.json` registry +
-`declare minor` staleness flow, and the deploy-tool skip rule for
-`validation.steps.yaml`.
+`declare minor` staleness flow (minor is ONLY a trivial change without gameplay
+effect — text or a very slight parameter adjustment; the declare command records
+the diff --stat alongside the why so the claim is checkable), and the
+deploy-tool skip rule for `validation.steps.yaml`.
 
 ## verify
 - Lint rule proven: a write step with no read-back anywhere in its component is

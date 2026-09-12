@@ -91,6 +91,12 @@ content hash of the mod's files at run time.
 - Hash mismatch → provisionally STALE.
 - `modcheck declare <mod> minor --why "<one line>"` (a ledger note) re-greens it
   at the new hash. Anything not declared minor is major.
+- **A minor declaration is only valid for a trivial change without gameplay
+  effect** (owner, 2026-09-12): text/description strings, or a very slight
+  parameter adjustment. The declare command prints the mod's diff `--stat` at
+  declare time and records it with the note, so the claim is checkable against
+  what actually changed — a C#, patch, or def-structure change declared minor
+  is a wrong declaration, and whoever spots it flips the mod stale.
 - The playtest offer path checks GREEN. No green, no playtest.
 
 ## 5. Rollout
