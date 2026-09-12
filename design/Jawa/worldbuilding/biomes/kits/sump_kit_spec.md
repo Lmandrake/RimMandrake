@@ -305,19 +305,15 @@ NOT in this kit), `sarlacc_spec.md` (family type specimen).
 
 ## Open owner cards (unruled — rides `MECHANICS_CARDS_SITTING_1`)
 
-1. **Does command ignition spread beyond the poured moat?** If lit moat can
-   catch adjacent NATURAL tar pools, a defensive burn can cascade into a
-   map-scale fire (physics, spectacular, punishing); if only poured cells
-   conduct, the moat is safe but reads artificial. Drafted default: **the
-   gizmo's flood-fill conducts through `RUT_TarMoat` cells only; natural tar
-   still catches from ordinary stray fire** — deliberate burns stay bounded,
-   physics stays true.
-2. **Can preserved era traps be disarmed?** A surfaced trap either only
-   detonates/gets avoided, or a high-skill disarm attempt can claim it as a
-   §GM-tier find (failure detonates). Trade: pure dread vs. a skill-priced
-   jackpot that makes the click a decision. Drafted default: **disarmable,
-   high skill gate, failure detonates** — "the tar preserves intentions"
-   cuts both ways.
+1. **RULED 2026-09-12 — the lit moat DOES catch adjacent natural tar
+   pools.** The owner overrode the drafted poured-cells-only default: a
+   defensive burn can cascade into a map-scale fire. Physics is true and
+   spectacular and punishing; players learn where they pour. (Build note:
+   the cascade must still be survivable-by-foresight — telegraphy per the
+   mouse-line doctrine, no silent map-wipe.)
+2. **RULED 2026-09-12 — era traps are disarmable: high skill gate, failure
+   detonates.** As drafted; the click is a decision and a skill-priced
+   §GM-tier find.
 3. **What ends a woken beast?** Re-submerges when sated (drafted default:
    it always leaves, the biome resets, dread renews) vs. stays until the
    player abandons the map (harsher, sheet-true "the trap remembers") vs.

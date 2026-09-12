@@ -2490,10 +2490,10 @@
     "sha": "ecc86a6f"
   },
   "src/RimMandrake/Pits/Source/DigStage/CompPitDigStage.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "63d8dd17dff2d01ea6c4b36d6cf1456a3605478b5af4fe0243b9451c710a53f5",
-    "sha": "ecc86a6f"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "033a2dc55af674d37f0ea39fad904f9369361161c5ecba6c2e94538273fd2ebf",
+    "sha": "4b440f019"
   },
   "src/RimMandrake/Pits/Source/DigStage/CompProperties_PitDigStage.cs": {
     "cleanCount": 1,
@@ -2508,10 +2508,10 @@
     "sha": "ecc86a6f"
   },
   "src/RimMandrake/Pits/Source/DigStage/PitDepthTier.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "903ed23ed81f363583bf59914ad7da43cf77ce7646efc355d94ea41dbbefdc86",
-    "sha": "ecc86a6f"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "a28f237b0f0d8820634f0cfed9d9e21e2f8c324bdb2c03557afee4a9ee50c9b0",
+    "sha": "4b440f019"
   },
   "src/RimMandrake/Pits/Source/DigStage/WorkGiver_DigPitDeeper.cs": {
     "cleanCount": 1,
@@ -2520,10 +2520,10 @@
     "sha": "ecc86a6f"
   },
   "src/RimMandrake/Pits/Source/Escape/PitEscapeUtility.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "48d1f261dd5e2f154f8a6af5d1a200a9e84fb996fe06d638099233763f54636f",
-    "sha": "ecc86a6f"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "09d2477bbcfe556f9ecf7ff497e98f89dd8af95edf926f17ec2c9e44effb9061",
+    "sha": "4b440f019"
   },
   "src/RimMandrake/Pits/Source/Fitting/CompPitFitting.cs": {
     "cleanCount": 1,
@@ -2544,16 +2544,22 @@
     "sha": "ecc86a6f"
   },
   "src/RimMandrake/Pits/Source/Holding/Building_OpenPit.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "c9db78214ec9d2942bf1ee98057737f562711111c51b26d25422ed33de97148b",
-    "sha": "af66b41c"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "f0ffcbe598c31db3dce12d7b15ca35da8db6ce1b5cec1ac28cf03b6677959bec",
+    "sha": "4b440f019"
   },
   "src/RimMandrake/Pits/Source/Holding/Building_PitCell.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "6330834502adb37e1f5996cad13eab1d31ec92dc2d3f68b4da262c27d213f7bf",
+    "sha": "4b440f019"
+  },
+  "src/RimMandrake/Pits/Source/PitsMod.cs": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "b693c3b1fba0c5f4993c55f6a1a723dcf380a4a0461f5db95419f43da667639b",
-    "sha": "ecc86a6f"
+    "date": "2026-09-11",
+    "hash": "4bd039e0b3b4fa2d30bac16d1a280de9d4f0441ad6c3f17d3cd3efcbaeb029ad",
+    "sha": "4b440f019"
   },
   "src/RimMandrake/Pits/Source/RimMandrakePits_DefOf.cs": {
     "cleanCount": 1,
@@ -2562,10 +2568,10 @@
     "sha": "ecc86a6f"
   },
   "src/RimMandrake/Pits/Source/RimMandrake_Pits.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "3d73550467c1b1bc52fdc24cbc9f32e10a51f7ba898d83a3236d2193f47f2718",
-    "sha": "e01583ae"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "9a853419227d30eefe03522bdb7a8ea8c1954b5308e7094fd0534ae1c65bf406",
+    "sha": "4b440f019"
   },
   "src/RimMandrake/Pits/Source/SelfTest/Program.cs": {
     "cleanCount": 1,
@@ -2586,10 +2592,10 @@
     "sha": "ecc86a6f"
   },
   "src/RimMandrake/Pits/Source/Trigger/CompPitCoverTrigger.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "ab7aaaf7f90126e34640ce184b2b0bbe3c2ca4a1efcb75e9ff4d35b9574b68cf",
-    "sha": "ecc86a6f"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "a10d3a9876baef9f2b34a9de787750df6c02d59dfa12261a790aaf917dc2340b",
+    "sha": "4b440f019"
   },
   "src/RimMandrake/Pits/Source/Trigger/CompProperties_PitCoverTrigger.cs": {
     "cleanCount": 1,
