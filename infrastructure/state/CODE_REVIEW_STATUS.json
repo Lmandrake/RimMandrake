@@ -1253,6 +1253,24 @@
     "hash": "81f607b06d25527e18cb48c31f14e439836e5501a7171bf854d7f35959861ae3",
     "sha": "3505dc594"
   },
+  "src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "bed1f36ae057574a5dfe3350fcc2d481fdef2abfd4c874720c0535ec033c36ea",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Source/SlimeVisitors.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "043b636fd1defcb472353de6db46fbf3a97458e8a08e9ff2cf16137dacb18a64",
+    "sha": "3505dc594"
+  },
+  "src/RimMandrake/GelatinousSlime/Source/Slimification.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "22fd2a837f284d6fa9a15948a3f60a64fd363c33b42626376b1b329b21710b7f",
+    "sha": "3505dc594"
+  },
   "src/RimMandrake/Graffiti/About/About.xml": {
     "cleanCount": 3,
     "date": "2026-09-09",
