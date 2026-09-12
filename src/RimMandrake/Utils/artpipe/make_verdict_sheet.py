@@ -51,6 +51,28 @@ except ImportError:
 
 OUT_HTML = common.REPO_ROOT / "Transient" / "art_verdict_sheet_2026-09-12.html"
 THUMB_MAX_SIDE = 256  # per the task spec: thumbnail if the self-contained page would be huge
+# ORIGINALs get a smaller cap than regenerated art: with 89 lanes now carrying a
+# current-in-game-texture original (see ORIGINALS_DIR below), 256px on both
+# images pushed the self-contained page to 15.8MB — over the 14MB budget.
+# 160px keeps every original comparable at a glance (still NEAREST, never
+# smoothed) and brings the page back under budget with headroom.
+ORIGINAL_THUMB_MAX_SIDE = 160
+
+# Originals resolved from the LIVE deployed texture (loose PNG or extracted
+# AssetBundle cache) for lanes whose job carries `reference: null` — see
+# infrastructure/artpipe/README.md and skills/reading-rimworld-graphics.
+# Populated by a one-shot offline resolver (not part of this script); keyed
+# by the exact `target` string, mirroring done/*.json's own keying, so a
+# target with a facing ("dactillion/east") nests as ORIGINALS_DIR/dactillion/
+# east.png. `_unresolved.json` sits alongside with a one-line reason per
+# lane this resolver could not find a current in-game texture for (mostly:
+# no matching ThingDef/PawnKindDef in the def dump — a new/commissioned
+# creature or test template with nothing to compare against).
+ORIGINALS_DIR = common.REPO_ROOT / "Transient" / "art_verdict_originals"
+UNRESOLVED_PATH = ORIGINALS_DIR / "_unresolved.json"
+UNRESOLVED_REASONS: dict[str, str] = (
+    json.loads(UNRESOLVED_PATH.read_text()) if UNRESOLVED_PATH.is_file() else {}
+)
 
 
 # --------------------------------------------------------------------------
@@ -92,14 +114,14 @@ def facing_of(target: str) -> str | None:
 # image handling
 # --------------------------------------------------------------------------
 
-def thumbnail_data_uri(path: Path) -> tuple[str, int, int, int]:
+def thumbnail_data_uri(path: Path, max_side: int = THUMB_MAX_SIDE) -> tuple[str, int, int, int]:
     """Returns (data_uri, orig_w, orig_h, bytes_embedded). Pixel-preserving
-    NEAREST resample (never smoothed) capped at THUMB_MAX_SIDE per side;
-    images already smaller are re-saved as-is (no upscaling)."""
+    NEAREST resample (never smoothed) capped at `max_side` per side; images
+    already smaller are re-saved as-is (no upscaling)."""
     with Image.open(path) as im:
         im = im.convert("RGBA")
         w, h = im.size
-        scale = min(1.0, THUMB_MAX_SIDE / max(w, h))
+        scale = min(1.0, max_side / max(w, h))
         if scale < 1.0:
             im = im.resize((max(1, round(w * scale)), max(1, round(h * scale))), Image.NEAREST)
         buf = io.BytesIO()
@@ -109,18 +131,37 @@ def thumbnail_data_uri(path: Path) -> tuple[str, int, int, int]:
         return f"data:image/png;base64,{b64}", w, h, len(data)
 
 
-def resolve_original(reference: str | None) -> dict:
+def resolve_original(reference: str | None, target: str) -> dict:
     """{"status": "none"|"found"|"unavailable_bundle", "path": str|None,
-    "windows_path": str|None}"""
-    if not reference:
-        return {"status": "none", "path": None, "windows_path": None}
-    p = Path(reference)
-    if p.is_file():
-        return {"status": "found", "path": reference, "windows_path": to_windows_path(reference)}
-    # Unreachable as a loose file — per the task spec, this is the
-    # AssetBundle (or otherwise-missing) case. Never guess a substitute.
-    return {"status": "unavailable_bundle", "path": reference,
-            "windows_path": to_windows_path(reference)}
+    "windows_path": str|None, "source": "job_reference"|"current_texture"|None,
+    "unresolved_reason": str|None}
+
+    Two sources, tried in order:
+      1. the job's own `reference` field (a redo/improve lane compared against
+         the specific file it was regenerated from).
+      2. when that is null, the creature's CURRENT in-game texture, resolved
+         offline (see ORIGINALS_DIR above) — the original a full "redo" lane
+         still has, even though its own job never recorded one.
+    """
+    if reference:
+        p = Path(reference)
+        if p.is_file():
+            return {"status": "found", "path": reference,
+                     "windows_path": to_windows_path(reference), "source": "job_reference",
+                     "unresolved_reason": None}
+        # Unreachable as a loose file — per the task spec, this is the
+        # AssetBundle (or otherwise-missing) case. Never guess a substitute.
+        return {"status": "unavailable_bundle", "path": reference,
+                "windows_path": to_windows_path(reference), "source": "job_reference",
+                "unresolved_reason": None}
+
+    current = ORIGINALS_DIR / f"{target}.png"
+    if current.is_file():
+        cp = str(current)
+        return {"status": "found", "path": cp, "windows_path": to_windows_path(cp),
+                "source": "current_texture", "unresolved_reason": None}
+    return {"status": "none", "path": None, "windows_path": None, "source": None,
+            "unresolved_reason": UNRESOLVED_REASONS.get(target)}
 
 
 # --------------------------------------------------------------------------
@@ -133,7 +174,8 @@ def build_rows() -> list[dict]:
     awaiting = {t: v for t, v in per_target.items() if v.get("state") == "awaiting_verdict"}
 
     rows = []
-    stats = {"originals_found": 0, "originals_none": 0, "originals_unavailable": 0}
+    stats = {"originals_found": 0, "originals_none": 0, "originals_unavailable": 0,
+              "originals_found_job_reference": 0, "originals_found_current_texture": 0}
     for target in sorted(awaiting):
         info = awaiting[target]
         job_ids = info.get("job_ids") or []
@@ -159,11 +201,11 @@ def build_rows() -> list[dict]:
 
         regen_uri, rw, rh, rbytes = thumbnail_data_uri(regen_path)
 
-        orig = resolve_original(job.get("reference"))
+        orig = resolve_original(job.get("reference"), target)
         orig_uri = None
         if orig["status"] == "found":
             try:
-                orig_uri, ow, oh, obytes = thumbnail_data_uri(Path(orig["path"]))
+                orig_uri, ow, oh, obytes = thumbnail_data_uri(Path(orig["path"]), ORIGINAL_THUMB_MAX_SIDE)
                 orig["w"], orig["h"] = ow, oh
             except Exception as exc:  # a found file that PIL can't open is still "found"
                 print(f"make_verdict_sheet: WARNING original for {target!r} at "
@@ -173,6 +215,10 @@ def build_rows() -> list[dict]:
 
         if orig["status"] == "found":
             stats["originals_found"] += 1
+            if orig["source"] == "current_texture":
+                stats["originals_found_current_texture"] += 1
+            else:
+                stats["originals_found_job_reference"] += 1
         elif orig["status"] == "none":
             stats["originals_none"] += 1
         else:
@@ -197,6 +243,8 @@ def build_rows() -> list[dict]:
             "original_uri": orig_uri,
             "original_path": orig["path"],
             "original_windows_path": orig["windows_path"],
+            "original_source": orig["source"],
+            "original_unresolved_reason": orig["unresolved_reason"],
             "validator": manifest.get("validator"),
             "validator_findings": manifest.get("validator_findings", []),
         })
@@ -293,11 +341,13 @@ footer.sticky .savedat { font-size:0.78em; color: var(--ink-dim); }
   <span class="invented">Invented by the generator: nothing.</span> Grouping-by-creature
   normalizes three <code>lockjaw_improve_*</code> retry ids whose facing got baked into the
   job id instead of the target (a naming quirk in the queue, not a judgement call).<br>
-  <b>141 of 147 lanes have no original to compare</b> — their job's <code>reference</code>
-  field is null, meaning they are full "redo"/"improve" regenerations (README's redo
-  semantics: the art may be a different creature identity entirely) with nothing 1:1 to hold
-  them against. Judge those on the regenerated art alone. <b>6 lanes</b>
-  (<code>lockjaw_improve_*</code>) have a real original, found on disk and shown.<br>
+  <b>Where the original comes from:</b> 6 lanes (<code>lockjaw_improve_*</code>) carry a real
+  job <code>reference</code>, found on disk and shown as-is. For the other 141, whose job
+  <code>reference</code> is null (full "redo"/"improve" regenerations — the art may be a
+  different creature identity entirely), the ORIGINAL shown is instead the creature's
+  <b>current in-game texture</b> — resolved offline from the def dump's
+  ThingDef/PawnKindDef&nbsp;→&nbsp;texPath chain and extracted from the live deployed loose
+  PNG or AssetBundle cache (never guessed). __ORIGINALS_SUMMARY__<br>
   <b>Buttons:</b> ACCEPT / REJECT / SKIP. SKIP means "not decided yet", not "reject" — a
   skipped lane is left untouched by the applier. Add a note on any lane; it is exported
   verbatim as this lane's <code>notes</code>.<br>
@@ -362,12 +412,13 @@ footer.sticky .savedat { font-size:0.78em; color: var(--ink-dim); }
     const note = d.notes || "";
     let originalHtml;
     if (it.original_status === "found") {
+      const label = it.original_source === "current_texture" ? "ORIGINAL — current in-game texture" : "ORIGINAL";
       originalHtml = `<div class="imgbox"><img src="${it.original_uri}" alt="original">
-        <div class="cap">ORIGINAL ${it.original_w}×${it.original_h}<br>${escapeHtml(it.original_windows_path||"")}</div></div>`;
+        <div class="cap">${label} ${it.original_w}×${it.original_h}<br>${escapeHtml(it.original_windows_path||"")}</div></div>`;
     } else if (it.original_status === "unavailable_bundle") {
       originalHtml = `<div class="imgbox noart">ORIGINAL: UNAVAILABLE<br>(not a loose file —<br>likely an AssetBundle)<br><span class="cap">${escapeHtml(it.original_windows_path||"")}</span></div>`;
     } else {
-      originalHtml = `<div class="imgbox noart">no original tracked<br>(full redo — nothing<br>to compare against)</div>`;
+      originalHtml = `<div class="imgbox noart">no original found<br><span class="cap">${escapeHtml(it.original_unresolved_reason||"no original tracked")}</span></div>`;
     }
     const badges = []
       .concat(it.iteration ? [`<span class="badge iter">iter ${it.iteration}</span>`] : [])
@@ -557,8 +608,15 @@ def main() -> int:
         print(f"make_verdict_sheet: NOTE built {len(rows)} rows (expected 147 at the time "
               f"this script was written — the registry may have moved since)", file=sys.stderr)
 
+    originals_summary = (
+        f"<b>{stats['originals_found_current_texture']} of {len(rows) - 6} redo/improve lanes</b> "
+        f"now show that current texture; <b>{stats['originals_none']}</b> have no matching "
+        f"ThingDef/PawnKindDef in the def dump at all (new/commissioned creature or test "
+        f"template — a one-line reason is shown on the lane)."
+    )
     items_json = json.dumps(rows, indent=None, separators=(",", ":"))
     html = PAGE_TEMPLATE.replace("__ITEMS_JSON__", items_json)
+    html = html.replace("__ORIGINALS_SUMMARY__", originals_summary)
 
     OUT_HTML.parent.mkdir(parents=True, exist_ok=True)
     OUT_HTML.write_text(html, encoding="utf-8")
@@ -566,8 +624,10 @@ def main() -> int:
     size = OUT_HTML.stat().st_size
     print(f"wrote {OUT_HTML} ({size:,} bytes, {size/1e6:.2f} MB)")
     print(f"lanes on sheet: {len(rows)}")
-    print(f"originals found: {stats['originals_found']} · "
-          f"no original tracked: {stats['originals_none']} · "
+    print(f"originals found: {stats['originals_found']} "
+          f"(job reference: {stats['originals_found_job_reference']}, "
+          f"current in-game texture: {stats['originals_found_current_texture']}) · "
+          f"no original found: {stats['originals_none']} · "
           f"unavailable (bundle): {stats['originals_unavailable']}")
     return 0
 
