@@ -11512,10 +11512,10 @@
     "sha": "0e94b4d2"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "2b64d9f97d7896403b0eb30e044f2df9cc01a2cee83ff86375574cc78d10be09",
-    "sha": "0e94b4d2"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "aa5e96934f525ef95303aac6077dd51afe5e8feab808adab12e7cca198bcc077",
+    "sha": "774ed90f1"
   },
   "src/RimUtinni/UtinniPatches/Defs/TraderKindDefs/RUT_HuttCartel_Captives.xml": {
     "cleanCount": 1,
@@ -11566,16 +11566,16 @@
     "sha": "d92f5459"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-06",
-    "hash": "03663792408389eaf6eca1a99a87eef05d33fa3e48144cfdaa51aacbf34d6845",
-    "sha": "b87a3622"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "c76cd92e47455fd7fa3ce6cced0e8f9177c9b2d39ffdda38bbe0d0f611a32ace",
+    "sha": "774ed90f1"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "0b340f74cd0e9cd386d4748d32a7303ec101f9988b894966af7dd1051de2d58b",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "4e1ae9ceb702ae6abf02b38572e66362be35961eb444a8e84a89b7d1124bfd19",
+    "sha": "774ed90f1"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml": {
     "cleanCount": 3,
@@ -11626,10 +11626,10 @@
     "sha": "429d1760"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeFishTypes_Greentide.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "e3d5b050fa6a9f357bb4b5f461d0f8e9b70bcb7f3fd1a8c6cd985536345f7f01",
-    "sha": "429d1760"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "b07137a4cd0f0fe709a211eb8cbf0a37afba3cb590819bd97bd9b905c5636054",
+    "sha": "774ed90f1"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeFloraStatAdjustments_Generated.xml": {
     "cleanCount": 1,
@@ -11644,10 +11644,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeNames_Ashkarr.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "a6bc86920290ee2db7e8d230cf0d209e41ea1c6f70296d8ca19089c02784bb7e",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "c394e598059cf5ed0f3bc0cde23510d2fb675b9776c961408980e26faa7a5add",
+    "sha": "774ed90f1"
   },
   "src/RimUtinni/UtinniPatches/Patches/BlackstarCompany.xml": {
     "cleanCount": 2,

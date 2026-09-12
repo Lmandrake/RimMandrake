@@ -346,6 +346,11 @@ def main():
     R.note("%d source XML files under %s" % (len(src_files), SRC_DEFS))
 
     buckets = {}  # (rel_dir, filename) -> list[Element]
+    all_source_targets = set()  # every (rel_dir, out_filename) a source file COULD produce,
+    # even one whose every element gets dropped this run -- without this, a source file that
+    # goes from "some survivors" to "zero survivors" leaves its PREVIOUS run's output file on
+    # disk, stale and unlisted by buckets, so the write loop below silently never revisits it.
+    # Same bug gen_kotorcore_absorption.py found live and fixed for itself; ported here.
     all_new_defnames = {}  # defName -> source file
     tex_paths = set()
     n_source_defs = 0
@@ -358,6 +363,7 @@ def main():
         rel_dir = os.path.dirname(rel)
         fn = os.path.basename(rel)
         out_filename = OUT_FILE_PREFIX + fn
+        all_source_targets.add((rel_dir, out_filename))
 
         parser = ET.XMLParser(target=ET.TreeBuilder(insert_comments=True))
         tree = ET.parse(src_path, parser=parser)
@@ -409,6 +415,16 @@ def main():
         src_relpath = os.path.join(rel_dir, filename[len(OUT_FILE_PREFIX):])
         write_defs_file(rel_dir, filename, elements, src_relpath)
 
+    # ------------------------------------------------- stale-file cleanup --
+    n_stale_removed = 0
+    for (rel_dir, filename) in sorted(all_source_targets - set(buckets.keys())):
+        stale_path = os.path.join(own_out_dir, rel_dir, filename) if rel_dir else os.path.join(own_out_dir, filename)
+        if os.path.isfile(stale_path):
+            os.remove(stale_path)
+            n_stale_removed += 1
+            R.note("removed STALE output %s -- every element from its source file is now collision-dropped"
+                   % os.path.relpath(stale_path, DEFS_ROOT))
+
     manifest_path = os.path.join(own_out_dir, OUT_FILE_PREFIX + "BLOCKED_manifest.txt")
     if not blocked_manifest:
         # Stale-file cleanup: a prior run's manifest (from before the
@@ -440,8 +456,8 @@ def main():
     print("\n=== summary ===")
     n_written = n_source_defs - n_dropped - n_blocked
     n_abstract = n_written - len(all_new_defnames)
-    print("source elements seen: %d; written to output: %d; blocked (kotorcore comp dependency): %d; dropped (collision): %d"
-          % (n_source_defs, n_written, n_blocked, n_dropped))
+    print("source elements seen: %d; written to output: %d; blocked (kotorcore comp dependency): %d; dropped (collision): %d; stale output files removed: %d"
+          % (n_source_defs, n_written, n_blocked, n_dropped, n_stale_removed))
     print("of those written, %d carry a defName, %d are Abstract/parent-only defs with none "
           "(kept for ParentName resolution, not a drop)" % (len(all_new_defnames), n_abstract))
     print("textures/icons: %d found+copied (%d from kotorcore's shared namespace), %d genuinely MISSING"
