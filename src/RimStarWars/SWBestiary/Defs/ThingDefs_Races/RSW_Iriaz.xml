@@ -87,8 +87,6 @@
       <gestationPeriodDays>4</gestationPeriodDays>
       <lifeExpectancy>10</lifeExpectancy>
       <wildBiomes>
-        <AridShrubland>1.0</AridShrubland>
-        <Desert>0.04</Desert>
         <ExtremeDesert>0.01</ExtremeDesert>
         <TropicalRainforest>1.0</TropicalRainforest>
         <TropicalSwamp>0.0</TropicalSwamp>

@@ -144,7 +144,6 @@
         </points>
       </litterSizeCurve>
       <wildBiomes>
-        <AridShrubland>0.16</AridShrubland>
         <TemperateForest>0.04</TemperateForest>
         <TropicalRainforest>0.08</TropicalRainforest>
         <BorealForest>0.08</BorealForest>

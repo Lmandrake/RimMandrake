@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T17:36:35Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-12T19:05:54Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
-prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -269,6 +260,15 @@ target:   v1
 kind:     task
 summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
 prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
+
+## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
+prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
 
 ## UNUSED_MUTATORS_WORLD_ASSIGNMENT_1 Put the unused tile mutators and Geological Landforms landforms on the frozen world — 88 of ~380 in use, zero GL_* (owner 2026-09-06)
 state:    doing
@@ -693,6 +693,15 @@ kind:     task
 summary:  1. Resolve the sizeBin UNKNOWN (measure, don't infer).
 prose:    infrastructure/state/items/SHEET_ORPHAN_CONSUMPTION_1.md
 
+## GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1 Giddy-Up's BuildAnimalBiomeCache throws 'same key already added: RSW_Iriaz' and skips its whole animal-biome cache. Root cause partially traced: RSW_Iriaz.xml keeps the donor's own <wildBiomes> block (AridShrubland 1.0, Desert 0.04) AND BiomeCast_Ashkarr.xml independently sets RSW_Iriaz's commonality on those SAME biomes (AridShrubland 1.0, Desert 0.1) - an overlap. BUT RSW_Anooba has the identical overlap pattern (wildBiomes AridShrubland/Desert + BiomeCast entries on the same biomes) and does NOT crash, so the overlap alone doesn't fully explain it - needs an actual read of RimWorld.BiomeDef.CommonalityOfAnimal/AllWildAnimals source (via RimSage) to find the real trigger before fixing blind. Pre-existing (byte-identical across the last two loads), not introduced by tonight's belt-mode work. Non-fatal - only Giddy-Up's own mountable-animal cache is affected, not core gameplay.
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  (no items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1079,16 +1088,6 @@ thin:     no ## criteria
 summary:  - Art: a top-down silhouette of THE ship as it is now — the ring hull without booms
 prose:    infrastructure/state/items/UTINNI_WORLDMAP_FLIGHT_ICON_1.md
 
-## GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1 Giddy-Up's BuildAnimalBiomeCache throws 'same key already added: RSW_Iriaz' and skips its whole animal-biome cache. Root cause partially traced: RSW_Iriaz.xml keeps the donor's own <wildBiomes> block (AridShrubland 1.0, Desert 0.04) AND BiomeCast_Ashkarr.xml independently sets RSW_Iriaz's commonality on those SAME biomes (AridShrubland 1.0, Desert 0.1) - an overlap. BUT RSW_Anooba has the identical overlap pattern (wildBiomes AridShrubland/Desert + BiomeCast entries on the same biomes) and does NOT crash, so the overlap alone doesn't fully explain it - needs an actual read of RimWorld.BiomeDef.CommonalityOfAnimal/AllWildAnimals source (via RimSage) to find the real trigger before fixing blind. Pre-existing (byte-identical across the last two loads), not introduced by tonight's belt-mode work. Non-fatal - only Giddy-Up's own mountable-animal cache is affected, not core gameplay.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md
-
 ## MEGAFAUNAYIELD_DEAD_GR_TARGETS_1 Doctrine's MegafaunaYield.xml patches GR_Elasmobearium/GR_Mantistanis (Genetic Rim ThingDefs) gated behind FindMod(Vanilla Genetics Expanded), but those GR_* defs no longer exist in the live 593-mod stack (Genetic Rim itself is cut) - 2 patch-op failures + cascading cross-ref errors every load, pre-existing per Player.log triage 2026-09-12. Fix: add a PatchOperationTest on the target defName inside the FindMod gate, or drop the dead GR_* operations outright. A related pattern (RimUtinni Patches statBases Conditionals on absent GR_*/TYR_*/VAEWaste_* defs) accounts for ~20 more of the 36 total patch-op failures logged - worth sweeping together.
 state:    proposed
 row:      unassigned
@@ -1128,3 +1127,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MLIE_ARTOVERRIDE_COLLISION_CHECK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MLIE_ARTOVERRIDE_COLLISION_CHECK_1.md
+
+## RSW_ANOOBA_MISSING_TEXTURES_1 RSW_Anooba PawnKindDef texPaths have no backing art (m/f), renders pink placeholder -- found incidentally fixing GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RSW_ANOOBA_MISSING_TEXTURES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RSW_ANOOBA_MISSING_TEXTURES_1.md

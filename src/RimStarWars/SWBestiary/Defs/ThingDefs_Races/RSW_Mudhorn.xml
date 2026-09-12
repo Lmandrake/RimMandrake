@@ -112,7 +112,6 @@
         <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Rampage</li>
       </specialTrainables>
       <wildBiomes>
-        <AridShrubland>0.8</AridShrubland>
         <Desert>0.4</Desert>
         <ExtremeDesert>0.0</ExtremeDesert>
         <TropicalRainforest>0.0</TropicalRainforest>

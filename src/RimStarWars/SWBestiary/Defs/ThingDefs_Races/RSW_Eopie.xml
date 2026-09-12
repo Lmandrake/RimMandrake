@@ -122,8 +122,6 @@
         <li MayRequire="Ludeon.RimWorld.Odyssey">SW_Spit</li>
       </specialTrainables>
       <wildBiomes>
-        <AridShrubland>0.8</AridShrubland>
-        <Desert>0.2</Desert>
         <ExtremeDesert>0.04</ExtremeDesert>
         <TropicalRainforest>0.2</TropicalRainforest>
         <TropicalSwamp>0.0</TropicalSwamp>

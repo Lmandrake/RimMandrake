@@ -111,13 +111,11 @@
         <li MayRequire="Ludeon.RimWorld.Odyssey">Comfort</li>
       </specialTrainables>
       <wildBiomes>
-        <AridShrubland>0.5</AridShrubland>
         <TemperateForest>0.02</TemperateForest>
         <TropicalRainforest>0.01</TropicalRainforest>
         <IceSheet>0</IceSheet>
         <BorealForest>0.01</BorealForest>
         <Tundra>0.5</Tundra>
-        <Desert>0.5</Desert>
       </wildBiomes>
       <nuzzleMtbHours>275</nuzzleMtbHours>
       <lifeStageAges>

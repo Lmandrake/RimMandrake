@@ -110,8 +110,6 @@
       <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
       <lifeExpectancy>6</lifeExpectancy>
       <wildBiomes>
-        <AridShrubland>0.4</AridShrubland>
-        <Desert>0.01</Desert>
         <ExtremeDesert>0.0</ExtremeDesert>
         <TropicalRainforest>0.4</TropicalRainforest>
         <TropicalSwamp>0.9</TropicalSwamp>
