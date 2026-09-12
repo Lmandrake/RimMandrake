@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- FLOOD_CANYON_BIOME_1. Generic sibling of a frozen campaign world's own
+     canyon biome sketch elsewhere in this repo (the source sheet's flood,
+     chime and soil mechanics), rebuilt with zero campaign-specific content
+     so it can generate on any player's own world. Vanilla-core roster only
+     — no third-party bestiary, no MayRequire on a fauna mod. Reuses the
+     vanilla ExtremeDesert world-map texture rather than commissioning new
+     art for v1 (same call WeatherSuite's instrument mast made). -->
+<Defs>
+
+  <BiomeDef>
+    <defName>RM_FloodedCanyon</defName>
+    <label>flooded canyon</label>
+    <description>Dry, cracked, shadowed canyon country under a hard sun — most of the time. Rarely and without warning, the water comes down: a wall tearing through the canyon floor that drowns whatever stands in it and leaves real soil behind once it drains. Warning chimes ring ahead of the flood for anyone who knows to listen.</description>
+    <workerClass>RimMandrake.FloodedCanyon.RM_BiomeWorker_FloodedCanyon</workerClass>
+    <texture>World/Biomes/ExtremeDesert</texture>
+
+    <modExtensions>
+      <li Class="RimMandrake.FloodedCanyon.RM_FloodedCanyonBiomeRanges">
+        <temperature>9~45</temperature>
+        <rainfall>0~800</rainfall>
+        <elevation>200~2000</elevation>
+        <baseScore>34</baseScore>
+        <degreeWeight>0.3</degreeWeight>
+        <rainfallDivisor>200</rainfallDivisor>
+        <spawnChance>0.03</spawnChance>
+      </li>
+    </modExtensions>
+
+    <animalDensity>0.5</animalDensity>
+    <plantDensity>0.12</plantDensity>
+    <wildPlantRegrowDays>30</wildPlantRegrowDays>
+    <movementDifficulty>1.3</movementDifficulty>
+    <forageability>0.2</forageability>
+    <foragedFood>RawAgave</foragedFood>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+
+    <lakeBeachTerrain>Sand</lakeBeachTerrain>
+    <riverbankTerrain>Sand</riverbankTerrain>
+
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>70</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>70</commonality>
+      </li>
+    </diseases>
+
+    <terrainsByFertility>
+      <li>
+        <terrain>Sand</terrain>
+        <min>-999</min>
+        <max>0.7</max>
+      </li>
+      <li>
+        <terrain>Soil</terrain>
+        <min>0.7</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+
+    <baseWeatherCommonalities>
+      <Clear>20</Clear>
+      <Rain>0.5</Rain>
+      <DryThunderstorm>2</DryThunderstorm>
+      <RainyThunderstorm>0.3</RainyThunderstorm>
+      <SnowGentle>1</SnowGentle>
+      <SnowHard>1</SnowHard>
+    </baseWeatherCommonalities>
+
+    <!-- Vanilla-core roster only. Follow-on roster items may add RM-tier
+         canyon-country creatures; this ships the biome functional on Core
+         alone. -->
+    <wildAnimals>
+      <Iguana>1.0</Iguana>
+      <Dromedary>0.4</Dromedary>
+      <Boomalope>0.4</Boomalope>
+      <Fox_Fennec>0.3</Fox_Fennec>
+      <Warg>0.15</Warg>
+      <Rat>0.6</Rat>
+      <Cougar>0.06</Cougar>
+    </wildAnimals>
+    <wildPlants>
+      <Plant_Grass>2.0</Plant_Grass>
+      <Plant_PincushionCactus>1.2</Plant_PincushionCactus>
+      <Plant_SaguaroCactus>0.8</Plant_SaguaroCactus>
+      <Plant_Agave>0.6</Plant_Agave>
+      <Plant_Bush>0.3</Plant_Bush>
+      <Plant_Dandelion>0.4</Plant_Dandelion>
+    </wildPlants>
+  </BiomeDef>
+
+</Defs>

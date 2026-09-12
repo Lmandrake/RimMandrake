@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- FLOOD_CANYON_BIOME_1. The wall of water's player-visible signal — the
+     letter, the end message, the condition-bar chip. The mechanism (the
+     terrain change, the pawn damage, the soak-driven growth window) is
+     entirely RM_MapComponent_CanyonFlood's; this condition carries none of
+     it, so the plain vanilla GameCondition class is enough — no subclass
+     needed. Duration is set programmatically
+     (GameConditionMaker.MakeCondition(def, durationTicks)) rather than a
+     fixed field here, since the duration is a Mod Settings slider. -->
+<Defs>
+
+  <GameConditionDef>
+    <defName>RM_CanyonFlood</defName>
+    <label>canyon flood</label>
+    <description>The wall has arrived. Red-brown water is tearing through the canyon floor, drowning anything caught below the ledges. It will recede on its own, leaving real soil where the dry cracked clay was.</description>
+    <conditionClass>RimWorld.GameCondition</conditionClass>
+    <canBePermanent>false</canBePermanent>
+    <allowUnderground>false</allowUnderground>
+    <natural>true</natural>
+    <letterDef>ThreatBig</letterDef>
+    <letterText>The chimes were right — the wall has arrived. Water is tearing through the canyon floor.</letterText>
+    <endMessage>The floodwater is draining into the cracks. The canyon floor is soil now, where it wasn't before.</endMessage>
+  </GameConditionDef>
+
+</Defs>
