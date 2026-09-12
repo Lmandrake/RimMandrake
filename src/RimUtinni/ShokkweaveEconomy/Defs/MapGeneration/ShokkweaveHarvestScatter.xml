@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SHOKKWEAVE_SOLE_SOURCE_1. GenStep_ScatterWebworkSilk self-gates to
+  RUT_Webwork, so adding both to the shared base generator (see
+  ../../Patches/ShokkweaveHarvestScatter_MapGenPatch.xml and
+  ShokkweaveNestScatter_MapGenPatch.xml) is safe: it no-ops on every other
+  biome's maps, the same shape RUT_FungalSoilScatter/RUT_LanternDeepEmergence
+  use.
+
+  Density: silk knots are the ordinary web-cutting route (a small handful of
+  clusters per map, same anti-exponential shape FungalSoilTrade uses); the
+  nest is a single rare structure (clusterRectRadius 0, near-zero density) -
+  a map either has one nest or none, never a field of them. Both densities
+  are INVENTED placeholders pending the owner's actual call, same status
+  every other density figure in this item's siblings carries. -->
+<Defs>
+
+  <GenStepDef>
+    <defName>RUT_WebworkSilkScatter</defName>
+    <order>323</order>
+    <genStep Class="RimMandrake.Utinni.ShokkweaveEconomy.GenStep_ScatterWebworkSilk">
+      <minSpacing>18</minSpacing>
+      <groups>
+        <li>
+          <things>
+            <RUT_Webwork_SilkKnot>1</RUT_Webwork_SilkKnot>
+          </things>
+          <coveredCellsPer10Cells>0~0.02</coveredCellsPer10Cells>
+          <clusterRectRadius>1~2</clusterRectRadius>
+        </li>
+      </groups>
+      <validators>
+        <li Class="ScattererValidator_Buildable">
+          <affordance>Heavy</affordance>
+        </li>
+        <li Class="ScattererValidator_NoNonNaturalEdifices" />
+      </validators>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef MayRequire="mlie.starwarsanimalcollection">
+    <defName>RUT_WebworkNestScatter</defName>
+    <order>324</order>
+    <genStep Class="RimMandrake.Utinni.ShokkweaveEconomy.GenStep_ScatterWebworkSilk">
+      <minSpacing>60</minSpacing>
+      <groups>
+        <li>
+          <things>
+            <RUT_Webwork_Nest>1</RUT_Webwork_Nest>
+          </things>
+          <coveredCellsPer10Cells>0~0.002</coveredCellsPer10Cells>
+          <clusterRectRadius>0~0</clusterRectRadius>
+        </li>
+      </groups>
+      <validators>
+        <li Class="ScattererValidator_Buildable">
+          <affordance>Heavy</affordance>
+        </li>
+        <li Class="ScattererValidator_NoNonNaturalEdifices" />
+      </validators>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

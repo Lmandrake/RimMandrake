@@ -62,3 +62,97 @@ comments) — but the item's own stated verify line ("live trader generation
 shows zero stock") is not yet independently exercised end-to-end. Leaving
 `doing`, not closing, until either that tool gets built or someone accepts
 the def-state + source-analysis proof as sufficient.
+
+## 2026-09-12 update — web-cutting + nest raid BUILT and offline-validated; needs=deploy
+
+**Reclaimed** (stale-queue audit, FOUNDRY): 3 of 4 Webwork harvest routes were
+still unbuilt (butchery shipped 2026-09-11; web-cutting, nest raid, and the
+ruled-in border creep-web route were not). This pass builds the two of those
+three that do not depend on other unbuilt items.
+
+**Built** (`src/RimUtinni/ShokkweaveEconomy/`, new files this pass):
+- `Defs/ThingDefs_Buildings/ShokkweaveHarvestNodes.xml` —
+  `RUT_Webwork_SilkKnot` (web-cutting: a mineable silk vein, `ParentName="RockBase"`
+  same shape as `MineableSteel`, `mineableThing=Hyperweave` `mineableYield=4`
+  INVENTED — spec's own "~2-5 per line-segment" range) and `RUT_Webwork_Nest`
+  (nest raid: `ParentName="BuildingNaturalBase"`, `MayRequire="mlie.starwarsanimalcollection"`,
+  same comp combination vanilla `Hive` uses — `CompCanBeDormant` +
+  `CompWakeUpDormant` + `CompProperties_SpawnerPawn` spawning a Wyyyschokk
+  guardian on `LordJob_DefendAndExpandHive` — `killedLeavings` Hyperweave 60
+  INVENTED, midpoint of the spec's own "~40-80" range).
+- `Defs/MapGeneration/ShokkweaveHarvestScatter.xml` — two `GenStepDef`s
+  scattering the above onto `RUT_Webwork` maps only (biome-gated in C#, not
+  XML — see below); nest scatter wrapped `MayRequire` for the donor mod.
+- `Source/GenStep_ScatterWebworkSilk.cs` + matching `.csproj` — a ~20-line
+  `GenStep_ScatterGroup` subclass gating on `map.Biome.defName == "RUT_Webwork"`,
+  copied verbatim from the established sibling pattern
+  (`FungalSoilTrade/Source/GenStep_ScatterFungalGround.cs`, itself from
+  LanternDeeps). **Compiled clean**: `dotnet.exe build -c Release` — 0
+  warnings, 0 errors — DLL lands at
+  `src/RimUtinni/ShokkweaveEconomy/Assemblies/RimMandrake.Utinni.ShokkweaveEconomy.dll`.
+  This is the mod's FIRST assembly (previously XML-only).
+- Two new `Patches/*_MapGenPatch.xml` files add both GenStepDefs to
+  `MapCommonBase` (silk unconditional, matching the sibling `FungalSoilTrade`
+  patch shape and warning; nest wrapped `PatchOperationFindMod`).
+- `About/About.xml` description extended to name both new routes.
+
+**Every def field/API RimSage- or vendor-source-verified, never guessed**:
+`MineableSteel`'s raw XML (RockBase shape), `Mineable.cs` source (confirms
+`TrySpawnYield` fires on the Mine job AND on `Destroy(DestroyMode.KillFinalize)`
+— i.e. ordinary combat destruction of a mineable vein/lair yields too, same as
+vanilla `MineableSteel`; this is NOT the kit's "web-cutting rings no yield"
+guard, which is about the *separate*, still-unbuilt web/anchor decorative
+Things, not these dedicated resource nodes — called out explicitly in-file),
+`Hive`'s raw XML (comp combination + `killedLeavings` shape),
+`CompProperties_SpawnerPawn`/`CompProperties_WakeUpDormant` C# source (field
+names), `LordJob_DefendAndExpandHive` C# source (confirms its constructor
+takes `SpawnedPawnParams`), `Wyyyschokk` PawnKindDef (vendor source,
+`mlie.starwarsanimalcollection`, combatPower 600), `AB_FeraliskInfestedJungle`
+defName (vendor source, Alpha Biomes) — biome gate instead uses `RUT_Webwork`
+(our own biome def, confirmed live-loaded, since it replaces the donor per
+`RUT_Webwork.xml`'s own header).
+
+**Offline-validated**: all 5 new/changed XML files parse
+(`xml.etree.ElementTree`); `validate_patch.py` against the LIVE 592-mod list
+(`ModsConfig.FULL.LATEST.xml`, confirmed byte-identical to the running
+`ModsConfig.xml` this session) — **0 errors** on both new Patches files (both
+`MapCommonBase` xpaths match exactly 1, same target the two working sibling
+patches already use) and on the two new Defs files (0 errors; one advisory
+WARN on the Nest's reused `Hive` texPath — expected per the tool's own
+caveat, game textures live in asset bundles invisible to a loose-file scan;
+confirmed correct instead via RimSage `get_def_details Hive`, which reads
+that exact texPath off the live vanilla def).
+
+**NOT deployed this session, and NOT attemptable**: the game is UP on the
+full 591/592-mod list and `ShokkweaveEconomy` is already active in it (XML
+only, from the 2026-09-11 session) — per the standing FOUNDRY constraint
+tonight, a brand-new DLL for an already-loaded mod does not deploy while the
+game is running. `needs` set to `deploy`.
+
+**Still owed** (unchanged in kind from the 2026-09-11 gap, now scoped
+tighter):
+1. Deploy (game-down window): `deploy_custom_mods.py --mod ShokkweaveEconomy`,
+   md5-verify the new DLL landed, restart.
+2. Live proof, all via bridge/quicktest (never a cold load), all still
+   blocked on step 1:
+   - the original 11-trader-kind zero-stock generation proof (N≥20 rolls
+     each — no bridge tool exists yet to force a specific TraderKindDef's
+     stock generation; still its own `rimbridge-companion` cycle per the
+     2026-09-11 note),
+   - the quest-reward roll pass,
+   - web-cutting: spawn a quicktest RUT_Webwork map, confirm `RUT_Webwork_SilkKnot`
+     scatters and mining it yields shokkweave,
+   - nest raid: confirm `RUT_Webwork_Nest` scatters (rare/singular),
+     starts dormant, wakes and spawns a Wyyyschokk guardian on approach, and
+     killing/deconstructing it drops 60 shokkweave.
+3. Border creep-web (4th, ruled-in route): NOT attempted. Genuinely blocks on
+   `RM_MapComponent_FrontCreep` (WEBWORK_MECHANICS_1 mechanic #6, itself
+   gated on `RM_Gas_Transmuting` content-wiring), which is unbuilt — no
+   queue item currently drives that build. Flagging as a gap: nothing is
+   presently filed to build the Webwork biome's own SenseWeb/FrontCreep/
+   web-and-anchor content kit at all (only the six generic RM_ comps from
+   `ALPHA_MECHANICS_KIT_1` are built); the kit spec and roster item exist in
+   design/ but have no FOUNDRY build item of their own yet.
+4. Balance pass on every INVENTED number in this item (butcher 15, silk
+   knot yield 4, nest yield 60, HP figures, scatter densities, guardian
+   points) — flagged, not ruled, throughout.
