@@ -7488,3 +7488,5 @@
 {"seat":"BENCH","event":"claim","id":"FEVER_WOOD_MECHANICS_1","ts":"2026-09-12T00:31:50Z"}
 {"seat":"FOUNDRY","event":"close","id":"REMBG_CONCURRENCY_CAP_1","sha":"2f8d4a99afe03553cee5dd2fbefb9fb4cd3cbd46","ts":"2026-09-12T00:32:15Z"}
 {"seat":"BENCH","event":"claim","id":"LIQUID_TYPES_MOD_1","ts":"2026-09-12T00:32:25Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SHOKKWEAVE_SOLE_SOURCE_1","ts":"2026-09-12T00:41:06Z"}
+{"seat":"FOUNDRY","event":"start","id":"SHOKKWEAVE_SOLE_SOURCE_1","ts":"2026-09-12T00:41:06Z"}
