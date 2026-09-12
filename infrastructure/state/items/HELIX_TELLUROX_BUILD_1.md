@@ -339,3 +339,90 @@ Everything still owed on this item (spawn proof, permanent-shell butcher
 proof, `HorrorWastes` wild-spawn cast row) requires the live bridge on a
 minimal mod list per the verify block above — genuinely blocked tonight, not
 skipped. **Left `doing`.**
+
+## 2026-09-12 (FOUNDRY) — live spawn + corpse-gen proof DONE on the canonical save; HorrorWastes wiring confirmed NOT done, re-blocked
+
+Owner AFK, autonomous pass. Canonical campaign save was already loaded and
+stable (bridge `get_game_info`: `game_loaded`, 1 map, 4 colonists visible,
+paused throughout) — used it directly rather than a fresh quicktest, per this
+pass's own briefing (avoids `QUICKTEST_POSTSETUP_CRASH_1`, owned by another
+agent, unrelated to this item).
+
+**Spawn — live-proven, independently verified (not trusted on `success:
+true`).** `Actions\Spawn Pawn...\RSW_Tellurox` (`ToolMap`, x=130 z=130, an
+open field cell outside the home area, away from the 4 colonists) returned
+`success:true`; **independently confirmed** via `get_cell_info` (cell now
+held `RSW_TelluroxRace`, class `Verse.Pawn`) and `jawa/list_pawns`
+(`RSW_TelluroxRace632209`... `632207`, kindDef `RSW_Tellurox`, faction null,
+hostile false, bodySize 2.6). Screenshot after `jump_camera_to_cell` +
+`set_camera_zoom` + `jawa/clear_ui` shows a real, distinct armored-plate
+quadruped sprite — not pink, not a Muffalo-shaped bare-path fallback.
+Confirms `mandrake.rsw.swbestiary`'s `RSW_Tellurox`/`RSW_TelluroxRace` load
+clean in the live, active mod list (already-active per 2026-09-09's read of
+`ModsConfig.xml`).
+
+**Corpse-gen / butcher-yield resolution — live-proven for the crash class,
+not for the exact 6x count.** Killed the spawned animal via `jawa/damage`
+(thingId `RSW_TelluroxRace632207`, 2 applications, `dead:true`,
+`destroyed:true`) — this directly exercises the code path
+`HELIX_TELLUROX_SHELL_LOAD_CRASH_1`'s own comment names (`butcherProducts`
+`<li>` cross-ref bug -> corpse-gen NRE): the corpse (`Corpse_RSW_
+TelluroxRace`) spawned cleanly at the death cell with **zero errors** in
+`jawa/drain_log` (`errorsOnly`) attributable to Tellurox — only pre-existing,
+unrelated Alien Worlds Framework biome-config warnings. Re-read
+`Races_Tellurox.xml`: `butcherProducts` is the correct
+`<RSW_TelluroxShell>6</RSW_TelluroxShell>` element form (the fix already
+deployed, commit `3468e2a0`, now re-confirmed live-clean via this kill).
+**Did not force an actual colonist butcher-bill job** (no documented bridge
+primitive exists to add/force a bill without a colonist path + real tick
+advance; the two closest tools, `jawa/order_pawn`'s GOTO and the debug
+`Actions\Spawn Pawn...`/`T: Damage To Death` tree, don't reach "butcher this
+corpse now" — `T: Damage To Death` is `ToolMapForPawns`, player-colonists-
+only, and no `utcher` debug-action leaf exists under `Actions`) — judged the
+canonical-save-disruption risk of unpausing + hauling + job-scheduling not
+worth it for the marginal proof over what the corpse-gen test above already
+gives. `jawa/get_def` cannot read `butcherProducts` itself (list field, not a
+reflected scalar) so the exact "6" could not be re-confirmed as a *live*
+number this pass beyond the source XML + the clean corpse-gen.
+
+**Cleanup:** killed animal, corpse, blood filth and spawn-effect motes at
+(130,130) removed via `jawa/destroy_batch` (rect `129,129,3,3`, category
+`All`). Collateral: this also swept 4 nearby wild decorative plants
+(`GRimClivia` x2, `RG_Plant_AridGrass` x2) in the same 3x3 — trivial, remote
+open-field ground cover, not colony infrastructure, will regrow; noted rather
+than hidden. Cell (130,130) now `thingCount: 0`. Canonical save left running,
+paused, untouched otherwise — no save-over performed, no time advanced
+(`ticksGame` never read as moved; no `set_time_speed`/unpause call made this
+pass).
+
+**HorrorWastes wild-spawn wiring — re-confirmed NOT done, more precisely than
+2026-09-09's entry.** `grep -c HorrorWastes design/Jawa/fauna/
+cast_assignment.csv` = **0**: `HorrorWastes` has **no rows at all** in the
+cast CSV, not merely a missing Tellurox row in an existing pyramid. It is one
+of the biomes `gen_cast_patch.py`'s own coverage check (`_missing`) flags as
+keeping "whatever their mod ships" — i.e. today it wild-spawns entirely on
+some donor mod's default roster, with no Ash'karr-authored ecosystem at all.
+`gen_cast_patch.py`'s header names the fix for a fully-missing biome:
+`refill_cast.py`, which the 2026-09-02 entry already ruled out for Tellurox
+specifically (no `sprite_features.csv` row, no extraction method available
+offline to make one honestly).
+
+A single hand-placed `cast_assignment.csv` row for `RSW_Tellurox` under
+`HorrorWastes` (bypassing the scorer entirely, per the 2026-09-02 entry's own
+suggested route) is now MECHANICALLY possible — nothing blocks the CSV edit
+itself — but making Tellurox the *entire* wild-spawn cast of a previously
+un-cast biome is a content decision this pass declined to make solo: the
+owner's own brief for this pipeline (`gen_cast_patch.py` header, 2026-08-22)
+is "many small, some medium, a few large, ONE super-huge rare per biome" —
+one hand-invented row cannot honestly fill that pyramid, and HorrorWastes
+being cast at all, with what else, is exactly the kind of whole-biome
+ecosystem call this project's doctrine routes through the owner/BENCH
+design loop (`biome_sheets are a conversation loop`), not an overnight
+FOUNDRY improvisation.
+
+**Verdict: criteria not met, re-blocked.** Spawn + corpse-gen/crash-class
+proof are now live-confirmed and can stand as done; the wild-spawn wiring
+bar in `## criteria` is not met and was not attempted beyond confirming its
+exact scope. `rimflow block` reason names precisely this: HorrorWastes has
+zero cast rows and populating it is a content decision, not a mechanical
+gap.
