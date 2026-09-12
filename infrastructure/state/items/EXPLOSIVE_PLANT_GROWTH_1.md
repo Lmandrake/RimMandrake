@@ -28,8 +28,10 @@ grow.
 The design already existed:
 `design/Jawa/worldbuilding/explosive_plant_growth_design.md` (2026-09-10,
 soak/charge/burst + per-biome terminal moments, provenance-traced to ruled
-sheets; its Burst default and variant table are marked INVENTED, awaiting the
-owner). A duplicate draft made 2026-09-12 in ignorance of it was deleted after
-a salvage pass; four small proposals from it were carried into the canonical
-file's 2026-09-12 addendum. Terminal-moment ruling still awaits the owner's
-cards, drawn from the CANONICAL file.
+sheets). Its §7 records the 2026-09-10 morning-batch rulings — all four core
+questions ANSWERED (Burst lethality = injury+knockdown ceiling; irrigation
+pump as-is; Fever Wood Nectar Flush IN; stepped default + smooth close-up).
+Only the per-biome variant roster remains PROPOSED (marked INVENTED in §3).
+A duplicate draft made 2026-09-12 in ignorance of it was deleted after a
+salvage pass; four small proposals carried into the canonical file's
+2026-09-12 addendum.
