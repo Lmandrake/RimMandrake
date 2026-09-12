@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T21:53:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T22:09:18Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -693,6 +693,24 @@ kind:     bug
 summary:  GIDDYUPWILDBIOMESDUPLICATEKEY1 — Giddy-Up's BuildAnimalBiomeCache still throws
 prose:    infrastructure/state/items/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md
 
+## MOD_VALIDATION_PIT_PILOT_1 modcheck pilot: write the pit mod's validation.steps.yaml (settings toggles as floor + beyond-toggle components: falls-in, climb-out vs not, full functionality once), run it green, owner ratifies the HTML sheet format
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  Write the pit mod's validation.py (Python on the modcheck library): one component per settings toggle
+prose:    infrastructure/state/items/MOD_VALIDATION_PIT_PILOT_1.md
+
+## MOD_VALIDATION_RUNNER_1 Build modcheck: the scripted mod-functionality validation runner (steps file + shared runner, minimal-list quicktest sessions, read-back+screenshot evidence, verify event + HTML sheet, status registry + playtest gate)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Build src/RimMandrake/Utils/modcheck/: the modcheck library (owner re-ruling 2026-09-12:
+prose:    infrastructure/state/items/MOD_VALIDATION_RUNNER_1.md
+
 ## RIMDRIVE_LIBRARY_BUILD_1 Build rimdrive L1+L2: hardened Session (reconnect+post-condition polling, verified pause, litter/teardown registry, runtime tool census, bridge-lock integration) + verified ops extracted from rimbench mutate(), with FakeSession offline selftests — modcheck and all future bridge drivers consume it
 state:    doing
 row:      unassigned
@@ -1077,26 +1095,6 @@ kind:     design
 thin:     no ## spec, no ## criteria
 summary:  FASCINATINGWORLDJUNK1 — every wreck on the map is a flavour of ice cream to a Jawa
 prose:    infrastructure/state/items/FASCINATING_WORLD_JUNK_1.md
-
-## MOD_VALIDATION_PIT_PILOT_1 modcheck pilot: write the pit mod's validation.steps.yaml (settings toggles as floor + beyond-toggle components: falls-in, climb-out vs not, full functionality once), run it green, owner ratifies the HTML sheet format
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Write the pit mod's validation.py (Python on the modcheck library): one component per settings toggle
-prose:    infrastructure/state/items/MOD_VALIDATION_PIT_PILOT_1.md
-
-## MOD_VALIDATION_RUNNER_1 Build modcheck: the scripted mod-functionality validation runner (steps file + shared runner, minimal-list quicktest sessions, read-back+screenshot evidence, verify event + HTML sheet, status registry + playtest gate)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Build src/RimMandrake/Utils/modcheck/: the modcheck library (owner re-ruling 2026-09-12:
-prose:    infrastructure/state/items/MOD_VALIDATION_RUNNER_1.md
 
 ## MOD_VALIDATION_RETROFIT_1 modcheck full retrofit wave: every shipped mod gets a validation.steps.yaml and a green run (owner ruling 2026-09-12: full wave, not campaign-critical only) — starts only after MOD_VALIDATION_PIT_PILOT_1 ratifies the format
 state:    proposed
