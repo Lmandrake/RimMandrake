@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T06:27:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T06:28:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -567,15 +567,6 @@ kind:     design
 summary:  spec (design proposal, Fable subagent, 2026-09-09 — awaiting owner ruling)
 prose:    infrastructure/state/items/MANYWATERS_COLOR_SUPPORT_1.md
 
-## COMPANION_SILENT_FAILURE_HARDENING_1 Harden the JawaBench companion against silent-failure modes (39-finding audit): success:true hardcoded across 7 world tools, playerForced missing on prioritized_work, factionName absent on list_things, etc. — the bug class that cost hours during the ship work
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Companion silent-failure hardening
-prose:    infrastructure/state/items/COMPANION_SILENT_FAILURE_HARDENING_1.md
-
 ## GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 Widen base RM Graffiti scope: punk/urban graffiti register + ideoligion-inspired sigils (vanilla ideos), RUT fills in richly after
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1086,3 +1077,33 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ASHFALL_SPIRE_LANDMARK_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ASHFALL_SPIRE_LANDMARK_1.md
+
+## CANON_CLAIM_TAGGING_1 Canon storage Phase 0 (owner adopted 2026-09-12): certainty tiers + entity tags on recorded facts; extend doc_claims.py to emit {entity, attribute, value, provenance, certainty, valid-time}
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CANON_CLAIM_TAGGING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CANON_CLAIM_TAGGING_1.md
+
+## CANON_CONSISTENCY_CHECKER_1 Canon storage Phase 1 (owner adopted 2026-09-12): contradiction+gap checker over the claim index — same entity+attribute disagreeing across docs, thin-coverage entities, changed-ruling dependency worklists; drain becomes a standing signal
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CANON_CONSISTENCY_CHECKER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CANON_CONSISTENCY_CHECKER_1.md
+
+## CHECK_CANON_WATER_RULE_1 check_canon [water] rule matches any '25%' (a gene's thirst stat and a row-count cap both flagged as water contradictions 2026-09-12) — needs context guard so only water-fraction statements match
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CHECK_CANON_WATER_RULE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CHECK_CANON_WATER_RULE_1.md
