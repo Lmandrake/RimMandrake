@@ -28,3 +28,14 @@ a real problem."*
 
 Design doc reviewed with the owner; Tribble module examined without ever entering the
 active mod list; donor art found or its absence MEASURED before any generation.
+
+## Recon done 2026-09-12 (BENCH belt wave) — parts 1-2
+`Transient/GIZKA_TRIBBLE_RECON_2026-09-12.md`. Tribble module =
+`zylle.TribbleTrouble` (WS 2400590961), inactive, breeding in ZTribble.dll
+(`CompProperties_TribbleSpawner`), arrival is a random ThreatBig roll — the
+shape to REJECT (we want a found-aboard event, not a raid roll). Gizka ALREADY
+EXISTS in active `mlie.starwarsanimalcollection` (WS 3497316713): full
+ThingDef/PawnKindDef/BodyDef, art in a Unity AssetBundle (any "art absent"
+claim is stale — bundle, not loose PNG); RSW_ gizka sounds + a biome spawn
+patch already exist in SWBestiary. UNKNOWN: whether the bundle sprite renders
+live (quicktest check). Next: design draft (parts 3-6) → owner cards.
