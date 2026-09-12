@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WhisperBatch1.xml   StructureInjectionsRUT   TILE_STRUCTURE_DESIGNS_1
+  ============================================================================
+  Wires the 3 whisper selector GenStepDefs (Defs/GenStepDefs_Whisper_
+  Batch1.xml) into the EXISTING TileMutatorDefs that carry each whisper's
+  own territory (structure_injection_roster.md §3's parenthetical, or - for
+  #18, which names "monument reads" - our own PROMISE #8 mutator). This is
+  the mechanism a WHISPER needs and a PROMISE does not: a promise gets a
+  brand-new TileMutatorDef for the owner's pen to place; a whisper rides
+  whichever mutator is ALREADY on the tile, because it is "rolled... from
+  the territory table," not authored per-tile.
+
+  SAFETY, same convention as Patches/AmbientShrineGuardians.xml: every
+  PatchOperationAdd is wrapped in a PatchOperationConditional whose xpath is
+  IDENTICAL to the inner operation's target. A future Odyssey rename or a
+  mod load order that hides one of these defs makes the whole <li> a
+  silent no-op, never a red error (CLAUDE.md: "a patch that matches nothing
+  logs nothing" - the intended behaviour here, not a bug to chase).
+
+  Cavern and DryLake carry no <extraGenSteps> element in vanilla, so the
+  Add's xpath targets the TileMutatorDef node itself (Add appends a whole
+  new child). RUT_Monument already has one (its own PROMISE #8 responder),
+  so the Add's xpath targets that existing list directly, appending one
+  more <li> alongside RUT_GenStep_Monument.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- WHISPER #12 Never Was (Ishko) -> Cavern (vanilla Odyssey). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TileMutatorDef[defName="Cavern"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TileMutatorDef[defName="Cavern"]</xpath>
+      <value>
+        <extraGenSteps>
+          <li>RUT_GenStep_WhisperCavern</li>
+        </extraGenSteps>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- WHISPER #20 The Rootstock (Oomo per this roster; sacred_sites_pass_1.md
+       §1b reads DryLake as Zizzik instead - conflict declared, not resolved)
+       -> DryLake (vanilla Odyssey). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TileMutatorDef[defName="DryLake"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TileMutatorDef[defName="DryLake"]</xpath>
+      <value>
+        <extraGenSteps>
+          <li>RUT_GenStep_WhisperDryLake</li>
+        </extraGenSteps>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- WHISPER #18 The Choir Wind (Ozzik, "monument reads") -> RUT_Monument
+       (our own PROMISE #8 mutator, TileMutatorDefs_Batch5.xml). Rolls only
+       where that promise has already been placed by the owner's pen - same
+       live-placement debt every RUT_Monument content already carries. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TileMutatorDef[defName="RUT_Monument"]/extraGenSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TileMutatorDef[defName="RUT_Monument"]/extraGenSteps</xpath>
+      <value>
+        <li>RUT_GenStep_WhisperMonument</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

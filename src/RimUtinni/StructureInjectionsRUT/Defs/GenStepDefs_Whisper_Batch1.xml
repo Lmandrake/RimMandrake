@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- TILE_STRUCTURE_DESIGNS_1 whisper subsystem, batch 1 -
+       structure_injection_roster.md §3 WHISPERS. First templates against
+       a "territory table row": each GenStepDef wraps vanilla Verse.
+       GenStep_RandomSelector (RimSage-confirmed field shape - List<
+       RandomGenStepSelectorOption>, weighted, runs the winner's own
+       genStep) - the exact mechanism §0b names, no new C# needed for the
+       roll itself. Patches/WhisperBatch1.xml wires each selector into an
+       EXISTING TileMutatorDef's extraGenSteps (the tile's own territory),
+       not a new mutator the owner must hand-place - this is the
+       structural difference from a PROMISE responder, which always gets
+       its own fresh TileMutatorDef for the owner's pen.
+
+       Only 3 of 22 whisper rows built this pass (declared, not padded):
+         #12 Never Was (Ishko) - on Cavern (vanilla, "any Cavern-class
+             mutator underground" is sacred_sites_pass_1.md's own read for
+             Ishko). One option only right now: fires whenever Cavern
+             generates, which does not yet match the roster's "RARE"
+             framing - a future batch adding more Ishko/Cavern options
+             alongside this one, at a higher relative weight, is what
+             actually makes it rare. Declared, not silently fixed.
+         #20 The Rootstock (Oomo per this roster; sacred_sites_pass_1.md's
+             own §1b table reads DryLake as ZIZZIK's instead - a real
+             conflict between the two docs, not resolved here) - on
+             DryLake (vanilla Odyssey).
+         #18 The Choir Wind (Ozzik, "monument reads") - on our own
+             RUT_Monument (PROMISE #8's mutator) - this whisper only rolls
+             where that promise has already been placed on a tile by the
+             owner's pen, same live-placement debt every RUT_Monument
+             content already carries.
+
+       The remaining 19 rows are NOT wired - most whisper conditions
+       (nightside biome bands, arc ranges, "any wild band") have no
+       TileMutatorDef to attach extraGenSteps to at all (that field only
+       exists on TileMutatorDef, confirmed via TileMutatorDef.cs:26-28 and
+       MapGenerator.cs:155-175 - BiomeDef has no equivalent hook), and most
+       whisper CONTENT is an incident/hediff/timer mechanic (a strongbox-
+       and-debt event, a hostile-pair spawn, rhythmic knocking on a timer)
+       that is its own design, not a template fill - see the item file's
+       running tally for the full breakdown, row by row. -->
+
+  <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_GenStep_WhisperCavern</defName>
+    <genStep Class="GenStep_RandomSelector">
+      <options>
+        <li>
+          <weight>1</weight>
+          <genStep Class="RimMandrake.StructureInjections.GenStep_Whisper_NoOp" />
+        </li>
+      </options>
+    </genStep>
+    <order>430</order>
+  </GenStepDef>
+
+  <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_GenStep_WhisperDryLake</defName>
+    <genStep Class="GenStep_RandomSelector">
+      <options>
+        <li>
+          <weight>1</weight>
+          <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+            <planFile>Templates/rootstock.txt</planFile>
+            <centerOnMap>true</centerOnMap>
+          </genStep>
+        </li>
+      </options>
+    </genStep>
+    <order>430</order>
+  </GenStepDef>
+
+  <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_GenStep_WhisperMonument</defName>
+    <genStep Class="GenStep_RandomSelector">
+      <options>
+        <li>
+          <weight>1</weight>
+          <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+            <planFile>Templates/choir_wind.txt</planFile>
+            <centerOnMap>true</centerOnMap>
+          </genStep>
+        </li>
+      </options>
+    </genStep>
+    <order>430</order>
+  </GenStepDef>
+
+</Defs>
