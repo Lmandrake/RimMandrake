@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T04:19:19Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-12T04:31:16Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1085,3 +1085,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VAPOR_PLACEMENT_CLEANUP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VAPOR_PLACEMENT_CLEANUP_1.md
+
+## GIZKA_HOLD_HOOK_SPIKE_1 Spike: find the gravship-hold discovery hook for the gizka stowaway event (Odyssey source read + quicktest proof) — owner ruled the whole gizka feature HOLDS until this hook is confirmed
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GIZKA_HOLD_HOOK_SPIKE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GIZKA_HOLD_HOOK_SPIKE_1.md
