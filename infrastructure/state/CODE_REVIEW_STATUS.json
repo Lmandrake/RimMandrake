@@ -5698,10 +5698,10 @@
     "sha": "3ea1ca20"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/AdaptiveStorageFramework/Absorbed_Kotorcore_AdaptiveStorageFramework_HiddenSmugglingCompartmentPanels.xml": {
-    "cleanCount": 3,
+    "cleanCount": 4,
     "date": "2026-09-11",
     "hash": "88d048b53ff0f0446e28a704c0f2e76a6fa48a7f550d78f81a405d6abd8e5f7b",
-    "sha": "3621ca51c"
+    "sha": "349152ba4"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships_Buildings_SWGravshipInteriorPieces.xml": {
     "cleanCount": 2,
@@ -5710,16 +5710,16 @@
     "sha": "85401ce7"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships_Gravship_DynamicFreighter.xml": {
-    "cleanCount": 3,
+    "cleanCount": 4,
     "date": "2026-09-11",
     "hash": "476b293491af72b0c80ef7f931f939c2d9b7b6b9b3d916302076612f0b08614d",
-    "sha": "3621ca51c"
+    "sha": "349152ba4"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships_Gravship_KT400Freighter.xml": {
-    "cleanCount": 3,
+    "cleanCount": 4,
     "date": "2026-09-11",
     "hash": "ac2b52ace5eb50417554982a5b046ab88ab0845432bca92cc82808d39bab9223",
-    "sha": "3621ca51c"
+    "sha": "349152ba4"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships_ResearchProjects.xml": {
     "cleanCount": 2,
@@ -5734,10 +5734,10 @@
     "sha": "85401ce7"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships__GravshipOverlay_BASE.xml": {
-    "cleanCount": 3,
+    "cleanCount": 4,
     "date": "2026-09-11",
     "hash": "ffa12dba218488aff0f4cc22219942769c21bcf004351baebb4a85429de3a5d1",
-    "sha": "3621ca51c"
+    "sha": "349152ba4"
   },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships_buildMenu.xml": {
     "cleanCount": 2,
