@@ -3954,10 +3954,10 @@
     "sha": "377864eb"
   },
   "src/RimMandrake/Utils/check_canon.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "4bb58d416c187f0a5bbaf6ad672a6517774e23516263418aed55b8add6d10a25",
-    "sha": "377864eb"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "a26b4ca8996d26552cc441820bfa2260f58381ac7b79a47fbf4c4c72a4e3d82c",
+    "sha": "af13037d4"
   },
   "src/RimMandrake/Utils/check_config_errors.py": {
     "cleanCount": 2,
@@ -4073,10 +4073,10 @@
     "sha": "eb2cdddd"
   },
   "src/RimMandrake/Utils/doc_claims.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "64a3d50084c9ca3747e0b9dc299eaacc90c576d7b9c11abad21cf2c852387186",
-    "sha": "43884307"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "0a97707d0d439c9586b954f35523cb9d6d217b98e75d1b976e0da843164bb104",
+    "sha": "af13037d4"
   },
   "src/RimMandrake/Utils/doc_roster.py": {
     "cleanCount": 1,
@@ -4750,10 +4750,10 @@
     "sha": "39cd22d5"
   },
   "src/RimMandrake/Utils/selftest_check_canon.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "23d04083bb62250e18dc7d85f7441d2832264fe180e3c23a9ec7e92ed4c59d32",
-    "sha": "8e8fe001"
+    "cleanCount": 2,
+    "date": "2026-09-12",
+    "hash": "89f2a7cd1c368204f7c9636384a8a3080400bbf002ebba3abf372fd05d15071c",
+    "sha": "af13037d4"
   },
   "src/RimMandrake/Utils/selftest_check_doc_links.py": {
     "cleanCount": 1,
