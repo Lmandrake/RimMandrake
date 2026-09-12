@@ -7574,3 +7574,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"FLOOD_CANYON_BIOME_1","ts":"2026-09-12T03:16:00Z"}
 {"seat":"FOUNDRY","event":"claim","id":"MUDSWALLOW_LIVE_LIST_FIX_1","ts":"2026-09-12T03:16:10Z"}
 {"seat":"BENCH","event":"file","id":"VAPOR_PLACEMENT_CLEANUP_1","title":"Vapor emitter part-4 cleanup per the 2026-09-12 ruled rules: magma-vent 5 out-of-lock tiles, ancient-vent ruin-only audit, swamp/ruin gas re-seat, PoisonForest toxic+green gas, helixien re-seat to junker sites in PoisonForest and the Rot (engine mechanism check first)","kind":"task","target":"v1","needs":"bridge","caused_by":"VAPOR_EMITTER_PLACEMENT_1","for":"FOUNDRY","ts":"2026-09-12T03:22:41Z"}
+{"seat":"BENCH","event":"close","id":"CANON_PLANET_CENSUS_1","sha":"d49aa5f03","ts":"2026-09-12T03:25:27Z"}
