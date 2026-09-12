@@ -122,3 +122,10 @@ Scald Gate is its one breach).
 - Cinder Spine
 - The Cauldron Ring
 - Cratercrown
+
+## RULED — owner cards, 2026-09-12
+Specimen Hall → **Site Aurek** · The Revision → **Farside Station** ·
+The Fair Copy → **Site Cresh** · Cold Archive → **Cold Stores** ·
+Fall Line Barrens → **The Breaks** · Scald Spine → **Cratercrown**.
+(Plus, ruled earlier the same day: player settlement "Colony" →
+**Zeddo's Salvage Yard**, owner verbatim.) Execution: WORLD_NAME_FIXES_1.
