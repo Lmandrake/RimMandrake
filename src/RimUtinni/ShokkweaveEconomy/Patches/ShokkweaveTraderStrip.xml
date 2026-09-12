@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  ShokkweaveTraderStrip.xml       ShokkweaveEconomy - new file, SHOKKWEAVE_SOLE_SOURCE_1
+  ============================================================================
+
+  The sole-source strip (spec section 2). One structural kill, plus two
+  non-trader leaks the ban also covers (section 6 ban 4: "from any source but
+  the Webwork" - a trader is only the named example).
+
+  1) tradeability All -> Sellable. ❓verify-at-build RESOLVED: Hyperweave (and
+     its ParentName="ResourceBase") declares NO <tradeability> element at all
+     (checked against the live Core install's raw XML,
+     Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml and
+     Data/Core/Defs/ThingDefs_Items/Items_Resource_Base.xml) - the field is
+     sitting on the C# default (ThingDef.cs: `Tradeability.All`), so this is a
+     PatchOperationAdd, not a Replace; a Replace here would silently match
+     nothing.
+
+     MEASURED against Source/RimWorld/
+     TradeabilityUtility.cs and StockGeneratorUtility.cs (RimSage, this build):
+     TryMakeForStockSingle refuses (Log.Error, no Thing) any def whose
+     tradeability.TraderCanSell() is false, and TraderCanSell() is true only
+     for Buyable/All - never Sellable. That check runs INSIDE TryMakeForStockSingle
+     itself, so it closes every route without touching a single TraderKindDef or
+     StockGenerator: StockGenerator_Tag/_Category additionally pre-filter
+     candidates on TraderCanSell() before they're ever chosen, and
+     StockGenerator_SingleDef (the guy762 Czerka/HuttGalleon KotOR traders) has
+     no such pre-filter and will still LOG AN ERROR ("Tried to make
+     non-trader-sellable thing for trader stock") the first time it tries -
+     harmless, but expected in the log; not a defect in this patch.
+     Sellable still allows the colonist to SELL it (PlayerCanSell is true for
+     Sellable) - the smuggler's-jackpot economy the sheet describes.
+
+  2) Quest-reward strip: RewardStandardCore removed from thingSetMakerTags.
+     MEASURED present on the def this build (RimSage get_def_details) - the
+     ThingSetMaker pool that draws this tag is dynamic (no XML ThingSetMakerDef
+     names Hyperweave directly), which is exactly why the tag is the only lever.
+
+  3) Belt-and-braces: the ExoticMisc trade tag is also removed directly. Every
+     currently-measured StockGenerator_Tag route to this def (Base_Empire_Standard,
+     Base_Outlander_Standard, Caravan_Outlander_Exotic, Orbital_Exotic,
+     DV_Base_Keshig_Standard, DV_Caravan_Keshig_Exotic) is reached ONLY through
+     this tag, never by SingleDef name - tradeability alone already closes the
+     route (StockGenerator_Tag.GenerateThings filters on TraderCanSell()), but
+     the tag strip is a second independent lock: it also keeps the def off any
+     future/unlisted trader that adds ExoticMisc stock by tag, and off anything
+     else in the game that keys off trade tags rather than tradeability
+     (colonist "sell to" UI groupings, some quest/reward pickers). Judgment
+     call per the spec's own "belt-and-braces" framing - decided YES.
+
+  4) Stuff-commonality: 0.1 -> 0.05 (owner-ruled number, 2026-09-11). Halves
+     the odds shokkweave is picked as the stuff for pawn-generated or
+     ThingSetMaker-rolled apparel; the raw resource sole-source holds
+     regardless because tailored gear never yields the resource back out.
+
+  Hyperweave is Core, always present, so no PatchOperationFindMod guard is
+  needed on this file.
+
+  NOT covered here (deferred, per the spec and the item's own scope):
+  - Cargo/resource pod contents - ❓ rides the live-proof pass (build-order
+    step 2), not this step.
+  - Live trader-generation proof itself - build-order step 2, needs a
+    quicktest map. Not attempted in this build.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/ThingDef[defName="Hyperweave"]</xpath>
+    <value>
+      <tradeability>Sellable</tradeability>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationRemove">
+    <xpath>Defs/ThingDef[defName="Hyperweave"]/thingSetMakerTags/li[text()="RewardStandardCore"]</xpath>
+  </Operation>
+
+  <Operation Class="PatchOperationRemove">
+    <xpath>Defs/ThingDef[defName="Hyperweave"]/tradeTags/li[text()="ExoticMisc"]</xpath>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/ThingDef[defName="Hyperweave"]/stuffProps/commonality</xpath>
+    <value>
+      <commonality>0.05</commonality>
+    </value>
+  </Operation>
+
+</Patch>

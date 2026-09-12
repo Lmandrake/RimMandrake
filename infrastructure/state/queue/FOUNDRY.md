@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T00:41:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-12T00:43:41Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## KYBER_TRADE_PLOT_1 Selling kyber: Empire heat rises per sale, Hutt interest rises, alleged Jedi from the Moisture Farmers, the donate-and-smuggle plot (no helping the Rebellion here)
+state:    ready
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  - Wire the heat mechanic (the Empire's pursuit/attention system — find the existing
+prose:    infrastructure/state/items/KYBER_TRADE_PLOT_1.md
 
 # IN PROGRESS
 
