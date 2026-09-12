@@ -1817,6 +1817,54 @@
     "hash": "ad91e72725bda743733d6b3cdebd3413c14749448f26d2a1b46ae471fa008195",
     "sha": "972818c70"
   },
+  "src/RimMandrake/LoreStages/Source/GameComponent_LoreStage.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "c983eff39411aade4e0596848b3f42cfc55b3bbe1c063f565b14d3db0dec094e",
+    "sha": "972818c70"
+  },
+  "src/RimMandrake/LoreStages/Source/LoreStageApplier.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "455f552f59b8e34f3f7c15c9da246c2b75ddc81b25cddfe323c3d8680ae246aa",
+    "sha": "972818c70"
+  },
+  "src/RimMandrake/LoreStages/Source/LoreStageDebugActions.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "3cb3adebeaea6daf13595d4425f803c8b85936f54beae6197b7335ac9c12c8c4",
+    "sha": "972818c70"
+  },
+  "src/RimMandrake/LoreStages/Source/LoreStageDefDatabase.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "9da2345689600ac0d0f0ca6c845c5d93eabbd14613c8125f84183f52c974f2a8",
+    "sha": "972818c70"
+  },
+  "src/RimMandrake/LoreStages/Source/LoreStageTarget.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "ca5a977df74275d0c2038168718cfc57c55d89c153267fbd7b5ccc63edb4c972",
+    "sha": "972818c70"
+  },
+  "src/RimMandrake/LoreStages/Source/LoreStageText.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "2f0569e4de874275cb841f133f27f70c28eba06603cd58eeb3a57c930cc8c0aa",
+    "sha": "972818c70"
+  },
+  "src/RimMandrake/LoreStages/Source/RM_LoreStageTableDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "afe73f093b9b8eb164f25a31a6fb18fff5047a99c48a22fdc196994218e72a4a",
+    "sha": "972818c70"
+  },
+  "src/RimMandrake/LoreStages/Source/SelfTest/Program.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "ec5708ae9d4d22506f4058e08edda020e277862cfdae89c597b32be21b250962",
+    "sha": "972818c70"
+  },
   "src/RimMandrake/MandrakePatches/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-09",
