@@ -436,9 +436,13 @@
        BEFORE "BiomeCast_Ashkarr.xml" (A < B) - so these removals ran before
        BiomeCast_Ashkarr.xml had appended its own second copy, found only one
        record, and silently no-opped. They now live in
-       BiomeWildAnimalDuplicates_Generated.xml, a GENERATED file
-       (biome_wildanimals_inlist_dupes.py) whose name sorts AFTER
-       BiomeCast_Ashkarr.xml on purpose. Iriaz x ZBiome_Grasslands (#40, still
+       ZZZ_BiomeWildAnimalDuplicates_Generated.xml, a GENERATED file
+       (biome_wildanimals_inlist_dupes.py). Renamed once already, from
+       "BiomeWildAnimalDuplicates_Generated.xml" (sorted after BiomeCast_Ashkarr.xml
+       only) to the current "ZZZ_" name after Ikee_Rename.xml - a file sorting AFTER
+       the first name but BEFORE nothing - turned out to also add AA_Eyeling to three
+       of these same biomes, re-creating the duplicate that name's ordering had fixed.
+       See that file's own header for the full story. Iriaz x ZBiome_Grasslands (#40, still
        below) is UNCHANGED and untouched by this move - the 2026-09-12T19-16-27Z
        capture shows it is no longer duplicated (a single record), so its
        removal below is a harmless no-op; it is not this pass's concern. -->
