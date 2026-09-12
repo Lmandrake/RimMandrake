@@ -90,3 +90,9 @@ the "Verify complete 2026-09-11 ~18:35" section above. Publisher migration is
 its own `build()` (calling `make_tab_data.py health`) — no more manual step.
 `artpipe` and `maturity` publishers still need the same treatment; see
 `HUB_TAB_PUBLISHER_MIGRATION_1`.
+
+## Caveat 2026-09-12 on the recorded "health GREEN 7.0 h" figures
+The 7.0 h age in the proofs above is a clock-labeling artifact — make_tab_data
+stamps local PDT as Z, so minutes-old data reads as ~7 h (HUB_LAMP_TIME_FIX_1,
+confirmed in code). The GREEN state, sha fingerprint matches and no-clobber
+conclusions are unaffected; only the age digits were wrong.
