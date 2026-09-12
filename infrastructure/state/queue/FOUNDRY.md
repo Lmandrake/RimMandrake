@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T09:13:05Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-12T09:18:42Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -174,10 +174,10 @@ prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
 ## SHIELD_MODS_LEVERAGE_1 Find existing shield mods, study and make compatible; tuned-plasma-field model per shd rulings
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     task
-summary:  SHIELDMODSLEVERAGE1 — v1 build slice in place, offline-verified only (FOUNDRY, 2026-09-09)
+summary:  SHIELDMODSLEVERAGE1 — particulate screen finished, predictive-failure and landing-advisory built, offline-ver…
 prose:    infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md
 
 ## STICK_FOOD_INGEST_1 Ingest the stuff-on-a-stick food mod(s) into our own recipe-discovery tree, then retire them
