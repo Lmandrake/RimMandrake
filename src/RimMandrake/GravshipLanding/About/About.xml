@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Gravship Landing Reveal</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.gravshiplanding</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>GRAVSHIP_LANDING_FOG_REVEAL_1 (owner, 2026-09-12): you cannot pick a landing spot you cannot see.
+
+When a gravship arrives at a tile with no map, vanilla generates the map, reserves a landing area near the centre and fogs everything except the flood-fill from that one spot. If the spot lands inside a walled complex (ruins, a junkyard, an injected structure) the landing picker shows a single room and the rest of the map is black — so the player lands blind.
+
+This mod runs after vanilla's GravshipMarker gen step on gravship-arrival maps and unfogs every OUTDOOR region (unroofed cells), exactly what vanilla's own edge-unfog does on maps with no start spot. Roofed interiors — mountains, sealed rooms, dungeons — stay fogged.
+
+Mod Settings: one toggle, "Reveal the outdoors before choosing a landing spot" (default on). Off = vanilla behaviour.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>Odyssey</displayName>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+  </loadAfter>
+</ModMetaData>

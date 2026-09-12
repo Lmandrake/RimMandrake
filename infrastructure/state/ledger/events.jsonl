@@ -7848,3 +7848,11 @@
 {"seat":"FOUNDRY","event":"start","id":"PATCH_MAYREQUIRE_OPERATION_SWEEP_1","ts":"2026-09-12T16:09:26Z"}
 {"seat":"OWNER","event":"claim","id":"GRAVSHIP_LANDING_FOG_REVEAL_1","ownerSaid":"let's work that ticket right now to completion","override":"OWNER may not `claim` GRAVSHIP_LANDING_FOG_REVEAL_1 — it belongs to FOUNDRY. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-09-12T16:14:50Z"}
 {"seat":"FOUNDRY","event":"close","id":"PATCH_MAYREQUIRE_OPERATION_SWEEP_1","sha":"908ffd9df3721f771d206292b11dec6c254d672d","ts":"2026-09-12T16:16:19Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-12T16:24:02Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH: reboot for GRAVSHIP_LANDING_FOG_REVEAL_1 (new assembly mandrake.rm.gravshiplanding), then the owner's arrival flight","ts":"2026-09-12T16:24:04Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","ownerSaid":"Restart now","ts":"2026-09-12T16:24:07Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Restart now","ts":"2026-09-12T16:24:19Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Restart now","ts":"2026-09-12T16:24:23Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is going down","ts":"2026-09-12T16:24:40Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is down","ts":"2026-09-12T16:24:45Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"Game is loading","ts":"2026-09-12T16:24:58Z"}
