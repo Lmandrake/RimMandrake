@@ -11385,6 +11385,84 @@
     "hash": "0b37cdf297ca5944ddf041d0d1a84dea412ebaf880fd58790ec4844456256622",
     "sha": "99a9e5cbc"
   },
+  "src/RimUtinni/RustCathedralWalls/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "49240b79b15690887fd896cad8b5077cabcedbcab8fb9af7b981960a34c9cd30",
+    "sha": "67cbd7f5a"
+  },
+  "src/RimUtinni/RustCathedralWalls/Defs/MapGeneration/RUT_CathedralSacredWallScatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "c9f0104d624764d3a74ca7bb2eb79c0f41717d2bd62ff95b8e6a31324edc6f12",
+    "sha": "67cbd7f5a"
+  },
+  "src/RimUtinni/RustCathedralWalls/Defs/MapGeneration/RUT_CathedralWallScatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "0dc989abd790de597189aaa73c9d58057ae5b55f102cc80086608634ba07ab72",
+    "sha": "67cbd7f5a"
+  },
+  "src/RimUtinni/RustCathedralWalls/Defs/ThingDefs_Buildings/RUT_CathedralDeckPlate.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "e63b26e79b800ef0933f6c6d74cc12fcf0dbfe4c7639643adcb8f12198f580be",
+    "sha": "67cbd7f5a"
+  },
+  "src/RimUtinni/RustCathedralWalls/Defs/ThingDefs_Buildings/RUT_MineableDeadSmartsteel.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "6c9f3c310b66e0ce871f6e5d99b4907fc4ada8b011bbf47dc2e9fe2330e4fcc3",
+    "sha": "67cbd7f5a"
+  },
+  "src/RimUtinni/RustCathedralWalls/Defs/ThingDefs_Buildings/RUT_SacredWall_Conduit.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "c430cc7f508ee31c9e1a1997924edc7637e6208a92be7eb13afb8b16ac422e11",
+    "sha": "67cbd7f5a"
+  },
+  "src/RimUtinni/RustCathedralWalls/Defs/ThingDefs_Items/RUT_DeadSmartsteel.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "3083be4a82ceed3badc0e39d143e93d5ed20fa28aa824a24d5d12386e59cf337",
+    "sha": "67cbd7f5a"
+  },
+  "src/RimUtinni/RustCathedralWalls/Defs/ThingDefs_Items/RUT_LivePatternMetal.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "d7dc9f36df5efbabd9e04c44628fe5193f8a65167eb2d440e3799fa4c2b0d491",
+    "sha": "67cbd7f5a"
+  },
+  "src/RimUtinni/RustCathedralWalls/Patches/RUT_CathedralWallScatter_MapGenPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "d3ed77ed1b0572d149b82c92f06697f6013cb6633224029dee32db5b2dc7d794",
+    "sha": "67cbd7f5a"
+  },
+  "src/RimUtinni/RustCathedralWalls/Patches/RUT_RustCathedral_ForceRockTypes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "f31ca56dcbe8f4f6e97dfd537e8abd31c13dc5c367370ac02e7db57f8cac0421",
+    "sha": "67cbd7f5a"
+  },
+  "src/RimUtinni/RustCathedralWalls/Source/GenStep_ScatterCathedralWallTiers.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "6693e1ab93a3a0eb2f6407ee7ea0897955baf0a5ddbc44bdc0848e02add1dfba",
+    "sha": "67cbd7f5a"
+  },
+  "src/RimUtinni/RustCathedralWalls/Source/GenStep_ScatterSacredWalls.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "3d76b636ca23dbdac66998e9d5f43685842ea61fd6e01e8a4a31e1251680d453",
+    "sha": "67cbd7f5a"
+  },
+  "src/RimUtinni/RustCathedralWalls/Source/HarmonyPatch_GateLivePatternMetal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-11",
+    "hash": "0f574ea5b7da67726f11147485aaed0f6e5d6eddc3c9327db8155708a3fb8eb9",
+    "sha": "67cbd7f5a"
+  },
   "src/RimUtinni/ScarlandsLadder/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
