@@ -60,3 +60,12 @@ The sitting must NOT land those two names as canonical rows — land the counts
 under the successor names marked pending-repaint, or hold the two rows until
 the wave repaints them. Same logic explains the 3 "dropped" legacy biomes
 (earlier ownership swaps), so the 29-count itself is sound.
+
+## LANDED 2026-09-12 — owner's card yes, provenance verified
+Census block replaced in canon.yml: complete 29-biome table (sum = 21872
+exact), water 1448 / 6.62% (13.51% incl-ice), rain max 1529, seas
+312/607/472 + PropaneLake 57, rivers_tiles 298 (254 deleted as
+unprovenanced), sole-census-source ruling recorded in-block with the owner's
+verbatim condition and its verification. Pending-repaint donor rows landed
+under RUT_Greentide/RUT_FeverWood successor names per the owner's card + his
+caution. check_canon: no new contradictions (1 pre-existing, unrelated).

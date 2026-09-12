@@ -130,45 +130,32 @@ planet:
   tiles_src: >
     world/ASHKARR_WORLDMAP_tiles.csv has 21872 data rows; world/ASHKARR_WORLDMAP_meta.json
     "tiles": 21872. Measured 2026-08-20, the two agree.
+    🔴 RECONFIRMED by world/_audit/post_freeze_2026-09-11.json verdict "total_world_tiles"
+    (MEASURED-ok): 21872 in the save (tileBiomeDeflate 43744 bytes / 2), 21872 CSV rows,
+    21872 here — three-way agreement against CANONICAL_ASHKARR_2026-09-09.rws. Unchanged.
 
-  water_pct: 5.19
-  water_tiles: 1135
-  water_ice_tiles: 277
-  water_pct_incl_ice: 6.46
+  water_tiles: 1448
   water_src: >
-    🔴 RE-MEASURED 2026-08-22 after the owner's combined nightside pass
-    (src/RimMandrake/Utils/ashkarr_nightside_pass.py). Was 8.14% / 1780 tiles
-    (Ocean 1468 + Lake 312), and that figure is DEAD.
-    Now: Ocean 823 + Lake 312 = 1135 liquid = 5.19%.
-    ⭐ There IS now a third water biome: SeaIce, 277 tiles. Counting it, 1412
-    tiles = 6.46%. Which number applies depends on the question —
-    🔴 CORRECTED 2026-08-23 on the owner's instruction to update the canon water.
-    The ice figure read 357 / 6.82% and BOTH were wrong: 357 is SeaIce (277) plus
-    IceSheet (80), and IceSheet is LAND ice — measured, its `water` column is 0 on
-    all 80 tiles, while all 277 SeaIce tiles carry water=1. So it was counting a
-    glacier as ocean. The liquid figure (5.19% / 1135) was right and is unchanged.
-    ⚠️ The three totals agree exactly and that is the check: water column = 1412,
-    Ocean+Lake+SeaIce = 1412, elevation <= 0 = 1412.
-    ⛔ `world/ASHKARR_WORLDMAP_meta.json` still says water_pct 8.14 — it is a build
-    output of an older pass and is not canon; do not read water from it.
-    liquid for hydrology, incl-ice for "how much of this planet was ocean".
-    The drop is the owner's ruling of 2026-08-22 13:04, "shrink the meridian water bodies
-    to around half their current size", plus the sub-freezing meridian ocean turning to ice
-    rather than drying. The Scald (312 Lake, arc <= 82) was explicitly guarded and is intact.
-  water_superseded:
-    - value: "25% / 22–28%"
-      why: >
-        `worldgen_sea_spec.md` req 1, killed by the owner 2026-08-18 — "There's WAY
-        too much water, so reduce that to a third the value shown." Both the spec and
-        the number are dead. Still asserted LIVE at design/Jawa/worldbuilding/the_one_map.md:100.
-    - value: "8.6%"
-      why: >
-        The TARGET the owner's "a third of 25%" arithmetic produced, at the_one_map.md:130.
-        Not wrong, just not what got painted. The realised figure is 8.14.
-    - value: "6.9%"
-      why: >
-        A measurement of an EARLIER world, quoted forward by worldgen_interactive_def.md's
-        banner as if current. Measurement of a planet that no longer exists.
+    world/_audit/post_freeze_2026-09-11.json verdict "water_tiles" (MEASURED-ok vs CSV):
+    1448 tiles at elev<=0 in CANONICAL_ASHKARR_2026-09-09.rws; 1448 in the frozen CSV by
+    the same test; 1448 tiles carrying a water BiomeDef — three independent asks, one
+    answer.
+    🔴 SUPERSEDES the 2026-08-22/23 liquid/ice split entirely (water_tiles 1135 +
+    water_ice_tiles 277 = 1412 = water_pct 5.19% / 6.46% incl-ice) — that whole framing is
+    the deprecated 2026-08-23 painted-lineage capture and is DELETED, not kept alongside
+    (see (c) below). The audit gives one unified count, not a liquid/ice split.
+    ⚠️ water_pct is UNMEASURED — not in post-freeze audit: the audit states tile counts
+    only, no percentage, and this task's sourcing rule does not permit back-computing one
+    (1448/21872) as a "replacement number" not itself present in the cited json. Add it
+    only as its own measured/cited row if the owner wants it re-derived properly.
+
+  water_pct: 6.62
+  water_pct_incl_ice: 13.51
+  water_pct_src: >
+    Transient/CANON_CENSUS_RECOUNT_2026-09-12.md, MEASURED against the frozen CSV
+    (sha256_12 756d9ffc8a22): water column 1448/21872 = 6.6203%. Incl-ice adds
+    RUT_NightsideIce (1506 tiles; the CSV's own water column does NOT count it as
+    water): 2954/21872 = 13.5059%. The two figures answer different questions.
 
   # The substellar point is the origin of everything: this world is tidally locked
   # and does not rotate, so there is no day, no season and no latitude gradient.
@@ -200,33 +187,52 @@ planet:
   seas: 3
   sea_names: ["The Scald", "The Twilight Sea", "The Gray Sea"]
   seas_src: >
-    world/ASHKARR_WORLDMAP_meta.json features, kind "sea": exactly three, of 312, 851
-    and 617 tiles. Satisfies the_one_map.md:100 "Exactly three connected bodies".
-  # 🔴 The Scald is painted `Lake`, NOT `Ocean` — all 312 of its tiles. The other two
-  # seas are `Ocean`. This is why the `Lake` biome is 1.43% of the planet after the
-  # owner cut it: cutting the def does not remove a stray biome, it deletes a named
-  # sea. See needs_ruling.LAKE_BIOME_CUT_OR_KEEP_1.
+    world/_audit/post_freeze_2026-09-11.json verdict "seas" (MEASURED-ok on count,
+    MISMATCH on sizes): 3 named seas present and painted — RUT_TheScald 312,
+    RUT_TwilightSea 607, RUT_GreySea 472. Satisfies the_one_map.md:100 "Exactly three
+    connected bodies"; the count of 3 holds and is unchanged.
+    🔴 SUPERSEDES the sizes "312, 851 and 617" sourced here since 2026-08-23 — those are
+    the deprecated painted-lineage capture and are DELETED (see (c) below).
+    ⭐ A fourth body, RUT_PropaneLake (57 tiles), is also on the map per the same audit
+    but is not one of the three NAMED seas — see biome_tile_counts.
+    Vanilla Ocean/Lake/SeaIce/IceSheet are all at 0 tiles per the same audit, "as the
+    2026-09-07 rulings intended" — see biome_tile_counts.
+
   named_regions: 24
   named_regions_src: "meta.json regions[] — 24 names; 23 carry tiles, `The Ashteeth` carries ZERO."
+  # ⚠️ world/_audit/post_freeze_2026-09-11.json verdict "named_regions" measured 71 WorldFeature
+  # elements / 71 CSV region names, with 809 tiles carrying a renamed region (775 clean
+  # 1:1 renames the CSV never received, plus a genuine 34-tile boundary change). The audit
+  # itself says this is a DIFFERENT question from named_regions=24 here (meta.json design
+  # regions, not save WorldFeatures) and NOT a mismatch against this row. Left untouched.
 
-  rivers_tiles: 254
-  rain_mm: {min: 0, median: 0, max: 1668}
+  rivers_tiles: 298
+  rivers_tiles_src: >
+    Transient/CANON_CENSUS_RECOUNT_2026-09-12.md, MEASURED: the frozen CSV's one
+    river column (river_flow) is nonzero on 298 tiles — cited under the 2026-09-12
+    census-source ruling (the CSV is the sole census source). 🔴 SUPERSEDES the
+    unprovenanced 254 (no instrument ever produced it — deleted). ⚠️ The
+    engine-side "tiles with a river" may differ (offline reads saw 326 edges over
+    217 origin tiles); if a live jawa/world_* bridge read is ever taken, record it
+    as its own row rather than editing this one.
+
+  rain_mm: {min: 0, median: 0, max: 1529}
   rain_src: >
-    world/ASHKARR_WORLDMAP_tiles.csv, re-measured 2026-08-21 after
-    RAIN_DRY_THE_JUNGLE_1 zeroed the last 363 rows below hilliness 4. ⚠️ Was
-    {min: 18, median: 19} on 2026-08-20, when every tile carried at least 18 mm;
-    that is dead.
-    🔑 0 is not "very dry", it is BANNED: every rain WeatherDef's
-    commonalityRainfallFactor curve starts at (0, 0), so at 0 the commonality is
-    multiplied by exactly zero and the weather can never be selected.
-    Over the 1,396 tiles that still carry rain: min 18, median 60, max 1668.
-    ⚠️ MAX DID NOT MOVE, and RAIN_DRY_THE_JUNGLE_1 expected it to. 1668 mm
-    survives on 191 tiles, all at hilliness 4 (175) or 5 (16) — which the owner's
-    ruling explicitly KEEPS. The 121 jungle tiles that were dried also sat at the
-    ceiling, so the ceiling looked like it belonged to them; it did not.
-    The ruling is "rain_mm = 0 below hilliness 4", and it is satisfied: the
-    selector `rain_mm > 0 AND hilliness < 4` now returns 0 rows, down from 363,
-    every one AB_FeraliskInfestedJungle. The 1,396 at hilliness >= 4 are untouched.
+    world/_audit/post_freeze_2026-09-11.json verdict "biome_census_vs_canon": rain_mm.max
+    1668 (here since 2026-08-21) vs measured 1529 — 1668 was a misread of the same,
+    unchanged CSV data; 1529 is the correct figure. 🔴 SUPERSEDES the 1668 max only.
+    ⚠️ min:0/median:0 are UNCONFIRMED by this audit (it does not restate them) but are
+    NOT contradicted either — the audit's separate "temperature_rainfall_swampiness_per_tile"
+    verdict (MEASURED-ok) found 0/21872 tiles differ on rainfall between the CSV and
+    CANONICAL_ASHKARR_2026-09-09.rws, i.e. the same underlying data the 2026-08-21 pass
+    read. That pass's other figures (over the 1,396 tiles that carry rain: min 18,
+    median 60, max was misread as 1668) are carried forward unconfirmed, not re-verified
+    row-by-row here.
+    🔑 0 is not "very dry", it is BANNED: every rain WeatherDef's commonalityRainfallFactor
+    curve starts at (0, 0), so at 0 the commonality is multiplied by exactly zero and the
+    weather can never be selected. The 191 tiles at the old (wrong) ceiling sit at
+    hilliness 4-5, which the 2026-08-21 ruling explicitly keeps; that ruling is unaffected
+    by the max correction.
 
   start_tile: null          # ⛔ STRUCK 2026-08-24 - was 2476
   start_name: null          # ⛔ STRUCK 2026-08-24 - was "The Setdown"
@@ -269,47 +275,81 @@ planet:
         hand-made world, not a finding. Still asserted at
         ASHKARR_WORLD_DEFINITION.md:237 and fauna_placement.md:13 until that item runs.
 
-  biomes_on_map: 28
+  biomes_on_map: 29
   biomes_on_map_src: >
-    28 distinct biome defNames appear on at least one tile. 🔴 RE-DERIVED 2026-08-23 from
-    world/ASHKARR_WORLDMAP_tiles.csv by DECIDE: the whole block below was stale — it read 25
-    biomes and carried Desert 2147 (actual 4648), AridShrubland 2401 (actual 709) and Ocean
-    1468 (actual 823), and had no row at all for HorrorWastes, SeaIce or IceSheet. These are a
-    pure derivation from the tiles CSV, so they are re-derived rather than ruled. ⚠️ Was 24 until 2026-08-21,
-    when OCULAR_FOREST_SUMMITS_1 painted AB_OcularForest on 3 Ashfall Range summit tiles
-    (4299 · 9158 · 9159) that were ExtremeDesert. ⚠️ This answers a DIFFERENT
-    question from the "36 / 37 / ~35 survivors" figures in the design tier, which count
-    biome DEFS surviving a Cherry Picker cut, not biomes actually painted. A def can
-    survive the cut and appear on zero tiles.
+    world/_audit/post_freeze_2026-09-11.json verdict "biome_per_tile" (MEASURED-ok): 0 of
+    21872 tiles differ between the frozen CSV and CANONICAL_ASHKARR_2026-09-09.rws; 29
+    distinct biome shortHashes, 0 unresolved against the def dump; biomes_on_map=29 both
+    sides. 🔴 SUPERSEDES the 2026-08-23 DECIDE re-derivation (28) — the deprecated
+    painted-lineage capture.
+    ✅ RECONCILED 2026-09-12 by the full re-census
+    (Transient/CANON_CENSUS_RECOUNT_2026-09-12.md): 29 distinct biome values in the
+    CSV; the complete table below sums to 21872 exactly. The earlier 30-name
+    arithmetic was wrong because 3 legacy biomes are genuinely off the map
+    (BMT_CrystalCaverns, BMT_FungalForest, HorrorWastes) while 2 donor defNames
+    remain painted pending their owned-successor repaint (see the table's
+    pending-repaint rows).
+
+  # 🔑 CENSUS SOURCE RULING — owner card sitting 2026-09-12 ("As long as that csv
+  # was taken from the current worldmap in the save, yes." — provenance verified
+  # before landing: save last written 2026-09-10 23:57, the CSV↔save comparison
+  # (0/21872 tiles differing) ran after it, save untouched since):
+  # world/ASHKARR_WORLDMAP_tiles.csv is the SOLE census source for the Ash'karr
+  # planet. The V26 live census (PoisonForest 557) and the 2026-08-23
+  # painted-lineage counts (PoisonForest 604, and every other superseded row) are
+  # DELETED, not kept alongside — closing the three-way disagreement everywhere.
+  # Counts below: recount 2026-09-12 at CSV sha256_12 756d9ffc8a22; the CSV was
+  # then region-renamed (CSV_REGION_SYNC_1, now sha256_12 274aecc5ff76) — region
+  # column only, biome counts unaffected.
   biome_tile_counts:
-    Desert: 4648
-    AB_RockyCrags: 3816
-    ExtremeDesert: 3214
-    AB_MycoticJungle: 1939
-    Wasteland: 1721
-    Ocean: 823
-    AridShrubland: 709
-    PoisonForest: 604
-    AB_PropaneLakes: 554
-    ZBiome_Badlands: 545
-    AB_FeraliskInfestedJungle: 534
-    HorrorWastes: 468
-    BMT_FungalForest: 425
-    Lake: 312
-    SeaIce: 277
+    ExtremeDesert: 3969
+    AB_PropaneLakes: 2531
+    Desert: 2390
+    AB_MycoticJungle: 2204
+    Wasteland: 1853
+    RUT_NightsideIce: 1506
+    AB_RockyCrags: 1135
+    RUT_BlueDesert: 1029
+    ZBiome_Badlands: 970
+    AridShrubland: 628
+    RUT_TwilightSea: 607
+    PoisonForest: 546
+    RUT_GreySea: 472
+    RUT_TheScald: 312
     AB_MechanoidIntrusion: 236
-    ZBiome_Grasslands: 233
-    ZBiome_DesertOasis: 227
-    BMT_CrystalCaverns: 127
+    # ⚠️ PENDING REPAINT — owner caution 2026-09-12: "Be careful with those new
+    # biomes. We were making our own versions of those biomes in our own mods."
+    # The next two rows are OUR biomes counted by their tiles, which the save
+    # still paints under the DONOR defNames shown in the trailing comments —
+    # BIOME_OWNERSHIP_WAVE_1 owes the repaint; after it lands, a fresh census
+    # must show both donor names at 0.
+    RUT_Greentide: 235      # painted as BiomeCypreJungle (donor) today
+    RUT_FeverWood: 43       # painted as COMIGO_GreaterSwamp_Tropical (donor) today
+    ZBiome_DesertOasis: 223
+    ZBiome_Grasslands: 222
+    AB_OcularForest: 179
+    AB_FeraliskInfestedJungle: 161
     AB_GelatinousSuperorganism: 96
+    AB_MiasmicMangrove: 93
     Scarlands: 90
-    IceSheet: 80
-    AB_MiasmicMangrove: 65
-    AB_TarPits: 57
+    RUT_PropaneLake: 57
+    AB_TarPits: 41
     AB_PyroclasticConflagration: 31
-    Volcano: 23
-    LavaField: 15
-    AB_OcularForest: 3
+    LavaField: 8
+    Volcano: 5
+    Ocean: 0
+    Lake: 0
+    SeaIce: 0
+    IceSheet: 0
+  biome_tile_counts_src: >
+    Transient/CANON_CENSUS_RECOUNT_2026-09-12.md — complete 29-biome table MEASURED
+    from the frozen CSV (csv.DictReader; sum of rows = 21872 = the file's row count
+    exactly). Vanilla Ocean/Lake/SeaIce/IceSheet are absent from the CSV entirely
+    (true 0; rows kept because the post-freeze audit names them "as the 2026-09-07
+    rulings intended"). PoisonForest 546 is confirmed by this CSV directly — the
+    557/604 lineage numbers are deleted under the census-source ruling above. The
+    two pending-repaint rows are measured by their donor defNames (235/43) and
+    listed under their owned successors per the owner's 2026-09-12 card.
 
 settlements:
   total: 120
