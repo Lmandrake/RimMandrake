@@ -58,6 +58,15 @@ TMPL = os.path.join(HERE, "codebase_health_artifact.tmpl.html")
 STATE = os.path.join(REPO, "infrastructure", "state", "codebase_health_last.json")
 JSON_OUT = os.path.join(REPO, "Transient", "codebase_health.json")
 PAGE_OUT = os.path.join(REPO, "Transient", "codebase_health_artifact.html")
+# HUB_TAB_PUBLISHER_MIGRATION_1: the hub's health tab reads this file, not the
+# standalone artifact above — refreshed here so a rebuild never leaves it
+# behind. Regenerating the file is scriptable; republishing it against the
+# hub's Artifact URL is not (no CLI exists for that) — a session still has to
+# run the Artifact tool. This only keeps the input to that step current.
+HUB_MAKE_TAB_DATA = os.path.join(
+    REPO, "infrastructure", "dashboards", "hub", "make_tab_data.py")
+HUB_HEALTH_JSON = os.path.join(
+    REPO, "infrastructure", "dashboards", "hub", "data", "health.json")
 
 MIN_INTERVAL = 900           # seconds. The owner's ceiling, raised from 300 2026-09-04.
 
@@ -206,7 +215,29 @@ def build():
         sys.exit("REFUSING: %s has no __DATA__ placeholder." % TMPL)
     os.makedirs(os.path.dirname(PAGE_OUT), exist_ok=True)
     write_atomic(PAGE_OUT, page.replace("__DATA__", payload))
+    refresh_hub_tab()
     return src["counts"], len(rows)
+
+
+def refresh_hub_tab():
+    """Regenerate the hub's health.json from the JSON this run just wrote.
+
+    Best-effort: a failure here must not fail the whole publish (the
+    standalone page above already built fine), so it prints a WARN rather
+    than exiting non-zero.
+    """
+    r = subprocess.run([sys.executable, HUB_MAKE_TAB_DATA, "health"],
+                       cwd=REPO, capture_output=True, text=True)
+    if r.returncode != 0:
+        print("WARN: hub tab data regen failed (%s); %s still holds a stale "
+              "fingerprint — hub_check.py will flag it STALE."
+              % (os.path.basename(HUB_MAKE_TAB_DATA), HUB_HEALTH_JSON),
+              file=sys.stderr)
+        if r.stderr.strip():
+            print(r.stderr.strip(), file=sys.stderr)
+        return
+    print("  hub tab -> %s (a session still owes a republish against the hub "
+          "Artifact URL: HUB_TAB_PUBLISHER_MIGRATION_1)" % HUB_HEALTH_JSON)
 
 
 def main():
