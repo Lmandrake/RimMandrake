@@ -49,3 +49,6 @@ Range + 12 ex-Notch as the audit predicted. CSV patched (34 rows, region
 column only), freeze re-stamped, stamp matches bytes. Independent check:
 post-patch Ashfall Range = 324 = the live save's own tileCount for that
 feature. All 809 region mismatches from the audit are now resolved.
+(Note: the landing commit shows all lines changed — the rewrite normalized
+CSV quoting; a field-by-field comparison against HEAD~1 confirmed exactly 34
+rows / region-only semantic difference. MEASURED.)

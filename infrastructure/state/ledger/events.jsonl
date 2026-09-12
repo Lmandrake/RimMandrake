@@ -7674,3 +7674,9 @@
 {"seat":"FOUNDRY","event":"claim","id":"SHRINE_GUARDIAN_BIOME_GATE_1","ts":"2026-09-12T07:27:41Z"}
 {"seat":"FOUNDRY","event":"start","id":"SHRINE_GUARDIAN_BIOME_GATE_1","ts":"2026-09-12T07:27:45Z"}
 {"seat":"FOUNDRY","event":"needs","id":"SHRINE_GUARDIAN_BIOME_GATE_1","to":"deploy","reason":"C# built 0W/0E, patch validated clean against live 592-mod load set; DLL write refused (Errno 22) - game running under BENCH's live WORLDMAP_FINAL_REVIEW_1 bridge session, not stale. Deploy owed next game-down, then quicktest verify on Desert biome before close.","ts":"2026-09-12T07:32:13Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-12T07:32:51Z"}
+{"seat":"FOUNDRY","event":"reclaim","id":"MLIE_FAUNA_ABSORPTION_1","reason":"Stale-queue audit 2026-09-12: STILL LIVE, ~130 of ~150 species unported, defName-drift sweep owed first; owner AFK, reclaiming to keep BELT floor busy","ts":"2026-09-12T07:33:31Z"}
+{"seat":"FOUNDRY","event":"reclaim","id":"MLIE_FAUNA_ABSORPTION_1","ts":"2026-09-12T07:34:17Z"}
+{"seat":"FOUNDRY","event":"start","id":"MLIE_FAUNA_ABSORPTION_1","ts":"2026-09-12T07:34:17Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-12T07:39:03Z"}
+{"seat":"BENCH","event":"close","id":"CSV_REGION_SYNC_1","sha":"0b3c6d937","ts":"2026-09-12T07:40:31Z"}
