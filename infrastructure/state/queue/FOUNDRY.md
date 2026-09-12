@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-12T17:16:42Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-12T17:21:58Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
+prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
 
 # IN PROGRESS
 
@@ -1030,17 +1039,7 @@ prose:    infrastructure/state/items/SARLACC_HABITAT_BUILD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-waiting:  needs `bridge`, game is UP
-summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
-prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -1069,16 +1068,6 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  Confirm whether RUTCathedralRoach pawns actually execute
 prose:    infrastructure/state/items/CATHEDRAL_ROACH_THINKTREE_GAP_1.md
-
-## SEA_LANDMARK_CLEANUP_REPLAY_1 Replay the 2026-09-12 sea-landmark cleanup onto the CANONICAL save at its next re-save: SEA_ENRICHMENT_LANDMARKS_1 put 613 landmarks on 1,079 sea tiles (57%); owner ruled shoreline-only + capped (~7%); applied live on the FLIGHT save only — CANONICAL_ASHKARR_2026-09-09.rws still carries all 613; run design/Jawa/worldbuilding/enrichment/sea_landmark_cleanup_apply.py after loading canonical, verify 80 remain, re-save with backup+stat discipline
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SEA_LANDMARK_CLEANUP_REPLAY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SEA_LANDMARK_CLEANUP_REPLAY_1.md
 
 ## UTINNI_WORLDMAP_FLIGHT_ICON_1 Replace the gravship's world-map flight icon with a Utinni-specific sprite: vanilla WorldObjectDef Gravship draws World/WorldObjects/Expanding/Gravship (expandingIcon) and World/WorldObjects/Caravan (texture); patch both to our art under the RUT_ tier, sized for expandingIconDrawSize 1.35
 state:    proposed

@@ -71,10 +71,40 @@ planet:
   status: frozen
   status_src: >
     Owner card, 2026-09-12: "Flip to frozen" — confirming the 2026-09-07
-    freeze declaration and the saved CANONICAL_ASHKARR_2026-09-09.rws as the
-    embodied world. Supersedes the remaking status (owner 2026-08-22) whose
-    own flip condition — a saved game with the map ported — is met.
+    freeze declaration. The embodied world is the START savegame below
+    (owner, 2026-09-12 10:20: "record this save game as the new canonical
+    frozen start savegame"); CANONICAL_ASHKARR_2026-09-09.rws was the world
+    before the player start existed on it and is kept only as the owner's
+    keeper, never loaded as canon again.
   name: "Ash'karr — The Sundered"
+
+  # ⭐ THE CANONICAL START SAVEGAME — owner, 2026-09-12, at the bench, verbatim:
+  # "So I am at the official world location! Please record this save game as the
+  # new canonical frozen start savegame. Very exciting! This map is the first and
+  # (in some sense) most important map the players will experience when loading
+  # the campaign."
+  start_savegame: CANONICAL_ASHKARR_START_2026-09-12.rws
+  start_savegame_src: >
+    Saves\CANONICAL_ASHKARR_START_2026-09-12.rws, written 10:20 2026-09-12 via
+    rimworld/save_game with the Saves folder stat'd before and after (one new
+    file, nothing else changed). Contents: the frozen world (live
+    jawa/world_tile_validate vs world/ASHKARR_WORLDMAP_tiles.csv = 21872/21872
+    matched, 0 mismatched — direction: the world was NOT imported from the CSV
+    today, so this is evidence the planet is unchanged); the Twilight/Grey Sea
+    landmark cleanup (533 removed, 80 kept, owner ruling 2026-09-12); the
+    gravship "The Utinni" (v2 ring, 3,275 substructure cells, booms removed)
+    landed at tile 17007 by the owner's own flight; the Five Founders aboard
+    (Captain, Keeper, The Hands, First-Hatched, Twice-Kin); the player
+    settlement at 17007 named "Zeddo's Salvage Yard" (renamed live from
+    vanilla's "The Utinni landing site"); the three ferry-hop
+    AbandonedSettlement markers (tiles 16869, 9926, 1596) removed before the
+    save. Ancestor: FLIGHT_hop1_seas_cleaned_2026-09-12.rws (pre-jump).
+  start_tile: 17007
+  start_tile_src: >
+    PLAYER_START_SITE_1 ruling (owner card 2026-09-08: Zeddo's Yard, tile 17007,
+    ExtremeDesert / Fall Line Barrens, one tile from Zeddo's Toll 17006); the
+    START savegame's PlayerColony Settlement (world object 277) sits on it,
+    read back live 2026-09-12.
 
   # ⭐ ACCEPTED FOR V1 — owner, 2026-08-20, after looking at the ortho globes.
   #   "Let's go with the globe map you made for v1. Map accepted."
