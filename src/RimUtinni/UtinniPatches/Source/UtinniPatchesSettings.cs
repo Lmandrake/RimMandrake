@@ -13,6 +13,10 @@ namespace RimMandrake.Utinni.UtinniPatches
     //   2. GEOTHERMAL_DENSITY_FIELD_1 (GeothermalDensityField.cs) — scales
     //      steam geyser count by a world-position density field. Also fires
     //      only during map generation.
+    //   3. UTINNI_WORLDMAP_FLIGHT_ICON_1 (Patches/UtinniWorldIcon.xml) — swaps
+    //      the gravship's world-map sprite from vanilla's grav-engine glyph to
+    //      the Utinni's own ring silhouette. Applied at XML patch time through
+    //      PatchOperationSettingGate, so it takes effect on the next game start.
     // TWINKLE_FLORA_SPIKE_1 (TwinkleFloraSpike.cs) is a timeboxed feasibility
     // spike that ships compiled but is not wired into any live biome or
     // shipped plant def — nothing in a real game ever runs it, so it gets no
@@ -22,6 +26,7 @@ namespace RimMandrake.Utinni.UtinniPatches
         public static bool ambientShrineDoctrineEnabled = true;
         public static bool geothermalDensityFieldEnabled = true;
         public static float geothermalMountainFalloffDeg = 20f;
+        public static bool utinniWorldIconEnabled = true;
 
         public override void ExposeData()
         {
@@ -29,6 +34,7 @@ namespace RimMandrake.Utinni.UtinniPatches
             Scribe_Values.Look(ref ambientShrineDoctrineEnabled, "ambientShrineDoctrineEnabled", true);
             Scribe_Values.Look(ref geothermalDensityFieldEnabled, "geothermalDensityFieldEnabled", true);
             Scribe_Values.Look(ref geothermalMountainFalloffDeg, "geothermalMountainFalloffDeg", 20f);
+            Scribe_Values.Look(ref utinniWorldIconEnabled, "utinniWorldIconEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -50,6 +56,12 @@ namespace RimMandrake.Utinni.UtinniPatches
               + "dayside mountain ranges. Off: geyser counts use vanilla's own formula only.");
             list.Label("Mountain-range falloff: " + geothermalMountainFalloffDeg.ToString("0") + " degrees");
             geothermalMountainFalloffDeg = list.Slider(geothermalMountainFalloffDeg, 5f, 60f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Utinni world-map icon", ref utinniWorldIconEnabled,
+                "Draws the Utinni's own ring hull on the planet map while the gravship is in "
+              + "flight, at both zoom levels, instead of vanilla's generic grav-engine glyph. "
+              + "Off: the vanilla gravship sprite is used. Takes effect on the next game start.");
 
             list.End();
         }
