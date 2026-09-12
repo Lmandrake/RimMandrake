@@ -20,3 +20,21 @@ lossless (pad, don't scale).**
 ## verify
 Re-run the header census: 0 non-%4 textures in our own mods; RSS delta on the
 next full load recorded MEASURED (expect roughly −0.2 GB from our share alone).
+
+## 2026-09-11 update — our-mods phase DONE
+
+87 PNGs padded (transparent, centered, silhouette unchanged) across
+RustChrome/Armoury/SWBestiary/StarWarsPatches/StarWarsRaces. Offender list
+preserved to `infrastructure/state/facts/nondiv4_offenders_ours_2026-09-12.csv`
+before the Transient source aged out. Redeployed (5 mods, `deploy_custom_mods.py
+--apply`), spot-checked the LIVE deployed copy's pixel dimensions, not just the
+repo. Re-census: **0 non-%4 textures remain** in `src/RimMandrake`,
+`src/RimStarWars`, `src/RimUtinni`. `drawSize`/offset check: no adjustment
+needed (cell-unit `drawSize`, not pixel-unit — padding stretches with the
+existing quad).
+
+Closing on this criterion. The RSS-delta MEASURED confirmation rides the
+next full load naturally (harvest_log.py / a memory-footprint re-audit) —
+not itself a build step, not holding the item open for it. Workshop-mod
+offenders (~1,491 of 1,578) untouched, phase 2, owner's call per this
+item's own spec.
