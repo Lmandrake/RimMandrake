@@ -1,0 +1,79 @@
+{
+ "generatedAt": "2026-09-11T16:58:00Z",
+ "source": {
+  "path": "Transient/codebase_health.json",
+  "bytes": 495359,
+  "sha256_12": "20c42eec8632"
+ },
+ "head": "35c25a4bf",
+ "counts": {
+  "red": 22,
+  "blue": 323,
+  "green": 1458,
+  "grey": 370,
+  "unmeasured": 0,
+  "total": 2173
+ },
+ "loc": {
+  "red": 11787,
+  "blue": 120340,
+  "green": 597263,
+  "grey": 115738,
+  "unmeasured": 0,
+  "total": 845128
+ },
+ "reviewEntries": 1938,
+ "recidivists": [
+  {
+   "path": "src/RimStarWars/Armoury/Patches/Armour_Leather.xml",
+   "loc": 3666,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimMandrake/Utils/gen_pawnkind_roster.py",
+   "loc": 2969,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_ImmortalusSithLords.xml",
+   "loc": 1353,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimMandrake/Utils/cherrypick_build.py",
+   "loc": 1076,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORBlasterRifle.xml",
+   "loc": 797,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORHeroApparel.xml",
+   "loc": 524,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml",
+   "loc": 1621,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWGenericHeadgear.xml",
+   "loc": 844,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORFactions_Sith.xml",
+   "loc": 704,
+   "cycles": 2
+  },
+  {
+   "path": "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_JunkPile.xml",
+   "loc": 684,
+   "cycles": 2
+  }
+ ],
+ "standalone": "Transient/codebase_health_artifact.html"
+}

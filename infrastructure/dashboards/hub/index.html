@@ -1,0 +1,245 @@
+<title>Utinni Control Room</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Archivo:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#2A211A; --panel:#362B21; --panel2:#3F3327;
+    --line:#4A3B2C; --ink:#EFE3D0; --muted:#B39C82; --accent:#D98E32;
+    --good:#7FA65A; --warn:#D9A13B; --bad:#C4573B; --info:#5B84A6; --grey:#8B8075;
+    --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);margin:0;
+       font:15px/1.5 Archivo,system-ui,sans-serif;
+       padding-block:0 32px;padding-inline:20px}
+  .wrap{max-width:1080px;margin:0 auto}
+  header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;
+         padding-block:26px 14px;border-bottom:3px solid var(--accent)}
+  h1{font:700 30px/1.1 Fraunces,Georgia,serif;margin:0;letter-spacing:.2px}
+  h1 .amp{color:var(--accent)}
+  .stamp{color:var(--muted);font-size:13px;margin-left:auto;
+         font-variant-numeric:tabular-nums}
+  nav{display:flex;flex-wrap:wrap;gap:6px;padding-block:14px;position:sticky;
+      top:0;background:var(--ground);z-index:2}
+  nav a{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:6px;
+        color:var(--muted);text-decoration:none;font-weight:600;font-size:14px;
+        border:1px solid transparent}
+  nav a:hover{color:var(--ink)}
+  nav a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  nav a.on{background:var(--panel);color:var(--ink);border-color:var(--line)}
+  .lamp{width:10px;height:10px;border-radius:50%;background:var(--grey);flex:none}
+  .lamp.g{background:var(--good)} .lamp.a{background:var(--warn)}
+  .lamp.r{background:var(--bad)}
+  section{padding-block:8px 0}
+  .meta{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--muted);font-size:13px;
+        margin:2px 0 14px;font-variant-numeric:tabular-nums}
+  .meta code{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .meta .age{font-weight:600}
+  .age.g{color:var(--good)} .age.a{color:var(--warn)} .age.r{color:var(--bad)}
+  h2{font:600 22px/1.2 Fraunces,Georgia,serif;margin:10px 0 2px;text-wrap:balance}
+  h3{font:600 12px/1 Archivo,sans-serif;text-transform:uppercase;
+     letter-spacing:.09em;color:var(--muted);margin:22px 0 10px}
+  .tiles{display:flex;flex-wrap:wrap;gap:10px}
+  .tile{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+        padding:10px 16px;min-width:108px}
+  .tile b{display:block;font:600 24px/1.2 Archivo;font-variant-numeric:tabular-nums}
+  .tile span{font-size:12px;color:var(--muted);text-transform:uppercase;
+             letter-spacing:.06em}
+  .tile.hot b{color:var(--accent)}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;
+       vertical-align:1px}
+  table{border-collapse:collapse;width:100%;font-size:14px;
+        font-variant-numeric:tabular-nums}
+  th{font:600 11px/1 Archivo;text-transform:uppercase;letter-spacing:.08em;
+     color:var(--muted);text-align:left;padding:6px 12px 6px 0;
+     border-bottom:1px solid var(--line)}
+  td{padding:6px 12px 6px 0;border-bottom:1px solid var(--line)}
+  td.num,th.num{text-align:right;padding-right:0}
+  .scroll{overflow-x:auto}
+  .tableclip{max-height:420px;overflow-y:auto;border:1px solid var(--line);
+             border-radius:8px;padding:0 14px;background:var(--panel)}
+  .bar{background:var(--panel2);border-radius:4px;height:10px;min-width:120px;
+       overflow:hidden}
+  .bar i{display:block;height:100%;background:var(--accent)}
+  .note{color:var(--muted);font-size:13px;max-width:64ch}
+  a{color:var(--accent)}
+  .links li{margin:10px 0}
+  .links .what{color:var(--muted);font-size:13px;display:block}
+  footer{margin-top:40px;border-top:1px solid var(--line);padding-top:14px;
+         color:var(--muted);font-size:13px}
+  footer code{font-family:var(--mono);font-size:12px}
+  .err{color:var(--bad);font-size:13px}
+  [hidden]{display:none!important}
+</style>
+<div class="wrap">
+<header>
+  <h1>Utinni <span class="amp">Control</span> Room</h1>
+  <div class="stamp" id="now"></div>
+</header>
+<nav id="tabs">
+  <a href="#art"><span class="lamp" id="lamp-art"></span>Art Regen</a>
+  <a href="#health"><span class="lamp" id="lamp-health"></span>Codebase Health</a>
+  <a href="#maturity"><span class="lamp" id="lamp-maturity"></span>Maturity</a>
+  <a href="#worldmap"><span class="lamp" id="lamp-worldmap"></span>Worldmap Audit</a>
+  <a href="#sheets"><span class="lamp g" id="lamp-sheets"></span>Sheets</a>
+</nav>
+
+<section id="art" hidden>
+  <h2>Art regeneration pipeline</h2>
+  <div class="meta" id="meta-art"></div>
+  <div id="body-art"></div>
+</section>
+
+<section id="health" hidden>
+  <h2>Codebase health</h2>
+  <div class="meta" id="meta-health"></div>
+  <div id="body-health"></div>
+</section>
+
+<section id="maturity" hidden>
+  <h2>Project maturity</h2>
+  <div class="meta" id="meta-maturity"></div>
+  <div id="body-maturity"></div>
+</section>
+
+<section id="worldmap" hidden>
+  <h2>Ash&rsquo;karr worldmap audit</h2>
+  <div class="meta" id="meta-worldmap"></div>
+  <div id="body-worldmap"></div>
+</section>
+
+<section id="sheets" hidden>
+  <h2>Working sheets</h2>
+  <p class="note">Pages the owner works <em>in</em> — decisions saved as data. They keep
+  their own URLs and are never embedded here.</p>
+  <ul class="links">
+    <li><a href="https://claude.ai/code/artifact/55e3c8e7-202a-4c5c-b47b-d2bce0747b55">Ash&rsquo;karr Fauna &amp; Flora Deck</a>
+        <span class="what">372 fauna / 313 flora rows awaiting the verdict sitting (ASSIGNMENT_SHEETS_VERDICT_SITTING_1)</span></li>
+    <li><a href="https://claude.ai/code/artifact/a7327077-3d63-4970-a4cc-13d55a586463">Fauna Canonical Graphs</a>
+        <span class="what">size / damage curves behind the fauna rulings</span></li>
+    <li><a href="https://claude.ai/code/artifact/f8b14a7a-b8ed-4787-8104-b055ebf2f45c">Ash&rsquo;karr Field Audit</a>
+        <span class="what">the worldmap audit page itself (also the Worldmap tab&rsquo;s subject)</span></li>
+  </ul>
+</section>
+
+<footer>
+  <div>Shell source: <code>D:\Luke\dev\Rimworld\infrastructure\dashboards\hub\index.html</code>
+  &nbsp;·&nbsp; regenerate tab data: <code>python3 infrastructure/dashboards/hub/make_tab_data.py</code>
+  &nbsp;·&nbsp; the same lamps, from a terminal: <code>python3 infrastructure/dashboards/hub/hub_check.py</code></div>
+  <div style="margin-top:6px">Contract: every tab reads one data file carrying
+  <code>generatedAt</code> + a source fingerprint; a seat republishes only its own file
+  against this URL. Lamp: green &lt; 24 h, amber &lt; 72 h, red older, grey unmeasured.</div>
+</footer>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const TABS=["art","health","maturity","worldmap","sheets"];
+$("#now").textContent="viewed "+new Date().toISOString().slice(0,16).replace("T"," ")+"Z";
+
+function show(){
+  let h=(location.hash||"#art").slice(1);
+  if(!TABS.includes(h))h="art";
+  for(const t of TABS){
+    document.getElementById(t).hidden=(t!==h);
+    document.querySelector(`nav a[href="#${t}"]`).classList.toggle("on",t===h);
+  }
+}
+addEventListener("hashchange",show);
+
+function lampClass(iso){
+  const t=Date.parse(iso);
+  if(isNaN(t))return"";
+  const h=(Date.now()-t)/36e5;
+  return h<24?"g":h<72?"a":"r";
+}
+function ageText(iso){
+  const t=Date.parse(iso);
+  if(isNaN(t))return"UNMEASURED";
+  const h=(Date.now()-t)/36e5;
+  return h<1?Math.round(h*60)+" min old":h<48?h.toFixed(1)+" h old":Math.round(h/24)+" d old";
+}
+function meta(tab,d){
+  const cls=lampClass(d.generatedAt);
+  $("#lamp-"+tab).classList.add(cls||"x");
+  const src=d.source||d.sourceFingerprint||{};
+  $("#meta-"+tab).innerHTML=
+    `<span class="age ${cls}">${ageText(d.generatedAt)}</span>`+
+    `<span>generated ${esc(d.generatedAt||"?")}</span>`+
+    (src.path?`<span>source <code>${esc(src.path)}</code></span>`:"")+
+    (src.sha256_12?`<span>fingerprint <code>${esc(src.sha256_12)}</code></span>`:"")+
+    (d.head?`<span>head <code>${esc(d.head)}</code></span>`:"");
+}
+function tiles(list){
+  return `<div class="tiles">`+list.map(([n,v,hot])=>
+    `<div class="tile${hot?" hot":""}"><b>${esc(v)}</b><span>${esc(n)}</span></div>`).join("")+`</div>`;
+}
+function fail(tab,e){
+  $("#body-"+tab).innerHTML=`<p class="err">data file failed to load: ${esc(e.message||e)} — the tab's publisher has not shipped it yet.</p>`;
+  $("#meta-"+tab).innerHTML=`<span class="age">UNMEASURED</span>`;
+}
+async function grab(f){const r=await fetch(f);if(!r.ok)throw new Error(f+" → HTTP "+r.status);return r.json()}
+
+grab("data/art.json").then(d=>{
+  meta("art",{generatedAt:d.generatedAt,source:d.sourceFingerprint});
+  const sc=d.stateCounts||{},sp=d.spend||{},pr=d.projection||{};
+  const states=Object.entries(sc).filter(([,v])=>v>0);
+  $("#body-art").innerHTML=
+    tiles([["targets",d.targetCount??"?",1],
+           ["awaiting verdict",sc.awaiting_verdict??0],
+           ["accepted",sc.accepted??0],
+           ["spend (USD)",sp.totalUsd!=null?"$"+sp.totalUsd.toFixed(2):"?"],
+           ["weekly window",sp.pctWeeklyWindow!=null?sp.pctWeeklyWindow+"%":"?"]])+
+    `<h3>Queue states</h3><div class="scroll"><table><tr><th>state</th><th class="num">targets</th></tr>`+
+    states.map(([k,v])=>`<tr><td>${esc(k)}</td><td class="num">${v}</td></tr>`).join("")+
+    `</table></div>`+
+    `<h3>Projection</h3><p class="note">${esc(pr.note||"")} — status ${esc(pr.status||"?")}, ${pr.remaining??"?"} of ${pr.totalTargets??"?"} remaining.</p>`;
+}).catch(e=>fail("art",e));
+
+grab("data/health.json").then(d=>{
+  meta("health",d);
+  const c=d.counts||{},l=d.loc||{};
+  const hue={red:"var(--bad)",blue:"var(--info)",green:"var(--good)",grey:"var(--grey)"};
+  $("#body-health").innerHTML=
+    tiles([["files",c.total??"?",1],["review entries",d.reviewEntries??"?"],
+           ["LOC total",(l.total??0).toLocaleString("en-US")]])+
+    `<h3>Review status</h3><div class="scroll"><table><tr><th>status</th><th class="num">files</th><th class="num">LOC</th></tr>`+
+    ["red","blue","green","grey"].map(k=>
+      `<tr><td><span class="dot" style="background:${hue[k]}"></span>${k}</td><td class="num">${c[k]??0}</td><td class="num">${(l[k]??0).toLocaleString("en-US")}</td></tr>`).join("")+
+    `</table></div>`+
+    `<h3>Recidivists — most re-dirtied files</h3><div class="scroll"><table><tr><th>path</th><th class="num">cycles</th><th class="num">LOC</th></tr>`+
+    (d.recidivists||[]).map(r=>`<tr><td><code style="font-family:var(--mono);font-size:12px">${esc(r.path)}</code></td><td class="num">${r.cycles}</td><td class="num">${r.loc}</td></tr>`).join("")+
+    `</table></div>`;
+}).catch(e=>fail("health",e));
+
+grab("data/maturity.json").then(d=>{
+  meta("maturity",d);
+  const fc=d.functionCounts||{},cr=d.codeReview||{},lg=d.ledger||{},g=d.goal||{};
+  const rungs=["planned","designed","implemented","runnable","validated","played"];
+  const mx=Math.max(...rungs.map(r=>fc[r]||0),1);
+  $("#body-maturity").innerHTML=
+    tiles([["systems",(d.systems||[]).length,1],
+           ["goal ticks",`${g.ticked??"?"} / ${g.total??"?"}`],
+           ["open items",lg.openItems??"?"],["needs owner",lg.needsOwner??"?"],
+           ["dirty files",cr.dirty??"?"]])+
+    `<h3>Function rungs</h3><div class="scroll"><table>`+
+    rungs.map(r=>`<tr><td style="width:110px">${r}</td><td class="num" style="width:44px">${fc[r]??0}</td><td><div class="bar"><i style="width:${(fc[r]||0)/mx*100}%"></i></div></td></tr>`).join("")+
+    `</table></div>`+
+    `<h3>Goal sheet — ${esc(String(g.ticked))} of ${esc(String(g.total))} ticked</h3><div class="scroll"><table><tr><th>#</th><th>section</th><th class="num">ticked</th><th style="width:35%"></th></tr>`+
+    (g.sections||[]).map(s=>`<tr><td>${s.n}</td><td>${esc(s.title)}</td><td class="num">${s.ticked} / ${s.total}</td><td><div class="bar"><i style="width:${s.total?s.ticked/s.total*100:0}%"></i></div></td></tr>`).join("")+
+    `</table></div>`+
+    `<h3>Systems (${(d.systems||[]).length})</h3><div class="tableclip"><table><tr><th>system</th><th>tier</th><th>function</th><th>content</th><th>date</th></tr>`+
+    (d.systems||[]).map(s=>`<tr><td>${esc(s.system)}</td><td>${esc(s.tier||"")}</td><td>${esc(s.functionRung||"")}</td><td>${esc(s.contentRung||"")}</td><td>${esc(s.date||"")}</td></tr>`).join("")+
+    `</table></div>`;
+}).catch(e=>fail("maturity",e));
+
+grab("data/worldmap.json").then(d=>{
+  meta("worldmap",d);
+  $("#body-worldmap").innerHTML=
+    `<p class="note">${esc(d.note||"")}</p>`+
+    `<p><a href="${esc(d.artifactUrl)}">Open the audit page</a></p>`+
+    `<p class="note">Freshness basis: ${esc(d.generatedAtBasis||"")}</p>`;
+}).catch(e=>fail("worldmap",e));
+
+show();
+</script>

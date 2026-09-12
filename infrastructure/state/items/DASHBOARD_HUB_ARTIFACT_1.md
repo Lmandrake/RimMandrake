@@ -30,3 +30,18 @@ check is fresh." Design: `design/RimMandrake/art_regen_registry_design.md` §4.
 ## criteria
 The owner opens one pinned URL and sees every status page with an honest
 freshness lamp per tab; no dashboard ships standalone after migration.
+
+## Built and published 2026-09-11 (BENCH)
+
+**URL (stable, pinned): https://claude.ai/code/artifact/d066e619-b84d-479c-842f-a81b0182511c**
+Shell + checker + generator: `infrastructure/dashboards/hub/` (index.html,
+make_tab_data.py, hub_check.py, data/). Tabs: art (fed directly by
+`infrastructure/artpipe/art_status.json`), health, maturity, worldmap, sheets
+(links only). Republish rule: pass the URL as `url`, send ONLY your tab's data
+file — unpassed files are kept.
+
+Verify state: stale-lamp half PROVEN (checker flags art STALE against
+registry.jsonl fingerprint, worldmap RED by age; shell lamps age-computed the
+same). Still open: the two-seat no-clobber republish proof, and migration —
+standalone publishers (codebase_health, maturity dashboard, artpipe) repoint
+to hub data files.
