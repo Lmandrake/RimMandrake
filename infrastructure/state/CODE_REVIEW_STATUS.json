@@ -2742,16 +2742,16 @@
     "sha": "90940c68"
   },
   "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "e4e17f7dd6323d8dbc6ff9c29dd886b39913ef4bbde44f1560b602f70ec9100d",
-    "sha": "90940c68"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "f543da67d0f9148244d15ec4a2c077fb8a6d3561e863b603121c31d7daf7884e",
+    "sha": "2467e0a2d"
   },
   "src/RimMandrake/Pyrelands/Source/FireEcologyHook.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "1e60ed4a7c2d69b67149c3e5e88b53637411d08306dfa0997a8906b0d78f7fbe",
-    "sha": "90940c68"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "a71a47b8ab1c6742614c192e41d602523403f90b50bc3177ccb7964d4ff93e72",
+    "sha": "2467e0a2d"
   },
   "src/RimMandrake/Pyrelands/Textures/World/Biomes/RM_FE_Pyrelands.png": {
     "cleanCount": 1,
@@ -3318,16 +3318,16 @@
     "sha": "7d23de24"
   },
   "src/RimMandrake/RustChrome/Source/RustChrome.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "314444e25edad65a2340e36b07059c07032b4918f5a377a007c89c96125e3045",
-    "sha": "7d23de24"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "2679abfe0210fc829cc3eb22650f4745f757503ecf301749734eb02847fa5478",
+    "sha": "2467e0a2d"
   },
   "src/RimMandrake/RustChrome/Source/RustChromeColors.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-06",
-    "hash": "2cb45640405e9224c02a869cf2f4c7d4de8cb534376f57e527c27fe76076a7f3",
-    "sha": "52dee04f"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "29e89aa10afd32eae19ad5aac6fa7d8053becaf692ae8e9cc0b44849f0652415",
+    "sha": "2467e0a2d"
   },
   "src/RimMandrake/SacredGraffiti/About/About.xml": {
     "cleanCount": 1,
@@ -3444,10 +3444,10 @@
     "sha": "b88a6f90"
   },
   "src/RimMandrake/StructureInjections/Source/GenStep_RimplacePlan.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "da56c7abd2960b82cb68b919a33f63809d040de90af66920f3be5b4f77466090",
-    "sha": "57c00854"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "9b680f4b12d63f1bf78e147a62197d99ed739592acaffce4cfefca2880360c86",
+    "sha": "2467e0a2d"
   },
   "src/RimMandrake/StructureInjections/Source/RimplacePlan.cs": {
     "cleanCount": 2,
@@ -3456,10 +3456,10 @@
     "sha": "555430a2"
   },
   "src/RimMandrake/StructureInjections/Source/StructureInjections.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-10",
-    "hash": "7fdf59873ff70bc447d72633c027aed1cdaade45e62548593e14878b1e213e15",
-    "sha": "b88a6f90"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "4b9e58fe43b82ffc205d4cbff0fadf5388c138395a1ddaea442f0e4c1a3295b6",
+    "sha": "2467e0a2d"
   },
   "src/RimMandrake/StructureInjections/Source/StructureInjectionsDebugActions.cs": {
     "cleanCount": 1,
@@ -5152,16 +5152,16 @@
     "sha": "92e56d4f"
   },
   "src/RimMandrake/WeatherSuite/Source/WeatherSuiteHook.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "8ee8846b77e2e7c664ee45d92d04d01d6c710bbaa43ac43a3ddb867d411198ef",
-    "sha": "a4b734f3"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "434c54f7942ff8d1be827edd74741aa3af5249c64751d6f5fa74aca4598f5afd",
+    "sha": "2467e0a2d"
   },
   "src/RimMandrake/WeatherSuite/Source/WeatherSuiteHook.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "2604affc90a65b8a5c2f6d056ccfbd21da5e2876233d957ab7a29740597c187c",
-    "sha": "a4b734f3"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "06a835bc4796029388b74076f29f2fe2868940fa55b7e432efc1416245a1a334",
+    "sha": "2467e0a2d"
   },
   "src/RimMandrake/WreckedMachines/About/About.xml": {
     "cleanCount": 1,
@@ -8974,16 +8974,16 @@
     "sha": "92e56d4f"
   },
   "src/RimStarWars/JawaRules/Source/JawaRules.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-09",
-    "hash": "4693a89cf37bfef5a2d64f7d3a0ecd727b40b22da8e105502a7b1dd9c67be5eb",
-    "sha": "3ea1ca20"
+    "cleanCount": 3,
+    "date": "2026-09-11",
+    "hash": "c4d5db65809e0d2a06e0ac489a9a57f52c43b0f19fcbcc14b8ca854d16e3db39",
+    "sha": "2467e0a2d"
   },
   "src/RimStarWars/JawaRules/Source/JawaRules.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "5cdaad1eb115c42dd7110f6e0dfb1899043de2c033c309e1256c8345cfab7b10",
-    "sha": "7a39f271"
+    "cleanCount": 2,
+    "date": "2026-09-11",
+    "hash": "a2be5d507d1d8b71626dbcaa0783d774207537f908439f1d9a1632705cb49869",
+    "sha": "2467e0a2d"
   },
   "src/RimStarWars/JawaVoice/About/About.xml": {
     "cleanCount": 1,
