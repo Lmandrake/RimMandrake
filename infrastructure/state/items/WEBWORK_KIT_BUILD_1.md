@@ -1,5 +1,52 @@
 # WEBWORK_KIT_BUILD_1 — Webwork biome mechanics kit (SenseWeb, FrontCreep, ChewAnchors, roster structures)
 
+## 2026-09-12 (FOUNDRY, fifth pass) — LIVE-VERIFIED clean against the item's own verify line, CLOSING
+
+`QUICKTEST_POSTSETUP_CRASH_1`'s fix made the crash moot. Built the exact
+bordering-biome scenario this item's own verify line calls for: painted
+tile 51055 to `RUT_Webwork` and its neighbor 51056 (the already-loaded
+quicktest map's tile) to `TemperateForest`, then `Actions\Regenerate Current
+Map`, so the CURRENT map borders a `RUT_Webwork` world tile on one edge
+(`jawa/world_neighbors` gave the true adjacency: 51056's neighbors are
+1846, 51057, 24421, 68819, 24420, **51055**).
+
+Since `advanceIntervalTicks` is a genuinely-invented ~1 in-game day
+(60,000 ticks), fast-forwarded with `rimworld/play_for`
+(`speed: Ultrafast, forceRequestedSpeed: true`) in chunks (each real bridge
+call is capped well under its own reported duration) to carry the map
+~78,000 ticks past its `FinalizeInit`.
+
+**Result — exactly the item's own verify line, met precisely:**
+`jawa/list_things` found `RUT_Webwork_Anchor` (10), `RUT_Webwork_Web` (10)
+and `RUT_Webwork_Gutter` (14), **every single one at x=249** — the map's
+true East edge (`sizeX=250`), and the correct edge given 51055 sits east of
+51056 in the neighbour ordering. This confirms, in one shot: `FindFront()`
+correctly detected the bordering biome's `RM_FrontCreepExtension`,
+`Rot4.FromAngleFlat` bucketed the heading to the right cardinal edge, and
+`InsetFromEdge`'s depth-1 math placed the band on the TRUE edge (inset=0) —
+exactly one band, matching that only one 60,000-tick interval had elapsed
+past the second (no things at x=248, ruling out an off-by-one).
+
+Destroyed one `RUT_Webwork_Anchor` via `jawa/damage` (Flame, lethal):
+`success: true`, clean. `Player.log` (checked by reading full stack traces,
+not grepping) has **zero** lines naming `SenseWeb`, `FrontCreep`, or
+`ChewAnchor` anywhere — no exception, from either the ~34 sense-web-carrying
+things spawning (which fires `RM_CompSenseWebNode.PostSpawnSetup` on each)
+or the destroy (`PostDeSpawn`). The one `NullReferenceException` in this
+session's whole log window is `MineralsFramework.ThingDef_StaticMineral`
+(an unrelated third-party GenStep, traced to its own stack, nothing to do
+with this kit).
+
+**`RM_JobGiver_ChewAnchors` stays unexercised live** — as this item's own
+"still owed" #3 already says, no consumer race's ThinkTree calls it yet, so
+there is nothing to observe firing. Not a defect in this item; a gap in a
+DIFFERENT unbuilt item (the anchor-beetle race).
+
+**Criteria met**: the item's own stated verify line ("a quicktest map
+bordering a RUT_Webwork world tile shows RUT_Webwork_Anchor/_Web/_Gutter
+Things scattering inward from the correct edge over time, and destroying
+one deregisters cleanly") is satisfied exactly. Closing.
+
 ## 2026-09-12 (FOUNDRY, later same night) — deploy confirmed done; live verify blocked on QUICKTEST_POSTSETUP_CRASH_1
 
 `deploy_custom_mods.py --mod CreatureBehaviors` and `--mod UtinniPatches`
