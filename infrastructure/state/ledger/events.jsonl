@@ -7538,3 +7538,5 @@
 {"seat":"BENCH","event":"block","id":"FAUNA_LORE_DIVERSIFICATION_1","reason":"Owner-judged round that rides the beast graphics/lore pass — after the art wave and with him present.","ts":"2026-09-12T01:15:38Z"}
 {"seat":"BENCH","event":"claim","id":"CATHEDRAL_PLAYER_CONCEALMENT_ARC_1","ts":"2026-09-12T01:15:41Z"}
 {"seat":"BENCH","event":"claim","id":"FAUNA_TOLERANCE_NORMALIZATION_1","ts":"2026-09-12T01:15:44Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-12T01:17:59Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-12T01:18:06Z"}
